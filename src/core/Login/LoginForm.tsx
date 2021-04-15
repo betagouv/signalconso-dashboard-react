@@ -40,7 +40,7 @@ export const LoginForm = ({isLoading, onLogin}: Props) => {
   const inputPassword = useFormInput('password', {
     errorMessage: m.atLeast8Characters,
     required: true,
-    pattern: '.{8,}'
+    // pattern: '.{8,}'
   });
   const css = useStyles();
 

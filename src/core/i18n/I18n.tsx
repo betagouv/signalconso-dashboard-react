@@ -32,6 +32,12 @@ export const useI18n = (): I18nContextProps => {
   return useContext<I18nContextProps>(I18nContext as any);
 };
 
+export const withI18n = (Component: any) => (props: any) => (
+  <I18nContext.Consumer>
+    {(other: any) => <Component {...props} {...other}/>}
+  </I18nContext.Consumer>
+)
+
 export const langToLocal = (lang: string) => `${lang}-${lang.toUpperCase()}`;
 
 export const I18nProvider = ({children, lang = AppLangs.en}: Props) => {
