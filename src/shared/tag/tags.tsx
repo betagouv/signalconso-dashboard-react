@@ -1,0 +1,22 @@
+import {makeStyles} from '@material-ui/core';
+import {Theme, Typography} from '@material-ui/core';
+import * as React from 'react';
+import classNames from 'classnames';
+
+const useH1Styles = makeStyles((t: Theme) => ({
+  root: {
+    lineHeight: 2.25
+  }
+}));
+
+interface Props extends React.HTMLAttributes<HTMLDivElement> {
+
+}
+
+
+export const H1 = ({children, className, style}: Props) => {
+  const css = useH1Styles();
+  return (
+    <Typography variant="h5" gutterBottom className={classNames(css.root, className)} style={style}>{children}</Typography>
+  );
+};

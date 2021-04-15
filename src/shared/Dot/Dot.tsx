@@ -1,0 +1,23 @@
+import {Icon, Theme, makeStyles} from '@material-ui/core';
+import * as React from 'react';
+import classNames from 'classnames';
+
+export interface DotProps {
+  className?: string
+}
+
+const useStyles = makeStyles((t: Theme) => ({
+  root: {
+    fontSize: '9px !important',
+    verticalAlign: 'middle',
+    marginLeft: t.spacing(1),
+    marginRight: t.spacing(1),
+  }
+}));
+
+export const Dot = ({className}: DotProps) => {
+  const css = useStyles();
+  return (
+    <Icon className={classNames(css.root, className)}>fiber_manual_record</Icon>
+  );
+};
