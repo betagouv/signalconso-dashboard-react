@@ -1,4 +1,4 @@
-export const messagesEn = {
+export const messagesFr = {
   yes: 'Yes',
   no: 'No',
   search: 'Search',
@@ -8,7 +8,7 @@ export const messagesEn = {
   close: 'Close',
   confirm: 'Confirm',
   create: 'Create',
-  end: 'End',
+  end: 'Fin',
   see: 'See',
   test: 'Test',
   date: 'Date',
@@ -35,7 +35,7 @@ export const messagesEn = {
   deploy: 'Deploy',
   unknown: 'Unknown',
   new: 'New',
-  start: 'Start',
+  start: 'Début',
   clear: 'Clear',
   cron: 'Cron',
   remainingTime: 'Remaining time',
@@ -58,4 +58,6 @@ export const messagesEn = {
   logout: 'Logout',
   atLeast8Characters: 'At least 8 characters',
   invalidEmail: 'Invalid email',
-};
+  selectedPeriod: 'Période sélectionnée',
+  department: 'Département',
+}

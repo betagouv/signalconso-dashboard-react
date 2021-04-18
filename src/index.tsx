@@ -4,16 +4,18 @@ import App from './App'
 import reportWebVitals from './reportWebVitals'
 import {I18nProvider} from './core/i18n'
 import {createMuiTheme, ThemeProvider} from '@material-ui/core'
+import {MuiPickersUtilsProvider} from '@material-ui/pickers'
+import DateAdapter from '@date-io/date-fns'
 
 ReactDOM.render(
-  <React.StrictMode>
-    <I18nProvider>
-      <ThemeProvider theme={createMuiTheme()}>
+  <I18nProvider>
+    <ThemeProvider theme={createMuiTheme()}>
+      <MuiPickersUtilsProvider utils={DateAdapter}>
         <App/>
-      </ThemeProvider>
-    </I18nProvider>
-  </React.StrictMode>,
-  document.getElementById('root')
+      </MuiPickersUtilsProvider>
+    </ThemeProvider>
+  </I18nProvider>
+  , document.getElementById('root')
 )
 
 // If you want to start measuring performance in your app, pass a function

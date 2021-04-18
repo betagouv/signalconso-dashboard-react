@@ -1,10 +1,11 @@
 import React from 'react'
 import {makeLoginProviderComponent} from './core/Login/LoginContext'
 import {Reports} from './feature/Reports/Reports'
-import {ApiClient, ApiPublicSdk, ApiSecuredSdk, User} from '@signalconso/signalconso-api-sdk-js/build'
+import {ApiClient, SignalConsoPublicSdk, SignalConsoSecuredSdk, User} from '@signalconso/signalconso-api-sdk-js/build'
 import {Config} from './conf/config'
 import {makeStyles} from '@material-ui/styles'
-import {Theme} from '@material-ui/core'
+import {Button, Theme} from '@material-ui/core'
+import {ReportsProvider} from './core/context/ReportsContext'
 
 const headers = {
   'Content-Type': 'application/json',
@@ -13,22 +14,24 @@ const headers = {
 
 const baseUrl = Config.baseUrl + '/api'
 
-const apiPublicSdk = new ApiPublicSdk(new ApiClient({
+const apiPublicSdk = new SignalConsoPublicSdk(new ApiClient({
   baseUrl,
   headers,
 }))
 
-const makePrivateSdk = (token: string) => ({
+const makeSecuredSdk = (token: string) => ({
   public: apiPublicSdk,
-  secured: new ApiSecuredSdk(new ApiClient({
+  secured: new SignalConsoSecuredSdk(new ApiClient({
     baseUrl,
     headers: {...headers, 'X-Auth-Token': token}
   }))
 })
 
-export type SignalConsoApiSdk = ReturnType<typeof makePrivateSdk>
+export type SignalConsoApiSdk = ReturnType<typeof makeSecuredSdk>
 
-export const Login = makeLoginProviderComponent<User, SignalConsoApiSdk>(apiPublicSdk.authenticate.login, makePrivateSdk)
+const loginProvider = makeLoginProviderComponent<User, SignalConsoApiSdk>(apiPublicSdk.authenticate.login, makeSecuredSdk)
+export const Login = loginProvider.Login
+export const useLoginContext = loginProvider.useLoginContext
 
 const useStyles = makeStyles((t: Theme) => ({
   '@global': {
@@ -75,8 +78,18 @@ const App = () => {
   useStyles()
   return (
     <Login>
-      <Reports/>
+      <LoggedApp/>
     </Login>
+  )
+}
+
+const LoggedApp = () => {
+  const {apiSdk, logout} = useLoginContext()
+  return (
+    <ReportsProvider api={apiSdk}>
+      <Button onClick={logout}>Disconnect</Button>
+      <Reports/>
+    </ReportsProvider>
   )
 }
 
