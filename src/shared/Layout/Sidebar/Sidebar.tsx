@@ -1,9 +1,9 @@
-import * as React from 'react';
-import {ReactNode} from 'react';
-import {Slide, Theme} from '@material-ui/core';
-import classNames from 'classnames';
-import {sidebarWith} from '../Layout';
-import makeStyles from '@material-ui/styles/makeStyles';
+import * as React from 'react'
+import {ReactNode} from 'react'
+import {Slide, Theme} from '@material-ui/core'
+import {sidebarWith} from '../Layout'
+import makeStyles from '@material-ui/styles/makeStyles'
+import {classes} from '../../../core/helper/utils'
 
 const useStyles = makeStyles((t: Theme) => ({
   root: {
@@ -22,12 +22,11 @@ interface IProps {
 }
 
 export const Sidebar = ({children, className}: IProps) => {
-  // @ts-ignore
   const css = useStyles();
 
   return (
     <Slide direction="right" in={true} mountOnEnter unmountOnExit>
-      <aside className={classNames(css.root, className)}>
+      <aside className={classes(css.root, className)}>
         {children}
       </aside>
     </Slide>

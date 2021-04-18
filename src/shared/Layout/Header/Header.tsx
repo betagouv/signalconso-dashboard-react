@@ -1,10 +1,9 @@
-import * as React from 'react';
-import classNames from 'classnames';
-import {makeStyles} from '@material-ui/core';
-import {Slide, Theme} from '@material-ui/core';
-import {sidebarWith} from '../Layout';
-import {pageWidth} from '..';
-import {Link} from 'react-router-dom';
+import * as React from 'react'
+import {makeStyles, Slide, Theme} from '@material-ui/core'
+import {sidebarWith} from '../Layout'
+import {pageWidth} from '..'
+import {Link} from 'react-router-dom'
+import {classes} from '../../../core/helper/utils'
 
 export const headerHeight = 56;
 
@@ -37,7 +36,7 @@ export const Header = ({className, children}: any) => {
   const css = useStyles();
   return (
     <Slide direction="down" in={true} mountOnEnter unmountOnExit>
-      <header className={classNames(css.root, className)}>
+      <header className={classes(css.root, className)}>
         <Link to="/workspace" className={css.title}>mediarithmics</Link>
         <div className={css.content}>{children}</div>
       </header>

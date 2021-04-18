@@ -1,7 +1,6 @@
-import * as React from 'react';
-import {Theme} from '@material-ui/core';
-import {makeStyles} from '@material-ui/core';
-import classNames from 'classnames';
+import * as React from 'react'
+import {makeStyles, Theme} from '@material-ui/core'
+import {classes} from '../../core/helper/utils'
 
 type Props = React.DetailedHTMLProps<React.ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement>;
 
@@ -19,6 +18,6 @@ const useStyles = makeStyles((t: Theme) => ({
 export const TransparentButton = ({className, ...props}: Props) => {
   const css = useStyles();
   return (
-    <button {...props} className={classNames(className, css.root)}/>
+    <button {...props} className={classes(className, css.root)}/>
   );
 };

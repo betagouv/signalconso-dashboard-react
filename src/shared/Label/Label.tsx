@@ -1,10 +1,10 @@
-import * as React from 'react';
-import {ReactNode} from 'react';
+import * as React from 'react'
+import {ReactNode} from 'react'
 import {makeStyles, Theme} from '@material-ui/core'
-import {CSSProperties} from '@material-ui/core/styles/withStyles';
-import {fade} from '@material-ui/core/styles';
-import {theme} from '../../core/theme';
-import classNames from 'classnames';
+import {CSSProperties} from '@material-ui/core/styles/withStyles'
+import {fade} from '@material-ui/core/styles'
+import {theme} from '../../core/theme'
+import {classes} from '../../core/helper/utils'
 
 export type LabelColor = 'error' | 'warning' | 'info' | 'success' | 'disable'
 
@@ -47,7 +47,7 @@ const useStyles = makeStyles((t: Theme) => ({
 export const Label = ({type, children, className, ...props}: Props) => {
   const css = useStyles();
   return (
-    <span className={classNames(css.root, type && css[type], className)} {...props}>
+    <span className={classes(css.root, type && css[type], className)} {...props}>
       {children}
     </span>
   );

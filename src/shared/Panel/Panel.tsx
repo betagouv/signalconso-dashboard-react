@@ -1,8 +1,7 @@
-import * as React from 'react';
-import {ReactNode} from 'react';
-import {createStyles, LinearProgress, Theme} from '@material-ui/core';
-import {makeStyles} from '@material-ui/core';
-import classNames from 'classnames';
+import * as React from 'react'
+import {ReactNode} from 'react'
+import {createStyles, LinearProgress, makeStyles, Theme} from '@material-ui/core'
+import {classes} from '../../core/helper/utils'
 
 const useStyles = makeStyles((t: Theme) => createStyles({
   root: {
@@ -30,11 +29,11 @@ export interface PanelProps extends React.DetailedHTMLProps<React.HTMLAttributes
 }
 
 export const Panel = ({className, hoverable, loading, children, ...other}: PanelProps) => {
-  const classes = useStyles();
+  const css = useStyles();
   return (
-    <div className={classNames(classes.root, hoverable && classes.hover, className)} {...other}>
+    <div className={classes(css.root, hoverable && css.hover, className)} {...other}>
       {children}
-      {loading && <LinearProgress className={classes.loader}/>}
+      {loading && <LinearProgress className={css.loader}/>}
     </div>
   );
 };

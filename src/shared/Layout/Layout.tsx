@@ -1,9 +1,8 @@
-import * as React from 'react';
-import {ReactNode} from 'react';
-import {Theme} from '@material-ui/core';
-import classNames from 'classnames';
-import {makeStyles} from '@material-ui/core';
-import {LayoutProvider, useLayoutContext} from './LayoutContext';
+import * as React from 'react'
+import {ReactNode} from 'react'
+import {makeStyles, Theme} from '@material-ui/core'
+import {LayoutProvider, useLayoutContext} from './LayoutContext'
+import {classes} from '../../core/helper/utils'
 
 export const sidebarWith = 220;
 
@@ -36,12 +35,12 @@ export const Layout = ({mobileBreakpoint, children, sidebar, header}: IProps) =>
 };
 
 const LayoutUsingContext = ({children, header: Header, sidebar: Sidebar}: any) => {
-  const classes = useStyles();
+  const css = useStyles();
   const {isMobileWidth} = useLayoutContext();
   return (
     <div>
       {Header && <Header/>}
-      <div className={classNames(classes.root, !isMobileWidth && classes.rootDesktop)}>
+      <div className={classes(css.root, !isMobileWidth && css.rootDesktop)}>
         {Sidebar && <Sidebar/>}
         {children}
       </div>

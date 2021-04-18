@@ -1,6 +1,6 @@
-import {Icon, Theme, makeStyles} from '@material-ui/core';
-import * as React from 'react';
-import classNames from 'classnames';
+import {Icon, makeStyles, Theme} from '@material-ui/core'
+import * as React from 'react'
+import {classes} from '../../core/helper/utils'
 
 export interface DotProps {
   className?: string
@@ -18,6 +18,6 @@ const useStyles = makeStyles((t: Theme) => ({
 export const Dot = ({className}: DotProps) => {
   const css = useStyles();
   return (
-    <Icon className={classNames(css.root, className)}>fiber_manual_record</Icon>
+    <Icon className={classes(css.root, className)}>fiber_manual_record</Icon>
   );
 };

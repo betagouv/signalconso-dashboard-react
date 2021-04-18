@@ -1,8 +1,7 @@
-import * as React from 'react';
-import {ReactNode} from 'react';
-import {Theme} from '@material-ui/core';
-import classNames from 'classnames';
-import {makeStyles} from '@material-ui/core';
+import * as React from 'react'
+import {ReactNode} from 'react'
+import {makeStyles, Theme} from '@material-ui/core'
+import {classes} from '../../../core/helper/utils'
 
 const useStyles = makeStyles((t: Theme) => ({
   root: {
@@ -19,10 +18,9 @@ interface IProps {
 }
 
 export const SidebarBody = ({children, className}: IProps) => {
-  // @ts-ignore
-  const classes = useStyles();
+  const css = useStyles();
   return (
-    <main className={classNames(classes.root, className)}>
+    <main className={classes(css.root, className)}>
       {children}
     </main>
   );

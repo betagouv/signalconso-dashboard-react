@@ -1,8 +1,8 @@
 import * as React from 'react'
 import {HTMLProps, ReactChild, ReactElement} from 'react'
 import {Icon, makeStyles, Theme} from '@material-ui/core'
-import classNames from 'classnames'
 import {fade} from '@material-ui/core/styles/colorManipulator'
+import {classes} from '../../../core/helper/utils'
 
 const useStyles = makeStyles((t: Theme) => ({
   root: {
@@ -60,7 +60,7 @@ interface IProps extends HTMLProps<any> {
 export const SidebarItem = ({href, to, children, icon, className, large = true, ...other}: IProps) => {
   const css = useStyles()
 
-  const getClassName = (clickable: boolean = true) => classNames(
+  const getClassName = (clickable: boolean = true) => classes(
     className,
     css.root,
     clickable && css.rootClickable,
@@ -95,7 +95,7 @@ export const SidebarItem = ({href, to, children, icon, className, large = true, 
     <>
       {icon && ((typeof icon === 'string')
           ? <Icon className={css.i}>{icon}</Icon>
-          : <div className={classNames(css.i)}>{icon}</div>
+          : <div className={classes(css.i)}>{icon}</div>
       )}
       <span className={css.label}>{children}</span>
     </>

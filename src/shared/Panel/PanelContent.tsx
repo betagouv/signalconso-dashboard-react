@@ -1,8 +1,7 @@
-import * as React from 'react';
-import {ReactNode} from 'react';
-import {CardContent as MuiCardContent, Theme} from '@material-ui/core';
-import classNames from 'classnames';
-import {makeStyles} from '@material-ui/core';
+import * as React from 'react'
+import {ReactNode} from 'react'
+import {CardContent as MuiCardContent, makeStyles, Theme} from '@material-ui/core'
+import {classes} from '../../core/helper/utils'
 
 const useStyles = makeStyles((t: Theme) => ({
   root: {
@@ -20,9 +19,9 @@ interface Props extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 export const PanelContent = ({className, children, ...other}: Props) => {
-  const classes = useStyles();
+  const css = useStyles();
   return (
-    <MuiCardContent {...other} className={classNames(classes.root, className)}>
+    <MuiCardContent {...other} className={classes(css.root, className)}>
       {children}
     </MuiCardContent>
   );

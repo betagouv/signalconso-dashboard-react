@@ -12,6 +12,7 @@ import {ScButton} from '../../shared/Button/Button'
 import {DatePicker} from '@material-ui/pickers'
 import {MaterialUiPickersDate} from '@material-ui/pickers/typings/date'
 import {addDays, subDays} from 'date-fns'
+import {textOverflowMiddleCropping} from '../../core/helper/utils'
 
 export const CustomDatePicker = ({value, onChange, label}: {label: string, value?: Date, onChange: (_: Date) => void}) => {
   return (
@@ -102,6 +103,12 @@ export const Reports = ({}) => {
                   {_.report.companyPostalCode?.slice(0, 2)}
                   {_.report.companyPostalCode?.substr(2, 5)}
                 </>
+            },
+            {
+              head: 'Consommateur', row: _ =>
+                <span>
+                  {textOverflowMiddleCropping(_.report.email, 25)}
+                </span>
             },
             {
               head: 'Entreprise', row: _ =>
