@@ -60,4 +60,5 @@ export const messagesFr = {
   invalidEmail: 'Invalid email',
   selectedPeriod: 'Période sélectionnée',
   department: 'Département',
+  selectAllDepartments: 'Tous les départements',
 }

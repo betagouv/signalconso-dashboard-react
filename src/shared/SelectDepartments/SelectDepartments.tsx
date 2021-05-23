@@ -1,5 +1,5 @@
 import * as React from 'react'
-import {useEffect} from 'react'
+import {useEffect, useMemo} from 'react'
 import {Checkbox, createStyles, Icon, InputAdornment, InputBase, makeStyles, Menu, MenuItem, Theme} from '@material-ui/core'
 import {Region} from '@signalconso/signalconso-api-sdk-js/build'
 import {regions as apiRegions} from '@signalconso/signalconso-api-sdk-js/build/asset'
@@ -47,19 +47,31 @@ const useStyles = makeStyles((t: Theme) => createStyles({
 }))
 
 export interface SelectDepartmentsProps {
+  placeholder?: string
+  selectAllLabel?: string
   values?: string[]
   readonly?: boolean
   regions?: Region[]
   onChange: (_: string[]) => void
 }
 
-export const SelectDepartments = ({values, readonly, regions = apiRegions, onChange}: SelectDepartmentsProps) => {
+export const SelectDepartments = ({
+  placeholder,
+  selectAllLabel = 'Tous les départements',
+  values,
+  readonly,
+  regions = apiRegions,
+  onChange
+}: SelectDepartmentsProps) => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
   let $input: HTMLElement | undefined = undefined
   const css = useStyles()
   const cssUtils = useUtilsCss()
   const indexValues: UseSetState<string> = useSetState<string>()
   const openedRegions: UseSetState<string> = useSetState<string>()
+  const allDepartments = useMemo(() => regions.flatMap(_ => _.departments).map(_ => _.code), [])
+  const allDepartmentsSelected = allDepartments.every(_ => indexValues.has(_))
+  const someDepartmentsSelected = !!allDepartments.find(_ => indexValues.has(_))
 
   useEffect(() => {
     if (values) indexValues.reset(values)
@@ -76,6 +88,16 @@ export const SelectDepartments = ({values, readonly, regions = apiRegions, onCha
     onChange(indexValues.toArray())
   }
 
+  const onSelectDepartment = (department: string) => {
+    indexValues.toggle(department)
+    onChange(indexValues.toArray())
+  }
+
+  const onSelectAll = () => {
+    allDepartments.forEach(allDepartmentsSelected ? indexValues.delete : indexValues.add)
+    onChange(indexValues.toArray())
+  }
+
   const toggleRegionOpen = (regionLabel: string) => {
     openedRegions.toggle(regionLabel)
   }
@@ -83,6 +105,7 @@ export const SelectDepartments = ({values, readonly, regions = apiRegions, onCha
   return (
     <>
       <InputBase
+        placeholder={placeholder}
         onClick={open}
         value={indexValues.toArray().join(', ') ?? ''}
         disabled={readonly}
@@ -94,6 +117,10 @@ export const SelectDepartments = ({values, readonly, regions = apiRegions, onCha
         }
       />
       <Menu anchorEl={anchorEl} open={!!anchorEl} onClose={close}>
+        <MenuItem className={classes(css.menuItem, css.menuItemRegion)} onClick={() => onSelectAll()}>
+          <Checkbox indeterminate={someDepartmentsSelected && !allDepartmentsSelected} checked={allDepartmentsSelected}/>
+          {selectAllLabel}
+        </MenuItem>
         {regions.map(region => {
           const allChecked = region.departments.every(_ => indexValues.has(_.code))
           const atLeastOneChecked = !!region.departments.find(_ => indexValues.has(_.code))
@@ -108,7 +135,7 @@ export const SelectDepartments = ({values, readonly, regions = apiRegions, onCha
               </Icon>
             </MenuItem>,
             openedRegions.has(region.label) ? region.departments.map(department =>
-              <MenuItem className={css.menuItem} dense onClick={() => indexValues.toggle(department.code)}>
+              <MenuItem className={css.menuItem} dense onClick={() => onSelectDepartment(department.code)}>
                 <Checkbox className={css.cbDepartment} checked={indexValues.has(department.code)}/>
                 <span className={cssUtils.colorTxtHint}>({department.code})</span>
                 &nbsp;

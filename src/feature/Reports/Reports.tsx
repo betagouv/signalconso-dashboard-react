@@ -79,8 +79,6 @@ const useStyles = makeStyles((t: Theme) => ({
   }
 }))
 
-// location.search = querystring.stringify({a: '1', test: ['oui', 'non']})
-
 export const Reports = ({}) => {
   const {m, formatDate} = useI18n()
   const _reports = useReportsContext()
@@ -109,7 +107,7 @@ export const Reports = ({}) => {
 
       <Panel>
         <div className={css.toolbar}>
-          <SelectDepartments onChange={departments => _reports.updateFilters(prev => ({...prev, departments}))}/>
+          <SelectDepartments values={_reports.filters.departments} onChange={departments => _reports.updateFilters(prev => ({...prev, departments}))}/>
           <CustomDatePicker
             value={_reports.filters.start}
             onChange={start => {
