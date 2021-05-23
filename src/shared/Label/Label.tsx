@@ -1,7 +1,6 @@
 import * as React from 'react'
-import {ReactNode} from 'react'
+import {CSSProperties, ReactNode} from 'react'
 import {makeStyles, Theme} from '@material-ui/core'
-import {CSSProperties} from '@material-ui/core/styles/withStyles'
 import {fade} from '@material-ui/core/styles'
 import {theme} from '../../core/theme'
 import {classes} from '../../core/helper/utils'

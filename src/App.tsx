@@ -3,9 +3,14 @@ import {makeLoginProviderComponent} from './core/Login/LoginContext'
 import {Reports} from './feature/Reports/Reports'
 import {ApiClient, SignalConsoPublicSdk, SignalConsoSecuredSdk, User} from '@signalconso/signalconso-api-sdk-js/build'
 import {Config} from './conf/config'
-import {makeStyles} from '@material-ui/styles'
+import {makeStyles} from '@material-ui/core/styles'
 import {Button, Theme} from '@material-ui/core'
 import {ReportsProvider} from './core/context/ReportsContext'
+import {BrowserRouter, Redirect, Route, Switch} from 'react-router-dom'
+import {I18nProvider} from './core/i18n'
+import {MuiPickersUtilsProvider} from '@material-ui/pickers'
+import DateAdapter from '@date-io/date-fns'
+import {Panel} from './shared/Panel'
 
 const headers = {
   'Content-Type': 'application/json',
@@ -77,9 +82,15 @@ const useStyles = makeStyles((t: Theme) => ({
 const App = () => {
   useStyles()
   return (
-    <Login>
-      <LoggedApp/>
-    </Login>
+    <I18nProvider>
+      <MuiPickersUtilsProvider utils={DateAdapter}>
+        <BrowserRouter>
+          <Login>
+            <LoggedApp/>
+          </Login>
+        </BrowserRouter>
+      </MuiPickersUtilsProvider>
+    </I18nProvider>
   )
 }
 
@@ -88,7 +99,11 @@ const LoggedApp = () => {
   return (
     <ReportsProvider api={apiSdk}>
       <Button onClick={logout}>Disconnect</Button>
-      <Reports/>
+      <Switch>
+        <Route exact path="/test" component={Panel}/>
+        <Route exact path="/reports" component={Reports}/>
+        <Redirect exact from="/" to="/reports"/>
+      </Switch>
     </ReportsProvider>
   )
 }

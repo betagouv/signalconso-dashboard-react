@@ -1,7 +1,7 @@
 import * as React from 'react'
 import {HTMLProps, ReactChild, ReactElement} from 'react'
 import {Icon, makeStyles, Theme} from '@material-ui/core'
-import {fade} from '@material-ui/core/styles/colorManipulator'
+import {fade} from '@material-ui/core/styles'
 import {classes} from '../../../core/helper/utils'
 
 const useStyles = makeStyles((t: Theme) => ({

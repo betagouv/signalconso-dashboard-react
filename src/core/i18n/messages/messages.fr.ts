@@ -1,7 +1,7 @@
 export const messagesFr = {
   yes: 'Yes',
   no: 'No',
-  search: 'Search',
+  search: 'Rechercher',
   edit: 'Edit',
   next: 'Next',
   nextStep: 'Next step',

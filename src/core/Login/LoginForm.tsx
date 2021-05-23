@@ -1,7 +1,7 @@
 import {Btn, Page} from 'mui-extension/lib'
 import {TextField, Theme} from '@material-ui/core'
 import * as React from 'react'
-import {makeStyles} from '@material-ui/styles'
+import {makeStyles} from '@material-ui/core/styles'
 import {useI18n} from '../i18n'
 import {useFormInput} from '@alexandreannic/react-hooks-lib/lib'
 import {RegEx} from '../utils/common'

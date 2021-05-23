@@ -2,7 +2,7 @@ import * as React from 'react'
 import {ReactNode} from 'react'
 import {Slide, Theme} from '@material-ui/core'
 import {sidebarWith} from '../Layout'
-import makeStyles from '@material-ui/styles/makeStyles'
+import {makeStyles} from '@material-ui/core/styles'
 import {classes} from '../../../core/helper/utils'
 
 const useStyles = makeStyles((t: Theme) => ({

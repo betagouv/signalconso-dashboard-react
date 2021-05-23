@@ -11,12 +11,36 @@ export const isJsonValid = (json: string): boolean => {
 
 export type Index<T> = {[key: string]: T}
 
-export class Regexp {
-  static readonly email = '^[^@]+@[^\\.]+\\..+'
+export const regexpPattern = {
+  email: '^[^@]+@[^\\.]+\\..+',
+  yyyyMMdd: '\\d{4}-(0\\d|1[0-2])-([0-2]\\d|3[0-1])',
 }
+
+export const regexp = Object.entries(regexpPattern).reduce(
+  (acc, [key, value]) => ({...acc, [key]: new RegExp(value)}),
+  {} as { [key in keyof typeof regexpPattern]: RegExp }
+)
 
 export const textOverflowMiddleCropping = (text: string, limit: number) => {
   return text.length > limit ? `${text.substr(0, limit / 2)}...${text.substr(text.length - (limit / 2), text.length)}` : text
 }
 
-export const classes = classNames;
+export const fromQueryString = <T = object>(qs: string): { [key in keyof T]: string | number } => {
+  const decoded = decodeURI(qs.replace(/^\?/, ''))
+    .replace(/"/g, '\\"')
+    .replace(/&/g, '","')
+    .replace(/=/g, '":"')
+  const json: Index<string> = JSON.parse(`{${decoded}}`)
+  return Object.entries(json).reduce(
+    (acc, [key, value]) => ({...acc, [key]: Number(value) ?? value}),
+    {} as { [key in keyof T]: string | number }
+  )
+}
+
+export const stopPropagation = <E extends {stopPropagation: () => void}>(action: (event: E) => void) => (event: E) => {
+  event.stopPropagation()
+  action(event)
+}
+
+// Because default imports are very very annoying since they break autocomplete
+export const classes = classNames

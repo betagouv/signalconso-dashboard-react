@@ -1,18 +1,23 @@
 import {Page, PageTitle} from '../../shared/Layout'
 import {useI18n} from '../../core/i18n'
 import {useReportsContext} from '../../core/context/ReportsContext'
-import {DetailInputValue, getHostFromUrl, Report, ReportingDateLabel, ReportsSearchResult} from '@signalconso/signalconso-api-sdk-js/build'
+import {DetailInputValue, getHostFromUrl, Report, ReportingDateLabel, ReportsSearchResult, Roles} from '@signalconso/signalconso-api-sdk-js/build'
 import {Panel} from '../../shared/Panel'
 import {useUtilsCss} from '../../core/utils/useUtilsCss'
 import {useLoginContext} from '../../App'
 import {Datatable} from './Datatable'
 import {some} from 'fp-ts/lib/Option'
-import {Icon, InputBase, makeStyles, TextFieldProps, Theme, Tooltip} from '@material-ui/core'
+import {Button, Icon, InputBase, makeStyles, Menu, MenuItem, TextFieldProps, Theme, Tooltip} from '@material-ui/core'
 import {ScButton} from '../../shared/Button/Button'
 import {DatePicker} from '@material-ui/pickers'
 import {MaterialUiPickersDate} from '@material-ui/pickers/typings/date'
 import {addDays, subDays} from 'date-fns'
-import {textOverflowMiddleCropping} from '../../core/helper/utils'
+import {classes, textOverflowMiddleCropping} from '../../core/helper/utils'
+import React, {useEffect} from 'react'
+import * as querystring from 'querystring'
+import {objectToParsableQueryString} from '../../core/utils/useQueryString'
+import {useHistory} from 'react-router-dom'
+import {SelectDepartments} from '../../shared/SelectDepartments/SelectDepartments'
 
 export const CustomDatePicker = ({value, onChange, label}: {label: string, value?: Date, onChange: (_: Date) => void}) => {
   return (
@@ -42,15 +47,58 @@ const useStyles = makeStyles((t: Theme) => ({
     // '& > *': {
     //   borderRight: `1px solid ${t.palette.divider}`,
     // }
+  },
+  tdName: {
+    lineHeight: 1.1,
+    maxWidth: 170,
+  },
+  tdName_label: {
+    fontWeight: 'bold',
+    marginBottom: -1,
+  },
+  tdName_desc: {
+    fontSize: t.typography.fontSize * 0.875,
+    color: t.palette.text.secondary,
+  },
+  tdPostal: {
+    maxWidth: 76,
+  },
+  tdConsumer: {
+    maxWidth: 160,
+  },
+  tdDesc: {
+    fontSize: t.typography.fontSize * 0.875,
+    color: t.palette.text.secondary,
+    maxWidth: 260,
+    lineHeight: 1.2
+  },
+  tdFiles: {
+    maxWidth: 100,
+  },
+  tdCategory: {
+    maxWidth: 140,
   }
 }))
+
+// location.search = querystring.stringify({a: '1', test: ['oui', 'non']})
 
 export const Reports = ({}) => {
   const {m, formatDate} = useI18n()
   const _reports = useReportsContext()
-  const utilsCss = useUtilsCss()
+  const history = useHistory()
+  const cssUtils = useUtilsCss()
   const {connectedUser, apiSdk} = useLoginContext()
   const css = useStyles()
+
+  useEffect(() => {
+    // const test = fromQueryString<ReportFilter>(history.location.search)
+    // const z = fromParsableQueryString<ReportFilter>(test)
+    // _reports.updateFilters(fromParsableQueryString(fromQueryString(history.location.search)))
+  }, [])
+
+  useEffect(() => {
+    history.push({search: querystring.stringify(objectToParsableQueryString(_reports.filters))})
+  }, [_reports.filters])
 
   const getReportingDate = (report: Report) => report.details
     .filter(_ => _.label.indexOf(ReportingDateLabel) !== -1)
@@ -62,11 +110,11 @@ export const Reports = ({}) => {
 
       <Panel>
         <div className={css.toolbar}>
-          <InputBase placeholder={m.department}/>
+          <SelectDepartments onChange={console.log}/>
           <CustomDatePicker
             value={_reports.filters.start}
             onChange={start => {
-              _reports.setFilters(prev => {
+              _reports.updateFilters(prev => {
                 if (prev.end && start.getTime() > prev.end.getTime()) {
                   return {...prev, start, end: addDays(start, 1)}
                 }
@@ -77,7 +125,7 @@ export const Reports = ({}) => {
           />
           <CustomDatePicker
             value={_reports.filters.end}
-            onChange={end => _reports.setFilters(prev => {
+            onChange={end => _reports.updateFilters(prev => {
               if (prev.start && prev.start.getTime() > end.getTime()) {
                 return {...prev, start: subDays(end, 1), end}
               }
@@ -91,35 +139,31 @@ export const Reports = ({}) => {
           loading={_reports.fetching}
           offset={_reports.filters.offset}
           limit={_reports.filters.limit}
-          onChangeLimit={limit => _reports.setFilters(prev => ({...prev, limit}))}
-          onChangeOffset={offset => _reports.setFilters(prev => ({...prev, offset}))}
+          onChangeLimit={limit => _reports.updateFilters(prev => ({...prev, limit}))}
+          onChangeOffset={offset => _reports.updateFilters(prev => ({...prev, offset}))}
           getRenderRowId={_ => _.report.id}
           data={_reports.list?.data}
           total={_reports.list?.totalSize}
           rows={[
             {
-              head: 'CP', row: _ =>
+              head: 'CP', className: css.tdPostal, row: _ =>
                 <>
-                  {_.report.companyPostalCode?.slice(0, 2)}
-                  {_.report.companyPostalCode?.substr(2, 5)}
+                  <span>{_.report.companyPostalCode?.slice(0, 2)}</span>
+                  <span className={cssUtils.colorDisabled}>{_.report.companyPostalCode?.substr(2, 5)}</span>
                 </>
             },
             {
-              head: 'Consommateur', row: _ =>
-                <span>
-                  {textOverflowMiddleCropping(_.report.email, 25)}
-                </span>
-            },
-            {
-              head: 'Entreprise', row: _ =>
+              head: 'Entreprise', className: css.tdName, row: _ =>
                 <>
-                  <span>{_.report.companyName}</span>
+                  <span className={css.tdName_label}>{_.report.companyName}</span>
                   <br/>
-                  <span>{some(_.report.website).map(getHostFromUrl).alt(some(_.report.phone)).getOrElse('')}</span>
+                  {_.report.website}
+                  {_.report.phone}
+                  <span className={css.tdName_desc}>{some(_.report.website).map(getHostFromUrl).alt(some(_.report.phone)).getOrElse('')}</span>
                 </>
             },
             {
-              head: 'SIRET', row: _ => _.report.companySiret
+              head: 'SIRET', hidden: connectedUser.role !== Roles.DGCCRF, row: _ => _.report.companySiret
             },
             {
               head: 'Problème', row: _ =>
@@ -128,11 +172,17 @@ export const Reports = ({}) => {
                 </Tooltip>
             },
             {
-              head: 'Description', row: _ =>
+              head: 'Création', row: _ => formatDate(_.report.creationDate)
+            },
+            {
+              head: 'Date constat', hidden: connectedUser.role !== Roles.DGCCRF, row: _ => getReportingDate(_.report)
+            },
+            {
+              head: 'Description', className: css.tdDesc, row: _ =>
                 <Tooltip title={_.report.details?.map((detail, i) =>
                   <div key={i}>
-                    <span dangerouslySetInnerHTML={{__html: detail.label}}/>&nbsp;
-                    <span dangerouslySetInnerHTML={{__html: detail.value}}/>
+                    <span dangerouslySetInnerHTML={{__html: detail.label}} className={cssUtils.txtBold}/>&nbsp;
+                    <span dangerouslySetInnerHTML={{__html: detail.value}} className={cssUtils.colorTxtSecondary}/>
                   </div>
                 )}>
                   {(() => {
@@ -147,13 +197,13 @@ export const Reports = ({}) => {
                 </Tooltip>
             },
             {
-              head: 'Date constat', row: _ => getReportingDate(_.report)
+              head: 'Consommateur', className: css.tdConsumer, row: _ =>
+                <span className={classes(_.report.contactAgreement ?? cssUtils.colorDisabled)}>
+                  {textOverflowMiddleCropping(_.report.email, 25)}
+                </span>
             },
             {
-              head: 'Création', row: _ => formatDate(_.report.creationDate)
-            },
-            {
-              head: 'Pièces jointes', row: _ => _.files.map(file =>
+              head: 'Pièces jointes', className: css.tdFiles, row: _ => _.files.map(file =>
                 <Tooltip title={file.filename} key={file.id}>
                   <a href={apiSdk.public.document.getLink(file)} target="_blank">
                     <Icon>insert_drive_file</Icon>

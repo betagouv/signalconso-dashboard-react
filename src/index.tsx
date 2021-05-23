@@ -2,19 +2,22 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import App from './App'
 import reportWebVitals from './reportWebVitals'
-import {I18nProvider} from './core/i18n'
 import {createMuiTheme, ThemeProvider} from '@material-ui/core'
-import {MuiPickersUtilsProvider} from '@material-ui/pickers'
-import DateAdapter from '@date-io/date-fns'
+import {createGenerateClassName, StylesProvider} from '@material-ui/core/styles'
+
+// https://github.com/mui-org/material-ui/issues/11843
+// I think it should not be necessary. There is some miss configuration somewhere
+const generateClassName = createGenerateClassName({
+  productionPrefix: 'c',
+  disableGlobal: true
+})
 
 ReactDOM.render(
-  <I18nProvider>
+  <StylesProvider generateClassName={generateClassName}>
     <ThemeProvider theme={createMuiTheme()}>
-      <MuiPickersUtilsProvider utils={DateAdapter}>
-        <App/>
-      </MuiPickersUtilsProvider>
+      <App/>
     </ThemeProvider>
-  </I18nProvider>
+  </StylesProvider>
   , document.getElementById('root')
 )
 
