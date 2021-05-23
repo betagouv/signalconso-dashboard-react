@@ -39,6 +39,10 @@ const useStyles = makeStyles((t: Theme) => createStyles({
   },
   menuItemRegion: {
     borderBottom: `1px solid ${t.palette.divider}`,
+  },
+  cbDepartment: {
+    paddingTop: `6px !important`,
+    paddingBottom: `6px !important`,
   }
 }))
 
@@ -74,7 +78,6 @@ export const SelectDepartments = ({values, readonly, regions = apiRegions, onCha
 
   const toggleRegionOpen = (regionLabel: string) => {
     openedRegions.toggle(regionLabel)
-    onChange(indexValues.toArray())
   }
 
   return (
@@ -106,8 +109,10 @@ export const SelectDepartments = ({values, readonly, regions = apiRegions, onCha
             </MenuItem>,
             openedRegions.has(region.label) ? region.departments.map(department =>
               <MenuItem className={css.menuItem} dense onClick={() => indexValues.toggle(department.code)}>
-                <Checkbox checked={indexValues.has(department.code)}/>
-                ({department.code}) {department.label}
+                <Checkbox className={css.cbDepartment} checked={indexValues.has(department.code)}/>
+                <span className={cssUtils.colorTxtHint}>({department.code})</span>
+                &nbsp;
+                {department.label}
               </MenuItem>
             ) : []
           ]

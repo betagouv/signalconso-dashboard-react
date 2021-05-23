@@ -1,21 +1,20 @@
 import {Page, PageTitle} from '../../shared/Layout'
 import {useI18n} from '../../core/i18n'
 import {useReportsContext} from '../../core/context/ReportsContext'
-import {DetailInputValue, getHostFromUrl, Report, ReportingDateLabel, ReportsSearchResult, Roles} from '@signalconso/signalconso-api-sdk-js/build'
+import {DetailInputValue, getHostFromUrl, Report, ReportFilter, ReportingDateLabel, ReportsSearchResult, Roles} from '@signalconso/signalconso-api-sdk-js/build'
 import {Panel} from '../../shared/Panel'
 import {useUtilsCss} from '../../core/utils/useUtilsCss'
 import {useLoginContext} from '../../App'
 import {Datatable} from './Datatable'
 import {some} from 'fp-ts/lib/Option'
-import {Button, Icon, InputBase, makeStyles, Menu, MenuItem, TextFieldProps, Theme, Tooltip} from '@material-ui/core'
+import {Icon, InputBase, makeStyles, TextFieldProps, Theme, Tooltip} from '@material-ui/core'
 import {ScButton} from '../../shared/Button/Button'
 import {DatePicker} from '@material-ui/pickers'
 import {MaterialUiPickersDate} from '@material-ui/pickers/typings/date'
 import {addDays, subDays} from 'date-fns'
 import {classes, textOverflowMiddleCropping} from '../../core/helper/utils'
 import React, {useEffect} from 'react'
-import * as querystring from 'querystring'
-import {objectToParsableQueryString} from '../../core/utils/useQueryString'
+import {useQueryString} from '../../core/utils/useQueryString'
 import {useHistory} from 'react-router-dom'
 import {SelectDepartments} from '../../shared/SelectDepartments/SelectDepartments'
 
@@ -90,14 +89,14 @@ export const Reports = ({}) => {
   const {connectedUser, apiSdk} = useLoginContext()
   const css = useStyles()
 
+  const test = useQueryString<Readonly<ReportFilter>>()
+
   useEffect(() => {
-    // const test = fromQueryString<ReportFilter>(history.location.search)
-    // const z = fromParsableQueryString<ReportFilter>(test)
-    // _reports.updateFilters(fromParsableQueryString(fromQueryString(history.location.search)))
+    _reports.updateFilters(test.get())
   }, [])
 
   useEffect(() => {
-    history.push({search: querystring.stringify(objectToParsableQueryString(_reports.filters))})
+    test.update(_reports.filters)
   }, [_reports.filters])
 
   const getReportingDate = (report: Report) => report.details
@@ -110,7 +109,7 @@ export const Reports = ({}) => {
 
       <Panel>
         <div className={css.toolbar}>
-          <SelectDepartments onChange={console.log}/>
+          <SelectDepartments onChange={departments => _reports.updateFilters(prev => ({...prev, departments}))}/>
           <CustomDatePicker
             value={_reports.filters.start}
             onChange={start => {

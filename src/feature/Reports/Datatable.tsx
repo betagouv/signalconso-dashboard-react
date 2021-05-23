@@ -38,9 +38,6 @@ const useStyles = makeStyles((t: Theme) => ({
 }))
 
 export const Datatable = <T extends any = any>(props: DatatableProps<T>) => {
-
-  console.log(props)
-
   const {
     loading,
     total,
