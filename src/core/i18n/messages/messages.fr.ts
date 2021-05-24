@@ -61,4 +61,5 @@ export const messagesFr = {
   selectedPeriod: 'Période sélectionnée',
   department: 'Département',
   selectAllDepartments: 'Tous les départements',
+  reports_pageTitle: 'Suivi des signalements'
 }

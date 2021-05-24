@@ -103,7 +103,7 @@ export const Reports = ({}) => {
 
   return (
     <Page>
-      <PageTitle>{m.login}</PageTitle>
+      <PageTitle>{m.reports_pageTitle}</PageTitle>
 
       <Panel>
         <div className={css.toolbar}>
