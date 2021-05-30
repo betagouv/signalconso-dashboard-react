@@ -43,6 +43,8 @@ const useStyles = makeStyles((t: Theme) => ({
   }
 }))
 
+const safeParseInt = (maybeInt: any, defaultValue: number): number => isNaN(maybeInt) ? defaultValue : parseInt(maybeInt)
+
 export const Datatable = <T extends any = any>(props: DatatableProps<T>) => {
   const {
     loading,
@@ -88,17 +90,24 @@ export const Datatable = <T extends any = any>(props: DatatableProps<T>) => {
           )}
         </TableBody>
       </Table>
-      {isDatatablePaginatedProps(props) && (
-        <TablePagination
-          rowsPerPageOptions={[5, 10, 25, 100]}
-          component="div"
-          count={total ?? 0}
-          rowsPerPage={props.limit ?? 10}
-          page={props.offset ?? 0 / props.limit ?? 10}
-          onChangePage={(event: unknown, newPage: number) => props.onChangeOffset(newPage * props.limit)}
-          onChangeRowsPerPage={(event: React.ChangeEvent<HTMLInputElement>) => props.onChangeLimit(parseInt(event.target.value, 10))}
-        />
-      )}
+      {isDatatablePaginatedProps(props) && (() => {
+        const limit = safeParseInt(props.limit, props.data?.length ?? 10)
+        const offset = safeParseInt(props.offset, 0)
+        return (
+          <TablePagination
+            rowsPerPageOptions={[5, 10, 25, 100]}
+            component="div"
+            count={total ?? 0}
+            rowsPerPage={limit}
+            page={offset / limit}
+            onChangePage={(event: unknown, newPage: number) => {
+              console.log('onchangepage', newPage)
+              props.onChangeOffset(newPage * limit)
+            }}
+            onChangeRowsPerPage={(event: React.ChangeEvent<HTMLInputElement>) => props.onChangeLimit(parseInt(event.target.value, 10))}
+          />
+        )
+      })()}
     </div>
   )
 }
