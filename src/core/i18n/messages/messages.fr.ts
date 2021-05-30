@@ -56,10 +56,15 @@ export const messagesFr = {
   email: 'Email',
   password: 'Password',
   logout: 'Logout',
+  home: 'Accueil',
   atLeast8Characters: 'At least 8 characters',
   invalidEmail: 'Invalid email',
   selectedPeriod: 'Période sélectionnée',
   department: 'Département',
   selectAllDepartments: 'Tous les départements',
-  reports_pageTitle: 'Suivi des signalements'
+  reports: 'Signalements',
+  report: 'Signalement',
+  reportHistory: 'Historique du signalement',
+  reports_pageTitle: 'Suivi des signalements',
+  report_pageTitle: (id: string) => `Signalement ${id}`,
 }

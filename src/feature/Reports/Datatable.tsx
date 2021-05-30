@@ -1,5 +1,5 @@
 import {LinearProgress, makeStyles, Table, TableBody, TableCell, TableHead, TablePagination, TableRow, Theme} from '@material-ui/core'
-import React, {ReactNode} from 'react'
+import React, {CSSProperties, ReactNode} from 'react'
 import {useUtilsCss} from '../../core/utils/useUtilsCss'
 import {classes} from '../../core/helper/utils'
 
@@ -26,9 +26,15 @@ export interface DatatableColumnProps<T> {
   row: (_: T) => ReactNode
   hidden?: boolean
   className?: string,
+  style?: CSSProperties
 }
 
-const isDatatablePaginatedProps = <T, >(_: DatatableProps<T>): _ is DatatablePaginatedProps<T> => (_ as DatatablePaginatedProps<T>).offset !== undefined
+const isDatatablePaginatedProps = <T, >(_: DatatableProps<T>): _ is DatatablePaginatedProps<T> => {
+  if (_.total !== undefined) {
+    return _.total > ((_ as DatatablePaginatedProps<T>).limit ?? 0)
+  }
+  return false
+}
 
 const useStyles = makeStyles((t: Theme) => ({
   table: {
@@ -50,6 +56,7 @@ export const Datatable = <T extends any = any>(props: DatatableProps<T>) => {
   const cssUtils = useUtilsCss()
   const filteredRows = rows.filter(_ => !_.hidden)
 
+  console.log('v-isDatatablePaginatedProps', isDatatablePaginatedProps(props), props)
   return (
     <div style={{overflowX: 'scroll'}}>
       <Table className={classes(cssUtils.truncate, css.table)}>
@@ -65,7 +72,7 @@ export const Datatable = <T extends any = any>(props: DatatableProps<T>) => {
         <TableBody>
           {loading && (
             <TableRow>
-              <TableCell colSpan={filteredRows.length} style={{padding: 0, position: 'relative', border: 'none'}}>
+              <TableCell colSpan={filteredRows.length} style={{height: 0, padding: 0, position: 'relative', border: 'none'}}>
                 <LinearProgress style={{position: 'absolute', right: 0, left: 0}}/>
               </TableCell>
             </TableRow>
@@ -73,7 +80,7 @@ export const Datatable = <T extends any = any>(props: DatatableProps<T>) => {
           {data?.map((item, i) =>
             <TableRow key={getRenderRowId ? getRenderRowId(item) : i}>
               {filteredRows.map((_, i) =>
-                <TableCell key={i} className={classes(_.className, cssUtils.truncate)}>
+                <TableCell key={i} className={classes(_.className, cssUtils.truncate)} style={_.style}>
                   {_.row(item)}
                 </TableCell>
               )}
@@ -86,8 +93,8 @@ export const Datatable = <T extends any = any>(props: DatatableProps<T>) => {
           rowsPerPageOptions={[5, 10, 25, 100]}
           component="div"
           count={total ?? 0}
-          rowsPerPage={props.limit}
-          page={props.offset / props.limit}
+          rowsPerPage={props.limit ?? 10}
+          page={props.offset ?? 0 / props.limit ?? 10}
           onChangePage={(event: unknown, newPage: number) => props.onChangeOffset(newPage * props.limit)}
           onChangeRowsPerPage={(event: React.ChangeEvent<HTMLInputElement>) => props.onChangeLimit(parseInt(event.target.value, 10))}
         />

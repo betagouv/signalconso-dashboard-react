@@ -1,16 +1,20 @@
 import React from 'react'
 import {makeLoginProviderComponent} from './core/Login/LoginContext'
-import {Reports} from './feature/Reports/Reports'
 import {ApiClient, SignalConsoPublicSdk, SignalConsoSecuredSdk, User} from '@signalconso/signalconso-api-sdk-js/build'
 import {Config} from './conf/config'
 import {makeStyles} from '@material-ui/core/styles'
-import {Button, Theme} from '@material-ui/core'
+import {Theme} from '@material-ui/core'
 import {ReportsProvider} from './core/context/ReportsContext'
 import {BrowserRouter, Redirect, Route, Switch} from 'react-router-dom'
 import {I18nProvider} from './core/i18n'
 import {MuiPickersUtilsProvider} from '@material-ui/pickers'
 import DateAdapter from '@date-io/date-fns'
+import {ReportProvider} from './core/context/ReportContext'
 import {Panel} from './shared/Panel'
+import {Reports} from './feature/Reports/Reports'
+import {ReportComponent} from './feature/Report/Report'
+import {Menu} from './shared/Layout/Menu/Menu'
+import {Layout} from 'mui-extension/lib'
 
 const headers = {
   'Content-Type': 'application/json',
@@ -98,12 +102,16 @@ const LoggedApp = () => {
   const {apiSdk, logout} = useLoginContext()
   return (
     <ReportsProvider api={apiSdk}>
-      <Button onClick={logout}>Disconnect</Button>
-      <Switch>
-        <Route exact path="/test" component={Panel}/>
-        <Route exact path="/reports" component={Reports}/>
-        <Redirect exact from="/" to="/reports"/>
-      </Switch>
+      <ReportProvider api={apiSdk}>
+        <Layout sidebar={Menu}>
+          <Switch>
+            <Route exact path="/test" component={Panel}/>
+            <Route exact path="/reports" component={Reports}/>
+            <Route exact path="/report/:id" component={ReportComponent}/>
+            <Redirect exact from="/" to="/reports"/>
+          </Switch>
+        </Layout>
+      </ReportProvider>
     </ReportsProvider>
   )
 }

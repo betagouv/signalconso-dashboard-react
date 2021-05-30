@@ -1,12 +1,12 @@
 import {Page, PageTitle} from '../../shared/Layout'
 import {useI18n} from '../../core/i18n'
 import {useReportsContext} from '../../core/context/ReportsContext'
-import {DetailInputValue, getHostFromUrl, Report, ReportFilter, ReportingDateLabel, ReportsSearchResult, Roles} from '@signalconso/signalconso-api-sdk-js/build'
+import {DetailInputValue, getHostFromUrl, Report, ReportFilter, ReportingDateLabel, ReportSearchResult, Roles} from '@signalconso/signalconso-api-sdk-js/build'
 import {Panel} from '../../shared/Panel'
 import {useUtilsCss} from '../../core/utils/useUtilsCss'
 import {useLoginContext} from '../../App'
 import {Datatable} from './Datatable'
-import {some} from 'fp-ts/lib/Option'
+import {fromNullable, some} from 'fp-ts/lib/Option'
 import {Icon, InputBase, makeStyles, TextFieldProps, Theme, Tooltip} from '@material-ui/core'
 import {ScButton} from '../../shared/Button/Button'
 import {DatePicker} from '@material-ui/pickers'
@@ -15,8 +15,9 @@ import {addDays, subDays} from 'date-fns'
 import {classes, textOverflowMiddleCropping} from '../../core/helper/utils'
 import React, {useEffect} from 'react'
 import {useQueryString} from '../../core/utils/useQueryString'
-import {useHistory} from 'react-router-dom'
+import {NavLink, useHistory} from 'react-router-dom'
 import {SelectDepartments} from '../../shared/SelectDepartments/SelectDepartments'
+import {IconBtn} from 'mui-extension/lib'
 
 export const CustomDatePicker = ({value, onChange, label}: {label: string, value?: Date, onChange: (_: Date) => void}) => {
   return (
@@ -76,7 +77,7 @@ const useStyles = makeStyles((t: Theme) => ({
   },
   tdCategory: {
     maxWidth: 140,
-  }
+  },
 }))
 
 export const Reports = ({}) => {
@@ -132,7 +133,7 @@ export const Reports = ({}) => {
           />
           <ScButton variant="contained" color="primary">Filtres avancés</ScButton>
         </div>
-        <Datatable<ReportsSearchResult>
+        <Datatable<ReportSearchResult>
           loading={_reports.fetching}
           offset={_reports.filters.offset}
           limit={_reports.filters.limit}
@@ -156,7 +157,7 @@ export const Reports = ({}) => {
                   <br/>
                   {_.report.website}
                   {_.report.phone}
-                  <span className={css.tdName_desc}>{some(_.report.website).map(getHostFromUrl).alt(some(_.report.phone)).getOrElse('')}</span>
+                  <span className={css.tdName_desc}>{fromNullable(_.report.website).map(getHostFromUrl).alt(some(_.report.phone)).getOrElse('')}</span>
                 </>
             },
             {
@@ -207,7 +208,19 @@ export const Reports = ({}) => {
                   </a>
                 </Tooltip>
               )
-            }
+            },
+            {
+              head: '',
+              className: classes(cssUtils.txtRight),
+              style: {paddingTop: 1},
+              row: _ => (
+                <NavLink to={`/report/${_.report.id}`}>
+                  <IconBtn className={cssUtils.colorTxtHint}>
+                    <Icon>chevron_right</Icon>
+                  </IconBtn>
+                </NavLink>
+              )
+            },
           ]}
         />
       </Panel>

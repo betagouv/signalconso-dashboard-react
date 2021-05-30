@@ -1,14 +1,14 @@
 import * as React from 'react'
 import {ReactNode} from 'react'
 import {makeStyles, Theme} from '@material-ui/core'
-import {theme} from '../../core/theme'
+import {utilsStyles} from '../../core/theme'
 import {classes} from '../../core/helper/utils'
 
 const useStyles = makeStyles((t: Theme) => ({
   root: {
     fontWeight: t.typography.fontWeightMedium,
-    margin: theme.padding(t.spacing(2), t.spacing(2)),
-    fontSize: theme.fontSize.title
+    margin: utilsStyles(t).padding(2, 2),
+    fontSize: utilsStyles(t).fontSize.title
   }
 }));
 

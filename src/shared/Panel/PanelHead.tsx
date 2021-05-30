@@ -2,13 +2,13 @@ import {PanelHead as MxPanelHeader, PanelHeadProps} from 'mui-extension'
 import {makeStyles, Theme} from '@material-ui/core'
 import * as React from 'react'
 import {ReactNode} from 'react'
-import {theme} from '../../core/theme'
+import {utilsStyles} from '../../core/theme'
 import {classes} from '../../core/helper/utils'
 
 const useStyles = makeStyles((t: Theme) => ({
   root: {
     borderRadius: 2,
-    padding: `${theme.padding()} !important`,
+    padding: `${utilsStyles(t).padding()} !important`,
     // padding: '0 !important',
     // margin: t.spacing(1),
     // margin: padding(),

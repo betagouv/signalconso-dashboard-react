@@ -4,6 +4,7 @@ import App from './App'
 import reportWebVitals from './reportWebVitals'
 import {createMuiTheme, ThemeProvider} from '@material-ui/core'
 import {createGenerateClassName, StylesProvider} from '@material-ui/core/styles'
+import {muiTheme} from './core/theme'
 
 // https://github.com/mui-org/material-ui/issues/11843
 // I think it should not be necessary. There is some miss configuration somewhere
@@ -14,7 +15,7 @@ const generateClassName = createGenerateClassName({
 
 ReactDOM.render(
   <StylesProvider generateClassName={generateClassName}>
-    <ThemeProvider theme={createMuiTheme()}>
+    <ThemeProvider theme={muiTheme()}>
       <App/>
     </ThemeProvider>
   </StylesProvider>
