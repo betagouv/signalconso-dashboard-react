@@ -11,6 +11,7 @@ export interface ReportAttachementsProps {
 const useReportAttachementsStyles = makeStyles((t: Theme) => ({
   root: {
     display: 'flex',
+    flexWrap: 'wrap',
     margin: t.spacing(-1)
   }
 }))
@@ -19,7 +20,6 @@ export const ReportAttachements = ({attachements}: ReportAttachementsProps) => {
   return (
     <div className={css.root}>
       {attachements.map(_ => <ReportAttachement attachement={_}/>)}
-
     </div>
   )
 }

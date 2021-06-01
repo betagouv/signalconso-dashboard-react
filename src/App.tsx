@@ -14,7 +14,7 @@ import {Panel} from './shared/Panel'
 import {Reports} from './feature/Reports/Reports'
 import {ReportComponent} from './feature/Report/Report'
 import {Menu} from './shared/Layout/Menu/Menu'
-import {Layout} from 'mui-extension/lib'
+import {Layout, ToastProvider} from 'mui-extension/lib'
 
 const headers = {
   'Content-Type': 'application/json',
@@ -32,7 +32,7 @@ const makeSecuredSdk = (token: string) => ({
   public: apiPublicSdk,
   secured: new SignalConsoSecuredSdk(new ApiClient({
     baseUrl,
-    headers: {...headers, 'X-Auth-Token': token}
+    headers: {...headers, 'X-Auth-Token': token},
   }))
 })
 
@@ -90,9 +90,11 @@ const App = () => {
     <I18nProvider>
       <MuiPickersUtilsProvider utils={DateAdapter}>
         <BrowserRouter>
-          <Login>
-            <LoggedApp/>
-          </Login>
+          <ToastProvider horizontal="right">
+            <Login>
+              <LoggedApp/>
+            </Login>
+          </ToastProvider>
         </BrowserRouter>
       </MuiPickersUtilsProvider>
     </I18nProvider>

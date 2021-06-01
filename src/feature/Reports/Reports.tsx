@@ -18,6 +18,7 @@ import {useQueryString} from '../../core/utils/useQueryString'
 import {NavLink, useHistory} from 'react-router-dom'
 import {SelectDepartments} from '../../shared/SelectDepartments/SelectDepartments'
 import {IconBtn} from 'mui-extension/lib'
+import {useToast} from '../../core/toast'
 
 export const CustomDatePicker = ({value, onChange, label}: {label: string, value?: Date, onChange: (_: Date) => void}) => {
   return (
@@ -87,21 +88,27 @@ export const Reports = ({}) => {
   const cssUtils = useUtilsCss()
   const {connectedUser, apiSdk} = useLoginContext()
   const css = useStyles()
+  const {toastError} = useToast()
 
-  const test = useQueryString<Readonly<ReportFilter>>()
+  const queryString = useQueryString<Readonly<ReportFilter>>()
 
   useEffect(() => {
-    _reports.updateFilters(test.get())
+    _reports.updateFilters(queryString.get())
   }, [])
 
   useEffect(() => {
-    test.update(_reports.filters)
+    fromNullable(_reports.error).map(toastError)
+  }, [_reports.list, _reports.error])
+
+  useEffect(() => {
+    queryString.update(_reports.filters)
   }, [_reports.filters])
 
   const getReportingDate = (report: Report) => report.details
     .filter(_ => _.label.indexOf(ReportingDateLabel) !== -1)
     .map(_ => _.value)
 
+  console.log(_reports.fetching)
   return (
     <Page>
       <PageTitle>{m.reports_pageTitle}</PageTitle>

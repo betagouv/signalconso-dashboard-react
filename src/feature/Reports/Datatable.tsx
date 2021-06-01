@@ -58,7 +58,6 @@ export const Datatable = <T extends any = any>(props: DatatableProps<T>) => {
   const cssUtils = useUtilsCss()
   const filteredRows = rows.filter(_ => !_.hidden)
 
-  console.log('v-isDatatablePaginatedProps', isDatatablePaginatedProps(props), props)
   return (
     <div style={{overflowX: 'scroll'}}>
       <Table className={classes(cssUtils.truncate, css.table)}>

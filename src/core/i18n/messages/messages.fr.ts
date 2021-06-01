@@ -23,6 +23,7 @@ export const messagesFr = {
   save: 'Save',
   saved: 'Saved',
   duplicate: 'Duplicate',
+  anErrorOccurred: 'Un erreur s\'est produite',
   minimize: 'Minimize',
   required: 'Required',
   cancel: 'Cancel',

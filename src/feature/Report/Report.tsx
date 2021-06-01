@@ -19,6 +19,7 @@ import {ReportCategories} from './ReportCategories'
 import {ReportAttachements} from './ReportAttachements'
 import {fromNullable} from 'fp-ts/lib/Option'
 import {utilsStyles} from '../../core/theme'
+import {useToast} from '../../core/toast'
 // import SwipeableViews from 'react-swipeable-views';
 
 const useStyles = makeStyles((t: Theme) => ({
@@ -54,28 +55,29 @@ export const ReportComponent = () => {
   const theme = useTheme()
   const cssUtils = useUtilsCss()
   const css = useStyles()
+  const {toastError} = useToast()
 
   useEffect(() => {
     _report.fetch()(id)
     _report.events.fetch()(id)
   }, [])
 
-  return (
-    <Page>
-      {/*<PageTitle></PageTitle>*/}
+  useEffect(() => {
+    fromNullable(_report.error).map(toastError)
+  }, [_report.entity, _report.error])
 
-      {report && (
-        <>
-          <Panel>
-            <PanelBody>
-              <div className={css.pageTitle}>
-                <div>
-                  <h1 className={css.pageTitle_txt}>
-                    {m.report_pageTitle}&nbsp;
-                    <span>{report.companySiret}</span>
-                  </h1>
-                  <div className={cssUtils.colorTxtHint}>ID {id}</div>
-                </div>
+  return report ? (
+      <Page>
+        <Panel>
+          <PanelBody>
+            <div className={css.pageTitle}>
+              <div>
+                <h1 className={css.pageTitle_txt}>
+                  {m.report_pageTitle}&nbsp;
+                  <span>{report.companySiret}</span>
+                </h1>
+                <div className={cssUtils.colorTxtHint}>ID {id}</div>
+              </div>
                 <ReportStatusChip className={cssUtils.marginLeftAuto} status={report.status}/>
               </div>
               <Alert dense type="info" deletable className={cssUtils.marginBottom}>
@@ -85,7 +87,7 @@ export const ReportComponent = () => {
               <Divider className={cssUtils.divider}/>
               {report.details.map(detail =>
                 <div className={cssUtils.marginBottom}>
-                  <div className={cssUtils.txtBig}  dangerouslySetInnerHTML={{__html: detail.label.replace(/\:$/, '')}}/>
+                  <div className={cssUtils.txtBig} dangerouslySetInnerHTML={{__html: detail.label.replace(/\:$/, '')}}/>
                   <div className={cssUtils.colorTxtSecondary} dangerouslySetInnerHTML={{__html: detail.value}}/>
                 </div>
               )}
@@ -179,18 +181,17 @@ export const ReportComponent = () => {
           {/*    <TabPanel value={value} index={2} dir={theme.direction}>*/}
           {/*      Item Three*/}
           {/*    </TabPanel>*/}
-          {/*  </SwipeableViews>*/}
-          {/*</Panel>*/}
-          <Panel loading={_report.events.loading}>
-            <PanelTitle>{m.reportHistory}</PanelTitle>
-            <PanelBody>
-              {_report.events.entity?.map(event =>
-                <ReportEventComponent event={event}/>
-              )}
-            </PanelBody>
-          </Panel>
-        </>
-      )}
-    </Page>
-  )
+        {/*  </SwipeableViews>*/}
+        {/*</Panel>*/}
+        <Panel loading={_report.events.loading}>
+          <PanelTitle>{m.reportHistory}</PanelTitle>
+          <PanelBody>
+            {_report.events.entity?.map(event =>
+              <ReportEventComponent event={event}/>
+            )}
+          </PanelBody>
+        </Panel>
+      </Page>
+    )
+    : <></>
 }
