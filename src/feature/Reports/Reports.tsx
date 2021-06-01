@@ -19,23 +19,7 @@ import {NavLink, useHistory} from 'react-router-dom'
 import {SelectDepartments} from '../../shared/SelectDepartments/SelectDepartments'
 import {IconBtn} from 'mui-extension/lib'
 import {useToast} from '../../core/toast'
-
-export const CustomDatePicker = ({value, onChange, label}: {label: string, value?: Date, onChange: (_: Date) => void}) => {
-  return (
-    <DatePicker
-      format="dd/MM/yyyy"
-      value={value ?? null}
-      onClick={console.log}
-      onChange={(start: MaterialUiPickersDate) => onChange(start as Date)}
-      TextFieldComponent={(props: TextFieldProps) => <InputBase
-        value={props.value}
-        onChange={props.onChange}
-        onClick={props.onClick}
-        placeholder={label}/>
-      }
-    />
-  )
-}
+import {Datepicker} from '../../shared/Datepicker/DatePicker'
 
 const useStyles = makeStyles((t: Theme) => ({
   toolbar: {
@@ -116,7 +100,8 @@ export const Reports = ({}) => {
       <Panel>
         <div className={css.toolbar}>
           <SelectDepartments values={_reports.filters.departments} onChange={departments => _reports.updateFilters(prev => ({...prev, departments}))}/>
-          <CustomDatePicker
+          <Datepicker
+            label={m.start}
             value={_reports.filters.start}
             onChange={start => {
               _reports.updateFilters(prev => {
@@ -126,9 +111,9 @@ export const Reports = ({}) => {
                 return {...prev, start}
               })
             }}
-            label={m.start}
           />
-          <CustomDatePicker
+
+          <Datepicker
             value={_reports.filters.end}
             onChange={end => _reports.updateFilters(prev => {
               if (prev.start && prev.start.getTime() > end.getTime()) {
@@ -141,7 +126,7 @@ export const Reports = ({}) => {
           <IconBtn onClick={_reports.clearFilters}>
             <Icon>clear</Icon>
           </IconBtn>
-          <ScButton variant="contained" color="primary">Filtres avancés</ScButton>
+          <ScButton variant="contained" color="primary" className={cssUtils.truncate}>Filtres avancés</ScButton>
         </div>
         <Datatable<ReportSearchResult>
           loading={_reports.fetching}
