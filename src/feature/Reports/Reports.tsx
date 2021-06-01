@@ -131,6 +131,9 @@ export const Reports = ({}) => {
             })}
             label={m.end}
           />
+          <IconBtn onClick={_reports.clearFilters}>
+            <Icon>clear</Icon>
+          </IconBtn>
           <ScButton variant="contained" color="primary">Filtres avancés</ScButton>
         </div>
         <Datatable<ReportSearchResult>

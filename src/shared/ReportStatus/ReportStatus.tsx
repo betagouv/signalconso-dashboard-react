@@ -28,6 +28,7 @@ const useStyles = makeStyles((t: Theme) => ({
 interface ReportStatusChipProps {
   status: ReportStatus
   dense?: boolean
+  className?: string
 }
 
 const reportStatusColor = {
@@ -45,10 +46,10 @@ const reportStatusColor = {
   [ReportStatus.NotConcerned]: '#c9d3df',
 }
 
-export const ReportStatusChip = ({status, dense}: ReportStatusChipProps) => {
+export const ReportStatusChip = ({status, dense, className}: ReportStatusChipProps) => {
   const css = useStyles()
   return (
-    <div aria-label="Statut du signalement" className={classes(css.root, dense && css.dense)} style={{background: reportStatusColor[status]}}>
+    <div aria-label="Statut du signalement" className={classes(className, css.root, dense && css.dense)} style={{background: reportStatusColor[status]}}>
       {status}
     </div>
 

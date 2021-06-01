@@ -1,4 +1,5 @@
 import classNames from 'classnames'
+import {fromNullable} from 'fp-ts/lib/Option'
 
 export const isJsonValid = (json: string): boolean => {
   try {
@@ -43,9 +44,12 @@ export const stopPropagation = <E extends {
 }>(action: (event: E) => void) => (event: E) => {
   event.stopPropagation()
   event.preventDefault();
-  (event as any).nativeEvent.stopImmediatePropagation();
+  (event as any).nativeEvent.stopImmediatePropagation()
   action(event)
 }
 
+export const capitalize = (str?: string): string | undefined => fromNullable(str).map(_ => _.charAt(0).toUpperCase() + _.slice(1).toLowerCase()).toUndefined()
+
+// export const fnSwitch = <T>(t: T, )
 // Because default imports are very very annoying since they break autocomplete
 export const classes = classNames

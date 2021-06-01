@@ -7,8 +7,9 @@ import {classes} from '../../core/helper/utils'
 const useStyles = makeStyles((t: Theme) => ({
   root: {
     fontWeight: t.typography.fontWeightMedium,
-    margin: utilsStyles(t).padding(2, 2),
-    fontSize: utilsStyles(t).fontSize.title
+    padding: utilsStyles(t).spacing(2, 2, 0, 2),
+    margin: utilsStyles(t).spacing(0, 0, 0, 0),
+    fontSize: utilsStyles(t).fontSize.title,
   }
 }));
 

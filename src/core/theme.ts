@@ -9,8 +9,9 @@ export const utilsStyles = (t: Theme) => ({
     normal: t.typography.fontSize,
     small: t.typography.fontSize * 0.85,
     title: t.typography.fontSize * 1.3,
+    bigTitle: t.typography.fontSize * 1.6,
   },
-  padding: (...args: number[]) => {
+  spacing: (...args: number[]) => {
     const [top = 0, right = 0, bottom = 0, left = 0] = args ?? [1, 1, 2, 1]
     return `${t.spacing(top)}px ${t.spacing(right)}px ${t.spacing(bottom)}px ${t.spacing(left)}px`
   },
@@ -88,7 +89,7 @@ export const muiTheme = (): any => createMuiTheme({
     },
     MuiIconButton: {
       root: {
-        padding: 6,
+        spacing: 6,
       }
     },
   },

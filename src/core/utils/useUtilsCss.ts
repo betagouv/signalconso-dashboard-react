@@ -15,6 +15,9 @@ export const useUtilsCss = makeStyles((t: Theme) => {
     colorTxtSecondary: {
       color: t.palette.text.secondary + ' !important',
     },
+    colorError: {
+      color: t.palette.error.main,
+    },
     colorTxtHint: {
       color: t.palette.text.hint + ' !important',
     },
@@ -28,6 +31,15 @@ export const useUtilsCss = makeStyles((t: Theme) => {
       whiteSpace: 'nowrap',
       textOverflow: 'ellipsis',
       overflow: 'hidden',
+    },
+    divider: {
+      marginTop: t.spacing(2),
+      marginBottom: t.spacing(2),
+    },
+    inlineIcon: {
+      display: 'inline !important',
+      fontSize: 'initial',
+      verticalAlign: 'text-top',
     },
     txtRight: {
       textAlign: 'right',
@@ -56,5 +68,8 @@ export const useUtilsCss = makeStyles((t: Theme) => {
     paddingLeft: {
       paddingLeft: t.spacing(1),
     },
+    marginLeftAuto: {
+      marginLeft: 'auto',
+    }
   }
 })

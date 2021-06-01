@@ -18,6 +18,11 @@ const useStyles = makeStyles((t: Theme) => createStyles({
       transform: 'scale(1.01)',
       boxShadow: t.shadows[4],
     }
+  },
+  stretch: {
+    display: 'flex',
+    flexDirection: 'column',
+    height: `calc(100% - ${t.spacing(2)}px)`
   }
 }));
 
@@ -26,12 +31,13 @@ export interface PanelProps extends React.DetailedHTMLProps<React.HTMLAttributes
   hoverable?: boolean
   children?: ReactNode
   className?: string
+  stretch?: boolean
 }
 
-export const Panel = ({className, hoverable, loading, children, ...other}: PanelProps) => {
+export const Panel = ({className, hoverable, loading, children, stretch, ...other}: PanelProps) => {
   const css = useStyles();
   return (
-    <div className={classes(css.root, hoverable && css.hover, className)} {...other}>
+    <div className={classes(css.root, hoverable && css.hover, stretch && css.stretch, className)} {...other}>
       {children}
       {loading && <LinearProgress className={css.loader}/>}
     </div>

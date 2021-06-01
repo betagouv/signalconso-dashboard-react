@@ -1,8 +1,10 @@
 import {EventActionValues} from '@signalconso/signalconso-api-sdk-js/build'
 import {Icon, Theme, useTheme} from '@material-ui/core'
+import {utilsStyles} from '../../core/theme'
 
 export interface ReportEventIconProps {
   action: EventActionValues
+  className?: string
 }
 
 export const getReportEventIcon = (action: EventActionValues): string => {
@@ -16,6 +18,8 @@ export const getReportEventIcon = (action: EventActionValues): string => {
     [EventActionValues.Control]: 'assignment_late',
     [EventActionValues.ConsumerAttachments]: 'attachment',
     [EventActionValues.ProfessionalAttachments]: 'attachment',
+    'Avis du consommateur sur la réponse du professionnel': 'rate_review',
+    'Signalement consulté ignoré': 'do_disturb_on'
   })[action]
   if (icon) {
     return icon
@@ -23,41 +27,28 @@ export const getReportEventIcon = (action: EventActionValues): string => {
   if (action.indexOf('Email ') > -1) {
     return 'email'
   }
-  return ''
+  return 'notifications'
 }
 
 export const getReportEventColor = (t: Theme) => (action: EventActionValues): string => ({
-  [EventActionValues.FirstVisit]: t.palette.primary.main,
-  [EventActionValues.ReportResponse]: t.palette.primary.main,
-  [EventActionValues.PostalSend]: t.palette.primary.main,
-  [EventActionValues.EditConsumer]: t.palette.primary.main,
-  [EventActionValues.EditCompany]: t.palette.primary.main,
-  [EventActionValues.Comment]: t.palette.primary.main,
+  [EventActionValues.FirstVisit]: utilsStyles(t).color.info,
+  [EventActionValues.ReportResponse]: utilsStyles(t).color.success,
+  [EventActionValues.PostalSend]: utilsStyles(t).color.info,
+  [EventActionValues.EditConsumer]: utilsStyles(t).color.info,
+  [EventActionValues.EditCompany]: utilsStyles(t).color.info,
+  [EventActionValues.Comment]: utilsStyles(t).color.info,
   [EventActionValues.Control]: t.palette.error.main,
   [EventActionValues.ConsumerAttachments]: t.palette.text.hint,
   [EventActionValues.ProfessionalAttachments]: t.palette.text.hint,
-})[action]
+  'Avis du consommateur sur la réponse du professionnel': utilsStyles(t).color.success,
+  'Signalement consulté ignoré': utilsStyles(t).color.error,
+})[action] || t.palette.text.hint
 
-export const ReportEventIcon = ({action}: ReportEventIconProps) => {
+export const ReportEventIcon = ({action, className}: ReportEventIconProps) => {
   const theme = useTheme()
-  console.log({
-    [EventActionValues.FirstVisit]: 'notifications',
-    [EventActionValues.ReportResponse]: 'question_answer',
-    [EventActionValues.PostalSend]: 'send',
-    [EventActionValues.EditConsumer]: 'edit',
-    [EventActionValues.EditCompany]: 'edit',
-    [EventActionValues.Comment]: 'feedback',
-    [EventActionValues.Control]: 'assignment_late',
-    [EventActionValues.ConsumerAttachments]: 'attachment',
-    [EventActionValues.ProfessionalAttachments]: 'attachment',
-  })
-  console.log('---action', action)
   return (
-    <div>
-      ({getReportEventIcon(action)})
-      <Icon style={{color: getReportEventColor(theme)(action)}}>
-        {getReportEventIcon(action)}
-      </Icon>
-    </div>
+    <Icon className={className} style={{color: getReportEventColor(theme)(action)}}>
+      {getReportEventIcon(action)}
+    </Icon>
   )
 }

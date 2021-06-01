@@ -48,12 +48,13 @@ const useStyles = makeStyles((t: Theme) => ({
       boxSizing: 'border-box',
     },
     '.material-icons': {
-      display: 'inherit !important',
+      display: 'inherit',
     },
     html: {
       fontSize: t.typography.fontSize,
     },
     body: {
+      lineHeight: '1.4rem',
       fontFamily: t.typography.fontFamily,
       background: t.palette.background.paper,
       margin: 0,

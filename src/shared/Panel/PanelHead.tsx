@@ -8,7 +8,7 @@ import {classes} from '../../core/helper/utils'
 const useStyles = makeStyles((t: Theme) => ({
   root: {
     borderRadius: 2,
-    padding: `${utilsStyles(t).padding()} !important`,
+    spacing: `${utilsStyles(t).spacing()} !important`,
     // padding: '0 !important',
     // margin: t.spacing(1),
     // margin: padding(),
