@@ -40,6 +40,8 @@ export const messagesFr = {
   clear: 'Clear',
   cron: 'Cron',
   removeAsk: 'Supprimer ? ',
+  exportInXLS: 'Exporter en XLS',
+  removeAllFilters: 'Supprimer tous les filtres',
   removeReportDesc: (siret: string) => `Le signalement ${siret} sera supprimé. Cette action est irreversible.`,
   download: 'Télécharger',
   remainingTime: 'Remaining time',

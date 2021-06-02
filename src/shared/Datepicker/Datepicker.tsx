@@ -26,7 +26,7 @@ export const Datepicker = ({value, onChange, label, fullWidth, className, style}
       className={className}
       style={style}
       label={label}
-      value={value ? mapDate(value) : undefined}
+      value={value ? mapDate(value) : ''}
       onChange={onChangeDate(onChange)}
       fullWidth
       InputLabelProps={{ shrink: true }}

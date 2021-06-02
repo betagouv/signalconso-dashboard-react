@@ -78,7 +78,7 @@ export const SelectDepartments = ({
   const someDepartmentsSelected = !!allDepartments.find(_ => indexValues.has(_))
 
   useEffect(() => {
-    if (values) indexValues.reset(values)
+    indexValues.reset(values)
   }, [values])
 
   const open = (event: any) => setAnchorEl(event.currentTarget)
@@ -108,10 +108,8 @@ export const SelectDepartments = ({
 
   return (
     <>
-      {/*<FormControl variant="outlined" size="small">*/}
-      {/*<InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>*/}
       <TextField
-        fullWidth
+        fullWidth={fullWidth}
         variant="outlined"
         margin="dense"
         size="small"
@@ -129,7 +127,6 @@ export const SelectDepartments = ({
             </InputAdornment>
         }}
       />
-      {/*</FormControl>*/}
       <Menu anchorEl={anchorEl} open={!!anchorEl} onClose={close}>
         <MenuItem className={classes(css.menuItem, css.menuItemRegion)} onClick={() => onSelectAll()}>
           <Checkbox indeterminate={someDepartmentsSelected && !allDepartmentsSelected} checked={allDepartmentsSelected}/>

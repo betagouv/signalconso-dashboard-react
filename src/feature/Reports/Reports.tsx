@@ -16,8 +16,8 @@ import {NavLink, useHistory} from 'react-router-dom'
 import {SelectDepartments} from '../../shared/SelectDepartments/SelectDepartments'
 import {IconBtn} from 'mui-extension/lib'
 import {useToast} from '../../core/toast'
-import {Datepicker} from '../../shared/Datepicker/Datepicker'
 import {ReportAttachementSmall} from '../Report/ReportAttachements'
+import {Datepicker} from '../../shared/Datepicker/Datepicker'
 
 const useStyles = makeStyles((t: Theme) => ({
   toolbar: {
@@ -90,7 +90,7 @@ export const Reports = ({}) => {
     .filter(_ => _.label.indexOf(ReportingDateLabel) !== -1)
     .map(_ => _.value)
 
-  console.log(_reports.fetching)
+  console.log('filter :: ', _reports.filters)
   return (
     <Page>
       <PageTitle>{m.reports_pageTitle}</PageTitle>
@@ -128,10 +128,10 @@ export const Reports = ({}) => {
             })}
             label={m.end}
           />
-          <IconBtn onClick={_reports.clearFilters}>
+          <IconBtn tooltip={m.exportInXLS} onClick={_reports.clearFilters}>
             <Icon>file_download</Icon>
           </IconBtn>
-          <IconBtn onClick={_reports.clearFilters}>
+          <IconBtn tooltip={m.removeAllFilters} onClick={_reports.clearFilters}>
             <Icon>clear</Icon>
           </IconBtn>
           <Button variant="contained" color="primary" style={{minWidth: 'initial'}} className={cssUtils.nowrap}>Filtres avancés</Button>

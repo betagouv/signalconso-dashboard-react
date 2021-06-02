@@ -145,7 +145,7 @@ const useReportAttachementSmallStyles = makeStyles((t: Theme) => ({
     color: '#4185f3',
   },
   imgPicture: {
-    color: '#db4537',
+    color: '#00c385',
   }
 }))
 
