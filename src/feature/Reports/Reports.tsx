@@ -62,6 +62,10 @@ const useStyles = makeStyles((t: Theme) => ({
   tdCategory: {
     maxWidth: 140,
   },
+  actions: {
+    paddingRight: t.spacing(.25),
+    paddingLeft: t.spacing(.25),
+  }
 }))
 
 export const Reports = ({}) => {
@@ -213,8 +217,8 @@ export const Reports = ({}) => {
             },
             {
               head: '',
-              className: classes(cssUtils.txtRight),
-              style: {paddingTop: 1},
+              stickyEnd: true,
+              className: classes(css.actions),
               row: _ => (
                 <NavLink to={`/report/${_.report.id}`}>
                   <IconBtn className={cssUtils.colorTxtHint}>

@@ -27,6 +27,7 @@ export interface DatatableColumnProps<T> {
   hidden?: boolean
   className?: string,
   style?: CSSProperties
+  stickyEnd?: boolean
 }
 
 const isDatatablePaginatedProps = <T, >(_: DatatableProps<T>): _ is DatatablePaginatedProps<T> => {
@@ -37,9 +38,19 @@ const isDatatablePaginatedProps = <T, >(_: DatatableProps<T>): _ is DatatablePag
 }
 
 const useStyles = makeStyles((t: Theme) => ({
+  container: {
+    overflowX: 'auto',
+  },
   table: {
     minWidth: '100%',
-    // tableLayout: 'fixed'
+    tableLayout: 'fixed',
+    width: 'auto', // Override width: 100% from Material-UI that breaks sticky columns
+  },
+  stickyEnd: {
+    paddingTop: 1,
+    position: 'sticky',
+    right: 0,
+    background: t.palette.background.paper,
   }
 }))
 
@@ -60,31 +71,31 @@ export const Datatable = <T extends any = any>(props: DatatableProps<T>) => {
 
   return (
     <>
-      <div style={{overflowX: 'scroll'}}>
-        <Table className={classes(cssUtils.truncate, css.table)}>
+      <div className={css.container}>
+        <Table className={classes(css.table)}>
           <TableHead>
             <TableRow>
               {filteredRows.map((_, i) =>
-                <TableCell key={i}>
+                <TableCell key={i} className={classes(_.stickyEnd && css.stickyEnd)}>
                   {_.head}
                 </TableCell>
               )}
             </TableRow>
           </TableHead>
-        <TableBody>
-          {loading && (
-            <TableRow>
-              <TableCell colSpan={filteredRows.length} style={{height: 0, padding: 0, position: 'relative', border: 'none'}}>
-                <LinearProgress style={{position: 'absolute', right: 0, left: 0}}/>
-              </TableCell>
-            </TableRow>
-          )}
-          {data?.map((item, i) =>
-            <TableRow key={getRenderRowId ? getRenderRowId(item) : i}>
-              {filteredRows.map((_, i) =>
-                <TableCell key={i} className={classes(_.className, cssUtils.truncate)} style={_.style}>
-                  {_.row(item)}
+          <TableBody>
+            {loading && (
+              <TableRow>
+                <TableCell colSpan={filteredRows.length} style={{height: 0, padding: 0, position: 'relative', border: 'none'}}>
+                  <LinearProgress style={{position: 'absolute', right: 0, left: 0}}/>
                 </TableCell>
+              </TableRow>
+            )}
+            {data?.map((item, i) =>
+              <TableRow key={getRenderRowId ? getRenderRowId(item) : i}>
+                {filteredRows.map((_, i) =>
+                  <TableCell key={i} className={classes(_.className, cssUtils.truncate, _.stickyEnd && css.stickyEnd)} style={_.style}>
+                    {_.row(item)}
+                  </TableCell>
               )}
             </TableRow>
           )}
