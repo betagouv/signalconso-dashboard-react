@@ -19,6 +19,7 @@ import {useToast} from '../../core/toast'
 import {ReportAttachementSmall} from '../Report/ReportAttachements'
 import {Datepicker} from '../../shared/Datepicker/Datepicker'
 import {ReportStatusChip} from '../../shared/ReportStatus/ReportStatus'
+import {Config} from '../../conf/config'
 
 const useStyles = makeStyles((t: Theme) => ({
   toolbar: {
@@ -133,10 +134,20 @@ export const Reports = ({}) => {
             })}
             label={m.end}
           />
-          <IconBtn tooltip={m.exportInXLS} onClick={_reports.clearFilters}>
-            <Icon>file_download</Icon>
-          </IconBtn>
-          <IconBtn tooltip={m.removeAllFilters} onClick={_reports.clearFilters}>
+          <Tooltip title={fromNullable(_reports?.list?.totalSize).map(_ => _ > Config.reportsLimitForExport ? m.cannotExportMoreReports(_) : '').getOrElse('')}>
+            <span>
+              <IconBtn
+                tooltip={m.exportInXLS}
+                onClick={_reports.clearFilters}
+                disabled={fromNullable(_reports?.list?.totalSize).map(_ => _ > Config.reportsLimitForExport).getOrElse(false)}
+              >
+                <Icon>file_download</Icon>
+              </IconBtn>
+            </span>
+          </Tooltip>
+          <IconBtn
+            tooltip={m.removeAllFilters}
+            onClick={_reports.clearFilters}>
             <Icon>clear</Icon>
           </IconBtn>
           <Button variant="contained" color="primary" style={{minWidth: 'initial'}} className={cssUtils.nowrap}>Filtres avancés</Button>

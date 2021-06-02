@@ -6,4 +6,7 @@ export class Config {
   static readonly sentryDsn = null
 
   static readonly basePath = '/'
+
+  static readonly reportsLimitForExport = 30000;
+
 }

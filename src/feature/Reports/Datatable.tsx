@@ -51,6 +51,9 @@ const useStyles = makeStyles((t: Theme) => ({
     position: 'sticky',
     right: 0,
     background: t.palette.background.paper,
+  },
+  header: {
+    color: t.palette.text.secondary
   }
 }))
 
@@ -76,7 +79,7 @@ export const Datatable = <T extends any = any>(props: DatatableProps<T>) => {
           <TableHead>
             <TableRow>
               {filteredRows.map((_, i) =>
-                <TableCell key={i} className={classes(_.stickyEnd && css.stickyEnd)}>
+                <TableCell key={i} className={classes(css.header, _.stickyEnd && css.stickyEnd)}>
                   {_.head}
                 </TableCell>
               )}

@@ -88,7 +88,9 @@ export const muiTheme = (dark?: boolean): any => {
           paddingBottom: 0,
           minHeight: 50,
           height: 50,
-        }
+          paddingRight: 8,
+          paddingLeft: 8,
+        },
       },
       MuiIcon: {
         root: {

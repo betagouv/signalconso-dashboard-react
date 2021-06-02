@@ -77,4 +77,5 @@ export const messagesFr = {
   report_pageTitle: `Signalement`,
   reportCategoriesAreSelectByConsumer: 'Les catégories du signalement sont sélectionnées par le consommateur.',
   reportConsumerWantToBeAnonymous: 'Le consommateur souhaite rester anonyme',
+  cannotExportMoreReports: (reportCount: number) => `Impossible d'exporter plus de ${reportCount} signalements.`,
 }
