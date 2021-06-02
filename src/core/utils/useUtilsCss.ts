@@ -70,6 +70,12 @@ export const useUtilsCss = makeStyles((t: Theme) => {
     },
     marginLeftAuto: {
       marginLeft: 'auto',
+    },
+    fullWidth: {
+      width: '100%',
+    },
+    nowrap: {
+      whiteSpace: 'nowrap',
     }
   }
 })

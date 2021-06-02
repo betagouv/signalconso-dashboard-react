@@ -1,6 +1,6 @@
 import * as React from 'react'
 import {useEffect, useMemo} from 'react'
-import {Checkbox, createStyles, Icon, InputAdornment, InputBase, makeStyles, Menu, MenuItem, Theme} from '@material-ui/core'
+import {Checkbox, createStyles, Icon, InputAdornment, makeStyles, Menu, MenuItem, TextField, Theme} from '@material-ui/core'
 import {Region} from '@signalconso/signalconso-api-sdk-js/build'
 import {regions as apiRegions} from '@signalconso/signalconso-api-sdk-js/build/asset'
 import {useSetState, UseSetState} from '@alexandreannic/react-hooks-lib/lib'
@@ -53,15 +53,19 @@ export interface SelectDepartmentsProps {
   readonly?: boolean
   regions?: Region[]
   onChange: (_: string[]) => void
+  className?: string
+  fullWidth?: boolean
 }
 
 export const SelectDepartments = ({
   placeholder,
   selectAllLabel = 'Tous les départements',
   values,
+  className,
   readonly,
   regions = apiRegions,
-  onChange
+  onChange,
+  fullWidth,
 }: SelectDepartmentsProps) => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
   let $input: HTMLElement | undefined = undefined
@@ -104,18 +108,28 @@ export const SelectDepartments = ({
 
   return (
     <>
-      <InputBase
+      {/*<FormControl variant="outlined" size="small">*/}
+      {/*<InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>*/}
+      <TextField
+        fullWidth
+        variant="outlined"
+        margin="dense"
+        size="small"
+        className={className}
         placeholder={placeholder}
         onClick={open}
         value={indexValues.toArray().join(', ') ?? ''}
         disabled={readonly}
         inputRef={(n: any) => $input = n ?? undefined}
-        endAdornment={
-          <InputAdornment position="end">
-            <Icon className={css.adornment}>arrow_drop_down</Icon>
-          </InputAdornment>
-        }
+        label="Département"
+        InputProps={{
+          endAdornment:
+            <InputAdornment position="end">
+              <Icon className={css.adornment}>arrow_drop_down</Icon>
+            </InputAdornment>
+        }}
       />
+      {/*</FormControl>*/}
       <Menu anchorEl={anchorEl} open={!!anchorEl} onClose={close}>
         <MenuItem className={classes(css.menuItem, css.menuItemRegion)} onClick={() => onSelectAll()}>
           <Checkbox indeterminate={someDepartmentsSelected && !allDepartmentsSelected} checked={allDepartmentsSelected}/>
