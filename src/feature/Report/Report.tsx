@@ -92,7 +92,7 @@ export const ReportComponent = () => {
                 </div>
               )}
               <Divider className={cssUtils.divider}/>
-              {fromNullable(_report.entity?.files).map(_ => <ReportAttachements attachements={_}/>).toNullable()}
+              {fromNullable(_report.entity?.files).map(_ => <ReportAttachements attachements={_}/>).toUndefined()}
             </PanelBody>
             <PanelFoot>
               <div style={{flex: 1}}>

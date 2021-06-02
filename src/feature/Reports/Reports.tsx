@@ -7,10 +7,7 @@ import {useUtilsCss} from '../../core/utils/useUtilsCss'
 import {useLoginContext} from '../../App'
 import {Datatable} from './Datatable'
 import {fromNullable, some} from 'fp-ts/lib/Option'
-import {Icon, InputBase, makeStyles, TextFieldProps, Theme, Tooltip} from '@material-ui/core'
-import {ScButton} from '../../shared/Button/Button'
-import {DatePicker} from '@material-ui/pickers'
-import {MaterialUiPickersDate} from '@material-ui/pickers/typings/date'
+import {Button, Icon, makeStyles, Theme, Tooltip} from '@material-ui/core'
 import {addDays, subDays} from 'date-fns'
 import {classes, textOverflowMiddleCropping} from '../../core/helper/utils'
 import React, {useEffect} from 'react'
@@ -19,7 +16,8 @@ import {NavLink, useHistory} from 'react-router-dom'
 import {SelectDepartments} from '../../shared/SelectDepartments/SelectDepartments'
 import {IconBtn} from 'mui-extension/lib'
 import {useToast} from '../../core/toast'
-import {Datepicker} from '../../shared/Datepicker/DatePicker'
+import {Datepicker} from '../../shared/Datepicker/Datepicker'
+import {ReportAttachementSmall} from '../Report/ReportAttachements'
 
 const useStyles = makeStyles((t: Theme) => ({
   toolbar: {
@@ -99,8 +97,14 @@ export const Reports = ({}) => {
 
       <Panel>
         <div className={css.toolbar}>
-          <SelectDepartments values={_reports.filters.departments} onChange={departments => _reports.updateFilters(prev => ({...prev, departments}))}/>
+          <SelectDepartments
+            fullWidth
+            values={_reports.filters.departments}
+            onChange={departments => _reports.updateFilters(prev => ({...prev, departments}))}
+          />
+          &nbsp;
           <Datepicker
+            fullWidth
             label={m.start}
             value={_reports.filters.start}
             onChange={start => {
@@ -112,8 +116,9 @@ export const Reports = ({}) => {
               })
             }}
           />
-
+          &nbsp;
           <Datepicker
+            fullWidth
             value={_reports.filters.end}
             onChange={end => _reports.updateFilters(prev => {
               if (prev.start && prev.start.getTime() > end.getTime()) {
@@ -124,9 +129,12 @@ export const Reports = ({}) => {
             label={m.end}
           />
           <IconBtn onClick={_reports.clearFilters}>
+            <Icon>file_download</Icon>
+          </IconBtn>
+          <IconBtn onClick={_reports.clearFilters}>
             <Icon>clear</Icon>
           </IconBtn>
-          <ScButton variant="contained" color="primary" className={cssUtils.truncate}>Filtres avancés</ScButton>
+          <Button variant="contained" color="primary" style={{minWidth: 'initial'}} className={cssUtils.nowrap}>Filtres avancés</Button>
         </div>
         <Datatable<ReportSearchResult>
           loading={_reports.fetching}
@@ -197,11 +205,7 @@ export const Reports = ({}) => {
             },
             {
               head: 'Pièces jointes', className: css.tdFiles, row: _ => _.files.map(file =>
-                <Tooltip title={file.filename} key={file.id}>
-                  <a href={apiSdk.public.document.getLink(file)} target="_blank">
-                    <Icon>insert_drive_file</Icon>
-                  </a>
-                </Tooltip>
+                <ReportAttachementSmall attachement={file}/>
               )
             },
             {

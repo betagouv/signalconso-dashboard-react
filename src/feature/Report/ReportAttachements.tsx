@@ -3,6 +3,7 @@ import {Icon, makeStyles, Theme, Tooltip} from '@material-ui/core'
 import {useLoginContext} from '../../App'
 import {Config} from '../../conf/config'
 import {some} from 'fp-ts/lib/Option'
+import React from 'react'
 
 export interface ReportAttachementsProps {
   attachements: UploadedFile[]
@@ -26,6 +27,7 @@ export const ReportAttachements = ({attachements}: ReportAttachementsProps) => {
 
 export interface ReportAttachementProps {
   attachement: UploadedFile
+  dense?: boolean
 }
 
 const allowedExtenions = ['jpg', 'jpeg', 'pdf', 'png', 'gif', 'docx']
@@ -90,7 +92,7 @@ const useStyles = makeStyles((t: Theme) => ({
   },
 }))
 
-export const ReportAttachement = ({attachement}: ReportAttachementProps) => {
+export const ReportAttachement = ({attachement, dense}: ReportAttachementProps) => {
   const fileType = extensionToType(attachement.filename)
   const css = useStyles()
   const {apiSdk} = useLoginContext()
@@ -130,9 +132,59 @@ export const ReportAttachement = ({attachement}: ReportAttachementProps) => {
             }
           }
         })()}
-        {/*<div>*/}
-        {/*{fileUrl}*/}
-        {/*</div>*/}
+      </a>
+    </Tooltip>
+  )
+}
+
+const useReportAttachementSmallStyles = makeStyles((t: Theme) => ({
+  imgPdf: {
+    color: '#db4537',
+  },
+  imgDoc: {
+    color: '#4185f3',
+  },
+  imgPicture: {
+    color: '#db4537',
+  }
+}))
+
+export const ReportAttachementSmall = ({attachement}: ReportAttachementProps) => {
+  const fileType = extensionToType(attachement.filename)
+  const css = useReportAttachementSmallStyles()
+  const {apiSdk} = useLoginContext()
+  const fileUrl = some(apiSdk.public.document.getLink(attachement)).map(_ => Config.isDev
+    ? _.replace(Config.baseUrl, 'https://signal-api.conso.gouv.fr')
+    : _
+  ).toUndefined()
+
+  return (
+    <Tooltip title={attachement.filename} key={attachement.id}>
+      <a href={fileUrl} target="_blank">
+        {(() => {
+          switch (fileType) {
+            case AttachementType.Image: {
+              return (
+                <Icon className={css.imgPicture}>image</Icon>
+              )
+            }
+            case AttachementType.PDF: {
+              return (
+                <Icon className={css.imgPdf}>picture_as_pdf</Icon>
+              )
+            }
+            case AttachementType.Doc: {
+              return (
+                <Icon className={css.imgDoc}>article</Icon>
+              )
+            }
+            default: {
+              return (
+                <Icon>insert_drive_file</Icon>
+              )
+            }
+          }
+        })()}
       </a>
     </Tooltip>
   )
