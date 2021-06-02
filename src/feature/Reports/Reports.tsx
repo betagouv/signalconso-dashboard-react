@@ -18,6 +18,7 @@ import {IconBtn} from 'mui-extension/lib'
 import {useToast} from '../../core/toast'
 import {ReportAttachementSmall} from '../Report/ReportAttachements'
 import {Datepicker} from '../../shared/Datepicker/Datepicker'
+import {ReportStatusChip} from '../../shared/ReportStatus/ReportStatus'
 
 const useStyles = makeStyles((t: Theme) => ({
   toolbar: {
@@ -32,7 +33,7 @@ const useStyles = makeStyles((t: Theme) => ({
     // }
   },
   tdName: {
-    lineHeight: 1.1,
+    lineHeight: 1.4,
     maxWidth: 170,
   },
   tdName_label: {
@@ -41,7 +42,7 @@ const useStyles = makeStyles((t: Theme) => ({
   },
   tdName_desc: {
     fontSize: t.typography.fontSize * 0.875,
-    color: t.palette.text.secondary,
+    color: t.palette.text.hint,
   },
   tdPostal: {
     maxWidth: 76,
@@ -53,7 +54,7 @@ const useStyles = makeStyles((t: Theme) => ({
     fontSize: t.typography.fontSize * 0.875,
     color: t.palette.text.secondary,
     maxWidth: 260,
-    lineHeight: 1.2
+    lineHeight: 1.4
   },
   tdFiles: {
     maxWidth: 100,
@@ -92,18 +93,19 @@ export const Reports = ({}) => {
 
   console.log('filter :: ', _reports.filters)
   return (
-    <Page>
+    <Page large>
       <PageTitle>{m.reports_pageTitle}</PageTitle>
 
       <Panel>
         <div className={css.toolbar}>
           <SelectDepartments
+            className={cssUtils.marginRight}
             fullWidth
             values={_reports.filters.departments}
             onChange={departments => _reports.updateFilters(prev => ({...prev, departments}))}
           />
-          &nbsp;
           <Datepicker
+            className={cssUtils.marginRight}
             fullWidth
             label={m.start}
             value={_reports.filters.start}
@@ -116,7 +118,6 @@ export const Reports = ({}) => {
               })
             }}
           />
-          &nbsp;
           <Datepicker
             fullWidth
             value={_reports.filters.end}
@@ -158,9 +159,7 @@ export const Reports = ({}) => {
                 <>
                   <span className={css.tdName_label}>{_.report.companyName}</span>
                   <br/>
-                  {_.report.website}
-                  {_.report.phone}
-                  <span className={css.tdName_desc}>{fromNullable(_.report.website).map(getHostFromUrl).alt(some(_.report.phone)).getOrElse('')}</span>
+                  <span className={css.tdName_desc}>{fromNullable(_.report.websiteURL).map(getHostFromUrl).alt(some(_.report.phone)).getOrElse('')}</span>
                 </>
             },
             {
@@ -190,7 +189,7 @@ export const Reports = ({}) => {
                     const details = getDetailContent(_.report.details)
                     return (
                       <span>
-                        <span dangerouslySetInnerHTML={{__html: details?.firstLine ?? ''}}/>&nbsp;
+                        <span dangerouslySetInnerHTML={{__html: details?.firstLine ?? ''}}/><br/>
                         <span dangerouslySetInnerHTML={{__html: details?.secondLine ?? ''}}/>
                       </span>
                     )
@@ -202,6 +201,10 @@ export const Reports = ({}) => {
                 <span className={classes(_.report.contactAgreement ?? cssUtils.colorDisabled)}>
                   {textOverflowMiddleCropping(_.report.email, 25)}
                 </span>
+            },
+            {
+              head: 'Statut', row: _ =>
+                <ReportStatusChip dense status={_.report.status}/>
             },
             {
               head: 'Pièces jointes', className: css.tdFiles, row: _ => _.files.map(file =>

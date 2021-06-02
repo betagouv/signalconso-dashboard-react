@@ -19,9 +19,10 @@ const useStyles = makeStyles((t: Theme) => ({
     alignItems: 'center',
   },
   dense: {
+    fontWeight: '500' as any,
     fontSize: utilsStyles(t).fontSize.small,
-    paddingTop: t.spacing(1 / 2),
-    paddingBottom: t.spacing(1 / 2),
+    paddingRight: t.spacing(1),
+    paddingLeft: t.spacing(1),
   }
 }))
 

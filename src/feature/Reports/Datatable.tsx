@@ -39,7 +39,7 @@ const isDatatablePaginatedProps = <T, >(_: DatatableProps<T>): _ is DatatablePag
 const useStyles = makeStyles((t: Theme) => ({
   table: {
     minWidth: '100%',
-    tableLayout: 'fixed'
+    // tableLayout: 'fixed'
   }
 }))
 
@@ -59,17 +59,18 @@ export const Datatable = <T extends any = any>(props: DatatableProps<T>) => {
   const filteredRows = rows.filter(_ => !_.hidden)
 
   return (
-    <div style={{overflowX: 'scroll'}}>
-      <Table className={classes(cssUtils.truncate, css.table)}>
-        <TableHead>
-          <TableRow>
-            {filteredRows.map((_, i) =>
-              <TableCell key={i}>
-                {_.head}
-              </TableCell>
-            )}
-          </TableRow>
-        </TableHead>
+    <>
+      <div style={{overflowX: 'scroll'}}>
+        <Table className={classes(cssUtils.truncate, css.table)}>
+          <TableHead>
+            <TableRow>
+              {filteredRows.map((_, i) =>
+                <TableCell key={i}>
+                  {_.head}
+                </TableCell>
+              )}
+            </TableRow>
+          </TableHead>
         <TableBody>
           {loading && (
             <TableRow>
@@ -88,7 +89,8 @@ export const Datatable = <T extends any = any>(props: DatatableProps<T>) => {
             </TableRow>
           )}
         </TableBody>
-      </Table>
+        </Table>
+      </div>
       {isDatatablePaginatedProps(props) && (() => {
         const limit = safeParseInt(props.limit, props.data?.length ?? 10)
         const offset = safeParseInt(props.offset, 0)
@@ -107,6 +109,6 @@ export const Datatable = <T extends any = any>(props: DatatableProps<T>) => {
           />
         )
       })()}
-    </div>
+    </>
   )
 }
