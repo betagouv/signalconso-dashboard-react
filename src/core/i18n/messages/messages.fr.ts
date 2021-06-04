@@ -1,6 +1,6 @@
 export const messagesFr = {
-  yes: 'Yes',
-  no: 'No',
+  yes: 'Oui',
+  no: 'Non',
   search: 'Rechercher',
   edit: 'Modifier',
   next: 'Suivant',
@@ -78,4 +78,14 @@ export const messagesFr = {
   reportCategoriesAreSelectByConsumer: 'Les catégories du signalement sont sélectionnées par le consommateur.',
   reportConsumerWantToBeAnonymous: 'Le consommateur souhaite rester anonyme',
   cannotExportMoreReports: (reportCount: number) => `Impossible d'exporter plus de ${reportCount} signalements.`,
+  siret: 'SIRET',
+  emailConsumer: 'Email conso.',
+  keywords: 'Mots-clés',
+  tags: 'Tags',
+  categories: 'Catégories',
+  foreignCountry: 'Pays étranger',
+  identifiedCompany: 'Entreprise identifiée ?',
+  indifferent: 'Indifférent',
+  phone: 'Téléphone',
+  website: 'Site web',
 }

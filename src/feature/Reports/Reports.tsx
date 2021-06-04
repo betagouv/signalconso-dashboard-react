@@ -1,13 +1,13 @@
 import {Page, PageTitle} from '../../shared/Layout'
 import {useI18n} from '../../core/i18n'
 import {useReportsContext} from '../../core/context/ReportsContext'
-import {DetailInputValue, getHostFromUrl, Report, ReportFilter, ReportingDateLabel, ReportSearchResult, Roles} from '@signalconso/signalconso-api-sdk-js/build'
+import {cleanObject, DetailInputValue, getHostFromUrl, Report, ReportFilter, ReportingDateLabel, ReportSearchResult, Roles} from '@signalconso/signalconso-api-sdk-js/build'
 import {Panel} from '../../shared/Panel'
 import {useUtilsCss} from '../../core/utils/useUtilsCss'
 import {useLoginContext} from '../../App'
 import {Datatable} from './Datatable'
 import {fromNullable, some} from 'fp-ts/lib/Option'
-import {Button, Icon, makeStyles, Theme, Tooltip} from '@material-ui/core'
+import {Badge, Button, Icon, makeStyles, Theme, Tooltip} from '@material-ui/core'
 import {addDays, subDays} from 'date-fns'
 import {classes, textOverflowMiddleCropping} from '../../core/helper/utils'
 import React, {useEffect} from 'react'
@@ -16,10 +16,10 @@ import {NavLink, useHistory} from 'react-router-dom'
 import {SelectDepartments} from '../../shared/SelectDepartments/SelectDepartments'
 import {IconBtn} from 'mui-extension/lib'
 import {useToast} from '../../core/toast'
-import {ReportAttachementSmall} from '../Report/ReportAttachements'
 import {Datepicker} from '../../shared/Datepicker/Datepicker'
 import {ReportStatusChip} from '../../shared/ReportStatus/ReportStatus'
 import {Config} from '../../conf/config'
+import {ReportFilters} from './ReportsFilters'
 
 const useStyles = makeStyles((t: Theme) => ({
   toolbar: {
@@ -58,6 +58,7 @@ const useStyles = makeStyles((t: Theme) => ({
     lineHeight: 1.4
   },
   tdFiles: {
+    minWidth: 44,
     maxWidth: 100,
   },
   tdCategory: {
@@ -78,10 +79,10 @@ export const Reports = ({}) => {
   const css = useStyles()
   const {toastError} = useToast()
 
-  const queryString = useQueryString<Readonly<ReportFilter>>()
+  const queryString = useQueryString<Readonly<Partial<ReportFilter>>>()
 
   useEffect(() => {
-    _reports.updateFilters(queryString.get())
+    _reports.updateFilters({..._reports.initialFilters, ...queryString.get()})
   }, [])
 
   useEffect(() => {
@@ -89,14 +90,13 @@ export const Reports = ({}) => {
   }, [_reports.list, _reports.error])
 
   useEffect(() => {
-    queryString.update(_reports.filters)
+    queryString.update(cleanObject(_reports.filters))
   }, [_reports.filters])
 
   const getReportingDate = (report: Report) => report.details
     .filter(_ => _.label.indexOf(ReportingDateLabel) !== -1)
     .map(_ => _.value)
 
-  console.log('filter :: ', _reports.filters)
   return (
     <Page large>
       <PageTitle>{m.reports_pageTitle}</PageTitle>
@@ -150,7 +150,9 @@ export const Reports = ({}) => {
             onClick={_reports.clearFilters}>
             <Icon>clear</Icon>
           </IconBtn>
-          <Button variant="contained" color="primary" style={{minWidth: 'initial'}} className={cssUtils.nowrap}>Filtres avancés</Button>
+          <ReportFilters filters={_reports.filters} updateFilters={_ => _reports.updateFilters(prev => ({...prev, ..._}))}>
+            <Button variant="contained" color="primary" style={{minWidth: 'initial'}} className={cssUtils.nowrap}>Filtres avancés</Button>
+          </ReportFilters>
         </div>
         <Datatable<ReportSearchResult>
           loading={_reports.fetching}
@@ -158,7 +160,7 @@ export const Reports = ({}) => {
           limit={_reports.filters.limit}
           onChangeLimit={limit => _reports.updateFilters(prev => ({...prev, limit}))}
           onChangeOffset={offset => _reports.updateFilters(prev => ({...prev, offset}))}
-          getRenderRowId={_ => _.report.id}
+          getRenderRowKey={_ => _.report.id}
           data={_reports.list?.data}
           total={_reports.list?.totalSize}
           rows={[
@@ -222,9 +224,12 @@ export const Reports = ({}) => {
                 <ReportStatusChip dense status={_.report.status}/>
             },
             {
-              head: 'Pièces jointes', className: css.tdFiles, row: _ => _.files.map(file =>
-                <ReportAttachementSmall attachement={file}/>
-              )
+              head: '', className: css.tdFiles, row: _ =>
+                _.files.length > 0 && (
+                  <Badge badgeContent={_.files.length} color="primary" invisible={_.files.length === 1}>
+                    <Icon className={cssUtils.colorTxtHint}>insert_drive_file</Icon>
+                  </Badge>
+                )
             },
             {
               head: '',

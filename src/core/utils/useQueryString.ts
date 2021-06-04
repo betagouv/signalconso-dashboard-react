@@ -56,9 +56,7 @@ export const useQueryString: UseQueryString = <T>(
   }
 
   const get = (): T => {
-    console.log('histry', history.location.search.replace(/^\?/, ''))
     const t1 = querystring.parse(history.location.search.replace(/^\?/, ''))
-    console.log('t1', t1)
     const t2 = mapDateFromQueryString(t1)
     return f2(t2 as any)
   }

@@ -7,7 +7,7 @@ export interface DatatableBaseProps<T> {
   loading?: boolean
   total?: number
   data?: T[]
-  getRenderRowId?: (_: T) => string
+  getRenderRowKey?: (_: T) => string
   rows: DatatableColumnProps<T>[]
 }
 
@@ -65,7 +65,7 @@ export const Datatable = <T extends any = any>(props: DatatableProps<T>) => {
     total,
     data,
     rows,
-    getRenderRowId,
+    getRenderRowKey,
   } = props
 
   const css = useStyles()
@@ -94,7 +94,7 @@ export const Datatable = <T extends any = any>(props: DatatableProps<T>) => {
               </TableRow>
             )}
             {data?.map((item, i) =>
-              <TableRow key={getRenderRowId ? getRenderRowId(item) : i}>
+              <TableRow key={getRenderRowKey ? getRenderRowKey(item) : i}>
                 {filteredRows.map((_, i) =>
                   <TableCell key={i} className={classes(_.className, cssUtils.truncate, _.stickyEnd && css.stickyEnd)} style={_.style}>
                     {_.row(item)}
@@ -115,10 +115,7 @@ export const Datatable = <T extends any = any>(props: DatatableProps<T>) => {
             count={total ?? 0}
             rowsPerPage={limit}
             page={offset / limit}
-            onChangePage={(event: unknown, newPage: number) => {
-              console.log('onchangepage', newPage)
-              props.onChangeOffset(newPage * limit)
-            }}
+            onChangePage={(event: unknown, newPage: number) => props.onChangeOffset(newPage * limit)}
             onChangeRowsPerPage={(event: React.ChangeEvent<HTMLInputElement>) => props.onChangeLimit(parseInt(event.target.value, 10))}
           />
         )

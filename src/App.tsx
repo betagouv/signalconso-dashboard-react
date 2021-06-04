@@ -15,6 +15,8 @@ import {Reports} from './feature/Reports/Reports'
 import {ReportComponent} from './feature/Report/Report'
 import {Menu} from './shared/Layout/Menu/Menu'
 import {Layout, ToastProvider} from 'mui-extension/lib'
+import {ConstantProvider} from './core/context/ConstantContext'
+import {AnomalyProvider} from './core/context/AnomalyContext'
 
 const headers = {
   'Content-Type': 'application/json',
@@ -106,14 +108,18 @@ const LoggedApp = () => {
   return (
     <ReportsProvider api={apiSdk}>
       <ReportProvider api={apiSdk}>
-        <Layout sidebar={Menu}>
-          <Switch>
-            <Route exact path="/test" component={Panel}/>
-            <Route exact path="/reports" component={Reports}/>
-            <Route exact path="/report/:id" component={ReportComponent}/>
-            <Redirect exact from="/" to="/reports"/>
-          </Switch>
-        </Layout>
+        <ConstantProvider api={apiSdk}>
+          <AnomalyProvider api={apiSdk}>
+            <Layout sidebar={Menu}>
+              <Switch>
+                <Route exact path="/test" component={Panel}/>
+                <Route exact path="/reports" component={Reports}/>
+                <Route exact path="/report/:id" component={ReportComponent}/>
+                <Redirect exact from="/" to="/reports"/>
+              </Switch>
+            </Layout>
+          </AnomalyProvider>
+        </ConstantProvider>
       </ReportProvider>
     </ReportsProvider>
   )
