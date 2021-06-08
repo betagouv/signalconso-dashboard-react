@@ -1,4 +1,4 @@
-import {EventActionValues} from '@signalconso/signalconso-api-sdk-js/build'
+import {EventActionValues} from 'core/api'
 import {Icon, Theme, useTheme} from '@material-ui/core'
 import {utilsStyles} from '../../core/theme'
 

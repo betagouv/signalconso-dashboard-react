@@ -1,11 +1,12 @@
 import * as React from 'react'
 import {useEffect, useMemo} from 'react'
 import {Checkbox, createStyles, Icon, InputAdornment, makeStyles, Menu, MenuItem, TextField, Theme} from '@material-ui/core'
-import {Region} from '@signalconso/signalconso-api-sdk-js/build'
-import {regions as apiRegions} from '@signalconso/signalconso-api-sdk-js/build/asset'
 import {useSetState, UseSetState} from '@alexandreannic/react-hooks-lib/lib'
 import {classes, stopPropagation} from '../../core/helper/utils'
 import {useUtilsCss} from '../../core/utils/useUtilsCss'
+import {useConstantContext} from '../../core/context/ConstantContext'
+import {Region} from 'core/api'
+import {fromNullable} from 'fp-ts/lib/Option'
 
 const useStyles = makeStyles((t: Theme) => createStyles({
   adornment: {
@@ -51,19 +52,27 @@ export interface SelectDepartmentsProps {
   selectAllLabel?: string
   values?: string[]
   readonly?: boolean
-  regions?: Region[]
+  regions: Region[]
   onChange: (_: string[]) => void
   className?: string
   fullWidth?: boolean
 }
 
-export const SelectDepartments = ({
+const withRegions = (WrappedComponent: React.ComponentType<SelectDepartmentsProps>) => (props: Omit<SelectDepartmentsProps, 'regions'>) => {
+  const {regions} = useConstantContext()
+  useEffect(() => {
+    regions.fetch()
+  }, [])
+  return fromNullable(regions.entity).map(_ => <WrappedComponent {...props} regions={_}/>).getOrElse(<></>)
+}
+
+export const SelectDepartments = withRegions(({
   placeholder,
   selectAllLabel = 'Tous les départements',
   values,
   className,
   readonly,
-  regions = apiRegions,
+  regions,
   onChange,
   fullWidth,
 }: SelectDepartmentsProps) => {
@@ -76,6 +85,7 @@ export const SelectDepartments = ({
   const allDepartments = useMemo(() => regions.flatMap(_ => _.departments).map(_ => _.code), [])
   const allDepartmentsSelected = allDepartments.every(_ => indexValues.has(_))
   const someDepartmentsSelected = !!allDepartments.find(_ => indexValues.has(_))
+  const {} = useConstantContext()
 
   useEffect(() => {
     indexValues.reset(values)
@@ -158,4 +168,4 @@ export const SelectDepartments = ({
       </Menu>
     </>
   )
-}
+})

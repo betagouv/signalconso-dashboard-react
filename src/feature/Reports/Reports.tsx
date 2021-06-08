@@ -1,7 +1,7 @@
 import {Page, PageTitle} from '../../shared/Layout'
 import {useI18n} from '../../core/i18n'
 import {useReportsContext} from '../../core/context/ReportsContext'
-import {cleanObject, DetailInputValue, getHostFromUrl, Report, ReportFilter, ReportingDateLabel, ReportSearchResult, Roles} from '@signalconso/signalconso-api-sdk-js/build'
+import {cleanObject, DetailInputValue, getHostFromUrl, Report, ReportFilter, ReportingDateLabel, ReportSearchResult, Roles} from 'core/api'
 import {Panel} from '../../shared/Panel'
 import {useUtilsCss} from '../../core/utils/useUtilsCss'
 import {useLoginContext} from '../../App'

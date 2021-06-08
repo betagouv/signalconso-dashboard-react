@@ -1,7 +1,7 @@
 import {Dialog, DialogActions, DialogContent, DialogTitle, FormControlLabel, makeStyles, MenuItem, Radio, RadioGroup, Theme} from '@material-ui/core'
 import {useI18n} from '../../core/i18n'
 import React, {ReactElement, ReactNode, useEffect, useState} from 'react'
-import {ReportFilter, ReportTag} from '@signalconso/signalconso-api-sdk-js/build'
+import {ReportFilter, ReportTag} from 'core/api'
 import {Controller, useForm} from 'react-hook-form'
 import {useConstantContext} from '../../core/context/ConstantContext'
 import {fromNullable} from 'fp-ts/lib/Option'

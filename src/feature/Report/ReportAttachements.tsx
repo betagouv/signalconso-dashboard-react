@@ -1,4 +1,4 @@
-import {UploadedFile} from '@signalconso/signalconso-api-sdk-js/build'
+import {UploadedFile} from 'core/api'
 import {Icon, makeStyles, Theme, Tooltip} from '@material-ui/core'
 import {useLoginContext} from '../../App'
 import {Config} from '../../conf/config'

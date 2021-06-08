@@ -1,6 +1,6 @@
 import React from 'react'
 import {makeLoginProviderComponent} from './core/Login/LoginContext'
-import {ApiClient, SignalConsoPublicSdk, SignalConsoSecuredSdk, User} from '@signalconso/signalconso-api-sdk-js/build'
+import {ApiClient, SignalConsoPublicSdk, SignalConsoSecuredSdk, User} from 'core/api'
 import {Config} from './conf/config'
 import {makeStyles} from '@material-ui/core/styles'
 import {Avatar, Icon, Theme, ThemeProvider} from '@material-ui/core'

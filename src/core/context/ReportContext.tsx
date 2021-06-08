@@ -2,7 +2,7 @@ import * as React from 'react'
 import {ReactNode, useContext} from 'react'
 import {UseFetchableReturn, useFetcher} from '@alexandreannic/react-hooks-lib/lib'
 import {SignalConsoApiSdk} from '../../App'
-import {ReportEvent, ReportSearchResult} from '@signalconso/signalconso-api-sdk-js/build'
+import {ReportEvent, ReportSearchResult} from 'core/api'
 
 export interface ReportContextProps extends UseFetchableReturn<ReportSearchResult> {
   events: UseFetchableReturn<ReportEvent[]>

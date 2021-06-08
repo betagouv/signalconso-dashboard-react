@@ -1,4 +1,4 @@
-import {dateToYYYYMMDD} from '@signalconso/signalconso-api-sdk-js/build'
+import {dateToYYYYMMDD} from 'core/api'
 import {Index, regexp} from '../helper/utils'
 import {useHistory} from 'react-router-dom'
 import * as querystring from 'querystring'

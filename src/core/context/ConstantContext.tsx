@@ -2,10 +2,11 @@ import * as React from 'react'
 import {ReactNode, useContext} from 'react'
 import {UseFetchableReturn, useFetcher} from '@alexandreannic/react-hooks-lib/lib'
 import {SignalConsoApiSdk} from '../../App'
-import {ReportStatus} from '@signalconso/signalconso-api-sdk-js/build'
+import {Region, ReportStatus} from 'core/api'
 
 export interface ConstantContextProps {
   reportStatus: UseFetchableReturn<ReportStatus[]>
+  regions: UseFetchableReturn<Region[]>
 }
 
 interface Props {
@@ -20,10 +21,12 @@ const ConstantContext = React.createContext<ConstantContextProps>(defaultContext
 export const ConstantProvider = ({api, children}: Props) => {
 
   const _reportStatus = useFetcher<ReportStatus[]>(api.secured.constant.getReportStatusList)
+  const _regions = useFetcher<Region[]>(api.public.constant.getRegions)
 
   return (
     <ConstantContext.Provider value={{
       reportStatus: _reportStatus,
+      regions: _regions,
     }}>
       {children}
     </ConstantContext.Provider>
