@@ -1,8 +1,7 @@
-import React, {Component, ReactNode, useEffect, useState} from 'react'
+import React, {ReactNode, useContext, useEffect, useState} from 'react'
 import {LoginLoader} from './LoginLoader'
 import {LoginForm} from './LoginForm'
 import {localStorageObject} from '../helper/localStorage'
-import {useToast} from '../toast'
 
 export interface LoginSdk<User extends {token: string}> {
   login: (email: string, password: string) => Promise<User>
@@ -52,8 +51,12 @@ export const makeLoginProviderComponent = <User, ApiSdk>(
     )
   }
 
-  return ({children}: LoginProps) => {
-    const {toastError} = useToast()
+  const useLoginContext = () => {
+    return useContext<LoginContextProps<User, ApiSdk>>(LoginContext)
+  }
+
+  const Login = ({children}: LoginProps) => {
+    // const {toastError} = useToast()
     const [auth, setAuth] = useState<AuthRespone<User>>()
     const [isLoggining, setIsLoggining] = useState(false)
     const [isCheckingToken, setIsCheckingToken] = useState(false)
@@ -72,7 +75,7 @@ export const makeLoginProviderComponent = <User, ApiSdk>(
         authenticationStorage.set(auth)
         setAuth(auth)
       } catch (e) {
-        toastError(e)
+        // toastError(e)
       } finally {
         setIsLoggining(false)
       }
@@ -86,11 +89,8 @@ export const makeLoginProviderComponent = <User, ApiSdk>(
     const checkToken = async (auth: AuthRespone<User>) => {
       setIsCheckingToken(true)
       // TODO(Alex) Make a proper verification !!!!!!!!!!!
-      if (auth.token) {
-        setAuth(auth)
-      } else {
-        setIsCheckingToken(false)
-      }
+      setAuth(auth)
+      setIsCheckingToken(false)
     }
 
     if (auth) {
@@ -109,5 +109,7 @@ export const makeLoginProviderComponent = <User, ApiSdk>(
       <LoginForm isLoading={isLoggining} onLogin={login}/>
     )
   }
+
+  return {Login, useLoginContext}
 }
 

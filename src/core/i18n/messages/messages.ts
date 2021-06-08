@@ -1,4 +1,4 @@
-export const messages = {
+export const messagesEn = {
   yes: 'Yes',
   no: 'No',
   search: 'Search',

@@ -1,8 +1,7 @@
-import * as React from 'react';
-import {ReactNode} from 'react';
-import {makeStyles} from '@material-ui/core';
-import {Theme, Typography} from '@material-ui/core';
-import classNames from 'classnames';
+import * as React from 'react'
+import {ReactNode} from 'react'
+import {makeStyles, Theme, Typography} from '@material-ui/core'
+import {classes} from '../../../core/helper/utils'
 
 const useStyles = makeStyles((t: Theme) => ({
   root: {
@@ -25,7 +24,7 @@ interface Props {
 export const PageTitle = ({className, action, children, ...props}: Props) => {
   const css = useStyles();
   return (
-    <Typography variant="h5" className={classNames(css.root, className)} {...props}>
+    <Typography variant="h5" className={classes(css.root, className)} {...props}>
       {children}
       {action && <div className={css.action}>{action}</div>}
     </Typography>

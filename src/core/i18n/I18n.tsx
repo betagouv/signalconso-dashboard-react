@@ -1,8 +1,7 @@
-import * as React from 'react';
-import {ReactNode, useContext} from 'react';
-import {messages} from './messages/messages';
-import {formatDate, formatDateTime, formatTime} from './date';
-import moment from 'moment';
+import * as React from 'react'
+import {ReactNode, useContext} from 'react'
+import {messagesFr} from './messages/messages.fr'
+import {formatDate, formatDateTime, formatTime} from './date'
 
 const I18nContext = React.createContext({});
 
@@ -18,12 +17,12 @@ interface Props {
 }
 
 export interface I18nContextProps {
-  m: typeof messages
+  m: typeof messagesFr
   availableLangs: AppLang[]
   formatLargeNumber: (n?: number) => string
   formatDuration: (ms?: number) => string
   formatDate: (d?: Date) => string
-  dateFromNow: (d?: Date) => string,
+  // dateFromNow: (d?: Date) => string,
   formatTime: (d?: Date) => string
   formatDateTime: (d?: Date) => string
 }
@@ -41,10 +40,10 @@ export const withI18n = (Component: any) => (props: any) => (
 export const langToLocal = (lang: string) => `${lang}-${lang.toUpperCase()}`;
 
 export const I18nProvider = ({children, lang = AppLangs.en}: Props) => {
-  const getMessages = (): typeof messages => {
+  const getMessages = (): typeof messagesFr => {
     switch (lang) {
       default:
-        return messages;
+        return messagesFr;
     }
   };
 
@@ -53,7 +52,7 @@ export const I18nProvider = ({children, lang = AppLangs.en}: Props) => {
       m: getMessages(),
       availableLangs: Object.keys(AppLangs),
       formatLargeNumber: (n?: number) => n !== undefined && n !== null ? n.toLocaleString(langToLocal(lang)) : '-',
-      dateFromNow: (d?: Date) => moment(d).fromNow(),
+      // dateFromNow: (d?: Date) => moment(d).fromNow(),
       formatDate: formatDate,
       formatTime: formatTime,
       formatDateTime: formatDateTime,
