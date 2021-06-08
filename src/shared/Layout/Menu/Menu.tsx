@@ -6,6 +6,7 @@ import {NavLink as Link, useLocation} from 'react-router-dom'
 import {useI18n} from '../../../core/i18n'
 import {useLoginContext} from '../../../App'
 import {Icons} from '../../../core/Icons'
+import {SidebarHeader} from 'mui-extension/lib'
 
 const useStyles = makeStyles((t: Theme) => createStyles({
   avatar: {

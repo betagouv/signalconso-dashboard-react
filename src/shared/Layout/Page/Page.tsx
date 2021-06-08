@@ -10,7 +10,7 @@ export const pageWidth = {
 
 const useStyles = makeStyles((t: Theme) => ({
   root: {
-    marginTop: `${t.spacing(2)}px !important`
+    padding: `${t.spacing(2)}px !important`,
   }
 }));
 

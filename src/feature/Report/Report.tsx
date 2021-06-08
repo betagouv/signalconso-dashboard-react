@@ -68,7 +68,7 @@ export const ReportComponent = () => {
 
   return report ? (
       <Page>
-        <Panel>
+        <Panel elevation={2}>
           <PanelBody>
             <div className={css.pageTitle}>
               <div>
@@ -78,39 +78,43 @@ export const ReportComponent = () => {
                 </h1>
                 <div className={cssUtils.colorTxtHint}>ID {id}</div>
               </div>
-                <ReportStatusChip className={cssUtils.marginLeftAuto} status={report.status}/>
+              <ReportStatusChip className={cssUtils.marginLeftAuto} status={report.status}/>
+            </div>
+            <Alert dense type="info" deletable className={cssUtils.marginBottom}>
+              {m.reportCategoriesAreSelectByConsumer}
+            </Alert>
+            <ReportCategories categories={[report.category, ...report.subcategories]}/>
+            <Divider className={cssUtils.divider}/>
+            {report.details.map(detail =>
+              <div className={cssUtils.marginBottom}>
+                <div className={cssUtils.txtBig} dangerouslySetInnerHTML={{__html: detail.label.replace(/\:$/, '')}}/>
+                <div className={cssUtils.colorTxtSecondary} dangerouslySetInnerHTML={{__html: detail.value}}/>
               </div>
-              <Alert dense type="info" deletable className={cssUtils.marginBottom}>
-                {m.reportCategoriesAreSelectByConsumer}
-              </Alert>
-              <ReportCategories categories={[report.category, ...report.subcategories]}/>
-              <Divider className={cssUtils.divider}/>
-              {report.details.map(detail =>
-                <div className={cssUtils.marginBottom}>
-                  <div className={cssUtils.txtBig} dangerouslySetInnerHTML={{__html: detail.label.replace(/\:$/, '')}}/>
-                  <div className={cssUtils.colorTxtSecondary} dangerouslySetInnerHTML={{__html: detail.value}}/>
-                </div>
-              )}
-              <Divider className={cssUtils.divider}/>
-              {fromNullable(_report.entity?.files).map(_ => <ReportAttachements attachements={_}/>).toUndefined()}
-            </PanelBody>
-            <PanelFoot>
-              <div style={{flex: 1}}>
-                {report.tags.map(tag => [
-                  <Chip icon={<Icon style={{fontSize: 20}} className={cssUtils.colorTxtHint}>sell</Icon>} key={tag} label={tag}/>,
-                  ' '
-                ])}
-              </div>
+            )}
+            {fromNullable(_report.entity?.files).map(_ => _.length > 0 && (
+              <>
+                <Divider className={cssUtils.divider}/>
+                <ReportAttachements attachements={_}/>
+              </>
+            )).toUndefined()}
+          </PanelBody>
+          <PanelFoot>
+            <div style={{flex: 1}}>
+              {report.tags.map(tag => [
+                <Chip icon={<Icon style={{fontSize: 20}} className={cssUtils.colorTxtHint}>sell</Icon>} key={tag} label={tag}/>,
+                ' '
+              ])}
+            </div>
 
-              <Btn variant="outlined" color="primary" icon="download">{m.download}</Btn>
-              <Confirm
-                title={m.removeAsk}
-                content={m.removeReportDesc(report.companySiret)}
-                onConfirm={console.log}
-              >
-                <Btn variant="contained" color="primary" icon="delete">{m.delete}</Btn>
-              </Confirm>
-            </PanelFoot>
+            <Btn variant="outlined" color="primary" icon="download">{m.download}</Btn>
+            <Confirm
+              title={m.removeAsk}
+              content={m.removeReportDesc(report.companySiret)}
+              onConfirm={console.log}
+            >
+              <Btn variant="contained" color="primary" icon="delete">{m.delete}</Btn>
+            </Confirm>
+          </PanelFoot>
           </Panel>
           <Grid container spacing={2} alignItems="stretch">
             <Grid item xs={12} sm={6}>

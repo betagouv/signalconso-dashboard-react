@@ -1,5 +1,6 @@
 import {Theme} from '@material-ui/core'
 import {makeStyles} from '@material-ui/core/styles'
+import {utilsStyles} from '../theme'
 
 export const useUtilsCss = makeStyles((t: Theme) => {
   return {
@@ -27,11 +28,7 @@ export const useUtilsCss = makeStyles((t: Theme) => {
     colorPrimary: {
       color: t.palette.primary.main + ' !important',
     },
-    truncate: {
-      whiteSpace: 'nowrap',
-      textOverflow: 'ellipsis',
-      overflow: 'hidden',
-    },
+    truncate: utilsStyles(t).truncate,
     divider: {
       marginTop: t.spacing(2),
       marginBottom: t.spacing(2),

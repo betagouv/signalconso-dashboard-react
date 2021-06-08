@@ -236,7 +236,7 @@ export const Reports = ({}) => {
               stickyEnd: true,
               className: classes(css.actions),
               row: _ => (
-                <NavLink to={`/report/${_.report.id}`}>
+                <NavLink to={`/reports/${_.report.id}`}>
                   <IconBtn className={cssUtils.colorTxtHint}>
                     <Icon>chevron_right</Icon>
                   </IconBtn>

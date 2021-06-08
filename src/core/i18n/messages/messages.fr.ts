@@ -88,4 +88,11 @@ export const messagesFr = {
   indifferent: 'Indifférent',
   phone: 'Téléphone',
   website: 'Site web',
+  howItWorks: 'Comment ça marche ?',
+  menu_phones: 'Téléphones signalés',
+  menu_websites: 'Sites webs signalés',
+  menu_reports: 'Signalements',
+  menu_companies: 'Entreprises',
+  menu_users: 'Utilisateurs DGCCRF',
+  menu_subscriptions: 'Abonnements',
 }
