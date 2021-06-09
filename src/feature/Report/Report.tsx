@@ -66,6 +66,10 @@ export const ReportComponent = () => {
     fromNullable(_report.error).map(toastError)
   }, [_report.entity, _report.error])
 
+  useEffect(() => {
+    fromNullable(_report.removingError).map(toastError)
+  }, [_report.removingError])
+
   return report ? (
       <Page>
         <Panel elevation={2}>
@@ -110,9 +114,9 @@ export const ReportComponent = () => {
             <Confirm
               title={m.removeAsk}
               content={m.removeReportDesc(report.companySiret)}
-              onConfirm={console.log}
+              onConfirm={() => _report.remove(report.id).then(() => window.history.back())}
             >
-              <Btn variant="contained" color="primary" icon="delete">{m.delete}</Btn>
+              <Btn loading={_report.removing} variant="contained" color="primary" icon="delete">{m.delete}</Btn>
             </Confirm>
           </PanelFoot>
           </Panel>

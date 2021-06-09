@@ -32,12 +32,6 @@ const reportFilter2QueryString = (report: ReportFilter): ReportFilterQuerystring
     const parseArray = (_: keyof Pick<ReportFilter, 'companyCountries' | 'departments'>) => (report[_] ? {[_]: report[_]?.join(',')} : {})
     return {
       ...r,
-      // email: fromNullable(report.email).map(encodeURI).toUndefined(),
-      // websiteURL: fromNullable(report.websiteURL).map(encodeURI).toUndefined(),
-      // phone: fromNullable(report.phone).map(encodeURI).toUndefined(),
-      // category: fromNullable(report.category).map(encodeURI).toUndefined(),
-      // status: fromNullable(report.status).map(encodeURI).toUndefined(),
-      // details: fromNullable(report.details).map(encodeURI).toUndefined(),
       offset: offset !== undefined ? offset + '' : undefined,
       limit: limit !== undefined ? limit + '' : undefined,
       ...parseBoolean('hasCompany'),
@@ -86,9 +80,10 @@ export class ReportsClient {
     })
   }
 
-  readonly encode = (reportFilter: ReportFilter) => {
-
+  readonly remove = (id: Id) => {
+    return this.client.delete<void>(`reports/${id}`)
   }
+
   readonly getById = (id: Id) => {
     return this.client.get<ReportSearchResult>(`/reports/${id}`)
   }

@@ -48,7 +48,7 @@ const useStyles = makeStyles((t: Theme) => createStyles({
     display: 'flex',
     alignItems: 'center',
     flex: 1,
-    fontSize: t.typography.fontSize,
+    // fontSize: t.typography.fontSize,
     fontWeight: t.typography.fontWeightMedium,
   },
 }))
