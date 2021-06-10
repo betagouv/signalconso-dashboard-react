@@ -45,8 +45,10 @@ export const Header = () => {
   return (
     <div className={css.root}>
       <div className={css.logo}>
-        <img src={logoGouv} className={css.logoGouv}/>
-        <img src={logoSignalConso} className={css.logoSignalConso}/>
+        <img src={logoGouv} alt={m.altLogoGouv} className={css.logoGouv}/>
+        <a href={Config.appBaseUrl}>
+          <img src={logoSignalConso} alt={m.altLogoSignalConso} className={css.logoSignalConso}/>
+        </a>
       </div>
       <div className={css.menu}>
         <HeaderItem href="">{m.home}</HeaderItem>

@@ -101,4 +101,6 @@ export const messagesFr = {
   attachedFiles: 'Pièces jointes',
   invalidSize: (maxSize: number) => `La taille du fichier dépasse les ${maxSize} Mb`,
   somethingWentWrong: `Une erreur s'est produite`,
+  altLogoSignalConso: `Logo SignalConso / Retour à la page d'accueil`,
+  altLogoGouv: `Logo Gouvernement - Ministère de l'Economie, des Finances et de la Relance`,
 }
