@@ -52,3 +52,10 @@ export interface ReviewOnReportResponse {
   positive: boolean
   details: string
 }
+
+export interface ReportAction {
+  actionType: EventActionValues;
+  details?: string;
+  fileIds: string[];
+}
+

@@ -7,6 +7,7 @@ import {useLoginContext} from '../../../App'
 import {makeStyles} from '@material-ui/core/styles'
 import {utilsStyles} from '../../theme'
 import {MenuItem} from './MenuItem'
+import {Txt} from 'mui-extension/lib/Txt/Txt'
 
 const useMenuStyles = makeStyles((t: Theme) => ({
   root: {
@@ -17,6 +18,7 @@ const useMenuStyles = makeStyles((t: Theme) => ({
     boxShadow: t.shadows[6],
     borderRadius: 4,
     zIndex: 100,
+    minWidth: 280,
   },
   user: {
     padding: t.spacing(2, 2, .5, 2),
@@ -52,8 +54,8 @@ export const Menu = ({onClose}: Props) => {
     <ClickAwayListener onClickAway={onClose}>
       <div className={css.root}>
         <div className={css.user}>
-          <div className={css.userName}>{connectedUser.firstName} {connectedUser.lastName}</div>
-          <div className={css.userEmail}>{connectedUser.email}</div>
+          <Txt block truncate className={css.userName}>{connectedUser.firstName} {connectedUser.lastName}</Txt>
+          <Txt block truncate className={css.userEmail}>{connectedUser.email}</Txt>
           <Btn variant="outlined" size="small" onClick={logout} icon="logout" color="primary" className={css.logoutBtn}>
             {m.logout}
           </Btn>

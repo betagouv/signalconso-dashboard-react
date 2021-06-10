@@ -1,4 +1,4 @@
-import {ApiClientApi, cleanObject, dateToApi, Id, Report, ReportSearchResult} from '../../index'
+import {ApiClientApi, cleanObject, dateToApi, Event, Id, Report, ReportAction, ReportResponse, ReportSearchResult} from '../../index'
 import {PaginatedData, ReportFilter} from '../../model'
 import {pipe} from 'rxjs'
 import {ApiSdkLogger} from '../../helper/Logger'
@@ -80,12 +80,36 @@ export class ReportsClient {
     })
   }
 
+  readonly download = (id: Id) => {
+    // TODO Type it and maybe improve it
+    return this.client.get<any>(`reports/${id}/download`,
+      {headers: {responseType: 'blob', 'Accept': 'application/pdf'}}
+    )
+      .then(response => {
+        const url = window.URL.createObjectURL(new Blob([response]))
+        const link = document.createElement('a')
+        link.href = url
+        link.setAttribute('download', 'file.pdf')
+        document.body.appendChild(link)
+        link.click()
+      })
+  }
+
   readonly remove = (id: Id) => {
     return this.client.delete<void>(`reports/${id}`)
   }
 
   readonly getById = (id: Id) => {
     return this.client.get<ReportSearchResult>(`/reports/${id}`)
+  }
+
+  readonly postReportResponse = (id: Id, response: ReportResponse) => {
+    return this.client.post<Event>(`reports/${id}/response`, {body: response})
+  }
+
+  readonly postReportAction = (id: Id, action: ReportAction) => {
+    const mappedAction: any = {...action, actionType: {value: action.actionType}}
+    return this.client.post<Event>(`reports/${id}/response`, {body: mappedAction})
   }
 
   static readonly mapReport = (report: { [key in keyof Report]: any }): Report => ({

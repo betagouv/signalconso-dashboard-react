@@ -1,6 +1,6 @@
 import {EventActionValues} from 'core/api'
 import {Icon, Theme, useTheme} from '@material-ui/core'
-import {utilsStyles} from '../../core/theme'
+import {utilsStyles} from '../../../core/theme'
 
 export interface ReportEventIconProps {
   action: EventActionValues

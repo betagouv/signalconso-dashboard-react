@@ -1,11 +1,11 @@
 import {ReportEvent} from 'core/api'
 import React from 'react'
-import {useI18n} from '../../core/i18n'
+import {useI18n} from '../../../core/i18n'
 import {ReportEventIcon} from './ReportEventIcon'
-import {useUtilsCss} from '../../core/utils/useUtilsCss'
-import {classes} from '../../core/helper/utils'
+import {useUtilsCss} from '../../../core/utils/useUtilsCss'
+import {classes} from '../../../core/helper/utils'
 import {Icon, makeStyles, Theme} from '@material-ui/core'
-import {utilsStyles} from '../../core/theme'
+import {utilsStyles} from '../../../core/theme'
 
 export interface ReportComponentEventProps {
   event: ReportEvent

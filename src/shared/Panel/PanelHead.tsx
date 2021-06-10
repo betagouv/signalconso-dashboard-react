@@ -1,30 +1,26 @@
-import {PanelHead as MxPanelHeader, PanelHeadProps} from 'mui-extension'
-import {makeStyles, Theme} from '@material-ui/core'
 import * as React from 'react'
 import {ReactNode} from 'react'
+import {makeStyles, Theme} from '@material-ui/core'
 import {utilsStyles} from '../../core/theme'
 import {classes} from '../../core/helper/utils'
+import {PanelTitle} from './PanelTitle'
 
 const useStyles = makeStyles((t: Theme) => ({
   root: {
-    borderRadius: 2,
-    spacing: `${utilsStyles(t).spacing()} !important`,
-    // padding: '0 !important',
-    // margin: t.spacing(1),
-    // margin: padding(),
+    padding: utilsStyles(t).spacing(2, 2, 0, 2),
   }
 }));
 
-interface Props extends React.HTMLAttributes<HTMLDivElement>, PanelHeadProps {
+interface Props {
   className?: any;
   children: ReactNode;
 }
 
-export const PanelHead = ({className, children, ...other}: Props) => {
+export const PanelHead = ({ className, children, ...other }: Props) => {
   const css = useStyles();
   return (
-    <MxPanelHeader {...other} className={classes(css.root, className)}>
+    <PanelTitle {...other} className={classes(css.root, className)}>
       {children}
-    </MxPanelHeader>
+    </PanelTitle>
   );
 };

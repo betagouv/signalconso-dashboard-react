@@ -8,6 +8,7 @@ export interface ReportContextProps extends UseFetchableReturn<ReportSearchResul
   remove: (_: Id) => Promise<void>
   removing: boolean
   removingError?: ApiError
+  download: (_: Id) => any
   events: UseFetchableReturn<ReportEvent[]>
 }
 
@@ -32,6 +33,7 @@ export const ReportProvider = ({api, children}: Props) => {
       remove: remove({force: true, clean: true}),
       removing,
       removingError,
+      download: api.secured.reports.download,
       events: _events,
     }}>
       {children}

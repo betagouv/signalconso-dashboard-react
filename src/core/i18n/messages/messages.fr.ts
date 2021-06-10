@@ -96,4 +96,9 @@ export const messagesFr = {
   menu_companies: 'Entreprises',
   menu_users: 'Utilisateurs DGCCRF',
   menu_subscriptions: 'Abonnements',
+  proResponse: 'Réponse du professionnel',
+  addProAttachmentFile: 'Ajouter une pièces jointe fournie par l\'entreprise',
+  attachedFiles: 'Pièces jointes',
+  invalidSize: (maxSize: number) => `La taille du fichier dépasse les ${maxSize} Mb`,
+  somethingWentWrong: `Une erreur s'est produite`,
 }

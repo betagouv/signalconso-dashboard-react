@@ -64,7 +64,6 @@ export const ReportFilters = ({filters, updateFilters, children}: ReportsFilters
     _category.fetch()()
   }, [])
 
-  console.log(fromNullable(filters.hasCompany).map(_ => '' + _).getOrElse('x'))
   return (
     <>
       {React.cloneElement(children, {
@@ -154,10 +153,10 @@ export const ReportFilters = ({filters, updateFilters, children}: ReportsFilters
             </DialogContent>
             <DialogActions>
               <Btn onClick={confirm} color="primary">
-                Cancel
+                {m.close}
               </Btn>
               <Btn onClick={handleSubmit(updateFilters)} color="primary">
-                Subscribe
+                {m.search}
               </Btn>
             </DialogActions>
           </>
