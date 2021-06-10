@@ -3,7 +3,7 @@ import {ReactNode} from 'react'
 import {createStyles, makeStyles, Theme} from '@material-ui/core'
 import classNames from 'classnames'
 import {LayoutProvider, useLayoutContext} from './LayoutContext'
-import {SidebarToggleBtnPortal} from './Sidebar/SidebarToggleBtnPortal'
+import {Header} from './Header/Header'
 
 export const sidebarWith = 220
 
@@ -22,28 +22,26 @@ export interface LayoutProps {
   title?: string
   children?: ReactNode
   mobileBreakpoint?: number
-  sidebar?: ReactNode,
   toggleSidebarBtnHostElementSelector: string
 }
 
-export const Layout = ({title, mobileBreakpoint, children, sidebar, toggleSidebarBtnHostElementSelector}: LayoutProps) => {
+export const Layout = ({title, mobileBreakpoint, children, toggleSidebarBtnHostElementSelector}: LayoutProps) => {
   return (
     <LayoutProvider title={title} mobileBreakpoint={mobileBreakpoint}>
-      <LayoutUsingContext sidebar={sidebar}>
-        <SidebarToggleBtnPortal hostElementId={toggleSidebarBtnHostElementSelector}/>
+      <LayoutUsingContext>
         {children}
       </LayoutUsingContext>
     </LayoutProvider>
   )
 }
 
-const LayoutUsingContext = ({children, sidebar: Sidebar}: any) => {
+const LayoutUsingContext = ({children}: any) => {
   const classes = useStyles()
   const {isMobileWidth} = useLayoutContext()
   return (
     <>
-      <div className={classNames(classes.root, !isMobileWidth && classes.rootDesktop)}>
-        {Sidebar && <Sidebar/>}
+      <Header/>
+      <div className={classNames(classes.root)}>
         {children}
       </div>
     </>
