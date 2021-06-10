@@ -26,7 +26,7 @@ const headers = {
   'Accept': 'application/json',
 }
 
-const baseUrl = Config.baseUrl + '/api'
+const baseUrl = Config.apiBaseUrl + '/api'
 
 const apiPublicSdk = new SignalConsoPublicSdk(new ApiClient({
   baseUrl,
@@ -115,7 +115,7 @@ const LoggedApp = () => {
       <ReportProvider api={apiSdk}>
         <ConstantProvider api={apiSdk}>
           <AnomalyProvider api={apiSdk}>
-            <Layout sidebar={Menu} toggleSidebarBtnHostElementSelector="#header-actions">
+            <Layout toggleSidebarBtnHostElementSelector="#header-actions">
               <Switch>
                 <Route exact path="/test" component={Panel}/>
                 <Route exact path="/reports" component={Reports}/>
@@ -130,64 +130,7 @@ const LoggedApp = () => {
   )
 }
 
-const useMenuStyles = makeStyles((t: Theme) => ({
-  avatar: {
-    color: lightBlue[50],
-    backgroundColor: lightBlue[500],
-    margin: 'auto',
-    marginBottom: t.spacing(1)
-  },
-  user: {
-    textAlign: 'center',
-    padding: t.spacing(0, 1, 0, 2),
-  },
-  userName: {
-    ...utilsStyles(t).truncate,
-  },
-  userEmail: {
-    ...utilsStyles(t).truncate,
-    color: t.palette.text.secondary,
-    fontSize: utilsStyles(t).fontSize.small,
-  },
-  logoutBtn: {
-    margin: `${t.spacing(1, 0)} !important`,
-  },
-  useRole: {
-    fontSize: utilsStyles(t).fontSize.small,
-    color: t.palette.text.hint,
-  },
-}))
 
-export const Menu = () => {
-  const path = (page: string) => '' + page
-  const {m} = useI18n()
-  const {apiSdk, logout, connectedUser} = useLoginContext()
-  const css = useMenuStyles()
-  return (
-    <Sidebar>
-      <SidebarHeader>
-        <div className={css.user}>
-          <Avatar className={css.avatar}>
-            <Icon>person</Icon>
-          </Avatar>
-          <div className={css.userName}>{connectedUser.firstName} {connectedUser.lastName}</div>
-          <div className={css.userEmail}>{connectedUser.email}</div>
-          <Btn variant="outlined" size="small" onClick={logout} icon="logout" color="primary" className={css.logoutBtn}>
-            {m.logout}
-          </Btn>
-        </div>
-      </SidebarHeader>
-      <SidebarBody>
-        <SidebarItem large to={path('/reports')} icon={Icons.report}>{m.menu_reports}</SidebarItem>
-        <SidebarItem large to={path('/entreprises')} icon={Icons.company}>{m.menu_companies}</SidebarItem>
-        <SidebarItem large to={path('/utilisateurs')} icon={Icons.user}>{m.menu_users}</SidebarItem>
-        <SidebarItem large to={path('/abonnements')} icon={Icons.subscription}>{m.menu_subscriptions}</SidebarItem>
-        <SidebarHr margin/>
-        <SidebarItem large to={path('/moderation-url-entreprises')} icon={Icons.website}>{m.menu_websites}</SidebarItem>
-        <SidebarItem large to={path('/moderation-telephones-entreprises')} icon={Icons.phone}>{m.menu_phones}</SidebarItem>
-      </SidebarBody>
-    </Sidebar>
-  )
-}
+
 export default App
 
