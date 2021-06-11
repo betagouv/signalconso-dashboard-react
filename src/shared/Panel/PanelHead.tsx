@@ -8,6 +8,7 @@ import {PanelTitle} from './PanelTitle'
 const useStyles = makeStyles((t: Theme) => ({
   root: {
     padding: utilsStyles(t).spacing(2, 2, 0, 2),
+    margin: 0,
   }
 }));
 

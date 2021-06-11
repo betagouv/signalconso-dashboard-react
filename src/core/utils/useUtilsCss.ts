@@ -19,6 +19,15 @@ export const useUtilsCss = makeStyles((t: Theme) => {
     colorError: {
       color: t.palette.error.main,
     },
+    colorSuccess: {
+      color: utilsStyles(t).color.success,
+    },
+    colorWarning: {
+      color: utilsStyles(t).color.warning,
+    },
+    colorInfo: {
+      color: utilsStyles(t).color.info,
+    },
     colorTxtHint: {
       color: t.palette.text.hint + ' !important',
     },
@@ -35,7 +44,7 @@ export const useUtilsCss = makeStyles((t: Theme) => {
     },
     inlineIcon: {
       display: 'inline !important',
-      fontSize: 'initial',
+      fontSize: 'inherit',
       verticalAlign: 'text-top',
     },
     txtRight: {

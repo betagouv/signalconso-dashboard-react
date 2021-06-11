@@ -59,7 +59,7 @@ const useStyles = makeStyles((t: Theme) => ({
       fontSize: t.typography.fontSize,
     },
     body: {
-      lineHeight: '1.4rem',
+      lineHeight: '1.5rem',
       fontFamily: t.typography.fontFamily,
       background: t.palette.background.paper,
       margin: 0,

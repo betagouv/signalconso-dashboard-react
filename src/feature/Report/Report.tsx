@@ -196,14 +196,14 @@ export const ReportComponent = () => {
               indicatorColor="primary"
               textColor="primary"
             >
-              <Tab label={m.reportHistory}/>
               <Tab label={m.proResponse}/>
+              <Tab label={m.reportHistory}/>
             </Tabs>
             <ReportTabPanel value={activeTab} index={0}>
-              <ReportEvents events={events}/>
+              <ReportMessages events={events}/>
             </ReportTabPanel>
             <ReportTabPanel value={activeTab} index={1}>
-              <ReportMessages events={events}/>
+              <ReportEvents events={events}/>
             </ReportTabPanel>
           </>
         ).toUndefined()}

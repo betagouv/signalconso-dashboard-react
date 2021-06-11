@@ -48,8 +48,18 @@ export const stopPropagation = <E extends {
   action(event)
 }
 
-export const capitalize = (str?: string, onlyFirst = true): string | undefined => fromNullable(str).map(_ => _.charAt(0).toUpperCase() + (onlyFirst ? _.slice(1).toLowerCase() : _.slice(1))).toUndefined()
+export const capitalize = (str?: string, othersInLowerCase = true): string | undefined => fromNullable(str)
+  .map(_ => _.charAt(0).toUpperCase() + (othersInLowerCase ? _.slice(1).toLowerCase() : _.slice(1)))
+  .toUndefined()
 
 // export const fnSwitch = <T>(t: T, )
 // Because default imports are very very annoying since they break autocomplete
 export const classes = classNames
+
+export const fnSwitch = <T extends string | number | symbol, R = any>(
+  value: T,
+  cases: Partial<{ [key in T]: (_: T) => R }>,
+  defaultCase?: (_: T) => R,
+): R | undefined => {
+  return (cases[value] ?? defaultCase ?? (() => undefined))(value)
+}
