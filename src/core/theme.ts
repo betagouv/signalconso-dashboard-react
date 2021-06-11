@@ -17,7 +17,7 @@ export const utilsStyles = (t: Theme) => ({
     return `${t.spacing(top)}px ${t.spacing(right)}px ${t.spacing(bottom)}px ${t.spacing(left)}px`
   },
   color: {
-    success: '#00c616',
+    success: '#00b728',
     error: '#cf0040',
     warning: '#FFB900',
     info: '#0288d1',

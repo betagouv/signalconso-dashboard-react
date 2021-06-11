@@ -20,7 +20,6 @@ import {Datepicker} from '../../shared/Datepicker/Datepicker'
 import {ReportStatusChip} from '../../shared/ReportStatus/ReportStatus'
 import {Config} from '../../conf/config'
 import {ReportFilters} from './ReportsFilters'
-import {DatatableColumnToggle} from './DatatableColumnsToggle'
 
 const useStyles = makeStyles((t: Theme) => ({
   toolbar: {
@@ -218,7 +217,7 @@ export const Reports = ({}) => {
             },
             {
               name: 'Consommateur', className: css.tdConsumer, row: _ =>
-                <span className={classes(_.report.contactAgreement ?? cssUtils.colorDisabled)}>
+                <span className={classes(_.report.contactAgreement ? cssUtils.colorSuccess : cssUtils.colorError)}>
                   {textOverflowMiddleCropping(_.report.email, 25)}
                 </span>
             },
