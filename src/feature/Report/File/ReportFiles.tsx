@@ -31,7 +31,7 @@ export const ReportFiles = ({reportId, fileOrigin, attachements, onNewFile}: Rep
     <>
       <PanelTitle>{m.attachedFiles}</PanelTitle>
       <div className={css.root}>
-        {attachements?.map(_ => <ReportFile file={_}/>)}
+        {attachements?.map(_ => <ReportFile key={_.id} file={_}/>)}
         <ReportFileAdd reportId={reportId} fileOrigin={fileOrigin} onUploaded={onNewFile}/>
       </div>
     </>

@@ -61,7 +61,7 @@ export interface SelectDepartmentsProps {
 const withRegions = (WrappedComponent: React.ComponentType<SelectDepartmentsProps>) => (props: Omit<SelectDepartmentsProps, 'regions'>) => {
   const {regions} = useConstantContext()
   useEffect(() => {
-    regions.fetch()
+    regions.fetch()()
   }, [])
   return fromNullable(regions.entity).map(_ => <WrappedComponent {...props} regions={_}/>).getOrElse(<></>)
 }
@@ -85,7 +85,6 @@ export const SelectDepartments = withRegions(({
   const allDepartments = useMemo(() => regions.flatMap(_ => _.departments).map(_ => _.code), [])
   const allDepartmentsSelected = allDepartments.every(_ => indexValues.has(_))
   const someDepartmentsSelected = !!allDepartments.find(_ => indexValues.has(_))
-  const {} = useConstantContext()
 
   useEffect(() => {
     indexValues.reset(values)
