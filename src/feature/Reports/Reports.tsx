@@ -20,6 +20,7 @@ import {Datepicker} from '../../shared/Datepicker/Datepicker'
 import {ReportStatusChip} from '../../shared/ReportStatus/ReportStatus'
 import {Config} from '../../conf/config'
 import {ReportFilters} from './ReportsFilters'
+import {DatatableColumnToggle} from './DatatableColumnsToggle'
 
 const useStyles = makeStyles((t: Theme) => ({
   toolbar: {
@@ -137,6 +138,7 @@ export const Reports = ({}) => {
           <Tooltip title={fromNullable(_reports?.list?.totalSize).map(_ => _ > Config.reportsLimitForExport ? m.cannotExportMoreReports(_) : '').getOrElse('')}>
             <span>
               <IconBtn
+                style={{marginRight: -8,}}
                 tooltip={m.exportInXLS}
                 onClick={_reports.clearFilters}
                 disabled={fromNullable(_reports?.list?.totalSize).map(_ => _ > Config.reportsLimitForExport).getOrElse(false)}
@@ -146,6 +148,7 @@ export const Reports = ({}) => {
             </span>
           </Tooltip>
           <IconBtn
+            style={{marginRight: -8,}}
             tooltip={m.removeAllFilters}
             onClick={_reports.clearFilters}>
             <Icon>clear</Icon>
@@ -165,14 +168,14 @@ export const Reports = ({}) => {
           total={_reports.list?.totalSize}
           rows={[
             {
-              head: 'CP', className: css.tdPostal, row: _ =>
+              name: 'CP', className: css.tdPostal, row: _ =>
                 <>
                   <span>{_.report.companyPostalCode?.slice(0, 2)}</span>
                   <span className={cssUtils.colorDisabled}>{_.report.companyPostalCode?.substr(2, 5)}</span>
                 </>
             },
             {
-              head: 'Entreprise', className: css.tdName, row: _ =>
+              name: 'Entreprise', className: css.tdName, row: _ =>
                 <>
                   <span className={css.tdName_label}>{_.report.companyName}</span>
                   <br/>
@@ -180,22 +183,22 @@ export const Reports = ({}) => {
                 </>
             },
             {
-              head: 'SIRET', hidden: connectedUser.role !== Roles.DGCCRF, row: _ => _.report.companySiret
+              name: 'SIRET', hidden: connectedUser.role !== Roles.DGCCRF, row: _ => _.report.companySiret
             },
             {
-              head: 'Problème', row: _ =>
+              name: 'Problème', row: _ =>
                 <Tooltip title={_.report.subcategories.map((s, i) => <span key={i}>{s}<br/></span>)}>
                   <span>{_.report.category}</span>
                 </Tooltip>
             },
             {
-              head: 'Création', row: _ => formatDate(_.report.creationDate)
+              name: 'Création', row: _ => formatDate(_.report.creationDate)
             },
             {
-              head: 'Date constat', hidden: connectedUser.role !== Roles.DGCCRF, row: _ => getReportingDate(_.report)
+              name: 'Date constat', hidden: connectedUser.role !== Roles.DGCCRF, row: _ => getReportingDate(_.report)
             },
             {
-              head: 'Description', className: css.tdDesc, row: _ =>
+              name: 'Description', className: css.tdDesc, row: _ =>
                 <Tooltip title={_.report.details?.map((detail, i) =>
                   <div key={i}>
                     <span dangerouslySetInnerHTML={{__html: detail.label}} className={cssUtils.txtBold}/>&nbsp;
@@ -214,17 +217,17 @@ export const Reports = ({}) => {
                 </Tooltip>
             },
             {
-              head: 'Consommateur', className: css.tdConsumer, row: _ =>
+              name: 'Consommateur', className: css.tdConsumer, row: _ =>
                 <span className={classes(_.report.contactAgreement ?? cssUtils.colorDisabled)}>
                   {textOverflowMiddleCropping(_.report.email, 25)}
                 </span>
             },
             {
-              head: 'Statut', row: _ =>
+              name: 'Statut', row: _ =>
                 <ReportStatusChip dense status={_.report.status}/>
             },
             {
-              head: '', className: css.tdFiles, row: _ =>
+              name: 'files', head: '', className: css.tdFiles, row: _ =>
                 _.files.length > 0 && (
                   <Badge badgeContent={_.files.length} color="primary" invisible={_.files.length === 1}>
                     <Icon className={cssUtils.colorTxtHint}>insert_drive_file</Icon>
@@ -232,6 +235,7 @@ export const Reports = ({}) => {
                 )
             },
             {
+              name: 'actions',
               head: '',
               stickyEnd: true,
               className: classes(css.actions),

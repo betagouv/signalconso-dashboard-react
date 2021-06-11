@@ -1,7 +1,9 @@
 import {LinearProgress, makeStyles, Table, TableBody, TableCell, TableHead, TablePagination, TableRow, Theme} from '@material-ui/core'
-import React, {CSSProperties, ReactNode} from 'react'
+import React, {CSSProperties, ReactNode, useMemo} from 'react'
 import {useUtilsCss} from '../../core/utils/useUtilsCss'
 import {classes} from '../../core/helper/utils'
+import {DatatableColumnToggle} from './DatatableColumnsToggle'
+import {useSetState} from '@alexandreannic/react-hooks-lib/lib'
 
 export interface DatatableBaseProps<T> {
   loading?: boolean
@@ -9,6 +11,7 @@ export interface DatatableBaseProps<T> {
   data?: T[]
   getRenderRowKey?: (_: T) => string
   rows: DatatableColumnProps<T>[]
+  displayToggleColumnBtnQuerySelector?: string
 }
 
 export interface DatatablePaginatedProps<T> extends DatatableBaseProps<T> {
@@ -21,8 +24,8 @@ export interface DatatablePaginatedProps<T> extends DatatableBaseProps<T> {
 export type DatatableProps<T> = DatatableBaseProps<T> | DatatablePaginatedProps<T>
 
 export interface DatatableColumnProps<T> {
-  sortName?: string
-  head: string | ReactNode
+  name: string
+  head?: string | ReactNode
   row: (_: T) => ReactNode
   hidden?: boolean
   className?: string,
@@ -40,6 +43,7 @@ const isDatatablePaginatedProps = <T, >(_: DatatableProps<T>): _ is DatatablePag
 const useStyles = makeStyles((t: Theme) => ({
   container: {
     overflowX: 'auto',
+    position: 'relative',
   },
   table: {
     minWidth: '100%',
@@ -54,6 +58,11 @@ const useStyles = makeStyles((t: Theme) => ({
   },
   header: {
     color: t.palette.text.secondary
+  },
+  btnColumnsToggle: {
+    position: 'absolute',
+    right: 0,
+    top: 0,
   }
 }))
 
@@ -66,11 +75,15 @@ export const Datatable = <T extends any = any>(props: DatatableProps<T>) => {
     data,
     rows,
     getRenderRowKey,
+    displayToggleColumnBtnQuerySelector,
   } = props
 
   const css = useStyles()
   const cssUtils = useUtilsCss()
-  const filteredRows = rows.filter(_ => !_.hidden)
+  const displayableRows = useMemo(() => rows.filter(_ => !_.hidden), [rows])
+  const columnsName = useMemo(() => displayableRows.map(_ => _.name), [rows])
+  const displayedColumnsSet = useSetState<string>(columnsName)
+  const filteredRows = useMemo(() => displayableRows.filter(_ => displayedColumnsSet.has(_.name)), [rows, displayedColumnsSet])
 
   return (
     <>
@@ -80,7 +93,7 @@ export const Datatable = <T extends any = any>(props: DatatableProps<T>) => {
             <TableRow>
               {filteredRows.map((_, i) =>
                 <TableCell key={i} className={classes(css.header, _.stickyEnd && css.stickyEnd)}>
-                  {_.head}
+                  {_.head ?? _.name}
                 </TableCell>
               )}
             </TableRow>
@@ -104,6 +117,12 @@ export const Datatable = <T extends any = any>(props: DatatableProps<T>) => {
           )}
         </TableBody>
         </Table>
+        <DatatableColumnToggle
+          className={css.btnColumnsToggle}
+          columns={columnsName}
+          displayedColumns={displayedColumnsSet.toArray()}
+          onChange={displayedColumnsSet.reset}
+        />
       </div>
       {isDatatablePaginatedProps(props) && (() => {
         const limit = safeParseInt(props.limit, props.data?.length ?? 10)
