@@ -109,7 +109,7 @@ export const ReportComponent = () => {
           <Divider className={cssUtils.divider}/>
           {report.details.map((detail, i) =>
             <div key={i} className={cssUtils.marginBottom}>
-              <div className={cssUtils.txtBig} dangerouslySetInnerHTML={{__html: detail.label.replace(/\:$/, '')}}/>
+              <div className={cssUtils.txtBold} dangerouslySetInnerHTML={{__html: detail.label.replace(/\:$/, '')}}/>
               <div className={cssUtils.colorTxtSecondary} dangerouslySetInnerHTML={{__html: detail.value}}/>
             </div>
           )}
