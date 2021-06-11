@@ -2,15 +2,18 @@ import {PanelBody} from '../../shared/Panel'
 import React, {useEffect, useMemo} from 'react'
 import {useReportContext} from '../../core/context/ReportContext'
 import {useI18n} from '../../core/i18n'
-import {EventActionValues, ReportEvent, ReportResponse, ReportResponseTypes} from '../../core/api'
+import {EventActionValues, FileOrigin, Id, ReportEvent, ReportResponse, ReportResponseTypes} from '../../core/api'
 import {classes, fnSwitch} from '../../core/helper/utils'
 import {fromNullable} from 'fp-ts/lib/Option'
 import {Icon, makeStyles, Theme} from '@material-ui/core'
 import {useUtilsCss} from '../../core/utils/useUtilsCss'
 import {utilsStyles} from '../../core/theme'
+import {ReportFiles} from './File/ReportFiles'
+import {Txt} from 'mui-extension/lib/Txt/Txt'
 
 interface Props {
   events: ReportEvent[]
+  reportId: Id
 }
 
 const useStyles = makeStyles((t: Theme) => ({
@@ -22,7 +25,7 @@ const useStyles = makeStyles((t: Theme) => ({
   }
 }))
 
-export const ReportMessages = ({events}: Props) => {
+export const ReportMessages = ({events, reportId}: Props) => {
   const _report = useReportContext()
   const {m} = useI18n()
   const response = useMemo(() => events.find(_ => _.data.action === EventActionValues.ReportResponse), [events])
@@ -57,8 +60,17 @@ export const ReportMessages = ({events}: Props) => {
               </div>
             ),
           })}
-          {(response?.data.details as ReportResponse).consumerDetails}
-          {(response?.data.details as ReportResponse).dgccrfDetails}
+          <div className={cssUtils.colorTxtSecondary}>
+            {(response?.data.details as ReportResponse).consumerDetails}
+          </div>
+
+          {details.dgccrfDetails && details.dgccrfDetails !== '' &&(
+            <>
+              <Txt bold size="big" gutterBottom className={cssUtils.marginTop}>{m.reportDgccrfDetails}</Txt>
+              <div className={cssUtils.colorTxtSecondary}>{details.dgccrfDetails}</div>
+            </>
+          )}
+          <ReportFiles onNewFile={console.log} reportId={reportId} fileOrigin={FileOrigin.Professional}/>
           {(response?.data.details as ReportResponse).fileIds}
         </div>
       )).toUndefined()}

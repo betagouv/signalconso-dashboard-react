@@ -10,8 +10,8 @@ import {useI18n} from '../../../core/i18n'
 import {PanelTitle} from '../../../shared/Panel'
 
 export interface ReportFilesProps {
-  attachements?: UploadedFile[]
-  onNewFile: () => void
+  files?: UploadedFile[]
+  onNewFile?: () => void
   reportId: Id
   fileOrigin: FileOrigin
 }
@@ -24,14 +24,14 @@ const useReportFilesStyles = makeStyles((t: Theme) => ({
   }
 }))
 
-export const ReportFiles = ({reportId, fileOrigin, attachements, onNewFile}: ReportFilesProps) => {
+export const ReportFiles = ({reportId, fileOrigin, files, onNewFile = () => void 0}: ReportFilesProps) => {
   const css = useReportFilesStyles()
   const {m} = useI18n()
   return (
     <>
       <PanelTitle>{m.attachedFiles}</PanelTitle>
       <div className={css.root}>
-        {attachements?.map(_ => <ReportFile key={_.id} file={_}/>)}
+        {files?.map(_ => <ReportFile key={_.id} file={_}/>)}
         <ReportFileAdd reportId={reportId} fileOrigin={fileOrigin} onUploaded={onNewFile}/>
       </div>
     </>

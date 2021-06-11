@@ -18,9 +18,9 @@ const useStyles = makeStyles((t: Theme) => ({
   },
   body: {
     flex: 1,
-    borderBottom: '1px solid ' + t.palette.divider,
     padding: utilsStyles(t).spacing(0, 2, 1.5, 0),
     fontSize: utilsStyles(t).fontSize.small,
+    borderBottom: '1px solid ' + t.palette.divider,
   },
   icon: {
     margin: utilsStyles(t).spacing(0, 2, 2, 0),

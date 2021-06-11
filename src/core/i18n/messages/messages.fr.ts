@@ -105,6 +105,7 @@ export const messagesFr = {
   somethingWentWrong: `Une erreur s'est produite`,
   altLogoSignalConso: `Logo SignalConso / Retour à la page d'accueil`,
   altLogoGouv: `Logo Gouvernement - Ministère de l'Economie, des Finances et de la Relance`,
+  reportDgccrfDetails: 'Informations complémentaires pour la DGCCRF',
   reportResponse: {
     [ReportResponseTypes.Accepted]: 'Signalement pris en compte',
     [ReportResponseTypes.Rejected]: 'Signalement infondé',

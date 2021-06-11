@@ -115,9 +115,9 @@ export const ReportComponent = () => {
           )}
           <Divider className={cssUtils.divider}/>
           <ReportFiles
-            attachements={_report.entity?.files}
+            files={_report.entity?.files}
             reportId={report.id}
-            fileOrigin={FileOrigin.Professional}
+            fileOrigin={FileOrigin.Consumer}
             onNewFile={() => _report.events.fetch({force: true, clean: false})()}
           />
         </PanelBody>
@@ -169,11 +169,11 @@ export const ReportComponent = () => {
                 <PanelHead>{m.company}</PanelHead>
                 <PanelBody className={css.cardBody}>
                   <div>
-                    <div className={cssUtils.txtBig}>{report.companySiret}</div>
-                    <div className={cssUtils.txtBold} style={{marginTop: theme.spacing(1 / 2)}}>{report.companyName}</div>
-                    <div className={classes(cssUtils.colorTxtSecondary)}>
-                      <div>{report.companyAddress}</div>
-                      <div>{report.companyPostalCode}</div>
+                    <div className={cssUtils.txtBig} style={{marginBottom: theme.spacing(1 / 2)}}>{report.companySiret}</div>
+                    <div className={classes(cssUtils.colorTxtSecondary, cssUtils.txtSmall)}>
+                      {report.companyAddress?.split(' - ').map((address, i) =>
+                        <div className={classes(i === 0 && cssUtils.txtBold)}>{address}</div>
+                      )}
                       <div>{report.companyCountry}</div>
                     </div>
                     <div>{report.vendor}</div>
@@ -200,7 +200,7 @@ export const ReportComponent = () => {
               <Tab label={m.reportHistory}/>
             </Tabs>
             <ReportTabPanel value={activeTab} index={0}>
-              <ReportMessages events={events}/>
+              <ReportMessages reportId={report.id} events={events}/>
             </ReportTabPanel>
             <ReportTabPanel value={activeTab} index={1}>
               <ReportEvents events={events}/>
