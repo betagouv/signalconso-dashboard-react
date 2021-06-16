@@ -20,6 +20,7 @@ import {Layout, Sidebar, SidebarBody, SidebarHr, SidebarItem} from './core/Layou
 import {Icons} from './core/Icons'
 import {muiTheme, utilsStyles} from './core/theme'
 import {lightBlue} from '@material-ui/core/colors'
+import {Websites} from './feature/Websites/Websites'
 
 const headers = {
   'Content-Type': 'application/json',
@@ -118,6 +119,7 @@ const LoggedApp = () => {
             <Layout toggleSidebarBtnHostElementSelector="#header-actions">
               <Switch>
                 <Route exact path="/test" component={Panel}/>
+                <Route exact path="/moderation-url-entreprises" component={Websites}/>
                 <Route exact path="/reports" component={Reports}/>
                 <Route exact path="/reports/:id" component={ReportComponent}/>
                 <Redirect exact from="/" to="/reports"/>

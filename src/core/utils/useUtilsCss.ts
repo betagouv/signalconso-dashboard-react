@@ -4,6 +4,12 @@ import {utilsStyles} from '../theme'
 
 export const useUtilsCss = makeStyles((t: Theme) => {
   return {
+    hidden: {
+      visibility: 'hidden',
+    },
+    txtTitle: {
+      fontSize: t.typography.fontSize * 1.25,
+    },
     txtBig: {
       fontSize: t.typography.fontSize * 1.125,
     },

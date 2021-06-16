@@ -41,10 +41,9 @@ export const fromQueryString = <T = object>(qs: string): { [key in keyof T]: str
 export const stopPropagation = <E extends {
   preventDefault: () => void,
   stopPropagation: () => void
-}>(action: (event: E) => void) => (event: E) => {
+}>(action: (event: E) => any) => (event: E) => {
   event.stopPropagation()
   event.preventDefault();
-  (event as any).nativeEvent.stopImmediatePropagation()
   action(event)
 }
 

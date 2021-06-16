@@ -45,8 +45,7 @@ export const LoginForm = ({isLoading, onLogin}: Props) => {
   const css = useStyles();
 
   const login = async () => {
-    onLogin(
-      inputEmail.props.value!, inputPassword.props.value!);
+    onLogin(inputEmail.props.value!, inputPassword.props.value!);
   };
 
   return (

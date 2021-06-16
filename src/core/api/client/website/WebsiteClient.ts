@@ -19,14 +19,18 @@ export class WebsiteClient {
   };
 
   readonly update = (id: Id, website: Partial<Website>): Promise<WebsiteWithCompany> => {
-    return this.client.put<WebsiteWithCompany>(`/websites/${id}`, {body: website});
+    return this.client.put<WebsiteWithCompany>(`/websites/${id}`, {body: website})
   };
 
   readonly updateCompany = (id: Id, website: WebsiteUpdateCompany): Promise<WebsiteWithCompany> => {
-    return this.client.put<WebsiteWithCompany>(`/websites/${id}/company`, {body: website});
-  };
+    return this.client.put<WebsiteWithCompany>(`/websites/${id}/company`, {body: website})
+  }
 
   readonly remove = (id: Id): Promise<void> => {
-    return this.client.delete<void>(`/websites/${id}`);
-  };
+    return this.client.delete<void>(`/websites/${id}`)
+  }
+
+  readonly search = () => {
+    return this.client.get<any>(`/websites/search`)
+  }
 }

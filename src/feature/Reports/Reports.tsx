@@ -5,7 +5,7 @@ import {cleanObject, DetailInputValue, getHostFromUrl, Report, ReportFilter, Rep
 import {Panel} from '../../shared/Panel'
 import {useUtilsCss} from '../../core/utils/useUtilsCss'
 import {useLoginContext} from '../../App'
-import {Datatable} from './Datatable'
+import {Datatable} from '../../shared/Datatable/Datatable'
 import {fromNullable, some} from 'fp-ts/lib/Option'
 import {Badge, Button, Icon, makeStyles, Theme, Tooltip} from '@material-ui/core'
 import {addDays, subDays} from 'date-fns'
@@ -147,7 +147,6 @@ export const Reports = ({}) => {
             </span>
           </Tooltip>
           <IconBtn
-            style={{marginRight: -8,}}
             tooltip={m.removeAllFilters}
             onClick={_reports.clearFilters}>
             <Icon>clear</Icon>

@@ -34,6 +34,7 @@ export const messagesFr = {
   configuration: 'Configuration',
   general: 'General',
   name: 'Nom',
+  others: 'Autres',
   description: 'Description',
   deploy: 'Deploy',
   unknown: 'Unknown',
@@ -106,6 +107,8 @@ export const messagesFr = {
   altLogoSignalConso: `Logo SignalConso / Retour à la page d'accueil`,
   altLogoGouv: `Logo Gouvernement - Ministère de l'Economie, des Finances et de la Relance`,
   reportDgccrfDetails: 'Informations complémentaires pour la DGCCRF',
+  selectCountries_onlyEU: 'Pays européens (UE)',
+  selectCountries_onlyTransfer: 'Pays avec accord',
   reportResponse: {
     [ReportResponseTypes.Accepted]: 'Signalement pris en compte',
     [ReportResponseTypes.Rejected]: 'Signalement infondé',

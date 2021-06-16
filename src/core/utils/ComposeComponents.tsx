@@ -3,7 +3,7 @@ interface Props {
   children: React.ReactNode
 }
 
-export const Compose = (props: Props) => {
+export const ComposeComponents = (props: Props) => {
   const {components = [], children} = props
   return (
     <>

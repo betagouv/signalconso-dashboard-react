@@ -2,6 +2,7 @@ import React, {ReactNode, useContext, useEffect, useState} from 'react'
 import {LoginLoader} from './LoginLoader'
 import {LoginForm} from './LoginForm'
 import {localStorageObject} from '../helper/localStorage'
+import {useToast} from '../toast'
 
 export interface LoginSdk<User extends {token: string}> {
   login: (email: string, password: string) => Promise<User>
@@ -56,7 +57,7 @@ export const makeLoginProviderComponent = <User, ApiSdk>(
   }
 
   const Login = ({children}: LoginProps) => {
-    // const {toastError} = useToast()
+    const {toastError} = useToast()
     const [auth, setAuth] = useState<AuthRespone<User>>()
     const [isLoggining, setIsLoggining] = useState(false)
     const [isCheckingToken, setIsCheckingToken] = useState(false)
@@ -75,7 +76,7 @@ export const makeLoginProviderComponent = <User, ApiSdk>(
         authenticationStorage.set(auth)
         setAuth(auth)
       } catch (e) {
-        // toastError(e)
+        toastError(e)
       } finally {
         setIsLoggining(false)
       }
