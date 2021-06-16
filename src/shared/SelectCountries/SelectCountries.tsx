@@ -2,11 +2,13 @@ import * as React from 'react'
 import {useEffect, useMemo} from 'react'
 import {useConstantContext} from '../../core/context/ConstantContext'
 import {fromNullable} from 'fp-ts/lib/Option'
-import {Country, Index} from '../../core/api'
-import {Checkbox, TextField} from '@material-ui/core'
-import {Autocomplete, AutocompleteProps} from '@material-ui/lab'
+import {Country} from '../../core/api'
+import {Checkbox, createStyles, fade, Icon, IconButton, makeStyles, Menu, TextField, Theme} from '@material-ui/core'
+import {AutocompleteProps} from '@material-ui/lab'
 import {useUtilsCss} from '../../core/utils/useUtilsCss'
 import {useI18n} from '../../core/i18n'
+import {classes, stopPropagation} from '../../core/helper/utils'
+import {useSetState, UseSetState} from '@alexandreannic/react-hooks-lib/lib'
 
 const withRegions = (WrappedComponent: React.ComponentType<Props>) => React.forwardRef((props: Omit<Props, 'countries'>, ref) => {
   const {countries} = useConstantContext()
@@ -14,6 +16,57 @@ const withRegions = (WrappedComponent: React.ComponentType<Props>) => React.forw
     countries.fetch()()
   }, [])
   return fromNullable(countries.entity).map(_ => <WrappedComponent {...props} countries={_.filter(_ => _.code !== 'FR')} ref={ref}/>).getOrElse(<></>)
+})
+
+const useStyles = makeStyles((t: Theme) => {
+  const iconWidth = 50
+  return createStyles({
+    adornment: {
+      height: 20,
+      color: t.palette.text.secondary,
+      verticalAlign: 'top',
+    },
+    menuItem: {
+      minHeight: 36,
+      display: 'flex',
+      alignItems: 'center',
+      padding: t.spacing(0, 1, 0, 0),
+      cursor: 'pointer',
+      color: t.palette.text.secondary,
+      '&:hover': {
+        background: t.palette.action.hover,
+      },
+      '&:active, &:focus': {
+        background: t.palette.action.focus,
+      }
+    },
+    menuItemActive: {
+      fontWeight: t.typography.fontWeightBold,
+      color: t.palette.primary.main + ' !important',
+      background: fade(t.palette.primary.main, .1) + ' !important',
+    },
+    menuItemCategory: {
+      '&:not(:first-of-type)': {
+        borderTop: `1px solid ${t.palette.divider}`
+      },
+    },
+    cbDepartment: {
+      paddingTop: `6px !important`,
+      paddingBottom: `6px !important`,
+    },
+    flag: {
+      color: 'rgba(0, 0, 0, 1)',
+      fontSize: 18,
+      textAlign: 'center',
+    },
+    iconWidth: {
+      width: iconWidth,
+    },
+    endAdornment: {
+      display: 'flex',
+      alignItems: 'center',
+    }
+  })
 })
 
 interface Props extends Pick<AutocompleteProps<string, true, false, false>,
@@ -25,12 +78,6 @@ interface Props extends Pick<AutocompleteProps<string, true, false, false>,
   | 'fullWidth'> {
   countries: Country[]
   onChange: (_: string[]) => void
-  // fullWidth?: boolean
-  // className?: string
-  // placeholder?: string
-  // ref?: any
-  // defaultValue?: string[]
-  // value: string[]
 }
 
 const countryToFlag = (isoCode: string) => {
@@ -49,60 +96,129 @@ interface Option {
 }
 
 export const SelectCountries = withRegions(({countries, ref, value, onChange, ...props}: Props) => {
-  const utilsCss = useUtilsCss()
+  const cssUtils = useUtilsCss()
+  const css = useStyles()
   const {m} = useI18n()
-  const indexedCountries = useMemo(() => countries.reduce((acc, country) => {
-      acc[country.code] = country
-      return acc
-    }, {} as Index<Country>
-  ), [countries])
-  const options = useMemo(() => countries
-    .sort((a, b) => a.transfer && !b.transfer ? -1 : a.european && !b.european ? -1 : 1)
-    .map(_ => _.code), [countries])
-  // const options: Option[] = useMemo(() => [
-  //   {title: m.selectCountries_onlyEU, value: countries.filter(_ => _.transfer).map(_ => _.code)},
-  //   {title: m.selectCountries_onlyTransfer, value: countries.filter(_ => _.european).map(_ => _.code)},
-  //   ...countries.map(_ => ({title: _.name, value: _.code, isCountry: true}))
-  // ], countries)
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
+  const indexValues: UseSetState<string> = useSetState<string>()
+  // const [inputValue, setInputValue] = useState('')
+
+  useEffect(() => {
+    indexValues.reset(value)
+  }, [value])
+
+  // const indexedCountries = useMemo(() => countries.reduce((acc, country) => {
+  //     acc[country.code] = country
+  //     return acc
+  //   }, {} as Index<Country>
+  // ), [countries])
+
+  const countriesS = useMemo(() => {
+    const euCountries: Country[] = []
+    const transfersCountries: Country[] = []
+    const othersCountries: Country[] = []
+    countries.forEach(country => {
+      if (country.european) euCountries.push(country)
+      else if (country.transfer) transfersCountries.push(country)
+      else othersCountries.push(country)
+    })
+    return [{
+      label: m.selectCountries_onlyEU,
+      countries: euCountries
+    }, {
+      label: m.selectCountries_onlyTransfer,
+      countries: transfersCountries
+    }, {
+      label: m.others,
+      countries: othersCountries
+    }]
+  }, [countries])
+
+  const open = (event: any) => setAnchorEl(event.currentTarget)
+
+  const close = () => setAnchorEl(null)
+
+  // // const handleInputChange = (event: any) => {
+  //   setInputValue(event.target.value)
+  //   if (inputValue !== '') open(event)
+  // }
+
   return (
     <>
-      <Autocomplete
-        ref={ref}
-        options={options}
-        autoHighlight
-        multiple
-        size="small"
+      <TextField
         {...props}
-        onChange={(_, value) => onChange(value)}
-        groupBy={(options: keyof typeof indexedCountries) => {
-          if (indexedCountries[options].european) return <>EU<div><Checkbox/></div></> as any
-          if (indexedCountries[options].transfer) return 'TRANSFER'
-          return 'autres'
-        }}
-        getOptionLabel={(option) => indexedCountries[option].name}
-        renderOption={(option) => {
-          const country = indexedCountries[option]
-          return (
-            <React.Fragment>
-              <span className={utilsCss.txtTitle}>{countryToFlag(country.code.slice(0, 2))}</span>
-              &nbsp;
-              {country.name}
-            </React.Fragment>
+        size="small"
+        margin="dense"
+        variant="outlined"
+        inputRef={ref}
+        onClick={open}
+        rowsMax={2}
+        rows={2}
+        value={indexValues.toArray().join(', ')}
+        // value={inputValue}
+        InputProps={{
+          style: {paddingRight: 4},
+          // startAdornment: indexValues.toArray().map(_ =>
+          //   <Chip size="small" label={_} style={{margin: 2}} onDelete={() => indexValues.delete(_)}/>
+          // ),
+          endAdornment: (
+            <div className={css.endAdornment}>
+              <IconButton size="small" onClick={_ => stopPropagation(indexValues.clear)(_)} className={classes(indexValues.size === 0 && cssUtils.hidden)}>
+                <Icon>clear</Icon>
+              </IconButton>
+              {/*<IconButton size="small" onClick={open}>*/}
+              {/*  <Icon>arrow_drop_down</Icon>*/}
+              {/*</IconButton>*/}
+            </div>
           )
         }}
-        renderInput={(params) => (
-          <TextField
-            {...params}
-            size="small"
-            margin="dense"
-            variant="outlined"
-            inputProps={{
-              ...params.inputProps,
-              autoComplete: 'new-password', // disable autocomplete and autofill
-            }}
-          />
-        )}
+        inputProps={{
+          autoComplete: 'new-password', // disable autocomplete and autofill
+        }}
       />
+      <Menu
+        style={{maxHeight: 500}}
+        open={!!anchorEl}
+        anchorEl={anchorEl}
+        // getContentAnchorEl={null}
+        // anchorOrigin={{vertical: 'bottom', horizontal: 'left'}}
+        // transformOrigin={{vertical: 'top', horizontal: 'left'}}
+        onClose={close}
+      >
+        {countriesS.map((countries, i) => {
+          const countriesCode = countries.countries.map(_ => _.code)
+          const someSelected = !!countriesCode.find(indexValues.has)
+          const allSelected = countriesCode.every(indexValues.has)
+
+          const handleSelectAll = () => {
+            if (allSelected) {
+              countriesCode.map(indexValues.delete)
+            } else {
+              countriesCode.map(indexValues.add)
+            }
+            onChange(indexValues.toArray())
+          }
+
+          const handleToggle = (country: Country) => {
+            indexValues.toggle(country.code)
+            onChange(indexValues.toArray())
+          }
+
+          return [
+            <div className={classes(css.menuItem, css.menuItemCategory)} onClick={handleSelectAll}>
+              <Checkbox className={css.iconWidth} indeterminate={someSelected && !allSelected} checked={allSelected}/>
+              <span className={cssUtils.txtBold}>{countries.label}</span>
+            </div>,
+            countries.countries.map(country => (
+              <div key={country.code} className={classes(css.menuItem, indexValues.has(country.code) && css.menuItemActive)}
+                   onClick={() => handleToggle(country)}>
+                <span className={classes(css.flag, css.iconWidth)}>{countryToFlag(country.code)}</span>
+                <span>{country.name}</span>
+              </div>
+            ))
+          ]
+        })}
+      </Menu>
     </>
   )
 })

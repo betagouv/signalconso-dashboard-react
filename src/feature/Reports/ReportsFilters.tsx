@@ -9,7 +9,7 @@ import {ReportStatusChip} from '../../shared/ReportStatus/ReportStatus'
 import {Btn} from 'mui-extension/lib'
 import {ScInput} from '../../shared/Input/ScInput'
 import {useAnomalyContext} from '../../core/context/AnomalyContext'
-import {SelectCountries2} from '../../shared/SelectCountries/SelectCountries2'
+import {SelectCountries} from '../../shared/SelectCountries/SelectCountries'
 
 export interface ReportsFiltersProps {
   updateFilters: (_: Partial<ReportFilter>) => void
@@ -134,7 +134,7 @@ export const ReportFilters = ({filters, updateFilters, children}: ReportsFilters
               </Row>
               <Row label={m.foreignCountry}>
                 <Controller name="companyCountries" defaultValue={filters.companyCountries ?? []} control={control} render={({field}) =>
-                  <SelectCountries2 fullWidth {...field}/>
+                  <SelectCountries fullWidth {...field}/>
                 }/>
               </Row>
               <Row label={m.identifiedCompany}>
