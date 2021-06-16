@@ -4,12 +4,12 @@ import React, {ReactElement, ReactNode, useEffect, useState} from 'react'
 import {ReportFilter, ReportTag} from 'core/api'
 import {Controller, useForm} from 'react-hook-form'
 import {useConstantContext} from '../../core/context/ConstantContext'
-import {fromNullable} from 'fp-ts/lib/Option'
 import {ScSelect} from '../../shared/Select/Select'
 import {ReportStatusChip} from '../../shared/ReportStatus/ReportStatus'
 import {Btn} from 'mui-extension/lib'
 import {ScInput} from '../../shared/Input/ScInput'
 import {useAnomalyContext} from '../../core/context/AnomalyContext'
+import {SelectCountries2} from '../../shared/SelectCountries/SelectCountries2'
 
 export interface ReportsFiltersProps {
   updateFilters: (_: Partial<ReportFilter>) => void
@@ -90,7 +90,7 @@ export const ReportFilters = ({filters, updateFilters, children}: ReportsFilters
               </Row>
               <Row label={m.status}>
                 <ScSelect small fullWidth {...register('status')} defaultValue={filters.status ?? ''}>
-                  <MenuItem value=""></MenuItem>
+                  <MenuItem value="">&nbsp;</MenuItem>
                   {_reportStatus.entity.map(status =>
                     <MenuItem key={status} value={status}>
                       <ReportStatusChip dense fullWidth status={status}/>
@@ -111,7 +111,7 @@ export const ReportFilters = ({filters, updateFilters, children}: ReportsFilters
               {/*</Row>*/}
               <Row label={m.tags}>
                 <ScSelect multiple small fullWidth {...register('tags')} defaultValue={filters.tags ?? []}>
-                  <MenuItem value=""></MenuItem>
+                  <MenuItem value="">&nbsp;</MenuItem>
                   {Object.values(ReportTag).map(tag =>
                     <MenuItem key={tag} value={tag}>
                       {tag}
@@ -124,7 +124,7 @@ export const ReportFilters = ({filters, updateFilters, children}: ReportsFilters
               </Row>
               <Row label={m.categories}>
                 <ScSelect small fullWidth {...register('category')} defaultValue={filters.category ?? []}>
-                  <MenuItem value=""></MenuItem>
+                  <MenuItem value="">&nbsp;</MenuItem>
                   {_category?.entity.map(category =>
                     <MenuItem key={category} value={category}>
                       {category}
@@ -133,7 +133,9 @@ export const ReportFilters = ({filters, updateFilters, children}: ReportsFilters
                 </ScSelect>
               </Row>
               <Row label={m.foreignCountry}>
-                <ScInput small fullWidth {...register('companyCountries')} defaultValue={filters.companyCountries ?? ''}/>
+                <Controller name="companyCountries" defaultValue={filters.companyCountries ?? []} control={control} render={({field}) =>
+                  <SelectCountries2 fullWidth {...field}/>
+                }/>
               </Row>
               <Row label={m.identifiedCompany}>
                 <Controller name="hasCompany" defaultValue={filters.hasCompany} control={control} render={({field}) =>
@@ -142,7 +144,7 @@ export const ReportFilters = ({filters, updateFilters, children}: ReportsFilters
                     <FormControlLabel control={<Radio/>} label={m.no} value="false"/>
                     <FormControlLabel control={<Radio/>} label={m.indifferent} value=""/>
                   </RadioGroup>
-                }></Controller>
+                }/>
 
                 {/*// <RadioGroup style={{flexDirection: 'row'}}>*/}
                 {/*//   <FormControlLabel control={<Radio inputRef={register('hasCompany') as any}/>} value={true} label={m.yes}/>*/}
