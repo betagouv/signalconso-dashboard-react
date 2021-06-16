@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": false,
   "scripts": {
+    "prestart": "npm-link-shared ./node_modules/@alexandreannic/react-hooks-lib/node_modules . react && npm-link-shared ./node_modules/mui-extension/node_modules . react",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
@@ -41,7 +42,7 @@
     "date-fns": "^2.21.1",
     "fp-ts": "^1.19.5",
     "js-yaml": "^4.1.0",
-    "mui-extension": "2.1.4",
+    "mui-extension": "^2.1.5",
     "path": "^0.12.7",
     "qs": "^6.10.1",
     "query-string": "5.1.1",

@@ -1,3 +1,5 @@
+import {PaginatedSearch} from '../../model'
+
 export interface ReportedPhone {
   phone: string;
   count: number;
@@ -5,3 +7,13 @@ export interface ReportedPhone {
   companyName?: string;
   category?: string;
 }
+
+export interface ReportedPhoneFilters {
+  phone?: string
+  start?: Date
+  end?: Date
+}
+
+export interface ReportedPhoneSearch extends PaginatedSearch<ReportedPhone>, ReportedPhoneFilters {
+}
+

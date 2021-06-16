@@ -9,3 +9,13 @@ export interface PaginatedData<T> {
   hasNextPage: boolean;
   entities: Array<T>;
 }
+
+export interface PaginatedFilters {
+  offset: number
+  limit: number
+}
+
+export interface PaginatedSearch<T extends object = any> extends PaginatedFilters {
+  sortBy?: Extract<keyof T, string>
+  orderBy?: 'asc' | 'desc'
+}

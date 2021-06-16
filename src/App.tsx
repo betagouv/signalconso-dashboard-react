@@ -3,24 +3,24 @@ import {makeLoginProviderComponent} from './core/Login/LoginContext'
 import {ApiClient, SignalConsoPublicSdk, SignalConsoSecuredSdk, User} from 'core/api'
 import {Config} from './conf/config'
 import {makeStyles} from '@material-ui/core/styles'
-import {Avatar, Icon, Theme, ThemeProvider} from '@material-ui/core'
+import {Theme, ThemeProvider} from '@material-ui/core'
 import {ReportsProvider} from './core/context/ReportsContext'
 import {BrowserRouter, Redirect, Route, Switch} from 'react-router-dom'
-import {I18nProvider, useI18n} from './core/i18n'
+import {I18nProvider} from './core/i18n'
 import {MuiPickersUtilsProvider} from '@material-ui/pickers'
 import DateAdapter from '@date-io/date-fns'
 import {ReportProvider} from './core/context/ReportContext'
-import {Panel} from './shared/Panel'
 import {Reports} from './feature/Reports/Reports'
 import {ReportComponent} from './feature/Report/Report'
-import {Btn, SidebarHeader, ToastProvider} from 'mui-extension/lib'
+import {ToastProvider} from 'mui-extension/lib'
 import {ConstantProvider} from './core/context/ConstantContext'
 import {AnomalyProvider} from './core/context/AnomalyContext'
-import {Layout, Sidebar, SidebarBody, SidebarHr, SidebarItem} from './core/Layout'
-import {Icons} from './core/Icons'
-import {muiTheme, utilsStyles} from './core/theme'
-import {lightBlue} from '@material-ui/core/colors'
-import {Websites} from './feature/Websites/Websites'
+import {Layout} from './core/Layout'
+import {muiTheme} from './core/theme'
+import {ReportedWebsites} from './feature/ReportedWebsites/ReportedWebsites'
+import {ReportedPhonesProvider} from './core/context/ReportedPhonesContext'
+import {ReportedPhones} from './feature/ReportedPhones/ReportedPhones'
+import {siteMap} from './core/siteMap'
 
 const headers = {
   'Content-Type': 'application/json',
@@ -116,15 +116,17 @@ const LoggedApp = () => {
       <ReportProvider api={apiSdk}>
         <ConstantProvider api={apiSdk}>
           <AnomalyProvider api={apiSdk}>
-            <Layout toggleSidebarBtnHostElementSelector="#header-actions">
-              <Switch>
-                <Route exact path="/test" component={Panel}/>
-                <Route exact path="/moderation-url-entreprises" component={Websites}/>
-                <Route exact path="/reports" component={Reports}/>
-                <Route exact path="/reports/:id" component={ReportComponent}/>
-                <Redirect exact from="/" to="/reports"/>
-              </Switch>
-            </Layout>
+            <ReportedPhonesProvider api={apiSdk}>
+              <Layout toggleSidebarBtnHostElementSelector="#header-actions">
+                <Switch>
+                  <Route exact path={siteMap.reportedWebsites} component={ReportedWebsites}/>
+                  <Route exact path={siteMap.reportedPhone} component={ReportedPhones}/>
+                  <Route exact path={siteMap.reports} component={Reports}/>
+                  <Route exact path={siteMap.report()} component={ReportComponent}/>
+                  <Redirect exact from="/" to={siteMap.reports}/>
+                </Switch>
+              </Layout>
+            </ReportedPhonesProvider>
           </AnomalyProvider>
         </ConstantProvider>
       </ReportProvider>

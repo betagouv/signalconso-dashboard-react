@@ -7,7 +7,7 @@ import {useUtilsCss} from '../../core/utils/useUtilsCss'
 import {useLoginContext} from '../../App'
 import {Datatable} from '../../shared/Datatable/Datatable'
 import {fromNullable, some} from 'fp-ts/lib/Option'
-import {Badge, Button, Icon, makeStyles, Theme, Tooltip} from '@material-ui/core'
+import {Badge, Icon, makeStyles, Theme, Tooltip} from '@material-ui/core'
 import {addDays, subDays} from 'date-fns'
 import {classes, textOverflowMiddleCropping} from '../../core/helper/utils'
 import React, {useEffect} from 'react'
@@ -20,18 +20,10 @@ import {Datepicker} from '../../shared/Datepicker/Datepicker'
 import {ReportStatusChip} from '../../shared/ReportStatus/ReportStatus'
 import {Config} from '../../conf/config'
 import {ReportFilters} from './ReportsFilters'
+import {siteMap} from '../../core/siteMap'
 
 const useStyles = makeStyles((t: Theme) => ({
   toolbar: {
-    display: 'flex',
-    alignItems: 'center',
-    minHeight: 52,
-    borderBottom: `1px solid ${t.palette.divider}`,
-    paddingLeft: t.spacing(2),
-    paddingRight: t.spacing(2),
-    // '& > *': {
-    //   borderRight: `1px solid ${t.palette.divider}`,
-    // }
   },
   tdName: {
     lineHeight: 1.4,
@@ -75,7 +67,7 @@ export const Reports = ({}) => {
   const _reports = useReportsContext()
   const history = useHistory()
   const cssUtils = useUtilsCss()
-  const {connectedUser, apiSdk} = useLoginContext()
+  const {connectedUser} = useLoginContext()
   const css = useStyles()
   const {toastError} = useToast()
 
@@ -102,78 +94,90 @@ export const Reports = ({}) => {
       <PageTitle>{m.reports_pageTitle}</PageTitle>
 
       <Panel>
-        <div className={css.toolbar}>
-          <SelectDepartments
-            className={cssUtils.marginRight}
-            fullWidth
-            values={_reports.filters.departments}
-            onChange={departments => _reports.updateFilters(prev => ({...prev, departments}))}
-          />
-          <Datepicker
-            className={cssUtils.marginRight}
-            fullWidth
-            label={m.start}
-            value={_reports.filters.start}
-            onChange={start => {
-              _reports.updateFilters(prev => {
-                if (prev.end && start.getTime() > prev.end.getTime()) {
-                  return {...prev, start, end: addDays(start, 1)}
-                }
-                return {...prev, start}
-              })
-            }}
-          />
-          <Datepicker
-            fullWidth
-            value={_reports.filters.end}
-            onChange={end => _reports.updateFilters(prev => {
-              if (prev.start && prev.start.getTime() > end.getTime()) {
-                return {...prev, start: subDays(end, 1), end}
-              }
-              return {...prev, end}
-            })}
-            label={m.end}
-          />
-          <Tooltip title={fromNullable(_reports?.list?.totalSize).map(_ => _ > Config.reportsLimitForExport ? m.cannotExportMoreReports(_) : '').getOrElse('')}>
-            <span>
-              <IconBtn
-                style={{marginRight: -8,}}
-                tooltip={m.exportInXLS}
-                onClick={_reports.clearFilters}
-                disabled={fromNullable(_reports?.list?.totalSize).map(_ => _ > Config.reportsLimitForExport).getOrElse(false)}
-              >
-                <Icon>file_download</Icon>
-              </IconBtn>
-            </span>
-          </Tooltip>
-          <IconBtn
-            tooltip={m.removeAllFilters}
-            onClick={_reports.clearFilters}>
-            <Icon>clear</Icon>
-          </IconBtn>
-          <ReportFilters filters={_reports.filters} updateFilters={_ => _reports.updateFilters(prev => ({...prev, ..._}))}>
-            <Button variant="contained" color="primary" style={{minWidth: 'initial'}} className={cssUtils.nowrap}>Filtres avancés</Button>
-          </ReportFilters>
-        </div>
         <Datatable<ReportSearchResult>
+          header={
+            <>
+              <SelectDepartments
+                className={cssUtils.marginRight}
+                fullWidth
+                values={_reports.filters.departments}
+                onChange={departments => _reports.updateFilters(prev => ({...prev, departments}))}
+              />
+              <Datepicker
+                className={cssUtils.marginRight}
+                fullWidth
+                label={m.start}
+                value={_reports.filters.start}
+                onChange={start => {
+                  _reports.updateFilters(prev => {
+                    if (prev.end && start.getTime() > prev.end.getTime()) {
+                      return {...prev, start, end: addDays(start, 1)}
+                    }
+                    return {...prev, start}
+                  })
+                }}
+              />
+              <Datepicker
+                fullWidth
+                value={_reports.filters.end}
+                onChange={end => _reports.updateFilters(prev => {
+                  if (prev.start && prev.start.getTime() > end.getTime()) {
+                    return {...prev, start: subDays(end, 1), end}
+                  }
+                  return {...prev, end}
+                })}
+                label={m.end}
+              />
+              <Tooltip title={fromNullable(_reports?.list?.totalSize).map(_ => _ > Config.reportsLimitForExport ? m.cannotExportMoreReports(Config.reportsLimitForExport) : '').getOrElse('')}>
+                <span className={cssUtils.marginLeft}>
+                  <IconBtn
+                    tooltip={m.exportInXLS}
+                    onClick={_reports.clearFilters}
+                    disabled={fromNullable(_reports?.list?.totalSize).map(_ => _ > Config.reportsLimitForExport).getOrElse(false)}
+                  >
+                    <Icon>file_download</Icon>
+                  </IconBtn>
+                </span>
+              </Tooltip>
+              <Tooltip title={m.removeAllFilters}>
+                <IconBtn onClick={_reports.clearFilters}>
+                  <Icon>clear</Icon>
+                </IconBtn>
+              </Tooltip>
+              <ReportFilters filters={_reports.filters} updateFilters={_ => _reports.updateFilters(prev => ({...prev, ..._}))}>
+                <Tooltip title={m.advancedFilters}>
+                  <IconBtn>
+                    <Icon>filter_list</Icon>
+                  </IconBtn>
+                </Tooltip>
+              </ReportFilters>
+              {/*<Button variant="contained" color="primary" style={{minWidth: 'initial'}} className={cssUtils.nowrap}>Filtres avancés</Button>*/}
+            </>
+          }
           loading={_reports.fetching}
           offset={_reports.filters.offset}
           limit={_reports.filters.limit}
-          onChangeLimit={limit => _reports.updateFilters(prev => ({...prev, limit}))}
-          onChangeOffset={offset => _reports.updateFilters(prev => ({...prev, offset}))}
+          onPaginationChange={pagination => _reports.updateFilters(prev => ({...prev, ...pagination}))}
           getRenderRowKey={_ => _.report.id}
           data={_reports.list?.data}
           total={_reports.list?.totalSize}
+          showColumnsToggle={true}
           rows={[
             {
-              name: 'CP', className: css.tdPostal, row: _ =>
+              name: 'companyPostalCode',
+              head: m.postalCodeShort,
+              className: css.tdPostal,
+              row: _ =>
                 <>
                   <span>{_.report.companyPostalCode?.slice(0, 2)}</span>
                   <span className={cssUtils.colorDisabled}>{_.report.companyPostalCode?.substr(2, 5)}</span>
                 </>
             },
             {
-              name: 'Entreprise', className: css.tdName, row: _ =>
+              name: 'companyName',
+              head: m.company,
+              className: css.tdName,
+              row: _ =>
                 <>
                   <span className={css.tdName_label}>{_.report.companyName}</span>
                   <br/>
@@ -181,22 +185,35 @@ export const Reports = ({}) => {
                 </>
             },
             {
-              name: 'SIRET', hidden: connectedUser.role !== Roles.DGCCRF, row: _ => _.report.companySiret
+              name: 'companySiret',
+              head: m.siret,
+              hidden: connectedUser.role !== Roles.DGCCRF,
+              row: _ => _.report.companySiret
             },
             {
-              name: 'Problème', row: _ =>
+              name: 'category',
+              head: m.problem,
+              row: _ =>
                 <Tooltip title={_.report.subcategories.map((s, i) => <span key={i}>{s}<br/></span>)}>
                   <span>{_.report.category}</span>
                 </Tooltip>
             },
             {
-              name: 'Création', row: _ => formatDate(_.report.creationDate)
+              name: 'creationDate',
+              head: m.creationDate,
+              row: _ => formatDate(_.report.creationDate)
             },
             {
-              name: 'Date constat', hidden: connectedUser.role !== Roles.DGCCRF, row: _ => getReportingDate(_.report)
+              name: 'reportDate',
+              head: 'Date constat',
+              hidden: connectedUser.role !== Roles.DGCCRF,
+              row: _ => getReportingDate(_.report)
             },
             {
-              name: 'Description', className: css.tdDesc, row: _ =>
+              name: 'details',
+              head: m.details,
+              className: css.tdDesc,
+              row: _ =>
                 <Tooltip title={_.report.details?.map((detail, i) =>
                   <div key={i}>
                     <span dangerouslySetInnerHTML={{__html: detail.label}} className={cssUtils.txtBold}/>&nbsp;
@@ -215,17 +232,20 @@ export const Reports = ({}) => {
                 </Tooltip>
             },
             {
-              name: 'Consommateur', className: css.tdConsumer, row: _ =>
+              name: 'email',
+              head: m.consumer, className: css.tdConsumer, row: _ =>
                 <span className={classes(_.report.contactAgreement ? cssUtils.colorSuccess : cssUtils.colorError)}>
                   {textOverflowMiddleCropping(_.report.email, 25)}
                 </span>
             },
             {
-              name: 'Statut', row: _ =>
+              name: 'status',
+              head: m.status, row: _ =>
                 <ReportStatusChip dense status={_.report.status}/>
             },
             {
-              name: 'files', head: '', className: css.tdFiles, row: _ =>
+              name: 'file',
+              head: m.files, className: css.tdFiles, row: _ =>
                 _.files.length > 0 && (
                   <Badge badgeContent={_.files.length} color="primary" invisible={_.files.length === 1}>
                     <Icon className={cssUtils.colorTxtHint}>insert_drive_file</Icon>
@@ -234,11 +254,10 @@ export const Reports = ({}) => {
             },
             {
               name: 'actions',
-              head: '',
               stickyEnd: true,
               className: classes(css.actions),
               row: _ => (
-                <NavLink to={`/reports/${_.report.id}`}>
+                <NavLink to={siteMap.report(_.report.id)}>
                   <IconBtn className={cssUtils.colorTxtHint}>
                     <Icon>chevron_right</Icon>
                   </IconBtn>

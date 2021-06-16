@@ -52,7 +52,7 @@ export const useQueryString: UseQueryString = <T>(
   const update = (t: T) => {
     const z = f1(t)
     const x = mapDatesToQueryString(z)
-    history.push({search: querystring.stringify(x as any)})
+    history.replace({search: querystring.stringify(x as any)})
   }
 
   const get = (): T => {

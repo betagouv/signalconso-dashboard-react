@@ -8,6 +8,7 @@ import {makeStyles} from '@material-ui/core/styles'
 import {utilsStyles} from '../../theme'
 import {MenuItem} from './MenuItem'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
+import {siteMap} from '../../siteMap'
 
 const useMenuStyles = makeStyles((t: Theme) => ({
   root: {
@@ -61,13 +62,13 @@ export const Menu = ({onClose}: Props) => {
           </Btn>
         </div>
         <Divider/>
-        <MenuItem onClick={onClose} to={path('/reports')} icon={Icons.report}>{m.menu_reports}</MenuItem>
-        <MenuItem onClick={onClose} to={path('/entreprises')} icon={Icons.company}>{m.menu_companies}</MenuItem>
-        <MenuItem onClick={onClose} to={path('/utilisateurs')} icon={Icons.user}>{m.menu_users}</MenuItem>
-        <MenuItem onClick={onClose} to={path('/abonnements')} icon={Icons.subscription}>{m.menu_subscriptions}</MenuItem>
+        <MenuItem onClick={onClose} to={path(siteMap.reports)} icon={Icons.report}>{m.menu_reports}</MenuItem>
+        <MenuItem onClick={onClose} to={path(siteMap.companies)} icon={Icons.company}>{m.menu_companies}</MenuItem>
+        <MenuItem onClick={onClose} to={path(siteMap.users)} icon={Icons.user}>{m.menu_users}</MenuItem>
+        <MenuItem onClick={onClose} to={path(siteMap.subscriptions)} icon={Icons.subscription}>{m.menu_subscriptions}</MenuItem>
         <Divider/>
-        <MenuItem onClick={onClose} to={path('/moderation-url-entreprises')} icon={Icons.website}>{m.menu_websites}</MenuItem>
-        <MenuItem onClick={onClose} to={path('/moderation-telephones-entreprises')} icon={Icons.phone}>{m.menu_phones}</MenuItem>
+        <MenuItem onClick={onClose} to={path(siteMap.reportedWebsites)} icon={Icons.website}>{m.menu_websites}</MenuItem>
+        <MenuItem onClick={onClose} to={path(siteMap.reportedPhone)} icon={Icons.phone}>{m.menu_phones}</MenuItem>
       </div>
     </ClickAwayListener>
   )

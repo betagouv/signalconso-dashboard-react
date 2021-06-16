@@ -1,16 +1,23 @@
-import {ApiClientApi} from '../../index'
+import {ApiClientApi, ReportedPhoneFilters} from '../..'
 import {ReportedPhone} from '../../model'
+import format from 'date-fns/format'
 
 export class ReportedPhoneClient {
 
   constructor(private client: ApiClientApi) {
   }
 
-  readonly list = (q?: string, start?: string, end?: string) => {
-    return this.client.get<ReportedPhone[]>(`/reported-phones`, {qs: {q, start, end}});
-  };
+  readonly list = (filters: ReportedPhoneFilters) => {
+    return this.client.get<ReportedPhone[]>(`/reported-phones`, {qs: ReportedPhoneClient.mapFilters(filters)})
+  }
 
-  readonly extract = (q?: string, start?: string, end?: string) => {
-    return this.client.get<ReportedPhone[]>(`/reported-phones/extract`, {qs: {q, start, end}});
-  };
+  readonly extract = (filters: ReportedPhoneFilters) => {
+    return this.client.get<void>(`/reported-phones/extract`, {qs: ReportedPhoneClient.mapFilters(filters)})
+  }
+
+  private static mapFilters = (filters: ReportedPhoneFilters): any => ({
+    q: filters.phone,
+    ...(filters.start ? {start: format(filters.start, 'yyyy-MM-dd')} : {}),
+    ...(filters.end ? {end: format(filters.end, 'yyyy-MM-dd')} : {}),
+  })
 }
