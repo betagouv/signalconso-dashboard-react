@@ -13,6 +13,7 @@ import {Datepicker} from '../../shared/Datepicker/Datepicker'
 import {addDays, subDays} from 'date-fns'
 import {Icon, TextField, Tooltip} from '@material-ui/core'
 import {ScInput} from '../../shared/Input/ScInput'
+import {ExportPhonesPopper, ExportPopperBtn} from '../../shared/ExportPopper/ExportPopperBtn'
 
 export const ReportedPhones = () => {
   const _reportedPhone = useReportedPhonesContext()
@@ -63,11 +64,7 @@ export const ReportedPhones = () => {
                 })}
                 label={m.end}
               />
-              <Tooltip title={m.exportInXLS}>
-                <IconBtn onClick={_reportedPhone.extract} className={cssUtils.marginLeft}>
-                  <Icon>file_download</Icon>
-                </IconBtn>
-              </Tooltip>
+              <ExportPhonesPopper/>
             </>
           }
           sortBy={_reportedPhone.filters.sortBy!}

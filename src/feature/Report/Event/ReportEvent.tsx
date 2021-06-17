@@ -15,6 +15,9 @@ const useStyles = makeStyles((t: Theme) => ({
   root: {
     display: 'flex',
     marginBottom: t.spacing(1.5),
+    '&:last-of-tyoe': {
+
+    }
   },
   body: {
     flex: 1,

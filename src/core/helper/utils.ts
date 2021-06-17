@@ -57,7 +57,7 @@ export const classes = classNames
 
 export const fnSwitch = <T extends string | number | symbol, R = any>(
   value: T,
-  cases: Partial<{ [key in T]: (_: T) => R }>,
+  cases: { [key in T]: (_: T) => R },
   defaultCase?: (_: T) => R,
 ): R | undefined => {
   return (cases[value] ?? defaultCase ?? (() => undefined))(value)

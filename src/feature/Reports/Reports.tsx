@@ -21,6 +21,7 @@ import {ReportStatusChip} from '../../shared/ReportStatus/ReportStatus'
 import {Config} from '../../conf/config'
 import {ReportFilters} from './ReportsFilters'
 import {siteMap} from '../../core/siteMap'
+import {ExportReportsPopper} from '../../shared/ExportPopper/ExportPopperBtn'
 
 const useStyles = makeStyles((t: Theme) => ({
   toolbar: {
@@ -128,17 +129,12 @@ export const Reports = ({}) => {
                 })}
                 label={m.end}
               />
-              <Tooltip title={fromNullable(_reports?.list?.totalSize).map(_ => _ > Config.reportsLimitForExport ? m.cannotExportMoreReports(Config.reportsLimitForExport) : '').getOrElse('')}>
-                <span className={cssUtils.marginLeft}>
-                  <IconBtn
-                    tooltip={m.exportInXLS}
-                    onClick={_reports.clearFilters}
-                    disabled={fromNullable(_reports?.list?.totalSize).map(_ => _ > Config.reportsLimitForExport).getOrElse(false)}
-                  >
-                    <Icon>file_download</Icon>
-                  </IconBtn>
-                </span>
-              </Tooltip>
+              <ExportReportsPopper
+                disabled={fromNullable(_reports?.list?.totalSize).map(_ => _ > Config.reportsLimitForExport).getOrElse(false)}
+                tooltipBtnNew={fromNullable(_reports?.list?.totalSize)
+                  .map(_ => _ > Config.reportsLimitForExport ? m.cannotExportMoreReports(Config.reportsLimitForExport) : '')
+                  .getOrElse('')}
+              />
               <Tooltip title={m.removeAllFilters}>
                 <IconBtn onClick={_reports.clearFilters}>
                   <Icon>clear</Icon>

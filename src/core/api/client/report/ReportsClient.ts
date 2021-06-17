@@ -65,6 +65,10 @@ export class ReportsClient {
   constructor(private client: ApiClientApi) {
   }
 
+  readonly extract = (filter: ReportFilter = {offset: 0, limit: 10}) => {
+    return this.client.post<void>(`reports/extract`, {body: filter})
+  }
+
   readonly search = (filter: ReportFilter = {offset: 0, limit: 10}) => {
     return this.client.get<PaginatedData<ReportSearchResult>>(`/reports`, {
       qs: pipe(

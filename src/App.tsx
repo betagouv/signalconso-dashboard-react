@@ -21,6 +21,8 @@ import {ReportedWebsites} from './feature/ReportedWebsites/ReportedWebsites'
 import {ReportedPhonesProvider} from './core/context/ReportedPhonesContext'
 import {ReportedPhones} from './feature/ReportedPhones/ReportedPhones'
 import {siteMap} from './core/siteMap'
+import {Exports} from './feature/Exports/Exports'
+import {AsyncFileProvider} from './core/context/AsyncFileContext'
 
 const headers = {
   'Content-Type': 'application/json',
@@ -117,15 +119,18 @@ const LoggedApp = () => {
         <ConstantProvider api={apiSdk}>
           <AnomalyProvider api={apiSdk}>
             <ReportedPhonesProvider api={apiSdk}>
+            <AsyncFileProvider api={apiSdk}>
               <Layout toggleSidebarBtnHostElementSelector="#header-actions">
                 <Switch>
                   <Route exact path={siteMap.reportedWebsites} component={ReportedWebsites}/>
                   <Route exact path={siteMap.reportedPhone} component={ReportedPhones}/>
                   <Route exact path={siteMap.reports} component={Reports}/>
                   <Route exact path={siteMap.report()} component={ReportComponent}/>
+                  <Route exact path={siteMap.exports} component={Exports}/>
                   <Redirect exact from="/" to={siteMap.reports}/>
                 </Switch>
               </Layout>
+            </AsyncFileProvider>
             </ReportedPhonesProvider>
           </AnomalyProvider>
         </ConstantProvider>

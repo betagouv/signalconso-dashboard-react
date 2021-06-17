@@ -31,7 +31,6 @@ export const ReportMessages = ({events, reportId}: Props) => {
   const response = useMemo(() => events.find(_ => _.data.action === EventActionValues.ReportResponse), [events])
   const cssUtils = useUtilsCss()
   const css = useStyles()
-  console.log(events, response)
 
   useEffect(() => {
   }, [])
@@ -73,7 +72,9 @@ export const ReportMessages = ({events, reportId}: Props) => {
           <ReportFiles onNewFile={console.log} reportId={reportId} fileOrigin={FileOrigin.Professional}/>
           {(response?.data.details as ReportResponse).fileIds}
         </div>
-      )).toUndefined()}
+      )).getOrElse(
+        <div>{m.noAnswerFromPro}</div>)
+      }
     </PanelBody>
   )
 }

@@ -62,6 +62,7 @@ export const messagesFr = {
   seeMore: 'Voir plus',
   apiToken: 'Api token',
   login: 'Connexion',
+  error: 'Erreur',
   email: 'Email',
   password: 'Mot de passe',
   logout: 'Déconnexion',
@@ -103,6 +104,7 @@ export const messagesFr = {
   menu_websites: 'Sites webs signalés',
   menu_reports: 'Signalements',
   menu_companies: 'Entreprises',
+  menu_exports: 'Mes exports',
   menu_users: 'Utilisateurs DGCCRF',
   menu_subscriptions: 'Abonnements',
   category: 'Catégorie',
@@ -119,6 +121,7 @@ export const messagesFr = {
   selectCountries_onlyTransfer: 'Pays avec accord',
   reportedPhoneTitle: 'Suivi des téléphones',
   advancedFilters: 'Filtres avancés',
+  noAnswerFromPro: 'Le professionnel n\'a pas encore répondu au signalement',
   reportResponse: {
     [ReportResponseTypes.Accepted]: 'Signalement pris en compte',
     [ReportResponseTypes.Rejected]: 'Signalement infondé',

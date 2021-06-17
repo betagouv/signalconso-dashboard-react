@@ -1,6 +1,7 @@
 import {CompanyClient, ConstantClient, ReportedPhoneClient, ReportsClient, SubscriptionClient, WebsiteClient} from './client'
 import {ApiClientApi} from './core/ApiClient'
 import {EventClient} from './client/event/EventClient'
+import {AsyncFileClient} from './client/async-file/AsyncFileClient'
 
 export class SignalConsoSecuredSdk {
 
@@ -14,4 +15,5 @@ export class SignalConsoSecuredSdk {
   readonly company = new CompanyClient(this.client)
   readonly reports = new ReportsClient(this.client)
   readonly events = new EventClient(this.client)
+  readonly asyncFiles = new AsyncFileClient(this.client)
 }
