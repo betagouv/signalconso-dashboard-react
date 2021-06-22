@@ -3,6 +3,7 @@ import {LoginLoader} from './LoginLoader'
 import {LoginForm} from './LoginForm'
 import {localStorageObject} from '../helper/localStorage'
 import {useToast} from '../toast'
+import jwtDecode from 'jwt-decode'
 
 export interface LoginSdk<User extends {token: string}> {
   login: (email: string, password: string) => Promise<User>
@@ -87,10 +88,17 @@ export const makeLoginProviderComponent = <User, ApiSdk>(
       authenticationStorage.clear()
     }
 
+    const isTokenExpired = (token: string): boolean => {
+      const expirationDate = (jwtDecode(token) as {exp: number}).exp
+      return new Date().getTime() > expirationDate
+    }
+
     const checkToken = async (auth: AuthRespone<User>) => {
       setIsCheckingToken(true)
-      // TODO(Alex) Make a proper verification !!!!!!!!!!!
-      setAuth(auth)
+      if (isTokenExpired(auth.token)) {
+      } else {
+        setAuth(auth)
+      }
       setIsCheckingToken(false)
     }
 
