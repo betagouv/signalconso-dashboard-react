@@ -5,7 +5,7 @@ export interface AsyncFile {
   creationDate: Date
   filename: string
   url: string
-  type: AsyncFileType
+  kind: AsyncFileKind
   status: AsyncFileStatus
 }
 
@@ -15,7 +15,7 @@ export enum AsyncFileStatus {
   Successed = 'Successed',
 }
 
-export enum AsyncFileType {
+export enum AsyncFileKind {
   ReportedPhones = 'ReportedPhones',
   Reports = 'Reports',
   ReportedWebsites = 'ReportedWebsites',

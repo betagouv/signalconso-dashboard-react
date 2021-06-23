@@ -5,4 +5,5 @@ export class Icons {
   static readonly phone = 'call'
   static readonly user = 'person'
   static readonly subscription = 'subscriptions'
+  static readonly export = 'file_download'
 }

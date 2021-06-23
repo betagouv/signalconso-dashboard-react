@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react'
 import {Btn, IconBtn} from 'mui-extension/lib'
 import {CircularProgress, Icon, LinearProgress, makeStyles, Menu, MenuItem, Theme, Tooltip} from '@material-ui/core'
 import {useI18n} from '../../core/i18n'
-import {AsyncFile, AsyncFileStatus, AsyncFileType} from '../../core/api/client/async-file/AsyncFile'
+import {AsyncFile, AsyncFileKind, AsyncFileStatus} from '../../core/api/client/async-file/AsyncFile'
 import {useAsyncFileContext} from '../../core/context/AsyncFileContext'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
 import {fnSwitch} from '../../core/helper/utils'
@@ -18,7 +18,7 @@ interface Props {
   loading?: boolean
   fetch: Fetch<() => Promise<any>>
   files?: AsyncFile[]
-  fileType: AsyncFileType
+  fileType: AsyncFileKind
   onNewExport: () => Promise<any>
 }
 
@@ -31,12 +31,13 @@ const useStyles = makeStyles((t: Theme) => ({
   },
   fileItemBody: {
     marginLeft: t.spacing(1),
-    minWidth: 220,
+    minWidth: 200,
   },
   fileItem: {
-    borderBottom: '1px solid ' + t.palette.divider,
+    '&:not(:last-of-type)': {
+      borderBottom: '1px solid ' + t.palette.divider,
+    },
     display: 'flex',
-    marginLeft: t.spacing(1),
   }
 }))
 
@@ -78,7 +79,7 @@ export const ExportPopperBtn = ({
   return (
     <>
       <Tooltip title={m.exportInXLS}>
-        <IconBtn onClick={handleClick}>
+        <IconBtn color="primary" onClick={handleClick}>
           <Icon>file_download</Icon>
         </IconBtn>
       </Tooltip>
@@ -97,40 +98,38 @@ export const ExportPopperBtn = ({
             </span>
           </Tooltip>
         </div>
-        {files?.filter(_ => _.type === fileType).map(file =>
-          <div key={file.id}>
+        {files?.filter(_ => _.kind === fileType).map(file =>
+          <MenuItem dense className={css.fileItem} key={file.id}>
             {fnSwitch(file.status, {
               [AsyncFileStatus.Successed]: _ => (
-                <a href={file.url} target="_blank">
-                  <MenuItem dense className={css.fileItem}>
-                    <Icon className={cssUtils.colorTxtHint}>insert_drive_file</Icon>
-                    <div className={css.fileItemBody}>
-                      <Txt bold block>{file.filename.match(/.*?\-(\w+.?)\.xlsx/)?.[1]}</Txt>
-                      <Txt color="hint">{formatDateTime(file.creationDate)}</Txt>
-                    </div>
-                  </MenuItem>
-                </a>
+                <>
+                  <Icon onClick={() => window.open(file.url, '_blank')} className={cssUtils.colorTxtHint}>insert_drive_file</Icon>
+                  <div onClick={() => window.open(file.url, '_blank')} className={css.fileItemBody}>
+                    <Txt bold block>{file.filename.match(/.*?\-(\w+.?)\.xlsx/)?.[1]}</Txt>
+                    <Txt color="hint">{formatDateTime(file.creationDate)}</Txt>
+                  </div>
+                </>
               ),
               [AsyncFileStatus.Loading]: _ => (
-                <MenuItem dense className={css.fileItem}>
+                <>
                   <CircularProgress size={24}/>
                   <div className={css.fileItemBody}>
                     <Txt skeleton/>
                     <Txt color="hint">{formatDateTime(file.creationDate)}</Txt>
                   </div>
-                </MenuItem>
+                </>
               ),
               [AsyncFileStatus.Failed]: _ => (
-                <MenuItem dense className={css.fileItem}>
+                <>
                   <Icon className={cssUtils.colorError}>error</Icon>
                   <div className={css.fileItemBody}>
                     <div>{m.error}</div>
                     <Txt color="hint">{formatDateTime(file.creationDate)}</Txt>
                   </div>
-                </MenuItem>
+                </>
               ),
             })}
-          </div>
+          </MenuItem>
         )}
       </Menu>
     </>
@@ -142,7 +141,7 @@ export const ExportPhonesPopper = () => {
   const _reportPhone = useReportedPhonesContext()
   return <ExportPopperBtn
     loading={_asyncFile.loading}
-    fileType={AsyncFileType.ReportedPhones}
+    fileType={AsyncFileKind.ReportedPhones}
     onNewExport={_reportPhone.extract}
     fetch={_asyncFile.fetch}
     files={_asyncFile.entity}
@@ -155,7 +154,7 @@ export const ExportReportsPopper = (props: {disabled?: boolean, tooltipBtnNew?: 
   return <ExportPopperBtn
     {...props}
     loading={_asyncFile.loading}
-    fileType={AsyncFileType.Reports}
+    fileType={AsyncFileKind.Reports}
     onNewExport={_reports.extract}
     fetch={_asyncFile.fetch}
     files={_asyncFile.entity}

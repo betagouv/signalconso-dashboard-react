@@ -69,6 +69,7 @@ export const messagesFr = {
   home: 'Accueil',
   consumer: 'Consommateur',
   company: 'Entreprise',
+  address: 'Adresse',
   atLeast8Characters: 'At least 8 characters',
   invalidEmail: 'Invalid email',
   selectedPeriod: 'Période sélectionnée',

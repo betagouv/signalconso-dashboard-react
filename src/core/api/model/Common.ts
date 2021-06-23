@@ -1,5 +1,10 @@
 export type Id = string;
 
+export interface ApiPaginate<T> {
+  entities: T[]
+  totalCount: number
+}
+
 export interface Entity {
   id: Id;
 }

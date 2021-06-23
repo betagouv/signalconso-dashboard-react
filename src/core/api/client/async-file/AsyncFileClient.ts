@@ -1,11 +1,13 @@
 import {ApiClientApi} from '../..'
-import {AsyncFile, AsyncFileStatus, AsyncFileType} from './AsyncFile'
-import {addDays} from 'date-fns'
+import {AsyncFile, AsyncFileStatus} from './AsyncFile'
+import {addHours} from 'date-fns'
 
 export class AsyncFileClient {
 
   constructor(private client: ApiClientApi) {
   }
+
+  private static readonly maxFileGenerationHoursDuration = 24
 
   readonly fetch = () => {
     return this.client.get<AsyncFile[]>(`/async-files`).then(result => result.map(_ => {
@@ -13,23 +15,18 @@ export class AsyncFileClient {
       return {
         ..._,
         creationDate,
-        type: AsyncFileClient.getFileType(_),
-        status: _.filename
-          ? AsyncFileStatus.Successed
-          : new Date().getTime() > addDays(creationDate, 1).getTime()
-            ? AsyncFileStatus.Failed
-            : AsyncFileStatus.Loading
+        status: AsyncFileClient.getStatus(_)
       }
     }))
   }
 
-  private static readonly getFileType = (file: AsyncFile): AsyncFileType => {
-    if (file.filename.startsWith('signalements')) {
-      return AsyncFileType.Reports
+  private static readonly getStatus = (file: AsyncFile): AsyncFileStatus => {
+    if (file.filename) {
+      return AsyncFileStatus.Successed
     }
-    if (file.filename.startsWith('sites-non-identifies')) {
-      return AsyncFileType.ReportedWebsites
-    }
-    return AsyncFileType.ReportedPhones
+    const creationDate = new Date(file.creationDate)
+    return new Date().getTime() > addHours(creationDate, AsyncFileClient.maxFileGenerationHoursDuration).getTime()
+      ? AsyncFileStatus.Failed
+      : AsyncFileStatus.Loading
   }
 }

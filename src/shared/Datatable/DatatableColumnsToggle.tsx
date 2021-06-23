@@ -33,7 +33,7 @@ export const DatatableColumnToggle = ({className, title, columns, displayedColum
   return (
     <>
       <Tooltip title={title ?? ''}>
-        <IconBtn className={className} onClick={handleClick}>
+        <IconBtn className={className} color="primary" onClick={handleClick}>
           <Icon>table_chart</Icon>
         </IconBtn>
       </Tooltip>

@@ -136,13 +136,13 @@ export const Reports = ({}) => {
                   .getOrElse('')}
               />
               <Tooltip title={m.removeAllFilters}>
-                <IconBtn onClick={_reports.clearFilters}>
+                <IconBtn color="primary" onClick={_reports.clearFilters}>
                   <Icon>clear</Icon>
                 </IconBtn>
               </Tooltip>
               <ReportFilters filters={_reports.filters} updateFilters={_ => _reports.updateFilters(prev => ({...prev, ..._}))}>
                 <Tooltip title={m.advancedFilters}>
-                  <IconBtn>
+                  <IconBtn color="primary">
                     <Icon>filter_list</Icon>
                   </IconBtn>
                 </Tooltip>

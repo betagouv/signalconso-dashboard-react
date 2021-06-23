@@ -30,3 +30,10 @@ export const toQueryString = (obj: any): string => {
     .map(k => `${encodeURIComponent(k)}=${encodeURIComponent(obj[k])}`)
     .join('&')
 }
+
+export const extractApiAddress = (address: string): string => {
+  const matches = address.match(/^[^-]*?-(.*?)-[^-]*$/)
+  return matches ? matches[1] : address
+  // const split = address.split(' - ')
+  // return split.length === 2 ? split[0] : split.length === 3 ? split[1] : address
+}

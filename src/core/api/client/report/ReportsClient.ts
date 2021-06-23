@@ -60,13 +60,28 @@ const cleanReportFilter = (filter: ReportFilter): ReportFilter => {
   return filter
 }
 
+export const reportFilter2Body = (report: ReportFilter): { [key in keyof ReportFilter]: any } => {
+  const { start, end, offset, departments, tags, limit, siretSirenList, ...rest } = report;
+  return {
+    ...rest,
+    limit: undefined,
+    offset: undefined,
+    siretSirenList: Array.isArray(siretSirenList) ? siretSirenList : (siretSirenList !== undefined ? [siretSirenList] : undefined),
+    departments: departments || [],
+    tags: tags || [],
+    start: dateToApi(start),
+    end: dateToApi(end)
+  };
+};
+
 export class ReportsClient {
 
   constructor(private client: ApiClientApi) {
   }
 
   readonly extract = (filter: ReportFilter = {offset: 0, limit: 10}) => {
-    return this.client.post<void>(`reports/extract`, {body: filter})
+    const body = pipe(cleanReportFilter, reportFilter2Body, cleanObject)(filter)
+    return this.client.post<void>(`reports/extract`, {body})
   }
 
   readonly search = (filter: ReportFilter = {offset: 0, limit: 10}) => {

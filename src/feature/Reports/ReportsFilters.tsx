@@ -54,9 +54,13 @@ export const ReportFilters = ({filters, updateFilters, children}: ReportsFilters
   const [open, setOpen] = useState<boolean>(false)
   const {category: _category} = useAnomalyContext()
 
-  const confirm = () => {
-    updateFilters({})
+  const close = () => {
     setOpen(false)
+  }
+
+  const confirm = (e: any) => {
+    close()
+    handleSubmit(updateFilters)(e)
   }
 
   useEffect(() => {
@@ -71,7 +75,7 @@ export const ReportFilters = ({filters, updateFilters, children}: ReportsFilters
           setOpen(true)
         }
       })}
-      <Dialog open={open ?? false} onClose={confirm} aria-labelledby="form-dialog-title">
+      <Dialog open={open ?? false} onClose={close} aria-labelledby="form-dialog-title">
         <DialogTitle>Subscribe</DialogTitle>
         {_reportStatus.entity && _category.entity && (
           <>
@@ -154,10 +158,10 @@ export const ReportFilters = ({filters, updateFilters, children}: ReportsFilters
               </Row>
             </DialogContent>
             <DialogActions>
-              <Btn onClick={confirm} color="primary">
+              <Btn onClick={close} color="primary">
                 {m.close}
               </Btn>
-              <Btn onClick={handleSubmit(updateFilters)} color="primary">
+              <Btn onClick={confirm} color="primary">
                 {m.search}
               </Btn>
             </DialogActions>

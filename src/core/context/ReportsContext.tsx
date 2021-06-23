@@ -27,7 +27,7 @@ export const ReportsProvider = ({api, children}: Props) => {
   return (
     <ReportsContext.Provider value={{
       ..._paginate,
-      extract: api.secured.reports.extract,
+      extract: () => api.secured.reports.extract(_paginate.filters),
     }}>
       {children}
     </ReportsContext.Provider>
