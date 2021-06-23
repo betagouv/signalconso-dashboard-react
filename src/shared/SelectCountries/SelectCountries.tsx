@@ -138,6 +138,11 @@ export const SelectCountries = withRegions(({countries, ref, value, onChange, ..
 
   const close = () => setAnchorEl(null)
 
+  const clear = () => {
+    indexValues.clear()
+    onChange([])
+  }
+
   // // const handleInputChange = (event: any) => {
   //   setInputValue(event.target.value)
   //   if (inputValue !== '') open(event)
@@ -163,7 +168,7 @@ export const SelectCountries = withRegions(({countries, ref, value, onChange, ..
           // ),
           endAdornment: (
             <div className={css.endAdornment}>
-              <IconButton size="small" onClick={_ => stopPropagation(indexValues.clear)(_)} className={classes(indexValues.size === 0 && cssUtils.hidden)}>
+              <IconButton size="small" onClick={_ => stopPropagation(clear)(_)} className={classes(indexValues.size === 0 && cssUtils.hidden)}>
                 <Icon>clear</Icon>
               </IconButton>
               {/*<IconButton size="small" onClick={open}>*/}
