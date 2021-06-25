@@ -90,7 +90,7 @@ export const makeLoginProviderComponent = <User, ApiSdk>(
 
     const isTokenExpired = (token: string): boolean => {
       const expirationDate = (jwtDecode(token) as {exp: number}).exp
-      return new Date().getTime() > expirationDate
+      return new Date().getTime() > (expirationDate * 1000)
     }
 
     const checkToken = async (auth: AuthRespone<User>) => {
