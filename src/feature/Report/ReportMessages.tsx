@@ -1,8 +1,7 @@
 import {PanelBody} from '../../shared/Panel'
 import React, {useEffect, useMemo} from 'react'
-import {useReportContext} from '../../core/context/ReportContext'
 import {useI18n} from '../../core/i18n'
-import {EventActionValues, FileOrigin, Id, ReportEvent, ReportResponse, ReportResponseTypes} from '../../core/api'
+import {EventActionValues, FileOrigin, Id, ReportEvent, ReportResponse, ReportResponseTypes, UploadedFile} from '../../core/api'
 import {classes, fnSwitch} from '../../core/helper/utils'
 import {fromNullable} from 'fp-ts/lib/Option'
 import {Icon, makeStyles, Theme} from '@material-ui/core'
@@ -14,6 +13,7 @@ import {Txt} from 'mui-extension/lib/Txt/Txt'
 interface Props {
   events: ReportEvent[]
   reportId: Id
+  files?: UploadedFile[]
 }
 
 const useStyles = makeStyles((t: Theme) => ({
@@ -25,10 +25,9 @@ const useStyles = makeStyles((t: Theme) => ({
   }
 }))
 
-export const ReportMessages = ({events, reportId}: Props) => {
-  const _report = useReportContext()
+export const ReportMessages = ({events, reportId, files}: Props) => {
   const {m} = useI18n()
-  const response = useMemo(() => events.find(_ => _.data.action === EventActionValues.ReportResponse), [events])
+  const response = useMemo(() => events.find(_ => _.data.action === EventActionValues.ReportProResponse), [events])
   const cssUtils = useUtilsCss()
   const css = useStyles()
 
@@ -63,14 +62,15 @@ export const ReportMessages = ({events, reportId}: Props) => {
             {(response?.data.details as ReportResponse).consumerDetails}
           </div>
 
-          {details.dgccrfDetails && details.dgccrfDetails !== '' &&(
+          {details.dgccrfDetails && details.dgccrfDetails !== '' && (
             <>
               <Txt bold size="big" gutterBottom className={cssUtils.marginTop}>{m.reportDgccrfDetails}</Txt>
               <div className={cssUtils.colorTxtSecondary}>{details.dgccrfDetails}</div>
             </>
           )}
-          <ReportFiles onNewFile={console.log} reportId={reportId} fileOrigin={FileOrigin.Professional}/>
-          {(response?.data.details as ReportResponse).fileIds}
+          {fromNullable(files?.filter(_ => _.origin === FileOrigin.Consumer)).filter(_ => _.length > 0).map(f =>
+            <ReportFiles hideAddBtn={true} onNewFile={console.log} reportId={reportId} files={f} fileOrigin={FileOrigin.Professional}/>
+          ).toUndefined()}
         </div>
       )).getOrElse(
         <div>{m.noAnswerFromPro}</div>)

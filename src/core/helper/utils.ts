@@ -55,10 +55,15 @@ export const capitalize = (str?: string, othersInLowerCase = true): string | und
 // Because default imports are very very annoying since they break autocomplete
 export const classes = classNames
 
-export const fnSwitch = <T extends string | number | symbol, R = any>(
-  value: T,
-  cases: { [key in T]: (_: T) => R },
-  defaultCase?: (_: T) => R,
-): R | undefined => {
-  return (cases[value] ?? defaultCase ?? (() => undefined))(value)
+interface FnSwitch {
+  <T extends string | number | symbol, R = any>(value: T, cases: { [key in T]: ((_: T) => R) | R }): R
+  <T extends string | number | symbol, R = any>(value: T, cases: Partial<{ [key in T]: ((_: T) => R) | R }>, defaultCase: (_: T) => R,): R
+}
+
+export const fnSwitch: FnSwitch = (value, cases, defaultCase?) => {
+  const res = cases[value]
+  if (!res && !defaultCase) {
+    throw new Error(`[fnSwtich] ${value} does not match any of theses cases ${Object.keys(cases).join(', ')} defaultCase parameter is not provided.`)
+  }
+  return (typeof res === 'function' ? res(value) : res) ?? (defaultCase as any)!(value)
 }

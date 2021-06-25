@@ -33,10 +33,12 @@ const useStyles = makeStyles((t: Theme) => ({
     marginLeft: t.spacing(1),
     minWidth: 200,
   },
-  fileItem: {
+  menuItem: {
     '&:not(:last-of-type)': {
       borderBottom: '1px solid ' + t.palette.divider,
     },
+  },
+  fileItem: {
     display: 'flex',
   }
 }))
@@ -99,34 +101,34 @@ export const ExportPopperBtn = ({
           </Tooltip>
         </div>
         {files?.filter(_ => _.kind === fileType).map(file =>
-          <MenuItem dense className={css.fileItem} key={file.id}>
+          <MenuItem className={css.menuItem} dense key={file.id}>
             {fnSwitch(file.status, {
               [AsyncFileStatus.Successed]: _ => (
-                <>
-                  <Icon onClick={() => window.open(file.url, '_blank')} className={cssUtils.colorTxtHint}>insert_drive_file</Icon>
-                  <div onClick={() => window.open(file.url, '_blank')} className={css.fileItemBody}>
+                <div className={css.fileItem} onClick={() => window.open(file.url, '_blank')}>
+                  <Icon className={cssUtils.colorTxtHint}>insert_drive_file</Icon>
+                  <div className={css.fileItemBody}>
                     <Txt bold block>{file.filename.match(/.*?\-(\w+.?)\.xlsx/)?.[1]}</Txt>
                     <Txt color="hint">{formatDateTime(file.creationDate)}</Txt>
                   </div>
-                </>
+                </div>
               ),
               [AsyncFileStatus.Loading]: _ => (
-                <>
+                <div className={css.fileItem}>
                   <CircularProgress size={24}/>
                   <div className={css.fileItemBody}>
                     <Txt skeleton/>
                     <Txt color="hint">{formatDateTime(file.creationDate)}</Txt>
                   </div>
-                </>
+                </div>
               ),
               [AsyncFileStatus.Failed]: _ => (
-                <>
+                <div className={css.fileItem}>
                   <Icon className={cssUtils.colorError}>error</Icon>
                   <div className={css.fileItemBody}>
                     <div>{m.error}</div>
                     <Txt color="hint">{formatDateTime(file.creationDate)}</Txt>
                   </div>
-                </>
+                </div>
               ),
             })}
           </MenuItem>

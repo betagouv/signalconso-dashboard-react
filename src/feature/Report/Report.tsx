@@ -4,7 +4,7 @@ import {useParams} from 'react-router'
 import {useI18n} from '../../core/i18n'
 import {Panel, PanelBody} from '../../shared/Panel'
 import {useReportContext} from '../../core/context/ReportContext'
-import {FileOrigin, Id, Report} from 'core/api'
+import {FileOrigin, Id} from 'core/api'
 import {Divider, Grid, Icon, makeStyles, Tab, Tabs, Theme, useTheme} from '@material-ui/core'
 import {ReportStatusChip} from '../../shared/ReportStatus/ReportStatus'
 import {Chip} from '../../shared/Chip/Chip'
@@ -55,7 +55,6 @@ export const ReportComponent = () => {
   const {id} = useParams<{id: Id}>()
   const {m, formatDate} = useI18n()
   const _report = useReportContext()
-  const report: Report | undefined = _report.entity?.report
   const theme = useTheme()
   const cssUtils = useUtilsCss()
   const css = useStyles()
@@ -88,9 +87,9 @@ export const ReportComponent = () => {
     // })
   }
 
-  return report ? (
+  return fromNullable(_report.entity?.report).map(report =>
     <Page>
-      <Panel elevation={2}>
+      <Panel elevation={3}>
         <PanelBody>
           <div className={css.pageTitle}>
             <div>
@@ -114,12 +113,17 @@ export const ReportComponent = () => {
             </div>
           )}
           <Divider className={cssUtils.divider}/>
-          <ReportFiles
-            files={_report.entity?.files}
-            reportId={report.id}
-            fileOrigin={FileOrigin.Consumer}
-            onNewFile={() => _report.events.fetch({force: true, clean: false})()}
-          />
+          {fromNullable(_report.entity?.files.filter(_ => _.origin === FileOrigin.Consumer))
+            .filter(_ => _.length > 0)
+            .map(files =>
+              <ReportFiles
+                files={files}
+                reportId={report.id}
+                fileOrigin={FileOrigin.Consumer}
+                onNewFile={() => _report.events.fetch({force: true, clean: false})()}
+              />
+            ).toUndefined()
+          }
         </PanelBody>
         <PanelFoot>
           <div style={{flex: 1}}>
@@ -172,7 +176,7 @@ export const ReportComponent = () => {
                     <div className={cssUtils.txtBig} style={{marginBottom: theme.spacing(1 / 2)}}>{report.companySiret}</div>
                     <div className={classes(cssUtils.colorTxtSecondary, cssUtils.txtSmall)}>
                       {report.companyAddress?.split(' - ').map((address, i) =>
-                        <div className={classes(i === 0 && cssUtils.txtBold)}>{address}</div>
+                        <div key={i} className={classes(i === 0 && cssUtils.txtBold)}>{address}</div>
                       )}
                       <div>{report.companyCountry}</div>
                     </div>
@@ -200,16 +204,16 @@ export const ReportComponent = () => {
               <Tab label={m.reportHistory}/>
             </Tabs>
             <ReportTabPanel value={activeTab} index={0}>
-              <ReportMessages reportId={report.id} events={events}/>
+              <ReportMessages reportId={report.id} events={events} files={_report.entity?.files}/>
             </ReportTabPanel>
             <ReportTabPanel value={activeTab} index={1}>
-              <ReportEvents events={events}/>
+              <ReportEvents report={report} events={events}/>
             </ReportTabPanel>
           </>
         ).toUndefined()}
       </Panel>
     </Page>
-  ) : <></>
+  ).getOrElse(<></>)
 }
 
 interface ReportTabPanelProps {

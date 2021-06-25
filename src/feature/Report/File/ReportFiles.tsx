@@ -14,6 +14,7 @@ export interface ReportFilesProps {
   onNewFile?: () => void
   reportId: Id
   fileOrigin: FileOrigin
+  hideAddBtn?: boolean
 }
 
 const useReportFilesStyles = makeStyles((t: Theme) => ({
@@ -24,15 +25,15 @@ const useReportFilesStyles = makeStyles((t: Theme) => ({
   }
 }))
 
-export const ReportFiles = ({reportId, fileOrigin, files, onNewFile = () => void 0}: ReportFilesProps) => {
+export const ReportFiles = ({reportId, fileOrigin, files, hideAddBtn, onNewFile = () => void 0}: ReportFilesProps) => {
   const css = useReportFilesStyles()
   const {m} = useI18n()
   return (
     <>
       <PanelTitle>{m.attachedFiles}</PanelTitle>
       <div className={css.root}>
-        {files?.map(_ => <ReportFile key={_.id} file={_}/>)}
-        <ReportFileAdd reportId={reportId} fileOrigin={fileOrigin} onUploaded={onNewFile}/>
+        {files?.filter(_ => _.origin === fileOrigin).map(_ => <ReportFile key={_.id} file={_}/>)}
+        {!hideAddBtn && <ReportFileAdd reportId={reportId} fileOrigin={fileOrigin} onUploaded={onNewFile}/>}
       </div>
     </>
   )

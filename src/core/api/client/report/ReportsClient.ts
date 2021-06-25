@@ -119,7 +119,7 @@ export class ReportsClient {
   }
 
   readonly getById = (id: Id) => {
-    return this.client.get<ReportSearchResult>(`/reports/${id}`)
+    return this.client.get<ReportSearchResult>(`/reports/${id}`).then(_ => ({files: _.files, report: ReportsClient.mapReport(_.report)}))
   }
 
   readonly postReportResponse = (id: Id, response: ReportResponse) => {
