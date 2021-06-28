@@ -6,10 +6,11 @@ import {CompanyWithReportsCount} from '../../core/api'
 import React, {useEffect} from 'react'
 import {useCompaniesContext} from '../../core/context/CompaniesContext'
 import {useUtilsCss} from '../../core/utils/useUtilsCss'
-import {makeStyles, Theme} from '@material-ui/core'
+import {InputBase, makeStyles, Theme} from '@material-ui/core'
 import {NavLink} from 'react-router-dom'
-import {Txt} from 'mui-extension/lib/Txt/Txt'
 import {siteMap} from '../../core/siteMap'
+import {ScButton} from '../../shared/Button/Button'
+import {utilsStyles} from '../../core/theme'
 
 const useStyles = makeStyles((t: Theme) => ({
   tdName_label: {
@@ -20,10 +21,14 @@ const useStyles = makeStyles((t: Theme) => ({
     fontSize: t.typography.fontSize * 0.875,
     color: t.palette.text.hint,
   },
+  tdAddress: {
+    maxWidth: 300,
+    ...utilsStyles(t).truncate,
+  }
 }))
 
 export const Companies = () => {
-  const {m} = useI18n()
+  const {m, formatLargeNumber} = useI18n()
   const _companies = useCompaniesContext()
   const cssUtils = useUtilsCss()
   const css = useStyles()
@@ -32,13 +37,12 @@ export const Companies = () => {
     _companies.fetch()
   }, [])
 
-  console.log(_companies.filters)
-
   return (
     <Page>
       <PageTitle>{m.company}</PageTitle>
       <Panel>
         <Datatable<CompanyWithReportsCount>
+          header={<InputBase placeholder={m.companiesSearchPlaceholder} fullWidth onChange={event => _companies.updateFilters(prev => ({...prev, identity: event.target.value}))}/>}
           loading={_companies.fetching}
           data={_companies.list?.data}
           offset={_companies.filters.offset}
@@ -61,8 +65,9 @@ export const Companies = () => {
             {
               head: m.address,
               name: 'address',
+              className: css.tdAddress,
               row: _ => (
-                _.address
+                <span>{_.address}</span>
               )
             },
             {
@@ -75,11 +80,12 @@ export const Companies = () => {
                 </>
             },
             {
-              head: m.reportsCount,
+              head: m.reports,
               name: 'count',
+              className: cssUtils.txtRight,
               row: _ =>
                 <NavLink to={siteMap.reports({siretSirenList: [_.siret]})}>
-                  <Txt>{_.count}</Txt>
+                  <ScButton color="primary">{formatLargeNumber(_.count)}</ScButton>
                 </NavLink>
             },
           ]}/>

@@ -123,6 +123,7 @@ export const messagesFr = {
   reportedPhoneTitle: 'Suivi des téléphones',
   advancedFilters: 'Filtres avancés',
   noAnswerFromPro: 'Le professionnel n\'a pas encore répondu au signalement',
+  companiesSearchPlaceholder: 'Rechercher par nom, SIREN, SIRET, identifiant...',
   reportResponse: {
     [ReportResponseTypes.Accepted]: 'Signalement pris en compte',
     [ReportResponseTypes.Rejected]: 'Signalement infondé',

@@ -1,5 +1,6 @@
 import classNames from 'classnames'
 import {fromNullable} from 'fp-ts/lib/Option'
+import {OrderBy, Paginate} from '@alexandreannic/react-hooks-lib/lib'
 
 export const isJsonValid = (json: string): boolean => {
   try {
@@ -66,4 +67,22 @@ export const fnSwitch: FnSwitch = (value, cases, defaultCase?) => {
     throw new Error(`[fnSwtich] ${value} does not match any of theses cases ${Object.keys(cases).join(', ')} defaultCase parameter is not provided.`)
   }
   return (typeof res === 'function' ? res(value) : res) ?? (defaultCase as any)!(value)
+}
+
+export const paginateData = <T>(limit: number, offset: number) => (data: T[]): Paginate<T> => {
+  return {
+    data: data.slice(offset, offset + limit),
+    totalSize: data.length,
+  }
+}
+
+export const sortData = <T>(sortBy: keyof T, orderBy: OrderBy) => (data: T[]): T[] => {
+  return data.sort((a, b) => ('' + a[sortBy]).localeCompare('' + b[sortBy]) * (orderBy === 'desc' ? -1 : 1))
+}
+
+export const sortPaginatedData = <T>(sortBy: keyof T, orderBy: OrderBy) => (p: Paginate<T>): Paginate<T> => {
+  return {
+    data: sortData(sortBy, orderBy)(p.data),
+    totalSize: p.totalSize,
+  }
 }

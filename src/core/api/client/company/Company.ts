@@ -65,5 +65,5 @@ export interface CompanySearchResult extends DraftCompany {
 }
 
 export interface CompanySearch extends PaginatedSearch<any> {
-
+  identity?: string
 }

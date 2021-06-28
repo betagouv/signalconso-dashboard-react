@@ -3,6 +3,7 @@ import {ReactNode, useContext} from 'react'
 import {usePaginate, UsePaginate} from '@alexandreannic/react-hooks-lib/lib'
 import {CompanySearch, CompanyWithReportsCount} from 'core/api'
 import {SignalConsoApiSdk} from '../../App'
+import {paginateData} from '../helper/utils'
 
 export interface CompaniesContextProps extends UsePaginate<CompanyWithReportsCount, CompanySearch> {
 }

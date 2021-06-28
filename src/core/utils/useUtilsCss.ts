@@ -53,6 +53,9 @@ export const useUtilsCss = makeStyles((t: Theme) => {
       fontSize: 'inherit',
       verticalAlign: 'text-top',
     },
+    txtCenter: {
+      textAlign: 'center',
+    },
     txtRight: {
       textAlign: 'right',
     },

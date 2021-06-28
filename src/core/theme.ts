@@ -1,6 +1,5 @@
 import {red} from '@material-ui/core/colors'
 import {createMuiTheme, Theme} from '@material-ui/core'
-import {CSSProperties} from 'react'
 
 export const utilsStyles = (t: Theme) => ({
   defaultRadius: 4,
