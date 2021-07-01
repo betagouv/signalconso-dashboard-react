@@ -2,7 +2,7 @@ import {Page, PageTitle} from '../../shared/Layout'
 import {useI18n} from '../../core/i18n'
 import {Panel} from '../../shared/Panel'
 import {Datatable} from '../../shared/Datatable/Datatable'
-import {CompanyWithReportsCount} from '../../core/api'
+import {cleanObject, CompanySearch, CompanyWithReportsCount, ReportSearch} from '../../core/api'
 import React, {useEffect} from 'react'
 import {useCompaniesContext} from '../../core/context/CompaniesContext'
 import {useUtilsCss} from '../../core/utils/useUtilsCss'
@@ -11,6 +11,10 @@ import {NavLink} from 'react-router-dom'
 import {siteMap} from '../../core/siteMap'
 import {ScButton} from '../../shared/Button/Button'
 import {utilsStyles} from '../../core/theme'
+import {PageTab, PageTabs} from '../../shared/Layout/Page/PageTabs'
+import {Fender} from 'mui-extension/lib'
+import {SelectDepartments} from '../../shared/SelectDepartments/SelectDepartments'
+import {useQueryString} from '../../core/utils/useQueryString'
 
 const useStyles = makeStyles((t: Theme) => ({
   tdName_label: {
@@ -24,6 +28,9 @@ const useStyles = makeStyles((t: Theme) => ({
   tdAddress: {
     maxWidth: 300,
     ...utilsStyles(t).truncate,
+  },
+  fender: {
+    margin: `${t.spacing(1)}px auto ${t.spacing(2)}px auto`,
   }
 }))
 
@@ -33,6 +40,15 @@ export const Companies = () => {
   const cssUtils = useUtilsCss()
   const css = useStyles()
 
+  const queryString = useQueryString<Readonly<Partial<CompanySearch>>>()
+  useEffect(() => {
+    _companies.updateFilters({..._companies.initialFilters, ...queryString.get()})
+  }, [])
+
+  useEffect(() => {
+    queryString.update(cleanObject(_companies.filters))
+  }, [_companies.filters])
+
   useEffect(() => {
     _companies.fetch()
   }, [])
@@ -40,9 +56,25 @@ export const Companies = () => {
   return (
     <Page>
       <PageTitle>{m.company}</PageTitle>
+      <PageTabs>
+        <PageTab to="test" label={m.companiesActivated}/>
+        <PageTab to="test" label={m.companiesToActivate}/>
+      </PageTabs>
       <Panel>
         <Datatable<CompanyWithReportsCount>
-          header={<InputBase placeholder={m.companiesSearchPlaceholder} fullWidth onChange={event => _companies.updateFilters(prev => ({...prev, identity: event.target.value}))}/>}
+          header={
+            <>
+              <SelectDepartments
+                values={_companies.filters.departments}
+                className={cssUtils.marginRight}
+                onChange={departments => _companies.updateFilters(prev => ({...prev, departments}))}
+              />
+              <InputBase
+                value={_companies.filters.identity}
+                placeholder={m.companiesSearchPlaceholder} fullWidth className={cssUtils.marginLeft}
+                onChange={event => _companies.updateFilters(prev => ({...prev, identity: event.target.value}))}/>
+            </>
+          }
           loading={_companies.fetching}
           data={_companies.list?.data}
           offset={_companies.filters.offset}
@@ -88,7 +120,14 @@ export const Companies = () => {
                   <ScButton color="primary">{formatLargeNumber(_.count)}</ScButton>
                 </NavLink>
             },
-          ]}/>
+          ]}
+          renderEmptyState={
+            <Fender title={m.noCompanyFound} icon="store" className={css.fender}>
+              <ScButton variant="contained" color="primary" icon="add" className={cssUtils.marginTop}>
+                {m.registerACompany}
+              </ScButton>
+            </Fender>
+          }/>
       </Panel>
     </Page>
   )
