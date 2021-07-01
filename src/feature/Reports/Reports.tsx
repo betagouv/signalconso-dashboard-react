@@ -1,7 +1,7 @@
 import {Page, PageTitle} from '../../shared/Layout'
 import {useI18n} from '../../core/i18n'
 import {useReportsContext} from '../../core/context/ReportsContext'
-import {cleanObject, DetailInputValue, getHostFromUrl, Report, ReportFilter, ReportingDateLabel, ReportSearchResult, Roles} from 'core/api'
+import {cleanObject, DetailInputValue, getHostFromUrl, Report, ReportSearch, ReportingDateLabel, ReportSearchResult, Roles} from 'core/api'
 import {Panel} from '../../shared/Panel'
 import {useUtilsCss} from '../../core/utils/useUtilsCss'
 import {useLoginContext} from '../../App'
@@ -72,7 +72,7 @@ export const Reports = ({}) => {
   const css = useStyles()
   const {toastError} = useToast()
 
-  const queryString = useQueryString<Readonly<Partial<ReportFilter>>>()
+  const queryString = useQueryString<Readonly<Partial<ReportSearch>>>()
 
   useEffect(() => {
     _reports.updateFilters({..._reports.initialFilters, ...queryString.get()})

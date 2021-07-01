@@ -1,11 +1,11 @@
 import * as React from 'react'
 import {ReactNode, useContext} from 'react'
 import {usePaginate, UsePaginate} from '@alexandreannic/react-hooks-lib/lib'
-import {ReportFilter, ReportSearchResult} from 'core/api'
+import {ReportSearch, ReportSearchResult} from 'core/api'
 import {SignalConsoApiSdk} from '../../App'
 
-export interface ReportsContextProps extends UsePaginate<ReportSearchResult, ReportFilter> {
-  extract: (_?: ReportFilter) => Promise<void>
+export interface ReportsContextProps extends UsePaginate<ReportSearchResult, ReportSearch> {
+  extract: (_?: ReportSearch) => Promise<void>
 }
 
 interface Props {
@@ -19,8 +19,8 @@ const ReportsContext = React.createContext<ReportsContextProps>(defaultContext a
 
 export const ReportsProvider = ({api, children}: Props) => {
 
-  const _paginate = usePaginate<ReportSearchResult, ReportFilter>(
-    (_: ReportFilter) => api.secured.reports.search(_).then(_ => ({data: _.entities, totalSize: _.totalCount})),
+  const _paginate = usePaginate<ReportSearchResult, ReportSearch>(
+    (_: ReportSearch) => api.secured.reports.search(_).then(_ => ({data: _.entities, totalSize: _.totalCount})),
     {limit: 10, offset: 0}
   )
 

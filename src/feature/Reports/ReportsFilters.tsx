@@ -1,7 +1,7 @@
 import {Dialog, DialogActions, DialogContent, DialogTitle, FormControlLabel, makeStyles, MenuItem, Radio, RadioGroup, Theme} from '@material-ui/core'
 import {useI18n} from '../../core/i18n'
 import React, {ReactElement, ReactNode, useEffect, useState} from 'react'
-import {ReportFilter, ReportTag} from 'core/api'
+import {ReportSearch, ReportTag} from 'core/api'
 import {Controller, useForm} from 'react-hook-form'
 import {useConstantContext} from '../../core/context/ConstantContext'
 import {ScSelect} from '../../shared/Select/Select'
@@ -12,9 +12,9 @@ import {useAnomalyContext} from '../../core/context/AnomalyContext'
 import {SelectCountries} from '../../shared/SelectCountries/SelectCountries'
 
 export interface ReportsFiltersProps {
-  updateFilters: (_: Partial<ReportFilter>) => void
+  updateFilters: (_: Partial<ReportSearch>) => void
   children: ReactElement<any>
-  filters: ReportFilter
+  filters: ReportSearch
 }
 
 export interface RowProps {
@@ -49,7 +49,7 @@ const Row = ({label, children}: RowProps) => {
 
 export const ReportFilters = ({filters, updateFilters, children}: ReportsFiltersProps) => {
   const {m} = useI18n()
-  const {register, handleSubmit, control, formState: {errors}} = useForm<ReportFilter>()
+  const {register, handleSubmit, control, formState: {errors}} = useForm<ReportSearch>()
   const {reportStatus: _reportStatus} = useConstantContext()
   const [open, setOpen] = useState<boolean>(false)
   const {category: _category} = useAnomalyContext()

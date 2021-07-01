@@ -23,7 +23,7 @@ export class CompanyClient {
   })
 
   readonly search = (search: CompanySearch): Promise<ApiPaginate<CompanyWithReportsCount>> => {
-    return this.client.get<ApiPaginate<ApiCompanyWithReportsCount>>(`/companies/search`, {qs: search}).then(res => ({
+    return this.client.get<ApiPaginate<ApiCompanyWithReportsCount>>(`/companies`, {qs: search}).then(res => ({
       ...res,
       entities: res.entities.map(CompanyClient.mapCompanyWithReportsCount)
     }))

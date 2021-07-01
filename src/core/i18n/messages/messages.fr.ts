@@ -124,6 +124,10 @@ export const messagesFr = {
   advancedFilters: 'Filtres avancés',
   noAnswerFromPro: 'Le professionnel n\'a pas encore répondu au signalement',
   companiesSearchPlaceholder: 'Rechercher par nom, SIREN, SIRET, identifiant...',
+  companiesToActivate: 'En attente d\'activation',
+  companiesActivated: 'Entreprises identifiées',
+  noCompanyFound: 'Aucune entreprise trouvée',
+  registerACompany: 'Enregistrer une entreprise',
   reportResponse: {
     [ReportResponseTypes.Accepted]: 'Signalement pris en compte',
     [ReportResponseTypes.Rejected]: 'Signalement infondé',

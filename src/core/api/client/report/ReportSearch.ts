@@ -1,6 +1,6 @@
-import {ReportTag} from '../anomaly/Anomaly'
+import {ReportTag} from '../..'
 
-export interface ReportFilter {
+export interface ReportSearch {
   readonly departments?: string[];
   readonly tags?: ReportTag[];
   readonly companyCountries?: string[];
