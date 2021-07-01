@@ -17,6 +17,7 @@ export interface DatatableBaseProps<T> {
   rows: DatatableColumnProps<T>[]
   showColumnsToggle?: boolean
   showColumnsToggleBtnTooltip?: string
+  renderEmptyState?: ReactNode
 }
 
 export interface DatatableSortedProps<T> extends DatatableBaseProps<T> {
@@ -103,6 +104,7 @@ export const Datatable = <T extends any = any,>(props: DatatableProps<T>) => {
     header,
     showColumnsToggle,
     showColumnsToggleBtnTooltip = m.toggleDatatableColumns,
+    renderEmptyState,
   } = props
 
   const css = useStyles()
@@ -166,10 +168,17 @@ export const Datatable = <T extends any = any,>(props: DatatableProps<T>) => {
                   <TableCell key={i} className={classes(_.className, cssUtils.truncate, _.stickyEnd && css.stickyEnd)} style={_.style}>
                     {_.row(item)}
                   </TableCell>
-              )}
-            </TableRow>
-          )}
-        </TableBody>
+                )}
+              </TableRow>
+            )}
+            {data?.length === 0 && renderEmptyState && (
+              <TableRow>
+                <TableCell colSpan={filteredRows.length}>
+                  {renderEmptyState}
+                </TableCell>
+              </TableRow>
+            )}
+          </TableBody>
         </Table>
       </div>
       {isDatatablePaginatedProps(props) && (() => {
