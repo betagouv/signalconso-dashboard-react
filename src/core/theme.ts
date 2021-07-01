@@ -1,5 +1,5 @@
 import {red} from '@material-ui/core/colors'
-import {createMuiTheme, Theme} from '@material-ui/core'
+import {createMuiTheme, fade, Theme} from '@material-ui/core'
 
 export const utilsStyles = (t: Theme) => ({
   defaultRadius: 4,
@@ -113,13 +113,12 @@ export const muiTheme = (dark?: boolean): any => {
       MuiOutlinedInput: {
         root: {
           '&:hover $notchedOutline': {
-            borderColor: colorMain,
-            borderWidth: 2,
+            borderColor: fade(colorMain, .7),
           },
         },
         notchedOutline: {
           transition: 'border-color 140ms cubic-bezier(0.4, 0, 0.2, 1) 0ms',
-          background: 'rgba(0,0,0,.025)',
+          background: 'rgba(0,0,0,.028)',
           borderColor: 'rgba(0, 0, 0, 0.12)'
         }
       }

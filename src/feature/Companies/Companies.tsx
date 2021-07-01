@@ -2,19 +2,21 @@ import {Page, PageTitle} from '../../shared/Layout'
 import {useI18n} from '../../core/i18n'
 import {Panel} from '../../shared/Panel'
 import {Datatable} from '../../shared/Datatable/Datatable'
-import {cleanObject, CompanySearch, CompanyWithReportsCount, ReportSearch} from '../../core/api'
-import React, {useEffect} from 'react'
+import {cleanObject, CompanySearch, CompanyWithReportsCount} from '../../core/api'
+import React, {useCallback, useEffect, useState} from 'react'
 import {useCompaniesContext} from '../../core/context/CompaniesContext'
 import {useUtilsCss} from '../../core/utils/useUtilsCss'
-import {InputBase, makeStyles, Theme} from '@material-ui/core'
+import {Icon, InputBase, makeStyles, Theme, Tooltip} from '@material-ui/core'
 import {NavLink} from 'react-router-dom'
 import {siteMap} from '../../core/siteMap'
 import {ScButton} from '../../shared/Button/Button'
 import {utilsStyles} from '../../core/theme'
 import {PageTab, PageTabs} from '../../shared/Layout/Page/PageTabs'
-import {Fender} from 'mui-extension/lib'
+import {Fender, IconBtn} from 'mui-extension/lib'
 import {SelectDepartments} from '../../shared/SelectDepartments/SelectDepartments'
 import {useQueryString} from '../../core/utils/useQueryString'
+import _ from 'lodash'
+import {DebouncedInput} from '../../shared/DebouncedInput/DebouncedInput'
 
 const useStyles = makeStyles((t: Theme) => ({
   tdName_label: {
@@ -69,10 +71,24 @@ export const Companies = () => {
                 className={cssUtils.marginRight}
                 onChange={departments => _companies.updateFilters(prev => ({...prev, departments}))}
               />
-              <InputBase
-                value={_companies.filters.identity}
-                placeholder={m.companiesSearchPlaceholder} fullWidth className={cssUtils.marginLeft}
-                onChange={event => _companies.updateFilters(prev => ({...prev, identity: event.target.value}))}/>
+              <DebouncedInput
+                debounce={400}
+                value={_companies.filters.identity ?? ''}
+                onChange={value => _companies.updateFilters(prev => ({...prev, identity: value}))}
+              >
+                {(value, onChange) =>
+                  <InputBase
+                    value={value}
+                    placeholder={m.companiesSearchPlaceholder} fullWidth className={cssUtils.marginLeft}
+                    onChange={e => onChange(e.target.value)}
+                  />
+                }
+              </DebouncedInput>
+              <Tooltip title={m.removeAllFilters}>
+                <IconBtn color="primary" onClick={_companies.clearFilters}>
+                  <Icon>clear</Icon>
+                </IconBtn>
+              </Tooltip>
             </>
           }
           loading={_companies.fetching}
@@ -116,7 +132,7 @@ export const Companies = () => {
               name: 'count',
               className: cssUtils.txtRight,
               row: _ =>
-                <NavLink to={siteMap.reports({siretSirenList: [_.siret]})}>
+                <NavLink to={siteMap.reports({siretSirenList: [_.siret], departments: _companies.filters.departments})}>
                   <ScButton color="primary">{formatLargeNumber(_.count)}</ScButton>
                 </NavLink>
             },

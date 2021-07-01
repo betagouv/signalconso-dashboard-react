@@ -76,7 +76,7 @@ export const ReportFilters = ({filters, updateFilters, children}: ReportsFilters
         }
       })}
       <Dialog open={open ?? false} onClose={close} aria-labelledby="form-dialog-title">
-        <DialogTitle>Subscribe</DialogTitle>
+        <DialogTitle>{m.search}</DialogTitle>
         {_reportStatus.entity && _category.entity && (
           <>
             <DialogContent>

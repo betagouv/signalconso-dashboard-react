@@ -66,7 +66,6 @@ const useStyles = makeStyles((t: Theme) => ({
 export const Reports = ({}) => {
   const {m, formatDate} = useI18n()
   const _reports = useReportsContext()
-  const history = useHistory()
   const cssUtils = useUtilsCss()
   const {connectedUser} = useLoginContext()
   const css = useStyles()
