@@ -29,17 +29,20 @@ export const utilsStyles = (t: Theme) => ({
 })
 
 export const muiTheme = (dark?: boolean): any => {
+  const colorMain = '#407e99'
+  const colorMainLight = '#6697ad'
+  const colorMainDark = '#2c586b'
   return createMuiTheme({
     palette: {
       primary: {
-        light: '#6697ad',
-        main: '#407e99',
-        dark: '#2c586b',
+        light: colorMainLight,
+        main: colorMain,
+        dark: colorMainDark,
       },
       secondary: {
-        light: '#6697ad',
-        main: '#407e99',
-        dark: '#2c586b',
+        light: colorMainLight,
+        main: colorMain,
+        dark: colorMainDark,
       },
       error: red,
       type: dark ? 'dark' : 'light',
@@ -107,6 +110,19 @@ export const muiTheme = (dark?: boolean): any => {
           spacing: 6,
         }
       },
+      MuiOutlinedInput: {
+        root: {
+          '&:hover $notchedOutline': {
+            borderColor: colorMain,
+            borderWidth: 2,
+          },
+        },
+        notchedOutline: {
+          transition: 'border-color 140ms cubic-bezier(0.4, 0, 0.2, 1) 0ms',
+          background: 'rgba(0,0,0,.025)',
+          borderColor: 'rgba(0, 0, 0, 0.12)'
+        }
+      }
     },
   })
 }
