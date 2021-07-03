@@ -1,4 +1,4 @@
-import axios, {AxiosError, AxiosResponse} from 'axios'
+import axios, {AxiosError, AxiosResponse, ResponseType} from 'axios'
 import {ApiSdkLogger} from '../helper/Logger'
 import * as qs from 'qs'
 
@@ -7,6 +7,7 @@ export interface RequestOption {
   readonly headers?: any
   readonly body?: any
   readonly timeout?: number
+  readonly responseType?: ResponseType
 }
 
 export interface ApiClientParams {
@@ -22,6 +23,7 @@ export interface ApiClientApi {
   readonly baseUrl: string
   readonly get: <T = any>(uri: string, options?: RequestOption) => Promise<T>
   readonly post: <T = any>(uri: string, options?: RequestOption) => Promise<T>
+  readonly postGetPdf: <T = any>(uri: string, options?: RequestOption) => Promise<Blob>
   readonly delete: <T = any>(uri: string, options?: RequestOption) => Promise<T>
   readonly put: <T = any>(uri: string, options?: RequestOption) => Promise<T>
 }
@@ -49,6 +51,8 @@ export class ApiClient {
 
   private readonly fetch: (method: Method, url: string, options?: RequestOption) => Promise<any>
 
+  readonly postGetPdf: (url: string, options?: RequestOption) => Promise<Blob>
+
   readonly baseUrl: string
 
   constructor({
@@ -74,7 +78,8 @@ export class ApiClient {
         params: options?.qs,
         data: options?.body,
         paramsSerializer: (params) => qs.stringify(params, {arrayFormat: 'repeat'})
-      }).then(mapData ?? ((_: AxiosResponse) => _.data))
+      })
+        .then(mapData ?? ((_: AxiosResponse) => _.data))
         .catch(mapError ?? ((_: AxiosError) => {
           ApiSdkLogger.error('[ApiClient]', _)
           const errorMessage = (() => {
@@ -88,6 +93,17 @@ export class ApiClient {
           throw new ApiError(_.response?.status as StatusCode, errorMessage)
         }));
     };
+
+    /** TODO(Alex) Didn't find any way to download pdf with axios but it should exist. */
+    this.postGetPdf = async (url: string, options?: RequestOption) => {
+      const builtOptions = await ApiClient.buildOptions(options, headers, requestInterceptor)
+      console.log(baseUrl, builtOptions)
+      return fetch(baseUrl + url, {
+        method: 'POST',
+        headers: builtOptions?.headers,
+        body: JSON.stringify(builtOptions?.body),
+      }).then(_ => _.blob())
+    }
   }
 
   private static readonly buildOptions = async (
@@ -95,23 +111,23 @@ export class ApiClient {
     headers?: any,
     requestInterceptor: (_?: RequestOption) => RequestOption | Promise<RequestOption> = _ => _!
   ): Promise<RequestOption> => {
-    const interceptedOptions = await requestInterceptor(options);
+    const interceptedOptions = await requestInterceptor(options)
     return {
       ...interceptedOptions,
       headers: {...headers, ...interceptedOptions?.headers},
-    };
+    }
   };
 
   readonly get = <T = any>(uri: string, options?: RequestOption): Promise<T> => {
-    return this.fetch('GET', uri, options);
-  };
+    return this.fetch('GET', uri, options)
+  }
 
   readonly post = <T = any>(uri: string, options?: RequestOption): Promise<T> => {
-    return this.fetch('POST', uri, options);
-  };
+    return this.fetch('POST', uri, options)
+  }
 
   readonly delete = <T = any>(uri: string, options?: RequestOption): Promise<T> => {
-    return this.fetch('DELETE', uri, options);
+    return this.fetch('DELETE', uri, options)
   };
 
   readonly put = <T = any>(uri: string, options?: RequestOption): Promise<T> => {

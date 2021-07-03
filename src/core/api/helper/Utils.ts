@@ -37,3 +37,12 @@ export const extractApiAddress = (address: string): string => {
   // const split = address.split(' - ')
   // return split.length === 2 ? split[0] : split.length === 3 ? split[1] : address
 }
+
+export const directDownloadBlob = (blob: Blob): void => {
+  const url = window.URL.createObjectURL(new Blob([blob], {type: 'application/pdf'}))
+  const link = document.createElement('a')
+  link.href = url
+  link.setAttribute('download', 'file.pdf')
+  document.body.appendChild(link)
+  link.click()
+}

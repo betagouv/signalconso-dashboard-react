@@ -128,7 +128,7 @@ const LoggedApp = () => {
                       <Route exact path={siteMap.reportedPhone} component={ReportedPhones}/>
                       <Route exact path={siteMap.reports()} component={Reports}/>
                       <Route exact path={siteMap.report()} component={ReportComponent}/>
-                      <Route exact path={siteMap.companies} component={Companies}/>
+                      <Route path={siteMap.companies} component={Companies}/>
                       <Redirect exact from="/" to={siteMap.reports()}/>
                     </Switch>
                   </Layout>

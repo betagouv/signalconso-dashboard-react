@@ -1,4 +1,4 @@
-import {ApiClientApi, ApiPaginate, CompanySearch, CompanyWithReportsCount, dateToApi, extractApiAddress} from '../../index'
+import {ApiClientApi, ApiPaginate, CompanySearch, CompanyToActivate, CompanyWithReportsCount, dateToApi, directDownloadBlob, extractApiAddress} from '../../index'
 import {Company, CompanyCreation, CompanyUpdate, Event, Id} from '../../model'
 
 interface ApiCompanyWithReportsCount {
@@ -39,11 +39,28 @@ export class CompanyClient {
   }
 
   readonly saveUndeliveredDocument = (siret: string, returnedDate: Date) => {
-    return this.client.post<Event>(`/companies/${siret}/undelivered-document`,
-      {body: {returnedDate: dateToApi(returnedDate)},})
-  };
+    return this.client.post<Event>(`/companies/${siret}/undelivered-document`, {body: {returnedDate: dateToApi(returnedDate)},})
+  }
 
   readonly create = (company: CompanyCreation) => {
-    return this.client.post<Company>(`/companies`, {body: company});
-  };
+    return this.client.post<Company>(`/companies`, {body: company})
+  }
+
+  readonly downloadActivationDocument = (companyIds: Id[]) => {
+    return this.client.postGetPdf(`/companies/activation-document`, {body: {companyIds},})
+      .then(directDownloadBlob)
+  }
+
+  readonly fetchToActivate = () => {
+    return this.client.get<CompanyToActivate[]>(`/companies/to-activate`).then(_ => _.map(_ => {
+      _.lastNotice = _.lastNotice ? new Date(_.lastNotice) : undefined
+      _.tokenCreation = new Date(_.tokenCreation)
+      _.company.creationDate = new Date(_.company.creationDate)
+      return _
+    }))
+  }
+
+  readonly confirmCompaniesPosted = (companyIds: Id[]) => {
+    return this.client.post<void>(`/companies/companies-posted`, {body: {companyIds}})
+  }
 }

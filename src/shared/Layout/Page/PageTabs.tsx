@@ -1,6 +1,7 @@
 import {makeStyles, Tab, Tabs, Theme} from '@material-ui/core'
 import * as React from 'react'
 import {ReactNode, useState} from 'react'
+import {useHistory} from 'react-router'
 
 interface Props {
   children: ReactNode
@@ -20,6 +21,7 @@ export const PageTabs = ({children}: Props) => {
   const handleChange = (event: any, index: number) => {
     setValue(index)
   }
+
   return (
     <Tabs
       value={value}
@@ -37,14 +39,15 @@ export const PageTabs = ({children}: Props) => {
 }
 
 export interface PageTabProps {
-  to?: string
+  to: string
   label?: string
   icon?: string | React.ReactElement
   disabled?: boolean
 }
 
 export const PageTab = ({to, ...props}: PageTabProps) => {
+  const history = useHistory()
   return (
-    <Tab {...props} onClick={() => console.log(to)}/>
+    <Tab {...props} onClick={() => history.push(to)}/>
   )
 }

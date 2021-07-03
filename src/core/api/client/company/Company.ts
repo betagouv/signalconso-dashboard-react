@@ -28,7 +28,7 @@ export interface CompanyWithReportsCount {
 export interface Company {
   id: Id
   siret: string
-  creationDate: string
+  creationDate: Date
   name: string
   address: string
   postalCode?: string
@@ -37,8 +37,8 @@ export interface Company {
 
 export interface CompanyToActivate {
   company: Company
-  lastNotice?: string
-  tokenCreation: string
+  lastNotice?: Date
+  tokenCreation: Date
 }
 
 export interface CompanyCreation {

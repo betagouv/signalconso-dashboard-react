@@ -18,6 +18,7 @@ export interface DatatableBaseProps<T> {
   showColumnsToggle?: boolean
   showColumnsToggleBtnTooltip?: string
   renderEmptyState?: ReactNode
+  rowsPerPageOptions?: number[]
 }
 
 export interface DatatableSortedProps<T> extends DatatableBaseProps<T> {
@@ -49,10 +50,11 @@ export interface DatatableColumnProps<T> {
 }
 
 const isDatatablePaginatedProps = <T, >(_: DatatableProps<T>): _ is DatatablePaginatedProps<T> => {
-  if (_.total !== undefined) {
-    return _.total > ((_ as DatatablePaginatedProps<T>).limit ?? 0)
-  }
-  return false
+  return _.total !== undefined || (_ as DatatablePaginatedProps<T>).limit !== undefined
+  // if (_.total !== undefined || limit !== undefined) {
+    // return _.total > ((_ as DatatablePaginatedProps<T>).limit ?? 0)
+  // }
+  // return false
 }
 
 const isDatatableSortedProps = <T, >(_: DatatableProps<T>): _ is DatatableSortedProps<T> => {
@@ -105,6 +107,7 @@ export const Datatable = <T extends any = any,>(props: DatatableProps<T>) => {
     showColumnsToggle,
     showColumnsToggleBtnTooltip = m.toggleDatatableColumns,
     renderEmptyState,
+    rowsPerPageOptions = [5, 10, 25, 100],
   } = props
 
   const css = useStyles()
@@ -186,7 +189,7 @@ export const Datatable = <T extends any = any,>(props: DatatableProps<T>) => {
         const offset = safeParseInt(props.offset, 0)
         return (
           <TablePagination
-            rowsPerPageOptions={[5, 10, 25, 100]}
+            rowsPerPageOptions={rowsPerPageOptions}
             component="div"
             count={total ?? 0}
             rowsPerPage={limit}

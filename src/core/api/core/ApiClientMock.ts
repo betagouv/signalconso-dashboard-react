@@ -37,20 +37,24 @@ export class ApiClientMock implements ApiClientApi {
   }
 
   readonly mock = (urlPattern: RegExp, returnValue: any) => {
-    this.mocks.push({urlPattern, returnValue});
-  };
+    this.mocks.push({urlPattern, returnValue})
+  }
 
   readonly get = <T = any>(uri: string, options?: RequestOption): Promise<T> => {
-    return this.fetch('GET', uri, options);
-  };
+    return this.fetch('GET', uri, options)
+  }
+
+  readonly postGetPdf = (uri: string, options?: RequestOption): Promise<Blob> => {
+    return this.fetch('POST', uri, options)
+  }
 
   readonly post = <T = any>(uri: string, options?: RequestOption): Promise<T> => {
-    return this.fetch('POST', uri, options);
-  };
+    return this.fetch('POST', uri, options)
+  }
 
   readonly delete = <T = any>(uri: string, options?: RequestOption): Promise<T> => {
-    return this.fetch('DELETE', uri, options);
-  };
+    return this.fetch('DELETE', uri, options)
+  }
 
   readonly put = <T = any>(uri: string, options?: RequestOption): Promise<T> => {
     return this.fetch('PUT', uri, options);
