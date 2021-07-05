@@ -2,9 +2,9 @@
 export const Config = {
   isDev: process.env.NODE_ENV === 'development',
 
-  apiBaseUrl: (process.env.REACT_APP_API_BASE_URL ?? 'http://localhost:9000').replace('\/$', ''),
+  apiBaseUrl: (process.env.REACT_APP_API_BASE_URL ?? 'http://localhost:9000').replace(/\/$/, ''),
 
-  appBaseUrl: (process.env.REACT_APP_APP_BASE_URL ?? 'http://localhost:4200').replace('\/$', ''),
+  appBaseUrl: (process.env.REACT_APP_APP_BASE_URL ?? 'http://localhost:4200').replace(/\/$/, ''),
 
   sentryDsn: null,
 

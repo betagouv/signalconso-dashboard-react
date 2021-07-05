@@ -48,7 +48,7 @@ interface Props {
 export const Menu = ({onClose}: Props) => {
   const path = (page: string) => '' + page
   const {m} = useI18n()
-  const {apiSdk, logout, connectedUser} = useLoginContext()
+  const {logout, connectedUser} = useLoginContext()
   const css = useMenuStyles()
 
   return (

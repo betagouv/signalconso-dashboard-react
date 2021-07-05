@@ -1,8 +1,7 @@
-import {createStyles, Icon, Theme} from '@material-ui/core'
+import {createStyles, Icon, makeStyles, Theme} from '@material-ui/core'
 import * as React from 'react'
 import {useLayoutContext} from '../LayoutContext'
 import classNames from 'classnames'
-import {makeStyles} from '@material-ui/core'
 import {IconBtn} from 'mui-extension/lib'
 
 export const headerHeight = 52

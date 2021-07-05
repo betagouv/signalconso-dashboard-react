@@ -126,7 +126,7 @@ const LoggedApp = () => {
       _ => <CompaniesProvider api={apiSdk} children={_}/>,
       _ => <UsersProvider api={apiSdk} children={_}/>,
     ]}>
-      <Layout toggleSidebarBtnHostElementSelector="#header-actions">
+      <Layout>
         <Switch>
           <Route path={siteMap.reportedWebsites} component={ReportedWebsites}/>
           <Route path={siteMap.reportedPhone} component={ReportedPhones}/>

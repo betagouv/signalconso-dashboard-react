@@ -1,7 +1,6 @@
 import * as React from 'react'
-import {createStyles, Theme} from '@material-ui/core'
+import {createStyles, makeStyles, Theme} from '@material-ui/core'
 import classNames from 'classnames'
-import {makeStyles} from '@material-ui/core'
 
 const useStyles = makeStyles((t: Theme) => createStyles({
   root: {

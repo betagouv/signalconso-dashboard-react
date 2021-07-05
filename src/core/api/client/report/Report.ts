@@ -1,4 +1,4 @@
-import {Subcategory, ReportTag} from '../anomaly/Anomaly'
+import {ReportTag, Subcategory} from '../anomaly/Anomaly'
 import {UploadedFile} from '../file/UploadedFile'
 
 export const ReportingDateLabel = 'Date du constat';

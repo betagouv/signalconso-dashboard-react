@@ -1,5 +1,5 @@
-import {lazy} from './Lazy';
-import {expect} from 'chai';
+import {lazy} from './Lazy'
+import {expect} from 'chai'
 
 const sleep = (ms: number) => new Promise(_ => setTimeout(_, ms));
 

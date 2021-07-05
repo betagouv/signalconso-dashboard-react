@@ -1,4 +1,4 @@
-import {bool, defaultValue, int, required, env} from './Env';
+import {bool, defaultValue, env, int, required} from './Env'
 
 process.env.PORT = '3000';
 process.env.IS_PRODUCTION = 'true';

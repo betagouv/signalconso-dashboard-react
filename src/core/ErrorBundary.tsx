@@ -1,5 +1,5 @@
-import {Component, ReactNode} from 'react';
-import {withToast, WithToast} from 'mui-extension/lib/Toast/Toast';
+import {Component, ReactNode} from 'react'
+import {withToast, WithToast} from 'mui-extension/lib/Toast/Toast'
 
 interface Props extends WithToast {
   children: ReactNode

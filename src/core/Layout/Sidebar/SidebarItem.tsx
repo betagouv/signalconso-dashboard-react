@@ -5,7 +5,6 @@ import classNames from 'classnames'
 import {fade} from '@material-ui/core/styles'
 import {useLayoutContext} from '../LayoutContext'
 import {NavLink} from 'react-router-dom'
-import {fromNullable} from 'fp-ts/lib/Option'
 
 const useStyles = makeStyles((t: Theme) => createStyles({
   root: {
@@ -72,12 +71,6 @@ export const SidebarItem = ({children, to, icon, className, active, large, ...ot
     clickable && classes.rootClickable,
     large && classes.rootLarge,
   )
-
-  const wrapInNavLink = (children: ReactNode) => (to: string) => {
-    return (
-      <NavLink activeClassName={classes.rootActive} to={to}>{children}</NavLink>
-    )
-  }
 
   return (
     <div onClick={closeMobileSidebar}>

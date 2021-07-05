@@ -22,10 +22,9 @@ export interface LayoutProps {
   title?: string
   children?: ReactNode
   mobileBreakpoint?: number
-  toggleSidebarBtnHostElementSelector: string
 }
 
-export const Layout = ({title, mobileBreakpoint, children, toggleSidebarBtnHostElementSelector}: LayoutProps) => {
+export const Layout = ({title, mobileBreakpoint, children}: LayoutProps) => {
   return (
     <LayoutProvider title={title} mobileBreakpoint={mobileBreakpoint}>
       <LayoutUsingContext>

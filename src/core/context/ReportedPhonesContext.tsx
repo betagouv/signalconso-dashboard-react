@@ -3,7 +3,7 @@ import {ReactNode, useContext} from 'react'
 import {UsePaginate, usePaginate} from '@alexandreannic/react-hooks-lib/lib'
 import {SignalConsoApiSdk} from '../../App'
 import {ReportedPhone, ReportedPhoneSearch} from '../api'
-import {sortPaginatedData, paginateData} from '../helper/utils'
+import {paginateData, sortPaginatedData} from '../helper/utils'
 
 export interface ReportedPhonesContextProps extends UsePaginate<ReportedPhone, ReportedPhoneSearch> {
   extract: () => Promise<void>
