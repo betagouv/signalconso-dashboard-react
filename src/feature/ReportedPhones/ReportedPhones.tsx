@@ -66,13 +66,17 @@ export const ReportedPhones = () => {
               <ExportPhonesPopper/>
             </>
           }
-          sortBy={_reportedPhone.filters.sortBy!}
-          orderBy={_reportedPhone.filters.orderBy}
-          onSortChange={(sort: any) => _reportedPhone.updateFilters(prev => ({...prev, ...sort}))}
-          onPaginationChange={pagination => _reportedPhone.updateFilters(prev => ({...prev, ...pagination}))}
+          sort={{
+            sortBy: _reportedPhone.filters.sortBy!,
+            orderBy: _reportedPhone.filters.orderBy!,
+            onSortChange: (sort: any) => _reportedPhone.updateFilters(prev => ({...prev, ...sort})),
+          }}
+          paginate={{
+            onPaginationChange: pagination => _reportedPhone.updateFilters(prev => ({...prev, ...pagination})),
+            offset: _reportedPhone.filters.offset,
+            limit: _reportedPhone.filters.limit,
+          }}
           total={_reportedPhone.list?.totalSize}
-          offset={_reportedPhone.filters.offset}
-          limit={_reportedPhone.filters.limit}
           loading={_reportedPhone.fetching}
           data={_reportedPhone.list?.data}
           rows={[

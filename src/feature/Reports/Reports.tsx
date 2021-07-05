@@ -150,9 +150,11 @@ export const Reports = ({}) => {
             </>
           }
           loading={_reports.fetching}
-          offset={_reports.filters.offset}
-          limit={_reports.filters.limit}
-          onPaginationChange={pagination => _reports.updateFilters(prev => ({...prev, ...pagination}))}
+          paginate={{
+            offset: _reports.filters.offset,
+            limit: _reports.filters.limit,
+            onPaginationChange: pagination => _reports.updateFilters(prev => ({...prev, ...pagination})),
+          }}
           getRenderRowKey={_ => _.report.id}
           data={_reports.list?.data}
           total={_reports.list?.totalSize}

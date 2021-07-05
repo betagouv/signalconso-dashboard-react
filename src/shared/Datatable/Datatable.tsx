@@ -8,7 +8,7 @@ import {useI18n} from '../../core/i18n'
 
 type OrderBy = 'asc' | 'desc'
 
-export interface DatatableBaseProps<T> {
+export interface DatatableProps<T> {
   header?: ReactNode
   loading?: boolean
   total?: number
@@ -19,25 +19,17 @@ export interface DatatableBaseProps<T> {
   showColumnsToggleBtnTooltip?: string
   renderEmptyState?: ReactNode
   rowsPerPageOptions?: number[]
+  paginate?: {
+    offset: number,
+    limit: number
+    onPaginationChange: (_: {offset?: number, limit?: number}) => void
+  },
+  sort?: {
+    sortBy: string
+    orderBy: OrderBy
+    onSortChange: (_: {sortBy: string, orderBy: OrderBy}) => void
+  }
 }
-
-export interface DatatableSortedProps<T> extends DatatableBaseProps<T> {
-  sortBy: string
-  orderBy: OrderBy
-  onSortChange: (_: {sortBy: string, orderBy: OrderBy}) => void
-}
-
-export interface DatatablePaginatedProps<T> extends DatatableBaseProps<T> {
-  offset: number,
-  limit: number
-  onPaginationChange: (_: {offset?: number, limit?: number}) => void
-}
-
-// TODO(Alex) Fix it: for example, when offset is set but not limit, and TypeError should be thrown
-export type DatatableProps<T> = DatatableBaseProps<T>
-  | DatatablePaginatedProps<T>
-  | DatatableSortedProps<T>
-  | DatatableSortedProps<T> & DatatablePaginatedProps<T>
 
 export interface DatatableColumnProps<T> {
   name: string
@@ -47,18 +39,6 @@ export interface DatatableColumnProps<T> {
   className?: string,
   style?: CSSProperties
   stickyEnd?: boolean
-}
-
-const isDatatablePaginatedProps = <T, >(_: DatatableProps<T>): _ is DatatablePaginatedProps<T> => {
-  return _.total !== undefined || (_ as DatatablePaginatedProps<T>).limit !== undefined
-  // if (_.total !== undefined || limit !== undefined) {
-    // return _.total > ((_ as DatatablePaginatedProps<T>).limit ?? 0)
-  // }
-  // return false
-}
-
-const isDatatableSortedProps = <T, >(_: DatatableProps<T>): _ is DatatableSortedProps<T> => {
-  return !!(_ as DatatableSortedProps<T>).onSortChange
 }
 
 const useStyles = makeStyles((t: Theme) => ({
@@ -90,6 +70,13 @@ const useStyles = makeStyles((t: Theme) => ({
     borderBottom: `1px solid ${t.palette.divider}`,
     paddingLeft: t.spacing(1),
     paddingRight: t.spacing(1),
+  },
+  paginate: {
+    padding: t.spacing(0, 2),
+    minHeight: 52,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'flex-end',
   }
 }))
 
@@ -108,6 +95,8 @@ export const Datatable = <T extends any = any,>(props: DatatableProps<T>) => {
     showColumnsToggleBtnTooltip = m.toggleDatatableColumns,
     renderEmptyState,
     rowsPerPageOptions = [5, 10, 25, 100],
+    sort,
+    paginate,
   } = props
 
   const css = useStyles()
@@ -141,11 +130,11 @@ export const Datatable = <T extends any = any,>(props: DatatableProps<T>) => {
                   key={i}
                   className={classes(css.cellHeader, _.stickyEnd && css.stickyEnd)}
                 >
-                  {isDatatableSortedProps(props) ? (
+                  {sort ? (
                     <TableSortLabel
-                      active={props.sortBy === _.name}
-                      direction={props.sortBy === _.name ? props.orderBy : 'asc'}
-                      onClick={() => props.onSortChange({sortBy: _.name, orderBy: props.orderBy === 'asc' ? 'desc' : 'asc'})}
+                      active={sort.sortBy === _.name}
+                      direction={sort.sortBy === _.name ? sort.orderBy : 'asc'}
+                      onClick={() => sort.onSortChange({sortBy: _.name, orderBy: sort.orderBy === 'asc' ? 'desc' : 'asc'})}
                     >
                       {_.head}
                     </TableSortLabel>
@@ -184,9 +173,9 @@ export const Datatable = <T extends any = any,>(props: DatatableProps<T>) => {
           </TableBody>
         </Table>
       </div>
-      {isDatatablePaginatedProps(props) && (() => {
-        const limit = safeParseInt(props.limit, 10)
-        const offset = safeParseInt(props.offset, 0)
+      {paginate ? (() => {
+        const limit = safeParseInt(paginate.limit, 10)
+        const offset = safeParseInt(paginate.offset, 0)
         return (
           <TablePagination
             rowsPerPageOptions={rowsPerPageOptions}
@@ -194,11 +183,15 @@ export const Datatable = <T extends any = any,>(props: DatatableProps<T>) => {
             count={total ?? 0}
             rowsPerPage={limit}
             page={offset / limit}
-            onChangePage={(event: unknown, newPage: number) => props.onPaginationChange({offset: newPage * limit})}
-            onChangeRowsPerPage={(event: React.ChangeEvent<HTMLInputElement>) => props.onPaginationChange({limit: +event.target.value})}
+            onChangePage={(event: unknown, newPage: number) => paginate.onPaginationChange({offset: newPage * limit})}
+            onChangeRowsPerPage={(event: React.ChangeEvent<HTMLInputElement>) => paginate.onPaginationChange({limit: +event.target.value})}
           />
         )
-      })()}
+      })() : data && (
+        <div className={css.paginate}>
+          <span dangerouslySetInnerHTML={{__html: m.nLines(data.length)}}/>
+        </div>
+      )}
     </>
   )
 }

@@ -23,11 +23,13 @@ export const UsersList = () => {
       <Datatable<User>
         loading={_users.fetching}
         total={_users.list?.totalSize}
-        limit={_users.filters.limit}
-        offset={_users.filters.offset}
+        paginate={{
+          limit: _users.filters.limit,
+          offset: _users.filters.offset,
+          onPaginationChange: pagination => _users.updateFilters(prev => ({...prev, ...pagination})),
+        }}
         getRenderRowKey={_ => _.email}
         data={_users.list?.data}
-        onPaginationChange={pagination => _users.updateFilters(prev => ({...prev, ...pagination}))}
         rows={[
           {
             name: '',

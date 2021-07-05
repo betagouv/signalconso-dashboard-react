@@ -88,16 +88,18 @@ export const CompaniesRegistered = () => {
         }
         loading={_companies.fetching}
         data={_companies.list?.data}
-        offset={_companies.filters.offset}
-        limit={_companies.filters.limit}
+        paginate={{
+          offset: _companies.filters.offset,
+          limit: _companies.filters.limit,
+          onPaginationChange: pagination => _companies.updateFilters(prev => ({...prev, ...pagination})),
+        }}
         total={_companies.list?.totalSize}
-        onPaginationChange={pagination => _companies.updateFilters(prev => ({...prev, ...pagination}))}
         getRenderRowKey={_ => _.siret}
         showColumnsToggle={true}
         rows={[
           {
             head: m.name,
-           name: 'siret',
+            name: 'siret',
             className: css.tdName,
             row: _ =>
               <>

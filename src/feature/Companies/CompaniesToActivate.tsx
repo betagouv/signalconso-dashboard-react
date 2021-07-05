@@ -138,10 +138,12 @@ export const CompaniesToActivate = () => {
         }
         loading={_companiesToActivate.fetching}
         data={_companiesToActivate.list?.data}
-        offset={_companiesToActivate.filters.offset}
-        limit={_companiesToActivate.filters.limit}
+        paginate={{
+          offset: _companiesToActivate.filters.offset,
+          limit: _companiesToActivate.filters.limit,
+          onPaginationChange: pagination => _companiesToActivate.updateFilters(prev => ({...prev, ...pagination})),
+        }}
         total={_companiesToActivate.list?.totalSize}
-        onPaginationChange={pagination => _companiesToActivate.updateFilters(prev => ({...prev, ...pagination}))}
         getRenderRowKey={_ => _.company.id}
         showColumnsToggle={true}
         rowsPerPageOptions={[5, 10, 25, 100, 500]}

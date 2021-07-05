@@ -18,6 +18,7 @@ export const UsersListPending = () => {
       <Datatable
         getRenderRowKey={_ => _.email}
         loading={_users.loading}
+        total={_users.entity?.length}
         data={_users.entity}
         rows={[
           {

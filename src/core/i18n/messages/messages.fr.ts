@@ -143,6 +143,7 @@ export const messagesFr = {
   users_invite_dialog_title: 'Inviter un agent DGCCRF',
   users_invite_dialog_desc: 'Un courrier électronique sera envoyé à l\'adresse e-mail saisie ci-dessus avec un lien sécurisé permettant de créer un compte DGCCRF.',
   selectedCompanies: `entreprises sélectionnées`,
+  nLines: (n: number) => `<b>${n}</b> lignes`,
   reportResponse: {
     [ReportResponseTypes.Accepted]: 'Signalement pris en compte',
     [ReportResponseTypes.Rejected]: 'Signalement infondé',
