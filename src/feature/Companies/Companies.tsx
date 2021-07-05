@@ -1,7 +1,7 @@
 import {Page, PageTitle} from '../../shared/Layout'
 import {useI18n} from '../../core/i18n'
 import React from 'react'
-import {useCssUtils} from '../../core/utils/useCssUtils'
+import {useCssUtils} from '../../core/helper/useCssUtils'
 import {makeStyles, Theme} from '@material-ui/core'
 import {Redirect, Route, Switch, useRouteMatch} from 'react-router-dom'
 import {siteMap} from '../../core/siteMap'

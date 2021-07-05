@@ -13,17 +13,6 @@ export const isJsonValid = (json: string): boolean => {
 
 export type Index<T> = {[key: string]: T}
 
-export const regexpPattern = {
-  email: '^[^@]+@[^\\.]+\\..+',
-  emailDGCCRF: '^[^@]+@[^\\.]+\\.gouv\\..+',
-  yyyyMMdd: '\\d{4}-(0\\d|1[0-2])-([0-2]\\d|3[0-1])',
-}
-
-export const regexp = Object.entries(regexpPattern).reduce(
-  (acc, [key, value]) => ({...acc, [key]: new RegExp(value)}),
-  {} as { [key in keyof typeof regexpPattern]: RegExp }
-)
-
 export const textOverflowMiddleCropping = (text: string, limit: number) => {
   return text.length > limit ? `${text.substr(0, limit / 2)}...${text.substr(text.length - (limit / 2), text.length)}` : text
 }

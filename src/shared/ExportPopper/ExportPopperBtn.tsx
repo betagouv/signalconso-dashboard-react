@@ -6,7 +6,7 @@ import {AsyncFile, AsyncFileKind, AsyncFileStatus} from '../../core/api/client/a
 import {useAsyncFileContext} from '../../core/context/AsyncFileContext'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
 import {fnSwitch} from '../../core/helper/utils'
-import {useCssUtils} from '../../core/utils/useCssUtils'
+import {useCssUtils} from '../../core/helper/useCssUtils'
 import {useReportedPhonesContext} from '../../core/context/ReportedPhonesContext'
 import {useInterval} from 'mui-extension/lib/core/utils/useInterval'
 import {Fetch} from '@alexandreannic/react-hooks-lib/lib'
@@ -144,7 +144,7 @@ export const ExportPhonesPopper = () => {
   return <ExportPopperBtn
     loading={_asyncFile.loading}
     fileType={AsyncFileKind.ReportedPhones}
-    onNewExport={_reportPhone.extract}
+    onNewExport={_reportPhone.extract.fetch()}
     fetch={_asyncFile.fetch}
     files={_asyncFile.entity}
   />

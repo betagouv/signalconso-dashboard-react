@@ -4,7 +4,7 @@ import * as React from 'react'
 import {makeStyles} from '@material-ui/core/styles'
 import {useI18n} from '../i18n'
 import {useFormInput} from '@alexandreannic/react-hooks-lib/lib'
-import {regexpPattern} from '../helper/utils'
+import {regexpPattern} from '../helper/regexp'
 
 interface Props {
   isLoading: boolean

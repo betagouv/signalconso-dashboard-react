@@ -13,7 +13,7 @@ import {useForm} from 'react-hook-form'
 import {ReportSearch} from '../../core/api'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
 import {useUsersContext} from '../../core/context/UsersContext'
-import {regexp} from '../../core/helper/utils'
+import {regexp} from '../../core/helper/regexp'
 import {fromNullable} from 'fp-ts/lib/Option'
 
 export const Users = () => {

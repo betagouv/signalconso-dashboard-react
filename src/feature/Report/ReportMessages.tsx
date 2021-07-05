@@ -5,7 +5,7 @@ import {EventActionValues, FileOrigin, Id, ReportEvent, ReportResponse, ReportRe
 import {classes, fnSwitch} from '../../core/helper/utils'
 import {fromNullable} from 'fp-ts/lib/Option'
 import {Icon, makeStyles, Theme} from '@material-ui/core'
-import {useCssUtils} from '../../core/utils/useCssUtils'
+import {useCssUtils} from '../../core/helper/useCssUtils'
 import {utilsStyles} from '../../core/theme'
 import {ReportFiles} from './File/ReportFiles'
 import {Txt} from 'mui-extension/lib/Txt/Txt'

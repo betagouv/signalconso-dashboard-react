@@ -1,6 +1,6 @@
 import {LinearProgress, makeStyles, Table, TableBody, TableCell, TableHead, TablePagination, TableRow, TableSortLabel, Theme} from '@material-ui/core'
 import React, {CSSProperties, ReactNode, useMemo} from 'react'
-import {useCssUtils} from '../../core/utils/useCssUtils'
+import {useCssUtils} from '../../core/helper/useCssUtils'
 import {classes} from '../../core/helper/utils'
 import {DatatableColumnToggle} from './DatatableColumnsToggle'
 import {useSetState} from '@alexandreannic/react-hooks-lib/lib'

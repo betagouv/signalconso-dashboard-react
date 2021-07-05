@@ -6,7 +6,7 @@ import React, {useEffect} from 'react'
 import {useUsersContext} from '../../core/context/UsersContext'
 import {subMonths} from 'date-fns'
 import {Icon, Tooltip} from '@material-ui/core'
-import {useCssUtils} from '../../core/utils/useCssUtils'
+import {useCssUtils} from '../../core/helper/useCssUtils'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
 
 export const UsersList = () => {
