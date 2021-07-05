@@ -2,7 +2,7 @@ import {ReportEvent} from 'core/api'
 import React from 'react'
 import {useI18n} from '../../../core/i18n'
 import {ReportEventIcon} from './ReportEventIcon'
-import {useUtilsCss} from '../../../core/utils/useUtilsCss'
+import {useCssUtils} from '../../../core/utils/useCssUtils'
 import {classes} from '../../../core/helper/utils'
 import {Icon, makeStyles, Theme} from '@material-ui/core'
 import {utilsStyles} from '../../../core/theme'
@@ -44,7 +44,7 @@ const useStyles = makeStyles((t: Theme) => ({
 
 export const ReportEventComponent = ({event}: ReportComponentEventProps) => {
   const {m, formatDate, formatDateTime} = useI18n()
-  const cssUtils = useUtilsCss()
+  const cssUtils = useCssUtils()
   const css = useStyles()
 
   return (

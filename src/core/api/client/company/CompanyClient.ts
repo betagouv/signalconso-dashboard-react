@@ -48,7 +48,7 @@ export class CompanyClient {
 
   readonly downloadActivationDocument = (companyIds: Id[]) => {
     return this.client.postGetPdf(`/companies/activation-document`, {body: {companyIds},})
-      .then(directDownloadBlob)
+      .then(directDownloadBlob(''))
   }
 
   readonly fetchToActivate = () => {

@@ -3,7 +3,7 @@ import {useEffect, useMemo} from 'react'
 import {Checkbox, createStyles, Icon, InputAdornment, makeStyles, Menu, MenuItem, TextField, Theme} from '@material-ui/core'
 import {useSetState, UseSetState} from '@alexandreannic/react-hooks-lib/lib'
 import {classes, stopPropagation} from '../../core/helper/utils'
-import {useUtilsCss} from '../../core/utils/useUtilsCss'
+import {useCssUtils} from '../../core/utils/useCssUtils'
 import {useConstantContext} from '../../core/context/ConstantContext'
 import {Region} from 'core/api'
 import {fromNullable} from 'fp-ts/lib/Option'
@@ -79,7 +79,7 @@ export const SelectDepartments = withRegions(({
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
   let $input: HTMLElement | undefined = undefined
   const css = useStyles()
-  const cssUtils = useUtilsCss()
+  const cssUtils = useCssUtils()
   const indexValues: UseSetState<string> = useSetState<string>()
   const openedRegions: UseSetState<string> = useSetState<string>()
   const allDepartments = useMemo(() => regions.flatMap(_ => _.departments).map(_ => _.code), [])

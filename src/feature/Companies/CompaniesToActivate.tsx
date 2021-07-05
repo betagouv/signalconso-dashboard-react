@@ -4,7 +4,7 @@ import {Datatable} from '../../shared/Datatable/Datatable'
 import {CompanyToActivate, Id} from '../../core/api'
 import React, {useEffect} from 'react'
 import {useCompaniesContext} from '../../core/context/CompaniesContext'
-import {useUtilsCss} from '../../core/utils/useUtilsCss'
+import {useCssUtils} from '../../core/utils/useCssUtils'
 import {Checkbox, Icon, makeStyles, Theme} from '@material-ui/core'
 import {utilsStyles} from '../../core/theme'
 import {Confirm, Fender, IconBtn} from 'mui-extension/lib'
@@ -14,11 +14,24 @@ import {usePersistentState} from 'react-persistent-state'
 import {useSetState} from '@alexandreannic/react-hooks-lib/lib'
 import {ScButton} from '../../shared/Button/Button'
 import {useToast} from '../../core/toast'
+import {Txt} from 'mui-extension/lib/Txt/Txt'
 
 const useStyles = makeStyles((t: Theme) => ({
   tdName_label: {
     fontWeight: 'bold',
     marginBottom: -1,
+  },
+  selectedCountBadge: {
+    borderRadius: 30,
+    minWidth: 22,
+    height: 22,
+    lineHeight: '22px',
+    padding: t.spacing(0, 1),
+    textAlign: 'center',
+    background: t.palette.primary.main,
+    color: t.palette.primary.contrastText,
+    fontWeight: 'bold',
+    marginRight: 4,
   },
   tdName: {
     lineHeight: 1.4,
@@ -45,7 +58,7 @@ export const CompaniesToActivate = () => {
   const {m, formatLargeNumber, formatDate} = useI18n()
   const _companies = useCompaniesContext()
   const _companiesToActivate = _companies.toActivate
-  const cssUtils = useUtilsCss()
+  const cssUtils = useCssUtils()
   const css = useStyles()
 
   const [selectedCompanies, setSelectedCompanies] = usePersistentState<string[]>([], 'CompaniesToActivate')
@@ -110,10 +123,17 @@ export const CompaniesToActivate = () => {
               <ScButton
                 disabled={_companiesToActivate.fetching || selectedCompaniesSet.size === 0}
                 loading={_companies.confirmCompaniesPosted.loading}
+                className={cssUtils.marginRight}
                 color="error" variant="contained" icon="check_circle">
                 {m.validateLetterSent}
               </ScButton>
             </Confirm>
+            {!_companiesToActivate.fetching && selectedCompaniesSet.size > 0 && (
+              <>
+                <span className={css.selectedCountBadge}>{selectedCompaniesSet.size}</span>
+                <Txt color="hint">{m.selectedCompanies}</Txt>
+              </>
+            )}
           </>
         }
         loading={_companiesToActivate.fetching}

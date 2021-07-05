@@ -2,7 +2,7 @@ import {Theme} from '@material-ui/core'
 import {makeStyles} from '@material-ui/core/styles'
 import {utilsStyles} from '../theme'
 
-export const useUtilsCss = makeStyles((t: Theme) => {
+export const useCssUtils = makeStyles((t: Theme) => {
   return {
     hidden: {
       visibility: 'hidden',

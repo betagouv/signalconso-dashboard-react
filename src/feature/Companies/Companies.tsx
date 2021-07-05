@@ -1,7 +1,7 @@
 import {Page, PageTitle} from '../../shared/Layout'
 import {useI18n} from '../../core/i18n'
 import React from 'react'
-import {useUtilsCss} from '../../core/utils/useUtilsCss'
+import {useCssUtils} from '../../core/utils/useCssUtils'
 import {makeStyles, Theme} from '@material-ui/core'
 import {Redirect, Route, Switch, useRouteMatch} from 'react-router-dom'
 import {siteMap} from '../../core/siteMap'
@@ -13,11 +13,10 @@ const useStyles = makeStyles((t: Theme) => ({}))
 
 export const Companies = () => {
   const {m,} = useI18n()
-  const cssUtils = useUtilsCss()
+  const cssUtils = useCssUtils()
   const css = useStyles()
-  const {path, url} = useRouteMatch()
+  const {path} = useRouteMatch()
 
-  console.log(path, url)
   return (
     <Page>
       <PageTitle>{m.company}</PageTitle>

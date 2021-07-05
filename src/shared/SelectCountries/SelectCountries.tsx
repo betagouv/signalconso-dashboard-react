@@ -5,7 +5,7 @@ import {fromNullable} from 'fp-ts/lib/Option'
 import {Country} from '../../core/api'
 import {Checkbox, createStyles, fade, Icon, IconButton, makeStyles, Menu, TextField, Theme} from '@material-ui/core'
 import {AutocompleteProps} from '@material-ui/lab'
-import {useUtilsCss} from '../../core/utils/useUtilsCss'
+import {useCssUtils} from '../../core/utils/useCssUtils'
 import {useI18n} from '../../core/i18n'
 import {classes, stopPropagation} from '../../core/helper/utils'
 import {useSetState, UseSetState} from '@alexandreannic/react-hooks-lib/lib'
@@ -96,7 +96,7 @@ interface Option {
 }
 
 export const SelectCountries = withRegions(({countries, ref, value, onChange, ...props}: Props) => {
-  const cssUtils = useUtilsCss()
+  const cssUtils = useCssUtils()
   const css = useStyles()
   const {m} = useI18n()
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)

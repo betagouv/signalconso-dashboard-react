@@ -7,9 +7,11 @@ export const siteMap = {
   reports: (_?: Partial<ReportSearch>) => '/reports' + (_ ? toQueryString(_) : ''),
   subscriptions: '/abonnements',
   report: (id: Id = ':id') => `/reports/${id}`,
-  users: '/admin/invitation-ccrf',
   exports: '/mes-telechargements',
   companies: '/entreprises',
   companies_toActivate: '/entreprises/a-activer',
   companies_registered: '/entreprises/les-plus-signalees',
+  users: '/admin/invitation-ccrf',
+  users_pending: '/admin/invitation-ccrf/pending',
+  users_all: '/admin/invitation-ccrf/all',
 }

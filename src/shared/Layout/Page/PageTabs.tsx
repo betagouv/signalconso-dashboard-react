@@ -17,8 +17,9 @@ const useStyles = makeStyles((t: Theme) => ({
 export const PageTabs = ({children}: Props) => {
   const {pathname} = useLocation()
   const getActiveIndex = () => children.map(_ => _.props.to).indexOf(pathname)
+  console.log('index', getActiveIndex())
   const css = useStyles()
-  const [value, setValue] = useState(getActiveIndex())
+  const [value, setValue] = useState(getActiveIndex() ?? 0)
 
 
   const handleChange = (event: any, index: number) => {

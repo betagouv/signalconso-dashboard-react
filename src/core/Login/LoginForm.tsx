@@ -4,7 +4,7 @@ import * as React from 'react'
 import {makeStyles} from '@material-ui/core/styles'
 import {useI18n} from '../i18n'
 import {useFormInput} from '@alexandreannic/react-hooks-lib/lib'
-import {RegEx} from '../utils/common'
+import {regexpPattern} from '../helper/utils'
 
 interface Props {
   isLoading: boolean
@@ -34,7 +34,7 @@ export const LoginForm = ({isLoading, onLogin}: Props) => {
   const {m} = useI18n();
   const inputEmail = useFormInput('email', {
     errorMessage: m.invalidEmail,
-    pattern: RegEx.email,
+    pattern: regexpPattern.email,
     required: true
   });
   const inputPassword = useFormInput('password', {

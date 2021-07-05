@@ -5,7 +5,7 @@ import {EventActionValues, FileOrigin, Id, ReportEvent, ReportResponse, ReportRe
 import {classes, fnSwitch} from '../../core/helper/utils'
 import {fromNullable} from 'fp-ts/lib/Option'
 import {Icon, makeStyles, Theme} from '@material-ui/core'
-import {useUtilsCss} from '../../core/utils/useUtilsCss'
+import {useCssUtils} from '../../core/utils/useCssUtils'
 import {utilsStyles} from '../../core/theme'
 import {ReportFiles} from './File/ReportFiles'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
@@ -28,7 +28,7 @@ const useStyles = makeStyles((t: Theme) => ({
 export const ReportMessages = ({events, reportId, files}: Props) => {
   const {m} = useI18n()
   const response = useMemo(() => events.find(_ => _.data.action === EventActionValues.ReportProResponse), [events])
-  const cssUtils = useUtilsCss()
+  const cssUtils = useCssUtils()
   const css = useStyles()
 
   useEffect(() => {

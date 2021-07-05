@@ -1,11 +1,14 @@
 import * as React from 'react'
 import {ReactNode, useContext} from 'react'
-import {usePaginate, UsePaginate} from '@alexandreannic/react-hooks-lib/lib'
-import {ReportSearch, ReportSearchResult} from 'core/api'
+import {UseFetchableReturn, useFetcher, usePaginate, UsePaginate} from '@alexandreannic/react-hooks-lib/lib'
+import {PaginatedFilters, User, UserPending} from 'core/api'
 import {SignalConsoApiSdk} from '../../App'
 
-export interface UsersContextProps extends UsePaginate<ReportSearchResult, ReportSearch> {
-  extract: (_?: ReportSearch) => Promise<void>
+export interface UsersContextProps {
+  dgccrf: UsePaginate<User, PaginatedFilters>
+  dgccrfPending: UseFetchableReturn<UserPending[]>
+  invite: UseFetchableReturn<void>
+
 }
 
 interface Props {
@@ -19,15 +22,20 @@ const UsersContext = React.createContext<UsersContextProps>(defaultContext as Us
 
 export const UsersProvider = ({api, children}: Props) => {
 
-  const _paginate = usePaginate<ReportSearchResult, ReportSearch>(
-    (_: ReportSearch) => api.secured.reports.search(_).then(_ => ({data: _.entities, totalSize: _.totalCount})),
+  const dgccrf = usePaginate<User, PaginatedFilters>(
+    api.secured.user.fetchDGCCRF,
     {limit: 10, offset: 0}
   )
 
+  const dgccrfPending = useFetcher<UserPending[]>(api.secured.user.fetchPendingDGCCRF)
+
+  const invite = useFetcher<void>(api.secured.user.inviteDGCCRF)
+
   return (
     <UsersContext.Provider value={{
-      ..._paginate,
-      extract: () => api.secured.reports.extract(_paginate.filters),
+      dgccrf,
+      dgccrfPending,
+      invite,
     }}>
       {children}
     </UsersContext.Provider>

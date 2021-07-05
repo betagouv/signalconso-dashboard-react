@@ -8,7 +8,7 @@ import {NavLink} from 'react-router-dom'
 import {siteMap} from '../../core/siteMap'
 import {ReportedPhone, toQueryString} from '../../core/api'
 import {Btn, IconBtn} from 'mui-extension/lib'
-import {useUtilsCss} from '../../core/utils/useUtilsCss'
+import {useCssUtils} from '../../core/utils/useCssUtils'
 import {Datepicker} from '../../shared/Datepicker/Datepicker'
 import {addDays, subDays} from 'date-fns'
 import {Icon, TextField, Tooltip} from '@material-ui/core'
@@ -18,7 +18,7 @@ import {ExportPhonesPopper, ExportPopperBtn} from '../../shared/ExportPopper/Exp
 export const ReportedPhones = () => {
   const _reportedPhone = useReportedPhonesContext()
   const {m} = useI18n()
-  const cssUtils = useUtilsCss()
+  const cssUtils = useCssUtils()
 
   useEffect(() => {
     _reportedPhone.fetch()

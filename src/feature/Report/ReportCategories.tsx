@@ -1,4 +1,4 @@
-import {useUtilsCss} from '../../core/utils/useUtilsCss'
+import {useCssUtils} from '../../core/utils/useCssUtils'
 import {Icon, makeStyles, Theme} from '@material-ui/core'
 import {utilsStyles} from '../../core/theme'
 import {classes} from '../../core/helper/utils'
@@ -23,7 +23,7 @@ const useReportCategoryStyles = makeStyles((t: Theme) => ({
 
 const ReportCategory = ({children}: {children: any}) => {
   const css = useReportCategoryStyles()
-  const cssUtils = useUtilsCss()
+  const cssUtils = useCssUtils()
 
   return (
     <div className={css.root}>

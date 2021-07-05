@@ -3,7 +3,7 @@ import {useI18n} from '../../core/i18n'
 import {useReportsContext} from '../../core/context/ReportsContext'
 import {cleanObject, DetailInputValue, getHostFromUrl, Report, ReportSearch, ReportingDateLabel, ReportSearchResult, Roles} from 'core/api'
 import {Panel} from '../../shared/Panel'
-import {useUtilsCss} from '../../core/utils/useUtilsCss'
+import {useCssUtils} from '../../core/utils/useCssUtils'
 import {useLoginContext} from '../../App'
 import {Datatable} from '../../shared/Datatable/Datatable'
 import {fromNullable, some} from 'fp-ts/lib/Option'
@@ -66,7 +66,7 @@ const useStyles = makeStyles((t: Theme) => ({
 export const Reports = ({}) => {
   const {m, formatDate} = useI18n()
   const _reports = useReportsContext()
-  const cssUtils = useUtilsCss()
+  const cssUtils = useCssUtils()
   const {connectedUser} = useLoginContext()
   const css = useStyles()
   const {toastError} = useToast()

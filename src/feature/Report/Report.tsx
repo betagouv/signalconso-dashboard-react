@@ -9,7 +9,7 @@ import {Divider, Grid, Icon, makeStyles, Tab, Tabs, Theme, useTheme} from '@mate
 import {ReportStatusChip} from '../../shared/ReportStatus/ReportStatus'
 import {Chip} from '../../shared/Chip/Chip'
 import {PanelHead} from '../../shared/Panel/PanelHead'
-import {useUtilsCss} from '../../core/utils/useUtilsCss'
+import {useCssUtils} from '../../core/utils/useCssUtils'
 import {capitalize, classes} from '../../core/helper/utils'
 import {ScButton} from '../../shared/Button/Button'
 import {PanelFoot} from '../../shared/Panel/PanelFoot'
@@ -56,7 +56,7 @@ export const ReportComponent = () => {
   const {m, formatDate} = useI18n()
   const _report = useReportContext()
   const theme = useTheme()
-  const cssUtils = useUtilsCss()
+  const cssUtils = useCssUtils()
   const css = useStyles()
   const {toastError} = useToast()
   const [activeTab, setActiveTab] = useState(0)

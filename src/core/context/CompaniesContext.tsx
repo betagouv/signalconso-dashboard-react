@@ -5,7 +5,8 @@ import {CompanySearch, CompanyToActivate, CompanyWithReportsCount, PaginatedFilt
 import {SignalConsoApiSdk} from '../../App'
 import {paginateData} from '../helper/utils'
 
-export interface CompaniesContextProps extends UsePaginate<CompanyWithReportsCount, CompanySearch> {
+export interface CompaniesContextProps {
+  activated: UsePaginate<CompanyWithReportsCount, CompanySearch>,
   toActivate: UsePaginate<CompanyToActivate, PaginatedFilters>
   downloadActivationDocument: UseFetchableReturn<void>
   confirmCompaniesPosted: UseFetchableReturn<void>
@@ -22,17 +23,17 @@ const CompaniesContext = React.createContext<CompaniesContextProps>(defaultConte
 
 export const CompaniesProvider = ({api, children}: Props) => {
 
-  const _paginate = usePaginate<CompanyWithReportsCount, CompanySearch>(
+  const activated = usePaginate<CompanyWithReportsCount, CompanySearch>(
     (_: CompanySearch) => api.secured.company.search(_).then(_ => ({data: _.entities, totalSize: _.totalCount})),
     {limit: 10, offset: 0}
   )
 
-  const _paginateToActivate = usePaginate<CompanyToActivate, PaginatedFilters>(
+  const toActivate = usePaginate<CompanyToActivate, PaginatedFilters>(
     (filter: PaginatedFilters) => api.secured.company.fetchToActivate()
       .then(_ => _.sort((a, b) => (b.tokenCreation.getTime() - a.tokenCreation.getTime())))
       .then(paginateData(filter.limit, filter.offset))
     ,
-    {limit: 100, offset: 0}
+    {limit: 500, offset: 0}
   )
 
   const downloadActivationDocument = useFetcher<void>(api.secured.company.downloadActivationDocument)
@@ -40,10 +41,10 @@ export const CompaniesProvider = ({api, children}: Props) => {
 
   return (
     <CompaniesContext.Provider value={{
-      ..._paginate,
-      toActivate: _paginateToActivate,
-      downloadActivationDocument: downloadActivationDocument,
-      confirmCompaniesPosted: confirmCompaniesPosted,
+      activated,
+      toActivate,
+      downloadActivationDocument,
+      confirmCompaniesPosted,
     }}>
       {children}
     </CompaniesContext.Provider>

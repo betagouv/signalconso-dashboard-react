@@ -1,4 +1,4 @@
-export interface User {
+export interface UserWithPermission {
   id: string
   login: string
   email: string
@@ -16,7 +16,7 @@ export enum Roles {
   ToActivate = 'ToActivate'
 }
 
-export const roleUrlParam = (_: User): string => {
+export const roleUrlParam = (_: UserWithPermission): string => {
   switch (_.role) {
     case Roles.Admin:
       return 'admin'
@@ -31,7 +31,7 @@ export const roleUrlParam = (_: User): string => {
 
 export interface AuthUser {
   token: string
-  user: User
+  user: UserWithPermission
 }
 
 export enum TokenKind {

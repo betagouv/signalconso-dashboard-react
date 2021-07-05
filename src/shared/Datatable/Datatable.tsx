@@ -1,6 +1,6 @@
 import {LinearProgress, makeStyles, Table, TableBody, TableCell, TableHead, TablePagination, TableRow, TableSortLabel, Theme} from '@material-ui/core'
 import React, {CSSProperties, ReactNode, useMemo} from 'react'
-import {useUtilsCss} from '../../core/utils/useUtilsCss'
+import {useCssUtils} from '../../core/utils/useCssUtils'
 import {classes} from '../../core/helper/utils'
 import {DatatableColumnToggle} from './DatatableColumnsToggle'
 import {useSetState} from '@alexandreannic/react-hooks-lib/lib'
@@ -111,7 +111,7 @@ export const Datatable = <T extends any = any,>(props: DatatableProps<T>) => {
   } = props
 
   const css = useStyles()
-  const cssUtils = useUtilsCss()
+  const cssUtils = useCssUtils()
   const displayableRows = useMemo(() => rows.filter(_ => !_.hidden), [rows])
   const displayedColumnsSet = useSetState<string>(displayableRows.map(_ => _.name!))
   const filteredRows = useMemo(() => displayableRows.filter(_ => displayedColumnsSet.has(_.name)), [rows, displayedColumnsSet])

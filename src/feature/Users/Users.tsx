@@ -1,16 +1,62 @@
 import {Page, PageTitle} from '../../shared/Layout'
 import {useI18n} from '../../core/i18n'
 import React from 'react'
-import {Panel} from '../../shared/Panel'
+import {PageTab, PageTabs} from '../../shared/Layout/Page/PageTabs'
+import {siteMap} from '../../core/siteMap'
+import {Redirect, Route, Switch, useRouteMatch} from 'react-router-dom'
+import {UsersList} from './UsersList'
+import {UsersListPending} from './UsersListPending'
+import {ScButton} from '../../shared/Button/Button'
+import {Confirm} from 'mui-extension/lib'
+import {ScInput} from '../../shared/Input/ScInput'
+import {useForm} from 'react-hook-form'
+import {ReportSearch} from '../../core/api'
+import {Txt} from 'mui-extension/lib/Txt/Txt'
+import {useUsersContext} from '../../core/context/UsersContext'
+import {regexp} from '../../core/helper/utils'
 
 export const Users = () => {
   const {m} = useI18n()
+  const {path, url} = useRouteMatch()
+  const {register, handleSubmit, control, getValues, formState: {errors}} = useForm<ReportSearch>()
+  const _invite = useUsersContext().invite
+
   return (
     <Page>
-      <PageTitle>{m.menu_users}</PageTitle>
-      <Panel>
-
-      </Panel>
+      <PageTitle action={
+        <Confirm
+          onConfirm={() => {
+            _invite.fetch()(getValues().email)
+          }}
+          confirmLabel={m.invite}
+          cancelLabel={m.close}
+          title={m.users_invite_dialog_title}
+          content={
+            <>
+              <Txt color="hint" block gutterBottom>{m.users_invite_dialog_desc}</Txt>
+              <ScInput fullWidth label={m.email} {...register('email', {
+                required: 'Email is required',
+                pattern: {
+                  value: regexp.emailDGCCRF,
+                  message: 'Please enter a valid email',
+                }
+              })}/>
+            </>
+          }>
+          <ScButton loading={_invite.loading} icon="person_add" variant="contained" color="primary">
+            {m.invite}
+          </ScButton>
+        </Confirm>
+      }>{m.menu_users}</PageTitle>
+      <PageTabs>
+        <PageTab to={siteMap.users_all} label={m.dgccrfUsers}/>
+        <PageTab to={siteMap.users_pending} label={m.pendingInvitation}/>
+      </PageTabs>
+      <Switch>
+        <Redirect exact from={path} to={siteMap.users_all}/>
+        <Route path={siteMap.users_all} component={UsersList}/>
+        <Route path={siteMap.users_pending} component={UsersListPending}/>
+      </Switch>
     </Page>
   )
 }

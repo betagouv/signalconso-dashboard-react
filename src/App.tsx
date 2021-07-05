@@ -1,6 +1,6 @@
 import React from 'react'
 import {makeLoginProviderComponent} from './core/Login/LoginContext'
-import {ApiClient, SignalConsoPublicSdk, SignalConsoSecuredSdk, User} from 'core/api'
+import {ApiClient, SignalConsoPublicSdk, SignalConsoSecuredSdk, UserWithPermission} from 'core/api'
 import {Config} from './conf/config'
 import {makeStyles} from '@material-ui/core/styles'
 import {Theme, ThemeProvider} from '@material-ui/core'
@@ -26,6 +26,7 @@ import {AsyncFileProvider} from './core/context/AsyncFileContext'
 import {CompaniesProvider} from './core/context/CompaniesContext'
 import {ReportsProvider} from './core/context/ReportsContext'
 import {Provide} from './shared/Provide/Provide'
+import {UsersProvider} from './core/context/UsersContext'
 
 const headers = {
   'Content-Type': 'application/json',
@@ -49,7 +50,7 @@ const makeSecuredSdk = (token: string) => ({
 
 export type SignalConsoApiSdk = ReturnType<typeof makeSecuredSdk>
 
-const loginProvider = makeLoginProviderComponent<User, SignalConsoApiSdk>(apiPublicSdk.authenticate.login, makeSecuredSdk)
+const loginProvider = makeLoginProviderComponent<UserWithPermission, SignalConsoApiSdk>(apiPublicSdk.authenticate.login, makeSecuredSdk)
 export const Login = loginProvider.Login
 export const useLoginContext = loginProvider.useLoginContext
 
@@ -123,14 +124,15 @@ const LoggedApp = () => {
       _ => <ReportedPhonesProvider api={apiSdk} children={_}/>,
       _ => <AsyncFileProvider api={apiSdk} children={_}/>,
       _ => <CompaniesProvider api={apiSdk} children={_}/>,
+      _ => <UsersProvider api={apiSdk} children={_}/>,
     ]}>
       <Layout toggleSidebarBtnHostElementSelector="#header-actions">
         <Switch>
-          <Route exact path={siteMap.reportedWebsites} component={ReportedWebsites}/>
-          <Route exact path={siteMap.reportedPhone} component={ReportedPhones}/>
-          <Route exact path={siteMap.reports()} component={Reports}/>
-          <Route exact path={siteMap.report()} component={ReportComponent}/>
-          <Route exact path={siteMap.users} component={Users}/>
+          <Route path={siteMap.reportedWebsites} component={ReportedWebsites}/>
+          <Route path={siteMap.reportedPhone} component={ReportedPhones}/>
+          <Route path={siteMap.reports()} component={Reports}/>
+          <Route path={siteMap.report()} component={ReportComponent}/>
+          <Route path={siteMap.users} component={Users}/>
           <Route path={siteMap.companies} component={Companies}/>
           <Redirect exact from="/" to={siteMap.reports()}/>
         </Switch>

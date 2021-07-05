@@ -4,7 +4,7 @@ import {Datatable} from '../../shared/Datatable/Datatable'
 import {cleanObject, CompanySearch, CompanyWithReportsCount} from '../../core/api'
 import React, {useEffect} from 'react'
 import {useCompaniesContext} from '../../core/context/CompaniesContext'
-import {useUtilsCss} from '../../core/utils/useUtilsCss'
+import {useCssUtils} from '../../core/utils/useCssUtils'
 import {Icon, InputBase, makeStyles, Theme, Tooltip} from '@material-ui/core'
 import {NavLink} from 'react-router-dom'
 import {siteMap} from '../../core/siteMap'
@@ -39,8 +39,8 @@ const useStyles = makeStyles((t: Theme) => ({
 
 export const CompaniesRegistered = () => {
   const {m, formatLargeNumber} = useI18n()
-  const _companies = useCompaniesContext()
-  const cssUtils = useUtilsCss()
+  const _companies = useCompaniesContext().activated
+  const cssUtils = useCssUtils()
   const css = useStyles()
 
   const queryString = useQueryString<Readonly<Partial<CompanySearch>>>()

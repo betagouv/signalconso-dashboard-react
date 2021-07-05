@@ -1,5 +1,5 @@
 import {ApiClientApi} from '../../index'
-import {AuthUser} from './User'
+import {AuthUser} from './UserWithPermission'
 
 export class AuthenticateClient {
 
