@@ -114,7 +114,7 @@ export const App = () => {
 }
 
 const LoggedApp = () => {
-  const {apiSdk, logout} = useLoginContext()
+  const {apiSdk} = useLoginContext()
   return (
     <Provide providers={[
       _ => <ReportsProvider api={apiSdk} children={_}/>,

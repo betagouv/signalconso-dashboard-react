@@ -32,10 +32,11 @@ export interface DatatableProps<T> {
 }
 
 export interface DatatableColumnProps<T> {
-  name: string
+  id: string
   head?: string | ReactNode
   row: (_: T) => ReactNode
   hidden?: boolean
+  alwaysVisible?: boolean
   className?: string,
   style?: CSSProperties
   stickyEnd?: boolean
@@ -102,8 +103,9 @@ export const Datatable = <T extends any = any,>(props: DatatableProps<T>) => {
   const css = useStyles()
   const cssUtils = useCssUtils()
   const displayableRows = useMemo(() => rows.filter(_ => !_.hidden), [rows])
-  const displayedColumnsSet = useSetState<string>(displayableRows.map(_ => _.name!))
-  const filteredRows = useMemo(() => displayableRows.filter(_ => displayedColumnsSet.has(_.name)), [rows, displayedColumnsSet])
+  const toggleableColumnsName = useMemo(() => displayableRows.filter(_ => !_.alwaysVisible), [displayableRows])
+  const displayedColumnsSet = useSetState<string>(displayableRows.map(_ => _.id!))
+  const filteredRows = useMemo(() => displayableRows.filter(_ => displayedColumnsSet.has(_.id)), [rows, displayedColumnsSet])
 
   return (
     <>
@@ -113,7 +115,7 @@ export const Datatable = <T extends any = any,>(props: DatatableProps<T>) => {
           {showColumnsToggle && (
             <DatatableColumnToggle
               className={css.btnColumnsToggle}
-              columns={displayableRows}
+              columns={toggleableColumnsName}
               displayedColumns={displayedColumnsSet.toArray() as string[]}
               onChange={displayedColumnsSet.reset}
               title={showColumnsToggleBtnTooltip}
@@ -132,9 +134,9 @@ export const Datatable = <T extends any = any,>(props: DatatableProps<T>) => {
                 >
                   {sort ? (
                     <TableSortLabel
-                      active={sort.sortBy === _.name}
-                      direction={sort.sortBy === _.name ? sort.orderBy : 'asc'}
-                      onClick={() => sort.onSortChange({sortBy: _.name, orderBy: sort.orderBy === 'asc' ? 'desc' : 'asc'})}
+                      active={sort.sortBy === _.id}
+                      direction={sort.sortBy === _.id ? sort.orderBy : 'asc'}
+                      onClick={() => sort.onSortChange({sortBy: _.id, orderBy: sort.orderBy === 'asc' ? 'desc' : 'asc'})}
                     >
                       {_.head}
                     </TableSortLabel>

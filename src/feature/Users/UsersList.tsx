@@ -32,23 +32,23 @@ export const UsersList = () => {
         data={_users.list?.data}
         rows={[
           {
-            name: '',
+            id: '',
             head: m.email,
             row: _ => <Txt bold>{_.email}</Txt>
           },
           {
             head: m.firstName,
-            name: 'firstName',
+            id: 'firstName',
             row: _ => _.firstName
           },
           {
             head: m.lastName,
-            name: 'lastName',
+            id: 'lastName',
             row: _ => _.lastName
           },
           {
             head: <Tooltip title={m.connectedUnder3Months}><span>{m.active}</span></Tooltip>,
-            name: 'lastEmailValidation',
+            id: 'lastEmailValidation',
             row: _ => _.lastEmailValidation.getTime() > subMonths(new Date, 3).getTime() && (
               <Icon className={cssUtils.colorSuccess}>check_circle</Icon>
             )

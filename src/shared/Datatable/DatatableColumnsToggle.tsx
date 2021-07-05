@@ -6,7 +6,7 @@ import {DatatableColumnProps} from './Datatable'
 interface Props {
   // Hack because there is no way to make TS understand that the key of an object can
   // only be a string ({[key: string]: string} does not work...)
-  columns: (Omit<DatatableColumnProps<any>, 'name'> & {name: string})[]
+  columns: (Omit<DatatableColumnProps<any>, 'id'> & {id: string})[]
   displayedColumns: string[]
   onChange: (_: string[]) => void
   className?: string
@@ -44,11 +44,11 @@ export const DatatableColumnToggle = ({className, title, columns, displayedColum
         onClose={() => setAnchorEl(null)}
       >
         {columns.filter(_ => _.head && _.head !== '').map(col => {
-          const checked = displayedColumns.indexOf(col.name) > -1
+          const checked = displayedColumns.indexOf(col.id) > -1
           return (
-            <MenuItem dense key={col.name} onClick={() => onChange(checked
-              ? displayedColumns.length > 1 ? displayedColumns.filter(_ => _ !== col.name) : displayedColumns
-              : [...displayedColumns, col.name])
+            <MenuItem dense key={col.id} onClick={() => onChange(checked
+              ? displayedColumns.length > 1 ? displayedColumns.filter(_ => _ !== col.id) : displayedColumns
+              : [...displayedColumns, col.id])
             }>
               <Checkbox className={css.cb} checked={checked}/>
               {col.head}

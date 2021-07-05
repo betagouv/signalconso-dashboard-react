@@ -152,9 +152,11 @@ export const CompaniesToActivate = () => {
             head: <Checkbox
               indeterminate={!allChecked && selectedCompaniesSet.size > 0}
               checked={allChecked}
-              disabled={_companiesToActivate.fetching} onClick={selectAll}
+              disabled={_companiesToActivate.fetching}
+              onClick={selectAll}
             />,
-            name: 'select',
+            alwaysVisible: true,
+            id: 'select',
             row: _ =>
               <Checkbox
                 checked={selectedCompaniesSet.has(_.company.id)}
@@ -162,9 +164,9 @@ export const CompaniesToActivate = () => {
               />
           },
           {
+            id: 'siret',
             head: m.name,
             className: css.tdName,
-            name: 'siret',
             row: _ =>
               <>
                 <span className={css.tdName_label}>{_.company.name}</span>
@@ -174,7 +176,7 @@ export const CompaniesToActivate = () => {
           },
           {
             head: m.address,
-            name: 'address',
+            id: 'address',
             className: css.tdAddress,
             row: _ => (
               <span>{_.company.address.split(' - ').map((_, i) => <React.Fragment key={i}>{_}<br/></React.Fragment>)}</span>
@@ -182,19 +184,19 @@ export const CompaniesToActivate = () => {
           },
           {
             head: m.created_at,
-            name: 'tokenCreation',
+            id: 'tokenCreation',
             row: _ =>
               <>{formatDate(_.tokenCreation)}</>
           },
           {
             head: m.lastNotice,
-            name: 'lastNotice',
+            id: 'lastNotice',
             row: _ =>
               <>{formatDate(_.lastNotice)}</>
 
           },
           {
-            name: 'actions',
+            id: 'actions',
             row: _ =>
               <>
                 <Link to={siteMap.reports({siretSirenList: [_.company.siret]})}>

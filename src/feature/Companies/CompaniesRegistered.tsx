@@ -99,7 +99,7 @@ export const CompaniesRegistered = () => {
         rows={[
           {
             head: m.name,
-            name: 'siret',
+            id: 'siret',
             className: css.tdName,
             row: _ =>
               <>
@@ -110,7 +110,7 @@ export const CompaniesRegistered = () => {
           },
           {
             head: m.address,
-            name: 'address',
+            id: 'address',
             className: css.tdAddress,
             row: _ => (
               <span>{_.address}</span>
@@ -118,7 +118,7 @@ export const CompaniesRegistered = () => {
           },
           {
             head: m.postalCodeShort,
-            name: 'postalCode',
+            id: 'postalCode',
             row: _ =>
               <>
                 <span>{_.postalCode?.slice(0, 2)}</span>
@@ -127,7 +127,7 @@ export const CompaniesRegistered = () => {
           },
           {
             head: m.reports,
-            name: 'count',
+            id: 'count',
             className: cssUtils.txtRight,
             row: _ =>
               <NavLink to={siteMap.reports({siretSirenList: [_.siret], departments: _companies.filters.departments})}>

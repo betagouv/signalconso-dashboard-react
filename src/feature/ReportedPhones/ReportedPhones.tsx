@@ -81,32 +81,32 @@ export const ReportedPhones = () => {
           data={_reportedPhone.list?.data}
           rows={[
             {
-              name: 'phone',
+              id: 'phone',
               head: m.phone,
               row: _ => _.phone,
             },
             {
-              name: 'category',
+              id: 'category',
               head: m.category,
               row: _ => _.category,
             },
             {
-              name: 'companyName',
+              id: 'companyName',
               head: m.company,
               row: _ => _.companyName,
             },
             {
-              name: 'siret',
+              id: 'siret',
               head: m.siret,
               row: _ => _.siret,
             },
             {
-              name: 'count',
+              id: 'count',
               head: m.reportsCount,
               row: _ => _.count,
             },
             {
-              name: 'actions',
+              id: 'actions',
               row: _ => (
                 <>
                   <NavLink to={siteMap.reports + toQueryString({

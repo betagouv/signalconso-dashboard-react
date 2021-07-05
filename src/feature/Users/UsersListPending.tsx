@@ -22,12 +22,12 @@ export const UsersListPending = () => {
         data={_users.entity}
         rows={[
           {
-            name: 'email',
+            id: 'email',
             head: m.email,
             row: _ => <Txt bold>{_.email}</Txt>
           },
           {
-            name: 'tokenCreation',
+            id: 'tokenCreation',
             head: m.invitationDate,
             row: _ => formatDate(_.tokenCreation)
           },

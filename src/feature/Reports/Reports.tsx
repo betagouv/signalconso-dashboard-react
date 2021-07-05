@@ -161,7 +161,7 @@ export const Reports = ({}) => {
           showColumnsToggle={true}
           rows={[
             {
-              name: 'companyPostalCode',
+              id: 'companyPostalCode',
               head: m.postalCodeShort,
               className: css.tdPostal,
               row: _ =>
@@ -171,7 +171,7 @@ export const Reports = ({}) => {
                 </>
             },
             {
-              name: 'companyName',
+              id: 'companyName',
               head: m.company,
               className: css.tdName,
               row: _ =>
@@ -182,13 +182,13 @@ export const Reports = ({}) => {
                 </>
             },
             {
-              name: 'companySiret',
+              id: 'companySiret',
               head: m.siret,
               hidden: connectedUser.role !== Roles.DGCCRF,
               row: _ => _.report.companySiret
             },
             {
-              name: 'category',
+              id: 'category',
               head: m.problem,
               row: _ =>
                 <Tooltip title={_.report.subcategories.map((s, i) => <span key={i}>{s}<br/></span>)}>
@@ -196,18 +196,18 @@ export const Reports = ({}) => {
                 </Tooltip>
             },
             {
-              name: 'creationDate',
+              id: 'creationDate',
               head: m.creationDate,
               row: _ => formatDate(_.report.creationDate)
             },
             {
-              name: 'reportDate',
+              id: 'reportDate',
               head: 'Date constat',
               hidden: connectedUser.role !== Roles.DGCCRF,
               row: _ => getReportingDate(_.report)
             },
             {
-              name: 'details',
+              id: 'details',
               head: m.details,
               className: css.tdDesc,
               row: _ =>
@@ -229,19 +229,19 @@ export const Reports = ({}) => {
                 </Tooltip>
             },
             {
-              name: 'email',
+              id: 'email',
               head: m.consumer, className: css.tdConsumer, row: _ =>
                 <span className={classes(_.report.contactAgreement ? cssUtils.colorSuccess : cssUtils.colorError)}>
                   {textOverflowMiddleCropping(_.report.email, 25)}
                 </span>
             },
             {
-              name: 'status',
+              id: 'status',
               head: m.status, row: _ =>
                 <ReportStatusChip dense status={_.report.status}/>
             },
             {
-              name: 'file',
+              id: 'file',
               head: m.files, className: css.tdFiles, row: _ =>
                 _.files.length > 0 && (
                   <Badge badgeContent={_.files.length} color="primary" invisible={_.files.length === 1}>
@@ -250,7 +250,7 @@ export const Reports = ({}) => {
                 )
             },
             {
-              name: 'actions',
+              id: 'actions',
               stickyEnd: true,
               className: classes(css.actions),
               row: _ => (
