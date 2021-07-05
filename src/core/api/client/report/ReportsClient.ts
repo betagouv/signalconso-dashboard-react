@@ -1,4 +1,4 @@
-import {ApiClientApi, cleanObject, dateToApi, Event, Id, Report, ReportAction, ReportResponse, ReportSearchResult} from '../../index'
+import {ApiClientApi, cleanObject, dateToApi, directDownloadBlob, Event, Id, Report, ReportAction, ReportResponse, ReportSearchResult} from '../../index'
 import {PaginatedData, ReportSearch} from '../../model'
 import {pipe} from 'rxjs'
 import {ApiSdkLogger} from '../../helper/Logger'
@@ -101,17 +101,8 @@ export class ReportsClient {
 
   readonly download = (id: Id) => {
     // TODO Type it and maybe improve it
-    return this.client.get<any>(`reports/${id}/download`,
-      {headers: {responseType: 'blob', 'Accept': 'application/pdf'}}
-    )
-      .then(response => {
-        const url = window.URL.createObjectURL(new Blob([response]))
-        const link = document.createElement('a')
-        link.href = url
-        link.setAttribute('download', 'file.pdf')
-        document.body.appendChild(link)
-        link.click()
-      })
+    return this.client.getPdf<any>(`reports/${id}/download`, {headers: {responseType: 'blob', 'Accept': 'application/pdf'}})
+      .then(directDownloadBlob('test.pdf'))
   }
 
   readonly remove = (id: Id) => {

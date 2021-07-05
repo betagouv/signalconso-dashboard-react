@@ -14,6 +14,7 @@ import {ReportSearch} from '../../core/api'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
 import {useUsersContext} from '../../core/context/UsersContext'
 import {regexp} from '../../core/helper/utils'
+import {fromNullable} from 'fp-ts/lib/Option'
 
 export const Users = () => {
   const {m} = useI18n()
@@ -25,9 +26,7 @@ export const Users = () => {
     <Page>
       <PageTitle action={
         <Confirm
-          onConfirm={() => {
-            _invite.fetch()(getValues().email)
-          }}
+          onConfirm={() => fromNullable(getValues().email).map(_invite.fetch())}
           confirmLabel={m.invite}
           cancelLabel={m.close}
           title={m.users_invite_dialog_title}

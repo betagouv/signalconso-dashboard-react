@@ -1,5 +1,6 @@
 import {ApiClientApi, ApiPaginate, CompanySearch, CompanyToActivate, CompanyWithReportsCount, dateToApi, directDownloadBlob, extractApiAddress} from '../../index'
 import {Company, CompanyCreation, CompanyUpdate, Event, Id} from '../../model'
+import {format} from 'date-fns'
 
 interface ApiCompanyWithReportsCount {
   companyAddress: string
@@ -48,7 +49,7 @@ export class CompanyClient {
 
   readonly downloadActivationDocument = (companyIds: Id[]) => {
     return this.client.postGetPdf(`/companies/activation-document`, {body: {companyIds},})
-      .then(directDownloadBlob(''))
+      .then(directDownloadBlob(`signalement_depot_${format(new Date(), 'ddMMyy')}`))
   }
 
   readonly fetchToActivate = () => {

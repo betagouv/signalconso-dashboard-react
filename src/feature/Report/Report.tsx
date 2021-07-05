@@ -2,13 +2,12 @@ import React, {useEffect, useState} from 'react'
 import {Page} from '../../shared/Layout'
 import {useParams} from 'react-router'
 import {useI18n} from '../../core/i18n'
-import {Panel, PanelBody} from '../../shared/Panel'
+import {Panel, PanelBody, PanelHead} from '../../shared/Panel'
 import {useReportContext} from '../../core/context/ReportContext'
 import {FileOrigin, Id} from 'core/api'
 import {Divider, Grid, Icon, makeStyles, Tab, Tabs, Theme, useTheme} from '@material-ui/core'
 import {ReportStatusChip} from '../../shared/ReportStatus/ReportStatus'
 import {Chip} from '../../shared/Chip/Chip'
-import {PanelHead} from '../../shared/Panel/PanelHead'
 import {useCssUtils} from '../../core/utils/useCssUtils'
 import {capitalize, classes} from '../../core/helper/utils'
 import {ScButton} from '../../shared/Button/Button'
@@ -54,7 +53,10 @@ const useStyles = makeStyles((t: Theme) => ({
 export const ReportComponent = () => {
   const {id} = useParams<{id: Id}>()
   const {m, formatDate} = useI18n()
-  const _report = useReportContext()
+  const _report = useReportContext().get
+  const _reportRemove = useReportContext().remove
+  const _events = useReportContext().events
+  const _reportDownload = useReportContext().download
   const theme = useTheme()
   const cssUtils = useCssUtils()
   const css = useStyles()
@@ -63,7 +65,7 @@ export const ReportComponent = () => {
 
   useEffect(() => {
     _report.fetch()(id)
-    _report.events.fetch()(id)
+    _events.fetch()(id)
   }, [])
 
   useEffect(() => {
@@ -71,21 +73,10 @@ export const ReportComponent = () => {
   }, [_report.entity, _report.error])
 
   useEffect(() => {
-    fromNullable(_report.removingError).map(toastError)
-  }, [_report.removingError])
+    fromNullable(_reportRemove.error).map(toastError)
+  }, [_reportRemove.error])
 
-  const downloadReport = (reportId: Id) => {
-    _report.download(reportId)
-    //   .then((response: any) => {
-    //   const blob = new Blob([response.body!], {type: 'application/pdf'})
-    //   const link = document.createElement('a')
-    //   link.href = window.URL.createObjectURL(blob)
-    //   link.download = 'report.pdf'
-    //   document.body.appendChild(link)
-    //   link.click()
-    //   document.body.removeChild(link)
-    // })
-  }
+  const downloadReport = (reportId: Id) => _reportDownload.fetch()(reportId)
 
   return fromNullable(_report.entity?.report).map(report =>
     <Page>
@@ -120,7 +111,7 @@ export const ReportComponent = () => {
                 files={files}
                 reportId={report.id}
                 fileOrigin={FileOrigin.Consumer}
-                onNewFile={() => _report.events.fetch({force: true, clean: false})()}
+                onNewFile={() => _events.fetch({force: true, clean: false})(report.id)}
               />
             ).toUndefined()
           }
@@ -139,9 +130,9 @@ export const ReportComponent = () => {
           <Confirm
             title={m.removeAsk}
             content={m.removeReportDesc(report.companySiret)}
-            onConfirm={() => _report.remove(report.id).then(() => window.history.back())}
+            onConfirm={() => _reportRemove.fetch()(report.id).then(() => window.history.back())}
           >
-            <Btn loading={_report.removing} variant="outlined" color="error" icon="delete">{m.delete}</Btn>
+            <Btn loading={_reportRemove.loading} variant="outlined" color="error" icon="delete">{m.delete}</Btn>
           </Confirm>
         </PanelFoot>
           </Panel>
@@ -190,8 +181,8 @@ export const ReportComponent = () => {
               </Panel>
             </Grid>
           </Grid>
-      <Panel loading={_report.events.loading}>
-        {fromNullable(_report.events.entity).map(events =>
+      <Panel loading={_events.loading}>
+        {fromNullable(_events.entity).map(events =>
           <>
             <Tabs
               className={css.tabs}

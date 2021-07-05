@@ -1,15 +1,14 @@
 import * as React from 'react'
 import {ReactNode, useContext} from 'react'
-import {UseFetchableReturn, useFetcher} from '@alexandreannic/react-hooks-lib/lib'
+import {UseFetcher, useFetcher} from '@alexandreannic/react-hooks-lib/lib'
 import {SignalConsoApiSdk} from '../../App'
-import {ApiError, Id, ReportEvent, ReportSearchResult} from 'core/api'
+import {ApiError} from '../api'
 
-export interface ReportContextProps extends UseFetchableReturn<ReportSearchResult> {
-  remove: (_: Id) => Promise<void>
-  removing: boolean
-  removingError?: ApiError
-  download: (_: Id) => any
-  events: UseFetchableReturn<ReportEvent[]>
+export interface ReportContextProps {
+  get: UseFetcher<SignalConsoApiSdk['secured']['reports']['getById'], ApiError>
+  remove: UseFetcher<SignalConsoApiSdk['secured']['reports']['remove'], ApiError>
+  download: UseFetcher<SignalConsoApiSdk['secured']['reports']['download'], ApiError>
+  events: UseFetcher<SignalConsoApiSdk['secured']['events']['getByReportId'], ApiError>
 }
 
 interface Props {
@@ -23,18 +22,17 @@ const ReportContext = React.createContext<ReportContextProps>(defaultContext as 
 
 export const ReportProvider = ({api, children}: Props) => {
 
-  const _report = useFetcher<ReportSearchResult>(api.secured.reports.getById)
-  const {fetch: remove, loading: removing, error: removingError} = useFetcher<void, ApiError>(api.secured.reports.remove)
-  const _events = useFetcher<ReportEvent[]>(api.secured.events.getByReportId)
+  const get = useFetcher(api.secured.reports.getById)
+  const remove = useFetcher(api.secured.reports.remove)
+  const events = useFetcher(api.secured.events.getByReportId)
+  const download = useFetcher(api.secured.reports.download)
 
   return (
     <ReportContext.Provider value={{
-      ..._report,
-      remove: remove({force: true, clean: true}),
-      removing,
-      removingError,
-      download: api.secured.reports.download,
-      events: _events,
+      get,
+      remove,
+      events,
+      download,
     }}>
       {children}
     </ReportContext.Provider>

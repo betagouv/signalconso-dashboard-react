@@ -1,15 +1,15 @@
 import * as React from 'react'
 import {ReactNode, useContext} from 'react'
-import {UseFetchableReturn, useFetcher, usePaginate, UsePaginate} from '@alexandreannic/react-hooks-lib/lib'
-import {CompanySearch, CompanyToActivate, CompanyWithReportsCount, PaginatedFilters} from 'core/api'
+import {UseFetcher, useFetcher, usePaginate, UsePaginate} from '@alexandreannic/react-hooks-lib/lib'
+import {ApiError, CompanySearch, CompanyToActivate, CompanyWithReportsCount, PaginatedFilters} from 'core/api'
 import {SignalConsoApiSdk} from '../../App'
 import {paginateData} from '../helper/utils'
 
 export interface CompaniesContextProps {
   activated: UsePaginate<CompanyWithReportsCount, CompanySearch>,
   toActivate: UsePaginate<CompanyToActivate, PaginatedFilters>
-  downloadActivationDocument: UseFetchableReturn<void>
-  confirmCompaniesPosted: UseFetchableReturn<void>
+  downloadActivationDocument: UseFetcher<SignalConsoApiSdk['secured']['company']['downloadActivationDocument'], ApiError>
+  confirmCompaniesPosted: UseFetcher<SignalConsoApiSdk['secured']['company']['confirmCompaniesPosted'], ApiError>
 }
 
 interface Props {
@@ -36,8 +36,8 @@ export const CompaniesProvider = ({api, children}: Props) => {
     {limit: 500, offset: 0}
   )
 
-  const downloadActivationDocument = useFetcher<void>(api.secured.company.downloadActivationDocument)
-  const confirmCompaniesPosted = useFetcher<void>(api.secured.company.confirmCompaniesPosted)
+  const downloadActivationDocument = useFetcher(api.secured.company.downloadActivationDocument)
+  const confirmCompaniesPosted = useFetcher(api.secured.company.confirmCompaniesPosted)
 
   return (
     <CompaniesContext.Provider value={{

@@ -1,6 +1,6 @@
 import {makeStyles, Tab, Tabs, Theme} from '@material-ui/core'
 import * as React from 'react'
-import {ReactElement, useState} from 'react'
+import {ReactElement, useMemo, useState} from 'react'
 import {useHistory, useLocation} from 'react-router'
 
 interface Props {
@@ -16,11 +16,9 @@ const useStyles = makeStyles((t: Theme) => ({
 
 export const PageTabs = ({children}: Props) => {
   const {pathname} = useLocation()
-  const getActiveIndex = () => children.map(_ => _.props.to).indexOf(pathname)
-  console.log('index', getActiveIndex())
+  const index = useMemo(() => children.map(_ => _.props.to).indexOf(pathname), [pathname])
   const css = useStyles()
-  const [value, setValue] = useState(getActiveIndex() ?? 0)
-
+  const [value, setValue] = useState(Math.max(0, index))
 
   const handleChange = (event: any, index: number) => {
     setValue(index)
@@ -35,9 +33,6 @@ export const PageTabs = ({children}: Props) => {
       className={css.root}
     >
       {children}
-      {/*{tabs.map(tab =>*/}
-      {/*  <Tab label={tab.label} icon={tab.icon} disabled={tab.disabled} onClick={() => console.log(tab.to)}/>*/}
-      {/*)}*/}
     </Tabs>
   )
 }

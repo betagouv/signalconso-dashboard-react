@@ -1,12 +1,12 @@
 import * as React from 'react'
 import {ReactNode, useContext} from 'react'
-import {UseFetchableReturn, useFetcher} from '@alexandreannic/react-hooks-lib/lib'
+import {UseFetcher, useFetcher} from '@alexandreannic/react-hooks-lib/lib'
 import {SignalConsoApiSdk} from '../../App'
-import {Anomaly} from 'core/api'
+import {ApiError} from '../api'
 
 export interface AnomalyContextProps {
-  anomaly: UseFetchableReturn<Anomaly[]>
-  category: UseFetchableReturn<string[]>
+  anomaly: UseFetcher<SignalConsoApiSdk['public']['anomaly']['getAnomalies'], ApiError>
+  category: UseFetcher<SignalConsoApiSdk['public']['anomaly']['getCategories'], ApiError>
 }
 
 interface Props {
@@ -20,8 +20,8 @@ const AnomalyContext = React.createContext<AnomalyContextProps>(defaultContext a
 
 export const AnomalyProvider = ({api, children}: Props) => {
 
-  const _anomaly = useFetcher<Anomaly[]>(api.public.anomaly.getAnomalies)
-  const _category = useFetcher<string[]>(api.public.anomaly.getCategories)
+  const _anomaly = useFetcher(api.public.anomaly.getAnomalies)
+  const _category = useFetcher(api.public.anomaly.getCategories)
 
   return (
     <AnomalyContext.Provider value={{

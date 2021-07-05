@@ -6,7 +6,7 @@ export const siteMap = {
   reportedPhone: '/suivi-des-telephones',
   reports: (_?: Partial<ReportSearch>) => '/reports' + (_ ? toQueryString(_) : ''),
   subscriptions: '/abonnements',
-  report: (id: Id = ':id') => `/reports/${id}`,
+  report: (id: Id = ':id') => `/report/${id}`,
   exports: '/mes-telechargements',
   companies: '/entreprises',
   companies_toActivate: '/entreprises/a-activer',

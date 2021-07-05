@@ -1,13 +1,13 @@
 import * as React from 'react'
 import {ReactNode, useContext} from 'react'
-import {UseFetchableReturn, useFetcher, usePaginate, UsePaginate} from '@alexandreannic/react-hooks-lib/lib'
-import {PaginatedFilters, User, UserPending} from 'core/api'
+import {UseFetcher, useFetcher, usePaginate, UsePaginate} from '@alexandreannic/react-hooks-lib/lib'
+import {ApiError, PaginatedFilters, User} from 'core/api'
 import {SignalConsoApiSdk} from '../../App'
 
 export interface UsersContextProps {
   dgccrf: UsePaginate<User, PaginatedFilters>
-  dgccrfPending: UseFetchableReturn<UserPending[]>
-  invite: UseFetchableReturn<void>
+  dgccrfPending: UseFetcher<SignalConsoApiSdk['secured']['user']['fetchPendingDGCCRF'], ApiError>
+  invite: UseFetcher<SignalConsoApiSdk['secured']['user']['inviteDGCCRF'], ApiError>
 
 }
 
@@ -27,9 +27,9 @@ export const UsersProvider = ({api, children}: Props) => {
     {limit: 10, offset: 0}
   )
 
-  const dgccrfPending = useFetcher<UserPending[]>(api.secured.user.fetchPendingDGCCRF)
+  const dgccrfPending = useFetcher(api.secured.user.fetchPendingDGCCRF)
 
-  const invite = useFetcher<void>(api.secured.user.inviteDGCCRF)
+  const invite = useFetcher(api.secured.user.inviteDGCCRF)
 
   return (
     <UsersContext.Provider value={{

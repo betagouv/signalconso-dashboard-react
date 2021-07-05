@@ -1,13 +1,13 @@
 import * as React from 'react'
 import {ReactNode, useContext} from 'react'
-import {UseFetchableReturn, useFetcher} from '@alexandreannic/react-hooks-lib/lib'
+import {UseFetcher, useFetcher} from '@alexandreannic/react-hooks-lib/lib'
 import {SignalConsoApiSdk} from '../../App'
-import {Country, Region, ReportStatus} from 'core/api'
+import {ApiError} from 'core/api'
 
 export interface ConstantContextProps {
-  reportStatus: UseFetchableReturn<ReportStatus[]>
-  regions: UseFetchableReturn<Region[]>
-  countries: UseFetchableReturn<Country[]>
+  reportStatus: UseFetcher<SignalConsoApiSdk['secured']['constant']['getReportStatusList'], ApiError>
+  regions: UseFetcher<SignalConsoApiSdk['public']['constant']['getRegions'], ApiError>
+  countries: UseFetcher<SignalConsoApiSdk['public']['constant']['getCountries'], ApiError>
 }
 
 interface Props {
@@ -21,9 +21,9 @@ const ConstantContext = React.createContext<ConstantContextProps>(defaultContext
 
 export const ConstantProvider = ({api, children}: Props) => {
 
-  const _reportStatus = useFetcher<ReportStatus[]>(api.secured.constant.getReportStatusList)
-  const _regions = useFetcher<Region[]>(api.public.constant.getRegions)
-  const _countries = useFetcher<Country[]>(api.public.constant.getCountries)
+  const _reportStatus = useFetcher(api.secured.constant.getReportStatusList)
+  const _regions = useFetcher(api.public.constant.getRegions)
+  const _countries = useFetcher(api.public.constant.getCountries)
 
   return (
     <ConstantContext.Provider value={{

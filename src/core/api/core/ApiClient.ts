@@ -24,6 +24,7 @@ export interface ApiClientApi {
   readonly get: <T = any>(uri: string, options?: RequestOption) => Promise<T>
   readonly post: <T = any>(uri: string, options?: RequestOption) => Promise<T>
   readonly postGetPdf: <T = any>(uri: string, options?: RequestOption) => Promise<Blob>
+  readonly getPdf: <T = any>(uri: string, options?: RequestOption) => Promise<Blob>
   readonly delete: <T = any>(uri: string, options?: RequestOption) => Promise<T>
   readonly put: <T = any>(uri: string, options?: RequestOption) => Promise<T>
 }
@@ -52,6 +53,8 @@ export class ApiClient {
   private readonly fetch: (method: Method, url: string, options?: RequestOption) => Promise<any>
 
   readonly postGetPdf: (url: string, options?: RequestOption) => Promise<Blob>
+
+  readonly getPdf: (url: string, options?: RequestOption) => Promise<Blob>
 
   readonly baseUrl: string
 
@@ -97,11 +100,18 @@ export class ApiClient {
     /** TODO(Alex) Didn't find any way to download pdf with axios but it should exist. */
     this.postGetPdf = async (url: string, options?: RequestOption) => {
       const builtOptions = await ApiClient.buildOptions(options, headers, requestInterceptor)
-      console.log(baseUrl, builtOptions)
       return fetch(baseUrl + url, {
         method: 'POST',
         headers: builtOptions?.headers,
         body: JSON.stringify(builtOptions?.body),
+      }).then(_ => _.blob())
+    }
+
+    this.getPdf = async (url: string, options?: RequestOption) => {
+      const builtOptions = await ApiClient.buildOptions(options, headers, requestInterceptor)
+      return fetch(baseUrl + url, {
+        method: 'GET',
+        headers: builtOptions?.headers,
       }).then(_ => _.blob())
     }
   }
