@@ -13,15 +13,22 @@ import {Datepicker} from '../../shared/Datepicker/Datepicker'
 import {addDays, subDays} from 'date-fns'
 import {ScInput} from '../../shared/Input/ScInput'
 import {ExportPhonesPopper} from '../../shared/ExportPopper/ExportPopperBtn'
+import {fromNullable} from 'fp-ts/lib/Option'
+import {useToast} from '../../core/toast'
 
 export const ReportedPhones = () => {
   const _reportedPhone = useReportedPhonesContext()
   const {m} = useI18n()
   const cssUtils = useCssUtils()
+  const {toastError} = useToast()
 
   useEffect(() => {
     _reportedPhone.fetch()
   }, [])
+
+  useEffect(() => {
+    fromNullable(_reportedPhone.error).map(toastError)
+  }, [_reportedPhone.error])
 
   return (
     <Page>

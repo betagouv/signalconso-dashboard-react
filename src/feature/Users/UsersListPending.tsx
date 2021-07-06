@@ -4,14 +4,21 @@ import {Datatable} from '../../shared/Datatable/Datatable'
 import {useUsersContext} from '../../core/context/UsersContext'
 import {useI18n} from '../../core/i18n'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
+import {fromNullable} from 'fp-ts/lib/Option'
+import {useToast} from '../../core/toast'
 
 export const UsersListPending = () => {
   const _users = useUsersContext().dgccrfPending
   const {m, formatDate} = useI18n()
+  const {toastError} = useToast()
 
   useEffect(() => {
     _users.fetch()()
   }, [])
+
+  useEffect(() => {
+    fromNullable(_users.error).map(toastError)
+  }, [_users.error])
 
   return (
     <Panel>

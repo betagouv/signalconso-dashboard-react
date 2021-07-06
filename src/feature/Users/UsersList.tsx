@@ -8,15 +8,22 @@ import {subMonths} from 'date-fns'
 import {Icon, Tooltip} from '@material-ui/core'
 import {useCssUtils} from '../../core/helper/useCssUtils'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
+import {fromNullable} from 'fp-ts/lib/Option'
+import {useToast} from '../../core/toast'
 
 export const UsersList = () => {
   const {m} = useI18n()
   const _users = useUsersContext().dgccrf
   const cssUtils = useCssUtils()
+  const {toastError} = useToast()
 
   useEffect(() => {
     _users.fetch()
   }, [])
+
+  useEffect(() => {
+    fromNullable(_users.error).map(toastError)
+  }, [_users.error])
 
   return (
     <Panel>

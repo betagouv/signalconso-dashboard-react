@@ -14,6 +14,8 @@ import {Fender, IconBtn} from 'mui-extension/lib'
 import {SelectDepartments} from '../../shared/SelectDepartments/SelectDepartments'
 import {useQueryString} from '../../core/helper/useQueryString'
 import {DebouncedInput} from '../../shared/DebouncedInput/DebouncedInput'
+import {fromNullable} from 'fp-ts/lib/Option'
+import {useToast} from '../../core/toast'
 
 const useStyles = makeStyles((t: Theme) => ({
   tdName_label: {
@@ -42,6 +44,7 @@ export const CompaniesRegistered = () => {
   const _companies = useCompaniesContext().activated
   const cssUtils = useCssUtils()
   const css = useStyles()
+  const {toastError} = useToast()
 
   const queryString = useQueryString<Readonly<Partial<CompanySearch>>>()
   useEffect(() => {
@@ -55,6 +58,10 @@ export const CompaniesRegistered = () => {
   useEffect(() => {
     _companies.fetch()
   }, [])
+
+  useEffect(() => {
+    fromNullable(_companies.error).map(toastError)
+  }, [_companies.error])
 
   return (
     <Panel>

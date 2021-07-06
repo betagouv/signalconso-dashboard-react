@@ -15,6 +15,7 @@ import {useSetState} from '@alexandreannic/react-hooks-lib/lib'
 import {ScButton} from '../../shared/Button/Button'
 import {useToast} from '../../core/toast'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
+import {fromNullable} from 'fp-ts/lib/Option'
 
 const useStyles = makeStyles((t: Theme) => ({
   tdName_label: {
@@ -68,6 +69,10 @@ export const CompaniesToActivate = () => {
   useEffect(() => {
     _companiesToActivate.fetch()
   }, [])
+
+  useEffect(() => {
+    fromNullable(_companiesToActivate.error).map(toastError)
+  }, [_companiesToActivate.error])
 
   const toggleSelectedCompany = (companyId: Id) => {
     selectedCompaniesSet.has(companyId) ? selectedCompaniesSet.delete(companyId) : selectedCompaniesSet.add(companyId)

@@ -7,7 +7,8 @@ export const useToast = () => {
   const {m} = useI18n()
   return {
     toastError: (error: Partial<ApiError>) => {
-      const errorMessage =  error.message || error.code ? error.message + ' ' + (error.code || '') : m.anErrorOccurred
+      // const errorMessage = error.message || error.code ? error.message + ' ' + (error.code || '') : m.anErrorOccurred
+      const errorMessage = m.anErrorOccurred
       toastError(errorMessage)
     },
     ...toasts,
