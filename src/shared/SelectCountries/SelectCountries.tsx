@@ -1,5 +1,5 @@
 import * as React from 'react'
-import {useEffect, useMemo} from 'react'
+import {forwardRef, useEffect, useMemo} from 'react'
 import {useConstantContext} from '../../core/context/ConstantContext'
 import {fromNullable} from 'fp-ts/lib/Option'
 import {Country} from '../../core/api'
@@ -10,12 +10,12 @@ import {useI18n} from '../../core/i18n'
 import {classes, stopPropagation} from '../../core/helper/utils'
 import {useSetState, UseSetState} from '@alexandreannic/react-hooks-lib/lib'
 
-const withRegions = (WrappedComponent: React.ComponentType<Props>) => React.forwardRef((props: Omit<Props, 'countries'>, ref) => {
+const withRegions = (WrappedComponent: React.ComponentType<Props>) => forwardRef((props: Omit<Props, 'countries'>) => {
   const {countries} = useConstantContext()
   useEffect(() => {
     countries.fetch()()
   }, [])
-  return fromNullable(countries.entity).map(_ => <WrappedComponent {...props} countries={_.filter(_ => _.code !== 'FR')} ref={ref}/>).getOrElse(<></>)
+  return fromNullable(countries.entity).map(_ => <WrappedComponent {...props} countries={_.filter(_ => _.code !== 'FR')}/>).getOrElse(<></>)
 })
 
 const useStyles = makeStyles((t: Theme) => {
@@ -73,8 +73,8 @@ interface Props extends Pick<AutocompleteProps<string, true, false, false>,
   | 'value'
   | 'defaultValue'
   | 'className'
+  // | 'ref'
   | 'placeholder'
-  | 'ref'
   | 'fullWidth'> {
   countries: Country[]
   onChange: (_: string[]) => void
@@ -95,7 +95,7 @@ interface Option {
   isCountry?: boolean
 }
 
-export const SelectCountries = withRegions(({countries, ref, value, onChange, ...props}: Props) => {
+export const SelectCountries = withRegions(forwardRef(({countries, value, onChange, ...props}: Props, ref: any) => {
   const cssUtils = useCssUtils()
   const css = useStyles()
   const {m} = useI18n()
@@ -226,4 +226,4 @@ export const SelectCountries = withRegions(({countries, ref, value, onChange, ..
       </Menu>
     </>
   )
-})
+}))
