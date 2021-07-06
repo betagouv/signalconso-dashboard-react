@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom'
 import {App} from './App'
 import reportWebVitals from './reportWebVitals'
 import {createGenerateClassName, StylesProvider} from '@material-ui/core/styles'
+import {ErrorBundary} from './core/ErrorBundary'
 
 // https://github.com/mui-org/material-ui/issues/11843
 // I think it should not be necessary. There is some miss configuration somewhere
@@ -13,7 +14,9 @@ const generateClassName = createGenerateClassName({
 
 ReactDOM.render(
   <StylesProvider generateClassName={generateClassName}>
+    <ErrorBundary>
       <App/>
+    </ErrorBundary>
   </StylesProvider>
   , document.getElementById('root')
 )

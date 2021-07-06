@@ -42,7 +42,6 @@ export const capitalize = (str?: string, othersInLowerCase = true): string | und
   .map(_ => _.charAt(0).toUpperCase() + (othersInLowerCase ? _.slice(1).toLowerCase() : _.slice(1)))
   .toUndefined()
 
-// export const fnSwitch = <T>(t: T, )
 // Because default imports are very very annoying since they break autocomplete
 export const classes = classNames
 
