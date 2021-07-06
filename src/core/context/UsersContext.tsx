@@ -1,11 +1,11 @@
 import * as React from 'react'
 import {ReactNode, useContext} from 'react'
 import {UseFetcher, useFetcher, usePaginate, UsePaginate} from '@alexandreannic/react-hooks-lib/lib'
-import {ApiError, PaginatedFilters, User} from 'core/api'
+import {ApiError, PaginatedFilters, User, UserSearch} from 'core/api'
 import {SignalConsoApiSdk} from '../../App'
 
 export interface UsersContextProps {
-  dgccrf: UsePaginate<User, PaginatedFilters>
+  dgccrf: UsePaginate<User, UserSearch>
   dgccrfPending: UseFetcher<SignalConsoApiSdk['secured']['user']['fetchPendingDGCCRF'], ApiError>
   invite: UseFetcher<SignalConsoApiSdk['secured']['user']['inviteDGCCRF'], ApiError>
 
@@ -22,7 +22,7 @@ const UsersContext = React.createContext<UsersContextProps>(defaultContext as Us
 
 export const UsersProvider = ({api, children}: Props) => {
 
-  const dgccrf = usePaginate<User, PaginatedFilters>(
+  const dgccrf = usePaginate<User, UserSearch>(
     api.secured.user.fetchDGCCRF,
     {limit: 10, offset: 0}
   )

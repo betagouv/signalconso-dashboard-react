@@ -113,6 +113,7 @@ export const messagesFr = {
   menu_subscriptions: 'Abonnements',
   category: 'Catégorie',
   proResponse: 'Réponse du professionnel',
+  searchByEmail: 'Rechercher par email',
   addProAttachmentFile: 'Ajouter une pièces jointe fournie par l\'entreprise',
   attachedFiles: 'Pièces jointes',
   invalidSize: (maxSize: number) => `La taille du fichier dépasse les ${maxSize} Mb`,

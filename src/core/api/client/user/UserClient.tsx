@@ -1,16 +1,18 @@
-import {ApiClientApi, PaginatedFilters, UserPending} from '../..'
+import {ApiClientApi, UserPending, UserSearch} from '../..'
 import {User} from './User'
 import {paginateData} from '../../../helper/utils'
 import {Paginate} from '@alexandreannic/react-hooks-lib/lib'
+import {fromNullable} from 'fp-ts/lib/Option'
 
 export class UserClient {
 
   constructor(private client: ApiClientApi) {
   }
 
-  readonly fetchDGCCRF = (tableSearch: PaginatedFilters): Promise<Paginate<User>> => {
+  readonly fetchDGCCRF = (filters: UserSearch): Promise<Paginate<User>> => {
     return this.client.get<User[]>(`/account/dgccrf/users`)
-      .then(paginateData(tableSearch.limit, tableSearch.offset))
+      .then(users => fromNullable(filters.email).map(_ => _ === '' ? users : users.filter(user => user.email.indexOf(_) > 0)).getOrElse(users))
+      .then(paginateData(filters.limit, filters.offset))
       .then(result => {
         result.data = result.data.map(_ => {
           _.lastEmailValidation = new Date(_.lastEmailValidation)

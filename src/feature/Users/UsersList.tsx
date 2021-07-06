@@ -5,11 +5,12 @@ import {useI18n} from '../../core/i18n'
 import React, {useEffect} from 'react'
 import {useUsersContext} from '../../core/context/UsersContext'
 import {subMonths} from 'date-fns'
-import {Icon, Tooltip} from '@material-ui/core'
+import {Icon, InputBase, Tooltip} from '@material-ui/core'
 import {useCssUtils} from '../../core/helper/useCssUtils'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
 import {fromNullable} from 'fp-ts/lib/Option'
 import {useToast} from '../../core/toast'
+import {DebouncedInput} from '../../shared/DebouncedInput/DebouncedInput'
 
 export const UsersList = () => {
   const {m} = useI18n()
@@ -28,6 +29,23 @@ export const UsersList = () => {
   return (
     <Panel>
       <Datatable<User>
+        header={
+          <>
+            <DebouncedInput
+              debounce={400}
+              value={_users.filters.email ?? ''}
+              onChange={email => _users.updateFilters(prev => ({...prev, email}))}
+            >
+              {(value, onChange) =>
+                <InputBase
+                  value={value}
+                  placeholder={m.searchByEmail + '...'} fullWidth className={cssUtils.marginLeft}
+                  onChange={e => onChange(e.target.value)}
+                />
+              }
+            </DebouncedInput>
+          </>
+        }
         loading={_users.fetching}
         total={_users.list?.totalSize}
         paginate={{
