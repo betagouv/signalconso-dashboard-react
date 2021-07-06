@@ -14,7 +14,7 @@ import React, {useEffect} from 'react'
 import {useQueryString} from '../../core/helper/useQueryString'
 import {NavLink} from 'react-router-dom'
 import {SelectDepartments} from '../../shared/SelectDepartments/SelectDepartments'
-import {IconBtn} from 'mui-extension/lib'
+import {Fender, IconBtn} from 'mui-extension/lib'
 import {useToast} from '../../core/toast'
 import {Datepicker} from '../../shared/Datepicker/Datepicker'
 import {ReportStatusChip} from '../../shared/ReportStatus/ReportStatus'
@@ -22,10 +22,12 @@ import {Config} from '../../conf/config'
 import {ReportFilters} from './ReportsFilters'
 import {siteMap} from '../../core/siteMap'
 import {ExportReportsPopper} from '../../shared/ExportPopper/ExportPopperBtn'
+import {EntityIcon} from '../../core/EntityIcon'
+import {ScButton} from '../../shared/Button/Button'
+import {Txt} from 'mui-extension/lib/Txt/Txt'
 
 const useStyles = makeStyles((t: Theme) => ({
-  toolbar: {
-  },
+  toolbar: {},
   tdName: {
     lineHeight: 1.4,
     maxWidth: 170,
@@ -262,6 +264,19 @@ export const Reports = ({}) => {
               )
             },
           ]}
+          renderEmptyState={
+            <Fender
+              icon={EntityIcon.report}
+              title={m.noReportsTitle}
+              description={
+                <>
+                  <Txt color="hint" size="big" block gutterBottom>{m.noReportsDesc}</Txt>
+                  <ScButton icon="clear" onClick={_reports.clearFilters} variant="contained" color="primary">
+                    {m.removeAllFilters}
+                  </ScButton>
+                </>
+              }
+            />}
         />
       </Panel>
     </Page>

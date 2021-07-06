@@ -16,6 +16,7 @@ import {ScButton} from '../../shared/Button/Button'
 import {useToast} from '../../core/toast'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
 import {fromNullable} from 'fp-ts/lib/Option'
+import {EntityIcon} from '../../core/EntityIcon'
 
 const useStyles = makeStyles((t: Theme) => ({
   tdName_label: {
@@ -50,9 +51,6 @@ const useStyles = makeStyles((t: Theme) => ({
     maxWidth: 300,
     ...utilsStyles(t).truncate,
   },
-  fender: {
-    margin: `${t.spacing(1)}px auto ${t.spacing(2)}px auto`,
-  }
 }))
 
 export const CompaniesToActivate = () => {
@@ -198,7 +196,6 @@ export const CompaniesToActivate = () => {
             id: 'lastNotice',
             row: _ =>
               <>{formatDate(_.lastNotice)}</>
-
           },
           {
             id: 'actions',
@@ -213,8 +210,7 @@ export const CompaniesToActivate = () => {
           }
         ]}
         renderEmptyState={
-          <Fender title={m.noCompanyFound} icon="store" description={m.noDataAtm} className={css.fender}>
-          </Fender>
+          <Fender title={m.noCompanyFound} icon={EntityIcon.company}/>
         }/>
     </Panel>
   )

@@ -29,7 +29,7 @@ const reportFilter2QueryString = (report: ReportSearch): ReportFilterQuerystring
 
     const parseBoolean = (_: keyof Pick<ReportSearch, 'websiteExists' | 'phoneExists' | 'hasCompany'>) => (report[_] !== undefined && {[_]: '' + report[_] as 'true' | 'false'})
     const parseDate = (_: keyof Pick<ReportSearch, 'start' | 'end'>) => ((report[_]) ? {[_]: dateToApi(report[_])} : {})
-    const parseArray = (_: keyof Pick<ReportSearch, 'companyCountries' | 'departments'>) => (report[_] ? {[_]: report[_]?.join(',')} : {})
+    const parseArray = (_: keyof Pick<ReportSearch, 'companyCountries' | 'departments'>) => (report[_] ? {[_]: [report[_]]?.flatMap(_ => _).join(',')} : {})
     return {
       ...r,
       offset: offset !== undefined ? offset + '' : undefined,

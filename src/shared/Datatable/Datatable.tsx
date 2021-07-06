@@ -5,6 +5,7 @@ import {classes} from '../../core/helper/utils'
 import {DatatableColumnToggle} from './DatatableColumnsToggle'
 import {useSetState} from '@alexandreannic/react-hooks-lib/lib'
 import {useI18n} from '../../core/i18n'
+import {Fender} from 'mui-extension/lib'
 
 type OrderBy = 'asc' | 'desc'
 
@@ -78,7 +79,11 @@ const useStyles = makeStyles((t: Theme) => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'flex-end',
-  }
+  },
+  fenderContainer: {
+    padding: t.spacing(2, 2),
+    textAlign: 'center',
+  },
 }))
 
 const safeParseInt = (maybeInt: any, defaultValue: number): number => isNaN(maybeInt) ? defaultValue : parseInt(maybeInt)
@@ -165,10 +170,14 @@ export const Datatable = <T extends any = any,>(props: DatatableProps<T>) => {
                 )}
               </TableRow>
             )}
-            {data?.length === 0 && renderEmptyState && (
+            {!loading && (!data || data?.length === 0) && (
               <TableRow>
-                <TableCell colSpan={filteredRows.length}>
-                  {renderEmptyState}
+                <TableCell colSpan={filteredRows.length} className={css.fenderContainer}>
+                  {renderEmptyState ? (
+                    renderEmptyState
+                  ) : (
+                    <Fender title={m.noDataAtm} icon="highlight_off"/>
+                  )}
                 </TableCell>
               </TableRow>
             )}

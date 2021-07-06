@@ -102,17 +102,6 @@ export const ReportFilters = ({filters, updateFilters, children}: ReportsFilters
                   )}
                 </ScSelect>
               </Row>
-              {/*<Row label={m.status}>*/}
-              {/*  <Controller control={control} name="status" defaultValue={''} render={({field: ?? '' {ref, ...props}}) =>*/}
-              {/*    <ScSelect inputRef={ref} {...props}>*/}
-              {/*      {reportStatus.map(status =>*/}
-              {/*        <MenuItem key={status} value={status}>*/}
-              {/*          <ReportStatusChip dense fullWidth status={status}/>*/}
-              {/*        </MenuItem>*/}
-              {/*      )}*/}
-              {/*    </ScSelect>*/}
-              {/*  }/>*/}
-              {/*</Row>*/}
               <Row label={m.tags}>
                 <ScSelect multiple small fullWidth {...register('tags')} defaultValue={filters.tags ?? []}>
                   <MenuItem value="">&nbsp;</MenuItem>
@@ -149,12 +138,6 @@ export const ReportFilters = ({filters, updateFilters, children}: ReportsFilters
                     <FormControlLabel control={<Radio/>} label={m.indifferent} value=""/>
                   </RadioGroup>
                 }/>
-
-                {/*// <RadioGroup style={{flexDirection: 'row'}}>*/}
-                {/*//   <FormControlLabel control={<Radio inputRef={register('hasCompany') as any}/>} value={true} label={m.yes}/>*/}
-                {/*//   <FormControlLabel control={<Radio inputRef={register('hasCompany') as any}/>} value={false} label={m.no}/>*/}
-                {/*//   <FormControlLabel control={<Radio inputRef={register('hasCompany') as any}/>} value={undefined} label={m.indifferent}/>*/}
-                {/*// </RadioGroup>*/}
               </Row>
             </DialogContent>
             <DialogActions>

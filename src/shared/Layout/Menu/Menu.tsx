@@ -5,7 +5,7 @@ import {Sidebar, SidebarBody, SidebarFooter, SidebarItem} from 'mui-extension'
 import {NavLink as Link, useLocation} from 'react-router-dom'
 import {useI18n} from '../../../core/i18n'
 import {useLoginContext} from '../../../App'
-import {Icons} from '../../../core/Icons'
+import {EntityIcon} from '../../../core/EntityIcon'
 
 const useStyles = makeStyles((t: Theme) => createStyles({
   avatar: {
@@ -47,7 +47,7 @@ export const Menu = ({className, basePath = ''}: MenuProps) => {
     <Sidebar className={className}>
       <SidebarBody>
         <MenuItem to={path('/')} icon="home" large>{m.home}</MenuItem>
-        <MenuItem to={path('/reports')} icon={Icons.report}>{m.reports}</MenuItem>
+        <MenuItem to={path('/reports')} icon={EntityIcon.report}>{m.reports}</MenuItem>
       </SidebarBody>
       <SidebarFooter>
         <SidebarItem icon="logout" onClick={logout}>{m.logout}</SidebarItem>
