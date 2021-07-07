@@ -7,57 +7,64 @@ import {Redirect, Route, Switch, useRouteMatch} from 'react-router-dom'
 import {UsersList} from './UsersList'
 import {UsersListPending} from './UsersListPending'
 import {ScButton} from '../../shared/Button/Button'
-import {Confirm} from 'mui-extension/lib'
+import {Alert, Confirm} from 'mui-extension/lib'
 import {ScInput} from '../../shared/Input/ScInput'
 import {useForm} from 'react-hook-form'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
 import {useUsersContext} from '../../core/context/UsersContext'
 import {regexp} from '../../core/helper/regexp'
+import {useToast} from '../../core/toast'
 import {fromNullable} from 'fp-ts/lib/Option'
 
 export const Users = () => {
   const {m} = useI18n()
   const {path, url} = useRouteMatch()
-  const {register, handleSubmit, control, getValues, formState: {errors}} = useForm<{email: string}>()
+  const {register, handleSubmit, formState: {errors, isValid}} = useForm<{email: string}>({mode: 'onChange'})
   const _invite = useUsersContext().invite
+  const {toastSuccess} = useToast()
 
   console.log(errors)
   return (
     <Page>
       <PageTitle action={
         <Confirm
+          maxWidth="xs"
           onConfirm={(close) => {
-            fromNullable(getValues().email).map(_invite.fetch())
-            close()
+            handleSubmit(({email}) => {
+              _invite.fetch()(email)
+                .then(() => toastSuccess(m.userInvitationSent))
+                .then(close)
+            })()
           }}
           confirmLabel={m.invite}
           cancelLabel={m.close}
+          loading={_invite.loading}
+          confirmDisabled={!isValid}
           title={m.users_invite_dialog_title}
           content={
             <>
+              {fromNullable(_invite.error).map(error =>
+                <Alert dense type="error" deletable gutterBottom>{m.anErrorOccurred}</Alert>
+              ).toUndefined()}
               <Txt color="hint" block gutterBottom>{m.users_invite_dialog_desc}</Txt>
-              <ScInput
-                fullWidth
-                label={m.email}
-                error={true}
-                helperText="test"
-              />
               <ScInput
                 fullWidth
                 label={m.email}
                 error={!!errors.email}
                 helperText={errors.email?.message}
                 {...register('email', {
-                  required: 'Email is required',
+                  required: m.required,
                   pattern: {
                     value: regexp.emailDGCCRF,
-                    message: 'Please enter a valid email',
+                    message: m.emailDGCCRFValidation,
                   }
                 })}/>
-              <ScButton onClick={handleSubmit(console.log)}>OHO</ScButton>
             </>
           }>
-          <ScButton loading={_invite.loading} icon="person_add" variant="contained" color="primary">
+          <ScButton
+            icon="person_add"
+            variant="contained"
+            color="primary">
             {m.invite}
           </ScButton>
         </Confirm>

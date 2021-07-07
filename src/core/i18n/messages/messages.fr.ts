@@ -159,6 +159,8 @@ export const messagesFr = {
   invalidPassword: 'Mot de passe incorrect',
   newPassword: 'Nouveau mot de passe',
   newPasswordConfirmation: 'Confirmation',
+  userInvitationSent: 'Invitation envoyée',
+  emailDGCCRFValidation: 'Email invalide. Email acceptés : *.gouv.fr',
   nLines: (n: number) => `<b>${n}</b> lignes`,
   reportResponse: {
     [ReportResponseTypes.Accepted]: 'Signalement pris en compte',
