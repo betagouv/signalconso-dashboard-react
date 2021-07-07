@@ -1,5 +1,4 @@
-import axios, {AxiosError, AxiosResponse, ResponseType} from 'axios'
-import {ApiSdkLogger} from '../helper/Logger'
+import axios, {AxiosResponse, ResponseType} from 'axios'
 import * as qs from 'qs'
 
 export interface RequestOption {
@@ -40,10 +39,10 @@ export type StatusCode =
   500 |
   504;
 
-export class ApiError extends Error {
-  constructor(public code: StatusCode, public message: string, public error?: Error) {
-    super(message);
-  }
+export interface ApiError {
+  code: StatusCode
+  message: string
+  error?: Error
 }
 
 export type Method = 'POST' | 'GET' | 'PUT' | 'DELETE';
@@ -83,18 +82,12 @@ export class ApiClient {
         paramsSerializer: (params) => qs.stringify(params, {arrayFormat: 'repeat'})
       })
         .then(mapData ?? ((_: AxiosResponse) => _.data))
-        .catch(mapError ?? ((_: AxiosError) => {
-          ApiSdkLogger.error('[ApiClient]', _)
-          const errorMessage = (() => {
-            switch (_.response?.status) {
-              case 400:
-                return 'BAD_REQUEST'
-              default:
-                return _.response?.data
-            }
-          })()
-          throw new ApiError(_.response?.status as StatusCode, errorMessage)
-        }));
+        .catch(mapError ?? ((_: any) => {
+          if (_.response) {
+            return Promise.reject({code: _.response.status, message: _.response.data, error: _})
+          }
+          return Promise.reject({code: 500, message: 'Something went wrong.', error: _})
+        }))
     };
 
     /** TODO(Alex) Didn't find any way to download pdf with axios but it should exist. */
