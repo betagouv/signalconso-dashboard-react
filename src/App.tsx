@@ -27,6 +27,7 @@ import {CompaniesProvider} from './core/context/CompaniesContext'
 import {ReportsProvider} from './core/context/ReportsContext'
 import {Provide} from './shared/Provide/Provide'
 import {UsersProvider} from './core/context/UsersContext'
+import {Settings} from './feature/Settings/Settings'
 
 const headers = {
   'Content-Type': 'application/json',
@@ -134,6 +135,7 @@ const LoggedApp = () => {
           <Route path={siteMap.report()} component={ReportComponent}/>
           <Route path={siteMap.users} component={Users}/>
           <Route path={siteMap.companies} component={Companies}/>
+          <Route path={siteMap.settings} component={Settings}/>
           <Redirect exact from="/" to={siteMap.reports()}/>
         </Switch>
       </Layout>

@@ -26,7 +26,10 @@ export const Users = () => {
     <Page>
       <PageTitle action={
         <Confirm
-          onConfirm={() => fromNullable(getValues().email).map(_invite.fetch())}
+          onConfirm={(close) => {
+            fromNullable(getValues().email).map(_invite.fetch())
+            close()
+          }}
           confirmLabel={m.invite}
           cancelLabel={m.close}
           title={m.users_invite_dialog_title}

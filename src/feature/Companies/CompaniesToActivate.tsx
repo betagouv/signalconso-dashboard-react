@@ -92,13 +92,14 @@ export const CompaniesToActivate = () => {
     setSelectedCompanies(selectedCompaniesSet.toArray())
   }
 
-  const confirmCompaniesPosted = () => {
+  const confirmCompaniesPosted = (closeDialog: () => void) => {
     _companies.confirmCompaniesPosted.fetch()(selectedCompaniesSet.toArray())
       .then(() => {
         _companiesToActivate.fetch({clean: false})
       })
       .then(unselectAll)
       .catch(toastError)
+      .finally(closeDialog)
   }
 
   return (

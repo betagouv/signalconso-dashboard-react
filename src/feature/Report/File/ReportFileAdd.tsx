@@ -62,7 +62,7 @@ export const ReportFileAdd = ({reportId, onUploaded, fileOrigin}: Props) => {
     if (files) {
       const file = files[0]
       if (file.size > Config.uploadFileMaxSizeMb * 1024 * 1024) {
-        toastError({name: m.invalidSize(Config.uploadFileMaxSizeMb), message: m.invalidSize(Config.uploadFileMaxSizeMb)})
+        toastError({message: m.invalidSize(Config.uploadFileMaxSizeMb)})
         setErrorMessage(m.invalidSize(Config.uploadFileMaxSizeMb))
         return
       }

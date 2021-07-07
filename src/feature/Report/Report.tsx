@@ -92,7 +92,7 @@ export const ReportComponent = () => {
             </div>
             <ReportStatusChip className={cssUtils.marginLeftAuto} status={report.status}/>
           </div>
-          <Alert dense type="info" deletable className={cssUtils.marginBottom}>
+          <Alert dense type="info" deletable persistentDelete className={cssUtils.marginBottom}>
             {m.reportCategoriesAreSelectByConsumer}
           </Alert>
           <ReportCategories categories={[report.category, ...report.subcategories]}/>
@@ -130,7 +130,7 @@ export const ReportComponent = () => {
           <Confirm
             title={m.removeAsk}
             content={m.removeReportDesc(report.companySiret)}
-            onConfirm={() => _reportRemove.fetch()(report.id).then(() => window.history.back())}
+            onConfirm={(close) => _reportRemove.fetch()(report.id).then(() => window.history.back()).finally(close)}
           >
             <Btn loading={_reportRemove.loading} variant="outlined" color="error" icon="delete">{m.delete}</Btn>
           </Confirm>

@@ -92,7 +92,7 @@ export const Reports = ({}) => {
     .map(_ => _.value)
 
   return (
-    <Page large>
+    <Page size="large">
       <PageTitle>{m.reports_pageTitle}</PageTitle>
 
       <Panel>

@@ -69,6 +69,8 @@ export const Menu = ({onClose}: Props) => {
         <Divider/>
         <MenuItem onClick={onClose} to={path(siteMap.reportedWebsites)} icon={EntityIcon.website}>{m.menu_websites}</MenuItem>
         <MenuItem onClick={onClose} to={path(siteMap.reportedPhone)} icon={EntityIcon.phone}>{m.menu_phones}</MenuItem>
+        <Divider/>
+        <MenuItem onClick={onClose} to={path(siteMap.settings)} icon="settings">{m.menu_settings}</MenuItem>
       </div>
     </ClickAwayListener>
   )

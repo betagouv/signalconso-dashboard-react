@@ -35,4 +35,8 @@ export class UserClient {
   readonly inviteDGCCRF = (email: string) => {
     return this.client.post<void>(`/account/dgccrf/invitation`, {body: {email}})
   }
+
+  readonly changePassword = (oldPassword: string, newPassword: string) => {
+    return this.client.post(`/account/password`, {body: {oldPassword, newPassword}})
+  }
 }
