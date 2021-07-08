@@ -5,11 +5,7 @@ import {makeStyles} from '@material-ui/core/styles'
 import {useI18n} from '../i18n'
 import {useFormInput} from '@alexandreannic/react-hooks-lib/lib'
 import {regexpPattern} from '../helper/regexp'
-
-interface Props {
-  isLoading: boolean
-  onLogin: (email: string, password: string) => Promise<void>
-}
+import {LoginComponentProps} from './LoginContext'
 
 const useStyles = makeStyles((t: Theme) => ({
   root: {
@@ -30,7 +26,7 @@ const useStyles = makeStyles((t: Theme) => ({
   },
 }));
 
-export const LoginForm = ({isLoading, onLogin}: Props) => {
+export const LoginForm = ({isLoading, onLogin}: LoginComponentProps) => {
   const {m} = useI18n();
   const inputEmail = useFormInput('email', {
     errorMessage: m.invalidEmail,

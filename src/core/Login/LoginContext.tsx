@@ -1,6 +1,5 @@
-import React, {ReactNode, useContext, useEffect, useState} from 'react'
+import React, {JSXElementConstructor, ReactComponentElement, ReactElement, ReactNode, useContext, useEffect, useState} from 'react'
 import {LoginLoader} from './LoginLoader'
-import {LoginForm} from './LoginForm'
 import {localStorageObject} from '../helper/localStorage'
 import {useToast} from '../toast'
 import jwtDecode from 'jwt-decode'
@@ -24,10 +23,22 @@ export interface AuthRespone<User> {
   user: User
 }
 
-export const makeLoginProviderComponent = <User, ApiSdk>(
-  apiLogin: (email: string, password: string) => Promise<AuthRespone<User>>,
-  makeSdk: (token: string) => ApiSdk
-) => {
+export interface MakeLoginProviderComponentProps<User, ApiSdk> {
+  loginApiEndpoint: (email: string, password: string) => Promise<AuthRespone<User>>,
+  makeSdk: (token: string) => ApiSdk,
+  LoginComponent: any
+}
+
+export interface LoginComponentProps {
+  isLoading: boolean
+  onLogin: (email: string, password: string) => Promise<void>
+}
+
+export const makeLoginProviderComponent = <User, ApiSdk>({
+  loginApiEndpoint,
+  makeSdk,
+  LoginComponent,
+}: MakeLoginProviderComponentProps<User, ApiSdk>) => {
   const authenticationStorage = localStorageObject<AuthRespone<User>>('AuthUserSignalConso')
   const LoginContext = React.createContext<LoginContextProps<User, ApiSdk>>({} as any)
 
@@ -73,7 +84,7 @@ export const makeLoginProviderComponent = <User, ApiSdk>(
     const login = async (email: string, password: string) => {
       try {
         setIsLoggining(true)
-        const auth = await apiLogin(email, password)
+        const auth = await loginApiEndpoint(email, password)
         authenticationStorage.set(auth)
         setAuth(auth)
       } catch (e) {
@@ -115,7 +126,7 @@ export const makeLoginProviderComponent = <User, ApiSdk>(
       )
     }
     return (
-      <LoginForm isLoading={isLoggining} onLogin={login}/>
+      <LoginComponent isLoading={isLoggining} onLogin={login}/>
     )
   }
 

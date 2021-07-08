@@ -9,6 +9,8 @@ import {utilsStyles} from '../../theme'
 import {MenuItem} from './MenuItem'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
 import {siteMap} from '../../siteMap'
+import {stopPropagation} from '../../helper/utils'
+import {User} from '../../api'
 
 const useMenuStyles = makeStyles((t: Theme) => ({
   root: {
@@ -43,16 +45,17 @@ const useMenuStyles = makeStyles((t: Theme) => ({
 
 interface Props {
   onClose: () => void
+  logout: () => void
+  connectedUser: User
 }
 
-export const Menu = ({onClose}: Props) => {
+export const Menu = ({onClose, logout, connectedUser}: Props) => {
   const path = (page: string) => '' + page
   const {m} = useI18n()
-  const {logout, connectedUser} = useLoginContext()
   const css = useMenuStyles()
 
   return (
-    <ClickAwayListener onClickAway={onClose}>
+    <ClickAwayListener onClickAway={stopPropagation(onClose)}>
       <div className={css.root}>
         <div className={css.user}>
           <Txt block truncate className={css.userName}>{connectedUser.firstName} {connectedUser.lastName}</Txt>

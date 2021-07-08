@@ -30,6 +30,7 @@ import {UsersProvider} from './core/context/UsersContext'
 import {Settings} from './feature/Settings/Settings'
 import {Subscriptions} from './feature/Subscriptions/Subscriptions'
 import {SubscriptionsProvider} from './core/context/SubscriptionsContext'
+import {LoginForm} from './core/Login/LoginForm'
 
 const headers = {
   'Content-Type': 'application/json',
@@ -53,7 +54,12 @@ const makeSecuredSdk = (token: string) => ({
 
 export type SignalConsoApiSdk = ReturnType<typeof makeSecuredSdk>
 
-const loginProvider = makeLoginProviderComponent<UserWithPermission, SignalConsoApiSdk>(apiPublicSdk.authenticate.login, makeSecuredSdk)
+const loginProvider = makeLoginProviderComponent<UserWithPermission, SignalConsoApiSdk>({
+  loginApiEndpoint: apiPublicSdk.authenticate.login,
+  makeSdk: makeSecuredSdk,
+  LoginComponent: LoginForm,
+})
+
 export const Login = loginProvider.Login
 export const useLoginContext = loginProvider.useLoginContext
 

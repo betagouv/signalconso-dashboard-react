@@ -133,10 +133,10 @@ export const CompaniesToActivate = () => {
               </ScButton>
             </Confirm>
             {!_companiesToActivate.fetching && selectedCompaniesSet.size > 0 && (
-              <>
+              <div>
                 <span className={css.selectedCountBadge}>{selectedCompaniesSet.size}</span>
                 <Txt color="hint">{m.selectedCompanies}</Txt>
-              </>
+              </div>
             )}
           </>
         }

@@ -35,15 +35,15 @@ const useMenuStyles = makeStyles((t: Theme) => ({
 
 export const MenuBtn = () => {
   const css = useMenuStyles()
-  const [menuOpen, openMenu, closeMenu, toggleMenu] = useBoolean()
+  const openMenu = useBoolean()
 
   return (
     <div className={css.root}>
-      <Avatar className={css.avatar} onClick={toggleMenu}>
+      <Avatar className={css.avatar} onClick={openMenu.toggle}>
         <Icon>person</Icon>
       </Avatar>
-      {menuOpen && (
-        <Menu onClose={closeMenu}/>
+      {openMenu.value && (
+        <Menu onClose={openMenu.setFalse}/>
       )}
     </div>
   )
