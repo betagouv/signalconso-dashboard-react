@@ -14,10 +14,7 @@ const fromApi = (client: ApiClientApi) => async (api: any): Promise<Subscription
   });
 }
 
-const toApi = (subscription: Partial<Subscription>): any => ({
-  ...subscription,
-  departments: subscription.departments?.map(_ => _.code),
-});
+const toApi = (subscription: Partial<SubscriptionCreate>): any => subscription
 
 export class SubscriptionClient {
 
@@ -25,22 +22,30 @@ export class SubscriptionClient {
   }
 
   readonly list = (): Promise<Subscription[]> => {
-    return this.client.get<Subscription[]>(`/subscriptions`).then(_ => Promise.all(_.map(fromApi(this.client))));
-  };
+    return this.client.get<Subscription[]>(`/subscriptions`).then(_ => Promise.all(_.map(fromApi(this.client))))
+  }
 
   readonly get = (id: Id) => {
-    return this.client.get<Subscription>(`/subscriptions/${id}`).then(fromApi(this.client));
-  };
+    return this.client.get<Subscription>(`/subscriptions/${id}`).then(fromApi(this.client))
+  }
 
-  readonly create = (body: SubscriptionCreate) => {
-    return this.client.post<Subscription>(`/subscriptions`, {body: toApi(body)}).then(fromApi(this.client));
-  };
+  readonly create = (body: SubscriptionCreate = {
+    categories: [],
+    departments: [],
+    sirets: [],
+    tags: [],
+    countries: [],
+    frequency: 'P7D'
+  }) => {
+    console.log('CREATE', body)
+    return this.client.post<Subscription>(`/subscriptions`, {body: toApi(body)}).then(fromApi(this.client))
+  }
 
-  readonly update = (id: Id, body: Partial<Subscription>) => {
-    return this.client.put<Subscription>(`/subscriptions/${id}`, {body: toApi(body)}).then(fromApi(this.client));
-  };
+  readonly update = (id: Id, body: Partial<SubscriptionCreate>) => {
+    return this.client.put<Subscription>(`/subscriptions/${id}`, {body: toApi(body)}).then(fromApi(this.client))
+  }
 
   readonly remove = (id: Id) => {
-    return this.client.delete<void>(`/subscriptions/${id}`);
-  };
+    return this.client.delete<void>(`/subscriptions/${id}`)
+  }
 }

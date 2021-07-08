@@ -7,7 +7,7 @@ import {useReportContext} from '../../core/context/ReportContext'
 import {FileOrigin, Id} from 'core/api'
 import {Divider, Grid, Icon, makeStyles, Tab, Tabs, Theme, useTheme} from '@material-ui/core'
 import {ReportStatusChip} from '../../shared/ReportStatus/ReportStatus'
-import {Chip} from '../../shared/Chip/Chip'
+import {ScChip} from '../../shared/Chip/ScChip'
 import {useCssUtils} from '../../core/helper/useCssUtils'
 import {capitalize, classes} from '../../core/helper/utils'
 import {ScButton} from '../../shared/Button/Button'
@@ -92,7 +92,7 @@ export const ReportComponent = () => {
             </div>
             <ReportStatusChip className={cssUtils.marginLeftAuto} status={report.status}/>
           </div>
-          <Alert dense type="info" deletable persistentDelete className={cssUtils.marginBottom}>
+          <Alert id="report-info" dense type="info" deletable persistentDelete className={cssUtils.marginBottom}>
             {m.reportCategoriesAreSelectByConsumer}
           </Alert>
           <ReportCategories categories={[report.category, ...report.subcategories]}/>
@@ -119,7 +119,7 @@ export const ReportComponent = () => {
         <PanelFoot>
           <div style={{flex: 1}}>
             {report.tags.map(tag => [
-              <Chip icon={<Icon style={{fontSize: 20}} className={cssUtils.colorTxtHint}>sell</Icon>} key={tag} label={tag}/>,
+              <ScChip icon={<Icon style={{fontSize: 20}} className={cssUtils.colorTxtHint}>sell</Icon>} key={tag} label={tag}/>,
               ' '
             ])}
           </div>

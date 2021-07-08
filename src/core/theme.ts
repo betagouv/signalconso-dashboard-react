@@ -1,5 +1,5 @@
 import {red} from '@material-ui/core/colors'
-import {createMuiTheme, fade, Theme} from '@material-ui/core'
+import {createMuiTheme, fade, Theme, useTheme} from '@material-ui/core'
 
 export const utilsStyles = (t: Theme) => ({
   defaultRadius: 4,
@@ -29,6 +29,7 @@ export const utilsStyles = (t: Theme) => ({
 })
 
 export const muiTheme = (dark?: boolean): any => {
+  const theme = createMuiTheme()
   const colorMain = '#407e99'
   const colorMainLight = '#6697ad'
   const colorMainDark = '#2c586b'
@@ -70,6 +71,11 @@ export const muiTheme = (dark?: boolean): any => {
           fontWeight: 600,
           minHeight: 40,
           minWidth: '80px !important',
+        }
+      },
+      MuiChip: {
+        outlined: {
+          borderColor: theme.palette.divider,
         }
       },
       MuiMenuItem: {

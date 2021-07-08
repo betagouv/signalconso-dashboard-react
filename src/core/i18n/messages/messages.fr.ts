@@ -77,7 +77,7 @@ export const messagesFr = {
   lastName: 'Nom',
   selectedPeriod: 'Période sélectionnée',
   department: 'Département',
-  selectAllDepartments: 'Tous les départements',
+  departments: 'Départements',
   reports: 'Signalements',
   report: 'Signalement',
   reportHistory: 'Historique du signalement',
@@ -132,9 +132,13 @@ export const messagesFr = {
   advancedFilters: 'Filtres avancés',
   noAnswerFromPro: 'Le professionnel n\'a pas encore répondu au signalement',
   companiesSearchPlaceholder: 'Rechercher par nom, SIREN, SIRET, identifiant...',
+  companySearch: 'Rechercher une entreprise',
+  companySearchLabel: 'SIREN, SIRET ou RCS',
   companiesToActivate: 'En attente d\'activation',
   companiesActivated: 'Entreprises identifiées',
   noCompanyFound: 'Aucune entreprise trouvée',
+  isHeadOffice: 'Siège sociale',
+  governmentCompany: 'Administration publique',
   registerACompany: 'Enregistrer une entreprise',
   noDataAtm: 'Aucune donnée',
   noReportsTitle: 'Aucun signalement',
@@ -158,9 +162,22 @@ export const messagesFr = {
   passwordEdited: 'Mot de passe modifié.',
   invalidPassword: 'Mot de passe incorrect',
   newPassword: 'Nouveau mot de passe',
+  subscription: 'Abonnement',
   newPasswordConfirmation: 'Confirmation',
   userInvitationSent: 'Invitation envoyée',
   emailDGCCRFValidation: 'Email invalide. Email acceptés : *.gouv.fr',
+  daily: 'Quotidienne',
+  weekly: 'Hebdomadaire',
+  selectAllDepartments: 'Tous les départements',
+  subscriptionsAlertInfo: `
+    En créant un abonnement, vous recevrez un mail quotidien ou hebdomadaire (au choix) comportant les nouveaux signalements correspondant à votre sélection de critères, qu’ils soient géographiques, thématiques ou par entreprise.
+    <br/>
+    <b>Ces différents critères peuvent se combiner.</b>
+    <br/>
+    <br/>
+    Par exemple, si vous souhaitez recevoir les signalements liés à deux entreprises bancaires et ceux liés au secteur de l'immobilier, il faut créer deux alertes : une avec les deux siret et une avec la catégorie immobilier.
+  `,
+  alreadySelectedCompany: (name?: string) => `L'entreprise ${name ?? ''} est déjà sélectionnée`,
   nLines: (n: number) => `<b>${n}</b> lignes`,
   reportResponse: {
     [ReportResponseTypes.Accepted]: 'Signalement pris en compte',

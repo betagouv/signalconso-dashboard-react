@@ -65,6 +65,9 @@ export const useCssUtils = makeStyles((t: Theme) => {
     marginBottom: {
       marginBottom: t.spacing(1),
     },
+    marginBottom3: {
+      marginBottom: t.spacing(3),
+    },
     marginRight: {
       marginRight: t.spacing(1),
     },

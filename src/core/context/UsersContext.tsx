@@ -1,7 +1,7 @@
 import * as React from 'react'
 import {ReactNode, useContext} from 'react'
 import {UseFetcher, useFetcher, usePaginate, UsePaginate} from '@alexandreannic/react-hooks-lib/lib'
-import {ApiError, PaginatedFilters, User, UserSearch} from 'core/api'
+import {ApiError, User, UserSearch} from 'core/api'
 import {SignalConsoApiSdk} from '../../App'
 
 export interface UsersContextProps {
@@ -9,7 +9,6 @@ export interface UsersContextProps {
   dgccrfPending: UseFetcher<SignalConsoApiSdk['secured']['user']['fetchPendingDGCCRF'], ApiError>
   invite: UseFetcher<SignalConsoApiSdk['secured']['user']['inviteDGCCRF'], ApiError>
   changePassword: UseFetcher<SignalConsoApiSdk['secured']['user']['changePassword'], ApiError>
-
 }
 
 interface Props {

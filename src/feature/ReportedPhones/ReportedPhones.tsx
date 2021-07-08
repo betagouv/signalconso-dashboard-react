@@ -6,7 +6,7 @@ import {Panel} from '../../shared/Panel'
 import {Datatable} from '../../shared/Datatable/Datatable'
 import {NavLink} from 'react-router-dom'
 import {siteMap} from '../../core/siteMap'
-import {ReportedPhone, toQueryString} from '../../core/api'
+import {ReportedPhone} from '../../core/api'
 import {Btn} from 'mui-extension/lib'
 import {useCssUtils} from '../../core/helper/useCssUtils'
 import {Datepicker} from '../../shared/Datepicker/Datepicker'
@@ -116,8 +116,10 @@ export const ReportedPhones = () => {
               id: 'actions',
               row: _ => (
                 <>
-                  <NavLink to={siteMap.reports + toQueryString({
-                    phone: _.phone, siret: _.siret
+                  <NavLink to={siteMap.reports({
+                    phone: _.phone,
+                    ...(_.siret ? {siretSirenList: [_.siret]} : {}),
+                    ...(_.category ? {category: _.category} : {}),
                   })}>
                     <Btn size="small" color="primary" variant="outlined">
                       {m.see}

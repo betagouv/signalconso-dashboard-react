@@ -28,6 +28,8 @@ import {ReportsProvider} from './core/context/ReportsContext'
 import {Provide} from './shared/Provide/Provide'
 import {UsersProvider} from './core/context/UsersContext'
 import {Settings} from './feature/Settings/Settings'
+import {Subscriptions} from './feature/Subscriptions/Subscriptions'
+import {SubscriptionsProvider} from './core/context/SubscriptionsContext'
 
 const headers = {
   'Content-Type': 'application/json',
@@ -65,6 +67,7 @@ const useStyles = makeStyles((t: Theme) => ({
     },
     html: {
       fontSize: t.typography.fontSize,
+      color: t.palette.text.primary,
     },
     body: {
       lineHeight: '1.5rem',
@@ -126,6 +129,7 @@ const LoggedApp = () => {
       _ => <AsyncFileProvider api={apiSdk} children={_}/>,
       _ => <CompaniesProvider api={apiSdk} children={_}/>,
       _ => <UsersProvider api={apiSdk} children={_}/>,
+      _ => <SubscriptionsProvider api={apiSdk} children={_}/>,
     ]}>
       <Layout>
         <Switch>
@@ -136,6 +140,7 @@ const LoggedApp = () => {
           <Route path={siteMap.users} component={Users}/>
           <Route path={siteMap.companies} component={Companies}/>
           <Route path={siteMap.settings} component={Settings}/>
+          <Route path={siteMap.subscriptions} component={Subscriptions}/>
           <Redirect exact from="/" to={siteMap.reports()}/>
         </Switch>
       </Layout>

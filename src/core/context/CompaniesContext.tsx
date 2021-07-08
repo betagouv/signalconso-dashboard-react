@@ -10,6 +10,7 @@ export interface CompaniesContextProps {
   toActivate: UsePaginate<CompanyToActivate, PaginatedFilters>
   downloadActivationDocument: UseFetcher<SignalConsoApiSdk['secured']['company']['downloadActivationDocument'], ApiError>
   confirmCompaniesPosted: UseFetcher<SignalConsoApiSdk['secured']['company']['confirmCompaniesPosted'], ApiError>
+  searchByIdentity: UseFetcher<SignalConsoApiSdk['public']['company']['searchCompaniesByIdentity'], ApiError>
 }
 
 interface Props {
@@ -27,7 +28,6 @@ export const CompaniesProvider = ({api, children}: Props) => {
     (_: CompanySearch) => api.secured.company.search(_).then(_ => ({data: _.entities, totalSize: _.totalCount})),
     {limit: 10, offset: 0}
   )
-
   const toActivate = usePaginate<CompanyToActivate, PaginatedFilters>(
     (filter: PaginatedFilters) => api.secured.company.fetchToActivate()
       .then(_ => _.sort((a, b) => (b.tokenCreation.getTime() - a.tokenCreation.getTime())))
@@ -35,7 +35,7 @@ export const CompaniesProvider = ({api, children}: Props) => {
     ,
     {limit: 500, offset: 0}
   )
-
+  const searchByIdentity = useFetcher(api.public.company.searchCompaniesByIdentity)
   const downloadActivationDocument = useFetcher(api.secured.company.downloadActivationDocument)
   const confirmCompaniesPosted = useFetcher(api.secured.company.confirmCompaniesPosted)
 
@@ -43,6 +43,7 @@ export const CompaniesProvider = ({api, children}: Props) => {
     <CompaniesContext.Provider value={{
       activated,
       toActivate,
+      searchByIdentity,
       downloadActivationDocument,
       confirmCompaniesPosted,
     }}>

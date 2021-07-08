@@ -6,7 +6,7 @@ export interface WebsiteURL {
 }
 
 export interface DraftCompany {
-  siret?: string
+  siret: string
   name?: string
   brand?: string
   address?: string
@@ -68,3 +68,5 @@ export interface CompanySearch extends PaginatedSearch<any> {
   readonly departments?: string[];
   identity?: string
 }
+
+export const isGovernmentCompany = (_?: DraftCompany): boolean => _?.activityCode?.startsWith('84.') ?? false;

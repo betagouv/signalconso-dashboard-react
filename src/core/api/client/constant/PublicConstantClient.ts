@@ -33,7 +33,7 @@ export class PublicConstantClient {
 
   readonly getDepartmentByCode = (code: string) => {
     // Simulate Async call since it could be moved in the API for factorization purpose
-    Promise.resolve(this.departments.find(_ => _.code === code))
+    return Promise.resolve(this.departments.find(_ => _.code === code))
   }
 
   readonly getCountries = () => this.client.get<Country[]>(`/constants/countries`)

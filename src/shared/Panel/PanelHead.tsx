@@ -9,19 +9,28 @@ const useStyles = makeStyles((t: Theme) => ({
   root: {
     padding: utilsStyles(t).spacing(2, 2, 0, 2),
     margin: 0,
+    display: 'flex',
+    alignItems: 'center',
+  },
+  content: {
+    flex: 1,
   }
 }));
 
 interface Props {
-  className?: any;
-  children: ReactNode;
+  className?: string
+  children: ReactNode
+  action?: ReactNode
 }
 
-export const PanelHead = ({ className, children, ...other }: Props) => {
-  const css = useStyles();
+export const PanelHead = ({className, children, action, ...other}: Props) => {
+  const css = useStyles()
   return (
     <PanelTitle {...other} className={classes(css.root, className)}>
-      {children}
+      <div className={css.content}>
+        {children}
+      </div>
+      {action}
     </PanelTitle>
-  );
-};
+  )
+}
