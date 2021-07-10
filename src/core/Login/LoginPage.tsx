@@ -5,14 +5,17 @@ import {makeStyles} from '@material-ui/core/styles'
 import {useI18n} from '../i18n'
 import {useFormInput} from '@alexandreannic/react-hooks-lib/lib'
 import {regexpPattern} from '../helper/regexp'
-import {LoginComponentProps} from './LoginContext'
 
 const useStyles = makeStyles((t: Theme) => ({
   root: {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    minHeight: '100vh',
+    position: 'fixed',
+    top: 0,
+    bottom: 0,
+    right: 0,
+    left: 0,
   },
   body: {
     display: 'flex',
@@ -26,18 +29,23 @@ const useStyles = makeStyles((t: Theme) => ({
   },
 }));
 
-export const LoginForm = ({isLoading, onLogin}: LoginComponentProps) => {
-  const {m} = useI18n();
+interface Props {
+  isLoading: boolean
+  onLogin: (...args: any[]) => Promise<any>
+}
+
+export const LoginPage = ({isLoading, onLogin}: Props) => {
+  const {m} = useI18n()
   const inputEmail = useFormInput('email', {
     errorMessage: m.invalidEmail,
     pattern: regexpPattern.email,
     required: true
-  });
+  })
   const inputPassword = useFormInput('password', {
     errorMessage: m.atLeast8Characters,
     required: true,
     // pattern: '.{8,}'
-  });
+  })
   const css = useStyles();
 
   const login = async () => {

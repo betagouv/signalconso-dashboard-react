@@ -11,6 +11,7 @@ import {headerHeight} from '../index'
 import React from 'react'
 import {MenuBtn} from '../Menu/MenuBtn'
 import {useLayoutContext} from '../LayoutContext'
+import {LayoutConnectedUser} from '../Layout'
 
 const useStyles = makeStyles((t: Theme) => ({
   root: {
@@ -46,10 +47,13 @@ const useStyles = makeStyles((t: Theme) => ({
     alignItems: 'center',
     marginLeft: 'auto',
   },
-
 }))
 
-export const Header = () => {
+interface Props {
+  connectedUser?: LayoutConnectedUser
+}
+
+export const Header = ({connectedUser}: Props) => {
   const css = useStyles()
   const {m} = useI18n()
   const {isMobileWidth} = useLayoutContext()
@@ -75,7 +79,7 @@ export const Header = () => {
         <HeaderItem href="">{m.home}</HeaderItem>
         <HeaderItem href="comment-ça-marche">{m.howItWorks}</HeaderItem>
         <HeaderItem href="centre-aide/consommateur">{m.helpCenter}</HeaderItem>
-        <MenuBtn/>
+        <MenuBtn connectedUser={connectedUser}/>
       </div>
     </div>
   )

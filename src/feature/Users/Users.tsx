@@ -48,6 +48,7 @@ export const Users = () => {
               ).toUndefined()}
               <Txt color="hint" block gutterBottom>{m.users_invite_dialog_desc}</Txt>
               <ScInput
+                autoFocus
                 fullWidth
                 label={m.email}
                 error={!!errors.email}

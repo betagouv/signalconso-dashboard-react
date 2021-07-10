@@ -3,10 +3,10 @@ import {Button, CircularProgress, Icon, makeStyles, Theme, Tooltip} from '@mater
 import {reportFileConfig} from './reportFileConfig'
 import {useI18n} from '../../../core/i18n'
 import {utilsStyles} from '../../../core/theme'
-import {useLoginContext} from '../../../App'
 import {Config} from '../../../conf/config'
 import {EventActionValues, FileOrigin, Id} from '../../../core/api'
 import {useToast} from '../../../core/toast'
+import {useLogin} from '../../../core/context/LoginContext'
 
 const useStyles = makeStyles((t: Theme) => ({
   root: {
@@ -47,7 +47,7 @@ interface Props {
 export const ReportFileAdd = ({reportId, onUploaded, fileOrigin}: Props) => {
   const css = useStyles()
   const {m} = useI18n()
-  const {apiSdk} = useLoginContext()
+  const {apiSdk} = useLogin()
   const {toastError} = useToast()
 
   const [uploading, setUploading] = useState(false)

@@ -4,7 +4,6 @@ import {useReportsContext} from '../../core/context/ReportsContext'
 import {cleanObject, DetailInputValue, getHostFromUrl, Report, ReportingDateLabel, ReportSearch, ReportSearchResult, Roles} from 'core/api'
 import {Panel} from '../../shared/Panel'
 import {useCssUtils} from '../../core/helper/useCssUtils'
-import {useLoginContext} from '../../App'
 import {Datatable} from '../../shared/Datatable/Datatable'
 import {fromNullable, some} from 'fp-ts/lib/Option'
 import {Badge, Icon, makeStyles, Theme, Tooltip} from '@material-ui/core'
@@ -25,6 +24,7 @@ import {ExportReportsPopper} from '../../shared/ExportPopper/ExportPopperBtn'
 import {EntityIcon} from '../../core/EntityIcon'
 import {ScButton} from '../../shared/Button/Button'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
+import {useLogin} from '../../core/context/LoginContext'
 
 const useStyles = makeStyles((t: Theme) => ({
   toolbar: {},
@@ -69,7 +69,7 @@ export const Reports = ({}) => {
   const {m, formatDate} = useI18n()
   const _reports = useReportsContext()
   const cssUtils = useCssUtils()
-  const {connectedUser} = useLoginContext()
+  const {connectedUser} = useLogin()
   const css = useStyles()
   const {toastError} = useToast()
 
