@@ -3,12 +3,13 @@ import {Btn} from 'mui-extension/lib'
 import {ClickAwayListener, Divider, Theme} from '@material-ui/core'
 import {EntityIcon} from '../../EntityIcon'
 import React from 'react'
-import {useLoginContext} from '../../../App'
 import {makeStyles} from '@material-ui/core/styles'
 import {utilsStyles} from '../../theme'
 import {MenuItem} from './MenuItem'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
 import {siteMap} from '../../siteMap'
+import {stopPropagation} from '../../helper/utils'
+import {LayoutConnectedUser} from '../Layout'
 
 const useMenuStyles = makeStyles((t: Theme) => ({
   root: {
@@ -43,21 +44,21 @@ const useMenuStyles = makeStyles((t: Theme) => ({
 
 interface Props {
   onClose: () => void
+  connectedUser: LayoutConnectedUser
 }
 
-export const Menu = ({onClose}: Props) => {
+export const Menu = ({onClose, connectedUser}: Props) => {
   const path = (page: string) => '' + page
   const {m} = useI18n()
-  const {logout, connectedUser} = useLoginContext()
   const css = useMenuStyles()
 
   return (
-    <ClickAwayListener onClickAway={onClose}>
+    <ClickAwayListener onClickAway={stopPropagation(onClose)}>
       <div className={css.root}>
         <div className={css.user}>
           <Txt block truncate className={css.userName}>{connectedUser.firstName} {connectedUser.lastName}</Txt>
           <Txt block truncate className={css.userEmail}>{connectedUser.email}</Txt>
-          <Btn variant="outlined" size="small" onClick={logout} icon="logout" color="primary" className={css.logoutBtn}>
+          <Btn variant="outlined" size="small" onClick={connectedUser.logout} icon="logout" color="primary" className={css.logoutBtn}>
             {m.logout}
           </Btn>
         </div>

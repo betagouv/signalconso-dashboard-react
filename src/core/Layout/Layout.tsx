@@ -18,28 +18,36 @@ const useStyles = makeStyles((t: Theme) => createStyles({
   },
 }))
 
+export interface LayoutConnectedUser {
+  firstName: string
+  lastName: string
+  email: string
+  logout: () => void
+}
+
 export interface LayoutProps {
   title?: string
   children?: ReactNode
   mobileBreakpoint?: number
+  connectedUser?: LayoutConnectedUser
 }
 
-export const Layout = ({title, mobileBreakpoint, children}: LayoutProps) => {
+export const Layout = ({title, mobileBreakpoint, children, connectedUser}: LayoutProps) => {
   return (
     <LayoutProvider title={title} mobileBreakpoint={mobileBreakpoint}>
-      <LayoutUsingContext>
+      <LayoutUsingContext connectedUser={connectedUser}>
         {children}
       </LayoutUsingContext>
     </LayoutProvider>
   )
 }
 
-const LayoutUsingContext = ({children}: any) => {
+const LayoutUsingContext = ({children, connectedUser}: any) => {
   const classes = useStyles()
   const {isMobileWidth} = useLayoutContext()
   return (
     <>
-      <Header/>
+      <Header connectedUser={connectedUser}/>
       <div className={classNames(classes.root)}>
         {children}
       </div>

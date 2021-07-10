@@ -1,6 +1,5 @@
 import {FileOrigin, Id, UploadedFile} from 'core/api'
 import {Icon, makeStyles, Theme, Tooltip} from '@material-ui/core'
-import {useLoginContext} from '../../../App'
 import {Config} from '../../../conf/config'
 import {some} from 'fp-ts/lib/Option'
 import React from 'react'
@@ -8,6 +7,7 @@ import {extensionToType, FileType, reportFileConfig} from './reportFileConfig'
 import {ReportFileAdd} from './ReportFileAdd'
 import {useI18n} from '../../../core/i18n'
 import {PanelTitle} from '../../../shared/Panel'
+import {useLogin} from '../../../core/context/LoginContext'
 
 export interface ReportFilesProps {
   files?: UploadedFile[]
@@ -78,7 +78,7 @@ const useStyles = makeStyles((t: Theme) => ({
 export const ReportFile = ({file, dense}: ReportFileProps) => {
   const fileType = extensionToType(file.filename)
   const css = useStyles()
-  const {apiSdk} = useLoginContext()
+  const {apiSdk} = useLogin()
   const fileUrl = some(apiSdk.public.document.getLink(file)).map(_ => Config.isDev
     ? _.replace(Config.apiBaseUrl, 'https://signal-api.conso.gouv.fr')
     : _

@@ -1,6 +1,5 @@
 import React from 'react'
-import {makeLoginProviderComponent} from './core/Login/LoginContext'
-import {ApiClient, SignalConsoPublicSdk, SignalConsoSecuredSdk, UserWithPermission} from 'core/api'
+import {ApiClient, SignalConsoPublicSdk, SignalConsoSecuredSdk} from 'core/api'
 import {Config} from './conf/config'
 import {makeStyles} from '@material-ui/core/styles'
 import {Theme, ThemeProvider} from '@material-ui/core'
@@ -12,7 +11,6 @@ import {ReportProvider} from './core/context/ReportContext'
 import {Reports} from './feature/Reports/Reports'
 import {ReportComponent} from './feature/Report/Report'
 import {ToastProvider} from 'mui-extension/lib'
-import {Layout} from './core/Layout'
 import {muiTheme} from './core/theme'
 import {ReportedWebsites} from './feature/ReportedWebsites/ReportedWebsites'
 import {ReportedPhones} from './feature/ReportedPhones/ReportedPhones'
@@ -30,6 +28,11 @@ import {UsersProvider} from './core/context/UsersContext'
 import {Settings} from './feature/Settings/Settings'
 import {Subscriptions} from './feature/Subscriptions/Subscriptions'
 import {SubscriptionsProvider} from './core/context/SubscriptionsContext'
+import {LoginPage} from './core/Login/LoginPage'
+import {Layout} from './core/Layout'
+import {Login} from './core/Login/Login'
+import {LoginProvider, useLogin} from './core/context/LoginContext'
+import {LoginLoader} from './core/Login/LoginLoader'
 
 const headers = {
   'Content-Type': 'application/json',
@@ -53,9 +56,6 @@ const makeSecuredSdk = (token: string) => ({
 
 export type SignalConsoApiSdk = ReturnType<typeof makeSecuredSdk>
 
-const loginProvider = makeLoginProviderComponent<UserWithPermission, SignalConsoApiSdk>(apiPublicSdk.authenticate.login, makeSecuredSdk)
-export const Login = loginProvider.Login
-export const useLoginContext = loginProvider.useLoginContext
 
 const useStyles = makeStyles((t: Theme) => ({
   '@global': {
@@ -110,15 +110,32 @@ export const App = () => {
       _ => <BrowserRouter children={_}/>,
       _ => <ToastProvider horizontal="right" children={_}/>,
     ]}>
-      <Login>
-        <LoggedApp/>
+      <Login onLogin={apiPublicSdk.authenticate.login} getTokenFromResponse={_ => _.token}>
+        {({authResponse, login, logout, isLogging, isCheckingToken}) =>
+          <Layout connectedUser={authResponse ? {...authResponse.user, logout: logout} : undefined}>
+            {authResponse ? (
+              <LoginProvider
+                connectedUser={authResponse.user}
+                token={authResponse.token}
+                onLogout={logout}
+                apiSdk={makeSecuredSdk(authResponse.token)}
+              >
+                <LoggedApp/>
+              </LoginProvider>
+            ) : isCheckingToken ? (
+              <LoginLoader/>
+            ) : (
+              <LoginPage isLoading={isLogging} onLogin={login}/>
+            )}
+          </Layout>
+        }
       </Login>
     </Provide>
   )
 }
 
 const LoggedApp = () => {
-  const {apiSdk} = useLoginContext()
+  const {apiSdk} = useLogin()
   return (
     <Provide providers={[
       _ => <ReportsProvider api={apiSdk} children={_}/>,
@@ -131,19 +148,17 @@ const LoggedApp = () => {
       _ => <UsersProvider api={apiSdk} children={_}/>,
       _ => <SubscriptionsProvider api={apiSdk} children={_}/>,
     ]}>
-      <Layout>
-        <Switch>
-          <Route path={siteMap.reportedWebsites} component={ReportedWebsites}/>
-          <Route path={siteMap.reportedPhone} component={ReportedPhones}/>
-          <Route path={siteMap.reports()} component={Reports}/>
-          <Route path={siteMap.report()} component={ReportComponent}/>
-          <Route path={siteMap.users} component={Users}/>
-          <Route path={siteMap.companies} component={Companies}/>
-          <Route path={siteMap.settings} component={Settings}/>
-          <Route path={siteMap.subscriptions} component={Subscriptions}/>
-          <Redirect exact from="/" to={siteMap.reports()}/>
-        </Switch>
-      </Layout>
+      <Switch>
+        <Route path={siteMap.reportedWebsites} component={ReportedWebsites}/>
+        <Route path={siteMap.reportedPhone} component={ReportedPhones}/>
+        <Route path={siteMap.reports()} component={Reports}/>
+        <Route path={siteMap.report()} component={ReportComponent}/>
+        <Route path={siteMap.users} component={Users}/>
+        <Route path={siteMap.companies} component={Companies}/>
+        <Route path={siteMap.settings} component={Settings}/>
+        <Route path={siteMap.subscriptions} component={Subscriptions}/>
+        <Redirect exact from="/" to={siteMap.reports()}/>
+      </Switch>
     </Provide>
   )
 }

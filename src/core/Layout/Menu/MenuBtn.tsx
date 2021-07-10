@@ -5,7 +5,7 @@ import {lightBlue} from '@material-ui/core/colors'
 import {utilsStyles} from '../../theme'
 import {useBoolean} from '@alexandreannic/react-hooks-lib/lib'
 import {Menu} from './Menu'
-
+import {LayoutConnectedUser} from '../Layout'
 
 const useMenuStyles = makeStyles((t: Theme) => ({
   root: {
@@ -33,17 +33,21 @@ const useMenuStyles = makeStyles((t: Theme) => ({
   },
 }))
 
-export const MenuBtn = () => {
+interface Props {
+  connectedUser?: LayoutConnectedUser
+}
+
+export const MenuBtn = ({connectedUser}: Props) => {
   const css = useMenuStyles()
-  const [menuOpen, openMenu, closeMenu, toggleMenu] = useBoolean()
+  const openMenu = useBoolean()
 
   return (
     <div className={css.root}>
-      <Avatar className={css.avatar} onClick={toggleMenu}>
-        <Icon>person</Icon>
+      <Avatar className={css.avatar} onClick={openMenu.toggle}>
+        <Icon>{connectedUser ? 'person' : 'no_accounts'}</Icon>
       </Avatar>
-      {menuOpen && (
-        <Menu onClose={closeMenu}/>
+      {connectedUser && openMenu.value && (
+        <Menu onClose={openMenu.setFalse} connectedUser={connectedUser}/>
       )}
     </div>
   )
