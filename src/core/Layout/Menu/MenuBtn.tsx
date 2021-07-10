@@ -1,20 +1,26 @@
 import {Avatar, Icon, Theme} from '@material-ui/core'
 import React from 'react'
 import {makeStyles} from '@material-ui/core/styles'
-import {lightBlue} from '@material-ui/core/colors'
+import {grey, lightBlue} from '@material-ui/core/colors'
 import {utilsStyles} from '../../theme'
 import {useBoolean} from '@alexandreannic/react-hooks-lib/lib'
 import {Menu} from './Menu'
 import {LayoutConnectedUser} from '../Layout'
+import {classes} from '../../helper/utils'
 
 const useMenuStyles = makeStyles((t: Theme) => ({
   root: {
     position: 'relative',
   },
   avatar: {
+    transition: t.transitions.create('all'),
     color: lightBlue[50],
     backgroundColor: lightBlue[500],
     margin: t.spacing(0, 1),
+  },
+  avatarOffline: {
+    color: grey[50],
+    backgroundColor: grey[500],
   },
   userName: {
     ...utilsStyles(t).truncate,
@@ -43,7 +49,7 @@ export const MenuBtn = ({connectedUser}: Props) => {
 
   return (
     <div className={css.root}>
-      <Avatar className={css.avatar} onClick={openMenu.toggle}>
+      <Avatar className={classes(css.avatar, !connectedUser && css.avatarOffline)} onClick={openMenu.toggle}>
         <Icon>{connectedUser ? 'person' : 'no_accounts'}</Icon>
       </Avatar>
       {connectedUser && openMenu.value && (

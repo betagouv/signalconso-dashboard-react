@@ -67,7 +67,7 @@ const useStyles = makeStyles((t: Theme) => ({
   },
   header: {
     display: 'flex',
-    flexWrap: 'wrap',
+    // flexWrap: 'wrap',
     alignItems: 'center',
     minHeight: 52,
     borderBottom: `1px solid ${t.palette.divider}`,
