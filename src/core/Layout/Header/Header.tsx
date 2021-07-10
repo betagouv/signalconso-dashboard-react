@@ -1,5 +1,5 @@
 import {makeStyles} from '@material-ui/core/styles'
-import {Theme} from '@material-ui/core'
+import {Slide, Theme} from '@material-ui/core'
 import logoGouvMobile from './gouv-mobile.svg'
 import logoGouv from './gouv.svg'
 import logoSignalConso from './signalconso.svg'
@@ -15,6 +15,8 @@ import {LayoutConnectedUser} from '../Layout'
 
 const useStyles = makeStyles((t: Theme) => ({
   root: {
+    // transform: 'translate(-100%)',
+    // transition: t.transitions.create('all'),
     minHeight: headerHeight,
     padding: t.spacing(.5, 2),
     display: 'flex',
@@ -59,29 +61,31 @@ export const Header = ({connectedUser}: Props) => {
   const {isMobileWidth} = useLayoutContext()
 
   return (
-    <div className={css.root}>
-      {isMobileWidth ? (
-        <div className={css.logo}>
-          <img src={logoGouvMobile} alt={m.altLogoGouv} className={css.logoGouvMobile}/>
-          <a href={Config.appBaseUrl}>
-            <img src={logoSignalConso} alt={m.altLogoSignalConso} className={css.logoSignalConsoMobile}/>
-          </a>
+    <Slide direction="down" in={true} mountOnEnter unmountOnExit>
+      <div className={css.root}>
+        {isMobileWidth ? (
+          <div className={css.logo}>
+            <img src={logoGouvMobile} alt={m.altLogoGouv} className={css.logoGouvMobile}/>
+            <a href={Config.appBaseUrl}>
+              <img src={logoSignalConso} alt={m.altLogoSignalConso} className={css.logoSignalConsoMobile}/>
+            </a>
+          </div>
+        ) : (
+          <div className={css.logo}>
+            <img src={logoGouv} alt={m.altLogoGouv} className={css.logoGouv}/>
+            <a href={Config.appBaseUrl}>
+              <img src={logoSignalConso} alt={m.altLogoSignalConso} className={css.logoSignalConso}/>
+            </a>
+          </div>
+        )}
+        <div className={css.menu}>
+          <HeaderItem href="">{m.home}</HeaderItem>
+          <HeaderItem href="comment-ça-marche">{m.howItWorks}</HeaderItem>
+          <HeaderItem href="centre-aide/consommateur">{m.helpCenter}</HeaderItem>
+          <MenuBtn connectedUser={connectedUser}/>
         </div>
-      ) : (
-        <div className={css.logo}>
-          <img src={logoGouv} alt={m.altLogoGouv} className={css.logoGouv}/>
-          <a href={Config.appBaseUrl}>
-            <img src={logoSignalConso} alt={m.altLogoSignalConso} className={css.logoSignalConso}/>
-          </a>
-        </div>
-      )}
-      <div className={css.menu}>
-        <HeaderItem href="">{m.home}</HeaderItem>
-        <HeaderItem href="comment-ça-marche">{m.howItWorks}</HeaderItem>
-        <HeaderItem href="centre-aide/consommateur">{m.helpCenter}</HeaderItem>
-        <MenuBtn connectedUser={connectedUser}/>
       </div>
-    </div>
+    </Slide>
   )
 }
 
