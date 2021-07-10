@@ -1,6 +1,7 @@
 import React, {ReactNode, useContext} from 'react'
 import {SignalConsoApiSdk} from '../../App'
-import {UserWithPermission} from '../api'
+import {ApiError, UserWithPermission} from '../api'
+import {UseFetcher, useFetcher} from '@alexandreannic/react-hooks-lib/lib'
 
 const LoginContext = React.createContext({} as any)
 
@@ -26,6 +27,7 @@ export const LoginProvider = ({
   onLogout,
   children
 }: LoginProviderProps) => {
+
   return (
     <LoginContext.Provider value={{
       connectedUser: connectedUser,

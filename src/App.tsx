@@ -1,5 +1,5 @@
 import React from 'react'
-import {ApiClient, SignalConsoPublicSdk, SignalConsoSecuredSdk} from 'core/api'
+import {ApiClient, ApiError, SignalConsoPublicSdk, SignalConsoSecuredSdk} from 'core/api'
 import {Config} from './conf/config'
 import {makeStyles} from '@material-ui/core/styles'
 import {Theme, ThemeProvider} from '@material-ui/core'
@@ -33,6 +33,7 @@ import {Layout} from './core/Layout'
 import {Login} from './core/Login/Login'
 import {LoginProvider, useLogin} from './core/context/LoginContext'
 import {LoginLoader} from './core/Login/LoginLoader'
+import {useFetcher} from '@alexandreannic/react-hooks-lib/lib'
 
 const headers = {
   'Content-Type': 'application/json',
@@ -102,6 +103,10 @@ const useStyles = makeStyles((t: Theme) => ({
 
 export const App = () => {
   useStyles()
+  const forgottenPassword = useFetcher<SignalConsoApiSdk['public']['authenticate']['forgotPassword'], ApiError>(
+    apiPublicSdk.authenticate.forgotPassword
+  )
+
   return (
     <Provide providers={[
       _ => <ThemeProvider theme={muiTheme()} children={_}/>,
@@ -110,7 +115,12 @@ export const App = () => {
       _ => <BrowserRouter children={_}/>,
       _ => <ToastProvider horizontal="right" children={_}/>,
     ]}>
-      <Login onLogin={apiPublicSdk.authenticate.login} getTokenFromResponse={_ => _.token}>
+      <Login
+        onLogin={apiPublicSdk.authenticate.login}
+        getTokenFromResponse={_ => _.token}
+        loadingForgottenPassword={forgottenPassword.loading}
+        onForgotPassword={forgottenPassword.fetch}
+      >
         {({authResponse, login, logout, isLogging, isCheckingToken}) =>
           <Layout connectedUser={authResponse ? {...authResponse.user, logout: logout} : undefined}>
             {authResponse ? (
@@ -125,7 +135,15 @@ export const App = () => {
             ) : isCheckingToken ? (
               <LoginLoader/>
             ) : (
-              <LoginPage isLoading={isLogging} onLogin={login}/>
+              <LoginPage
+                isLogging={isLogging}
+                onLogin={login}
+                forgottenPassword={{
+                  action: forgottenPassword.fetch(),
+                  loading: forgottenPassword.loading,
+                  errorMsg: forgottenPassword.error,
+                }}
+              />
             )}
           </Layout>
         }

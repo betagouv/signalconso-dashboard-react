@@ -48,6 +48,9 @@ export const messagesFr = {
   removeReportDesc: (siret: string) => `Le signalement ${siret} sera supprimé. Cette action est irreversible.`,
   download: 'Télécharger',
   remainingTime: 'Remaining time',
+  forgottenPassword: 'Mot de passe oublié',
+  forgottenPasswordDesc: 'Vous recevrez un email vous permettant de créer un nouveau mot de passe.',
+  createNewPassword: 'Créer un nouveau mot de passe',
   speed: 'Speed',
   key: 'Key',
   value: 'Value',
@@ -169,6 +172,7 @@ export const messagesFr = {
   daily: 'Quotidienne',
   weekly: 'Hebdomadaire',
   selectAllDepartments: 'Tous les départements',
+  loginIssueTip: 'En cas de difficultés, vous pouvez contacter par email le service <a href="href="mailto:support@signal.conso.gouv.fr">support@signal.conso.gouv.fr</a>.',
   subscriptionsAlertInfo: `
     En créant un abonnement, vous recevrez un mail quotidien ou hebdomadaire (au choix) comportant les nouveaux signalements correspondant à votre sélection de critères, qu’ils soient géographiques, thématiques ou par entreprise.
     <br/>

@@ -43,6 +43,7 @@ export const EditPassword = () => {
           ).toUndefined()}
           <Txt color="hint" block gutterBottom>{m.editPasswordDialogDesc}</Txt>
           <ScInput
+            type="password"
             inputProps={{
               autocomplete: 'false'
             }}
@@ -57,6 +58,7 @@ export const EditPassword = () => {
             })}
           />
           <ScInput
+            type="password"
             error={!!errors.newPassword}
             helperText={errors.newPassword?.message ?? ' '}
             fullWidth
@@ -68,6 +70,7 @@ export const EditPassword = () => {
             })}
           />
           <ScInput
+            type="password"
             error={!!errors.newPasswordConfirmation}
             helperText={errors.newPasswordConfirmation?.message ?? ' '}
             fullWidth
