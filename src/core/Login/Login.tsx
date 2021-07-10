@@ -22,7 +22,7 @@ interface Props<F extends (...args: any[]) => Promise<object>> {
   children: ({authResponse, login, logout, token}: LoginExposedProps<F>) => any
 }
 
-export const TestLogin = <F extends (...args: any[]) => Promise<object>>({
+export const Login = <F extends (...args: any[]) => Promise<object>>({
   onLogin,
   getTokenFromResponse,
   children

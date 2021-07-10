@@ -19,7 +19,7 @@ interface UseLoginProps {
   token: string
 }
 
-export const LoginProvider2 = ({
+export const LoginProvider = ({
   apiSdk,
   token,
   connectedUser,

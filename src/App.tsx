@@ -30,7 +30,7 @@ import {Subscriptions} from './feature/Subscriptions/Subscriptions'
 import {SubscriptionsProvider} from './core/context/SubscriptionsContext'
 import {LoginPage} from './core/Login/LoginPage'
 import {Layout} from './core/Layout'
-import {TestLogin} from './core/Login/Login'
+import {Login} from './core/Login/Login'
 import {LoginProvider, useLogin} from './core/context/LoginContext'
 import {LoginLoader} from './core/Login/LoginLoader'
 
@@ -110,7 +110,7 @@ export const App = () => {
       _ => <BrowserRouter children={_}/>,
       _ => <ToastProvider horizontal="right" children={_}/>,
     ]}>
-      <TestLogin onLogin={apiPublicSdk.authenticate.login} getTokenFromResponse={_ => _.token}>
+      <Login onLogin={apiPublicSdk.authenticate.login} getTokenFromResponse={_ => _.token}>
         {({authResponse, login, logout, isLogging, isCheckingToken}) =>
           <Layout connectedUser={authResponse ? {...authResponse.user, logout: logout} : undefined}>
             {authResponse ? (
@@ -129,7 +129,7 @@ export const App = () => {
             )}
           </Layout>
         }
-      </TestLogin>
+      </Login>
     </Provide>
   )
 }
