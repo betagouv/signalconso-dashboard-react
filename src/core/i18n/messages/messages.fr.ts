@@ -170,6 +170,7 @@ export const messagesFr = {
   invalidPassword: 'Mot de passe incorrect',
   newPassword: 'Nouveau mot de passe',
   subscription: 'Abonnement',
+  removeSubscription: 'Supprimer l\'abonnement',
   newPasswordConfirmation: 'Confirmation',
   userInvitationSent: 'Invitation envoyée',
   emailDGCCRFValidation: 'Email invalide. Email acceptés : *.gouv.fr',

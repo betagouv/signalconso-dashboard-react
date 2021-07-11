@@ -190,6 +190,7 @@ const LoggedApp = () => {
           </>,
           [Roles.Pro]: <>
             <Route path={siteMap.reportsPro()} component={ReportsPro}/>
+            <Route path={siteMap.settings} component={Settings}/>
             <Redirect exact from="/" to={siteMap.reportsPro()}/>
           </>,
         }, () => <Fender type="error" title={m.anErrorOccurred}/>

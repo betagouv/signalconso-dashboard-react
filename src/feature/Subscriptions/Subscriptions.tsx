@@ -66,6 +66,7 @@ export const Subscriptions = () => {
             key={subscription.id}
             subscription={subscription}
             loading={_subscriptions.updating(subscription.id)}
+            removing={_subscriptions.removing(subscription.id)}
             onUpdate={_ => _subscriptions.update(subscription.id, _)}
             onDelete={() => _subscriptions.remove(subscription.id)}
           />

@@ -14,13 +14,14 @@ import {SelectDepartmentsMenu} from '../../shared/SelectDepartments/SelectDepart
 import {SelectCountriesMenu} from '../../shared/SelectCountries/SelectCountriesMenu'
 import {SelectMenu} from '../../shared/SelectCategory/SelectMenu'
 import {useAnomalyContext} from '../../core/context/AnomalyContext'
-import {IconBtn} from 'mui-extension/lib'
+import {Confirm, IconBtn} from 'mui-extension/lib'
 import {makeStyles} from '@material-ui/core/styles'
 
 interface Props {
   subscription: Subscription
   onUpdate: (_: Partial<SubscriptionCreate>) => Promise<Subscription>
   onDelete: () => void
+  removing: boolean
   loading?: boolean
   className?: string
   style?: CSSProperties
@@ -47,6 +48,7 @@ export const SubscriptionCard = ({
   subscription,
   onUpdate,
   onDelete,
+  removing,
   loading,
   className,
   style,
@@ -78,9 +80,11 @@ export const SubscriptionCard = ({
             <MenuItem value="P7D">{m.weekly}</MenuItem>
           </ScSelect>
           &nbsp;
-          <IconBtn color="primary" onClick={onDelete}>
-            <Icon>delete</Icon>
-          </IconBtn>
+          <Confirm title={m.removeSubscription} cancelLabel={m.close} confirmLabel={m.delete} onConfirm={onDelete}>
+            <IconBtn color="primary" loading={removing}>
+              <Icon>delete</Icon>
+            </IconBtn>
+          </Confirm>
         </>
       }>
         {m.subscription}
