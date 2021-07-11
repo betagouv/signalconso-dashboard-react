@@ -1,4 +1,14 @@
-import {ApiClientApi, ApiPaginate, CompanySearch, CompanyToActivate, CompanyWithReportsCount, dateToApi, directDownloadBlob, extractApiAddress} from '../../index'
+import {
+  ApiClientApi,
+  ApiPaginate,
+  CompanyAccessLevel,
+  CompanySearch,
+  CompanyToActivate,
+  CompanyWithReportsCount,
+  dateToApi,
+  directDownloadBlob,
+  extractApiAddress, ViewableCompany
+} from '../../index'
 import {Company, CompanyCreation, CompanyUpdate, Event, Id} from '../../model'
 import {format} from 'date-fns'
 
@@ -50,6 +60,14 @@ export class CompanyClient {
   readonly downloadActivationDocument = (companyIds: Id[]) => {
     return this.client.postGetPdf(`/companies/activation-document`, {body: {companyIds},})
       .then(directDownloadBlob(`signalement_depot_${format(new Date(), 'ddMMyy')}`))
+  }
+
+  readonly getAccessesByPro = () => {
+    return this.client.get<CompanyAccessLevel[]>(`/accesses/connected-user`)
+  }
+
+  readonly getCompaniesViewableByPro = () => {
+    return this.client.get<ViewableCompany[]>(`/accesses/connected-user`)
   }
 
   readonly fetchToActivate = () => {

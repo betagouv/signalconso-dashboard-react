@@ -11,6 +11,8 @@ export interface CompaniesContextProps {
   downloadActivationDocument: UseFetcher<SignalConsoApiSdk['secured']['company']['downloadActivationDocument'], ApiError>
   confirmCompaniesPosted: UseFetcher<SignalConsoApiSdk['secured']['company']['confirmCompaniesPosted'], ApiError>
   searchByIdentity: UseFetcher<SignalConsoApiSdk['public']['company']['searchCompaniesByIdentity'], ApiError>
+  accessesByPro: UseFetcher<SignalConsoApiSdk['secured']['company']['getAccessesByPro'], ApiError>
+  companiesViewableByPro: UseFetcher<SignalConsoApiSdk['secured']['company']['getCompaniesViewableByPro'], ApiError>
 }
 
 interface Props {
@@ -38,6 +40,8 @@ export const CompaniesProvider = ({api, children}: Props) => {
   const searchByIdentity = useFetcher(api.public.company.searchCompaniesByIdentity)
   const downloadActivationDocument = useFetcher(api.secured.company.downloadActivationDocument)
   const confirmCompaniesPosted = useFetcher(api.secured.company.confirmCompaniesPosted)
+  const accessesByPro = useFetcher(api.secured.company.getAccessesByPro)
+  const companiesViewableByPro = useFetcher(api.secured.company.getCompaniesViewableByPro)
 
   return (
     <CompaniesContext.Provider value={{
@@ -46,6 +50,8 @@ export const CompaniesProvider = ({api, children}: Props) => {
       searchByIdentity,
       downloadActivationDocument,
       confirmCompaniesPosted,
+      accessesByPro,
+      companiesViewableByPro,
     }}>
       {children}
     </CompaniesContext.Provider>

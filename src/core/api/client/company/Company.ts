@@ -69,4 +69,20 @@ export interface CompanySearch extends PaginatedSearch<any> {
   identity?: string
 }
 
+export enum AccessLevel {
+  NONE = 'none',
+  MEMBER = 'member',
+  ADMIN = 'admin',
+}
+
+export interface ViewableCompany {
+  siret: string;
+  postalCode?: string;
+  closed: boolean;
+}
+
+export interface CompanyAccessLevel extends Company {
+  level: AccessLevel;
+}
+
 export const isGovernmentCompany = (_?: DraftCompany): boolean => _?.activityCode?.startsWith('84.') ?? false;
