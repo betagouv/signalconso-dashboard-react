@@ -148,7 +148,6 @@ export const Reports = ({}) => {
                   </IconBtn>
                 </Tooltip>
               </ReportFilters>
-              {/*<Button variant="contained" color="primary" style={{minWidth: 'initial'}} className={cssUtils.nowrap}>Filtres avancés</Button>*/}
             </>
           }
           loading={_reports.fetching}

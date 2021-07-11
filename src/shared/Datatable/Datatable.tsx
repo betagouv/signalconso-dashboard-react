@@ -1,5 +1,5 @@
 import {LinearProgress, makeStyles, Table, TableBody, TableCell, TableHead, TablePagination, TableRow, TableSortLabel, Theme} from '@material-ui/core'
-import React, {CSSProperties, ReactNode, useMemo} from 'react'
+import React, {CSSProperties, ReactNode, useEffect, useMemo} from 'react'
 import {useCssUtils} from '../../core/helper/useCssUtils'
 import {classes} from '../../core/helper/utils'
 import {DatatableColumnToggle} from './DatatableColumnsToggle'
@@ -15,12 +15,14 @@ export interface DatatableProps<T> {
   total?: number
   data?: T[]
   getRenderRowKey?: (_: T) => string
+  onClickRows?: (_: T) => void
   rows: DatatableColumnProps<T>[]
   showColumnsToggle?: boolean
   showColumnsToggleBtnTooltip?: string
   renderEmptyState?: ReactNode
   rowsPerPageOptions?: number[]
   paginate?: {
+    minRowsBeforeDisplay?: number,
     offset: number,
     limit: number
     onPaginationChange: (_: {offset?: number, limit?: number}) => void
@@ -85,6 +87,11 @@ const useStyles = makeStyles((t: Theme) => ({
     padding: t.spacing(2, 2),
     textAlign: 'center',
   },
+  hoverableRows: {
+    '&:hover': {
+      background: t.palette.action.hover,
+    }
+  },
 }))
 
 const safeParseInt = (maybeInt: any, defaultValue: number): number => isNaN(maybeInt) ? defaultValue : parseInt(maybeInt)
@@ -103,6 +110,7 @@ export const Datatable = <T extends any = any,>(props: DatatableProps<T>) => {
     renderEmptyState,
     rowsPerPageOptions = [5, 10, 25, 100],
     sort,
+    onClickRows,
     paginate,
   } = props
 
@@ -111,8 +119,12 @@ export const Datatable = <T extends any = any,>(props: DatatableProps<T>) => {
   const displayableRows = useMemo(() => rows.filter(_ => !_.hidden), [rows])
   const toggleableColumnsName = useMemo(() => displayableRows.filter(_ => !_.alwaysVisible), [displayableRows])
   const displayedColumnsSet = useSetState<string>(displayableRows.map(_ => _.id!))
+  useEffect(() => {
+    displayedColumnsSet.reset(displayableRows.map(_ => _.id!))
+  }, [displayableRows])
   const filteredRows = useMemo(() => displayableRows.filter(_ => displayedColumnsSet.has(_.id)), [rows, displayedColumnsSet])
 
+  console.log('render', rows, data)
   return (
     <>
       {(header || showColumnsToggle) && (
@@ -163,7 +175,11 @@ export const Datatable = <T extends any = any,>(props: DatatableProps<T>) => {
               </TableRow>
             )}
             {data?.map((item, i) =>
-              <TableRow key={getRenderRowKey ? getRenderRowKey(item) : i}>
+              <TableRow
+                key={getRenderRowKey ? getRenderRowKey(item) : i}
+                onClick={() => onClickRows?.(item)}
+                className={classes(onClickRows && css.hoverableRows)}
+              >
                 {filteredRows.map((_, i) =>
                   <TableCell key={i} className={classes(_.className, cssUtils.truncate, _.stickyEnd && css.stickyEnd)} style={_.style}>
                     {_.row(item)}
@@ -185,7 +201,7 @@ export const Datatable = <T extends any = any,>(props: DatatableProps<T>) => {
           </TableBody>
         </Table>
       </div>
-      {paginate ? (() => {
+      {paginate && total && (!paginate.minRowsBeforeDisplay || total > paginate.minRowsBeforeDisplay) ? (() => {
         const limit = safeParseInt(paginate.limit, 10)
         const offset = safeParseInt(paginate.offset, 0)
         return (

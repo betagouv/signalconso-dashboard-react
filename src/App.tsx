@@ -1,16 +1,16 @@
 import React from 'react'
-import {ApiClient, ApiError, SignalConsoPublicSdk, SignalConsoSecuredSdk} from 'core/api'
+import {ApiClient, ApiError, Roles, SignalConsoPublicSdk, SignalConsoSecuredSdk} from 'core/api'
 import {Config} from './conf/config'
 import {makeStyles} from '@material-ui/core/styles'
 import {Theme, ThemeProvider} from '@material-ui/core'
 import {BrowserRouter, Redirect, Route, Switch} from 'react-router-dom'
-import {I18nProvider} from './core/i18n'
+import {I18nProvider, useI18n} from './core/i18n'
 import {MuiPickersUtilsProvider} from '@material-ui/pickers'
 import DateAdapter from '@date-io/date-fns'
 import {ReportProvider} from './core/context/ReportContext'
 import {Reports} from './feature/Reports/Reports'
 import {ReportComponent} from './feature/Report/Report'
-import {ToastProvider} from 'mui-extension/lib'
+import {Fender, ToastProvider} from 'mui-extension/lib'
 import {muiTheme} from './core/theme'
 import {ReportedWebsites} from './feature/ReportedWebsites/ReportedWebsites'
 import {ReportedPhones} from './feature/ReportedPhones/ReportedPhones'
@@ -34,6 +34,8 @@ import {Login} from './core/Login/Login'
 import {LoginProvider, useLogin} from './core/context/LoginContext'
 import {LoginLoader} from './core/Login/LoginLoader'
 import {useFetcher} from '@alexandreannic/react-hooks-lib/lib'
+import {fnSwitch} from './core/helper/utils'
+import {ReportsPro} from './feature/ReportsPro/ReportsPro'
 
 const headers = {
   'Content-Type': 'application/json',
@@ -151,7 +153,8 @@ export const App = () => {
 }
 
 const LoggedApp = () => {
-  const {apiSdk} = useLogin()
+  const {apiSdk, connectedUser} = useLogin()
+  const {m} = useI18n()
   return (
     <Provide providers={[
       _ => <ReportsProvider api={apiSdk} children={_}/>,
@@ -165,15 +168,32 @@ const LoggedApp = () => {
       _ => <SubscriptionsProvider api={apiSdk} children={_}/>,
     ]}>
       <Switch>
-        <Route path={siteMap.reportedWebsites} component={ReportedWebsites}/>
-        <Route path={siteMap.reportedPhone} component={ReportedPhones}/>
-        <Route path={siteMap.reports()} component={Reports}/>
-        <Route path={siteMap.report()} component={ReportComponent}/>
-        <Route path={siteMap.users} component={Users}/>
-        <Route path={siteMap.companies} component={Companies}/>
-        <Route path={siteMap.settings} component={Settings}/>
-        <Route path={siteMap.subscriptions} component={Subscriptions}/>
-        <Redirect exact from="/" to={siteMap.reports()}/>
+        {fnSwitch(connectedUser.role, {
+          [Roles.Admin]: <>
+            <Route path={siteMap.reportedWebsites} component={ReportedWebsites}/>
+            <Route path={siteMap.reportedPhone} component={ReportedPhones}/>
+            <Route path={siteMap.reports()} component={Reports}/>
+            <Route path={siteMap.report()} component={ReportComponent}/>
+            <Route path={siteMap.users} component={Users}/>
+            <Route path={siteMap.companies} component={Companies}/>
+            <Route path={siteMap.settings} component={Settings}/>
+            <Route path={siteMap.subscriptions} component={Subscriptions}/>
+            <Redirect exact from="/" to={siteMap.reports()}/>
+          </>,
+          [Roles.DGCCRF]: <>
+            <Route path={siteMap.reports()} component={Reports}/>
+            <Route path={siteMap.report()} component={ReportComponent}/>
+            <Route path={siteMap.companies} component={Companies}/>
+            <Route path={siteMap.settings} component={Settings}/>
+            <Route path={siteMap.subscriptions} component={Subscriptions}/>
+            <Redirect exact from="/" to={siteMap.reports()}/>
+          </>,
+          [Roles.Pro]: <>
+            <Route path={siteMap.reportsPro()} component={ReportsPro}/>
+            <Redirect exact from="/" to={siteMap.reportsPro()}/>
+          </>,
+        }, () => <Fender type="error" title={m.anErrorOccurred}/>
+        )}
       </Switch>
     </Provide>
   )
