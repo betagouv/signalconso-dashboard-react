@@ -10,6 +10,7 @@ export const siteMap = {
   report: (id: Id = ':id') => `/report/${id}`,
   exports: '/mes-telechargements',
   companies: '/entreprises',
+  companiesPro: '/mes-entreprises',
   companies_toActivate: '/entreprises/a-activer',
   companies_registered: '/entreprises/les-plus-signalees',
   users: '/admin/invitation-ccrf',

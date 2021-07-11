@@ -10,6 +10,7 @@ import {Txt} from 'mui-extension/lib/Txt/Txt'
 import {siteMap} from '../../siteMap'
 import {stopPropagation} from '../../helper/utils'
 import {LayoutConnectedUser} from '../Layout'
+import {Roles} from '../../api'
 
 const useMenuStyles = makeStyles((t: Theme) => ({
   root: {
@@ -63,13 +64,28 @@ export const Menu = ({onClose, connectedUser}: Props) => {
           </Btn>
         </div>
         <Divider/>
-        <MenuItem onClick={onClose} to={path(siteMap.reports())} icon={EntityIcon.report}>{m.menu_reports}</MenuItem>
-        <MenuItem onClick={onClose} to={path(siteMap.companies)} icon={EntityIcon.company}>{m.menu_companies}</MenuItem>
-        <MenuItem onClick={onClose} to={path(siteMap.users)} icon={EntityIcon.user}>{m.menu_users}</MenuItem>
-        <MenuItem onClick={onClose} to={path(siteMap.subscriptions)} icon={EntityIcon.subscription}>{m.menu_subscriptions}</MenuItem>
+        {[Roles.Admin, Roles.DGCCRF].includes(connectedUser.role) && (
+          <MenuItem onClick={onClose} to={path(siteMap.reports())} icon={EntityIcon.report}>{m.menu_reports}</MenuItem>
+        )}
+        {[Roles.Pro].includes(connectedUser.role) && (
+          <MenuItem onClick={onClose} to={path(siteMap.reportsPro())} icon={EntityIcon.report}>{m.menu_reports}</MenuItem>
+        )}
+        {[Roles.Pro].includes(connectedUser.role) && (
+          <MenuItem onClick={onClose} to={path(siteMap.companiesPro)} icon={EntityIcon.company}>{m.menu_companies}</MenuItem>
+        )}
+        {[Roles.Admin].includes(connectedUser.role) && (
+          <MenuItem onClick={onClose} to={path(siteMap.users)} icon={EntityIcon.user}>{m.menu_users}</MenuItem>
+        )}
+        {[Roles.Admin, Roles.DGCCRF].includes(connectedUser.role) && (
+          <MenuItem onClick={onClose} to={path(siteMap.subscriptions)} icon={EntityIcon.subscription}>{m.menu_subscriptions}</MenuItem>
+        )}
         <Divider/>
-        <MenuItem onClick={onClose} to={path(siteMap.reportedWebsites)} icon={EntityIcon.website}>{m.menu_websites}</MenuItem>
-        <MenuItem onClick={onClose} to={path(siteMap.reportedPhone)} icon={EntityIcon.phone}>{m.menu_phones}</MenuItem>
+        {[Roles.Admin].includes(connectedUser.role) && (
+          <MenuItem onClick={onClose} to={path(siteMap.reportedWebsites)} icon={EntityIcon.website}>{m.menu_websites}</MenuItem>
+        )}
+        {[Roles.Admin].includes(connectedUser.role) && (
+          <MenuItem onClick={onClose} to={path(siteMap.reportedPhone)} icon={EntityIcon.phone}>{m.menu_phones}</MenuItem>
+        )}
         <Divider/>
         <MenuItem onClick={onClose} to={path(siteMap.settings)} icon="settings">{m.menu_settings}</MenuItem>
       </div>

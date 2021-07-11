@@ -4,6 +4,7 @@ import {createStyles, makeStyles, Theme} from '@material-ui/core'
 import classNames from 'classnames'
 import {LayoutProvider, useLayoutContext} from './LayoutContext'
 import {Header} from './Header/Header'
+import {Roles} from '../api'
 
 export const sidebarWith = 220
 
@@ -22,6 +23,7 @@ export interface LayoutConnectedUser {
   firstName: string
   lastName: string
   email: string
+  role: Roles
   logout: () => void
 }
 
