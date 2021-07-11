@@ -123,6 +123,7 @@ export const Datatable = <T extends any = any,>(props: DatatableProps<T>) => {
     displayedColumnsSet.reset(displayableRows.map(_ => _.id!))
   }, [displayableRows])
   const filteredRows = useMemo(() => displayableRows.filter(_ => displayedColumnsSet.has(_.id)), [rows, displayedColumnsSet])
+  const displayTableHeader = useMemo(() => !!displayableRows.find(_ => _.head !== ''), [displayableRows])
 
   console.log('render', rows, data)
   return (
@@ -143,29 +144,30 @@ export const Datatable = <T extends any = any,>(props: DatatableProps<T>) => {
       )}
       <div className={css.container}>
         <Table className={classes(css.table)}>
-          <TableHead>
-            <TableRow>
-              {filteredRows.map((_, i) =>
-                <TableCell
-                  key={i}
-                  className={classes(css.cellHeader, _.stickyEnd && css.stickyEnd)}
-                >
-                  {sort ? (
-                    <TableSortLabel
-                      active={sort.sortBy === _.id}
-                      direction={sort.sortBy === _.id ? sort.orderBy : 'asc'}
-                      onClick={() => sort.onSortChange({sortBy: _.id, orderBy: sort.orderBy === 'asc' ? 'desc' : 'asc'})}
-                    >
-                      {_.head}
-                    </TableSortLabel>
-
-                  ) : (
-                    _.head
-                  )}
-                </TableCell>
-              )}
-            </TableRow>
-          </TableHead>
+          {displayTableHeader && (
+            <TableHead>
+              <TableRow>
+                {filteredRows.map((_, i) =>
+                  <TableCell
+                    key={i}
+                    className={classes(css.cellHeader, _.stickyEnd && css.stickyEnd)}
+                  >
+                    {sort ? (
+                      <TableSortLabel
+                        active={sort.sortBy === _.id}
+                        direction={sort.sortBy === _.id ? sort.orderBy : 'asc'}
+                        onClick={() => sort.onSortChange({sortBy: _.id, orderBy: sort.orderBy === 'asc' ? 'desc' : 'asc'})}
+                      >
+                        {_.head}
+                      </TableSortLabel>
+                    ) : (
+                      _.head
+                    )}
+                  </TableCell>
+                )}
+              </TableRow>
+            </TableHead>
+          )}
           <TableBody>
             {loading && (
               <TableRow>

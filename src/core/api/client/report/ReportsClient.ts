@@ -85,18 +85,150 @@ export class ReportsClient {
   }
 
   readonly search = (filter: ReportSearch = {offset: 0, limit: 10}) => {
-    return this.client.get<PaginatedData<ReportSearchResult>>(`/reports`, {
-      qs: pipe(
-        cleanReportFilter,
-        reportFilter2QueryString,
-        cleanObject,
-      )(filter)
-    }).then(result => {
-      result.entities.forEach(entity => {
-        entity.report = ReportsClient.mapReport(entity.report)
+    return Promise.resolve({
+      'totalCount': 5,
+      'hasNextPage': false,
+      'entities': [{
+        'report': {
+          'id': '967a923a-498b-4235-ad15-f64e28a59cd9',
+          'category': 'Eau / Gaz / Electricité',
+          'subcategories': ['Autre (Fioul / GPL / granulés de bois...)', 'Non, pas sur internet'],
+          'details': [{'label': 'Description :', 'value': 'test'}, {'label': 'Date du constat :', 'value': '29/06/2021'}],
+          'companyName': 'ALEXANDRE ANNIC',
+          'companyAddress': 'ALEXANDRE ANNIC - 31 RUE EMILE BERNARD - 29930 PONT-AVEN',
+          'companyPostalCode': '29930',
+          'companySiret': '81352117600038',
+          'creationDate': '2021-06-29T12:44:19.031213Z',
+          'contactAgreement': true,
+          'employeeConsumer': false,
+          'status': 'Non consulté',
+          'websiteURL': null,
+          'host': null,
+          'phone': null,
+          'vendor': null,
+          'tags': ['Litige contractuel'],
+          'firstName': 'Alexandre',
+          'lastName': 'ANNIC',
+          'email': 'alexandre.annic1@gmail.com'
+        }, 'files': []
+      }, {
+        'report': {
+          'id': '29b2a1db-a19d-4d14-9561-611fefd740ee',
+          'category': 'COVID-19 (coronavirus)',
+          'subcategories': ['Problème / abus avec un site de vente en ligne', 'Autre problème de prix'],
+          'details': [{'label': 'Date du constat :', 'value': '29/06/2021'}, {'label': 'Quel est le problème :', 'value': 'test'}],
+          'companyName': 'ALEXANDRE ANNIC',
+          'companyAddress': 'ALEXANDRE ANNIC - 31 RUE EMILE BERNARD - 29930 PONT-AVEN',
+          'companyPostalCode': '29930',
+          'companySiret': '81352117600038',
+          'creationDate': '2021-06-29T10:56:23.346359Z',
+          'contactAgreement': false,
+          'employeeConsumer': false,
+          'status': 'Clôturé',
+          'websiteURL': 'https://fake.url.test/',
+          'host': 'fake.url.test',
+          'phone': null,
+          'vendor': null,
+          'tags': ['Internet']
+        },
+        'files': [{
+          'id': '5df5051d-b689-4d77-aa94-d7204d61bad1',
+          'reportId': '29b2a1db-a19d-4d14-9561-611fefd740ee',
+          'creationDate': '2021-06-29T12:43:05.720478Z',
+          'filename': '0fa435e0-a518-4e6d-9ed3-719f9a100bbf_IMG_3569 (1).jpg',
+          'storageFilename': '3c4f9503-93dc-451e-8000-aea8789e86aa_0fa435e0-a518-4e6d-9ed3-719f9a100bbf_IMG_3569 (1).jpg',
+          'origin': 'professional',
+          'avOutput': '/tmp/3c4f9503-93dc-451e-8000-aea8789e86aa_0fa435e0-a518-4e6d-9ed3-719f9a100bbf_IMG_3569 (1).jpg: OK----------- SCAN SUMMARY -----------Known viruses: 8542198Engine version: 0.103.2Scanned directories: 0Scanned files: 1Infected files: 0Data scanned: 4.86 MBData read: 2.29 MB (ratio 2.13:1)Time: 26.157 sec (0 m 26 s)Start Date: 2021:06:29 12:43:05End Date:   2021:06:29 12:43:31'
+        }]
+      }, {
+        'report': {
+          'id': 'fa101a4a-211d-49ad-8c95-8f291c0985a6',
+          'category': 'COVID-19 (coronavirus)',
+          'subcategories': ['Problème / abus avec un site de vente en ligne', 'Problème avec un produit livré'],
+          'details': [{'label': 'Date du constat :', 'value': '28/04/2021'}, {'label': 'Quel est le problème :', 'value': 'test'}],
+          'companyName': 'ALEXANDRE ANNIC',
+          'companyAddress': 'ALEXANDRE ANNIC - 31 RUE EMILE BERNARD - 29930 PONT-AVEN',
+          'companyPostalCode': '29930',
+          'companySiret': '81352117600038',
+          'creationDate': '2021-04-28T08:27:27.901921Z',
+          'contactAgreement': true,
+          'employeeConsumer': false,
+          'status': 'Clôturé',
+          'websiteURL': 'https://tegea.com',
+          'host': 'tegea.com',
+          'phone': null,
+          'vendor': null,
+          'tags': ['Internet'],
+          'firstName': 'Alexandre',
+          'lastName': 'ANNIC',
+          'email': 'alexandre.annic1@gmail.com'
+        }, 'files': []
+      }, {
+        'report': {
+          'id': '4c4c6308-d2e1-4a25-8dca-9ac1bbe97c8c',
+          'category': 'COVID-19 (coronavirus)',
+          'subcategories': ['Les prix (gel désinfectant, masque) sont trop élevés', 'Gel désinfectant (gel hydroalcoolique)', 'Non, pas sur internet'],
+          'details': [{'label': 'Date du constat :', 'value': '19/04/2021'}, {
+            'label': 'Volume du produit et autres caractéristiques :',
+            'value': 'delete me'
+          }, {'label': 'Quel est le prix de vente :', 'value': '0'}],
+          'companyName': 'ALEXANDRE ANNIC',
+          'companyAddress': 'ALEXANDRE ANNIC - 31 RUE EMILE BERNARD - 29930 PONT-AVEN',
+          'companyPostalCode': '29930',
+          'companySiret': '81352117600038',
+          'creationDate': '2021-04-19T17:44:54.944755Z',
+          'contactAgreement': false,
+          'employeeConsumer': false,
+          'status': 'Clôturé',
+          'websiteURL': null,
+          'host': null,
+          'phone': null,
+          'vendor': null,
+          'tags': []
+        }, 'files': []
+      }, {
+        'report': {
+          'id': 'ced31668-7aa4-4925-9378-655e9ea8bf1f',
+          'category': 'COVID-19 (coronavirus)',
+          'subcategories': ['Problème avec les règles d\'hygiène ou de distanciation physique'],
+          'details': [{'label': 'Description :', 'value': 'a'}, {'label': 'Date du constat :', 'value': '19/02/2021'}],
+          'companyName': 'ALEXANDRE ANNIC',
+          'companyAddress': 'ALEXANDRE ANNIC - 5 RUE JEAN MACE - 92150 SURESNES',
+          'companyPostalCode': '92150',
+          'companySiret': '81352117600020',
+          'creationDate': '2021-02-19T18:26:23.931744Z',
+          'contactAgreement': true,
+          'employeeConsumer': false,
+          'status': 'Clôturé',
+          'websiteURL': null,
+          'host': null,
+          'phone': null,
+          'vendor': null,
+          'tags': [],
+          'firstName': 'Alexandre',
+          'lastName': 'ANNIC',
+          'email': 'alexandre.annic1@gmail.com'
+        }, 'files': []
+      }]
+    } as unknown as PaginatedData<ReportSearchResult>)
+      .then(result => {
+        result.entities.forEach(entity => {
+          entity.report = ReportsClient.mapReport(entity.report)
+        })
+        return result
       })
-      return result
-    })
+    // return this.client.get<PaginatedData<ReportSearchResult>>(`/reports`, {
+    //   qs: pipe(
+    //     cleanReportFilter,
+    //     reportFilter2QueryString,
+    //     cleanObject,
+    //   )(filter)
+    // }).then(result => {
+    //   result.entities.forEach(entity => {
+    //     entity.report = ReportsClient.mapReport(entity.report)
+    //   })
+    //   return result
+    // })
   }
 
   readonly download = (id: Id) => {
