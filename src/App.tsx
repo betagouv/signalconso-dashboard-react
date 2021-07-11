@@ -118,8 +118,6 @@ export const App = () => {
       <Login
         onLogin={apiPublicSdk.authenticate.login}
         getTokenFromResponse={_ => _.token}
-        loadingForgottenPassword={forgottenPassword.loading}
-        onForgotPassword={forgottenPassword.fetch}
       >
         {({authResponse, login, logout, isLogging, isCheckingToken}) =>
           <Layout connectedUser={authResponse ? {...authResponse.user, logout: logout} : undefined}>
@@ -141,7 +139,7 @@ export const App = () => {
                 forgottenPassword={{
                   action: forgottenPassword.fetch(),
                   loading: forgottenPassword.loading,
-                  errorMsg: forgottenPassword.error,
+                  errorMsg: forgottenPassword.error?.message,
                 }}
               />
             )}
