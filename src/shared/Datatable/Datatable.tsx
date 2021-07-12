@@ -213,8 +213,8 @@ export const Datatable = <T extends any = any,>(props: DatatableProps<T>) => {
             count={total ?? 0}
             rowsPerPage={limit}
             page={offset / limit}
-            onChangePage={(event: unknown, newPage: number) => paginate.onPaginationChange({offset: newPage * limit})}
-            onChangeRowsPerPage={(event: React.ChangeEvent<HTMLInputElement>) => paginate.onPaginationChange({limit: +event.target.value})}
+            onPageChange={(event: unknown, newPage: number) => paginate.onPaginationChange({offset: newPage * limit})}
+            onRowsPerPageChange={(event: React.ChangeEvent<HTMLInputElement>) => paginate.onPaginationChange({limit: +event.target.value})}
           />
         )
       })() : data && (
