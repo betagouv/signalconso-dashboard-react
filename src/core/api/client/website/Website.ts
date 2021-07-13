@@ -1,4 +1,4 @@
-import {Entity, Id} from '../../model/Common'
+import {Entity, Id, PaginatedFilters} from '../../model/Common'
 import {Company} from '../company/Company'
 
 export enum WebsiteKind {
@@ -40,4 +40,9 @@ export interface HostWithReportCount {
 export interface ApiHostWithReportCount {
   host: string;
   count: number;
+}
+
+export interface WebsiteWithCompanySearch extends PaginatedFilters {
+  host?: string
+  kind?: string
 }

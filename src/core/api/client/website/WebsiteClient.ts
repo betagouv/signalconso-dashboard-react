@@ -1,13 +1,33 @@
-import {ApiHostWithReportCount, Id, Website, WebsiteUpdateCompany, WebsiteWithCompany} from '../../model'
+import {
+  ApiHostWithReportCount,
+  Id,
+  Website,
+  WebsiteUpdateCompany,
+  WebsiteWithCompany,
+  WebsiteWithCompanySearch
+} from '../../model'
 import {ApiClientApi} from '../..'
+import {fromNullable} from "fp-ts/lib/Option";
+import {paginateData} from "../../../helper/utils";
+import {Paginate} from "@alexandreannic/react-hooks-lib";
 
 export class WebsiteClient {
 
   constructor(private client: ApiClientApi) {
   }
 
-  readonly list = (): Promise<WebsiteWithCompany[]> => {
-    return this.client.get<WebsiteWithCompany[]>(`/websites`);
+  readonly list = (filters: WebsiteWithCompanySearch): Promise<Paginate<WebsiteWithCompany>> => {
+    return this.client.get<WebsiteWithCompany[]>(`/websites`)
+        .then(websiteWithCompany => fromNullable(filters.host).map(_ => _ === '' ? websiteWithCompany : websiteWithCompany.filter(website => website.host.indexOf(_) > 0)).getOrElse(websiteWithCompany))
+        .then(websiteWithCompany => fromNullable(filters.kind).map(_ => _ === '' ? websiteWithCompany : websiteWithCompany.filter(website => website.kind.indexOf(_) > 0)).getOrElse(websiteWithCompany))
+        .then(paginateData(filters.limit, filters.offset))
+        .then(result => {
+          result.data = result.data.map(_ => {
+            _.creationDate = new Date(_.creationDate)
+            return _
+          })
+          return result
+        });
   };
 
   readonly listUnregistered = (q?: string, start?: string, end?: string): Promise<ApiHostWithReportCount[]> => {
