@@ -92,6 +92,15 @@ const useStyles = makeStyles((t: Theme) => ({
       background: t.palette.action.hover,
     }
   },
+  loadingTd: {
+    height: 0,
+    marginBottom: -1,
+    padding: 0,
+    border: 'none'
+  },
+  loading: {
+    marginBottom: -5,
+  }
 }))
 
 const safeParseInt = (maybeInt: any, defaultValue: number): number => isNaN(maybeInt) ? defaultValue : parseInt(maybeInt)
@@ -119,13 +128,13 @@ export const Datatable = <T extends any = any,>(props: DatatableProps<T>) => {
   const displayableRows = useMemo(() => rows.filter(_ => !_.hidden), [rows])
   const toggleableColumnsName = useMemo(() => displayableRows.filter(_ => !_.alwaysVisible), [displayableRows])
   const displayedColumnsSet = useSetState<string>(displayableRows.map(_ => _.id!))
-  useEffect(() => {
-    displayedColumnsSet.reset(displayableRows.map(_ => _.id!))
-  }, [displayableRows])
   const filteredRows = useMemo(() => displayableRows.filter(_ => displayedColumnsSet.has(_.id)), [rows, displayedColumnsSet])
   const displayTableHeader = useMemo(() => !!displayableRows.find(_ => _.head !== ''), [displayableRows])
 
-  console.log('render', rows, data)
+  useEffect(() => {
+    displayedColumnsSet.reset(displayableRows.map(_ => _.id!))
+  }, [displayableRows])
+
   return (
     <>
       {(header || showColumnsToggle) && (
@@ -171,8 +180,8 @@ export const Datatable = <T extends any = any,>(props: DatatableProps<T>) => {
           <TableBody>
             {loading && (
               <TableRow>
-                <TableCell colSpan={filteredRows.length} style={{height: 0, padding: 0, border: 'none'}}>
-                  <LinearProgress/>
+                <TableCell colSpan={filteredRows.length} className={css.loadingTd}>
+                  <LinearProgress className={css.loading}/>
                 </TableCell>
               </TableRow>
             )}
