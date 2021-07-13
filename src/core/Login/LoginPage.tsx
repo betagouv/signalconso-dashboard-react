@@ -10,6 +10,7 @@ import {utilsStyles} from '../theme'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
 import {useCssUtils} from '../helper/useCssUtils'
 import {useEffect} from 'react'
+import {useToast} from '../toast'
 
 const useStyles = makeStyles((t: Theme) => ({
   root: {
@@ -58,6 +59,7 @@ interface Props {
 export const LoginPage = ({isLogging, onLogin, forgottenPassword}: Props) => {
   const {m} = useI18n()
   const cssUtils = useCssUtils()
+  const {toastSuccess} = useToast()
   const inputEmail = useFormInput('email', {
     errorMessage: m.invalidEmail,
     pattern: regexpPattern.email,
@@ -141,7 +143,7 @@ export const LoginPage = ({isLogging, onLogin, forgottenPassword}: Props) => {
                     </>
                   }
                   onConfirm={(close) => {
-                    forgottenPassword?.action(inputEmailForgotten.props.value).then(close)
+                    forgottenPassword?.action(inputEmailForgotten.props.value).then(close).then(() => toastSuccess(m.emailSentToYou))
                   }}
                   confirmLabel={m.createNewPassword}
                   cancelLabel={m.close}
