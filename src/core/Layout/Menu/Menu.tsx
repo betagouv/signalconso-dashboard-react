@@ -41,6 +41,11 @@ const useMenuStyles = makeStyles((t: Theme) => ({
     fontSize: utilsStyles(t).fontSize.small,
     color: t.palette.text.hint,
   },
+  divider: {
+    '& + $divider': {
+      display: 'none',
+    }
+  }
 }))
 
 interface Props {
@@ -63,12 +68,15 @@ export const Menu = ({onClose, connectedUser}: Props) => {
             {m.logout}
           </Btn>
         </div>
-        <Divider/>
+        <Divider className={css.divider}/>
         {[Roles.Admin, Roles.DGCCRF].includes(connectedUser.role) && (
           <MenuItem onClick={onClose} to={path(siteMap.reports())} icon={EntityIcon.report}>{m.menu_reports}</MenuItem>
         )}
         {[Roles.Pro].includes(connectedUser.role) && (
           <MenuItem onClick={onClose} to={path(siteMap.reportsPro())} icon={EntityIcon.report}>{m.menu_reports}</MenuItem>
+        )}
+        {[Roles.Admin, Roles.DGCCRF].includes(connectedUser.role) && (
+          <MenuItem onClick={onClose} to={path(siteMap.companies)} icon={EntityIcon.company}>{m.menu_companies}</MenuItem>
         )}
         {[Roles.Pro].includes(connectedUser.role) && (
           <MenuItem onClick={onClose} to={path(siteMap.companiesPro)} icon={EntityIcon.company}>{m.menu_companies}</MenuItem>
@@ -79,14 +87,14 @@ export const Menu = ({onClose, connectedUser}: Props) => {
         {[Roles.Admin, Roles.DGCCRF].includes(connectedUser.role) && (
           <MenuItem onClick={onClose} to={path(siteMap.subscriptions)} icon={EntityIcon.subscription}>{m.menu_subscriptions}</MenuItem>
         )}
-        <Divider/>
+        <Divider className={css.divider}/>
         {[Roles.Admin].includes(connectedUser.role) && (
           <MenuItem onClick={onClose} to={path(siteMap.reportedWebsites)} icon={EntityIcon.website}>{m.menu_websites}</MenuItem>
         )}
         {[Roles.Admin].includes(connectedUser.role) && (
           <MenuItem onClick={onClose} to={path(siteMap.reportedPhone)} icon={EntityIcon.phone}>{m.menu_phones}</MenuItem>
         )}
-        <Divider/>
+        <Divider className={css.divider}/>
         <MenuItem onClick={onClose} to={path(siteMap.settings)} icon="settings">{m.menu_settings}</MenuItem>
       </div>
     </ClickAwayListener>
