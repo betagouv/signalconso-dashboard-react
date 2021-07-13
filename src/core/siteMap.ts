@@ -11,6 +11,7 @@ export const siteMap = {
   exports: '/mes-telechargements',
   companies: '/entreprises',
   companiesPro: '/mes-entreprises',
+  companyAccesses: (siret: string = ':siret') => `/entreprise/acces/${siret}`,
   companies_toActivate: '/entreprises/a-activer',
   companies_registered: '/entreprises/les-plus-signalees',
   users: '/admin/invitation-ccrf',

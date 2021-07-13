@@ -1,13 +1,14 @@
 import {
   ApiClientApi,
   ApiPaginate,
-  CompanyAccessLevel,
   CompanySearch,
   CompanyToActivate,
+  CompanyWithAccessLevel,
   CompanyWithReportsCount,
   dateToApi,
   directDownloadBlob,
-  extractApiAddress, ViewableCompany
+  extractApiAddress,
+  ViewableCompany
 } from '../../index'
 import {Company, CompanyCreation, CompanyUpdate, Event, Id} from '../../model'
 import {format} from 'date-fns'
@@ -62,8 +63,8 @@ export class CompanyClient {
       .then(directDownloadBlob(`signalement_depot_${format(new Date(), 'ddMMyy')}`))
   }
 
-  readonly getAccessesByPro = () => {
-    return this.client.get<CompanyAccessLevel[]>(`/accesses/connected-user`)
+  readonly getCompaniesWithAccessByPro = () => {
+    return this.client.get<CompanyWithAccessLevel[]>(`/accesses/connected-user`)
   }
 
   readonly getCompaniesViewableByPro = () => {
@@ -78,6 +79,9 @@ export class CompanyClient {
       return _
     }))
   }
+
+
+
 
   readonly confirmCompaniesPosted = (companyIds: Id[]) => {
     return this.client.post<void>(`/companies/companies-posted`, {body: {companyIds}})

@@ -1,8 +1,8 @@
-import {CompanyClient, ConstantClient, ReportedPhoneClient, ReportsClient, SubscriptionClient, WebsiteClient} from './client'
+import {CompanyAccessClient, CompanyClient, ConstantClient, ReportedPhoneClient, ReportsClient, SubscriptionClient, WebsiteClient} from './client'
 import {ApiClientApi} from './core/ApiClient'
-import {EventClient} from './client/event/EventClient'
 import {AsyncFileClient} from './client/async-file/AsyncFileClient'
-import {UserClient} from './client/user/UserClient'
+import {UserClient, EventClient} from './client'
+import {CompanyAccessTokenClient} from './client/company-access-token/CompanyAccessTokenClient'
 
 export class SignalConsoSecuredSdk {
 
@@ -14,6 +14,8 @@ export class SignalConsoSecuredSdk {
   readonly constant = new ConstantClient(this.client)
   readonly subscription = new SubscriptionClient(this.client)
   readonly company = new CompanyClient(this.client)
+  readonly companyAccess = new CompanyAccessClient(this.client)
+  readonly companyAccessToken = new CompanyAccessTokenClient(this.client)
   readonly reports = new ReportsClient(this.client)
   readonly events = new EventClient(this.client)
   readonly asyncFiles = new AsyncFileClient(this.client)

@@ -1,6 +1,7 @@
 export * from './anomaly/AnomalyClient'
 export * from './authenticate/AuthenticateClient'
 export * from './company/CompanyClient'
+export * from './company-access/CompanyAccessClient'
 export * from './constant/ConstantClient'
 export * from './constant/PublicConstantClient'
 export * from './event/EventClient'

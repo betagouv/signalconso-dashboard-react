@@ -4,7 +4,7 @@ import {CrudListCRUD, useCrudList} from '@alexandreannic/react-hooks-lib/lib'
 import {Subscription} from 'core/api'
 import {SignalConsoApiSdk} from '../../App'
 
-export interface SubscriptionsContextProps extends CrudListCRUD<Subscription> {
+export interface SubscriptionsContextProps extends CrudListCRUD<Subscription, 'id'> {
 }
 
 interface Props {
@@ -18,7 +18,7 @@ const SubscriptionsContext = React.createContext<SubscriptionsContextProps>(defa
 
 export const SubscriptionsProvider = ({api, children}: Props) => {
 
-  const crud = useCrudList({
+  const crud = useCrudList('id', {
     c: api.secured.subscription.create,
     r: api.secured.subscription.list,
     u: api.secured.subscription.update,

@@ -141,6 +141,16 @@ export const CompaniesRegistered = () => {
                 <ScButton color="primary">{formatLargeNumber(_.count)}</ScButton>
               </NavLink>
           },
+          {
+            head: '',
+            id: 'actions',
+            className: cssUtils.txtRight,
+            row: _ => <NavLink to={siteMap.companyAccesses(_.siret)}>
+              <IconBtn color="primary">
+                <Icon>lock</Icon>
+              </IconBtn>
+            </NavLink>
+          }
         ]}
         renderEmptyState={
           <Fender title={m.noCompanyFound} icon="store" className={css.fender}>
