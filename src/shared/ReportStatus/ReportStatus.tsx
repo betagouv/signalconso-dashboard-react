@@ -27,6 +27,10 @@ const useStyles = makeStyles((t: Theme) => ({
   },
   fullWidth: {
     width: '100%',
+  },
+  inSelectOptions: {
+    marginTop: -10,
+    marginBottom: -10,
   }
 }))
 
@@ -35,6 +39,7 @@ interface ReportStatusChipProps {
   dense?: boolean
   className?: string
   fullWidth?: boolean
+  inSelectOptions?: boolean
 }
 
 const reportStatusColor = {
@@ -52,13 +57,13 @@ const reportStatusColor = {
   [ReportStatus.NotConcerned]: '#c9d3df',
 }
 
-export const ReportStatusChip = ({status, fullWidth, dense, className}: ReportStatusChipProps) => {
+export const ReportStatusChip = ({status, fullWidth, dense, className, inSelectOptions}: ReportStatusChipProps) => {
   const css = useStyles()
   const statusLabel = useMemo(() => capitalize(status.replace('Signalement ', ''), false), [status])
   return (
     <div
       aria-label="Statut du signalement"
-      className={classes(className, css.root, dense && css.dense, fullWidth && css.fullWidth)}
+      className={classes(className, css.root, inSelectOptions && css.inSelectOptions, dense && css.dense, fullWidth && css.fullWidth)}
       style={{background: reportStatusColor[status]}}>
       {statusLabel}
     </div>

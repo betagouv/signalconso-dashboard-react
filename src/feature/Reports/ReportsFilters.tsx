@@ -97,7 +97,7 @@ export const ReportFilters = ({filters, updateFilters, children}: ReportsFilters
                   <MenuItem value="">&nbsp;</MenuItem>
                   {_reportStatus.entity.map(status =>
                     <MenuItem key={status} value={status}>
-                      <ReportStatusChip dense fullWidth status={status}/>
+                      <ReportStatusChip inSelectOptions dense fullWidth status={status}/>
                     </MenuItem>
                   )}
                 </ScSelect>
