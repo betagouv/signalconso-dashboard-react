@@ -9,17 +9,22 @@ import {Badge, Icon, makeStyles, MenuItem, Theme} from '@material-ui/core'
 import {ReportStatusChip} from '../../shared/ReportStatus/ReportStatus'
 import {useLayoutContext} from '../../core/Layout/LayoutContext'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
-import {ReportSearch, ReportSearchResult} from '../../core/api'
+import {cleanObject, ReportSearch, ReportSearchResult} from '../../core/api'
 import {utilsStyles} from '../../core/theme'
 import {SelectDepartments} from '../../shared/SelectDepartments/SelectDepartments'
 import {ScSelect} from '../../shared/Select/Select'
 import {useConstantContext} from '../../core/context/ConstantContext'
-import {useForm} from 'react-hook-form'
 import {useHistory} from 'react-router'
 import {siteMap} from '../../core/siteMap'
 import {classes} from '../../core/helper/utils'
 import {Datepicker} from '../../shared/Datepicker/Datepicker'
 import {addDays, subDays} from 'date-fns'
+import {Fender} from 'mui-extension/lib'
+import {EntityIcon} from '../../core/EntityIcon'
+import {ScButton} from '../../shared/Button/Button'
+import {useQueryString} from '../../core/helper/useQueryString'
+import {fromNullable} from 'fp-ts/lib/Option'
+import {useToast} from '../../core/toast'
 
 const useStyles = makeStyles((t: Theme) => ({
   tdFiles: {
@@ -49,19 +54,42 @@ const minRowsBeforeDisplayFilters = 2
 
 export const ReportsPro = () => {
   const _reports = useReportsContext()
+  const _reportStatus = useConstantContext().reportStatus
+
   const {formatDate, m} = useI18n()
+
   const css = useStyles()
   const cssUtils = useCssUtils()
+
   const {isMobileWidth} = useLayoutContext()
-  const displayFilters = useMemo(() => _reports.list && _reports.list.totalSize > minRowsBeforeDisplayFilters, [_reports.list])
-  const _reportStatus = useConstantContext().reportStatus
-  const {register, handleSubmit, control, formState: {errors}} = useForm<ReportSearch>()
   const history = useHistory()
+  const {toastError} = useToast()
+
+  const hasFilters = () => {
+    const {limit, offset, ...values} = _reports.filters
+    return Object.keys(cleanObject(values)).length > 0 || offset > 0
+  }
+
+  const displayFilters = useMemo(
+    () => (_reports.list && _reports.list.totalSize > minRowsBeforeDisplayFilters) || hasFilters(),
+    [_reports.list]
+  )
+
+  const queryString = useQueryString<Readonly<Partial<ReportSearch>>>()
 
   useEffect(() => {
+    console.log(queryString.get())
+    _reports.updateFilters({..._reports.initialFilters, ...queryString.get()})
     _reportStatus.fetch()()
-    _reports.fetch()
   }, [])
+
+  useEffect(() => {
+    queryString.update(cleanObject(_reports.filters))
+  }, [_reports.filters])
+
+  useEffect(() => {
+    fromNullable(_reports.error).map(toastError)
+  }, [_reports.list, _reports.error])
 
   return (
     <Page size="small">
@@ -101,11 +129,19 @@ export const ReportsPro = () => {
                 })}
                 label={m.end}
               />
-              <ScSelect small fullWidth {...register('status')} defaultValue={_reports.filters.status ?? ''}>
+              <ScSelect
+                label={m.status}
+                fullWidth
+                onChange={event => {
+                  console.log(event)
+                  _reports.updateFilters(prev => ({...prev, status: event.target.value as string}))
+                }}
+                value={_reports.filters.status ?? ''}
+              >
                 <MenuItem value="">&nbsp;</MenuItem>
                 {(_reportStatus.entity ?? []).map(status =>
                   <MenuItem key={status} value={status}>
-                    <ReportStatusChip dense fullWidth status={status}/>
+                    <ReportStatusChip dense fullWidth inSelectOptions status={status}/>
                   </MenuItem>
                 )}
               </ScSelect>
@@ -181,6 +217,20 @@ export const ReportsPro = () => {
                     )
                 },
               ]}
+          renderEmptyState={
+            <Fender
+              icon={EntityIcon.report}
+              title={m.noReportsTitle}
+              description={
+                <>
+                  <Txt color="hint" size="big" block gutterBottom>{m.noReportsDesc}</Txt>
+                  <ScButton icon="clear" onClick={_reports.clearFilters} variant="contained" color="primary">
+                    {m.removeAllFilters}
+                  </ScButton>
+                </>
+              }
+            />
+          }
         />
       </Panel>
     </Page>

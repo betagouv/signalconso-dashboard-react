@@ -276,7 +276,8 @@ export const Reports = ({}) => {
                   </ScButton>
                 </>
               }
-            />}
+            />
+          }
         />
       </Panel>
     </Page>

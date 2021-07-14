@@ -82,6 +82,9 @@ export const muiTheme = (dark?: boolean): any => {
         root: {
           fontSize: '1rem',
           minHeight: 42,
+          [theme.breakpoints.up('xs')]: {
+            minHeight: 42,
+          }
         }
       },
       MuiDialogTitle: {
