@@ -10,6 +10,7 @@ export const useCompanyAccess = (api: SignalConsoApiSdk, siret: string) => {
   })
 
   const crudToken = useCrudList('id', {
+    c: (email: string, level: CompanyAccessLevel) => api.secured.companyAccessToken.create(siret, email, level),
     r: () => api.secured.companyAccessToken.fetch(siret),
     d: (id: Id) => api.secured.companyAccessToken.remove(siret, id)
   })

@@ -8,12 +8,13 @@ import {Icon, MenuItem} from '@material-ui/core'
 import {Panel} from '../../shared/Panel'
 import {useCssUtils} from '../../core/helper/useCssUtils'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
-import {CompanyAccessLevel} from '../../core/api/client/company-access/CompanyAccess'
+import {CompanyAccessLevel} from '../../core/api'
 import {Confirm, IconBtn} from 'mui-extension/lib'
 import {Id} from '../../core/api/model'
 import {fromNullable} from 'fp-ts/lib/Option'
 import {useLogin} from '../../core/context/LoginContext'
 import {useCompanyAccess} from './useCompaniesAccess'
+import {CompanyAccessCreateBtn} from './CompanyAccessCreateBtn'
 
 interface Accesses {
   name?: string
@@ -45,11 +46,18 @@ export const CompanyAccesses = () => {
 
   return (
     <Page>
-      <PageTitle>{m.companyAccessesTitle}</PageTitle>
+      <PageTitle action={
+        <CompanyAccessCreateBtn
+          loading={_crudToken.creating}
+          onCreate={_crudToken.create}
+          errorMessage={_crudToken.createError}
+        />
+      }>
+        {m.companyAccessesTitle}
+      </PageTitle>
       <Panel>
         <Datatable<Accesses>
-          data={(_crudAccess.list && _crudToken.list) ? accesses : undefined
-          }
+          data={(_crudAccess.list && _crudToken.list) ? accesses : undefined}
           loading={_crudAccess.fetching || _crudToken.fetching}
           getRenderRowKey={_ => _.email}
           rows={[

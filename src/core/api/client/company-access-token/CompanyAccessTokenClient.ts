@@ -1,4 +1,4 @@
-import {ApiClientApi} from '../..'
+import {ApiClientApi, CompanyAccessLevel} from '../..'
 import {CompanyAccessToken} from './CompanyAccessToken'
 
 export class CompanyAccessTokenClient {
@@ -12,5 +12,9 @@ export class CompanyAccessTokenClient {
 
   readonly remove = (siret: string, tokenId: string) => {
     return this.client.delete(`accesses/${siret}/token/${tokenId}`)
+  }
+
+  readonly create = (siret: string, email: string, level: CompanyAccessLevel) => {
+    return this.client.post(`api/accesses/${siret}/invitation`, {body: {email, level}})
   }
 }
