@@ -193,7 +193,6 @@ export const Reports = ({}) => {
             {
               id: 'companySiret',
               head: m.siret,
-              hidden: connectedUser.role !== Roles.DGCCRF,
               row: _ => _.report.companySiret
             },
             {
@@ -218,7 +217,6 @@ export const Reports = ({}) => {
             {
               id: 'reportDate',
               head: 'Date constat',
-              hidden: connectedUser.role !== Roles.DGCCRF,
               row: _ => getReportingDate(_.report)
             },
             {

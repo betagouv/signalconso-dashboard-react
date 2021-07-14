@@ -21,7 +21,7 @@ export const SaveUndeliveredDocBtn = ({loading, onChange, className}: Props) => 
   const {toastSuccess} = useToast()
   const [returnDate, setReturnDate] = useState(new Date())
 
-  if (connectedUser.role !== Roles.Admin) {
+  if (!connectedUser.isAdmin) {
     return <></>
   }
   return (
