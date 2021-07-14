@@ -1,6 +1,6 @@
 import * as React from 'react'
 import {ReactNode, useContext} from 'react'
-import {UseFetcher, useFetcher, usePaginate, UsePaginate} from '@alexandreannic/react-hooks-lib/lib'
+import {useCrudList, UseFetcher, useFetcher, usePaginate, UsePaginate} from '@alexandreannic/react-hooks-lib/lib'
 import {ApiError, CompanySearch, CompanyToActivate, CompanyWithReportsCount, PaginatedFilters} from 'core/api'
 import {SignalConsoApiSdk} from '../../App'
 import {paginateData} from '../helper/utils'
@@ -11,7 +11,7 @@ export interface CompaniesContextProps {
   downloadActivationDocument: UseFetcher<SignalConsoApiSdk['secured']['company']['downloadActivationDocument'], ApiError>
   confirmCompaniesPosted: UseFetcher<SignalConsoApiSdk['secured']['company']['confirmCompaniesPosted'], ApiError>
   searchByIdentity: UseFetcher<SignalConsoApiSdk['public']['company']['searchCompaniesByIdentity'], ApiError>
-  accessesByPro: UseFetcher<SignalConsoApiSdk['secured']['company']['getAccessesByPro'], ApiError>
+  accessesByPro: UseFetcher<SignalConsoApiSdk['secured']['company']['getCompaniesWithAccessByPro'], ApiError>
   companiesViewableByPro: UseFetcher<SignalConsoApiSdk['secured']['company']['getCompaniesViewableByPro'], ApiError>
 }
 
@@ -40,7 +40,7 @@ export const CompaniesProvider = ({api, children}: Props) => {
   const searchByIdentity = useFetcher(api.public.company.searchCompaniesByIdentity)
   const downloadActivationDocument = useFetcher(api.secured.company.downloadActivationDocument)
   const confirmCompaniesPosted = useFetcher(api.secured.company.confirmCompaniesPosted)
-  const accessesByPro = useFetcher(api.secured.company.getAccessesByPro)
+  const accessesByPro = useFetcher(api.secured.company.getCompaniesWithAccessByPro)
   const companiesViewableByPro = useFetcher(api.secured.company.getCompaniesViewableByPro)
 
   return (

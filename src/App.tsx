@@ -170,31 +170,32 @@ const LoggedApp = () => {
     ]}>
       <Switch>
         {fnSwitch(connectedUser.role, {
-            [Roles.Admin]: <>
-              <Route path={siteMap.reportedWebsites} component={ReportedWebsites}/>
-              <Route path={siteMap.reportedPhone} component={ReportedPhones}/>
-              <Route path={siteMap.reports()} component={Reports}/>
-              <Route path={siteMap.report()} component={ReportComponent}/>
-              <Route path={siteMap.users} component={Users}/>
-              <Route path={siteMap.companies} component={Companies}/>
-              <Route path={siteMap.companyAccesses()} component={CompanyAccesses}/>
-              <Route path={siteMap.settings} component={Settings}/>
-              <Route path={siteMap.subscriptions} component={Subscriptions}/>
-            </>,
-            [Roles.DGCCRF]: <>
-              <Route path={siteMap.reports()} component={Reports}/>
-              <Route path={siteMap.report()} component={ReportComponent}/>
-              <Route path={siteMap.companies} component={Companies}/>
-              <Route path={siteMap.settings} component={Settings}/>
-              <Route path={siteMap.subscriptions} component={Subscriptions}/>
-            </>,
-            [Roles.Pro]: <>
-              <Route path={siteMap.reportsPro()} component={ReportsPro}/>
-              <Route path={siteMap.settings} component={Settings}/>
-            </>,
-          }, () => <Fender type="error" title={m.anErrorOccurred}/>
+            [Roles.Admin]: [
+              <Route path={siteMap.reportedWebsites} component={ReportedWebsites}/>,
+              <Route path={siteMap.reportedPhone} component={ReportedPhones}/>,
+              <Route path={siteMap.reports()} component={Reports}/>,
+              <Route path={siteMap.report()} component={ReportComponent}/>,
+              <Route path={siteMap.users} component={Users}/>,
+              <Route path={siteMap.companies} component={Companies}/>,
+              <Route path={siteMap.companyAccesses()} component={CompanyAccesses}/>,
+              <Route path={siteMap.settings} component={Settings}/>,
+              <Route path={siteMap.subscriptions} component={Subscriptions}/>,
+              <Redirect exact from="/" to={siteMap.reports()}/>
+            ],
+            [Roles.DGCCRF]: [
+              <Route path={siteMap.reports()} component={Reports}/>,
+              <Route path={siteMap.report()} component={ReportComponent}/>,
+              <Route path={siteMap.companies} component={Companies}/>,
+              <Route path={siteMap.settings} component={Settings}/>,
+              <Route path={siteMap.subscriptions} component={Subscriptions}/>,
+              <Redirect exact from="/" to={siteMap.reports()}/>
+            ],
+            [Roles.Pro]: [
+              <Route path={siteMap.reportsPro()} component={ReportsPro}/>,
+              <Route path={siteMap.settings} component={Settings}/>,
+            ],
+          }, () => [<Fender type="error" title={m.anErrorOccurred}/>]
         )}
-        <Redirect exact from="/" to={connectedUser.role === Roles.Pro ? siteMap.reportsPro() : siteMap.reports()}/>
       </Switch>
     </Provide>
   )

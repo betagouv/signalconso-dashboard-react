@@ -55,7 +55,6 @@ export interface CompanyUpdate {
   activationDocumentRequired: boolean
 }
 
-
 export interface CompanySearchResult extends DraftCompany {
   highlight: string
   activityCode: string
@@ -65,10 +64,11 @@ export interface CompanySearchResult extends DraftCompany {
 }
 
 export interface CompanySearch extends PaginatedSearch<any> {
-  readonly departments?: string[];
+  readonly departments?: string[]
   identity?: string
 }
 
+// TODO(Alex) Harmonize with company-access types
 export enum AccessLevel {
   NONE = 'none',
   MEMBER = 'member',
@@ -76,13 +76,13 @@ export enum AccessLevel {
 }
 
 export interface ViewableCompany {
-  siret: string;
-  postalCode?: string;
-  closed: boolean;
+  siret: string
+  postalCode?: string
+  closed: boolean
 }
 
-export interface CompanyAccessLevel extends Company {
-  level: AccessLevel;
+export interface CompanyWithAccessLevel extends Company {
+  level: AccessLevel
 }
 
-export const isGovernmentCompany = (_?: DraftCompany): boolean => _?.activityCode?.startsWith('84.') ?? false;
+export const isGovernmentCompany = (_?: DraftCompany): boolean => _?.activityCode?.startsWith('84.') ?? false
