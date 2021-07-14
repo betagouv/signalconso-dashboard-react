@@ -20,6 +20,7 @@ import {utilsStyles} from '../../core/theme'
 import {useToast} from '../../core/toast'
 import {ReportEvents} from './Event/ReportEvents'
 import {ReportMessages} from './ReportMessages'
+import {AddressComponent} from '../../shared/Address/Address'
 // import SwipeableViews from 'react-swipeable-views';
 
 const useStyles = makeStyles((t: Theme) => ({
@@ -166,10 +167,8 @@ export const ReportComponent = () => {
                   <div>
                     <div className={cssUtils.txtBig} style={{marginBottom: theme.spacing(1 / 2)}}>{report.companySiret}</div>
                     <div className={classes(cssUtils.colorTxtSecondary, cssUtils.txtSmall)}>
-                      {report.companyAddress?.split(' - ').map((address, i) =>
-                        <div key={i} className={classes(i === 0 && cssUtils.txtBold)}>{address}</div>
-                      )}
-                      <div>{report.companyCountry}</div>
+                      <div className={cssUtils.txtBold}>{report.companyName}</div>
+                      <AddressComponent address={report.companyAddress}/>
                     </div>
                     <div>{report.vendor}</div>
                   </div>

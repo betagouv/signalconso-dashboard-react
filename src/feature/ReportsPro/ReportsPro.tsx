@@ -169,7 +169,7 @@ export const ReportsPro = () => {
                         <Icon className={classes(css.iconDash, cssUtils.inlineIcon)}>remove</Icon>
                         <Txt color="disabled">
                           <Icon className={cssUtils.inlineIcon}>location_on</Icon>
-                          {_.report.companyPostalCode}
+                          {_.report.companyAddress.postalCode}
                         </Txt>
                       </div>
                       <Txt block color="hint">{m.thisDate(formatDate(_.report.creationDate))}</Txt>
@@ -184,7 +184,7 @@ export const ReportsPro = () => {
                 {
                   id: 'companyPostalCode',
                   head: m.postalCodeShort,
-                  row: _ => _.report.companyPostalCode,
+                  row: _ => _.report.companyAddress.postalCode,
                 },
                 {
                   id: 'siret',

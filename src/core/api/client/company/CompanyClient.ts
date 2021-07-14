@@ -7,16 +7,15 @@ import {
   CompanyWithReportsCount,
   dateToApi,
   directDownloadBlob,
-  extractApiAddress,
   ViewableCompany
 } from '../../index'
 import {Company, CompanyCreation, CompanyUpdate, Event, Id} from '../../model'
 import {format} from 'date-fns'
+import {Address} from '../../model/Address'
 
 interface ApiCompanyWithReportsCount {
-  companyAddress: string
+  companyAddress: Address
   companyName: string
-  companyPostalCode: string
   companySiret: string
   count: number
 }
@@ -28,9 +27,8 @@ export class CompanyClient {
 
   private static readonly mapCompanyWithReportsCount = (_: ApiCompanyWithReportsCount): CompanyWithReportsCount => ({
     ..._,
-    address: extractApiAddress(_.companyAddress),
+    address: _.companyAddress,
     name: _.companyName,
-    postalCode: _.companyPostalCode,
     siret: _.companySiret,
   })
 

@@ -7,6 +7,7 @@ import {ScRadioGroup} from '../RadioGroup/RadioGroup'
 import React from 'react'
 import {useCssUtils} from '../../core/helper/useCssUtils'
 import {useI18n} from '../../core/i18n'
+import {AddressComponent} from '../Address/Address'
 
 interface Props {
   companies: CompanySearchResult[]
@@ -65,9 +66,11 @@ export const SelectCompanyList = ({companies, onChange}: Props) => {
                 {m.governmentCompany}
               </Txt>
             )}
-            <Txt color="hint" block size="small" className={css.address}>
-              {company.address?.split(' - ').map((line, i) => <div key={i}>{line}</div>)}
-            </Txt>
+            {company.address && (
+              <Txt color="hint" block size="small" className={css.address}>
+                <AddressComponent address={company.address}/>
+              </Txt>
+            )}
           </ScRadioGroupItem>
         )
       })}

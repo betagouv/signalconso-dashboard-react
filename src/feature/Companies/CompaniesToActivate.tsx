@@ -17,6 +17,7 @@ import {useToast} from '../../core/toast'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
 import {fromNullable} from 'fp-ts/lib/Option'
 import {EntityIcon} from '../../core/EntityIcon'
+import {AddressComponent} from '../../shared/Address/Address'
 
 const useStyles = makeStyles((t: Theme) => ({
   tdName_label: {
@@ -183,7 +184,7 @@ export const CompaniesToActivate = () => {
             id: 'address',
             className: css.tdAddress,
             row: _ => (
-              <span>{_.company.address.split(' - ').map((_, i) => <React.Fragment key={i}>{_}<br/></React.Fragment>)}</span>
+              <AddressComponent address={_.company.address}/>
             )
           },
           {

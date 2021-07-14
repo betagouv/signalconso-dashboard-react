@@ -168,8 +168,8 @@ export const Reports = ({}) => {
               className: css.tdPostal,
               row: _ =>
                 <>
-                  <span>{_.report.companyPostalCode?.slice(0, 2)}</span>
-                  <span className={cssUtils.colorDisabled}>{_.report.companyPostalCode?.substr(2, 5)}</span>
+                  <span>{_.report.companyAddress.postalCode?.slice(0, 2)}</span>
+                  <span className={cssUtils.colorDisabled}>{_.report.companyAddress.postalCode?.substr(2, 5)}</span>
                 </>
             },
             {

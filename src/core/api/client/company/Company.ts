@@ -1,5 +1,6 @@
 import {Id, PaginatedSearch} from '../../model'
 import {WebsiteKind} from '../..'
+import {Address} from '../../model/Address'
 
 export interface WebsiteURL {
   url: string
@@ -9,17 +10,15 @@ export interface DraftCompany {
   siret: string
   name?: string
   brand?: string
-  address?: string
-  postalCode?: string
-  country?: string
+  address?: Address
   website?: WebsiteURL
   activityCode?: string
 }
 
 export interface CompanyWithReportsCount {
-  address: string
+  address: Address
   name: string
-  postalCode: string
+  // postalCode: string
   siret: string
   count: number
 }
@@ -30,8 +29,8 @@ export interface Company {
   siret: string
   creationDate: Date
   name: string
-  address: string
-  postalCode?: string
+  address: Address
+  // postalCode?: string
   activityCode?: string
 }
 
@@ -44,14 +43,14 @@ export interface CompanyToActivate {
 export interface CompanyCreation {
   siret: string
   name: string
-  address: string
-  postalCode?: string
+  address: Address
+  // postalCode?: string
   activityCode?: string
 }
 
 export interface CompanyUpdate {
-  address: string
-  postalCode: string
+  address: Address
+  // postalCode: string
   activationDocumentRequired: boolean
 }
 

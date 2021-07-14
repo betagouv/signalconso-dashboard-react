@@ -31,13 +31,6 @@ export const toQueryString = (obj: any): string => {
     .join('&')
 }
 
-export const extractApiAddress = (address: string): string => {
-  const matches = address.match(/^[^-]*?-(.*?)-[^-]*$/)
-  return matches ? matches[1] : address
-  // const split = address.split(' - ')
-  // return split.length === 2 ? split[0] : split.length === 3 ? split[1] : address
-}
-
 export const directDownloadBlob = (fileName: string) => (blob: Blob): void => {
   const url = window.URL.createObjectURL(new Blob([blob], {type: 'application/pdf'}))
   const link = document.createElement('a')

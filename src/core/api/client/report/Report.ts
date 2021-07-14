@@ -1,5 +1,6 @@
 import {ReportTag, Subcategory} from '../anomaly/Anomaly'
 import {UploadedFile} from '../file/UploadedFile'
+import {Address} from '../../model/Address'
 
 export const ReportingDateLabel = 'Date du constat';
 export const ReportingTimeslotLabel = 'Heure du constat';
@@ -12,9 +13,7 @@ export interface Report {
   tags: ReportTag[]
   companyId: string
   companyName: string
-  companyAddress: string
-  companyPostalCode: string
-  companyCountry: string
+  companyAddress: Address
   companySiret: string
   websiteURL?: string
   vendor: string

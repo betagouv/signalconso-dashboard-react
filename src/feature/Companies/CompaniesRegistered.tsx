@@ -16,6 +16,7 @@ import {useQueryString} from '../../core/helper/useQueryString'
 import {DebouncedInput} from '../../shared/DebouncedInput/DebouncedInput'
 import {fromNullable} from 'fp-ts/lib/Option'
 import {useToast} from '../../core/toast'
+import {AddressComponent} from '../../shared/Address/Address'
 
 const useStyles = makeStyles((t: Theme) => ({
   tdName_label: {
@@ -120,7 +121,7 @@ export const CompaniesRegistered = () => {
             id: 'address',
             className: css.tdAddress,
             row: _ => (
-              <span>{_.address}</span>
+              <AddressComponent address={_.address}/>
             )
           },
           {
@@ -128,8 +129,8 @@ export const CompaniesRegistered = () => {
             id: 'postalCode',
             row: _ =>
               <>
-                <span>{_.postalCode?.slice(0, 2)}</span>
-                <span className={cssUtils.colorDisabled}>{_.postalCode?.substr(2, 5)}</span>
+                <span>{_.address.postalCode?.slice(0, 2)}</span>
+                <span className={cssUtils.colorDisabled}>{_.address.postalCode?.substr(2, 5)}</span>
               </>
           },
           {
