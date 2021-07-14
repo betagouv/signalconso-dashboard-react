@@ -5,7 +5,7 @@ import {EntityIcon} from '../../EntityIcon'
 import React from 'react'
 import {makeStyles} from '@material-ui/core/styles'
 import {utilsStyles} from '../../theme'
-import {MenuItem} from './MenuItem'
+import {ScMenuItem} from './ScMenuItem'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
 import {siteMap} from '../../siteMap'
 import {stopPropagation} from '../../helper/utils'
@@ -53,7 +53,7 @@ interface Props {
   connectedUser: LayoutConnectedUser
 }
 
-export const Menu = ({onClose, connectedUser}: Props) => {
+export const ScMenu = ({onClose, connectedUser}: Props) => {
   const path = (page: string) => '' + page
   const {m} = useI18n()
   const css = useMenuStyles()
@@ -70,32 +70,32 @@ export const Menu = ({onClose, connectedUser}: Props) => {
         </div>
         <Divider className={css.divider}/>
         {[Roles.Admin, Roles.DGCCRF].includes(connectedUser.role) && (
-          <MenuItem onClick={onClose} to={path(siteMap.reports())} icon={EntityIcon.report}>{m.menu_reports}</MenuItem>
+          <ScMenuItem onClick={onClose} to={path(siteMap.reports())} icon={EntityIcon.report}>{m.menu_reports}</ScMenuItem>
         )}
         {[Roles.Pro].includes(connectedUser.role) && (
-          <MenuItem onClick={onClose} to={path(siteMap.reportsPro())} icon={EntityIcon.report}>{m.menu_reports}</MenuItem>
+          <ScMenuItem onClick={onClose} to={path(siteMap.reportsPro())} icon={EntityIcon.report}>{m.menu_reports}</ScMenuItem>
         )}
         {[Roles.Admin, Roles.DGCCRF].includes(connectedUser.role) && (
-          <MenuItem onClick={onClose} to={path(siteMap.companies)} icon={EntityIcon.company}>{m.menu_companies}</MenuItem>
+          <ScMenuItem onClick={onClose} to={path(siteMap.companies)} icon={EntityIcon.company}>{m.menu_companies}</ScMenuItem>
         )}
         {[Roles.Pro].includes(connectedUser.role) && (
-          <MenuItem onClick={onClose} to={path(siteMap.companiesPro)} icon={EntityIcon.company}>{m.menu_companies}</MenuItem>
+          <ScMenuItem onClick={onClose} to={path(siteMap.companiesPro)} icon={EntityIcon.company}>{m.menu_companies}</ScMenuItem>
         )}
         {[Roles.Admin].includes(connectedUser.role) && (
-          <MenuItem onClick={onClose} to={path(siteMap.users)} icon={EntityIcon.user}>{m.menu_users}</MenuItem>
+          <ScMenuItem onClick={onClose} to={path(siteMap.users)} icon={EntityIcon.user}>{m.menu_users}</ScMenuItem>
         )}
         {[Roles.Admin, Roles.DGCCRF].includes(connectedUser.role) && (
-          <MenuItem onClick={onClose} to={path(siteMap.subscriptions)} icon={EntityIcon.subscription}>{m.menu_subscriptions}</MenuItem>
+          <ScMenuItem onClick={onClose} to={path(siteMap.subscriptions)} icon={EntityIcon.subscription}>{m.menu_subscriptions}</ScMenuItem>
         )}
         <Divider className={css.divider}/>
         {[Roles.Admin].includes(connectedUser.role) && (
-          <MenuItem onClick={onClose} to={path(siteMap.reportedWebsites)} icon={EntityIcon.website}>{m.menu_websites}</MenuItem>
+          <ScMenuItem onClick={onClose} to={path(siteMap.reportedWebsites)} icon={EntityIcon.website}>{m.menu_websites}</ScMenuItem>
         )}
         {[Roles.Admin].includes(connectedUser.role) && (
-          <MenuItem onClick={onClose} to={path(siteMap.reportedPhone)} icon={EntityIcon.phone}>{m.menu_phones}</MenuItem>
+          <ScMenuItem onClick={onClose} to={path(siteMap.reportedPhone)} icon={EntityIcon.phone}>{m.menu_phones}</ScMenuItem>
         )}
         <Divider className={css.divider}/>
-        <MenuItem onClick={onClose} to={path(siteMap.settings)} icon="settings">{m.menu_settings}</MenuItem>
+        <ScMenuItem onClick={onClose} to={path(siteMap.settings)} icon="settings">{m.menu_settings}</ScMenuItem>
       </div>
     </ClickAwayListener>
   )

@@ -1,4 +1,4 @@
-export const headerHeight = 128
+export const headerHeight = 64
 
 export {Layout} from './Layout'
 export {LayoutProvider} from './LayoutContext'

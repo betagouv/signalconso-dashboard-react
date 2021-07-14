@@ -57,7 +57,7 @@ export interface MenuItemProps extends HTMLProps<any> {
   to?: string
 }
 
-export const MenuItem = ({children, to, icon, className, active, large, ...other}: MenuItemProps) => {
+export const ScMenuItem = ({children, to, icon, className, active, large, ...other}: MenuItemProps) => {
   const {closeMobileSidebar} = useLayoutContext()
   const classes = useStyles()
 

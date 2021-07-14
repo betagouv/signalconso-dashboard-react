@@ -4,7 +4,7 @@ import {makeStyles} from '@material-ui/core/styles'
 import {grey, lightBlue} from '@material-ui/core/colors'
 import {utilsStyles} from '../../theme'
 import {useBoolean} from '@alexandreannic/react-hooks-lib/lib'
-import {Menu} from './Menu'
+import {ScMenu} from './ScMenu'
 import {LayoutConnectedUser} from '../Layout'
 import {classes} from '../../helper/utils'
 
@@ -17,6 +17,7 @@ const useMenuStyles = makeStyles((t: Theme) => ({
     color: lightBlue[50],
     backgroundColor: lightBlue[500],
     margin: t.spacing(0, 1),
+    marginRight: 0,
   },
   avatarOffline: {
     color: grey[50],
@@ -43,7 +44,7 @@ interface Props {
   connectedUser?: LayoutConnectedUser
 }
 
-export const MenuBtn = ({connectedUser}: Props) => {
+export const ScMenuBtn = ({connectedUser}: Props) => {
   const css = useMenuStyles()
   const openMenu = useBoolean()
 
@@ -53,7 +54,7 @@ export const MenuBtn = ({connectedUser}: Props) => {
         <Icon>{connectedUser ? 'person' : 'no_accounts'}</Icon>
       </Avatar>
       {connectedUser && openMenu.value && (
-        <Menu onClose={openMenu.setFalse} connectedUser={connectedUser}/>
+        <ScMenu onClose={openMenu.setFalse} connectedUser={connectedUser}/>
       )}
     </div>
   )
