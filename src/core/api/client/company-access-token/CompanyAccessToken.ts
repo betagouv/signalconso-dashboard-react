@@ -3,6 +3,6 @@ import {CompanyAccessLevel, Id} from '../..'
 export interface CompanyAccessToken {
   id: Id
   level: CompanyAccessLevel
-  emailedTo: string
+  emailedTo?: string
   expirationDate: Date
 }

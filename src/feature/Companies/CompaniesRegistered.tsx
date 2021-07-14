@@ -146,9 +146,11 @@ export const CompaniesRegistered = () => {
             id: 'actions',
             className: cssUtils.txtRight,
             row: _ => <NavLink to={siteMap.companyAccesses(_.siret)}>
-              <IconBtn color="primary">
-                <Icon>lock</Icon>
-              </IconBtn>
+              <Tooltip title={m.handleAccesses}>
+                <IconBtn color="primary">
+                  <Icon>vpn_key</Icon>
+                </IconBtn>
+              </Tooltip>
             </NavLink>
           }
         ]}

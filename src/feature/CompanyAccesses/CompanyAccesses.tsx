@@ -16,19 +16,24 @@ import {useLogin} from '../../core/context/LoginContext'
 import {useCompanyAccess} from './useCompaniesAccess'
 import {CompanyAccessCreateBtn} from './CompanyAccessCreateBtn'
 import {useToast} from '../../core/toast'
+import {SaveUndeliveredDocBtn} from './SaveUndeliveredDocBtn'
+import {useCompaniesContext} from '../../core/context/CompaniesContext'
 
 interface Accesses {
   name?: string
   userId?: Id
-  email: string
+  email?: string
   level: CompanyAccessLevel
   tokenId?: Id
 }
 
 export const CompanyAccesses = () => {
   const {siret} = useParams<{siret: string}>()
+
   const _crudAccess = useCompanyAccess(useLogin().apiSdk, siret).crudAccess
   const _crudToken = useCompanyAccess(useLogin().apiSdk, siret).crudToken
+  const _company = useCompaniesContext()
+
   const {m} = useI18n()
   const cssUtils = useCssUtils()
   const {connectedUser} = useLogin()
@@ -58,11 +63,20 @@ export const CompanyAccesses = () => {
   return (
     <Page>
       <PageTitle action={
+        <>
+          {_crudAccess.list?.length === 0 && (
+            <SaveUndeliveredDocBtn
+              loading={_company.saveUndeliveredDocument.loading}
+              onChange={date => _company.saveUndeliveredDocument.fetch()(siret, date)}
+              className={cssUtils.marginRight}
+            />
+          )}
         <CompanyAccessCreateBtn
           loading={_crudToken.creating}
           onCreate={_crudToken.create}
           errorMessage={_crudToken.createError}
         />
+        </>
       }>
         {m.companyAccessesTitle}
       </PageTitle>
@@ -70,7 +84,7 @@ export const CompanyAccesses = () => {
         <Datatable<Accesses>
           data={(_crudAccess.list && _crudToken.list) ? accesses : undefined}
           loading={_crudAccess.fetching || _crudToken.fetching}
-          getRenderRowKey={_ => _.email}
+          getRenderRowKey={_ => _.email ?? _.tokenId!}
           rows={[
             {
               id: 'status',
@@ -104,6 +118,7 @@ export const CompanyAccesses = () => {
             {
               id: 'action',
               head: '',
+              className: cssUtils.txtRight,
               row: _ =>
                 <>
                   {fromNullable(_.userId).map(userId =>
