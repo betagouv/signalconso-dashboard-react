@@ -1,7 +1,6 @@
 import React, {ReactNode, useContext} from 'react'
 import {SignalConsoApiSdk} from '../../App'
-import {ApiError, UserWithPermission} from '../api'
-import {UseFetcher, useFetcher} from '@alexandreannic/react-hooks-lib/lib'
+import {Roles, UserWithPermission} from '../api'
 
 const LoginContext = React.createContext({} as any)
 
@@ -14,7 +13,7 @@ interface LoginProviderProps {
 }
 
 interface UseLoginProps {
-  connectedUser: UserWithPermission,
+  connectedUser: UserWithPermission & {isDGCCRF: boolean, isPro: boolean, isAdmin: boolean},
   logout: () => void,
   apiSdk: SignalConsoApiSdk
   token: string
@@ -30,7 +29,12 @@ export const LoginProvider = ({
 
   return (
     <LoginContext.Provider value={{
-      connectedUser: connectedUser,
+      connectedUser: {
+        ...connectedUser,
+        isDGCCRF: connectedUser.role === Roles.DGCCRF,
+        isPro: connectedUser.role === Roles.Pro,
+        isAdmin: connectedUser.role === Roles.Admin,
+      },
       logout: onLogout,
       token,
       apiSdk,
