@@ -96,10 +96,9 @@ const useStyles = makeStyles((t: Theme) => ({
     height: 0,
     marginBottom: -1,
     padding: 0,
-    border: 'none'
+    border: 'none',
   },
   loading: {
-    marginBottom: -5,
   }
 }))
 
