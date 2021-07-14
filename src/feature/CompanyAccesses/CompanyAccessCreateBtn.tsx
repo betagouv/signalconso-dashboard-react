@@ -13,7 +13,7 @@ import {useToast} from '../../core/toast'
 interface Props {
   errorMessage?: string
   loading: boolean
-  onCreate: (email: string, level: CompanyAccessLevel) => Promise<void>
+  onCreate: (email: string, level: CompanyAccessLevel) => Promise<any>
 }
 
 interface Form {
@@ -46,7 +46,6 @@ export const CompanyAccessCreateBtn = ({errorMessage, loading, onCreate}: Props)
             <Alert dense type="error" deletable gutterBottom>{m.anErrorOccurred}</Alert>
           )}
           <ScInput
-            type="password"
             error={!!errors.email}
             helperText={errors.email?.message ?? ' '}
             fullWidth

@@ -1,5 +1,5 @@
 import {red} from '@material-ui/core/colors'
-import {createMuiTheme, fade, Theme, useTheme} from '@material-ui/core'
+import {createTheme, fade, Theme} from '@material-ui/core'
 
 export const utilsStyles = (t: Theme) => ({
   defaultRadius: 4,
@@ -29,11 +29,11 @@ export const utilsStyles = (t: Theme) => ({
 })
 
 export const muiTheme = (dark?: boolean): any => {
-  const theme = createMuiTheme()
+  const theme = createTheme()
   const colorMain = '#407e99'
   const colorMainLight = '#6697ad'
   const colorMainDark = '#2c586b'
-  return createMuiTheme({
+  return createTheme({
     palette: {
       primary: {
         light: colorMainLight,

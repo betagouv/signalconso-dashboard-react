@@ -15,6 +15,7 @@ import {fromNullable} from 'fp-ts/lib/Option'
 import {useLogin} from '../../core/context/LoginContext'
 import {useCompanyAccess} from './useCompaniesAccess'
 import {CompanyAccessCreateBtn} from './CompanyAccessCreateBtn'
+import {useToast} from '../../core/toast'
 
 interface Accesses {
   name?: string
@@ -31,6 +32,7 @@ export const CompanyAccesses = () => {
   const {m} = useI18n()
   const cssUtils = useCssUtils()
   const {connectedUser} = useLogin()
+  const {toastError} = useToast()
 
   const accesses: Accesses[] = useMemo(() => {
     return [
@@ -43,6 +45,15 @@ export const CompanyAccesses = () => {
     _crudAccess.fetch()()
     _crudToken.fetch()()
   }, [])
+
+  useEffect(() => {
+    fromNullable(_crudToken.fetchError).map(toastError)
+  }, [_crudToken.list, _crudToken.fetchError])
+
+  useEffect(() => {
+    fromNullable(_crudAccess.fetchError).map(toastError)
+  }, [_crudAccess.list, _crudAccess.fetchError])
+
 
   return (
     <Page>

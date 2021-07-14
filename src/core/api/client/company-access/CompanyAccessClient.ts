@@ -11,10 +11,10 @@ export class CompanyAccessClient {
   }
 
   readonly update = (siret: string, userId: string, level: CompanyAccessLevel) => {
-    return this.client.put<CompanyAccess>(`accesses/${siret}/${userId}`, {body: {level}}).then(_ => ({..._, level: level}))
+    return this.client.put<CompanyAccess>(`/accesses/${siret}/${userId}`, {body: {level}}).then(_ => ({..._, level: level}))
   }
 
   readonly remove = (siret: string, userId: Id) => {
-    return this.client.delete<void>(`accesses/${siret}/${userId}`)
+    return this.client.delete<void>(`/accesses/${siret}/${userId}`)
   }
 }
