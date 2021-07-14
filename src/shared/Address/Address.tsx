@@ -8,11 +8,11 @@ interface Props {
 export const AddressComponent = ({address}: Props) => {
   return (
     <>
-      {address.number}
-      {address.street}
+      {address.number}&nbsp;
+      {address.street}&nbsp;
       {address.addressSupplement}
       <br/>
-      {address.postalCode}
+      {address.postalCode}&nbsp;
       {address.city}
       {address.country && (
         <>

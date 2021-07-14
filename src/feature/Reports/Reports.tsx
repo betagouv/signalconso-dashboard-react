@@ -62,6 +62,13 @@ const useStyles = makeStyles((t: Theme) => ({
   actions: {
     paddingRight: t.spacing(.25),
     paddingLeft: t.spacing(.25),
+  },
+  tdProblem: {
+    maxWidth: 200,
+  },
+  tooltipUl: {
+    margin: 0,
+    padding: 16,
   }
 }))
 
@@ -192,8 +199,14 @@ export const Reports = ({}) => {
             {
               id: 'category',
               head: m.problem,
+              className: css.tdProblem,
               row: _ =>
-                <Tooltip title={_.report.subcategories.map((s, i) => <span key={i}>{s}<br/></span>)}>
+                <Tooltip title={<>
+                  <b>{_.report.category}</b>
+                  <ul className={css.tooltipUl}>
+                    {_.report.subcategories.map((s, i) => <li key={i}>{s}</li>)}
+                  </ul>
+                </>}>
                   <span>{_.report.category}</span>
                 </Tooltip>
             },

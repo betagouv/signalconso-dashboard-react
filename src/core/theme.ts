@@ -109,6 +109,12 @@ export const muiTheme = (dark?: boolean): any => {
           paddingLeft: 8,
         },
       },
+      MuiTooltip: {
+        tooltip: {
+          fontSize: theme.typography.fontSize,
+          fontWeight: 'normal',
+        },
+      },
       MuiIcon: {
         root: {
           width: 'auto',

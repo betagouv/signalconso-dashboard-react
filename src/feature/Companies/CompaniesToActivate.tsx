@@ -5,7 +5,7 @@ import {CompanyToActivate, Id} from '../../core/api'
 import React, {useEffect} from 'react'
 import {useCompaniesContext} from '../../core/context/CompaniesContext'
 import {useCssUtils} from '../../core/helper/useCssUtils'
-import {Checkbox, Icon, makeStyles, Theme} from '@material-ui/core'
+import {Checkbox, Icon, makeStyles, Theme, Tooltip} from '@material-ui/core'
 import {utilsStyles} from '../../core/theme'
 import {Confirm, Fender, IconBtn} from 'mui-extension/lib'
 import {Link} from 'react-router-dom'
@@ -204,9 +204,11 @@ export const CompaniesToActivate = () => {
             row: _ =>
               <>
                 <Link to={siteMap.reports({siretSirenList: [_.company.siret]})}>
-                  <IconBtn>
-                    <Icon>chevron_right</Icon>
-                  </IconBtn>
+                  <Tooltip title={m.reports}>
+                    <IconBtn>
+                      <Icon>chevron_right</Icon>
+                    </IconBtn>
+                  </Tooltip>
                 </Link>
               </>
           }
