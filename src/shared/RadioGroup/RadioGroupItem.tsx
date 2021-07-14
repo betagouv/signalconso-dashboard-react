@@ -1,4 +1,4 @@
-import {fade, makeStyles, Radio, Theme} from '@material-ui/core'
+import {alpha, makeStyles, Radio, Theme} from '@material-ui/core'
 import React, {MouseEventHandler, ReactNode} from 'react'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
 import {classes} from 'core/helper/utils'
@@ -31,7 +31,7 @@ const useStyle = makeStyles((t: Theme) => ({
   rootSelected: {
     zIndex: 1,
     border: `1px solid ${t.palette.primary.main} !important`,
-    background: fade(t.palette.primary.main, .1),
+    background: alpha(t.palette.primary.main, .1),
     boxShadow: `inset 0 0 0 1px ${t.palette.primary.main}`,
   },
   body: {

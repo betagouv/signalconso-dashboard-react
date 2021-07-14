@@ -2,7 +2,7 @@ import * as React from 'react'
 import {HTMLProps, ReactNode} from 'react'
 import {createStyles, Icon, makeStyles, Theme} from '@material-ui/core'
 import classNames from 'classnames'
-import {fade} from '@material-ui/core/styles'
+import {alpha} from '@material-ui/core/styles'
 import {useLayoutContext} from '../LayoutContext'
 import {NavLink} from 'react-router-dom'
 
@@ -30,7 +30,7 @@ const useStyles = makeStyles((t: Theme) => createStyles({
   },
   rootActive: {
     color: t.palette.primary.main,
-    background: fade(t.palette.primary.main, .16),
+    background: alpha(t.palette.primary.main, .16),
   },
   i: {
     // color: t.palette.text.secondary,

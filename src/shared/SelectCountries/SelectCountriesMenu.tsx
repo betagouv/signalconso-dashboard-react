@@ -3,7 +3,7 @@ import {forwardRef, useEffect, useMemo} from 'react'
 import {useConstantContext} from '../../core/context/ConstantContext'
 import {fromNullable} from 'fp-ts/lib/Option'
 import {Country} from '../../core/api'
-import {Checkbox, createStyles, fade, makeStyles, Menu, Theme} from '@material-ui/core'
+import {Checkbox, createStyles, alpha, makeStyles, Menu, Theme} from '@material-ui/core'
 import {useCssUtils} from '../../core/helper/useCssUtils'
 import {useI18n} from '../../core/i18n'
 import {classes} from '../../core/helper/utils'
@@ -37,7 +37,7 @@ const useStyles = makeStyles((t: Theme) => {
     menuItemActive: {
       fontWeight: t.typography.fontWeightBold,
       color: t.palette.primary.main + ' !important',
-      background: fade(t.palette.primary.main, .1) + ' !important',
+      background: alpha(t.palette.primary.main, .1) + ' !important',
     },
     menuItemCategory: {
       '&:not(:first-of-type)': {

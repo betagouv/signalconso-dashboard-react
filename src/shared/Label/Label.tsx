@@ -1,7 +1,7 @@
 import * as React from 'react'
 import {CSSProperties, ReactNode} from 'react'
 import {makeStyles, Theme} from '@material-ui/core'
-import {fade} from '@material-ui/core/styles'
+import {alpha} from '@material-ui/core/styles'
 import {utilsStyles} from '../../core/theme'
 import {classes} from '../../core/helper/utils'
 
@@ -14,7 +14,7 @@ interface Props extends React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElem
 }
 
 const colorize = (color: string): CSSProperties => ({
-  background: fade(color, .14),
+  background: alpha(color, .14),
   color: color
 });
 
