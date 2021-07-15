@@ -44,5 +44,5 @@ export interface ApiHostWithReportCount {
 
 export interface WebsiteWithCompanySearch extends PaginatedFilters {
   host?: string
-  kind?: string
+  kind?: WebsiteKind
 }

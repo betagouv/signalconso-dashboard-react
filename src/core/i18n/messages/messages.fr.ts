@@ -32,6 +32,7 @@ export const messagesFr = {
   help: 'Aide',
   created_at: 'Créé le',
   validated: 'Validé',
+  notValidated: 'Non validé',
   configuration: 'Configuration',
   general: 'General',
   name: 'Nom',

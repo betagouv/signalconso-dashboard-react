@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react'
 import {useI18n} from '../../core/i18n'
 import {useCssUtils} from "../../core/helper/useCssUtils";
-import {InputBase} from "@material-ui/core";
+import {Icon, InputBase, MenuItem} from "@material-ui/core";
 import {useToast} from "../../core/toast";
 import {fromNullable} from "fp-ts/lib/Option";
 import {Panel} from "../../shared/Panel";
@@ -9,22 +9,53 @@ import {Datatable} from "../../shared/Datatable/Datatable";
 import {DebouncedInput} from "../../shared/DebouncedInput/DebouncedInput";
 import {Txt} from "mui-extension/lib/Txt/Txt";
 import {useReportedWebsiteWithCompanyContext} from "../../core/context/ReportedWebsitesContext";
-import {WebsiteWithCompany} from "../../core/api";
+import {WebsiteKind, WebsiteWithCompany} from "../../core/api";
+import {Btn, IconBtn} from "mui-extension";
+import {ScSelect} from "../../shared/Select/Select";
 
 
 export const ReportedCompaniesWebsites = () => {
     const {m, formatDate} = useI18n()
-    const _reportedCompanyWebsites = useReportedWebsiteWithCompanyContext().getWebsiteWithCompany
+    const _fetch = useReportedWebsiteWithCompanyContext().getWebsiteWithCompany
+    const _remove = useReportedWebsiteWithCompanyContext().remove
     const cssUtils = useCssUtils()
     const {toastError} = useToast()
 
+
+    const useAnchoredMenu = () => {
+        const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
+        const open = (event: any) => setAnchorEl(event.currentTarget)
+        const close = () => setAnchorEl(null)
+        return {open, close, element: anchorEl}
+    }
+
+    const websiteKindBtn = (status: WebsiteKind) => {
+        let validatedValue =
+            status === WebsiteKind.DEFAULT ?
+                <><Icon className={cssUtils.colorSuccess}>check_circle</Icon>
+                    <span> {m.validated} </span></> : m.validated
+
+        return <Btn size="small" color="primary" variant="outlined">
+            {validatedValue}
+        </Btn>
+    }
+
     useEffect(() => {
-        _reportedCompanyWebsites.fetch()
+        _fetch.fetch()
     }, [])
 
     useEffect(() => {
-        fromNullable(_reportedCompanyWebsites.error).map(toastError)
-    }, [_reportedCompanyWebsites.error])
+        fromNullable(_fetch.error).map(toastError)
+    }, [_fetch.error])
+
+
+    useEffect(() => {
+        _remove.fetch()
+    }, [])
+
+    useEffect(() => {
+        fromNullable(_remove.error).map(toastError)
+    }, [_remove.error])
 
     return (
         <Panel>
@@ -33,8 +64,8 @@ export const ReportedCompaniesWebsites = () => {
                     <>
                         <DebouncedInput
                             debounce={400}
-                            value={_reportedCompanyWebsites.filters.host ?? ''}
-                            onChange={host => _reportedCompanyWebsites.updateFilters(prev => ({...prev, host: host}))}
+                            value={_fetch.filters.host ?? ''}
+                            onChange={host => _fetch.updateFilters(prev => ({...prev, host: host}))}
                         >
                             {(value, onChange) =>
                                 <InputBase
@@ -44,17 +75,30 @@ export const ReportedCompaniesWebsites = () => {
                                 />
                             }
                         </DebouncedInput>
+                        <ScSelect small={true} fullWidth value={_fetch.filters.kind ?? ''}
+                                  onChange={event => _fetch.updateFilters(prev => ({
+                                      ...prev,
+                                      kind: event.target.value as WebsiteKind
+                                  }))}>
+                            <MenuItem value="">&nbsp;</MenuItem>
+                            {[WebsiteKind.PENDING, WebsiteKind.DEFAULT].map(kind =>
+                                <MenuItem key={kind} value={kind}>
+                                    {kind === WebsiteKind.PENDING ? <> {m.notValidated} </> : m.validated}
+                                </MenuItem>
+                            )}
+                        </ScSelect>
                     </>
+
                 }
-                loading={_reportedCompanyWebsites.fetching}
-                total={_reportedCompanyWebsites.list?.totalSize}
+                loading={_fetch.fetching}
+                total={_fetch.list?.totalSize}
                 paginate={{
-                    limit: _reportedCompanyWebsites.filters.limit,
-                    offset: _reportedCompanyWebsites.filters.offset,
-                    onPaginationChange: pagination => _reportedCompanyWebsites.updateFilters(prev => ({...prev, ...pagination})),
+                    limit: _fetch.filters.limit,
+                    offset: _fetch.filters.offset,
+                    onPaginationChange: pagination => _fetch.updateFilters(prev => ({...prev, ...pagination})),
                 }}
                 getRenderRowKey={_ => _.host}
-                data={_reportedCompanyWebsites.list?.data}
+                data={_fetch.list?.data}
                 rows={[
                     {
                         id: 'host',
@@ -82,11 +126,20 @@ export const ReportedCompaniesWebsites = () => {
                         id: 'company_siret',
                         row: _ => _.company.siret
                     },
-                    // {
-                    //     id: 'status',
-                    //     head: m.status, row: _ =>
-                    //         <ReportStatusChip dense status={_.kind}/>
-                    // }
+                    {
+                        head: m.status,
+                        id: 'status',
+                        row: _ => websiteKindBtn(_.kind)
+                    },
+                    {
+                        id: 'actions',
+                        stickyEnd: true,
+                        row: _ => (
+                            <IconBtn className={cssUtils.colorTxtHint} onClick={() => _remove.fetch()(_.id)}>
+                                <Icon>delete</Icon>
+                            </IconBtn>
+                        )
+                    },
                 ]}/>
         </Panel>
     )
