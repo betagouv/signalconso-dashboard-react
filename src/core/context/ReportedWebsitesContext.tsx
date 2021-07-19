@@ -11,6 +11,7 @@ import {ApiError} from "../api";
 export interface ReportedWebsiteWithCompanyContextProps {
     getWebsiteWithCompany: UsePaginate<WebsiteWithCompany, WebsiteWithCompanySearch>
     remove: UseFetcher<SignalConsoApiSdk['secured']['website']['remove'], ApiError>
+    update: UseFetcher<SignalConsoApiSdk['secured']['website']['update'], ApiError>
 }
 
 interface Props {
@@ -29,11 +30,13 @@ export const ReportedWebsitesProvider = ({api, children}: Props) => {
         {limit: 10, offset: 0}
     )
     const remove = useFetcher(api.secured.website.remove)
+    const update = useFetcher(api.secured.website.update)
 
     return (
         <ReportedWebsitesContext.Provider value={{
             getWebsiteWithCompany: listReportedWebsiteWithCompany,
-            remove
+            remove,
+            update
         }}>
             {children}
         </ReportedWebsitesContext.Provider>

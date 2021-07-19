@@ -18,8 +18,9 @@ export const ReportedCompaniesWebsites = () => {
     const {m, formatDate} = useI18n()
     const _fetch = useReportedWebsiteWithCompanyContext().getWebsiteWithCompany
     const _remove = useReportedWebsiteWithCompanyContext().remove
+    const _update = useReportedWebsiteWithCompanyContext().update
     const cssUtils = useCssUtils()
-    const {toastError} = useToast()
+    const {toastError, toastSuccess} = useToast()
 
 
     const useAnchoredMenu = () => {
@@ -29,13 +30,19 @@ export const ReportedCompaniesWebsites = () => {
         return {open, close, element: anchorEl}
     }
 
-    const websiteKindBtn = (status: WebsiteKind) => {
+    const websiteKindBtn = (websiteWithCompany: WebsiteWithCompany) => {
+
         let validatedValue =
-            status === WebsiteKind.DEFAULT ?
+            websiteWithCompany.kind === WebsiteKind.DEFAULT ?
                 <><Icon className={cssUtils.colorSuccess}>check_circle</Icon>
                     <span> {m.validated} </span></> : m.validated
 
-        return <Btn size="small" color="primary" variant="outlined">
+        return <Btn size="small" color="primary" variant="outlined"
+                    onClick={() => _update.fetch()(websiteWithCompany.id, {
+                        ...websiteWithCompany,
+                        kind: websiteWithCompany.kind === WebsiteKind.DEFAULT ? WebsiteKind.PENDING : WebsiteKind.DEFAULT
+                    }).then(() => toastSuccess(m.statusEdited))
+                    }>
             {validatedValue}
         </Btn>
     }
@@ -129,7 +136,7 @@ export const ReportedCompaniesWebsites = () => {
                     {
                         head: m.status,
                         id: 'status',
-                        row: _ => websiteKindBtn(_.kind)
+                        row: _ => websiteKindBtn(_)
                     },
                     {
                         id: 'actions',

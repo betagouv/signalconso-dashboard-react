@@ -22,6 +22,7 @@ export const messagesFr = {
   try: 'Try',
   settings: 'Paramètres',
   status: 'Status',
+  statusEdited: 'Status modifié.',
   save: 'Sauvegarder',
   saved: 'Sauvegardé',
   duplicate: 'Duplicate',
