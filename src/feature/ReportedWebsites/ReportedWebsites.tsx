@@ -22,7 +22,8 @@ export const ReportedWebsites = () => {
             </PageTabs>
             <Switch>
                 <Redirect exact from={path} to={siteMap.reportedCompanyWebsites}/>
-                <Route path={siteMap.reportedCompanyWebsites} component={ReportedCompaniesWebsites}/>
+                <Route path={siteMap.reportedCompanyWebsites} component={ReportedUnknownWebsites}/>
+                {/*<Route path={siteMap.reportedCompanyWebsites} component={ReportedCompaniesWebsites}/>*/}
                 <Route path={siteMap.reportedWebsites_unknown} component={ReportedUnknownWebsites}/>
             </Switch>
         </Page>
