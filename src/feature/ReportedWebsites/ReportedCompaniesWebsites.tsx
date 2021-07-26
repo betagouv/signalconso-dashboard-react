@@ -106,6 +106,7 @@ export const ReportedCompaniesWebsites = () => {
                 }}
                 getRenderRowKey={_ => _.host}
                 data={_fetch.list?.data}
+                showColumnsToggle={true}
                 rows={[
                     {
                         id: 'host',

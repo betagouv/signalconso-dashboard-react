@@ -1,6 +1,6 @@
 import {
     ApiHostWithReportCount, HostReportCountSearch,
-    Id, ReportSearch,
+    Id, PaginatedData,
     Website,
     WebsiteKind,
     WebsiteUpdateCompany,
@@ -46,14 +46,16 @@ export class WebsiteClient {
     constructor(private client: ApiClientApi) {
     }
 
-    readonly list = (filters: WebsiteWithCompanySearch): Promise<Paginate<WebsiteWithCompany>> => {
-        return this.client.get<WebsiteWithCompany[]>(`/websites`)
-            .then(websiteWithCompany => websiteWithCompany.filter(website => website.kind != WebsiteKind.MARKETPLACE))
-            .then(websiteWithCompany => fromNullable(filters.host).map(_ => _ === '' ? websiteWithCompany : websiteWithCompany.filter(website => website.host.includes(_))).getOrElse(websiteWithCompany))
-            .then(websiteWithCompany => fromNullable(filters.kind).map(kindFiltered => websiteWithCompany.filter(website => website.kind === kindFiltered)).getOrElse(websiteWithCompany))
-            .then(paginateData(filters.limit, filters.offset))
+    readonly list = (filters: WebsiteWithCompanySearch) => {
+        console.log(toQueryString(filters))
+        return this.client.get<PaginatedData<WebsiteWithCompany>>(`/websites${toQueryString(filters)}`)
+            .then(paginated =>
+                Object.assign({}, paginated, {entities: paginated.entities.filter(website => website.kind !== WebsiteKind.MARKETPLACE)})
+            )
+            .then(paginated => fromNullable(filters.host).map(_ => _ === '' ? paginated : Object.assign({}, paginated, {entities: paginated.entities.filter(website => website.host.includes(_))})).getOrElse(paginated))
+            .then(paginated => fromNullable(filters.kind).map(kindFiltered => Object.assign({}, paginated, {entities: paginated.entities.filter(website => website.kind === kindFiltered)})).getOrElse(paginated))
             .then(result => {
-                result.data = result.data.map(_ => {
+                result.entities = result.entities.map(_ => {
                     _.creationDate = new Date(_.creationDate)
                     return _
                 })
@@ -61,14 +63,16 @@ export class WebsiteClient {
             });
     };
 
+
     readonly listUnregistered = (filters: HostReportCountSearch): Promise<Paginate<ApiHostWithReportCount>> => {
         return this.client.get<ApiHostWithReportCount[]>(`/websites/unregistered${toQueryString(hostReportFilter2QueryString(filters))}`)
             .then(hostWithReport => fromNullable(filters.host).map(_ => _ === '' ? hostWithReport : hostWithReport.filter(w => w.host.includes(_))).getOrElse(hostWithReport))
             .then(paginateData(filters.limit, filters.offset));
     };
 
-    readonly extractUnregistered = (q?: string, start?: string, end?: string): Promise<ApiHostWithReportCount[]> => {
-        return this.client.get<ApiHostWithReportCount[]>(`/websites/unregistered/extract`, {qs: {q, start, end}});
+
+    readonly extractUnregistered = (filters: HostReportCountSearch) => {
+        return this.client.get<void>(`/websites/unregistered/extract`, {qs: hostReportFilter2QueryString(filters)})
     };
 
     readonly update = (id: Id, website: Partial<Website>): Promise<WebsiteWithCompany> => {

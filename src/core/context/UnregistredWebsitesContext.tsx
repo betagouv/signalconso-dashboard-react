@@ -2,11 +2,11 @@ import * as React from 'react'
 import {ReactNode, useContext} from 'react'
 import {UseFetcher, useFetcher, usePaginate, UsePaginate} from '@alexandreannic/react-hooks-lib/lib'
 import {SignalConsoApiSdk} from '../../App'
-import {ApiError, HostReportCountSearch, ApiHostWithReportCount} from "../api";
+import {ApiHostWithReportCount, HostReportCountSearch} from "../api";
+import {sortPaginatedData} from "../helper/utils";
 
-export interface UnregistredWebsiteWithCompanyContextProps {
-    extractUnregistered: UseFetcher<SignalConsoApiSdk['secured']['website']['extractUnregistered'], ApiError>
-    listUnregistred: UsePaginate<ApiHostWithReportCount, HostReportCountSearch>
+export interface UnregistredWebsiteWithCompanyContextProps extends UsePaginate<ApiHostWithReportCount, HostReportCountSearch> {
+    extractUnregistered: UseFetcher<() => Promise<void>>
 }
 
 interface Props {
@@ -20,16 +20,19 @@ const UnregistredWebsitesContext = React.createContext<UnregistredWebsiteWithCom
 
 export const UnregistredWebsitesProvider = ({api, children}: Props) => {
 
-    const extractUnregistered = useFetcher(api.secured.website.extractUnregistered)
-    const listUnregistred = usePaginate<ApiHostWithReportCount, HostReportCountSearch, ApiError>(
-        api.secured.website.listUnregistered,
-        {limit: 10, offset: 0}
-    )
+    const listUnregistred = usePaginate<ApiHostWithReportCount, HostReportCountSearch>(search => {
+        return api.secured.website.listUnregistered(search)
+            .then(sortPaginatedData('count', 'desc'))
+    }, {limit: 10, offset: 0})
+
+
+    const extractUnregistered = useFetcher(() => api.secured.website.extractUnregistered(listUnregistred.filters))
+
 
     return (
         <UnregistredWebsitesContext.Provider value={{
+            ...listUnregistred,
             extractUnregistered,
-            listUnregistred
         }}>
             {children}
         </UnregistredWebsitesContext.Provider>

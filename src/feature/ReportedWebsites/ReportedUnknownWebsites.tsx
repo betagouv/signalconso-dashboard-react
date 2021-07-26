@@ -1,12 +1,11 @@
 import React, {useEffect} from 'react'
 import {useI18n} from '../../core/i18n'
 import {useCssUtils} from "../../core/helper/useCssUtils";
-import {InputBase, makeStyles, Theme} from "@material-ui/core";
+import {Icon, InputBase, makeStyles, Theme, Tooltip} from "@material-ui/core";
 import {Panel} from "../../shared/Panel";
 import {Datatable} from "../../shared/Datatable/Datatable";
 import {ApiHostWithReportCount} from "../../core/api";
 import {DebouncedInput} from "../../shared/DebouncedInput/DebouncedInput";
-import {Txt} from "mui-extension/lib/Txt/Txt";
 import {useUnregistredWebsiteWithCompanyContext} from "../../core/context/UnregistredWebsitesContext";
 import {useToast} from "../../core/toast";
 import {fromNullable} from "fp-ts/lib/Option";
@@ -14,7 +13,8 @@ import {Datepicker} from "../../shared/Datepicker/Datepicker";
 import {addDays, subDays} from "date-fns";
 import {NavLink} from "react-router-dom";
 import {siteMap} from "../../core/siteMap";
-import {Btn} from "mui-extension";
+import {Btn, IconBtn} from "mui-extension";
+import {ExportUnknownWebsitesPopper} from "../../shared/ExportPopper/ExportPopperBtn";
 
 
 const useStyles = makeStyles((t: Theme) => ({}))
@@ -22,7 +22,7 @@ const useStyles = makeStyles((t: Theme) => ({}))
 export const ReportedUnknownWebsites = () => {
 
     const {m, formatDate} = useI18n()
-    const _fetch = useUnregistredWebsiteWithCompanyContext().listUnregistred
+    const _fetch = useUnregistredWebsiteWithCompanyContext()
     const cssUtils = useCssUtils()
     const {toastError, toastSuccess} = useToast()
 
@@ -80,6 +80,12 @@ export const ReportedUnknownWebsites = () => {
                                 })}
                             label={m.end}
                         />
+                        <Tooltip title={m.removeAllFilters}>
+                            <IconBtn color="primary" onClick={_fetch.clearFilters}>
+                                <Icon>clear</Icon>
+                            </IconBtn>
+                        </Tooltip>
+                        <ExportUnknownWebsitesPopper/>
                     </>
                 }
                 loading={_fetch.fetching}
@@ -91,11 +97,12 @@ export const ReportedUnknownWebsites = () => {
                 }}
                 getRenderRowKey={_ => _.host}
                 data={_fetch.list?.data}
+                showColumnsToggle={true}
                 rows={[
                     {
                         id: 'host',
                         head: m.website,
-                        row: _ => <Txt bold>{_.host}</Txt>
+                        row: _ => <a href={"https://"+ _.host}>{_.host}</a>
                     },
                     {
                         head: m.reports,

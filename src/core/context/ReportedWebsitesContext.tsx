@@ -3,6 +3,8 @@ import {ReactNode, useContext} from 'react'
 import {UseFetcher, useFetcher, usePaginate, UsePaginate} from '@alexandreannic/react-hooks-lib/lib'
 import {SignalConsoApiSdk} from '../../App'
 import {
+    ReportSearch,
+    ReportSearchResult,
     WebsiteWithCompany,
     WebsiteWithCompanySearch
 } from "../api";
@@ -25,10 +27,12 @@ const ReportedWebsitesContext = React.createContext<ReportedWebsiteWithCompanyCo
 
 export const ReportedWebsitesProvider = ({api, children}: Props) => {
 
-    const listReportedWebsiteWithCompany = usePaginate<WebsiteWithCompany, WebsiteWithCompanySearch, ApiError>(
-        api.secured.website.list,
+
+    const listReportedWebsiteWithCompany = usePaginate<WebsiteWithCompany, WebsiteWithCompanySearch>(
+        (_: WebsiteWithCompanySearch) => api.secured.website.list(_).then(_ => ({data: _.entities, totalSize: _.totalCount})),
         {limit: 10, offset: 0}
     )
+
     const remove = useFetcher(api.secured.website.remove)
     const update = useFetcher(api.secured.website.update)
 
