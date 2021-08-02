@@ -99,6 +99,11 @@ export const muiTheme = (dark?: boolean): any => {
           },
         }
       })),
+      MuiFormHelperText: {
+        marginDense: {
+          marginBottom: -4,
+        },
+      },
       MuiTableCell: {
         root: {
           paddingTop: 0,

@@ -2,13 +2,15 @@ import * as React from 'react'
 import {ReactNode, useContext} from 'react'
 import {UseFetcher, useFetcher} from '@alexandreannic/react-hooks-lib/lib'
 import {SignalConsoApiSdk} from '../../App'
-import {ApiError} from '../api'
+import {ApiError, CompanySearchResult, Report} from '../api'
 
 export interface ReportContextProps {
   get: UseFetcher<SignalConsoApiSdk['secured']['reports']['getById'], ApiError>
   remove: UseFetcher<SignalConsoApiSdk['secured']['reports']['remove'], ApiError>
   download: UseFetcher<SignalConsoApiSdk['secured']['reports']['download'], ApiError>
   events: UseFetcher<SignalConsoApiSdk['secured']['events']['getByReportId'], ApiError>
+  updateCompany: UseFetcher<SignalConsoApiSdk['secured']['reports']['updateReportCompany'], ApiError>
+  updateConsumer: UseFetcher<SignalConsoApiSdk['secured']['reports']['updateReportConsumer'], ApiError>
 }
 
 interface Props {
@@ -27,12 +29,23 @@ export const ReportProvider = ({api, children}: Props) => {
   const events = useFetcher(api.secured.events.getByReportId)
   const download = useFetcher(api.secured.reports.download)
 
+  const updateReport = (report: Report) => get.setEntity(prev => ({report, files: prev?.files ?? []}))
+
+  const updateCompany = useFetcher((reportId: string, company: CompanySearchResult) =>
+    api.secured.reports.updateReportCompany(reportId, company).then(updateReport)
+  )
+  const updateConsumer = useFetcher((reportId: string, firstName: string, lastName: string, email: string, contactAgreement: boolean) =>
+    api.secured.reports.updateReportConsumer(reportId, firstName, lastName, email, contactAgreement).then(updateReport)
+  )
+
   return (
     <ReportContext.Provider value={{
       get,
       remove,
       events,
       download,
+      updateCompany,
+      updateConsumer,
     }}>
       {children}
     </ReportContext.Provider>

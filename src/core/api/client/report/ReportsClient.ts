@@ -1,4 +1,4 @@
-import {ApiClientApi, cleanObject, dateToApi, directDownloadBlob, Event, Id, Report, ReportAction, ReportResponse, ReportSearchResult} from '../../index'
+import {ApiClientApi, cleanObject, CompanySearchResult, dateToApi, directDownloadBlob, Event, Id, Report, ReportAction, ReportResponse, ReportSearchResult} from '../../index'
 import {PaginatedData, ReportSearch} from '../../model'
 import {pipe} from 'rxjs'
 import {ApiSdkLogger} from '../../helper/Logger'
@@ -120,6 +120,28 @@ export class ReportsClient {
   readonly postReportAction = (id: Id, action: ReportAction) => {
     const mappedAction: any = {...action, actionType: {value: action.actionType}}
     return this.client.post<Event>(`reports/${id}/response`, {body: mappedAction})
+  }
+
+  readonly updateReportCompany = (reportId: string, company: CompanySearchResult) => {
+    return this.client.post<Report>(`/reports/${reportId}/company`, {
+      body: {
+        name: company.name,
+        address: company.address,
+        siret: company.siret,
+        activityCode: company.activityCode,
+      }
+    })
+  }
+
+  readonly updateReportConsumer = (reportId: string, firstName: string, lastName: string, email: string, contactAgreement: boolean) => {
+    return this.client.post(`reports/${reportId}/consumer`, {
+      body: {
+        firstName: firstName,
+        lastName: lastName,
+        email: email,
+        contactAgreement
+      }
+    })
   }
 
   static readonly mapReport = (report: { [key in keyof Report]: any }): Report => ({
