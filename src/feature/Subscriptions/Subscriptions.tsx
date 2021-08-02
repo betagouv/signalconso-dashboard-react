@@ -38,7 +38,7 @@ export const Subscriptions = () => {
   const _subscriptions = useSubscriptionsContext()
 
   useEffect(() => {
-    _subscriptions.fetch({})
+    _subscriptions.fetch()
   }, [])
 
   return (
@@ -54,7 +54,7 @@ export const Subscriptions = () => {
       )}
       <Animate>
         <Ripple>
-          <div className={css.btnAdd} title={m.add} onClick={() => !_subscriptions.creating && _subscriptions.create()}>
+          <div className={css.btnAdd} title={m.add} onClick={() => !_subscriptions.creating && _subscriptions.create({insertBefore: true})}>
             <Icon>add</Icon>
             {m.add}
           </div>
