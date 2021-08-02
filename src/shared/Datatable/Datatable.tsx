@@ -6,10 +6,12 @@ import {DatatableColumnToggle} from './DatatableColumnsToggle'
 import {useSetState} from '@alexandreannic/react-hooks-lib/lib'
 import {useI18n} from '../../core/i18n'
 import {Fender} from 'mui-extension/lib'
+import {usePersistentState} from 'react-persistent-state/build'
 
 type OrderBy = 'asc' | 'desc'
 
 export interface DatatableProps<T> {
+  id?: string
   header?: ReactNode
   actions?: ReactNode
   loading?: boolean
@@ -115,6 +117,7 @@ const safeParseInt = (maybeInt: any, defaultValue: number): number => (isNaN(may
 export const Datatable = <T extends any = any>(props: DatatableProps<T>) => {
   const {m} = useI18n()
   const {
+    id,
     loading,
     total,
     data,
@@ -135,13 +138,13 @@ export const Datatable = <T extends any = any>(props: DatatableProps<T>) => {
   const cssUtils = useCssUtils()
   const displayableRows = useMemo(() => rows.filter(_ => !_.hidden), [rows])
   const toggleableColumnsName = useMemo(() => displayableRows.filter(_ => !_.alwaysVisible), [displayableRows])
-  const displayedColumnsSet = useSetState<string>(displayableRows.map(_ => _.id!))
-  const filteredRows = useMemo(() => displayableRows.filter(_ => displayedColumnsSet.has(_.id)), [rows, displayedColumnsSet])
+  const [displayedColumnsSet, setDisplayedColumnsSet] = usePersistentState<string[]>(displayableRows.map(_ => _.id!), id)
+  const filteredRows = useMemo(() => displayableRows.filter(_ => displayedColumnsSet.indexOf(_.id) > -1), [rows, displayedColumnsSet])
   const displayTableHeader = useMemo(() => !!displayableRows.find(_ => _.head !== ''), [displayableRows])
 
-  useEffect(() => {
-    displayedColumnsSet.reset(displayableRows.map(_ => _.id!))
-  }, [displayableRows])
+  // useEffect(() => {
+  //   setDisplayedColumnsSet(displayableRows.map(_ => _.id!))
+  // }, [displayableRows])
 
   return (
     <>
@@ -164,7 +167,7 @@ export const Datatable = <T extends any = any>(props: DatatableProps<T>) => {
           </div>
         </div>
       )}
-      <div className={css.container}>
+      <div className={css.container} id={id}>
         <Table className={classes(css.table)}>
           {displayTableHeader && (
             <TableHead>
