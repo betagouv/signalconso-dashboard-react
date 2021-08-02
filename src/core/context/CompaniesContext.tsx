@@ -1,6 +1,6 @@
 import * as React from 'react'
 import {ReactNode, useContext} from 'react'
-import {useCrudList, UseFetcher, useFetcher, usePaginate, UsePaginate} from '@alexandreannic/react-hooks-lib/lib'
+import {UseFetcher, useFetcher, usePaginate, UsePaginate} from '@alexandreannic/react-hooks-lib/lib'
 import {ApiError, CompanySearch, CompanyToActivate, CompanyWithReportsCount, PaginatedFilters} from 'core/api'
 import {SignalConsoApiSdk} from '../../App'
 import {paginateData} from '../helper/utils'

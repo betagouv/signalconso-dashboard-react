@@ -68,13 +68,13 @@ export const ExportPopperBtn = ({
 
   useInterval(() => {
     if (anchorEl !== null) {
-      fetch({clean: false})()
+      fetch({clean: false})
     }
   }, 2000)
 
   useEffect(() => {
     if (anchorEl !== null) {
-      fetch({clean: true, force: true})().then(() => setInitialLoading(false))
+      fetch({clean: true, force: true}).then(() => setInitialLoading(false))
     }
   }, [anchorEl])
 
@@ -91,7 +91,7 @@ export const ExportPopperBtn = ({
         onClose={handleClose}
         anchorEl={anchorEl}>
         {initialLoading && loading && <LinearProgress/>}
-        <div className={css.btnContainer} onClick={() => onNewExport().then(fetch({clean: false}))}>
+        <div className={css.btnContainer} onClick={() => onNewExport().then(() => fetch({clean: false}))}>
           <Tooltip title={tooltipBtnNew ?? ''}>
             <span>
               <Btn disabled={disabled} color="primary" variant="outlined" size="small" className={css.btnNew} icon="add">
@@ -144,7 +144,7 @@ export const ExportPhonesPopper = () => {
   return <ExportPopperBtn
     loading={_asyncFile.loading}
     fileType={AsyncFileKind.ReportedPhones}
-    onNewExport={_reportPhone.extract.fetch()}
+    onNewExport={_reportPhone.extract.fetch}
     fetch={_asyncFile.fetch}
     files={_asyncFile.entity}
   />

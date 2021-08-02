@@ -80,7 +80,7 @@ export const ReportsPro = () => {
   useEffect(() => {
     console.log(queryString.get())
     _reports.updateFilters({..._reports.initialFilters, ...queryString.get()})
-    _reportStatus.fetch()()
+    _reportStatus.fetch()
   }, [])
 
   useEffect(() => {

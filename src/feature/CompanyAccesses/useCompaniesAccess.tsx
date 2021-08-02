@@ -1,18 +1,33 @@
-import {CompanyAccessLevel, Id} from '../../core/api'
+import {ApiError, CompanyAccess, CompanyAccessLevel, CompanyAccessToken, Id} from '../../core/api'
 import {SignalConsoApiSdk} from '../../App'
 import {useCrudList} from '@alexandreannic/react-hooks-lib/lib'
 
 export const useCompanyAccess = (api: SignalConsoApiSdk, siret: string) => {
-  const crudAccess = useCrudList('userId', {
-    r: () => api.secured.companyAccess.fetch(siret),
-    u: (userId: string, level: CompanyAccessLevel) => api.secured.companyAccess.update(siret, userId, level),
-    d: (userId: string) => api.secured.companyAccess.remove(siret, userId)
+  const crudAccessR = () => api.secured.companyAccess.fetch(siret)
+  const crudAccessU = (userId: string, level: CompanyAccessLevel) => api.secured.companyAccess.update(siret, userId, level)
+  const crudAccessD = (userId: string) => api.secured.companyAccess.remove(siret, userId)
+  const crudAccess = useCrudList<CompanyAccess, 'userId', {
+    r: typeof crudAccessR,
+    u: typeof crudAccessU,
+    d: typeof crudAccessD,
+  }, ApiError>('userId', {
+    r: crudAccessR,
+    u: crudAccessU,
+    d: crudAccessD,
   })
 
-  const crudToken = useCrudList('id', {
-    c: (email: string, level: CompanyAccessLevel) => api.secured.companyAccessToken.create(siret, email, level),
-    r: () => api.secured.companyAccessToken.fetch(siret),
-    d: (id: Id) => api.secured.companyAccessToken.remove(siret, id)
+  const crudTokenC = (email: string, level: CompanyAccessLevel) => api.secured.companyAccessToken.create(siret, email, level)
+  const crudTokenR = () => api.secured.companyAccessToken.fetch(siret)
+  const crudTokenD = (id: Id) => api.secured.companyAccessToken.remove(siret, id)
+
+  const crudToken = useCrudList<CompanyAccessToken, 'id', {
+    c: typeof crudTokenC,
+    r: typeof crudTokenR,
+    d: typeof crudTokenD,
+  }>('id', {
+    c: crudTokenC,
+    r: crudTokenR,
+    d: crudTokenD,
   })
 
   return {crudAccess, crudToken}

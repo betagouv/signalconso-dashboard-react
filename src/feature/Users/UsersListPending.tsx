@@ -13,7 +13,7 @@ export const UsersListPending = () => {
   const {toastError} = useToast()
 
   useEffect(() => {
-    _users.fetch()()
+    _users.fetch()
   }, [])
 
   useEffect(() => {

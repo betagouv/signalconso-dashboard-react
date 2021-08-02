@@ -47,8 +47,8 @@ export const CompanyAccesses = () => {
   }, [_crudAccess.list, _crudToken.list])
 
   useEffect(() => {
-    _crudAccess.fetch()()
-    _crudToken.fetch()()
+    _crudAccess.fetch()
+    _crudToken.fetch()
   }, [])
 
   useEffect(() => {
@@ -67,13 +67,13 @@ export const CompanyAccesses = () => {
           {_crudAccess.list?.length === 0 && (
             <SaveUndeliveredDocBtn
               loading={_company.saveUndeliveredDocument.loading}
-              onChange={date => _company.saveUndeliveredDocument.fetch()(siret, date)}
+              onChange={date => _company.saveUndeliveredDocument.fetch({}, siret, date)}
               className={cssUtils.marginRight}
             />
           )}
         <CompanyAccessCreateBtn
           loading={_crudToken.creating}
-          onCreate={_crudToken.create}
+          onCreate={(email, level) => _crudToken.create({}, email, level)}
           errorMessage={_crudToken.createError}
         />
         </>

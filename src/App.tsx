@@ -140,7 +140,7 @@ export const App = () => {
                 isLogging={isLogging}
                 onLogin={login}
                 forgottenPassword={{
-                  action: forgottenPassword.fetch(),
+                  action: forgottenPassword.fetch,
                   loading: forgottenPassword.loading,
                   errorMsg: forgottenPassword.error?.message,
                 }}
