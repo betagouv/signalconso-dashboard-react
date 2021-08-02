@@ -65,8 +65,8 @@ export const ReportComponent = () => {
   const [activeTab, setActiveTab] = useState(0)
 
   useEffect(() => {
-    _report.fetch()(id)
-    _events.fetch()(id)
+    _report.fetch({}, id)
+    _events.fetch({}, id)
   }, [])
 
   useEffect(() => {
@@ -77,7 +77,7 @@ export const ReportComponent = () => {
     fromNullable(_reportRemove.error).map(toastError)
   }, [_reportRemove.error])
 
-  const downloadReport = (reportId: Id) => _reportDownload.fetch()(reportId)
+  const downloadReport = (reportId: Id) => _reportDownload.fetch({}, reportId)
 
   return fromNullable(_report.entity?.report).map(report =>
     <Page>
@@ -112,7 +112,7 @@ export const ReportComponent = () => {
                 files={files}
                 reportId={report.id}
                 fileOrigin={FileOrigin.Consumer}
-                onNewFile={() => _events.fetch({force: true, clean: false})(report.id)}
+                onNewFile={() => _events.fetch({force: true, clean: false}, report.id)}
               />
             ).toUndefined()
           }
@@ -131,7 +131,7 @@ export const ReportComponent = () => {
           <Confirm
             title={m.removeAsk}
             content={m.removeReportDesc(report.companySiret)}
-            onConfirm={(close) => _reportRemove.fetch()(report.id).then(() => window.history.back()).finally(close)}
+            onConfirm={(close) => _reportRemove.fetch({}, report.id).then(() => window.history.back()).finally(close)}
           >
             <Btn loading={_reportRemove.loading} variant="outlined" color="error" icon="delete">{m.delete}</Btn>
           </Confirm>

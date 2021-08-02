@@ -33,7 +33,7 @@ export const SelectCompany = ({children, onChange, companyId}: Props) => {
   }, [companyId])
 
   const search = () => {
-    if (inputValue) _company.fetch()(inputValue)
+    if (inputValue) _company.fetch({}, inputValue)
   }
 
   return (

@@ -31,7 +31,7 @@ export const EditPassword = () => {
       loading={_changePassword.loading}
       onConfirm={(close => {
         handleSubmit((form: Form) => {
-          _changePassword.fetch()(form.oldPassword, form.newPassword)
+          _changePassword.fetch({}, form.oldPassword, form.newPassword)
             .then(() => toastSuccess(m.passwordEdited))
             .then(close)
         })()

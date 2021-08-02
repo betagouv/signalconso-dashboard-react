@@ -38,7 +38,7 @@ export const Subscriptions = () => {
   const _subscriptions = useSubscriptionsContext()
 
   useEffect(() => {
-    _subscriptions.fetch()()
+    _subscriptions.fetch({})
   }, [])
 
   return (

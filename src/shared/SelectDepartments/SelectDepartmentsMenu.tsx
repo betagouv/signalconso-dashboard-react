@@ -12,7 +12,7 @@ import {useI18n} from '../../core/i18n'
 const withRegions = (WrappedComponent: React.ComponentType<SelectDepartmentsMenuProps>) => (props: Omit<SelectDepartmentsMenuProps, 'regions'>) => {
   const {regions} = useConstantContext()
   useEffect(() => {
-    regions.fetch()()
+    regions.fetch()
   }, [])
   return fromNullable(regions.entity).map(_ => <WrappedComponent {...props} regions={_}/>).getOrElse(<></>)
 }

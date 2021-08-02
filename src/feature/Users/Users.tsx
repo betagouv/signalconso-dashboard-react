@@ -31,7 +31,7 @@ export const Users = () => {
           maxWidth="xs"
           onConfirm={(close) => {
             handleSubmit(({email}) => {
-              _invite.fetch()(email)
+              _invite.fetch({}, email)
                 .then(() => toastSuccess(m.userInvitationSent))
                 .then(close)
             })()

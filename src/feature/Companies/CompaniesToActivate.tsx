@@ -94,7 +94,7 @@ export const CompaniesToActivate = () => {
   }
 
   const confirmCompaniesPosted = (closeDialog: () => void) => {
-    _companies.confirmCompaniesPosted.fetch()(selectedCompaniesSet.toArray())
+    _companies.confirmCompaniesPosted.fetch({}, selectedCompaniesSet.toArray())
       .then(() => {
         _companiesToActivate.fetch({clean: false})
       })
@@ -112,7 +112,7 @@ export const CompaniesToActivate = () => {
               disabled={_companiesToActivate.fetching || selectedCompaniesSet.size === 0}
               loading={_companies.downloadActivationDocument.loading}
               color="primary" variant="outlined" icon="file_download" className={cssUtils.marginRight}
-              onClick={() => _companies.downloadActivationDocument.fetch()(selectedCompaniesSet.toArray())
+              onClick={() => _companies.downloadActivationDocument.fetch({}, selectedCompaniesSet.toArray())
                 .catch(toastError)
               }
             >

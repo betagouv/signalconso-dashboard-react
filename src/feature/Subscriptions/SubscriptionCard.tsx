@@ -64,7 +64,7 @@ export const SubscriptionCard = ({
   const css = useStyles()
 
   useEffect(() => {
-    _category.fetch()()
+    _category.fetch()
   }, [])
 
   return (
