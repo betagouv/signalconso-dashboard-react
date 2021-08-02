@@ -1,7 +1,17 @@
 import React, {useEffect} from 'react'
 import {useI18n} from '../../core/i18n'
 import {useCssUtils} from "../../core/helper/useCssUtils";
-import {Icon, InputBase, MenuItem} from "@material-ui/core";
+import {
+    Button, Chip,
+    FormControlLabel,
+    Icon,
+    InputBase,
+    makeStyles,
+    MenuItem,
+    Switch,
+    Theme,
+    Tooltip, Typography
+} from "@material-ui/core";
 import {useToast} from "../../core/toast";
 import {fromNullable} from "fp-ts/lib/Option";
 import {Panel} from "../../shared/Panel";
@@ -12,40 +22,34 @@ import {useReportedWebsiteWithCompanyContext} from "../../core/context/ReportedW
 import {WebsiteKind, WebsiteWithCompany} from "../../core/api";
 import {Btn, IconBtn} from "mui-extension";
 import {ScSelect} from "../../shared/Select/Select";
+import {SelectCompany} from "../../shared/SelectCompany/SelectCompany";
+import {ScChip} from "../../shared/Chip/ScChip";
+import {ScChipContainer} from "../../shared/Chip/ScChipContainer";
 
 
 export const ReportedCompaniesWebsites = () => {
+
+    const useStyles = makeStyles((t: Theme) => ({
+        tdName_label: {
+            fontWeight: 'bold',
+            marginBottom: -1,
+        },
+        tdName_desc: {
+            fontSize: t.typography.fontSize * 0.875,
+            color: t.palette.text.hint,
+        }
+    }))
+
+
     const {m, formatDate} = useI18n()
     const _fetch = useReportedWebsiteWithCompanyContext().getWebsiteWithCompany
     const _remove = useReportedWebsiteWithCompanyContext().remove
     const _update = useReportedWebsiteWithCompanyContext().update
+    const _updateCompany = useReportedWebsiteWithCompanyContext().updateCompany
+    const css = useStyles()
     const cssUtils = useCssUtils()
-    const {toastError, toastSuccess} = useToast()
+    const {toastError, toastInfo, toastSuccess} = useToast()
 
-
-    const useAnchoredMenu = () => {
-        const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
-        const open = (event: any) => setAnchorEl(event.currentTarget)
-        const close = () => setAnchorEl(null)
-        return {open, close, element: anchorEl}
-    }
-
-    const websiteKindBtn = (websiteWithCompany: WebsiteWithCompany) => {
-
-        let validatedValue =
-            websiteWithCompany.kind === WebsiteKind.DEFAULT ?
-                <><Icon className={cssUtils.colorSuccess}>check_circle</Icon>
-                    <span> {m.validated} </span></> : m.validated
-
-        return <Btn size="small" color="primary" variant="outlined"
-                    onClick={() => _update.fetch()(websiteWithCompany.id, {
-                        ...websiteWithCompany,
-                        kind: websiteWithCompany.kind === WebsiteKind.DEFAULT ? WebsiteKind.PENDING : WebsiteKind.DEFAULT
-                    }).then(() => toastSuccess(m.statusEdited))
-                    }>
-            {validatedValue}
-        </Btn>
-    }
 
     useEffect(() => {
         _fetch.fetch()
@@ -63,6 +67,7 @@ export const ReportedCompaniesWebsites = () => {
     useEffect(() => {
         fromNullable(_remove.error).map(toastError)
     }, [_remove.error])
+
 
     return (
         <Panel>
@@ -82,18 +87,21 @@ export const ReportedCompaniesWebsites = () => {
                                 />
                             }
                         </DebouncedInput>
-                        <ScSelect small={true} fullWidth value={_fetch.filters.kind ?? ''}
+
+                        <ScSelect multiple small fullWidth
                                   onChange={event => _fetch.updateFilters(prev => ({
                                       ...prev,
-                                      kind: event.target.value as WebsiteKind
-                                  }))}>
-                            <MenuItem value="">&nbsp;</MenuItem>
+                                      kinds: event.target.value as WebsiteKind[]
+                                  }))}
+                                  defaultValue={_fetch.filters.kinds ?? [WebsiteKind.DEFAULT]}
+                        >
                             {[WebsiteKind.PENDING, WebsiteKind.DEFAULT].map(kind =>
                                 <MenuItem key={kind} value={kind}>
-                                    {kind === WebsiteKind.PENDING ? <> {m.notValidated} </> : m.validated}
+                                    {kind === WebsiteKind.PENDING ? m.notValidated : m.validated}
                                 </MenuItem>
                             )}
                         </ScSelect>
+
                     </>
 
                 }
@@ -127,23 +135,57 @@ export const ReportedCompaniesWebsites = () => {
                     {
                         head: m.company,
                         id: 'company_name',
-                        row: _ => _.company.name
-                    },
-                    {
-                        head: m.siret,
-                        id: 'company_siret',
-                        row: _ => _.company.siret
+                        row: _ => (
+                            <SelectCompany siret={_.company.siret} onChange={company => {
+                                if (_.company.siret === company.siret) {
+                                    toastInfo(m.alreadySelectedCompany(company.name))
+                                } else {
+                                    _updateCompany.fetch()(_.id, {
+                                        companySiret: company.siret,
+                                        companyName: company.name,
+                                        companyAddress: company.address,
+                                        companyActivityCode: company.activityCode
+                                    })
+                                }
+                            }}>
+                                {/*<ScChip label={*/}
+                                {/*    <>*/}
+                                {/*        <span className={css.tdName_label}>{_.company.name}</span>*/}
+                                {/*    </>*/}
+                                {/*}/>*/}
+                                {/*<ScChipContainer>*/}
+                                <Chip variant={"outlined"} label={<div>
+                                    <span className={css.tdName_label}>{_.company.name}</span>
+                                    <br/>
+                                    <span className={css.tdName_desc}>{_.company.siret}</span>
+                                </div>
+                                }/>
+                                {/*</Chip>*/}
+                                {/*</ScChipContainer>*/}
+                            </SelectCompany>
+
+                        )
                     },
                     {
                         head: m.status,
                         id: 'status',
-                        row: _ => websiteKindBtn(_)
+                        row: _ =>
+                            (<FormControlLabel
+                                control={<Switch checked={_.kind === WebsiteKind.DEFAULT}/>}
+                                onChange={() => _update.fetch()(_.id, {
+                                    ..._,
+                                    kind: _.kind === WebsiteKind.DEFAULT ? WebsiteKind.PENDING : WebsiteKind.DEFAULT
+                                }).then(() => toastSuccess(m.statusEdited)).then(_ => _fetch.fetch())
+                                }
+                                label={_.kind === WebsiteKind.DEFAULT ? m.validated : m.notValidated}
+                            />)
                     },
                     {
                         id: 'actions',
                         stickyEnd: true,
                         row: _ => (
-                            <IconBtn className={cssUtils.colorTxtHint} onClick={() => _remove.fetch()(_.id)}>
+                            <IconBtn className={cssUtils.colorTxtHint}
+                                     onClick={() => _remove.fetch()(_.id).then(_ => _fetch.fetch())}>
                                 <Icon>delete</Icon>
                             </IconBtn>
                         )

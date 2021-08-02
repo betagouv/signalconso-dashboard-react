@@ -1,6 +1,6 @@
 import {
     ApiHostWithReportCount, HostReportCountSearch,
-    Id, PaginatedData,
+    Id, PaginatedData, ReportSearch,
     Website,
     WebsiteKind,
     WebsiteUpdateCompany,
@@ -41,19 +41,32 @@ const hostReportFilter2QueryString = (hostReport: HostReportCountSearch): HostRe
     }
 }
 
+
+const cleanFilter = (filter: WebsiteWithCompanySearch): WebsiteWithCompanySearch => {
+    if (filter.kinds === []) {
+        delete filter.kinds
+    }
+    if (filter.host === '') {
+        delete filter.host
+    }
+    return filter
+}
+
+
 export class WebsiteClient {
 
     constructor(private client: ApiClientApi) {
     }
 
     readonly list = (filters: WebsiteWithCompanySearch) => {
-        console.log(toQueryString(filters))
-        return this.client.get<PaginatedData<WebsiteWithCompany>>(`/websites${toQueryString(filters)}`)
+
+
+        return this.client.get<PaginatedData<WebsiteWithCompany>>(`/websites${toQueryString(cleanFilter(filters))}`)
             .then(paginated =>
                 Object.assign({}, paginated, {entities: paginated.entities.filter(website => website.kind !== WebsiteKind.MARKETPLACE)})
             )
-            .then(paginated => fromNullable(filters.host).map(_ => _ === '' ? paginated : Object.assign({}, paginated, {entities: paginated.entities.filter(website => website.host.includes(_))})).getOrElse(paginated))
-            .then(paginated => fromNullable(filters.kind).map(kindFiltered => Object.assign({}, paginated, {entities: paginated.entities.filter(website => website.kind === kindFiltered)})).getOrElse(paginated))
+            // .then(paginated => fromNullable(filters.host).map(_ => _ === '' ? paginated : Object.assign({}, paginated, {entities: paginated.entities.filter(website => website.host.includes(_))})).getOrElse(paginated))
+            // .then(paginated => fromNullable(filters.kind).map(kindFiltered => Object.assign({}, paginated, {entities: paginated.entities.filter(website => website.kind === kindFiltered)})).getOrElse(paginated))
             .then(result => {
                 result.entities = result.entities.map(_ => {
                     _.creationDate = new Date(_.creationDate)

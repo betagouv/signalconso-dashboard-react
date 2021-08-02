@@ -10,67 +10,71 @@ import {SelectCompanyList} from './SelectCompanyList'
 import {IconBtn} from 'mui-extension/lib'
 
 interface Props {
-  children: ReactElement<any>
-  companyId?: Id
-  onChange: (_: CompanySearchResult) => void
+    children: ReactElement<any>
+    siret?: Id
+    onChange: (_: CompanySearchResult) => void
 }
 
 const useStyles = makeStyles((t: Theme) => ({
-  input: {
-    marginBottom: t.spacing(1.5),
-    minWidth: 280,
-  },
+    input: {
+        marginBottom: t.spacing(1.5),
+        minWidth: 280,
+    },
 }))
 
-export const SelectCompany = ({children, onChange, companyId}: Props) => {
-  const {m} = useI18n()
-  const _company = useCompaniesContext().searchByIdentity
-  const [inputValue, setInputValue] = useState<Id | undefined>(undefined)
-  const css = useStyles()
+export const SelectCompany = ({children, onChange, siret}: Props) => {
+    const {m} = useI18n()
+    const _company = useCompaniesContext().searchByIdentity
+    const [inputValue, setInputValue] = useState<Id | undefined>(siret)
+    const css = useStyles()
 
-  useEffect(() => {
-    fromNullable(companyId).filter(_ => _ === inputValue).map(setInputValue)
-  }, [companyId])
 
-  const search = () => {
-    if (inputValue) _company.fetch({}, inputValue)
-  }
+    useEffect(() => {
+        fromNullable(siret)
+            .filter(x => x === inputValue)
+            .map(setInputValue)
+    }, [siret])
 
-  return (
-    <Confirm
-      maxWidth="sm"
-      loading={_company.loading}
-      title={m.companySearch}
-      content={close =>
-        <>
-          <ScInput
-            className={css.input}
-            fullWidth
-            value={inputValue ?? ''}
-            placeholder={m.companySearchLabel}
-            onChange={e => setInputValue(e.target.value)}
-            InputProps={{
-              endAdornment: (
-                <IconBtn style={{marginRight: -12}} onClick={() => {
-                  setInputValue(undefined)
-                  _company.clearCache()
-                }}>
-                  <Icon>clear</Icon>
-                </IconBtn>
-              )
-            }}
-          />
-          {_company.entity && <SelectCompanyList companies={_company.entity} onChange={_ => {
-            onChange(_)
-            setTimeout(close, 300)
-          }}/>}
-        </>
-      }
-      onConfirm={search}
-      confirmLabel={m.search}
-      cancelLabel={m.close}
-    >
-      {children}
-    </Confirm>
-  )
+    const search = () => {
+        if (inputValue) _company.fetch({}, inputValue)
+    }
+
+    return (
+        <Confirm
+            onClick={_ => search()}
+            maxWidth="sm"
+            loading={_company.loading}
+            title={m.companySearch}
+            content={close =>
+                <>
+                    <ScInput
+                        className={css.input}
+                        fullWidth
+                        value={inputValue ?? ''}
+                        placeholder={m.companySearchLabel}
+                        onChange={e => setInputValue(e.target.value)}
+                        InputProps={{
+                            endAdornment: (
+                                <IconBtn style={{marginRight: -12}} onClick={() => {
+                                    setInputValue(undefined)
+                                    _company.clearCache()
+                                }}>
+                                    <Icon>clear</Icon>
+                                </IconBtn>
+                            )
+                        }}
+                    />
+                    {_company.entity && <SelectCompanyList companies={_company.entity} onChange={_ => {
+                        onChange(_)
+                        setTimeout(close, 300)
+                    }}/>}
+                </>
+            }
+            onConfirm={search}
+            confirmLabel={m.search}
+            cancelLabel={m.close}
+        >
+            {children}
+        </Confirm>
+    )
 }

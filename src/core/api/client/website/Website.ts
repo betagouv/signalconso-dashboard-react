@@ -1,5 +1,6 @@
 import {Entity, Id, PaginatedFilters} from '../../model/Common'
 import {Company} from '../company/Company'
+import {Address} from "../../model/Address";
 
 export enum WebsiteKind {
     DEFAULT = 'DEFAULT',
@@ -16,9 +17,8 @@ export interface Website extends Entity {
 
 export interface WebsiteUpdateCompany {
     companySiret: string;
-    companyName: string;
-    companyAddress?: string;
-    companyPostalCode?: string;
+    companyName?: string;
+    companyAddress?: Address;
     companyActivityCode?: string;
 }
 
@@ -39,7 +39,7 @@ export interface ApiHostWithReportCount {
 
 export interface WebsiteWithCompanySearch extends PaginatedFilters {
     host?: string
-    kind?: WebsiteKind
+    kinds?: WebsiteKind[]
 }
 
 export interface HostReportCountSearch extends PaginatedFilters {

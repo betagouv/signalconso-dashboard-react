@@ -135,7 +135,7 @@ export const messagesFr = {
   searchByEmail: 'Rechercher par email',
   undeliveredDoc: 'Courrier retourné',
   undeliveredDocTitle: 'Retour du courrier d\'activation',
-  searchByHost: 'Rechercher par domaine',
+  searchByHost: 'Rechercher par nom de domaine',
   addProAttachmentFile: 'Ajouter une pièces jointe fournie par l\'entreprise',
   addAttachmentFile: 'Ajouter une pièces jointe',
   attachedFiles: 'Pièces jointes',

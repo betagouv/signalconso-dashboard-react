@@ -14,6 +14,7 @@ export interface ReportedWebsiteWithCompanyContextProps {
     getWebsiteWithCompany: UsePaginate<WebsiteWithCompany, WebsiteWithCompanySearch>
     remove: UseFetcher<SignalConsoApiSdk['secured']['website']['remove'], ApiError>
     update: UseFetcher<SignalConsoApiSdk['secured']['website']['update'], ApiError>
+    updateCompany: UseFetcher<SignalConsoApiSdk['secured']['website']['updateCompany'], ApiError>
 }
 
 interface Props {
@@ -35,12 +36,14 @@ export const ReportedWebsitesProvider = ({api, children}: Props) => {
 
     const remove = useFetcher(api.secured.website.remove)
     const update = useFetcher(api.secured.website.update)
+    const updateCompany = useFetcher(api.secured.website.updateCompany)
 
     return (
         <ReportedWebsitesContext.Provider value={{
             getWebsiteWithCompany: listReportedWebsiteWithCompany,
             remove,
-            update
+            update,
+            updateCompany
         }}>
             {children}
         </ReportedWebsitesContext.Provider>
