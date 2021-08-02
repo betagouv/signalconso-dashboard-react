@@ -185,6 +185,8 @@ export const messagesFr = {
   daily: 'Quotidienne',
   weekly: 'Hebdomadaire',
   handleAccesses: 'Gérer les accès',
+  contactAgreement: 'Accord pour contact par entreprise',
+  editConsumer: 'Modifier les informations du consommateur',
   changesSaved: 'Modification enregistrée',
   selectAllDepartments: 'Tous les départements',
   deleteCompanyAccess: (name: string) => `Supprimer l\'accès à ${name} ?`,

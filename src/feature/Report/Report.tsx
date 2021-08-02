@@ -21,6 +21,8 @@ import {useToast} from '../../core/toast'
 import {ReportEvents} from './Event/ReportEvents'
 import {ReportMessages} from './ReportMessages'
 import {AddressComponent} from '../../shared/Address/Address'
+import {SelectCompany} from '../../shared/SelectCompany/SelectCompany'
+import {EditConsumerDialog} from './EditConsumerDialog'
 // import SwipeableViews from 'react-swipeable-views';
 
 const useStyles = makeStyles((t: Theme) => ({
@@ -54,10 +56,7 @@ const useStyles = makeStyles((t: Theme) => ({
 export const ReportComponent = () => {
   const {id} = useParams<{id: Id}>()
   const {m, formatDate} = useI18n()
-  const _report = useReportContext().get
-  const _reportRemove = useReportContext().remove
-  const _events = useReportContext().events
-  const _reportDownload = useReportContext().download
+  const _report = useReportContext()
   const theme = useTheme()
   const cssUtils = useCssUtils()
   const css = useStyles()
@@ -65,21 +64,25 @@ export const ReportComponent = () => {
   const [activeTab, setActiveTab] = useState(0)
 
   useEffect(() => {
-    _report.fetch({}, id)
-    _events.fetch({}, id)
+    _report.get.fetch({}, id)
+    _report.events.fetch({}, id)
   }, [])
 
   useEffect(() => {
-    fromNullable(_report.error).map(toastError)
-  }, [_report.entity, _report.error])
+    fromNullable(_report.get.error).map(toastError)
+  }, [_report.get.entity, _report.get.error])
 
   useEffect(() => {
-    fromNullable(_reportRemove.error).map(toastError)
-  }, [_reportRemove.error])
+    fromNullable(_report.remove.error).map(toastError)
+  }, [_report.remove.error])
 
-  const downloadReport = (reportId: Id) => _reportDownload.fetch({}, reportId)
+  useEffect(() => {
+    fromNullable(_report.updateCompany.error).map(toastError)
+  }, [_report.updateCompany.error])
 
-  return fromNullable(_report.entity?.report).map(report =>
+  const downloadReport = (reportId: Id) => _report.download.fetch({}, reportId)
+
+  return fromNullable(_report.get.entity?.report).map(report =>
     <Page>
       <Panel elevation={3}>
         <PanelBody>
@@ -105,14 +108,14 @@ export const ReportComponent = () => {
             </div>
           )}
           <Divider className={cssUtils.divider}/>
-          {fromNullable(_report.entity?.files.filter(_ => _.origin === FileOrigin.Consumer))
+          {fromNullable(_report.get.entity?.files.filter(_ => _.origin === FileOrigin.Consumer))
             .filter(_ => _.length > 0)
             .map(files =>
               <ReportFiles
                 files={files}
                 reportId={report.id}
                 fileOrigin={FileOrigin.Consumer}
-                onNewFile={() => _events.fetch({force: true, clean: false}, report.id)}
+                onNewFile={() => _report.events.fetch({force: true, clean: false}, report.id)}
               />
             ).toUndefined()
           }
@@ -131,9 +134,9 @@ export const ReportComponent = () => {
           <Confirm
             title={m.removeAsk}
             content={m.removeReportDesc(report.companySiret)}
-            onConfirm={(close) => _reportRemove.fetch({}, report.id).then(() => window.history.back()).finally(close)}
+            onConfirm={(close) => _report.remove.fetch({}, report.id).then(() => window.history.back()).finally(close)}
           >
-            <Btn loading={_reportRemove.loading} variant="outlined" color="error" icon="delete">{m.delete}</Btn>
+            <Btn loading={_report.remove.loading} variant="outlined" color="error" icon="delete">{m.delete}</Btn>
           </Confirm>
         </PanelFoot>
           </Panel>
@@ -156,7 +159,15 @@ export const ReportComponent = () => {
                   <Icon className={css.cardBody_icon}>person</Icon>
                 </PanelBody>
                 <PanelFoot>
-                  <ScButton icon="edit" color="primary">{m.edit}</ScButton>
+                  <EditConsumerDialog report={report} onChange={user => _report.updateConsumer.fetch({},
+                    report.id,
+                    user.firstName,
+                    user.lastName,
+                    user.email,
+                    user.contactAgreement
+                  )}>
+                    <ScButton icon="edit" color="primary" loading={_report.updateConsumer.loading}>{m.edit}</ScButton>
+                  </EditConsumerDialog>
                 </PanelFoot>
               </Panel>
             </Grid>
@@ -175,13 +186,17 @@ export const ReportComponent = () => {
                   <Icon className={css.cardBody_icon}>store</Icon>
                 </PanelBody>
                 <PanelFoot>
-                  <ScButton icon="edit" color="primary">{m.edit}</ScButton>
+                  <SelectCompany companyId={report.companyId} onChange={company => {
+                    _report.updateCompany.fetch({}, report.id, company)
+                  }}>
+                    <ScButton icon="edit" color="primary" loading={_report.updateCompany.loading}>{m.edit}</ScButton>
+                  </SelectCompany>
                 </PanelFoot>
               </Panel>
             </Grid>
           </Grid>
-      <Panel loading={_events.loading}>
-        {fromNullable(_events.entity).map(events =>
+      <Panel loading={_report.events.loading}>
+        {fromNullable(_report.events.entity).map(events =>
           <>
             <Tabs
               className={css.tabs}
@@ -194,7 +209,7 @@ export const ReportComponent = () => {
               <Tab label={m.reportHistory}/>
             </Tabs>
             <ReportTabPanel value={activeTab} index={0}>
-              <ReportMessages reportId={report.id} events={events} files={_report.entity?.files}/>
+              <ReportMessages reportId={report.id} events={events} files={_report.get.entity?.files}/>
             </ReportTabPanel>
             <ReportTabPanel value={activeTab} index={1}>
               <ReportEvents report={report} events={events}/>
