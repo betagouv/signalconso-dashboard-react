@@ -27,6 +27,7 @@ export const EditConsumerDialog = ({report, onChange, children}: Props) => {
     <Confirm
       title={m.editConsumer}
       maxWidth="xs"
+      confirmLabel={m.edit}
       onConfirm={close => {
         onChange(getValues())
         close()

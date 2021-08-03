@@ -101,7 +101,7 @@ export class ReportsClient {
 
   readonly download = (id: Id) => {
     // TODO Type it and maybe improve it
-    return this.client.getPdf<any>(`reports/${id}/download`, {headers: {responseType: 'blob', 'Accept': 'application/pdf'}})
+    return this.client.getPdf<any>(`/reports/${id}/download`,)
       .then(directDownloadBlob('test.pdf'))
   }
 

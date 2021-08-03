@@ -100,6 +100,7 @@ export class ApiClient {
       }).then(_ => _.blob())
     }
 
+    /** TODO(Alex) Didn't find any way to download pdf with axios but it should exist. */
     this.getPdf = async (url: string, options?: RequestOption) => {
       const builtOptions = await ApiClient.buildOptions(options, headers, requestInterceptor)
       return fetch(baseUrl + url, {
