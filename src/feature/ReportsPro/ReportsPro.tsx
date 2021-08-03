@@ -5,11 +5,11 @@ import {useReportsContext} from '../../core/context/ReportsContext'
 import {Datatable} from '../../shared/Datatable/Datatable'
 import {useI18n} from '../../core/i18n'
 import {useCssUtils} from '../../core/helper/useCssUtils'
-import {Badge, Icon, makeStyles, MenuItem, Theme} from '@material-ui/core'
+import {Badge, Grid, Icon, makeStyles, MenuItem, Theme} from '@material-ui/core'
 import {ReportStatusChip} from '../../shared/ReportStatus/ReportStatus'
 import {useLayoutContext} from '../../core/Layout/LayoutContext'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
-import {cleanObject, ReportSearch, ReportSearchResult} from '../../core/api'
+import {cleanObject, ReportSearch, ReportSearchResult, ReportStatus} from '../../core/api'
 import {utilsStyles} from '../../core/theme'
 import {SelectDepartments} from '../../shared/SelectDepartments/SelectDepartments'
 import {ScSelect} from '../../shared/Select/Select'
@@ -95,56 +95,60 @@ export const ReportsPro = () => {
       <Panel>
         <Datatable<ReportSearchResult>
           header={displayFilters && (
-            <>
-              <SelectDepartments
-                className={cssUtils.marginRight}
-                fullWidth
-                values={_reports.filters.departments}
-                onChange={departments => _reports.updateFilters(prev => ({...prev, departments}))}
-              />
-              <Datepicker
-                className={cssUtils.marginRight}
-                fullWidth
-                label={m.start}
-                value={_reports.filters.start}
-                onChange={start => {
-                  _reports.updateFilters(prev => {
-                    if (prev.end && start.getTime() > prev.end.getTime()) {
-                      return {...prev, start, end: addDays(start, 1)}
+            <Grid container spacing={1}>
+              <Grid item sm={6}>
+                <SelectDepartments
+                  className={cssUtils.marginRight}
+                  fullWidth
+                  values={_reports.filters.departments}
+                  onChange={departments => _reports.updateFilters(prev => ({...prev, departments}))}
+                />
+                <ScSelect
+                  label={m.status}
+                  fullWidth
+                  onChange={event => {
+                    console.log(event)
+                    _reports.updateFilters(prev => ({...prev, status: event.target.value as string}))
+                  }}
+                  value={_reports.filters.status ?? ''}
+                >
+                  <MenuItem value="">&nbsp;</MenuItem>
+                  {(_reportStatus.entity ?? []).map(status =>
+                    <MenuItem key={status} value={status}>
+                      <ReportStatusChip dense fullWidth inSelectOptions status={status}/>
+                    </MenuItem>
+                  )}
+                </ScSelect>
+              </Grid>
+              <Grid item sm={6}>
+                <Datepicker
+                  className={cssUtils.marginRight}
+                  fullWidth
+                  label={m.start}
+                  value={_reports.filters.start}
+                  onChange={start => {
+                    _reports.updateFilters(prev => {
+                      if (prev.end && start.getTime() > prev.end.getTime()) {
+                        return {...prev, start, end: addDays(start, 1)}
+                      }
+                      return {...prev, start}
+                    })
+                  }}
+                />
+                <Datepicker
+                  className={cssUtils.marginRight}
+                  fullWidth
+                  value={_reports.filters.end}
+                  onChange={end => _reports.updateFilters(prev => {
+                    if (prev.start && prev.start.getTime() > end.getTime()) {
+                      return {...prev, start: subDays(end, 1), end}
                     }
-                    return {...prev, start}
-                  })
-                }}
-              />
-              <Datepicker
-                className={cssUtils.marginRight}
-                fullWidth
-                value={_reports.filters.end}
-                onChange={end => _reports.updateFilters(prev => {
-                  if (prev.start && prev.start.getTime() > end.getTime()) {
-                    return {...prev, start: subDays(end, 1), end}
-                  }
-                  return {...prev, end}
-                })}
-                label={m.end}
-              />
-              <ScSelect
-                label={m.status}
-                fullWidth
-                onChange={event => {
-                  console.log(event)
-                  _reports.updateFilters(prev => ({...prev, status: event.target.value as string}))
-                }}
-                value={_reports.filters.status ?? ''}
-              >
-                <MenuItem value="">&nbsp;</MenuItem>
-                {(_reportStatus.entity ?? []).map(status =>
-                  <MenuItem key={status} value={status}>
-                    <ReportStatusChip dense fullWidth inSelectOptions status={status}/>
-                  </MenuItem>
-                )}
-              </ScSelect>
-            </>
+                    return {...prev, end}
+                  })}
+                  label={m.end}
+                />
+              </Grid>
+            </Grid>
           )}
           paginate={{
             minRowsBeforeDisplay: minRowsBeforeDisplayFilters,
@@ -183,17 +187,19 @@ export const ReportsPro = () => {
                 {
                   id: 'companyPostalCode',
                   head: m.postalCodeShort,
+                  className: _ => _.report.status === ReportStatus.UnreadForPro ? cssUtils.txtBold : undefined,
                   row: _ => _.report.companyAddress.postalCode,
                 },
                 {
                   id: 'siret',
                   head: m.siret,
-                  className: cssUtils.txtBold,
+                  className: _ => _.report.status === ReportStatus.UnreadForPro ? cssUtils.txtBold : undefined,
                   row: _ => _.report.companySiret
                 },
                 {
                   id: 'createDate',
                   head: m.receivedAt,
+                  className: _ => _.report.status === ReportStatus.UnreadForPro ? cssUtils.txtBold : undefined,
                   row: _ => formatDate(_.report.creationDate),
                 },
                 {
@@ -203,7 +209,8 @@ export const ReportsPro = () => {
                 },
                 {
                   id: 'consumer',
-                  head: m.status,
+                  head: m.consumer,
+                  className: _ => _.report.status === ReportStatus.UnreadForPro ? cssUtils.txtBold : undefined,
                   row: _ => _.report.contactAgreement ? _.report.firstName + ' ' + _.report.lastName : m.anonymousReport,
                 },
                 {
@@ -215,7 +222,8 @@ export const ReportsPro = () => {
                       </Badge>
                     )
                 },
-              ]}
+              ]
+          }
           renderEmptyState={
             <Fender
               icon={EntityIcon.report}

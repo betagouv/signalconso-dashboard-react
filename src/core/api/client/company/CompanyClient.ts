@@ -1,14 +1,4 @@
-import {
-  ApiClientApi,
-  ApiPaginate,
-  CompanySearch,
-  CompanyToActivate,
-  CompanyWithAccessLevel,
-  CompanyWithReportsCount,
-  dateToApi,
-  directDownloadBlob,
-  ViewableCompany
-} from '../..'
+import {ApiClientApi, ApiPaginate, CompanySearch, CompanyToActivate, CompanyWithAccessLevel, CompanyWithReportsCount, dateToApi, directDownloadBlob, ViewableCompany} from '../..'
 import {Company, CompanyCreation, CompanyUpdate, Event, Id} from '../../model'
 import {format} from 'date-fns'
 import {Address} from '../../model/Address'
@@ -61,12 +51,12 @@ export class CompanyClient {
       .then(directDownloadBlob(`signalement_depot_${format(new Date(), 'ddMMyy')}`))
   }
 
-  readonly getCompaniesWithAccessByPro = () => {
+  readonly getCompaniesAccessibleByPro = () => {
     return this.client.get<CompanyWithAccessLevel[]>(`/accesses/connected-user`)
   }
 
-  readonly getCompaniesViewableByPro = () => {
-    return this.client.get<ViewableCompany[]>(`/accesses/connected-user`)
+  readonly getCompaniesVisibleByPro = () => {
+    return this.client.get<ViewableCompany[]>(`/companies/connected-user`)
   }
 
   readonly fetchToActivate = () => {
