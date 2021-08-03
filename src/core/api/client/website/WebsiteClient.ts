@@ -15,7 +15,7 @@ import {ApiSdkLogger} from "../../helper/Logger";
 
 
 export interface HostReportCountQueryString {
-    host?: string;
+    q?: string;
     start?: string;
     end?: string;
     offset?: string;
@@ -24,13 +24,13 @@ export interface HostReportCountQueryString {
 
 const hostReportFilter2QueryString = (hostReport: HostReportCountSearch): HostReportCountQueryString => {
     try {
-        const {host, begin, end, offset, limit, ...r} = hostReport
-        const parseDate = (_: keyof Pick<HostReportCountSearch, 'begin' | 'end'>) => ((hostReport[_]) ? {[_]: dateToApi(hostReport[_])} : {})
+        const {q, start, end, offset, limit, ...r} = hostReport
+        const parseDate = (_: keyof Pick<HostReportCountSearch, 'start' | 'end'>) => ((hostReport[_]) ? {[_]: dateToApi(hostReport[_])} : {})
 
         return {
             ...r,
-            host,
-            ...parseDate('begin'),
+            q: q,
+            ...parseDate('start'),
             ...parseDate('end'),
             offset: offset !== undefined ? offset + '' : undefined,
             limit: limit !== undefined ? limit + '' : undefined,
@@ -65,8 +65,6 @@ export class WebsiteClient {
             .then(paginated =>
                 Object.assign({}, paginated, {entities: paginated.entities.filter(website => website.kind !== WebsiteKind.MARKETPLACE)})
             )
-            // .then(paginated => fromNullable(filters.host).map(_ => _ === '' ? paginated : Object.assign({}, paginated, {entities: paginated.entities.filter(website => website.host.includes(_))})).getOrElse(paginated))
-            // .then(paginated => fromNullable(filters.kind).map(kindFiltered => Object.assign({}, paginated, {entities: paginated.entities.filter(website => website.kind === kindFiltered)})).getOrElse(paginated))
             .then(result => {
                 result.entities = result.entities.map(_ => {
                     _.creationDate = new Date(_.creationDate)
@@ -79,7 +77,7 @@ export class WebsiteClient {
 
     readonly listUnregistered = (filters: HostReportCountSearch): Promise<Paginate<ApiHostWithReportCount>> => {
         return this.client.get<ApiHostWithReportCount[]>(`/websites/unregistered${toQueryString(hostReportFilter2QueryString(filters))}`)
-            .then(hostWithReport => fromNullable(filters.host).map(_ => _ === '' ? hostWithReport : hostWithReport.filter(w => w.host.includes(_))).getOrElse(hostWithReport))
+            // .then(hostWithReport => fromNullable(filters.q).map(_ => _ === '' ? hostWithReport : hostWithReport.filter(w => w.host.includes(_))).getOrElse(hostWithReport))
             .then(paginateData(filters.limit, filters.offset));
     };
 

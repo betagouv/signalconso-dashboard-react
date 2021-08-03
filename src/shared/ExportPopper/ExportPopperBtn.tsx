@@ -218,7 +218,7 @@ export const ExportUnknownWebsitesPopper = () => {
     return <ExportPopperBtn
         loading={_asyncFile.loading}
         fileType={AsyncFileKind.ReportedWebsites}
-        onNewExport={_extract.extractUnregistered.fetch()}
+        onNewExport={_extract.extractUnregistered.fetch}
         fetch={_asyncFile.fetch}
         files={_asyncFile.entity}
     />

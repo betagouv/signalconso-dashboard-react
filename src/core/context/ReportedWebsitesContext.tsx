@@ -2,13 +2,7 @@ import * as React from 'react'
 import {ReactNode, useContext} from 'react'
 import {UseFetcher, useFetcher, usePaginate, UsePaginate} from '@alexandreannic/react-hooks-lib/lib'
 import {SignalConsoApiSdk} from '../../App'
-import {
-    ReportSearch,
-    ReportSearchResult,
-    WebsiteWithCompany,
-    WebsiteWithCompanySearch
-} from "../api";
-import {ApiError} from "../api";
+import {ApiError, WebsiteKind, WebsiteWithCompany, WebsiteWithCompanySearch} from "../api";
 
 export interface ReportedWebsiteWithCompanyContextProps {
     getWebsiteWithCompany: UsePaginate<WebsiteWithCompany, WebsiteWithCompanySearch>
@@ -30,8 +24,11 @@ export const ReportedWebsitesProvider = ({api, children}: Props) => {
 
 
     const listReportedWebsiteWithCompany = usePaginate<WebsiteWithCompany, WebsiteWithCompanySearch>(
-        (_: WebsiteWithCompanySearch) => api.secured.website.list(_).then(_ => ({data: _.entities, totalSize: _.totalCount})),
-        {limit: 10, offset: 0}
+        (_: WebsiteWithCompanySearch) => api.secured.website.list(_).then(_ => ({
+            data: _.entities,
+            totalSize: _.totalCount
+        })),
+        {limit: 25, offset: 0, kinds: [WebsiteKind.PENDING]}
     )
 
     const remove = useFetcher(api.secured.website.remove)

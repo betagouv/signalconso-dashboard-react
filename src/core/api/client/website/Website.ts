@@ -43,7 +43,7 @@ export interface WebsiteWithCompanySearch extends PaginatedFilters {
 }
 
 export interface HostReportCountSearch extends PaginatedFilters {
-    host?: string;
-    begin?: Date;
+    q?: string;
+    start?: Date;
     end?: Date;
 }

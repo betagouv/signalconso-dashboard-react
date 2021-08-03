@@ -43,8 +43,8 @@ export const ReportedUnknownWebsites = () => {
                     <>
                         <DebouncedInput
                             debounce={400}
-                            value={_fetch.filters.host ?? ''}
-                            onChange={host => _fetch.updateFilters(prev => ({...prev, host: host}))}
+                            value={_fetch.filters.q ?? ''}
+                            onChange={host => _fetch.updateFilters(prev => ({...prev, q: host}))}
                         >
                             {(value, onChange) =>
                                 <InputBase
@@ -58,13 +58,13 @@ export const ReportedUnknownWebsites = () => {
                             className={cssUtils.marginRight}
                             fullWidth
                             label={m.start}
-                            value={_fetch.filters.begin}
-                            onChange={begin => {
+                            value={_fetch.filters.start}
+                            onChange={start => {
                                 _fetch.updateFilters(prev => {
-                                    if (prev.end && begin.getTime() > prev.end.getTime()) {
-                                        return {...prev, begin, end: addDays(begin, 1)}
+                                    if (prev.end && start.getTime() > prev.end.getTime()) {
+                                        return {...prev, start: start, end: addDays(start, 1)}
                                     }
-                                    return {...prev, begin}
+                                    return {...prev, start: start}
                                 })
                             }}
                         />
@@ -73,7 +73,7 @@ export const ReportedUnknownWebsites = () => {
                             value={_fetch.filters.end}
                             onChange={end =>
                                 _fetch.updateFilters(prev => {
-                                    if (prev.begin && prev.begin.getTime() > end.getTime()) {
+                                    if (prev.start && prev.start.getTime() > end.getTime()) {
                                         return {...prev, start: subDays(end, 1), end}
                                     }
                                     return {...prev, end}
