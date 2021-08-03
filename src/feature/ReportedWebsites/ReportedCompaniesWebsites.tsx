@@ -9,10 +9,11 @@ import {Datatable} from "../../shared/Datatable/Datatable";
 import {DebouncedInput} from "../../shared/DebouncedInput/DebouncedInput";
 import {Txt} from "mui-extension/lib/Txt/Txt";
 import {useReportedWebsiteWithCompanyContext} from "../../core/context/ReportedWebsitesContext";
-import {WebsiteKind, WebsiteWithCompany} from "../../core/api";
+²import {cleanObject, CompanySearch, WebsiteKind, WebsiteWithCompany, WebsiteWithCompanySearch} from "../../core/api";
 import {IconBtn} from "mui-extension";
 import {ScSelect} from "../../shared/Select/Select";
 import {SelectCompany} from "../../shared/SelectCompany/SelectCompany";
+import {useQueryString} from "../../core/helper/useQueryString";
 
 
 export const ReportedCompaniesWebsites = () => {
@@ -38,6 +39,9 @@ export const ReportedCompaniesWebsites = () => {
     const cssUtils = useCssUtils()
     const {toastError, toastInfo, toastSuccess} = useToast()
 
+    useEffect(() => {
+        _fetch.updateFilters({..._fetch.initialFilters})
+    }, [])
 
     useEffect(() => {
         _fetch.fetch()
