@@ -37,7 +37,6 @@ export class SubscriptionClient {
     countries: [],
     frequency: 'P7D'
   }) => {
-    console.log('CREATE', body)
     return this.client.post<Subscription>(`/subscriptions`, {body: toApi(body)}).then(fromApi(this.client))
   }
 

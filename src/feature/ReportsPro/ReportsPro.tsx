@@ -78,7 +78,6 @@ export const ReportsPro = () => {
   const queryString = useQueryString<Readonly<Partial<ReportSearch>>>()
 
   useEffect(() => {
-    console.log(queryString.get())
     _reports.updateFilters({..._reports.initialFilters, ...queryString.get()})
     _reportStatus.fetch()
   }, [])

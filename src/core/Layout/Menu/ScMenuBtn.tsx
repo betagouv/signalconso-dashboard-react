@@ -48,7 +48,6 @@ export const ScMenuBtn = ({connectedUser}: Props) => {
   const css = useMenuStyles()
   const openMenu = useBoolean(false)
 
-  console.log(openMenu.value)
   return (
     <div className={css.root}>
       <Avatar className={classes(css.avatar, !connectedUser && css.avatarOffline)} onClick={openMenu.toggle}>

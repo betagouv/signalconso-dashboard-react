@@ -23,7 +23,6 @@ export const Users = () => {
   const _invite = useUsersContext().invite
   const {toastSuccess} = useToast()
 
-  console.log(errors)
   return (
     <Page>
       <PageTitle action={
