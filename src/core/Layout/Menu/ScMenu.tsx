@@ -58,13 +58,18 @@ export const ScMenu = ({onClose, connectedUser}: Props) => {
   const {m} = useI18n()
   const css = useMenuStyles()
 
+  const logout = () => {
+    connectedUser.logout()
+    onClose()
+  }
+
   return (
     <ClickAwayListener onClickAway={stopPropagation(onClose)}>
       <div className={css.root}>
         <div className={css.user}>
           <Txt block truncate className={css.userName}>{connectedUser.firstName} {connectedUser.lastName}</Txt>
           <Txt block truncate className={css.userEmail}>{connectedUser.email}</Txt>
-          <Btn variant="outlined" size="small" onClick={connectedUser.logout} icon="logout" color="primary" className={css.logoutBtn}>
+          <Btn variant="outlined" size="small" icon="logout" color="primary" className={css.logoutBtn} onClick={logout}>
             {m.logout}
           </Btn>
         </div>

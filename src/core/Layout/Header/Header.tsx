@@ -53,14 +53,12 @@ export const Header = ({connectedUser}: Props) => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    console.log('handleclick')
     setAnchorEl(event.currentTarget)
   }
 
   const handleClose = () => {
     setAnchorEl(null)
   }
-  console.log(Config.appBaseUrl)
 
   return (
     <Slide direction="down" in={true} mountOnEnter unmountOnExit>
