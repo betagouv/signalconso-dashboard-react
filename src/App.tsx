@@ -140,7 +140,7 @@ const AppLogin = () => {
               onLogout={logout}
               apiSdk={makeSecuredSdk(authResponse.token)}
             >
-              <LoggedApp/>
+              <AppLogged/>
             </LoginProvider>
           ) : isCheckingToken ? (
             <LoginLoader/>
@@ -161,7 +161,7 @@ const AppLogin = () => {
   )
 }
 
-const LoggedApp = () => {
+const AppLogged = () => {
   const {apiSdk, connectedUser} = useLogin()
   const {m} = useI18n()
   return (
