@@ -3,7 +3,7 @@ import {ApiClient, ApiError, SignalConsoPublicSdk, SignalConsoSecuredSdk} from '
 import {Config} from './conf/config'
 import {makeStyles} from '@material-ui/core/styles'
 import {Theme, ThemeProvider} from '@material-ui/core'
-import {BrowserRouter, Redirect, Route, Switch} from 'react-router-dom'
+import {BrowserRouter, HashRouter, Redirect, Route, Switch} from 'react-router-dom'
 import {I18nProvider, useI18n} from './core/i18n'
 import {MuiPickersUtilsProvider} from '@material-ui/pickers'
 import DateAdapter from '@date-io/date-fns'
@@ -110,7 +110,7 @@ export const App = () => {
       _ => <ThemeProvider theme={muiTheme()} children={_}/>,
       _ => <I18nProvider children={_}/>,
       _ => <MuiPickersUtilsProvider utils={DateAdapter} children={_}/>,
-      _ => <BrowserRouter children={_}/>,
+      _ => <HashRouter children={_}/>,
       _ => <ToastProvider horizontal="right" children={_}/>,
     ]}>
       <AppLogin/>
