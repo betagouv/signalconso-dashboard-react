@@ -140,6 +140,7 @@ export const messagesFr = {
   selectCountries_onlyTransfer: 'Pays avec accord',
   reportedPhoneTitle: 'Suivi des téléphones',
   advancedFilters: 'Filtres avancés',
+  comment: 'Commentaire',
   commentAdded: 'Commentaire ajouté',
   noAnswerFromPro: 'Le professionnel n\'a pas encore répondu au signalement.',
   companiesSearchPlaceholder: 'Rechercher par nom, SIREN, SIRET, identifiant...',

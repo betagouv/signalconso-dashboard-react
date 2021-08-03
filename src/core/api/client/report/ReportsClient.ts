@@ -1,4 +1,4 @@
-import {ApiClientApi, cleanObject, CompanySearchResult, dateToApi, directDownloadBlob, Event, Id, Report, ReportAction, ReportResponse, ReportSearchResult} from '../../index'
+import {ApiClientApi, cleanObject, CompanySearchResult, dateToApi, directDownloadBlob, Event, Id, Report, ReportAction, ReportResponse, ReportSearchResult} from '../..'
 import {PaginatedData, ReportSearch} from '../../model'
 import {pipe} from 'rxjs'
 import {ApiSdkLogger} from '../../helper/Logger'

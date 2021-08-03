@@ -1,4 +1,4 @@
-import {ApiClientApi} from '../../index'
+import {ApiClientApi} from '../..'
 import {ReportStatus} from '../../model'
 
 export class ConstantClient {

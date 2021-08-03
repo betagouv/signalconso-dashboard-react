@@ -5,7 +5,7 @@ import {useI18n} from '../../core/i18n'
 import {Panel, PanelBody, PanelHead} from '../../shared/Panel'
 import {useReportContext} from '../../core/context/ReportContext'
 import {EventActionValues, FileOrigin, Id, Report, ReportEvent} from 'core/api'
-import {Divider, Grid, Icon, makeStyles, Tab, Tabs, Theme, useTheme} from '@material-ui/core'
+import {Divider, Grid, Icon, makeStyles, Tab, Tabs, Theme, Tooltip, useTheme} from '@material-ui/core'
 import {ReportStatusChip} from '../../shared/ReportStatus/ReportStatus'
 import {ScChip} from '../../shared/Chip/ScChip'
 import {useCssUtils} from '../../core/helper/useCssUtils'
@@ -157,9 +157,11 @@ export const ReportComponent = () => {
           </div>
 
           <ReportAddComment report={report} onAdd={() => _report.events.fetch({force: true, clean: false}, id)}>
-            <Btn variant="outlined" color="primary" icon="add_comment">
-              {m.addDgccrfComment}
-            </Btn>
+            <Tooltip title={m.addDgccrfComment}>
+              <Btn variant="outlined" color="primary" icon="add_comment">
+                {m.comment}
+              </Btn>
+            </Tooltip>
           </ReportAddComment>
           <Btn variant="outlined" color="primary" icon="download"
                loading={_report.download.loading}

@@ -1,4 +1,4 @@
-import {ApiClientApi, FileOrigin, UploadedFile} from '../../index'
+import {ApiClientApi, FileOrigin, UploadedFile} from '../..'
 
 export class FileClient {
 

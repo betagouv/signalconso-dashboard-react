@@ -1,5 +1,5 @@
 import {ApiHostWithReportCount, Id, Website, WebsiteUpdateCompany, WebsiteWithCompany} from '../../model'
-import {ApiClientApi} from '../../index'
+import {ApiClientApi} from '../..'
 
 export class WebsiteClient {
 

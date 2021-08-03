@@ -8,7 +8,7 @@ import {
   dateToApi,
   directDownloadBlob,
   ViewableCompany
-} from '../../index'
+} from '../..'
 import {Company, CompanyCreation, CompanyUpdate, Event, Id} from '../../model'
 import {format} from 'date-fns'
 import {Address} from '../../model/Address'
@@ -77,9 +77,6 @@ export class CompanyClient {
       return _
     }))
   }
-
-
-
 
   readonly confirmCompaniesPosted = (companyIds: Id[]) => {
     return this.client.post<void>(`/companies/companies-posted`, {body: {companyIds}})
