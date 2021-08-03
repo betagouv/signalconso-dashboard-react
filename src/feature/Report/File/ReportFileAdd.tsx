@@ -68,7 +68,7 @@ export const ReportFileAdd = ({reportId, onUploaded, fileOrigin}: Props) => {
       }
       setUploading(true)
       apiSdk.public.document.upload(file, fileOrigin)
-        .then(file => apiSdk.secured.reports.postReportAction(reportId, {
+        .then(file => apiSdk.secured.reports.postAction(reportId, {
           details: '',
           fileIds: [file.id],
           actionType: EventActionValues.ProfessionalAttachments,

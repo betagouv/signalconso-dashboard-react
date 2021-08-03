@@ -23,6 +23,7 @@ import {ReportMessages} from './ReportMessages'
 import {AddressComponent} from '../../shared/Address/Address'
 import {SelectCompany} from '../../shared/SelectCompany/SelectCompany'
 import {EditConsumerDialog} from './EditConsumerDialog'
+import {ReportAddComment} from './ReportAddComment'
 // import SwipeableViews from 'react-swipeable-views';
 
 const useStyles = makeStyles((t: Theme) => ({
@@ -49,6 +50,10 @@ const useStyles = makeStyles((t: Theme) => ({
   },
   tabs: {
     borderBottom: '1px solid ' + t.palette.divider,
+  },
+  actions: {
+    flexWrap: 'wrap',
+    whiteSpace: 'nowrap',
   }
 }))
 
@@ -143,7 +148,7 @@ export const ReportComponent = () => {
             ).toUndefined()
           }
         </PanelBody>
-        <PanelFoot>
+        <PanelFoot className={css.actions}>
           <div style={{flex: 1}}>
             {report.tags.map(tag => [
               <ScChip icon={<Icon style={{fontSize: 20}} className={cssUtils.colorTxtHint}>sell</Icon>} key={tag} label={tag}/>,
@@ -151,7 +156,15 @@ export const ReportComponent = () => {
             ])}
           </div>
 
-          <Btn variant="outlined" color="primary" icon="download" onClick={() => downloadReport(report.id)}>
+          <ReportAddComment report={report} onAdd={() => _report.events.fetch({force: true, clean: false}, id)}>
+            <Btn variant="outlined" color="primary" icon="add_comment">
+              {m.addDgccrfComment}
+            </Btn>
+          </ReportAddComment>
+          <Btn variant="outlined" color="primary" icon="download"
+               loading={_report.download.loading}
+               onClick={() => downloadReport(report.id)}
+          >
             {m.download}
           </Btn>
           <Confirm
