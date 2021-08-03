@@ -59,8 +59,6 @@ export class WebsiteClient {
     }
 
     readonly list = (filters: WebsiteWithCompanySearch) => {
-
-
         return this.client.get<PaginatedData<WebsiteWithCompany>>(`/websites${toQueryString(cleanFilter(filters))}`)
             .then(paginated =>
                 Object.assign({}, paginated, {entities: paginated.entities.filter(website => website.kind !== WebsiteKind.MARKETPLACE)})
@@ -77,7 +75,6 @@ export class WebsiteClient {
 
     readonly listUnregistered = (filters: HostReportCountSearch): Promise<Paginate<ApiHostWithReportCount>> => {
         return this.client.get<ApiHostWithReportCount[]>(`/websites/unregistered${toQueryString(hostReportFilter2QueryString(filters))}`)
-            // .then(hostWithReport => fromNullable(filters.q).map(_ => _ === '' ? hostWithReport : hostWithReport.filter(w => w.host.includes(_))).getOrElse(hostWithReport))
             .then(paginateData(filters.limit, filters.offset));
     };
 

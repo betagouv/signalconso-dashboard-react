@@ -74,13 +74,14 @@ export const ReportedCompaniesWebsites = () => {
                                 />
                             }
                         </DebouncedInput>
-
                         <ScSelect multiple small fullWidth
-                                  onChange={event => _fetch.updateFilters(prev => ({
-                                      ...prev,
-                                      kinds: event.target.value as WebsiteKind[]
-                                  }))}
-                                  value={_fetch.filters.kinds ?? [WebsiteKind.PENDING]}
+                                  onChange={event =>
+                                      _fetch.updateFilters(prev => ({
+                                          ...prev,
+                                          kinds: event.target.value as WebsiteKind[]
+                                      }))
+                                  }
+                                  defaultValue={_fetch.filters.kinds ?? [WebsiteKind.PENDING]}
                         >
                             {[WebsiteKind.PENDING, WebsiteKind.DEFAULT].map(kind =>
                                 <MenuItem key={kind} value={kind}>
@@ -98,14 +99,14 @@ export const ReportedCompaniesWebsites = () => {
                     offset: _fetch.filters.offset,
                     onPaginationChange: pagination => _fetch.updateFilters(prev => ({...prev, ...pagination})),
                 }}
-                getRenderRowKey={_ => _.host}
+                getRenderRowKey={_ => _.id}
                 data={_fetch.list?.data}
                 showColumnsToggle={true}
                 rows={[
                     {
                         id: 'host',
                         head: m.website,
-                        row: _ => <Txt bold>{_.host}</Txt>
+                        row: _ => <a href={"https://" + _.host}>{_.host}</a>
                     },
                     {
                         head: m.reports,

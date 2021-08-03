@@ -21,7 +21,7 @@ const useStyles = makeStyles((t: Theme) => ({}))
 
 export const ReportedUnknownWebsites = () => {
 
-    const {m, formatDate} = useI18n()
+    const {m} = useI18n()
     const _fetch = useUnregistredWebsiteWithCompanyContext()
     const cssUtils = useCssUtils()
     const {toastError, toastSuccess} = useToast()
@@ -44,7 +44,7 @@ export const ReportedUnknownWebsites = () => {
                         <DebouncedInput
                             debounce={400}
                             value={_fetch.filters.q ?? ''}
-                            onChange={host => _fetch.updateFilters(prev => ({...prev, q: host}))}
+                            onChange={q => _fetch.updateFilters(prev => ({...prev, q: q}))}
                         >
                             {(value, onChange) =>
                                 <InputBase
@@ -102,7 +102,7 @@ export const ReportedUnknownWebsites = () => {
                     {
                         id: 'host',
                         head: m.website,
-                        row: _ => <a href={"https://"+ _.host}>{_.host}</a>
+                        row: _ => <a href={"https://" + _.host}>{_.host}</a>
                     },
                     {
                         head: m.reports,

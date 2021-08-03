@@ -23,7 +23,7 @@ export const UnregistredWebsitesProvider = ({api, children}: Props) => {
     const listUnregistred = usePaginate<ApiHostWithReportCount, HostReportCountSearch>(search => {
         return api.secured.website.listUnregistered(search)
             .then(sortPaginatedData('count', 'desc'))
-    }, {limit: 10, offset: 0})
+    }, {limit: 10, offset: 0, q: ''})
 
 
     const extractUnregistered = useFetcher(() => api.secured.website.extractUnregistered(listUnregistred.filters))
