@@ -1,5 +1,5 @@
 import React from 'react'
-import {ApiClient, ApiError, Roles, SignalConsoPublicSdk, SignalConsoSecuredSdk} from 'core/api'
+import {ApiClient, ApiError, SignalConsoPublicSdk, SignalConsoSecuredSdk} from 'core/api'
 import {Config} from './conf/config'
 import {makeStyles} from '@material-ui/core/styles'
 import {Theme, ThemeProvider} from '@material-ui/core'
@@ -10,7 +10,7 @@ import DateAdapter from '@date-io/date-fns'
 import {ReportProvider} from './core/context/ReportContext'
 import {Reports} from './feature/Reports/Reports'
 import {ReportComponent} from './feature/Report/Report'
-import {Fender, ToastProvider} from 'mui-extension/lib'
+import {ToastProvider} from 'mui-extension/lib'
 import {muiTheme} from './core/theme'
 import {ReportedWebsites} from './feature/ReportedWebsites/ReportedWebsites'
 import {ReportedPhones} from './feature/ReportedPhones/ReportedPhones'
@@ -34,9 +34,9 @@ import {Login} from './core/Login/Login'
 import {LoginProvider, useLogin} from './core/context/LoginContext'
 import {LoginLoader} from './core/Login/LoginLoader'
 import {useFetcher} from '@alexandreannic/react-hooks-lib/lib'
-import {fnSwitch} from './core/helper/utils'
 import {ReportsPro} from './feature/ReportsPro/ReportsPro'
 import {CompanyAccesses} from './feature/CompanyAccesses/CompanyAccesses'
+import {useHistory} from 'react-router'
 
 const headers = {
   'Content-Type': 'application/json',
@@ -105,11 +105,6 @@ const useStyles = makeStyles((t: Theme) => ({
 }))
 
 export const App = () => {
-  useStyles()
-  const forgottenPassword = useFetcher<SignalConsoApiSdk['public']['authenticate']['forgotPassword'], ApiError>(
-    apiPublicSdk.authenticate.forgotPassword
-  )
-
   return (
     <Provide providers={[
       _ => <ThemeProvider theme={muiTheme()} children={_}/>,
@@ -118,38 +113,51 @@ export const App = () => {
       _ => <BrowserRouter children={_}/>,
       _ => <ToastProvider horizontal="right" children={_}/>,
     ]}>
-      <Login
-        onLogin={apiPublicSdk.authenticate.login}
-        getTokenFromResponse={_ => _.token}
-      >
-        {({authResponse, login, logout, isLogging, isCheckingToken}) =>
-          <Layout connectedUser={authResponse ? {...authResponse.user, logout: logout} : undefined}>
-            {authResponse ? (
-              <LoginProvider
-                connectedUser={authResponse.user}
-                token={authResponse.token}
-                onLogout={logout}
-                apiSdk={makeSecuredSdk(authResponse.token)}
-              >
-                <LoggedApp/>
-              </LoginProvider>
-            ) : isCheckingToken ? (
-              <LoginLoader/>
-            ) : (
-              <LoginPage
-                isLogging={isLogging}
-                onLogin={login}
-                forgottenPassword={{
-                  action: forgottenPassword.fetch,
-                  loading: forgottenPassword.loading,
-                  errorMsg: forgottenPassword.error?.message,
-                }}
-              />
-            )}
-          </Layout>
-        }
-      </Login>
+      <AppLogin/>
     </Provide>
+  )
+}
+
+const AppLogin = () => {
+  useStyles()
+  const history = useHistory()
+  const forgottenPassword = useFetcher<SignalConsoApiSdk['public']['authenticate']['forgotPassword'], ApiError>(
+    apiPublicSdk.authenticate.forgotPassword
+  )
+
+  return (
+    <Login
+      onLogin={apiPublicSdk.authenticate.login}
+      onLogout={() => history.push('/')}
+      getTokenFromResponse={_ => _.token}
+    >
+      {({authResponse, login, logout, isLogging, isCheckingToken}) =>
+        <Layout connectedUser={authResponse ? {...authResponse.user, logout: logout} : undefined}>
+          {authResponse ? (
+            <LoginProvider
+              connectedUser={authResponse.user}
+              token={authResponse.token}
+              onLogout={logout}
+              apiSdk={makeSecuredSdk(authResponse.token)}
+            >
+              <LoggedApp/>
+            </LoginProvider>
+          ) : isCheckingToken ? (
+            <LoginLoader/>
+          ) : (
+            <LoginPage
+              isLogging={isLogging}
+              onLogin={login}
+              forgottenPassword={{
+                action: forgottenPassword.fetch,
+                loading: forgottenPassword.loading,
+                errorMsg: forgottenPassword.error?.message,
+              }}
+            />
+          )}
+        </Layout>
+      }
+    </Login>
   )
 }
 
@@ -169,33 +177,20 @@ const LoggedApp = () => {
       _ => <SubscriptionsProvider api={apiSdk} children={_}/>,
     ]}>
       <Switch>
-        {fnSwitch(connectedUser.role, {
-            [Roles.Admin]: <>
-              <Route path={siteMap.reportedWebsites} component={ReportedWebsites}/>
-              <Route path={siteMap.reportedPhone} component={ReportedPhones}/>
-              <Route path={siteMap.reports()} component={Reports}/>
-              <Route path={siteMap.report()} component={ReportComponent}/>
-              <Route path={siteMap.users} component={Users}/>
-              <Route path={siteMap.companies} component={Companies}/>
-              <Route path={siteMap.companyAccesses()} component={CompanyAccesses}/>
-              <Route path={siteMap.settings} component={Settings}/>
-              <Route path={siteMap.subscriptions} component={Subscriptions}/>
-              <Redirect exact from="/" to={siteMap.reports()}/>
-            </>,
-            [Roles.DGCCRF]: <>
-              <Route path={siteMap.reports()} component={Reports}/>
-              <Route path={siteMap.report()} component={ReportComponent}/>
-              <Route path={siteMap.companies} component={Companies}/>
-              <Route path={siteMap.settings} component={Settings}/>
-              <Route path={siteMap.subscriptions} component={Subscriptions}/>
-              <Redirect exact from="/" to={siteMap.reports()}/>
-            </>,
-            [Roles.Pro]: <>
-              <Route path={siteMap.reportsPro()} component={ReportsPro}/>
-              <Route path={siteMap.settings} component={Settings}/>
-              <Redirect exact from="/" to={siteMap.reportsPro()}/>
-            </>,
-          }, () => <Fender type="error" title={m.anErrorOccurred}/>
+        <Route path={siteMap.reportedWebsites} component={ReportedWebsites}/>
+        <Route path={siteMap.reportedPhone} component={ReportedPhones}/>
+        <Route path={siteMap.reports()} component={Reports}/>
+        <Route path={siteMap.report()} component={ReportComponent}/>
+        <Route path={siteMap.users} component={Users}/>
+        <Route path={siteMap.companies} component={Companies}/>
+        <Route path={siteMap.companyAccesses()} component={CompanyAccesses}/>
+        <Route path={siteMap.subscriptions} component={Subscriptions}/>
+        <Route path={siteMap.reportsPro()} component={ReportsPro}/>
+        <Route path={siteMap.settings} component={Settings}/>
+        {connectedUser.isPro ? (
+          <Redirect exact from="/" to={siteMap.reportsPro()}/>
+        ) : (
+          <Redirect exact from="/" to={siteMap.reports()}/>
         )}
       </Switch>
     </Provide>

@@ -18,12 +18,14 @@ export interface LoginExposedProps<F extends (...args: any[]) => Promise<object>
 
 interface Props<F extends (...args: any[]) => Promise<object>> {
   onLogin: F
+  onLogout: () => void
   getTokenFromResponse: (_: AsynFnResult<F>) => string
   children: ({authResponse, login, logout, token}: LoginExposedProps<F>) => any
 }
 
 export const Login = <F extends (...args: any[]) => Promise<object>>({
   onLogin,
+  onLogout,
   getTokenFromResponse,
   children
 }: Props<F>) => {
@@ -56,6 +58,7 @@ export const Login = <F extends (...args: any[]) => Promise<object>>({
   const logout = () => {
     setAuth(undefined)
     authenticationStorage.clear()
+    onLogout()
   }
 
   const isTokenExpired = (token: string): boolean => {
