@@ -4,7 +4,7 @@ import {reportFileConfig} from './reportFileConfig'
 import {useI18n} from '../../../core/i18n'
 import {utilsStyles} from '../../../core/theme'
 import {Config} from '../../../conf/config'
-import {EventActionValues, FileOrigin, Id} from '../../../core/api'
+import {EventActionValues, FileOrigin, Id, UploadedFile} from '../../../core/api'
 import {useToast} from '../../../core/toast'
 import {useLogin} from '../../../core/context/LoginContext'
 
@@ -41,7 +41,7 @@ const useStyles = makeStyles((t: Theme) => ({
 interface Props {
   reportId: Id
   fileOrigin: FileOrigin
-  onUploaded: () => void
+  onUploaded: (f: UploadedFile) => void
 }
 
 export const ReportFileAdd = ({reportId, onUploaded, fileOrigin}: Props) => {
@@ -69,9 +69,10 @@ export const ReportFileAdd = ({reportId, onUploaded, fileOrigin}: Props) => {
       setUploading(true)
       apiSdk.public.document.upload(file, fileOrigin)
         .then(file => apiSdk.secured.reports.postReportAction(reportId, {
+          details: '',
           fileIds: [file.id],
           actionType: EventActionValues.ProfessionalAttachments,
-        }))
+        }).then(() => file))
         .then(onUploaded)
         .catch(toastError)
         .finally(() => setUploading(false))

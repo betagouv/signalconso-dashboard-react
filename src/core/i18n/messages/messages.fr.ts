@@ -140,7 +140,7 @@ export const messagesFr = {
   selectCountries_onlyTransfer: 'Pays avec accord',
   reportedPhoneTitle: 'Suivi des téléphones',
   advancedFilters: 'Filtres avancés',
-  noAnswerFromPro: 'Le professionnel n\'a pas encore répondu au signalement',
+  noAnswerFromPro: 'Le professionnel n\'a pas encore répondu au signalement.',
   companiesSearchPlaceholder: 'Rechercher par nom, SIREN, SIRET, identifiant...',
   companySearch: 'Rechercher une entreprise',
   anonymousReport: 'Signalement anonyme',
