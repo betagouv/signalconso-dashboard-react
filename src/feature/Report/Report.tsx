@@ -139,7 +139,6 @@ export const ReportComponent = () => {
                 files={files}
                 reportId={report.id}
                 fileOrigin={FileOrigin.Consumer}
-                onNewFile={() => _report.events.fetch({force: true, clean: false}, report.id)}
               />
             ).toUndefined()
           }
@@ -234,7 +233,11 @@ export const ReportComponent = () => {
               <Tab label={m.companyHistory}/>
             </Tabs>
             <ReportTabPanel value={activeTab} index={0}>
-              <ReportMessages reportId={report.id} events={_report.events.entity} files={_report.get.entity?.files}/>
+              <ReportMessages
+                reportId={report.id}
+                events={_report.events.entity}
+                files={_report.get.entity?.files.filter(_ => _.origin === FileOrigin.Professional)}
+              />
             </ReportTabPanel>
             <ReportTabPanel value={activeTab} index={1}>
               <ReportEvents events={[creationReportEvent(report), ..._report.events.entity]}/>

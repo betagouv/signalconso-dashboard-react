@@ -3,6 +3,7 @@ import {ApiClientApi} from './core/ApiClient'
 import {AsyncFileClient} from './client/async-file/AsyncFileClient'
 import {UserClient, EventClient} from './client'
 import {CompanyAccessTokenClient} from './client/company-access-token/CompanyAccessTokenClient'
+import {SecuredFileClient} from './client/file/SecuredFileClient'
 
 export class SignalConsoSecuredSdk {
 
@@ -20,4 +21,5 @@ export class SignalConsoSecuredSdk {
   readonly events = new EventClient(this.client)
   readonly asyncFiles = new AsyncFileClient(this.client)
   readonly user = new UserClient(this.client)
+  readonly document = new SecuredFileClient(this.client)
 }

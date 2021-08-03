@@ -13,4 +13,8 @@ export class FileClient {
     fileFormData.append('reportFileOrigin', origin)
     return this.client.post<UploadedFile>(`reports/files`, {body: fileFormData})
   }
+
+  readonly remove = (file: UploadedFile) => {
+    return this.client.delete(`/reports/files/${file.id}/${file.filename}`)
+  }
 }

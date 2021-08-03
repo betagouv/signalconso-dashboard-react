@@ -59,6 +59,9 @@ export const useCssUtils = makeStyles((t: Theme) => {
     txtRight: {
       textAlign: 'right',
     },
+    marginTop2: {
+      marginTop: t.spacing(2),
+    },
     marginTop: {
       marginTop: t.spacing(1),
     },

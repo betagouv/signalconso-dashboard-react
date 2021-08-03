@@ -7,7 +7,7 @@ export const siteMap = {
   reports: (_?: Partial<ReportSearch>) => '/reports' + (_ ? toQueryString(_) : ''),
   reportsPro: (_?: Partial<ReportSearch>) => '/suivi-des-signalements/pro' + (_ ? toQueryString(_) : ''),
   subscriptions: '/abonnements',
-  report: (id: Id = ':id') => `/report/${id}`,
+  report: (id: Id = ':id') => `/suivi-des-signalements/report/${id}`,
   exports: '/mes-telechargements',
   companies: '/entreprises',
   companiesPro: '/mes-entreprises',

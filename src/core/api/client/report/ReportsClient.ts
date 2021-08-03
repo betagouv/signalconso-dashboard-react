@@ -118,8 +118,8 @@ export class ReportsClient {
   }
 
   readonly postReportAction = (id: Id, action: ReportAction) => {
-    const mappedAction: any = {...action, actionType: {value: action.actionType}}
-    return this.client.post<Event>(`reports/${id}/response`, {body: mappedAction})
+    // const mappedAction: any = {...action, actionType: {value: action.actionType}}
+    return this.client.post<Event>(`reports/${id}/action`, {body: action})
   }
 
   readonly updateReportCompany = (reportId: string, company: CompanySearchResult) => {

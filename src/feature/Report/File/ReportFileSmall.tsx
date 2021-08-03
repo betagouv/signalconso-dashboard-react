@@ -3,7 +3,7 @@ import {Config} from '../../../conf/config'
 import {Icon, makeStyles, Theme, Tooltip} from '@material-ui/core'
 import React from 'react'
 import {extensionToType, FileType} from './reportFileConfig'
-import {ReportFileProps} from './ReportFiles'
+import {ReportFileProps} from './ReportFile'
 import {useLogin} from '../../../core/context/LoginContext'
 
 const useReportFileSmallStyles = makeStyles((t: Theme) => ({

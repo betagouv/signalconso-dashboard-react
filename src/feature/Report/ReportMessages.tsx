@@ -1,4 +1,4 @@
-import {PanelBody} from '../../shared/Panel'
+import {PanelBody, PanelTitle} from '../../shared/Panel'
 import React, {useEffect, useMemo} from 'react'
 import {useI18n} from '../../core/i18n'
 import {EventActionValues, FileOrigin, Id, ReportEvent, ReportResponse, ReportResponseTypes, UploadedFile} from '../../core/api'
@@ -8,7 +8,6 @@ import {Icon, makeStyles, Theme} from '@material-ui/core'
 import {useCssUtils} from '../../core/helper/useCssUtils'
 import {utilsStyles} from '../../core/theme'
 import {ReportFiles} from './File/ReportFiles'
-import {Txt} from 'mui-extension/lib/Txt/Txt'
 
 interface Props {
   events: ReportEvent[]
@@ -64,17 +63,16 @@ export const ReportMessages = ({events, reportId, files}: Props) => {
 
           {details.dgccrfDetails && details.dgccrfDetails !== '' && (
             <>
-              <Txt bold size="big" gutterBottom className={cssUtils.marginTop}>{m.reportDgccrfDetails}</Txt>
+              <PanelTitle>{m.reportDgccrfDetails}</PanelTitle>
               <div className={cssUtils.colorTxtSecondary}>{details.dgccrfDetails}</div>
             </>
           )}
-          {fromNullable(files?.filter(_ => _.origin === FileOrigin.Consumer)).filter(_ => _.length > 0).map(f =>
-            <ReportFiles hideAddBtn={true} onNewFile={console.log} reportId={reportId} files={f} fileOrigin={FileOrigin.Professional}/>
-          ).toUndefined()}
         </div>
       )).getOrElse(
         <div>{m.noAnswerFromPro}</div>)
       }
+      <PanelTitle>{m.attachedFiles}</PanelTitle>
+      <ReportFiles reportId={reportId} files={files} fileOrigin={FileOrigin.Professional}/>
     </PanelBody>
   )
 }
