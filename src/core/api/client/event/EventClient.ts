@@ -1,4 +1,4 @@
-import {ApiClientApi, Event, Id, ReportEvent} from '../../index'
+import {ApiClientApi, Event, Id, ReportEvent} from '../..'
 
 export class EventClient {
 
@@ -7,7 +7,12 @@ export class EventClient {
 
   readonly getByReportId = (reportId: Id) => {
     return this.client.get<ReportEvent[]>(`reports/${reportId}/events`)
-      .then(reportEvents => reportEvents.map(reportEvent => ({...reportEvent, data: EventClient.mapEvent(reportEvent.data)})))
+      .then(events => events.map(reportEvent => ({...reportEvent, data: EventClient.mapEvent(reportEvent.data)})))
+  }
+
+  readonly getBySiret = (siret: string) => {
+    return this.client.get<ReportEvent[]>(`companies/${siret}/events`)
+      .then(events => events.map(reportEvent => ({...reportEvent, data: EventClient.mapEvent(reportEvent.data)})))
   }
 
   static readonly mapEvent = (_: { [key in keyof Event]: any }): Event => ({

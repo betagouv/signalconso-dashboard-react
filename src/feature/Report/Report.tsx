@@ -4,7 +4,7 @@ import {useParams} from 'react-router'
 import {useI18n} from '../../core/i18n'
 import {Panel, PanelBody, PanelHead} from '../../shared/Panel'
 import {useReportContext} from '../../core/context/ReportContext'
-import {FileOrigin, Id} from 'core/api'
+import {EventActionValues, FileOrigin, Id, Report, ReportEvent} from 'core/api'
 import {Divider, Grid, Icon, makeStyles, Tab, Tabs, Theme, useTheme} from '@material-ui/core'
 import {ReportStatusChip} from '../../shared/ReportStatus/ReportStatus'
 import {ScChip} from '../../shared/Chip/ScChip'
@@ -52,6 +52,16 @@ const useStyles = makeStyles((t: Theme) => ({
   }
 }))
 
+const creationReportEvent = (report: Report): ReportEvent => Object.freeze({
+  data: {
+    id: 'dummy',
+    details: {} as any,
+    reportId: report.id,
+    eventType: 'CONSO',
+    creationDate: report.creationDate,
+    action: EventActionValues.Creation,
+  }
+})
 
 export const ReportComponent = () => {
   const {id} = useParams<{id: Id}>()
@@ -69,6 +79,12 @@ export const ReportComponent = () => {
   }, [])
 
   useEffect(() => {
+    if (_report.get.entity) {
+      _report.companyEvents.fetch({}, _report.get.entity.report.companySiret)
+    }
+  }, [_report.get.entity?.report.companySiret])
+
+  useEffect(() => {
     fromNullable(_report.get.error).map(toastError)
   }, [_report.get.entity, _report.get.error])
 
@@ -79,6 +95,14 @@ export const ReportComponent = () => {
   useEffect(() => {
     fromNullable(_report.updateCompany.error).map(toastError)
   }, [_report.updateCompany.error])
+
+  useEffect(() => {
+    fromNullable(_report.companyEvents.error).map(toastError)
+  }, [_report.companyEvents.error])
+
+  useEffect(() => {
+    fromNullable(_report.events.error).map(toastError)
+  }, [_report.events.error])
 
   const downloadReport = (reportId: Id) => _report.download.fetch({}, reportId)
 
@@ -196,7 +220,7 @@ export const ReportComponent = () => {
             </Grid>
           </Grid>
       <Panel loading={_report.events.loading}>
-        {fromNullable(_report.events.entity).map(events =>
+        {_report.events.entity && _report.companyEvents.entity && (
           <>
             <Tabs
               className={css.tabs}
@@ -207,15 +231,19 @@ export const ReportComponent = () => {
             >
               <Tab label={m.proResponse}/>
               <Tab label={m.reportHistory}/>
+              <Tab label={m.companyHistory}/>
             </Tabs>
             <ReportTabPanel value={activeTab} index={0}>
-              <ReportMessages reportId={report.id} events={events} files={_report.get.entity?.files}/>
+              <ReportMessages reportId={report.id} events={_report.events.entity} files={_report.get.entity?.files}/>
             </ReportTabPanel>
             <ReportTabPanel value={activeTab} index={1}>
-              <ReportEvents report={report} events={events}/>
+              <ReportEvents events={[creationReportEvent(report), ..._report.events.entity]}/>
+            </ReportTabPanel>
+            <ReportTabPanel value={activeTab} index={2}>
+              <ReportEvents events={_report.companyEvents.entity}/>
             </ReportTabPanel>
           </>
-        ).toUndefined()}
+        )}
       </Panel>
     </Page>
   ).getOrElse(<></>)

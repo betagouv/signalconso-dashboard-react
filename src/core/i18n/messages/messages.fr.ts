@@ -86,6 +86,7 @@ export const messagesFr = {
   report: 'Signalement',
   you: 'Vous',
   reportHistory: 'Historique du signalement',
+  companyHistory: 'Historique de l\'entreprise',
   reports_pageTitle: 'Suivi des signalements',
   report_pageTitle: `Signalement`,
   details: 'Détails',

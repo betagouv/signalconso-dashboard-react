@@ -9,6 +9,7 @@ export interface ReportContextProps {
   remove: UseFetcher<SignalConsoApiSdk['secured']['reports']['remove'], ApiError>
   download: UseFetcher<SignalConsoApiSdk['secured']['reports']['download'], ApiError>
   events: UseFetcher<SignalConsoApiSdk['secured']['events']['getByReportId'], ApiError>
+  companyEvents: UseFetcher<SignalConsoApiSdk['secured']['events']['getBySiret'], ApiError>
   updateCompany: UseFetcher<SignalConsoApiSdk['secured']['reports']['updateReportCompany'], ApiError>
   updateConsumer: UseFetcher<SignalConsoApiSdk['secured']['reports']['updateReportConsumer'], ApiError>
 }
@@ -27,6 +28,7 @@ export const ReportProvider = ({api, children}: Props) => {
   const get = useFetcher(api.secured.reports.getById)
   const remove = useFetcher(api.secured.reports.remove)
   const events = useFetcher(api.secured.events.getByReportId)
+  const companyEvents = useFetcher(api.secured.events.getBySiret)
   const download = useFetcher(api.secured.reports.download)
 
   const updateReport = (report: Report) => get.setEntity(prev => ({report, files: prev?.files ?? []}))
@@ -43,6 +45,7 @@ export const ReportProvider = ({api, children}: Props) => {
       get,
       remove,
       events,
+      companyEvents,
       download,
       updateCompany,
       updateConsumer,

@@ -5,24 +5,13 @@ import {useI18n} from '../../../core/i18n'
 import {EventActionValues, Report, ReportEvent} from 'core/api'
 
 interface Props {
-  report: Report,
   events: ReportEvent[]
 }
 
-export const ReportEvents = ({report, events}: Props) => {
+export const ReportEvents = ({events}: Props) => {
   const {m} = useI18n()
   return (
     <PanelBody>
-      <ReportEventComponent event={{
-        data: {
-          id: 'dummy',
-          details: {} as any,
-          reportId: report.id,
-          eventType: 'CONSO',
-          creationDate: report.creationDate,
-          action: EventActionValues.Creation,
-        }
-      }}/>
       {events
         .sort((a, b) => a.data.creationDate.getTime() - b.data.creationDate.getTime())
         .map(event =>

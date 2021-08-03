@@ -32,11 +32,17 @@ const useStyles = makeStyles((t: Theme) => ({
   icon: {
     margin: utilsStyles(t).spacing(0, 2, 2, 0),
   },
+  head: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
   title: {
     fontWeight: t.typography.fontWeightBold,
     fontSize: utilsStyles(t).fontSize.normal,
   },
   date: {
+    whiteSpace: 'nowrap',
     color: t.palette.text.hint,
     marginTop: t.spacing(.5),
   }
@@ -51,8 +57,13 @@ export const ReportEventComponent = ({event}: ReportComponentEventProps) => {
     <div className={css.root} key={event.data.id}>
       <ReportEventIcon className={css.icon} action={event.data.action}/>
       <div className={css.body}>
-        <div className={css.title}>
-          {event.data.action}
+        <div className={css.head}>
+          <div className={css.title}>
+            {event.data.action}
+          </div>
+          <div className={css.date}>
+            {formatDateTime(event.data.creationDate)}
+          </div>
         </div>
 
         {event.user && (
@@ -64,9 +75,6 @@ export const ReportEventComponent = ({event}: ReportComponentEventProps) => {
         )}
         <div className={cssUtils.colorTxtSecondary}>
           {(event.data.details as any)?.description}
-        </div>
-        <div className={css.date}>
-          {formatDateTime(event.data.creationDate)}
         </div>
       </div>
     </div>

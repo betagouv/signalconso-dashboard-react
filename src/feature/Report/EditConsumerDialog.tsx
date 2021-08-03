@@ -27,6 +27,7 @@ export const EditConsumerDialog = ({report, onChange, children}: Props) => {
     <Confirm
       title={m.editConsumer}
       maxWidth="xs"
+      cancelLabel={m.close}
       confirmLabel={m.edit}
       onConfirm={close => {
         onChange(getValues())
@@ -71,7 +72,7 @@ export const EditConsumerDialog = ({report, onChange, children}: Props) => {
 
           <Controller name="contactAgreement" defaultValue={report.contactAgreement} control={control} render={({field}) =>
             <FormControlLabel
-              control={<Checkbox {...field} checked={field.value}/>}
+              control={<Checkbox {...field} checked={field.value} disabled={report.contactAgreement}/>}
               label={m.contactAgreement}
             />
           }/>
