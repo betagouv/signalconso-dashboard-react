@@ -1,5 +1,5 @@
 import React, {useEffect, useMemo} from 'react'
-import {Page} from '../../shared/Layout'
+import {Page, PageTitle} from '../../shared/Layout'
 import {Panel} from '../../shared/Panel'
 import {useReportsContext} from '../../core/context/ReportsContext'
 import {Datatable} from '../../shared/Datatable/Datatable'
@@ -19,12 +19,14 @@ import {siteMap} from '../../core/siteMap'
 import {classes} from '../../core/helper/utils'
 import {Datepicker} from '../../shared/Datepicker/Datepicker'
 import {addDays, subDays} from 'date-fns'
-import {Fender} from 'mui-extension/lib'
+import {Btn, Fender} from 'mui-extension/lib'
 import {EntityIcon} from '../../core/EntityIcon'
 import {ScButton} from '../../shared/Button/Button'
 import {useQueryString} from '../../core/helper/useQueryString'
 import {fromNullable} from 'fp-ts/lib/Option'
 import {useToast} from '../../core/toast'
+import {Config} from '../../conf/config'
+import {ExportReportsPopper} from '../../shared/ExportPopper/ExportPopperBtn'
 
 const useStyles = makeStyles((t: Theme) => ({
   tdFiles: {
@@ -47,7 +49,13 @@ const useStyles = makeStyles((t: Theme) => ({
     display: 'flex',
     alignItems: 'center',
     marginBottom: t.spacing(1 / 2),
-  }
+  },
+  head: {
+    marginBottom: t.spacing(2),
+    display: 'flex',
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+  },
 }))
 
 const minRowsBeforeDisplayFilters = 2
@@ -92,6 +100,25 @@ export const ReportsPro = () => {
 
   return (
     <Page size="small">
+      <PageTitle>{m.reports_pageTitle}</PageTitle>
+      <div className={css.head}>
+        <ExportReportsPopper
+          className={cssUtils.marginRight}
+          disabled={fromNullable(_reports?.list?.totalSize).map(_ => _ > Config.reportsLimitForExport).getOrElse(false)}
+          tooltipBtnNew={fromNullable(_reports?.list?.totalSize)
+            .map(_ => _ > Config.reportsLimitForExport ? m.cannotExportMoreReports(Config.reportsLimitForExport) : '')
+            .getOrElse('')}
+        >
+          <Btn variant="contained" color="primary" icon="get_app">
+            {m.exportInXLS}
+          </Btn>
+        </ExportReportsPopper>
+
+        <Btn variant="outlined" color="primary" icon="help" {...{target: '_blank'} as any} href={Config.appBaseUrl + '/comment-ça-marche/professionnel'}>
+          {m.help}
+          <Icon className={classes(cssUtils.marginLeft, cssUtils.colorTxtHint)}>open_in_new</Icon>
+        </Btn>
+      </div>
       <Panel>
         <Datatable<ReportSearchResult>
           header={displayFilters && (

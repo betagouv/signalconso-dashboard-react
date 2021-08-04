@@ -58,6 +58,9 @@ export const muiTheme = (dark?: boolean): any => {
       MuiButton: {
         root: {
           borderRadius: 20,
+        },
+        outlinedPrimary: {
+          borderColor: theme.palette.divider,
         }
       },
       MuiTabs: {

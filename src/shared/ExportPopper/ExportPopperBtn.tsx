@@ -1,6 +1,6 @@
-import React, {useEffect, useState} from 'react'
-import {Btn, IconBtn} from 'mui-extension/lib'
-import {CircularProgress, Icon, LinearProgress, makeStyles, Menu, MenuItem, Theme, Tooltip} from '@material-ui/core'
+import React, {ReactElement, useEffect, useState} from 'react'
+import {Btn} from 'mui-extension/lib'
+import {CircularProgress, Icon, makeStyles, Menu, MenuItem, Theme, Tooltip} from '@material-ui/core'
 import {useI18n} from '../../core/i18n'
 import {AsyncFile, AsyncFileKind, AsyncFileStatus} from '../../core/api/client/async-file/AsyncFile'
 import {useAsyncFileContext} from '../../core/context/AsyncFileContext'
@@ -13,6 +13,7 @@ import {Fetch} from '@alexandreannic/react-hooks-lib/lib'
 import {useReportsContext} from '../../core/context/ReportsContext'
 
 interface Props {
+  className?: string
   disabled?: boolean
   tooltipBtnNew?: string
   loading?: boolean
@@ -20,6 +21,8 @@ interface Props {
   files?: AsyncFile[]
   fileType: AsyncFileKind
   onNewExport: () => Promise<any>
+  children: ReactElement<any>
+  onClick?: (event: any) => void
 }
 
 const useStyles = makeStyles((t: Theme) => ({
@@ -40,12 +43,26 @@ const useStyles = makeStyles((t: Theme) => ({
   },
   fileItem: {
     display: 'flex',
-  }
+  },
+  progress: {
+    minHeight: 100,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  noData: {
+    textAlign: 'center',
+    margin: t.spacing(1),
+    color: t.palette.text.hint,
+  },
 }))
 
 export const ExportPopperBtn = ({
+  children,
   tooltipBtnNew,
   loading,
+  onClick,
+  className,
   fetch,
   files,
   fileType,
@@ -81,16 +98,20 @@ export const ExportPopperBtn = ({
   return (
     <>
       <Tooltip title={m.exportInXLS}>
-        <IconBtn color="primary" onClick={handleClick}>
-          <Icon>file_download</Icon>
-        </IconBtn>
+        {React.cloneElement(children, {
+          onClick: (event: any) => {
+            if (onClick) onClick(event)
+            handleClick(event)
+          },
+          className,
+        })}
       </Tooltip>
       <Menu
         keepMounted
         open={!!anchorEl}
         onClose={handleClose}
-        anchorEl={anchorEl}>
-        {initialLoading && loading && <LinearProgress/>}
+        anchorEl={anchorEl}
+      >
         <div className={css.btnContainer} onClick={() => onNewExport().then(() => fetch({clean: false}))}>
           <Tooltip title={tooltipBtnNew ?? ''}>
             <span>
@@ -100,6 +121,14 @@ export const ExportPopperBtn = ({
             </span>
           </Tooltip>
         </div>
+        {initialLoading && loading && (
+          <div className={css.progress}>
+            <CircularProgress/>
+          </div>
+        )}
+        {files?.length === 0 && (
+          <div className={css.noData}>{m.noExport}</div>
+        )}
         {files?.filter(_ => _.kind === fileType).map(file =>
           <MenuItem className={css.menuItem} dense key={file.id}>
             {fnSwitch(file.status, {
@@ -138,10 +167,19 @@ export const ExportPopperBtn = ({
   )
 }
 
-export const ExportPhonesPopper = () => {
+interface ExportReportProps {
+  className?: string
+  children: ReactElement<any>
+  disabled?: boolean
+  onClick?: (event: any) => void
+  tooltipBtnNew?: string
+}
+
+export const ExportPhonesPopper = (props: ExportReportProps) => {
   const _asyncFile = useAsyncFileContext()
   const _reportPhone = useReportedPhonesContext()
   return <ExportPopperBtn
+    {...props}
     loading={_asyncFile.loading}
     fileType={AsyncFileKind.ReportedPhones}
     onNewExport={_reportPhone.extract.fetch}
@@ -150,7 +188,7 @@ export const ExportPhonesPopper = () => {
   />
 }
 
-export const ExportReportsPopper = (props: {disabled?: boolean, tooltipBtnNew?: string}) => {
+export const ExportReportsPopper = (props: ExportReportProps) => {
   const _asyncFile = useAsyncFileContext()
   const _reports = useReportsContext()
   return <ExportPopperBtn

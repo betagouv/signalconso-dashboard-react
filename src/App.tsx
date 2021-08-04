@@ -37,6 +37,8 @@ import {useFetcher} from '@alexandreannic/react-hooks-lib/lib'
 import {ReportsPro} from './feature/ReportsPro/ReportsPro'
 import {CompanyAccesses} from './feature/CompanyAccesses/CompanyAccesses'
 import {useHistory} from 'react-router'
+import {CompaniesPro} from './feature/CompaniesPro/CompaniesPro'
+import {CompaniesProTable} from './feature/CompaniesPro/CompaniesProTable'
 
 const headers = {
   'Content-Type': 'application/json',
@@ -186,6 +188,7 @@ const AppLogged = () => {
         <Route path={siteMap.companyAccesses()} component={CompanyAccesses}/>
         <Route path={siteMap.subscriptions} component={Subscriptions}/>
         <Route path={siteMap.reportsPro()} component={ReportsPro}/>
+        <Route path={siteMap.companiesPro} component={CompaniesProTable}/>
         <Route path={siteMap.settings} component={Settings}/>
         {connectedUser.isPro ? (
           <Redirect exact from="/" to={siteMap.reportsPro()}/>

@@ -7,7 +7,7 @@ import {Datatable} from '../../shared/Datatable/Datatable'
 import {NavLink} from 'react-router-dom'
 import {siteMap} from '../../core/siteMap'
 import {ReportedPhone} from '../../core/api'
-import {Btn} from 'mui-extension/lib'
+import {Btn, IconBtn} from 'mui-extension/lib'
 import {useCssUtils} from '../../core/helper/useCssUtils'
 import {Datepicker} from '../../shared/Datepicker/Datepicker'
 import {addDays, subDays} from 'date-fns'
@@ -15,6 +15,7 @@ import {ScInput} from '../../shared/Input/ScInput'
 import {ExportPhonesPopper} from '../../shared/ExportPopper/ExportPopperBtn'
 import {fromNullable} from 'fp-ts/lib/Option'
 import {useToast} from '../../core/toast'
+import {Icon, Tooltip} from '@material-ui/core'
 
 export const ReportedPhones = () => {
   const _reportedPhone = useReportedPhonesContext()
@@ -70,7 +71,11 @@ export const ReportedPhones = () => {
                 })}
                 label={m.end}
               />
-              <ExportPhonesPopper/>
+              <ExportPhonesPopper>
+                <IconBtn color="primary">
+                  <Icon>file_download</Icon>
+                </IconBtn>
+              </ExportPhonesPopper>
             </>
           }
           sort={{
