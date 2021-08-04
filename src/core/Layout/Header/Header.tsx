@@ -116,6 +116,6 @@ const useHeaderItemStyles = makeStyles((t: Theme) => ({
 const HeaderItem = ({children, href}: {children: any, href: string}) => {
   const css = useHeaderItemStyles()
   return (
-    <Btn color="primary" href={Config.appBaseUrl + '/' + href} className={css.root}>{children}</Btn>
+    <Btn color="primary" href={href} className={css.root}>{children}</Btn>
   )
 }
