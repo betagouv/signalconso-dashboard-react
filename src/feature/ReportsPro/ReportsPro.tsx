@@ -5,7 +5,7 @@ import {useReportsContext} from '../../core/context/ReportsContext'
 import {Datatable} from '../../shared/Datatable/Datatable'
 import {useI18n} from '../../core/i18n'
 import {useCssUtils} from '../../core/helper/useCssUtils'
-import {Badge, Grid, Icon, makeStyles, MenuItem, Theme} from '@material-ui/core'
+import {Badge, Grid, Icon, makeStyles, MenuItem, Theme, Tooltip} from '@material-ui/core'
 import {ReportStatusChip} from '../../shared/ReportStatus/ReportStatus'
 import {useLayoutContext} from '../../core/Layout/LayoutContext'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
@@ -17,9 +17,7 @@ import {useConstantContext} from '../../core/context/ConstantContext'
 import {useHistory} from 'react-router'
 import {siteMap} from '../../core/siteMap'
 import {classes} from '../../core/helper/utils'
-import {Datepicker} from '../../shared/Datepicker/Datepicker'
-import {addDays, subDays} from 'date-fns'
-import {Btn, Fender} from 'mui-extension/lib'
+import {Btn, Fender, IconBtn} from 'mui-extension/lib'
 import {EntityIcon} from '../../core/EntityIcon'
 import {ScButton} from '../../shared/Button/Button'
 import {useQueryString} from '../../core/helper/useQueryString'
@@ -27,6 +25,8 @@ import {fromNullable} from 'fp-ts/lib/Option'
 import {useToast} from '../../core/toast'
 import {Config} from '../../conf/config'
 import {ExportReportsPopper} from '../../shared/ExportPopper/ExportPopperBtn'
+import {PeriodPicker} from '../../shared/PeriodPicker/PeriodPicker'
+import {ScInput} from '../../shared/Input/ScInput'
 
 const useStyles = makeStyles((t: Theme) => ({
   tdFiles: {
@@ -50,11 +50,23 @@ const useStyles = makeStyles((t: Theme) => ({
     alignItems: 'center',
     marginBottom: t.spacing(1 / 2),
   },
-  head: {
-    marginBottom: t.spacing(2),
+  filters: {
+    borderRadius: 4,
+    padding: t.spacing(1, 2, 1, 2),
+    boxShadow: t.shadows[3],
+    marginBottom: t.spacing(3),
+  },
+  actions: {
+    flexWrap: 'wrap',
+    whiteSpace: 'nowrap',
+    marginTop: t.spacing(2),
     display: 'flex',
-    justifyContent: 'flex-end',
     alignItems: 'center',
+    justifyContent: 'flex-end',
+    '& > *': {
+      marginBottom: t.spacing(1),
+      marginLeft: t.spacing(1),
+    }
   },
 }))
 
@@ -100,83 +112,70 @@ export const ReportsPro = () => {
 
   return (
     <Page size="small">
-      <PageTitle>{m.reports_pageTitle}</PageTitle>
-      <div className={css.head}>
-        <ExportReportsPopper
-          className={cssUtils.marginRight}
-          disabled={fromNullable(_reports?.list?.totalSize).map(_ => _ > Config.reportsLimitForExport).getOrElse(false)}
-          tooltipBtnNew={fromNullable(_reports?.list?.totalSize)
-            .map(_ => _ > Config.reportsLimitForExport ? m.cannotExportMoreReports(Config.reportsLimitForExport) : '')
-            .getOrElse('')}
-        >
-          <Btn variant="contained" color="primary" icon="get_app">
-            {m.exportInXLS}
-          </Btn>
-        </ExportReportsPopper>
-
+      <PageTitle action={
         <Btn variant="outlined" color="primary" icon="help" {...{target: '_blank'} as any} href={Config.appBaseUrl + '/comment-ça-marche/professionnel'}>
           {m.help}
           <Icon className={classes(cssUtils.marginLeft, cssUtils.colorTxtHint)}>open_in_new</Icon>
         </Btn>
+      }>{m.reports_pageTitle}</PageTitle>
+
+      <div className={css.filters}>
+        <Grid container spacing={1}>
+          <Grid item sm={4} xs={12}>
+            <ScInput fullWidth className={cssUtils.marginRight}/>
+          </Grid>
+          <Grid item sm={4} xs={12}>
+            <SelectDepartments
+              className={cssUtils.marginRight}
+              fullWidth
+              values={_reports.filters.departments}
+              onChange={departments => _reports.updateFilters(prev => ({...prev, departments}))}
+            />
+          </Grid>
+          <Grid item sm={4} xs={12}>
+            <ScSelect
+              label={m.status}
+              fullWidth
+              onChange={event => {
+                console.log(event)
+                _reports.updateFilters(prev => ({...prev, status: event.target.value as string}))
+              }}
+              value={_reports.filters.status ?? ''}
+            >
+              <MenuItem value="">&nbsp;</MenuItem>
+              {(_reportStatus.entity ?? []).map(status =>
+                <MenuItem key={status} value={status}>
+                  <ReportStatusChip dense fullWidth inSelectOptions status={status}/>
+                </MenuItem>,
+              )}
+            </ScSelect>
+          </Grid>
+        </Grid>
+        <PeriodPicker
+          fullWidth
+          value={[_reports.filters.start, _reports.filters.end]}
+          onChange={([start, end]) => {
+          }}
+        />
+        <div className={css.actions}>
+          <ExportReportsPopper
+            disabled={fromNullable(_reports?.list?.totalSize).map(_ => _ > Config.reportsLimitForExport).getOrElse(false)}
+            tooltipBtnNew={fromNullable(_reports?.list?.totalSize)
+              .map(_ => _ > Config.reportsLimitForExport ? m.cannotExportMoreReports(Config.reportsLimitForExport) : '')
+              .getOrElse('')}
+          >
+            <Btn variant="outlined" color="primary" icon="get_app">
+              {m.exportInXLS}
+            </Btn>
+          </ExportReportsPopper>
+
+          <ScButton icon="clear" onClick={_reports.clearFilters} variant="outlined" color="primary">
+            {m.removeAllFilters}
+          </ScButton>
+        </div>
       </div>
       <Panel>
         <Datatable<ReportSearchResult>
-          header={displayFilters && (
-            <Grid container spacing={1}>
-              <Grid item sm={6}>
-                <SelectDepartments
-                  className={cssUtils.marginRight}
-                  fullWidth
-                  values={_reports.filters.departments}
-                  onChange={departments => _reports.updateFilters(prev => ({...prev, departments}))}
-                />
-                <ScSelect
-                  label={m.status}
-                  fullWidth
-                  onChange={event => {
-                    console.log(event)
-                    _reports.updateFilters(prev => ({...prev, status: event.target.value as string}))
-                  }}
-                  value={_reports.filters.status ?? ''}
-                >
-                  <MenuItem value="">&nbsp;</MenuItem>
-                  {(_reportStatus.entity ?? []).map(status =>
-                    <MenuItem key={status} value={status}>
-                      <ReportStatusChip dense fullWidth inSelectOptions status={status}/>
-                    </MenuItem>
-                  )}
-                </ScSelect>
-              </Grid>
-              <Grid item sm={6}>
-                <Datepicker
-                  className={cssUtils.marginRight}
-                  fullWidth
-                  label={m.start}
-                  value={_reports.filters.start}
-                  onChange={start => {
-                    _reports.updateFilters(prev => {
-                      if (prev.end && start.getTime() > prev.end.getTime()) {
-                        return {...prev, start, end: addDays(start, 1)}
-                      }
-                      return {...prev, start}
-                    })
-                  }}
-                />
-                <Datepicker
-                  className={cssUtils.marginRight}
-                  fullWidth
-                  value={_reports.filters.end}
-                  onChange={end => _reports.updateFilters(prev => {
-                    if (prev.start && prev.start.getTime() > end.getTime()) {
-                      return {...prev, start: subDays(end, 1), end}
-                    }
-                    return {...prev, end}
-                  })}
-                  label={m.end}
-                />
-              </Grid>
-            </Grid>
-          )}
           paginate={{
             minRowsBeforeDisplay: minRowsBeforeDisplayFilters,
             offset: _reports.filters.offset,
