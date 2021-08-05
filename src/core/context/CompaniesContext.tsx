@@ -11,8 +11,8 @@ export interface CompaniesContextProps {
   downloadActivationDocument: UseFetcher<SignalConsoApiSdk['secured']['company']['downloadActivationDocument'], ApiError>
   confirmCompaniesPosted: UseFetcher<SignalConsoApiSdk['secured']['company']['confirmCompaniesPosted'], ApiError>
   searchByIdentity: UseFetcher<SignalConsoApiSdk['public']['company']['searchCompaniesByIdentity'], ApiError>
-  accessesByPro: UseFetcher<SignalConsoApiSdk['secured']['company']['getCompaniesWithAccessByPro'], ApiError>
-  companiesViewableByPro: UseFetcher<SignalConsoApiSdk['secured']['company']['getCompaniesViewableByPro'], ApiError>
+  accessesByPro: UseFetcher<SignalConsoApiSdk['secured']['company']['getCompaniesAccessibleByPro'], ApiError>
+  viewableByPro: UseFetcher<SignalConsoApiSdk['secured']['company']['getCompaniesVisibleByPro'], ApiError>
   saveUndeliveredDocument: UseFetcher<SignalConsoApiSdk['secured']['company']['saveUndeliveredDocument'], ApiError>
 }
 
@@ -41,9 +41,9 @@ export const CompaniesProvider = ({api, children}: Props) => {
   const searchByIdentity = useFetcher(api.public.company.searchCompaniesByIdentity)
   const downloadActivationDocument = useFetcher(api.secured.company.downloadActivationDocument)
   const confirmCompaniesPosted = useFetcher(api.secured.company.confirmCompaniesPosted)
-  const accessesByPro = useFetcher(api.secured.company.getCompaniesWithAccessByPro)
-  const companiesViewableByPro = useFetcher(api.secured.company.getCompaniesViewableByPro)
   const saveUndeliveredDocument = useFetcher(api.secured.company.saveUndeliveredDocument)
+  const accessesByPro = useFetcher(api.secured.company.getCompaniesAccessibleByPro)
+  const viewableByPro = useFetcher(api.secured.company.getCompaniesVisibleByPro)
 
   return (
     <CompaniesContext.Provider value={{
@@ -53,7 +53,7 @@ export const CompaniesProvider = ({api, children}: Props) => {
       downloadActivationDocument,
       confirmCompaniesPosted,
       accessesByPro,
-      companiesViewableByPro,
+      viewableByPro,
       saveUndeliveredDocument,
     }}>
       {children}

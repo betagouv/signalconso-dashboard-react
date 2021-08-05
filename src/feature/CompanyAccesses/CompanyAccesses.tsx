@@ -11,7 +11,7 @@ import {Txt} from 'mui-extension/lib/Txt/Txt'
 import {CompanyAccessLevel} from '../../core/api'
 import {Confirm, IconBtn} from 'mui-extension/lib'
 import {Id} from '../../core/api/model'
-import {fromNullable} from 'fp-ts/lib/Option'
+import {fromNullable, some} from 'fp-ts/lib/Option'
 import {useLogin} from '../../core/context/LoginContext'
 import {useCompanyAccess} from './useCompaniesAccess'
 import {CompanyAccessCreateBtn} from './CompanyAccessCreateBtn'
@@ -104,7 +104,9 @@ export const CompanyAccesses = () => {
             {
               id: 'level',
               head: m.companyAccessLevel,
-              row: _ => connectedUser.email !== _.email && fromNullable(_.userId)
+              row: _ => some(_)
+                .filter(_ => _.email !== connectedUser.email)
+                .mapNullable(_ => _.userId)
                 .map(userId =>
                   <ScSelect fullWidth value={_.level} onChange={event => _crudAccess.update(userId, event.target.value as CompanyAccessLevel)}>
                     {Object.keys(CompanyAccessLevel).map(level =>
@@ -121,7 +123,7 @@ export const CompanyAccesses = () => {
               className: cssUtils.txtRight,
               row: _ =>
                 <>
-                  {fromNullable(_.userId).map(userId =>
+                  {some(_).filter(_ => _.email !== connectedUser.email).mapNullable(_ => _.userId).map(userId =>
                     <Confirm
                       title={m.deleteCompanyAccess(_.name!)}
                       onConfirm={() => _crudAccess.remove(userId)}

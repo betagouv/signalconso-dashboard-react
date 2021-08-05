@@ -142,7 +142,11 @@ export const Reports = ({}) => {
                 tooltipBtnNew={fromNullable(_reports?.list?.totalSize)
                   .map(_ => _ > Config.reportsLimitForExport ? m.cannotExportMoreReports(Config.reportsLimitForExport) : '')
                   .getOrElse('')}
-              />
+              >
+                <IconBtn color="primary">
+                  <Icon>file_download</Icon>
+                </IconBtn>
+              </ExportReportsPopper>
               <Tooltip title={m.removeAllFilters}>
                 <IconBtn color="primary" onClick={_reports.clearFilters}>
                   <Icon>clear</Icon>

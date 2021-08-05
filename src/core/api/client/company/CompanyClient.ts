@@ -1,14 +1,4 @@
-import {
-  ApiClientApi,
-  ApiPaginate,
-  CompanySearch,
-  CompanyToActivate,
-  CompanyWithAccessLevel,
-  CompanyWithReportsCount,
-  dateToApi,
-  directDownloadBlob,
-  ViewableCompany
-} from '../..'
+import {ApiClientApi, ApiPaginate, CompanySearch, CompanyToActivate, CompanyWithAccessLevel, CompanyWithReportsCount, dateToApi, directDownloadBlob, VisibleCompany} from '../..'
 import {Company, CompanyCreation, CompanyUpdate, Event, Id} from '../../model'
 import {format} from 'date-fns'
 import {Address} from '../../model/Address'
@@ -57,16 +47,17 @@ export class CompanyClient {
   }
 
   readonly downloadActivationDocument = (companyIds: Id[]) => {
-    return this.client.postGetPdf(`/companies/activation-document`, {body: {companyIds},})
+    return this.client.postGetPdf(`/companies/activation-document`, {body: {companyIds}})
       .then(directDownloadBlob(`signalement_depot_${format(new Date(), 'ddMMyy')}`))
   }
 
-  readonly getCompaniesWithAccessByPro = () => {
+  readonly getCompaniesAccessibleByPro = (): Promise<CompanyWithAccessLevel[]> => {
     return this.client.get<CompanyWithAccessLevel[]>(`/accesses/connected-user`)
+      .then(res => res.map(_ => ({..._, creationDate: new Date(_.creationDate)})))
   }
 
-  readonly getCompaniesViewableByPro = () => {
-    return this.client.get<ViewableCompany[]>(`/accesses/connected-user`)
+  readonly getCompaniesVisibleByPro = (): Promise<VisibleCompany[]> => {
+    return this.client.get<VisibleCompany[]>(`/companies/connected-user`)
   }
 
   readonly fetchToActivate = () => {

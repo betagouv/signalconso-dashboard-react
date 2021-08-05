@@ -51,6 +51,7 @@ export const useCssUtils = makeStyles((t: Theme) => {
     inlineIcon: {
       display: 'inline !important',
       fontSize: 'inherit',
+      lineHeight: 1,
       verticalAlign: 'text-top',
     },
     txtCenter: {

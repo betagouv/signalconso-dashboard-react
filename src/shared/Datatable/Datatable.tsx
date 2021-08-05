@@ -40,7 +40,7 @@ export interface DatatableColumnProps<T> {
   row: (_: T) => ReactNode
   hidden?: boolean
   alwaysVisible?: boolean
-  className?: string,
+  className?: string | ((_: T) => string | undefined),
   style?: CSSProperties
   stickyEnd?: boolean
 }
@@ -191,7 +191,11 @@ export const Datatable = <T extends any = any,>(props: DatatableProps<T>) => {
                 className={classes(onClickRows && css.hoverableRows)}
               >
                 {filteredRows.map((_, i) =>
-                  <TableCell key={i} className={classes(_.className, cssUtils.truncate, _.stickyEnd && css.stickyEnd)} style={_.style}>
+                  <TableCell key={i} style={_.style} className={classes(
+                    typeof _.className === 'function' ? _.className(item) : _.className,
+                    cssUtils.truncate,
+                    _.stickyEnd && css.stickyEnd
+                  )}>
                     {_.row(item)}
                   </TableCell>
                 )}
