@@ -14,7 +14,9 @@ import {addDays, subDays} from "date-fns";
 import {NavLink} from "react-router-dom";
 import {siteMap} from "../../core/siteMap";
 import {Btn, IconBtn} from "mui-extension";
-import {ExportUnknownWebsitesPopper} from "../../shared/ExportPopper/ExportPopperBtn";
+import {ExportReportsPopper, ExportUnknownWebsitesPopper} from "../../shared/ExportPopper/ExportPopperBtn";
+import {Config} from "../../conf/config";
+import {PeriodPicker} from "../../shared/PeriodPicker/PeriodPicker";
 
 
 export const ReportedUnknownWebsites = () => {
@@ -52,35 +54,53 @@ export const ReportedUnknownWebsites = () => {
                                 />
                             }
                         </DebouncedInput>
-                        <Datepicker
-                            label={m.start}
-                            value={_fetch.filters.start}
-                            onChange={start => {
-                                _fetch.updateFilters(prev => {
-                                    if (prev.end && start.getTime() > prev.end.getTime()) {
-                                        return {...prev, start: start, end: addDays(start, 1)}
-                                    }
-                                    return {...prev, start: start}
-                                })
-                            }}
+
+                        <PeriodPicker
+                            fullWidth
+                            value={[_fetch.filters.start, _fetch.filters.end]}
+                            onChange={([start, end]) => _fetch.updateFilters(prev => ({...prev, start: start ?? prev.start, end: end ?? prev.end}))}
                         />
-                        <Datepicker
-                            value={_fetch.filters.end}
-                            onChange={end =>
-                                _fetch.updateFilters(prev => {
-                                    if (prev.start && prev.start.getTime() > end.getTime()) {
-                                        return {...prev, start: subDays(end, 1), end}
-                                    }
-                                    return {...prev, end}
-                                })}
-                            label={m.end}
-                        />
+
+                        {/*<Datepicker*/}
+                        {/*    label={m.start}*/}
+                        {/*    value={_fetch.filters.start}*/}
+                        {/*    onChange={start => {*/}
+                        {/*        _fetch.updateFilters(prev => {*/}
+                        {/*            if (prev.end && start.getTime() > prev.end.getTime()) {*/}
+                        {/*                return {...prev, start: start, end: addDays(start, 1)}*/}
+                        {/*            }*/}
+                        {/*            return {...prev, start: start}*/}
+                        {/*        })*/}
+                        {/*    }}*/}
+                        {/*/>*/}
+                        {/*<Datepicker*/}
+                        {/*    value={_fetch.filters.end}*/}
+                        {/*    onChange={end =>*/}
+                        {/*        _fetch.updateFilters(prev => {*/}
+                        {/*            if (prev.start && prev.start.getTime() > end.getTime()) {*/}
+                        {/*                return {...prev, start: subDays(end, 1), end}*/}
+                        {/*            }*/}
+                        {/*            return {...prev, end}*/}
+                        {/*        })}*/}
+                        {/*    label={m.end}*/}
+                        {/*/>*/}
                         <Tooltip title={m.removeAllFilters}>
                             <IconBtn color="primary" onClick={_fetch.clearFilters}>
                                 <Icon>clear</Icon>
                             </IconBtn>
                         </Tooltip>
-                        <ExportUnknownWebsitesPopper/>
+
+                        <ExportUnknownWebsitesPopper
+                            disabled={fromNullable(_fetch?.list?.totalSize).map(_ => _ > Config.reportsLimitForExport).getOrElse(false)}
+                            tooltipBtnNew={fromNullable(_fetch?.list?.totalSize)
+                                .map(_ => _ > Config.reportsLimitForExport ? m.cannotExportMoreReports(Config.reportsLimitForExport) : '')
+                                .getOrElse('')}
+                        >
+                            <IconBtn color="primary">
+                                <Icon>file_download</Icon>
+                            </IconBtn>
+                        </ExportUnknownWebsitesPopper>
+
                     </>
                 }
                 loading={_fetch.fetching}

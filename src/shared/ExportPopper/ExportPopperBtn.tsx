@@ -212,10 +212,11 @@ export const ExportReportsPopper = (props: ExportReportProps) => {
     />
 }
 
-export const ExportUnknownWebsitesPopper = () => {
+export const ExportUnknownWebsitesPopper = (props: ExportReportProps) => {
     const _asyncFile = useAsyncFileContext()
     const _extract = useUnregistredWebsiteWithCompanyContext()
     return <ExportPopperBtn
+        {...props}
         loading={_asyncFile.loading}
         fileType={AsyncFileKind.ReportedWebsites}
         onNewExport={_extract.extractUnregistered.fetch}
