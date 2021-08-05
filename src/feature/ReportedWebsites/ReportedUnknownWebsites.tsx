@@ -17,8 +17,6 @@ import {Btn, IconBtn} from "mui-extension";
 import {ExportUnknownWebsitesPopper} from "../../shared/ExportPopper/ExportPopperBtn";
 
 
-const useStyles = makeStyles((t: Theme) => ({}))
-
 export const ReportedUnknownWebsites = () => {
 
     const {m} = useI18n()
@@ -55,8 +53,6 @@ export const ReportedUnknownWebsites = () => {
                             }
                         </DebouncedInput>
                         <Datepicker
-                            className={cssUtils.marginRight}
-                            fullWidth
                             label={m.start}
                             value={_fetch.filters.start}
                             onChange={start => {
@@ -69,7 +65,6 @@ export const ReportedUnknownWebsites = () => {
                             }}
                         />
                         <Datepicker
-                            fullWidth
                             value={_fetch.filters.end}
                             onChange={end =>
                                 _fetch.updateFilters(prev => {
@@ -97,7 +92,6 @@ export const ReportedUnknownWebsites = () => {
                 }}
                 getRenderRowKey={_ => _.host}
                 data={_fetch.list?.data}
-                showColumnsToggle={true}
                 rows={[
                     {
                         id: 'host',
