@@ -1,19 +1,18 @@
 import React, {useEffect} from 'react'
 import {useI18n} from '../../core/i18n'
-import {useCssUtils} from "../../core/helper/useCssUtils";
-import {Chip, FormControlLabel, Icon, InputBase, makeStyles, MenuItem, Switch, Theme} from "@material-ui/core";
-import {useToast} from "../../core/toast";
-import {fromNullable} from "fp-ts/lib/Option";
-import {Panel} from "../../shared/Panel";
-import {Datatable} from "../../shared/Datatable/Datatable";
-import {DebouncedInput} from "../../shared/DebouncedInput/DebouncedInput";
-import {Txt} from "mui-extension/lib/Txt/Txt";
-import {useReportedWebsiteWithCompanyContext} from "../../core/context/ReportedWebsitesContext";
-import {cleanObject, CompanySearch, WebsiteKind, WebsiteWithCompany, WebsiteWithCompanySearch} from "../../core/api";
-import {IconBtn} from "mui-extension";
-import {ScSelect} from "../../shared/Select/Select";
-import {SelectCompany} from "../../shared/SelectCompany/SelectCompany";
-import {useQueryString} from "../../core/helper/useQueryString";
+import {useCssUtils} from '../../core/helper/useCssUtils'
+import {Chip, FormControlLabel, Icon, InputBase, makeStyles, MenuItem, Switch, Theme, Tooltip} from '@material-ui/core'
+import {useToast} from '../../core/toast'
+import {fromNullable} from 'fp-ts/lib/Option'
+import {Panel} from '../../shared/Panel'
+import {Datatable} from '../../shared/Datatable/Datatable'
+import {DebouncedInput} from '../../shared/DebouncedInput/DebouncedInput'
+import {useReportedWebsiteWithCompanyContext} from '../../core/context/ReportedWebsitesContext'
+import {WebsiteKind, WebsiteWithCompany} from '../../core/api'
+import {IconBtn} from 'mui-extension'
+import {ScSelect} from '../../shared/Select/Select'
+import {SelectCompany} from '../../shared/SelectCompany/SelectCompany'
+import {Txt} from 'mui-extension/lib/Txt/Txt'
 
 
 export const ReportedCompaniesWebsites = () => {
@@ -22,11 +21,16 @@ export const ReportedCompaniesWebsites = () => {
         tdName_label: {
             fontWeight: 'bold',
             marginBottom: -1,
+            maxWidth: 200,
         },
         tdName_desc: {
             fontSize: t.typography.fontSize * 0.875,
             color: t.palette.text.hint,
-        }
+        },
+        chipEnterprise: {
+            height: 42,
+            borderRadius: 42,
+        },
     }))
 
 
@@ -131,16 +135,17 @@ export const ReportedCompaniesWebsites = () => {
                                         companySiret: company.siret,
                                         companyName: company.name,
                                         companyAddress: company.address,
-                                        companyActivityCode: company.activityCode
+                                        companyActivityCode: company.activityCode,
                                     }).then(_ => _fetch.fetch())
                                 }
                             }}>
-                                <Chip variant={"outlined"} label={<div>
-                                    <span className={css.tdName_label}>{_.company.name}</span>
-                                    <br/>
-                                    <span className={css.tdName_desc}>{_.company.siret}</span>
-                                </div>
-                                }/>
+                                <Tooltip title={_.company.name}>
+                                    <Chip variant={'outlined'} className={css.chipEnterprise} label={<div>
+                                        <Txt truncate className={css.tdName_label} block>{_.company.name}</Txt>
+                                        <span className={css.tdName_desc}>{_.company.siret}</span>
+                                    </div>
+                                    }/>
+                                </Tooltip>
                             </SelectCompany>
 
                         )
