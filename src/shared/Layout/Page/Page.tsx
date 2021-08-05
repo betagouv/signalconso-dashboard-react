@@ -1,8 +1,8 @@
 import * as React from 'react'
-import {Page as MuiPage} from 'mui-extension'
-import {makeStyles, Theme} from '@material-ui/core'
-import {classes} from '../../../core/helper/utils'
 import {ReactNode} from 'react'
+import {Page as MuiPage} from 'mui-extension'
+import {LinearProgress, makeStyles, Theme} from '@material-ui/core'
+import {classes} from '../../../core/helper/utils'
 
 export const pageWidth = {
   large: 1100,
@@ -12,7 +12,10 @@ export const pageWidth = {
 
 const useStyles = makeStyles((t: Theme) => ({
   root: {
-    padding: `${t.spacing(2)}px !important`,
+    padding: `${t.spacing(3)}px ${t.spacing(2)}px ${t.spacing(2)}px ${t.spacing(2)}px ${t.spacing(2)}px !important`,
+  },
+  loading: {
+    width: '100%',
   }
 }));
 
@@ -21,11 +24,17 @@ export interface PageProps {
   large?: boolean
   size?: 'large' | 'small' | 'regular'
   children: ReactNode
+  loading?: boolean
 }
 
-export const Page = ({className, size, ...props}: PageProps) => {
+export const Page = ({className, loading, size, ...props}: PageProps) => {
   const css = useStyles()
   return (
-    <MuiPage width={pageWidth[size ?? 'regular']} className={classes(className, css.root)} {...props}/>
+    <>
+      {loading && (
+        <LinearProgress className={css.loading}/>
+      )}
+      <MuiPage width={pageWidth[size ?? 'regular']} className={classes(className, css.root)} {...props}/>
+    </>
   )
 }

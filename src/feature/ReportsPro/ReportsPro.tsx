@@ -119,7 +119,7 @@ export const ReportsPro = () => {
   }, [_reports.filters])
 
   return (
-    <Page size="small">
+    <Page size="small" loading={_companies.accessesByPro.loading || _companies.viewableByPro.loading}>
       <PageTitle action={
         <Btn variant="outlined" color="primary" icon="help" {...{target: '_blank'} as any} href={Config.appBaseUrl + '/comment-ça-marche/professionnel'}>
           {m.help}

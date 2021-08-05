@@ -13,6 +13,7 @@ const useStyles = makeStyles((t: Theme) => createStyles({
     overflow: 'hidden',
     position: 'relative',
     display: 'flex',
+    flexDirection: 'column',
   },
   rootDesktop: {
     marginLeft: sidebarWith,

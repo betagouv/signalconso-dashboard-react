@@ -24,7 +24,6 @@ import {AddressComponent} from '../../shared/Address/Address'
 import {SelectCompany} from '../../shared/SelectCompany/SelectCompany'
 import {EditConsumerDialog} from './EditConsumerDialog'
 import {ReportAddComment} from './ReportAddComment'
-// import SwipeableViews from 'react-swipeable-views';
 
 const useStyles = makeStyles((t: Theme) => ({
   pageTitle: {
@@ -91,47 +90,43 @@ export const ReportComponent = () => {
 
   useEffect(() => {
     fromNullable(_report.get.error).map(toastError)
-  }, [_report.get.entity, _report.get.error])
-
-  useEffect(() => {
     fromNullable(_report.remove.error).map(toastError)
-  }, [_report.remove.error])
-
-  useEffect(() => {
     fromNullable(_report.updateCompany.error).map(toastError)
-  }, [_report.updateCompany.error])
-
-  useEffect(() => {
     fromNullable(_report.companyEvents.error).map(toastError)
-  }, [_report.companyEvents.error])
-
-  useEffect(() => {
     fromNullable(_report.events.error).map(toastError)
-  }, [_report.events.error])
+  }, [
+    _report.remove.error,
+    _report.get.error,
+    _report.updateCompany.error,
+    _report.companyEvents.error,
+    _report.events.error,
+  ])
 
   const downloadReport = (reportId: Id) => _report.download.fetch({}, reportId)
 
-  return fromNullable(_report.get.entity?.report).map(report =>
-    <Page>
-      <Panel elevation={3}>
-        <PanelBody>
-          <div className={css.pageTitle}>
-            <div>
-              <h1 className={css.pageTitle_txt}>
-                {m.report_pageTitle}&nbsp;
-                <span>{report.companySiret}</span>
-              </h1>
-              <div className={cssUtils.colorTxtHint}>ID {id}</div>
-            </div>
-            <ReportStatusChip className={cssUtils.marginLeftAuto} status={report.status}/>
-          </div>
-          <Alert id="report-info" dense type="info" deletable persistentDelete className={cssUtils.marginBottom}>
-            {m.reportCategoriesAreSelectByConsumer}
-          </Alert>
-          <ReportCategories categories={[report.category, ...report.subcategories]}/>
-          <Divider className={cssUtils.divider}/>
-          {report.details.map((detail, i) =>
-            <div key={i} className={cssUtils.marginBottom}>
+  return (
+    <Page loading={_report.get.loading}>
+      {fromNullable(_report.get.entity?.report).map(report =>
+        <>
+          <Panel elevation={3}>
+            <PanelBody>
+              <div className={css.pageTitle}>
+                <div>
+                  <h1 className={css.pageTitle_txt}>
+                    {m.report_pageTitle}&nbsp;
+                    <span>{report.companySiret}</span>
+                  </h1>
+                  <div className={cssUtils.colorTxtHint}>ID {id}</div>
+                </div>
+                <ReportStatusChip className={cssUtils.marginLeftAuto} status={report.status}/>
+              </div>
+              <Alert id="report-info" dense type="info" deletable persistentDelete className={cssUtils.marginBottom}>
+                {m.reportCategoriesAreSelectByConsumer}
+              </Alert>
+              <ReportCategories categories={[report.category, ...report.subcategories]}/>
+              <Divider className={cssUtils.divider}/>
+              {report.details.map((detail, i) =>
+                <div key={i} className={cssUtils.marginBottom}>
               <div className={cssUtils.txtBold} dangerouslySetInnerHTML={{__html: detail.label.replace(/\:$/, '')}}/>
               <div className={cssUtils.colorTxtSecondary} dangerouslySetInnerHTML={{__html: detail.value}}/>
             </div>
@@ -202,7 +197,7 @@ export const ReportComponent = () => {
                     user.firstName,
                     user.lastName,
                     user.email,
-                    user.contactAgreement
+                    user.contactAgreement,
                   )}>
                     <ScButton icon="edit" color="primary" loading={_report.updateConsumer.loading}>{m.edit}</ScButton>
                   </EditConsumerDialog>
@@ -233,11 +228,11 @@ export const ReportComponent = () => {
               </Panel>
             </Grid>
           </Grid>
-      <Panel loading={_report.events.loading}>
-        {_report.events.entity && _report.companyEvents.entity && (
-          <>
-            <Tabs
-              className={css.tabs}
+          <Panel loading={_report.events.loading}>
+            {_report.events.entity && _report.companyEvents.entity && (
+              <>
+                <Tabs
+                  className={css.tabs}
               value={activeTab}
               onChange={(event: React.ChangeEvent<{}>, newValue: number) => setActiveTab(newValue)}
               indicatorColor="primary"
@@ -254,17 +249,19 @@ export const ReportComponent = () => {
                 files={_report.get.entity?.files.filter(_ => _.origin === FileOrigin.Professional)}
               />
             </ReportTabPanel>
-            <ReportTabPanel value={activeTab} index={1}>
-              <ReportEvents events={[creationReportEvent(report), ..._report.events.entity]}/>
-            </ReportTabPanel>
-            <ReportTabPanel value={activeTab} index={2}>
-              <ReportEvents events={_report.companyEvents.entity}/>
-            </ReportTabPanel>
-          </>
-        )}
-      </Panel>
+                <ReportTabPanel value={activeTab} index={1}>
+                  <ReportEvents events={[creationReportEvent(report), ..._report.events.entity]}/>
+                </ReportTabPanel>
+                <ReportTabPanel value={activeTab} index={2}>
+                  <ReportEvents events={_report.companyEvents.entity}/>
+                </ReportTabPanel>
+              </>
+            )}
+          </Panel>
+        </>
+      ).getOrElse(<></>)}
     </Page>
-  ).getOrElse(<></>)
+  )
 }
 
 interface ReportTabPanelProps {
