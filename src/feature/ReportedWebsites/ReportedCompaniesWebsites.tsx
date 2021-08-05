@@ -75,14 +75,14 @@ export const ReportedCompaniesWebsites = () => {
                                 />
                             }
                         </DebouncedInput>
-                        <ScSelect multiple  fullWidth
+                        <ScSelect multiple fullWidth
+                                  value={_fetch.filters.kinds}
                                   onChange={event =>
                                       _fetch.updateFilters(prev => ({
                                           ...prev,
                                           kinds: event.target.value as WebsiteKind[]
                                       }))
                                   }
-                                  defaultValue={_fetch.filters.kinds ?? [WebsiteKind.PENDING]}
                         >
                             {[WebsiteKind.PENDING, WebsiteKind.DEFAULT].map(kind =>
                                 <MenuItem key={kind} value={kind}>
@@ -90,6 +90,11 @@ export const ReportedCompaniesWebsites = () => {
                                 </MenuItem>
                             )}
                         </ScSelect>
+                        <Tooltip title={m.removeAllFilters}>
+                            <IconBtn color="primary" onClick={_fetch.clearFilters}>
+                                <Icon>clear</Icon>
+                            </IconBtn>
+                        </Tooltip>
                     </>
 
                 }

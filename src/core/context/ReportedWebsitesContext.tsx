@@ -28,7 +28,7 @@ export const ReportedWebsitesProvider = ({api, children}: Props) => {
             data: _.entities,
             totalSize: _.totalCount
         })),
-        {limit: 10, offset: 0, kinds: [WebsiteKind.PENDING], host: ''}
+        {limit: 10, offset: 0, kinds: [WebsiteKind.PENDING]}
     )
 
     const remove = useFetcher(api.secured.website.remove)
