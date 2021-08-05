@@ -74,7 +74,7 @@ export enum AccessLevel {
   ADMIN = 'admin',
 }
 
-export interface ViewableCompany {
+export interface VisibleCompany {
   siret: string
   postalCode?: string
   closed: boolean

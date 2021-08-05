@@ -61,8 +61,9 @@ export const SelectDepartments = ({
         value={indexValues.toArray().join(', ') ?? ''}
         disabled={readonly}
         inputRef={(n: any) => $input = n ?? undefined}
-        label="Département"
+        label={m.departments}
         InputProps={{
+          readOnly: true,
           endAdornment:
             <InputAdornment position="end">
               <Icon className={css.adornment}>arrow_drop_down</Icon>

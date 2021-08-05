@@ -98,13 +98,15 @@ export const ExportPopperBtn = ({
   return (
     <>
       <Tooltip title={m.exportInXLS}>
-        {React.cloneElement(children, {
-          onClick: (event: any) => {
-            if (onClick) onClick(event)
-            handleClick(event)
-          },
-          className,
-        })}
+        <span>
+          {React.cloneElement(children, {
+            onClick: (event: any) => {
+              if (onClick) onClick(event)
+              handleClick(event)
+            },
+            className,
+          })}
+        </span>
       </Tooltip>
       <Menu
         keepMounted

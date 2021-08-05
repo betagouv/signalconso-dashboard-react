@@ -1,11 +1,11 @@
 import React, {useEffect, useMemo} from 'react'
 import {Page, PageTitle} from '../../shared/Layout'
-import {Panel} from '../../shared/Panel'
+import {Panel, PanelBody} from '../../shared/Panel'
 import {useReportsContext} from '../../core/context/ReportsContext'
 import {Datatable} from '../../shared/Datatable/Datatable'
 import {useI18n} from '../../core/i18n'
 import {useCssUtils} from '../../core/helper/useCssUtils'
-import {Badge, Grid, Icon, makeStyles, MenuItem, Theme, Tooltip} from '@material-ui/core'
+import {Badge, Grid, Icon, makeStyles, MenuItem, Theme} from '@material-ui/core'
 import {ReportStatusChip} from '../../shared/ReportStatus/ReportStatus'
 import {useLayoutContext} from '../../core/Layout/LayoutContext'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
@@ -17,7 +17,7 @@ import {useConstantContext} from '../../core/context/ConstantContext'
 import {useHistory} from 'react-router'
 import {siteMap} from '../../core/siteMap'
 import {classes} from '../../core/helper/utils'
-import {Btn, Fender, IconBtn} from 'mui-extension/lib'
+import {Btn, Fender} from 'mui-extension/lib'
 import {EntityIcon} from '../../core/EntityIcon'
 import {ScButton} from '../../shared/Button/Button'
 import {useQueryString} from '../../core/helper/useQueryString'
@@ -26,7 +26,8 @@ import {useToast} from '../../core/toast'
 import {Config} from '../../conf/config'
 import {ExportReportsPopper} from '../../shared/ExportPopper/ExportPopperBtn'
 import {PeriodPicker} from '../../shared/PeriodPicker/PeriodPicker'
-import {ScInput} from '../../shared/Input/ScInput'
+import {useCompaniesContext} from '../../core/context/CompaniesContext'
+import {SelectCompaniesByPro} from '../../shared/SelectCompaniesByPro/SelectCompaniesByPro'
 
 const useStyles = makeStyles((t: Theme) => ({
   tdFiles: {
@@ -51,10 +52,10 @@ const useStyles = makeStyles((t: Theme) => ({
     marginBottom: t.spacing(1 / 2),
   },
   filters: {
-    borderRadius: 4,
-    padding: t.spacing(1, 2, 1, 2),
-    boxShadow: t.shadows[3],
     marginBottom: t.spacing(3),
+  },
+  filtersBody: {
+    paddingBottom: `${t.spacing(1)}px !important`,
   },
   actions: {
     flexWrap: 'wrap',
@@ -75,6 +76,7 @@ const minRowsBeforeDisplayFilters = 2
 export const ReportsPro = () => {
   const _reports = useReportsContext()
   const _reportStatus = useConstantContext().reportStatus
+  const _companies = useCompaniesContext()
 
   const {formatDate, m} = useI18n()
 
@@ -98,17 +100,25 @@ export const ReportsPro = () => {
   const queryString = useQueryString<Readonly<Partial<ReportSearch>>>()
 
   useEffect(() => {
-    _reports.updateFilters({..._reports.initialFilters, ...queryString.get()})
+    _companies.accessesByPro.fetch()
+    _companies.viewableByPro.fetch()
     _reportStatus.fetch()
+    _reports.updateFilters({..._reports.initialFilters, ...queryString.get()})
   }, [])
+
+  useEffect(() => {
+    fromNullable(_companies.accessesByPro.error).map(toastError)
+    fromNullable(_companies.viewableByPro.error).map(toastError)
+    fromNullable(_reports.error).map(toastError)
+  }, [
+    _reports.error,
+    _companies.accessesByPro.error,
+    _companies.viewableByPro.error,
+  ])
 
   useEffect(() => {
     queryString.update(cleanObject(_reports.filters))
   }, [_reports.filters])
-
-  useEffect(() => {
-    fromNullable(_reports.error).map(toastError)
-  }, [_reports.list, _reports.error])
 
   return (
     <Page size="small">
@@ -119,90 +129,102 @@ export const ReportsPro = () => {
         </Btn>
       }>{m.reports_pageTitle}</PageTitle>
 
-      <div className={css.filters}>
-        <Grid container spacing={1}>
-          <Grid item sm={4} xs={12}>
-            <ScInput fullWidth className={cssUtils.marginRight}/>
-          </Grid>
-          <Grid item sm={4} xs={12}>
-            <SelectDepartments
-              className={cssUtils.marginRight}
-              fullWidth
-              values={_reports.filters.departments}
-              onChange={departments => _reports.updateFilters(prev => ({...prev, departments}))}
-            />
-          </Grid>
-          <Grid item sm={4} xs={12}>
-            <ScSelect
-              label={m.status}
-              fullWidth
-              onChange={event => {
-                console.log(event)
-                _reports.updateFilters(prev => ({...prev, status: event.target.value as string}))
-              }}
-              value={_reports.filters.status ?? ''}
-            >
-              <MenuItem value="">&nbsp;</MenuItem>
-              {(_reportStatus.entity ?? []).map(status =>
-                <MenuItem key={status} value={status}>
-                  <ReportStatusChip dense fullWidth inSelectOptions status={status}/>
-                </MenuItem>,
-              )}
-            </ScSelect>
-          </Grid>
-        </Grid>
-        <PeriodPicker
-          fullWidth
-          value={[_reports.filters.start, _reports.filters.end]}
-          onChange={([start, end]) => {
-          }}
-        />
-        <div className={css.actions}>
-          <ExportReportsPopper
-            disabled={fromNullable(_reports?.list?.totalSize).map(_ => _ > Config.reportsLimitForExport).getOrElse(false)}
-            tooltipBtnNew={fromNullable(_reports?.list?.totalSize)
-              .map(_ => _ > Config.reportsLimitForExport ? m.cannotExportMoreReports(Config.reportsLimitForExport) : '')
-              .getOrElse('')}
-          >
-            <Btn variant="outlined" color="primary" icon="get_app">
-              {m.exportInXLS}
-            </Btn>
-          </ExportReportsPopper>
+      {_companies.accessesByPro.entity && _companies.viewableByPro.entity && (
+        <>
+          <Panel elevation={3} className={css.filters}>
+            <PanelBody className={css.filtersBody}>
+              <Grid container spacing={1}>
+                <Grid item sm={4} xs={12}>
+                  <SelectCompaniesByPro
+                    values={_reports.filters.siretSirenList}
+                    fullWidth
+                    onChange={_ => _reports.updateFilters(prev => ({...prev, siretSirenList: _}))}
+                    className={cssUtils.marginRight}
+                    accessibleCompanies={_companies.accessesByPro.entity}
+                    visibleCompanies={_companies.viewableByPro.entity}
+                  />
+                </Grid>
+                <Grid item sm={4} xs={12}>
+                  <SelectDepartments
+                    className={cssUtils.marginRight}
+                    fullWidth
+                    values={_reports.filters.departments}
+                    onChange={departments => _reports.updateFilters(prev => ({...prev, departments}))}
+                  />
+                </Grid>
+                <Grid item sm={4} xs={12}>
+                  <ScSelect
+                    label={m.status}
+                    fullWidth
+                    onChange={event => {
+                      console.log(event)
+                      _reports.updateFilters(prev => ({...prev, status: event.target.value as string}))
+                    }}
+                    value={_reports.filters.status ?? ''}
+                  >
+                    <MenuItem value="">&nbsp;</MenuItem>
+                    {(_reportStatus.entity ?? []).map(status =>
+                      <MenuItem key={status} value={status}>
+                        <ReportStatusChip dense fullWidth inSelectOptions status={status}/>
+                      </MenuItem>,
+                    )}
+                  </ScSelect>
+                </Grid>
+              </Grid>
+              <PeriodPicker
+                fullWidth
+                value={[_reports.filters.start, _reports.filters.end]}
+                onChange={([start, end]) => {
+                }}
+              />
+              <div className={css.actions}>
+                <ExportReportsPopper
+                  disabled={fromNullable(_reports?.list?.totalSize).map(_ => _ > Config.reportsLimitForExport).getOrElse(false)}
+                  tooltipBtnNew={fromNullable(_reports?.list?.totalSize)
+                    .map(_ => _ > Config.reportsLimitForExport ? m.cannotExportMoreReports(Config.reportsLimitForExport) : '')
+                    .getOrElse('')}
+                >
+                  <Btn size="small" variant="outlined" color="primary" icon="get_app">
+                    {m.exportInXLS}
+                  </Btn>
+                </ExportReportsPopper>
 
-          <ScButton icon="clear" onClick={_reports.clearFilters} variant="outlined" color="primary">
-            {m.removeAllFilters}
-          </ScButton>
-        </div>
-      </div>
-      <Panel>
-        <Datatable<ReportSearchResult>
-          paginate={{
-            minRowsBeforeDisplay: minRowsBeforeDisplayFilters,
-            offset: _reports.filters.offset,
-            limit: _reports.filters.limit,
-            onPaginationChange: pagination => _reports.updateFilters(prev => ({...prev, ...pagination})),
-          }}
-          data={_reports.list?.data}
-          loading={_reports.fetching}
-          total={_reports.list?.totalSize}
-          onClickRows={_ => history.push(siteMap.report(_.report.id))}
-          rows={
-            isMobileWidth ? [
-                {
-                  id: 'all',
-                  head: '',
-                  row: _ => <div className={css.card}>
-                    <div className={css.card_content}>
-                      <div className={css.card_head}>
-                        <Txt bold size="big">{_.report.companySiret}</Txt>
-                        <Icon className={classes(css.iconDash, cssUtils.inlineIcon)}>remove</Icon>
-                        <Txt color="disabled">
-                          <Icon className={cssUtils.inlineIcon}>location_on</Icon>
-                          {_.report.companyAddress.postalCode}
-                        </Txt>
-                      </div>
-                      <Txt block color="hint">{m.thisDate(formatDate(_.report.creationDate))}</Txt>
-                      <Txt block color="hint">{_.report.contactAgreement ? m.byHim(_.report.firstName + ' ' + _.report.lastName) : m.anonymousReport}</Txt>
+                <ScButton size="small" icon="clear" onClick={_reports.clearFilters} variant="outlined" color="primary">
+                  {m.removeAllFilters}
+                </ScButton>
+              </div>
+            </PanelBody>
+          </Panel>
+
+          <Panel>
+            <Datatable<ReportSearchResult>
+              paginate={{
+                minRowsBeforeDisplay: minRowsBeforeDisplayFilters,
+                offset: _reports.filters.offset,
+                limit: _reports.filters.limit,
+                onPaginationChange: pagination => _reports.updateFilters(prev => ({...prev, ...pagination})),
+              }}
+              data={_reports.list?.data}
+              loading={_reports.fetching}
+              total={_reports.list?.totalSize}
+              onClickRows={_ => history.push(siteMap.report(_.report.id))}
+              rows={
+                isMobileWidth ? [
+                    {
+                      id: 'all',
+                      head: '',
+                      row: _ => <div className={css.card}>
+                        <div className={css.card_content}>
+                          <div className={css.card_head}>
+                            <Txt bold size="big">{_.report.companySiret}</Txt>
+                            <Icon className={classes(css.iconDash, cssUtils.inlineIcon)}>remove</Icon>
+                            <Txt color="disabled">
+                              <Icon className={cssUtils.inlineIcon}>location_on</Icon>
+                              {_.report.companyAddress.postalCode}
+                            </Txt>
+                          </div>
+                          <Txt block color="hint">{m.thisDate(formatDate(_.report.creationDate))}</Txt>
+                          <Txt block color="hint">{_.report.contactAgreement ? m.byHim(_.report.firstName + ' ' + _.report.lastName) : m.anonymousReport}</Txt>
                     </div>
                     <ReportStatusChip dense status={_.report.status}/>
                   </div>
@@ -264,8 +286,10 @@ export const ReportsPro = () => {
               }
             />
           }
-        />
-      </Panel>
+            />
+          </Panel>
+        </>
+      )}
     </Page>
   )
 }

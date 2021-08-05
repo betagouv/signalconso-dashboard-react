@@ -142,6 +142,8 @@ export const messagesFr = {
   selectCountries_onlyTransfer: 'Pays avec accord',
   reportedPhoneTitle: 'Suivi des téléphones',
   noExport: 'Aucun export',
+  allMyCompanies: 'Tous mes accès',
+  allSubCompanies: 'Inclure les filliales',
   advancedFilters: 'Filtres avancés',
   comment: 'Commentaire',
   commentAdded: 'Commentaire ajouté',

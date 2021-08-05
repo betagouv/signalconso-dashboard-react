@@ -1,21 +1,11 @@
 import {Checkbox, createStyles, Icon, makeStyles, Menu, MenuItem, Theme} from '@material-ui/core'
-import {classes, stopPropagation} from '../../core/helper/utils'
+import {classes} from '../../core/helper/utils'
 import * as React from 'react'
 import {useEffect, useMemo} from 'react'
 import {useCssUtils} from '../../core/helper/useCssUtils'
 import {useSetState, UseSetState} from '@alexandreannic/react-hooks-lib/lib'
-import {useConstantContext} from '../../core/context/ConstantContext'
-import {fromNullable} from 'fp-ts/lib/Option'
-import {Region} from '../../core/api'
+import {CompanyWithAccessLevel, VisibleCompany} from '../../core/api'
 import {useI18n} from '../../core/i18n'
-
-const withRegions = (WrappedComponent: React.ComponentType<SelectDepartmentsMenuProps>) => (props: Omit<SelectDepartmentsMenuProps, 'regions'>) => {
-  const {regions} = useConstantContext()
-  useEffect(() => {
-    regions.fetch()
-  }, [])
-  return fromNullable(regions.entity).map(_ => <WrappedComponent {...props} regions={_}/>).getOrElse(<></>)
-}
 
 const useStyles = makeStyles((t: Theme) => createStyles({
   regionLabel: {
@@ -34,15 +24,18 @@ const useStyles = makeStyles((t: Theme) => createStyles({
     '&:hover, &:active, &:focus': {
       background: t.palette.action.hover,
       color: t.palette.primary.main,
-    }
+    },
+  },
+  locationIcon: {
+    fontSize: 20,
   },
   menuItem: {
     paddingTop: 0,
     paddingBottom: 0,
-    paddingRight: t.spacing(1 / 2),
     paddingLeft: t.spacing(1 / 2),
   },
-  menuItemRegion: {
+  menuItemImportant: {
+    fontWeight: t.typography.fontWeightBold,
     borderBottom: `1px solid ${t.palette.divider}`,
   },
   cbDepartment: {
@@ -51,87 +44,74 @@ const useStyles = makeStyles((t: Theme) => createStyles({
   }
 }))
 
-interface SelectDepartmentsMenuProps {
+interface SelectCompaniesProMenuProps {
+  accessibleCompanies: CompanyWithAccessLevel[]
+  visibleCompanies: VisibleCompany[]
   onClose: () => void
-  regions: Region[]
   initialValues?: string[]
-  selectAllLabel?: string
   anchorEl: HTMLElement | null
   open: boolean
   onChange: (departments: string[]) => void
 }
 
-export const SelectCompaniesByProMenu = withRegions(({
-  selectAllLabel,
+export const SelectCompaniesByProMenu = ({
   onClose,
-  regions,
   initialValues,
   anchorEl,
   open,
-  onChange
-}: SelectDepartmentsMenuProps) => {
+  onChange,
+  accessibleCompanies,
+  visibleCompanies,
+}: SelectCompaniesProMenuProps) => {
   const css = useStyles()
   const cssUtils = useCssUtils()
   const indexValues: UseSetState<string> = useSetState<string>()
-  const openedRegions: UseSetState<string> = useSetState<string>()
-  const allDepartments = useMemo(() => regions.flatMap(_ => _.departments).map(_ => _.code), [])
-  const allDepartmentsSelected = allDepartments.every(_ => indexValues.has(_))
-  const someDepartmentsSelected = !!allDepartments.find(_ => indexValues.has(_))
   const {m} = useI18n()
-  selectAllLabel = selectAllLabel || m.selectAllDepartments
+
+  const allSelected = useMemo(() => indexValues.size === visibleCompanies.length, [indexValues, visibleCompanies])
+  const allAccessSelected = useMemo(() => accessibleCompanies.every(_ => indexValues.has(_.siret)), [indexValues, accessibleCompanies])
+  const someSelected = useMemo(() => !allSelected && !!visibleCompanies.find(_ => indexValues.has(_.siret)), [indexValues, visibleCompanies])
 
   useEffect(() => {
     indexValues.reset(initialValues)
   }, [])
 
-  const onSelectDepartments = (departments: string[]) => {
-    indexValues.toggleAll(departments)
-    onChange(indexValues.toArray())
-  }
-
-  const onSelectDepartment = (department: string) => {
-    indexValues.toggle(department)
-    onChange(indexValues.toArray())
-  }
-
   const onSelectAll = () => {
-    allDepartments.forEach(allDepartmentsSelected ? indexValues.delete : indexValues.add)
+    visibleCompanies.map(_ => _.siret).forEach(allSelected ? indexValues.delete : indexValues.add)
     onChange(indexValues.toArray())
   }
 
-  const toggleRegionOpen = (regionLabel: string) => {
-    openedRegions.toggle(regionLabel)
+  const onSelectAccess = () => {
+    accessibleCompanies.map(_ => _.siret).forEach(allAccessSelected ? indexValues.delete : indexValues.add)
+    onChange(indexValues.toArray())
+  }
+
+  const onSelect = (company: VisibleCompany) => {
+    indexValues.toggle(company.siret)
+    onChange(indexValues.toArray())
   }
 
   return (
     <Menu anchorEl={anchorEl} open={open} onClose={onClose}>
-      <MenuItem className={classes(css.menuItem, css.menuItemRegion)} onClick={() => onSelectAll()}>
-        <Checkbox indeterminate={someDepartmentsSelected && !allDepartmentsSelected} checked={allDepartmentsSelected}/>
-        {selectAllLabel}
+      <MenuItem className={classes(css.menuItem, css.menuItemImportant)} onClick={() => onSelectAll()}>
+        <Checkbox indeterminate={someSelected} checked={allSelected}/>
+        {m.allMyCompanies}
       </MenuItem>
-      {regions.map(region => {
-        const allChecked = region.departments.every(_ => indexValues.has(_.code))
-        const atLeastOneChecked = !!region.departments.find(_ => indexValues.has(_.code))
-        return [
-          <MenuItem className={classes(css.menuItem, css.menuItemRegion)} key={region.label} onClick={() => onSelectDepartments(region.departments.map(_ => _.code))}>
-            <Checkbox indeterminate={atLeastOneChecked && !allChecked} checked={allChecked}/>
-            <span className={css.regionLabel}>{region.label}</span>
-            <Icon
-              className={classes(css.regionToggleArrow, openedRegions.has(region.label) && cssUtils.colorPrimary)}
-              onClick={stopPropagation(() => toggleRegionOpen(region.label))}>
-              {openedRegions.has(region.label) ? 'expand_less' : 'expand_more'}
-            </Icon>
-          </MenuItem>,
-          openedRegions.has(region.label) ? region.departments.map(department =>
-            <MenuItem className={css.menuItem} dense onClick={() => onSelectDepartment(department.code)}>
-              <Checkbox className={css.cbDepartment} checked={indexValues.has(department.code)}/>
-              <span className={cssUtils.colorTxtHint}>({department.code})</span>
-              &nbsp;
-              {department.label}
-            </MenuItem>
-          ) : []
-        ]
-      })}
+      <MenuItem className={classes(css.menuItem, css.menuItemImportant)} onClick={() => onSelectAccess()}>
+        <Checkbox indeterminate={!allAccessSelected && someSelected} checked={allAccessSelected}/>
+        {m.allSubCompanies}
+      </MenuItem>
+      {visibleCompanies.map(company =>
+        <MenuItem className={css.menuItem} key={company.siret} dense onClick={() => onSelect(company)}>
+          <Checkbox className={css.cbDepartment} checked={indexValues.has(company.siret)}/>
+          <span className={cssUtils.colorTxtSecondary}>{company.siret.slice(0, 9)}</span>
+          <span className={cssUtils.txtBold}>{company.siret.substr(9, 14)}</span>
+          <span className={classes(cssUtils.colorTxtHint, cssUtils.marginLeft)}>
+            <Icon className={classes(cssUtils.inlineIcon, css.locationIcon)}>location_on</Icon>
+            {company.postalCode}
+          </span>
+        </MenuItem>,
+      )}
     </Menu>
   )
-})
+}
