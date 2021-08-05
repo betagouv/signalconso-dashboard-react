@@ -53,12 +53,9 @@ export const ReportedCompaniesWebsites = () => {
 
     useEffect(() => {
         fromNullable(_fetch.error).map(toastError)
-    }, [_fetch.error])
-
-    useEffect(() => {
+        fromNullable(_update.error).map(toastError)
         fromNullable(_remove.error).map(toastError)
-    }, [_remove.error])
-
+    }, [_fetch.error, _update.error, _remove.error])
 
     return (
         <Panel>
@@ -155,13 +152,19 @@ export const ReportedCompaniesWebsites = () => {
                         id: 'status',
                         row: _ =>
                             (<FormControlLabel
-                                control={<Switch checked={_.kind === WebsiteKind.DEFAULT}/>}
-                                onChange={() => _update.fetch({}, _.id, {
-                                    ..._,
-                                    kind: _.kind === WebsiteKind.DEFAULT ? WebsiteKind.PENDING : WebsiteKind.DEFAULT
-                                }).then(() => toastSuccess(m.statusEdited)).then(_ => _fetch.fetch())
-                                }
-                                label={_.kind === WebsiteKind.DEFAULT ? m.validated : m.notValidated}
+                              control={<Switch checked={_.kind === WebsiteKind.DEFAULT}/>}
+                              onChange={() => {
+                                  _fetch.setEntity(prev => prev ? ({
+                                        totalSize: prev!.totalSize,
+                                        data: prev!.data.map(d => d.id === _.id ? ({...d, kind: _.kind === WebsiteKind.PENDING ? WebsiteKind.DEFAULT : WebsiteKind.PENDING}) : d),
+                                    }) : undefined,
+                                  )
+                                  _update.fetch({}, _.id, {
+                                      ..._,
+                                      kind: _.kind === WebsiteKind.DEFAULT ? WebsiteKind.PENDING : WebsiteKind.DEFAULT,
+                                  })
+                              }}
+                              label={_.kind === WebsiteKind.DEFAULT ? m.validated : m.notValidated}
                             />)
                     },
                     {
