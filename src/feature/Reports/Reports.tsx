@@ -1,7 +1,7 @@
 import {Page, PageTitle} from '../../shared/Layout'
 import {useI18n} from '../../core/i18n'
 import {useReportsContext} from '../../core/context/ReportsContext'
-import {cleanObject, DetailInputValue, getHostFromUrl, Report, ReportingDateLabel, ReportSearch, ReportSearchResult} from 'core/api'
+import {cleanObject, DetailInputValue, getHostFromUrl, Report, ReportingDateLabel, ReportSearch, ReportSearchResult, ReportTag} from 'core/api'
 import {Panel} from '../../shared/Panel'
 import {useCssUtils} from '../../core/helper/useCssUtils'
 import {Datatable} from '../../shared/Datatable/Datatable'
@@ -9,7 +9,7 @@ import {fromNullable, some} from 'fp-ts/lib/Option'
 import {Badge, Icon, makeStyles, Theme, Tooltip} from '@material-ui/core'
 import {classes, textOverflowMiddleCropping} from '../../core/helper/utils'
 import React, {useEffect} from 'react'
-import {useQueryString} from '../../core/helper/useQueryString'
+import {mapArrayFromQuerystring, mapDateFromQueryString, mapDatesToQueryString, useQueryString} from '../../core/helper/useQueryString'
 import {NavLink} from 'react-router-dom'
 import {SelectDepartments} from '../../shared/SelectDepartments/SelectDepartments'
 import {Fender, IconBtn} from 'mui-extension/lib'
@@ -22,8 +22,8 @@ import {ExportReportsPopper} from '../../shared/ExportPopper/ExportPopperBtn'
 import {EntityIcon} from '../../core/EntityIcon'
 import {ScButton} from '../../shared/Button/Button'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
-import {useLogin} from '../../core/context/LoginContext'
 import {PeriodPicker} from '../../shared/PeriodPicker/PeriodPicker'
+import compose from '../../core/helper/compose'
 
 const useStyles = makeStyles((t: Theme) => ({
   toolbar: {},
@@ -68,8 +68,28 @@ const useStyles = makeStyles((t: Theme) => ({
   tooltipUl: {
     margin: 0,
     padding: 16,
-  }
+  },
 }))
+
+interface ReportSearchQs {
+  readonly departments?: string[] | string
+  readonly tags?: ReportTag[] | ReportTag
+  readonly companyCountries?: string[] | string
+  readonly siretSirenList?: string[] | string
+  start?: string
+  end?: string
+  email?: string
+  websiteURL?: string
+  phone?: string
+  websiteExists?: boolean
+  phoneExists?: boolean
+  category?: string
+  status?: string
+  details?: string
+  hasCompany?: boolean
+  offset: number
+  limit: number
+}
 
 export const Reports = ({}) => {
   const {m, formatDate} = useI18n()
@@ -78,19 +98,29 @@ export const Reports = ({}) => {
   const css = useStyles()
   const {toastError} = useToast()
 
-  const queryString = useQueryString<Readonly<Partial<ReportSearch>>>()
+  const queryString = useQueryString<Partial<ReportSearch>, Partial<ReportSearchQs>>({
+    toQueryString: mapDatesToQueryString,
+    fromQueryString: compose(
+      mapDateFromQueryString,
+      _ => mapArrayFromQuerystring(_, [
+        'departments',
+        'tags',
+        'companyCountries',
+        'siretSirenList',
+      ]),
+    ),
+  })
 
   useEffect(() => {
+    console.log('update filters', {..._reports.initialFilters, ...queryString.get()})
     _reports.updateFilters({..._reports.initialFilters, ...queryString.get()})
   }, [])
+
+  console.log('filters', _reports.filters)
 
   useEffect(() => {
     fromNullable(_reports.error).map(toastError)
   }, [_reports.list, _reports.error])
-
-  useEffect(() => {
-    queryString.update(cleanObject(_reports.filters))
-  }, [_reports.filters])
 
   const getReportingDate = (report: Report) => report.details
     .filter(_ => _.label.indexOf(ReportingDateLabel) !== -1)

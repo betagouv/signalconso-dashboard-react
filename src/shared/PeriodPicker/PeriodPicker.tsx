@@ -1,4 +1,4 @@
-import {addDays, format, subDays} from 'date-fns'
+import {addDays, subDays} from 'date-fns'
 import React, {CSSProperties, useEffect, useState} from 'react'
 import {useI18n} from '../../core/i18n'
 import {makeStyles, Theme} from '@material-ui/core'
@@ -34,12 +34,6 @@ const useStyles = makeStyles((t: Theme) => ({
 
 }))
 
-const onChangeDate = (callback: (date: Date) => any) => (e: React.ChangeEvent<HTMLInputElement>) => {
-  callback(e.target.valueAsDate!)
-}
-
-const mapDate = (date: Date): string => format(date, 'yyyy-MM-dd')
-
 export const PeriodPicker = ({value, onChange, label, fullWidth, className, style}: DatepickerProps) => {
   const [start, setStart] = useState<Date | undefined>(undefined)
   const [end, setEnd] = useState<Date | undefined>(undefined)
@@ -47,22 +41,27 @@ export const PeriodPicker = ({value, onChange, label, fullWidth, className, styl
   const css = useStyles()
   const cssUtils = useCssUtils()
 
+  useEffect(() => {
+    if (value) {
+      setStart(value[0])
+      setEnd(value[1])
+    }
+  }, [value])
+
   const handleStartChange = (newStart: Date) => {
     setStart(newStart)
     if (end && newStart.getTime() > end.getTime()) {
       setEnd(addDays(newStart, 1))
     }
+    onChange([start, end])
   }
   const handleEndChange = (newEnd: Date) => {
     setEnd(newEnd)
     if (start && newEnd.getTime() < start.getTime()) {
       setStart(subDays(newEnd, 1))
     }
-  }
-
-  useEffect(() => {
     onChange([start, end])
-  }, [start, end])
+  }
 
   return (
     <div className={classes(css.root, className, fullWidth && cssUtils.fullWidth)}>
