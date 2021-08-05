@@ -35,11 +35,11 @@ const useStyles = makeStyles((t: Theme) => ({
   },
   pageTitle_txt: {
     margin: 0,
-    fontSize: utilsStyles(t).fontSize.bigTitle
+    fontSize: utilsStyles(t).fontSize.bigTitle,
   },
   cardBody: {
     display: 'flex',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
     // alignItems: 'center',
   },
   cardBody_icon: {
@@ -53,7 +53,7 @@ const useStyles = makeStyles((t: Theme) => ({
   actions: {
     flexWrap: 'wrap',
     whiteSpace: 'nowrap',
-  }
+  },
 }))
 
 const creationReportEvent = (report: Report): ReportEvent => Object.freeze({
@@ -64,7 +64,7 @@ const creationReportEvent = (report: Report): ReportEvent => Object.freeze({
     eventType: 'CONSO',
     creationDate: report.creationDate,
     action: EventActionValues.Creation,
-  }
+  },
 })
 
 export const ReportComponent = () => {
@@ -127,51 +127,51 @@ export const ReportComponent = () => {
               <Divider className={cssUtils.divider}/>
               {report.details.map((detail, i) =>
                 <div key={i} className={cssUtils.marginBottom}>
-              <div className={cssUtils.txtBold} dangerouslySetInnerHTML={{__html: detail.label.replace(/\:$/, '')}}/>
-              <div className={cssUtils.colorTxtSecondary} dangerouslySetInnerHTML={{__html: detail.value}}/>
-            </div>
-          )}
-          <Divider className={cssUtils.divider}/>
-          {fromNullable(_report.get.entity?.files.filter(_ => _.origin === FileOrigin.Consumer))
-            .filter(_ => _.length > 0)
-            .map(files =>
-              <ReportFiles
-                files={files}
-                reportId={report.id}
-                fileOrigin={FileOrigin.Consumer}
-              />
-            ).toUndefined()
-          }
-        </PanelBody>
-        <PanelFoot className={css.actions}>
-          <div style={{flex: 1}}>
-            {report.tags.map(tag => [
-              <ScChip icon={<Icon style={{fontSize: 20}} className={cssUtils.colorTxtHint}>sell</Icon>} key={tag} label={tag}/>,
-              ' '
-            ])}
-          </div>
+                  <div className={cssUtils.txtBold} dangerouslySetInnerHTML={{__html: detail.label.replace(/\:$/, '')}}/>
+                  <div className={cssUtils.colorTxtSecondary} dangerouslySetInnerHTML={{__html: detail.value}}/>
+                </div>,
+              )}
+              <Divider className={cssUtils.divider}/>
+              {fromNullable(_report.get.entity?.files.filter(_ => _.origin === FileOrigin.Consumer))
+                .filter(_ => _.length > 0)
+                .map(files =>
+                  <ReportFiles
+                    files={files}
+                    reportId={report.id}
+                    fileOrigin={FileOrigin.Consumer}
+                  />,
+                ).toUndefined()
+              }
+            </PanelBody>
+            <PanelFoot className={css.actions}>
+              <div style={{flex: 1}}>
+                {report.tags.map(tag => [
+                  <ScChip icon={<Icon style={{fontSize: 20}} className={cssUtils.colorTxtHint}>sell</Icon>} key={tag} label={tag}/>,
+                  ' ',
+                ])}
+              </div>
 
-          <ReportAddComment report={report} onAdd={() => _report.events.fetch({force: true, clean: false}, id)}>
-            <Tooltip title={m.addDgccrfComment}>
-              <Btn variant="outlined" color="primary" icon="add_comment">
-                {m.comment}
+              <ReportAddComment report={report} onAdd={() => _report.events.fetch({force: true, clean: false}, id)}>
+                <Tooltip title={m.addDgccrfComment}>
+                  <Btn variant="outlined" color="primary" icon="add_comment">
+                    {m.comment}
+                  </Btn>
+                </Tooltip>
+              </ReportAddComment>
+              <Btn variant="outlined" color="primary" icon="download"
+                   loading={_report.download.loading}
+                   onClick={() => downloadReport(report.id)}
+              >
+                {m.download}
               </Btn>
-            </Tooltip>
-          </ReportAddComment>
-          <Btn variant="outlined" color="primary" icon="download"
-               loading={_report.download.loading}
-               onClick={() => downloadReport(report.id)}
-          >
-            {m.download}
-          </Btn>
-          <Confirm
-            title={m.removeAsk}
-            content={m.removeReportDesc(report.companySiret)}
-            onConfirm={(close) => _report.remove.fetch({}, report.id).then(() => window.history.back()).finally(close)}
-          >
-            <Btn loading={_report.remove.loading} variant="outlined" color="error" icon="delete">{m.delete}</Btn>
-          </Confirm>
-        </PanelFoot>
+              <Confirm
+                title={m.removeAsk}
+                content={m.removeReportDesc(report.companySiret)}
+                onConfirm={(close) => _report.remove.fetch({}, report.id).then(() => window.history.back()).finally(close)}
+              >
+                <Btn loading={_report.remove.loading} variant="outlined" color="error" icon="delete">{m.delete}</Btn>
+              </Confirm>
+            </PanelFoot>
           </Panel>
           <Grid container spacing={2} alignItems="stretch">
             <Grid item xs={12} sm={6}>
@@ -233,22 +233,22 @@ export const ReportComponent = () => {
               <>
                 <Tabs
                   className={css.tabs}
-              value={activeTab}
-              onChange={(event: React.ChangeEvent<{}>, newValue: number) => setActiveTab(newValue)}
-              indicatorColor="primary"
-              textColor="primary"
-            >
-              <Tab label={m.proResponse}/>
-              <Tab label={m.reportHistory}/>
-              <Tab label={m.companyHistory}/>
-            </Tabs>
-            <ReportTabPanel value={activeTab} index={0}>
-              <ReportMessages
-                reportId={report.id}
-                events={_report.events.entity}
-                files={_report.get.entity?.files.filter(_ => _.origin === FileOrigin.Professional)}
-              />
-            </ReportTabPanel>
+                  value={activeTab}
+                  onChange={(event: React.ChangeEvent<{}>, newValue: number) => setActiveTab(newValue)}
+                  indicatorColor="primary"
+                  textColor="primary"
+                >
+                  <Tab label={m.proResponse}/>
+                  <Tab label={m.reportHistory}/>
+                  <Tab label={m.companyHistory}/>
+                </Tabs>
+                <ReportTabPanel value={activeTab} index={0}>
+                  <ReportMessages
+                    reportId={report.id}
+                    events={_report.events.entity}
+                    files={_report.get.entity?.files.filter(_ => _.origin === FileOrigin.Professional)}
+                  />
+                </ReportTabPanel>
                 <ReportTabPanel value={activeTab} index={1}>
                   <ReportEvents events={[creationReportEvent(report), ..._report.events.entity]}/>
                 </ReportTabPanel>
@@ -258,7 +258,7 @@ export const ReportComponent = () => {
               </>
             )}
           </Panel>
-        </>
+        </>,
       ).getOrElse(<></>)}
     </Page>
   )
