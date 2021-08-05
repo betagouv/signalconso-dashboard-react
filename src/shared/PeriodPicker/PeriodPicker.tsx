@@ -1,5 +1,5 @@
-import {format} from 'date-fns'
-import React, {CSSProperties, useState} from 'react'
+import {addDays, format, subDays} from 'date-fns'
+import React, {CSSProperties, useEffect, useState} from 'react'
 import {useI18n} from '../../core/i18n'
 import {makeStyles, Theme} from '@material-ui/core'
 import {Datepicker} from '../Datepicker/Datepicker'
@@ -47,14 +47,41 @@ export const PeriodPicker = ({value, onChange, label, fullWidth, className, styl
   const css = useStyles()
   const cssUtils = useCssUtils()
 
-  const handleChange = () => {
-    onChange([start, end])
+  const handleStartChange = (newStart: Date) => {
+    setStart(newStart)
+    if (end && newStart.getTime() > end.getTime()) {
+      setEnd(addDays(newStart, 1))
+    }
   }
+  const handleEndChange = (newEnd: Date) => {
+    setEnd(newEnd)
+    if (start && newEnd.getTime() < start.getTime()) {
+      setStart(subDays(newEnd, 1))
+    }
+  }
+
+  useEffect(() => {
+    onChange([start, end])
+  }, [start, end])
 
   return (
     <div className={classes(css.root, className, fullWidth && cssUtils.fullWidth)}>
-      <Datepicker label={label?.[0] ?? m.start} fullWidth={fullWidth} value={start} onChange={handleChange} className={css.start} InputProps={{className: css.startInput}}/>
-      <Datepicker label={label?.[1] ?? m.end} fullWidth={fullWidth} value={end} onChange={handleChange} InputProps={{className: css.endInput}}/>
+      <Datepicker
+        label={label?.[0] ?? m.start}
+        fullWidth={fullWidth}
+        value={start}
+        onChange={handleStartChange}
+        className={css.start}
+        InputProps={{className: css.startInput}}
+      />
+
+      <Datepicker
+        label={label?.[1] ?? m.end}
+        fullWidth={fullWidth}
+        value={end}
+        onChange={handleEndChange}
+        InputProps={{className: css.endInput}}
+      />
     </div>
   )
 }

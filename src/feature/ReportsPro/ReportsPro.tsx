@@ -78,23 +78,21 @@ export const ReportsPro = () => {
   const _reportStatus = useConstantContext().reportStatus
   const _companies = useCompaniesContext()
 
-  const {formatDate, m} = useI18n()
-
-  const css = useStyles()
-  const cssUtils = useCssUtils()
-
   const {isMobileWidth} = useLayoutContext()
   const history = useHistory()
   const {toastError} = useToast()
+  const {formatDate, m} = useI18n()
+  const css = useStyles()
+  const cssUtils = useCssUtils()
 
-  const hasFilters = () => {
+  const hasFilters = useMemo(() => {
     const {limit, offset, ...values} = _reports.filters
     return Object.keys(cleanObject(values)).length > 0 || offset > 0
-  }
+  }, [_reports.filters])
 
   const displayFilters = useMemo(
-    () => (_reports.list && _reports.list.totalSize > minRowsBeforeDisplayFilters) || hasFilters(),
-    [_reports.list]
+    () => (_reports.list && _reports.list.totalSize > minRowsBeforeDisplayFilters) || hasFilters,
+    [_reports.list],
   )
 
   const queryString = useQueryString<Readonly<Partial<ReportSearch>>>()
@@ -131,70 +129,70 @@ export const ReportsPro = () => {
 
       {_companies.accessesByPro.entity && _companies.viewableByPro.entity && (
         <>
-          <Panel elevation={3} className={css.filters}>
-            <PanelBody className={css.filtersBody}>
-              <Grid container spacing={1}>
-                <Grid item sm={4} xs={12}>
-                  <SelectCompaniesByPro
-                    values={_reports.filters.siretSirenList}
-                    fullWidth
-                    onChange={_ => _reports.updateFilters(prev => ({...prev, siretSirenList: _}))}
-                    className={cssUtils.marginRight}
-                    accessibleCompanies={_companies.accessesByPro.entity}
-                    visibleCompanies={_companies.viewableByPro.entity}
-                  />
+          {displayFilters && (
+            <Panel elevation={3} className={css.filters}>
+              <PanelBody className={css.filtersBody}>
+                <Grid container spacing={1}>
+                  <Grid item sm={4} xs={12}>
+                    <SelectCompaniesByPro
+                      values={_reports.filters.siretSirenList}
+                      fullWidth
+                      onChange={_ => _reports.updateFilters(prev => ({...prev, siretSirenList: _}))}
+                      className={cssUtils.marginRight}
+                      accessibleCompanies={_companies.accessesByPro.entity}
+                      visibleCompanies={_companies.viewableByPro.entity}
+                    />
+                  </Grid>
+                  <Grid item sm={4} xs={12}>
+                    <SelectDepartments
+                      className={cssUtils.marginRight}
+                      fullWidth
+                      values={_reports.filters.departments}
+                      onChange={departments => _reports.updateFilters(prev => ({...prev, departments}))}
+                    />
+                  </Grid>
+                  <Grid item sm={4} xs={12}>
+                    <ScSelect
+                      label={m.status}
+                      fullWidth
+                      onChange={event => {
+                        _reports.updateFilters(prev => ({...prev, status: event.target.value as string}))
+                      }}
+                      value={_reports.filters.status ?? ''}
+                    >
+                      <MenuItem value="">&nbsp;</MenuItem>
+                      {(_reportStatus.entity ?? []).map(status =>
+                        <MenuItem key={status} value={status}>
+                          <ReportStatusChip dense fullWidth inSelectOptions status={status}/>
+                        </MenuItem>,
+                      )}
+                    </ScSelect>
+                  </Grid>
                 </Grid>
-                <Grid item sm={4} xs={12}>
-                  <SelectDepartments
-                    className={cssUtils.marginRight}
-                    fullWidth
-                    values={_reports.filters.departments}
-                    onChange={departments => _reports.updateFilters(prev => ({...prev, departments}))}
-                  />
-                </Grid>
-                <Grid item sm={4} xs={12}>
-                  <ScSelect
-                    label={m.status}
-                    fullWidth
-                    onChange={event => {
-                      console.log(event)
-                      _reports.updateFilters(prev => ({...prev, status: event.target.value as string}))
-                    }}
-                    value={_reports.filters.status ?? ''}
+                <PeriodPicker
+                  fullWidth
+                  value={[_reports.filters.start, _reports.filters.end]}
+                  onChange={([start, end]) => _reports.updateFilters(prev => ({...prev, start: start ?? prev.start, end: end ?? prev.end}))}
+                />
+                <div className={css.actions}>
+                  <ScButton size="small" icon="clear" onClick={_reports.clearFilters} variant="outlined" color="primary">
+                    {m.removeAllFilters}
+                  </ScButton>
+                  <ExportReportsPopper
+                    disabled={fromNullable(_reports?.list?.totalSize).map(_ => _ > Config.reportsLimitForExport).getOrElse(false)}
+                    tooltipBtnNew={fromNullable(_reports?.list?.totalSize)
+                      .map(_ => _ > Config.reportsLimitForExport ? m.cannotExportMoreReports(Config.reportsLimitForExport) : '')
+                      .getOrElse('')}
                   >
-                    <MenuItem value="">&nbsp;</MenuItem>
-                    {(_reportStatus.entity ?? []).map(status =>
-                      <MenuItem key={status} value={status}>
-                        <ReportStatusChip dense fullWidth inSelectOptions status={status}/>
-                      </MenuItem>,
-                    )}
-                  </ScSelect>
-                </Grid>
-              </Grid>
-              <PeriodPicker
-                fullWidth
-                value={[_reports.filters.start, _reports.filters.end]}
-                onChange={([start, end]) => {
-                }}
-              />
-              <div className={css.actions}>
-                <ExportReportsPopper
-                  disabled={fromNullable(_reports?.list?.totalSize).map(_ => _ > Config.reportsLimitForExport).getOrElse(false)}
-                  tooltipBtnNew={fromNullable(_reports?.list?.totalSize)
-                    .map(_ => _ > Config.reportsLimitForExport ? m.cannotExportMoreReports(Config.reportsLimitForExport) : '')
-                    .getOrElse('')}
-                >
-                  <Btn size="small" variant="outlined" color="primary" icon="get_app">
-                    {m.exportInXLS}
-                  </Btn>
-                </ExportReportsPopper>
+                    <Btn size="small" variant="outlined" color="primary" icon="get_app">
+                      {m.exportInXLS}
+                    </Btn>
+                  </ExportReportsPopper>
 
-                <ScButton size="small" icon="clear" onClick={_reports.clearFilters} variant="outlined" color="primary">
-                  {m.removeAllFilters}
-                </ScButton>
-              </div>
-            </PanelBody>
-          </Panel>
+                </div>
+              </PanelBody>
+            </Panel>
+          )}
 
           <Panel>
             <Datatable<ReportSearchResult>
