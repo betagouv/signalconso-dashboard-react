@@ -25,6 +25,7 @@ import {EntityIcon} from '../../core/EntityIcon'
 import {ScButton} from '../../shared/Button/Button'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
 import {useLogin} from '../../core/context/LoginContext'
+import {PeriodPicker} from '../../shared/PeriodPicker/PeriodPicker'
 
 const useStyles = makeStyles((t: Theme) => ({
   toolbar: {},
@@ -112,30 +113,10 @@ export const Reports = ({}) => {
                 values={_reports.filters.departments}
                 onChange={departments => _reports.updateFilters(prev => ({...prev, departments}))}
               />
-              <Datepicker
-                className={cssUtils.marginRight}
+              <PeriodPicker
                 fullWidth
-                label={m.start}
-                value={_reports.filters.start}
-                onChange={start => {
-                  _reports.updateFilters(prev => {
-                    if (prev.end && start.getTime() > prev.end.getTime()) {
-                      return {...prev, start, end: addDays(start, 1)}
-                    }
-                    return {...prev, start}
-                  })
-                }}
-              />
-              <Datepicker
-                fullWidth
-                value={_reports.filters.end}
-                onChange={end => _reports.updateFilters(prev => {
-                  if (prev.start && prev.start.getTime() > end.getTime()) {
-                    return {...prev, start: subDays(end, 1), end}
-                  }
-                  return {...prev, end}
-                })}
-                label={m.end}
+                value={[_reports.filters.start, _reports.filters.end]}
+                onChange={([start, end]) => _reports.updateFilters(prev => ({...prev, start: start ?? prev.start, end: end ?? prev.end}))}
               />
               <ExportReportsPopper
                 disabled={fromNullable(_reports?.list?.totalSize).map(_ => _ > Config.reportsLimitForExport).getOrElse(false)}

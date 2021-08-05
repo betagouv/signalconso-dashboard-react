@@ -16,6 +16,7 @@ import {ExportPhonesPopper} from '../../shared/ExportPopper/ExportPopperBtn'
 import {fromNullable} from 'fp-ts/lib/Option'
 import {useToast} from '../../core/toast'
 import {Icon, Tooltip} from '@material-ui/core'
+import {PeriodPicker} from '../../shared/PeriodPicker/PeriodPicker'
 
 export const ReportedPhones = () => {
   const _reportedPhone = useReportedPhonesContext()
@@ -46,30 +47,10 @@ export const ReportedPhones = () => {
                 className={cssUtils.marginRight}
                 label={m.phone}
               />
-              <Datepicker
-                className={cssUtils.marginRight}
+              <PeriodPicker
                 fullWidth
-                label={m.start}
-                value={_reportedPhone.filters.start}
-                onChange={start => {
-                  _reportedPhone.updateFilters(prev => {
-                    if (prev.end && start.getTime() > prev.end.getTime()) {
-                      return {...prev, start, end: addDays(start, 1)}
-                    }
-                    return {...prev, start}
-                  })
-                }}
-              />
-              <Datepicker
-                fullWidth
-                value={_reportedPhone.filters.end}
-                onChange={end => _reportedPhone.updateFilters(prev => {
-                  if (prev.start && prev.start.getTime() > end.getTime()) {
-                    return {...prev, start: subDays(end, 1), end}
-                  }
-                  return {...prev, end}
-                })}
-                label={m.end}
+                value={[_reportedPhone.filters.start, _reportedPhone.filters.end]}
+                onChange={([start, end]) => _reportedPhone.updateFilters(prev => ({...prev, start: start ?? prev.start, end: end ?? prev.end}))}
               />
               <ExportPhonesPopper>
                 <IconBtn color="primary">
