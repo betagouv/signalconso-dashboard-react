@@ -20,7 +20,6 @@ const useStyles = makeStyles((t: Theme) => ({
     alignItems: 'center',
     background: t.palette.background.paper,
     borderBottom: '1px solid ' + t.palette.divider,
-    marginBottom: t.spacing(1),
   },
   logo: {
     display: 'flex',

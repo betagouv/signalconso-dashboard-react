@@ -12,11 +12,17 @@ export const pageWidth = {
 
 const useStyles = makeStyles((t: Theme) => ({
   root: {
-    padding: `${t.spacing(3)}px ${t.spacing(2)}px ${t.spacing(2)}px ${t.spacing(2)}px ${t.spacing(2)}px !important`,
+    padding: `${t.spacing(3)}px ${t.spacing(2)}px ${t.spacing(2)}px ${t.spacing(2)}px !important`,
   },
   loading: {
-    width: '100%',
-  }
+    position: 'relative',
+  },
+  loadingSpinner: {
+    position: 'absolute',
+    top: 0,
+    right: 0,
+    left: 0,
+  },
 }));
 
 export interface PageProps {
@@ -32,7 +38,9 @@ export const Page = ({className, loading, size, ...props}: PageProps) => {
   return (
     <>
       {loading && (
-        <LinearProgress className={css.loading}/>
+        <div className={css.loading}>
+          <LinearProgress className={css.loadingSpinner}/>
+        </div>
       )}
       <MuiPage width={pageWidth[size ?? 'regular']} className={classes(className, css.root)} {...props}/>
     </>

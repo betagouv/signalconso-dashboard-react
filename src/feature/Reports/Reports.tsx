@@ -1,13 +1,12 @@
 import {Page, PageTitle} from '../../shared/Layout'
 import {useI18n} from '../../core/i18n'
 import {useReportsContext} from '../../core/context/ReportsContext'
-import {cleanObject, DetailInputValue, getHostFromUrl, Report, ReportingDateLabel, ReportSearch, ReportSearchResult, Roles} from 'core/api'
+import {cleanObject, DetailInputValue, getHostFromUrl, Report, ReportingDateLabel, ReportSearch, ReportSearchResult} from 'core/api'
 import {Panel} from '../../shared/Panel'
 import {useCssUtils} from '../../core/helper/useCssUtils'
 import {Datatable} from '../../shared/Datatable/Datatable'
 import {fromNullable, some} from 'fp-ts/lib/Option'
 import {Badge, Icon, makeStyles, Theme, Tooltip} from '@material-ui/core'
-import {addDays, subDays} from 'date-fns'
 import {classes, textOverflowMiddleCropping} from '../../core/helper/utils'
 import React, {useEffect} from 'react'
 import {useQueryString} from '../../core/helper/useQueryString'
@@ -15,7 +14,6 @@ import {NavLink} from 'react-router-dom'
 import {SelectDepartments} from '../../shared/SelectDepartments/SelectDepartments'
 import {Fender, IconBtn} from 'mui-extension/lib'
 import {useToast} from '../../core/toast'
-import {Datepicker} from '../../shared/Datepicker/Datepicker'
 import {ReportStatusChip} from '../../shared/ReportStatus/ReportStatus'
 import {Config} from '../../conf/config'
 import {ReportFilters} from './ReportsFilters'
@@ -77,7 +75,6 @@ export const Reports = ({}) => {
   const {m, formatDate} = useI18n()
   const _reports = useReportsContext()
   const cssUtils = useCssUtils()
-  const {connectedUser} = useLogin()
   const css = useStyles()
   const {toastError} = useToast()
 
