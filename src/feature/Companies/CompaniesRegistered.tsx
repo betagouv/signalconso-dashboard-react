@@ -1,7 +1,7 @@
 import {useI18n} from '../../core/i18n'
 import {Panel} from '../../shared/Panel'
 import {Datatable} from '../../shared/Datatable/Datatable'
-import {cleanObject, CompanySearch, CompanyWithReportsCount} from '../../core/api'
+import {cleanObject, CompanySearch, CompanyWithReportsCount, PaginatedSearch} from '../../core/api'
 import React, {useEffect} from 'react'
 import {useCompaniesContext} from '../../core/context/CompaniesContext'
 import {useCssUtils} from '../../core/helper/useCssUtils'
@@ -12,7 +12,7 @@ import {ScButton} from '../../shared/Button/Button'
 import {utilsStyles} from '../../core/theme'
 import {Fender, IconBtn} from 'mui-extension/lib'
 import {SelectDepartments} from '../../shared/SelectDepartments/SelectDepartments'
-import {useQueryString} from '../../core/helper/useQueryString'
+import {mapArrayFromQuerystring, useQueryString} from '../../core/helper/useQueryString'
 import {DebouncedInput} from '../../shared/DebouncedInput/DebouncedInput'
 import {fromNullable} from 'fp-ts/lib/Option'
 import {useToast} from '../../core/toast'
@@ -37,8 +37,14 @@ const useStyles = makeStyles((t: Theme) => ({
   },
   fender: {
     margin: `${t.spacing(1)}px auto ${t.spacing(2)}px auto`,
-  }
+  },
 }))
+
+export interface CompanySearchQs extends PaginatedSearch<any> {
+  departments?: string[] | string
+  identity?: string
+}
+
 
 export const CompaniesRegistered = () => {
   const {m, formatLargeNumber} = useI18n()
@@ -47,7 +53,11 @@ export const CompaniesRegistered = () => {
   const css = useStyles()
   const {toastError} = useToast()
 
-  const queryString = useQueryString<Readonly<Partial<CompanySearch>>>()
+  const queryString = useQueryString<Partial<CompanySearch>, Partial<CompanySearchQs>>({
+    toQueryString: _ => _,
+    fromQueryString: _ => mapArrayFromQuerystring(_, ['departments']),
+  })
+
   useEffect(() => {
     _companies.updateFilters({..._companies.initialFilters, ...queryString.get()})
   }, [])

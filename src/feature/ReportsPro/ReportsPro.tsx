@@ -20,7 +20,7 @@ import {classes} from '../../core/helper/utils'
 import {Btn, Fender} from 'mui-extension/lib'
 import {EntityIcon} from '../../core/EntityIcon'
 import {ScButton} from '../../shared/Button/Button'
-import {useQueryString} from '../../core/helper/useQueryString'
+import {mapArrayFromQuerystring, mapDateFromQueryString, mapDatesToQueryString, useQueryString} from '../../core/helper/useQueryString'
 import {fromNullable} from 'fp-ts/lib/Option'
 import {useToast} from '../../core/toast'
 import {Config} from '../../conf/config'
@@ -28,6 +28,7 @@ import {ExportReportsPopper} from '../../shared/ExportPopper/ExportPopperBtn'
 import {PeriodPicker} from '../../shared/PeriodPicker/PeriodPicker'
 import {useCompaniesContext} from '../../core/context/CompaniesContext'
 import {SelectCompaniesByPro} from '../../shared/SelectCompaniesByPro/SelectCompaniesByPro'
+import compose from '../../core/helper/compose'
 
 const useStyles = makeStyles((t: Theme) => ({
   tdFiles: {
@@ -67,11 +68,19 @@ const useStyles = makeStyles((t: Theme) => ({
     '& > *': {
       marginBottom: t.spacing(1),
       marginLeft: t.spacing(1),
-    }
+    },
   },
 }))
 
-const minRowsBeforeDisplayFilters = 2
+const minRowsBeforeDisplayFilters = 10
+
+interface ReportFiltersQs {
+  readonly departments?: string[] | string
+  readonly siretSirenList?: string[] | string
+  start?: string
+  end?: string
+  status?: string
+}
 
 export const ReportsPro = () => {
   const _reports = useReportsContext()
@@ -95,7 +104,13 @@ export const ReportsPro = () => {
     [_reports.list],
   )
 
-  const queryString = useQueryString<Readonly<Partial<ReportSearch>>>()
+  const queryString = useQueryString<Partial<ReportSearch>, Partial<ReportFiltersQs>>({
+    toQueryString: mapDatesToQueryString,
+    fromQueryString: compose(
+      mapDateFromQueryString,
+      _ => mapArrayFromQuerystring(_, ['siretSirenList', 'departments']),
+    ),
+  })
 
   useEffect(() => {
     _companies.accessesByPro.fetch()
@@ -188,7 +203,6 @@ export const ReportsPro = () => {
                       {m.exportInXLS}
                     </Btn>
                   </ExportReportsPopper>
-
                 </div>
               </PanelBody>
             </Panel>
@@ -223,67 +237,67 @@ export const ReportsPro = () => {
                           </div>
                           <Txt block color="hint">{m.thisDate(formatDate(_.report.creationDate))}</Txt>
                           <Txt block color="hint">{_.report.contactAgreement ? m.byHim(_.report.firstName + ' ' + _.report.lastName) : m.anonymousReport}</Txt>
-                    </div>
-                    <ReportStatusChip dense status={_.report.status}/>
-                  </div>
-                },
-              ]
-              :
-              [
-                {
-                  id: 'companyPostalCode',
-                  head: m.postalCodeShort,
-                  className: _ => _.report.status === ReportStatus.UnreadForPro ? cssUtils.txtBold : undefined,
-                  row: _ => _.report.companyAddress.postalCode,
-                },
-                {
-                  id: 'siret',
-                  head: m.siret,
-                  className: _ => _.report.status === ReportStatus.UnreadForPro ? cssUtils.txtBold : undefined,
-                  row: _ => _.report.companySiret
-                },
-                {
-                  id: 'createDate',
-                  head: m.receivedAt,
-                  className: _ => _.report.status === ReportStatus.UnreadForPro ? cssUtils.txtBold : undefined,
-                  row: _ => formatDate(_.report.creationDate),
-                },
-                {
-                  id: 'status',
-                  head: m.status,
-                  row: _ => <ReportStatusChip dense status={_.report.status}/>
-                },
-                {
-                  id: 'consumer',
-                  head: m.consumer,
-                  className: _ => _.report.status === ReportStatus.UnreadForPro ? cssUtils.txtBold : undefined,
-                  row: _ => _.report.contactAgreement ? _.report.firstName + ' ' + _.report.lastName : m.anonymousReport,
-                },
-                {
-                  id: 'file',
-                  head: m.files, className: css.tdFiles, row: _ =>
-                    _.files.length > 0 && (
-                      <Badge badgeContent={_.files.length} color="primary" invisible={_.files.length === 1}>
-                        <Icon className={cssUtils.colorTxtHint}>insert_drive_file</Icon>
-                      </Badge>
-                    )
-                },
-              ]
-          }
-          renderEmptyState={
-            <Fender
-              icon={EntityIcon.report}
-              title={m.noReportsTitle}
-              description={
-                <>
-                  <Txt color="hint" size="big" block gutterBottom>{m.noReportsDesc}</Txt>
-                  <ScButton icon="clear" onClick={_reports.clearFilters} variant="contained" color="primary">
-                    {m.removeAllFilters}
-                  </ScButton>
-                </>
+                        </div>
+                        <ReportStatusChip dense status={_.report.status}/>
+                      </div>,
+                    },
+                  ]
+                  :
+                  [
+                    {
+                      id: 'companyPostalCode',
+                      head: m.postalCodeShort,
+                      className: _ => _.report.status === ReportStatus.UnreadForPro ? cssUtils.txtBold : undefined,
+                      row: _ => _.report.companyAddress.postalCode,
+                    },
+                    {
+                      id: 'siret',
+                      head: m.siret,
+                      className: _ => _.report.status === ReportStatus.UnreadForPro ? cssUtils.txtBold : undefined,
+                      row: _ => _.report.companySiret,
+                    },
+                    {
+                      id: 'createDate',
+                      head: m.receivedAt,
+                      className: _ => _.report.status === ReportStatus.UnreadForPro ? cssUtils.txtBold : undefined,
+                      row: _ => formatDate(_.report.creationDate),
+                    },
+                    {
+                      id: 'status',
+                      head: m.status,
+                      row: _ => <ReportStatusChip dense status={_.report.status}/>,
+                    },
+                    {
+                      id: 'consumer',
+                      head: m.consumer,
+                      className: _ => _.report.status === ReportStatus.UnreadForPro ? cssUtils.txtBold : undefined,
+                      row: _ => _.report.contactAgreement ? _.report.firstName + ' ' + _.report.lastName : m.anonymousReport,
+                    },
+                    {
+                      id: 'file',
+                      head: m.files, className: css.tdFiles, row: _ =>
+                        _.files.length > 0 && (
+                          <Badge badgeContent={_.files.length} color="primary" invisible={_.files.length === 1}>
+                            <Icon className={cssUtils.colorTxtHint}>insert_drive_file</Icon>
+                          </Badge>
+                        ),
+                    },
+                  ]
               }
-            />
-          }
+              renderEmptyState={
+                <Fender
+                  icon={EntityIcon.report}
+                  title={m.noReportsTitle}
+                  description={
+                    <>
+                      <Txt color="hint" size="big" block gutterBottom>{m.noReportsDesc}</Txt>
+                      <ScButton icon="clear" onClick={_reports.clearFilters} variant="contained" color="primary">
+                        {m.removeAllFilters}
+                      </ScButton>
+                    </>
+                  }
+                />
+              }
             />
           </Panel>
         </>
