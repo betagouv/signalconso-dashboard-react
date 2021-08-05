@@ -45,7 +45,6 @@ export interface CompanySearchQs extends PaginatedSearch<any> {
   identity?: string
 }
 
-
 export const CompaniesRegistered = () => {
   const {m, formatLargeNumber} = useI18n()
   const _companies = useCompaniesContext().activated

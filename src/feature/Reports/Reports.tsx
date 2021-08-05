@@ -112,11 +112,8 @@ export const Reports = ({}) => {
   })
 
   useEffect(() => {
-    console.log('update filters', {..._reports.initialFilters, ...queryString.get()})
     _reports.updateFilters({..._reports.initialFilters, ...queryString.get()})
   }, [])
-
-  console.log('filters', _reports.filters)
 
   useEffect(() => {
     fromNullable(_reports.error).map(toastError)
