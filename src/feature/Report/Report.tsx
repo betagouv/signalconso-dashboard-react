@@ -83,7 +83,7 @@ export const ReportComponent = () => {
   }, [])
 
   useEffect(() => {
-    if (_report.get.entity) {
+    if (_report.get.entity && _report.get.entity.report.companySiret) {
       _report.companyEvents.fetch({}, _report.get.entity.report.companySiret)
     }
   }, [_report.get.entity?.report.companySiret])
