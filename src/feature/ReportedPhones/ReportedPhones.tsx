@@ -42,7 +42,7 @@ export const ReportedPhones = () => {
             <>
               <ScInput
                 fullWidth
-                value={_reportedPhone.filters.phone}
+                value={_reportedPhone.filters.phone ?? ''}
                 onChange={event => _reportedPhone.updateFilters(prev => ({...prev, phone: event.target.value}))}
                 className={cssUtils.marginRight}
                 label={m.phone}

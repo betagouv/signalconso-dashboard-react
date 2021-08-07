@@ -45,7 +45,6 @@ export interface CompanySearchQs extends PaginatedSearch<any> {
   identity?: string
 }
 
-
 export const CompaniesRegistered = () => {
   const {m, formatLargeNumber} = useI18n()
   const _companies = useCompaniesContext().activated
@@ -65,10 +64,6 @@ export const CompaniesRegistered = () => {
   useEffect(() => {
     queryString.update(cleanObject(_companies.filters))
   }, [_companies.filters])
-
-  useEffect(() => {
-    _companies.fetch()
-  }, [])
 
   useEffect(() => {
     fromNullable(_companies.error).map(toastError)

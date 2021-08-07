@@ -112,11 +112,12 @@ export const Reports = ({}) => {
   })
 
   useEffect(() => {
-    console.log('update filters', {..._reports.initialFilters, ...queryString.get()})
     _reports.updateFilters({..._reports.initialFilters, ...queryString.get()})
   }, [])
 
-  console.log('filters', _reports.filters)
+  useEffect(() => {
+    queryString.update(cleanObject(_reports.filters))
+  }, [_reports.filters])
 
   useEffect(() => {
     fromNullable(_reports.error).map(toastError)
@@ -143,7 +144,10 @@ export const Reports = ({}) => {
               <PeriodPicker
                 fullWidth
                 value={[_reports.filters.start, _reports.filters.end]}
-                onChange={([start, end]) => _reports.updateFilters(prev => ({...prev, start: start ?? prev.start, end: end ?? prev.end}))}
+                onChange={([start, end]) => {
+                  console.log(start, end)
+                  _reports.updateFilters(prev => ({...prev, start: start ?? prev.start, end: end ?? prev.end}))
+                }}
               />
               <ExportReportsPopper
                 disabled={fromNullable(_reports?.list?.totalSize).map(_ => _ > Config.reportsLimitForExport).getOrElse(false)}
