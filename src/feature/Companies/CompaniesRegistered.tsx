@@ -66,10 +66,6 @@ export const CompaniesRegistered = () => {
   }, [_companies.filters])
 
   useEffect(() => {
-    _companies.fetch()
-  }, [])
-
-  useEffect(() => {
     fromNullable(_companies.error).map(toastError)
   }, [_companies.error])
 

@@ -43,28 +43,30 @@ export const PeriodPicker = ({value, onChange, label, fullWidth, className, styl
 
   useEffect(() => {
     if (value) {
-      setStart(value[0])
-      setEnd(value[1])
+      if (value[0]?.getTime() !== start?.getTime()) setStart(value[0])
+      if (value[1]?.getTime() !== end?.getTime()) setStart(value[1])
     }
   }, [value])
 
   const handleStartChange = (newStart: Date) => {
+    const newEnd = end
+      ? newStart.getTime() > end.getTime() ? addDays(newStart, 1) : end
+      : undefined
     setStart(newStart)
-    if (end && newStart.getTime() > end.getTime()) {
-      setEnd(addDays(newStart, 1))
-    }
-    onChange([start, end])
+    setEnd(newEnd)
+    onChange([newStart, newEnd])
   }
   const handleEndChange = (newEnd: Date) => {
+    const newStart = start
+      ? newEnd.getTime() < start.getTime() ? subDays(newEnd, 1) : start
+      : undefined
+    setStart(newStart)
     setEnd(newEnd)
-    if (start && newEnd.getTime() < start.getTime()) {
-      setStart(subDays(newEnd, 1))
-    }
-    onChange([start, end])
+    onChange([newStart, newEnd])
   }
 
   return (
-    <div className={classes(css.root, className, fullWidth && cssUtils.fullWidth)}>
+    <div className={classes(css.root, className, fullWidth && cssUtils.fullWidth)} style={style}>
       <Datepicker
         label={label?.[0] ?? m.start}
         fullWidth={fullWidth}

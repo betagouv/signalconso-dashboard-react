@@ -116,6 +116,10 @@ export const Reports = ({}) => {
   }, [])
 
   useEffect(() => {
+    queryString.update(cleanObject(_reports.filters))
+  }, [_reports.filters])
+
+  useEffect(() => {
     fromNullable(_reports.error).map(toastError)
   }, [_reports.list, _reports.error])
 
@@ -140,7 +144,10 @@ export const Reports = ({}) => {
               <PeriodPicker
                 fullWidth
                 value={[_reports.filters.start, _reports.filters.end]}
-                onChange={([start, end]) => _reports.updateFilters(prev => ({...prev, start: start ?? prev.start, end: end ?? prev.end}))}
+                onChange={([start, end]) => {
+                  console.log(start, end)
+                  _reports.updateFilters(prev => ({...prev, start: start ?? prev.start, end: end ?? prev.end}))
+                }}
               />
               <ExportReportsPopper
                 disabled={fromNullable(_reports?.list?.totalSize).map(_ => _ > Config.reportsLimitForExport).getOrElse(false)}
