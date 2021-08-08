@@ -18,6 +18,7 @@ import {CompanyAccessCreateBtn} from './CompanyAccessCreateBtn'
 import {useToast} from '../../core/toast'
 import {SaveUndeliveredDocBtn} from './SaveUndeliveredDocBtn'
 import {useCompaniesContext} from '../../core/context/CompaniesContext'
+import {Enum} from '../../core/helper/enum'
 
 interface Accesses {
   name?: string
@@ -109,8 +110,8 @@ export const CompanyAccesses = () => {
                 .mapNullable(_ => _.userId)
                 .map(userId =>
                   <ScSelect fullWidth value={_.level} onChange={event => _crudAccess.update(userId, event.target.value as CompanyAccessLevel)}>
-                    {Object.keys(CompanyAccessLevel).map(level =>
-                      <MenuItem key={level} value={level}>{(CompanyAccessLevel as any)[level]}</MenuItem>
+                    {Enum.keys(CompanyAccessLevel).map(level =>
+                      <MenuItem key={level} value={level}>{CompanyAccessLevel[level]}</MenuItem>
                     )}
                   </ScSelect>
                 ).getOrElse(

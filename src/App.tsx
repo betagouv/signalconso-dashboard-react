@@ -3,7 +3,7 @@ import {ApiClient, ApiError, SignalConsoPublicSdk, SignalConsoSecuredSdk} from '
 import {Config} from './conf/config'
 import {makeStyles} from '@material-ui/core/styles'
 import {Theme, ThemeProvider} from '@material-ui/core'
-import {BrowserRouter, HashRouter, Redirect, Route, Switch} from 'react-router-dom'
+import {HashRouter, Redirect, Route, Switch} from 'react-router-dom'
 import {I18nProvider, useI18n} from './core/i18n'
 import {MuiPickersUtilsProvider} from '@material-ui/pickers'
 import DateAdapter from '@date-io/date-fns'
@@ -38,7 +38,7 @@ import {ReportsPro} from './feature/ReportsPro/ReportsPro'
 import {CompanyAccesses} from './feature/CompanyAccesses/CompanyAccesses'
 import {useHistory} from 'react-router'
 import {CompaniesPro} from './feature/CompaniesPro/CompaniesPro'
-import {CompaniesProTable} from './feature/CompaniesPro/CompaniesProTable'
+import {ReportPro} from './feature/ReportPro/ReportPro'
 
 const headers = {
   'Content-Type': 'application/json',
@@ -181,20 +181,15 @@ const AppLogged = () => {
       <Switch>
         <Route path={siteMap.reportedWebsites} component={ReportedWebsites}/>
         <Route path={siteMap.reportedPhone} component={ReportedPhones}/>
-        <Route path={siteMap.reports()} component={Reports}/>
-        <Route path={siteMap.report()} component={ReportComponent}/>
+        <Route path={siteMap.report()} component={connectedUser.isPro ? ReportPro : ReportComponent}/>
+        <Route path={siteMap.reports()} component={connectedUser.isPro ? ReportsPro : Reports}/>
         <Route path={siteMap.users} component={Users}/>
         <Route path={siteMap.companies} component={Companies}/>
         <Route path={siteMap.companyAccesses()} component={CompanyAccesses}/>
         <Route path={siteMap.subscriptions} component={Subscriptions}/>
-        <Route path={siteMap.reportsPro()} component={ReportsPro}/>
-        <Route path={siteMap.companiesPro} component={CompaniesProTable}/>
+        <Route path={siteMap.companiesPro} component={CompaniesPro}/>
         <Route path={siteMap.settings} component={Settings}/>
-        {connectedUser.isPro ? (
-          <Redirect exact from="/" to={siteMap.reportsPro()}/>
-        ) : (
-          <Redirect exact from="/" to={siteMap.reports()}/>
-        )}
+        <Redirect exact from="/" to={siteMap.reports()}/>
       </Switch>
     </Provide>
   )

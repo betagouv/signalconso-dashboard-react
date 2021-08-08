@@ -1,42 +1,25 @@
-import React, {useEffect, useState} from 'react'
+import React, {useEffect, useMemo, useState} from 'react'
 import {Page} from '../../shared/Layout'
 import {useParams} from 'react-router'
 import {useI18n} from '../../core/i18n'
 import {Panel, PanelBody, PanelHead} from '../../shared/Panel'
 import {useReportContext} from '../../core/context/ReportContext'
 import {EventActionValues, FileOrigin, Id, Report, ReportEvent} from 'core/api'
-import {Divider, Grid, Icon, makeStyles, Tab, Tabs, Theme, Tooltip, useTheme} from '@material-ui/core'
-import {ReportStatusChip} from '../../shared/ReportStatus/ReportStatus'
-import {ScChip} from '../../shared/Chip/ScChip'
+import {Grid, Icon, makeStyles, Tab, Tabs, Theme, useTheme} from '@material-ui/core'
 import {useCssUtils} from '../../core/helper/useCssUtils'
 import {capitalize, classes} from '../../core/helper/utils'
 import {ScButton} from '../../shared/Button/Button'
 import {PanelFoot} from '../../shared/Panel/PanelFoot'
-import {Alert, Btn, Confirm} from 'mui-extension/lib'
-import {ReportCategories} from './ReportCategories'
-import {ReportFiles} from './File/ReportFiles'
 import {fromNullable} from 'fp-ts/lib/Option'
-import {utilsStyles} from '../../core/theme'
 import {useToast} from '../../core/toast'
 import {ReportEvents} from './Event/ReportEvents'
 import {ReportMessages} from './ReportMessages'
 import {AddressComponent} from '../../shared/Address/Address'
 import {SelectCompany} from '../../shared/SelectCompany/SelectCompany'
 import {EditConsumerDialog} from './EditConsumerDialog'
-import {ReportAddComment} from './ReportAddComment'
+import {ReportHeader} from './ReportHeader'
 
 const useStyles = makeStyles((t: Theme) => ({
-  pageTitle: {
-    display: 'flex',
-    alignItems: 'center',
-    flexWrap: 'wrap',
-    justifyContent: 'space-between',
-    marginBottom: t.spacing(2),
-  },
-  pageTitle_txt: {
-    margin: 0,
-    fontSize: utilsStyles(t).fontSize.bigTitle,
-  },
   cardBody: {
     display: 'flex',
     justifyContent: 'space-between',
@@ -50,13 +33,9 @@ const useStyles = makeStyles((t: Theme) => ({
   tabs: {
     borderBottom: '1px solid ' + t.palette.divider,
   },
-  actions: {
-    flexWrap: 'wrap',
-    whiteSpace: 'nowrap',
-  },
 }))
 
-const creationReportEvent = (report: Report): ReportEvent => Object.freeze({
+export const creationReportEvent = (report: Report): ReportEvent => Object.freeze({
   data: {
     id: 'dummy',
     details: {} as any,
@@ -69,24 +48,22 @@ const creationReportEvent = (report: Report): ReportEvent => Object.freeze({
 
 export const ReportComponent = () => {
   const {id} = useParams<{id: Id}>()
-  const {m, formatDate} = useI18n()
+  const {m} = useI18n()
   const _report = useReportContext()
   const theme = useTheme()
   const cssUtils = useCssUtils()
   const css = useStyles()
   const {toastError} = useToast()
   const [activeTab, setActiveTab] = useState(0)
+  const response = useMemo(() => _report.events.entity?.find(_ => _.data.action === EventActionValues.ReportProResponse), [_report.events])
 
   useEffect(() => {
-    _report.get.fetch({}, id)
+    _report.get.clearCache()
+    _report.get.fetch({}, id).then(({report}) => {
+      if (report.companySiret) _report.companyEvents.fetch({}, report.companySiret)
+    })
     _report.events.fetch({}, id)
   }, [])
-
-  useEffect(() => {
-    if (_report.get.entity && _report.get.entity.report.companySiret) {
-      _report.companyEvents.fetch({}, _report.get.entity.report.companySiret)
-    }
-  }, [_report.get.entity?.report.companySiret])
 
   useEffect(() => {
     fromNullable(_report.get.error).map(toastError)
@@ -102,77 +79,11 @@ export const ReportComponent = () => {
     _report.events.error,
   ])
 
-  const downloadReport = (reportId: Id) => _report.download.fetch({}, reportId)
-
   return (
     <Page loading={_report.get.loading}>
       {fromNullable(_report.get.entity?.report).map(report =>
         <>
-          <Panel elevation={3}>
-            <PanelBody>
-              <div className={css.pageTitle}>
-                <div>
-                  <h1 className={css.pageTitle_txt}>
-                    {m.report_pageTitle}&nbsp;
-                    <span>{report.companySiret}</span>
-                  </h1>
-                  <div className={cssUtils.colorTxtHint}>ID {id}</div>
-                </div>
-                <ReportStatusChip className={cssUtils.marginLeftAuto} status={report.status}/>
-              </div>
-              <Alert id="report-info" dense type="info" deletable persistentDelete className={cssUtils.marginBottom}>
-                {m.reportCategoriesAreSelectByConsumer}
-              </Alert>
-              <ReportCategories categories={[report.category, ...report.subcategories]}/>
-              <Divider className={cssUtils.divider}/>
-              {report.details.map((detail, i) =>
-                <div key={i} className={cssUtils.marginBottom}>
-                  <div className={cssUtils.txtBold} dangerouslySetInnerHTML={{__html: detail.label.replace(/\:$/, '')}}/>
-                  <div className={cssUtils.colorTxtSecondary} dangerouslySetInnerHTML={{__html: detail.value}}/>
-                </div>,
-              )}
-              <Divider className={cssUtils.divider}/>
-              {fromNullable(_report.get.entity?.files.filter(_ => _.origin === FileOrigin.Consumer))
-                .filter(_ => _.length > 0)
-                .map(files =>
-                  <ReportFiles
-                    files={files}
-                    reportId={report.id}
-                    fileOrigin={FileOrigin.Consumer}
-                  />,
-                ).toUndefined()
-              }
-            </PanelBody>
-            <PanelFoot className={css.actions}>
-              <div style={{flex: 1}}>
-                {report.tags.map(tag => [
-                  <ScChip icon={<Icon style={{fontSize: 20}} className={cssUtils.colorTxtHint}>sell</Icon>} key={tag} label={tag}/>,
-                  ' ',
-                ])}
-              </div>
-
-              <ReportAddComment report={report} onAdd={() => _report.events.fetch({force: true, clean: false}, id)}>
-                <Tooltip title={m.addDgccrfComment}>
-                  <Btn variant="outlined" color="primary" icon="add_comment">
-                    {m.comment}
-                  </Btn>
-                </Tooltip>
-              </ReportAddComment>
-              <Btn variant="outlined" color="primary" icon="download"
-                   loading={_report.download.loading}
-                   onClick={() => downloadReport(report.id)}
-              >
-                {m.download}
-              </Btn>
-              <Confirm
-                title={m.removeAsk}
-                content={m.removeReportDesc(report.companySiret)}
-                onConfirm={(close) => _report.remove.fetch({}, report.id).then(() => window.history.back()).finally(close)}
-              >
-                <Btn loading={_report.remove.loading} variant="outlined" color="error" icon="delete">{m.delete}</Btn>
-              </Confirm>
-            </PanelFoot>
-          </Panel>
+          <ReportHeader elevated report={report} files={_report.get.entity?.files}/>
           <Grid container spacing={2} alignItems="stretch">
             <Grid item xs={12} sm={6}>
               <Panel stretch>
@@ -244,8 +155,9 @@ export const ReportComponent = () => {
                 </Tabs>
                 <ReportTabPanel value={activeTab} index={0}>
                   <ReportMessages
+                    canEditFile
                     reportId={report.id}
-                    events={_report.events.entity}
+                    response={response}
                     files={_report.get.entity?.files.filter(_ => _.origin === FileOrigin.Professional)}
                   />
                 </ReportTabPanel>

@@ -56,7 +56,7 @@ export const ReportCategories = ({categories}: ReportCategoriesProps) => {
   return (
     <div className={css.root}>
       {categories.map((category, i) =>
-        <React.Fragment key={category}>
+        <React.Fragment key={i}>
           <ReportCategory>{category}</ReportCategory>
           {i < categories.length - 1 && <Icon className={css.separator}>chevron_right</Icon>}
         </React.Fragment>
