@@ -1,6 +1,7 @@
 import {Alert, Btn, Confirm, Page} from 'mui-extension/lib'
 import {TextField, Theme} from '@material-ui/core'
 import * as React from 'react'
+import {useEffect} from 'react'
 import {makeStyles} from '@material-ui/core/styles'
 import {useI18n} from '../i18n'
 import {useFormInput} from '@alexandreannic/react-hooks-lib/lib'
@@ -9,7 +10,6 @@ import {Panel, PanelBody} from '../../shared/Panel'
 import {utilsStyles} from '../theme'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
 import {useCssUtils} from '../helper/useCssUtils'
-import {useEffect} from 'react'
 import {useToast} from '../toast'
 
 const useStyles = makeStyles((t: Theme) => ({
@@ -50,7 +50,7 @@ interface Props {
   isLogging: boolean
   onLogin: (...args: any[]) => Promise<any>
   forgottenPassword?: {
-    action: (...args: any[]) => Promise<any>,
+    action: (email: string) => Promise<any>,
     loading: boolean
     errorMsg?: string
   }
@@ -59,7 +59,7 @@ interface Props {
 export const LoginPage = ({isLogging, onLogin, forgottenPassword}: Props) => {
   const {m} = useI18n()
   const cssUtils = useCssUtils()
-  const {toastSuccess} = useToast()
+  const {toastSuccess, toastError} = useToast()
   const inputEmail = useFormInput('email', {
     errorMessage: m.invalidEmail,
     pattern: regexpPattern.email,
@@ -127,10 +127,10 @@ export const LoginPage = ({isLogging, onLogin, forgottenPassword}: Props) => {
                   title={m.forgottenPassword}
                   content={
                     <>
-                      {forgottenPassword.errorMsg && (
-                        <Alert type="error">{forgottenPassword.errorMsg}</Alert>
+                      {forgottenPassword.errorMsg !== undefined && (
+                        <Alert type="error" gutterBottom deletable>{m.anErrorOccurred}</Alert>
                       )}
-                      <Txt color="hint" block gutterBottom>{m.forgottenPasswordDesc}</Txt>
+                      <Txt color="hint" block gutterBottom>{m.forgottenPasswordDesc} {inputEmailForgotten.props.value}</Txt>
                       <TextField
                         fullWidth
                         autoFocus

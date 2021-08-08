@@ -151,7 +151,7 @@ const AppLogin = () => {
               isLogging={isLogging}
               onLogin={login}
               forgottenPassword={{
-                action: forgottenPassword.fetch,
+                action: (email: string) => forgottenPassword.fetch({}, email),
                 loading: forgottenPassword.loading,
                 errorMsg: forgottenPassword.error?.message,
               }}
