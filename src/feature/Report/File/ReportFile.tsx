@@ -94,9 +94,11 @@ export const ReportFile = ({file, dense, onRemove}: ReportFileProps) => {
   return (
     <Tooltip title={file.filename}>
       <a target="_blank" href={fileUrl} className={css.root}>
-        <IconBtn loading={_remove.loading} size="small" className={css.removeBtn} onClick={stopPropagation(remove)}>
-          <Icon>clear</Icon>
-        </IconBtn>
+        {onRemove && (
+          <IconBtn loading={_remove.loading} size="small" className={css.removeBtn} onClick={stopPropagation(remove)}>
+            <Icon>clear</Icon>
+          </IconBtn>
+        )}
         <div className={css.image}>
           {(() => {
             switch (fileType) {

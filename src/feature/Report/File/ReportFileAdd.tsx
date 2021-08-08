@@ -4,7 +4,7 @@ import {reportFileConfig} from './reportFileConfig'
 import {useI18n} from '../../../core/i18n'
 import {utilsStyles} from '../../../core/theme'
 import {Config} from '../../../conf/config'
-import {EventActionValues, FileOrigin, Id, UploadedFile} from '../../../core/api'
+import {FileOrigin, Id, UploadedFile} from '../../../core/api'
 import {useToast} from '../../../core/toast'
 import {useLogin} from '../../../core/context/LoginContext'
 
@@ -68,11 +68,6 @@ export const ReportFileAdd = ({reportId, onUploaded, fileOrigin}: Props) => {
       }
       setUploading(true)
       apiSdk.public.document.upload(file, fileOrigin)
-        .then(file => apiSdk.secured.reports.postAction(reportId, {
-          details: '',
-          fileIds: [file.id],
-          actionType: EventActionValues.ProfessionalAttachments,
-        }).then(() => file))
         .then(onUploaded)
         .catch(toastError)
         .finally(() => setUploading(false))
@@ -89,7 +84,7 @@ export const ReportFileAdd = ({reportId, onUploaded, fileOrigin}: Props) => {
     )
   } else {
     return (
-      <Tooltip title={m.addProAttachmentFile}>
+      <Tooltip title={m.addAttachmentFile}>
         <Button className={css.root} onClick={openFileSelection}>
           <div className={css.body}>
             <Icon className={css.icon}>add</Icon>

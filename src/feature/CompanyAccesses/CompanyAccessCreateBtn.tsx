@@ -9,6 +9,7 @@ import {regexp} from '../../core/helper/regexp'
 import {ScSelect} from '../../shared/Select/Select'
 import {MenuItem} from '@material-ui/core'
 import {useToast} from '../../core/toast'
+import {Enum} from '../../core/helper/enum'
 
 interface Props {
   errorMessage?: string
@@ -56,8 +57,8 @@ export const CompanyAccessCreateBtn = ({errorMessage, loading, onCreate}: Props)
             })}
           />
           <ScSelect fullWidth {...register('level')} defaultValue="admin">
-            {Object.keys(CompanyAccessLevel).map(level =>
-              <MenuItem key={level} value={level}>{(CompanyAccessLevel as any)[level]}</MenuItem>
+            {Enum.keys(CompanyAccessLevel).map(level =>
+              <MenuItem key={level} value={level}>{CompanyAccessLevel[level]}</MenuItem>
             )}
           </ScSelect>
         </>

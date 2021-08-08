@@ -113,8 +113,8 @@ export class ReportsClient {
     return this.client.get<ReportSearchResult>(`/reports/${id}`).then(_ => ({files: _.files, report: ReportsClient.mapReport(_.report)}))
   }
 
-  readonly postReportResponse = (id: Id, response: ReportResponse) => {
-    return this.client.post<Event>(`reports/${id}/response`, {body: response})
+  readonly postResponse = (id: Id, response: ReportResponse) => {
+    return this.client.post<Event>(`reports/${id}/response`, {body: {...response, fileIds: response.fileIds ?? []}})
   }
 
   readonly postAction = (id: Id, action: ReportAction) => {

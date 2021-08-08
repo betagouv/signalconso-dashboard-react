@@ -56,7 +56,7 @@ export interface ReportResponse {
   responseType: ReportResponseTypes
   consumerDetails: string
   dgccrfDetails: string
-  fileIds: string[]
+  fileIds?: string[]
 }
 
 export enum ReportResponseTypes {

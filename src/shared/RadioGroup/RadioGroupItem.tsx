@@ -6,6 +6,7 @@ import {classes} from 'core/helper/utils'
 const useStyle = makeStyles((t: Theme) => ({
   root: {
     display: 'flex',
+    // alignItems: 'center',
     alignItems: 'flex-start',
     border: '1px solid ' + t.palette.divider,
     borderBottomColor: 'transparent',
@@ -28,13 +29,24 @@ const useStyle = makeStyles((t: Theme) => ({
       background: 'rgba(0,0,0,.04)',
     },
   },
+  rootDense: {
+    paddingTop: t.spacing(1/4),
+    paddingBottom: t.spacing(1/4),
+  },
   rootSelected: {
     zIndex: 1,
     border: `1px solid ${t.palette.primary.main} !important`,
     background: alpha(t.palette.primary.main, .1),
     boxShadow: `inset 0 0 0 1px ${t.palette.primary.main}`,
   },
+  rootError: {
+    borderColor: t.palette.error.main + ' !important',
+  },
   body: {
+    display: 'flex',
+    justifyContent: 'center',
+    minHeight: 42,
+    flexDirection: 'column',
     marginLeft: t.spacing(1),
   },
 }))
@@ -47,13 +59,21 @@ export interface ScRadioGroupItemProps {
   selected?: boolean
   children?: ReactNode
   onClick?: MouseEventHandler<HTMLDivElement>
+  dense?: boolean
+  error?: boolean
 }
 
-export const ScRadioGroupItem = ({title, description, value, children, selected, onClick, className}: ScRadioGroupItemProps) => {
+export const ScRadioGroupItem = ({title, description, error, dense, value, children, selected, onClick, className}: ScRadioGroupItemProps) => {
   const css = useStyle()
 
   return (
-    <div className={classes(css.root, selected && css.rootSelected, className)} onClick={onClick}>
+    <div className={classes(
+      css.root,
+      dense && css.rootDense,
+      selected && css.rootSelected,
+      error && css.rootError,
+      className
+    )} onClick={onClick}>
       <Radio checked={selected}/>
       <div className={css.body}>
         {title && <Txt block size="big">{title}</Txt>}

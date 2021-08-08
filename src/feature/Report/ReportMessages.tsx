@@ -1,5 +1,5 @@
 import {PanelBody, PanelTitle} from '../../shared/Panel'
-import React, {useEffect, useMemo} from 'react'
+import React, {useMemo} from 'react'
 import {useI18n} from '../../core/i18n'
 import {EventActionValues, FileOrigin, Id, ReportEvent, ReportResponse, ReportResponseTypes, UploadedFile} from '../../core/api'
 import {classes, fnSwitch} from '../../core/helper/utils'
@@ -8,9 +8,12 @@ import {Icon, makeStyles, Theme} from '@material-ui/core'
 import {useCssUtils} from '../../core/helper/useCssUtils'
 import {utilsStyles} from '../../core/theme'
 import {ReportFiles} from './File/ReportFiles'
+import {useReportContext} from '../../core/context/ReportContext'
+import {Txt} from 'mui-extension/lib/Txt/Txt'
 
 interface Props {
-  events: ReportEvent[]
+  canEditFile?: boolean
+  response?: ReportEvent
   reportId: Id
   files?: UploadedFile[]
 }
@@ -18,20 +21,20 @@ interface Props {
 const useStyles = makeStyles((t: Theme) => ({
   responseType: {
     fontSize: utilsStyles(t).fontSize.big,
-    display: 'flex',
+    display: 'inline-flex',
     alignItems: 'center',
     marginBottom: t.spacing(1),
+    borderRadius: 40,
+    border: '1px solid ' + t.palette.divider,
+    padding: t.spacing(.5, 1, .5, 1),
   }
 }))
 
-export const ReportMessages = ({events, reportId, files}: Props) => {
+export const ReportMessages = ({canEditFile, response, reportId, files}: Props) => {
   const {m} = useI18n()
-  const response = useMemo(() => events.find(_ => _.data.action === EventActionValues.ReportProResponse), [events])
   const cssUtils = useCssUtils()
   const css = useStyles()
-
-  useEffect(() => {
-  }, [])
+  const _report = useReportContext()
 
   return (
     <PanelBody>
@@ -63,7 +66,7 @@ export const ReportMessages = ({events, reportId, files}: Props) => {
 
           {details.dgccrfDetails && details.dgccrfDetails !== '' && (
             <>
-              <PanelTitle>{m.reportDgccrfDetails}</PanelTitle>
+              <Txt className={cssUtils.marginTop2} bold size="big" block>{m.reportDgccrfDetails}</Txt>
               <div className={cssUtils.colorTxtSecondary}>{details.dgccrfDetails}</div>
             </>
           )}
@@ -71,8 +74,20 @@ export const ReportMessages = ({events, reportId, files}: Props) => {
       )).getOrElse(
         <div>{m.noAnswerFromPro}</div>)
       }
-      <PanelTitle>{m.attachedFiles}</PanelTitle>
-      <ReportFiles reportId={reportId} files={files} fileOrigin={FileOrigin.Professional}/>
+      <Txt className={cssUtils.marginTop2} bold size="big" block>{m.attachedFiles}</Txt>
+      <ReportFiles
+        hideAddBtn={!canEditFile}
+        reportId={reportId}
+        files={files}
+        fileOrigin={FileOrigin.Professional}
+        onNewFile={file => {
+          _report.postAction.fetch({}, reportId, {
+            details: '',
+            fileIds: [file.id],
+            actionType: EventActionValues.ProfessionalAttachments,
+          }).then(() => _report.events.fetch({force: true, clean: false}, reportId))
+        }}
+      />
     </PanelBody>
   )
 }

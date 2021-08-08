@@ -4,8 +4,7 @@ import {toQueryString} from './api'
 export const siteMap = {
   reportedWebsites: '/moderation-url-entreprises',
   reportedPhone: '/suivi-des-telephones',
-  reports: (_?: Partial<ReportSearch>) => '/reports' + (_ ? toQueryString(_) : ''),
-  reportsPro: (_?: Partial<ReportSearch>) => '/suivi-des-signalements/pro' + (_ ? toQueryString(_) : ''),
+  reports: (_?: Partial<ReportSearch>) => '/suivi-des-signalements' + (_ ? toQueryString(_) : ''),
   subscriptions: '/abonnements',
   report: (id: Id = ':id') => `/suivi-des-signalements/report/${id}`,
   exports: '/mes-telechargements',
