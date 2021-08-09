@@ -24,7 +24,7 @@ interface Props {
   onConfirm?: (_: ReportResponse) => void
 }
 
-export const ReportAnswerPro = ({
+export const ReportResponsePro = ({
   report,
   className,
   onCancel,

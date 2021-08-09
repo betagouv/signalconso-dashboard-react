@@ -1,5 +1,5 @@
 import {useParams} from 'react-router'
-import {EventActionValues, FileOrigin, Id} from '../../core/api/model'
+import {EventActionValues, FileOrigin, Id, ReportStatus} from '../../core/api/model'
 import {useI18n} from '../../core/i18n'
 import React, {useEffect, useMemo} from 'react'
 import {fromNullable} from 'fp-ts/lib/Option'
@@ -9,21 +9,29 @@ import {Page} from '../../shared/Layout'
 import {ReportHeader} from '../Report/ReportHeader'
 import {ReportEvents} from '../Report/Event/ReportEvents'
 import {creationReportEvent} from '../Report/Report'
-import {Panel, PanelHead, PanelTitle} from '../../shared/Panel'
-import {ReportAnswerPro} from '../ReportAnswerPro/ReportAnswerPro'
+import {Panel, PanelHead} from '../../shared/Panel'
+import {ReportResponsePro} from '../ReportAnswerPro/ReportResponsePro'
 import {useBoolean} from '@alexandreannic/react-hooks-lib/lib'
 import {Collapse, makeStyles, Theme} from '@material-ui/core'
 import {ReportMessages} from '../Report/ReportMessages'
+import {ScButton} from '../../shared/Button/Button'
+import {utilsStyles} from '../../core/theme'
 
 const useStyles = makeStyles((t: Theme) => ({
   answerPanel: {
     transition: t.transitions.create('box-shadow'),
   },
+  responseDateTime: {
+    color: t.palette.text.hint,
+    fontSize: utilsStyles(t).fontSize.normal,
+    fontWeight: 'normal',
+    display: 'inline',
+  },
 }))
 
 export const ReportPro = () => {
   const {id} = useParams<{id: Id}>()
-  const {m} = useI18n()
+  const {m, formatDateTime} = useI18n()
   const css = useStyles()
   const _report = useReportContext()
   const {toastError} = useToast()
@@ -51,12 +59,23 @@ export const ReportPro = () => {
             elevated={!openAnswerPanel.value}
             report={report}
             files={_report.get.entity?.files}
-            onClickAnswerBtn={response ? undefined : openAnswerPanel.setTrue}
-          />
+          >
+            {!response && report.status !== ReportStatus.ClosedForPro && (
+              <ScButton onClick={openAnswerPanel.setTrue} icon="priority_high" color="error" variant="contained">
+                {m.answer}
+              </ScButton>
+            )}
+          </ReportHeader>
 
           <Collapse in={_report.events.entity && !!response}>
             <Panel>
-              <PanelHead>{m.proAnswerYourAnswer}</PanelHead>
+              <PanelHead action={
+                response && (
+                  <div className={css.responseDateTime}>{formatDateTime(response.data.creationDate)}</div>
+                )
+              }>
+                {m.proAnswerYourAnswer}
+              </PanelHead>
               <ReportMessages
                 canEditFile={false}
                 response={response}
@@ -65,7 +84,7 @@ export const ReportPro = () => {
             </Panel>
           </Collapse>
           <Collapse in={!response && openAnswerPanel.value}>
-            <ReportAnswerPro
+            <ReportResponsePro
               report={report}
               onConfirm={() => {
                 openAnswerPanel.setFalse()
