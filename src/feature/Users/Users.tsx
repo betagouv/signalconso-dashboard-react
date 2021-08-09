@@ -28,7 +28,7 @@ export const Users = () => {
       <PageTitle action={
         <Confirm
           maxWidth="xs"
-          onConfirm={(close) => {
+          onConfirm={(event, close) => {
             handleSubmit(({email}) => {
               _invite.fetch({}, email)
                 .then(() => toastSuccess(m.userInvitationSent))

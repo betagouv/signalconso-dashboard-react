@@ -28,7 +28,7 @@ export const ReportAddComment = ({report, children, onAdd}: Props) => {
     <Confirm
       title={m.addDgccrfComment}
       loading={_addComment.loading}
-      onConfirm={close => addComment().then(() => {
+      onConfirm={(event, close) => addComment().then(() => {
         setComment('')
         onAdd()
         toastSuccess(m.commentAdded)

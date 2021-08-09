@@ -31,7 +31,7 @@ export const SaveUndeliveredDocBtn = ({loading, onChange, className}: Props) => 
       loading={loading}
       confirmLabel={m.confirm}
       confirmDisabled={!returnDate}
-      onConfirm={(close) =>
+      onConfirm={(event, close) =>
         onChange(returnDate)
           .then(() => toastSuccess(m.changesSaved))
           .then(close)

@@ -29,7 +29,7 @@ export const EditConsumerDialog = ({report, onChange, children}: Props) => {
       maxWidth="xs"
       cancelLabel={m.close}
       confirmLabel={m.edit}
-      onConfirm={close => {
+      onConfirm={(event, close) => {
         onChange(getValues())
         close()
       }}

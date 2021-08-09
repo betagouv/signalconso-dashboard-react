@@ -29,13 +29,13 @@ export const EditPassword = () => {
       cancelLabel={m.close}
       confirmDisabled={!isValid}
       loading={_changePassword.loading}
-      onConfirm={(close => {
+      onConfirm={(event, close) => {
         handleSubmit((form: Form) => {
           _changePassword.fetch({}, form.oldPassword, form.newPassword)
             .then(() => toastSuccess(m.passwordEdited))
             .then(close)
         })()
-      })}
+      }}
       content={
         <>
           {fromNullable(_changePassword.error).map(error =>

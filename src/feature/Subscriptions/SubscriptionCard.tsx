@@ -1,4 +1,4 @@
-import React, {CSSProperties, useEffect} from 'react'
+import React, {CSSProperties, SyntheticEvent, useEffect} from 'react'
 import {useI18n} from '../../core/i18n'
 import {ReportTag, Subscription, SubscriptionCreate} from '../../core/api'
 import {Panel, PanelHead} from '../../shared/Panel'
@@ -20,7 +20,7 @@ import {makeStyles} from '@material-ui/core/styles'
 interface Props {
   subscription: Subscription
   onUpdate: (_: Partial<SubscriptionCreate>) => Promise<Subscription>
-  onDelete: () => void
+  onDelete: (event: SyntheticEvent<any>) => void
   removing: boolean
   loading?: boolean
   className?: string

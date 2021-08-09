@@ -110,7 +110,7 @@ export const ReportComponent = () => {
                 <Confirm
                   title={m.removeAsk}
                   content={m.removeReportDesc(report.companySiret)}
-                  onConfirm={(close) => _report.remove.fetch({}, report.id).then(() => window.history.back()).finally(close)}
+                  onConfirm={(event, close) => _report.remove.fetch({}, report.id).then(() => window.history.back()).finally(close)}
                 >
                   <Btn loading={_report.remove.loading} variant="outlined" color="error" icon="delete">{m.delete}</Btn>
                 </Confirm>

@@ -2,7 +2,7 @@ import {useI18n} from '../../core/i18n'
 import {Panel} from '../../shared/Panel'
 import {Datatable} from '../../shared/Datatable/Datatable'
 import {CompanyToActivate, Id} from '../../core/api'
-import React, {useEffect} from 'react'
+import React, {SyntheticEvent, useEffect} from 'react'
 import {useCompaniesContext} from '../../core/context/CompaniesContext'
 import {useCssUtils} from '../../core/helper/useCssUtils'
 import {Checkbox, Icon, makeStyles, Theme, Tooltip} from '@material-ui/core'
@@ -93,7 +93,7 @@ export const CompaniesToActivate = () => {
     setSelectedCompanies(selectedCompaniesSet.toArray())
   }
 
-  const confirmCompaniesPosted = (closeDialog: () => void) => {
+  const confirmCompaniesPosted = (event: SyntheticEvent<any>, closeDialog: () => void) => {
     _companies.confirmCompaniesPosted.fetch({}, selectedCompaniesSet.toArray())
       .then(() => {
         _companiesToActivate.fetch({clean: false})

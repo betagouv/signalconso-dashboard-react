@@ -34,7 +34,7 @@ export const CompanyAccessCreateBtn = ({errorMessage, loading, onCreate}: Props)
       confirmLabel={m.create}
       loading={loading}
       confirmDisabled={!isValid}
-      onConfirm={close => {
+      onConfirm={(event, close) => {
         handleSubmit(({email, level}) => {
           onCreate(email, level)
             .then(() => toastSuccess(m.userInvitationSent))

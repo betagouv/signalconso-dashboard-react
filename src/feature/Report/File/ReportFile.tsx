@@ -5,10 +5,10 @@ import {useLogin} from '../../../core/context/LoginContext'
 import {fromNullable, some} from 'fp-ts/lib/Option'
 import {Config} from '../../../conf/config'
 import React, {useEffect} from 'react'
-import {stopPropagation} from '../../../core/helper/utils'
 import {useFetcher} from '@alexandreannic/react-hooks-lib/lib'
-import {IconBtn} from 'mui-extension/lib'
+import {Confirm, IconBtn} from 'mui-extension/lib'
 import {useToast} from '../../../core/toast'
+import {useI18n} from '../../../core/i18n'
 
 export interface ReportFileProps {
   file: UploadedFile
@@ -76,6 +76,7 @@ export const ReportFile = ({file, dense, onRemove}: ReportFileProps) => {
   const {apiSdk} = useLogin()
   const _remove = useFetcher(apiSdk.secured.document.remove)
   const {toastError} = useToast()
+  const {m} = useI18n()
 
   const fileUrl = some(apiSdk.public.document.getLink(file)).map(_ => Config.isDev
     ? _.replace(Config.apiBaseUrl, 'https://signal-api.conso.gouv.fr')
@@ -95,9 +96,25 @@ export const ReportFile = ({file, dense, onRemove}: ReportFileProps) => {
     <Tooltip title={file.filename}>
       <a target="_blank" href={fileUrl} className={css.root}>
         {onRemove && (
-          <IconBtn loading={_remove.loading} size="small" className={css.removeBtn} onClick={stopPropagation(remove)}>
-            <Icon>clear</Icon>
-          </IconBtn>
+          <Confirm
+            title={m.removeAsk}
+            content={<span dangerouslySetInnerHTML={{__html: m.thisWillBeRemoved(file.filename)}}/>}
+            maxWidth="xs"
+            onClick={e => {
+              e.stopPropagation()
+              e.preventDefault()
+            }}
+            onConfirm={(event, close) => {
+              remove()
+              close()
+            }}
+            cancelLabel={m.close}
+            confirmLabel={m.delete}
+          >
+            <IconBtn loading={_remove.loading} size="small" className={css.removeBtn}>
+              <Icon>clear</Icon>
+            </IconBtn>
+          </Confirm>
         )}
         <div className={css.image}>
           {(() => {

@@ -142,7 +142,7 @@ export const LoginPage = ({isLogging, onLogin, forgottenPassword}: Props) => {
 
                     </>
                   }
-                  onConfirm={(close) => {
+                  onConfirm={(event, close) => {
                     forgottenPassword?.action(inputEmailForgotten.props.value).then(close).then(() => toastSuccess(m.emailSentToYou))
                   }}
                   confirmLabel={m.createNewPassword}
