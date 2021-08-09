@@ -17,7 +17,7 @@ const useStyles = makeStyles((t: Theme) => ({
   },
 }))
 
-export const ReportAnswerProItem = ({children, title, desc}: ReportAnswerProItemProps) => {
+export const ReportResponseFormItem = ({children, title, desc}: ReportAnswerProItemProps) => {
   const css = useStyles()
   return (
     <div className={css.root}>

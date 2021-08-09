@@ -1,5 +1,5 @@
-import {ReportTag, Subcategory} from '../anomaly/Anomaly'
-import {UploadedFile} from '../file/UploadedFile'
+import {ReportTag, Subcategory} from '../..'
+import {UploadedFile} from '../..'
 import {Address} from '../../model/Address'
 
 export const ReportingDateLabel = 'Date du constat';
@@ -19,9 +19,9 @@ export interface Report {
   vendor: string
   phone?: string
   details: DetailInputValue[]
-  firstName: string
-  lastName: string
-  email: string
+  firstName?: string
+  lastName?: string
+  email?: string
   employeeConsumer: boolean
   contactAgreement: boolean
   creationDate: Date
