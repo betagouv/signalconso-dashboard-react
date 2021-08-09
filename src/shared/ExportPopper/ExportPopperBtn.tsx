@@ -114,10 +114,18 @@ export const ExportPopperBtn = ({
         onClose={handleClose}
         anchorEl={anchorEl}
       >
-        <div className={css.btnContainer} onClick={() => onNewExport().then(() => fetch({clean: false}))}>
+        <div className={css.btnContainer}>
           <Tooltip title={tooltipBtnNew ?? ''}>
             <span>
-              <Btn disabled={disabled} color="primary" variant="outlined" size="small" className={css.btnNew} icon="add">
+              <Btn
+                disabled={disabled}
+                color="primary"
+                variant="outlined"
+                size="small"
+                className={css.btnNew}
+                icon="add"
+                onClick={() => onNewExport().then(() => fetch({clean: false}))}
+              >
                 {m.exportInXLS}
               </Btn>
             </span>
