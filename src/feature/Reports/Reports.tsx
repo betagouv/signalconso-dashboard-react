@@ -152,7 +152,6 @@ export const Reports = ({}) => {
                 fullWidth
                 value={[_reports.filters.start, _reports.filters.end]}
                 onChange={([start, end]) => {
-                  console.log(start, end)
                   _reports.updateFilters(prev => ({...prev, start: start ?? prev.start, end: end ?? prev.end}))
                 }}
               />

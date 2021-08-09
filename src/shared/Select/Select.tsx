@@ -15,7 +15,7 @@ export const ScSelect = React.forwardRef(({label, className, style, small, fullW
   return (
     <FormControl fullWidth={fullWidth} size="small" margin="dense" variant="outlined" className={className} style={style}>
       <InputLabel id={id}>{label}</InputLabel>
-      <Select {...selectProps} inputRef={ref} labelId={id} style={small ? {height: 32} : {}} />
+      <Select {...selectProps} inputRef={ref} labelId={id} />
     </FormControl>
   )
 })

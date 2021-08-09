@@ -11,7 +11,8 @@ export const getHostFromUrl = (url?: string) => {
 export const cleanObject = <T extends object>(obj: T): Partial<T> => {
   return Object.entries(obj)
     .filter(
-      ([, _]) => _ !== undefined && _ !== null && _ !== '' && (!Array.isArray(_) || !!_.filter(v => v !== undefined).length),
+      ([, _]) =>
+        _ !== undefined && _ !== null && _ !== '' && (!Array.isArray(_) || !!_.filter(v => v !== undefined || v === '').length),
     )
     .reduce((acc, [key, value]) => ({...acc, [key]: value}), {})
 }

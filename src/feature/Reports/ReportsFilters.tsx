@@ -1,4 +1,5 @@
 import {
+  Chip,
   Dialog,
   DialogActions,
   DialogContent,
@@ -8,6 +9,7 @@ import {
   MenuItem,
   Radio,
   RadioGroup,
+  TextField,
   Theme,
 } from '@material-ui/core'
 import {useI18n} from '../../core/i18n'
@@ -21,6 +23,8 @@ import {Btn} from 'mui-extension/lib'
 import {ScInput} from '../../shared/Input/ScInput'
 import {useAnomalyContext} from '../../core/context/AnomalyContext'
 import {SelectCountries} from '../../shared/SelectCountries/SelectCountries'
+import {Autocomplete} from '@material-ui/lab'
+import {Enum} from '@alexandreannic/ts-utils/lib/enum/Enum'
 
 export interface ReportsFiltersProps {
   updateFilters: (_: Partial<ReportSearch>) => void
@@ -63,6 +67,7 @@ export const ReportFilters = ({filters, updateFilters, children}: ReportsFilters
   const {
     register,
     handleSubmit,
+    setValue,
     control,
     formState: {errors},
   } = useForm<ReportSearch>()
@@ -119,14 +124,26 @@ export const ReportFilters = ({filters, updateFilters, children}: ReportsFilters
                 </ScSelect>
               </Row>
               <Row label={m.tags}>
-                <ScSelect multiple small fullWidth {...register('tags')} defaultValue={filters.tags ?? []}>
-                  <MenuItem value="">&nbsp;</MenuItem>
-                  {Object.values(ReportTag).map(tag => (
-                    <MenuItem key={tag} value={tag}>
-                      {tag}
-                    </MenuItem>
-                  ))}
-                </ScSelect>
+                <Controller
+                  name="tags"
+                  defaultValue={filters.tags ?? []}
+                  control={control}
+                  render={({field}) => (
+                    <Autocomplete
+                      multiple
+                      {...field}
+                      onChange={(e, value) => field.onChange(value)}
+                      options={Enum.values(ReportTag)}
+                      style={{width: 300}}
+                      renderTags={(value, getTagProps) =>
+                        value.map((option: string, index: number) => (
+                          <Chip size="small" variant="outlined" label={option} {...getTagProps({index})} />
+                        ))
+                      }
+                      renderInput={params => <ScInput {...params} />}
+                    />
+                  )}
+                />
               </Row>
               <Row label={m.keywords}>
                 <ScInput small fullWidth {...register('details')} defaultValue={filters.details ?? ''} />

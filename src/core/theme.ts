@@ -1,5 +1,5 @@
 import {red} from '@material-ui/core/colors'
-import {createTheme, alpha, Theme} from '@material-ui/core'
+import {alpha, createTheme, Theme} from '@material-ui/core'
 
 export const styleUtils = (t: Theme) => ({
   defaultRadius: 4,
