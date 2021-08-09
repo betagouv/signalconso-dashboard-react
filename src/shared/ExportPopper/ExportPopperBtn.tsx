@@ -11,8 +11,7 @@ import {useReportedPhonesContext} from '../../core/context/ReportedPhonesContext
 import {useInterval} from 'mui-extension/lib/core/utils/useInterval'
 import {Fetch} from '@alexandreannic/react-hooks-lib/lib'
 import {useReportsContext} from '../../core/context/ReportsContext'
-import {User} from '../../core/api'
-import {useUnregistredWebsiteWithCompanyContext} from "../../core/context/UnregistredWebsitesContext";
+import {useUnregistredWebsiteWithCompanyContext} from '../../core/context/UnregistredWebsitesContext'
 
 interface Props {
   className?: string
