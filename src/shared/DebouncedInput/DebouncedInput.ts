@@ -1,4 +1,4 @@
-import {useCallback, useState} from 'react'
+import {useCallback, useEffect, useState} from 'react'
 import lodashDebounce from 'lodash.debounce'
 
 interface DebouncedInputProps {
@@ -11,6 +11,10 @@ interface DebouncedInputProps {
 export const DebouncedInput = ({debounce = 0, value = '', onChange, children}: DebouncedInputProps) => {
   const [innerValue, setInnerValue] = useState(value)
   const debounced = useCallback(lodashDebounce(onChange, debounce), [])
+
+  useEffect(() => {
+   setInnerValue(value)
+  }, [value])
 
   const innerOnChange = (event: string) => {
     setInnerValue(event)
