@@ -12,8 +12,8 @@ const useStyles = makeStyles((t: Theme) => ({
   },
   action: {
     marginLeft: 'auto',
-  }
-}));
+  },
+}))
 
 interface Props {
   children?: ReactNode
@@ -22,11 +22,11 @@ interface Props {
 }
 
 export const PageTitle = ({className, action, children, ...props}: Props) => {
-  const css = useStyles();
+  const css = useStyles()
   return (
     <Typography variant="h5" className={classes(css.root, className)} {...props}>
       {children}
       {action && <div className={css.action}>{action}</div>}
     </Typography>
-  );
-};
+  )
+}

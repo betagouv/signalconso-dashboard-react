@@ -12,12 +12,8 @@ export const Settings = () => {
     <Page size="small">
       <PageTitle>{m.menu_settings}</PageTitle>
       <Panel>
-        <SettingRow
-          icon="vpn_key"
-          title={m.password}
-          description={m.editPasswordDesc}
-        >
-          <EditPassword/>
+        <SettingRow icon="vpn_key" title={m.password} description={m.editPasswordDesc}>
+          <EditPassword />
         </SettingRow>
       </Panel>
     </Page>

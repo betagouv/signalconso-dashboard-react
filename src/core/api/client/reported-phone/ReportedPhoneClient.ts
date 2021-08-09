@@ -3,9 +3,7 @@ import {ReportedPhone} from '../../model'
 import format from 'date-fns/format'
 
 export class ReportedPhoneClient {
-
-  constructor(private client: ApiClientApi) {
-  }
+  constructor(private client: ApiClientApi) {}
 
   readonly list = (filters: ReportedPhoneFilters) => {
     return this.client.get<ReportedPhone[]>(`/reported-phones`, {qs: ReportedPhoneClient.mapFilters(filters)})

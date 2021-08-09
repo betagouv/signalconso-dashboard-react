@@ -1,4 +1,15 @@
-import {LinearProgress, makeStyles, Table, TableBody, TableCell, TableHead, TablePagination, TableRow, TableSortLabel, Theme} from '@material-ui/core'
+import {
+  LinearProgress,
+  makeStyles,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TablePagination,
+  TableRow,
+  TableSortLabel,
+  Theme,
+} from '@material-ui/core'
 import React, {CSSProperties, ReactNode, useEffect, useMemo} from 'react'
 import {useCssUtils} from '../../core/helper/useCssUtils'
 import {classes} from '../../core/helper/utils'
@@ -22,15 +33,15 @@ export interface DatatableProps<T> {
   renderEmptyState?: ReactNode
   rowsPerPageOptions?: number[]
   paginate?: {
-    minRowsBeforeDisplay?: number,
-    offset: number,
+    minRowsBeforeDisplay?: number
+    offset: number
     limit: number
-    onPaginationChange: (_: {offset?: number, limit?: number}) => void
-  },
+    onPaginationChange: (_: {offset?: number; limit?: number}) => void
+  }
   sort?: {
     sortBy: string
     orderBy: OrderBy
-    onSortChange: (_: {sortBy: string, orderBy: OrderBy}) => void
+    onSortChange: (_: {sortBy: string; orderBy: OrderBy}) => void
   }
 }
 
@@ -40,7 +51,7 @@ export interface DatatableColumnProps<T> {
   row: (_: T) => ReactNode
   hidden?: boolean
   alwaysVisible?: boolean
-  className?: string | ((_: T) => string | undefined),
+  className?: string | ((_: T) => string | undefined)
   style?: CSSProperties
   stickyEnd?: boolean
 }
@@ -62,7 +73,7 @@ const useStyles = makeStyles((t: Theme) => ({
     background: t.palette.background.paper,
   },
   cellHeader: {
-    color: t.palette.text.secondary
+    color: t.palette.text.secondary,
   },
   btnColumnsToggle: {
     marginLeft: 'auto',
@@ -90,7 +101,7 @@ const useStyles = makeStyles((t: Theme) => ({
   hoverableRows: {
     '&:hover': {
       background: t.palette.action.hover,
-    }
+    },
   },
   loadingTd: {
     height: 0,
@@ -98,13 +109,12 @@ const useStyles = makeStyles((t: Theme) => ({
     padding: 0,
     border: 'none',
   },
-  loading: {
-  }
+  loading: {},
 }))
 
-const safeParseInt = (maybeInt: any, defaultValue: number): number => isNaN(maybeInt) ? defaultValue : parseInt(maybeInt)
+const safeParseInt = (maybeInt: any, defaultValue: number): number => (isNaN(maybeInt) ? defaultValue : parseInt(maybeInt))
 
-export const Datatable = <T extends any = any,>(props: DatatableProps<T>) => {
+export const Datatable = <T extends any = any>(props: DatatableProps<T>) => {
   const {m} = useI18n()
   const {
     loading,
@@ -155,11 +165,8 @@ export const Datatable = <T extends any = any,>(props: DatatableProps<T>) => {
           {displayTableHeader && (
             <TableHead>
               <TableRow>
-                {filteredRows.map((_, i) =>
-                  <TableCell
-                    key={i}
-                    className={classes(css.cellHeader, _.stickyEnd && css.stickyEnd)}
-                  >
+                {filteredRows.map((_, i) => (
+                  <TableCell key={i} className={classes(css.cellHeader, _.stickyEnd && css.stickyEnd)}>
                     {sort ? (
                       <TableSortLabel
                         active={sort.sortBy === _.id}
@@ -172,7 +179,7 @@ export const Datatable = <T extends any = any,>(props: DatatableProps<T>) => {
                       _.head
                     )}
                   </TableCell>
-                )}
+                ))}
               </TableRow>
             </TableHead>
           )}
@@ -180,60 +187,64 @@ export const Datatable = <T extends any = any,>(props: DatatableProps<T>) => {
             {loading && (
               <TableRow>
                 <TableCell colSpan={filteredRows.length} className={css.loadingTd}>
-                  <LinearProgress className={css.loading}/>
+                  <LinearProgress className={css.loading} />
                 </TableCell>
               </TableRow>
             )}
-            {data?.map((item, i) =>
+            {data?.map((item, i) => (
               <TableRow
                 key={getRenderRowKey ? getRenderRowKey(item) : i}
                 onClick={() => onClickRows?.(item)}
                 className={classes(onClickRows && css.hoverableRows)}
               >
-                {filteredRows.map((_, i) =>
-                  <TableCell key={i} style={_.style} className={classes(
-                    typeof _.className === 'function' ? _.className(item) : _.className,
-                    cssUtils.truncate,
-                    _.stickyEnd && css.stickyEnd
-                  )}>
+                {filteredRows.map((_, i) => (
+                  <TableCell
+                    key={i}
+                    style={_.style}
+                    className={classes(
+                      typeof _.className === 'function' ? _.className(item) : _.className,
+                      cssUtils.truncate,
+                      _.stickyEnd && css.stickyEnd,
+                    )}
+                  >
                     {_.row(item)}
                   </TableCell>
-                )}
+                ))}
               </TableRow>
-            )}
+            ))}
             {!loading && (!data || data?.length === 0) && (
               <TableRow>
                 <TableCell colSpan={filteredRows.length} className={css.fenderContainer}>
-                  {renderEmptyState ? (
-                    renderEmptyState
-                  ) : (
-                    <Fender title={m.noDataAtm} icon="highlight_off"/>
-                  )}
+                  {renderEmptyState ? renderEmptyState : <Fender title={m.noDataAtm} icon="highlight_off" />}
                 </TableCell>
               </TableRow>
             )}
           </TableBody>
         </Table>
       </div>
-      {paginate && total && (!paginate.minRowsBeforeDisplay || total > paginate.minRowsBeforeDisplay) ? (() => {
-        const limit = safeParseInt(paginate.limit, 10)
-        const offset = safeParseInt(paginate.offset, 0)
-        return (
-          <TablePagination
-            rowsPerPageOptions={rowsPerPageOptions}
-            component="div"
-            count={total ?? 0}
-            rowsPerPage={limit}
-            page={offset / limit}
-            onPageChange={(event: unknown, newPage: number) => paginate.onPaginationChange({offset: newPage * limit})}
-            onRowsPerPageChange={(event: React.ChangeEvent<HTMLInputElement>) => paginate.onPaginationChange({limit: +event.target.value})}
-          />
-        )
-      })() : data && (
-        <div className={css.paginate}>
-          <span dangerouslySetInnerHTML={{__html: m.nLines(data.length)}}/>
-        </div>
-      )}
+      {paginate && total && (!paginate.minRowsBeforeDisplay || total > paginate.minRowsBeforeDisplay)
+        ? (() => {
+            const limit = safeParseInt(paginate.limit, 10)
+            const offset = safeParseInt(paginate.offset, 0)
+            return (
+              <TablePagination
+                rowsPerPageOptions={rowsPerPageOptions}
+                component="div"
+                count={total ?? 0}
+                rowsPerPage={limit}
+                page={offset / limit}
+                onPageChange={(event: unknown, newPage: number) => paginate.onPaginationChange({offset: newPage * limit})}
+                onRowsPerPageChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+                  paginate.onPaginationChange({limit: +event.target.value})
+                }
+              />
+            )
+          })()
+        : data && (
+            <div className={css.paginate}>
+              <span dangerouslySetInnerHTML={{__html: m.nLines(data.length)}} />
+            </div>
+          )}
     </>
   )
 }

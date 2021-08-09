@@ -8,17 +8,17 @@ const useReportCategoryStyles = makeStyles((t: Theme) => ({
   root: {
     display: 'inline-flex',
     alignItems: 'center',
-    marginBottom: t.spacing(.5),
+    marginBottom: t.spacing(0.5),
     border: '1px solid ' + t.palette.divider,
     borderRadius: 40,
-    padding: styleUtils(t).spacing(.5, 1, .5, 1),
+    padding: styleUtils(t).spacing(0.5, 1, 0.5, 1),
   },
   icon: {
     fontSize: 20,
     // color: t.palette.divider,
     color: t.palette.primary.main,
-    marginRight: t.spacing(.5),
-  }
+    marginRight: t.spacing(0.5),
+  },
 }))
 
 const ReportCategory = ({children}: {children: any}) => {
@@ -48,22 +48,19 @@ const useReportCategoriesStyles = makeStyles((t: Theme) => ({
     // marginRight: t.spacing(0),
     // marginLeft: t.spacing(0),
     display: 'inline',
-  }
+  },
 }))
 
 export const ReportCategories = ({categories}: ReportCategoriesProps) => {
   const css = useReportCategoriesStyles()
   return (
     <div className={css.root}>
-      {categories.map((category, i) =>
+      {categories.map((category, i) => (
         <React.Fragment key={i}>
           <ReportCategory>{category}</ReportCategory>
           {i < categories.length - 1 && <Icon className={css.separator}>chevron_right</Icon>}
         </React.Fragment>
-      )}
+      ))}
     </div>
-
   )
 }
-
-

@@ -3,21 +3,21 @@ import {AsyncFile, AsyncFileStatus} from './AsyncFile'
 import {addHours} from 'date-fns'
 
 export class AsyncFileClient {
-
-  constructor(private client: ApiClientApi) {
-  }
+  constructor(private client: ApiClientApi) {}
 
   private static readonly maxFileGenerationHoursDuration = 24
 
   readonly fetch = () => {
-    return this.client.get<AsyncFile[]>(`/async-files`).then(result => result.map(_ => {
-      const creationDate = new Date(_.creationDate)
-      return {
-        ..._,
-        creationDate,
-        status: AsyncFileClient.getStatus(_)
-      }
-    }))
+    return this.client.get<AsyncFile[]>(`/async-files`).then(result =>
+      result.map(_ => {
+        const creationDate = new Date(_.creationDate)
+        return {
+          ..._,
+          creationDate,
+          status: AsyncFileClient.getStatus(_),
+        }
+      }),
+    )
   }
 
   private static readonly getStatus = (file: AsyncFile): AsyncFileStatus => {

@@ -26,7 +26,6 @@ const defaultContext: Partial<ReportContextProps> = {}
 const ReportContext = React.createContext<ReportContextProps>(defaultContext as ReportContextProps)
 
 export const ReportProvider = ({api, children}: Props) => {
-
   const get = useFetcher(api.secured.reports.getById)
   const remove = useFetcher(api.secured.reports.remove)
   const events = useFetcher(api.secured.events.getByReportId)
@@ -38,24 +37,27 @@ export const ReportProvider = ({api, children}: Props) => {
   const updateReport = (report: Report) => get.setEntity(prev => ({report, files: prev?.files ?? []}))
 
   const updateCompany = useFetcher((reportId: string, company: CompanySearchResult) =>
-    api.secured.reports.updateReportCompany(reportId, company).then(updateReport)
+    api.secured.reports.updateReportCompany(reportId, company).then(updateReport),
   )
-  const updateConsumer = useFetcher((reportId: string, firstName: string, lastName: string, email: string, contactAgreement: boolean) =>
-    api.secured.reports.updateReportConsumer(reportId, firstName, lastName, email, contactAgreement).then(updateReport)
+  const updateConsumer = useFetcher(
+    (reportId: string, firstName: string, lastName: string, email: string, contactAgreement: boolean) =>
+      api.secured.reports.updateReportConsumer(reportId, firstName, lastName, email, contactAgreement).then(updateReport),
   )
 
   return (
-    <ReportContext.Provider value={{
-      get,
-      remove,
-      events,
-      companyEvents,
-      download,
-      updateCompany,
-      updateConsumer,
-      postAction,
-      postResponse
-    }}>
+    <ReportContext.Provider
+      value={{
+        get,
+        remove,
+        events,
+        companyEvents,
+        download,
+        updateCompany,
+        updateConsumer,
+        postAction,
+        postResponse,
+      }}
+    >
       {children}
     </ReportContext.Provider>
   )

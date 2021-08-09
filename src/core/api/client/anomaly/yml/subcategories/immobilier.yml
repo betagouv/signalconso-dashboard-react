@@ -1,5 +1,5 @@
 - title: Agence immobilière
-  example: 'Exemple : location, vente, gestion locative, mandataire indépendant, marchand de liste, chasseur d''appartements'
+  example: "Exemple : location, vente, gestion locative, mandataire indépendant, marchand de liste, chasseur d'appartements"
   subcategories:
     - title: Je cherche une location ou un bien à acheter
       example: 'Exemple : marchand de liste, annonce immobilière, dossier de location'
@@ -13,7 +13,7 @@
               tags:
                 - Litige contractuel
             - title: Annonces de location incomplètes ou mensongères (en vitrine ou sur internet)
-              example: 'Exemple : loyer annoncé faux, descriptif de l''appartement mensonger'
+              example: "Exemple : loyer annoncé faux, descriptif de l'appartement mensonger"
               tags:
                 - Litige contractuel
             - title: Demande d'un document interdit pour le dossier de location
@@ -29,7 +29,7 @@
               tags:
                 - Litige contractuel
             - title: Annonces de vente incomplètes ou mensongères (en vitrine ou sur internet)
-              example: 'Exemple : absence de DPE, descriptif d''un appartement mensonger'
+              example: "Exemple : absence de DPE, descriptif d'un appartement mensonger"
               tags:
                 - Litige contractuel
             - title: Problème avec une offre d'achat ou un compromis de vente
@@ -37,7 +37,7 @@
               tags:
                 - Litige contractuel
             - title: Cas particulier d'un chasseur d'appartements
-              example: 'Exemple : frais d''étude alors que c''est interdit'
+              example: "Exemple : frais d'étude alors que c'est interdit"
               tags:
                 - Litige contractuel
             - title: Cas particulier d'un mandataire indépendant (agent commercial)
@@ -74,7 +74,7 @@
               tags:
                 - Litige contractuel
             - title: Discours trompeur
-              example: 'Exemple : L''agent immobilier m''a promis de vendre sous 7 jours'
+              example: "Exemple : L'agent immobilier m'a promis de vendre sous 7 jours"
               tags:
                 - Litige contractuel
         - title: Autre
@@ -102,7 +102,7 @@
   subcategories:
     - title: Facturation
       example: 'Exemple : frais facturés injustifiés ou facturés plus chers que prévu'
-      subcategoriesTitle: 'Le détail des frais est marqué dans le contrat de syndic. Avant de faire un signalement, veuillez vérifier ce contrat au chapitre 7. Si vous ne l''avez pas, demandez le à votre syndic. Ce document est obligatoire et gratuit.'
+      subcategoriesTitle: "Le détail des frais est marqué dans le contrat de syndic. Avant de faire un signalement, veuillez vérifier ce contrat au chapitre 7. Si vous ne l'avez pas, demandez le à votre syndic. Ce document est obligatoire et gratuit."
       subcategories:
         - title: J'ai pris connaissance de mon contrat de syndic.
           tags:

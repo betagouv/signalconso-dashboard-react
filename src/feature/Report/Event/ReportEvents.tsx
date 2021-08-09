@@ -18,9 +18,8 @@ export const ReportEvents = ({events}: Props) => {
       ) : (
         events
           .sort((a, b) => a.data.creationDate.getTime() - b.data.creationDate.getTime())
-          .map(event =>
-            <ReportEventComponent key={event.data.id} event={event}/>,
-          ))}
+          .map(event => <ReportEventComponent key={event.data.id} event={event} />)
+      )}
     </PanelBody>
   )
 }

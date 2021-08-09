@@ -15,14 +15,20 @@ interface Form {
 }
 
 interface Props {
-  report: Report,
+  report: Report
   children: ReactElement<any>
   onChange: (userForm: Form) => any
 }
 
 export const EditConsumerDialog = ({report, onChange, children}: Props) => {
   const {m} = useI18n()
-  const {register, handleSubmit, getValues, control, formState: {errors, isValid}} = useForm<Form>({mode: 'onChange'})
+  const {
+    register,
+    handleSubmit,
+    getValues,
+    control,
+    formState: {errors, isValid},
+  } = useForm<Form>({mode: 'onChange'})
   return (
     <Confirm
       title={m.editConsumer}
@@ -70,12 +76,17 @@ export const EditConsumerDialog = ({report, onChange, children}: Props) => {
             })}
           />
 
-          <Controller name="contactAgreement" defaultValue={report.contactAgreement} control={control} render={({field}) =>
-            <FormControlLabel
-              control={<Checkbox {...field} checked={field.value} disabled={report.contactAgreement}/>}
-              label={m.contactAgreement}
-            />
-          }/>
+          <Controller
+            name="contactAgreement"
+            defaultValue={report.contactAgreement}
+            control={control}
+            render={({field}) => (
+              <FormControlLabel
+                control={<Checkbox {...field} checked={field.value} disabled={report.contactAgreement} />}
+                label={m.contactAgreement}
+              />
+            )}
+          />
         </>
       }
     >

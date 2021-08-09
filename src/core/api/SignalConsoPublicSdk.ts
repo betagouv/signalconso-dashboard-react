@@ -3,9 +3,7 @@ import {AnomalyClient, AuthenticateClient, FileClient, PublicConstantClient} fro
 import {PublicCompanyClient} from './client/company/PublicCompanyClient'
 
 export class SignalConsoPublicSdk {
-
-  constructor(private client: ApiClientApi) {
-  }
+  constructor(private client: ApiClientApi) {}
 
   readonly company = new PublicCompanyClient(this.client)
   readonly constant = new PublicConstantClient(this.client)

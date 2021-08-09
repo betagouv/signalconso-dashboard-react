@@ -24,7 +24,7 @@ const useMenuStyles = makeStyles((t: Theme) => ({
     minWidth: 280,
   },
   user: {
-    padding: t.spacing(2, 2, .5, 2),
+    padding: t.spacing(2, 2, 0.5, 2),
   },
   userName: {
     ...styleUtils(t).truncate,
@@ -44,8 +44,8 @@ const useMenuStyles = makeStyles((t: Theme) => ({
   divider: {
     '& + $divider': {
       display: 'none',
-    }
-  }
+    },
+  },
 }))
 
 interface Props {
@@ -67,39 +67,56 @@ export const ScMenu = ({onClose, connectedUser}: Props) => {
     <ClickAwayListener onClickAway={stopPropagation(onClose)}>
       <div className={css.root}>
         <div className={css.user}>
-          <Txt block truncate className={css.userName}>{connectedUser.firstName} {connectedUser.lastName}</Txt>
-          <Txt block truncate className={css.userEmail}>{connectedUser.email}</Txt>
+          <Txt block truncate className={css.userName}>
+            {connectedUser.firstName} {connectedUser.lastName}
+          </Txt>
+          <Txt block truncate className={css.userEmail}>
+            {connectedUser.email}
+          </Txt>
           <Btn variant="outlined" size="small" icon="logout" color="primary" className={css.logoutBtn} onClick={logout}>
             {m.logout}
           </Btn>
         </div>
-        <Divider className={css.divider}/>
-        <ScMenuItem onClick={onClose} to={path(siteMap.reports())} icon={EntityIcon.report}>{m.menu_reports}</ScMenuItem>
+        <Divider className={css.divider} />
+        <ScMenuItem onClick={onClose} to={path(siteMap.reports())} icon={EntityIcon.report}>
+          {m.menu_reports}
+        </ScMenuItem>
         {[Roles.Admin, Roles.DGCCRF].includes(connectedUser.role) && (
-          <ScMenuItem onClick={onClose} to={path(siteMap.companies)} icon={EntityIcon.company}>{m.menu_companies}</ScMenuItem>
+          <ScMenuItem onClick={onClose} to={path(siteMap.companies)} icon={EntityIcon.company}>
+            {m.menu_companies}
+          </ScMenuItem>
         )}
         {[Roles.Pro].includes(connectedUser.role) && (
-          <ScMenuItem onClick={onClose} to={path(siteMap.companiesPro)} icon={EntityIcon.company}>{m.menu_companies}</ScMenuItem>
+          <ScMenuItem onClick={onClose} to={path(siteMap.companiesPro)} icon={EntityIcon.company}>
+            {m.menu_companies}
+          </ScMenuItem>
         )}
         {[Roles.Admin].includes(connectedUser.role) && (
-          <ScMenuItem onClick={onClose} to={path(siteMap.users)} icon={EntityIcon.user}>{m.menu_users}</ScMenuItem>
+          <ScMenuItem onClick={onClose} to={path(siteMap.users)} icon={EntityIcon.user}>
+            {m.menu_users}
+          </ScMenuItem>
         )}
         {[Roles.Admin, Roles.DGCCRF].includes(connectedUser.role) && (
-          <ScMenuItem onClick={onClose} to={path(siteMap.subscriptions)} icon={EntityIcon.subscription}>{m.menu_subscriptions}</ScMenuItem>
+          <ScMenuItem onClick={onClose} to={path(siteMap.subscriptions)} icon={EntityIcon.subscription}>
+            {m.menu_subscriptions}
+          </ScMenuItem>
         )}
-        <Divider className={css.divider}/>
+        <Divider className={css.divider} />
         {[Roles.Admin].includes(connectedUser.role) && (
-          <ScMenuItem onClick={onClose} to={path(siteMap.reportedWebsites)} icon={EntityIcon.website}>{m.menu_websites}</ScMenuItem>
+          <ScMenuItem onClick={onClose} to={path(siteMap.reportedWebsites)} icon={EntityIcon.website}>
+            {m.menu_websites}
+          </ScMenuItem>
         )}
         {[Roles.Admin].includes(connectedUser.role) && (
-          <ScMenuItem onClick={onClose} to={path(siteMap.reportedPhone)} icon={EntityIcon.phone}>{m.menu_phones}</ScMenuItem>
+          <ScMenuItem onClick={onClose} to={path(siteMap.reportedPhone)} icon={EntityIcon.phone}>
+            {m.menu_phones}
+          </ScMenuItem>
         )}
-        <Divider className={css.divider}/>
-        <ScMenuItem onClick={onClose} to={path(siteMap.settings)} icon="settings">{m.menu_settings}</ScMenuItem>
+        <Divider className={css.divider} />
+        <ScMenuItem onClick={onClose} to={path(siteMap.settings)} icon="settings">
+          {m.menu_settings}
+        </ScMenuItem>
       </div>
     </ClickAwayListener>
   )
 }
-
-
-

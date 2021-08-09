@@ -42,15 +42,15 @@ const useStyles = makeStyles((t: Theme) => ({
     '& a': {
       color: t.palette.primary.main,
       fontWeight: t.typography.fontWeightBold,
-    }
-  }
-}));
+    },
+  },
+}))
 
 interface Props {
   isLogging: boolean
   onLogin: (...args: any[]) => Promise<any>
   forgottenPassword?: {
-    action: (email: string) => Promise<any>,
+    action: (email: string) => Promise<any>
     loading: boolean
     errorMsg?: string
   }
@@ -63,12 +63,12 @@ export const LoginPage = ({isLogging, onLogin, forgottenPassword}: Props) => {
   const inputEmail = useFormInput('email', {
     errorMessage: m.invalidEmail,
     pattern: regexpPattern.email,
-    required: true
+    required: true,
   })
   const inputEmailForgotten = useFormInput('emailForgotten', {
     errorMessage: m.invalidEmail,
     pattern: regexpPattern.email,
-    required: true
+    required: true,
   })
   const inputPassword = useFormInput('password', {
     errorMessage: m.atLeast8Characters,
@@ -128,9 +128,13 @@ export const LoginPage = ({isLogging, onLogin, forgottenPassword}: Props) => {
                   content={
                     <>
                       {forgottenPassword.errorMsg !== undefined && (
-                        <Alert type="error" gutterBottom deletable>{m.anErrorOccurred}</Alert>
+                        <Alert type="error" gutterBottom deletable>
+                          {m.anErrorOccurred}
+                        </Alert>
                       )}
-                      <Txt color="hint" block gutterBottom>{m.forgottenPasswordDesc} {inputEmailForgotten.props.value}</Txt>
+                      <Txt color="hint" block gutterBottom>
+                        {m.forgottenPasswordDesc} {inputEmailForgotten.props.value}
+                      </Txt>
                       <TextField
                         fullWidth
                         autoFocus
@@ -138,20 +142,21 @@ export const LoginPage = ({isLogging, onLogin, forgottenPassword}: Props) => {
                         margin="dense"
                         variant="outlined"
                         label={m.email}
-                        {...inputEmailForgotten.props}/>
-
+                        {...inputEmailForgotten.props}
+                      />
                     </>
                   }
                   onConfirm={(event, close) => {
-                    forgottenPassword?.action(inputEmailForgotten.props.value).then(close).then(() => toastSuccess(m.emailSentToYou))
+                    forgottenPassword
+                      ?.action(inputEmailForgotten.props.value)
+                      .then(close)
+                      .then(() => toastSuccess(m.emailSentToYou))
                   }}
                   confirmLabel={m.createNewPassword}
                   cancelLabel={m.close}
                   maxWidth="xs"
                 >
-                  <Btn color="primary">
-                    {m.forgottenPassword}
-                  </Btn>
+                  <Btn color="primary">{m.forgottenPassword}</Btn>
                 </Confirm>
               )}
             </div>
@@ -159,8 +164,8 @@ export const LoginPage = ({isLogging, onLogin, forgottenPassword}: Props) => {
         </PanelBody>
       </Panel>
       <Txt color="hint" className={css.hint}>
-        <div dangerouslySetInnerHTML={{__html: m.loginIssueTip}}/>
+        <div dangerouslySetInnerHTML={{__html: m.loginIssueTip}} />
       </Txt>
     </Page>
-  );
-};
+  )
+}

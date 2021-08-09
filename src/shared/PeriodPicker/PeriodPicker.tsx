@@ -31,7 +31,6 @@ const useStyles = makeStyles((t: Theme) => ({
     borderBottomLeftRadius: 0,
     borderTopLeftRadius: 0,
   },
-
 }))
 
 export const PeriodPicker = ({value, onChange, label, fullWidth, className, style}: DatepickerProps) => {
@@ -49,17 +48,13 @@ export const PeriodPicker = ({value, onChange, label, fullWidth, className, styl
   }, [value])
 
   const handleStartChange = (newStart: Date) => {
-    const newEnd = end
-      ? newStart.getTime() > end.getTime() ? addDays(newStart, 1) : end
-      : undefined
+    const newEnd = end ? (newStart.getTime() > end.getTime() ? addDays(newStart, 1) : end) : undefined
     setStart(newStart)
     setEnd(newEnd)
     onChange([newStart, newEnd])
   }
   const handleEndChange = (newEnd: Date) => {
-    const newStart = start
-      ? newEnd.getTime() < start.getTime() ? subDays(newEnd, 1) : start
-      : undefined
+    const newStart = start ? (newEnd.getTime() < start.getTime() ? subDays(newEnd, 1) : start) : undefined
     setStart(newStart)
     setEnd(newEnd)
     onChange([newStart, newEnd])

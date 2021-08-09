@@ -50,7 +50,9 @@ export const ReportedPhones = () => {
               <PeriodPicker
                 fullWidth
                 value={[_reportedPhone.filters.start, _reportedPhone.filters.end]}
-                onChange={([start, end]) => _reportedPhone.updateFilters(prev => ({...prev, start: start ?? prev.start, end: end ?? prev.end}))}
+                onChange={([start, end]) =>
+                  _reportedPhone.updateFilters(prev => ({...prev, start: start ?? prev.start, end: end ?? prev.end}))
+                }
               />
               <ExportPhonesPopper>
                 <IconBtn color="primary">
@@ -102,18 +104,20 @@ export const ReportedPhones = () => {
               id: 'actions',
               row: _ => (
                 <>
-                  <NavLink to={siteMap.reports({
-                    phone: _.phone,
-                    ...(_.siret ? {siretSirenList: [_.siret]} : {}),
-                    ...(_.category ? {category: _.category} : {}),
-                  })}>
+                  <NavLink
+                    to={siteMap.reports({
+                      phone: _.phone,
+                      ...(_.siret ? {siretSirenList: [_.siret]} : {}),
+                      ...(_.category ? {category: _.category} : {}),
+                    })}
+                  >
                     <Btn size="small" color="primary" variant="outlined">
                       {m.see}
                     </Btn>
                   </NavLink>
                 </>
-              )
-            }
+              ),
+            },
           ]}
         />
       </Panel>

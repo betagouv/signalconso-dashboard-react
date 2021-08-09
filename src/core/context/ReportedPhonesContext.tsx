@@ -19,21 +19,23 @@ const defaultContext: Partial<ReportedPhonesContextProps> = {}
 const ReportedPhonesContext = React.createContext<ReportedPhonesContextProps>(defaultContext as ReportedPhonesContextProps)
 
 export const ReportedPhonesProvider = ({api, children}: Props) => {
-
-  const paginated = usePaginate<ReportedPhone, ReportedPhoneSearch>(search => {
-    const {limit, offset, sortBy = 'count', orderBy = 'desc', ...filters} = search
-    return api.secured.reportedPhone.list(filters)
-      .then(paginateData(limit, offset))
-      .then(sortPaginatedData(sortBy, orderBy))
-  }, {limit: 10, offset: 0})
+  const paginated = usePaginate<ReportedPhone, ReportedPhoneSearch>(
+    search => {
+      const {limit, offset, sortBy = 'count', orderBy = 'desc', ...filters} = search
+      return api.secured.reportedPhone.list(filters).then(paginateData(limit, offset)).then(sortPaginatedData(sortBy, orderBy))
+    },
+    {limit: 10, offset: 0},
+  )
 
   const extract = useFetcher(() => api.secured.reportedPhone.extract(paginated.filters))
 
   return (
-    <ReportedPhonesContext.Provider value={{
-      ...paginated,
-      extract,
-    }}>
+    <ReportedPhonesContext.Provider
+      value={{
+        ...paginated,
+        extract,
+      }}
+    >
       {children}
     </ReportedPhonesContext.Provider>
   )

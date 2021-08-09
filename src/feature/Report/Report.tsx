@@ -37,16 +37,17 @@ const useStyles = makeStyles((t: Theme) => ({
   },
 }))
 
-export const creationReportEvent = (report: Report): ReportEvent => Object.freeze({
-  data: {
-    id: 'dummy',
-    details: {} as any,
-    reportId: report.id,
-    eventType: 'CONSO',
-    creationDate: report.creationDate,
-    action: EventActionValues.Creation,
-  },
-})
+export const creationReportEvent = (report: Report): ReportEvent =>
+  Object.freeze({
+    data: {
+      id: 'dummy',
+      details: {} as any,
+      reportId: report.id,
+      eventType: 'CONSO',
+      creationDate: report.creationDate,
+      action: EventActionValues.Creation,
+    },
+  })
 
 export const ReportComponent = () => {
   const {id} = useParams<{id: Id}>()
@@ -57,7 +58,10 @@ export const ReportComponent = () => {
   const css = useStyles()
   const {toastError} = useToast()
   const [activeTab, setActiveTab] = useState(0)
-  const response = useMemo(() => _report.events.entity?.find(_ => _.data.action === EventActionValues.ReportProResponse), [_report.events])
+  const response = useMemo(
+    () => _report.events.entity?.find(_ => _.data.action === EventActionValues.ReportProResponse),
+    [_report.events],
+  )
 
   useEffect(() => {
     _report.get.clearCache()
@@ -73,149 +77,174 @@ export const ReportComponent = () => {
     fromNullable(_report.updateCompany.error).map(toastError)
     fromNullable(_report.companyEvents.error).map(toastError)
     fromNullable(_report.events.error).map(toastError)
-  }, [
-    _report.remove.error,
-    _report.get.error,
-    _report.updateCompany.error,
-    _report.companyEvents.error,
-    _report.events.error,
-  ])
+  }, [_report.remove.error, _report.get.error, _report.updateCompany.error, _report.companyEvents.error, _report.events.error])
 
   const downloadReport = (reportId: Id) => _report.download.fetch({}, reportId)
 
   return (
     <Page loading={_report.get.loading}>
-      {fromNullable(_report.get.entity?.report).map(report =>
-        <>
-          <ReportHeader
-            elevated
-            report={report}
-            files={_report.get.entity?.files}
-            actions={
-              <>
-                <ReportAddComment report={report} onAdd={() => _report.events.fetch({force: true, clean: false}, id)}>
-                  <Tooltip title={m.addDgccrfComment}>
-                    <Btn variant="outlined" color="primary" icon="add_comment">
-                      {m.comment}
+      {fromNullable(_report.get.entity?.report)
+        .map(report => (
+          <>
+            <ReportHeader
+              elevated
+              report={report}
+              files={_report.get.entity?.files}
+              actions={
+                <>
+                  <ReportAddComment report={report} onAdd={() => _report.events.fetch({force: true, clean: false}, id)}>
+                    <Tooltip title={m.addDgccrfComment}>
+                      <Btn variant="outlined" color="primary" icon="add_comment">
+                        {m.comment}
+                      </Btn>
+                    </Tooltip>
+                  </ReportAddComment>
+                  <Btn
+                    variant="outlined"
+                    color="primary"
+                    icon="download"
+                    loading={_report.download.loading}
+                    onClick={() => downloadReport(report.id)}
+                  >
+                    {m.download}
+                  </Btn>
+                  <Confirm
+                    title={m.removeAsk}
+                    content={m.removeReportDesc(report.companySiret)}
+                    onConfirm={(event, close) =>
+                      _report.remove
+                        .fetch({}, report.id)
+                        .then(() => window.history.back())
+                        .finally(close)
+                    }
+                  >
+                    <Btn loading={_report.remove.loading} variant="outlined" color="error" icon="delete">
+                      {m.delete}
                     </Btn>
-                  </Tooltip>
-                </ReportAddComment>
-                <Btn
-                  variant="outlined" color="primary" icon="download"
-                  loading={_report.download.loading}
-                  onClick={() => downloadReport(report.id)}
-                >
-                  {m.download}
-                </Btn>
-                <Confirm
-                  title={m.removeAsk}
-                  content={m.removeReportDesc(report.companySiret)}
-                  onConfirm={(event, close) => _report.remove.fetch({}, report.id).then(() => window.history.back()).finally(close)}
-                >
-                  <Btn loading={_report.remove.loading} variant="outlined" color="error" icon="delete">{m.delete}</Btn>
-                </Confirm>
-              </>
-            }/>
-          <Grid container spacing={2} alignItems="stretch">
-            <Grid item xs={12} sm={6}>
-              <Panel stretch>
-                <PanelHead>{m.consumer}</PanelHead>
-                <PanelBody className={css.cardBody}>
-                  <div>
-                    <div className={cssUtils.txtBig}>
-                      {fromNullable(report.firstName).map(_ => capitalize(_)).getOrElse('')}
-                      &nbsp;
-                      {fromNullable(report.lastName).map(_ => _.toLocaleUpperCase()).getOrElse('')}
-                    </div>
-                    <div className={cssUtils.colorTxtSecondary}>{report.email}</div>
-                    {!report.contactAgreement && (
-                      <div className={classes(cssUtils.colorError)} style={{marginTop: theme.spacing(.5)}}>
-                        <Icon className={cssUtils.inlineIcon}>warning</Icon>
+                  </Confirm>
+                </>
+              }
+            />
+            <Grid container spacing={2} alignItems="stretch">
+              <Grid item xs={12} sm={6}>
+                <Panel stretch>
+                  <PanelHead>{m.consumer}</PanelHead>
+                  <PanelBody className={css.cardBody}>
+                    <div>
+                      <div className={cssUtils.txtBig}>
+                        {fromNullable(report.firstName)
+                          .map(_ => capitalize(_))
+                          .getOrElse('')}
                         &nbsp;
-                        {m.reportConsumerWantToBeAnonymous}
+                        {fromNullable(report.lastName)
+                          .map(_ => _.toLocaleUpperCase())
+                          .getOrElse('')}
                       </div>
-                    )}
-                  </div>
-                  <Icon className={css.cardBody_icon}>person</Icon>
-                </PanelBody>
-                <PanelFoot>
-                  <EditConsumerDialog report={report} onChange={user => _report.updateConsumer.fetch({},
-                    report.id,
-                    user.firstName,
-                    user.lastName,
-                    user.email,
-                    user.contactAgreement,
-                  )}>
-                    <ScButton icon="edit" color="primary" loading={_report.updateConsumer.loading}>{m.edit}</ScButton>
-                  </EditConsumerDialog>
-                </PanelFoot>
-              </Panel>
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <Panel stretch>
-                <PanelHead>{m.company}</PanelHead>
-                <PanelBody className={css.cardBody}>
-                  <div>
-                    <div className={cssUtils.txtBig} style={{marginBottom: theme.spacing(1 / 2)}}>{report.companySiret}</div>
-                    <div className={classes(cssUtils.colorTxtSecondary, cssUtils.txtSmall)}>
-                      <div className={cssUtils.txtBold}>{report.companyName}</div>
-                      <AddressComponent address={report.companyAddress}/>
+                      <div className={cssUtils.colorTxtSecondary}>{report.email}</div>
+                      {!report.contactAgreement && (
+                        <div className={classes(cssUtils.colorError)} style={{marginTop: theme.spacing(0.5)}}>
+                          <Icon className={cssUtils.inlineIcon}>warning</Icon>
+                          &nbsp;
+                          {m.reportConsumerWantToBeAnonymous}
+                        </div>
+                      )}
                     </div>
-                    <div>{report.vendor}</div>
-                  </div>
-                  <Icon className={css.cardBody_icon}>store</Icon>
-                </PanelBody>
-                <PanelFoot>
-                  <SelectCompany siret={report.companySiret} onChange={company => {
-                    _report.updateCompany.fetch({}, report.id, company)
-                  }}>
-                    <ScButton icon="edit" color="primary" loading={_report.updateCompany.loading}>{m.edit}</ScButton>
-                  </SelectCompany>
-                </PanelFoot>
-              </Panel>
+                    <Icon className={css.cardBody_icon}>person</Icon>
+                  </PanelBody>
+                  <PanelFoot>
+                    <EditConsumerDialog
+                      report={report}
+                      onChange={user =>
+                        _report.updateConsumer.fetch(
+                          {},
+                          report.id,
+                          user.firstName,
+                          user.lastName,
+                          user.email,
+                          user.contactAgreement,
+                        )
+                      }
+                    >
+                      <ScButton icon="edit" color="primary" loading={_report.updateConsumer.loading}>
+                        {m.edit}
+                      </ScButton>
+                    </EditConsumerDialog>
+                  </PanelFoot>
+                </Panel>
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <Panel stretch>
+                  <PanelHead>{m.company}</PanelHead>
+                  <PanelBody className={css.cardBody}>
+                    <div>
+                      <div className={cssUtils.txtBig} style={{marginBottom: theme.spacing(1 / 2)}}>
+                        {report.companySiret}
+                      </div>
+                      <div className={classes(cssUtils.colorTxtSecondary, cssUtils.txtSmall)}>
+                        <div className={cssUtils.txtBold}>{report.companyName}</div>
+                        <AddressComponent address={report.companyAddress} />
+                      </div>
+                      <div>{report.vendor}</div>
+                    </div>
+                    <Icon className={css.cardBody_icon}>store</Icon>
+                  </PanelBody>
+                  <PanelFoot>
+                    <SelectCompany
+                      siret={report.companySiret}
+                      onChange={company => {
+                        _report.updateCompany.fetch({}, report.id, company)
+                      }}
+                    >
+                      <ScButton icon="edit" color="primary" loading={_report.updateCompany.loading}>
+                        {m.edit}
+                      </ScButton>
+                    </SelectCompany>
+                  </PanelFoot>
+                </Panel>
+              </Grid>
             </Grid>
-          </Grid>
-          <Panel loading={_report.events.loading}>
-            {_report.events.entity && _report.companyEvents.entity && (
-              <>
-                <Tabs
-                  className={css.tabs}
-                  value={activeTab}
-                  onChange={(event: React.ChangeEvent<{}>, newValue: number) => setActiveTab(newValue)}
-                  indicatorColor="primary"
-                  textColor="primary"
-                >
-                  <Tab label={m.proResponse}/>
-                  <Tab label={m.reportHistory}/>
-                  <Tab label={m.companyHistory}/>
-                </Tabs>
-                <ReportTabPanel value={activeTab} index={0}>
-                  <ReportResponseComponent
-                    canEditFile
-                    reportId={report.id}
-                    response={response}
-                    files={_report.get.entity?.files.filter(_ => _.origin === FileOrigin.Professional)}
-                  />
-                </ReportTabPanel>
-                <ReportTabPanel value={activeTab} index={1}>
-                  <ReportEvents events={[creationReportEvent(report), ..._report.events.entity]}/>
-                </ReportTabPanel>
-                <ReportTabPanel value={activeTab} index={2}>
-                  <ReportEvents events={_report.companyEvents.entity}/>
-                </ReportTabPanel>
-              </>
-            )}
-          </Panel>
-        </>,
-      ).getOrElse(<></>)}
+            <Panel loading={_report.events.loading}>
+              {_report.events.entity && _report.companyEvents.entity && (
+                <>
+                  <Tabs
+                    className={css.tabs}
+                    value={activeTab}
+                    onChange={(event: React.ChangeEvent<{}>, newValue: number) => setActiveTab(newValue)}
+                    indicatorColor="primary"
+                    textColor="primary"
+                  >
+                    <Tab label={m.proResponse} />
+                    <Tab label={m.reportHistory} />
+                    <Tab label={m.companyHistory} />
+                  </Tabs>
+                  <ReportTabPanel value={activeTab} index={0}>
+                    <ReportResponseComponent
+                      canEditFile
+                      reportId={report.id}
+                      response={response}
+                      files={_report.get.entity?.files.filter(_ => _.origin === FileOrigin.Professional)}
+                    />
+                  </ReportTabPanel>
+                  <ReportTabPanel value={activeTab} index={1}>
+                    <ReportEvents events={[creationReportEvent(report), ..._report.events.entity]} />
+                  </ReportTabPanel>
+                  <ReportTabPanel value={activeTab} index={2}>
+                    <ReportEvents events={_report.companyEvents.entity} />
+                  </ReportTabPanel>
+                </>
+              )}
+            </Panel>
+          </>
+        ))
+        .getOrElse(<></>)}
     </Page>
   )
 }
 
 interface ReportTabPanelProps {
-  children?: React.ReactNode;
-  index: any;
-  value: any;
+  children?: React.ReactNode
+  index: any
+  value: any
 }
 
 const ReportTabPanel = (props: ReportTabPanelProps) => {
@@ -229,9 +258,7 @@ const ReportTabPanel = (props: ReportTabPanelProps) => {
       aria-labelledby={`scrollable-auto-tab-${index}`}
       {...other}
     >
-      {value === index && (
-        children
-      )}
+      {value === index && children}
     </div>
   )
 }

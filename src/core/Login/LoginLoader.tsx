@@ -9,13 +9,13 @@ const useStyles = makeStyles((t: Theme) => ({
     justifyContent: 'center',
     minHeight: '100vh',
   },
-}));
+}))
 
 export const LoginLoader = () => {
-  const css = useStyles();
+  const css = useStyles()
   return (
     <div className={css.root}>
-      <CircularProgress/>
+      <CircularProgress />
     </div>
-  );
-};
+  )
+}

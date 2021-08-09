@@ -14,9 +14,9 @@ interface Props extends React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElem
 }
 
 const colorize = (color: string): CSSProperties => ({
-  background: alpha(color, .14),
-  color: color
-});
+  background: alpha(color, 0.14),
+  color: color,
+})
 
 const useStyles = makeStyles((t: Theme) => ({
   root: {
@@ -41,13 +41,13 @@ const useStyles = makeStyles((t: Theme) => ({
   disable: {
     ...colorize(t.palette.text.disabled),
   },
-}));
+}))
 
 export const Label = ({type, children, className, ...props}: Props) => {
-  const css = useStyles();
+  const css = useStyles()
   return (
     <span className={classes(css.root, type && css[type], className)} {...props}>
       {children}
     </span>
-  );
-};
+  )
+}

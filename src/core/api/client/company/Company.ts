@@ -23,7 +23,6 @@ export interface CompanyWithReportsCount {
   count: number
 }
 
-
 export interface Company {
   id: Id
   siret: string

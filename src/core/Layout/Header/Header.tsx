@@ -15,7 +15,7 @@ import {LayoutConnectedUser} from '../Layout'
 const useStyles = makeStyles((t: Theme) => ({
   root: {
     minHeight: headerHeight,
-    padding: t.spacing(.5, 2),
+    padding: t.spacing(0.5, 2),
     display: 'flex',
     alignItems: 'center',
     background: t.palette.background.paper,
@@ -63,9 +63,9 @@ export const Header = ({connectedUser}: Props) => {
     <Slide direction="down" in={true} mountOnEnter unmountOnExit>
       <div className={css.root}>
         <div className={css.logo}>
-          <img src={logoGouvMobile} alt={m.altLogoGouv} className={css.logoGouvMobile}/>
+          <img src={logoGouvMobile} alt={m.altLogoGouv} className={css.logoGouvMobile} />
           <a href={Config.appBaseUrl}>
-            <img src={logoSignalConso} alt={m.altLogoSignalConso} className={css.logoSignalConsoMobile}/>
+            <img src={logoSignalConso} alt={m.altLogoSignalConso} className={css.logoSignalConsoMobile} />
           </a>
         </div>
         <div className={css.menu}>
@@ -74,11 +74,7 @@ export const Header = ({connectedUser}: Props) => {
               <IconBtn aria-haspopup="true" onClick={handleClick}>
                 <Icon>menu</Icon>
               </IconBtn>
-              <Menu
-                anchorEl={anchorEl}
-                open={Boolean(anchorEl)}
-                onClose={handleClose}
-              >
+              <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleClose}>
                 <a href={Config.appBaseUrl}>
                   <MenuItem>{m.home}</MenuItem>
                 </a>
@@ -97,7 +93,7 @@ export const Header = ({connectedUser}: Props) => {
               <HeaderItem href={Config.appBaseUrl + '/centre-aide/consommateur'}>{m.helpCenter}</HeaderItem>
             </>
           )}
-          <ScMenuBtn connectedUser={connectedUser}/>
+          <ScMenuBtn connectedUser={connectedUser} />
         </div>
       </div>
     </Slide>
@@ -109,12 +105,14 @@ const useHeaderItemStyles = makeStyles((t: Theme) => ({
     textTransform: 'initial',
     fontSize: styleUtils(t).fontSize.normal,
     padding: t.spacing(0, 2),
-  }
+  },
 }))
 
-const HeaderItem = ({children, href}: {children: any, href: string}) => {
+const HeaderItem = ({children, href}: {children: any; href: string}) => {
   const css = useHeaderItemStyles()
   return (
-    <Btn color="primary" href={href} className={css.root}>{children}</Btn>
+    <Btn color="primary" href={href} className={css.root}>
+      {children}
+    </Btn>
   )
 }

@@ -6,23 +6,25 @@ import {IconBtn} from 'mui-extension/lib'
 
 export const headerHeight = 52
 
-const useStyles = makeStyles((t: Theme) => createStyles({
-  root: {
-    height: headerHeight,
-    display: 'flex',
-    alignItems: 'center',
-    paddingRight: t.spacing(2),
-    paddingLeft: t.spacing(1) + 2,
-    background: t.palette.background.paper,
-  },
-  hidden: {
-    visibility: 'hidden' as any,
-  },
-  title: {
-    flex: 1,
-    fontSize: t.typography.h6.fontSize,
-  }
-}))
+const useStyles = makeStyles((t: Theme) =>
+  createStyles({
+    root: {
+      height: headerHeight,
+      display: 'flex',
+      alignItems: 'center',
+      paddingRight: t.spacing(2),
+      paddingLeft: t.spacing(1) + 2,
+      background: t.palette.background.paper,
+    },
+    hidden: {
+      visibility: 'hidden' as any,
+    },
+    title: {
+      flex: 1,
+      fontSize: t.typography.h6.fontSize,
+    },
+  }),
+)
 
 export const SidebarTitle = ({className}: any) => {
   const classes = useStyles()

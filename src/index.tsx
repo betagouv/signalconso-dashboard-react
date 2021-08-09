@@ -9,19 +9,19 @@ import {ErrorBundary} from './core/ErrorBundary'
 // I think it should not be necessary. There is some miss configuration somewhere
 const generateClassName = createGenerateClassName({
   productionPrefix: 'c',
-  disableGlobal: true
+  disableGlobal: true,
 })
 
 ReactDOM.render(
   <StylesProvider generateClassName={generateClassName}>
     <ErrorBundary>
-      <App/>
+      <App />
     </ErrorBundary>
-  </StylesProvider>
-  , document.getElementById('root')
+  </StylesProvider>,
+  document.getElementById('root'),
 )
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
 // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+reportWebVitals()

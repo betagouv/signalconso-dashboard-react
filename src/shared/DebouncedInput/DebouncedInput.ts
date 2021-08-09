@@ -13,7 +13,7 @@ export const DebouncedInput = ({debounce = 0, value = '', onChange, children}: D
   const debounced = useCallback(lodashDebounce(onChange, debounce), [])
 
   useEffect(() => {
-   setInnerValue(value)
+    setInnerValue(value)
   }, [value])
 
   const innerOnChange = (event: string) => {

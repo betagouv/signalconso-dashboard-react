@@ -1,16 +1,16 @@
 export interface Country {
-  code: string;
-  name: string;
-  european: boolean;
-  transfer: boolean;
+  code: string
+  name: string
+  european: boolean
+  transfer: boolean
 }
 
 export interface Region {
-  label: string;
-  departments: Department[];
+  label: string
+  departments: Department[]
 }
 
 export interface Department {
-  code: string;
-  label: string;
+  code: string
+  label: string
 }

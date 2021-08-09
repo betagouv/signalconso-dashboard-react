@@ -22,7 +22,7 @@ const useStyles = makeStyles((t: Theme) => ({
   },
   body: {
     flex: 1,
-  }
+  },
 }))
 
 export const SettingRow = ({title, description, icon, children}: Props) => {
@@ -33,12 +33,16 @@ export const SettingRow = ({title, description, icon, children}: Props) => {
     <div className={css.root}>
       <Icon className={css.icon}>{icon}</Icon>
       <div className={css.body}>
-        <Txt block size="big">{title}</Txt>
-        {description && <Txt block color="hint">{description}</Txt>}
+        <Txt block size="big">
+          {title}
+        </Txt>
+        {description && (
+          <Txt block color="hint">
+            {description}
+          </Txt>
+        )}
       </div>
-      <div>
-        {children}
-      </div>
+      <div>{children}</div>
     </div>
   )
 }

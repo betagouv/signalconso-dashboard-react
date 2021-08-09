@@ -1,23 +1,23 @@
 export interface SubcategoryBase extends Category {
-  title: string;
-  description?: string;
-  tags?: ReportTag[];
-  example?: string;
+  title: string
+  description?: string
+  tags?: ReportTag[]
+  example?: string
 }
 
 export interface Anomaly extends Category {
-  category: string;
-  categoryId: string;
-  path: string;
-  description?: string;
-  rank?: number;
-  sprite?: string;
-  hidden?: boolean;
-  information?: Information;
-  breadcrumbTitle?: string;
+  category: string
+  categoryId: string
+  path: string
+  description?: string
+  rank?: number
+  sprite?: string
+  hidden?: boolean
+  information?: Information
+  breadcrumbTitle?: string
 }
 
-export type Subcategory = SubcategoryBase | SubcategoryInput | SubcategoryInformation;
+export type Subcategory = SubcategoryBase | SubcategoryInput | SubcategoryInformation
 
 export enum ReportTag {
   LitigeContractuel = 'Litige contractuel',
@@ -37,44 +37,44 @@ export enum CompanyKinds {
 }
 
 export interface Category {
-  subcategoriesTitle?: string;
-  subcategories?: Subcategory[];
-  companyKind?: string;
+  subcategoriesTitle?: string
+  subcategories?: Subcategory[]
+  companyKind?: string
 }
 
 export interface SubcategoryInput extends SubcategoryBase {
-  detailTitle?: string;
-  fileLabel: string;
-  detailInputs?: DetailInput[];
+  detailTitle?: string
+  fileLabel: string
+  detailInputs?: DetailInput[]
 }
 
 export interface SubcategoryInformation extends SubcategoryBase {
-  information: Information;
+  information: Information
 }
 
 export interface Information {
-  title?: string;
-  content?: string;
-  actions?: Action[];
-  subTitle?: string;
-  outOfScope?: boolean;
+  title?: string
+  content?: string
+  actions?: Action[]
+  subTitle?: string
+  outOfScope?: boolean
 }
 
 export interface Action {
-  question: string;
-  example?: string;
-  answer: string;
+  question: string
+  example?: string
+  answer: string
 }
 
 export interface DetailInput {
-  label: string;
-  rank: number;
-  type: string;
-  placeholder?: string;
-  options?: string[];
-  defaultValue?: string;
-  example?: string;
-  optionnal?: boolean;
+  label: string
+  rank: number
+  type: string
+  placeholder?: string
+  options?: string[]
+  defaultValue?: string
+  example?: string
+  optionnal?: boolean
 }
 
 export enum InputType {
@@ -83,7 +83,7 @@ export enum InputType {
   Checkbox = 'CHECKBOX',
   Textarea = 'TEXTAREA',
   Timeslot = 'TIMESLOT',
-  Date = 'DATE'
+  Date = 'DATE',
 }
 
 // const askCompanyKindIfMissing = (anomaly: Category): Category => {

@@ -19,15 +19,16 @@ const defaultContext: Partial<AnomalyContextProps> = {}
 const AnomalyContext = React.createContext<AnomalyContextProps>(defaultContext as AnomalyContextProps)
 
 export const AnomalyProvider = ({api, children}: Props) => {
-
   const _anomaly = useFetcher(api.public.anomaly.getAnomalies)
   const _category = useFetcher(api.public.anomaly.getCategories)
 
   return (
-    <AnomalyContext.Provider value={{
-      anomaly: _anomaly,
-      category: _category,
-    }}>
+    <AnomalyContext.Provider
+      value={{
+        anomaly: _anomaly,
+        category: _category,
+      }}
+    >
       {children}
     </AnomalyContext.Provider>
   )

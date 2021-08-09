@@ -3,7 +3,7 @@ import {ReactNode, useContext} from 'react'
 import {messagesFr} from './messages/messages.fr'
 import {formatDate, formatDateTime, formatTime} from './date'
 
-const I18nContext = React.createContext({});
+const I18nContext = React.createContext({})
 
 export enum AppLangs {
   en = 'en',
@@ -28,36 +28,35 @@ export interface I18nContextProps {
 }
 
 export const useI18n = (): I18nContextProps => {
-  return useContext<I18nContextProps>(I18nContext as any);
-};
+  return useContext<I18nContextProps>(I18nContext as any)
+}
 
-export const withI18n = (Component: any) => (props: any) => (
-  <I18nContext.Consumer>
-    {(other: any) => <Component {...props} {...other}/>}
-  </I18nContext.Consumer>
-)
+export const withI18n = (Component: any) => (props: any) =>
+  <I18nContext.Consumer>{(other: any) => <Component {...props} {...other} />}</I18nContext.Consumer>
 
-export const langToLocal = (lang: string) => `${lang}-${lang.toUpperCase()}`;
+export const langToLocal = (lang: string) => `${lang}-${lang.toUpperCase()}`
 
 export const I18nProvider = ({children, lang = AppLangs.en}: Props) => {
   const getMessages = (): typeof messagesFr => {
     switch (lang) {
       default:
-        return messagesFr;
+        return messagesFr
     }
-  };
+  }
 
   return (
-    <I18nContext.Provider value={{
-      m: getMessages(),
-      availableLangs: Object.keys(AppLangs),
-      formatLargeNumber: (n?: number) => n !== undefined && n !== null ? n.toLocaleString(langToLocal(lang)) : '-',
-      // dateFromNow: (d?: Date) => moment(d).fromNow(),
-      formatDate: formatDate,
-      formatTime: formatTime,
-      formatDateTime: formatDateTime,
-    }}>
+    <I18nContext.Provider
+      value={{
+        m: getMessages(),
+        availableLangs: Object.keys(AppLangs),
+        formatLargeNumber: (n?: number) => (n !== undefined && n !== null ? n.toLocaleString(langToLocal(lang)) : '-'),
+        // dateFromNow: (d?: Date) => moment(d).fromNow(),
+        formatDate: formatDate,
+        formatTime: formatTime,
+        formatDateTime: formatDateTime,
+      }}
+    >
       {children}
     </I18nContext.Provider>
-  );
-};
+  )
+}

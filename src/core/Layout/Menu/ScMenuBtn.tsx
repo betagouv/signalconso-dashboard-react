@@ -53,12 +53,7 @@ export const ScMenuBtn = ({connectedUser}: Props) => {
       <Avatar className={classes(css.avatar, !connectedUser && css.avatarOffline)} onClick={openMenu.toggle}>
         <Icon>{connectedUser ? 'person' : 'no_accounts'}</Icon>
       </Avatar>
-      {connectedUser && openMenu.value && (
-        <ScMenu onClose={openMenu.setFalse} connectedUser={connectedUser}/>
-      )}
+      {connectedUser && openMenu.value && <ScMenu onClose={openMenu.setFalse} connectedUser={connectedUser} />}
     </div>
   )
 }
-
-
-

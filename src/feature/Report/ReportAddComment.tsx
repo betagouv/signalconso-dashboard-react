@@ -28,29 +28,21 @@ export const ReportAddComment = ({report, children, onAdd}: Props) => {
     <Confirm
       title={m.addDgccrfComment}
       loading={_addComment.loading}
-      onConfirm={(event, close) => addComment().then(() => {
-        setComment('')
-        onAdd()
-        toastSuccess(m.commentAdded)
-        close()
-      })}
+      onConfirm={(event, close) =>
+        addComment().then(() => {
+          setComment('')
+          onAdd()
+          toastSuccess(m.commentAdded)
+          close()
+        })
+      }
       confirmLabel={m.add}
       cancelLabel={m.close}
       confirmDisabled={comment === ''}
       content={
         <>
-          {_addComment.error && (
-            <Alert type="error">{m.anErrorOccurred}</Alert>
-          )}
-          <ScInput
-            required
-            value={comment}
-            onChange={e => setComment(e.target.value)}
-            multiline
-            fullWidth
-            rows={3}
-            maxRows={8}
-          />
+          {_addComment.error && <Alert type="error">{m.anErrorOccurred}</Alert>}
+          <ScInput required value={comment} onChange={e => setComment(e.target.value)} multiline fullWidth rows={3} maxRows={8} />
         </>
       }
     >

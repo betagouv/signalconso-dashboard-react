@@ -6,15 +6,14 @@ interface Props extends WithToast {
 }
 
 class Cp extends Component<Props> {
-
   componentDidCatch(error: Error | null, info: object) {
-    const message = error ? error.message : JSON.stringify(info);
-    this.props.toastError(message);
+    const message = error ? error.message : JSON.stringify(info)
+    this.props.toastError(message)
   }
 
   render() {
-    return this.props.children;
+    return this.props.children
   }
 }
 
-export const ErrorBundary = withToast(Cp);
+export const ErrorBundary = withToast(Cp)

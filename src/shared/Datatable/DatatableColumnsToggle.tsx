@@ -16,9 +16,9 @@ interface Props {
 const useStyles = makeStyles((t: Theme) => ({
   cb: {
     paddingLeft: 0,
-    paddingBottom: t.spacing(.25),
-    paddingTop: t.spacing(.25),
-  }
+    paddingBottom: t.spacing(0.25),
+    paddingTop: t.spacing(0.25),
+  },
 }))
 
 export const DatatableColumnToggle = ({className, title, columns, displayedColumns, onChange}: Props) => {
@@ -37,24 +37,30 @@ export const DatatableColumnToggle = ({className, title, columns, displayedColum
           <Icon>table_chart</Icon>
         </IconBtn>
       </Tooltip>
-      <Menu
-        anchorEl={anchorEl}
-        keepMounted
-        open={!!anchorEl}
-        onClose={() => setAnchorEl(null)}
-      >
-        {columns.filter(_ => _.head && _.head !== '').map(col => {
-          const checked = displayedColumns.indexOf(col.id) > -1
-          return (
-            <MenuItem dense key={col.id} onClick={() => onChange(checked
-              ? displayedColumns.length > 1 ? displayedColumns.filter(_ => _ !== col.id) : displayedColumns
-              : [...displayedColumns, col.id])
-            }>
-              <Checkbox className={css.cb} checked={checked}/>
-              {col.head}
-            </MenuItem>
-          )
-        })}
+      <Menu anchorEl={anchorEl} keepMounted open={!!anchorEl} onClose={() => setAnchorEl(null)}>
+        {columns
+          .filter(_ => _.head && _.head !== '')
+          .map(col => {
+            const checked = displayedColumns.indexOf(col.id) > -1
+            return (
+              <MenuItem
+                dense
+                key={col.id}
+                onClick={() =>
+                  onChange(
+                    checked
+                      ? displayedColumns.length > 1
+                        ? displayedColumns.filter(_ => _ !== col.id)
+                        : displayedColumns
+                      : [...displayedColumns, col.id],
+                  )
+                }
+              >
+                <Checkbox className={css.cb} checked={checked} />
+                {col.head}
+              </MenuItem>
+            )
+          })}
       </Menu>
     </>
   )

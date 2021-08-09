@@ -4,8 +4,7 @@ import {UseFetcher, useFetcher} from '@alexandreannic/react-hooks-lib/lib'
 import {SignalConsoApiSdk} from '../../App'
 import {ApiError} from '../api'
 
-export interface AsyncFileContextProps extends UseFetcher<SignalConsoApiSdk['secured']['asyncFiles']['fetch'], ApiError> {
-}
+export interface AsyncFileContextProps extends UseFetcher<SignalConsoApiSdk['secured']['asyncFiles']['fetch'], ApiError> {}
 
 interface Props {
   children: ReactNode
@@ -17,13 +16,14 @@ const defaultContext: Partial<AsyncFileContextProps> = {}
 const AsyncFileContext = React.createContext<AsyncFileContextProps>(defaultContext as AsyncFileContextProps)
 
 export const AsyncFileProvider = ({api, children}: Props) => {
-
   const _asyncFilesStatus = useFetcher(api.secured.asyncFiles.fetch)
 
   return (
-    <AsyncFileContext.Provider value={{
-      ..._asyncFilesStatus,
-    }}>
+    <AsyncFileContext.Provider
+      value={{
+        ..._asyncFilesStatus,
+      }}
+    >
       {children}
     </AsyncFileContext.Provider>
   )

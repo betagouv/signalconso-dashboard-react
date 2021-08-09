@@ -21,14 +21,14 @@ const useStyles = makeStyles((t: Theme) => ({
   },
   icon: {
     color: t.palette.text.secondary,
-    margin: t.spacing(.5, 2, .5, 3)
+    margin: t.spacing(0.5, 2, 0.5, 3),
   },
   divider: {
     marginLeft: t.spacing(3),
     '&:last-of-type': {
       display: 'none',
-    }
-  }
+    },
+  },
 }))
 
 export const SubscriptionCardRow = ({icon, label, children, onClick}: SubscriptionCardRowProps) => {
@@ -43,7 +43,7 @@ export const SubscriptionCardRow = ({icon, label, children, onClick}: Subscripti
         </div>
         <div>{children}</div>
       </div>
-      <Divider className={css.divider}/>
+      <Divider className={css.divider} />
     </>
   )
 }

@@ -23,10 +23,10 @@ const useStyles = makeStyles((t: Theme) => ({
     right: 0,
     left: 0,
   },
-}));
+}))
 
 export interface PageProps {
-  className?: string,
+  className?: string
   large?: boolean
   size?: 'large' | 'small' | 'regular'
   children: ReactNode
@@ -39,10 +39,10 @@ export const Page = ({className, loading, size, ...props}: PageProps) => {
     <>
       {loading && (
         <div className={css.loading}>
-          <LinearProgress className={css.loadingSpinner}/>
+          <LinearProgress className={css.loadingSpinner} />
         </div>
       )}
-      <MuiPage width={pageWidth[size ?? 'regular']} className={classes(className, css.root)} {...props}/>
+      <MuiPage width={pageWidth[size ?? 'regular']} className={classes(className, css.root)} {...props} />
     </>
   )
 }

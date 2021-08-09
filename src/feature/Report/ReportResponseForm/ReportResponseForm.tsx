@@ -24,15 +24,16 @@ interface Props {
   onConfirm?: (_: ReportResponse) => void
 }
 
-export const ReportResponseForm = ({
-  report,
-  className,
-  onCancel,
-  onConfirm,
-}: Props) => {
+export const ReportResponseForm = ({report, className, onCancel, onConfirm}: Props) => {
   const {m} = useI18n()
   const cssUtils = useCssUtils()
-  const {register, handleSubmit, reset, control, formState: {errors, isValid}} = useForm<ReportResponse>()
+  const {
+    register,
+    handleSubmit,
+    reset,
+    control,
+    formState: {errors, isValid},
+  } = useForm<ReportResponse>()
   const _report = useReportContext()
   const {toastError, toastSuccess} = useToast()
 
@@ -56,15 +57,20 @@ export const ReportResponseForm = ({
         </Alert>
 
         <ReportResponseFormItem title={m.proAnswerResponseType}>
-          <Controller name="responseType" rules={{required: {value: true, message: m.required}}} control={control} render={({field}) =>
-            <ScRadioGroup error={!!errors.responseType} dense className={cssUtils.marginBottom2} {...field}>
-              {Enum.values(ReportResponseTypes).map(responseType =>
-                <ScRadioGroupItem value={responseType} key={responseType}>
-                  {m.reportResponseDesc[responseType]}
-                </ScRadioGroupItem>,
-              )}
-            </ScRadioGroup>
-          }/>
+          <Controller
+            name="responseType"
+            rules={{required: {value: true, message: m.required}}}
+            control={control}
+            render={({field}) => (
+              <ScRadioGroup error={!!errors.responseType} dense className={cssUtils.marginBottom2} {...field}>
+                {Enum.values(ReportResponseTypes).map(responseType => (
+                  <ScRadioGroupItem value={responseType} key={responseType}>
+                    {m.reportResponseDesc[responseType]}
+                  </ScRadioGroupItem>
+                ))}
+              </ScRadioGroup>
+            )}
+          />
         </ReportResponseFormItem>
 
         <ReportResponseFormItem title={m.proAnswerYourAnswer} desc={m.proAnswerYourAnswerDesc}>
@@ -97,18 +103,26 @@ export const ReportResponseForm = ({
           />
         </ReportResponseFormItem>
         <ReportResponseFormItem title={m.attachedFiles} desc={m.onlyVisibleByDGCCRF}>
-          <Controller name="fileIds" control={control} render={({field}) =>
-            <ReportFiles
-              reportId={report.id}
-              fileOrigin={FileOrigin.Professional}
-              onNewFile={file => field.onChange([...(field.value ?? []), file.id])}
-            />
-          }/>
+          <Controller
+            name="fileIds"
+            control={control}
+            render={({field}) => (
+              <ReportFiles
+                reportId={report.id}
+                fileOrigin={FileOrigin.Professional}
+                onNewFile={file => field.onChange([...(field.value ?? []), file.id])}
+              />
+            )}
+          />
         </ReportResponseFormItem>
       </PanelBody>
       <PanelFoot alignEnd>
-        <ScButton onClick={onCancel} color="primary">{m.close}</ScButton>
-        <ScButton loading={_report.postResponse.loading} onClick={handleSubmit(submitForm)} color="primary" variant="contained">{m.confirm}</ScButton>
+        <ScButton onClick={onCancel} color="primary">
+          {m.close}
+        </ScButton>
+        <ScButton loading={_report.postResponse.loading} onClick={handleSubmit(submitForm)} color="primary" variant="contained">
+          {m.confirm}
+        </ScButton>
       </PanelFoot>
     </Panel>
   )

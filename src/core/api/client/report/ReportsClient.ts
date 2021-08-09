@@ -1,35 +1,49 @@
-import {ApiClientApi, cleanObject, CompanySearchResult, dateToApi, directDownloadBlob, Event, Id, Report, ReportAction, ReportResponse, ReportSearchResult} from '../..'
+import {
+  ApiClientApi,
+  cleanObject,
+  CompanySearchResult,
+  dateToApi,
+  directDownloadBlob,
+  Event,
+  Id,
+  Report,
+  ReportAction,
+  ReportResponse,
+  ReportSearchResult,
+} from '../..'
 import {PaginatedData, ReportSearch} from '../../model'
 import {pipe} from 'rxjs'
 import {ApiSdkLogger} from '../../helper/Logger'
 
 export interface ReportFilterQuerystring {
-  readonly departments?: string;
-  readonly tags?: string | string[];
-  readonly companyCountries?: string;
-  readonly siretSirenList?: string[];
-  start?: string;
-  end?: string;
-  email?: string;
-  websiteURL?: string;
-  phone?: string;
-  websiteExists?: 'true' | 'false';
-  phoneExists?: 'true' | 'false';
-  category?: string;
-  status?: string;
-  details?: string;
-  hasCompany?: 'true' | 'false';
-  offset?: string;
-  limit?: string;
+  readonly departments?: string
+  readonly tags?: string | string[]
+  readonly companyCountries?: string
+  readonly siretSirenList?: string[]
+  start?: string
+  end?: string
+  email?: string
+  websiteURL?: string
+  phone?: string
+  websiteExists?: 'true' | 'false'
+  phoneExists?: 'true' | 'false'
+  category?: string
+  status?: string
+  details?: string
+  hasCompany?: 'true' | 'false'
+  offset?: string
+  limit?: string
 }
 
 const reportFilter2QueryString = (report: ReportSearch): ReportFilterQuerystring => {
   try {
     const {offset, limit, hasCompany, websiteExists, phoneExists, companyCountries, departments, start, end, ...r} = report
 
-    const parseBoolean = (_: keyof Pick<ReportSearch, 'websiteExists' | 'phoneExists' | 'hasCompany'>) => (report[_] !== undefined && {[_]: '' + report[_] as 'true' | 'false'})
-    const parseDate = (_: keyof Pick<ReportSearch, 'start' | 'end'>) => ((report[_]) ? {[_]: dateToApi(report[_])} : {})
-    const parseArray = (_: keyof Pick<ReportSearch, 'companyCountries' | 'departments'>) => (report[_] ? {[_]: [report[_]]?.flatMap(_ => _).join(',')} : {})
+    const parseBoolean = (_: keyof Pick<ReportSearch, 'websiteExists' | 'phoneExists' | 'hasCompany'>) =>
+      report[_] !== undefined && {[_]: ('' + report[_]) as 'true' | 'false'}
+    const parseDate = (_: keyof Pick<ReportSearch, 'start' | 'end'>) => (report[_] ? {[_]: dateToApi(report[_])} : {})
+    const parseArray = (_: keyof Pick<ReportSearch, 'companyCountries' | 'departments'>) =>
+      report[_] ? {[_]: [report[_]]?.flatMap(_ => _).join(',')} : {}
     return {
       ...r,
       offset: offset !== undefined ? offset + '' : undefined,
@@ -60,24 +74,22 @@ const cleanReportFilter = (filter: ReportSearch): ReportSearch => {
   return filter
 }
 
-export const reportFilter2Body = (report: ReportSearch): { [key in keyof ReportSearch]: any } => {
-  const { start, end, offset, departments, tags, limit, siretSirenList, ...rest } = report;
+export const reportFilter2Body = (report: ReportSearch): {[key in keyof ReportSearch]: any} => {
+  const {start, end, offset, departments, tags, limit, siretSirenList, ...rest} = report
   return {
     ...rest,
     limit: undefined,
     offset: undefined,
-    siretSirenList: Array.isArray(siretSirenList) ? siretSirenList : (siretSirenList !== undefined ? [siretSirenList] : undefined),
+    siretSirenList: Array.isArray(siretSirenList) ? siretSirenList : siretSirenList !== undefined ? [siretSirenList] : undefined,
     departments: departments || [],
     tags: tags || [],
     start: dateToApi(start),
-    end: dateToApi(end)
-  };
-};
+    end: dateToApi(end),
+  }
+}
 
 export class ReportsClient {
-
-  constructor(private client: ApiClientApi) {
-  }
+  constructor(private client: ApiClientApi) {}
 
   readonly extract = (filter: ReportSearch = {offset: 0, limit: 10}) => {
     const body = pipe(cleanReportFilter, reportFilter2Body, cleanObject)(filter)
@@ -85,24 +97,21 @@ export class ReportsClient {
   }
 
   readonly search = (filter: ReportSearch = {offset: 0, limit: 10}) => {
-    return this.client.get<PaginatedData<ReportSearchResult>>(`/reports`, {
-      qs: pipe(
-        cleanReportFilter,
-        reportFilter2QueryString,
-        cleanObject,
-      )(filter)
-    }).then(result => {
-      result.entities.forEach(entity => {
-        entity.report = ReportsClient.mapReport(entity.report)
+    return this.client
+      .get<PaginatedData<ReportSearchResult>>(`/reports`, {
+        qs: pipe(cleanReportFilter, reportFilter2QueryString, cleanObject)(filter),
       })
-      return result
-    })
+      .then(result => {
+        result.entities.forEach(entity => {
+          entity.report = ReportsClient.mapReport(entity.report)
+        })
+        return result
+      })
   }
 
   readonly download = (id: Id) => {
     // TODO Type it and maybe improve it
-    return this.client.getPdf<any>(`/reports/${id}/download`,)
-      .then(directDownloadBlob('test.pdf'))
+    return this.client.getPdf<any>(`/reports/${id}/download`).then(directDownloadBlob('test.pdf'))
   }
 
   readonly remove = (id: Id) => {
@@ -110,7 +119,9 @@ export class ReportsClient {
   }
 
   readonly getById = (id: Id) => {
-    return this.client.get<ReportSearchResult>(`/reports/${id}`).then(_ => ({files: _.files, report: ReportsClient.mapReport(_.report)}))
+    return this.client
+      .get<ReportSearchResult>(`/reports/${id}`)
+      .then(_ => ({files: _.files, report: ReportsClient.mapReport(_.report)}))
   }
 
   readonly postResponse = (id: Id, response: ReportResponse) => {
@@ -129,22 +140,28 @@ export class ReportsClient {
         address: company.address,
         siret: company.siret,
         activityCode: company.activityCode,
-      }
+      },
     })
   }
 
-  readonly updateReportConsumer = (reportId: string, firstName: string, lastName: string, email: string, contactAgreement: boolean) => {
+  readonly updateReportConsumer = (
+    reportId: string,
+    firstName: string,
+    lastName: string,
+    email: string,
+    contactAgreement: boolean,
+  ) => {
     return this.client.post(`reports/${reportId}/consumer`, {
       body: {
         firstName: firstName,
         lastName: lastName,
         email: email,
-        contactAgreement
-      }
+        contactAgreement,
+      },
     })
   }
 
-  static readonly mapReport = (report: { [key in keyof Report]: any }): Report => ({
+  static readonly mapReport = (report: {[key in keyof Report]: any}): Report => ({
     ...report,
     creationDate: new Date(report.creationDate),
   })

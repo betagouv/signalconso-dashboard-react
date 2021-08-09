@@ -42,7 +42,12 @@ export const CompanyAccesses = () => {
 
   const accesses: Accesses[] = useMemo(() => {
     return [
-      ...(_crudAccess.list ?? []).map(_ => ({email: _.email, name: _.firstName + ' ' + _.lastName, level: _.level, userId: _.userId})),
+      ...(_crudAccess.list ?? []).map(_ => ({
+        email: _.email,
+        name: _.firstName + ' ' + _.lastName,
+        level: _.level,
+        userId: _.userId,
+      })),
       ...(_crudToken.list ?? []).map(_ => ({email: _.emailedTo, level: _.level, tokenId: _.id})),
     ]
   }, [_crudAccess.list, _crudToken.list])
@@ -60,98 +65,127 @@ export const CompanyAccesses = () => {
     fromNullable(_crudAccess.fetchError).map(toastError)
   }, [_crudAccess.list, _crudAccess.fetchError])
 
-
   return (
     <Page>
-      <PageTitle action={
-        <>
-          {_crudAccess.list?.length === 0 && (
-            <SaveUndeliveredDocBtn
-              loading={_company.saveUndeliveredDocument.loading}
-              onChange={date => _company.saveUndeliveredDocument.fetch({}, siret, date)}
-              className={cssUtils.marginRight}
+      <PageTitle
+        action={
+          <>
+            {_crudAccess.list?.length === 0 && (
+              <SaveUndeliveredDocBtn
+                loading={_company.saveUndeliveredDocument.loading}
+                onChange={date => _company.saveUndeliveredDocument.fetch({}, siret, date)}
+                className={cssUtils.marginRight}
+              />
+            )}
+            <CompanyAccessCreateBtn
+              loading={_crudToken.creating}
+              onCreate={(email, level) => _crudToken.create({}, email, level)}
+              errorMessage={_crudToken.createError}
             />
-          )}
-        <CompanyAccessCreateBtn
-          loading={_crudToken.creating}
-          onCreate={(email, level) => _crudToken.create({}, email, level)}
-          errorMessage={_crudToken.createError}
-        />
-        </>
-      }>
+          </>
+        }
+      >
         {m.companyAccessesTitle}
       </PageTitle>
       <Panel>
         <Datatable<Accesses>
-          data={(_crudAccess.list && _crudToken.list) ? accesses : undefined}
+          data={_crudAccess.list && _crudToken.list ? accesses : undefined}
           loading={_crudAccess.fetching || _crudToken.fetching}
           getRenderRowKey={_ => _.email ?? _.tokenId!}
           rows={[
             {
               id: 'status',
               head: '',
-              row: _ => _.name ? <Icon className={cssUtils.colorSuccess}>check_circle</Icon> : <Icon className={cssUtils.colorWarning}>watch_later</Icon>
+              row: _ =>
+                _.name ? (
+                  <Icon className={cssUtils.colorSuccess}>check_circle</Icon>
+                ) : (
+                  <Icon className={cssUtils.colorWarning}>watch_later</Icon>
+                ),
             },
             {
               id: 'email',
               head: m.email,
-              row: _ => connectedUser.email === _.email ? <Txt bold>{_.email} ({m.you})</Txt> : _.email,
+              row: _ =>
+                connectedUser.email === _.email ? (
+                  <Txt bold>
+                    {_.email} ({m.you})
+                  </Txt>
+                ) : (
+                  _.email
+                ),
             },
             {
               id: 'name',
               head: m.name,
-              row: _ => _.name
+              row: _ => _.name,
             },
             {
               id: 'level',
               head: m.companyAccessLevel,
-              row: _ => some(_)
-                .filter(_ => _.email !== connectedUser.email)
-                .mapNullable(_ => _.userId)
-                .map(userId =>
-                  <ScSelect fullWidth value={_.level} onChange={event => _crudAccess.update(userId, event.target.value as CompanyAccessLevel)}>
-                    {Enum.keys(CompanyAccessLevel).map(level =>
-                      <MenuItem key={level} value={level}>{CompanyAccessLevel[level]}</MenuItem>
-                    )}
-                  </ScSelect>
-                ).getOrElse(
-                  <Txt color="hint">{(CompanyAccessLevel as any)[_.level]}</Txt>
-                )
+              row: _ =>
+                some(_)
+                  .filter(_ => _.email !== connectedUser.email)
+                  .mapNullable(_ => _.userId)
+                  .map(userId => (
+                    <ScSelect
+                      fullWidth
+                      value={_.level}
+                      onChange={event => _crudAccess.update(userId, event.target.value as CompanyAccessLevel)}
+                    >
+                      {Enum.keys(CompanyAccessLevel).map(level => (
+                        <MenuItem key={level} value={level}>
+                          {CompanyAccessLevel[level]}
+                        </MenuItem>
+                      ))}
+                    </ScSelect>
+                  ))
+                  .getOrElse(<Txt color="hint">{(CompanyAccessLevel as any)[_.level]}</Txt>),
             },
             {
               id: 'action',
               head: '',
               className: cssUtils.txtRight,
-              row: _ =>
+              row: _ => (
                 <>
-                  {some(_).filter(_ => _.email !== connectedUser.email).mapNullable(_ => _.userId).map(userId =>
-                    <Confirm
-                      title={m.deleteCompanyAccess(_.name!)}
-                      onConfirm={() => _crudAccess.remove(userId)}
-                      maxWidth="xs"
-                      confirmLabel={m.delete}
-                      cancelLabel={m.close}
-                    >
-                      <IconBtn loading={_crudAccess.removing(userId)}>
-                        <Icon>delete</Icon>
-                      </IconBtn>
-                    </Confirm>
-                  ).getOrElse(fromNullable(_.tokenId).map(tokenId =>
-                    <Confirm
-                      title={m.deleteCompanyAccessToken(_.email)}
-                      onConfirm={() => _crudToken.remove(tokenId)}
-                      maxWidth="xs"
-                      confirmLabel={m.confirm}
-                      cancelLabel={m.close}
-                    >
-                      <IconBtn loading={_crudToken.removing(tokenId)}>
-                        <Icon>delete</Icon>
-                      </IconBtn>
-                    </Confirm>
-                  ).getOrElse(<></>))}
+                  {some(_)
+                    .filter(_ => _.email !== connectedUser.email)
+                    .mapNullable(_ => _.userId)
+                    .map(userId => (
+                      <Confirm
+                        title={m.deleteCompanyAccess(_.name!)}
+                        onConfirm={() => _crudAccess.remove(userId)}
+                        maxWidth="xs"
+                        confirmLabel={m.delete}
+                        cancelLabel={m.close}
+                      >
+                        <IconBtn loading={_crudAccess.removing(userId)}>
+                          <Icon>delete</Icon>
+                        </IconBtn>
+                      </Confirm>
+                    ))
+                    .getOrElse(
+                      fromNullable(_.tokenId)
+                        .map(tokenId => (
+                          <Confirm
+                            title={m.deleteCompanyAccessToken(_.email)}
+                            onConfirm={() => _crudToken.remove(tokenId)}
+                            maxWidth="xs"
+                            confirmLabel={m.confirm}
+                            cancelLabel={m.close}
+                          >
+                            <IconBtn loading={_crudToken.removing(tokenId)}>
+                              <Icon>delete</Icon>
+                            </IconBtn>
+                          </Confirm>
+                        ))
+                        .getOrElse(<></>),
+                    )}
                 </>
+              ),
             },
-          ]}/>
+          ]}
+        />
       </Panel>
     </Page>
   )

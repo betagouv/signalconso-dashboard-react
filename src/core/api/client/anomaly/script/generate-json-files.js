@@ -1,13 +1,13 @@
-const path = require('path');
-const yaml = require('js-yaml');
-const yamlImport = require('yaml-import');
-const fs = require('fs');
+const path = require('path')
+const yaml = require('js-yaml')
+const yamlImport = require('yaml-import')
+const fs = require('fs')
 
 const files = [
   {
     input: 'anomalies.yml',
-    output: 'anomalies.json'
-  }
+    output: 'anomalies.json',
+  },
 ]
 
 const root = path.join(__dirname, '..', 'yml')

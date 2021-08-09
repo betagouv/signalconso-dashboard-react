@@ -1,7 +1,16 @@
 import {Page, PageTitle} from '../../shared/Layout'
 import {useI18n} from '../../core/i18n'
 import {useReportsContext} from '../../core/context/ReportsContext'
-import {cleanObject, DetailInputValue, getHostFromUrl, Report, ReportingDateLabel, ReportSearch, ReportSearchResult, ReportTag} from 'core/api'
+import {
+  cleanObject,
+  DetailInputValue,
+  getHostFromUrl,
+  Report,
+  ReportingDateLabel,
+  ReportSearch,
+  ReportSearchResult,
+  ReportTag,
+} from 'core/api'
 import {Panel} from '../../shared/Panel'
 import {useCssUtils} from '../../core/helper/useCssUtils'
 import {Datatable} from '../../shared/Datatable/Datatable'
@@ -9,7 +18,12 @@ import {fromNullable, some} from 'fp-ts/lib/Option'
 import {Badge, Icon, makeStyles, Theme, Tooltip} from '@material-ui/core'
 import {classes, textOverflowMiddleCropping} from '../../core/helper/utils'
 import React, {useEffect} from 'react'
-import {mapArrayFromQuerystring, mapDateFromQueryString, mapDatesToQueryString, useQueryString} from '../../core/helper/useQueryString'
+import {
+  mapArrayFromQuerystring,
+  mapDateFromQueryString,
+  mapDatesToQueryString,
+  useQueryString,
+} from '../../core/helper/useQueryString'
 import {NavLink} from 'react-router-dom'
 import {SelectDepartments} from '../../shared/SelectDepartments/SelectDepartments'
 import {Fender, IconBtn} from 'mui-extension/lib'
@@ -49,7 +63,7 @@ const useStyles = makeStyles((t: Theme) => ({
     fontSize: t.typography.fontSize * 0.875,
     color: t.palette.text.secondary,
     maxWidth: 260,
-    lineHeight: 1.4
+    lineHeight: 1.4,
   },
   tdFiles: {
     minWidth: 44,
@@ -59,8 +73,8 @@ const useStyles = makeStyles((t: Theme) => ({
     maxWidth: 140,
   },
   actions: {
-    paddingRight: t.spacing(.25),
-    paddingLeft: t.spacing(.25),
+    paddingRight: t.spacing(0.25),
+    paddingLeft: t.spacing(0.25),
   },
   tdProblem: {
     maxWidth: 200,
@@ -100,14 +114,8 @@ export const Reports = ({}) => {
 
   const queryString = useQueryString<Partial<ReportSearch>, Partial<ReportSearchQs>>({
     toQueryString: mapDatesToQueryString,
-    fromQueryString: compose(
-      mapDateFromQueryString,
-      _ => mapArrayFromQuerystring(_, [
-        'departments',
-        'tags',
-        'companyCountries',
-        'siretSirenList',
-      ]),
+    fromQueryString: compose(mapDateFromQueryString, _ =>
+      mapArrayFromQuerystring(_, ['departments', 'tags', 'companyCountries', 'siretSirenList']),
     ),
   })
 
@@ -123,9 +131,8 @@ export const Reports = ({}) => {
     fromNullable(_reports.error).map(toastError)
   }, [_reports.list, _reports.error])
 
-  const getReportingDate = (report: Report) => report.details
-    .filter(_ => _.label.indexOf(ReportingDateLabel) !== -1)
-    .map(_ => _.value)
+  const getReportingDate = (report: Report) =>
+    report.details.filter(_ => _.label.indexOf(ReportingDateLabel) !== -1).map(_ => _.value)
 
   return (
     <Page size="large">
@@ -150,9 +157,11 @@ export const Reports = ({}) => {
                 }}
               />
               <ExportReportsPopper
-                disabled={fromNullable(_reports?.list?.totalSize).map(_ => _ > Config.reportsLimitForExport).getOrElse(false)}
+                disabled={fromNullable(_reports?.list?.totalSize)
+                  .map(_ => _ > Config.reportsLimitForExport)
+                  .getOrElse(false)}
                 tooltipBtnNew={fromNullable(_reports?.list?.totalSize)
-                  .map(_ => _ > Config.reportsLimitForExport ? m.cannotExportMoreReports(Config.reportsLimitForExport) : '')
+                  .map(_ => (_ > Config.reportsLimitForExport ? m.cannotExportMoreReports(Config.reportsLimitForExport) : ''))
                   .getOrElse('')}
               >
                 <IconBtn color="primary">
@@ -189,94 +198,115 @@ export const Reports = ({}) => {
               id: 'companyPostalCode',
               head: m.postalCodeShort,
               className: css.tdPostal,
-              row: _ =>
+              row: _ => (
                 <>
                   <span>{_.report.companyAddress.postalCode?.slice(0, 2)}</span>
                   <span className={cssUtils.colorDisabled}>{_.report.companyAddress.postalCode?.substr(2, 5)}</span>
                 </>
+              ),
             },
             {
               id: 'companyName',
               head: m.company,
               className: css.tdName,
-              row: _ =>
+              row: _ => (
                 <>
                   <span className={css.tdName_label}>{_.report.companyName}</span>
-                  <br/>
-                  <span className={css.tdName_desc}>{fromNullable(_.report.websiteURL).map(getHostFromUrl).alt(some(_.report.phone)).getOrElse('')}</span>
+                  <br />
+                  <span className={css.tdName_desc}>
+                    {fromNullable(_.report.websiteURL).map(getHostFromUrl).alt(some(_.report.phone)).getOrElse('')}
+                  </span>
                 </>
+              ),
             },
             {
               id: 'companySiret',
               head: m.siret,
-              row: _ => _.report.companySiret
+              row: _ => _.report.companySiret,
             },
             {
               id: 'category',
               head: m.problem,
               className: css.tdProblem,
-              row: _ =>
-                <Tooltip title={<>
-                  <b>{_.report.category}</b>
-                  <ul className={css.tooltipUl}>
-                    {_.report.subcategories.map((s, i) => <li key={i}>{s}</li>)}
-                  </ul>
-                </>}>
+              row: _ => (
+                <Tooltip
+                  title={
+                    <>
+                      <b>{_.report.category}</b>
+                      <ul className={css.tooltipUl}>
+                        {_.report.subcategories.map((s, i) => (
+                          <li key={i}>{s}</li>
+                        ))}
+                      </ul>
+                    </>
+                  }
+                >
                   <span>{_.report.category}</span>
                 </Tooltip>
+              ),
             },
             {
               id: 'creationDate',
               head: m.creationDate,
-              row: _ => formatDate(_.report.creationDate)
+              row: _ => formatDate(_.report.creationDate),
             },
             {
               id: 'reportDate',
               head: 'Date constat',
-              row: _ => getReportingDate(_.report)
+              row: _ => getReportingDate(_.report),
             },
             {
               id: 'details',
               head: m.details,
               className: css.tdDesc,
-              row: _ =>
-                <Tooltip title={_.report.details?.map((detail, i) =>
-                  <div key={i}>
-                    <span dangerouslySetInnerHTML={{__html: detail.label}} className={cssUtils.txtBold}/>&nbsp;
-                    <span dangerouslySetInnerHTML={{__html: detail.value}} className={cssUtils.colorTxtSecondary}/>
-                  </div>
-                )}>
+              row: _ => (
+                <Tooltip
+                  title={_.report.details?.map((detail, i) => (
+                    <div key={i}>
+                      <span dangerouslySetInnerHTML={{__html: detail.label}} className={cssUtils.txtBold} />
+                      &nbsp;
+                      <span dangerouslySetInnerHTML={{__html: detail.value}} className={cssUtils.colorTxtSecondary} />
+                    </div>
+                  ))}
+                >
                   {(() => {
                     const details = getDetailContent(_.report.details)
                     return (
                       <span>
-                        <span dangerouslySetInnerHTML={{__html: details?.firstLine ?? ''}}/><br/>
-                        <span dangerouslySetInnerHTML={{__html: details?.secondLine ?? ''}}/>
+                        <span dangerouslySetInnerHTML={{__html: details?.firstLine ?? ''}} />
+                        <br />
+                        <span dangerouslySetInnerHTML={{__html: details?.secondLine ?? ''}} />
                       </span>
                     )
                   })()}
                 </Tooltip>
+              ),
             },
             {
               id: 'email',
-              head: m.consumer, className: css.tdConsumer, row: _ =>
+              head: m.consumer,
+              className: css.tdConsumer,
+              row: _ => (
                 <span className={classes(_.report.contactAgreement ? cssUtils.colorSuccess : cssUtils.colorError)}>
                   {textOverflowMiddleCropping(_.report.email ?? '', 25)}
                 </span>
+              ),
             },
             {
               id: 'status',
-              head: m.status, row: _ =>
-                <ReportStatusChip dense status={_.report.status}/>
+              head: m.status,
+              row: _ => <ReportStatusChip dense status={_.report.status} />,
             },
             {
               id: 'file',
-              head: m.files, className: css.tdFiles, row: _ =>
+              head: m.files,
+              className: css.tdFiles,
+              row: _ =>
                 _.files.length > 0 && (
                   <Badge badgeContent={_.files.length} color="primary" invisible={_.files.length === 1}>
                     <Icon className={cssUtils.colorTxtHint}>insert_drive_file</Icon>
                   </Badge>
-                )
+                ),
             },
             {
               id: 'actions',
@@ -288,7 +318,7 @@ export const Reports = ({}) => {
                     <Icon>chevron_right</Icon>
                   </IconBtn>
                 </NavLink>
-              )
+              ),
             },
           ]}
           renderEmptyState={
@@ -297,7 +327,9 @@ export const Reports = ({}) => {
               title={m.noReportsTitle}
               description={
                 <>
-                  <Txt color="hint" size="big" block gutterBottom>{m.noReportsDesc}</Txt>
+                  <Txt color="hint" size="big" block gutterBottom>
+                    {m.noReportsDesc}
+                  </Txt>
                   <ScButton icon="clear" onClick={_reports.clearFilters} variant="contained" color="primary">
                     {m.removeAllFilters}
                   </ScButton>
@@ -333,10 +365,11 @@ const getDetailContent = (details: DetailInputValue[]) => {
 
     const strings = str.split(' ')
     const nbWords = helper(str.split(' '), '', 0)
-    const lines = strings.reduce((prev, curr, index) => index < nbWords
-      ? {...prev, line: prev.line + curr + ' '}
-      : {...prev, rest: prev.rest + curr + ' '}
-      , {line: '', rest: ''})
+    const lines = strings.reduce(
+      (prev, curr, index) =>
+        index < nbWords ? {...prev, line: prev.line + curr + ' '} : {...prev, rest: prev.rest + curr + ' '},
+      {line: '', rest: ''},
+    )
     return {line: lines.line.trim(), rest: lines.rest.trim()}
   }
 
@@ -355,7 +388,6 @@ const getDetailContent = (details: DetailInputValue[]) => {
     if (lines.rest) {
       lines = getLines(lines.rest, MAX_CHAR_DETAILS)
       secondLine = lines.rest ? lines.line.slice(0, -3) + '...' : lines.line
-
     } else if (details.length > 1) {
       lines = getLines(details[1].label + ' ' + details[1].value, MAX_CHAR_DETAILS)
       secondLine = lines.rest ? lines.line.slice(0, -3) + '...' : lines.line

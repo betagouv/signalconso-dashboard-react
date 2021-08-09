@@ -20,7 +20,12 @@ import {classes} from '../../core/helper/utils'
 import {Btn, Fender} from 'mui-extension/lib'
 import {EntityIcon} from '../../core/EntityIcon'
 import {ScButton} from '../../shared/Button/Button'
-import {mapArrayFromQuerystring, mapDateFromQueryString, mapDatesToQueryString, useQueryString} from '../../core/helper/useQueryString'
+import {
+  mapArrayFromQuerystring,
+  mapDateFromQueryString,
+  mapDatesToQueryString,
+  useQueryString,
+} from '../../core/helper/useQueryString'
 import {fromNullable} from 'fp-ts/lib/Option'
 import {useToast} from '../../core/toast'
 import {Config} from '../../conf/config'
@@ -106,10 +111,7 @@ export const ReportsPro = () => {
 
   const queryString = useQueryString<Partial<ReportSearch>, Partial<ReportFiltersQs>>({
     toQueryString: mapDatesToQueryString,
-    fromQueryString: compose(
-      mapDateFromQueryString,
-      _ => mapArrayFromQuerystring(_, ['siretSirenList', 'departments']),
-    ),
+    fromQueryString: compose(mapDateFromQueryString, _ => mapArrayFromQuerystring(_, ['siretSirenList', 'departments'])),
   })
 
   useEffect(() => {
@@ -123,11 +125,7 @@ export const ReportsPro = () => {
     fromNullable(_companies.accessesByPro.error).map(toastError)
     fromNullable(_companies.viewableByPro.error).map(toastError)
     fromNullable(_reports.error).map(toastError)
-  }, [
-    _reports.error,
-    _companies.accessesByPro.error,
-    _companies.viewableByPro.error,
-  ])
+  }, [_reports.error, _companies.accessesByPro.error, _companies.viewableByPro.error])
 
   useEffect(() => {
     queryString.update(cleanObject(_reports.filters))
@@ -135,12 +133,22 @@ export const ReportsPro = () => {
 
   return (
     <Page size="small" loading={_companies.accessesByPro.loading || _companies.viewableByPro.loading}>
-      <PageTitle action={
-        <Btn variant="outlined" color="primary" icon="help" {...{target: '_blank'} as any} href={Config.appBaseUrl + '/comment-ça-marche/professionnel'}>
-          {m.help}
-          <Icon className={classes(cssUtils.marginLeft, cssUtils.colorTxtHint)}>open_in_new</Icon>
-        </Btn>
-      }>{m.reports_pageTitle}</PageTitle>
+      <PageTitle
+        action={
+          <Btn
+            variant="outlined"
+            color="primary"
+            icon="help"
+            {...({target: '_blank'} as any)}
+            href={Config.appBaseUrl + '/comment-ça-marche/professionnel'}
+          >
+            {m.help}
+            <Icon className={classes(cssUtils.marginLeft, cssUtils.colorTxtHint)}>open_in_new</Icon>
+          </Btn>
+        }
+      >
+        {m.reports_pageTitle}
+      </PageTitle>
 
       {_companies.accessesByPro.entity && _companies.viewableByPro.entity && (
         <>
@@ -176,27 +184,31 @@ export const ReportsPro = () => {
                       value={_reports.filters.status ?? ''}
                     >
                       <MenuItem value="">&nbsp;</MenuItem>
-                      {(_reportStatus.entity ?? []).map(status =>
+                      {(_reportStatus.entity ?? []).map(status => (
                         <MenuItem key={status} value={status}>
-                          <ReportStatusChip dense fullWidth inSelectOptions status={status}/>
-                        </MenuItem>,
-                      )}
+                          <ReportStatusChip dense fullWidth inSelectOptions status={status} />
+                        </MenuItem>
+                      ))}
                     </ScSelect>
                   </Grid>
                 </Grid>
                 <PeriodPicker
                   fullWidth
                   value={[_reports.filters.start, _reports.filters.end]}
-                  onChange={([start, end]) => _reports.updateFilters(prev => ({...prev, start: start ?? prev.start, end: end ?? prev.end}))}
+                  onChange={([start, end]) =>
+                    _reports.updateFilters(prev => ({...prev, start: start ?? prev.start, end: end ?? prev.end}))
+                  }
                 />
                 <div className={css.actions}>
                   <ScButton size="small" icon="clear" onClick={_reports.clearFilters} variant="outlined" color="primary">
                     {m.removeAllFilters}
                   </ScButton>
                   <ExportReportsPopper
-                    disabled={fromNullable(_reports?.list?.totalSize).map(_ => _ > Config.reportsLimitForExport).getOrElse(false)}
+                    disabled={fromNullable(_reports?.list?.totalSize)
+                      .map(_ => _ > Config.reportsLimitForExport)
+                      .getOrElse(false)}
                     tooltipBtnNew={fromNullable(_reports?.list?.totalSize)
-                      .map(_ => _ > Config.reportsLimitForExport ? m.cannotExportMoreReports(Config.reportsLimitForExport) : '')
+                      .map(_ => (_ > Config.reportsLimitForExport ? m.cannotExportMoreReports(Config.reportsLimitForExport) : ''))
                       .getOrElse('')}
                   >
                     <Btn size="small" variant="outlined" color="primary" icon="get_app">
@@ -221,68 +233,80 @@ export const ReportsPro = () => {
               total={_reports.list?.totalSize}
               onClickRows={_ => history.push(siteMap.report(_.report.id))}
               rows={
-                isMobileWidth ? [
-                    {
-                      id: 'all',
-                      head: '',
-                      row: _ => <div className={css.card}>
-                        <div className={css.card_content}>
-                          <div className={css.card_head}>
-                            <Txt bold size="big">{_.report.companySiret}</Txt>
-                            <Icon className={classes(css.iconDash, cssUtils.inlineIcon)}>remove</Icon>
-                            <Txt color="disabled">
-                              <Icon className={cssUtils.inlineIcon}>location_on</Icon>
-                              {_.report.companyAddress.postalCode}
-                            </Txt>
+                isMobileWidth
+                  ? [
+                      {
+                        id: 'all',
+                        head: '',
+                        row: _ => (
+                          <div className={css.card}>
+                            <div className={css.card_content}>
+                              <div className={css.card_head}>
+                                <Txt bold size="big">
+                                  {_.report.companySiret}
+                                </Txt>
+                                <Icon className={classes(css.iconDash, cssUtils.inlineIcon)}>remove</Icon>
+                                <Txt color="disabled">
+                                  <Icon className={cssUtils.inlineIcon}>location_on</Icon>
+                                  {_.report.companyAddress.postalCode}
+                                </Txt>
+                              </div>
+                              <Txt block color="hint">
+                                {m.thisDate(formatDate(_.report.creationDate))}
+                              </Txt>
+                              <Txt block color="hint">
+                                {_.report.contactAgreement
+                                  ? m.byHim(_.report.firstName + ' ' + _.report.lastName)
+                                  : m.anonymousReport}
+                              </Txt>
+                            </div>
+                            <ReportStatusChip dense status={_.report.status} />
                           </div>
-                          <Txt block color="hint">{m.thisDate(formatDate(_.report.creationDate))}</Txt>
-                          <Txt block color="hint">{_.report.contactAgreement ? m.byHim(_.report.firstName + ' ' + _.report.lastName) : m.anonymousReport}</Txt>
-                        </div>
-                        <ReportStatusChip dense status={_.report.status}/>
-                      </div>,
-                    },
-                  ]
-                  :
-                  [
-                    {
-                      id: 'companyPostalCode',
-                      head: m.postalCodeShort,
-                      className: _ => _.report.status === ReportStatus.UnreadForPro ? cssUtils.txtBold : undefined,
-                      row: _ => _.report.companyAddress.postalCode,
-                    },
-                    {
-                      id: 'siret',
-                      head: m.siret,
-                      className: _ => _.report.status === ReportStatus.UnreadForPro ? cssUtils.txtBold : undefined,
-                      row: _ => _.report.companySiret,
-                    },
-                    {
-                      id: 'createDate',
-                      head: m.receivedAt,
-                      className: _ => _.report.status === ReportStatus.UnreadForPro ? cssUtils.txtBold : undefined,
-                      row: _ => formatDate(_.report.creationDate),
-                    },
-                    {
-                      id: 'status',
-                      head: m.status,
-                      row: _ => <ReportStatusChip dense status={_.report.status}/>,
-                    },
-                    {
-                      id: 'consumer',
-                      head: m.consumer,
-                      className: _ => _.report.status === ReportStatus.UnreadForPro ? cssUtils.txtBold : undefined,
-                      row: _ => _.report.contactAgreement ? _.report.firstName + ' ' + _.report.lastName : m.anonymousReport,
-                    },
-                    {
-                      id: 'file',
-                      head: m.files, className: css.tdFiles, row: _ =>
-                        _.files.length > 0 && (
-                          <Badge badgeContent={_.files.length} color="primary" invisible={_.files.length === 1}>
-                            <Icon className={cssUtils.colorTxtHint}>insert_drive_file</Icon>
-                          </Badge>
                         ),
-                    },
-                  ]
+                      },
+                    ]
+                  : [
+                      {
+                        id: 'companyPostalCode',
+                        head: m.postalCodeShort,
+                        className: _ => (_.report.status === ReportStatus.UnreadForPro ? cssUtils.txtBold : undefined),
+                        row: _ => _.report.companyAddress.postalCode,
+                      },
+                      {
+                        id: 'siret',
+                        head: m.siret,
+                        className: _ => (_.report.status === ReportStatus.UnreadForPro ? cssUtils.txtBold : undefined),
+                        row: _ => _.report.companySiret,
+                      },
+                      {
+                        id: 'createDate',
+                        head: m.receivedAt,
+                        className: _ => (_.report.status === ReportStatus.UnreadForPro ? cssUtils.txtBold : undefined),
+                        row: _ => formatDate(_.report.creationDate),
+                      },
+                      {
+                        id: 'status',
+                        head: m.status,
+                        row: _ => <ReportStatusChip dense status={_.report.status} />,
+                      },
+                      {
+                        id: 'consumer',
+                        head: m.consumer,
+                        className: _ => (_.report.status === ReportStatus.UnreadForPro ? cssUtils.txtBold : undefined),
+                        row: _ => (_.report.contactAgreement ? _.report.firstName + ' ' + _.report.lastName : m.anonymousReport),
+                      },
+                      {
+                        id: 'file',
+                        head: m.files,
+                        className: css.tdFiles,
+                        row: _ =>
+                          _.files.length > 0 && (
+                            <Badge badgeContent={_.files.length} color="primary" invisible={_.files.length === 1}>
+                              <Icon className={cssUtils.colorTxtHint}>insert_drive_file</Icon>
+                            </Badge>
+                          ),
+                      },
+                    ]
               }
               renderEmptyState={
                 <Fender
@@ -290,7 +314,9 @@ export const ReportsPro = () => {
                   title={m.noReportsTitle}
                   description={
                     <>
-                      <Txt color="hint" size="big" block gutterBottom>{m.noReportsDesc}</Txt>
+                      <Txt color="hint" size="big" block gutterBottom>
+                        {m.noReportsDesc}
+                      </Txt>
                       <ScButton icon="clear" onClick={_reports.clearFilters} variant="contained" color="primary">
                         {m.removeAllFilters}
                       </ScButton>

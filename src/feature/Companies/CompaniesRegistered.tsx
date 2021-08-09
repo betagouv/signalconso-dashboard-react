@@ -84,13 +84,15 @@ export const CompaniesRegistered = () => {
               value={_companies.filters.identity ?? ''}
               onChange={value => _companies.updateFilters(prev => ({...prev, identity: value}))}
             >
-              {(value, onChange) =>
+              {(value, onChange) => (
                 <InputBase
                   value={value}
-                  placeholder={m.companiesSearchPlaceholder} fullWidth className={cssUtils.marginLeft}
+                  placeholder={m.companiesSearchPlaceholder}
+                  fullWidth
+                  className={cssUtils.marginLeft}
                   onChange={e => onChange(e.target.value)}
                 />
-              }
+              )}
             </DebouncedInput>
             <Tooltip title={m.removeAllFilters}>
               <IconBtn color="primary" onClick={_companies.clearFilters}>
@@ -114,51 +116,54 @@ export const CompaniesRegistered = () => {
             head: m.name,
             id: 'siret',
             className: css.tdName,
-            row: _ =>
+            row: _ => (
               <>
                 <span className={css.tdName_label}>{_.name}</span>
-                <br/>
+                <br />
                 <span className={css.tdName_desc}>{_.siret}</span>
               </>
+            ),
           },
           {
             head: m.address,
             id: 'address',
             className: css.tdAddress,
-            row: _ => (
-              <AddressComponent address={_.address}/>
-            )
+            row: _ => <AddressComponent address={_.address} />,
           },
           {
             head: m.postalCodeShort,
             id: 'postalCode',
-            row: _ =>
+            row: _ => (
               <>
                 <span>{_.address.postalCode?.slice(0, 2)}</span>
                 <span className={cssUtils.colorDisabled}>{_.address.postalCode?.substr(2, 5)}</span>
               </>
+            ),
           },
           {
             head: m.reports,
             id: 'count',
             className: cssUtils.txtRight,
-            row: _ =>
+            row: _ => (
               <NavLink to={siteMap.reports({siretSirenList: [_.siret], departments: _companies.filters.departments})}>
                 <ScButton color="primary">{formatLargeNumber(_.count)}</ScButton>
               </NavLink>
+            ),
           },
           {
             head: '',
             id: 'actions',
             className: cssUtils.txtRight,
-            row: _ => <NavLink to={siteMap.companyAccesses(_.siret)}>
-              <Tooltip title={m.handleAccesses}>
-                <IconBtn color="primary">
-                  <Icon>vpn_key</Icon>
-                </IconBtn>
-              </Tooltip>
-            </NavLink>
-          }
+            row: _ => (
+              <NavLink to={siteMap.companyAccesses(_.siret)}>
+                <Tooltip title={m.handleAccesses}>
+                  <IconBtn color="primary">
+                    <Icon>vpn_key</Icon>
+                  </IconBtn>
+                </Tooltip>
+              </NavLink>
+            ),
+          },
         ]}
         renderEmptyState={
           <Fender title={m.noCompanyFound} icon="store" className={css.fender}>
@@ -166,7 +171,8 @@ export const CompaniesRegistered = () => {
               {m.registerACompany}
             </ScButton>
           </Fender>
-        }/>
+        }
+      />
     </Panel>
   )
 }

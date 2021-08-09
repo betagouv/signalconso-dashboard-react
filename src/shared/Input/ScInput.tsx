@@ -19,10 +19,12 @@ export const ScInput = React.forwardRef(({small, ...props}: ScInputProps, ref) =
       inputRef={ref}
       InputProps={{
         ...props.InputProps,
-        style: small ? {
-          ...props.InputProps?.style,
-          height: 32
-        } : props.InputProps?.style
+        style: small
+          ? {
+              ...props.InputProps?.style,
+              height: 32,
+            }
+          : props.InputProps?.style,
       }}
     />
   )

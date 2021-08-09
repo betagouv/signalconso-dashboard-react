@@ -17,17 +17,20 @@ const useStyles = makeStyles((t: Theme) => {
     endAdornment: {
       display: 'flex',
       alignItems: 'center',
-    }
+    },
   })
 })
 
-interface Props extends Pick<AutocompleteProps<string, true, false, false>,
-  | 'value'
-  | 'defaultValue'
-  | 'className'
-  // | 'ref'
-  | 'placeholder'
-  | 'fullWidth'> {
+interface Props
+  extends Pick<
+    AutocompleteProps<string, true, false, false>,
+    | 'value'
+    | 'defaultValue'
+    | 'className'
+    // | 'ref'
+    | 'placeholder'
+    | 'fullWidth'
+  > {
   onChange: (_: string[]) => void
 }
 
@@ -80,14 +83,18 @@ export const SelectCountries = forwardRef(({value, onChange, ...props}: Props, r
           // ),
           endAdornment: (
             <div className={css.endAdornment}>
-              <IconButton size="small" onClick={_ => stopPropagation(clear)(_)} className={classes(innerValue.length === 0 && cssUtils.hidden)}>
+              <IconButton
+                size="small"
+                onClick={_ => stopPropagation(clear)(_)}
+                className={classes(innerValue.length === 0 && cssUtils.hidden)}
+              >
                 <Icon>clear</Icon>
               </IconButton>
               {/*<IconButton size="small" onClick={open}>*/}
               {/*  <Icon>arrow_drop_down</Icon>*/}
               {/*</IconButton>*/}
             </div>
-          )
+          ),
         }}
         inputProps={{
           autoComplete: 'new-password', // disable autocomplete and autofill

@@ -60,26 +60,25 @@ export const CompaniesPro = () => {
               id: '',
               className: css.tdName,
               head: m.name,
-              row: _ =>
+              row: _ => (
                 <>
                   <span className={css.tdName_label}>{_.name}</span>
-                  <br/>
+                  <br />
                   <span className={css.tdName_desc}>{_.siret}</span>
-                </>,
+                </>
+              ),
             },
             {
               head: m.address,
               id: 'address',
               className: css.tdAddress,
-              row: _ => (
-                <AddressComponent address={_.address}/>
-              ),
+              row: _ => <AddressComponent address={_.address} />,
             },
             {
               head: '',
               id: 'actions',
               className: cssUtils.txtRight,
-              row: _ =>
+              row: _ => (
                 <>
                   {_.level === AccessLevel.ADMIN && (
                     <NavLink to={siteMap.companyAccesses(_.siret)}>
@@ -97,7 +96,8 @@ export const CompaniesPro = () => {
                       </IconBtn>
                     </Tooltip>
                   </NavLink>
-                </>,
+                </>
+              ),
             },
           ]}
           renderEmptyState={

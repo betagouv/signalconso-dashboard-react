@@ -36,13 +36,15 @@ export const UsersList = () => {
               value={_users.filters.email ?? ''}
               onChange={email => _users.updateFilters(prev => ({...prev, email}))}
             >
-              {(value, onChange) =>
+              {(value, onChange) => (
                 <InputBase
                   value={value}
-                  placeholder={m.searchByEmail + '...'} fullWidth className={cssUtils.marginLeft}
+                  placeholder={m.searchByEmail + '...'}
+                  fullWidth
+                  className={cssUtils.marginLeft}
                   onChange={e => onChange(e.target.value)}
                 />
-              }
+              )}
             </DebouncedInput>
           </>
         }
@@ -59,26 +61,32 @@ export const UsersList = () => {
           {
             id: '',
             head: m.email,
-            row: _ => <Txt bold>{_.email}</Txt>
+            row: _ => <Txt bold>{_.email}</Txt>,
           },
           {
             head: m.firstName,
             id: 'firstName',
-            row: _ => _.firstName
+            row: _ => _.firstName,
           },
           {
             head: m.lastName,
             id: 'lastName',
-            row: _ => _.lastName
+            row: _ => _.lastName,
           },
           {
-            head: <Tooltip title={m.connectedUnder3Months}><span>{m.active}</span></Tooltip>,
+            head: (
+              <Tooltip title={m.connectedUnder3Months}>
+                <span>{m.active}</span>
+              </Tooltip>
+            ),
             id: 'lastEmailValidation',
-            row: _ => _.lastEmailValidation.getTime() > subMonths(new Date, 3).getTime() && (
-              <Icon className={cssUtils.colorSuccess}>check_circle</Icon>
-            )
-          }
-        ]}/>
+            row: _ =>
+              _.lastEmailValidation.getTime() > subMonths(new Date(), 3).getTime() && (
+                <Icon className={cssUtils.colorSuccess}>check_circle</Icon>
+              ),
+          },
+        ]}
+      />
     </Panel>
   )
 }

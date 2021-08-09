@@ -7,42 +7,44 @@ import {useSetState, UseSetState} from '@alexandreannic/react-hooks-lib/lib'
 import {CompanyWithAccessLevel, VisibleCompany} from '../../core/api'
 import {useI18n} from '../../core/i18n'
 
-const useStyles = makeStyles((t: Theme) => createStyles({
-  regionLabel: {
-    fontWeight: t.typography.fontWeightBold,
-    flex: 1,
-  },
-  regionToggleArrow: {
-    width: 40,
-    height: 36,
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginLeft: t.spacing(1),
-    borderRadius: 4,
-    color: t.palette.text.disabled,
-    '&:hover, &:active, &:focus': {
-      background: t.palette.action.hover,
-      color: t.palette.primary.main,
+const useStyles = makeStyles((t: Theme) =>
+  createStyles({
+    regionLabel: {
+      fontWeight: t.typography.fontWeightBold,
+      flex: 1,
     },
-  },
-  locationIcon: {
-    fontSize: 20,
-  },
-  menuItem: {
-    paddingTop: 0,
-    paddingBottom: 0,
-    paddingLeft: t.spacing(1 / 2),
-  },
-  menuItemImportant: {
-    fontWeight: t.typography.fontWeightBold,
-    borderBottom: `1px solid ${t.palette.divider}`,
-  },
-  cbDepartment: {
-    paddingTop: `6px !important`,
-    paddingBottom: `6px !important`,
-  }
-}))
+    regionToggleArrow: {
+      width: 40,
+      height: 36,
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      marginLeft: t.spacing(1),
+      borderRadius: 4,
+      color: t.palette.text.disabled,
+      '&:hover, &:active, &:focus': {
+        background: t.palette.action.hover,
+        color: t.palette.primary.main,
+      },
+    },
+    locationIcon: {
+      fontSize: 20,
+    },
+    menuItem: {
+      paddingTop: 0,
+      paddingBottom: 0,
+      paddingLeft: t.spacing(1 / 2),
+    },
+    menuItemImportant: {
+      fontWeight: t.typography.fontWeightBold,
+      borderBottom: `1px solid ${t.palette.divider}`,
+    },
+    cbDepartment: {
+      paddingTop: `6px !important`,
+      paddingBottom: `6px !important`,
+    },
+  }),
+)
 
 interface SelectCompaniesProMenuProps {
   accessibleCompanies: CompanyWithAccessLevel[]
@@ -69,8 +71,14 @@ export const SelectCompaniesByProMenu = ({
   const {m} = useI18n()
 
   const allSelected = useMemo(() => indexValues.size === visibleCompanies.length, [indexValues, visibleCompanies])
-  const allAccessSelected = useMemo(() => accessibleCompanies.every(_ => indexValues.has(_.siret)), [indexValues, accessibleCompanies])
-  const someSelected = useMemo(() => !allSelected && !!visibleCompanies.find(_ => indexValues.has(_.siret)), [indexValues, visibleCompanies])
+  const allAccessSelected = useMemo(
+    () => accessibleCompanies.every(_ => indexValues.has(_.siret)),
+    [indexValues, accessibleCompanies],
+  )
+  const someSelected = useMemo(
+    () => !allSelected && !!visibleCompanies.find(_ => indexValues.has(_.siret)),
+    [indexValues, visibleCompanies],
+  )
 
   useEffect(() => {
     indexValues.reset(initialValues)
@@ -94,24 +102,24 @@ export const SelectCompaniesByProMenu = ({
   return (
     <Menu anchorEl={anchorEl} open={open} onClose={onClose}>
       <MenuItem className={classes(css.menuItem, css.menuItemImportant)} onClick={() => onSelectAll()}>
-        <Checkbox indeterminate={someSelected} checked={allSelected}/>
+        <Checkbox indeterminate={someSelected} checked={allSelected} />
         {m.allMyCompanies}
       </MenuItem>
       <MenuItem className={classes(css.menuItem, css.menuItemImportant)} onClick={() => onSelectAccess()}>
-        <Checkbox indeterminate={!allAccessSelected && someSelected} checked={allAccessSelected}/>
+        <Checkbox indeterminate={!allAccessSelected && someSelected} checked={allAccessSelected} />
         {m.allSubCompanies}
       </MenuItem>
-      {visibleCompanies.map(company =>
+      {visibleCompanies.map(company => (
         <MenuItem className={css.menuItem} key={company.siret} dense onClick={() => onSelect(company)}>
-          <Checkbox className={css.cbDepartment} checked={indexValues.has(company.siret)}/>
+          <Checkbox className={css.cbDepartment} checked={indexValues.has(company.siret)} />
           <span className={cssUtils.colorTxtSecondary}>{company.siret.slice(0, 9)}</span>
           <span className={cssUtils.txtBold}>{company.siret.substr(9, 14)}</span>
           <span className={classes(cssUtils.colorTxtHint, cssUtils.marginLeft)}>
             <Icon className={classes(cssUtils.inlineIcon, css.locationIcon)}>location_on</Icon>
             {company.postalCode}
           </span>
-        </MenuItem>,
-      )}
+        </MenuItem>
+      ))}
     </Menu>
   )
 }

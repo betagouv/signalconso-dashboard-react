@@ -1,6 +1,6 @@
 export enum CompanyAccessLevel {
   member = 'Accès simple',
-  admin = 'Administrateur'
+  admin = 'Administrateur',
 }
 
 export interface CompanyAccess {
