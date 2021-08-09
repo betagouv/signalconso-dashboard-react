@@ -19,8 +19,9 @@ const useReportFilesStyles = makeStyles((t: Theme) => ({
   root: {
     display: 'flex',
     flexWrap: 'wrap',
-    marginRight: t.spacing(-1),
-    marginLeft: t.spacing(-1),
+    margin: t.spacing(-1),
+    // marginRight: t.spacing(-1),
+    // marginLeft: t.spacing(-1),
   }
 }))
 

@@ -40,10 +40,11 @@ interface Props {
   report: Report
   files?: UploadedFile[]
   elevated?: boolean
+  actions?: ReactNode
   children?: ReactNode
 }
 
-export const ReportHeader = ({report, children, files, elevated}: Props) => {
+export const ReportHeader = ({report, children, actions, files, elevated}: Props) => {
   const css = useStyles()
   const cssUtils = useCssUtils()
   const {m} = useI18n()
@@ -75,7 +76,7 @@ export const ReportHeader = ({report, children, files, elevated}: Props) => {
           </div>,
         )}
         <Divider className={cssUtils.divider}/>
-        <Txt bold block>{m.attachedFiles}</Txt>
+        <Txt bold block gutterBottom>{m.attachedFiles}</Txt>
         <ReportFiles
           hideAddBtn={connectedUser.isPro}
           files={files?.filter(_ => _.origin === FileOrigin.Consumer)}
@@ -89,6 +90,12 @@ export const ReportHeader = ({report, children, files, elevated}: Props) => {
             }).then(() => _report.events.fetch({force: true, clean: false}, report.id))
           }}
         />
+        {children && (
+          <>
+            <Divider className={cssUtils.divider}/>
+            {children}
+          </>
+        )}
       </PanelBody>
       <PanelFoot className={css.actions}>
         <div style={{flex: 1}}>
@@ -97,7 +104,7 @@ export const ReportHeader = ({report, children, files, elevated}: Props) => {
             ' ',
           ])}
         </div>
-        {children}
+        {actions}
       </PanelFoot>
     </Panel>
   )

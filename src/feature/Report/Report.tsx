@@ -87,36 +87,46 @@ export const ReportComponent = () => {
     <Page loading={_report.get.loading}>
       {fromNullable(_report.get.entity?.report).map(report =>
         <>
-          <ReportHeader elevated report={report} files={_report.get.entity?.files}>
-            <ReportAddComment report={report} onAdd={() => _report.events.fetch({force: true, clean: false}, id)}>
-              <Tooltip title={m.addDgccrfComment}>
-                <Btn variant="outlined" color="primary" icon="add_comment">
-                  {m.comment}
+          <ReportHeader
+            elevated
+            report={report}
+            files={_report.get.entity?.files}
+            actions={
+              <>
+                <ReportAddComment report={report} onAdd={() => _report.events.fetch({force: true, clean: false}, id)}>
+                  <Tooltip title={m.addDgccrfComment}>
+                    <Btn variant="outlined" color="primary" icon="add_comment">
+                      {m.comment}
+                    </Btn>
+                  </Tooltip>
+                </ReportAddComment>
+                <Btn
+                  variant="outlined" color="primary" icon="download"
+                  loading={_report.download.loading}
+                  onClick={() => downloadReport(report.id)}
+                >
+                  {m.download}
                 </Btn>
-              </Tooltip>
-            </ReportAddComment>
-            <Btn
-              variant="outlined" color="primary" icon="download"
-              loading={_report.download.loading}
-              onClick={() => downloadReport(report.id)}
-            >
-              {m.download}
-            </Btn>
-            <Confirm
-              title={m.removeAsk}
-              content={m.removeReportDesc(report.companySiret)}
-              onConfirm={(close) => _report.remove.fetch({}, report.id).then(() => window.history.back()).finally(close)}
-            >
-              <Btn loading={_report.remove.loading} variant="outlined" color="error" icon="delete">{m.delete}</Btn>
-            </Confirm>
-          </ReportHeader>
+                <Confirm
+                  title={m.removeAsk}
+                  content={m.removeReportDesc(report.companySiret)}
+                  onConfirm={(close) => _report.remove.fetch({}, report.id).then(() => window.history.back()).finally(close)}
+                >
+                  <Btn loading={_report.remove.loading} variant="outlined" color="error" icon="delete">{m.delete}</Btn>
+                </Confirm>
+              </>
+            }/>
           <Grid container spacing={2} alignItems="stretch">
             <Grid item xs={12} sm={6}>
               <Panel stretch>
                 <PanelHead>{m.consumer}</PanelHead>
                 <PanelBody className={css.cardBody}>
                   <div>
-                    <div className={cssUtils.txtBig}>{capitalize(report.firstName)}&nbsp;{report.lastName.toLocaleUpperCase()}</div>
+                    <div className={cssUtils.txtBig}>
+                      {fromNullable(report.firstName).map(_ => capitalize(_)).getOrElse('')}
+                      &nbsp;
+                      {fromNullable(report.lastName).map(_ => _.toLocaleUpperCase()).getOrElse('')}
+                    </div>
                     <div className={cssUtils.colorTxtSecondary}>{report.email}</div>
                     {!report.contactAgreement && (
                       <div className={classes(cssUtils.colorError)} style={{marginTop: theme.spacing(.5)}}>

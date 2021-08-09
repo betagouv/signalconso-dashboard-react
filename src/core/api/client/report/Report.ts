@@ -19,9 +19,9 @@ export interface Report {
   vendor: string
   phone?: string
   details: DetailInputValue[]
-  firstName: string
-  lastName: string
-  email: string
+  firstName?: string
+  lastName?: string
+  email?: string
   employeeConsumer: boolean
   contactAgreement: boolean
   creationDate: Date

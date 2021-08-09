@@ -16,6 +16,9 @@ import {Collapse, makeStyles, Theme} from '@material-ui/core'
 import {ReportMessages} from '../Report/ReportMessages'
 import {ScButton} from '../../shared/Button/Button'
 import {utilsStyles} from '../../core/theme'
+import {capitalize} from '../../core/helper/utils'
+import {useCssUtils} from '../../core/helper/useCssUtils'
+import { Txt } from 'mui-extension/lib/Txt/Txt'
 
 const useStyles = makeStyles((t: Theme) => ({
   answerPanel: {
@@ -37,6 +40,7 @@ export const ReportPro = () => {
   const {toastError} = useToast()
   const openAnswerPanel = useBoolean(false)
   const response = useMemo(() => _report.events.entity?.find(_ => _.data.action === EventActionValues.ReportProResponse), [_report.events])
+  const cssUtils = useCssUtils()
 
   useEffect(() => {
     _report.get.fetch({}, id)
@@ -59,11 +63,24 @@ export const ReportPro = () => {
             elevated={!openAnswerPanel.value}
             report={report}
             files={_report.get.entity?.files}
-          >
-            {!response && report.status !== ReportStatus.ClosedForPro && (
+            actions={!response && report.status !== ReportStatus.ClosedForPro && (
               <ScButton onClick={openAnswerPanel.setTrue} icon="priority_high" color="error" variant="contained">
                 {m.answer}
               </ScButton>
+            )}
+          >
+            <Txt block bold>{m.consumer}</Txt>
+            {report.contactAgreement ? (
+              <>
+                <div className={cssUtils.colorTxtSecondary}>
+                  {fromNullable(report.firstName).map(_ => capitalize(_)).getOrElse('')}
+                  &nbsp;
+                  {fromNullable(report.lastName).map(_ => _.toLocaleUpperCase()).getOrElse('')}
+                </div>
+                <div className={cssUtils.colorTxtSecondary}>{report.email}</div>
+              </>
+            ) : (
+              m.reportConsumerWantToBeAnonymous
             )}
           </ReportHeader>
 

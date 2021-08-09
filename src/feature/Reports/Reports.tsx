@@ -261,7 +261,7 @@ export const Reports = ({}) => {
               id: 'email',
               head: m.consumer, className: css.tdConsumer, row: _ =>
                 <span className={classes(_.report.contactAgreement ? cssUtils.colorSuccess : cssUtils.colorError)}>
-                  {textOverflowMiddleCropping(_.report.email, 25)}
+                  {textOverflowMiddleCropping(_.report.email ?? '', 25)}
                 </span>
             },
             {

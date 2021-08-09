@@ -74,7 +74,7 @@ export const ReportMessages = ({canEditFile, response, reportId, files}: Props) 
       )).getOrElse(
         <div>{m.noAnswerFromPro}</div>)
       }
-      <Txt className={cssUtils.marginTop2} bold size="big" block>{m.attachedFiles}</Txt>
+      <Txt className={cssUtils.marginTop2} gutterBottom bold size="big" block>{m.attachedFiles}</Txt>
       <ReportFiles
         hideAddBtn={!canEditFile}
         reportId={reportId}
