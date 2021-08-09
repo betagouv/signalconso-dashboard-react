@@ -10,7 +10,7 @@ import {ReportStatusChip} from '../../shared/ReportStatus/ReportStatus'
 import {useLayoutContext} from '../../core/Layout/LayoutContext'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
 import {cleanObject, ReportSearch, ReportSearchResult, ReportStatus} from '../../core/api'
-import {utilsStyles} from '../../core/theme'
+import {styleUtils} from '../../core/theme'
 import {SelectDepartments} from '../../shared/SelectDepartments/SelectDepartments'
 import {ScSelect} from '../../shared/Select/Select'
 import {useConstantContext} from '../../core/context/ConstantContext'
@@ -36,7 +36,7 @@ const useStyles = makeStyles((t: Theme) => ({
     maxWidth: 100,
   },
   card: {
-    fontSize: utilsStyles(t).fontSize.normal,
+    fontSize: styleUtils(t).fontSize.normal,
     display: 'flex',
     alignItems: 'center',
     padding: t.spacing(1, 2),

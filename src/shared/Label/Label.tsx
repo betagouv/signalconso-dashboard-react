@@ -2,7 +2,7 @@ import * as React from 'react'
 import {CSSProperties, ReactNode} from 'react'
 import {makeStyles, Theme} from '@material-ui/core'
 import {alpha} from '@material-ui/core/styles'
-import {utilsStyles} from '../../core/theme'
+import {styleUtils} from '../../core/theme'
 import {classes} from '../../core/helper/utils'
 
 export type LabelColor = 'error' | 'warning' | 'info' | 'success' | 'disable'
@@ -27,16 +27,16 @@ const useStyles = makeStyles((t: Theme) => ({
     ...colorize(t.palette.text.disabled),
   },
   error: {
-    ...colorize(utilsStyles(t).color.error),
+    ...colorize(styleUtils(t).color.error),
   },
   warning: {
-    ...colorize(utilsStyles(t).color.warning),
+    ...colorize(styleUtils(t).color.warning),
   },
   success: {
-    ...colorize(utilsStyles(t).color.success),
+    ...colorize(styleUtils(t).color.success),
   },
   info: {
-    ...colorize(utilsStyles(t).color.info),
+    ...colorize(styleUtils(t).color.info),
   },
   disable: {
     ...colorize(t.palette.text.disabled),

@@ -6,7 +6,7 @@ import React, {useEffect} from 'react'
 import {useCompaniesContext} from '../../core/context/CompaniesContext'
 import {useCssUtils} from '../../core/helper/useCssUtils'
 import {Checkbox, Icon, makeStyles, Theme, Tooltip} from '@material-ui/core'
-import {utilsStyles} from '../../core/theme'
+import {styleUtils} from '../../core/theme'
 import {Confirm, Fender, IconBtn} from 'mui-extension/lib'
 import {Link} from 'react-router-dom'
 import {siteMap} from '../../core/siteMap'
@@ -47,10 +47,10 @@ const useStyles = makeStyles((t: Theme) => ({
   tdAddress: {
     paddingTop: t.spacing(.5),
     paddingBottom: t.spacing(.5),
-    fontSize: utilsStyles(t).fontSize.small,
+    fontSize: styleUtils(t).fontSize.small,
     color: t.palette.text.secondary,
     maxWidth: 300,
-    ...utilsStyles(t).truncate,
+    ...styleUtils(t).truncate,
   },
 }))
 

@@ -7,7 +7,7 @@ import {Alert, Animate, AnimateList} from 'mui-extension/lib'
 import {makeStyles} from '@material-ui/core/styles'
 import {Icon, LinearProgress, Theme} from '@material-ui/core'
 import {Ripple} from '../../shared/Ripple/Ripple'
-import {utilsStyles} from '../../core/theme'
+import {styleUtils} from '../../core/theme'
 import {useCssUtils} from '../../core/helper/useCssUtils'
 
 const useStyles = makeStyles((t: Theme) => ({
@@ -26,7 +26,7 @@ const useStyles = makeStyles((t: Theme) => ({
     border: `1px dashed ${t.palette.divider}`,
     marginBottom: t.spacing(3),
     color: t.palette.primary.main,
-    fontSize: utilsStyles(t).fontSize.title,
+    fontSize: styleUtils(t).fontSize.title,
     borderRadius: 4,
   }
 }))

@@ -2,7 +2,7 @@ import {Avatar, Icon, Theme} from '@material-ui/core'
 import React from 'react'
 import {makeStyles} from '@material-ui/core/styles'
 import {grey, lightBlue} from '@material-ui/core/colors'
-import {utilsStyles} from '../../theme'
+import {styleUtils} from '../../theme'
 import {useBoolean} from '@alexandreannic/react-hooks-lib/lib'
 import {ScMenu} from './ScMenu'
 import {LayoutConnectedUser} from '../Layout'
@@ -24,18 +24,18 @@ const useMenuStyles = makeStyles((t: Theme) => ({
     backgroundColor: grey[500],
   },
   userName: {
-    ...utilsStyles(t).truncate,
+    ...styleUtils(t).truncate,
   },
   userEmail: {
-    ...utilsStyles(t).truncate,
+    ...styleUtils(t).truncate,
     color: t.palette.text.secondary,
-    fontSize: utilsStyles(t).fontSize.small,
+    fontSize: styleUtils(t).fontSize.small,
   },
   logoutBtn: {
     margin: `${t.spacing(1, 0)} !important`,
   },
   useRole: {
-    fontSize: utilsStyles(t).fontSize.small,
+    fontSize: styleUtils(t).fontSize.small,
     color: t.palette.text.hint,
   },
 }))

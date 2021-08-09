@@ -5,7 +5,7 @@ import logoSignalConso from './signalconso.svg'
 import {useI18n} from '../../i18n'
 import {Btn, IconBtn} from 'mui-extension/lib'
 import {Config} from '../../../conf/config'
-import {utilsStyles} from 'core/theme'
+import {styleUtils} from 'core/theme'
 import {headerHeight} from '../index'
 import React from 'react'
 import {ScMenuBtn} from '../Menu/ScMenuBtn'
@@ -107,7 +107,7 @@ export const Header = ({connectedUser}: Props) => {
 const useHeaderItemStyles = makeStyles((t: Theme) => ({
   root: {
     textTransform: 'initial',
-    fontSize: utilsStyles(t).fontSize.normal,
+    fontSize: styleUtils(t).fontSize.normal,
     padding: t.spacing(0, 2),
   }
 }))

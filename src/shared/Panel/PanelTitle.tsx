@@ -1,12 +1,12 @@
 import {makeStyles, Theme} from '@material-ui/core'
-import {utilsStyles} from '../../core/theme'
+import {styleUtils} from '../../core/theme'
 import {classes} from '../../core/helper/utils'
 
 const useStyles = makeStyles((t: Theme) => ({
   root: {
     fontWeight: t.typography.fontWeightMedium,
-    margin: utilsStyles(t).spacing(2, 0, 2, 0),
-    fontSize: utilsStyles(t).fontSize.title,
+    margin: styleUtils(t).spacing(2, 0, 2, 0),
+    fontSize: styleUtils(t).fontSize.title,
   }
 }))
 

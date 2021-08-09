@@ -6,7 +6,7 @@ import {useCompaniesContext} from '../../core/context/CompaniesContext'
 import {useCssUtils} from '../../core/helper/useCssUtils'
 import {Datatable} from '../../shared/Datatable/Datatable'
 import {Icon, makeStyles, Theme, Tooltip} from '@material-ui/core'
-import {utilsStyles} from '../../core/theme'
+import {styleUtils} from '../../core/theme'
 import {Fender, IconBtn} from 'mui-extension/lib'
 import {ScButton} from '../../shared/Button/Button'
 import {AddressComponent} from '../../shared/Address/Address'
@@ -29,7 +29,7 @@ const useStyles = makeStyles((t: Theme) => ({
   },
   tdAddress: {
     maxWidth: 300,
-    ...utilsStyles(t).truncate,
+    ...styleUtils(t).truncate,
   },
   fender: {
     margin: `${t.spacing(1)}px auto ${t.spacing(2)}px auto`,

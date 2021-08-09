@@ -5,7 +5,7 @@ import {ReportEventIcon} from './ReportEventIcon'
 import {useCssUtils} from '../../../core/helper/useCssUtils'
 import {classes} from '../../../core/helper/utils'
 import {Icon, makeStyles, Theme} from '@material-ui/core'
-import {utilsStyles} from '../../../core/theme'
+import {styleUtils} from '../../../core/theme'
 
 export interface ReportComponentEventProps {
   event: ReportEvent
@@ -25,12 +25,12 @@ const useStyles = makeStyles((t: Theme) => ({
   },
   body: {
     flex: 1,
-    padding: utilsStyles(t).spacing(0, 2, 1.5, 0),
-    fontSize: utilsStyles(t).fontSize.small,
+    padding: styleUtils(t).spacing(0, 2, 1.5, 0),
+    fontSize: styleUtils(t).fontSize.small,
     borderBottom: '1px solid ' + t.palette.divider,
   },
   icon: {
-    margin: utilsStyles(t).spacing(0, 2, 2, 0),
+    margin: styleUtils(t).spacing(0, 2, 2, 0),
   },
   head: {
     display: 'flex',
@@ -39,7 +39,7 @@ const useStyles = makeStyles((t: Theme) => ({
   },
   title: {
     fontWeight: t.typography.fontWeightBold,
-    fontSize: utilsStyles(t).fontSize.normal,
+    fontSize: styleUtils(t).fontSize.normal,
   },
   date: {
     whiteSpace: 'nowrap',

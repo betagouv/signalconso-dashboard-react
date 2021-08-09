@@ -1,6 +1,6 @@
 import {EventActionValues} from 'core/api'
 import {Icon, Theme, useTheme} from '@material-ui/core'
-import {utilsStyles} from '../../../core/theme'
+import {styleUtils} from '../../../core/theme'
 import {fnSwitch} from '../../../core/helper/utils'
 
 export interface ReportEventIconProps {
@@ -27,17 +27,17 @@ export const getReportEventIcon = (action: EventActionValues) => fnSwitch(action
 )
 
 export const getReportEventColor = (t: Theme) => (action: EventActionValues) => fnSwitch(action, {
-  [EventActionValues.ReportReadingByPro]: utilsStyles(t).color.info,
-  [EventActionValues.ReportProResponse]: utilsStyles(t).color.success,
-  [EventActionValues.ReportConsumerChange]: utilsStyles(t).color.info,
-  [EventActionValues.ReportCompanyChange]: utilsStyles(t).color.info,
-  [EventActionValues.Comment]: utilsStyles(t).color.info,
+  [EventActionValues.ReportReadingByPro]: styleUtils(t).color.info,
+  [EventActionValues.ReportProResponse]: styleUtils(t).color.success,
+  [EventActionValues.ReportConsumerChange]: styleUtils(t).color.info,
+  [EventActionValues.ReportCompanyChange]: styleUtils(t).color.info,
+  [EventActionValues.Comment]: styleUtils(t).color.info,
   [EventActionValues.Control]: t.palette.error.main,
   [EventActionValues.ConsumerAttachments]: t.palette.text.hint,
   [EventActionValues.ProfessionalAttachments]: t.palette.text.hint,
-  [EventActionValues.ReportReviewOnResponse]: utilsStyles(t).color.success,
-  [EventActionValues.ReportClosedByNoAction]: utilsStyles(t).color.error,
-  [EventActionValues.Creation]: utilsStyles(t).color.info,
+  [EventActionValues.ReportReviewOnResponse]: styleUtils(t).color.success,
+  [EventActionValues.ReportClosedByNoAction]: styleUtils(t).color.error,
+  [EventActionValues.Creation]: styleUtils(t).color.info,
 }, _ => t.palette.text.hint)
 
 export const ReportEventIcon = ({action, className}: ReportEventIconProps) => {

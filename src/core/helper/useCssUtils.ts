@@ -1,6 +1,6 @@
 import {Theme} from '@material-ui/core'
 import {makeStyles} from '@material-ui/core/styles'
-import {utilsStyles} from '../theme'
+import {styleUtils} from '../theme'
 
 export const useCssUtils = makeStyles((t: Theme) => {
   return {
@@ -26,13 +26,13 @@ export const useCssUtils = makeStyles((t: Theme) => {
       color: t.palette.error.main,
     },
     colorSuccess: {
-      color: utilsStyles(t).color.success,
+      color: styleUtils(t).color.success,
     },
     colorWarning: {
-      color: utilsStyles(t).color.warning,
+      color: styleUtils(t).color.warning,
     },
     colorInfo: {
-      color: utilsStyles(t).color.info,
+      color: styleUtils(t).color.info,
     },
     colorTxtHint: {
       color: t.palette.text.hint + ' !important',
@@ -43,7 +43,7 @@ export const useCssUtils = makeStyles((t: Theme) => {
     colorPrimary: {
       color: t.palette.primary.main + ' !important',
     },
-    truncate: utilsStyles(t).truncate,
+    truncate: styleUtils(t).truncate,
     divider: {
       marginTop: t.spacing(2),
       marginBottom: t.spacing(2),

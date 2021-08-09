@@ -4,7 +4,7 @@ import {ClickAwayListener, Divider, Theme} from '@material-ui/core'
 import {EntityIcon} from '../../EntityIcon'
 import React from 'react'
 import {makeStyles} from '@material-ui/core/styles'
-import {utilsStyles} from '../../theme'
+import {styleUtils} from '../../theme'
 import {ScMenuItem} from './ScMenuItem'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
 import {siteMap} from '../../siteMap'
@@ -27,18 +27,18 @@ const useMenuStyles = makeStyles((t: Theme) => ({
     padding: t.spacing(2, 2, .5, 2),
   },
   userName: {
-    ...utilsStyles(t).truncate,
+    ...styleUtils(t).truncate,
   },
   userEmail: {
-    ...utilsStyles(t).truncate,
+    ...styleUtils(t).truncate,
     color: t.palette.text.secondary,
-    fontSize: utilsStyles(t).fontSize.small,
+    fontSize: styleUtils(t).fontSize.small,
   },
   logoutBtn: {
     margin: `${t.spacing(1, 0)} !important`,
   },
   useRole: {
-    fontSize: utilsStyles(t).fontSize.small,
+    fontSize: styleUtils(t).fontSize.small,
     color: t.palette.text.hint,
   },
   divider: {

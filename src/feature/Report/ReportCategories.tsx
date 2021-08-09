@@ -1,6 +1,6 @@
 import {useCssUtils} from '../../core/helper/useCssUtils'
 import {Icon, makeStyles, Theme} from '@material-ui/core'
-import {utilsStyles} from '../../core/theme'
+import {styleUtils} from '../../core/theme'
 import {classes} from '../../core/helper/utils'
 import React from 'react'
 
@@ -11,7 +11,7 @@ const useReportCategoryStyles = makeStyles((t: Theme) => ({
     marginBottom: t.spacing(.5),
     border: '1px solid ' + t.palette.divider,
     borderRadius: 40,
-    padding: utilsStyles(t).spacing(.5, 1, .5, 1),
+    padding: styleUtils(t).spacing(.5, 1, .5, 1),
   },
   icon: {
     fontSize: 20,

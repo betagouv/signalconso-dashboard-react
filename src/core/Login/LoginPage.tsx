@@ -7,7 +7,7 @@ import {useI18n} from '../i18n'
 import {useFormInput} from '@alexandreannic/react-hooks-lib/lib'
 import {regexpPattern} from '../helper/regexp'
 import {Panel, PanelBody} from '../../shared/Panel'
-import {utilsStyles} from '../theme'
+import {styleUtils} from '../theme'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
 import {useCssUtils} from '../helper/useCssUtils'
 import {useToast} from '../toast'
@@ -29,7 +29,7 @@ const useStyles = makeStyles((t: Theme) => ({
     marginTop: 0,
     marginBottom: t.spacing(3),
     textAlign: 'center',
-    fontSize: utilsStyles(t).fontSize.bigTitle,
+    fontSize: styleUtils(t).fontSize.bigTitle,
   },
   body: {
     display: 'flex',

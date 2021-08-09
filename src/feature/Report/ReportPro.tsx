@@ -15,7 +15,7 @@ import {useBoolean} from '@alexandreannic/react-hooks-lib/lib'
 import {Collapse, makeStyles, Theme} from '@material-ui/core'
 import {ReportResponseComponent} from './ReportResponse'
 import {ScButton} from '../../shared/Button/Button'
-import {utilsStyles} from '../../core/theme'
+import {styleUtils} from '../../core/theme'
 import {capitalize} from '../../core/helper/utils'
 import {useCssUtils} from '../../core/helper/useCssUtils'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
@@ -26,7 +26,7 @@ const useStyles = makeStyles((t: Theme) => ({
   },
   responseDateTime: {
     color: t.palette.text.hint,
-    fontSize: utilsStyles(t).fontSize.normal,
+    fontSize: styleUtils(t).fontSize.normal,
     fontWeight: 'normal',
     display: 'inline',
   },

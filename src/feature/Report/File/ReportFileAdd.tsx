@@ -2,7 +2,7 @@ import React, {useRef, useState} from 'react'
 import {Button, CircularProgress, Icon, makeStyles, Theme, Tooltip} from '@material-ui/core'
 import {reportFileConfig} from './reportFileConfig'
 import {useI18n} from '../../../core/i18n'
-import {utilsStyles} from '../../../core/theme'
+import {styleUtils} from '../../../core/theme'
 import {Config} from '../../../conf/config'
 import {FileOrigin, Id, UploadedFile} from '../../../core/api'
 import {useToast} from '../../../core/toast'
@@ -31,7 +31,7 @@ const useStyles = makeStyles((t: Theme) => ({
     fontSize: 32,
   },
   label: {
-    fontSize: utilsStyles(t).fontSize.small,
+    fontSize: styleUtils(t).fontSize.small,
     textTransform: 'initial',
     fontWeight: 'normal',
     lineHeight: 1.4,

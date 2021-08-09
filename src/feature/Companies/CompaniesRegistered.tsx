@@ -9,7 +9,7 @@ import {Icon, InputBase, makeStyles, Theme, Tooltip} from '@material-ui/core'
 import {NavLink} from 'react-router-dom'
 import {siteMap} from '../../core/siteMap'
 import {ScButton} from '../../shared/Button/Button'
-import {utilsStyles} from '../../core/theme'
+import {styleUtils} from '../../core/theme'
 import {Fender, IconBtn} from 'mui-extension/lib'
 import {SelectDepartments} from '../../shared/SelectDepartments/SelectDepartments'
 import {mapArrayFromQuerystring, useQueryString} from '../../core/helper/useQueryString'
@@ -33,7 +33,7 @@ const useStyles = makeStyles((t: Theme) => ({
   },
   tdAddress: {
     maxWidth: 300,
-    ...utilsStyles(t).truncate,
+    ...styleUtils(t).truncate,
   },
   fender: {
     margin: `${t.spacing(1)}px auto ${t.spacing(2)}px auto`,

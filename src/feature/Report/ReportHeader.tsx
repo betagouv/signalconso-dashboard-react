@@ -8,7 +8,7 @@ import {ReportFiles} from './File/ReportFiles'
 import {PanelFoot} from '../../shared/Panel/PanelFoot'
 import {ScChip} from '../../shared/Chip/ScChip'
 import React, {ReactNode} from 'react'
-import {utilsStyles} from '../../core/theme'
+import {styleUtils} from '../../core/theme'
 import {useCssUtils} from '../../core/helper/useCssUtils'
 import {useI18n} from '../../core/i18n'
 import {useReportContext} from '../../core/context/ReportContext'
@@ -28,7 +28,7 @@ const useStyles = makeStyles((t: Theme) => ({
   },
   pageTitle_txt: {
     margin: 0,
-    fontSize: utilsStyles(t).fontSize.bigTitle,
+    fontSize: styleUtils(t).fontSize.bigTitle,
   },
   actions: {
     flexWrap: 'wrap',

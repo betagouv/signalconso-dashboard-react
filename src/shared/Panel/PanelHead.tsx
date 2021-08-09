@@ -1,13 +1,13 @@
 import * as React from 'react'
 import {ReactNode} from 'react'
 import {makeStyles, Theme} from '@material-ui/core'
-import {utilsStyles} from '../../core/theme'
+import {styleUtils} from '../../core/theme'
 import {classes} from '../../core/helper/utils'
 import {PanelTitle} from './PanelTitle'
 
 const useStyles = makeStyles((t: Theme) => ({
   root: {
-    padding: utilsStyles(t).spacing(2, 2, 0, 2),
+    padding: styleUtils(t).spacing(2, 2, 0, 2),
     margin: 0,
     display: 'flex',
     alignItems: 'center',

@@ -1,7 +1,7 @@
 import {makeStyles, Theme} from '@material-ui/core'
 import {ReportStatus} from 'core/api'
 import {capitalize, classes} from '../../core/helper/utils'
-import {utilsStyles} from '../../core/theme'
+import {styleUtils} from '../../core/theme'
 import {useMemo} from 'react'
 
 const useStyles = makeStyles((t: Theme) => ({
@@ -21,7 +21,7 @@ const useStyles = makeStyles((t: Theme) => ({
   },
   dense: {
     fontWeight: '500' as any,
-    fontSize: utilsStyles(t).fontSize.small,
+    fontSize: styleUtils(t).fontSize.small,
     paddingRight: t.spacing(1),
     paddingLeft: t.spacing(1),
   },

@@ -6,7 +6,7 @@ import {classes, fnSwitch} from '../../core/helper/utils'
 import {fromNullable} from 'fp-ts/lib/Option'
 import {Icon, makeStyles, Theme} from '@material-ui/core'
 import {useCssUtils} from '../../core/helper/useCssUtils'
-import {utilsStyles} from '../../core/theme'
+import {styleUtils} from '../../core/theme'
 import {ReportFiles} from './File/ReportFiles'
 import {useReportContext} from '../../core/context/ReportContext'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
@@ -20,7 +20,7 @@ interface Props {
 
 const useStyles = makeStyles((t: Theme) => ({
   responseType: {
-    fontSize: utilsStyles(t).fontSize.big,
+    fontSize: styleUtils(t).fontSize.big,
     display: 'inline-flex',
     alignItems: 'center',
     marginBottom: t.spacing(1),

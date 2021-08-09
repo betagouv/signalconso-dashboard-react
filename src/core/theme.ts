@@ -1,7 +1,7 @@
 import {red} from '@material-ui/core/colors'
 import {createTheme, alpha, Theme} from '@material-ui/core'
 
-export const utilsStyles = (t: Theme) => ({
+export const styleUtils = (t: Theme) => ({
   defaultRadius: 4,
   gridSpacing: 3 as any,
   fontSize: {
