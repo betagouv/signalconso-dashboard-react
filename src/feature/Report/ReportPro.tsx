@@ -13,12 +13,12 @@ import {Panel, PanelHead} from '../../shared/Panel'
 import {ReportResponseForm} from './ReportResponseForm/ReportResponseForm'
 import {useBoolean} from '@alexandreannic/react-hooks-lib/lib'
 import {Collapse, makeStyles, Theme} from '@material-ui/core'
-import {ReportResponse} from './ReportResponse'
+import {ReportResponseComponent} from './ReportResponse'
 import {ScButton} from '../../shared/Button/Button'
 import {utilsStyles} from '../../core/theme'
 import {capitalize} from '../../core/helper/utils'
 import {useCssUtils} from '../../core/helper/useCssUtils'
-import { Txt } from 'mui-extension/lib/Txt/Txt'
+import {Txt} from 'mui-extension/lib/Txt/Txt'
 
 const useStyles = makeStyles((t: Theme) => ({
   answerPanel: {
@@ -77,10 +77,10 @@ export const ReportPro = () => {
                   &nbsp;
                   {fromNullable(report.lastName).map(_ => _.toLocaleUpperCase()).getOrElse('')}
                 </div>
-                <div className={cssUtils.colorTxtSecondary}>{report.email}</div>
+                <Txt color="hint">{report.email}</Txt>
               </>
             ) : (
-              m.reportConsumerWantToBeAnonymous
+              <Txt color="hint">{m.reportConsumerWantToBeAnonymous}</Txt>
             )}
           </ReportHeader>
 
@@ -93,7 +93,7 @@ export const ReportPro = () => {
               }>
                 {m.proAnswerYourAnswer}
               </PanelHead>
-              <ReportResponse
+              <ReportResponseComponent
                 canEditFile={false}
                 response={response}
                 reportId={report.id}

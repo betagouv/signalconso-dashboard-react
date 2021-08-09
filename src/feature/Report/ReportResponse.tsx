@@ -1,5 +1,5 @@
-import {PanelBody, PanelTitle} from '../../shared/Panel'
-import React, {useMemo} from 'react'
+import {PanelBody} from '../../shared/Panel'
+import React from 'react'
 import {useI18n} from '../../core/i18n'
 import {EventActionValues, FileOrigin, Id, ReportEvent, ReportResponse, ReportResponseTypes, UploadedFile} from '../../core/api'
 import {classes, fnSwitch} from '../../core/helper/utils'
@@ -30,7 +30,7 @@ const useStyles = makeStyles((t: Theme) => ({
   }
 }))
 
-export const ReportResponse = ({canEditFile, response, reportId, files}: Props) => {
+export const ReportResponseComponent = ({canEditFile, response, reportId, files}: Props) => {
   const {m} = useI18n()
   const cssUtils = useCssUtils()
   const css = useStyles()
