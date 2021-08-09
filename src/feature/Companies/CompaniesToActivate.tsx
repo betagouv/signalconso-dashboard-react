@@ -45,8 +45,8 @@ const useStyles = makeStyles((t: Theme) => ({
     color: t.palette.text.hint,
   },
   tdAddress: {
-    paddingTop: t.spacing(.5),
-    paddingBottom: t.spacing(.5),
+    paddingTop: t.spacing(0.5),
+    paddingBottom: t.spacing(0.5),
     fontSize: styleUtils(t).fontSize.small,
     color: t.palette.text.secondary,
     maxWidth: 300,
@@ -83,8 +83,7 @@ export const CompaniesToActivate = () => {
   const selectAll = () => {
     if (selectedCompaniesSet.size === 0 && !allChecked)
       selectedCompaniesSet.reset(_companiesToActivate.list?.data.map(_ => _.company.id))
-    else
-      selectedCompaniesSet.clear()
+    else selectedCompaniesSet.clear()
     setSelectedCompanies(selectedCompaniesSet.toArray())
   }
 
@@ -94,7 +93,8 @@ export const CompaniesToActivate = () => {
   }
 
   const confirmCompaniesPosted = (event: SyntheticEvent<any>, closeDialog: () => void) => {
-    _companies.confirmCompaniesPosted.fetch({}, selectedCompaniesSet.toArray())
+    _companies.confirmCompaniesPosted
+      .fetch({}, selectedCompaniesSet.toArray())
       .then(() => {
         _companiesToActivate.fetch({clean: false})
       })
@@ -111,10 +111,11 @@ export const CompaniesToActivate = () => {
             <ScButton
               disabled={_companiesToActivate.fetching || selectedCompaniesSet.size === 0}
               loading={_companies.downloadActivationDocument.loading}
-              color="primary" variant="outlined" icon="file_download" className={cssUtils.marginRight}
-              onClick={() => _companies.downloadActivationDocument.fetch({}, selectedCompaniesSet.toArray())
-                .catch(toastError)
-              }
+              color="primary"
+              variant="outlined"
+              icon="file_download"
+              className={cssUtils.marginRight}
+              onClick={() => _companies.downloadActivationDocument.fetch({}, selectedCompaniesSet.toArray()).catch(toastError)}
             >
               {m.download}
             </ScButton>
@@ -129,7 +130,10 @@ export const CompaniesToActivate = () => {
                 disabled={_companiesToActivate.fetching || selectedCompaniesSet.size === 0}
                 loading={_companies.confirmCompaniesPosted.loading}
                 className={cssUtils.marginRight}
-                color="error" variant="contained" icon="check_circle">
+                color="error"
+                variant="contained"
+                icon="check_circle"
+              >
                 {m.validateLetterSent}
               </ScButton>
             </Confirm>
@@ -154,54 +158,51 @@ export const CompaniesToActivate = () => {
         rowsPerPageOptions={[5, 10, 25, 100, 500]}
         rows={[
           {
-            head: <Checkbox
-              indeterminate={!allChecked && selectedCompaniesSet.size > 0}
-              checked={allChecked}
-              disabled={_companiesToActivate.fetching}
-              onClick={selectAll}
-            />,
+            head: (
+              <Checkbox
+                indeterminate={!allChecked && selectedCompaniesSet.size > 0}
+                checked={allChecked}
+                disabled={_companiesToActivate.fetching}
+                onClick={selectAll}
+              />
+            ),
             alwaysVisible: true,
             id: 'select',
-            row: _ =>
-              <Checkbox
-                checked={selectedCompaniesSet.has(_.company.id)}
-                onClick={() => toggleSelectedCompany(_.company.id)}
-              />
+            row: _ => (
+              <Checkbox checked={selectedCompaniesSet.has(_.company.id)} onClick={() => toggleSelectedCompany(_.company.id)} />
+            ),
           },
           {
             id: 'siret',
             head: m.name,
             className: css.tdName,
-            row: _ =>
+            row: _ => (
               <>
                 <span className={css.tdName_label}>{_.company.name}</span>
-                <br/>
+                <br />
                 <span className={css.tdName_desc}>{_.company.siret}</span>
               </>
+            ),
           },
           {
             head: m.address,
             id: 'address',
             className: css.tdAddress,
-            row: _ => (
-              <AddressComponent address={_.company.address}/>
-            )
+            row: _ => <AddressComponent address={_.company.address} />,
           },
           {
             head: m.created_at,
             id: 'tokenCreation',
-            row: _ =>
-              <>{formatDate(_.tokenCreation)}</>
+            row: _ => <>{formatDate(_.tokenCreation)}</>,
           },
           {
             head: m.lastNotice,
             id: 'lastNotice',
-            row: _ =>
-              <>{formatDate(_.lastNotice)}</>
+            row: _ => <>{formatDate(_.lastNotice)}</>,
           },
           {
             id: 'actions',
-            row: _ =>
+            row: _ => (
               <>
                 <Link to={siteMap.reports({siretSirenList: [_.company.siret]})}>
                   <Tooltip title={m.reports}>
@@ -211,11 +212,11 @@ export const CompaniesToActivate = () => {
                   </Tooltip>
                 </Link>
               </>
-          }
+            ),
+          },
         ]}
-        renderEmptyState={
-          <Fender title={m.noCompanyFound} icon={EntityIcon.company}/>
-        }/>
+        renderEmptyState={<Fender title={m.noCompanyFound} icon={EntityIcon.company} />}
+      />
     </Panel>
   )
 }

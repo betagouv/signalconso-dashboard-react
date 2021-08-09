@@ -10,31 +10,40 @@ interface Pipe {
   <R>(...funcs: Function[]): Func<string, R>
 }
 
-export const env: Pipe = (...funcs: any[]) => (envname: string) => {
-  try {
-    const envValue = process.env[envname];
-    if (funcs.length === 0) {
-      return process.env[envname];
+export const env: Pipe =
+  (...funcs: any[]) =>
+  (envname: string) => {
+    try {
+      const envValue = process.env[envname]
+      if (funcs.length === 0) {
+        return process.env[envname]
+      }
+      if (funcs.length === 1) {
+        return funcs[0](envValue)
+      }
+      return funcs.reduce(
+        (a: Function, b: Function) =>
+          (...args: any[]) =>
+            b(a(...args)),
+      )(envValue)
+    } catch (e) {
+      throw new Error(`[utils/Env] ${envname}: ${e.message}`)
     }
-    if (funcs.length === 1) {
-      return funcs[0](envValue);
-    }
-    return (funcs.reduce((a: Function, b: Function) => (...args: any[]) => b(a(...args))))(envValue);
-  } catch (e) {
-    throw new Error(`[utils/Env] ${envname}: ${e.message}`);
   }
-};
 
-export const int = (x?: string): undefined | number => x ? parseInt(x) : undefined;
+export const int = (x?: string): undefined | number => (x ? parseInt(x) : undefined)
 
-export const defaultValue = <T>(value: T) => (x?: T): T => x ?? value;
+export const defaultValue =
+  <T>(value: T) =>
+  (x?: T): T =>
+    x ?? value
 
 export const required = <T>(x?: T): T => {
-  if (!x) throw new Error(`Value is required but undefined.`);
-  return x;
-};
+  if (!x) throw new Error(`Value is required but undefined.`)
+  return x
+}
 
 export const bool = (x?: string): boolean | undefined => {
-  if (x === 'true') return true;
-  if (x === 'false') return false;
-};
+  if (x === 'true') return true
+  if (x === 'false') return false
+}

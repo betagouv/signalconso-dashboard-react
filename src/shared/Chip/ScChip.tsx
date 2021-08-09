@@ -4,18 +4,15 @@ import {makeStyles} from '@material-ui/core/styles'
 import {classes} from '../../core/helper/utils'
 import {styleUtils} from '../../core/theme'
 
-interface ChipProps extends MatChipProps {
-}
+interface ChipProps extends MatChipProps {}
 
 const useStyles = makeStyles((t: Theme) => ({
   root: {
     fontSize: styleUtils(t).fontSize.normal,
-  }
+  },
 }))
 
 export const ScChip = ({variant = 'outlined', ...props}: ChipProps) => {
   const css = useStyles()
-  return (
-    <MatChip variant={variant} {...props} className={classes(props.className, css.root)}/>
-  )
+  return <MatChip variant={variant} {...props} className={classes(props.className, css.root)} />
 }

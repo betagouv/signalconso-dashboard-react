@@ -62,37 +62,41 @@ export const ReportHeader = ({report, children, actions, files, elevated}: Props
             </h1>
             <div className={cssUtils.colorTxtHint}>ID {report.id}</div>
           </div>
-          <ReportStatusChip className={cssUtils.marginLeftAuto} status={report.status}/>
+          <ReportStatusChip className={cssUtils.marginLeftAuto} status={report.status} />
         </div>
         <Alert id="report-info" dense type="info" deletable persistentDelete className={cssUtils.marginBottom}>
           {m.reportCategoriesAreSelectByConsumer}
         </Alert>
-        <ReportCategories categories={[report.category, ...report.subcategories]}/>
-        <Divider className={cssUtils.divider}/>
-        {report.details.map((detail, i) =>
+        <ReportCategories categories={[report.category, ...report.subcategories]} />
+        <Divider className={cssUtils.divider} />
+        {report.details.map((detail, i) => (
           <div key={i} className={cssUtils.marginBottom}>
-            <div className={cssUtils.txtBold} dangerouslySetInnerHTML={{__html: detail.label.replace(/\:$/, '')}}/>
-            <div className={cssUtils.colorTxtSecondary} dangerouslySetInnerHTML={{__html: detail.value}}/>
-          </div>,
-        )}
-        <Divider className={cssUtils.divider}/>
-        <Txt bold block gutterBottom>{m.attachedFiles}</Txt>
+            <div className={cssUtils.txtBold} dangerouslySetInnerHTML={{__html: detail.label.replace(/\:$/, '')}} />
+            <div className={cssUtils.colorTxtSecondary} dangerouslySetInnerHTML={{__html: detail.value}} />
+          </div>
+        ))}
+        <Divider className={cssUtils.divider} />
+        <Txt bold block gutterBottom>
+          {m.attachedFiles}
+        </Txt>
         <ReportFiles
           hideAddBtn={connectedUser.isPro}
           files={files?.filter(_ => _.origin === FileOrigin.Consumer)}
           reportId={report.id}
           fileOrigin={FileOrigin.Consumer}
           onNewFile={file => {
-            _report.postAction.fetch({}, report.id, {
-              details: '',
-              fileIds: [file.id],
-              actionType: EventActionValues.ConsumerAttachments,
-            }).then(() => _report.events.fetch({force: true, clean: false}, report.id))
+            _report.postAction
+              .fetch({}, report.id, {
+                details: '',
+                fileIds: [file.id],
+                actionType: EventActionValues.ConsumerAttachments,
+              })
+              .then(() => _report.events.fetch({force: true, clean: false}, report.id))
           }}
         />
         {children && (
           <>
-            <Divider className={cssUtils.divider}/>
+            <Divider className={cssUtils.divider} />
             {children}
           </>
         )}
@@ -100,7 +104,15 @@ export const ReportHeader = ({report, children, actions, files, elevated}: Props
       <PanelFoot className={css.actions}>
         <div style={{flex: 1}}>
           {report.tags.map(tag => [
-            <ScChip icon={<Icon style={{fontSize: 20}} className={cssUtils.colorTxtHint}>sell</Icon>} key={tag} label={tag}/>,
+            <ScChip
+              icon={
+                <Icon style={{fontSize: 20}} className={cssUtils.colorTxtHint}>
+                  sell
+                </Icon>
+              }
+              key={tag}
+              label={tag}
+            />,
             ' ',
           ])}
         </div>

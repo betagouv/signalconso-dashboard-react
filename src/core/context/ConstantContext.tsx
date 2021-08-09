@@ -20,17 +20,18 @@ const defaultContext: Partial<ConstantContextProps> = {}
 const ConstantContext = React.createContext<ConstantContextProps>(defaultContext as ConstantContextProps)
 
 export const ConstantProvider = ({api, children}: Props) => {
-
   const _reportStatus = useFetcher(api.secured.constant.getReportStatusList)
   const _regions = useFetcher(api.public.constant.getRegions)
   const _countries = useFetcher(api.public.constant.getCountries)
 
   return (
-    <ConstantContext.Provider value={{
-      reportStatus: _reportStatus,
-      regions: _regions,
-      countries: _countries,
-    }}>
+    <ConstantContext.Provider
+      value={{
+        reportStatus: _reportStatus,
+        regions: _regions,
+        countries: _countries,
+      }}
+    >
       {children}
     </ConstantContext.Provider>
   )

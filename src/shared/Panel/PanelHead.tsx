@@ -14,8 +14,8 @@ const useStyles = makeStyles((t: Theme) => ({
   },
   content: {
     flex: 1,
-  }
-}));
+  },
+}))
 
 interface Props {
   className?: string
@@ -27,9 +27,7 @@ export const PanelHead = ({className, children, action, ...other}: Props) => {
   const css = useStyles()
   return (
     <PanelTitle {...other} className={classes(css.root, className)}>
-      <div className={css.content}>
-        {children}
-      </div>
+      <div className={css.content}>{children}</div>
       {action}
     </PanelTitle>
   )

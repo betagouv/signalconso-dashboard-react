@@ -35,7 +35,7 @@ const useStyles = makeStyles((t: Theme) => ({
     textTransform: 'initial',
     fontWeight: 'normal',
     lineHeight: 1.4,
-  }
+  },
 }))
 
 interface Props {
@@ -67,7 +67,8 @@ export const ReportFileAdd = ({reportId, onUploaded, fileOrigin}: Props) => {
         return
       }
       setUploading(true)
-      apiSdk.public.document.upload(file, fileOrigin)
+      apiSdk.public.document
+        .upload(file, fileOrigin)
         .then(onUploaded)
         .catch(toastError)
         .finally(() => setUploading(false))
@@ -78,7 +79,7 @@ export const ReportFileAdd = ({reportId, onUploaded, fileOrigin}: Props) => {
     return (
       <div className={css.root}>
         <div className={css.body}>
-          <CircularProgress/>
+          <CircularProgress />
         </div>
       </div>
     )
@@ -89,11 +90,9 @@ export const ReportFileAdd = ({reportId, onUploaded, fileOrigin}: Props) => {
           <div className={css.body}>
             <Icon className={css.icon}>add</Icon>
           </div>
-          <input style={{display: 'none'}} type="file" ref={fileInputEl}
-                 onChange={e => handleChange(e.target.files)}/>
+          <input style={{display: 'none'}} type="file" ref={fileInputEl} onChange={e => handleChange(e.target.files)} />
         </Button>
       </Tooltip>
     )
   }
 }
-

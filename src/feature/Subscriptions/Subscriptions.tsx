@@ -28,7 +28,7 @@ const useStyles = makeStyles((t: Theme) => ({
     color: t.palette.primary.main,
     fontSize: styleUtils(t).fontSize.title,
     borderRadius: 4,
-  }
+  },
 }))
 
 export const Subscriptions = () => {
@@ -46,22 +46,24 @@ export const Subscriptions = () => {
       <PageTitle>{m.menu_subscriptions}</PageTitle>
 
       <Alert id="subscriptions-info" type="info" deletable className={css.alert}>
-        <div dangerouslySetInnerHTML={{__html: m.subscriptionsAlertInfo}}/>
+        <div dangerouslySetInnerHTML={{__html: m.subscriptionsAlertInfo}} />
       </Alert>
 
-      {_subscriptions.fetching && (
-        <LinearProgress/>
-      )}
+      {_subscriptions.fetching && <LinearProgress />}
       <Animate>
         <Ripple>
-          <div className={css.btnAdd} title={m.add} onClick={() => !_subscriptions.creating && _subscriptions.create({insertBefore: true})}>
+          <div
+            className={css.btnAdd}
+            title={m.add}
+            onClick={() => !_subscriptions.creating && _subscriptions.create({insertBefore: true})}
+          >
             <Icon>add</Icon>
             {m.add}
           </div>
         </Ripple>
       </Animate>
       <AnimateList initialDelay={0} delay={220}>
-        {_subscriptions.list?.map(subscription =>
+        {_subscriptions.list?.map(subscription => (
           <SubscriptionCard
             key={subscription.id}
             subscription={subscription}
@@ -70,7 +72,7 @@ export const Subscriptions = () => {
             onUpdate={_ => _subscriptions.update(subscription.id, _)}
             onDelete={() => _subscriptions.remove(subscription.id)}
           />
-        )}
+        ))}
       </AnimateList>
     </Page>
   )

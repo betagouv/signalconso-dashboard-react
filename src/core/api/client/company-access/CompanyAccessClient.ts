@@ -2,9 +2,7 @@ import {CompanyAccess, CompanyAccessLevel} from './CompanyAccess'
 import {ApiClientApi, Id} from '../..'
 
 export class CompanyAccessClient {
-
-  constructor(private client: ApiClientApi) {
-  }
+  constructor(private client: ApiClientApi) {}
 
   readonly fetch = (siret: string) => {
     return this.client.get<CompanyAccess[]>(`/accesses/${siret}`)

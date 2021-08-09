@@ -1,4 +1,15 @@
-import {Dialog, DialogActions, DialogContent, DialogTitle, FormControlLabel, makeStyles, MenuItem, Radio, RadioGroup, Theme} from '@material-ui/core'
+import {
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  FormControlLabel,
+  makeStyles,
+  MenuItem,
+  Radio,
+  RadioGroup,
+  Theme,
+} from '@material-ui/core'
 import {useI18n} from '../../core/i18n'
 import React, {ReactElement, ReactNode, useEffect, useState} from 'react'
 import {ReportSearch, ReportTag} from 'core/api'
@@ -34,7 +45,7 @@ const useRowStyles = makeStyles((t: Theme) => ({
   content: {
     flex: 1,
     overflow: 'hidden',
-  }
+  },
 }))
 
 const Row = ({label, children}: RowProps) => {
@@ -49,7 +60,12 @@ const Row = ({label, children}: RowProps) => {
 
 export const ReportFilters = ({filters, updateFilters, children}: ReportsFiltersProps) => {
   const {m} = useI18n()
-  const {register, handleSubmit, control, formState: {errors}} = useForm<ReportSearch>()
+  const {
+    register,
+    handleSubmit,
+    control,
+    formState: {errors},
+  } = useForm<ReportSearch>()
   const {reportStatus: _reportStatus} = useConstantContext()
   const [open, setOpen] = useState<boolean>(false)
   const {category: _category} = useAnomalyContext()
@@ -73,7 +89,7 @@ export const ReportFilters = ({filters, updateFilters, children}: ReportsFilters
       {React.cloneElement(children, {
         onClick: (event: any) => {
           setOpen(true)
-        }
+        },
       })}
       <Dialog open={open ?? false} onClose={close} aria-labelledby="form-dialog-title">
         <DialogTitle>{m.search}</DialogTitle>
@@ -81,63 +97,71 @@ export const ReportFilters = ({filters, updateFilters, children}: ReportsFilters
           <>
             <DialogContent>
               <Row label={m.website}>
-                <ScInput small fullWidth {...register('websiteURL')} defaultValue={filters.websiteURL ?? ''}/>
+                <ScInput small fullWidth {...register('websiteURL')} defaultValue={filters.websiteURL ?? ''} />
               </Row>
               <Row label={m.phone}>
-                <ScInput small fullWidth {...register('phone')} defaultValue={filters.phone ?? ''}/>
+                <ScInput small fullWidth {...register('phone')} defaultValue={filters.phone ?? ''} />
               </Row>
               <Row label={m.siret}>
-                <ScInput small fullWidth {...register('siretSirenList')} defaultValue={filters.siretSirenList ?? ''}/>
+                <ScInput small fullWidth {...register('siretSirenList')} defaultValue={filters.siretSirenList ?? ''} />
               </Row>
               <Row label={m.emailConsumer}>
-                <ScInput small fullWidth {...register('email')} defaultValue={filters.email ?? ''}/>
+                <ScInput small fullWidth {...register('email')} defaultValue={filters.email ?? ''} />
               </Row>
               <Row label={m.status}>
                 <ScSelect small fullWidth {...register('status')} defaultValue={filters.status ?? ''}>
                   <MenuItem value="">&nbsp;</MenuItem>
-                  {_reportStatus.entity.map(status =>
+                  {_reportStatus.entity.map(status => (
                     <MenuItem key={status} value={status}>
-                      <ReportStatusChip inSelectOptions dense fullWidth status={status}/>
+                      <ReportStatusChip inSelectOptions dense fullWidth status={status} />
                     </MenuItem>
-                  )}
+                  ))}
                 </ScSelect>
               </Row>
               <Row label={m.tags}>
                 <ScSelect multiple small fullWidth {...register('tags')} defaultValue={filters.tags ?? []}>
                   <MenuItem value="">&nbsp;</MenuItem>
-                  {Object.values(ReportTag).map(tag =>
+                  {Object.values(ReportTag).map(tag => (
                     <MenuItem key={tag} value={tag}>
                       {tag}
                     </MenuItem>
-                  )}
+                  ))}
                 </ScSelect>
               </Row>
               <Row label={m.keywords}>
-                <ScInput small fullWidth {...register('details')} defaultValue={filters.details ?? ''}/>
+                <ScInput small fullWidth {...register('details')} defaultValue={filters.details ?? ''} />
               </Row>
               <Row label={m.categories}>
                 <ScSelect small fullWidth {...register('category')} defaultValue={filters.category ?? []}>
                   <MenuItem value="">&nbsp;</MenuItem>
-                  {_category?.entity.map(category =>
+                  {_category?.entity.map(category => (
                     <MenuItem key={category} value={category}>
                       {category}
                     </MenuItem>
-                  )}
+                  ))}
                 </ScSelect>
               </Row>
               <Row label={m.foreignCountry}>
-                <Controller name="companyCountries" defaultValue={filters.companyCountries ?? []} control={control} render={({field}) =>
-                  <SelectCountries fullWidth {...field}/>
-                }/>
+                <Controller
+                  name="companyCountries"
+                  defaultValue={filters.companyCountries ?? []}
+                  control={control}
+                  render={({field}) => <SelectCountries fullWidth {...field} />}
+                />
               </Row>
               <Row label={m.identifiedCompany}>
-                <Controller name="hasCompany" defaultValue={filters.hasCompany} control={control} render={({field}) =>
-                  <RadioGroup style={{flexDirection: 'row'}} {...field}>
-                    <FormControlLabel control={<Radio/>} label={m.yes} value="true"/>
-                    <FormControlLabel control={<Radio/>} label={m.no} value="false"/>
-                    <FormControlLabel control={<Radio/>} label={m.indifferent} value=""/>
-                  </RadioGroup>
-                }/>
+                <Controller
+                  name="hasCompany"
+                  defaultValue={filters.hasCompany}
+                  control={control}
+                  render={({field}) => (
+                    <RadioGroup style={{flexDirection: 'row'}} {...field}>
+                      <FormControlLabel control={<Radio />} label={m.yes} value="true" />
+                      <FormControlLabel control={<Radio />} label={m.no} value="false" />
+                      <FormControlLabel control={<Radio />} label={m.indifferent} value="" />
+                    </RadioGroup>
+                  )}
+                />
               </Row>
             </DialogContent>
             <DialogActions>

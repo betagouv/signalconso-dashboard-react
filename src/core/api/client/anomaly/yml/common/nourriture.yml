@@ -15,7 +15,8 @@
             - title: Non
               information:
                 title: Le commerçant a le droit de vendre un produit jusqu'au jour indiqué sur la date limite de consommation (DLC).
-                content: Par exemple, si la date est le 13 avril, il est possible de vendre le produit le 13 avril mais pas le 14 avril.
+                content:
+                  Par exemple, si la date est le 13 avril, il est possible de vendre le produit le 13 avril mais pas le 14 avril.
                   <br/>Le commerçant peut choisir de faire une réduction du prix pour les dates "courtes" mais ce n'est pas une obligation.
                   <br/>Le commerçant peut indiquer que les produits se périment bientôt ou le jour-même mais ce n'est pas une obligation.
                 actions:
@@ -25,7 +26,8 @@
           example: 'Exemple : chocolat, conserve, compote, petits pots bébé'
           information:
             title: Ce problème n'est pas un motif de signalement.
-            content: Les produits vendus à température ambiante comme des compotes, du chocolat, des biscuits ou des conserves ont une date qu'on appelle date de durabilité minimale (anciennement appelée DLUO).
+            content:
+              Les produits vendus à température ambiante comme des compotes, du chocolat, des biscuits ou des conserves ont une date qu'on appelle date de durabilité minimale (anciennement appelée DLUO).
               <br/><br/><b>Le commerçant a le droit de vendre un produit avec cette date dépassée.</b>
               <br/><br/>Cette date est seulement une indication. Au-delà de celle-ci, l'aliment peut perdre certaines de ses qualités gustatives ou nutritionnelles mais peut être consommé sans danger pour la santé. Il n'est pas nécessaire de le jeter.
             actions:
@@ -38,7 +40,8 @@
           example: C'est souvent le cas des produits vendus à température ambiante.
           information:
             title: Ce problème n'est pas un motif de signalement.
-            content: Les produits vendus à température ambiante comme des compotes, du chocolat, des biscuits ou des conserves ont une date qu'on appelle date de durabilité minimale (anciennement DLUO).
+            content:
+              Les produits vendus à température ambiante comme des compotes, du chocolat, des biscuits ou des conserves ont une date qu'on appelle date de durabilité minimale (anciennement DLUO).
               <br/><br/><b>Le commerçant a le droit de vendre un produit avec cette date dépassée.</b>
               <br/>Cette date est seulement une indication. Au-delà de celle-ci, l'aliment peut perdre certaines de ses qualités gustatives ou nutritionnelles mais peut être consommé sans danger pour la santé. Il n'est pas nécessaire de le jeter.
             actions:
@@ -63,7 +66,8 @@
             - title: Non
               information:
                 title: Le commerçant n'a pas le droit de vendre un produit si la date limite de consommation (DLC) est passée.
-                content: Par exemple, si la date est le 13 avril, il est possible de vendre le produit le 13 avril mais pas le 14 avril.
+                content:
+                  Par exemple, si la date est le 13 avril, il est possible de vendre le produit le 13 avril mais pas le 14 avril.
                   <br/>Le commerçant peut choisir de faire une réduction du prix pour les dates "courtes" mais ce n'est pas une obligation.
                   <br/>Le commerçant peut indiquer que les produits se périment bientôt ou le jour-même mais ce n'est pas une obligation.
                 actions:
@@ -106,9 +110,9 @@
               defaultValue: SYSDATE
           fileLabel: Photo du produit
         - title: Un produit vendu dans un emballage
-          example: 'Exemple : bouteille d''eau, conserve de légumes, paquet de chips'
+          example: "Exemple : bouteille d'eau, conserve de légumes, paquet de chips"
           detailInputs:
-            - label: 'C''est un produit vendu&#160;:'
+            - label: "C'est un produit vendu&#160;:"
               rank: 1
               type: RADIO
               options:
@@ -153,9 +157,9 @@
               type: TEXT
           fileLabel: Photo du produit
         - title: Un produit vendu dans un emballage
-          example: 'Exemple : bouteille d''eau, conserve de légumes, paquet de chips...'
+          example: "Exemple : bouteille d'eau, conserve de légumes, paquet de chips..."
           detailInputs:
-            - label: 'C''est un produit vendu&#160;:'
+            - label: "C'est un produit vendu&#160;:"
               rank: 1
               type: RADIO
               options:
@@ -201,9 +205,9 @@
               defaultValue: SYSDATE
           fileLabel: Photo du produit
         - title: Un produit vendu dans un emballage
-          example: 'Exemple : bouteille d''eau, conserve de légumes, paquet de chips'
+          example: "Exemple : bouteille d'eau, conserve de légumes, paquet de chips"
           detailInputs:
-            - label: 'C''est un produit vendu&#160;:'
+            - label: "C'est un produit vendu&#160;:"
               rank: 1
               type: RADIO
               options:
@@ -252,9 +256,9 @@
               defaultValue: SYSDATE
           fileLabel: Photo du produit
         - title: Un produit vendu dans un emballage
-          example: 'Exemple : bouteille d''eau, conserve de légumes, paquet de chips'
+          example: "Exemple : bouteille d'eau, conserve de légumes, paquet de chips"
           detailInputs:
-            - label: 'C''est un produit vendu&#160;:'
+            - label: "C'est un produit vendu&#160;:"
               rank: 1
               type: RADIO
               options:
@@ -373,8 +377,9 @@
       subcategoriesTitle: Quel est le type de produit&#160;?
       subcategories:
         - title: Un produit emballé par le fabricant comme une boîte de conserve, un paquet, une bouteille
-          example: 'La quantité est directement imprimée sur l''emballage par le fabricant'
-          description: Une petite différence entre la quantité écrite sur l'emballage et la quantité de votre produit est autorisée.
+          example: "La quantité est directement imprimée sur l'emballage par le fabricant"
+          description:
+            Une petite différence entre la quantité écrite sur l'emballage et la quantité de votre produit est autorisée.
             <br/>Par contre, ces différences sont encadrées par la loi.
             <br/>Par exemple, un produit marqué "1 kg" a le droit d'avoir 15g en moins et donc de peser 0, 985 kg.
             <br/><a href="https://www2.economie.gouv.fr/dgccrf/Publications/Vie-pratique/Fiches-pratiques/Metrologie-pour-professionnels" target="_blank"> En savoir plus </a>
@@ -437,7 +442,8 @@
           <br/>Généralement il est indiqué sur l'emballage.
           <br/>Si ce n'est pas le cas, contactez votre commerçant afin de lui faire part de votre avis ou de votre mécontentement.
       - question: Vous avez commandé votre produit dans un bar ou un restaurant&#160;?
-        answer: Si vous trouvez que le plat n'est pas frais ou pas assez chaud, vous pouvez demander que l'on vous remplace le plat.
+        answer:
+          Si vous trouvez que le plat n'est pas frais ou pas assez chaud, vous pouvez demander que l'on vous remplace le plat.
           <br/>Si votre vin est bouchonné, vous pouvez demander à le changer.
           <br/>Par contre, si votre plat ne vous convient pas pour une question de goût uniquement, le restaurateur est libre de le reprendre ou non.
 - title: Produit rappelé toujours en vente

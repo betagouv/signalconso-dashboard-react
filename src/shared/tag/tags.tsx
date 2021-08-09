@@ -4,18 +4,17 @@ import {classes} from '../../core/helper/utils'
 
 const useH1Styles = makeStyles((t: Theme) => ({
   root: {
-    lineHeight: 2.25
-  }
-}));
+    lineHeight: 2.25,
+  },
+}))
 
-interface Props extends React.HTMLAttributes<HTMLDivElement> {
-
-}
-
+interface Props extends React.HTMLAttributes<HTMLDivElement> {}
 
 export const H1 = ({children, className, style}: Props) => {
-  const css = useH1Styles();
+  const css = useH1Styles()
   return (
-    <Typography variant="h5" gutterBottom className={classes(css.root, className)} style={style}>{children}</Typography>
-  );
-};
+    <Typography variant="h5" gutterBottom className={classes(css.root, className)} style={style}>
+      {children}
+    </Typography>
+  )
+}

@@ -34,7 +34,7 @@ const useStyles = makeStyles((t: Theme) => ({
   },
   selectFrequency: {
     margin: 0,
-  }
+  },
 }))
 
 const useAnchoredMenu = () => {
@@ -44,15 +44,7 @@ const useAnchoredMenu = () => {
   return {open, close, element: anchorEl}
 }
 
-export const SubscriptionCard = ({
-  subscription,
-  onUpdate,
-  onDelete,
-  removing,
-  loading,
-  className,
-  style,
-}: Props) => {
+export const SubscriptionCard = ({subscription, onUpdate, onDelete, removing, loading, className, style}: Props) => {
   const {m} = useI18n()
   const {toastInfo} = useToast()
   const cssUtils = useCssUtils()
@@ -69,30 +61,35 @@ export const SubscriptionCard = ({
 
   return (
     <Panel loading={loading} className={className} style={style}>
-      <PanelHead className={css.head} action={
-        <>
-          <ScSelect
-            className={css.selectFrequency}
-            value={subscription.frequency ?? 'P7D'}
-            onChange={(e: any) => onUpdate({frequency: e.target.value})}
-          >
-            <MenuItem value="P1D">{m.daily}</MenuItem>
-            <MenuItem value="P7D">{m.weekly}</MenuItem>
-          </ScSelect>
-          &nbsp;
-          <Confirm title={m.removeSubscription} cancelLabel={m.close} confirmLabel={m.delete} onConfirm={onDelete}>
-            <IconBtn color="primary" loading={removing}>
-              <Icon>delete</Icon>
-            </IconBtn>
-          </Confirm>
-        </>
-      }>
+      <PanelHead
+        className={css.head}
+        action={
+          <>
+            <ScSelect
+              className={css.selectFrequency}
+              value={subscription.frequency ?? 'P7D'}
+              onChange={(e: any) => onUpdate({frequency: e.target.value})}
+            >
+              <MenuItem value="P1D">{m.daily}</MenuItem>
+              <MenuItem value="P7D">{m.weekly}</MenuItem>
+            </ScSelect>
+            &nbsp;
+            <Confirm title={m.removeSubscription} cancelLabel={m.close} confirmLabel={m.delete} onConfirm={onDelete}>
+              <IconBtn color="primary" loading={removing}>
+                <Icon>delete</Icon>
+              </IconBtn>
+            </Confirm>
+          </>
+        }
+      >
         {m.subscription}
       </PanelHead>
 
       <SubscriptionCardRow icon="flag" label={m.foreignCountry} onClick={countriesAnchor.open}>
         <ScChipContainer>
-          {subscription.countries.map(_ => <ScChip key={_.code} label={_.name}/>)}
+          {subscription.countries.map(_ => (
+            <ScChip key={_.code} label={_.name} />
+          ))}
         </ScChipContainer>
       </SubscriptionCardRow>
       <SelectCountriesMenu
@@ -105,7 +102,9 @@ export const SubscriptionCard = ({
 
       <SubscriptionCardRow icon="location_on" label={m.departments} onClick={departmentAnchor.open}>
         <ScChipContainer>
-          {subscription.departments.map(_ => <ScChip key={_.code} label={_.code + ' - ' + _.label}/>)}
+          {subscription.departments.map(_ => (
+            <ScChip key={_.code} label={_.code + ' - ' + _.label} />
+          ))}
         </ScChipContainer>
       </SubscriptionCardRow>
       <SelectDepartmentsMenu
@@ -117,7 +116,9 @@ export const SubscriptionCard = ({
       />
       <SubscriptionCardRow icon="dashboard" label={m.categories} onClick={categoryAnchor.open}>
         <ScChipContainer>
-          {subscription.categories.map(_ => <ScChip key={_} label={_}/>)}
+          {subscription.categories.map(_ => (
+            <ScChip key={_} label={_} />
+          ))}
         </ScChipContainer>
       </SubscriptionCardRow>
       {_category.entity && (
@@ -134,27 +135,28 @@ export const SubscriptionCard = ({
 
       <SubscriptionCardRow icon="business" label={m.siret}>
         <ScChipContainer>
-          {subscription.sirets.map(siret =>
-            <ScChip
-              key={siret} label={siret}
-              onDelete={() => onUpdate({sirets: subscription.sirets.filter(_ => _ !== siret)})}
-            />
-          )}
-          <SelectCompany onChange={company => {
-            if (!subscription.sirets.find(_ => _ === company.siret)) {
-              onUpdate({sirets: [...subscription.sirets, company.siret]})
-            } else {
-              toastInfo(m.alreadySelectedCompany(company.name))
-            }
-          }}>
-            <ScChip label={<Icon>add</Icon>}/>
+          {subscription.sirets.map(siret => (
+            <ScChip key={siret} label={siret} onDelete={() => onUpdate({sirets: subscription.sirets.filter(_ => _ !== siret)})} />
+          ))}
+          <SelectCompany
+            onChange={company => {
+              if (!subscription.sirets.find(_ => _ === company.siret)) {
+                onUpdate({sirets: [...subscription.sirets, company.siret]})
+              } else {
+                toastInfo(m.alreadySelectedCompany(company.name))
+              }
+            }}
+          >
+            <ScChip label={<Icon>add</Icon>} />
           </SelectCompany>
         </ScChipContainer>
       </SubscriptionCardRow>
 
       <SubscriptionCardRow icon="label" label={m.tags} onClick={tagsAnchor.open}>
         <ScChipContainer>
-          {subscription.tags.map(_ => <ScChip key={_} label={_}/>)}
+          {subscription.tags.map(_ => (
+            <ScChip key={_} label={_} />
+          ))}
         </ScChipContainer>
       </SubscriptionCardRow>
       <SelectMenu

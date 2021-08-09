@@ -49,7 +49,7 @@
     - title: Prix / paiement
       example: 'Exemple : devis non détaillé, devis non respecté, délais'
     - title: Prestation mal réalisée ou pas réalisée
-      example: 'Exemple : malfaçon, panne non réparée, pose d''un équipement endommagé, pièce d''origine douteuse'
+      example: "Exemple : malfaçon, panne non réparée, pose d'un équipement endommagé, pièce d'origine douteuse"
     - title: Publicité mensongère
     - title: Autre
       subcategories:
@@ -62,7 +62,7 @@
     - title: Prix / paiement
       example: 'Exemple : prix non affiché, forfait obligatoire'
     - title: Publicité mensongère
-      example: 'Exemple : publicité trompeuse avec un nombre d''heures infaisable'
+      example: "Exemple : publicité trompeuse avec un nombre d'heures infaisable"
     - title: Autre
       example: 'Exemple : clause abusive dans le contrat, obligation de payer des heures régulièrement, heure de conduite qui ne dure pas une heure'
       subcategories:

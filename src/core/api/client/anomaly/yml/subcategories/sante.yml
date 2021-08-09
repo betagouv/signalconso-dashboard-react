@@ -101,7 +101,7 @@
         - label: Quelle sa marque et sa référence / numéro de modèle ? Vous pouvez trouver ces informations sur votre facture d'achat.
           rank: 3
           type: TEXT
-        - label: "Expliquez le problème en quelques mots :"
+        - label: 'Expliquez le problème en quelques mots :'
           rank: 4
           type: TEXT
 - title: Professionnel de la santé et médecine douce
@@ -111,7 +111,7 @@
   subcategoriesTitle: 'Quel type de médecine exerce-t-il ?'
   subcategories:
     - title: La médecine dite "conventionnelle"
-      example: 'C''est-à-dire qu''il est : médecin généraliste, dentiste, ophtalmologue, sage-femme, infirmier, kinésithérapeute , pédicure-podologue, odontologiste, orthophoniste, orthoptiste, diététicien, psychiatre, ou autre médecin spécialiste.'
+      example: "C'est-à-dire qu'il est : médecin généraliste, dentiste, ophtalmologue, sage-femme, infirmier, kinésithérapeute , pédicure-podologue, odontologiste, orthophoniste, orthoptiste, diététicien, psychiatre, ou autre médecin spécialiste."
       subcategories:
         - title: Les tarifs ne sont pas affichés en salle d'attente
           example: Les tarifs doivent être clairement affichés dans la salle d'attente.
@@ -151,7 +151,8 @@
         - title: Les prix sont exagérés
           information:
             title: Un professionnel de santé non conventionné peut choisir ses tarifs
-            content: Le prix varie selon qu'il est conventionné ou non conventionné. <br> Un médecin non conventionné peut choisir librement ses prix.  Il facture des « dépassements d’honoraires ». En savoir plus<br><a href="https://www.service-public.fr/particuliers/vosdroits/F17042" target="_blank">https://www.service-public.fr/particuliers/vosdroits/F17042</a>
+            content:
+              Le prix varie selon qu'il est conventionné ou non conventionné. <br> Un médecin non conventionné peut choisir librement ses prix.  Il facture des « dépassements d’honoraires ». En savoir plus<br><a href="https://www.service-public.fr/particuliers/vosdroits/F17042" target="_blank">https://www.service-public.fr/particuliers/vosdroits/F17042</a>
               <br><br>Un médecin conventionné pratiquera des tarifs classiques.
             outOfScope: true
         - title: Problème de devis
@@ -243,7 +244,7 @@
               optionnal: true
           fileLabel: Vous pouvez joindre une photo
         - title: Les prix sont trop chers
-          example: "Exemple : ce naturopathe est plus cher que ceux de la région"
+          example: 'Exemple : ce naturopathe est plus cher que ceux de la région'
           information:
             title: En médecine non conventionnelle, un praticien peut choisir librement ses prix.
             content: "Il peut proposer des prix élevés et choisir d'être plus cher que ses concurrents. <br> Cependant il a une obligation : indiquer tous ces prix de façon claire. Vous devez connaître le prix avant de vous faire soigner. <br> Les prix doivent être affichés en salle d'attente de manière lisible."
@@ -284,7 +285,7 @@
                 - le diplôme du praticien
                 - des informations médicales fausses
                 - autre (à préciser)
-            - label: "Précisez en quelques mots pourquoi vous trouvez cela trompeur :"
+            - label: 'Précisez en quelques mots pourquoi vous trouvez cela trompeur :'
               rank: 3
               type: TEXT
               placeholder: Soyez factuel et courtois, merci !
@@ -407,7 +408,8 @@
         - title: Les prix sont exagérés
           information:
             title: Le pharmacien a le droit de faire les prix qu'il souhaite (sauf pour les médicaments remboursables).
-            content: Le pharmacien peut choisir les prix des médicaments non remboursables, et des produits divers de la pharmacie (biberon, brosse à dent, crème...). Les prix doivent être clairement indiqués sans devoir les demander.
+            content:
+              Le pharmacien peut choisir les prix des médicaments non remboursables, et des produits divers de la pharmacie (biberon, brosse à dent, crème...). Les prix doivent être clairement indiqués sans devoir les demander.
               Cas particulier des médicaments remboursables !
               Le prix des médicaments remboursables est fixe. Ces prix sont en ligne sur le site <a href="http://base-donnees-publique.medicaments.gouv.fr" target="_blank"> http://base-donnees-publique.medicaments.gouv.fr/</a>
             outOfScope: true
@@ -439,7 +441,7 @@
               fileLabel: Vous pouvez joindre des éléments (photo, carte d'assistance...) pour appuyer votre signalement.
         - title: Autre
 - title: Ambulance
-  example: "et autre transport sanitaire (exemple : taxi)"
+  example: 'et autre transport sanitaire (exemple : taxi)'
   tags:
     - Litige contractuel
 - title: Cure
@@ -451,7 +453,7 @@
         - Litige contractuel
       subcategories:
         - title: Les prix ne sont pas affichés
-          example: "Exemple : les prix des soins ne sont pas affichés, les prix affichés ne sont pas très clairs"
+          example: 'Exemple : les prix des soins ne sont pas affichés, les prix affichés ne sont pas très clairs'
           detailInputs:
             - label: Date de constat
               rank: 1

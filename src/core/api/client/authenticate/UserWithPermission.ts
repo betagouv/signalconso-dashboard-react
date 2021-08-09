@@ -13,7 +13,7 @@ export enum Roles {
   Admin = 'Admin',
   DGCCRF = 'DGCCRF',
   Pro = 'Professionnel',
-  ToActivate = 'ToActivate'
+  ToActivate = 'ToActivate',
 }
 
 export const roleUrlParam = (_: UserWithPermission): string => {
@@ -40,7 +40,6 @@ export enum TokenKind {
   dgccrfAccount = 'DGCCRF_ACCOUNT',
 }
 
-
 export interface TokenInfo {
   token: string
   kind: TokenKind
@@ -57,5 +56,5 @@ export enum Permissions {
   createEvent = 'createEvent',
   editDocuments = 'editDocuments',
   subscribeReports = 'subscribeReports',
-  updateCompany = 'updateCompany'
+  updateCompany = 'updateCompany',
 }

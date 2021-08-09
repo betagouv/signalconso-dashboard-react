@@ -61,12 +61,12 @@ export const muiTheme = (dark?: boolean): any => {
         },
         outlinedPrimary: {
           borderColor: theme.palette.divider,
-        }
+        },
       },
       MuiTabs: {
         root: {
           minHeight: 0,
-        }
+        },
       },
       MuiTab: {
         root: {
@@ -74,12 +74,12 @@ export const muiTheme = (dark?: boolean): any => {
           fontWeight: 600,
           minHeight: 40,
           minWidth: '80px !important',
-        }
+        },
       },
       MuiChip: {
         outlined: {
           borderColor: theme.palette.divider,
-        }
+        },
       },
       MuiMenuItem: {
         root: {
@@ -87,21 +87,21 @@ export const muiTheme = (dark?: boolean): any => {
           minHeight: 42,
           [theme.breakpoints.up('xs')]: {
             minHeight: 42,
-          }
-        }
+          },
+        },
       },
       MuiDialogTitle: {
         root: {
           paddingBottom: 8,
-        }
+        },
       },
-      ...(dark && ({
+      ...(dark && {
         MuiOutlinedInput: {
           notchedOutline: {
             borderColor: '#d9dce0',
           },
-        }
-      })),
+        },
+      }),
       MuiFormHelperText: {
         marginDense: {
           marginBottom: -4,
@@ -126,25 +126,25 @@ export const muiTheme = (dark?: boolean): any => {
       MuiIcon: {
         root: {
           width: 'auto',
-        }
+        },
       },
       MuiIconButton: {
         root: {
           spacing: 6,
-        }
+        },
       },
       MuiOutlinedInput: {
         root: {
           '&:hover $notchedOutline': {
-            borderColor: alpha(colorMain, .7),
+            borderColor: alpha(colorMain, 0.7),
           },
         },
         notchedOutline: {
           transition: 'border-color 140ms cubic-bezier(0.4, 0, 0.2, 1) 0ms',
           background: 'rgba(0,0,0,.028)',
-          borderColor: 'rgba(0, 0, 0, 0.12)'
-        }
-      }
+          borderColor: 'rgba(0, 0, 0, 0.12)',
+        },
+      },
     },
   })
 }

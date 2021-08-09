@@ -12,19 +12,19 @@ const useStyles = makeStyles((t: Theme) => ({
     // padding: '0 !important',
     // margin: t.spacing(1),
     // margin: padding(),
-  }
-}));
+  },
+}))
 
 interface Props extends React.HTMLAttributes<HTMLDivElement> {
-  className?: any;
-  children: ReactNode;
+  className?: any
+  children: ReactNode
 }
 
 export const PanelBody = ({className, children, ...other}: Props) => {
-  const css = useStyles();
+  const css = useStyles()
   return (
     <MuiCardContent {...other} className={classes(css.root, className)}>
       {children}
     </MuiCardContent>
-  );
-};
+  )
+}

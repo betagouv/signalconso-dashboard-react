@@ -30,12 +30,12 @@ export const UsersListPending = () => {
           {
             id: 'email',
             head: m.email,
-            row: _ => <Txt bold>{_.email}</Txt>
+            row: _ => <Txt bold>{_.email}</Txt>,
           },
           {
             id: 'tokenCreation',
             head: m.invitationDate,
-            row: _ => formatDate(_.tokenCreation)
+            row: _ => formatDate(_.tokenCreation),
           },
         ]}
       />

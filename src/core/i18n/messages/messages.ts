@@ -58,4 +58,4 @@ export const messagesEn = {
   logout: 'Logout',
   atLeast8Characters: 'At least 8 characters',
   invalidEmail: 'Invalid email',
-};
+}

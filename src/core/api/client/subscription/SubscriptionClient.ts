@@ -1,25 +1,25 @@
 import {Id, Subscription, SubscriptionCreate} from '../../model'
 import {ApiClientApi, PublicConstantClient} from '../..'
 
-const fromApi = (client: ApiClientApi) => async (api: any): Promise<Subscription> => {
-  const getDepartmentByCode = new PublicConstantClient(client).getDepartmentByCode
-  const departments = await Promise.all((api.departments || []).map(getDepartmentByCode))
-  return ({
-    ...api,
-    categories: api.categories ?? [],
-    sirets: api.sirets ?? [],
-    countries: api.countries ?? [],
-    tags: api.tags ?? [],
-    departments,
-  });
-}
+const fromApi =
+  (client: ApiClientApi) =>
+  async (api: any): Promise<Subscription> => {
+    const getDepartmentByCode = new PublicConstantClient(client).getDepartmentByCode
+    const departments = await Promise.all((api.departments || []).map(getDepartmentByCode))
+    return {
+      ...api,
+      categories: api.categories ?? [],
+      sirets: api.sirets ?? [],
+      countries: api.countries ?? [],
+      tags: api.tags ?? [],
+      departments,
+    }
+  }
 
 const toApi = (subscription: Partial<SubscriptionCreate>): any => subscription
 
 export class SubscriptionClient {
-
-  constructor(private client: ApiClientApi) {
-  }
+  constructor(private client: ApiClientApi) {}
 
   readonly list = (): Promise<Subscription[]> => {
     return this.client.get<Subscription[]>(`/subscriptions`).then(_ => Promise.all(_.map(fromApi(this.client))))
@@ -29,14 +29,16 @@ export class SubscriptionClient {
     return this.client.get<Subscription>(`/subscriptions/${id}`).then(fromApi(this.client))
   }
 
-  readonly create = (body: SubscriptionCreate = {
-    categories: [],
-    departments: [],
-    sirets: [],
-    tags: [],
-    countries: [],
-    frequency: 'P7D'
-  }) => {
+  readonly create = (
+    body: SubscriptionCreate = {
+      categories: [],
+      departments: [],
+      sirets: [],
+      tags: [],
+      countries: [],
+      frequency: 'P7D',
+    },
+  ) => {
     return this.client.post<Subscription>(`/subscriptions`, {body: toApi(body)}).then(fromApi(this.client))
   }
 

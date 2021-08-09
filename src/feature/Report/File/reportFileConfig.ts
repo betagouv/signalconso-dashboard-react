@@ -31,5 +31,3 @@ export const extensionToType = (fileName: string): FileType | undefined => {
     }
   }
 }
-
-

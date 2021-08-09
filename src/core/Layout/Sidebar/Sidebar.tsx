@@ -6,15 +6,17 @@ import {sidebarWith} from '../Layout'
 import {SidebarTitle} from './SidebarTitle'
 import {useLayoutContext} from '../LayoutContext'
 
-const useStyles = makeStyles((t: Theme) => createStyles({
-  root: {
-    width: sidebarWith,
-    height: '100vh',
-    display: 'flex',
-    flexDirection: 'column',
-    borderRadius: 0,
-  },
-}))
+const useStyles = makeStyles((t: Theme) =>
+  createStyles({
+    root: {
+      width: sidebarWith,
+      height: '100vh',
+      display: 'flex',
+      flexDirection: 'column',
+      borderRadius: 0,
+    },
+  }),
+)
 
 export interface SidebarProps {
   className?: string
@@ -31,10 +33,11 @@ export const Sidebar = ({children, className}: SidebarProps) => {
       open={opened}
       onOpen={openMobileSidebar}
       onClose={closeMobileSidebar}
-      variant={isMobileWidth ? 'temporary' : 'permanent'}>
+      variant={isMobileWidth ? 'temporary' : 'permanent'}
+    >
       <>
         <div className={classNames(classes.root, className)}>
-          <SidebarTitle/>
+          <SidebarTitle />
           {children}
         </div>
       </>

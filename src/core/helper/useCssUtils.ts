@@ -101,6 +101,6 @@ export const useCssUtils = makeStyles((t: Theme) => {
     },
     nowrap: {
       whiteSpace: 'nowrap',
-    }
+    },
   }
 })

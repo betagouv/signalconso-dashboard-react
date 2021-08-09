@@ -8,7 +8,7 @@ export interface DatepickerProps {
   onChange: (_: Date) => void
   label?: string
   className?: string
-  InputProps?: Partial<StandardInputProps>;
+  InputProps?: Partial<StandardInputProps>
   style?: CSSProperties
   fullWidth?: boolean
 }
@@ -32,7 +32,7 @@ export const Datepicker = ({value, onChange, label, fullWidth, InputProps, class
       value={value ? mapDate(value) : ''}
       onChange={onChangeDate(onChange)}
       fullWidth={fullWidth}
-      InputLabelProps={{ shrink: true }}
+      InputLabelProps={{shrink: true}}
     />
   )
 }

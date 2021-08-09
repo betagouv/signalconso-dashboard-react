@@ -5,13 +5,15 @@ import {useSetState, UseSetState} from '@alexandreannic/react-hooks-lib/lib'
 import {SelectDepartmentsMenu} from './SelectDepartmentsMenu'
 import {useI18n} from '../../core/i18n'
 
-const useStyles = makeStyles((t: Theme) => createStyles({
-  adornment: {
-    height: 20,
-    color: t.palette.text.secondary,
-    verticalAlign: 'top',
-  },
-}))
+const useStyles = makeStyles((t: Theme) =>
+  createStyles({
+    adornment: {
+      height: 20,
+      color: t.palette.text.secondary,
+      verticalAlign: 'top',
+    },
+  }),
+)
 
 export interface SelectDepartmentsProps {
   placeholder?: string
@@ -60,14 +62,15 @@ export const SelectDepartments = ({
         onClick={open}
         value={indexValues.toArray().join(', ') ?? ''}
         disabled={readonly}
-        inputRef={(n: any) => $input = n ?? undefined}
+        inputRef={(n: any) => ($input = n ?? undefined)}
         label={m.departments}
         InputProps={{
           readOnly: true,
-          endAdornment:
+          endAdornment: (
             <InputAdornment position="end">
               <Icon className={css.adornment}>arrow_drop_down</Icon>
             </InputAdornment>
+          ),
         }}
       />
       <SelectDepartmentsMenu

@@ -9,14 +9,17 @@ interface SidebarOpenProps {
 }
 
 export const SidebarToggleBtnPortal = ({hostElementId}: SidebarOpenProps) => {
-  const {isMobileWidth, isMobileSidebarOpened, toggleMobileSidebar,} = useLayoutContext()
-  return isMobileWidth ? createPortal(
-    <div>
-      <IconBtn onClick={toggleMobileSidebar}>
-        <Icon>{isMobileSidebarOpened ? 'clear' : 'menu'}</Icon>
-      </IconBtn>
-    </div>
-    ,
-    document.querySelector(hostElementId)!
-  ) : <></>
+  const {isMobileWidth, isMobileSidebarOpened, toggleMobileSidebar} = useLayoutContext()
+  return isMobileWidth ? (
+    createPortal(
+      <div>
+        <IconBtn onClick={toggleMobileSidebar}>
+          <Icon>{isMobileSidebarOpened ? 'clear' : 'menu'}</Icon>
+        </IconBtn>
+      </div>,
+      document.querySelector(hostElementId)!,
+    )
+  ) : (
+    <></>
+  )
 }

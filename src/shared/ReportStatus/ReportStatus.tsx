@@ -31,7 +31,7 @@ const useStyles = makeStyles((t: Theme) => ({
   inSelectOptions: {
     marginTop: -10,
     marginBottom: -10,
-  }
+  },
 }))
 
 interface ReportStatusChipProps {
@@ -63,10 +63,16 @@ export const ReportStatusChip = ({status, fullWidth, dense, className, inSelectO
   return (
     <div
       aria-label="Statut du signalement"
-      className={classes(className, css.root, inSelectOptions && css.inSelectOptions, dense && css.dense, fullWidth && css.fullWidth)}
-      style={{background: reportStatusColor[status]}}>
+      className={classes(
+        className,
+        css.root,
+        inSelectOptions && css.inSelectOptions,
+        dense && css.dense,
+        fullWidth && css.fullWidth,
+      )}
+      style={{background: reportStatusColor[status]}}
+    >
       {statusLabel}
     </div>
-
   )
 }

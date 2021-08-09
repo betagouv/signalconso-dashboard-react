@@ -8,17 +8,19 @@ import {Roles} from '../api'
 
 export const sidebarWith = 220
 
-const useStyles = makeStyles((t: Theme) => createStyles({
-  root: {
-    overflow: 'hidden',
-    position: 'relative',
-    display: 'flex',
-    flexDirection: 'column',
-  },
-  rootDesktop: {
-    marginLeft: sidebarWith,
-  },
-}))
+const useStyles = makeStyles((t: Theme) =>
+  createStyles({
+    root: {
+      overflow: 'hidden',
+      position: 'relative',
+      display: 'flex',
+      flexDirection: 'column',
+    },
+    rootDesktop: {
+      marginLeft: sidebarWith,
+    },
+  }),
+)
 
 export interface LayoutConnectedUser {
   firstName: string
@@ -38,9 +40,7 @@ export interface LayoutProps {
 export const Layout = ({title, mobileBreakpoint, children, connectedUser}: LayoutProps) => {
   return (
     <LayoutProvider title={title} mobileBreakpoint={mobileBreakpoint}>
-      <LayoutUsingContext connectedUser={connectedUser}>
-        {children}
-      </LayoutUsingContext>
+      <LayoutUsingContext connectedUser={connectedUser}>{children}</LayoutUsingContext>
     </LayoutProvider>
   )
 }
@@ -50,10 +50,8 @@ const LayoutUsingContext = ({children, connectedUser}: any) => {
   const {isMobileWidth} = useLayoutContext()
   return (
     <>
-      <Header connectedUser={connectedUser}/>
-      <div className={classNames(classes.root)}>
-        {children}
-      </div>
+      <Header connectedUser={connectedUser} />
+      <div className={classNames(classes.root)}>{children}</div>
     </>
   )
 }

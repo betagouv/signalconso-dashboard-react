@@ -18,7 +18,12 @@ interface Form {
 export const EditPassword = () => {
   const {m} = useI18n()
   const _changePassword = useUsersContext().changePassword
-  const {register, handleSubmit, getValues, formState: {errors, isValid}} = useForm<Form>({mode: 'onChange'})
+  const {
+    register,
+    handleSubmit,
+    getValues,
+    formState: {errors, isValid},
+  } = useForm<Form>({mode: 'onChange'})
   const {toastSuccess} = useToast()
 
   return (
@@ -31,21 +36,28 @@ export const EditPassword = () => {
       loading={_changePassword.loading}
       onConfirm={(event, close) => {
         handleSubmit((form: Form) => {
-          _changePassword.fetch({}, form.oldPassword, form.newPassword)
+          _changePassword
+            .fetch({}, form.oldPassword, form.newPassword)
             .then(() => toastSuccess(m.passwordEdited))
             .then(close)
         })()
       }}
       content={
         <>
-          {fromNullable(_changePassword.error).map(error =>
-            <Alert dense type="error" deletable gutterBottom>{error.code === 401 ? m.invalidPassword : m.failedToChangePassword}</Alert>
-          ).toUndefined()}
-          <Txt color="hint" block gutterBottom>{m.editPasswordDialogDesc}</Txt>
+          {fromNullable(_changePassword.error)
+            .map(error => (
+              <Alert dense type="error" deletable gutterBottom>
+                {error.code === 401 ? m.invalidPassword : m.failedToChangePassword}
+              </Alert>
+            ))
+            .toUndefined()}
+          <Txt color="hint" block gutterBottom>
+            {m.editPasswordDialogDesc}
+          </Txt>
           <ScInput
             type="password"
             inputProps={{
-              autocomplete: 'false'
+              autocomplete: 'false',
             }}
             autoComplete="false"
             error={!!errors.oldPassword}
@@ -54,7 +66,7 @@ export const EditPassword = () => {
             label={m.oldPassword}
             {...register('oldPassword', {
               required: {value: true, message: m.required},
-              minLength: {value: 8, message: m.passwordNotLongEnough}
+              minLength: {value: 8, message: m.passwordNotLongEnough},
             })}
           />
           <ScInput

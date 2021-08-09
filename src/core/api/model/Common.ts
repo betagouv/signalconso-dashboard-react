@@ -1,4 +1,4 @@
-export type Id = string;
+export type Id = string
 
 export interface ApiPaginate<T> {
   entities: T[]
@@ -6,13 +6,13 @@ export interface ApiPaginate<T> {
 }
 
 export interface Entity {
-  id: Id;
+  id: Id
 }
 
 export interface PaginatedData<T> {
-  totalCount: number;
-  hasNextPage: boolean;
-  entities: Array<T>;
+  totalCount: number
+  hasNextPage: boolean
+  entities: Array<T>
 }
 
 export interface PaginatedFilters {

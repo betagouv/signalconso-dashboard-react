@@ -12,12 +12,10 @@ const useStyles = makeStyles((t: Theme) => ({
     verticalAlign: 'middle',
     marginLeft: t.spacing(1),
     marginRight: t.spacing(1),
-  }
-}));
+  },
+}))
 
 export const Dot = ({className}: DotProps) => {
-  const css = useStyles();
-  return (
-    <Icon className={classes(css.root, className)}>fiber_manual_record</Icon>
-  );
-};
+  const css = useStyles()
+  return <Icon className={classes(css.root, className)}>fiber_manual_record</Icon>
+}

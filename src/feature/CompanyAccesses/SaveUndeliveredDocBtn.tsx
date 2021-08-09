@@ -48,11 +48,7 @@ export const SaveUndeliveredDocBtn = ({loading, onChange, className}: Props) => 
         </>
       }
     >
-      <ScButton
-        variant="outlined"
-        className={className}
-        icon="cancel_schedule_send"
-        color="primary">
+      <ScButton variant="outlined" className={className} icon="cancel_schedule_send" color="primary">
         {m.undeliveredDoc}
       </ScButton>
     </Confirm>

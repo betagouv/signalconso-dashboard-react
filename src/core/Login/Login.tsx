@@ -8,8 +8,8 @@ type PromiseReturn<T> = T extends PromiseLike<infer U> ? U : T
 type AsynFnResult<T extends (...args: any[]) => Promise<object>> = PromiseReturn<ReturnType<T>>
 
 export interface LoginExposedProps<F extends (...args: any[]) => Promise<object>> {
-  authResponse?: AsynFnResult<F>,
-  logout: () => void,
+  authResponse?: AsynFnResult<F>
+  logout: () => void
   login: (...args: Parameters<F>) => Promise<void>
   token?: string
   isLogging: boolean
@@ -27,7 +27,7 @@ export const Login = <F extends (...args: any[]) => Promise<object>>({
   onLogin,
   onLogout,
   getTokenFromResponse,
-  children
+  children,
 }: Props<F>) => {
   const authenticationStorage = useMemo(() => localStorageObject<AsynFnResult<F>>('AuthUserSignalConso'), [])
   const {toastError} = useToast()
@@ -63,7 +63,7 @@ export const Login = <F extends (...args: any[]) => Promise<object>>({
 
   const isTokenExpired = (token: string): boolean => {
     const expirationDate = (jwtDecode(token) as {exp: number}).exp
-    return new Date().getTime() > (expirationDate * 1000)
+    return new Date().getTime() > expirationDate * 1000
   }
 
   const checkToken = async (auth: AsynFnResult<F>) => {

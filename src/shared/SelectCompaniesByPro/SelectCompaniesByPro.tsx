@@ -18,13 +18,15 @@ export interface SelectDepartmentsProps {
   fullWidth?: boolean
 }
 
-const useStyles = makeStyles((t: Theme) => createStyles({
-  adornment: {
-    height: 20,
-    color: t.palette.text.secondary,
-    verticalAlign: 'top',
-  },
-}))
+const useStyles = makeStyles((t: Theme) =>
+  createStyles({
+    adornment: {
+      height: 20,
+      color: t.palette.text.secondary,
+      verticalAlign: 'top',
+    },
+  }),
+)
 
 export const SelectCompaniesByPro = ({
   accessibleCompanies,
@@ -64,15 +66,19 @@ export const SelectCompaniesByPro = ({
         placeholder={placeholder}
         label={label ?? m.siret}
         onClick={open}
-        value={fromNullable(innerValues).filter(_ => _.length > 0).map(_ => `(${_.length}) ${_.join(', ')}`).getOrElse('')}
+        value={fromNullable(innerValues)
+          .filter(_ => _.length > 0)
+          .map(_ => `(${_.length}) ${_.join(', ')}`)
+          .getOrElse('')}
         disabled={readonly}
-        inputRef={(n: any) => $input = n ?? undefined}
+        inputRef={(n: any) => ($input = n ?? undefined)}
         InputProps={{
           readOnly: true,
-          endAdornment:
+          endAdornment: (
             <InputAdornment position="end">
               <Icon className={css.adornment}>arrow_drop_down</Icon>
             </InputAdornment>
+          ),
         }}
       />
       <SelectCompaniesByProMenu
@@ -86,7 +92,7 @@ export const SelectCompaniesByPro = ({
           setInnerValues(_)
         }}
         initialValues={values}
-        />
+      />
     </>
   )
 }

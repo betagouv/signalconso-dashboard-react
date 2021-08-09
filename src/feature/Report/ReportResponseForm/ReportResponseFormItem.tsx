@@ -21,15 +21,15 @@ export const ReportResponseFormItem = ({children, title, desc}: ReportAnswerProI
   const css = useStyles()
   return (
     <div className={css.root}>
-      <Txt block size="big" bold>{title}</Txt>
+      <Txt block size="big" bold>
+        {title}
+      </Txt>
       {desc && (
         <Txt color="hint">
-          <span dangerouslySetInnerHTML={{__html: desc}}/>
+          <span dangerouslySetInnerHTML={{__html: desc}} />
         </Txt>
       )}
-      <div className={css.body}>
-        {children}
-      </div>
+      <div className={css.body}>{children}</div>
     </div>
   )
 }

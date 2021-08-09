@@ -24,7 +24,12 @@ interface Form {
 
 export const CompanyAccessCreateBtn = ({errorMessage, loading, onCreate}: Props) => {
   const {m} = useI18n()
-  const {register, handleSubmit, getValues, formState: {errors, isValid}} = useForm<Form>({mode: 'onChange'})
+  const {
+    register,
+    handleSubmit,
+    getValues,
+    formState: {errors, isValid},
+  } = useForm<Form>({mode: 'onChange'})
   const {toastSuccess} = useToast()
   return (
     <Confirm
@@ -44,7 +49,9 @@ export const CompanyAccessCreateBtn = ({errorMessage, loading, onCreate}: Props)
       content={
         <>
           {errorMessage && (
-            <Alert dense type="error" deletable gutterBottom>{m.anErrorOccurred}</Alert>
+            <Alert dense type="error" deletable gutterBottom>
+              {m.anErrorOccurred}
+            </Alert>
           )}
           <ScInput
             error={!!errors.email}
@@ -57,13 +64,15 @@ export const CompanyAccessCreateBtn = ({errorMessage, loading, onCreate}: Props)
             })}
           />
           <ScSelect fullWidth {...register('level')} defaultValue="admin">
-            {Enum.keys(CompanyAccessLevel).map(level =>
-              <MenuItem key={level} value={level}>{CompanyAccessLevel[level]}</MenuItem>
-            )}
+            {Enum.keys(CompanyAccessLevel).map(level => (
+              <MenuItem key={level} value={level}>
+                {CompanyAccessLevel[level]}
+              </MenuItem>
+            ))}
           </ScSelect>
         </>
-      }>
-
+      }
+    >
       <ScButton loading={loading} icon="add" color="primary" variant="contained">
         {m.invite}
       </ScButton>

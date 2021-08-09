@@ -2,7 +2,7 @@ import {textOverflowMiddleCropping} from '../../../helper/utils'
 
 export enum FileOrigin {
   Consumer = 'consumer',
-  Professional = 'professional'
+  Professional = 'professional',
 }
 
 export interface UploadedFile {

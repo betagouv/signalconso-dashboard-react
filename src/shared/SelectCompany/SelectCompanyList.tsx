@@ -33,11 +33,10 @@ export const SelectCompanyList = ({companies, onChange}: Props) => {
       {companies.map(company => {
         const isGovernment = isGovernmentCompany(company)
         return (
-          <ScRadioGroupItem
-            key={company.siret} value={company.siret!} className={css.root}
-            onClick={() => onChange(company)}
-          >
-            <Txt truncate block bold>{company.name}</Txt>
+          <ScRadioGroupItem key={company.siret} value={company.siret!} className={css.root} onClick={() => onChange(company)}>
+            <Txt truncate block bold>
+              {company.name}
+            </Txt>
             {company.brand && <Txt block>{company.brand}</Txt>}
             {company.highlight && (
               <div>
@@ -68,7 +67,7 @@ export const SelectCompanyList = ({companies, onChange}: Props) => {
             )}
             {company.address && (
               <Txt color="hint" block size="small" className={css.address}>
-                <AddressComponent address={company.address}/>
+                <AddressComponent address={company.address} />
               </Txt>
             )}
           </ScRadioGroupItem>

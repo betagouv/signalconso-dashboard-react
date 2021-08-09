@@ -11,7 +11,5 @@ export interface ScProps {
  * Prefere use <Controller> from react-hook-form
  */
 export const ScRadio = forwardRef(({label, ...props}: any, ref) => {
-  return (
-    <FormControlLabel label={label} value={props.value} inputRef={ref} {...props} control={<Radio/>}/>
-  )
+  return <FormControlLabel label={label} value={props.value} inputRef={ref} {...props} control={<Radio />} />
 })

@@ -1,16 +1,26 @@
-import {Anomaly, ApiClientApi, Category, CompanyKinds, ReportTag, Subcategory, SubcategoryInformation, SubcategoryInput} from '../..'
+import {
+  Anomaly,
+  ApiClientApi,
+  Category,
+  CompanyKinds,
+  ReportTag,
+  Subcategory,
+  SubcategoryInformation,
+  SubcategoryInput,
+} from '../..'
 import anomaliesJSON from '../anomaly/yml/anomalies.json'
 import {lazy} from '../../helper/Lazy'
 
 export class AnomalyClient {
-
   constructor(private client: ApiClientApi) {
     console.log('anomaliesJSON', anomaliesJSON)
   }
 
   readonly getAnomalies = lazy(() => Promise.resolve((anomaliesJSON as any).list.map(AnomalyClient.enrichAnomaly) as Anomaly[]))
 
-  readonly getCategories = lazy(() => Promise.resolve(this.getAnomalies().then(_ => _.filter(anomaly => !anomaly.information).map(anomaly => anomaly.category))))
+  readonly getCategories = lazy(() =>
+    Promise.resolve(this.getAnomalies().then(_ => _.filter(anomaly => !anomaly.information).map(anomaly => anomaly.category))),
+  )
 
   private static readonly askCompanyKindIfMissing = (anomaly: Category, tags: ReportTag[]): Category => {
     if (!anomaly.subcategories && !anomaly.companyKind && !AnomalyClient.instanceOfSubcategoryInformation(anomaly)) {
@@ -23,20 +33,23 @@ export class AnomalyClient {
             ...anomaly,
             title: 'Oui',
             companyKind: CompanyKinds.WEBSITE,
-            example: undefined
-          }, {
+            example: undefined,
+          },
+          {
             ...anomaly,
             title: 'Non, pas sur internet',
             companyKind: tags.indexOf(ReportTag.ProduitDangereux) === -1 ? CompanyKinds.SIRET : CompanyKinds.LOCATION,
-            example: undefined
+            example: undefined,
           },
-        ]
+        ],
       } as Category
     }
     return {
       ...anomaly,
-      subcategories: anomaly.subcategories?.map(_ =>
-        ({..._, ...AnomalyClient.askCompanyKindIfMissing(_, [...tags, ...(anomaly as Subcategory).tags ?? []])})),
+      subcategories: anomaly.subcategories?.map(_ => ({
+        ..._,
+        ...AnomalyClient.askCompanyKindIfMissing(_, [...tags, ...((anomaly as Subcategory).tags ?? [])]),
+      })),
     }
   }
 
@@ -44,12 +57,13 @@ export class AnomalyClient {
     return {
       ...anomaly,
       subcategories: anomaly.subcategories
-        ?.map(_ => ({..._, companyKind: _.companyKind || anomaly.companyKind,}))
-        ?.map(_ => ({..._, ...AnomalyClient.propagateCompanyKinds(_),}))
+        ?.map(_ => ({..._, companyKind: _.companyKind || anomaly.companyKind}))
+        ?.map(_ => ({..._, ...AnomalyClient.propagateCompanyKinds(_)})),
     }
   }
 
-  private static readonly enrichAnomaly = (anomaly: Category): Category => AnomalyClient.askCompanyKindIfMissing(AnomalyClient.propagateCompanyKinds(anomaly), [])
+  private static readonly enrichAnomaly = (anomaly: Category): Category =>
+    AnomalyClient.askCompanyKindIfMissing(AnomalyClient.propagateCompanyKinds(anomaly), [])
 
   static readonly instanceOfSubcategoryInput = (_?: Category): _ is SubcategoryInput => {
     return !!(_ as SubcategoryInput)?.detailInputs

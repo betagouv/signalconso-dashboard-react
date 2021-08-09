@@ -9,13 +9,16 @@ import {useI18n} from '../../core/i18n'
 import {classes} from '../../core/helper/utils'
 import {useSetState, UseSetState} from '@alexandreannic/react-hooks-lib/lib'
 
-const withRegions = (WrappedComponent: React.ComponentType<Props>) => forwardRef((props: Omit<Props, 'countries'>) => {
-  const {countries} = useConstantContext()
-  useEffect(() => {
-    countries.fetch()
-  }, [])
-  return fromNullable(countries.entity).map(_ => <WrappedComponent {...props} countries={_.filter(_ => _.code !== 'FR')}/>).getOrElse(<></>)
-})
+const withRegions = (WrappedComponent: React.ComponentType<Props>) =>
+  forwardRef((props: Omit<Props, 'countries'>) => {
+    const {countries} = useConstantContext()
+    useEffect(() => {
+      countries.fetch()
+    }, [])
+    return fromNullable(countries.entity)
+      .map(_ => <WrappedComponent {...props} countries={_.filter(_ => _.code !== 'FR')} />)
+      .getOrElse(<></>)
+  })
 
 const useStyles = makeStyles((t: Theme) => {
   const iconWidth = 50
@@ -32,16 +35,16 @@ const useStyles = makeStyles((t: Theme) => {
       },
       '&:active, &:focus': {
         background: t.palette.action.focus,
-      }
+      },
     },
     menuItemActive: {
       fontWeight: t.typography.fontWeightBold,
       color: t.palette.primary.main + ' !important',
-      background: alpha(t.palette.primary.main, .1) + ' !important',
+      background: alpha(t.palette.primary.main, 0.1) + ' !important',
     },
     menuItemCategory: {
       '&:not(:first-of-type)': {
-        borderTop: `1px solid ${t.palette.divider}`
+        borderTop: `1px solid ${t.palette.divider}`,
       },
     },
     cbDepartment: {
@@ -70,20 +73,11 @@ interface Props {
 
 const countryToFlag = (isoCode: string) => {
   return typeof String.fromCodePoint !== 'undefined'
-    ? isoCode
-      .toUpperCase()
-      .replace(/./g, (char) => String.fromCodePoint(char.charCodeAt(0) + 127397))
+    ? isoCode.toUpperCase().replace(/./g, char => String.fromCodePoint(char.charCodeAt(0) + 127397))
     : isoCode
 }
 
-export const SelectCountriesMenu = withRegions(({
-  countries,
-  anchorEl,
-  open,
-  initialValues,
-  onChange,
-  onClose,
-}: Props) => {
+export const SelectCountriesMenu = withRegions(({countries, anchorEl, open, initialValues, onChange, onClose}: Props) => {
   const cssUtils = useCssUtils()
   const css = useStyles()
   const {m} = useI18n()
@@ -110,16 +104,20 @@ export const SelectCountriesMenu = withRegions(({
       else if (country.transfer) transfersCountries.push(country)
       else othersCountries.push(country)
     })
-    return [{
-      label: m.selectCountries_onlyEU,
-      countries: euCountries
-    }, {
-      label: m.selectCountries_onlyTransfer,
-      countries: transfersCountries
-    }, {
-      label: m.others,
-      countries: othersCountries
-    }]
+    return [
+      {
+        label: m.selectCountries_onlyEU,
+        countries: euCountries,
+      },
+      {
+        label: m.selectCountries_onlyTransfer,
+        countries: transfersCountries,
+      },
+      {
+        label: m.others,
+        countries: othersCountries,
+      },
+    ]
   }, [countries])
 
   // // const handleInputChange = (event: any) => {
@@ -158,16 +156,19 @@ export const SelectCountriesMenu = withRegions(({
 
         return [
           <div className={classes(css.menuItem, css.menuItemCategory)} onClick={handleSelectAll}>
-            <Checkbox className={css.iconWidth} indeterminate={someSelected && !allSelected} checked={allSelected}/>
+            <Checkbox className={css.iconWidth} indeterminate={someSelected && !allSelected} checked={allSelected} />
             <span className={cssUtils.txtBold}>{countries.label}</span>
           </div>,
           countries.countries.map(country => (
-            <div key={country.code} className={classes(css.menuItem, indexedValues.has(country.code) && css.menuItemActive)}
-                 onClick={() => handleToggle(country)}>
+            <div
+              key={country.code}
+              className={classes(css.menuItem, indexedValues.has(country.code) && css.menuItemActive)}
+              onClick={() => handleToggle(country)}
+            >
               <span className={classes(css.flag, css.iconWidth)}>{countryToFlag(country.code)}</span>
               <span>{country.name}</span>
             </div>
-          ))
+          )),
         ]
       })}
     </Menu>

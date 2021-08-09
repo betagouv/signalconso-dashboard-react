@@ -2,9 +2,9 @@ import {ReportTag, Subcategory} from '../..'
 import {UploadedFile} from '../..'
 import {Address} from '../../model/Address'
 
-export const ReportingDateLabel = 'Date du constat';
-export const ReportingTimeslotLabel = 'Heure du constat';
-export const DescriptionLabel = 'Description';
+export const ReportingDateLabel = 'Date du constat'
+export const ReportingTimeslotLabel = 'Heure du constat'
+export const DescriptionLabel = 'Description'
 
 export interface Report {
   id: string
@@ -40,7 +40,7 @@ export interface ReportSearchResult {
 
 export enum ReportStatus {
   NA = 'NA',
-  EmployeeConsumer = 'Lanceur d\'alerte',
+  EmployeeConsumer = "Lanceur d'alerte",
   InProgress = 'Traitement en cours',
   Unread = 'Signalement non consulté',
   UnreadForPro = 'Non consulté',
@@ -50,6 +50,5 @@ export enum ReportStatus {
   ClosedForPro = 'Clôturé',
   Rejected = 'Signalement infondé',
   Ignored = 'Signalement consulté ignoré',
-  NotConcerned = 'Signalement mal attribué'
+  NotConcerned = 'Signalement mal attribué',
 }
-

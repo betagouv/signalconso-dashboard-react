@@ -28,7 +28,7 @@ interface Props {
 
 const useStyles = makeStyles((t: Theme) => ({
   btnContainer: {
-    padding: t.spacing(0, 2, .5, 2),
+    padding: t.spacing(0, 2, 0.5, 2),
   },
   btnNew: {
     width: '100%',
@@ -109,12 +109,7 @@ export const ExportPopperBtn = ({
           })}
         </span>
       </Tooltip>
-      <Menu
-        keepMounted
-        open={!!anchorEl}
-        onClose={handleClose}
-        anchorEl={anchorEl}
-      >
+      <Menu keepMounted open={!!anchorEl} onClose={handleClose} anchorEl={anchorEl}>
         <div className={css.btnContainer}>
           <Tooltip title={tooltipBtnNew ?? ''}>
             <span>
@@ -134,45 +129,47 @@ export const ExportPopperBtn = ({
         </div>
         {initialLoading && loading && (
           <div className={css.progress}>
-            <CircularProgress/>
+            <CircularProgress />
           </div>
         )}
-        {files?.length === 0 && (
-          <div className={css.noData}>{m.noExport}</div>
-        )}
-        {files?.filter(_ => _.kind === fileType).map(file =>
-          <MenuItem className={css.menuItem} dense key={file.id}>
-            {fnSwitch(file.status, {
-              [AsyncFileStatus.Successed]: _ => (
-                <div className={css.fileItem} onClick={() => window.open(file.url, '_blank')}>
-                  <Icon className={cssUtils.colorTxtHint}>insert_drive_file</Icon>
-                  <div className={css.fileItemBody}>
-                    <Txt bold block>{file.filename.match(/.*?\-(\w+.?)\.xlsx/)?.[1]}</Txt>
-                    <Txt color="hint">{formatDateTime(file.creationDate)}</Txt>
+        {files?.length === 0 && <div className={css.noData}>{m.noExport}</div>}
+        {files
+          ?.filter(_ => _.kind === fileType)
+          .map(file => (
+            <MenuItem className={css.menuItem} dense key={file.id}>
+              {fnSwitch(file.status, {
+                [AsyncFileStatus.Successed]: _ => (
+                  <div className={css.fileItem} onClick={() => window.open(file.url, '_blank')}>
+                    <Icon className={cssUtils.colorTxtHint}>insert_drive_file</Icon>
+                    <div className={css.fileItemBody}>
+                      <Txt bold block>
+                        {file.filename.match(/.*?\-(\w+.?)\.xlsx/)?.[1]}
+                      </Txt>
+                      <Txt color="hint">{formatDateTime(file.creationDate)}</Txt>
+                    </div>
                   </div>
-                </div>
-              ),
-              [AsyncFileStatus.Loading]: _ => (
-                <div className={css.fileItem}>
-                  <CircularProgress size={24}/>
-                  <div className={css.fileItemBody}>
-                    <Txt skeleton/>
-                    <Txt color="hint">{formatDateTime(file.creationDate)}</Txt>
+                ),
+                [AsyncFileStatus.Loading]: _ => (
+                  <div className={css.fileItem}>
+                    <CircularProgress size={24} />
+                    <div className={css.fileItemBody}>
+                      <Txt skeleton />
+                      <Txt color="hint">{formatDateTime(file.creationDate)}</Txt>
+                    </div>
                   </div>
-                </div>
-              ),
-              [AsyncFileStatus.Failed]: _ => (
-                <div className={css.fileItem}>
-                  <Icon className={cssUtils.colorError}>error</Icon>
-                  <div className={css.fileItemBody}>
-                    <div>{m.error}</div>
-                    <Txt color="hint">{formatDateTime(file.creationDate)}</Txt>
+                ),
+                [AsyncFileStatus.Failed]: _ => (
+                  <div className={css.fileItem}>
+                    <Icon className={cssUtils.colorError}>error</Icon>
+                    <div className={css.fileItemBody}>
+                      <div>{m.error}</div>
+                      <Txt color="hint">{formatDateTime(file.creationDate)}</Txt>
+                    </div>
                   </div>
-                </div>
-              ),
-            })}
-          </MenuItem>
-        )}
+                ),
+              })}
+            </MenuItem>
+          ))}
       </Menu>
     </>
   )
@@ -189,38 +186,44 @@ interface ExportReportProps {
 export const ExportPhonesPopper = (props: ExportReportProps) => {
   const _asyncFile = useAsyncFileContext()
   const _reportPhone = useReportedPhonesContext()
-  return <ExportPopperBtn
-    {...props}
-    loading={_asyncFile.loading}
-    fileType={AsyncFileKind.ReportedPhones}
-    onNewExport={_reportPhone.extract.fetch}
-    fetch={_asyncFile.fetch}
-    files={_asyncFile.entity}
-  />
+  return (
+    <ExportPopperBtn
+      {...props}
+      loading={_asyncFile.loading}
+      fileType={AsyncFileKind.ReportedPhones}
+      onNewExport={_reportPhone.extract.fetch}
+      fetch={_asyncFile.fetch}
+      files={_asyncFile.entity}
+    />
+  )
 }
 
 export const ExportReportsPopper = (props: ExportReportProps) => {
-    const _asyncFile = useAsyncFileContext()
-    const _reports = useReportsContext()
-    return <ExportPopperBtn
-        {...props}
-        loading={_asyncFile.loading}
-        fileType={AsyncFileKind.Reports}
-        onNewExport={_reports.extract}
-        fetch={_asyncFile.fetch}
-        files={_asyncFile.entity}
+  const _asyncFile = useAsyncFileContext()
+  const _reports = useReportsContext()
+  return (
+    <ExportPopperBtn
+      {...props}
+      loading={_asyncFile.loading}
+      fileType={AsyncFileKind.Reports}
+      onNewExport={_reports.extract}
+      fetch={_asyncFile.fetch}
+      files={_asyncFile.entity}
     />
+  )
 }
 
 export const ExportUnknownWebsitesPopper = (props: ExportReportProps) => {
-    const _asyncFile = useAsyncFileContext()
-    const _extract = useUnregistredWebsiteWithCompanyContext()
-    return <ExportPopperBtn
-        {...props}
-        loading={_asyncFile.loading}
-        fileType={AsyncFileKind.ReportedWebsites}
-        onNewExport={_extract.extractUnregistered.fetch}
-        fetch={_asyncFile.fetch}
-        files={_asyncFile.entity}
+  const _asyncFile = useAsyncFileContext()
+  const _extract = useUnregistredWebsiteWithCompanyContext()
+  return (
+    <ExportPopperBtn
+      {...props}
+      loading={_asyncFile.loading}
+      fileType={AsyncFileKind.ReportedWebsites}
+      onNewExport={_extract.extractUnregistered.fetch}
+      fetch={_asyncFile.fetch}
+      files={_asyncFile.entity}
     />
+  )
 }

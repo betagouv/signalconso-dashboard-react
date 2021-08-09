@@ -7,7 +7,6 @@ export interface User {
   lastEmailValidation: Date
 }
 
-
 export interface UserPending {
   email: string
   tokenCreation: Date

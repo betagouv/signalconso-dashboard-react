@@ -2,25 +2,23 @@ import {ApiClientApi} from '../..'
 import {CompanySearchResult} from './Company'
 
 export class PublicCompanyClient {
-
-  constructor(private client: ApiClientApi) {
-  }
+  constructor(private client: ApiClientApi) {}
 
   readonly searchCompanies = (search: string, searchPostalCode: string) => {
     return this.client.get<CompanySearchResult[]>(`/companies/search`, {
       qs: {
         postalCode: searchPostalCode.toString(),
         q: search,
-      }
-    });
-  };
+      },
+    })
+  }
 
   readonly searchCompaniesByIdentity = (identity: string) => {
     return this.client.get<CompanySearchResult[]>(`/companies/search/${identity}`, {})
-      // .then(companies => companies.filter(_ => _.postalCode));
-  };
+    // .then(companies => companies.filter(_ => _.postalCode));
+  }
 
   readonly searchCompaniesByUrl = (url: string) => {
-    return this.client.get<CompanySearchResult[]>(`/companies/search-url`, {qs: {url}});
-  };
+    return this.client.get<CompanySearchResult[]>(`/companies/search-url`, {qs: {url}})
+  }
 }

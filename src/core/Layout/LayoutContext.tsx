@@ -33,14 +33,16 @@ export const LayoutProvider = ({title, mobileBreakpoint = 700, children}: Layout
   }, [])
 
   return (
-    <LayoutContext.Provider value={{
-      isMobileSidebarOpened,
-      openMobileSidebar,
-      closeMobileSidebar,
-      toggleMobileSidebar,
-      title,
-      isMobileWidth: pageWidth < mobileBreakpoint,
-    }}>
+    <LayoutContext.Provider
+      value={{
+        isMobileSidebarOpened,
+        openMobileSidebar,
+        closeMobileSidebar,
+        toggleMobileSidebar,
+        title,
+        isMobileWidth: pageWidth < mobileBreakpoint,
+      }}
+    >
       {children}
     </LayoutContext.Provider>
   )

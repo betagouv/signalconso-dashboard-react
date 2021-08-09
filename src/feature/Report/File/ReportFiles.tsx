@@ -22,7 +22,7 @@ const useReportFilesStyles = makeStyles((t: Theme) => ({
     margin: t.spacing(-1),
     // marginRight: t.spacing(-1),
     // marginLeft: t.spacing(-1),
-  }
+  },
 }))
 
 export const ReportFiles = ({
@@ -43,7 +43,7 @@ export const ReportFiles = ({
 
   const newFile = (f: UploadedFile) => {
     onNewFile(f)
-    setInnerFiles(prev => [f, ...prev ?? []])
+    setInnerFiles(prev => [f, ...(prev ?? [])])
   }
 
   const removeFile = (f: UploadedFile) => {
@@ -54,15 +54,18 @@ export const ReportFiles = ({
   return (
     <>
       <div className={css.root}>
-        {innerFiles?.filter(_ => _.origin === fileOrigin).map(_ =>
-          <ReportFile key={_.id} file={_} onRemove={hideAddBtn ? undefined : removeFile}/>,
-        )}
-        {!hideAddBtn && <ReportFileAdd reportId={reportId} fileOrigin={fileOrigin} onUploaded={newFile}/>}
+        {innerFiles
+          ?.filter(_ => _.origin === fileOrigin)
+          .map(_ => (
+            <ReportFile key={_.id} file={_} onRemove={hideAddBtn ? undefined : removeFile} />
+          ))}
+        {!hideAddBtn && <ReportFileAdd reportId={reportId} fileOrigin={fileOrigin} onUploaded={newFile} />}
       </div>
       {hideAddBtn && innerFiles?.length === 0 && (
-        <Txt block color="hint">{m.noAttachment}</Txt>
+        <Txt block color="hint">
+          {m.noAttachment}
+        </Txt>
       )}
     </>
   )
 }
-

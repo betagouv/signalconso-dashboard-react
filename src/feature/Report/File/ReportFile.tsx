@@ -25,7 +25,7 @@ const useStyles = makeStyles((t: Theme) => ({
     position: 'relative',
     padding: t.spacing(cardMargin),
     '&:hover > $removeBtn': {
-      display: 'flex !important'
+      display: 'flex !important',
     },
   },
   image: {
@@ -47,7 +47,7 @@ const useStyles = makeStyles((t: Theme) => ({
       backgroundSize: 'cover',
       height: '100%',
       width: '100%',
-    }
+    },
   },
   removeBtn: {
     display: 'none !important',
@@ -78,10 +78,9 @@ export const ReportFile = ({file, dense, onRemove}: ReportFileProps) => {
   const {toastError} = useToast()
   const {m} = useI18n()
 
-  const fileUrl = some(apiSdk.public.document.getLink(file)).map(_ => Config.isDev
-    ? _.replace(Config.apiBaseUrl, 'https://signal-api.conso.gouv.fr')
-    : _
-  ).toUndefined()
+  const fileUrl = some(apiSdk.public.document.getLink(file))
+    .map(_ => (Config.isDev ? _.replace(Config.apiBaseUrl, 'https://signal-api.conso.gouv.fr') : _))
+    .toUndefined()
 
   const remove = async () => {
     await _remove.fetch({}, file)
@@ -98,7 +97,7 @@ export const ReportFile = ({file, dense, onRemove}: ReportFileProps) => {
         {onRemove && (
           <Confirm
             title={m.removeAsk}
-            content={<span dangerouslySetInnerHTML={{__html: m.thisWillBeRemoved(file.filename)}}/>}
+            content={<span dangerouslySetInnerHTML={{__html: m.thisWillBeRemoved(file.filename)}} />}
             maxWidth="xs"
             onClick={e => {
               e.stopPropagation()
@@ -120,7 +119,7 @@ export const ReportFile = ({file, dense, onRemove}: ReportFileProps) => {
           {(() => {
             switch (fileType) {
               case FileType.Image: {
-                return <div style={{backgroundImage: `url(${fileUrl})`}}/>
+                return <div style={{backgroundImage: `url(${fileUrl})`}} />
               }
               case FileType.PDF: {
                 return (

@@ -13,32 +13,27 @@ interface LoginProviderProps {
 }
 
 interface UseLoginProps {
-  connectedUser: UserWithPermission & {isDGCCRF: boolean, isPro: boolean, isAdmin: boolean},
-  logout: () => void,
+  connectedUser: UserWithPermission & {isDGCCRF: boolean; isPro: boolean; isAdmin: boolean}
+  logout: () => void
   apiSdk: SignalConsoApiSdk
   token: string
 }
 
-export const LoginProvider = ({
-  apiSdk,
-  token,
-  connectedUser,
-  onLogout,
-  children
-}: LoginProviderProps) => {
-
+export const LoginProvider = ({apiSdk, token, connectedUser, onLogout, children}: LoginProviderProps) => {
   return (
-    <LoginContext.Provider value={{
-      connectedUser: {
-        ...connectedUser,
-        isDGCCRF: connectedUser.role === Roles.DGCCRF,
-        isPro: connectedUser.role === Roles.Pro,
-        isAdmin: connectedUser.role === Roles.Admin,
-      },
-      logout: onLogout,
-      token,
-      apiSdk,
-    }}>
+    <LoginContext.Provider
+      value={{
+        connectedUser: {
+          ...connectedUser,
+          isDGCCRF: connectedUser.role === Roles.DGCCRF,
+          isPro: connectedUser.role === Roles.Pro,
+          isAdmin: connectedUser.role === Roles.Admin,
+        },
+        logout: onLogout,
+        token,
+        apiSdk,
+      }}
+    >
       {children}
     </LoginContext.Provider>
   )

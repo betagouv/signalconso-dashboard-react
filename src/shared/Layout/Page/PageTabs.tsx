@@ -11,7 +11,7 @@ const useStyles = makeStyles((t: Theme) => ({
   root: {
     marginBottom: t.spacing(3),
     borderBottom: '1px solid ' + t.palette.divider,
-  }
+  },
 }))
 
 export const PageTabs = ({children}: Props) => {
@@ -25,13 +25,7 @@ export const PageTabs = ({children}: Props) => {
   }
 
   return (
-    <Tabs
-      value={value}
-      indicatorColor="primary"
-      textColor="primary"
-      onChange={handleChange}
-      className={css.root}
-    >
+    <Tabs value={value} indicatorColor="primary" textColor="primary" onChange={handleChange} className={css.root}>
       {children}
     </Tabs>
   )
@@ -46,8 +40,5 @@ export interface PageTabProps {
 
 export const PageTab = ({to, ...props}: PageTabProps) => {
   const history = useHistory()
-  return (
-    <Tab {...props} onClick={() => history.push(to)}/>
-  )
+  return <Tab {...props} onClick={() => history.push(to)} />
 }
-

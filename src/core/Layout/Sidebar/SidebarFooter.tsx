@@ -3,13 +3,15 @@ import {ReactNode} from 'react'
 import {createStyles, makeStyles, Theme} from '@material-ui/core'
 import classNames from 'classnames'
 
-const useStyles = makeStyles((t: Theme) => createStyles({
-  root: {
-    paddingTop: t.spacing(1 / 2),
-    paddingBottom: t.spacing(1 / 2),
-    borderTop: '1px solid ' + t.palette.divider,
-  },
-}))
+const useStyles = makeStyles((t: Theme) =>
+  createStyles({
+    root: {
+      paddingTop: t.spacing(1 / 2),
+      paddingBottom: t.spacing(1 / 2),
+      borderTop: '1px solid ' + t.palette.divider,
+    },
+  }),
+)
 
 export interface SidebarFooterProps {
   children?: ReactNode
@@ -18,9 +20,5 @@ export interface SidebarFooterProps {
 
 export const SidebarFooter = ({children, className}: SidebarFooterProps) => {
   const classes = useStyles()
-  return (
-    <footer className={classNames(classes.root, className)}>
-      {children}
-    </footer>
-  )
+  return <footer className={classNames(classes.root, className)}>{children}</footer>
 }

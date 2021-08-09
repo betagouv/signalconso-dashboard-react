@@ -106,7 +106,7 @@ list:
     description: vente et réparation de voiture, location, auto-école, pneu, accessoire...
     rank: 13
     sprite: category-transport
-    subcategoriesTitle: "Pouvez-vous préciser &#160;?"
+    subcategoriesTitle: 'Pouvez-vous préciser &#160;?'
     subcategories: !!import/single subcategories/voiture-vehicule.yml
   - category: Animaux
     categoryId: ANI

@@ -18,17 +18,18 @@ const defaultContext: Partial<ReportsContextProps> = {}
 const ReportsContext = React.createContext<ReportsContextProps>(defaultContext as ReportsContextProps)
 
 export const ReportsProvider = ({api, children}: Props) => {
-
   const _paginate = usePaginate<ReportSearchResult, ReportSearch>(
     (_: ReportSearch) => api.secured.reports.search(_).then(_ => ({data: _.entities, totalSize: _.totalCount})),
-    {limit: 10, offset: 0}
+    {limit: 10, offset: 0},
   )
 
   return (
-    <ReportsContext.Provider value={{
-      ..._paginate,
-      extract: () => api.secured.reports.extract(_paginate.filters),
-    }}>
+    <ReportsContext.Provider
+      value={{
+        ..._paginate,
+        extract: () => api.secured.reports.extract(_paginate.filters),
+      }}
+    >
       {children}
     </ReportsContext.Provider>
   )

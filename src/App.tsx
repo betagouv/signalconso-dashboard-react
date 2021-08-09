@@ -35,35 +35,38 @@ import {LoginProvider, useLogin} from './core/context/LoginContext'
 import {LoginLoader} from './core/Login/LoginLoader'
 import {useFetcher} from '@alexandreannic/react-hooks-lib/lib'
 import {ReportsPro} from './feature/ReportsPro/ReportsPro'
-import {ReportedWebsitesProvider} from "./core/context/ReportedWebsitesContext";
+import {ReportedWebsitesProvider} from './core/context/ReportedWebsitesContext'
 import {CompanyAccesses} from './feature/CompanyAccesses/CompanyAccesses'
 import {useHistory} from 'react-router'
-import {UnregistredWebsitesProvider} from "./core/context/UnregistredWebsitesContext";
+import {UnregistredWebsitesProvider} from './core/context/UnregistredWebsitesContext'
 import {CompaniesPro} from './feature/CompaniesPro/CompaniesPro'
 import {ReportPro} from './feature/Report/ReportPro'
 
 const headers = {
   'Content-Type': 'application/json',
-  'Accept': 'application/json',
+  Accept: 'application/json',
 }
 
 const baseUrl = Config.apiBaseUrl + '/api'
 
-const apiPublicSdk = new SignalConsoPublicSdk(new ApiClient({
-  baseUrl,
-  headers,
-}))
+const apiPublicSdk = new SignalConsoPublicSdk(
+  new ApiClient({
+    baseUrl,
+    headers,
+  }),
+)
 
 const makeSecuredSdk = (token: string) => ({
   public: apiPublicSdk,
-  secured: new SignalConsoSecuredSdk(new ApiClient({
-    baseUrl,
-    headers: {...headers, 'X-Auth-Token': token},
-  }))
+  secured: new SignalConsoSecuredSdk(
+    new ApiClient({
+      baseUrl,
+      headers: {...headers, 'X-Auth-Token': token},
+    }),
+  ),
 })
 
 export type SignalConsoApiSdk = ReturnType<typeof makeSecuredSdk>
-
 
 const useStyles = makeStyles((t: Theme) => ({
   '@global': {
@@ -86,7 +89,7 @@ const useStyles = makeStyles((t: Theme) => ({
       boxSizing: 'border-box',
     },
     ul: {
-      marginTop: '.5em'
+      marginTop: '.5em',
     },
     h1: t.typography.h4,
     h2: {
@@ -110,14 +113,16 @@ const useStyles = makeStyles((t: Theme) => ({
 
 export const App = () => {
   return (
-    <Provide providers={[
-      _ => <ThemeProvider theme={muiTheme()} children={_}/>,
-      _ => <I18nProvider children={_}/>,
-      _ => <MuiPickersUtilsProvider utils={DateAdapter} children={_}/>,
-      _ => <HashRouter children={_}/>,
-      _ => <ToastProvider horizontal="right" children={_}/>,
-    ]}>
-      <AppLogin/>
+    <Provide
+      providers={[
+        _ => <ThemeProvider theme={muiTheme()} children={_} />,
+        _ => <I18nProvider children={_} />,
+        _ => <MuiPickersUtilsProvider utils={DateAdapter} children={_} />,
+        _ => <HashRouter children={_} />,
+        _ => <ToastProvider horizontal="right" children={_} />,
+      ]}
+    >
+      <AppLogin />
     </Provide>
   )
 }
@@ -126,16 +131,12 @@ const AppLogin = () => {
   useStyles()
   const history = useHistory()
   const forgottenPassword = useFetcher<SignalConsoApiSdk['public']['authenticate']['forgotPassword'], ApiError>(
-    apiPublicSdk.authenticate.forgotPassword
+    apiPublicSdk.authenticate.forgotPassword,
   )
 
   return (
-    <Login
-      onLogin={apiPublicSdk.authenticate.login}
-      onLogout={() => history.push('/')}
-      getTokenFromResponse={_ => _.token}
-    >
-      {({authResponse, login, logout, isLogging, isCheckingToken}) =>
+    <Login onLogin={apiPublicSdk.authenticate.login} onLogout={() => history.push('/')} getTokenFromResponse={_ => _.token}>
+      {({authResponse, login, logout, isLogging, isCheckingToken}) => (
         <Layout connectedUser={authResponse ? {...authResponse.user, logout: logout} : undefined}>
           {authResponse ? (
             <LoginProvider
@@ -144,10 +145,10 @@ const AppLogin = () => {
               onLogout={logout}
               apiSdk={makeSecuredSdk(authResponse.token)}
             >
-              <AppLogged/>
+              <AppLogged />
             </LoginProvider>
           ) : isCheckingToken ? (
-            <LoginLoader/>
+            <LoginLoader />
           ) : (
             <LoginPage
               isLogging={isLogging}
@@ -160,7 +161,7 @@ const AppLogin = () => {
             />
           )}
         </Layout>
-      }
+      )}
     </Login>
   )
 }
@@ -169,31 +170,33 @@ const AppLogged = () => {
   const {apiSdk, connectedUser} = useLogin()
   const {m} = useI18n()
   return (
-    <Provide providers={[
-      _ => <ReportsProvider api={apiSdk} children={_}/>,
-      _ => <ReportProvider api={apiSdk} children={_}/>,
-      _ => <ConstantProvider api={apiSdk} children={_}/>,
-      _ => <AnomalyProvider api={apiSdk} children={_}/>,
-      _ => <ReportedPhonesProvider api={apiSdk} children={_}/>,
-      _ => <AsyncFileProvider api={apiSdk} children={_}/>,
-      _ => <CompaniesProvider api={apiSdk} children={_}/>,
-      _ => <UsersProvider api={apiSdk} children={_}/>,
-      _ => <ReportedWebsitesProvider api={apiSdk} children={_}/>,
-      _ => <UnregistredWebsitesProvider api={apiSdk} children={_}/>,
-      _ => <SubscriptionsProvider api={apiSdk} children={_}/>,
-    ]}>
+    <Provide
+      providers={[
+        _ => <ReportsProvider api={apiSdk} children={_} />,
+        _ => <ReportProvider api={apiSdk} children={_} />,
+        _ => <ConstantProvider api={apiSdk} children={_} />,
+        _ => <AnomalyProvider api={apiSdk} children={_} />,
+        _ => <ReportedPhonesProvider api={apiSdk} children={_} />,
+        _ => <AsyncFileProvider api={apiSdk} children={_} />,
+        _ => <CompaniesProvider api={apiSdk} children={_} />,
+        _ => <UsersProvider api={apiSdk} children={_} />,
+        _ => <ReportedWebsitesProvider api={apiSdk} children={_} />,
+        _ => <UnregistredWebsitesProvider api={apiSdk} children={_} />,
+        _ => <SubscriptionsProvider api={apiSdk} children={_} />,
+      ]}
+    >
       <Switch>
-        <Route path={siteMap.reportedWebsites} component={ReportedWebsites}/>
-        <Route path={siteMap.reportedPhone} component={ReportedPhones}/>
-        <Route path={siteMap.report()} component={connectedUser.isPro ? ReportPro : ReportComponent}/>
-        <Route path={siteMap.reports()} component={connectedUser.isPro ? ReportsPro : Reports}/>
-        <Route path={siteMap.users} component={Users}/>
-        <Route path={siteMap.companies} component={Companies}/>
-        <Route path={siteMap.companyAccesses()} component={CompanyAccesses}/>
-        <Route path={siteMap.subscriptions} component={Subscriptions}/>
-        <Route path={siteMap.companiesPro} component={CompaniesPro}/>
-        <Route path={siteMap.settings} component={Settings}/>
-        <Redirect exact from="/" to={siteMap.reports()}/>
+        <Route path={siteMap.reportedWebsites} component={ReportedWebsites} />
+        <Route path={siteMap.reportedPhone} component={ReportedPhones} />
+        <Route path={siteMap.report()} component={connectedUser.isPro ? ReportPro : ReportComponent} />
+        <Route path={siteMap.reports()} component={connectedUser.isPro ? ReportsPro : Reports} />
+        <Route path={siteMap.users} component={Users} />
+        <Route path={siteMap.companies} component={Companies} />
+        <Route path={siteMap.companyAccesses()} component={CompanyAccesses} />
+        <Route path={siteMap.subscriptions} component={Subscriptions} />
+        <Route path={siteMap.companiesPro} component={CompaniesPro} />
+        <Route path={siteMap.settings} component={Settings} />
+        <Redirect exact from="/" to={siteMap.reports()} />
       </Switch>
     </Provide>
   )
