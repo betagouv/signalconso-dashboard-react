@@ -166,7 +166,7 @@ export const ReportComponent = () => {
                   <Icon className={css.cardBody_icon}>store</Icon>
                 </PanelBody>
                 <PanelFoot>
-                  <SelectCompany companyId={report.companyId} onChange={company => {
+                  <SelectCompany siret={report.companySiret} onChange={company => {
                     _report.updateCompany.fetch({}, report.id, company)
                   }}>
                     <ScButton icon="edit" color="primary" loading={_report.updateCompany.loading}>{m.edit}</ScButton>

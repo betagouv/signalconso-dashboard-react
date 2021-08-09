@@ -35,8 +35,10 @@ import {LoginProvider, useLogin} from './core/context/LoginContext'
 import {LoginLoader} from './core/Login/LoginLoader'
 import {useFetcher} from '@alexandreannic/react-hooks-lib/lib'
 import {ReportsPro} from './feature/ReportsPro/ReportsPro'
+import {ReportedWebsitesProvider} from "./core/context/ReportedWebsitesContext";
 import {CompanyAccesses} from './feature/CompanyAccesses/CompanyAccesses'
 import {useHistory} from 'react-router'
+import {UnregistredWebsitesProvider} from "./core/context/UnregistredWebsitesContext";
 import {CompaniesPro} from './feature/CompaniesPro/CompaniesPro'
 import {ReportPro} from './feature/Report/ReportPro'
 
@@ -176,6 +178,8 @@ const AppLogged = () => {
       _ => <AsyncFileProvider api={apiSdk} children={_}/>,
       _ => <CompaniesProvider api={apiSdk} children={_}/>,
       _ => <UsersProvider api={apiSdk} children={_}/>,
+      _ => <ReportedWebsitesProvider api={apiSdk} children={_}/>,
+      _ => <UnregistredWebsitesProvider api={apiSdk} children={_}/>,
       _ => <SubscriptionsProvider api={apiSdk} children={_}/>,
     ]}>
       <Switch>

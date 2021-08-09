@@ -12,6 +12,7 @@ import {useInterval} from 'mui-extension/lib/core/utils/useInterval'
 import {Fetch} from '@alexandreannic/react-hooks-lib/lib'
 import {useReportsContext} from '../../core/context/ReportsContext'
 import {User} from '../../core/api'
+import {useUnregistredWebsiteWithCompanyContext} from "../../core/context/UnregistredWebsitesContext";
 
 interface Props {
   className?: string
@@ -200,14 +201,27 @@ export const ExportPhonesPopper = (props: ExportReportProps) => {
 }
 
 export const ExportReportsPopper = (props: ExportReportProps) => {
-  const _asyncFile = useAsyncFileContext()
-  const _reports = useReportsContext()
-  return <ExportPopperBtn
-    {...props}
-    loading={_asyncFile.loading}
-    fileType={AsyncFileKind.Reports}
-    onNewExport={_reports.extract}
-    fetch={_asyncFile.fetch}
-    files={_asyncFile.entity}
-  />
+    const _asyncFile = useAsyncFileContext()
+    const _reports = useReportsContext()
+    return <ExportPopperBtn
+        {...props}
+        loading={_asyncFile.loading}
+        fileType={AsyncFileKind.Reports}
+        onNewExport={_reports.extract}
+        fetch={_asyncFile.fetch}
+        files={_asyncFile.entity}
+    />
+}
+
+export const ExportUnknownWebsitesPopper = (props: ExportReportProps) => {
+    const _asyncFile = useAsyncFileContext()
+    const _extract = useUnregistredWebsiteWithCompanyContext()
+    return <ExportPopperBtn
+        {...props}
+        loading={_asyncFile.loading}
+        fileType={AsyncFileKind.ReportedWebsites}
+        onNewExport={_extract.extractUnregistered.fetch}
+        fetch={_asyncFile.fetch}
+        files={_asyncFile.entity}
+    />
 }
