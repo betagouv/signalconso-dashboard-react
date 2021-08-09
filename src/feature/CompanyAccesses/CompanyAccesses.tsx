@@ -18,7 +18,7 @@ import {CompanyAccessCreateBtn} from './CompanyAccessCreateBtn'
 import {useToast} from '../../core/toast'
 import {SaveUndeliveredDocBtn} from './SaveUndeliveredDocBtn'
 import {useCompaniesContext} from '../../core/context/CompaniesContext'
-import {Enum} from '../../core/helper/enum'
+import {Enum} from '@alexandreannic/ts-utils/lib/enum/Enum'
 
 interface Accesses {
   name?: string

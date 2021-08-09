@@ -9,7 +9,7 @@ import {regexp} from '../../core/helper/regexp'
 import {ScSelect} from '../../shared/Select/Select'
 import {MenuItem} from '@material-ui/core'
 import {useToast} from '../../core/toast'
-import {Enum} from '../../core/helper/enum'
+import {Enum} from '@alexandreannic/ts-utils/lib/enum/Enum'
 
 interface Props {
   errorMessage?: string
