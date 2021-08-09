@@ -30,7 +30,7 @@ const useStyles = makeStyles((t: Theme) => ({
   }
 }))
 
-export const ReportMessages = ({canEditFile, response, reportId, files}: Props) => {
+export const ReportResponse = ({canEditFile, response, reportId, files}: Props) => {
   const {m} = useI18n()
   const cssUtils = useCssUtils()
   const css = useStyles()

@@ -6,14 +6,14 @@ import {fromNullable} from 'fp-ts/lib/Option'
 import {useReportContext} from '../../core/context/ReportContext'
 import {useToast} from '../../core/toast'
 import {Page} from '../../shared/Layout'
-import {ReportHeader} from '../Report/ReportHeader'
-import {ReportEvents} from '../Report/Event/ReportEvents'
-import {creationReportEvent} from '../Report/Report'
+import {ReportHeader} from './ReportHeader'
+import {ReportEvents} from './Event/ReportEvents'
+import {creationReportEvent} from './Report'
 import {Panel, PanelHead} from '../../shared/Panel'
-import {ReportResponsePro} from '../ReportAnswerPro/ReportResponsePro'
+import {ReportResponseForm} from './ReportResponseForm/ReportResponseForm'
 import {useBoolean} from '@alexandreannic/react-hooks-lib/lib'
 import {Collapse, makeStyles, Theme} from '@material-ui/core'
-import {ReportMessages} from '../Report/ReportMessages'
+import {ReportResponse} from './ReportResponse'
 import {ScButton} from '../../shared/Button/Button'
 import {utilsStyles} from '../../core/theme'
 import {capitalize} from '../../core/helper/utils'
@@ -93,7 +93,7 @@ export const ReportPro = () => {
               }>
                 {m.proAnswerYourAnswer}
               </PanelHead>
-              <ReportMessages
+              <ReportResponse
                 canEditFile={false}
                 response={response}
                 reportId={report.id}
@@ -101,7 +101,7 @@ export const ReportPro = () => {
             </Panel>
           </Collapse>
           <Collapse in={!response && openAnswerPanel.value}>
-            <ReportResponsePro
+            <ReportResponseForm
               report={report}
               onConfirm={() => {
                 openAnswerPanel.setFalse()

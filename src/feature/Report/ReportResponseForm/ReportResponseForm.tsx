@@ -1,21 +1,21 @@
 import React, {useEffect} from 'react'
-import {useI18n} from '../../core/i18n'
-import {ScRadioGroup} from '../../shared/RadioGroup/RadioGroup'
-import {FileOrigin, Report, ReportEvent, ReportResponse, ReportResponseTypes} from '../../core/api'
-import {ScRadioGroupItem} from '../../shared/RadioGroup/RadioGroupItem'
-import {Enum} from '../../core/helper/enum'
+import {useI18n} from '../../../core/i18n'
+import {ScRadioGroup} from '../../../shared/RadioGroup/RadioGroup'
+import {FileOrigin, Report, ReportEvent, ReportResponse, ReportResponseTypes} from '../../../core/api'
+import {ScRadioGroupItem} from '../../../shared/RadioGroup/RadioGroupItem'
+import {Enum} from '../../../core/helper/enum'
 import {Alert} from 'mui-extension/lib'
-import {ScInput} from '../../shared/Input/ScInput'
-import {useCssUtils} from '../../core/helper/useCssUtils'
-import {ReportAnswerProItem} from './ReportAnswerProItem'
-import {Panel, PanelBody, PanelHead} from '../../shared/Panel'
-import {PanelFoot} from '../../shared/Panel/PanelFoot'
-import {ScButton} from '../../shared/Button/Button'
-import {ReportFiles} from '../Report/File/ReportFiles'
+import {ScInput} from '../../../shared/Input/ScInput'
+import {useCssUtils} from '../../../core/helper/useCssUtils'
+import {ReportResponseFormItem} from './ReportResponseFormItem'
+import {Panel, PanelBody, PanelHead} from '../../../shared/Panel'
+import {PanelFoot} from '../../../shared/Panel/PanelFoot'
+import {ScButton} from '../../../shared/Button/Button'
+import {ReportFiles} from '../File/ReportFiles'
 import {Controller, useForm} from 'react-hook-form'
-import {useReportContext} from '../../core/context/ReportContext'
+import {useReportContext} from '../../../core/context/ReportContext'
 import {fromNullable} from 'fp-ts/lib/Option'
-import {useToast} from '../../core/toast'
+import {useToast} from '../../../core/toast'
 
 interface Props {
   report: Report
@@ -24,7 +24,7 @@ interface Props {
   onConfirm?: (_: ReportResponse) => void
 }
 
-export const ReportResponsePro = ({
+export const ReportResponseForm = ({
   report,
   className,
   onCancel,
@@ -55,7 +55,7 @@ export const ReportResponsePro = ({
           {m.proAnswerVisibleByDGCCRF}
         </Alert>
 
-        <ReportAnswerProItem title={m.proAnswerResponseType}>
+        <ReportResponseFormItem title={m.proAnswerResponseType}>
           <Controller name="responseType" rules={{required: {value: true, message: m.required}}} control={control} render={({field}) =>
             <ScRadioGroup error={!!errors.responseType} dense className={cssUtils.marginBottom2} {...field}>
               {Enum.values(ReportResponseTypes).map(responseType =>
@@ -65,9 +65,9 @@ export const ReportResponsePro = ({
               )}
             </ScRadioGroup>
           }/>
-        </ReportAnswerProItem>
+        </ReportResponseFormItem>
 
-        <ReportAnswerProItem title={m.proAnswerYourAnswer} desc={m.proAnswerYourAnswerDesc}>
+        <ReportResponseFormItem title={m.proAnswerYourAnswer} desc={m.proAnswerYourAnswerDesc}>
           <ScInput
             {...register('consumerDetails', {
               required: {value: true, message: m.required},
@@ -80,9 +80,9 @@ export const ReportResponsePro = ({
             placeholder={m.text + '...'}
             maxRows={8}
           />
-        </ReportAnswerProItem>
+        </ReportResponseFormItem>
 
-        <ReportAnswerProItem title={m.proAnswerYourDGCCRFAnswer} desc={m.proAnswerYourDGCCRFAnswerDesc}>
+        <ReportResponseFormItem title={m.proAnswerYourDGCCRFAnswer} desc={m.proAnswerYourDGCCRFAnswerDesc}>
           <ScInput
             {...register('dgccrfDetails', {
               required: {value: true, message: m.required},
@@ -95,8 +95,8 @@ export const ReportResponsePro = ({
             placeholder={m.text + '...'}
             maxRows={8}
           />
-        </ReportAnswerProItem>
-        <ReportAnswerProItem title={m.attachedFiles} desc={m.onlyVisibleByDGCCRF}>
+        </ReportResponseFormItem>
+        <ReportResponseFormItem title={m.attachedFiles} desc={m.onlyVisibleByDGCCRF}>
           <Controller name="fileIds" control={control} render={({field}) =>
             <ReportFiles
               reportId={report.id}
@@ -104,7 +104,7 @@ export const ReportResponsePro = ({
               onNewFile={file => field.onChange([...(field.value ?? []), file.id])}
             />
           }/>
-        </ReportAnswerProItem>
+        </ReportResponseFormItem>
       </PanelBody>
       <PanelFoot alignEnd>
         <ScButton onClick={onCancel} color="primary">{m.close}</ScButton>

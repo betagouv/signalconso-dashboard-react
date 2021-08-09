@@ -13,7 +13,7 @@ import {PanelFoot} from '../../shared/Panel/PanelFoot'
 import {fromNullable} from 'fp-ts/lib/Option'
 import {useToast} from '../../core/toast'
 import {ReportEvents} from './Event/ReportEvents'
-import {ReportMessages} from './ReportMessages'
+import {ReportResponse} from './ReportResponse'
 import {AddressComponent} from '../../shared/Address/Address'
 import {SelectCompany} from '../../shared/SelectCompany/SelectCompany'
 import {EditConsumerDialog} from './EditConsumerDialog'
@@ -190,7 +190,7 @@ export const ReportComponent = () => {
                   <Tab label={m.companyHistory}/>
                 </Tabs>
                 <ReportTabPanel value={activeTab} index={0}>
-                  <ReportMessages
+                  <ReportResponse
                     canEditFile
                     reportId={report.id}
                     response={response}

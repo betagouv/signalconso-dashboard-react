@@ -38,7 +38,7 @@ import {ReportsPro} from './feature/ReportsPro/ReportsPro'
 import {CompanyAccesses} from './feature/CompanyAccesses/CompanyAccesses'
 import {useHistory} from 'react-router'
 import {CompaniesPro} from './feature/CompaniesPro/CompaniesPro'
-import {ReportPro} from './feature/ReportPro/ReportPro'
+import {ReportPro} from './feature/Report/ReportPro'
 
 const headers = {
   'Content-Type': 'application/json',
