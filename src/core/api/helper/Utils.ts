@@ -8,13 +8,21 @@ export const getHostFromUrl = (url?: string) => {
   return url?.replace('http://', '').replace('https://', '').replace('www.', '').split(/[/?#]/)[0]
 }
 
-export const cleanObject = <T extends object>(obj: T): Partial<T> => {
-  return Object.entries(obj)
-    .filter(
-      ([, _]) =>
-        _ !== undefined && _ !== null && _ !== '' && (!Array.isArray(_) || !!_.filter(v => v !== undefined || v === '').length),
-    )
-    .reduce((acc, [key, value]) => ({...acc, [key]: value}), {})
+export const isNotDefined = (value: any): value is (undefined | null | '') => {
+  return [undefined, null, ''].includes(value)
+}
+
+export const isDefined = <T>(value: T | undefined | null | ''): value is T => !isNotDefined(value)
+
+export const cleanObject = <T extends {[key: string]: any}>(obj: T): Partial<T> => {
+  const clone = {...obj}
+  for (let k in clone) {
+    const val = clone[k]
+    if (isNotDefined(val) || Array.isArray(val) && val.filter(isDefined)) {
+      delete clone[k]
+    }
+  }
+  return clone
 }
 
 export const toQueryString = (obj: any): string => {

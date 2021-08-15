@@ -1,17 +1,4 @@
-import {
-  Chip,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  FormControlLabel,
-  makeStyles,
-  MenuItem,
-  Radio,
-  RadioGroup,
-  TextField,
-  Theme,
-} from '@material-ui/core'
+import {Chip, Dialog, DialogActions, DialogContent, DialogTitle, FormControlLabel, makeStyles, MenuItem, Radio, RadioGroup, Theme} from '@material-ui/core'
 import {useI18n} from '../../core/i18n'
 import React, {ReactElement, ReactNode, useEffect, useState} from 'react'
 import {ReportSearch, ReportTag} from 'core/api'
@@ -172,10 +159,22 @@ export const ReportFilters = ({filters, updateFilters, children}: ReportsFilters
                   defaultValue={filters.hasCompany}
                   control={control}
                   render={({field}) => (
-                    <RadioGroup style={{flexDirection: 'row'}} {...field}>
-                      <FormControlLabel control={<Radio />} label={m.yes} value="true" />
-                      <FormControlLabel control={<Radio />} label={m.no} value="false" />
-                      <FormControlLabel control={<Radio />} label={m.indifferent} value="" />
+                    <RadioGroup
+                      {...field}
+                      style={{flexDirection: 'row'}}
+                      value={(() => {
+                        if ([true, 'true'].includes(field.value as any)) return 'true'
+                        if ([false, 'false'].includes(field.value as any)) return 'false'
+                        return ''
+                      })()}
+                      onChange={e => {
+                        const valueAsBoolean = ({'true': true, 'false': false})[e.target.value]
+                        field.onChange(valueAsBoolean)
+                      }}
+                    >
+                      <FormControlLabel control={<Radio/>} label={m.yes} value="true"/>
+                      <FormControlLabel control={<Radio/>} label={m.no} value="false"/>
+                      <FormControlLabel control={<Radio/>} label={m.indifferent} value=""/>
                     </RadioGroup>
                   )}
                 />

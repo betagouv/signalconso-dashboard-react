@@ -155,7 +155,7 @@ export const Reports = ({}) => {
                 }}
               />
               <Tooltip title={m.removeAllFilters}>
-                <Badge color="error" badgeContent={filtersCount} hidden={filtersCount === 0} overlap="circle">
+                <Badge color="error" badgeContent={filtersCount} hidden={filtersCount === 0} overlap="circular">
                   <Button color="primary" onClick={_reports.clearFilters}
                           className={classes(css.clearIcons, filtersCount && css.clearIconWithFilters)}>
                     <Icon>clear</Icon>

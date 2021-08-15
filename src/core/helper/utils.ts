@@ -1,7 +1,6 @@
 import classNames from 'classnames'
 import {fromNullable} from 'fp-ts/lib/Option'
 import {OrderBy, Paginate} from '@alexandreannic/react-hooks-lib/lib'
-import {ReportResponseTypes} from '../api'
 
 export const isJsonValid = (json: string): boolean => {
   try {
@@ -86,11 +85,9 @@ export const sortData =
     return data.sort((a, b) => ('' + a[sortBy]).localeCompare('' + b[sortBy]) * (orderBy === 'desc' ? -1 : 1))
   }
 
-export const sortPaginatedData =
-  <T>(sortBy: keyof T, orderBy: OrderBy) =>
-  (p: Paginate<T>): Paginate<T> => {
-    return {
-      data: sortData(sortBy, orderBy)(p.data),
-      totalSize: p.totalSize,
-    }
+export const sortPaginatedData = <T>(sortBy: keyof T, orderBy: OrderBy) => (p: Paginate<T>): Paginate<T> => {
+  return {
+    data: sortData(sortBy, orderBy)(p.data),
+    totalSize: p.totalSize,
   }
+}
