@@ -10,12 +10,12 @@ interface ScSelectProps extends SelectProps {
   small?: boolean
 }
 
-export const ScSelect = React.forwardRef(({label, className, style, small, fullWidth, ...selectProps}: ScSelectProps, ref) => {
-  const id = useMemo(() => 'sc-select-' + Math.floor(Math.random() * 10000), [])
+export const ScSelect = React.forwardRef(({id: argId, label, className, style, small, fullWidth, ...selectProps}: ScSelectProps, ref) => {
+  const id: string = useMemo(() => argId ?? 'sc-select-' + Math.floor(Math.random() * 10000), [argId])
   return (
     <FormControl fullWidth={fullWidth} size="small" margin="dense" variant="outlined" className={className} style={style}>
-      <InputLabel id={id}>{label}</InputLabel>
-      <Select {...selectProps} inputRef={ref} labelId={id} />
+      <InputLabel htmlFor={id} id={id + '-label'}>{label}</InputLabel>
+      <Select {...selectProps} inputRef={ref} labelId={id + '-label'} id={id} />
     </FormControl>
   )
 })
