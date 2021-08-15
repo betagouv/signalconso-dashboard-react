@@ -83,7 +83,7 @@ export const ReportFilters = ({filters, updateFilters, children}: ReportsFilters
           setOpen(true)
         },
       })}
-      <Dialog open={open ?? false} onClose={close} aria-labelledby="form-dialog-title">
+      <Dialog open={open ?? false} onClose={close}>
         <DialogTitle>{m.search}</DialogTitle>
         {_reportStatus.entity && _category.entity && (
           <>
