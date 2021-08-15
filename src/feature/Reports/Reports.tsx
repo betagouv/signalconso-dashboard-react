@@ -1,29 +1,15 @@
 import {Page, PageTitle} from '../../shared/Layout'
 import {useI18n} from '../../core/i18n'
 import {useReportsContext} from '../../core/context/ReportsContext'
-import {
-  cleanObject,
-  DetailInputValue,
-  getHostFromUrl,
-  Report,
-  ReportingDateLabel,
-  ReportSearch,
-  ReportSearchResult,
-  ReportTag,
-} from 'core/api'
+import {cleanObject, DetailInputValue, getHostFromUrl, Report, ReportingDateLabel, ReportSearch, ReportSearchResult, ReportTag} from 'core/api'
 import {Panel} from '../../shared/Panel'
 import {useCssUtils} from '../../core/helper/useCssUtils'
 import {Datatable} from '../../shared/Datatable/Datatable'
 import {fromNullable, some} from 'fp-ts/lib/Option'
-import {Badge, Icon, makeStyles, Theme, Tooltip} from '@material-ui/core'
+import {alpha, Badge, Button, Icon, makeStyles, Theme, Tooltip} from '@material-ui/core'
 import {classes, textOverflowMiddleCropping} from '../../core/helper/utils'
-import React, {useEffect} from 'react'
-import {
-  mapArrayFromQuerystring,
-  mapDateFromQueryString,
-  mapDatesToQueryString,
-  useQueryString,
-} from '../../core/helper/useQueryString'
+import React, {useEffect, useMemo} from 'react'
+import {mapArrayFromQuerystring, mapDateFromQueryString, mapDatesToQueryString, useQueryString} from '../../core/helper/useQueryString'
 import {NavLink} from 'react-router-dom'
 import {SelectDepartments} from '../../shared/SelectDepartments/SelectDepartments'
 import {Fender, IconBtn} from 'mui-extension/lib'
@@ -83,6 +69,13 @@ const useStyles = makeStyles((t: Theme) => ({
     margin: 0,
     padding: 16,
   },
+  clearIcons: {
+    minWidth: 'auto',
+  },
+  clearIconWithFilters: {
+    border: '1px solid ' + t.palette.divider,
+    background: alpha(t.palette.primary.main, 0.12),
+  }
 }))
 
 interface ReportSearchQs {
@@ -134,6 +127,11 @@ export const Reports = ({}) => {
   const getReportingDate = (report: Report) =>
     report.details.filter(_ => _.label.indexOf(ReportingDateLabel) !== -1).map(_ => _.value)
 
+  const filtersCount = useMemo(() => {
+    const {offset, limit, ...filters} = _reports.filters
+    return Object.keys(cleanObject(filters)).length
+  }, [_reports.filters])
+
   return (
     <Page size="large">
       <PageTitle>{m.reports_pageTitle}</PageTitle>
@@ -149,12 +147,21 @@ export const Reports = ({}) => {
                 onChange={departments => _reports.updateFilters(prev => ({...prev, departments}))}
               />
               <PeriodPicker
+                className={cssUtils.marginRight}
                 fullWidth
                 value={[_reports.filters.start, _reports.filters.end]}
                 onChange={([start, end]) => {
                   _reports.updateFilters(prev => ({...prev, start: start ?? prev.start, end: end ?? prev.end}))
                 }}
               />
+              <Tooltip title={m.removeAllFilters}>
+                <Badge color="error" badgeContent={filtersCount} hidden={filtersCount === 0} overlap="circle">
+                  <Button color="primary" onClick={_reports.clearFilters}
+                          className={classes(css.clearIcons, filtersCount && css.clearIconWithFilters)}>
+                    <Icon>clear</Icon>
+                  </Button>
+                </Badge>
+              </Tooltip>
               <ExportReportsPopper
                 disabled={fromNullable(_reports?.list?.totalSize)
                   .map(_ => _ > Config.reportsLimitForExport)
@@ -167,11 +174,6 @@ export const Reports = ({}) => {
                   <Icon>file_download</Icon>
                 </IconBtn>
               </ExportReportsPopper>
-              <Tooltip title={m.removeAllFilters}>
-                <IconBtn color="primary" onClick={_reports.clearFilters}>
-                  <Icon>clear</Icon>
-                </IconBtn>
-              </Tooltip>
               <ReportFilters filters={_reports.filters} updateFilters={_ => _reports.updateFilters(prev => ({...prev, ..._}))}>
                 <Tooltip title={m.advancedFilters}>
                   <IconBtn color="primary">

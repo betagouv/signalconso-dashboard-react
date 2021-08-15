@@ -43,7 +43,7 @@ export const PeriodPicker = ({value, onChange, label, fullWidth, className, styl
   useEffect(() => {
     if (value) {
       if (value[0]?.getTime() !== start?.getTime()) setStart(value[0])
-      if (value[1]?.getTime() !== end?.getTime()) setStart(value[1])
+      if (value[1]?.getTime() !== end?.getTime()) setEnd(value[1])
     }
   }, [value])
 
