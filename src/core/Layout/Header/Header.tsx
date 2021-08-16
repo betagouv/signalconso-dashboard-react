@@ -2,6 +2,7 @@ import {makeStyles} from '@material-ui/core/styles'
 import {Icon, Menu, MenuItem, Slide, Theme} from '@material-ui/core'
 import logoGouvMobile from './gouv-mobile.svg'
 import logoSignalConso from './signalconso.svg'
+import logoDgccrf from './logo-dgccrf.png'
 import {useI18n} from '../../i18n'
 import {Btn, IconBtn} from 'mui-extension/lib'
 import {Config} from '../../../conf/config'
@@ -64,6 +65,7 @@ export const Header = ({connectedUser}: Props) => {
       <div className={css.root}>
         <div className={css.logo}>
           <img src={logoGouvMobile} alt={m.altLogoGouv} className={css.logoGouvMobile} />
+          <img src={logoDgccrf} alt={m.altLogoDGCCRF} className={css.logoGouvMobile} />
           <a href={Config.appBaseUrl}>
             <img src={logoSignalConso} alt={m.altLogoSignalConso} className={css.logoSignalConsoMobile} />
           </a>
