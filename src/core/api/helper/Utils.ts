@@ -8,17 +8,17 @@ export const getHostFromUrl = (url?: string) => {
   return url?.replace('http://', '').replace('https://', '').replace('www.', '').split(/[/?#]/)[0]
 }
 
-export const isNotDefined = (value: any): value is (undefined | null | '') => {
+export const isNotDefined = (value: any): value is undefined | null | '' => {
   return [undefined, null, ''].includes(value)
 }
 
-export const isDefined = <T>(value: T | undefined | null | ''): value is T => !isNotDefined(value)
+export const isDefined = <T>(value: T | undefined | null | ''): value is T => !isNotDefined(value)
 
 export const cleanObject = <T extends {[key: string]: any}>(obj: T): Partial<T> => {
   const clone = {...obj}
   for (let k in clone) {
     const val = clone[k]
-    if (isNotDefined(val) || Array.isArray(val) && val.filter(isDefined)) {
+    if (isNotDefined(val) || (Array.isArray(val) && val.filter(isDefined))) {
       delete clone[k]
     }
   }

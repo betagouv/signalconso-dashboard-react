@@ -20,7 +20,12 @@ import {classes} from '../../core/helper/utils'
 import {Btn, Fender} from 'mui-extension/lib'
 import {EntityIcon} from '../../core/EntityIcon'
 import {ScButton} from '../../shared/Button/Button'
-import {mapArrayFromQuerystring, mapDateFromQueryString, mapDatesToQueryString, useQueryString} from '../../core/helper/useQueryString'
+import {
+  mapArrayFromQuerystring,
+  mapDateFromQueryString,
+  mapDatesToQueryString,
+  useQueryString,
+} from '../../core/helper/useQueryString'
 import {fromNullable} from 'fp-ts/lib/Option'
 import {useToast} from '../../core/toast'
 import {Config} from '../../conf/config'
@@ -202,7 +207,7 @@ export const ReportsPro = () => {
                 />
                 <div className={css.actions}>
                   <Badge color="error" badgeContent={filtersCount} hidden={filtersCount === 0}>
-                    <ScButton  icon="clear" onClick={_reports.clearFilters} variant="outlined" color="primary">
+                    <ScButton icon="clear" onClick={_reports.clearFilters} variant="outlined" color="primary">
                       {m.removeAllFilters}
                     </ScButton>
                   </Badge>
@@ -214,7 +219,7 @@ export const ReportsPro = () => {
                       .map(_ => (_ > Config.reportsLimitForExport ? m.cannotExportMoreReports(Config.reportsLimitForExport) : ''))
                       .getOrElse('')}
                   >
-                    <Btn  variant="outlined" color="primary" icon="get_app">
+                    <Btn variant="outlined" color="primary" icon="get_app">
                       {m.exportInXLS}
                     </Btn>
                   </ExportReportsPopper>

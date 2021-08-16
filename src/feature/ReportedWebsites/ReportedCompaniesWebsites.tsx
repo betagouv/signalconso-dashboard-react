@@ -75,15 +75,10 @@ export const ReportedCompaniesWebsites = () => {
             </DebouncedInput>
             <DebouncedInput
               value={_fetch.filters.kinds}
-              onChange={(kinds: WebsiteKind[]) => _fetch.updateFilters(prev => ({...prev, kinds,}))}
+              onChange={(kinds: WebsiteKind[]) => _fetch.updateFilters(prev => ({...prev, kinds}))}
             >
               {(value, onChange) => (
-                <ScSelect
-                  value={value}
-                  onChange={(e: any) => onChange(e.target.value)}
-                  multiple
-                  fullWidth
-                >
+                <ScSelect value={value} onChange={(e: any) => onChange(e.target.value)} multiple fullWidth>
                   {[WebsiteKind.PENDING, WebsiteKind.DEFAULT].map(kind => (
                     <MenuItem key={kind} value={kind}>
                       {kind === WebsiteKind.PENDING ? m.notValidated : m.validated}

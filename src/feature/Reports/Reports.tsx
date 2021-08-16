@@ -1,7 +1,16 @@
 import {Page, PageTitle} from '../../shared/Layout'
 import {useI18n} from '../../core/i18n'
 import {useReportsContext} from '../../core/context/ReportsContext'
-import {cleanObject, DetailInputValue, getHostFromUrl, Report, ReportingDateLabel, ReportSearch, ReportSearchResult, ReportTag} from 'core/api'
+import {
+  cleanObject,
+  DetailInputValue,
+  getHostFromUrl,
+  Report,
+  ReportingDateLabel,
+  ReportSearch,
+  ReportSearchResult,
+  ReportTag,
+} from 'core/api'
 import {Panel} from '../../shared/Panel'
 import {useCssUtils} from '../../core/helper/useCssUtils'
 import {Datatable} from '../../shared/Datatable/Datatable'
@@ -9,7 +18,12 @@ import {fromNullable, some} from 'fp-ts/lib/Option'
 import {alpha, Badge, Button, Icon, makeStyles, Theme, Tooltip} from '@material-ui/core'
 import {classes, textOverflowMiddleCropping} from '../../core/helper/utils'
 import React, {useEffect, useMemo} from 'react'
-import {mapArrayFromQuerystring, mapDateFromQueryString, mapDatesToQueryString, useQueryString} from '../../core/helper/useQueryString'
+import {
+  mapArrayFromQuerystring,
+  mapDateFromQueryString,
+  mapDatesToQueryString,
+  useQueryString,
+} from '../../core/helper/useQueryString'
 import {NavLink} from 'react-router-dom'
 import {SelectDepartments} from '../../shared/SelectDepartments/SelectDepartments'
 import {Fender, IconBtn} from 'mui-extension/lib'
@@ -76,7 +90,7 @@ const useStyles = makeStyles((t: Theme) => ({
   clearIconWithFilters: {
     border: '1px solid ' + t.palette.divider,
     background: alpha(t.palette.primary.main, 0.12),
-  }
+  },
 }))
 
 interface ReportSearchQs {
@@ -146,12 +160,7 @@ export const Reports = ({}) => {
                 onChange={departments => _reports.updateFilters(prev => ({...prev, departments}))}
               >
                 {(value, onChange) => (
-                  <SelectDepartments
-                    values={value}
-                    onChange={onChange}
-                    className={cssUtils.marginRight}
-                    fullWidth
-                  />
+                  <SelectDepartments values={value} onChange={onChange} className={cssUtils.marginRight} fullWidth />
                 )}
               </DebouncedInput>
               <DebouncedInput<[Date | undefined, Date | undefined]>
@@ -161,18 +170,16 @@ export const Reports = ({}) => {
                 }}
               >
                 {(value, onChange) => (
-                  <PeriodPicker
-                    value={value}
-                    onChange={onChange}
-                    className={cssUtils.marginRight}
-                    fullWidth
-                  />
+                  <PeriodPicker value={value} onChange={onChange} className={cssUtils.marginRight} fullWidth />
                 )}
               </DebouncedInput>
               <Tooltip title={m.removeAllFilters}>
                 <Badge color="error" badgeContent={filtersCount} hidden={filtersCount === 0} overlap="circular">
-                  <Button color="primary" onClick={_reports.clearFilters}
-                          className={classes(css.clearIcons, filtersCount && css.clearIconWithFilters)}>
+                  <Button
+                    color="primary"
+                    onClick={_reports.clearFilters}
+                    className={classes(css.clearIcons, filtersCount && css.clearIconWithFilters)}
+                  >
                     <Icon>clear</Icon>
                   </Button>
                 </Badge>

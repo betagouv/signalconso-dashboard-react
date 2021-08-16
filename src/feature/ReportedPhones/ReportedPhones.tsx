@@ -59,13 +59,7 @@ export const ReportedPhones = () => {
                   _reportedPhone.updateFilters(prev => ({...prev, start: start ?? prev.start, end: end ?? prev.end}))
                 }
               >
-                {(value, onChange) => (
-                  <PeriodPicker
-                    value={value ?? [undefined, undefined]}
-                    onChange={onChange}
-                    fullWidth
-                  />
-                )}
+                {(value, onChange) => <PeriodPicker value={value ?? [undefined, undefined]} onChange={onChange} fullWidth />}
               </DebouncedInput>
               <ExportPhonesPopper>
                 <IconBtn color="primary">

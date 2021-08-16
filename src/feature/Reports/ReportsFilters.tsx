@@ -1,4 +1,16 @@
-import {Chip, Dialog, DialogActions, DialogContent, DialogTitle, FormControlLabel, makeStyles, MenuItem, Radio, RadioGroup, Theme} from '@material-ui/core'
+import {
+  Chip,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  FormControlLabel,
+  makeStyles,
+  MenuItem,
+  Radio,
+  RadioGroup,
+  Theme,
+} from '@material-ui/core'
 import {useI18n} from '../../core/i18n'
 import React, {ReactElement, ReactNode, useEffect, useState} from 'react'
 import {ReportSearch, ReportTag} from 'core/api'
@@ -168,13 +180,13 @@ export const ReportFilters = ({filters, updateFilters, children}: ReportsFilters
                         return ''
                       })()}
                       onChange={e => {
-                        const valueAsBoolean = ({'true': true, 'false': false})[e.target.value]
+                        const valueAsBoolean = {true: true, false: false}[e.target.value]
                         field.onChange(valueAsBoolean)
                       }}
                     >
-                      <FormControlLabel control={<Radio/>} label={m.yes} value="true"/>
-                      <FormControlLabel control={<Radio/>} label={m.no} value="false"/>
-                      <FormControlLabel control={<Radio/>} label={m.indifferent} value=""/>
+                      <FormControlLabel control={<Radio />} label={m.yes} value="true" />
+                      <FormControlLabel control={<Radio />} label={m.no} value="false" />
+                      <FormControlLabel control={<Radio />} label={m.indifferent} value="" />
                     </RadioGroup>
                   )}
                 />

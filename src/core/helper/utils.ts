@@ -85,9 +85,11 @@ export const sortData =
     return data.sort((a, b) => ('' + a[sortBy]).localeCompare('' + b[sortBy]) * (orderBy === 'desc' ? -1 : 1))
   }
 
-export const sortPaginatedData = <T>(sortBy: keyof T, orderBy: OrderBy) => (p: Paginate<T>): Paginate<T> => {
-  return {
-    data: sortData(sortBy, orderBy)(p.data),
-    totalSize: p.totalSize,
+export const sortPaginatedData =
+  <T>(sortBy: keyof T, orderBy: OrderBy) =>
+  (p: Paginate<T>): Paginate<T> => {
+    return {
+      data: sortData(sortBy, orderBy)(p.data),
+      totalSize: p.totalSize,
+    }
   }
-}
