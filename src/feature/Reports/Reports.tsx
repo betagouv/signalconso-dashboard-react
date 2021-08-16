@@ -24,6 +24,7 @@ import {ScButton} from '../../shared/Button/Button'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
 import {PeriodPicker} from '../../shared/PeriodPicker/PeriodPicker'
 import compose from '../../core/helper/compose'
+import {DebouncedInput} from '../../shared/DebouncedInput/DebouncedInput'
 
 const useStyles = makeStyles((t: Theme) => ({
   toolbar: {},
@@ -140,20 +141,34 @@ export const Reports = ({}) => {
         <Datatable<ReportSearchResult>
           header={
             <>
-              <SelectDepartments
-                className={cssUtils.marginRight}
-                fullWidth
-                values={_reports.filters.departments}
+              <DebouncedInput
+                value={_reports.filters.departments}
                 onChange={departments => _reports.updateFilters(prev => ({...prev, departments}))}
-              />
-              <PeriodPicker
-                className={cssUtils.marginRight}
-                fullWidth
+              >
+                {(value, onChange) => (
+                  <SelectDepartments
+                    values={value}
+                    onChange={onChange}
+                    className={cssUtils.marginRight}
+                    fullWidth
+                  />
+                )}
+              </DebouncedInput>
+              <DebouncedInput<[Date | undefined, Date | undefined]>
                 value={[_reports.filters.start, _reports.filters.end]}
                 onChange={([start, end]) => {
                   _reports.updateFilters(prev => ({...prev, start: start ?? prev.start, end: end ?? prev.end}))
                 }}
-              />
+              >
+                {(value, onChange) => (
+                  <PeriodPicker
+                    value={value}
+                    onChange={onChange}
+                    className={cssUtils.marginRight}
+                    fullWidth
+                  />
+                )}
+              </DebouncedInput>
               <Tooltip title={m.removeAllFilters}>
                 <Badge color="error" badgeContent={filtersCount} hidden={filtersCount === 0} overlap="circular">
                   <Button color="primary" onClick={_reports.clearFilters}

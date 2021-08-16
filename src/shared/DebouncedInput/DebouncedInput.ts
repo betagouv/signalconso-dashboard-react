@@ -1,24 +1,25 @@
 import {useCallback, useEffect, useState} from 'react'
 import lodashDebounce from 'lodash.debounce'
 
-interface DebouncedInputProps {
+interface DebouncedInputProps<V> {
   debounce?: number
-  value?: string
-  onChange: (e: string) => void
-  children: (value: string | undefined, onChange: (e: string) => void) => any
+  value?: V
+  onChange: (e: V) => void
+  children: (value: V | undefined, onChange: (e: V) => void) => any
 }
 
-export const DebouncedInput = ({debounce = 0, value = '', onChange, children}: DebouncedInputProps) => {
-  const [innerValue, setInnerValue] = useState(value)
-  const debounced = useCallback(lodashDebounce(onChange, debounce), [])
+// FIXME(Alex) Trigger only one onChange but 2 API calls.
+export const DebouncedInput = <V>({debounce = 400, value, onChange, children}: DebouncedInputProps<V>) => {
+  const [innerValue, setInnerValue] = useState<V | undefined>(value)
+  const debounced = useCallback(lodashDebounce(onChange, debounce), [onChange])
 
   useEffect(() => {
     setInnerValue(value)
   }, [value])
 
-  const innerOnChange = (event: string) => {
-    setInnerValue(event)
-    debounced(event)
+  const innerOnChange = (newValue: V) => {
+    setInnerValue(newValue)
+    debounced(newValue)
   }
   return children(innerValue, innerOnChange)
 }
