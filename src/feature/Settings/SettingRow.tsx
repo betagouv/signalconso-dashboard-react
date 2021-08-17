@@ -19,6 +19,9 @@ const useStyles = makeStyles((t: Theme) => ({
     padding: t.spacing(1, 2),
     display: 'flex',
     alignItems: 'center',
+    '&:not(:last-of-type)': {
+      borderBottom: '1px solid ' + t.palette.divider,
+    },
   },
   body: {
     flex: 1,

@@ -7,6 +7,18 @@ export interface User {
   lastEmailValidation: Date
 }
 
+export interface UserPro {
+  email: string
+  firstName: string
+  lastName: string
+  lastEmailValidation: Date
+  disableAllNotifications: boolean
+}
+
+export interface UserProUpdate {
+  disableAllNotifications: boolean
+}
+
 export interface UserPending {
   email: string
   tokenCreation: Date

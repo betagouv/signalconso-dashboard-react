@@ -1,4 +1,4 @@
-import {ApiClientApi, UserPending, UserSearch} from '../..'
+import {ApiClientApi, UserPending, UserPro, UserSearch} from '../..'
 import {User} from './User'
 import {paginateData} from '../../../helper/utils'
 import {Paginate} from '@alexandreannic/react-hooks-lib/lib'
@@ -6,6 +6,16 @@ import {fromNullable} from 'fp-ts/lib/Option'
 
 export class UserClient {
   constructor(private client: ApiClientApi) {}
+
+  readonly fetchConnectedUser = (): Promise<UserPro> => {
+    return Promise.resolve({
+      email: 'test',
+      firstName: 'test',
+      lastName: 'test',
+      lastEmailValidation: new Date(),
+      disableAllNotifications: false,
+    })
+  }
 
   readonly fetchDGCCRF = (filters: UserSearch): Promise<Paginate<User>> => {
     return this.client

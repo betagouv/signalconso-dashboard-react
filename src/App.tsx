@@ -41,8 +41,8 @@ import {useHistory} from 'react-router'
 import {UnregistredWebsitesProvider} from './core/context/UnregistredWebsitesContext'
 import {CompaniesPro} from './feature/CompaniesPro/CompaniesPro'
 import {ReportPro} from './feature/Report/ReportPro'
-import {ReportNotificationBlockListSettings} from "./feature/Settings/ReportNotificationBlocklist";
-import {ReportNotificationBlockListProvider} from "./core/context/ReportNotificationBlocklist";
+import {ReportNotificationBlockListSettings} from './feature/Settings/ReportNotificationBlocklist'
+import {ReportNotificationBlockListProvider} from './core/context/ReportNotificationBlocklist'
 
 const headers = {
     'Content-Type': 'application/json',

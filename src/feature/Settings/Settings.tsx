@@ -1,33 +1,44 @@
 import {Page, PageTitle} from '../../shared/Layout'
-import React from 'react'
+import React, {useEffect} from 'react'
 import {useI18n} from '../../core/i18n'
 import {Panel} from '../../shared/Panel'
 import {SettingRow} from './SettingRow'
 import {EditPassword} from './EditPassword'
-import {NavLink} from "react-router-dom";
-import {siteMap} from "../../core/siteMap";
-import {Tooltip} from "@material-ui/core";
-import {ScButton} from "../../shared/Button/Button";
+import {NavLink} from 'react-router-dom'
+import {siteMap} from '../../core/siteMap'
+import {Icon, Switch, Tooltip} from '@material-ui/core'
+import {useUsersContext} from '../../core/context/UsersContext'
+import {IconBtn} from 'mui-extension/lib'
 
 export const Settings = () => {
   const {m} = useI18n()
+
+  const _user = useUsersContext()
+
+  useEffect(() => {
+    _user.getConnectedUser.fetch()
+  }, [])
 
   return (
     <Page size="small">
       <PageTitle>{m.menu_settings}</PageTitle>
       <Panel>
         <SettingRow icon="vpn_key" title={m.password} description={m.editPasswordDesc}>
-          <EditPassword />
+          <EditPassword/>
         </SettingRow>
-          <SettingRow icon="notifications" title="Notifications" description={m.editPasswordDesc}>
-              <NavLink to={siteMap.settings_notifications}>
-                  <Tooltip title={m.handleAccesses}>
-                      <ScButton icon="edit" color="primary">
-                          {m.edit}
-                      </ScButton>
-                  </Tooltip>
-              </NavLink>
-          </SettingRow>
+        <SettingRow icon="notifications" title="Notifications" description="Les emails sont bloquées. Réactiver les emails pour pouvoir personnaliser.">
+          <NavLink to={siteMap.companiesPro}>
+            <Tooltip title={m.handleAccesses}>
+              <IconBtn color="primary">
+                <Icon>tune</Icon>
+              </IconBtn>
+            </Tooltip>
+          </NavLink>
+          <Switch
+            checked={!_user.getConnectedUser.entity?.disableAllNotifications ?? true}
+            onChange={e => _user.updateConnectedUser({disableAllNotifications: !e.target.checked})}
+          />
+        </SettingRow>
       </Panel>
     </Page>
   )
