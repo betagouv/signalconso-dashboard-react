@@ -5,51 +5,52 @@ import {Paginate} from '@alexandreannic/react-hooks-lib/lib'
 import {fromNullable} from 'fp-ts/lib/Option'
 
 export class UserClient {
-  constructor(private client: ApiClientApi) {}
+    constructor(private client: ApiClientApi) {
+    }
 
-  readonly fetchConnectedUser = (): Promise<UserPro> => {
-    return Promise.resolve({
-      email: 'test',
-      firstName: 'test',
-      lastName: 'test',
-      lastEmailValidation: new Date(),
-      disableAllNotifications: false,
-    })
-  }
+    readonly fetchConnectedUser = (): Promise<UserPro> => {
+        return this.client
+            .get<UserPro>(`/account`)
+    }
 
-  readonly fetchDGCCRF = (filters: UserSearch): Promise<Paginate<User>> => {
-    return this.client
-      .get<User[]>(`/account/dgccrf/users`)
-      .then(users =>
-        fromNullable(filters.email)
-          .map(_ => (_ === '' ? users : users.filter(user => user.email.indexOf(_) > 0)))
-          .getOrElse(users),
-      )
-      .then(paginateData(filters.limit, filters.offset))
-      .then(result => {
-        result.data = result.data.map(_ => {
-          _.lastEmailValidation = new Date(_.lastEmailValidation)
-          return _
-        })
-        return result
-      })
-  }
+    readonly patchConnectedUser = (disableAllNotifications: Boolean): Promise<UserPro> => {
+        return this.client
+            .patch<UserPro>(`/account`, {body: { disableAllNotifications: disableAllNotifications}})
+    }
 
-  readonly fetchPendingDGCCRF = () => {
-    return this.client.get<UserPending[]>(`/account/dgccrf/pending`).then(_ =>
-      _.map(_ => {
-        _.tokenCreation = new Date(_.tokenCreation)
-        _.tokenExpiration = new Date(_.tokenExpiration)
-        return _
-      }),
-    )
-  }
+    readonly fetchDGCCRF = (filters: UserSearch): Promise<Paginate<User>> => {
+        return this.client
+            .get<User[]>(`/account/dgccrf/users`)
+            .then(users =>
+                fromNullable(filters.email)
+                    .map(_ => (_ === '' ? users : users.filter(user => user.email.indexOf(_) > 0)))
+                    .getOrElse(users),
+            )
+            .then(paginateData(filters.limit, filters.offset))
+            .then(result => {
+                result.data = result.data.map(_ => {
+                    _.lastEmailValidation = new Date(_.lastEmailValidation)
+                    return _
+                })
+                return result
+            })
+    }
 
-  readonly inviteDGCCRF = (email: string) => {
-    return this.client.post<void>(`/account/dgccrf/invitation`, {body: {email}})
-  }
+    readonly fetchPendingDGCCRF = () => {
+        return this.client.get<UserPending[]>(`/account/dgccrf/pending`).then(_ =>
+            _.map(_ => {
+                _.tokenCreation = new Date(_.tokenCreation)
+                _.tokenExpiration = new Date(_.tokenExpiration)
+                return _
+            }),
+        )
+    }
 
-  readonly changePassword = (oldPassword: string, newPassword: string) => {
-    return this.client.post(`/account/password`, {body: {oldPassword, newPassword}})
-  }
+    readonly inviteDGCCRF = (email: string) => {
+        return this.client.post<void>(`/account/dgccrf/invitation`, {body: {email}})
+    }
+
+    readonly changePassword = (oldPassword: string, newPassword: string) => {
+        return this.client.post(`/account/password`, {body: {oldPassword, newPassword}})
+    }
 }

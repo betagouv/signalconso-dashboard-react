@@ -40,21 +40,32 @@ export class CompanyClient {
             }))
     }
 
+    readonly blockCompanyNotification = (companyId: Id) => {
+        return this.client.post(`/report-notification-blocklist/${companyId}`)
+    }
+
+    readonly allowCompanyNotification = (companyId: Id) => {
+        return this.client.delete(`/report-notification-blocklist/${companyId}`)
+    }
+
     readonly accessibleCompanyProWithNotificationBlocklist = (): Promise<CompanyWithNotification[]> => {
-        return this.client
+
+        const companiesForProUser = this.client
             .get<CompanyWithAccessLevel[]>(`/accesses/connected-user`)
             .then(res => res.map(_ => ({..._, creationDate: new Date(_.creationDate)})))
-            .then(companies =>
-                Promise.resolve(['50303779-7647-4bc9-8556-686d3b43f8c9'] as unknown as Id[])
-                    .then(blocked => ({blocked: blocked, companies: companies}))
-            )
-            .then(_ => _.companies.map(c => _.blocked.filter(id => id === c.id).length >= 1 ? ({
-                ...c,
-                hasNotification: false
-            }) : ({...c, hasNotification: true})))
 
+        const blockedNotification: Promise<Id[]> = this.client.get(`/report-notification-blocklist`)
+
+        return companiesForProUser
+            .then(companies => blockedNotification.then(blocked => ({blocked: blocked, companies: companies})))
+            .then(_ => _.companies.map(c => _.blocked.filter(id => id === c.id).length >= 1 ?
+                ({
+                    ...c,
+                    hasNotification: false
+                }) : ({...c, hasNotification: true})))
 
     }
+
     /** @deprecated use search() instead */
     readonly searchRegisterCompanies = (search: string): Promise<CompanyWithReportsCount[]> => {
         return this.client

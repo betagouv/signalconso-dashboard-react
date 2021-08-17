@@ -26,6 +26,7 @@ export interface ApiClientApi {
   readonly getPdf: <T = any>(uri: string, options?: RequestOption) => Promise<Blob>
   readonly delete: <T = any>(uri: string, options?: RequestOption) => Promise<T>
   readonly put: <T = any>(uri: string, options?: RequestOption) => Promise<T>
+  readonly patch: <T = any>(uri: string, options?: RequestOption) => Promise<T>
 }
 
 export type StatusCode = 200 | 301 | 302 | 400 | 401 | 403 | 404 | 500 | 504
@@ -36,7 +37,7 @@ export interface ApiError {
   error?: Error
 }
 
-export type Method = 'POST' | 'GET' | 'PUT' | 'DELETE'
+export type Method = 'POST' | 'GET' | 'PUT' | 'DELETE' | 'PATCH'
 
 export class ApiClient {
   private readonly fetch: (method: Method, url: string, options?: RequestOption) => Promise<any>
@@ -124,5 +125,9 @@ export class ApiClient {
 
   readonly put = <T = any>(uri: string, options?: RequestOption): Promise<T> => {
     return this.fetch('PUT', uri, options)
+  }
+
+  readonly patch = <T = any>(uri: string, options?: RequestOption): Promise<T> => {
+    return this.fetch('PATCH', uri, options)
   }
 }
