@@ -65,7 +65,9 @@ export const CompaniesPro = () => {
                     />
                 }>
                     <Txt bold block>Notifications désactivées</Txt>
-                    <Txt color="hint" block>Réactiver les notifications.</Txt>
+                    <Txt color="hint" block>Toutes les notifications pour l'ensemble de vos entreprise sont désactivées.
+                        Cliquez sur le bouton pour avoir la possibilité d'activer ou desactiver les notifications par
+                        entreprise </Txt>
                 </Alert>
             )}
             <Panel>

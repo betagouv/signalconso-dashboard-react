@@ -41,8 +41,6 @@ import {useHistory} from 'react-router'
 import {UnregistredWebsitesProvider} from './core/context/UnregistredWebsitesContext'
 import {CompaniesPro} from './feature/CompaniesPro/CompaniesPro'
 import {ReportPro} from './feature/Report/ReportPro'
-import {ReportNotificationBlockListSettings} from './feature/Settings/ReportNotificationBlocklist'
-import {ReportNotificationBlockListProvider} from './core/context/ReportNotificationBlocklist'
 
 const headers = {
     'Content-Type': 'application/json',
@@ -184,7 +182,6 @@ const AppLogged = () => {
                 _ => <CompaniesProvider api={apiSdk} children={_}/>,
                 _ => <UsersProvider api={apiSdk} children={_}/>,
                 _ => <ReportedWebsitesProvider api={apiSdk} children={_}/>,
-                _ => <ReportNotificationBlockListProvider api={apiSdk} children={_}/>,
                 _ => <UnregistredWebsitesProvider api={apiSdk} children={_}/>,
                 _ => <SubscriptionsProvider api={apiSdk} children={_}/>,
             ]}
@@ -200,7 +197,6 @@ const AppLogged = () => {
                 <Route path={siteMap.subscriptions} component={Subscriptions}/>
                 <Route path={siteMap.companiesPro} component={CompaniesPro}/>
                 <Route path={siteMap.settings} component={Settings}/>
-                <Route path={siteMap.settings_notifications} component={ReportNotificationBlockListSettings}/>
                 <Redirect exact from="/" to={siteMap.reports()}/>
             </Switch>
         </Provide>

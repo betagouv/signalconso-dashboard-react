@@ -27,7 +27,7 @@ export const Settings = () => {
                     <EditPassword/>
                 </SettingRow>
                 <SettingRow icon="notifications" title="Notifications"
-                            description="Les emails sont bloquées. Réactiver les emails pour pouvoir personnaliser.">
+                            description={m.notification_settings}>
                     <NavLink to={siteMap.companiesPro}>
                         <Tooltip title={m.handleAccesses}>
                             <IconBtn color="primary">

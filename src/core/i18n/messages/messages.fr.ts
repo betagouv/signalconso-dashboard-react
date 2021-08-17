@@ -98,7 +98,7 @@ export const messagesFr = {
     reportedUnknownWebsites: 'Sites non identifiés',
     companyHistory: "Historique de l'entreprise",
     reports_pageTitle: 'Suivi des signalements',
-    notification_settings: 'Préférences de notifications',
+    notification_settings: `Configuration des notifications pour l'ensemble de vos entreprises ou par entreprise`,
     report_pageTitle: `Signalement`,
     details: 'Détails',
     answer: 'Répondre',

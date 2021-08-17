@@ -12,7 +12,6 @@ import {
 import {Company, CompanyCreation, CompanyUpdate, Event, Id} from '../../model'
 import {format} from 'date-fns'
 import {Address} from '../../model/Address'
-import {ReportNotificationBlockList, ReportNotificationBlockListSearch} from "../settings/ReportNotificationBlocklist";
 
 interface ApiCompanyWithReportsCount {
     companyAddress: Address

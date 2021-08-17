@@ -19,5 +19,4 @@ export const siteMap = {
   users_pending: '/admin/invitation-ccrf/pending',
   users_all: '/admin/invitation-ccrf/all',
   settings: '/parametres',
-  settings_notifications: '/notifications',
 }
