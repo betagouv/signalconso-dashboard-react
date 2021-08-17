@@ -10,7 +10,7 @@ export class SettingsClient {
 
     readonly list = (filters: ReportNotificationBlockListSearch): Promise<PaginatedData<ReportNotificationBlockList>> => {
         return Promise.resolve({
-            'totalCount': 1,
+            'totalCount': 2,
             'hasNextPage': false,
             'entities': [{
                 'company': {

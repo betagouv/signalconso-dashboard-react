@@ -1,89 +1,108 @@
 import {
-  ApiClientApi,
-  ApiPaginate,
-  CompanySearch,
-  CompanyToActivate,
-  CompanyWithAccessLevel,
-  CompanyWithReportsCount,
-  dateToApi,
-  directDownloadBlob,
-  VisibleCompany,
+    ApiClientApi,
+    ApiPaginate,
+    CompanySearch,
+    CompanyToActivate,
+    CompanyWithAccessLevel, CompanyWithNotification,
+    CompanyWithReportsCount,
+    dateToApi,
+    directDownloadBlob, PaginatedData,
+    VisibleCompany,
 } from '../..'
 import {Company, CompanyCreation, CompanyUpdate, Event, Id} from '../../model'
 import {format} from 'date-fns'
 import {Address} from '../../model/Address'
+import {ReportNotificationBlockList, ReportNotificationBlockListSearch} from "../settings/ReportNotificationBlocklist";
 
 interface ApiCompanyWithReportsCount {
-  companyAddress: Address
-  companyName: string
-  companySiret: string
-  count: number
+    companyAddress: Address
+    companyName: string
+    companySiret: string
+    count: number
 }
 
 export class CompanyClient {
-  constructor(private client: ApiClientApi) {}
+    constructor(private client: ApiClientApi) {
+    }
 
-  private static readonly mapCompanyWithReportsCount = (_: ApiCompanyWithReportsCount): CompanyWithReportsCount => ({
-    ..._,
-    address: _.companyAddress,
-    name: _.companyName,
-    siret: _.companySiret,
-  })
+    private static readonly mapCompanyWithReportsCount = (_: ApiCompanyWithReportsCount): CompanyWithReportsCount => ({
+        ..._,
+        address: _.companyAddress,
+        name: _.companyName,
+        siret: _.companySiret,
+    })
 
-  readonly search = (search: CompanySearch): Promise<ApiPaginate<CompanyWithReportsCount>> => {
-    return this.client.get<ApiPaginate<ApiCompanyWithReportsCount>>(`/companies`, {qs: search}).then(res => ({
-      ...res,
-      entities: res.entities.map(CompanyClient.mapCompanyWithReportsCount),
-    }))
-  }
+    readonly search = (search: CompanySearch): Promise<ApiPaginate<CompanyWithReportsCount>> => {
+        return this.client.get<ApiPaginate<ApiCompanyWithReportsCount>>(`/companies`, {qs: search})
+            .then(res => ({
+                ...res,
+                entities: res.entities.map(CompanyClient.mapCompanyWithReportsCount),
+            }))
+    }
 
-  /** @deprecated use search() instead */
-  readonly searchRegisterCompanies = (search: string): Promise<CompanyWithReportsCount[]> => {
-    return this.client
-      .get<ApiCompanyWithReportsCount[]>(`/companies/search/registered`, {qs: {q: search}})
-      .then(_ => _.map(CompanyClient.mapCompanyWithReportsCount))
-  }
+    readonly accessibleCompanyProWithNotificationBlocklist = (): Promise<CompanyWithNotification[]> => {
+        return this.client
+            .get<CompanyWithAccessLevel[]>(`/accesses/connected-user`)
+            .then(res => res.map(_ => ({..._, creationDate: new Date(_.creationDate)})))
+            .then(companies =>
+                Promise.resolve(['50303779-7647-4bc9-8556-686d3b43f8c9'] as unknown as Id[])
+                    .then(blocked => ({blocked: blocked, companies: companies}))
+            )
+            .then(_ => _.companies.map(c => _.blocked.filter(id => id === c.id).length >= 1 ? ({
+                ...c,
+                hasNotification: false
+            }) : ({...c, hasNotification: true})))
 
-  readonly updateCompanyAddress = (id: Id, update: CompanyUpdate) => {
-    return this.client.put<Company>(`/companies/${id}/address`, {body: update})
-  }
 
-  readonly saveUndeliveredDocument = (siret: string, returnedDate: Date) => {
-    return this.client.post<Event>(`/companies/${siret}/undelivered-document`, {body: {returnedDate: dateToApi(returnedDate)}})
-  }
+    }
+    /** @deprecated use search() instead */
+    readonly searchRegisterCompanies = (search: string): Promise<CompanyWithReportsCount[]> => {
+        return this.client
+            .get<ApiCompanyWithReportsCount[]>(`/companies/search/registered`, {qs: {q: search}})
+            .then(_ => _.map(CompanyClient.mapCompanyWithReportsCount))
+    }
 
-  readonly create = (company: CompanyCreation) => {
-    return this.client.post<Company>(`/companies`, {body: company})
-  }
+    readonly updateCompanyAddress = (id: Id, update: CompanyUpdate) => {
+        return this.client.put<Company>(`/companies/${id}/address`, {body: update})
+    }
 
-  readonly downloadActivationDocument = (companyIds: Id[]) => {
-    return this.client
-      .postGetPdf(`/companies/activation-document`, {body: {companyIds}})
-      .then(directDownloadBlob(`signalement_depot_${format(new Date(), 'ddMMyy')}`))
-  }
+    readonly saveUndeliveredDocument = (siret: string, returnedDate: Date) => {
+        return this.client.post<Event>(`/companies/${siret}/undelivered-document`, {body: {returnedDate: dateToApi(returnedDate)}})
+    }
 
-  readonly getCompaniesAccessibleByPro = (): Promise<CompanyWithAccessLevel[]> => {
-    return this.client
-      .get<CompanyWithAccessLevel[]>(`/accesses/connected-user`)
-      .then(res => res.map(_ => ({..._, creationDate: new Date(_.creationDate)})))
-  }
+    readonly create = (company: CompanyCreation) => {
+        return this.client.post<Company>(`/companies`, {body: company})
+    }
 
-  readonly getCompaniesVisibleByPro = (): Promise<VisibleCompany[]> => {
-    return this.client.get<VisibleCompany[]>(`/companies/connected-user`)
-  }
+    readonly downloadActivationDocument = (companyIds: Id[]) => {
+        return this.client
+            .postGetPdf(`/companies/activation-document`, {body: {companyIds}})
+            .then(directDownloadBlob(`signalement_depot_${format(new Date(), 'ddMMyy')}`))
+    }
 
-  readonly fetchToActivate = () => {
-    return this.client.get<CompanyToActivate[]>(`/companies/to-activate`).then(_ =>
-      _.map(_ => {
-        _.lastNotice = _.lastNotice ? new Date(_.lastNotice) : undefined
-        _.tokenCreation = new Date(_.tokenCreation)
-        _.company.creationDate = new Date(_.company.creationDate)
-        return _
-      }),
-    )
-  }
+    readonly getCompaniesAccessibleByPro = (): Promise<CompanyWithAccessLevel[]> => {
+        return this.client
+            .get<CompanyWithAccessLevel[]>(`/accesses/connected-user`)
+            .then(res => res.map(_ => ({..._, creationDate: new Date(_.creationDate)})))
+    }
 
-  readonly confirmCompaniesPosted = (companyIds: Id[]) => {
-    return this.client.post<void>(`/companies/companies-posted`, {body: {companyIds}})
-  }
+
+    readonly getCompaniesVisibleByPro = (): Promise<VisibleCompany[]> => {
+        return this.client.get<VisibleCompany[]>(`/companies/connected-user`)
+    }
+
+    readonly fetchToActivate = () => {
+        return this.client.get<CompanyToActivate[]>(`/companies/to-activate`).then(_ =>
+            _.map(_ => {
+                _.lastNotice = _.lastNotice ? new Date(_.lastNotice) : undefined
+                _.tokenCreation = new Date(_.tokenCreation)
+                _.company.creationDate = new Date(_.company.creationDate)
+                return _
+            }),
+        )
+    }
+
+    readonly confirmCompaniesPosted = (companyIds: Id[]) => {
+        return this.client.post<void>(`/companies/companies-posted`, {body: {companyIds}})
+    }
 }

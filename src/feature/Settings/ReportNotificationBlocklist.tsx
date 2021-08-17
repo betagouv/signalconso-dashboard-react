@@ -65,7 +65,6 @@ export const ReportNotificationBlockListSettings = () => {
                             .then(_ => _fetch.fetch({clean: false}))
                             .catch(toastError)}
                     >
-                        {m.activate_all}
                     </ScButton>
                 }>{m.notification_settings}</PageTitle>
 
