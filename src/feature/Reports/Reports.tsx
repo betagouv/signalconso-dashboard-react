@@ -15,9 +15,9 @@ import {Panel} from '../../shared/Panel'
 import {useCssUtils} from '../../core/helper/useCssUtils'
 import {Datatable} from '../../shared/Datatable/Datatable'
 import {fromNullable, some} from 'fp-ts/lib/Option'
-import {Badge, Icon, makeStyles, Theme, Tooltip} from '@material-ui/core'
+import {alpha, Badge, Button, Icon, makeStyles, Theme, Tooltip} from '@material-ui/core'
 import {classes, textOverflowMiddleCropping} from '../../core/helper/utils'
-import React, {useEffect} from 'react'
+import React, {useEffect, useMemo} from 'react'
 import {
   mapArrayFromQuerystring,
   mapDateFromQueryString,
@@ -38,6 +38,7 @@ import {ScButton} from '../../shared/Button/Button'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
 import {PeriodPicker} from '../../shared/PeriodPicker/PeriodPicker'
 import compose from '../../core/helper/compose'
+import {DebouncedInput} from '../../shared/DebouncedInput/DebouncedInput'
 
 const useStyles = makeStyles((t: Theme) => ({
   toolbar: {},
@@ -82,6 +83,13 @@ const useStyles = makeStyles((t: Theme) => ({
   tooltipUl: {
     margin: 0,
     padding: 16,
+  },
+  clearIcons: {
+    minWidth: 'auto',
+  },
+  clearIconWithFilters: {
+    border: '1px solid ' + t.palette.divider,
+    background: alpha(t.palette.primary.main, 0.12),
   },
 }))
 
@@ -134,6 +142,11 @@ export const Reports = ({}) => {
   const getReportingDate = (report: Report) =>
     report.details.filter(_ => _.label.indexOf(ReportingDateLabel) !== -1).map(_ => _.value)
 
+  const filtersCount = useMemo(() => {
+    const {offset, limit, ...filters} = _reports.filters
+    return Object.keys(cleanObject(filters)).length
+  }, [_reports.filters])
+
   return (
     <Page size="large">
       <PageTitle>{m.reports_pageTitle}</PageTitle>
@@ -142,19 +155,35 @@ export const Reports = ({}) => {
         <Datatable<ReportSearchResult>
           header={
             <>
-              <SelectDepartments
-                className={cssUtils.marginRight}
-                fullWidth
-                values={_reports.filters.departments}
+              <DebouncedInput
+                value={_reports.filters.departments}
                 onChange={departments => _reports.updateFilters(prev => ({...prev, departments}))}
-              />
-              <PeriodPicker
-                fullWidth
+              >
+                {(value, onChange) => (
+                  <SelectDepartments values={value} onChange={onChange} className={cssUtils.marginRight} fullWidth />
+                )}
+              </DebouncedInput>
+              <DebouncedInput<[Date | undefined, Date | undefined]>
                 value={[_reports.filters.start, _reports.filters.end]}
                 onChange={([start, end]) => {
                   _reports.updateFilters(prev => ({...prev, start: start ?? prev.start, end: end ?? prev.end}))
                 }}
-              />
+              >
+                {(value, onChange) => (
+                  <PeriodPicker value={value} onChange={onChange} className={cssUtils.marginRight} fullWidth />
+                )}
+              </DebouncedInput>
+              <Tooltip title={m.removeAllFilters}>
+                <Badge color="error" badgeContent={filtersCount} hidden={filtersCount === 0} overlap="circular">
+                  <Button
+                    color="primary"
+                    onClick={_reports.clearFilters}
+                    className={classes(css.clearIcons, filtersCount && css.clearIconWithFilters)}
+                  >
+                    <Icon>clear</Icon>
+                  </Button>
+                </Badge>
+              </Tooltip>
               <ExportReportsPopper
                 disabled={fromNullable(_reports?.list?.totalSize)
                   .map(_ => _ > Config.reportsLimitForExport)
@@ -167,11 +196,6 @@ export const Reports = ({}) => {
                   <Icon>file_download</Icon>
                 </IconBtn>
               </ExportReportsPopper>
-              <Tooltip title={m.removeAllFilters}>
-                <IconBtn color="primary" onClick={_reports.clearFilters}>
-                  <Icon>clear</Icon>
-                </IconBtn>
-              </Tooltip>
               <ReportFilters filters={_reports.filters} updateFilters={_ => _reports.updateFilters(prev => ({...prev, ..._}))}>
                 <Tooltip title={m.advancedFilters}>
                   <IconBtn color="primary">

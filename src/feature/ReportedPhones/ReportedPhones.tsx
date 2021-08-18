@@ -9,14 +9,13 @@ import {siteMap} from '../../core/siteMap'
 import {ReportedPhone} from '../../core/api'
 import {Btn, IconBtn} from 'mui-extension/lib'
 import {useCssUtils} from '../../core/helper/useCssUtils'
-import {Datepicker} from '../../shared/Datepicker/Datepicker'
-import {addDays, subDays} from 'date-fns'
 import {ScInput} from '../../shared/Input/ScInput'
 import {ExportPhonesPopper} from '../../shared/ExportPopper/ExportPopperBtn'
 import {fromNullable} from 'fp-ts/lib/Option'
 import {useToast} from '../../core/toast'
-import {Icon, Tooltip} from '@material-ui/core'
+import {Icon} from '@material-ui/core'
 import {PeriodPicker} from '../../shared/PeriodPicker/PeriodPicker'
+import {DebouncedInput} from '../../shared/DebouncedInput/DebouncedInput'
 
 export const ReportedPhones = () => {
   const _reportedPhone = useReportedPhonesContext()
@@ -40,20 +39,28 @@ export const ReportedPhones = () => {
           showColumnsToggle
           header={
             <>
-              <ScInput
-                fullWidth
+              <DebouncedInput
                 value={_reportedPhone.filters.phone ?? ''}
-                onChange={event => _reportedPhone.updateFilters(prev => ({...prev, phone: event.target.value}))}
-                className={cssUtils.marginRight}
-                label={m.phone}
-              />
-              <PeriodPicker
-                fullWidth
+                onChange={phone => _reportedPhone.updateFilters(prev => ({...prev, phone}))}
+              >
+                {(value, onChange) => (
+                  <ScInput
+                    value={value}
+                    onChange={e => onChange(e.target.value)}
+                    fullWidth
+                    className={cssUtils.marginRight}
+                    label={m.phone}
+                  />
+                )}
+              </DebouncedInput>
+              <DebouncedInput<[Date | undefined, Date | undefined]>
                 value={[_reportedPhone.filters.start, _reportedPhone.filters.end]}
                 onChange={([start, end]) =>
                   _reportedPhone.updateFilters(prev => ({...prev, start: start ?? prev.start, end: end ?? prev.end}))
                 }
-              />
+              >
+                {(value, onChange) => <PeriodPicker value={value ?? [undefined, undefined]} onChange={onChange} fullWidth />}
+              </DebouncedInput>
               <ExportPhonesPopper>
                 <IconBtn color="primary">
                   <Icon>file_download</Icon>

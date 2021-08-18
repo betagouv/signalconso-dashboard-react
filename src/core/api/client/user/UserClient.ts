@@ -16,11 +16,11 @@ export class UserClient {
   }
 
   readonly fetchDGCCRF = (filters: UserSearch): Promise<Paginate<User>> => {
-    return this.client
-      .get<User[]>(`/account/dgccrf/users`)
+    return this.client.get<User[]>(`/account/dgccrf/users`)
       .then(users =>
         fromNullable(filters.email)
-          .map(_ => (_ === '' ? users : users.filter(user => user.email.indexOf(_) > 0)))
+          .filter(_ => _ !== '')
+          .map(user => users.filter(_ => _.email.includes(user)))
           .getOrElse(users),
       )
       .then(paginateData(filters.limit, filters.offset))

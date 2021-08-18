@@ -60,7 +60,6 @@ export const ReportedCompaniesWebsites = () => {
         header={
           <>
             <DebouncedInput
-              debounce={400}
               value={_fetch.filters.host ?? ''}
               onChange={host => _fetch.updateFilters(prev => ({...prev, host: host}))}
             >
@@ -74,23 +73,20 @@ export const ReportedCompaniesWebsites = () => {
                 />
               )}
             </DebouncedInput>
-            <ScSelect
-              multiple
-              fullWidth
+            <DebouncedInput
               value={_fetch.filters.kinds}
-              onChange={event =>
-                _fetch.updateFilters(prev => ({
-                  ...prev,
-                  kinds: event.target.value as WebsiteKind[],
-                }))
-              }
+              onChange={(kinds: WebsiteKind[]) => _fetch.updateFilters(prev => ({...prev, kinds}))}
             >
-              {[WebsiteKind.PENDING, WebsiteKind.DEFAULT].map(kind => (
-                <MenuItem key={kind} value={kind}>
-                  {kind === WebsiteKind.PENDING ? m.notValidated : m.validated}
-                </MenuItem>
-              ))}
-            </ScSelect>
+              {(value, onChange) => (
+                <ScSelect value={value} onChange={(e: any) => onChange(e.target.value)} multiple fullWidth>
+                  {[WebsiteKind.PENDING, WebsiteKind.DEFAULT].map(kind => (
+                    <MenuItem key={kind} value={kind}>
+                      {kind === WebsiteKind.PENDING ? m.notValidated : m.validated}
+                    </MenuItem>
+                  ))}
+                </ScSelect>
+              )}
+            </DebouncedInput>
             <Tooltip title={m.removeAllFilters}>
               <IconBtn color="primary" onClick={_fetch.clearFilters}>
                 <Icon>clear</Icon>

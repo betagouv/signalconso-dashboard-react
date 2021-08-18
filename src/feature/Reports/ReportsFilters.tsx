@@ -9,7 +9,6 @@ import {
   MenuItem,
   Radio,
   RadioGroup,
-  TextField,
   Theme,
 } from '@material-ui/core'
 import {useI18n} from '../../core/i18n'
@@ -96,7 +95,7 @@ export const ReportFilters = ({filters, updateFilters, children}: ReportsFilters
           setOpen(true)
         },
       })}
-      <Dialog open={open ?? false} onClose={close} aria-labelledby="form-dialog-title">
+      <Dialog open={open ?? false} onClose={close}>
         <DialogTitle>{m.search}</DialogTitle>
         {_reportStatus.entity && _category.entity && (
           <>
@@ -172,7 +171,19 @@ export const ReportFilters = ({filters, updateFilters, children}: ReportsFilters
                   defaultValue={filters.hasCompany}
                   control={control}
                   render={({field}) => (
-                    <RadioGroup style={{flexDirection: 'row'}} {...field}>
+                    <RadioGroup
+                      {...field}
+                      style={{flexDirection: 'row'}}
+                      value={(() => {
+                        if ([true, 'true'].includes(field.value as any)) return 'true'
+                        if ([false, 'false'].includes(field.value as any)) return 'false'
+                        return ''
+                      })()}
+                      onChange={e => {
+                        const valueAsBoolean = {true: true, false: false}[e.target.value]
+                        field.onChange(valueAsBoolean)
+                      }}
+                    >
                       <FormControlLabel control={<Radio />} label={m.yes} value="true" />
                       <FormControlLabel control={<Radio />} label={m.no} value="false" />
                       <FormControlLabel control={<Radio />} label={m.indifferent} value="" />

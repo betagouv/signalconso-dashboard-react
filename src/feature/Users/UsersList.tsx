@@ -32,7 +32,6 @@ export const UsersList = () => {
         header={
           <>
             <DebouncedInput
-              debounce={400}
               value={_users.filters.email ?? ''}
               onChange={email => _users.updateFilters(prev => ({...prev, email}))}
             >

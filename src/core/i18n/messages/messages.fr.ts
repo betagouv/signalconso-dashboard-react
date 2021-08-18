@@ -152,6 +152,7 @@ export const messagesFr = {
   altLogoSignalConso: `Logo SignalConso / Retour à la page d'accueil`,
   toggleDatatableColumns: 'Affichier/Masquer des colonnes',
   altLogoGouv: `Logo Gouvernement - Ministère de l'Economie, des Finances et de la Relance`,
+  altLogoDGCCRF: `Logo DGCCRF - Direction générale de la Concurrence, de la Consommation et de la Répression des fraudes`,
   noAttachment: 'Aucune pièce jointe.',
   reportDgccrfDetails: 'Informations complémentaires pour la DGCCRF',
   selectCountries_onlyEU: 'Pays européens (UE)',

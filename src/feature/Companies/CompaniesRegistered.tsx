@@ -74,13 +74,13 @@ export const CompaniesRegistered = () => {
       <Datatable<CompanyWithReportsCount>
         header={
           <>
-            <SelectDepartments
-              values={_companies.filters.departments}
-              className={cssUtils.marginRight}
-              onChange={departments => _companies.updateFilters(prev => ({...prev, departments}))}
-            />
             <DebouncedInput
-              debounce={400}
+              value={_companies.filters.departments}
+              onChange={departments => _companies.updateFilters(prev => ({...prev, departments}))}
+            >
+              {(value, onChange) => <SelectDepartments values={value} onChange={onChange} className={cssUtils.marginRight} />}
+            </DebouncedInput>
+            <DebouncedInput
               value={_companies.filters.identity ?? ''}
               onChange={value => _companies.updateFilters(prev => ({...prev, identity: value}))}
             >

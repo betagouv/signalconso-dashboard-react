@@ -77,7 +77,7 @@ const useStyles = makeStyles((t: Theme) => ({
   },
 }))
 
-const minRowsBeforeDisplayFilters = 10
+const minRowsBeforeDisplayFilters = 2
 
 interface ReportFiltersQs {
   readonly departments?: string[] | string
@@ -113,6 +113,11 @@ export const ReportsPro = () => {
     toQueryString: mapDatesToQueryString,
     fromQueryString: compose(mapDateFromQueryString, _ => mapArrayFromQuerystring(_, ['siretSirenList', 'departments'])),
   })
+
+  const filtersCount = useMemo(() => {
+    const {offset, limit, ...filters} = _reports.filters
+    return Object.keys(cleanObject(filters)).length
+  }, [_reports.filters])
 
   useEffect(() => {
     _companies.accessesByPro.fetch()
@@ -176,6 +181,7 @@ export const ReportsPro = () => {
                   </Grid>
                   <Grid item sm={4} xs={12}>
                     <ScSelect
+                      id="test"
                       label={m.status}
                       fullWidth
                       onChange={event => {
@@ -200,9 +206,11 @@ export const ReportsPro = () => {
                   }
                 />
                 <div className={css.actions}>
-                  <ScButton size="small" icon="clear" onClick={_reports.clearFilters} variant="outlined" color="primary">
-                    {m.removeAllFilters}
-                  </ScButton>
+                  <Badge color="error" badgeContent={filtersCount} hidden={filtersCount === 0}>
+                    <ScButton icon="clear" onClick={_reports.clearFilters} variant="outlined" color="primary">
+                      {m.removeAllFilters}
+                    </ScButton>
+                  </Badge>
                   <ExportReportsPopper
                     disabled={fromNullable(_reports?.list?.totalSize)
                       .map(_ => _ > Config.reportsLimitForExport)
@@ -211,7 +219,7 @@ export const ReportsPro = () => {
                       .map(_ => (_ > Config.reportsLimitForExport ? m.cannotExportMoreReports(Config.reportsLimitForExport) : ''))
                       .getOrElse('')}
                   >
-                    <Btn size="small" variant="outlined" color="primary" icon="get_app">
+                    <Btn variant="outlined" color="primary" icon="get_app">
                       {m.exportInXLS}
                     </Btn>
                   </ExportReportsPopper>

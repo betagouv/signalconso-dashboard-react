@@ -140,10 +140,10 @@ export const ExportPopperBtn = ({
               {fnSwitch(file.status, {
                 [AsyncFileStatus.Successed]: _ => (
                   <div className={css.fileItem} onClick={() => window.open(file.url, '_blank')}>
-                    <Icon className={cssUtils.colorTxtHint}>insert_drive_file</Icon>
+                    <Icon className={cssUtils.colorSuccess}>file_download_done</Icon>
                     <div className={css.fileItemBody}>
                       <Txt bold block>
-                        {file.filename.match(/.*?\-(\w+.?)\.xlsx/)?.[1]}
+                        {file.filename.match(/.*?\-(\w+.?\.xlsx)/)?.[1]}
                       </Txt>
                       <Txt color="hint">{formatDateTime(file.creationDate)}</Txt>
                     </div>
@@ -160,7 +160,7 @@ export const ExportPopperBtn = ({
                 ),
                 [AsyncFileStatus.Failed]: _ => (
                   <div className={css.fileItem}>
-                    <Icon className={cssUtils.colorError}>error</Icon>
+                    <Icon className={cssUtils.colorError}>error_outline</Icon>
                     <div className={css.fileItemBody}>
                       <div>{m.error}</div>
                       <Txt color="hint">{formatDateTime(file.creationDate)}</Txt>

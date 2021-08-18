@@ -1,7 +1,6 @@
 import classNames from 'classnames'
 import {fromNullable} from 'fp-ts/lib/Option'
 import {OrderBy, Paginate} from '@alexandreannic/react-hooks-lib/lib'
-import {ReportResponseTypes} from '../api'
 
 export const isJsonValid = (json: string): boolean => {
   try {
