@@ -1,4 +1,14 @@
-import {CompanyAccessClient, CompanyClient, ConstantClient, EventClient, ReportedPhoneClient, ReportsClient, SubscriptionClient, UserClient, WebsiteClient} from './client'
+import {
+  CompanyAccessClient,
+  CompanyClient,
+  ConstantClient,
+  EventClient,
+  ReportedPhoneClient,
+  ReportsClient,
+  SubscriptionClient,
+  UserClient,
+  WebsiteClient,
+} from './client'
 import {ApiClientApi} from './core/ApiClient'
 import {AsyncFileClient} from './client/async-file/AsyncFileClient'
 import {CompanyAccessTokenClient} from './client/company-access-token/CompanyAccessTokenClient'

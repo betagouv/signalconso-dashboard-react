@@ -71,11 +71,15 @@ export const CompaniesPro = () => {
   }, [])
 
   const accessibleCompaniesIndex = useMemo(() => {
-    return fromNullable(_companies.accessibleByPro.entity).map(_ => indexEntities('id', _)).toUndefined()
+    return fromNullable(_companies.accessibleByPro.entity)
+      .map(_ => indexEntities('id', _))
+      .toUndefined()
   }, [_companies.accessibleByPro.entity])
 
   const blockedNotificationIndex = useMemo(() => {
-    return fromNullable(_reportNotificationBlockLists.crud.list).map(_ => indexEntities('companyId', _)).toUndefined()
+    return fromNullable(_reportNotificationBlockLists.crud.list)
+      .map(_ => indexEntities('companyId', _))
+      .toUndefined()
   }, [_reportNotificationBlockLists.crud.list])
 
   return (
@@ -93,17 +97,19 @@ export const CompaniesPro = () => {
             />
           }
         >
-          <Txt bold block>{m.notificationsAreDisabled}</Txt>
-          <Txt color="hint" block>{m.notificationsAreDisabledDesc}</Txt>
+          <Txt bold block>
+            {m.notificationsAreDisabled}
+          </Txt>
+          <Txt color="hint" block>
+            {m.notificationsAreDisabledDesc}
+          </Txt>
         </Alert>
       )}
       <Panel>
         <Datatable
           data={_companies.visibleByPro.entity}
           loading={
-            _companies.visibleByPro.loading ||
-            _companies.accessibleByPro.loading ||
-            _reportNotificationBlockLists.crud.fetching
+            _companies.visibleByPro.loading || _companies.accessibleByPro.loading || _reportNotificationBlockLists.crud.fetching
           }
           getRenderRowKey={_ => _.id}
           rows={[
@@ -114,7 +120,7 @@ export const CompaniesPro = () => {
               row: _ => (
                 <>
                   <span className={css.tdName_label}>{_.name}</span>
-                  <br/>
+                  <br />
                   <span className={css.tdName_desc}>{_.siret}</span>
                 </>
               ),
@@ -123,7 +129,7 @@ export const CompaniesPro = () => {
               head: m.address,
               id: 'address',
               className: css.tdAddress,
-              row: _ => <AddressComponent address={_.address}/>,
+              row: _ => <AddressComponent address={_.address} />,
             },
             {
               head: (
@@ -144,7 +150,8 @@ export const CompaniesPro = () => {
                     e.target.checked
                       ? _reportNotificationBlockLists.crud.remove(_.id)
                       : _reportNotificationBlockLists.crud.create({}, _.id)
-                  }}/>
+                  }}
+                />
               ),
             },
             {

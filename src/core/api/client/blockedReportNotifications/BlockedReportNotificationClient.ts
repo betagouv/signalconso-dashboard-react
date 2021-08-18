@@ -2,8 +2,7 @@ import {ApiClientApi, Id} from '../..'
 import {BlockedReportNotification} from './BlockedReportNotification'
 
 export class BlockedReportNotificationClient {
-  constructor(private client: ApiClientApi) {
-  }
+  constructor(private client: ApiClientApi) {}
 
   readonly fetch = () => {
     return this.client.get<BlockedReportNotification[]>(`/report-notification-blocklist`)

@@ -25,7 +25,7 @@ export const Settings = () => {
       <PageTitle>{m.menu_settings}</PageTitle>
       <Panel>
         <SettingRow icon="vpn_key" title={m.password} description={m.editPasswordDesc}>
-          <EditPassword/>
+          <EditPassword />
         </SettingRow>
         <SettingRow icon="notifications" title={m.notifications} description={m.notificationSettings}>
           <NavLink to={siteMap.companiesPro}>
@@ -36,7 +36,7 @@ export const Settings = () => {
             </Tooltip>
           </NavLink>
           {_user.getConnectedUser.loading ? (
-            <Txt size="title" skeleton={58}/>
+            <Txt size="title" skeleton={58} />
           ) : (
             <Switch
               checked={_user.getConnectedUser.entity?.acceptNotifications ?? true}

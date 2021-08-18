@@ -6,14 +6,16 @@ import {SignalConsoApiSdk} from '../../App'
 import {BlockedReportNotification} from '../api/client/blockedReportNotifications/BlockedReportNotification'
 
 export interface BlockedReportNotificationContextProps {
-  crud: CrudListCRD<BlockedReportNotification,
+  crud: CrudListCRD<
+    BlockedReportNotification,
     'companyId',
     {
-      c: (companyId: Id) => Promise<BlockedReportNotification>,
-      r: () => Promise<BlockedReportNotification[]>,
-      d: (companyId: Id) => Promise<void>,
+      c: (companyId: Id) => Promise<BlockedReportNotification>
+      r: () => Promise<BlockedReportNotification[]>
+      d: (companyId: Id) => Promise<void>
     },
-    ApiError>,
+    ApiError
+  >
 }
 
 interface Props {
@@ -23,7 +25,9 @@ interface Props {
 
 const defaultContext: Partial<BlockedReportNotificationContextProps> = {}
 
-const BlockedReportNotificationContext = React.createContext<BlockedReportNotificationContextProps>(defaultContext as BlockedReportNotificationContextProps)
+const BlockedReportNotificationContext = React.createContext<BlockedReportNotificationContextProps>(
+  defaultContext as BlockedReportNotificationContextProps,
+)
 
 export const BlockedReportNotificationProvider = ({api, children}: Props) => {
   const crud = useCrudList('companyId', {
