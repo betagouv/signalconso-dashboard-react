@@ -11,36 +11,35 @@ import {useUsersContext} from '../../core/context/UsersContext'
 import {IconBtn} from 'mui-extension/lib'
 
 export const Settings = () => {
-    const {m} = useI18n()
+  const {m} = useI18n()
 
-    const _user = useUsersContext()
+  const _user = useUsersContext()
 
-    useEffect(() => {
-        _user.getConnectedUser.fetch()
-    }, [])
+  useEffect(() => {
+    _user.getConnectedUser.fetch()
+  }, [])
 
-    return (
-        <Page size="small">
-            <PageTitle>{m.menu_settings}</PageTitle>
-            <Panel>
-                <SettingRow icon="vpn_key" title={m.password} description={m.editPasswordDesc}>
-                    <EditPassword/>
-                </SettingRow>
-                <SettingRow icon="notifications" title="Notifications"
-                            description={m.notification_settings}>
-                    <NavLink to={siteMap.companiesPro}>
-                        <Tooltip title={m.handleAccesses}>
-                            <IconBtn color="primary">
-                                <Icon>tune</Icon>
-                            </IconBtn>
-                        </Tooltip>
-                    </NavLink>
-                    <Switch
-                        checked={!_user.getConnectedUser.entity?.disableAllNotifications ?? true}
-                        onChange={e => _user.patchConnectedUser.fetch({}, !e.target.checked).then( _ => _user.getConnectedUser.fetch())}
-                    />
-                </SettingRow>
-            </Panel>
-        </Page>
-    )
+  return (
+    <Page size="small">
+      <PageTitle>{m.menu_settings}</PageTitle>
+      <Panel>
+        <SettingRow icon="vpn_key" title={m.password} description={m.editPasswordDesc}>
+          <EditPassword />
+        </SettingRow>
+        <SettingRow icon="notifications" title={m.notifications} description={m.notificationSettings}>
+          <NavLink to={siteMap.companiesPro}>
+            <Tooltip title={m.notificationSettingsCustom}>
+              <IconBtn color="primary">
+                <Icon>tune</Icon>
+              </IconBtn>
+            </Tooltip>
+          </NavLink>
+          <Switch
+            checked={!_user.getConnectedUser.entity?.disableAllNotifications ?? true}
+            onChange={e => _user.patchConnectedUser.fetch({}, !e.target.checked).then(_ => _user.getConnectedUser.fetch())}
+          />
+        </SettingRow>
+      </Panel>
+    </Page>
+  )
 }

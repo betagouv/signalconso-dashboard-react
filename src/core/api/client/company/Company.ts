@@ -3,88 +3,88 @@ import {WebsiteKind} from '../..'
 import {Address} from '../../model/Address'
 
 export interface WebsiteURL {
-    url: string
+  url: string
 }
 
 export interface DraftCompany {
-    siret: string
-    name?: string
-    brand?: string
-    address?: Address
-    website?: WebsiteURL
-    activityCode?: string
+  siret: string
+  name?: string
+  brand?: string
+  address?: Address
+  website?: WebsiteURL
+  activityCode?: string
 }
 
 export interface CompanyWithReportsCount {
-    address: Address
-    name: string
-    // postalCode: string
-    siret: string
-    count: number
+  address: Address
+  name: string
+  // postalCode: string
+  siret: string
+  count: number
 }
 
 export interface Company {
-    id: Id
-    siret: string
-    creationDate: Date
-    name: string
-    address: Address
-    // postalCode?: string
-    activityCode?: string
+  id: Id
+  siret: string
+  creationDate: Date
+  name: string
+  address: Address
+  // postalCode?: string
+  activityCode?: string
 }
 
 export interface CompanyToActivate {
-    company: Company
-    lastNotice?: Date
-    tokenCreation: Date
+  company: Company
+  lastNotice?: Date
+  tokenCreation: Date
 }
 
 export interface CompanyCreation {
-    siret: string
-    name: string
-    address: Address
-    // postalCode?: string
-    activityCode?: string
+  siret: string
+  name: string
+  address: Address
+  // postalCode?: string
+  activityCode?: string
 }
 
 export interface CompanyUpdate {
-    address: Address
-    // postalCode: string
-    activationDocumentRequired: boolean
+  address: Address
+  // postalCode: string
+  activationDocumentRequired: boolean
 }
 
 export interface CompanySearchResult extends DraftCompany {
-    highlight: string
-    activityCode: string
-    activityLabel: string
-    isHeadOffice: boolean
-    kind?: WebsiteKind
+  highlight: string
+  activityCode: string
+  activityLabel: string
+  isHeadOffice: boolean
+  kind?: WebsiteKind
 }
 
 export interface CompanySearch extends PaginatedSearch<any> {
-    readonly departments?: string[]
-    identity?: string
+  readonly departments?: string[]
+  identity?: string
 }
 
 // TODO(Alex) Harmonize with company-access types
 export enum AccessLevel {
-    NONE = 'none',
-    MEMBER = 'member',
-    ADMIN = 'admin',
+  NONE = 'none',
+  MEMBER = 'member',
+  ADMIN = 'admin',
 }
 
 export interface VisibleCompany {
-    siret: string
-    postalCode?: string
-    closed: boolean
+  siret: string
+  postalCode?: string
+  closed: boolean
 }
 
 export interface CompanyWithAccessLevel extends Company {
-    level: AccessLevel
+  level: AccessLevel
 }
 
 export interface CompanyWithNotification extends CompanyWithAccessLevel {
-    hasNotification: boolean
+  hasNotification: boolean
 }
 
 export const isGovernmentCompany = (_?: DraftCompany): boolean => _?.activityCode?.startsWith('84.') ?? false
