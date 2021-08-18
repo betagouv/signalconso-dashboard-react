@@ -11,14 +11,8 @@ export interface CompaniesContextProps {
   downloadActivationDocument: UseFetcher<SignalConsoApiSdk['secured']['company']['downloadActivationDocument'], ApiError>
   confirmCompaniesPosted: UseFetcher<SignalConsoApiSdk['secured']['company']['confirmCompaniesPosted'], ApiError>
   searchByIdentity: UseFetcher<SignalConsoApiSdk['public']['company']['searchCompaniesByIdentity'], ApiError>
-  accessesByPro: UseFetcher<SignalConsoApiSdk['secured']['company']['getCompaniesAccessibleByPro'], ApiError>
-  accessesAndNotificationByPro: UseFetcher<
-    SignalConsoApiSdk['secured']['company']['accessibleCompanyProWithNotificationBlocklist'],
-    ApiError
-  >
-  blockCompanyNotification: UseFetcher<SignalConsoApiSdk['secured']['company']['blockCompanyNotification'], ApiError>
-  allowCompanyNotification: UseFetcher<SignalConsoApiSdk['secured']['company']['allowCompanyNotification'], ApiError>
-  viewableByPro: UseFetcher<SignalConsoApiSdk['secured']['company']['getCompaniesVisibleByPro'], ApiError>
+  accessibleByPro: UseFetcher<SignalConsoApiSdk['secured']['company']['getAccessibleByPro'], ApiError>
+  visibleByPro: UseFetcher<SignalConsoApiSdk['secured']['company']['getVisibleByPro'], ApiError>
   saveUndeliveredDocument: UseFetcher<SignalConsoApiSdk['secured']['company']['saveUndeliveredDocument'], ApiError>
 }
 
@@ -48,11 +42,8 @@ export const CompaniesProvider = ({api, children}: Props) => {
   const downloadActivationDocument = useFetcher(api.secured.company.downloadActivationDocument)
   const confirmCompaniesPosted = useFetcher(api.secured.company.confirmCompaniesPosted)
   const saveUndeliveredDocument = useFetcher(api.secured.company.saveUndeliveredDocument)
-  const accessesAndNotificationByPro = useFetcher(api.secured.company.accessibleCompanyProWithNotificationBlocklist)
-  const accessesByPro = useFetcher(api.secured.company.getCompaniesAccessibleByPro)
-  const viewableByPro = useFetcher(api.secured.company.getCompaniesVisibleByPro)
-  const blockCompanyNotification = useFetcher(api.secured.company.blockCompanyNotification)
-  const allowCompanyNotification = useFetcher(api.secured.company.allowCompanyNotification)
+  const accessibleByPro = useFetcher(api.secured.company.getAccessibleByPro)
+  const visible = useFetcher(api.secured.company.getVisibleByPro)
 
   return (
     <CompaniesContext.Provider
@@ -62,11 +53,8 @@ export const CompaniesProvider = ({api, children}: Props) => {
         searchByIdentity,
         downloadActivationDocument,
         confirmCompaniesPosted,
-        accessesByPro,
-        accessesAndNotificationByPro,
-        blockCompanyNotification,
-        allowCompanyNotification,
-        viewableByPro,
+        accessibleByPro: accessibleByPro,
+        visibleByPro: visible,
         saveUndeliveredDocument,
       }}
     >

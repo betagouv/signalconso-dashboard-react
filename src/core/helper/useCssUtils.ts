@@ -4,6 +4,9 @@ import {styleUtils} from '../theme'
 
 export const useCssUtils = makeStyles((t: Theme) => {
   return {
+    vaMiddle: {
+      verticalAlign: 'middle',
+    },
     hidden: {
       visibility: 'hidden',
     },

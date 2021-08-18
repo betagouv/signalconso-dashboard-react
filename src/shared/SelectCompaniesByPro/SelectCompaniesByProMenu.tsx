@@ -4,7 +4,7 @@ import * as React from 'react'
 import {useEffect, useMemo} from 'react'
 import {useCssUtils} from '../../core/helper/useCssUtils'
 import {useSetState, UseSetState} from '@alexandreannic/react-hooks-lib/lib'
-import {CompanyWithAccessLevel, VisibleCompany} from '../../core/api'
+import {Company, CompanyWithAccessLevel} from '../../core/api'
 import {useI18n} from '../../core/i18n'
 
 const useStyles = makeStyles((t: Theme) =>
@@ -48,7 +48,7 @@ const useStyles = makeStyles((t: Theme) =>
 
 interface SelectCompaniesProMenuProps {
   accessibleCompanies: CompanyWithAccessLevel[]
-  visibleCompanies: VisibleCompany[]
+  visibleCompanies: Company[]
   onClose: () => void
   initialValues?: string[]
   anchorEl: HTMLElement | null
@@ -94,7 +94,7 @@ export const SelectCompaniesByProMenu = ({
     onChange(indexValues.toArray())
   }
 
-  const onSelect = (company: VisibleCompany) => {
+  const onSelect = (company: Company) => {
     indexValues.toggle(company.siret)
     onChange(indexValues.toArray())
   }
@@ -116,7 +116,7 @@ export const SelectCompaniesByProMenu = ({
           <span className={cssUtils.txtBold}>{company.siret.substr(9, 14)}</span>
           <span className={classes(cssUtils.colorTxtHint, cssUtils.marginLeft)}>
             <Icon className={classes(cssUtils.inlineIcon, css.locationIcon)}>location_on</Icon>
-            {company.postalCode}
+            {company.address.postalCode}
           </span>
         </MenuItem>
       ))}

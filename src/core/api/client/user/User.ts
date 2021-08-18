@@ -5,18 +5,11 @@ export interface User {
   firstName: string
   lastName: string
   lastEmailValidation: Date
+  acceptNotifications: boolean
 }
 
-export interface UserPro {
-  email: string
-  firstName: string
-  lastName: string
-  lastEmailValidation: Date
-  disableAllNotifications: boolean
-}
-
-export interface UserProUpdate {
-  disableAllNotifications: boolean
+export interface UserUpdate {
+  acceptNotifications: boolean
 }
 
 export interface UserPending {

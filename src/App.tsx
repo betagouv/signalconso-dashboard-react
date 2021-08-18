@@ -41,6 +41,7 @@ import {useHistory} from 'react-router'
 import {UnregistredWebsitesProvider} from './core/context/UnregistredWebsitesContext'
 import {CompaniesPro} from './feature/CompaniesPro/CompaniesPro'
 import {ReportPro} from './feature/Report/ReportPro'
+import {BlockedReportNotificationProvider} from './core/context/BlockedReportNotificationProviderContext'
 
 const headers = {
   'Content-Type': 'application/json',
@@ -183,6 +184,7 @@ const AppLogged = () => {
         _ => <ReportedWebsitesProvider api={apiSdk} children={_} />,
         _ => <UnregistredWebsitesProvider api={apiSdk} children={_} />,
         _ => <SubscriptionsProvider api={apiSdk} children={_} />,
+        _ => <BlockedReportNotificationProvider api={apiSdk} children={_} />,
       ]}
     >
       <Switch>

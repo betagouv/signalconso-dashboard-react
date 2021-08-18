@@ -3,12 +3,12 @@ import {useEffect, useState} from 'react'
 import {createStyles, Icon, InputAdornment, makeStyles, TextField, Theme} from '@material-ui/core'
 import {SelectCompaniesByProMenu} from './SelectCompaniesByProMenu'
 import {useI18n} from '../../core/i18n'
-import {CompanyWithAccessLevel, VisibleCompany} from '../../core/api'
+import {Company, CompanyWithAccessLevel} from '../../core/api'
 import {fromNullable} from 'fp-ts/lib/Option'
 
 export interface SelectDepartmentsProps {
   accessibleCompanies: CompanyWithAccessLevel[]
-  visibleCompanies: VisibleCompany[]
+  visibleCompanies: Company[]
   placeholder?: string
   label?: string
   values?: string[]

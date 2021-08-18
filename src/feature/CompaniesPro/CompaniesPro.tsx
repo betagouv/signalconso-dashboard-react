@@ -1,20 +1,24 @@
 import {Page, PageTitle} from '../../shared/Layout'
 import {useI18n} from '../../core/i18n'
-import React, {useEffect} from 'react'
+import React, {useEffect, useMemo} from 'react'
 import {Panel} from '../../shared/Panel'
 import {useCompaniesContext} from '../../core/context/CompaniesContext'
 import {useCssUtils} from '../../core/helper/useCssUtils'
 import {Datatable} from '../../shared/Datatable/Datatable'
-import {FormControlLabel, Icon, makeStyles, Switch, Theme, Tooltip} from '@material-ui/core'
+import {Icon, makeStyles, Switch, Theme, Tooltip} from '@material-ui/core'
 import {styleUtils} from '../../core/theme'
 import {Alert, Fender, IconBtn} from 'mui-extension/lib'
 import {ScButton} from '../../shared/Button/Button'
 import {AddressComponent} from '../../shared/Address/Address'
 import {siteMap} from '../../core/siteMap'
 import {NavLink} from 'react-router-dom'
-import {AccessLevel} from '../../core/api'
+import {AccessLevel, Company} from '../../core/api'
 import {useUsersContext} from '../../core/context/UsersContext'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
+import {useReportNotificationBlockListsContext} from '../../core/context/BlockedReportNotificationProviderContext'
+import {indexEntities} from '@alexandreannic/ts-utils/lib/indexEntites/IndexEntities'
+import {fromNullable} from 'fp-ts/lib/Option'
+import {classes} from '../../core/helper/utils'
 
 const useStyles = makeStyles((t: Theme) => ({
   tdName_label: {
@@ -30,54 +34,77 @@ const useStyles = makeStyles((t: Theme) => ({
     color: t.palette.text.hint,
   },
   tdAddress: {
-    maxWidth: 300,
+    maxWidth: 240,
+    color: t.palette.text.secondary,
     ...styleUtils(t).truncate,
+  },
+  tdNotification: {
+    width: 0,
+    textAlign: 'center',
   },
   fender: {
     margin: `${t.spacing(1)}px auto ${t.spacing(2)}px auto`,
   },
+  tdActions: {
+    textAlign: 'right',
+    width: 0,
+  },
 }))
+
+interface CompanyInfo extends Company {
+  level?: AccessLevel
+}
 
 export const CompaniesPro = () => {
   const {m} = useI18n()
   const _companies = useCompaniesContext()
+  const _reportNotificationBlockLists = useReportNotificationBlockListsContext()
   const cssUtils = useCssUtils()
   const css = useStyles()
   const _users = useUsersContext()
 
   useEffect(() => {
     _users.getConnectedUser.fetch({force: false})
-    _companies.accessesAndNotificationByPro.fetch()
+    _reportNotificationBlockLists.crud.fetch()
+    _companies.visibleByPro.fetch({force: false})
+    _companies.accessibleByPro.fetch({force: false})
   }, [])
+
+  const accessibleCompaniesIndex = useMemo(() => {
+    return fromNullable(_companies.accessibleByPro.entity).map(_ => indexEntities('id', _)).toUndefined()
+  }, [_companies.accessibleByPro.entity])
+
+  const blockedNotificationIndex = useMemo(() => {
+    return fromNullable(_reportNotificationBlockLists.crud.list).map(_ => indexEntities('companyId', _)).toUndefined()
+  }, [_reportNotificationBlockLists.crud.list])
 
   return (
     <Page size="small">
       <PageTitle>{m.myCompanies}</PageTitle>
-
-      {_users.getConnectedUser.entity?.disableAllNotifications && (
+      {_users.getConnectedUser.entity && (
         <Alert
           type="info"
           gutterBottom
+          hidden={_users.getConnectedUser.entity.acceptNotifications}
           action={
             <Switch
-              checked={!_users.getConnectedUser.entity?.disableAllNotifications ?? true}
-              onChange={e => _users.patchConnectedUser.fetch({}, !e.target.checked).then(_ => _users.getConnectedUser.fetch({}))}
+              checked={_users.getConnectedUser.entity?.acceptNotifications ?? true}
+              onChange={e => _users.patchConnectedUser.fetch({}, {acceptNotifications: e.target.checked})}
             />
           }
         >
-          <Txt bold block>
-            Notifications désactivées
-          </Txt>
-          <Txt color="hint" block>
-            Toutes les notifications pour l'ensemble de vos entreprise sont désactivées. Cliquez sur le bouton pour avoir la
-            possibilité d'activer ou desactiver les notifications par entreprise{' '}
-          </Txt>
+          <Txt bold block>{m.notificationsAreDisabled}</Txt>
+          <Txt color="hint" block>{m.notificationsAreDisabledDesc}</Txt>
         </Alert>
       )}
       <Panel>
         <Datatable
-          data={_companies.accessesAndNotificationByPro?.entity}
-          loading={_companies.accessesAndNotificationByPro.loading}
+          data={_companies.visibleByPro.entity}
+          loading={
+            _companies.visibleByPro.loading ||
+            _companies.accessibleByPro.loading ||
+            _reportNotificationBlockLists.crud.fetching
+          }
           getRenderRowKey={_ => _.id}
           rows={[
             {
@@ -87,7 +114,7 @@ export const CompaniesPro = () => {
               row: _ => (
                 <>
                   <span className={css.tdName_label}>{_.name}</span>
-                  <br />
+                  <br/>
                   <span className={css.tdName_desc}>{_.siret}</span>
                 </>
               ),
@@ -96,33 +123,37 @@ export const CompaniesPro = () => {
               head: m.address,
               id: 'address',
               className: css.tdAddress,
-              row: _ => <AddressComponent address={_.address} />,
+              row: _ => <AddressComponent address={_.address}/>,
             },
             {
-              head: m.notification,
+              head: (
+                <Tooltip title={m.notificationAcceptForCompany}>
+                  <span className={classes(cssUtils.nowrap, cssUtils.vaMiddle)}>
+                    {m.notification}&nbsp;
+                    <Icon className={cssUtils.inlineIcon}>help</Icon>
+                  </span>
+                </Tooltip>
+              ),
               id: 'status',
+              className: css.tdNotification,
               row: _ => (
-                <FormControlLabel
-                  control={
-                    <Switch disabled={_users.getConnectedUser.entity?.disableAllNotifications} checked={_.hasNotification} />
-                  }
+                <Switch
+                  disabled={!_users.getConnectedUser.entity?.acceptNotifications}
+                  checked={!blockedNotificationIndex?.[_.id]}
                   onChange={e => {
-                    ;(_.hasNotification
-                      ? _companies.blockCompanyNotification.fetch({}, _.id)
-                      : _companies.allowCompanyNotification.fetch({}, _.id)
-                    ).then(_ => _companies.accessesAndNotificationByPro.fetch({clean: false}))
-                  }}
-                  label=""
-                />
+                    e.target.checked
+                      ? _reportNotificationBlockLists.crud.remove(_.id)
+                      : _reportNotificationBlockLists.crud.create({}, _.id)
+                  }}/>
               ),
             },
             {
               head: '',
               id: 'actions',
-              className: cssUtils.txtRight,
+              className: css.tdActions,
               row: _ => (
                 <>
-                  {_.level === AccessLevel.ADMIN && (
+                  {accessibleCompaniesIndex?.[_.id]?.level === AccessLevel.ADMIN && (
                     <NavLink to={siteMap.companyAccesses(_.siret)}>
                       <Tooltip title={m.handleAccesses}>
                         <IconBtn color="primary">

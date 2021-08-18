@@ -1,7 +1,7 @@
 import * as React from 'react'
 import {ReactNode, useContext} from 'react'
 import {UseFetcher, useFetcher, usePaginate, UsePaginate} from '@alexandreannic/react-hooks-lib/lib'
-import {ApiError, User, UserProUpdate, UserSearch} from 'core/api'
+import {ApiError, User, UserSearch, UserUpdate} from 'core/api'
 import {SignalConsoApiSdk} from '../../App'
 
 export interface UsersContextProps {
@@ -24,13 +24,15 @@ const UsersContext = React.createContext<UsersContextProps>(defaultContext as Us
 
 export const UsersProvider = ({api, children}: Props) => {
 
-  const dgccrf = usePaginate<User, UserSearch, ApiError>(api.secured.user.fetchDGCCRF, {limit: 10, offset: 0},)
+  const dgccrf = usePaginate<User, UserSearch, ApiError>(api.secured.user.fetchDGCCRF, {limit: 10, offset: 0})
   const changePassword = useFetcher(api.secured.user.changePassword)
   const dgccrfPending = useFetcher(api.secured.user.fetchPendingDGCCRF)
   const invite = useFetcher(api.secured.user.inviteDGCCRF)
   const getConnectedUser = useFetcher(api.secured.user.fetchConnectedUser)
-
-  const patchConnectedUser = useFetcher(api.secured.user.patchConnectedUser)
+  const patchConnectedUser = useFetcher((userUpdate: UserUpdate) => {
+    getConnectedUser.setEntity(prev => prev && ({...prev, ...userUpdate}))
+    return api.secured.user.patchConnectedUser(userUpdate)
+  })
 
   return (
     <UsersContext.Provider

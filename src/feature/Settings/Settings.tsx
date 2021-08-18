@@ -9,6 +9,7 @@ import {siteMap} from '../../core/siteMap'
 import {Icon, Switch, Tooltip} from '@material-ui/core'
 import {useUsersContext} from '../../core/context/UsersContext'
 import {IconBtn} from 'mui-extension/lib'
+import {Txt} from 'mui-extension/lib/Txt/Txt'
 
 export const Settings = () => {
   const {m} = useI18n()
@@ -24,7 +25,7 @@ export const Settings = () => {
       <PageTitle>{m.menu_settings}</PageTitle>
       <Panel>
         <SettingRow icon="vpn_key" title={m.password} description={m.editPasswordDesc}>
-          <EditPassword />
+          <EditPassword/>
         </SettingRow>
         <SettingRow icon="notifications" title={m.notifications} description={m.notificationSettings}>
           <NavLink to={siteMap.companiesPro}>
@@ -34,10 +35,14 @@ export const Settings = () => {
               </IconBtn>
             </Tooltip>
           </NavLink>
-          <Switch
-            checked={!_user.getConnectedUser.entity?.disableAllNotifications ?? true}
-            onChange={e => _user.patchConnectedUser.fetch({}, !e.target.checked).then(_ => _user.getConnectedUser.fetch())}
-          />
+          {_user.getConnectedUser.loading ? (
+            <Txt size="title" skeleton={58}/>
+          ) : (
+            <Switch
+              checked={_user.getConnectedUser.entity?.acceptNotifications ?? true}
+              onChange={e => _user.patchConnectedUser.fetch({}, {acceptNotifications: e.target.checked})}
+            />
+          )}
         </SettingRow>
       </Panel>
     </Page>

@@ -1,16 +1,4 @@
-import {
-  ApiClientApi,
-  ApiPaginate,
-  CompanySearch,
-  CompanyToActivate,
-  CompanyWithAccessLevel,
-  CompanyWithNotification,
-  CompanyWithReportsCount,
-  dateToApi,
-  directDownloadBlob,
-  PaginatedData,
-  VisibleCompany,
-} from '../..'
+import {ApiClientApi, ApiPaginate, CompanySearch, CompanyToActivate, CompanyWithAccessLevel, CompanyWithReportsCount, dateToApi, directDownloadBlob} from '../..'
 import {Company, CompanyCreation, CompanyUpdate, Event, Id} from '../../model'
 import {format} from 'date-fns'
 import {Address} from '../../model/Address'
@@ -39,35 +27,6 @@ export class CompanyClient {
     }))
   }
 
-  readonly blockCompanyNotification = (companyId: Id) => {
-    return this.client.post(`/report-notification-blocklist/${companyId}`)
-  }
-
-  readonly allowCompanyNotification = (companyId: Id) => {
-    return this.client.delete(`/report-notification-blocklist/${companyId}`)
-  }
-
-  readonly accessibleCompanyProWithNotificationBlocklist = (): Promise<CompanyWithNotification[]> => {
-    const companiesForProUser = this.client
-      .get<CompanyWithAccessLevel[]>(`/accesses/connected-user`)
-      .then(res => res.map(_ => ({..._, creationDate: new Date(_.creationDate)})))
-
-    const blockedNotification: Promise<Id[]> = this.client.get(`/report-notification-blocklist`)
-
-    return companiesForProUser
-      .then(companies => blockedNotification.then(blocked => ({blocked: blocked, companies: companies})))
-      .then(_ =>
-        _.companies.map(c =>
-          _.blocked.filter(id => id === c.id).length >= 1
-            ? {
-                ...c,
-                hasNotification: false,
-              }
-            : {...c, hasNotification: true},
-        ),
-      )
-  }
-
   /** @deprecated use search() instead */
   readonly searchRegisterCompanies = (search: string): Promise<CompanyWithReportsCount[]> => {
     return this.client
@@ -93,14 +52,14 @@ export class CompanyClient {
       .then(directDownloadBlob(`signalement_depot_${format(new Date(), 'ddMMyy')}`))
   }
 
-  readonly getCompaniesAccessibleByPro = (): Promise<CompanyWithAccessLevel[]> => {
+  readonly getAccessibleByPro = (): Promise<CompanyWithAccessLevel[]> => {
     return this.client
       .get<CompanyWithAccessLevel[]>(`/accesses/connected-user`)
       .then(res => res.map(_ => ({..._, creationDate: new Date(_.creationDate)})))
   }
 
-  readonly getCompaniesVisibleByPro = (): Promise<VisibleCompany[]> => {
-    return this.client.get<VisibleCompany[]>(`/companies/connected-user`)
+  readonly getVisibleByPro = () => {
+    return this.client.get<Company[]>(`/companies/connected-user`)
   }
 
   readonly fetchToActivate = () => {
