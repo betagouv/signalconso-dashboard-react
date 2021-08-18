@@ -17,7 +17,7 @@ export const Settings = () => {
   const _user = useUsersContext()
 
   useEffect(() => {
-    _user.getConnectedUser.fetch()
+    _user.getConnectedUser.fetch({force: false})
   }, [])
 
   return (

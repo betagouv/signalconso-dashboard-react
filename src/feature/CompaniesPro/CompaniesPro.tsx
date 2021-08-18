@@ -15,10 +15,10 @@ import {NavLink} from 'react-router-dom'
 import {AccessLevel, Company} from '../../core/api'
 import {useUsersContext} from '../../core/context/UsersContext'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
-import {useReportNotificationBlockListsContext} from '../../core/context/BlockedReportNotificationProviderContext'
 import {indexEntities} from '@alexandreannic/ts-utils/lib/indexEntites/IndexEntities'
 import {fromNullable} from 'fp-ts/lib/Option'
 import {classes} from '../../core/helper/utils'
+import {useBlockedReportNotificationContext} from '../../core/context/BlockedReportNotificationProviderContext'
 
 const useStyles = makeStyles((t: Theme) => ({
   tdName_label: {
@@ -58,7 +58,7 @@ interface CompanyInfo extends Company {
 export const CompaniesPro = () => {
   const {m} = useI18n()
   const _companies = useCompaniesContext()
-  const _reportNotificationBlockLists = useReportNotificationBlockListsContext()
+  const _reportNotificationBlockLists = useBlockedReportNotificationContext()
   const cssUtils = useCssUtils()
   const css = useStyles()
   const _users = useUsersContext()
@@ -107,7 +107,7 @@ export const CompaniesPro = () => {
       )}
       <Panel>
         <Datatable
-          data={_companies.visibleByPro.entity}
+          data={accessibleCompaniesIndex && blockedNotificationIndex && _companies.visibleByPro.entity || undefined}
           loading={
             _companies.visibleByPro.loading || _companies.accessibleByPro.loading || _reportNotificationBlockLists.crud.fetching
           }

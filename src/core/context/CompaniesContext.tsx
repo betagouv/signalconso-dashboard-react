@@ -43,7 +43,7 @@ export const CompaniesProvider = ({api, children}: Props) => {
   const confirmCompaniesPosted = useFetcher(api.secured.company.confirmCompaniesPosted)
   const saveUndeliveredDocument = useFetcher(api.secured.company.saveUndeliveredDocument)
   const accessibleByPro = useFetcher(api.secured.company.getAccessibleByPro)
-  const visible = useFetcher(api.secured.company.getVisibleByPro)
+  const visibleByPro = useFetcher(api.secured.company.getVisibleByPro)
 
   return (
     <CompaniesContext.Provider
@@ -53,8 +53,8 @@ export const CompaniesProvider = ({api, children}: Props) => {
         searchByIdentity,
         downloadActivationDocument,
         confirmCompaniesPosted,
-        accessibleByPro: accessibleByPro,
-        visibleByPro: visible,
+        accessibleByPro,
+        visibleByPro,
         saveUndeliveredDocument,
       }}
     >
