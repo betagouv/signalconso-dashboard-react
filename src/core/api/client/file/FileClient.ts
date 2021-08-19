@@ -13,6 +13,6 @@ export class FileClient {
   }
 
   readonly remove = (file: UploadedFile) => {
-    return this.client.delete(`/reports/files/${file.id}/${file.filename}`)
+    return this.client.delete(`/reports/files/${file.id}/${encodeURI(file.filename)}`)
   }
 }
