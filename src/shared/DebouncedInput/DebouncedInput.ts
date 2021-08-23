@@ -14,12 +14,7 @@ export const DebouncedInput = <V>({debounce = 400, value, onChange, children}: D
   const debounced = useCallback(lodashDebounce(onChange, debounce), [onChange])
 
   useEffect(() => {
-    if (!innerValue || (innerValue as any) === '') {
-      // We cannot setInnerValue on every [value] change because if would override the innerValue
-      // Also, cannot setInnerValue on mount because when reading from querystring, it is initially undefined
-      // before to be set.
-      setInnerValue(value)
-    }
+    setInnerValue(value)
   }, [value])
 
   const innerOnChange = (newValue: V) => {

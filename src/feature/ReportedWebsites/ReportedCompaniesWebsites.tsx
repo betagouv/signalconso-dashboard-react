@@ -29,6 +29,10 @@ export const ReportedCompaniesWebsites = () => {
       height: 42,
       borderRadius: 42,
     },
+    status: {
+      width: '100%',
+      maxWidth: 180,
+    }
   }))
 
   const {m, formatDate} = useI18n()
@@ -78,7 +82,7 @@ export const ReportedCompaniesWebsites = () => {
               onChange={(kinds: WebsiteKind[]) => _fetch.updateFilters(prev => ({...prev, kinds}))}
             >
               {(value, onChange) => (
-                <ScSelect value={value} onChange={(e: any) => onChange(e.target.value)} multiple fullWidth>
+                <ScSelect value={value} onChange={(e: any) => onChange(e.target.value)} multiple className={css.status}>
                   {[WebsiteKind.PENDING, WebsiteKind.DEFAULT].map(kind => (
                     <MenuItem key={kind} value={kind}>
                       {kind === WebsiteKind.PENDING ? m.notValidated : m.validated}

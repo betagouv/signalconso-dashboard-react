@@ -66,8 +66,15 @@ interface SelectDepartmentsMenuProps {
   onChange: (departments: string[]) => void
 }
 
-export const SelectDepartmentsMenu = withRegions(
-  ({selectAllLabel, onClose, regions, initialValues, anchorEl, open, onChange}: SelectDepartmentsMenuProps) => {
+export const SelectDepartmentsMenu = withRegions(({
+    selectAllLabel,
+    onClose,
+    regions,
+    initialValues,
+    anchorEl,
+    open,
+    onChange,
+  }: SelectDepartmentsMenuProps) => {
     const css = useStyles()
     const cssUtils = useCssUtils()
     const indexValues: UseSetState<string> = useSetState<string>()
@@ -80,7 +87,7 @@ export const SelectDepartmentsMenu = withRegions(
 
     useEffect(() => {
       indexValues.reset(initialValues)
-    }, [])
+    }, [initialValues])
 
     const onSelectDepartments = (departments: string[]) => {
       indexValues.toggleAll(departments)

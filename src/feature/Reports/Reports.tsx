@@ -1,16 +1,7 @@
 import {Page, PageTitle} from '../../shared/Layout'
 import {useI18n} from '../../core/i18n'
 import {useReportsContext} from '../../core/context/ReportsContext'
-import {
-  cleanObject,
-  DetailInputValue,
-  getHostFromUrl,
-  Report,
-  ReportingDateLabel,
-  ReportSearch,
-  ReportSearchResult,
-  ReportTag,
-} from 'core/api'
+import {cleanObject, DetailInputValue, getHostFromUrl, Report, ReportingDateLabel, ReportSearch, ReportSearchResult, ReportTag} from 'core/api'
 import {Panel} from '../../shared/Panel'
 import {useCssUtils} from '../../core/helper/useCssUtils'
 import {Datatable} from '../../shared/Datatable/Datatable'
@@ -18,12 +9,7 @@ import {fromNullable, some} from 'fp-ts/lib/Option'
 import {alpha, Badge, Button, Icon, makeStyles, Theme, Tooltip} from '@material-ui/core'
 import {classes, textOverflowMiddleCropping} from '../../core/helper/utils'
 import React, {useEffect, useMemo} from 'react'
-import {
-  mapArrayFromQuerystring,
-  mapDateFromQueryString,
-  mapDatesToQueryString,
-  useQueryString,
-} from '../../core/helper/useQueryString'
+import {mapArrayFromQuerystring, mapDateFromQueryString, mapDatesToQueryString, useQueryString} from '../../core/helper/useQueryString'
 import {NavLink} from 'react-router-dom'
 import {SelectDepartments} from '../../shared/SelectDepartments/SelectDepartments'
 import {Fender, IconBtn} from 'mui-extension/lib'
@@ -122,8 +108,9 @@ export const Reports = ({}) => {
 
   const queryString = useQueryString<Partial<ReportSearch>, Partial<ReportSearchQs>>({
     toQueryString: mapDatesToQueryString,
-    fromQueryString: compose(mapDateFromQueryString, _ =>
-      mapArrayFromQuerystring(_, ['departments', 'tags', 'companyCountries', 'siretSirenList']),
+    fromQueryString: compose(
+      mapDateFromQueryString,
+      _ => mapArrayFromQuerystring(_, ['departments', 'tags', 'companyCountries', 'siretSirenList']),
     ),
   })
 
