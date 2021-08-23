@@ -17,6 +17,7 @@ import {DebouncedInput} from '../../shared/DebouncedInput/DebouncedInput'
 import {fromNullable} from 'fp-ts/lib/Option'
 import {useToast} from '../../core/toast'
 import {AddressComponent} from '../../shared/Address/Address'
+import {SelectCompany} from '../../shared/SelectCompany/SelectCompany'
 
 const useStyles = makeStyles((t: Theme) => ({
   tdName_label: {
@@ -48,9 +49,10 @@ export interface CompanySearchQs extends PaginatedSearch<any> {
 export const CompaniesRegistered = () => {
   const {m, formatLargeNumber} = useI18n()
   const _companies = useCompaniesContext().activated
+  const _companyCreate = useCompaniesContext().create
   const cssUtils = useCssUtils()
   const css = useStyles()
-  const {toastError} = useToast()
+  const {toastError, toastSuccess} = useToast()
 
   const queryString = useQueryString<Partial<CompanySearch>, Partial<CompanySearchQs>>({
     toQueryString: _ => _,
@@ -67,7 +69,8 @@ export const CompaniesRegistered = () => {
 
   useEffect(() => {
     fromNullable(_companies.error).map(toastError)
-  }, [_companies.error])
+    fromNullable(_companyCreate.error).map(toastError)
+  }, [_companies.error, _companyCreate.error])
 
   return (
     <Panel>
@@ -167,9 +170,21 @@ export const CompaniesRegistered = () => {
         ]}
         renderEmptyState={
           <Fender title={m.noCompanyFound} icon="store" className={css.fender}>
-            <ScButton variant="contained" color="primary" icon="add" className={cssUtils.marginTop}>
-              {m.registerACompany}
-            </ScButton>
+            <SelectCompany
+              onChange={company => {
+                const {siret, name, address, activityCode} = company
+                if (name && address) {
+                  _companyCreate.fetch({}, {siret, name, address, activityCode})
+                    .then(() => toastSuccess(m.companyCreated))
+                } else {
+                  toastError({message: m.cannotCreateCompanyMissingInfo})
+                }
+              }}
+            >
+              <ScButton variant="contained" color="primary" icon="add" className={cssUtils.marginTop}>
+                {m.registerACompany}
+              </ScButton>
+            </SelectCompany>
           </Fender>
         }
       />

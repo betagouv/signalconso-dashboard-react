@@ -207,6 +207,8 @@ export const messagesFr = {
   selectedCompanies: `entreprises sélectionnées`,
   passwordNotLongEnough: '8 caractères minimum',
   oldPassword: 'Ancien mot de passe',
+  companyCreated: 'Entreprise créée',
+  cannotCreateCompanyMissingInfo: `Impossible de créer l'entreprise. Son nom ou son adresse ne sont pas renseignés.`,
   failedToChangePassword: 'Impossible de modifier le mot de passe.',
   passwordAreIdentical: 'Les mots de passe sont identiques',
   passwordDoesntMatch: "Le mot de passe n'est pas identitique",

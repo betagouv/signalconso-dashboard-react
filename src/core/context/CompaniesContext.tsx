@@ -8,6 +8,7 @@ import {paginateData} from '../helper/utils'
 export interface CompaniesContextProps {
   activated: UsePaginate<CompanyWithReportsCount, CompanySearch>
   toActivate: UsePaginate<CompanyToActivate, PaginatedFilters>
+  create: UseFetcher<SignalConsoApiSdk['secured']['company']['create'], ApiError>
   downloadActivationDocument: UseFetcher<SignalConsoApiSdk['secured']['company']['downloadActivationDocument'], ApiError>
   confirmCompaniesPosted: UseFetcher<SignalConsoApiSdk['secured']['company']['confirmCompaniesPosted'], ApiError>
   searchByIdentity: UseFetcher<SignalConsoApiSdk['public']['company']['searchCompaniesByIdentity'], ApiError>
@@ -38,6 +39,7 @@ export const CompaniesProvider = ({api, children}: Props) => {
         .then(paginateData(filter.limit, filter.offset)),
     {limit: 500, offset: 0},
   )
+  const create = useFetcher(api.secured.company.create)
   const searchByIdentity = useFetcher(api.public.company.searchCompaniesByIdentity)
   const downloadActivationDocument = useFetcher(api.secured.company.downloadActivationDocument)
   const confirmCompaniesPosted = useFetcher(api.secured.company.confirmCompaniesPosted)
@@ -48,6 +50,7 @@ export const CompaniesProvider = ({api, children}: Props) => {
   return (
     <CompaniesContext.Provider
       value={{
+        create,
         activated,
         toActivate,
         searchByIdentity,
