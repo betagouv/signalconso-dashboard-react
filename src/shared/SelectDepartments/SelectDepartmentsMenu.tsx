@@ -13,7 +13,7 @@ const withRegions =
   (WrappedComponent: React.ComponentType<SelectDepartmentsMenuProps>) => (props: Omit<SelectDepartmentsMenuProps, 'regions'>) => {
     const {regions} = useConstantContext()
     useEffect(() => {
-      regions.fetch()
+      regions.fetch({force: false})
     }, [])
     return fromNullable(regions.entity)
       .map(_ => <WrappedComponent {...props} regions={_} />)

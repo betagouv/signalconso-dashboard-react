@@ -84,8 +84,8 @@ export const ReportFilters = ({filters, updateFilters, children}: ReportsFilters
   }
 
   useEffect(() => {
-    _reportStatus.fetch()
-    _category.fetch()
+    _reportStatus.fetch({force: false})
+    _category.fetch({force: false})
   }, [])
 
   return (

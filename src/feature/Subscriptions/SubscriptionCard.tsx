@@ -56,7 +56,7 @@ export const SubscriptionCard = ({subscription, onUpdate, onDelete, removing, lo
   const css = useStyles()
 
   useEffect(() => {
-    _category.fetch()
+    _category.fetch({force: false})
   }, [])
 
   return (

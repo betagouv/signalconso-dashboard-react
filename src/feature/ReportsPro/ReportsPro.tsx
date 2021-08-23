@@ -122,7 +122,7 @@ export const ReportsPro = () => {
   useEffect(() => {
     _companies.accessesByPro.fetch()
     _companies.viewableByPro.fetch()
-    _reportStatus.fetch()
+    _reportStatus.fetch({force: false})
     _reports.updateFilters({..._reports.initialFilters, ...queryString.get()})
   }, [])
 
