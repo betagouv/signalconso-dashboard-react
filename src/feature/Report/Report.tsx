@@ -78,7 +78,13 @@ export const ReportComponent = () => {
     fromNullable(_report.updateCompany.error).map(toastError)
     fromNullable(_report.companyEvents.error).map(toastError)
     fromNullable(_report.events.error).map(toastError)
-  }, [_report.remove.error, _report.get.error, _report.updateCompany.error, _report.companyEvents.error, _report.events.error])
+  }, [
+    _report.remove.error,
+    _report.get.error,
+    _report.updateCompany.error,
+    _report.companyEvents.error,
+    _report.events.error,
+  ])
 
   const downloadReport = (reportId: Id) => _report.download.fetch({}, reportId)
 
