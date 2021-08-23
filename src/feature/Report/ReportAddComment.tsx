@@ -6,6 +6,7 @@ import {ScInput} from '../../shared/Input/ScInput'
 import {useFetcher} from '@alexandreannic/react-hooks-lib/lib'
 import {useLogin} from '../../core/context/LoginContext'
 import {useToast} from '../../core/toast'
+import {ScDialog} from '../../shared/Confirm/ScDialog'
 
 interface Props {
   report: Report
@@ -25,7 +26,7 @@ export const ReportAddComment = ({report, children, onAdd}: Props) => {
   }
 
   return (
-    <Confirm
+    <ScDialog
       title={m.addDgccrfComment}
       loading={_addComment.loading}
       onConfirm={(event, close) =>
@@ -37,7 +38,6 @@ export const ReportAddComment = ({report, children, onAdd}: Props) => {
         })
       }
       confirmLabel={m.add}
-      cancelLabel={m.close}
       confirmDisabled={comment === ''}
       content={
         <>
@@ -47,6 +47,6 @@ export const ReportAddComment = ({report, children, onAdd}: Props) => {
       }
     >
       {children}
-    </Confirm>
+    </ScDialog>
   )
 }

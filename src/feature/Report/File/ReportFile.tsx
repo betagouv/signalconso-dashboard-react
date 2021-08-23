@@ -9,6 +9,7 @@ import {useFetcher} from '@alexandreannic/react-hooks-lib/lib'
 import {Confirm, IconBtn} from 'mui-extension/lib'
 import {useToast} from '../../../core/toast'
 import {useI18n} from '../../../core/i18n'
+import {ScDialog} from '../../../shared/Confirm/ScDialog'
 
 export interface ReportFileProps {
   file: UploadedFile
@@ -95,7 +96,7 @@ export const ReportFile = ({file, dense, onRemove}: ReportFileProps) => {
     <Tooltip title={file.filename}>
       <a target="_blank" href={fileUrl} className={css.root}>
         {onRemove && (
-          <Confirm
+          <ScDialog
             title={m.removeAsk}
             content={<span dangerouslySetInnerHTML={{__html: m.thisWillBeRemoved(file.filename)}} />}
             maxWidth="xs"
@@ -107,13 +108,12 @@ export const ReportFile = ({file, dense, onRemove}: ReportFileProps) => {
               remove()
               close()
             }}
-            cancelLabel={m.close}
             confirmLabel={m.delete}
           >
             <IconBtn loading={_remove.loading} size="small" className={css.removeBtn}>
               <Icon>clear</Icon>
             </IconBtn>
-          </Confirm>
+          </ScDialog>
         )}
         <div className={css.image}>
           {(() => {

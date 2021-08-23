@@ -16,6 +16,7 @@ import {SelectMenu} from '../../shared/SelectMenu/SelectMenu'
 import {useAnomalyContext} from '../../core/context/AnomalyContext'
 import {Confirm, IconBtn} from 'mui-extension/lib'
 import {makeStyles} from '@material-ui/core/styles'
+import {ScDialog} from '../../shared/Confirm/ScDialog'
 
 interface Props {
   subscription: Subscription
@@ -77,11 +78,11 @@ export const SubscriptionCard = ({subscription, onUpdate, onDelete, removing, lo
                 <MenuItem value="P7D">{m.weekly}</MenuItem>
               </ScSelect>
               &nbsp;
-              <Confirm title={m.removeSubscription} cancelLabel={m.close} confirmLabel={m.delete} onConfirm={onDelete}>
+              <ScDialog title={m.removeSubscription} confirmLabel={m.delete} onConfirm={onDelete}>
                 <IconBtn color="primary" loading={removing}>
                   <Icon>delete</Icon>
                 </IconBtn>
-              </Confirm>
+              </ScDialog>
             </>
           }
         >

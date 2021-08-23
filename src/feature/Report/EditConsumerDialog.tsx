@@ -1,4 +1,3 @@
-import {Confirm} from 'mui-extension/lib'
 import React, {ReactElement} from 'react'
 import {useI18n} from '../../core/i18n'
 import {ScInput} from '../../shared/Input/ScInput'
@@ -6,6 +5,7 @@ import {Controller, useForm} from 'react-hook-form'
 import {regexp} from '../../core/helper/regexp'
 import {Checkbox, FormControlLabel} from '@material-ui/core'
 import {Report} from '../../core/api'
+import {ScDialog} from '../../shared/Confirm/ScDialog'
 
 interface Form {
   firstName: string
@@ -30,10 +30,9 @@ export const EditConsumerDialog = ({report, onChange, children}: Props) => {
     formState: {errors, isValid},
   } = useForm<Form>({mode: 'onChange'})
   return (
-    <Confirm
+    <ScDialog
       title={m.editConsumer}
       maxWidth="xs"
-      cancelLabel={m.close}
       confirmLabel={m.edit}
       onConfirm={(event, close) => {
         onChange(getValues())
@@ -91,6 +90,6 @@ export const EditConsumerDialog = ({report, onChange, children}: Props) => {
       }
     >
       {children}
-    </Confirm>
+    </ScDialog>
   )
 }

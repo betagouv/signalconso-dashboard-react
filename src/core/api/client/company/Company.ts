@@ -15,11 +15,7 @@ export interface DraftCompany {
   activityCode?: string
 }
 
-export interface CompanyWithReportsCount {
-  address: Address
-  name: string
-  // postalCode: string
-  siret: string
+export interface CompanyWithReportsCount extends Company {
   count: number
 }
 

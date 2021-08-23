@@ -10,6 +10,7 @@ import {ScSelect} from '../../shared/Select/Select'
 import {MenuItem} from '@material-ui/core'
 import {useToast} from '../../core/toast'
 import {Enum} from '@alexandreannic/ts-utils/lib/enum/Enum'
+import {ScDialog} from '../../shared/Confirm/ScDialog'
 
 interface Props {
   errorMessage?: string
@@ -32,10 +33,9 @@ export const CompanyAccessCreateBtn = ({errorMessage, loading, onCreate}: Props)
   } = useForm<Form>({mode: 'onChange'})
   const {toastSuccess} = useToast()
   return (
-    <Confirm
+    <ScDialog
       maxWidth="xs"
       title={m.invitNewUser}
-      cancelLabel={m.close}
       confirmLabel={m.create}
       loading={loading}
       confirmDisabled={!isValid}
@@ -76,6 +76,6 @@ export const CompanyAccessCreateBtn = ({errorMessage, loading, onCreate}: Props)
       <ScButton loading={loading} icon="add" color="primary" variant="contained">
         {m.invite}
       </ScButton>
-    </Confirm>
+    </ScDialog>
   )
 }

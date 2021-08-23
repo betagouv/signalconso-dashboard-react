@@ -1,4 +1,4 @@
-import {Alert, Btn, Confirm, Page} from 'mui-extension/lib'
+import {Alert, Btn, Page} from 'mui-extension/lib'
 import {TextField, Theme} from '@material-ui/core'
 import * as React from 'react'
 import {useEffect} from 'react'
@@ -11,6 +11,7 @@ import {styleUtils} from '../theme'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
 import {useCssUtils} from '../helper/useCssUtils'
 import {useToast} from '../toast'
+import {ScDialog} from '../../shared/Confirm/ScDialog'
 
 const useStyles = makeStyles((t: Theme) => ({
   root: {
@@ -121,7 +122,7 @@ export const LoginPage = ({isLogging, onLogin, forgottenPassword}: Props) => {
                 {m.login}
               </Btn>
               {forgottenPassword && (
-                <Confirm
+                <ScDialog
                   confirmDisabled={forgottenPassword.loading}
                   loading={forgottenPassword.loading}
                   title={m.forgottenPassword}
@@ -153,11 +154,10 @@ export const LoginPage = ({isLogging, onLogin, forgottenPassword}: Props) => {
                       .then(() => toastSuccess(m.emailSentToYou))
                   }}
                   confirmLabel={m.createNewPassword}
-                  cancelLabel={m.close}
                   maxWidth="xs"
                 >
                   <Btn color="primary">{m.forgottenPassword}</Btn>
-                </Confirm>
+                </ScDialog>
               )}
             </div>
           </form>
