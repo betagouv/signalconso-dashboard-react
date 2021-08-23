@@ -18,7 +18,7 @@ export const cleanObject = <T extends {[key: string]: any}>(obj: T): Partial<T> 
   const clone = {...obj}
   for (let k in clone) {
     const val = clone[k]
-    if (isNotDefined(val) || (Array.isArray(val) && val.filter(isDefined))) {
+    if (isNotDefined(val) || (Array.isArray(val) && val.filter(isDefined).length === 0)) {
       delete clone[k]
     }
   }
