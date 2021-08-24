@@ -63,7 +63,7 @@ export const LoginPage = <L extends Fn, R extends Fn, F extends Fn>({login, regi
                 <Tabs
                   variant="fullWidth"
                   className={css.tabs}
-                  value={location.pathname}
+                  value={allTabs.find(_ => _ === location.pathname) ?? allTabs[0]}
                   indicatorColor="primary"
                   textColor="primary"
                 >
