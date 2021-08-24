@@ -26,7 +26,7 @@ export const messagesFr = {
   save: 'Sauvegarder',
   saved: 'Sauvegardé',
   duplicate: 'Duplicate',
-  anErrorOccurred: "Un erreur s'est produite.",
+  anErrorOccurred: "Une erreur s'est produite.",
   minimize: 'Minimize',
   required: 'Requis',
   cancel: 'Annuler',
