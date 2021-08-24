@@ -87,9 +87,24 @@ export const sortData =
 
 export const sortPaginatedData =
   <T>(sortBy: keyof T, orderBy: OrderBy) =>
-  (p: Paginate<T>): Paginate<T> => {
-    return {
-      data: sortData(sortBy, orderBy)(p.data),
-      totalSize: p.totalSize,
+    (p: Paginate<T>): Paginate<T> => {
+      return {
+        data: sortData(sortBy, orderBy)(p.data),
+        totalSize: p.totalSize,
+      }
     }
-  }
+
+type PromiseReturn<T> = T extends PromiseLike<infer U> ? U : T
+type AsyncFnResult<T extends (...args: any[]) => Promise<object>> = PromiseReturn<ReturnType<T>>
+
+export const mapPromise = <F extends (...args: any[]) => Promise<any>, X>({
+  promise,
+  mapThen = _ => _,
+  mapCatch = _ => _,
+}: {
+  promise: F,
+  mapThen?: (_: AsyncFnResult<F>) => X,
+  mapCatch?: (_: any) => any
+}) => (...args: Parameters<F>): Promise<X> => {
+  return promise(args).then(mapThen).catch(mapCatch)
+}

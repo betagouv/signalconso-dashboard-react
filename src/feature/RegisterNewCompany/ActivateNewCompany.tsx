@@ -14,6 +14,9 @@ import {useAccessesContext} from '../../core/context/AccessesContext'
 import {fromNullable} from 'fp-ts/lib/Option'
 import {useToast} from '../../core/toast'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
+import {useHistory} from 'react-router'
+import {siteMap} from '../../core/siteMap'
+import {Alert} from 'mui-extension'
 
 interface Form {
   siret: string
@@ -35,13 +38,14 @@ const useStyles = makeStyles((t: Theme) => ({
   },
 }))
 
-export const RegisterNewCompany = () => {
+export const ActivateNewCompany = () => {
   const {m} = useI18n()
   const cssUtils = useCssUtils()
   const css = useStyles()
   const {connectedUser} = useLogin()
   const _acceptToken = useAccessesContext().acceptToken
-  const {toastError} = useToast()
+  const {toastError, toastSuccess} = useToast()
+  const history = useHistory()
 
   const {
     register,
@@ -52,15 +56,21 @@ export const RegisterNewCompany = () => {
 
   const acceptToken = (form: Form) => {
     _acceptToken.fetch({}, form.siret, form.code)
+      .then(() => {
+        toastSuccess(m.companyRegistered)
+        history.push(siteMap.companiesPro)
+      })
   }
-
-  useEffect(() => {
-    fromNullable(_acceptToken.error).map(toastError)
-  }, [_acceptToken.error])
 
   return (
     <Page size="small">
       <LoginPanel title={m.youReceivedNewLetter}>
+        {_acceptToken.error && (
+          <Alert type="error" className={cssUtils.marginBottom2}>
+            <Txt size="big" block bold>{m.registerCompanyError}</Txt>
+            <Txt>{m.registerCompanyErrorDesc}</Txt>
+          </Alert>
+        )}
         <form onSubmit={handleSubmit(acceptToken)}>
           <ScInput
             className={cssUtils.marginBottom}
@@ -76,6 +86,7 @@ export const RegisterNewCompany = () => {
           <ScInput
             className={cssUtils.marginBottom}
             fullWidth
+            type="password"
             error={!!errors.code}
             helperText={errors.code?.message ?? m.activationCodeDesc}
             label={m.activationCode}

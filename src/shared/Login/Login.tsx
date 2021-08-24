@@ -9,15 +9,19 @@ type AsynFnResult<T extends (...args: any[]) => Promise<object>> = PromiseReturn
 
 export type Fn = (...args: any[]) => Promise<any>
 
+export interface LoginActionProps<F extends Function> {
+  action: F
+  loading?: boolean
+  errorMsg?: string
+}
+
 export interface LoginExposedProps<L extends Fn, R extends Fn> {
   authResponse?: AsynFnResult<L>
   logout: () => void
-  login: (...args: Parameters<L>) => Promise<void>
-  register: (...args: Parameters<R>) => Promise<void>
+  login: LoginActionProps<(...args: Parameters<L>) => Promise<void>>
+  register: LoginActionProps<(...args: Parameters<R>) => Promise<void>>
   token?: string
-  isLogging: boolean
   isCheckingToken: boolean
-  isRegistering: boolean
 }
 
 interface Props<L extends Fn, R extends Fn> {
@@ -40,6 +44,8 @@ export const Login = <L extends Fn, R extends Fn>({
   const [auth, setAuth] = useState<AsynFnResult<L>>()
   const [isLogging, setIsLogging] = useState(false)
   const [isRegistering, setIsRegistering] = useState(false)
+  const [loginError, setLoginError] = useState<string | undefined>()
+  const [registerError, setRegisterError] = useState<string | undefined>()
   const [isCheckingToken, setIsCheckingToken] = useState(true)
 
   useEffect(() => {
@@ -59,6 +65,7 @@ export const Login = <L extends Fn, R extends Fn>({
       setAuth(auth as any)
     } catch (e) {
       toastError(e)
+      setLoginError(e)
     } finally {
       setIsLogging(false)
     }
@@ -70,6 +77,7 @@ export const Login = <L extends Fn, R extends Fn>({
       await onRegister(...args)
     } catch (e) {
       toastError(e)
+      setRegisterError(e)
     } finally {
       setIsRegistering(false)
     }
@@ -97,12 +105,18 @@ export const Login = <L extends Fn, R extends Fn>({
 
   return children({
     authResponse: auth,
-    login,
+    login: {
+      action: login,
+      loading: isLogging,
+      errorMsg: loginError,
+    },
     logout,
-    register,
+    register: {
+      action: register,
+      loading: isRegistering,
+      errorMsg: registerError,
+    },
     token: auth ? getTokenFromResponse(auth) : undefined,
-    isLogging,
-    isRegistering,
     isCheckingToken,
   })
 }

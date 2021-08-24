@@ -59,6 +59,7 @@ export const ActivateAccountForm = ({register: registerAction}: Props) => {
         <ScInput
           className={cssUtils.marginBottom}
           fullWidth
+          type="password"
           error={!!errors.code}
           helperText={errors.code?.message ?? m.activationCodeDesc}
           label={m.activationCode}

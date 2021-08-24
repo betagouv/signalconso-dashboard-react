@@ -42,7 +42,8 @@ import {UnregistredWebsitesProvider} from './core/context/UnregistredWebsitesCon
 import {CompaniesPro} from './feature/CompaniesPro/CompaniesPro'
 import {ReportPro} from './feature/Report/ReportPro'
 import {AccessesProvider} from './core/context/AccessesContext'
-import {RegisterNewCompany} from './feature/RegisterNewCompany/RegisterNewCompany'
+import {ActivateNewCompany} from './feature/RegisterNewCompany/ActivateNewCompany'
+import {mapPromise} from './core/helper/utils'
 
 const headers = {
   'Content-Type': 'application/json',
@@ -138,12 +139,18 @@ const AppLogin = () => {
 
   return (
     <Login
-      onRegister={apiPublicSdk.authenticate.sendActivationLink}
-      onLogin={apiPublicSdk.authenticate.login}
+      onRegister={mapPromise({
+        promise: apiPublicSdk.authenticate.sendActivationLink,
+        mapCatch: (err: ApiError) => err.message
+      })}
+      onLogin={mapPromise({
+        promise: apiPublicSdk.authenticate.login,
+        mapCatch: (err: ApiError) => err.message,
+      })}
       onLogout={() => history.push('/')}
       getTokenFromResponse={_ => _.token}
     >
-      {({authResponse, login, logout, register, isLogging, isCheckingToken, isRegistering}) => (
+      {({authResponse, login, logout, register, isCheckingToken}) => (
         <Layout connectedUser={authResponse ? {...authResponse.user, logout: logout} : undefined}>
           {authResponse ? (
             <LoginProvider
@@ -158,14 +165,8 @@ const AppLogin = () => {
             <LoginLoader />
           ) : (
             <LoginPage
-              login={{
-                action: login,
-                loading: isLogging,
-              }}
-              register={{
-                action: register,
-                loading: isRegistering,
-              }}
+              login={login}
+              register={register}
               forgottenPassword={{
                 action: (email: string) => forgottenPassword.fetch({}, email),
                 loading: forgottenPassword.loading,
@@ -209,7 +210,7 @@ const AppLogged = () => {
         <Route path={siteMap.subscriptions} component={Subscriptions} />
         <Route path={siteMap.companiesPro} component={CompaniesPro} />
         <Route path={siteMap.settings} component={Settings} />
-        <Route path={siteMap.register} component={RegisterNewCompany} />
+        <Route path={siteMap.register} component={ActivateNewCompany} />
         <Redirect from="/" to={siteMap.reports()} />
       </Switch>
     </Provide>
