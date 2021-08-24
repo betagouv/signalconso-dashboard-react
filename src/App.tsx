@@ -42,6 +42,7 @@ import {UnregistredWebsitesProvider} from './core/context/UnregistredWebsitesCon
 import {CompaniesPro} from './feature/CompaniesPro/CompaniesPro'
 import {ReportPro} from './feature/Report/ReportPro'
 import {AccessesProvider} from './core/context/AccessesContext'
+import {RegisterNewCompany} from './feature/RegisterNewCompany/RegisterNewCompany'
 
 const headers = {
   'Content-Type': 'application/json',
@@ -216,7 +217,8 @@ const AppLogged = () => {
         <Route path={siteMap.subscriptions} component={Subscriptions} />
         <Route path={siteMap.companiesPro} component={CompaniesPro} />
         <Route path={siteMap.settings} component={Settings} />
-        <Redirect exact from="/" to={siteMap.reports()} />
+        <Route path={siteMap.register} component={RegisterNewCompany} />
+        <Redirect from="/" to={siteMap.reports()} />
       </Switch>
     </Provide>
   )

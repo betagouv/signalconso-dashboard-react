@@ -10,6 +10,7 @@ import {ActivateAccountForm} from './ActivateAccountForm'
 import {LoginForm} from './LoginForm'
 import {HashRouter, Link, Redirect, Route, Switch} from 'react-router-dom'
 import {Fn} from '../../shared/Login/Login'
+import {siteMap} from '../../core/siteMap'
 
 const useStyles = makeStyles((t: Theme) => ({
   root: {
@@ -49,7 +50,7 @@ export const LoginPage = <L extends Fn, R extends Fn, F extends Fn>({login, regi
   const {m} = useI18n()
   const css = useStyles()
 
-  const allTabs = ['/connexion', '/entreprise/activation']
+  const allTabs = [siteMap.login, siteMap.register]
 
   return (
     <Page className={css.root}>

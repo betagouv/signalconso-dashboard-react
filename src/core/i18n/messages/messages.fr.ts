@@ -84,6 +84,8 @@ export const messagesFr = {
   invalidEmail: 'Email invalide',
   firstName: 'Prénom',
   lastName: 'Nom',
+  addCompany: `Enregister l'entreprise`,
+  addACompany: `Enregister une entreprise`,
   youReceivedNewLetter: `Vous avez reçu un courrier postal ?`,
   siretOfYourCompany: `SIRET de votre entreprise`,
   siretOfYourCompanyDesc: `Il doit correspondre à la raison sociale indiquée sur le courrier.`,
