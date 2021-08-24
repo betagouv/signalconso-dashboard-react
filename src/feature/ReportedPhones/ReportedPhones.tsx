@@ -59,13 +59,10 @@ export const ReportedPhones = () => {
                   _reportedPhone.updateFilters(prev => ({...prev, start: start ?? prev.start, end: end ?? prev.end}))
                 }
               >
-                {(value, onChange) => <PeriodPicker value={value ?? [undefined, undefined]} onChange={onChange} fullWidth/>}
+                {(value, onChange) => <PeriodPicker value={value ?? [undefined, undefined]} onChange={onChange} fullWidth />}
               </DebouncedInput>
               <Tooltip title={m.removeAllFilters}>
-                <IconBtn
-                  color="primary"
-                  onClick={_reportedPhone.clearFilters}
-                >
+                <IconBtn color="primary" onClick={_reportedPhone.clearFilters}>
                   <Icon>clear</Icon>
                 </IconBtn>
               </Tooltip>

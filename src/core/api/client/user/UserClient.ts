@@ -8,7 +8,8 @@ export class UserClient {
   constructor(private client: ApiClientApi) {}
 
   readonly fetchDGCCRF = (filters: UserSearch): Promise<Paginate<User>> => {
-    return this.client.get<User[]>(`/account/dgccrf/users`)
+    return this.client
+      .get<User[]>(`/account/dgccrf/users`)
       .then(users =>
         fromNullable(filters.email)
           .filter(_ => _ !== '')

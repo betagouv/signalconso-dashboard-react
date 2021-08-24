@@ -20,5 +20,5 @@ export const siteMap = {
   users_all: '/admin/invitation-ccrf/all',
   settings: '/parametres',
   register: '/entreprise/activation',
-  login: '/connexion'
+  login: '/connexion',
 }

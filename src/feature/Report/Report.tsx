@@ -183,12 +183,18 @@ export const ReportComponent = () => {
                       </div>
                       <div className={classes(cssUtils.colorTxtSecondary, cssUtils.txtSmall)}>
                         <div className={cssUtils.txtBold}>{report.companyName}</div>
-                        <AddressComponent address={report.companyAddress}/>
+                        <AddressComponent address={report.companyAddress} />
                       </div>
                       <div>{report.vendor}</div>
-                      {fromNullable(report.websiteURL).map(_ =>
-                        <Txt link block className={cssUtils.marginTop}><a href={_} target="_blank">{_}</a></Txt>,
-                      ).toUndefined()}
+                      {fromNullable(report.websiteURL)
+                        .map(_ => (
+                          <Txt link block className={cssUtils.marginTop}>
+                            <a href={_} target="_blank">
+                              {_}
+                            </a>
+                          </Txt>
+                        ))
+                        .toUndefined()}
                     </div>
                     <Icon className={css.cardBody_icon}>store</Icon>
                   </PanelBody>

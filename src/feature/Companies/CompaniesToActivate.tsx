@@ -120,11 +120,7 @@ export const CompaniesToActivate = () => {
             >
               {m.download}
             </ScButton>
-            <ScDialog
-              title={m.validateLetterSentTitle}
-              content={m.validateLetterSentDesc}
-              onConfirm={confirmCompaniesPosted}
-            >
+            <ScDialog title={m.validateLetterSentTitle} content={m.validateLetterSentDesc} onConfirm={confirmCompaniesPosted}>
               <ScButton
                 disabled={_companiesToActivate.fetching || selectedCompaniesSet.size === 0}
                 loading={_companies.confirmCompaniesPosted.loading}

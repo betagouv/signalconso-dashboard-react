@@ -84,13 +84,7 @@ export const RegisterNewCompany = () => {
               pattern: {value: regexp.activationCode, message: m.activationCodeInvalid},
             })}
           />
-          <ScInput
-            className={cssUtils.marginBottom}
-            disabled
-            fullWidth
-            label={m.email}
-            value={connectedUser.email}
-          />
+          <ScInput className={cssUtils.marginBottom} disabled fullWidth label={m.email} value={connectedUser.email} />
           <div className={css.foot}>
             <ScButton loading={_acceptToken.loading} type="submit" color="primary" variant="contained">
               {m.addCompany}
@@ -99,7 +93,7 @@ export const RegisterNewCompany = () => {
         </form>
       </LoginPanel>
       <Txt color="hint" className={css.hint}>
-        <div dangerouslySetInnerHTML={{__html: m.loginIssueTip}}/>
+        <div dangerouslySetInnerHTML={{__html: m.loginIssueTip}} />
       </Txt>
     </Page>
   )

@@ -18,7 +18,6 @@ const defaultContext: Partial<AccessesContextProps> = {}
 const AccessesContext = React.createContext<AccessesContextProps>(defaultContext as AccessesContextProps)
 
 export const AccessesProvider = ({api, children}: Props) => {
-
   const acceptToken = useFetcher(api.secured.accesses.acceptToken)
 
   return (

@@ -67,12 +67,11 @@ export const CompaniesProvider = ({api, children}: Props) => {
       value={{
         updateAddress: {
           ...updateAddress,
-          fetch: (p: {force?: boolean, clean?: boolean} = {}, id: Id, update: CompanyUpdate) => {
-            return updateAddress.fetch(p, id, update)
-              .then(_ => {
-                updateRegisteredCompanyAddress(id, update.address)
-                return _
-              })
+          fetch: (p: {force?: boolean; clean?: boolean} = {}, id: Id, update: CompanyUpdate) => {
+            return updateAddress.fetch(p, id, update).then(_ => {
+              updateRegisteredCompanyAddress(id, update.address)
+              return _
+            })
           },
         },
         create,

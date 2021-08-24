@@ -16,7 +16,7 @@ const withRegions = (WrappedComponent: React.ComponentType<Props>) =>
       countries.fetch({force: false})
     }, [])
     return fromNullable(countries.entity)
-      .map(_ => <WrappedComponent {...props} countries={_.filter(_ => _.code !== 'FR')} ref={ref}/>)
+      .map(_ => <WrappedComponent {...props} countries={_.filter(_ => _.code !== 'FR')} ref={ref} />)
       .getOrElse(<></>)
   })
 

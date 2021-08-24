@@ -32,5 +32,4 @@ export const LoginPanel = ({title, children}: Props) => {
       </PanelBody>
     </Panel>
   )
-
 }

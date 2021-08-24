@@ -143,15 +143,7 @@ const AppLogin = () => {
       onLogout={() => history.push('/')}
       getTokenFromResponse={_ => _.token}
     >
-      {({
-        authResponse,
-        login,
-        logout,
-        register,
-        isLogging,
-        isCheckingToken,
-        isRegistering,
-      }) => (
+      {({authResponse, login, logout, register, isLogging, isCheckingToken, isRegistering}) => (
         <Layout connectedUser={authResponse ? {...authResponse.user, logout: logout} : undefined}>
           {authResponse ? (
             <LoginProvider
@@ -160,7 +152,7 @@ const AppLogin = () => {
               onLogout={logout}
               apiSdk={makeSecuredSdk(authResponse.token)}
             >
-              <AppLogged/>
+              <AppLogged />
             </LoginProvider>
           ) : isCheckingToken ? (
             <LoginLoader />

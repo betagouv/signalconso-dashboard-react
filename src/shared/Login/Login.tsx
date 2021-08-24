@@ -66,7 +66,7 @@ export const Login = <L extends Fn, R extends Fn>({
     try {
       setIsRegistering(true)
       await onRegister(...args)
-    }  catch (e) {
+    } catch (e) {
       toastError(e)
     } finally {
       setIsRegistering(false)

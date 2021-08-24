@@ -1,4 +1,16 @@
-import {Chip, Dialog, DialogActions, DialogContent, DialogTitle, FormControlLabel, makeStyles, MenuItem, Radio, RadioGroup, Theme} from '@material-ui/core'
+import {
+  Chip,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  FormControlLabel,
+  makeStyles,
+  MenuItem,
+  Radio,
+  RadioGroup,
+  Theme,
+} from '@material-ui/core'
 import {useI18n} from '../../core/i18n'
 import React, {ReactElement, ReactNode, useEffect, useState} from 'react'
 import {ReportSearch, ReportTag} from 'core/api'
@@ -94,10 +106,10 @@ export const ReportFilters = ({filters, updateFilters, children}: ReportsFilters
           <>
             <DialogContent>
               <Row label={m.website}>
-                <ScInput small fullWidth {...register('websiteURL')} defaultValue={filters.websiteURL ?? ''}/>
+                <ScInput small fullWidth {...register('websiteURL')} defaultValue={filters.websiteURL ?? ''} />
               </Row>
               <Row label={m.phone}>
-                <ScInput small fullWidth {...register('phone')} defaultValue={filters.phone ?? ''}/>
+                <ScInput small fullWidth {...register('phone')} defaultValue={filters.phone ?? ''} />
               </Row>
               <Row label={m.siret}>
                 <ScInput small fullWidth {...register('siretSirenList')} defaultValue={filters.siretSirenList ?? ''} />
