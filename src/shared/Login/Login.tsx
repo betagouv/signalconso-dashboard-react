@@ -40,7 +40,7 @@ export const Login = <L extends Fn, R extends Fn>({
   const [auth, setAuth] = useState<AsynFnResult<L>>()
   const [isLogging, setIsLogging] = useState(false)
   const [isRegistering, setIsRegistering] = useState(false)
-  const [isCheckingToken, setIsCheckingToken] = useState(false)
+  const [isCheckingToken, setIsCheckingToken] = useState(true)
 
   useEffect(() => {
     const storedToken = authenticationStorage.get()
