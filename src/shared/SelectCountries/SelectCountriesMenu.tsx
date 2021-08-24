@@ -1,24 +1,23 @@
 import * as React from 'react'
-import {forwardRef, useEffect, useMemo} from 'react'
+import {useEffect, useMemo} from 'react'
 import {useConstantContext} from '../../core/context/ConstantContext'
 import {fromNullable} from 'fp-ts/lib/Option'
 import {Country} from '../../core/api'
-import {Checkbox, createStyles, alpha, makeStyles, Menu, Theme} from '@material-ui/core'
+import {alpha, Checkbox, createStyles, makeStyles, Menu, Theme} from '@material-ui/core'
 import {useCssUtils} from '../../core/helper/useCssUtils'
 import {useI18n} from '../../core/i18n'
 import {classes} from '../../core/helper/utils'
 import {useSetState, UseSetState} from '@alexandreannic/react-hooks-lib/lib'
 
-const withRegions = (WrappedComponent: React.ComponentType<Props>) =>
-  forwardRef((props: Omit<Props, 'countries'>, ref: any) => {
-    const {countries} = useConstantContext()
-    useEffect(() => {
-      countries.fetch({force: false})
-    }, [])
-    return fromNullable(countries.entity)
-      .map(_ => <WrappedComponent {...props} countries={_.filter(_ => _.code !== 'FR')} ref={ref} />)
-      .getOrElse(<></>)
-  })
+const withRegions = (WrappedComponent: React.ComponentType<Props>) => (props: Omit<Props, 'countries'>) => {
+  const {countries} = useConstantContext()
+  useEffect(() => {
+    countries.fetch({force: false})
+  }, [])
+  return fromNullable(countries.entity)
+    .map(_ => <WrappedComponent {...props} countries={_.filter(_ => _.code !== 'FR')} />)
+    .getOrElse(<></>)
+}
 
 const useStyles = makeStyles((t: Theme) => {
   const iconWidth = 50
@@ -69,7 +68,6 @@ interface Props {
   open: boolean
   countries: Country[]
   onClose: () => void
-  ref: any
 }
 
 const countryToFlag = (isoCode: string) => {
@@ -78,7 +76,7 @@ const countryToFlag = (isoCode: string) => {
     : isoCode
 }
 
-export const SelectCountriesMenu = withRegions(({countries, anchorEl, open, initialValues, onChange, onClose, ref}: Props) => {
+export const SelectCountriesMenu = withRegions(({countries, anchorEl, open, initialValues, onChange, onClose}: Props) => {
   const cssUtils = useCssUtils()
   const css = useStyles()
   const {m} = useI18n()
