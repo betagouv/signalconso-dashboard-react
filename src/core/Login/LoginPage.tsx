@@ -112,7 +112,7 @@ export const LoginPage = ({isLogging, onLogin, forgottenPassword}: Props) => {
             <div style={{display: 'flex', alignItems: 'center'}}>
               <Btn
                 loading={isLogging}
-                type="submit"
+                type="button"
                 disabled={!inputPassword.isValid() || !inputEmail.isValid()}
                 onClick={login}
                 variant="contained"
