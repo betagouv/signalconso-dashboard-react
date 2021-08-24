@@ -46,6 +46,8 @@ export const Login = <L extends Fn, R extends Fn>({
     const storedToken = authenticationStorage.get()
     if (storedToken) {
       checkToken(storedToken)
+    } else {
+      setIsCheckingToken(false)
     }
   }, [])
 
