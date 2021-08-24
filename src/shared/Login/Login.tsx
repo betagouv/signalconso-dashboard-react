@@ -1,38 +1,45 @@
-import {useToast} from '../toast'
+import {useToast} from '../../core/toast'
 import React, {useEffect, useMemo, useState} from 'react'
 import jwtDecode from 'jwt-decode'
-import {localStorageObject} from '../helper/localStorage'
+import {localStorageObject} from '../../core/helper/localStorage'
 
 type PromiseReturn<T> = T extends PromiseLike<infer U> ? U : T
 
 type AsynFnResult<T extends (...args: any[]) => Promise<object>> = PromiseReturn<ReturnType<T>>
 
-export interface LoginExposedProps<F extends (...args: any[]) => Promise<object>> {
-  authResponse?: AsynFnResult<F>
+export type Fn = (...args: any[]) => Promise<any>
+
+export interface LoginExposedProps<L extends Fn, R extends Fn> {
+  authResponse?: AsynFnResult<L>
   logout: () => void
-  login: (...args: Parameters<F>) => Promise<void>
+  login: (...args: Parameters<L>) => Promise<void>
+  register: (...args: Parameters<R>) => Promise<void>
   token?: string
   isLogging: boolean
   isCheckingToken: boolean
+  isRegistering: boolean
 }
 
-interface Props<F extends (...args: any[]) => Promise<object>> {
-  onLogin: F
+interface Props<L extends Fn, R extends Fn> {
+  onLogin: L
+  onRegister: R
   onLogout: () => void
-  getTokenFromResponse: (_: AsynFnResult<F>) => string
-  children: ({authResponse, login, logout, token}: LoginExposedProps<F>) => any
+  getTokenFromResponse: (_: AsynFnResult<L>) => string
+  children: ({authResponse, login, logout, token}: LoginExposedProps<L, R>) => any
 }
 
-export const Login = <F extends (...args: any[]) => Promise<object>>({
+export const Login = <L extends Fn, R extends Fn>({
   onLogin,
+  onRegister,
   onLogout,
   getTokenFromResponse,
   children,
-}: Props<F>) => {
-  const authenticationStorage = useMemo(() => localStorageObject<AsynFnResult<F>>('AuthUserSignalConso'), [])
+}: Props<L, R>) => {
+  const authenticationStorage = useMemo(() => localStorageObject<AsynFnResult<L>>('AuthUserSignalConso'), [])
   const {toastError} = useToast()
-  const [auth, setAuth] = useState<AsynFnResult<F>>()
+  const [auth, setAuth] = useState<AsynFnResult<L>>()
   const [isLogging, setIsLogging] = useState(false)
+  const [isRegistering, setIsRegistering] = useState(false)
   const [isCheckingToken, setIsCheckingToken] = useState(false)
 
   useEffect(() => {
@@ -42,7 +49,7 @@ export const Login = <F extends (...args: any[]) => Promise<object>>({
     }
   }, [])
 
-  const login = async (...args: Parameters<F>): Promise<void> => {
+  const login = async (...args: Parameters<L>): Promise<void> => {
     try {
       setIsLogging(true)
       const auth = await onLogin(...args)
@@ -52,6 +59,17 @@ export const Login = <F extends (...args: any[]) => Promise<object>>({
       toastError(e)
     } finally {
       setIsLogging(false)
+    }
+  }
+
+  const register = async (...args: Parameters<R>): Promise<void> => {
+    try {
+      setIsRegistering(true)
+      await onRegister(...args)
+    }  catch (e) {
+      toastError(e)
+    } finally {
+      setIsRegistering(false)
     }
   }
 
@@ -66,7 +84,7 @@ export const Login = <F extends (...args: any[]) => Promise<object>>({
     return new Date().getTime() > expirationDate * 1000
   }
 
-  const checkToken = async (auth: AsynFnResult<F>) => {
+  const checkToken = async (auth: AsynFnResult<L>) => {
     setIsCheckingToken(true)
     if (isTokenExpired(getTokenFromResponse(auth))) {
     } else {
@@ -79,8 +97,10 @@ export const Login = <F extends (...args: any[]) => Promise<object>>({
     authResponse: auth,
     login,
     logout,
+    register,
     token: auth ? getTokenFromResponse(auth) : undefined,
     isLogging,
+    isRegistering,
     isCheckingToken,
   })
 }

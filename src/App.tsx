@@ -28,11 +28,11 @@ import {UsersProvider} from './core/context/UsersContext'
 import {Settings} from './feature/Settings/Settings'
 import {Subscriptions} from './feature/Subscriptions/Subscriptions'
 import {SubscriptionsProvider} from './core/context/SubscriptionsContext'
-import {LoginPage} from './core/Login/LoginPage'
+import {LoginPage} from './feature/Login/LoginPage'
 import {Layout} from './core/Layout'
-import {Login} from './core/Login/Login'
+import {Login} from './shared/Login/Login'
 import {LoginProvider, useLogin} from './core/context/LoginContext'
-import {LoginLoader} from './core/Login/LoginLoader'
+import {LoginLoader} from './feature/Login/LoginLoader'
 import {useFetcher} from '@alexandreannic/react-hooks-lib/lib'
 import {ReportsPro} from './feature/ReportsPro/ReportsPro'
 import {ReportedWebsitesProvider} from './core/context/ReportedWebsitesContext'
@@ -41,6 +41,7 @@ import {useHistory} from 'react-router'
 import {UnregistredWebsitesProvider} from './core/context/UnregistredWebsitesContext'
 import {CompaniesPro} from './feature/CompaniesPro/CompaniesPro'
 import {ReportPro} from './feature/Report/ReportPro'
+import {AccessesProvider} from './core/context/AccessesContext'
 
 const headers = {
   'Content-Type': 'application/json',
@@ -135,8 +136,21 @@ const AppLogin = () => {
   )
 
   return (
-    <Login onLogin={apiPublicSdk.authenticate.login} onLogout={() => history.push('/')} getTokenFromResponse={_ => _.token}>
-      {({authResponse, login, logout, isLogging, isCheckingToken}) => (
+    <Login
+      onRegister={apiPublicSdk.authenticate.sendActivationLink}
+      onLogin={apiPublicSdk.authenticate.login}
+      onLogout={() => history.push('/')}
+      getTokenFromResponse={_ => _.token}
+    >
+      {({
+        authResponse,
+        login,
+        logout,
+        register,
+        isLogging,
+        isCheckingToken,
+        isRegistering,
+      }) => (
         <Layout connectedUser={authResponse ? {...authResponse.user, logout: logout} : undefined}>
           {authResponse ? (
             <LoginProvider
@@ -145,14 +159,20 @@ const AppLogin = () => {
               onLogout={logout}
               apiSdk={makeSecuredSdk(authResponse.token)}
             >
-              <AppLogged />
+              <AppLogged/>
             </LoginProvider>
           ) : isCheckingToken ? (
             <LoginLoader />
           ) : (
             <LoginPage
-              isLogging={isLogging}
-              onLogin={login}
+              login={{
+                action: login,
+                loading: isLogging,
+              }}
+              register={{
+                action: register,
+                loading: isRegistering,
+              }}
               forgottenPassword={{
                 action: (email: string) => forgottenPassword.fetch({}, email),
                 loading: forgottenPassword.loading,
@@ -168,7 +188,6 @@ const AppLogin = () => {
 
 const AppLogged = () => {
   const {apiSdk, connectedUser} = useLogin()
-  const {m} = useI18n()
   return (
     <Provide
       providers={[
@@ -183,6 +202,7 @@ const AppLogged = () => {
         _ => <ReportedWebsitesProvider api={apiSdk} children={_} />,
         _ => <UnregistredWebsitesProvider api={apiSdk} children={_} />,
         _ => <SubscriptionsProvider api={apiSdk} children={_} />,
+        _ => <AccessesProvider api={apiSdk} children={_} />,
       ]}
     >
       <Switch>
