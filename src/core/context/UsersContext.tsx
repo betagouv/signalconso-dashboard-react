@@ -21,8 +21,7 @@ const defaultContext: Partial<UsersContextProps> = {}
 const UsersContext = React.createContext<UsersContextProps>(defaultContext as UsersContextProps)
 
 export const UsersProvider = ({api, children}: Props) => {
-
-  const dgccrf = usePaginate<User, UserSearch, ApiError>(api.secured.user.fetchDGCCRF, {limit: 10, offset: 0},)
+  const dgccrf = usePaginate<User, UserSearch, ApiError>(api.secured.user.fetchDGCCRF, {limit: 10, offset: 0})
   const changePassword = useFetcher(api.secured.user.changePassword)
   const dgccrfPending = useFetcher(api.secured.user.fetchPendingDGCCRF)
   const invite = useFetcher(api.secured.user.inviteDGCCRF)

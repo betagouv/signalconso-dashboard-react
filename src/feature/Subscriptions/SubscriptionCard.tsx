@@ -140,7 +140,11 @@ export const SubscriptionCard = ({subscription, onUpdate, onDelete, removing, lo
         <SubscriptionCardRow icon="business" label={m.siret}>
           <ScChipContainer>
             {subscription.sirets.map(siret => (
-              <ScChip key={siret} label={siret} onDelete={() => onUpdate({sirets: subscription.sirets.filter(_ => _ !== siret)})} />
+              <ScChip
+                key={siret}
+                label={siret}
+                onDelete={() => onUpdate({sirets: subscription.sirets.filter(_ => _ !== siret)})}
+              />
             ))}
             <SelectCompany
               onChange={company => {

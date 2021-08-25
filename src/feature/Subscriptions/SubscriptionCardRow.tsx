@@ -21,7 +21,7 @@ const useStyles = makeStyles((t: Theme) => ({
     transition: t.transitions.create('background'),
     '&:hover': {
       background: t.palette.action.hover,
-    }
+    },
   },
   label: {
     minWidth: 110,

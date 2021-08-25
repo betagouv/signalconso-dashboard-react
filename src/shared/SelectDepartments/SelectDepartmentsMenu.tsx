@@ -66,15 +66,8 @@ interface SelectDepartmentsMenuProps {
   onChange: (departments: string[]) => void
 }
 
-export const SelectDepartmentsMenu = withRegions(({
-    selectAllLabel,
-    onClose,
-    regions,
-    initialValues,
-    anchorEl,
-    open,
-    onChange,
-  }: SelectDepartmentsMenuProps) => {
+export const SelectDepartmentsMenu = withRegions(
+  ({selectAllLabel, onClose, regions, initialValues, anchorEl, open, onChange}: SelectDepartmentsMenuProps) => {
     const css = useStyles()
     const cssUtils = useCssUtils()
     const indexValues: UseSetState<string> = useSetState<string>()

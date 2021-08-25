@@ -35,12 +35,7 @@ const useStyles = makeStyles((t: Theme) =>
     },
   }),
 )
-export const EditAddressDialog = ({
-  address,
-  children,
-  onChange,
-  onChangeError,
-}: EditAddressDialogProps) => {
+export const EditAddressDialog = ({address, children, onChange, onChangeError}: EditAddressDialogProps) => {
   const {m} = useI18n()
   const css = useStyles()
   const cssUtils = useCssUtils()
@@ -64,9 +59,7 @@ export const EditAddressDialog = ({
       }}
       content={close => (
         <>
-          {onChangeError && (
-            <Alert type="error">{onChangeError}</Alert>
-          )}
+          {onChangeError && <Alert type="error">{onChangeError}</Alert>}
           <div className={cssUtils.flex}>
             <ScInput
               defaultValue={address.number}
@@ -124,10 +117,7 @@ export const EditAddressDialog = ({
             name="activationDocumentRequired"
             control={control}
             render={({field}) => (
-              <FormControlLabel
-                control={<Checkbox {...field} checked={field.value}/>}
-                label={m.contactAgreement}
-              />
+              <FormControlLabel control={<Checkbox {...field} checked={field.value} />} label={m.contactAgreement} />
             )}
           />
         </>

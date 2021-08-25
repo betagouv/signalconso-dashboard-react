@@ -169,7 +169,8 @@ export const CompaniesRegistered = () => {
                     onChangeError={_companyUpdateAddress.error?.message}
                     onChange={form => {
                       const {activationDocumentRequired = false, ...address} = form
-                      return _companyUpdateAddress.fetch({}, _.id, {address, activationDocumentRequired})
+                      return _companyUpdateAddress
+                        .fetch({}, _.id, {address, activationDocumentRequired})
                         .then(() => toastSuccess(m.editedAddress))
                     }}
                   >
@@ -199,8 +200,7 @@ export const CompaniesRegistered = () => {
               onChange={company => {
                 const {siret, name, address, activityCode} = company
                 if (name && address) {
-                  _companyCreate.fetch({}, {siret, name, address, activityCode})
-                    .then(() => toastSuccess(m.companyCreated))
+                  _companyCreate.fetch({}, {siret, name, address, activityCode}).then(() => toastSuccess(m.companyCreated))
                 } else {
                   toastError({message: m.cannotCreateCompanyMissingInfo})
                 }

@@ -32,7 +32,7 @@ export const ReportedCompaniesWebsites = () => {
     status: {
       width: '100%',
       maxWidth: 180,
-    }
+    },
   }))
 
   const {m, formatDate} = useI18n()

@@ -94,10 +94,10 @@ export const ReportFilters = ({filters, updateFilters, children}: ReportsFilters
           <>
             <DialogContent>
               <Row label={m.website}>
-                <ScInput small fullWidth {...register('websiteURL')} defaultValue={filters.websiteURL ?? ''}/>
+                <ScInput small fullWidth {...register('websiteURL')} defaultValue={filters.websiteURL ?? ''} />
               </Row>
               <Row label={m.phone}>
-                <ScInput small fullWidth {...register('phone')} defaultValue={filters.phone ?? ''}/>
+                <ScInput small fullWidth {...register('phone')} defaultValue={filters.phone ?? ''} />
               </Row>
               <Row label={m.siret}>
                 <ScInput small fullWidth {...register('siretSirenList')} defaultValue={filters.siretSirenList ?? ''} />
