@@ -67,7 +67,7 @@ export const CompanyAccesses = () => {
   }, [_crudAccess.list, _crudAccess.fetchError])
 
   return (
-    <Page>
+    <Page size="small">
       <PageTitle
         action={
           <>
