@@ -141,11 +141,11 @@ const AppLogin = () => {
     <Login
       onRegister={mapPromise({
         promise: apiPublicSdk.authenticate.sendActivationLink,
-        mapCatch: (err: ApiError) => err.message
+        mapCatch: (err: ApiError) => Promise.reject(err.message),
       })}
       onLogin={mapPromise({
         promise: apiPublicSdk.authenticate.login,
-        mapCatch: (err: ApiError) => err.message,
+        mapCatch: (err: ApiError) => Promise.reject(err.message,),
       })}
       onLogout={() => history.push('/')}
       getTokenFromResponse={_ => _.token}

@@ -100,11 +100,11 @@ type AsyncFnResult<T extends (...args: any[]) => Promise<object>> = PromiseRetur
 export const mapPromise = <F extends (...args: any[]) => Promise<any>, X>({
   promise,
   mapThen = _ => _,
-  mapCatch = _ => _,
+  mapCatch = _ => Promise.reject(_),
 }: {
   promise: F,
   mapThen?: (_: AsyncFnResult<F>) => X,
   mapCatch?: (_: any) => any
 }) => (...args: Parameters<F>): Promise<X> => {
-  return promise(args).then(mapThen).catch(mapCatch)
+  return promise(...args).then(mapThen).catch(mapCatch)
 }
