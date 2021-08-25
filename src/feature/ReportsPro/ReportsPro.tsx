@@ -20,12 +20,7 @@ import {classes} from '../../core/helper/utils'
 import {Btn, Fender} from 'mui-extension/lib'
 import {EntityIcon} from '../../core/EntityIcon'
 import {ScButton} from '../../shared/Button/Button'
-import {
-  mapArrayFromQuerystring,
-  mapDateFromQueryString,
-  mapDatesToQueryString,
-  useQueryString,
-} from '../../core/helper/useQueryString'
+import {mapArrayFromQuerystring, mapDateFromQueryString, mapDatesToQueryString, useQueryString} from '../../core/helper/useQueryString'
 import {fromNullable} from 'fp-ts/lib/Option'
 import {useToast} from '../../core/toast'
 import {Config} from '../../conf/config'
@@ -34,6 +29,7 @@ import {PeriodPicker} from '../../shared/PeriodPicker/PeriodPicker'
 import {useCompaniesContext} from '../../core/context/CompaniesContext'
 import {SelectCompaniesByPro} from '../../shared/SelectCompaniesByPro/SelectCompaniesByPro'
 import compose from '../../core/helper/compose'
+import {Alert} from 'mui-extension'
 
 const useStyles = makeStyles((t: Theme) => ({
   tdFiles: {
@@ -99,6 +95,11 @@ export const ReportsPro = () => {
   const css = useStyles()
   const cssUtils = useCssUtils()
 
+  const isFirstVisit = useMemo(
+    () => _reports.list?.totalSize === 1 && _reports.list.data[0].report.status === ReportStatus.UnreadForPro,
+    [_reports.list],
+  )
+
   const hasFilters = useMemo(() => {
     const {limit, offset, ...values} = _reports.filters
     return Object.keys(cleanObject(values)).length > 0 || offset > 0
@@ -155,6 +156,11 @@ export const ReportsPro = () => {
         {m.reports_pageTitle}
       </PageTitle>
 
+      {isFirstVisit && (
+        <Alert type="success" deletable persistentDelete className={cssUtils.marginBottom2}>
+          <span dangerouslySetInnerHTML={{__html: m.yourAccountIsActivated}}/>
+        </Alert>
+      )}
       {_companies.accessibleByPro.entity && _companies.visibleByPro.entity && (
         <>
           {displayFilters && (

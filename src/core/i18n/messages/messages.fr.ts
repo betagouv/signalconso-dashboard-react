@@ -261,6 +261,7 @@ export const messagesFr = {
   emailDGCCRFValidation: 'Email invalide. Email acceptés : *.gouv.fr',
   companyAccessesTitle: 'Gestion des accès',
   daily: 'Quotidienne',
+  yourAccountIsActivated: `Votre compte est bien activé, vous pouvez consulter <strong>votre signalement</strong>.`,
   weekly: 'Hebdomadaire',
   handleAccesses: 'Gérer les accès',
   accesses: 'Accès',
