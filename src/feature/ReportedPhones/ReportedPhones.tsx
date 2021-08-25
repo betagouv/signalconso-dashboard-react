@@ -13,7 +13,7 @@ import {ScInput} from '../../shared/Input/ScInput'
 import {ExportPhonesPopper} from '../../shared/ExportPopper/ExportPopperBtn'
 import {fromNullable} from 'fp-ts/lib/Option'
 import {useToast} from '../../core/toast'
-import {Icon} from '@material-ui/core'
+import {Icon, Tooltip} from '@material-ui/core'
 import {PeriodPicker} from '../../shared/PeriodPicker/PeriodPicker'
 import {DebouncedInput} from '../../shared/DebouncedInput/DebouncedInput'
 
@@ -61,6 +61,11 @@ export const ReportedPhones = () => {
               >
                 {(value, onChange) => <PeriodPicker value={value ?? [undefined, undefined]} onChange={onChange} fullWidth />}
               </DebouncedInput>
+              <Tooltip title={m.removeAllFilters}>
+                <IconBtn color="primary" onClick={_reportedPhone.clearFilters}>
+                  <Icon>clear</Icon>
+                </IconBtn>
+              </Tooltip>
               <ExportPhonesPopper>
                 <IconBtn color="primary">
                   <Icon>file_download</Icon>

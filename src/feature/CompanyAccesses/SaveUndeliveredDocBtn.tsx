@@ -7,6 +7,7 @@ import {Confirm} from 'mui-extension/lib'
 import {Datepicker} from '../../shared/Datepicker/Datepicker'
 import {useCssUtils} from '../../core/helper/useCssUtils'
 import {useToast} from '../../core/toast'
+import {ScDialog} from '../../shared/Confirm/ScDialog'
 
 interface Props {
   loading: boolean
@@ -25,9 +26,8 @@ export const SaveUndeliveredDocBtn = ({loading, onChange, className}: Props) => 
     return <></>
   }
   return (
-    <Confirm
+    <ScDialog
       title={m.undeliveredDocTitle}
-      cancelLabel={m.close}
       loading={loading}
       confirmLabel={m.confirm}
       confirmDisabled={!returnDate}
@@ -51,6 +51,6 @@ export const SaveUndeliveredDocBtn = ({loading, onChange, className}: Props) => 
       <ScButton variant="outlined" className={className} icon="cancel_schedule_send" color="primary">
         {m.undeliveredDoc}
       </ScButton>
-    </Confirm>
+    </ScDialog>
   )
 }

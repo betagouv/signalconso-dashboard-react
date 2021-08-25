@@ -28,6 +28,9 @@ const useStyles = makeStyles((t: Theme) => ({
     height: 42,
     borderRadius: 42,
   },
+  status: {
+    maxWidth: 180,
+  },
 }))
 
 export const ReportedCompaniesWebsites = () => {
@@ -78,7 +81,7 @@ export const ReportedCompaniesWebsites = () => {
               onChange={(kinds: WebsiteKind[]) => _fetch.updateFilters(prev => ({...prev, kinds}))}
             >
               {(value, onChange) => (
-                <ScSelect value={value} onChange={(e: any) => onChange(e.target.value)} multiple fullWidth>
+                <ScSelect value={value} onChange={(e: any) => onChange(e.target.value)} fullWidth multiple className={css.status}>
                   {[WebsiteKind.PENDING, WebsiteKind.DEFAULT].map(kind => (
                     <MenuItem key={kind} value={kind}>
                       {kind === WebsiteKind.PENDING ? m.notValidated : m.validated}

@@ -9,7 +9,7 @@ import {Panel} from '../../shared/Panel'
 import {useCssUtils} from '../../core/helper/useCssUtils'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
 import {CompanyAccessLevel} from '../../core/api'
-import {Confirm, IconBtn} from 'mui-extension/lib'
+import {IconBtn} from 'mui-extension/lib'
 import {Id} from '../../core/api/model'
 import {fromNullable, some} from 'fp-ts/lib/Option'
 import {useLogin} from '../../core/context/LoginContext'
@@ -19,6 +19,7 @@ import {useToast} from '../../core/toast'
 import {SaveUndeliveredDocBtn} from './SaveUndeliveredDocBtn'
 import {useCompaniesContext} from '../../core/context/CompaniesContext'
 import {Enum} from '@alexandreannic/ts-utils/lib/enum/Enum'
+import {ScDialog} from '../../shared/Confirm/ScDialog'
 
 interface Accesses {
   name?: string
@@ -152,32 +153,29 @@ export const CompanyAccesses = () => {
                     .filter(_ => _.email !== connectedUser.email)
                     .mapNullable(_ => _.userId)
                     .map(userId => (
-                      <Confirm
+                      <ScDialog
                         title={m.deleteCompanyAccess(_.name!)}
                         onConfirm={() => _crudAccess.remove(userId)}
                         maxWidth="xs"
                         confirmLabel={m.delete}
-                        cancelLabel={m.close}
                       >
                         <IconBtn loading={_crudAccess.removing(userId)}>
                           <Icon>delete</Icon>
                         </IconBtn>
-                      </Confirm>
+                      </ScDialog>
                     ))
                     .getOrElse(
                       fromNullable(_.tokenId)
                         .map(tokenId => (
-                          <Confirm
+                          <ScDialog
                             title={m.deleteCompanyAccessToken(_.email)}
                             onConfirm={() => _crudToken.remove(tokenId)}
                             maxWidth="xs"
-                            confirmLabel={m.confirm}
-                            cancelLabel={m.close}
                           >
                             <IconBtn loading={_crudToken.removing(tokenId)}>
                               <Icon>delete</Icon>
                             </IconBtn>
-                          </Confirm>
+                          </ScDialog>
                         ))
                         .getOrElse(<></>),
                     )}

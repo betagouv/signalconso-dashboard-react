@@ -14,10 +14,12 @@ import {AsyncFileClient} from './client/async-file/AsyncFileClient'
 import {CompanyAccessTokenClient} from './client/company-access-token/CompanyAccessTokenClient'
 import {SecuredFileClient} from './client/file/SecuredFileClient'
 import {BlockedReportNotificationClient} from './client/blockedReportNotifications/BlockedReportNotificationClient'
+import {AccessesClient} from './client/accesses/AccessesClient'
 
 export class SignalConsoSecuredSdk {
   constructor(private client: ApiClientApi) {}
 
+  readonly accesses = new AccessesClient(this.client)
   readonly website = new WebsiteClient(this.client)
   readonly reportedPhone = new ReportedPhoneClient(this.client)
   readonly constant = new ConstantClient(this.client)

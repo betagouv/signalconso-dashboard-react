@@ -15,6 +15,7 @@ import {useUsersContext} from '../../core/context/UsersContext'
 import {regexp} from '../../core/helper/regexp'
 import {useToast} from '../../core/toast'
 import {fromNullable} from 'fp-ts/lib/Option'
+import {ScDialog} from '../../shared/Confirm/ScDialog'
 
 export const Users = () => {
   const {m} = useI18n()
@@ -31,7 +32,7 @@ export const Users = () => {
     <Page>
       <PageTitle
         action={
-          <Confirm
+          <ScDialog
             maxWidth="xs"
             onConfirm={(event, close) => {
               handleSubmit(({email}) => {
@@ -42,7 +43,6 @@ export const Users = () => {
               })()
             }}
             confirmLabel={m.invite}
-            cancelLabel={m.close}
             loading={_invite.loading}
             confirmDisabled={!isValid}
             title={m.users_invite_dialog_title}
@@ -78,7 +78,7 @@ export const Users = () => {
             <ScButton icon="person_add" variant="contained" color="primary">
               {m.invite}
             </ScButton>
-          </Confirm>
+          </ScDialog>
         }
       >
         {m.menu_users}

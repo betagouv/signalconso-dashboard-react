@@ -84,7 +84,17 @@ export const CompaniesPro = () => {
 
   return (
     <Page size="small">
-      <PageTitle>{m.myCompanies}</PageTitle>
+      <PageTitle
+        action={
+          <NavLink to={siteMap.register}>
+            <ScButton icon="add" color="primary" variant="outlined">
+              {m.addACompany}
+            </ScButton>
+          </NavLink>
+        }
+      >
+        {m.myCompanies}
+      </PageTitle>
       {_users.getConnectedUser.entity && (
         <Alert
           type="info"

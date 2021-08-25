@@ -3,7 +3,7 @@ import React, {useEffect} from 'react'
 import {useI18n} from '../../core/i18n'
 import {useSubscriptionsContext} from '../../core/context/SubscriptionsContext'
 import {SubscriptionCard} from './SubscriptionCard'
-import {Alert, Animate, AnimateList} from 'mui-extension/lib'
+import {Alert, Animate} from 'mui-extension/lib'
 import {makeStyles} from '@material-ui/core/styles'
 import {Icon, LinearProgress, Theme} from '@material-ui/core'
 import {Ripple} from '../../shared/Ripple/Ripple'
@@ -62,18 +62,16 @@ export const Subscriptions = () => {
           </div>
         </Ripple>
       </Animate>
-      <AnimateList initialDelay={0} delay={220}>
-        {_subscriptions.list?.map(subscription => (
-          <SubscriptionCard
-            key={subscription.id}
-            subscription={subscription}
-            loading={_subscriptions.updating(subscription.id)}
-            removing={_subscriptions.removing(subscription.id)}
-            onUpdate={_ => _subscriptions.update(subscription.id, _)}
-            onDelete={() => _subscriptions.remove(subscription.id)}
-          />
-        ))}
-      </AnimateList>
+      {_subscriptions.list?.map(subscription => (
+        <SubscriptionCard
+          key={subscription.id}
+          subscription={subscription}
+          loading={_subscriptions.updating(subscription.id)}
+          removing={_subscriptions.removing(subscription.id)}
+          onUpdate={_ => _subscriptions.update(subscription.id, _)}
+          onDelete={() => _subscriptions.remove(subscription.id)}
+        />
+      ))}
     </Page>
   )
 }

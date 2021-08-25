@@ -17,6 +17,9 @@ import {DebouncedInput} from '../../shared/DebouncedInput/DebouncedInput'
 import {fromNullable} from 'fp-ts/lib/Option'
 import {useToast} from '../../core/toast'
 import {AddressComponent} from '../../shared/Address/Address'
+import {SelectCompany} from '../../shared/SelectCompany/SelectCompany'
+import {EditAddressDialog} from './EditAddressDialog'
+import {useLogin} from '../../core/context/LoginContext'
 
 const useStyles = makeStyles((t: Theme) => ({
   tdName_label: {
@@ -48,9 +51,12 @@ export interface CompanySearchQs extends PaginatedSearch<any> {
 export const CompaniesRegistered = () => {
   const {m, formatLargeNumber} = useI18n()
   const _companies = useCompaniesContext().activated
+  const _companyUpdateAddress = useCompaniesContext().updateAddress
+  const _companyCreate = useCompaniesContext().create
   const cssUtils = useCssUtils()
   const css = useStyles()
-  const {toastError} = useToast()
+  const {toastError, toastSuccess} = useToast()
+  const {connectedUser} = useLogin()
 
   const queryString = useQueryString<Partial<CompanySearch>, Partial<CompanySearchQs>>({
     toQueryString: _ => _,
@@ -67,7 +73,8 @@ export const CompaniesRegistered = () => {
 
   useEffect(() => {
     fromNullable(_companies.error).map(toastError)
-  }, [_companies.error])
+    fromNullable(_companyCreate.error).map(toastError)
+  }, [_companies.error, _companyCreate.error])
 
   return (
     <Panel>
@@ -155,21 +162,54 @@ export const CompaniesRegistered = () => {
             id: 'actions',
             className: cssUtils.txtRight,
             row: _ => (
-              <NavLink to={siteMap.companyAccesses(_.siret)}>
-                <Tooltip title={m.handleAccesses}>
-                  <IconBtn color="primary">
-                    <Icon>vpn_key</Icon>
-                  </IconBtn>
-                </Tooltip>
-              </NavLink>
+              <>
+                {connectedUser.isAdmin && (
+                  <EditAddressDialog
+                    address={_.address}
+                    onChangeError={_companyUpdateAddress.error?.message}
+                    onChange={form => {
+                      const {activationDocumentRequired = false, ...address} = form
+                      return _companyUpdateAddress
+                        .fetch({}, _.id, {address, activationDocumentRequired})
+                        .then(() => toastSuccess(m.editedAddress))
+                    }}
+                  >
+                    <Tooltip title={m.editAddress}>
+                      <IconBtn color="primary">
+                        <Icon>edit</Icon>
+                      </IconBtn>
+                    </Tooltip>
+                  </EditAddressDialog>
+                )}
+                {connectedUser.isAdmin && (
+                  <NavLink to={siteMap.companyAccesses(_.siret)}>
+                    <Tooltip title={m.handleAccesses}>
+                      <IconBtn color="primary">
+                        <Icon>vpn_key</Icon>
+                      </IconBtn>
+                    </Tooltip>
+                  </NavLink>
+                )}
+              </>
             ),
           },
         ]}
         renderEmptyState={
           <Fender title={m.noCompanyFound} icon="store" className={css.fender}>
-            <ScButton variant="contained" color="primary" icon="add" className={cssUtils.marginTop}>
-              {m.registerACompany}
-            </ScButton>
+            <SelectCompany
+              onChange={company => {
+                const {siret, name, address, activityCode} = company
+                if (name && address) {
+                  _companyCreate.fetch({}, {siret, name, address, activityCode}).then(() => toastSuccess(m.companyCreated))
+                } else {
+                  toastError({message: m.cannotCreateCompanyMissingInfo})
+                }
+              }}
+            >
+              <ScButton variant="contained" color="primary" icon="add" className={cssUtils.marginTop}>
+                {m.registerACompany}
+              </ScButton>
+            </SelectCompany>
           </Fender>
         }
       />

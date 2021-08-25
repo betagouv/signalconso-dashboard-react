@@ -153,7 +153,7 @@ export const ExportPopperBtn = ({
                   <div className={css.fileItem}>
                     <CircularProgress size={24} />
                     <div className={css.fileItemBody}>
-                      <Txt skeleton />
+                      <Txt skeleton="100%" block />
                       <Txt color="hint">{formatDateTime(file.creationDate)}</Txt>
                     </div>
                   </div>

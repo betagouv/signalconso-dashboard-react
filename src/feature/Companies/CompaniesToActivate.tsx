@@ -18,6 +18,7 @@ import {Txt} from 'mui-extension/lib/Txt/Txt'
 import {fromNullable} from 'fp-ts/lib/Option'
 import {EntityIcon} from '../../core/EntityIcon'
 import {AddressComponent} from '../../shared/Address/Address'
+import {ScDialog} from '../../shared/Confirm/ScDialog'
 
 const useStyles = makeStyles((t: Theme) => ({
   tdName_label: {
@@ -119,13 +120,7 @@ export const CompaniesToActivate = () => {
             >
               {m.download}
             </ScButton>
-            <Confirm
-              title={m.validateLetterSentTitle}
-              content={m.validateLetterSentDesc}
-              cancelLabel={m.cancel}
-              confirmLabel={m.confirm}
-              onConfirm={confirmCompaniesPosted}
-            >
+            <ScDialog title={m.validateLetterSentTitle} content={m.validateLetterSentDesc} onConfirm={confirmCompaniesPosted}>
               <ScButton
                 disabled={_companiesToActivate.fetching || selectedCompaniesSet.size === 0}
                 loading={_companies.confirmCompaniesPosted.loading}
@@ -136,7 +131,7 @@ export const CompaniesToActivate = () => {
               >
                 {m.validateLetterSent}
               </ScButton>
-            </Confirm>
+            </ScDialog>
             {!_companiesToActivate.fetching && selectedCompaniesSet.size > 0 && (
               <div>
                 <span className={css.selectedCountBadge}>{selectedCompaniesSet.size}</span>

@@ -1,13 +1,16 @@
 import * as React from 'react'
 import {ReactNode, useContext} from 'react'
 import {UseFetcher, useFetcher, usePaginate, UsePaginate} from '@alexandreannic/react-hooks-lib/lib'
-import {ApiError, CompanySearch, CompanyToActivate, CompanyWithReportsCount, PaginatedFilters} from 'core/api'
+import {ApiError, CompanySearch, CompanyToActivate, CompanyUpdate, CompanyWithReportsCount, Id, PaginatedFilters} from 'core/api'
 import {SignalConsoApiSdk} from '../../App'
 import {paginateData} from '../helper/utils'
+import {Address} from '../api/model/Address'
 
 export interface CompaniesContextProps {
   activated: UsePaginate<CompanyWithReportsCount, CompanySearch>
   toActivate: UsePaginate<CompanyToActivate, PaginatedFilters>
+  create: UseFetcher<SignalConsoApiSdk['secured']['company']['create'], ApiError>
+  updateAddress: UseFetcher<SignalConsoApiSdk['secured']['company']['updateAddress'], ApiError>
   downloadActivationDocument: UseFetcher<SignalConsoApiSdk['secured']['company']['downloadActivationDocument'], ApiError>
   confirmCompaniesPosted: UseFetcher<SignalConsoApiSdk['secured']['company']['confirmCompaniesPosted'], ApiError>
   searchByIdentity: UseFetcher<SignalConsoApiSdk['public']['company']['searchCompaniesByIdentity'], ApiError>
@@ -38,6 +41,8 @@ export const CompaniesProvider = ({api, children}: Props) => {
         .then(paginateData(filter.limit, filter.offset)),
     {limit: 500, offset: 0},
   )
+  const create = useFetcher(api.secured.company.create)
+  const updateAddress = useFetcher(api.secured.company.updateAddress)
   const searchByIdentity = useFetcher(api.public.company.searchCompaniesByIdentity)
   const downloadActivationDocument = useFetcher(api.secured.company.downloadActivationDocument)
   const confirmCompaniesPosted = useFetcher(api.secured.company.confirmCompaniesPosted)
@@ -45,9 +50,31 @@ export const CompaniesProvider = ({api, children}: Props) => {
   const accessibleByPro = useFetcher(api.secured.company.getAccessibleByPro)
   const visibleByPro = useFetcher(api.secured.company.getVisibleByPro)
 
+  const updateRegisteredCompanyAddress = (id: Id, address: Address) => {
+    activated.setEntity(companies => {
+      if (!companies) return companies
+      const company = companies?.data.find(company => company.id === id)
+      if (company) {
+        company.address = address
+        return {...companies}
+      }
+      return companies
+    })
+  }
+
   return (
     <CompaniesContext.Provider
       value={{
+        updateAddress: {
+          ...updateAddress,
+          fetch: (p: {force?: boolean; clean?: boolean} = {}, id: Id, update: CompanyUpdate) => {
+            return updateAddress.fetch(p, id, update).then(_ => {
+              updateRegisteredCompanyAddress(id, update.address)
+              return _
+            })
+          },
+        },
+        create,
         activated,
         toActivate,
         searchByIdentity,

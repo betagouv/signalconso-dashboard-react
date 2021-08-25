@@ -1,16 +1,4 @@
-import {
-  Chip,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  FormControlLabel,
-  makeStyles,
-  MenuItem,
-  Radio,
-  RadioGroup,
-  Theme,
-} from '@material-ui/core'
+import {Chip, Dialog, DialogActions, DialogContent, DialogTitle, FormControlLabel, makeStyles, MenuItem, Radio, RadioGroup, Theme} from '@material-ui/core'
 import {useI18n} from '../../core/i18n'
 import React, {ReactElement, ReactNode, useEffect, useState} from 'react'
 import {ReportSearch, ReportTag} from 'core/api'
@@ -68,6 +56,7 @@ export const ReportFilters = ({filters, updateFilters, children}: ReportsFilters
     handleSubmit,
     setValue,
     control,
+    reset,
     formState: {errors},
   } = useForm<ReportSearch>()
   const {reportStatus: _reportStatus} = useConstantContext()
@@ -87,6 +76,10 @@ export const ReportFilters = ({filters, updateFilters, children}: ReportsFilters
     _reportStatus.fetch({force: false})
     _category.fetch({force: false})
   }, [])
+
+  useEffect(() => {
+    reset(filters)
+  }, [filters])
 
   return (
     <>

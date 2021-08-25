@@ -10,6 +10,9 @@ export const useCssUtils = makeStyles((t: Theme) => {
     hidden: {
       visibility: 'hidden',
     },
+    flex: {
+      display: 'flex',
+    },
     txtTitle: {
       fontSize: t.typography.fontSize * 1.25,
     },

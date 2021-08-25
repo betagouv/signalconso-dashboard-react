@@ -5,9 +5,11 @@ import {Txt} from 'mui-extension/lib/Txt/Txt'
 import {ScInput} from '../../shared/Input/ScInput'
 import {useForm} from 'react-hook-form'
 import {useUsersContext} from '../../core/context/UsersContext'
-import {Alert, Confirm} from 'mui-extension/lib'
+import {Alert} from 'mui-extension/lib'
 import {useToast} from '../../core/toast'
 import {fromNullable} from 'fp-ts/lib/Option'
+import {ScDialog} from '../../shared/Confirm/ScDialog'
+import {ScInputPassword} from '../../shared/InputPassword/InputPassword'
 
 interface Form {
   oldPassword: string
@@ -27,11 +29,10 @@ export const EditPassword = () => {
   const {toastSuccess} = useToast()
 
   return (
-    <Confirm
+    <ScDialog
       title={m.editPassword}
       maxWidth="xs"
       confirmLabel={m.edit}
-      cancelLabel={m.close}
       confirmDisabled={!isValid}
       loading={_changePassword.loading}
       onConfirm={(event, close) => {
@@ -54,8 +55,7 @@ export const EditPassword = () => {
           <Txt color="hint" block gutterBottom>
             {m.editPasswordDialogDesc}
           </Txt>
-          <ScInput
-            type="password"
+          <ScInputPassword
             inputProps={{
               autocomplete: 'false',
             }}
@@ -69,8 +69,7 @@ export const EditPassword = () => {
               minLength: {value: 8, message: m.passwordNotLongEnough},
             })}
           />
-          <ScInput
-            type="password"
+          <ScInputPassword
             error={!!errors.newPassword}
             helperText={errors.newPassword?.message ?? ' '}
             fullWidth
@@ -81,8 +80,7 @@ export const EditPassword = () => {
               validate: value => value !== getValues().oldPassword || m.passwordAreIdentical,
             })}
           />
-          <ScInput
-            type="password"
+          <ScInputPassword
             error={!!errors.newPasswordConfirmation}
             helperText={errors.newPasswordConfirmation?.message ?? ' '}
             fullWidth
@@ -99,6 +97,6 @@ export const EditPassword = () => {
       <ScButton icon="edit" color="primary">
         {m.edit}
       </ScButton>
-    </Confirm>
+    </ScDialog>
   )
 }

@@ -8,6 +8,7 @@ import {fromNullable} from 'fp-ts/lib/Option'
 import {Icon, makeStyles, Theme} from '@material-ui/core'
 import {SelectCompanyList} from './SelectCompanyList'
 import {IconBtn} from 'mui-extension/lib'
+import {ScDialog} from '../Confirm/ScDialog'
 
 interface Props {
   children: ReactElement<any>
@@ -39,7 +40,7 @@ export const SelectCompany = ({children, onChange, siret}: Props) => {
   }
 
   return (
-    <Confirm
+    <ScDialog
       onClick={_ => search()}
       maxWidth="sm"
       loading={_company.loading}
@@ -79,9 +80,8 @@ export const SelectCompany = ({children, onChange, siret}: Props) => {
       )}
       onConfirm={search}
       confirmLabel={m.search}
-      cancelLabel={m.close}
     >
       {children}
-    </Confirm>
+    </ScDialog>
   )
 }

@@ -10,40 +10,18 @@ import {
 } from '../..'
 import {Company, CompanyCreation, CompanyUpdate, Event, Id} from '../../model'
 import {format} from 'date-fns'
-import {Address} from '../../model/Address'
-
-interface ApiCompanyWithReportsCount {
-  companyAddress: Address
-  companyName: string
-  companySiret: string
-  count: number
-}
 
 export class CompanyClient {
   constructor(private client: ApiClientApi) {}
 
-  private static readonly mapCompanyWithReportsCount = (_: ApiCompanyWithReportsCount): CompanyWithReportsCount => ({
-    ..._,
-    address: _.companyAddress,
-    name: _.companyName,
-    siret: _.companySiret,
-  })
-
   readonly search = (search: CompanySearch): Promise<ApiPaginate<CompanyWithReportsCount>> => {
-    return this.client.get<ApiPaginate<ApiCompanyWithReportsCount>>(`/companies`, {qs: search}).then(res => ({
+    return this.client.get<ApiPaginate<CompanyWithReportsCount>>(`/companies`, {qs: search}).then(res => ({
       ...res,
-      entities: res.entities.map(CompanyClient.mapCompanyWithReportsCount),
+      entities: res.entities,
     }))
   }
 
-  /** @deprecated use search() instead */
-  readonly searchRegisterCompanies = (search: string): Promise<CompanyWithReportsCount[]> => {
-    return this.client
-      .get<ApiCompanyWithReportsCount[]>(`/companies/search/registered`, {qs: {q: search}})
-      .then(_ => _.map(CompanyClient.mapCompanyWithReportsCount))
-  }
-
-  readonly updateCompanyAddress = (id: Id, update: CompanyUpdate) => {
+  readonly updateAddress = (id: Id, update: CompanyUpdate) => {
     return this.client.put<Company>(`/companies/${id}/address`, {body: update})
   }
 
