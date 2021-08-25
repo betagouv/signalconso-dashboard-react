@@ -6,7 +6,7 @@ import {fromNullable, some} from 'fp-ts/lib/Option'
 import {Config} from '../../../conf/config'
 import React, {useEffect} from 'react'
 import {useFetcher} from '@alexandreannic/react-hooks-lib/lib'
-import {Confirm, IconBtn} from 'mui-extension/lib'
+import {IconBtn} from 'mui-extension/lib'
 import {useToast} from '../../../core/toast'
 import {useI18n} from '../../../core/i18n'
 import {ScDialog} from '../../../shared/Confirm/ScDialog'
@@ -37,6 +37,7 @@ const useStyles = makeStyles((t: Theme) => ({
     width: reportFileConfig.cardSize,
     color: t.palette.text.hint,
     overflow: 'hidden',
+    position: 'relative',
     transition: t.transitions.create('all'),
     '&:hover': {
       boxShadow: t.shadows[4],
@@ -63,12 +64,23 @@ const useStyles = makeStyles((t: Theme) => ({
     boxShadow: t.shadows[4],
     background: t.palette.background.paper + ' !important',
   },
+  imgImage: {
+    color: '#00b50f',
+  },
   imgPdf: {
     color: '#db4537',
   },
   imgDoc: {
     color: '#4185f3',
   },
+  backgroundImage: {
+    position: 'absolute',
+    top: 0,
+    right: 0,
+    left: 0,
+    bottom: 0,
+    backgroundSize: 'cover',
+  }
 }))
 
 export const ReportFile = ({file, dense, onRemove}: ReportFileProps) => {
@@ -95,31 +107,16 @@ export const ReportFile = ({file, dense, onRemove}: ReportFileProps) => {
   return (
     <Tooltip title={file.filename}>
       <a target="_blank" href={fileUrl} className={css.root}>
-        {onRemove && (
-          <ScDialog
-            title={m.removeAsk}
-            content={<span dangerouslySetInnerHTML={{__html: m.thisWillBeRemoved(file.filename)}} />}
-            maxWidth="xs"
-            onClick={e => {
-              e.stopPropagation()
-              e.preventDefault()
-            }}
-            onConfirm={(event, close) => {
-              remove()
-              close()
-            }}
-            confirmLabel={m.delete}
-          >
-            <IconBtn loading={_remove.loading} size="small" className={css.removeBtn}>
-              <Icon>clear</Icon>
-            </IconBtn>
-          </ScDialog>
-        )}
         <div className={css.image}>
           {(() => {
             switch (fileType) {
               case FileType.Image: {
-                return <div style={{backgroundImage: `url(${fileUrl})`}} />
+                return (
+                  <div>
+                    <div className={css.backgroundImage} style={{backgroundImage: `url(${fileUrl})`}}/>
+                    <Icon className={css.imgImage}>image</Icon>
+                  </div>
+                )
               }
               case FileType.PDF: {
                 return (
@@ -145,6 +142,26 @@ export const ReportFile = ({file, dense, onRemove}: ReportFileProps) => {
             }
           })()}
         </div>
+        {onRemove && (
+          <ScDialog
+            title={m.removeAsk}
+            content={<span dangerouslySetInnerHTML={{__html: m.thisWillBeRemoved(file.filename)}} />}
+            maxWidth="xs"
+            onClick={e => {
+              e.stopPropagation()
+              e.preventDefault()
+            }}
+            onConfirm={(event, close) => {
+              remove()
+              close()
+            }}
+            confirmLabel={m.delete}
+          >
+            <IconBtn loading={_remove.loading} size="small" className={css.removeBtn}>
+              <Icon>clear</Icon>
+            </IconBtn>
+          </ScDialog>
+        )}
       </a>
     </Tooltip>
   )
