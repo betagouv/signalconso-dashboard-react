@@ -6,8 +6,15 @@ import {useCssUtils} from '../../core/helper/useCssUtils'
 import {LoginPanel} from './LoginPanel'
 import {ScButton} from '../../shared/Button/Button'
 import {makeStyles} from '@material-ui/core/styles'
-import {Theme} from '@material-ui/core'
+import {Icon, InputAdornment, Theme} from '@material-ui/core'
 import {ActionProps} from './LoginPage'
+import {Alert} from 'mui-extension'
+import {Txt} from 'mui-extension/lib/Txt/Txt'
+import React from 'react'
+import {useToast} from '../../core/toast'
+import {useHistory} from 'react-router'
+import {siteMap} from '../../core/siteMap'
+import {ScInputPassword} from '../../shared/InputPassword/InputPassword'
 
 interface Form {
   siret: string
@@ -31,6 +38,8 @@ export const ActivateAccountForm = ({register: registerAction}: Props) => {
   const {m} = useI18n()
   const cssUtils = useCssUtils()
   const css = useStyles()
+  const {toastSuccess} = useToast()
+  const history = useHistory()
   const {
     register,
     handleSubmit,
@@ -39,11 +48,20 @@ export const ActivateAccountForm = ({register: registerAction}: Props) => {
   } = useForm<Form>({mode: 'onSubmit'})
 
   const activateAccount = (form: Form) => {
-    registerAction.action(form.siret, form.code, form.email)
+    registerAction.action(form.siret, form.code, form.email).then(() => {
+      toastSuccess(m.companyRegisteredEmailSent)
+      history.push(siteMap.login)
+    })
   }
 
   return (
     <LoginPanel title={m.youReceivedNewLetter}>
+      {registerAction.errorMsg && (
+        <Alert type="error" className={cssUtils.marginBottom2}>
+          <Txt size="big" block bold>{m.registerCompanyError}</Txt>
+          <Txt>{m.registerCompanyErrorDesc}</Txt>
+        </Alert>
+      )}
       <form onSubmit={handleSubmit(activateAccount)}>
         <ScInput
           className={cssUtils.marginBottom}
@@ -56,10 +74,9 @@ export const ActivateAccountForm = ({register: registerAction}: Props) => {
             pattern: {value: regexp.siret, message: m.siretOfYourCompanyInvalid},
           })}
         />
-        <ScInput
+        <ScInputPassword
           className={cssUtils.marginBottom}
           fullWidth
-          type="password"
           error={!!errors.code}
           helperText={errors.code?.message ?? m.activationCodeDesc}
           label={m.activationCode}

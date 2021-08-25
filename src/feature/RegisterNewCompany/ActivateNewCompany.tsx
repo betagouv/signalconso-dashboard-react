@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react'
+import React from 'react'
 import {Page} from '../../shared/Layout'
 import {LoginPanel} from '../Login/LoginPanel'
 import {useI18n} from '../../core/i18n'
@@ -11,12 +11,12 @@ import {Theme} from '@material-ui/core'
 import {useLogin} from '../../core/context/LoginContext'
 import {useForm} from 'react-hook-form'
 import {useAccessesContext} from '../../core/context/AccessesContext'
-import {fromNullable} from 'fp-ts/lib/Option'
 import {useToast} from '../../core/toast'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
 import {useHistory} from 'react-router'
 import {siteMap} from '../../core/siteMap'
 import {Alert} from 'mui-extension'
+import {ScInputPassword} from '../../shared/InputPassword/InputPassword'
 
 interface Form {
   siret: string
@@ -83,10 +83,9 @@ export const ActivateNewCompany = () => {
               pattern: {value: regexp.siret, message: m.siretOfYourCompanyInvalid},
             })}
           />
-          <ScInput
+          <ScInputPassword
             className={cssUtils.marginBottom}
             fullWidth
-            type="password"
             error={!!errors.code}
             helperText={errors.code?.message ?? m.activationCodeDesc}
             label={m.activationCode}

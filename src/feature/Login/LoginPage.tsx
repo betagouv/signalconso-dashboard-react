@@ -14,7 +14,7 @@ import {siteMap} from '../../core/siteMap'
 
 const useStyles = makeStyles((t: Theme) => ({
   root: {
-    maxWidth: 396,
+    maxWidth: 400,
   },
   body: {
     display: 'flex',

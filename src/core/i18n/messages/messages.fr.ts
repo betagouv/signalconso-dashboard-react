@@ -97,6 +97,7 @@ export const messagesFr = {
   selectedPeriod: 'Période sélectionnée',
   department: 'Département',
   companyRegistered: 'Entreprise enregistrée',
+  companyRegisteredEmailSent: 'Un email vous a été envoyé avec les instructions pour accéder au compte de l\'entreprise.',
   departments: 'Départements',
   reports: 'Signalements',
   report: 'Signalement',
