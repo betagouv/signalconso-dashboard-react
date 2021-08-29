@@ -1,4 +1,4 @@
-import {ReportResponseTypes} from '../../api'
+import {CompanyAccessLevel, ReportResponseTypes} from '../../api'
 import {Config} from '../../../conf/config'
 
 export const messagesFr = {
@@ -235,6 +235,11 @@ export const messagesFr = {
   companyCreated: 'Entreprise créée',
   cannotCreateCompanyMissingInfo: `Impossible de créer l'entreprise. Son nom ou son adresse ne sont pas renseignés.`,
   editAddress: `Modifier l'adresse de l'entreprise`,
+  companyAccessLevelDescription: {
+    [CompanyAccessLevel.admin]: 'Peut  consulter, répondre aux signalements et inviter/supprimer des nouveaux utilisateurs.',
+    [CompanyAccessLevel.member]: 'Peut consulter et répondre aux signalements.',
+  },
+  invitationToProAlreadySent: (email: string) => `Une invitation a déjà été envoyée à l'adresse ${email}.`,
   editedAddress: `Adresse modifiée`,
   failedToChangePassword: 'Impossible de modifier le mot de passe.',
   passwordAreIdentical: 'Les mots de passe sont identiques',
@@ -248,12 +253,14 @@ export const messagesFr = {
   newPasswordConfirmation: 'Confirmation',
   userInvitationSent: 'Invitation envoyée',
   companyAccessLevel: 'Autorisation',
+  editAccess: `Modifier l'accès`,
   emailDGCCRFValidation: 'Email invalide. Email acceptés : *.gouv.fr',
   companyAccessesTitle: 'Gestion des accès',
   daily: 'Quotidienne',
   weekly: 'Hebdomadaire',
   handleAccesses: 'Gérer les accès',
   accesses: 'Accès',
+  authorization: `Autorisation`,
   contactAgreement: 'Accord pour contact par entreprise',
   editConsumer: 'Modifier les informations du consommateur',
   changesSaved: 'Modification enregistrée',

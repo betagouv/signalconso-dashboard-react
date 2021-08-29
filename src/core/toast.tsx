@@ -9,8 +9,7 @@ export const useToast = () => {
     toastError: (error: Partial<ApiError>) => {
       console.error('[useToast]', error)
       // const errorMessage = error.message || error.code ? error.message + ' ' + (error.code || '') : m.anErrorOccurred
-      const errorMessage = m.anErrorOccurred
-      toastError(errorMessage)
+      toastError(error.message ?? m.anErrorOccurred)
     },
     ...toasts,
   }
