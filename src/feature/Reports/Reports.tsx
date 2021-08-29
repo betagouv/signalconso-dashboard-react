@@ -281,8 +281,7 @@ export const Reports = ({}) => {
               head: m.details,
               className: css.tdDesc,
               row: _ => (
-                <Tooltip
-                  title={_.report.details?.map((detail, i) => (
+                <Tooltip title={_.report.details?.map((detail, i) => (
                     <div key={i}>
                       <span dangerouslySetInnerHTML={{__html: detail.label}} className={cssUtils.txtBold} />
                       &nbsp;

@@ -91,7 +91,7 @@ export const ReportHeader = ({report, children, actions, files, elevated}: Props
                 fileIds: [file.id],
                 actionType: EventActionValues.ConsumerAttachments,
               })
-              .then(() => _report.events.fetch({force: true, clean: false}, report.id))
+              .then(() => _report.get.fetch({force: true, clean: false}, report.id))
           }}
         />
         {children && (
