@@ -252,18 +252,16 @@ export const Reports = ({}) => {
               head: m.problem,
               className: css.tdProblem,
               row: _ => (
-                <Tooltip
-                  title={
-                    <>
-                      <b>{_.report.category}</b>
-                      <ul className={css.tooltipUl}>
-                        {_.report.subcategories.map((s, i) => (
-                          <li key={i}>{s}</li>
-                        ))}
-                      </ul>
-                    </>
-                  }
-                >
+                <Tooltip title={
+                  <>
+                    <b>{_.report.category}</b>
+                    <ul className={css.tooltipUl}>
+                      {_.report.subcategories.map((s, i) => (
+                        <li key={i}>{s}</li>
+                      ))}
+                    </ul>
+                  </>
+                }>
                   <span>{_.report.category}</span>
                 </Tooltip>
               ),
@@ -288,7 +286,7 @@ export const Reports = ({}) => {
                     <div key={i}>
                       <span dangerouslySetInnerHTML={{__html: detail.label}} className={cssUtils.txtBold} />
                       &nbsp;
-                      <span dangerouslySetInnerHTML={{__html: detail.value}} className={cssUtils.colorTxtSecondary} />
+                      <span dangerouslySetInnerHTML={{__html: detail.value}} className={cssUtils.tooltipColorTxtSecondary} />
                     </div>
                   ))}
                 >

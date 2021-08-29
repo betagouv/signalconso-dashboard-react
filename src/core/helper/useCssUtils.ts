@@ -28,6 +28,9 @@ export const useCssUtils = makeStyles((t: Theme) => {
     colorError: {
       color: t.palette.error.main,
     },
+    tooltipColorTxtSecondary: {
+      opacity: 0.82,
+    },
     colorSuccess: {
       color: styleUtils(t).color.success,
     },
