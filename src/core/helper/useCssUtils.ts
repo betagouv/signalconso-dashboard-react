@@ -10,6 +10,9 @@ export const useCssUtils = makeStyles((t: Theme) => {
     flex: {
       display: 'flex',
     },
+    txtCapitalize: {
+      textTransform: 'capitalize'
+    },
     txtTitle: {
       fontSize: t.typography.fontSize * 1.25,
     },
