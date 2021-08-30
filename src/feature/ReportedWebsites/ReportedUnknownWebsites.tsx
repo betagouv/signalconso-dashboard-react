@@ -60,30 +60,6 @@ export const ReportedUnknownWebsites = () => {
                 _fetch.updateFilters(prev => ({...prev, start: start ?? prev.start, end: end ?? prev.end}))
               }
             />
-
-            {/*<Datepicker*/}
-            {/*    label={m.start}*/}
-            {/*    value={_fetch.filters.start}*/}
-            {/*    onChange={start => {*/}
-            {/*        _fetch.updateFilters(prev => {*/}
-            {/*            if (prev.end && start.getTime() > prev.end.getTime()) {*/}
-            {/*                return {...prev, start: start, end: addDays(start, 1)}*/}
-            {/*            }*/}
-            {/*            return {...prev, start: start}*/}
-            {/*        })*/}
-            {/*    }}*/}
-            {/*/>*/}
-            {/*<Datepicker*/}
-            {/*    value={_fetch.filters.end}*/}
-            {/*    onChange={end =>*/}
-            {/*        _fetch.updateFilters(prev => {*/}
-            {/*            if (prev.start && prev.start.getTime() > end.getTime()) {*/}
-            {/*                return {...prev, start: subDays(end, 1), end}*/}
-            {/*            }*/}
-            {/*            return {...prev, end}*/}
-            {/*        })}*/}
-            {/*    label={m.end}*/}
-            {/*/>*/}
             <Tooltip title={m.removeAllFilters}>
               <IconBtn color="primary" onClick={_fetch.clearFilters}>
                 <Icon>clear</Icon>
@@ -126,6 +102,7 @@ export const ReportedUnknownWebsites = () => {
           },
           {
             id: 'actions',
+            className: cssUtils.txtRight,
             row: _ => (
               <>
                 <NavLink

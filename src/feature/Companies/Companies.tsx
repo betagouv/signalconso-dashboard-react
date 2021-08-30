@@ -14,8 +14,6 @@ const useStyles = makeStyles((t: Theme) => ({}))
 
 export const Companies = () => {
   const {m} = useI18n()
-  const cssUtils = useCssUtils()
-  const css = useStyles()
   const {path} = useRouteMatch()
   const {connectedUser} = useLogin()
 

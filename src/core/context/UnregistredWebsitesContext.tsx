@@ -3,7 +3,6 @@ import {ReactNode, useContext} from 'react'
 import {UseFetcher, useFetcher, usePaginate, UsePaginate} from '@alexandreannic/react-hooks-lib/lib'
 import {SignalConsoApiSdk} from '../../App'
 import {ApiHostWithReportCount, HostReportCountSearch} from '../api'
-import {sortPaginatedData} from '../helper/utils'
 
 export interface UnregistredWebsiteWithCompanyContextProps extends UsePaginate<ApiHostWithReportCount, HostReportCountSearch> {
   extractUnregistered: UseFetcher<() => Promise<void>>
