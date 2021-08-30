@@ -11,7 +11,7 @@ import {LoginForm} from './LoginForm'
 import {Link, Redirect, Route, Switch} from 'react-router-dom'
 import {Fn} from '../../shared/Login/Login'
 import {siteMap} from '../../core/siteMap'
-import {ApiError} from '../../core/api'
+import {ApiError, SignalConsoPublicSdk} from '../../core/api'
 
 const useStyles = makeStyles((t: Theme) => ({
   root: {
@@ -41,21 +41,21 @@ export interface ActionProps<F extends (...args: any[]) => Promise<any>> {
   error?: ApiError
 }
 
-interface Props<L extends Fn, R extends Fn, F extends Fn> {
-  login: ActionProps<L>
-  register: ActionProps<R>
-  forgottenPassword?: ActionProps<F>
+interface Props {
+  login: ActionProps<SignalConsoPublicSdk['authenticate']['login']>
+  forgottenPassword?: ActionProps<SignalConsoPublicSdk['authenticate']['forgotPassword']>
+  register: ActionProps<SignalConsoPublicSdk['authenticate']['sendActivationLink']>
 }
 
-export const LoginPage = <L extends Fn, R extends Fn, F extends Fn>({login, register, forgottenPassword}: Props<L, R, F>) => {
+export const LoginPage = ({login, register, forgottenPassword}: Props) => {
   const {m} = useI18n()
   const css = useStyles()
 
   const allTabs = [siteMap.login, siteMap.register]
 
   return (
-    <Page className={css.root}>
-      <CenteredContent offset={headerHeight}>
+    <CenteredContent offset={headerHeight}>
+      <Page className={css.root}>
         <Route
           path="/"
           render={({location}) => (
@@ -85,7 +85,7 @@ export const LoginPage = <L extends Fn, R extends Fn, F extends Fn>({login, regi
         <Txt color="hint" className={css.hint}>
           <div dangerouslySetInnerHTML={{__html: m.loginIssueTip}}/>
         </Txt>
-      </CenteredContent>
-    </Page>
+      </Page>
+    </CenteredContent>
   )
 }

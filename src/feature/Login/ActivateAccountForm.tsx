@@ -10,13 +10,13 @@ import {Theme} from '@material-ui/core'
 import {ActionProps} from './LoginPage'
 import {Alert} from 'mui-extension'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
-import React, {useEffect} from 'react'
+import React from 'react'
 import {useToast} from '../../core/toast'
 import {useHistory} from 'react-router'
 import {siteMap} from '../../core/siteMap'
 import {ScInputPassword} from '../../shared/InputPassword/InputPassword'
-import {ActionResultNames, CompanyAccessEventActions, EventCategories, Matomo} from '../../core/analyics/Matomo'
-import {fromNullable} from 'fp-ts/es6/Option'
+import {AccessEventActions, ActionResultNames, EventCategories, Matomo} from '../../core/analyics/Matomo'
+import {fnSwitch} from '../../core/helper/utils'
 
 interface Form {
   siret: string
@@ -45,15 +45,23 @@ export const ActivateAccountForm = ({register: registerAction}: Props) => {
   const {
     register,
     handleSubmit,
-    getValues,
     formState: {errors, isValid},
   } = useForm<Form>({mode: 'onSubmit'})
 
   const activateAccount = (form: Form) => {
-    registerAction.action(form.siret, form.code, form.email).then(() => {
-      toastSuccess(m.companyRegisteredEmailSent)
-      history.push(siteMap.login)
-    }).catch(toastError)
+    registerAction.action(form.siret, form.code, form.email)
+      .then(() => {
+        toastSuccess(m.companyRegisteredEmailSent)
+        history.push(siteMap.login)
+        Matomo.trackEvent(EventCategories.account, AccessEventActions.activateCompanyCode, ActionResultNames.success)
+      })
+      .catch(err => {
+        const errorMessage = fnSwitch(err.code, {
+          404: m.companyActivationNotFound,
+        })
+        toastError({message: errorMessage})
+        Matomo.trackEvent(EventCategories.companyAccess, AccessEventActions.activateCompanyCode, ActionResultNames.fail)
+      })
   }
 
   return (

@@ -1,6 +1,5 @@
-import React from 'react'
+import React, {ReactElement} from 'react'
 import {useI18n} from '../../core/i18n'
-import {ScButton} from '../../shared/Button/Button'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
 import {useForm} from 'react-hook-form'
 import {useUsersContext} from '../../core/context/UsersContext'
@@ -17,7 +16,11 @@ interface Form {
   newPasswordConfirmation: string
 }
 
-export const EditPassword = () => {
+interface Props {
+  children: ReactElement<any>
+}
+
+export const EditPasswordDialog = ({children}: Props) => {
   const {m} = useI18n()
   const _changePassword = useUsersContext().changePassword
   const {
@@ -99,9 +102,7 @@ export const EditPassword = () => {
         </>
       }
     >
-      <ScButton icon="edit" color="primary">
-        {m.edit}
-      </ScButton>
+      {children}
     </ScDialog>
   )
 }

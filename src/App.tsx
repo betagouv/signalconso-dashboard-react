@@ -2,7 +2,7 @@ import React from 'react'
 import {ApiClient, ApiError, SignalConsoPublicSdk, SignalConsoSecuredSdk} from 'core/api'
 import {Config} from './conf/config'
 import {makeStyles} from '@material-ui/core/styles'
-import {Theme, ThemeProvider} from '@material-ui/core'
+import {CircularProgress, Theme, ThemeProvider} from '@material-ui/core'
 import {HashRouter, Redirect, Route, Switch} from 'react-router-dom'
 import {I18nProvider} from './core/i18n'
 import {MuiPickersUtilsProvider} from '@material-ui/pickers'
@@ -29,10 +29,9 @@ import {Settings} from './feature/Settings/Settings'
 import {Subscriptions} from './feature/Subscriptions/Subscriptions'
 import {SubscriptionsProvider} from './core/context/SubscriptionsContext'
 import {LoginPage} from './feature/Login/LoginPage'
-import {Layout} from './core/Layout'
+import {headerHeight, Layout} from './core/Layout'
 import {Login} from './shared/Login/Login'
 import {LoginProvider, useLogin} from './core/context/LoginContext'
-import {LoginLoader} from './feature/Login/LoginLoader'
 import {useFetcher} from '@alexandreannic/react-hooks-lib/lib'
 import {ReportsPro} from './feature/ReportsPro/ReportsPro'
 import {ReportedWebsitesProvider} from './core/context/ReportedWebsitesContext'
@@ -43,9 +42,8 @@ import {CompaniesPro} from './feature/CompaniesPro/CompaniesPro'
 import {ReportPro} from './feature/Report/ReportPro'
 import {AccessesProvider} from './core/context/AccessesContext'
 import {ActivateNewCompany} from './feature/ActivateNewCompany/ActivateNewCompany'
-import {mapPromise} from './core/helper/utils'
 import {EmailValidation} from './feature/EmailValidation/EmailValidation'
-import {ActionResultNames, AuthenticationEventActions, CompanyAccessEventActions, EventCategories, Matomo} from './core/analyics/Matomo'
+import {CenteredContent} from './shared/CenteredContent/CenteredContent'
 
 const headers = {
   'Content-Type': 'application/json',
@@ -141,40 +139,19 @@ const AppLogin = () => {
 
   return (
     <Login
-      onRegister={mapPromise({
-        promise: apiPublicSdk.authenticate.sendActivationLink,
-        mapThen: () => {
-          Matomo.trackEvent(
-            EventCategories.account,
-            CompanyAccessEventActions.activateCompanyCode,
-            ActionResultNames.success,
-          )
-        },
-        mapCatch: (err: ApiError) => {
-          Matomo.trackEvent(
-            EventCategories.companyAccess,
-            CompanyAccessEventActions.activateCompanyCode,
-            ActionResultNames.fail,
-          )
-          return Promise.reject(err)
-        },
-      })}
-      onLogin={mapPromise({
-        promise: apiPublicSdk.authenticate.login,
-        mapThen: _ => {
-          Matomo.trackEvent(EventCategories.auth, AuthenticationEventActions.success, _.user.id)
-          Matomo.trackEvent(EventCategories.auth, AuthenticationEventActions.role, _.user.role)
-          return _
-        },
-        mapCatch: (err: ApiError) => {
-          Matomo.trackEvent(EventCategories.auth, AuthenticationEventActions.fail)
-          return Promise.reject(err)
-        },
-      })}
+      onRegister={apiPublicSdk.authenticate.sendActivationLink}
+      onLogin={apiPublicSdk.authenticate.login}
       onLogout={() => history.push('/')}
       getTokenFromResponse={_ => _.token}
     >
-      {({authResponse, login, logout, register, isCheckingToken, setToken}) => (
+      {({
+        authResponse,
+        login,
+        logout,
+        register,
+        isCheckingToken,
+        setToken,
+      }) => (
         <Layout connectedUser={authResponse ? {...authResponse.user, logout: logout} : undefined}>
           <Switch>
             <Route path={siteMap.emailValidation}>
@@ -191,7 +168,9 @@ const AppLogin = () => {
                   <AppLogged/>
                 </LoginProvider>
               ) : isCheckingToken ? (
-                <LoginLoader />
+                <CenteredContent offset={headerHeight}>
+                  <CircularProgress/>
+                </CenteredContent>
               ) : (
                 <LoginPage
                   login={login}

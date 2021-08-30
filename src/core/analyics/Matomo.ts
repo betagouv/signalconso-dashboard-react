@@ -15,7 +15,7 @@ type AnalyticAction =
   | CompanySearchEventActions
   | ContractualDisputeActions
   | AccountEventActions
-  | CompanyAccessEventActions
+  | AccessEventActions
 
 export enum EventCategories {
   report = 'Signalement',
@@ -81,7 +81,7 @@ export enum AccountEventNames {
   userAlreadyRegistered = 'Compte déjà existant',
 }
 
-export enum CompanyAccessEventActions {
+export enum AccessEventActions {
   addCompanyToAccount = 'Ajout d\'une entreprise à un compte',
   activateCompanyCode = 'Activation d\'une entreprise'
 }

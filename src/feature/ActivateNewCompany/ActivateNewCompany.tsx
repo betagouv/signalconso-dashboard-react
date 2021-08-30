@@ -17,7 +17,7 @@ import {useHistory} from 'react-router'
 import {siteMap} from '../../core/siteMap'
 import {Alert} from 'mui-extension'
 import {ScInputPassword} from '../../shared/InputPassword/InputPassword'
-import {ActionResultNames, CompanyAccessEventActions, EventCategories, Matomo} from '../../core/analyics/Matomo'
+import {ActionResultNames, AccessEventActions, EventCategories, Matomo} from '../../core/analyics/Matomo'
 
 interface Form {
   siret: string
@@ -61,14 +61,14 @@ export const ActivateNewCompany = () => {
         history.push(siteMap.companiesPro)
         Matomo.trackEvent(
           EventCategories.companyAccess,
-          CompanyAccessEventActions.addCompanyToAccount,
+          AccessEventActions.addCompanyToAccount,
           ActionResultNames.success
         )
       })
       .catch(() => {
         Matomo.trackEvent(
           EventCategories.companyAccess,
-          CompanyAccessEventActions.addCompanyToAccount,
+          AccessEventActions.addCompanyToAccount,
           ActionResultNames.fail
         )
       })

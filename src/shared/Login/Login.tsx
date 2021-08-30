@@ -17,8 +17,8 @@ export interface LoginActionProps<F extends Function> {
 export interface LoginExposedProps<L extends Fn, R extends Fn> {
   authResponse?: AsynFnResult<L>
   logout: () => void
-  login: LoginActionProps<(...args: Parameters<L>) => Promise<void>>
-  register: LoginActionProps<(...args: Parameters<R>) => Promise<void>>
+  login: LoginActionProps<L>
+  register: LoginActionProps<R>
   token?: string
   setToken: (_: AsynFnResult<L>) => void
   isCheckingToken: boolean
@@ -56,11 +56,13 @@ export const Login = <L extends Fn, R extends Fn>({
     }
   }, [])
 
-  const login = async (...args: Parameters<L>): Promise<void> => {
+  // @ts-ignore
+  const login: L = async (...args: any[]) => {
     try {
       setIsLogging(true)
       const auth = await onLogin(...args)
       setToken(auth)
+      return auth
     } catch (e) {
       setLoginError(e)
       throw e
@@ -74,10 +76,11 @@ export const Login = <L extends Fn, R extends Fn>({
     setAuth(auth)
   }
 
-  const register = async (...args: Parameters<R>): Promise<void> => {
+  // @ts-ignore
+  const register: R = async (...args: any[]) => {
     try {
       setIsRegistering(true)
-      await onRegister(...args)
+      return onRegister(...args)
     } catch (e) {
       setRegisterError(e)
       throw e

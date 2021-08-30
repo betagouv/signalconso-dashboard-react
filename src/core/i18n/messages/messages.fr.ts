@@ -229,6 +229,7 @@ export const messagesFr = {
   loginForbidden: `Compte bloqué (trop de tentatives, veuillez réessayer dans 30 minutes)`,
   loginLocked: `Votre adresse email doit être validée, un e-mail vient de vous être envoyé avec un lien à cet effet.`,
   loginFailed: `Échec de l'authentification`,
+  companyActivationNotFound: `Le SIRET ou le code d'activation est invalide.`,
   validateLetterSentDesc:
     'Les courriers seront considérés envoyés pour les entreprises sélectionnées. Cette action est irrévocable.',
   dgccrfUsers: 'Agents DGCCRF',
