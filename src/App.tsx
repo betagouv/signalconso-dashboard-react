@@ -138,11 +138,9 @@ const AppLogin = () => {
   const forgottenPassword = useFetcher<SignalConsoApiSdk['public']['authenticate']['forgotPassword'], ApiError>(
     apiPublicSdk.authenticate.forgotPassword,
   )
-  const authenticationStorage = useMemo(() => localStorageObject<AuthUser>('AuthUserSignalConso'), [])
 
   return (
     <Login
-      authenticationStorage={authenticationStorage}
       onRegister={mapPromise({
         promise: apiPublicSdk.authenticate.sendActivationLink,
         mapCatch: (err: ApiError) => Promise.reject(err.message),
@@ -154,11 +152,11 @@ const AppLogin = () => {
       onLogout={() => history.push('/')}
       getTokenFromResponse={_ => _.token}
     >
-      {({authResponse, login, logout, register, isCheckingToken}) => (
+      {({authResponse, login, logout, register, isCheckingToken, setToken}) => (
         <Layout connectedUser={authResponse ? {...authResponse.user, logout: logout} : undefined}>
           <Switch>
             <Route path={siteMap.emailValidation}>
-              <EmailValidation saveToken={authenticationStorage.set} validateEmail={apiPublicSdk.authenticate.validateEmail}/>
+              <EmailValidation saveToken={setToken} validateEmail={apiPublicSdk.authenticate.validateEmail}/>
             </Route>
             <Route path="/">
               {authResponse ? (

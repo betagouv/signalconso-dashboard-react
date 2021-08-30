@@ -2,6 +2,7 @@ import {useToast} from '../../core/toast'
 import React, {useEffect, useMemo, useState} from 'react'
 import jwtDecode from 'jwt-decode'
 import {localStorageObject} from '../../core/helper/localStorage'
+import {AuthUser} from '../../core/api'
 
 type PromiseReturn<T> = T extends PromiseLike<infer U> ? U : T
 
@@ -21,6 +22,7 @@ export interface LoginExposedProps<L extends Fn, R extends Fn> {
   login: LoginActionProps<(...args: Parameters<L>) => Promise<void>>
   register: LoginActionProps<(...args: Parameters<R>) => Promise<void>>
   token?: string
+  setToken: (_: AsynFnResult<L>) => void
   isCheckingToken: boolean
 }
 
@@ -30,21 +32,16 @@ interface Props<L extends Fn, R extends Fn> {
   onLogout: () => void
   getTokenFromResponse: (_: AsynFnResult<L>) => string
   children: ({authResponse, login, logout, token}: LoginExposedProps<L, R>) => any
-  authenticationStorage: {
-    get: () => AsynFnResult<L>
-    set: (_: AsynFnResult<L>) => void,
-    clear: () => void
-  }
 }
 
 export const Login = <L extends Fn, R extends Fn>({
-  authenticationStorage,
   onLogin,
   onRegister,
   onLogout,
   getTokenFromResponse,
   children,
 }: Props<L, R>) => {
+  const authenticationStorage = useMemo(() => localStorageObject<AsynFnResult<L>>('AuthUserSignalConso'), [])
   const {toastError} = useToast()
   const [auth, setAuth] = useState<AsynFnResult<L>>()
   const [isLogging, setIsLogging] = useState(false)
@@ -66,14 +63,18 @@ export const Login = <L extends Fn, R extends Fn>({
     try {
       setIsLogging(true)
       const auth = await onLogin(...args)
-      authenticationStorage.set(auth)
-      setAuth(auth)
+      setToken(auth)
     } catch (e) {
       toastError(e)
       setLoginError(e)
     } finally {
       setIsLogging(false)
     }
+  }
+
+  const setToken = (auth: AsynFnResult<L>) => {
+    authenticationStorage.set(auth)
+    setAuth(auth)
   }
 
   const register = async (...args: Parameters<R>): Promise<void> => {
@@ -123,5 +124,6 @@ export const Login = <L extends Fn, R extends Fn>({
     },
     token: auth ? getTokenFromResponse(auth) : undefined,
     isCheckingToken,
+    setToken,
   })
 }

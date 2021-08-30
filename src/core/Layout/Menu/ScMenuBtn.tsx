@@ -7,7 +7,8 @@ import {useBoolean} from '@alexandreannic/react-hooks-lib/lib'
 import {ScMenu} from './ScMenu'
 import {LayoutConnectedUser} from '../Layout'
 import {classes} from '../../helper/utils'
-import {NavLink} from 'react-router-dom'
+import {useHistory} from 'react-router'
+import {siteMap} from '../../siteMap'
 
 const useMenuStyles = makeStyles((t: Theme) => ({
   root: {
@@ -48,15 +49,17 @@ interface Props {
 export const ScMenuBtn = ({connectedUser}: Props) => {
   const css = useMenuStyles()
   const openMenu = useBoolean(false)
+  const history = useHistory()
 
   return (
     <div className={css.root}>
-      <NavLink to="/">
-        <Avatar className={classes(css.avatar, !connectedUser && css.avatarOffline)} onClick={openMenu.toggle}>
-          <Icon>{connectedUser ? 'person' : 'no_accounts'}</Icon>
-        </Avatar>
-      </NavLink>
-      {connectedUser && openMenu.value && <ScMenu onClose={openMenu.setFalse} connectedUser={connectedUser} />}
+      <Avatar className={classes(css.avatar, !connectedUser && css.avatarOffline)} onClick={() => {
+        if (connectedUser) openMenu.toggle()
+        else history.push(siteMap.login)
+      }}>
+        <Icon>{connectedUser ? 'person' : 'no_accounts'}</Icon>
+      </Avatar>
+      {connectedUser && openMenu.value && <ScMenu onClose={openMenu.setFalse} connectedUser={connectedUser}/>}
     </div>
   )
 }
