@@ -13,6 +13,9 @@ import {useForm} from 'react-hook-form'
 import {ScButton} from '../../shared/Button/Button'
 import {fromNullable} from 'fp-ts/es6/Option'
 import {ForgottenPasswordDialog} from './ForgottenPasswordDialog'
+import {ApiError} from '../../core/api'
+import {fnSwitch} from '../../core/helper/utils'
+import {useToast} from '../../core/toast'
 
 interface Props<L extends Fn, F extends Fn> {
   login: ActionProps<L>
@@ -31,10 +34,12 @@ interface Form {
   password: string
 }
 
+
 export const LoginForm = <L extends Fn, F extends Fn>({login, forgottenPassword}: Props<L, F>) => {
   const {m} = useI18n()
   const css = useStyles()
   const cssUtils = useCssUtils()
+  const {toastError} = useToast()
 
   const {
     register,
@@ -44,7 +49,13 @@ export const LoginForm = <L extends Fn, F extends Fn>({login, forgottenPassword}
   } = useForm<Form>({mode: 'onSubmit'})
 
   const onLogin = async (form: Form) => {
-    login.action(form.email, form.password)
+    login.action(form.email, form.password).catch((err: ApiError) => {
+      const errorMessage = fnSwitch(err.code, {
+        403: m.loginForbidden,
+        423: m.loginLocked,
+      }, () => m.loginFailed)
+      toastError({message: errorMessage})
+    })
   }
 
   return (
@@ -85,7 +96,7 @@ export const LoginForm = <L extends Fn, F extends Fn>({login, forgottenPassword}
             <ForgottenPasswordDialog
               value={watch('email')}
               loading={_.loading}
-              errorMsg={_.errorMsg}
+              error={_.error}
               onSubmit={_.action}
             >
               <ScButton color="primary">{m.forgottenPassword}</ScButton>

@@ -1,11 +1,12 @@
 import * as React from 'react'
 import {ReactNode, useContext} from 'react'
-import {UseFetcher, useFetcher} from '@alexandreannic/react-hooks-lib/lib'
+import {UseAsync, UseFetcher, useFetcher} from '@alexandreannic/react-hooks-lib/lib'
 import {SignalConsoSecuredSdk} from 'core/api'
 import {SignalConsoApiSdk} from '../../App'
+import {useAsync} from '@alexandreannic/react-hooks-lib'
 
 export interface AccessesContextProps {
-  acceptToken: UseFetcher<SignalConsoSecuredSdk['accesses']['acceptToken']>
+  acceptToken: UseAsync<SignalConsoSecuredSdk['accesses']['acceptToken']>
 }
 
 interface Props {
@@ -18,7 +19,7 @@ const defaultContext: Partial<AccessesContextProps> = {}
 const AccessesContext = React.createContext<AccessesContextProps>(defaultContext as AccessesContextProps)
 
 export const AccessesProvider = ({api, children}: Props) => {
-  const acceptToken = useFetcher(api.secured.accesses.acceptToken)
+  const acceptToken = useAsync(api.secured.accesses.acceptToken)
 
   return (
     <AccessesContext.Provider

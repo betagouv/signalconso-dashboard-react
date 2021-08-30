@@ -1,5 +1,5 @@
-import React, {useMemo} from 'react'
-import {ApiClient, ApiError, AuthUser, SignalConsoPublicSdk, SignalConsoSecuredSdk} from 'core/api'
+import React from 'react'
+import {ApiClient, ApiError, SignalConsoPublicSdk, SignalConsoSecuredSdk} from 'core/api'
 import {Config} from './conf/config'
 import {makeStyles} from '@material-ui/core/styles'
 import {Theme, ThemeProvider} from '@material-ui/core'
@@ -42,10 +42,10 @@ import {UnregistredWebsitesProvider} from './core/context/UnregistredWebsitesCon
 import {CompaniesPro} from './feature/CompaniesPro/CompaniesPro'
 import {ReportPro} from './feature/Report/ReportPro'
 import {AccessesProvider} from './core/context/AccessesContext'
-import {ActivateNewCompany} from './feature/RegisterNewCompany/ActivateNewCompany'
+import {ActivateNewCompany} from './feature/ActivateNewCompany/ActivateNewCompany'
 import {mapPromise} from './core/helper/utils'
 import {EmailValidation} from './feature/EmailValidation/EmailValidation'
-import {localStorageObject} from './core/helper/localStorage'
+import {ActionResultNames, AuthenticationEventActions, CompanyAccessEventActions, EventCategories, Matomo} from './core/analyics/Matomo'
 
 const headers = {
   'Content-Type': 'application/json',
@@ -143,11 +143,33 @@ const AppLogin = () => {
     <Login
       onRegister={mapPromise({
         promise: apiPublicSdk.authenticate.sendActivationLink,
-        mapCatch: (err: ApiError) => Promise.reject(err.message),
+        mapThen: () => {
+          Matomo.trackEvent(
+            EventCategories.account,
+            CompanyAccessEventActions.activateCompanyCode,
+            ActionResultNames.success,
+          )
+        },
+        mapCatch: (err: ApiError) => {
+          Matomo.trackEvent(
+            EventCategories.companyAccess,
+            CompanyAccessEventActions.activateCompanyCode,
+            ActionResultNames.fail,
+          )
+          return Promise.reject(err)
+        },
       })}
       onLogin={mapPromise({
         promise: apiPublicSdk.authenticate.login,
-        mapCatch: (err: ApiError) => Promise.reject(err.message,),
+        mapThen: _ => {
+          Matomo.trackEvent(EventCategories.auth, AuthenticationEventActions.success, _.user.id)
+          Matomo.trackEvent(EventCategories.auth, AuthenticationEventActions.role, _.user.role)
+          return _
+        },
+        mapCatch: (err: ApiError) => {
+          Matomo.trackEvent(EventCategories.auth, AuthenticationEventActions.fail)
+          return Promise.reject(err)
+        },
       })}
       onLogout={() => history.push('/')}
       getTokenFromResponse={_ => _.token}
@@ -177,7 +199,7 @@ const AppLogin = () => {
                   forgottenPassword={{
                     action: (email: string) => forgottenPassword.fetch({}, email),
                     loading: forgottenPassword.loading,
-                    errorMsg: forgottenPassword.error?.message,
+                    error: forgottenPassword.error,
                   }}
                 />
               )}

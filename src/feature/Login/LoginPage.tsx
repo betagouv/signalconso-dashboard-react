@@ -11,6 +11,7 @@ import {LoginForm} from './LoginForm'
 import {Link, Redirect, Route, Switch} from 'react-router-dom'
 import {Fn} from '../../shared/Login/Login'
 import {siteMap} from '../../core/siteMap'
+import {ApiError} from '../../core/api'
 
 const useStyles = makeStyles((t: Theme) => ({
   root: {
@@ -37,7 +38,7 @@ const useStyles = makeStyles((t: Theme) => ({
 export interface ActionProps<F extends (...args: any[]) => Promise<any>> {
   action: F
   loading?: boolean
-  errorMsg?: string
+  error?: ApiError
 }
 
 interface Props<L extends Fn, R extends Fn, F extends Fn> {

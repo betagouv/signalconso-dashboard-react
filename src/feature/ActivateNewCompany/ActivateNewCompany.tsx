@@ -17,6 +17,7 @@ import {useHistory} from 'react-router'
 import {siteMap} from '../../core/siteMap'
 import {Alert} from 'mui-extension'
 import {ScInputPassword} from '../../shared/InputPassword/InputPassword'
+import {ActionResultNames, CompanyAccessEventActions, EventCategories, Matomo} from '../../core/analyics/Matomo'
 
 interface Form {
   siret: string
@@ -44,21 +45,32 @@ export const ActivateNewCompany = () => {
   const css = useStyles()
   const {connectedUser} = useLogin()
   const _acceptToken = useAccessesContext().acceptToken
-  const {toastError, toastSuccess} = useToast()
+  const {toastSuccess} = useToast()
   const history = useHistory()
 
   const {
     register,
     handleSubmit,
-    getValues,
-    formState: {errors, isValid},
+    formState: {errors},
   } = useForm<Form>({mode: 'onSubmit'})
 
   const acceptToken = (form: Form) => {
-    _acceptToken.fetch({}, form.siret, form.code)
+    _acceptToken.call(form.siret, form.code)
       .then(() => {
         toastSuccess(m.companyRegistered)
         history.push(siteMap.companiesPro)
+        Matomo.trackEvent(
+          EventCategories.companyAccess,
+          CompanyAccessEventActions.addCompanyToAccount,
+          ActionResultNames.success
+        )
+      })
+      .catch(() => {
+        Matomo.trackEvent(
+          EventCategories.companyAccess,
+          CompanyAccessEventActions.addCompanyToAccount,
+          ActionResultNames.fail
+        )
       })
   }
 

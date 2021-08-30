@@ -8,11 +8,13 @@ import {useForm} from 'react-hook-form'
 import {useI18n} from '../../core/i18n'
 import {useToast} from '../../core/toast'
 import {ScDialog} from '../../shared/Confirm/ScDialog'
+import {AuthenticationEventActions, EventCategories, Matomo} from '../../core/analyics/Matomo'
+import {ApiError} from '../../core/api'
 
 interface Props {
   onSubmit: (email: string) => Promise<any>
   loading?: boolean
-  errorMsg?: string
+  error?: ApiError
   children: ReactElement<any>
   value?: string
 }
@@ -21,7 +23,7 @@ interface Form {
   emailForgotten: string
 }
 
-export const ForgottenPasswordDialog = ({value, onSubmit, loading, errorMsg, children}: Props) => {
+export const ForgottenPasswordDialog = ({value, onSubmit, loading, error, children}: Props) => {
   const {m} = useI18n()
   const {toastSuccess} = useToast()
   const {
@@ -37,8 +39,22 @@ export const ForgottenPasswordDialog = ({value, onSubmit, loading, errorMsg, chi
 
   const submit = (form: Form, close: () => void) => {
     onSubmit(form.emailForgotten)
-      .then(close)
-      .then(() => toastSuccess(m.emailSentToYou))
+      .then(() => {
+        close()
+        toastSuccess(m.emailSentToYou)
+        Matomo.trackEvent(
+          EventCategories.auth,
+          AuthenticationEventActions.forgotPasswordSuccess,
+          form.emailForgotten,
+        )
+      })
+      .catch(() => {
+        Matomo.trackEvent(
+          EventCategories.auth,
+          AuthenticationEventActions.forgotPasswordFail,
+          form.emailForgotten,
+        )
+      })
   }
 
   return (
@@ -51,7 +67,7 @@ export const ForgottenPasswordDialog = ({value, onSubmit, loading, errorMsg, chi
       onConfirm={(e, close) => submit(getValues(), close)}
       content={
         <>
-          {errorMsg !== undefined && (
+          {error !== undefined && (
             <Alert type="error" gutterBottom deletable>
               {m.anErrorOccurred}
             </Alert>

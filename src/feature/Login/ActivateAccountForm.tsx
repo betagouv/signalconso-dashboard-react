@@ -6,15 +6,17 @@ import {useCssUtils} from '../../core/helper/useCssUtils'
 import {LoginPanel} from './LoginPanel'
 import {ScButton} from '../../shared/Button/Button'
 import {makeStyles} from '@material-ui/core/styles'
-import {Icon, InputAdornment, Theme} from '@material-ui/core'
+import {Theme} from '@material-ui/core'
 import {ActionProps} from './LoginPage'
 import {Alert} from 'mui-extension'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
-import React from 'react'
+import React, {useEffect} from 'react'
 import {useToast} from '../../core/toast'
 import {useHistory} from 'react-router'
 import {siteMap} from '../../core/siteMap'
 import {ScInputPassword} from '../../shared/InputPassword/InputPassword'
+import {ActionResultNames, CompanyAccessEventActions, EventCategories, Matomo} from '../../core/analyics/Matomo'
+import {fromNullable} from 'fp-ts/es6/Option'
 
 interface Form {
   siret: string
@@ -38,7 +40,7 @@ export const ActivateAccountForm = ({register: registerAction}: Props) => {
   const {m} = useI18n()
   const cssUtils = useCssUtils()
   const css = useStyles()
-  const {toastSuccess} = useToast()
+  const {toastSuccess, toastError} = useToast()
   const history = useHistory()
   const {
     register,
@@ -51,12 +53,12 @@ export const ActivateAccountForm = ({register: registerAction}: Props) => {
     registerAction.action(form.siret, form.code, form.email).then(() => {
       toastSuccess(m.companyRegisteredEmailSent)
       history.push(siteMap.login)
-    })
+    }).catch(toastError)
   }
 
   return (
     <LoginPanel title={m.youReceivedNewLetter}>
-      {registerAction.errorMsg && (
+      {registerAction.error && (
         <Alert type="error" className={cssUtils.marginBottom2}>
           <Txt size="big" block bold>{m.registerCompanyError}</Txt>
           <Txt>{m.registerCompanyErrorDesc}</Txt>

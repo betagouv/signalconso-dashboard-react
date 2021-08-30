@@ -1,8 +1,6 @@
-import {useToast} from '../../core/toast'
 import React, {useEffect, useMemo, useState} from 'react'
 import jwtDecode from 'jwt-decode'
 import {localStorageObject} from '../../core/helper/localStorage'
-import {AuthUser} from '../../core/api'
 
 type PromiseReturn<T> = T extends PromiseLike<infer U> ? U : T
 
@@ -42,7 +40,6 @@ export const Login = <L extends Fn, R extends Fn>({
   children,
 }: Props<L, R>) => {
   const authenticationStorage = useMemo(() => localStorageObject<AsynFnResult<L>>('AuthUserSignalConso'), [])
-  const {toastError} = useToast()
   const [auth, setAuth] = useState<AsynFnResult<L>>()
   const [isLogging, setIsLogging] = useState(false)
   const [isRegistering, setIsRegistering] = useState(false)
@@ -65,8 +62,8 @@ export const Login = <L extends Fn, R extends Fn>({
       const auth = await onLogin(...args)
       setToken(auth)
     } catch (e) {
-      toastError(e)
       setLoginError(e)
+      throw e
     } finally {
       setIsLogging(false)
     }
@@ -82,8 +79,8 @@ export const Login = <L extends Fn, R extends Fn>({
       setIsRegistering(true)
       await onRegister(...args)
     } catch (e) {
-      toastError(e)
       setRegisterError(e)
+      throw e
     } finally {
       setIsRegistering(false)
     }

@@ -28,7 +28,7 @@ export interface ApiClientApi {
   readonly put: <T = any>(uri: string, options?: RequestOption) => Promise<T>
 }
 
-export type StatusCode = 200 | 301 | 302 | 400 | 401 | 403 | 404 | 500 | 504
+export type StatusCode = 200 | 301 | 302 | 400 | 401 | 403 | 404 | 423 | 500 | 504
 
 export interface ApiError {
   code: StatusCode
