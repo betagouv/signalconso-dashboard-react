@@ -117,7 +117,7 @@ export const EditAddressDialog = ({address, children, onChange, onChangeError}: 
             name="activationDocumentRequired"
             control={control}
             render={({field}) => (
-              <FormControlLabel control={<Checkbox {...field} checked={field.value} />} label={m.contactAgreement} />
+              <FormControlLabel control={<Checkbox {...field} checked={field.value} />} label={m.activationDocumentRequired} />
             )}
           />
         </>
