@@ -44,6 +44,7 @@ import {AccessesProvider} from './core/context/AccessesContext'
 import {ActivateNewCompany} from './feature/ActivateNewCompany/ActivateNewCompany'
 import {EmailValidation} from './feature/EmailValidation/EmailValidation'
 import {CenteredContent} from './shared/CenteredContent/CenteredContent'
+import {ResetPassword} from './feature/ResetPassword/ResetPassword'
 
 const headers = {
   'Content-Type': 'application/json',
@@ -155,7 +156,10 @@ const AppLogin = () => {
         <Layout connectedUser={authResponse ? {...authResponse.user, logout: logout} : undefined}>
           <Switch>
             <Route path={siteMap.emailValidation}>
-              <EmailValidation saveToken={setToken} validateEmail={apiPublicSdk.authenticate.validateEmail}/>
+              <EmailValidation onSaveToken={setToken} onValidateEmail={apiPublicSdk.authenticate.validateEmail}/>
+            </Route>
+            <Route path={siteMap.resetPassword()}>
+              <ResetPassword onResetPassword={apiPublicSdk.authenticate.resetPassword}/>
             </Route>
             <Route path="/">
               {authResponse ? (

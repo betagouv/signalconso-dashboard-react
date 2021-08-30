@@ -15,8 +15,8 @@ import {useCssUtils} from '../../core/helper/useCssUtils'
 import * as querystring from 'querystring'
 
 interface Props {
-  validateEmail: (token: Id) => Promise<AuthUser>
-  saveToken: (_: AuthUser) => void
+  onValidateEmail: (token: Id) => Promise<AuthUser>
+  onSaveToken: (_: AuthUser) => void
 }
 
 interface FenderProps {
@@ -25,15 +25,15 @@ interface FenderProps {
   description?: string
 }
 
-export const EmailValidation = ({validateEmail, saveToken}: Props) => {
+export const EmailValidation = ({onValidateEmail, onSaveToken}: Props) => {
   const {m} = useI18n()
   const cssUtils = useCssUtils()
-  const _validateEmail = useAsync(validateEmail)
+  const _validateEmail = useAsync(onValidateEmail)
   const {search} = useLocation()
 
   useEffect(() => {
     const token = querystring.parse(search.replace(/^\?/, '')).token as string
-    _validateEmail.call(token).then(saveToken)
+    _validateEmail.call(token).then(onSaveToken)
   }, [])
 
   const fenderProps = useMemo((): FenderProps => {

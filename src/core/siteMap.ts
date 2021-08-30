@@ -21,5 +21,6 @@ export const siteMap = {
   register: '/activation',
   registerBis: '/entreprise/activation',
   login: '/connexion',
-  emailValidation: '/connexion/validation-email'
+  emailValidation: '/connexion/validation-email',
+  resetPassword: (token: Id = ':token') => `/connexion/nouveau-mot-de-passe/${token}`,
 }

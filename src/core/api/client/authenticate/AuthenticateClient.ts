@@ -19,4 +19,8 @@ export class AuthenticateClient {
   readonly validateEmail = (token: Id) => {
     return this.client.post<AuthUser>(`/account/validate-email`, {body: {token}})
   }
+
+  readonly resetPassword = (password: string, token: string) => {
+    return this.client.post<void>(`/authenticate/password/reset`, {body: {password}, qs: {token}})
+  }
 }

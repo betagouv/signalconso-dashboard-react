@@ -17,7 +17,8 @@ import {useHistory} from 'react-router'
 import {siteMap} from '../../core/siteMap'
 import {Alert} from 'mui-extension'
 import {ScInputPassword} from '../../shared/InputPassword/InputPassword'
-import {ActionResultNames, AccessEventActions, EventCategories, Matomo} from '../../core/analyics/Matomo'
+import {AccessEventActions, ActionResultNames, EventCategories, Matomo} from '../../core/analyics/Matomo'
+import {HelpContactInfo} from '../../shared/HelpContactInfo/HelpContactInfo'
 
 interface Form {
   siret: string
@@ -29,13 +30,6 @@ const useStyles = makeStyles((t: Theme) => ({
     marginTop: t.spacing(2),
     display: 'flex',
     alignItems: 'center',
-  },
-  hint: {
-    marginBottom: t.spacing(1),
-    '& a': {
-      color: t.palette.primary.main,
-      fontWeight: t.typography.fontWeightBold,
-    },
   },
 }))
 
@@ -114,9 +108,7 @@ export const ActivateNewCompany = () => {
           </div>
         </form>
       </LoginPanel>
-      <Txt color="hint" className={css.hint}>
-        <div dangerouslySetInnerHTML={{__html: m.loginIssueTip}} />
-      </Txt>
+      <HelpContactInfo/>
     </Page>
   )
 }

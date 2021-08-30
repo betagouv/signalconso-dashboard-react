@@ -3,15 +3,14 @@ import {Icon, Tab, Tabs, Theme} from '@material-ui/core'
 import * as React from 'react'
 import {makeStyles} from '@material-ui/core/styles'
 import {useI18n} from '../../core/i18n'
-import {Txt} from 'mui-extension/lib/Txt/Txt'
 import {CenteredContent} from '../../shared/CenteredContent/CenteredContent'
 import {headerHeight} from '../../core/Layout'
 import {ActivateAccountForm} from './ActivateAccountForm'
 import {LoginForm} from './LoginForm'
 import {Link, Redirect, Route, Switch} from 'react-router-dom'
-import {Fn} from '../../shared/Login/Login'
 import {siteMap} from '../../core/siteMap'
 import {ApiError, SignalConsoPublicSdk} from '../../core/api'
+import {HelpContactInfo} from '../../shared/HelpContactInfo/HelpContactInfo'
 
 const useStyles = makeStyles((t: Theme) => ({
   root: {
@@ -20,13 +19,6 @@ const useStyles = makeStyles((t: Theme) => ({
   body: {
     display: 'flex',
     flexDirection: 'column',
-  },
-  hint: {
-    marginBottom: t.spacing(1),
-    '& a': {
-      color: t.palette.primary.main,
-      fontWeight: t.typography.fontWeightBold,
-    },
   },
   tabs: {
     border: '1px solid ' + t.palette.divider,
@@ -82,9 +74,7 @@ export const LoginPage = ({login, register, forgottenPassword}: Props) => {
           )}
         />
         <Redirect exact from="/" to={allTabs[0]}/>
-        <Txt color="hint" className={css.hint}>
-          <div dangerouslySetInnerHTML={{__html: m.loginIssueTip}}/>
-        </Txt>
+        <HelpContactInfo/>
       </Page>
     </CenteredContent>
   )

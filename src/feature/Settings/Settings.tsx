@@ -3,7 +3,7 @@ import React from 'react'
 import {useI18n} from '../../core/i18n'
 import {Panel} from '../../shared/Panel'
 import {SettingRow} from './SettingRow'
-import {EditPasswordDialog} from '../EditPassword/EditPasswordDialog'
+import {EditPasswordDialog} from './EditPasswordDialog'
 import {ScButton} from '../../shared/Button/Button'
 
 export const Settings = () => {
