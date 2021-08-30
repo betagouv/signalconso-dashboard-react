@@ -1,10 +1,10 @@
-import React from 'react'
-import {ApiClient, ApiError, SignalConsoPublicSdk, SignalConsoSecuredSdk} from 'core/api'
+import React, {useMemo} from 'react'
+import {ApiClient, ApiError, AuthUser, SignalConsoPublicSdk, SignalConsoSecuredSdk} from 'core/api'
 import {Config} from './conf/config'
 import {makeStyles} from '@material-ui/core/styles'
 import {Theme, ThemeProvider} from '@material-ui/core'
 import {HashRouter, Redirect, Route, Switch} from 'react-router-dom'
-import {I18nProvider, useI18n} from './core/i18n'
+import {I18nProvider} from './core/i18n'
 import {MuiPickersUtilsProvider} from '@material-ui/pickers'
 import DateAdapter from '@date-io/date-fns'
 import {ReportProvider} from './core/context/ReportContext'
@@ -44,6 +44,8 @@ import {ReportPro} from './feature/Report/ReportPro'
 import {AccessesProvider} from './core/context/AccessesContext'
 import {ActivateNewCompany} from './feature/RegisterNewCompany/ActivateNewCompany'
 import {mapPromise} from './core/helper/utils'
+import {EmailValidation} from './feature/EmailValidation/EmailValidation'
+import {localStorageObject} from './core/helper/localStorage'
 
 const headers = {
   'Content-Type': 'application/json',
@@ -125,7 +127,7 @@ export const App = () => {
         _ => <ToastProvider horizontal="right" children={_} />,
       ]}
     >
-      <AppLogin />
+      <AppLogin/>
     </Provide>
   )
 }
@@ -136,9 +138,11 @@ const AppLogin = () => {
   const forgottenPassword = useFetcher<SignalConsoApiSdk['public']['authenticate']['forgotPassword'], ApiError>(
     apiPublicSdk.authenticate.forgotPassword,
   )
+  const authenticationStorage = useMemo(() => localStorageObject<AuthUser>('AuthUserSignalConso'), [])
 
   return (
     <Login
+      authenticationStorage={authenticationStorage}
       onRegister={mapPromise({
         promise: apiPublicSdk.authenticate.sendActivationLink,
         mapCatch: (err: ApiError) => Promise.reject(err.message),
@@ -152,28 +156,35 @@ const AppLogin = () => {
     >
       {({authResponse, login, logout, register, isCheckingToken}) => (
         <Layout connectedUser={authResponse ? {...authResponse.user, logout: logout} : undefined}>
-          {authResponse ? (
-            <LoginProvider
-              connectedUser={authResponse.user}
-              token={authResponse.token}
-              onLogout={logout}
-              apiSdk={makeSecuredSdk(authResponse.token)}
-            >
-              <AppLogged />
-            </LoginProvider>
-          ) : isCheckingToken ? (
-            <LoginLoader />
-          ) : (
-            <LoginPage
-              login={login}
-              register={register}
-              forgottenPassword={{
-                action: (email: string) => forgottenPassword.fetch({}, email),
-                loading: forgottenPassword.loading,
-                errorMsg: forgottenPassword.error?.message,
-              }}
-            />
-          )}
+          <Switch>
+            <Route path={siteMap.emailValidation}>
+              <EmailValidation saveToken={authenticationStorage.set} validateEmail={apiPublicSdk.authenticate.validateEmail}/>
+            </Route>
+            <Route path="/">
+              {authResponse ? (
+                <LoginProvider
+                  connectedUser={authResponse.user}
+                  token={authResponse.token}
+                  onLogout={logout}
+                  apiSdk={makeSecuredSdk(authResponse.token)}
+                >
+                  <AppLogged/>
+                </LoginProvider>
+              ) : isCheckingToken ? (
+                <LoginLoader />
+              ) : (
+                <LoginPage
+                  login={login}
+                  register={register}
+                  forgottenPassword={{
+                    action: (email: string) => forgottenPassword.fetch({}, email),
+                    loading: forgottenPassword.loading,
+                    errorMsg: forgottenPassword.error?.message,
+                  }}
+                />
+              )}
+            </Route>
+          </Switch>
         </Layout>
       )}
     </Login>

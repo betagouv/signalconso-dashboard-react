@@ -1,4 +1,4 @@
-import {ApiClientApi} from '../..'
+import {ApiClientApi, Id} from '../..'
 import {AuthUser} from './UserWithPermission'
 
 export class AuthenticateClient {
@@ -14,5 +14,9 @@ export class AuthenticateClient {
 
   readonly sendActivationLink = (siret: string, token: string, email: string) => {
     return this.client.post<void>(`/accesses/${siret}/send-activation-link`, {body: {token, email}})
+  }
+
+  readonly validateEmail = (token: Id) => {
+    return this.client.post<AuthUser>(`/account/validate-email`, {body: {token}})
   }
 }

@@ -30,16 +30,21 @@ interface Props<L extends Fn, R extends Fn> {
   onLogout: () => void
   getTokenFromResponse: (_: AsynFnResult<L>) => string
   children: ({authResponse, login, logout, token}: LoginExposedProps<L, R>) => any
+  authenticationStorage: {
+    get: () => AsynFnResult<L>
+    set: (_: AsynFnResult<L>) => void,
+    clear: () => void
+  }
 }
 
 export const Login = <L extends Fn, R extends Fn>({
+  authenticationStorage,
   onLogin,
   onRegister,
   onLogout,
   getTokenFromResponse,
   children,
 }: Props<L, R>) => {
-  const authenticationStorage = useMemo(() => localStorageObject<AsynFnResult<L>>('AuthUserSignalConso'), [])
   const {toastError} = useToast()
   const [auth, setAuth] = useState<AsynFnResult<L>>()
   const [isLogging, setIsLogging] = useState(false)
@@ -61,8 +66,8 @@ export const Login = <L extends Fn, R extends Fn>({
     try {
       setIsLogging(true)
       const auth = await onLogin(...args)
-      authenticationStorage.set(auth as any)
-      setAuth(auth as any)
+      authenticationStorage.set(auth)
+      setAuth(auth)
     } catch (e) {
       toastError(e)
       setLoginError(e)

@@ -7,6 +7,7 @@ import {useBoolean} from '@alexandreannic/react-hooks-lib/lib'
 import {ScMenu} from './ScMenu'
 import {LayoutConnectedUser} from '../Layout'
 import {classes} from '../../helper/utils'
+import {NavLink} from 'react-router-dom'
 
 const useMenuStyles = makeStyles((t: Theme) => ({
   root: {
@@ -50,9 +51,11 @@ export const ScMenuBtn = ({connectedUser}: Props) => {
 
   return (
     <div className={css.root}>
-      <Avatar className={classes(css.avatar, !connectedUser && css.avatarOffline)} onClick={openMenu.toggle}>
-        <Icon>{connectedUser ? 'person' : 'no_accounts'}</Icon>
-      </Avatar>
+      <NavLink to="/">
+        <Avatar className={classes(css.avatar, !connectedUser && css.avatarOffline)} onClick={openMenu.toggle}>
+          <Icon>{connectedUser ? 'person' : 'no_accounts'}</Icon>
+        </Avatar>
+      </NavLink>
       {connectedUser && openMenu.value && <ScMenu onClose={openMenu.setFalse} connectedUser={connectedUser} />}
     </div>
   )
