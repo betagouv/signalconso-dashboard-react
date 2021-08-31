@@ -1,4 +1,4 @@
-import {ApiClientApi, Id} from '../..'
+import {ApiClientApi, Id, TokenInfo, UserToActivate} from '../..'
 import {AuthUser} from './UserWithPermission'
 
 export class AuthenticateClient {

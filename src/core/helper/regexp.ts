@@ -1,6 +1,6 @@
 export const regexpPattern = {
   email: '^[^@]+@[^\\.]+\\..+',
-  emailDGCCRF: '^[^@]+@[a-zA-Z0-9_\\-.]*\\.gouv\\.fr',
+  emailDGCCRF: '^[^@]+@[^\\.]+\\..+',
   yyyyMMdd: '\\d{4}-(0\\d|1[0-2])-([0-2]\\d|3[0-1])',
   siren: '[0-9]{9}',
   siret: '[0-9]{14}',

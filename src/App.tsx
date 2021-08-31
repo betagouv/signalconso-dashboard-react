@@ -44,6 +44,7 @@ import {AccessesProvider} from './core/context/AccessesContext'
 import {EmailValidation} from './feature/EmailValidation/EmailValidation'
 import {CenteredContent} from './shared/CenteredContent/CenteredContent'
 import {ResetPassword} from './feature/ResetPassword/ResetPassword'
+import {UserActivation} from "./feature/Users/UserActivation";
 import {BlockedReportNotificationProvider} from './core/context/BlockedReportNotificationProviderContext'
 import {ActivateNewCompany} from './feature/ActivateNewCompany/ActivateNewCompany'
 import {ModeEmploiDGCCRF} from './feature/ModeEmploiDGCCRF/ModeEmploiDGCCRF'
@@ -222,6 +223,8 @@ const AppLogged = () => {
         <Route path={siteMap.report()} component={connectedUser.isPro ? ReportPro : ReportComponent} />
         <Route path={siteMap.reports()} component={connectedUser.isPro ? ReportsPro : Reports} />
         <Route path={siteMap.users} component={Users} />
+        <Route path={siteMap.activatePro} component={UserActivation} />
+        <Route path={siteMap.activateDgccrf} component={UserActivation} />
         <Route path={siteMap.companies} component={Companies} />
         <Route path={siteMap.companyAccesses()} component={CompanyAccesses} />
         <Route path={siteMap.subscriptions} component={Subscriptions} />

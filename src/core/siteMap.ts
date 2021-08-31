@@ -15,6 +15,8 @@ export const siteMap = {
   companies_toActivate: '/entreprises/a-activer',
   companies_registered: '/entreprises/les-plus-signalees',
   users: '/admin/invitation-ccrf',
+  activatePro: '/entreprise/rejoindre',
+  activateDgccrf: '/dgccrf/rejoindre',
   users_pending: '/admin/invitation-ccrf/pending',
   users_all: '/admin/invitation-ccrf/all',
   settings: '/parametres',
