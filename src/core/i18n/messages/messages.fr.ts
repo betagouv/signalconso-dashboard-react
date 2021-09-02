@@ -117,7 +117,6 @@ export const messagesFr = {
   notificationsAreDisabled: 'Activer les notifications',
   notificationsAreDisabledDesc: `Inclus les notifications concernant les signalements des entreprises.`,
   notificationSettings: `Emails reçus lors d'un nouveau signalement.`,
-  notificationSettingsCustom: `Personnaliser pour mes entreprises.`,
   notificationAcceptForCompany: "Autoriser l'envoie d'emails concernant les signalements d'une entreprise.",
   report_pageTitle: `Signalement`,
   details: 'Détails',
