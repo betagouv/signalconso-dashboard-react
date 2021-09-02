@@ -63,7 +63,7 @@ export const Login = <L extends Fn, R extends Fn>({
       const auth = await onLogin(...args)
       setToken(auth)
       return auth
-    } catch (e) {
+    } catch (e: any) {
       setLoginError(e)
       throw e
     } finally {
@@ -81,7 +81,7 @@ export const Login = <L extends Fn, R extends Fn>({
     try {
       setIsRegistering(true)
       return onRegister(...args)
-    } catch (e) {
+    } catch (e: any) {
       setRegisterError(e)
       throw e
     } finally {
