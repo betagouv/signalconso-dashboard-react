@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react'
+import React, {useEffect, useState} from 'react'
 import {useUsersContext} from '../../core/context/UsersContext'
 import {useToast} from '../../core/toast'
 import {ScInputPassword} from "../../shared/InputPassword/InputPassword";
@@ -38,42 +38,32 @@ export const UserActivation = () => {
     const {toastSuccess, toastError} = useToast()
     const {search} = useLocation()
     const history = useHistory()
+    const [email, setEmail] = useState('')
 
     const {
         register,
         handleSubmit,
-        reset,
+        setValue,
         getValues,
+        watch,
         formState: {errors},
     } = useForm<UserActivationForm>({
         mode: 'onChange', defaultValues: {email: ' '}
     },)
 
-    const toUser = (): UserToActivate => {
-        return {
-            email: 'sdid@yopmail.com',
-            firstName: getValues().firstName,
-            lastName: getValues().lastName,
-            password: getValues().password
-        }
-    }
-
-    const submitForm = async () => {
-        await _activate.fetch({}, toUser(), '')
-        // history.push(siteMap.login)
-    }
-
     useEffect(() => {
         const token = querystring.parse(search.replace(/^\?/, '')).token as string
         _tokenInfo.fetch({}, token).then(
             tokenInfo => {
-                reset({email: tokenInfo.emailedTo}, {keepDefaultValues: false})
+                setEmail(tokenInfo.emailedTo)
             }
         )
     }, [])
 
-    const onSubmit = async () => {
-        await _activate.fetch({}, toUser(), '').catch((e) => console.log(e))
+    const onSubmit = async (form: UserActivationForm) => {
+        console.log(form)
+        await _activate.fetch({}, {...form, email: email}, '').catch((e) =>
+            console.log("toto"))
     }
     return (
         <Page size="small">
@@ -85,9 +75,7 @@ export const UserActivation = () => {
                     error={!!errors.email}
                     disabled={true}
                     label={m.email}
-                    {...register('email', {
-                        required: {value: true, message: m.required},
-                    })}
+                    value={email}
                 />
                 <ScInput
                     className={cssUtils.marginBottom}
