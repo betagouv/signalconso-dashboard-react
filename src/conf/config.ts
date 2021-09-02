@@ -9,6 +9,7 @@ export const Config = {
   reportsLimitForExport: 30000,
   uploadFileAllowedExtenions: ['jpg', 'jpeg', 'pdf', 'png', 'gif', 'docx'],
   uploadFileMaxSizeMb: 5,
+  contactEmail: 'support@signal.conso.gouv.fr'
 }
 
 console.info(Config)

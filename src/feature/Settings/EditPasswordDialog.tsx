@@ -1,8 +1,6 @@
-import React from 'react'
+import React, {ReactElement} from 'react'
 import {useI18n} from '../../core/i18n'
-import {ScButton} from '../../shared/Button/Button'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
-import {ScInput} from '../../shared/Input/ScInput'
 import {useForm} from 'react-hook-form'
 import {useUsersContext} from '../../core/context/UsersContext'
 import {Alert} from 'mui-extension/lib'
@@ -10,6 +8,7 @@ import {useToast} from '../../core/toast'
 import {fromNullable} from 'fp-ts/lib/Option'
 import {ScDialog} from '../../shared/Confirm/ScDialog'
 import {ScInputPassword} from '../../shared/InputPassword/InputPassword'
+import {AccountEventActions, EventCategories, Matomo} from '../../core/analyics/Matomo'
 
 interface Form {
   oldPassword: string
@@ -17,7 +16,11 @@ interface Form {
   newPasswordConfirmation: string
 }
 
-export const EditPassword = () => {
+interface Props {
+  children: ReactElement<any>
+}
+
+export const EditPasswordDialog = ({children}: Props) => {
   const {m} = useI18n()
   const _changePassword = useUsersContext().changePassword
   const {
@@ -37,10 +40,15 @@ export const EditPassword = () => {
       loading={_changePassword.loading}
       onConfirm={(event, close) => {
         handleSubmit((form: Form) => {
-          _changePassword
-            .fetch({}, form.oldPassword, form.newPassword)
-            .then(() => toastSuccess(m.passwordEdited))
-            .then(close)
+          _changePassword.fetch({}, form.oldPassword, form.newPassword)
+            .then(() => {
+              toastSuccess(m.passwordEdited)
+              close()
+              Matomo.trackEvent(EventCategories.account, AccountEventActions.changePasswordSuccess)
+            })
+            .catch(_ => {
+              Matomo.trackEvent(EventCategories.account, AccountEventActions.changePasswordFail)
+            })
         })()
       }}
       content={
@@ -94,9 +102,7 @@ export const EditPassword = () => {
         </>
       }
     >
-      <ScButton icon="edit" color="primary">
-        {m.edit}
-      </ScButton>
+      {children}
     </ScDialog>
   )
 }

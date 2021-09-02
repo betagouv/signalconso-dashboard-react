@@ -1,4 +1,5 @@
-import {ReportResponseTypes} from '../../api'
+import {CompanyAccessLevel, ReportResponseTypes} from '../../api'
+import {Config} from '../../../conf/config'
 
 export const messagesFr = {
   yes: 'Oui',
@@ -211,6 +212,7 @@ export const messagesFr = {
   noAnswerFromPro: "Le professionnel n'a pas encore répondu au signalement.",
   companiesSearchPlaceholder: 'Rechercher par nom, SIREN, SIRET, identifiant...',
   companySearch: 'Rechercher une entreprise',
+  emailValidation: `Validation de l'adresse email`,
   anonymousReport: 'Signalement anonyme',
   companySearchLabel: 'SIREN, SIRET ou RCS',
   companiesToActivate: "En attente d'activation",
@@ -223,12 +225,21 @@ export const messagesFr = {
   governmentCompany: 'Administration publique',
   registerACompany: 'Enregistrer une entreprise',
   noDataAtm: 'Aucune donnée',
+  linkNotValidAnymore: `Le lien sur lequel vous avez cliqué n'est plus valide.`,
+  linkNotValidAnymoreDesc: `Si vous avez déjà validé votre email, vous pouvez vous connecter à l'aide de votre adresse email et mot de passe.`,
   noReportsTitle: 'Aucun signalement',
   noReportsDesc: 'Aucun signalement ne correspond à votre recherche.',
   lastNotice: 'Relancé le',
+  validatingEmail: `Validation de l'adresse email...`,
   validateLetterSent: "Valider l'envoi des courriers",
+  emailValidated: `Votre email est validé.`,
+  emailValidatedDesc: `Vous pouvez vous connecter à l'aide de votre adresse email et mot de passe.`,
   validateLetterSentTitle: "Valider l'envoi des courriers",
   sendNewPostal: `Envoyer un nouveau courrier`,
+  loginForbidden: `Compte bloqué (trop de tentatives, veuillez réessayer dans 30 minutes)`,
+  loginLocked: `Votre adresse email doit être validée, un e-mail vient de vous être envoyé avec un lien à cet effet.`,
+  loginFailed: `Échec de l'authentification`,
+  companyActivationNotFound: `Le SIRET ou le code d'activation est invalide.`,
   validateLetterSentDesc:
     'Les courriers seront considérés envoyés pour les entreprises sélectionnées. Cette action est irrévocable.',
   dgccrfUsers: 'Agents DGCCRF',
@@ -244,6 +255,11 @@ export const messagesFr = {
   companyCreated: 'Entreprise créée',
   cannotCreateCompanyMissingInfo: `Impossible de créer l'entreprise. Son nom ou son adresse ne sont pas renseignés.`,
   editAddress: `Modifier l'adresse de l'entreprise`,
+  companyAccessLevelDescription: {
+    [CompanyAccessLevel.admin]: 'Peut  consulter, répondre aux signalements et inviter/supprimer des nouveaux utilisateurs.',
+    [CompanyAccessLevel.member]: 'Peut consulter et répondre aux signalements.',
+  },
+  invitationToProAlreadySent: (email: string) => `Une invitation a déjà été envoyée à l'adresse ${email}.`,
   editedAddress: `Adresse modifiée`,
   failedToChangePassword: 'Impossible de modifier le mot de passe.',
   passwordAreIdentical: 'Les mots de passe sont identiques',
@@ -257,6 +273,7 @@ export const messagesFr = {
   newPasswordConfirmation: 'Confirmation',
   userInvitationSent: 'Invitation envoyée',
   companyAccessLevel: 'Autorisation',
+  editAccess: `Modifier l'accès`,
   emailDGCCRFValidation: 'Email invalide. Email acceptés : *.gouv.fr',
   companyAccessesTitle: 'Gestion des accès',
   daily: 'Quotidienne',
@@ -264,14 +281,19 @@ export const messagesFr = {
   weekly: 'Hebdomadaire',
   handleAccesses: 'Gérer les accès',
   accesses: 'Accès',
+  validate: 'Valider',
+  authorization: `Autorisation`,
   contactAgreement: 'Accord pour contact par entreprise',
+  activationDocumentRequired: `Envoyer un nouveau courrier`,
   editConsumer: 'Modifier les informations du consommateur',
   changesSaved: 'Modification enregistrée',
   selectAllDepartments: 'Tous les départements',
   deleteCompanyAccess: (name: string) => `Supprimer l\'accès à ${name} ?`,
   deleteCompanyAccessToken: (email?: string) => `Annuler l'invitation  ${email ? 'à ' + email + ' ' : ''}?`,
+  resetPasswordNotFound: `Le lien permettant de demander un nouveau mot de passe n'est pas valide, veuillez refaire une demande.`,
+  resetPasswordSuccess: `Votre mot de passe est maintenant créé, vous pouvez vous connecter pour accéder à votre espace entreprise.`,
   loginIssueTip:
-    'En cas de difficultés, vous pouvez contacter par email le service <a href="href="mailto:support@signal.conso.gouv.fr">support@signal.conso.gouv.fr</a>.',
+    `En cas de difficultés, vous pouvez contacter par email le service <a href="href="mailto:${Config.contactEmail}">${Config.contactEmail}</a>.`,
   subscriptionsAlertInfo: `
     En créant un abonnement, vous recevrez un mail quotidien ou hebdomadaire (au choix) comportant les nouveaux signalements correspondant à votre sélection de critères, qu’ils soient géographiques, thématiques ou par entreprise.
     <br/>

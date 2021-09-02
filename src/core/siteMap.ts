@@ -1,5 +1,4 @@
-import {Id, ReportSearch} from './api/model'
-import {toQueryString} from './api'
+import {Id, ReportSearch, toQueryString} from './api'
 
 export const siteMap = {
   reportedWebsites: '/moderation-url-entreprises',
@@ -19,6 +18,9 @@ export const siteMap = {
   users_pending: '/admin/invitation-ccrf/pending',
   users_all: '/admin/invitation-ccrf/all',
   settings: '/parametres',
-  register: '/entreprise/activation',
+  register: '/activation',
+  registerBis: '/entreprise/activation',
   login: '/connexion',
+  emailValidation: '/connexion/validation-email',
+  resetPassword: (token: Id = ':token') => `/connexion/nouveau-mot-de-passe/${token}`,
 }

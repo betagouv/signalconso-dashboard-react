@@ -6,22 +6,31 @@ import {siteMap} from '../../core/siteMap'
 import {PageTab, PageTabs} from '../../shared/Layout/Page/PageTabs'
 import {ReportedUnknownWebsites} from './ReportedUnknownWebsites'
 import {ReportedCompaniesWebsites} from './ReportedCompaniesWebsites'
+import {useLogin} from '../../core/context/LoginContext'
 
 export const ReportedWebsites = () => {
   const {m} = useI18n()
   const {path} = useRouteMatch()
+  const {connectedUser} = useLogin()
 
   return (
     <Page>
       <PageTitle>{m.reportedWebsites}</PageTitle>
-      <PageTabs>
-        <PageTab to={siteMap.reportedCompanyWebsites} label={m.reportedCompaniesWebsites} />
-        <PageTab to={siteMap.reportedWebsites_unknown} label={m.reportedUnknownWebsites} />
-      </PageTabs>
+
+      {connectedUser.isAdmin && (
+        <PageTabs>
+          <PageTab to={siteMap.reportedCompanyWebsites} label={m.reportedCompaniesWebsites}/>
+          <PageTab to={siteMap.reportedWebsites_unknown} label={m.reportedUnknownWebsites}/>
+        </PageTabs>
+      )}
       <Switch>
-        <Redirect exact from={path} to={siteMap.reportedCompanyWebsites} />
-        <Route path={siteMap.reportedCompanyWebsites} component={ReportedCompaniesWebsites} />
-        <Route path={siteMap.reportedWebsites_unknown} component={ReportedUnknownWebsites} />
+        {connectedUser.isAdmin ? (
+          <Redirect exact from={path} to={siteMap.reportedCompanyWebsites}/>
+        ) : (
+          <Redirect exact from={path} to={siteMap.reportedWebsites_unknown}/>
+        )}
+        <Route path={siteMap.reportedCompanyWebsites} component={ReportedCompaniesWebsites}/>
+        <Route path={siteMap.reportedWebsites_unknown} component={ReportedUnknownWebsites}/>
       </Switch>
     </Page>
   )

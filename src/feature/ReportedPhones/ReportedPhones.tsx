@@ -13,14 +13,22 @@ import {ScInput} from '../../shared/Input/ScInput'
 import {ExportPhonesPopper} from '../../shared/ExportPopper/ExportPopperBtn'
 import {fromNullable} from 'fp-ts/lib/Option'
 import {useToast} from '../../core/toast'
-import {Icon, Tooltip} from '@material-ui/core'
+import {Icon, makeStyles, Theme, Tooltip} from '@material-ui/core'
 import {PeriodPicker} from '../../shared/PeriodPicker/PeriodPicker'
 import {DebouncedInput} from '../../shared/DebouncedInput/DebouncedInput'
+import { Txt } from 'mui-extension/lib/Txt/Txt'
+
+const useStyles = makeStyles((t: Theme) => ({
+  tdSiret: {
+    maxWidth: 200,
+  }
+}))
 
 export const ReportedPhones = () => {
   const _reportedPhone = useReportedPhonesContext()
   const {m} = useI18n()
   const cssUtils = useCssUtils()
+  const css = useStyles()
   const {toastError} = useToast()
 
   useEffect(() => {
@@ -98,14 +106,13 @@ export const ReportedPhones = () => {
               row: _ => _.category,
             },
             {
-              id: 'companyName',
-              head: m.company,
-              row: _ => _.companyName,
-            },
-            {
               id: 'siret',
               head: m.siret,
-              row: _ => _.siret,
+              className: css.tdSiret,
+              row: _ => <>
+                <Txt bold>{_.siret}</Txt><br/>
+                <Txt color="hint">{_.companyName}</Txt>
+              </>,
             },
             {
               id: 'count',

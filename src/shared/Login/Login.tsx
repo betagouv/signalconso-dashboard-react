@@ -1,4 +1,3 @@
-import {useToast} from '../../core/toast'
 import React, {useEffect, useMemo, useState} from 'react'
 import jwtDecode from 'jwt-decode'
 import {localStorageObject} from '../../core/helper/localStorage'
@@ -18,9 +17,10 @@ export interface LoginActionProps<F extends Function> {
 export interface LoginExposedProps<L extends Fn, R extends Fn> {
   authResponse?: AsynFnResult<L>
   logout: () => void
-  login: LoginActionProps<(...args: Parameters<L>) => Promise<void>>
-  register: LoginActionProps<(...args: Parameters<R>) => Promise<void>>
+  login: LoginActionProps<L>
+  register: LoginActionProps<R>
   token?: string
+  setToken: (_: AsynFnResult<L>) => void
   isCheckingToken: boolean
 }
 
@@ -40,7 +40,6 @@ export const Login = <L extends Fn, R extends Fn>({
   children,
 }: Props<L, R>) => {
   const authenticationStorage = useMemo(() => localStorageObject<AsynFnResult<L>>('AuthUserSignalConso'), [])
-  const {toastError} = useToast()
   const [auth, setAuth] = useState<AsynFnResult<L>>()
   const [isLogging, setIsLogging] = useState(false)
   const [isRegistering, setIsRegistering] = useState(false)
@@ -57,27 +56,34 @@ export const Login = <L extends Fn, R extends Fn>({
     }
   }, [])
 
-  const login = async (...args: Parameters<L>): Promise<void> => {
+  // @ts-ignore
+  const login: L = async (...args: any[]) => {
     try {
       setIsLogging(true)
       const auth = await onLogin(...args)
-      authenticationStorage.set(auth as any)
-      setAuth(auth as any)
-    } catch (e) {
-      toastError(e)
+      setToken(auth)
+      return auth
+    } catch (e: any) {
       setLoginError(e)
+      throw e
     } finally {
       setIsLogging(false)
     }
   }
 
-  const register = async (...args: Parameters<R>): Promise<void> => {
+  const setToken = (auth: AsynFnResult<L>) => {
+    authenticationStorage.set(auth)
+    setAuth(auth)
+  }
+
+  // @ts-ignore
+  const register: R = async (...args: any[]) => {
     try {
       setIsRegistering(true)
-      await onRegister(...args)
-    } catch (e) {
-      toastError(e)
+      return onRegister(...args)
+    } catch (e: any) {
       setRegisterError(e)
+      throw e
     } finally {
       setIsRegistering(false)
     }
@@ -118,5 +124,6 @@ export const Login = <L extends Fn, R extends Fn>({
     },
     token: auth ? getTokenFromResponse(auth) : undefined,
     isCheckingToken,
+    setToken,
   })
 }

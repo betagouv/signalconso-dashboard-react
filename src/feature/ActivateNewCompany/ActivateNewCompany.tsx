@@ -17,6 +17,8 @@ import {useHistory} from 'react-router'
 import {siteMap} from '../../core/siteMap'
 import {Alert} from 'mui-extension'
 import {ScInputPassword} from '../../shared/InputPassword/InputPassword'
+import {AccessEventActions, ActionResultNames, EventCategories, Matomo} from '../../core/analyics/Matomo'
+import {HelpContactInfo} from '../../shared/HelpContactInfo/HelpContactInfo'
 
 interface Form {
   siret: string
@@ -29,13 +31,6 @@ const useStyles = makeStyles((t: Theme) => ({
     display: 'flex',
     alignItems: 'center',
   },
-  hint: {
-    marginBottom: t.spacing(1),
-    '& a': {
-      color: t.palette.primary.main,
-      fontWeight: t.typography.fontWeightBold,
-    },
-  },
 }))
 
 export const ActivateNewCompany = () => {
@@ -44,21 +39,32 @@ export const ActivateNewCompany = () => {
   const css = useStyles()
   const {connectedUser} = useLogin()
   const _acceptToken = useAccessesContext().acceptToken
-  const {toastError, toastSuccess} = useToast()
+  const {toastSuccess} = useToast()
   const history = useHistory()
 
   const {
     register,
     handleSubmit,
-    getValues,
-    formState: {errors, isValid},
+    formState: {errors},
   } = useForm<Form>({mode: 'onSubmit'})
 
   const acceptToken = (form: Form) => {
-    _acceptToken.fetch({}, form.siret, form.code)
+    _acceptToken.call(form.siret, form.code)
       .then(() => {
         toastSuccess(m.companyRegistered)
         history.push(siteMap.companiesPro)
+        Matomo.trackEvent(
+          EventCategories.companyAccess,
+          AccessEventActions.addCompanyToAccount,
+          ActionResultNames.success
+        )
+      })
+      .catch(() => {
+        Matomo.trackEvent(
+          EventCategories.companyAccess,
+          AccessEventActions.addCompanyToAccount,
+          ActionResultNames.fail
+        )
       })
   }
 
@@ -102,9 +108,7 @@ export const ActivateNewCompany = () => {
           </div>
         </form>
       </LoginPanel>
-      <Txt color="hint" className={css.hint}>
-        <div dangerouslySetInnerHTML={{__html: m.loginIssueTip}} />
-      </Txt>
+      <HelpContactInfo/>
     </Page>
   )
 }

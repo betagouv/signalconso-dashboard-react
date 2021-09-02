@@ -2,9 +2,9 @@ import React from 'react'
 import {ApiClient, ApiError, SignalConsoPublicSdk, SignalConsoSecuredSdk} from 'core/api'
 import {Config} from './conf/config'
 import {makeStyles} from '@material-ui/core/styles'
-import {Theme, ThemeProvider} from '@material-ui/core'
+import {CircularProgress, Theme, ThemeProvider} from '@material-ui/core'
 import {HashRouter, Redirect, Route, Switch} from 'react-router-dom'
-import {I18nProvider, useI18n} from './core/i18n'
+import {I18nProvider} from './core/i18n'
 import {MuiPickersUtilsProvider} from '@material-ui/pickers'
 import DateAdapter from '@date-io/date-fns'
 import {ReportProvider} from './core/context/ReportContext'
@@ -29,10 +29,9 @@ import {Settings} from './feature/Settings/Settings'
 import {Subscriptions} from './feature/Subscriptions/Subscriptions'
 import {SubscriptionsProvider} from './core/context/SubscriptionsContext'
 import {LoginPage} from './feature/Login/LoginPage'
-import {Layout} from './core/Layout'
+import {headerHeight, Layout} from './core/Layout'
 import {Login} from './shared/Login/Login'
 import {LoginProvider, useLogin} from './core/context/LoginContext'
-import {LoginLoader} from './feature/Login/LoginLoader'
 import {useFetcher} from '@alexandreannic/react-hooks-lib/lib'
 import {ReportsPro} from './feature/ReportsPro/ReportsPro'
 import {ReportedWebsitesProvider} from './core/context/ReportedWebsitesContext'
@@ -42,6 +41,10 @@ import {UnregistredWebsitesProvider} from './core/context/UnregistredWebsitesCon
 import {CompaniesPro} from './feature/CompaniesPro/CompaniesPro'
 import {ReportPro} from './feature/Report/ReportPro'
 import {AccessesProvider} from './core/context/AccessesContext'
+import {ActivateNewCompany} from './feature/ActivateNewCompany/ActivateNewCompany'
+import {EmailValidation} from './feature/EmailValidation/EmailValidation'
+import {CenteredContent} from './shared/CenteredContent/CenteredContent'
+import {ResetPassword} from './feature/ResetPassword/ResetPassword'
 import {ActivateNewCompany} from './feature/RegisterNewCompany/ActivateNewCompany'
 import {mapPromise} from './core/helper/utils'
 import {BlockedReportNotificationProvider} from './core/context/BlockedReportNotificationProviderContext'
@@ -126,7 +129,7 @@ export const App = () => {
         _ => <ToastProvider horizontal="right" children={_} />,
       ]}
     >
-      <AppLogin />
+      <AppLogin/>
     </Provide>
   )
 }
@@ -140,41 +143,54 @@ const AppLogin = () => {
 
   return (
     <Login
-      onRegister={mapPromise({
-        promise: apiPublicSdk.authenticate.sendActivationLink,
-        mapCatch: (err: ApiError) => Promise.reject(err.message),
-      })}
-      onLogin={mapPromise({
-        promise: apiPublicSdk.authenticate.login,
-        mapCatch: (err: ApiError) => Promise.reject(err.message,),
-      })}
+      onRegister={apiPublicSdk.authenticate.sendActivationLink}
+      onLogin={apiPublicSdk.authenticate.login}
       onLogout={() => history.push('/')}
       getTokenFromResponse={_ => _.token}
     >
-      {({authResponse, login, logout, register, isCheckingToken}) => (
+      {({
+        authResponse,
+        login,
+        logout,
+        register,
+        isCheckingToken,
+        setToken,
+      }) => (
         <Layout connectedUser={authResponse ? {...authResponse.user, logout: logout} : undefined}>
-          {authResponse ? (
-            <LoginProvider
-              connectedUser={authResponse.user}
-              token={authResponse.token}
-              onLogout={logout}
-              apiSdk={makeSecuredSdk(authResponse.token)}
-            >
-              <AppLogged />
-            </LoginProvider>
-          ) : isCheckingToken ? (
-            <LoginLoader />
-          ) : (
-            <LoginPage
-              login={login}
-              register={register}
-              forgottenPassword={{
-                action: (email: string) => forgottenPassword.fetch({}, email),
-                loading: forgottenPassword.loading,
-                errorMsg: forgottenPassword.error?.message,
-              }}
-            />
-          )}
+          <Switch>
+            <Route path={siteMap.emailValidation}>
+              <EmailValidation onSaveToken={setToken} onValidateEmail={apiPublicSdk.authenticate.validateEmail}/>
+            </Route>
+            <Route path={siteMap.resetPassword()}>
+              <ResetPassword onResetPassword={apiPublicSdk.authenticate.resetPassword}/>
+            </Route>
+            <Route path="/">
+              {authResponse ? (
+                <LoginProvider
+                  connectedUser={authResponse.user}
+                  token={authResponse.token}
+                  onLogout={logout}
+                  apiSdk={makeSecuredSdk(authResponse.token)}
+                >
+                  <AppLogged/>
+                </LoginProvider>
+              ) : isCheckingToken ? (
+                <CenteredContent offset={headerHeight}>
+                  <CircularProgress/>
+                </CenteredContent>
+              ) : (
+                <LoginPage
+                  login={login}
+                  register={register}
+                  forgottenPassword={{
+                    action: (email: string) => forgottenPassword.fetch({}, email),
+                    loading: forgottenPassword.loading,
+                    error: forgottenPassword.error,
+                  }}
+                />
+              )}
+            </Route>
+          </Switch>
         </Layout>
       )}
     </Login>

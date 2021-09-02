@@ -13,6 +13,9 @@ export const useCssUtils = makeStyles((t: Theme) => {
     flex: {
       display: 'flex',
     },
+    txtCapitalize: {
+      textTransform: 'capitalize'
+    },
     txtTitle: {
       fontSize: t.typography.fontSize * 1.25,
     },
@@ -30,6 +33,9 @@ export const useCssUtils = makeStyles((t: Theme) => {
     },
     colorError: {
       color: t.palette.error.main,
+    },
+    tooltipColorTxtSecondary: {
+      opacity: 0.82,
     },
     colorSuccess: {
       color: styleUtils(t).color.success,

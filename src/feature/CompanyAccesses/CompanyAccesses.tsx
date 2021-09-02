@@ -3,8 +3,7 @@ import {Page, PageTitle} from '../../shared/Layout'
 import {useI18n} from '../../core/i18n'
 import {useParams} from 'react-router'
 import {Datatable} from '../../shared/Datatable/Datatable'
-import {ScSelect} from '../../shared/Select/Select'
-import {Icon, MenuItem} from '@material-ui/core'
+import {Icon, Tooltip} from '@material-ui/core'
 import {Panel} from '../../shared/Panel'
 import {useCssUtils} from '../../core/helper/useCssUtils'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
@@ -20,6 +19,9 @@ import {SaveUndeliveredDocBtn} from './SaveUndeliveredDocBtn'
 import {useCompaniesContext} from '../../core/context/CompaniesContext'
 import {Enum} from '@alexandreannic/ts-utils/lib/enum/Enum'
 import {ScDialog} from '../../shared/Confirm/ScDialog'
+import {ScButton} from '../../shared/Button/Button'
+import {ScRadioGroupItem} from '../../shared/RadioGroup/RadioGroupItem'
+import {ScRadioGroup} from '../../shared/RadioGroup/RadioGroup'
 
 interface Accesses {
   name?: string
@@ -39,7 +41,7 @@ export const CompanyAccesses = () => {
   const {m} = useI18n()
   const cssUtils = useCssUtils()
   const {connectedUser} = useLogin()
-  const {toastError} = useToast()
+  const {toastSuccess, toastError} = useToast()
 
   const accesses: Accesses[] = useMemo(() => {
     return [
@@ -66,6 +68,15 @@ export const CompanyAccesses = () => {
     fromNullable(_crudAccess.fetchError).map(toastError)
   }, [_crudAccess.list, _crudAccess.fetchError])
 
+  const inviteNewUser = async (email: string, level: CompanyAccessLevel): Promise<any> => {
+    if (accesses?.find(_ => _.email === email)) {
+      toastError({message: m.invitationToProAlreadySent(email)})
+    } else {
+      await _crudToken.create({}, email, level)
+      toastSuccess(m.userInvitationSent)
+    }
+  }
+
   return (
     <Page size="small">
       <PageTitle
@@ -80,7 +91,7 @@ export const CompanyAccesses = () => {
             )}
             <CompanyAccessCreateBtn
               loading={_crudToken.creating}
-              onCreate={(email, level) => _crudToken.create({}, email, level)}
+              onCreate={inviteNewUser}
               errorMessage={_crudToken.createError}
             />
           </>
@@ -125,23 +136,36 @@ export const CompanyAccesses = () => {
               id: 'level',
               head: m.companyAccessLevel,
               row: _ =>
-                some(_)
-                  .filter(_ => _.email !== connectedUser.email)
-                  .mapNullable(_ => _.userId)
-                  .map(userId => (
-                    <ScSelect
-                      fullWidth
-                      value={_.level}
-                      onChange={event => _crudAccess.update(userId, event.target.value as CompanyAccessLevel)}
+                <ScDialog maxWidth="xs" title={m.editAccess} content={close => (
+                  <ScRadioGroup
+                    value={_.level}
+                    onChange={level => {
+                      if (_.userId)
+                        _crudAccess.update(_.userId, level as CompanyAccessLevel)
+                      close()
+                    }}>
+                    {Enum.keys(CompanyAccessLevel).map(level => (
+                      <ScRadioGroupItem
+                        title={CompanyAccessLevel[level]}
+                        description={m.companyAccessLevelDescription[CompanyAccessLevel[level]]}
+                        value={level}
+                        key={level}/>
+                    ))}
+                  </ScRadioGroup>
+                )}>
+                  <Tooltip title={m.editAccess}>
+                    <ScButton
+                      className={cssUtils.txtCapitalize}
+                      loading={_crudAccess.updating(_.userId ?? '')}
+                      color="primary"
+                      icon="manage_accounts"
+                      variant="outlined"
+                      disabled={_.email === connectedUser.email || !_.userId}
                     >
-                      {Enum.keys(CompanyAccessLevel).map(level => (
-                        <MenuItem key={level} value={level}>
-                          {CompanyAccessLevel[level]}
-                        </MenuItem>
-                      ))}
-                    </ScSelect>
-                  ))
-                  .getOrElse(<Txt color="hint">{(CompanyAccessLevel as any)[_.level]}</Txt>),
+                      {(CompanyAccessLevel as any)[_.level]}
+                    </ScButton>
+                  </Tooltip>
+                </ScDialog>
             },
             {
               id: 'action',

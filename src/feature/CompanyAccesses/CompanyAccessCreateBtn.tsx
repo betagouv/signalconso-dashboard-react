@@ -1,16 +1,16 @@
 import {ScButton} from '../../shared/Button/Button'
-import {Alert, Confirm} from 'mui-extension/lib'
+import {Alert} from 'mui-extension/lib'
 import React from 'react'
 import {useI18n} from '../../core/i18n'
 import {CompanyAccessLevel} from '../../core/api'
-import {useForm} from 'react-hook-form'
+import {Controller, useForm} from 'react-hook-form'
 import {ScInput} from '../../shared/Input/ScInput'
 import {regexp} from '../../core/helper/regexp'
-import {ScSelect} from '../../shared/Select/Select'
-import {MenuItem} from '@material-ui/core'
-import {useToast} from '../../core/toast'
 import {Enum} from '@alexandreannic/ts-utils/lib/enum/Enum'
 import {ScDialog} from '../../shared/Confirm/ScDialog'
+import {ScRadioGroup} from '../../shared/RadioGroup/RadioGroup'
+import {ScRadioGroupItem} from '../../shared/RadioGroup/RadioGroupItem'
+import {Txt} from 'mui-extension/lib/Txt/Txt'
 
 interface Props {
   errorMessage?: string
@@ -28,10 +28,10 @@ export const CompanyAccessCreateBtn = ({errorMessage, loading, onCreate}: Props)
   const {
     register,
     handleSubmit,
-    getValues,
+    control,
     formState: {errors, isValid},
+    reset,
   } = useForm<Form>({mode: 'onChange'})
-  const {toastSuccess} = useToast()
   return (
     <ScDialog
       maxWidth="xs"
@@ -39,12 +39,10 @@ export const CompanyAccessCreateBtn = ({errorMessage, loading, onCreate}: Props)
       confirmLabel={m.create}
       loading={loading}
       confirmDisabled={!isValid}
-      onConfirm={(event, close) => {
-        handleSubmit(({email, level}) => {
-          onCreate(email, level)
-            .then(() => toastSuccess(m.userInvitationSent))
-            .then(close)
-        })()
+      onConfirm={async (event, close) => {
+        await handleSubmit(({email, level}) => onCreate(email, level))()
+        close()
+        reset()
       }}
       content={
         <>
@@ -63,13 +61,24 @@ export const CompanyAccessCreateBtn = ({errorMessage, loading, onCreate}: Props)
               required: {value: true, message: m.required},
             })}
           />
-          <ScSelect fullWidth {...register('level')} defaultValue="admin">
-            {Enum.keys(CompanyAccessLevel).map(level => (
-              <MenuItem key={level} value={level}>
-                {CompanyAccessLevel[level]}
-              </MenuItem>
-            ))}
-          </ScSelect>
+
+          <Txt block gutterBottom size="big">{m.authorization}</Txt>
+          <Controller
+            name="level"
+            rules={{required: {value: true, message: m.required}}}
+            control={control}
+            render={({field}) => (
+              <ScRadioGroup error={!!errors.level} {...field}>
+                {Enum.keys(CompanyAccessLevel).map(level => (
+                  <ScRadioGroupItem
+                    title={CompanyAccessLevel[level]}
+                    description={m.companyAccessLevelDescription[CompanyAccessLevel[level]]}
+                    value={level}
+                    key={level}/>
+                ))}
+              </ScRadioGroup>
+            )}
+          />
         </>
       }
     >
