@@ -1,4 +1,4 @@
-import {ApiClientApi, UserPending, UserSearch, UserUpdate} from '../..'
+import {ApiClientApi, UserPending, UserSearch} from '../..'
 import {User} from './User'
 import {paginateData} from '../../../helper/utils'
 import {Paginate} from '@alexandreannic/react-hooks-lib/lib'
@@ -9,10 +9,6 @@ export class UserClient {
 
   readonly fetchConnectedUser = () => {
     return this.client.get<User>(`/account`)
-  }
-
-  readonly patchConnectedUser = (userUpdate: UserUpdate) => {
-    return this.client.patch<User>(`/account`, {body: userUpdate})
   }
 
   readonly fetchDGCCRF = (filters: UserSearch): Promise<Paginate<User>> => {

@@ -5,11 +5,6 @@ export interface User {
   firstName: string
   lastName: string
   lastEmailValidation: Date
-  acceptNotifications: boolean
-}
-
-export interface UserUpdate {
-  acceptNotifications: boolean
 }
 
 export interface UserPending {

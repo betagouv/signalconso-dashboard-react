@@ -1,21 +1,16 @@
 import * as React from 'react'
 import {ReactNode, useContext} from 'react'
-import {CrudListCRD, useCrudList} from '@alexandreannic/react-hooks-lib/lib'
-import {ApiError, Id} from 'core/api'
+import {UseAsync, UseFetcher, useFetcher} from '@alexandreannic/react-hooks-lib/lib'
+import {Id, SignalConsoSecuredSdk} from 'core/api'
 import {SignalConsoApiSdk} from '../../App'
+import {useAsync} from '@alexandreannic/react-hooks-lib'
+import {uniqby} from '../lodashNamedExport'
 import {BlockedReportNotification} from '../api/client/blockedReportNotifications/BlockedReportNotification'
 
 export interface BlockedReportNotificationContextProps {
-  crud: CrudListCRD<
-    BlockedReportNotification,
-    'companyId',
-    {
-      c: (companyId: Id) => Promise<BlockedReportNotification>
-      r: () => Promise<BlockedReportNotification[]>
-      d: (companyId: Id) => Promise<void>
-    },
-    ApiError
-  >
+  list: UseFetcher<SignalConsoSecuredSdk['reportBlockedNotification']['fetch']>
+  create: UseAsync<SignalConsoSecuredSdk['reportBlockedNotification']['create']>
+  remove: UseAsync<SignalConsoSecuredSdk['reportBlockedNotification']['delete']>
 }
 
 interface Props {
@@ -30,16 +25,23 @@ const BlockedReportNotificationContext = React.createContext<BlockedReportNotifi
 )
 
 export const BlockedReportNotificationProvider = ({api, children}: Props) => {
-  const crud = useCrudList('companyId', {
-    r: () => api.secured.reportNotificationBlockList.fetch(),
-    c: (companyId: Id) => api.secured.reportNotificationBlockList.create(companyId),
-    d: (companyId: Id) => api.secured.reportNotificationBlockList.delete(companyId),
+  const fetch = useFetcher(api.secured.reportBlockedNotification.fetch)
+  const create = useAsync((companyIds: Id[]) => {
+    const newBlocked: BlockedReportNotification[] = companyIds.map(companyId => ({companyId, dateCreation: new Date()}))
+    fetch.setEntity(prev => uniqby([...(prev ?? []), ...newBlocked], _ => _.companyId))
+    return api.secured.reportBlockedNotification.create(companyIds)
+  })
+  const remove = useAsync((companyIds: Id[]) => {
+    fetch.setEntity(currentCompanyIds => currentCompanyIds?.filter(_ => !companyIds.includes(_.companyId)))
+    return api.secured.reportBlockedNotification.delete(companyIds)
   })
 
   return (
     <BlockedReportNotificationContext.Provider
       value={{
-        crud,
+        list: fetch,
+        create,
+        remove,
       }}
     >
       {children}

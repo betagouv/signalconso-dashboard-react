@@ -19,6 +19,7 @@ import {indexEntities} from '@alexandreannic/ts-utils/lib/indexEntites/IndexEnti
 import {fromNullable} from 'fp-ts/lib/Option'
 import {classes} from '../../core/helper/utils'
 import {useBlockedReportNotificationContext} from '../../core/context/BlockedReportNotificationProviderContext'
+import {useToast} from '../../core/toast'
 
 const useStyles = makeStyles((t: Theme) => ({
   tdName_label: {
@@ -51,10 +52,6 @@ const useStyles = makeStyles((t: Theme) => ({
   },
 }))
 
-interface CompanyInfo extends Company {
-  level?: AccessLevel
-}
-
 export const CompaniesPro = () => {
   const {m} = useI18n()
   const _companies = useCompaniesContext()
@@ -62,10 +59,11 @@ export const CompaniesPro = () => {
   const cssUtils = useCssUtils()
   const css = useStyles()
   const _users = useUsersContext()
+  const {toastError} = useToast()
 
   useEffect(() => {
     _users.getConnectedUser.fetch({force: false})
-    _reportNotificationBlockLists.crud.fetch()
+    _reportNotificationBlockLists.list.fetch()
     _companies.visibleByPro.fetch({force: false})
     _companies.accessibleByPro.fetch({force: false})
   }, [])
@@ -77,10 +75,15 @@ export const CompaniesPro = () => {
   }, [_companies.accessibleByPro.entity])
 
   const blockedNotificationIndex = useMemo(() => {
-    return fromNullable(_reportNotificationBlockLists.crud.list)
+    return fromNullable(_reportNotificationBlockLists.list.entity)
       .map(_ => indexEntities('companyId', _))
       .toUndefined()
-  }, [_reportNotificationBlockLists.crud.list])
+  }, [_reportNotificationBlockLists.list.entity])
+
+  useEffect(() => {
+    fromNullable(_reportNotificationBlockLists.create.error).map(toastError)
+    fromNullable(_reportNotificationBlockLists.remove.error).map(toastError)
+  }, [_reportNotificationBlockLists.create.error, _reportNotificationBlockLists.remove.error])
 
   return (
     <Page size="small">
@@ -95,31 +98,11 @@ export const CompaniesPro = () => {
       >
         {m.myCompanies}
       </PageTitle>
-      {_users.getConnectedUser.entity && (
-        <Alert
-          type="info"
-          gutterBottom
-          hidden={_users.getConnectedUser.entity.acceptNotifications}
-          action={
-            <Switch
-              checked={_users.getConnectedUser.entity?.acceptNotifications ?? true}
-              onChange={e => _users.patchConnectedUser.fetch({}, {acceptNotifications: e.target.checked})}
-            />
-          }
-        >
-          <Txt bold block>
-            {m.notificationsAreDisabled}
-          </Txt>
-          <Txt color="hint" block>
-            {m.notificationsAreDisabledDesc}
-          </Txt>
-        </Alert>
-      )}
       <Panel>
         <Datatable
           data={accessibleCompaniesIndex && blockedNotificationIndex && _companies.visibleByPro.entity || undefined}
           loading={
-            _companies.visibleByPro.loading || _companies.accessibleByPro.loading || _reportNotificationBlockLists.crud.fetching
+            _companies.visibleByPro.loading || _companies.accessibleByPro.loading || _reportNotificationBlockLists.list.loading
           }
           getRenderRowKey={_ => _.id}
           rows={[
@@ -154,12 +137,11 @@ export const CompaniesPro = () => {
               className: css.tdNotification,
               row: _ => (
                 <Switch
-                  disabled={!_users.getConnectedUser.entity?.acceptNotifications}
                   checked={!blockedNotificationIndex?.[_.id]}
                   onChange={e => {
                     e.target.checked
-                      ? _reportNotificationBlockLists.crud.remove(_.id)
-                      : _reportNotificationBlockLists.crud.create({}, _.id)
+                      ? _reportNotificationBlockLists.remove.call([_.id])
+                      : _reportNotificationBlockLists.create.call([_.id])
                   }}
                 />
               ),
