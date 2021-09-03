@@ -10,7 +10,7 @@ export const ScInputPassword = forwardRef((props: ScInputPasswordProps, ref: any
   return (
     <ScInput
       {...props}
-      inputRef={ref}
+      ref={ref}
       type={passwordVisible ? 'text' : 'password'}
       InputProps={{
         ...props.InputProps,
