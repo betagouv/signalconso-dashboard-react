@@ -93,7 +93,7 @@ export const ResetPassword = ({onResetPassword}: Props) => {
                 })}
               />
             </PanelBody>
-            <PanelFoot alignEnd>
+            <PanelFoot alignEnd border>
               <ScButton variant="contained" color="primary" type="submit">
                 {m.validate}
               </ScButton>

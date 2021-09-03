@@ -158,7 +158,7 @@ export const ReportComponent = () => {
                     </div>
                     <Icon className={css.cardBody_icon}>person</Icon>
                   </PanelBody>
-                  <PanelFoot>
+                  <PanelFoot border>
                     <EditConsumerDialog
                       report={report}
                       onChange={user =>
@@ -204,7 +204,7 @@ export const ReportComponent = () => {
                     </div>
                     <Icon className={css.cardBody_icon}>store</Icon>
                   </PanelBody>
-                  <PanelFoot>
+                  <PanelFoot border>
                     <SelectCompany
                       siret={report.companySiret}
                       onChange={company => {

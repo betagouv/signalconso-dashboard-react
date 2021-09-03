@@ -1,25 +1,27 @@
 import {Page, PageTitle} from '../../shared/Layout'
 import {useI18n} from '../../core/i18n'
-import React, {useEffect, useMemo} from 'react'
-import {Panel} from '../../shared/Panel'
+import React, {useEffect, useMemo, useState} from 'react'
+import {Panel, PanelBody} from '../../shared/Panel'
 import {useCompaniesContext} from '../../core/context/CompaniesContext'
 import {useCssUtils} from '../../core/helper/useCssUtils'
 import {Datatable} from '../../shared/Datatable/Datatable'
 import {Icon, makeStyles, Switch, Theme, Tooltip} from '@material-ui/core'
 import {styleUtils} from '../../core/theme'
-import {Alert, Fender, IconBtn} from 'mui-extension/lib'
+import {Fender, IconBtn} from 'mui-extension/lib'
 import {ScButton} from '../../shared/Button/Button'
 import {AddressComponent} from '../../shared/Address/Address'
 import {siteMap} from '../../core/siteMap'
 import {NavLink} from 'react-router-dom'
-import {AccessLevel, Company} from '../../core/api'
+import {AccessLevel, Id} from '../../core/api'
 import {useUsersContext} from '../../core/context/UsersContext'
-import {Txt} from 'mui-extension/lib/Txt/Txt'
 import {indexEntities} from '@alexandreannic/ts-utils/lib/indexEntites/IndexEntities'
 import {fromNullable} from 'fp-ts/lib/Option'
 import {classes} from '../../core/helper/utils'
 import {useBlockedReportNotificationContext} from '../../core/context/BlockedReportNotificationProviderContext'
 import {useToast} from '../../core/toast'
+import {PanelFoot} from '../../shared/Panel/PanelFoot'
+import {Txt} from 'mui-extension/lib/Txt/Txt'
+import {ConfirmDisableNotificationDialog} from './ConfirmDisableNotificationDialog'
 
 const useStyles = makeStyles((t: Theme) => ({
   tdName_label: {
@@ -55,15 +57,16 @@ const useStyles = makeStyles((t: Theme) => ({
 export const CompaniesPro = () => {
   const {m} = useI18n()
   const _companies = useCompaniesContext()
-  const _reportNotificationBlockLists = useBlockedReportNotificationContext()
+  const _blockedNotifications = useBlockedReportNotificationContext()
   const cssUtils = useCssUtils()
   const css = useStyles()
   const _users = useUsersContext()
   const {toastError} = useToast()
+  const [state, setState] = useState<Id | Id[] | undefined>()
 
   useEffect(() => {
     _users.getConnectedUser.fetch({force: false})
-    _reportNotificationBlockLists.list.fetch()
+    _blockedNotifications.list.fetch()
     _companies.visibleByPro.fetch({force: false})
     _companies.accessibleByPro.fetch({force: false})
   }, [])
@@ -75,15 +78,22 @@ export const CompaniesPro = () => {
   }, [_companies.accessibleByPro.entity])
 
   const blockedNotificationIndex = useMemo(() => {
-    return fromNullable(_reportNotificationBlockLists.list.entity)
+    return fromNullable(_blockedNotifications.list.entity)
       .map(_ => indexEntities('companyId', _))
       .toUndefined()
-  }, [_reportNotificationBlockLists.list.entity])
+  }, [_blockedNotifications.list.entity])
 
   useEffect(() => {
-    fromNullable(_reportNotificationBlockLists.create.error).map(toastError)
-    fromNullable(_reportNotificationBlockLists.remove.error).map(toastError)
-  }, [_reportNotificationBlockLists.create.error, _reportNotificationBlockLists.remove.error])
+    fromNullable(_blockedNotifications.create.error).map(toastError).map(() => _blockedNotifications.list.fetch({clean: false}))
+    fromNullable(_blockedNotifications.remove.error).map(toastError).map(() => _blockedNotifications.list.fetch({clean: false}))
+  }, [_blockedNotifications.create.error, _blockedNotifications.remove.error])
+
+  const allNotificationsAreBlocked = useMemo(() => {
+    if(_companies.visibleByPro.entity && blockedNotificationIndex) {
+      return _companies.visibleByPro.entity?.every(_ => blockedNotificationIndex[_.id])
+    }
+    return false
+  }, [_companies.visibleByPro.entity, blockedNotificationIndex])
 
   return (
     <Page size="small">
@@ -98,11 +108,37 @@ export const CompaniesPro = () => {
       >
         {m.myCompanies}
       </PageTitle>
+
+      {fromNullable(_companies.visibleByPro.entity).map(companies => companies.length > 5 && (
+        <Panel>
+          <PanelBody>
+            <Txt block size="big">{m.notifications}</Txt>
+            <Txt block color="hint">{m.notificationsAreDisabled}</Txt>
+          </PanelBody>
+          <PanelFoot alignEnd style={{paddingTop: 0}}>
+            <ScButton
+              disabled={allNotificationsAreBlocked}
+              color="primary" icon="notifications_off"
+              onClick={() => setState(companies.map(_ => _.id))}
+            >
+              {m.disableAll}
+            </ScButton>
+            <ScButton
+              disabled={_blockedNotifications.list.entity?.length === 0}
+              color="primary" icon="notifications_active" className={cssUtils.marginRight}
+              onClick={() => _blockedNotifications.remove.call(companies.map(_ => _.id))}
+            >
+              {m.enableAll}
+            </ScButton>
+          </PanelFoot>
+        </Panel>
+      )).toUndefined()}
+
       <Panel>
         <Datatable
-          data={accessibleCompaniesIndex && blockedNotificationIndex && _companies.visibleByPro.entity || undefined}
+          data={accessibleCompaniesIndex && _companies.visibleByPro.entity || undefined}
           loading={
-            _companies.visibleByPro.loading || _companies.accessibleByPro.loading || _reportNotificationBlockLists.list.loading
+            _companies.visibleByPro.loading || _companies.accessibleByPro.loading || _blockedNotifications.list.loading
           }
           getRenderRowKey={_ => _.id}
           rows={[
@@ -111,11 +147,13 @@ export const CompaniesPro = () => {
               className: css.tdName,
               head: m.name,
               row: _ => (
-                <>
-                  <span className={css.tdName_label}>{_.name}</span>
-                  <br />
-                  <span className={css.tdName_desc}>{_.siret}</span>
-                </>
+                <Tooltip title={_.name}>
+                  <>
+                    <span className={css.tdName_label}>{_.name}</span>
+                    <br/>
+                    <span className={css.tdName_desc}>{_.siret}</span>
+                  </>
+                </Tooltip>
               ),
             },
             {
@@ -136,14 +174,17 @@ export const CompaniesPro = () => {
               id: 'status',
               className: css.tdNotification,
               row: _ => (
-                <Switch
-                  checked={!blockedNotificationIndex?.[_.id]}
-                  onChange={e => {
-                    e.target.checked
-                      ? _reportNotificationBlockLists.remove.call([_.id])
-                      : _reportNotificationBlockLists.create.call([_.id])
-                  }}
-                />
+                <>
+                  <Switch
+                    disabled={!blockedNotificationIndex}
+                    checked={!blockedNotificationIndex?.[_.id]}
+                    onChange={e => {
+                      e.target.checked
+                        ? _blockedNotifications.remove.call([_.id])
+                        : setState(_.id)
+                    }}
+                  />
+                </>
               ),
             },
             {
@@ -181,6 +222,14 @@ export const CompaniesPro = () => {
           }
         />
       </Panel>
+      <ConfirmDisableNotificationDialog
+        open={!!state}
+        onClose={() => setState(undefined)}
+        onConfirm={() => {
+          _blockedNotifications.create.call([state!].flatMap(_ => _))
+          setState(undefined)
+        }}
+      />
     </Page>
   )
 }

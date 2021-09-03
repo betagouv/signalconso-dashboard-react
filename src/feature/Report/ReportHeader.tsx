@@ -101,7 +101,7 @@ export const ReportHeader = ({report, children, actions, files, elevated}: Props
           </>
         )}
       </PanelBody>
-      <PanelFoot className={css.actions}>
+      <PanelFoot className={css.actions} border>
         <div style={{flex: 1}}>
           {report.tags.map(tag => [
             <ScChip
