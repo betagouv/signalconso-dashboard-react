@@ -3,12 +3,10 @@ import React from 'react'
 import {useI18n} from '../../core/i18n'
 import {Panel} from '../../shared/Panel'
 import {SettingRow} from './SettingRow'
-import {EditPassword} from './EditPassword'
 import {NavLink} from 'react-router-dom'
 import {siteMap} from '../../core/siteMap'
 import {ScButton} from '../../shared/Button/Button'
 import {EditPasswordDialog} from './EditPasswordDialog'
-import {ScButton} from '../../shared/Button/Button'
 
 export const Settings = () => {
   const {m} = useI18n()

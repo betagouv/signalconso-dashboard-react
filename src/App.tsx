@@ -41,13 +41,11 @@ import {UnregistredWebsitesProvider} from './core/context/UnregistredWebsitesCon
 import {CompaniesPro} from './feature/CompaniesPro/CompaniesPro'
 import {ReportPro} from './feature/Report/ReportPro'
 import {AccessesProvider} from './core/context/AccessesContext'
-import {ActivateNewCompany} from './feature/ActivateNewCompany/ActivateNewCompany'
 import {EmailValidation} from './feature/EmailValidation/EmailValidation'
 import {CenteredContent} from './shared/CenteredContent/CenteredContent'
 import {ResetPassword} from './feature/ResetPassword/ResetPassword'
-import {ActivateNewCompany} from './feature/RegisterNewCompany/ActivateNewCompany'
-import {mapPromise} from './core/helper/utils'
 import {BlockedReportNotificationProvider} from './core/context/BlockedReportNotificationProviderContext'
+import {ActivateNewCompany} from './feature/ActivateNewCompany/ActivateNewCompany'
 
 const headers = {
   'Content-Type': 'application/json',
