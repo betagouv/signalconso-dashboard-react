@@ -13,6 +13,12 @@ export const useCssUtils = makeStyles((t: Theme) => {
     flex: {
       display: 'flex',
     },
+    alignCenter: {
+      alignItems: 'center',
+    },
+    spaceBetween: {
+      justifyContent: 'space-between'
+    },
     txtCapitalize: {
       textTransform: 'capitalize'
     },

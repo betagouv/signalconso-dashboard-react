@@ -19,7 +19,6 @@ import {fromNullable} from 'fp-ts/lib/Option'
 import {classes} from '../../core/helper/utils'
 import {useBlockedReportNotificationContext} from '../../core/context/BlockedReportNotificationProviderContext'
 import {useToast} from '../../core/toast'
-import {PanelFoot} from '../../shared/Panel/PanelFoot'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
 import {ConfirmDisableNotificationDialog} from './ConfirmDisableNotificationDialog'
 
@@ -111,26 +110,25 @@ export const CompaniesPro = () => {
 
       {fromNullable(_companies.visibleByPro.entity).map(companies => companies.length > 5 && (
         <Panel>
-          <PanelBody>
-            <Txt block size="big">{m.notifications}</Txt>
-            <Txt block color="hint">{m.notificationsAreDisabled}</Txt>
+          <PanelBody className={classes(cssUtils.flex, cssUtils.alignCenter, cssUtils.spaceBetween)}>
+            <Txt block size="big" bold>{m.notifications}</Txt>
+            <div>
+              <ScButton
+                disabled={allNotificationsAreBlocked}
+                color="primary" icon="notifications_off"
+                onClick={() => setState(companies.map(_ => _.id))}
+              >
+                {m.disableAll}
+              </ScButton>
+              <ScButton
+                disabled={_blockedNotifications.list.entity?.length === 0}
+                color="primary" icon="notifications_active" className={cssUtils.marginRight}
+                onClick={() => _blockedNotifications.remove.call(companies.map(_ => _.id))}
+              >
+                {m.enableAll}
+              </ScButton>
+            </div>
           </PanelBody>
-          <PanelFoot alignEnd style={{paddingTop: 0}}>
-            <ScButton
-              disabled={allNotificationsAreBlocked}
-              color="primary" icon="notifications_off"
-              onClick={() => setState(companies.map(_ => _.id))}
-            >
-              {m.disableAll}
-            </ScButton>
-            <ScButton
-              disabled={_blockedNotifications.list.entity?.length === 0}
-              color="primary" icon="notifications_active" className={cssUtils.marginRight}
-              onClick={() => _blockedNotifications.remove.call(companies.map(_ => _.id))}
-            >
-              {m.enableAll}
-            </ScButton>
-          </PanelFoot>
         </Panel>
       )).toUndefined()}
 
