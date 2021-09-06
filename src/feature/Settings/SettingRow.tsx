@@ -16,9 +16,12 @@ const useStyles = makeStyles((t: Theme) => ({
     marginRight: t.spacing(2),
   },
   root: {
-    padding: t.spacing(1, 2),
+    padding: t.spacing(1.5, 2),
     display: 'flex',
     alignItems: 'center',
+    '&:not(:last-of-type)': {
+      borderBottom: '1px solid ' + t.palette.divider,
+    },
   },
   body: {
     flex: 1,

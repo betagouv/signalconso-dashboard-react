@@ -116,7 +116,7 @@ export const ReportResponseForm = ({report, className, onCancel, onConfirm}: Pro
           />
         </ReportResponseFormItem>
       </PanelBody>
-      <PanelFoot alignEnd>
+      <PanelFoot alignEnd border>
         <ScButton onClick={onCancel} color="primary">
           {m.close}
         </ScButton>

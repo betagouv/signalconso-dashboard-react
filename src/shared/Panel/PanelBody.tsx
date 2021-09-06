@@ -12,6 +12,9 @@ const useStyles = makeStyles((t: Theme) => ({
     // padding: '0 !important',
     // margin: t.spacing(1),
     // margin: padding(),
+    '&:last-child': {
+      paddingBottom: t.spacing(2),
+    },
   },
 }))
 

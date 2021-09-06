@@ -7,6 +7,10 @@ import {fromNullable} from 'fp-ts/lib/Option'
 export class UserClient {
   constructor(private client: ApiClientApi) {}
 
+  readonly fetchConnectedUser = () => {
+    return this.client.get<User>(`/account`)
+  }
+
   readonly fetchDGCCRF = (filters: UserSearch): Promise<Paginate<User>> => {
     return this.client
       .get<User[]>(`/account/dgccrf/users`)

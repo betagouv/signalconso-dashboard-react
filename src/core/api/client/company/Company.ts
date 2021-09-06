@@ -69,14 +69,12 @@ export enum AccessLevel {
   ADMIN = 'admin',
 }
 
-export interface VisibleCompany {
-  siret: string
-  postalCode?: string
-  closed: boolean
-}
-
 export interface CompanyWithAccessLevel extends Company {
   level: AccessLevel
+}
+
+export interface CompanyWithNotification extends CompanyWithAccessLevel {
+  hasNotification: boolean
 }
 
 export const isGovernmentCompany = (_?: DraftCompany): boolean => _?.activityCode?.startsWith('84.') ?? false

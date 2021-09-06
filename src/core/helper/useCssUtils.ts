@@ -4,11 +4,20 @@ import {styleUtils} from '../theme'
 
 export const useCssUtils = makeStyles((t: Theme) => {
   return {
+    vaMiddle: {
+      verticalAlign: 'middle',
+    },
     hidden: {
       visibility: 'hidden',
     },
     flex: {
       display: 'flex',
+    },
+    alignCenter: {
+      alignItems: 'center',
+    },
+    spaceBetween: {
+      justifyContent: 'space-between'
     },
     txtCapitalize: {
       textTransform: 'capitalize'

@@ -7,7 +7,6 @@ import {
   CompanyWithReportsCount,
   dateToApi,
   directDownloadBlob,
-  VisibleCompany,
 } from '../..'
 import {Company, CompanyCreation, CompanyUpdate, Event, Id} from '../../model'
 import {format} from 'date-fns'
@@ -40,14 +39,14 @@ export class CompanyClient {
       .then(directDownloadBlob(`signalement_depot_${format(new Date(), 'ddMMyy')}`))
   }
 
-  readonly getCompaniesAccessibleByPro = (): Promise<CompanyWithAccessLevel[]> => {
+  readonly getAccessibleByPro = (): Promise<CompanyWithAccessLevel[]> => {
     return this.client
       .get<CompanyWithAccessLevel[]>(`/accesses/connected-user`)
       .then(res => res.map(_ => ({..._, creationDate: new Date(_.creationDate)})))
   }
 
-  readonly getCompaniesVisibleByPro = (): Promise<VisibleCompany[]> => {
-    return this.client.get<VisibleCompany[]>(`/companies/connected-user`)
+  readonly getVisibleByPro = () => {
+    return this.client.get<Company[]>(`/companies/connected-user`)
   }
 
   readonly fetchToActivate = () => {

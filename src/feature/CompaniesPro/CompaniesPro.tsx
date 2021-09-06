@@ -1,18 +1,26 @@
 import {Page, PageTitle} from '../../shared/Layout'
 import {useI18n} from '../../core/i18n'
-import React, {useEffect} from 'react'
-import {Panel} from '../../shared/Panel'
+import React, {useEffect, useMemo, useState} from 'react'
+import {Panel, PanelBody} from '../../shared/Panel'
 import {useCompaniesContext} from '../../core/context/CompaniesContext'
 import {useCssUtils} from '../../core/helper/useCssUtils'
 import {Datatable} from '../../shared/Datatable/Datatable'
-import {Icon, makeStyles, Theme, Tooltip} from '@material-ui/core'
+import {Icon, makeStyles, Switch, Theme, Tooltip} from '@material-ui/core'
 import {styleUtils} from '../../core/theme'
 import {Fender, IconBtn} from 'mui-extension/lib'
 import {ScButton} from '../../shared/Button/Button'
 import {AddressComponent} from '../../shared/Address/Address'
 import {siteMap} from '../../core/siteMap'
 import {NavLink} from 'react-router-dom'
-import {AccessLevel} from '../../core/api'
+import {AccessLevel, Id} from '../../core/api'
+import {useUsersContext} from '../../core/context/UsersContext'
+import {indexEntities} from '@alexandreannic/ts-utils/lib/indexEntites/IndexEntities'
+import {fromNullable} from 'fp-ts/lib/Option'
+import {classes} from '../../core/helper/utils'
+import {useBlockedReportNotificationContext} from '../../core/context/BlockedReportNotificationProviderContext'
+import {useToast} from '../../core/toast'
+import {Txt} from 'mui-extension/lib/Txt/Txt'
+import {ConfirmDisableNotificationDialog} from './ConfirmDisableNotificationDialog'
 
 const useStyles = makeStyles((t: Theme) => ({
   tdName_label: {
@@ -28,23 +36,63 @@ const useStyles = makeStyles((t: Theme) => ({
     color: t.palette.text.hint,
   },
   tdAddress: {
-    maxWidth: 300,
+    maxWidth: 240,
+    color: t.palette.text.secondary,
     ...styleUtils(t).truncate,
+  },
+  tdNotification: {
+    width: 0,
+    textAlign: 'center',
   },
   fender: {
     margin: `${t.spacing(1)}px auto ${t.spacing(2)}px auto`,
+  },
+  tdActions: {
+    textAlign: 'right',
+    width: 0,
   },
 }))
 
 export const CompaniesPro = () => {
   const {m} = useI18n()
   const _companies = useCompaniesContext()
+  const _blockedNotifications = useBlockedReportNotificationContext()
   const cssUtils = useCssUtils()
   const css = useStyles()
+  const _users = useUsersContext()
+  const {toastError} = useToast()
+  const [state, setState] = useState<Id | Id[] | undefined>()
 
   useEffect(() => {
-    _companies.accessesByPro.fetch()
+    _users.getConnectedUser.fetch({force: false})
+    _blockedNotifications.list.fetch()
+    _companies.visibleByPro.fetch({force: false})
+    _companies.accessibleByPro.fetch({force: false})
   }, [])
+
+  const accessibleCompaniesIndex = useMemo(() => {
+    return fromNullable(_companies.accessibleByPro.entity)
+      .map(_ => indexEntities('id', _))
+      .toUndefined()
+  }, [_companies.accessibleByPro.entity])
+
+  const blockedNotificationIndex = useMemo(() => {
+    return fromNullable(_blockedNotifications.list.entity)
+      .map(_ => indexEntities('companyId', _))
+      .toUndefined()
+  }, [_blockedNotifications.list.entity])
+
+  useEffect(() => {
+    fromNullable(_blockedNotifications.create.error).map(toastError).map(() => _blockedNotifications.list.fetch({clean: false}))
+    fromNullable(_blockedNotifications.remove.error).map(toastError).map(() => _blockedNotifications.list.fetch({clean: false}))
+  }, [_blockedNotifications.create.error, _blockedNotifications.remove.error])
+
+  const allNotificationsAreBlocked = useMemo(() => {
+    if(_companies.visibleByPro.entity && blockedNotificationIndex) {
+      return _companies.visibleByPro.entity?.every(_ => blockedNotificationIndex[_.id])
+    }
+    return false
+  }, [_companies.visibleByPro.entity, blockedNotificationIndex])
 
   return (
     <Page size="small">
@@ -60,10 +108,36 @@ export const CompaniesPro = () => {
         {m.myCompanies}
       </PageTitle>
 
+      {fromNullable(_companies.visibleByPro.entity).map(companies => companies.length > 5 && (
+        <Panel>
+          <PanelBody className={classes(cssUtils.flex, cssUtils.alignCenter, cssUtils.spaceBetween)}>
+            <Txt block size="big" bold>{m.notifications}</Txt>
+            <div>
+              <ScButton
+                disabled={allNotificationsAreBlocked}
+                color="primary" icon="notifications_off"
+                onClick={() => setState(companies.map(_ => _.id))}
+              >
+                {m.disableAll}
+              </ScButton>
+              <ScButton
+                disabled={_blockedNotifications.list.entity?.length === 0}
+                color="primary" icon="notifications_active" className={cssUtils.marginRight}
+                onClick={() => _blockedNotifications.remove.call(companies.map(_ => _.id))}
+              >
+                {m.enableAll}
+              </ScButton>
+            </div>
+          </PanelBody>
+        </Panel>
+      )).toUndefined()}
+
       <Panel>
         <Datatable
-          data={_companies.accessesByPro?.entity}
-          loading={_companies.accessesByPro.loading}
+          data={accessibleCompaniesIndex && _companies.visibleByPro.entity || undefined}
+          loading={
+            _companies.visibleByPro.loading || _companies.accessibleByPro.loading || _blockedNotifications.list.loading
+          }
           getRenderRowKey={_ => _.id}
           rows={[
             {
@@ -71,11 +145,13 @@ export const CompaniesPro = () => {
               className: css.tdName,
               head: m.name,
               row: _ => (
-                <>
-                  <span className={css.tdName_label}>{_.name}</span>
-                  <br />
-                  <span className={css.tdName_desc}>{_.siret}</span>
-                </>
+                <Tooltip title={_.name}>
+                  <>
+                    <span className={css.tdName_label}>{_.name}</span>
+                    <br/>
+                    <span className={css.tdName_desc}>{_.siret}</span>
+                  </>
+                </Tooltip>
               ),
             },
             {
@@ -85,12 +161,37 @@ export const CompaniesPro = () => {
               row: _ => <AddressComponent address={_.address} />,
             },
             {
-              head: '',
-              id: 'actions',
-              className: cssUtils.txtRight,
+              head: (
+                <Tooltip title={m.notificationAcceptForCompany}>
+                  <span className={classes(cssUtils.nowrap, cssUtils.vaMiddle)}>
+                    {m.notification}&nbsp;
+                    <Icon className={cssUtils.inlineIcon}>help</Icon>
+                  </span>
+                </Tooltip>
+              ),
+              id: 'status',
+              className: css.tdNotification,
               row: _ => (
                 <>
-                  {_.level === AccessLevel.ADMIN && (
+                  <Switch
+                    disabled={!blockedNotificationIndex}
+                    checked={!blockedNotificationIndex?.[_.id]}
+                    onChange={e => {
+                      e.target.checked
+                        ? _blockedNotifications.remove.call([_.id])
+                        : setState(_.id)
+                    }}
+                  />
+                </>
+              ),
+            },
+            {
+              head: '',
+              id: 'actions',
+              className: css.tdActions,
+              row: _ => (
+                <>
+                  {accessibleCompaniesIndex?.[_.id]?.level === AccessLevel.ADMIN && (
                     <NavLink to={siteMap.companyAccesses(_.siret)}>
                       <Tooltip title={m.handleAccesses}>
                         <IconBtn color="primary">
@@ -119,6 +220,14 @@ export const CompaniesPro = () => {
           }
         />
       </Panel>
+      <ConfirmDisableNotificationDialog
+        open={!!state}
+        onClose={() => setState(undefined)}
+        onConfirm={() => {
+          _blockedNotifications.create.call([state!].flatMap(_ => _))
+          setState(undefined)
+        }}
+      />
     </Page>
   )
 }

@@ -20,12 +20,7 @@ import {classes} from '../../core/helper/utils'
 import {Btn, Fender} from 'mui-extension/lib'
 import {EntityIcon} from '../../core/EntityIcon'
 import {ScButton} from '../../shared/Button/Button'
-import {
-  mapArrayFromQuerystring,
-  mapDateFromQueryString,
-  mapDatesToQueryString,
-  useQueryString,
-} from '../../core/helper/useQueryString'
+import {mapArrayFromQuerystring, mapDateFromQueryString, mapDatesToQueryString, useQueryString} from '../../core/helper/useQueryString'
 import {fromNullable} from 'fp-ts/lib/Option'
 import {useToast} from '../../core/toast'
 import {Config} from '../../conf/config'
@@ -34,6 +29,7 @@ import {PeriodPicker} from '../../shared/PeriodPicker/PeriodPicker'
 import {useCompaniesContext} from '../../core/context/CompaniesContext'
 import {SelectCompaniesByPro} from '../../shared/SelectCompaniesByPro/SelectCompaniesByPro'
 import compose from '../../core/helper/compose'
+import {Alert} from 'mui-extension'
 
 const useStyles = makeStyles((t: Theme) => ({
   tdFiles: {
@@ -99,6 +95,11 @@ export const ReportsPro = () => {
   const css = useStyles()
   const cssUtils = useCssUtils()
 
+  const isFirstVisit = useMemo(
+    () => _reports.list?.totalSize === 1 && _reports.list.data[0].report.status === ReportStatus.UnreadForPro,
+    [_reports.list],
+  )
+
   const hasFilters = useMemo(() => {
     const {limit, offset, ...values} = _reports.filters
     return Object.keys(cleanObject(values)).length > 0 || offset > 0
@@ -120,24 +121,24 @@ export const ReportsPro = () => {
   }, [_reports.filters])
 
   useEffect(() => {
-    _companies.accessesByPro.fetch()
-    _companies.viewableByPro.fetch()
+    _companies.accessibleByPro.fetch({force: false})
+    _companies.visibleByPro.fetch({force: false})
     _reportStatus.fetch({force: false})
     _reports.updateFilters({..._reports.initialFilters, ...queryString.get()})
   }, [])
 
   useEffect(() => {
-    fromNullable(_companies.accessesByPro.error).map(toastError)
-    fromNullable(_companies.viewableByPro.error).map(toastError)
+    fromNullable(_companies.accessibleByPro.error).map(toastError)
+    fromNullable(_companies.visibleByPro.error).map(toastError)
     fromNullable(_reports.error).map(toastError)
-  }, [_reports.error, _companies.accessesByPro.error, _companies.viewableByPro.error])
+  }, [_reports.error, _companies.accessibleByPro.error, _companies.visibleByPro.error])
 
   useEffect(() => {
     queryString.update(cleanObject(_reports.filters))
   }, [_reports.filters])
 
   return (
-    <Page size="small" loading={_companies.accessesByPro.loading || _companies.viewableByPro.loading}>
+    <Page size="small" loading={_companies.accessibleByPro.loading || _companies.visibleByPro.loading}>
       <PageTitle
         action={
           <Btn
@@ -155,7 +156,12 @@ export const ReportsPro = () => {
         {m.reports_pageTitle}
       </PageTitle>
 
-      {_companies.accessesByPro.entity && _companies.viewableByPro.entity && (
+      {isFirstVisit && (
+        <Alert type="success" deletable persistentDelete className={cssUtils.marginBottom2}>
+          <span dangerouslySetInnerHTML={{__html: m.yourAccountIsActivated}}/>
+        </Alert>
+      )}
+      {_companies.accessibleByPro.entity && _companies.visibleByPro.entity && (
         <>
           {displayFilters && (
             <Panel elevation={3} className={css.filters}>
@@ -167,8 +173,8 @@ export const ReportsPro = () => {
                       fullWidth
                       onChange={_ => _reports.updateFilters(prev => ({...prev, siretSirenList: _}))}
                       className={cssUtils.marginRight}
-                      accessibleCompanies={_companies.accessesByPro.entity}
-                      visibleCompanies={_companies.viewableByPro.entity}
+                      accessibleCompanies={_companies.accessibleByPro.entity}
+                      visibleCompanies={_companies.visibleByPro.entity}
                     />
                   </Grid>
                   <Grid item sm={4} xs={12}>

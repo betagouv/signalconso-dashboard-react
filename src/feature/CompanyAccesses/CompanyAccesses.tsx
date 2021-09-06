@@ -78,7 +78,7 @@ export const CompanyAccesses = () => {
   }
 
   return (
-    <Page>
+    <Page size="small">
       <PageTitle
         action={
           <>

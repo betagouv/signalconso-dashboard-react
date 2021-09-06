@@ -1,5 +1,5 @@
 import {useCallback, useEffect, useState} from 'react'
-import lodashDebounce from 'lodash.debounce'
+import {debounce} from '../../core/lodashNamedExport'
 
 interface DebouncedInputProps<V> {
   debounce?: number
@@ -9,9 +9,9 @@ interface DebouncedInputProps<V> {
 }
 
 // FIXME(Alex) Trigger only one onChange but 2 API calls.
-export const DebouncedInput = <V>({debounce = 400, value, onChange, children}: DebouncedInputProps<V>) => {
+export const DebouncedInput = <V>({debounce: debounceTime = 400, value, onChange, children}: DebouncedInputProps<V>) => {
   const [innerValue, setInnerValue] = useState<V | undefined>(value)
-  const debounced = useCallback(lodashDebounce(onChange, debounce), [onChange])
+  const debounced = useCallback(debounce(onChange, debounceTime), [onChange])
 
   useEffect(() => {
     setInnerValue(value)

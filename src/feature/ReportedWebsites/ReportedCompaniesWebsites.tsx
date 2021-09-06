@@ -14,27 +14,26 @@ import {ScSelect} from '../../shared/Select/Select'
 import {SelectCompany} from '../../shared/SelectCompany/SelectCompany'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
 
-export const ReportedCompaniesWebsites = () => {
-  const useStyles = makeStyles((t: Theme) => ({
-    tdName_label: {
-      fontWeight: 'bold',
-      marginBottom: -1,
-      maxWidth: 200,
-    },
-    tdName_desc: {
-      fontSize: t.typography.fontSize * 0.875,
-      color: t.palette.text.hint,
-    },
-    chipEnterprise: {
-      height: 42,
-      borderRadius: 42,
-    },
-    status: {
-      width: '100%',
-      maxWidth: 180,
-    },
-  }))
+const useStyles = makeStyles((t: Theme) => ({
+  tdName_label: {
+    fontWeight: 'bold',
+    marginBottom: -1,
+    maxWidth: 200,
+  },
+  tdName_desc: {
+    fontSize: t.typography.fontSize * 0.875,
+    color: t.palette.text.hint,
+  },
+  chipEnterprise: {
+    height: 42,
+    borderRadius: 42,
+  },
+  status: {
+    maxWidth: 180,
+  },
+}))
 
+export const ReportedCompaniesWebsites = () => {
   const {m, formatDate} = useI18n()
   const _fetch = useReportedWebsiteWithCompanyContext().getWebsiteWithCompany
   const _remove = useReportedWebsiteWithCompanyContext().remove
@@ -82,7 +81,7 @@ export const ReportedCompaniesWebsites = () => {
               onChange={(kinds: WebsiteKind[]) => _fetch.updateFilters(prev => ({...prev, kinds}))}
             >
               {(value, onChange) => (
-                <ScSelect value={value} onChange={(e: any) => onChange(e.target.value)} multiple className={css.status}>
+                <ScSelect value={value} onChange={(e: any) => onChange(e.target.value)} fullWidth multiple className={css.status}>
                   {[WebsiteKind.PENDING, WebsiteKind.DEFAULT].map(kind => (
                     <MenuItem key={kind} value={kind}>
                       {kind === WebsiteKind.PENDING ? m.notValidated : m.validated}

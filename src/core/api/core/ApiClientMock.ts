@@ -55,4 +55,8 @@ export class ApiClientMock implements ApiClientApi {
   readonly put = <T = any>(uri: string, options?: RequestOption): Promise<T> => {
     return this.fetch('PUT', uri, options)
   }
+
+  readonly patch = <T = any>(uri: string, options?: RequestOption): Promise<T> => {
+    return this.fetch('PATCH', uri, options)
+  }
 }
