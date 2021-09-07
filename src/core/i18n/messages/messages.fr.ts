@@ -152,6 +152,7 @@ export const messagesFr = {
   howItWorks: 'Comment ça marche ?',
   helpCenter: "Centre d'aide",
   menu_phones: 'Téléphones signalés',
+  menu_modeEmploiDGCCRF: `Mode d'emploi`,
   menu_websites: 'Sites webs signalés',
   menu_reports: 'Signalements',
   menu_companies: 'Entreprises',

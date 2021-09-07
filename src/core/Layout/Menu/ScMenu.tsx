@@ -112,6 +112,11 @@ export const ScMenu = ({onClose, connectedUser}: Props) => {
             {m.menu_phones}
           </ScMenuItem>
         )}
+        {[Roles.DGCCRF].includes(connectedUser.role) && (
+          <ScMenuItem onClick={onClose} to={path(siteMap.modeEmploiDGCCRF)} icon="help">
+            {m.menu_modeEmploiDGCCRF}
+          </ScMenuItem>
+        )}
         <Divider className={css.divider} />
         <ScMenuItem onClick={onClose} to={path(siteMap.settings)} icon="settings">
           {m.menu_settings}

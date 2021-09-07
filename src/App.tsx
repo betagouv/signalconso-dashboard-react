@@ -46,6 +46,7 @@ import {CenteredContent} from './shared/CenteredContent/CenteredContent'
 import {ResetPassword} from './feature/ResetPassword/ResetPassword'
 import {BlockedReportNotificationProvider} from './core/context/BlockedReportNotificationProviderContext'
 import {ActivateNewCompany} from './feature/ActivateNewCompany/ActivateNewCompany'
+import {ModeEmploiDGCCRF} from './feature/ModeEmploiDGCCRF/ModeEmploiDGCCRF'
 
 const headers = {
   'Content-Type': 'application/json',
@@ -227,6 +228,7 @@ const AppLogged = () => {
         <Route path={siteMap.companiesPro} component={CompaniesPro} />
         <Route path={siteMap.settings} component={Settings} />
         <Route path={siteMap.register} component={ActivateNewCompany} />
+        <Route path={siteMap.modeEmploiDGCCRF} component={ModeEmploiDGCCRF} />
         <Redirect from="/" to={siteMap.reports()} />
       </Switch>
     </Provide>
