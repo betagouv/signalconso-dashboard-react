@@ -37,26 +37,25 @@ export const EmailValidation = ({onValidateEmail, onSaveToken}: Props) => {
   }, [])
 
   const fenderProps = useMemo((): FenderProps => {
-      if (_validateEmail.loading) {
-        return {
-          type: 'loading',
-          title: m.validatingEmail,
-        }
-      }
-      if (_validateEmail.error) {
-        return {
-          type: 'error',
-          title: m.linkNotValidAnymore,
-          description: m.linkNotValidAnymoreDesc,
-        }
-      }
+    if (_validateEmail.loading) {
       return {
-        type: 'success',
-        title: m.emailValidated,
-        description: m.emailValidatedDesc,
+        type: 'loading',
+        title: m.validatingEmail,
       }
-    }, [_validateEmail.loading, _validateEmail.error],
-  )
+    }
+    if (_validateEmail.error) {
+      return {
+        type: 'error',
+        title: m.linkNotValidAnymore,
+        description: m.linkNotValidAnymoreDesc,
+      }
+    }
+    return {
+      type: 'success',
+      title: m.emailValidated,
+      description: m.emailValidatedDesc,
+    }
+  }, [_validateEmail.loading, _validateEmail.error])
 
   return (
     <CenteredContent offset={headerHeight}>

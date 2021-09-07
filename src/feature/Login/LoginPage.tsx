@@ -59,22 +59,22 @@ export const LoginPage = ({login, register, forgottenPassword}: Props) => {
                 indicatorColor="primary"
                 textColor="primary"
               >
-                <Tab component={Link} value={allTabs[0]} to={allTabs[0]} icon={<Icon>login</Icon>} label={m.signin}/>
-                <Tab component={Link} value={allTabs[1]} to={allTabs[1]} icon={<Icon>person_add</Icon>} label={m.signup}/>
+                <Tab component={Link} value={allTabs[0]} to={allTabs[0]} icon={<Icon>login</Icon>} label={m.signin} />
+                <Tab component={Link} value={allTabs[1]} to={allTabs[1]} icon={<Icon>person_add</Icon>} label={m.signup} />
               </Tabs>
               <Switch>
                 <Route path={allTabs[0]}>
-                  <LoginForm login={login} forgottenPassword={forgottenPassword}/>
+                  <LoginForm login={login} forgottenPassword={forgottenPassword} />
                 </Route>
                 <Route>
-                  <ActivateAccountForm register={register}/>
+                  <ActivateAccountForm register={register} />
                 </Route>
               </Switch>
             </>
           )}
         />
-        <Redirect exact from="/" to={allTabs[0]}/>
-        <HelpContactInfo/>
+        <Redirect exact from="/" to={allTabs[0]} />
+        <HelpContactInfo />
       </Page>
     </CenteredContent>
   )

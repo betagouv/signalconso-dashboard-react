@@ -16,3 +16,10 @@ export interface UserPending {
 export interface UserSearch extends PaginatedFilters {
   email?: string
 }
+
+export interface UserToActivate {
+  email: string
+  firstName: string
+  lastName: string
+  password: string
+}

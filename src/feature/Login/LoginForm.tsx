@@ -48,16 +48,21 @@ export const LoginForm = ({login, forgottenPassword}: Props) => {
   } = useForm<Form>({mode: 'onSubmit'})
 
   const onLogin = async (form: Form) => {
-    login.action(form.email, form.password)
+    login
+      .action(form.email, form.password)
       .then(auth => {
         Matomo.trackEvent(EventCategories.auth, AuthenticationEventActions.success, auth.user.id)
         Matomo.trackEvent(EventCategories.auth, AuthenticationEventActions.role, auth.user.role)
       })
       .catch((err: ApiError) => {
-        const errorMessage = fnSwitch(err.code, {
-          403: m.loginForbidden,
-          423: m.loginLocked,
-        }, () => m.loginFailed)
+        const errorMessage = fnSwitch(
+          err.code,
+          {
+            403: m.loginForbidden,
+            423: m.loginLocked,
+          },
+          () => m.loginFailed,
+        )
         toastError({message: errorMessage})
         Matomo.trackEvent(EventCategories.auth, AuthenticationEventActions.fail)
       })
@@ -88,25 +93,16 @@ export const LoginForm = ({login, forgottenPassword}: Props) => {
           })}
         />
         <div style={{display: 'flex', alignItems: 'center'}}>
-          <ScButton
-            loading={login.loading}
-            type="submit"
-            variant="contained"
-            color="primary"
-            className={cssUtils.marginRight}
-          >
+          <ScButton loading={login.loading} type="submit" variant="contained" color="primary" className={cssUtils.marginRight}>
             {m.login}
           </ScButton>
-          {fromNullable(forgottenPassword).map(_ => (
-            <ForgottenPasswordDialog
-              value={watch('email')}
-              loading={_.loading}
-              error={_.error}
-              onSubmit={_.action}
-            >
-              <ScButton color="primary">{m.forgottenPassword}</ScButton>
-            </ForgottenPasswordDialog>
-          )).toUndefined()}
+          {fromNullable(forgottenPassword)
+            .map(_ => (
+              <ForgottenPasswordDialog value={watch('email')} loading={_.loading} error={_.error} onSubmit={_.action}>
+                <ScButton color="primary">{m.forgottenPassword}</ScButton>
+              </ForgottenPasswordDialog>
+            ))
+            .toUndefined()}
         </div>
       </form>
     </LoginPanel>

@@ -16,12 +16,12 @@ import {useToast} from '../../core/toast'
 import {Icon, makeStyles, Theme, Tooltip} from '@material-ui/core'
 import {PeriodPicker} from '../../shared/PeriodPicker/PeriodPicker'
 import {DebouncedInput} from '../../shared/DebouncedInput/DebouncedInput'
-import { Txt } from 'mui-extension/lib/Txt/Txt'
+import {Txt} from 'mui-extension/lib/Txt/Txt'
 
 const useStyles = makeStyles((t: Theme) => ({
   tdSiret: {
     maxWidth: 200,
-  }
+  },
 }))
 
 export const ReportedPhones = () => {
@@ -109,10 +109,13 @@ export const ReportedPhones = () => {
               id: 'siret',
               head: m.siret,
               className: css.tdSiret,
-              row: _ => <>
-                <Txt bold>{_.siret}</Txt><br/>
-                <Txt color="hint">{_.companyName}</Txt>
-              </>,
+              row: _ => (
+                <>
+                  <Txt bold>{_.siret}</Txt>
+                  <br />
+                  <Txt color="hint">{_.companyName}</Txt>
+                </>
+              ),
             },
             {
               id: 'count',

@@ -238,16 +238,18 @@ export const Reports = ({}) => {
               head: m.problem,
               className: css.tdProblem,
               row: _ => (
-                <Tooltip title={
-                  <>
-                    <b>{_.report.category}</b>
-                    <ul className={css.tooltipUl}>
-                      {_.report.subcategories.map((s, i) => (
-                        <li key={i}>{s}</li>
-                      ))}
-                    </ul>
-                  </>
-                }>
+                <Tooltip
+                  title={
+                    <>
+                      <b>{_.report.category}</b>
+                      <ul className={css.tooltipUl}>
+                        {_.report.subcategories.map((s, i) => (
+                          <li key={i}>{s}</li>
+                        ))}
+                      </ul>
+                    </>
+                  }
+                >
                   <span>{_.report.category}</span>
                 </Tooltip>
               ),
@@ -267,7 +269,8 @@ export const Reports = ({}) => {
               head: m.details,
               className: css.tdDesc,
               row: _ => (
-                <Tooltip title={_.report.details?.map((detail, i) => (
+                <Tooltip
+                  title={_.report.details?.map((detail, i) => (
                     <div key={i}>
                       <span dangerouslySetInnerHTML={{__html: detail.label}} className={cssUtils.txtBold} />
                       &nbsp;

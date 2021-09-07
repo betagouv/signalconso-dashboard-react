@@ -49,22 +49,15 @@ export const ActivateNewCompany = () => {
   } = useForm<Form>({mode: 'onSubmit'})
 
   const acceptToken = (form: Form) => {
-    _acceptToken.call(form.siret, form.code)
+    _acceptToken
+      .call(form.siret, form.code)
       .then(() => {
         toastSuccess(m.companyRegistered)
         history.push(siteMap.companiesPro)
-        Matomo.trackEvent(
-          EventCategories.companyAccess,
-          AccessEventActions.addCompanyToAccount,
-          ActionResultNames.success
-        )
+        Matomo.trackEvent(EventCategories.companyAccess, AccessEventActions.addCompanyToAccount, ActionResultNames.success)
       })
       .catch(() => {
-        Matomo.trackEvent(
-          EventCategories.companyAccess,
-          AccessEventActions.addCompanyToAccount,
-          ActionResultNames.fail
-        )
+        Matomo.trackEvent(EventCategories.companyAccess, AccessEventActions.addCompanyToAccount, ActionResultNames.fail)
       })
   }
 
@@ -73,7 +66,9 @@ export const ActivateNewCompany = () => {
       <LoginPanel title={m.youReceivedNewLetter}>
         {_acceptToken.error && (
           <Alert type="error" className={cssUtils.marginBottom2}>
-            <Txt size="big" block bold>{m.registerCompanyError}</Txt>
+            <Txt size="big" block bold>
+              {m.registerCompanyError}
+            </Txt>
             <Txt>{m.registerCompanyErrorDesc}</Txt>
           </Alert>
         )}
@@ -108,7 +103,7 @@ export const ActivateNewCompany = () => {
           </div>
         </form>
       </LoginPanel>
-      <HelpContactInfo/>
+      <HelpContactInfo />
     </Page>
   )
 }

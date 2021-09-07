@@ -53,13 +53,16 @@ export const ScMenuBtn = ({connectedUser}: Props) => {
 
   return (
     <div className={css.root}>
-      <Avatar className={classes(css.avatar, !connectedUser && css.avatarOffline)} onClick={() => {
-        if (connectedUser) openMenu.toggle()
-        else history.push(siteMap.login)
-      }}>
+      <Avatar
+        className={classes(css.avatar, !connectedUser && css.avatarOffline)}
+        onClick={() => {
+          if (connectedUser) openMenu.toggle()
+          else history.push(siteMap.login)
+        }}
+      >
         <Icon>{connectedUser ? 'person' : 'no_accounts'}</Icon>
       </Avatar>
-      {connectedUser && openMenu.value && <ScMenu onClose={openMenu.setFalse} connectedUser={connectedUser}/>}
+      {connectedUser && openMenu.value && <ScMenu onClose={openMenu.setFalse} connectedUser={connectedUser} />}
     </div>
   )
 }

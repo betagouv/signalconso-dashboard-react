@@ -43,9 +43,13 @@ export enum TokenKind {
 export interface TokenInfo {
   token: string
   kind: TokenKind
-  timestamp: Date
+  emailedTo: string
+}
+
+export interface DGCCRFUserActivationToken extends TokenInfo {}
+
+export interface CompanyUserActivationToken extends TokenInfo {
   companySiret?: string
-  emailedTo?: string
 }
 
 export enum Permissions {
