@@ -219,6 +219,7 @@ export const messagesFr = {
   companySearchLabel: 'SIREN, SIRET ou RCS',
   accountActivated: "Compte activé",
   companiesToActivate: "En attente d'activation",
+  activationLinkNotValid: "Lien d'activation non valide",
   companiesActivated: 'Entreprises identifiées',
   noCompanyFound: 'Aucune entreprise trouvée',
   isHeadOffice: 'Siège sociale',
@@ -301,6 +302,8 @@ export const messagesFr = {
   resetPasswordSuccess: `Votre mot de passe est maintenant créé, vous pouvez vous connecter pour accéder à votre espace entreprise.`,
   loginIssueTip:
     `En cas de difficultés, vous pouvez contacter par email le service <a href="href="mailto:${Config.contactEmail}">${Config.contactEmail}</a>.`,
+  consent :
+      ` Je reconnais avoir pris connaissance des  <a href="href="${Config.appBaseUrl}/conditions-generales-utilisation/professionnel"> conditions générales d'utilisation</a> de SignalConso.`,
   subscriptionsAlertInfo: `
     En créant un abonnement, vous recevrez un mail quotidien ou hebdomadaire (au choix) comportant les nouveaux signalements correspondant à votre sélection de critères, qu’ils soient géographiques, thématiques ou par entreprise.
     <br/>

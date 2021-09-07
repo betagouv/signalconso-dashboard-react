@@ -223,7 +223,7 @@ const AppLogged = () => {
         <Route path={siteMap.report()} component={connectedUser.isPro ? ReportPro : ReportComponent} />
         <Route path={siteMap.reports()} component={connectedUser.isPro ? ReportsPro : Reports} />
         <Route path={siteMap.users} component={Users} />
-        <Route path={siteMap.activatePro} component={UserActivation} />
+        <Route path={siteMap.activatePro()} component={UserActivation} />
         <Route path={siteMap.activateDgccrf} component={UserActivation} />
         <Route path={siteMap.companies} component={Companies} />
         <Route path={siteMap.companyAccesses()} component={CompanyAccesses} />

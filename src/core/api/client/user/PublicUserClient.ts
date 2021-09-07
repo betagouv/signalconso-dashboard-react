@@ -15,11 +15,19 @@ export class PublicUserClient {
         })
     }
 
-    readonly fetchTokenInfo = (token: string): Promise<TokenInfo> => {
-        return this.client.get<TokenInfo>(`/account/token`, {
-            qs: {
-                token: token,
-            }
-        })
+    readonly fetchTokenInfo = (token: string, companySiret?: string): Promise<TokenInfo> => {
+        if (companySiret) {
+            return this.client.get<TokenInfo>('/accesses/' + companySiret + '/token', {
+                qs: {
+                    token: token
+                }
+            })
+        } else {
+            return this.client.get<TokenInfo>(`/account/token`, {
+                qs: {
+                    token: token
+                }
+            })
+        }
     }
 }
