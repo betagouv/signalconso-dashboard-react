@@ -80,7 +80,7 @@ const useStyles = makeStyles((t: Theme) => ({
     left: 0,
     bottom: 0,
     backgroundSize: 'cover',
-  }
+  },
 }))
 
 export const ReportFile = ({file, dense, onRemove}: ReportFileProps) => {
@@ -113,7 +113,7 @@ export const ReportFile = ({file, dense, onRemove}: ReportFileProps) => {
               case FileType.Image: {
                 return (
                   <div>
-                    <div className={css.backgroundImage} style={{backgroundImage: `url(${fileUrl})`}}/>
+                    <div className={css.backgroundImage} style={{backgroundImage: `url(${fileUrl})`}} />
                     <Icon className={css.imgImage}>image</Icon>
                   </div>
                 )

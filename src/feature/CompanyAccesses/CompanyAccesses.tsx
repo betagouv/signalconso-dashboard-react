@@ -135,24 +135,29 @@ export const CompanyAccesses = () => {
             {
               id: 'level',
               head: m.companyAccessLevel,
-              row: _ =>
-                <ScDialog maxWidth="xs" title={m.editAccess} content={close => (
-                  <ScRadioGroup
-                    value={_.level}
-                    onChange={level => {
-                      if (_.userId)
-                        _crudAccess.update(_.userId, level as CompanyAccessLevel)
-                      close()
-                    }}>
-                    {Enum.keys(CompanyAccessLevel).map(level => (
-                      <ScRadioGroupItem
-                        title={CompanyAccessLevel[level]}
-                        description={m.companyAccessLevelDescription[CompanyAccessLevel[level]]}
-                        value={level}
-                        key={level}/>
-                    ))}
-                  </ScRadioGroup>
-                )}>
+              row: _ => (
+                <ScDialog
+                  maxWidth="xs"
+                  title={m.editAccess}
+                  content={close => (
+                    <ScRadioGroup
+                      value={_.level}
+                      onChange={level => {
+                        if (_.userId) _crudAccess.update(_.userId, level as CompanyAccessLevel)
+                        close()
+                      }}
+                    >
+                      {Enum.keys(CompanyAccessLevel).map(level => (
+                        <ScRadioGroupItem
+                          title={CompanyAccessLevel[level]}
+                          description={m.companyAccessLevelDescription[CompanyAccessLevel[level]]}
+                          value={level}
+                          key={level}
+                        />
+                      ))}
+                    </ScRadioGroup>
+                  )}
+                >
                   <Tooltip title={m.editAccess}>
                     <ScButton
                       className={cssUtils.txtCapitalize}
@@ -166,6 +171,7 @@ export const CompanyAccesses = () => {
                     </ScButton>
                   </Tooltip>
                 </ScDialog>
+              ),
             },
             {
               id: 'action',

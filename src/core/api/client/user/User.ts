@@ -1,26 +1,25 @@
 import {PaginatedFilters} from '../../model'
 
 export interface User {
-    email: string
-    firstName: string
-    lastName: string
-    lastEmailValidation: Date
+  email: string
+  firstName: string
+  lastName: string
+  lastEmailValidation: Date
 }
 
 export interface UserPending {
-    email: string
-    tokenCreation: Date
-    tokenExpiration: Date
+  email: string
+  tokenCreation: Date
+  tokenExpiration: Date
 }
 
 export interface UserSearch extends PaginatedFilters {
-    email?: string
+  email?: string
 }
 
-
 export interface UserToActivate {
-    email: string
-    firstName: string
-    lastName: string
-    password: string
+  email: string
+  firstName: string
+  lastName: string
+  password: string
 }

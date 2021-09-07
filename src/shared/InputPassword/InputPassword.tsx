@@ -2,8 +2,7 @@ import {ScInput, ScInputProps} from '../Input/ScInput'
 import {Icon, InputAdornment} from '@material-ui/core'
 import React, {forwardRef, useState} from 'react'
 
-interface ScInputPasswordProps extends Omit<ScInputProps, 'type'> {
-}
+interface ScInputPasswordProps extends Omit<ScInputProps, 'type'> {}
 
 export const ScInputPassword = forwardRef((props: ScInputPasswordProps, ref: any) => {
   const [passwordVisible, setPasswordVisible] = useState<boolean>(false)
@@ -19,6 +18,7 @@ export const ScInputPassword = forwardRef((props: ScInputPasswordProps, ref: any
             <Icon color="action">{passwordVisible ? 'visibility_off' : 'visibility'}</Icon>
           </InputAdornment>
         ),
-      }}/>
+      }}
+    />
   )
 })

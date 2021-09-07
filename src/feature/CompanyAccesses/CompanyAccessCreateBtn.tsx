@@ -62,7 +62,9 @@ export const CompanyAccessCreateBtn = ({errorMessage, loading, onCreate}: Props)
             })}
           />
 
-          <Txt block gutterBottom size="big">{m.authorization}</Txt>
+          <Txt block gutterBottom size="big">
+            {m.authorization}
+          </Txt>
           <Controller
             name="level"
             rules={{required: {value: true, message: m.required}}}
@@ -74,7 +76,8 @@ export const CompanyAccessCreateBtn = ({errorMessage, loading, onCreate}: Props)
                     title={CompanyAccessLevel[level]}
                     description={m.companyAccessLevelDescription[CompanyAccessLevel[level]]}
                     value={level}
-                    key={level}/>
+                    key={level}
+                  />
                 ))}
               </ScRadioGroup>
             )}

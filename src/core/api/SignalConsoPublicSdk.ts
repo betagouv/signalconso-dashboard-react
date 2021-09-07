@@ -1,7 +1,7 @@
 import {ApiClientApi} from './core/ApiClient'
 import {AnomalyClient, AuthenticateClient, FileClient, PublicConstantClient} from './client'
 import {PublicCompanyClient} from './client/company/PublicCompanyClient'
-import {PublicUserClient} from "./client/user/PublicUserClient";
+import {PublicUserClient} from './client/user/PublicUserClient'
 
 export class SignalConsoPublicSdk {
   constructor(private client: ApiClientApi) {}

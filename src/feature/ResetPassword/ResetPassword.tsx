@@ -48,15 +48,20 @@ export const ResetPassword = ({onResetPassword}: Props) => {
   } = useForm<Form>()
 
   const resetPassword = (form: Form) => {
-    _resetPassword.call(form.newPassword, token)
+    _resetPassword
+      .call(form.newPassword, token)
       .then(() => {
         toastSuccess(m.resetPasswordSuccess)
         Matomo.trackEvent(EventCategories.account, AuthenticationEventActions.resetPasswordSuccess)
       })
       .catch(err => {
-        const errorMessage = fnSwitch(err.code, {
-          404: m.resetPasswordNotFound,
-        }, () => undefined)
+        const errorMessage = fnSwitch(
+          err.code,
+          {
+            404: m.resetPasswordNotFound,
+          },
+          () => undefined,
+        )
         toastError({message: errorMessage})
         reset()
         Matomo.trackEvent(EventCategories.account, AuthenticationEventActions.resetPasswordFail)
@@ -99,7 +104,7 @@ export const ResetPassword = ({onResetPassword}: Props) => {
               </ScButton>
             </PanelFoot>
           </Panel>
-          <HelpContactInfo/>
+          <HelpContactInfo />
         </form>
       </Page>
     </CenteredContent>

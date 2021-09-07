@@ -20,7 +20,7 @@ export const useCssUtils = makeStyles((t: Theme) => {
       justifyContent: 'space-between'
     },
     txtCapitalize: {
-      textTransform: 'capitalize'
+      textTransform: 'capitalize',
     },
     txtTitle: {
       fontSize: t.typography.fontSize * 1.25,

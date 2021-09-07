@@ -40,7 +40,8 @@ export const EditPasswordDialog = ({children}: Props) => {
       loading={_changePassword.loading}
       onConfirm={(event, close) => {
         handleSubmit((form: Form) => {
-          _changePassword.fetch({}, form.oldPassword, form.newPassword)
+          _changePassword
+            .fetch({}, form.oldPassword, form.newPassword)
             .then(() => {
               toastSuccess(m.passwordEdited)
               close()

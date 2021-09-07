@@ -49,7 +49,8 @@ export const ActivateAccountForm = ({register: registerAction}: Props) => {
   } = useForm<Form>({mode: 'onSubmit'})
 
   const activateAccount = (form: Form) => {
-    registerAction.action(form.siret, form.code, form.email)
+    registerAction
+      .action(form.siret, form.code, form.email)
       .then(() => {
         toastSuccess(m.companyRegisteredEmailSent)
         history.push(siteMap.login)
@@ -68,7 +69,9 @@ export const ActivateAccountForm = ({register: registerAction}: Props) => {
     <LoginPanel title={m.youReceivedNewLetter}>
       {registerAction.error && (
         <Alert type="error" className={cssUtils.marginBottom2}>
-          <Txt size="big" block bold>{m.registerCompanyError}</Txt>
+          <Txt size="big" block bold>
+            {m.registerCompanyError}
+          </Txt>
           <Txt>{m.registerCompanyErrorDesc}</Txt>
         </Alert>
       )}

@@ -42,18 +42,10 @@ export const ForgottenPasswordDialog = ({value, onSubmit, loading, error, childr
       .then(() => {
         close()
         toastSuccess(m.emailSentToYou)
-        Matomo.trackEvent(
-          EventCategories.auth,
-          AuthenticationEventActions.forgotPasswordSuccess,
-          form.emailForgotten,
-        )
+        Matomo.trackEvent(EventCategories.auth, AuthenticationEventActions.forgotPasswordSuccess, form.emailForgotten)
       })
       .catch(() => {
-        Matomo.trackEvent(
-          EventCategories.auth,
-          AuthenticationEventActions.forgotPasswordFail,
-          form.emailForgotten,
-        )
+        Matomo.trackEvent(EventCategories.auth, AuthenticationEventActions.forgotPasswordFail, form.emailForgotten)
       })
   }
 
