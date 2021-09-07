@@ -1,4 +1,4 @@
-import {makeStyles, Theme} from '@material-ui/core'
+import {makeStyles, Paper, Theme} from '@material-ui/core'
 import {ReportStatus} from 'core/api'
 import {capitalize, classes} from '../../core/helper/utils'
 import {styleUtils} from '../../core/theme'
@@ -8,16 +8,19 @@ const useStyles = makeStyles((t: Theme) => ({
   root: {
     whiteSpace: 'nowrap',
     borderRadius: 40,
-    paddingTop: t.spacing(1 / 2),
-    paddingBottom: t.spacing(1 / 2),
+    paddingTop: t.spacing(1 / 1.5),
+    paddingBottom: t.spacing(1 / 1.5),
     paddingRight: t.spacing(2),
     paddingLeft: t.spacing(2),
     fontWeight: 'bold',
-    border: `1px solid ${t.palette.divider}`,
     letterSpacing: '1px',
     display: 'inline-flex',
-    minHeight: 24,
+    minHeight: 26,
     alignItems: 'center',
+    // fontSize: styleUtils(t).fontSize.big,
+  },
+  border: {
+    border: `1px solid ${t.palette.divider}`,
   },
   dense: {
     fontWeight: '500' as any,
@@ -40,6 +43,7 @@ interface ReportStatusChipProps {
   className?: string
   fullWidth?: boolean
   inSelectOptions?: boolean
+  elevation?: number
 }
 
 const reportStatusColor = {
@@ -57,15 +61,17 @@ const reportStatusColor = {
   [ReportStatus.NotConcerned]: '#c9d3df',
 }
 
-export const ReportStatusChip = ({status, fullWidth, dense, className, inSelectOptions}: ReportStatusChipProps) => {
+export const ReportStatusChip = ({status, elevation = 0, fullWidth, dense, className, inSelectOptions}: ReportStatusChipProps) => {
   const css = useStyles()
   const statusLabel = useMemo(() => capitalize(status.replace('Signalement ', ''), false), [status])
   return (
-    <div
+    <Paper
+      elevation={elevation}
       aria-label="Statut du signalement"
       className={classes(
         className,
         css.root,
+        elevation === 0 && css.border,
         inSelectOptions && css.inSelectOptions,
         dense && css.dense,
         fullWidth && css.fullWidth,
@@ -73,6 +79,6 @@ export const ReportStatusChip = ({status, fullWidth, dense, className, inSelectO
       style={{background: reportStatusColor[status]}}
     >
       {statusLabel}
-    </div>
+    </Paper>
   )
 }

@@ -23,6 +23,10 @@ const useReportFilesStyles = makeStyles((t: Theme) => ({
     // marginRight: t.spacing(-1),
     // marginLeft: t.spacing(-1),
   },
+  noAttachment: {
+    marginTop: t.spacing(1),
+    marginBottom: t.spacing(1),
+  }
 }))
 
 export const ReportFiles = ({
@@ -62,7 +66,7 @@ export const ReportFiles = ({
         {!hideAddBtn && <ReportFileAdd reportId={reportId} fileOrigin={fileOrigin} onUploaded={newFile} />}
       </div>
       {hideAddBtn && innerFiles?.length === 0 && (
-        <Txt block color="hint">
+        <Txt block color="hint" className={css.noAttachment}>
           {m.noAttachment}
         </Txt>
       )}

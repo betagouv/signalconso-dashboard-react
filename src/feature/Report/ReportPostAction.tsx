@@ -12,9 +12,19 @@ interface Props {
   report: Report
   children: ReactElement<any>
   onAdd: () => void
+  required?: boolean
+  label: string
+  actionType: EventActionValues,
 }
 
-export const ReportAddComment = ({report, children, onAdd}: Props) => {
+export const ReportPostAction = ({
+  label,
+  actionType,
+  report,
+  children,
+  onAdd,
+  required,
+}: Props) => {
   const {m} = useI18n()
   const {apiSdk} = useLogin()
   const _addComment = useFetcher(apiSdk.secured.reports.postAction)
@@ -22,12 +32,12 @@ export const ReportAddComment = ({report, children, onAdd}: Props) => {
   const {toastSuccess} = useToast()
 
   const addComment = () => {
-    return _addComment.fetch({}, report.id, {actionType: EventActionValues.Comment, details: comment, fileIds: []})
+    return _addComment.fetch({}, report.id, {actionType, details: comment, fileIds: []})
   }
 
   return (
     <ScDialog
-      title={m.addDgccrfComment}
+      title={label}
       loading={_addComment.loading}
       onConfirm={(event, close) =>
         addComment().then(() => {
@@ -38,11 +48,11 @@ export const ReportAddComment = ({report, children, onAdd}: Props) => {
         })
       }
       confirmLabel={m.add}
-      confirmDisabled={comment === ''}
+      confirmDisabled={required && comment === ''}
       content={
         <>
           {_addComment.error && <Alert type="error">{m.anErrorOccurred}</Alert>}
-          <ScInput required value={comment} onChange={e => setComment(e.target.value)} multiline fullWidth rows={3} maxRows={8} />
+          <ScInput required={required} value={comment} onChange={e => setComment(e.target.value)} multiline fullWidth rows={3} maxRows={8} />
         </>
       }
     >

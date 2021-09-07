@@ -1,5 +1,5 @@
 import * as React from 'react'
-import {ReactNode} from 'react'
+import {forwardRef, ReactNode} from 'react'
 import {Card, createStyles, LinearProgress, makeStyles, Theme} from '@material-ui/core'
 import {classes} from '../../core/helper/utils'
 import {CardProps} from '@material-ui/core/Card/Card'
@@ -39,10 +39,11 @@ export interface PanelProps extends CardProps {
   elevation?: number
 }
 
-export const Panel = ({className, elevation = 0, hoverable, loading, children, stretch, ...other}: PanelProps) => {
+export const Panel = forwardRef(({className, elevation = 0, hoverable, loading, children, stretch, ...other}: PanelProps, ref: any) => {
   const css = useStyles()
   return (
     <Card
+      ref={ref}
       elevation={elevation}
       className={classes(css.root, hoverable && css.hover, stretch && css.stretch, className, elevation === 0 && css.border)}
       {...other}
@@ -51,4 +52,4 @@ export const Panel = ({className, elevation = 0, hoverable, loading, children, s
       {loading && <LinearProgress className={css.loader} />}
     </Card>
   )
-}
+})

@@ -45,8 +45,8 @@ const useReportCategoriesStyles = makeStyles((t: Theme) => ({
   },
   separator: {
     color: t.palette.divider,
-    // marginRight: t.spacing(0),
-    // marginLeft: t.spacing(0),
+    // marginRight: t.spacing(.5),
+    // marginLeft: t.spacing(.5),
     display: 'inline',
   },
 }))

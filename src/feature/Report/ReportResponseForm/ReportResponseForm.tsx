@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react'
+import React, {forwardRef, useEffect} from 'react'
 import {useI18n} from '../../../core/i18n'
 import {ScRadioGroup} from '../../../shared/RadioGroup/RadioGroup'
 import {FileOrigin, Report, ReportResponse, ReportResponseTypes} from '../../../core/api'
@@ -24,7 +24,7 @@ interface Props {
   onConfirm?: (_: ReportResponse) => void
 }
 
-export const ReportResponseForm = ({report, className, onCancel, onConfirm}: Props) => {
+export const ReportResponseForm = forwardRef(({report, className, onCancel, onConfirm}: Props, ref: any) => {
   const {m} = useI18n()
   const cssUtils = useCssUtils()
   const {
@@ -49,7 +49,7 @@ export const ReportResponseForm = ({report, className, onCancel, onConfirm}: Pro
   }, [_report.postResponse.error])
 
   return (
-    <Panel elevation={3} className={className}>
+    <Panel elevation={5} className={className} ref={ref}>
       <PanelHead>{m.answer}</PanelHead>
       <PanelBody>
         <Alert type="info" deletable persistentDelete gutterBottom>
@@ -126,4 +126,4 @@ export const ReportResponseForm = ({report, className, onCancel, onConfirm}: Pro
       </PanelFoot>
     </Panel>
   )
-}
+})

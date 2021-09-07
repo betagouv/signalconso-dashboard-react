@@ -2,18 +2,14 @@ import {Panel, PanelBody} from '../../shared/Panel'
 import {ReportStatusChip} from '../../shared/ReportStatus/ReportStatus'
 import {Alert} from 'mui-extension/lib'
 import {ReportCategories} from './ReportCategories'
-import {Divider, Icon, makeStyles, Theme} from '@material-ui/core'
-import {EventActionValues, FileOrigin, Report, UploadedFile} from '../../core/api'
-import {ReportFiles} from './File/ReportFiles'
+import {Icon, makeStyles, Theme} from '@material-ui/core'
+import {Report} from '../../core/api'
 import {PanelFoot} from '../../shared/Panel/PanelFoot'
 import {ScChip} from '../../shared/Chip/ScChip'
 import React, {ReactNode} from 'react'
 import {styleUtils} from '../../core/theme'
 import {useCssUtils} from '../../core/helper/useCssUtils'
 import {useI18n} from '../../core/i18n'
-import {useReportContext} from '../../core/context/ReportContext'
-import {useLogin} from '../../core/context/LoginContext'
-import {Txt} from 'mui-extension/lib/Txt/Txt'
 
 const useStyles = makeStyles((t: Theme) => ({
   root: {
@@ -21,7 +17,7 @@ const useStyles = makeStyles((t: Theme) => ({
   },
   pageTitle: {
     display: 'flex',
-    alignItems: 'center',
+    alignItems: 'flex-start',
     flexWrap: 'wrap',
     justifyContent: 'space-between',
     marginBottom: t.spacing(2),
@@ -38,18 +34,16 @@ const useStyles = makeStyles((t: Theme) => ({
 
 interface Props {
   report: Report
-  files?: UploadedFile[]
   elevated?: boolean
-  actions?: ReactNode
   children?: ReactNode
+  hideTags?: boolean
+  hideSiret?: boolean
 }
 
-export const ReportHeader = ({report, children, actions, files, elevated}: Props) => {
+export const ReportHeader = ({hideTags, hideSiret, report, children, elevated}: Props) => {
   const css = useStyles()
   const cssUtils = useCssUtils()
   const {m} = useI18n()
-  const _report = useReportContext()
-  const {connectedUser} = useLogin()
 
   return (
     <Panel elevation={elevated ? 3 : 0} className={css.root}>
@@ -57,67 +51,45 @@ export const ReportHeader = ({report, children, actions, files, elevated}: Props
         <div className={css.pageTitle}>
           <div>
             <h1 className={css.pageTitle_txt}>
-              {m.report_pageTitle}&nbsp;
-              <span>{report.companySiret}</span>
+              {m.report_pageTitle}
+              {!hideSiret && (
+                <>
+                  &nbsp;
+                  {report.companySiret}
+                </>
+              )}
             </h1>
+            {!hideSiret && (<div className={cssUtils.colorTxtHint}>{report.companyName}</div>)}
             <div className={cssUtils.colorTxtHint}>ID {report.id}</div>
           </div>
-          <ReportStatusChip className={cssUtils.marginLeftAuto} status={report.status} />
+          <ReportStatusChip className={cssUtils.marginLeftAuto} status={report.status}/>
         </div>
-        <Alert id="report-info" dense type="info" deletable persistentDelete className={cssUtils.marginBottom}>
+        <Alert id="report-info" dense type="info" deletable persistentDelete className={cssUtils.marginBottom2}>
           {m.reportCategoriesAreSelectByConsumer}
         </Alert>
-        <ReportCategories categories={[report.category, ...report.subcategories]} />
-        <Divider className={cssUtils.divider} />
-        {report.details.map((detail, i) => (
-          <div key={i} className={cssUtils.marginBottom}>
-            <div className={cssUtils.txtBold} dangerouslySetInnerHTML={{__html: detail.label.replace(/\:$/, '')}} />
-            <div className={cssUtils.colorTxtSecondary} dangerouslySetInnerHTML={{__html: detail.value}} />
-          </div>
-        ))}
-        <Divider className={cssUtils.divider} />
-        <Txt bold block gutterBottom>
-          {m.attachedFiles}
-        </Txt>
-        <ReportFiles
-          hideAddBtn={connectedUser.isPro}
-          files={files?.filter(_ => _.origin === FileOrigin.Consumer)}
-          reportId={report.id}
-          fileOrigin={FileOrigin.Consumer}
-          onNewFile={file => {
-            _report.postAction
-              .fetch({}, report.id, {
-                details: '',
-                fileIds: [file.id],
-                actionType: EventActionValues.ConsumerAttachments,
-              })
-              .then(() => _report.get.fetch({force: true, clean: false}, report.id))
-          }}
-        />
-        {children && (
-          <>
-            <Divider className={cssUtils.divider} />
-            {children}
-          </>
-        )}
+        <ReportCategories categories={[report.category, ...report.subcategories]}/>
       </PanelBody>
-      <PanelFoot className={css.actions} border>
-        <div style={{flex: 1}}>
-          {report.tags.map(tag => [
-            <ScChip
-              icon={
-                <Icon style={{fontSize: 20}} className={cssUtils.colorTxtHint}>
-                  sell
-                </Icon>
-              }
-              key={tag}
-              label={tag}
-            />,
-            ' ',
-          ])}
-        </div>
-        {actions}
-      </PanelFoot>
+      {(!hideTags || children) && (
+        <PanelFoot className={css.actions} border>
+          {!hideTags && (
+            <div style={{flex: 1}}>
+              {report.tags.map(tag => [
+                <ScChip
+                  icon={
+                    <Icon style={{fontSize: 20}} className={cssUtils.colorTxtHint}>
+                      sell
+                    </Icon>
+                  }
+                  key={tag}
+                  label={tag}
+                />,
+                ' ',
+              ])}
+            </div>
+          )}
+          {children}
+        </PanelFoot>
+      )}
     </Panel>
   )
 }
