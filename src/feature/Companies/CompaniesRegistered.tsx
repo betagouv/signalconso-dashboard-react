@@ -1,7 +1,7 @@
 import {useI18n} from '../../core/i18n'
 import {Panel} from '../../shared/Panel'
 import {Datatable} from '../../shared/Datatable/Datatable'
-import {cleanObject, CompanySearch, CompanyWithReportsCount, PaginatedSearch} from '../../core/api'
+import {cleanObject, Company, CompanySearch, CompanyWithReportsCount, PaginatedSearch} from '../../core/api'
 import React, {useEffect} from 'react'
 import {useCompaniesContext} from '../../core/context/CompaniesContext'
 import {useCssUtils} from '../../core/helper/useCssUtils'
@@ -20,6 +20,7 @@ import {AddressComponent} from '../../shared/Address/Address'
 import {SelectCompany} from '../../shared/SelectCompany/SelectCompany'
 import {EditAddressDialog} from './EditAddressDialog'
 import {useLogin} from '../../core/context/LoginContext'
+import {ClipboardApi} from '../../core/helper/clipboard'
 
 const useStyles = makeStyles((t: Theme) => ({
   tdName_label: {
@@ -65,6 +66,7 @@ export const CompaniesRegistered = () => {
 
   useEffect(() => {
     _companies.updateFilters({..._companies.initialFilters, ...queryString.get()})
+
   }, [])
 
   useEffect(() => {
@@ -76,6 +78,13 @@ export const CompaniesRegistered = () => {
     fromNullable(_companyCreate.error).map(toastError)
   }, [_companies.error, _companyCreate.error])
 
+  const copyAddress = (c: Company) => {
+    const a = c.address
+    const address = `${c.name} - ${a.number} ${a.street} ${a.addressSupplement} ${a.postalCode} ${a.city} (${c.siret})`
+    ClipboardApi.copy(address.replaceAll('undefined', '').replaceAll(/[\s]{1,}/g, ' '))
+    toastSuccess(m.addressCopied)
+  }
+
   return (
     <Panel>
       <Datatable<CompanyWithReportsCount>
@@ -85,7 +94,7 @@ export const CompaniesRegistered = () => {
               value={_companies.filters.departments}
               onChange={departments => _companies.updateFilters(prev => ({...prev, departments}))}
             >
-              {(value, onChange) => <SelectDepartments values={value} onChange={onChange} className={cssUtils.marginRight} />}
+              {(value, onChange) => <SelectDepartments values={value} onChange={onChange} className={cssUtils.marginRight}/>}
             </DebouncedInput>
             <DebouncedInput
               value={_companies.filters.identity ?? ''}
@@ -163,6 +172,11 @@ export const CompaniesRegistered = () => {
             className: cssUtils.txtRight,
             row: _ => (
               <>
+                <Tooltip title={m.copyAddress}>
+                  <IconBtn color="primary" onClick={() => copyAddress(_)}>
+                    <Icon>content_copy</Icon>
+                  </IconBtn>
+                </Tooltip>
                 {connectedUser.isAdmin && (
                   <EditAddressDialog
                     address={_.address}

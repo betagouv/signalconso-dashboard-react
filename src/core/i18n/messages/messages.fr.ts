@@ -223,6 +223,8 @@ export const messagesFr = {
   markDgccrfControlDone: 'Contrôle effectué (interne à la DGCCRF)',
   thisDate: (_: string) => `Le ${_}`,
   byHim: (_: string) => `Par ${_}`,
+  copyAddress: `Copy address`,
+  addressCopied: `Adresse copiée`,
   governmentCompany: 'Administration publique',
   registerACompany: 'Enregistrer une entreprise',
   noDataAtm: 'Aucune donnée',
