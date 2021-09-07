@@ -39,14 +39,15 @@ export class CompanyClient {
       .then(directDownloadBlob(`signalement_depot_${format(new Date(), 'ddMMyy')}`))
   }
 
-  readonly getAccessibleByPro = (): Promise<CompanyWithAccessLevel[]> => {
+  /** @deprecated use getVisibleByPro */
+  readonly getDirectAccessibleByPro = (): Promise<CompanyWithAccessLevel[]> => {
     return this.client
       .get<CompanyWithAccessLevel[]>(`/accesses/connected-user`)
       .then(res => res.map(_ => ({..._, creationDate: new Date(_.creationDate)})))
   }
 
-  readonly getVisibleByPro = () => {
-    return this.client.get<Company[]>(`/companies/connected-user`)
+  readonly getAccessibleByPro = () => {
+    return this.client.get<CompanyWithAccessLevel[]>(`/companies/connected-user`)
   }
 
   readonly fetchToActivate = () => {

@@ -122,23 +122,21 @@ export const ReportsPro = () => {
 
   useEffect(() => {
     _companies.accessibleByPro.fetch({force: false})
-    _companies.visibleByPro.fetch({force: false})
     _reportStatus.fetch({force: false})
     _reports.updateFilters({..._reports.initialFilters, ...queryString.get()})
   }, [])
 
   useEffect(() => {
     fromNullable(_companies.accessibleByPro.error).map(toastError)
-    fromNullable(_companies.visibleByPro.error).map(toastError)
     fromNullable(_reports.error).map(toastError)
-  }, [_reports.error, _companies.accessibleByPro.error, _companies.visibleByPro.error])
+  }, [_reports.error, _companies.accessibleByPro.error])
 
   useEffect(() => {
     queryString.update(cleanObject(_reports.filters))
   }, [_reports.filters])
 
   return (
-    <Page size="small" loading={_companies.accessibleByPro.loading || _companies.visibleByPro.loading}>
+    <Page size="small" loading={_companies.accessibleByPro.loading || _companies.accessibleByPro.loading}>
       <PageTitle
         action={
           <Btn
@@ -161,7 +159,7 @@ export const ReportsPro = () => {
           <span dangerouslySetInnerHTML={{__html: m.yourAccountIsActivated}}/>
         </Alert>
       )}
-      {_companies.accessibleByPro.entity && _companies.visibleByPro.entity && (
+      {_companies.accessibleByPro.entity && (
         <>
           {displayFilters && (
             <Panel elevation={3} className={css.filters}>
@@ -174,7 +172,6 @@ export const ReportsPro = () => {
                       onChange={_ => _reports.updateFilters(prev => ({...prev, siretSirenList: _}))}
                       className={cssUtils.marginRight}
                       accessibleCompanies={_companies.accessibleByPro.entity}
-                      visibleCompanies={_companies.visibleByPro.entity}
                     />
                   </Grid>
                   <Grid item sm={4} xs={12}>

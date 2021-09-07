@@ -108,3 +108,5 @@ export const mapPromise = <F extends (...args: any[]) => Promise<any>, X>({
 }) => (...args: Parameters<F>): Promise<X> => {
   return promise(...args).then(mapThen).catch(mapCatch)
 }
+
+export const siretToSiren = (siret: string) => siret.slice(0, 9)

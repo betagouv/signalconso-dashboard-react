@@ -14,13 +14,13 @@ import {siteMap} from '../../core/siteMap'
 import {NavLink} from 'react-router-dom'
 import {AccessLevel, Id} from '../../core/api'
 import {useUsersContext} from '../../core/context/UsersContext'
-import {indexEntities} from '@alexandreannic/ts-utils/lib/indexEntites/IndexEntities'
 import {fromNullable} from 'fp-ts/lib/Option'
 import {classes} from '../../core/helper/utils'
 import {useBlockedReportNotificationContext} from '../../core/context/BlockedReportNotificationProviderContext'
 import {useToast} from '../../core/toast'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
 import {ConfirmDisableNotificationDialog} from './ConfirmDisableNotificationDialog'
+import {groupBy} from '../../core/lodashNamedExport'
 
 const useStyles = makeStyles((t: Theme) => ({
   tdName_label: {
@@ -66,19 +66,12 @@ export const CompaniesPro = () => {
   useEffect(() => {
     _users.getConnectedUser.fetch({force: false})
     _blockedNotifications.list.fetch()
-    _companies.visibleByPro.fetch({force: false})
     _companies.accessibleByPro.fetch({force: false})
   }, [])
 
-  const accessibleCompaniesIndex = useMemo(() => {
-    return fromNullable(_companies.accessibleByPro.entity)
-      .map(_ => indexEntities('id', _))
-      .toUndefined()
-  }, [_companies.accessibleByPro.entity])
-
   const blockedNotificationIndex = useMemo(() => {
     return fromNullable(_blockedNotifications.list.entity)
-      .map(_ => indexEntities('companyId', _))
+      .map(blockedNotification => groupBy(blockedNotification, _ => _.companyId))
       .toUndefined()
   }, [_blockedNotifications.list.entity])
 
@@ -88,11 +81,11 @@ export const CompaniesPro = () => {
   }, [_blockedNotifications.create.error, _blockedNotifications.remove.error])
 
   const allNotificationsAreBlocked = useMemo(() => {
-    if(_companies.visibleByPro.entity && blockedNotificationIndex) {
-      return _companies.visibleByPro.entity?.every(_ => blockedNotificationIndex[_.id])
+    if(_companies.accessibleByPro.entity && blockedNotificationIndex) {
+      return _companies.accessibleByPro.entity?.every(_ => blockedNotificationIndex[_.id])
     }
     return false
-  }, [_companies.visibleByPro.entity, blockedNotificationIndex])
+  }, [_companies.accessibleByPro.entity, blockedNotificationIndex])
 
   return (
     <Page size="small">
@@ -108,7 +101,7 @@ export const CompaniesPro = () => {
         {m.myCompanies}
       </PageTitle>
 
-      {fromNullable(_companies.visibleByPro.entity).map(companies => companies.length > 5 && (
+      {fromNullable(_companies.accessibleByPro.entity).map(companies => companies.length > 5 && (
         <Panel>
           <PanelBody className={classes(cssUtils.flex, cssUtils.alignCenter, cssUtils.spaceBetween)}>
             <Txt block size="big" bold>{m.notifications}</Txt>
@@ -134,10 +127,8 @@ export const CompaniesPro = () => {
 
       <Panel>
         <Datatable
-          data={accessibleCompaniesIndex && _companies.visibleByPro.entity || undefined}
-          loading={
-            _companies.visibleByPro.loading || _companies.accessibleByPro.loading || _blockedNotifications.list.loading
-          }
+          data={_companies.accessibleByPro.entity}
+          loading={_companies.accessibleByPro.loading || _blockedNotifications.list.loading}
           getRenderRowKey={_ => _.id}
           rows={[
             {
@@ -191,7 +182,7 @@ export const CompaniesPro = () => {
               className: css.tdActions,
               row: _ => (
                 <>
-                  {accessibleCompaniesIndex?.[_.id]?.level === AccessLevel.ADMIN && (
+                  {_.level === AccessLevel.ADMIN && (
                     <NavLink to={siteMap.companyAccesses(_.siret)}>
                       <Tooltip title={m.handleAccesses}>
                         <IconBtn color="primary">

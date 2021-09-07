@@ -115,6 +115,7 @@ export const ReportPro = () => {
                 onConfirm={() => {
                   openAnswerPanel.setFalse()
                   _report.events.fetch({clean: false, force: true}, report.id)
+                  _report.get.fetch({clean: false, force: true}, id)
                 }}
                 onCancel={openAnswerPanel.setFalse}
                 className={css.answerPanel}

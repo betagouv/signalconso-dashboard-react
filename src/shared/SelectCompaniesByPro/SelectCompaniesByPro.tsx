@@ -1,14 +1,15 @@
 import * as React from 'react'
-import {useEffect, useState} from 'react'
+import {useEffect, useMemo, useState} from 'react'
 import {createStyles, Icon, InputAdornment, makeStyles, TextField, Theme} from '@material-ui/core'
 import {SelectCompaniesByProMenu} from './SelectCompaniesByProMenu'
 import {useI18n} from '../../core/i18n'
-import {Company, CompanyWithAccessLevel} from '../../core/api'
+import {CompanyWithAccessLevel} from '../../core/api'
 import {fromNullable} from 'fp-ts/lib/Option'
+import {groupBy} from '../../core/lodashNamedExport'
+import {siretToSiren} from '../../core/helper/utils'
 
 export interface SelectDepartmentsProps {
   accessibleCompanies: CompanyWithAccessLevel[]
-  visibleCompanies: Company[]
   placeholder?: string
   label?: string
   values?: string[]
@@ -30,7 +31,6 @@ const useStyles = makeStyles((t: Theme) =>
 
 export const SelectCompaniesByPro = ({
   accessibleCompanies,
-  visibleCompanies,
   placeholder,
   label,
   values,
@@ -83,7 +83,6 @@ export const SelectCompaniesByPro = ({
       />
       <SelectCompaniesByProMenu
         accessibleCompanies={accessibleCompanies}
-        visibleCompanies={visibleCompanies}
         anchorEl={anchorEl}
         open={!!anchorEl}
         onClose={close}
