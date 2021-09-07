@@ -44,7 +44,7 @@ import {AccessesProvider} from './core/context/AccessesContext'
 import {EmailValidation} from './feature/EmailValidation/EmailValidation'
 import {CenteredContent} from './shared/CenteredContent/CenteredContent'
 import {ResetPassword} from './feature/ResetPassword/ResetPassword'
-import {UserActivation} from "./feature/Users/UserActivation";
+import {UserActivation} from './feature/Users/UserActivation'
 import {BlockedReportNotificationProvider} from './core/context/BlockedReportNotificationProviderContext'
 import {ActivateNewCompany} from './feature/ActivateNewCompany/ActivateNewCompany'
 import {ModeEmploiDGCCRF} from './feature/ModeEmploiDGCCRF/ModeEmploiDGCCRF'
@@ -129,7 +129,7 @@ export const App = () => {
         _ => <ToastProvider horizontal="right" children={_} />,
       ]}
     >
-      <AppLogin/>
+      <AppLogin />
     </Provide>
   )
 }
@@ -148,21 +148,26 @@ const AppLogin = () => {
       onLogout={() => history.push('/')}
       getTokenFromResponse={_ => _.token}
     >
-      {({
-        authResponse,
-        login,
-        logout,
-        register,
-        isCheckingToken,
-        setToken,
-      }) => (
+      {({authResponse, login, logout, register, isCheckingToken, setToken}) => (
         <Layout connectedUser={authResponse ? {...authResponse.user, logout: logout} : undefined}>
           <Switch>
             <Route path={siteMap.emailValidation}>
-              <EmailValidation onSaveToken={setToken} onValidateEmail={apiPublicSdk.authenticate.validateEmail}/>
+              <EmailValidation onSaveToken={setToken} onValidateEmail={apiPublicSdk.authenticate.validateEmail} />
             </Route>
             <Route path={siteMap.resetPassword()}>
-              <ResetPassword onResetPassword={apiPublicSdk.authenticate.resetPassword}/>
+              <ResetPassword onResetPassword={apiPublicSdk.authenticate.resetPassword} />
+            </Route>
+            <Route path={siteMap.activatePro()}>
+              <UserActivation
+                onActivateUser={apiPublicSdk.user.activateAccount}
+                onFetchTokenInfo={apiPublicSdk.user.fetchTokenInfo}
+              />
+            </Route>
+            <Route path={siteMap.activateDgccrf}>
+              <UserActivation
+                onActivateUser={apiPublicSdk.user.activateAccount}
+                onFetchTokenInfo={apiPublicSdk.user.fetchTokenInfo}
+              />
             </Route>
             <Route path="/">
               {authResponse ? (
@@ -172,11 +177,11 @@ const AppLogin = () => {
                   onLogout={logout}
                   apiSdk={makeSecuredSdk(authResponse.token)}
                 >
-                  <AppLogged/>
+                  <AppLogged />
                 </LoginProvider>
               ) : isCheckingToken ? (
                 <CenteredContent offset={headerHeight}>
-                  <CircularProgress/>
+                  <CircularProgress />
                 </CenteredContent>
               ) : (
                 <LoginPage
@@ -223,8 +228,6 @@ const AppLogged = () => {
         <Route path={siteMap.report()} component={connectedUser.isPro ? ReportPro : ReportComponent} />
         <Route path={siteMap.reports()} component={connectedUser.isPro ? ReportsPro : Reports} />
         <Route path={siteMap.users} component={Users} />
-        <Route path={siteMap.activatePro()} component={UserActivation} />
-        <Route path={siteMap.activateDgccrf} component={UserActivation} />
         <Route path={siteMap.companies} component={Companies} />
         <Route path={siteMap.companyAccesses()} component={CompanyAccesses} />
         <Route path={siteMap.subscriptions} component={Subscriptions} />

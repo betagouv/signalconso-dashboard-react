@@ -1,5 +1,6 @@
 import {CompanyAccessLevel, ReportResponseTypes} from '../../api'
 import {Config} from '../../../conf/config'
+import {App} from '../../../App'
 
 export const messagesFr = {
   yes: 'Oui',
@@ -102,7 +103,7 @@ export const messagesFr = {
   selectedPeriod: 'Période sélectionnée',
   department: 'Département',
   companyRegistered: 'Entreprise enregistrée',
-  companyRegisteredEmailSent: 'Un email vous a été envoyé avec les instructions pour accéder au compte de l\'entreprise.',
+  companyRegisteredEmailSent: "Un email vous a été envoyé avec les instructions pour accéder au compte de l'entreprise.",
   departments: 'Départements',
   reports: 'Signalements',
   report: 'Signalement',
@@ -217,9 +218,9 @@ export const messagesFr = {
   emailValidation: `Validation de l'adresse email`,
   anonymousReport: 'Signalement anonyme',
   companySearchLabel: 'SIREN, SIRET ou RCS',
-  accountActivated: "Compte activé",
+  accountActivated: 'Compte activé',
   companiesToActivate: "En attente d'activation",
-  activationLinkNotValid: "Lien d'activation non valide",
+  activationFailed: "Erreur inattendue , impossible d'activer le compte. Merci de bien vouloir réessayer ultérieurement.",
   companiesActivated: 'Entreprises identifiées',
   noCompanyFound: 'Aucune entreprise trouvée',
   isHeadOffice: 'Siège sociale',
@@ -300,10 +301,8 @@ export const messagesFr = {
   deleteCompanyAccessToken: (email?: string) => `Annuler l'invitation  ${email ? 'à ' + email + ' ' : ''}?`,
   resetPasswordNotFound: `Le lien permettant de demander un nouveau mot de passe n'est pas valide, veuillez refaire une demande.`,
   resetPasswordSuccess: `Votre mot de passe est maintenant créé, vous pouvez vous connecter pour accéder à votre espace entreprise.`,
-  loginIssueTip:
-    `En cas de difficultés, vous pouvez contacter par email le service <a href="href="mailto:${Config.contactEmail}">${Config.contactEmail}</a>.`,
-  consent :
-      ` Je reconnais avoir pris connaissance des  <a href="href="${Config.appBaseUrl}/conditions-generales-utilisation/professionnel"> conditions générales d'utilisation</a> de SignalConso.`,
+  loginIssueTip: `En cas de difficultés, vous pouvez contacter par email le service <a href="href="mailto:${Config.contactEmail}">${Config.contactEmail}</a>.`,
+  consent: ` Je reconnais avoir pris connaissance des  <a href="href="${Config.appBaseUrl}/conditions-generales-utilisation/professionnel"> conditions générales d'utilisation</a> de SignalConso.`,
   subscriptionsAlertInfo: `
     En créant un abonnement, vous recevrez un mail quotidien ou hebdomadaire (au choix) comportant les nouveaux signalements correspondant à votre sélection de critères, qu’ils soient géographiques, thématiques ou par entreprise.
     <br/>
@@ -311,6 +310,14 @@ export const messagesFr = {
     <br/>
     <br/>
     Par exemple, si vous souhaitez recevoir les signalements liés à deux entreprises bancaires et ceux liés au secteur de l'immobilier, il faut créer deux alertes : une avec les deux siret et une avec la catégorie immobilier.
+  `,
+  cannotActivateAccountAlertTitle: `Le lien sur lequel vous avez cliqué n'est plus valide.`,
+  cannotActivateAccountAlertInfo: `
+    <br/>
+    Si vous avez déjà créé votre compte, vous pouvez vous <a href="href="/connexion"/conditions-generales-utilisation/professionnel">connecter</a> à l'aide de votre adresse email et mot de passe.
+    <br/>
+    <br/>
+    Sinon, vous pouvez demander au gestionnaire de l'entreprise de vous envoyer une nouvelle invitation.
   `,
   alreadySelectedCompany: (name?: string) => `L'entreprise ${name ?? ''} est déjà sélectionnée`,
   nLines: (n: number) => `<b>${n}</b> lignes`,
