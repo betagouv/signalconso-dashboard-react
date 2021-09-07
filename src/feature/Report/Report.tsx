@@ -2,37 +2,24 @@ import React, {useEffect, useMemo, useState} from 'react'
 import {Page} from '../../shared/Layout'
 import {useParams} from 'react-router'
 import {useI18n} from '../../core/i18n'
-import {Panel, PanelBody, PanelHead} from '../../shared/Panel'
+import {Panel} from '../../shared/Panel'
 import {useReportContext} from '../../core/context/ReportContext'
 import {EventActionValues, FileOrigin, Id, Report, ReportEvent} from 'core/api'
-import {Grid, Icon, makeStyles, Tab, Tabs, Theme, Tooltip, useTheme} from '@material-ui/core'
+import {Grid, makeStyles, Tab, Tabs, Theme, Tooltip, useTheme} from '@material-ui/core'
 import {useCssUtils} from '../../core/helper/useCssUtils'
-import {capitalize, classes} from '../../core/helper/utils'
-import {ScButton} from '../../shared/Button/Button'
-import {PanelFoot} from '../../shared/Panel/PanelFoot'
 import {fromNullable} from 'fp-ts/lib/Option'
 import {useToast} from '../../core/toast'
 import {ReportEvents} from './Event/ReportEvents'
 import {ReportResponseComponent} from './ReportResponse'
-import {AddressComponent} from '../../shared/Address/Address'
-import {SelectCompany} from '../../shared/SelectCompany/SelectCompany'
-import {EditConsumerDialog} from './EditConsumerDialog'
 import {ReportHeader} from './ReportHeader'
 import {Btn, Confirm} from 'mui-extension/lib'
-import {ReportAddComment} from './ReportAddComment'
-import {Txt} from 'mui-extension/lib/Txt/Txt'
+import {ReportPostAction} from './ReportPostAction'
+import {useLogin} from '../../core/context/LoginContext'
+import {ReportConsumer} from './ReportConsumer/ReportConsumer'
+import {ReportCompany} from './ReportCompany/ReportCompany'
+import {ReportDescription} from './ReportDescription'
 
 const useStyles = makeStyles((t: Theme) => ({
-  cardBody: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    // alignItems: 'center',
-  },
-  cardBody_icon: {
-    fontSize: 64,
-    // color: t.palette.primary.main,
-    color: t.palette.divider,
-  },
   tabs: {
     borderBottom: '1px solid ' + t.palette.divider,
   },
@@ -55,6 +42,7 @@ export const ReportComponent = () => {
   const {m} = useI18n()
   const _report = useReportContext()
   const theme = useTheme()
+  const {connectedUser} = useLogin()
   const cssUtils = useCssUtils()
   const css = useStyles()
   const {toastError} = useToast()
@@ -93,28 +81,47 @@ export const ReportComponent = () => {
       {fromNullable(_report.get.entity?.report)
         .map(report => (
           <>
-            <ReportHeader
-              elevated
-              report={report}
-              files={_report.get.entity?.files}
-              actions={
-                <>
-                  <ReportAddComment report={report} onAdd={() => _report.events.fetch({force: true, clean: false}, id)}>
+            <ReportHeader elevated report={report} hideSiret>
+              <div className={cssUtils.nowrap}>
+
+                {connectedUser.isDGCCRF && (
+                  <ReportPostAction
+                    actionType={EventActionValues.Control}
+                    label={m.markDgccrfControlDone}
+                    report={report}
+                    onAdd={() => _report.events.fetch({force: true, clean: false}, id)}
+                  >
                     <Tooltip title={m.addDgccrfComment}>
-                      <Btn variant="outlined" color="primary" icon="add_comment">
-                        {m.comment}
+                      <Btn color="primary" icon="check_box">
+                        {m.dgccrfControlDone}
                       </Btn>
                     </Tooltip>
-                  </ReportAddComment>
-                  <Btn
-                    variant="outlined"
-                    color="primary"
-                    icon="download"
-                    loading={_report.download.loading}
-                    onClick={() => downloadReport(report.id)}
-                  >
-                    {m.download}
-                  </Btn>
+                  </ReportPostAction>
+                )}
+
+                <ReportPostAction
+                  actionType={EventActionValues.Comment}
+                  label={m.addDgccrfComment}
+                  report={report}
+                  onAdd={() => _report.events.fetch({force: true, clean: false}, id)}
+                >
+                  <Tooltip title={m.addDgccrfComment}>
+                    <Btn color="primary" icon="add_comment">
+                      {m.comment}
+                    </Btn>
+                  </Tooltip>
+                </ReportPostAction>
+
+                <Btn
+                  color="primary"
+                  icon="download"
+                  loading={_report.download.loading}
+                  onClick={() => downloadReport(report.id)}
+                >
+                  {m.download}
+                </Btn>
+
+                {connectedUser.isAdmin && (
                   <Confirm
                     title={m.removeAsk}
                     content={m.removeReportDesc(report.companySiret)}
@@ -125,100 +132,25 @@ export const ReportComponent = () => {
                         .finally(close)
                     }
                   >
-                    <Btn loading={_report.remove.loading} variant="outlined" color="error" icon="delete">
+                    <Btn loading={_report.remove.loading} className={cssUtils.colorError} icon="delete">
                       {m.delete}
                     </Btn>
                   </Confirm>
-                </>
-              }
-            />
+                )}
+              </div>
+            </ReportHeader>
+
             <Grid container spacing={2} alignItems="stretch">
               <Grid item xs={12} sm={6}>
-                <Panel stretch>
-                  <PanelHead>{m.consumer}</PanelHead>
-                  <PanelBody className={css.cardBody}>
-                    <div>
-                      <div className={cssUtils.txtBig}>
-                        {fromNullable(report.firstName)
-                          .map(_ => capitalize(_))
-                          .getOrElse('')}
-                        &nbsp;
-                        {fromNullable(report.lastName)
-                          .map(_ => _.toLocaleUpperCase())
-                          .getOrElse('')}
-                      </div>
-                      <div className={cssUtils.colorTxtSecondary}>{report.email}</div>
-                      {!report.contactAgreement && (
-                        <div className={classes(cssUtils.colorError)} style={{marginTop: theme.spacing(0.5)}}>
-                          <Icon className={cssUtils.inlineIcon}>warning</Icon>
-                          &nbsp;
-                          {m.reportConsumerWantToBeAnonymous}
-                        </div>
-                      )}
-                    </div>
-                    <Icon className={css.cardBody_icon}>person</Icon>
-                  </PanelBody>
-                  <PanelFoot border>
-                    <EditConsumerDialog
-                      report={report}
-                      onChange={user =>
-                        _report.updateConsumer.fetch(
-                          {},
-                          report.id,
-                          user.firstName,
-                          user.lastName,
-                          user.email,
-                          user.contactAgreement,
-                        )
-                      }
-                    >
-                      <ScButton icon="edit" color="primary" loading={_report.updateConsumer.loading}>
-                        {m.edit}
-                      </ScButton>
-                    </EditConsumerDialog>
-                  </PanelFoot>
-                </Panel>
+                <ReportConsumer report={report} canEdit={connectedUser.isAdmin}/>
               </Grid>
               <Grid item xs={12} sm={6}>
-                <Panel stretch>
-                  <PanelHead>{m.company}</PanelHead>
-                  <PanelBody className={css.cardBody}>
-                    <div>
-                      <div className={cssUtils.txtBig} style={{marginBottom: theme.spacing(1 / 2)}}>
-                        {report.companySiret}
-                      </div>
-                      <div className={classes(cssUtils.colorTxtSecondary, cssUtils.txtSmall)}>
-                        <div className={cssUtils.txtBold}>{report.companyName}</div>
-                        <AddressComponent address={report.companyAddress} />
-                      </div>
-                      <div>{report.vendor}</div>
-                      {fromNullable(report.websiteURL)
-                        .map(_ => (
-                          <Txt link block className={cssUtils.marginTop}>
-                            <a href={_} target="_blank">
-                              {_}
-                            </a>
-                          </Txt>
-                        ))
-                        .toUndefined()}
-                    </div>
-                    <Icon className={css.cardBody_icon}>store</Icon>
-                  </PanelBody>
-                  <PanelFoot border>
-                    <SelectCompany
-                      siret={report.companySiret}
-                      onChange={company => {
-                        _report.updateCompany.fetch({}, report.id, company)
-                      }}
-                    >
-                      <ScButton icon="edit" color="primary" loading={_report.updateCompany.loading}>
-                        {m.edit}
-                      </ScButton>
-                    </SelectCompany>
-                  </PanelFoot>
-                </Panel>
+                <ReportCompany report={report} canEdit={connectedUser.isAdmin}/>
               </Grid>
             </Grid>
+
+            <ReportDescription report={report} files={_report.get.entity?.files}/>
+
             <Panel loading={_report.events.loading}>
               {_report.events.entity && _report.companyEvents.entity && (
                 <>

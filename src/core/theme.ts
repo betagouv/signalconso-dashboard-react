@@ -141,7 +141,7 @@ export const muiTheme = (dark?: boolean): any => {
         },
         notchedOutline: {
           transition: 'border-color 140ms cubic-bezier(0.4, 0, 0.2, 1) 0ms',
-          background: 'rgba(0,0,0,.028)',
+          background: 'rgba(0,0,0,.02)',
           borderColor: 'rgba(0, 0, 0, 0.12)',
         },
       },
