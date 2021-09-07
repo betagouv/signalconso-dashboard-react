@@ -15,7 +15,6 @@ export interface CompaniesContextProps {
   confirmCompaniesPosted: UseFetcher<SignalConsoApiSdk['secured']['company']['confirmCompaniesPosted'], ApiError>
   searchByIdentity: UseFetcher<SignalConsoApiSdk['public']['company']['searchCompaniesByIdentity'], ApiError>
   accessibleByPro: UseFetcher<SignalConsoApiSdk['secured']['company']['getAccessibleByPro'], ApiError>
-  visibleByPro: UseFetcher<SignalConsoApiSdk['secured']['company']['getVisibleByPro'], ApiError>
   saveUndeliveredDocument: UseFetcher<SignalConsoApiSdk['secured']['company']['saveUndeliveredDocument'], ApiError>
 }
 
@@ -48,7 +47,6 @@ export const CompaniesProvider = ({api, children}: Props) => {
   const confirmCompaniesPosted = useFetcher(api.secured.company.confirmCompaniesPosted)
   const saveUndeliveredDocument = useFetcher(api.secured.company.saveUndeliveredDocument)
   const accessibleByPro = useFetcher(api.secured.company.getAccessibleByPro)
-  const visibleByPro = useFetcher(api.secured.company.getVisibleByPro)
 
   const updateRegisteredCompanyAddress = (id: Id, address: Address) => {
     activated.setEntity(companies => {
@@ -81,7 +79,6 @@ export const CompaniesProvider = ({api, children}: Props) => {
         downloadActivationDocument,
         confirmCompaniesPosted,
         accessibleByPro,
-        visibleByPro,
         saveUndeliveredDocument,
       }}
     >
