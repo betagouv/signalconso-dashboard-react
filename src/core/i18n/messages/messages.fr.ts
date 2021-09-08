@@ -232,7 +232,7 @@ export const messagesFr = {
   markDgccrfControlDone: 'Contrôle effectué (interne à la DGCCRF)',
   thisDate: (_: string) => `Le ${_}`,
   byHim: (_: string) => `Par ${_}`,
-  copyAddress: `Copy address`,
+  copyAddress: `Copier l'adresse`,
   youCanAddCommentForDGCCRF: `Vous pouvez, si vous le souhaitez, apporter une précision <b>à l'attention de la DGCCRF</b> qui ne sera pas transmise à l'entreprise`,
   youCanNoteSignalConso: `Vous pouvez également donner votre avis sur SignalConso`,
   addressCopied: `Adresse copiée`,
