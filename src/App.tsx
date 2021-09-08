@@ -170,7 +170,7 @@ const AppLogin = () => {
                 onFetchTokenInfo={apiPublicSdk.user.fetchTokenInfo}
               />
             </Route>
-            <Route path={siteMap.consumerReview}>
+            <Route path={siteMap.consumerReview()}>
               <ConsumerReview onSubmit={apiPublicSdk.report.postReviewOnReportResponse}/>
             </Route>
             <Route path="/">

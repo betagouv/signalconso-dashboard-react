@@ -25,6 +25,6 @@ export const siteMap = {
   login: '/connexion',
   emailValidation: '/connexion/validation-email',
   modeEmploiDGCCRF: '/mode-emploi-dgccrf',
-  consumerReview: `/suivi-des-signalements/:reportId/avis`,
+  consumerReview: (reportId: Id = ':reportId') => `/suivi-des-signalements/${reportId}/avis`,
   resetPassword: (token: Id = ':token') => `/connexion/nouveau-mot-de-passe/${token}`,
 }
