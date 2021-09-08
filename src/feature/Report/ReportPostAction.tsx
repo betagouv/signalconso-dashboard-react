@@ -14,17 +14,10 @@ interface Props {
   onAdd: () => void
   required?: boolean
   label: string
-  actionType: EventActionValues,
+  actionType: EventActionValues
 }
 
-export const ReportPostAction = ({
-  label,
-  actionType,
-  report,
-  children,
-  onAdd,
-  required,
-}: Props) => {
+export const ReportPostAction = ({label, actionType, report, children, onAdd, required}: Props) => {
   const {m} = useI18n()
   const {apiSdk} = useLogin()
   const _addComment = useFetcher(apiSdk.secured.reports.postAction)
@@ -52,7 +45,15 @@ export const ReportPostAction = ({
       content={
         <>
           {_addComment.error && <Alert type="error">{m.anErrorOccurred}</Alert>}
-          <ScInput required={required} value={comment} onChange={e => setComment(e.target.value)} multiline fullWidth rows={3} maxRows={8} />
+          <ScInput
+            required={required}
+            value={comment}
+            onChange={e => setComment(e.target.value)}
+            multiline
+            fullWidth
+            rows={3}
+            maxRows={8}
+          />
         </>
       }
     >

@@ -26,7 +26,7 @@ const useReportFilesStyles = makeStyles((t: Theme) => ({
   noAttachment: {
     marginTop: t.spacing(1),
     marginBottom: t.spacing(1),
-  }
+  },
 }))
 
 export const ReportFiles = ({

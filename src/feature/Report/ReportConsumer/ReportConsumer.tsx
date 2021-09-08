@@ -37,26 +37,22 @@ export const ReportConsumer = ({report, canEdit}: Props) => {
 
   return (
     <Panel stretch>
-      <PanelHead action={
-        canEdit && (
-          <EditConsumerDialog
-            report={report}
-            onChange={user =>
-              _report.updateConsumer.fetch(
-                {},
-                report.id,
-                user.firstName,
-                user.lastName,
-                user.email,
-                user.contactAgreement,
-              )
-            }
-          >
-            <ScButton icon="edit" color="primary" loading={_report.updateConsumer.loading}>
-              {m.edit}
-            </ScButton>
-          </EditConsumerDialog>
-        )}>
+      <PanelHead
+        action={
+          canEdit && (
+            <EditConsumerDialog
+              report={report}
+              onChange={user =>
+                _report.updateConsumer.fetch({}, report.id, user.firstName, user.lastName, user.email, user.contactAgreement)
+              }
+            >
+              <ScButton icon="edit" color="primary" loading={_report.updateConsumer.loading}>
+                {m.edit}
+              </ScButton>
+            </EditConsumerDialog>
+          )
+        }
+      >
         {m.consumer}
       </PanelHead>
       <PanelBody className={css.cardBody}>

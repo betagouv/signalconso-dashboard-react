@@ -26,11 +26,11 @@ export const ReportDescription = ({report, files, children}: Props) => {
       <PanelBody>
         {report.details.map((detail, i) => (
           <div key={i} className={cssUtils.marginBottom}>
-            <div className={cssUtils.txtBold} dangerouslySetInnerHTML={{__html: detail.label.replace(/\:$/, '')}}/>
-            <div className={cssUtils.colorTxtSecondary} dangerouslySetInnerHTML={{__html: detail.value}}/>
+            <div className={cssUtils.txtBold} dangerouslySetInnerHTML={{__html: detail.label.replace(/\:$/, '')}} />
+            <div className={cssUtils.colorTxtSecondary} dangerouslySetInnerHTML={{__html: detail.value}} />
           </div>
         ))}
-        <Divider className={cssUtils.divider}/>
+        <Divider className={cssUtils.divider} />
         <Txt bold block gutterBottom>
           {m.attachedFiles}
         </Txt>
@@ -51,7 +51,7 @@ export const ReportDescription = ({report, files, children}: Props) => {
         />
         {children && (
           <>
-            <Divider className={cssUtils.divider}/>
+            <Divider className={cssUtils.divider} />
             {children}
           </>
         )}

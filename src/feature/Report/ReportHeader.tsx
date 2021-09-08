@@ -59,15 +59,15 @@ export const ReportHeader = ({hideTags, hideSiret, report, children, elevated}: 
                 </>
               )}
             </h1>
-            {!hideSiret && (<div className={cssUtils.colorTxtHint}>{report.companyName}</div>)}
+            {!hideSiret && <div className={cssUtils.colorTxtHint}>{report.companyName}</div>}
             <div className={cssUtils.colorTxtHint}>ID {report.id}</div>
           </div>
-          <ReportStatusChip className={cssUtils.marginLeftAuto} status={report.status}/>
+          <ReportStatusChip className={cssUtils.marginLeftAuto} status={report.status} />
         </div>
         <Alert id="report-info" dense type="info" deletable persistentDelete className={cssUtils.marginBottom2}>
           {m.reportCategoriesAreSelectByConsumer}
         </Alert>
-        <ReportCategories categories={[report.category, ...report.subcategories]}/>
+        <ReportCategories categories={[report.category, ...report.subcategories]} />
       </PanelBody>
       {(!hideTags || children) && (
         <PanelFoot className={css.actions} border>

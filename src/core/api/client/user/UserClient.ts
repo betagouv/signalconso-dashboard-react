@@ -8,8 +8,8 @@ export class UserClient {
   constructor(private client: ApiClientApi) {}
 
   readonly fetchConnectedUser = () => {
-        return this.client.get<User>(`/account`)
-    }
+    return this.client.get<User>(`/account`)
+  }
 
   readonly fetchDGCCRF = (filters: UserSearch): Promise<Paginate<User>> => {
     return this.client

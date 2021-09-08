@@ -2,11 +2,11 @@ import {ApiClientApi, Id} from '../..'
 import {BlockedReportNotification} from './BlockedReportNotification'
 
 export class ReportBlockedNotificationClient {
-  constructor(private client: ApiClientApi) {
-  }
+  constructor(private client: ApiClientApi) {}
 
   readonly fetch = () => {
-    return this.client.get<BlockedReportNotification[]>(`/report-blocked-notification`)
+    return this.client
+      .get<BlockedReportNotification[]>(`/report-blocked-notification`)
       .then(result => result.map(_ => ({..._, dateCreation: new Date(_.dateCreation)})))
   }
 

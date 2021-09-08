@@ -61,7 +61,14 @@ const reportStatusColor = {
   [ReportStatus.NotConcerned]: '#c9d3df',
 }
 
-export const ReportStatusChip = ({status, elevation = 0, fullWidth, dense, className, inSelectOptions}: ReportStatusChipProps) => {
+export const ReportStatusChip = ({
+  status,
+  elevation = 0,
+  fullWidth,
+  dense,
+  className,
+  inSelectOptions,
+}: ReportStatusChipProps) => {
   const css = useStyles()
   const statusLabel = useMemo(() => capitalize(status.replace('Signalement ', ''), false), [status])
   return (

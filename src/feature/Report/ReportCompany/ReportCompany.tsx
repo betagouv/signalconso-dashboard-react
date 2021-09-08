@@ -12,7 +12,6 @@ import {useReportContext} from '../../../core/context/ReportContext'
 import {useI18n} from '../../../core/i18n'
 import {useCssUtils} from '../../../core/helper/useCssUtils'
 
-
 interface Props {
   report: Report
   canEdit?: boolean
@@ -39,20 +38,24 @@ export const ReportCompany = ({report, canEdit}: Props) => {
   const theme = useTheme()
   return (
     <Panel stretch>
-      <PanelHead action={
-        canEdit && (
-          <SelectCompany
-            siret={report.companySiret}
-            onChange={company => {
-              _report.updateCompany.fetch({}, report.id, company)
-            }}
-          >
-            <ScButton icon="edit" color="primary" loading={_report.updateCompany.loading}>
-              {m.edit}
-            </ScButton>
-          </SelectCompany>
-        )}
-      >{m.company}</PanelHead>
+      <PanelHead
+        action={
+          canEdit && (
+            <SelectCompany
+              siret={report.companySiret}
+              onChange={company => {
+                _report.updateCompany.fetch({}, report.id, company)
+              }}
+            >
+              <ScButton icon="edit" color="primary" loading={_report.updateCompany.loading}>
+                {m.edit}
+              </ScButton>
+            </SelectCompany>
+          )
+        }
+      >
+        {m.company}
+      </PanelHead>
       <PanelBody className={css.cardBody}>
         <div>
           <div className={cssUtils.txtBig} style={{marginBottom: theme.spacing(1 / 2)}}>
@@ -60,7 +63,7 @@ export const ReportCompany = ({report, canEdit}: Props) => {
           </div>
           <div className={classes(cssUtils.colorTxtSecondary, cssUtils.txtSmall)}>
             <div className={cssUtils.txtBold}>{report.companyName}</div>
-            <AddressComponent address={report.companyAddress}/>
+            <AddressComponent address={report.companyAddress} />
           </div>
           <div>{report.vendor}</div>
           {fromNullable(report.websiteURL)

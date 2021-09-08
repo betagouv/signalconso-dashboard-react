@@ -39,17 +39,19 @@ export interface PanelProps extends CardProps {
   elevation?: number
 }
 
-export const Panel = forwardRef(({className, elevation = 0, hoverable, loading, children, stretch, ...other}: PanelProps, ref: any) => {
-  const css = useStyles()
-  return (
-    <Card
-      ref={ref}
-      elevation={elevation}
-      className={classes(css.root, hoverable && css.hover, stretch && css.stretch, className, elevation === 0 && css.border)}
-      {...other}
-    >
-      {children}
-      {loading && <LinearProgress className={css.loader} />}
-    </Card>
-  )
-})
+export const Panel = forwardRef(
+  ({className, elevation = 0, hoverable, loading, children, stretch, ...other}: PanelProps, ref: any) => {
+    const css = useStyles()
+    return (
+      <Card
+        ref={ref}
+        elevation={elevation}
+        className={classes(css.root, hoverable && css.hover, stretch && css.stretch, className, elevation === 0 && css.border)}
+        {...other}
+      >
+        {children}
+        {loading && <LinearProgress className={css.loader} />}
+      </Card>
+    )
+  },
+)

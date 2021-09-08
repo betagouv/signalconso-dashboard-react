@@ -17,10 +17,10 @@ export const useCssUtils = makeStyles((t: Theme) => {
       alignItems: 'center',
     },
     spaceBetween: {
-      justifyContent: 'space-between'
+      justifyContent: 'space-between',
     },
     flexJustifyEnd: {
-      justifyContent: 'flex-end'
+      justifyContent: 'flex-end',
     },
     txtCapitalize: {
       textTransform: 'capitalize',

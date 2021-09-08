@@ -171,7 +171,7 @@ const AppLogin = () => {
               />
             </Route>
             <Route path={siteMap.consumerReview()}>
-              <ConsumerReview onSubmit={apiPublicSdk.report.postReviewOnReportResponse}/>
+              <ConsumerReview onSubmit={apiPublicSdk.report.postReviewOnReportResponse} />
             </Route>
             <Route path="/">
               {authResponse ? (
@@ -181,7 +181,7 @@ const AppLogin = () => {
                   onLogout={logout}
                   apiSdk={makeSecuredSdk(authResponse.token)}
                 >
-                  <AppLogged/>
+                  <AppLogged />
                 </LoginProvider>
               ) : isCheckingToken ? (
                 <CenteredContent offset={headerHeight}>

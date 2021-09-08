@@ -71,16 +71,18 @@ export const ReportPro = () => {
       {fromNullable(_report.get.entity?.report)
         .map(report => (
           <>
-            <ReportHeader
-              hideTags={true}
-              elevated={!openAnswerPanel.value}
-              report={report}>
+            <ReportHeader hideTags={true} elevated={!openAnswerPanel.value} report={report}>
               {!response && report.status !== ReportStatus.ClosedForPro && (
-                <ScButton style={{marginLeft: 'auto'}} onClick={openResponsePanel} icon="priority_high" color="error" variant="contained">
+                <ScButton
+                  style={{marginLeft: 'auto'}}
+                  onClick={openResponsePanel}
+                  icon="priority_high"
+                  color="error"
+                  variant="contained"
+                >
                   {m.answer}
                 </ScButton>
-              )
-              }
+              )}
             </ReportHeader>
 
             <ReportDescription report={report} files={_report.get.entity?.files}>
@@ -107,11 +109,9 @@ export const ReportPro = () => {
 
             <Collapse in={_report.events.entity && !!response}>
               <Panel>
-                <PanelHead action={response && (
-                  <div className={css.responseDateTime}>
-                    {formatDateTime(response.data.creationDate)}
-                  </div>
-                )}>
+                <PanelHead
+                  action={response && <div className={css.responseDateTime}>{formatDateTime(response.data.creationDate)}</div>}
+                >
                   {m.proAnswerYourAnswer}
                 </PanelHead>
                 <ReportResponseComponent

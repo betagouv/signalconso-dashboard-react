@@ -62,21 +62,28 @@ export const ConsumerReview = ({onSubmit}: Props) => {
           <Panel>
             <PanelHead>{m.shareYourMind}</PanelHead>
             <PanelBody>
-              <Txt block gutterBottom color="hint">{m.didTheCompanyAnsweredWell}</Txt>
+              <Txt block gutterBottom color="hint">
+                {m.didTheCompanyAnsweredWell}
+              </Txt>
               <Controller
                 name="positive"
                 rules={{required: {value: true, message: m.required}}}
                 control={control}
                 render={({field}) => (
                   <ScRadioGroup dense error={!!errors.positive} {...field}>
-                    <ScRadioGroupItem title={m.yes} value="true"/>
-                    <ScRadioGroupItem title={m.no} value="false"/>
+                    <ScRadioGroupItem title={m.yes} value="true" />
+                    <ScRadioGroupItem title={m.no} value="false" />
                   </ScRadioGroup>
                 )}
               />
 
-              <Txt className={cssUtils.marginTop3} block color="hint" dangerouslySetInnerHTML={{__html: m.youCanAddCommentForDGCCRF}}/>
-              <ScInput {...register('details')} multiline fullWidth rows={5} maxRows={12}/>
+              <Txt
+                className={cssUtils.marginTop3}
+                block
+                color="hint"
+                dangerouslySetInnerHTML={{__html: m.youCanAddCommentForDGCCRF}}
+              />
+              <ScInput {...register('details')} multiline fullWidth rows={5} maxRows={12} />
             </PanelBody>
             <PanelFoot alignEnd>
               <ScButton loading={_post.loading} type="submit" icon="send" variant="contained" color="primary">
@@ -87,7 +94,9 @@ export const ConsumerReview = ({onSubmit}: Props) => {
         </form>
       )}
       <div>
-        <Txt block gutterBottom color="disabled">{m.youCanNoteSignalConso}</Txt>
+        <Txt block gutterBottom color="disabled">
+          {m.youCanNoteSignalConso}
+        </Txt>
         <a
           className={cssUtils.marginTop}
           href="https://monavis.numerique.gouv.fr/Demarches/2071?&view-mode=formulaire-avis&nd_mode=en-ligne-enti%C3%A8rement&nd_source=button&key=5a58254dab900906fe4924e37c1c5bba"

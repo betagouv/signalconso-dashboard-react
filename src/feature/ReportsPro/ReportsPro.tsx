@@ -20,7 +20,12 @@ import {classes} from '../../core/helper/utils'
 import {Btn, Fender} from 'mui-extension/lib'
 import {EntityIcon} from '../../core/EntityIcon'
 import {ScButton} from '../../shared/Button/Button'
-import {mapArrayFromQuerystring, mapDateFromQueryString, mapDatesToQueryString, useQueryString} from '../../core/helper/useQueryString'
+import {
+  mapArrayFromQuerystring,
+  mapDateFromQueryString,
+  mapDatesToQueryString,
+  useQueryString,
+} from '../../core/helper/useQueryString'
 import {fromNullable} from 'fp-ts/lib/Option'
 import {useToast} from '../../core/toast'
 import {Config} from '../../conf/config'
@@ -156,7 +161,7 @@ export const ReportsPro = () => {
 
       {isFirstVisit && (
         <Alert type="success" deletable persistentDelete className={cssUtils.marginBottom2}>
-          <span dangerouslySetInnerHTML={{__html: m.yourAccountIsActivated}}/>
+          <span dangerouslySetInnerHTML={{__html: m.yourAccountIsActivated}} />
         </Alert>
       )}
       {_companies.accessibleByPro.entity && (

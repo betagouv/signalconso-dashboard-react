@@ -11,7 +11,7 @@ export interface UsersContextProps {
   changePassword: UseFetcher<SignalConsoApiSdk['secured']['user']['changePassword'], ApiError>
   activate: UseFetcher<SignalConsoApiSdk['public']['user']['activateAccount'], ApiError>
   fetchTokenInfo: UseFetcher<SignalConsoApiSdk['public']['user']['fetchTokenInfo'], ApiError>
-    getConnectedUser: UseFetcher<SignalConsoApiSdk['secured']['user']['fetchConnectedUser']>
+  getConnectedUser: UseFetcher<SignalConsoApiSdk['secured']['user']['fetchConnectedUser']>
 }
 
 interface Props {
@@ -30,7 +30,7 @@ export const UsersProvider = ({api, children}: Props) => {
   const dgccrfPending = useFetcher(api.secured.user.fetchPendingDGCCRF)
   const invite = useFetcher(api.secured.user.inviteDGCCRF)
   const fetchTokenInfo = useFetcher(api.public.user.fetchTokenInfo)
-    const getConnectedUser = useFetcher(api.secured.user.fetchConnectedUser)
+  const getConnectedUser = useFetcher(api.secured.user.fetchConnectedUser)
 
   return (
     <UsersContext.Provider
@@ -41,7 +41,8 @@ export const UsersProvider = ({api, children}: Props) => {
         changePassword,
         activate,
         fetchTokenInfo,
-      getConnectedUser,}}
+        getConnectedUser,
+      }}
     >
       {children}
     </UsersContext.Provider>

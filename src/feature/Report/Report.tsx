@@ -66,13 +66,7 @@ export const ReportComponent = () => {
     fromNullable(_report.updateCompany.error).map(toastError)
     fromNullable(_report.companyEvents.error).map(toastError)
     fromNullable(_report.events.error).map(toastError)
-  }, [
-    _report.remove.error,
-    _report.get.error,
-    _report.updateCompany.error,
-    _report.companyEvents.error,
-    _report.events.error,
-  ])
+  }, [_report.remove.error, _report.get.error, _report.updateCompany.error, _report.companyEvents.error, _report.events.error])
 
   const downloadReport = (reportId: Id) => _report.download.fetch({}, reportId)
 
@@ -83,7 +77,6 @@ export const ReportComponent = () => {
           <>
             <ReportHeader elevated report={report} hideSiret>
               <div className={cssUtils.nowrap}>
-
                 {connectedUser.isDGCCRF && (
                   <ReportPostAction
                     actionType={EventActionValues.Control}
@@ -112,12 +105,7 @@ export const ReportComponent = () => {
                   </Tooltip>
                 </ReportPostAction>
 
-                <Btn
-                  color="primary"
-                  icon="download"
-                  loading={_report.download.loading}
-                  onClick={() => downloadReport(report.id)}
-                >
+                <Btn color="primary" icon="download" loading={_report.download.loading} onClick={() => downloadReport(report.id)}>
                   {m.download}
                 </Btn>
 
@@ -142,14 +130,14 @@ export const ReportComponent = () => {
 
             <Grid container spacing={2} alignItems="stretch">
               <Grid item xs={12} sm={6}>
-                <ReportConsumer report={report} canEdit={connectedUser.isAdmin}/>
+                <ReportConsumer report={report} canEdit={connectedUser.isAdmin} />
               </Grid>
               <Grid item xs={12} sm={6}>
-                <ReportCompany report={report} canEdit={connectedUser.isAdmin}/>
+                <ReportCompany report={report} canEdit={connectedUser.isAdmin} />
               </Grid>
             </Grid>
 
-            <ReportDescription report={report} files={_report.get.entity?.files}/>
+            <ReportDescription report={report} files={_report.get.entity?.files} />
 
             <Panel loading={_report.events.loading}>
               {_report.events.entity && _report.companyEvents.entity && (

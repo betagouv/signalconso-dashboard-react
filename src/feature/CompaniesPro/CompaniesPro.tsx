@@ -76,12 +76,16 @@ export const CompaniesPro = () => {
   }, [_blockedNotifications.list.entity])
 
   useEffect(() => {
-    fromNullable(_blockedNotifications.create.error).map(toastError).map(() => _blockedNotifications.list.fetch({clean: false}))
-    fromNullable(_blockedNotifications.remove.error).map(toastError).map(() => _blockedNotifications.list.fetch({clean: false}))
+    fromNullable(_blockedNotifications.create.error)
+      .map(toastError)
+      .map(() => _blockedNotifications.list.fetch({clean: false}))
+    fromNullable(_blockedNotifications.remove.error)
+      .map(toastError)
+      .map(() => _blockedNotifications.list.fetch({clean: false}))
   }, [_blockedNotifications.create.error, _blockedNotifications.remove.error])
 
   const allNotificationsAreBlocked = useMemo(() => {
-    if(_companies.accessibleByPro.entity && blockedNotificationIndex) {
+    if (_companies.accessibleByPro.entity && blockedNotificationIndex) {
       return _companies.accessibleByPro.entity?.every(_ => blockedNotificationIndex[_.id])
     }
     return false
@@ -101,29 +105,39 @@ export const CompaniesPro = () => {
         {m.myCompanies}
       </PageTitle>
 
-      {fromNullable(_companies.accessibleByPro.entity).map(companies => companies.length > 5 && (
-        <Panel>
-          <PanelBody className={classes(cssUtils.flex, cssUtils.alignCenter, cssUtils.spaceBetween)}>
-            <Txt block size="big" bold>{m.notifications}</Txt>
-            <div>
-              <ScButton
-                disabled={allNotificationsAreBlocked}
-                color="primary" icon="notifications_off"
-                onClick={() => setState(companies.map(_ => _.id))}
-              >
-                {m.disableAll}
-              </ScButton>
-              <ScButton
-                disabled={_blockedNotifications.list.entity?.length === 0}
-                color="primary" icon="notifications_active" className={cssUtils.marginRight}
-                onClick={() => _blockedNotifications.remove.call(companies.map(_ => _.id))}
-              >
-                {m.enableAll}
-              </ScButton>
-            </div>
-          </PanelBody>
-        </Panel>
-      )).toUndefined()}
+      {fromNullable(_companies.accessibleByPro.entity)
+        .map(
+          companies =>
+            companies.length > 5 && (
+              <Panel>
+                <PanelBody className={classes(cssUtils.flex, cssUtils.alignCenter, cssUtils.spaceBetween)}>
+                  <Txt block size="big" bold>
+                    {m.notifications}
+                  </Txt>
+                  <div>
+                    <ScButton
+                      disabled={allNotificationsAreBlocked}
+                      color="primary"
+                      icon="notifications_off"
+                      onClick={() => setState(companies.map(_ => _.id))}
+                    >
+                      {m.disableAll}
+                    </ScButton>
+                    <ScButton
+                      disabled={_blockedNotifications.list.entity?.length === 0}
+                      color="primary"
+                      icon="notifications_active"
+                      className={cssUtils.marginRight}
+                      onClick={() => _blockedNotifications.remove.call(companies.map(_ => _.id))}
+                    >
+                      {m.enableAll}
+                    </ScButton>
+                  </div>
+                </PanelBody>
+              </Panel>
+            ),
+        )
+        .toUndefined()}
 
       <Panel>
         <Datatable
@@ -139,7 +153,7 @@ export const CompaniesPro = () => {
                 <Tooltip title={_.name}>
                   <>
                     <span className={css.tdName_label}>{_.name}</span>
-                    <br/>
+                    <br />
                     <span className={css.tdName_desc}>{_.siret}</span>
                   </>
                 </Tooltip>
@@ -168,9 +182,7 @@ export const CompaniesPro = () => {
                     disabled={!blockedNotificationIndex}
                     checked={!blockedNotificationIndex?.[_.id]}
                     onChange={e => {
-                      e.target.checked
-                        ? _blockedNotifications.remove.call([_.id])
-                        : setState(_.id)
+                      e.target.checked ? _blockedNotifications.remove.call([_.id]) : setState(_.id)
                     }}
                   />
                 </>

@@ -66,7 +66,6 @@ export const CompaniesRegistered = () => {
 
   useEffect(() => {
     _companies.updateFilters({..._companies.initialFilters, ...queryString.get()})
-
   }, [])
 
   useEffect(() => {
@@ -94,7 +93,7 @@ export const CompaniesRegistered = () => {
               value={_companies.filters.departments}
               onChange={departments => _companies.updateFilters(prev => ({...prev, departments}))}
             >
-              {(value, onChange) => <SelectDepartments values={value} onChange={onChange} className={cssUtils.marginRight}/>}
+              {(value, onChange) => <SelectDepartments values={value} onChange={onChange} className={cssUtils.marginRight} />}
             </DebouncedInput>
             <DebouncedInput
               value={_companies.filters.identity ?? ''}
