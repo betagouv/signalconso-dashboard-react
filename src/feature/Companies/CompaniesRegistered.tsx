@@ -20,7 +20,7 @@ import {AddressComponent} from '../../shared/Address/Address'
 import {SelectCompany} from '../../shared/SelectCompany/SelectCompany'
 import {EditAddressDialog} from './EditAddressDialog'
 import {useLogin} from '../../core/context/LoginContext'
-import {ClipboardApi} from '../../core/helper/clipboard'
+import {ClipboardApi} from '@alexandreannic/ts-utils/lib/browser/clipboard/ClipboardApi'
 
 const useStyles = makeStyles((t: Theme) => ({
   tdName_label: {

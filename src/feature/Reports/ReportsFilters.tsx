@@ -23,7 +23,7 @@ import {ScInput} from '../../shared/Input/ScInput'
 import {useAnomalyContext} from '../../core/context/AnomalyContext'
 import {SelectCountries} from '../../shared/SelectCountries/SelectCountries'
 import {Autocomplete} from '@material-ui/lab'
-import {Enum} from '@alexandreannic/ts-utils/lib/enum/Enum'
+import {Enum} from '@alexandreannic/ts-utils/lib/common/enum/Enum'
 
 export interface ReportsFiltersProps {
   updateFilters: (_: Partial<ReportSearch>) => void
