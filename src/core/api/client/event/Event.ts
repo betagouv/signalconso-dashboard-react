@@ -67,7 +67,7 @@ export enum ReportResponseTypes {
 
 export interface ReviewOnReportResponse {
   positive: boolean
-  details: string
+  details?: string
 }
 
 export interface ReportAction {

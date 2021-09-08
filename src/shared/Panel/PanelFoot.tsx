@@ -11,8 +11,10 @@ export interface PanelFootProps extends CardActionsProps {
 const useStyles = makeStyles((t: Theme) => ({
   root: {
     marginTop: 'auto',
+    padding: t.spacing(0, 2, 2, 2),
   },
   border: {
+    paddingTop: t.spacing(2),
     borderTop: '1px solid ' + t.palette.divider,
   },
   alignEnd: {

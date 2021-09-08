@@ -48,6 +48,7 @@ import {UserActivation} from './feature/Users/UserActivation'
 import {BlockedReportNotificationProvider} from './core/context/BlockedReportNotificationProviderContext'
 import {ActivateNewCompany} from './feature/ActivateNewCompany/ActivateNewCompany'
 import {ModeEmploiDGCCRF} from './feature/ModeEmploiDGCCRF/ModeEmploiDGCCRF'
+import {ConsumerReview} from './feature/ConsumerReview/ConsumerReview'
 
 const headers = {
   'Content-Type': 'application/json',
@@ -169,6 +170,9 @@ const AppLogin = () => {
                 onFetchTokenInfo={apiPublicSdk.user.fetchTokenInfo}
               />
             </Route>
+            <Route path={siteMap.consumerReview}>
+              <ConsumerReview onSubmit={apiPublicSdk.report.postReviewOnReportResponse}/>
+            </Route>
             <Route path="/">
               {authResponse ? (
                 <LoginProvider
@@ -177,7 +181,7 @@ const AppLogin = () => {
                   onLogout={logout}
                   apiSdk={makeSecuredSdk(authResponse.token)}
                 >
-                  <AppLogged />
+                  <AppLogged/>
                 </LoginProvider>
               ) : isCheckingToken ? (
                 <CenteredContent offset={headerHeight}>

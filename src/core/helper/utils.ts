@@ -107,10 +107,17 @@ export const mapPromise =
     mapThen?: (_: AsyncFnResult<F>) => X
     mapCatch?: (_: any) => any
   }) =>
-  (...args: Parameters<F>): Promise<X> => {
-    return promise(...args)
-      .then(mapThen)
-      .catch(mapCatch)
-  }
+    (...args: Parameters<F>): Promise<X> => {
+      return promise(...args)
+        .then(mapThen)
+        .catch(mapCatch)
+    }
 
 export const siretToSiren = (siret: string) => siret.slice(0, 9)
+
+export const stringToBoolean = (str?: string): boolean | undefined => {
+  if (str) {
+    if (str === 'true') return true
+    else if (str === 'false') return false
+  }
+}

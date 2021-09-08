@@ -3,7 +3,7 @@ import {useI18n} from '../../../core/i18n'
 import {ScRadioGroup} from '../../../shared/RadioGroup/RadioGroup'
 import {FileOrigin, Report, ReportResponse, ReportResponseTypes} from '../../../core/api'
 import {ScRadioGroupItem} from '../../../shared/RadioGroup/RadioGroupItem'
-import {Enum} from '@alexandreannic/ts-utils/lib/enum/Enum'
+import {Enum} from '@alexandreannic/ts-utils/lib/common/enum/Enum'
 import {Alert} from 'mui-extension/lib'
 import {ScInput} from '../../../shared/Input/ScInput'
 import {useCssUtils} from '../../../core/helper/useCssUtils'
@@ -116,7 +116,7 @@ export const ReportResponseForm = forwardRef(({report, className, onCancel, onCo
           />
         </ReportResponseFormItem>
       </PanelBody>
-      <PanelFoot alignEnd border>
+      <PanelFoot alignEnd>
         <ScButton onClick={onCancel} color="primary">
           {m.close}
         </ScButton>

@@ -19,6 +19,9 @@ export const useCssUtils = makeStyles((t: Theme) => {
     spaceBetween: {
       justifyContent: 'space-between'
     },
+    flexJustifyEnd: {
+      justifyContent: 'flex-end'
+    },
     txtCapitalize: {
       textTransform: 'capitalize',
     },
@@ -80,6 +83,9 @@ export const useCssUtils = makeStyles((t: Theme) => {
     },
     marginTop2: {
       marginTop: t.spacing(2),
+    },
+    marginTop3: {
+      marginTop: t.spacing(3),
     },
     marginTop: {
       marginTop: t.spacing(1),
