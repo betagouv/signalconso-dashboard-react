@@ -48,7 +48,7 @@
     "lodash.debounce": "^4.0.8",
     "lodash.groupby": "^4.6.0",
     "lodash.uniqby": "^4.0.8",
-    "mui-extension": "^2.3.7",
+    "mui-extension": "^2.3.10",
     "path": "^0.12.7",
     "qs": "^6.10.1",
     "query-string": "5.1.1",
