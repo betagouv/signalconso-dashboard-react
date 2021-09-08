@@ -15,7 +15,7 @@ export class PublicUserClient {
 
   readonly fetchTokenInfo = (token: string, companySiret?: string): Promise<TokenInfo> => {
     if (companySiret) {
-      return this.client.get<TokenInfo>('/accesses/' + companySiret + '/token', {
+      return this.client.get<TokenInfo>(`/accesses/${companySiret}/token`, {
         qs: {
           token: token,
         },
