@@ -1,5 +1,5 @@
 - title: Dépannage
-  example: "Vous faites appel à un professionnel dans l'urgence à votre domicile (par exemple : vous avez perdu votre clef d'appartement et vous contactez un serrurier pour qu'il vienne vous l'ouvrir, vous appelez un plombier suite à l'explosion de votre canalisation)"
+  example: 'Vous faites appel à un professionnel dans l''urgence à votre domicile (par exemple : vous avez perdu votre clef d''appartement et vous contactez un serrurier pour qu''il vienne vous l''ouvrir, vous appelez un plombier suite à l''explosion de votre canalisation)'
   tags:
     - Litige contractuel
   subcategories:
@@ -12,12 +12,20 @@
               <br />Par contre, les prix doivent être clairement indiqués pour que vous soyez au courant avant d'acheter ou de commander.
             outOfScope: true
         - title: Prix non affiché
+          tags:
+            - ReponseConso
         - title: Prix final non conforme au prix annoncé
+          tags:
+            - ReponseConso
     - title: Publicité et pratique du professionnel
       example: "Exemple : information trompeuse ou mensongère, absence d'information, contrainte"
       subcategories:
         - title: Absence d'information ou information incomplète
+          tags:
+            - ReponseConso
         - title: Information mensongère ou trompeuse
+          tags:
+            - ReponseConso
           detailInputs:
             - label: Qu'est-ce qui est trompeur ou mensonger&#160;?
               rank: 1
@@ -48,7 +56,7 @@
         - title: Contrainte du professionnel
           detailInputs:
             - label: Précisez les informations sur le contexte
-              example: 'Exemple : lieu de la rencontre, discours du professionnel, âge'
+              example: "Exemple : lieu de la rencontre, discours du professionnel, âge"
               rank: 1
               type: TEXTAREA
             - label: Date du constat
@@ -70,7 +78,7 @@
 - title: Travaux / rénovation
   subcategories:
     - title: Prix
-      example: 'Exemple : prix non affiché, devis non respecté'
+      example: "Exemple : prix non affiché, devis non respecté"
       tags:
         - Litige contractuel
       subcategories:
@@ -81,7 +89,11 @@
               <br />Par contre, les prix doivent être clairement indiqués pour que vous soyez au courant avant d'acheter ou de commander.
             outOfScope: true
         - title: Prix final non conforme au prix annoncé
+          tags:
+            - ReponseConso
         - title: Prix non affiché
+          tags:
+            - ReponseConso
     - title: Publicité et pratique du professionnel
       example: "Exemple : absence d'information, information trompeuse ou mensongère, démarchage"
       tags:
@@ -92,12 +104,17 @@
             - Litige contractuel
           subcategories:
             - title: Caractéristiques techniques des produits non précisées
+              tags:
+                - ReponseConso
             - title: Prix indiqué de manière globale et non détaillée
+              tags:
+                - ReponseConso
             - title: Date de livraison des produits ou réalisation des travaux non précisée
             - title: Autre
         - title: Démarchage à domicile
           companyKind: LOCATION
           tags:
+            - ReponseConso
             - Démarchage à domicile
           detailInputs:
             - label: Que s'est-il passé ?
@@ -119,6 +136,9 @@
               defaultValue: SYSDATE
         - title: Démarchage téléphonique
           companyKind: PHONE
+          tags:
+            - ReponseConso
+            - Démarchage téléphonique
           detailInputs:
             - label: Date de l'appel
               rank: 1
@@ -136,6 +156,8 @@
         - title: Information mensongère ou trompeuse
           subcategories:
             - title: Mise en avant d'un label ou d'un signe de qualité non ou plus détenu
+              tags:
+                - ReponseConso
               detailInputs:
                 - label: Qu'est-ce qui est trompeur ou mensonger&#160;?
                   rank: 1
@@ -157,6 +179,8 @@
                   type: TIMESLOT
                   optionnal: true
             - title: Référence abusive à des partenariats avec l'État ou de grandes entreprises d'énergie
+              tags:
+                - ReponseConso
               detailInputs:
                 - label: Qu'est-ce qui est trompeur ou mensonger&#160;?
                   rank: 1
@@ -178,6 +202,8 @@
                   type: TIMESLOT
                   optionnal: true
             - title: Utilisation de termes laissant croire qu'il s'agit d'une structure publique
+              tags:
+                - ReponseConso
               detailInputs:
                 - label: Qu'est-ce qui est trompeur ou mensonger&#160;?
                   rank: 1
@@ -199,6 +225,8 @@
                   type: TIMESLOT
                   optionnal: true
             - title: Usurpation d'identité de la part du professionnel
+              tags:
+                - ReponseConso
               detailInputs:
                 - label: Qu'est-ce qui est trompeur ou mensonger&#160;?
                   rank: 1
@@ -220,6 +248,8 @@
                   type: TIMESLOT
                   optionnal: true
             - title: Présentation des travaux comme étant obligatoires
+              tags:
+                - ReponseConso
               detailInputs:
                 - label: Qu'est-ce qui est trompeur ou mensonger&#160;?
                   rank: 1
@@ -241,6 +271,8 @@
                   type: TIMESLOT
                   optionnal: true
             - title: Promesse d'économies d'énergie surestimées
+              tags:
+                - ReponseConso
               detailInputs:
                 - label: Qu'est-ce qui est trompeur ou mensonger&#160;?
                   rank: 1
@@ -292,7 +324,7 @@
         - title: Contrainte du professionnel
           detailInputs:
             - label: Précisez les informations sur le contexte
-              example: 'Exemple : lieu de la rencontre, discours du professionnel, âge'
+              example: "Exemple : lieu de la rencontre, discours du professionnel, âge"
               rank: 1
               type: TEXTAREA
             - label: Date du constat
@@ -305,7 +337,7 @@
               optionnal: true
         - title: Autre
     - title: Prestation
-      example: 'Exemple : malfaçons sur le chantier, travaux commencés mais jamais terminés'
+      example: "Exemple : malfaçons sur le chantier, travaux commencés mais jamais terminés"
       subcategories:
         - title: Malfaçon
           example: Constat d'un défaut résultant d'une mauvaise exécution des travaux
@@ -314,7 +346,7 @@
           tags:
             - Litige contractuel
     - title: Contrat
-      example: 'Exemple : contrat non respecté, délai de rétractation, clause abusive'
+      example: "Exemple : contrat non respecté, délai de rétractation, clause abusive"
       subcategories:
         - title: Droit de rétractation
           example: Une fois le contrat signé, vous souhaitez revenir en arrière
@@ -322,14 +354,12 @@
           subcategories:
             - title: À votre domicile
               example: Un démarcheur est venu chez vous
-              description:
-                Vous avez un délai de 14 jours pour changer d’avis. On appelle ce délai le "délai de rétractation". Ce délai est valable même si vous avez demandé à faire démarrer votre contrat immédiatement
+              description: Vous avez un délai de 14 jours pour changer d’avis. On appelle ce délai le "délai de rétractation". Ce délai est valable même si vous avez demandé à faire démarrer votre contrat immédiatement
                 <br />Vous n’avez pas à vous justifier auprès du commerçant.
                 <br/><a href="../delai-de-retractation" target="_blank">>> Comment calculer mon délai de retractation</a>
             - title: À distance
               example: 'Exemple : sur internet'
-              description:
-                Vous avez un délai de 14 jours pour changer d’avis. On appelle ce délai le "délai de rétractation". Ce délai est valable même si vous avez demandé à faire démarrer votre contrat immédiatement
+              description: Vous avez un délai de 14 jours pour changer d’avis. On appelle ce délai le "délai de rétractation". Ce délai est valable même si vous avez demandé à faire démarrer votre contrat immédiatement
                 <br />Vous n’avez pas à vous justifier auprès du commerçant.
                 <br/><a href="../delai-de-retractation" target="_blank">>> Comment calculer mon délai de retractation</a>
             - title: Au lieu habituel d'activité du professionnel
@@ -346,8 +376,7 @@
                     content: Il n'y a pas de délai de rétractation pour votre cas.
                     outOfScope: true
                 - title: Oui
-                  description:
-                    Vous avez un délai de 14 jours pour changer d’avis. On appelle ce délai le "délai de rétractation". Ce délai est valable même si vous avez demandé à faire démarrer votre contrat immédiatement
+                  description: Vous avez un délai de 14 jours pour changer d’avis. On appelle ce délai le "délai de rétractation". Ce délai est valable même si vous avez demandé à faire démarrer votre contrat immédiatement
                     <br />Vous n’avez pas à vous justifier auprès du commerçant.
                     <br/><a href="../delai-de-retractation" target="_blank">>> Comment calculer mon délai de retractation</a>
         - title: Contrat non respecté
@@ -356,6 +385,7 @@
         - title: Clause abusive
           example: Vous souhaitez dénoncer une clause qui vous est particulièrement défavorable
           tags:
+            - ReponseConso
             - Litige contractuel
         - title: Autre
           tags:
@@ -368,6 +398,8 @@
           example: Crédit affecté au contrat de travaux / rénovation
           subcategories:
             - title: Absence d'informations
+              tags:
+                - ReponseConso
               subcategories:
                 - title: Avant la souscription
                 - title: Vous ne saviez pas que vous vous engagiez

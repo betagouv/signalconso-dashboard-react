@@ -64,7 +64,7 @@
           type: DATE
       fileLabel: Joindre une copie du contrat / règlement.
     - title: Dégâts / travaux sur les canalisations
-      example: "Exemple : fuite d'eau avant compteur"
+      example: 'Exemple : fuite d''eau avant compteur'
       information:
         title: Le compteur d'eau représente la frontière entre ce qui est à votre charge et ce qui ne l'est pas.
         content: La partie située après votre compteur d'eau est à votre charge. Cela veut dire que les travaux après votre compteur sont à votre charge. Les problèmes sur les canalisations après votre compteur sont également à votre charge. <br> Les canalisations situées avant votre compteur sont des ouvrages publics. Ils relèvent donc de la responsabilité du service des eaux. Le compteur est également à la charge du service des eaux. <br> Cette règle est valable aussi même si les canalisations sont situées dans votre propriété. <br><br> Vous êtes responsable du paiement des fuites d’eau après votre compteur, mais vous pouvez bénéficier d’un droit à un écrêtement dans certains cas. Plus d'information <a href="https://www.economie.gouv.fr/files/files/directions_services/dgccrf/documentation/publications/depliants/guide-eau-15062018.pdf" target="_blank" />ici</a>
@@ -73,7 +73,7 @@
             answer: Contactez le service client de votre distributeur. Si vous ne trouvez pas de solution, vous pouvez saisir le médiateur de l'eau<br><a href="https://www.mediation-eau.fr/" target="_blank" />https://www.mediation-eau.fr/</a>
         outOfScope: true
     - title: Fosse septique
-      example: "Exemple : malfaçons sur la fosse, le bureau d'étude m'impose une marque de fosse en particulier "
+      example: 'Exemple : malfaçons sur la fosse, le bureau d''étude m''impose une marque de fosse en particulier '
       detailInputs:
         - label: Date du constat
           rank: 1
@@ -167,7 +167,7 @@
           options:
             - Un label / certificat
             - Une baisse de prix
-            - 'Une information (exemple : origine géographique de mon électricité)'
+            - "Une information (exemple : origine géographique de mon électricité)"
             - Autre (à préciser)
         - label: Pourquoi trouvez-vous ça trompeur ?
           rank: 4
@@ -184,15 +184,14 @@
       example: 'Exemple : reconduction de contrat, clause abusive'
       subcategories:
         - title: Difficultés pour résilier un contrat
-          example: "Exemple : le bulletin de rétractation n'a pas été prise en compte"
+          example: 'Exemple : le bulletin de rétractation n''a pas été prise en compte'
           subcategoriesTitle: Où avez-vous souscrit votre contrat ?
           subcategories:
             - title: Sur internet, par téléphone ou chez moi avec un conseiller
               subcategoriesTitle: Ce contrat concerne un logement
               subcategories:
                 - title: Dans lequel vous venez d'emménager
-                  description:
-                    Vous avez un délai de 14 jours pour changer d’avis. On appelle ce délai le "délai de rétractation". Ce délai est valable même si vous avez demandé à faire démarrer votre contrat immédiatement
+                  description: Vous avez un délai de 14 jours pour changer d’avis. On appelle ce délai le "délai de rétractation". Ce délai est valable même si vous avez demandé à faire démarrer votre contrat immédiatement
                     <br />Vous n’avez pas à vous justifier auprès du commerçant.
                     <br/><a href="../delai-de-retractation" target="_blank">>> Comment calculer mon délai de retractation</a>
                   subcategoriesTitle: Avez-vous fait votre demande dans ce délai&#160;?
@@ -219,8 +218,7 @@
                   subcategoriesTitle: Avez-vous demandé à faire démarrer votre contrat immédiatement ?
                   subcategories:
                     - title: Non. Le contrat doit démarrer à la fin du délai de retractation.
-                      description:
-                        Vous avez un délai de 14 jours pour changer d’avis. On appelle ce délai le "délai de rétractation".
+                      description: Vous avez un délai de 14 jours pour changer d’avis. On appelle ce délai le "délai de rétractation".
                         <br />Vous n’avez pas à vous justifier auprès du commerçant.
                         <br/><a href="../delai-de-retractation" target="_blank">>> Comment calculer mon délai de retractation</a>
                       subcategoriesTitle: Avez-vous fait votre demande dans ce délai&#160;?

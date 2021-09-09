@@ -8,6 +8,7 @@
     - title: Un produit dangereux
       example: 'Exemple : jouet, cosmétique'
       tags:
+        - ReponseConso
         - Produit dangereux
       subcategories:
         - title: Produit alimentaire
@@ -51,6 +52,8 @@
       subcategories:
         - title: Prix
           example: 'Exemple : prix faux en caisse, prix pas affiché'
+          tags:
+            - ReponseConso
           subcategories:
             - title: Le prix à la caisse est différent du prix affiché
               example: 'Exemple : le prix à la caisse est de 5 euros alors que le prix affiché en rayon est de 3 euros'
@@ -73,7 +76,7 @@
                   type: TEXT
                   placeholder: Prix indiqué
                   optionnal: true
-                - label: "L'avez-vous signalé au moment de payer&#160;?"
+                - label: 'L''avez-vous signalé au moment de payer&#160;?'
                   rank: 5
                   type: RADIO
                   options:
@@ -112,17 +115,16 @@
                 title: Les commerçants ont le droit de choisir leurs prix.
                 outOfScope: true
                 content: "Par contre, les prix doivent être clairement indiqués pour que vous soyez au courant avant d'acheter.
-                  <br/> Par exemple, il est autorisé de vendre une bouteille d'eau à 8 euros ou une baguette de pain à 5 euros. C'est au consommateur de bien regarder les prix avant d'acheter.
-                  <br/><br/><b>Le saviez-vous ?</b>
-                  <br/> Il existe quelques exceptions à ce principe. Certains prix sont réglementés, c'est-à-dire qu'ils sont encadrés par la loi.
-                  <br/> Par exemple, le prix des livres est réglementé.
-                  <br/><br/> Un commerçant n'a pas le droit de vendre à un prix trop bas : il ne peut pas vendre un produit moins cher que ce qu'il lui a coûté. Il existe quelques situations où il a le droit de vendre en dessous du prix d'achat, comme la période des soldes."
+                              <br/> Par exemple, il est autorisé de vendre une bouteille d'eau à 8 euros ou une baguette de pain à 5 euros. C'est au consommateur de bien regarder les prix avant d'acheter.
+                              <br/><br/><b>Le saviez-vous ?</b>
+                              <br/> Il existe quelques exceptions à ce principe. Certains prix sont réglementés, c'est-à-dire qu'ils sont encadrés par la loi.
+                              <br/> Par exemple, le prix des livres est réglementé.
+                              <br/><br/> Un commerçant n'a pas le droit de vendre à un prix trop bas : il ne peut pas vendre un produit moins cher que ce qu'il lui a coûté. Il existe quelques situations où il a le droit de vendre en dessous du prix d'achat, comme la période des soldes."
             - title: Fausse réduction de prix
               example: 'Exemple : fausse promotion pendant les soldes, fausse liquidation totale'
-              description:
-                '<b>Soldes :</b> Les dates des soldes sont encadrées par la loi. Ces dates sont valables pour les magasins et aussi pour la vente sur internet.
-                <br/><br/><b>Liquidation :</b> les liquidations sont soumises à déclaration préalable auprès du maire de la commune où a lieu cette opération.
-                Un document prouvant cette déclaration doit être affichée dans le magasin, pendant toute la durée de la liquidation. Ce document est souvent affiché sur la vitrine car il doit être visible de la rue.'
+              description: "<b>Soldes :</b> Les dates des soldes sont encadrées par la loi. Ces dates sont valables pour les magasins et aussi pour la vente sur internet.
+                       <br/><br/><b>Liquidation :</b> les liquidations sont soumises à déclaration préalable auprès du maire de la commune où a lieu cette opération.
+                       Un document prouvant cette déclaration doit être affichée dans le magasin, pendant toute la durée de la liquidation. Ce document est souvent affiché sur la vitrine car il doit être visible de la rue."
               detailInputs:
                 - label: "Il s'agit d'un problème sur:"
                   rank: 1
@@ -232,6 +234,8 @@
                       optionnal: true
             - title: Problème de température
               example: 'Exemple : rupture de la chaîne du froid'
+              tags:
+                - ReponseConso
               detailInputs:
                 - label: Quel est le problème&#160;?
                   rank: 1
@@ -257,7 +261,11 @@
               example: 'Exemple : les odeurs des poubelles arrivent dans mon appartement, les clients se garent devant chez moi'
               information: !!import/single ../common/info/voisinage.yml
             - title: Autre problème d'hygiène
+              tags:
+                - ReponseConso
         - title: Produit périmé
+          tags:
+            - ReponseConso
           subcategoriesTitle: 'Vous voulez signaler&#160;:'
           subcategories:
             - title: Un constat fréquent de produits périmés dans un établissement
@@ -274,8 +282,7 @@
                     - title: Non
                       information:
                         title: Le commerçant a le droit de vendre un produit jusqu'au jour indiqué sur la date limite de consommation (DLC).
-                        content:
-                          Par exemple, si la date est le 13 avril, il est possible de vendre le produit le 13 avril mais pas le 14 avril.
+                        content: Par exemple, si la date est le 13 avril, il est possible de vendre le produit le 13 avril mais pas le 14 avril.
                           <br/>Le commerçant peut choisir de faire une réduction du prix pour les dates "courtes" mais ce n'est pas une obligation.
                           <br/>Le commerçant peut indiquer que les produits périment bientôt ou le jour-même mais ce n'est pas une obligation.
                         outOfScope: true
@@ -286,8 +293,7 @@
                   example: 'Exemple : chocolat, conserve, compote, petits pots'
                   information:
                     title: Ce problème n'est pas un motif de signalement.
-                    content:
-                      Les produits vendus à température ambiante comme des compotes, du chocolat, des biscuits ou des conserves ont une date qu'on appelle date de durabilité minimale (anciennement appelée DLUO).
+                    content: Les produits vendus à température ambiante comme des compotes, du chocolat, des biscuits ou des conserves ont une date qu'on appelle date de durabilité minimale (anciennement appelée DLUO).
                       <br/><br/><b>Le commerçant a le droit de vendre un produit avec cette date dépassée.</b>
                       <br/><br/>Cette date est seulement une indication. Au-delà de celle-ci, l'aliment peut perdre certaines de ses qualités gustatives ou nutritionnelles mais peut être consommé sans danger pour la santé. Il n'est pas nécessaire de le jeter.
                     outOfScope: true
@@ -299,6 +305,8 @@
               subcategories: !!import/single ../common/date.yml
         - title: Publicité
           example: 'Exemple : publicité trompeuse, produit du catalogue indisponible'
+          tags:
+            - ReponseConso
           subcategories:
             - title: Indisponibilité des produits en publicité
               detailInputs:
@@ -330,10 +338,10 @@
                 - label: Précisez si possible la publicité concernée. Vous pouvez par exemple récupérer le lien de la publicité sur le site <a href="https&#58;//www.bonial.fr" target="_blank">bonial.fr</a>&#160;?
                   rank: 5
                   type: TEXT
-                  placeholder: 'Lien vers la publicité'
+                  placeholder: "Lien vers la publicité"
               fileLabel: Photo(s) de la publicité si possible
             - title: Informations de vente mensongères
-              example: 'Exemple : pancarte "produits locaux" or ce n''est pas le cas, affiche "pain bio" or ce n''est pas le cas'
+              example : 'Exemple : pancarte "produits locaux" or ce n''est pas le cas, affiche "pain bio" or ce n''est pas le cas'
               detailInputs:
                 - label: Date du constat
                   rank: 1
@@ -386,7 +394,7 @@
                   subcategoriesTitle: Quand avez-vous acheté le produit&#160;?
                   subcategories:
                     - title: Il y a moins de 2 ans
-                      description: "Le vendeur a l'obligation de garantir 2 ans le fonctionnement normal de tous les objets. Attention : vous ne bénéficiez pas de cette garantie si vous avez cassé le produit  ou que vous l'avez mal utilisé (exemple : vous avez marché sur votre téléphone)."
+                      description: 'Le vendeur a l''obligation de garantir 2 ans le fonctionnement normal de tous les objets. Attention : vous ne bénéficiez pas de cette garantie si vous avez cassé le produit  ou que vous l''avez mal utilisé (exemple : vous avez marché sur votre téléphone).'
                       detailTitle: Problème de garantie légale
                       detailInputs:
                         - label: Date d'achat
@@ -441,26 +449,24 @@
                         - title: Non
                           information:
                             title: <b>Votre produit n'est plus couvert par la garantie.</b>
-                            content:
-                              Votre produit n'est plus couvert par la garantie de base, appelée "garantie légale de conformité".
+                            content: Votre produit n'est plus couvert par la garantie de base, appelée "garantie légale de conformité".
                               <br/>La garantie légale de conformité est de 2 ans pour tous les produits neufs et de 6 mois pour tous les produits d'occasion. Elle ne s'applique pas pour les achats entre particuliers.
                             outOfScope: true
                             actions:
-                              - question: 'Vous souhaitez attaquer l''entreprise pour "vices cachés"&#160;?'
+                              - question: "Vous souhaitez attaquer l'entreprise pour \"vices cachés\"&#160;?"
                                 example: "Un vice caché d'un produit est un défaut :
-                                  <ul>
-                                  <li>qui rend le produit inutilisable, </li>
-                                  <li>présent dès le départ et</li>
-                                  <li>que vous ne connaissiez pas quand vous avez acheté le produit.</li>
-                                  </ul>"
-                                answer:
-                                  C'est à vous de prouver l'existence du vice caché, avec un rapport d'expertise par exemple.
+                                      <ul>
+                                        <li>qui rend le produit inutilisable, </li>
+                                        <li>présent dès le départ et</li>
+                                        <li>que vous ne connaissiez pas quand vous avez acheté le produit.</li>
+                                      </ul>"
+                                answer: C'est à vous de prouver l'existence du vice caché, avec un rapport d'expertise par exemple.
                                   <br/>Vous avez deux ans à partir de la découverte de ce défaut pour faire la demande .
                 - title: Occasion
                   subcategoriesTitle: Quand avez-vous acheté le produit&#160;?
                   subcategories:
                     - title: Il y a moins de 6 mois
-                      description: "Le vendeur a l'obligation de garantir 6 mois le fonctionnement normal de tous les objets. Attention : vous ne bénéficiez pas de cette garantie si vous avez cassé le produit  ou que vous l'avez mal utilisé (exemple : vous avez marché sur votre téléphone)."
+                      description: 'Le vendeur a l''obligation de garantir 6 mois le fonctionnement normal de tous les objets. Attention : vous ne bénéficiez pas de cette garantie si vous avez cassé le produit  ou que vous l''avez mal utilisé (exemple : vous avez marché sur votre téléphone).'
                       detailTitle: Problème de garantie légale
                       detailInputs:
                         - label: Date d'achat
@@ -518,18 +524,19 @@
                             content: Votre produit n'est plus couvert par la garantie de base, appelée "garantie légale de conformité". La garantie légale de conformité est de 2 ans pour tous les produits neufs et de 6 mois pour tous les produits d'occasion.
                             outOfScope: true
                             actions:
-                              - question: 'Vous souhaitez attaquer l''entreprise pour "vices cachés"&#160;?'
+                              - question: "Vous souhaitez attaquer l'entreprise pour \"vices cachés\"&#160;?"
                                 example: "Un vice caché d'un produit est un défaut :
-                                  <ul>
-                                  <li>qui rend le produit inutilisable, </li>
-                                  <li>présent dès le départ et</li>
-                                  <li>que vous ne connaissiez pas quand vous avez acheté le produit.</li>
-                                  </ul>"
-                                answer:
-                                  C'est à vous de prouver l'existence du vice caché, avec un rapport d'expertise par exemple.
+                                      <ul>
+                                        <li>qui rend le produit inutilisable, </li>
+                                        <li>présent dès le départ et</li>
+                                        <li>que vous ne connaissiez pas quand vous avez acheté le produit.</li>
+                                      </ul>"
+                                answer: C'est à vous de prouver l'existence du vice caché, avec un rapport d'expertise par exemple.
                                   <br/>Vous avez deux ans à partir de la découverte du défaut pour faire la demande .
             - title: Autre raison
-              example: "Exemple: vêtement trop petit, cadeau en doublon, j'ai changé d'avis, prix moins cher ailleurs, je n'aime pas la couleur"
+              tags:
+                - ReponseConso
+              example: 'Exemple: vêtement trop petit, cadeau en doublon, j''ai changé d''avis, prix moins cher ailleurs, je n''aime pas la couleur'
               subcategoriesTitle: Le remboursement ou la reprise d'un article dans un magasin n'est pas une obligation. Vous êtes-vous assuré qu’il proposait bien l'échange ou le remboursement des articles&#160;?
               subcategories:
                 - title: Oui
@@ -571,10 +578,9 @@
                     - title: Oui
                       example: 'Exemple : sur une affiche au niveau des caisses'
                       information:
-                        title:
-                          Le commerçant a le droit d'exiger un minimum d'achat pour les paiements par carte bancaire et par chèque.
+                        title: Le commerçant a le droit d'exiger un minimum d'achat pour les paiements par carte bancaire et par chèque.
                           <br/> Si vous voulez acheter un produit moins cher que le minimum d'achat, c'est à vous de trouver de la monnaie.
-                        content: "Le minimum d'achat doit être indiqué très visiblement. Par exemple : affichage à l'entrée du magasin ou à la caisse..."
+                        content: 'Le minimum d''achat doit être indiqué très visiblement. Par exemple : affichage à l''entrée du magasin ou à la caisse...'
                         outOfScope: true
                     - title: Non
                 - title: Il refuse les paiements par chèque ou carte bleue de façon générale
@@ -584,7 +590,7 @@
                       example: 'Exemple : sur une affiche au niveau des caisses'
                       information:
                         title: Le commerçant a le droit de refuser les chèques ou la carte bancaire.
-                        content: "Il doit l'indiquer très visiblement au consommateur. Par exemple : affichage à l'entrée du magasin ou à la caisse..."
+                        content: 'Il doit l''indiquer très visiblement au consommateur. Par exemple : affichage à l''entrée du magasin ou à la caisse...'
                         outOfScope: true
                     - title: Non
                 - title: Autre
@@ -596,8 +602,7 @@
                 - title: Le commerçant a réfusé de me faire une détaxe alors que je vis à l'étranger
                   information:
                     title: Le commerçant a le droit de refuser de faire une détaxe sur vos achats.
-                    content:
-                      La vente en détaxe est une exonération de la taxe sur la valeur ajoutée (TVA) sur le prix de biens achetés par des personnes de passage en France, soumise à conditions.
+                    content: La vente en détaxe est une exonération de la taxe sur la valeur ajoutée (TVA) sur le prix de biens achetés par des personnes de passage en France, soumise à conditions.
                       <br /> Le commerçant est libre d'appliquer la détaxe, qui est facultative. L'acheteur ne peut pas l'exiger du vendeur.
                       Retrouvez plus d'information sur le site <a href="https://www.service-public.fr/professionnels-entreprises/vosdroits/F20558" target="_blank">service-public.fr</a>
                     outOfScope: true
@@ -607,9 +612,9 @@
             - title: Problème d'accessibilité
               information: !!import/single ../common/info/accessibilite.yml
             - title: Problème lié à l'écologie
-              example: 'Exemple : sac en plastique, éclairage de nuit '
+              example: "Exemple : sac en plastique, éclairage de nuit "
             - title: Problème de voisinage
-              example: 'Exemple : bruit, odeur, voiture mal garée'
+              example: "Exemple : bruit, odeur, voiture mal garée"
             - title: Autre
     - title: Un problème avec un produit en particulier
       example: "Exemple : il manque des informations sur l'emballage, le produit est douteux"
@@ -661,6 +666,7 @@
 - title: un achat suite à la visite d'un vendeur à mon domicile
   companyKind: LOCATION
   tags:
+    - ReponseConso
     - Démarchage à domicile
   subcategories:
     - title: C'est un aliment ou une boisson
@@ -741,3 +747,4 @@
         - title: Autre
           subcategoriesTitle: Quel est le risque&#160;?
           subcategories: !!import/single ../common/produit-dangereux.yml
+

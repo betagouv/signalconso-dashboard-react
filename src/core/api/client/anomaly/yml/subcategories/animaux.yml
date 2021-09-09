@@ -7,11 +7,12 @@
   tags:
     - Litige contractuel
 - title: Garde d'animaux
-  example: "Exemple : pension, site internet de garde d'animaux"
+  example: 'Exemple : pension, site internet de garde d''animaux'
   tags:
     - Litige contractuel
 - title: Vendeur d'animaux
   tags:
+    - ReponseConso
     - Litige contractuel
 - title: Autre
   tags:

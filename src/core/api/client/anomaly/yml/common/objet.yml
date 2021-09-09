@@ -7,12 +7,12 @@
   subcategories:
     - title: Informations manquantes
       description: "Certaines informations sont obligatoires.
-        <br/>Par exemple :
-        <ul>
-        <li>Vêtements : la composition des tissus (noms et proportions des matières)</li>
-        <li>Meubles : la composition, la taille, s'il faut le monter soi-même, de quel cuir il s'agit</li>
-        <li>Electroménagers : l'étiquetage énergétique, la disponibilité des pièces de rechange</li>
-        </ul>"
+              <br/>Par exemple :
+              <ul>
+                <li>Vêtements : la composition des tissus (noms et proportions des matières)</li>
+                <li>Meubles : la composition, la taille, s'il faut le monter soi-même, de quel cuir il s'agit</li>
+                <li>Electroménagers : l'étiquetage énergétique, la disponibilité des pièces de rechange</li>
+              </ul>"
       detailInputs:
         - label: Quel est-le problème&#160;?
           rank: 1
@@ -46,6 +46,8 @@
     - title: Informations du produit ou notice uniquement en langue étrangère
       example: Aucune information traduite en français
       subcategoriesTitle: Où avez-vous acheté votre produit&#160;?
+      tags:
+        - ReponseConso
       subcategories:
         - title: En France (Outre-mer compris)
           detailTitle: Problème de langue française
@@ -69,6 +71,8 @@
             title: L'obligation d'utiliser la langue française ne s'applique pas dans les autres pays.
     - title: Informations trompeuses ou fausses
       example: 'Exemple : "en or" alors qu''il s''agit de "plaqué or", "fabriqué en France" alors que ce n''est pas le cas '
+      tags:
+        - ReponseConso
       detailInputs:
         - label: Quel est le type de produit&#160;?
           rank: 1
@@ -113,7 +117,9 @@
   subcategoriesTitle: Quel est le type de produit&#160;?
   subcategories:
     - title: Un produit emballé par le fabricant comme une boîte de conserve, un paquet, une bouteille
-      example: "La quantité est directement imprimée sur l'emballage par le fabricant"
+      tags:
+        - ReponseConso
+      example: 'La quantité est directement imprimée sur l''emballage par le fabricant'
       description: Une petite différence entre la quantité écrite sur l'emballage et la quantité de votre produit est autorisée.
         <br/>Par contre, ces différences sont encadrées par la loi.
         <br/>Par exemple, un produit marqué "1 kg" a le droit d'avoir 15g en moins et donc de peser 0, 985 kg.

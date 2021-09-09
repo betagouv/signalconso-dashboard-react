@@ -1,7 +1,7 @@
 - title: Téléphonie / internet
   subcategories:
     - title: 'Mon forfait : prix, contrat et facture'
-      example: "Exemple : mon forfait a été augmenté, je ne suis pas d'accord avec ma facture"
+      example: 'Exemple : mon forfait a été augmenté, je ne suis pas d''accord avec ma facture'
       subcategories:
         - title: Le prix de mon forfait a été augmenté (ou va être augmenté)
           example: "Exemple : ajout automatique d'une option payante, augmentation du nombre d'heures, augmentation des données disponibles..."
@@ -15,13 +15,17 @@
                   information: !!import/single ../common/info/tel.yml
                 - title: Non, j'ai reçu seulement un sms
                   tags:
+                    - ReponseConso
                     - Litige contractuel
                 - title: Non, je n'ai rien reçu du tout
                   tags:
+                    - ReponseConso
                     - Litige contractuel
             - title: Modification concernant les sms, mms ou appels
-              example: "Exemple : augmentation du nombre d'heures, augmentation du nombre de sms..."
-              subcategoriesTitle: Avez-vous reçu un email ou un courrier pour vous prévenir (un mois avant) ?
+              tags:
+                - ReponseConso
+              example: 'Exemple : augmentation du nombre d''heures, augmentation du nombre de sms...'
+              subcategoriesTitle: Avez-vous reçu un email ou un courrier pour vous prévenir (un mois avant) ?
               subcategories:
                 - title: Oui, j'ai été prévenu par email ou courrier
                   information: !!import/single ../common/info/tel.yml
@@ -36,7 +40,9 @@
               subcategoriesTitle: Quel est le type d'option ?
               subcategories:
                 - title: option liée à la data (Go), aux appels, aux sms, au débit, à la présentation du numéro
-                  subcategoriesTitle: Avez-vous reçu un email ou un courrier pour vous prévenir ?
+                  tags:
+                    - ReponseConso
+                  subcategoriesTitle: Avez-vous reçu un email ou un courrier pour vous prévenir ?
                   subcategories:
                     - title: Oui, j'ai été prévenu par email ou courrier
                       information: !!import/single ../common/info/tel.yml
@@ -80,12 +86,15 @@
                       optionnal: true
             - title: Le lien pour refuser l'augmentation de mon forfait ne fonctionne pas
               tags:
+                - ReponseConso
                 - Litige contractuel
         - title: L'offre / la promotion que je devais avoir n'a pas été appliquée
           tags:
+            - ReponseConso
             - Litige contractuel
         - title: Autre problème de facturation ou de contrat
           tags:
+            - ReponseConso
             - Litige contractuel
           subcategories:
             - title: Utilisation de mon forfait à l'étranger
@@ -107,15 +116,15 @@
       example: 'Exemple : spams, appel incessant, rappel vers un numéro payant'
       subcategories:
         - title: Je reçois des appels indésirables alors que je suis sur BlocTel
+          tags:
+            - ReponseConso
         - title: J'ai répondu à un sms ou j'ai rappelé un numéro qui était payant sans le savoir
           information:
-            content:
-              Vous devez rentrer le numéro en question et la date sur le site <a href="https://a.surmafacture.fr" target="_blank" /> surmafacture.fr </a>
+            content: Vous devez rentrer le numéro en question et la date sur le site <a href="https://a.surmafacture.fr" target="_blank" /> surmafacture.fr </a>
               <br> La répression des fraudes aura accès à votre signalement directement avec le site surmafacture.fr
             actions:
               - question: Comment bloquer ces numéros payants&#160;?
-                answer:
-                  Votre opérateur téléphonique doit vous proposer une option gratuite de blocage des numéros payants appelés "surtaxés".
+                answer: Votre opérateur téléphonique doit vous proposer une option gratuite de blocage des numéros payants appelés "surtaxés".
                   <br> Vous pouvez activer cette option dans votre espace client ou auprès d'un conseiller.
                   <br> Cette option ne bloque pas la totalité des numéros surtaxés.
                   <br>Les numéros peu surtaxés (maximum 50 centimes l'appel) et les services de renseignements (numéro commençant par 118) ne sont pas compris dans ce blocage.
@@ -123,6 +132,7 @@
         - title: J'ai eu un problème de démarchage téléphonique
           companyKind: PHONE
           tags:
+            - ReponseConso
             - Démarchage téléphonique
           detailInputs:
             - label: Date de l'appel
@@ -141,13 +151,18 @@
     - title: Autre
       example: 'Exemple : téléphone acheté avec le forfait, service client injoignable'
       tags:
+        - ReponseConso
         - Litige contractuel
       subcategories:
         - title: Qualité du service client
           example: 'Exemple : pas de réponse du service client, service client payant'
         - title: Téléphone acheté avec le forfait
 - title: Abonnement télévision
+  tags:
+    - ReponseConso
 - title: Abonnement presse
+  tags:
+    - ReponseConso
 - title: Produit dangereux
   example: 'Exemple : téléphone, accessoire'
   tags:
