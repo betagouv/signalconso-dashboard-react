@@ -30,8 +30,9 @@ export const ForgottenPasswordDialog = ({value, onSubmit, loading, error, childr
     register,
     getValues,
     setValue,
+    handleSubmit,
     formState: {errors, isValid},
-  } = useForm<Form>({mode: 'onSubmit'})
+  } = useForm<Form>()
 
   useEffect(() => {
     setValue('emailForgotten', value ?? '')
@@ -51,12 +52,11 @@ export const ForgottenPasswordDialog = ({value, onSubmit, loading, error, childr
 
   return (
     <ScDialog
-      confirmDisabled={!isValid || loading}
       loading={loading}
       title={m.forgottenPassword}
       confirmLabel={m.createNewPassword}
       maxWidth="xs"
-      onConfirm={(e, close) => submit(getValues(), close)}
+      onConfirm={(e, close) => handleSubmit(() => submit(getValues(), close))()}
       content={
         <>
           {error !== undefined && (
@@ -72,6 +72,8 @@ export const ForgottenPasswordDialog = ({value, onSubmit, loading, error, childr
             autoFocus
             type="email"
             label={m.email}
+            error={!!errors.emailForgotten}
+            helperText={errors.emailForgotten?.message}
             {...register('emailForgotten', {
               required: {value: true, message: m.required},
               pattern: {value: regexp.email, message: m.invalidEmail},
