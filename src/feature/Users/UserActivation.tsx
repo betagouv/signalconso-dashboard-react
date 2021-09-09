@@ -1,21 +1,23 @@
-import React, {useEffect, useState} from 'react'
+import React, {useEffect, useMemo} from 'react'
 import {useToast} from '../../core/toast'
 import {ScInputPassword} from '../../shared/InputPassword/InputPassword'
 import {Controller, useForm} from 'react-hook-form'
-import {UserToActivate} from '../../core/api'
+import {TokenInfo, UserToActivate} from '../../core/api'
 import {useI18n} from '../../core/i18n'
 import {ScInput} from '../../shared/Input/ScInput'
 import {makeStyles} from '@material-ui/core/styles'
 import {Checkbox, FormControl, FormControlLabel, FormHelperText, Theme} from '@material-ui/core'
-import {useCssUtils} from '../../core/helper/useCssUtils'
 import {ScButton} from '../../shared/Button/Button'
 import {Page, PageTitle} from '../../shared/Layout'
 import querystring from 'querystring'
 import {useHistory, useLocation, useParams} from 'react-router'
 import {siteMap} from '../../core/siteMap'
 import {useAsync} from '@alexandreannic/react-hooks-lib'
-import {Alert, AlertTitle} from '@material-ui/lab'
+import {Alert, PanelFoot} from 'mui-extension'
 import {AccountEventActions, ActionResultNames, EventCategories, Matomo} from '../../core/analyics/Matomo'
+import {Txt} from 'mui-extension/lib/Txt/Txt'
+import {useFetcher} from '@alexandreannic/react-hooks-lib/lib'
+import {Panel, PanelBody} from '../../shared/Panel'
 
 interface UserActivationForm extends UserToActivate {
   repeatPassword: string
@@ -23,40 +25,29 @@ interface UserActivationForm extends UserToActivate {
 }
 
 const useStyles = makeStyles((t: Theme) => ({
-  foot: {
-    marginTop: t.spacing(2),
-    display: 'flex',
-    alignItems: 'center',
-  },
   hint: {
-    marginBottom: t.spacing(1),
     '& a': {
       color: t.palette.primary.main,
       fontWeight: t.typography.fontWeightBold,
     },
   },
-  alert: {
-    marginBottom: t.spacing(2),
-  },
 }))
 
 interface Props {
-  onActivateUser: (user: UserToActivate, token: string, companySiret?: string) => Promise<any>
-  onFetchTokenInfo: (token: string, companySiret?: string) => Promise<any>
+  onActivateUser: (user: UserToActivate, token: string, companySiret?: string) => Promise<void>
+  onFetchTokenInfo: (token: string, companySiret?: string) => Promise<TokenInfo>
 }
 
 export const UserActivation = ({onActivateUser, onFetchTokenInfo}: Props) => {
   const {m} = useI18n()
   const _activate = useAsync(onActivateUser)
-  const _tokenInfo = useAsync(onFetchTokenInfo)
-  const cssUtils = useCssUtils()
+  const _tokenInfo = useFetcher(onFetchTokenInfo)
   const css = useStyles()
   const {toastSuccess, toastError} = useToast()
+
   const {search} = useLocation()
   const history = useHistory()
-  const [email, setEmail] = useState('')
-  const [token, setToken] = useState<string>('')
-  const [canActivate, setCanActivate] = useState<boolean>(false)
+
   const {siret} = useParams<{siret: string}>()
 
   const {
@@ -70,29 +61,20 @@ export const UserActivation = ({onActivateUser, onFetchTokenInfo}: Props) => {
     defaultValues: {email: ' '},
   })
 
-  useEffect(() => {
-    const token = querystring.parse(search.replace(/^\?/, '')).token as string
-    setToken(token)
-    console.log('-----------------------------------------------')
-    console.log(siret)
+  const urlToken = useMemo(() => querystring.parse(search.replace(/^\?/, '')).token as string, [])
 
-    _tokenInfo
-      .call(token, siret)
-      .then(tokenInfo => {
-        setEmail(tokenInfo.emailedTo)
-        setCanActivate(true)
-      })
-      .catch(e => {
-        setCanActivate(false)
-      })
+  useEffect(() => {
+    _tokenInfo.fetch({}, urlToken, siret)
   }, [])
 
   const onSubmit = (form: UserActivationForm) => {
+    if (!_tokenInfo.entity) return
     _activate
-      .call({...form, email: email}, token, siret)
+      .call({...form, email: _tokenInfo.entity.emailedTo}, urlToken, siret)
       .then(_ => {
         Matomo.trackEvent(EventCategories.account, AccountEventActions.registerUser, ActionResultNames.success)
-        history.push(siteMap.login)
+        toastSuccess(m.accountActivated)
+        setTimeout(() => history.push(siteMap.login), 400)
       })
       .catch(e => {
         Matomo.trackEvent(EventCategories.account, AccountEventActions.registerUser, ActionResultNames.fail)
@@ -104,97 +86,98 @@ export const UserActivation = ({onActivateUser, onFetchTokenInfo}: Props) => {
     <Page size="small">
       <PageTitle>{m.createMyAccount}</PageTitle>
 
-      {!canActivate && (
-        <Alert id="subscriptions-info" variant={'outlined'} className={css.hint} severity="error">
-          <AlertTitle>{m.cannotActivateAccountAlertTitle}</AlertTitle>
-          <div dangerouslySetInnerHTML={{__html: m.cannotActivateAccountAlertInfo}} />
-        </Alert>
-      )}
-
-      {canActivate && (
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <ScInput
-            className={cssUtils.marginBottom}
-            fullWidth
-            error={!!errors.email}
-            helperText={' '}
-            disabled={true}
-            label={m.email}
-            value={email}
-          />
-          <ScInput
-            className={cssUtils.marginBottom}
-            fullWidth
-            error={!!errors.firstName}
-            helperText={' '}
-            label={m.firstName}
-            {...register('firstName', {
-              required: {value: true, message: m.required},
-            })}
-          />
-          <ScInput
-            className={cssUtils.marginBottom}
-            fullWidth
-            error={!!errors.lastName}
-            helperText={' '}
-            label={m.lastName}
-            {...register('lastName', {
-              required: {value: true, message: m.required},
-            })}
-          />
-          <ScInputPassword
-            className={cssUtils.marginBottom}
-            inputProps={{
-              autocomplete: 'false',
-            }}
-            autoComplete="false"
-            error={!!errors.password}
-            helperText={errors.password?.message ?? ' '}
-            fullWidth
-            label={m.password}
-            {...register('password', {
-              required: {value: true, message: m.required},
-              minLength: {value: 8, message: m.passwordNotLongEnough},
-            })}
-          />
-          <ScInputPassword
-            className={cssUtils.marginBottom}
-            inputProps={{
-              autocomplete: 'false',
-            }}
-            autoComplete="false"
-            error={!!errors.repeatPassword}
-            helperText={errors.repeatPassword?.message ?? ' '}
-            fullWidth
-            label={m.newPasswordConfirmation}
-            {...register('repeatPassword', {
-              required: {value: true, message: m.required},
-              minLength: {value: 8, message: m.passwordNotLongEnough},
-              validate: value => value === getValues().password || m.passwordDoesntMatch,
-            })}
-          />
-          <Controller
-            name="consent"
-            defaultValue={false}
-            control={control}
-            rules={{required: {value: true, message: m.required}}}
-            render={({field}) => (
-              <FormControl required error={!!errors.consent}>
-                <FormControlLabel
-                  control={<Checkbox {...field} checked={field.value} />}
-                  label={<div className={css.hint} dangerouslySetInnerHTML={{__html: m.consent}} />}
+      <Panel loading={_tokenInfo.loading}>
+        {_tokenInfo.error ? (
+          <Alert type="error" className={css.hint}>
+            <Txt size="big" block bold gutterBottom>
+              {m.cannotActivateAccountAlertTitle}
+            </Txt>
+            <div dangerouslySetInnerHTML={{__html: m.cannotActivateAccountAlertInfo}} />
+          </Alert>
+        ) : (
+          _tokenInfo.entity && (
+            <form onSubmit={handleSubmit(onSubmit)}>
+              <PanelBody>
+                <ScInput
+                  fullWidth
+                  error={!!errors.email}
+                  helperText={errors.email?.message ?? ' '}
+                  disabled={true}
+                  label={m.email}
+                  value={_tokenInfo.entity.emailedTo}
                 />
-                <FormHelperText> {errors.consent?.message ?? ' '}</FormHelperText>
-              </FormControl>
-            )}
-          />
-          <div className={css.foot}>
-            <ScButton loading={_activate.loading} type="submit" color="primary" variant="contained">
-              {m.activateMyAccount}
-            </ScButton>
-          </div>
-        </form>
-      )}
+                <ScInput
+                  fullWidth
+                  error={!!errors.firstName}
+                  helperText={errors.firstName?.message ?? ' '}
+                  label={m.firstName}
+                  {...register('firstName', {
+                    required: {value: true, message: m.required},
+                  })}
+                />
+                <ScInput
+                  fullWidth
+                  error={!!errors.lastName}
+                  helperText={errors.lastName?.message ?? ' '}
+                  label={m.lastName}
+                  {...register('lastName', {
+                    required: {value: true, message: m.required},
+                  })}
+                />
+                <ScInputPassword
+                  inputProps={{
+                    autocomplete: 'false',
+                  }}
+                  autoComplete="false"
+                  error={!!errors.password}
+                  helperText={errors.password?.message ?? ' '}
+                  fullWidth
+                  label={m.password}
+                  {...register('password', {
+                    required: {value: true, message: m.required},
+                    minLength: {value: 8, message: m.passwordNotLongEnough},
+                  })}
+                />
+                <ScInputPassword
+                  inputProps={{
+                    autocomplete: 'false',
+                  }}
+                  autoComplete="false"
+                  error={!!errors.repeatPassword}
+                  helperText={errors.repeatPassword?.message ?? ' '}
+                  fullWidth
+                  label={m.newPasswordConfirmation}
+                  {...register('repeatPassword', {
+                    required: {value: true, message: m.required},
+                    minLength: {value: 8, message: m.passwordNotLongEnough},
+                    validate: value => value === getValues().password || m.passwordDoesntMatch,
+                  })}
+                />
+                <Controller
+                  name="consent"
+                  defaultValue={false}
+                  control={control}
+                  rules={{required: {value: true, message: m.required}}}
+                  render={({field}) => (
+                    <FormControl required error={!!errors.consent}>
+                      <FormControlLabel
+                        control={<Checkbox {...field} checked={field.value} />}
+                        label={<div className={css.hint} dangerouslySetInnerHTML={{__html: m.consent}} />}
+                      />
+                      <FormHelperText> {errors.consent?.message ?? ' '}</FormHelperText>
+                    </FormControl>
+                  )}
+                />
+              </PanelBody>
+              <PanelFoot>
+                <ScButton loading={_activate.loading} type="submit" color="primary" variant="contained">
+                  {m.activateMyAccount}
+                </ScButton>
+              </PanelFoot>
+            </form>
+          )
+        )}
+      </Panel>
     </Page>
   )
 }
