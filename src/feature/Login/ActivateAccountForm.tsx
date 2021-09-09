@@ -53,7 +53,7 @@ export const ActivateAccountForm = ({register: registerAction}: Props) => {
       .action(form.siret, form.code, form.email)
       .then(() => {
         toastSuccess(m.companyRegisteredEmailSent)
-        history.push(siteMap.login)
+        setTimeout(() => history.push(siteMap.login), 400)
         Matomo.trackEvent(EventCategories.account, AccessEventActions.activateCompanyCode, ActionResultNames.success)
       })
       .catch(err => {

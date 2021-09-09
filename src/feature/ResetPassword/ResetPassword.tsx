@@ -8,7 +8,7 @@ import React from 'react'
 import {useI18n} from '../../core/i18n'
 import {PanelFoot} from '../../shared/Panel/PanelFoot'
 import {ScButton} from '../../shared/Button/Button'
-import {useParams} from 'react-router'
+import {useHistory, useParams} from 'react-router'
 import {Id} from '../../core/api'
 import {useAsync} from '@alexandreannic/react-hooks-lib'
 import {makeStyles} from '@material-ui/core/styles'
@@ -17,6 +17,7 @@ import {HelpContactInfo} from '../../shared/HelpContactInfo/HelpContactInfo'
 import {AuthenticationEventActions, EventCategories, Matomo} from '../../core/analyics/Matomo'
 import {useToast} from '../../core/toast'
 import {fnSwitch} from '../../core/helper/utils'
+import {siteMap} from '../../core/siteMap'
 
 interface Form {
   newPassword: string
@@ -38,6 +39,7 @@ export const ResetPassword = ({onResetPassword}: Props) => {
   const {token} = useParams<{token: Id}>()
   const _resetPassword = useAsync(onResetPassword)
   const css = useStyles()
+  const history = useHistory()
   const {toastError, toastSuccess} = useToast()
   const {
     register,
@@ -52,6 +54,7 @@ export const ResetPassword = ({onResetPassword}: Props) => {
       .call(form.newPassword, token)
       .then(() => {
         toastSuccess(m.resetPasswordSuccess)
+        setTimeout(() => history.push(siteMap.login), 400)
         Matomo.trackEvent(EventCategories.account, AuthenticationEventActions.resetPasswordSuccess)
       })
       .catch(err => {
