@@ -13,7 +13,6 @@ import {lazy} from '../../helper/Lazy'
 
 export class AnomalyClient {
   constructor(private client: ApiClientApi) {
-    console.log('anomaliesJSON', anomaliesJSON)
   }
 
   readonly getAnomalies = lazy(() => Promise.resolve((anomaliesJSON as any).list.map(AnomalyClient.enrichAnomaly) as Anomaly[]))
