@@ -7,7 +7,7 @@ import {useCompaniesContext} from '../../core/context/CompaniesContext'
 import {useCssUtils} from '../../core/helper/useCssUtils'
 import {Checkbox, Icon, makeStyles, Theme, Tooltip} from '@material-ui/core'
 import {styleUtils} from '../../core/theme'
-import {Confirm, Fender, IconBtn} from 'mui-extension/lib'
+import {Fender, IconBtn} from 'mui-extension/lib'
 import {Link} from 'react-router-dom'
 import {siteMap} from '../../core/siteMap'
 import {usePersistentState} from 'react-persistent-state'
@@ -39,7 +39,7 @@ const useStyles = makeStyles((t: Theme) => ({
   },
   tdName: {
     lineHeight: 1.4,
-    maxWidth: 190,
+    maxWidth: 390,
   },
   tdName_desc: {
     fontSize: t.typography.fontSize * 0.875,
@@ -172,18 +172,24 @@ export const CompaniesToActivate = () => {
             head: m.name,
             className: css.tdName,
             row: _ => (
-              <>
-                <span className={css.tdName_label}>{_.company.name}</span>
-                <br />
-                <span className={css.tdName_desc}>{_.company.siret}</span>
-              </>
+              <Tooltip title={_.company.name}>
+                <span>
+                  <span className={css.tdName_label}>{_.company.name}</span>
+                  <br/>
+                  <span className={css.tdName_desc}>{_.company.siret}</span>
+                </span>
+              </Tooltip>
             ),
           },
           {
             head: m.address,
             id: 'address',
             className: css.tdAddress,
-            row: _ => <AddressComponent address={_.company.address} />,
+            row: _ => (
+              <Tooltip title={<AddressComponent address={_.company.address}/>}>
+                <span><AddressComponent address={_.company.address}/></span>
+              </Tooltip>
+            ),
           },
           {
             head: m.created_at,

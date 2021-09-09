@@ -7,7 +7,7 @@ interface Props {
 
 export const AddressComponent = ({address}: Props) => {
   return (
-    <>
+    <span>
       {address.number}&nbsp;
       {address.street}&nbsp;
       {address.addressSupplement}
@@ -20,6 +20,6 @@ export const AddressComponent = ({address}: Props) => {
           {address.country}
         </>
       )}
-    </>
+    </span>
   )
 }

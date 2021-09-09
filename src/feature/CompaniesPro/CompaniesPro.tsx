@@ -21,6 +21,7 @@ import {useToast} from '../../core/toast'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
 import {ConfirmDisableNotificationDialog} from './ConfirmDisableNotificationDialog'
 import {groupBy} from '../../core/lodashNamedExport'
+import {PanelFoot} from '../../shared/Panel/PanelFoot'
 
 const useStyles = makeStyles((t: Theme) => ({
   tdName_label: {
@@ -29,7 +30,7 @@ const useStyles = makeStyles((t: Theme) => ({
   },
   tdName: {
     lineHeight: 1.4,
-    maxWidth: 170,
+    maxWidth: 200,
   },
   tdName_desc: {
     fontSize: t.typography.fontSize * 0.875,
@@ -43,6 +44,7 @@ const useStyles = makeStyles((t: Theme) => ({
   tdNotification: {
     width: 0,
     textAlign: 'center',
+    padding: 0,
   },
   fender: {
     margin: `${t.spacing(1)}px auto ${t.spacing(2)}px auto`,
@@ -110,30 +112,33 @@ export const CompaniesPro = () => {
           companies =>
             companies.length > 5 && (
               <Panel>
-                <PanelBody className={classes(cssUtils.flex, cssUtils.alignCenter, cssUtils.spaceBetween)}>
+                <PanelBody>
                   <Txt block size="big" bold>
                     {m.notifications}
                   </Txt>
-                  <div>
-                    <ScButton
-                      disabled={allNotificationsAreBlocked}
-                      color="primary"
-                      icon="notifications_off"
-                      onClick={() => setState(companies.map(_ => _.id))}
-                    >
-                      {m.disableAll}
-                    </ScButton>
-                    <ScButton
-                      disabled={_blockedNotifications.list.entity?.length === 0}
-                      color="primary"
-                      icon="notifications_active"
-                      className={cssUtils.marginRight}
-                      onClick={() => _blockedNotifications.remove.call(companies.map(_ => _.id))}
-                    >
-                      {m.enableAll}
-                    </ScButton>
-                  </div>
+                  <Txt block color="hint">
+                    {m.notificationAcceptForCompany}
+                  </Txt>
                 </PanelBody>
+                <PanelFoot alignEnd>
+                  <ScButton
+                    disabled={allNotificationsAreBlocked}
+                    color="primary"
+                    icon="notifications_off"
+                    onClick={() => setState(companies.map(_ => _.id))}
+                  >
+                    {m.disableAll}
+                  </ScButton>
+                  <ScButton
+                    disabled={_blockedNotifications.list.entity?.length === 0}
+                    color="primary"
+                    icon="notifications_active"
+                    className={cssUtils.marginRight}
+                    onClick={() => _blockedNotifications.remove.call(companies.map(_ => _.id))}
+                  >
+                    {m.enableAll}
+                  </ScButton>
+                </PanelFoot>
               </Panel>
             ),
         )
@@ -151,11 +156,11 @@ export const CompaniesPro = () => {
               head: m.name,
               row: _ => (
                 <Tooltip title={_.name}>
-                  <>
+                  <span>
                     <span className={css.tdName_label}>{_.name}</span>
-                    <br />
+                    <br/>
                     <span className={css.tdName_desc}>{_.siret}</span>
-                  </>
+                  </span>
                 </Tooltip>
               ),
             },
@@ -163,16 +168,18 @@ export const CompaniesPro = () => {
               head: m.address,
               id: 'address',
               className: css.tdAddress,
-              row: _ => <AddressComponent address={_.address} />,
+              row: _ =>
+                <Tooltip title={<AddressComponent address={_.address}/>}>
+                  <span>
+                    <AddressComponent address={_.address}/>
+                  </span>
+                </Tooltip>,
             },
             {
               head: (
-                <Tooltip title={m.notificationAcceptForCompany}>
-                  <span className={classes(cssUtils.nowrap, cssUtils.vaMiddle)}>
-                    {m.notification}&nbsp;
-                    <Icon className={cssUtils.inlineIcon}>help</Icon>
-                  </span>
-                </Tooltip>
+                <span className={classes(cssUtils.nowrap, cssUtils.vaMiddle)}>
+                  {m.notification}
+                </span>
               ),
               id: 'status',
               className: css.tdNotification,
