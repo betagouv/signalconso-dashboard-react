@@ -321,10 +321,7 @@ export const messagesFr = {
   `,
   cannotActivateAccountAlertTitle: `Le lien sur lequel vous avez cliqué n'est plus valide.`,
   cannotActivateAccountAlertInfo: `
-    <br/>
-    Si vous avez déjà créé votre compte, vous pouvez vous <a href="href="/connexion"/conditions-generales-utilisation/professionnel">connecter</a> à l'aide de votre adresse email et mot de passe.
-    <br/>
-    <br/>
+    <p>Si vous avez déjà créé votre compte, vous pouvez vous <a href="href="/connexion"/conditions-generales-utilisation/professionnel">connecter</a> à l'aide de votre adresse email et mot de passe.</p>
     Sinon, vous pouvez demander au gestionnaire de l'entreprise de vous envoyer une nouvelle invitation.
   `,
   alreadySelectedCompany: (name?: string) => `L'entreprise ${name ?? ''} est déjà sélectionnée`,
