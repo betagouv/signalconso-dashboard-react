@@ -20,12 +20,7 @@ import {classes} from '../../core/helper/utils'
 import {Btn, Fender} from 'mui-extension/lib'
 import {EntityIcon} from '../../core/EntityIcon'
 import {ScButton} from '../../shared/Button/Button'
-import {
-  mapArrayFromQuerystring,
-  mapDateFromQueryString,
-  mapDatesToQueryString,
-  useQueryString,
-} from '../../core/helper/useQueryString'
+import {mapArrayFromQuerystring, mapDateFromQueryString, mapDatesToQueryString, useQueryString} from '../../core/helper/useQueryString'
 import {fromNullable} from 'fp-ts/lib/Option'
 import {useToast} from '../../core/toast'
 import {Config} from '../../conf/config'
@@ -35,6 +30,7 @@ import {useCompaniesContext} from '../../core/context/CompaniesContext'
 import {SelectCompaniesByPro} from '../../shared/SelectCompaniesByPro/SelectCompaniesByPro'
 import compose from '../../core/helper/compose'
 import {Alert} from 'mui-extension'
+import {DebouncedInput} from 'shared/DebouncedInput/DebouncedInput'
 
 const useStyles = makeStyles((t: Theme) => ({
   tdFiles: {
@@ -100,15 +96,15 @@ export const ReportsPro = () => {
   const css = useStyles()
   const cssUtils = useCssUtils()
 
-  const isFirstVisit = useMemo(
-    () => _reports.list?.totalSize === 1 && _reports.list.data[0].report.status === ReportStatus.UnreadForPro,
-    [_reports.list],
-  )
-
   const hasFilters = useMemo(() => {
     const {limit, offset, ...values} = _reports.filters
     return Object.keys(cleanObject(values)).length > 0 || offset > 0
   }, [_reports.filters])
+
+  const isFirstVisit = useMemo(
+    () => !hasFilters && _reports.list?.data.every(_ => _.report.status === ReportStatus.UnreadForPro),
+    [_reports.list],
+  )
 
   const displayFilters = useMemo(
     () => (_reports.list && _reports.list.totalSize > minRowsBeforeDisplayFilters) || hasFilters,
@@ -161,58 +157,80 @@ export const ReportsPro = () => {
 
       {isFirstVisit && (
         <Alert type="success" deletable persistentDelete className={cssUtils.marginBottom2}>
-          <span dangerouslySetInnerHTML={{__html: m.yourAccountIsActivated}} />
+          <span dangerouslySetInnerHTML={{__html: m.yourAccountIsActivated}}/>
         </Alert>
       )}
-      {_companies.accessibleByPro.entity && (
+      {fromNullable(_companies.accessibleByPro.entity).map(companies => (
         <>
           {displayFilters && (
             <Panel elevation={3} className={css.filters}>
               <PanelBody className={css.filtersBody}>
                 <Grid container spacing={1}>
                   <Grid item sm={4} xs={12}>
-                    <SelectCompaniesByPro
-                      values={_reports.filters.siretSirenList}
-                      fullWidth
+                    <DebouncedInput
+                      value={_reports.filters.siretSirenList}
                       onChange={_ => _reports.updateFilters(prev => ({...prev, siretSirenList: _}))}
-                      className={cssUtils.marginRight}
-                      accessibleCompanies={_companies.accessibleByPro.entity}
-                    />
-                  </Grid>
-                  <Grid item sm={4} xs={12}>
-                    <SelectDepartments
-                      className={cssUtils.marginRight}
-                      fullWidth
-                      values={_reports.filters.departments}
-                      onChange={departments => _reports.updateFilters(prev => ({...prev, departments}))}
-                    />
-                  </Grid>
-                  <Grid item sm={4} xs={12}>
-                    <ScSelect
-                      id="test"
-                      label={m.status}
-                      fullWidth
-                      onChange={event => {
-                        _reports.updateFilters(prev => ({...prev, status: event.target.value as string}))
-                      }}
-                      value={_reports.filters.status ?? ''}
                     >
-                      <MenuItem value="">&nbsp;</MenuItem>
-                      {(_reportStatus.entity ?? []).map(status => (
-                        <MenuItem key={status} value={status}>
-                          <ReportStatusChip dense fullWidth inSelectOptions status={status} />
-                        </MenuItem>
-                      ))}
-                    </ScSelect>
+                      {(value, onChange) => (
+                        <SelectCompaniesByPro
+                          values={value} onChange={onChange} fullWidth
+                          className={cssUtils.marginRight}
+                          accessibleCompanies={companies}
+                        />
+                      )}
+                    </DebouncedInput>
+                  </Grid>
+                  <Grid item sm={4} xs={12}>
+                    <DebouncedInput
+                      value={_reports.filters.departments}
+                      onChange={departments => _reports.updateFilters(prev => ({...prev, departments}))}
+                    >
+                      {(value, onChange) => (
+                        <SelectDepartments
+                          values={value}
+                          onChange={onChange}
+                          className={cssUtils.marginRight}
+                          fullWidth
+                        />
+                      )}
+                    </DebouncedInput>
+                  </Grid>
+                  <Grid item sm={4} xs={12}>
+                    <DebouncedInput
+                      value={_reports.filters.status ?? ''}
+                      onChange={event => {
+                        _reports.updateFilters(prev => ({...prev, status: event as string}))
+                      }}
+                    >
+                      {(value, onChange) => (
+                        <ScSelect
+                          value={value}
+                          onChange={(e) => onChange(e.target.value as string)}
+                          id="test"
+                          label={m.status}
+                          fullWidth
+                        >
+                          <MenuItem value="">&nbsp;</MenuItem>
+                          {(_reportStatus.entity ?? []).map(status => (
+                            <MenuItem key={status} value={status}>
+                              <ReportStatusChip dense fullWidth inSelectOptions status={status}/>
+                            </MenuItem>
+                          ))}
+                        </ScSelect>
+                      )}
+                    </DebouncedInput>
                   </Grid>
                 </Grid>
-                <PeriodPicker
-                  fullWidth
+                <DebouncedInput<[Date | undefined, Date | undefined]>
                   value={[_reports.filters.start, _reports.filters.end]}
                   onChange={([start, end]) =>
                     _reports.updateFilters(prev => ({...prev, start: start ?? prev.start, end: end ?? prev.end}))
                   }
-                />
+                >
+                  {(value, onChange) => (
+                    <PeriodPicker fullWidth value={value} onChange={onChange}/>
+                  )}
+                </DebouncedInput>
                 <div className={css.actions}>
                   <Badge color="error" badgeContent={filtersCount} hidden={filtersCount === 0}>
                     <ScButton icon="clear" onClick={_reports.clearFilters} variant="outlined" color="primary">
@@ -343,7 +361,7 @@ export const ReportsPro = () => {
             />
           </Panel>
         </>
-      )}
+      )).toUndefined()}
     </Page>
   )
 }
