@@ -209,20 +209,22 @@ export const CompaniesRegistered = () => {
         ]}
         renderEmptyState={
           <Fender title={m.noCompanyFound} icon="store" className={css.fender}>
-            <SelectCompany
-              onChange={company => {
-                const {siret, name, address, activityCode} = company
-                if (name && address) {
-                  _companyCreate.fetch({}, {siret, name, address, activityCode}).then(() => toastSuccess(m.companyCreated))
-                } else {
-                  toastError({message: m.cannotCreateCompanyMissingInfo})
-                }
-              }}
-            >
-              <ScButton variant="contained" color="primary" icon="add" className={cssUtils.marginTop}>
-                {m.registerACompany}
-              </ScButton>
-            </SelectCompany>
+            {connectedUser.isAdmin && (
+              <SelectCompany
+                onChange={company => {
+                  const {siret, name, address, activityCode} = company
+                  if (name && address) {
+                    _companyCreate.fetch({}, {siret, name, address, activityCode}).then(() => toastSuccess(m.companyCreated))
+                  } else {
+                    toastError({message: m.cannotCreateCompanyMissingInfo})
+                  }
+                }}
+              >
+                <ScButton variant="contained" color="primary" icon="add" className={cssUtils.marginTop}>
+                  {m.registerACompany}
+                </ScButton>
+              </SelectCompany>
+            )}
           </Fender>
         }
       />
