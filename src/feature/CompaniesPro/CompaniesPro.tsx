@@ -158,7 +158,7 @@ export const CompaniesPro = () => {
                 <Tooltip title={_.name}>
                   <span>
                     <span className={css.tdName_label}>{_.name}</span>
-                    <br/>
+                    <br />
                     <span className={css.tdName_desc}>{_.siret}</span>
                   </span>
                 </Tooltip>
@@ -168,19 +168,16 @@ export const CompaniesPro = () => {
               head: m.address,
               id: 'address',
               className: css.tdAddress,
-              row: _ =>
-                <Tooltip title={<AddressComponent address={_.address}/>}>
+              row: _ => (
+                <Tooltip title={<AddressComponent address={_.address} />}>
                   <span>
-                    <AddressComponent address={_.address}/>
+                    <AddressComponent address={_.address} />
                   </span>
-                </Tooltip>,
+                </Tooltip>
+              ),
             },
             {
-              head: (
-                <span className={classes(cssUtils.nowrap, cssUtils.vaMiddle)}>
-                  {m.notification}
-                </span>
-              ),
+              head: <span className={classes(cssUtils.nowrap, cssUtils.vaMiddle)}>{m.notification}</span>,
               id: 'status',
               className: css.tdNotification,
               row: _ => (

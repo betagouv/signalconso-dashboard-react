@@ -1,15 +1,17 @@
 // Env variables must start with 'REACT_APP_' to be considered by CreateReactApp
+import {defaultValue, env, int} from '@alexandreannic/ts-utils/lib/common'
+
 export const Config = {
-  isDev: process.env.NODE_ENV === 'development',
-  apiBaseUrl: (process.env.REACT_APP_API_BASE_URL ?? 'http://localhost:9000').replace(/\/$/, ''),
-  // apiBaseUrl: (process.env.REACT_APP_API_BASE_URL ?? 'https://app-513c11a7-052f-4ff1-8670-5a17dacb7327.cleverapps.io/').replace(/\/$/, ''),
-  appBaseUrl: (process.env.REACT_APP_APP_BASE_URL ?? 'http://localhost:4200').replace(/\/$/, ''),
-  sentryDsn: null,
-  basePath: '/',
+  isDev: env()('NODE_ENV') === 'development',
+  apiBaseUrl: env(defaultValue('http://localhost:9000'))('REACT_APP_API_BASE_URL').replace(/\/$/, ''),
+  appBaseUrl: env(defaultValue('http://localhost:4200'))('REACT_APP_APP_BASE_URL').replace(/\/$/, ''),
+  basePath: env(defaultValue('/'))('REACT_APP_BASE_PATH'),
   reportsLimitForExport: 30000,
-  uploadFileAllowedExtenions: ['jpg', 'jpeg', 'pdf', 'png', 'gif', 'docx'],
-  uploadFileMaxSizeMb: 5,
+  upload_allowedExtensions: ['jpg', 'jpeg', 'pdf', 'png', 'gif', 'docx'],
+  upload_maxSizeMb: env(int, defaultValue(5))('REACT_APP_UPLOAD_MAX_SIZE_MB'),
   contactEmail: 'support@signal.conso.gouv.fr',
+  sentry_dns: env()('REACT_APP_SENTRY_DNS'),
+  sentry_traceRate: env(int, defaultValue(1.0))('REACT_APP_SENTRY_TRACE_RATE'),
 }
 
 console.info(Config)

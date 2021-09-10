@@ -20,7 +20,12 @@ import {classes} from '../../core/helper/utils'
 import {Btn, Fender} from 'mui-extension/lib'
 import {EntityIcon} from '../../core/EntityIcon'
 import {ScButton} from '../../shared/Button/Button'
-import {mapArrayFromQuerystring, mapDateFromQueryString, mapDatesToQueryString, useQueryString} from '../../core/helper/useQueryString'
+import {
+  mapArrayFromQuerystring,
+  mapDateFromQueryString,
+  mapDatesToQueryString,
+  useQueryString,
+} from '../../core/helper/useQueryString'
 import {fromNullable} from 'fp-ts/lib/Option'
 import {useToast} from '../../core/toast'
 import {Config} from '../../conf/config'
@@ -157,211 +162,211 @@ export const ReportsPro = () => {
 
       {isFirstVisit && (
         <Alert type="success" deletable persistentDelete className={cssUtils.marginBottom2}>
-          <span dangerouslySetInnerHTML={{__html: m.yourAccountIsActivated}}/>
+          <span dangerouslySetInnerHTML={{__html: m.yourAccountIsActivated}} />
         </Alert>
       )}
-      {fromNullable(_companies.accessibleByPro.entity).map(companies => (
-        <>
-          {displayFilters && (
-            <Panel elevation={3} className={css.filters}>
-              <PanelBody className={css.filtersBody}>
-                <Grid container spacing={1}>
-                  <Grid item sm={4} xs={12}>
-                    <DebouncedInput
-                      value={_reports.filters.siretSirenList}
-                      onChange={_ => _reports.updateFilters(prev => ({...prev, siretSirenList: _}))}
-                    >
-                      {(value, onChange) => (
-                        <SelectCompaniesByPro
-                          values={value} onChange={onChange} fullWidth
-                          className={cssUtils.marginRight}
-                          accessibleCompanies={companies}
-                        />
-                      )}
-                    </DebouncedInput>
+      {fromNullable(_companies.accessibleByPro.entity)
+        .map(companies => (
+          <>
+            {displayFilters && (
+              <Panel elevation={3} className={css.filters}>
+                <PanelBody className={css.filtersBody}>
+                  <Grid container spacing={1}>
+                    <Grid item sm={4} xs={12}>
+                      <DebouncedInput
+                        value={_reports.filters.siretSirenList}
+                        onChange={_ => _reports.updateFilters(prev => ({...prev, siretSirenList: _}))}
+                      >
+                        {(value, onChange) => (
+                          <SelectCompaniesByPro
+                            values={value}
+                            onChange={onChange}
+                            fullWidth
+                            className={cssUtils.marginRight}
+                            accessibleCompanies={companies}
+                          />
+                        )}
+                      </DebouncedInput>
+                    </Grid>
+                    <Grid item sm={4} xs={12}>
+                      <DebouncedInput
+                        value={_reports.filters.departments}
+                        onChange={departments => _reports.updateFilters(prev => ({...prev, departments}))}
+                      >
+                        {(value, onChange) => (
+                          <SelectDepartments values={value} onChange={onChange} className={cssUtils.marginRight} fullWidth />
+                        )}
+                      </DebouncedInput>
+                    </Grid>
+                    <Grid item sm={4} xs={12}>
+                      <DebouncedInput
+                        value={_reports.filters.status ?? ''}
+                        onChange={event => {
+                          _reports.updateFilters(prev => ({...prev, status: event as string}))
+                        }}
+                      >
+                        {(value, onChange) => (
+                          <ScSelect
+                            value={value}
+                            onChange={e => onChange(e.target.value as string)}
+                            id="test"
+                            label={m.status}
+                            fullWidth
+                          >
+                            <MenuItem value="">&nbsp;</MenuItem>
+                            {(_reportStatus.entity ?? []).map(status => (
+                              <MenuItem key={status} value={status}>
+                                <ReportStatusChip dense fullWidth inSelectOptions status={status} />
+                              </MenuItem>
+                            ))}
+                          </ScSelect>
+                        )}
+                      </DebouncedInput>
+                    </Grid>
                   </Grid>
-                  <Grid item sm={4} xs={12}>
-                    <DebouncedInput
-                      value={_reports.filters.departments}
-                      onChange={departments => _reports.updateFilters(prev => ({...prev, departments}))}
-                    >
-                      {(value, onChange) => (
-                        <SelectDepartments
-                          values={value}
-                          onChange={onChange}
-                          className={cssUtils.marginRight}
-                          fullWidth
-                        />
-                      )}
-                    </DebouncedInput>
-                  </Grid>
-                  <Grid item sm={4} xs={12}>
-                    <DebouncedInput
-                      value={_reports.filters.status ?? ''}
-                      onChange={event => {
-                        _reports.updateFilters(prev => ({...prev, status: event as string}))
-                      }}
-                    >
-                      {(value, onChange) => (
-                        <ScSelect
-                          value={value}
-                          onChange={(e) => onChange(e.target.value as string)}
-                          id="test"
-                          label={m.status}
-                          fullWidth
-                        >
-                          <MenuItem value="">&nbsp;</MenuItem>
-                          {(_reportStatus.entity ?? []).map(status => (
-                            <MenuItem key={status} value={status}>
-                              <ReportStatusChip dense fullWidth inSelectOptions status={status}/>
-                            </MenuItem>
-                          ))}
-                        </ScSelect>
-                      )}
-                    </DebouncedInput>
-                  </Grid>
-                </Grid>
-                <DebouncedInput<[Date | undefined, Date | undefined]>
-                  value={[_reports.filters.start, _reports.filters.end]}
-                  onChange={([start, end]) =>
-                    _reports.updateFilters(prev => ({...prev, start: start ?? prev.start, end: end ?? prev.end}))
-                  }
-                >
-                  {(value, onChange) => (
-                    <PeriodPicker fullWidth value={value} onChange={onChange}/>
-                  )}
-                </DebouncedInput>
-                <div className={css.actions}>
-                  <Badge color="error" badgeContent={filtersCount} hidden={filtersCount === 0}>
-                    <ScButton icon="clear" onClick={_reports.clearFilters} variant="outlined" color="primary">
-                      {m.removeAllFilters}
-                    </ScButton>
-                  </Badge>
-                  <ExportReportsPopper
-                    disabled={fromNullable(_reports?.list?.totalSize)
-                      .map(_ => _ > Config.reportsLimitForExport)
-                      .getOrElse(false)}
-                    tooltipBtnNew={fromNullable(_reports?.list?.totalSize)
-                      .map(_ => (_ > Config.reportsLimitForExport ? m.cannotExportMoreReports(Config.reportsLimitForExport) : ''))
-                      .getOrElse('')}
+                  <DebouncedInput<[Date | undefined, Date | undefined]>
+                    value={[_reports.filters.start, _reports.filters.end]}
+                    onChange={([start, end]) =>
+                      _reports.updateFilters(prev => ({...prev, start: start ?? prev.start, end: end ?? prev.end}))
+                    }
                   >
-                    <Btn variant="outlined" color="primary" icon="get_app">
-                      {m.exportInXLS}
-                    </Btn>
-                  </ExportReportsPopper>
-                </div>
-              </PanelBody>
-            </Panel>
-          )}
-
-          <Panel>
-            <Datatable<ReportSearchResult>
-              paginate={{
-                minRowsBeforeDisplay: minRowsBeforeDisplayFilters,
-                offset: _reports.filters.offset,
-                limit: _reports.filters.limit,
-                onPaginationChange: pagination => _reports.updateFilters(prev => ({...prev, ...pagination})),
-              }}
-              data={_reports.list?.data}
-              loading={_reports.fetching}
-              total={_reports.list?.totalSize}
-              onClickRows={_ => history.push(siteMap.report(_.report.id))}
-              rows={
-                isMobileWidth
-                  ? [
-                      {
-                        id: 'all',
-                        head: '',
-                        row: _ => (
-                          <div className={css.card}>
-                            <div className={css.card_content}>
-                              <div className={css.card_head}>
-                                <Txt bold size="big">
-                                  {_.report.companySiret}
-                                </Txt>
-                                <Icon className={classes(css.iconDash, cssUtils.inlineIcon)}>remove</Icon>
-                                <Txt color="disabled">
-                                  <Icon className={cssUtils.inlineIcon}>location_on</Icon>
-                                  {_.report.companyAddress.postalCode}
-                                </Txt>
-                              </div>
-                              <Txt block color="hint">
-                                {m.thisDate(formatDate(_.report.creationDate))}
-                              </Txt>
-                              <Txt block color="hint">
-                                {_.report.contactAgreement
-                                  ? m.byHim(_.report.firstName + ' ' + _.report.lastName)
-                                  : m.anonymousReport}
-                              </Txt>
-                            </div>
-                            <ReportStatusChip dense status={_.report.status} />
-                          </div>
-                        ),
-                      },
-                    ]
-                  : [
-                      {
-                        id: 'companyPostalCode',
-                        head: m.postalCodeShort,
-                        className: _ => (_.report.status === ReportStatus.UnreadForPro ? cssUtils.txtBold : undefined),
-                        row: _ => _.report.companyAddress.postalCode,
-                      },
-                      {
-                        id: 'siret',
-                        head: m.siret,
-                        className: _ => (_.report.status === ReportStatus.UnreadForPro ? cssUtils.txtBold : undefined),
-                        row: _ => _.report.companySiret,
-                      },
-                      {
-                        id: 'createDate',
-                        head: m.receivedAt,
-                        className: _ => (_.report.status === ReportStatus.UnreadForPro ? cssUtils.txtBold : undefined),
-                        row: _ => formatDate(_.report.creationDate),
-                      },
-                      {
-                        id: 'status',
-                        head: m.status,
-                        row: _ => <ReportStatusChip dense status={_.report.status} />,
-                      },
-                      {
-                        id: 'consumer',
-                        head: m.consumer,
-                        className: _ => (_.report.status === ReportStatus.UnreadForPro ? cssUtils.txtBold : undefined),
-                        row: _ => (_.report.contactAgreement ? _.report.firstName + ' ' + _.report.lastName : m.anonymousReport),
-                      },
-                      {
-                        id: 'file',
-                        head: m.files,
-                        className: css.tdFiles,
-                        row: _ =>
-                          _.files.length > 0 && (
-                            <Badge badgeContent={_.files.length} color="primary" invisible={_.files.length === 1}>
-                              <Icon className={cssUtils.colorTxtHint}>insert_drive_file</Icon>
-                            </Badge>
-                          ),
-                      },
-                    ]
-              }
-              renderEmptyState={
-                <Fender
-                  icon={EntityIcon.report}
-                  title={m.noReportsTitle}
-                  description={
-                    <>
-                      <Txt color="hint" size="big" block gutterBottom>
-                        {m.noReportsDesc}
-                      </Txt>
-                      <ScButton icon="clear" onClick={_reports.clearFilters} variant="contained" color="primary">
+                    {(value, onChange) => <PeriodPicker fullWidth value={value} onChange={onChange} />}
+                  </DebouncedInput>
+                  <div className={css.actions}>
+                    <Badge color="error" badgeContent={filtersCount} hidden={filtersCount === 0}>
+                      <ScButton icon="clear" onClick={_reports.clearFilters} variant="outlined" color="primary">
                         {m.removeAllFilters}
                       </ScButton>
-                    </>
-                  }
-                />
-              }
-            />
-          </Panel>
-        </>
-      )).toUndefined()}
+                    </Badge>
+                    <ExportReportsPopper
+                      disabled={fromNullable(_reports?.list?.totalSize)
+                        .map(_ => _ > Config.reportsLimitForExport)
+                        .getOrElse(false)}
+                      tooltipBtnNew={fromNullable(_reports?.list?.totalSize)
+                        .map(_ =>
+                          _ > Config.reportsLimitForExport ? m.cannotExportMoreReports(Config.reportsLimitForExport) : '',
+                        )
+                        .getOrElse('')}
+                    >
+                      <Btn variant="outlined" color="primary" icon="get_app">
+                        {m.exportInXLS}
+                      </Btn>
+                    </ExportReportsPopper>
+                  </div>
+                </PanelBody>
+              </Panel>
+            )}
+
+            <Panel>
+              <Datatable<ReportSearchResult>
+                paginate={{
+                  minRowsBeforeDisplay: minRowsBeforeDisplayFilters,
+                  offset: _reports.filters.offset,
+                  limit: _reports.filters.limit,
+                  onPaginationChange: pagination => _reports.updateFilters(prev => ({...prev, ...pagination})),
+                }}
+                data={_reports.list?.data}
+                loading={_reports.fetching}
+                total={_reports.list?.totalSize}
+                onClickRows={_ => history.push(siteMap.report(_.report.id))}
+                rows={
+                  isMobileWidth
+                    ? [
+                        {
+                          id: 'all',
+                          head: '',
+                          row: _ => (
+                            <div className={css.card}>
+                              <div className={css.card_content}>
+                                <div className={css.card_head}>
+                                  <Txt bold size="big">
+                                    {_.report.companySiret}
+                                  </Txt>
+                                  <Icon className={classes(css.iconDash, cssUtils.inlineIcon)}>remove</Icon>
+                                  <Txt color="disabled">
+                                    <Icon className={cssUtils.inlineIcon}>location_on</Icon>
+                                    {_.report.companyAddress.postalCode}
+                                  </Txt>
+                                </div>
+                                <Txt block color="hint">
+                                  {m.thisDate(formatDate(_.report.creationDate))}
+                                </Txt>
+                                <Txt block color="hint">
+                                  {_.report.contactAgreement
+                                    ? m.byHim(_.report.firstName + ' ' + _.report.lastName)
+                                    : m.anonymousReport}
+                                </Txt>
+                              </div>
+                              <ReportStatusChip dense status={_.report.status} />
+                            </div>
+                          ),
+                        },
+                      ]
+                    : [
+                        {
+                          id: 'companyPostalCode',
+                          head: m.postalCodeShort,
+                          className: _ => (_.report.status === ReportStatus.UnreadForPro ? cssUtils.txtBold : undefined),
+                          row: _ => _.report.companyAddress.postalCode,
+                        },
+                        {
+                          id: 'siret',
+                          head: m.siret,
+                          className: _ => (_.report.status === ReportStatus.UnreadForPro ? cssUtils.txtBold : undefined),
+                          row: _ => _.report.companySiret,
+                        },
+                        {
+                          id: 'createDate',
+                          head: m.receivedAt,
+                          className: _ => (_.report.status === ReportStatus.UnreadForPro ? cssUtils.txtBold : undefined),
+                          row: _ => formatDate(_.report.creationDate),
+                        },
+                        {
+                          id: 'status',
+                          head: m.status,
+                          row: _ => <ReportStatusChip dense status={_.report.status} />,
+                        },
+                        {
+                          id: 'consumer',
+                          head: m.consumer,
+                          className: _ => (_.report.status === ReportStatus.UnreadForPro ? cssUtils.txtBold : undefined),
+                          row: _ =>
+                            _.report.contactAgreement ? _.report.firstName + ' ' + _.report.lastName : m.anonymousReport,
+                        },
+                        {
+                          id: 'file',
+                          head: m.files,
+                          className: css.tdFiles,
+                          row: _ =>
+                            _.files.length > 0 && (
+                              <Badge badgeContent={_.files.length} color="primary" invisible={_.files.length === 1}>
+                                <Icon className={cssUtils.colorTxtHint}>insert_drive_file</Icon>
+                              </Badge>
+                            ),
+                        },
+                      ]
+                }
+                renderEmptyState={
+                  <Fender
+                    icon={EntityIcon.report}
+                    title={m.noReportsTitle}
+                    description={
+                      <>
+                        <Txt color="hint" size="big" block gutterBottom>
+                          {m.noReportsDesc}
+                        </Txt>
+                        <ScButton icon="clear" onClick={_reports.clearFilters} variant="contained" color="primary">
+                          {m.removeAllFilters}
+                        </ScButton>
+                      </>
+                    }
+                  />
+                }
+              />
+            </Panel>
+          </>
+        ))
+        .toUndefined()}
     </Page>
   )
 }

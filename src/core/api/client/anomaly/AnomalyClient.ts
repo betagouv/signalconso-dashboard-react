@@ -12,8 +12,7 @@ import anomaliesJSON from '../anomaly/yml/anomalies.json'
 import {lazy} from '../../helper/Lazy'
 
 export class AnomalyClient {
-  constructor(private client: ApiClientApi) {
-  }
+  constructor(private client: ApiClientApi) {}
 
   readonly getAnomalies = lazy(() => Promise.resolve((anomaliesJSON as any).list.map(AnomalyClient.enrichAnomaly) as Anomaly[]))
 

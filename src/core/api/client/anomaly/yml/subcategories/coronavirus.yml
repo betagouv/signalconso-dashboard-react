@@ -47,7 +47,7 @@
   tags:
     - ReponseConso
 - title: Problème / abus avec un site de vente en ligne
-  example: "Exemple : site de livraison de courses à domicile"
+  example: 'Exemple : site de livraison de courses à domicile'
   companyKind: 'WEBSITE'
   tags:
     - ReponseConso

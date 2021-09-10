@@ -65,7 +65,7 @@
     - title: Prestation mal réalisée ou pas réalisée
       tags:
         - ReponseConso
-      example: 'Exemple : malfaçon, panne non réparée, pose d''un équipement endommagé, pièce d''origine douteuse'
+      example: "Exemple : malfaçon, panne non réparée, pose d'un équipement endommagé, pièce d'origine douteuse"
     - title: Publicité mensongère
       tags:
         - ReponseConso
@@ -84,7 +84,7 @@
     - title: Publicité mensongère
       tags:
         - ReponseConso
-      example: 'Exemple : publicité trompeuse avec un nombre d''heures infaisable'
+      example: "Exemple : publicité trompeuse avec un nombre d'heures infaisable"
     - title: Autre
       example: 'Exemple : clause abusive dans le contrat, obligation de payer des heures régulièrement, heure de conduite qui ne dure pas une heure'
       subcategories:

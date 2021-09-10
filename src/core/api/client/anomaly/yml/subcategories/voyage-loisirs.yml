@@ -67,7 +67,7 @@
                 - label: Si vous avez appelé une centrale de réservation, notez son nom.
                   rank: 9
                   type: TEXT
-                - label: "Ajoutez ici toute autre information utile à votre signalement."
+                - label: 'Ajoutez ici toute autre information utile à votre signalement.'
                   rank: 10
                   type: TEXT
               fileLabel: Si possible, joindre une copie de la note (facture), et toute preuve du trajet réellement emprunté.
@@ -223,7 +223,7 @@
             - label: Quelle était l'offre ou la promotion annoncée ?
               rank: 2
               type: TEXT
-              placeholder: "Exemple : -20% offert à la première course"
+              placeholder: 'Exemple : -20% offert à la première course'
             - label: Où avez-vous vu cette offre  ?
               rank: 3
               type: RADIO
@@ -264,7 +264,8 @@
     - title: Un chauffeur qui s'est proposé dans la rue ou à l'aéroport
       information:
         title: Il s'agit d'un chauffeur non déclaré ("faux" taxi ou taxi clandestin)
-        content: Lorsqu'un véhicule n'est pas identifié comme un taxi "officiel" (c'est-à-dire une enseigne lumineuse sur le toit, un numéro d'identification marqué sur la voiture) ou que vous ne l'avez pas réservé, il s'agit souvent de taxi clandestin ou "faux" taxi. <br> Ces "faux" taxis sont interdits. <br> Ils proposent souvent "taxi taxi" et sont par exemple dans les aéroports ou près des lieux de sorties le soir. <br><br>
+        content:
+          Lorsqu'un véhicule n'est pas identifié comme un taxi "officiel" (c'est-à-dire une enseigne lumineuse sur le toit, un numéro d'identification marqué sur la voiture) ou que vous ne l'avez pas réservé, il s'agit souvent de taxi clandestin ou "faux" taxi. <br> Ces "faux" taxis sont interdits. <br> Ils proposent souvent "taxi taxi" et sont par exemple dans les aéroports ou près des lieux de sorties le soir. <br><br>
           Comme ces chauffeurs ne sont pas déclarés, il n'est pas possible de faire un signalement sur notre plate-forme.
         actions:
           - question: Que faire en cas de problème avec un "faux" taxi&#160;?
@@ -285,7 +286,7 @@
             - ReponseConso
           example: 'Exemple: sur un site, un catalogue'
         - title: Prix final non-conforme au prix annoncé
-          example: "Exemple : fausse réduction, supplément imprévu"
+          example: 'Exemple : fausse réduction, supplément imprévu'
           tags:
             - ReponseConso
             - Litige contractuel
@@ -439,7 +440,7 @@
                   type: TEXTAREA
               fileLabel: Vous pouvez joindre des éléments (photo, carte d'assistance...) pour appuyer votre signalement.
         - title: Le personnel est peu aimable
-          example: 'Exemple : l''accueil est froid, le personnel parle mal aux clients'
+          example: "Exemple : l'accueil est froid, le personnel parle mal aux clients"
           information: !!import/single ../common/info/amabilite.yml
 - title: Agence de voyage
   subcategories:
@@ -456,7 +457,7 @@
             - ReponseConso
           example: 'Exemple : sur un site, un catalogue'
         - title: Prix final non-conforme au prix annoncé
-          example: "Exemple : fausse réduction, suppléments non prévus"
+          example: 'Exemple : fausse réduction, suppléments non prévus'
           tags:
             - ReponseConso
             - Litige contractuel
@@ -505,7 +506,7 @@
         - title: La prestation ne correspond pas à ce que l'agence m'a vendu
           tags:
             - ReponseConso
-          example: "Exemple : une excursion était prévue dans le voyage et elle a été annulée sans motifs"
+          example: 'Exemple : une excursion était prévue dans le voyage et elle a été annulée sans motifs'
         - title: Autre
     - title: Annulation / remboursement
       tags:
@@ -540,7 +541,7 @@
             - ReponseConso
           example: 'Exemple : sur un site, un catalogue'
         - title: Prix final non-conforme au prix annoncé
-          example: "Exemple : fausse réduction, suppléments non prévus"
+          example: 'Exemple : fausse réduction, suppléments non prévus'
           tags:
             - ReponseConso
             - Litige contractuel
@@ -595,7 +596,7 @@
         - title: Bagage
         - title: Autre
     - title: Abonnement de transport
-      example: "Exemple : TGV max, pass Navigo"
+      example: 'Exemple : TGV max, pass Navigo'
       tags:
         - Litige contractuel
     - title: Autre
@@ -637,7 +638,7 @@
             - ReponseConso
           example: 'Exemple : sur un site, un catalogue'
         - title: Prix final non-conforme au prix annoncé
-          example: "Exemple : fausse réduction, suppléments non prévus"
+          example: 'Exemple : fausse réduction, suppléments non prévus'
           tags:
             - ReponseConso
             - Litige contractuel
@@ -687,7 +688,7 @@
       subcategories:
         - title: Clause abusive
           tags:
-          - ReponseConso
+            - ReponseConso
         - title: Contrat non respecté
     - title: Produit dangereux
       example: 'Exemple : équipement de protection'
@@ -746,7 +747,7 @@
             - ReponseConso
           example: 'Exemple : sur un site, un catalogue'
         - title: Prix final non-conforme au prix annoncé
-          example: "Exemple : fausse réduction, suppléments non prévus"
+          example: 'Exemple : fausse réduction, suppléments non prévus'
           tags:
             - ReponseConso
             - Litige contractuel
@@ -822,6 +823,6 @@
     - ReponseConso
   subcategories:
     - title: Abonnement
-      example: "Exemple : abonnement magazine"
+      example: 'Exemple : abonnement magazine'
     - title: Coffret cadeau / box
     - title: Autre

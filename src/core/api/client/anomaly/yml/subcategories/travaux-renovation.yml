@@ -1,5 +1,5 @@
 - title: Dépannage
-  example: 'Vous faites appel à un professionnel dans l''urgence à votre domicile (par exemple : vous avez perdu votre clef d''appartement et vous contactez un serrurier pour qu''il vienne vous l''ouvrir, vous appelez un plombier suite à l''explosion de votre canalisation)'
+  example: "Vous faites appel à un professionnel dans l'urgence à votre domicile (par exemple : vous avez perdu votre clef d'appartement et vous contactez un serrurier pour qu'il vienne vous l'ouvrir, vous appelez un plombier suite à l'explosion de votre canalisation)"
   tags:
     - Litige contractuel
   subcategories:
@@ -56,7 +56,7 @@
         - title: Contrainte du professionnel
           detailInputs:
             - label: Précisez les informations sur le contexte
-              example: "Exemple : lieu de la rencontre, discours du professionnel, âge"
+              example: 'Exemple : lieu de la rencontre, discours du professionnel, âge'
               rank: 1
               type: TEXTAREA
             - label: Date du constat
@@ -78,7 +78,7 @@
 - title: Travaux / rénovation
   subcategories:
     - title: Prix
-      example: "Exemple : prix non affiché, devis non respecté"
+      example: 'Exemple : prix non affiché, devis non respecté'
       tags:
         - Litige contractuel
       subcategories:
@@ -324,7 +324,7 @@
         - title: Contrainte du professionnel
           detailInputs:
             - label: Précisez les informations sur le contexte
-              example: "Exemple : lieu de la rencontre, discours du professionnel, âge"
+              example: 'Exemple : lieu de la rencontre, discours du professionnel, âge'
               rank: 1
               type: TEXTAREA
             - label: Date du constat
@@ -337,7 +337,7 @@
               optionnal: true
         - title: Autre
     - title: Prestation
-      example: "Exemple : malfaçons sur le chantier, travaux commencés mais jamais terminés"
+      example: 'Exemple : malfaçons sur le chantier, travaux commencés mais jamais terminés'
       subcategories:
         - title: Malfaçon
           example: Constat d'un défaut résultant d'une mauvaise exécution des travaux
@@ -346,7 +346,7 @@
           tags:
             - Litige contractuel
     - title: Contrat
-      example: "Exemple : contrat non respecté, délai de rétractation, clause abusive"
+      example: 'Exemple : contrat non respecté, délai de rétractation, clause abusive'
       subcategories:
         - title: Droit de rétractation
           example: Une fois le contrat signé, vous souhaitez revenir en arrière
@@ -354,12 +354,14 @@
           subcategories:
             - title: À votre domicile
               example: Un démarcheur est venu chez vous
-              description: Vous avez un délai de 14 jours pour changer d’avis. On appelle ce délai le "délai de rétractation". Ce délai est valable même si vous avez demandé à faire démarrer votre contrat immédiatement
+              description:
+                Vous avez un délai de 14 jours pour changer d’avis. On appelle ce délai le "délai de rétractation". Ce délai est valable même si vous avez demandé à faire démarrer votre contrat immédiatement
                 <br />Vous n’avez pas à vous justifier auprès du commerçant.
                 <br/><a href="../delai-de-retractation" target="_blank">>> Comment calculer mon délai de retractation</a>
             - title: À distance
               example: 'Exemple : sur internet'
-              description: Vous avez un délai de 14 jours pour changer d’avis. On appelle ce délai le "délai de rétractation". Ce délai est valable même si vous avez demandé à faire démarrer votre contrat immédiatement
+              description:
+                Vous avez un délai de 14 jours pour changer d’avis. On appelle ce délai le "délai de rétractation". Ce délai est valable même si vous avez demandé à faire démarrer votre contrat immédiatement
                 <br />Vous n’avez pas à vous justifier auprès du commerçant.
                 <br/><a href="../delai-de-retractation" target="_blank">>> Comment calculer mon délai de retractation</a>
             - title: Au lieu habituel d'activité du professionnel
@@ -376,7 +378,8 @@
                     content: Il n'y a pas de délai de rétractation pour votre cas.
                     outOfScope: true
                 - title: Oui
-                  description: Vous avez un délai de 14 jours pour changer d’avis. On appelle ce délai le "délai de rétractation". Ce délai est valable même si vous avez demandé à faire démarrer votre contrat immédiatement
+                  description:
+                    Vous avez un délai de 14 jours pour changer d’avis. On appelle ce délai le "délai de rétractation". Ce délai est valable même si vous avez demandé à faire démarrer votre contrat immédiatement
                     <br />Vous n’avez pas à vous justifier auprès du commerçant.
                     <br/><a href="../delai-de-retractation" target="_blank">>> Comment calculer mon délai de retractation</a>
         - title: Contrat non respecté
