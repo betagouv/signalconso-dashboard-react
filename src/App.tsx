@@ -49,6 +49,16 @@ import {BlockedReportNotificationProvider} from './core/context/BlockedReportNot
 import {ActivateNewCompany} from './feature/ActivateNewCompany/ActivateNewCompany'
 import {ModeEmploiDGCCRF} from './feature/ModeEmploiDGCCRF/ModeEmploiDGCCRF'
 import {ConsumerReview} from './feature/ConsumerReview/ConsumerReview'
+import * as Sentry from '@sentry/react'
+import {Integrations} from '@sentry/tracing'
+
+if (Config.sentry_dns) {
+  Sentry.init({
+    dsn: Config.sentry_dns,
+    integrations: [new Integrations.BrowserTracing()],
+    tracesSampleRate: Config.sentry_traceRate,
+  })
+}
 
 const headers = {
   'Content-Type': 'application/json',
