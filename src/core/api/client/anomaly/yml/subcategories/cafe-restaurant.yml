@@ -87,7 +87,8 @@
             - title: Les employés ne portent pas de gants ou pas de coiffe (calot, charlotte)
               information:
                 title: Cet incident ne doit pas nécessairement être signalé.
-                content: La loi précise que les personnes qui travaillent dans un endroit où sont manipulés des aliments, doivent respecter un niveau élevé de propreté personnelle et doivent porter des tenues adaptées et propres.
+                content:
+                  La loi précise que les personnes qui travaillent dans un endroit où sont manipulés des aliments, doivent respecter un niveau élevé de propreté personnelle et doivent porter des tenues adaptées et propres.
                   Les restaurateurs et commerçants peuvent choisir de faire porter des gants ou une coiffe (charlotte, calot...) à leur personnel, à condition que ceux-ci soient propres et en bon état.<br />Cependant, le lavage des mains peut également être suffisant pour éviter les contaminations. <br> Vous pouvez directement discuter avec le gérant pour lui faire part de votre questionnement.
                 outOfScope: true
             - title: Autre problème de tenue
@@ -145,7 +146,7 @@
       fileLabel: Si possible, merci de joindre une photo ou un document pour appuyer votre signalement.
 - title: Prix et paiement
   companyKind: SIRET
-  example: 'Exemple : refus de la carte bancaire, j''ai payé plus cher que prévu'
+  example: "Exemple : refus de la carte bancaire, j'ai payé plus cher que prévu"
   subcategories:
     - title: Il manque certains prix
       tags:
@@ -161,7 +162,7 @@
           example: Pouvez-vous nous en dire plus ?
           rank: 2
           type: TEXTAREA
-          placeholder: 'absence de carte des vins, absence des prix à l''extérieur du restaurant'
+          placeholder: "absence de carte des vins, absence des prix à l'extérieur du restaurant"
       fileLabel: Merci de joindre si possible des éléments pour appuyer votre signalement (photo du menu, photo de la vitrine...)
     - title: J'ai payé plus cher que le prix affiché
       tags:
@@ -196,9 +197,10 @@
       example: 'Exemple : le prix du menu est très cher pour la qualité'
       information:
         title: Les prix sont choisis librement par les commerçants.
-        content: "Par contre, les prix doivent être clairement indiqués pour que vous soyez au courant avant d'acheter ou de commander.
-                <br/> Par exemple, il est autorisé de vendre un verre de limonade à 100 euros dans un bar si le prix est bien marqué sur la carte.
-                <br/> Le saviez-vous ? Un café a également le droit de faire payer l'eau du robinet si le prix est marqué. Par contre, au cours d'un repas, l'eau du robinet doit vous être fournie gratuitement."
+        content:
+          "Par contre, les prix doivent être clairement indiqués pour que vous soyez au courant avant d'acheter ou de commander.
+          <br/> Par exemple, il est autorisé de vendre un verre de limonade à 100 euros dans un bar si le prix est bien marqué sur la carte.
+          <br/> Le saviez-vous ? Un café a également le droit de faire payer l'eau du robinet si le prix est marqué. Par contre, au cours d'un repas, l'eau du robinet doit vous être fournie gratuitement."
         outOfScope: true
     - title: J'ai eu un problème pour payer
       example: 'Exemple : refus de la carte bancaire'
@@ -309,7 +311,7 @@
           rank: 3
           type: RADIO
           options:
-            - 'L''origine (exemple : origine des vins )'
+            - "L'origine (exemple : origine des vins )"
             - 'Un label ou une mention (exemple : fait maison)'
             - 'Une marque (exemple : la marque de rhum proposée est mensongère)'
             - Autre (à préciser)
@@ -331,10 +333,10 @@
   example: 'Exemple : chien refusé, personnel peu aimable, refus de nous donner une table car nous avions une poussette'
   subcategories:
     - title: Le personnel est peu aimable
-      example: 'Exemple : l''accueil est froid, le personnel parle mal aux clients'
+      example: "Exemple : l'accueil est froid, le personnel parle mal aux clients"
       information: !!import/single ../common/info/amabilite.yml
     - title: On a refusé de me donner une table ou de me servir
-      example: 'Exemple : Refus au motif de la présence d''enfant, pour un motif discriminatoire, refus de d''une table en terrasse pour un simple café'
+      example: "Exemple : Refus au motif de la présence d'enfant, pour un motif discriminatoire, refus de d'une table en terrasse pour un simple café"
       detailInputs:
         - label: Date du problème
           rank: 1
@@ -375,7 +377,7 @@
           rank: 2
           type: RADIO
           options:
-            - 'L''origine (exemple : origine des vins)'
+            - "L'origine (exemple : origine des vins)"
             - 'Un label ou une mention (exemple: fait maison)'
             - 'Une marque (exemple: la marque de rhum proposée est mensongère'
             - Autre (à préciser)

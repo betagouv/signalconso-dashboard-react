@@ -175,7 +175,7 @@ export const CompaniesToActivate = () => {
               <Tooltip title={_.company.name}>
                 <span>
                   <span className={css.tdName_label}>{_.company.name}</span>
-                  <br/>
+                  <br />
                   <span className={css.tdName_desc}>{_.company.siret}</span>
                 </span>
               </Tooltip>
@@ -186,8 +186,10 @@ export const CompaniesToActivate = () => {
             id: 'address',
             className: css.tdAddress,
             row: _ => (
-              <Tooltip title={<AddressComponent address={_.company.address}/>}>
-                <span><AddressComponent address={_.company.address}/></span>
+              <Tooltip title={<AddressComponent address={_.company.address} />}>
+                <span>
+                  <AddressComponent address={_.company.address} />
+                </span>
               </Tooltip>
             ),
           },
