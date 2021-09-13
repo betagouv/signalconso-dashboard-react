@@ -13,7 +13,7 @@ import {Grid, makeStyles, Theme} from '@material-ui/core'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
 import {CompanyReportsCountPanel} from './CompanyReportsCountPanel'
 import {useCompaniesStatsContext} from '../../core/context/CompanyStatsContext'
-import {useMap} from '../../shared/hooks/UseMap'
+import {useMapOnChange} from '../../shared/hooks/UseMapOnChange'
 
 const useStyles = makeStyles((t: Theme) => ({
   cardValue: {
@@ -37,13 +37,13 @@ export const CompanyComponent = () => {
     _companyStats.status.fetch({}, id)
   }, [])
 
-  const company = _company.byId.entity?.entities[0]
+  const company = _company.byId.entity
 
-  const statusDistribution = useMap(_companyStats.status.entity, _ => Enum.entries(_).map(([status, count]) =>
+  const statusDistribution = useMapOnChange(_companyStats.status.entity, _ => Enum.entries(_).map(([status, count]) =>
     ({label: m.reportStatusShort[status], value: count, color: reportStatusColor[status] ?? undefined}),
   ))
 
-  const tagsDistribution = useMap(_companyStats.tags.entity, _ => Object.entries(_).map(([label, count]) => ({label, value: count})))
+  const tagsDistribution = useMapOnChange(_companyStats.tags.entity, _ => Object.entries(_).map(([label, count]) => ({label, value: count})))
 
   return (
     <Page loading={_company.byId.loading}>
