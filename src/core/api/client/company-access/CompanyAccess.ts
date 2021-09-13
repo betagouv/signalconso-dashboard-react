@@ -8,5 +8,6 @@ export interface CompanyAccess {
   firstName: string
   lastName: string
   email: string
-  level: CompanyAccessLevel
+  level: CompanyAccessLevel,
+  editable: Boolean
 }
