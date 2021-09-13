@@ -1,13 +1,4 @@
-import {
-  ApiClientApi,
-  ApiPaginate,
-  CompanySearch,
-  CompanyToActivate,
-  CompanyWithAccessLevel,
-  CompanyWithReportsCount,
-  dateToApi,
-  directDownloadBlob,
-} from '../..'
+import {ApiClientApi, ApiPaginate, CompanySearch, CompanyToActivate, CompanyWithAccessLevel, CompanyWithReportsCount, dateToApi, directDownloadBlob} from '../..'
 import {Company, CompanyCreation, CompanyUpdate, Event, Id} from '../../model'
 import {format} from 'date-fns'
 
@@ -61,7 +52,7 @@ export class CompanyClient {
     )
   }
 
-  readonly confirmCompaniesPosted = (companyIds: Id[]) => {
-    return this.client.post<void>(`/companies/companies-posted`, {body: {companyIds}})
+  readonly confirmCompaniesPosted = (ids: Id[]) => {
+    return this.client.post<void>(`/companies/companies-posted`, {body: {companyIds: ids}})
   }
 }

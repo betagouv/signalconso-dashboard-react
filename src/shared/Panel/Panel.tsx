@@ -13,7 +13,9 @@ const useStyles = makeStyles((t: Theme) =>
     border: {
       border: `1px solid ${t.palette.divider}`,
     },
-    loader: {},
+    loader: {
+      marginBottom: -4,
+    },
     hover: {
       cursor: 'pointer',
       transition: t.transitions.create('all'),
@@ -49,8 +51,8 @@ export const Panel = forwardRef(
         className={classes(css.root, hoverable && css.hover, stretch && css.stretch, className, elevation === 0 && css.border)}
         {...other}
       >
-        {children}
         {loading && <LinearProgress className={css.loader} />}
+        {children}
       </Card>
     )
   },

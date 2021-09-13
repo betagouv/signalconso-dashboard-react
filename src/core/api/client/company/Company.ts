@@ -1,5 +1,5 @@
-import {Id, PaginatedSearch} from '../../model'
-import {WebsiteKind} from '../..'
+import {Id, PaginatedSearch, ReportStatus} from '../../model'
+import {Index, WebsiteKind} from '../..'
 import {Address} from '../../model/Address'
 
 export interface WebsiteURL {
@@ -71,10 +71,6 @@ export enum AccessLevel {
 
 export interface CompanyWithAccessLevel extends Company {
   level: AccessLevel
-}
-
-export interface CompanyWithNotification extends CompanyWithAccessLevel {
-  hasNotification: boolean
 }
 
 export const isGovernmentCompany = (_?: DraftCompany): boolean => _?.activityCode?.startsWith('84.') ?? false

@@ -1,6 +1,5 @@
-import {CompanyAccessLevel, ReportResponseTypes} from '../../api'
+import {CompanyAccessLevel, ReportResponseTypes, ReportStatus} from '../../api'
 import {Config} from '../../../conf/config'
-import {App} from '../../../App'
 
 export const messagesFr = {
   yes: 'Oui',
@@ -19,6 +18,7 @@ export const messagesFr = {
   add: 'Ajouter',
   previous: 'Précédent',
   back: 'Retour',
+  count: 'Nombre',
   delete: 'Supprimer',
   deleted: 'Supprimé',
   try: 'Try',
@@ -139,6 +139,9 @@ export const messagesFr = {
   emailConsumer: 'Email conso.',
   number: `Numéro`,
   numberShort: `N°`,
+  day: 'Jour',
+  week: 'Semaine',
+  month: 'Mois',
   street: `Rue`,
   addressSupplement: `Complément d'adresse`,
   postalCode: `Code postal`,
@@ -331,4 +334,32 @@ export const messagesFr = {
     [ReportResponseTypes.Rejected]: 'Signalement infondé',
     [ReportResponseTypes.NotConcerned]: 'Etablissement non concerné par le signalement',
   },
+  reportStatusShort: {
+    [ReportStatus.NA]: 'NA',
+    [ReportStatus.EmployeeConsumer]: 'Lanceur d\'alerte',
+    [ReportStatus.InProgress]: 'Traitement en cours',
+    [ReportStatus.Unread]: 'Non consulté',
+    [ReportStatus.UnreadForPro]: 'Non consulté',
+    [ReportStatus.Transmitted]: 'Transmis',
+    [ReportStatus.ToReviewedByPro]: 'À répondre',
+    [ReportStatus.Accepted]: `Promesse d'action`,
+    [ReportStatus.ClosedForPro]: 'Clôturé',
+    [ReportStatus.Rejected]: 'Infondé',
+    [ReportStatus.Ignored]: 'Consulté ignoré',
+    [ReportStatus.NotConcerned]: 'Mal attribué',
+  },
+  month_: {
+    1: 'Janvier',
+    2: 'Février',
+    3: 'Mars',
+    4: 'Avril',
+    5: 'Mai',
+    6: 'Juin',
+    7: 'Juillet',
+    8: 'Août',
+    9: 'Septembre',
+    10: 'Octobre',
+    11: 'Novembre',
+    12: 'Décembre',
+  }
 }

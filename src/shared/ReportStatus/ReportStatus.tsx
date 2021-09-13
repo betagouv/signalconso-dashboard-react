@@ -46,7 +46,7 @@ interface ReportStatusChipProps {
   elevation?: number
 }
 
-const reportStatusColor = {
+export const reportStatusColor = {
   [ReportStatus.NA]: '#fff',
   [ReportStatus.EmployeeConsumer]: '#fff',
   [ReportStatus.InProgress]: '#FFE49E',
@@ -59,6 +59,10 @@ const reportStatusColor = {
   [ReportStatus.ClosedForPro]: '#daf5e7',
   [ReportStatus.Ignored]: '#c9d3df',
   [ReportStatus.NotConcerned]: '#c9d3df',
+}
+
+export const getReportStatusColor = (reportStatus: ReportStatus): string => {
+  return reportStatusColor[reportStatus]
 }
 
 export const ReportStatusChip = ({
