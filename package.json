@@ -30,7 +30,7 @@
   },
   "dependencies": {
     "@alexandreannic/react-hooks-lib": "1.8.3",
-    "@alexandreannic/ts-utils": "^1.3.1",
+    "@alexandreannic/ts-utils": "^1.3.2",
     "@date-io/date-fns": "^1.3.13",
     "@material-ui/core": "4.12.3",
     "@material-ui/lab": "^4.0.0-alpha.60",
@@ -63,6 +63,7 @@
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.3",
     "rxjs": "^6.6.7",
+    "source-map-explorer": "^2.5.2",
     "typescript": "^4.2.4",
     "web-vitals": "^1.1.1",
     "yaml-import": "^2.0.0"

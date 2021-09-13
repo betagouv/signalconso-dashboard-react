@@ -22,7 +22,7 @@ import {Btn} from 'mui-extension/lib'
 import {ScInput} from '../../shared/Input/ScInput'
 import {useAnomalyContext} from '../../core/context/AnomalyContext'
 import {SelectCountries} from '../../shared/SelectCountries/SelectCountries'
-import {Autocomplete} from '@material-ui/lab'
+import Autocomplete from '@material-ui/lab/Autocomplete/Autocomplete'
 import {Enum} from '@alexandreannic/ts-utils/lib/common/enum/Enum'
 
 export interface ReportsFiltersProps {
