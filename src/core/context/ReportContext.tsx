@@ -8,8 +8,6 @@ export interface ReportContextProps {
   get: UseFetcher<SignalConsoApiSdk['secured']['reports']['getById'], ApiError>
   remove: UseFetcher<SignalConsoApiSdk['secured']['reports']['remove'], ApiError>
   download: UseFetcher<SignalConsoApiSdk['secured']['reports']['download'], ApiError>
-  events: UseFetcher<SignalConsoApiSdk['secured']['events']['getByReportId'], ApiError>
-  companyEvents: UseFetcher<SignalConsoApiSdk['secured']['events']['getBySiret'], ApiError>
   updateCompany: UseFetcher<SignalConsoApiSdk['secured']['reports']['updateReportCompany'], ApiError>
   updateConsumer: UseFetcher<SignalConsoApiSdk['secured']['reports']['updateReportConsumer'], ApiError>
   postAction: UseFetcher<SignalConsoApiSdk['secured']['reports']['postAction']>
@@ -28,8 +26,6 @@ const ReportContext = React.createContext<ReportContextProps>(defaultContext as 
 export const ReportProvider = ({api, children}: Props) => {
   const get = useFetcher(api.secured.reports.getById)
   const remove = useFetcher(api.secured.reports.remove)
-  const events = useFetcher(api.secured.events.getByReportId)
-  const companyEvents = useFetcher(api.secured.events.getBySiret)
   const download = useFetcher(api.secured.reports.download)
   const postAction = useFetcher(api.secured.reports.postAction)
   const postResponse = useFetcher(api.secured.reports.postResponse)
@@ -49,8 +45,6 @@ export const ReportProvider = ({api, children}: Props) => {
       value={{
         get,
         remove,
-        events,
-        companyEvents,
         download,
         updateCompany,
         updateConsumer,

@@ -10,6 +10,7 @@ import {styleUtils} from '../../core/theme'
 import {ReportFiles} from './File/ReportFiles'
 import {useReportContext} from '../../core/context/ReportContext'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
+import {useEventContext} from '../../core/context/EventContext'
 
 interface Props {
   canEditFile?: boolean
@@ -35,6 +36,7 @@ export const ReportResponseComponent = ({canEditFile, response, reportId, files}
   const cssUtils = useCssUtils()
   const css = useStyles()
   const _report = useReportContext()
+  const _event = useEventContext()
 
   return (
     <PanelBody>
@@ -89,7 +91,7 @@ export const ReportResponseComponent = ({canEditFile, response, reportId, files}
               fileIds: [file.id],
               actionType: EventActionValues.ProfessionalAttachments,
             })
-            .then(() => _report.events.fetch({force: true, clean: false}, reportId))
+            .then(() => _event.reportEvents.fetch({force: true, clean: false}, reportId))
         }}
       />
     </PanelBody>

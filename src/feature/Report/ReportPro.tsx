@@ -20,6 +20,7 @@ import {Panel, PanelHead} from '../../shared/Panel'
 import {ReportResponseComponent} from './ReportResponse'
 import {ReportEvents} from './Event/ReportEvents'
 import {creationReportEvent} from './Report'
+import {useEventContext} from '../../core/context/EventContext'
 
 const useStyles = makeStyles((t: Theme) => ({
   answerPanel: {
@@ -38,24 +39,25 @@ export const ReportPro = () => {
   const {m, formatDateTime} = useI18n()
   const css = useStyles()
   const _report = useReportContext()
+  const _event = useEventContext()
   const {toastError} = useToast()
   const openAnswerPanel = useBoolean(false)
   const response = useMemo(
-    () => _report.events.entity?.find(_ => _.data.action === EventActionValues.ReportProResponse),
-    [_report.events],
+    () => _event.reportEvents.entity?.find(_ => _.data.action === EventActionValues.ReportProResponse),
+    [_event.reportEvents],
   )
   const cssUtils = useCssUtils()
   const responseFormRef = useRef<any>(null)
 
   useEffect(() => {
     _report.get.fetch({}, id)
-    _report.events.fetch({}, id)
+    _event.reportEvents.fetch({}, id)
   }, [])
 
   useEffect(() => {
     fromNullable(_report.get.error).map(toastError)
-    fromNullable(_report.events.error).map(toastError)
-  }, [_report.get.error, _report.events.error])
+    fromNullable(_event.reportEvents.error).map(toastError)
+  }, [_report.get.error, _event.reportEvents.error])
 
   const openResponsePanel = () => {
     openAnswerPanel.setTrue()
@@ -107,7 +109,7 @@ export const ReportPro = () => {
               )}
             </ReportDescription>
 
-            <Collapse in={_report.events.entity && !!response}>
+            <Collapse in={_event.reportEvents.entity && !!response}>
               <Panel>
                 <PanelHead
                   action={response && <div className={css.responseDateTime}>{formatDateTime(response.data.creationDate)}</div>}
@@ -128,7 +130,7 @@ export const ReportPro = () => {
                 report={report}
                 onConfirm={() => {
                   openAnswerPanel.setFalse()
-                  _report.events.fetch({clean: false, force: true}, report.id)
+                  _event.reportEvents.fetch({clean: false, force: true}, report.id)
                   _report.get.fetch({clean: false, force: true}, id)
                 }}
                 onCancel={openAnswerPanel.setFalse}
@@ -136,10 +138,10 @@ export const ReportPro = () => {
               />
             </Collapse>
 
-            {_report.events.entity && (
+            {_event.reportEvents.entity && (
               <Panel>
                 <PanelHead>{m.reportHistory}</PanelHead>
-                <ReportEvents events={[creationReportEvent(report), ..._report.events.entity]} />
+                <ReportEvents events={[creationReportEvent(report), ..._event.reportEvents.entity]} />
               </Panel>
             )}
           </>

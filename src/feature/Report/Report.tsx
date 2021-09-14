@@ -18,6 +18,7 @@ import {useLogin} from '../../core/context/LoginContext'
 import {ReportConsumer} from './ReportConsumer/ReportConsumer'
 import {ReportCompany} from './ReportCompany/ReportCompany'
 import {ReportDescription} from './ReportDescription'
+import {useEventContext} from '../../core/context/EventContext'
 
 const useStyles = makeStyles((t: Theme) => ({
   tabs: {
@@ -41,6 +42,7 @@ export const ReportComponent = () => {
   const {id} = useParams<{id: Id}>()
   const {m} = useI18n()
   const _report = useReportContext()
+  const _event = useEventContext()
   const theme = useTheme()
   const {connectedUser} = useLogin()
   const cssUtils = useCssUtils()
@@ -48,25 +50,25 @@ export const ReportComponent = () => {
   const {toastError} = useToast()
   const [activeTab, setActiveTab] = useState(0)
   const response = useMemo(
-    () => _report.events.entity?.find(_ => _.data.action === EventActionValues.ReportProResponse),
-    [_report.events],
+    () => _event.reportEvents.entity?.find(_ => _.data.action === EventActionValues.ReportProResponse),
+    [_event.reportEvents],
   )
 
   useEffect(() => {
     _report.get.clearCache()
     _report.get.fetch({}, id).then(({report}) => {
-      if (report.companySiret) _report.companyEvents.fetch({}, report.companySiret)
+      if (report.companySiret) _event.companyEvents.fetch({}, report.companySiret)
     })
-    _report.events.fetch({}, id)
+    _event.reportEvents.fetch({}, id)
   }, [])
 
   useEffect(() => {
     fromNullable(_report.get.error).map(toastError)
     fromNullable(_report.remove.error).map(toastError)
     fromNullable(_report.updateCompany.error).map(toastError)
-    fromNullable(_report.companyEvents.error).map(toastError)
-    fromNullable(_report.events.error).map(toastError)
-  }, [_report.remove.error, _report.get.error, _report.updateCompany.error, _report.companyEvents.error, _report.events.error])
+    fromNullable(_event.companyEvents.error).map(toastError)
+    fromNullable(_event.reportEvents.error).map(toastError)
+  }, [_report.remove.error, _report.get.error, _report.updateCompany.error, _event.companyEvents.error, _event.reportEvents.error])
 
   const downloadReport = (reportId: Id) => _report.download.fetch({}, reportId)
 
@@ -82,7 +84,7 @@ export const ReportComponent = () => {
                     actionType={EventActionValues.Control}
                     label={m.markDgccrfControlDone}
                     report={report}
-                    onAdd={() => _report.events.fetch({force: true, clean: false}, id)}
+                    onAdd={() => _event.reportEvents.fetch({force: true, clean: false}, id)}
                   >
                     <Tooltip title={m.addDgccrfComment}>
                       <Btn color="primary" icon="check_circle">
@@ -96,7 +98,7 @@ export const ReportComponent = () => {
                   actionType={EventActionValues.Comment}
                   label={m.addDgccrfComment}
                   report={report}
-                  onAdd={() => _report.events.fetch({force: true, clean: false}, id)}
+                  onAdd={() => _event.reportEvents.fetch({force: true, clean: false}, id)}
                 >
                   <Tooltip title={m.addDgccrfComment}>
                     <Btn color="primary" icon="add_comment">
@@ -139,8 +141,8 @@ export const ReportComponent = () => {
 
             <ReportDescription report={report} files={_report.get.entity?.files} />
 
-            <Panel loading={_report.events.loading}>
-              {_report.events.entity && _report.companyEvents.entity && (
+            <Panel loading={_event.reportEvents.loading}>
+              {_event.reportEvents.entity && _event.companyEvents.entity && (
                 <>
                   <Tabs
                     className={css.tabs}
@@ -162,10 +164,10 @@ export const ReportComponent = () => {
                     />
                   </ReportTabPanel>
                   <ReportTabPanel value={activeTab} index={1}>
-                    <ReportEvents events={[creationReportEvent(report), ..._report.events.entity]} />
+                    <ReportEvents events={[creationReportEvent(report), ..._event.reportEvents.entity]} />
                   </ReportTabPanel>
                   <ReportTabPanel value={activeTab} index={2}>
-                    <ReportEvents events={_report.companyEvents.entity} />
+                    <ReportEvents events={_event.companyEvents.entity} />
                   </ReportTabPanel>
                 </>
               )}
