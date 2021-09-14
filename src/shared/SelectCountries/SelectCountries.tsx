@@ -1,7 +1,7 @@
 import * as React from 'react'
 import {forwardRef, useEffect, useState} from 'react'
 import {createStyles, Icon, IconButton, makeStyles, TextField, Theme} from '@material-ui/core'
-import {AutocompleteProps} from '@material-ui/lab'
+import {AutocompleteProps} from '@material-ui/lab/Autocomplete'
 import {useCssUtils} from '../../core/helper/useCssUtils'
 import {useI18n} from '../../core/i18n'
 import {classes, stopPropagation} from '../../core/helper/utils'

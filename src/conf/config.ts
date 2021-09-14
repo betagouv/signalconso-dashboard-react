@@ -1,5 +1,6 @@
 // Env variables must start with 'REACT_APP_' to be considered by CreateReactApp
-import {defaultValue, env, int} from '@alexandreannic/ts-utils/lib/common'
+import {env} from '@alexandreannic/ts-utils/lib/common/env/Env'
+import {defaultValue, int} from '@alexandreannic/ts-utils/lib/common/env/EnvParser'
 
 export const Config = {
   isDev: env()('NODE_ENV') === 'development',
