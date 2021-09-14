@@ -6,6 +6,7 @@ import {useMemo} from 'react'
 import {useI18n} from '../../core/i18n'
 import {classes} from '../../core/helper/utils'
 import {ReportsCountEvolution, ReportsCountEvolutionPeriod} from '../../core/api/client/company-stats/CompanyStats'
+import {EntityIcon} from '../../core/EntityIcon'
 
 interface Props {
   data?: ReportsCountEvolution,
@@ -31,7 +32,7 @@ export const CompanyReportsCountPanel = ({data, period, onChange}: Props) => {
 
   return (
     <Panel loading={!data}>
-      <PanelHead action={
+      <PanelHead icon={EntityIcon.report} action={
         <ButtonGroup color="primary">
           <Button
             className={classes(period === 'day' && css.btnPeriodActive)}

@@ -16,12 +16,12 @@ import {useCompaniesStatsContext} from '../../core/context/CompanyStatsContext'
 import {useMemoFn} from '../../shared/hooks/UseMemoFn'
 import {useEventContext} from '../../core/context/EventContext'
 import {useEffectFn} from '../../shared/hooks/UseEffectFn'
+import {useFetcher} from '@alexandreannic/react-hooks-lib/lib'
+import {useLogin} from '../../core/context/LoginContext'
+import {Widget} from './Widget'
+import {siteMap} from '../../core/siteMap'
 
 const useStyles = makeStyles((t: Theme) => ({
-  cardValue: {
-    fontSize: 36,
-    lineHeight: 1,
-  },
 }))
 
 export const CompanyComponent = () => {
@@ -30,8 +30,10 @@ export const CompanyComponent = () => {
   const _company = useCompaniesContext()
   const _companyStats = useCompaniesStatsContext()
   const _event = useEventContext()
+  const _accesses = useFetcher((siret: string) => apiSdk.secured.companyAccess.fetch(siret))
   const css = useStyles()
   const company = _company.byId.entity
+  const apiSdk = useLogin().apiSdk
 
   useEffect(() => {
     _company.byId.fetch({}, id)
@@ -41,7 +43,10 @@ export const CompanyComponent = () => {
     _companyStats.status.fetch({}, id)
   }, [])
 
-  useEffectFn(_company.byId.entity, _ => _event.companyEvents.fetch({}, _.siret))
+  useEffectFn(_company.byId.entity, _ => {
+    _event.companyEvents.fetch({}, _.siret)
+    _accesses.fetch({}, _.siret)
+  })
 
   const postActivationDocEvents = useMemoFn(_event.companyEvents.entity, events => events
     .map(_ => _.data)
@@ -67,29 +72,19 @@ export const CompanyComponent = () => {
         <>
           <Grid container spacing={2}>
             <Grid item xs={12} sm={6} md={3}>
-              <Panel>
-                <PanelBody>
-                  <Txt block uppercase color="hint" size="small" gutterBottom>{m.reports}</Txt>
-                  <Txt className={css.cardValue}>{formatLargeNumber(company.count)}</Txt>
-                </PanelBody>
-              </Panel>
+              <Widget title={m.reports}>
+                {formatLargeNumber(company.count)}
+              </Widget>
             </Grid>
             <Grid item xs={12} sm={6} md={3}>
-              <Panel>
-                <PanelBody>
-                  <Txt block uppercase color="hint" size="small" gutterBottom>{m.activationDocReturned}</Txt>
-                  <Txt skeleton={_event.companyEvents.loading} className={css.cardValue}>
-                    {postActivationDocEvents?.length}
-                  </Txt>
-                </PanelBody>
-              </Panel>
+              <Widget title={m.activationDocReturned} loading={_event.companyEvents.loading}>
+                {postActivationDocEvents?.length}
+              </Widget>
             </Grid>
             <Grid item xs={12} sm={6} md={3}>
-              <Panel>
-                <PanelBody>
-
-                </PanelBody>
-              </Panel>
+              <Widget title={m.accountsActivated} to={siteMap.companyAccesses(company.siret)} loading={_accesses.loading}>
+                {_accesses.entity?.length}
+              </Widget>
             </Grid>
             <Grid item xs={12} sm={6} md={3}>
               <Panel>
@@ -104,18 +99,30 @@ export const CompanyComponent = () => {
             data={_companyStats.reportsCountEvolution.entity}
             onChange={period => _companyStats.reportsCountEvolution.fetch({}, id, period)}
           />
-          <Panel>
-            <PanelHead>{m.status}</PanelHead>
-            <PanelBody>
-              <HorizontalBarChart data={statusDistribution} grid/>
-            </PanelBody>
-          </Panel>
-          <Panel>
-            <PanelHead>{m.tags}</PanelHead>
-            <PanelBody>
-              <HorizontalBarChart data={tagsDistribution} grid/>
-            </PanelBody>
-          </Panel>
+          <Grid container spacing={2}>
+            <Grid item sm={12} md={7}>
+              <Panel>
+                <PanelHead icon="account_tree">{m.status}</PanelHead>
+                <PanelBody>
+                  <HorizontalBarChart data={statusDistribution} grid/>
+                </PanelBody>
+              </Panel>
+              <Panel>
+                <PanelHead icon="style">{m.tags}</PanelHead>
+                <PanelBody>
+                  <HorizontalBarChart data={tagsDistribution} grid/>
+                </PanelBody>
+              </Panel>
+            </Grid>
+            <Grid item xs={12} sm={5}>
+              <Panel>
+                <PanelHead icon="question_answer">{m.responses}</PanelHead>
+                <PanelBody>
+                </PanelBody>
+              </Panel>
+            </Grid>
+          </Grid>
+
           {/*<Panel>*/}
           {/*  <PanelBody>{stats.hosts?.map(host => (*/}
           {/*    <>*/}

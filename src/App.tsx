@@ -249,9 +249,9 @@ const AppLogged = () => {
         <Route path={siteMap.report()} component={connectedUser.isPro ? ReportPro : ReportComponent} />
         <Route path={siteMap.reports()} component={connectedUser.isPro ? ReportsPro : Reports} />
         <Route path={siteMap.users} component={Users} />
-        <Route path={siteMap.company()} component={CompanyComponent} />
         <Route path={siteMap.companies} component={Companies} />
         <Route path={siteMap.companyAccesses()} component={CompanyAccesses} />
+        <Route path={siteMap.company()} component={CompanyComponent} />
         <Route path={siteMap.subscriptions} component={Subscriptions} />
         <Route path={siteMap.companiesPro} component={CompaniesPro} />
         <Route path={siteMap.settings} component={Settings} />
