@@ -7,7 +7,7 @@ import {Icon, Tooltip} from '@material-ui/core'
 import {Panel} from '../../shared/Panel'
 import {useCssUtils} from '../../core/helper/useCssUtils'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
-import { CompanyAccessLevel, Id} from '../../core/api'
+import {CompanyAccessLevel, Id} from '../../core/api'
 import {IconBtn} from 'mui-extension/lib'
 import {fromNullable, some} from 'fp-ts/lib/Option'
 import {useLogin} from '../../core/context/LoginContext'
@@ -28,7 +28,8 @@ interface Accesses {
     email?: string
     level: CompanyAccessLevel
     tokenId?: Id
-    editable?: Boolean
+    editable?: Boolean,
+    isHeadOffice?: Boolean
 }
 
 export const CompanyAccesses = () => {
@@ -45,13 +46,15 @@ export const CompanyAccesses = () => {
 
     const accesses: Accesses[] = useMemo(() => {
         return [
-            ...(_crudAccess.list ?? []).map(_ => ({
-                email: _.email,
-                name: _.firstName + ' ' + _.lastName,
-                level: _.level,
-                userId: _.userId,
-                editable: _.editable,
-            })),
+            ...(_crudAccess.list ?? []).map(_ => (
+                {
+                    email: _.email,
+                    name: _.firstName + ' ' + _.lastName,
+                    level: _.level,
+                    userId: _.userId,
+                    editable: _.editable,
+                    isHeadOffice: _.isHeadOffice
+                })),
             ...(_crudToken.list ?? []).map(_ => ({email: _.emailedTo, level: _.level, tokenId: _.id})),
         ]
     }, [_crudAccess.list, _crudToken.list])
@@ -125,7 +128,17 @@ export const CompanyAccesses = () => {
                                         {_.email} ({m.you})
                                     </Txt>
                                 ) : (
-                                    _.email
+
+                                    _.isHeadOffice ?
+                                        (
+                                            <Txt>
+                                                {_.email}
+                                                &nbsp;
+                                                ({m.isHeadOffice})
+                                            </Txt>
+                                        )
+                                        : _.email
+
                                 ),
                         },
                         {
@@ -167,7 +180,7 @@ export const CompanyAccesses = () => {
                                             icon="manage_accounts"
                                             variant="outlined"
                                             disabled={
-                                                 !_.userId || !_.editable
+                                                !_.userId || !_.editable
                                             }
                                         >
                                             {(CompanyAccessLevel as any)[_.level]}
@@ -183,7 +196,7 @@ export const CompanyAccesses = () => {
                             row: _ => (
                                 <>
                                     {some(_)
-                                        .filter(_ => _.editable === true )
+                                        .filter(_ => _.editable === true)
                                         .mapNullable(_ => _.userId)
                                         .map(userId => (
                                             <ScDialog
