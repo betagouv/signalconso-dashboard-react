@@ -90,9 +90,7 @@ export const ReportResponseForm = forwardRef(({report, className, onCancel, onCo
 
         <ReportResponseFormItem title={m.proAnswerYourDGCCRFAnswer} desc={m.proAnswerYourDGCCRFAnswerDesc}>
           <ScInput
-            {...register('dgccrfDetails', {
-              required: {value: true, message: m.required},
-            })}
+            {...register('dgccrfDetails')}
             helperText={errors.dgccrfDetails?.message}
             error={!!errors.dgccrfDetails}
             fullWidth
