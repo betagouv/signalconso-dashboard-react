@@ -3,7 +3,7 @@ import {useEffect} from 'react'
 import {Page, PageTitle} from 'shared/Layout'
 import {useCompaniesContext} from '../../core/context/CompaniesContext'
 import {useParams} from 'react-router'
-import {Id} from '../../core/api'
+import {EventActionValues, Id} from '../../core/api'
 import {Panel, PanelBody, PanelHead} from '../../shared/Panel'
 import {HorizontalBarChart} from '../../shared/HorizontalBarChart/HorizontalBarChart'
 import {reportStatusColor} from '../../shared/ReportStatus/ReportStatus'
@@ -13,7 +13,9 @@ import {Grid, makeStyles, Theme} from '@material-ui/core'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
 import {CompanyReportsCountPanel} from './CompanyReportsCountPanel'
 import {useCompaniesStatsContext} from '../../core/context/CompanyStatsContext'
-import {useMapOnChange} from '../../shared/hooks/UseMapOnChange'
+import {useMemoFn} from '../../shared/hooks/UseMemoFn'
+import {useEventContext} from '../../core/context/EventContext'
+import {useEffectFn} from '../../shared/hooks/UseEffectFn'
 
 const useStyles = makeStyles((t: Theme) => ({
   cardValue: {
@@ -27,7 +29,9 @@ export const CompanyComponent = () => {
   const {m, formatDate, formatLargeNumber} = useI18n()
   const _company = useCompaniesContext()
   const _companyStats = useCompaniesStatsContext()
+  const _event = useEventContext()
   const css = useStyles()
+  const company = _company.byId.entity
 
   useEffect(() => {
     _company.byId.fetch({}, id)
@@ -37,13 +41,18 @@ export const CompanyComponent = () => {
     _companyStats.status.fetch({}, id)
   }, [])
 
-  const company = _company.byId.entity
+  useEffectFn(_company.byId.entity, _ => _event.companyEvents.fetch({}, _.siret))
 
-  const statusDistribution = useMapOnChange(_companyStats.status.entity, _ => Enum.entries(_).map(([status, count]) =>
+  const postActivationDocEvents = useMemoFn(_event.companyEvents.entity, events => events
+    .map(_ => _.data)
+    .filter(_ => _.action === EventActionValues.PostAccountActivationDoc),
+  )
+
+  const statusDistribution = useMemoFn(_companyStats.status.entity, _ => Enum.entries(_).map(([status, count]) =>
     ({label: m.reportStatusShort[status], value: count, color: reportStatusColor[status] ?? undefined}),
   ))
 
-  const tagsDistribution = useMapOnChange(_companyStats.tags.entity, _ => Object.entries(_).map(([label, count]) => ({label, value: count})))
+  const tagsDistribution = useMemoFn(_companyStats.tags.entity, _ => Object.entries(_).map(([label, count]) => ({label, value: count})))
 
   return (
     <Page loading={_company.byId.loading}>
@@ -68,7 +77,10 @@ export const CompanyComponent = () => {
             <Grid item xs={12} sm={6} md={3}>
               <Panel>
                 <PanelBody>
-
+                  <Txt block uppercase color="hint" size="small" gutterBottom>{m.activationDocReturned}</Txt>
+                  <Txt skeleton={_event.companyEvents.loading} className={css.cardValue}>
+                    {postActivationDocEvents?.length}
+                  </Txt>
                 </PanelBody>
               </Panel>
             </Grid>

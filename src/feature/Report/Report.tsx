@@ -19,6 +19,7 @@ import {ReportConsumer} from './ReportConsumer/ReportConsumer'
 import {ReportCompany} from './ReportCompany/ReportCompany'
 import {ReportDescription} from './ReportDescription'
 import {useEventContext} from '../../core/context/EventContext'
+import {useEffectFn} from '../../shared/hooks/UseEffectFn'
 
 const useStyles = makeStyles((t: Theme) => ({
   tabs: {
@@ -62,13 +63,11 @@ export const ReportComponent = () => {
     _event.reportEvents.fetch({}, id)
   }, [])
 
-  useEffect(() => {
-    fromNullable(_report.get.error).map(toastError)
-    fromNullable(_report.remove.error).map(toastError)
-    fromNullable(_report.updateCompany.error).map(toastError)
-    fromNullable(_event.companyEvents.error).map(toastError)
-    fromNullable(_event.reportEvents.error).map(toastError)
-  }, [_report.remove.error, _report.get.error, _report.updateCompany.error, _event.companyEvents.error, _event.reportEvents.error])
+  useEffectFn(_report.get.error, toastError)
+  useEffectFn(_report.remove.error, toastError)
+  useEffectFn(_report.updateCompany.error, toastError)
+  useEffectFn(_event.companyEvents.error, toastError)
+  useEffectFn(_event.reportEvents.error, toastError)
 
   const downloadReport = (reportId: Id) => _report.download.fetch({}, reportId)
 
