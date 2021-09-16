@@ -14,6 +14,7 @@ import {
 import {PaginatedData, ReportSearch} from '../../model'
 import {pipe} from 'rxjs'
 import {ApiSdkLogger} from '../../helper/Logger'
+import {Address} from "../../model/Address";
 
 export interface ReportFilterQuerystring {
   readonly departments?: string
@@ -118,9 +119,9 @@ export class ReportsClient {
     return this.client.delete<void>(`reports/${id}`)
   }
 
-  readonly getById = (id: Id) => {
+  readonly getById = (id: Id) : Promise<ReportSearchResult> => {
     return this.client
-      .get<ReportSearchResult>(`/reports/${id}`)
+      .get(`/reports/${id}`)
       .then(_ => ({files: _.files, report: ReportsClient.mapReport(_.report)}))
   }
 
@@ -161,8 +162,15 @@ export class ReportsClient {
     })
   }
 
-  static readonly mapReport = (report: {[key in keyof Report]: any}): Report => ({
-    ...report,
-    creationDate: new Date(report.creationDate),
-  })
+    static readonly mapReport = (report: { [key in keyof Report]: any }): Report => ({
+        ...report,
+        companyAddress: ReportsClient.mapAddress(report.companyAddress),
+        creationDate: new Date(report.creationDate),
+    })
+
+    static readonly mapAddress = (address: { [key in keyof Address]: any | undefined}): Address => ({
+        ...address,
+        country: address.country?.name,
+    })
+
 }
