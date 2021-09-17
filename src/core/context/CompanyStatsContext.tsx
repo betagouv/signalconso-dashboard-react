@@ -13,6 +13,7 @@ export interface CompaniesStatsContextProps {
   tags: UseFetcher<CompanyStatSdk['getTags'], ApiError>
   status: UseFetcher<CompanyStatSdk['getStatus'], ApiError>
   hosts: UseFetcher<CompanyStatSdk['getHosts'], ApiError>
+  responseReviews: UseFetcher<CompanyStatSdk['getResponseReviews'], ApiError>
 }
 
 interface Props {
@@ -33,6 +34,7 @@ export const CompaniesStatsProvider = ({api, children}: Props) => {
   const tags = useFetcher(api.secured.companyStats.getTags)
   const status = useFetcher(api.secured.companyStats.getStatus)
   const hosts = useFetcher(api.secured.companyStats.getHosts)
+  const responseReviews = useFetcher(api.secured.companyStats.getResponseReviews)
 
   return (
     <CompaniesStatsContext.Provider
@@ -42,6 +44,7 @@ export const CompaniesStatsProvider = ({api, children}: Props) => {
         tags,
         status,
         hosts,
+        responseReviews,
       }}
     >
       {children}

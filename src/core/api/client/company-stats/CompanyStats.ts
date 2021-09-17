@@ -8,3 +8,8 @@ export type ReportsCountEvolution = [Date, number][]
 export type ReportStatusDistribution = { [key in ReportStatus]: number }
 
 export type ReportTagsDistribution = Index<number>
+
+export interface ReportResponseReviews {
+  positive: number
+  negative: number
+}

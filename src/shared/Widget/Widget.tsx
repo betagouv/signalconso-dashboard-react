@@ -1,11 +1,10 @@
-import {Panel, PanelBody} from '../../shared/Panel'
+import {Panel, PanelBody} from '../Panel'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
 import * as React from 'react'
 import {ReactNode} from 'react'
 import {Icon, makeStyles, Theme} from '@material-ui/core'
 import {NavLink} from 'react-router-dom'
 import {useCssUtils} from '../../core/helper/useCssUtils'
-import {classes} from '../../core/helper/utils'
 import {styleUtils} from '../../core/theme'
 
 interface Props {
@@ -16,10 +15,6 @@ interface Props {
 }
 
 const useStyles = makeStyles((t: Theme) => ({
-  cardValue: {
-    fontSize: 36,
-    lineHeight: 1,
-  },
   title: {
     display: 'flex',
     alignItems: 'center',
@@ -37,7 +32,7 @@ const useStyles = makeStyles((t: Theme) => ({
       // borderColor: t.palette.primary.main,
       // boxShadow: `inset 0 0 0 1px ${t.palette.primary.main}`,
     }
-  }
+  },
 }))
 
 export const Widget = ({loading, title, to, children}: Props) => {
@@ -54,9 +49,7 @@ export const Widget = ({loading, title, to, children}: Props) => {
             </Icon>
           )}
         </Txt>
-        <Txt skeleton={loading} className={css.cardValue}>
-          {children}
-        </Txt>
+        {children}
       </PanelBody>
     </Panel>
   )

@@ -1,23 +1,28 @@
 import {ApiClientApi, ReportTag} from '../..'
 import {Id} from '../../model'
-import {ReportsCountEvolution, ReportsCountEvolutionPeriod, ReportStatusDistribution, ReportTagsDistribution} from './CompanyStats'
+import {ReportResponseReviews, ReportsCountEvolution, ReportsCountEvolutionPeriod, ReportStatusDistribution, ReportTagsDistribution} from './CompanyStats'
 
 export class CompanyStatsClient {
   constructor(private client: ApiClientApi) {
   }
 
   readonly getTags = (id: Id) => {
-    return this.client.get<ReportTagsDistribution>(`/companies-stats/tags/${id}`)
+    return this.client.get<ReportTagsDistribution>(`/company-stats/${id}/tags`)
   }
   readonly getStatus = (id: Id) => {
-    return this.client.get<ReportStatusDistribution>(`/companies-stats/status/${id}`)
+    return this.client.get<ReportStatusDistribution>(`/company-stats/${id}/status`)
   }
+
   readonly getHosts = (id: Id) => {
-    return this.client.get<ReportTag[]>(`/companies-stats/hosts/${id}`)
+    return this.client.get<ReportTag[]>(`/company-stats/${id}/hosts`)
+  }
+
+  readonly getResponseReviews = (id: Id) => {
+    return this.client.get<ReportResponseReviews>(`/company-stats/${id}/reviews`)
   }
 
   readonly getReportsCountEvolution = (id: Id, period: ReportsCountEvolutionPeriod): Promise<ReportsCountEvolution> => {
-    return this.client.get(`/companies-stats/report-count/${id}`, {qs: {period}})
+    return this.client.get(`/company-stats/${id}/report-count`, {qs: {period}})
       .then(this.mapReportsCountByDate)
   }
 
