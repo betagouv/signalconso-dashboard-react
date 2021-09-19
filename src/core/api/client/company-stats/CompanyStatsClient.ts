@@ -21,6 +21,10 @@ export class CompanyStatsClient {
     return this.client.get<ReportResponseReviews>(`/company-stats/${id}/reviews`)
   }
 
+  readonly getResponseDelay = (id: Id) => {
+    return this.client.get<any>(`/company-stats/${id}/response-delay-days`)
+  }
+
   readonly getReportsCountEvolution = (id: Id, period: ReportsCountEvolutionPeriod): Promise<ReportsCountEvolution> => {
     return this.client.get(`/company-stats/${id}/report-count`, {qs: {period}})
       .then(this.mapReportsCountByDate)

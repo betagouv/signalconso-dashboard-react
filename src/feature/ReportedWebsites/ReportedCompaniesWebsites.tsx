@@ -125,7 +125,7 @@ export const ReportedCompaniesWebsites = () => {
             row: _ => _.count,
           },
           {
-            head: m.creationDate,
+            head: m.creation,
             id: 'creationDate',
             row: _ => <>{formatDate(_.creationDate)}</>,
           },

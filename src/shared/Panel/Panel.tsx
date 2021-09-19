@@ -7,8 +7,8 @@ import {CardProps} from '@material-ui/core/Card/Card'
 const useStyles = makeStyles((t: Theme) =>
   createStyles({
     root: {
-      borderRadius: 4,
-      marginBottom: t.spacing(3),
+      borderRadius: 6,
+      marginBottom: t.spacing(2),
     },
     border: {
       border: `1px solid ${t.palette.divider}`,

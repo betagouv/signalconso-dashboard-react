@@ -9,7 +9,7 @@ import {HorizontalBarChart} from '../../shared/HorizontalBarChart/HorizontalBarC
 import {reportStatusColor} from '../../shared/ReportStatus/ReportStatus'
 import {useI18n} from '../../core/i18n'
 import {Enum} from '@alexandreannic/ts-utils/lib/common/enum/Enum'
-import {Grid, Icon, makeStyles, Theme} from '@material-ui/core'
+import {Divider, Grid, Icon, List, ListItem, ListItemIcon, ListItemText, makeStyles, Theme} from '@material-ui/core'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
 import {CompanyReportsCountPanel} from './CompanyReportsCountPanel'
 import {useCompaniesStatsContext} from '../../core/context/CompanyStatsContext'
@@ -24,9 +24,9 @@ import {useToast} from '../../core/toast'
 import {WidgetValue} from '../../shared/Widget/WidgetValue'
 import {useCssUtils} from '../../core/helper/useCssUtils'
 import {classes} from '../../core/helper/utils'
-import {WidgetBody} from '../../shared/Widget/WidgetBody'
 import {fromNullable} from 'fp-ts/es6/Option'
 import {WidgetLoading} from '../../shared/Widget/WidgetLoading'
+import {AddressComponent} from '../../shared/Address/Address'
 
 
 const useStyles = makeStyles((t: Theme) => ({
@@ -44,8 +44,8 @@ const useStyles = makeStyles((t: Theme) => ({
     // margin: t.spacing(2),
   },
   reviews_type_icon: {
-    margin: t.spacing(0, 1, 0, 1),
-    fontSize: 34,
+    margin: t.spacing(0, 2, 0, 2),
+    fontSize: 38,
   },
 }))
 
@@ -69,6 +69,7 @@ export const CompanyComponent = () => {
     _companyStats.hosts.fetch({}, id)
     _companyStats.status.fetch({}, id)
     _companyStats.responseReviews.fetch({}, id)
+    _companyStats.responseDelay.fetch({}, id)
   }, [])
 
   useEffectFn(_company.byId.error, toastError)
@@ -77,6 +78,7 @@ export const CompanyComponent = () => {
   useEffectFn(_companyStats.hosts.error, toastError)
   useEffectFn(_companyStats.status.error, toastError)
   useEffectFn(_companyStats.responseReviews.error, toastError)
+  useEffectFn(_companyStats.responseDelay.error, toastError)
 
   useEffectFn(_company.byId.entity, _ => {
     _event.companyEvents.fetch({}, _.siret)
@@ -128,9 +130,39 @@ export const CompanyComponent = () => {
               </Widget>
             </Grid>
             <Grid item xs={12} sm={6} md={3}>
-              <Widget title={m.reviews}>
+              <Widget title={m.avgResponseTime}>
+                {fromNullable(_companyStats.responseDelay.entity)
+                  .map(_ => <><WidgetValue>{_} <Txt size="big">{m.days}</Txt></WidgetValue></>)
+                  .getOrElse(<WidgetLoading/>)
+                }
+              </Widget>
+            </Grid>
+          </Grid>
+          <CompanyReportsCountPanel
+            period={_companyStats.reportsCountEvolutionPeriod}
+            data={_companyStats.reportsCountEvolution.entity}
+            onChange={period => _companyStats.reportsCountEvolution.fetch({}, id, period)}
+          />
+          <Grid container spacing={2}>
+            <Grid item sm={12} md={7}>
+              <Panel>
+                <PanelHead>{m.status}</PanelHead>
+                <PanelBody>
+                  <HorizontalBarChart data={statusDistribution} grid/>
+                </PanelBody>
+              </Panel>
+              <Panel>
+                <PanelHead>{m.tags}</PanelHead>
+                <PanelBody>
+                  <HorizontalBarChart data={tagsDistribution} grid/>
+                </PanelBody>
+              </Panel>
+            </Grid>
+            <Grid item sm={12} md={5}>
+              <Panel>
+                <PanelHead>{m.reviews}</PanelHead>
                 {fromNullable(_companyStats.responseReviews.entity).map(_ => (
-                  <WidgetBody>
+                  <PanelBody>
                     <div className={css.reviews}>
                       <div className={css.reviews_type}>
                         <div className={css.reviews_type_value}>
@@ -145,48 +177,40 @@ export const CompanyComponent = () => {
                         {_companyStats.responseReviews.entity?.negative}
                       </div>
                     </div>
-                  </WidgetBody>
+                  </PanelBody>
                 )).getOrElse(<WidgetLoading/>)}
-              </Widget>
+              </Panel>
+              <Panel>
+                <PanelHead>{m.informations}</PanelHead>
+                <PanelBody>
+                  <List>
+                    <ListItem>
+                      <ListItemIcon>
+                        <Icon>location_on</Icon>
+                      </ListItemIcon>
+                      <ListItemText primary={m.address} secondary={
+                        <AddressComponent address={company.address}/>
+                      }/>
+                    </ListItem>
+                    <Divider variant="inset" component="li" />
+                    <ListItem>
+                      <ListItemIcon>
+                        <Icon>event</Icon>
+                      </ListItemIcon>
+                      <ListItemText primary={m.creationDate} secondary={formatDate(company.creationDate)}/>
+                    </ListItem>
+                    <Divider variant="inset" component="li" />
+                    <ListItem>
+                      <ListItemIcon>
+                        <Icon>label</Icon>
+                      </ListItemIcon>
+                      <ListItemText primary={m.activityCode} secondary={company.activityCode}/>
+                    </ListItem>
+                  </List>
+                </PanelBody>
+              </Panel>
             </Grid>
           </Grid>
-          <CompanyReportsCountPanel
-            period={_companyStats.reportsCountEvolutionPeriod}
-            data={_companyStats.reportsCountEvolution.entity}
-            onChange={period => _companyStats.reportsCountEvolution.fetch({}, id, period)}
-          />
-          {/*<Grid container spacing={2}>*/}
-          {/*  <Grid item sm={12} md={7}>*/}
-          <Panel>
-            <PanelHead icon="account_tree">{m.status}</PanelHead>
-            <PanelBody>
-              <HorizontalBarChart data={statusDistribution} grid/>
-            </PanelBody>
-          </Panel>
-          <Panel>
-            <PanelHead icon="style">{m.tags}</PanelHead>
-            <PanelBody>
-              <HorizontalBarChart data={tagsDistribution} grid/>
-            </PanelBody>
-          </Panel>
-          {/*</Grid>*/}
-          {/*<Grid item xs={12} sm={5}>*/}
-          {/*  <Panel>*/}
-          {/*    <PanelHead icon="question_answer">{m.responses}</PanelHead>*/}
-          {/*    <PanelBody>*/}
-          {/*    </PanelBody>*/}
-          {/*  </Panel>*/}
-          {/*</Grid>*/}
-          {/*</Grid>*/}
-
-          {/*<Panel>*/}
-          {/*  <PanelBody>{stats.hosts?.map(host => (*/}
-          {/*    <>*/}
-          {/*      <Txt key={host}>{host}</Txt>*/}
-          {/*      &nbsp;*/}
-          {/*    </>*/}
-          {/*  ))}</PanelBody>*/}
-          {/*</Panel>*/}
         </>
       )}
     </Page>

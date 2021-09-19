@@ -32,7 +32,7 @@ export const CompanyReportsCountPanel = ({data, period, onChange}: Props) => {
 
   return (
     <Panel loading={!data}>
-      <PanelHead icon={EntityIcon.report} action={
+      <PanelHead action={
         <ButtonGroup color="primary">
           <Button
             className={classes(period === 'day' && css.btnPeriodActive)}
