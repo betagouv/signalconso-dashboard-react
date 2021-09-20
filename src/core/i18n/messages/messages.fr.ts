@@ -47,6 +47,9 @@ export const messagesFr = {
   unknown: 'Inconnu',
   new: 'New',
   start: 'Début',
+  startUp: 'Démarrer',
+  inProgress: 'En cours...',
+  cancelAll: `Tout annuler`,
   clear: 'Clear',
   cron: 'Cron',
   removeAsk: 'Supprimer ? ',
@@ -177,11 +180,13 @@ export const messagesFr = {
   proResponse: 'Réponse du professionnel',
   searchByEmail: 'Rechercher par email',
   undeliveredDoc: 'Courrier retourné',
-  undeliveredDocTitle: "Retour du courrier d'activation",
+  undeliveredDocTitle: 'Retour du courrier d\'activation',
   searchByHost: 'Rechercher par nom de domaine',
-  addProAttachmentFile: "Ajouter une pièces jointe fournie par l'entreprise",
+  addProAttachmentFile: 'Ajouter une pièces jointe fournie par l\'entreprise',
   addAttachmentFile: 'Ajouter une pièces jointe',
   attachedFiles: 'Pièces jointes',
+  database: `Base de données`,
+  beginning: `Début`,
   invalidSize: (maxSize: number) => `La taille du fichier dépasse les ${maxSize} Mb`,
   somethingWentWrong: `Une erreur s'est produite`,
   altLogoSignalConso: `Logo SignalConso / Retour à la page d'accueil`,
@@ -259,11 +264,19 @@ export const messagesFr = {
   noReportsDesc: 'Aucun signalement ne correspond à votre recherche.',
   lastNotice: 'Relancé le',
   validatingEmail: `Validation de l'adresse email...`,
-  validateLetterSent: "Valider l'envoi des courriers",
+  validateLetterSent: 'Valider l\'envoi des courriers',
   emailValidated: `Votre email est validé.`,
   emailValidatedDesc: `Vous pouvez vous connecter à l'aide de votre adresse email et mot de passe.`,
-  validateLetterSentTitle: "Valider l'envoi des courriers",
+  validateLetterSentTitle: 'Valider l\'envoi des courriers',
   sendNewPostal: `Envoyer un nouveau courrier`,
+  companiesDbSyncInfo: `
+    Le fichier <b>StockEtablissement</b> doit être, de préférence, lancé en premier. 
+    <br.>
+    Le fichier <b>StockUniteLegale</b> permet d'obtenir le nom de l'établissement lorsqu'il est absent du fichier <b>StockEtablissement</b>.
+    <br/>
+    <br/>
+    La sychronisation peut être lancée et annulée à tout moment sans risque.
+  `,
   loginForbidden: `Compte bloqué (trop de tentatives, veuillez réessayer dans 30 minutes)`,
   loginLocked: `Votre adresse email doit être validée, un e-mail vient de vous être envoyé avec un lien à cet effet.`,
   loginFailed: `Échec de l'authentification`,
@@ -271,7 +284,7 @@ export const messagesFr = {
   validateLetterSentDesc:
     'Les courriers seront considérés envoyés pour les entreprises sélectionnées. Cette action est irrévocable.',
   dgccrfUsers: 'Agents DGCCRF',
-  invitationDate: "Date d'invitation",
+  invitationDate: 'Date d\'invitation',
   connectedUnder3Months: 'Connecté dans les 3 derniers mois',
   pendingInvitation: 'Invitation en attente',
   users_invite_dialog_title: 'Inviter un agent DGCCRF',
@@ -279,7 +292,7 @@ export const messagesFr = {
   disable: `Désactiver`,
   disableAll: `Tout désactiver`,
   users_invite_dialog_desc:
-    "Un courrier électronique sera envoyé à l'adresse e-mail saisie ci-dessus avec un lien sécurisé permettant de créer un compte DGCCRF.",
+    'Un courrier électronique sera envoyé à l\'adresse e-mail saisie ci-dessus avec un lien sécurisé permettant de créer un compte DGCCRF.',
   selectedCompanies: `entreprises sélectionnées`,
   passwordNotLongEnough: '8 caractères minimum',
   oldPassword: 'Ancien mot de passe',

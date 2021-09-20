@@ -55,6 +55,7 @@ import {CompanyComponent} from './feature/Company/Company'
 import {CompaniesStatsProvider} from './core/context/CompanyStatsContext'
 import {CompaniesDbSyncProvider} from './core/context/CompaniesDbSyncContext'
 import {EventProvider} from './core/context/EventContext'
+import {CompaniesDbSync} from './feature/CompaniesDbSync/CompaniesDbSync'
 
 if (Config.sentry_dns) {
   Sentry.init({
@@ -257,6 +258,7 @@ const AppLogged = () => {
         <Route path={siteMap.settings} component={Settings} />
         <Route path={siteMap.register} component={ActivateNewCompany} />
         <Route path={siteMap.modeEmploiDGCCRF} component={ModeEmploiDGCCRF} />
+        <Route path={siteMap.companiesDbSync} component={CompaniesDbSync} />
         <Redirect from="/" to={siteMap.reports()} />
       </Switch>
     </Provide>
