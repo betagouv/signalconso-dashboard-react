@@ -28,4 +28,5 @@ export const siteMap = {
   modeEmploiDGCCRF: '/mode-emploi-dgccrf',
   consumerReview: (reportId: Id = ':reportId') => `/suivi-des-signalements/${reportId}/avis`,
   resetPassword: (token: Id = ':token') => `/connexion/nouveau-mot-de-passe/${token}`,
+  companiesDbSync: `/companies-db-sync`
 }

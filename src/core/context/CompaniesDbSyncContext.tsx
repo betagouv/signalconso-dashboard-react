@@ -1,6 +1,6 @@
 import * as React from 'react'
 import {ReactNode, useContext} from 'react'
-import {UseAsync} from '@alexandreannic/react-hooks-lib/lib'
+import {UseAsync, UseFetcher, useFetcher} from '@alexandreannic/react-hooks-lib/lib'
 import {SignalConsoApiSdk} from '../../App'
 import {useAsync} from '@alexandreannic/react-hooks-lib'
 
@@ -12,7 +12,7 @@ export interface CompaniesDbSyncContextProps {
   cancelAllFiles: UseAsync<Sdk['cancelAllFiles']>
   cancelEtablissementFile: UseAsync<Sdk['cancelEtablissementFile']>
   cancelUniteLegaleFile: UseAsync<Sdk['cancelUniteLegaleFile']>
-  getInfo: UseAsync<Sdk['getInfo']>
+  getInfo: UseFetcher<Sdk['getInfo']>
 }
 
 interface Props {
@@ -31,7 +31,7 @@ export const CompaniesDbSyncProvider = ({api, children}: Props) => {
   const cancelAllFiles = useAsync(api.secured.companiesDbSync.cancelAllFiles)
   const cancelEtablissementFile = useAsync(api.secured.companiesDbSync.cancelEtablissementFile)
   const cancelUniteLegaleFile = useAsync(api.secured.companiesDbSync.cancelUniteLegaleFile)
-  const getInfo = useAsync((api.secured.companiesDbSync.getInfo))
+  const getInfo = useFetcher(api.secured.companiesDbSync.getInfo)
 
   return (
     <CompaniesDbSyncContext.Provider
