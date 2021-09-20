@@ -270,7 +270,7 @@ export const Reports = ({}) => {
             },
             {
               id: 'creationDate',
-              head: m.creationDate,
+              head: m.creation,
               row: _ => formatDate(_.report.creationDate),
             },
             {

@@ -17,7 +17,7 @@ export const Ripple = ({children}: Props) => {
   }
 
   return (
-    <div onMouseDown={onRippleStart} onMouseUp={onRippleStop} style={{position: 'relative'}}>
+    <div onMouseDown={onRippleStart} onMouseLeave={onRippleStop} onMouseUp={onRippleStop} style={{position: 'relative'}}>
       {children}
       <TouchRipple ref={rippleRef} center={false} />
     </div>

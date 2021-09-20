@@ -211,6 +211,11 @@ export const CompaniesRegistered = () => {
                     </Tooltip>
                   </NavLink>
                 )}
+                <NavLink to={siteMap.company(_.id)}>
+                  <IconBtn>
+                    <Icon>chevron_right</Icon>
+                  </IconBtn>
+                </NavLink>
               </>
             ),
           },
