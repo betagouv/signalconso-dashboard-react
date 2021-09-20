@@ -25,9 +25,9 @@ export class CompaniesDbSyncClient {
       }))
   }
 
-  private static readonly mapCompaniesDbSyncInfo = (_: { [key in keyof CompaniesDbSyncInfo]: any }): CompaniesDbSyncInfo => ({
+  private static readonly mapCompaniesDbSyncInfo = (_?: Shape<CompaniesDbSyncInfo>): CompaniesDbSyncInfo | undefined => _ ? ({
     ..._,
     startedAt: new Date(_.startedAt),
     ...(_.endedAt ? {endedAt: new Date(_.endedAt)} : {}),
-  })
+  }) : undefined
 }
