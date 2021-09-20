@@ -41,6 +41,7 @@ export const CompaniesDbSync = () => {
         <Grid container spacing={2}>
           <Grid item sm={6}>
             <CompaniesDbSyncCard
+              name="StockEtablissement"
               start={_companiesDbSync.startEtablissementFile}
               cancel={_companiesDbSync.cancelEtablissementFile}
               info={_companiesDbSync.getInfo.entity.etablissementImportInfo}
@@ -48,6 +49,7 @@ export const CompaniesDbSync = () => {
           </Grid>
           <Grid item sm={6}>
             <CompaniesDbSyncCard
+              name="StockUniteLegale"
               start={_companiesDbSync.startUniteLegaleFile}
               cancel={_companiesDbSync.cancelUniteLegaleFile}
               info={_companiesDbSync.getInfo.entity.uniteLegaleInfo}

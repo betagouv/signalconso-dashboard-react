@@ -12,6 +12,6 @@ export interface CompaniesDbSyncInfo {
 }
 
 export interface CompaniesDbSyncInfos {
-  etablissementImportInfo: CompaniesDbSyncInfo
-  uniteLegaleInfo: CompaniesDbSyncInfo
+  etablissementImportInfo?: CompaniesDbSyncInfo
+  uniteLegaleInfo?: CompaniesDbSyncInfo
 }
