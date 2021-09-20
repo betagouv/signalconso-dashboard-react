@@ -5,7 +5,7 @@ import {Id, SignalConsoSecuredSdk} from 'core/api'
 import {SignalConsoApiSdk} from '../../App'
 import {useAsync} from '@alexandreannic/react-hooks-lib'
 import {uniqby} from '../lodashNamedExport'
-import {BlockedReportNotification} from '../api/client/blockedReportNotifications/BlockedReportNotification'
+import {BlockedReportNotification} from '../api/client/blocked-report-notifications/BlockedReportNotification'
 
 export interface BlockedReportNotificationContextProps {
   list: UseFetcher<SignalConsoSecuredSdk['reportBlockedNotification']['fetch']>
