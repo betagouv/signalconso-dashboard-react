@@ -49,6 +49,6 @@ export enum ReportStatus {
   Accepted = 'Promesse action',
   ClosedForPro = 'Clôturé',
   Rejected = 'Signalement infondé',
-  Ignored = 'Signalement consulté ignoré',
   NotConcerned = 'Signalement mal attribué',
+  Ignored = 'Signalement consulté ignoré',
 }
