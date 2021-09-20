@@ -28,7 +28,6 @@ import {fromNullable} from 'fp-ts/es6/Option'
 import {WidgetLoading} from '../../shared/Widget/WidgetLoading'
 import {AddressComponent} from '../../shared/Address/Address'
 
-
 const useStyles = makeStyles((t: Theme) => ({
   reviews: {
     display: 'flex',

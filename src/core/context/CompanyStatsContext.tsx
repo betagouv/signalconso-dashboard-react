@@ -48,7 +48,6 @@ export const CompaniesStatsProvider = ({api, children}: Props) => {
         hosts,
         responseReviews,
         responseDelay,
-        // reportsResponsesCountEvolution,
       }}
     >
       {children}
