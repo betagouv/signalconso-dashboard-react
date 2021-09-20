@@ -51,6 +51,7 @@ import {ModeEmploiDGCCRF} from './feature/ModeEmploiDGCCRF/ModeEmploiDGCCRF'
 import {ConsumerReview} from './feature/ConsumerReview/ConsumerReview'
 import * as Sentry from '@sentry/react'
 import {Integrations} from '@sentry/tracing'
+import {CompaniesDbSyncProvider} from './core/context/CompaniesDbSyncContext'
 
 if (Config.sentry_dns) {
   Sentry.init({
@@ -234,6 +235,7 @@ const AppLogged = () => {
         _ => <SubscriptionsProvider api={apiSdk} children={_} />,
         _ => <AccessesProvider api={apiSdk} children={_} />,
         _ => <BlockedReportNotificationProvider api={apiSdk} children={_} />,
+        _ => <CompaniesDbSyncProvider api={apiSdk} children={_} />,
       ]}
     >
       <Switch>
