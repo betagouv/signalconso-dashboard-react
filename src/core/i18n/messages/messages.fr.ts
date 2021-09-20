@@ -140,6 +140,7 @@ export const messagesFr = {
   creation: 'Création',
   creationDate: 'Date de création',
   reportsCount: 'Nombre de signalements',
+  responsesCount: 'Nombre de réponses',
   emailConsumer: 'Email conso.',
   pro: 'Professionnels',
   number: `Numéro`,

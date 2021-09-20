@@ -1,6 +1,6 @@
 import {ApiClientApi, ReportTag} from '../..'
 import {Id} from '../../model'
-import {ReportResponseReviews, ReportsCountEvolution, ReportsCountEvolutionPeriod, ReportStatusDistribution, ReportTagsDistribution} from './CompanyStats'
+import {ReportResponseReviews, ReportsCountEvolution, Period, ReportStatusDistribution, ReportTagsDistribution} from './CompanyStats'
 
 export class CompanyStatsClient {
   constructor(private client: ApiClientApi) {
@@ -25,12 +25,12 @@ export class CompanyStatsClient {
     return this.client.get<any>(`/company-stats/${id}/response-delay-days`)
   }
 
-  readonly getReportsCountEvolution = (id: Id, period: ReportsCountEvolutionPeriod): Promise<ReportsCountEvolution> => {
+  readonly getReportsCountEvolution = (id: Id, period: Period): Promise<ReportsCountEvolution[]> => {
     return this.client.get(`/company-stats/${id}/report-count`, {qs: {period}})
       .then(this.mapReportsCountByDate)
   }
 
-  private readonly mapReportsCountByDate = (data: [string, number][]): ReportsCountEvolution => {
-    return data.map(([date, count]) => ([new Date(date), count]))
+  private readonly mapReportsCountByDate = (data: ReportsCountEvolution[]): ReportsCountEvolution[] => {
+    return data.map(x => ({...x, data: new Date(x.date)}))
   }
 }

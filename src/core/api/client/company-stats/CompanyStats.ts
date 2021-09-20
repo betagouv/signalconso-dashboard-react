@@ -1,9 +1,13 @@
 import {ReportStatus} from '../report/Report'
 import {Index} from '../../helper/Utils'
 
-export type ReportsCountEvolutionPeriod = 'day' | 'week' | 'month'
+export type Period = 'day' | 'week' | 'month'
 
-export type ReportsCountEvolution = [Date, number][]
+export interface ReportsCountEvolution {
+  date: Date
+  reports: number
+  responses: number
+}
 
 export type ReportStatusDistribution = { [key in ReportStatus]: number }
 
