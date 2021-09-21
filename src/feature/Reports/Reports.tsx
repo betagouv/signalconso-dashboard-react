@@ -1,16 +1,7 @@
 import {Page, PageTitle} from '../../shared/Layout'
 import {useI18n} from '../../core/i18n'
 import {useReportsContext} from '../../core/context/ReportsContext'
-import {
-  cleanObject,
-  DetailInputValue,
-  getHostFromUrl,
-  Report,
-  ReportingDateLabel,
-  ReportSearch,
-  ReportSearchResult,
-  ReportTag,
-} from 'core/api'
+import {cleanObject, DetailInputValue, getHostFromUrl, Report, ReportingDateLabel, ReportSearch, ReportSearchResult, ReportTag} from 'core/api'
 import {Panel} from '../../shared/Panel'
 import {useCssUtils} from '../../core/helper/useCssUtils'
 import {Datatable} from '../../shared/Datatable/Datatable'
@@ -18,12 +9,7 @@ import {fromNullable, some} from 'fp-ts/lib/Option'
 import {alpha, Badge, Button, Icon, makeStyles, Theme, Tooltip} from '@material-ui/core'
 import {classes, textOverflowMiddleCropping} from '../../core/helper/utils'
 import React, {useEffect, useMemo} from 'react'
-import {
-  mapArrayFromQuerystring,
-  mapDateFromQueryString,
-  mapDatesToQueryString,
-  useQueryString,
-} from '../../core/helper/useQueryString'
+import {mapArrayFromQuerystring, mapDateFromQueryString, mapDatesToQueryString, useQueryString} from '../../core/helper/useQueryString'
 import {NavLink} from 'react-router-dom'
 import {SelectDepartments} from '../../shared/SelectDepartments/SelectDepartments'
 import {Fender, IconBtn} from 'mui-extension/lib'
@@ -39,6 +25,8 @@ import {Txt} from 'mui-extension/lib/Txt/Txt'
 import {PeriodPicker} from '../../shared/PeriodPicker/PeriodPicker'
 import compose from '../../core/helper/compose'
 import {DebouncedInput} from '../../shared/DebouncedInput/DebouncedInput'
+import {ReportDetailValues} from '../../shared/ReportDetailValues/ReportDetailValues'
+import {styleUtils} from '../../core/theme'
 
 const useStyles = makeStyles((t: Theme) => ({
   toolbar: {},
@@ -61,10 +49,12 @@ const useStyles = makeStyles((t: Theme) => ({
     maxWidth: 160,
   },
   tdDesc: {
-    fontSize: t.typography.fontSize * 0.875,
+    fontSize: styleUtils(t).fontSize.small,
     color: t.palette.text.secondary,
-    maxWidth: 260,
+    maxWidth: 200,
+    minWidth: 200,
     lineHeight: 1.4,
+    whiteSpace: 'initial'
   },
   tdFiles: {
     minWidth: 44,
@@ -150,7 +140,14 @@ export const Reports = ({}) => {
   return (
     <Page size="large">
       <PageTitle>{m.reports_pageTitle}</PageTitle>
-
+      <table style={{tableLayout: 'fixed'}}>
+        <tr>
+          <td>Fuck</td>
+          <td>
+            <ReportDetailValues className={css.tdDesc} input={_reports.list?.data[9]?.report.details || []} lines={3}/>
+          </td>
+        </tr>
+      </table>
       <Panel>
         <Datatable<ReportSearchResult>
           header={
@@ -283,26 +280,7 @@ export const Reports = ({}) => {
               head: m.details,
               className: css.tdDesc,
               row: _ => (
-                <Tooltip
-                  title={_.report.details?.map((detail, i) => (
-                    <div key={i}>
-                      <span dangerouslySetInnerHTML={{__html: detail.label}} className={cssUtils.txtBold} />
-                      &nbsp;
-                      <span dangerouslySetInnerHTML={{__html: detail.value}} className={cssUtils.tooltipColorTxtSecondary} />
-                    </div>
-                  ))}
-                >
-                  {(() => {
-                    const details = getDetailContent(_.report.details)
-                    return (
-                      <span>
-                        <span dangerouslySetInnerHTML={{__html: details?.firstLine ?? ''}} />
-                        <br />
-                        <span dangerouslySetInnerHTML={{__html: details?.secondLine ?? ''}} />
-                      </span>
-                    )
-                  })()}
-                </Tooltip>
+                <ReportDetailValues input={_.report.details} lines={2}/>
               ),
             },
             {
@@ -364,58 +342,4 @@ export const Reports = ({}) => {
       </Panel>
     </Page>
   )
-}
-
-export const getDetailContent = (details: DetailInputValue[]) => {
-  const MAX_CHAR_DETAILS = 40
-
-  function getLines(str: String, maxLength: Number) {
-    function helper(_strings: string[], currentLine: string, _nbWords: number): number {
-      if (!_strings || !_strings.length) {
-        return _nbWords
-      }
-      if (_nbWords >= _strings.length) {
-        return _nbWords
-      } else {
-        const newLine = currentLine + ' ' + _strings[_nbWords]
-        if (newLine.length > maxLength) {
-          return _nbWords
-        } else {
-          return helper(_strings, newLine, _nbWords + 1)
-        }
-      }
-    }
-
-    const strings = str.split(' ')
-    const nbWords = helper(str.split(' '), '', 0)
-    const lines = strings.reduce(
-      (prev, curr, index) =>
-        index < nbWords ? {...prev, line: prev.line + curr + ' '} : {...prev, rest: prev.rest + curr + ' '},
-      {line: '', rest: ''},
-    )
-    return {line: lines.line.trim(), rest: lines.rest.trim()}
-  }
-
-  let firstLine = ''
-  let secondLine = ''
-  let hasNext = false
-
-  if (details && details.length) {
-    if (details.length > 2) {
-      hasNext = true
-    }
-
-    let lines = getLines(details[0].label + ' ' + details[0].value, MAX_CHAR_DETAILS)
-    firstLine = lines.line
-
-    if (lines.rest) {
-      lines = getLines(lines.rest, MAX_CHAR_DETAILS)
-      secondLine = lines.rest ? lines.line.slice(0, -3) + '...' : lines.line
-    } else if (details.length > 1) {
-      lines = getLines(details[1].label + ' ' + details[1].value, MAX_CHAR_DETAILS)
-      secondLine = lines.rest ? lines.line.slice(0, -3) + '...' : lines.line
-    }
-
-    return {firstLine, secondLine, hasNext}
-  }
 }

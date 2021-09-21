@@ -163,6 +163,7 @@ export const messagesFr = {
   indifferent: 'Indifférent',
   phone: 'Téléphone',
   website: 'Site web',
+  websites: 'Sites web',
   howItWorks: 'Comment ça marche ?',
   helpCenter: "Centre d'aide",
   menu_phones: 'Téléphones signalés',

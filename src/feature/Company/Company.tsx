@@ -9,7 +9,7 @@ import {HorizontalBarChart} from '../../shared/HorizontalBarChart/HorizontalBarC
 import {reportStatusColor} from '../../shared/ReportStatus/ReportStatus'
 import {useI18n} from '../../core/i18n'
 import {Enum} from '@alexandreannic/ts-utils/lib/common/enum/Enum'
-import {Divider, Grid, Icon, List, ListItem, ListItemIcon, ListItemText, makeStyles, Theme} from '@material-ui/core'
+import {Divider, Grid, Icon, LinearProgress, List, ListItem, ListItemIcon, ListItemText, makeStyles, Theme} from '@material-ui/core'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
 import {CompanyReportsCountPanel} from './CompanyReportsCountPanel'
 import {useCompaniesStatsContext} from '../../core/context/CompanyStatsContext'
@@ -29,6 +29,7 @@ import {WidgetLoading} from '../../shared/Widget/WidgetLoading'
 import {AddressComponent} from '../../shared/Address/Address'
 import {useReportsContext} from '../../core/context/ReportsContext'
 import {ReportsShortList} from './ReportsShortList'
+import {styleUtils} from '../../core/theme'
 
 const useStyles = makeStyles((t: Theme) => ({
   reviews: {
@@ -42,6 +43,8 @@ const useStyles = makeStyles((t: Theme) => ({
     alignItems: 'center',
   },
   reviews_type_value: {
+    fontWeight: t.typography.fontWeightBold,
+    fontSize: styleUtils(t).fontSize.big,
     // margin: t.spacing(2),
   },
   reviews_type_icon: {
@@ -92,7 +95,7 @@ export const CompanyComponent = () => {
   useEffectFn(_company.byId.entity, _ => {
     _event.companyEvents.fetch({}, _.siret)
     _accesses.fetch({}, _.siret)
-    _report.updateFilters({siretSirenList: [_.siret], offset: 0, limit: 10})
+    _report.updateFilters({siretSirenList: [_.siret], offset: 0, limit: 5})
   })
 
   const postActivationDocEvents = useMemoFn(_event.companyEvents.entity, events => events
@@ -182,17 +185,18 @@ export const CompanyComponent = () => {
                     <div className={css.reviews}>
                       <div className={css.reviews_type}>
                         <div className={css.reviews_type_value}>
-                          {_companyStats.responseReviews.entity?.positive}
+                          {_.positive}
                         </div>
-                        <Icon className={classes(css.reviews_type_icon, cssUtils.colorSuccess)}>thumb_down</Icon>
+                        <Icon className={classes(css.reviews_type_icon, cssUtils.colorSuccess)}>thumb_up</Icon>
                       </div>
                       <div className={css.reviews_type}>
                         <div className={css.reviews_type_value}>
-                          <Icon className={classes(css.reviews_type_icon, cssUtils.colorError)}>thumb_up</Icon>
+                          <Icon className={classes(css.reviews_type_icon, cssUtils.colorError)}>thumb_down</Icon>
                         </div>
-                        {_companyStats.responseReviews.entity?.negative}
+                        {_.negative}
                       </div>
                     </div>
+                    <LinearProgress className={cssUtils.marginTop2} variant="determinate" value={_.positive / (_.positive + _.negative) * 100}/>
                   </PanelBody>
                 )).getOrElse(<WidgetLoading/>)}
               </Panel>
@@ -215,7 +219,7 @@ export const CompanyComponent = () => {
                       </ListItemIcon>
                       <ListItemText primary={m.creationDate} secondary={formatDate(company.creationDate)}/>
                     </ListItem>
-                    <Divider variant="inset" component="li" />
+                    <Divider variant="inset" component="li"/>
                     <ListItem>
                       <ListItemIcon>
                         <Icon>label</Icon>
@@ -224,6 +228,14 @@ export const CompanyComponent = () => {
                     </ListItem>
                   </List>
                 </PanelBody>
+              </Panel>
+              <Panel loading={_companyStats.hosts.loading}>
+                <PanelHead>{m.websites}</PanelHead>
+                <div style={{maxHeight: 260, overflow: 'auto'}}>
+                  <List dense>
+                    {_companyStats.hosts.entity?.map(host => <ListItem>{host}</ListItem>)}
+                  </List>
+                </div>
               </Panel>
             </Grid>
           </Grid>

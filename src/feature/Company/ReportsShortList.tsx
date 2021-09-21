@@ -8,8 +8,8 @@ import {IconBtn} from 'mui-extension/lib'
 import {siteMap} from '../../core/siteMap'
 import {NavLink} from 'react-router-dom'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
-import {getDetailContent} from '../Reports/Reports'
 import {useCssUtils} from '../../core/helper/useCssUtils'
+import {ReportDetailValues} from '../../shared/ReportDetailValues/ReportDetailValues'
 
 interface Props {
   reports: Paginate<ReportSearchResult>
@@ -60,15 +60,7 @@ export const ReportsShortList = ({reports}: Props) => {
                 </Txt>
               </div>
             </div>
-            {(() => {
-              const details = getDetailContent(_.report.details)
-              return (
-                <Txt size="small" block color="hint">
-                  <div>{details?.firstLine}</div>
-                  {details?.secondLine}
-                </Txt>
-              )
-            })()}
+            <ReportDetailValues input={_.report.details} lines={3}/>
           </div>
           <NavLink to={siteMap.report(_.report.id)}>
             <IconBtn>
