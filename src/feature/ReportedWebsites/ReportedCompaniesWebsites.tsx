@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react'
+import React, {useEffect, useState} from 'react'
 import {useI18n} from '../../core/i18n'
 import {useCssUtils} from '../../core/helper/useCssUtils'
 import {Chip, FormControlLabel, Icon, InputBase, makeStyles, MenuItem, Switch, Theme, Tooltip} from '@material-ui/core'
@@ -8,11 +8,16 @@ import {Panel} from '../../shared/Panel'
 import {Datatable} from '../../shared/Datatable/Datatable'
 import {DebouncedInput} from '../../shared/DebouncedInput/DebouncedInput'
 import {useReportedWebsiteWithCompanyContext} from '../../core/context/ReportedWebsitesContext'
-import {WebsiteKind, WebsiteWithCompany} from '../../core/api'
+import {Country, WebsiteKind, WebsiteWithCompany} from '../../core/api'
 import {IconBtn} from 'mui-extension'
 import {ScSelect} from '../../shared/Select/Select'
 import {SelectCompany} from '../../shared/SelectCompany/SelectCompany'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
+import {SelectCountries} from "../../shared/SelectCountries/SelectCountries";
+import {Controller} from "react-hook-form";
+import {useConstantContext} from "../../core/context/ConstantContext";
+import {SelectCountriesMenu} from "../../shared/SelectCountries/SelectCountriesMenu";
+import {SelectCountry} from "./SelectCountry";
 
 const useStyles = makeStyles((t: Theme) => ({
   tdName_label: {
@@ -33,12 +38,22 @@ const useStyles = makeStyles((t: Theme) => ({
   },
 }))
 
+const useAnchoredMenu = () => {
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
+  const open = (event: any) => setAnchorEl(event.currentTarget)
+  const close = () => setAnchorEl(null)
+  return {open, close, element: anchorEl}
+}
+
 export const ReportedCompaniesWebsites = () => {
   const {m, formatDate} = useI18n()
+  const _countries = useConstantContext().countries
   const _fetch = useReportedWebsiteWithCompanyContext().getWebsiteWithCompany
   const _remove = useReportedWebsiteWithCompanyContext().remove
-  const _update = useReportedWebsiteWithCompanyContext().update
+  const _updateStatus = useReportedWebsiteWithCompanyContext().update
   const _updateCompany = useReportedWebsiteWithCompanyContext().updateCompany
+  const [countries, setCountries] = useState<Country[]>([])
+  const countriesAnchor = useAnchoredMenu()
   const css = useStyles()
   const cssUtils = useCssUtils()
   const {toastError, toastInfo, toastSuccess} = useToast()
@@ -52,10 +67,14 @@ export const ReportedCompaniesWebsites = () => {
   }, [])
 
   useEffect(() => {
+    _countries.fetch({ }).then(setCountries)
+  }, [])
+
+  useEffect(() => {
     fromNullable(_fetch.error).map(toastError)
-    fromNullable(_update.error).map(toastError)
+    fromNullable(_updateStatus.error).map(toastError)
     fromNullable(_remove.error).map(toastError)
-  }, [_fetch.error, _update.error, _remove.error])
+  }, [_fetch.error, _updateStatus.error, _remove.error])
 
   return (
     <Panel>
@@ -131,20 +150,20 @@ export const ReportedCompaniesWebsites = () => {
           },
           {
             head: m.company,
-            id: 'company_name',
-            row: _ => (
+            id: 'company',
+            row: _ =>  ( _.company &&
               <SelectCompany
                 siret={_.company.siret}
                 onChange={company => {
-                  if (_.company.siret === company.siret) {
+                  if (_.company?.siret === company.siret) {
                     toastInfo(m.alreadySelectedCompany(company.name))
                   } else {
                     _updateCompany
                       .fetch({}, _.id, {
-                        companySiret: company.siret,
-                        companyName: company.name,
-                        companyAddress: company.address,
-                        companyActivityCode: company.activityCode,
+                        siret: company.siret,
+                        name: company.name,
+                        address: company.address,
+                        activityCode: company.activityCode,
                       })
                       .then(_ => _fetch.fetch())
                   }
@@ -168,17 +187,40 @@ export const ReportedCompaniesWebsites = () => {
             ),
           },
           {
+            head: m.foreignCountry,
+            id: 'company_country',
+            row: _ =>  ( _.companyCountry &&
+                <SelectCountry
+                    country={_.companyCountry}
+                    onChange={_ => console.log('saving' + _)}
+                >
+                  <Tooltip title={_.companyCountry.name}>
+                    <Chip
+                        variant={'outlined'}
+                        className={css.chipEnterprise}
+                        label={
+                          <div>
+                            <Txt truncate className={css.tdName_label} block>
+                              {_.companyCountry.name}
+                            </Txt>
+                            <span className={css.tdName_desc}>{_.companyCountry.name}</span>
+                          </div>
+                        }
+                    />
+                  </Tooltip>
+                </SelectCountry>
+            ),
+          },
+          {
             head: m.status,
             id: 'status',
             row: _ => (
               <FormControlLabel
                 control={<Switch checked={_.kind === WebsiteKind.DEFAULT} />}
                 onChange={() => {
-                  _update
-                    .fetch({}, _.id, {
-                      ..._,
-                      kind: _.kind === WebsiteKind.DEFAULT ? WebsiteKind.PENDING : WebsiteKind.DEFAULT,
-                    })
+                  _updateStatus
+                    .fetch({}, _.id, _.kind === WebsiteKind.DEFAULT ? WebsiteKind.PENDING : WebsiteKind.DEFAULT
+                    )
                     .then(_ => _fetch.fetch({clean: false}))
                 }}
                 label=""

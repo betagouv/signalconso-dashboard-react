@@ -87,6 +87,7 @@ export const messagesFr = {
   home: 'Accueil',
   consumer: 'Consommateur',
   company: 'Entreprise',
+  identification: 'Identification du pays',
   address: 'Adresse',
   activateMyAccount: 'Activer mon compte',
   createMyAccount: 'Créer mon compte',
