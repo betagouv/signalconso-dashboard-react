@@ -51,7 +51,7 @@ export const CompaniesDbSyncCard = ({name, info, start, cancel}: Props) => {
   const cssUtils = useCssUtils()
   const {m, dateFromNow, formatLargeNumber} = useI18n()
 
-  const percent = useMemoFn(info, _ => _.linesDone / _.linesCount * 100)
+  const percent = useMemoFn(info, _ => info?.endedAt ? 100 : _.linesDone / _.linesCount * 100)
 
   return (
     <Panel>
