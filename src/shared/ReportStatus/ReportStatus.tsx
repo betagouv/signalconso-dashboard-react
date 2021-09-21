@@ -26,8 +26,7 @@ const useStyles = makeStyles((t: Theme) => ({
   dense: {
     fontWeight: '500' as any,
     fontSize: styleUtils(t).fontSize.small,
-    paddingRight: t.spacing(1),
-    paddingLeft: t.spacing(1),
+    padding: t.spacing(.125, 1, .125, 1),
   },
   fullWidth: {
     width: '100%',

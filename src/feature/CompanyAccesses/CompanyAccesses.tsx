@@ -23,214 +23,201 @@ import {ScRadioGroupItem} from '../../shared/RadioGroup/RadioGroupItem'
 import {ScRadioGroup} from '../../shared/RadioGroup/RadioGroup'
 
 interface Accesses {
-    name?: string
-    userId?: Id
-    email?: string
-    level: CompanyAccessLevel
-    tokenId?: Id
-    editable?: Boolean,
-    isHeadOffice?: Boolean
+  name?: string
+  userId?: Id
+  email?: string
+  level: CompanyAccessLevel
+  tokenId?: Id
+  editable?: Boolean,
+  isHeadOffice?: Boolean
 }
 
 export const CompanyAccesses = () => {
-    const {siret} = useParams<{ siret: string }>()
+  const {siret} = useParams<{siret: string}>()
 
-    const _crudAccess = useCompanyAccess(useLogin().apiSdk, siret).crudAccess
-    const _crudToken = useCompanyAccess(useLogin().apiSdk, siret).crudToken
-    const _company = useCompaniesContext()
+  const _crudAccess = useCompanyAccess(useLogin().apiSdk, siret).crudAccess
+  const _crudToken = useCompanyAccess(useLogin().apiSdk, siret).crudToken
+  const _company = useCompaniesContext()
 
-    const {m} = useI18n()
-    const cssUtils = useCssUtils()
-    const {connectedUser} = useLogin()
-    const {toastSuccess, toastError} = useToast()
+  const {m} = useI18n()
+  const cssUtils = useCssUtils()
+  const {connectedUser} = useLogin()
+  const {toastSuccess, toastError} = useToast()
 
-    const accesses: Accesses[] = useMemo(() => {
-        return [
-            ...(_crudAccess.list ?? []).map(_ => (
-                {
-                    email: _.email,
-                    name: _.firstName + ' ' + _.lastName,
-                    level: _.level,
-                    userId: _.userId,
-                    editable: _.editable,
-                    isHeadOffice: _.isHeadOffice
-                })),
-            ...(_crudToken.list ?? []).map(_ => ({email: _.emailedTo, level: _.level, tokenId: _.id})),
-        ]
-    }, [_crudAccess.list, _crudToken.list])
+  const accesses: Accesses[] = useMemo(() => {
+    return [
+      ...(_crudAccess.list ?? []).map(_ => (
+        {
+          email: _.email,
+          name: _.firstName + ' ' + _.lastName,
+          level: _.level,
+          userId: _.userId,
+          editable: _.editable,
+          isHeadOffice: _.isHeadOffice,
+        })),
+      ...(_crudToken.list ?? []).map(_ => ({email: _.emailedTo, level: _.level, tokenId: _.id})),
+    ]
+  }, [_crudAccess.list, _crudToken.list])
 
-    useEffect(() => {
-        _crudAccess.fetch()
-        _crudToken.fetch()
-    }, [])
+  useEffect(() => {
+    _crudAccess.fetch()
+    _crudToken.fetch()
+  }, [])
 
-    useEffect(() => {
-        fromNullable(_crudToken.fetchError).map(toastError)
-    }, [_crudToken.list, _crudToken.fetchError])
+  useEffect(() => {
+    fromNullable(_crudToken.fetchError).map(toastError)
+  }, [_crudToken.list, _crudToken.fetchError])
 
-    useEffect(() => {
-        fromNullable(_crudAccess.fetchError).map(toastError)
-    }, [_crudAccess.list, _crudAccess.fetchError])
+  useEffect(() => {
+    fromNullable(_crudAccess.fetchError).map(toastError)
+  }, [_crudAccess.list, _crudAccess.fetchError])
 
-    const inviteNewUser = async (email: string, level: CompanyAccessLevel): Promise<any> => {
-        if (accesses?.find(_ => _.email === email)) {
-            toastError({message: m.invitationToProAlreadySent(email)})
-        } else {
-            await _crudToken.create({}, email, level)
-            toastSuccess(m.userInvitationSent)
-        }
+  const inviteNewUser = async (email: string, level: CompanyAccessLevel): Promise<any> => {
+    if (accesses?.find(_ => _.email === email)) {
+      toastError({message: m.invitationToProAlreadySent(email)})
+    } else {
+      await _crudToken.create({}, email, level)
+      toastSuccess(m.userInvitationSent)
     }
+  }
 
-    return (
-        <Page size="small">
-            <PageTitle
-                action={
-                    <>
-                        {_crudAccess.list?.length === 0 && (
-                            <SaveUndeliveredDocBtn
-                                loading={_company.saveUndeliveredDocument.loading}
-                                onChange={date => _company.saveUndeliveredDocument.fetch({}, siret, date)}
-                                className={cssUtils.marginRight}
-                            />
-                        )}
-                        <CompanyAccessCreateBtn
-                            loading={_crudToken.creating}
-                            onCreate={inviteNewUser}
-                            errorMessage={_crudToken.createError}
+  return (
+    <Page size="small">
+      <PageTitle
+        action={
+          <>
+            {_crudAccess.list?.length === 0 && (
+              <SaveUndeliveredDocBtn
+                loading={_company.saveUndeliveredDocument.loading}
+                onChange={date => _company.saveUndeliveredDocument.fetch({}, siret, date)}
+                className={cssUtils.marginRight}
+              />
+            )}
+            <CompanyAccessCreateBtn
+              loading={_crudToken.creating}
+              onCreate={inviteNewUser}
+              errorMessage={_crudToken.createError}
+            />
+          </>
+        }
+      >
+        {m.companyAccessesTitle}
+      </PageTitle>
+      <Panel>
+        <Datatable<Accesses>
+          data={_crudAccess.list && _crudToken.list ? accesses : undefined}
+          loading={_crudAccess.fetching || _crudToken.fetching}
+          getRenderRowKey={_ => _.email ?? _.tokenId!}
+          rows={[
+            {
+              id: 'status',
+              head: '',
+              row: _ =>
+                _.name ? (
+                  <Icon className={cssUtils.colorSuccess}>check_circle</Icon>
+                ) : (
+                  <Icon className={cssUtils.colorWarning}>watch_later</Icon>
+                ),
+            },
+            {
+              id: 'email',
+              head: m.email,
+              row: _ =>
+                <>
+                  <div>
+                    <Txt bold>{_.email}</Txt>
+                    &nbsp;
+                    {_.isHeadOffice && <Txt color="hint">({m.isHeadOffice})</Txt>}
+                    {connectedUser.email === _.email && <Txt color="hint">({m.you})</Txt>}
+                  </div>
+                  <Txt size="small" color="hint">{_.name}</Txt>
+                </>,
+            },
+            {
+              id: 'level',
+              head: m.companyAccessLevel,
+              row: _ => (
+                <ScDialog
+                  maxWidth="xs"
+                  title={m.editAccess}
+                  content={close => (
+                    <ScRadioGroup
+                      value={_.level}
+                      onChange={level => {
+                        if (_.userId) _crudAccess.update(_.userId, level as CompanyAccessLevel)
+                        close()
+                      }}
+                    >
+                      {Enum.keys(CompanyAccessLevel).map(level => (
+                        <ScRadioGroupItem
+                          title={CompanyAccessLevel[level]}
+                          description={m.companyAccessLevelDescription[CompanyAccessLevel[level]]}
+                          value={level}
+                          key={level}
                         />
-                    </>
-                }
-            >
-                {m.companyAccessesTitle}
-            </PageTitle>
-            <Panel>
-                <Datatable<Accesses>
-                    data={_crudAccess.list && _crudToken.list ? accesses : undefined}
-                    loading={_crudAccess.fetching || _crudToken.fetching}
-                    getRenderRowKey={_ => _.email ?? _.tokenId!}
-                    rows={[
-                        {
-                            id: 'status',
-                            head: '',
-                            row: _ =>
-                                _.name ? (
-                                    <Icon className={cssUtils.colorSuccess}>check_circle</Icon>
-                                ) : (
-                                    <Icon className={cssUtils.colorWarning}>watch_later</Icon>
-                                ),
-                        },
-                        {
-                            id: 'email',
-                            head: m.email,
-                            row: _ =>
-                                connectedUser.email === _.email ? (
-                                    <Txt bold>
-                                        {_.email} ({m.you})
-                                    </Txt>
-                                ) : (
-
-                                    _.isHeadOffice ?
-                                        (
-                                            <Txt>
-                                                {_.email}
-                                                &nbsp;
-                                                ({m.isHeadOffice})
-                                            </Txt>
-                                        )
-                                        : _.email
-
-                                ),
-                        },
-                        {
-                            id: 'name',
-                            head: m.name,
-                            row: _ => _.name,
-                        },
-                        {
-                            id: 'level',
-                            head: m.companyAccessLevel,
-                            row: _ => (
-                                <ScDialog
-                                    maxWidth="xs"
-                                    title={m.editAccess}
-                                    content={close => (
-                                        <ScRadioGroup
-                                            value={_.level}
-                                            onChange={level => {
-                                                if (_.userId) _crudAccess.update(_.userId, level as CompanyAccessLevel)
-                                                close()
-                                            }}
-                                        >
-                                            {Enum.keys(CompanyAccessLevel).map(level => (
-                                                <ScRadioGroupItem
-                                                    title={CompanyAccessLevel[level]}
-                                                    description={m.companyAccessLevelDescription[CompanyAccessLevel[level]]}
-                                                    value={level}
-                                                    key={level}
-                                                />
-                                            ))}
-                                        </ScRadioGroup>
-                                    )}
-                                >
-                                    <Tooltip title={m.editAccess}>
-                                        <ScButton
-                                            className={cssUtils.txtCapitalize}
-                                            loading={_crudAccess.updating(_.userId ?? '')}
-                                            color="primary"
-                                            icon="manage_accounts"
-                                            variant="outlined"
-                                            disabled={
-                                                !_.userId || !_.editable
-                                            }
-                                        >
-                                            {(CompanyAccessLevel as any)[_.level]}
-                                        </ScButton>
-                                    </Tooltip>
-                                </ScDialog>
-                            ),
-                        },
-                        {
-                            id: 'action',
-                            head: '',
-                            className: cssUtils.txtRight,
-                            row: _ => (
-                                <>
-                                    {some(_)
-                                        .filter(_ => _.editable === true)
-                                        .mapNullable(_ => _.userId)
-                                        .map(userId => (
-                                            <ScDialog
-                                                title={m.deleteCompanyAccess(_.name!)}
-                                                onConfirm={() => _crudAccess.remove(userId)}
-                                                maxWidth="xs"
-                                                confirmLabel={m.delete}
-                                            >
-                                                <IconBtn loading={_crudAccess.removing(userId)}>
-                                                    <Icon>delete</Icon>
-                                                </IconBtn>
-                                            </ScDialog>
-                                        ))
-                                        .getOrElse(
-                                            fromNullable(_.tokenId)
-                                                .map(tokenId => (
-                                                    <ScDialog
-                                                        title={m.deleteCompanyAccessToken(_.email)}
-                                                        onConfirm={() => _crudToken.remove(tokenId)}
-                                                        maxWidth="xs"
-                                                    >
-                                                        <IconBtn loading={_crudToken.removing(tokenId)}>
-                                                            <Icon>delete</Icon>
-                                                        </IconBtn>
-                                                    </ScDialog>
-                                                ))
-                                                .getOrElse(<></>),
-                                        )}
-                                </>
-                            ),
-                        },
-                    ]}
-                />
-            </Panel>
-        </Page>
-    )
+                      ))}
+                    </ScRadioGroup>
+                  )}
+                >
+                  <Tooltip title={m.editAccess}>
+                    <ScButton
+                      className={cssUtils.txtCapitalize}
+                      loading={_crudAccess.updating(_.userId ?? '')}
+                      color="primary"
+                      icon="manage_accounts"
+                      variant="outlined"
+                      disabled={
+                        !_.userId || !_.editable
+                      }
+                    >
+                      {(CompanyAccessLevel as any)[_.level]}
+                    </ScButton>
+                  </Tooltip>
+                </ScDialog>
+              ),
+            },
+            {
+              id: 'action',
+              head: '',
+              className: cssUtils.txtRight,
+              row: _ => (
+                <>
+                  {some(_)
+                    .filter(_ => _.editable === true)
+                    .mapNullable(_ => _.userId)
+                    .map(userId => (
+                      <ScDialog
+                        title={m.deleteCompanyAccess(_.name!)}
+                        onConfirm={() => _crudAccess.remove(userId)}
+                        maxWidth="xs"
+                        confirmLabel={m.delete}
+                      >
+                        <IconBtn loading={_crudAccess.removing(userId)}>
+                          <Icon>delete</Icon>
+                        </IconBtn>
+                      </ScDialog>
+                    ))
+                    .getOrElse(
+                      fromNullable(_.tokenId)
+                        .map(tokenId => (
+                          <ScDialog
+                            title={m.deleteCompanyAccessToken(_.email)}
+                            onConfirm={() => _crudToken.remove(tokenId)}
+                            maxWidth="xs"
+                          >
+                            <IconBtn loading={_crudToken.removing(tokenId)}>
+                              <Icon>delete</Icon>
+                            </IconBtn>
+                          </ScDialog>
+                        ))
+                        .getOrElse(<></>),
+                    )}
+                </>
+              ),
+            },
+          ]}
+        />
+      </Panel>
+    </Page>
+  )
 }

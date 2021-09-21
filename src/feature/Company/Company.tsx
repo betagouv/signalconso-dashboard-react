@@ -27,6 +27,8 @@ import {classes} from '../../core/helper/utils'
 import {fromNullable} from 'fp-ts/es6/Option'
 import {WidgetLoading} from '../../shared/Widget/WidgetLoading'
 import {AddressComponent} from '../../shared/Address/Address'
+import {useReportsContext} from '../../core/context/ReportsContext'
+import {ReportsShortList} from './ReportsShortList'
 
 const useStyles = makeStyles((t: Theme) => ({
   reviews: {
@@ -46,6 +48,13 @@ const useStyles = makeStyles((t: Theme) => ({
     margin: t.spacing(0, 2, 0, 2),
     fontSize: 38,
   },
+  report: {
+    margin: t.spacing(1, 1, 1, 1),
+    '&:not(:last-of-type)': {
+      borderBottom: `1px solid ${t.palette.divider}`,
+    },
+  },
+  reportTag: {},
 }))
 
 export const CompanyComponent = () => {
@@ -55,6 +64,7 @@ export const CompanyComponent = () => {
   const _companyStats = useCompaniesStatsContext()
   const _event = useEventContext()
   const _accesses = useFetcher((siret: string) => apiSdk.secured.companyAccess.fetch(siret))
+  const _report = useReportsContext()
   const css = useStyles()
   const cssUtils = useCssUtils()
   const company = _company.byId.entity
@@ -82,6 +92,7 @@ export const CompanyComponent = () => {
   useEffectFn(_company.byId.entity, _ => {
     _event.companyEvents.fetch({}, _.siret)
     _accesses.fetch({}, _.siret)
+    _report.updateFilters({siretSirenList: [_.siret], offset: 0, limit: 10})
   })
 
   const postActivationDocEvents = useMemoFn(_event.companyEvents.entity, events => events
@@ -155,6 +166,12 @@ export const CompanyComponent = () => {
                 <PanelBody>
                   <HorizontalBarChart data={tagsDistribution} grid/>
                 </PanelBody>
+              </Panel>
+              <Panel loading={_report.fetching}>
+                <PanelHead>{m.reports}</PanelHead>
+                {_report.list && (
+                  <ReportsShortList reports={_report.list}/>
+                )}
               </Panel>
             </Grid>
             <Grid item sm={12} md={5}>

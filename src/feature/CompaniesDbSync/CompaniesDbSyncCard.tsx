@@ -22,7 +22,7 @@ const progressSize = 110
 
 const useStyles = makeStyles((t: Theme) => ({
   progressContainer: {
-    marginBottom: t.spacing(2),
+    marginBottom: t.spacing(1),
     height: progressSize,
     display: 'flex',
     alignItems: 'center',
@@ -49,9 +49,9 @@ export const CompaniesDbSyncCard = ({name, info, start, cancel}: Props) => {
   const css = useStyles()
   const theme = useTheme()
   const cssUtils = useCssUtils()
-  const {m, dateFromNow} = useI18n()
+  const {m, dateFromNow, formatLargeNumber} = useI18n()
 
-  const percent = useMemoFn(info, _ => _.linesDone / (_.linesCount + _.linesDone) * 100)
+  const percent = useMemoFn(info, _ => _.linesDone / _.linesCount * 100)
 
   return (
     <Panel>
@@ -65,13 +65,21 @@ export const CompaniesDbSyncCard = ({name, info, start, cancel}: Props) => {
           <CircularProgress value={percent} size={progressSize} variant="determinate"/>
           <div className={classes(css.percent, !info?.endedAt && css.percentActive)}>{Math.round(percent ?? 0)} %</div>
         </div>
-        <Txt block bold size="big">{info?.fileName ?? name}</Txt>
+        <div style={{textAlign: 'center'}}>
+          <Txt size="big">{formatLargeNumber(info?.linesDone ?? 0)}</Txt>
+          <Txt color="hint">
+            &nbsp;/&nbsp;
+            {formatLargeNumber(info?.linesCount ?? 0)}
+          </Txt>
+        </div>
+
+        <Txt block bold size="big" className={cssUtils.marginTop3}>{info?.fileName ?? name}</Txt>
         <a href={info?.fileUrl ?? '#'}>
           <Txt block truncate gutterBottom link>{info?.fileUrl ?? ''}</Txt>
         </a>
 
         {info && (
-          <Grid container style={{marginTop: 20}}>
+          <Grid container className={cssUtils.marginTop2}>
             <Grid item xs={6}>
               <Txt block size="small" color="hint" uppercase>{m.beginning}</Txt>
               <Txt block size="big">{dateFromNow(info.startedAt)}</Txt>
