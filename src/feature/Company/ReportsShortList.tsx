@@ -8,6 +8,8 @@ import {IconBtn} from 'mui-extension/lib'
 import {siteMap} from '../../core/siteMap'
 import {NavLink} from 'react-router-dom'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
+import {getDetailContent} from '../Reports/Reports'
+import {useCssUtils} from '../../core/helper/useCssUtils'
 
 interface Props {
   reports: Paginate<ReportSearchResult>
@@ -33,14 +35,12 @@ const useStyles = makeStyles((t: Theme) => ({
     flex: 1,
   },
   title: {
-    justifyContent: 'flex-between',
-    display: 'flex',
-    alignItems: 'center',
   }
 }))
 
 export const ReportsShortList = ({reports}: Props) => {
   const css = useStyles()
+  const cssUtils = useCssUtils()
   const {formatDate} = useI18n()
   return (
     <div>
@@ -48,15 +48,27 @@ export const ReportsShortList = ({reports}: Props) => {
         <div className={css.report}>
           <div className={css.body}>
             <div className={css.title}>
-              <Txt size="big" bold truncate style={{flex: 1}}>{_.report.category}</Txt>
-              &nbsp;
-              <Txt color="hint">{formatDate(_.report.creationDate)}</Txt>
+              <Txt size="big" bold truncate style={{flex: 1, width: 0}}>
+                {_.report.category}
+              </Txt>
+              <div className={css.reportTag}>
+                <ReportStatusChip status={_.report.status} dense className={cssUtils.marginRight}/>
+                <Txt color="hint">{formatDate(_.report.creationDate)}</Txt>
+                <Icon fontSize="inherit" className={cssUtils.marginLeft}>label</Icon>&nbsp;
+                <Txt color="disabled" truncate style={{width: 0, flex: 1}}>
+                  {_.report.tags.join(', ')}
+                </Txt>
+              </div>
             </div>
-            <div className={css.reportTag}>
-              <Icon fontSize="inherit">label</Icon>
-              <Txt size="small">{_.report.tags.join(', ')}</Txt>
-            </div>
-            <ReportStatusChip status={_.report.status} dense/>
+            {(() => {
+              const details = getDetailContent(_.report.details)
+              return (
+                <Txt size="small" block color="hint">
+                  <div>{details?.firstLine}</div>
+                  {details?.secondLine}
+                </Txt>
+              )
+            })()}
           </div>
           <NavLink to={siteMap.report(_.report.id)}>
             <IconBtn>

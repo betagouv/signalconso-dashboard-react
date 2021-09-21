@@ -15,7 +15,7 @@ const useStyles = makeStyles((t: Theme) => ({
     fontWeight: 'bold',
     letterSpacing: '1px',
     display: 'inline-flex',
-    minHeight: 26,
+    minHeight: 24,
     alignItems: 'center',
     color: 'white',
     // fontSize: styleUtils(t).fontSize.big,
@@ -26,7 +26,7 @@ const useStyles = makeStyles((t: Theme) => ({
   dense: {
     fontWeight: '500' as any,
     fontSize: styleUtils(t).fontSize.small,
-    padding: t.spacing(.125, 1, .125, 1),
+    padding: t.spacing(0, 1, 0, 1),
   },
   fullWidth: {
     width: '100%',

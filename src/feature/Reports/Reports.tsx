@@ -366,7 +366,7 @@ export const Reports = ({}) => {
   )
 }
 
-const getDetailContent = (details: DetailInputValue[]) => {
+export const getDetailContent = (details: DetailInputValue[]) => {
   const MAX_CHAR_DETAILS = 40
 
   function getLines(str: String, maxLength: Number) {
