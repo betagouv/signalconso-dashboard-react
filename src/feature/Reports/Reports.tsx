@@ -140,14 +140,6 @@ export const Reports = ({}) => {
   return (
     <Page size="large">
       <PageTitle>{m.reports_pageTitle}</PageTitle>
-      <table style={{tableLayout: 'fixed'}}>
-        <tr>
-          <td>Fuck</td>
-          <td>
-            <ReportDetailValues className={css.tdDesc} input={_reports.list?.data[9]?.report.details || []} lines={3}/>
-          </td>
-        </tr>
-      </table>
       <Panel>
         <Datatable<ReportSearchResult>
           header={
