@@ -284,6 +284,7 @@ export const messagesFr = {
   validateLetterSentDesc:
     'Les courriers seront considérés envoyés pour les entreprises sélectionnées. Cette action est irrévocable.',
   dgccrfUsers: 'Agents DGCCRF',
+  lastReports: `Derniers signalements`,
   invitationDate: 'Date d\'invitation',
   connectedUnder3Months: 'Connecté dans les 3 derniers mois',
   pendingInvitation: 'Invitation en attente',

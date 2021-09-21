@@ -17,17 +17,26 @@ const useStyles = makeStyles((t: Theme) => ({
   report: {
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'flex-between',
+    paddingBottom: t.spacing(2),
     margin: t.spacing(2, 2, 2, 2),
     '&:not(:last-of-type)': {
       borderBottom: `1px solid ${t.palette.divider}`,
     },
   },
   reportTag: {
-    display: 'block',
+    marginBottom: t.spacing(1),
+    display: 'flex',
     alignItems: 'center',
     color: t.palette.text.hint,
   },
+  body: {
+    flex: 1,
+  },
+  title: {
+    justifyContent: 'flex-between',
+    display: 'flex',
+    alignItems: 'center',
+  }
 }))
 
 export const ReportsShortList = ({reports}: Props) => {
@@ -37,17 +46,19 @@ export const ReportsShortList = ({reports}: Props) => {
     <div>
       {reports.data.map(_ => (
         <div className={css.report}>
-          <div>
-            <Txt size="big" bold truncate>{_.report.category}</Txt>
-            <ReportStatusChip status={_.report.status} dense/>
-            &nbsp;
-            <Txt color="hint">{formatDate(_.report.creationDate)}</Txt>
+          <div className={css.body}>
+            <div className={css.title}>
+              <Txt size="big" bold truncate style={{flex: 1}}>{_.report.category}</Txt>
+              &nbsp;
+              <Txt color="hint">{formatDate(_.report.creationDate)}</Txt>
+            </div>
             <div className={css.reportTag}>
               <Icon fontSize="inherit">label</Icon>
               <Txt size="small">{_.report.tags.join(', ')}</Txt>
             </div>
+            <ReportStatusChip status={_.report.status} dense/>
           </div>
-          <NavLink to={siteMap.reports({siretSirenList: [_.report.companySiret]})}>
+          <NavLink to={siteMap.report(_.report.id)}>
             <IconBtn>
               <Icon>chevron_right</Icon>
             </IconBtn>

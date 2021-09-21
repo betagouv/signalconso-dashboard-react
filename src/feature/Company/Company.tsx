@@ -132,7 +132,7 @@ export const CompanyComponent = () => {
               </Widget>
             </Grid>
             <Grid item xs={12} sm={6} md={3}>
-              <Widget title={m.accountsActivated} to={siteMap.companyAccesses(company.siret)} loading={_accesses.loading}>
+              <Widget title={m.accountsActivated} loading={_accesses.loading}>
                 {fromNullable(_accesses.entity)
                   .map(_ => <WidgetValue>{_.length}</WidgetValue>)
                   .getOrElse(<WidgetLoading/>)
@@ -168,7 +168,7 @@ export const CompanyComponent = () => {
                 </PanelBody>
               </Panel>
               <Panel loading={_report.fetching}>
-                <PanelHead>{m.reports}</PanelHead>
+                <PanelHead>{m.lastReports}</PanelHead>
                 {_report.list && (
                   <ReportsShortList reports={_report.list}/>
                 )}
