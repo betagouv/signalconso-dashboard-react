@@ -40,7 +40,7 @@ export const ReportDetailValues = ({input, lines = 2, hideTooltip, style, classN
       <div className={classes(css.desc, className)} style={style}>
         {description || input.map((_, i) => (
           <span key={i}>
-            <Txt bold>{_.label}</Txt> {_.value}<br/>
+            <Txt bold>{_.label}</Txt> <span dangerouslySetInnerHTML={{__html: _.value}}/><br/>
           </span>
         ))}
       </div>
