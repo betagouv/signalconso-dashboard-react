@@ -15,18 +15,18 @@ const useStyles = makeStyles((t: Theme) => ({
     fontWeight: 'bold',
     letterSpacing: '1px',
     display: 'inline-flex',
-    minHeight: 26,
+    minHeight: 24,
     alignItems: 'center',
+    color: 'white',
     // fontSize: styleUtils(t).fontSize.big,
   },
   border: {
-    border: `1px solid ${t.palette.divider}`,
+    // border: `1px solid ${t.palette.divider}`,
   },
   dense: {
     fontWeight: '500' as any,
     fontSize: styleUtils(t).fontSize.small,
-    paddingRight: t.spacing(1),
-    paddingLeft: t.spacing(1),
+    padding: t.spacing(0, 1, 0, 1),
   },
   fullWidth: {
     width: '100%',
@@ -46,19 +46,23 @@ interface ReportStatusChipProps {
   elevation?: number
 }
 
-const reportStatusColor = {
-  [ReportStatus.NA]: '#fff',
-  [ReportStatus.EmployeeConsumer]: '#fff',
-  [ReportStatus.InProgress]: '#FFE49E',
-  [ReportStatus.Unread]: '#c9d3df',
-  [ReportStatus.UnreadForPro]: '#f7d5d2',
-  [ReportStatus.Transmitted]: '#FFE49E',
-  [ReportStatus.ToReviewedByPro]: '#FFE49E',
-  [ReportStatus.Accepted]: '#D6F0FF',
-  [ReportStatus.Rejected]: '#c9d3df',
-  [ReportStatus.ClosedForPro]: '#daf5e7',
-  [ReportStatus.Ignored]: '#c9d3df',
-  [ReportStatus.NotConcerned]: '#c9d3df',
+export const reportStatusColor = {
+  [ReportStatus.NA]: '#a1a1a1',
+  [ReportStatus.EmployeeConsumer]: '#a1a1a1',
+  [ReportStatus.InProgress]: '#f57c00',
+  [ReportStatus.Transmitted]: '#f57c00',
+  [ReportStatus.ToReviewedByPro]: '#f57c00',
+  [ReportStatus.ClosedForPro]: '#03a9f4',
+  [ReportStatus.Unread]: '#03a9f4',
+  [ReportStatus.NotConcerned]: '#03a9f4',
+  [ReportStatus.Accepted]: '#4caf50',
+  [ReportStatus.Rejected]: '#4caf50',
+  [ReportStatus.UnreadForPro]: '#d32f2f',
+  [ReportStatus.Ignored]: '#d32f2f',
+}
+
+export const getReportStatusColor = (reportStatus: ReportStatus): string => {
+  return reportStatusColor[reportStatus]
 }
 
 export const ReportStatusChip = ({

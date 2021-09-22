@@ -205,9 +205,10 @@ export const CompaniesToActivate = () => {
           },
           {
             id: 'actions',
+            stickyEnd: true,
             row: _ => (
               <>
-                <Link to={siteMap.reports({siretSirenList: [_.company.siret]})}>
+                <Link target="_blank" to={siteMap.reports({siretSirenList: [_.company.siret]})}>
                   <Tooltip title={m.reports}>
                     <IconBtn>
                       <Icon>chevron_right</Icon>

@@ -13,8 +13,10 @@ import {ApiClientApi} from './core/ApiClient'
 import {AsyncFileClient} from './client/async-file/AsyncFileClient'
 import {CompanyAccessTokenClient} from './client/company-access-token/CompanyAccessTokenClient'
 import {SecuredFileClient} from './client/file/SecuredFileClient'
-import {ReportBlockedNotificationClient} from './client/blockedReportNotifications/ReportBlockedNotificationClient'
+import {ReportBlockedNotificationClient} from './client/blocked-report-notifications/ReportBlockedNotificationClient'
 import {AccessesClient} from './client/accesses/AccessesClient'
+import {CompaniesDbSyncClient} from './client/companies-db-sync/CompaniesDbSyncClient'
+import {CompanyStatsClient} from './client/company-stats/CompanyStatsClient'
 
 export class SignalConsoSecuredSdk {
   constructor(private client: ApiClientApi) {}
@@ -25,6 +27,7 @@ export class SignalConsoSecuredSdk {
   readonly constant = new ConstantClient(this.client)
   readonly subscription = new SubscriptionClient(this.client)
   readonly company = new CompanyClient(this.client)
+  readonly companyStats = new CompanyStatsClient(this.client)
   readonly companyAccess = new CompanyAccessClient(this.client)
   readonly companyAccessToken = new CompanyAccessTokenClient(this.client)
   readonly reports = new ReportsClient(this.client)
@@ -33,4 +36,5 @@ export class SignalConsoSecuredSdk {
   readonly user = new UserClient(this.client)
   readonly document = new SecuredFileClient(this.client)
   readonly reportBlockedNotification = new ReportBlockedNotificationClient(this.client)
+  readonly companiesDbSync = new CompaniesDbSyncClient(this.client)
 }

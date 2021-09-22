@@ -1,4 +1,5 @@
 export type Index<T> = {[key: string]: T}
+export type Shape<T extends object> = { [key in keyof T]: any }
 
 export const dateToYYYYMMDD = (date?: Date): string | undefined => (date ? date.toISOString().split('T')[0] : undefined)
 

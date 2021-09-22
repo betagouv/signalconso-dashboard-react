@@ -9,13 +9,14 @@ export const siteMap = {
   subscriptions: '/abonnements',
   report: (id: Id = ':id') => `/suivi-des-signalements/report/${id}`,
   exports: '/mes-telechargements',
+  companies_toActivate: '/entreprises/a-activer',
+  companies_registered: '/entreprises/les-plus-signalees',
   companies: '/entreprises',
   companiesPro: '/mes-entreprises',
   companyAccesses: (siret: string = ':siret') => `/entreprise/acces/${siret}`,
-  companies_toActivate: '/entreprises/a-activer',
-  companies_registered: '/entreprises/les-plus-signalees',
   users: '/admin/invitation-ccrf',
   activatePro: (siret: string = ':siret') => `/entreprise/rejoindre/${siret}`,
+  company: (id: Id = ':id') => `/entreprise/${id}`,
   activateDgccrf: '/dgccrf/rejoindre',
   users_pending: '/admin/invitation-ccrf/pending',
   users_all: '/admin/invitation-ccrf/all',
@@ -27,4 +28,5 @@ export const siteMap = {
   modeEmploiDGCCRF: '/mode-emploi-dgccrf',
   consumerReview: (reportId: Id = ':reportId') => `/suivi-des-signalements/${reportId}/avis`,
   resetPassword: (token: Id = ':token') => `/connexion/nouveau-mot-de-passe/${token}`,
+  companiesDbSync: `/companies-db-sync`
 }

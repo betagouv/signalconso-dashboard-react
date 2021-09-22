@@ -51,6 +51,11 @@ import {ModeEmploiDGCCRF} from './feature/ModeEmploiDGCCRF/ModeEmploiDGCCRF'
 import {ConsumerReview} from './feature/ConsumerReview/ConsumerReview'
 import * as Sentry from '@sentry/react'
 import {Integrations} from '@sentry/tracing'
+import {CompanyComponent} from './feature/Company/Company'
+import {CompaniesStatsProvider} from './core/context/CompanyStatsContext'
+import {CompaniesDbSyncProvider} from './core/context/CompaniesDbSyncContext'
+import {EventProvider} from './core/context/EventContext'
+import {CompaniesDbSync} from './feature/CompaniesDbSync/CompaniesDbSync'
 
 if (Config.sentry_dns) {
   Sentry.init({
@@ -234,6 +239,9 @@ const AppLogged = () => {
         _ => <SubscriptionsProvider api={apiSdk} children={_} />,
         _ => <AccessesProvider api={apiSdk} children={_} />,
         _ => <BlockedReportNotificationProvider api={apiSdk} children={_} />,
+        _ => <CompaniesStatsProvider api={apiSdk} children={_} />,
+        _ => <CompaniesDbSyncProvider api={apiSdk} children={_} />,
+        _ => <EventProvider api={apiSdk} children={_} />,
       ]}
     >
       <Switch>
@@ -244,11 +252,13 @@ const AppLogged = () => {
         <Route path={siteMap.users} component={Users} />
         <Route path={siteMap.companies} component={Companies} />
         <Route path={siteMap.companyAccesses()} component={CompanyAccesses} />
+        <Route path={siteMap.company()} component={CompanyComponent} />
         <Route path={siteMap.subscriptions} component={Subscriptions} />
         <Route path={siteMap.companiesPro} component={CompaniesPro} />
         <Route path={siteMap.settings} component={Settings} />
         <Route path={siteMap.register} component={ActivateNewCompany} />
         <Route path={siteMap.modeEmploiDGCCRF} component={ModeEmploiDGCCRF} />
+        <Route path={siteMap.companiesDbSync} component={CompaniesDbSync} />
         <Redirect from="/" to={siteMap.reports()} />
       </Switch>
     </Provide>
