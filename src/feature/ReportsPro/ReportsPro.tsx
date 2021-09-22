@@ -14,7 +14,7 @@ import {styleUtils} from '../../core/theme'
 import {SelectDepartments} from '../../shared/SelectDepartments/SelectDepartments'
 import {ScSelect} from '../../shared/Select/Select'
 import {useConstantContext} from '../../core/context/ConstantContext'
-import {useHistory} from 'react-router'
+import {useHistory, useLocation} from 'react-router'
 import {siteMap} from '../../core/siteMap'
 import {classes} from '../../core/helper/utils'
 import {Btn, Fender} from 'mui-extension/lib'
@@ -91,6 +91,7 @@ export const ReportsPro = () => {
 
   const {isMobileWidth} = useLayoutContext()
   const history = useHistory()
+  const location = useLocation()
   const {toastError} = useToast()
   const {formatDate, m} = useI18n()
   const css = useStyles()
@@ -265,7 +266,8 @@ export const ReportsPro = () => {
                 total={_reports.list?.totalSize}
                 onClickRows={(_, e) => {
                   if (e.metaKey || e.ctrlKey) {
-                    window.open(siteMap.report(_.report.id), '_blank')
+                    // FIXME(Alex) setting manually the '/#' will break if we stop using hash router.
+                    window.open('/#' + siteMap.report(_.report.id), '_blank')
                   } else {
                     history.push(siteMap.report(_.report.id))
                   }
