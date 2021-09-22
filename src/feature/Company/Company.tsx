@@ -30,6 +30,7 @@ import {AddressComponent} from '../../shared/Address/Address'
 import {useReportsContext} from '../../core/context/ReportsContext'
 import {ReportsShortList} from './ReportsShortList'
 import {styleUtils} from '../../core/theme'
+import {Skeleton} from '@material-ui/lab'
 
 const useStyles = makeStyles((t: Theme) => ({
   reviews: {
@@ -190,15 +191,15 @@ export const CompanyComponent = () => {
                         <Icon className={classes(css.reviews_type_icon, cssUtils.colorSuccess)}>thumb_up</Icon>
                       </div>
                       <div className={css.reviews_type}>
+                        <Icon className={classes(css.reviews_type_icon, cssUtils.colorError)}>thumb_down</Icon>
                         <div className={css.reviews_type_value}>
-                          <Icon className={classes(css.reviews_type_icon, cssUtils.colorError)}>thumb_down</Icon>
+                          {_.negative}
                         </div>
-                        {_.negative}
                       </div>
                     </div>
                     <LinearProgress className={cssUtils.marginTop2} variant="determinate" value={_.positive / (_.positive + _.negative) * 100}/>
                   </PanelBody>
-                )).getOrElse(<WidgetLoading/>)}
+                )).getOrElse(<PanelBody><Skeleton height={66} width="100%"/></PanelBody>)}
               </Panel>
               <Panel>
                 <PanelHead>{m.informations}</PanelHead>
