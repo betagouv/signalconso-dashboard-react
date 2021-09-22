@@ -16,7 +16,7 @@ export const siteMap = {
   companyAccesses: (siret: string = ':siret') => `/entreprise/acces/${siret}`,
   users: '/admin/invitation-ccrf',
   activatePro: (siret: string = ':siret') => `/entreprise/rejoindre/${siret}`,
-  company: (id: Id = ':id') => `/entreprise/${id}`,
+  company: (id: Id = ':id') => `/bilan-entreprise/${id}`,
   activateDgccrf: '/dgccrf/rejoindre',
   users_pending: '/admin/invitation-ccrf/pending',
   users_all: '/admin/invitation-ccrf/all',
