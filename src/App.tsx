@@ -56,6 +56,7 @@ import {CompaniesStatsProvider} from './core/context/CompanyStatsContext'
 import {CompaniesDbSyncProvider} from './core/context/CompaniesDbSyncContext'
 import {EventProvider} from './core/context/EventContext'
 import {CompaniesDbSync} from './feature/CompaniesDbSync/CompaniesDbSync'
+import {ReportStatsProvider} from './core/context/ReportStatsContext'
 
 if (Config.sentry_dns) {
   Sentry.init({
@@ -242,6 +243,7 @@ const AppLogged = () => {
         _ => <CompaniesStatsProvider api={apiSdk} children={_} />,
         _ => <CompaniesDbSyncProvider api={apiSdk} children={_} />,
         _ => <EventProvider api={apiSdk} children={_} />,
+        _ => <ReportStatsProvider api={apiSdk} children={_} />,
       ]}
     >
       <Switch>
