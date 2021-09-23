@@ -180,7 +180,7 @@ export const CompanyComponent = () => {
             </Grid>
             <Grid item sm={12} md={5}>
               <Panel>
-                <PanelHead>{m.reviews}</PanelHead>
+                <PanelHead>{m.consumerReviews}</PanelHead>
                 {fromNullable(_companyStats.responseReviews.entity).map(_ => (
                   <PanelBody>
                     <div className={css.reviews}>
