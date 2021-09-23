@@ -1,5 +1,5 @@
 import {
-    ApiHostWithReportCount,
+    ApiHostWithReportCount, Country,
     HostReportCountSearch,
     Id,
     PaginatedData,
@@ -86,6 +86,10 @@ export class WebsiteClient {
 
     readonly updateCompany = (id: Id, website: WebsiteUpdateCompany): Promise<WebsiteWithCompany> => {
         return this.client.put<WebsiteWithCompany>(`/websites/${id}/company`, {body: website})
+    }
+
+    readonly updateCountry = (id: Id, country: Country): Promise<WebsiteWithCompany> => {
+        return this.client.put<WebsiteWithCompany>(`/websites/${id}/country`, {qs: {companyCountry: country.name}})
     }
 
     readonly remove = (id: Id): Promise<void> => {

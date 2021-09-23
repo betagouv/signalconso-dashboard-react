@@ -205,6 +205,9 @@ export const messagesFr = {
   selectCountries_onlyTransfer: 'Pays avec accord',
   reportedPhoneTitle: 'Suivi des téléphones',
   noExport: 'Aucun export',
+  noAssociation: 'Non associé',
+  linkCountry: 'Associer un pays étranger au site internet',
+  linkCompany: 'Associer une entreprise au site internet',
   proAnswerVisibleByDGCCRF: 'Votre réponse sera visible par le consommateur et la DGCCRF.',
   proAnswerResponseType: 'Pouvez-vous préciser votre réponse ?',
   proAnswerYourAnswer: 'Votre réponse',
@@ -358,6 +361,7 @@ export const messagesFr = {
     Sinon, vous pouvez demander au gestionnaire de l'entreprise de vous envoyer une nouvelle invitation.
   `,
   alreadySelectedCompany: (name?: string) => `L'entreprise ${name ?? ''} est déjà sélectionnée`,
+  alreadySelectedCountry: (name?: string) => `Le pays ${name ?? ''} est déjà sélectionnée`,
   nLines: (n: number) => `<b>${n}</b> lignes`,
   reportResponse: {
     [ReportResponseTypes.Accepted]: 'Signalement pris en compte',

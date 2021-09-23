@@ -10,7 +10,7 @@ import {fromNullable} from "fp-ts/es6/Option";
 interface Props {
     children: ReactElement<any>
     country?: Country
-    onChange: (_?: Country) => void
+    onChange: (_: Country) => void
 }
 
 const useStyles = makeStyles((t: Theme) => ({
@@ -20,25 +20,29 @@ const useStyles = makeStyles((t: Theme) => ({
     },
 }))
 
-export const SelectCountry = ({children,onChange, country}: Props) => {
+export const SelectCountry = ({children, onChange, country}: Props) => {
     const {m} = useI18n()
     const _countries = useConstantContext().countries
     const [countries, setCountries] = useState<Country[]>([])
-    const [value, setValue] = React.useState<Country | undefined >(country);
+    const [value, setValue] = React.useState<Country | undefined>(country);
     const css = useStyles()
 
+
     useEffect(() => {
-        _countries.fetch({}).then(setCountries)
+        _countries.fetch({})
+            .then(setCountries)
     }, [])
 
     return (
         <ScDialog
+            confirmDisabled={!value}
             maxWidth="sm"
             title={m.identification}
             content={_ => (
                 <>
                     <Autocomplete
                         disablePortal
+                        multiple={false}
                         defaultValue={country}
                         id="combo-country"
                         onChange={(event, newInputValue) => {
@@ -51,8 +55,8 @@ export const SelectCountry = ({children,onChange, country}: Props) => {
                 </>
 
             )}
-            onConfirm={ (_, close)=> {
-                onChange(value)
+            onConfirm={(_, close) => {
+                (value && onChange(value))
                 close()
             }
             }
