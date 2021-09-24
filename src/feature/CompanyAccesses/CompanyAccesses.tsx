@@ -84,7 +84,7 @@ export const CompanyAccesses = () => {
   return (
     <Page size="small">
       <PageTitle
-        action={connectedUser.isAdmin && (
+        action={!connectedUser.isDGCCRF && (
           <>
             {_crudAccess.list?.length === 0 && (
               <SaveUndeliveredDocBtn
