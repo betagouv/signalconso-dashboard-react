@@ -234,7 +234,7 @@ export const CompanyComponent = () => {
                 <PanelHead>{m.websites}</PanelHead>
                 <div style={{maxHeight: 260, overflow: 'auto'}}>
                   <List dense>
-                    {_companyStats.hosts.entity?.map(host => <ListItem>{host}</ListItem>)}
+                    {_companyStats.hosts.entity?.map((host, i) => <ListItem key={i}>{host}</ListItem>)}
                   </List>
                 </div>
               </Panel>

@@ -45,7 +45,7 @@ export const ReportsShortList = ({reports}: Props) => {
   return (
     <div>
       {reports.data.map(_ => (
-        <div className={css.report}>
+        <div className={css.report} key={_.report.id}>
           <div className={css.body}>
             <div className={css.title}>
               <Txt size="big" bold truncate style={{flex: 1, width: 0}}>
