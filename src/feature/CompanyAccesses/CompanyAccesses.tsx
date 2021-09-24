@@ -84,7 +84,7 @@ export const CompanyAccesses = () => {
   return (
     <Page size="small">
       <PageTitle
-        action={
+        action={connectedUser.isAdmin && (
           <>
             {_crudAccess.list?.length === 0 && (
               <SaveUndeliveredDocBtn
@@ -99,7 +99,7 @@ export const CompanyAccesses = () => {
               errorMessage={_crudToken.createError}
             />
           </>
-        }
+        )}
       >
         {m.companyAccessesTitle}
       </PageTitle>
