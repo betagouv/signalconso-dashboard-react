@@ -13,6 +13,7 @@ export const Config = {
   contactEmail: 'support@signal.conso.gouv.fr',
   sentry_dns: env()('REACT_APP_SENTRY_DNS'),
   sentry_traceRate: env(int, defaultValue(1.0))('REACT_APP_SENTRY_TRACE_RATE'),
+  useHashRouter: true,
 }
 
 console.info(Config)

@@ -2,7 +2,7 @@ import * as React from 'react'
 import {ReactNode, useContext} from 'react'
 import {UseFetcher, useFetcher, usePaginate, UsePaginate} from '@alexandreannic/react-hooks-lib/lib'
 import {ApiError, User, UserSearch} from 'core/api'
-import {SignalConsoApiSdk} from '../../App'
+import {SignalConsoApiSdk} from '../ApiSdkInstance'
 
 export interface UsersContextProps {
   dgccrf: UsePaginate<User, UserSearch>

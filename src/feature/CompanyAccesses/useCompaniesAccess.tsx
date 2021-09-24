@@ -1,6 +1,6 @@
 import {ApiError, CompanyAccess, CompanyAccessLevel, CompanyAccessToken, Id} from '../../core/api'
-import {SignalConsoApiSdk} from '../../App'
 import {useCrudList} from '@alexandreannic/react-hooks-lib/lib'
+import {SignalConsoApiSdk} from '../../core/ApiSdkInstance'
 
 export const useCompanyAccess = (api: SignalConsoApiSdk, siret: string) => {
   const crudAccessR = () => api.secured.companyAccess.fetch(siret)

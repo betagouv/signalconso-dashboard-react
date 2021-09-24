@@ -16,7 +16,7 @@ import {ScSelect} from '../../shared/Select/Select'
 import {useConstantContext} from '../../core/context/ConstantContext'
 import {useHistory, useLocation} from 'react-router'
 import {siteMap} from '../../core/siteMap'
-import {classes} from '../../core/helper/utils'
+import {classes, openInNew} from '../../core/helper/utils'
 import {Btn, Fender} from 'mui-extension/lib'
 import {EntityIcon} from '../../core/EntityIcon'
 import {ScButton} from '../../shared/Button/Button'
@@ -266,8 +266,7 @@ export const ReportsPro = () => {
                 total={_reports.list?.totalSize}
                 onClickRows={(_, e) => {
                   if (e.metaKey || e.ctrlKey) {
-                    // FIXME(Alex) setting manually the '/#' will break if we stop using hash router.
-                    window.open('/#' + siteMap.report(_.report.id), '_blank')
+                    openInNew(siteMap.report(_.report.id))
                   } else {
                     history.push(siteMap.report(_.report.id))
                   }

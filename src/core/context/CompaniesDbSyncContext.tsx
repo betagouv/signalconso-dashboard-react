@@ -1,7 +1,7 @@
 import * as React from 'react'
 import {ReactNode, useContext} from 'react'
 import {UseAsync, UseFetcher, useFetcher} from '@alexandreannic/react-hooks-lib/lib'
-import {SignalConsoApiSdk} from '../../App'
+import {SignalConsoApiSdk} from '../ApiSdkInstance'
 import {useAsync} from '@alexandreannic/react-hooks-lib'
 
 type Sdk = SignalConsoApiSdk['secured']['companiesDbSync']
