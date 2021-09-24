@@ -26,7 +26,7 @@ export interface DatatableProps<T> {
   total?: number
   data?: T[]
   getRenderRowKey?: (_: T) => string
-  onClickRows?: (_: T) => void
+  onClickRows?: (_: T, event: React.MouseEvent<HTMLTableRowElement>) => void
   rows: DatatableColumnProps<T>[]
   showColumnsToggle?: boolean
   showColumnsToggleBtnTooltip?: string
@@ -194,7 +194,7 @@ export const Datatable = <T extends any = any>(props: DatatableProps<T>) => {
             {data?.map((item, i) => (
               <TableRow
                 key={getRenderRowKey ? getRenderRowKey(item) : i}
-                onClick={() => onClickRows?.(item)}
+                onClick={e => onClickRows?.(item, e)}
                 className={classes(onClickRows && css.hoverableRows)}
               >
                 {filteredRows.map((_, i) => (

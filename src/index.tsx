@@ -5,6 +5,9 @@ import {App} from './App'
 import reportWebVitals from './reportWebVitals'
 import {createGenerateClassName, StylesProvider} from '@material-ui/core/styles'
 import {ErrorBundary} from './core/ErrorBundary'
+import {Sentry} from './core/plugins/Sentry'
+
+Sentry.init()
 
 // https://github.com/mui-org/material-ui/issues/11843
 // I think it should not be necessary. There is some miss configuration somewhere

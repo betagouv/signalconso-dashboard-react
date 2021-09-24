@@ -12,7 +12,8 @@ export const Config = {
   upload_maxSizeMb: env(int, defaultValue(5))('REACT_APP_UPLOAD_MAX_SIZE_MB'),
   contactEmail: 'support@signal.conso.gouv.fr',
   sentry_dns: env()('REACT_APP_SENTRY_DNS'),
-  sentry_traceRate: env(int, defaultValue(1.0))('REACT_APP_SENTRY_TRACE_RATE'),
+  sentry_traceRate: env(int, defaultValue(.5))('REACT_APP_SENTRY_TRACE_RATE'),
+  useHashRouter: true,
 }
 
 console.info(Config)

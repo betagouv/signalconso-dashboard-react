@@ -136,7 +136,7 @@ export const CompanyComponent = () => {
               </Widget>
             </Grid>
             <Grid item xs={12} sm={6} md={3}>
-              <Widget title={m.accountsActivated} loading={_accesses.loading}>
+              <Widget title={m.accountsActivated} loading={_accesses.loading} to={siteMap.companyAccesses(company.siret)}>
                 {fromNullable(_accesses.entity)
                   .map(_ => <WidgetValue>{_.length}</WidgetValue>)
                   .getOrElse(<WidgetLoading/>)
@@ -180,7 +180,7 @@ export const CompanyComponent = () => {
             </Grid>
             <Grid item sm={12} md={5}>
               <Panel>
-                <PanelHead>{m.reviews}</PanelHead>
+                <PanelHead>{m.consumerReviews}</PanelHead>
                 {fromNullable(_companyStats.responseReviews.entity).map(_ => (
                   <PanelBody>
                     <div className={css.reviews}>
@@ -234,7 +234,7 @@ export const CompanyComponent = () => {
                 <PanelHead>{m.websites}</PanelHead>
                 <div style={{maxHeight: 260, overflow: 'auto'}}>
                   <List dense>
-                    {_companyStats.hosts.entity?.map(host => <ListItem>{host}</ListItem>)}
+                    {_companyStats.hosts.entity?.map((host, i) => <ListItem key={i}>{host}</ListItem>)}
                   </List>
                 </div>
               </Panel>

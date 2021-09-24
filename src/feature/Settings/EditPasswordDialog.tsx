@@ -8,7 +8,7 @@ import {useToast} from '../../core/toast'
 import {fromNullable} from 'fp-ts/lib/Option'
 import {ScDialog} from '../../shared/Confirm/ScDialog'
 import {ScInputPassword} from '../../shared/InputPassword/InputPassword'
-import {AccountEventActions, EventCategories, Matomo} from '../../core/analyics/Matomo'
+import {AccountEventActions, EventCategories, Matomo} from '../../core/plugins/Matomo'
 
 interface Form {
   oldPassword: string

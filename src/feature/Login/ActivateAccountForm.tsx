@@ -15,7 +15,7 @@ import {useToast} from '../../core/toast'
 import {useHistory} from 'react-router'
 import {siteMap} from '../../core/siteMap'
 import {ScInputPassword} from '../../shared/InputPassword/InputPassword'
-import {AccessEventActions, ActionResultNames, EventCategories, Matomo} from '../../core/analyics/Matomo'
+import {AccessEventActions, ActionResultNames, EventCategories, Matomo} from '../../core/plugins/Matomo'
 import {fnSwitch} from '../../core/helper/utils'
 
 interface Form {

@@ -1,6 +1,8 @@
 import classNames from 'classnames'
 import {fromNullable} from 'fp-ts/lib/Option'
 import {OrderBy, Paginate} from '@alexandreannic/react-hooks-lib/lib'
+import {siteMap} from '../siteMap'
+import { Config } from 'conf/config'
 
 export const isJsonValid = (json: string): boolean => {
   try {
@@ -120,4 +122,8 @@ export const stringToBoolean = (str?: string): boolean | undefined => {
     if (str === 'true') return true
     else if (str === 'false') return false
   }
+}
+
+export const openInNew = (path: string) => {
+  window.open((Config.useHashRouter ? '/#' : '') + path, '_blank')
 }

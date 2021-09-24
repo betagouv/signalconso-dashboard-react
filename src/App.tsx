@@ -1,9 +1,9 @@
 import React from 'react'
-import {ApiClient, ApiError, SignalConsoPublicSdk, SignalConsoSecuredSdk} from 'core/api'
+import {ApiError} from 'core/api'
 import {Config} from './conf/config'
 import {makeStyles} from '@material-ui/core/styles'
 import {CircularProgress, Theme, ThemeProvider} from '@material-ui/core'
-import {HashRouter, Redirect, Route, Switch} from 'react-router-dom'
+import {BrowserRouter, HashRouter, Redirect, Route, Switch} from 'react-router-dom'
 import {I18nProvider} from './core/i18n'
 import {MuiPickersUtilsProvider} from '@material-ui/pickers'
 import DateAdapter from '@date-io/date-fns'
@@ -49,47 +49,13 @@ import {BlockedReportNotificationProvider} from './core/context/BlockedReportNot
 import {ActivateNewCompany} from './feature/ActivateNewCompany/ActivateNewCompany'
 import {ModeEmploiDGCCRF} from './feature/ModeEmploiDGCCRF/ModeEmploiDGCCRF'
 import {ConsumerReview} from './feature/ConsumerReview/ConsumerReview'
-import * as Sentry from '@sentry/react'
-import {Integrations} from '@sentry/tracing'
 import {CompanyComponent} from './feature/Company/Company'
 import {CompaniesStatsProvider} from './core/context/CompanyStatsContext'
 import {CompaniesDbSyncProvider} from './core/context/CompaniesDbSyncContext'
 import {EventProvider} from './core/context/EventContext'
 import {CompaniesDbSync} from './feature/CompaniesDbSync/CompaniesDbSync'
-
-if (Config.sentry_dns) {
-  Sentry.init({
-    dsn: Config.sentry_dns,
-    integrations: [new Integrations.BrowserTracing()],
-    tracesSampleRate: Config.sentry_traceRate,
-  })
-}
-
-const headers = {
-  'Content-Type': 'application/json',
-  Accept: 'application/json',
-}
-
-const baseUrl = Config.apiBaseUrl + '/api'
-
-const apiPublicSdk = new SignalConsoPublicSdk(
-  new ApiClient({
-    baseUrl,
-    headers,
-  }),
-)
-
-const makeSecuredSdk = (token: string) => ({
-  public: apiPublicSdk,
-  secured: new SignalConsoSecuredSdk(
-    new ApiClient({
-      baseUrl,
-      headers: {...headers, 'X-Auth-Token': token},
-    }),
-  ),
-})
-
-export type SignalConsoApiSdk = ReturnType<typeof makeSecuredSdk>
+import {Matomo} from './core/plugins/Matomo'
+import {apiPublicSdk, makeSecuredSdk, SignalConsoApiSdk} from './core/ApiSdkInstance'
 
 const useStyles = makeStyles((t: Theme) => ({
   '@global': {
@@ -134,15 +100,17 @@ const useStyles = makeStyles((t: Theme) => ({
   },
 }))
 
+const Router: typeof HashRouter = Config.useHashRouter ? HashRouter : BrowserRouter
+
 export const App = () => {
   return (
     <Provide
       providers={[
-        _ => <ThemeProvider theme={muiTheme()} children={_} />,
-        _ => <I18nProvider children={_} />,
-        _ => <MuiPickersUtilsProvider utils={DateAdapter} children={_} />,
-        _ => <HashRouter children={_} />,
-        _ => <ToastProvider horizontal="right" children={_} />,
+        _ => <ThemeProvider theme={muiTheme()} children={_}/>,
+        _ => <I18nProvider children={_}/>,
+        _ => <MuiPickersUtilsProvider utils={DateAdapter} children={_}/>,
+        _ => <Router children={_}/>,
+        _ => <ToastProvider horizontal="right" children={_}/>,
       ]}
     >
       <AppLogin />
@@ -153,6 +121,7 @@ export const App = () => {
 const AppLogin = () => {
   useStyles()
   const history = useHistory()
+  history.listen(_ => Matomo.trackPage(_.pathname))
   const forgottenPassword = useFetcher<SignalConsoApiSdk['public']['authenticate']['forgotPassword'], ApiError>(
     apiPublicSdk.authenticate.forgotPassword,
   )

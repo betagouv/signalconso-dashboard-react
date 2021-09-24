@@ -236,6 +236,7 @@ export const messagesFr = {
   responses: 'Réponses',
   informations: `Informations`,
   reviews: `Avis`,
+  consumerReviews: `Avis consommateur`,
   companySearchLabel: 'SIREN, SIRET ou RCS',
   accountActivated: 'Compte activé',
   accountsActivated: `Comptes activés`,
