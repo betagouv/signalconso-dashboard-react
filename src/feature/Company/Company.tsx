@@ -146,7 +146,7 @@ export const CompanyComponent = () => {
             <Grid item xs={12} sm={6} md={3}>
               <Widget title={m.avgResponseTime}>
                 {fromNullable(_companyStats.responseDelay.entity)
-                  .map(_ => <><WidgetValue>{_} <Txt size="big">{m.days}</Txt></WidgetValue></>)
+                  .map(_ => <><WidgetValue>{_.toDays} <Txt size="big">{m.days}</Txt></WidgetValue></>)
                   .getOrElse(<WidgetLoading/>)
                 }
               </Widget>

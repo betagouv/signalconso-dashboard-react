@@ -1,6 +1,7 @@
 import {ApiClientApi, ReportTag} from '../..'
 import {Id} from '../../model'
-import {ReportResponseReviews, ReportsCountEvolution, Period, ReportStatusDistribution, ReportTagsDistribution} from './CompanyStats'
+import {Period, ReportResponseReviews, ReportsCountEvolution, ReportStatusDistribution, ReportTagsDistribution} from './CompanyStats'
+import {duration, Duration} from '@alexandreannic/ts-utils/lib/common'
 
 export class CompanyStatsClient {
   constructor(private client: ApiClientApi) {
@@ -21,8 +22,14 @@ export class CompanyStatsClient {
     return this.client.get<ReportResponseReviews>(`/company-stats/${id}/reviews`)
   }
 
-  readonly getResponseDelay = (id: Id) => {
-    return this.client.get<any>(`/company-stats/${id}/response-delay-days`)
+  readonly getReadDelay = (id: Id): Promise<Duration | undefined> => {
+    return this.client.get<{value: number | undefined}>(`/company-stats/${id}/read-delay-hours`)
+      .then(_ => _.value ? duration(_.value, 'hour') : undefined)
+  }
+
+  readonly getResponseDelay = (id: Id): Promise<Duration | undefined> => {
+    return this.client.get<{value: number | undefined}>(`/company-stats/${id}/response-delay-hours`)
+      .then(_ => _.value ? duration(_.value, 'hour') : undefined)
   }
 
   readonly getReportsCountEvolution = (id: Id, period: Period): Promise<ReportsCountEvolution[]> => {
