@@ -192,7 +192,7 @@ export const ReportedCompaniesWebsites = () => {
                                                 address: company.address,
                                                 activityCode: company.activityCode,
                                             })
-                                            .then(_ => _fetch.fetch())
+                                            .then(_ => _fetch.fetch({clean: false}))
                                     }
                                 }}
                             >
@@ -243,7 +243,7 @@ export const ReportedCompaniesWebsites = () => {
                                     } else {
                                         _updateCountry
                                             .fetch({}, _.id, companyCountry)
-                                            .then(_ => _fetch.fetch())
+                                            .then(_ => _fetch.fetch({clean: false}))
                                     }
                                 }}
                             >
