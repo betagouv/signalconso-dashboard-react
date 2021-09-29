@@ -9,7 +9,7 @@ import {HorizontalBarChart} from '../../shared/HorizontalBarChart/HorizontalBarC
 import {reportStatusColor} from '../../shared/ReportStatus/ReportStatus'
 import {useI18n} from '../../core/i18n'
 import {Enum} from '@alexandreannic/ts-utils/lib/common/enum/Enum'
-import {Divider, Grid, Icon, LinearProgress, List, ListItem, ListItemIcon, ListItemText, makeStyles, Theme} from '@material-ui/core'
+import {Divider, Grid, Icon, LinearProgress, List, ListItem, ListItemIcon, ListItemText, makeStyles, Theme, Tooltip} from '@material-ui/core'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
 import {CompanyReportsCountPanel} from './CompanyReportsCountPanel'
 import {useCompaniesStatsContext} from '../../core/context/CompanyStatsContext'
@@ -59,6 +59,11 @@ const useStyles = makeStyles((t: Theme) => ({
     },
   },
   reportTag: {},
+  statusInfo: {
+    verticalAlign: 'middle',
+    color: t.palette.text.disabled,
+    marginLeft: t.spacing(1),
+  }
 }))
 
 export const CompanyComponent = () => {
@@ -105,7 +110,16 @@ export const CompanyComponent = () => {
   )
 
   const statusDistribution = useMemoFn(_companyStats.status.entity, _ => Enum.entries(_).map(([status, count]) =>
-    ({label: m.reportStatusShort[status], value: count, color: reportStatusColor[status] ?? undefined}),
+    ({
+      label: <span>
+        {m.reportStatusShort[status]}
+        <Tooltip title={m.reportStatusDesc[status]}>
+          <Icon fontSize="small" className={css.statusInfo}>help</Icon>
+        </Tooltip>
+      </span>,
+      value: count,
+      color: reportStatusColor[status] ?? undefined
+    }),
   ))
 
   const tagsDistribution = useMemoFn(_companyStats.tags.entity, _ => Object.entries(_).map(([label, count]) => ({label, value: count})))
@@ -146,7 +160,18 @@ export const CompanyComponent = () => {
             <Grid item xs={12} sm={6} md={3}>
               <Widget title={m.avgResponseTime}>
                 {fromNullable(_companyStats.responseDelay.entity)
-                  .map(_ => <><WidgetValue>{_} <Txt size="big">{m.days}</Txt></WidgetValue></>)
+                  .map(_ =>
+                    <WidgetValue>
+                      <span>
+                        {_}&nbsp;
+                        <Txt size="big">{m.days}</Txt>
+                        &nbsp;
+                        <Tooltip title={m.avgResponseTimeDesc}>
+                          <Icon className={cssUtils.colorTxtHint} fontSize="medium">help</Icon>
+                        </Tooltip>
+                      </span>
+                    </WidgetValue>,
+                  )
                   .getOrElse(<WidgetLoading/>)
                 }
               </Widget>
@@ -183,6 +208,7 @@ export const CompanyComponent = () => {
                 <PanelHead>{m.consumerReviews}</PanelHead>
                 {fromNullable(_companyStats.responseReviews.entity).map(_ => (
                   <PanelBody>
+                    <Txt color="hint" block className={cssUtils.marginBottom2}>{m.consumerReviewsDesc}</Txt>
                     <div className={css.reviews}>
                       <div className={css.reviews_type}>
                         <div className={css.reviews_type_value}>

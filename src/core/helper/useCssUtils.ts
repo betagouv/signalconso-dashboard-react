@@ -10,6 +10,9 @@ export const useCssUtils = makeStyles((t: Theme) => {
     hidden: {
       visibility: 'hidden',
     },
+    inline: {
+      display: 'inline',
+    },
     flex: {
       display: 'flex',
     },
