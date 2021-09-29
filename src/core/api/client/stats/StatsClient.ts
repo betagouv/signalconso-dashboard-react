@@ -1,6 +1,6 @@
 import {ApiClientApi} from '../../index'
 import {Id} from '../../model'
-import {CountByDate, Period, ReportResponseReviews, ReportStatusDistribution, ReportTagsDistribution} from '../company-stats/CompanyStats'
+import {CountByDate, Period, ReportResponseReviews, ReportStatusDistribution, ReportTagsDistribution} from './Stats'
 import {duration, Duration} from '@alexandreannic/ts-utils/lib/common'
 import {fnSwitch} from '../../../helper/utils'
 

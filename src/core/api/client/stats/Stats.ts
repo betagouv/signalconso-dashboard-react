@@ -1,6 +1,10 @@
 import {ReportStatus} from '../report/Report'
 import {Index} from '../../helper/Utils'
 
+export interface SimpleStat {
+  value: string | number
+}
+
 export type Period = 'day' | 'month'
 
 export interface CountByDate {

@@ -1,5 +1,5 @@
 import {ApiClientApi} from '../../core/ApiClient'
-import {MonthlyStat, SimpleStat} from './ReportStats'
+import {CountByDate, SimpleStat} from './Stats'
 
 export class PublicStatsClient {
 
@@ -11,7 +11,7 @@ export class PublicStatsClient {
   }
 
   readonly getMonthlyReportCount = () => {
-    return this.client.get<MonthlyStat[]>(`/stats/reports/count/monthly`)
+    return this.client.get<CountByDate[]>(`/stats/reports/count/monthly`)
   }
 
   readonly getReportForwardedToProPercentage = () => {
@@ -23,11 +23,11 @@ export class PublicStatsClient {
   }
 
   readonly getMonthlyReportForwardedToProPercentage = () => {
-    return this.client.get<MonthlyStat[]>(`/stats/reports/forwarded/percentage/monthly`)
+    return this.client.get<CountByDate[]>(`/stats/reports/forwarded/percentage/monthly`)
   }
 
   readonly getMonthlyReportReadByProPercentage = () => {
-    return this.client.get<MonthlyStat[]>(`/stats/reports/read/percentage/monthly`)
+    return this.client.get<CountByDate[]>(`/stats/reports/read/percentage/monthly`)
   }
 
   readonly getReportWithResponsePercentage = () => {
@@ -35,7 +35,7 @@ export class PublicStatsClient {
   }
 
   readonly getMonthlyReportWithResponsePercentage = () => {
-    return this.client.get<MonthlyStat[]>(`/stats', 'reports/responsed/percentage/monthly`)
+    return this.client.get<CountByDate[]>(`/stats', 'reports/responsed/percentage/monthly`)
   }
 
   readonly getReportWithWebsitePercentage = () => {

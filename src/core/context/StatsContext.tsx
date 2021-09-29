@@ -3,7 +3,7 @@ import {ReactNode, useContext, useState} from 'react'
 import {UseFetcher, useFetcher} from '@alexandreannic/react-hooks-lib/lib'
 import {ApiError, Id} from 'core/api'
 import {SignalConsoApiSdk} from '../../App'
-import {Period} from '../api/client/company-stats/CompanyStats'
+import {Period} from '../api/client/stats/Stats'
 
 type StatSdk = SignalConsoApiSdk['secured']['companyStats']
 
