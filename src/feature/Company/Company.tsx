@@ -61,7 +61,6 @@ const useStyles = makeStyles((t: Theme) => ({
   reportTag: {},
   statusInfo: {
     verticalAlign: 'middle',
-    display: 'inline',
     color: t.palette.text.disabled,
     marginLeft: t.spacing(1),
   }
@@ -112,12 +111,12 @@ export const CompanyComponent = () => {
 
   const statusDistribution = useMemoFn(_companyStats.status.entity, _ => Enum.entries(_).map(([status, count]) =>
     ({
-      label: <>
+      label: <span>
         {m.reportStatusShort[status]}
         <Tooltip title={m.reportStatusDesc[status]}>
           <Icon fontSize="small" className={css.statusInfo}>help</Icon>
         </Tooltip>
-      </>,
+      </span>,
       value: count,
       color: reportStatusColor[status] ?? undefined
     }),
@@ -161,7 +160,18 @@ export const CompanyComponent = () => {
             <Grid item xs={12} sm={6} md={3}>
               <Widget title={m.avgResponseTime}>
                 {fromNullable(_companyStats.responseDelay.entity)
-                  .map(_ => <><WidgetValue>{_} <Txt size="big">{m.days}</Txt></WidgetValue></>)
+                  .map(_ =>
+                    <WidgetValue>
+                      <span>
+                        {_}&nbsp;
+                        <Txt size="big">{m.days}</Txt>
+                        &nbsp;
+                        <Tooltip title={m.avgResponseTimeDesc}>
+                          <Icon className={cssUtils.colorTxtHint} fontSize="medium">help</Icon>
+                        </Tooltip>
+                      </span>
+                    </WidgetValue>,
+                  )
                   .getOrElse(<WidgetLoading/>)
                 }
               </Widget>
@@ -198,6 +208,7 @@ export const CompanyComponent = () => {
                 <PanelHead>{m.consumerReviews}</PanelHead>
                 {fromNullable(_companyStats.responseReviews.entity).map(_ => (
                   <PanelBody>
+                    <Txt color="hint" block className={cssUtils.marginBottom2}>{m.consumerReviewsDesc}</Txt>
                     <div className={css.reviews}>
                       <div className={css.reviews_type}>
                         <div className={css.reviews_type_value}>
