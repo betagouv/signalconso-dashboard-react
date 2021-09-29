@@ -1,7 +1,7 @@
 import {ApiClientApi} from '../../core/ApiClient'
 import {MonthlyStat, SimpleStat} from './ReportStats'
 
-export class PublicReportStatsClient {
+export class PublicStatsClient {
 
   constructor(private client: ApiClientApi) {
   }

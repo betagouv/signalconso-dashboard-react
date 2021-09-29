@@ -6,17 +6,20 @@ import {SignalConsoApiSdk} from '../../App'
 import {paginateData} from '../helper/utils'
 import {Address} from '../api/model/Address'
 
+type Sdk = SignalConsoApiSdk['secured']['company']
+
 export interface CompaniesContextProps {
   activated: UsePaginate<CompanyWithReportsCount, CompanySearch>
   toActivate: UsePaginate<CompanyToActivate, PaginatedFilters>
-  create: UseFetcher<SignalConsoApiSdk['secured']['company']['create'], ApiError>
-  updateAddress: UseFetcher<SignalConsoApiSdk['secured']['company']['updateAddress'], ApiError>
-  downloadActivationDocument: UseFetcher<SignalConsoApiSdk['secured']['company']['downloadActivationDocument'], ApiError>
-  confirmCompaniesPosted: UseFetcher<SignalConsoApiSdk['secured']['company']['confirmCompaniesPosted'], ApiError>
+  create: UseFetcher<Sdk['create'], ApiError>
+  updateAddress: UseFetcher<Sdk['updateAddress'], ApiError>
+  downloadActivationDocument: UseFetcher<Sdk['downloadActivationDocument'], ApiError>
+  confirmCompaniesPosted: UseFetcher<Sdk['confirmCompaniesPosted'], ApiError>
   searchByIdentity: UseFetcher<SignalConsoApiSdk['public']['company']['searchCompaniesByIdentity'], ApiError>
-  accessibleByPro: UseFetcher<SignalConsoApiSdk['secured']['company']['getAccessibleByPro'], ApiError>
-  saveUndeliveredDocument: UseFetcher<SignalConsoApiSdk['secured']['company']['saveUndeliveredDocument'], ApiError>
+  accessibleByPro: UseFetcher<Sdk['getAccessibleByPro'], ApiError>
+  saveUndeliveredDocument: UseFetcher<Sdk['saveUndeliveredDocument'], ApiError>
   byId: UseFetcher<(id: Id) => Promise<CompanyWithReportsCount>, ApiError>
+  hosts: UseFetcher<Sdk['getHosts'], ApiError>
 }
 
 interface Props {
@@ -49,6 +52,7 @@ export const CompaniesProvider = ({api, children}: Props) => {
   const saveUndeliveredDocument = useFetcher(api.secured.company.saveUndeliveredDocument)
   const accessibleByPro = useFetcher(api.secured.company.getAccessibleByPro)
   const byId = useFetcher((id: Id) => api.secured.company.search({identity: id, limit: 1, offset: 0}).then(_ => _.entities[0]))
+  const hosts = useFetcher(api.secured.company.getHosts)
 
   const updateRegisteredCompanyAddress = (id: Id, address: Address) => {
     activated.setEntity(companies => {
@@ -83,6 +87,7 @@ export const CompaniesProvider = ({api, children}: Props) => {
         accessibleByPro,
         saveUndeliveredDocument,
         byId,
+        hosts,
       }}
     >
       {children}

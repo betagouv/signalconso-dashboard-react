@@ -4,12 +4,14 @@ import {CartesianGrid, Legend, Line, LineChart, ResponsiveContainer, Tooltip, XA
 import * as React from 'react'
 import {useI18n} from '../../core/i18n'
 import {classes} from '../../core/helper/utils'
-import {Period, ReportsCountEvolution} from '../../core/api/client/company-stats/CompanyStats'
+import {CountByDate, Period} from '../../core/api/client/company-stats/CompanyStats'
+import {useMemoFn} from '../../shared/hooks/UseMemoFn'
+import {format} from 'date-fns'
 
 interface Props {
-  data?: ReportsCountEvolution[],
+  data?: CountByDate[],
   period?: Period,
-  onChange: (_: Period) => Promise<ReportsCountEvolution[]>
+  onChange: (_: Period) => Promise<CountByDate[]>
 }
 
 const useStyles = makeStyles((t: Theme) => ({
@@ -18,53 +20,51 @@ const useStyles = makeStyles((t: Theme) => ({
   },
 }))
 
+const periods: Period[] = ['day', 'month']
+
 export const CompanyReportsCountPanel = ({data, period, onChange}: Props) => {
   const {m} = useI18n()
   const css = useStyles()
   const theme = useTheme()
 
+  const mappedData = useMemoFn(data, _ => _.map(x => ({
+    ...x,
+    date: format(x.date, period === 'day' ? 'dd/MM/yyyy' : 'MM/yyyy'),
+  })))
+
   return (
     <Panel loading={!data}>
       <PanelHead action={
         <ButtonGroup color="primary">
-          <Button
-            className={classes(period === 'day' && css.btnPeriodActive)}
-            onClick={() => onChange('day')}
-          >
-            {m.day}
-          </Button>
-          <Button
-            className={classes(period === 'week' && css.btnPeriodActive)}
-            onClick={() => onChange('week')}
-          >
-            {m.week}
-          </Button>
-          <Button
-            className={classes(period === 'month' && css.btnPeriodActive)}
-            onClick={() => onChange('month')}
-          >
-            {m.month}
-          </Button>
+          {periods.map(p =>
+            <Button
+              key={p}
+              className={classes(p === period && css.btnPeriodActive)}
+              onClick={() => onChange(p)}
+            >
+              {m[p]}
+            </Button>,
+          )}
         </ButtonGroup>
       }>
         {m.reports}
       </PanelHead>
 
       <PanelBody style={{height: 300}}>
-        {data && (
+        {mappedData && (
           <ResponsiveContainer width="100%" height="100%">
             <LineChart
               width={500}
               height={300}
-              data={data}
+              data={mappedData}
             >
               <CartesianGrid strokeDasharray="3 3"/>
               <XAxis dataKey="date"/>
               <YAxis/>
               <Tooltip/>
-              <Legend wrapperStyle={{position: 'relative', marginTop: -16}} />
-              <Line name={m.reportsCount} type="monotone" dataKey="reports" stroke={theme.palette.primary.main} strokeWidth={2}/>
-              <Line name={m.responsesCount} type="monotone" dataKey="responses"  stroke='#e48c00' strokeWidth={2}/>
+              <Legend wrapperStyle={{position: 'relative', marginTop: -16}}/>
+              <Line name={m.reportsCount} type="monotone" dataKey="count" stroke={theme.palette.primary.main} strokeWidth={2}/>
+              <Line name={m.responsesCount} type="monotone" dataKey="countResponded" stroke="#e48c00" strokeWidth={2}/>
             </LineChart>
           </ResponsiveContainer>
         )}

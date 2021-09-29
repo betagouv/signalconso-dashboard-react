@@ -1,4 +1,4 @@
-import {ApiClientApi, ApiPaginate, CompanySearch, CompanyToActivate, CompanyWithAccessLevel, CompanyWithReportsCount, dateToApi, directDownloadBlob, Report} from '../..'
+import {ApiClientApi, ApiPaginate, CompanySearch, CompanyToActivate, CompanyWithAccessLevel, CompanyWithReportsCount, dateToApi, directDownloadBlob, Report, ReportTag} from '../..'
 import {Company, CompanyCreation, CompanyUpdate, Event, Id} from '../../model'
 import {format} from 'date-fns'
 
@@ -30,11 +30,8 @@ export class CompanyClient {
       .then(directDownloadBlob(`signalement_depot_${format(new Date(), 'ddMMyy')}`))
   }
 
-  /** @deprecated use getVisibleByPro */
-  readonly getDirectAccessibleByPro = (): Promise<CompanyWithAccessLevel[]> => {
-    return this.client
-      .get<CompanyWithAccessLevel[]>(`/accesses/connected-user`)
-      .then(res => res.map(_ => ({..._, creationDate: new Date(_.creationDate)})))
+  readonly getHosts = (id: Id) => {
+    return this.client.get<string[]>(`/companies/hosts/${id}`)
   }
 
   readonly getAccessibleByPro = () => {

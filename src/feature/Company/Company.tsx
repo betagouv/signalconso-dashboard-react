@@ -12,7 +12,7 @@ import {Enum} from '@alexandreannic/ts-utils/lib/common/enum/Enum'
 import {Divider, Grid, Icon, LinearProgress, List, ListItem, ListItemIcon, ListItemText, makeStyles, Theme} from '@material-ui/core'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
 import {CompanyReportsCountPanel} from './CompanyReportsCountPanel'
-import {useCompaniesStatsContext} from '../../core/context/CompanyStatsContext'
+import {useStatsContext} from '../../core/context/StatsContext'
 import {useMemoFn} from '../../shared/hooks/UseMemoFn'
 import {useEventContext} from '../../core/context/EventContext'
 import {useEffectFn} from '../../shared/hooks/UseEffectFn'
@@ -65,7 +65,7 @@ export const CompanyComponent = () => {
   const {id} = useParams<{id: Id}>()
   const {m, formatDate, formatLargeNumber} = useI18n()
   const _company = useCompaniesContext()
-  const _companyStats = useCompaniesStatsContext()
+  const _companyStats = useStatsContext()
   const _event = useEventContext()
   const _accesses = useFetcher((siret: string) => apiSdk.secured.companyAccess.fetch(siret))
   const _report = useReportsContext()
@@ -77,18 +77,18 @@ export const CompanyComponent = () => {
 
   useEffect(() => {
     _company.byId.fetch({}, id)
-    _companyStats.reportsCountEvolution.fetch({}, id, 'month')
+    _company.hosts.fetch({}, id)
+    _companyStats.reportsCountCurve.fetch({}, id, 'month')
     _companyStats.tags.fetch({}, id)
-    _companyStats.hosts.fetch({}, id)
     _companyStats.status.fetch({}, id)
     _companyStats.responseReviews.fetch({}, id)
     _companyStats.responseDelay.fetch({}, id)
   }, [])
 
   useEffectFn(_company.byId.error, toastError)
-  useEffectFn(_companyStats.reportsCountEvolution.error, toastError)
+  useEffectFn(_company.hosts.error, toastError)
+  useEffectFn(_companyStats.reportsCountCurve.error, toastError)
   useEffectFn(_companyStats.tags.error, toastError)
-  useEffectFn(_companyStats.hosts.error, toastError)
   useEffectFn(_companyStats.status.error, toastError)
   useEffectFn(_companyStats.responseReviews.error, toastError)
   useEffectFn(_companyStats.responseDelay.error, toastError)
@@ -154,8 +154,8 @@ export const CompanyComponent = () => {
           </Grid>
           <CompanyReportsCountPanel
             period={_companyStats.reportsCountEvolutionPeriod}
-            data={_companyStats.reportsCountEvolution.entity}
-            onChange={period => _companyStats.reportsCountEvolution.fetch({}, id, period)}
+            data={_companyStats.reportsCountCurve.entity}
+            onChange={period => _companyStats.reportsCountCurve.fetch({}, id, period)}
           />
           <Grid container spacing={2}>
             <Grid item sm={12} md={7}>
@@ -230,11 +230,11 @@ export const CompanyComponent = () => {
                   </List>
                 </PanelBody>
               </Panel>
-              <Panel loading={_companyStats.hosts.loading}>
+              <Panel loading={_company.hosts.loading}>
                 <PanelHead>{m.websites}</PanelHead>
                 <div style={{maxHeight: 260, overflow: 'auto'}}>
                   <List dense>
-                    {_companyStats.hosts.entity?.map(host => <ListItem>{host}</ListItem>)}
+                    {_company.hosts.entity?.map((host, i) => <ListItem key={i}>{host}</ListItem>)}
                   </List>
                 </div>
               </Panel>
