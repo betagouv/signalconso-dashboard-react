@@ -9,7 +9,7 @@ import {HorizontalBarChart} from '../../shared/HorizontalBarChart/HorizontalBarC
 import {reportStatusColor} from '../../shared/ReportStatus/ReportStatus'
 import {useI18n} from '../../core/i18n'
 import {Enum} from '@alexandreannic/ts-utils/lib/common/enum/Enum'
-import {Divider, Grid, Icon, LinearProgress, List, ListItem, ListItemIcon, ListItemText, makeStyles, Theme} from '@material-ui/core'
+import {Divider, Grid, Icon, LinearProgress, List, ListItem, ListItemIcon, ListItemText, makeStyles, Theme, Tooltip} from '@material-ui/core'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
 import {CompanyReportsCountPanel} from './CompanyReportsCountPanel'
 import {useCompaniesStatsContext} from '../../core/context/CompanyStatsContext'
@@ -59,6 +59,12 @@ const useStyles = makeStyles((t: Theme) => ({
     },
   },
   reportTag: {},
+  statusInfo: {
+    verticalAlign: 'middle',
+    display: 'inline',
+    color: t.palette.text.disabled,
+    marginLeft: t.spacing(1),
+  }
 }))
 
 export const CompanyComponent = () => {
@@ -105,7 +111,16 @@ export const CompanyComponent = () => {
   )
 
   const statusDistribution = useMemoFn(_companyStats.status.entity, _ => Enum.entries(_).map(([status, count]) =>
-    ({label: m.reportStatusShort[status], value: count, color: reportStatusColor[status] ?? undefined}),
+    ({
+      label: <>
+        {m.reportStatusShort[status]}
+        <Tooltip title={m.reportStatusDesc[status]}>
+          <Icon fontSize="small" className={css.statusInfo}>help</Icon>
+        </Tooltip>
+      </>,
+      value: count,
+      color: reportStatusColor[status] ?? undefined
+    }),
   ))
 
   const tagsDistribution = useMemoFn(_companyStats.tags.entity, _ => Object.entries(_).map(([label, count]) => ({label, value: count})))
