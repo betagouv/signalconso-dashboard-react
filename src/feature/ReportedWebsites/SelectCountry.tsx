@@ -17,7 +17,7 @@ const useStyles = makeStyles((t: Theme) => ({
     input: {
         marginBottom: t.spacing(1.5),
         minWidth: 280,
-        width : 300
+        width: 300
     },
 }))
 
@@ -36,6 +36,7 @@ export const SelectCountry = ({children, onChange, country}: Props) => {
 
     return (
         <ScDialog
+            PaperProps={{style: {position: "static"}}}
             confirmDisabled={!value}
             maxWidth="sm"
             title={m.identification}
@@ -46,7 +47,7 @@ export const SelectCountry = ({children, onChange, country}: Props) => {
                         multiple={false}
                         defaultValue={country}
                         id="combo-country"
-                        className = {css.input}
+                        className={css.input}
                         onChange={(event, newInputValue) => {
                             setValue(fromNullable(newInputValue).toUndefined());
                         }}
