@@ -1,7 +1,7 @@
 import {ApiError, SignalConsoPublicSdk, SignalConsoSecuredSdk} from '@betagouv/signalconso-api-sdk-js'
 import {useFetcher, UseFetcher} from '@alexandreannic/react-hooks-lib/lib'
 import React, {ReactNode, useContext} from 'react'
-import {SignalConsoApiSdk} from '../../App'
+import {SignalConsoApiSdk} from '../ApiSdkInstance'
 
 type PublicSdk = SignalConsoPublicSdk['stats']
 type SecuredSdk = SignalConsoSecuredSdk['stats']

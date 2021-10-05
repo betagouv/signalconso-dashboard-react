@@ -8,7 +8,7 @@ import {useForm} from 'react-hook-form'
 import {useI18n} from '../../core/i18n'
 import {useToast} from '../../core/toast'
 import {ScDialog} from '../../shared/Confirm/ScDialog'
-import {AuthenticationEventActions, EventCategories, Matomo} from '../../core/analyics/Matomo'
+import {AuthenticationEventActions, EventCategories, Matomo} from '../../core/plugins/Matomo'
 import {ApiError} from '@betagouv/signalconso-api-sdk-js'
 
 interface Props {

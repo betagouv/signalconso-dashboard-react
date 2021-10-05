@@ -130,7 +130,7 @@ export const CompanyComponent = () => {
     .filter(_ => _.action === EventActionValues.PostAccountActivationDoc),
   )
 
-  const statusDistribution = useMemoFn(_companyStats.status.entity, _ => Enum.entries(_).map(([status, count]) =>
+  const statusDistribution = useMemoFn(_stats.status.entity, _ => Enum.entries(_).map(([status, count]) =>
     ({
       label: <span>
         {m.reportStatusShort[status]}
@@ -180,10 +180,11 @@ export const CompanyComponent = () => {
             </Grid>
             <Grid item xs={12} sm={6} md={3}>
               <Widget title={m.avgResponseTime}>
-                {fromNullable(_companyStats.responseDelay.entity)
+                {fromNullable(_stats.responseDelay.entity)
                   .map(_ =>
                     <WidgetValue>
                       <span>
+                        {_.toDays}&nbsp;
                         <Txt size="big">{m.days}</Txt>
                         &nbsp;
                         <Tooltip title={m.avgResponseTimeDesc}>
@@ -192,7 +193,6 @@ export const CompanyComponent = () => {
                       </span>
                     </WidgetValue>,
                   )
-                        {_}&nbsp;
                   .getOrElse(<WidgetLoading/>)
                 }
               </Widget>
