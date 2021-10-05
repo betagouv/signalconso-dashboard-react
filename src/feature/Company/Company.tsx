@@ -9,7 +9,7 @@ import {HorizontalBarChart} from '../../shared/HorizontalBarChart/HorizontalBarC
 import {reportStatusColor} from '../../shared/ReportStatus/ReportStatus'
 import {useI18n} from '../../core/i18n'
 import {Enum} from '@alexandreannic/ts-utils/lib/common/enum/Enum'
-import {Divider, Grid, Icon, LinearProgress, List, ListItem, ListItemIcon, ListItemText, makeStyles, Theme} from '@material-ui/core'
+import {Divider, Grid, Icon, LinearProgress, List, ListItem, ListItemIcon, ListItemText, makeStyles, Theme, Tooltip} from '@material-ui/core'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
 import {CompanyReportsCountPanel} from './CompanyReportsCountPanel'
 import {useMemoFn} from '../../shared/hooks/UseMemoFn'
@@ -59,6 +59,11 @@ const useStyles = makeStyles((t: Theme) => ({
     },
   },
   reportTag: {},
+  statusInfo: {
+    verticalAlign: 'middle',
+    color: t.palette.text.disabled,
+    marginLeft: t.spacing(1),
+  }
 }))
 
 const ticks = 7
@@ -125,8 +130,17 @@ export const CompanyComponent = () => {
     .filter(_ => _.action === EventActionValues.PostAccountActivationDoc),
   )
 
-  const statusDistribution = useMemoFn(_stats.status.entity, _ => Enum.entries(_).map(([status, count]) =>
-    ({label: m.reportStatusShort[status], value: count, color: reportStatusColor[status] ?? undefined}),
+  const statusDistribution = useMemoFn(_companyStats.status.entity, _ => Enum.entries(_).map(([status, count]) =>
+    ({
+      label: <span>
+        {m.reportStatusShort[status]}
+        <Tooltip title={m.reportStatusDesc[status]}>
+          <Icon fontSize="small" className={css.statusInfo}>help</Icon>
+        </Tooltip>
+      </span>,
+      value: count,
+      color: reportStatusColor[status] ?? undefined
+    }),
   ))
 
   const tagsDistribution = useMemoFn(_stats.tags.entity, _ => Object.entries(_).map(([label, count]) => ({label, value: count})))
@@ -157,7 +171,7 @@ export const CompanyComponent = () => {
               </Widget>
             </Grid>
             <Grid item xs={12} sm={6} md={3}>
-              <Widget title={m.accountsActivated} loading={_accesses.loading}>
+              <Widget title={m.accountsActivated} loading={_accesses.loading} to={siteMap.companyAccesses(company.siret)}>
                 {fromNullable(_accesses.entity)
                   .map(_ => <WidgetValue>{_.length}</WidgetValue>)
                   .getOrElse(<WidgetLoading/>)
@@ -166,8 +180,19 @@ export const CompanyComponent = () => {
             </Grid>
             <Grid item xs={12} sm={6} md={3}>
               <Widget title={m.avgResponseTime}>
-                {fromNullable(_stats.responseDelay.entity)
-                  .map(_ => <><WidgetValue>{_.toDays} <Txt size="big">{m.days}</Txt></WidgetValue></>)
+                {fromNullable(_companyStats.responseDelay.entity)
+                  .map(_ =>
+                    <WidgetValue>
+                      <span>
+                        <Txt size="big">{m.days}</Txt>
+                        &nbsp;
+                        <Tooltip title={m.avgResponseTimeDesc}>
+                          <Icon className={cssUtils.colorTxtHint} fontSize="medium">help</Icon>
+                        </Tooltip>
+                      </span>
+                    </WidgetValue>,
+                  )
+                        {_}&nbsp;
                   .getOrElse(<WidgetLoading/>)
                 }
               </Widget>
@@ -204,6 +229,7 @@ export const CompanyComponent = () => {
                 <PanelHead>{m.consumerReviews}</PanelHead>
                 {fromNullable(_stats.responseReviews.entity).map(_ => (
                   <PanelBody>
+                    <Txt color="hint" block className={cssUtils.marginBottom2}>{m.consumerReviewsDesc}</Txt>
                     <div className={css.reviews}>
                       <div className={css.reviews_type}>
                         <div className={css.reviews_type_value}>

@@ -2,7 +2,7 @@ import * as React from 'react'
 import {ReactNode, useContext} from 'react'
 import {UseAsync, UseFetcher, useFetcher} from '@alexandreannic/react-hooks-lib/lib'
 import {SignalConsoSecuredSdk} from '@betagouv/signalconso-api-sdk-js'
-import {SignalConsoApiSdk} from '../../App'
+import {SignalConsoApiSdk} from '../ApiSdkInstance'
 import {useAsync} from '@alexandreannic/react-hooks-lib'
 
 export interface AccessesContextProps {

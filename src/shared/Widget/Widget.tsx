@@ -37,7 +37,6 @@ const useStyles = makeStyles((t: Theme) => ({
 
 export const Widget = ({loading, title, to, children}: Props) => {
   const css = useStyles()
-  const cssUtils = useCssUtils()
   const body = (
     <Panel className={to && css.hoverable}>
       <PanelBody>

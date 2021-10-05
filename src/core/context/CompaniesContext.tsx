@@ -2,7 +2,7 @@ import * as React from 'react'
 import {ReactNode, useContext} from 'react'
 import {UseFetcher, useFetcher, usePaginate, UsePaginate} from '@alexandreannic/react-hooks-lib/lib'
 import {Address, ApiError, CompanySearch, CompanyToActivate, CompanyUpdate, CompanyWithReportsCount, Id, PaginatedFilters} from '@betagouv/signalconso-api-sdk-js'
-import {SignalConsoApiSdk} from '../../App'
+import {SignalConsoApiSdk} from '../ApiSdkInstance'
 import {mapPromiseSdkPaginateToHook, paginateData} from '../helper/utils'
 
 type Sdk = SignalConsoApiSdk['secured']['company']

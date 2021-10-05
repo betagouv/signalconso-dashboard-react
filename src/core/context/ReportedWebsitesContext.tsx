@@ -1,15 +1,16 @@
 import * as React from 'react'
 import {ReactNode, useContext} from 'react'
 import {UseFetcher, useFetcher, usePaginate, UsePaginate} from '@alexandreannic/react-hooks-lib/lib'
-import {SignalConsoApiSdk} from '../../App'
-import {ApiError, WebsiteKind, WebsiteWithCompany, WebsiteWithCompanySearch} from '@betagouv/signalconso-api-sdk-js'
+import {SignalConsoApiSdk} from '../ApiSdkInstance'
 import {mapPromiseSdkPaginateToHook} from '../helper/utils'
+import {ApiError, WebsiteKind, WebsiteWithCompany, WebsiteWithCompanySearch} from '@betagouv/signalconso-api-sdk-js'
 
 export interface ReportedWebsiteWithCompanyContextProps {
   getWebsiteWithCompany: UsePaginate<WebsiteWithCompany, WebsiteWithCompanySearch>
   remove: UseFetcher<SignalConsoApiSdk['secured']['website']['remove'], ApiError>
-  update: UseFetcher<SignalConsoApiSdk['secured']['website']['update'], ApiError>
+  update: UseFetcher<SignalConsoApiSdk['secured']['website']['updateStatus'], ApiError>
   updateCompany: UseFetcher<SignalConsoApiSdk['secured']['website']['updateCompany'], ApiError>
+  updateCountry: UseFetcher<SignalConsoApiSdk['secured']['website']['updateCountry'], ApiError>
 }
 
 interface Props {
@@ -30,8 +31,9 @@ export const ReportedWebsitesProvider = ({api, children}: Props) => {
   )
 
   const remove = useFetcher(api.secured.website.remove)
-  const update = useFetcher(api.secured.website.update)
+  const update = useFetcher(api.secured.website.updateStatus)
   const updateCompany = useFetcher(api.secured.website.updateCompany)
+  const updateCountry = useFetcher(api.secured.website.updateCountry)
 
   return (
     <ReportedWebsitesContext.Provider
@@ -40,6 +42,7 @@ export const ReportedWebsitesProvider = ({api, children}: Props) => {
         remove,
         update,
         updateCompany,
+        updateCountry,
       }}
     >
       {children}

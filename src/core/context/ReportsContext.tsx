@@ -1,9 +1,9 @@
 import * as React from 'react'
 import {ReactNode, useContext} from 'react'
 import {usePaginate, UsePaginate} from '@alexandreannic/react-hooks-lib/lib'
-import {ReportSearch, ReportSearchResult} from '@betagouv/signalconso-api-sdk-js'
-import {SignalConsoApiSdk} from '../../App'
+import {SignalConsoApiSdk} from '../ApiSdkInstance'
 import {mapPromiseSdkPaginateToHook} from '../helper/utils'
+import {ReportSearch, ReportSearchResult} from '@betagouv/signalconso-api-sdk-js'
 
 export interface ReportsContextProps extends UsePaginate<ReportSearchResult, ReportSearch> {
   extract: (_?: ReportSearch) => Promise<void>

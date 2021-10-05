@@ -17,7 +17,7 @@ import {useHistory} from 'react-router'
 import {siteMap} from '../../core/siteMap'
 import {Alert} from 'mui-extension'
 import {ScInputPassword} from '../../shared/InputPassword/InputPassword'
-import {AccessEventActions, ActionResultNames, EventCategories, Matomo} from '../../core/analyics/Matomo'
+import {AccessEventActions, ActionResultNames, EventCategories, Matomo} from '../../core/plugins/Matomo'
 import {HelpContactInfo} from '../../shared/HelpContactInfo/HelpContactInfo'
 
 interface Form {

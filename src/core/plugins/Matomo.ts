@@ -1,10 +1,33 @@
+import {Config} from 'conf/config'
+
 declare const _paq: any
 
 export class Matomo {
-  constructor() {}
+  constructor() {
+  }
 
   static readonly trackEvent = (category: EventCategories, action: AnalyticAction, name?: any, value?: any) => {
-    _paq.push(['trackEvent', category, action, name, value])
+    Matomo.push(['trackEvent', category, action, name, value])
+  }
+
+  static readonly trackPage = (path: string) => {
+    Matomo.push(['setCustomUrl', window.location.origin + path])
+    Matomo.push(['trackPageView'])
+  }
+
+  private static readonly push = (args: any[]) => {
+    if (Config.isDev) {
+      console.info('[Matomo]', args)
+    } else {
+      try {
+        _paq.push(args)
+      } catch (e) {
+        console.error('[Matomo]', e)
+        if (!(e instanceof ReferenceError)) {
+          throw e
+        }
+      }
+    }
   }
 }
 

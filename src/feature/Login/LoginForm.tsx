@@ -15,7 +15,7 @@ import {ForgottenPasswordDialog} from './ForgottenPasswordDialog'
 import {ApiError, SignalConsoPublicSdk} from '@betagouv/signalconso-api-sdk-js'
 import {fnSwitch} from '../../core/helper/utils'
 import {useToast} from '../../core/toast'
-import {AuthenticationEventActions, EventCategories, Matomo} from '../../core/analyics/Matomo'
+import {AuthenticationEventActions, EventCategories, Matomo} from '../../core/plugins/Matomo'
 
 interface Props {
   login: ActionProps<SignalConsoPublicSdk['authenticate']['login']>
