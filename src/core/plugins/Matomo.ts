@@ -11,7 +11,7 @@ export class Matomo {
   }
 
   static readonly trackPage = (path: string) => {
-    Matomo.push(['setCustomUrl', window.location.origin + path])
+    Matomo.push(['setCustomUrl', Config.appBaseUrl + path])
     Matomo.push(['trackPageView'])
   }
 
