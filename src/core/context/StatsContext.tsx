@@ -1,26 +1,31 @@
-import * as React from 'react'
-import {ReactNode, useContext, useState} from 'react'
-import {UseFetcher, useFetcher} from '@alexandreannic/react-hooks-lib/lib'
-import {ApiError, Id} from 'core/api'
+import {ApiError, SignalConsoPublicSdk, SignalConsoSecuredSdk} from '@betagouv/signalconso-api-sdk-js'
+import {useFetcher, UseFetcher} from '@alexandreannic/react-hooks-lib/lib'
+import React, {ReactNode, useContext} from 'react'
 import {SignalConsoApiSdk} from '../../App'
-import {Period} from '../api/client/stats/Stats'
 
-type StatSdk = SignalConsoApiSdk['secured']['companyStats']
+type PublicSdk = SignalConsoPublicSdk['stats']
+type SecuredSdk = SignalConsoSecuredSdk['stats']
 
-export interface ReportsCountByDate {
-  date: Date
-  count: number
-  countResponded: number
-}
-
-export interface StatsContextProps {
-  reportsCountEvolutionPeriod?: Period,
-  reportsCountCurve: UseFetcher<(id: Id, period: Period) => Promise<ReportsCountByDate[]>, ApiError>
-  tags: UseFetcher<StatSdk['getTags'], ApiError>
-  status: UseFetcher<StatSdk['getStatus'], ApiError>
-  responseReviews: UseFetcher<StatSdk['getResponseReviews'], ApiError>
-  readDelay: UseFetcher<StatSdk['getReadDelay'], ApiError>
-  responseDelay: UseFetcher<StatSdk['getResponseDelay'], ApiError>
+interface StatsContextProps {
+  reportCount: UseFetcher<PublicSdk['getReportCount'], ApiError>
+  tags: UseFetcher<SecuredSdk['getTags'], ApiError>
+  status: UseFetcher<SecuredSdk['getStatus'], ApiError>
+  responseReviews: UseFetcher<SecuredSdk['getResponseReviews'], ApiError>
+  readDelay: UseFetcher<SecuredSdk['getReadDelay'], ApiError>
+  responseDelay: UseFetcher<SecuredSdk['getResponseDelay'], ApiError>
+  curve: {
+    reportCount: UseFetcher<PublicSdk['curve']['getReportCount'], ApiError>
+    reportRespondedCount: UseFetcher<PublicSdk['curve']['getReportRespondedCount'], ApiError>
+    reportForwardedPercentage: UseFetcher<PublicSdk['curve']['getReportForwardedPercentage'], ApiError>
+    reportRespondedPercentage: UseFetcher<PublicSdk['curve']['getReportRespondedPercentage'], ApiError>
+    reportReadPercentage: UseFetcher<PublicSdk['curve']['getReportReadPercentage'], ApiError>
+  }
+  percentage: {
+    reportForwardedToPro: UseFetcher<PublicSdk['percentage']['getReportForwardedToPro'], ApiError>
+    reportReadByPro: UseFetcher<PublicSdk['percentage']['getReportReadByPro'], ApiError>
+    reportWithResponse: UseFetcher<PublicSdk['percentage']['getReportWithResponse'], ApiError>
+    reportWithWebsite: UseFetcher<PublicSdk['percentage']['getReportWithWebsite'], ApiError>
+  }
 }
 
 interface Props {
@@ -28,46 +33,40 @@ interface Props {
   api: SignalConsoApiSdk
 }
 
-const defaultContext: Partial<StatsContextProps> = {}
-
-const StatsContext = React.createContext<StatsContextProps>(defaultContext as StatsContextProps)
+const StatsContext = React.createContext({} as StatsContextProps)
 
 export const StatsProvider = ({api, children}: Props) => {
-  const [reportsCountEvolutionPeriod, setReportsCountEvolutionPeriod] = useState<undefined | Period>()
-  const reportsCountCurve = useFetcher(async (id: Id, period: Period): Promise<ReportsCountByDate[]> => {
-    setReportsCountEvolutionPeriod(period)
-    const [reports, reportsResponded] = await Promise.all([
-      api.secured.companyStats.getReportsCountCurve(id, period),
-      api.secured.companyStats.getReportsRespondedCountCurve(id, period),
-    ])
-    return reports.map(_ => {
-      const countResponded = reportsResponded.find(_1 => _1.date.getTime() - _.date.getTime() === 0)?.count
-      if(!countResponded) {
-        throw new Error(`Cannot find a match of ${_.date} from 'getReportsCountCurve' in 'getReportsRespondedCountCurve'.`)
-      }
-      return ({
-        date: _.date,
-        count: _.count,
-        countResponded: reportsResponded.find(_1 => _1.date.getTime() - _.date.getTime() === 0)?.count ?? 0,
-      })
-    })
-  })
-  const tags = useFetcher(api.secured.companyStats.getTags)
-  const status = useFetcher(api.secured.companyStats.getStatus)
-  const responseReviews = useFetcher(api.secured.companyStats.getResponseReviews)
-  const readDelay = useFetcher(api.secured.companyStats.getReadDelay)
-  const responseDelay = useFetcher(api.secured.companyStats.getResponseDelay)
+  const reportCount = useFetcher(api.public.stats.getReportCount)
+  const tags = useFetcher(api.secured.stats.getTags)
+  const status = useFetcher(api.secured.stats.getStatus)
+  const responseReviews = useFetcher(api.secured.stats.getResponseReviews)
+  const readDelay = useFetcher(api.secured.stats.getReadDelay)
+  const responseDelay = useFetcher(api.secured.stats.getResponseDelay)
+  const curve = {
+    reportCount: useFetcher(api.public.stats.curve.getReportCount),
+    reportRespondedCount: useFetcher(api.public.stats.curve.getReportRespondedCount),
+    reportForwardedPercentage: useFetcher(api.public.stats.curve.getReportForwardedPercentage),
+    reportRespondedPercentage: useFetcher(api.public.stats.curve.getReportRespondedPercentage),
+    reportReadPercentage: useFetcher(api.public.stats.curve.getReportReadPercentage),
+  }
+  const percentage = {
+    reportForwardedToPro: useFetcher(api.public.stats.percentage.getReportForwardedToPro),
+    reportReadByPro: useFetcher(api.public.stats.percentage.getReportReadByPro),
+    reportWithResponse: useFetcher(api.public.stats.percentage.getReportWithResponse),
+    reportWithWebsite: useFetcher(api.public.stats.percentage.getReportWithWebsite),
+  }
 
   return (
     <StatsContext.Provider
       value={{
-        reportsCountEvolutionPeriod,
-        reportsCountCurve,
+        reportCount,
         tags,
         status,
         responseReviews,
         readDelay,
         responseDelay,
+        curve,
+        percentage,
       }}
     >
       {children}
@@ -75,6 +74,4 @@ export const StatsProvider = ({api, children}: Props) => {
   )
 }
 
-export const useStatsContext = (): StatsContextProps => {
-  return useContext<StatsContextProps>(StatsContext)
-}
+export const useStatsContext = (): StatsContextProps => useContext<StatsContextProps>(StatsContext)

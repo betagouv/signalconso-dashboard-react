@@ -1,9 +1,9 @@
 import * as React from 'react'
-import {useEffect} from 'react'
+import {useEffect, useMemo, useState} from 'react'
 import {Page, PageTitle} from 'shared/Layout'
 import {useCompaniesContext} from '../../core/context/CompaniesContext'
 import {useParams} from 'react-router'
-import {EventActionValues, Id} from '../../core/api'
+import {EventActionValues, Id, Period} from '@betagouv/signalconso-api-sdk-js'
 import {Panel, PanelBody, PanelHead} from '../../shared/Panel'
 import {HorizontalBarChart} from '../../shared/HorizontalBarChart/HorizontalBarChart'
 import {reportStatusColor} from '../../shared/ReportStatus/ReportStatus'
@@ -12,7 +12,6 @@ import {Enum} from '@alexandreannic/ts-utils/lib/common/enum/Enum'
 import {Divider, Grid, Icon, LinearProgress, List, ListItem, ListItemIcon, ListItemText, makeStyles, Theme} from '@material-ui/core'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
 import {CompanyReportsCountPanel} from './CompanyReportsCountPanel'
-import {useStatsContext} from '../../core/context/StatsContext'
 import {useMemoFn} from '../../shared/hooks/UseMemoFn'
 import {useEventContext} from '../../core/context/EventContext'
 import {useEffectFn} from '../../shared/hooks/UseEffectFn'
@@ -31,6 +30,7 @@ import {useReportsContext} from '../../core/context/ReportsContext'
 import {ReportsShortList} from './ReportsShortList'
 import {styleUtils} from '../../core/theme'
 import {Skeleton} from '@material-ui/lab'
+import {useStatsContext} from '../../core/context/StatsContext'
 
 const useStyles = makeStyles((t: Theme) => ({
   reviews: {
@@ -61,11 +61,13 @@ const useStyles = makeStyles((t: Theme) => ({
   reportTag: {},
 }))
 
+const ticks = 7
+
 export const CompanyComponent = () => {
   const {id} = useParams<{id: Id}>()
   const {m, formatDate, formatLargeNumber} = useI18n()
   const _company = useCompaniesContext()
-  const _companyStats = useStatsContext()
+  const _stats = useStatsContext()
   const _event = useEventContext()
   const _accesses = useFetcher((siret: string) => apiSdk.secured.companyAccess.fetch(siret))
   const _report = useReportsContext()
@@ -74,24 +76,43 @@ export const CompanyComponent = () => {
   const company = _company.byId.entity
   const apiSdk = useLogin().apiSdk
   const {toastError} = useToast()
+  const [reportsCurvePeriod, setReportsCurvePeriod] = useState<Period>('Month')
+
+  const fetchCurve = (period: Period) => {
+    setReportsCurvePeriod(period)
+    _stats.curve.reportCount.fetch({}, {companyId: id, ticks, tickDuration: period})
+    _stats.curve.reportRespondedCount.fetch({}, {companyId: id, ticks, tickDuration: period})
+  }
+
+  const reportsCurves = useMemo(() => {
+    const reportsResponded = _stats.curve.reportRespondedCount.entity
+    const reports = _stats.curve.reportCount.entity
+    if (reportsResponded && reports) {
+      return reports.map(_ => ({
+        date: _.date,
+        count: _.count,
+        countResponded: reportsResponded.find(_1 => _1.date.getTime() - _.date.getTime() === 0)?.count ?? -1,
+      }))
+    }
+  }, [_stats.curve.reportCount, _stats.curve.reportRespondedCount])
 
   useEffect(() => {
     _company.byId.fetch({}, id)
     _company.hosts.fetch({}, id)
-    _companyStats.reportsCountCurve.fetch({}, id, 'month')
-    _companyStats.tags.fetch({}, id)
-    _companyStats.status.fetch({}, id)
-    _companyStats.responseReviews.fetch({}, id)
-    _companyStats.responseDelay.fetch({}, id)
+    fetchCurve('Month')
+    _stats.tags.fetch({}, id)
+    _stats.status.fetch({}, id)
+    _stats.responseReviews.fetch({}, id)
+    _stats.responseDelay.fetch({}, id)
   }, [])
 
   useEffectFn(_company.byId.error, toastError)
   useEffectFn(_company.hosts.error, toastError)
-  useEffectFn(_companyStats.reportsCountCurve.error, toastError)
-  useEffectFn(_companyStats.tags.error, toastError)
-  useEffectFn(_companyStats.status.error, toastError)
-  useEffectFn(_companyStats.responseReviews.error, toastError)
-  useEffectFn(_companyStats.responseDelay.error, toastError)
+  useEffectFn(_stats.reportCount.error, toastError)
+  useEffectFn(_stats.tags.error, toastError)
+  useEffectFn(_stats.status.error, toastError)
+  useEffectFn(_stats.responseReviews.error, toastError)
+  useEffectFn(_stats.responseDelay.error, toastError)
 
   useEffectFn(_company.byId.entity, _ => {
     _event.companyEvents.fetch({}, _.siret)
@@ -104,11 +125,11 @@ export const CompanyComponent = () => {
     .filter(_ => _.action === EventActionValues.PostAccountActivationDoc),
   )
 
-  const statusDistribution = useMemoFn(_companyStats.status.entity, _ => Enum.entries(_).map(([status, count]) =>
+  const statusDistribution = useMemoFn(_stats.status.entity, _ => Enum.entries(_).map(([status, count]) =>
     ({label: m.reportStatusShort[status], value: count, color: reportStatusColor[status] ?? undefined}),
   ))
 
-  const tagsDistribution = useMemoFn(_companyStats.tags.entity, _ => Object.entries(_).map(([label, count]) => ({label, value: count})))
+  const tagsDistribution = useMemoFn(_stats.tags.entity, _ => Object.entries(_).map(([label, count]) => ({label, value: count})))
 
   return (
     <Page loading={_company.byId.loading}>
@@ -145,7 +166,7 @@ export const CompanyComponent = () => {
             </Grid>
             <Grid item xs={12} sm={6} md={3}>
               <Widget title={m.avgResponseTime}>
-                {fromNullable(_companyStats.responseDelay.entity)
+                {fromNullable(_stats.responseDelay.entity)
                   .map(_ => <><WidgetValue>{_.toDays} <Txt size="big">{m.days}</Txt></WidgetValue></>)
                   .getOrElse(<WidgetLoading/>)
                 }
@@ -153,9 +174,9 @@ export const CompanyComponent = () => {
             </Grid>
           </Grid>
           <CompanyReportsCountPanel
-            period={_companyStats.reportsCountEvolutionPeriod}
-            data={_companyStats.reportsCountCurve.entity}
-            onChange={period => _companyStats.reportsCountCurve.fetch({}, id, period)}
+            period={reportsCurvePeriod}
+            data={reportsCurves}
+            onChange={period => fetchCurve(period)}
           />
           <Grid container spacing={2}>
             <Grid item sm={12} md={7}>
@@ -181,7 +202,7 @@ export const CompanyComponent = () => {
             <Grid item sm={12} md={5}>
               <Panel>
                 <PanelHead>{m.consumerReviews}</PanelHead>
-                {fromNullable(_companyStats.responseReviews.entity).map(_ => (
+                {fromNullable(_stats.responseReviews.entity).map(_ => (
                   <PanelBody>
                     <div className={css.reviews}>
                       <div className={css.reviews_type}>

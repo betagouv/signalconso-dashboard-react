@@ -1,4 +1,4 @@
-import {Address} from '../../core/api/model/Address'
+import {Address} from '@betagouv/signalconso-api-sdk-js'
 import React from 'react'
 
 interface Props {

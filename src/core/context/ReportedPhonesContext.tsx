@@ -2,8 +2,8 @@ import * as React from 'react'
 import {ReactNode, useContext} from 'react'
 import {UseFetcher, useFetcher, UsePaginate, usePaginate} from '@alexandreannic/react-hooks-lib/lib'
 import {SignalConsoApiSdk} from '../../App'
-import {ReportedPhone, ReportedPhoneSearch} from '../api'
-import {paginateData, sortData, sortPaginatedData} from '../helper/utils'
+import {ReportedPhone, ReportedPhoneSearch} from '@betagouv/signalconso-api-sdk-js'
+import {paginateData, sortData} from '../helper/utils'
 
 export interface ReportedPhonesContextProps extends UsePaginate<ReportedPhone, ReportedPhoneSearch> {
   extract: UseFetcher<() => Promise<void>>

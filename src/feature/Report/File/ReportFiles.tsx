@@ -1,4 +1,4 @@
-import {FileOrigin, Id, UploadedFile} from 'core/api'
+import {FileOrigin, Id, UploadedFile} from '@betagouv/signalconso-api-sdk-js'
 import {makeStyles, Theme} from '@material-ui/core'
 import React, {useEffect, useState} from 'react'
 import {ReportFileAdd} from './ReportFileAdd'

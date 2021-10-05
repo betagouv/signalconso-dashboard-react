@@ -2,7 +2,7 @@ import * as React from 'react'
 import {ReactNode, useContext} from 'react'
 import {UseFetcher, useFetcher} from '@alexandreannic/react-hooks-lib/lib'
 import {SignalConsoApiSdk} from '../../App'
-import {ApiError} from '../api'
+import {ApiError} from '@betagouv/signalconso-api-sdk-js'
 
 export interface EventContextProps {
 

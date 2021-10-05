@@ -4,7 +4,7 @@ import * as React from 'react'
 import {useEffect, useMemo} from 'react'
 import {useCssUtils} from '../../core/helper/useCssUtils'
 import {useSetState, UseSetState} from '@alexandreannic/react-hooks-lib/lib'
-import {Company, CompanyWithAccessLevel} from '../../core/api'
+import {Company, CompanyWithAccessLevel} from '@betagouv/signalconso-api-sdk-js'
 import {useI18n} from '../../core/i18n'
 
 const useStyles = makeStyles((t: Theme) =>

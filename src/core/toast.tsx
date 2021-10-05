@@ -1,5 +1,5 @@
 import {useToast as useMuiToast} from 'mui-extension/lib/Toast/Toast'
-import {ApiError} from 'core/api'
+import {ApiError} from '@betagouv/signalconso-api-sdk-js'
 import {useI18n} from './i18n'
 
 export const useToast = () => {

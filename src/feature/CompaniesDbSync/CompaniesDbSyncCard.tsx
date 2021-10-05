@@ -1,6 +1,6 @@
 import {Txt} from 'mui-extension/lib/Txt/Txt'
 import {Panel, PanelBody} from 'shared/Panel'
-import {CompaniesDbSyncInfo} from '../../core/api/client/companies-db-sync/CompaniesDbSync'
+import {CompaniesDbSyncInfo} from '@betagouv/signalconso-api-sdk-js'
 import {alpha, CircularProgress, Grid, makeStyles, Theme, useTheme} from '@material-ui/core'
 import {styleUtils} from '../../core/theme'
 import {useI18n} from '../../core/i18n'

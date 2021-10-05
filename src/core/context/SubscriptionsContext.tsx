@@ -1,7 +1,7 @@
 import * as React from 'react'
 import {ReactNode, useContext} from 'react'
 import {CrudListCRUD, useCrudList} from '@alexandreannic/react-hooks-lib/lib'
-import {ApiError, SignalConsoSecuredSdk, Subscription} from 'core/api'
+import {ApiError, SignalConsoSecuredSdk, Subscription} from '@betagouv/signalconso-api-sdk-js'
 import {SignalConsoApiSdk} from '../../App'
 
 export interface SubscriptionsContextProps

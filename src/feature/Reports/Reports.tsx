@@ -1,7 +1,7 @@
 import {Page, PageTitle} from '../../shared/Layout'
 import {useI18n} from '../../core/i18n'
 import {useReportsContext} from '../../core/context/ReportsContext'
-import {cleanObject, getHostFromUrl, Report, ReportingDateLabel, ReportSearch, ReportSearchResult, ReportTag} from 'core/api'
+import {cleanObject, getHostFromUrl, Report, ReportingDateLabel, ReportSearch, ReportSearchResult, ReportTag} from '@betagouv/signalconso-api-sdk-js'
 import {Panel} from '../../shared/Panel'
 import {useCssUtils} from '../../core/helper/useCssUtils'
 import {Datatable} from '../../shared/Datatable/Datatable'

@@ -1,7 +1,7 @@
 import {useI18n} from '../../core/i18n'
 import {Panel} from '../../shared/Panel'
 import {Datatable} from '../../shared/Datatable/Datatable'
-import {CompanyToActivate, Id} from '../../core/api'
+import {CompanyToActivate, Id} from '@betagouv/signalconso-api-sdk-js'
 import React, {SyntheticEvent, useEffect} from 'react'
 import {useCompaniesContext} from '../../core/context/CompaniesContext'
 import {useCssUtils} from '../../core/helper/useCssUtils'

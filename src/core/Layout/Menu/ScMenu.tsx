@@ -10,7 +10,7 @@ import {Txt} from 'mui-extension/lib/Txt/Txt'
 import {siteMap} from '../../siteMap'
 import {stopPropagation} from '../../helper/utils'
 import {LayoutConnectedUser} from '../Layout'
-import {Roles} from '../../api'
+import {Roles} from '@betagouv/signalconso-api-sdk-js'
 
 const useMenuStyles = makeStyles((t: Theme) => ({
   root: {

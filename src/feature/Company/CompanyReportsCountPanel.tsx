@@ -4,14 +4,14 @@ import {CartesianGrid, Legend, Line, LineChart, ResponsiveContainer, Tooltip, XA
 import * as React from 'react'
 import {useI18n} from '../../core/i18n'
 import {classes} from '../../core/helper/utils'
-import {CountByDate, Period} from '../../core/api/client/stats/Stats'
+import {CountByDate, Period} from '@betagouv/signalconso-api-sdk-js'
 import {useMemoFn} from '../../shared/hooks/UseMemoFn'
 import {format} from 'date-fns'
 
 interface Props {
   data?: CountByDate[],
   period?: Period,
-  onChange: (_: Period) => Promise<CountByDate[]>
+  onChange: (_: Period) => void
 }
 
 const useStyles = makeStyles((t: Theme) => ({
@@ -20,7 +20,7 @@ const useStyles = makeStyles((t: Theme) => ({
   },
 }))
 
-const periods: Period[] = ['day', 'month']
+const periods: Period[] = ['Day', 'Month']
 
 export const CompanyReportsCountPanel = ({data, period, onChange}: Props) => {
   const {m} = useI18n()
@@ -29,7 +29,7 @@ export const CompanyReportsCountPanel = ({data, period, onChange}: Props) => {
 
   const mappedData = useMemoFn(data, _ => _.map(x => ({
     ...x,
-    date: format(x.date, period === 'day' ? 'dd/MM/yyyy' : 'MM/yyyy'),
+    date: format(x.date, period === 'Day' ? 'dd/MM/yyyy' : 'MM/yyyy'),
   })))
 
   return (
@@ -42,7 +42,7 @@ export const CompanyReportsCountPanel = ({data, period, onChange}: Props) => {
               className={classes(p === period && css.btnPeriodActive)}
               onClick={() => onChange(p)}
             >
-              {m[p]}
+              {p === 'Day' ? m.day : m.month}
             </Button>,
           )}
         </ButtonGroup>

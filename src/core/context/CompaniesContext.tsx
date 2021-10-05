@@ -1,10 +1,9 @@
 import * as React from 'react'
 import {ReactNode, useContext} from 'react'
 import {UseFetcher, useFetcher, usePaginate, UsePaginate} from '@alexandreannic/react-hooks-lib/lib'
-import {ApiError, CompanySearch, CompanyToActivate, CompanyUpdate, CompanyWithReportsCount, Id, PaginatedFilters} from 'core/api'
+import {Address, ApiError, CompanySearch, CompanyToActivate, CompanyUpdate, CompanyWithReportsCount, Id, PaginatedFilters} from '@betagouv/signalconso-api-sdk-js'
 import {SignalConsoApiSdk} from '../../App'
-import {paginateData} from '../helper/utils'
-import {Address} from '../api/model/Address'
+import {mapPromiseSdkPaginateToHook, paginateData} from '../helper/utils'
 
 type Sdk = SignalConsoApiSdk['secured']['company']
 
@@ -33,7 +32,7 @@ const CompaniesContext = React.createContext<CompaniesContextProps>(defaultConte
 
 export const CompaniesProvider = ({api, children}: Props) => {
   const activated = usePaginate<CompanyWithReportsCount, CompanySearch>(
-    (_: CompanySearch) => api.secured.company.search(_).then(_ => ({data: _.entities, totalSize: _.totalCount})),
+    mapPromiseSdkPaginateToHook(api.secured.company.search),
     {limit: 10, offset: 0},
   )
   const toActivate = usePaginate<CompanyToActivate, PaginatedFilters>(
