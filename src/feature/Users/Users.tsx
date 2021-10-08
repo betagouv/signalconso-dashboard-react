@@ -51,7 +51,7 @@ export const Users = () => {
                 {fromNullable(_invite.error)
                   .map(error => (
                     <Alert dense type="error" deletable gutterBottom>
-                      {m.anErrorOccurred}
+                        {error.message?.details}
                     </Alert>
                   ))
                   .toUndefined()}
