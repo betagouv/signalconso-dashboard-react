@@ -9,7 +9,7 @@ import {ActivateAccountForm} from './ActivateAccountForm'
 import {LoginForm} from './LoginForm'
 import {Link, Redirect, Route, Switch} from 'react-router-dom'
 import {siteMap} from '../../core/siteMap'
-import {ApiError, SignalConsoPublicSdk} from '../../core/api'
+import {ApiError, SignalConsoPublicSdk} from '@betagouv/signalconso-api-sdk-js'
 import {HelpContactInfo} from '../../shared/HelpContactInfo/HelpContactInfo'
 
 const useStyles = makeStyles((t: Theme) => ({

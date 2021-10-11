@@ -1,6 +1,6 @@
 import React, {ReactElement, useEffect, useState} from 'react'
 import {useI18n} from '../../core/i18n'
-import {Country} from '../../core/api'
+import {Country} from '@betagouv/signalconso-api-sdk-js'
 import {makeStyles, TextField, Theme} from '@material-ui/core'
 import {useConstantContext} from "../../core/context/ConstantContext";
 import {ScDialog} from "../../shared/Confirm/ScDialog";

@@ -1,4 +1,4 @@
-import {Id, ReportSearch, toQueryString} from './api'
+import {Id, ReportSearch, toQueryString} from '@betagouv/signalconso-api-sdk-js'
 
 export const siteMap = {
   reportedWebsites: '/moderation-url-entreprises',

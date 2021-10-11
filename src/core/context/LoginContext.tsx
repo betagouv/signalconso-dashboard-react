@@ -1,6 +1,6 @@
 import React, {ReactNode, useContext} from 'react'
 import {SignalConsoApiSdk} from '../ApiSdkInstance'
-import {Roles, UserWithPermission} from '../api'
+import {Roles, UserWithPermission} from '@betagouv/signalconso-api-sdk-js'
 
 const LoginContext = React.createContext({} as any)
 

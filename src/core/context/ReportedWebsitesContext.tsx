@@ -2,7 +2,8 @@ import * as React from 'react'
 import {ReactNode, useContext} from 'react'
 import {UseFetcher, useFetcher, usePaginate, UsePaginate} from '@alexandreannic/react-hooks-lib/lib'
 import {SignalConsoApiSdk} from '../ApiSdkInstance'
-import {ApiError, WebsiteKind, WebsiteWithCompany, WebsiteWithCompanySearch} from '../api'
+import {mapPromiseSdkPaginateToHook} from '../helper/utils'
+import {ApiError, WebsiteKind, WebsiteWithCompany, WebsiteWithCompanySearch} from '@betagouv/signalconso-api-sdk-js'
 
 export interface ReportedWebsiteWithCompanyContextProps {
   getWebsiteWithCompany: UsePaginate<WebsiteWithCompany, WebsiteWithCompanySearch>
@@ -25,11 +26,7 @@ const ReportedWebsitesContext = React.createContext<ReportedWebsiteWithCompanyCo
 
 export const ReportedWebsitesProvider = ({api, children}: Props) => {
   const listReportedWebsiteWithCompany = usePaginate<WebsiteWithCompany, WebsiteWithCompanySearch>(
-    (_: WebsiteWithCompanySearch) =>
-      api.secured.website.list(_).then(_ => ({
-        data: _.entities,
-        totalSize: _.totalCount,
-      })),
+    mapPromiseSdkPaginateToHook(api.secured.website.list),
     {limit: 10, offset: 0, kinds: [WebsiteKind.PENDING]},
   )
 

@@ -6,7 +6,7 @@ import {Controller, useForm} from 'react-hook-form'
 import {useCssUtils} from '../../core/helper/useCssUtils'
 import {classes} from '../../core/helper/utils'
 import {Checkbox, createStyles, FormControlLabel, makeStyles, Theme} from '@material-ui/core'
-import {Address} from '../../core/api/model/Address'
+import {Address} from '@betagouv/signalconso-api-sdk-js'
 import {Alert} from 'mui-extension'
 
 interface EditAddressDialogProps {

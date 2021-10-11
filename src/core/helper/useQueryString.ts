@@ -1,4 +1,4 @@
-import {dateToYYYYMMDD} from 'core/api'
+import {dateToYYYYMMDD} from '@betagouv/signalconso-api-sdk-js'
 import {regexp} from './regexp'
 import {useHistory} from 'react-router-dom'
 import * as querystring from 'querystring'

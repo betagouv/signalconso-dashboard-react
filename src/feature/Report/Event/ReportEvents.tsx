@@ -2,7 +2,7 @@ import {PanelBody} from '../../../shared/Panel'
 import {ReportEventComponent} from './ReportEvent'
 import React from 'react'
 import {useI18n} from '../../../core/i18n'
-import {ReportEvent} from 'core/api'
+import {ReportEvent} from '@betagouv/signalconso-api-sdk-js'
 import {Fender} from 'mui-extension/lib'
 
 interface Props {

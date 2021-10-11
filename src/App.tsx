@@ -1,5 +1,5 @@
 import React from 'react'
-import {ApiError} from 'core/api'
+import {ApiClient, ApiError, SignalConsoPublicSdk, SignalConsoSecuredSdk} from '@betagouv/signalconso-api-sdk-js'
 import {Config} from './conf/config'
 import {makeStyles} from '@material-ui/core/styles'
 import {CircularProgress, Theme, ThemeProvider} from '@material-ui/core'
@@ -50,7 +50,7 @@ import {ActivateNewCompany} from './feature/ActivateNewCompany/ActivateNewCompan
 import {ModeEmploiDGCCRF} from './feature/ModeEmploiDGCCRF/ModeEmploiDGCCRF'
 import {ConsumerReview} from './feature/ConsumerReview/ConsumerReview'
 import {CompanyComponent} from './feature/Company/Company'
-import {CompaniesStatsProvider} from './core/context/CompanyStatsContext'
+import {StatsProvider} from './core/context/StatsContext'
 import {CompaniesDbSyncProvider} from './core/context/CompaniesDbSyncContext'
 import {EventProvider} from './core/context/EventContext'
 import {CompaniesDbSync} from './feature/CompaniesDbSync/CompaniesDbSync'
@@ -208,7 +208,7 @@ const AppLogged = () => {
         _ => <SubscriptionsProvider api={apiSdk} children={_} />,
         _ => <AccessesProvider api={apiSdk} children={_} />,
         _ => <BlockedReportNotificationProvider api={apiSdk} children={_} />,
-        _ => <CompaniesStatsProvider api={apiSdk} children={_} />,
+        _ => <StatsProvider api={apiSdk} children={_} />,
         _ => <CompaniesDbSyncProvider api={apiSdk} children={_} />,
         _ => <EventProvider api={apiSdk} children={_} />,
       ]}
