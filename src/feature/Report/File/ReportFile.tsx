@@ -1,4 +1,4 @@
-import {UploadedFile} from '../../../core/api'
+import {UploadedFile} from '@betagouv/signalconso-api-sdk-js'
 import {Icon, makeStyles, Theme, Tooltip} from '@material-ui/core'
 import {extensionToType, FileType, reportFileConfig} from './reportFileConfig'
 import {useLogin} from '../../../core/context/LoginContext'

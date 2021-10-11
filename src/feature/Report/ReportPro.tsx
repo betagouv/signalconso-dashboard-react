@@ -1,5 +1,5 @@
 import {useParams} from 'react-router'
-import {EventActionValues, FileOrigin, Id, ReportStatus} from '../../core/api/model'
+import {EventActionValues, FileOrigin, Id, ReportStatus} from '@betagouv/signalconso-api-sdk-js'
 import {useI18n} from '../../core/i18n'
 import React, {useEffect, useMemo, useRef} from 'react'
 import {fromNullable} from 'fp-ts/lib/Option'

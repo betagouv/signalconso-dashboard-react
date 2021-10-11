@@ -1,6 +1,6 @@
 import {Panel} from '../../shared/Panel'
 import {Datatable} from '../../shared/Datatable/Datatable'
-import {User} from '../../core/api'
+import {User} from '@betagouv/signalconso-api-sdk-js'
 import {useI18n} from '../../core/i18n'
 import React, {useEffect} from 'react'
 import {useUsersContext} from '../../core/context/UsersContext'

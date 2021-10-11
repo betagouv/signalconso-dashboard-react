@@ -9,7 +9,7 @@ import {useI18n} from '../../core/i18n'
 import {useToast} from '../../core/toast'
 import {ScDialog} from '../../shared/Confirm/ScDialog'
 import {AuthenticationEventActions, EventCategories, Matomo} from '../../core/plugins/Matomo'
-import {ApiError} from '../../core/api'
+import {ApiError} from '@betagouv/signalconso-api-sdk-js'
 
 interface Props {
   onSubmit: (email: string) => Promise<any>

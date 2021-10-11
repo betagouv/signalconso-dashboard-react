@@ -1,4 +1,4 @@
-import {CompanySearchResult, isGovernmentCompany} from '../../core/api'
+import {CompanySearchResult, isGovernmentCompany} from '@betagouv/signalconso-api-sdk-js'
 import {ScRadioGroupItem} from '../RadioGroup/RadioGroupItem'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
 import {Icon, makeStyles, Theme} from '@material-ui/core'
@@ -38,13 +38,6 @@ export const SelectCompanyList = ({companies, onChange}: Props) => {
               {company.name}
             </Txt>
             {company.brand && <Txt block>{company.brand}</Txt>}
-            {company.highlight && (
-              <div>
-                <Icon className={classes(cssUtils.inlineIcon, cssUtils.colorSuccess)}>check_circle</Icon>
-                &nbsp;
-                <Txt>{company.highlight}</Txt>
-              </div>
-            )}
             {company.isHeadOffice && (
               <Txt color="primary">
                 <Icon className={cssUtils.inlineIcon}>business</Icon>

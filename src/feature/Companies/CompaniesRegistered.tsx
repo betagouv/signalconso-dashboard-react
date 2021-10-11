@@ -1,7 +1,7 @@
 import {useI18n} from '../../core/i18n'
 import {Panel} from '../../shared/Panel'
 import {Datatable} from '../../shared/Datatable/Datatable'
-import {cleanObject, Company, CompanySearch, CompanyWithReportsCount, PaginatedSearch} from '../../core/api'
+import {cleanObject, Company, CompanySearch, CompanyWithReportsCount, PaginatedSearch} from '@betagouv/signalconso-api-sdk-js'
 import React, {useEffect} from 'react'
 import {useCompaniesContext} from '../../core/context/CompaniesContext'
 import {useCssUtils} from '../../core/helper/useCssUtils'
@@ -224,7 +224,7 @@ export const CompaniesRegistered = () => {
               <SelectCompany
                 onChange={company => {
                   const {siret, name, address, activityCode} = company
-                  if (name && address) {
+                  if (name && address && siret) {
                     _companyCreate.fetch({}, {siret, name, address, activityCode}).then(() => toastSuccess(m.companyCreated))
                   } else {
                     toastError({message: m.cannotCreateCompanyMissingInfo})

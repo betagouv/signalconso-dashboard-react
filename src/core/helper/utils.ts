@@ -3,6 +3,8 @@ import {fromNullable} from 'fp-ts/lib/Option'
 import {OrderBy, Paginate} from '@alexandreannic/react-hooks-lib/lib'
 import {siteMap} from '../siteMap'
 import { Config } from 'conf/config'
+import {Paginate as ApiPaginate} from '@betagouv/signalconso-api-sdk-js'
+import {mapPromise, PromiseFnResult} from '@alexandreannic/ts-utils/lib/common'
 
 export const isJsonValid = (json: string): boolean => {
   try {
@@ -96,25 +98,6 @@ export const sortPaginatedData =
     }
   }
 
-type PromiseReturn<T> = T extends PromiseLike<infer U> ? U : T
-type AsyncFnResult<T extends (...args: any[]) => Promise<object>> = PromiseReturn<ReturnType<T>>
-
-export const mapPromise =
-  <F extends (...args: any[]) => Promise<any>, X>({
-    promise,
-    mapThen = _ => _,
-    mapCatch = _ => Promise.reject(_),
-  }: {
-    promise: F
-    mapThen?: (_: AsyncFnResult<F>) => X
-    mapCatch?: (_: any) => any
-  }) =>
-  (...args: Parameters<F>): Promise<X> => {
-    return promise(...args)
-      .then(mapThen)
-      .catch(mapCatch)
-  }
-
 export const siretToSiren = (siret: string) => siret.slice(0, 9)
 
 export const stringToBoolean = (str?: string): boolean | undefined => {
@@ -123,6 +106,18 @@ export const stringToBoolean = (str?: string): boolean | undefined => {
     else if (str === 'false') return false
   }
 }
+
+export const mapSdkPaginateToHook = <T>(_: ApiPaginate<T>): Paginate<T> => ({
+  data: _.entities,
+  totalSize: _.totalCount,
+})
+
+export const mapPromiseSdkPaginateToHook = <F extends (...args: any[]) => Promise<ApiPaginate<any>>>(
+  promise: F,
+): PromiseFnResult<F> extends ApiPaginate<infer U> ? (...args: Parameters<F>) => Promise<Paginate<U>> : F => mapPromise({
+  promise: promise,
+  mapThen: mapSdkPaginateToHook,
+}) as any
 
 export const openInNew = (path: string) => {
   window.open((Config.useHashRouter ? '/#' : '') + path, '_blank')

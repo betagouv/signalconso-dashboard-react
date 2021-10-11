@@ -1,4 +1,4 @@
-import {DetailInputValue} from '../../core/api'
+import {DetailInputValue} from '@betagouv/signalconso-api-sdk-js'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
 import * as React from 'react'
 import {CSSProperties} from 'react'
