@@ -7,7 +7,7 @@ import {Redirect, Route, Switch, useRouteMatch} from 'react-router-dom'
 import {UsersList} from './UsersList'
 import {UsersListPending} from './UsersListPending'
 import {ScButton} from '../../shared/Button/Button'
-import {Alert, Confirm} from 'mui-extension/lib'
+import {Alert} from 'mui-extension/lib'
 import {ScInput} from '../../shared/Input/ScInput'
 import {useForm} from 'react-hook-form'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
@@ -51,7 +51,7 @@ export const Users = () => {
                 {fromNullable(_invite.error)
                   .map(error => (
                     <Alert dense type="error" deletable gutterBottom>
-                      {m.anErrorOccurred}
+                      {error.message?.details}
                     </Alert>
                   ))
                   .toUndefined()}
