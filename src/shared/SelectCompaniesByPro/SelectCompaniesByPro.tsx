@@ -1,12 +1,10 @@
 import * as React from 'react'
-import {useEffect, useMemo, useState} from 'react'
+import {useEffect, useState} from 'react'
 import {createStyles, Icon, InputAdornment, makeStyles, TextField, Theme} from '@material-ui/core'
 import {SelectCompaniesByProMenu} from './SelectCompaniesByProMenu'
 import {useI18n} from '../../core/i18n'
 import {CompanyWithAccessLevel} from '@signal-conso/signalconso-api-sdk-js'
 import {fromNullable} from 'fp-ts/lib/Option'
-import {groupBy} from '../../core/lodashNamedExport'
-import {siretToSiren} from '../../core/helper/utils'
 
 export interface SelectDepartmentsProps {
   accessibleCompanies: CompanyWithAccessLevel[]

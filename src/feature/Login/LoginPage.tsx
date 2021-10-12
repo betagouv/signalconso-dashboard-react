@@ -43,7 +43,7 @@ export const LoginPage = ({login, register, forgottenPassword}: Props) => {
   const {m} = useI18n()
   const css = useStyles()
 
-  const allTabs = [siteMap.login, siteMap.register]
+  const allTabs = [siteMap.loggedout.login, siteMap.loggedout.register]
 
   return (
     <CenteredContent offset={headerHeight}>

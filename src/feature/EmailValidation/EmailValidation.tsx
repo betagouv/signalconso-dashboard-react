@@ -66,7 +66,7 @@ export const EmailValidation = ({onValidateEmail, onSaveToken}: Props) => {
           </Txt>
 
           {fenderProps.type !== 'loading' && (
-            <NavLink to={siteMap.login}>
+            <NavLink to={siteMap.loggedout.login}>
               <ScButton className={cssUtils.marginTop} icon="login" variant="contained" color="primary">
                 {m.login}
               </ScButton>

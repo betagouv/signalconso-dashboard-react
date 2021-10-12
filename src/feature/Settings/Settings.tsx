@@ -26,7 +26,7 @@ export const Settings = () => {
         </SettingRow>
         {connectedUser.isPro && (
           <SettingRow icon="notifications" title={m.notifications} description={m.notificationSettings}>
-            <NavLink to={siteMap.companiesPro}>
+            <NavLink to={siteMap.logged(connectedUser.role).companiesPro}>
               <ScButton icon="edit" color="primary">
                 {m.edit}
               </ScButton>

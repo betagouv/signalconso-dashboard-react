@@ -17,6 +17,7 @@ import {Icon, makeStyles, Theme, Tooltip} from '@material-ui/core'
 import {PeriodPicker} from '../../shared/PeriodPicker/PeriodPicker'
 import {DebouncedInput} from '../../shared/DebouncedInput/DebouncedInput'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
+import {useLogin} from '../../core/context/LoginContext'
 
 const useStyles = makeStyles((t: Theme) => ({
   tdSiret: {
@@ -30,6 +31,7 @@ export const ReportedPhones = () => {
   const cssUtils = useCssUtils()
   const css = useStyles()
   const {toastError} = useToast()
+  const {connectedUser} = useLogin()
 
   useEffect(() => {
     _reportedPhone.fetch()
@@ -127,7 +129,7 @@ export const ReportedPhones = () => {
               row: _ => (
                 <>
                   <NavLink
-                    to={siteMap.reports({
+                    to={siteMap.logged(connectedUser.role).reports({
                       phone: _.phone,
                       ...(_.siret ? {siretSirenList: [_.siret]} : {}),
                       ...(_.category ? {category: _.category} : {}),

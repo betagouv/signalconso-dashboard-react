@@ -53,7 +53,7 @@ export const ActivateNewCompany = () => {
       .call(form.siret, form.code)
       .then(() => {
         toastSuccess(m.companyRegistered)
-        history.push(siteMap.companiesPro)
+        history.push(siteMap.logged(connectedUser.role).companiesPro)
         Matomo.trackEvent(EventCategories.companyAccess, AccessEventActions.addCompanyToAccount, ActionResultNames.success)
       })
       .catch(() => {

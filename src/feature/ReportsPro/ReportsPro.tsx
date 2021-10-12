@@ -31,6 +31,7 @@ import {SelectCompaniesByPro} from '../../shared/SelectCompaniesByPro/SelectComp
 import compose from '../../core/helper/compose'
 import {Alert} from 'mui-extension'
 import {DebouncedInput} from 'shared/DebouncedInput/DebouncedInput'
+import {useLogin} from '../../core/context/LoginContext'
 
 const useStyles = makeStyles((t: Theme) => ({
   tdFiles: {
@@ -91,11 +92,11 @@ export const ReportsPro = () => {
 
   const {isMobileWidth} = useLayoutContext()
   const history = useHistory()
-  const location = useLocation()
   const {toastError} = useToast()
   const {formatDate, m} = useI18n()
   const css = useStyles()
   const cssUtils = useCssUtils()
+  const {connectedUser} = useLogin()
 
   const hasFilters = useMemo(() => {
     const {limit, offset, ...values} = _reports.filters
@@ -266,9 +267,9 @@ export const ReportsPro = () => {
                 total={_reports.list?.totalSize}
                 onClickRows={(_, e) => {
                   if (e.metaKey || e.ctrlKey) {
-                    openInNew(siteMap.report(_.report.id))
+                    openInNew(siteMap.logged(connectedUser.role).report(_.report.id))
                   } else {
-                    history.push(siteMap.report(_.report.id))
+                    history.push(siteMap.logged(connectedUser.role).report(_.report.id))
                   }
                 }}
                 rows={

@@ -74,7 +74,7 @@ export const UserActivation = ({onActivateUser, onFetchTokenInfo}: Props) => {
       .then(_ => {
         Matomo.trackEvent(EventCategories.account, AccountEventActions.registerUser, ActionResultNames.success)
         toastSuccess(m.accountActivated)
-        setTimeout(() => history.push(siteMap.login), 400)
+        setTimeout(() => history.push(siteMap.loggedout.login), 400)
       })
       .catch(e => {
         Matomo.trackEvent(EventCategories.account, AccountEventActions.registerUser, ActionResultNames.fail)

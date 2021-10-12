@@ -16,10 +16,12 @@ import {regexp} from '../../core/helper/regexp'
 import {useToast} from '../../core/toast'
 import {fromNullable} from 'fp-ts/lib/Option'
 import {ScDialog} from '../../shared/Confirm/ScDialog'
+import {useLogin} from '../../core/context/LoginContext'
 
 export const Users = () => {
   const {m} = useI18n()
   const {path, url} = useRouteMatch()
+  const {connectedUser} = useLogin()
   const {
     register,
     handleSubmit,
@@ -84,13 +86,13 @@ export const Users = () => {
         {m.menu_users}
       </PageTitle>
       <PageTabs>
-        <PageTab to={siteMap.users_all} label={m.dgccrfUsers} />
-        <PageTab to={siteMap.users_pending} label={m.pendingInvitation} />
+        <PageTab to={siteMap.logged(connectedUser.role).users_all} label={m.dgccrfUsers} />
+        <PageTab to={siteMap.logged(connectedUser.role).users_pending} label={m.pendingInvitation} />
       </PageTabs>
       <Switch>
-        <Redirect exact from={path} to={siteMap.users_all} />
-        <Route path={siteMap.users_all} component={UsersList} />
-        <Route path={siteMap.users_pending} component={UsersListPending} />
+        <Redirect exact from={path} to={siteMap.logged(connectedUser.role).users_all} />
+        <Route path={siteMap.logged(connectedUser.role).users_all} component={UsersList} />
+        <Route path={siteMap.logged(connectedUser.role).users_pending} component={UsersListPending} />
       </Switch>
     </Page>
   )

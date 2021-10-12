@@ -78,8 +78,8 @@ export const CompanyComponent = () => {
   const _report = useReportsContext()
   const css = useStyles()
   const cssUtils = useCssUtils()
+  const {connectedUser, apiSdk} = useLogin()
   const company = _company.byId.entity
-  const apiSdk = useLogin().apiSdk
   const {toastError} = useToast()
   const [reportsCurvePeriod, setReportsCurvePeriod] = useState<Period>('Month')
 
@@ -158,7 +158,7 @@ export const CompanyComponent = () => {
         <>
           <Grid container spacing={2}>
             <Grid item xs={12} sm={6} md={3}>
-              <Widget title={m.reports} to={siteMap.reports({siretSirenList: [company.siret]})}>
+              <Widget title={m.reports} to={siteMap.logged(connectedUser.role).reports({siretSirenList: [company.siret]})}>
                 <WidgetValue>{formatLargeNumber(company.count)}</WidgetValue>
               </Widget>
             </Grid>
@@ -171,7 +171,7 @@ export const CompanyComponent = () => {
               </Widget>
             </Grid>
             <Grid item xs={12} sm={6} md={3}>
-              <Widget title={m.accountsActivated} loading={_accesses.loading} to={siteMap.companyAccesses(company.siret)}>
+              <Widget title={m.accountsActivated} loading={_accesses.loading} to={siteMap.logged(connectedUser.role).companyAccesses(company.siret)}>
                 {fromNullable(_accesses.entity)
                   .map(_ => <WidgetValue>{_.length}</WidgetValue>)
                   .getOrElse(<WidgetLoading/>)

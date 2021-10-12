@@ -136,25 +136,25 @@ const AppLogin = () => {
       {({authResponse, login, logout, register, isCheckingToken, setToken}) => (
         <Layout connectedUser={authResponse ? {...authResponse.user, logout: logout} : undefined}>
           <Switch>
-            <Route path={siteMap.emailValidation}>
+            <Route path={siteMap.loggedout.emailValidation}>
               <EmailValidation onSaveToken={setToken} onValidateEmail={apiPublicSdk.authenticate.validateEmail} />
             </Route>
-            <Route path={siteMap.resetPassword()}>
+            <Route path={siteMap.loggedout.resetPassword()}>
               <ResetPassword onResetPassword={apiPublicSdk.authenticate.resetPassword} />
             </Route>
-            <Route path={siteMap.activatePro()}>
+            <Route path={siteMap.loggedout.activatePro()}>
               <UserActivation
                 onActivateUser={apiPublicSdk.user.activateAccount}
                 onFetchTokenInfo={apiPublicSdk.user.fetchTokenInfo}
               />
             </Route>
-            <Route path={siteMap.activateDgccrf}>
+            <Route path={siteMap.loggedout.activateDgccrf}>
               <UserActivation
                 onActivateUser={apiPublicSdk.user.activateAccount}
                 onFetchTokenInfo={apiPublicSdk.user.fetchTokenInfo}
               />
             </Route>
-            <Route path={siteMap.consumerReview()}>
+            <Route path={siteMap.loggedout.consumerReview()}>
               <ConsumerReview onSubmit={apiPublicSdk.report.postReviewOnReportResponse} />
             </Route>
             <Route path="/">
@@ -214,21 +214,21 @@ const AppLogged = () => {
       ]}
     >
       <Switch>
-        <Route path={siteMap.reportedWebsites} component={ReportedWebsites} />
-        <Route path={siteMap.reportedPhone} component={ReportedPhones} />
-        <Route path={siteMap.report()} component={connectedUser.isPro ? ReportPro : ReportComponent} />
-        <Route path={siteMap.reports()} component={connectedUser.isPro ? ReportsPro : Reports} />
-        <Route path={siteMap.users} component={Users} />
-        <Route path={siteMap.companies} component={Companies} />
-        <Route path={siteMap.companyAccesses()} component={CompanyAccesses} />
-        <Route path={siteMap.company()} component={CompanyComponent} />
-        <Route path={siteMap.subscriptions} component={Subscriptions} />
-        <Route path={siteMap.companiesPro} component={CompaniesPro} />
-        <Route path={siteMap.settings} component={Settings} />
-        <Route path={siteMap.register} component={ActivateNewCompany} />
-        <Route path={siteMap.modeEmploiDGCCRF} component={ModeEmploiDGCCRF} />
-        <Route path={siteMap.companiesDbSync} component={CompaniesDbSync} />
-        <Redirect from="/" to={siteMap.reports()} />
+        <Route path={siteMap.logged(null).reportedWebsites} component={ReportedWebsites} />
+        <Route path={siteMap.logged(null).reportedPhone} component={ReportedPhones} />
+        <Route path={siteMap.logged(null).report()} component={connectedUser.isPro ? ReportPro : ReportComponent} />
+        <Route path={siteMap.logged(null).reports()} component={connectedUser.isPro ? ReportsPro : Reports} />
+        <Route path={siteMap.logged(null).users} component={Users} />
+        <Route path={siteMap.logged(null).companies} component={Companies} />
+        <Route path={siteMap.logged(null).companyAccesses()} component={CompanyAccesses} />
+        <Route path={siteMap.logged(null).company()} component={CompanyComponent} />
+        <Route path={siteMap.logged(null).subscriptions} component={Subscriptions} />
+        <Route path={siteMap.logged(null).companiesPro} component={CompaniesPro} />
+        <Route path={siteMap.logged(null).settings} component={Settings} />
+        <Route path={siteMap.logged(null).modeEmploiDGCCRF} component={ModeEmploiDGCCRF} />
+        <Route path={siteMap.logged(null).companiesDbSync} component={CompaniesDbSync} />
+        <Route path={siteMap.loggedout.register} component={ActivateNewCompany} />
+        <Redirect from="/" to={siteMap.logged(connectedUser.role).reports()} />
       </Switch>
     </Provide>
   )

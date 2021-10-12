@@ -22,6 +22,7 @@ import {Txt} from 'mui-extension/lib/Txt/Txt'
 import {ConfirmDisableNotificationDialog} from './ConfirmDisableNotificationDialog'
 import {groupBy} from '../../core/lodashNamedExport'
 import {PanelFoot} from '../../shared/Panel/PanelFoot'
+import {useLogin} from '../../core/context/LoginContext'
 
 const useStyles = makeStyles((t: Theme) => ({
   tdName_label: {
@@ -60,6 +61,7 @@ export const CompaniesPro = () => {
   const _companies = useCompaniesContext()
   const _blockedNotifications = useBlockedReportNotificationContext()
   const cssUtils = useCssUtils()
+  const {connectedUser} = useLogin()
   const css = useStyles()
   const _users = useUsersContext()
   const {toastError} = useToast()
@@ -97,7 +99,7 @@ export const CompaniesPro = () => {
     <Page size="small">
       <PageTitle
         action={
-          <NavLink to={siteMap.register}>
+          <NavLink to={siteMap.loggedout.register}>
             <ScButton icon="add" color="primary" variant="outlined">
               {m.addACompany}
             </ScButton>
@@ -199,7 +201,7 @@ export const CompaniesPro = () => {
               row: _ => (
                 <>
                   {_.level === AccessLevel.ADMIN && (
-                    <NavLink to={siteMap.companyAccesses(_.siret)}>
+                    <NavLink to={siteMap.logged(connectedUser.role).companyAccesses(_.siret)}>
                       <Tooltip title={m.handleAccesses}>
                         <IconBtn color="primary">
                           <Icon>vpn_key</Icon>
@@ -207,7 +209,7 @@ export const CompaniesPro = () => {
                       </Tooltip>
                     </NavLink>
                   )}
-                  <NavLink to={siteMap.reports({siretSirenList: [_.siret]})}>
+                  <NavLink to={siteMap.logged(connectedUser.role).reports({siretSirenList: [_.siret]})}>
                     <Tooltip title={m.reports}>
                       <IconBtn color="primary">
                         <Icon>chevron_right</Icon>

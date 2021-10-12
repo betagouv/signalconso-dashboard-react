@@ -10,6 +10,7 @@ import {NavLink} from 'react-router-dom'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
 import {useCssUtils} from '../../core/helper/useCssUtils'
 import {ReportDetailValues} from '../../shared/ReportDetailValues/ReportDetailValues'
+import {useLogin} from '../../core/context/LoginContext'
 
 interface Props {
   reports: Paginate<ReportSearchResult>
@@ -42,6 +43,7 @@ export const ReportsShortList = ({reports}: Props) => {
   const css = useStyles()
   const cssUtils = useCssUtils()
   const {formatDate} = useI18n()
+  const {connectedUser} = useLogin()
   return (
     <div>
       {reports.data.map(_ => (
@@ -62,7 +64,7 @@ export const ReportsShortList = ({reports}: Props) => {
             </div>
             <ReportDetailValues input={_.report.details} lines={3}/>
           </div>
-          <NavLink to={siteMap.report(_.report.id)}>
+          <NavLink to={siteMap.logged(connectedUser.role).report(_.report.id)}>
             <IconBtn>
               <Icon>chevron_right</Icon>
             </IconBtn>

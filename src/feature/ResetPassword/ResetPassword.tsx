@@ -54,7 +54,7 @@ export const ResetPassword = ({onResetPassword}: Props) => {
       .call(form.newPassword, token)
       .then(() => {
         toastSuccess(m.resetPasswordSuccess)
-        setTimeout(() => history.push(siteMap.login), 400)
+        setTimeout(() => history.push(siteMap.loggedout.login), 400)
         Matomo.trackEvent(EventCategories.account, AuthenticationEventActions.resetPasswordSuccess)
       })
       .catch(err => {
