@@ -1,6 +1,6 @@
 import React, {ReactElement, useState} from 'react'
 import {Alert, Confirm} from 'mui-extension/lib'
-import {EventActionValues, Report} from '@betagouv/signalconso-api-sdk-js'
+import {EventActionValues, Report} from '@signal-conso/signalconso-api-sdk-js'
 import {useI18n} from '../../core/i18n'
 import {ScInput} from '../../shared/Input/ScInput'
 import {useFetcher} from '@alexandreannic/react-hooks-lib/lib'

@@ -1,4 +1,4 @@
-import {CompanyAccessLevel, ReportResponseTypes, ReportStatus} from '@betagouv/signalconso-api-sdk-js'
+import {CompanyAccessLevel, ReportResponseTypes, ReportStatus} from '@signal-conso/signalconso-api-sdk-js'
 import {Config} from '../../../conf/config'
 
 export const messagesFr = {

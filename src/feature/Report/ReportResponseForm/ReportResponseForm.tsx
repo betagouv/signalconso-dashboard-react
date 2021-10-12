@@ -1,7 +1,7 @@
 import React, {forwardRef, useEffect} from 'react'
 import {useI18n} from '../../../core/i18n'
 import {ScRadioGroup} from '../../../shared/RadioGroup/RadioGroup'
-import {FileOrigin, Report, ReportResponse, ReportResponseTypes} from '@betagouv/signalconso-api-sdk-js'
+import {FileOrigin, Report, ReportResponse, ReportResponseTypes} from '@signal-conso/signalconso-api-sdk-js'
 import {ScRadioGroupItem} from '../../../shared/RadioGroup/RadioGroupItem'
 import {Enum} from '@alexandreannic/ts-utils/lib/common/enum/Enum'
 import {Alert} from 'mui-extension/lib'

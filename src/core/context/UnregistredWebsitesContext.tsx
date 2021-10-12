@@ -2,7 +2,7 @@ import * as React from 'react'
 import {ReactNode, useContext} from 'react'
 import {UseFetcher, useFetcher, usePaginate, UsePaginate} from '@alexandreannic/react-hooks-lib/lib'
 import {SignalConsoApiSdk} from '../ApiSdkInstance'
-import {ApiHostWithReportCount, HostReportCountSearch} from '@betagouv/signalconso-api-sdk-js'
+import {ApiHostWithReportCount, HostReportCountSearch} from '@signal-conso/signalconso-api-sdk-js'
 import {mapPromiseSdkPaginateToHook} from '../helper/utils'
 
 export interface UnregistredWebsiteWithCompanyContextProps extends UsePaginate<ApiHostWithReportCount, HostReportCountSearch> {

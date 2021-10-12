@@ -1,7 +1,7 @@
 import {useI18n} from '../../core/i18n'
 import {Panel} from '../../shared/Panel'
 import {Datatable} from '../../shared/Datatable/Datatable'
-import {cleanObject, Company, CompanySearch, CompanyWithReportsCount, PaginatedSearch} from '@betagouv/signalconso-api-sdk-js'
+import {cleanObject, Company, CompanySearch, CompanyWithReportsCount, PaginatedSearch} from '@signal-conso/signalconso-api-sdk-js'
 import React, {useEffect} from 'react'
 import {useCompaniesContext} from '../../core/context/CompaniesContext'
 import {useCssUtils} from '../../core/helper/useCssUtils'

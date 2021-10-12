@@ -4,7 +4,7 @@ import {createStyles, makeStyles, Theme} from '@material-ui/core'
 import classNames from 'classnames'
 import {LayoutProvider, useLayoutContext} from './LayoutContext'
 import {Header} from './Header/Header'
-import {Roles} from '@betagouv/signalconso-api-sdk-js'
+import {Roles} from '@signal-conso/signalconso-api-sdk-js'
 
 export const sidebarWith = 220
 

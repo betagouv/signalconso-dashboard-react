@@ -1,4 +1,4 @@
-import {ReportEvent} from '@betagouv/signalconso-api-sdk-js'
+import {ReportEvent} from '@signal-conso/signalconso-api-sdk-js'
 import React from 'react'
 import {useI18n} from '../../../core/i18n'
 import {ReportEventIcon} from './ReportEventIcon'

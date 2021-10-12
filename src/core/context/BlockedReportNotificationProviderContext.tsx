@@ -1,11 +1,11 @@
 import * as React from 'react'
 import {ReactNode, useContext} from 'react'
 import {UseAsync, UseFetcher, useFetcher} from '@alexandreannic/react-hooks-lib/lib'
-import {Id, SignalConsoSecuredSdk} from '@betagouv/signalconso-api-sdk-js'
+import {Id, SignalConsoSecuredSdk} from '@signal-conso/signalconso-api-sdk-js'
 import {SignalConsoApiSdk} from '../ApiSdkInstance'
 import {useAsync} from '@alexandreannic/react-hooks-lib'
 import {uniqby} from '../lodashNamedExport'
-import {BlockedReportNotification} from '@betagouv/signalconso-api-sdk-js'
+import {BlockedReportNotification} from '@signal-conso/signalconso-api-sdk-js'
 
 export interface BlockedReportNotificationContextProps {
   list: UseFetcher<SignalConsoSecuredSdk['reportBlockedNotification']['fetch']>

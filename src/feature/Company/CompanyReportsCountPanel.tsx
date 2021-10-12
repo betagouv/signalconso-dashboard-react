@@ -4,7 +4,7 @@ import {CartesianGrid, Legend, Line, LineChart, ResponsiveContainer, Tooltip, XA
 import * as React from 'react'
 import {useI18n} from '../../core/i18n'
 import {classes} from '../../core/helper/utils'
-import {CountByDate, Period} from '@betagouv/signalconso-api-sdk-js'
+import {CountByDate, Period} from '@signal-conso/signalconso-api-sdk-js'
 import {useMemoFn} from '../../shared/hooks/UseMemoFn'
 import {format} from 'date-fns'
 

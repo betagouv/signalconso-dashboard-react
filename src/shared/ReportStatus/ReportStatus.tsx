@@ -1,5 +1,5 @@
 import {makeStyles, Paper, Theme} from '@material-ui/core'
-import {ReportStatus} from '@betagouv/signalconso-api-sdk-js'
+import {ReportStatus} from '@signal-conso/signalconso-api-sdk-js'
 import {capitalize, classes} from '../../core/helper/utils'
 import {styleUtils} from '../../core/theme'
 import {useMemo} from 'react'
