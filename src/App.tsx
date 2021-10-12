@@ -1,5 +1,5 @@
 import React from 'react'
-import {ApiClient, ApiError, SignalConsoPublicSdk, SignalConsoSecuredSdk} from '@betagouv/signalconso-api-sdk-js'
+import {ApiClient, ApiError, SignalConsoPublicSdk, SignalConsoSecuredSdk} from '@signal-conso/signalconso-api-sdk-js'
 import {Config} from './conf/config'
 import {makeStyles} from '@material-ui/core/styles'
 import {CircularProgress, Theme, ThemeProvider} from '@material-ui/core'

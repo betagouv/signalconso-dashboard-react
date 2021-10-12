@@ -1,5 +1,5 @@
 import {Config} from '../conf/config'
-import {ApiClient, SignalConsoPublicSdk, SignalConsoSecuredSdk} from '@betagouv/signalconso-api-sdk-js'
+import {ApiClient, SignalConsoPublicSdk, SignalConsoSecuredSdk} from '@signal-conso/signalconso-api-sdk-js'
 
 export type SignalConsoApiSdk = ReturnType<typeof makeSecuredSdk>
 

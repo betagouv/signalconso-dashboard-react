@@ -1,4 +1,4 @@
-import {ApiError, CompanyAccess, CompanyAccessLevel, CompanyAccessToken, Id} from '@betagouv/signalconso-api-sdk-js'
+import {ApiError, CompanyAccess, CompanyAccessLevel, CompanyAccessToken, Id} from '@signal-conso/signalconso-api-sdk-js'
 import {useCrudList} from '@alexandreannic/react-hooks-lib/lib'
 import {SignalConsoApiSdk} from '../../core/ApiSdkInstance'
 

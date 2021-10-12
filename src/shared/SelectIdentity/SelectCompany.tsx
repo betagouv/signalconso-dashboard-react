@@ -1,7 +1,7 @@
 import React, {ReactElement, useEffect, useState} from 'react'
 import {useI18n} from '../../core/i18n'
 import {ScInput} from '../Input/ScInput'
-import {CompanySearchResult, Id} from '@betagouv/signalconso-api-sdk-js'
+import {CompanySearchResult, Id} from '@signal-conso/signalconso-api-sdk-js'
 import {useCompaniesContext} from '../../core/context/CompaniesContext'
 import {fromNullable} from 'fp-ts/lib/Option'
 import {Icon, makeStyles, Theme} from '@material-ui/core'

@@ -1,5 +1,5 @@
 import {Icon, makeStyles, Theme} from '@material-ui/core'
-import {ReportSearchResult} from '@betagouv/signalconso-api-sdk-js'
+import {ReportSearchResult} from '@signal-conso/signalconso-api-sdk-js'
 import {Paginate} from '@alexandreannic/react-hooks-lib/lib'
 import {ReportStatusChip} from '../../shared/ReportStatus/ReportStatus'
 import * as React from 'react'

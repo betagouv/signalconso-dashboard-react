@@ -1,7 +1,7 @@
 import * as React from 'react'
 import {ReactNode, useContext} from 'react'
 import {UseFetcher, useFetcher, usePaginate, UsePaginate} from '@alexandreannic/react-hooks-lib/lib'
-import {ApiError, User, UserSearch} from '@betagouv/signalconso-api-sdk-js'
+import {ApiError, User, UserSearch} from '@signal-conso/signalconso-api-sdk-js'
 import {mapPromiseSdkPaginateToHook} from '../helper/utils'
 import {SignalConsoApiSdk} from '../ApiSdkInstance'
 

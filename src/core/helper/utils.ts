@@ -3,7 +3,7 @@ import {fromNullable} from 'fp-ts/lib/Option'
 import {OrderBy, Paginate} from '@alexandreannic/react-hooks-lib/lib'
 import {siteMap} from '../siteMap'
 import { Config } from 'conf/config'
-import {Paginate as ApiPaginate} from '@betagouv/signalconso-api-sdk-js'
+import {Paginate as ApiPaginate} from '@signal-conso/signalconso-api-sdk-js'
 import {mapPromise, PromiseFnResult} from '@alexandreannic/ts-utils/lib/common'
 
 export const isJsonValid = (json: string): boolean => {

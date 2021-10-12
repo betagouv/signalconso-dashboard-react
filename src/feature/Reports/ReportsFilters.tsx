@@ -13,7 +13,7 @@ import {
 } from '@material-ui/core'
 import {useI18n} from '../../core/i18n'
 import React, {ReactElement, ReactNode, useEffect, useState} from 'react'
-import {ReportSearch, ReportTag} from '@betagouv/signalconso-api-sdk-js'
+import {ReportSearch, ReportTag} from '@signal-conso/signalconso-api-sdk-js'
 import {Controller, useForm} from 'react-hook-form'
 import {useConstantContext} from '../../core/context/ConstantContext'
 import {ScSelect} from '../../shared/Select/Select'

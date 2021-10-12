@@ -1,4 +1,4 @@
-import {CompanySearchResult, isGovernmentCompany} from '@betagouv/signalconso-api-sdk-js'
+import {CompanySearchResult, isGovernmentCompany} from '@signal-conso/signalconso-api-sdk-js'
 import {ScRadioGroupItem} from '../RadioGroup/RadioGroupItem'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
 import {Icon, makeStyles, Theme} from '@material-ui/core'

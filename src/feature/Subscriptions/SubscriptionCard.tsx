@@ -1,6 +1,6 @@
 import React, {CSSProperties, SyntheticEvent, useEffect, useState} from 'react'
 import {useI18n} from '../../core/i18n'
-import {ReportTag, Subscription, SubscriptionCreate} from '@betagouv/signalconso-api-sdk-js'
+import {ReportTag, Subscription, SubscriptionCreate} from '@signal-conso/signalconso-api-sdk-js'
 import {Panel, PanelHead} from '../../shared/Panel'
 import {ScSelect} from '../../shared/Select/Select'
 import {Collapse, duration, Icon, MenuItem, Theme} from '@material-ui/core'

@@ -1,7 +1,7 @@
 import {Page} from '../../shared/Layout'
 import {useI18n} from '../../core/i18n'
 import {useHistory, useLocation, useParams} from 'react-router'
-import {AuthUser, Id} from '@betagouv/signalconso-api-sdk-js'
+import {AuthUser, Id} from '@signal-conso/signalconso-api-sdk-js'
 import {useAsync} from '@alexandreannic/react-hooks-lib'
 import {useEffect, useMemo} from 'react'
 import {Fender} from 'mui-extension'
