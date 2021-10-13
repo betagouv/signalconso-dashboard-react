@@ -11,6 +11,9 @@ import {Report} from '@signal-conso/signalconso-api-sdk-js'
 import {useReportContext} from '../../../core/context/ReportContext'
 import {useI18n} from '../../../core/i18n'
 import {useCssUtils} from '../../../core/helper/useCssUtils'
+import {IconBtn} from 'mui-extension/lib'
+import {siteMap} from '../../../core/siteMap'
+import {NavLink} from 'react-router-dom'
 
 interface Props {
   report: Report
@@ -21,11 +24,9 @@ const useStyles = makeStyles((t: Theme) => ({
   cardBody: {
     display: 'flex',
     justifyContent: 'space-between',
-    // alignItems: 'center',
   },
   cardBody_icon: {
     fontSize: 64,
-    // color: t.palette.primary.main,
     color: t.palette.divider,
   },
 }))
@@ -54,7 +55,12 @@ export const ReportCompany = ({report, canEdit}: Props) => {
           )
         }
       >
-        {m.company}
+        <NavLink to={siteMap.logged.company(report.companyId)}>
+          {m.company}
+          <IconBtn size="small" className={cssUtils.marginLeft}>
+            <Icon>open_in_new</Icon>
+          </IconBtn>
+        </NavLink>
       </PanelHead>
       <PanelBody className={css.cardBody}>
         <div>
@@ -63,7 +69,7 @@ export const ReportCompany = ({report, canEdit}: Props) => {
           </div>
           <div className={classes(cssUtils.colorTxtSecondary, cssUtils.txtSmall)}>
             <div className={cssUtils.txtBold}>{report.companyName}</div>
-            <AddressComponent address={report.companyAddress} />
+            <AddressComponent address={report.companyAddress}/>
           </div>
           <div>{report.vendor}</div>
           {fromNullable(report.websiteURL)
