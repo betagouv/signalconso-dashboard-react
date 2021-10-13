@@ -78,52 +78,52 @@ export const ScMenu = ({onClose, connectedUser}: Props) => {
           </Btn>
         </div>
         <Divider className={css.divider} />
-        <ScMenuItem onClick={onClose} to={path(siteMap.reports())} icon={EntityIcon.report}>
+        <ScMenuItem onClick={onClose} to={path(siteMap.logged.reports())} icon={EntityIcon.report}>
           {m.menu_reports}
         </ScMenuItem>
         {[Roles.Admin, Roles.DGCCRF].includes(connectedUser.role) && (
-          <ScMenuItem onClick={onClose} to={path(siteMap.companies)} icon={EntityIcon.company}>
+          <ScMenuItem onClick={onClose} to={path(siteMap.logged.companies)} icon={EntityIcon.company}>
             {m.menu_companies}
           </ScMenuItem>
         )}
         {[Roles.Pro].includes(connectedUser.role) && (
-          <ScMenuItem onClick={onClose} to={path(siteMap.companiesPro)} icon={EntityIcon.company}>
+          <ScMenuItem onClick={onClose} to={path(siteMap.logged.companiesPro)} icon={EntityIcon.company}>
             {m.menu_companies}
           </ScMenuItem>
         )}
         {[Roles.Admin].includes(connectedUser.role) && (
-          <ScMenuItem onClick={onClose} to={path(siteMap.users)} icon={EntityIcon.user}>
+          <ScMenuItem onClick={onClose} to={path(siteMap.logged.users)} icon={EntityIcon.user}>
             {m.menu_users}
           </ScMenuItem>
         )}
         {[Roles.Admin, Roles.DGCCRF].includes(connectedUser.role) && (
-          <ScMenuItem onClick={onClose} to={path(siteMap.subscriptions)} icon={EntityIcon.subscription}>
+          <ScMenuItem onClick={onClose} to={path(siteMap.logged.subscriptions)} icon={EntityIcon.subscription}>
             {m.menu_subscriptions}
           </ScMenuItem>
         )}
         <Divider className={css.divider} />
         {[Roles.Admin, Roles.DGCCRF].includes(connectedUser.role) && (
-          <ScMenuItem onClick={onClose} to={path(siteMap.reportedWebsites)} icon={EntityIcon.website}>
+          <ScMenuItem onClick={onClose} to={path(siteMap.logged.reportedWebsites)} icon={EntityIcon.website}>
             {m.menu_websites}
           </ScMenuItem>
         )}
         {[Roles.Admin, Roles.DGCCRF].includes(connectedUser.role) && (
-          <ScMenuItem onClick={onClose} to={path(siteMap.reportedPhone)} icon={EntityIcon.phone}>
+          <ScMenuItem onClick={onClose} to={path(siteMap.logged.reportedPhone)} icon={EntityIcon.phone}>
             {m.menu_phones}
           </ScMenuItem>
         )}
         {[Roles.DGCCRF].includes(connectedUser.role) && (
-          <ScMenuItem onClick={onClose} to={path(siteMap.modeEmploiDGCCRF)} icon="help">
+          <ScMenuItem onClick={onClose} to={path(siteMap.logged.modeEmploiDGCCRF)} icon="help">
             {m.menu_modeEmploiDGCCRF}
           </ScMenuItem>
         )}
         {[Roles.Admin].includes(connectedUser.role) && (
-          <ScMenuItem onClick={onClose} to={path(siteMap.companiesDbSync)} icon="sync">
+          <ScMenuItem onClick={onClose} to={path(siteMap.logged.companiesDbSync)} icon="sync">
             {m.database}
           </ScMenuItem>
         )}
         <Divider className={css.divider} />
-        <ScMenuItem onClick={onClose} to={path(siteMap.settings)} icon="settings">
+        <ScMenuItem onClick={onClose} to={path(siteMap.logged.settings)} icon="settings">
           {m.menu_settings}
         </ScMenuItem>
       </div>

@@ -17,6 +17,7 @@ import {Btn, IconBtn} from 'mui-extension'
 import {ExportReportsPopper, ExportUnknownWebsitesPopper} from '../../shared/ExportPopper/ExportPopperBtn'
 import {Config} from '../../conf/config'
 import {PeriodPicker} from '../../shared/PeriodPicker/PeriodPicker'
+import {useLogin} from '../../core/context/LoginContext'
 
 export const ReportedUnknownWebsites = () => {
   const {m} = useI18n()
@@ -106,7 +107,7 @@ export const ReportedUnknownWebsites = () => {
             row: _ => (
               <>
                 <NavLink
-                  to={siteMap.reports({
+                  to={siteMap.logged.reports({
                     websiteURL: _.host,
                   })}
                 >

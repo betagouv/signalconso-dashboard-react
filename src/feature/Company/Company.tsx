@@ -9,7 +9,19 @@ import {HorizontalBarChart} from '../../shared/HorizontalBarChart/HorizontalBarC
 import {reportStatusColor} from '../../shared/ReportStatus/ReportStatus'
 import {useI18n} from '../../core/i18n'
 import {Enum} from '@alexandreannic/ts-utils/lib/common/enum/Enum'
-import {Divider, Grid, Icon, LinearProgress, List, ListItem, ListItemIcon, ListItemText, makeStyles, Theme, Tooltip} from '@material-ui/core'
+import {
+  Divider,
+  Grid,
+  Icon,
+  LinearProgress,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  makeStyles,
+  Theme,
+  Tooltip,
+} from '@material-ui/core'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
 import {CompanyReportsCountPanel} from './CompanyReportsCountPanel'
 import {useMemoFn} from '../../shared/hooks/UseMemoFn'
@@ -63,7 +75,7 @@ const useStyles = makeStyles((t: Theme) => ({
     verticalAlign: 'middle',
     color: t.palette.text.disabled,
     marginLeft: t.spacing(1),
-  }
+  },
 }))
 
 const ticks = 7
@@ -78,8 +90,8 @@ export const CompanyComponent = () => {
   const _report = useReportsContext()
   const css = useStyles()
   const cssUtils = useCssUtils()
+  const {apiSdk} = useLogin()
   const company = _company.byId.entity
-  const apiSdk = useLogin().apiSdk
   const {toastError} = useToast()
   const [reportsCurvePeriod, setReportsCurvePeriod] = useState<Period>('Month')
 
@@ -125,23 +137,26 @@ export const CompanyComponent = () => {
     _report.updateFilters({siretSirenList: [_.siret], offset: 0, limit: 5})
   })
 
-  const postActivationDocEvents = useMemoFn(_event.companyEvents.entity, events => events
-    .map(_ => _.data)
-    .filter(_ => _.action === EventActionValues.PostAccountActivationDoc),
+  const postActivationDocEvents = useMemoFn(_event.companyEvents.entity, events =>
+    events.map(_ => _.data).filter(_ => _.action === EventActionValues.PostAccountActivationDoc),
   )
 
-  const statusDistribution = useMemoFn(_stats.status.entity, _ => Enum.entries(_).map(([status, count]) =>
-    ({
-      label: <span>
-        {m.reportStatusShort[status]}
-        <Tooltip title={m.reportStatusDesc[status]}>
-          <Icon fontSize="small" className={css.statusInfo}>help</Icon>
-        </Tooltip>
-      </span>,
+  const statusDistribution = useMemoFn(_stats.status.entity, _ =>
+    Enum.entries(_).map(([status, count]) => ({
+      label: (
+        <span>
+          {m.reportStatusShort[status]}
+          <Tooltip title={m.reportStatusDesc[status]}>
+            <Icon fontSize="small" className={css.statusInfo}>
+              help
+            </Icon>
+          </Tooltip>
+        </span>
+      ),
       value: count,
-      color: reportStatusColor[status] ?? undefined
-    }),
-  ))
+      color: reportStatusColor[status] ?? undefined,
+    })),
+  )
 
   const tagsDistribution = useMemoFn(_stats.tags.entity, _ => Object.entries(_).map(([label, count]) => ({label, value: count})))
 
@@ -150,15 +165,17 @@ export const CompanyComponent = () => {
       <PageTitle>
         <div>
           {company?.name}
-          <Txt block size="big" color="hint">{company?.siret}</Txt>
+          <Txt block size="big" color="hint">
+            {company?.siret}
+          </Txt>
         </div>
       </PageTitle>
 
-      {(_company.byId.entity && company) && (
+      {_company.byId.entity && company && (
         <>
           <Grid container spacing={2}>
             <Grid item xs={12} sm={6} md={3}>
-              <Widget title={m.reports} to={siteMap.reports({siretSirenList: [company.siret]})}>
+              <Widget title={m.reports} to={siteMap.logged.reports({siretSirenList: [company.siret]})}>
                 <WidgetValue>{formatLargeNumber(company.count)}</WidgetValue>
               </Widget>
             </Grid>
@@ -166,87 +183,88 @@ export const CompanyComponent = () => {
               <Widget title={m.activationDocReturned} loading={_event.companyEvents.loading}>
                 {fromNullable(postActivationDocEvents)
                   .map(_ => <WidgetValue>{_.length}</WidgetValue>)
-                  .getOrElse(<WidgetLoading/>)
-                }
+                  .getOrElse(<WidgetLoading />)}
               </Widget>
             </Grid>
             <Grid item xs={12} sm={6} md={3}>
-              <Widget title={m.accountsActivated} loading={_accesses.loading} to={siteMap.companyAccesses(company.siret)}>
+              <Widget title={m.accountsActivated} loading={_accesses.loading} to={siteMap.logged.companyAccesses(company.siret)}>
                 {fromNullable(_accesses.entity)
                   .map(_ => <WidgetValue>{_.length}</WidgetValue>)
-                  .getOrElse(<WidgetLoading/>)
-                }
+                  .getOrElse(<WidgetLoading />)}
               </Widget>
             </Grid>
             <Grid item xs={12} sm={6} md={3}>
               <Widget title={m.avgResponseTime}>
                 {fromNullable(_stats.responseDelay.entity)
-                  .map(_ =>
+                  .map(_ => (
                     <WidgetValue>
                       <span>
                         {_.toDays}&nbsp;
                         <Txt size="big">{m.days}</Txt>
                         &nbsp;
                         <Tooltip title={m.avgResponseTimeDesc}>
-                          <Icon className={cssUtils.colorTxtHint} fontSize="medium">help</Icon>
+                          <Icon className={cssUtils.colorTxtHint} fontSize="medium">
+                            help
+                          </Icon>
                         </Tooltip>
                       </span>
-                    </WidgetValue>,
-                  )
-                  .getOrElse(<WidgetLoading/>)
-                }
+                    </WidgetValue>
+                  ))
+                  .getOrElse(<WidgetLoading />)}
               </Widget>
             </Grid>
           </Grid>
-          <CompanyReportsCountPanel
-            period={reportsCurvePeriod}
-            data={reportsCurves}
-            onChange={period => fetchCurve(period)}
-          />
+          <CompanyReportsCountPanel period={reportsCurvePeriod} data={reportsCurves} onChange={period => fetchCurve(period)} />
           <Grid container spacing={2}>
             <Grid item sm={12} md={7}>
               <Panel>
                 <PanelHead>{m.status}</PanelHead>
                 <PanelBody>
-                  <HorizontalBarChart data={statusDistribution} grid/>
+                  <HorizontalBarChart data={statusDistribution} grid />
                 </PanelBody>
               </Panel>
               <Panel>
                 <PanelHead>{m.tags}</PanelHead>
                 <PanelBody>
-                  <HorizontalBarChart data={tagsDistribution} grid/>
+                  <HorizontalBarChart data={tagsDistribution} grid />
                 </PanelBody>
               </Panel>
               <Panel loading={_report.fetching}>
                 <PanelHead>{m.lastReports}</PanelHead>
-                {_report.list && (
-                  <ReportsShortList reports={_report.list}/>
-                )}
+                {_report.list && <ReportsShortList reports={_report.list} />}
               </Panel>
             </Grid>
             <Grid item sm={12} md={5}>
               <Panel>
                 <PanelHead>{m.consumerReviews}</PanelHead>
-                {fromNullable(_stats.responseReviews.entity).map(_ => (
-                  <PanelBody>
-                    <Txt color="hint" block className={cssUtils.marginBottom2}>{m.consumerReviewsDesc}</Txt>
-                    <div className={css.reviews}>
-                      <div className={css.reviews_type}>
-                        <div className={css.reviews_type_value}>
-                          {_.positive}
+                {fromNullable(_stats.responseReviews.entity)
+                  .map(_ => (
+                    <PanelBody>
+                      <Txt color="hint" block className={cssUtils.marginBottom2}>
+                        {m.consumerReviewsDesc}
+                      </Txt>
+                      <div className={css.reviews}>
+                        <div className={css.reviews_type}>
+                          <div className={css.reviews_type_value}>{_.positive}</div>
+                          <Icon className={classes(css.reviews_type_icon, cssUtils.colorSuccess)}>thumb_up</Icon>
                         </div>
-                        <Icon className={classes(css.reviews_type_icon, cssUtils.colorSuccess)}>thumb_up</Icon>
-                      </div>
-                      <div className={css.reviews_type}>
-                        <Icon className={classes(css.reviews_type_icon, cssUtils.colorError)}>thumb_down</Icon>
-                        <div className={css.reviews_type_value}>
-                          {_.negative}
+                        <div className={css.reviews_type}>
+                          <Icon className={classes(css.reviews_type_icon, cssUtils.colorError)}>thumb_down</Icon>
+                          <div className={css.reviews_type_value}>{_.negative}</div>
                         </div>
                       </div>
-                    </div>
-                    <LinearProgress className={cssUtils.marginTop2} variant="determinate" value={_.positive / (_.positive + _.negative) * 100}/>
-                  </PanelBody>
-                )).getOrElse(<PanelBody><Skeleton height={66} width="100%"/></PanelBody>)}
+                      <LinearProgress
+                        className={cssUtils.marginTop2}
+                        variant="determinate"
+                        value={(_.positive / (_.positive + _.negative)) * 100}
+                      />
+                    </PanelBody>
+                  ))
+                  .getOrElse(
+                    <PanelBody>
+                      <Skeleton height={66} width="100%" />
+                    </PanelBody>,
+                  )}
               </Panel>
               <Panel>
                 <PanelHead>{m.informations}</PanelHead>
@@ -256,23 +274,21 @@ export const CompanyComponent = () => {
                       <ListItemIcon>
                         <Icon>location_on</Icon>
                       </ListItemIcon>
-                      <ListItemText primary={m.address} secondary={
-                        <AddressComponent address={company.address}/>
-                      }/>
+                      <ListItemText primary={m.address} secondary={<AddressComponent address={company.address} />} />
                     </ListItem>
                     <Divider variant="inset" component="li" />
                     <ListItem>
                       <ListItemIcon>
                         <Icon>event</Icon>
                       </ListItemIcon>
-                      <ListItemText primary={m.creationDate} secondary={formatDate(company.creationDate)}/>
+                      <ListItemText primary={m.creationDate} secondary={formatDate(company.creationDate)} />
                     </ListItem>
-                    <Divider variant="inset" component="li"/>
+                    <Divider variant="inset" component="li" />
                     <ListItem>
                       <ListItemIcon>
                         <Icon>label</Icon>
                       </ListItemIcon>
-                      <ListItemText primary={m.activityCode} secondary={company.activityCode}/>
+                      <ListItemText primary={m.activityCode} secondary={company.activityCode} />
                     </ListItem>
                   </List>
                 </PanelBody>
@@ -281,7 +297,9 @@ export const CompanyComponent = () => {
                 <PanelHead>{m.websites}</PanelHead>
                 <div style={{maxHeight: 260, overflow: 'auto'}}>
                   <List dense>
-                    {_company.hosts.entity?.map((host, i) => <ListItem key={i}>{host}</ListItem>)}
+                    {_company.hosts.entity?.map((host, i) => (
+                      <ListItem key={i}>{host}</ListItem>
+                    ))}
                   </List>
                 </div>
               </Panel>

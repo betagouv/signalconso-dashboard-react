@@ -20,7 +20,12 @@ import {classes, openInNew} from '../../core/helper/utils'
 import {Btn, Fender} from 'mui-extension/lib'
 import {EntityIcon} from '../../core/EntityIcon'
 import {ScButton} from '../../shared/Button/Button'
-import {mapArrayFromQuerystring, mapDateFromQueryString, mapDatesToQueryString, useQueryString} from '../../core/helper/useQueryString'
+import {
+  mapArrayFromQuerystring,
+  mapDateFromQueryString,
+  mapDatesToQueryString,
+  useQueryString,
+} from '../../core/helper/useQueryString'
 import {fromNullable} from 'fp-ts/lib/Option'
 import {useToast} from '../../core/toast'
 import {Config} from '../../conf/config'
@@ -31,6 +36,7 @@ import {SelectCompaniesByPro} from '../../shared/SelectCompaniesByPro/SelectComp
 import compose from '../../core/helper/compose'
 import {Alert} from 'mui-extension'
 import {DebouncedInput} from 'shared/DebouncedInput/DebouncedInput'
+import {useLogin} from '../../core/context/LoginContext'
 
 const useStyles = makeStyles((t: Theme) => ({
   tdFiles: {
@@ -91,7 +97,6 @@ export const ReportsPro = () => {
 
   const {isMobileWidth} = useLayoutContext()
   const history = useHistory()
-  const location = useLocation()
   const {toastError} = useToast()
   const {formatDate, m} = useI18n()
   const css = useStyles()
@@ -266,21 +271,21 @@ export const ReportsPro = () => {
                 total={_reports.list?.totalSize}
                 onClickRows={(_, e) => {
                   if (e.metaKey || e.ctrlKey) {
-                    openInNew(siteMap.report(_.report.id))
+                    openInNew(siteMap.logged.report(_.report.id))
                   } else {
-                    history.push(siteMap.report(_.report.id))
+                    history.push(siteMap.logged.report(_.report.id))
                   }
                 }}
                 rows={
                   isMobileWidth
                     ? [
-                      {
-                        id: 'all',
-                        head: '',
-                        row: _ => (
-                          <div className={css.card}>
-                            <div className={css.card_content}>
-                              <div className={css.card_head}>
+                        {
+                          id: 'all',
+                          head: '',
+                          row: _ => (
+                            <div className={css.card}>
+                              <div className={css.card_content}>
+                                <div className={css.card_head}>
                                   <Txt bold size="big">
                                     {_.report.companySiret}
                                   </Txt>
