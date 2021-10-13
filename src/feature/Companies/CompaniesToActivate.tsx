@@ -1,7 +1,7 @@
 import {useI18n} from '../../core/i18n'
 import {Panel} from '../../shared/Panel'
 import {Datatable} from '../../shared/Datatable/Datatable'
-import {CompanyToActivate, Id} from '@betagouv/signalconso-api-sdk-js'
+import {CompanyToActivate, Id} from '@signal-conso/signalconso-api-sdk-js'
 import React, {SyntheticEvent, useEffect} from 'react'
 import {useCompaniesContext} from '../../core/context/CompaniesContext'
 import {useCssUtils} from '../../core/helper/useCssUtils'
@@ -19,6 +19,7 @@ import {fromNullable} from 'fp-ts/lib/Option'
 import {EntityIcon} from '../../core/EntityIcon'
 import {AddressComponent} from '../../shared/Address/Address'
 import {ScDialog} from '../../shared/Confirm/ScDialog'
+import {useLogin} from '../../core/context/LoginContext'
 
 const useStyles = makeStyles((t: Theme) => ({
   tdName_label: {
@@ -208,7 +209,7 @@ export const CompaniesToActivate = () => {
             stickyEnd: true,
             row: _ => (
               <>
-                <Link target="_blank" to={siteMap.reports({siretSirenList: [_.company.siret]})}>
+                <Link target="_blank" to={siteMap.logged.reports({siretSirenList: [_.company.siret]})}>
                   <Tooltip title={m.reports}>
                     <IconBtn>
                       <Icon>chevron_right</Icon>

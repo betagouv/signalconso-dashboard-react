@@ -9,7 +9,7 @@ import {useI18n} from '../../core/i18n'
 import {PanelFoot} from '../../shared/Panel/PanelFoot'
 import {ScButton} from '../../shared/Button/Button'
 import {useHistory, useParams} from 'react-router'
-import {Id} from '@betagouv/signalconso-api-sdk-js'
+import {Id} from '@signal-conso/signalconso-api-sdk-js'
 import {useAsync} from '@alexandreannic/react-hooks-lib'
 import {makeStyles} from '@material-ui/core/styles'
 import {Theme} from '@material-ui/core'
@@ -54,7 +54,7 @@ export const ResetPassword = ({onResetPassword}: Props) => {
       .call(form.newPassword, token)
       .then(() => {
         toastSuccess(m.resetPasswordSuccess)
-        setTimeout(() => history.push(siteMap.login), 400)
+        setTimeout(() => history.push(siteMap.loggedout.login), 400)
         Matomo.trackEvent(EventCategories.account, AuthenticationEventActions.resetPasswordSuccess)
       })
       .catch(err => {

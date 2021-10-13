@@ -22,7 +22,7 @@ const useStyles = makeStyles((t: Theme) => ({
   toIcon: {
     marginLeft: t.spacing(1),
     color: t.palette.text.hint,
-    fontSize: styleUtils(t).fontSize.big
+    fontSize: styleUtils(t).fontSize.big,
   },
   hoverable: {
     transition: t.transitions.create('all'),
@@ -31,7 +31,7 @@ const useStyles = makeStyles((t: Theme) => ({
       boxShadow: t.shadows[3],
       // borderColor: t.palette.primary.main,
       // boxShadow: `inset 0 0 0 1px ${t.palette.primary.main}`,
-    }
+    },
   },
 }))
 
@@ -52,7 +52,5 @@ export const Widget = ({loading, title, to, children}: Props) => {
       </PanelBody>
     </Panel>
   )
-  return to ? (
-    <NavLink to={to}>{body}</NavLink>
-  ) : body
+  return to ? <NavLink to={to}>{body}</NavLink> : body
 }

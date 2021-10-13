@@ -4,7 +4,7 @@ import {ScInput} from '../../../shared/Input/ScInput'
 import {Controller, useForm} from 'react-hook-form'
 import {regexp} from '../../../core/helper/regexp'
 import {Checkbox, FormControlLabel} from '@material-ui/core'
-import {Report} from '@betagouv/signalconso-api-sdk-js'
+import {Report} from '@signal-conso/signalconso-api-sdk-js'
 import {ScDialog} from '../../../shared/Confirm/ScDialog'
 
 interface Form {

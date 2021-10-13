@@ -18,7 +18,7 @@ const useStyles = makeStyles((t: Theme) => ({
   icon: {
     color: t.palette.text.disabled,
     marginRight: t.spacing(1),
-  }
+  },
 }))
 
 interface Props {

@@ -7,7 +7,7 @@ import {Icon, Tooltip} from '@material-ui/core'
 import {Panel} from '../../shared/Panel'
 import {useCssUtils} from '../../core/helper/useCssUtils'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
-import {CompanyAccessLevel, Id} from '@betagouv/signalconso-api-sdk-js'
+import {CompanyAccessLevel, Id} from '@signal-conso/signalconso-api-sdk-js'
 import {IconBtn} from 'mui-extension/lib'
 import {fromNullable, some} from 'fp-ts/lib/Option'
 import {useLogin} from '../../core/context/LoginContext'
@@ -28,7 +28,7 @@ interface Accesses {
   email?: string
   level: CompanyAccessLevel
   tokenId?: Id
-  editable?: Boolean,
+  editable?: Boolean
   isHeadOffice?: Boolean
 }
 
@@ -46,15 +46,14 @@ export const CompanyAccesses = () => {
 
   const accesses: Accesses[] = useMemo(() => {
     return [
-      ...(_crudAccess.list ?? []).map(_ => (
-        {
-          email: _.email,
-          name: _.firstName + ' ' + _.lastName,
-          level: _.level,
-          userId: _.userId,
-          editable: _.editable,
-          isHeadOffice: _.isHeadOffice,
-        })),
+      ...(_crudAccess.list ?? []).map(_ => ({
+        email: _.email,
+        name: _.firstName + ' ' + _.lastName,
+        level: _.level,
+        userId: _.userId,
+        editable: _.editable,
+        isHeadOffice: _.isHeadOffice,
+      })),
       ...(_crudToken.list ?? []).map(_ => ({email: _.emailedTo, level: _.level, tokenId: _.id})),
     ]
   }, [_crudAccess.list, _crudToken.list])
@@ -84,22 +83,24 @@ export const CompanyAccesses = () => {
   return (
     <Page size="small">
       <PageTitle
-        action={!connectedUser.isDGCCRF && (
-          <>
-            {_crudAccess.list?.length === 0 && (
-              <SaveUndeliveredDocBtn
-                loading={_company.saveUndeliveredDocument.loading}
-                onChange={date => _company.saveUndeliveredDocument.fetch({}, siret, date)}
-                className={cssUtils.marginRight}
+        action={
+          !connectedUser.isDGCCRF && (
+            <>
+              {_crudAccess.list?.length === 0 && (
+                <SaveUndeliveredDocBtn
+                  loading={_company.saveUndeliveredDocument.loading}
+                  onChange={date => _company.saveUndeliveredDocument.fetch({}, siret, date)}
+                  className={cssUtils.marginRight}
+                />
+              )}
+              <CompanyAccessCreateBtn
+                loading={_crudToken.creating}
+                onCreate={inviteNewUser}
+                errorMessage={_crudToken.createError}
               />
-            )}
-            <CompanyAccessCreateBtn
-              loading={_crudToken.creating}
-              onCreate={inviteNewUser}
-              errorMessage={_crudToken.createError}
-            />
-          </>
-        )}
+            </>
+          )
+        }
       >
         {m.companyAccessesTitle}
       </PageTitle>
@@ -122,7 +123,7 @@ export const CompanyAccesses = () => {
             {
               id: 'email',
               head: m.email,
-              row: _ =>
+              row: _ => (
                 <>
                   <div>
                     <Txt bold>{_.email}</Txt>
@@ -130,8 +131,11 @@ export const CompanyAccesses = () => {
                     {_.isHeadOffice && <Txt color="hint">({m.isHeadOffice})</Txt>}
                     {connectedUser.email === _.email && <Txt color="hint">({m.you})</Txt>}
                   </div>
-                  <Txt size="small" color="hint">{_.name}</Txt>
-                </>,
+                  <Txt size="small" color="hint">
+                    {_.name}
+                  </Txt>
+                </>
+              ),
             },
             {
               id: 'level',
@@ -166,9 +170,7 @@ export const CompanyAccesses = () => {
                       color="primary"
                       icon="manage_accounts"
                       variant="outlined"
-                      disabled={
-                        !_.userId || !_.editable
-                      }
+                      disabled={!_.userId || !_.editable}
                     >
                       {(CompanyAccessLevel as any)[_.level]}
                     </ScButton>

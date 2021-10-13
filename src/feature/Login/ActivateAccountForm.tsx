@@ -17,6 +17,7 @@ import {siteMap} from '../../core/siteMap'
 import {ScInputPassword} from '../../shared/InputPassword/InputPassword'
 import {AccessEventActions, ActionResultNames, EventCategories, Matomo} from '../../core/plugins/Matomo'
 import {fnSwitch} from '../../core/helper/utils'
+import {useLogin} from '../../core/context/LoginContext'
 
 interface Form {
   siret: string
@@ -53,7 +54,7 @@ export const ActivateAccountForm = ({register: registerAction}: Props) => {
       .action(form.siret, form.code, form.email)
       .then(() => {
         toastSuccess(m.companyRegisteredEmailSent)
-        setTimeout(() => history.push(siteMap.login), 400)
+        setTimeout(() => history.push(siteMap.loggedout.login), 400)
         Matomo.trackEvent(EventCategories.account, AccessEventActions.activateCompanyCode, ActionResultNames.success)
       })
       .catch(err => {

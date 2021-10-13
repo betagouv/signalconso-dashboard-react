@@ -12,7 +12,7 @@ import {ScButton} from '../../shared/Button/Button'
 import {AddressComponent} from '../../shared/Address/Address'
 import {siteMap} from '../../core/siteMap'
 import {NavLink} from 'react-router-dom'
-import {AccessLevel, Id} from '@betagouv/signalconso-api-sdk-js'
+import {AccessLevel, Id} from '@signal-conso/signalconso-api-sdk-js'
 import {useUsersContext} from '../../core/context/UsersContext'
 import {fromNullable} from 'fp-ts/lib/Option'
 import {classes} from '../../core/helper/utils'
@@ -22,6 +22,7 @@ import {Txt} from 'mui-extension/lib/Txt/Txt'
 import {ConfirmDisableNotificationDialog} from './ConfirmDisableNotificationDialog'
 import {groupBy} from '../../core/lodashNamedExport'
 import {PanelFoot} from '../../shared/Panel/PanelFoot'
+import {useLogin} from '../../core/context/LoginContext'
 
 const useStyles = makeStyles((t: Theme) => ({
   tdName_label: {
@@ -97,7 +98,7 @@ export const CompaniesPro = () => {
     <Page size="small">
       <PageTitle
         action={
-          <NavLink to={siteMap.register}>
+          <NavLink to={siteMap.loggedout.register}>
             <ScButton icon="add" color="primary" variant="outlined">
               {m.addACompany}
             </ScButton>
@@ -199,7 +200,7 @@ export const CompaniesPro = () => {
               row: _ => (
                 <>
                   {_.level === AccessLevel.ADMIN && (
-                    <NavLink to={siteMap.companyAccesses(_.siret)}>
+                    <NavLink to={siteMap.logged.companyAccesses(_.siret)}>
                       <Tooltip title={m.handleAccesses}>
                         <IconBtn color="primary">
                           <Icon>vpn_key</Icon>
@@ -207,7 +208,7 @@ export const CompaniesPro = () => {
                       </Tooltip>
                     </NavLink>
                   )}
-                  <NavLink to={siteMap.reports({siretSirenList: [_.siret]})}>
+                  <NavLink to={siteMap.logged.reports({siretSirenList: [_.siret]})}>
                     <Tooltip title={m.reports}>
                       <IconBtn color="primary">
                         <Icon>chevron_right</Icon>

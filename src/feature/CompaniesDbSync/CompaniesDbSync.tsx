@@ -23,19 +23,23 @@ export const CompaniesDbSync = () => {
 
   return (
     <Page>
-      <PageTitle action={
-        <ScButton
-          color="error" variant="contained" icon="clear"
-          loading={_companiesDbSync.cancelAllFiles.loading}
-          onClick={_companiesDbSync.cancelAllFiles.call}
-        >
-          {m.cancelAll}
-        </ScButton>
-      }>
+      <PageTitle
+        action={
+          <ScButton
+            color="error"
+            variant="contained"
+            icon="clear"
+            loading={_companiesDbSync.cancelAllFiles.loading}
+            onClick={_companiesDbSync.cancelAllFiles.call}
+          >
+            {m.cancelAll}
+          </ScButton>
+        }
+      >
         {m.database}
       </PageTitle>
       <Alert type="info" className={cssUtils.marginBottom2}>
-        <div dangerouslySetInnerHTML={{__html: m.companiesDbSyncInfo}}/>
+        <div dangerouslySetInnerHTML={{__html: m.companiesDbSyncInfo}} />
       </Alert>
       {_companiesDbSync.getInfo.entity && (
         <Grid container spacing={2}>

@@ -4,7 +4,7 @@ import {useParams} from 'react-router'
 import {useI18n} from '../../core/i18n'
 import {Panel} from '../../shared/Panel'
 import {useReportContext} from '../../core/context/ReportContext'
-import {EventActionValues, FileOrigin, Id, Report, ReportEvent} from '@betagouv/signalconso-api-sdk-js'
+import {EventActionValues, FileOrigin, Id, Report, ReportEvent} from '@signal-conso/signalconso-api-sdk-js'
 import {Grid, makeStyles, Tab, Tabs, Theme, Tooltip, useTheme} from '@material-ui/core'
 import {useCssUtils} from '../../core/helper/useCssUtils'
 import {fromNullable} from 'fp-ts/lib/Option'
@@ -44,7 +44,6 @@ export const ReportComponent = () => {
   const {m} = useI18n()
   const _report = useReportContext()
   const _event = useEventContext()
-  const theme = useTheme()
   const {connectedUser} = useLogin()
   const cssUtils = useCssUtils()
   const css = useStyles()

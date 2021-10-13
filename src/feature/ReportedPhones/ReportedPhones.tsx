@@ -6,7 +6,7 @@ import {Panel} from '../../shared/Panel'
 import {Datatable} from '../../shared/Datatable/Datatable'
 import {NavLink} from 'react-router-dom'
 import {siteMap} from '../../core/siteMap'
-import {ReportedPhone} from '@betagouv/signalconso-api-sdk-js'
+import {ReportedPhone} from '@signal-conso/signalconso-api-sdk-js'
 import {Btn, IconBtn} from 'mui-extension/lib'
 import {useCssUtils} from '../../core/helper/useCssUtils'
 import {ScInput} from '../../shared/Input/ScInput'
@@ -17,6 +17,7 @@ import {Icon, makeStyles, Theme, Tooltip} from '@material-ui/core'
 import {PeriodPicker} from '../../shared/PeriodPicker/PeriodPicker'
 import {DebouncedInput} from '../../shared/DebouncedInput/DebouncedInput'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
+import {useLogin} from '../../core/context/LoginContext'
 
 const useStyles = makeStyles((t: Theme) => ({
   tdSiret: {
@@ -127,7 +128,7 @@ export const ReportedPhones = () => {
               row: _ => (
                 <>
                   <NavLink
-                    to={siteMap.reports({
+                    to={siteMap.logged.reports({
                       phone: _.phone,
                       ...(_.siret ? {siretSirenList: [_.siret]} : {}),
                       ...(_.category ? {category: _.category} : {}),

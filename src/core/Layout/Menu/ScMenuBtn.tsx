@@ -57,7 +57,7 @@ export const ScMenuBtn = ({connectedUser}: Props) => {
         className={classes(css.avatar, !connectedUser && css.avatarOffline)}
         onClick={() => {
           if (connectedUser) openMenu.toggle()
-          else history.push(siteMap.login)
+          else history.push(siteMap.loggedout.login)
         }}
       >
         <Icon>{connectedUser ? 'person' : 'no_accounts'}</Icon>

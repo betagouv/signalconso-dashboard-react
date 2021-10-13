@@ -1,7 +1,7 @@
 import * as React from 'react'
 import {ReactNode, useContext} from 'react'
 import {UseAsync, UseFetcher, useFetcher} from '@alexandreannic/react-hooks-lib/lib'
-import {SignalConsoSecuredSdk} from '@betagouv/signalconso-api-sdk-js'
+import {SignalConsoSecuredSdk} from '@signal-conso/signalconso-api-sdk-js'
 import {SignalConsoApiSdk} from '../ApiSdkInstance'
 import {useAsync} from '@alexandreannic/react-hooks-lib'
 

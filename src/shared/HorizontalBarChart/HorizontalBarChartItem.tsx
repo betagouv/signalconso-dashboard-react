@@ -6,12 +6,6 @@ interface Props {
   color?: string
 }
 
-export const HorizontalBarChartItem = ({
-  value,
-  label,
-  color,
-}: Props) => {
-  return (
-    <div></div>
-  )
+export const HorizontalBarChartItem = ({value, label, color}: Props) => {
+  return <div></div>
 }

@@ -1,4 +1,4 @@
-import {CompanyAccessLevel, ReportResponseTypes, ReportStatus} from '@betagouv/signalconso-api-sdk-js'
+import {CompanyAccessLevel, ReportResponseTypes, ReportStatus} from '@signal-conso/signalconso-api-sdk-js'
 import {Config} from '../../../conf/config'
 
 export const messagesFr = {
@@ -183,9 +183,9 @@ export const messagesFr = {
   proResponse: 'Réponse du professionnel',
   searchByEmail: 'Rechercher par email',
   undeliveredDoc: 'Courrier retourné',
-  undeliveredDocTitle: 'Retour du courrier d\'activation',
+  undeliveredDocTitle: "Retour du courrier d'activation",
   searchByHost: 'Rechercher par nom de domaine',
-  addProAttachmentFile: 'Ajouter une pièces jointe fournie par l\'entreprise',
+  addProAttachmentFile: "Ajouter une pièces jointe fournie par l'entreprise",
   addAttachmentFile: 'Ajouter une pièces jointe',
   attachedFiles: 'Pièces jointes',
   database: `Base de données`,
@@ -272,10 +272,10 @@ export const messagesFr = {
   noReportsDesc: 'Aucun signalement ne correspond à votre recherche.',
   lastNotice: 'Relancé le',
   validatingEmail: `Validation de l'adresse email...`,
-  validateLetterSent: 'Valider l\'envoi des courriers',
+  validateLetterSent: "Valider l'envoi des courriers",
   emailValidated: `Votre email est validé.`,
   emailValidatedDesc: `Vous pouvez vous connecter à l'aide de votre adresse email et mot de passe.`,
-  validateLetterSentTitle: 'Valider l\'envoi des courriers',
+  validateLetterSentTitle: "Valider l'envoi des courriers",
   sendNewPostal: `Envoyer un nouveau courrier`,
   companiesDbSyncInfo: `
     Le fichier <b>StockEtablissement</b> doit être, de préférence, lancé en premier. 
@@ -293,7 +293,7 @@ export const messagesFr = {
     'Les courriers seront considérés envoyés pour les entreprises sélectionnées. Cette action est irrévocable.',
   dgccrfUsers: 'Agents DGCCRF',
   lastReports: `Derniers signalements`,
-  invitationDate: 'Date d\'invitation',
+  invitationDate: "Date d'invitation",
   connectedUnder3Months: 'Connecté dans les 3 derniers mois',
   pendingInvitation: 'Invitation en attente',
   users_invite_dialog_title: 'Inviter un agent DGCCRF',
@@ -301,7 +301,7 @@ export const messagesFr = {
   disable: `Désactiver`,
   disableAll: `Tout désactiver`,
   users_invite_dialog_desc:
-    'Un courrier électronique sera envoyé à l\'adresse e-mail saisie ci-dessus avec un lien sécurisé permettant de créer un compte DGCCRF.',
+    "Un courrier électronique sera envoyé à l'adresse e-mail saisie ci-dessus avec un lien sécurisé permettant de créer un compte DGCCRF.",
   selectedCompanies: `entreprises sélectionnées`,
   passwordNotLongEnough: '8 caractères minimum',
   oldPassword: 'Ancien mot de passe',
@@ -370,7 +370,7 @@ export const messagesFr = {
   },
   reportStatusShort: {
     [ReportStatus.NA]: 'NA',
-    [ReportStatus.EmployeeConsumer]: 'Lanceur d\'alerte',
+    [ReportStatus.EmployeeConsumer]: "Lanceur d'alerte",
     [ReportStatus.InProgress]: 'Traitement en cours',
     [ReportStatus.Unread]: 'Non consulté',
     [ReportStatus.UnreadForPro]: 'Non consulté',
@@ -409,5 +409,5 @@ export const messagesFr = {
     10: 'Octobre',
     11: 'Novembre',
     12: 'Décembre',
-  }
+  },
 }

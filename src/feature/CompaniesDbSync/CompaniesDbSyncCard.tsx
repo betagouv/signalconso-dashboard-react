@@ -1,6 +1,6 @@
 import {Txt} from 'mui-extension/lib/Txt/Txt'
 import {Panel, PanelBody} from 'shared/Panel'
-import {CompaniesDbSyncInfo} from '@betagouv/signalconso-api-sdk-js'
+import {CompaniesDbSyncInfo} from '@signal-conso/signalconso-api-sdk-js'
 import {alpha, CircularProgress, Grid, makeStyles, Theme, useTheme} from '@material-ui/core'
 import {styleUtils} from '../../core/theme'
 import {useI18n} from '../../core/i18n'
@@ -51,18 +51,19 @@ export const CompaniesDbSyncCard = ({name, info, start, cancel}: Props) => {
   const cssUtils = useCssUtils()
   const {m, dateFromNow, formatLargeNumber} = useI18n()
 
-  const percent = useMemoFn(info, _ => _.linesDone / _.linesCount * 100)
+  const percent = useMemoFn(info, _ => (_.linesDone / _.linesCount) * 100)
 
   return (
     <Panel>
       <PanelBody>
         <div className={css.progressContainer}>
           <CircularProgress
-            value={100} size={progressSize}
+            value={100}
+            size={progressSize}
             variant={info && !info.endedAt ? 'indeterminate' : 'determinate'}
             className={css.circleBackground}
           />
-          <CircularProgress value={percent} size={progressSize} variant="determinate"/>
+          <CircularProgress value={percent} size={progressSize} variant="determinate" />
           <div className={classes(css.percent, !info?.endedAt && css.percentActive)}>{Math.round(percent ?? 0)} %</div>
         </div>
         <div style={{textAlign: 'center'}}>
@@ -73,25 +74,39 @@ export const CompaniesDbSyncCard = ({name, info, start, cancel}: Props) => {
           </Txt>
         </div>
 
-        <Txt block bold size="big" className={cssUtils.marginTop3}>{info?.fileName ?? name}</Txt>
+        <Txt block bold size="big" className={cssUtils.marginTop3}>
+          {info?.fileName ?? name}
+        </Txt>
         <a href={info?.fileUrl ?? '#'}>
-          <Txt block truncate gutterBottom link>{info?.fileUrl ?? ''}</Txt>
+          <Txt block truncate gutterBottom link>
+            {info?.fileUrl ?? ''}
+          </Txt>
         </a>
 
         {info && (
           <Grid container className={cssUtils.marginTop2}>
             <Grid item xs={6}>
-              <Txt block size="small" color="hint" uppercase>{m.beginning}</Txt>
-              <Txt block size="big">{dateFromNow(info.startedAt)}</Txt>
+              <Txt block size="small" color="hint" uppercase>
+                {m.beginning}
+              </Txt>
+              <Txt block size="big">
+                {dateFromNow(info.startedAt)}
+              </Txt>
             </Grid>
             <Grid item xs={6} style={{textAlign: 'right'}}>
               {info.endedAt ? (
                 <>
-                  <Txt block size="small" color="hint" uppercase>{m.end}</Txt>
-                  <Txt block size="big">{dateFromNow(info.endedAt)}</Txt>
+                  <Txt block size="small" color="hint" uppercase>
+                    {m.end}
+                  </Txt>
+                  <Txt block size="big">
+                    {dateFromNow(info.endedAt)}
+                  </Txt>
                 </>
               ) : (
-                <Txt block size="title" bold className={cssUtils.colorWarning}>{m.inProgress}</Txt>
+                <Txt block size="title" bold className={cssUtils.colorWarning}>
+                  {m.inProgress}
+                </Txt>
               )}
             </Grid>
           </Grid>

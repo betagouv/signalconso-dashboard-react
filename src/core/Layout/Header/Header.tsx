@@ -65,9 +65,7 @@ export const Header = ({connectedUser}: Props) => {
       <div className={css.root}>
         <div className={css.logo}>
           <img src={logoGouvMobile} alt={m.altLogoGouv} className={css.logoGouvMobile} />
-          {!isMobileWidth && (
-            <img src={logoDgccrf} alt={m.altLogoDGCCRF} className={css.logoGouvMobile}/>
-          )}
+          {!isMobileWidth && <img src={logoDgccrf} alt={m.altLogoDGCCRF} className={css.logoGouvMobile} />}
           <a href={Config.appBaseUrl}>
             <img src={logoSignalConso} alt={m.altLogoSignalConso} className={css.logoSignalConsoMobile} />
           </a>

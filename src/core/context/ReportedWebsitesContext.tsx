@@ -3,7 +3,7 @@ import {ReactNode, useContext} from 'react'
 import {UseFetcher, useFetcher, usePaginate, UsePaginate} from '@alexandreannic/react-hooks-lib/lib'
 import {SignalConsoApiSdk} from '../ApiSdkInstance'
 import {mapPromiseSdkPaginateToHook} from '../helper/utils'
-import {ApiError, WebsiteKind, WebsiteWithCompany, WebsiteWithCompanySearch} from '@betagouv/signalconso-api-sdk-js'
+import {ApiError, WebsiteKind, WebsiteWithCompany, WebsiteWithCompanySearch} from '@signal-conso/signalconso-api-sdk-js'
 
 export interface ReportedWebsiteWithCompanyContextProps {
   getWebsiteWithCompany: UsePaginate<WebsiteWithCompany, WebsiteWithCompanySearch>

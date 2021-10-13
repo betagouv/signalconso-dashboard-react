@@ -16,6 +16,7 @@ import {regexp} from '../../core/helper/regexp'
 import {useToast} from '../../core/toast'
 import {fromNullable} from 'fp-ts/lib/Option'
 import {ScDialog} from '../../shared/Confirm/ScDialog'
+import {useLogin} from '../../core/context/LoginContext'
 
 export const Users = () => {
   const {m} = useI18n()
@@ -84,13 +85,13 @@ export const Users = () => {
         {m.menu_users}
       </PageTitle>
       <PageTabs>
-        <PageTab to={siteMap.users_all} label={m.dgccrfUsers} />
-        <PageTab to={siteMap.users_pending} label={m.pendingInvitation} />
+        <PageTab to={siteMap.logged.users_all} label={m.dgccrfUsers} />
+        <PageTab to={siteMap.logged.users_pending} label={m.pendingInvitation} />
       </PageTabs>
       <Switch>
-        <Redirect exact from={path} to={siteMap.users_all} />
-        <Route path={siteMap.users_all} component={UsersList} />
-        <Route path={siteMap.users_pending} component={UsersListPending} />
+        <Redirect exact from={path} to={siteMap.logged.users_all} />
+        <Route path={siteMap.logged.users_all} component={UsersList} />
+        <Route path={siteMap.logged.users_pending} component={UsersListPending} />
       </Switch>
     </Page>
   )

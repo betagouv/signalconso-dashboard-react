@@ -2,7 +2,7 @@ import React, {useEffect, useMemo} from 'react'
 import {useToast} from '../../core/toast'
 import {ScInputPassword} from '../../shared/InputPassword/InputPassword'
 import {Controller, useForm} from 'react-hook-form'
-import {TokenInfo, UserToActivate} from '@betagouv/signalconso-api-sdk-js'
+import {TokenInfo, UserToActivate} from '@signal-conso/signalconso-api-sdk-js'
 import {useI18n} from '../../core/i18n'
 import {ScInput} from '../../shared/Input/ScInput'
 import {makeStyles} from '@material-ui/core/styles'
@@ -74,7 +74,7 @@ export const UserActivation = ({onActivateUser, onFetchTokenInfo}: Props) => {
       .then(_ => {
         Matomo.trackEvent(EventCategories.account, AccountEventActions.registerUser, ActionResultNames.success)
         toastSuccess(m.accountActivated)
-        setTimeout(() => history.push(siteMap.login), 400)
+        setTimeout(() => history.push(siteMap.loggedout.login), 400)
       })
       .catch(e => {
         Matomo.trackEvent(EventCategories.account, AccountEventActions.registerUser, ActionResultNames.fail)

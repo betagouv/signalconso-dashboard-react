@@ -1,14 +1,25 @@
 import React, {useEffect, useState} from 'react'
 import {useI18n} from '../../core/i18n'
 import {useCssUtils} from '../../core/helper/useCssUtils'
-import {Chip, createStyles, FormControlLabel, Icon, InputBase, makeStyles, MenuItem, Switch, Theme, Tooltip} from '@material-ui/core'
+import {
+  Chip,
+  createStyles,
+  FormControlLabel,
+  Icon,
+  InputBase,
+  makeStyles,
+  MenuItem,
+  Switch,
+  Theme,
+  Tooltip,
+} from '@material-ui/core'
 import {useToast} from '../../core/toast'
 import {fromNullable} from 'fp-ts/lib/Option'
 import {Panel} from '../../shared/Panel'
 import {Datatable} from '../../shared/Datatable/Datatable'
 import {DebouncedInput} from '../../shared/DebouncedInput/DebouncedInput'
 import {useReportedWebsiteWithCompanyContext} from '../../core/context/ReportedWebsitesContext'
-import {Country, WebsiteKind, WebsiteWithCompany} from '@betagouv/signalconso-api-sdk-js'
+import {Country, WebsiteKind, WebsiteWithCompany} from '@signal-conso/signalconso-api-sdk-js'
 import {IconBtn} from 'mui-extension'
 import {ScSelect} from '../../shared/Select/Select'
 import {SelectCompany} from '../../shared/SelectCompany/SelectCompany'
@@ -167,8 +178,8 @@ export const ReportedCompaniesWebsites = () => {
           {
             head: m.company,
             id: 'company',
-            row: _ =>
-              (<SelectCompany
+            row: _ => (
+              <SelectCompany
                 siret={_.company?.siret}
                 onChange={company => {
                   if (_.company?.siret === company.siret) {
@@ -185,7 +196,7 @@ export const ReportedCompaniesWebsites = () => {
                   }
                 }}
               >
-                {_.company ?
+                {_.company ? (
                   <Tooltip title={_.company.name}>
                     <Chip
                       variant={'outlined'}
@@ -199,7 +210,8 @@ export const ReportedCompaniesWebsites = () => {
                         </div>
                       }
                     />
-                  </Tooltip> :
+                  </Tooltip>
+                ) : (
                   <Tooltip title={m.linkCompany}>
                     <Chip
                       variant={'outlined'}
@@ -211,29 +223,25 @@ export const ReportedCompaniesWebsites = () => {
                       }
                     />
                   </Tooltip>
-                }
-
-
-              </SelectCompany>)
-            ,
+                )}
+              </SelectCompany>
+            ),
           },
           {
             head: m.foreignCountry,
             id: 'company_country',
-            row: _ =>
-              (<SelectCountry
+            row: _ => (
+              <SelectCountry
                 country={_.companyCountry}
                 onChange={companyCountry => {
                   if (_.companyCountry === companyCountry) {
                     toastInfo(m.alreadySelectedCountry(companyCountry?.name))
                   } else {
-                    _updateCountry
-                      .fetch({}, _.id, companyCountry)
-                      .then(_ => _fetch.fetch({clean: false}))
+                    _updateCountry.fetch({}, _.id, companyCountry).then(_ => _fetch.fetch({clean: false}))
                   }
                 }}
               >
-                {_.companyCountry ?
+                {_.companyCountry ? (
                   <Tooltip title={m.linkCountry}>
                     <Chip
                       variant={'outlined'}
@@ -248,7 +256,8 @@ export const ReportedCompaniesWebsites = () => {
                         </div>
                       }
                     />
-                  </Tooltip> :
+                  </Tooltip>
+                ) : (
                   <Tooltip title={m.linkCountry}>
                     <Chip
                       variant={'outlined'}
@@ -260,19 +269,19 @@ export const ReportedCompaniesWebsites = () => {
                       }
                     />
                   </Tooltip>
-                }
-              </SelectCountry>),
+                )}
+              </SelectCountry>
+            ),
           },
           {
             head: m.status,
             id: 'status',
             row: _ => (
               <FormControlLabel
-                control={<Switch checked={_.kind === WebsiteKind.DEFAULT}/>}
+                control={<Switch checked={_.kind === WebsiteKind.DEFAULT} />}
                 onChange={() => {
                   _updateStatus
-                    .fetch({}, _.id, _.kind === WebsiteKind.DEFAULT ? WebsiteKind.PENDING : WebsiteKind.DEFAULT,
-                    )
+                    .fetch({}, _.id, _.kind === WebsiteKind.DEFAULT ? WebsiteKind.PENDING : WebsiteKind.DEFAULT)
                     .then(_ => _fetch.fetch({clean: false}))
                 }}
                 label=""
@@ -283,8 +292,7 @@ export const ReportedCompaniesWebsites = () => {
             id: 'actions',
             stickyEnd: true,
             row: _ => (
-              <IconBtn className={cssUtils.colorTxtHint}
-                       onClick={() => _remove.fetch({}, _.id).then(_ => _fetch.fetch())}>
+              <IconBtn className={cssUtils.colorTxtHint} onClick={() => _remove.fetch({}, _.id).then(_ => _fetch.fetch())}>
                 <Icon>delete</Icon>
               </IconBtn>
             ),

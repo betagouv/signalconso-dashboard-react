@@ -1,5 +1,5 @@
 import {Icon, makeStyles, Theme} from '@material-ui/core'
-import {ReportSearchResult} from '@betagouv/signalconso-api-sdk-js'
+import {ReportSearchResult} from '@signal-conso/signalconso-api-sdk-js'
 import {Paginate} from '@alexandreannic/react-hooks-lib/lib'
 import {ReportStatusChip} from '../../shared/ReportStatus/ReportStatus'
 import * as React from 'react'
@@ -10,6 +10,7 @@ import {NavLink} from 'react-router-dom'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
 import {useCssUtils} from '../../core/helper/useCssUtils'
 import {ReportDetailValues} from '../../shared/ReportDetailValues/ReportDetailValues'
+import {useLogin} from '../../core/context/LoginContext'
 
 interface Props {
   reports: Paginate<ReportSearchResult>
@@ -34,8 +35,7 @@ const useStyles = makeStyles((t: Theme) => ({
   body: {
     flex: 1,
   },
-  title: {
-  }
+  title: {},
 }))
 
 export const ReportsShortList = ({reports}: Props) => {
@@ -52,17 +52,20 @@ export const ReportsShortList = ({reports}: Props) => {
                 {_.report.category}
               </Txt>
               <div className={css.reportTag}>
-                <ReportStatusChip status={_.report.status} dense className={cssUtils.marginRight}/>
+                <ReportStatusChip status={_.report.status} dense className={cssUtils.marginRight} />
                 <Txt color="hint">{formatDate(_.report.creationDate)}</Txt>
-                <Icon fontSize="inherit" className={cssUtils.marginLeft}>label</Icon>&nbsp;
+                <Icon fontSize="inherit" className={cssUtils.marginLeft}>
+                  label
+                </Icon>
+                &nbsp;
                 <Txt color="disabled" truncate style={{width: 0, flex: 1}}>
                   {_.report.tags.join(', ')}
                 </Txt>
               </div>
             </div>
-            <ReportDetailValues input={_.report.details} lines={3}/>
+            <ReportDetailValues input={_.report.details} lines={3} />
           </div>
-          <NavLink to={siteMap.report(_.report.id)}>
+          <NavLink to={siteMap.logged.report(_.report.id)}>
             <IconBtn>
               <Icon>chevron_right</Icon>
             </IconBtn>

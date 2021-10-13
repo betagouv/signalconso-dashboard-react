@@ -6,7 +6,7 @@ import {useCssUtils} from '../../core/helper/useCssUtils'
 import {useSetState, UseSetState} from '@alexandreannic/react-hooks-lib/lib'
 import {useConstantContext} from '../../core/context/ConstantContext'
 import {fromNullable} from 'fp-ts/lib/Option'
-import {Region} from '@betagouv/signalconso-api-sdk-js'
+import {Region} from '@signal-conso/signalconso-api-sdk-js'
 import {useI18n} from '../../core/i18n'
 
 const withRegions =

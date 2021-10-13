@@ -4,7 +4,7 @@ import {reportFileConfig} from './reportFileConfig'
 import {useI18n} from '../../../core/i18n'
 import {styleUtils} from '../../../core/theme'
 import {Config} from '../../../conf/config'
-import {FileOrigin, Id, UploadedFile} from '@betagouv/signalconso-api-sdk-js'
+import {FileOrigin, Id, UploadedFile} from '@signal-conso/signalconso-api-sdk-js'
 import {useToast} from '../../../core/toast'
 import {useLogin} from '../../../core/context/LoginContext'
 

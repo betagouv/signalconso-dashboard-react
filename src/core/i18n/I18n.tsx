@@ -23,7 +23,7 @@ export interface I18nContextProps {
   formatLargeNumber: (n?: number) => string
   formatDuration: (ms?: number) => string
   formatDate: (d?: Date) => string
-  dateFromNow: (d?: Date) => string,
+  dateFromNow: (d?: Date) => string
   formatTime: (d?: Date) => string
   formatDateTime: (d?: Date) => string
 }
@@ -51,7 +51,7 @@ export const I18nProvider = ({children, lang = AppLangs.en}: Props) => {
         m: getMessages(),
         availableLangs: Object.keys(AppLangs),
         formatLargeNumber: (n?: number) => (n !== undefined && n !== null ? n.toLocaleString(langToLocal(lang)) : '-'),
-        dateFromNow: (d?: Date) => d ? formatDistance(d, new Date(), { addSuffix: true }) : undefined,
+        dateFromNow: (d?: Date) => (d ? formatDistance(d, new Date(), {addSuffix: true}) : undefined),
         formatDate: formatDate,
         formatTime: formatTime,
         formatDateTime: formatDateTime,

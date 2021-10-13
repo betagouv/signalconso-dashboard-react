@@ -25,7 +25,6 @@ const defaultContext: Partial<CompaniesDbSyncContextProps> = {}
 const CompaniesDbSyncContext = React.createContext<CompaniesDbSyncContextProps>(defaultContext as CompaniesDbSyncContextProps)
 
 export const CompaniesDbSyncProvider = ({api, children}: Props) => {
-
   const startEtablissementFile = useAsync(api.secured.companiesDbSync.startEtablissementFile)
   const startUniteLegaleFile = useAsync(api.secured.companiesDbSync.startUniteLegaleFile)
   const cancelAllFiles = useAsync(api.secured.companiesDbSync.cancelAllFiles)

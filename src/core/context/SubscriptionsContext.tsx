@@ -2,7 +2,7 @@ import * as React from 'react'
 import {ReactNode, useContext} from 'react'
 import {CrudListCRUD, useCrudList} from '@alexandreannic/react-hooks-lib/lib'
 import {SignalConsoApiSdk} from '../ApiSdkInstance'
-import {ApiError, SignalConsoSecuredSdk, Subscription} from '@betagouv/signalconso-api-sdk-js'
+import {ApiError, SignalConsoSecuredSdk, Subscription} from '@signal-conso/signalconso-api-sdk-js'
 
 export interface SubscriptionsContextProps
   extends CrudListCRUD<

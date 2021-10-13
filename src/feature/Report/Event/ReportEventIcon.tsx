@@ -1,4 +1,4 @@
-import {EventActionValues} from '@betagouv/signalconso-api-sdk-js'
+import {EventActionValues} from '@signal-conso/signalconso-api-sdk-js'
 import {Icon, Theme, useTheme} from '@material-ui/core'
 import {styleUtils} from '../../../core/theme'
 import {fnSwitch} from '../../../core/helper/utils'

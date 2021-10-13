@@ -1,7 +1,7 @@
 import {useI18n} from '../../core/i18n'
 import {Panel} from '../../shared/Panel'
 import {Datatable} from '../../shared/Datatable/Datatable'
-import {cleanObject, Company, CompanySearch, CompanyWithReportsCount, PaginatedSearch} from '@betagouv/signalconso-api-sdk-js'
+import {cleanObject, Company, CompanySearch, CompanyWithReportsCount, PaginatedSearch} from '@signal-conso/signalconso-api-sdk-js'
 import React, {useEffect} from 'react'
 import {useCompaniesContext} from '../../core/context/CompaniesContext'
 import {useCssUtils} from '../../core/helper/useCssUtils'
@@ -93,7 +93,7 @@ export const CompaniesRegistered = () => {
               value={_companies.filters.departments}
               onChange={departments => _companies.updateFilters(prev => ({...prev, departments}))}
             >
-              {(value, onChange) => <SelectDepartments values={value} onChange={onChange} className={cssUtils.marginRight}/>}
+              {(value, onChange) => <SelectDepartments values={value} onChange={onChange} className={cssUtils.marginRight} />}
             </DebouncedInput>
             <DebouncedInput
               value={_companies.filters.identity ?? ''}
@@ -135,7 +135,7 @@ export const CompaniesRegistered = () => {
               <Tooltip title={_.name}>
                 <span>
                   <span className={css.tdName_label}>{_.name}</span>
-                  <br/>
+                  <br />
                   <span className={css.tdName_desc}>{_.siret}</span>
                 </span>
               </Tooltip>
@@ -146,9 +146,9 @@ export const CompaniesRegistered = () => {
             id: 'address',
             className: css.tdAddress,
             row: _ => (
-              <Tooltip title={<AddressComponent address={_.address}/>}>
+              <Tooltip title={<AddressComponent address={_.address} />}>
                 <span>
-                  <AddressComponent address={_.address}/>
+                  <AddressComponent address={_.address} />
                 </span>
               </Tooltip>
             ),
@@ -168,7 +168,7 @@ export const CompaniesRegistered = () => {
             id: 'count',
             className: cssUtils.txtRight,
             row: _ => (
-              <NavLink to={siteMap.reports({siretSirenList: [_.siret], departments: _companies.filters.departments})}>
+              <NavLink to={siteMap.logged.reports({siretSirenList: [_.siret], departments: _companies.filters.departments})}>
                 <ScButton color="primary">{formatLargeNumber(_.count)}</ScButton>
               </NavLink>
             ),
@@ -202,14 +202,14 @@ export const CompaniesRegistered = () => {
                     </Tooltip>
                   </EditAddressDialog>
                 )}
-                <NavLink to={siteMap.companyAccesses(_.siret)}>
+                <NavLink to={siteMap.logged.companyAccesses(_.siret)}>
                   <Tooltip title={m.handleAccesses}>
                     <IconBtn color="primary">
                       <Icon>vpn_key</Icon>
                     </IconBtn>
                   </Tooltip>
                 </NavLink>
-                <NavLink to={siteMap.company(_.id)}>
+                <NavLink to={siteMap.logged.company(_.id)}>
                   <IconBtn>
                     <Icon>chevron_right</Icon>
                   </IconBtn>

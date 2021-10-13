@@ -1,5 +1,5 @@
-import React from 'react'
-import {ApiClient, ApiError, SignalConsoPublicSdk, SignalConsoSecuredSdk} from '@betagouv/signalconso-api-sdk-js'
+import React, {useEffect} from 'react'
+import {ApiError} from '@signal-conso/signalconso-api-sdk-js'
 import {Config} from './conf/config'
 import {makeStyles} from '@material-ui/core/styles'
 import {CircularProgress, Theme, ThemeProvider} from '@material-ui/core'
@@ -106,11 +106,11 @@ export const App = () => {
   return (
     <Provide
       providers={[
-        _ => <ThemeProvider theme={muiTheme()} children={_}/>,
-        _ => <I18nProvider children={_}/>,
-        _ => <MuiPickersUtilsProvider utils={DateAdapter} children={_}/>,
-        _ => <Router children={_}/>,
-        _ => <ToastProvider horizontal="right" children={_}/>,
+        _ => <ThemeProvider theme={muiTheme()} children={_} />,
+        _ => <I18nProvider children={_} />,
+        _ => <MuiPickersUtilsProvider utils={DateAdapter} children={_} />,
+        _ => <Router children={_} />,
+        _ => <ToastProvider horizontal="right" children={_} />,
       ]}
     >
       <AppLogin />
@@ -121,7 +121,6 @@ export const App = () => {
 const AppLogin = () => {
   useStyles()
   const history = useHistory()
-  history.listen(_ => Matomo.trackPage(_.pathname))
   const forgottenPassword = useFetcher<SignalConsoApiSdk['public']['authenticate']['forgotPassword'], ApiError>(
     apiPublicSdk.authenticate.forgotPassword,
   )
@@ -136,25 +135,25 @@ const AppLogin = () => {
       {({authResponse, login, logout, register, isCheckingToken, setToken}) => (
         <Layout connectedUser={authResponse ? {...authResponse.user, logout: logout} : undefined}>
           <Switch>
-            <Route path={siteMap.emailValidation}>
+            <Route path={siteMap.loggedout.emailValidation}>
               <EmailValidation onSaveToken={setToken} onValidateEmail={apiPublicSdk.authenticate.validateEmail} />
             </Route>
-            <Route path={siteMap.resetPassword()}>
+            <Route path={siteMap.loggedout.resetPassword()}>
               <ResetPassword onResetPassword={apiPublicSdk.authenticate.resetPassword} />
             </Route>
-            <Route path={siteMap.activatePro()}>
+            <Route path={siteMap.loggedout.activatePro()}>
               <UserActivation
                 onActivateUser={apiPublicSdk.user.activateAccount}
                 onFetchTokenInfo={apiPublicSdk.user.fetchTokenInfo}
               />
             </Route>
-            <Route path={siteMap.activateDgccrf}>
+            <Route path={siteMap.loggedout.activateDgccrf}>
               <UserActivation
                 onActivateUser={apiPublicSdk.user.activateAccount}
                 onFetchTokenInfo={apiPublicSdk.user.fetchTokenInfo}
               />
             </Route>
-            <Route path={siteMap.consumerReview()}>
+            <Route path={siteMap.loggedout.consumerReview()}>
               <ConsumerReview onSubmit={apiPublicSdk.report.postReviewOnReportResponse} />
             </Route>
             <Route path="/">
@@ -192,6 +191,9 @@ const AppLogin = () => {
 
 const AppLogged = () => {
   const {apiSdk, connectedUser} = useLogin()
+  const history = useHistory()
+  useEffect(() => history.listen(_ => Matomo.trackPage(`/${connectedUser.role.toLocaleLowerCase()}${_.pathname}`)), [history])
+
   return (
     <Provide
       providers={[
@@ -214,21 +216,21 @@ const AppLogged = () => {
       ]}
     >
       <Switch>
-        <Route path={siteMap.reportedWebsites} component={ReportedWebsites} />
-        <Route path={siteMap.reportedPhone} component={ReportedPhones} />
-        <Route path={siteMap.report()} component={connectedUser.isPro ? ReportPro : ReportComponent} />
-        <Route path={siteMap.reports()} component={connectedUser.isPro ? ReportsPro : Reports} />
-        <Route path={siteMap.users} component={Users} />
-        <Route path={siteMap.companies} component={Companies} />
-        <Route path={siteMap.companyAccesses()} component={CompanyAccesses} />
-        <Route path={siteMap.company()} component={CompanyComponent} />
-        <Route path={siteMap.subscriptions} component={Subscriptions} />
-        <Route path={siteMap.companiesPro} component={CompaniesPro} />
-        <Route path={siteMap.settings} component={Settings} />
-        <Route path={siteMap.register} component={ActivateNewCompany} />
-        <Route path={siteMap.modeEmploiDGCCRF} component={ModeEmploiDGCCRF} />
-        <Route path={siteMap.companiesDbSync} component={CompaniesDbSync} />
-        <Redirect from="/" to={siteMap.reports()} />
+        <Route path={siteMap.logged.reportedWebsites} component={ReportedWebsites} />
+        <Route path={siteMap.logged.reportedPhone} component={ReportedPhones} />
+        <Route path={siteMap.logged.report()} component={connectedUser.isPro ? ReportPro : ReportComponent} />
+        <Route path={siteMap.logged.reports()} component={connectedUser.isPro ? ReportsPro : Reports} />
+        <Route path={siteMap.logged.users} component={Users} />
+        <Route path={siteMap.logged.companies} component={Companies} />
+        <Route path={siteMap.logged.companyAccesses()} component={CompanyAccesses} />
+        <Route path={siteMap.logged.company()} component={CompanyComponent} />
+        <Route path={siteMap.logged.subscriptions} component={Subscriptions} />
+        <Route path={siteMap.logged.companiesPro} component={CompaniesPro} />
+        <Route path={siteMap.logged.settings} component={Settings} />
+        <Route path={siteMap.logged.modeEmploiDGCCRF} component={ModeEmploiDGCCRF} />
+        <Route path={siteMap.logged.companiesDbSync} component={CompaniesDbSync} />
+        <Route path={siteMap.loggedout.register} component={ActivateNewCompany} />
+        <Redirect from="/" to={siteMap.logged.reports()} />
       </Switch>
     </Provide>
   )

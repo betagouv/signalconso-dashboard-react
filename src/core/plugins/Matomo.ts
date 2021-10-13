@@ -3,7 +3,16 @@ import {Config} from 'conf/config'
 declare const _paq: any
 
 export class Matomo {
-  constructor() {
+  constructor() {}
+
+  private static previousTrackedPage?: string
+
+  private static isAlreadyFired = (path: string) => {
+    if (path !== Matomo.previousTrackedPage) {
+      Matomo.previousTrackedPage = path
+      return false
+    }
+    return true
   }
 
   static readonly trackEvent = (category: EventCategories, action: AnalyticAction, name?: any, value?: any) => {
@@ -11,8 +20,10 @@ export class Matomo {
   }
 
   static readonly trackPage = (path: string) => {
-    Matomo.push(['setCustomUrl', Config.appBaseUrl + path])
-    Matomo.push(['trackPageView'])
+    if (!Matomo.isAlreadyFired(path)) {
+      Matomo.push(['setCustomUrl', Config.appBaseUrl + path])
+      Matomo.push(['trackPageView'])
+    }
   }
 
   private static readonly push = (args: any[]) => {

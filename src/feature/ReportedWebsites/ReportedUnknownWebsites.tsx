@@ -4,7 +4,7 @@ import {useCssUtils} from '../../core/helper/useCssUtils'
 import {Icon, InputBase, makeStyles, Theme, Tooltip} from '@material-ui/core'
 import {Panel} from '../../shared/Panel'
 import {Datatable} from '../../shared/Datatable/Datatable'
-import {ApiHostWithReportCount} from '@betagouv/signalconso-api-sdk-js'
+import {ApiHostWithReportCount} from '@signal-conso/signalconso-api-sdk-js'
 import {DebouncedInput} from '../../shared/DebouncedInput/DebouncedInput'
 import {useUnregistredWebsiteWithCompanyContext} from '../../core/context/UnregistredWebsitesContext'
 import {useToast} from '../../core/toast'
@@ -17,6 +17,7 @@ import {Btn, IconBtn} from 'mui-extension'
 import {ExportReportsPopper, ExportUnknownWebsitesPopper} from '../../shared/ExportPopper/ExportPopperBtn'
 import {Config} from '../../conf/config'
 import {PeriodPicker} from '../../shared/PeriodPicker/PeriodPicker'
+import {useLogin} from '../../core/context/LoginContext'
 
 export const ReportedUnknownWebsites = () => {
   const {m} = useI18n()
@@ -106,7 +107,7 @@ export const ReportedUnknownWebsites = () => {
             row: _ => (
               <>
                 <NavLink
-                  to={siteMap.reports({
+                  to={siteMap.logged.reports({
                     websiteURL: _.host,
                   })}
                 >
