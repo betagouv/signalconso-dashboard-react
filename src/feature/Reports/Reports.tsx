@@ -1,7 +1,15 @@
 import {Page, PageTitle} from '../../shared/Layout'
 import {useI18n} from '../../core/i18n'
 import {useReportsContext} from '../../core/context/ReportsContext'
-import {cleanObject, getHostFromUrl, Report, ReportingDateLabel, ReportSearch, ReportSearchResult, ReportTag} from '@signal-conso/signalconso-api-sdk-js'
+import {
+  cleanObject,
+  getHostFromUrl,
+  Report,
+  ReportingDateLabel,
+  ReportSearch,
+  ReportSearchResult,
+  ReportTag,
+} from '@signal-conso/signalconso-api-sdk-js'
 import {Panel} from '../../shared/Panel'
 import {useCssUtils} from '../../core/helper/useCssUtils'
 import {Datatable} from '../../shared/Datatable/Datatable'
@@ -9,7 +17,12 @@ import {fromNullable, some} from 'fp-ts/lib/Option'
 import {alpha, Badge, Button, Icon, makeStyles, Theme, Tooltip} from '@material-ui/core'
 import {classes, textOverflowMiddleCropping} from '../../core/helper/utils'
 import React, {useEffect, useMemo} from 'react'
-import {mapArrayFromQuerystring, mapDateFromQueryString, mapDatesToQueryString, useQueryString} from '../../core/helper/useQueryString'
+import {
+  mapArrayFromQuerystring,
+  mapDateFromQueryString,
+  mapDatesToQueryString,
+  useQueryString,
+} from '../../core/helper/useQueryString'
 import {NavLink} from 'react-router-dom'
 import {SelectDepartments} from '../../shared/SelectDepartments/SelectDepartments'
 import {Fender, IconBtn} from 'mui-extension/lib'
@@ -55,7 +68,7 @@ const useStyles = makeStyles((t: Theme) => ({
     maxWidth: 200,
     minWidth: 200,
     lineHeight: 1.4,
-    whiteSpace: 'initial'
+    whiteSpace: 'initial',
   },
   tdFiles: {
     minWidth: 44,
@@ -271,9 +284,7 @@ export const Reports = ({}) => {
               id: 'details',
               head: m.details,
               className: css.tdDesc,
-              row: _ => (
-                <ReportDetailValues input={_.report.details} lines={2}/>
-              ),
+              row: _ => <ReportDetailValues input={_.report.details} lines={2} />,
             },
             {
               id: 'email',

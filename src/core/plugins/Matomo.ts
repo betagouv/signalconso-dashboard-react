@@ -3,8 +3,7 @@ import {Config} from 'conf/config'
 declare const _paq: any
 
 export class Matomo {
-  constructor() {
-  }
+  constructor() {}
 
   private static previousTrackedPage?: string
 

@@ -23,7 +23,7 @@ const useStyles = makeStyles((t: Theme) => ({
   },
   item: {
     display: 'flex',
-    margin: t.spacing(.5, 0, .5, 0),
+    margin: t.spacing(0.5, 0, 0.5, 0),
   },
   label: {
     width: 200,
@@ -36,11 +36,11 @@ const useStyles = makeStyles((t: Theme) => ({
     overflow: 'hidden',
   },
   barContainer: {
-    padding: t.spacing(.25, 0, .25, 0),
+    padding: t.spacing(0.25, 0, 0.25, 0),
     flex: 1,
     transition: t.transitions.create('background'),
     '&:hover': {
-      background: alpha(t.palette.primary.main, .1),
+      background: alpha(t.palette.primary.main, 0.1),
     },
   },
   bar: {
@@ -71,7 +71,7 @@ const useStyles = makeStyles((t: Theme) => ({
   },
   tooltipBody: {
     textAlign: 'right',
-  }
+  },
 }))
 
 export const HorizontalBarChart = ({data, grid}: Props) => {
@@ -85,40 +85,48 @@ export const HorizontalBarChart = ({data, grid}: Props) => {
 
   return (
     <div className={css.root}>
-      {(data && maxValue && sumValue) ? data.map((item, i) => {
-        const percentOfMax = item.value / maxValue * 100
-        const percentOfAll = item.value / sumValue * 100
-        return (
-          <div key={i} className={css.item}>
-            <div className={css.label}>{item.label}</div>
-            <LightTooltip title={
-              <>
-                <Txt size="big" block bold>{item.label}</Txt>
-                <div className={css.tooltipBody}>
-                  <Txt size="title" color="primary" block>{formatLargeNumber(item.value)}</Txt>
-                  <Txt size="big" color="hint" block>{Math.ceil(percentOfAll)}%</Txt>
+      {data && maxValue && sumValue ? (
+        data.map((item, i) => {
+          const percentOfMax = (item.value / maxValue) * 100
+          const percentOfAll = (item.value / sumValue) * 100
+          return (
+            <div key={i} className={css.item}>
+              <div className={css.label}>{item.label}</div>
+              <LightTooltip
+                title={
+                  <>
+                    <Txt size="big" block bold>
+                      {item.label}
+                    </Txt>
+                    <div className={css.tooltipBody}>
+                      <Txt size="title" color="primary" block>
+                        {formatLargeNumber(item.value)}
+                      </Txt>
+                      <Txt size="big" color="hint" block>
+                        {Math.ceil(percentOfAll)}%
+                      </Txt>
+                    </div>
+                  </>
+                }
+              >
+                <div className={css.barContainer}>
+                  <div className={css.bar} style={{width: appeared ? `${percentOfMax}%` : 0, backgroundColor: item.color}}>
+                    {percentOfMax > 40 && <div className={css.bar_label}>{formatLargeNumber(item.value)}</div>}
+                  </div>
                 </div>
-              </>
-            }>
-              <div className={css.barContainer}>
-                <div className={css.bar} style={{width: appeared ? `${percentOfMax}%` : 0, backgroundColor: item.color}}>
-                  {percentOfMax > 40 && (
-                    <div className={css.bar_label}>{formatLargeNumber(item.value)}</div>
-                  )}
-                </div>
-              </div>
-            </LightTooltip>
-          </div>
-        )
-      }) : (
+              </LightTooltip>
+            </div>
+          )
+        })
+      ) : (
         <div></div>
       )}
       {grid && (
         <div className={css.item}>
-          <div className={css.label}/>
+          <div className={css.label} />
           <div className={css.legend}>
             {mapFor(gridAxis + 1, i => (
-              <div key={i} className={css.legendTick} style={{left: `calc(${i * (100 / gridAxis)}% - 1px)`}}/>
+              <div key={i} className={css.legendTick} style={{left: `calc(${i * (100 / gridAxis)}% - 1px)`}} />
             ))}
           </div>
         </div>

@@ -14,7 +14,7 @@ export const WidgetLoading = () => {
   const css = useStyles()
   return (
     <div className={css.root}>
-      <Skeleton height={46} width="60%"/>
+      <Skeleton height={46} width="60%" />
     </div>
   )
 }

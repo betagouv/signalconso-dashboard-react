@@ -20,7 +20,12 @@ import {classes, openInNew} from '../../core/helper/utils'
 import {Btn, Fender} from 'mui-extension/lib'
 import {EntityIcon} from '../../core/EntityIcon'
 import {ScButton} from '../../shared/Button/Button'
-import {mapArrayFromQuerystring, mapDateFromQueryString, mapDatesToQueryString, useQueryString} from '../../core/helper/useQueryString'
+import {
+  mapArrayFromQuerystring,
+  mapDateFromQueryString,
+  mapDatesToQueryString,
+  useQueryString,
+} from '../../core/helper/useQueryString'
 import {fromNullable} from 'fp-ts/lib/Option'
 import {useToast} from '../../core/toast'
 import {Config} from '../../conf/config'
@@ -274,13 +279,13 @@ export const ReportsPro = () => {
                 rows={
                   isMobileWidth
                     ? [
-                      {
-                        id: 'all',
-                        head: '',
-                        row: _ => (
-                          <div className={css.card}>
-                            <div className={css.card_content}>
-                              <div className={css.card_head}>
+                        {
+                          id: 'all',
+                          head: '',
+                          row: _ => (
+                            <div className={css.card}>
+                              <div className={css.card_content}>
+                                <div className={css.card_head}>
                                   <Txt bold size="big">
                                     {_.report.companySiret}
                                   </Txt>

@@ -17,7 +17,5 @@ const useStyles = makeStyles((t: Theme) => ({
 
 export const WidgetBody = ({children}: Props) => {
   const css = useStyles()
-  return (
-    <div className={css.root}>{children}</div>
-  )
+  return <div className={css.root}>{children}</div>
 }

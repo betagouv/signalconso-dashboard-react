@@ -5,7 +5,6 @@ import {ApiError} from '@signal-conso/signalconso-api-sdk-js'
 import {SignalConsoApiSdk} from '../ApiSdkInstance'
 
 export interface EventContextProps {
-
   reportEvents: UseFetcher<SignalConsoApiSdk['secured']['events']['getByReportId'], ApiError>
   companyEvents: UseFetcher<SignalConsoApiSdk['secured']['events']['getBySiret'], ApiError>
 }

@@ -46,10 +46,7 @@ export const LoginPage = ({login, register, forgottenPassword}: Props) => {
   const {m} = useI18n()
   const css = useStyles()
   const history = useHistory()
-  useEffect(
-    () => history.listen(_ => Matomo.trackPage(_.pathname)),
-    [history],
-  )
+  useEffect(() => history.listen(_ => Matomo.trackPage(_.pathname)), [history])
 
   const allTabs = [siteMap.loggedout.login, siteMap.loggedout.register]
 

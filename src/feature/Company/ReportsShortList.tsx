@@ -35,8 +35,7 @@ const useStyles = makeStyles((t: Theme) => ({
   body: {
     flex: 1,
   },
-  title: {
-  }
+  title: {},
 }))
 
 export const ReportsShortList = ({reports}: Props) => {
@@ -53,15 +52,18 @@ export const ReportsShortList = ({reports}: Props) => {
                 {_.report.category}
               </Txt>
               <div className={css.reportTag}>
-                <ReportStatusChip status={_.report.status} dense className={cssUtils.marginRight}/>
+                <ReportStatusChip status={_.report.status} dense className={cssUtils.marginRight} />
                 <Txt color="hint">{formatDate(_.report.creationDate)}</Txt>
-                <Icon fontSize="inherit" className={cssUtils.marginLeft}>label</Icon>&nbsp;
+                <Icon fontSize="inherit" className={cssUtils.marginLeft}>
+                  label
+                </Icon>
+                &nbsp;
                 <Txt color="disabled" truncate style={{width: 0, flex: 1}}>
                   {_.report.tags.join(', ')}
                 </Txt>
               </div>
             </div>
-            <ReportDetailValues input={_.report.details} lines={3}/>
+            <ReportDetailValues input={_.report.details} lines={3} />
           </div>
           <NavLink to={siteMap.logged.report(_.report.id)}>
             <IconBtn>

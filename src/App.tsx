@@ -106,11 +106,11 @@ export const App = () => {
   return (
     <Provide
       providers={[
-        _ => <ThemeProvider theme={muiTheme()} children={_}/>,
-        _ => <I18nProvider children={_}/>,
-        _ => <MuiPickersUtilsProvider utils={DateAdapter} children={_}/>,
-        _ => <Router children={_}/>,
-        _ => <ToastProvider horizontal="right" children={_}/>,
+        _ => <ThemeProvider theme={muiTheme()} children={_} />,
+        _ => <I18nProvider children={_} />,
+        _ => <MuiPickersUtilsProvider utils={DateAdapter} children={_} />,
+        _ => <Router children={_} />,
+        _ => <ToastProvider horizontal="right" children={_} />,
       ]}
     >
       <AppLogin />
@@ -192,48 +192,45 @@ const AppLogin = () => {
 const AppLogged = () => {
   const {apiSdk, connectedUser} = useLogin()
   const history = useHistory()
-  useEffect(
-    () => history.listen(_ => Matomo.trackPage(`/${connectedUser.role.toLocaleLowerCase()}${_.pathname}`)),
-    [history],
-  )
+  useEffect(() => history.listen(_ => Matomo.trackPage(`/${connectedUser.role.toLocaleLowerCase()}${_.pathname}`)), [history])
 
   return (
     <Provide
       providers={[
-        _ => <ReportsProvider api={apiSdk} children={_}/>,
-        _ => <ReportProvider api={apiSdk} children={_}/>,
-        _ => <ConstantProvider api={apiSdk} children={_}/>,
-        _ => <AnomalyProvider api={apiSdk} children={_}/>,
-        _ => <ReportedPhonesProvider api={apiSdk} children={_}/>,
-        _ => <AsyncFileProvider api={apiSdk} children={_}/>,
-        _ => <CompaniesProvider api={apiSdk} children={_}/>,
-        _ => <UsersProvider api={apiSdk} children={_}/>,
-        _ => <ReportedWebsitesProvider api={apiSdk} children={_}/>,
-        _ => <UnregistredWebsitesProvider api={apiSdk} children={_}/>,
-        _ => <SubscriptionsProvider api={apiSdk} children={_}/>,
-        _ => <AccessesProvider api={apiSdk} children={_}/>,
-        _ => <BlockedReportNotificationProvider api={apiSdk} children={_}/>,
-        _ => <StatsProvider api={apiSdk} children={_}/>,
-        _ => <CompaniesDbSyncProvider api={apiSdk} children={_}/>,
-        _ => <EventProvider api={apiSdk} children={_}/>,
+        _ => <ReportsProvider api={apiSdk} children={_} />,
+        _ => <ReportProvider api={apiSdk} children={_} />,
+        _ => <ConstantProvider api={apiSdk} children={_} />,
+        _ => <AnomalyProvider api={apiSdk} children={_} />,
+        _ => <ReportedPhonesProvider api={apiSdk} children={_} />,
+        _ => <AsyncFileProvider api={apiSdk} children={_} />,
+        _ => <CompaniesProvider api={apiSdk} children={_} />,
+        _ => <UsersProvider api={apiSdk} children={_} />,
+        _ => <ReportedWebsitesProvider api={apiSdk} children={_} />,
+        _ => <UnregistredWebsitesProvider api={apiSdk} children={_} />,
+        _ => <SubscriptionsProvider api={apiSdk} children={_} />,
+        _ => <AccessesProvider api={apiSdk} children={_} />,
+        _ => <BlockedReportNotificationProvider api={apiSdk} children={_} />,
+        _ => <StatsProvider api={apiSdk} children={_} />,
+        _ => <CompaniesDbSyncProvider api={apiSdk} children={_} />,
+        _ => <EventProvider api={apiSdk} children={_} />,
       ]}
     >
       <Switch>
-        <Route path={siteMap.logged.reportedWebsites} component={ReportedWebsites}/>
-        <Route path={siteMap.logged.reportedPhone} component={ReportedPhones}/>
-        <Route path={siteMap.logged.report()} component={connectedUser.isPro ? ReportPro : ReportComponent}/>
-        <Route path={siteMap.logged.reports()} component={connectedUser.isPro ? ReportsPro : Reports}/>
-        <Route path={siteMap.logged.users} component={Users}/>
-        <Route path={siteMap.logged.companies} component={Companies}/>
-        <Route path={siteMap.logged.companyAccesses()} component={CompanyAccesses}/>
-        <Route path={siteMap.logged.company()} component={CompanyComponent}/>
-        <Route path={siteMap.logged.subscriptions} component={Subscriptions}/>
-        <Route path={siteMap.logged.companiesPro} component={CompaniesPro}/>
-        <Route path={siteMap.logged.settings} component={Settings}/>
-        <Route path={siteMap.logged.modeEmploiDGCCRF} component={ModeEmploiDGCCRF}/>
-        <Route path={siteMap.logged.companiesDbSync} component={CompaniesDbSync}/>
-        <Route path={siteMap.loggedout.register} component={ActivateNewCompany}/>
-        <Redirect from="/" to={siteMap.logged.reports()}/>
+        <Route path={siteMap.logged.reportedWebsites} component={ReportedWebsites} />
+        <Route path={siteMap.logged.reportedPhone} component={ReportedPhones} />
+        <Route path={siteMap.logged.report()} component={connectedUser.isPro ? ReportPro : ReportComponent} />
+        <Route path={siteMap.logged.reports()} component={connectedUser.isPro ? ReportsPro : Reports} />
+        <Route path={siteMap.logged.users} component={Users} />
+        <Route path={siteMap.logged.companies} component={Companies} />
+        <Route path={siteMap.logged.companyAccesses()} component={CompanyAccesses} />
+        <Route path={siteMap.logged.company()} component={CompanyComponent} />
+        <Route path={siteMap.logged.subscriptions} component={Subscriptions} />
+        <Route path={siteMap.logged.companiesPro} component={CompaniesPro} />
+        <Route path={siteMap.logged.settings} component={Settings} />
+        <Route path={siteMap.logged.modeEmploiDGCCRF} component={ModeEmploiDGCCRF} />
+        <Route path={siteMap.logged.companiesDbSync} component={CompaniesDbSync} />
+        <Route path={siteMap.loggedout.register} component={ActivateNewCompany} />
+        <Redirect from="/" to={siteMap.logged.reports()} />
       </Switch>
     </Provide>
   )
