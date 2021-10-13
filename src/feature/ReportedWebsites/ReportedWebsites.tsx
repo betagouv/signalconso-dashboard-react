@@ -19,18 +19,18 @@ export const ReportedWebsites = () => {
 
       {connectedUser.isAdmin && (
         <PageTabs>
-          <PageTab to={siteMap.logged(connectedUser.role).reportedWebsites_association} label={m.reportedCompaniesWebsites} />
-          <PageTab to={siteMap.logged(connectedUser.role).reportedWebsites_unknown} label={m.reportedUnknownWebsites} />
+          <PageTab to={siteMap.logged.reportedWebsites_association} label={m.reportedCompaniesWebsites} />
+          <PageTab to={siteMap.logged.reportedWebsites_unknown} label={m.reportedUnknownWebsites} />
         </PageTabs>
       )}
       <Switch>
         {connectedUser.isAdmin ? (
-          <Redirect exact from={path} to={siteMap.logged(connectedUser.role).reportedWebsites_association} />
+          <Redirect exact from={path} to={siteMap.logged.reportedWebsites_association} />
         ) : (
-          <Redirect exact from={path} to={siteMap.logged(connectedUser.role).reportedWebsites_unknown} />
+          <Redirect exact from={path} to={siteMap.logged.reportedWebsites_unknown} />
         )}
-        <Route path={siteMap.logged(connectedUser.role).reportedWebsites_association} component={ReportedCompaniesWebsites} />
-        <Route path={siteMap.logged(connectedUser.role).reportedWebsites_unknown} component={ReportedUnknownWebsites} />
+        <Route path={siteMap.logged.reportedWebsites_association} component={ReportedCompaniesWebsites} />
+        <Route path={siteMap.logged.reportedWebsites_unknown} component={ReportedUnknownWebsites} />
       </Switch>
     </Page>
   )

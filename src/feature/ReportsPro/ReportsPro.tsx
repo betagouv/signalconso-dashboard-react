@@ -96,7 +96,6 @@ export const ReportsPro = () => {
   const {formatDate, m} = useI18n()
   const css = useStyles()
   const cssUtils = useCssUtils()
-  const {connectedUser} = useLogin()
 
   const hasFilters = useMemo(() => {
     const {limit, offset, ...values} = _reports.filters
@@ -267,9 +266,9 @@ export const ReportsPro = () => {
                 total={_reports.list?.totalSize}
                 onClickRows={(_, e) => {
                   if (e.metaKey || e.ctrlKey) {
-                    openInNew(siteMap.logged(connectedUser.role).report(_.report.id))
+                    openInNew(siteMap.logged.report(_.report.id))
                   } else {
-                    history.push(siteMap.logged(connectedUser.role).report(_.report.id))
+                    history.push(siteMap.logged.report(_.report.id))
                   }
                 }}
                 rows={

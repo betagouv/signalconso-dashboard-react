@@ -61,7 +61,6 @@ export const CompaniesPro = () => {
   const _companies = useCompaniesContext()
   const _blockedNotifications = useBlockedReportNotificationContext()
   const cssUtils = useCssUtils()
-  const {connectedUser} = useLogin()
   const css = useStyles()
   const _users = useUsersContext()
   const {toastError} = useToast()
@@ -201,7 +200,7 @@ export const CompaniesPro = () => {
               row: _ => (
                 <>
                   {_.level === AccessLevel.ADMIN && (
-                    <NavLink to={siteMap.logged(connectedUser.role).companyAccesses(_.siret)}>
+                    <NavLink to={siteMap.logged.companyAccesses(_.siret)}>
                       <Tooltip title={m.handleAccesses}>
                         <IconBtn color="primary">
                           <Icon>vpn_key</Icon>
@@ -209,7 +208,7 @@ export const CompaniesPro = () => {
                       </Tooltip>
                     </NavLink>
                   )}
-                  <NavLink to={siteMap.logged(connectedUser.role).reports({siretSirenList: [_.siret]})}>
+                  <NavLink to={siteMap.logged.reports({siretSirenList: [_.siret]})}>
                     <Tooltip title={m.reports}>
                       <IconBtn color="primary">
                         <Icon>chevron_right</Icon>

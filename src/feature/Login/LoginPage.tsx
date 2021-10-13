@@ -1,6 +1,7 @@
 import {Page} from 'mui-extension/lib'
 import {Icon, Tab, Tabs, Theme} from '@material-ui/core'
 import * as React from 'react'
+import {useEffect} from 'react'
 import {makeStyles} from '@material-ui/core/styles'
 import {useI18n} from '../../core/i18n'
 import {CenteredContent} from '../../shared/CenteredContent/CenteredContent'
@@ -11,6 +12,8 @@ import {Link, Redirect, Route, Switch} from 'react-router-dom'
 import {siteMap} from '../../core/siteMap'
 import {ApiError, SignalConsoPublicSdk} from '@signal-conso/signalconso-api-sdk-js'
 import {HelpContactInfo} from '../../shared/HelpContactInfo/HelpContactInfo'
+import {useHistory} from 'react-router'
+import {Matomo} from '../../core/plugins/Matomo'
 
 const useStyles = makeStyles((t: Theme) => ({
   root: {
@@ -42,6 +45,11 @@ interface Props {
 export const LoginPage = ({login, register, forgottenPassword}: Props) => {
   const {m} = useI18n()
   const css = useStyles()
+  const history = useHistory()
+  useEffect(
+    () => history.listen(_ => Matomo.trackPage(_.pathname)),
+    [history],
+  )
 
   const allTabs = [siteMap.loggedout.login, siteMap.loggedout.register]
 

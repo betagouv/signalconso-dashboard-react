@@ -24,7 +24,6 @@ export const ReportedUnknownWebsites = () => {
   const _fetch = useUnregistredWebsiteWithCompanyContext()
   const cssUtils = useCssUtils()
   const {toastError, toastSuccess} = useToast()
-  const {connectedUser} = useLogin()
 
   useEffect(() => {
     _fetch.fetch()
@@ -108,7 +107,7 @@ export const ReportedUnknownWebsites = () => {
             row: _ => (
               <>
                 <NavLink
-                  to={siteMap.logged(connectedUser.role).reports({
+                  to={siteMap.logged.reports({
                     websiteURL: _.host,
                   })}
                 >

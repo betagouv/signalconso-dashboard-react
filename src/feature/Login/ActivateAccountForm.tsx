@@ -43,7 +43,6 @@ export const ActivateAccountForm = ({register: registerAction}: Props) => {
   const css = useStyles()
   const {toastSuccess, toastError} = useToast()
   const history = useHistory()
-  const {connectedUser} = useLogin()
   const {
     register,
     handleSubmit,

@@ -168,7 +168,7 @@ export const CompaniesRegistered = () => {
             id: 'count',
             className: cssUtils.txtRight,
             row: _ => (
-              <NavLink to={siteMap.logged(connectedUser.role).reports({siretSirenList: [_.siret], departments: _companies.filters.departments})}>
+              <NavLink to={siteMap.logged.reports({siretSirenList: [_.siret], departments: _companies.filters.departments})}>
                 <ScButton color="primary">{formatLargeNumber(_.count)}</ScButton>
               </NavLink>
             ),
@@ -202,14 +202,14 @@ export const CompaniesRegistered = () => {
                     </Tooltip>
                   </EditAddressDialog>
                 )}
-                <NavLink to={siteMap.logged(connectedUser.role).companyAccesses(_.siret)}>
+                <NavLink to={siteMap.logged.companyAccesses(_.siret)}>
                   <Tooltip title={m.handleAccesses}>
                     <IconBtn color="primary">
                       <Icon>vpn_key</Icon>
                     </IconBtn>
                   </Tooltip>
                 </NavLink>
-                <NavLink to={siteMap.logged(connectedUser.role).company(_.id)}>
+                <NavLink to={siteMap.logged.company(_.id)}>
                   <IconBtn>
                     <Icon>chevron_right</Icon>
                   </IconBtn>

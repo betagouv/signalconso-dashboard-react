@@ -6,13 +6,25 @@ export class Matomo {
   constructor() {
   }
 
+  private static previousTrackedPage?: string
+
+  private static isAlreadyFired = (path: string) => {
+    if (path !== Matomo.previousTrackedPage) {
+      Matomo.previousTrackedPage = path
+      return false
+    }
+    return true
+  }
+
   static readonly trackEvent = (category: EventCategories, action: AnalyticAction, name?: any, value?: any) => {
     Matomo.push(['trackEvent', category, action, name, value])
   }
 
   static readonly trackPage = (path: string) => {
-    Matomo.push(['setCustomUrl', Config.appBaseUrl + path])
-    Matomo.push(['trackPageView'])
+    if (!Matomo.isAlreadyFired(path)) {
+      Matomo.push(['setCustomUrl', Config.appBaseUrl + path])
+      Matomo.push(['trackPageView'])
+    }
   }
 
   private static readonly push = (args: any[]) => {

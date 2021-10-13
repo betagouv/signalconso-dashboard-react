@@ -31,7 +31,6 @@ export const ReportedPhones = () => {
   const cssUtils = useCssUtils()
   const css = useStyles()
   const {toastError} = useToast()
-  const {connectedUser} = useLogin()
 
   useEffect(() => {
     _reportedPhone.fetch()
@@ -129,7 +128,7 @@ export const ReportedPhones = () => {
               row: _ => (
                 <>
                   <NavLink
-                    to={siteMap.logged(connectedUser.role).reports({
+                    to={siteMap.logged.reports({
                       phone: _.phone,
                       ...(_.siret ? {siretSirenList: [_.siret]} : {}),
                       ...(_.category ? {category: _.category} : {}),

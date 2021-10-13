@@ -62,7 +62,6 @@ export const CompaniesToActivate = () => {
   const _companiesToActivate = _companies.toActivate
   const cssUtils = useCssUtils()
   const css = useStyles()
-  const {connectedUser} = useLogin()
 
   const [selectedCompanies, setSelectedCompanies] = usePersistentState<string[]>([], 'CompaniesToActivate')
   const selectedCompaniesSet = useSetState(selectedCompanies)
@@ -210,7 +209,7 @@ export const CompaniesToActivate = () => {
             stickyEnd: true,
             row: _ => (
               <>
-                <Link target="_blank" to={siteMap.logged(connectedUser.role).reports({siretSirenList: [_.company.siret]})}>
+                <Link target="_blank" to={siteMap.logged.reports({siretSirenList: [_.company.siret]})}>
                   <Tooltip title={m.reports}>
                     <IconBtn>
                       <Icon>chevron_right</Icon>

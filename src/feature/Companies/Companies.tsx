@@ -20,14 +20,14 @@ export const Companies = () => {
       <PageTitle>{m.company}</PageTitle>
       {connectedUser.isAdmin && (
         <PageTabs>
-          <PageTab to={siteMap.logged(connectedUser.role).companies_registered} label={m.companiesActivated} />
-          <PageTab to={siteMap.logged(connectedUser.role).companies_toActivate} label={m.companiesToActivate} />
+          <PageTab to={siteMap.logged.companies_registered} label={m.companiesActivated} />
+          <PageTab to={siteMap.logged.companies_toActivate} label={m.companiesToActivate} />
         </PageTabs>
       )}
       <Switch>
-        <Redirect exact from={path} to={siteMap.logged(connectedUser.role).companies_registered} />
-        <Route path={siteMap.logged(connectedUser.role).companies_registered} component={CompaniesRegistered} />
-        <Route path={siteMap.logged(connectedUser.role).companies_toActivate} component={CompaniesToActivate} />
+        <Redirect exact from={path} to={siteMap.logged.companies_registered} />
+        <Route path={siteMap.logged.companies_registered} component={CompaniesRegistered} />
+        <Route path={siteMap.logged.companies_toActivate} component={CompaniesToActivate} />
       </Switch>
     </Page>
   )

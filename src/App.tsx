@@ -1,5 +1,5 @@
-import React from 'react'
-import {ApiClient, ApiError, SignalConsoPublicSdk, SignalConsoSecuredSdk} from '@signal-conso/signalconso-api-sdk-js'
+import React, {useEffect} from 'react'
+import {ApiError} from '@signal-conso/signalconso-api-sdk-js'
 import {Config} from './conf/config'
 import {makeStyles} from '@material-ui/core/styles'
 import {CircularProgress, Theme, ThemeProvider} from '@material-ui/core'
@@ -121,7 +121,6 @@ export const App = () => {
 const AppLogin = () => {
   useStyles()
   const history = useHistory()
-  history.listen(_ => Matomo.trackPage(_.pathname))
   const forgottenPassword = useFetcher<SignalConsoApiSdk['public']['authenticate']['forgotPassword'], ApiError>(
     apiPublicSdk.authenticate.forgotPassword,
   )
@@ -192,43 +191,49 @@ const AppLogin = () => {
 
 const AppLogged = () => {
   const {apiSdk, connectedUser} = useLogin()
+  const history = useHistory()
+  useEffect(
+    () => history.listen(_ => Matomo.trackPage(`/${connectedUser.role.toLocaleLowerCase()}${_.pathname}`)),
+    [history],
+  )
+
   return (
     <Provide
       providers={[
-        _ => <ReportsProvider api={apiSdk} children={_} />,
-        _ => <ReportProvider api={apiSdk} children={_} />,
-        _ => <ConstantProvider api={apiSdk} children={_} />,
-        _ => <AnomalyProvider api={apiSdk} children={_} />,
-        _ => <ReportedPhonesProvider api={apiSdk} children={_} />,
-        _ => <AsyncFileProvider api={apiSdk} children={_} />,
-        _ => <CompaniesProvider api={apiSdk} children={_} />,
-        _ => <UsersProvider api={apiSdk} children={_} />,
-        _ => <ReportedWebsitesProvider api={apiSdk} children={_} />,
-        _ => <UnregistredWebsitesProvider api={apiSdk} children={_} />,
-        _ => <SubscriptionsProvider api={apiSdk} children={_} />,
-        _ => <AccessesProvider api={apiSdk} children={_} />,
-        _ => <BlockedReportNotificationProvider api={apiSdk} children={_} />,
-        _ => <StatsProvider api={apiSdk} children={_} />,
-        _ => <CompaniesDbSyncProvider api={apiSdk} children={_} />,
-        _ => <EventProvider api={apiSdk} children={_} />,
+        _ => <ReportsProvider api={apiSdk} children={_}/>,
+        _ => <ReportProvider api={apiSdk} children={_}/>,
+        _ => <ConstantProvider api={apiSdk} children={_}/>,
+        _ => <AnomalyProvider api={apiSdk} children={_}/>,
+        _ => <ReportedPhonesProvider api={apiSdk} children={_}/>,
+        _ => <AsyncFileProvider api={apiSdk} children={_}/>,
+        _ => <CompaniesProvider api={apiSdk} children={_}/>,
+        _ => <UsersProvider api={apiSdk} children={_}/>,
+        _ => <ReportedWebsitesProvider api={apiSdk} children={_}/>,
+        _ => <UnregistredWebsitesProvider api={apiSdk} children={_}/>,
+        _ => <SubscriptionsProvider api={apiSdk} children={_}/>,
+        _ => <AccessesProvider api={apiSdk} children={_}/>,
+        _ => <BlockedReportNotificationProvider api={apiSdk} children={_}/>,
+        _ => <StatsProvider api={apiSdk} children={_}/>,
+        _ => <CompaniesDbSyncProvider api={apiSdk} children={_}/>,
+        _ => <EventProvider api={apiSdk} children={_}/>,
       ]}
     >
       <Switch>
-        <Route path={siteMap.logged(null).reportedWebsites} component={ReportedWebsites} />
-        <Route path={siteMap.logged(null).reportedPhone} component={ReportedPhones} />
-        <Route path={siteMap.logged(null).report()} component={connectedUser.isPro ? ReportPro : ReportComponent} />
-        <Route path={siteMap.logged(null).reports()} component={connectedUser.isPro ? ReportsPro : Reports} />
-        <Route path={siteMap.logged(null).users} component={Users} />
-        <Route path={siteMap.logged(null).companies} component={Companies} />
-        <Route path={siteMap.logged(null).companyAccesses()} component={CompanyAccesses} />
-        <Route path={siteMap.logged(null).company()} component={CompanyComponent} />
-        <Route path={siteMap.logged(null).subscriptions} component={Subscriptions} />
-        <Route path={siteMap.logged(null).companiesPro} component={CompaniesPro} />
-        <Route path={siteMap.logged(null).settings} component={Settings} />
-        <Route path={siteMap.logged(null).modeEmploiDGCCRF} component={ModeEmploiDGCCRF} />
-        <Route path={siteMap.logged(null).companiesDbSync} component={CompaniesDbSync} />
-        <Route path={siteMap.loggedout.register} component={ActivateNewCompany} />
-        <Redirect from="/" to={siteMap.logged(connectedUser.role).reports()} />
+        <Route path={siteMap.logged.reportedWebsites} component={ReportedWebsites}/>
+        <Route path={siteMap.logged.reportedPhone} component={ReportedPhones}/>
+        <Route path={siteMap.logged.report()} component={connectedUser.isPro ? ReportPro : ReportComponent}/>
+        <Route path={siteMap.logged.reports()} component={connectedUser.isPro ? ReportsPro : Reports}/>
+        <Route path={siteMap.logged.users} component={Users}/>
+        <Route path={siteMap.logged.companies} component={Companies}/>
+        <Route path={siteMap.logged.companyAccesses()} component={CompanyAccesses}/>
+        <Route path={siteMap.logged.company()} component={CompanyComponent}/>
+        <Route path={siteMap.logged.subscriptions} component={Subscriptions}/>
+        <Route path={siteMap.logged.companiesPro} component={CompaniesPro}/>
+        <Route path={siteMap.logged.settings} component={Settings}/>
+        <Route path={siteMap.logged.modeEmploiDGCCRF} component={ModeEmploiDGCCRF}/>
+        <Route path={siteMap.logged.companiesDbSync} component={CompaniesDbSync}/>
+        <Route path={siteMap.loggedout.register} component={ActivateNewCompany}/>
+        <Redirect from="/" to={siteMap.logged.reports()}/>
       </Switch>
     </Provide>
   )

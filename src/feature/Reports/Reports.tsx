@@ -110,7 +110,6 @@ export const Reports = ({}) => {
   const cssUtils = useCssUtils()
   const css = useStyles()
   const {toastError} = useToast()
-  const {connectedUser} = useLogin()
   const queryString = useQueryString<Partial<ReportSearch>, Partial<ReportSearchQs>>({
     toQueryString: mapDatesToQueryString,
     fromQueryString: compose(mapDateFromQueryString, _ =>
@@ -307,7 +306,7 @@ export const Reports = ({}) => {
               stickyEnd: true,
               className: classes(css.actions),
               row: _ => (
-                <NavLink to={siteMap.logged(connectedUser.role).report(_.report.id)}>
+                <NavLink to={siteMap.logged.report(_.report.id)}>
                   <IconBtn className={cssUtils.colorTxtHint}>
                     <Icon>chevron_right</Icon>
                   </IconBtn>

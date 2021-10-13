@@ -1,30 +1,27 @@
-import {Id, ReportSearch, Roles, toQueryString} from '@signal-conso/signalconso-api-sdk-js'
+import {Id, ReportSearch, toQueryString} from '@signal-conso/signalconso-api-sdk-js'
 
 export const siteMap = {
-  logged: (_role: Roles | null) => {
-    const role = _role?.toLocaleLowerCase() || ':role'
-    return {
-      reportedWebsites: `/${role}/moderation-url-entreprises`,
-      reportedWebsites_unknown: `/${role}/moderation-url-entreprises/sites-internet/non-identifies`,
-      reportedWebsites_association: `/${role}/moderation-url-entreprises/site-internet`,
-      reportedPhone: `/${role}/suivi-des-telephones`,
-      reports: (_?: Partial<ReportSearch>) => `/${role}/suivi-des-signalements` + (_ ? toQueryString(_) : ``),
-      subscriptions: `/${role}/abonnements`,
-      report: (id: Id = `:id`) => `/${role}/suivi-des-signalements/report/${id}`,
-      exports: `/${role}/mes-telechargements`,
-      companies_toActivate: `/${role}/entreprises/a-activer`,
-      companies_registered: `/${role}/entreprises/les-plus-signalees`,
-      companies: `/${role}/entreprises`,
-      companiesPro: `/${role}/mes-entreprises`,
-      companyAccesses: (siret: string = `:siret`) => `/${role}/entreprise/acces/${siret}`,
-      users: `/${role}/admin/invitation-ccrf`,
-      company: (id: Id = `:id`) => `/${role}/bilan-entreprise/${id}`,
-      users_pending: `/${role}/admin/invitation-ccrf/pending`,
-      users_all: `/${role}/admin/invitation-ccrf/all`,
-      settings: `/${role}/parametres`,
-      modeEmploiDGCCRF: `/${role}/mode-emploi-dgccrf`,
-      companiesDbSync: `/${role}/companies-db-sync`,
-    }
+  logged: {
+    reportedWebsites: `/moderation-url-entreprises`,
+    reportedWebsites_unknown: `/moderation-url-entreprises/sites-internet/non-identifies`,
+    reportedWebsites_association: `/moderation-url-entreprises/site-internet`,
+    reportedPhone: `/suivi-des-telephones`,
+    reports: (_?: Partial<ReportSearch>) => `/suivi-des-signalements` + (_ ? toQueryString(_) : ``),
+    subscriptions: `/abonnements`,
+    report: (id: Id = `:id`) => `/suivi-des-signalements/report/${id}`,
+    exports: `/mes-telechargements`,
+    companies_toActivate: `/entreprises/a-activer`,
+    companies_registered: `/entreprises/les-plus-signalees`,
+    companies: `/entreprises`,
+    companiesPro: `/mes-entreprises`,
+    companyAccesses: (siret: string = `:siret`) => `/entreprise/acces/${siret}`,
+    users: `/admin/invitation-ccrf`,
+    company: (id: Id = `:id`) => `/bilan-entreprise/${id}`,
+    users_pending: `/admin/invitation-ccrf/pending`,
+    users_all: `/admin/invitation-ccrf/all`,
+    settings: `/parametres`,
+    modeEmploiDGCCRF: `/mode-emploi-dgccrf`,
+    companiesDbSync: `/companies-db-sync`,
   },
   loggedout: {
     activatePro: (siret: string = `:siret`) => `/entreprise/rejoindre/${siret}`,

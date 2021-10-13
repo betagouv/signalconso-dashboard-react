@@ -44,7 +44,6 @@ export const ReportComponent = () => {
   const {m} = useI18n()
   const _report = useReportContext()
   const _event = useEventContext()
-  const theme = useTheme()
   const {connectedUser} = useLogin()
   const cssUtils = useCssUtils()
   const css = useStyles()
