@@ -1,16 +1,4 @@
-import {
-  Chip,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  FormControlLabel,
-  makeStyles,
-  MenuItem,
-  Radio,
-  RadioGroup,
-  Theme,
-} from '@material-ui/core'
+import {Chip, Dialog, DialogActions, DialogContent, DialogTitle, FormControlLabel, makeStyles, MenuItem, Radio, RadioGroup, Theme} from '@material-ui/core'
 import {useI18n} from '../../core/i18n'
 import React, {ReactElement, ReactNode, useEffect, useState} from 'react'
 import {ReportSearch, ReportTag} from '@signal-conso/signalconso-api-sdk-js'
@@ -24,6 +12,7 @@ import {useAnomalyContext} from '../../core/context/AnomalyContext'
 import {SelectCountries} from '../../shared/SelectCountries/SelectCountries'
 import Autocomplete from '@material-ui/lab/Autocomplete/Autocomplete'
 import {Enum} from '@alexandreannic/ts-utils/lib/common/enum/Enum'
+import {SelectActivityCode} from '../../shared/SelectActivityCode/SelectActivityCode'
 
 export interface ReportsFiltersProps {
   updateFilters: (_: Partial<ReportSearch>) => void
@@ -105,14 +94,31 @@ export const ReportFilters = ({filters, updateFilters, children}: ReportsFilters
         {_reportStatus.entity && _category.entity && (
           <>
             <DialogContent>
+              <Row label={m.codeNaf}>
+                <Controller
+                  name="activityCodes"
+                  defaultValue={filters.activityCodes ?? []}
+                  control={control}
+                  render={({field}) => (
+                    <SelectActivityCode
+                      {...field}
+                      onChange={(e, value) => {
+                        console.log(value)
+                        field.onChange(value)
+                      }}
+                      fullWidth
+                    />
+                  )}
+                />
+              </Row>
               <Row label={m.website}>
-                <ScInput small fullWidth {...register('websiteURL')} defaultValue={filters.websiteURL ?? ''} />
+                <ScInput small fullWidth {...register('websiteURL')} defaultValue={filters.websiteURL ?? ''}/>
               </Row>
               <Row label={m.phone}>
-                <ScInput small fullWidth {...register('phone')} defaultValue={filters.phone ?? ''} />
+                <ScInput small fullWidth {...register('phone')} defaultValue={filters.phone ?? ''}/>
               </Row>
               <Row label={m.siret}>
-                <ScInput small fullWidth {...register('siretSirenList')} defaultValue={filters.siretSirenList ?? ''} />
+                <ScInput small fullWidth {...register('siretSirenList')} defaultValue={filters.siretSirenList ?? ''}/>
               </Row>
               <Row label={m.emailConsumer}>
                 <ScInput small fullWidth {...register('email')} defaultValue={filters.email ?? ''} />
@@ -134,11 +140,11 @@ export const ReportFilters = ({filters, updateFilters, children}: ReportsFilters
                   control={control}
                   render={({field}) => (
                     <Autocomplete
+                      fullWidth
                       multiple
                       {...field}
                       onChange={(e, value) => field.onChange(value)}
                       options={Enum.values(ReportTag)}
-                      style={{width: 300}}
                       renderTags={(value, getTagProps) =>
                         value.map((option: string, index: number) => (
                           <Chip size="small" variant="outlined" label={option} {...getTagProps({index})} />
