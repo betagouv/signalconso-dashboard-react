@@ -306,6 +306,7 @@ export const messagesFr = {
   passwordNotLongEnough: '8 caractères minimum',
   oldPassword: 'Ancien mot de passe',
   companyCreated: 'Entreprise créée',
+  codeNaf: 'Code NAF',
   cannotCreateCompanyMissingInfo: `Impossible de créer l'entreprise. Son nom ou son adresse ne sont pas renseignés.`,
   editAddress: `Modifier l'adresse de l'entreprise`,
   companyAccessLevelDescription: {

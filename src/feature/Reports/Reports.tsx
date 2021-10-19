@@ -102,6 +102,7 @@ interface ReportSearchQs {
   readonly tags?: ReportTag[] | ReportTag
   readonly companyCountries?: string[] | string
   readonly siretSirenList?: string[] | string
+  readonly activityCodes?: string[] | string
   start?: string
   end?: string
   email?: string
@@ -126,7 +127,7 @@ export const Reports = ({}) => {
   const queryString = useQueryString<Partial<ReportSearch>, Partial<ReportSearchQs>>({
     toQueryString: mapDatesToQueryString,
     fromQueryString: compose(mapDateFromQueryString, _ =>
-      mapArrayFromQuerystring(_, ['departments', 'tags', 'companyCountries', 'siretSirenList']),
+      mapArrayFromQuerystring(_, ['departments', 'tags', 'companyCountries', 'siretSirenList', 'activityCodes']),
     ),
   })
 
