@@ -26,16 +26,16 @@ export const UsersListPending = () => {
         loading={_users.loading}
         total={_users.entity?.length}
         data={_users.entity}
-        rows={[
+        columns={[
           {
             id: 'email',
             head: m.email,
-            row: _ => <Txt bold>{_.email}</Txt>,
+            render: _ => <Txt bold>{_.email}</Txt>,
           },
           {
             id: 'tokenCreation',
             head: m.invitationDate,
-            row: _ => formatDate(_.tokenCreation),
+            render: _ => formatDate(_.tokenCreation),
           },
         ]}
       />

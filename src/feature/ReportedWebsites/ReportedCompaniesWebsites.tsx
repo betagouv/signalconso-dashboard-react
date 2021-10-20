@@ -150,26 +150,26 @@ export const ReportedCompaniesWebsites = () => {
         getRenderRowKey={_ => _.id}
         data={_fetch.list?.data}
         showColumnsToggle={true}
-        rows={[
+        columns={[
           {
             id: 'host',
             head: m.website,
-            row: _ => <a href={'https://' + _.host}>{_.host}</a>,
+            render: _ => <a href={'https://' + _.host}>{_.host}</a>,
           },
           {
             head: m.reports,
             id: 'reports',
-            row: _ => _.count,
+            render: _ => _.count,
           },
           {
             head: m.creation,
             id: 'creationDate',
-            row: _ => <>{formatDate(_.creationDate)}</>,
+            render: _ => <>{formatDate(_.creationDate)}</>,
           },
           {
             head: m.company,
             id: 'company',
-            row: _ => (
+            render: _ => (
               <SelectCompany
                 siret={_.company?.siret}
                 onChange={company => {
@@ -221,7 +221,7 @@ export const ReportedCompaniesWebsites = () => {
           {
             head: m.foreignCountry,
             id: 'company_country',
-            row: _ => (
+            render: _ => (
               <SelectCountry
                 country={_.companyCountry}
                 onChange={companyCountry => {
@@ -267,7 +267,7 @@ export const ReportedCompaniesWebsites = () => {
           {
             head: m.status,
             id: 'status',
-            row: _ => (
+            render: _ => (
               <FormControlLabel
                 control={<Switch checked={_.kind === WebsiteKind.DEFAULT} />}
                 onChange={() => {
@@ -282,7 +282,7 @@ export const ReportedCompaniesWebsites = () => {
           {
             id: 'actions',
             stickyEnd: true,
-            row: _ => (
+            render: _ => (
               <IconBtn className={cssUtils.colorTxtHint} onClick={() => _remove.fetch({}, _.id).then(_ => _fetch.fetch())}>
                 <Icon>delete</Icon>
               </IconBtn>

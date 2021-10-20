@@ -156,12 +156,12 @@ export const CompaniesRegistered = () => {
         total={_companies.list?.totalSize}
         getRenderRowKey={_ => _.siret}
         showColumnsToggle={true}
-        rows={[
+        columns={[
           {
             head: m.name,
             id: 'siret',
             className: css.tdName,
-            row: _ => (
+            render: _ => (
               <Tooltip title={_.name}>
                 <span>
                   <span className={css.tdName_label}>{_.name}</span>
@@ -175,7 +175,7 @@ export const CompaniesRegistered = () => {
             head: m.address,
             id: 'address',
             className: css.tdAddress,
-            row: _ => (
+            render: _ => (
               <Tooltip title={<AddressComponent address={_.address} />}>
                 <span>
                   <AddressComponent address={_.address} />
@@ -186,7 +186,7 @@ export const CompaniesRegistered = () => {
           {
             head: m.postalCodeShort,
             id: 'postalCode',
-            row: _ => (
+            render: _ => (
               <>
                 <span>{_.address.postalCode?.slice(0, 2)}</span>
                 <span className={cssUtils.colorDisabled}>{_.address.postalCode?.substr(2, 5)}</span>
@@ -197,7 +197,7 @@ export const CompaniesRegistered = () => {
             head: m.reports,
             id: 'count',
             className: cssUtils.txtRight,
-            row: _ => (
+            render: _ => (
               <NavLink to={siteMap.logged.reports({siretSirenList: [_.siret], departments: _companies.filters.departments})}>
                 <ScButton color="primary">{formatLargeNumber(_.count)}</ScButton>
               </NavLink>
@@ -207,7 +207,7 @@ export const CompaniesRegistered = () => {
             head: '',
             id: 'actions',
             className: cssUtils.txtRight,
-            row: _ => (
+            render: _ => (
               <>
                 <Tooltip title={m.copyAddress}>
                   <IconBtn color="primary" onClick={() => copyAddress(_)}>
