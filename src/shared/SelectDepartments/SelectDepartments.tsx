@@ -1,5 +1,5 @@
 import * as React from 'react'
-import {useEffect} from 'react'
+import {CSSProperties, useEffect} from 'react'
 import {createStyles, Icon, InputAdornment, makeStyles, TextField, Theme} from '@material-ui/core'
 import {useSetState, UseSetState} from '@alexandreannic/react-hooks-lib/lib'
 import {SelectDepartmentsMenu} from './SelectDepartmentsMenu'
@@ -19,6 +19,7 @@ export interface SelectDepartmentsProps {
   placeholder?: string
   selectAllLabel?: string
   values?: string[]
+  style?: CSSProperties
   readonly?: boolean
   onChange: (_: string[]) => void
   className?: string
@@ -26,13 +27,11 @@ export interface SelectDepartmentsProps {
 }
 
 export const SelectDepartments = ({
-  placeholder,
   values,
-  className,
   readonly,
   onChange,
   selectAllLabel,
-  fullWidth,
+  ...props
 }: SelectDepartmentsProps) => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
   let $input: HTMLElement | undefined = undefined
@@ -53,12 +52,10 @@ export const SelectDepartments = ({
   return (
     <>
       <TextField
-        fullWidth={fullWidth}
+        {...props}
         variant="outlined"
         margin="dense"
         size="small"
-        className={className}
-        placeholder={placeholder}
         onClick={open}
         value={indexValues.toArray().join(', ') ?? ''}
         disabled={readonly}

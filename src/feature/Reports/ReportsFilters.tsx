@@ -102,10 +102,7 @@ export const ReportFilters = ({filters, updateFilters, children}: ReportsFilters
                   render={({field}) => (
                     <SelectActivityCode
                       {...field}
-                      onChange={(e, value) => {
-                        console.log(value)
-                        field.onChange(value)
-                      }}
+                      onChange={(e, value) => field.onChange(value)}
                       fullWidth
                     />
                   )}

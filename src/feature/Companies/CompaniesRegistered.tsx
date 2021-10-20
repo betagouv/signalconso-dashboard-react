@@ -5,7 +5,7 @@ import {cleanObject, Company, CompanySearch, CompanyWithReportsCount, PaginatedS
 import React, {useEffect} from 'react'
 import {useCompaniesContext} from '../../core/context/CompaniesContext'
 import {useCssUtils} from '../../core/helper/useCssUtils'
-import {Icon, InputBase, makeStyles, Theme, Tooltip} from '@material-ui/core'
+import {Grid, Icon, makeStyles, Theme, Tooltip} from '@material-ui/core'
 import {NavLink} from 'react-router-dom'
 import {siteMap} from '../../core/siteMap'
 import {ScButton} from '../../shared/Button/Button'
@@ -21,6 +21,8 @@ import {SelectCompany} from '../../shared/SelectCompany/SelectCompany'
 import {EditAddressDialog} from './EditAddressDialog'
 import {useLogin} from '../../core/context/LoginContext'
 import {ClipboardApi} from '@alexandreannic/ts-utils/lib/browser/clipboard/ClipboardApi'
+import {SelectActivityCode} from '../../shared/SelectActivityCode/SelectActivityCode'
+import {ScInput} from '../../shared/Input/ScInput'
 
 const useStyles = makeStyles((t: Theme) => ({
   tdName_label: {
@@ -46,6 +48,7 @@ const useStyles = makeStyles((t: Theme) => ({
 
 export interface CompanySearchQs extends PaginatedSearch<any> {
   departments?: string[] | string
+  activityCodes?: string[] | string
   identity?: string
 }
 
@@ -61,7 +64,7 @@ export const CompaniesRegistered = () => {
 
   const queryString = useQueryString<Partial<CompanySearch>, Partial<CompanySearchQs>>({
     toQueryString: _ => _,
-    fromQueryString: _ => mapArrayFromQuerystring(_, ['departments']),
+    fromQueryString: _ => mapArrayFromQuerystring(_, ['activityCodes', 'departments']),
   })
 
   useEffect(() => {
@@ -88,33 +91,60 @@ export const CompaniesRegistered = () => {
     <Panel>
       <Datatable<CompanyWithReportsCount>
         header={
-          <>
-            <DebouncedInput
-              value={_companies.filters.departments}
-              onChange={departments => _companies.updateFilters(prev => ({...prev, departments}))}
-            >
-              {(value, onChange) => <SelectDepartments values={value} onChange={onChange} className={cssUtils.marginRight} />}
-            </DebouncedInput>
-            <DebouncedInput
-              value={_companies.filters.identity ?? ''}
-              onChange={value => _companies.updateFilters(prev => ({...prev, identity: value}))}
-            >
-              {(value, onChange) => (
-                <InputBase
-                  value={value}
-                  placeholder={m.companiesSearchPlaceholder}
-                  fullWidth
-                  className={cssUtils.marginLeft}
-                  onChange={e => onChange(e.target.value)}
-                />
-              )}
-            </DebouncedInput>
-            <Tooltip title={m.removeAllFilters}>
-              <IconBtn color="primary" onClick={_companies.clearFilters}>
-                <Icon>clear</Icon>
-              </IconBtn>
-            </Tooltip>
-          </>
+          <Grid container alignItems="center" spacing={1}>
+            <Grid item xs={12} md={4}>
+              <DebouncedInput
+                value={_companies.filters.identity ?? ''}
+                onChange={value => _companies.updateFilters(prev => ({...prev, identity: value}))}
+              >
+                {(value, onChange) => (
+                  <ScInput
+                    value={value}
+                    placeholder={m.companiesSearchPlaceholder}
+                    fullWidth
+                    onChange={e => onChange(e.target.value)}
+                  />
+                )}
+              </DebouncedInput>
+            </Grid>
+            <Grid item xs={12} md={4}>
+              <DebouncedInput
+                value={_companies.filters.departments}
+                onChange={departments => _companies.updateFilters(prev => ({...prev, departments}))}
+              >
+                {(value, onChange) =>
+                  <SelectDepartments
+                    values={value}
+                    fullWidth
+                    onChange={onChange}
+                    className={cssUtils.marginRight}
+                  />
+                }
+              </DebouncedInput>
+            </Grid>
+            <Grid item xs={12} md={4}>
+              <DebouncedInput
+                value={_companies.filters.activityCodes}
+                onChange={activityCodes => _companies.updateFilters(prev => ({...prev, activityCodes}))}
+              >
+                {(value, onChange) =>
+                  <SelectActivityCode
+                    fullWidth
+                    label={m.codeNaf}
+                    value={value}
+                    onChange={(a, b) => onChange(b)}
+                  />
+                }
+              </DebouncedInput>
+            </Grid>
+          </Grid>
+        }
+        actions={
+          <Tooltip title={m.removeAllFilters}>
+            <IconBtn color="primary" onClick={_companies.clearFilters}>
+              <Icon>clear</Icon>
+            </IconBtn>
+          </Tooltip>
         }
         loading={_companies.fetching}
         data={_companies.list?.data}

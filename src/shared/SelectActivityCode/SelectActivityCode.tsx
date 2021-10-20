@@ -11,9 +11,11 @@ interface Props extends Pick<AutocompleteProps<string, true, false, false>,
   | 'value'
   | 'defaultValue'
   | 'className'
+  | 'style'
   | 'placeholder'
   | 'onChange'
   | 'fullWidth'> {
+  label?: string
 }
 
 export const SelectActivityCode = forwardRef((props: Props, ref) => {
@@ -36,7 +38,7 @@ export const SelectActivityCode = forwardRef((props: Props, ref) => {
           multiple
           options={activityCodes}
           getOptionLabel={option => option + activities[option]}
-          renderInput={params => <ScInput {...params} small fullWidth/>}
+          renderInput={params => <ScInput {...params} label={props.label} small/>}
           renderOption={(option: string) => (
             <Tooltip title={activities[option]}>
               <div>

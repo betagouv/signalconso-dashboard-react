@@ -17,7 +17,6 @@ import {Icon, makeStyles, Theme, Tooltip} from '@material-ui/core'
 import {PeriodPicker} from '../../shared/PeriodPicker/PeriodPicker'
 import {DebouncedInput} from '../../shared/DebouncedInput/DebouncedInput'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
-import {useLogin} from '../../core/context/LoginContext'
 
 const useStyles = makeStyles((t: Theme) => ({
   tdSiret: {
@@ -54,6 +53,7 @@ export const ReportedPhones = () => {
               >
                 {(value, onChange) => (
                   <ScInput
+                    style={{minWidth: 120}}
                     value={value}
                     onChange={e => onChange(e.target.value)}
                     fullWidth
@@ -68,8 +68,12 @@ export const ReportedPhones = () => {
                   _reportedPhone.updateFilters(prev => ({...prev, start: start ?? prev.start, end: end ?? prev.end}))
                 }
               >
-                {(value, onChange) => <PeriodPicker value={value ?? [undefined, undefined]} onChange={onChange} fullWidth />}
+                {(value, onChange) => <PeriodPicker value={value ?? [undefined, undefined]} onChange={onChange} fullWidth/>}
               </DebouncedInput>
+            </>
+          }
+          actions={
+            <>
               <Tooltip title={m.removeAllFilters}>
                 <IconBtn color="primary" onClick={_reportedPhone.clearFilters}>
                   <Icon>clear</Icon>
