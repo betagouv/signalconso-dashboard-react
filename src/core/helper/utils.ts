@@ -107,17 +107,17 @@ export const stringToBoolean = (str?: string): boolean | undefined => {
   }
 }
 
-export const mapSdkPaginateToHook = <T>(_: ApiPaginate<T>): Paginate<T> => ({
+export const mapSdkPaginate = <T>(_: ApiPaginate<T>): Paginate<T> => ({
   data: _.entities,
   totalSize: _.totalCount,
 })
 
-export const mapPromiseSdkPaginateToHook = <F extends (...args: any[]) => Promise<ApiPaginate<any>>>(
+export const mapPromiseSdkPaginate = <F extends (...args: any[]) => Promise<ApiPaginate<any>>>(
   promise: F,
 ): PromiseFnResult<F> extends ApiPaginate<infer U> ? (...args: Parameters<F>) => Promise<Paginate<U>> : F =>
   mapPromise({
     promise: promise,
-    mapThen: mapSdkPaginateToHook,
+    mapThen: mapSdkPaginate,
   }) as any
 
 export const openInNew = (path: string) => {

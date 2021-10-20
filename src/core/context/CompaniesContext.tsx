@@ -12,7 +12,7 @@ import {
   PaginatedFilters,
 } from '@signal-conso/signalconso-api-sdk-js'
 import {SignalConsoApiSdk} from '../ApiSdkInstance'
-import {mapPromiseSdkPaginateToHook, paginateData} from '../helper/utils'
+import {mapPromiseSdkPaginate, paginateData} from '../helper/utils'
 
 type Sdk = SignalConsoApiSdk['secured']['company']
 
@@ -40,7 +40,7 @@ const defaultContext: Partial<CompaniesContextProps> = {}
 const CompaniesContext = React.createContext<CompaniesContextProps>(defaultContext as CompaniesContextProps)
 
 export const CompaniesProvider = ({api, children}: Props) => {
-  const activated = usePaginate<CompanyWithReportsCount, CompanySearch>(mapPromiseSdkPaginateToHook(api.secured.company.search), {
+  const activated = usePaginate<CompanyWithReportsCount, CompanySearch>(mapPromiseSdkPaginate(api.secured.company.search), {
     limit: 10,
     offset: 0,
   })
