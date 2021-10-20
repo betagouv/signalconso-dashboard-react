@@ -2,7 +2,7 @@ import * as React from 'react'
 import {ReactNode, useContext} from 'react'
 import {UseFetcher, useFetcher, usePaginate, UsePaginate} from '@alexandreannic/react-hooks-lib/lib'
 import {ApiError, User, UserSearch} from '@signal-conso/signalconso-api-sdk-js'
-import {mapPromiseSdkPaginateToHook} from '../helper/utils'
+import {mapPromiseSdkPaginate} from '../helper/utils'
 import {SignalConsoApiSdk} from '../ApiSdkInstance'
 
 export interface UsersContextProps {
@@ -25,7 +25,7 @@ const defaultContext: Partial<UsersContextProps> = {}
 const UsersContext = React.createContext<UsersContextProps>(defaultContext as UsersContextProps)
 
 export const UsersProvider = ({api, children}: Props) => {
-  const dgccrf = usePaginate<User, UserSearch, ApiError>(mapPromiseSdkPaginateToHook(api.secured.user.fetchDGCCRF), {
+  const dgccrf = usePaginate<User, UserSearch, ApiError>(mapPromiseSdkPaginate(api.secured.user.fetchDGCCRF), {
     limit: 10,
     offset: 0,
   })
