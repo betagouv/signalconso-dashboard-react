@@ -39,22 +39,22 @@ export const PeriodPicker = ({value, onChange, label, fullWidth, className, styl
   const {m} = useI18n()
   const css = useStyles()
   const cssUtils = useCssUtils()
-
+  
   useEffect(() => {
     if (value) {
-      if (value[0]?.getTime() !== start?.getTime()) setStart(value[0])
-      if (value[1]?.getTime() !== end?.getTime()) setEnd(value[1])
+      if (value[0] && value[0].getTime() !== start?.getTime()) setStart(value[0])
+      if (value[1] && value[1].getTime() !== end?.getTime()) setEnd(value[1])
     }
   }, [value])
 
-  const handleStartChange = (newStart: Date) => {
-    const newEnd = end ? (newStart.getTime() > end.getTime() ? addDays(newStart, 1) : end) : undefined
+  const handleStartChange = (newStart?: Date) => {
+    const newEnd = end && newStart ? (newStart.getTime() > end.getTime() ? addDays(newStart, 1) : end) : undefined
     setStart(newStart)
     setEnd(newEnd)
     onChange([newStart, newEnd])
   }
-  const handleEndChange = (newEnd: Date) => {
-    const newStart = start ? (newEnd.getTime() < start.getTime() ? subDays(newEnd, 1) : start) : undefined
+  const handleEndChange = (newEnd?: Date) => {
+    const newStart = start && newEnd ? (newEnd.getTime() < start.getTime() ? subDays(newEnd, 1) : start) : undefined
     setStart(newStart)
     setEnd(newEnd)
     onChange([newStart, newEnd])
