@@ -109,11 +109,11 @@ export const CompanyAccesses = () => {
           data={_crudAccess.list && _crudToken.list ? accesses : undefined}
           loading={_crudAccess.fetching || _crudToken.fetching}
           getRenderRowKey={_ => _.email ?? _.tokenId!}
-          rows={[
+          columns={[
             {
               id: 'status',
               head: '',
-              row: _ =>
+              render: _ =>
                 _.name ? (
                   <Icon className={cssUtils.colorSuccess}>check_circle</Icon>
                 ) : (
@@ -123,7 +123,7 @@ export const CompanyAccesses = () => {
             {
               id: 'email',
               head: m.email,
-              row: _ => (
+              render: _ => (
                 <>
                   <div>
                     <Txt bold>{_.email}</Txt>
@@ -140,7 +140,7 @@ export const CompanyAccesses = () => {
             {
               id: 'level',
               head: m.companyAccessLevel,
-              row: _ => (
+              render: _ => (
                 <ScDialog
                   maxWidth="xs"
                   title={m.editAccess}
@@ -182,7 +182,7 @@ export const CompanyAccesses = () => {
               id: 'action',
               head: '',
               className: cssUtils.txtRight,
-              row: _ => (
+              render: _ => (
                 <>
                   {some(_)
                     .filter(_ => _.editable === true)

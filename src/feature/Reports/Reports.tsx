@@ -212,12 +212,12 @@ export const Reports = ({}) => {
           data={_reports.list?.data}
           total={_reports.list?.totalSize}
           showColumnsToggle={true}
-          rows={[
+          columns={[
             {
               id: 'companyPostalCode',
               head: m.postalCodeShort,
               className: css.tdPostal,
-              row: _ => (
+              render: _ => (
                 <>
                   <span>{_.report.companyAddress.postalCode?.slice(0, 2)}</span>
                   <span className={cssUtils.colorDisabled}>{_.report.companyAddress.postalCode?.substr(2, 5)}</span>
@@ -228,7 +228,7 @@ export const Reports = ({}) => {
               id: 'companyName',
               head: m.company,
               className: css.tdName,
-              row: _ => (
+              render: _ => (
                 <>
                   <span className={css.tdName_label}>{_.report.companyName}</span>
                   <br />
@@ -241,13 +241,13 @@ export const Reports = ({}) => {
             {
               id: 'companySiret',
               head: m.siret,
-              row: _ => _.report.companySiret,
+              render: _ => _.report.companySiret,
             },
             {
               id: 'category',
               head: m.problem,
               className: css.tdProblem,
-              row: _ => (
+              render: _ => (
                 <Tooltip
                   title={
                     <>
@@ -267,24 +267,24 @@ export const Reports = ({}) => {
             {
               id: 'creationDate',
               head: m.creation,
-              row: _ => formatDate(_.report.creationDate),
+              render: _ => formatDate(_.report.creationDate),
             },
             {
               id: 'reportDate',
               head: 'Date constat',
-              row: _ => getReportingDate(_.report),
+              render: _ => getReportingDate(_.report),
             },
             {
               id: 'details',
               head: m.details,
               className: css.tdDesc,
-              row: _ => <ReportDetailValues input={_.report.details} lines={2} />,
+              render: _ => <ReportDetailValues input={_.report.details} lines={2} />,
             },
             {
               id: 'email',
               head: m.consumer,
               className: css.tdConsumer,
-              row: _ => (
+              render: _ => (
                 <span className={classes(_.report.contactAgreement ? cssUtils.colorSuccess : cssUtils.colorError)}>
                   {textOverflowMiddleCropping(_.report.email ?? '', 25)}
                 </span>
@@ -293,13 +293,13 @@ export const Reports = ({}) => {
             {
               id: 'status',
               head: m.status,
-              row: _ => <ReportStatusChip dense status={_.report.status} />,
+              render: _ => <ReportStatusChip dense status={_.report.status} />,
             },
             {
               id: 'file',
               head: m.files,
               className: css.tdFiles,
-              row: _ =>
+              render: _ =>
                 _.files.length > 0 && (
                   <Badge badgeContent={_.files.length} color="primary" invisible={_.files.length === 1}>
                     <Icon className={cssUtils.colorTxtHint}>insert_drive_file</Icon>
@@ -310,7 +310,7 @@ export const Reports = ({}) => {
               id: 'actions',
               stickyEnd: true,
               className: classes(css.actions),
-              row: _ => (
+              render: _ => (
                 <NavLink to={siteMap.logged.report(_.report.id)}>
                   <IconBtn className={cssUtils.colorTxtHint}>
                     <Icon>chevron_right</Icon>

@@ -152,7 +152,7 @@ export const CompaniesToActivate = () => {
         getRenderRowKey={_ => _.company.id}
         showColumnsToggle={true}
         rowsPerPageOptions={[5, 10, 25, 100, 500]}
-        rows={[
+        columns={[
           {
             head: (
               <Checkbox
@@ -164,7 +164,7 @@ export const CompaniesToActivate = () => {
             ),
             alwaysVisible: true,
             id: 'select',
-            row: _ => (
+            render: _ => (
               <Checkbox checked={selectedCompaniesSet.has(_.company.id)} onClick={() => toggleSelectedCompany(_.company.id)} />
             ),
           },
@@ -172,7 +172,7 @@ export const CompaniesToActivate = () => {
             id: 'siret',
             head: m.name,
             className: css.tdName,
-            row: _ => (
+            render: _ => (
               <Tooltip title={_.company.name}>
                 <span>
                   <span className={css.tdName_label}>{_.company.name}</span>
@@ -186,7 +186,7 @@ export const CompaniesToActivate = () => {
             head: m.address,
             id: 'address',
             className: css.tdAddress,
-            row: _ => (
+            render: _ => (
               <Tooltip title={<AddressComponent address={_.company.address} />}>
                 <span>
                   <AddressComponent address={_.company.address} />
@@ -197,17 +197,17 @@ export const CompaniesToActivate = () => {
           {
             head: m.created_at,
             id: 'tokenCreation',
-            row: _ => <>{formatDate(_.tokenCreation)}</>,
+            render: _ => <>{formatDate(_.tokenCreation)}</>,
           },
           {
             head: m.lastNotice,
             id: 'lastNotice',
-            row: _ => <>{formatDate(_.lastNotice)}</>,
+            render: _ => <>{formatDate(_.lastNotice)}</>,
           },
           {
             id: 'actions',
             stickyEnd: true,
-            row: _ => (
+            render: _ => (
               <>
                 <Link target="_blank" to={siteMap.logged.reports({siretSirenList: [_.company.siret]})}>
                   <Tooltip title={m.reports}>

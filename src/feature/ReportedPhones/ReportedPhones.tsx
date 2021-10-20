@@ -99,22 +99,22 @@ export const ReportedPhones = () => {
           total={_reportedPhone.list?.totalSize}
           loading={_reportedPhone.fetching}
           data={_reportedPhone.list?.data}
-          rows={[
+          columns={[
             {
               id: 'phone',
               head: m.phone,
-              row: _ => _.phone,
+              render: _ => _.phone,
             },
             {
               id: 'category',
               head: m.category,
-              row: _ => _.category,
+              render: _ => _.category,
             },
             {
               id: 'siret',
               head: m.siret,
               className: css.tdSiret,
-              row: _ => (
+              render: _ => (
                 <>
                   <Txt bold>{_.siret}</Txt>
                   <br />
@@ -125,11 +125,11 @@ export const ReportedPhones = () => {
             {
               id: 'count',
               head: m.reportsCount,
-              row: _ => _.count,
+              render: _ => _.count,
             },
             {
               id: 'actions',
-              row: _ => (
+              render: _ => (
                 <>
                   <NavLink
                     to={siteMap.logged.reports({
