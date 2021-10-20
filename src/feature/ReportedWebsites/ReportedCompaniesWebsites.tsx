@@ -1,18 +1,7 @@
 import React, {useEffect, useState} from 'react'
 import {useI18n} from '../../core/i18n'
 import {useCssUtils} from '../../core/helper/useCssUtils'
-import {
-  Chip,
-  createStyles,
-  FormControlLabel,
-  Icon,
-  InputBase,
-  makeStyles,
-  MenuItem,
-  Switch,
-  Theme,
-  Tooltip,
-} from '@material-ui/core'
+import {Chip, createStyles, FormControlLabel, Icon, InputBase, makeStyles, MenuItem, Switch, Theme, Tooltip} from '@material-ui/core'
 import {useToast} from '../../core/toast'
 import {fromNullable} from 'fp-ts/lib/Option'
 import {Panel} from '../../shared/Panel'
@@ -142,12 +131,14 @@ export const ReportedCompaniesWebsites = () => {
                 </ScSelect>
               )}
             </DebouncedInput>
-            <Tooltip title={m.removeAllFilters}>
-              <IconBtn color="primary" onClick={_fetch.clearFilters}>
-                <Icon>clear</Icon>
-              </IconBtn>
-            </Tooltip>
           </>
+        }
+        actions={
+          <Tooltip title={m.removeAllFilters}>
+            <IconBtn color="primary" onClick={_fetch.clearFilters}>
+              <Icon>clear</Icon>
+            </IconBtn>
+          </Tooltip>
         }
         loading={_fetch.fetching}
         total={_fetch.list?.totalSize}

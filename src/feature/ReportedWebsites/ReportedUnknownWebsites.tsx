@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react'
 import {useI18n} from '../../core/i18n'
 import {useCssUtils} from '../../core/helper/useCssUtils'
-import {Icon, InputBase, makeStyles, Theme, Tooltip} from '@material-ui/core'
+import {Icon, InputBase, Tooltip} from '@material-ui/core'
 import {Panel} from '../../shared/Panel'
 import {Datatable} from '../../shared/Datatable/Datatable'
 import {ApiHostWithReportCount} from '@signal-conso/signalconso-api-sdk-js'
@@ -9,15 +9,12 @@ import {DebouncedInput} from '../../shared/DebouncedInput/DebouncedInput'
 import {useUnregistredWebsiteWithCompanyContext} from '../../core/context/UnregistredWebsitesContext'
 import {useToast} from '../../core/toast'
 import {fromNullable} from 'fp-ts/lib/Option'
-import {Datepicker} from '../../shared/Datepicker/Datepicker'
-import {addDays, subDays} from 'date-fns'
 import {NavLink} from 'react-router-dom'
 import {siteMap} from '../../core/siteMap'
 import {Btn, IconBtn} from 'mui-extension'
-import {ExportReportsPopper, ExportUnknownWebsitesPopper} from '../../shared/ExportPopper/ExportPopperBtn'
+import {ExportUnknownWebsitesPopper} from '../../shared/ExportPopper/ExportPopperBtn'
 import {Config} from '../../conf/config'
 import {PeriodPicker} from '../../shared/PeriodPicker/PeriodPicker'
-import {useLogin} from '../../core/context/LoginContext'
 
 export const ReportedUnknownWebsites = () => {
   const {m} = useI18n()
@@ -48,6 +45,7 @@ export const ReportedUnknownWebsites = () => {
                   value={value}
                   placeholder={m.searchByHost + '...'}
                   fullWidth
+                  style={{minWidth: 120}}
                   className={cssUtils.marginLeft}
                   onChange={e => onChange(e.target.value)}
                 />
@@ -61,6 +59,10 @@ export const ReportedUnknownWebsites = () => {
                 _fetch.updateFilters(prev => ({...prev, start: start ?? prev.start, end: end ?? prev.end}))
               }
             />
+          </>
+        }
+        actions={
+          <>
             <Tooltip title={m.removeAllFilters}>
               <IconBtn color="primary" onClick={_fetch.clearFilters}>
                 <Icon>clear</Icon>

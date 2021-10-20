@@ -1,15 +1,4 @@
-import {
-  LinearProgress,
-  makeStyles,
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TablePagination,
-  TableRow,
-  TableSortLabel,
-  Theme,
-} from '@material-ui/core'
+import {LinearProgress, makeStyles, Table, TableBody, TableCell, TableHead, TablePagination, TableRow, TableSortLabel, Theme} from '@material-ui/core'
 import React, {CSSProperties, ReactNode, useEffect, useMemo} from 'react'
 import {useCssUtils} from '../../core/helper/useCssUtils'
 import {classes} from '../../core/helper/utils'
@@ -22,6 +11,7 @@ type OrderBy = 'asc' | 'desc'
 
 export interface DatatableProps<T> {
   header?: ReactNode
+  actions?: ReactNode
   loading?: boolean
   total?: number
   data?: T[]
@@ -80,12 +70,20 @@ const useStyles = makeStyles((t: Theme) => ({
   },
   header: {
     display: 'flex',
-    // flexWrap: 'wrap',
+    flexWrap: 'wrap',
     alignItems: 'center',
     minHeight: 52,
     borderBottom: `1px solid ${t.palette.divider}`,
     paddingLeft: t.spacing(1),
     paddingRight: t.spacing(1),
+  },
+  header_content: {
+    display: 'flex',
+    alignItems: 'center',
+    flex: 1,
+  },
+  header_actions: {
+    whiteSpace: 'nowrap',
   },
   paginate: {
     padding: t.spacing(0, 2),
@@ -122,6 +120,7 @@ export const Datatable = <T extends any = any>(props: DatatableProps<T>) => {
     data,
     rows,
     getRenderRowKey,
+    actions,
     header,
     showColumnsToggle,
     showColumnsToggleBtnTooltip = m.toggleDatatableColumns,
@@ -148,16 +147,21 @@ export const Datatable = <T extends any = any>(props: DatatableProps<T>) => {
     <>
       {(header || showColumnsToggle) && (
         <div className={css.header}>
-          {header}
-          {showColumnsToggle && (
-            <DatatableColumnToggle
-              className={css.btnColumnsToggle}
-              columns={toggleableColumnsName}
-              displayedColumns={displayedColumnsSet.toArray() as string[]}
-              onChange={displayedColumnsSet.reset}
-              title={showColumnsToggleBtnTooltip}
-            />
-          )}
+          <div className={css.header_content}>
+            {header}
+          </div>
+          <div className={css.header_actions}>
+            {actions}
+            {showColumnsToggle && (
+              <DatatableColumnToggle
+                className={css.btnColumnsToggle}
+                columns={toggleableColumnsName}
+                displayedColumns={displayedColumnsSet.toArray() as string[]}
+                onChange={displayedColumnsSet.reset}
+                title={showColumnsToggleBtnTooltip}
+              />
+            )}
+          </div>
         </div>
       )}
       <div className={css.container}>
