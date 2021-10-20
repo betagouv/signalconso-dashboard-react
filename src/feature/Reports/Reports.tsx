@@ -1,28 +1,15 @@
 import {Page, PageTitle} from '../../shared/Layout'
 import {useI18n} from '../../core/i18n'
 import {useReportsContext} from '../../core/context/ReportsContext'
-import {
-  cleanObject,
-  getHostFromUrl,
-  Report,
-  ReportingDateLabel,
-  ReportSearch,
-  ReportSearchResult,
-  ReportTag,
-} from '@signal-conso/signalconso-api-sdk-js'
+import {cleanObject, getHostFromUrl, Report, ReportingDateLabel, ReportSearch, ReportSearchResult, ReportTag} from '@signal-conso/signalconso-api-sdk-js'
 import {Panel} from '../../shared/Panel'
 import {useCssUtils} from '../../core/helper/useCssUtils'
 import {Datatable} from '../../shared/Datatable/Datatable'
 import {fromNullable, some} from 'fp-ts/lib/Option'
-import {alpha, Badge, Button, Icon, makeStyles, Theme, Tooltip} from '@material-ui/core'
+import {alpha, Badge, Button, Grid, Icon, makeStyles, Theme, Tooltip} from '@material-ui/core'
 import {classes, textOverflowMiddleCropping} from '../../core/helper/utils'
 import React, {useEffect, useMemo} from 'react'
-import {
-  mapArrayFromQuerystring,
-  mapDateFromQueryString,
-  mapDatesToQueryString,
-  useQueryString,
-} from '../../core/helper/useQueryString'
+import {mapArrayFromQuerystring, mapDateFromQueryString, mapDatesToQueryString, useQueryString} from '../../core/helper/useQueryString'
 import {NavLink} from 'react-router-dom'
 import {SelectDepartments} from '../../shared/SelectDepartments/SelectDepartments'
 import {Fender, IconBtn} from 'mui-extension/lib'
@@ -40,7 +27,6 @@ import compose from '../../core/helper/compose'
 import {DebouncedInput} from '../../shared/DebouncedInput/DebouncedInput'
 import {ReportDetailValues} from '../../shared/ReportDetailValues/ReportDetailValues'
 import {styleUtils} from '../../core/theme'
-import {useLogin} from '../../core/context/LoginContext'
 
 const useStyles = makeStyles((t: Theme) => ({
   toolbar: {},
@@ -157,25 +143,33 @@ export const Reports = ({}) => {
       <Panel>
         <Datatable<ReportSearchResult>
           header={
+            <Grid container spacing={1}>
+              <Grid item xs={12} md={6}>
+                <DebouncedInput
+                  value={_reports.filters.departments}
+                  onChange={departments => _reports.updateFilters(prev => ({...prev, departments}))}
+                >
+                  {(value, onChange) => (
+                    <SelectDepartments values={value} onChange={onChange} className={cssUtils.marginRight} fullWidth/>
+                  )}
+                </DebouncedInput>
+              </Grid>
+              <Grid item xs={12} md={6}>
+                <DebouncedInput<[Date | undefined, Date | undefined]>
+                  value={[_reports.filters.start, _reports.filters.end]}
+                  onChange={([start, end]) => {
+                    _reports.updateFilters(prev => ({...prev, start: start ?? prev.start, end: end ?? prev.end}))
+                  }}
+                >
+                  {(value, onChange) => (
+                    <PeriodPicker value={value} onChange={onChange} className={cssUtils.marginRight} fullWidth/>
+                  )}
+                </DebouncedInput>
+              </Grid>
+            </Grid>
+          }
+          actions={
             <>
-              <DebouncedInput
-                value={_reports.filters.departments}
-                onChange={departments => _reports.updateFilters(prev => ({...prev, departments}))}
-              >
-                {(value, onChange) => (
-                  <SelectDepartments values={value} onChange={onChange} className={cssUtils.marginRight} fullWidth />
-                )}
-              </DebouncedInput>
-              <DebouncedInput<[Date | undefined, Date | undefined]>
-                value={[_reports.filters.start, _reports.filters.end]}
-                onChange={([start, end]) => {
-                  _reports.updateFilters(prev => ({...prev, start: start ?? prev.start, end: end ?? prev.end}))
-                }}
-              >
-                {(value, onChange) => (
-                  <PeriodPicker value={value} onChange={onChange} className={cssUtils.marginRight} fullWidth />
-                )}
-              </DebouncedInput>
               <Tooltip title={m.removeAllFilters}>
                 <Badge color="error" badgeContent={filtersCount} hidden={filtersCount === 0} overlap="circular">
                   <Button
@@ -206,7 +200,6 @@ export const Reports = ({}) => {
                   </IconBtn>
                 </Tooltip>
               </ReportFilters>
-              {/*<Button variant="contained" color="primary" style={{minWidth: 'initial'}} className={cssUtils.nowrap}>Filtres avancés</Button>*/}
             </>
           }
           loading={_reports.fetching}
