@@ -4,7 +4,7 @@ import {UseAsync, UseFetcher, useFetcher} from '@alexandreannic/react-hooks-lib/
 import {Id, SignalConsoSecuredSdk} from '@signal-conso/signalconso-api-sdk-js'
 import {SignalConsoApiSdk} from '../ApiSdkInstance'
 import {useAsync} from '@alexandreannic/react-hooks-lib'
-import {uniqby} from '../lodashNamedExport'
+import {uniqBy} from '../lodashNamedExport'
 import {BlockedReportNotification} from '@signal-conso/signalconso-api-sdk-js'
 
 export interface BlockedReportNotificationContextProps {
@@ -28,7 +28,7 @@ export const BlockedReportNotificationProvider = ({api, children}: Props) => {
   const fetch = useFetcher(api.secured.reportBlockedNotification.fetch)
   const create = useAsync((companyIds: Id[]) => {
     const newBlocked: BlockedReportNotification[] = companyIds.map(companyId => ({companyId, dateCreation: new Date()}))
-    fetch.setEntity(prev => uniqby([...(prev ?? []), ...newBlocked], _ => _.companyId))
+    fetch.setEntity(prev => uniqBy([...(prev ?? []), ...newBlocked], _ => _.companyId))
     return api.secured.reportBlockedNotification.create(companyIds)
   })
   const remove = useAsync((companyIds: Id[]) => {

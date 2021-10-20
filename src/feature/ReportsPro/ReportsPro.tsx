@@ -276,13 +276,13 @@ export const ReportsPro = () => {
                     history.push(siteMap.logged.report(_.report.id))
                   }
                 }}
-                rows={
+                columns={
                   isMobileWidth
                     ? [
                         {
                           id: 'all',
                           head: '',
-                          row: _ => (
+                          render: _ => (
                             <div className={css.card}>
                               <div className={css.card_content}>
                                 <div className={css.card_head}>
@@ -314,37 +314,37 @@ export const ReportsPro = () => {
                           id: 'companyPostalCode',
                           head: m.postalCodeShort,
                           className: _ => (_.report.status === ReportStatus.UnreadForPro ? cssUtils.txtBold : undefined),
-                          row: _ => _.report.companyAddress.postalCode,
+                          render: _ => _.report.companyAddress.postalCode,
                         },
                         {
                           id: 'siret',
                           head: m.siret,
                           className: _ => (_.report.status === ReportStatus.UnreadForPro ? cssUtils.txtBold : undefined),
-                          row: _ => _.report.companySiret,
+                          render: _ => _.report.companySiret,
                         },
                         {
                           id: 'createDate',
                           head: m.receivedAt,
                           className: _ => (_.report.status === ReportStatus.UnreadForPro ? cssUtils.txtBold : undefined),
-                          row: _ => formatDate(_.report.creationDate),
+                          render: _ => formatDate(_.report.creationDate),
                         },
                         {
                           id: 'status',
                           head: m.status,
-                          row: _ => <ReportStatusChip dense status={_.report.status} />,
+                          render: _ => <ReportStatusChip dense status={_.report.status} />,
                         },
                         {
                           id: 'consumer',
                           head: m.consumer,
                           className: _ => (_.report.status === ReportStatus.UnreadForPro ? cssUtils.txtBold : undefined),
-                          row: _ =>
+                          render: _ =>
                             _.report.contactAgreement ? _.report.firstName + ' ' + _.report.lastName : m.anonymousReport,
                         },
                         {
                           id: 'file',
                           head: m.files,
                           className: css.tdFiles,
-                          row: _ =>
+                          render: _ =>
                             _.files.length > 0 && (
                               <Badge badgeContent={_.files.length} color="primary" invisible={_.files.length === 1}>
                                 <Icon className={cssUtils.colorTxtHint}>insert_drive_file</Icon>

@@ -92,21 +92,21 @@ export const ReportedUnknownWebsites = () => {
         }}
         getRenderRowKey={_ => _.host}
         data={_fetch.list?.data}
-        rows={[
+        columns={[
           {
             id: 'host',
             head: m.website,
-            row: _ => <a href={'https://' + _.host}>{_.host}</a>,
+            render: _ => <a href={'https://' + _.host}>{_.host}</a>,
           },
           {
             head: m.reports,
             id: 'reports',
-            row: _ => _.count,
+            render: _ => _.count,
           },
           {
             id: 'actions',
             className: cssUtils.txtRight,
-            row: _ => (
+            render: _ => (
               <>
                 <NavLink
                   to={siteMap.logged.reports({

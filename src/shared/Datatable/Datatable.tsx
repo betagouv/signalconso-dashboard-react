@@ -7,6 +7,7 @@ import {useSetState} from '@alexandreannic/react-hooks-lib/lib'
 import {useI18n} from '../../core/i18n'
 import {Fender} from 'mui-extension/lib'
 import {usePersistentState} from 'react-persistent-state/build'
+import {differenceBy, intersectionBy} from '../../core/lodashNamedExport'
 
 type OrderBy = 'asc' | 'desc'
 
@@ -19,7 +20,7 @@ export interface DatatableProps<T> {
   data?: T[]
   getRenderRowKey?: (_: T) => string
   onClickRows?: (_: T, event: React.MouseEvent<HTMLTableRowElement>) => void
-  rows: DatatableColumnProps<T>[]
+  columns: DatatableColumnProps<T>[]
   showColumnsToggle?: boolean
   showColumnsToggleBtnTooltip?: string
   renderEmptyState?: ReactNode
@@ -40,7 +41,7 @@ export interface DatatableProps<T> {
 export interface DatatableColumnProps<T> {
   id: string
   head?: string | ReactNode
-  row: (_: T) => ReactNode
+  render: (_: T) => ReactNode
   hidden?: boolean
   alwaysVisible?: boolean
   className?: string | ((_: T) => string | undefined)
@@ -121,7 +122,7 @@ export const Datatable = <T extends any = any>(props: DatatableProps<T>) => {
     loading,
     total,
     data,
-    rows,
+    columns,
     getRenderRowKey,
     actions,
     header,
@@ -136,15 +137,11 @@ export const Datatable = <T extends any = any>(props: DatatableProps<T>) => {
 
   const css = useStyles()
   const cssUtils = useCssUtils()
-  const displayableRows = useMemo(() => rows.filter(_ => !_.hidden), [rows])
-  const toggleableColumnsName = useMemo(() => displayableRows.filter(_ => !_.alwaysVisible), [displayableRows])
-  const [displayedColumnsSet, setDisplayedColumnsSet] = usePersistentState<string[]>(displayableRows.map(_ => _.id!), id)
-  const filteredRows = useMemo(() => displayableRows.filter(_ => displayedColumnsSet.indexOf(_.id) > -1), [rows, displayedColumnsSet])
-  const displayTableHeader = useMemo(() => !!displayableRows.find(_ => _.head !== ''), [displayableRows])
-
-  // useEffect(() => {
-  //   setDisplayedColumnsSet(displayableRows.map(_ => _.id!))
-  // }, [displayableRows])
+  const displayableColumns = useMemo(() => columns.filter(_ => !_.hidden), [columns])
+  const toggleableColumnsName = useMemo(() => displayableColumns.filter(_ => !_.alwaysVisible && _.head && _.head !== ''), [displayableColumns])
+  const [hiddenColumns, setHiddenColumns] = usePersistentState<string[]>([], id)
+  const filteredColumns = useMemo(() => displayableColumns.filter(_ => !hiddenColumns.includes(_.id)), [columns, hiddenColumns])
+  const displayTableHeader = useMemo(() => !!displayableColumns.find(_ => _.head !== ''), [displayableColumns])
 
   return (
     <>
@@ -159,8 +156,8 @@ export const Datatable = <T extends any = any>(props: DatatableProps<T>) => {
               <DatatableColumnToggle
                 className={css.btnColumnsToggle}
                 columns={toggleableColumnsName}
-                displayedColumns={displayedColumnsSet.toArray() as string[]}
-                onChange={displayedColumnsSet.reset}
+                hiddenColumns={hiddenColumns}
+                onChange={_ => setHiddenColumns(_)}
                 title={showColumnsToggleBtnTooltip}
               />
             )}
@@ -172,7 +169,7 @@ export const Datatable = <T extends any = any>(props: DatatableProps<T>) => {
           {displayTableHeader && (
             <TableHead>
               <TableRow>
-                {filteredRows.map((_, i) => (
+                {filteredColumns.map((_, i) => (
                   <TableCell key={i} className={classes(css.cellHeader, _.stickyEnd && css.stickyEnd)}>
                     {sort ? (
                       <TableSortLabel
@@ -193,7 +190,7 @@ export const Datatable = <T extends any = any>(props: DatatableProps<T>) => {
           <TableBody>
             {loading && (
               <TableRow>
-                <TableCell colSpan={filteredRows.length} className={css.loadingTd}>
+                <TableCell colSpan={filteredColumns.length} className={css.loadingTd}>
                   <LinearProgress className={css.loading} />
                 </TableCell>
               </TableRow>
@@ -204,7 +201,7 @@ export const Datatable = <T extends any = any>(props: DatatableProps<T>) => {
                 onClick={e => onClickRows?.(item, e)}
                 className={classes(onClickRows && css.hoverableRows)}
               >
-                {filteredRows.map((_, i) => (
+                {filteredColumns.map((_, i) => (
                   <TableCell
                     key={i}
                     style={_.style}
@@ -214,14 +211,14 @@ export const Datatable = <T extends any = any>(props: DatatableProps<T>) => {
                       _.stickyEnd && css.stickyEnd,
                     )}
                   >
-                    {_.row(item)}
+                    {_.render(item)}
                   </TableCell>
                 ))}
               </TableRow>
             ))}
             {!loading && (!data || data?.length === 0) && (
               <TableRow>
-                <TableCell colSpan={filteredRows.length} className={css.fenderContainer}>
+                <TableCell colSpan={filteredColumns.length} className={css.fenderContainer}>
                   {renderEmptyState ? renderEmptyState : <Fender title={m.noDataAtm} icon="highlight_off" />}
                 </TableCell>
               </TableRow>

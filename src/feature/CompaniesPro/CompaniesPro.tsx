@@ -150,12 +150,12 @@ export const CompaniesPro = () => {
           data={_companies.accessibleByPro.entity}
           loading={_companies.accessibleByPro.loading || _blockedNotifications.list.loading}
           getRenderRowKey={_ => _.id}
-          rows={[
+          columns={[
             {
               id: '',
               className: css.tdName,
               head: m.name,
-              row: _ => (
+              render: _ => (
                 <Tooltip title={_.name}>
                   <span>
                     <span className={css.tdName_label}>{_.name}</span>
@@ -169,7 +169,7 @@ export const CompaniesPro = () => {
               head: m.address,
               id: 'address',
               className: css.tdAddress,
-              row: _ => (
+              render: _ => (
                 <Tooltip title={<AddressComponent address={_.address} />}>
                   <span>
                     <AddressComponent address={_.address} />
@@ -181,7 +181,7 @@ export const CompaniesPro = () => {
               head: <span className={classes(cssUtils.nowrap, cssUtils.vaMiddle)}>{m.notification}</span>,
               id: 'status',
               className: css.tdNotification,
-              row: _ => (
+              render: _ => (
                 <>
                   <Switch
                     disabled={!blockedNotificationIndex}
@@ -197,7 +197,7 @@ export const CompaniesPro = () => {
               head: '',
               id: 'actions',
               className: css.tdActions,
-              row: _ => (
+              render: _ => (
                 <>
                   {_.level === AccessLevel.ADMIN && (
                     <NavLink to={siteMap.logged.companyAccesses(_.siret)}>

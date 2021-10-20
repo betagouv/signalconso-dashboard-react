@@ -56,21 +56,21 @@ export const UsersList = () => {
         }}
         getRenderRowKey={_ => _.email}
         data={_users.list?.data}
-        rows={[
+        columns={[
           {
             id: '',
             head: m.email,
-            row: _ => <Txt bold>{_.email}</Txt>,
+            render: _ => <Txt bold>{_.email}</Txt>,
           },
           {
             head: m.firstName,
             id: 'firstName',
-            row: _ => _.firstName,
+            render: _ => _.firstName,
           },
           {
             head: m.lastName,
             id: 'lastName',
-            row: _ => _.lastName,
+            render: _ => _.lastName,
           },
           {
             head: (
@@ -79,7 +79,7 @@ export const UsersList = () => {
               </Tooltip>
             ),
             id: 'lastEmailValidation',
-            row: _ =>
+            render: _ =>
               _.lastEmailValidation.getTime() > subMonths(new Date(), 3).getTime() && (
                 <Icon className={cssUtils.colorSuccess}>check_circle</Icon>
               ),
