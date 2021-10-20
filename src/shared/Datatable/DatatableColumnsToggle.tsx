@@ -30,10 +30,6 @@ export const DatatableColumnToggle = ({className, title, columns, hiddenColumns,
 
   const css = useStyles()
 
-  console.log('columns', columns)
-  console.log('hiddenColumns', hiddenColumns)
-  console.log(columns.length, hiddenColumns.length, columns.length !== hiddenColumns.length)
-
   return (
     <>
       <Tooltip title={title ?? ''}>
