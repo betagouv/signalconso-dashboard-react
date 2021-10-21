@@ -32,7 +32,8 @@ export const ReportedUnknownWebsites = () => {
 
   return (
     <Panel>
-      <Datatable<ApiHostWithReportCount>
+      <Datatable
+        id="reportedunknownwebsites"
         header={
           <>
             <DebouncedInput

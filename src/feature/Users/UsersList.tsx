@@ -28,7 +28,8 @@ export const UsersList = () => {
 
   return (
     <Panel>
-      <Datatable<User>
+      <Datatable
+        id="userslist"
         header={
           <>
             <DebouncedInput

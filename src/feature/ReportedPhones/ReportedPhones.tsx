@@ -43,7 +43,8 @@ export const ReportedPhones = () => {
     <Page>
       <PageTitle>{m.reportedPhoneTitle}</PageTitle>
       <Panel>
-        <Datatable<ReportedPhone>
+        <Datatable
+          id="reportedphones"
           showColumnsToggle
           header={
             <>

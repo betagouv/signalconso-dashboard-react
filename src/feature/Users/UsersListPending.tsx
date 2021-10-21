@@ -23,6 +23,7 @@ export const UsersListPending = () => {
   return (
     <Panel>
       <Datatable
+        id="userslistpending"
         loading={_users.loading}
         total={_users.entity?.length}
         data={_users.entity}
