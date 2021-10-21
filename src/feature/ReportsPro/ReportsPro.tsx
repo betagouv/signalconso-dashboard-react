@@ -259,7 +259,8 @@ export const ReportsPro = () => {
             )}
 
             <Panel>
-              <Datatable<ReportSearchResult>
+              <Datatable
+                id="reportspro"
                 paginate={{
                   minRowsBeforeDisplay: minRowsBeforeDisplayFilters,
                   offset: _reports.filters.offset,

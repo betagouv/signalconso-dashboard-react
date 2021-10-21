@@ -107,7 +107,8 @@ export const CompaniesToActivate = () => {
 
   return (
     <Panel>
-      <Datatable<CompanyToActivate>
+      <Datatable
+        id="companiestoactivate"
         header={
           <>
             <ScButton

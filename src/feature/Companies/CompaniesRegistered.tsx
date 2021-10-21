@@ -89,7 +89,8 @@ export const CompaniesRegistered = () => {
 
   return (
     <Panel>
-      <Datatable<CompanyWithReportsCount>
+      <Datatable
+        id="companiesregistered"
         header={
           <Grid container alignItems="center" spacing={1}>
             <Grid item xs={12} md={4}>

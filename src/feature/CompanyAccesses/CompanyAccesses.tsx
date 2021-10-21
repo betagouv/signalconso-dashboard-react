@@ -105,7 +105,8 @@ export const CompanyAccesses = () => {
         {m.companyAccessesTitle}
       </PageTitle>
       <Panel>
-        <Datatable<Accesses>
+        <Datatable
+          id="companyaccesses"
           data={_crudAccess.list && _crudToken.list ? accesses : undefined}
           loading={_crudAccess.fetching || _crudToken.fetching}
           getRenderRowKey={_ => _.email ?? _.tokenId!}

@@ -94,7 +94,8 @@ export const ReportedCompaniesWebsites = () => {
 
   return (
     <Panel>
-      <Datatable<WebsiteWithCompany>
+      <Datatable
+        id="reportcompanieswebsites"
         header={
           <>
             <DebouncedInput

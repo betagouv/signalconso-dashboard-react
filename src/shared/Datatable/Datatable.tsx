@@ -86,6 +86,7 @@ const useStyles = makeStyles((t: Theme) => ({
     flex: 1,
   },
   header_actions: {
+    marginLeft: t.spacing(1),
     whiteSpace: 'nowrap',
   },
   paginate: {

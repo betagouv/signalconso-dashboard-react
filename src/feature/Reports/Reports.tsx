@@ -27,6 +27,7 @@ import compose from '../../core/helper/compose'
 import {DebouncedInput} from '../../shared/DebouncedInput/DebouncedInput'
 import {ReportDetailValues} from '../../shared/ReportDetailValues/ReportDetailValues'
 import {styleUtils} from '../../core/theme'
+import {useStatsContext} from '../../core/context/StatsContext'
 
 const useStyles = makeStyles((t: Theme) => ({
   toolbar: {},
@@ -109,6 +110,7 @@ export const Reports = ({}) => {
   const _reports = useReportsContext()
   const cssUtils = useCssUtils()
   const css = useStyles()
+  const _stats = useStatsContext()
   const {toastError} = useToast()
   const queryString = useQueryString<Partial<ReportSearch>, Partial<ReportSearchQs>>({
     toQueryString: mapDatesToQueryString,
@@ -141,7 +143,8 @@ export const Reports = ({}) => {
     <Page size="large">
       <PageTitle>{m.reports_pageTitle}</PageTitle>
       <Panel>
-        <Datatable<ReportSearchResult>
+        <Datatable
+          id="reports"
           header={
             <Grid container spacing={1}>
               <Grid item xs={12} md={6}>
