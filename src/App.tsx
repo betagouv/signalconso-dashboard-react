@@ -5,8 +5,6 @@ import {makeStyles} from '@material-ui/core/styles'
 import {CircularProgress, Theme, ThemeProvider} from '@material-ui/core'
 import {BrowserRouter, HashRouter, Redirect, Route, Switch} from 'react-router-dom'
 import {I18nProvider} from './core/i18n'
-import {MuiPickersUtilsProvider} from '@material-ui/pickers'
-import DateAdapter from '@date-io/date-fns'
 import {ReportProvider} from './core/context/ReportContext'
 import {Reports} from './feature/Reports/Reports'
 import {ReportComponent} from './feature/Report/Report'
@@ -108,7 +106,6 @@ export const App = () => {
       providers={[
         _ => <ThemeProvider theme={muiTheme()} children={_} />,
         _ => <I18nProvider children={_} />,
-        _ => <MuiPickersUtilsProvider utils={DateAdapter} children={_} />,
         _ => <Router children={_} />,
         _ => <ToastProvider horizontal="right" children={_} />,
       ]}
