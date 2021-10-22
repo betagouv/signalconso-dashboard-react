@@ -1,5 +1,6 @@
 import React, {useRef, useState} from 'react'
-import {Button, CircularProgress, Icon, makeStyles, Theme, Tooltip} from '@material-ui/core'
+import { Button, CircularProgress, Icon, Theme, Tooltip } from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
 import {reportFileConfig} from './reportFileConfig'
 import {useI18n} from '../../../core/i18n'
 import {styleUtils} from '../../../core/theme'
@@ -15,7 +16,7 @@ const useStyles = makeStyles((t: Theme) => ({
     borderRadius: reportFileConfig.cardBorderRadius,
     height: reportFileConfig.cardSize,
     width: reportFileConfig.cardSize,
-    color: t.palette.text.hint,
+    color: t.palette.text.disabled,
     overflow: 'hidden',
     display: 'inline-flex',
     alignItems: 'center',

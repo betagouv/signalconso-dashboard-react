@@ -1,8 +1,9 @@
 import * as React from 'react'
 import {forwardRef, ReactNode} from 'react'
-import {Card, createStyles, LinearProgress, makeStyles, Theme} from '@material-ui/core'
+import {Card, LinearProgress, Theme} from '@mui/material'
 import {classes} from '../../core/helper/utils'
-import {CardProps} from '@material-ui/core/Card/Card'
+import {CardProps} from '@mui/material'
+import {makeStyles, createStyles} from '@mui/styles'
 
 const useStyles = makeStyles((t: Theme) =>
   createStyles({
@@ -27,7 +28,7 @@ const useStyles = makeStyles((t: Theme) =>
     stretch: {
       display: 'flex',
       flexDirection: 'column',
-      height: `calc(100% - ${t.spacing(2)}px)`,
+      height: `calc(100% - ${t.spacing(2)})`,
     },
   }),
 )

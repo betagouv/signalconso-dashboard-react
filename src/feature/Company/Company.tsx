@@ -18,10 +18,10 @@ import {
   ListItem,
   ListItemIcon,
   ListItemText,
-  makeStyles,
   Theme,
   Tooltip,
-} from '@material-ui/core'
+} from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
 import {Txt} from 'mui-extension/lib/Txt/Txt'
 import {CompanyReportsCountPanel} from './CompanyReportsCountPanel'
 import {useMemoFn} from '../../shared/hooks/UseMemoFn'
@@ -41,7 +41,7 @@ import {AddressComponent} from '../../shared/Address/Address'
 import {useReportsContext} from '../../core/context/ReportsContext'
 import {ReportsShortList} from './ReportsShortList'
 import {styleUtils} from '../../core/theme'
-import {Skeleton} from '@material-ui/lab'
+import { Skeleton } from '@mui/material';
 import {useStatsContext} from '../../core/context/StatsContext'
 
 const useStyles = makeStyles((t: Theme) => ({

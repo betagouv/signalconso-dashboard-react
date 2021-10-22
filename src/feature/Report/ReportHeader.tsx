@@ -2,7 +2,8 @@ import {Panel, PanelBody} from '../../shared/Panel'
 import {ReportStatusChip} from '../../shared/ReportStatus/ReportStatus'
 import {Alert} from 'mui-extension/lib'
 import {ReportCategories} from './ReportCategories'
-import {Icon, makeStyles, Theme} from '@material-ui/core'
+import { Icon, Theme } from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
 import {Report} from '@signal-conso/signalconso-api-sdk-js'
 import {PanelFoot} from '../../shared/Panel/PanelFoot'
 import {ScChip} from '../../shared/Chip/ScChip'

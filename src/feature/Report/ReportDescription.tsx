@@ -1,5 +1,5 @@
 import {Panel, PanelBody} from '../../shared/Panel'
-import {Divider} from '@material-ui/core'
+import {Divider} from '@mui/material'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
 import {ReportFiles} from './File/ReportFiles'
 import {EventActionValues, FileOrigin, Report, UploadedFile} from '@signal-conso/signalconso-api-sdk-js'
@@ -57,5 +57,5 @@ export const ReportDescription = ({report, files, children}: Props) => {
         )}
       </PanelBody>
     </Panel>
-  )
+  );
 }

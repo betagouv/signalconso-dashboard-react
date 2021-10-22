@@ -3,7 +3,9 @@ import {useEffect, useMemo} from 'react'
 import {useConstantContext} from '../../core/context/ConstantContext'
 import {fromNullable} from 'fp-ts/lib/Option'
 import {Country} from '@signal-conso/signalconso-api-sdk-js'
-import {alpha, Checkbox, createStyles, makeStyles, Menu, Theme} from '@material-ui/core'
+import { alpha, Checkbox, Menu, Theme } from '@mui/material';
+import createStyles from '@mui/styles/createStyles';
+import makeStyles from '@mui/styles/makeStyles';
 import {useCssUtils} from '../../core/helper/useCssUtils'
 import {useI18n} from '../../core/i18n'
 import {classes} from '../../core/helper/utils'
@@ -73,7 +75,7 @@ interface Props {
 const countryToFlag = (isoCode: string) => {
   return typeof String.fromCodePoint !== 'undefined'
     ? isoCode.toUpperCase().replace(/./g, char => String.fromCodePoint(char.charCodeAt(0) + 127397))
-    : isoCode
+    : isoCode;
 }
 
 export const SelectCountriesMenu = withRegions(({countries, anchorEl, open, initialValues, onChange, onClose}: Props) => {

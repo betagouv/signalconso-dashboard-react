@@ -3,7 +3,8 @@ import {classes} from '../../../core/helper/utils'
 import {AddressComponent} from '../../../shared/Address/Address'
 import {fromNullable} from 'fp-ts/lib/Option'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
-import {Icon, makeStyles, Theme, useTheme} from '@material-ui/core'
+import {Icon, IconButton, Theme, useTheme} from '@mui/material'
+import makeStyles from '@mui/styles/makeStyles';
 import {SelectCompany} from '../../../shared/SelectCompany/SelectCompany'
 import {ScButton} from '../../../shared/Button/Button'
 import React from 'react'
@@ -57,9 +58,9 @@ export const ReportCompany = ({report, canEdit}: Props) => {
       >
         <NavLink to={siteMap.logged.company(report.companyId)}>
           {m.company}
-          <IconBtn size="small" className={cssUtils.marginLeft}>
+          <IconButton size="small" className={cssUtils.marginLeft}>
             <Icon>open_in_new</Icon>
-          </IconBtn>
+          </IconButton>
         </NavLink>
       </PanelHead>
       <PanelBody className={css.cardBody}>

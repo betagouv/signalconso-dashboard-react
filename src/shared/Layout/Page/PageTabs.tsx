@@ -1,4 +1,5 @@
-import {makeStyles, Tab, Tabs, Theme} from '@material-ui/core'
+import { Tab, Tabs, Theme } from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
 import * as React from 'react'
 import {ReactElement, useMemo, useState} from 'react'
 import {useHistory, useLocation} from 'react-router'

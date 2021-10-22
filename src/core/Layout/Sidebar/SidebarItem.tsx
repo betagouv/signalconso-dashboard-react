@@ -1,8 +1,10 @@
 import * as React from 'react'
 import {HTMLProps, ReactNode} from 'react'
-import {createStyles, Icon, makeStyles, Theme} from '@material-ui/core'
+import { Icon, Theme } from '@mui/material';
+import createStyles from '@mui/styles/createStyles';
+import makeStyles from '@mui/styles/makeStyles';
 import classNames from 'classnames'
-import {alpha} from '@material-ui/core/styles'
+import {alpha} from '@mui/material/styles'
 import {useLayoutContext} from '../LayoutContext'
 import {NavLink} from 'react-router-dom'
 

@@ -4,7 +4,8 @@ import {useI18n} from '../../../core/i18n'
 import {ReportEventIcon} from './ReportEventIcon'
 import {useCssUtils} from '../../../core/helper/useCssUtils'
 import {classes} from '../../../core/helper/utils'
-import {Icon, makeStyles, Theme} from '@material-ui/core'
+import { Icon, Theme } from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
 import {styleUtils} from '../../../core/theme'
 
 export interface ReportComponentEventProps {
@@ -43,7 +44,7 @@ const useStyles = makeStyles((t: Theme) => ({
   },
   date: {
     whiteSpace: 'nowrap',
-    color: t.palette.text.hint,
+    color: t.palette.text.disabled,
     marginTop: t.spacing(0.5),
   },
 }))

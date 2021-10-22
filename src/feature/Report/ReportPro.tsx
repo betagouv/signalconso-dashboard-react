@@ -8,7 +8,8 @@ import {useToast} from '../../core/toast'
 import {Page} from '../../shared/Layout'
 import {ReportHeader} from './ReportHeader'
 import {useBoolean} from '@alexandreannic/react-hooks-lib/lib'
-import {Collapse, makeStyles, Theme} from '@material-ui/core'
+import { Collapse, Theme } from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
 import {ScButton} from '../../shared/Button/Button'
 import {styleUtils} from '../../core/theme'
 import {capitalize} from '../../core/helper/utils'
@@ -27,7 +28,7 @@ const useStyles = makeStyles((t: Theme) => ({
     transition: t.transitions.create('box-shadow'),
   },
   responseDateTime: {
-    color: t.palette.text.hint,
+    color: t.palette.text.disabled,
     fontSize: styleUtils(t).fontSize.normal,
     fontWeight: 'normal',
     display: 'inline',

@@ -5,7 +5,8 @@ import {Panel, PanelBody} from '../../shared/Panel'
 import {useCompaniesContext} from '../../core/context/CompaniesContext'
 import {useCssUtils} from '../../core/helper/useCssUtils'
 import {Datatable} from '../../shared/Datatable/Datatable'
-import {Icon, makeStyles, Switch, Theme, Tooltip} from '@material-ui/core'
+import { Icon, Switch, Theme, Tooltip } from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
 import {styleUtils} from '../../core/theme'
 import {Fender, IconBtn} from 'mui-extension/lib'
 import {ScButton} from '../../shared/Button/Button'
@@ -35,7 +36,7 @@ const useStyles = makeStyles((t: Theme) => ({
   },
   tdName_desc: {
     fontSize: t.typography.fontSize * 0.875,
-    color: t.palette.text.hint,
+    color: t.palette.text.disabled,
   },
   tdAddress: {
     maxWidth: 240,

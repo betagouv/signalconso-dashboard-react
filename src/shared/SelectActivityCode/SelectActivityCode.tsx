@@ -1,10 +1,10 @@
-import {Autocomplete, Skeleton} from '@material-ui/lab'
+import { Autocomplete, Skeleton } from '@mui/material';
 import {ScInput} from '../Input/ScInput'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
-import {Chip, Tooltip} from '@material-ui/core'
+import {Chip, Tooltip} from '@mui/material'
 import {forwardRef, useEffect} from 'react'
 import {useFetcher} from '@alexandreannic/react-hooks-lib/lib'
-import {AutocompleteProps} from '@material-ui/lab/Autocomplete'
+import {AutocompleteProps} from '@mui/material/Autocomplete'
 import {useMemoFn} from '../hooks/UseMemoFn'
 
 interface Props extends Pick<AutocompleteProps<string, true, false, false>,
@@ -34,17 +34,17 @@ export const SelectActivityCode = forwardRef((props: Props, ref) => {
       ) : activityCodes && activities && (
         <Autocomplete
           {...props}
-          innerRef={ref}
+          ref={ref}
           multiple
           options={activityCodes}
           getOptionLabel={option => option + activities[option]}
           renderInput={params => <ScInput {...params} label={props.label} small/>}
-          renderOption={(option: string) => (
+          renderOption={(props, option: string) => (
             <Tooltip title={activities[option]}>
-              <div>
+              <li {...props}>
                 <Txt bold>{option}</Txt>
                 <Txt truncate color="hint">&nbsp;-&nbsp;{activities[option]}</Txt>
-              </div>
+              </li>
             </Tooltip>
           )}
           renderTags={(value, getTagProps) =>

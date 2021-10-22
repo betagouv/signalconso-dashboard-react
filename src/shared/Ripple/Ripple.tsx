@@ -1,4 +1,4 @@
-import TouchRipple from '@material-ui/core/ButtonBase/TouchRipple'
+import TouchRipple from '@mui/material/ButtonBase/TouchRipple'
 import {ReactElement, useRef} from 'react'
 
 interface Props {

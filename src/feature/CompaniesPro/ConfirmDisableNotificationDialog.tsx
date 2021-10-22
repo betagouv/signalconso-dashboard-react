@@ -1,4 +1,4 @@
-import {Dialog, DialogActions, DialogContent, DialogTitle} from '@material-ui/core'
+import {Dialog, DialogActions, DialogContent, DialogTitle} from '@mui/material'
 import {ScButton} from '../../shared/Button/Button'
 import {useI18n} from '../../core/i18n'
 import {Txt} from 'mui-extension/lib/Txt/Txt'

@@ -3,7 +3,7 @@ import {useI18n} from '../../../core/i18n'
 import {ScInput} from '../../../shared/Input/ScInput'
 import {Controller, useForm} from 'react-hook-form'
 import {regexp} from '../../../core/helper/regexp'
-import {Checkbox, FormControlLabel} from '@material-ui/core'
+import {Checkbox, FormControlLabel} from '@mui/material'
 import {Report} from '@signal-conso/signalconso-api-sdk-js'
 import {ScDialog} from '../../../shared/Confirm/ScDialog'
 

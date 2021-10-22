@@ -1,6 +1,6 @@
 import React, {CSSProperties, useMemo} from 'react'
-import {FormControl, InputLabel, Select} from '@material-ui/core'
-import {SelectProps} from '@material-ui/core/Select/Select'
+import {FormControl, InputLabel, Select} from '@mui/material'
+import {SelectProps} from '@mui/material'
 
 interface ScSelectProps extends SelectProps {
   label?: string

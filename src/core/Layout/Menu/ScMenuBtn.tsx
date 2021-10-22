@@ -1,7 +1,7 @@
-import {Avatar, Icon, Theme} from '@material-ui/core'
+import {Avatar, Icon, Theme} from '@mui/material'
 import React from 'react'
-import {makeStyles} from '@material-ui/core/styles'
-import {grey, lightBlue} from '@material-ui/core/colors'
+import makeStyles from '@mui/styles/makeStyles';
+import {grey, lightBlue} from '@mui/material/colors'
 import {styleUtils} from '../../theme'
 import {useBoolean} from '@alexandreannic/react-hooks-lib/lib'
 import {ScMenu} from './ScMenu'
@@ -38,7 +38,7 @@ const useMenuStyles = makeStyles((t: Theme) => ({
   },
   useRole: {
     fontSize: styleUtils(t).fontSize.small,
-    color: t.palette.text.hint,
+    color: t.palette.text.disabled,
   },
 }))
 

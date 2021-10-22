@@ -1,7 +1,7 @@
 import {createPortal} from 'react-dom'
 import {useLayoutContext} from '../LayoutContext'
 import React from 'react'
-import {Icon} from '@material-ui/core'
+import {Icon} from '@mui/material'
 import {IconBtn} from 'mui-extension/lib'
 
 interface SidebarOpenProps {

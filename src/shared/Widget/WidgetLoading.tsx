@@ -1,7 +1,8 @@
 import * as React from 'react'
-import {makeStyles, Theme} from '@material-ui/core'
+import { Theme } from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
 import {widgetBodyHeight} from './WidgetBody'
-import {Skeleton} from '@material-ui/lab'
+import { Skeleton } from '@mui/material';
 
 const useStyles = makeStyles((t: Theme) => ({
   root: {
