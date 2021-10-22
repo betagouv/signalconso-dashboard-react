@@ -1,4 +1,5 @@
-import {Badge, Checkbox, Icon, makeStyles, Menu, MenuItem, Theme, Tooltip} from '@material-ui/core'
+import { Badge, Checkbox, Icon, Menu, MenuItem, Theme, Tooltip } from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
 import React from 'react'
 import {IconBtn} from 'mui-extension/lib'
 import {DatatableColumnProps} from './Datatable'

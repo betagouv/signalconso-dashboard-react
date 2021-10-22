@@ -1,7 +1,8 @@
 import {addDays, subDays} from 'date-fns'
 import React, {CSSProperties, useEffect, useState} from 'react'
 import {useI18n} from '../../core/i18n'
-import {makeStyles, Theme} from '@material-ui/core'
+import { Theme } from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
 import {Datepicker} from '../Datepicker/Datepicker'
 import {classes} from '../../core/helper/utils'
 import {useCssUtils} from '../../core/helper/useCssUtils'

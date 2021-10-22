@@ -1,6 +1,8 @@
 import * as React from 'react'
 import {ReactNode} from 'react'
-import {createStyles, makeStyles, SwipeableDrawer, Theme} from '@material-ui/core'
+import { SwipeableDrawer, Theme } from '@mui/material';
+import createStyles from '@mui/styles/createStyles';
+import makeStyles from '@mui/styles/makeStyles';
 import classNames from 'classnames'
 import {sidebarWith} from '../Layout'
 import {SidebarTitle} from './SidebarTitle'

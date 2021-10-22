@@ -1,5 +1,6 @@
-import {red} from '@material-ui/core/colors'
-import {alpha, createTheme, Theme} from '@material-ui/core'
+import {red} from '@mui/material/colors'
+import {alpha, createTheme, Theme} from '@mui/material'
+import {ThemeOptions} from '@mui/material/styles/createTheme'
 
 export const styleUtils = (t: Theme) => ({
   defaultRadius: 4,
@@ -13,7 +14,7 @@ export const styleUtils = (t: Theme) => ({
   },
   spacing: (...args: number[]) => {
     const [top = 0, right = 0, bottom = 0, left = 0] = args ?? [1, 1, 2, 1]
-    return `${t.spacing(top)}px ${t.spacing(right)}px ${t.spacing(bottom)}px ${t.spacing(left)}px`
+    return `${t.spacing(top)} ${t.spacing(right)} ${t.spacing(bottom)} ${t.spacing(left)}`
   },
   color: {
     success: '#00b79f',
@@ -28,12 +29,15 @@ export const styleUtils = (t: Theme) => ({
   } as any,
 })
 
-export const muiTheme = (dark?: boolean): any => {
-  const theme = createTheme()
+export const defaultSpacing = 8
+
+export const muiTheme = (dark?: boolean): Theme => {
+  const defaultTheme = createTheme()
   const colorMain = '#407e99'
   const colorMainLight = '#6697ad'
   const colorMainDark = '#2c586b'
-  return createTheme({
+  const theme: ThemeOptions = {
+    spacing: defaultSpacing,
     palette: {
       primary: {
         light: colorMainLight,
@@ -46,7 +50,7 @@ export const muiTheme = (dark?: boolean): any => {
         dark: colorMainDark,
       },
       error: red,
-      type: dark ? 'dark' : 'light',
+      mode: dark ? 'dark' : 'light',
     },
     typography: {
       fontSize: 15,
@@ -54,97 +58,127 @@ export const muiTheme = (dark?: boolean): any => {
       fontFamily: 'Roboto, sans-serif',
       fontWeightBold: 500,
     },
-    overrides: {
+    components: {
       MuiButton: {
-        root: {
-          borderRadius: 20,
-        },
-        outlinedPrimary: {
-          borderColor: theme.palette.divider,
+        styleOverrides: {
+          root: {
+            borderRadius: 20,
+          },
+          outlinedPrimary: {
+            borderColor: defaultTheme.palette.divider,
+          },
         },
       },
       MuiTabs: {
-        root: {
-          minHeight: 0,
+        styleOverrides: {
+          root: {
+            minHeight: 0,
+          },
         },
       },
+
       MuiTab: {
-        root: {
-          textTransform: 'none',
-          fontWeight: 600,
-          minHeight: 40,
-          minWidth: '80px !important',
+        styleOverrides: {
+          root: {
+            textTransform: 'none',
+            fontWeight: 600,
+            minHeight: 40,
+            minWidth: '80px !important',
+          },
         },
       },
       MuiChip: {
-        outlined: {
-          borderColor: theme.palette.divider,
+        styleOverrides: {
+          outlined: {
+            borderColor: defaultTheme.palette.divider,
+          },
         },
       },
       MuiMenuItem: {
-        root: {
-          fontSize: '1rem',
-          minHeight: 42,
-          [theme.breakpoints.up('xs')]: {
+        styleOverrides: {
+          root: {
+            fontSize: '1rem',
             minHeight: 42,
+            [defaultTheme.breakpoints.up('xs')]: {
+              minHeight: 42,
+            },
           },
         },
       },
       MuiDialogTitle: {
-        root: {
-          paddingBottom: 8,
+        styleOverrides: {
+          root: {
+            paddingBottom: 8,
+          },
         },
       },
-      ...(dark && {
-        MuiOutlinedInput: {
+      MuiFormHelperText: {
+        styleOverrides: {
+          sizeSmall: {
+            marginBottom: -4,
+          },
+        },
+      },
+      MuiTableCell: {
+        styleOverrides: {
+          root: {
+            paddingTop: 0,
+            paddingBottom: 0,
+            minHeight: 50,
+            height: 50,
+            paddingRight: 8,
+            paddingLeft: 8,
+          },
+        },
+      },
+      MuiTooltip: {
+        styleOverrides: {
+          tooltip: {
+            fontSize: defaultTheme.typography.fontSize,
+            fontWeight: 'normal',
+          },
+        },
+      },
+      MuiIcon: {
+        styleOverrides: {
+          root: {
+            width: 'auto',
+          },
+        },
+      },
+      MuiIconButton: {
+        styleOverrides: {
+          root: {
+            spacing: 6,
+          },
+        },
+      },
+      MuiOutlinedInput: {
+        styleOverrides: {
+          root: {
+            '&:hover $notchedOutline': {
+              borderColor: alpha(colorMain, 0.7),
+            },
+          },
+          notchedOutline: {
+            transition: 'border-color 140ms cubic-bezier(0.4, 0, 0.2, 1) 0ms',
+            background: 'rgba(0,0,0,.02)',
+            borderColor: 'rgba(0, 0, 0, 0.12)',
+          },
+        },
+      },
+    },
+  }
+  return createTheme({
+    ...theme,
+    ...(dark ? {
+      MuiOutlinedInput: {
+        styleOverrides: {
           notchedOutline: {
             borderColor: '#d9dce0',
           },
         },
-      }),
-      MuiFormHelperText: {
-        marginDense: {
-          marginBottom: -4,
-        },
       },
-      MuiTableCell: {
-        root: {
-          paddingTop: 0,
-          paddingBottom: 0,
-          minHeight: 50,
-          height: 50,
-          paddingRight: 8,
-          paddingLeft: 8,
-        },
-      },
-      MuiTooltip: {
-        tooltip: {
-          fontSize: theme.typography.fontSize,
-          fontWeight: 'normal',
-        },
-      },
-      MuiIcon: {
-        root: {
-          width: 'auto',
-        },
-      },
-      MuiIconButton: {
-        root: {
-          spacing: 6,
-        },
-      },
-      MuiOutlinedInput: {
-        root: {
-          '&:hover $notchedOutline': {
-            borderColor: alpha(colorMain, 0.7),
-          },
-        },
-        notchedOutline: {
-          transition: 'border-color 140ms cubic-bezier(0.4, 0, 0.2, 1) 0ms',
-          background: 'rgba(0,0,0,.02)',
-          borderColor: 'rgba(0, 0, 0, 0.12)',
-        },
-      },
-    },
+    } : {} as any),
   })
 }

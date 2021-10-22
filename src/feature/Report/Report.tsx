@@ -5,7 +5,8 @@ import {useI18n} from '../../core/i18n'
 import {Panel} from '../../shared/Panel'
 import {useReportContext} from '../../core/context/ReportContext'
 import {EventActionValues, FileOrigin, Id, Report, ReportEvent} from '@signal-conso/signalconso-api-sdk-js'
-import {Grid, makeStyles, Tab, Tabs, Theme, Tooltip, useTheme} from '@material-ui/core'
+import { Grid, Tab, Tabs, Theme, Tooltip, useTheme } from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
 import {useCssUtils} from '../../core/helper/useCssUtils'
 import {fromNullable} from 'fp-ts/lib/Option'
 import {useToast} from '../../core/toast'

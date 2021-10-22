@@ -1,5 +1,5 @@
-import {Theme} from '@material-ui/core'
-import {makeStyles} from '@material-ui/core/styles'
+import {Theme} from '@mui/material'
+import makeStyles from '@mui/styles/makeStyles';
 import {styleUtils} from '../theme'
 
 export const useCssUtils = makeStyles((t: Theme) => {
@@ -59,7 +59,7 @@ export const useCssUtils = makeStyles((t: Theme) => {
       color: styleUtils(t).color.info,
     },
     colorTxtHint: {
-      color: t.palette.text.hint + ' !important',
+      color: t.palette.text.disabled + ' !important',
     },
     colorDisabled: {
       color: t.palette.text.disabled + ' !important',

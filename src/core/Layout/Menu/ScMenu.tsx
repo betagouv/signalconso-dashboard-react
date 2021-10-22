@@ -1,9 +1,9 @@
 import {useI18n} from '../../i18n'
 import {Btn} from 'mui-extension/lib'
-import {ClickAwayListener, Divider, Theme} from '@material-ui/core'
+import {ClickAwayListener, Divider, Theme} from '@mui/material'
 import {EntityIcon} from '../../EntityIcon'
 import React from 'react'
-import {makeStyles} from '@material-ui/core/styles'
+import makeStyles from '@mui/styles/makeStyles';
 import {styleUtils} from '../../theme'
 import {ScMenuItem} from './ScMenuItem'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
@@ -39,7 +39,7 @@ const useMenuStyles = makeStyles((t: Theme) => ({
   },
   useRole: {
     fontSize: styleUtils(t).fontSize.small,
-    color: t.palette.text.hint,
+    color: t.palette.text.disabled,
   },
   divider: {
     '& + $divider': {

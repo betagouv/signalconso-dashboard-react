@@ -1,6 +1,7 @@
 import * as React from 'react'
 import {ReactNode} from 'react'
-import {CardActions, CardActionsProps, makeStyles, Theme} from '@material-ui/core'
+import { CardActions, CardActionsProps, Theme } from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
 import {classes} from '../../core/helper/utils'
 
 export interface PanelFootProps extends CardActionsProps {

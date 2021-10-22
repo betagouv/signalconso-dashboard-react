@@ -1,6 +1,7 @@
 import * as React from 'react'
 import {ReactNode} from 'react'
-import {CardContent as MuiCardContent, makeStyles, Theme} from '@material-ui/core'
+import { CardContent as MuiCardContent, Theme } from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
 import {classes} from '../../core/helper/utils'
 import {styleUtils} from '../../core/theme'
 

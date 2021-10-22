@@ -1,4 +1,5 @@
-import {Icon, makeStyles, Theme} from '@material-ui/core'
+import { Icon, Theme } from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
 import {ReportSearchResult} from '@signal-conso/signalconso-api-sdk-js'
 import {Paginate} from '@alexandreannic/react-hooks-lib/lib'
 import {ReportStatusChip} from '../../shared/ReportStatus/ReportStatus'
@@ -30,7 +31,7 @@ const useStyles = makeStyles((t: Theme) => ({
     marginBottom: t.spacing(1),
     display: 'flex',
     alignItems: 'center',
-    color: t.palette.text.hint,
+    color: t.palette.text.disabled,
   },
   body: {
     flex: 1,

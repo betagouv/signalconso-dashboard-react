@@ -6,7 +6,8 @@ import {Panel} from '../../shared/Panel'
 import {useCssUtils} from '../../core/helper/useCssUtils'
 import {Datatable} from '../../shared/Datatable/Datatable'
 import {fromNullable, some} from 'fp-ts/lib/Option'
-import {alpha, Badge, Button, Grid, Icon, makeStyles, Theme, Tooltip} from '@material-ui/core'
+import { alpha, Badge, Button, Grid, Icon, Theme, Tooltip } from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
 import {classes, textOverflowMiddleCropping} from '../../core/helper/utils'
 import React, {useEffect, useMemo} from 'react'
 import {mapArrayFromQuerystring, mapDateFromQueryString, mapDatesToQueryString, useQueryString} from '../../core/helper/useQueryString'
@@ -41,7 +42,7 @@ const useStyles = makeStyles((t: Theme) => ({
   },
   tdName_desc: {
     fontSize: t.typography.fontSize * 0.875,
-    color: t.palette.text.hint,
+    color: t.palette.text.disabled,
   },
   tdPostal: {
     maxWidth: 76,

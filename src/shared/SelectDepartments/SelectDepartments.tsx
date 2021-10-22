@@ -1,6 +1,8 @@
 import * as React from 'react'
 import {CSSProperties, useEffect} from 'react'
-import {createStyles, Icon, InputAdornment, makeStyles, TextField, Theme} from '@material-ui/core'
+import { Icon, InputAdornment, TextField, Theme } from '@mui/material';
+import createStyles from '@mui/styles/createStyles';
+import makeStyles from '@mui/styles/makeStyles';
 import {useSetState, UseSetState} from '@alexandreannic/react-hooks-lib/lib'
 import {SelectDepartmentsMenu} from './SelectDepartmentsMenu'
 import {useI18n} from '../../core/i18n'

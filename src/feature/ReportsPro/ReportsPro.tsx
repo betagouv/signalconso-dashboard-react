@@ -5,7 +5,8 @@ import {useReportsContext} from '../../core/context/ReportsContext'
 import {Datatable} from '../../shared/Datatable/Datatable'
 import {useI18n} from '../../core/i18n'
 import {useCssUtils} from '../../core/helper/useCssUtils'
-import {Badge, Grid, Icon, makeStyles, MenuItem, Theme} from '@material-ui/core'
+import { Badge, Grid, Icon, MenuItem, Theme } from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
 import {ReportStatusChip} from '../../shared/ReportStatus/ReportStatus'
 import {useLayoutContext} from '../../core/Layout/LayoutContext'
 import {Txt} from 'mui-extension/lib/Txt/Txt'

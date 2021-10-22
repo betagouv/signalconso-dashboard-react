@@ -1,4 +1,6 @@
-import {Checkbox, createStyles, Icon, makeStyles, Menu, MenuItem, Theme} from '@material-ui/core'
+import { Checkbox, Icon, Menu, MenuItem, Theme } from '@mui/material';
+import createStyles from '@mui/styles/createStyles';
+import makeStyles from '@mui/styles/makeStyles';
 import {classes} from '../../core/helper/utils'
 import * as React from 'react'
 import {useEffect, useMemo} from 'react'

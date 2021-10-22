@@ -1,5 +1,6 @@
 import {UploadedFile} from '@signal-conso/signalconso-api-sdk-js'
-import {Icon, makeStyles, Theme, Tooltip} from '@material-ui/core'
+import { Icon, Theme, Tooltip } from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
 import {extensionToType, FileType, reportFileConfig} from './reportFileConfig'
 import {useLogin} from '../../../core/context/LoginContext'
 import {fromNullable, some} from 'fp-ts/lib/Option'
@@ -10,6 +11,7 @@ import {IconBtn} from 'mui-extension/lib'
 import {useToast} from '../../../core/toast'
 import {useI18n} from '../../../core/i18n'
 import {ScDialog} from '../../../shared/Confirm/ScDialog'
+import { defaultSpacing } from 'core/theme';
 
 export interface ReportFileProps {
   file: UploadedFile
@@ -35,7 +37,7 @@ const useStyles = makeStyles((t: Theme) => ({
     borderRadius: reportFileConfig.cardBorderRadius,
     height: reportFileConfig.cardSize,
     width: reportFileConfig.cardSize,
-    color: t.palette.text.hint,
+    color: t.palette.text.disabled,
     overflow: 'hidden',
     position: 'relative',
     transition: t.transitions.create('all'),
@@ -54,8 +56,8 @@ const useStyles = makeStyles((t: Theme) => ({
   removeBtn: {
     display: 'none !important',
     position: 'absolute',
-    top: (removeBtnSize - t.spacing(cardMargin)) / -2,
-    right: (removeBtnSize - t.spacing(cardMargin)) / -2,
+    top: (removeBtnSize - defaultSpacing * cardMargin) / -2,
+    right: (removeBtnSize - defaultSpacing * cardMargin) / -2,
     width: removeBtnSize,
     height: removeBtnSize,
     borderRadius: removeBtnSize,

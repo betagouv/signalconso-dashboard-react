@@ -1,5 +1,5 @@
 import React, {forwardRef} from 'react'
-import {FormControlLabel, Radio} from '@material-ui/core'
+import {FormControlLabel, Radio} from '@mui/material'
 
 export interface ScProps {
   // label?: string

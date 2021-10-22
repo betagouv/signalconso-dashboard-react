@@ -1,5 +1,6 @@
 import {Panel, PanelBody, PanelHead} from '../../shared/Panel'
-import {alpha, Button, ButtonGroup, makeStyles, Theme, useTheme} from '@material-ui/core'
+import { alpha, Button, ButtonGroup, Theme, useTheme } from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
 import {CartesianGrid, Legend, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis} from 'recharts'
 import * as React from 'react'
 import {useI18n} from '../../core/i18n'

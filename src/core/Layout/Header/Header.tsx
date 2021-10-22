@@ -1,5 +1,5 @@
-import {makeStyles} from '@material-ui/core/styles'
-import {Icon, Menu, MenuItem, Slide, Theme} from '@material-ui/core'
+import makeStyles from '@mui/styles/makeStyles';
+import {Icon, Menu, MenuItem, Slide, Theme} from '@mui/material'
 import logoGouvMobile from './gouv-mobile.svg'
 import logoSignalConso from './signalconso.svg'
 import logoDgccrf from './logo-dgccrf.png'

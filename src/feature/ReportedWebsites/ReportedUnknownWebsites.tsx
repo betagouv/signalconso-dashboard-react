@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react'
 import {useI18n} from '../../core/i18n'
 import {useCssUtils} from '../../core/helper/useCssUtils'
-import {Icon, InputBase, Tooltip} from '@material-ui/core'
+import {Icon, InputBase, Tooltip} from '@mui/material'
 import {Panel} from '../../shared/Panel'
 import {Datatable} from '../../shared/Datatable/Datatable'
 import {ApiHostWithReportCount} from '@signal-conso/signalconso-api-sdk-js'

@@ -1,4 +1,5 @@
-import {makeStyles, Paper, Theme} from '@material-ui/core'
+import { Paper, Theme } from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
 import {ReportStatus} from '@signal-conso/signalconso-api-sdk-js'
 import {capitalize, classes} from '../../core/helper/utils'
 import {styleUtils} from '../../core/theme'
