@@ -1,5 +1,6 @@
 import {FileOrigin, Id, UploadedFile} from '@signal-conso/signalconso-api-sdk-js'
-import {makeStyles, Theme} from '@material-ui/core'
+import { Theme } from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
 import React, {useEffect, useState} from 'react'
 import {ReportFileAdd} from './ReportFileAdd'
 import {ReportFile} from './ReportFile'

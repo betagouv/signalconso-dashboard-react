@@ -1,4 +1,5 @@
-import {makeStyles, Theme, Typography} from '@material-ui/core'
+import { Theme, Typography } from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
 import * as React from 'react'
 import {classes} from '../../core/helper/utils'
 

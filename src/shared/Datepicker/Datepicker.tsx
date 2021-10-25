@@ -1,7 +1,7 @@
 import {format} from 'date-fns'
-import {TextField} from '@material-ui/core'
+import {TextField} from '@mui/material'
 import React, {CSSProperties} from 'react'
-import {InputProps as StandardInputProps} from '@material-ui/core/Input/Input'
+import {InputProps as StandardInputProps} from '@mui/material'
 
 export interface DatepickerProps {
   value?: Date
@@ -26,6 +26,7 @@ export const Datepicker = ({value, onChange, label, fullWidth, InputProps, class
       margin="dense"
       variant="outlined"
       className={className}
+      size="small"
       style={style}
       label={label}
       InputProps={InputProps}

@@ -5,7 +5,8 @@ import {cleanObject, Company, CompanySearch, CompanyWithReportsCount, PaginatedS
 import React, {useEffect} from 'react'
 import {useCompaniesContext} from '../../core/context/CompaniesContext'
 import {useCssUtils} from '../../core/helper/useCssUtils'
-import {Grid, Icon, makeStyles, Theme, Tooltip} from '@material-ui/core'
+import { Grid, Icon, Theme, Tooltip } from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
 import {NavLink} from 'react-router-dom'
 import {siteMap} from '../../core/siteMap'
 import {ScButton} from '../../shared/Button/Button'
@@ -35,7 +36,7 @@ const useStyles = makeStyles((t: Theme) => ({
   },
   tdName_desc: {
     fontSize: t.typography.fontSize * 0.875,
-    color: t.palette.text.hint,
+    color: t.palette.text.disabled,
   },
   tdAddress: {
     maxWidth: 300,

@@ -27,7 +27,7 @@ export const useQueryString = <E, QS extends ParsedUrlQueryInput>({
   }
 
   const get = (): E => {
-    return fromQueryString(querystring.parse(history.location.search.replace(/^\?/, '')) as any)
+    return fromQueryString(querystring.parse(history.location.search.replace(/^\?/, '')) as any);
   }
 
   return {update, get}

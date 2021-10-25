@@ -1,5 +1,6 @@
 import React, {ReactNode} from 'react'
-import {Icon, makeStyles, Theme} from '@material-ui/core'
+import { Icon, Theme } from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
 import {Txt} from 'mui-extension/lib/Txt/Txt'
 import {useI18n} from '../../core/i18n'
 

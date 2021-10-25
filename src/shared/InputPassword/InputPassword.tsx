@@ -1,5 +1,5 @@
 import {ScInput, ScInputProps} from '../Input/ScInput'
-import {Icon, InputAdornment} from '@material-ui/core'
+import {Icon, InputAdornment} from '@mui/material'
 import React, {forwardRef, useState} from 'react'
 
 interface ScInputPasswordProps extends Omit<ScInputProps, 'type'> {}

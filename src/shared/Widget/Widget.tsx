@@ -2,7 +2,8 @@ import {Panel, PanelBody} from '../Panel'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
 import * as React from 'react'
 import {ReactNode} from 'react'
-import {Icon, makeStyles, Theme} from '@material-ui/core'
+import { Icon, Theme } from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
 import {NavLink} from 'react-router-dom'
 import {useCssUtils} from '../../core/helper/useCssUtils'
 import {styleUtils} from '../../core/theme'
@@ -21,7 +22,7 @@ const useStyles = makeStyles((t: Theme) => ({
   },
   toIcon: {
     marginLeft: t.spacing(1),
-    color: t.palette.text.hint,
+    color: t.palette.text.disabled,
     fontSize: styleUtils(t).fontSize.big,
   },
   hoverable: {

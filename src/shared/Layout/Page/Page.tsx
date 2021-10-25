@@ -1,7 +1,8 @@
 import * as React from 'react'
 import {ReactNode} from 'react'
 import {Page as MuiPage} from 'mui-extension'
-import {LinearProgress, makeStyles, Theme} from '@material-ui/core'
+import { LinearProgress, Theme } from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
 import {classes} from '../../../core/helper/utils'
 
 export const pageWidth = {
@@ -12,7 +13,7 @@ export const pageWidth = {
 
 const useStyles = makeStyles((t: Theme) => ({
   root: {
-    padding: `${t.spacing(3)}px ${t.spacing(2)}px ${t.spacing(2)}px ${t.spacing(2)}px !important`,
+    padding: `${t.spacing(3)} ${t.spacing(2)} ${t.spacing(2)} ${t.spacing(2)} !important`,
   },
   loading: {
     position: 'relative',

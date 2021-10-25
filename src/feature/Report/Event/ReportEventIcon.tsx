@@ -1,5 +1,5 @@
 import {EventActionValues} from '@signal-conso/signalconso-api-sdk-js'
-import {Icon, Theme, useTheme} from '@material-ui/core'
+import {Icon, Theme, useTheme} from '@mui/material'
 import {styleUtils} from '../../../core/theme'
 import {fnSwitch} from '../../../core/helper/utils'
 
@@ -40,13 +40,13 @@ export const getReportEventColor = (t: Theme) => (action: EventActionValues) =>
       [EventActionValues.ReportCompanyChange]: styleUtils(t).color.info,
       [EventActionValues.Comment]: styleUtils(t).color.info,
       [EventActionValues.Control]: t.palette.error.main,
-      [EventActionValues.ConsumerAttachments]: t.palette.text.hint,
-      [EventActionValues.ProfessionalAttachments]: t.palette.text.hint,
+      [EventActionValues.ConsumerAttachments]: t.palette.text.disabled,
+      [EventActionValues.ProfessionalAttachments]: t.palette.text.disabled,
       [EventActionValues.ReportReviewOnResponse]: styleUtils(t).color.success,
       [EventActionValues.ReportClosedByNoAction]: styleUtils(t).color.error,
       [EventActionValues.Creation]: styleUtils(t).color.info,
     },
-    _ => t.palette.text.hint,
+    _ => t.palette.text.disabled,
   )
 
 export const ReportEventIcon = ({action, className}: ReportEventIconProps) => {

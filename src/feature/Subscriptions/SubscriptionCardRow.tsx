@@ -1,6 +1,6 @@
 import React, {ReactNode} from 'react'
-import {Divider, Icon, Theme} from '@material-ui/core'
-import {makeStyles} from '@material-ui/core/styles'
+import {Divider, Icon, Theme} from '@mui/material'
+import makeStyles from '@mui/styles/makeStyles';
 import {Txt} from 'mui-extension/lib/Txt/Txt'
 import {useCssUtils} from '../../core/helper/useCssUtils'
 import {classes} from '../../core/helper/utils'

@@ -1,4 +1,16 @@
-import {Chip, Dialog, DialogActions, DialogContent, DialogTitle, FormControlLabel, makeStyles, MenuItem, Radio, RadioGroup, Theme} from '@material-ui/core'
+import {
+  Chip,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  FormControlLabel,
+  MenuItem,
+  Radio,
+  RadioGroup,
+  Theme,
+} from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
 import {useI18n} from '../../core/i18n'
 import React, {ReactElement, ReactNode, useEffect, useState} from 'react'
 import {ReportSearch, ReportTag} from '@signal-conso/signalconso-api-sdk-js'
@@ -10,7 +22,7 @@ import {Btn} from 'mui-extension/lib'
 import {ScInput} from '../../shared/Input/ScInput'
 import {useAnomalyContext} from '../../core/context/AnomalyContext'
 import {SelectCountries} from '../../shared/SelectCountries/SelectCountries'
-import Autocomplete from '@material-ui/lab/Autocomplete/Autocomplete'
+import Autocomplete from '@mui/lab/Autocomplete/Autocomplete'
 import {Enum} from '@alexandreannic/ts-utils/lib/common/enum/Enum'
 import {SelectActivityCode} from '../../shared/SelectActivityCode/SelectActivityCode'
 

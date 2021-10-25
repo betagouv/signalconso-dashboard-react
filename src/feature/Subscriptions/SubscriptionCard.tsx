@@ -3,7 +3,7 @@ import {useI18n} from '../../core/i18n'
 import {ReportTag, Subscription, SubscriptionCreate} from '@signal-conso/signalconso-api-sdk-js'
 import {Panel, PanelHead} from '../../shared/Panel'
 import {ScSelect} from '../../shared/Select/Select'
-import {Collapse, duration, Icon, MenuItem, Theme} from '@material-ui/core'
+import {Collapse, duration, Icon, MenuItem, Theme} from '@mui/material'
 import {SubscriptionCardRow} from './SubscriptionCardRow'
 import {SelectCompany} from '../../shared/SelectCompany/SelectCompany'
 import {ScChip} from '../../shared/Chip/ScChip'
@@ -15,7 +15,7 @@ import {SelectCountriesMenu} from '../../shared/SelectCountries/SelectCountriesM
 import {SelectMenu} from '../../shared/SelectMenu/SelectMenu'
 import {useAnomalyContext} from '../../core/context/AnomalyContext'
 import {Confirm, IconBtn} from 'mui-extension/lib'
-import {makeStyles} from '@material-ui/core/styles'
+import makeStyles from '@mui/styles/makeStyles';
 import {ScDialog} from '../../shared/Confirm/ScDialog'
 
 interface Props {

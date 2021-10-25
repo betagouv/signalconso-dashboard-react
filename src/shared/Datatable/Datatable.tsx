@@ -1,4 +1,15 @@
-import {LinearProgress, makeStyles, Table, TableBody, TableCell, TableHead, TablePagination, TableRow, TableSortLabel, Theme} from '@material-ui/core'
+import {
+  LinearProgress,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TablePagination,
+  TableRow,
+  TableSortLabel,
+  Theme,
+} from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
 import React, {CSSProperties, ReactNode, useEffect, useMemo} from 'react'
 import {useCssUtils} from '../../core/helper/useCssUtils'
 import {classes} from '../../core/helper/utils'

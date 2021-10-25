@@ -1,12 +1,10 @@
 import React, {useEffect} from 'react'
 import {ApiError} from '@signal-conso/signalconso-api-sdk-js'
 import {Config} from './conf/config'
-import {makeStyles} from '@material-ui/core/styles'
-import {CircularProgress, Theme, ThemeProvider} from '@material-ui/core'
+import makeStyles from '@mui/styles/makeStyles'
+import {CircularProgress, StyledEngineProvider, Theme, ThemeProvider} from '@mui/material'
 import {BrowserRouter, HashRouter, Redirect, Route, Switch} from 'react-router-dom'
 import {I18nProvider} from './core/i18n'
-import {MuiPickersUtilsProvider} from '@material-ui/pickers'
-import DateAdapter from '@date-io/date-fns'
 import {ReportProvider} from './core/context/ReportContext'
 import {Reports} from './feature/Reports/Reports'
 import {ReportComponent} from './feature/Report/Report'
@@ -106,16 +104,16 @@ export const App = () => {
   return (
     <Provide
       providers={[
-        _ => <ThemeProvider theme={muiTheme()} children={_} />,
-        _ => <I18nProvider children={_} />,
-        _ => <MuiPickersUtilsProvider utils={DateAdapter} children={_} />,
-        _ => <Router children={_} />,
-        _ => <ToastProvider horizontal="right" children={_} />,
+        _ => <StyledEngineProvider injectFirst children={_}/>,
+        _ => <ThemeProvider theme={muiTheme()} children={_}/>,
+        _ => <I18nProvider children={_}/>,
+        _ => <Router children={_}/>,
+        _ => <ToastProvider horizontal="right" children={_}/>,
       ]}
     >
-      <AppLogin />
+      <AppLogin/>
     </Provide>
-  )
+  );
 }
 
 const AppLogin = () => {

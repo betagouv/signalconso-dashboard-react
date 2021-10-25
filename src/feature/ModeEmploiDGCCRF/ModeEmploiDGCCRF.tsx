@@ -1,9 +1,9 @@
 import {Page} from 'shared/Layout'
 import {Panel, PanelBody} from '../../shared/Panel'
-import {Divider, Theme, Typography} from '@material-ui/core'
+import {Divider, Theme, Typography} from '@mui/material'
 import {useCssUtils} from '../../core/helper/useCssUtils'
 import {classes} from '../../core/helper/utils'
-import {makeStyles} from '@material-ui/core/styles'
+import makeStyles from '@mui/styles/makeStyles';
 import {styleUtils} from '../../core/theme'
 
 const useStyles = makeStyles((t: Theme) => ({

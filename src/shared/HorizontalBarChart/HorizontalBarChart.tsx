@@ -1,6 +1,8 @@
 import * as React from 'react'
 import {ReactNode, useMemo, useState} from 'react'
-import {alpha, makeStyles, Theme, Tooltip, withStyles} from '@material-ui/core'
+import { alpha, Theme, Tooltip } from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
+import withStyles from '@mui/styles/withStyles';
 import {useTimeout} from 'mui-extension/lib/core/utils/useTimeout'
 import {mapFor} from '@alexandreannic/ts-utils/lib/common'
 import {Txt} from 'mui-extension/lib/Txt/Txt'

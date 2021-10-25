@@ -1,7 +1,9 @@
 import React, {useEffect, useState} from 'react'
 import {useI18n} from '../../core/i18n'
 import {useCssUtils} from '../../core/helper/useCssUtils'
-import {Chip, createStyles, FormControlLabel, Icon, InputBase, makeStyles, MenuItem, Switch, Theme, Tooltip} from '@material-ui/core'
+import { Chip, FormControlLabel, Icon, InputBase, MenuItem, Switch, Theme, Tooltip } from '@mui/material';
+import createStyles from '@mui/styles/createStyles';
+import makeStyles from '@mui/styles/makeStyles';
 import {useToast} from '../../core/toast'
 import {fromNullable} from 'fp-ts/lib/Option'
 import {Panel} from '../../shared/Panel'
@@ -27,7 +29,7 @@ const useStyles = makeStyles((t: Theme) => {
     },
     tdName_desc: {
       fontSize: t.typography.fontSize * 0.875,
-      color: t.palette.text.hint,
+      color: t.palette.text.disabled,
     },
     chipEnterprise: {
       height: 42,
@@ -50,7 +52,7 @@ const useStyles = makeStyles((t: Theme) => {
 const countryToFlag = (isoCode: string) => {
   return typeof String.fromCodePoint !== 'undefined'
     ? isoCode.toUpperCase().replace(/./g, char => String.fromCodePoint(char.charCodeAt(0) + 127397))
-    : isoCode
+    : isoCode;
 }
 
 const useAnchoredMenu = () => {

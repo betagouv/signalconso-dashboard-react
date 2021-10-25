@@ -5,7 +5,8 @@ import {ScInput} from '../Input/ScInput'
 import {CompanySearchResult, Id} from '@signal-conso/signalconso-api-sdk-js'
 import {useCompaniesContext} from '../../core/context/CompaniesContext'
 import {fromNullable} from 'fp-ts/lib/Option'
-import {Icon, makeStyles, Theme} from '@material-ui/core'
+import { Icon, Theme } from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
 import {SelectCompanyList} from './SelectCompanyList'
 import {IconBtn} from 'mui-extension/lib'
 import {ScDialog} from '../Confirm/ScDialog'

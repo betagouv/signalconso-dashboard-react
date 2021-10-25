@@ -1,7 +1,8 @@
 import * as React from 'react'
 import {CSSProperties, ReactNode} from 'react'
-import {makeStyles, Theme} from '@material-ui/core'
-import {alpha} from '@material-ui/core/styles'
+import { Theme } from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
+import {alpha} from '@mui/material/styles'
 import {styleUtils} from '../../core/theme'
 import {classes} from '../../core/helper/utils'
 
@@ -21,7 +22,7 @@ const colorize = (color: string): CSSProperties => ({
 const useStyles = makeStyles((t: Theme) => ({
   root: {
     borderRadius: 2,
-    padding: `${t.spacing(1 / 4)}px ${t.spacing(1)}px`,
+    padding: `${t.spacing(1 / 4)} ${t.spacing(1)}`,
     display: 'inline-block',
     fontWeight: t.typography.fontWeightMedium,
     ...colorize(t.palette.text.disabled),

@@ -1,6 +1,7 @@
 import React, {ReactElement, useEffect, useState} from 'react'
 import {Btn} from 'mui-extension/lib'
-import {CircularProgress, Icon, makeStyles, Menu, MenuItem, Theme, Tooltip} from '@material-ui/core'
+import { CircularProgress, Icon, Menu, MenuItem, Theme, Tooltip } from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
 import {useI18n} from '../../core/i18n'
 import {AsyncFile, AsyncFileKind, AsyncFileStatus} from '@signal-conso/signalconso-api-sdk-js'
 import {useAsyncFileContext} from '../../core/context/AsyncFileContext'
@@ -54,7 +55,7 @@ const useStyles = makeStyles((t: Theme) => ({
   noData: {
     textAlign: 'center',
     margin: t.spacing(1),
-    color: t.palette.text.hint,
+    color: t.palette.text.disabled,
   },
 }))
 
@@ -96,83 +97,81 @@ export const ExportPopperBtn = ({
     }
   }, [anchorEl])
 
-  return (
-    <>
-      <Tooltip title={m.exportInXLS}>
-        <span>
-          {React.cloneElement(children, {
-            onClick: (event: any) => {
-              if (onClick) onClick(event)
-              handleClick(event)
-            },
-            className,
-          })}
-        </span>
-      </Tooltip>
-      <Menu keepMounted open={!!anchorEl} onClose={handleClose} anchorEl={anchorEl}>
-        <div className={css.btnContainer}>
-          <Tooltip title={tooltipBtnNew ?? ''}>
-            <span>
-              <Btn
-                disabled={disabled}
-                color="primary"
-                variant="outlined"
-                size="small"
-                className={css.btnNew}
-                icon="add"
-                onClick={() => onNewExport().then(() => fetch({clean: false}))}
-              >
-                {m.exportInXLS}
-              </Btn>
-            </span>
-          </Tooltip>
+  return <>
+    <Tooltip title={m.exportInXLS}>
+      <span>
+        {React.cloneElement(children, {
+          onClick: (event: any) => {
+            if (onClick) onClick(event)
+            handleClick(event)
+          },
+          className,
+        })}
+      </span>
+    </Tooltip>
+    <Menu keepMounted open={!!anchorEl} onClose={handleClose} anchorEl={anchorEl}>
+      <div className={css.btnContainer}>
+        <Tooltip title={tooltipBtnNew ?? ''}>
+          <span>
+            <Btn
+              disabled={disabled}
+              color="primary"
+              variant="outlined"
+              size="small"
+              className={css.btnNew}
+              icon="add"
+              onClick={() => onNewExport().then(() => fetch({clean: false}))}
+            >
+              {m.exportInXLS}
+            </Btn>
+          </span>
+        </Tooltip>
+      </div>
+      {initialLoading && loading && (
+        <div className={css.progress}>
+          <CircularProgress />
         </div>
-        {initialLoading && loading && (
-          <div className={css.progress}>
-            <CircularProgress />
-          </div>
-        )}
-        {files?.length === 0 && <div className={css.noData}>{m.noExport}</div>}
-        {files
-          ?.filter(_ => _.kind === fileType)
-          .map(file => (
-            <MenuItem className={css.menuItem} dense key={file.id}>
-              {fnSwitch(file.status, {
-                [AsyncFileStatus.Successed]: _ => (
-                  <div className={css.fileItem} onClick={() => window.open(file.url, '_blank')}>
-                    <Icon className={cssUtils.colorSuccess}>file_download_done</Icon>
-                    <div className={css.fileItemBody}>
-                      <Txt bold block>
-                        {file.filename.match(/.*?\-(\w+.?\.xlsx)/)?.[1]}
-                      </Txt>
-                      <Txt color="hint">{formatDateTime(file.creationDate)}</Txt>
-                    </div>
+      )}
+      {files?.length === 0 && <div className={css.noData}>{m.noExport}</div>}
+      {files
+        ?.filter(_ => _.kind === fileType)
+        .map(file => (
+          <MenuItem className={css.menuItem} dense key={file.id}>
+            {fnSwitch(file.status, {
+              [AsyncFileStatus.Successed]: _ => (
+                <div className={css.fileItem} onClick={() => window.open(file.url, '_blank')}>
+                  <Icon className={cssUtils.colorSuccess}>file_download_done</Icon>
+                  <div className={css.fileItemBody}>
+                    <Txt bold block>
+                      {file.filename.match(/.*?\-(\w+.?\.xlsx)/)?.[1]}
+                    </Txt>
+                    <Txt color="hint">{formatDateTime(file.creationDate)}</Txt>
                   </div>
-                ),
-                [AsyncFileStatus.Loading]: _ => (
-                  <div className={css.fileItem}>
-                    <CircularProgress size={24} />
-                    <div className={css.fileItemBody}>
-                      <Txt skeleton="100%" block />
-                      <Txt color="hint">{formatDateTime(file.creationDate)}</Txt>
-                    </div>
+                </div>
+              ),
+              [AsyncFileStatus.Loading]: _ => (
+                <div className={css.fileItem}>
+                  <CircularProgress size={24} />
+                  <div className={css.fileItemBody}>
+                    <Txt skeleton="100%" block />
+                    <Txt color="hint">{formatDateTime(file.creationDate)}</Txt>
                   </div>
-                ),
-                [AsyncFileStatus.Failed]: _ => (
-                  <div className={css.fileItem}>
-                    <Icon className={cssUtils.colorError}>error_outline</Icon>
-                    <div className={css.fileItemBody}>
-                      <div>{m.error}</div>
-                      <Txt color="hint">{formatDateTime(file.creationDate)}</Txt>
-                    </div>
+                </div>
+              ),
+              [AsyncFileStatus.Failed]: _ => (
+                <div className={css.fileItem}>
+                  <Icon className={cssUtils.colorError}>error_outline</Icon>
+                  <div className={css.fileItemBody}>
+                    <div>{m.error}</div>
+                    <Txt color="hint">{formatDateTime(file.creationDate)}</Txt>
                   </div>
-                ),
-              })}
-            </MenuItem>
-          ))}
-      </Menu>
-    </>
-  )
+                </div>
+              ),
+            })}
+          </MenuItem>
+        ))}
+    </Menu>
+  </>;
 }
 
 interface ExportReportProps {
