@@ -5,7 +5,7 @@ import {regexp} from '../../core/helper/regexp'
 import {useCssUtils} from '../../core/helper/useCssUtils'
 import {LoginPanel} from './LoginPanel'
 import {ScButton} from '../../shared/Button/Button'
-import makeStyles from '@mui/styles/makeStyles';
+import makeStyles from '@mui/styles/makeStyles'
 import {Theme} from '@mui/material'
 import {ActionProps} from './LoginPage'
 import {Alert} from 'mui-extension'
@@ -16,8 +16,7 @@ import {useHistory} from 'react-router'
 import {siteMap} from '../../core/siteMap'
 import {ScInputPassword} from '../../shared/InputPassword/InputPassword'
 import {AccessEventActions, ActionResultNames, EventCategories, Matomo} from '../../core/plugins/Matomo'
-import {fnSwitch} from '../../core/helper/utils'
-import {useLogin} from '../../core/context/LoginContext'
+import {ApiError} from '@signal-conso/signalconso-api-sdk-js'
 
 interface Form {
   siret: string
@@ -57,11 +56,8 @@ export const ActivateAccountForm = ({register: registerAction}: Props) => {
         setTimeout(() => history.push(siteMap.loggedout.login), 400)
         Matomo.trackEvent(EventCategories.account, AccessEventActions.activateCompanyCode, ActionResultNames.success)
       })
-      .catch(err => {
-        const errorMessage = fnSwitch(err.code, {
-          404: m.companyActivationNotFound,
-        })
-        toastError({message: errorMessage})
+      .catch((err: ApiError) => {
+        toastError(err)
         Matomo.trackEvent(EventCategories.companyAccess, AccessEventActions.activateCompanyCode, ActionResultNames.fail)
       })
   }
