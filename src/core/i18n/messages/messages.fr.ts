@@ -115,6 +115,7 @@ export const messagesFr = {
   companyRegisteredEmailSent: "Un email vous a été envoyé avec les instructions pour accéder au compte de l'entreprise.",
   departments: 'Départements',
   reports: 'Signalements',
+  responseRate: 'Taux de réponse',
   report: 'Signalement',
   you: 'Vous',
   reportHistory: 'Historique du signalement',
