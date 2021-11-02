@@ -206,6 +206,22 @@ export const CompaniesRegistered = () => {
             ),
           },
           {
+            head: m.responseRate,
+            id: 'responseRate',
+            className: cssUtils.txtRight,
+            render: _ =>
+                <span>{_.responseRate} % </span>
+            ,
+          },
+          {
+            head: m.activityCode,
+            id: 'activityCode',
+            className: cssUtils.txtRight,
+            render: _ =>
+                <span>{_?.activityCode}</span>
+            ,
+          },
+          {
             head: '',
             id: 'actions',
             className: cssUtils.txtRight,

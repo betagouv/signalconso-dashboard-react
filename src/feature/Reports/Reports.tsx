@@ -16,7 +16,7 @@ import {SelectDepartments} from '../../shared/SelectDepartments/SelectDepartment
 import {Fender, IconBtn} from 'mui-extension/lib'
 import {useToast} from '../../core/toast'
 import {ReportStatusChip} from '../../shared/ReportStatus/ReportStatus'
-import {Config} from '../../conf/config'
+import {config} from '../../conf/config'
 import {ReportFilters} from './ReportsFilters'
 import {siteMap} from '../../core/siteMap'
 import {ExportReportsPopper} from '../../shared/ExportPopper/ExportPopperBtn'
@@ -187,10 +187,10 @@ export const Reports = ({}) => {
               </Tooltip>
               <ExportReportsPopper
                 disabled={fromNullable(_reports?.list?.totalSize)
-                  .map(_ => _ > Config.reportsLimitForExport)
+                  .map(_ => _ > config.reportsLimitForExport)
                   .getOrElse(false)}
                 tooltipBtnNew={fromNullable(_reports?.list?.totalSize)
-                  .map(_ => (_ > Config.reportsLimitForExport ? m.cannotExportMoreReports(Config.reportsLimitForExport) : ''))
+                  .map(_ => (_ > config.reportsLimitForExport ? m.cannotExportMoreReports(config.reportsLimitForExport) : ''))
                   .getOrElse('')}
               >
                 <IconBtn color="primary">

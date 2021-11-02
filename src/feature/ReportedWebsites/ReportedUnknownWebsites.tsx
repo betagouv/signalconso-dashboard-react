@@ -13,7 +13,7 @@ import {NavLink} from 'react-router-dom'
 import {siteMap} from '../../core/siteMap'
 import {Btn, IconBtn} from 'mui-extension'
 import {ExportUnknownWebsitesPopper} from '../../shared/ExportPopper/ExportPopperBtn'
-import {Config} from '../../conf/config'
+import {config} from '../../conf/config'
 import {PeriodPicker} from '../../shared/PeriodPicker/PeriodPicker'
 
 export const ReportedUnknownWebsites = () => {
@@ -72,10 +72,10 @@ export const ReportedUnknownWebsites = () => {
 
             <ExportUnknownWebsitesPopper
               disabled={fromNullable(_fetch?.list?.totalSize)
-                .map(_ => _ > Config.reportsLimitForExport)
+                .map(_ => _ > config.reportsLimitForExport)
                 .getOrElse(false)}
               tooltipBtnNew={fromNullable(_fetch?.list?.totalSize)
-                .map(_ => (_ > Config.reportsLimitForExport ? m.cannotExportMoreReports(Config.reportsLimitForExport) : ''))
+                .map(_ => (_ > config.reportsLimitForExport ? m.cannotExportMoreReports(config.reportsLimitForExport) : ''))
                 .getOrElse('')}
             >
               <IconBtn color="primary">

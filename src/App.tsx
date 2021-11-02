@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react'
 import {ApiError} from '@signal-conso/signalconso-api-sdk-js'
-import {Config} from './conf/config'
+import {config} from './conf/config'
 import makeStyles from '@mui/styles/makeStyles'
 import {CircularProgress, StyledEngineProvider, Theme, ThemeProvider} from '@mui/material'
 import {BrowserRouter, HashRouter, Redirect, Route, Switch} from 'react-router-dom'
@@ -98,7 +98,7 @@ const useStyles = makeStyles((t: Theme) => ({
   },
 }))
 
-const Router: typeof HashRouter = Config.useHashRouter ? HashRouter : BrowserRouter
+const Router: typeof HashRouter = config.useHashRouter ? HashRouter : BrowserRouter
 
 export const App = () => {
   return (
