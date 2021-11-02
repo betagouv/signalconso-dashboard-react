@@ -1,4 +1,4 @@
-import {Config} from 'conf/config'
+import {config} from 'conf/config'
 
 declare const _paq: any
 
@@ -21,13 +21,13 @@ export class Matomo {
 
   static readonly trackPage = (path: string) => {
     if (!Matomo.isAlreadyFired(path)) {
-      Matomo.push(['setCustomUrl', Config.appBaseUrl + path])
+      Matomo.push(['setCustomUrl', config.appBaseUrl + path])
       Matomo.push(['trackPageView'])
     }
   }
 
   private static readonly push = (args: any[]) => {
-    if (Config.isDev) {
+    if (config.isDev) {
       console.info('[Matomo]', args)
     } else {
       try {

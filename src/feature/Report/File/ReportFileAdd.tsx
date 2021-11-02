@@ -4,7 +4,7 @@ import makeStyles from '@mui/styles/makeStyles';
 import {reportFileConfig} from './reportFileConfig'
 import {useI18n} from '../../../core/i18n'
 import {styleUtils} from '../../../core/theme'
-import {Config} from '../../../conf/config'
+import {config} from '../../../conf/config'
 import {FileOrigin, Id, UploadedFile} from '@signal-conso/signalconso-api-sdk-js'
 import {useToast} from '../../../core/toast'
 import {useLogin} from '../../../core/context/LoginContext'
@@ -62,9 +62,9 @@ export const ReportFileAdd = ({reportId, onUploaded, fileOrigin}: Props) => {
   const handleChange = (files: FileList | null) => {
     if (files && files[0]) {
       const file: File  = files[0]
-      if (file.size > Config.upload_maxSizeMb * 1024 * 1024) {
-        toastError({message: m.invalidSize(Config.upload_maxSizeMb)})
-        setErrorMessage(m.invalidSize(Config.upload_maxSizeMb))
+      if (file.size > config.upload_maxSizeMb * 1024 * 1024) {
+        toastError({message: m.invalidSize(config.upload_maxSizeMb)})
+        setErrorMessage(m.invalidSize(config.upload_maxSizeMb))
         return
       }
       setUploading(true)

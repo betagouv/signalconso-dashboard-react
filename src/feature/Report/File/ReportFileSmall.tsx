@@ -1,5 +1,5 @@
 import {some} from 'fp-ts/lib/Option'
-import {Config} from '../../../conf/config'
+import {config} from '../../../conf/config'
 import { Icon, Theme, Tooltip } from '@mui/material';
 import makeStyles from '@mui/styles/makeStyles';
 import React from 'react'
@@ -24,7 +24,7 @@ export const ReportFileSmall = ({file}: ReportFileProps) => {
   const css = useReportFileSmallStyles()
   const {apiSdk} = useLogin()
   const fileUrl = some(apiSdk.public.document.getLink(file))
-    .map(_ => (Config.isDev ? _.replace(Config.apiBaseUrl, 'https://signal-api.conso.gouv.fr') : _))
+    .map(_ => (config.isDev ? _.replace(config.apiBaseUrl, 'https://signal-api.conso.gouv.fr') : _))
     .toUndefined()
 
   return (
