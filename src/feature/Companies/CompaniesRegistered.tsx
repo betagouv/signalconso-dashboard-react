@@ -224,6 +224,7 @@ export const CompaniesRegistered = () => {
           {
             head: '',
             id: 'actions',
+            stickyEnd: true,
             className: cssUtils.txtRight,
             render: _ => (
               <>
