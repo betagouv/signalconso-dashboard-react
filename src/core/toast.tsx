@@ -5,12 +5,19 @@ import {useI18n} from './i18n'
 export const useToast = () => {
   const {toastError, ...toasts} = useMuiToast()
   const {m} = useI18n()
+
+  const getErrorMessage = (err: Partial<ApiError>) => {
+    if (err.id && (m.apiErrorsCode as any)[err.id]) {
+      return (m.apiErrorsCode as any)[err.id]
+    }
+    if (err.message && err.message !== '') {
+      return err.message
+    }
+    return m.anErrorOccurred
+  }
+
   return {
-    toastError: (error: Partial<ApiError>) => {
-      console.error('[useToast]', error)
-      // const errorMessage = error.message || error.code ? error.message + ' ' + (error.code || '') : m.anErrorOccurred
-      toastError(!error.message || error.message === '' ? m.anErrorOccurred : error.message)
-    },
+    toastError: (error: Partial<ApiError>) => toastError(getErrorMessage(error)),
     ...toasts,
   }
 }
