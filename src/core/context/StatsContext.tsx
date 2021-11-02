@@ -1,7 +1,8 @@
-import {ApiError, SignalConsoPublicSdk, SignalConsoSecuredSdk} from '@signal-conso/signalconso-api-sdk-js'
+import {ApiError, ReportStatus, SignalConsoPublicSdk, SignalConsoSecuredSdk} from '@signal-conso/signalconso-api-sdk-js'
 import {useFetcher, UseFetcher} from '@alexandreannic/react-hooks-lib/lib'
 import React, {ReactNode, useContext} from 'react'
 import {SignalConsoApiSdk} from '../ApiSdkInstance'
+import {CurveStatsParamsWithPeriod} from '@signal-conso/signalconso-api-sdk-js/lib/client/stats/PublicStatsClient'
 
 type PublicSdk = SignalConsoPublicSdk['stats']
 type SecuredSdk = SignalConsoSecuredSdk['stats']
@@ -15,7 +16,7 @@ interface StatsContextProps {
   responseDelay: UseFetcher<SecuredSdk['getResponseDelay'], ApiError>
   curve: {
     reportCount: UseFetcher<PublicSdk['curve']['getReportCount'], ApiError>
-    reportRespondedCount: UseFetcher<PublicSdk['curve']['getReportRespondedCount'], ApiError>
+    reportRespondedCount: UseFetcher<PublicSdk['curve']['getReportCount'], ApiError>
     reportForwardedPercentage: UseFetcher<PublicSdk['curve']['getReportForwardedPercentage'], ApiError>
     reportRespondedPercentage: UseFetcher<PublicSdk['curve']['getReportRespondedPercentage'], ApiError>
     reportReadPercentage: UseFetcher<PublicSdk['curve']['getReportReadPercentage'], ApiError>
@@ -44,7 +45,10 @@ export const StatsProvider = ({api, children}: Props) => {
   const responseDelay = useFetcher(api.secured.stats.getResponseDelay)
   const curve = {
     reportCount: useFetcher(api.public.stats.curve.getReportCount),
-    reportRespondedCount: useFetcher(api.public.stats.curve.getReportRespondedCount),
+    reportRespondedCount: useFetcher((_: CurveStatsParamsWithPeriod) => {
+      const status = [ReportStatus.Accepted, ReportStatus.Rejected, ReportStatus.NotConcerned]
+      return api.public.stats.curve.getReportCount({status, ..._})
+    }),
     reportForwardedPercentage: useFetcher(api.public.stats.curve.getReportForwardedPercentage),
     reportRespondedPercentage: useFetcher(api.public.stats.curve.getReportRespondedPercentage),
     reportReadPercentage: useFetcher(api.public.stats.curve.getReportReadPercentage),

@@ -44,7 +44,7 @@
     "mui-extension": "3.0.6",
     "@sentry/react": "^6.12.0",
     "@sentry/tracing": "^6.12.0",
-    "@signal-conso/signalconso-api-sdk-js": "^1.0.20",
+    "@signal-conso/signalconso-api-sdk-js": "^1.0.21",
     "@testing-library/jest-dom": "^5.11.10",
     "@testing-library/react": "^11.2.6",
     "@testing-library/user-event": "^12.8.3",
