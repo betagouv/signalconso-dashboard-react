@@ -218,7 +218,7 @@ export const CompanyComponent = () => {
           <CompanyReportsCountPanel
             period={reportsCurvePeriod}
             data={reportsCurves} onChange={period => fetchCurve(period)}
-            total={_company.responseRate.entity}
+            total={company.count}
           />
           <Grid container spacing={2}>
             <Grid item sm={12} md={7}>
