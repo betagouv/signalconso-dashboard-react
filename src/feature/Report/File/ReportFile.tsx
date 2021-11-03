@@ -4,7 +4,7 @@ import makeStyles from '@mui/styles/makeStyles';
 import {extensionToType, FileType, reportFileConfig} from './reportFileConfig'
 import {useLogin} from '../../../core/context/LoginContext'
 import {fromNullable, some} from 'fp-ts/lib/Option'
-import {Config} from '../../../conf/config'
+import {config} from '../../../conf/config'
 import React, {useEffect} from 'react'
 import {useFetcher} from '@alexandreannic/react-hooks-lib/lib'
 import {IconBtn} from 'mui-extension/lib'
@@ -94,7 +94,7 @@ export const ReportFile = ({file, dense, onRemove}: ReportFileProps) => {
   const {m} = useI18n()
 
   const fileUrl = some(apiSdk.public.document.getLink(file))
-    .map(_ => (Config.isDev ? _.replace(Config.apiBaseUrl, 'https://signal-api.conso.gouv.fr') : _))
+    .map(_ => (config.isDev ? _.replace(config.apiBaseUrl, 'https://signal-api.conso.gouv.fr') : _))
     .toUndefined()
 
   const remove = async () => {

@@ -1,6 +1,6 @@
 import {Panel, PanelBody, PanelHead} from '../../shared/Panel'
-import { alpha, Button, ButtonGroup, Theme, useTheme } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
+import {alpha, Button, ButtonGroup, Icon, IconButton, Theme, useTheme} from '@mui/material'
+import makeStyles from '@mui/styles/makeStyles'
 import {CartesianGrid, Legend, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis} from 'recharts'
 import * as React from 'react'
 import {useI18n} from '../../core/i18n'
@@ -8,8 +8,12 @@ import {classes} from '../../core/helper/utils'
 import {CountByDate, Period} from '@signal-conso/signalconso-api-sdk-js'
 import {useMemoFn} from '../../shared/hooks/UseMemoFn'
 import {format} from 'date-fns'
+import {useCssUtils} from '../../core/helper/useCssUtils'
+import {siteMap} from '../../core/siteMap'
+import { NavLink } from 'react-router-dom'
 
 interface Props {
+  total?: number
   data?: CountByDate[]
   period?: Period
   onChange: (_: Period) => void
@@ -23,9 +27,10 @@ const useStyles = makeStyles((t: Theme) => ({
 
 const periods: Period[] = ['Day', 'Month']
 
-export const CompanyReportsCountPanel = ({data, period, onChange}: Props) => {
-  const {m} = useI18n()
+export const CompanyReportsCountPanel = ({total, data, period, onChange}: Props) => {
+  const {formatLargeNumber, m} = useI18n()
   const css = useStyles()
+  const cssUtils = useCssUtils()
   const theme = useTheme()
 
   const mappedData = useMemoFn(data, _ =>
@@ -48,7 +53,14 @@ export const CompanyReportsCountPanel = ({data, period, onChange}: Props) => {
           </ButtonGroup>
         }
       >
-        {m.reports}
+        {total && formatLargeNumber(total)}
+        &nbsp;
+        {m.reports.toLocaleLowerCase()}
+        <NavLink to={siteMap.logged.reports()}>
+          <IconButton size={'small'} className={classes(cssUtils.colorTxtHint, cssUtils.marginLeft)}>
+            <Icon>open_in_new</Icon>
+          </IconButton>
+        </NavLink>
       </PanelHead>
 
       <PanelBody style={{height: 300}}>

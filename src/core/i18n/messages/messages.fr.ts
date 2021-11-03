@@ -1,5 +1,5 @@
 import {CompanyAccessLevel, ReportResponseTypes, ReportStatus} from '@signal-conso/signalconso-api-sdk-js'
-import {Config} from '../../../conf/config'
+import {config} from '../../../conf/config'
 
 export const messagesFr = {
   yes: 'Oui',
@@ -115,7 +115,7 @@ export const messagesFr = {
   companyRegisteredEmailSent: "Un email vous a été envoyé avec les instructions pour accéder au compte de l'entreprise.",
   departments: 'Départements',
   reports: 'Signalements',
-  responseRate: 'Taux de réponse',
+  responseRate: '% réponse',
   report: 'Signalement',
   you: 'Vous',
   reportHistory: 'Historique du signalement',
@@ -347,8 +347,8 @@ export const messagesFr = {
   deleteCompanyAccessToken: (email?: string) => `Annuler l'invitation  ${email ? 'à ' + email + ' ' : ''}?`,
   resetPasswordNotFound: `Le lien permettant de demander un nouveau mot de passe n'est pas valide, veuillez refaire une demande.`,
   resetPasswordSuccess: `Votre mot de passe est maintenant créé, vous pouvez vous connecter pour accéder à votre espace entreprise.`,
-  loginIssueTip: `En cas de difficultés, vous pouvez contacter par email le service <a href="href="mailto:${Config.contactEmail}">${Config.contactEmail}</a>.`,
-  consent: ` Je reconnais avoir pris connaissance des  <a href="href="${Config.appBaseUrl}/conditions-generales-utilisation/professionnel"> conditions générales d'utilisation</a> de SignalConso.`,
+  loginIssueTip: `En cas de difficultés, vous pouvez contacter par email le service <a href="href="mailto:${config.contactEmail}">${config.contactEmail}</a>.`,
+  consent: ` Je reconnais avoir pris connaissance des  <a href="href="${config.appBaseUrl}/conditions-generales-utilisation/professionnel"> conditions générales d'utilisation</a> de SignalConso.`,
   subscriptionsAlertInfo: `
     En créant un abonnement, vous recevrez un mail quotidien ou hebdomadaire (au choix) comportant les nouveaux signalements correspondant à votre sélection de critères, qu’ils soient géographiques, thématiques ou par entreprise.
     <br/>
@@ -411,5 +411,20 @@ export const messagesFr = {
     10: 'Octobre',
     11: 'Novembre',
     12: 'Décembre',
+  },
+  apiErrorsCode: {
+    'SC-0001': `Une erreur s'est produite`,
+    'SC-0002': `L'utilisateur DGCCRF n'existe pas.`,
+    'SC-0003': `Le professionnel n'existe pas.`,
+    'SC-0004': `L'entreprise n'existe pas.`,
+    'SC-0005': `Le site web n'existe pas.`,
+    'SC-0006': `L'entreprise est déjà associée à un site.`,
+    'SC-0007': `URL invalide.`,
+    'SC-0008': `Email DGCCRF invalide.`,
+    'SC-0009': `L'utilisateur existe déjà.`,
+    'SC-0010': `L'entreprise a déjà été activée.`,
+    'SC-0011': `L'entreprise n'existe pas.`,
+    'SC-0012': `Le code d'activation est périmé.`,
+    'SC-0013': `Le code d'activation est invalide.`,
   },
 }

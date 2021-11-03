@@ -5,7 +5,7 @@ import logoSignalConso from './signalconso.svg'
 import logoDgccrf from './logo-dgccrf.png'
 import {useI18n} from '../../i18n'
 import {Btn, IconBtn} from 'mui-extension/lib'
-import {Config} from '../../../conf/config'
+import {config} from '../../../conf/config'
 import {styleUtils} from 'core/theme'
 import {headerHeight} from '../index'
 import React from 'react'
@@ -66,7 +66,7 @@ export const Header = ({connectedUser}: Props) => {
         <div className={css.logo}>
           <img src={logoGouvMobile} alt={m.altLogoGouv} className={css.logoGouvMobile} />
           {!isMobileWidth && <img src={logoDgccrf} alt={m.altLogoDGCCRF} className={css.logoGouvMobile} />}
-          <a href={Config.appBaseUrl}>
+          <a href={config.appBaseUrl}>
             <img src={logoSignalConso} alt={m.altLogoSignalConso} className={css.logoSignalConsoMobile} />
           </a>
         </div>
@@ -77,22 +77,22 @@ export const Header = ({connectedUser}: Props) => {
                 <Icon>menu</Icon>
               </IconBtn>
               <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleClose}>
-                <a href={Config.appBaseUrl}>
+                <a href={config.appBaseUrl}>
                   <MenuItem>{m.home}</MenuItem>
                 </a>
-                <a href={Config.appBaseUrl + '/comment-ça-marche'}>
+                <a href={config.appBaseUrl + '/comment-ça-marche'}>
                   <MenuItem>{m.howItWorks}</MenuItem>
                 </a>
-                <a href={Config.appBaseUrl + '/centre-aide/consommateur'}>
+                <a href={config.appBaseUrl + '/centre-aide/consommateur'}>
                   <MenuItem>{m.helpCenter}</MenuItem>
                 </a>
               </Menu>
             </>
           ) : (
             <>
-              <HeaderItem href={Config.appBaseUrl}>{m.home}</HeaderItem>
-              <HeaderItem href={Config.appBaseUrl + '/comment-ça-marche'}>{m.howItWorks}</HeaderItem>
-              <HeaderItem href={Config.appBaseUrl + '/centre-aide/consommateur'}>{m.helpCenter}</HeaderItem>
+              <HeaderItem href={config.appBaseUrl}>{m.home}</HeaderItem>
+              <HeaderItem href={config.appBaseUrl + '/comment-ça-marche'}>{m.howItWorks}</HeaderItem>
+              <HeaderItem href={config.appBaseUrl + '/centre-aide/consommateur'}>{m.helpCenter}</HeaderItem>
             </>
           )}
           <ScMenuBtn connectedUser={connectedUser} />

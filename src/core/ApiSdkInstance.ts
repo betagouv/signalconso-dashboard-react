@@ -1,4 +1,4 @@
-import {Config} from '../conf/config'
+import {config} from '../conf/config'
 import {ApiClient, SignalConsoPublicSdk, SignalConsoSecuredSdk} from '@signal-conso/signalconso-api-sdk-js'
 
 export type SignalConsoApiSdk = ReturnType<typeof makeSecuredSdk>
@@ -8,7 +8,7 @@ const headers = {
   Accept: 'application/json',
 }
 
-const baseUrl = Config.apiBaseUrl + '/api'
+const baseUrl = config.apiBaseUrl + '/api'
 
 export const apiPublicSdk = new SignalConsoPublicSdk(
   new ApiClient({

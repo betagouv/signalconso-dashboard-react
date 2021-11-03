@@ -29,7 +29,7 @@ import {
 } from '../../core/helper/useQueryString'
 import {fromNullable} from 'fp-ts/lib/Option'
 import {useToast} from '../../core/toast'
-import {Config} from '../../conf/config'
+import {config} from '../../conf/config'
 import {ExportReportsPopper} from '../../shared/ExportPopper/ExportPopperBtn'
 import {PeriodPicker} from '../../shared/PeriodPicker/PeriodPicker'
 import {useCompaniesContext} from '../../core/context/CompaniesContext'
@@ -152,7 +152,7 @@ export const ReportsPro = () => {
             color="primary"
             icon="help"
             {...({target: '_blank'} as any)}
-            href={Config.appBaseUrl + '/comment-ça-marche/professionnel'}
+            href={config.appBaseUrl + '/comment-ça-marche/professionnel'}
           >
             {m.help}
             <Icon className={classes(cssUtils.marginLeft, cssUtils.colorTxtHint)}>open_in_new</Icon>
@@ -242,11 +242,11 @@ export const ReportsPro = () => {
                     </Badge>
                     <ExportReportsPopper
                       disabled={fromNullable(_reports?.list?.totalSize)
-                        .map(_ => _ > Config.reportsLimitForExport)
+                        .map(_ => _ > config.reportsLimitForExport)
                         .getOrElse(false)}
                       tooltipBtnNew={fromNullable(_reports?.list?.totalSize)
                         .map(_ =>
-                          _ > Config.reportsLimitForExport ? m.cannotExportMoreReports(Config.reportsLimitForExport) : '',
+                          _ > config.reportsLimitForExport ? m.cannotExportMoreReports(config.reportsLimitForExport) : '',
                         )
                         .getOrElse('')}
                     >

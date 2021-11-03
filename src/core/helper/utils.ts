@@ -1,8 +1,7 @@
 import classNames from 'classnames'
 import {fromNullable} from 'fp-ts/lib/Option'
 import {OrderBy, Paginate} from '@alexandreannic/react-hooks-lib/lib'
-import {siteMap} from '../siteMap'
-import {Config} from 'conf/config'
+import {config} from 'conf/config'
 import {Paginate as ApiPaginate} from '@signal-conso/signalconso-api-sdk-js'
 import {mapPromise, PromiseFnResult} from '@alexandreannic/ts-utils/lib/common'
 
@@ -121,5 +120,5 @@ export const mapPromiseSdkPaginate = <F extends (...args: any[]) => Promise<ApiP
   }) as any
 
 export const openInNew = (path: string) => {
-  window.open((Config.useHashRouter ? '/#' : '') + path, '_blank')
+  window.open((config.useHashRouter ? '/#' : '') + path, '_blank')
 }

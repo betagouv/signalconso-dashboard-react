@@ -116,6 +116,7 @@ export const CompanyComponent = () => {
   useEffect(() => {
     _company.byId.fetch({}, id)
     _company.hosts.fetch({}, id)
+    _company.responseRate.fetch({}, id)
     fetchCurve('Month')
     _stats.tags.fetch({}, id)
     _stats.status.fetch({}, id)
@@ -175,22 +176,8 @@ export const CompanyComponent = () => {
         <>
           <Grid container spacing={2}>
             <Grid item xs={12} sm={6} md={3}>
-              <Widget title={m.reports} to={siteMap.logged.reports({siretSirenList: [company.siret]})}>
-                <WidgetValue>{formatLargeNumber(company.count)}</WidgetValue>
-              </Widget>
-            </Grid>
-            <Grid item xs={12} sm={6} md={3}>
-              <Widget title={m.activationDocReturned} loading={_event.companyEvents.loading}>
-                {fromNullable(postActivationDocEvents)
-                  .map(_ => <WidgetValue>{_.length}</WidgetValue>)
-                  .getOrElse(<WidgetLoading />)}
-              </Widget>
-            </Grid>
-            <Grid item xs={12} sm={6} md={3}>
-              <Widget title={m.accountsActivated} loading={_accesses.loading} to={siteMap.logged.companyAccesses(company.siret)}>
-                {fromNullable(_accesses.entity)
-                  .map(_ => <WidgetValue>{_.length}</WidgetValue>)
-                  .getOrElse(<WidgetLoading />)}
+              <Widget title={m.responseRate}>
+                <WidgetValue>{_company.responseRate.entity}%</WidgetValue>
               </Widget>
             </Grid>
             <Grid item xs={12} sm={6} md={3}>
@@ -213,8 +200,26 @@ export const CompanyComponent = () => {
                   .getOrElse(<WidgetLoading />)}
               </Widget>
             </Grid>
+            <Grid item xs={12} sm={6} md={3}>
+              <Widget title={m.activationDocReturned} loading={_event.companyEvents.loading}>
+                {fromNullable(postActivationDocEvents)
+                  .map(_ => <WidgetValue>{_.length}</WidgetValue>)
+                  .getOrElse(<WidgetLoading />)}
+              </Widget>
+            </Grid>
+            <Grid item xs={12} sm={6} md={3}>
+              <Widget title={m.accountsActivated} loading={_accesses.loading} to={siteMap.logged.companyAccesses(company.siret)}>
+                {fromNullable(_accesses.entity)
+                  .map(_ => <WidgetValue>{_.length}</WidgetValue>)
+                  .getOrElse(<WidgetLoading />)}
+              </Widget>
+            </Grid>
           </Grid>
-          <CompanyReportsCountPanel period={reportsCurvePeriod} data={reportsCurves} onChange={period => fetchCurve(period)} />
+          <CompanyReportsCountPanel
+            period={reportsCurvePeriod}
+            data={reportsCurves} onChange={period => fetchCurve(period)}
+            total={company.count}
+          />
           <Grid container spacing={2}>
             <Grid item sm={12} md={7}>
               <Panel>

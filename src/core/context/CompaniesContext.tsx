@@ -28,6 +28,8 @@ export interface CompaniesContextProps {
   saveUndeliveredDocument: UseFetcher<Sdk['saveUndeliveredDocument'], ApiError>
   byId: UseFetcher<(id: Id) => Promise<CompanyWithReportsCount>, ApiError>
   hosts: UseFetcher<Sdk['getHosts'], ApiError>
+  responseRate: UseFetcher<Sdk['getResponseRate'], ApiError>
+
 }
 
 interface Props {
@@ -61,6 +63,7 @@ export const CompaniesProvider = ({api, children}: Props) => {
   const accessibleByPro = useFetcher(api.secured.company.getAccessibleByPro)
   const byId = useFetcher((id: Id) => api.secured.company.search({identity: id, limit: 1, offset: 0}).then(_ => _.entities[0]))
   const hosts = useFetcher(api.secured.company.getHosts)
+  const responseRate = useFetcher(api.secured.company.getResponseRate)
 
   const updateRegisteredCompanyAddress = (id: Id, address: Address) => {
     activated.setEntity(companies => {
@@ -96,6 +99,7 @@ export const CompaniesProvider = ({api, children}: Props) => {
         saveUndeliveredDocument,
         byId,
         hosts,
+        responseRate,
       }}
     >
       {children}
