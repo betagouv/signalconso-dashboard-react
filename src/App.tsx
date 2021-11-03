@@ -54,6 +54,7 @@ import {EventProvider} from './core/context/EventContext'
 import {CompaniesDbSync} from './feature/CompaniesDbSync/CompaniesDbSync'
 import {Matomo} from './core/plugins/Matomo'
 import {apiPublicSdk, makeSecuredSdk, SignalConsoApiSdk} from './core/ApiSdkInstance'
+import {Stats} from './feature/Stats/Stats'
 
 const useStyles = makeStyles((t: Theme) => ({
   '@global': {
@@ -228,6 +229,7 @@ const AppLogged = () => {
         <Route path={siteMap.logged.modeEmploiDGCCRF} component={ModeEmploiDGCCRF} />
         <Route path={siteMap.logged.companiesDbSync} component={CompaniesDbSync} />
         <Route path={siteMap.loggedout.register} component={ActivateNewCompany} />
+        <Route path={siteMap.loggedout.register} component={Stats} />
         <Redirect from="/" to={siteMap.logged.reports()} />
       </Switch>
     </Provide>

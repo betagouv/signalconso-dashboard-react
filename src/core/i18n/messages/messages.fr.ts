@@ -176,6 +176,7 @@ export const messagesFr = {
   menu_websites: 'Sites webs signalés',
   menu_reports: 'Signalements',
   menu_companies: 'Entreprises',
+  menu_stats: 'Présentation',
   menu_exports: 'Mes exports',
   menu_users: 'Utilisateurs DGCCRF',
   menu_subscriptions: 'Abonnements',
