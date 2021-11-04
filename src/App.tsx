@@ -228,8 +228,8 @@ const AppLogged = () => {
         <Route path={siteMap.logged.settings} component={Settings} />
         <Route path={siteMap.logged.modeEmploiDGCCRF} component={ModeEmploiDGCCRF} />
         <Route path={siteMap.logged.companiesDbSync} component={CompaniesDbSync} />
+        <Route path={siteMap.logged.stats} component={Stats} />
         <Route path={siteMap.loggedout.register} component={ActivateNewCompany} />
-        <Route path={siteMap.loggedout.register} component={Stats} />
         <Redirect from="/" to={siteMap.logged.reports()} />
       </Switch>
     </Provide>
