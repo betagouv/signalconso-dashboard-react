@@ -46,7 +46,7 @@ export const StatsProvider = ({api, children}: Props) => {
   const curve = {
     reportCount: useFetcher(api.public.stats.curve.getReportCount),
     reportRespondedCount: useFetcher((_: CurveStatsParamsWithPeriod) => {
-      const status = [ReportStatus.Accepted, ReportStatus.Rejected, ReportStatus.NotConcerned]
+      const status = [ReportStatus.PromesseAction, ReportStatus.Infonde, ReportStatus.MalAttribue]
       return api.public.stats.curve.getReportCount({status, ..._})
     }),
     reportForwardedPercentage: useFetcher(api.public.stats.curve.getReportForwardedPercentage),

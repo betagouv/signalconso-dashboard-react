@@ -1,23 +1,11 @@
-import {
-  Chip,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  FormControlLabel,
-  MenuItem,
-  Radio,
-  RadioGroup,
-  Theme,
-} from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
+import {Checkbox, Chip, Dialog, DialogActions, DialogContent, DialogTitle, FormControlLabel, MenuItem, Radio, RadioGroup, Theme} from '@mui/material'
+import makeStyles from '@mui/styles/makeStyles'
 import {useI18n} from '../../core/i18n'
 import React, {ReactElement, ReactNode, useEffect, useState} from 'react'
-import {ReportSearch, ReportTag} from '@signal-conso/signalconso-api-sdk-js'
+import {ReportSearch, ReportStatus, ReportTag} from '@signal-conso/signalconso-api-sdk-js'
 import {Controller, useForm} from 'react-hook-form'
-import {useConstantContext} from '../../core/context/ConstantContext'
 import {ScSelect} from '../../shared/Select/Select'
-import {ReportStatusChip} from '../../shared/ReportStatus/ReportStatus'
+import {ReportStatusLabel} from '../../shared/ReportStatus/ReportStatus'
 import {Btn} from 'mui-extension/lib'
 import {ScInput} from '../../shared/Input/ScInput'
 import {useAnomalyContext} from '../../core/context/AnomalyContext'
@@ -67,12 +55,11 @@ export const ReportFilters = ({filters, updateFilters, children}: ReportsFilters
   const {
     register,
     handleSubmit,
-    setValue,
     control,
     reset,
+    getValues,
     formState: {errors},
   } = useForm<ReportSearch>()
-  const {reportStatus: _reportStatus} = useConstantContext()
   const [open, setOpen] = useState<boolean>(false)
   const {category: _category} = useAnomalyContext()
 
@@ -86,7 +73,6 @@ export const ReportFilters = ({filters, updateFilters, children}: ReportsFilters
   }
 
   useEffect(() => {
-    _reportStatus.fetch({force: false})
     _category.fetch({force: false})
   }, [])
 
@@ -103,7 +89,7 @@ export const ReportFilters = ({filters, updateFilters, children}: ReportsFilters
       })}
       <Dialog open={open ?? false} onClose={close}>
         <DialogTitle>{m.search}</DialogTitle>
-        {_reportStatus.entity && _category.entity && (
+        {_category.entity && (
           <>
             <DialogContent>
               <Row label={m.codeNaf}>
@@ -130,17 +116,25 @@ export const ReportFilters = ({filters, updateFilters, children}: ReportsFilters
                 <ScInput small fullWidth {...register('siretSirenList')} defaultValue={filters.siretSirenList ?? ''}/>
               </Row>
               <Row label={m.emailConsumer}>
-                <ScInput small fullWidth {...register('email')} defaultValue={filters.email ?? ''} />
+                <ScInput small fullWidth {...register('email')} defaultValue={filters.email ?? ''}/>
               </Row>
               <Row label={m.status}>
-                <ScSelect small fullWidth {...register('status')} defaultValue={filters.status ?? ''}>
-                  <MenuItem value="">&nbsp;</MenuItem>
-                  {_reportStatus.entity.map(status => (
-                    <MenuItem key={status} value={status}>
-                      <ReportStatusChip inSelectOptions dense fullWidth status={status} />
-                    </MenuItem>
-                  ))}
-                </ScSelect>
+                <Controller defaultValue={filters.status ?? []} name="status" control={control} render={({field}) => (
+                  <ScSelect
+                    {...field} multiple fullWidth
+                    renderValue={status => `(${status.length}) ${status.map(_ => m.reportStatusShort[_]).join(',')}`}
+                  >
+                    {Enum.values(ReportStatus).map(status => (
+                      <MenuItem key={status} value={status}>
+                        <Checkbox
+                          size="small" style={{paddingLeft: 0, paddingTop: 0, paddingBottom: 0}}
+                          checked={(getValues().status ?? []).includes(status)}
+                        />
+                        <ReportStatusLabel inSelectOptions dense fullWidth status={status}/>
+                      </MenuItem>
+                    ))}
+                  </ScSelect>
+                )}/>
               </Row>
               <Row label={m.tags}>
                 <Controller

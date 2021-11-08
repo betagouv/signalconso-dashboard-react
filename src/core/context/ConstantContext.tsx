@@ -5,7 +5,6 @@ import {ApiError} from '@signal-conso/signalconso-api-sdk-js'
 import {SignalConsoApiSdk} from '../ApiSdkInstance'
 
 export interface ConstantContextProps {
-  reportStatus: UseFetcher<SignalConsoApiSdk['secured']['constant']['getReportStatusList'], ApiError>
   regions: UseFetcher<SignalConsoApiSdk['public']['constant']['getRegions'], ApiError>
   countries: UseFetcher<SignalConsoApiSdk['public']['constant']['getCountries'], ApiError>
 }
@@ -20,14 +19,12 @@ const defaultContext: Partial<ConstantContextProps> = {}
 const ConstantContext = React.createContext<ConstantContextProps>(defaultContext as ConstantContextProps)
 
 export const ConstantProvider = ({api, children}: Props) => {
-  const _reportStatus = useFetcher(api.secured.constant.getReportStatusList)
   const _regions = useFetcher(api.public.constant.getRegions)
   const _countries = useFetcher(api.public.constant.getCountries)
 
   return (
     <ConstantContext.Provider
       value={{
-        reportStatus: _reportStatus,
         regions: _regions,
         countries: _countries,
       }}

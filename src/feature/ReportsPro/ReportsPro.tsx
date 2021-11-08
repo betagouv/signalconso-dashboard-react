@@ -5,28 +5,22 @@ import {useReportsContext} from '../../core/context/ReportsContext'
 import {Datatable} from '../../shared/Datatable/Datatable'
 import {useI18n} from '../../core/i18n'
 import {useCssUtils} from '../../core/helper/useCssUtils'
-import { Badge, Grid, Icon, MenuItem, Theme } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
-import {ReportStatusChip} from '../../shared/ReportStatus/ReportStatus'
+import {Badge, Grid, Icon, MenuItem, Theme} from '@mui/material'
+import makeStyles from '@mui/styles/makeStyles'
+import {ReportStatusLabel, ReportStatusProLabel} from '../../shared/ReportStatus/ReportStatus'
 import {useLayoutContext} from '../../core/Layout/LayoutContext'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
-import {cleanObject, ReportSearch, ReportSearchResult, ReportStatus} from '@signal-conso/signalconso-api-sdk-js'
+import {cleanObject, Report, ReportSearch, ReportStatus, ReportStatusPro} from '@signal-conso/signalconso-api-sdk-js'
 import {styleUtils} from '../../core/theme'
 import {SelectDepartments} from '../../shared/SelectDepartments/SelectDepartments'
 import {ScSelect} from '../../shared/Select/Select'
-import {useConstantContext} from '../../core/context/ConstantContext'
-import {useHistory, useLocation} from 'react-router'
+import {useHistory} from 'react-router'
 import {siteMap} from '../../core/siteMap'
 import {classes, openInNew} from '../../core/helper/utils'
 import {Btn, Fender} from 'mui-extension/lib'
 import {EntityIcon} from '../../core/EntityIcon'
 import {ScButton} from '../../shared/Button/Button'
-import {
-  mapArrayFromQuerystring,
-  mapDateFromQueryString,
-  mapDatesToQueryString,
-  useQueryString,
-} from '../../core/helper/useQueryString'
+import {mapArrayFromQuerystring, mapDateFromQueryString, mapDatesToQueryString, useQueryString} from '../../core/helper/useQueryString'
 import {fromNullable} from 'fp-ts/lib/Option'
 import {useToast} from '../../core/toast'
 import {config} from '../../conf/config'
@@ -37,7 +31,7 @@ import {SelectCompaniesByPro} from '../../shared/SelectCompaniesByPro/SelectComp
 import compose from '../../core/helper/compose'
 import {Alert} from 'mui-extension'
 import {DebouncedInput} from 'shared/DebouncedInput/DebouncedInput'
-import {useLogin} from '../../core/context/LoginContext'
+import {Enum} from '@alexandreannic/ts-utils/lib/common/enum/Enum'
 
 const useStyles = makeStyles((t: Theme) => ({
   tdFiles: {
@@ -88,12 +82,11 @@ interface ReportFiltersQs {
   readonly siretSirenList?: string[] | string
   start?: string
   end?: string
-  status?: string
+  status?: string[]
 }
 
 export const ReportsPro = () => {
   const _reports = useReportsContext()
-  const _reportStatus = useConstantContext().reportStatus
   const _companies = useCompaniesContext()
 
   const {isMobileWidth} = useLayoutContext()
@@ -109,7 +102,7 @@ export const ReportsPro = () => {
   }, [_reports.filters])
 
   const isFirstVisit = useMemo(
-    () => !hasFilters && _reports.list?.data.every(_ => _.report.status === ReportStatus.UnreadForPro),
+    () => !hasFilters && _reports.list?.data.every(_ => _.report.status === ReportStatus.TraitementEnCours),
     [_reports.list],
   )
 
@@ -120,7 +113,7 @@ export const ReportsPro = () => {
 
   const queryString = useQueryString<Partial<ReportSearch>, Partial<ReportFiltersQs>>({
     toQueryString: mapDatesToQueryString,
-    fromQueryString: compose(mapDateFromQueryString, _ => mapArrayFromQuerystring(_, ['siretSirenList', 'departments'])),
+    fromQueryString: compose(mapDateFromQueryString, _ => mapArrayFromQuerystring(_, ['status', 'siretSirenList', 'departments'])),
   })
 
   const filtersCount = useMemo(() => {
@@ -130,7 +123,6 @@ export const ReportsPro = () => {
 
   useEffect(() => {
     _companies.accessibleByPro.fetch({force: false})
-    _reportStatus.fetch({force: false})
     _reports.updateFilters({..._reports.initialFilters, ...queryString.get()})
   }, [])
 
@@ -196,31 +188,35 @@ export const ReportsPro = () => {
                         onChange={departments => _reports.updateFilters(prev => ({...prev, departments}))}
                       >
                         {(value, onChange) => (
-                          <SelectDepartments values={value} onChange={onChange} className={cssUtils.marginRight} fullWidth />
+                          <SelectDepartments values={value} onChange={onChange} className={cssUtils.marginRight} fullWidth/>
                         )}
                       </DebouncedInput>
                     </Grid>
                     <Grid item sm={4} xs={12}>
                       <DebouncedInput
-                        value={_reports.filters.status ?? ''}
-                        onChange={event => {
-                          _reports.updateFilters(prev => ({...prev, status: event as string}))
+                        value={_reports.filters.status?.[0] ? Report.getStatusProByStatus(_reports.filters.status[0]) : ''}
+                        onChange={e => {
+                          const status = fromNullable(e)
+                            .filter(_ => _ in ReportStatusPro)
+                            .map(_ => Report.getStatusByStatusPro(_ as ReportStatusPro))
+                            .toUndefined()
+                          _reports.updateFilters(prev => ({...prev, status}))
                         }}
                       >
                         {(value, onChange) => (
                           <ScSelect
                             value={value}
-                            onChange={e => onChange(e.target.value as string)}
-                            id="test"
+                            onChange={x => onChange(x.target.value)}
+                            id="select-status-pro"
                             label={m.status}
                             fullWidth
                           >
                             <MenuItem value="">&nbsp;</MenuItem>
-                            {(_reportStatus.entity ?? []).map(status => (
-                              <MenuItem key={status} value={status}>
-                                <ReportStatusChip dense fullWidth inSelectOptions status={status} />
-                              </MenuItem>
-                            ))}
+                            {Enum.values(ReportStatusPro).map(statusPro =>
+                              <MenuItem key={statusPro} value={statusPro}>
+                                <ReportStatusProLabel dense fullWidth inSelectOptions status={statusPro}/>
+                              </MenuItem>,
+                            )}
                           </ScSelect>
                         )}
                       </DebouncedInput>
@@ -306,54 +302,54 @@ export const ReportsPro = () => {
                                     : m.anonymousReport}
                                 </Txt>
                               </div>
-                              <ReportStatusChip dense status={_.report.status} />
+                              <ReportStatusLabel dense status={_.report.status}/>
                             </div>
                           ),
                         },
                       ]
                     : [
-                        {
-                          id: 'companyPostalCode',
-                          head: m.postalCodeShort,
-                          className: _ => (_.report.status === ReportStatus.UnreadForPro ? cssUtils.txtBold : undefined),
-                          render: _ => _.report.companyAddress.postalCode,
-                        },
-                        {
-                          id: 'siret',
-                          head: m.siret,
-                          className: _ => (_.report.status === ReportStatus.UnreadForPro ? cssUtils.txtBold : undefined),
-                          render: _ => _.report.companySiret,
-                        },
-                        {
-                          id: 'createDate',
-                          head: m.receivedAt,
-                          className: _ => (_.report.status === ReportStatus.UnreadForPro ? cssUtils.txtBold : undefined),
-                          render: _ => formatDate(_.report.creationDate),
-                        },
-                        {
-                          id: 'status',
-                          head: m.status,
-                          render: _ => <ReportStatusChip dense status={_.report.status} />,
-                        },
-                        {
-                          id: 'consumer',
-                          head: m.consumer,
-                          className: _ => (_.report.status === ReportStatus.UnreadForPro ? cssUtils.txtBold : undefined),
-                          render: _ =>
-                            _.report.contactAgreement ? _.report.firstName + ' ' + _.report.lastName : m.anonymousReport,
-                        },
-                        {
-                          id: 'file',
-                          head: m.files,
-                          className: css.tdFiles,
-                          render: _ =>
-                            _.files.length > 0 && (
-                              <Badge badgeContent={_.files.length} color="primary" invisible={_.files.length === 1}>
-                                <Icon className={cssUtils.colorTxtHint}>insert_drive_file</Icon>
-                              </Badge>
-                            ),
-                        },
-                      ]
+                      {
+                        id: 'companyPostalCode',
+                        head: m.postalCodeShort,
+                        className: _ => (_.report.status === ReportStatus.TraitementEnCours ? cssUtils.txtBold : undefined),
+                        render: _ => _.report.companyAddress.postalCode,
+                      },
+                      {
+                        id: 'siret',
+                        head: m.siret,
+                        className: _ => (_.report.status === ReportStatus.TraitementEnCours ? cssUtils.txtBold : undefined),
+                        render: _ => _.report.companySiret,
+                      },
+                      {
+                        id: 'createDate',
+                        head: m.receivedAt,
+                        className: _ => (_.report.status === ReportStatus.TraitementEnCours ? cssUtils.txtBold : undefined),
+                        render: _ => formatDate(_.report.creationDate),
+                      },
+                      {
+                        id: 'status',
+                        head: m.status,
+                        render: _ => <ReportStatusProLabel dense status={Report.getStatusProByStatus(_.report.status)}/>,
+                      },
+                      {
+                        id: 'consumer',
+                        head: m.consumer,
+                        className: _ => (_.report.status === ReportStatus.TraitementEnCours ? cssUtils.txtBold : undefined),
+                        render: _ =>
+                          _.report.contactAgreement ? _.report.firstName + ' ' + _.report.lastName : m.anonymousReport,
+                      },
+                      {
+                        id: 'file',
+                        head: m.files,
+                        className: css.tdFiles,
+                        render: _ =>
+                          _.files.length > 0 && (
+                            <Badge badgeContent={_.files.length} color="primary" invisible={_.files.length === 1}>
+                              <Icon className={cssUtils.colorTxtHint}>insert_drive_file</Icon>
+                            </Badge>
+                          ),
+                      },
+                    ]
                 }
                 renderEmptyState={
                   <Fender
