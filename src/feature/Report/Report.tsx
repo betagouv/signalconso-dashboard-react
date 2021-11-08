@@ -5,8 +5,8 @@ import {useI18n} from '../../core/i18n'
 import {Panel} from '../../shared/Panel'
 import {useReportContext} from '../../core/context/ReportContext'
 import {EventActionValues, FileOrigin, Id, Report, ReportEvent} from '@signal-conso/signalconso-api-sdk-js'
-import { Grid, Tab, Tabs, Theme, Tooltip, useTheme } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
+import {Grid, Tab, Tabs, Theme, Tooltip} from '@mui/material'
+import makeStyles from '@mui/styles/makeStyles'
 import {useCssUtils} from '../../core/helper/useCssUtils'
 import {fromNullable} from 'fp-ts/lib/Option'
 import {useToast} from '../../core/toast'
@@ -131,45 +131,49 @@ export const ReportComponent = () => {
 
             <Grid container spacing={2} alignItems="stretch">
               <Grid item xs={12} sm={6}>
-                <ReportConsumer report={report} canEdit={connectedUser.isAdmin} />
+                <ReportConsumer report={report} canEdit={connectedUser.isAdmin}/>
               </Grid>
               <Grid item xs={12} sm={6}>
-                <ReportCompany report={report} canEdit={connectedUser.isAdmin} />
+                <ReportCompany report={report} canEdit={connectedUser.isAdmin}/>
               </Grid>
             </Grid>
 
-            <ReportDescription report={report} files={_report.get.entity?.files} />
+            <ReportDescription report={report} files={_report.get.entity?.files}/>
 
             <Panel loading={_event.reportEvents.loading}>
-              {_event.reportEvents.entity && _event.companyEvents.entity && (
-                <>
-                  <Tabs
-                    className={css.tabs}
-                    value={activeTab}
-                    onChange={(event: React.ChangeEvent<{}>, newValue: number) => setActiveTab(newValue)}
-                    indicatorColor="primary"
-                    textColor="primary"
-                  >
-                    <Tab label={m.proResponse} />
-                    <Tab label={m.reportHistory} />
-                    <Tab label={m.companyHistory} />
-                  </Tabs>
-                  <ReportTabPanel value={activeTab} index={0}>
-                    <ReportResponseComponent
-                      canEditFile
-                      reportId={report.id}
-                      response={response}
-                      files={_report.get.entity?.files.filter(_ => _.origin === FileOrigin.Professional)}
-                    />
-                  </ReportTabPanel>
-                  <ReportTabPanel value={activeTab} index={1}>
-                    <ReportEvents events={[creationReportEvent(report), ..._event.reportEvents.entity]} />
-                  </ReportTabPanel>
-                  <ReportTabPanel value={activeTab} index={2}>
-                    <ReportEvents events={_event.companyEvents.entity} />
-                  </ReportTabPanel>
-                </>
-              )}
+              <>
+                <Tabs
+                  className={css.tabs}
+                  value={activeTab}
+                  onChange={(event: React.ChangeEvent<{}>, newValue: number) => setActiveTab(newValue)}
+                  indicatorColor="primary"
+                  textColor="primary"
+                >
+                  <Tab label={m.proResponse}/>
+                  <Tab label={m.reportHistory}/>
+                  <Tab label={m.companyHistory}/>
+                </Tabs>
+                <ReportTabPanel value={activeTab} index={0}>
+                  <ReportResponseComponent
+                    canEditFile
+                    reportId={report.id}
+                    response={response}
+                    files={_report.get.entity?.files.filter(_ => _.origin === FileOrigin.Professional)}
+                  />
+                </ReportTabPanel>
+                <ReportTabPanel value={activeTab} index={1}>
+                  <ReportEvents events={_event.reportEvents.loading
+                    ? undefined
+                    : [creationReportEvent(report), ...(_event.reportEvents.entity ?? [])]}
+                  />
+                </ReportTabPanel>
+                <ReportTabPanel value={activeTab} index={2}>
+                  <ReportEvents events={_event.companyEvents.loading
+                    ? undefined
+                    : (_event.companyEvents.entity ?? [])}
+                  />
+                </ReportTabPanel>
+              </>
             </Panel>
           </>
         ))
