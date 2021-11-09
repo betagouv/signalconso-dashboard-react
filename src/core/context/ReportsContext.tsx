@@ -3,8 +3,7 @@ import {ReactNode, useContext} from 'react'
 import {usePaginate, UsePaginate} from '@alexandreannic/react-hooks-lib/lib'
 import {SignalConsoApiSdk} from '../ApiSdkInstance'
 import {mapSdkPaginate} from '../helper/utils'
-import {ReportSearch, ReportSearchResult} from '@signal-conso/signalconso-api-sdk-js'
-import {PaginatedFilters} from '../../../../signalconso-api-sdk-js/src'
+import {ReportSearch, ReportSearchResult, PaginatedFilters} from '@signal-conso/signalconso-api-sdk-js'
 import {mapPromise} from '@alexandreannic/ts-utils/lib/common'
 
 export interface ReportsContextProps extends UsePaginate<ReportSearchResult, ReportSearch & PaginatedFilters> {
