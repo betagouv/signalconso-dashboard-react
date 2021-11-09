@@ -2,7 +2,7 @@ import { Icon, Theme } from '@mui/material';
 import makeStyles from '@mui/styles/makeStyles';
 import {ReportSearchResult} from '@signal-conso/signalconso-api-sdk-js'
 import {Paginate} from '@alexandreannic/react-hooks-lib/lib'
-import {ReportStatusChip} from '../../shared/ReportStatus/ReportStatus'
+import {ReportStatusLabel} from '../../shared/ReportStatus/ReportStatus'
 import * as React from 'react'
 import {useI18n} from '../../core/i18n'
 import {IconBtn} from 'mui-extension/lib'
@@ -53,7 +53,7 @@ export const ReportsShortList = ({reports}: Props) => {
                 {_.report.category}
               </Txt>
               <div className={css.reportTag}>
-                <ReportStatusChip status={_.report.status} dense className={cssUtils.marginRight} />
+                <ReportStatusLabel status={_.report.status} dense className={cssUtils.marginRight} />
                 <Txt color="hint">{formatDate(_.report.creationDate)}</Txt>
                 <Icon fontSize="inherit" className={cssUtils.marginLeft}>
                   label

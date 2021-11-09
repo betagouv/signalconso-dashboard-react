@@ -3,10 +3,11 @@ import {ReactNode, useContext} from 'react'
 import {usePaginate, UsePaginate} from '@alexandreannic/react-hooks-lib/lib'
 import {SignalConsoApiSdk} from '../ApiSdkInstance'
 import {mapSdkPaginate} from '../helper/utils'
-import {ApiClient, ReportSearch, ReportSearchResult, toQueryString} from '@signal-conso/signalconso-api-sdk-js'
-import {DgccrfEventActions, EventCategories, Matomo} from '../plugins/Matomo'
+import {ReportSearch, ReportSearchResult} from '@signal-conso/signalconso-api-sdk-js'
+import {PaginatedFilters} from '../../../../signalconso-api-sdk-js/src'
+import {mapPromise} from '@alexandreannic/ts-utils/lib/common'
 
-export interface ReportsContextProps extends UsePaginate<ReportSearchResult, ReportSearch> {
+export interface ReportsContextProps extends UsePaginate<ReportSearchResult, ReportSearch & PaginatedFilters> {
   extract: (_?: ReportSearch) => Promise<void>
 }
 
@@ -20,10 +21,10 @@ const defaultContext: Partial<ReportsContextProps> = {}
 const ReportsContext = React.createContext<ReportsContextProps>(defaultContext as ReportsContextProps)
 
 export const ReportsProvider = ({api, children}: Props) => {
-  const _paginate = usePaginate<ReportSearchResult, ReportSearch>((search: ReportSearch) => {
-    Matomo.trackEvent(EventCategories.dgccrf, DgccrfEventActions.reportsSearch, 'querystring', toQueryString(search))
-    return api.secured.reports.search(search).then(mapSdkPaginate)
-  }, {
+  const _paginate = usePaginate<ReportSearchResult, ReportSearch & PaginatedFilters>(mapPromise({
+    promise: api.secured.reports.search,
+    mapThen: mapSdkPaginate,
+  }), {
     limit: 10,
     offset: 0,
   })

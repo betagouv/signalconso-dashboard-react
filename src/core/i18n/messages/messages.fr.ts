@@ -1,5 +1,6 @@
-import {CompanyAccessLevel, ReportResponseTypes, ReportStatus} from '@signal-conso/signalconso-api-sdk-js'
+import {CompanyAccessLevel, ReportResponseTypes, ReportStatus, ReportStatusPro} from '@signal-conso/signalconso-api-sdk-js'
 import {config} from '../../../conf/config'
+import {ReportStatusProLabel} from '../../../shared/ReportStatus/ReportStatus'
 
 export const messagesFr = {
   yes: 'Oui',
@@ -372,31 +373,30 @@ export const messagesFr = {
   },
   reportStatusShort: {
     [ReportStatus.NA]: 'NA',
-    [ReportStatus.EmployeeConsumer]: "Lanceur d'alerte",
-    [ReportStatus.InProgress]: 'Traitement en cours',
-    [ReportStatus.Unread]: 'Non consulté',
-    [ReportStatus.UnreadForPro]: 'Non consulté',
-    [ReportStatus.Transmitted]: 'Transmis',
-    [ReportStatus.ToReviewedByPro]: 'À répondre',
-    [ReportStatus.Accepted]: `Promesse d'action`,
-    [ReportStatus.ClosedForPro]: 'Clôturé',
-    [ReportStatus.Rejected]: 'Infondé',
-    [ReportStatus.Ignored]: 'Consulté ignoré',
-    [ReportStatus.NotConcerned]: 'Mal attribué',
+    [ReportStatus.LanceurAlerte]: 'Lanceur d\'alerte',
+    [ReportStatus.TraitementEnCours]: 'Traitement en cours',
+    [ReportStatus.NonConsulte]: 'Non consulté',
+    [ReportStatus.Transmis]: 'Transmis',
+    [ReportStatus.PromesseAction]: `Promesse d'action`,
+    [ReportStatus.Infonde]: 'Infondé',
+    [ReportStatus.ConsulteIgnore]: 'Consulté ignoré',
+    [ReportStatus.MalAttribue]: 'Mal attribué',
+  },
+  reportStatusShortPro: {
+    [ReportStatusPro.NonConsulte]: 'Non consulté',
+    [ReportStatusPro.ARepondre]: 'À répondre',
+    [ReportStatusPro.Cloture]: 'Clôturé',
   },
   reportStatusDesc: {
     [ReportStatus.NA]: `Il y a eu un signalement déposé par un consommateur. Mais, le consommateur n’a pas pu identifier la société. Cela peut être le cas pour les sites internet et des démarchages téléphoniques ou à domicile.`,
-    [ReportStatus.EmployeeConsumer]: `Le signalement n’est pas envoyé au professionnel. Cela correspond aux cas où le consommateur s’est signalé comme employé du professionnel.`,
-    [ReportStatus.InProgress]: `Statut intermédiaire indiquant que le signalement suit son cours et n'est pas clos. Cela correspond notamment à la période laissée au professionnel pour prendre connaissance du signalement ou y répondre.`,
-    [ReportStatus.UnreadForPro]: 'Non consulté',
-    [ReportStatus.Unread]: `Le professionnel n'a pas créé de compte pour lire le signalement malgré les relances.`,
-    [ReportStatus.Transmitted]: `Transmis`,
-    [ReportStatus.ToReviewedByPro]: `À répondre`,
-    [ReportStatus.Accepted]: `Le professionnel souhaite mettre en place une action préventive ou corrective.`,
-    [ReportStatus.ClosedForPro]: `Clôturé`,
-    [ReportStatus.Rejected]: `Le professionnel a déclaré le signalement comme infondé selon lui.`,
-    [ReportStatus.Ignored]: `Le professionnel a lu le signalement, mais il n'a pas répondu malgré les relances.`,
-    [ReportStatus.NotConcerned]: `Le consommateur n'a pas sélectionné le bon établissement. Il est important de rappeler que ce sont les consommateurs qui identifient le professionnel, avec un taux d’erreur d’environ 5% en pratique.`,
+    [ReportStatus.LanceurAlerte]: `Le signalement n’est pas envoyé au professionnel. Cela correspond aux cas où le consommateur s’est signalé comme employé du professionnel.`,
+    [ReportStatus.TraitementEnCours]: `Statut intermédiaire indiquant que le signalement suit son cours et n'est pas clos. Cela correspond notamment à la période laissée au professionnel pour prendre connaissance du signalement ou y répondre.`,
+    [ReportStatus.NonConsulte]: `Le professionnel n'a pas créé de compte pour lire le signalement malgré les relances.`,
+    [ReportStatus.Transmis]: `Transmis`,
+    [ReportStatus.PromesseAction]: `Le professionnel souhaite mettre en place une action préventive ou corrective.`,
+    [ReportStatus.Infonde]: `Le professionnel a déclaré le signalement comme infondé selon lui.`,
+    [ReportStatus.ConsulteIgnore]: `Le professionnel a lu le signalement, mais il n'a pas répondu malgré les relances.`,
+    [ReportStatus.MalAttribue]: `Le consommateur n'a pas sélectionné le bon établissement. Il est important de rappeler que ce sont les consommateurs qui identifient le professionnel, avec un taux d’erreur d’environ 5% en pratique.`,
   },
   month_: {
     1: 'Janvier',

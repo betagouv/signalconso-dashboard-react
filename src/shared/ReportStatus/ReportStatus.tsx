@@ -1,96 +1,59 @@
-import { Paper, Theme } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
-import {ReportStatus} from '@signal-conso/signalconso-api-sdk-js'
-import {capitalize, classes} from '../../core/helper/utils'
-import {styleUtils} from '../../core/theme'
-import {useMemo} from 'react'
+import {Report, ReportStatus, ReportStatusPro} from '@signal-conso/signalconso-api-sdk-js'
+import {Label, LabelProps} from '../Label/Label'
+import {useI18n} from '../../core/i18n'
+import {useLogin} from '../../core/context/LoginContext'
 
-const useStyles = makeStyles((t: Theme) => ({
-  root: {
-    whiteSpace: 'nowrap',
-    borderRadius: 40,
-    paddingTop: t.spacing(1 / 1.5),
-    paddingBottom: t.spacing(1 / 1.5),
-    paddingRight: t.spacing(2),
-    paddingLeft: t.spacing(2),
-    fontWeight: 'bold',
-    letterSpacing: '1px',
-    display: 'inline-flex',
-    minHeight: 24,
-    alignItems: 'center',
-    color: 'white',
-    // fontSize: styleUtils(t).fontSize.big,
-  },
-  border: {
-    // border: `1px solid ${t.palette.divider}`,
-  },
-  dense: {
-    fontWeight: '500' as any,
-    fontSize: styleUtils(t).fontSize.small,
-    padding: t.spacing(0, 1, 0, 1),
-  },
-  fullWidth: {
-    width: '100%',
-  },
-  inSelectOptions: {
-    marginTop: -10,
-    marginBottom: -10,
-  },
-}))
-
-interface ReportStatusChipProps {
+interface ReportStatusLabelProps extends Omit<LabelProps, 'children'> {
   status: ReportStatus
-  dense?: boolean
-  className?: string
-  fullWidth?: boolean
-  inSelectOptions?: boolean
-  elevation?: number
+}
+
+interface ReportStatusProLabelProps extends Omit<LabelProps, 'children'> {
+  status: ReportStatusPro
 }
 
 export const reportStatusColor = {
   [ReportStatus.NA]: '#a1a1a1',
-  [ReportStatus.EmployeeConsumer]: '#a1a1a1',
-  [ReportStatus.InProgress]: '#f57c00',
-  [ReportStatus.Transmitted]: '#f57c00',
-  [ReportStatus.ToReviewedByPro]: '#f57c00',
-  [ReportStatus.ClosedForPro]: '#03a9f4',
-  [ReportStatus.Unread]: '#03a9f4',
-  [ReportStatus.NotConcerned]: '#03a9f4',
-  [ReportStatus.Accepted]: '#4caf50',
-  [ReportStatus.Rejected]: '#4caf50',
-  [ReportStatus.UnreadForPro]: '#d32f2f',
-  [ReportStatus.Ignored]: '#d32f2f',
+  [ReportStatus.LanceurAlerte]: '#a1a1a1',
+  [ReportStatus.TraitementEnCours]: '#f57c00',
+  [ReportStatus.Transmis]: '#f57c00',
+  [ReportStatus.NonConsulte]: '#03a9f4',
+  [ReportStatus.MalAttribue]: '#03a9f4',
+  [ReportStatus.PromesseAction]: '#4caf50',
+  [ReportStatus.Infonde]: '#4caf50',
+  [ReportStatus.ConsulteIgnore]: '#d32f2f',
 }
 
-export const getReportStatusColor = (reportStatus: ReportStatus): string => {
-  return reportStatusColor[reportStatus]
+export const reportStatusProColor = {
+  [ReportStatusPro.ARepondre]: '#f57c00',
+  [ReportStatusPro.NonConsulte]: '#d32f2f',
+  [ReportStatusPro.Cloture]: '#03a9f4',
 }
 
-export const ReportStatusChip = ({
-  status,
-  elevation = 0,
-  fullWidth,
-  dense,
-  className,
-  inSelectOptions,
-}: ReportStatusChipProps) => {
-  const css = useStyles()
-  const statusLabel = useMemo(() => capitalize(status.replace('Signalement ', ''), false), [status])
+export const ReportStatusLabel = ({status, ...props}: ReportStatusLabelProps) => {
+  const {connectedUser} = useLogin()
   return (
-    <Paper
-      elevation={elevation}
-      aria-label="Statut du signalement"
-      className={classes(
-        className,
-        css.root,
-        elevation === 0 && css.border,
-        inSelectOptions && css.inSelectOptions,
-        dense && css.dense,
-        fullWidth && css.fullWidth,
-      )}
-      style={{background: reportStatusColor[status]}}
-    >
-      {statusLabel}
-    </Paper>
+    connectedUser.isPro ? (
+      <ReportStatusProLabel status={Report.getStatusProByStatus(status)} {...props}/>
+    ) : (
+      <ReportStatusAdminLabel status={status} {...props}/>
+    )
+  )
+}
+
+export const ReportStatusAdminLabel = ({status, style, ...props}: ReportStatusLabelProps) => {
+  const {m} = useI18n()
+  return (
+    <Label {...props} style={{color: 'white', background: reportStatusColor[status], ...style}}>
+      {m.reportStatusShort[status]}
+    </Label>
+  )
+}
+
+export const ReportStatusProLabel = ({status, style, ...props}: ReportStatusProLabelProps) => {
+  const {m} = useI18n()
+  return (
+    <Label {...props} style={{color: 'white', background: reportStatusProColor[status], ...style}}>
+      {m.reportStatusShortPro[status]}
+    </Label>
   )
 }

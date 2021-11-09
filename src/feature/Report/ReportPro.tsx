@@ -1,5 +1,5 @@
 import {useParams} from 'react-router'
-import {EventActionValues, FileOrigin, Id, ReportStatus} from '@signal-conso/signalconso-api-sdk-js'
+import {EventActionValues, FileOrigin, Id, Report} from '@signal-conso/signalconso-api-sdk-js'
 import {useI18n} from '../../core/i18n'
 import React, {useEffect, useMemo, useRef} from 'react'
 import {fromNullable} from 'fp-ts/lib/Option'
@@ -8,8 +8,8 @@ import {useToast} from '../../core/toast'
 import {Page} from '../../shared/Layout'
 import {ReportHeader} from './ReportHeader'
 import {useBoolean} from '@alexandreannic/react-hooks-lib/lib'
-import { Collapse, Theme } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
+import {Collapse, Theme} from '@mui/material'
+import makeStyles from '@mui/styles/makeStyles'
 import {ScButton} from '../../shared/Button/Button'
 import {styleUtils} from '../../core/theme'
 import {capitalize} from '../../core/helper/utils'
@@ -75,7 +75,7 @@ export const ReportPro = () => {
         .map(report => (
           <>
             <ReportHeader hideTags={true} elevated={!openAnswerPanel.value} report={report}>
-              {!response && report.status !== ReportStatus.ClosedForPro && (
+              {!response && !Report.isClosed(report.status) && (
                 <ScButton
                   style={{marginLeft: 'auto'}}
                   onClick={openResponsePanel}

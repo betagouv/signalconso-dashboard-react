@@ -15,7 +15,7 @@ import {NavLink} from 'react-router-dom'
 import {SelectDepartments} from '../../shared/SelectDepartments/SelectDepartments'
 import {Fender, IconBtn} from 'mui-extension/lib'
 import {useToast} from '../../core/toast'
-import {ReportStatusChip} from '../../shared/ReportStatus/ReportStatus'
+import {ReportStatusLabel} from '../../shared/ReportStatus/ReportStatus'
 import {config} from '../../conf/config'
 import {ReportFilters} from './ReportsFilters'
 import {siteMap} from '../../core/siteMap'
@@ -99,7 +99,7 @@ interface ReportSearchQs {
   websiteExists?: boolean
   phoneExists?: boolean
   category?: string
-  status?: string
+  status?: string[]
   details?: string
   hasCompany?: boolean
   offset: number
@@ -111,12 +111,11 @@ export const Reports = ({}) => {
   const _reports = useReportsContext()
   const cssUtils = useCssUtils()
   const css = useStyles()
-  const _stats = useStatsContext()
   const {toastError} = useToast()
   const queryString = useQueryString<Partial<ReportSearch>, Partial<ReportSearchQs>>({
     toQueryString: mapDatesToQueryString,
     fromQueryString: compose(mapDateFromQueryString, _ =>
-      mapArrayFromQuerystring(_, ['departments', 'tags', 'companyCountries', 'siretSirenList', 'activityCodes']),
+      mapArrayFromQuerystring(_, ['status', 'departments', 'tags', 'companyCountries', 'siretSirenList', 'activityCodes']),
     ),
   })
 
@@ -197,7 +196,9 @@ export const Reports = ({}) => {
                   <Icon>file_download</Icon>
                 </IconBtn>
               </ExportReportsPopper>
-              <ReportFilters filters={_reports.filters} updateFilters={_ => _reports.updateFilters(prev => ({...prev, ..._}))}>
+              <ReportFilters filters={_reports.filters} updateFilters={_ => {
+                _reports.updateFilters(prev => ({...prev, ..._}))
+              }}>
                 <Tooltip title={m.advancedFilters}>
                   <IconBtn color="primary">
                     <Icon>filter_list</Icon>
@@ -297,7 +298,7 @@ export const Reports = ({}) => {
             {
               id: 'status',
               head: m.status,
-              render: _ => <ReportStatusChip dense status={_.report.status} />,
+              render: _ => <ReportStatusLabel dense status={_.report.status} />,
             },
             {
               id: 'file',

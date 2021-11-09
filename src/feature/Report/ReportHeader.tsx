@@ -1,9 +1,9 @@
 import {Panel, PanelBody} from '../../shared/Panel'
-import {ReportStatusChip} from '../../shared/ReportStatus/ReportStatus'
+import {ReportStatusLabel, ReportStatusProLabel} from '../../shared/ReportStatus/ReportStatus'
 import {Alert} from 'mui-extension/lib'
 import {ReportCategories} from './ReportCategories'
-import { Icon, Theme } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
+import {Icon, Theme} from '@mui/material'
+import makeStyles from '@mui/styles/makeStyles'
 import {Report} from '@signal-conso/signalconso-api-sdk-js'
 import {PanelFoot} from '../../shared/Panel/PanelFoot'
 import {ScChip} from '../../shared/Chip/ScChip'
@@ -11,6 +11,7 @@ import React, {ReactNode} from 'react'
 import {styleUtils} from '../../core/theme'
 import {useCssUtils} from '../../core/helper/useCssUtils'
 import {useI18n} from '../../core/i18n'
+import {useLogin} from '../../core/context/LoginContext'
 
 const useStyles = makeStyles((t: Theme) => ({
   root: {
@@ -45,6 +46,7 @@ export const ReportHeader = ({hideTags, hideSiret, report, children, elevated}: 
   const css = useStyles()
   const cssUtils = useCssUtils()
   const {m} = useI18n()
+  const {connectedUser} = useLogin()
 
   return (
     <Panel elevation={elevated ? 3 : 0} className={css.root}>
@@ -63,7 +65,7 @@ export const ReportHeader = ({hideTags, hideSiret, report, children, elevated}: 
             {!hideSiret && <div className={cssUtils.colorTxtHint}>{report.companyName}</div>}
             <div className={cssUtils.colorTxtHint}>ID {report.id}</div>
           </div>
-          <ReportStatusChip className={cssUtils.marginLeftAuto} status={report.status} />
+          <ReportStatusLabel className={cssUtils.marginLeftAuto} status={report.status}/>
         </div>
         <Alert id="report-info" dense type="info" deletable persistentDelete className={cssUtils.marginBottom2}>
           {m.reportCategoriesAreSelectByConsumer}
