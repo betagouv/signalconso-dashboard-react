@@ -9,19 +9,8 @@ import {HorizontalBarChart} from '../../shared/HorizontalBarChart/HorizontalBarC
 import {reportStatusColor} from '../../shared/ReportStatus/ReportStatus'
 import {useI18n} from '../../core/i18n'
 import {Enum} from '@alexandreannic/ts-utils/lib/common/enum/Enum'
-import {
-  Divider,
-  Grid,
-  Icon,
-  LinearProgress,
-  List,
-  ListItem,
-  ListItemIcon,
-  ListItemText,
-  Theme,
-  Tooltip,
-} from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
+import {Divider, Grid, Icon, LinearProgress, List, ListItem, ListItemIcon, ListItemText, Skeleton, Theme, Tooltip} from '@mui/material'
+import makeStyles from '@mui/styles/makeStyles'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
 import {CompanyReportsCountPanel} from './CompanyReportsCountPanel'
 import {useMemoFn} from '../../shared/hooks/UseMemoFn'
@@ -41,7 +30,6 @@ import {AddressComponent} from '../../shared/Address/Address'
 import {useReportsContext} from '../../core/context/ReportsContext'
 import {ReportsShortList} from './ReportsShortList'
 import {styleUtils} from '../../core/theme'
-import { Skeleton } from '@mui/material';
 import {useStatsContext} from '../../core/context/StatsContext'
 
 const useStyles = makeStyles((t: Theme) => ({
@@ -182,22 +170,22 @@ export const CompanyComponent = () => {
             </Grid>
             <Grid item xs={12} sm={6} md={3}>
               <Widget title={m.avgResponseTime}>
-                {fromNullable(_stats.responseDelay.entity)
-                  .map(_ => (
-                    <WidgetValue>
+                {_stats.responseDelay.loading ? (
+                  <WidgetLoading/>
+                ) : (
+                  <WidgetValue>
                       <span>
-                        {_.toDays}&nbsp;
+                        {_stats.responseDelay.entity ? _stats.responseDelay.entity.toDays : '∞'}&nbsp;
                         <Txt size="big">{m.days}</Txt>
                         &nbsp;
-                        <Tooltip title={m.avgResponseTimeDesc}>
+                        <Tooltip title={_stats.responseDelay.entity ? m.avgResponseTimeDesc : m.avgResponseTimeDescNoData}>
                           <Icon className={cssUtils.colorTxtHint} fontSize="medium">
                             help
                           </Icon>
                         </Tooltip>
                       </span>
-                    </WidgetValue>
-                  ))
-                  .getOrElse(<WidgetLoading />)}
+                  </WidgetValue>
+                )}
               </Widget>
             </Grid>
             <Grid item xs={12} sm={6} md={3}>
