@@ -110,6 +110,7 @@ export const messagesFr = {
   days: `jours`,
   avgResponseTime: `Temps de réponse moyen`,
   avgResponseTimeDesc: `Sur les signalements ayant obtenu une réponse.`,
+  avgResponseTimeDescNoData: `Aucun signalement n'a obtenu de réponse pour le moment`,
   selectedPeriod: 'Période sélectionnée',
   department: 'Département',
   companyRegistered: 'Entreprise enregistrée',
