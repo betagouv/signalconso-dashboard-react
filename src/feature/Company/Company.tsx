@@ -30,7 +30,7 @@ import {AddressComponent} from '../../shared/Address/Address'
 import {useReportsContext} from '../../core/context/ReportsContext'
 import {ReportsShortList} from './ReportsShortList'
 import {styleUtils} from '../../core/theme'
-import {useStatsContext} from '../../core/context/StatsContext'
+import {useCompanyStats} from './useCompanyStats'
 
 const useStyles = makeStyles((t: Theme) => ({
   reviews: {
@@ -72,7 +72,7 @@ export const CompanyComponent = () => {
   const {id} = useParams<{id: Id}>()
   const {m, formatDate, formatLargeNumber} = useI18n()
   const _company = useCompaniesContext()
-  const _stats = useStatsContext()
+  const _stats = useCompanyStats(id)
   const _event = useEventContext()
   const _accesses = useFetcher((siret: string) => apiSdk.secured.companyAccess.fetch(siret))
   const _report = useReportsContext()
@@ -85,8 +85,8 @@ export const CompanyComponent = () => {
 
   const fetchCurve = (period: Period) => {
     setReportsCurvePeriod(period)
-    _stats.curve.reportCount.fetch({}, {companyId: id, ticks, tickDuration: period})
-    _stats.curve.reportRespondedCount.fetch({}, {companyId: id, ticks, tickDuration: period})
+    _stats.curve.reportCount.fetch({}, {ticks, tickDuration: period})
+    _stats.curve.reportRespondedCount.fetch({}, {ticks, tickDuration: period})
   }
 
   const reportsCurves = useMemo(() => {
@@ -106,10 +106,10 @@ export const CompanyComponent = () => {
     _company.hosts.fetch({}, id)
     _company.responseRate.fetch({}, id)
     fetchCurve('Month')
-    _stats.tags.fetch({}, id)
-    _stats.status.fetch({}, id)
-    _stats.responseReviews.fetch({}, id)
-    _stats.responseDelay.fetch({}, id)
+    _stats.tags.fetch()
+    _stats.status.fetch()
+    _stats.responseReviews.fetch()
+    _stats.responseDelay.fetch()
   }, [])
 
   useEffectFn(_company.byId.error, toastError)

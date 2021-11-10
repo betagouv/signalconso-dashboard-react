@@ -48,7 +48,6 @@ import {ActivateNewCompany} from './feature/ActivateNewCompany/ActivateNewCompan
 import {ModeEmploiDGCCRF} from './feature/ModeEmploiDGCCRF/ModeEmploiDGCCRF'
 import {ConsumerReview} from './feature/ConsumerReview/ConsumerReview'
 import {CompanyComponent} from './feature/Company/Company'
-import {StatsProvider} from './core/context/StatsContext'
 import {CompaniesDbSyncProvider} from './core/context/CompaniesDbSyncContext'
 import {EventProvider} from './core/context/EventContext'
 import {CompaniesDbSync} from './feature/CompaniesDbSync/CompaniesDbSync'
@@ -209,7 +208,6 @@ const AppLogged = () => {
         _ => <SubscriptionsProvider api={apiSdk} children={_} />,
         _ => <AccessesProvider api={apiSdk} children={_} />,
         _ => <BlockedReportNotificationProvider api={apiSdk} children={_} />,
-        _ => <StatsProvider api={apiSdk} children={_} />,
         _ => <CompaniesDbSyncProvider api={apiSdk} children={_} />,
         _ => <EventProvider api={apiSdk} children={_} />,
       ]}
