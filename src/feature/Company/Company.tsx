@@ -1,9 +1,9 @@
 import * as React from 'react'
-import {useEffect, useMemo, useState} from 'react'
+import {useEffect, useState} from 'react'
 import {Page, PageTitle} from 'shared/Layout'
 import {useCompaniesContext} from '../../core/context/CompaniesContext'
 import {useParams} from 'react-router'
-import {EventActionValues, Id, Period} from '@signal-conso/signalconso-api-sdk-js'
+import {CountByDate, EventActionValues, Id, Period} from '@signal-conso/signalconso-api-sdk-js'
 import {Panel, PanelBody, PanelHead} from '../../shared/Panel'
 import {HorizontalBarChart} from '../../shared/HorizontalBarChart/HorizontalBarChart'
 import {reportStatusColor} from '../../shared/ReportStatus/ReportStatus'
@@ -12,7 +12,6 @@ import {Enum} from '@alexandreannic/ts-utils/lib/common/enum/Enum'
 import {Divider, Grid, Icon, LinearProgress, List, ListItem, ListItemIcon, ListItemText, Skeleton, Theme, Tooltip} from '@mui/material'
 import makeStyles from '@mui/styles/makeStyles'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
-import {CompanyReportsCountPanel} from './CompanyReportsCountPanel'
 import {useMemoFn} from '../../shared/hooks/UseMemoFn'
 import {useEventContext} from '../../core/context/EventContext'
 import {useEffectFn} from '../../shared/hooks/UseEffectFn'
@@ -31,6 +30,9 @@ import {useReportsContext} from '../../core/context/ReportsContext'
 import {ReportsShortList} from './ReportsShortList'
 import {styleUtils} from '../../core/theme'
 import {useCompanyStats} from './useCompanyStats'
+import {NavLink} from 'react-router-dom'
+import {ScLineChart} from '../../shared/Chart/Chart'
+import {messagesFr} from '../../core/i18n/messages/messages.fr'
 
 const useStyles = makeStyles((t: Theme) => ({
   reviews: {
@@ -64,9 +66,19 @@ const useStyles = makeStyles((t: Theme) => ({
     color: t.palette.text.disabled,
     marginLeft: t.spacing(1),
   },
+  btnPeriodActive: {
+    background: alpha(t.palette.primary.main, 0.14),
+  },
 }))
 
 const ticks = 7
+
+const periods: Period[] = ['Day', 'Month']
+
+const formatCurveDate = (m: typeof messagesFr) => ({date, count}: CountByDate): {date: string, count: number} => ({
+  date: (m.monthShort_ as any)[date.getMonth() + 1],
+  count,
+})
 
 export const CompanyComponent = () => {
   const {id} = useParams<{id: Id}>()
@@ -88,18 +100,6 @@ export const CompanyComponent = () => {
     _stats.curve.reportCount.fetch({}, {ticks, tickDuration: period})
     _stats.curve.reportRespondedCount.fetch({}, {ticks, tickDuration: period})
   }
-
-  const reportsCurves = useMemo(() => {
-    const reportsResponded = _stats.curve.reportRespondedCount.entity
-    const reports = _stats.curve.reportCount.entity
-    if (reportsResponded && reports) {
-      return reports.map(_ => ({
-        date: _.date,
-        count: _.count,
-        countResponded: reportsResponded.find(_1 => _1.date.getTime() - _.date.getTime() === 0)?.count ?? -1,
-      }))
-    }
-  }, [_stats.curve.reportCount, _stats.curve.reportRespondedCount])
 
   useEffect(() => {
     _company.byId.fetch({}, id)
@@ -199,21 +199,55 @@ export const CompanyComponent = () => {
               <Widget title={m.accountsActivated} loading={_accesses.loading} to={siteMap.logged.companyAccesses(company.siret)}>
                 {fromNullable(_accesses.entity)
                   .map(_ => <WidgetValue>{_.length}</WidgetValue>)
-                  .getOrElse(<WidgetLoading />)}
+                  .getOrElse(<WidgetLoading/>)}
               </Widget>
             </Grid>
           </Grid>
-          <CompanyReportsCountPanel
-            period={reportsCurvePeriod}
-            data={reportsCurves} onChange={period => fetchCurve(period)}
-            total={company.count}
-          />
+          <Panel loading={_stats.curve.reportCount.loading || _stats.curve.reportRespondedCount.loading}>
+            <PanelHead
+              action={
+                <ButtonGroup color="primary">
+                  {periods.map(p => (
+                    <Button key={p} className={classes(p === reportsCurvePeriod && css.btnPeriodActive)} onClick={() => fetchCurve(p)}>
+                      {p === 'Day' ? m.day : m.month}
+                    </Button>
+                  ))}
+                </ButtonGroup>
+              }
+            >
+              {company.count && formatLargeNumber(company.count)}
+              &nbsp;
+              {m.reports.toLocaleLowerCase()}
+              <NavLink to={siteMap.logged.reports()}>
+                <IconButton size={'small'} className={classes(cssUtils.colorTxtHint, cssUtils.marginLeft)}>
+                  <Icon>open_in_new</Icon>
+                </IconButton>
+              </NavLink>
+            </PanelHead>
+            <PanelBody>
+              {_stats.curve.reportCount.entity && _stats.curve.reportRespondedCount.entity && (
+                <ScLineChart curves={[
+                  {
+                    label: m.reportsCount,
+                    key: 'count',
+                    curve: _stats.curve.reportCount.entity.map(formatCurveDate(m)),
+                  },
+                  {
+                    label: m.responsesCount,
+                    key: 'countResponded',
+                    curve: _stats.curve.reportRespondedCount.entity.map(formatCurveDate(m)),
+                  },
+                ]}/>
+              )}
+            </PanelBody>
+          </Panel>
+
           <Grid container spacing={2}>
             <Grid item sm={12} md={7}>
               <Panel>
                 <PanelHead>{m.status}</PanelHead>
                 <PanelBody>
-                  <HorizontalBarChart data={statusDistribution} grid />
+                  <HorizontalBarChart data={statusDistribution} grid/>
                 </PanelBody>
               </Panel>
               <Panel>
