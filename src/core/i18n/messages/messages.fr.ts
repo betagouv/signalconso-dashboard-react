@@ -147,6 +147,7 @@ export const messagesFr = {
   problem: 'Problème',
   creation: 'Création',
   creationDate: 'Date de création',
+  reportsDivision: 'Répartition des signalements',
   reportsCount: 'Nombre de signalements',
   reportsCountInternet: 'Nombre de signalements internet',
   reportsCountDemarchage: 'Nombre de signalements démarchage',

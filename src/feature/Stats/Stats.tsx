@@ -1,10 +1,10 @@
-import {Page} from 'shared/Layout'
+import {Page, PageTitle} from 'shared/Layout'
 import * as React from 'react'
 import {useEffect, useMemo} from 'react'
 import {CountByDate, CurveStatsParams, Period, ReportTag} from '@signal-conso/signalconso-api-sdk-js'
 import {useLogin} from '../../core/context/LoginContext'
 import {useFetcher} from '@alexandreannic/react-hooks-lib/lib'
-import {Panel, PanelBody} from '../../shared/Panel'
+import {Panel, PanelBody, PanelHead} from '../../shared/Panel'
 import {messagesFr} from '../../core/i18n/messages/messages.fr'
 import {useI18n} from '../../core/i18n'
 import {ScLineChart} from '../../shared/Chart/Chart'
@@ -54,19 +54,22 @@ export const Stats = () => {
 
   return (
     <Page>
-      <Panel>
-        {reportCountCurve.entity && reportInternetCountCurve.entity && reportDemarchageCountCurve.entity && (
-          <PanelBody style={{height: 300}}>
+      <PageTitle>{m.menu_stats}</PageTitle>
+      <Panel loading={
+        reportCountCurve.loading || reportInternetCountCurve.loading || reportDemarchageCountCurve.loading
+      }>
+        <PanelHead>{m.reportsDivision}</PanelHead>
+        <PanelBody>
+          {reportCountCurve.entity && reportInternetCountCurve.entity && reportDemarchageCountCurve.entity && (
             <ScLineChart curves={[
               {label: m.reportsCount, key: 'all', curve: reportCountCurve.entity.map(formatCurveDate(m))},
               {label: m.reportsCountInternet, key: 'internet', curve: reportInternetCountCurve.entity.map(formatCurveDate(m))},
               {label: m.reportsCountDemarchage, key: 'demarchage', curve: reportDemarchageCountCurve.entity.map(formatCurveDate(m))},
               {label: m.reportsCountPhysique, key: 'physique', curve: curvePhysique.map(formatCurveDate(m))},
             ]}/>
-          </PanelBody>
-        )}
+          )}
+        </PanelBody>
       </Panel>
-
     </Page>
   )
 }
