@@ -21,7 +21,7 @@ const useStyles = makeStyles((t: Theme) => ({
 
 interface Props extends React.HTMLAttributes<HTMLDivElement> {
   className?: any
-  children: ReactNode
+  children?: ReactNode
 }
 
 export const PanelBody = ({className, children, ...other}: Props) => {

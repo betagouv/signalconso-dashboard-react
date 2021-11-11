@@ -48,12 +48,12 @@ import {ActivateNewCompany} from './feature/ActivateNewCompany/ActivateNewCompan
 import {ModeEmploiDGCCRF} from './feature/ModeEmploiDGCCRF/ModeEmploiDGCCRF'
 import {ConsumerReview} from './feature/ConsumerReview/ConsumerReview'
 import {CompanyComponent} from './feature/Company/Company'
-import {StatsProvider} from './core/context/StatsContext'
 import {CompaniesDbSyncProvider} from './core/context/CompaniesDbSyncContext'
 import {EventProvider} from './core/context/EventContext'
 import {CompaniesDbSync} from './feature/CompaniesDbSync/CompaniesDbSync'
 import {Matomo} from './core/plugins/Matomo'
 import {apiPublicSdk, makeSecuredSdk, SignalConsoApiSdk} from './core/ApiSdkInstance'
+import {Stats} from './feature/Stats/Stats'
 
 const useStyles = makeStyles((t: Theme) => ({
   '@global': {
@@ -208,7 +208,6 @@ const AppLogged = () => {
         _ => <SubscriptionsProvider api={apiSdk} children={_} />,
         _ => <AccessesProvider api={apiSdk} children={_} />,
         _ => <BlockedReportNotificationProvider api={apiSdk} children={_} />,
-        _ => <StatsProvider api={apiSdk} children={_} />,
         _ => <CompaniesDbSyncProvider api={apiSdk} children={_} />,
         _ => <EventProvider api={apiSdk} children={_} />,
       ]}
@@ -227,6 +226,7 @@ const AppLogged = () => {
         <Route path={siteMap.logged.settings} component={Settings} />
         <Route path={siteMap.logged.modeEmploiDGCCRF} component={ModeEmploiDGCCRF} />
         <Route path={siteMap.logged.companiesDbSync} component={CompaniesDbSync} />
+        <Route path={siteMap.logged.stats} component={Stats} />
         <Route path={siteMap.loggedout.register} component={ActivateNewCompany} />
         <Redirect from="/" to={siteMap.logged.reports()} />
       </Switch>
