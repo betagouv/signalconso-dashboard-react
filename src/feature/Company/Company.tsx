@@ -9,7 +9,7 @@ import {HorizontalBarChart} from '../../shared/HorizontalBarChart/HorizontalBarC
 import {reportStatusColor} from '../../shared/ReportStatus/ReportStatus'
 import {useI18n} from '../../core/i18n'
 import {Enum} from '@alexandreannic/ts-utils/lib/common/enum/Enum'
-import {Divider, Grid, Icon, LinearProgress, List, ListItem, ListItemIcon, ListItemText, Skeleton, Theme, Tooltip} from '@mui/material'
+import {alpha, Button, ButtonGroup, Divider, Grid, Icon, IconButton, LinearProgress, List, ListItem, ListItemIcon, ListItemText, Skeleton, Theme, Tooltip} from '@mui/material'
 import makeStyles from '@mui/styles/makeStyles'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
 import {useMemoFn} from '../../shared/hooks/UseMemoFn'
