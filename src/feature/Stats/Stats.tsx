@@ -22,6 +22,7 @@ export const Stats = () => {
   const {apiSdk: api} = useLogin()
   const {m} = useI18n()
   const reportCountCurve = useFetcher(api.public.stats.getReportCountCurve)
+  const getReportedActiveProAccountRate = useFetcher(api.secured.stats.getReportedActiveProAccountRate)
   const reportInternetCountCurve = useFetcher((_: CurveStatsParams) =>
     api.public.stats.getReportCountCurve({..._, tags: [ReportTag.Internet]}),
   )
@@ -33,6 +34,7 @@ export const Stats = () => {
     reportCountCurve.fetch({}, {ticks, tickDuration: period})
     reportInternetCountCurve.fetch({}, {ticks, tickDuration: period})
     reportDemarchageCountCurve.fetch({}, {ticks, tickDuration: period})
+    getReportedActiveProAccountRate.fetch({}, {ticks})
   }
 
   const curvePhysique = useMemo(() => {
@@ -56,7 +58,7 @@ export const Stats = () => {
     <Page>
       <PageTitle>{m.menu_stats}</PageTitle>
       <Panel loading={
-        reportCountCurve.loading || reportInternetCountCurve.loading || reportDemarchageCountCurve.loading
+        reportCountCurve.loading || reportInternetCountCurve.loading || reportDemarchageCountCurve.loading || getReportedActiveProAccountRate.loading
       }>
         <PanelHead>{m.reportsDivision}</PanelHead>
         <PanelBody>
@@ -69,6 +71,15 @@ export const Stats = () => {
             ]}/>
           )}
         </PanelBody>
+        <PanelHead>{m.proUser}</PanelHead>
+        <PanelBody>
+          {getReportedActiveProAccountRate.entity && (
+              <ScLineChart curves={[
+                {label: m.reportsProUserAccountRate, key: 'pro', curve: getReportedActiveProAccountRate.entity.map(formatCurveDate(m))}
+              ]}/>
+          )}
+        </PanelBody>
+
       </Panel>
     </Page>
   )
