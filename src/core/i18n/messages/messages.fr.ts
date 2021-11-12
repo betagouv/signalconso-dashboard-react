@@ -148,6 +148,8 @@ export const messagesFr = {
   creation: 'Création',
   creationDate: 'Date de création',
   reportsDivision: 'Répartition des signalements',
+  proUser: 'Utilisateurs Professionnels',
+  reportsProUserAccountRate: '% entreprises signalées avec un compte activé',
   reportsCount: 'Nombre de signalements',
   reportsCountInternet: 'Nombre de signalements internet',
   reportsCountDemarchage: 'Nombre de signalements démarchage',
