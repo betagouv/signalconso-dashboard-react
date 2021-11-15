@@ -28,7 +28,6 @@ import compose from '../../core/helper/compose'
 import {DebouncedInput} from '../../shared/DebouncedInput/DebouncedInput'
 import {ReportDetailValues} from '../../shared/ReportDetailValues/ReportDetailValues'
 import {styleUtils} from '../../core/theme'
-import {useStatsContext} from '../../core/context/StatsContext'
 
 const useStyles = makeStyles((t: Theme) => ({
   toolbar: {},

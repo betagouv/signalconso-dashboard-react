@@ -22,6 +22,7 @@ export const siteMap = {
     settings: `/parametres`,
     modeEmploiDGCCRF: `/mode-emploi-dgccrf`,
     companiesDbSync: `/companies-db-sync`,
+    stats: `/stats`,
   },
   loggedout: {
     activatePro: (siret: string = `:siret`) => `/entreprise/rejoindre/${siret}`,
