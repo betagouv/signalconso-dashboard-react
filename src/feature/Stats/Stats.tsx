@@ -23,6 +23,12 @@ export const Stats = () => {
   const {m} = useI18n()
   const reportCountCurve = useFetcher(api.public.stats.getReportCountCurve)
   const getReportedActiveProAccountRate = useFetcher(api.secured.stats.getReportedActiveProAccountRate)
+
+  const getDgccrfActiveAccount = useFetcher(api.secured.stats.getActiveDgccrfAccountCurve)
+  const getDgccrfAccount = useFetcher(api.secured.stats.getDgccrfAccountCurve)
+  const getDgccrfControlsCurve = useFetcher(api.secured.stats.getDgccrfControlsCurve)
+  const getDgccrfSubscriptionsCurve = useFetcher(api.secured.stats.getDgccrfSubscriptionsCurve)
+
   const reportInternetCountCurve = useFetcher((_: CurveStatsParams) =>
     api.public.stats.getReportCountCurve({..._, tags: [ReportTag.Internet]}),
   )
@@ -35,6 +41,10 @@ export const Stats = () => {
     reportInternetCountCurve.fetch({}, {ticks, tickDuration: period})
     reportDemarchageCountCurve.fetch({}, {ticks, tickDuration: period})
     getReportedActiveProAccountRate.fetch({}, {ticks})
+    getDgccrfActiveAccount.fetch({}, {ticks})
+    getDgccrfAccount.fetch({}, {ticks})
+    getDgccrfControlsCurve.fetch({}, {ticks})
+    getDgccrfSubscriptionsCurve.fetch({}, {ticks})
   }
 
   const curvePhysique = useMemo(() => {
@@ -58,10 +68,17 @@ export const Stats = () => {
     <Page>
       <PageTitle>{m.menu_stats}</PageTitle>
       <Panel loading={
-        reportCountCurve.loading || reportInternetCountCurve.loading || reportDemarchageCountCurve.loading || getReportedActiveProAccountRate.loading
+        reportCountCurve.loading
+        || reportInternetCountCurve.loading
+        || reportDemarchageCountCurve.loading
+        || getReportedActiveProAccountRate.loading
+        || getDgccrfActiveAccount.loading
+        || getDgccrfAccount.loading
+        || getDgccrfControlsCurve.loading
+        || getDgccrfSubscriptionsCurve.loading
       }>
         <PanelHead>{m.reportsDivision}</PanelHead>
-        <PanelBody>
+        <PanelBody >
           {reportCountCurve.entity && reportInternetCountCurve.entity && reportDemarchageCountCurve.entity && (
             <ScLineChart curves={[
               {label: m.reportsCount, key: 'all', curve: reportCountCurve.entity.map(formatCurveDate(m))},
@@ -79,7 +96,24 @@ export const Stats = () => {
               ]}/>
           )}
         </PanelBody>
-
+        <PanelHead>{m.dgccrfUser}</PanelHead>
+        <PanelBody>
+          {getDgccrfActiveAccount.entity && getDgccrfAccount.entity && (
+              <ScLineChart curves={[
+                {label: m.dgccrfCountActiveAccount, key: 'dgccrfActiveAccount', curve: getDgccrfActiveAccount.entity.map(formatCurveDate(m))},
+                {label: m.dgccrfCountAccount, key: 'dgccrfAccount', curve: getDgccrfAccount.entity.map(formatCurveDate(m))}
+              ]}/>
+          )}
+        </PanelBody>
+        <PanelHead>{m.dgccrfActions}</PanelHead>
+        <PanelBody>
+          {getDgccrfSubscriptionsCurve.entity && getDgccrfControlsCurve.entity && (
+              <ScLineChart curves={[
+                {label: m.dgccrfSubscriptionsCurve, key: 'getDgccrfSubscriptionsCurve', curve: getDgccrfSubscriptionsCurve.entity.map(formatCurveDate(m))},
+                {label: m.dgccrfControlsCurve, key: 'getDgccrfControlsCurve', curve: getDgccrfControlsCurve.entity.map(formatCurveDate(m))}
+              ]}/>
+          )}
+        </PanelBody>
       </Panel>
     </Page>
   )
