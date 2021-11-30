@@ -1,4 +1,4 @@
-import {Checkbox, Chip, Dialog, DialogActions, DialogContent, DialogTitle, FormControlLabel, MenuItem, Radio, RadioGroup, Theme} from '@mui/material'
+import {Checkbox, Chip, Dialog, DialogActions, DialogContent, DialogTitle, MenuItem, Theme} from '@mui/material'
 import makeStyles from '@mui/styles/makeStyles'
 import {useI18n} from '../../core/i18n'
 import React, {ReactElement, ReactNode, useEffect, useState} from 'react'
@@ -9,9 +9,11 @@ import {ReportStatusLabel} from '../../shared/ReportStatus/ReportStatus'
 import {Btn} from 'mui-extension/lib'
 import {ScInput} from '../../shared/Input/ScInput'
 import {useAnomalyContext} from '../../core/context/AnomalyContext'
-import {SelectCountries} from '../../shared/SelectCountries/SelectCountries'
 import Autocomplete from '@mui/lab/Autocomplete/Autocomplete'
 import {Enum} from '@alexandreannic/ts-utils/lib/common/enum/Enum'
+import {TrueFalseUndefined} from '../../shared/TrueFalseUndefined/TrueFalseUndefined'
+import {useCssUtils} from '../../core/helper/useCssUtils'
+import {SelectCountries} from '../../shared/SelectCountries/SelectCountries'
 import {SelectActivityCode} from '../../shared/SelectActivityCode/SelectActivityCode'
 
 export interface ReportsFiltersProps {
@@ -22,25 +24,34 @@ export interface ReportsFiltersProps {
 
 export interface RowProps {
   label: string | ReactNode
-  children: any
+  children: ReactNode
 }
 
-const useRowStyles = makeStyles((t: Theme) => ({
-  root: {
-    display: 'flex',
-    alignItems: 'center',
-  },
-  label: {
-    color: t.palette.text.secondary,
-    minWidth: 160,
-  },
-  content: {
-    flex: 1,
-    overflow: 'hidden',
-  },
-}))
+export interface RowExtraProps {
+  children: ReactNode
+}
 
 const Row = ({label, children}: RowProps) => {
+  const useRowStyles = makeStyles((t: Theme) => ({
+    root: {
+      display: 'flex',
+      alignItems: 'flex-start',
+    },
+    label: {
+      display: 'flex',
+      alignItems: 'center',
+      minHeight: 50,
+      color: t.palette.text.secondary,
+      minWidth: 160,
+    },
+    content: {
+      maxWidth: 240,
+      width: '100%',
+      minHeight: 50,
+      flex: 1,
+      overflow: 'hidden',
+    },
+  }))
   const css = useRowStyles()
   return (
     <div className={css.root}>
@@ -50,14 +61,51 @@ const Row = ({label, children}: RowProps) => {
   )
 }
 
-export const ReportFilters = ({filters, updateFilters, children}: ReportsFiltersProps) => {
+const RowExtra = ({children}: RowExtraProps) => {
+  const useStyles = makeStyles((t: Theme) => ({
+    root: {
+      paddingBottom: t.spacing(2),
+      marginBottom: t.spacing(2),
+      borderBottom: `1px solid ${t.palette.divider}`,
+    },
+  }))
+  const css = useStyles()
+  return (
+    <div className={css.root}>
+      {children}
+    </div>
+  )
+}
+
+const useStyles = makeStyles((t: Theme) => ({
+  optionalInput: {},
+}))
+
+export const ReportFilters = ({filters, ...props}: ReportsFiltersProps) => {
+  const rationalizeFilters = (f: ReportSearch): ReportSearch => ({
+    ...f,
+    hasWebsite: f.websiteURL && f.websiteURL !== '' ? true : f.hasWebsite,
+    hasPhone: f.phone && f.phone !== '' ? true : f.hasPhone,
+    hasForeignCountry: (f.companyCountries ?? []).length > 0 ? true : f.hasForeignCountry,
+    hasCompany: (f.siretSirenList ?? []).length > 0 ? true : f.hasCompany,
+  })
+  return (
+    <ReportFiltersMapped filters={rationalizeFilters(filters)} {...props}/>
+  )
+}
+
+const ReportFiltersMapped = ({filters, updateFilters, children}: ReportsFiltersProps) => {
+  console.log('render filters:', filters)
   const {m} = useI18n()
+  const css = useStyles()
+  const cssUtils = useCssUtils()
   const {
     register,
     handleSubmit,
     control,
     reset,
     getValues,
+    watch,
     formState: {errors},
   } = useForm<ReportSearch>()
   const [open, setOpen] = useState<boolean>(false)
@@ -92,6 +140,9 @@ export const ReportFilters = ({filters, updateFilters, children}: ReportsFilters
         {_category.entity && (
           <>
             <DialogContent>
+              <Row label={m.keywords}>
+                <ScInput fullWidth {...register('details')} defaultValue={filters.details ?? ''}/>
+              </Row>
               <Row label={m.codeNaf}>
                 <Controller
                   name="activityCodes"
@@ -100,41 +151,22 @@ export const ReportFilters = ({filters, updateFilters, children}: ReportsFilters
                   render={({field}) => (
                     <SelectActivityCode
                       {...field}
-                      onChange={(e, value) => field.onChange(value)}
                       fullWidth
+                      label={m.codeNaf}
+                      onChange={(e, value) => field.onChange(value)}
                     />
                   )}
                 />
               </Row>
-              <Row label={m.website}>
-                <ScInput small fullWidth {...register('websiteURL')} defaultValue={filters.websiteURL ?? ''}/>
-              </Row>
-              <Row label={m.phone}>
-                <ScInput small fullWidth {...register('phone')} defaultValue={filters.phone ?? ''}/>
-              </Row>
-              <Row label={m.siret}>
-                <ScInput small fullWidth {...register('siretSirenList')} defaultValue={filters.siretSirenList ?? ''}/>
-              </Row>
-              <Row label={m.emailConsumer}>
-                <ScInput small fullWidth {...register('email')} defaultValue={filters.email ?? ''}/>
-              </Row>
-              <Row label={m.status}>
-                <Controller defaultValue={filters.status ?? []} name="status" control={control} render={({field}) => (
-                  <ScSelect
-                    {...field} multiple fullWidth
-                    renderValue={status => `(${status.length}) ${status.map(_ => m.reportStatusShort[_]).join(',')}`}
-                  >
-                    {Enum.values(ReportStatus).map(status => (
-                      <MenuItem key={status} value={status}>
-                        <Checkbox
-                          size="small" style={{paddingLeft: 0, paddingTop: 0, paddingBottom: 0}}
-                          checked={(getValues().status ?? []).includes(status)}
-                        />
-                        <ReportStatusLabel inSelectOptions dense fullWidth status={status}/>
-                      </MenuItem>
-                    ))}
-                  </ScSelect>
-                )}/>
+              <Row label={m.categories}>
+                <ScSelect small fullWidth {...register('category')} defaultValue={filters.category ?? []}>
+                  <MenuItem value="">&nbsp;</MenuItem>
+                  {_category?.entity.map(category => (
+                    <MenuItem key={category} value={category}>
+                      {category}
+                    </MenuItem>
+                  ))}
+                </ScSelect>
               </Row>
               <Row label={m.tags}>
                 <Controller
@@ -158,26 +190,23 @@ export const ReportFilters = ({filters, updateFilters, children}: ReportsFilters
                   )}
                 />
               </Row>
-              <Row label={m.keywords}>
-                <ScInput small fullWidth {...register('details')} defaultValue={filters.details ?? ''} />
-              </Row>
-              <Row label={m.categories}>
-                <ScSelect small fullWidth {...register('category')} defaultValue={filters.category ?? []}>
-                  <MenuItem value="">&nbsp;</MenuItem>
-                  {_category?.entity.map(category => (
-                    <MenuItem key={category} value={category}>
-                      {category}
-                    </MenuItem>
-                  ))}
-                </ScSelect>
-              </Row>
-              <Row label={m.foreignCountry}>
-                <Controller
-                  name="companyCountries"
-                  defaultValue={filters.companyCountries ?? []}
-                  control={control}
-                  render={({field}) => <SelectCountries fullWidth {...field} />}
-                />
+              <Row label={m.status}>
+                <Controller defaultValue={filters.status ?? []} name="status" control={control} render={({field}) => (
+                  <ScSelect
+                    {...field} multiple fullWidth
+                    renderValue={status => `(${status.length}) ${status.map(_ => m.reportStatusShort[_]).join(',')}`}
+                  >
+                    {Enum.values(ReportStatus).map(status => (
+                      <MenuItem key={status} value={status}>
+                        <Checkbox
+                          size="small" style={{paddingLeft: 0, paddingTop: 0, paddingBottom: 0}}
+                          checked={(getValues().status ?? []).includes(status)}
+                        />
+                        <ReportStatusLabel inSelectOptions dense fullWidth status={status}/>
+                      </MenuItem>
+                    ))}
+                  </ScSelect>
+                )}/>
               </Row>
               <Row label={m.identifiedCompany}>
                 <Controller
@@ -185,32 +214,74 @@ export const ReportFilters = ({filters, updateFilters, children}: ReportsFilters
                   defaultValue={filters.hasCompany}
                   control={control}
                   render={({field}) => (
-                    <RadioGroup
-                      {...field}
-                      style={{flexDirection: 'row'}}
-                      value={(() => {
-                        if ([true, 'true'].includes(field.value as any)) return 'true'
-                        if ([false, 'false'].includes(field.value as any)) return 'false'
-                        return ''
-                      })()}
-                      onChange={e => {
-                        const valueAsBoolean = {true: true, false: false}[e.target.value]
-                        field.onChange(valueAsBoolean)
-                      }}
-                    >
-                      <FormControlLabel control={<Radio />} label={m.yes} value="true" />
-                      <FormControlLabel control={<Radio />} label={m.no} value="false" />
-                      <FormControlLabel control={<Radio />} label={m.indifferent} value="" />
-                    </RadioGroup>
+                    <TrueFalseUndefined className={cssUtils.marginTop} {...field}/>
                   )}
                 />
+                {watch('hasCompany') === true && (
+                  <RowExtra>
+                    <ScInput className={css.optionalInput} label={m.siret} fullWidth {...register('siretSirenList')} defaultValue={filters.siretSirenList ?? ''}/>
+                  </RowExtra>
+                )}
+              </Row>
+              <Row label={m.website}>
+                <Controller
+                  name="hasWebsite"
+                  defaultValue={filters.hasWebsite}
+                  control={control}
+                  render={({field}) => (
+                    <TrueFalseUndefined className={cssUtils.marginTop} {...field}/>
+                  )}
+                />
+                {watch('hasWebsite') === true && (
+                  <RowExtra>
+                    <ScInput label={m.url} fullWidth className={css.optionalInput} {...register('websiteURL')} defaultValue={filters.websiteURL ?? ''}/>
+                  </RowExtra>
+                )}
+              </Row>
+              <Row label={m.phone}>
+                <Controller
+                  name="hasPhone"
+                  defaultValue={filters.hasPhone}
+                  control={control}
+                  render={({field}) => (
+                    <TrueFalseUndefined className={cssUtils.marginTop} {...field}/>
+                  )}
+                />
+                {watch('hasPhone') === true && (
+                  <RowExtra>
+                    <ScInput label={m.phone} fullWidth className={css.optionalInput} {...register('phone')} defaultValue={filters.phone ?? ''}/>
+                  </RowExtra>
+                )}
+              </Row>
+              <Row label={m.foreignCountry}>
+                <Controller
+                  name="hasForeignCountry"
+                  defaultValue={filters.hasForeignCountry}
+                  control={control}
+                  render={({field}) => (
+                    <TrueFalseUndefined className={cssUtils.marginTop} {...field}/>
+                  )}
+                />
+                {watch('hasForeignCountry') === true && (
+                  <RowExtra>
+                    <Controller
+                      name="companyCountries"
+                      defaultValue={filters.companyCountries ?? []}
+                      control={control}
+                      render={({field}) => <SelectCountries label={m.foreignCountry} fullWidth className={css.optionalInput} {...field} />}
+                    />
+                  </RowExtra>
+                )}
+              </Row>
+              <Row label={m.emailConsumer}>
+                <ScInput fullWidth {...register('email')} defaultValue={filters.email ?? ''}/>
               </Row>
             </DialogContent>
             <DialogActions>
               <Btn onClick={close} color="primary">
                 {m.close}
               </Btn>
-              <Btn onClick={confirm} color="primary">
+              <Btn onClick={confirm} color="primary" variant="contained">
                 {m.search}
               </Btn>
             </DialogActions>

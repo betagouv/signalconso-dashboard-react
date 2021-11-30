@@ -20,29 +20,28 @@ export const textOverflowMiddleCropping = (text: string, limit: number) => {
   return text.length > limit ? `${text.substr(0, limit / 2)}...${text.substr(text.length - limit / 2, text.length)}` : text
 }
 
-export const fromQueryString = <T = object>(qs: string): {[key in keyof T]: string | number} => {
+export const fromQueryString = <T = object>(qs: string): { [key in keyof T]: string | number } => {
   const decoded = decodeURI(qs.replace(/^\?/, '')).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g, '":"')
   const json: Index<string> = JSON.parse(`{${decoded}}`)
   return Object.entries(json).reduce(
     (acc, [key, value]) => ({...acc, [key]: Number(value) ?? value}),
-    {} as {[key in keyof T]: string | number},
+    {} as { [key in keyof T]: string | number },
   )
 }
 
 export const stopPropagation =
-  <
-    E extends {
-      preventDefault: () => void
-      stopPropagation: () => void
-    },
-  >(
+  <E extends {
+    preventDefault: () => void
+    stopPropagation: () => void
+  },
+    >(
     action: (event: E) => any,
   ) =>
-  (event: E) => {
-    event.stopPropagation()
-    event.preventDefault()
-    action(event)
-  }
+    (event: E) => {
+      event.stopPropagation()
+      event.preventDefault()
+      action(event)
+    }
 
 export const capitalize = (str?: string, othersInLowerCase = true): string | undefined =>
   fromNullable(str)
@@ -53,10 +52,10 @@ export const capitalize = (str?: string, othersInLowerCase = true): string | und
 export const classes = classNames
 
 interface FnSwitch {
-  <T extends string | number | symbol, R = any>(value: T, cases: {[key in T]: ((_: T) => R) | R}): R
+  <T extends string | number | symbol, R = any>(value: T, cases: { [key in T]: ((_: T) => R) | R }): R
   <T extends string | number | symbol, R = any>(
     value: T,
-    cases: Partial<{[key in T]: ((_: T) => R) | R}>,
+    cases: Partial<{ [key in T]: ((_: T) => R) | R }>,
     defaultCase: (_: T) => R,
   ): R
 }
@@ -73,29 +72,23 @@ export const fnSwitch: FnSwitch = (value, cases, defaultCase?) => {
   return (typeof res === 'function' ? res(value) : res) ?? (defaultCase as any)!(value)
 }
 
-export const paginateData =
-  <T>(limit: number, offset: number) =>
-  (data: T[]): Paginate<T> => {
-    return {
-      data: data.slice(offset, offset + limit),
-      totalSize: data.length,
-    }
+export const paginateData = <T>(limit: number, offset: number) => (data: T[]): Paginate<T> => {
+  return {
+    data: data.slice(offset, offset + limit),
+    totalSize: data.length,
   }
+}
 
-export const sortData =
-  <T>(sortBy: keyof T, orderBy: OrderBy) =>
-  (data: T[]): T[] => {
-    return data.sort((a, b) => ('' + a[sortBy]).localeCompare('' + b[sortBy]) * (orderBy === 'desc' ? -1 : 1))
-  }
+export const sortData = <T>(sortBy: keyof T, orderBy: OrderBy) => (data: T[]): T[] => {
+  return data.sort((a, b) => ('' + a[sortBy]).localeCompare('' + b[sortBy]) * (orderBy === 'desc' ? -1 : 1))
+}
 
-export const sortPaginatedData =
-  <T>(sortBy: keyof T, orderBy: OrderBy) =>
-  (p: Paginate<T>): Paginate<T> => {
-    return {
-      data: sortData(sortBy, orderBy)(p.data),
-      totalSize: p.totalSize,
-    }
+export const sortPaginatedData = <T>(sortBy: keyof T, orderBy: OrderBy) => (p: Paginate<T>): Paginate<T> => {
+  return {
+    data: sortData(sortBy, orderBy)(p.data),
+    totalSize: p.totalSize,
   }
+}
 
 export const siretToSiren = (siret: string) => siret.slice(0, 9)
 

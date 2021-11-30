@@ -1,16 +1,16 @@
 import {Page, PageTitle} from '../../shared/Layout'
 import {useI18n} from '../../core/i18n'
 import {useReportsContext} from '../../core/context/ReportsContext'
-import {cleanObject, getHostFromUrl, Report, ReportingDateLabel, ReportSearch, ReportSearchResult, ReportTag} from '@signal-conso/signalconso-api-sdk-js'
+import {cleanObject, getHostFromUrl, Report, ReportingDateLabel, ReportSearch, ReportTag} from '@signal-conso/signalconso-api-sdk-js'
 import {Panel} from '../../shared/Panel'
 import {useCssUtils} from '../../core/helper/useCssUtils'
 import {Datatable} from '../../shared/Datatable/Datatable'
 import {fromNullable, some} from 'fp-ts/lib/Option'
-import { alpha, Badge, Button, Grid, Icon, Theme, Tooltip } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
+import {alpha, Badge, Button, Grid, Icon, Theme, Tooltip} from '@mui/material'
+import makeStyles from '@mui/styles/makeStyles'
 import {classes, textOverflowMiddleCropping} from '../../core/helper/utils'
 import React, {useEffect, useMemo} from 'react'
-import {mapArrayFromQuerystring, mapDateFromQueryString, mapDatesToQueryString, useQueryString} from '../../core/helper/useQueryString'
+import {mapArrayFromQuerystring, mapBooleanFromQueryString, mapDateFromQueryString, mapDatesToQueryString, useQueryString} from '../../core/helper/useQueryString'
 import {NavLink} from 'react-router-dom'
 import {SelectDepartments} from '../../shared/SelectDepartments/SelectDepartments'
 import {Fender, IconBtn} from 'mui-extension/lib'
@@ -24,7 +24,6 @@ import {EntityIcon} from '../../core/EntityIcon'
 import {ScButton} from '../../shared/Button/Button'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
 import {PeriodPicker} from '../../shared/PeriodPicker/PeriodPicker'
-import compose from '../../core/helper/compose'
 import {DebouncedInput} from '../../shared/DebouncedInput/DebouncedInput'
 import {ReportDetailValues} from '../../shared/ReportDetailValues/ReportDetailValues'
 import {styleUtils} from '../../core/theme'
@@ -95,12 +94,13 @@ interface ReportSearchQs {
   email?: string
   websiteURL?: string
   phone?: string
-  websiteExists?: boolean
-  phoneExists?: boolean
   category?: string
   status?: string[]
   details?: string
+  hasWebsite?: boolean
+  hasPhone?: boolean
   hasCompany?: boolean
+  hasForeignCountry?: boolean
   offset: number
   limit: number
 }
@@ -113,9 +113,18 @@ export const Reports = ({}) => {
   const {toastError} = useToast()
   const queryString = useQueryString<Partial<ReportSearch>, Partial<ReportSearchQs>>({
     toQueryString: mapDatesToQueryString,
-    fromQueryString: compose(mapDateFromQueryString, _ =>
-      mapArrayFromQuerystring(_, ['status', 'departments', 'tags', 'companyCountries', 'siretSirenList', 'activityCodes']),
-    ),
+    fromQueryString: x => {
+      const a = mapDateFromQueryString(x)
+      const b = mapArrayFromQuerystring(a, ['status', 'departments', 'tags', 'companyCountries', 'siretSirenList', 'activityCodes'])
+      // const c = mapBooleanFromQueryString(b, ['hasWebsite'])
+      const c = mapBooleanFromQueryString(b, ['hasCompany', 'hasForeignCountry', 'hasPhone', 'hasWebsite'])
+      return c
+    },
+    // compose(
+    // mapDateFromQueryString,
+    // _ => mapArrayFromQuerystring(_, ['status', 'departments', 'tags', 'companyCountries', 'siretSirenList', 'activityCodes']),
+    // _ => mapBooleanFromQueryString(_, ['hasCompany', 'hasForeignCountry', 'hasPhone', 'hasWebsite'])
+    // ),
   })
 
   useEffect(() => {
