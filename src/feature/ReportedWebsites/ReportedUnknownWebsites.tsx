@@ -4,7 +4,6 @@ import {useCssUtils} from '../../core/helper/useCssUtils'
 import {Icon, InputBase, Tooltip} from '@mui/material'
 import {Panel} from '../../shared/Panel'
 import {Datatable} from '../../shared/Datatable/Datatable'
-import {ApiHostWithReportCount} from '@signal-conso/signalconso-api-sdk-js'
 import {DebouncedInput} from '../../shared/DebouncedInput/DebouncedInput'
 import {useUnregistredWebsiteWithCompanyContext} from '../../core/context/UnregistredWebsitesContext'
 import {useToast} from '../../core/toast'
@@ -112,6 +111,8 @@ export const ReportedUnknownWebsites = () => {
                 <NavLink
                   to={siteMap.logged.reports({
                     websiteURL: _.host,
+                    hasCompany: false,
+                    hasForeignCountry: false,
                   })}
                 >
                   <Btn size="small" color="primary" variant="outlined">

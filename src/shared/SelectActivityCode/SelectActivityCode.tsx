@@ -38,9 +38,9 @@ export const SelectActivityCode = forwardRef((props: Props, ref) => {
           multiple
           options={activityCodes}
           getOptionLabel={option => option + activities[option]}
-          renderInput={params => <ScInput {...params} label={props.label} small/>}
+          renderInput={params => <ScInput {...params} label={props.label}/>}
           renderOption={(props, option: string) => (
-            <Tooltip title={activities[option]}>
+            <Tooltip title={activities[option]} key={props.id}>
               <li {...props}>
                 <Txt bold>{option}</Txt>
                 <Txt truncate color="hint">&nbsp;-&nbsp;{activities[option]}</Txt>

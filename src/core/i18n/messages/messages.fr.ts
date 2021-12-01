@@ -113,6 +113,7 @@ export const messagesFr = {
   avgResponseTimeDescNoData: `Aucun signalement n'a obtenu de réponse pour le moment`,
   selectedPeriod: 'Période sélectionnée',
   department: 'Département',
+  url: 'URL',
   companyRegistered: 'Entreprise enregistrée',
   companyRegisteredEmailSent: "Un email vous a été envoyé avec les instructions pour accéder au compte de l'entreprise.",
   departments: 'Départements',
