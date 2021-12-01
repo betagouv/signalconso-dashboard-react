@@ -65,7 +65,7 @@ export const CompaniesRegistered = () => {
 
   const queryString = useQueryString<Partial<CompanySearch>, Partial<CompanySearchQs>>({
     toQueryString: _ => _,
-    fromQueryString: _ => mapArrayFromQuerystring(_, ['activityCodes', 'departments']),
+    fromQueryString: mapArrayFromQuerystring(['activityCodes', 'departments']),
   })
 
   useEffect(() => {

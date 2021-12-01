@@ -33,10 +33,11 @@ interface Props
     | 'placeholder'
     | 'fullWidth'
   > {
+  label?: string
   onChange: (_: string[]) => void
 }
 
-export const SelectCountries = forwardRef(({value, onChange, ...props}: Props, ref: any) => {
+export const SelectCountries = forwardRef(({value, label, onChange, ...props}: Props, ref: any) => {
   const cssUtils = useCssUtils()
   const css = useStyles()
   const {m} = useI18n()

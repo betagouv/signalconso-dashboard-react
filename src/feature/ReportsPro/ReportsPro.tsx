@@ -113,7 +113,7 @@ export const ReportsPro = () => {
 
   const queryString = useQueryString<Partial<ReportSearch>, Partial<ReportFiltersQs>>({
     toQueryString: mapDatesToQueryString,
-    fromQueryString: compose(mapDateFromQueryString, _ => mapArrayFromQuerystring(_, ['status', 'siretSirenList', 'departments'])),
+    fromQueryString: compose(mapDateFromQueryString, mapArrayFromQuerystring(['status', 'siretSirenList', 'departments'])),
   })
 
   const filtersCount = useMemo(() => {
