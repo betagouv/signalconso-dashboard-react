@@ -35,14 +35,14 @@ export const useQueryString = <E, QS extends ParsedUrlQueryInput>({
 
 const parseArray = (_?: string | string[]): string[] | undefined => (_ ? [_].flatMap(_ => _) : undefined)
 
-export const mapArrayFromQuerystring = <QS extends {[key: string]: any}>(obj: QS, arrayProperties: (keyof QS)[]): {[key: string]: any} => {
+export const mapArrayFromQuerystring = <QS extends {[key: string]: any}>(arrayProperties: (keyof QS)[]) => (obj: QS): {[key in keyof QS]: any} => {
   arrayProperties.forEach(property => {
     obj[property] = parseArray(obj[property] as any) as any
   })
   return obj as any
 }
 
-export const mapBooleanFromQueryString = <QS extends {[key: string]: any}>(obj: QS, properties: (keyof QS)[]): {[key: string]: any} => {
+export const mapBooleanFromQueryString = <QS extends {[key: string]: any}>(properties: (keyof QS)[]) => (obj: QS): {[key in keyof QS]: any} => {
   properties.forEach(property => {
     obj[property] = ({true: true, false: false})[obj[property] as unknown as string] as any
   })

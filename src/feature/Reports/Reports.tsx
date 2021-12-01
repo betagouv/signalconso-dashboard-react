@@ -27,6 +27,7 @@ import {PeriodPicker} from '../../shared/PeriodPicker/PeriodPicker'
 import {DebouncedInput} from '../../shared/DebouncedInput/DebouncedInput'
 import {ReportDetailValues} from '../../shared/ReportDetailValues/ReportDetailValues'
 import {styleUtils} from '../../core/theme'
+import compose from '../../core/helper/compose'
 
 const useStyles = makeStyles((t: Theme) => ({
   toolbar: {},
@@ -113,18 +114,11 @@ export const Reports = ({}) => {
   const {toastError} = useToast()
   const queryString = useQueryString<Partial<ReportSearch>, Partial<ReportSearchQs>>({
     toQueryString: mapDatesToQueryString,
-    fromQueryString: x => {
-      const a = mapDateFromQueryString(x)
-      const b = mapArrayFromQuerystring(a, ['status', 'departments', 'tags', 'companyCountries', 'siretSirenList', 'activityCodes'])
-      // const c = mapBooleanFromQueryString(b, ['hasWebsite'])
-      const c = mapBooleanFromQueryString(b, ['hasCompany', 'hasForeignCountry', 'hasPhone', 'hasWebsite'])
-      return c
-    },
-    // compose(
-    // mapDateFromQueryString,
-    // _ => mapArrayFromQuerystring(_, ['status', 'departments', 'tags', 'companyCountries', 'siretSirenList', 'activityCodes']),
-    // _ => mapBooleanFromQueryString(_, ['hasCompany', 'hasForeignCountry', 'hasPhone', 'hasWebsite'])
-    // ),
+    fromQueryString: compose(
+      mapDateFromQueryString,
+      mapArrayFromQuerystring(['status', 'departments', 'tags', 'companyCountries', 'siretSirenList', 'activityCodes']),
+      mapBooleanFromQueryString(['hasCompany', 'hasForeignCountry', 'hasPhone', 'hasWebsite']),
+    ),
   })
 
   useEffect(() => {
