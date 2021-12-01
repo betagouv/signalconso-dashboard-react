@@ -95,7 +95,6 @@ export const ReportFilters = ({filters, ...props}: ReportsFiltersProps) => {
 }
 
 const ReportFiltersMapped = ({filters, updateFilters, children}: ReportsFiltersProps) => {
-  console.log('render filters:', filters)
   const {m} = useI18n()
   const css = useStyles()
   const cssUtils = useCssUtils()
@@ -152,7 +151,6 @@ const ReportFiltersMapped = ({filters, updateFilters, children}: ReportsFiltersP
                     <SelectActivityCode
                       {...field}
                       fullWidth
-                      label={m.codeNaf}
                       onChange={(e, value) => field.onChange(value)}
                     />
                   )}
