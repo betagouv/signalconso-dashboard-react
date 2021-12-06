@@ -251,6 +251,11 @@ export const Reports = ({}) => {
               render: _ => _.report.companySiret,
             },
             {
+              id: 'companyCountry',
+              head: m.country,
+              render: _ => _.report.companyAddress.country,
+            },
+            {
               id: 'category',
               head: m.problem,
               className: css.tdProblem,
