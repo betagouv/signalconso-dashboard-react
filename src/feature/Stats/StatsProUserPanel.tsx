@@ -22,11 +22,11 @@ export const StatsProUserPanel = ({ticks}: Props) => {
 
   return (
     <Panel loading={reportedActiveProAccountRate.loading}>
-      <PanelHead>{m.proUser}</PanelHead>
+      <PanelHead>{m.reportsProUserInactiveAccountRate}</PanelHead>
       <PanelBody>
         {reportedActiveProAccountRate.entity && (
           <ScLineChart curves={[
-            {label: m.reportsProUserAccountRate, key: 'pro', curve: reportedActiveProAccountRate.entity.map(statsFormatCurveDate(m))},
+            {label: m.reportsProUserInactiveAccountRateDesc, key: 'pro', curve: reportedActiveProAccountRate.entity.map(statsFormatCurveDate(m))},
           ]}/>
         )}
       </PanelBody>
