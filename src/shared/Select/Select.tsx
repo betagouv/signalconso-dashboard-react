@@ -15,11 +15,12 @@ const _ScSelect = <T, >({
   className,
   small,
   fullWidth,
+  style,
   ...selectProps
 }: ScSelectProps<T>, ref: any) => {
   const id: string = useMemo(() => argId ?? 'sc-select-' + Math.floor(Math.random() * 10000), [argId])
   return (
-    <FormControl fullWidth={fullWidth} size="small" margin="dense" variant="outlined" className={className}>
+    <FormControl fullWidth={fullWidth} size="small" margin="dense" variant="outlined" className={className} style={style}>
       <InputLabel htmlFor={id} id={id + '-label'}>
         {label}
       </InputLabel>

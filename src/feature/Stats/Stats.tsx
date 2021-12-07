@@ -8,9 +8,9 @@ import {Panel, PanelBody, PanelHead} from '../../shared/Panel'
 import {messagesFr} from '../../core/i18n/messages/messages.fr'
 import {useI18n} from '../../core/i18n'
 import {ScLineChart} from '../../shared/Chart/Chart'
+import {StatsReportsByRegion} from './StatsReportsByRegion'
 
 const ticks = 12
-const period: Period = 'Month'
 
 const formatCurveDate = (m: typeof messagesFr) => ({date, count}: CountByDate): {date: string, count: number} => ({
   date: (m.monthShort_ as any)[date.getMonth() + 1],
@@ -22,12 +22,12 @@ export const Stats = () => {
   const {apiSdk: api} = useLogin()
   const {m} = useI18n()
   const reportCountCurve = useFetcher(api.public.stats.getReportCountCurve)
-  const getReportedActiveProAccountRate = useFetcher(api.secured.stats.getReportedActiveProAccountRate)
+  const reportedActiveProAccountRate = useFetcher(api.secured.stats.getReportedActiveProAccountRate)
 
-  const getDgccrfActiveAccount = useFetcher(api.secured.stats.getActiveDgccrfAccountCurve)
-  const getDgccrfAccount = useFetcher(api.secured.stats.getDgccrfAccountCurve)
-  const getDgccrfControlsCurve = useFetcher(api.secured.stats.getDgccrfControlsCurve)
-  const getDgccrfSubscriptionsCurve = useFetcher(api.secured.stats.getDgccrfSubscriptionsCurve)
+  const dgccrfActiveAccount = useFetcher(api.secured.stats.getActiveDgccrfAccountCurve)
+  const dgccrfAccount = useFetcher(api.secured.stats.getDgccrfAccountCurve)
+  const dgccrfControlsCurve = useFetcher(api.secured.stats.getDgccrfControlsCurve)
+  const dgccrfSubscriptionsCurve = useFetcher(api.secured.stats.getDgccrfSubscriptionsCurve)
 
   const reportInternetCountCurve = useFetcher((_: CurveStatsParams) =>
     api.public.stats.getReportCountCurve({..._, tags: [ReportTag.Internet]}),
@@ -40,11 +40,11 @@ export const Stats = () => {
     reportCountCurve.fetch({}, {ticks, tickDuration: period})
     reportInternetCountCurve.fetch({}, {ticks, tickDuration: period})
     reportDemarchageCountCurve.fetch({}, {ticks, tickDuration: period})
-    getReportedActiveProAccountRate.fetch({}, {ticks})
-    getDgccrfActiveAccount.fetch({}, {ticks})
-    getDgccrfAccount.fetch({}, {ticks})
-    getDgccrfControlsCurve.fetch({}, {ticks})
-    getDgccrfSubscriptionsCurve.fetch({}, {ticks})
+    reportedActiveProAccountRate.fetch({}, {ticks})
+    dgccrfActiveAccount.fetch({}, {ticks})
+    dgccrfAccount.fetch({}, {ticks})
+    dgccrfControlsCurve.fetch({}, {ticks})
+    dgccrfSubscriptionsCurve.fetch({}, {ticks})
   }
 
   const curvePhysique = useMemo(() => {
@@ -67,18 +67,10 @@ export const Stats = () => {
   return (
     <Page>
       <PageTitle>{m.menu_stats}</PageTitle>
-      <Panel loading={
-        reportCountCurve.loading
-        || reportInternetCountCurve.loading
-        || reportDemarchageCountCurve.loading
-        || getReportedActiveProAccountRate.loading
-        || getDgccrfActiveAccount.loading
-        || getDgccrfAccount.loading
-        || getDgccrfControlsCurve.loading
-        || getDgccrfSubscriptionsCurve.loading
-      }>
+
+      <Panel loading={reportCountCurve.loading || reportInternetCountCurve.loading || reportDemarchageCountCurve.loading}>
         <PanelHead>{m.reportsDivision}</PanelHead>
-        <PanelBody >
+        <PanelBody>
           {reportCountCurve.entity && reportInternetCountCurve.entity && reportDemarchageCountCurve.entity && (
             <ScLineChart curves={[
               {label: m.reportsCount, key: 'all', curve: reportCountCurve.entity.map(formatCurveDate(m))},
@@ -88,33 +80,44 @@ export const Stats = () => {
             ]}/>
           )}
         </PanelBody>
+      </Panel>
+
+      <Panel loading={reportedActiveProAccountRate.loading}>
         <PanelHead>{m.proUser}</PanelHead>
         <PanelBody>
-          {getReportedActiveProAccountRate.entity && (
-              <ScLineChart curves={[
-                {label: m.reportsProUserAccountRate, key: 'pro', curve: getReportedActiveProAccountRate.entity.map(formatCurveDate(m))}
-              ]}/>
-          )}
-        </PanelBody>
-        <PanelHead>{m.dgccrfUser}</PanelHead>
-        <PanelBody>
-          {getDgccrfActiveAccount.entity && getDgccrfAccount.entity && (
-              <ScLineChart curves={[
-                {label: m.dgccrfCountActiveAccount, key: 'dgccrfActiveAccount', curve: getDgccrfActiveAccount.entity.map(formatCurveDate(m))},
-                {label: m.dgccrfCountAccount, key: 'dgccrfAccount', curve: getDgccrfAccount.entity.map(formatCurveDate(m))}
-              ]}/>
-          )}
-        </PanelBody>
-        <PanelHead>{m.dgccrfActions}</PanelHead>
-        <PanelBody>
-          {getDgccrfSubscriptionsCurve.entity && getDgccrfControlsCurve.entity && (
-              <ScLineChart curves={[
-                {label: m.dgccrfSubscriptionsCurve, key: 'getDgccrfSubscriptionsCurve', curve: getDgccrfSubscriptionsCurve.entity.map(formatCurveDate(m))},
-                {label: m.dgccrfControlsCurve, key: 'getDgccrfControlsCurve', curve: getDgccrfControlsCurve.entity.map(formatCurveDate(m))}
-              ]}/>
+          {reportedActiveProAccountRate.entity && (
+            <ScLineChart curves={[
+              {label: m.reportsProUserAccountRate, key: 'pro', curve: reportedActiveProAccountRate.entity.map(formatCurveDate(m))},
+            ]}/>
           )}
         </PanelBody>
       </Panel>
+
+      <Panel loading={dgccrfActiveAccount.loading || dgccrfAccount.loading}>
+        <PanelHead>{m.dgccrfUser}</PanelHead>
+        <PanelBody>
+          {dgccrfActiveAccount.entity && dgccrfAccount.entity && (
+            <ScLineChart curves={[
+              {label: m.dgccrfCountActiveAccount, key: 'dgccrfActiveAccount', curve: dgccrfActiveAccount.entity.map(formatCurveDate(m))},
+              {label: m.dgccrfCountAccount, key: 'dgccrfAccount', curve: dgccrfAccount.entity.map(formatCurveDate(m))},
+            ]}/>
+          )}
+        </PanelBody>
+      </Panel>
+
+      <Panel loading={dgccrfSubscriptionsCurve.loading || dgccrfControlsCurve.loading}>
+        <PanelHead>{m.dgccrfActions}</PanelHead>
+        <PanelBody>
+          {dgccrfSubscriptionsCurve.entity && dgccrfControlsCurve.entity && (
+            <ScLineChart curves={[
+              {label: m.dgccrfSubscriptionsCurve, key: 'getDgccrfSubscriptionsCurve', curve: dgccrfSubscriptionsCurve.entity.map(formatCurveDate(m))},
+              {label: m.dgccrfControlsCurve, key: 'getDgccrfControlsCurve', curve: dgccrfControlsCurve.entity.map(formatCurveDate(m))},
+            ]}/>
+          )}
+        </PanelBody>
+      </Panel>
+
+      <StatsReportsByRegion/>
     </Page>
   )
 }
