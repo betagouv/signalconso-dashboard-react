@@ -68,7 +68,7 @@ export const StatsReportsByRegion = () => {
             <TableCell>{m.rank}</TableCell>
             <TableCell>{m.department}</TableCell>
             <TableCell>{m.reportsCount}</TableCell>
-            <TableCell>{m.reportsCount}</TableCell>
+            <TableCell>{m.positionComparedToLastMonth}</TableCell>
           </TableRow>
         </TableHead>
         {_countByDepCurrentMonth.entity && positionByDep && _constant.departmentsIndex && (

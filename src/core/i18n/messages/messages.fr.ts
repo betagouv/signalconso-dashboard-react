@@ -362,6 +362,7 @@ export const messagesFr = {
   editConsumer: 'Modifier les informations du consommateur',
   changesSaved: 'Modification enregistrée',
   selectAllDepartments: 'Tous les départements',
+  positionComparedToLastMonth: `Position vs mois précédent`,
   deleteCompanyAccess: (name: string) => `Supprimer l\'accès à ${name} ?`,
   deleteCompanyAccessToken: (email?: string) => `Annuler l'invitation  ${email ? 'à ' + email + ' ' : ''}?`,
   resetPasswordNotFound: `Le lien permettant de demander un nouveau mot de passe n'est pas valide, veuillez refaire une demande.`,
