@@ -9,6 +9,11 @@ import {useCssUtils} from '../../core/helper/useCssUtils'
 import {classes} from '../../core/helper/utils'
 import {Panel, PanelHead} from '../../shared/Panel'
 import {ScSelect} from '../../shared/Select/Select'
+import {ScButton} from '../../shared/Button/Button'
+import {siteMap} from '../../core/siteMap'
+import { NavLink } from 'react-router-dom'
+import {useEffectFn} from '../../shared/hooks/UseEffectFn'
+import {useToast} from '../../core/toast'
 
 export const StatsReportsByRegion = () => {
   const {apiSdk: api} = useLogin()
@@ -17,7 +22,7 @@ export const StatsReportsByRegion = () => {
   const currentYear = useMemo(() => new Date().getFullYear(), [])
   const cssUtils = useCssUtils()
   const _constant = useConstantContext()
-
+  const {toastError} = useToast()
   const [selectedMonth, setSelectedMonth] = useState<number>(currentMonth)
 
   const _countByDepCurrentMonth = useFetcher(api.secured.reports.getCountByDepartments)
@@ -50,8 +55,11 @@ export const StatsReportsByRegion = () => {
     }
   }, [_countByDepLastMonth.entity])
 
+  useEffectFn(_countByDepCurrentMonth.error, toastError)
+  useEffectFn(_countByDepLastMonth.error, toastError)
+
   return (
-    <Panel>
+    <Panel loading={_countByDepCurrentMonth.loading || _countByDepLastMonth.loading}>
       <PanelHead className={cssUtils.marginBottom2} action={
         <ScSelect value={selectedMonth} onChange={x => setSelectedMonth(x.target.value as number)} style={{margin: 0}}>
           {Object.entries(m.month_).map(([index, label]) =>
@@ -69,17 +77,18 @@ export const StatsReportsByRegion = () => {
             <TableCell>{m.department}</TableCell>
             <TableCell>{m.reportsCount}</TableCell>
             <TableCell>{m.positionComparedToLastMonth}</TableCell>
+            <TableCell/>
           </TableRow>
         </TableHead>
-        {_countByDepCurrentMonth.entity && positionByDep && _constant.departmentsIndex && (
+        {_countByDepCurrentMonth.entity && positionByDep && _constant.regions.entity && _constant.departmentsIndex && (
           <TableBody>
-            {_countByDepCurrentMonth.entity.slice(0, 20).map((_, i) => (
+            {_countByDepCurrentMonth.entity.slice(0, 20).map(([depNumber, count], i) => (
               <TableRow>
                 <TableCell>{i + 1}</TableCell>
-                <TableCell>{_constant.departmentsIndex![_[0]]} <span className={cssUtils.colorTxtHint}>({_[0]})</span></TableCell>
-                <TableCell>{formatLargeNumber(_[1])}</TableCell>
+                <TableCell>{_constant.departmentsIndex![depNumber]} <span className={cssUtils.colorTxtHint}>({depNumber})</span></TableCell>
+                <TableCell>{formatLargeNumber(count)}</TableCell>
                 <TableCell>{(() => {
-                  const oldPosition = positionByDep[_[0]]
+                  const oldPosition = positionByDep[depNumber]
                   if (oldPosition === i) {
                     return <span className={classes(cssUtils.txtBold, cssUtils.colorTxtHint)}>=</span>
                   } else if (oldPosition > i) {
@@ -88,6 +97,11 @@ export const StatsReportsByRegion = () => {
                     return <span className={classes(cssUtils.txtBold, cssUtils.colorSuccess)}>{oldPosition - i}</span>
                   }
                 })()}</TableCell>
+                <TableCell style={{textAlign: 'right'}}>
+                  <NavLink to={siteMap.logged.reports({departments: [depNumber],})}>
+                    <ScButton color="primary" size="small">{m.see}</ScButton>
+                  </NavLink>
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>
