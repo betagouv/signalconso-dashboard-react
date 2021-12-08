@@ -6,7 +6,7 @@ import {Panel} from '../../shared/Panel'
 import {useCssUtils} from '../../core/helper/useCssUtils'
 import {Datatable} from '../../shared/Datatable/Datatable'
 import {fromNullable, some} from 'fp-ts/lib/Option'
-import {alpha, Badge, Button, Grid, Icon, Theme, Tooltip} from '@mui/material'
+import {alpha, Badge, Button, Chip, Grid, Icon, Theme, Tooltip} from '@mui/material'
 import makeStyles from '@mui/styles/makeStyles'
 import {classes, textOverflowMiddleCropping} from '../../core/helper/utils'
 import React, {useEffect, useMemo} from 'react'
@@ -305,7 +305,20 @@ export const Reports = ({}) => {
             {
               id: 'status',
               head: m.status,
-              render: _ => <ReportStatusLabel dense status={_.report.status} />,
+              render: _ => <ReportStatusLabel dense status={_.report.status}/>,
+            },
+            {
+              id: 'tags',
+              head: m.tags,
+              render: _ => _.report.tags.map(tag =>
+                <Chip
+                  size="small"
+                  variant="outlined"
+                  label={tag}
+                  className={classes(cssUtils.colorTxtSecondary, cssUtils.txtBold)}
+                  style={{marginRight: 2}}
+                />,
+              ),
             },
             {
               id: 'file',
