@@ -1,24 +1,12 @@
-import {
-  LinearProgress,
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TablePagination,
-  TableRow,
-  TableSortLabel,
-  Theme,
-} from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
-import React, {CSSProperties, ReactNode, useEffect, useMemo} from 'react'
+import {LinearProgress, Table, TableBody, TableCell, TableHead, TablePagination, TableRow, TableSortLabel, Theme} from '@mui/material'
+import makeStyles from '@mui/styles/makeStyles'
+import React, {CSSProperties, ReactNode, useMemo} from 'react'
 import {useCssUtils} from '../../core/helper/useCssUtils'
 import {classes} from '../../core/helper/utils'
 import {DatatableColumnToggle} from './DatatableColumnsToggle'
-import {useSetState} from '@alexandreannic/react-hooks-lib/lib'
 import {useI18n} from '../../core/i18n'
 import {Fender} from 'mui-extension/lib'
 import {usePersistentState} from 'react-persistent-state/build'
-import {differenceBy, intersectionBy} from '../../core/lodashNamedExport'
 
 type OrderBy = 'asc' | 'desc'
 
@@ -43,9 +31,10 @@ export interface DatatableProps<T> {
     onPaginationChange: (_: {offset?: number; limit?: number}) => void
   }
   sort?: {
-    sortBy: string
-    orderBy: OrderBy
-    onSortChange: (_: {sortBy: string; orderBy: OrderBy}) => void
+    sortableColumns?: string[]
+    sortBy?: string
+    orderBy?: OrderBy
+    onSortChange: (_: {sortBy?: string; orderBy?: OrderBy}) => void
   }
 }
 
@@ -183,11 +172,17 @@ export const Datatable = <T extends any = any>(props: DatatableProps<T>) => {
               <TableRow>
                 {filteredColumns.map((_, i) => (
                   <TableCell key={i} className={classes(css.cellHeader, _.stickyEnd && css.stickyEnd)}>
-                    {sort ? (
+                    {sort && (sort.sortableColumns?.includes(_.id) ?? true) ? (
                       <TableSortLabel
                         active={sort.sortBy === _.id}
                         direction={sort.sortBy === _.id ? sort.orderBy : 'asc'}
-                        onClick={() => sort.onSortChange({sortBy: _.id, orderBy: sort.orderBy === 'asc' ? 'desc' : 'asc'})}
+                        onClick={() => {
+                          if (sort.sortBy === _.id && sort.orderBy === 'desc') {
+                            sort.onSortChange({sortBy: undefined, orderBy: undefined})
+                          } else {
+                            sort.onSortChange({sortBy: _.id, orderBy: sort.orderBy === 'asc' ? 'desc' : 'asc'})
+                          }
+                        }}
                       >
                         {_.head}
                       </TableSortLabel>
