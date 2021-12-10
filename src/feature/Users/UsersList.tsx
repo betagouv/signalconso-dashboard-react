@@ -1,16 +1,17 @@
 import {Panel} from '../../shared/Panel'
 import {Datatable} from '../../shared/Datatable/Datatable'
-import {User} from '@signal-conso/signalconso-api-sdk-js'
 import {useI18n} from '../../core/i18n'
 import React, {useEffect} from 'react'
 import {useUsersContext} from '../../core/context/UsersContext'
-import {subMonths} from 'date-fns'
 import {Icon, InputBase, Tooltip} from '@mui/material'
 import {useCssUtils} from '../../core/helper/useCssUtils'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
 import {fromNullable} from 'fp-ts/lib/Option'
 import {useToast} from '../../core/toast'
 import {DebouncedInput} from '../../shared/DebouncedInput/DebouncedInput'
+import {TrueFalseUndefined} from '../../shared/TrueFalseUndefined/TrueFalseUndefined'
+import {User} from '@signal-conso/signalconso-api-sdk-js'
+
 
 export const UsersList = () => {
   const {m} = useI18n()
@@ -46,6 +47,16 @@ export const UsersList = () => {
                 />
               )}
             </DebouncedInput>
+
+            <TrueFalseUndefined
+              value={_users.filters.active}
+              onChange={_ => _users.updateFilters(prev => ({...prev, active: _}))}
+              label={{
+                true: m.active,
+                false: m.inactive,
+                undefined: m.all,
+              }}
+            />
           </>
         }
         loading={_users.fetching}
@@ -55,6 +66,8 @@ export const UsersList = () => {
           offset: _users.filters.offset,
           onPaginationChange: pagination => _users.updateFilters(prev => ({...prev, ...pagination})),
         }}
+        showColumnsToggle
+        rowsPerPageOptions={[5, 10, 25, 100, ...(_users.list ? [_users.list.totalSize] : [])]}
         getRenderRowKey={_ => _.email}
         data={_users.list?.data}
         columns={[
@@ -81,7 +94,7 @@ export const UsersList = () => {
             ),
             id: 'lastEmailValidation',
             render: _ =>
-              _.lastEmailValidation.getTime() > subMonths(new Date(), 3).getTime() && (
+              User.isUserActive(_) && (
                 <Icon className={cssUtils.colorSuccess}>check_circle</Icon>
               ),
           },
