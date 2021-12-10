@@ -11,7 +11,7 @@ import {Panel, PanelHead} from '../../shared/Panel'
 import {ScSelect} from '../../shared/Select/Select'
 import {ScButton} from '../../shared/Button/Button'
 import {siteMap} from '../../core/siteMap'
-import { NavLink } from 'react-router-dom'
+import {NavLink} from 'react-router-dom'
 import {useEffectFn} from '../../shared/hooks/UseEffectFn'
 import {useToast} from '../../core/toast'
 
@@ -28,9 +28,12 @@ export const StatsReportsByRegion = () => {
   const _countByDepCurrentMonth = useFetcher(api.secured.reports.getCountByDepartments)
   const _countByDepLastMonth = useFetcher(api.secured.reports.getCountByDepartments)
 
-  const fetch = () => {
+  const selectedDateHandlingYear = useMemo(() => {
     const selectedDate = new Date(new Date().setMonth(selectedMonth))
-    const selectedDateHandlingYear = selectedMonth > currentMonth + 1 ? subYears(selectedDate, 1) : selectedDate
+    return selectedMonth > currentMonth + 1 ? subYears(selectedDate, 1) : selectedDate
+  }, [selectedMonth])
+
+  const fetch = () => {
     _countByDepCurrentMonth.fetch({clean: false}, {
       start: startOfMonth(selectedDateHandlingYear),
       end: endOfMonth(selectedDateHandlingYear),
@@ -98,7 +101,11 @@ export const StatsReportsByRegion = () => {
                   }
                 })()}</TableCell>
                 <TableCell style={{textAlign: 'right'}}>
-                  <NavLink to={siteMap.logged.reports({departments: [depNumber],})}>
+                  <NavLink to={siteMap.logged.reports({
+                    departments: [depNumber],
+                    start: startOfMonth(selectedDateHandlingYear),
+                    end: endOfMonth(selectedDateHandlingYear),
+                  })}>
                     <ScButton color="primary" size="small">{m.see}</ScButton>
                   </NavLink>
                 </TableCell>

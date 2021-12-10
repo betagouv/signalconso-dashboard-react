@@ -1,12 +1,12 @@
 import {useI18n} from '../../core/i18n'
 import {Panel} from '../../shared/Panel'
 import {Datatable} from '../../shared/Datatable/Datatable'
-import {cleanObject, Company, CompanySearch, CompanyWithReportsCount, PaginatedSearch} from '@signal-conso/signalconso-api-sdk-js'
-import React, {useEffect} from 'react'
+import {cleanObject, Company, CompanySearch, PaginatedSearch} from '@signal-conso/signalconso-api-sdk-js'
+import React, {useEffect, useMemo, useState} from 'react'
 import {useCompaniesContext} from '../../core/context/CompaniesContext'
 import {useCssUtils} from '../../core/helper/useCssUtils'
-import { Grid, Icon, Theme, Tooltip } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
+import {Grid, Icon, Theme, Tooltip} from '@mui/material'
+import makeStyles from '@mui/styles/makeStyles'
 import {NavLink} from 'react-router-dom'
 import {siteMap} from '../../core/siteMap'
 import {ScButton} from '../../shared/Button/Button'
@@ -24,6 +24,7 @@ import {useLogin} from '../../core/context/LoginContext'
 import {ClipboardApi} from '@alexandreannic/ts-utils/lib/browser/clipboard/ClipboardApi'
 import {SelectActivityCode} from '../../shared/SelectActivityCode/SelectActivityCode'
 import {ScInput} from '../../shared/Input/ScInput'
+import {classes} from '../../core/helper/utils'
 
 const useStyles = makeStyles((t: Theme) => ({
   tdName_label: {
@@ -62,6 +63,7 @@ export const CompaniesRegistered = () => {
   const css = useStyles()
   const {toastError, toastSuccess} = useToast()
   const {connectedUser} = useLogin()
+  const [sortByResponseRate, setSortByResponseRate] = useState<'asc' | 'desc' | undefined>()
 
   const queryString = useQueryString<Partial<CompanySearch>, Partial<CompanySearchQs>>({
     toQueryString: _ => _,
@@ -87,6 +89,12 @@ export const CompaniesRegistered = () => {
     ClipboardApi.copy(address.replaceAll('undefined', '').replaceAll(/[\s]{1,}/g, ' '))
     toastSuccess(m.addressCopied)
   }
+
+  const data = useMemo(() => {
+    if (sortByResponseRate && _companies.list)
+      return [..._companies.list.data].sort((a, b) => (a.responseRate - b.responseRate) * (sortByResponseRate === 'desc' ? -1 : 1))
+    return _companies.list?.data
+  }, [_companies.list?.data, sortByResponseRate])
 
   return (
     <Panel>
@@ -148,8 +156,14 @@ export const CompaniesRegistered = () => {
             </IconBtn>
           </Tooltip>
         }
+        sort={{
+          sortableColumns: ['responseRate'],
+          sortBy: sortByResponseRate ? 'responseRate' : undefined,
+          orderBy: sortByResponseRate,
+          onSortChange: _ => setSortByResponseRate(_.sortBy === 'responseRate' ? _.orderBy : undefined),
+        }}
         loading={_companies.fetching}
-        data={_companies.list?.data}
+        data={data}
         paginate={{
           offset: _companies.filters.offset,
           limit: _companies.filters.limit,
@@ -210,7 +224,11 @@ export const CompaniesRegistered = () => {
             id: 'responseRate',
             className: cssUtils.txtRight,
             render: _ =>
-                <span>{_.responseRate} % </span>
+              <span className={classes(cssUtils.txtBold, _.responseRate > 50 ?
+                cssUtils.colorSuccess : _.responseRate === 0 ?
+                  cssUtils.colorError : cssUtils.colorWarning)}>
+                  {_.responseRate} %
+              </span>
             ,
           },
           {

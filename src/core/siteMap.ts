@@ -1,4 +1,5 @@
 import {Id, ReportSearch, toQueryString} from '@signal-conso/signalconso-api-sdk-js'
+import {mapDateFromQueryString, mapDatesToQueryString} from './helper/useQueryString'
 
 export const siteMap = {
   logged: {
@@ -6,7 +7,7 @@ export const siteMap = {
     reportedWebsites_unknown: `/moderation-url-entreprises/sites-internet/non-identifies`,
     reportedWebsites_association: `/moderation-url-entreprises/site-internet`,
     reportedPhone: `/suivi-des-telephones`,
-    reports: (_?: Partial<ReportSearch>) => `/suivi-des-signalements` + (_ ? toQueryString(_) : ``),
+    reports: (_?: Partial<ReportSearch>) => `/suivi-des-signalements` + (_ ? toQueryString(mapDatesToQueryString(_)) : ``),
     subscriptions: `/abonnements`,
     report: (id: Id = `:id`) => `/suivi-des-signalements/report/${id}`,
     exports: `/mes-telechargements`,

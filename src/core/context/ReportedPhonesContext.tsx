@@ -1,7 +1,7 @@
 import * as React from 'react'
 import {ReactNode, useContext} from 'react'
 import {UseFetcher, useFetcher, UsePaginate, usePaginate} from '@alexandreannic/react-hooks-lib/lib'
-import {paginateData, sortData, sortPaginatedData} from '../helper/utils'
+import {paginateData, sortData} from '../helper/utils'
 import {SignalConsoApiSdk} from '../ApiSdkInstance'
 import {ReportedPhone, ReportedPhoneSearch} from '@signal-conso/signalconso-api-sdk-js'
 
@@ -22,7 +22,7 @@ export const ReportedPhonesProvider = ({api, children}: Props) => {
   const paginated = usePaginate<ReportedPhone, ReportedPhoneSearch>(
     search => {
       const {limit, offset, sortBy = 'count', orderBy = 'desc', ...filters} = search
-      return api.secured.reportedPhone.list(filters).then(sortData(sortBy, orderBy)).then(paginateData(limit, offset))
+      return api.secured.reportedPhone.list(filters).then(_ => sortData(_, sortBy, orderBy)).then(paginateData(limit, offset))
     },
     {limit: 10, offset: 0},
   )

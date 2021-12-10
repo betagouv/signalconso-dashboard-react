@@ -79,13 +79,13 @@ export const paginateData = <T>(limit: number, offset: number) => (data: T[]): P
   }
 }
 
-export const sortData = <T>(sortBy: keyof T, orderBy: OrderBy) => (data: T[]): T[] => {
+export const sortData = <T>(data: T[], sortBy: keyof T, orderBy: OrderBy): T[] => {
   return data.sort((a, b) => ('' + a[sortBy]).localeCompare('' + b[sortBy]) * (orderBy === 'desc' ? -1 : 1))
 }
 
 export const sortPaginatedData = <T>(sortBy: keyof T, orderBy: OrderBy) => (p: Paginate<T>): Paginate<T> => {
   return {
-    data: sortData(sortBy, orderBy)(p.data),
+    data: sortData(p.data, sortBy, orderBy),
     totalSize: p.totalSize,
   }
 }
