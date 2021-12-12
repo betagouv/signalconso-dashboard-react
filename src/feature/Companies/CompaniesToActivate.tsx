@@ -213,7 +213,7 @@ export const CompaniesToActivate = () => {
               <>
                 <Link target="_blank" to={siteMap.logged.reports({siretSirenList: [_.company.siret]})}>
                   <Tooltip title={m.reports}>
-                    <IconBtn>
+                    <IconBtn color="primary">
                       <Icon>chevron_right</Icon>
                     </IconBtn>
                   </Tooltip>
