@@ -1,5 +1,5 @@
 import * as React from 'react'
-import {CSSProperties, useEffect} from 'react'
+import {CSSProperties, forwardRef, useEffect} from 'react'
 import { Icon, InputAdornment, TextField, Theme } from '@mui/material';
 import createStyles from '@mui/styles/createStyles';
 import makeStyles from '@mui/styles/makeStyles';
@@ -26,20 +26,21 @@ export interface SelectDepartmentsProps {
   onChange: (_: string[]) => void
   className?: string
   fullWidth?: boolean
+  label?: string
 }
 
-export const SelectDepartments = ({
+export const SelectDepartments = forwardRef(({
   value,
   readonly,
   onChange,
   selectAllLabel,
+  label,
   ...props
-}: SelectDepartmentsProps) => {
+}: SelectDepartmentsProps, ref: any) => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
   let $input: HTMLElement | undefined = undefined
   const css = useStyles()
   const indexValues: UseSetState<string> = useSetState<string>()
-  const {m} = useI18n()
 
   useEffect(() => {
     indexValues.reset(value)
@@ -55,14 +56,15 @@ export const SelectDepartments = ({
     <>
       <TextField
         {...props}
+        ref={ref}
         variant="outlined"
         margin="dense"
         size="small"
         onClick={open}
         value={indexValues.toArray().join(', ') ?? ''}
         disabled={readonly}
+        label={label}
         inputRef={(n: any) => ($input = n ?? undefined)}
-        label={m.departments}
         InputProps={{
           readOnly: true,
           endAdornment: (
@@ -82,4 +84,4 @@ export const SelectDepartments = ({
       />
     </>
   )
-}
+})

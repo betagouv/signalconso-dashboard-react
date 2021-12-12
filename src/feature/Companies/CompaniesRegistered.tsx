@@ -5,7 +5,7 @@ import {cleanObject, Company, CompanySearch, PaginatedSearch} from '@signal-cons
 import React, {useEffect, useMemo, useState} from 'react'
 import {useCompaniesContext} from '../../core/context/CompaniesContext'
 import {useCssUtils} from '../../core/helper/useCssUtils'
-import {Icon, InputBase, Theme, Tooltip} from '@mui/material'
+import {Icon, InputBase, ListItemIcon, ListItemText, MenuItem, Theme, Tooltip} from '@mui/material'
 import makeStyles from '@mui/styles/makeStyles'
 import {NavLink} from 'react-router-dom'
 import {siteMap} from '../../core/siteMap'
@@ -23,6 +23,7 @@ import {useLogin} from '../../core/context/LoginContext'
 import {ClipboardApi} from '@alexandreannic/ts-utils/lib/browser/clipboard/ClipboardApi'
 import {classes} from '../../core/helper/utils'
 import {CompaniesRegisteredFilters} from './CompaniesRegisteredFilters'
+import {ScMenu} from '../../shared/Menu/Menu'
 
 const useStyles = makeStyles((t: Theme) => ({
   tdName_label: {
@@ -148,7 +149,7 @@ export const CompaniesRegistered = () => {
           onPaginationChange: pagination => _companies.updateFilters(prev => ({...prev, ...pagination})),
         }}
         total={_companies.list?.totalSize}
-        getRenderRowKey={_ => _.siret}
+        getRenderRowKey={_ => _.id}
         showColumnsToggle={true}
         columns={[
           {
@@ -224,36 +225,35 @@ export const CompaniesRegistered = () => {
             className: cssUtils.txtRight,
             render: _ => (
               <>
-                <Tooltip title={m.copyAddress}>
-                  <IconBtn color="primary" onClick={() => copyAddress(_)}>
-                    <Icon>content_copy</Icon>
-                  </IconBtn>
-                </Tooltip>
-                {connectedUser.isAdmin && (
-                  <EditAddressDialog
-                    address={_.address}
-                    onChangeError={_companyUpdateAddress.error?.message}
-                    onChange={form => {
-                      const {activationDocumentRequired = false, ...address} = form
-                      return _companyUpdateAddress
-                        .fetch({}, _.id, {address, activationDocumentRequired})
-                        .then(() => toastSuccess(m.editedAddress))
-                    }}
-                  >
-                    <Tooltip title={m.editAddress}>
-                      <IconBtn color="primary">
-                        <Icon>edit</Icon>
-                      </IconBtn>
-                    </Tooltip>
-                  </EditAddressDialog>
-                )}
-                <NavLink to={siteMap.logged.companyAccesses(_.siret)}>
-                  <Tooltip title={m.handleAccesses}>
-                    <IconBtn color="primary">
-                      <Icon>vpn_key</Icon>
-                    </IconBtn>
-                  </Tooltip>
-                </NavLink>
+                <ScMenu>
+                  <NavLink to={siteMap.logged.companyAccesses(_.siret)}>
+                  <MenuItem>
+                    <ListItemIcon><Icon>vpn_key</Icon></ListItemIcon>
+                    <ListItemText>{m.handleAccesses}</ListItemText>
+                  </MenuItem>
+                  </NavLink>
+                  <MenuItem onClick={() => copyAddress(_)}>
+                    <ListItemIcon><Icon>content_copy</Icon></ListItemIcon>
+                    <ListItemText>{m.copyAddress}</ListItemText>
+                  </MenuItem>
+                  {connectedUser.isAdmin && (
+                    <EditAddressDialog
+                      address={_.address}
+                      onChangeError={_companyUpdateAddress.error?.message}
+                      onChange={form => {
+                        const {activationDocumentRequired = false, ...address} = form
+                        return _companyUpdateAddress
+                          .fetch({}, _.id, {address, activationDocumentRequired})
+                          .then(() => toastSuccess(m.editedAddress))
+                      }}
+                    >
+                      <MenuItem>
+                        <ListItemIcon><Icon>edit</Icon></ListItemIcon>
+                        <ListItemText>{m.editAddress}</ListItemText>
+                      </MenuItem>
+                    </EditAddressDialog>
+                  )}
+                </ScMenu>
                 <NavLink to={siteMap.logged.company(_.id)}>
                   <IconBtn color="primary">
                     <Icon>chevron_right</Icon>

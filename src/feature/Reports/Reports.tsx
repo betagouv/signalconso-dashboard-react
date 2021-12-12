@@ -155,7 +155,7 @@ export const Reports = ({}) => {
                   onChange={departments => _reports.updateFilters(prev => ({...prev, departments}))}
                 >
                   {(value, onChange) => (
-                    <SelectDepartments value={value} onChange={onChange} className={cssUtils.marginRight} fullWidth/>
+                    <SelectDepartments label={m.departments} value={value} onChange={onChange} className={cssUtils.marginRight} fullWidth/>
                   )}
                 </DebouncedInput>
               </Grid>
@@ -312,6 +312,7 @@ export const Reports = ({}) => {
               head: m.tags,
               render: _ => _.report.tags.map(tag =>
                 <Chip
+                  key={tag}
                   size="small"
                   variant="outlined"
                   label={tag}

@@ -1,7 +1,7 @@
 import {Dialog, DialogActions, DialogContent, DialogTitle} from '@mui/material'
 import {SelectDepartments} from '../../shared/SelectDepartments/SelectDepartments'
 import {SelectActivityCode} from '../../shared/SelectActivityCode/SelectActivityCode'
-import React, {ReactElement, useState} from 'react'
+import React, {ReactElement, useEffect, useState} from 'react'
 import {useI18n} from '../../core/i18n'
 import {useCssUtils} from '../../core/helper/useCssUtils'
 import {Controller, useForm} from 'react-hook-form'
@@ -25,9 +25,6 @@ export const CompaniesRegisteredFilters = ({updateFilters, children, filters}: C
     handleSubmit,
     control,
     reset,
-    getValues,
-    watch,
-    formState: {errors},
   } = useForm<CompanySearch>()
 
   const close = () => {
@@ -38,6 +35,10 @@ export const CompaniesRegisteredFilters = ({updateFilters, children, filters}: C
     close()
     handleSubmit(updateFilters)(e)
   }
+
+  useEffect(() => {
+    reset(filters)
+  }, [filters])
 
   return (
     <>
