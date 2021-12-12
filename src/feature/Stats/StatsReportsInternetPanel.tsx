@@ -135,7 +135,7 @@ export const StatsReportsInternetPanel = () => {
       </PanelHead>
       <PanelBody>
         {asyncPercent.value && asyncPercentLastMonth.value && (
-          <div style={{display: 'flex', justifyContent: 'space-around', alignItems: 'center'}}>
+          <div style={{display: 'flex', flexWrap: 'wrap', justifyContent: 'space-around', alignItems: 'center'}}>
             <Box
               className={cssUtils.marginRight}
               title={m.statsInternets_all}

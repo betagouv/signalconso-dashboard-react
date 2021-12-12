@@ -61,51 +61,53 @@ export const StatsReportsByRegion = () => {
         {m.reportsDistribution}
       </PanelHead>
       <Divider/>
-      <Table size="small">
-        <TableHead>
-          <TableRow>
-            <TableCell>{m.rank}</TableCell>
-            <TableCell>{m.department}</TableCell>
-            <TableCell>{m.reports}</TableCell>
-            <TableCell>
-              <Tooltip title={m.positionComparedToLastMonth}>
-                <Icon className={cssUtils.colorTxtHint}>show_chart</Icon>
-              </Tooltip>
-            </TableCell>
-            <TableCell/>
-          </TableRow>
-        </TableHead>
-        {_countByDepCurrentMonth.entity && positionByDep && _constant.regions.entity && _constant.departmentsIndex && (
-          <TableBody>
-            {_countByDepCurrentMonth.entity.slice(0, 20).map(([depNumber, count], i) => (
-              <TableRow>
-                <TableCell>{i + 1}</TableCell>
-                <TableCell>{_constant.departmentsIndex![depNumber]} <span className={cssUtils.colorTxtHint}>({depNumber})</span></TableCell>
-                <TableCell>{formatLargeNumber(count)}</TableCell>
-                <TableCell>{(() => {
-                  const oldPosition = positionByDep[depNumber]
-                  if (oldPosition === i) {
-                    return <span className={classes(cssUtils.txtBold, cssUtils.colorTxtHint)}>=</span>
-                  } else if (oldPosition > i) {
-                    return <span className={classes(cssUtils.txtBold, cssUtils.colorError)}>+{oldPosition - i}</span>
-                  } else {
-                    return <span className={classes(cssUtils.txtBold, cssUtils.colorSuccess)}>{oldPosition - i}</span>
-                  }
-                })()}</TableCell>
-                <TableCell style={{textAlign: 'right'}}>
-                  <NavLink to={siteMap.logged.reports({
-                    departments: [depNumber],
-                    start: dates.current.start,
-                    end: dates.current.end,
-                  })}>
-                    <ScButton color="primary" size="small">{m.see}</ScButton>
-                  </NavLink>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        )}
-      </Table>
+      <div style={{overflowX: 'auto', position: 'relative'}}>
+        <Table size="small">
+          <TableHead>
+            <TableRow>
+              <TableCell></TableCell>
+              <TableCell>{m.department}</TableCell>
+              <TableCell>{m.reports}</TableCell>
+              <TableCell>
+                <Tooltip title={m.positionComparedToLastMonth}>
+                  <Icon className={cssUtils.colorTxtHint}>show_chart</Icon>
+                </Tooltip>
+              </TableCell>
+              <TableCell/>
+            </TableRow>
+          </TableHead>
+          {_countByDepCurrentMonth.entity && positionByDep && _constant.regions.entity && _constant.departmentsIndex && (
+            <TableBody>
+              {_countByDepCurrentMonth.entity.slice(0, 20).map(([depNumber, count], i) => (
+                <TableRow>
+                  <TableCell>{i + 1}</TableCell>
+                  <TableCell>{_constant.departmentsIndex![depNumber]} <span className={cssUtils.colorTxtHint}>({depNumber})</span></TableCell>
+                  <TableCell>{formatLargeNumber(count)}</TableCell>
+                  <TableCell>{(() => {
+                    const oldPosition = positionByDep[depNumber]
+                    if (oldPosition === i) {
+                      return <span className={classes(cssUtils.txtBold, cssUtils.colorTxtHint)}>=</span>
+                    } else if (oldPosition > i) {
+                      return <span className={classes(cssUtils.txtBold, cssUtils.colorError)}>+{oldPosition - i}</span>
+                    } else {
+                      return <span className={classes(cssUtils.txtBold, cssUtils.colorSuccess)}>{oldPosition - i}</span>
+                    }
+                  })()}</TableCell>
+                  <TableCell style={{textAlign: 'right'}}>
+                    <NavLink to={siteMap.logged.reports({
+                      departments: [depNumber],
+                      start: dates.current.start,
+                      end: dates.current.end,
+                    })}>
+                      <ScButton color="primary" size="small">{m.see}</ScButton>
+                    </NavLink>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          )}
+        </Table>
+      </div>
     </Panel>
   )
 }

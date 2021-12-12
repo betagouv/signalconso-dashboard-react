@@ -18,7 +18,6 @@ export const statsFormatCurveDate = (m: I18nContextProps['m']) => ({date, count}
 })
 
 export const Stats = () => {
-
   const {m} = useI18n()
 
   return (
