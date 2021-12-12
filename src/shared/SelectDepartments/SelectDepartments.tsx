@@ -20,7 +20,7 @@ const useStyles = makeStyles((t: Theme) =>
 export interface SelectDepartmentsProps {
   placeholder?: string
   selectAllLabel?: string
-  values?: string[]
+  value?: string[]
   style?: CSSProperties
   readonly?: boolean
   onChange: (_: string[]) => void
@@ -29,7 +29,7 @@ export interface SelectDepartmentsProps {
 }
 
 export const SelectDepartments = ({
-  values,
+  value,
   readonly,
   onChange,
   selectAllLabel,
@@ -42,8 +42,8 @@ export const SelectDepartments = ({
   const {m} = useI18n()
 
   useEffect(() => {
-    indexValues.reset(values)
-  }, [values])
+    indexValues.reset(value)
+  }, [value])
 
   const open = (event: any) => setAnchorEl(event.currentTarget)
 
@@ -78,7 +78,7 @@ export const SelectDepartments = ({
         open={!!anchorEl}
         onClose={close}
         onChange={onChange}
-        initialValues={values}
+        initialValues={value}
       />
     </>
   )

@@ -5,14 +5,13 @@ import {cleanObject, Company, CompanySearch, PaginatedSearch} from '@signal-cons
 import React, {useEffect, useMemo, useState} from 'react'
 import {useCompaniesContext} from '../../core/context/CompaniesContext'
 import {useCssUtils} from '../../core/helper/useCssUtils'
-import {Grid, Icon, Theme, Tooltip} from '@mui/material'
+import {Icon, InputBase, Theme, Tooltip} from '@mui/material'
 import makeStyles from '@mui/styles/makeStyles'
 import {NavLink} from 'react-router-dom'
 import {siteMap} from '../../core/siteMap'
 import {ScButton} from '../../shared/Button/Button'
 import {styleUtils} from '../../core/theme'
 import {Fender, IconBtn} from 'mui-extension/lib'
-import {SelectDepartments} from '../../shared/SelectDepartments/SelectDepartments'
 import {mapArrayFromQuerystring, useQueryString} from '../../core/helper/useQueryString'
 import {DebouncedInput} from '../../shared/DebouncedInput/DebouncedInput'
 import {fromNullable} from 'fp-ts/lib/Option'
@@ -22,9 +21,8 @@ import {SelectCompany} from '../../shared/SelectCompany/SelectCompany'
 import {EditAddressDialog} from './EditAddressDialog'
 import {useLogin} from '../../core/context/LoginContext'
 import {ClipboardApi} from '@alexandreannic/ts-utils/lib/browser/clipboard/ClipboardApi'
-import {SelectActivityCode} from '../../shared/SelectActivityCode/SelectActivityCode'
-import {ScInput} from '../../shared/Input/ScInput'
 import {classes} from '../../core/helper/utils'
+import {CompaniesRegisteredFilters} from './CompaniesRegisteredFilters'
 
 const useStyles = makeStyles((t: Theme) => ({
   tdName_label: {
@@ -101,60 +99,40 @@ export const CompaniesRegistered = () => {
       <Datatable
         id="companiesregistered"
         header={
-          <Grid container alignItems="center" spacing={1}>
-            <Grid item xs={12} md={4}>
-              <DebouncedInput
-                value={_companies.filters.identity ?? ''}
-                onChange={value => _companies.updateFilters(prev => ({...prev, identity: value}))}
-              >
-                {(value, onChange) => (
-                  <ScInput
-                    value={value}
-                    placeholder={m.companiesSearchPlaceholder}
-                    fullWidth
-                    onChange={e => onChange(e.target.value)}
-                  />
-                )}
-              </DebouncedInput>
-            </Grid>
-            <Grid item xs={12} md={4}>
-              <DebouncedInput
-                value={_companies.filters.departments}
-                onChange={departments => _companies.updateFilters(prev => ({...prev, departments}))}
-              >
-                {(value, onChange) =>
-                  <SelectDepartments
-                    values={value}
-                    fullWidth
-                    onChange={onChange}
-                    className={cssUtils.marginRight}
-                  />
-                }
-              </DebouncedInput>
-            </Grid>
-            <Grid item xs={12} md={4}>
-              <DebouncedInput
-                value={_companies.filters.activityCodes}
-                onChange={activityCodes => _companies.updateFilters(prev => ({...prev, activityCodes}))}
-              >
-                {(value, onChange) =>
-                  <SelectActivityCode
-                    fullWidth
-                    label={m.codeNaf}
-                    value={value}
-                    onChange={(a, b) => onChange(b)}
-                  />
-                }
-              </DebouncedInput>
-            </Grid>
-          </Grid>
+          <DebouncedInput
+            value={_companies.filters.identity ?? ''}
+            onChange={value => _companies.updateFilters(prev => ({...prev, identity: value}))}
+          >
+            {(value, onChange) => (
+              <InputBase
+                value={value}
+                placeholder={m.companiesSearchPlaceholder}
+                fullWidth
+                onChange={e => onChange(e.target.value)}
+              />
+            )}
+          </DebouncedInput>
         }
         actions={
-          <Tooltip title={m.removeAllFilters}>
-            <IconBtn color="primary" onClick={_companies.clearFilters}>
-              <Icon>clear</Icon>
-            </IconBtn>
-          </Tooltip>
+          <>
+            <CompaniesRegisteredFilters
+              filters={_companies.filters}
+              updateFilters={_ => {
+                _companies.updateFilters(prev => ({...prev, ..._}))
+              }}
+            >
+              <Tooltip title={m.advancedFilters}>
+                <IconBtn color="primary">
+                  <Icon>filter_list</Icon>
+                </IconBtn>
+              </Tooltip>
+            </CompaniesRegisteredFilters>
+            <Tooltip title={m.removeAllFilters}>
+              <IconBtn color="primary" onClick={_companies.clearFilters}>
+                <Icon>clear</Icon>
+              </IconBtn>
+            </Tooltip>
+          </>
         }
         sort={{
           sortableColumns: ['responseRate'],

@@ -155,7 +155,7 @@ export const Reports = ({}) => {
                   onChange={departments => _reports.updateFilters(prev => ({...prev, departments}))}
                 >
                   {(value, onChange) => (
-                    <SelectDepartments values={value} onChange={onChange} className={cssUtils.marginRight} fullWidth/>
+                    <SelectDepartments value={value} onChange={onChange} className={cssUtils.marginRight} fullWidth/>
                   )}
                 </DebouncedInput>
               </Grid>
