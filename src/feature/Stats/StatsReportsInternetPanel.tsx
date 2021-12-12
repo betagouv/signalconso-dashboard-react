@@ -190,7 +190,7 @@ const Box = ({
   }, [value, previousValue])
 
   return (
-    <Panel elevation={1} style={{maxWidth: 300}} className={className}>
+    <Panel elevation={2} style={{maxWidth: 300}} className={className}>
       <PanelBody>
         <div style={{lineHeight: 1.5, display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
           <span>
