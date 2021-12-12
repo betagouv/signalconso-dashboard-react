@@ -3,7 +3,7 @@ import {useFetcher} from '@alexandreannic/react-hooks-lib'
 import {useLogin} from '../../core/context/LoginContext'
 import {useI18n} from '../../core/i18n'
 import {endOfMonth, startOfMonth, subMonths, subYears} from 'date-fns'
-import {Divider, MenuItem, Table, TableBody, TableCell, TableHead, TableRow} from '@mui/material'
+import {Divider, Icon, MenuItem, Table, TableBody, TableCell, TableHead, TableRow, Tooltip} from '@mui/material'
 import {useConstantContext} from '../../core/context/ConstantContext'
 import {useCssUtils} from '../../core/helper/useCssUtils'
 import {classes} from '../../core/helper/utils'
@@ -78,8 +78,12 @@ export const StatsReportsByRegion = () => {
           <TableRow>
             <TableCell>{m.rank}</TableCell>
             <TableCell>{m.department}</TableCell>
-            <TableCell>{m.reportsCount}</TableCell>
-            <TableCell>{m.positionComparedToLastMonth}</TableCell>
+            <TableCell>{m.reports}</TableCell>
+            <TableCell>
+              <Tooltip title={m.positionComparedToLastMonth}>
+                <Icon className={cssUtils.colorTxtHint}>show_chart</Icon>
+              </Tooltip>
+            </TableCell>
             <TableCell/>
           </TableRow>
         </TableHead>
