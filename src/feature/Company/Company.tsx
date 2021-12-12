@@ -32,7 +32,7 @@ import {styleUtils} from '../../core/theme'
 import {useCompanyStats} from './useCompanyStats'
 import {NavLink} from 'react-router-dom'
 import {ScLineChart} from '../../shared/Chart/Chart'
-import {messagesFr} from '../../core/i18n/messages/messages.fr'
+import {I18nContextProps} from '../../core/i18n/I18n'
 
 const useStyles = makeStyles((t: Theme) => ({
   reviews: {
@@ -75,7 +75,7 @@ const ticks = 7
 
 const periods: Period[] = ['Day', 'Month']
 
-const formatCurveDate = (m: typeof messagesFr) => ({date, count}: CountByDate): {date: string, count: number} => ({
+const formatCurveDate = (m: I18nContextProps['m']) => ({date, count}: CountByDate): {date: string, count: number} => ({
   date: (m.monthShort_ as any)[date.getMonth() + 1],
   count,
 })

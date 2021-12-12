@@ -5,14 +5,14 @@ import {CountByDate, CurveStatsParams, Period, ReportTag} from '@signal-conso/si
 import {useLogin} from '../../core/context/LoginContext'
 import {useFetcher} from '@alexandreannic/react-hooks-lib/lib'
 import {Panel, PanelBody, PanelHead} from '../../shared/Panel'
-import {messagesFr} from '../../core/i18n/messages/messages.fr'
 import {useI18n} from '../../core/i18n'
 import {ScLineChart} from '../../shared/Chart/Chart'
 import {StatsReportsByRegion} from './StatsReportsByRegion'
+import {I18nContextProps} from '../../core/i18n/I18n'
 
 const ticks = 12
 
-const formatCurveDate = (m: typeof messagesFr) => ({date, count}: CountByDate): {date: string, count: number} => ({
+const formatCurveDate = (m: I18nContextProps['m']) => ({date, count}: CountByDate): {date: string, count: number} => ({
   date: (m.monthShort_ as any)[date.getMonth() + 1],
   count,
 })
