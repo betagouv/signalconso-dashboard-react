@@ -5,7 +5,7 @@ import React, {ReactElement, useEffect, useState} from 'react'
 import {useI18n} from '../../core/i18n'
 import {useCssUtils} from '../../core/helper/useCssUtils'
 import {Controller, useForm} from 'react-hook-form'
-import {CompanySearch} from '@signal-conso/signalconso-api-sdk-js'
+import {cleanObject, CompanySearch} from '@signal-conso/signalconso-api-sdk-js'
 import {Btn} from 'mui-extension'
 import {DialogInputRow} from '../Reports/ReportsFilters'
 import {ScInput} from '../../shared/Input/ScInput'
@@ -33,7 +33,7 @@ export const CompaniesRegisteredFilters = ({updateFilters, children, filters}: C
 
   const confirm = (e: any) => {
     close()
-    handleSubmit(updateFilters)(e)
+    handleSubmit(_ => updateFilters(cleanObject(_)))(e)
   }
 
   useEffect(() => {
