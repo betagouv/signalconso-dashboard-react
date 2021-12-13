@@ -14,7 +14,7 @@ interface Props {
 export const StatsProUserPanel = ({ticks}: Props) => {
   const {apiSdk: api} = useLogin()
   const {m} = useI18n()
-  const reportedActiveProAccountRate = useFetcher(api.secured.stats.getReportedActiveProAccountRate)
+  const reportedActiveProAccountRate = useFetcher(api.secured.stats.getReportedInactiveProAccountRate)
 
   useEffect(() => {
     reportedActiveProAccountRate.fetch({}, {ticks})
@@ -22,11 +22,11 @@ export const StatsProUserPanel = ({ticks}: Props) => {
 
   return (
     <Panel loading={reportedActiveProAccountRate.loading}>
-      <PanelHead>{m.proUser}</PanelHead>
+      <PanelHead>{m.reportsProUserInactiveAccountRate}</PanelHead>
       <PanelBody>
         {reportedActiveProAccountRate.entity && (
           <ScLineChart curves={[
-            {label: m.reportsProUserAccountRate, key: 'pro', curve: reportedActiveProAccountRate.entity.map(statsFormatCurveDate(m))},
+            {label: m.reportsProUserInactiveAccountRateDesc, key: 'pro', curve: reportedActiveProAccountRate.entity.map(statsFormatCurveDate(m))},
           ]}/>
         )}
       </PanelBody>
