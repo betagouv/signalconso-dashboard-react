@@ -10,6 +10,7 @@ import {StatsDgccrfAccountPanel} from './StatsDgccrfAccountPanel'
 import {StatsDgccrfSubscriptionsPanel} from './StatsDgccrfSubscriptionsPanel'
 import {StatsReportsInternetPanel} from './StatsReportsInternetPanel'
 import {StatsReportsProProcessedPanel} from "./StatsReportsProProcessed";
+import {StatsReportsProResponsePanel} from "./StatsReportsProResponse";
 
 const ticks = 12
 
@@ -37,10 +38,10 @@ export const Stats = () => {
     return (
         <Page>
             <PageTitle>{m.menu_stats}</PageTitle>
-
             <StatsReportsCurvePanel ticks={ticks}/>
             <StatsProUserPanel ticks={ticks}/>
             <StatsReportsProProcessedPanel ticks={ticks}/>
+            <StatsReportsProResponsePanel/>
             <StatsDgccrfAccountPanel ticks={ticks}/>
             <StatsDgccrfSubscriptionsPanel ticks={ticks}/>
             <StatsReportsByRegion/>

@@ -14,7 +14,7 @@ interface Props {
 export const StatsProUserPanel = ({ticks}: Props) => {
   const {apiSdk: api} = useLogin()
   const {m} = useI18n()
-  const reportedActiveProAccountRate = useFetcher(api.secured.stats.getReportedActiveProAccountRate)
+  const reportedActiveProAccountRate = useFetcher(api.secured.stats.getReportedInactiveProAccountRate)
 
   useEffect(() => {
     reportedActiveProAccountRate.fetch({}, {ticks})
