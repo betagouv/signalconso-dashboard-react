@@ -174,6 +174,7 @@ export const Datatable = <T extends any = any>(props: DatatableProps<T>) => {
                   <TableCell key={i} className={classes(css.cellHeader, _.stickyEnd && css.stickyEnd)}>
                     {sort && (sort.sortableColumns?.includes(_.id) ?? true) ? (
                       <TableSortLabel
+                        className={cssUtils.colorPrimary}
                         active={sort.sortBy === _.id}
                         direction={sort.sortBy === _.id ? sort.orderBy : 'asc'}
                         onClick={() => {

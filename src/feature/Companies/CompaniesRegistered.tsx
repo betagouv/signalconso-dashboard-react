@@ -40,7 +40,7 @@ const useStyles = makeStyles((t: Theme) => ({
     color: t.palette.text.disabled,
   },
   tdAddress: {
-    maxWidth: 300,
+    maxWidth: 260,
     ...styleUtils(t).truncate,
   },
   fender: {
@@ -277,7 +277,7 @@ export const CompaniesRegistered = () => {
                   </Tooltip>
                 </NavLink>
                 <NavLink to={siteMap.logged.company(_.id)}>
-                  <IconBtn>
+                  <IconBtn color="primary">
                     <Icon>chevron_right</Icon>
                   </IconBtn>
                 </NavLink>

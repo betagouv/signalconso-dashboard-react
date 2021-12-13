@@ -67,7 +67,7 @@ export const ReportsShortList = ({reports}: Props) => {
             <ReportDetailValues input={_.report.details} lines={3} />
           </div>
           <NavLink to={siteMap.logged.report(_.report.id)}>
-            <IconBtn>
+            <IconBtn color="primary">
               <Icon>chevron_right</Icon>
             </IconBtn>
           </NavLink>

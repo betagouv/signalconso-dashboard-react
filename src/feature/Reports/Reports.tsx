@@ -337,7 +337,7 @@ export const Reports = ({}) => {
               className: classes(css.actions),
               render: _ => (
                 <NavLink to={siteMap.logged.report(_.report.id)}>
-                  <IconBtn className={cssUtils.colorTxtHint}>
+                  <IconBtn color="primary">
                     <Icon>chevron_right</Icon>
                   </IconBtn>
                 </NavLink>
