@@ -33,35 +33,6 @@ export const StatsReportsInternetPanel = () => {
   const dates = useGetDateForMonthAndPreviousOne(selectedMonth)
 
   const cssUtils = useCssUtils()
-  // const reports = useFetcher((start: Date, end: Date) => api.public.stats.getReportCount({
-  //   start,
-  //   end,
-  // }).then(_ => _.value))
-  // const reportsInternets = useFetcher((start: Date, end: Date) => api.public.stats.getReportCount({
-  //   start,
-  //   end,
-  //   tags: [ReportTag.Internet],
-  // }).then(_ => _.value))
-  // const reportsInternetsWithCompany = useFetcher((start: Date, end: Date) => api.public.stats.getReportCount({
-  //   start,
-  //   end,
-  //   tags: [ReportTag.Internet],
-  //   hasCompany: true,
-  // }).then(_ => _.value))
-  // const reportsInternetsWithCountry = useFetcher((start: Date, end: Date) => api.public.stats.getReportCount({
-  //   start,
-  //   end,
-  //   tags: [ReportTag.Internet],
-  //   hasCompany: false,
-  //   hasForeignCountry: true,
-  // }).then(_ => _.value))
-  // const reportsInternetsWithoutAnything = useFetcher((start: Date, end: Date) => api.public.stats.getReportCount({
-  //   start,
-  //   end,
-  //   tags: [ReportTag.Internet],
-  //   hasCompany: false,
-  //   hasForeignCountry: false,
-  // }).then(_ => _.value))
 
   const fetch = (start: Date, end: Date) => {
     return Promise.all([
