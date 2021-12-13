@@ -8,6 +8,7 @@ import {StatsReportsCurvePanel} from './StatsReportsCurve'
 import {StatsProUserPanel} from './StatsProUserPanel'
 import {StatsDgccrfAccountPanel} from './StatsDgccrfAccountPanel'
 import {StatsDgccrfSubscriptionsPanel} from './StatsDgccrfSubscriptionsPanel'
+import {StatsReportsInternetPanel} from './StatsReportsInternetPanel'
 
 const ticks = 12
 
@@ -17,7 +18,6 @@ export const statsFormatCurveDate = (m: I18nContextProps['m']) => ({date, count}
 })
 
 export const Stats = () => {
-
   const {m} = useI18n()
 
   return (
@@ -29,6 +29,7 @@ export const Stats = () => {
       <StatsDgccrfAccountPanel ticks={ticks}/>
       <StatsDgccrfSubscriptionsPanel ticks={ticks}/>
       <StatsReportsByRegion/>
+      <StatsReportsInternetPanel/>
     </Page>
   )
 }

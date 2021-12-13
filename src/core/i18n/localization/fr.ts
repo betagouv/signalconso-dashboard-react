@@ -409,6 +409,14 @@ export const fr = {
     resetPasswordSuccess: `Votre mot de passe est maintenant créé, vous pouvez vous connecter pour accéder à votre espace entreprise.`,
     loginIssueTip: `En cas de difficultés, vous pouvez contacter par email le service <a href="href="mailto:${config.contactEmail}">${config.contactEmail}</a>.`,
     consent: ` Je reconnais avoir pris connaissance des  <a href="href="${config.appBaseUrl}/conditions-generales-utilisation/professionnel"> conditions générales d'utilisation</a> de SignalConso.`,
+    statsInternetsTitle: 'Signalements internet',
+    statsInternets_all: 'des signalements sont des signalements Internet',
+    statsInternets_all_desc: 'le consommateur indique que le problème rencontré concerne une entreprise en ligne',
+    statsInternets_withCompany: 'pour lesquels les entreprises sont identifiées par les consommateurs',
+    statsInternets_withCountry: 'pour lesquels les entreprises ne sont pas identifiées mais de pays étrangers identifiés',
+    statsInternets_withCountry_desc: '(statut NA - le signalement n’est pas transmis au professionnel)',
+    statsInternets_withNothing: 'pour lesquels les entreprises et le pays ne sont pas identifiés',
+    statsInternets_withNothing_desc: '(statut NA - le signalement n’est pas transmis au professionnel)',
     subscriptionsAlertInfo: `
     En créant un abonnement, vous recevrez un mail quotidien ou hebdomadaire (au choix) comportant les nouveaux signalements correspondant à votre sélection de critères, qu’ils soient géographiques, thématiques ou par entreprise.
     <br/>
