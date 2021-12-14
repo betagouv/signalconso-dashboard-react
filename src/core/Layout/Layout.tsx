@@ -49,11 +49,10 @@ export const Layout = ({title, mobileBreakpoint, children, connectedUser}: Layou
 
 const LayoutUsingContext = ({children, connectedUser}: any) => {
   const classes = useStyles()
-  const {isMobileWidth} = useLayoutContext()
   return (
     <>
       <Header connectedUser={connectedUser} />
-      <div className={classNames(classes.root)}>{children}</div>
+      <main className={classNames(classes.root)}>{children}</main>
     </>
   )
 }
