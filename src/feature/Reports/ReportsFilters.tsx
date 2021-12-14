@@ -31,7 +31,7 @@ export interface RowExtraProps {
   children: ReactNode
 }
 
-const Row = ({label, children}: RowProps) => {
+export const DialogInputRow = ({label, children}: RowProps) => {
   const useRowStyles = makeStyles((t: Theme) => ({
     root: {
       display: 'flex',
@@ -139,10 +139,10 @@ const ReportFiltersMapped = ({filters, updateFilters, children}: ReportsFiltersP
         {_category.entity && (
           <>
             <DialogContent>
-              <Row label={m.keywords}>
+              <DialogInputRow label={m.keywords}>
                 <ScInput fullWidth {...register('details')} defaultValue={filters.details ?? ''}/>
-              </Row>
-              <Row label={m.codeNaf}>
+              </DialogInputRow>
+              <DialogInputRow label={m.codeNaf}>
                 <Controller
                   name="activityCodes"
                   defaultValue={filters.activityCodes ?? []}
@@ -155,8 +155,8 @@ const ReportFiltersMapped = ({filters, updateFilters, children}: ReportsFiltersP
                     />
                   )}
                 />
-              </Row>
-              <Row label={m.categories}>
+              </DialogInputRow>
+              <DialogInputRow label={m.categories}>
                 <ScSelect small fullWidth {...register('category')} defaultValue={filters.category ?? []}>
                   <MenuItem value="">&nbsp;</MenuItem>
                   {_category?.entity.map(category => (
@@ -165,8 +165,8 @@ const ReportFiltersMapped = ({filters, updateFilters, children}: ReportsFiltersP
                     </MenuItem>
                   ))}
                 </ScSelect>
-              </Row>
-              <Row label={m.tags}>
+              </DialogInputRow>
+              <DialogInputRow label={m.tags}>
                 <Controller
                   name="tags"
                   defaultValue={filters.tags ?? []}
@@ -187,8 +187,8 @@ const ReportFiltersMapped = ({filters, updateFilters, children}: ReportsFiltersP
                     />
                   )}
                 />
-              </Row>
-              <Row label={m.status}>
+              </DialogInputRow>
+              <DialogInputRow label={m.status}>
                 <Controller defaultValue={filters.status ?? []} name="status" control={control} render={({field}) => (
                   <ScSelect
                     {...field} multiple fullWidth
@@ -205,8 +205,8 @@ const ReportFiltersMapped = ({filters, updateFilters, children}: ReportsFiltersP
                     ))}
                   </ScSelect>
                 )}/>
-              </Row>
-              <Row label={m.identifiedCompany}>
+              </DialogInputRow>
+              <DialogInputRow label={m.identifiedCompany}>
                 <Controller
                   name="hasCompany"
                   defaultValue={filters.hasCompany}
@@ -220,8 +220,8 @@ const ReportFiltersMapped = ({filters, updateFilters, children}: ReportsFiltersP
                     <ScInput className={css.optionalInput} label={m.siret} fullWidth {...register('siretSirenList')} defaultValue={filters.siretSirenList ?? ''}/>
                   </RowExtra>
                 )}
-              </Row>
-              <Row label={m.website}>
+              </DialogInputRow>
+              <DialogInputRow label={m.website}>
                 <Controller
                   name="hasWebsite"
                   defaultValue={filters.hasWebsite}
@@ -235,8 +235,8 @@ const ReportFiltersMapped = ({filters, updateFilters, children}: ReportsFiltersP
                     <ScInput label={m.url} fullWidth className={css.optionalInput} {...register('websiteURL')} defaultValue={filters.websiteURL ?? ''}/>
                   </RowExtra>
                 )}
-              </Row>
-              <Row label={m.phone}>
+              </DialogInputRow>
+              <DialogInputRow label={m.phone}>
                 <Controller
                   name="hasPhone"
                   defaultValue={filters.hasPhone}
@@ -250,8 +250,8 @@ const ReportFiltersMapped = ({filters, updateFilters, children}: ReportsFiltersP
                     <ScInput label={m.phone} fullWidth className={css.optionalInput} {...register('phone')} defaultValue={filters.phone ?? ''}/>
                   </RowExtra>
                 )}
-              </Row>
-              <Row label={m.foreignCountry}>
+              </DialogInputRow>
+              <DialogInputRow label={m.foreignCountry}>
                 <Controller
                   name="hasForeignCountry"
                   defaultValue={filters.hasForeignCountry}
@@ -270,10 +270,10 @@ const ReportFiltersMapped = ({filters, updateFilters, children}: ReportsFiltersP
                     />
                   </RowExtra>
                 )}
-              </Row>
-              <Row label={m.emailConsumer}>
+              </DialogInputRow>
+              <DialogInputRow label={m.emailConsumer}>
                 <ScInput fullWidth {...register('email')} defaultValue={filters.email ?? ''}/>
-              </Row>
+              </DialogInputRow>
             </DialogContent>
             <DialogActions>
               <Btn onClick={close} color="primary">

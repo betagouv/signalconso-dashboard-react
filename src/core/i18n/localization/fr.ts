@@ -377,7 +377,7 @@ export const fr = {
     companyCreated: 'Entreprise créée',
     codeNaf: 'Code NAF',
     cannotCreateCompanyMissingInfo: `Impossible de créer l'entreprise. Son nom ou son adresse ne sont pas renseignés.`,
-    editAddress: `Modifier l'adresse de l'entreprise`,
+    editAddress: `Modifier l'adresse`,
     companyAccessLevelDescription: {
       [CompanyAccessLevel.admin]: 'Peut  consulter, répondre aux signalements et inviter/supprimer des nouveaux utilisateurs.',
       [CompanyAccessLevel.member]: 'Peut consulter et répondre aux signalements.',
