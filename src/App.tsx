@@ -54,6 +54,7 @@ import {CompaniesDbSync} from './feature/CompaniesDbSync/CompaniesDbSync'
 import {Matomo} from './core/plugins/Matomo'
 import {apiPublicSdk, makeSecuredSdk, SignalConsoApiSdk} from './core/ApiSdkInstance'
 import {Stats} from './feature/Stats/Stats'
+import {Admin} from './feature/Admin/Admin'
 
 const useStyles = makeStyles((t: Theme) => ({
   '@global': {
@@ -213,6 +214,7 @@ const AppLogged = () => {
       ]}
     >
       <Switch>
+        <Route path={siteMap.logged.admin} component={Admin} />
         <Route path={siteMap.logged.reportedWebsites} component={ReportedWebsites} />
         <Route path={siteMap.logged.reportedPhone} component={ReportedPhones} />
         <Route path={siteMap.logged.report()} component={connectedUser.isPro ? ReportPro : ReportComponent} />

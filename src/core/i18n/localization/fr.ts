@@ -240,6 +240,7 @@ export const fr = {
     menu_websites: 'Sites webs signalés',
     menu_reports: 'Signalements',
     menu_companies: 'Entreprises',
+    menu_admin: 'Administration',
     menu_stats: 'Présentation',
     menu_exports: 'Mes exports',
     menu_users: 'Utilisateurs DGCCRF',
@@ -426,6 +427,8 @@ export const fr = {
     statsInternets_withCountry_desc: '(statut NA - le signalement n’est pas transmis au professionnel)',
     statsInternets_withNothing: 'pour lesquels les entreprises et le pays ne sont pas identifiés',
     statsInternets_withNothing_desc: '(statut NA - le signalement n’est pas transmis au professionnel)',
+    sendDummEmail: `Envoie d'emails tests`,
+    allMailsWillBeSendTo: (email: string) => `Les mails seront envoyés à l'adresse <b>${email}</b> avec de fausses données générées.`,
     subscriptionsAlertInfo: `
     En créant un abonnement, vous recevrez un mail quotidien ou hebdomadaire (au choix) comportant les nouveaux signalements correspondant à votre sélection de critères, qu’ils soient géographiques, thématiques ou par entreprise.
     <br/>
