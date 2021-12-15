@@ -16,10 +16,6 @@ const useStyles = makeStyles((t: Theme) => {
       color: t.palette.text.secondary,
       verticalAlign: 'top',
     },
-    endAdornment: {
-      display: 'flex',
-      alignItems: 'center',
-    },
   })
 })
 
@@ -30,6 +26,7 @@ interface Props
     | 'defaultValue'
     | 'className'
     // | 'ref'
+    | 'disabled'
     | 'placeholder'
     | 'fullWidth'
   > {
@@ -37,7 +34,7 @@ interface Props
   onChange: (_: string[]) => void
 }
 
-export const SelectCountries = forwardRef(({value, label, onChange, ...props}: Props, ref: any) => {
+export const SelectCountries = forwardRef(({value, label, onChange, disabled, ...props}: Props, ref: any) => {
   const cssUtils = useCssUtils()
   const css = useStyles()
   const {m} = useI18n()
@@ -48,7 +45,9 @@ export const SelectCountries = forwardRef(({value, label, onChange, ...props}: P
     if (value) setInnerValue(Array.isArray(value) ? value : [value])
   }, [])
 
-  const open = (event: any) => setAnchorEl(event.currentTarget)
+  const open = (event: any) => {
+    if(!disabled) setAnchorEl(event.currentTarget)
+  }
 
   const close = () => setAnchorEl(null)
 
@@ -79,12 +78,13 @@ export const SelectCountries = forwardRef(({value, label, onChange, ...props}: P
       value={innerValue.join(', ')}
       // value={inputValue}
       InputProps={{
+        disabled,
         style: {paddingRight: 4},
         // startAdornment: indexValues.toArray().map(_ =>
         //   <Chip size="small" label={_} style={{margin: 2}} onDelete={() => indexValues.delete(_)}/>
         // ),
         endAdornment: (
-          <div className={css.endAdornment}>
+          <>
             <IconButton
               size="small"
               onClick={_ => stopPropagation(clear)(_)}
@@ -95,7 +95,7 @@ export const SelectCountries = forwardRef(({value, label, onChange, ...props}: P
             {/*<IconButton size="small" onClick={open}>*/}
             {/*  <Icon>arrow_drop_down</Icon>*/}
             {/*</IconButton>*/}
-          </div>
+          </>
         ),
       }}
       inputProps={{

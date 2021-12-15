@@ -1,11 +1,10 @@
 import * as React from 'react'
 import {CSSProperties, forwardRef, useEffect} from 'react'
-import { Icon, InputAdornment, TextField, Theme } from '@mui/material';
-import createStyles from '@mui/styles/createStyles';
-import makeStyles from '@mui/styles/makeStyles';
+import {Icon, InputAdornment, TextField, Theme} from '@mui/material'
+import createStyles from '@mui/styles/createStyles'
+import makeStyles from '@mui/styles/makeStyles'
 import {useSetState, UseSetState} from '@alexandreannic/react-hooks-lib/lib'
 import {SelectDepartmentsMenu} from './SelectDepartmentsMenu'
-import {useI18n} from '../../core/i18n'
 
 const useStyles = makeStyles((t: Theme) =>
   createStyles({
@@ -26,6 +25,7 @@ export interface SelectDepartmentsProps {
   onChange: (_: string[]) => void
   className?: string
   fullWidth?: boolean
+  disabled?: boolean
   label?: string
 }
 
@@ -35,6 +35,7 @@ export const SelectDepartments = forwardRef(({
   onChange,
   selectAllLabel,
   label,
+  disabled,
   ...props
 }: SelectDepartmentsProps, ref: any) => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
@@ -46,7 +47,9 @@ export const SelectDepartments = forwardRef(({
     indexValues.reset(value)
   }, [value])
 
-  const open = (event: any) => setAnchorEl(event.currentTarget)
+  const open = (event: any) => {
+    if (!disabled) setAnchorEl(event.currentTarget)
+  }
 
   const close = () => {
     setAnchorEl(null)
@@ -66,6 +69,7 @@ export const SelectDepartments = forwardRef(({
         label={label}
         inputRef={(n: any) => ($input = n ?? undefined)}
         InputProps={{
+          disabled,
           readOnly: true,
           endAdornment: (
             <InputAdornment position="end">

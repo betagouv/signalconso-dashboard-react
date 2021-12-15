@@ -1,4 +1,4 @@
-import {Checkbox, Chip, Dialog, DialogActions, DialogContent, DialogTitle, MenuItem, Theme} from '@mui/material'
+import {Checkbox, Chip, Dialog, DialogActions, DialogContent, DialogTitle, Icon, MenuItem, Theme} from '@mui/material'
 import makeStyles from '@mui/styles/makeStyles'
 import {useI18n} from '../../core/i18n'
 import React, {ReactElement, ReactNode, useEffect, useState} from 'react'
@@ -15,6 +15,7 @@ import {TrueFalseUndefined} from '../../shared/TrueFalseUndefined/TrueFalseUndef
 import {useCssUtils} from '../../core/helper/useCssUtils'
 import {SelectCountries} from '../../shared/SelectCountries/SelectCountries'
 import {SelectActivityCode} from '../../shared/SelectActivityCode/SelectActivityCode'
+import {Txt} from 'mui-extension/lib/Txt/Txt'
 
 export interface ReportsFiltersProps {
   updateFilters: (_: Partial<ReportSearch>) => void
@@ -43,6 +44,8 @@ export const DialogInputRow = ({label, children}: RowProps) => {
       minHeight: 50,
       color: t.palette.text.secondary,
       minWidth: 160,
+      maxWidth: 160,
+      flexWrap: 'wrap',
     },
     content: {
       maxWidth: 240,
@@ -139,6 +142,28 @@ const ReportFiltersMapped = ({filters, updateFilters, children}: ReportsFiltersP
         {_category.entity && (
           <>
             <DialogContent>
+              <DialogInputRow label={
+                <>
+                  <div>{m.identifiedCompany}</div>
+                  <Txt size="small" color="disabled" block style={{marginTop: -14}}>({m.siret})</Txt>
+                </>
+              }>
+                <Controller
+                  name="hasCompany"
+                  defaultValue={filters.hasCompany}
+                  control={control}
+                  render={({field}) => (
+                    <TrueFalseUndefined
+                      label={{true: <>{m.yes} <Icon fontSize="inherit">arrow_drop_down</Icon></>}}
+                      className={cssUtils.marginTop} {...field}/>
+                  )}
+                />
+                {watch('hasCompany') === true && (
+                  <RowExtra>
+                    <ScInput className={css.optionalInput} label={m.siret} fullWidth {...register('siretSirenList')} defaultValue={filters.siretSirenList ?? ''}/>
+                  </RowExtra>
+                )}
+              </DialogInputRow>
               <DialogInputRow label={m.keywords}>
                 <ScInput fullWidth {...register('details')} defaultValue={filters.details ?? ''}/>
               </DialogInputRow>
@@ -206,28 +231,17 @@ const ReportFiltersMapped = ({filters, updateFilters, children}: ReportsFiltersP
                   </ScSelect>
                 )}/>
               </DialogInputRow>
-              <DialogInputRow label={m.identifiedCompany}>
-                <Controller
-                  name="hasCompany"
-                  defaultValue={filters.hasCompany}
-                  control={control}
-                  render={({field}) => (
-                    <TrueFalseUndefined className={cssUtils.marginTop} {...field}/>
-                  )}
-                />
-                {watch('hasCompany') === true && (
-                  <RowExtra>
-                    <ScInput className={css.optionalInput} label={m.siret} fullWidth {...register('siretSirenList')} defaultValue={filters.siretSirenList ?? ''}/>
-                  </RowExtra>
-                )}
-              </DialogInputRow>
               <DialogInputRow label={m.website}>
                 <Controller
                   name="hasWebsite"
                   defaultValue={filters.hasWebsite}
                   control={control}
                   render={({field}) => (
-                    <TrueFalseUndefined className={cssUtils.marginTop} {...field}/>
+                    <TrueFalseUndefined
+                      {...field}
+                      label={{true: <>{m.yes} <Icon fontSize="inherit">arrow_drop_down</Icon></>}}
+                      className={cssUtils.marginTop}
+                    />
                   )}
                 />
                 {watch('hasWebsite') === true && (
@@ -242,7 +256,11 @@ const ReportFiltersMapped = ({filters, updateFilters, children}: ReportsFiltersP
                   defaultValue={filters.hasPhone}
                   control={control}
                   render={({field}) => (
-                    <TrueFalseUndefined className={cssUtils.marginTop} {...field}/>
+                    <TrueFalseUndefined
+                      {...field}
+                      label={{true: <>{m.yes} <Icon fontSize="inherit">arrow_drop_down</Icon></>}}
+                      className={cssUtils.marginTop}
+                    />
                   )}
                 />
                 {watch('hasPhone') === true && (
@@ -257,7 +275,11 @@ const ReportFiltersMapped = ({filters, updateFilters, children}: ReportsFiltersP
                   defaultValue={filters.hasForeignCountry}
                   control={control}
                   render={({field}) => (
-                    <TrueFalseUndefined className={cssUtils.marginTop} {...field}/>
+                    <TrueFalseUndefined
+                      {...field}
+                      label={{true: <>{m.yes} <Icon fontSize="inherit">arrow_drop_down</Icon></>}}
+                      className={cssUtils.marginTop}
+                    />
                   )}
                 />
                 {watch('hasForeignCountry') === true && (
