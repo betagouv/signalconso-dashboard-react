@@ -534,7 +534,7 @@ export const fr = {
         },
         report_closed_no_action_case_dispute: {
           title: `Signalement lu mais sans réponse`,
-          desc: ``
+          desc: `Signalement <b>Litige</b>`
         },
         report_ack_case_andorre: {
           title: `Signalement envoyé`,
