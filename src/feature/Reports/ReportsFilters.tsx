@@ -15,6 +15,7 @@ import {TrueFalseUndefined} from '../../shared/TrueFalseUndefined/TrueFalseUndef
 import {useCssUtils} from '../../core/helper/useCssUtils'
 import {SelectCountries} from '../../shared/SelectCountries/SelectCountries'
 import {SelectActivityCode} from '../../shared/SelectActivityCode/SelectActivityCode'
+import {Txt} from 'mui-extension/lib/Txt/Txt'
 
 export interface ReportsFiltersProps {
   updateFilters: (_: Partial<ReportSearch>) => void
@@ -43,6 +44,8 @@ export const DialogInputRow = ({label, children}: RowProps) => {
       minHeight: 50,
       color: t.palette.text.secondary,
       minWidth: 160,
+      maxWidth: 160,
+      flexWrap: 'wrap',
     },
     content: {
       maxWidth: 240,
@@ -206,7 +209,12 @@ const ReportFiltersMapped = ({filters, updateFilters, children}: ReportsFiltersP
                   </ScSelect>
                 )}/>
               </DialogInputRow>
-              <DialogInputRow label={m.identifiedCompany}>
+              <DialogInputRow label={
+                <>
+                  <div>{m.identifiedCompany}</div>
+                  <Txt size="small" color="disabled" block style={{marginTop: -14}}>({m.siret})</Txt>
+                </>
+              }>
                 <Controller
                   name="hasCompany"
                   defaultValue={filters.hasCompany}
