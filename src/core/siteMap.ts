@@ -1,8 +1,9 @@
 import {Id, ReportSearch, toQueryString} from '@signal-conso/signalconso-api-sdk-js'
-import {mapDateFromQueryString, mapDatesToQueryString} from './helper/useQueryString'
+import {mapDatesToQueryString} from './helper/useQueryString'
 
 export const siteMap = {
   logged: {
+    admin: `/admin`,
     reportedWebsites: `/moderation-url-entreprises`,
     reportedWebsites_unknown: `/moderation-url-entreprises/sites-internet/non-identifies`,
     reportedWebsites_association: `/moderation-url-entreprises/site-internet`,
