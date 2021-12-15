@@ -1,5 +1,5 @@
 import {Theme, ToggleButton, ToggleButtonGroup} from '@mui/material'
-import React, {forwardRef, useMemo} from 'react'
+import React, {forwardRef, ReactNode, useMemo} from 'react'
 import {useI18n} from '../../core/i18n'
 import {SxProps} from '@mui/system'
 
@@ -9,9 +9,9 @@ interface Props {
   value?: boolean
   onChange: (_?: boolean) => void
   label?: {
-    true?: string
-    false?: string
-    undefined?: string
+    true?: ReactNode
+    false?: ReactNode
+    undefined?: ReactNode
   }
 }
 
