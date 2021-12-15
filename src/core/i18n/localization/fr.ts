@@ -536,6 +536,10 @@ export const fr = {
           title: `Signalement lu mais sans réponse`,
           desc: `Signalement <b>Litige</b>`
         },
+        report_ack_case_reponseconso: {
+          title: `Signalement envoyé`,
+          desc: `Question <b>ReponseConso</b>`
+        },
         report_ack_case_andorre: {
           title: `Signalement envoyé`,
           desc: `Signalement Andorre (pays avec accord)`
