@@ -427,7 +427,7 @@ export const fr = {
     statsInternets_withCountry_desc: '(statut NA - le signalement n’est pas transmis au professionnel)',
     statsInternets_withNothing: 'pour lesquels les entreprises et le pays ne sont pas identifiés',
     statsInternets_withNothing_desc: '(statut NA - le signalement n’est pas transmis au professionnel)',
-    sendDummEmail: `Envoie d'emails tests`,
+    sendDummyEmail: `Envoie d'emails tests`,
     allMailsWillBeSendTo: (email: string) => `Les mails seront envoyés à l'adresse <b>${email}</b> avec de fausses données générées.`,
     subscriptionsAlertInfo: `
     En créant un abonnement, vous recevrez un mail quotidien ou hebdomadaire (au choix) comportant les nouveaux signalements correspondant à votre sélection de critères, qu’ils soient géographiques, thématiques ou par entreprise.
@@ -442,6 +442,114 @@ export const fr = {
     <p>Si vous avez déjà créé votre compte, vous pouvez vous <a href="href="/connexion"/conditions-generales-utilisation/professionnel">connecter</a> à l'aide de votre adresse email et mot de passe.</p>
     Sinon, vous pouvez demander au gestionnaire de l'entreprise de vous envoyer une nouvelle invitation.
   `,
+    testMails: {
+      dgccrf: {
+        report_notif_dgccrf: {
+          title: `Abonnement`,
+          desc: `Email envoyé à la suite d'un abonnement`
+        },
+        report_dangerous_product_notification: {
+          title: `Produit dangeureux`,
+          desc: `Email envoyé lors d'un nouveau signalement concernant un produit dangereux`
+        },
+        access_link: {
+          title: `Accéder à SignalConso`,
+          desc: `Email envoyé lors de le l'invitation d'un agent`
+        },
+      },
+      pro: {
+        report_transmitted_reminder: {
+          title: `Rappel signalement en attente de réponse`,
+          desc: `Lorsqu'un pro a lu mais n'a pas répondu à un signalement après 7 jours`
+        },
+        report_unread_reminder: {
+          title: `Rappel signalement non lu`,
+          desc: `Lorsqu'un pro n'a pas consulté un signalement`
+        },
+        new_company_access: {
+          title: `Invitation à un entreprise pour utilisateur existant`,
+          desc: `Email d'invitation à rejoindre une entreprise pour un utilisateur ayant déjà un compte sur SignalConso`
+        },
+        report_notification: {
+          title: `Noueau signalement`,
+          desc: `Email envoyé au pro lors d'un nouveau signalement sur son entreprise`
+        },
+        report_ack_pro: {
+          title: `Réponse à un signalement`,
+          desc: `Email envoyé lorsque le pro a répondu à un signalement, peu importe le status`
+        },
+        access_invitation: {
+          title: `Invitation à un entreprise pour utilisateur sans compte`,
+          desc: `Email d'invitation à rejoindre une entreprise pour un utilisateur n'ayant pas de compte sur SignalConso`
+        },
+      },
+      consumer: {
+        report_transmitted: {
+          title: `Lecture par l'entreprise`,
+          desc: `Email envoyé à la fin d'un signalement`
+        },
+        report_ack_pro_consumer: {
+          title: `Réponse de l'entreprise`,
+          desc: `Email envoyé au conso lorsque l'entreprise a répondue`
+        },
+        report_ack_case_euro_and_dispute: {
+          title: `Signalement envoyé`,
+          desc: `Signalement pays européen + <b>litige</b>`
+        },
+        report_closed_no_action: {
+          title: `Pas de réponse`,
+          desc: `Email envoyé lorsque le pro n'a pas répondu au conso après le délai de 60j.`
+        },
+        report_ack_case_abroad_default: {
+          title: `Signalement envoyé`,
+          desc: `Signalement pays étranger`
+        },
+        report_ack_case_suisse: {
+          title: `Signalement envoyé`,
+          desc: `Signalement Suisse (pays avec accord)`
+        },
+        report_ack_case_dispute: {
+          title: `Signalement envoyé`,
+          desc: `Signalement <b>litige</b>`
+        },
+        report_ack_case_andorre_and_dispute: {
+          title: `Signalement envoyé`,
+          desc: `Signalement Andorre (pays avec accord) + <b>litige</b>`
+        },
+        report_closed_no_reading: {
+          title: `Signalement non lu`,
+          desc: `Email envoyé si le pro n'a pas consulté le signalement dans un délai de 60j`
+        },
+        report_ack: {
+          title: `Signalement envoyé`,
+          desc: `Signalement aléatoire`
+        },
+        report_ack_case_suisse_and_dispute: {
+          title: `Signalement envoyé`,
+          desc: `Signalement Suisse (pays avec accord) + <b>litige</b>`
+        },
+        report_closed_no_reading_case_dispute: {
+          title: `Signalement litige non lu`,
+          desc: `Email envoyé si le pro n'a pas consulté le signalement de type <b>litige</b> dans un délai de 60j`
+        },
+        report_closed_no_action_case_dispute: {
+          title: `Signalement lu mais sans réponse`,
+          desc: ``
+        },
+        report_ack_case_andorre: {
+          title: `Signalement envoyé`,
+          desc: `Signalement Andorre (pays avec accord)`
+        },
+        report_ack_case_abroad_default_and_dispute: {
+          title: `Signalement envoyé`,
+          desc: `Pays étranger + <b>litige</b>`
+        },
+        report_ack_case_euro: {
+          title: `Signalement envoyé`,
+          desc: `Pays européeen`
+        },
+      }
+    },
     alreadySelectedCompany: (name?: string) => `L'entreprise ${name ?? ''} est déjà sélectionnée`,
     alreadySelectedCountry: (name?: string) => `Le pays ${name ?? ''} est déjà sélectionnée`,
     nLines: (n: number) => `<b>${n}</b> lignes`,
