@@ -6,7 +6,10 @@ import {useLogin} from '../../core/context/LoginContext'
 import {useI18n} from '../../core/i18n'
 import {useFetcher} from '@alexandreannic/react-hooks-lib'
 import {CurveStatsParams, Period, ReportStatus} from '@signal-conso/signalconso-api-sdk-js'
-import {curveRatio, statsFormatCurveDate} from './Stats'
+import {statsFormatCurveDate} from './Stats'
+import {curveRatio} from "./ReportStats";
+import {Alert} from "mui-extension";
+import {useCssUtils} from "../../core/helper/useCssUtils";
 
 interface Props {
   ticks?: number
@@ -15,28 +18,16 @@ interface Props {
 export const StatsReportsProProcessedPanel = ({ticks}: Props) => {
   const {apiSdk: api} = useLogin()
   const {m} = useI18n()
-
+  const cssUtils = useCssUtils()
   const reportCountCurve = useFetcher(api.public.stats.getReportCountCurve)
   const reportResponseCountCurve = useFetcher(api.secured.stats.getProReportResponseStat)
   const reportTransmittedCountCurve = useFetcher(api.secured.stats.getProReportTransmittedStat)
-  const reportCountVisibleByProCurve = useFetcher((_: CurveStatsParams) =>
-      api.public.stats.getReportCountCurve({
-        ..._, status: [
-          ReportStatus.TraitementEnCours,
-          ReportStatus.Transmis,
-          ReportStatus.PromesseAction,
-          ReportStatus.Infonde,
-          ReportStatus.NonConsulte,
-          ReportStatus.ConsulteIgnore,
-          ReportStatus.MalAttribue]
-      }),
-  )
+
 
   const fetchCurve = (period: Period) => {
     reportCountCurve.fetch({}, {ticks, tickDuration: period})
     reportResponseCountCurve.fetch({}, {ticks})
     reportTransmittedCountCurve.fetch({}, {ticks})
-    reportCountVisibleByProCurve.fetch({}, {ticks, tickDuration: period})
   }
 
   useEffect(() => {
@@ -44,30 +35,29 @@ export const StatsReportsProProcessedPanel = ({ticks}: Props) => {
   }, [ticks])
 
   return (
-    <Panel loading={reportCountCurve.loading || reportTransmittedCountCurve.loading || reportResponseCountCurve.loading || reportCountVisibleByProCurve.loading}>
+    <Panel loading={reportCountCurve.loading || reportTransmittedCountCurve.loading || reportResponseCountCurve.loading }>
+      <Alert type="info" className={cssUtils.marginBottom2}>
+                <span dangerouslySetInnerHTML={{__html: m.reportsProProcessedDesc}}
+                      className={cssUtils.tooltipColorTxtSecondary}/>
+      </Alert>
       <PanelHead>{m.reportsProProcessed}</PanelHead>
       <PanelBody>
         {
 
             reportCountCurve.entity
             && reportTransmittedCountCurve.entity
-            && reportResponseCountCurve.entity
-            && reportCountVisibleByProCurve.entity && (
+            && reportResponseCountCurve.entity &&
+             (
                 <ScLineChart curves={[
                   {
                     label: m.reportsProVisible,
                     key: 'visible_by_pro',
-                    curve: curveRatio(reportCountVisibleByProCurve.entity, reportCountCurve.entity).map(statsFormatCurveDate(m))
+                    curve: curveRatio(reportTransmittedCountCurve.entity, reportCountCurve.entity).map(statsFormatCurveDate(m))
                   },
                   {
                     label: m.reportsProResponse,
                     key: 'response_pro',
                     curve: curveRatio(reportResponseCountCurve.entity, reportCountCurve.entity).map(statsFormatCurveDate(m))
-                  },
-                  {
-                    label: m.reportsProTransmitted,
-                    key: 'transmitted_pro',
-                    curve: curveRatio(reportTransmittedCountCurve.entity, reportCountCurve.entity).map(statsFormatCurveDate(m))
                   }
                 ]}/>
             )}

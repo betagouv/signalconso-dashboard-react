@@ -2,17 +2,14 @@ import {Page, PageTitle} from 'shared/Layout'
 import * as React from 'react'
 import {CountByDate} from '@signal-conso/signalconso-api-sdk-js'
 import {useI18n} from '../../core/i18n'
-import {StatsReportsByRegion} from './StatsReportsByRegion'
 import {I18nContextProps} from '../../core/i18n/I18n'
-import {StatsReportsCurvePanel} from './StatsReportsCurve'
-import {StatsProUserPanel} from './StatsProUserPanel'
-import {StatsDgccrfAccountPanel} from './StatsDgccrfAccountPanel'
-import {StatsDgccrfSubscriptionsPanel} from './StatsDgccrfSubscriptionsPanel'
-import {StatsReportsInternetPanel} from './StatsReportsInternetPanel'
-import {StatsReportsProProcessedPanel} from "./StatsReportsProProcessed";
-import {StatsReportsProResponsePanel} from "./StatsReportsProResponse";
+import {ProStats} from './ProStats'
+import {DgccrfStats} from './DgccrfStats'
+import {PageTab, PageTabs} from "../../shared/Layout/Page/PageTabs";
+import {siteMap} from "../../core/siteMap";
+import {Redirect, Route, Switch, useRouteMatch} from "react-router-dom";
+import {ReportStats} from "./ReportStats";
 
-const ticks = 12
 
 export const statsFormatCurveDate = (m: I18nContextProps['m']) => ({
                                                                        date,
@@ -22,30 +19,27 @@ export const statsFormatCurveDate = (m: I18nContextProps['m']) => ({
     count,
 })
 
-export const curveRatio = (numerator: CountByDate[], denominator: CountByDate[]): CountByDate[] => {
 
-    return numerator.map<CountByDate>((k, i, t) =>
-        ({
-            date: k.date,
-            count: denominator[i] && denominator[i].count > 0 ? Math.round((k.count / denominator[i].count) * 100) : 0
-        } as CountByDate)
-    )
-}
 
 export const Stats = () => {
+    const {path} = useRouteMatch()
     const {m} = useI18n()
-
     return (
         <Page>
-            <PageTitle>{m.menu_stats}</PageTitle>
-            <StatsReportsCurvePanel ticks={ticks}/>
-            <StatsProUserPanel ticks={ticks}/>
-            <StatsReportsProProcessedPanel ticks={ticks}/>
-            <StatsReportsProResponsePanel/>
-            <StatsDgccrfAccountPanel ticks={ticks}/>
-            <StatsDgccrfSubscriptionsPanel ticks={ticks}/>
-            <StatsReportsByRegion/>
-            <StatsReportsInternetPanel/>
+            <PageTitle>
+                {m.statsLandingPage}
+            </PageTitle>
+            <PageTabs>
+                <PageTab to={siteMap.logged.reportStats} label={m.statsReports}/>
+                <PageTab to={siteMap.logged.proStats} label={m.statsPro}/>
+                <PageTab to={siteMap.logged.dgccrfStats} label={m.statsDgccrf}/>
+            </PageTabs>
+            <Switch>
+                <Redirect exact from={path} to={siteMap.logged.reportStats}/>
+                <Route path={siteMap.logged.reportStats} component={ReportStats}/>
+                <Route path={siteMap.logged.proStats} component={ProStats}/>
+                <Route path={siteMap.logged.dgccrfStats} component={DgccrfStats}/>
+            </Switch>
         </Page>
     )
 }

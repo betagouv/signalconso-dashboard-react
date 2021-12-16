@@ -5,8 +5,11 @@ import {useEffect} from 'react'
 import {useLogin} from '../../core/context/LoginContext'
 import {useI18n} from '../../core/i18n'
 import {useFetcher} from '@alexandreannic/react-hooks-lib'
-import {CurveStatsParams, ReportStatus} from '@signal-conso/signalconso-api-sdk-js'
-import {curveRatio, statsFormatCurveDate} from './Stats'
+import {statsFormatCurveDate} from './Stats'
+import {curveRatio} from "./ReportStats";
+import {ReportResponseStatsParams} from "../../../../signalconso-api-sdk-js/src";
+import {useCssUtils} from "../../core/helper/useCssUtils";
+import {Alert} from "mui-extension";
 
 interface Props {
   ticks?: number
@@ -15,44 +18,35 @@ interface Props {
 export const StatsReportsProResponsePanel = ({ticks}: Props) => {
   const {apiSdk: api} = useLogin()
   const {m} = useI18n()
+  const cssUtils = useCssUtils()
 
 
-  const reportCountVisibleByProCurve = useFetcher((_: CurveStatsParams) =>
-      api.public.stats.getReportCountCurve({
-        ..._, status: [
-          ReportStatus.TraitementEnCours,
-          ReportStatus.Transmis,
-          ReportStatus.PromesseAction,
-          ReportStatus.Infonde,
-          ReportStatus.NonConsulte,
-          ReportStatus.ConsulteIgnore,
-          ReportStatus.MalAttribue]
-      }),
-  )
-  const reportCountMalAttribueCurve = useFetcher((_: CurveStatsParams) =>
-      api.public.stats.getReportCountCurve({
-        ..._, status: [ReportStatus.MalAttribue]
+  const reportResponseCountCurve = useFetcher(api.secured.stats.getProReportResponseStat)
+
+  const reportCountMalAttribueCurve = useFetcher((_: ReportResponseStatsParams) =>
+     api.secured.stats.getProReportResponseStat({
+        ..._, responseStatusQuery: ['NOT_CONCERNED']
       }),
   )
 
-  const reportCountInfondeCurve = useFetcher((_: CurveStatsParams) =>
-      api.public.stats.getReportCountCurve({
-        ..._, status: [ReportStatus.Infonde]
+  const reportCountInfondeCurve = useFetcher((_: ReportResponseStatsParams) =>
+     api.secured.stats.getProReportResponseStat({
+        ..._, responseStatusQuery: ['REJECTED']
       }),
   )
 
-  const reportCountPromesseActionCurve = useFetcher((_: CurveStatsParams) =>
-      api.public.stats.getReportCountCurve({
-        ..._, status: [ReportStatus.PromesseAction]
+  const reportCountPromesseActionCurve = useFetcher((_: ReportResponseStatsParams) =>
+     api.secured.stats.getProReportResponseStat({
+        ..._, responseStatusQuery: ['ACCEPTED']
       }),
   )
 
 
   const fetchCurve = () => {
-    reportCountVisibleByProCurve.fetch({}, {ticks})
     reportCountMalAttribueCurve.fetch({}, {ticks})
     reportCountInfondeCurve.fetch({}, {ticks})
     reportCountPromesseActionCurve.fetch({}, {ticks})
+    reportResponseCountCurve.fetch({}, {ticks})
   }
 
   useEffect(() => {
@@ -60,7 +54,11 @@ export const StatsReportsProResponsePanel = ({ticks}: Props) => {
   }, [ticks])
 
   return (
-    <Panel loading={reportCountVisibleByProCurve.loading || reportCountMalAttribueCurve.loading || reportCountInfondeCurve.loading || reportCountPromesseActionCurve.loading}>
+    <Panel loading={reportResponseCountCurve.loading || reportCountMalAttribueCurve.loading || reportCountInfondeCurve.loading || reportCountPromesseActionCurve.loading}>
+        <Alert type="info" className={cssUtils.marginBottom2}>
+                <span dangerouslySetInnerHTML={{__html: m.reportsProResponseTypeDesc}}
+                      className={cssUtils.tooltipColorTxtSecondary}/>
+        </Alert>
       <PanelHead>{m.reportsProResponseType}</PanelHead>
       <PanelBody>
         {
@@ -68,22 +66,22 @@ export const StatsReportsProResponsePanel = ({ticks}: Props) => {
             reportCountMalAttribueCurve.entity
             && reportCountInfondeCurve.entity
             && reportCountPromesseActionCurve.entity
-            && reportCountVisibleByProCurve.entity && (
+            && reportResponseCountCurve.entity && (
                 <ScLineChart curves={[
                   {
                     label: m.reportsProMalAttribue,
                     key: 'mal_attribue',
-                    curve: curveRatio(reportCountMalAttribueCurve.entity, reportCountVisibleByProCurve.entity).map(statsFormatCurveDate(m))
+                    curve: curveRatio(reportCountMalAttribueCurve.entity, reportResponseCountCurve.entity).map(statsFormatCurveDate(m))
                   },
                   {
                     label: m.reportsProInfonde,
                     key: 'infonde',
-                    curve: curveRatio(reportCountInfondeCurve.entity, reportCountVisibleByProCurve.entity).map(statsFormatCurveDate(m))
+                    curve: curveRatio(reportCountInfondeCurve.entity, reportResponseCountCurve.entity).map(statsFormatCurveDate(m))
                   },
                   {
                     label: m.reportsProPromesseAction,
                     key: 'promesse_action',
-                    curve: curveRatio(reportCountPromesseActionCurve.entity, reportCountVisibleByProCurve.entity).map(statsFormatCurveDate(m))
+                    curve: curveRatio(reportCountPromesseActionCurve.entity, reportResponseCountCurve.entity).map(statsFormatCurveDate(m))
                   }
                 ]}/>
             )}
