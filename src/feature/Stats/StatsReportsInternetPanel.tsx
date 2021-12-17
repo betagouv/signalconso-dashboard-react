@@ -169,7 +169,7 @@ const Box = ({
             <span style={{fontSize: 22}}> %</span>
           </span>
           <span className={classes(cssUtils.txtBig, cssUtils.txtBold, evolution > 0 ? cssUtils.colorSuccess : cssUtils.colorError)}>
-            {evolution > 0 ? '+' : '-'}{Math.abs(evolution)} %
+            {evolution > 0 ? '+' : '-'}{Math.abs(evolution)}
           </span>
         </div>
         <Txt block bold>{title}</Txt>

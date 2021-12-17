@@ -7,7 +7,7 @@ import {useI18n} from '../../core/i18n'
 import {useFetcher} from '@alexandreannic/react-hooks-lib'
 import {statsFormatCurveDate} from './Stats'
 import {curveRatio} from "./ReportStats";
-import {ReportResponseStatsParams} from "../../../../signalconso-api-sdk-js/src";
+import {ReportResponseStatsParams} from "@signal-conso/signalconso-api-sdk-js";
 import {useCssUtils} from "../../core/helper/useCssUtils";
 import {Alert} from "mui-extension";
 
