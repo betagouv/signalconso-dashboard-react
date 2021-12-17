@@ -191,7 +191,7 @@ export const fr = {
     creationDate: 'Date de création',
     reportsDivision: 'Répartition des signalements',
     reportsDivisionDesc: `   
-    <p>Répartition des signalements  :</p>
+    <div>Répartition des signalements :</div>
     <ul>
         <li>Nombre total de signalements toute catégorie.</li>
         <li>Signalements de site internet.</li>
@@ -206,18 +206,18 @@ export const fr = {
     statsReports: 'Signalements',
     dgccrfUser: 'Comptes DGCCRF',
     dgccrfUserDesc: `   
-    <p>Statistique des comptes DGCCRF :</p>
+    <div>Statistique des comptes DGCCRF :</div>
     <ul>
         <li>Nombre de comptes DGCCRF en cumul (non actifs compris).</li>
-        <li>Nombre de compte actifs ( 3 mois après la dernière validation de leur adresse email).</li>
+        <li>Nombre de compte actifs (3 mois après la dernière validation de leur adresse email).</li>
     </ul>
   `,
     dgccrfActions: 'Actions DGCCRF',
     dgccrfActionsDesc: `   
-    <p>Statistique sur les actions des agents DGCCRF :</p>
+    <div>Statistique sur les actions des agents DGCCRF :</div>
     <ul>
         <li>Nombre d'abonnements au cumul</li>
-        <li>Nombre d'entreprises controlées ( retour par un agents DGCCRF sur signal conso du controle d'une entreprise )</li>
+        <li>Nombre d'entreprises controlées (retour par un agents DGCCRF sur signal conso du controle d'une entreprise)</li>
     </ul>
   `,
     dgccrfCountAccount: 'Nombre compte CCRF au cumul',
@@ -235,7 +235,7 @@ export const fr = {
     emailConsumer: 'Email conso.',
     reportsProProcessed: 'Traitement des signalements par les pros',
     reportsProProcessedDesc: `   
-    <p>Pourcentage du traitement des signalements visible par les professionnels sur le total des signalements</p>
+    <div>Pourcentage du traitement des signalements visible par les professionnels sur le total des signalements</div>
     <ul>
         <li>Part des signalements transmis : TraitementEnCours/Envoyé, Transmis/Lu, NonConsulte, ConsulteIgnore, PromesseAction, Infonde, MalAttribue</li>
         <li>Part des réponses aux signalements : PromesseAction, Infonde, MalAttribue</li>
@@ -243,8 +243,7 @@ export const fr = {
   `,
     reportsProResponseType: 'Types de réponse - évolution',
     reportsProResponseTypeDesc: `   
-    <p>Répartition des réponses des professionels aux signalements sur les signalements transmis</p>
- 
+    Répartition des réponses des professionels aux signalements sur les signalements transmis
   `,
     reportsProResponse: '% Réponses',
     reportsProVisible: ' % Transmis',
@@ -298,8 +297,7 @@ export const fr = {
     database: `Base de données`,
     beginning: `Début`,
     reportsDistribution: `Répartition des signalementspar départements`,
-    reportsDistributionDesc: `<p>Classement des signalements par départements ( N/A correspond aux signalements dont les départements non renseignés) </p>
-  `,
+    reportsDistributionDesc: `Classement des signalements par départements (N/A correspond aux signalements dont les départements non renseignés).`,
     invalidSize: (maxSize: number) => `La taille du fichier dépasse les ${maxSize} Mb`,
     somethingWentWrong: `Une erreur s'est produite`,
     altLogoSignalConso: `Logo SignalConso / Retour à la page d'accueil`,
@@ -389,7 +387,7 @@ export const fr = {
     sendNewPostal: `Envoyer un nouveau courrier`,
     companiesDbSyncInfo: `
     Le fichier <b>StockEtablissement</b> doit être, de préférence, lancé en premier. 
-    <br.>
+    <br/>
     Le fichier <b>StockUniteLegale</b> permet d'obtenir le nom de l'établissement lorsqu'il est absent du fichier <b>StockEtablissement</b>.
     <br/>
     <br/>
