@@ -7,6 +7,8 @@ import {useI18n} from '../../core/i18n'
 import {useFetcher} from '@alexandreannic/react-hooks-lib'
 import {CountByDate, CurveStatsParams, Period, ReportTag} from '@signal-conso/signalconso-api-sdk-js'
 import {statsFormatCurveDate} from './Stats'
+import {Alert} from "mui-extension";
+import {useCssUtils} from "../../core/helper/useCssUtils";
 
 interface Props {
   ticks?: number
@@ -15,6 +17,7 @@ interface Props {
 export const StatsReportsCurvePanel = ({ticks}: Props) => {
   const {apiSdk: api} = useLogin()
   const {m} = useI18n()
+  const cssUtils = useCssUtils()
 
   const reportCountCurve = useFetcher(api.public.stats.getReportCountCurve)
   const reportInternetCountCurve = useFetcher((_: CurveStatsParams) =>
@@ -50,6 +53,10 @@ export const StatsReportsCurvePanel = ({ticks}: Props) => {
 
   return (
     <Panel loading={reportCountCurve.loading || reportInternetCountCurve.loading || reportDemarchageCountCurve.loading}>
+      <Alert type="info" className={cssUtils.marginBottom2}>
+                <span dangerouslySetInnerHTML={{__html: m.reportsDivisionDesc}}
+                      className={cssUtils.tooltipColorTxtSecondary}/>
+      </Alert>
       <PanelHead>{m.reportsDivision}</PanelHead>
       <PanelBody>
         {reportCountCurve.entity && reportInternetCountCurve.entity && reportDemarchageCountCurve.entity && (

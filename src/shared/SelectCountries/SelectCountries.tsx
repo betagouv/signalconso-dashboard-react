@@ -34,7 +34,7 @@ interface Props
   onChange: (_: string[]) => void
 }
 
-export const SelectCountries = forwardRef(({value, label, onChange, disabled, ...props}: Props, ref: any) => {
+export const SelectCountries = forwardRef(({value, onChange, disabled, ...props}: Props, ref: any) => {
   const cssUtils = useCssUtils()
   const css = useStyles()
   const {m} = useI18n()

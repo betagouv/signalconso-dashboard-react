@@ -122,6 +122,12 @@ export const ScMenu = ({onClose, connectedUser}: Props) => {
             {m.menu_modeEmploiDGCCRF}
           </ScMenuItem>
         )}
+        <Divider className={css.divider} />
+        {[Roles.Admin].includes(connectedUser.role) && (
+          <ScMenuItem onClick={onClose} to={path(siteMap.logged.admin)} icon={EntityIcon.admin}>
+            {m.menu_admin}
+          </ScMenuItem>
+        )}
         {[Roles.Admin].includes(connectedUser.role) && (
           <ScMenuItem onClick={onClose} to={path(siteMap.logged.companiesDbSync)} icon="sync">
             {m.database}

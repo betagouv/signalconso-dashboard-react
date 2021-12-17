@@ -293,21 +293,6 @@ export const Reports = ({}) => {
               render: _ => <ReportDetailValues input={_.report.details} lines={2} />,
             },
             {
-              id: 'email',
-              head: m.consumer,
-              className: css.tdConsumer,
-              render: _ => (
-                <span className={classes(_.report.contactAgreement ? cssUtils.colorSuccess : cssUtils.colorError)}>
-                  {textOverflowMiddleCropping(_.report.email ?? '', 25)}
-                </span>
-              ),
-            },
-            {
-              id: 'status',
-              head: m.status,
-              render: _ => <ReportStatusLabel dense status={_.report.status}/>,
-            },
-            {
               id: 'tags',
               head: m.tags,
               render: _ => _.report.tags.map(tag =>
@@ -319,6 +304,21 @@ export const Reports = ({}) => {
                   className={classes(cssUtils.colorTxtSecondary, cssUtils.txtBold)}
                   style={{marginRight: 2}}
                 />,
+              ),
+            },
+            {
+              id: 'status',
+              head: m.status,
+              render: _ => <ReportStatusLabel dense status={_.report.status}/>,
+            },
+            {
+              id: 'email',
+              head: m.consumer,
+              className: css.tdConsumer,
+              render: _ => (
+                <span className={classes(_.report.contactAgreement ? cssUtils.colorSuccess : cssUtils.colorError)}>
+                  {textOverflowMiddleCropping(_.report.email ?? '', 25)}
+                </span>
               ),
             },
             {

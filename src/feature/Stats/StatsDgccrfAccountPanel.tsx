@@ -6,6 +6,9 @@ import {useLogin} from '../../core/context/LoginContext'
 import {useI18n} from '../../core/i18n'
 import {useFetcher} from '@alexandreannic/react-hooks-lib'
 import {useEffect} from 'react'
+import {Alert} from "mui-extension";
+import {useCssUtils} from "../../core/helper/useCssUtils";
+import {Txt} from "mui-extension/lib/Txt/Txt";
 
 interface Props {
   ticks: number
@@ -13,6 +16,7 @@ interface Props {
 export const StatsDgccrfAccountPanel = ({ticks}: Props) => {
   const {apiSdk: api} = useLogin()
   const {m} = useI18n()
+  const cssUtils = useCssUtils()
 
   const dgccrfActiveAccount = useFetcher(api.secured.stats.getActiveDgccrfAccountCurve)
   const dgccrfAccount = useFetcher(api.secured.stats.getDgccrfAccountCurve)
@@ -24,6 +28,9 @@ export const StatsDgccrfAccountPanel = ({ticks}: Props) => {
 
   return (
     <Panel loading={dgccrfActiveAccount.loading || dgccrfAccount.loading}>
+        <Alert type="info" className={cssUtils.marginBottom2}>
+            <span dangerouslySetInnerHTML={{__html: m.dgccrfUserDesc}} className={cssUtils.tooltipColorTxtSecondary} />
+        </Alert>
       <PanelHead>{m.dgccrfUser}</PanelHead>
       <PanelBody>
         {dgccrfActiveAccount.entity && dgccrfAccount.entity && (

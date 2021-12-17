@@ -1,8 +1,9 @@
 import {Id, ReportSearch, toQueryString} from '@signal-conso/signalconso-api-sdk-js'
-import {mapDateFromQueryString, mapDatesToQueryString} from './helper/useQueryString'
+import {mapDatesToQueryString} from './helper/useQueryString'
 
 export const siteMap = {
   logged: {
+    admin: `/admin`,
     reportedWebsites: `/moderation-url-entreprises`,
     reportedWebsites_unknown: `/moderation-url-entreprises/sites-internet/non-identifies`,
     reportedWebsites_association: `/moderation-url-entreprises/site-internet`,
@@ -16,14 +17,17 @@ export const siteMap = {
     companies: `/entreprises`,
     companiesPro: `/mes-entreprises`,
     companyAccesses: (siret: string = `:siret`) => `/entreprise/acces/${siret}`,
-    users: `/admin/invitation-ccrf`,
+    users: `/invitation-ccrf`,
     company: (id: Id = `:id`) => `/bilan-entreprise/${id}`,
-    users_pending: `/admin/invitation-ccrf/pending`,
-    users_all: `/admin/invitation-ccrf/all`,
+    users_pending: `/invitation-ccrf/pending`,
+    users_all: `/invitation-ccrf/all`,
     settings: `/parametres`,
     modeEmploiDGCCRF: `/mode-emploi-dgccrf`,
     companiesDbSync: `/companies-db-sync`,
     stats: `/stats`,
+    proStats: `/stats/pro-stats`,
+    dgccrfStats: `/stats/dgccrf-stats`,
+    reportStats: `/stats/report-stats`,
   },
   loggedout: {
     activatePro: (siret: string = `:siret`) => `/entreprise/rejoindre/${siret}`,
