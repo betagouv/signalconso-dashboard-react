@@ -14,6 +14,8 @@ import {useEffectFn} from '../../shared/hooks/UseEffectFn'
 import {useToast} from '../../core/toast'
 import {SelectMonth} from '../../shared/SelectMonth/SelectMonth'
 import {useGetDateForMonthAndPreviousOne} from './useGetDateForMonthAndPreviousOne'
+import {Alert} from "mui-extension";
+import * as React from "react";
 
 export const StatsReportsByRegion = () => {
   const {apiSdk: api} = useLogin()
@@ -55,6 +57,10 @@ export const StatsReportsByRegion = () => {
 
   return (
     <Panel loading={_countByDepCurrentMonth.loading || _countByDepLastMonth.loading}>
+      <Alert type="info" className={cssUtils.marginBottom2}>
+                <span dangerouslySetInnerHTML={{__html: m.reportsDistributionDesc}}
+                      className={cssUtils.tooltipColorTxtSecondary}/>
+      </Alert>
       <PanelHead className={cssUtils.marginBottom2} action={
         <SelectMonth value={selectedMonth} onChange={setSelectedMonth}/>
       }>
@@ -81,7 +87,12 @@ export const StatsReportsByRegion = () => {
               {_countByDepCurrentMonth.entity.slice(0, 20).map(([depNumber, count], i) => (
                 <TableRow>
                   <TableCell>{i + 1}</TableCell>
-                  <TableCell>{_constant.departmentsIndex![depNumber]} <span className={cssUtils.colorTxtHint}>({depNumber})</span></TableCell>
+                  <TableCell>{
+                    (() =>{
+                      return depNumber ? <span>{_constant.departmentsIndex![depNumber]} <span className={cssUtils.colorTxtHint}>({depNumber})</span></span> : <span> N/A </span>
+                    })()}
+
+                  </TableCell>
                   <TableCell>{formatLargeNumber(count)}</TableCell>
                   <TableCell>{(() => {
                     const oldPosition = positionByDep[depNumber]
