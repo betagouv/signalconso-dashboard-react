@@ -131,14 +131,14 @@ export const ReportComponent = () => {
 
             <Grid container spacing={2} alignItems="stretch">
               <Grid item xs={12} sm={6}>
-                <ReportConsumer report={report} canEdit={connectedUser.isAdmin}/>
+                <ReportConsumer report={report} canEdit={connectedUser.isAdmin} />
               </Grid>
               <Grid item xs={12} sm={6}>
-                <ReportCompany report={report} canEdit={connectedUser.isAdmin}/>
+                <ReportCompany report={report} canEdit={connectedUser.isAdmin} />
               </Grid>
             </Grid>
 
-            <ReportDescription report={report} files={_report.get.entity?.files}/>
+            <ReportDescription report={report} files={_report.get.entity?.files} />
 
             <Panel loading={_event.reportEvents.loading}>
               <>
@@ -149,9 +149,9 @@ export const ReportComponent = () => {
                   indicatorColor="primary"
                   textColor="primary"
                 >
-                  <Tab label={m.proResponse}/>
-                  <Tab label={m.reportHistory}/>
-                  <Tab label={m.companyHistory}/>
+                  <Tab label={m.proResponse} />
+                  <Tab label={m.reportHistory} />
+                  <Tab label={m.companyHistory} />
                 </Tabs>
                 <ReportTabPanel value={activeTab} index={0}>
                   <ReportResponseComponent
@@ -162,16 +162,16 @@ export const ReportComponent = () => {
                   />
                 </ReportTabPanel>
                 <ReportTabPanel value={activeTab} index={1}>
-                  <ReportEvents events={_event.reportEvents.loading
-                    ? undefined
-                    : [creationReportEvent(report), ...(_event.reportEvents.entity ?? [])]}
+                  <ReportEvents
+                    events={
+                      _event.reportEvents.loading
+                        ? undefined
+                        : [creationReportEvent(report), ...(_event.reportEvents.entity ?? [])]
+                    }
                   />
                 </ReportTabPanel>
                 <ReportTabPanel value={activeTab} index={2}>
-                  <ReportEvents events={_event.companyEvents.loading
-                    ? undefined
-                    : (_event.companyEvents.entity ?? [])}
-                  />
+                  <ReportEvents events={_event.companyEvents.loading ? undefined : _event.companyEvents.entity ?? []} />
                 </ReportTabPanel>
               </>
             </Panel>

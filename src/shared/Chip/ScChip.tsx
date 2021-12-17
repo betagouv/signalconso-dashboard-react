@@ -1,6 +1,6 @@
 import React from 'react'
 import {Chip as MatChip, ChipProps as MatChipProps, Theme} from '@mui/material'
-import makeStyles from '@mui/styles/makeStyles';
+import makeStyles from '@mui/styles/makeStyles'
 import {classes} from '../../core/helper/utils'
 import {styleUtils} from '../../core/theme'
 

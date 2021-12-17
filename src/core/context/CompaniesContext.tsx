@@ -29,7 +29,6 @@ export interface CompaniesContextProps {
   byId: UseFetcher<(id: Id) => Promise<CompanyWithReportsCount>, ApiError>
   hosts: UseFetcher<Sdk['getHosts'], ApiError>
   responseRate: UseFetcher<Sdk['getResponseRate'], ApiError>
-
 }
 
 interface Props {

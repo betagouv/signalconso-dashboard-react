@@ -29,63 +29,57 @@ export interface SelectDepartmentsProps {
   label?: string
 }
 
-export const SelectDepartments = forwardRef(({
-  value,
-  readonly,
-  onChange,
-  selectAllLabel,
-  label,
-  disabled,
-  ...props
-}: SelectDepartmentsProps, ref: any) => {
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
-  let $input: HTMLElement | undefined = undefined
-  const css = useStyles()
-  const indexValues: UseSetState<string> = useSetState<string>()
+export const SelectDepartments = forwardRef(
+  ({value, readonly, onChange, selectAllLabel, label, disabled, ...props}: SelectDepartmentsProps, ref: any) => {
+    const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
+    let $input: HTMLElement | undefined = undefined
+    const css = useStyles()
+    const indexValues: UseSetState<string> = useSetState<string>()
 
-  useEffect(() => {
-    indexValues.reset(value)
-  }, [value])
+    useEffect(() => {
+      indexValues.reset(value)
+    }, [value])
 
-  const open = (event: any) => {
-    if (!disabled) setAnchorEl(event.currentTarget)
-  }
+    const open = (event: any) => {
+      if (!disabled) setAnchorEl(event.currentTarget)
+    }
 
-  const close = () => {
-    setAnchorEl(null)
-  }
+    const close = () => {
+      setAnchorEl(null)
+    }
 
-  return (
-    <>
-      <TextField
-        {...props}
-        ref={ref}
-        variant="outlined"
-        margin="dense"
-        size="small"
-        onClick={open}
-        value={indexValues.toArray().join(', ') ?? ''}
-        disabled={readonly}
-        label={label}
-        inputRef={(n: any) => ($input = n ?? undefined)}
-        InputProps={{
-          disabled,
-          readOnly: true,
-          endAdornment: (
-            <InputAdornment position="end">
-              <Icon className={css.adornment}>arrow_drop_down</Icon>
-            </InputAdornment>
-          ),
-        }}
-      />
-      <SelectDepartmentsMenu
-        selectAllLabel={selectAllLabel}
-        anchorEl={anchorEl}
-        open={!!anchorEl}
-        onClose={close}
-        onChange={onChange}
-        initialValues={value}
-      />
-    </>
-  )
-})
+    return (
+      <>
+        <TextField
+          {...props}
+          ref={ref}
+          variant="outlined"
+          margin="dense"
+          size="small"
+          onClick={open}
+          value={indexValues.toArray().join(', ') ?? ''}
+          disabled={readonly}
+          label={label}
+          inputRef={(n: any) => ($input = n ?? undefined)}
+          InputProps={{
+            disabled,
+            readOnly: true,
+            endAdornment: (
+              <InputAdornment position="end">
+                <Icon className={css.adornment}>arrow_drop_down</Icon>
+              </InputAdornment>
+            ),
+          }}
+        />
+        <SelectDepartmentsMenu
+          selectAllLabel={selectAllLabel}
+          anchorEl={anchorEl}
+          open={!!anchorEl}
+          onClose={close}
+          onChange={onChange}
+          initialValues={value}
+        />
+      </>
+    )
+  },
+)

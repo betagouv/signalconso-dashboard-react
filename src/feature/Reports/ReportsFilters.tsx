@@ -73,11 +73,7 @@ const RowExtra = ({children}: RowExtraProps) => {
     },
   }))
   const css = useStyles()
-  return (
-    <div className={css.root}>
-      {children}
-    </div>
-  )
+  return <div className={css.root}>{children}</div>
 }
 
 const useStyles = makeStyles((t: Theme) => ({
@@ -92,9 +88,7 @@ export const ReportFilters = ({filters, ...props}: ReportsFiltersProps) => {
     hasForeignCountry: (f.companyCountries ?? []).length > 0 ? true : f.hasForeignCountry,
     hasCompany: (f.siretSirenList ?? []).length > 0 ? true : f.hasCompany,
   })
-  return (
-    <ReportFiltersMapped filters={rationalizeFilters(filters)} {...props}/>
-  )
+  return <ReportFiltersMapped filters={rationalizeFilters(filters)} {...props} />
 }
 
 const ReportFiltersMapped = ({filters, updateFilters, children}: ReportsFiltersProps) => {
@@ -142,43 +136,55 @@ const ReportFiltersMapped = ({filters, updateFilters, children}: ReportsFiltersP
         {_category.entity && (
           <>
             <DialogContent>
-              <DialogInputRow label={
-                <>
-                  <div>{m.identifiedCompany}</div>
-                  <Txt size="small" color="disabled" block style={{marginTop: -14}}>({m.siret})</Txt>
-                </>
-              }>
+              <DialogInputRow
+                label={
+                  <>
+                    <div>{m.identifiedCompany}</div>
+                    <Txt size="small" color="disabled" block style={{marginTop: -14}}>
+                      ({m.siret})
+                    </Txt>
+                  </>
+                }
+              >
                 <Controller
                   name="hasCompany"
                   defaultValue={filters.hasCompany}
                   control={control}
                   render={({field}) => (
                     <TrueFalseUndefined
-                      label={{true: <>{m.yes} <Icon fontSize="inherit">arrow_drop_down</Icon></>}}
-                      className={cssUtils.marginTop} {...field}/>
+                      label={{
+                        true: (
+                          <>
+                            {m.yes} <Icon fontSize="inherit">arrow_drop_down</Icon>
+                          </>
+                        ),
+                      }}
+                      className={cssUtils.marginTop}
+                      {...field}
+                    />
                   )}
                 />
                 {watch('hasCompany') === true && (
                   <RowExtra>
-                    <ScInput className={css.optionalInput} label={m.siret} fullWidth {...register('siretSirenList')} defaultValue={filters.siretSirenList ?? ''}/>
+                    <ScInput
+                      className={css.optionalInput}
+                      label={m.siret}
+                      fullWidth
+                      {...register('siretSirenList')}
+                      defaultValue={filters.siretSirenList ?? ''}
+                    />
                   </RowExtra>
                 )}
               </DialogInputRow>
               <DialogInputRow label={m.keywords}>
-                <ScInput fullWidth {...register('details')} defaultValue={filters.details ?? ''}/>
+                <ScInput fullWidth {...register('details')} defaultValue={filters.details ?? ''} />
               </DialogInputRow>
               <DialogInputRow label={m.codeNaf}>
                 <Controller
                   name="activityCodes"
                   defaultValue={filters.activityCodes ?? []}
                   control={control}
-                  render={({field}) => (
-                    <SelectActivityCode
-                      {...field}
-                      fullWidth
-                      onChange={(e, value) => field.onChange(value)}
-                    />
-                  )}
+                  render={({field}) => <SelectActivityCode {...field} fullWidth onChange={(e, value) => field.onChange(value)} />}
                 />
               </DialogInputRow>
               <DialogInputRow label={m.categories}>
@@ -214,22 +220,30 @@ const ReportFiltersMapped = ({filters, updateFilters, children}: ReportsFiltersP
                 />
               </DialogInputRow>
               <DialogInputRow label={m.status}>
-                <Controller defaultValue={filters.status ?? []} name="status" control={control} render={({field}) => (
-                  <ScSelect
-                    {...field} multiple fullWidth
-                    renderValue={status => `(${status.length}) ${status.map(_ => m.reportStatusShort[_]).join(',')}`}
-                  >
-                    {Enum.values(ReportStatus).map(status => (
-                      <MenuItem key={status} value={status}>
-                        <Checkbox
-                          size="small" style={{paddingLeft: 0, paddingTop: 0, paddingBottom: 0}}
-                          checked={(getValues().status ?? []).includes(status)}
-                        />
-                        <ReportStatusLabel inSelectOptions dense fullWidth status={status}/>
-                      </MenuItem>
-                    ))}
-                  </ScSelect>
-                )}/>
+                <Controller
+                  defaultValue={filters.status ?? []}
+                  name="status"
+                  control={control}
+                  render={({field}) => (
+                    <ScSelect
+                      {...field}
+                      multiple
+                      fullWidth
+                      renderValue={status => `(${status.length}) ${status.map(_ => m.reportStatusShort[_]).join(',')}`}
+                    >
+                      {Enum.values(ReportStatus).map(status => (
+                        <MenuItem key={status} value={status}>
+                          <Checkbox
+                            size="small"
+                            style={{paddingLeft: 0, paddingTop: 0, paddingBottom: 0}}
+                            checked={(getValues().status ?? []).includes(status)}
+                          />
+                          <ReportStatusLabel inSelectOptions dense fullWidth status={status} />
+                        </MenuItem>
+                      ))}
+                    </ScSelect>
+                  )}
+                />
               </DialogInputRow>
               <DialogInputRow label={m.website}>
                 <Controller
@@ -239,14 +253,26 @@ const ReportFiltersMapped = ({filters, updateFilters, children}: ReportsFiltersP
                   render={({field}) => (
                     <TrueFalseUndefined
                       {...field}
-                      label={{true: <>{m.yes} <Icon fontSize="inherit">arrow_drop_down</Icon></>}}
+                      label={{
+                        true: (
+                          <>
+                            {m.yes} <Icon fontSize="inherit">arrow_drop_down</Icon>
+                          </>
+                        ),
+                      }}
                       className={cssUtils.marginTop}
                     />
                   )}
                 />
                 {watch('hasWebsite') === true && (
                   <RowExtra>
-                    <ScInput label={m.url} fullWidth className={css.optionalInput} {...register('websiteURL')} defaultValue={filters.websiteURL ?? ''}/>
+                    <ScInput
+                      label={m.url}
+                      fullWidth
+                      className={css.optionalInput}
+                      {...register('websiteURL')}
+                      defaultValue={filters.websiteURL ?? ''}
+                    />
                   </RowExtra>
                 )}
               </DialogInputRow>
@@ -258,14 +284,26 @@ const ReportFiltersMapped = ({filters, updateFilters, children}: ReportsFiltersP
                   render={({field}) => (
                     <TrueFalseUndefined
                       {...field}
-                      label={{true: <>{m.yes} <Icon fontSize="inherit">arrow_drop_down</Icon></>}}
+                      label={{
+                        true: (
+                          <>
+                            {m.yes} <Icon fontSize="inherit">arrow_drop_down</Icon>
+                          </>
+                        ),
+                      }}
                       className={cssUtils.marginTop}
                     />
                   )}
                 />
                 {watch('hasPhone') === true && (
                   <RowExtra>
-                    <ScInput label={m.phone} fullWidth className={css.optionalInput} {...register('phone')} defaultValue={filters.phone ?? ''}/>
+                    <ScInput
+                      label={m.phone}
+                      fullWidth
+                      className={css.optionalInput}
+                      {...register('phone')}
+                      defaultValue={filters.phone ?? ''}
+                    />
                   </RowExtra>
                 )}
               </DialogInputRow>
@@ -277,7 +315,13 @@ const ReportFiltersMapped = ({filters, updateFilters, children}: ReportsFiltersP
                   render={({field}) => (
                     <TrueFalseUndefined
                       {...field}
-                      label={{true: <>{m.yes} <Icon fontSize="inherit">arrow_drop_down</Icon></>}}
+                      label={{
+                        true: (
+                          <>
+                            {m.yes} <Icon fontSize="inherit">arrow_drop_down</Icon>
+                          </>
+                        ),
+                      }}
                       className={cssUtils.marginTop}
                     />
                   )}
@@ -288,13 +332,15 @@ const ReportFiltersMapped = ({filters, updateFilters, children}: ReportsFiltersP
                       name="companyCountries"
                       defaultValue={filters.companyCountries ?? []}
                       control={control}
-                      render={({field}) => <SelectCountries label={m.foreignCountry} fullWidth className={css.optionalInput} {...field} />}
+                      render={({field}) => (
+                        <SelectCountries label={m.foreignCountry} fullWidth className={css.optionalInput} {...field} />
+                      )}
                     />
                   </RowExtra>
                 )}
               </DialogInputRow>
               <DialogInputRow label={m.emailConsumer}>
-                <ScInput fullWidth {...register('email')} defaultValue={filters.email ?? ''}/>
+                <ScInput fullWidth {...register('email')} defaultValue={filters.email ?? ''} />
               </DialogInputRow>
             </DialogContent>
             <DialogActions>

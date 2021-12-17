@@ -71,16 +71,7 @@ const useStyles = makeStyles((t: Theme) => ({
   },
 }))
 
-export const Label = ({
-  type,
-  children,
-  className,
-  fullWidth,
-  dense,
-  elevation = 0,
-  inSelectOptions,
-  ...props
-}: LabelProps) => {
+export const Label = ({type, children, className, fullWidth, dense, elevation = 0, inSelectOptions, ...props}: LabelProps) => {
   const css = useStyles()
   return (
     <Paper

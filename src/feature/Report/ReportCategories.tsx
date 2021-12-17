@@ -1,6 +1,6 @@
 import {useCssUtils} from '../../core/helper/useCssUtils'
-import { Icon, Theme } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
+import {Icon, Theme} from '@mui/material'
+import makeStyles from '@mui/styles/makeStyles'
 import {styleUtils} from '../../core/theme'
 import {classes} from '../../core/helper/utils'
 import React from 'react'

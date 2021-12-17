@@ -7,9 +7,9 @@ import {useI18n} from '../../core/i18n'
 import {useFetcher} from '@alexandreannic/react-hooks-lib'
 import {CurveStatsParams, Period, ReportStatus} from '@signal-conso/signalconso-api-sdk-js'
 import {statsFormatCurveDate} from './Stats'
-import {curveRatio} from "./ReportStats";
-import {Alert} from "mui-extension";
-import {useCssUtils} from "../../core/helper/useCssUtils";
+import {curveRatio} from './ReportStats'
+import {Alert} from 'mui-extension'
+import {useCssUtils} from '../../core/helper/useCssUtils'
 
 interface Props {
   ticks?: number
@@ -23,7 +23,6 @@ export const StatsReportsProProcessedPanel = ({ticks}: Props) => {
   const reportResponseCountCurve = useFetcher(api.secured.stats.getProReportResponseStat)
   const reportTransmittedCountCurve = useFetcher(api.secured.stats.getProReportTransmittedStat)
 
-
   const fetchCurve = (period: Period) => {
     reportCountCurve.fetch({}, {ticks, tickDuration: period})
     reportResponseCountCurve.fetch({}, {ticks})
@@ -35,32 +34,28 @@ export const StatsReportsProProcessedPanel = ({ticks}: Props) => {
   }, [ticks])
 
   return (
-    <Panel loading={reportCountCurve.loading || reportTransmittedCountCurve.loading || reportResponseCountCurve.loading }>
+    <Panel loading={reportCountCurve.loading || reportTransmittedCountCurve.loading || reportResponseCountCurve.loading}>
       <Alert type="info" className={cssUtils.marginBottom2}>
-                <span dangerouslySetInnerHTML={{__html: m.reportsProProcessedDesc}}
-                      className={cssUtils.tooltipColorTxtSecondary}/>
+        <span dangerouslySetInnerHTML={{__html: m.reportsProProcessedDesc}} className={cssUtils.tooltipColorTxtSecondary} />
       </Alert>
       <PanelHead>{m.reportsProProcessed}</PanelHead>
       <PanelBody>
-        {
-
-            reportCountCurve.entity
-            && reportTransmittedCountCurve.entity
-            && reportResponseCountCurve.entity &&
-             (
-                <ScLineChart curves={[
-                  {
-                    label: m.reportsProVisible,
-                    key: 'visible_by_pro',
-                    curve: curveRatio(reportTransmittedCountCurve.entity, reportCountCurve.entity).map(statsFormatCurveDate(m))
-                  },
-                  {
-                    label: m.reportsProResponse,
-                    key: 'response_pro',
-                    curve: curveRatio(reportResponseCountCurve.entity, reportCountCurve.entity).map(statsFormatCurveDate(m))
-                  }
-                ]}/>
-            )}
+        {reportCountCurve.entity && reportTransmittedCountCurve.entity && reportResponseCountCurve.entity && (
+          <ScLineChart
+            curves={[
+              {
+                label: m.reportsProVisible,
+                key: 'visible_by_pro',
+                curve: curveRatio(reportTransmittedCountCurve.entity, reportCountCurve.entity).map(statsFormatCurveDate(m)),
+              },
+              {
+                label: m.reportsProResponse,
+                key: 'response_pro',
+                curve: curveRatio(reportResponseCountCurve.entity, reportCountCurve.entity).map(statsFormatCurveDate(m)),
+              },
+            ]}
+          />
+        )}
       </PanelBody>
     </Panel>
   )

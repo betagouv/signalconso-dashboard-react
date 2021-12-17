@@ -3,7 +3,7 @@ import {Btn} from 'mui-extension/lib'
 import {ClickAwayListener, Divider, Theme} from '@mui/material'
 import {EntityIcon} from '../../EntityIcon'
 import React from 'react'
-import makeStyles from '@mui/styles/makeStyles';
+import makeStyles from '@mui/styles/makeStyles'
 import {styleUtils} from '../../theme'
 import {ScMenuItem} from './ScMenuItem'
 import {Txt} from 'mui-extension/lib/Txt/Txt'

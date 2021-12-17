@@ -4,7 +4,7 @@ import {useI18n} from '../../core/i18n'
 import {useSubscriptionsContext} from '../../core/context/SubscriptionsContext'
 import {SubscriptionCard} from './SubscriptionCard'
 import {Alert, Animate} from 'mui-extension/lib'
-import makeStyles from '@mui/styles/makeStyles';
+import makeStyles from '@mui/styles/makeStyles'
 import {Icon, LinearProgress, Theme} from '@mui/material'
 import {Ripple} from '../../shared/Ripple/Ripple'
 import {styleUtils} from '../../core/theme'

@@ -58,7 +58,7 @@ export enum EventCategories {
   account = 'Compte utilisateur',
   companyAccess = "Accès de l'entreprise",
   contractualDispute = 'Litige contractuel',
-  dgccrf = 'DGCCRF'
+  dgccrf = 'DGCCRF',
 }
 
 export enum DgccrfEventActions {
@@ -66,21 +66,21 @@ export enum DgccrfEventActions {
 }
 
 export enum ReportEventActions {
-  outOfBounds = 'Affichage d\'un message problème hors périmètre',
-  information = 'Consultation du détail d\'un message d\'information',
+  outOfBounds = "Affichage d'un message problème hors périmètre",
+  information = "Consultation du détail d'un message d'information",
   secondaryCategories = 'Affichage des autres problèmes',
-  validateCategory = 'Sélection d\'une catégorie',
-  validateSubcategory = 'Sélection d\'une sous catégorie',
-  employee = 'Consommateur employé de l\'entreprise',
-  notEmployee = 'Consommateur non employé de l\'entreprise',
+  validateCategory = "Sélection d'une catégorie",
+  validateSubcategory = "Sélection d'une sous catégorie",
+  employee = "Consommateur employé de l'entreprise",
+  notEmployee = "Consommateur non employé de l'entreprise",
   validateDetails = 'Validation de la description',
-  validateCompany = 'Validation de l\'établissement',
+  validateCompany = "Validation de l'établissement",
   validateConsumer = 'Validation du consommateur',
-  validateConfirmation = 'Validation de l\'envoi d\'un signalement',
-  reportSendSuccess = 'Envoi d\'un signalement',
-  reportSendFail = 'Echec de l\'envoi d\'un signalement',
+  validateConfirmation = "Validation de l'envoi d'un signalement",
+  reportSendSuccess = "Envoi d'un signalement",
+  reportSendFail = "Echec de l'envoi d'un signalement",
   keywordsDetection = 'Mots-clés détectés',
-  informationFromKeywordsDetection = 'Consultation du détail d\'un message d\'information suite à la détection de mots-clés',
+  informationFromKeywordsDetection = "Consultation du détail d'un message d'information suite à la détection de mots-clés",
   contactualReport = 'Litige contractuel',
 }
 

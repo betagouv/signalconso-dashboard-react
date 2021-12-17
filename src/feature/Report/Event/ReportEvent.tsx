@@ -4,8 +4,8 @@ import {useI18n} from '../../../core/i18n'
 import {ReportEventIcon} from './ReportEventIcon'
 import {useCssUtils} from '../../../core/helper/useCssUtils'
 import {classes} from '../../../core/helper/utils'
-import { Icon, Theme } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
+import {Icon, Theme} from '@mui/material'
+import makeStyles from '@mui/styles/makeStyles'
 import {styleUtils} from '../../../core/theme'
 
 export interface ReportComponentEventProps {

@@ -4,7 +4,7 @@ import {useI18n} from '../../core/i18n'
 import {regexp} from '../../core/helper/regexp'
 import {LoginPanel} from './LoginPanel'
 import {useCssUtils} from '../../core/helper/useCssUtils'
-import makeStyles from '@mui/styles/makeStyles';
+import makeStyles from '@mui/styles/makeStyles'
 import {ActionProps} from './LoginPage'
 import {ScInputPassword} from '../../shared/InputPassword/InputPassword'
 import {ScInput} from '../../shared/Input/ScInput'
