@@ -8,6 +8,7 @@ import {SelectMonth} from '../../shared/SelectMonth/SelectMonth'
 import {useGetDateForMonthAndPreviousOne} from './useGetDateForMonthAndPreviousOne'
 import {classes} from '../../core/helper/utils'
 import {useCssUtils} from '../../core/helper/useCssUtils'
+import {Box} from '@mui/material'
 
 interface AsyncPercent {
   loading: boolean
@@ -107,26 +108,30 @@ export const StatsReportsInternetPanel = () => {
       <PanelBody>
         {asyncPercent.value && asyncPercentLastMonth.value && (
           <div style={{display: 'flex', flexWrap: 'wrap', justifyContent: 'space-around', alignItems: 'center'}}>
-            <Box
+            <StatsCard
               className={cssUtils.marginRight}
               title={m.statsInternets_all}
               desc={m.statsInternets_all_desc}
               value={asyncPercent.value.reportsInternets}
               previousValue={asyncPercentLastMonth.value.reportsInternets}
             />
+            <Box sx={{
+              fontSize: 220,
+              color: t => t.palette.divider,
+            }}>{'{'}</Box>
             <div className={cssUtils.marginLeft}>
-              <Box
+              <StatsCard
                 title={m.statsInternets_withCompany}
                 value={asyncPercent.value.reportsInternetsWithCompany}
                 previousValue={asyncPercentLastMonth.value.reportsInternetsWithCompany}
               />
-              <Box
+              <StatsCard
                 title={m.statsInternets_withCountry}
                 desc={m.statsInternets_withCountry_desc}
                 value={asyncPercent.value.reportsInternetsWithCountry}
                 previousValue={asyncPercentLastMonth.value.reportsInternetsWithCountry}
               />
-              <Box
+              <StatsCard
                 title={m.statsInternets_withNothing}
                 desc={m.statsInternets_withNothing_desc}
                 value={asyncPercent.value.reportsInternetsWithoutAnything}
@@ -140,7 +145,7 @@ export const StatsReportsInternetPanel = () => {
   )
 }
 
-interface BoxProps {
+interface StatsCardProps {
   className?: string
   value: number
   previousValue: number
@@ -148,13 +153,7 @@ interface BoxProps {
   desc?: string
 }
 
-const Box = ({
-  className,
-  value,
-  previousValue,
-  title,
-  desc,
-}: BoxProps) => {
+const StatsCard = ({className, value, previousValue, title, desc}: StatsCardProps) => {
   const cssUtils = useCssUtils()
   const evolution = useMemo(() => {
     return Math.round(value - previousValue)
