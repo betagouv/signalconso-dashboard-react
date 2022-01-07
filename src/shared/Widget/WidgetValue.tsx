@@ -1,5 +1,5 @@
-import {Theme} from '@mui/material'
-import makeStyles from '@mui/styles/makeStyles'
+import { Theme } from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
 import {ReactNode} from 'react'
 import {WidgetBody} from './WidgetBody'
 

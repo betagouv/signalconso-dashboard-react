@@ -1,8 +1,8 @@
 import * as React from 'react'
 import {HTMLProps, ReactNode} from 'react'
-import {Icon, Theme} from '@mui/material'
-import createStyles from '@mui/styles/createStyles'
-import makeStyles from '@mui/styles/makeStyles'
+import { Icon, Theme } from '@mui/material';
+import createStyles from '@mui/styles/createStyles';
+import makeStyles from '@mui/styles/makeStyles';
 import classNames from 'classnames'
 import {alpha} from '@mui/material/styles'
 import {useLayoutContext} from '../LayoutContext'

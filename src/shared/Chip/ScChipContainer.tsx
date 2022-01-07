@@ -1,8 +1,8 @@
 import React, {ReactNode} from 'react'
-import {Theme} from '@mui/material'
+import { Theme } from '@mui/material';
 
-import createStyles from '@mui/styles/createStyles'
-import makeStyles from '@mui/styles/makeStyles'
+import createStyles from '@mui/styles/createStyles';
+import makeStyles from '@mui/styles/makeStyles';
 
 interface ScChipContainer {
   children: ReactNode

@@ -2,8 +2,8 @@ import {DetailInputValue} from '@signal-conso/signalconso-api-sdk-js'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
 import * as React from 'react'
 import {CSSProperties} from 'react'
-import {Theme, Tooltip} from '@mui/material'
-import makeStyles from '@mui/styles/makeStyles'
+import { Theme, Tooltip } from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
 import {useCssUtils} from '../../core/helper/useCssUtils'
 import {classes} from '../../core/helper/utils'
 import {useMemoFn} from '../hooks/UseMemoFn'

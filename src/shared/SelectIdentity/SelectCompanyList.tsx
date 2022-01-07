@@ -1,8 +1,8 @@
 import {CompanySearchResult, isGovernmentCompany} from '@signal-conso/signalconso-api-sdk-js'
 import {ScRadioGroupItem} from '../RadioGroup/RadioGroupItem'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
-import {Icon, Theme} from '@mui/material'
-import makeStyles from '@mui/styles/makeStyles'
+import { Icon, Theme } from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
 import {classes} from '../../core/helper/utils'
 import {ScRadioGroup} from '../RadioGroup/RadioGroup'
 import React from 'react'

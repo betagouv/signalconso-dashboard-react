@@ -3,8 +3,8 @@ import {EditConsumerDialog} from './EditConsumerDialog'
 import {ScButton} from '../../../shared/Button/Button'
 import {fromNullable} from 'fp-ts/lib/Option'
 import {capitalize, classes} from '../../../core/helper/utils'
-import {Icon, Theme, useTheme} from '@mui/material'
-import makeStyles from '@mui/styles/makeStyles'
+import { Icon, Theme, useTheme } from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
 import React from 'react'
 import {Report} from '@signal-conso/signalconso-api-sdk-js'
 import {useI18n} from '../../../core/i18n'

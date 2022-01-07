@@ -5,8 +5,8 @@ import {Panel, PanelBody} from '../../shared/Panel'
 import {useCompaniesContext} from '../../core/context/CompaniesContext'
 import {useCssUtils} from '../../core/helper/useCssUtils'
 import {Datatable} from '../../shared/Datatable/Datatable'
-import {Icon, Switch, Theme, Tooltip} from '@mui/material'
-import makeStyles from '@mui/styles/makeStyles'
+import { Icon, Switch, Theme, Tooltip } from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
 import {styleUtils} from '../../core/theme'
 import {Fender, IconBtn} from 'mui-extension/lib'
 import {ScButton} from '../../shared/Button/Button'

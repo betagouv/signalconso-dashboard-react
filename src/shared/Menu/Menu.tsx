@@ -21,15 +21,13 @@ export const ScMenu = ({children, button, onClick}: Props) => {
 
   return (
     <>
-      {button ? (
-        React.cloneElement(button, {
-          onClick: (event: React.MouseEvent<HTMLElement>) => {
-            if (button.props.onClick) button.props.onClick(event)
-            if (onClick) onClick(event)
-            handleClick(event)
-          },
-        })
-      ) : (
+      {button ? React.cloneElement(button, {
+        onClick: (event: React.MouseEvent<HTMLElement>) => {
+          if (button.props.onClick) button.props.onClick(event)
+          if (onClick) onClick(event)
+          handleClick(event)
+        },
+      }) : (
         <IconBtn onClick={handleClick} color="primary">
           <Icon>more_vert</Icon>
         </IconBtn>

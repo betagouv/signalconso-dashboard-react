@@ -1,6 +1,6 @@
 import {Avatar, Icon, Theme} from '@mui/material'
 import React from 'react'
-import makeStyles from '@mui/styles/makeStyles'
+import makeStyles from '@mui/styles/makeStyles';
 import {grey, lightBlue} from '@mui/material/colors'
 import {styleUtils} from '../../theme'
 import {useBoolean} from '@alexandreannic/react-hooks-lib/lib'

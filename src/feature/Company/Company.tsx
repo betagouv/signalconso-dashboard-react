@@ -9,23 +9,7 @@ import {HorizontalBarChart} from '../../shared/HorizontalBarChart/HorizontalBarC
 import {reportStatusColor} from '../../shared/ReportStatus/ReportStatus'
 import {useI18n} from '../../core/i18n'
 import {Enum} from '@alexandreannic/ts-utils/lib/common/enum/Enum'
-import {
-  alpha,
-  Button,
-  ButtonGroup,
-  Divider,
-  Grid,
-  Icon,
-  IconButton,
-  LinearProgress,
-  List,
-  ListItem,
-  ListItemIcon,
-  ListItemText,
-  Skeleton,
-  Theme,
-  Tooltip,
-} from '@mui/material'
+import {alpha, Button, ButtonGroup, Divider, Grid, Icon, IconButton, LinearProgress, List, ListItem, ListItemIcon, ListItemText, Skeleton, Theme, Tooltip} from '@mui/material'
 import makeStyles from '@mui/styles/makeStyles'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
 import {useMemoFn} from '../../shared/hooks/UseMemoFn'
@@ -91,12 +75,10 @@ const ticks = 7
 
 const periods: Period[] = ['Day', 'Month']
 
-const formatCurveDate =
-  (m: I18nContextProps['m']) =>
-  ({date, count}: CountByDate): {date: string; count: number} => ({
-    date: (m.monthShort_ as any)[date.getMonth() + 1],
-    count,
-  })
+const formatCurveDate = (m: I18nContextProps['m']) => ({date, count}: CountByDate): {date: string, count: number} => ({
+  date: (m.monthShort_ as any)[date.getMonth() + 1],
+  count,
+})
 
 export const CompanyComponent = () => {
   const {id} = useParams<{id: Id}>()
@@ -189,19 +171,19 @@ export const CompanyComponent = () => {
             <Grid item xs={12} sm={6} md={3}>
               <Widget title={m.avgResponseTime}>
                 {_stats.responseDelay.loading ? (
-                  <WidgetLoading />
+                  <WidgetLoading/>
                 ) : (
                   <WidgetValue>
-                    <span>
-                      {_stats.responseDelay.entity ? _stats.responseDelay.entity.toDays : '∞'}&nbsp;
-                      <Txt size="big">{m.days}</Txt>
-                      &nbsp;
-                      <Tooltip title={_stats.responseDelay.entity ? m.avgResponseTimeDesc : m.avgResponseTimeDescNoData}>
-                        <Icon className={cssUtils.colorTxtHint} fontSize="medium">
-                          help
-                        </Icon>
-                      </Tooltip>
-                    </span>
+                      <span>
+                        {_stats.responseDelay.entity ? _stats.responseDelay.entity.toDays : '∞'}&nbsp;
+                        <Txt size="big">{m.days}</Txt>
+                        &nbsp;
+                        <Tooltip title={_stats.responseDelay.entity ? m.avgResponseTimeDesc : m.avgResponseTimeDescNoData}>
+                          <Icon className={cssUtils.colorTxtHint} fontSize="medium">
+                            help
+                          </Icon>
+                        </Tooltip>
+                      </span>
                   </WidgetValue>
                 )}
               </Widget>
@@ -217,7 +199,7 @@ export const CompanyComponent = () => {
               <Widget title={m.accountsActivated} loading={_accesses.loading} to={siteMap.logged.companyAccesses(company.siret)}>
                 {fromNullable(_accesses.entity)
                   .map(_ => <WidgetValue>{_.length}</WidgetValue>)
-                  .getOrElse(<WidgetLoading />)}
+                  .getOrElse(<WidgetLoading/>)}
               </Widget>
             </Grid>
           </Grid>
@@ -226,11 +208,7 @@ export const CompanyComponent = () => {
               action={
                 <ButtonGroup color="primary">
                   {periods.map(p => (
-                    <Button
-                      key={p}
-                      className={classes(p === reportsCurvePeriod && css.btnPeriodActive)}
-                      onClick={() => fetchCurve(p)}
-                    >
+                    <Button key={p} className={classes(p === reportsCurvePeriod && css.btnPeriodActive)} onClick={() => fetchCurve(p)}>
                       {p === 'Day' ? m.day : m.month}
                     </Button>
                   ))}
@@ -248,20 +226,18 @@ export const CompanyComponent = () => {
             </PanelHead>
             <PanelBody>
               {_stats.curve.reportCount.entity && _stats.curve.reportRespondedCount.entity && (
-                <ScLineChart
-                  curves={[
-                    {
-                      label: m.reportsCount,
-                      key: 'count',
-                      curve: _stats.curve.reportCount.entity.map(formatCurveDate(m)),
-                    },
-                    {
-                      label: m.responsesCount,
-                      key: 'countResponded',
-                      curve: _stats.curve.reportRespondedCount.entity.map(formatCurveDate(m)),
-                    },
-                  ]}
-                />
+                <ScLineChart curves={[
+                  {
+                    label: m.reportsCount,
+                    key: 'count',
+                    curve: _stats.curve.reportCount.entity.map(formatCurveDate(m)),
+                  },
+                  {
+                    label: m.responsesCount,
+                    key: 'countResponded',
+                    curve: _stats.curve.reportRespondedCount.entity.map(formatCurveDate(m)),
+                  },
+                ]}/>
               )}
             </PanelBody>
           </Panel>
@@ -271,7 +247,7 @@ export const CompanyComponent = () => {
               <Panel>
                 <PanelHead>{m.status}</PanelHead>
                 <PanelBody>
-                  <HorizontalBarChart data={statusDistribution} grid />
+                  <HorizontalBarChart data={statusDistribution} grid/>
                 </PanelBody>
               </Panel>
               <Panel>

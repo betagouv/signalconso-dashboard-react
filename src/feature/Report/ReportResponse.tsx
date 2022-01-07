@@ -12,8 +12,8 @@ import {
 } from '@signal-conso/signalconso-api-sdk-js'
 import {classes, fnSwitch} from '../../core/helper/utils'
 import {fromNullable} from 'fp-ts/lib/Option'
-import {Icon, Theme} from '@mui/material'
-import makeStyles from '@mui/styles/makeStyles'
+import { Icon, Theme } from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
 import {useCssUtils} from '../../core/helper/useCssUtils'
 import {styleUtils} from '../../core/theme'
 import {ReportFiles} from './File/ReportFiles'

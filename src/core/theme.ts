@@ -132,7 +132,7 @@ export const muiTheme = (dark?: boolean): Theme => {
           sizeSmall: {
             height: 40,
             minHeight: 40,
-          },
+          }
         },
       },
       MuiTooltip: {
@@ -175,16 +175,14 @@ export const muiTheme = (dark?: boolean): Theme => {
   }
   return createTheme({
     ...theme,
-    ...(dark
-      ? {
-          MuiOutlinedInput: {
-            styleOverrides: {
-              notchedOutline: {
-                borderColor: '#d9dce0',
-              },
-            },
+    ...(dark ? {
+      MuiOutlinedInput: {
+        styleOverrides: {
+          notchedOutline: {
+            borderColor: '#d9dce0',
           },
-        }
-      : ({} as any)),
+        },
+      },
+    } : {} as any),
   })
 }

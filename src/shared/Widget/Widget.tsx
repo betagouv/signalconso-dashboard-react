@@ -2,8 +2,8 @@ import {Panel, PanelBody} from '../Panel'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
 import * as React from 'react'
 import {ReactNode} from 'react'
-import {Icon, Theme} from '@mui/material'
-import makeStyles from '@mui/styles/makeStyles'
+import { Icon, Theme } from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
 import {NavLink} from 'react-router-dom'
 import {useCssUtils} from '../../core/helper/useCssUtils'
 import {styleUtils} from '../../core/theme'

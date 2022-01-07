@@ -6,7 +6,7 @@ import {ScInput} from '../../shared/Input/ScInput'
 import {regexp} from '../../core/helper/regexp'
 import {ScButton} from '../../shared/Button/Button'
 import {useCssUtils} from '../../core/helper/useCssUtils'
-import makeStyles from '@mui/styles/makeStyles'
+import makeStyles from '@mui/styles/makeStyles';
 import {Theme} from '@mui/material'
 import {useLogin} from '../../core/context/LoginContext'
 import {useForm} from 'react-hook-form'

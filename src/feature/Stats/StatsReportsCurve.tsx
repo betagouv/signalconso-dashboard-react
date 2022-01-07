@@ -7,8 +7,8 @@ import {useI18n} from '../../core/i18n'
 import {useFetcher} from '@alexandreannic/react-hooks-lib'
 import {CountByDate, CurveStatsParams, Period, ReportTag} from '@signal-conso/signalconso-api-sdk-js'
 import {statsFormatCurveDate} from './Stats'
-import {useCssUtils} from '../../core/helper/useCssUtils'
-import {Txt} from 'mui-extension/lib/Txt/Txt'
+import {Alert} from "mui-extension";
+import {useCssUtils} from "../../core/helper/useCssUtils";
 
 interface Props {
   ticks?: number
@@ -39,15 +39,13 @@ export const StatsReportsCurvePanel = ({ticks}: Props) => {
       for (let i = 0; i < reportCountCurve.entity.length; i++) {
         res[i] = {
           date: reportCountCurve.entity[i].date,
-          count:
-            reportCountCurve.entity[i].count -
-            reportInternetCountCurve.entity[i]?.count -
-            reportDemarchageCountCurve.entity[i]?.count,
+          count: reportCountCurve.entity[i].count - reportInternetCountCurve.entity[i]?.count - reportDemarchageCountCurve.entity[i]?.count,
         }
       }
     }
     return res
   }, [reportCountCurve, reportInternetCountCurve, reportDemarchageCountCurve])
+
 
   useEffect(() => {
     fetchCurve('Month')
@@ -55,26 +53,19 @@ export const StatsReportsCurvePanel = ({ticks}: Props) => {
 
   return (
     <Panel loading={reportCountCurve.loading || reportInternetCountCurve.loading || reportDemarchageCountCurve.loading}>
+      <Alert type="info" className={cssUtils.marginBottom2}>
+                <span dangerouslySetInnerHTML={{__html: m.reportsDivisionDesc}}
+                      className={cssUtils.tooltipColorTxtSecondary}/>
+      </Alert>
       <PanelHead>{m.reportsDivision}</PanelHead>
       <PanelBody>
-        <Txt color="hint" gutterBottom block dangerouslySetInnerHTML={{__html: m.reportsDivisionDesc}}/>
         {reportCountCurve.entity && reportInternetCountCurve.entity && reportDemarchageCountCurve.entity && (
-          <ScLineChart
-            curves={[
-              {label: m.reportsCount, key: 'all', curve: reportCountCurve.entity.map(statsFormatCurveDate(m))},
-              {
-                label: m.reportsCountInternet,
-                key: 'internet',
-                curve: reportInternetCountCurve.entity.map(statsFormatCurveDate(m)),
-              },
-              {
-                label: m.reportsCountDemarchage,
-                key: 'demarchage',
-                curve: reportDemarchageCountCurve.entity.map(statsFormatCurveDate(m)),
-              },
-              {label: m.reportsCountPhysique, key: 'physique', curve: curvePhysique.map(statsFormatCurveDate(m))},
-            ]}
-          />
+          <ScLineChart curves={[
+            {label: m.reportsCount, key: 'all', curve: reportCountCurve.entity.map(statsFormatCurveDate(m))},
+            {label: m.reportsCountInternet, key: 'internet', curve: reportInternetCountCurve.entity.map(statsFormatCurveDate(m))},
+            {label: m.reportsCountDemarchage, key: 'demarchage', curve: reportDemarchageCountCurve.entity.map(statsFormatCurveDate(m))},
+            {label: m.reportsCountPhysique, key: 'physique', curve: curvePhysique.map(statsFormatCurveDate(m))},
+          ]}/>
         )}
       </PanelBody>
     </Panel>

@@ -2,8 +2,8 @@ import {Page, PageTitle} from '../../shared/Layout'
 import {useI18n} from '../../core/i18n'
 import React from 'react'
 import {useCssUtils} from '../../core/helper/useCssUtils'
-import {Theme} from '@mui/material'
-import makeStyles from '@mui/styles/makeStyles'
+import { Theme } from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
 import {Redirect, Route, Switch, useRouteMatch} from 'react-router-dom'
 import {siteMap} from '../../core/siteMap'
 import {PageTab, PageTabs} from '../../shared/Layout/Page/PageTabs'

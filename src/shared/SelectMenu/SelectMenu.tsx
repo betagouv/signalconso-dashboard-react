@@ -1,6 +1,6 @@
-import {Checkbox, Menu, MenuItem, Theme} from '@mui/material'
-import createStyles from '@mui/styles/createStyles'
-import makeStyles from '@mui/styles/makeStyles'
+import { Checkbox, Menu, MenuItem, Theme } from '@mui/material';
+import createStyles from '@mui/styles/createStyles';
+import makeStyles from '@mui/styles/makeStyles';
 import React, {useEffect, useState} from 'react'
 
 interface Props {

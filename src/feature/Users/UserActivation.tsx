@@ -5,7 +5,7 @@ import {Controller, useForm} from 'react-hook-form'
 import {TokenInfo, UserToActivate} from '@signal-conso/signalconso-api-sdk-js'
 import {useI18n} from '../../core/i18n'
 import {ScInput} from '../../shared/Input/ScInput'
-import makeStyles from '@mui/styles/makeStyles'
+import makeStyles from '@mui/styles/makeStyles';
 import {Checkbox, FormControl, FormControlLabel, FormHelperText, Theme} from '@mui/material'
 import {ScButton} from '../../shared/Button/Button'
 import {Page, PageTitle} from '../../shared/Layout'

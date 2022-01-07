@@ -64,10 +64,10 @@ export const Header = ({connectedUser}: Props) => {
     <Slide direction="down" in={true} mountOnEnter unmountOnExit>
       <header className={css.root}>
         <div className={css.logo}>
-          <img src={logoGouvMobile} alt={m.altLogoGouv} className={css.logoGouvMobile} />
-          {!isMobileWidth && <img src={logoDgccrf} alt={m.altLogoDGCCRF} className={css.logoGouvMobile} />}
+          <img src={logoGouvMobile} alt={m.altLogoGouv} className={css.logoGouvMobile}/>
+          {!isMobileWidth && <img src={logoDgccrf} alt={m.altLogoDGCCRF} className={css.logoGouvMobile}/>}
           <a href={config.appBaseUrl}>
-            <img src={logoSignalConso} alt={m.altLogoSignalConso} className={css.logoSignalConsoMobile} />
+            <img src={logoSignalConso} alt={m.altLogoSignalConso} className={css.logoSignalConsoMobile}/>
           </a>
         </div>
         <div className={css.menu}>
@@ -95,7 +95,7 @@ export const Header = ({connectedUser}: Props) => {
               <HeaderItem href={config.appBaseUrl + '/centre-aide/consommateur'}>{m.helpCenter}</HeaderItem>
             </nav>
           )}
-          <ScMenuBtn connectedUser={connectedUser} />
+          <ScMenuBtn connectedUser={connectedUser}/>
         </div>
       </header>
     </Slide>

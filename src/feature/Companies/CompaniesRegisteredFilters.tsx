@@ -20,7 +20,12 @@ export const CompaniesRegisteredFilters = ({updateFilters, children, filters}: C
   const [open, setOpen] = useState<boolean>(false)
   const cssUtils = useCssUtils()
   const {m} = useI18n()
-  const {register, handleSubmit, control, reset} = useForm<CompanySearch>()
+  const {
+    register,
+    handleSubmit,
+    control,
+    reset,
+  } = useForm<CompanySearch>()
 
   const close = () => {
     setOpen(false)
@@ -50,7 +55,13 @@ export const CompaniesRegisteredFilters = ({updateFilters, children, filters}: C
               name="departments"
               defaultValue={filters.departments}
               control={control}
-              render={({field}) => <SelectDepartments {...field} fullWidth className={cssUtils.marginRight} />}
+              render={({field}) => (
+                <SelectDepartments
+                  {...field}
+                  fullWidth
+                  className={cssUtils.marginRight}
+                />
+              )}
             />
           </DialogInputRow>
           <DialogInputRow label={m.codeNaf}>
@@ -58,11 +69,17 @@ export const CompaniesRegisteredFilters = ({updateFilters, children, filters}: C
               name="activityCodes"
               defaultValue={filters.activityCodes}
               control={control}
-              render={({field}) => <SelectActivityCode fullWidth value={field.value} onChange={(a, b) => field.onChange(b)} />}
+              render={({field}) => (
+                <SelectActivityCode
+                  fullWidth
+                  value={field.value}
+                  onChange={(a, b) => field.onChange(b)}
+                />
+              )}
             />
           </DialogInputRow>
           <DialogInputRow label={m.email}>
-            <ScInput fullWidth {...register('emailsWithAccess')} defaultValue={filters.emailsWithAccess ?? ''} />
+            <ScInput fullWidth {...register('emailsWithAccess')} defaultValue={filters.emailsWithAccess ?? ''}/>
           </DialogInputRow>
         </DialogContent>
         <DialogActions>

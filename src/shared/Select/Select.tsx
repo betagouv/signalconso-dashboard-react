@@ -9,14 +9,22 @@ interface ScSelectProps<T> extends SelectProps<T> {
   small?: boolean
 }
 
-const _ScSelect = <T,>({id: argId, label, className, small, fullWidth, style, ...selectProps}: ScSelectProps<T>, ref: any) => {
+const _ScSelect = <T, >({
+  id: argId,
+  label,
+  className,
+  small,
+  fullWidth,
+  style,
+  ...selectProps
+}: ScSelectProps<T>, ref: any) => {
   const id: string = useMemo(() => argId ?? 'sc-select-' + Math.floor(Math.random() * 10000), [argId])
   return (
     <FormControl fullWidth={fullWidth} size="small" margin="dense" variant="outlined" className={className} style={style}>
       <InputLabel htmlFor={id} id={id + '-label'}>
         {label}
       </InputLabel>
-      <Select {...selectProps} inputRef={ref} labelId={id + '-label'} id={id} />
+      <Select {...selectProps} inputRef={ref} labelId={id + '-label'} id={id}/>
     </FormControl>
   )
 }
@@ -27,3 +35,4 @@ const _ScSelect = <T,>({id: argId, label, className, small, fullWidth, style, ..
 export const ScSelect = React.forwardRef(_ScSelect) as <T>(
   props: ScSelectProps<T> & {ref?: React.ForwardedRef<any>},
 ) => ReturnType<typeof _ScSelect>
+

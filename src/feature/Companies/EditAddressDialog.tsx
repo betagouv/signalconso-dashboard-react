@@ -5,9 +5,9 @@ import {useI18n} from '../../core/i18n'
 import {Controller, useForm} from 'react-hook-form'
 import {useCssUtils} from '../../core/helper/useCssUtils'
 import {classes} from '../../core/helper/utils'
-import {Checkbox, FormControlLabel, Theme} from '@mui/material'
-import createStyles from '@mui/styles/createStyles'
-import makeStyles from '@mui/styles/makeStyles'
+import { Checkbox, FormControlLabel, Theme } from '@mui/material';
+import createStyles from '@mui/styles/createStyles';
+import makeStyles from '@mui/styles/makeStyles';
 import {Address} from '@signal-conso/signalconso-api-sdk-js'
 import {Alert} from 'mui-extension'
 

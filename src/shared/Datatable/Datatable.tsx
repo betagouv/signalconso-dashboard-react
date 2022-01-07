@@ -1,14 +1,4 @@
-import {
-  LinearProgress,
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TablePagination,
-  TableRow,
-  TableSortLabel,
-  Theme,
-} from '@mui/material'
+import {LinearProgress, Table, TableBody, TableCell, TableHead, TablePagination, TableRow, TableSortLabel, Theme} from '@mui/material'
 import makeStyles from '@mui/styles/makeStyles'
 import React, {CSSProperties, ReactNode, useMemo} from 'react'
 import {useCssUtils} from '../../core/helper/useCssUtils'
@@ -149,10 +139,7 @@ export const Datatable = <T extends any = any>(props: DatatableProps<T>) => {
   const css = useStyles()
   const cssUtils = useCssUtils()
   const displayableColumns = useMemo(() => columns.filter(_ => !_.hidden), [columns])
-  const toggleableColumnsName = useMemo(
-    () => displayableColumns.filter(_ => !_.alwaysVisible && _.head && _.head !== ''),
-    [displayableColumns],
-  )
+  const toggleableColumnsName = useMemo(() => displayableColumns.filter(_ => !_.alwaysVisible && _.head && _.head !== ''), [displayableColumns])
   const [hiddenColumns, setHiddenColumns] = usePersistentState<string[]>([], id)
   const filteredColumns = useMemo(() => displayableColumns.filter(_ => !hiddenColumns.includes(_.id)), [columns, hiddenColumns])
   const displayTableHeader = useMemo(() => !!displayableColumns.find(_ => _.head !== ''), [displayableColumns])
@@ -161,7 +148,9 @@ export const Datatable = <T extends any = any>(props: DatatableProps<T>) => {
     <>
       {(header || showColumnsToggle) && (
         <div className={css.header}>
-          <div className={css.header_content}>{header}</div>
+          <div className={css.header_content}>
+            {header}
+          </div>
           <div className={css.header_actions}>
             {actions}
             {showColumnsToggle && (

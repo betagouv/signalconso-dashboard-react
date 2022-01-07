@@ -105,16 +105,16 @@ export const App = () => {
   return (
     <Provide
       providers={[
-        _ => <StyledEngineProvider injectFirst children={_} />,
-        _ => <ThemeProvider theme={muiTheme()} children={_} />,
-        _ => <I18nProvider children={_} />,
-        _ => <Router children={_} />,
-        _ => <ToastProvider horizontal="right" children={_} />,
+        _ => <StyledEngineProvider injectFirst children={_}/>,
+        _ => <ThemeProvider theme={muiTheme()} children={_}/>,
+        _ => <I18nProvider children={_}/>,
+        _ => <Router children={_}/>,
+        _ => <ToastProvider horizontal="right" children={_}/>,
       ]}
     >
-      <AppLogin />
+      <AppLogin/>
     </Provide>
-  )
+  );
 }
 
 const AppLogin = () => {

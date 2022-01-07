@@ -1,7 +1,7 @@
 import {some} from 'fp-ts/lib/Option'
 import {config} from '../../../conf/config'
-import {Icon, Theme, Tooltip} from '@mui/material'
-import makeStyles from '@mui/styles/makeStyles'
+import { Icon, Theme, Tooltip } from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
 import React from 'react'
 import {extensionToType, FileType} from './reportFileConfig'
 import {ReportFileProps} from './ReportFile'

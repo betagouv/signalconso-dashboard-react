@@ -1,5 +1,5 @@
 import {ReactNode, useMemo} from 'react'
-import makeStyles from '@mui/styles/makeStyles'
+import makeStyles from '@mui/styles/makeStyles';
 import {Theme} from '@mui/material'
 
 interface Props {

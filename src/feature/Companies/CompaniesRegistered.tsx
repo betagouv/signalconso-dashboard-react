@@ -91,9 +91,7 @@ export const CompaniesRegistered = () => {
 
   const data = useMemo(() => {
     if (sortByResponseRate && _companies.list)
-      return [..._companies.list.data].sort(
-        (a, b) => (a.responseRate - b.responseRate) * (sortByResponseRate === 'desc' ? -1 : 1),
-      )
+      return [..._companies.list.data].sort((a, b) => (a.responseRate - b.responseRate) * (sortByResponseRate === 'desc' ? -1 : 1))
     return _companies.list?.data
   }, [_companies.list?.data, sortByResponseRate])
 
@@ -204,26 +202,21 @@ export const CompaniesRegistered = () => {
             head: m.responseRate,
             id: 'responseRate',
             className: cssUtils.txtRight,
-            render: _ => (
-              <span
-                className={classes(
-                  cssUtils.txtBold,
-                  _.responseRate > 50
-                    ? cssUtils.colorSuccess
-                    : _.responseRate === 0
-                    ? cssUtils.colorError
-                    : cssUtils.colorWarning,
-                )}
-              >
-                {_.responseRate} %
+            render: _ =>
+              <span className={classes(cssUtils.txtBold, _.responseRate > 50 ?
+                cssUtils.colorSuccess : _.responseRate === 0 ?
+                  cssUtils.colorError : cssUtils.colorWarning)}>
+                  {_.responseRate} %
               </span>
-            ),
+            ,
           },
           {
             head: m.activityCode,
             id: 'activityCode',
             className: cssUtils.txtRight,
-            render: _ => <span>{_?.activityCode}</span>,
+            render: _ =>
+                <span>{_?.activityCode}</span>
+            ,
           },
           {
             head: '',
@@ -234,17 +227,13 @@ export const CompaniesRegistered = () => {
               <>
                 <ScMenu>
                   <NavLink to={siteMap.logged.companyAccesses(_.siret)}>
-                    <MenuItem>
-                      <ListItemIcon>
-                        <Icon>vpn_key</Icon>
-                      </ListItemIcon>
-                      <ListItemText>{m.handleAccesses}</ListItemText>
-                    </MenuItem>
+                  <MenuItem>
+                    <ListItemIcon><Icon>vpn_key</Icon></ListItemIcon>
+                    <ListItemText>{m.handleAccesses}</ListItemText>
+                  </MenuItem>
                   </NavLink>
                   <MenuItem onClick={() => copyAddress(_)}>
-                    <ListItemIcon>
-                      <Icon>content_copy</Icon>
-                    </ListItemIcon>
+                    <ListItemIcon><Icon>content_copy</Icon></ListItemIcon>
                     <ListItemText>{m.copyAddress}</ListItemText>
                   </MenuItem>
                   {connectedUser.isAdmin && (
@@ -259,9 +248,7 @@ export const CompaniesRegistered = () => {
                       }}
                     >
                       <MenuItem>
-                        <ListItemIcon>
-                          <Icon>edit</Icon>
-                        </ListItemIcon>
+                        <ListItemIcon><Icon>edit</Icon></ListItemIcon>
                         <ListItemText>{m.editAddress}</ListItemText>
                       </MenuItem>
                     </EditAddressDialog>

@@ -65,7 +65,7 @@ export const ReportHeader = ({hideTags, hideSiret, report, children, elevated}: 
             {!hideSiret && <div className={cssUtils.colorTxtHint}>{report.companyName}</div>}
             <div className={cssUtils.colorTxtHint}>ID {report.id}</div>
           </div>
-          <ReportStatusLabel className={cssUtils.marginLeftAuto} status={report.status} />
+          <ReportStatusLabel className={cssUtils.marginLeftAuto} status={report.status}/>
         </div>
         <Alert id="report-info" dense type="info" deletable persistentDelete className={cssUtils.marginBottom2}>
           {m.reportCategoriesAreSelectByConsumer}

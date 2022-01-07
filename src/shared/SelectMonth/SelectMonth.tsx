@@ -15,11 +15,9 @@ export const SelectMonth = ({value, onChange}: Props) => {
 
   return (
     <ScSelect value={value} onChange={x => onChange(x.target.value as number)} style={{margin: 0}}>
-      {Object.entries(m.month_).map(([index, label]) => (
-        <MenuItem key={index} value={+index - 1}>
-          {label} {+index - 1 > currentMonth + 1 ? currentYear - 1 : currentYear}
-        </MenuItem>
-      ))}
+      {Object.entries(m.month_).map(([index, label]) =>
+        <MenuItem key={index} value={+index - 1}>{label} {+index - 1 > currentMonth + 1 ? currentYear - 1 : currentYear}</MenuItem>,
+      )}
     </ScSelect>
   )
 }

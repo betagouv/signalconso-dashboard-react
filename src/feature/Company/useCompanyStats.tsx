@@ -14,22 +14,14 @@ export const useCompanyStats = (id: Id) => {
     responseDelay: useFetcher(() => api.secured.stats.getResponseDelay(id)),
     curve: {
       reportCount: useFetcher((_: CurveStatsParams) => api.public.stats.getReportCountCurve({companyIds: [id], ..._})),
-      reportRespondedCount: useFetcher((_: CurveStatsParams) =>
-        api.public.stats.getReportCountCurve({
-          ..._,
-          companyIds: [id],
-          status: [ReportStatus.PromesseAction, ReportStatus.Infonde, ReportStatus.MalAttribue],
-        }),
-      ),
-      reportForwardedPercentage: useFetcher((_: CurveStatsParams) =>
-        api.public.stats.percentageCurve.getReportForwardedPercentage({companyId: id, ..._}),
-      ),
-      reportRespondedPercentage: useFetcher((_: CurveStatsParams) =>
-        api.public.stats.percentageCurve.getReportRespondedPercentage({companyId: id, ..._}),
-      ),
-      reportReadPercentage: useFetcher((_: CurveStatsParams) =>
-        api.public.stats.percentageCurve.getReportReadPercentage({companyId: id, ..._}),
-      ),
+      reportRespondedCount: useFetcher((_: CurveStatsParams) => api.public.stats.getReportCountCurve({
+        ..._,
+        companyIds: [id],
+        status: [ReportStatus.PromesseAction, ReportStatus.Infonde, ReportStatus.MalAttribue],
+      })),
+      reportForwardedPercentage: useFetcher((_: CurveStatsParams) => api.public.stats.percentageCurve.getReportForwardedPercentage({companyId: id, ..._})),
+      reportRespondedPercentage: useFetcher((_: CurveStatsParams) => api.public.stats.percentageCurve.getReportRespondedPercentage({companyId: id, ..._})),
+      reportReadPercentage: useFetcher((_: CurveStatsParams) => api.public.stats.percentageCurve.getReportReadPercentage({companyId: id, ..._})),
     },
     percentage: {
       reportForwardedToPro: useFetcher(() => api.public.stats.percentage.getReportForwardedToPro(id)),

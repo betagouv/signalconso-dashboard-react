@@ -1,7 +1,7 @@
 import {ReactNode} from 'react'
-import {Theme} from '@mui/material'
+import { Theme } from '@mui/material';
 
-import makeStyles from '@mui/styles/makeStyles'
+import makeStyles from '@mui/styles/makeStyles';
 
 interface Props {
   children: ReactNode

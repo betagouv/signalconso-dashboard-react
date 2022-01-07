@@ -31,10 +31,12 @@ export const reportStatusProColor = {
 
 export const ReportStatusLabel = ({status, ...props}: ReportStatusLabelProps) => {
   const {connectedUser} = useLogin()
-  return connectedUser.isPro ? (
-    <ReportStatusProLabel status={Report.getStatusProByStatus(status)} {...props} />
-  ) : (
-    <ReportStatusAdminLabel status={status} {...props} />
+  return (
+    connectedUser.isPro ? (
+      <ReportStatusProLabel status={Report.getStatusProByStatus(status)} {...props}/>
+    ) : (
+      <ReportStatusAdminLabel status={status} {...props}/>
+    )
   )
 }
 

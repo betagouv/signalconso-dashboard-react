@@ -17,15 +17,13 @@ export const Admin = () => {
   const {apiSdk: api, connectedUser} = useLogin()
   const {toastError} = useToast()
 
-  const _emailCodes = useFetcher<() => Promise<{dgccrf: string[]; pro: string[]; consumer: string[]}>>(() =>
-    api.secured.admin
-      .getEmailCodes()
-      .then(emailCodes => emailCodes.sort())
-      .then(emailCodes => ({
-        dgccrf: emailCodes.filter(_ => _.startsWith('dgccrf.')),
-        pro: emailCodes.filter(_ => _.startsWith('pro.')),
-        consumer: emailCodes.filter(_ => _.startsWith('consumer.')),
-      })),
+  const _emailCodes = useFetcher<() => Promise<{dgccrf: string[], pro: string[], consumer: string[]}>>(() => api.secured.admin.getEmailCodes()
+    .then(emailCodes => emailCodes.sort())
+    .then(emailCodes => ({
+      dgccrf: emailCodes.filter(_ => _.startsWith('dgccrf.')),
+      pro: emailCodes.filter(_ => _.startsWith('pro.')),
+      consumer: emailCodes.filter(_ => _.startsWith('consumer.')),
+    })),
   )
   const _sendEmail = useAsync(api.secured.admin.sendTestEmail)
 
@@ -43,64 +41,54 @@ export const Admin = () => {
         <PanelHead>{m.sendDummyEmail}</PanelHead>
         <PanelBody>
           <Alert type="info" gutterBottom>
-            <div dangerouslySetInnerHTML={{__html: m.allMailsWillBeSendTo(connectedUser.email)}} />
+            <div dangerouslySetInnerHTML={{__html: m.allMailsWillBeSendTo(connectedUser.email)}}/>
           </Alert>
 
-          {_emailCodes.entity &&
-            Object.entries(_emailCodes.entity).map(([type, emailCodes]) => (
-              <Box key={type} sx={{mt: 3, mb: 4}}>
-                <Txt size="big" bold>
-                  {capitalize(type)}
-                </Txt>
-                {emailCodes.map(emailCode => (
-                  <Box
-                    sx={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      py: 1.5,
-                      borderBottom: t => `1px solid ${t.palette.divider}`,
-                    }}
-                  >
-                    <Box
-                      sx={{
-                        flex: 1,
-                      }}
-                    >
-                      {(() => {
-                        try {
-                          const {title, desc} = (m.testMails as any)[type][emailCode.split('.')[1]]
-                          return (
-                            <>
-                              <Txt bold block>
-                                {title}
-                              </Txt>
-                              <Txt color="hint" block dangerouslySetInnerHTML={{__html: desc}} />
-                              <Txt color="disabled" size="small" block>
-                                {emailCode}
-                              </Txt>
-                            </>
-                          )
-                        } catch (e) {
-                          console.error(`Missing translation for ${emailCode}`)
-                          return <></>
-                        }
-                      })()}
-                    </Box>
-                    <Box>
-                      <IconBtn
-                        color="primary"
-                        loading={_sendEmail.loading}
-                        onClick={() => _sendEmail.call(emailCode, connectedUser.email)}
-                      >
-                        <Icon>send</Icon>
-                      </IconBtn>
-                    </Box>
+          {_emailCodes.entity && Object.entries(_emailCodes.entity).map(([type, emailCodes]) =>
+            <Box key={type} sx={{mt: 3, mb: 4}}>
+              <Txt size="big" bold>{capitalize(type)}</Txt>
+              {emailCodes.map(emailCode =>
+                <Box sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  py: 1.5,
+                  borderBottom: t => `1px solid ${t.palette.divider}`,
+                }}>
+                  <Box sx={{
+                    flex: 1,
+                  }}>
+                    {(() => {
+                      try {
+                        const {title, desc} = (m.testMails as any)[type][emailCode.split('.')[1]]
+                        return (
+                          <>
+                            <Txt bold block>{title}</Txt>
+                            <Txt color="hint" block dangerouslySetInnerHTML={{__html: desc}}/>
+                            <Txt color="disabled" size="small" block>{emailCode}</Txt>
+                          </>
+                        )
+                      } catch (e) {
+                        console.error(`Missing translation for ${emailCode}`)
+                        return <></>
+                      }
+                    })()}
                   </Box>
-                ))}
-              </Box>
-            ))}
+                  <Box>
+                    <IconBtn
+                      color="primary"
+                      loading={_sendEmail.loading}
+                      onClick={() => _sendEmail.call(emailCode, connectedUser.email)}
+                    >
+                      <Icon>send</Icon>
+                    </IconBtn>
+                  </Box>
+                </Box>,
+              )}
+            </Box>,
+          )}
         </PanelBody>
       </Panel>
+
     </Page>
   )
 }
