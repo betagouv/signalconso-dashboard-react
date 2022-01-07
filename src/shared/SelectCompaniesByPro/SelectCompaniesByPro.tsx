@@ -1,8 +1,8 @@
 import * as React from 'react'
 import {useEffect, useState} from 'react'
-import { Icon, InputAdornment, TextField, Theme } from '@mui/material';
-import createStyles from '@mui/styles/createStyles';
-import makeStyles from '@mui/styles/makeStyles';
+import {Icon, InputAdornment, TextField, Theme} from '@mui/material'
+import createStyles from '@mui/styles/createStyles'
+import makeStyles from '@mui/styles/makeStyles'
 import {SelectCompaniesByProMenu} from './SelectCompaniesByProMenu'
 import {useI18n} from '../../core/i18n'
 import {CompanyWithAccessLevel} from '@signal-conso/signalconso-api-sdk-js'

@@ -1,7 +1,14 @@
 import {Page, PageTitle} from '../../shared/Layout'
 import {useI18n} from '../../core/i18n'
 import {useReportsContext} from '../../core/context/ReportsContext'
-import {cleanObject, getHostFromUrl, Report, ReportingDateLabel, ReportSearch, ReportTag} from '@signal-conso/signalconso-api-sdk-js'
+import {
+  cleanObject,
+  getHostFromUrl,
+  Report,
+  ReportingDateLabel,
+  ReportSearch,
+  ReportTag,
+} from '@signal-conso/signalconso-api-sdk-js'
 import {Panel} from '../../shared/Panel'
 import {useCssUtils} from '../../core/helper/useCssUtils'
 import {Datatable} from '../../shared/Datatable/Datatable'
@@ -10,7 +17,13 @@ import {alpha, Badge, Button, Chip, Grid, Icon, Theme, Tooltip} from '@mui/mater
 import makeStyles from '@mui/styles/makeStyles'
 import {classes, textOverflowMiddleCropping} from '../../core/helper/utils'
 import React, {useEffect, useMemo} from 'react'
-import {mapArrayFromQuerystring, mapBooleanFromQueryString, mapDateFromQueryString, mapDatesToQueryString, useQueryString} from '../../core/helper/useQueryString'
+import {
+  mapArrayFromQuerystring,
+  mapBooleanFromQueryString,
+  mapDateFromQueryString,
+  mapDatesToQueryString,
+  useQueryString,
+} from '../../core/helper/useQueryString'
 import {NavLink} from 'react-router-dom'
 import {SelectDepartments} from '../../shared/SelectDepartments/SelectDepartments'
 import {Fender, IconBtn} from 'mui-extension/lib'
@@ -155,7 +168,13 @@ export const Reports = ({}) => {
                   onChange={departments => _reports.updateFilters(prev => ({...prev, departments}))}
                 >
                   {(value, onChange) => (
-                    <SelectDepartments label={m.departments} value={value} onChange={onChange} className={cssUtils.marginRight} fullWidth/>
+                    <SelectDepartments
+                      label={m.departments}
+                      value={value}
+                      onChange={onChange}
+                      className={cssUtils.marginRight}
+                      fullWidth
+                    />
                   )}
                 </DebouncedInput>
               </Grid>
@@ -167,7 +186,7 @@ export const Reports = ({}) => {
                   }}
                 >
                   {(value, onChange) => (
-                    <PeriodPicker value={value} onChange={onChange} className={cssUtils.marginRight} fullWidth/>
+                    <PeriodPicker value={value} onChange={onChange} className={cssUtils.marginRight} fullWidth />
                   )}
                 </DebouncedInput>
               </Grid>
@@ -198,9 +217,12 @@ export const Reports = ({}) => {
                   <Icon>file_download</Icon>
                 </IconBtn>
               </ExportReportsPopper>
-              <ReportFilters filters={_reports.filters} updateFilters={_ => {
-                _reports.updateFilters(prev => ({...prev, ..._}))
-              }}>
+              <ReportFilters
+                filters={_reports.filters}
+                updateFilters={_ => {
+                  _reports.updateFilters(prev => ({...prev, ..._}))
+                }}
+              >
                 <Tooltip title={m.advancedFilters}>
                   <IconBtn color="primary">
                     <Icon>filter_list</Icon>
@@ -295,21 +317,22 @@ export const Reports = ({}) => {
             {
               id: 'tags',
               head: m.tags,
-              render: _ => _.report.tags.map(tag =>
-                <Chip
-                  key={tag}
-                  size="small"
-                  variant="outlined"
-                  label={tag}
-                  className={classes(cssUtils.colorTxtSecondary, cssUtils.txtBold)}
-                  style={{marginRight: 2}}
-                />,
-              ),
+              render: _ =>
+                _.report.tags.map(tag => (
+                  <Chip
+                    key={tag}
+                    size="small"
+                    variant="outlined"
+                    label={tag}
+                    className={classes(cssUtils.colorTxtSecondary, cssUtils.txtBold)}
+                    style={{marginRight: 2}}
+                  />
+                )),
             },
             {
               id: 'status',
               head: m.status,
-              render: _ => <ReportStatusLabel dense status={_.report.status}/>,
+              render: _ => <ReportStatusLabel dense status={_.report.status} />,
             },
             {
               id: 'email',

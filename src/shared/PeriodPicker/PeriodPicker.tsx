@@ -1,8 +1,8 @@
 import {addDays, subDays} from 'date-fns'
 import React, {CSSProperties, useEffect, useState} from 'react'
 import {useI18n} from '../../core/i18n'
-import { Theme } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
+import {Theme} from '@mui/material'
+import makeStyles from '@mui/styles/makeStyles'
 import {Datepicker} from '../Datepicker/Datepicker'
 import {classes} from '../../core/helper/utils'
 import {useCssUtils} from '../../core/helper/useCssUtils'
@@ -40,7 +40,7 @@ export const PeriodPicker = ({value, onChange, label, fullWidth, className, styl
   const {m} = useI18n()
   const css = useStyles()
   const cssUtils = useCssUtils()
-  
+
   useEffect(() => {
     if (value) {
       if (value[0] && value[0].getTime() !== start?.getTime()) setStart(value[0])

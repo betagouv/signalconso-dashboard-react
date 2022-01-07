@@ -3,8 +3,8 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import {App} from './App'
 import reportWebVitals from './reportWebVitals'
-import createGenerateClassName from '@mui/styles/createGenerateClassName';
-import StylesProvider from '@mui/styles/StylesProvider';
+import createGenerateClassName from '@mui/styles/createGenerateClassName'
+import StylesProvider from '@mui/styles/StylesProvider'
 import {ErrorBundary} from './core/ErrorBundary'
 import {Sentry} from './core/plugins/Sentry'
 

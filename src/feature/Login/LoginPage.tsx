@@ -2,7 +2,7 @@ import {Page} from 'mui-extension/lib'
 import {Icon, Tab, Tabs, Theme} from '@mui/material'
 import * as React from 'react'
 import {useEffect} from 'react'
-import makeStyles from '@mui/styles/makeStyles';
+import makeStyles from '@mui/styles/makeStyles'
 import {useI18n} from '../../core/i18n'
 import {CenteredContent} from '../../shared/CenteredContent/CenteredContent'
 import {headerHeight} from '../../core/Layout'

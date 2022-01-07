@@ -57,5 +57,5 @@ export const ReportDescription = ({report, files, children}: Props) => {
         )}
       </PanelBody>
     </Panel>
-  );
+  )
 }

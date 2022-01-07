@@ -1,5 +1,5 @@
-import { Icon, Theme } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
+import {Icon, Theme} from '@mui/material'
+import makeStyles from '@mui/styles/makeStyles'
 import {ReportSearchResult} from '@signal-conso/signalconso-api-sdk-js'
 import {Paginate} from '@alexandreannic/react-hooks-lib/lib'
 import {ReportStatusLabel} from '../../shared/ReportStatus/ReportStatus'

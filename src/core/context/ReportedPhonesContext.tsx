@@ -22,7 +22,10 @@ export const ReportedPhonesProvider = ({api, children}: Props) => {
   const paginated = usePaginate<ReportedPhone, ReportedPhoneSearch>(
     search => {
       const {limit, offset, sortBy = 'count', orderBy = 'desc', ...filters} = search
-      return api.secured.reportedPhone.list(filters).then(_ => sortData(_, sortBy, orderBy)).then(paginateData(limit, offset))
+      return api.secured.reportedPhone
+        .list(filters)
+        .then(_ => sortData(_, sortBy, orderBy))
+        .then(paginateData(limit, offset))
     },
     {limit: 10, offset: 0},
   )
