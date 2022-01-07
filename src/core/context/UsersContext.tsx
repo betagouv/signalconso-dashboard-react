@@ -1,14 +1,14 @@
 import * as React from 'react'
 import {ReactNode, useContext} from 'react'
 import {UseFetcher, useFetcher, usePaginate, UsePaginate} from '@alexandreannic/react-hooks-lib/lib'
-import {ApiError, User, UserSearch} from '@signal-conso/signalconso-api-sdk-js'
+import {ApiDetailedError, ApiError, User, UserSearch} from '@signal-conso/signalconso-api-sdk-js'
 import {mapPromiseSdkPaginate} from '../helper/utils'
 import {SignalConsoApiSdk} from '../ApiSdkInstance'
 
 export interface UsersContextProps {
   dgccrf: UsePaginate<User, UserSearch>
   dgccrfPending: UseFetcher<SignalConsoApiSdk['secured']['user']['fetchPendingDGCCRF'], ApiError>
-  invite: UseFetcher<SignalConsoApiSdk['secured']['user']['inviteDGCCRF'], ApiError>
+  invite: UseFetcher<SignalConsoApiSdk['secured']['user']['inviteDGCCRF'], ApiDetailedError>
   changePassword: UseFetcher<SignalConsoApiSdk['secured']['user']['changePassword'], ApiError>
   activate: UseFetcher<SignalConsoApiSdk['public']['user']['activateAccount'], ApiError>
   fetchTokenInfo: UseFetcher<SignalConsoApiSdk['public']['user']['fetchTokenInfo'], ApiError>
