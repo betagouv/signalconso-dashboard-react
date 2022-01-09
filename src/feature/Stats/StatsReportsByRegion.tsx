@@ -85,7 +85,7 @@ export const StatsReportsByRegion = () => {
           {_countByDepCurrentMonth.entity && positionByDep && _constant.regions.entity && _constant.departmentsIndex && (
             <TableBody>
               {_countByDepCurrentMonth.entity.slice(0, 20).map(([depNumber, count], i) => (
-                <TableRow>
+                <TableRow key={depNumber}>
                   <TableCell>{i + 1}</TableCell>
                   <TableCell>{
                     (() =>{
