@@ -6,9 +6,8 @@ import {statsFormatCurveDate} from './Stats'
 import {useFetcher} from '@alexandreannic/react-hooks-lib'
 import {useI18n} from '../../core/i18n'
 import {useLogin} from '../../core/context/LoginContext'
-import {Alert} from 'mui-extension'
 import {useCssUtils} from '../../core/helper/useCssUtils'
-import {Text} from 'recharts'
+import {Txt} from 'mui-extension/lib/Txt/Txt'
 
 interface Props {
   ticks: number
@@ -26,11 +25,9 @@ export const StatsProUserPanel = ({ticks}: Props) => {
 
   return (
     <Panel loading={reportedActiveProAccountRate.loading}>
-      <Alert type="info" className={cssUtils.marginBottom2}>
-        <Text>{m.reportsProUserDesc}</Text>
-      </Alert>
       <PanelHead>{m.reportsProUserInactiveAccountRate}</PanelHead>
       <PanelBody>
+        <Txt color="hint" gutterBottom block dangerouslySetInnerHTML={{__html: m.reportsProUserDesc}}/>
         {reportedActiveProAccountRate.entity && (
           <ScLineChart
             curves={[

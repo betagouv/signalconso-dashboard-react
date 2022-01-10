@@ -7,8 +7,8 @@ import {useI18n} from '../../core/i18n'
 import {useFetcher} from '@alexandreannic/react-hooks-lib'
 import {CountByDate, CurveStatsParams, Period, ReportTag} from '@signal-conso/signalconso-api-sdk-js'
 import {statsFormatCurveDate} from './Stats'
-import {Alert} from 'mui-extension'
 import {useCssUtils} from '../../core/helper/useCssUtils'
+import {Txt} from 'mui-extension/lib/Txt/Txt'
 
 interface Props {
   ticks?: number
@@ -55,11 +55,9 @@ export const StatsReportsCurvePanel = ({ticks}: Props) => {
 
   return (
     <Panel loading={reportCountCurve.loading || reportInternetCountCurve.loading || reportDemarchageCountCurve.loading}>
-      <Alert type="info" className={cssUtils.marginBottom2}>
-        <span dangerouslySetInnerHTML={{__html: m.reportsDivisionDesc}} className={cssUtils.tooltipColorTxtSecondary} />
-      </Alert>
       <PanelHead>{m.reportsDivision}</PanelHead>
       <PanelBody>
+        <Txt color="hint" gutterBottom block dangerouslySetInnerHTML={{__html: m.reportsDivisionDesc}}/>
         {reportCountCurve.entity && reportInternetCountCurve.entity && reportDemarchageCountCurve.entity && (
           <ScLineChart
             curves={[

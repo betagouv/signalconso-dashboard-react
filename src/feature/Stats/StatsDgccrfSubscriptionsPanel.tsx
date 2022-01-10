@@ -1,14 +1,13 @@
 import {Panel, PanelBody, PanelHead} from '../../shared/Panel'
 import {ScLineChart} from '../../shared/Chart/Chart'
 import * as React from 'react'
+import {useEffect} from 'react'
 import {statsFormatCurveDate} from './Stats'
 import {useLogin} from '../../core/context/LoginContext'
 import {useI18n} from '../../core/i18n'
 import {useFetcher} from '@alexandreannic/react-hooks-lib'
-import {useEffect} from 'react'
-import {Alert} from 'mui-extension'
-import {Txt} from 'mui-extension/lib/Txt/Txt'
 import {useCssUtils} from '../../core/helper/useCssUtils'
+import {Txt} from 'mui-extension/lib/Txt/Txt'
 
 interface Props {
   ticks: number
@@ -29,11 +28,9 @@ export const StatsDgccrfSubscriptionsPanel = ({ticks}: Props) => {
 
   return (
     <Panel loading={dgccrfSubscriptionsCurve.loading || dgccrfControlsCurve.loading}>
-      <Alert type="info" className={cssUtils.marginBottom2}>
-        <span dangerouslySetInnerHTML={{__html: m.dgccrfActionsDesc}} className={cssUtils.tooltipColorTxtSecondary} />
-      </Alert>
       <PanelHead>{m.dgccrfActions}</PanelHead>
       <PanelBody>
+        <Txt color="hint" gutterBottom block dangerouslySetInnerHTML={{__html: m.dgccrfActionsDesc}}/>
         {dgccrfSubscriptionsCurve.entity && dgccrfControlsCurve.entity && (
           <ScLineChart
             curves={[

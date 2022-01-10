@@ -5,11 +5,11 @@ import {useEffect} from 'react'
 import {useLogin} from '../../core/context/LoginContext'
 import {useI18n} from '../../core/i18n'
 import {useFetcher} from '@alexandreannic/react-hooks-lib'
-import {CurveStatsParams, Period, ReportStatus} from '@signal-conso/signalconso-api-sdk-js'
+import {Period} from '@signal-conso/signalconso-api-sdk-js'
 import {statsFormatCurveDate} from './Stats'
 import {curveRatio} from './ReportStats'
-import {Alert} from 'mui-extension'
 import {useCssUtils} from '../../core/helper/useCssUtils'
+import {Txt} from 'mui-extension/lib/Txt/Txt'
 
 interface Props {
   ticks?: number
@@ -35,11 +35,9 @@ export const StatsReportsProProcessedPanel = ({ticks}: Props) => {
 
   return (
     <Panel loading={reportCountCurve.loading || reportTransmittedCountCurve.loading || reportResponseCountCurve.loading}>
-      <Alert type="info" className={cssUtils.marginBottom2}>
-        <span dangerouslySetInnerHTML={{__html: m.reportsProProcessedDesc}} className={cssUtils.tooltipColorTxtSecondary} />
-      </Alert>
       <PanelHead>{m.reportsProProcessed}</PanelHead>
       <PanelBody>
+        <Txt color="hint" gutterBottom block dangerouslySetInnerHTML={{__html: m.reportsProProcessedDesc}}/>
         {reportCountCurve.entity && reportTransmittedCountCurve.entity && reportResponseCountCurve.entity && (
           <ScLineChart
             curves={[
