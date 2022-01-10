@@ -16,7 +16,7 @@ import {useHistory} from 'react-router'
 import {siteMap} from '../../core/siteMap'
 import {ScInputPassword} from '../../shared/InputPassword/InputPassword'
 import {AccessEventActions, ActionResultNames, EventCategories, Matomo} from '../../core/plugins/Matomo'
-import {ApiError} from '@signal-conso/signalconso-api-sdk-js'
+import {ApiDetailedError, ApiError} from '@signal-conso/signalconso-api-sdk-js'
 
 interface Form {
   siret: string
@@ -40,7 +40,7 @@ export const ActivateAccountForm = ({register: registerAction}: Props) => {
   const {m} = useI18n()
   const cssUtils = useCssUtils()
   const css = useStyles()
-  const {toastSuccess, toastError} = useToast()
+  const {toastSuccess, toastApiError} = useToast()
   const history = useHistory()
   const {
     register,
@@ -56,8 +56,8 @@ export const ActivateAccountForm = ({register: registerAction}: Props) => {
         setTimeout(() => history.push(siteMap.loggedout.login), 400)
         Matomo.trackEvent(EventCategories.account, AccessEventActions.activateCompanyCode, ActionResultNames.success)
       })
-      .catch((err: ApiError) => {
-        toastError(err)
+      .catch((err: ApiDetailedError) => {
+        toastApiError(err)
         Matomo.trackEvent(EventCategories.companyAccess, AccessEventActions.activateCompanyCode, ActionResultNames.fail)
       })
   }

@@ -12,7 +12,7 @@ import {useForm} from 'react-hook-form'
 import {ScButton} from '../../shared/Button/Button'
 import {fromNullable} from 'fp-ts/es6/Option'
 import {ForgottenPasswordDialog} from './ForgottenPasswordDialog'
-import {ApiError, SignalConsoPublicSdk} from '@signal-conso/signalconso-api-sdk-js'
+import {ApiDetailedError, ApiError, SignalConsoPublicSdk} from '@signal-conso/signalconso-api-sdk-js'
 import {fnSwitch} from '../../core/helper/utils'
 import {useToast} from '../../core/toast'
 import {AuthenticationEventActions, EventCategories, Matomo} from '../../core/plugins/Matomo'
@@ -38,7 +38,7 @@ export const LoginForm = ({login, forgottenPassword}: Props) => {
   const {m} = useI18n()
   const css = useStyles()
   const cssUtils = useCssUtils()
-  const {toastError} = useToast()
+  const {toastApiError} = useToast()
 
   const {
     register,
@@ -54,16 +54,8 @@ export const LoginForm = ({login, forgottenPassword}: Props) => {
         Matomo.trackEvent(EventCategories.auth, AuthenticationEventActions.success, auth.user.id)
         Matomo.trackEvent(EventCategories.auth, AuthenticationEventActions.role, auth.user.role)
       })
-      .catch((err: ApiError) => {
-        const errorMessage = fnSwitch(
-          err.code,
-          {
-            403: m.loginForbidden,
-            423: m.loginLocked,
-          },
-          () => m.loginFailed,
-        )
-        toastError({message: errorMessage})
+      .catch((err: ApiDetailedError) => {
+        toastApiError(err)
         Matomo.trackEvent(EventCategories.auth, AuthenticationEventActions.fail)
       })
   }

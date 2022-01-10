@@ -34,7 +34,6 @@ export const siteMap = {
     activateDgccrf: `/dgccrf/rejoindre`,
     consumerReview: (reportId: Id = `:reportId`) => `/suivi-des-signalements/${reportId}/avis`,
     register: `/activation`,
-    registerBis: `/entreprise/activation`,
     login: `/connexion`,
     emailValidation: `/connexion/validation-email`,
     resetPassword: (token: Id = `:token`) => `/connexion/nouveau-mot-de-passe/${token}`,
