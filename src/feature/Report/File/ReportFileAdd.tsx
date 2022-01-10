@@ -1,6 +1,6 @@
 import React, {useRef, useState} from 'react'
-import { Button, CircularProgress, Icon, Theme, Tooltip } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
+import {Button, CircularProgress, Icon, Theme, Tooltip} from '@mui/material'
+import makeStyles from '@mui/styles/makeStyles'
 import {reportFileConfig} from './reportFileConfig'
 import {useI18n} from '../../../core/i18n'
 import {styleUtils} from '../../../core/theme'
@@ -61,7 +61,7 @@ export const ReportFileAdd = ({reportId, onUploaded, fileOrigin}: Props) => {
 
   const handleChange = (files: FileList | null) => {
     if (files && files[0]) {
-      const file: File  = files[0]
+      const file: File = files[0]
       if (file.size > config.upload_maxSizeMb * 1024 * 1024) {
         toastError({message: m.invalidSize(config.upload_maxSizeMb)})
         setErrorMessage(m.invalidSize(config.upload_maxSizeMb))

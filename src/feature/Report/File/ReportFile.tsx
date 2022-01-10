@@ -1,6 +1,6 @@
 import {UploadedFile} from '@signal-conso/signalconso-api-sdk-js'
-import { Icon, Theme, Tooltip } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
+import {Icon, Theme, Tooltip} from '@mui/material'
+import makeStyles from '@mui/styles/makeStyles'
 import {extensionToType, FileType, reportFileConfig} from './reportFileConfig'
 import {useLogin} from '../../../core/context/LoginContext'
 import {fromNullable, some} from 'fp-ts/lib/Option'
@@ -11,7 +11,7 @@ import {IconBtn} from 'mui-extension/lib'
 import {useToast} from '../../../core/toast'
 import {useI18n} from '../../../core/i18n'
 import {ScDialog} from '../../../shared/Confirm/ScDialog'
-import { defaultSpacing } from 'core/theme';
+import {defaultSpacing} from 'core/theme'
 
 export interface ReportFileProps {
   file: UploadedFile

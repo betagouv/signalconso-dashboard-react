@@ -12,7 +12,6 @@ import {DebouncedInput} from '../../shared/DebouncedInput/DebouncedInput'
 import {TrueFalseUndefined} from '../../shared/TrueFalseUndefined/TrueFalseUndefined'
 import {User} from '@signal-conso/signalconso-api-sdk-js'
 
-
 export const UsersList = () => {
   const {m} = useI18n()
   const _users = useUsersContext().dgccrf
@@ -93,10 +92,7 @@ export const UsersList = () => {
               </Tooltip>
             ),
             id: 'lastEmailValidation',
-            render: _ =>
-              User.isUserActive(_) && (
-                <Icon className={cssUtils.colorSuccess}>check_circle</Icon>
-              ),
+            render: _ => User.isUserActive(_) && <Icon className={cssUtils.colorSuccess}>check_circle</Icon>,
           },
         ]}
       />

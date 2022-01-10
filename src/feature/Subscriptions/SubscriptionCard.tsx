@@ -15,7 +15,7 @@ import {SelectCountriesMenu} from '../../shared/SelectCountries/SelectCountriesM
 import {SelectMenu} from '../../shared/SelectMenu/SelectMenu'
 import {useAnomalyContext} from '../../core/context/AnomalyContext'
 import {Confirm, IconBtn} from 'mui-extension/lib'
-import makeStyles from '@mui/styles/makeStyles';
+import makeStyles from '@mui/styles/makeStyles'
 import {ScDialog} from '../../shared/Confirm/ScDialog'
 
 interface Props {

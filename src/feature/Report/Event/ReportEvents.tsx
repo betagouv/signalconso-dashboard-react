@@ -14,13 +14,13 @@ export const ReportEvents = ({events}: Props) => {
   return (
     <PanelBody>
       {!events ? (
-        <Fender type="loading"/>
+        <Fender type="loading" />
       ) : events.length === 0 ? (
         <Fender type="empty">{m.noDataAtm}</Fender>
       ) : (
         events
           .sort((a, b) => a.data.creationDate.getTime() - b.data.creationDate.getTime())
-          .map(event => <ReportEventComponent key={event.data.id} event={event}/>)
+          .map(event => <ReportEventComponent key={event.data.id} event={event} />)
       )}
     </PanelBody>
   )

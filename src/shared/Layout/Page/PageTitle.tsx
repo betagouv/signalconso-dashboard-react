@@ -1,7 +1,7 @@
 import * as React from 'react'
 import {ReactNode} from 'react'
-import { Theme, Typography } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
+import {Theme, Typography} from '@mui/material'
+import makeStyles from '@mui/styles/makeStyles'
 import {classes} from '../../../core/helper/utils'
 
 const useStyles = makeStyles((t: Theme) => ({

@@ -1,4 +1,4 @@
-import makeStyles from '@mui/styles/makeStyles';
+import makeStyles from '@mui/styles/makeStyles'
 import {Theme} from '@mui/material'
 import {styleUtils} from '../../core/theme'
 import * as React from 'react'

@@ -1,8 +1,8 @@
 import * as React from 'react'
 import {ReactNode} from 'react'
 import {Page as MuiPage} from 'mui-extension'
-import { LinearProgress, Theme } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
+import {LinearProgress, Theme} from '@mui/material'
+import makeStyles from '@mui/styles/makeStyles'
 import {classes} from '../../../core/helper/utils'
 
 export const pageWidth = {

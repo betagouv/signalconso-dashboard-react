@@ -5,8 +5,8 @@ import {CompanyToActivate, Id} from '@signal-conso/signalconso-api-sdk-js'
 import React, {SyntheticEvent, useEffect} from 'react'
 import {useCompaniesContext} from '../../core/context/CompaniesContext'
 import {useCssUtils} from '../../core/helper/useCssUtils'
-import { Checkbox, Icon, Theme, Tooltip } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
+import {Checkbox, Icon, Theme, Tooltip} from '@mui/material'
+import makeStyles from '@mui/styles/makeStyles'
 import {styleUtils} from '../../core/theme'
 import {Fender, IconBtn} from 'mui-extension/lib'
 import {Link} from 'react-router-dom'

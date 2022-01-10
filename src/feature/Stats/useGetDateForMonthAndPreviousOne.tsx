@@ -2,8 +2,8 @@ import {useMemo} from 'react'
 import {endOfMonth, startOfMonth, subMonths, subYears} from 'date-fns'
 
 export interface UseGetDateForMonthAndPreviousOneProps {
-  current: {start: Date, end: Date}
-  lastMonth: {start: Date, end: Date}
+  current: {start: Date; end: Date}
+  lastMonth: {start: Date; end: Date}
 }
 
 export const useGetDateForMonthAndPreviousOne = (selectedMonth: number): UseGetDateForMonthAndPreviousOneProps => {
