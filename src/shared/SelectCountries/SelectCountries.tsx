@@ -1,8 +1,8 @@
 import * as React from 'react'
 import {forwardRef, useEffect, useState} from 'react'
-import { Icon, IconButton, TextField, Theme } from '@mui/material';
-import createStyles from '@mui/styles/createStyles';
-import makeStyles from '@mui/styles/makeStyles';
+import {Icon, IconButton, TextField, Theme} from '@mui/material'
+import createStyles from '@mui/styles/createStyles'
+import makeStyles from '@mui/styles/makeStyles'
 import {AutocompleteProps} from '@mui/material/Autocomplete'
 import {useCssUtils} from '../../core/helper/useCssUtils'
 import {useI18n} from '../../core/i18n'
@@ -46,7 +46,7 @@ export const SelectCountries = forwardRef(({value, onChange, disabled, ...props}
   }, [])
 
   const open = (event: any) => {
-    if(!disabled) setAnchorEl(event.currentTarget)
+    if (!disabled) setAnchorEl(event.currentTarget)
   }
 
   const close = () => setAnchorEl(null)
@@ -65,49 +65,51 @@ export const SelectCountries = forwardRef(({value, onChange, disabled, ...props}
   //   if (inputValue !== '') open(event)
   // }
 
-  return <>
-    <TextField
-      {...props}
-      size="small"
-      margin="dense"
-      variant="outlined"
-      inputRef={ref}
-      onClick={open}
-      maxRows={2}
-      rows={2}
-      value={innerValue.join(', ')}
-      // value={inputValue}
-      InputProps={{
-        disabled,
-        style: {paddingRight: 4},
-        // startAdornment: indexValues.toArray().map(_ =>
-        //   <Chip size="small" label={_} style={{margin: 2}} onDelete={() => indexValues.delete(_)}/>
-        // ),
-        endAdornment: (
-          <>
-            <IconButton
-              size="small"
-              onClick={_ => stopPropagation(clear)(_)}
-              className={classes(innerValue.length === 0 && cssUtils.hidden)}
-            >
-              <Icon>clear</Icon>
-            </IconButton>
-            {/*<IconButton size="small" onClick={open}>*/}
-            {/*  <Icon>arrow_drop_down</Icon>*/}
-            {/*</IconButton>*/}
-          </>
-        ),
-      }}
-      inputProps={{
-        autoComplete: 'new-password', // disable autocomplete and autofill
-      }}
-    />
-    <SelectCountriesMenu
-      open={!!anchorEl}
-      anchorEl={anchorEl}
-      onClose={close}
-      onChange={innerOnChange}
-      initialValues={innerValue}
-    />
-  </>;
+  return (
+    <>
+      <TextField
+        {...props}
+        size="small"
+        margin="dense"
+        variant="outlined"
+        inputRef={ref}
+        onClick={open}
+        maxRows={2}
+        rows={2}
+        value={innerValue.join(', ')}
+        // value={inputValue}
+        InputProps={{
+          disabled,
+          style: {paddingRight: 4},
+          // startAdornment: indexValues.toArray().map(_ =>
+          //   <Chip size="small" label={_} style={{margin: 2}} onDelete={() => indexValues.delete(_)}/>
+          // ),
+          endAdornment: (
+            <>
+              <IconButton
+                size="small"
+                onClick={_ => stopPropagation(clear)(_)}
+                className={classes(innerValue.length === 0 && cssUtils.hidden)}
+              >
+                <Icon>clear</Icon>
+              </IconButton>
+              {/*<IconButton size="small" onClick={open}>*/}
+              {/*  <Icon>arrow_drop_down</Icon>*/}
+              {/*</IconButton>*/}
+            </>
+          ),
+        }}
+        inputProps={{
+          autoComplete: 'new-password', // disable autocomplete and autofill
+        }}
+      />
+      <SelectCountriesMenu
+        open={!!anchorEl}
+        anchorEl={anchorEl}
+        onClose={close}
+        onChange={innerOnChange}
+        initialValues={innerValue}
+      />
+    </>
+  )
 })

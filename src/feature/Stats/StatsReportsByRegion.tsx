@@ -14,8 +14,8 @@ import {useEffectFn} from '../../shared/hooks/UseEffectFn'
 import {useToast} from '../../core/toast'
 import {SelectMonth} from '../../shared/SelectMonth/SelectMonth'
 import {useGetDateForMonthAndPreviousOne} from './useGetDateForMonthAndPreviousOne'
-import {Alert} from "mui-extension";
-import * as React from "react";
+import {Alert} from 'mui-extension'
+import * as React from 'react'
 
 export const StatsReportsByRegion = () => {
   const {apiSdk: api} = useLogin()
@@ -58,15 +58,12 @@ export const StatsReportsByRegion = () => {
   return (
     <Panel loading={_countByDepCurrentMonth.loading || _countByDepLastMonth.loading}>
       <Alert type="info" className={cssUtils.marginBottom2}>
-                <span dangerouslySetInnerHTML={{__html: m.reportsDistributionDesc}}
-                      className={cssUtils.tooltipColorTxtSecondary}/>
+        <span dangerouslySetInnerHTML={{__html: m.reportsDistributionDesc}} className={cssUtils.tooltipColorTxtSecondary} />
       </Alert>
-      <PanelHead className={cssUtils.marginBottom2} action={
-        <SelectMonth value={selectedMonth} onChange={setSelectedMonth}/>
-      }>
+      <PanelHead className={cssUtils.marginBottom2} action={<SelectMonth value={selectedMonth} onChange={setSelectedMonth} />}>
         {m.reportsDistribution}
       </PanelHead>
-      <Divider/>
+      <Divider />
       <div style={{overflowX: 'auto', position: 'relative'}}>
         <Table size="small">
           <TableHead>
@@ -79,7 +76,7 @@ export const StatsReportsByRegion = () => {
                   <Icon className={cssUtils.colorTxtHint}>show_chart</Icon>
                 </Tooltip>
               </TableCell>
-              <TableCell/>
+              <TableCell />
             </TableRow>
           </TableHead>
           {_countByDepCurrentMonth.entity && positionByDep && _constant.regions.entity && _constant.departmentsIndex && (
@@ -87,30 +84,41 @@ export const StatsReportsByRegion = () => {
               {_countByDepCurrentMonth.entity.slice(0, 20).map(([depNumber, count], i) => (
                 <TableRow key={depNumber}>
                   <TableCell>{i + 1}</TableCell>
-                  <TableCell>{
-                    (() =>{
-                      return depNumber ? <span>{_constant.departmentsIndex![depNumber]} <span className={cssUtils.colorTxtHint}>({depNumber})</span></span> : <span> N/A </span>
+                  <TableCell>
+                    {(() => {
+                      return depNumber ? (
+                        <span>
+                          {_constant.departmentsIndex![depNumber]} <span className={cssUtils.colorTxtHint}>({depNumber})</span>
+                        </span>
+                      ) : (
+                        <span> N/A </span>
+                      )
                     })()}
-
                   </TableCell>
                   <TableCell>{formatLargeNumber(count)}</TableCell>
-                  <TableCell>{(() => {
-                    const oldPosition = positionByDep[depNumber]
-                    if (oldPosition === i) {
-                      return <span className={classes(cssUtils.txtBold, cssUtils.colorTxtHint)}>=</span>
-                    } else if (oldPosition > i) {
-                      return <span className={classes(cssUtils.txtBold, cssUtils.colorError)}>+{oldPosition - i}</span>
-                    } else {
-                      return <span className={classes(cssUtils.txtBold, cssUtils.colorSuccess)}>{oldPosition - i}</span>
-                    }
-                  })()}</TableCell>
+                  <TableCell>
+                    {(() => {
+                      const oldPosition = positionByDep[depNumber]
+                      if (oldPosition === i) {
+                        return <span className={classes(cssUtils.txtBold, cssUtils.colorTxtHint)}>=</span>
+                      } else if (oldPosition > i) {
+                        return <span className={classes(cssUtils.txtBold, cssUtils.colorError)}>+{oldPosition - i}</span>
+                      } else {
+                        return <span className={classes(cssUtils.txtBold, cssUtils.colorSuccess)}>{oldPosition - i}</span>
+                      }
+                    })()}
+                  </TableCell>
                   <TableCell style={{textAlign: 'right'}}>
-                    <NavLink to={siteMap.logged.reports({
-                      departments: [depNumber],
-                      start: dates.current.start,
-                      end: dates.current.end,
-                    })}>
-                      <ScButton color="primary" size="small">{m.see}</ScButton>
+                    <NavLink
+                      to={siteMap.logged.reports({
+                        departments: [depNumber],
+                        start: dates.current.start,
+                        end: dates.current.end,
+                      })}
+                    >
+                      <ScButton color="primary" size="small">
+                        {m.see}
+                      </ScButton>
                     </NavLink>
                   </TableCell>
                 </TableRow>

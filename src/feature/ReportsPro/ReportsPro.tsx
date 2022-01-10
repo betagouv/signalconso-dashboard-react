@@ -20,7 +20,12 @@ import {classes, openInNew} from '../../core/helper/utils'
 import {Btn, Fender} from 'mui-extension/lib'
 import {EntityIcon} from '../../core/EntityIcon'
 import {ScButton} from '../../shared/Button/Button'
-import {mapArrayFromQuerystring, mapDateFromQueryString, mapDatesToQueryString, useQueryString} from '../../core/helper/useQueryString'
+import {
+  mapArrayFromQuerystring,
+  mapDateFromQueryString,
+  mapDatesToQueryString,
+  useQueryString,
+} from '../../core/helper/useQueryString'
 import {fromNullable} from 'fp-ts/lib/Option'
 import {useToast} from '../../core/toast'
 import {config} from '../../conf/config'
@@ -188,7 +193,13 @@ export const ReportsPro = () => {
                         onChange={departments => _reports.updateFilters(prev => ({...prev, departments}))}
                       >
                         {(value, onChange) => (
-                          <SelectDepartments label={m.departments} value={value} onChange={onChange} className={cssUtils.marginRight} fullWidth/>
+                          <SelectDepartments
+                            label={m.departments}
+                            value={value}
+                            onChange={onChange}
+                            className={cssUtils.marginRight}
+                            fullWidth
+                          />
                         )}
                       </DebouncedInput>
                     </Grid>
@@ -212,11 +223,11 @@ export const ReportsPro = () => {
                             fullWidth
                           >
                             <MenuItem value="">&nbsp;</MenuItem>
-                            {Enum.values(ReportStatusPro).map(statusPro =>
+                            {Enum.values(ReportStatusPro).map(statusPro => (
                               <MenuItem key={statusPro} value={statusPro}>
-                                <ReportStatusProLabel dense fullWidth inSelectOptions status={statusPro}/>
-                              </MenuItem>,
-                            )}
+                                <ReportStatusProLabel dense fullWidth inSelectOptions status={statusPro} />
+                              </MenuItem>
+                            ))}
                           </ScSelect>
                         )}
                       </DebouncedInput>
@@ -302,54 +313,54 @@ export const ReportsPro = () => {
                                     : m.anonymousReport}
                                 </Txt>
                               </div>
-                              <ReportStatusLabel dense status={_.report.status}/>
+                              <ReportStatusLabel dense status={_.report.status} />
                             </div>
                           ),
                         },
                       ]
                     : [
-                      {
-                        id: 'companyPostalCode',
-                        head: m.postalCodeShort,
-                        className: _ => (_.report.status === ReportStatus.TraitementEnCours ? cssUtils.txtBold : undefined),
-                        render: _ => _.report.companyAddress.postalCode,
-                      },
-                      {
-                        id: 'siret',
-                        head: m.siret,
-                        className: _ => (_.report.status === ReportStatus.TraitementEnCours ? cssUtils.txtBold : undefined),
-                        render: _ => _.report.companySiret,
-                      },
-                      {
-                        id: 'createDate',
-                        head: m.receivedAt,
-                        className: _ => (_.report.status === ReportStatus.TraitementEnCours ? cssUtils.txtBold : undefined),
-                        render: _ => formatDate(_.report.creationDate),
-                      },
-                      {
-                        id: 'status',
-                        head: m.status,
-                        render: _ => <ReportStatusProLabel dense status={Report.getStatusProByStatus(_.report.status)}/>,
-                      },
-                      {
-                        id: 'consumer',
-                        head: m.consumer,
-                        className: _ => (_.report.status === ReportStatus.TraitementEnCours ? cssUtils.txtBold : undefined),
-                        render: _ =>
-                          _.report.contactAgreement ? _.report.firstName + ' ' + _.report.lastName : m.anonymousReport,
-                      },
-                      {
-                        id: 'file',
-                        head: m.files,
-                        className: css.tdFiles,
-                        render: _ =>
-                          _.files.length > 0 && (
-                            <Badge badgeContent={_.files.length} color="primary" invisible={_.files.length === 1}>
-                              <Icon className={cssUtils.colorTxtHint}>insert_drive_file</Icon>
-                            </Badge>
-                          ),
-                      },
-                    ]
+                        {
+                          id: 'companyPostalCode',
+                          head: m.postalCodeShort,
+                          className: _ => (_.report.status === ReportStatus.TraitementEnCours ? cssUtils.txtBold : undefined),
+                          render: _ => _.report.companyAddress.postalCode,
+                        },
+                        {
+                          id: 'siret',
+                          head: m.siret,
+                          className: _ => (_.report.status === ReportStatus.TraitementEnCours ? cssUtils.txtBold : undefined),
+                          render: _ => _.report.companySiret,
+                        },
+                        {
+                          id: 'createDate',
+                          head: m.receivedAt,
+                          className: _ => (_.report.status === ReportStatus.TraitementEnCours ? cssUtils.txtBold : undefined),
+                          render: _ => formatDate(_.report.creationDate),
+                        },
+                        {
+                          id: 'status',
+                          head: m.status,
+                          render: _ => <ReportStatusProLabel dense status={Report.getStatusProByStatus(_.report.status)} />,
+                        },
+                        {
+                          id: 'consumer',
+                          head: m.consumer,
+                          className: _ => (_.report.status === ReportStatus.TraitementEnCours ? cssUtils.txtBold : undefined),
+                          render: _ =>
+                            _.report.contactAgreement ? _.report.firstName + ' ' + _.report.lastName : m.anonymousReport,
+                        },
+                        {
+                          id: 'file',
+                          head: m.files,
+                          className: css.tdFiles,
+                          render: _ =>
+                            _.files.length > 0 && (
+                              <Badge badgeContent={_.files.length} color="primary" invisible={_.files.length === 1}>
+                                <Icon className={cssUtils.colorTxtHint}>insert_drive_file</Icon>
+                              </Badge>
+                            ),
+                        },
+                      ]
                 }
                 renderEmptyState={
                   <Fender

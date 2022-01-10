@@ -1,5 +1,5 @@
-import { Badge, Checkbox, Icon, Menu, MenuItem, Theme, Tooltip } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
+import {Badge, Checkbox, Icon, Menu, MenuItem, Theme, Tooltip} from '@mui/material'
+import makeStyles from '@mui/styles/makeStyles'
 import React from 'react'
 import {IconBtn} from 'mui-extension/lib'
 import {DatatableColumnProps} from './Datatable'
@@ -47,15 +47,9 @@ export const DatatableColumnToggle = ({className, title, columns, hiddenColumns,
             <MenuItem
               dense
               key={col.id}
-              onClick={() =>
-                onChange(
-                  checked
-                    ? [...hiddenColumns, col.id]
-                    : hiddenColumns.filter(_ => _ !== col.id),
-                )
-              }
+              onClick={() => onChange(checked ? [...hiddenColumns, col.id] : hiddenColumns.filter(_ => _ !== col.id))}
             >
-              <Checkbox className={css.cb} checked={checked}/>
+              <Checkbox className={css.cb} checked={checked} />
               {col.head}
             </MenuItem>
           )

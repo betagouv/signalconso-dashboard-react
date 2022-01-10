@@ -37,59 +37,72 @@ export const StatsReportsInternetPanel = () => {
 
   const fetch = (start: Date, end: Date) => {
     return Promise.all([
-      api.public.stats.getReportCount({
-        start,
-        end,
-      }).then(_ => _.value),
-      api.public.stats.getReportCount({
-        start,
-        end,
-        tags: [ReportTag.Internet],
-      }).then(_ => _.value),
-      api.public.stats.getReportCount({
-        start,
-        end,
-        tags: [ReportTag.Internet],
-        hasCompany: true,
-      }).then(_ => _.value),
-      api.public.stats.getReportCount({
-        start,
-        end,
-        tags: [ReportTag.Internet],
-        hasCompany: false,
-        hasForeignCountry: true,
-      }).then(_ => _.value),
-      api.public.stats.getReportCount({
-        start,
-        end,
-        tags: [ReportTag.Internet],
-        hasCompany: false,
-        hasForeignCountry: false,
-      }).then(_ => _.value),
+      api.public.stats
+        .getReportCount({
+          start,
+          end,
+        })
+        .then(_ => _.value),
+      api.public.stats
+        .getReportCount({
+          start,
+          end,
+          tags: [ReportTag.Internet],
+        })
+        .then(_ => _.value),
+      api.public.stats
+        .getReportCount({
+          start,
+          end,
+          tags: [ReportTag.Internet],
+          hasCompany: true,
+        })
+        .then(_ => _.value),
+      api.public.stats
+        .getReportCount({
+          start,
+          end,
+          tags: [ReportTag.Internet],
+          hasCompany: false,
+          hasForeignCountry: true,
+        })
+        .then(_ => _.value),
+      api.public.stats
+        .getReportCount({
+          start,
+          end,
+          tags: [ReportTag.Internet],
+          hasCompany: false,
+          hasForeignCountry: false,
+        })
+        .then(_ => _.value),
     ])
   }
 
   const getValues = async (start: Date, end: Date, setState: Dispatch<SetStateAction<AsyncPercent>>) => {
     setState(prev => ({...prev, loading: true}))
     fetch(start, end)
-      .then(([
-        reports,
-        reportsInternets,
-        reportsInternetsWithCompany,
-        reportsInternetsWithCountry,
-        reportsInternetsWithoutAnything,
-      ]) => {
-        setState({
-          loading: false,
-          error: undefined,
-          value: {
-            reportsInternets: +reportsInternets / +reports * 100,
-            reportsInternetsWithCompany: +reportsInternetsWithCompany / +reportsInternets * 100,
-            reportsInternetsWithCountry: +reportsInternetsWithCountry / +reportsInternets * 100,
-            reportsInternetsWithoutAnything: +reportsInternetsWithoutAnything / +reportsInternets * 100,
-          },
-        })
-      }).catch((err: ApiError) => setState(prev => ({...prev, error: err.message})))
+      .then(
+        ([
+          reports,
+          reportsInternets,
+          reportsInternetsWithCompany,
+          reportsInternetsWithCountry,
+          reportsInternetsWithoutAnything,
+        ]) => {
+          setState({
+            loading: false,
+            error: undefined,
+            value: {
+              reportsInternets: (+reportsInternets / +reports) * 100,
+              reportsInternetsWithCompany: (+reportsInternetsWithCompany / +reportsInternets) * 100,
+              reportsInternetsWithCountry: (+reportsInternetsWithCountry / +reportsInternets) * 100,
+              reportsInternetsWithoutAnything: (+reportsInternetsWithoutAnything / +reportsInternets) * 100,
+            },
+          })
+        },
+      )
+      .catch((err: ApiError) => setState(prev => ({...prev, error: err.message})))
   }
 
   useEffect(() => {
@@ -100,11 +113,7 @@ export const StatsReportsInternetPanel = () => {
 
   return (
     <Panel loading={asyncPercent.loading || asyncPercentLastMonth.loading}>
-      <PanelHead action={
-        <SelectMonth value={selectedMonth} onChange={setSelectedMonth}/>
-      }>
-        {m.statsInternetsTitle}
-      </PanelHead>
+      <PanelHead action={<SelectMonth value={selectedMonth} onChange={setSelectedMonth} />}>{m.statsInternetsTitle}</PanelHead>
       <PanelBody>
         {asyncPercent.value && asyncPercentLastMonth.value && (
           <div style={{display: 'flex', flexWrap: 'wrap', justifyContent: 'space-around', alignItems: 'center'}}>
@@ -115,10 +124,14 @@ export const StatsReportsInternetPanel = () => {
               value={asyncPercent.value.reportsInternets}
               previousValue={asyncPercentLastMonth.value.reportsInternets}
             />
-            <Box sx={{
-              fontSize: 220,
-              color: t => t.palette.divider,
-            }}>{'{'}</Box>
+            <Box
+              sx={{
+                fontSize: 220,
+                color: t => t.palette.divider,
+              }}
+            >
+              {'{'}
+            </Box>
             <div className={cssUtils.marginLeft}>
               <StatsCard
                 title={m.statsInternets_withCompany}
@@ -167,12 +180,19 @@ const StatsCard = ({className, value, previousValue, title, desc}: StatsCardProp
             <span style={{fontSize: 36}}>{Math.round(value)}</span>
             <span style={{fontSize: 22}}> %</span>
           </span>
-          <span className={classes(cssUtils.txtBig, cssUtils.txtBold, evolution > 0 ? cssUtils.colorSuccess : cssUtils.colorError)}>
-            {evolution > 0 ? '+' : '-'}{Math.abs(evolution)}
+          <span
+            className={classes(cssUtils.txtBig, cssUtils.txtBold, evolution > 0 ? cssUtils.colorSuccess : cssUtils.colorError)}
+          >
+            {evolution > 0 ? '+' : '-'}
+            {Math.abs(evolution)}
           </span>
         </div>
-        <Txt block bold>{title}</Txt>
-        <Txt block color="hint" size="small">{desc}</Txt>
+        <Txt block bold>
+          {title}
+        </Txt>
+        <Txt block color="hint" size="small">
+          {desc}
+        </Txt>
       </PanelBody>
     </Panel>
   )

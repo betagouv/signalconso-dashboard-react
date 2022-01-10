@@ -4,7 +4,7 @@ import {AddressComponent} from '../../../shared/Address/Address'
 import {fromNullable} from 'fp-ts/lib/Option'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
 import {Icon, IconButton, Theme, useTheme} from '@mui/material'
-import makeStyles from '@mui/styles/makeStyles';
+import makeStyles from '@mui/styles/makeStyles'
 import {SelectCompany} from '../../../shared/SelectCompany/SelectCompany'
 import {ScButton} from '../../../shared/Button/Button'
 import React from 'react'
@@ -70,7 +70,7 @@ export const ReportCompany = ({report, canEdit}: Props) => {
           </div>
           <div className={classes(cssUtils.colorTxtSecondary, cssUtils.txtSmall)}>
             <div className={cssUtils.txtBold}>{report.companyName}</div>
-            <AddressComponent address={report.companyAddress}/>
+            <AddressComponent address={report.companyAddress} />
           </div>
           <div>{report.vendor}</div>
           {fromNullable(report.websiteURL)

@@ -1,8 +1,8 @@
 import {Txt} from 'mui-extension/lib/Txt/Txt'
 import {Panel, PanelBody} from 'shared/Panel'
 import {CompaniesDbSyncInfo} from '@signal-conso/signalconso-api-sdk-js'
-import { alpha, CircularProgress, Grid, Theme, useTheme } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
+import {alpha, CircularProgress, Grid, Theme, useTheme} from '@mui/material'
+import makeStyles from '@mui/styles/makeStyles'
 import {styleUtils} from '../../core/theme'
 import {useI18n} from '../../core/i18n'
 import {PanelFoot} from '../../shared/Panel/PanelFoot'
