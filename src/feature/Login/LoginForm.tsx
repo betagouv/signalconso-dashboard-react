@@ -16,6 +16,8 @@ import {ApiDetailedError, ApiError, SignalConsoPublicSdk} from '@signal-conso/si
 import {fnSwitch} from '../../core/helper/utils'
 import {useToast} from '../../core/toast'
 import {AuthenticationEventActions, EventCategories, Matomo} from '../../core/plugins/Matomo'
+import {Alert} from "mui-extension";
+import {Txt} from "mui-extension/lib/Txt/Txt";
 
 interface Props {
   login: ActionProps<SignalConsoPublicSdk['authenticate']['login']>
@@ -32,19 +34,21 @@ const useStyles = makeStyles((t: Theme) => ({
 interface Form {
   email: string
   password: string
+  apiError: string
 }
 
 export const LoginForm = ({login, forgottenPassword}: Props) => {
   const {m} = useI18n()
   const css = useStyles()
   const cssUtils = useCssUtils()
-  const {toastApiError} = useToast()
 
   const {
     register,
     handleSubmit,
     watch,
-    formState: {errors, isValid},
+    setError,
+    clearErrors,
+    formState: {errors},
   } = useForm<Form>({mode: 'onSubmit'})
 
   const onLogin = async (form: Form) => {
@@ -55,7 +59,10 @@ export const LoginForm = ({login, forgottenPassword}: Props) => {
         Matomo.trackEvent(EventCategories.auth, AuthenticationEventActions.role, auth.user.role)
       })
       .catch((err: ApiDetailedError) => {
-        toastApiError(err)
+        setError('apiError', {
+          type: err.message.type,
+          message: err.message.details
+        });
         Matomo.trackEvent(EventCategories.auth, AuthenticationEventActions.fail)
       })
   }
@@ -63,6 +70,14 @@ export const LoginForm = ({login, forgottenPassword}: Props) => {
   return (
     <LoginPanel title={m.login}>
       <form className={css.body} onSubmit={handleSubmit(onLogin)} action="#">
+        {errors.apiError && (
+            <Alert type="error" className={cssUtils.marginBottom2}>
+              <Txt size="big" block bold>
+                {m.somethingWentWrong}
+              </Txt>
+              <Txt>{errors.apiError.message}</Txt>
+            </Alert>
+        )}
         <ScInput
           autoFocus
           type="email"
@@ -85,12 +100,12 @@ export const LoginForm = ({login, forgottenPassword}: Props) => {
           })}
         />
         <div style={{display: 'flex', alignItems: 'center'}}>
-          <ScButton loading={login.loading} type="submit" variant="contained" color="primary" className={cssUtils.marginRight}>
+          <ScButton loading={login.loading} type="submit" onClick={_ => clearErrors('apiError')} variant="contained" color="primary" className={cssUtils.marginRight}>
             {m.login}
           </ScButton>
           {fromNullable(forgottenPassword)
             .map(_ => (
-              <ForgottenPasswordDialog value={watch('email')} loading={_.loading} error={_.error} onSubmit={_.action}>
+              <ForgottenPasswordDialog value={watch('email')} loading={_.loading}  error={_.error} onSubmit={_.action}>
                 <ScButton color="primary">{m.forgottenPassword}</ScButton>
               </ForgottenPasswordDialog>
             ))
