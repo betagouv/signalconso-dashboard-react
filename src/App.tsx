@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react'
-import {ApiError} from '@signal-conso/signalconso-api-sdk-js'
+import {ApiDetailedError, ApiError} from '@signal-conso/signalconso-api-sdk-js'
 import {config} from './conf/config'
 import makeStyles from '@mui/styles/makeStyles'
 import {CircularProgress, StyledEngineProvider, Theme, ThemeProvider} from '@mui/material'
@@ -120,7 +120,7 @@ export const App = () => {
 const AppLogin = () => {
   useStyles()
   const history = useHistory()
-  const forgottenPassword = useFetcher<SignalConsoApiSdk['public']['authenticate']['forgotPassword'], ApiError>(
+  const forgottenPassword = useFetcher<SignalConsoApiSdk['public']['authenticate']['forgotPassword'], ApiDetailedError>(
     apiPublicSdk.authenticate.forgotPassword,
   )
 
