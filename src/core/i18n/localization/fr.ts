@@ -296,7 +296,7 @@ export const fr = {
     attachedFiles: 'Pièces jointes',
     database: `Base de données`,
     beginning: `Début`,
-    reportsDistribution: `Répartition des signalementspar départements`,
+    reportsDistribution: `Répartition des signalements par départements`,
     reportsDistributionDesc: `Classement des signalements par départements (N/A correspond aux signalements dont les départements non renseignés).`,
     invalidSize: (maxSize: number) => `La taille du fichier dépasse les ${maxSize} Mb`,
     somethingWentWrong: `Une erreur s'est produite`,
