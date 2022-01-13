@@ -235,15 +235,15 @@ export const fr = {
     emailConsumer: 'Email conso.',
     reportsProProcessed: 'Traitement des signalements par les pros',
     reportsProProcessedDesc: `   
-    <div>Pourcentage du traitement des signalements visible par les professionnels sur le total des signalements</div>
+    <div>Pourcentage du traitement des signalements visibles par les professionnels (une partie des signalements ne sont pas transmis aux professionnels) sur le total des signalements</div>
     <ul>
-        <li>Part des signalements transmis : TraitementEnCours/Envoyé, Transmis/Lu, NonConsulte, ConsulteIgnore, PromesseAction, Infonde, MalAttribue</li>
-        <li>Part des réponses aux signalements : PromesseAction, Infonde, MalAttribue</li>
+        <li>Part des signalements transmis :  Envoyé, Lu, Non consulté, Consulte ignoré, Promesse d'action, infondé, Mal attribué</li>
+        <li>Part des réponses aux signalements : Promesse d'action, infondé, Mal attribué</li>
     </ul>
   `,
     reportsProResponseType: 'Types de réponse - évolution',
     reportsProResponseTypeDesc: `   
-    Répartition des réponses des professionels aux signalements sur les signalements transmis
+    Répartition des réponses des professionels sur les signalements transmis
   `,
     reportsProResponse: '% Réponses',
     reportsProVisible: ' % Transmis',
