@@ -224,9 +224,15 @@ export const fr = {
     dgccrfCountActiveAccount: 'Nombre compte CCRF actifs',
     dgccrfSubscriptionsCurve: `Nombre d'abonnements au cumul`,
     dgccrfControlsCurve: `Nombre d'entreprises controlées`,
-    reportsProUserInactiveAccountRate: 'Comptes pro inactifs parmis les entreprises signalées',
-    reportsProUserDesc: `Pourcentage des utilisateurs professionnel inactifs (qui n'ont pas encore activé de compte sur signal conso) sur les signalements reçus `,
-    reportsProUserInactiveAccountRateDesc: '% de comptes pro inactifs',
+    reportsOnFisrtProActivationAccount:  `Adhésion de nouveaux professionnels`,
+    reportsProUserDesc:
+      `   
+    <ul>
+        <li>Nombre de signalements visibles au professionnels (une partie des signalements ne sont pas transmis aux professionnels).</li>
+        <li>Nombre d''entreprises ayant activé un compte utilisateur la première fois.</li>
+    </ul>
+  `,
+    proFirstAccountActivation: `Nombre d''entreprises ayant activé un compte utilisateur la première fois`,
     reportsCount: 'Nombre de signalements',
     reportsCountInternet: 'Nombre de signalements internet',
     reportsCountDemarchage: 'Nombre de signalements démarchage',
@@ -246,7 +252,7 @@ export const fr = {
     Répartition des réponses des professionels sur les signalements transmis
   `,
     reportsProResponse: '% Réponses',
-    reportsProVisible: ' % Transmis',
+    reportsProVisible: ' % Signalements visibles par les pro',
     reportsProInfonde: '% infondés',
     reportsProMalAttribue: '% mauvaises attributions',
     reportsProPromesseAction: `% promesses d'action`,
