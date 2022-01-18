@@ -8,6 +8,7 @@ import {useI18n} from '../../core/i18n'
 import {useLogin} from '../../core/context/LoginContext'
 import {useCssUtils} from '../../core/helper/useCssUtils'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
+import {curveRatio} from "./ReportStats";
 
 interface Props {
   ticks: number
@@ -18,21 +19,28 @@ export const StatsProUserPanel = ({ticks}: Props) => {
   const {m} = useI18n()
   const cssUtils = useCssUtils()
   const reportedActiveProAccountRate = useFetcher(api.secured.stats.getReportedInactiveProAccountRate)
+  const reportVisibleByProCountCurve = useFetcher(api.secured.stats.getProReportTransmittedStat)
 
   useEffect(() => {
     reportedActiveProAccountRate.fetch({}, {ticks})
+    reportVisibleByProCountCurve.fetch({}, {ticks})
   }, [ticks])
 
   return (
-    <Panel loading={reportedActiveProAccountRate.loading}>
-      <PanelHead>{m.reportsProUserInactiveAccountRate}</PanelHead>
+    <Panel loading={reportedActiveProAccountRate.loading || reportVisibleByProCountCurve.loading}>
+      <PanelHead>{m.reportsOnFisrtProActivationAccount}</PanelHead>
       <PanelBody>
         <Txt color="hint" gutterBottom block dangerouslySetInnerHTML={{__html: m.reportsProUserDesc}}/>
-        {reportedActiveProAccountRate.entity && (
+        {reportedActiveProAccountRate.entity && reportVisibleByProCountCurve.entity && (
           <ScLineChart
             curves={[
+                {
+                    label: m.reportsProVisible,
+                    key: 'visible_by_pro',
+                    curve: reportVisibleByProCountCurve.entity.map(statsFormatCurveDate(m)),
+                },
               {
-                label: m.reportsProUserInactiveAccountRateDesc,
+                label: m.proFirstAccountActivation,
                 key: 'pro',
                 curve: reportedActiveProAccountRate.entity.map(statsFormatCurveDate(m)),
               },
