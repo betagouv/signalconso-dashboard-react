@@ -224,9 +224,15 @@ export const fr = {
     dgccrfCountActiveAccount: 'Nombre compte CCRF actifs',
     dgccrfSubscriptionsCurve: `Nombre d'abonnements au cumul`,
     dgccrfControlsCurve: `Nombre d'entreprises controlées`,
-    reportsProUserInactiveAccountRate: 'Comptes pro inactifs parmis les entreprises signalées',
-    reportsProUserDesc: `Pourcentage des utilisateurs professionnel inactifs (qui n'ont pas encore activé de compte sur signal conso) sur les signalements reçus `,
-    reportsProUserInactiveAccountRateDesc: '% de comptes pro inactifs',
+    reportsOnFisrtProActivationAccount:  `Adhésion de nouveaux professionnels`,
+    reportsProUserDesc:
+      `   
+    <ul>
+        <li>Nombre de signalements visibles au professionnels (une partie des signalements ne sont pas transmis aux professionnels).</li>
+        <li>Nombre d''entreprises ayant activé un compte utilisateur la première fois.</li>
+    </ul>
+  `,
+    proFirstAccountActivation: `Nombre d''entreprises ayant activé un compte utilisateur la première fois`,
     reportsCount: 'Nombre de signalements',
     reportsCountInternet: 'Nombre de signalements internet',
     reportsCountDemarchage: 'Nombre de signalements démarchage',
@@ -246,7 +252,7 @@ export const fr = {
     Répartition des réponses des professionels sur les signalements transmis
   `,
     reportsProResponse: '% Réponses',
-    reportsProVisible: ' % Transmis',
+    reportsProVisible: ' % Signalements visibles par les pro',
     reportsProInfonde: '% infondés',
     reportsProMalAttribue: '% mauvaises attributions',
     reportsProPromesseAction: `% promesses d'action`,
@@ -455,7 +461,7 @@ export const fr = {
     deleteCompanyAccessToken: (email?: string) => `Annuler l'invitation  ${email ? 'à ' + email + ' ' : ''}?`,
     resetPasswordNotFound: `Le lien permettant de demander un nouveau mot de passe n'est pas valide, veuillez refaire une demande.`,
     resetPasswordSuccess: `Votre mot de passe est maintenant créé, vous pouvez vous connecter pour accéder à votre espace entreprise.`,
-    loginIssueTip: `En cas de difficultés, vous pouvez contacter par email le service <a href="href="mailto:${config.contactEmail}">${config.contactEmail}</a>.`,
+    loginIssueTip: `En cas de difficultés, vous pouvez contacter par email le service <a href="mailto:${config.contactEmail}">${config.contactEmail}</a>.`,
     consent: ` Je reconnais avoir pris connaissance des  <a href="href="${config.appBaseUrl}/conditions-generales-utilisation/professionnel"> conditions générales d'utilisation</a> de SignalConso.`,
     statsInternetsTitle: 'Signalements internet',
     statsInternets_all: 'des signalements sont des signalements Internet',
