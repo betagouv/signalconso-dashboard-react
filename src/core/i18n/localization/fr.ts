@@ -228,7 +228,7 @@ export const fr = {
     reportsProUserDesc:
       `   
     <ul>
-        <li>Nombre de signalements visibles au professionnels (une partie des signalements ne sont pas transmis aux professionnels).</li>
+        <li>Nombre de signalements transmis aux professionnels (une partie des signalements relatifs aux produits dangereux, lanceurs d'alertes, etc., ne sont pas transmis aux professionnels).</li>
         <li>Nombre d''entreprises ayant activé un compte utilisateur la première fois.</li>
     </ul>
   `,
@@ -252,6 +252,7 @@ export const fr = {
     Répartition des réponses des professionels sur les signalements transmis
   `,
     reportsProResponse: '% Réponses',
+    reportsProVisibleCount: ' Nombre de signalements visibles par les pro',
     reportsProVisible: ' % Signalements visibles par les pro',
     reportsProInfonde: '% infondés',
     reportsProMalAttribue: '% mauvaises attributions',
