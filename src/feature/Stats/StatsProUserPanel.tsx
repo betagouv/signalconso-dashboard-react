@@ -35,7 +35,7 @@ export const StatsProUserPanel = ({ticks}: Props) => {
           <ScLineChart
             curves={[
                 {
-                    label: m.reportsProVisible,
+                    label: m.reportsProVisibleCount,
                     key: 'visible_by_pro',
                     curve: reportVisibleByProCountCurve.entity.map(statsFormatCurveDate(m)),
                 },
