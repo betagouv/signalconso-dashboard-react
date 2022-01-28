@@ -228,7 +228,7 @@ export const fr = {
     reportsProUserDesc:
       `   
     <ul>
-        <li>Nombre de signalements transmis aux professionnels (une partie des signalements relatifs aux produits dangereux, lanceurs d'alertes, etc., ne sont pas transmis aux professionnels).</li>
+        <li>Nombre de signalements transmis aux professionnels (une partie des signalements relatifs aux produits dangereux, lanceurs d'alertes, démarchage téléphonique, Question pour RéponseConso ne sont pas transmis aux professionnels).</li>
         <li>Nombre d''entreprises ayant activé un compte utilisateur la première fois.</li>
     </ul>
   `,
