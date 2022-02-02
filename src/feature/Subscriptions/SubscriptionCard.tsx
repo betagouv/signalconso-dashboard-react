@@ -164,7 +164,7 @@ export const SubscriptionCard = ({subscription, onUpdate, onDelete, removing, lo
         <SubscriptionCardRow icon="label" label={m.tags} onClick={tagsAnchor.open}>
           <ScChipContainer>
             {subscription.tags.map(_ => (
-              <ReportTagLabel inSelectOptions dense fullWidth tag={_} />
+              <ReportTagLabel inSelectOptions dense  tag={_} />
             ))}
           </ScChipContainer>
         </SubscriptionCardRow>
