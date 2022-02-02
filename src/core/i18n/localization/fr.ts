@@ -1,4 +1,10 @@
-import {CompanyAccessLevel, ReportResponseTypes, ReportStatus, ReportStatusPro} from '@signal-conso/signalconso-api-sdk-js'
+import {
+  CompanyAccessLevel,
+  ReportResponseTypes,
+  ReportStatus,
+  ReportStatusPro,
+  ReportTag,
+} from '@signal-conso/signalconso-api-sdk-js'
 import {config} from '../../../conf/config'
 import {formatDistance, formatDuration as formatDurationFns} from 'date-fns'
 
@@ -41,6 +47,22 @@ export const fr = {
   formatDuration,
   formatLargeNumber,
   messages: {
+    reportTagDesc: {
+      [ReportTag.LitigeContractuel]: 'Litige contractuel',
+      [ReportTag.Hygiene]: 'Hygiène',
+      [ReportTag.ProduitDangereux]: 'Produit dangereux',
+      [ReportTag.DemarchageADomicile]: 'Démarchage à domicile',
+      [ReportTag.Ehpad]: 'Ehpad',
+      [ReportTag.DemarchageTelephonique]: 'Démarchage téléphonique',
+      [ReportTag.AbsenceDeMediateur]: 'Absence de médiateur',
+      [ReportTag.Bloctel]: 'Bloctel',
+      [ReportTag.Influenceur]: 'Influenceur',
+      [ReportTag.ReponseConso]: 'ReponseConso',
+      [ReportTag.Internet]: 'Internet',
+      [ReportTag.ProduitIndustriel]: 'Produit industriel',
+      [ReportTag.ProduitAlimentaire]: 'Produit alimentaire',
+      [ReportTag.CompagnieAerienne]: 'Compagnie aérienne',
+    },
     yes: 'Oui',
     no: 'Non',
     search: 'Rechercher',
@@ -224,9 +246,8 @@ export const fr = {
     dgccrfCountActiveAccount: 'Nombre compte CCRF actifs',
     dgccrfSubscriptionsCurve: `Nombre d'abonnements au cumul`,
     dgccrfControlsCurve: `Nombre d'entreprises controlées`,
-    reportsOnFisrtProActivationAccount:  `Adhésion de nouveaux professionnels`,
-    reportsProUserDesc:
-      `   
+    reportsOnFisrtProActivationAccount: `Adhésion de nouveaux professionnels`,
+    reportsProUserDesc: `   
     <ul>
         <li>Nombre de signalements transmis aux professionnels (une partie des signalements relatifs aux produits dangereux, lanceurs d'alertes, démarchage téléphonique, Question pour RéponseConso ne sont pas transmis aux professionnels).</li>
         <li>Nombre d''entreprises ayant activé un compte utilisateur la première fois.</li>

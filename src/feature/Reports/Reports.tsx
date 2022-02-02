@@ -323,7 +323,7 @@ export const Reports = ({}) => {
                     key={tag}
                     size="small"
                     variant="outlined"
-                    label={tag}
+                    label={m.reportTagDesc[tag]}
                     className={classes(cssUtils.colorTxtSecondary, cssUtils.txtBold)}
                     style={{marginRight: 2}}
                   />

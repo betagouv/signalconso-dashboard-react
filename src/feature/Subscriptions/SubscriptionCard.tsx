@@ -1,6 +1,6 @@
 import React, {CSSProperties, SyntheticEvent, useEffect, useState} from 'react'
 import {useI18n} from '../../core/i18n'
-import {ReportTag, Subscription, SubscriptionCreate} from '@signal-conso/signalconso-api-sdk-js'
+import {Report, ReportTag, Subscription, SubscriptionCreate} from '@signal-conso/signalconso-api-sdk-js'
 import {Panel, PanelHead} from '../../shared/Panel'
 import {ScSelect} from '../../shared/Select/Select'
 import {Collapse, duration, Icon, MenuItem, Theme} from '@mui/material'
@@ -17,6 +17,7 @@ import {useAnomalyContext} from '../../core/context/AnomalyContext'
 import {Confirm, IconBtn} from 'mui-extension/lib'
 import makeStyles from '@mui/styles/makeStyles'
 import {ScDialog} from '../../shared/Confirm/ScDialog'
+import {ReportTagLabel} from '../../shared/tag/ReportTag'
 
 interface Props {
   subscription: Subscription
@@ -163,7 +164,7 @@ export const SubscriptionCard = ({subscription, onUpdate, onDelete, removing, lo
         <SubscriptionCardRow icon="label" label={m.tags} onClick={tagsAnchor.open}>
           <ScChipContainer>
             {subscription.tags.map(_ => (
-              <ScChip key={_} label={_} />
+              <ReportTagLabel inSelectOptions dense fullWidth tag={_} />
             ))}
           </ScChipContainer>
         </SubscriptionCardRow>
@@ -174,6 +175,7 @@ export const SubscriptionCard = ({subscription, onUpdate, onDelete, removing, lo
           onClose={tagsAnchor.close}
           open={!!tagsAnchor.element}
           anchorEl={tagsAnchor.element}
+          renderValue={tag => <ReportTagLabel inSelectOptions dense fullWidth tag={tag} />}
           onChange={tags => onUpdate({tags})}
         />
       </Panel>
