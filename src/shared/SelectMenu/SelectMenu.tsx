@@ -12,6 +12,7 @@ interface Props<T> {
   onClose: () => void
   initialValue: T[]
   toString?: (t: T) => string
+  renderValue?: (value: T) => React.ReactNode
 }
 
 const useStyles = makeStyles((t: Theme) =>
@@ -33,6 +34,7 @@ export const SelectMenu = <T,>({
   multiple,
   onClose,
   initialValue,
+  renderValue,
   toString = _ => _ + ''
 }: Props<T>) => {
   const [innerValue, setInnerValue] = useState<T[]>([])
@@ -65,7 +67,7 @@ export const SelectMenu = <T,>({
           }}
         >
           {multiple && <Checkbox checked={innerValue.indexOf(option) >= 0} />}
-          {option}
+          {renderValue ? renderValue(option) : option}
         </MenuItem>
       ))}
     </Menu>

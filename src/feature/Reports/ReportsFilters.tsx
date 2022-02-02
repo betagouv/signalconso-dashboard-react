@@ -5,7 +5,7 @@ import React, {ReactElement, ReactNode, useEffect, useState} from 'react'
 import {ReportSearch, ReportStatus, ReportTag} from '@signal-conso/signalconso-api-sdk-js'
 import {Controller, useForm} from 'react-hook-form'
 import {ScSelect} from '../../shared/Select/Select'
-import {ReportStatusLabel} from '../../shared/ReportStatus/ReportStatus'
+import {ReportStatusLabel, reportStatusProColor} from '../../shared/ReportStatus/ReportStatus'
 import {Btn} from 'mui-extension/lib'
 import {ScInput} from '../../shared/Input/ScInput'
 import {useAnomalyContext} from '../../core/context/AnomalyContext'
@@ -18,6 +18,8 @@ import {SelectActivityCode} from '../../shared/SelectActivityCode/SelectActivity
 import {Txt} from 'mui-extension/lib/Txt/Txt'
 import {ScMultiSelect} from 'shared/Select/MultiSelect'
 import {ScMenuItem} from '../../shared/MenuItem/ScMenuItem'
+import {Label} from '../../shared/Label/Label'
+import {ReportTagLabel} from '../../shared/tag/ReportTag'
 
 export interface ReportsFiltersProps {
   updateFilters: (_: Partial<ReportSearch>) => void
@@ -205,19 +207,17 @@ const ReportFiltersMapped = ({filters, updateFilters, children}: ReportsFiltersP
                   defaultValue={filters.tags ?? []}
                   control={control}
                   render={({field}) => (
-                    <Autocomplete
-                      fullWidth
-                      multiple
+                    <ScMultiSelect
                       {...field}
-                      onChange={(e, value) => field.onChange(value)}
-                      options={Enum.values(ReportTag)}
-                      renderTags={(value, getTagProps) =>
-                        value.map((option: string, index: number) => (
-                          <Chip size="small" variant="outlined" label={option} {...getTagProps({index})} />
-                        ))
-                      }
-                      renderInput={params => <ScInput {...params} />}
-                    />
+                      fullWidth
+                      renderValue={tag => `(${tag.length}) ${tag.map(_ => m.reportTagDesc[_]).join(',')}`}
+                    >
+                      {Enum.values(ReportTag).map(tag => (
+                        <ScMenuItem withCheckbox key={tag} value={tag}>
+                          <ReportTagLabel inSelectOptions dense fullWidth tag={tag} />
+                        </ScMenuItem>
+                      ))}
+                    </ScMultiSelect>
                   )}
                 />
               </DialogInputRow>
