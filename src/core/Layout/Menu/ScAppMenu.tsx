@@ -5,7 +5,7 @@ import {EntityIcon} from '../../EntityIcon'
 import React from 'react'
 import makeStyles from '@mui/styles/makeStyles'
 import {styleUtils} from '../../theme'
-import {ScMenuItem} from './ScMenuItem'
+import {ScAppMenuItem} from './ScAppMenuItem'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
 import {siteMap} from '../../siteMap'
 import {stopPropagation} from '../../helper/utils'
@@ -53,7 +53,7 @@ interface Props {
   connectedUser: LayoutConnectedUser
 }
 
-export const ScMenu = ({onClose, connectedUser}: Props) => {
+export const ScAppMenu = ({onClose, connectedUser}: Props) => {
   const path = (page: string) => '' + page
   const {m} = useI18n()
   const css = useMenuStyles()
@@ -79,64 +79,64 @@ export const ScMenu = ({onClose, connectedUser}: Props) => {
         </div>
         <Divider className={css.divider} />
         {[Roles.Admin,Roles.DGCCRF].includes(connectedUser.role) && (
-          <ScMenuItem onClick={onClose} to={path(siteMap.logged.stats)} icon={EntityIcon.stats}>
+          <ScAppMenuItem onClick={onClose} to={path(siteMap.logged.stats)} icon={EntityIcon.stats}>
             {m.menu_stats}
-          </ScMenuItem>
+          </ScAppMenuItem>
         )}
-        <ScMenuItem onClick={onClose} to={path(siteMap.logged.reports())} icon={EntityIcon.report}>
+        <ScAppMenuItem onClick={onClose} to={path(siteMap.logged.reports())} icon={EntityIcon.report}>
           {m.menu_reports}
-        </ScMenuItem>
+        </ScAppMenuItem>
         {[Roles.Admin, Roles.DGCCRF].includes(connectedUser.role) && (
-          <ScMenuItem onClick={onClose} to={path(siteMap.logged.companies)} icon={EntityIcon.company}>
+          <ScAppMenuItem onClick={onClose} to={path(siteMap.logged.companies)} icon={EntityIcon.company}>
             {m.menu_companies}
-          </ScMenuItem>
+          </ScAppMenuItem>
         )}
         {[Roles.Pro].includes(connectedUser.role) && (
-          <ScMenuItem onClick={onClose} to={path(siteMap.logged.companiesPro)} icon={EntityIcon.company}>
+          <ScAppMenuItem onClick={onClose} to={path(siteMap.logged.companiesPro)} icon={EntityIcon.company}>
             {m.menu_companies}
-          </ScMenuItem>
+          </ScAppMenuItem>
         )}
         {[Roles.Admin].includes(connectedUser.role) && (
-          <ScMenuItem onClick={onClose} to={path(siteMap.logged.users)} icon={EntityIcon.user}>
+          <ScAppMenuItem onClick={onClose} to={path(siteMap.logged.users)} icon={EntityIcon.user}>
             {m.menu_users}
-          </ScMenuItem>
+          </ScAppMenuItem>
         )}
         {[Roles.Admin, Roles.DGCCRF].includes(connectedUser.role) && (
-          <ScMenuItem onClick={onClose} to={path(siteMap.logged.subscriptions)} icon={EntityIcon.subscription}>
+          <ScAppMenuItem onClick={onClose} to={path(siteMap.logged.subscriptions)} icon={EntityIcon.subscription}>
             {m.menu_subscriptions}
-          </ScMenuItem>
+          </ScAppMenuItem>
         )}
         <Divider className={css.divider} />
         {[Roles.Admin, Roles.DGCCRF].includes(connectedUser.role) && (
-          <ScMenuItem onClick={onClose} to={path(siteMap.logged.reportedWebsites)} icon={EntityIcon.website}>
+          <ScAppMenuItem onClick={onClose} to={path(siteMap.logged.reportedWebsites)} icon={EntityIcon.website}>
             {m.menu_websites}
-          </ScMenuItem>
+          </ScAppMenuItem>
         )}
         {[Roles.Admin, Roles.DGCCRF].includes(connectedUser.role) && (
-          <ScMenuItem onClick={onClose} to={path(siteMap.logged.reportedPhone)} icon={EntityIcon.phone}>
+          <ScAppMenuItem onClick={onClose} to={path(siteMap.logged.reportedPhone)} icon={EntityIcon.phone}>
             {m.menu_phones}
-          </ScMenuItem>
+          </ScAppMenuItem>
         )}
         {[Roles.DGCCRF].includes(connectedUser.role) && (
-          <ScMenuItem onClick={onClose} to={path(siteMap.logged.modeEmploiDGCCRF)} icon="help">
+          <ScAppMenuItem onClick={onClose} to={path(siteMap.logged.modeEmploiDGCCRF)} icon="help">
             {m.menu_modeEmploiDGCCRF}
-          </ScMenuItem>
+          </ScAppMenuItem>
         )}
         <Divider className={css.divider} />
         {[Roles.Admin].includes(connectedUser.role) && (
-          <ScMenuItem onClick={onClose} to={path(siteMap.logged.admin)} icon={EntityIcon.admin}>
+          <ScAppMenuItem onClick={onClose} to={path(siteMap.logged.admin)} icon={EntityIcon.admin}>
             {m.menu_admin}
-          </ScMenuItem>
+          </ScAppMenuItem>
         )}
         {[Roles.Admin].includes(connectedUser.role) && (
-          <ScMenuItem onClick={onClose} to={path(siteMap.logged.companiesDbSync)} icon="sync">
+          <ScAppMenuItem onClick={onClose} to={path(siteMap.logged.companiesDbSync)} icon="sync">
             {m.database}
-          </ScMenuItem>
+          </ScAppMenuItem>
         )}
         <Divider className={css.divider} />
-        <ScMenuItem onClick={onClose} to={path(siteMap.logged.settings)} icon="settings">
+        <ScAppMenuItem onClick={onClose} to={path(siteMap.logged.settings)} icon="settings">
           {m.menu_settings}
-        </ScMenuItem>
+        </ScAppMenuItem>
       </div>
     </ClickAwayListener>
   )
