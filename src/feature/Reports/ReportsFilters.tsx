@@ -1,4 +1,4 @@
-import {Checkbox, Chip, Dialog, DialogActions, DialogContent, DialogTitle, Icon, MenuItem, Theme} from '@mui/material'
+import {Chip, Dialog, DialogActions, DialogContent, DialogTitle, Icon, MenuItem, Theme} from '@mui/material'
 import makeStyles from '@mui/styles/makeStyles'
 import {useI18n} from '../../core/i18n'
 import React, {ReactElement, ReactNode, useEffect, useState} from 'react'
@@ -16,6 +16,8 @@ import {useCssUtils} from '../../core/helper/useCssUtils'
 import {SelectCountries} from '../../shared/SelectCountries/SelectCountries'
 import {SelectActivityCode} from '../../shared/SelectActivityCode/SelectActivityCode'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
+import {ScMultiSelect} from 'shared/Select/MultiSelect'
+import {ScMenuItem} from '../../shared/MenuItem/ScMenuItem'
 
 export interface ReportsFiltersProps {
   updateFilters: (_: Partial<ReportSearch>) => void
@@ -225,23 +227,17 @@ const ReportFiltersMapped = ({filters, updateFilters, children}: ReportsFiltersP
                   name="status"
                   control={control}
                   render={({field}) => (
-                    <ScSelect
+                    <ScMultiSelect
                       {...field}
-                      multiple
                       fullWidth
                       renderValue={status => `(${status.length}) ${status.map(_ => m.reportStatusShort[_]).join(',')}`}
                     >
                       {Enum.values(ReportStatus).map(status => (
-                        <MenuItem key={status} value={status}>
-                          <Checkbox
-                            size="small"
-                            style={{paddingLeft: 0, paddingTop: 0, paddingBottom: 0}}
-                            checked={(getValues().status ?? []).includes(status)}
-                          />
-                          <ReportStatusLabel inSelectOptions dense fullWidth status={status} />
-                        </MenuItem>
+                        <ScMenuItem withCheckbox key={status} value={status}>
+                          <ReportStatusLabel inSelectOptions dense fullWidth status={status}/>
+                        </ScMenuItem>
                       ))}
-                    </ScSelect>
+                    </ScMultiSelect>
                   )}
                 />
               </DialogInputRow>
