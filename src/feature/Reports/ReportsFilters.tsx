@@ -210,6 +210,7 @@ const ReportFiltersMapped = ({filters, updateFilters, children}: ReportsFiltersP
                     <ScMultiSelect
                       {...field}
                       fullWidth
+                      withSelectAll
                       renderValue={tag => `(${tag.length}) ${tag.map(_ => m.reportTagDesc[_]).join(',')}`}
                     >
                       {Enum.values(ReportTag).map(tag => (
@@ -230,6 +231,7 @@ const ReportFiltersMapped = ({filters, updateFilters, children}: ReportsFiltersP
                     <ScMultiSelect
                       {...field}
                       fullWidth
+                      withSelectAll
                       renderValue={status => `(${status.length}) ${status.map(_ => m.reportStatusShort[_]).join(',')}`}
                     >
                       {Enum.values(ReportStatus).map(status => (

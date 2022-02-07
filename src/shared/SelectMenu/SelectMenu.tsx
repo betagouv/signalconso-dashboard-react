@@ -2,6 +2,7 @@ import {Checkbox, Menu, MenuItem, Theme} from '@mui/material'
 import createStyles from '@mui/styles/createStyles'
 import makeStyles from '@mui/styles/makeStyles'
 import React, {useEffect, useState} from 'react'
+import {useI18n} from '../../core/i18n'
 
 interface Props<T> {
   options: T[]
@@ -12,7 +13,7 @@ interface Props<T> {
   onClose: () => void
   initialValue: T[]
   toString?: (t: T) => string
-  renderValue?: (value: T) => React.ReactNode
+  renderValue?: (value: string) => React.ReactNode
 }
 
 const useStyles = makeStyles((t: Theme) =>
@@ -38,15 +39,40 @@ export const SelectMenu = <T,>({
   toString = _ => _ + ''
 }: Props<T>) => {
   const [innerValue, setInnerValue] = useState<T[]>([])
+  const [allSelected, setAllSelected] = useState<boolean>(false)
   const css = useStyles()
+  const {m} = useI18n()
+  const emptyOptions: T[] = []
 
   useEffect(() => {
     setInnerValue(initialValue)
+    setAllSelected(initialValue.length === options.length)
   }, [])
 
   return (
     <Menu open={open} anchorEl={anchorEl} onClose={onClose}>
       {!multiple && <MenuItem value="">&nbsp;</MenuItem>}
+      {multiple && (
+        <MenuItem
+          className={css.menuItem}
+          dense
+          key="all"
+          value="all"
+          onClick={e => {
+            if (allSelected) {
+              onChange(emptyOptions)
+              setInnerValue(emptyOptions)
+            } else {
+              onChange(options)
+              setInnerValue(options)
+            }
+            setAllSelected(!allSelected)
+          }}
+        >
+          <Checkbox checked={allSelected} />
+          {renderValue ? renderValue(m.allNoneValuesSwitchMenuItem) : m.allNoneValuesSwitchMenuItem}
+        </MenuItem>
+      )}
       {options.map((option, i) => (
         <MenuItem
           className={css.menuItem}
@@ -67,7 +93,7 @@ export const SelectMenu = <T,>({
           }}
         >
           {multiple && <Checkbox checked={innerValue.indexOf(option) >= 0} />}
-          {renderValue ? renderValue(option) : option}
+          {renderValue ? renderValue(option.toString()) : option}
         </MenuItem>
       ))}
     </Menu>

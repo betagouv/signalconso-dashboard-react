@@ -57,13 +57,13 @@ export const StatsReportsByRegion = () => {
 
   return (
     <Panel loading={_countByDepCurrentMonth.loading || _countByDepLastMonth.loading}>
-      <PanelHead className={cssUtils.marginBottom2} action={<SelectMonth value={selectedMonth} onChange={setSelectedMonth}/>}>
+      <PanelHead className={cssUtils.marginBottom2} action={<SelectMonth value={selectedMonth} onChange={setSelectedMonth} />}>
         {m.reportsDistribution}
       </PanelHead>
       <PanelBody>
-        <Txt color="hint" gutterBottom block dangerouslySetInnerHTML={{__html: m.reportsDistributionDesc}}/>
+        <Txt color="hint" gutterBottom block dangerouslySetInnerHTML={{__html: m.reportsDistributionDesc}} />
       </PanelBody>
-      <Divider/>
+      <Divider />
       <div style={{overflowX: 'auto', position: 'relative'}}>
         <Table size="small">
           <TableHead>

@@ -3,7 +3,7 @@ import {Label, LabelProps} from '../Label/Label'
 import {useI18n} from '../../core/i18n'
 
 interface ReportTagProps extends Omit<LabelProps, 'children'> {
-  tag: ReportTag
+  tag: string
 }
 
 export const reportTagColor = {
@@ -23,11 +23,30 @@ export const reportTagColor = {
   [ReportTag.CompagnieAerienne]: '#a1a1a1',
 }
 
+function fromString(name: string): ReportTag | undefined {
+  return Object.entries(ReportTag).find(([key, value]) => value === name)?.[1]
+}
+
 export const ReportTagLabel = ({tag, style, ...props}: ReportTagProps) => {
   const {m} = useI18n()
-  return (
-    <Label {...props} style={{color: 'white', background: reportTagColor[tag], ...style}}>
-      {m.reportTagDesc[tag]}
+  let tagOrUndefined = fromString(tag)
+  return tagOrUndefined ? (
+    <Label
+      {...props}
+      style={{
+        fontWeight: '400' as any,
+        color: 'black',
+        background: 'white',
+        border: `2px solid`,
+        borderColor: reportTagColor[tagOrUndefined],
+        ...style,
+      }}
+    >
+      {m.reportTagDesc[tagOrUndefined]}
+    </Label>
+  ) : (
+    <Label {...props} style={{fontWeight: '400' as any, color: 'black', background: 'white', border: `2px solid`, ...style}}>
+      {tag}
     </Label>
   )
 }

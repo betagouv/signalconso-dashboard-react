@@ -5,83 +5,93 @@ import {useI18n} from '../../core/i18n'
 import {stopPropagation} from '../../core/helper/utils'
 
 interface ScMultiSelectProps<T extends E[], E> extends Omit<SelectProps<T>, 'multiple' | 'onChange'> {
-  label?: string
-  children?: React.ReactNode
-  className?: string
-  style?: CSSProperties
-  small?: boolean
-  withSelectAll?: boolean
-  onChange?: (_: T) => void
+    label?: string
+    children?: React.ReactNode
+    className?: string
+    style?: CSSProperties
+    small?: boolean
+    withSelectAll?: boolean
+    onChange?: (_: T) => void
 }
 
 const _ScMultiSelect = <T extends E[], E>({
-  id: argId,
-  label,
-  children,
-  className,
-  small,
-  fullWidth,
-  style,
-  withSelectAll,
-  onChange,
-  ...selectProps
-}: ScMultiSelectProps<T, E>, ref: any) => {
-  const id: string = useMemo(() => argId ?? 'sc-multi-select-' + Math.floor(Math.random() * 10000), [argId])
-  const {m} = useI18n()
-  const allValues = useMemo(() => {
-    const values: E[] = []
-    React.Children.forEach(children as ReactElement<ScMenuItemProps<E>>[], _ => {
-      if (_.props.value) values.push(_.props.value)
-    })
-    return values
-  }, [children])
-  const someValuesSelected = !!allValues.find(_ => selectProps.value?.includes(_))
-  const allChecked = allValues.length === selectProps.value?.length
+                                              id: argId,
+                                              label,
+                                              children,
+                                              className,
+                                              small,
+                                              fullWidth,
+                                              style,
+                                              withSelectAll,
+                                              onChange,
+                                              ...selectProps
+                                          }: ScMultiSelectProps<T, E>, ref: any) => {
+    const id: string = useMemo(() => argId ?? 'sc-multi-select-' + Math.floor(Math.random() * 10000), [argId])
+    const {m} = useI18n()
 
-  const toggleAll = () => {
-    if (selectProps.value?.length === 0) {
-      onChange?.(allValues as T)
-    } else {
-      onChange?.([] as unknown as T)
+    const allValues = useMemo(() => {
+        const values: E[] = []
+        React.Children.forEach(children as ReactElement<ScMenuItemProps<E>>[], _ => {
+            if (_.props.value) values.push(_.props.value)
+        })
+        return values
+    }, [children])
+
+    const someValuesSelected = !!allValues.find(_ => selectProps.value?.includes(_))
+
+    const allChecked = allValues.length === selectProps.value?.length
+
+    const toggleAll = () => {
+        if (selectProps.value?.length === 0) {
+            onChange?.(allValues as T)
+        } else {
+            onChange?.([] as unknown as T)
+        }
     }
-  }
 
-  return (
-    <FormControl fullWidth={fullWidth} size="small" margin="dense" variant="outlined" className={className} style={style}>
-      <InputLabel htmlFor={id} id={id + '-label'}>
-        {label}
-      </InputLabel>
-      <Select
-        {...selectProps}
-        onChange={e => onChange?.(e.target.value as T)}
-        inputRef={ref} multiple={true} labelId={id + '-label'} id={id}
-      >
-        {withSelectAll && (
-          <MenuItem>
-            <div onClick={stopPropagation(toggleAll)}>
-              <Checkbox
-                checked={allChecked}
-                indeterminate={!allChecked && someValuesSelected}
-                size="small"
-                style={{paddingLeft: 0, paddingTop: 0, paddingBottom: 0}}
-              />
-              {m.selectAll}
-            </div>
-          </MenuItem>
-        )}
-        {React.Children.map(children as ReactElement<ScMenuItemProps<E>>[], c =>
-          React.cloneElement(c, {
-            checked: selectProps.value?.includes(c.props.value!),
-          }),
-        )}
-      </Select>
-    </FormControl>
-  )
+    return (
+        <FormControl fullWidth={fullWidth} size="small" margin="dense" variant="outlined" className={className}
+                     style={style}>
+            <InputLabel htmlFor={id} id={id + '-label'}>
+                {label}
+            </InputLabel>
+            <Select
+                {...selectProps}
+                onChange={e => {
+                    if ((e.target.value as E[]).filter(v => v === undefined).length === 0) {
+                        //Excluding selectall value
+                        onChange?.(e.target.value as T)
+                    }
+                }
+                }
+                inputRef={ref} multiple={true} labelId={id + '-label'} id={id}
+            >
+                {withSelectAll && (
+                    <MenuItem >
+                        <div onClick={stopPropagation(toggleAll)}>
+                            <Checkbox
+                                checked={allChecked}
+                                indeterminate={!allChecked && someValuesSelected}
+                                size="small"
+                                style={{paddingLeft: 0, paddingTop: 0, paddingBottom: 0}}
+                            />
+                            {m.selectAll}
+                        </div>
+                    </MenuItem>
+                )}
+                {React.Children.map(children as ReactElement<ScMenuItemProps<E>>[], c =>
+                    React.cloneElement(c, {
+                        checked: selectProps.value?.includes(c.props.value!),
+                    }),
+                )}
+            </Select>
+        </FormControl>
+    )
 }
 
 /**
  * Workaround because forwardRef break the generic type of ScSelect.
  */
 export const ScMultiSelect = React.forwardRef(_ScMultiSelect) as <T extends E[], E>(
-  props: ScMultiSelectProps<T, E> & {ref?: React.ForwardedRef<any>},
+    props: ScMultiSelectProps<T, E> & { ref?: React.ForwardedRef<any> },
 ) => ReturnType<typeof _ScMultiSelect>

@@ -37,7 +37,7 @@ export const StatsReportsProProcessedPanel = ({ticks}: Props) => {
     <Panel loading={reportCountCurve.loading || reportTransmittedCountCurve.loading || reportResponseCountCurve.loading}>
       <PanelHead>{m.reportsProProcessed}</PanelHead>
       <PanelBody>
-        <Txt color="hint" gutterBottom block dangerouslySetInnerHTML={{__html: m.reportsProProcessedDesc}}/>
+        <Txt color="hint" gutterBottom block dangerouslySetInnerHTML={{__html: m.reportsProProcessedDesc}} />
         {reportCountCurve.entity && reportTransmittedCountCurve.entity && reportResponseCountCurve.entity && (
           <ScLineChart
             curves={[

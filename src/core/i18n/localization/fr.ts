@@ -63,6 +63,7 @@ export const fr = {
       [ReportTag.ProduitAlimentaire]: 'Produit alimentaire',
       [ReportTag.CompagnieAerienne]: 'Compagnie aérienne',
     },
+    allNoneValuesSwitchMenuItem: 'Tout cocher/décocher',
     yes: 'Oui',
     no: 'Non',
     search: 'Rechercher',

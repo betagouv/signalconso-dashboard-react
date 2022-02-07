@@ -18,6 +18,7 @@ import {Confirm, IconBtn} from 'mui-extension/lib'
 import makeStyles from '@mui/styles/makeStyles'
 import {ScDialog} from '../../shared/Confirm/ScDialog'
 import {ReportTagLabel} from '../../shared/tag/ReportTag'
+import {ScMenuItem} from "../MenuItem/MenuItem";
 
 interface Props {
   subscription: Subscription
@@ -75,8 +76,8 @@ export const SubscriptionCard = ({subscription, onUpdate, onDelete, removing, lo
                 value={subscription.frequency ?? 'P7D'}
                 onChange={(e: any) => onUpdate({frequency: e.target.value})}
               >
-                <MenuItem value="P1D">{m.daily}</MenuItem>
-                <MenuItem value="P7D">{m.weekly}</MenuItem>
+                <ScMenuItem value="P1D">{m.daily}</ScMenuItem>
+                <ScMenuItem value="P7D">{m.weekly}</ScMenuItem>
               </ScSelect>
               &nbsp;
               <ScDialog title={m.removeSubscription} confirmLabel={m.delete} onConfirm={onDelete}>
@@ -164,7 +165,7 @@ export const SubscriptionCard = ({subscription, onUpdate, onDelete, removing, lo
         <SubscriptionCardRow icon="label" label={m.tags} onClick={tagsAnchor.open}>
           <ScChipContainer>
             {subscription.tags.map(_ => (
-              <ReportTagLabel inSelectOptions dense  tag={_} />
+              <ReportTagLabel inSelectOptions dense tag={_} />
             ))}
           </ScChipContainer>
         </SubscriptionCardRow>
