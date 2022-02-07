@@ -63,35 +63,35 @@ export const StatsReportsProResponsePanel = ({ticks}: Props) => {
     >
       <PanelHead>{m.reportsProResponseType}</PanelHead>
       <PanelBody>
-        <Txt color="hint" gutterBottom block dangerouslySetInnerHTML={{__html: m.reportsProResponseTypeDesc}}/>
+        <Txt color="hint" gutterBottom block dangerouslySetInnerHTML={{__html: m.reportsProResponseTypeDesc}} />
         {reportCountMalAttribueCurve.entity &&
-        reportCountInfondeCurve.entity &&
-        reportCountPromesseActionCurve.entity &&
-        reportResponseCountCurve.entity && (
-          <ScLineChart
-            curves={[
-              {
-                label: m.reportsProMalAttribue,
-                key: 'mal_attribue',
-                curve: curveRatio(reportCountMalAttribueCurve.entity, reportResponseCountCurve.entity).map(
-                  statsFormatCurveDate(m),
-                ),
-              },
-              {
-                label: m.reportsProInfonde,
-                key: 'infonde',
-                curve: curveRatio(reportCountInfondeCurve.entity, reportResponseCountCurve.entity).map(statsFormatCurveDate(m)),
-              },
-              {
-                label: m.reportsProPromesseAction,
-                key: 'promesse_action',
-                curve: curveRatio(reportCountPromesseActionCurve.entity, reportResponseCountCurve.entity).map(
-                  statsFormatCurveDate(m),
-                ),
-              },
-            ]}
-          />
-        )}
+          reportCountInfondeCurve.entity &&
+          reportCountPromesseActionCurve.entity &&
+          reportResponseCountCurve.entity && (
+            <ScLineChart
+              curves={[
+                {
+                  label: m.reportsProMalAttribue,
+                  key: 'mal_attribue',
+                  curve: curveRatio(reportCountMalAttribueCurve.entity, reportResponseCountCurve.entity).map(
+                    statsFormatCurveDate(m),
+                  ),
+                },
+                {
+                  label: m.reportsProInfonde,
+                  key: 'infonde',
+                  curve: curveRatio(reportCountInfondeCurve.entity, reportResponseCountCurve.entity).map(statsFormatCurveDate(m)),
+                },
+                {
+                  label: m.reportsProPromesseAction,
+                  key: 'promesse_action',
+                  curve: curveRatio(reportCountPromesseActionCurve.entity, reportResponseCountCurve.entity).map(
+                    statsFormatCurveDate(m),
+                  ),
+                },
+              ]}
+            />
+          )}
       </PanelBody>
     </Panel>
   )

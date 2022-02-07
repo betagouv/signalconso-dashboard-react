@@ -78,7 +78,7 @@ export const ScAppMenu = ({onClose, connectedUser}: Props) => {
           </Btn>
         </div>
         <Divider className={css.divider} />
-        {[Roles.Admin,Roles.DGCCRF].includes(connectedUser.role) && (
+        {[Roles.Admin, Roles.DGCCRF].includes(connectedUser.role) && (
           <ScAppMenuItem onClick={onClose} to={path(siteMap.logged.stats)} icon={EntityIcon.stats}>
             {m.menu_stats}
           </ScAppMenuItem>

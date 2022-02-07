@@ -30,7 +30,7 @@ export const StatsDgccrfSubscriptionsPanel = ({ticks}: Props) => {
     <Panel loading={dgccrfSubscriptionsCurve.loading || dgccrfControlsCurve.loading}>
       <PanelHead>{m.dgccrfActions}</PanelHead>
       <PanelBody>
-        <Txt color="hint" gutterBottom block dangerouslySetInnerHTML={{__html: m.dgccrfActionsDesc}}/>
+        <Txt color="hint" gutterBottom block dangerouslySetInnerHTML={{__html: m.dgccrfActionsDesc}} />
         {dgccrfSubscriptionsCurve.entity && dgccrfControlsCurve.entity && (
           <ScLineChart
             curves={[
