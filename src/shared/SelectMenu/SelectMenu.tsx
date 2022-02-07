@@ -13,7 +13,7 @@ interface Props<T> {
   onClose: () => void
   initialValue: T[]
   toString?: (t: T) => string
-  renderValue?: (value: string) => React.ReactNode
+  renderValue?: (value: T) => React.ReactNode
 }
 
 const useStyles = makeStyles((t: Theme) =>
@@ -39,14 +39,15 @@ export const SelectMenu = <T,>({
   toString = _ => _ + ''
 }: Props<T>) => {
   const [innerValue, setInnerValue] = useState<T[]>([])
-  const [allSelected, setAllSelected] = useState<boolean>(false)
   const css = useStyles()
   const {m} = useI18n()
   const emptyOptions: T[] = []
+  const allSelected = options.length === innerValue.length
+
+  const someValuesSelected = innerValue.length > 1 && innerValue.length < options.length
 
   useEffect(() => {
     setInnerValue(initialValue)
-    setAllSelected(initialValue.length === options.length)
   }, [])
 
   return (
@@ -59,18 +60,19 @@ export const SelectMenu = <T,>({
           key="all"
           value="all"
           onClick={e => {
-            if (allSelected) {
+            if (allSelected || (!allSelected && someValuesSelected)) {
               onChange(emptyOptions)
               setInnerValue(emptyOptions)
             } else {
               onChange(options)
               setInnerValue(options)
             }
-            setAllSelected(!allSelected)
           }}
         >
-          <Checkbox checked={allSelected} />
-          {renderValue ? renderValue(m.allNoneValuesSwitchMenuItem) : m.allNoneValuesSwitchMenuItem}
+          <Checkbox
+              indeterminate={!allSelected && someValuesSelected}
+              checked={allSelected} />
+          {m.selectAll}
         </MenuItem>
       )}
       {options.map((option, i) => (
@@ -93,7 +95,7 @@ export const SelectMenu = <T,>({
           }}
         >
           {multiple && <Checkbox checked={innerValue.indexOf(option) >= 0} />}
-          {renderValue ? renderValue(option.toString()) : option}
+          {renderValue ? renderValue(option) : option}
         </MenuItem>
       ))}
     </Menu>
