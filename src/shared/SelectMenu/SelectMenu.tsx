@@ -3,14 +3,15 @@ import createStyles from '@mui/styles/createStyles'
 import makeStyles from '@mui/styles/makeStyles'
 import React, {useEffect, useState} from 'react'
 
-interface Props {
-  options: string[]
+interface Props<T> {
+  options: T[]
   open: boolean
   anchorEl: HTMLElement | null
-  onChange: (_: string[]) => void
+  onChange: (_: T[]) => void
   multiple?: boolean
   onClose: () => void
-  initialValue: string[]
+  initialValue: T[]
+  toString?: (t: T) => string
 }
 
 const useStyles = makeStyles((t: Theme) =>
@@ -24,8 +25,17 @@ const useStyles = makeStyles((t: Theme) =>
   }),
 )
 
-export const SelectMenu = ({options, open, anchorEl, onChange, multiple, onClose, initialValue}: Props) => {
-  const [innerValue, setInnerValue] = useState<string[]>([])
+export const SelectMenu = <T,>({
+  options,
+  open,
+  anchorEl,
+  onChange,
+  multiple,
+  onClose,
+  initialValue,
+  toString = _ => _ + ''
+}: Props<T>) => {
+  const [innerValue, setInnerValue] = useState<T[]>([])
   const css = useStyles()
 
   useEffect(() => {
@@ -35,11 +45,11 @@ export const SelectMenu = ({options, open, anchorEl, onChange, multiple, onClose
   return (
     <Menu open={open} anchorEl={anchorEl} onClose={onClose}>
       {!multiple && <MenuItem value="">&nbsp;</MenuItem>}
-      {options.map(option => (
+      {options.map((option, i) => (
         <MenuItem
           className={css.menuItem}
-          key={option}
-          value={option}
+          key={toString(option)}
+          value={toString(option)}
           dense
           onClick={() => {
             if (multiple) {
