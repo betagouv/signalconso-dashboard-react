@@ -51,7 +51,6 @@ export const ActivateAccountForm = ({register: registerAction}: Props) => {
     formState: {errors},
   } = useForm<Form>({mode: 'onChange'})
 
-
   const activateAccount = (form: Form) => {
     clearErrors('apiError')
     registerAction
@@ -115,8 +114,13 @@ export const ActivateAccountForm = ({register: registerAction}: Props) => {
           })}
         />
         <div className={css.foot}>
-          <ScButton loading={registerAction.loading} onClick={_ => clearErrors('apiError')} type="submit"
-                    color="primary" variant="contained">
+          <ScButton
+            loading={registerAction.loading}
+            onClick={_ => clearErrors('apiError')}
+            type="submit"
+            color="primary"
+            variant="contained"
+          >
             {m.activateMyAccount}
           </ScButton>
         </div>

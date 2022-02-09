@@ -236,7 +236,7 @@ const ReportFiltersMapped = ({filters, updateFilters, children}: ReportsFiltersP
                     >
                       {Enum.values(ReportStatus).map(status => (
                         <ScMenuItem withCheckbox key={status} value={status}>
-                          <ReportStatusLabel inSelectOptions dense fullWidth status={status}/>
+                          <ReportStatusLabel inSelectOptions dense fullWidth status={status} />
                         </ScMenuItem>
                       ))}
                     </ScMultiSelect>

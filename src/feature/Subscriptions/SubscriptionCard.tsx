@@ -1,12 +1,6 @@
 import React, {CSSProperties, SyntheticEvent, useEffect, useState} from 'react'
 import {useI18n} from '../../core/i18n'
-import {
-  Report,
-  ReportTag,
-  ReportTagFilterValues,
-  Subscription,
-  SubscriptionCreate
-} from '@signal-conso/signalconso-api-sdk-js'
+import {Report, ReportTag, ReportTagFilterValues, Subscription, SubscriptionCreate} from '@signal-conso/signalconso-api-sdk-js'
 import {Panel, PanelHead} from '../../shared/Panel'
 import {ScSelect} from '../../shared/Select/Select'
 import {Collapse, duration, Icon, MenuItem, Theme} from '@mui/material'
@@ -24,7 +18,7 @@ import {Confirm, IconBtn} from 'mui-extension/lib'
 import makeStyles from '@mui/styles/makeStyles'
 import {ScDialog} from '../../shared/Confirm/ScDialog'
 import {ReportTagLabel} from '../../shared/tag/ReportTag'
-import {ScMenuItem} from "../MenuItem/MenuItem";
+import {ScMenuItem} from '../MenuItem/MenuItem'
 
 interface Props {
   subscription: Subscription
