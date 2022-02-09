@@ -7,7 +7,7 @@ import {
   Report,
   ReportingDateLabel,
   ReportSearch,
-  ReportTag,
+  ReportTagFilter,
 } from '@signal-conso/signalconso-api-sdk-js'
 import {Panel} from '../../shared/Panel'
 import {useCssUtils} from '../../core/helper/useCssUtils'
@@ -41,7 +41,6 @@ import {DebouncedInput} from '../../shared/DebouncedInput/DebouncedInput'
 import {ReportDetailValues} from '../../shared/ReportDetailValues/ReportDetailValues'
 import {styleUtils} from '../../core/theme'
 import compose from '../../core/helper/compose'
-import {ReportTagFilter} from '../../../../signalconso-api-sdk-js/src'
 
 const useStyles = makeStyles((t: Theme) => ({
   toolbar: {},
