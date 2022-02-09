@@ -36,7 +36,7 @@ export const SelectMenu = <T,>({
   onClose,
   initialValue,
   renderValue,
-  toString = _ => _ + ''
+  toString = _ => _ + '',
 }: Props<T>) => {
   const [innerValue, setInnerValue] = useState<T[]>([])
   const css = useStyles()
@@ -69,9 +69,7 @@ export const SelectMenu = <T,>({
             }
           }}
         >
-          <Checkbox
-              indeterminate={!allSelected && someValuesSelected}
-              checked={allSelected} />
+          <Checkbox indeterminate={!allSelected && someValuesSelected} checked={allSelected} />
           {m.selectAll}
         </MenuItem>
       )}

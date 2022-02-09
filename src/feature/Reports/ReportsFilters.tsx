@@ -2,7 +2,7 @@ import {Chip, Dialog, DialogActions, DialogContent, DialogTitle, Icon, MenuItem,
 import makeStyles from '@mui/styles/makeStyles'
 import {useI18n} from '../../core/i18n'
 import React, {ReactElement, ReactNode, useEffect, useState} from 'react'
-import {ReportSearch, ReportStatus, ReportTag} from '@signal-conso/signalconso-api-sdk-js'
+import {ReportSearch, ReportStatus, ReportTag, ReportTagFilterValues} from '@signal-conso/signalconso-api-sdk-js'
 import {Controller, useForm} from 'react-hook-form'
 import {ScSelect} from '../../shared/Select/Select'
 import {ReportStatusLabel, reportStatusProColor} from '../../shared/ReportStatus/ReportStatus'
@@ -213,7 +213,7 @@ const ReportFiltersMapped = ({filters, updateFilters, children}: ReportsFiltersP
                       withSelectAll
                       renderValue={tag => `(${tag.length}) ${tag.map(_ => m.reportTagDesc[_]).join(',')}`}
                     >
-                      {Enum.values(ReportTag).map(tag => (
+                      {ReportTagFilterValues.map(tag => (
                         <ScMenuItem withCheckbox key={tag} value={tag}>
                           <ReportTagLabel inSelectOptions dense fullWidth tag={tag} />
                         </ScMenuItem>
@@ -236,7 +236,7 @@ const ReportFiltersMapped = ({filters, updateFilters, children}: ReportsFiltersP
                     >
                       {Enum.values(ReportStatus).map(status => (
                         <ScMenuItem withCheckbox key={status} value={status}>
-                          <ReportStatusLabel inSelectOptions dense fullWidth status={status}/>
+                          <ReportStatusLabel inSelectOptions dense fullWidth status={status} />
                         </ScMenuItem>
                       ))}
                     </ScMultiSelect>

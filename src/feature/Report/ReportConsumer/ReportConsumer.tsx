@@ -68,9 +68,7 @@ export const ReportConsumer = ({report, canEdit}: Props) => {
               .getOrElse('')}
           </div>
           <div className={cssUtils.colorTxtSecondary}>{report.email}</div>
-          {report.consumerPhone && (
-            <div className={cssUtils.colorTxtSecondary}>{report.consumerPhone}</div>
-          )}
+          {report.consumerPhone && <div className={cssUtils.colorTxtSecondary}>{report.consumerPhone}</div>}
           {!report.contactAgreement && (
             <div className={classes(cssUtils.colorError)} style={{marginTop: theme.spacing(0.5)}}>
               <Icon className={cssUtils.inlineIcon}>warning</Icon>

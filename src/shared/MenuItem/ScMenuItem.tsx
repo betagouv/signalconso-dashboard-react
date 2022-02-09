@@ -7,14 +7,10 @@ export interface ScMenuItemProps<T> extends Omit<MenuItemProps, 'value'> {
   checked?: boolean
 }
 
-export const ScMenuItem = <T, >({checked, withCheckbox, value, children, ...props}: ScMenuItemProps<T>) => {
+export const ScMenuItem = <T,>({checked, withCheckbox, value, children, ...props}: ScMenuItemProps<T>) => {
   return (
     <MenuItem {...props} value={'' + value}>
-      <Checkbox
-        size="small"
-        style={{paddingLeft: 0, paddingTop: 0, paddingBottom: 0}}
-        checked={checked}
-      />
+      <Checkbox size="small" style={{paddingLeft: 0, paddingTop: 0, paddingBottom: 0}} checked={checked} />
       {children}
     </MenuItem>
   )

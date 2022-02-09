@@ -61,8 +61,8 @@ export const LoginForm = ({login, forgottenPassword}: Props) => {
       .catch((err: ApiDetailedError) => {
         setError('apiError', {
           type: err.message.type,
-          message: err.message.details
-        });
+          message: err.message.details,
+        })
         Matomo.trackEvent(EventCategories.auth, AuthenticationEventActions.fail)
       })
   }
@@ -71,12 +71,12 @@ export const LoginForm = ({login, forgottenPassword}: Props) => {
     <LoginPanel title={m.login}>
       <form className={css.body} onSubmit={handleSubmit(onLogin)} action="#">
         {errors.apiError && (
-            <Alert type="error" className={cssUtils.marginBottom2}>
-              <Txt size="big" block bold>
-                {m.somethingWentWrong}
-              </Txt>
-              <Txt>{errors.apiError.message}</Txt>
-            </Alert>
+          <Alert type="error" className={cssUtils.marginBottom2}>
+            <Txt size="big" block bold>
+              {m.somethingWentWrong}
+            </Txt>
+            <Txt>{errors.apiError.message}</Txt>
+          </Alert>
         )}
         <ScInput
           autoFocus
@@ -100,12 +100,19 @@ export const LoginForm = ({login, forgottenPassword}: Props) => {
           })}
         />
         <div style={{display: 'flex', alignItems: 'center'}}>
-          <ScButton loading={login.loading} type="submit" onClick={_ => clearErrors('apiError')} variant="contained" color="primary" className={cssUtils.marginRight}>
+          <ScButton
+            loading={login.loading}
+            type="submit"
+            onClick={_ => clearErrors('apiError')}
+            variant="contained"
+            color="primary"
+            className={cssUtils.marginRight}
+          >
             {m.login}
           </ScButton>
           {fromNullable(forgottenPassword)
             .map(_ => (
-              <ForgottenPasswordDialog value={watch('email')} loading={_.loading}  error={_.error} onSubmit={_.action}>
+              <ForgottenPasswordDialog value={watch('email')} loading={_.loading} error={_.error} onSubmit={_.action}>
                 <ScButton color="primary">{m.forgottenPassword}</ScButton>
               </ForgottenPasswordDialog>
             ))
