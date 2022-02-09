@@ -18,7 +18,7 @@ import {Txt} from 'mui-extension/lib/Txt/Txt'
 import {useConstantContext} from '../../core/context/ConstantContext'
 import {SelectCountry} from './SelectCountry'
 import {classes} from '../../core/helper/utils'
-import {ScMenuItem} from "../MenuItem/MenuItem";
+import {ScMenuItem} from '../MenuItem/MenuItem'
 
 const useStyles = makeStyles((t: Theme) => {
   const iconWidth = 50

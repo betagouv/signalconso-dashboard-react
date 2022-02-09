@@ -1,7 +1,14 @@
 import {Page, PageTitle} from '../../shared/Layout'
 import {useI18n} from '../../core/i18n'
 import {useReportsContext} from '../../core/context/ReportsContext'
-import {cleanObject, getHostFromUrl, Report, ReportingDateLabel, ReportSearch, ReportTag} from '@signal-conso/signalconso-api-sdk-js'
+import {
+  cleanObject,
+  getHostFromUrl,
+  Report,
+  ReportingDateLabel,
+  ReportSearch,
+  ReportTag,
+} from '@signal-conso/signalconso-api-sdk-js'
 import {Panel} from '../../shared/Panel'
 import {useCssUtils} from '../../core/helper/useCssUtils'
 import {Datatable} from '../../shared/Datatable/Datatable'
@@ -10,7 +17,13 @@ import {alpha, Badge, Button, Chip, Grid, Icon, Theme, Tooltip} from '@mui/mater
 import makeStyles from '@mui/styles/makeStyles'
 import {classes, textOverflowMiddleCropping} from '../../core/helper/utils'
 import React, {useEffect, useMemo} from 'react'
-import {mapArrayFromQuerystring, mapBooleanFromQueryString, mapDateFromQueryString, mapDatesToQueryString, useQueryString} from '../../core/helper/useQueryString'
+import {
+  mapArrayFromQuerystring,
+  mapBooleanFromQueryString,
+  mapDateFromQueryString,
+  mapDatesToQueryString,
+  useQueryString,
+} from '../../core/helper/useQueryString'
 import {NavLink} from 'react-router-dom'
 import {SelectDepartments} from '../../shared/SelectDepartments/SelectDepartments'
 import {Fender, IconBtn} from 'mui-extension/lib'
@@ -28,6 +41,7 @@ import {DebouncedInput} from '../../shared/DebouncedInput/DebouncedInput'
 import {ReportDetailValues} from '../../shared/ReportDetailValues/ReportDetailValues'
 import {styleUtils} from '../../core/theme'
 import compose from '../../core/helper/compose'
+import {ReportTagFilter} from '../../../../signalconso-api-sdk-js/src'
 
 const useStyles = makeStyles((t: Theme) => ({
   toolbar: {},
@@ -86,7 +100,7 @@ const useStyles = makeStyles((t: Theme) => ({
 
 interface ReportSearchQs {
   readonly departments?: string[] | string
-  readonly tags?: ReportTag[] | ReportTag
+  readonly tags?: ReportTagFilter[] | ReportTagFilter
   readonly companyCountries?: string[] | string
   readonly siretSirenList?: string[] | string
   readonly activityCodes?: string[] | string
@@ -330,8 +344,10 @@ export const Reports = ({}) => {
                   <span className={classes(_.report.contactAgreement ? cssUtils.colorSuccess : cssUtils.colorError)}>
                     {textOverflowMiddleCropping(_.report.email ?? '', 25)}
                   </span>
-                  <br/>
-                  <Txt color="hint" size="small">{_.report.consumerPhone ?? ''}</Txt>
+                  <br />
+                  <Txt color="hint" size="small">
+                    {_.report.consumerPhone ?? ''}
+                  </Txt>
                 </span>
               ),
             },

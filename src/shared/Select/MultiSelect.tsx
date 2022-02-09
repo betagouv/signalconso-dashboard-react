@@ -14,18 +14,21 @@ interface ScMultiSelectProps<T extends E[], E> extends Omit<SelectProps<T>, "mul
   onChange?: (_: T) => void;
 }
 
-const _ScMultiSelect = <T extends E[], E>({
-  id: argId,
-  label,
-  children,
-  className,
-  small,
-  fullWidth,
-  style,
-  withSelectAll,
-  onChange,
-  ...selectProps
-}: ScMultiSelectProps<T, E>, ref: any) => {
+const _ScMultiSelect = <T extends E[], E>(
+  {
+    id: argId,
+    label,
+    children,
+    className,
+    small,
+    fullWidth,
+    style,
+    withSelectAll,
+    onChange,
+    ...selectProps
+  }: ScMultiSelectProps<T, E>,
+  ref: any,
+) => {
   const id: string = useMemo(() => argId ?? "sc-multi-select-" + Math.floor(Math.random() * 10000), [argId]);
   const {m} = useI18n();
 
@@ -42,8 +45,7 @@ const _ScMultiSelect = <T extends E[], E>({
   const allChecked = allValues.length === selectProps.value?.length;
 
   const toggleAll = () => {
-    console.log("--click", selectProps, allValues);
-    if (selectProps.value?.length === 0) {
+    console.log("--click", selectProps, allValues);if (selectProps.value?.length === 0) {
       onChange?.(allValues as T);
     } else {
       onChange?.([] as unknown as T);
@@ -51,35 +53,33 @@ const _ScMultiSelect = <T extends E[], E>({
   };
 
   return (
-    <FormControl
-      fullWidth={fullWidth}
-      size="small"
-      margin="dense"
-      variant="outlined"
-      className={className}
-      style={style}
-    >
+    <FormControl fullWidth={fullWidth} size="small" margin="dense" variant="outlined" className={className} style={style}>
       <InputLabel htmlFor={id} id={id + "-label"}>
         {label}
       </InputLabel>
       <Select
         {...selectProps}
-        onChange={e => onChange?.(e.target.value as T)}
-        inputRef={ref} multiple={true} labelId={id + "-label"} id={id}
+        onChange={e =>
+            onChange?.(e.target.value as T)
+          }
+        inputRef={ref}
+        multiple={true}
+        labelId={id + "-label"}
+        id={id}
       >
         {withSelectAll && (
           <MenuItem
             divider
             sx={{fontWeight: t => t.typography.fontWeightBold}}
-            onClickCapture={e => stopPropagation(toggleAll)(e)}
-          >
-            <Checkbox
-              checked={allChecked}
-              indeterminate={!allChecked && someValuesSelected}
-              size="small"
-              style={{paddingLeft: 0, paddingTop: 0, paddingBottom: 0}}
-            />
-            <span>{m.selectAll}</span>
+            onClickCapture={e => stopPropagation(toggleAll)(e)}>
+              <Checkbox
+                checked={allChecked}
+                indeterminate={!allChecked && someValuesSelected}
+                size="small"
+                style={{paddingLeft: 0, paddingTop: 0, paddingBottom: 0}}
+              />
+              <span>{m.selectAll}
+            </span>
           </MenuItem>
         )}
         {React.Children.map(children as ReactElement<ScMenuItemProps<E>>[], c =>

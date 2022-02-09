@@ -17,7 +17,6 @@ export const useToast = () => {
   }
 
   const getApiErrorMessage = (err: Partial<ApiDetailedError>) => {
-
     if (err.message && err.message.details !== '') {
       return err.message.details
     }
