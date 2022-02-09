@@ -1,6 +1,12 @@
 import React, {CSSProperties, SyntheticEvent, useEffect, useState} from 'react'
 import {useI18n} from '../../core/i18n'
-import {Report, ReportTag, Subscription, SubscriptionCreate} from '@signal-conso/signalconso-api-sdk-js'
+import {
+  Report,
+  ReportTag,
+  ReportTagFilterValues,
+  Subscription,
+  SubscriptionCreate
+} from '@signal-conso/signalconso-api-sdk-js'
 import {Panel, PanelHead} from '../../shared/Panel'
 import {ScSelect} from '../../shared/Select/Select'
 import {Collapse, duration, Icon, MenuItem, Theme} from '@mui/material'
@@ -171,7 +177,7 @@ export const SubscriptionCard = ({subscription, onUpdate, onDelete, removing, lo
         </SubscriptionCardRow>
         <SelectMenu
           multiple
-          options={Object.values(ReportTag)}
+          options={ReportTagFilterValues}
           initialValue={subscription.tags}
           onClose={tagsAnchor.close}
           open={!!tagsAnchor.element}
