@@ -62,7 +62,7 @@ export const fr = {
       [ReportTag.ProduitIndustriel]: 'Produit industriel',
       [ReportTag.ProduitAlimentaire]: 'Produit alimentaire',
       [ReportTag.CompagnieAerienne]: 'Compagnie aérienne',
-      ['NA']: 'Aucun tag',
+      'NA': 'Aucun tag',
     },
     yes: 'Oui',
     no: 'Non',

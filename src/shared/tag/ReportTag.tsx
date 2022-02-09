@@ -22,7 +22,7 @@ export const reportTagColor = {
     [ReportTag.ProduitIndustriel]: '#a1a1a1',
     [ReportTag.ProduitAlimentaire]: '#a1a1a1',
     [ReportTag.CompagnieAerienne]: '#a1a1a1',
-    ['NA']: '#a1a1a1',
+    'NA': '#a1a1a1',
 }
 
 
