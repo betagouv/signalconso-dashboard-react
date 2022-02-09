@@ -28,6 +28,7 @@ import {DebouncedInput} from '../../shared/DebouncedInput/DebouncedInput'
 import {ReportDetailValues} from '../../shared/ReportDetailValues/ReportDetailValues'
 import {styleUtils} from '../../core/theme'
 import compose from '../../core/helper/compose'
+import {ReportTagFilter} from "../../../../signalconso-api-sdk-js/src";
 
 const useStyles = makeStyles((t: Theme) => ({
   toolbar: {},
@@ -86,7 +87,7 @@ const useStyles = makeStyles((t: Theme) => ({
 
 interface ReportSearchQs {
   readonly departments?: string[] | string
-  readonly tags?: ReportTag[] | ReportTag
+  readonly tags?: ReportTagFilter[] | ReportTagFilter
   readonly companyCountries?: string[] | string
   readonly siretSirenList?: string[] | string
   readonly activityCodes?: string[] | string
