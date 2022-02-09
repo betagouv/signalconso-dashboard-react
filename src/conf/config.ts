@@ -1,5 +1,5 @@
 // Env variables must start with 'REACT_APP_' to be considered by CreateReactApp
-import {env} from '@alexandreannic/ts-utils/lib/common/env/Env'
+import {env as _env} from '@alexandreannic/ts-utils/lib/common/env/Env'
 import {defaultValue, int} from '@alexandreannic/ts-utils/lib/common/env/EnvParser'
 
 enum Env {
@@ -11,6 +11,8 @@ enum Env {
   REACT_APP_SENTRY_DNS = 'REACT_APP_SENTRY_DNS',
   REACT_APP_SENTRY_TRACE_RATE = 'REACT_APP_SENTRY_TRACE_RATE',
 }
+
+const env = _env(process.env)
 
 const parseUrl = (_: string): string => _.replace(/\/$/, '')
 

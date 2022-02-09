@@ -1,24 +1,24 @@
-import React, {CSSProperties, SyntheticEvent, useEffect, useState} from 'react'
-import {useI18n} from '../../core/i18n'
-import {Report, ReportTag, ReportTagFilterValues, Subscription, SubscriptionCreate} from '@signal-conso/signalconso-api-sdk-js'
-import {Panel, PanelHead} from '../../shared/Panel'
-import {ScSelect} from '../../shared/Select/Select'
-import {Collapse, duration, Icon, MenuItem, Theme} from '@mui/material'
-import {SubscriptionCardRow} from './SubscriptionCardRow'
-import {SelectCompany} from '../../shared/SelectCompany/SelectCompany'
-import {ScChip} from '../../shared/Chip/ScChip'
-import {useCssUtils} from '../../core/helper/useCssUtils'
-import {ScChipContainer} from '../../shared/Chip/ScChipContainer'
-import {useToast} from '../../core/toast'
-import {SelectDepartmentsMenu} from '../../shared/SelectDepartments/SelectDepartmentsMenu'
-import {SelectCountriesMenu} from '../../shared/SelectCountries/SelectCountriesMenu'
-import {SelectMenu} from '../../shared/SelectMenu/SelectMenu'
-import {useAnomalyContext} from '../../core/context/AnomalyContext'
-import {Confirm, IconBtn} from 'mui-extension/lib'
-import makeStyles from '@mui/styles/makeStyles'
-import {ScDialog} from '../../shared/Confirm/ScDialog'
-import {ReportTagLabel} from '../../shared/tag/ReportTag'
-import {ScMenuItem} from '../MenuItem/MenuItem'
+import React, {CSSProperties, SyntheticEvent, useEffect, useState} from "react";
+import {useI18n} from "../../core/i18n";
+import {ReportTagFilterValues, Subscription, SubscriptionCreate} from "@signal-conso/signalconso-api-sdk-js";
+import {Panel, PanelHead} from "../../shared/Panel";
+import {ScSelect} from "../../shared/Select/Select";
+import {Collapse, duration, Icon, Theme} from "@mui/material";
+import {SubscriptionCardRow} from "./SubscriptionCardRow";
+import {SelectCompany} from "../../shared/SelectCompany/SelectCompany";
+import {ScChip} from "../../shared/Chip/ScChip";
+import {useCssUtils} from "../../core/helper/useCssUtils";
+import {ScChipContainer} from "../../shared/Chip/ScChipContainer";
+import {useToast} from "../../core/toast";
+import {SelectDepartmentsMenu} from "../../shared/SelectDepartments/SelectDepartmentsMenu";
+import {SelectCountriesMenu} from "../../shared/SelectCountries/SelectCountriesMenu";
+import {SelectMenu} from "../../shared/SelectMenu/SelectMenu";
+import {useAnomalyContext} from "../../core/context/AnomalyContext";
+import {IconBtn} from "mui-extension/lib";
+import makeStyles from "@mui/styles/makeStyles";
+import {ScDialog} from "../../shared/Confirm/ScDialog";
+import {ReportTagLabel} from "../../shared/tag/ReportTag";
+import {ScMenuItem} from "../MenuItem/MenuItem";
 
 interface Props {
   subscription: Subscription
