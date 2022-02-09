@@ -2,15 +2,18 @@ import {Checkbox, Menu, MenuItem, Theme} from '@mui/material'
 import createStyles from '@mui/styles/createStyles'
 import makeStyles from '@mui/styles/makeStyles'
 import React, {useEffect, useState} from 'react'
+import {useI18n} from '../../core/i18n'
 
-interface Props {
-  options: string[]
+interface Props<T> {
+  options: T[]
   open: boolean
   anchorEl: HTMLElement | null
-  onChange: (_: string[]) => void
+  onChange: (_: T[]) => void
   multiple?: boolean
   onClose: () => void
-  initialValue: string[]
+  initialValue: T[]
+  toString?: (t: T) => string
+  renderValue?: (value: T) => React.ReactNode
 }
 
 const useStyles = makeStyles((t: Theme) =>
@@ -24,9 +27,24 @@ const useStyles = makeStyles((t: Theme) =>
   }),
 )
 
-export const SelectMenu = ({options, open, anchorEl, onChange, multiple, onClose, initialValue}: Props) => {
-  const [innerValue, setInnerValue] = useState<string[]>([])
+export const SelectMenu = <T,>({
+  options,
+  open,
+  anchorEl,
+  onChange,
+  multiple,
+  onClose,
+  initialValue,
+  renderValue,
+  toString = _ => _ + ''
+}: Props<T>) => {
+  const [innerValue, setInnerValue] = useState<T[]>([])
   const css = useStyles()
+  const {m} = useI18n()
+  const emptyOptions: T[] = []
+  const allSelected = options.length === innerValue.length
+
+  const someValuesSelected = innerValue.length > 1 && innerValue.length < options.length
 
   useEffect(() => {
     setInnerValue(initialValue)
@@ -35,11 +53,33 @@ export const SelectMenu = ({options, open, anchorEl, onChange, multiple, onClose
   return (
     <Menu open={open} anchorEl={anchorEl} onClose={onClose}>
       {!multiple && <MenuItem value="">&nbsp;</MenuItem>}
-      {options.map(option => (
+      {multiple && (
         <MenuItem
           className={css.menuItem}
-          key={option}
-          value={option}
+          dense
+          key="all"
+          value="all"
+          onClick={e => {
+            if (allSelected || (!allSelected && someValuesSelected)) {
+              onChange(emptyOptions)
+              setInnerValue(emptyOptions)
+            } else {
+              onChange(options)
+              setInnerValue(options)
+            }
+          }}
+        >
+          <Checkbox
+              indeterminate={!allSelected && someValuesSelected}
+              checked={allSelected} />
+          {m.selectAll}
+        </MenuItem>
+      )}
+      {options.map((option, i) => (
+        <MenuItem
+          className={css.menuItem}
+          key={toString(option)}
+          value={toString(option)}
           dense
           onClick={() => {
             if (multiple) {
@@ -55,7 +95,7 @@ export const SelectMenu = ({options, open, anchorEl, onChange, multiple, onClose
           }}
         >
           {multiple && <Checkbox checked={innerValue.indexOf(option) >= 0} />}
-          {option}
+          {renderValue ? renderValue(option) : option}
         </MenuItem>
       ))}
     </Menu>

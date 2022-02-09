@@ -42,7 +42,7 @@ const useStyles = makeStyles((t: Theme) => ({
 export const ReportsShortList = ({reports}: Props) => {
   const css = useStyles()
   const cssUtils = useCssUtils()
-  const {formatDate} = useI18n()
+  const {m, formatDate} = useI18n()
   return (
     <div>
       {reports.data.map(_ => (
@@ -60,7 +60,7 @@ export const ReportsShortList = ({reports}: Props) => {
                 </Icon>
                 &nbsp;
                 <Txt color="disabled" truncate style={{width: 0, flex: 1}}>
-                  {_.report.tags.join(', ')}
+                  {_.report.tags.map(x => m.reportTagDesc[x]).join(', ')}
                 </Txt>
               </div>
             </div>

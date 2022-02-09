@@ -1,11 +1,11 @@
-import {Checkbox, Chip, Dialog, DialogActions, DialogContent, DialogTitle, Icon, MenuItem, Theme} from '@mui/material'
+import {Chip, Dialog, DialogActions, DialogContent, DialogTitle, Icon, MenuItem, Theme} from '@mui/material'
 import makeStyles from '@mui/styles/makeStyles'
 import {useI18n} from '../../core/i18n'
 import React, {ReactElement, ReactNode, useEffect, useState} from 'react'
 import {ReportSearch, ReportStatus, ReportTag} from '@signal-conso/signalconso-api-sdk-js'
 import {Controller, useForm} from 'react-hook-form'
 import {ScSelect} from '../../shared/Select/Select'
-import {ReportStatusLabel} from '../../shared/ReportStatus/ReportStatus'
+import {ReportStatusLabel, reportStatusProColor} from '../../shared/ReportStatus/ReportStatus'
 import {Btn} from 'mui-extension/lib'
 import {ScInput} from '../../shared/Input/ScInput'
 import {useAnomalyContext} from '../../core/context/AnomalyContext'
@@ -16,6 +16,10 @@ import {useCssUtils} from '../../core/helper/useCssUtils'
 import {SelectCountries} from '../../shared/SelectCountries/SelectCountries'
 import {SelectActivityCode} from '../../shared/SelectActivityCode/SelectActivityCode'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
+import {ScMultiSelect} from 'shared/Select/MultiSelect'
+import {ScMenuItem} from '../../shared/MenuItem/ScMenuItem'
+import {Label} from '../../shared/Label/Label'
+import {ReportTagLabel} from '../../shared/tag/ReportTag'
 
 export interface ReportsFiltersProps {
   updateFilters: (_: Partial<ReportSearch>) => void
@@ -203,19 +207,18 @@ const ReportFiltersMapped = ({filters, updateFilters, children}: ReportsFiltersP
                   defaultValue={filters.tags ?? []}
                   control={control}
                   render={({field}) => (
-                    <Autocomplete
-                      fullWidth
-                      multiple
+                    <ScMultiSelect
                       {...field}
-                      onChange={(e, value) => field.onChange(value)}
-                      options={Enum.values(ReportTag)}
-                      renderTags={(value, getTagProps) =>
-                        value.map((option: string, index: number) => (
-                          <Chip size="small" variant="outlined" label={option} {...getTagProps({index})} />
-                        ))
-                      }
-                      renderInput={params => <ScInput {...params} />}
-                    />
+                      fullWidth
+                      withSelectAll
+                      renderValue={tag => `(${tag.length}) ${tag.map(_ => m.reportTagDesc[_]).join(',')}`}
+                    >
+                      {Enum.values(ReportTag).map(tag => (
+                        <ScMenuItem withCheckbox key={tag} value={tag}>
+                          <ReportTagLabel inSelectOptions dense fullWidth tag={tag} />
+                        </ScMenuItem>
+                      ))}
+                    </ScMultiSelect>
                   )}
                 />
               </DialogInputRow>
@@ -225,23 +228,18 @@ const ReportFiltersMapped = ({filters, updateFilters, children}: ReportsFiltersP
                   name="status"
                   control={control}
                   render={({field}) => (
-                    <ScSelect
+                    <ScMultiSelect
                       {...field}
-                      multiple
                       fullWidth
+                      withSelectAll
                       renderValue={status => `(${status.length}) ${status.map(_ => m.reportStatusShort[_]).join(',')}`}
                     >
                       {Enum.values(ReportStatus).map(status => (
-                        <MenuItem key={status} value={status}>
-                          <Checkbox
-                            size="small"
-                            style={{paddingLeft: 0, paddingTop: 0, paddingBottom: 0}}
-                            checked={(getValues().status ?? []).includes(status)}
-                          />
-                          <ReportStatusLabel inSelectOptions dense fullWidth status={status} />
-                        </MenuItem>
+                        <ScMenuItem withCheckbox key={status} value={status}>
+                          <ReportStatusLabel inSelectOptions dense fullWidth status={status}/>
+                        </ScMenuItem>
                       ))}
-                    </ScSelect>
+                    </ScMultiSelect>
                   )}
                 />
               </DialogInputRow>

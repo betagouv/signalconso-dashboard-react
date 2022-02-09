@@ -57,7 +57,7 @@ export const StatsReportsCurvePanel = ({ticks}: Props) => {
     <Panel loading={reportCountCurve.loading || reportInternetCountCurve.loading || reportDemarchageCountCurve.loading}>
       <PanelHead>{m.reportsDivision}</PanelHead>
       <PanelBody>
-        <Txt color="hint" gutterBottom block dangerouslySetInnerHTML={{__html: m.reportsDivisionDesc}}/>
+        <Txt color="hint" gutterBottom block dangerouslySetInnerHTML={{__html: m.reportsDivisionDesc}} />
         {reportCountCurve.entity && reportInternetCountCurve.entity && reportDemarchageCountCurve.entity && (
           <ScLineChart
             curves={[

@@ -9,7 +9,7 @@ import {config} from '../../../conf/config'
 import {styleUtils} from 'core/theme'
 import {headerHeight} from '../index'
 import React from 'react'
-import {ScMenuBtn} from '../Menu/ScMenuBtn'
+import {ScAppMenuBtn} from '../Menu/ScAppMenuBtn'
 import {useLayoutContext} from '../LayoutContext'
 import {LayoutConnectedUser} from '../Layout'
 
@@ -95,7 +95,7 @@ export const Header = ({connectedUser}: Props) => {
               <HeaderItem href={config.appBaseUrl + '/centre-aide/consommateur'}>{m.helpCenter}</HeaderItem>
             </nav>
           )}
-          <ScMenuBtn connectedUser={connectedUser} />
+          <ScAppMenuBtn connectedUser={connectedUser} />
         </div>
       </header>
     </Slide>

@@ -16,8 +16,8 @@ import {ApiDetailedError, ApiError, SignalConsoPublicSdk} from '@signal-conso/si
 import {fnSwitch} from '../../core/helper/utils'
 import {useToast} from '../../core/toast'
 import {AuthenticationEventActions, EventCategories, Matomo} from '../../core/plugins/Matomo'
-import {Alert} from "mui-extension";
-import {Txt} from "mui-extension/lib/Txt/Txt";
+import {Alert} from 'mui-extension'
+import {Txt} from 'mui-extension/lib/Txt/Txt'
 
 interface Props {
   login: ActionProps<SignalConsoPublicSdk['authenticate']['login']>

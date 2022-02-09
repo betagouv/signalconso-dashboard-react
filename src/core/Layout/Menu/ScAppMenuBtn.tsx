@@ -4,7 +4,7 @@ import makeStyles from '@mui/styles/makeStyles'
 import {grey, lightBlue} from '@mui/material/colors'
 import {styleUtils} from '../../theme'
 import {useBoolean} from '@alexandreannic/react-hooks-lib/lib'
-import {ScMenu} from './ScMenu'
+import {ScAppMenu} from './ScAppMenu'
 import {LayoutConnectedUser} from '../Layout'
 import {classes} from '../../helper/utils'
 import {useHistory} from 'react-router'
@@ -46,7 +46,7 @@ interface Props {
   connectedUser?: LayoutConnectedUser
 }
 
-export const ScMenuBtn = ({connectedUser}: Props) => {
+export const ScAppMenuBtn = ({connectedUser}: Props) => {
   const css = useMenuStyles()
   const openMenu = useBoolean(false)
   const history = useHistory()
@@ -62,7 +62,7 @@ export const ScMenuBtn = ({connectedUser}: Props) => {
       >
         <Icon>{connectedUser ? 'person' : 'no_accounts'}</Icon>
       </Avatar>
-      {connectedUser && openMenu.value && <ScMenu onClose={openMenu.setFalse} connectedUser={connectedUser} />}
+      {connectedUser && openMenu.value && <ScAppMenu onClose={openMenu.setFalse} connectedUser={connectedUser} />}
     </div>
   )
 }

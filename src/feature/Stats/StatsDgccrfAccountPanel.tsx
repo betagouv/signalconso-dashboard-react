@@ -30,7 +30,7 @@ export const StatsDgccrfAccountPanel = ({ticks}: Props) => {
     <Panel loading={dgccrfActiveAccount.loading || dgccrfAccount.loading}>
       <PanelHead>{m.dgccrfUser}</PanelHead>
       <PanelBody>
-        <Txt color="hint" gutterBottom block dangerouslySetInnerHTML={{__html: m.dgccrfUserDesc}}/>
+        <Txt color="hint" gutterBottom block dangerouslySetInnerHTML={{__html: m.dgccrfUserDesc}} />
         {dgccrfActiveAccount.entity && dgccrfAccount.entity && (
           <ScLineChart
             curves={[

@@ -8,7 +8,7 @@ import {useI18n} from '../../core/i18n'
 import {useLogin} from '../../core/context/LoginContext'
 import {useCssUtils} from '../../core/helper/useCssUtils'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
-import {curveRatio} from "./ReportStats";
+import {curveRatio} from './ReportStats'
 
 interface Props {
   ticks: number
@@ -30,15 +30,15 @@ export const StatsProUserPanel = ({ticks}: Props) => {
     <Panel loading={reportedActiveProAccountRate.loading || reportVisibleByProCountCurve.loading}>
       <PanelHead>{m.reportsOnFisrtProActivationAccount}</PanelHead>
       <PanelBody>
-        <Txt color="hint" gutterBottom block dangerouslySetInnerHTML={{__html: m.reportsProUserDesc}}/>
+        <Txt color="hint" gutterBottom block dangerouslySetInnerHTML={{__html: m.reportsProUserDesc}} />
         {reportedActiveProAccountRate.entity && reportVisibleByProCountCurve.entity && (
           <ScLineChart
             curves={[
-                {
-                    label: m.reportsProVisibleCount,
-                    key: 'visible_by_pro',
-                    curve: reportVisibleByProCountCurve.entity.map(statsFormatCurveDate(m)),
-                },
+              {
+                label: m.reportsProVisibleCount,
+                key: 'visible_by_pro',
+                curve: reportVisibleByProCountCurve.entity.map(statsFormatCurveDate(m)),
+              },
               {
                 label: m.proFirstAccountActivation,
                 key: 'pro',
