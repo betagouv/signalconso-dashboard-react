@@ -231,8 +231,8 @@ export const fr = {
     dgccrfUserDesc: `   
     <div>Statistique des comptes DGCCRF :</div>
     <ul>
-        <li>Nombre de comptes DGCCRF en cumul (non actifs compris).</li>
-        <li>Nombre de compte actifs (3 mois après la dernière validation de leur adresse email).</li>
+        <li>Nombre de compte DGCCRF en cumul (non actifs compris).</li>
+        <li>Nombre de compte actifs (3 mois après la dernière validation de leur adresse e-mail).</li>
     </ul>
   `,
     dgccrfActions: 'Actions DGCCRF',
@@ -240,13 +240,13 @@ export const fr = {
     <div>Statistique sur les actions des agents DGCCRF :</div>
     <ul>
         <li>Nombre d'abonnements au cumul</li>
-        <li>Nombre d'entreprises controlées (retour par un agents DGCCRF sur signal conso du controle d'une entreprise)</li>
+        <li>Nombre d'entreprises contrôlées (retour par un agent DGCCRF sur signal conso du contrôle d'une entreprise)</li>
     </ul>
   `,
     dgccrfCountAccount: 'Nombre compte CCRF au cumul',
     dgccrfCountActiveAccount: 'Nombre compte CCRF actifs',
     dgccrfSubscriptionsCurve: `Nombre d'abonnements au cumul`,
-    dgccrfControlsCurve: `Nombre d'entreprises controlées`,
+    dgccrfControlsCurve: `Nombre d'entreprises contrôlées`,
     reportsOnFisrtProActivationAccount: `Adhésion de nouveaux professionnels`,
     reportsProUserDesc: `   
     <ul>
