@@ -1,6 +1,6 @@
 import React, {CSSProperties, SyntheticEvent, useEffect, useState} from "react";
 import {useI18n} from "../../core/i18n";
-import {ReportTagFilterValues, Subscription, SubscriptionCreate} from "@signal-conso/signalconso-api-sdk-js";
+import {Subscription, SubscriptionCreate} from "@signal-conso/signalconso-api-sdk-js";
 import {Panel, PanelHead} from "../../shared/Panel";
 import {ScSelect} from "../../shared/Select/Select";
 import {Collapse, duration, Icon, Theme} from "@mui/material";
@@ -164,21 +164,21 @@ export const SubscriptionCard = ({subscription, onUpdate, onDelete, removing, lo
 
         <SubscriptionCardRow icon="label" label={m.tags} onClick={tagsAnchor.open}>
           <ScChipContainer>
-            {subscription.tags.map(_ => (
+            {subscription.withTags.map(_ => (
               <ReportTagLabel inSelectOptions dense tag={_} />
             ))}
           </ScChipContainer>
         </SubscriptionCardRow>
-        <SelectMenu
-          multiple
-          options={ReportTagFilterValues}
-          initialValue={subscription.tags}
-          onClose={tagsAnchor.close}
-          open={!!tagsAnchor.element}
-          anchorEl={tagsAnchor.element}
-          renderValue={tag => <ReportTagLabel inSelectOptions dense fullWidth tag={tag} />}
-          onChange={tags => onUpdate({tags})}
-        />
+        {/*<SelectMenu*/}
+        {/*  multiple*/}
+        {/*  options={ReportTagFilterValues}*/}
+        {/*  initialValue={subscription.tags}*/}
+        {/*  onClose={tagsAnchor.close}*/}
+        {/*  open={!!tagsAnchor.element}*/}
+        {/*  anchorEl={tagsAnchor.element}*/}
+        {/*  renderValue={tag => <ReportTagLabel inSelectOptions dense fullWidth tag={tag} />}*/}
+        {/*  onChange={tags => onUpdate({tags})}*/}
+        {/*/>*/}
       </Panel>
     </Collapse>
   )

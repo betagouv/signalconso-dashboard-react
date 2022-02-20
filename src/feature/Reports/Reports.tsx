@@ -7,7 +7,7 @@ import {
   Report,
   ReportingDateLabel,
   ReportSearch,
-  ReportTagFilter,
+  ReportTag,
 } from '@signal-conso/signalconso-api-sdk-js'
 import {Panel} from '../../shared/Panel'
 import {useCssUtils} from '../../core/helper/useCssUtils'
@@ -99,7 +99,7 @@ const useStyles = makeStyles((t: Theme) => ({
 
 interface ReportSearchQs {
   readonly departments?: string[] | string
-  readonly tags?: ReportTagFilter[] | ReportTagFilter
+  readonly tags?: ReportTag[] | ReportTag
   readonly companyCountries?: string[] | string
   readonly siretSirenList?: string[] | string
   readonly activityCodes?: string[] | string

@@ -68,78 +68,84 @@ interface SelectDepartmentsMenuProps {
   onChange: (departments: string[]) => void
 }
 
-export const SelectDepartmentsMenu = withRegions(
-  ({selectAllLabel, onClose, regions, initialValues, anchorEl, open, onChange}: SelectDepartmentsMenuProps) => {
-    const css = useStyles()
-    const cssUtils = useCssUtils()
-    const indexValues: UseSetState<string> = useSetState<string>()
-    const openedRegions: UseSetState<string> = useSetState<string>()
-    const allDepartments = useMemo(() => regions.flatMap(_ => _.departments).map(_ => _.code), [])
-    const allDepartmentsSelected = allDepartments.every(_ => indexValues.has(_))
-    const someDepartmentsSelected = !!allDepartments.find(_ => indexValues.has(_))
-    const {m} = useI18n()
-    selectAllLabel = selectAllLabel || m.selectAllDepartments
+export const SelectDepartmentsMenu = withRegions(({
+  selectAllLabel,
+  onClose,
+  regions,
+  initialValues,
+  anchorEl,
+  open,
+  onChange,
+}: SelectDepartmentsMenuProps) => {
+  const css = useStyles()
+  const cssUtils = useCssUtils()
+  const indexValues: UseSetState<string> = useSetState<string>()
+  const openedRegions: UseSetState<string> = useSetState<string>()
+  const allDepartments = useMemo(() => regions.flatMap(_ => _.departments).map(_ => _.code), [])
+  const allDepartmentsSelected = allDepartments.every(_ => indexValues.has(_))
+  const someDepartmentsSelected = !!allDepartments.find(_ => indexValues.has(_))
+  const {m} = useI18n()
+  selectAllLabel = selectAllLabel || m.selectAllDepartments
 
-    useEffect(() => {
-      indexValues.reset(initialValues)
-    }, [initialValues])
+  useEffect(() => {
+    indexValues.reset(initialValues)
+  }, [initialValues])
 
-    const onSelectDepartments = (departments: string[]) => {
-      indexValues.toggleAll(departments)
-      onChange(indexValues.toArray())
-    }
+  const onSelectDepartments = (departments: string[]) => {
+    indexValues.toggleAll(departments)
+    onChange(indexValues.toArray())
+  }
 
-    const onSelectDepartment = (department: string) => {
-      indexValues.toggle(department)
-      onChange(indexValues.toArray())
-    }
+  const onSelectDepartment = (department: string) => {
+    indexValues.toggle(department)
+    onChange(indexValues.toArray())
+  }
 
-    const onSelectAll = () => {
-      allDepartments.forEach(allDepartmentsSelected ? indexValues.delete : indexValues.add)
-      onChange(indexValues.toArray())
-    }
+  const onSelectAll = () => {
+    allDepartments.forEach(allDepartmentsSelected ? indexValues.delete : indexValues.add)
+    onChange(indexValues.toArray())
+  }
 
-    const toggleRegionOpen = (regionLabel: string) => {
-      openedRegions.toggle(regionLabel)
-    }
+  const toggleRegionOpen = (regionLabel: string) => {
+    openedRegions.toggle(regionLabel)
+  }
 
-    return (
-      <Menu anchorEl={anchorEl} open={open} onClose={onClose}>
-        <MenuItem className={classes(css.menuItem, css.menuItemRegion)} onClick={() => onSelectAll()}>
-          <Checkbox indeterminate={someDepartmentsSelected && !allDepartmentsSelected} checked={allDepartmentsSelected} />
-          {selectAllLabel}
-        </MenuItem>
-        {regions.map(region => {
-          const allChecked = region.departments.every(_ => indexValues.has(_.code))
-          const atLeastOneChecked = !!region.departments.find(_ => indexValues.has(_.code))
-          return [
-            <MenuItem
-              className={classes(css.menuItem, css.menuItemRegion)}
-              key={region.label}
-              onClick={() => onSelectDepartments(region.departments.map(_ => _.code))}
+  return (
+    <Menu anchorEl={anchorEl} open={open} onClose={onClose}>
+      <MenuItem className={classes(css.menuItem, css.menuItemRegion)} onClick={() => onSelectAll()}>
+        <Checkbox indeterminate={someDepartmentsSelected && !allDepartmentsSelected} checked={allDepartmentsSelected} />
+        {selectAllLabel}
+      </MenuItem>
+      {regions.map(region => {
+        const allChecked = region.departments.every(_ => indexValues.has(_.code))
+        const atLeastOneChecked = !!region.departments.find(_ => indexValues.has(_.code))
+        return [
+          <MenuItem
+            className={classes(css.menuItem, css.menuItemRegion)}
+            key={region.label}
+            onClick={() => onSelectDepartments(region.departments.map(_ => _.code))}
+          >
+            <Checkbox indeterminate={atLeastOneChecked && !allChecked} checked={allChecked} />
+            <span className={css.regionLabel}>{region.label}</span>
+            <Icon
+              className={classes(css.regionToggleArrow, openedRegions.has(region.label) && cssUtils.colorPrimary)}
+              onClick={stopPropagation(() => toggleRegionOpen(region.label))}
             >
-              <Checkbox indeterminate={atLeastOneChecked && !allChecked} checked={allChecked} />
-              <span className={css.regionLabel}>{region.label}</span>
-              <Icon
-                className={classes(css.regionToggleArrow, openedRegions.has(region.label) && cssUtils.colorPrimary)}
-                onClick={stopPropagation(() => toggleRegionOpen(region.label))}
-              >
-                {openedRegions.has(region.label) ? 'expand_less' : 'expand_more'}
-              </Icon>
-            </MenuItem>,
-            openedRegions.has(region.label)
-              ? region.departments.map(department => (
-                  <MenuItem className={css.menuItem} dense onClick={() => onSelectDepartment(department.code)}>
-                    <Checkbox className={css.cbDepartment} checked={indexValues.has(department.code)} />
-                    <span className={cssUtils.colorTxtHint}>({department.code})</span>
-                    &nbsp;
-                    {department.label}
-                  </MenuItem>
-                ))
-              : [],
-          ]
-        })}
-      </Menu>
-    )
-  },
-)
+              {openedRegions.has(region.label) ? 'expand_less' : 'expand_more'}
+            </Icon>
+          </MenuItem>,
+          openedRegions.has(region.label)
+            ? region.departments.map(department => (
+              <MenuItem className={css.menuItem} dense onClick={() => onSelectDepartment(department.code)}>
+                <Checkbox className={css.cbDepartment} checked={indexValues.has(department.code)} />
+                <span className={cssUtils.colorTxtHint}>({department.code})</span>
+                &nbsp;
+                {department.label}
+              </MenuItem>
+            ))
+            : [],
+        ]
+      })}
+    </Menu>
+  )
+})

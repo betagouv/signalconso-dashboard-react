@@ -4,6 +4,7 @@ import {OrderBy, Paginate} from '@alexandreannic/react-hooks-lib/lib'
 import {config} from 'conf/config'
 import {Paginate as ApiPaginate} from '@signal-conso/signalconso-api-sdk-js'
 import {mapPromise, PromiseFnResult} from '@alexandreannic/ts-utils/lib/common'
+import {SxProps, Theme} from '@mui/material'
 
 export const isJsonValid = (json: string): boolean => {
   try {
@@ -65,7 +66,7 @@ export const fnSwitch: FnSwitch = (value, cases, defaultCase?) => {
   const res = cases[value]
   if (!res && !defaultCase) {
     throw new Error(
-      `[fnSwtich] ${value} does not match any of theses cases ${Object.keys(cases).join(
+      `[fnSwitch] ${value} does not match any of theses cases ${Object.keys(cases).join(
         ', ',
       )} defaultCase parameter is not provided.`,
     )
@@ -119,4 +120,8 @@ export const mapPromiseSdkPaginate = <F extends (...args: any[]) => Promise<ApiP
 
 export const openInNew = (path: string) => {
   window.open((config.useHashRouter ? '/#' : '') + path, '_blank')
+}
+
+export const sxIf = (condition: boolean | undefined, sx: SxProps<Theme>): SxProps<Theme> => {
+  return condition ? sx : {}
 }

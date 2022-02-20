@@ -1,9 +1,9 @@
-import {ReportTag, ReportTagFilter} from '@signal-conso/signalconso-api-sdk-js'
+import {ReportTag} from '@signal-conso/signalconso-api-sdk-js'
 import {Label, LabelProps} from '../Label/Label'
 import {useI18n} from '../../core/i18n'
 
 interface ReportTagProps extends Omit<LabelProps, 'children'> {
-  tag: ReportTagFilter
+  tag: ReportTag
 }
 
 export const reportTagColor = {
@@ -21,7 +21,6 @@ export const reportTagColor = {
   [ReportTag.ProduitIndustriel]: '#a1a1a1',
   [ReportTag.ProduitAlimentaire]: '#a1a1a1',
   [ReportTag.CompagnieAerienne]: '#a1a1a1',
-  NA: '#a1a1a1',
 }
 
 export const ReportTagLabel = ({tag, style, ...props}: ReportTagProps) => {
