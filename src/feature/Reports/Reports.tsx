@@ -1,14 +1,7 @@
 import {Page, PageTitle} from '../../shared/Layout'
 import {useI18n} from '../../core/i18n'
 import {useReportsContext} from '../../core/context/ReportsContext'
-import {
-  cleanObject,
-  getHostFromUrl,
-  Report,
-  ReportingDateLabel,
-  ReportSearch,
-  ReportTag,
-} from '@signal-conso/signalconso-api-sdk-js'
+import {cleanObject, getHostFromUrl, Report, ReportingDateLabel, ReportSearch, ReportTag} from '@signal-conso/signalconso-api-sdk-js'
 import {Panel} from '../../shared/Panel'
 import {useCssUtils} from '../../core/helper/useCssUtils'
 import {Datatable} from '../../shared/Datatable/Datatable'
@@ -17,13 +10,7 @@ import {alpha, Badge, Button, Chip, Grid, Icon, Theme, Tooltip} from '@mui/mater
 import makeStyles from '@mui/styles/makeStyles'
 import {classes, textOverflowMiddleCropping} from '../../core/helper/utils'
 import React, {useEffect, useMemo} from 'react'
-import {
-  mapArrayFromQuerystring,
-  mapBooleanFromQueryString,
-  mapDateFromQueryString,
-  mapDatesToQueryString,
-  useQueryString,
-} from '../../core/helper/useQueryString'
+import {mapArrayFromQuerystring, mapBooleanFromQueryString, mapDateFromQueryString, mapDatesToQueryString, useQueryString} from '../../core/helper/useQueryString'
 import {NavLink} from 'react-router-dom'
 import {SelectDepartments} from '../../shared/SelectDepartments/SelectDepartments'
 import {Fender, IconBtn} from 'mui-extension/lib'
@@ -41,6 +28,8 @@ import {DebouncedInput} from '../../shared/DebouncedInput/DebouncedInput'
 import {ReportDetailValues} from '../../shared/ReportDetailValues/ReportDetailValues'
 import {styleUtils} from '../../core/theme'
 import compose from '../../core/helper/compose'
+import {Alert} from 'mui-extension'
+import {difference, intersection} from '../../core/lodashNamedExport'
 
 const useStyles = makeStyles((t: Theme) => ({
   toolbar: {},
@@ -157,6 +146,17 @@ export const Reports = ({}) => {
   return (
     <Page size="large">
       <PageTitle>{m.reports_pageTitle}</PageTitle>
+      {intersection([ReportTag.ReponseConso, ReportTag.Bloctel], _reports.filters.withoutTags ?? []).length !== 2 && (
+        <Panel>
+          <Alert type="info" action={
+            <ScButton color="primary" onClick={() => _reports.updateFilters(_ => ({..._, withoutTags: [ReportTag.ReponseConso, ReportTag.Bloctel]}))}>
+              {m.filter}
+            </ScButton>
+          }>
+            <span dangerouslySetInnerHTML={{__html: m.hideAllReponseConsoAndBloctelReports}} />
+          </Alert>
+        </Panel>
+      )}
       <Panel>
         <Datatable
           id="reports"
