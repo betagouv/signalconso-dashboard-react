@@ -1,6 +1,6 @@
 import * as React from 'react'
 import {ReactNode} from 'react'
-import {Icon, Theme} from '@mui/material'
+import {BoxProps, Icon, Theme} from '@mui/material'
 import makeStyles from '@mui/styles/makeStyles'
 import {styleUtils} from '../../core/theme'
 import {classes} from '../../core/helper/utils'
@@ -22,7 +22,7 @@ const useStyles = makeStyles((t: Theme) => ({
   },
 }))
 
-interface Props {
+interface Props extends BoxProps {
   className?: string
   children: ReactNode
   action?: ReactNode

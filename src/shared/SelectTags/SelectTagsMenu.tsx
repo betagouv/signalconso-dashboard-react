@@ -1,8 +1,9 @@
-import {alpha, Icon, IconButton, IconProps, Menu, MenuItem, Theme} from '@mui/material'
+import {alpha, Icon, IconButton, IconProps, Menu, MenuItem, SxProps, Theme} from '@mui/material'
 import {ReportTag} from '@signal-conso/signalconso-api-sdk-js'
 import {Enum} from '@alexandreannic/ts-utils/lib/common/enum/Enum'
 import {useI18n} from '../../core/i18n'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
+import {useEffect, useState} from 'react'
 
 export type SelectTagsMenuValue = 'included' | 'excluded' | undefined
 
@@ -55,16 +56,24 @@ export const SelectTagsMenu = ({
 }: ScSelectTagsMenuProps) => {
   const {m} = useI18n()
 
+  const [innerValue, setInnerValue] = useState<SelectTagsMenuValues | undefined>()
+
+  useEffect(() => {
+    setInnerValue(value)
+  }, [value])
+
   const handleChange = (tag: ReportTag, v: SelectTagsMenuValue) => {
-    onChange({...value, [tag]: value?.[tag] ? undefined : v})
+    const newValue = {...innerValue, [tag]: value?.[tag] === v ? undefined : v}
+    setInnerValue(newValue)
+    onChange(newValue)
   }
 
-  const iff = <T, >(
+  const switchTagValue = <T, >(
     tag: ReportTag,
     {included, excluded, notdefined}: {included: T, excluded: T, notdefined: T},
   ): T => {
-    if (value?.[tag] === 'included') return included
-    if (value?.[tag] === 'excluded') return excluded
+    if (innerValue?.[tag] === 'included') return included
+    if (innerValue?.[tag] === 'excluded') return excluded
     return notdefined
   }
 
@@ -80,7 +89,7 @@ export const SelectTagsMenu = ({
           // })}
         >
           <TagButton
-            status={iff(tag, {
+            status={switchTagValue(tag, {
               excluded: 'inactive',
               included: 'active',
               notdefined: 'default',
@@ -92,7 +101,7 @@ export const SelectTagsMenu = ({
             add
           </TagButton>
           <TagButton
-            status={iff(tag, {
+            status={switchTagValue(tag, {
               excluded: 'active',
               included: 'inactive',
               notdefined: 'default',
@@ -107,16 +116,18 @@ export const SelectTagsMenu = ({
             size="big"
             sx={{
               flex: 1,
-              ...value?.[tag] === undefined && {
-                color: t => t.palette.text.secondary,
-              },
-              ...value?.[tag] === 'excluded' && {
-                color: t => t.palette.text.disabled,
-                textDecoration: 'line-through',
-              },
-              ...value?.[tag] === 'included' && {
-                fontWeight: t => t.typography.fontWeightBold,
-              },
+              ...switchTagValue<SxProps<Theme>>(tag, {
+                excluded: {
+                  color: t => t.palette.text.disabled,
+                  textDecoration: 'line-through',
+                },
+                included: {
+                  fontWeight: t => t.typography.fontWeightBold,
+                },
+                notdefined: {
+                  color: t => t.palette.text.secondary,
+                },
+              }),
             }}
           >
             {m.reportTagDesc[tag]}

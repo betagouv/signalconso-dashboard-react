@@ -45,26 +45,32 @@ const rationalizeFilters = (f: ReportSearch): ReportSearch => ({
   hasCompany: (f.siretSirenList ?? []).length > 0 ? true : f.hasCompany,
 })
 
-const mapTags = (filters: ReportSearch): Form => {
-  const res: SelectTagsMenuValues = {}
+export const toReportTagValues = <T extends Pick<ReportSearch, 'withTags' | 'withoutTags'>>(filters: T): T & {tags: SelectTagsMenuValues} => {
+  const tags: SelectTagsMenuValues = {}
   filters.withTags?.forEach(tag => {
-    res[tag] = 'included'
+    tags[tag] = 'included'
   })
   filters.withoutTags?.forEach(tag => {
-    res[tag] = 'excluded'
+    tags[tag] = 'excluded'
   })
-  return {...filters, tags: res}
+  return {...filters, tags}
+}
+
+export const fromReportTagValues = (tags: SelectTagsMenuValues): Pick<ReportSearch, 'withTags' | 'withoutTags'> => {
+  return {
+    withTags: Enum.keys(tags).filter(tag => tags[tag] === 'included'),
+    withoutTags: Enum.keys(tags).filter(tag => tags[tag] === 'excluded'),
+  }
 }
 
 export const ReportFilters = ({filters, updateFilters, ...props}: ReportsFiltersProps) => {
   return (
     <_ReportsFilters
       {...props}
-      filters={compose(mapTags, rationalizeFilters)(filters)}
+      filters={compose(toReportTagValues, rationalizeFilters)(filters)}
       updateFilters={form => updateFilters({
         ...form,
-        withTags: Enum.keys(form.tags).filter(tag => form.tags[tag] === 'included'),
-        withoutTags: Enum.keys(form.tags).filter(tag => form.tags[tag] === 'excluded'),
+        ...fromReportTagValues(form.tags),
       })}
     />
   )
