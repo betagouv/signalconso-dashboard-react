@@ -1,6 +1,6 @@
 import {Page} from '../../shared/Layout'
 import {useI18n} from '../../core/i18n'
-import {useHistory, useLocation, useParams} from 'react-router'
+import {useLocation} from 'react-router'
 import {AuthUser, Id} from '@signal-conso/signalconso-api-sdk-js'
 import {useAsync} from '@alexandreannic/react-hooks-lib'
 import {useEffect, useMemo} from 'react'
@@ -12,7 +12,7 @@ import {CenteredContent} from '../../shared/CenteredContent/CenteredContent'
 import {headerHeight} from '../../core/Layout'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
 import {useCssUtils} from '../../core/helper/useCssUtils'
-import * as querystring from 'querystring'
+import {QueryString} from '../../core/helper/useQueryString'
 
 interface Props {
   onValidateEmail: (token: Id) => Promise<AuthUser>
@@ -32,7 +32,7 @@ export const EmailValidation = ({onValidateEmail, onSaveToken}: Props) => {
   const {search} = useLocation()
 
   useEffect(() => {
-    const token = querystring.parse(search.replace(/^\?/, '')).token as string
+    const token = QueryString.parse(search.replace(/^\?/, '')).token as string
     _validateEmail.call(token).then(onSaveToken)
   }, [])
 

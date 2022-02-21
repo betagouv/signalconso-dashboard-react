@@ -1,8 +1,16 @@
 import {dateToYYYYMMDD} from '@signal-conso/signalconso-api-sdk-js'
 import {regexp} from './regexp'
 import {useHistory} from 'react-router-dom'
-import * as querystring from 'querystring'
-import {ParsedUrlQueryInput} from 'querystring'
+import {parse as _parse, stringify as _stringify} from 'qs'
+
+export interface ParsedUrlQueryInput {
+  [key: string]: string | number | boolean | ReadonlyArray<string> | ReadonlyArray<number> | ReadonlyArray<boolean> | undefined | null;
+}
+
+export class QueryString {
+  static readonly parse = _parse
+  static readonly stringify = _stringify
+}
 
 type ParsedQueryString<T> = {
   [K in keyof T]: T[K] extends Date ? ParsedDate : T[K] extends Date | undefined ? ParsedDate | undefined : T[K]
@@ -23,11 +31,11 @@ export const useQueryString = <E, QS extends ParsedUrlQueryInput>({
   const history = useHistory()
 
   const update = (t: E) => {
-    history.replace({search: querystring.stringify(toQueryString(t))})
+    history.replace({search: QueryString.stringify(toQueryString(t))})
   }
 
   const get = (): E => {
-    return fromQueryString(querystring.parse(history.location.search.replace(/^\?/, '')) as any)
+    return fromQueryString(QueryString.parse(history.location.search.replace(/^\?/, '')) as any)
   }
 
   return {update, get}
