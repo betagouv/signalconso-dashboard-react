@@ -64,7 +64,7 @@
     "react-hook-form": "^7.0.5",
     "react-persistent-state": "1.1.1",
     "react-router-dom": "^5.2.0",
-    "react-scripts": "^4.0.1",
+    "react-scripts": "^5.0.0",
     "recharts": "^2.1.2",
     "rxjs": "^6.6.7",
     "source-map-explorer": "^2.5.2",
