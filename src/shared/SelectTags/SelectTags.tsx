@@ -45,7 +45,8 @@ export const SelectTags = forwardRef(({
   const displayedValue = useMemoFn(value, v => {
     const included = Enum.values(v).filter(_ => _ === 'included').length
     const excluded = Enum.values(v).filter(_ => _ === 'excluded').length
-    return `+ (${included}), - (${excluded})`
+    console.log(included, excluded)
+    return (included > 0 ? `+ (${included})  ` : ``) + (excluded > 0 ? ` - (${excluded})` : ``)
   })
 
   return (
