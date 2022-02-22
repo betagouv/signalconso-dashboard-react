@@ -1,24 +1,23 @@
-import React, {CSSProperties, SyntheticEvent, useEffect, useState} from "react";
-import {useI18n} from "../../core/i18n";
-import {ReportTagFilterValues, Subscription, SubscriptionCreate} from "@signal-conso/signalconso-api-sdk-js";
-import {Panel, PanelHead} from "../../shared/Panel";
-import {ScSelect} from "../../shared/Select/Select";
-import {Collapse, duration, Icon, Theme} from "@mui/material";
-import {SubscriptionCardRow} from "./SubscriptionCardRow";
-import {SelectCompany} from "../../shared/SelectCompany/SelectCompany";
-import {ScChip} from "../../shared/Chip/ScChip";
-import {useCssUtils} from "../../core/helper/useCssUtils";
-import {ScChipContainer} from "../../shared/Chip/ScChipContainer";
-import {useToast} from "../../core/toast";
-import {SelectDepartmentsMenu} from "../../shared/SelectDepartments/SelectDepartmentsMenu";
-import {SelectCountriesMenu} from "../../shared/SelectCountries/SelectCountriesMenu";
-import {SelectMenu} from "../../shared/SelectMenu/SelectMenu";
-import {useAnomalyContext} from "../../core/context/AnomalyContext";
-import {IconBtn} from "mui-extension/lib";
-import makeStyles from "@mui/styles/makeStyles";
-import {ScDialog} from "../../shared/Confirm/ScDialog";
-import {ReportTagLabel} from "../../shared/tag/ReportTag";
-import {ScMenuItem} from "../MenuItem/MenuItem";
+import React, {CSSProperties, SyntheticEvent, useEffect, useMemo, useState} from 'react'
+import {useI18n} from '../../core/i18n'
+import {Subscription, SubscriptionCreate} from '@signal-conso/signalconso-api-sdk-js'
+import {Panel, PanelHead} from '../../shared/Panel'
+import {ScSelect} from '../../shared/Select/Select'
+import {Chip, Collapse, duration, Icon} from '@mui/material'
+import {SubscriptionCardRow} from './SubscriptionCardRow'
+import {SelectCompany} from '../../shared/SelectCompany/SelectCompany'
+import {ScChip} from '../../shared/Chip/ScChip'
+import {ScChipContainer} from '../../shared/Chip/ScChipContainer'
+import {useToast} from '../../core/toast'
+import {SelectDepartmentsMenu} from '../../shared/SelectDepartments/SelectDepartmentsMenu'
+import {SelectCountriesMenu} from '../../shared/SelectCountries/SelectCountriesMenu'
+import {SelectMenu} from '../../shared/SelectMenu/SelectMenu'
+import {useAnomalyContext} from '../../core/context/AnomalyContext'
+import {IconBtn} from 'mui-extension/lib'
+import {ScDialog} from '../../shared/Confirm/ScDialog'
+import {ScMenuItem} from '../MenuItem/MenuItem'
+import {SelectTagsMenu, SelectTagsMenuValues} from '../../shared/SelectTags/SelectTagsMenu'
+import {fromReportTagValues, toReportTagValues} from '../Reports/ReportsFilters'
 
 interface Props {
   subscription: Subscription
@@ -30,16 +29,6 @@ interface Props {
   style?: CSSProperties
 }
 
-const useStyles = makeStyles((t: Theme) => ({
-  head: {
-    display: 'flex',
-    alignItems: 'center',
-  },
-  selectFrequency: {
-    margin: 0,
-  },
-}))
-
 const useAnchoredMenu = () => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
   const open = (event: any) => setAnchorEl(event.currentTarget)
@@ -50,13 +39,11 @@ const useAnchoredMenu = () => {
 export const SubscriptionCard = ({subscription, onUpdate, onDelete, removing, loading, className, style}: Props) => {
   const {m} = useI18n()
   const {toastInfo} = useToast()
-  const cssUtils = useCssUtils()
   const departmentAnchor = useAnchoredMenu()
   const countriesAnchor = useAnchoredMenu()
   const categoryAnchor = useAnchoredMenu()
   const tagsAnchor = useAnchoredMenu()
   const _category = useAnomalyContext().category
-  const css = useStyles()
   const [isMounted, setIsMounted] = useState(false)
 
   useEffect(() => {
@@ -64,15 +51,22 @@ export const SubscriptionCard = ({subscription, onUpdate, onDelete, removing, lo
     setIsMounted(true)
   }, [])
 
+  const tags: SelectTagsMenuValues = useMemo(() => {
+    return toReportTagValues(subscription).tags
+  }, [subscription.withTags, subscription.withoutTags])
+
   return (
     <Collapse in={isMounted} timeout={duration.standard * 1.5}>
       <Panel loading={loading} className={className} style={style}>
         <PanelHead
-          className={css.head}
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+          }}
           action={
             <>
               <ScSelect
-                className={css.selectFrequency}
+                sx={{mb: 0}}
                 value={subscription.frequency ?? 'P7D'}
                 onChange={(e: any) => onUpdate({frequency: e.target.value})}
               >
@@ -164,20 +158,20 @@ export const SubscriptionCard = ({subscription, onUpdate, onDelete, removing, lo
 
         <SubscriptionCardRow icon="label" label={m.tags} onClick={tagsAnchor.open}>
           <ScChipContainer>
-            {subscription.tags.map(_ => (
-              <ReportTagLabel inSelectOptions dense tag={_} />
+            {subscription?.withTags.map(_ => (
+              <Chip key={_} color="success" icon={<Icon>add</Icon>} label={_} />
+            ))}
+            {subscription?.withoutTags.map(_ => (
+              <Chip key={_} color="error" icon={<Icon>remove</Icon>} label={_} />
             ))}
           </ScChipContainer>
         </SubscriptionCardRow>
-        <SelectMenu
-          multiple
-          options={ReportTagFilterValues}
-          initialValue={subscription.tags}
+        <SelectTagsMenu
           onClose={tagsAnchor.close}
+          value={tags}
+          onChange={value => onUpdate(fromReportTagValues(value))}
           open={!!tagsAnchor.element}
           anchorEl={tagsAnchor.element}
-          renderValue={tag => <ReportTagLabel inSelectOptions dense fullWidth tag={tag} />}
-          onChange={tags => onUpdate({tags})}
         />
       </Panel>
     </Collapse>

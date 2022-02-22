@@ -16,7 +16,6 @@ import {regexp} from '../../core/helper/regexp'
 import {useToast} from '../../core/toast'
 import {fromNullable} from 'fp-ts/lib/Option'
 import {ScDialog} from '../../shared/Confirm/ScDialog'
-import {useLogin} from '../../core/context/LoginContext'
 
 export const Users = () => {
   const {m} = useI18n()

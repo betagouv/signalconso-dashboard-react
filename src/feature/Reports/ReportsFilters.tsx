@@ -1,15 +1,13 @@
-import {Chip, Dialog, DialogActions, DialogContent, DialogTitle, Icon, MenuItem, Theme} from '@mui/material'
-import makeStyles from '@mui/styles/makeStyles'
+import {Dialog, DialogActions, DialogContent, DialogTitle, Icon, MenuItem} from '@mui/material'
 import {useI18n} from '../../core/i18n'
-import React, {ReactElement, ReactNode, useEffect, useState} from 'react'
-import {ReportSearch, ReportStatus, ReportTag, ReportTagFilterValues} from '@signal-conso/signalconso-api-sdk-js'
+import React, {ReactElement, useEffect, useState} from 'react'
+import {ReportSearch, ReportStatus} from '@signal-conso/signalconso-api-sdk-js'
 import {Controller, useForm} from 'react-hook-form'
 import {ScSelect} from '../../shared/Select/Select'
-import {ReportStatusLabel, reportStatusProColor} from '../../shared/ReportStatus/ReportStatus'
+import {ReportStatusLabel} from '../../shared/ReportStatus/ReportStatus'
 import {Btn} from 'mui-extension/lib'
 import {ScInput} from '../../shared/Input/ScInput'
 import {useAnomalyContext} from '../../core/context/AnomalyContext'
-import Autocomplete from '@mui/lab/Autocomplete/Autocomplete'
 import {Enum} from '@alexandreannic/ts-utils/lib/common/enum/Enum'
 import {TrueFalseUndefined} from '../../shared/TrueFalseUndefined/TrueFalseUndefined'
 import {useCssUtils} from '../../core/helper/useCssUtils'
@@ -18,86 +16,68 @@ import {SelectActivityCode} from '../../shared/SelectActivityCode/SelectActivity
 import {Txt} from 'mui-extension/lib/Txt/Txt'
 import {ScMultiSelect} from 'shared/Select/MultiSelect'
 import {ScMenuItem} from '../../shared/MenuItem/ScMenuItem'
-import {Label} from '../../shared/Label/Label'
-import {ReportTagLabel} from '../../shared/tag/ReportTag'
+import {SelectTags} from '../../shared/SelectTags/SelectTags'
+import {SelectTagsMenuValues} from '../../shared/SelectTags/SelectTagsMenu'
+import {DialogInputRow, DialogInputRowExtra} from '../../shared/DialogInputRow/DialogInputRow'
+import compose from '../../core/helper/compose'
 
 export interface ReportsFiltersProps {
-  updateFilters: (_: Partial<ReportSearch>) => void
-  children: ReactElement<any>
+  updateFilters: (_: ReportSearch) => void
   filters: ReportSearch
+  children: ReactElement<any>
 }
 
-export interface RowProps {
-  label: string | ReactNode
-  children: ReactNode
+export interface _ReportsFiltersProps {
+  updateFilters: (_: Form) => void
+  filters: Form
+  children: ReactElement<any>
 }
 
-export interface RowExtraProps {
-  children: ReactNode
+interface Form extends Omit<ReportSearch, 'withTags' | 'withoutTags'> {
+  tags: SelectTagsMenuValues
 }
 
-export const DialogInputRow = ({label, children}: RowProps) => {
-  const useRowStyles = makeStyles((t: Theme) => ({
-    root: {
-      display: 'flex',
-      alignItems: 'flex-start',
-    },
-    label: {
-      display: 'flex',
-      alignItems: 'center',
-      minHeight: 50,
-      color: t.palette.text.secondary,
-      minWidth: 160,
-      maxWidth: 160,
-      flexWrap: 'wrap',
-    },
-    content: {
-      maxWidth: 240,
-      width: '100%',
-      minHeight: 50,
-      flex: 1,
-      overflow: 'hidden',
-    },
-  }))
-  const css = useRowStyles()
+const rationalizeFilters = (f: ReportSearch): ReportSearch => ({
+  ...f,
+  hasWebsite: f.websiteURL && f.websiteURL !== '' ? true : f.hasWebsite,
+  hasPhone: f.phone && f.phone !== '' ? true : f.hasPhone,
+  hasForeignCountry: (f.companyCountries ?? []).length > 0 ? true : f.hasForeignCountry,
+  hasCompany: (f.siretSirenList ?? []).length > 0 ? true : f.hasCompany,
+})
+
+export const toReportTagValues = <T extends Pick<ReportSearch, 'withTags' | 'withoutTags'>>(filters: T): T & {tags: SelectTagsMenuValues} => {
+  const tags: SelectTagsMenuValues = {}
+  filters.withTags?.forEach(tag => {
+    tags[tag] = 'included'
+  })
+  filters.withoutTags?.forEach(tag => {
+    tags[tag] = 'excluded'
+  })
+  return {...filters, tags}
+}
+
+export const fromReportTagValues = (tags: SelectTagsMenuValues): Pick<ReportSearch, 'withTags' | 'withoutTags'> => {
+  return {
+    withTags: Enum.keys(tags).filter(tag => tags[tag] === 'included'),
+    withoutTags: Enum.keys(tags).filter(tag => tags[tag] === 'excluded'),
+  }
+}
+
+export const ReportFilters = ({filters, updateFilters, ...props}: ReportsFiltersProps) => {
   return (
-    <div className={css.root}>
-      <div className={css.label}>{label}</div>
-      <div className={css.content}>{children}</div>
-    </div>
+    <_ReportsFilters
+      {...props}
+      filters={compose(toReportTagValues, rationalizeFilters)(filters)}
+      updateFilters={form => updateFilters({
+        ...form,
+        ...fromReportTagValues(form.tags),
+      })}
+    />
   )
 }
 
-const RowExtra = ({children}: RowExtraProps) => {
-  const useStyles = makeStyles((t: Theme) => ({
-    root: {
-      paddingBottom: t.spacing(2),
-      marginBottom: t.spacing(2),
-      borderBottom: `1px solid ${t.palette.divider}`,
-    },
-  }))
-  const css = useStyles()
-  return <div className={css.root}>{children}</div>
-}
-
-const useStyles = makeStyles((t: Theme) => ({
-  optionalInput: {},
-}))
-
-export const ReportFilters = ({filters, ...props}: ReportsFiltersProps) => {
-  const rationalizeFilters = (f: ReportSearch): ReportSearch => ({
-    ...f,
-    hasWebsite: f.websiteURL && f.websiteURL !== '' ? true : f.hasWebsite,
-    hasPhone: f.phone && f.phone !== '' ? true : f.hasPhone,
-    hasForeignCountry: (f.companyCountries ?? []).length > 0 ? true : f.hasForeignCountry,
-    hasCompany: (f.siretSirenList ?? []).length > 0 ? true : f.hasCompany,
-  })
-  return <ReportFiltersMapped filters={rationalizeFilters(filters)} {...props} />
-}
-
-const ReportFiltersMapped = ({filters, updateFilters, children}: ReportsFiltersProps) => {
+const _ReportsFilters = ({filters, updateFilters, children}: _ReportsFiltersProps) => {
   const {m} = useI18n()
-  const css = useStyles()
   const cssUtils = useCssUtils()
   const {
     register,
@@ -107,7 +87,7 @@ const ReportFiltersMapped = ({filters, updateFilters, children}: ReportsFiltersP
     getValues,
     watch,
     formState: {errors},
-  } = useForm<ReportSearch>()
+  } = useForm<Form>()
   const [open, setOpen] = useState<boolean>(false)
   const {category: _category} = useAnomalyContext()
 
@@ -169,15 +149,14 @@ const ReportFiltersMapped = ({filters, updateFilters, children}: ReportsFiltersP
                   )}
                 />
                 {watch('hasCompany') === true && (
-                  <RowExtra>
+                  <DialogInputRowExtra>
                     <ScInput
-                      className={css.optionalInput}
                       label={m.siret}
                       fullWidth
                       {...register('siretSirenList')}
                       defaultValue={filters.siretSirenList ?? ''}
                     />
-                  </RowExtra>
+                  </DialogInputRowExtra>
                 )}
               </DialogInputRow>
               <DialogInputRow label={m.keywords}>
@@ -204,21 +183,10 @@ const ReportFiltersMapped = ({filters, updateFilters, children}: ReportsFiltersP
               <DialogInputRow label={m.tags}>
                 <Controller
                   name="tags"
-                  defaultValue={filters.tags ?? []}
+                  defaultValue={filters.tags ?? {}}
                   control={control}
                   render={({field}) => (
-                    <ScMultiSelect
-                      {...field}
-                      fullWidth
-                      withSelectAll
-                      renderValue={tag => `(${tag.length}) ${tag.map(_ => m.reportTagDesc[_]).join(',')}`}
-                    >
-                      {ReportTagFilterValues.map(tag => (
-                        <ScMenuItem withCheckbox key={tag} value={tag}>
-                          <ReportTagLabel inSelectOptions dense fullWidth tag={tag} />
-                        </ScMenuItem>
-                      ))}
-                    </ScMultiSelect>
+                    <SelectTags {...field}/>
                   )}
                 />
               </DialogInputRow>
@@ -263,15 +231,14 @@ const ReportFiltersMapped = ({filters, updateFilters, children}: ReportsFiltersP
                   )}
                 />
                 {watch('hasWebsite') === true && (
-                  <RowExtra>
+                  <DialogInputRowExtra>
                     <ScInput
                       label={m.url}
                       fullWidth
-                      className={css.optionalInput}
                       {...register('websiteURL')}
                       defaultValue={filters.websiteURL ?? ''}
                     />
-                  </RowExtra>
+                  </DialogInputRowExtra>
                 )}
               </DialogInputRow>
               <DialogInputRow label={m.phone}>
@@ -294,15 +261,14 @@ const ReportFiltersMapped = ({filters, updateFilters, children}: ReportsFiltersP
                   )}
                 />
                 {watch('hasPhone') === true && (
-                  <RowExtra>
+                  <DialogInputRowExtra>
                     <ScInput
                       label={m.phone}
                       fullWidth
-                      className={css.optionalInput}
                       {...register('phone')}
                       defaultValue={filters.phone ?? ''}
                     />
-                  </RowExtra>
+                  </DialogInputRowExtra>
                 )}
               </DialogInputRow>
               <DialogInputRow label={m.foreignCountry}>
@@ -325,16 +291,16 @@ const ReportFiltersMapped = ({filters, updateFilters, children}: ReportsFiltersP
                   )}
                 />
                 {watch('hasForeignCountry') === true && (
-                  <RowExtra>
+                  <DialogInputRowExtra>
                     <Controller
                       name="companyCountries"
                       defaultValue={filters.companyCountries ?? []}
                       control={control}
                       render={({field}) => (
-                        <SelectCountries label={m.foreignCountry} fullWidth className={css.optionalInput} {...field} />
+                        <SelectCountries label={m.foreignCountry} fullWidth {...field} />
                       )}
                     />
-                  </RowExtra>
+                  </DialogInputRowExtra>
                 )}
               </DialogInputRow>
               <DialogInputRow label={m.emailConsumer}>

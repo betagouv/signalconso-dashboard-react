@@ -1,4 +1,4 @@
-import {Theme} from '@mui/material'
+import {Box, BoxProps, Theme} from '@mui/material'
 import makeStyles from '@mui/styles/makeStyles'
 import {styleUtils} from '../../core/theme'
 import {classes} from '../../core/helper/utils'
@@ -11,9 +11,9 @@ const useStyles = makeStyles((t: Theme) => ({
   },
 }))
 
-interface Props extends React.DetailedHTMLProps<React.HTMLAttributes<HTMLHeadingElement>, HTMLHeadingElement> {}
+interface Props extends BoxProps {}
 
 export const PanelTitle = ({className, ...props}: Props) => {
   const css = useStyles()
-  return <h3 {...props} className={classes(css.root, className)} />
+  return <Box component="h3" {...props} className={classes(css.root, className)} />
 }

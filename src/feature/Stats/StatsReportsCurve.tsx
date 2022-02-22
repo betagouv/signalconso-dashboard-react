@@ -17,14 +17,13 @@ interface Props {
 export const StatsReportsCurvePanel = ({ticks}: Props) => {
   const {apiSdk: api} = useLogin()
   const {m} = useI18n()
-  const cssUtils = useCssUtils()
 
   const reportCountCurve = useFetcher(api.public.stats.getReportCountCurve)
   const reportInternetCountCurve = useFetcher((_: CurveStatsParams) =>
-    api.public.stats.getReportCountCurve({..._, tags: [ReportTag.Internet]}),
+    api.public.stats.getReportCountCurve({..._, withTags: [ReportTag.Internet]}),
   )
   const reportDemarchageCountCurve = useFetcher((_: CurveStatsParams) =>
-    api.public.stats.getReportCountCurve({..._, tags: [ReportTag.DemarchageADomicile, ReportTag.DemarchageTelephonique]}),
+    api.public.stats.getReportCountCurve({..._, withTags: [ReportTag.DemarchageADomicile, ReportTag.DemarchageTelephonique]}),
   )
 
   const fetchCurve = (period: Period) => {

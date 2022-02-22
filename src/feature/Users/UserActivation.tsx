@@ -9,7 +9,6 @@ import makeStyles from '@mui/styles/makeStyles'
 import {Checkbox, FormControl, FormControlLabel, FormHelperText, Theme} from '@mui/material'
 import {ScButton} from '../../shared/Button/Button'
 import {Page, PageTitle} from '../../shared/Layout'
-import querystring from 'querystring'
 import {useHistory, useLocation, useParams} from 'react-router'
 import {siteMap} from '../../core/siteMap'
 import {useAsync} from '@alexandreannic/react-hooks-lib'
@@ -18,6 +17,7 @@ import {AccountEventActions, ActionResultNames, EventCategories, Matomo} from '.
 import {Txt} from 'mui-extension/lib/Txt/Txt'
 import {useFetcher} from '@alexandreannic/react-hooks-lib/lib'
 import {Panel, PanelBody} from '../../shared/Panel'
+import {QueryString} from '../../core/helper/useQueryString'
 
 interface UserActivationForm extends UserToActivate {
   repeatPassword: string
@@ -61,7 +61,7 @@ export const UserActivation = ({onActivateUser, onFetchTokenInfo}: Props) => {
     defaultValues: {email: ' '},
   })
 
-  const urlToken = useMemo(() => querystring.parse(search.replace(/^\?/, '')).token as string, [])
+  const urlToken = useMemo(() => QueryString.parse(search.replace(/^\?/, '')).token as string, [])
 
   useEffect(() => {
     _tokenInfo.fetch({}, urlToken, siret)

@@ -7,8 +7,8 @@ import {useCssUtils} from '../../core/helper/useCssUtils'
 import {Controller, useForm} from 'react-hook-form'
 import {cleanObject, CompanySearch} from '@signal-conso/signalconso-api-sdk-js'
 import {Btn} from 'mui-extension'
-import {DialogInputRow} from '../Reports/ReportsFilters'
 import {ScInput} from '../../shared/Input/ScInput'
+import {DialogInputRow} from '../../shared/DialogInputRow/DialogInputRow'
 
 export interface CompaniesRegisteredFiltersProps {
   updateFilters: (_: Partial<CompanySearch>) => void

@@ -47,14 +47,14 @@ export const StatsReportsInternetPanel = () => {
         .getReportCount({
           start,
           end,
-          tags: [ReportTag.Internet],
+          withTags: [ReportTag.Internet],
         })
         .then(_ => _.value),
       api.public.stats
         .getReportCount({
           start,
           end,
-          tags: [ReportTag.Internet],
+          withTags: [ReportTag.Internet],
           hasCompany: true,
         })
         .then(_ => _.value),
@@ -62,7 +62,7 @@ export const StatsReportsInternetPanel = () => {
         .getReportCount({
           start,
           end,
-          tags: [ReportTag.Internet],
+          withTags: [ReportTag.Internet],
           hasCompany: false,
           hasForeignCountry: true,
         })
@@ -71,7 +71,7 @@ export const StatsReportsInternetPanel = () => {
         .getReportCount({
           start,
           end,
-          tags: [ReportTag.Internet],
+          withTags: [ReportTag.Internet],
           hasCompany: false,
           hasForeignCountry: false,
         })
