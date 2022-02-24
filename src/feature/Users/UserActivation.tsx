@@ -83,7 +83,7 @@ export const UserActivation = ({onActivateUser, onFetchTokenInfo}: Props) => {
   }
 
   return (
-    <Page size="small">
+    <Page size="s">
       <PageTitle>{m.createMyAccount}</PageTitle>
 
       <Panel loading={_tokenInfo.loading}>

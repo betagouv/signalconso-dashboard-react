@@ -42,7 +42,7 @@ export const Subscriptions = () => {
   }, [])
 
   return (
-    <Page size="small">
+    <Page size="s">
       <PageTitle>{m.menu_subscriptions}</PageTitle>
 
       <Alert id="subscriptions-info" type="info" deletable className={css.alert}>

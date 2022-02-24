@@ -73,7 +73,7 @@ export const ResetPassword = ({onResetPassword}: Props) => {
 
   return (
     <CenteredContent offset={headerHeight}>
-      <Page size="small" className={css.page}>
+      <Page size="s" className={css.page}>
         <form onSubmit={handleSubmit(resetPassword)}>
           <Panel>
             <PanelHead>{m.newPassword}</PanelHead>

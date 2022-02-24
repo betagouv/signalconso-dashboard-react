@@ -96,7 +96,7 @@ export const CompaniesPro = () => {
   }, [_companies.accessibleByPro.entity, blockedNotificationIndex])
 
   return (
-    <Page size="small">
+    <Page size="s">
       <PageTitle
         action={
           <NavLink to={siteMap.loggedout.register}>

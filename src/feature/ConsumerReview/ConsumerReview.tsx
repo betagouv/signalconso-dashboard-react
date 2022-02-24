@@ -52,7 +52,7 @@ export const ConsumerReview = ({onSubmit}: Props) => {
   }, [_post.error])
 
   return (
-    <Page size="small">
+    <Page size="s">
       {done ? (
         <Alert type="success" className={cssUtils.marginBottom2}>
           {m.thanksForSharingYourMind}
