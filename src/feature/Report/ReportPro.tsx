@@ -70,7 +70,7 @@ export const ReportPro = () => {
   }
 
   return (
-    <Page size="small" loading={_report.get.loading}>
+    <Page size="s" loading={_report.get.loading}>
       {fromNullable(_report.get.entity?.report)
         .map(report => (
           <>

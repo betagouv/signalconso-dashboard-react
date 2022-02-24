@@ -20,7 +20,7 @@ export const ModeEmploiDGCCRF = () => {
   const cssUtils = useCssUtils()
   const css = useStyles()
   return (
-    <Page size="small">
+    <Page size="s">
       <Panel>
         <PanelBody>
           <Typography variant="h4" gutterBottom>

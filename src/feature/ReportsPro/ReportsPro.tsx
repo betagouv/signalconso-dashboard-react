@@ -141,7 +141,7 @@ export const ReportsPro = () => {
   }, [_reports.filters])
 
   return (
-    <Page size="small" loading={_companies.accessibleByPro.loading || _companies.accessibleByPro.loading}>
+    <Page size="s" loading={_companies.accessibleByPro.loading || _companies.accessibleByPro.loading}>
       <PageTitle
         action={
           <Btn

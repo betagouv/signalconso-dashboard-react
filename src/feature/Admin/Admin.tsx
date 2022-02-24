@@ -37,7 +37,7 @@ export const Admin = () => {
   useEffectFn(_sendEmail.error, toastError)
 
   return (
-    <Page size="small">
+    <Page size="s">
       <PageTitle>{m.menu_admin}</PageTitle>
       <Panel loading={_emailCodes.loading}>
         <PanelHead>{m.sendDummyEmail}</PanelHead>

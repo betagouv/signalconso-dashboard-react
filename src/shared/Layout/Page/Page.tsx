@@ -6,9 +6,10 @@ import makeStyles from '@mui/styles/makeStyles'
 import {classes} from '../../../core/helper/utils'
 
 export const pageWidth = {
-  large: 1100,
-  regular: 932,
-  small: 680,
+  xl: 1400,
+  l: 1100,
+  m: 932,
+  s: 680,
 }
 
 const useStyles = makeStyles((t: Theme) => ({
@@ -29,7 +30,7 @@ const useStyles = makeStyles((t: Theme) => ({
 export interface PageProps {
   className?: string
   large?: boolean
-  size?: 'large' | 'small' | 'regular'
+  size?: 'xl' | 'l' | 's' | 'm'
   children: ReactNode
   loading?: boolean
 }
@@ -43,7 +44,7 @@ export const Page = ({className, loading, size, ...props}: PageProps) => {
           <LinearProgress className={css.loadingSpinner} />
         </div>
       )}
-      <MuiPage width={pageWidth[size ?? 'regular']} className={classes(className, css.root)} {...props} />
+      <MuiPage width={pageWidth[size ?? 'm']} className={classes(className, css.root)} {...props} />
     </>
   )
 }

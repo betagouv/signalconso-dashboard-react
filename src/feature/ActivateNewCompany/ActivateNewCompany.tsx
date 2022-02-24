@@ -62,7 +62,7 @@ export const ActivateNewCompany = () => {
   }
 
   return (
-    <Page size="small">
+    <Page size="s">
       <LoginPanel title={m.youReceivedNewLetter}>
         {_acceptToken.error && (
           <Alert type="error" className={cssUtils.marginBottom2}>

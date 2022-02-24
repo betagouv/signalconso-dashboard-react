@@ -144,7 +144,7 @@ export const Reports = ({}) => {
   }, [_reports.filters])
 
   return (
-    <Page size="large">
+    <Page size="xl">
       <PageTitle>{m.reports_pageTitle}</PageTitle>
       {intersection([ReportTag.ReponseConso, ReportTag.Bloctel], _reports.filters.withoutTags ?? []).length !== 2 && (
         <Panel>

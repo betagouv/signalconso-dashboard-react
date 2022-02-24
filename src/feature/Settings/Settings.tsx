@@ -14,7 +14,7 @@ export const Settings = () => {
   const {connectedUser} = useLogin()
 
   return (
-    <Page size="small">
+    <Page size="s">
       <PageTitle>{m.menu_settings}</PageTitle>
       <Panel>
         <SettingRow icon="vpn_key" title={m.password} description={m.editPasswordDesc}>
