@@ -333,7 +333,7 @@ export const fr = {
     invalidSize: (maxSize: number) => `La taille du fichier dépasse les ${maxSize} Mb`,
     somethingWentWrong: `Une erreur s'est produite`,
     altLogoSignalConso: `Logo SignalConso / Retour à la page d'accueil`,
-    toggleDatatableColumns: 'Affichier/Masquer des colonnes',
+    toggleDatatableColumns: 'Afficher/Masquer des colonnes',
     altLogoGouv: `Logo Gouvernement - Ministère de l'Economie, des Finances et de la Relance`,
     altLogoDGCCRF: `Logo DGCCRF - Direction générale de la Concurrence, de la Consommation et de la Répression des fraudes`,
     noAttachment: 'Aucune pièce jointe.',
