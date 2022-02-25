@@ -575,6 +575,10 @@ export const fr = {
           title: `Signalement envoyé`,
           desc: `Signalement pays étranger`,
         },
+        report_ack_case_compagnie_aerienne: {
+          title: `Signalement envoyé`,
+          desc: `Signalement Compagnie aérienne`,
+        },
         report_ack_case_suisse: {
           title: `Signalement envoyé`,
           desc: `Signalement Suisse (pays avec accord)`,
