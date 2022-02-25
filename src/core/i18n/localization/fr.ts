@@ -283,7 +283,7 @@ export const fr = {
     reportsProPromesseAction: `% promesses d'action`,
     pro: 'Professionnels',
     number: `Numéro`,
-    hideAllReponseConsoAndBloctelReports: `Filter les signalements <b>Bloctel</b> et <b>ReponseConso</b> ?`,
+    hideAllReponseConsoAndBloctelReports: `Filtrer les signalements <b>Bloctel</b> et <b>ReponseConso</b> ?`,
     numberShort: `N°`,
     day: 'Jour',
     week: 'Semaine',

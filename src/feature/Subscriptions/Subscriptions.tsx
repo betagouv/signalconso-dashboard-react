@@ -34,7 +34,6 @@ const useStyles = makeStyles((t: Theme) => ({
 export const Subscriptions = () => {
   const {m} = useI18n()
   const css = useStyles()
-  const cssUtils = useCssUtils()
   const _subscriptions = useSubscriptionsContext()
 
   useEffect(() => {
