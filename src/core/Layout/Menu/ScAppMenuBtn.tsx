@@ -1,4 +1,4 @@
-import {Avatar, Icon, Theme} from '@mui/material'
+import {Box, Icon, Theme} from '@mui/material'
 import React from 'react'
 import makeStyles from '@mui/styles/makeStyles'
 import {grey, lightBlue} from '@mui/material/colors'
@@ -9,15 +9,15 @@ import {LayoutConnectedUser} from '../Layout'
 import {classes} from '../../helper/utils'
 import {useHistory} from 'react-router'
 import {siteMap} from '../../siteMap'
+import {IconBtn} from 'mui-extension/lib'
 
 const useMenuStyles = makeStyles((t: Theme) => ({
-  root: {
-    position: 'relative',
-  },
   avatar: {
-    transition: t.transitions.create('all'),
+    height: 46,
+    width: 46,
+    // transition: t.transitions.create('all'),
     color: lightBlue[50],
-    backgroundColor: lightBlue[500],
+    backgroundColor: lightBlue[500] + ' !important',
     margin: t.spacing(0, 1),
     marginRight: 0,
   },
@@ -52,17 +52,29 @@ export const ScAppMenuBtn = ({connectedUser}: Props) => {
   const history = useHistory()
 
   return (
-    <div className={css.root}>
-      <Avatar
-        className={classes(css.avatar, !connectedUser && css.avatarOffline)}
-        onClick={() => {
-          if (connectedUser) openMenu.toggle()
-          else history.push(siteMap.loggedout.login)
-        }}
-      >
-        <Icon>{connectedUser ? 'person' : 'no_accounts'}</Icon>
-      </Avatar>
+    <Box sx={{position: 'relative'}}>
+      <Box sx={{display: 'flex', alignItems: 'center'}} onClick={() => {
+        if (connectedUser) openMenu.toggle()
+        else history.push(siteMap.loggedout.login)
+      }}>
+        <IconBtn
+          size="large"
+          disabled={!connectedUser}
+          sx={{
+            boxShadow: t => t.shadows[2],
+          }}
+          className={classes(css.avatar, !connectedUser && css.avatarOffline)}
+
+        >
+          <Icon fontSize="large">{connectedUser ? 'menu' : 'no_accounts'}</Icon>
+        </IconBtn>
+        <Icon>arrow_drop_down</Icon>
+      </Box>
+      {/*<Avatar*/}
+      {/*>*/}
+      {/*<Icon>{connectedUser ? 'person' : 'no_accounts'}</Icon>*/}
+      {/*</Avatar>*/}
       {connectedUser && openMenu.value && <ScAppMenu onClose={openMenu.setFalse} connectedUser={connectedUser} />}
-    </div>
+    </Box>
   )
 }
