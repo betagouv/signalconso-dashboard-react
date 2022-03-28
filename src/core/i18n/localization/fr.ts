@@ -488,7 +488,7 @@ export const fr = {
     resetPasswordNotFound: `Le lien permettant de demander un nouveau mot de passe n'est pas valide, veuillez refaire une demande.`,
     resetPasswordSuccess: `Votre mot de passe est maintenant créé, vous pouvez vous connecter pour accéder à votre espace entreprise.`,
     loginIssueTip: `En cas de difficultés, vous pouvez contacter par email le service <a href="mailto:${config.contactEmail}">${config.contactEmail}</a>.`,
-    consent: ` Je reconnais avoir pris connaissance des  <a href="href="${config.appBaseUrl}/conditions-generales-utilisation/professionnel"> conditions générales d'utilisation</a> de SignalConso.`,
+    consent: ` Je reconnais avoir pris connaissance des  <a href="${config.appBaseUrl}/conditions-generales-utilisation/professionnel"> conditions générales d'utilisation</a> de SignalConso.`,
     statsInternetsTitle: 'Signalements internet',
     statsInternets_all: 'des signalements sont des signalements Internet',
     statsInternets_all_desc: 'le consommateur indique que le problème rencontré concerne une entreprise en ligne',
@@ -510,7 +510,7 @@ export const fr = {
   `,
     cannotActivateAccountAlertTitle: `Le lien sur lequel vous avez cliqué n'est plus valide.`,
     cannotActivateAccountAlertInfo: `
-    <p>Si vous avez déjà créé votre compte, vous pouvez vous <a href="href="/connexion"/conditions-generales-utilisation/professionnel">connecter</a> à l'aide de votre adresse email et mot de passe.</p>
+    <p>Si vous avez déjà créé votre compte, vous pouvez vous <a href="/connexion">connecter</a> à l'aide de votre adresse email et mot de passe.</p>
     Sinon, vous pouvez demander au gestionnaire de l'entreprise de vous envoyer une nouvelle invitation.
   `,
     testMails: {
