@@ -22,8 +22,9 @@ const useMenuStyles = makeStyles((t: Theme) => ({
     marginRight: 0,
   },
   avatarOffline: {
-    color: grey[50],
-    backgroundColor: grey[500],
+    boxShadow: 'none',
+    color: grey[50] + ' !important',
+    backgroundColor: grey[500] + ' !important',
   },
   userName: {
     ...styleUtils(t).truncate,
@@ -64,11 +65,12 @@ export const ScAppMenuBtn = ({connectedUser}: Props) => {
             boxShadow: t => t.shadows[2],
           }}
           className={classes(css.avatar, !connectedUser && css.avatarOffline)}
-
         >
           <Icon fontSize="large">{connectedUser ? 'menu' : 'no_accounts'}</Icon>
         </IconBtn>
-        <Icon>arrow_drop_down</Icon>
+        {connectedUser && (
+          <Icon>arrow_drop_down</Icon>
+        )}
       </Box>
       {/*<Avatar*/}
       {/*>*/}
