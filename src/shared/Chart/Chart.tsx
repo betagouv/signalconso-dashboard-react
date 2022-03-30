@@ -1,10 +1,12 @@
-import {Bar, BarChart, CartesianGrid, Legend, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis} from 'recharts'
+import {Bar, BarChart, CartesianGrid, LabelList, Legend, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis} from 'recharts'
 import * as React from 'react'
 import {useMemo} from 'react'
 import {Theme, useTheme} from '@mui/material'
+import {styleUtils} from '../../core/theme'
 
 interface Props {
   height?: number
+  showLabel?: boolean
   curves: {
     label: string
     key: string
@@ -15,7 +17,7 @@ interface Props {
 
 const colors = (t: Theme) => [t.palette.primary.main, '#e48c00', 'red', 'green']
 
-export const ScLineChart = ({curves, height}: Props) => {
+export const ScLineChart = ({curves, height, showLabel = true}: Props) => {
   const theme = useTheme()
 
   const mappedData = useMemo(() => {
@@ -47,7 +49,14 @@ export const ScLineChart = ({curves, height}: Props) => {
               dataKey={_.key}
               stroke={_.color ?? colors(theme)[i] ?? colors(theme)[0]}
               strokeWidth={2}
-            />
+            >
+              {showLabel && (
+                <LabelList dataKey={_.key} position="top" style={{
+                  fill: _.color ?? colors(theme)[i] ?? colors(theme)[0],
+                  fontSize: styleUtils(theme).fontSize.small,
+                }} />
+              )}
+            </Line>
           ))}
         </LineChart>
       </ResponsiveContainer>

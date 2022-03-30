@@ -8,7 +8,6 @@ import {useFetcher} from '@alexandreannic/react-hooks-lib'
 import {Period} from '@signal-conso/signalconso-api-sdk-js'
 import {statsFormatCurveDate} from './Stats'
 import {curveRatio} from './ReportStats'
-import {useCssUtils} from '../../core/helper/useCssUtils'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
 
 interface Props {
@@ -18,7 +17,6 @@ interface Props {
 export const StatsReportsProProcessedPanel = ({ticks}: Props) => {
   const {apiSdk: api} = useLogin()
   const {m} = useI18n()
-  const cssUtils = useCssUtils()
   const reportCountCurve = useFetcher(api.public.stats.getReportCountCurve)
   const reportResponseCountCurve = useFetcher(api.secured.stats.getProReportResponseStat)
   const reportTransmittedCountCurve = useFetcher(api.secured.stats.getProReportTransmittedStat)
