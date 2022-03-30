@@ -10,12 +10,10 @@ import {siteMap} from '../../core/siteMap'
 import {Redirect, Route, Switch, useRouteMatch} from 'react-router-dom'
 import {ReportStats} from './ReportStats'
 
-export const statsFormatCurveDate =
-  (m: I18nContextProps['m']) =>
-  ({date, count}: CountByDate): {date: string; count: number} => ({
-    date: (m.monthShort_ as any)[date.getMonth() + 1],
-    count,
-  })
+export const statsFormatCurveDate = (m: I18nContextProps['m']) => ({date, count}: CountByDate): {date: string; count: number} => ({
+  date: (m.monthShort_ as any)[date.getMonth() + 1],
+  count,
+})
 
 export const Stats = () => {
   const {path} = useRouteMatch()

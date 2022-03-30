@@ -64,6 +64,9 @@ const useStyles = makeStyles((t: Theme) => ({
     '.material-icons': {
       display: 'inherit',
     },
+    '.recharts-surface': {
+      overflow: 'visible',
+    },
     html: {
       fontSize: t.typography.fontSize,
       color: t.palette.text.primary,

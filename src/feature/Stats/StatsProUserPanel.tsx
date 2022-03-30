@@ -6,9 +6,7 @@ import {statsFormatCurveDate} from './Stats'
 import {useFetcher} from '@alexandreannic/react-hooks-lib'
 import {useI18n} from '../../core/i18n'
 import {useLogin} from '../../core/context/LoginContext'
-import {useCssUtils} from '../../core/helper/useCssUtils'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
-import {curveRatio} from './ReportStats'
 
 interface Props {
   ticks: number
@@ -17,7 +15,6 @@ interface Props {
 export const StatsProUserPanel = ({ticks}: Props) => {
   const {apiSdk: api} = useLogin()
   const {m} = useI18n()
-  const cssUtils = useCssUtils()
   const reportedActiveProAccountRate = useFetcher(api.secured.stats.getReportedInactiveProAccountRate)
   const reportVisibleByProCountCurve = useFetcher(api.secured.stats.getProReportTransmittedStat)
 
