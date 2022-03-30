@@ -74,7 +74,7 @@ export const LoginPage = ({login, register, forgottenPassword}: Props) => {
                 <Route path={allTabs[1]}>
                   <ActivateAccountForm register={register} />
                 </Route>
-                <Redirect exact from="/" to={allTabs[0]} />
+                <Redirect from="/" to={allTabs[0]} />
               </Switch>
             </>
           )}
