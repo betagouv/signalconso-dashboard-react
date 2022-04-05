@@ -190,6 +190,7 @@ export const fr = {
     reportHistory: 'Historique du signalement',
     reportedWebsites: 'Suivi des sites internet',
     reportedCompaniesWebsites: 'Associations sites / entreprises',
+    showLabels: 'Afficher les valeurs :',
     reportedUnknownWebsites: 'Sites non identifiés',
     companyHistory: "Historique de l'entreprise",
     reports_pageTitle: 'Suivi des signalements',
