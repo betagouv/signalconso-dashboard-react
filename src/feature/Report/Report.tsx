@@ -110,7 +110,7 @@ export const ReportComponent = () => {
                   {m.download}
                 </Btn>
 
-                {connectedUser.isAdmin && (
+                {connectedUser.isAdmin && report.companySiret && (
                   <Confirm
                     title={m.removeAsk}
                     content={m.removeReportDesc(report.companySiret)}

@@ -1,4 +1,4 @@
-import {CompanySearchResult, isGovernmentCompany} from '@signal-conso/signalconso-api-sdk-js'
+import {CompanySearchResult} from '@signal-conso/signalconso-api-sdk-js'
 import {ScRadioGroupItem} from '../RadioGroup/RadioGroupItem'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
 import {Icon, Theme} from '@mui/material'
@@ -8,6 +8,7 @@ import React from 'react'
 import {useCssUtils} from '../../core/helper/useCssUtils'
 import {useI18n} from '../../core/i18n'
 import {AddressComponent} from '../Address/Address'
+import {Report} from '@signal-conso/signalconso-api-sdk-js'
 
 interface Props {
   companies: CompanySearchResult[]
@@ -31,7 +32,7 @@ export const SelectCompanyList = ({companies, onChange}: Props) => {
   return (
     <ScRadioGroup>
       {companies.map(company => {
-        const isGovernment = isGovernmentCompany(company)
+        const isGovernment = Report.isGovernmentCompany(company)
         return (
           <ScRadioGroupItem key={company.siret} value={company.siret!} className={css.root} onClick={() => onChange(company)}>
             <Txt truncate block bold>

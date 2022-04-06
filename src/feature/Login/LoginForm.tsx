@@ -12,9 +12,7 @@ import {useForm} from 'react-hook-form'
 import {ScButton} from '../../shared/Button/Button'
 import {fromNullable} from 'fp-ts/es6/Option'
 import {ForgottenPasswordDialog} from './ForgottenPasswordDialog'
-import {ApiDetailedError, ApiError, SignalConsoPublicSdk} from '@signal-conso/signalconso-api-sdk-js'
-import {fnSwitch} from '../../core/helper/utils'
-import {useToast} from '../../core/toast'
+import {ApiError, SignalConsoPublicSdk} from '@signal-conso/signalconso-api-sdk-js'
 import {AuthenticationEventActions, EventCategories, Matomo} from '../../core/plugins/Matomo'
 import {Alert} from 'mui-extension'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
@@ -58,10 +56,10 @@ export const LoginForm = ({login, forgottenPassword}: Props) => {
         Matomo.trackEvent(EventCategories.auth, AuthenticationEventActions.success, auth.user.id)
         Matomo.trackEvent(EventCategories.auth, AuthenticationEventActions.role, auth.user.role)
       })
-      .catch((err: ApiDetailedError) => {
+      .catch((err: ApiError) => {
         setError('apiError', {
-          type: err.message.type,
-          message: err.message.details,
+          type: err.details.id,
+          message: err.message,
         })
         Matomo.trackEvent(EventCategories.auth, AuthenticationEventActions.fail)
       })

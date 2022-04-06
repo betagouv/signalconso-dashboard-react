@@ -57,7 +57,7 @@ export const EditPasswordDialog = ({children}: Props) => {
           {fromNullable(_changePassword.error)
             .map(error => (
               <Alert dense type="error" deletable gutterBottom>
-                {error.code === 401 ? m.invalidPassword : m.failedToChangePassword}
+                {error.details?.code === 401 ? m.invalidPassword : m.failedToChangePassword}
               </Alert>
             ))
             .toUndefined()}
