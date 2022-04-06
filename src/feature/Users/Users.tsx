@@ -48,10 +48,10 @@ export const Users = () => {
             title={m.users_invite_dialog_title}
             content={
               <>
-                {fromNullable(_invite.error)
-                  .map(error => (
+                {fromNullable(_invite.error?.details?.id)
+                  .map(errId => (
                     <Alert dense type="error" deletable gutterBottom>
-                      {error.message?.details}
+                      {m.apiErrorsCode[errId as keyof typeof m.apiErrorsCode]}
                     </Alert>
                   ))
                   .toUndefined()}

@@ -10,7 +10,7 @@ import {ActivateAccountForm} from './ActivateAccountForm'
 import {LoginForm} from './LoginForm'
 import {Link, Redirect, Route, Switch} from 'react-router-dom'
 import {siteMap} from '../../core/siteMap'
-import {ApiDetailedError, SignalConsoPublicSdk} from '@signal-conso/signalconso-api-sdk-js'
+import {ApiError, SignalConsoPublicSdk} from '@signal-conso/signalconso-api-sdk-js'
 import {HelpContactInfo} from '../../shared/HelpContactInfo/HelpContactInfo'
 import {useHistory} from 'react-router'
 import {Matomo} from '../../core/plugins/Matomo'
@@ -33,7 +33,7 @@ const useStyles = makeStyles((t: Theme) => ({
 export interface ActionProps<F extends (...args: any[]) => Promise<any>> {
   action: F
   loading?: boolean
-  error?: ApiDetailedError
+  error?: ApiError
 }
 
 interface Props {

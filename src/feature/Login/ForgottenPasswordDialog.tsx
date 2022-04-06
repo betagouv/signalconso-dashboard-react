@@ -9,12 +9,12 @@ import {useI18n} from '../../core/i18n'
 import {useToast} from '../../core/toast'
 import {ScDialog} from '../../shared/Confirm/ScDialog'
 import {AuthenticationEventActions, EventCategories, Matomo} from '../../core/plugins/Matomo'
-import {ApiDetailedError, ApiError} from '@signal-conso/signalconso-api-sdk-js'
+import {ApiError} from '@signal-conso/signalconso-api-sdk-js'
 
 interface Props {
   onSubmit: (email: string) => Promise<any>
   loading?: boolean
-  error?: ApiDetailedError
+  error?: ApiError
   children: ReactElement<any>
   value?: string
 }
