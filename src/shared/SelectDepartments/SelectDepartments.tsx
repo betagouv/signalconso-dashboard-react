@@ -1,8 +1,6 @@
 import * as React from 'react'
 import {CSSProperties, forwardRef, useEffect} from 'react'
-import {Icon, InputAdornment, TextField, Theme} from '@mui/material'
-import createStyles from '@mui/styles/createStyles'
-import makeStyles from '@mui/styles/makeStyles'
+import {Icon, InputAdornment, TextField} from '@mui/material'
 import {useSetState, UseSetState} from '@alexandreannic/react-hooks-lib/lib'
 import {SelectDepartmentsMenu} from './SelectDepartmentsMenu'
 
