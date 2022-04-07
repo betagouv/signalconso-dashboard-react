@@ -35,7 +35,6 @@ const useStyles = makeStyles((t: Theme) => ({
     padding: t.spacing(0, 2, 0, 0),
     textOverflow: 'ellipsis',
     whiteSpace: 'nowrap',
-    // overflow: 'hidden',
   },
   barContainer: {
     padding: t.spacing(0.25, 0, 0.25, 0),
