@@ -149,7 +149,7 @@ export const ReportsPro = () => {
             color="primary"
             icon="help"
             {...({target: '_blank'} as any)}
-            href={config.appBaseUrl + '/comment-ça-marche/professionnel'}
+            href={config.appBaseUrl + '/comment-ca-marche'}
           >
             {m.help}
             <Icon className={classes(cssUtils.marginLeft, cssUtils.colorTxtHint)}>open_in_new</Icon>
