@@ -398,7 +398,7 @@ export const fr = {
     activationDocReturned: `Courriers retournés`,
     shareYourMind: `Donner votre avis`,
     thanksForSharingYourMind: `Votre avis a bien été pris en compte, nous vous en remercions.`,
-    didTheCompanyAnsweredWell: `Est-ce que la réponse de l'entreprise vous satisfait ?`,
+    didTheCompanyAnsweredWell: `Est-ce que la réponse de l'entreprise vous satisfait ? <b>(Attention, une fois l'avis déposé, il ne sera plus possible de le modifier.)</b>`,
     addDgccrfComment: 'Commentaire (interne à la DGCCRF)',
     markDgccrfControlDone: 'Contrôle effectué (interne à la DGCCRF)',
     thisDate: (_: string) => `Le ${_}`,

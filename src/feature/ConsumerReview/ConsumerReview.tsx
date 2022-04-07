@@ -82,16 +82,14 @@ export const ConsumerReview = ({onSubmit}: Props) => {
             <PanelHead>{m.shareYourMind}</PanelHead>
 
             <PanelBody>
-              <Txt block gutterBottom color="hint">
-                {m.didTheCompanyAnsweredWell}
-              </Txt>
+              <Txt block gutterBottom color="hint" dangerouslySetInnerHTML={{__html: m.didTheCompanyAnsweredWell}}/>
               <Controller
                 name="evaluation"
                 {...defaultValueProps}
                 rules={{required: {value: true, message: m.required}}}
                 control={control}
                 render={({field}) => (
-                  <ScRadioGroup inline={!isMobileWidth} error={!!errors.evaluation} {...field}>
+                  <ScRadioGroup className={cssUtils.marginTop3} inline={!isMobileWidth} error={!!errors.evaluation} {...field}>
                     <ScRadioGroupItem value={ResponseEvaluation.Positive}><Emoticon className={css.large} label="happy">😀</Emoticon></ScRadioGroupItem>
                     <ScRadioGroupItem value={ResponseEvaluation.Neutral}><Emoticon className={css.large} label="neutral">😐</Emoticon></ScRadioGroupItem>
                     <ScRadioGroupItem value={ResponseEvaluation.Negative}><Emoticon className={css.large} label="sad">🙁</Emoticon></ScRadioGroupItem>
