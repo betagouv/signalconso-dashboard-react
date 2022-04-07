@@ -80,7 +80,7 @@ export const Header = ({connectedUser}: Props) => {
                 <a href={config.appBaseUrl}>
                   <MenuItem>{m.home}</MenuItem>
                 </a>
-                <a href={config.appBaseUrl + '/comment-ça-marche'}>
+                <a href={config.appBaseUrl + '/comment-ca-marche'}>
                   <MenuItem>{m.howItWorks}</MenuItem>
                 </a>
                 <a href={config.appBaseUrl + '/centre-aide/consommateur'}>
@@ -91,7 +91,7 @@ export const Header = ({connectedUser}: Props) => {
           ) : (
             <nav>
               <HeaderItem href={config.appBaseUrl}>{m.home}</HeaderItem>
-              <HeaderItem href={config.appBaseUrl + '/comment-ça-marche'}>{m.howItWorks}</HeaderItem>
+              <HeaderItem href={config.appBaseUrl + '/comment-ca-marche'}>{m.howItWorks}</HeaderItem>
               <HeaderItem href={config.appBaseUrl + '/centre-aide/consommateur'}>{m.helpCenter}</HeaderItem>
             </nav>
           )}
