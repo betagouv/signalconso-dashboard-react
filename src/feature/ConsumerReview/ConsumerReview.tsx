@@ -9,26 +9,36 @@ import {useCssUtils} from '../../core/helper/useCssUtils'
 import {ScButton} from '../../shared/Button/Button'
 import {PanelFoot} from '../../shared/Panel/PanelFoot'
 import {Controller, useForm} from 'react-hook-form'
-import {Id, ReviewOnReportResponse} from '@signal-conso/signalconso-api-sdk-js'
+import {Id, ResponseConsumerReview, ResponseEvaluation} from '@signal-conso/signalconso-api-sdk-js'
 import {useAsync} from '@alexandreannic/react-hooks-lib'
-import React, {useEffect, useState} from 'react'
-import {useParams} from 'react-router'
-import {stringToBoolean} from '../../core/helper/utils'
+import React, {useEffect, useMemo, useState} from 'react'
+import {useLocation, useParams} from 'react-router'
 import {fromNullable} from 'fp-ts/es6/Option'
 import {useToast} from '../../core/toast'
 import {Alert} from 'mui-extension'
+import {QueryString} from "../../core/helper/useQueryString";
+import {Box, Icon, Theme} from "@mui/material";
+import {useLayoutContext} from "../../core/Layout/LayoutContext";
+import {Emoticon} from "../../shared/Emoticon/Emoticon";
+import makeStyles from "@mui/styles/makeStyles";
 
 interface Props {
-  onSubmit: (reportId: Id, review: ReviewOnReportResponse) => Promise<any>
+  onSubmit: (reportId: Id, review: ResponseConsumerReview) => Promise<any>
 }
 
 interface Form {
-  positive: string
+  evaluation: ResponseEvaluation
   details?: string
 }
 
+const useStyles = makeStyles((t: Theme) => ({
+  large: {
+    fontSize: 50,
+  },
+}))
+
 export const ConsumerReview = ({onSubmit}: Props) => {
-  const {reportId} = useParams<{reportId: Id}>()
+  const {reportId} = useParams<{ reportId: Id }>()
   const {m} = useI18n()
   const cssUtils = useCssUtils()
   const {toastError} = useToast()
@@ -39,14 +49,23 @@ export const ConsumerReview = ({onSubmit}: Props) => {
     control,
     formState: {errors, isValid},
   } = useForm<Form>()
+  const {search} = useLocation()
+  const css = useStyles()
 
+  const defaultValueProps = useMemo(() => {
+    let queryParamEvaluation = (QueryString.parse(search.replace(/^\?/, '')).evaluation as string)
+    let responseEvaluation = new Map(Object.entries(ResponseEvaluation)).get(queryParamEvaluation)
+    return responseEvaluation ? {defaultValue: responseEvaluation} : {}
+  }, [])
   const _post = useAsync(onSubmit)
+  const {isMobileWidth} = useLayoutContext()
+
 
   const submit = async (form: Form) => {
-    await _post.call(reportId, {...form, positive: stringToBoolean(form.positive)!})
+    await _post.call(reportId, {...form})
     setDone(true)
   }
-
+  type ResponseEvaluation = string;
   useEffect(() => {
     fromNullable(_post.error).map(toastError)
   }, [_post.error])
@@ -61,18 +80,21 @@ export const ConsumerReview = ({onSubmit}: Props) => {
         <form onSubmit={handleSubmit(submit)}>
           <Panel>
             <PanelHead>{m.shareYourMind}</PanelHead>
+
             <PanelBody>
               <Txt block gutterBottom color="hint">
                 {m.didTheCompanyAnsweredWell}
               </Txt>
               <Controller
-                name="positive"
+                name="evaluation"
+                {...defaultValueProps}
                 rules={{required: {value: true, message: m.required}}}
                 control={control}
                 render={({field}) => (
-                  <ScRadioGroup dense error={!!errors.positive} {...field}>
-                    <ScRadioGroupItem title={m.yes} value="true" />
-                    <ScRadioGroupItem title={m.no} value="false" />
+                  <ScRadioGroup inline={!isMobileWidth} error={!!errors.evaluation} {...field}>
+                    <ScRadioGroupItem value={ResponseEvaluation.Positive}><Emoticon className={css.large} label="happy">😀</Emoticon></ScRadioGroupItem>
+                    <ScRadioGroupItem value={ResponseEvaluation.Neutral}><Emoticon className={css.large} label="neutral">😐</Emoticon></ScRadioGroupItem>
+                    <ScRadioGroupItem value={ResponseEvaluation.Negative}><Emoticon className={css.large} label="sad">🙁</Emoticon></ScRadioGroupItem>
                   </ScRadioGroup>
                 )}
               />
@@ -83,7 +105,7 @@ export const ConsumerReview = ({onSubmit}: Props) => {
                 color="hint"
                 dangerouslySetInnerHTML={{__html: m.youCanAddCommentForDGCCRF}}
               />
-              <ScInput {...register('details')} multiline fullWidth rows={5} maxRows={12} />
+              <ScInput {...register('details')} multiline fullWidth rows={5} maxRows={12}/>
             </PanelBody>
             <PanelFoot alignEnd>
               <ScButton loading={_post.loading} type="submit" icon="send" variant="contained" color="primary">

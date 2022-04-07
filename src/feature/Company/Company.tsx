@@ -49,13 +49,18 @@ import {useCompanyStats} from './useCompanyStats'
 import {NavLink} from 'react-router-dom'
 import {ScLineChart} from '../../shared/Chart/Chart'
 import {I18nContextProps} from '../../core/i18n/I18n'
+import {Emoticon} from "../../shared/Emoticon/Emoticon";
 
 const useStyles = makeStyles((t: Theme) => ({
   reviews: {
     display: 'flex',
     justifyContent: 'space-around',
     textAlign: 'center',
+    margin: t.spacing(4, 0, 4, 0),
     width: '100%',
+  },
+  test: {
+    display: 'flex',
   },
   reviews_type: {
     display: 'flex',
@@ -63,12 +68,12 @@ const useStyles = makeStyles((t: Theme) => ({
   },
   reviews_type_value: {
     fontWeight: t.typography.fontWeightBold,
-    fontSize: styleUtils(t).fontSize.big,
+    fontSize: 20,
     // margin: t.spacing(2),
   },
   reviews_type_icon: {
-    margin: t.spacing(0, 2, 0, 2),
-    fontSize: 38,
+    // margin: t.spacing(0, 1, 0, 2),
+    fontSize: 30,
   },
   report: {
     margin: t.spacing(1, 1, 1, 1),
@@ -76,7 +81,6 @@ const useStyles = makeStyles((t: Theme) => ({
       borderBottom: `1px solid ${t.palette.divider}`,
     },
   },
-  reportTag: {},
   statusInfo: {
     verticalAlign: 'middle',
     color: t.palette.text.disabled,
@@ -163,6 +167,47 @@ export const CompanyComponent = () => {
       value: count,
       color: reportStatusColor[status] ?? undefined,
     })),
+  )
+
+  const reviewDistribution = useMemoFn(_stats.responseReviews.entity, _ =>
+    [
+      {label : (
+      <span className={css.test}>
+        <Emoticon className={css.reviews_type_icon} label="happy">😀</Emoticon>
+        <Tooltip title={m.positive}>
+            <Icon fontSize="small" className={css.statusInfo}>
+              help
+            </Icon>
+          </Tooltip>
+        </span>),
+      value : _.positive,
+      color : '#4caf50'
+    },
+      {label : (
+          <span className={css.test}>
+        <Emoticon className={css.reviews_type_icon} label="neutral">😐</Emoticon>
+        <Tooltip title={m.neutral}>
+            <Icon fontSize="small" className={css.statusInfo}>
+              help
+            </Icon>
+          </Tooltip>
+        </span>),
+        value : _.neutral,
+        color : '#4caf50'
+      },
+      {label : (
+          <span className={css.test}>
+        <Emoticon className={css.reviews_type_icon} label="sad">🙁</Emoticon>
+        <Tooltip title={m.negative}>
+            <Icon fontSize="small" className={css.statusInfo}>
+              help
+            </Icon>
+          </Tooltip>
+        </span>),
+        value : _.negative,
+        color : '#4caf50'
+      }
+    ]
   )
 
   const tagsDistribution = useMemoFn(_stats.tags.entity, _ => Object.entries(_).map(([label, count]) => ({label, value: count})))
@@ -291,24 +336,24 @@ export const CompanyComponent = () => {
                 {fromNullable(_stats.responseReviews.entity)
                   .map(_ => (
                     <PanelBody>
-                      <Txt color="hint" block className={cssUtils.marginBottom2}>
-                        {m.consumerReviewsDesc}
-                      </Txt>
-                      <div className={css.reviews}>
-                        <div className={css.reviews_type}>
-                          <div className={css.reviews_type_value}>{_.positive}</div>
-                          <Icon className={classes(css.reviews_type_icon, cssUtils.colorSuccess)}>thumb_up</Icon>
-                        </div>
-                        <div className={css.reviews_type}>
-                          <Icon className={classes(css.reviews_type_icon, cssUtils.colorError)}>thumb_down</Icon>
-                          <div className={css.reviews_type_value}>{_.negative}</div>
-                        </div>
-                      </div>
-                      <LinearProgress
-                        className={cssUtils.marginTop2}
-                        variant="determinate"
-                        value={(_.positive / (_.positive + _.negative)) * 100}
-                      />
+                      {/*<Txt color="hint" block className={cssUtils.marginBottom2}>*/}
+                      {/*  {m.consumerReviewsDesc}*/}
+                      {/*</Txt>*/}
+                      <HorizontalBarChart data={reviewDistribution} grid />
+                      {/*<div className={css.reviews}>*/}
+                      {/*  <div className={css.reviews_type}>*/}
+                      {/*    <Emoticon className={css.reviews_type_icon} label="happy">😀</Emoticon>*/}
+                      {/*    <div className={css.reviews_type_value}>{_.positive}</div>*/}
+                      {/*  </div>*/}
+                      {/*  <div className={css.reviews_type}>*/}
+                      {/*    <Emoticon className={css.reviews_type_icon} label="neutral">😐</Emoticon>*/}
+                      {/*    <div className={css.reviews_type_value}>{_.neutral}</div>*/}
+                      {/*  </div>*/}
+                      {/*  <div className={css.reviews_type}>*/}
+                      {/*    <Emoticon className={css.reviews_type_icon} label="sad">🙁</Emoticon>*/}
+                      {/*    <div className={css.reviews_type_value}>{_.negative}</div>*/}
+                      {/*  </div>*/}
+                      {/*</div>*/}
                     </PanelBody>
                   ))
                   .getOrElse(

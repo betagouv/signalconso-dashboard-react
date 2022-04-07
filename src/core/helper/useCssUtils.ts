@@ -49,6 +49,11 @@ export const useCssUtils = makeStyles((t: Theme) => {
     tooltipColorTxtSecondary: {
       opacity: 0.82,
     },
+    largeIcon: {
+      '& svg': {
+        fontSize: 1200
+      }
+    },
     colorSuccess: {
       color: styleUtils(t).color.success,
     },
