@@ -28,14 +28,14 @@ const useStyles = makeStyles((t: Theme) => ({
     margin: t.spacing(0.5, 0, 0.5, 0),
   },
   label: {
-    width: 200,
-    minWidth: 200,
+    minWidth: '38%',
+    width: '38%',
     textAlign: 'right',
     color: t.palette.text.secondary,
     padding: t.spacing(0, 2, 0, 0),
     textOverflow: 'ellipsis',
     whiteSpace: 'nowrap',
-    overflow: 'hidden',
+    // overflow: 'hidden',
   },
   barContainer: {
     padding: t.spacing(0.25, 0, 0.25, 0),

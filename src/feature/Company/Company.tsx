@@ -69,7 +69,7 @@ const useStyles = makeStyles((t: Theme) => ({
   reviews_type_value: {
     fontWeight: t.typography.fontWeightBold,
     fontSize: 20,
-    // margin: t.spacing(2),
+    margin: t.spacing(2),
   },
   reviews_type_icon: {
     // margin: t.spacing(0, 1, 0, 2),
@@ -336,24 +336,10 @@ export const CompanyComponent = () => {
                 {fromNullable(_stats.responseReviews.entity)
                   .map(_ => (
                     <PanelBody>
-                      {/*<Txt color="hint" block className={cssUtils.marginBottom2}>*/}
-                      {/*  {m.consumerReviewsDesc}*/}
-                      {/*</Txt>*/}
+                      <Txt color="hint" block className={cssUtils.marginBottom3}>
+                        {m.consumerReviewsDesc}
+                      </Txt>
                       <HorizontalBarChart data={reviewDistribution} grid />
-                      {/*<div className={css.reviews}>*/}
-                      {/*  <div className={css.reviews_type}>*/}
-                      {/*    <Emoticon className={css.reviews_type_icon} label="happy">😀</Emoticon>*/}
-                      {/*    <div className={css.reviews_type_value}>{_.positive}</div>*/}
-                      {/*  </div>*/}
-                      {/*  <div className={css.reviews_type}>*/}
-                      {/*    <Emoticon className={css.reviews_type_icon} label="neutral">😐</Emoticon>*/}
-                      {/*    <div className={css.reviews_type_value}>{_.neutral}</div>*/}
-                      {/*  </div>*/}
-                      {/*  <div className={css.reviews_type}>*/}
-                      {/*    <Emoticon className={css.reviews_type_icon} label="sad">🙁</Emoticon>*/}
-                      {/*    <div className={css.reviews_type_value}>{_.negative}</div>*/}
-                      {/*  </div>*/}
-                      {/*</div>*/}
                     </PanelBody>
                   ))
                   .getOrElse(
