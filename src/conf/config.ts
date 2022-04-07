@@ -19,7 +19,7 @@ const parseUrl = (_: string): string => _.replace(/\/$/, '')
 export const config = {
   isDev: env()(Env.NODE_ENV) === 'development',
   apiBaseUrl: env(defaultValue('http://localhost:9000'), parseUrl)(Env.REACT_APP_API_BASE_URL),
-  appBaseUrl: env(defaultValue('http://localhost:4200'), parseUrl)(Env.REACT_APP_APP_BASE_URL),
+  appBaseUrl: env(defaultValue('http://localhost:3001'), parseUrl)(Env.REACT_APP_APP_BASE_URL),
   basePath: env(defaultValue('/'))(Env.REACT_APP_BASE_PATH),
   reportsLimitForExport: 30000,
   upload_allowedExtensions: ['jpg', 'jpeg', 'pdf', 'png', 'gif', 'docx'],

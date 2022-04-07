@@ -72,7 +72,6 @@ const useStyles = makeStyles((t: Theme) => ({
     margin: t.spacing(2),
   },
   reviews_type_icon: {
-    // margin: t.spacing(0, 1, 0, 2),
     fontSize: 30,
   },
   report: {
@@ -81,7 +80,7 @@ const useStyles = makeStyles((t: Theme) => ({
       borderBottom: `1px solid ${t.palette.divider}`,
     },
   },
-  statusInfo: {
+  info: {
     verticalAlign: 'middle',
     color: t.palette.text.disabled,
     marginLeft: t.spacing(1),
@@ -158,7 +157,7 @@ export const CompanyComponent = () => {
         <span>
           {m.reportStatusShort[status]}
           <Tooltip title={m.reportStatusDesc[status]}>
-            <Icon fontSize="small" className={css.statusInfo}>
+            <Icon fontSize="small" className={css.info}>
               help
             </Icon>
           </Tooltip>
@@ -175,7 +174,7 @@ export const CompanyComponent = () => {
       <span className={css.test}>
         <Emoticon className={css.reviews_type_icon} label="happy">😀</Emoticon>
         <Tooltip title={m.positive}>
-            <Icon fontSize="small" className={css.statusInfo}>
+            <Icon fontSize="small" className={css.info}>
               help
             </Icon>
           </Tooltip>
@@ -187,25 +186,25 @@ export const CompanyComponent = () => {
           <span className={css.test}>
         <Emoticon className={css.reviews_type_icon} label="neutral">😐</Emoticon>
         <Tooltip title={m.neutral}>
-            <Icon fontSize="small" className={css.statusInfo}>
+            <Icon fontSize="small" className={css.info}>
               help
             </Icon>
           </Tooltip>
         </span>),
         value : _.neutral,
-        color : '#4caf50'
+        color : '#f57c00'
       },
       {label : (
           <span className={css.test}>
         <Emoticon className={css.reviews_type_icon} label="sad">🙁</Emoticon>
         <Tooltip title={m.negative}>
-            <Icon fontSize="small" className={css.statusInfo}>
+            <Icon fontSize="small" className={css.info}>
               help
             </Icon>
           </Tooltip>
         </span>),
         value : _.negative,
-        color : '#4caf50'
+        color : '#d32f2f'
       }
     ]
   )
