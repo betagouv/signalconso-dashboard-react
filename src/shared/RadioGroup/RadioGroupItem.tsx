@@ -14,7 +14,6 @@ const useStyle = makeStyles((t: Theme) => ({
     padding: t.spacing(1.5, 2, 1.5, 1),
     transition: 'all .2s ease-in-out',
     cursor: 'pointer',
-
     '&:last-of-type': {
       borderBottom: '1px solid ' + t.palette.divider,
       borderBottomRightRadius: 6,
@@ -33,6 +32,26 @@ const useStyle = makeStyles((t: Theme) => ({
   rootDense: {
     paddingTop: t.spacing(1 / 4),
     paddingBottom: t.spacing(1 / 4),
+  },
+  rootInline: {
+    borderRightColor: 'transparent',
+    '&:last-of-type': {
+      borderRight:  '1px solid ' + t.palette.divider,
+      borderTopRightRadius:  t.shape.borderRadius,
+      borderBottom: '1px solid ' + t.palette.divider,
+      borderBottomRightRadius: 6,
+      borderBottomLeftRadius: 0,
+    },
+    '&:first-of-type': {
+      borderBottom: '1px solid ' + t.palette.divider,
+      borderBottomRightRadius: 0,
+      borderBottomLeftRadius: 6,
+      borderTopRightRadius: 0,
+    },
+    '&:not(:first-of-type)': {
+      marginLeft: '-1px',
+      borderBottom: '1px solid ' + t.palette.divider,
+    },
   },
   rootSelected: {
     zIndex: 1,
@@ -61,6 +80,7 @@ export interface ScRadioGroupItemProps {
   children?: ReactNode
   onClick?: MouseEventHandler<HTMLDivElement>
   dense?: boolean
+  inline?: boolean
   error?: boolean
 }
 
@@ -69,6 +89,7 @@ export const ScRadioGroupItem = ({
   description,
   error,
   dense,
+  inline,
   value,
   children,
   selected,
@@ -79,7 +100,7 @@ export const ScRadioGroupItem = ({
 
   return (
     <div
-      className={classes(css.root, dense && css.rootDense, selected && css.rootSelected, error && css.rootError, className)}
+      className={classes(css.root, inline && css.rootInline, dense && css.rootDense, selected && css.rootSelected, error && css.rootError, className)}
       onClick={onClick}
     >
       <Radio checked={selected} />

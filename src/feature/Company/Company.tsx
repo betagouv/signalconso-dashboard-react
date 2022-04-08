@@ -10,7 +10,7 @@ import {reportStatusColor} from '../../shared/ReportStatus/ReportStatus'
 import {useI18n} from '../../core/i18n'
 import {Enum} from '@alexandreannic/ts-utils/lib/common/enum/Enum'
 import {
-  alpha,
+  alpha, Box,
   Button,
   ButtonGroup,
   Divider,
@@ -49,12 +49,14 @@ import {useCompanyStats} from './useCompanyStats'
 import {NavLink} from 'react-router-dom'
 import {ScLineChart} from '../../shared/Chart/Chart'
 import {I18nContextProps} from '../../core/i18n/I18n'
+import {Emoticon} from "../../shared/Emoticon/Emoticon";
 
 const useStyles = makeStyles((t: Theme) => ({
   reviews: {
     display: 'flex',
     justifyContent: 'space-around',
     textAlign: 'center',
+    margin: t.spacing(4, 0, 4, 0),
     width: '100%',
   },
   reviews_type: {
@@ -63,12 +65,8 @@ const useStyles = makeStyles((t: Theme) => ({
   },
   reviews_type_value: {
     fontWeight: t.typography.fontWeightBold,
-    fontSize: styleUtils(t).fontSize.big,
-    // margin: t.spacing(2),
-  },
-  reviews_type_icon: {
-    margin: t.spacing(0, 2, 0, 2),
-    fontSize: 38,
+    fontSize: 20,
+    margin: t.spacing(2),
   },
   report: {
     margin: t.spacing(1, 1, 1, 1),
@@ -76,8 +74,7 @@ const useStyles = makeStyles((t: Theme) => ({
       borderBottom: `1px solid ${t.palette.divider}`,
     },
   },
-  reportTag: {},
-  statusInfo: {
+  info: {
     verticalAlign: 'middle',
     color: t.palette.text.disabled,
     marginLeft: t.spacing(1),
@@ -93,13 +90,13 @@ const periods: Period[] = ['Day', 'Month']
 
 const formatCurveDate =
   (m: I18nContextProps['m']) =>
-  ({date, count}: CountByDate): {date: string; count: number} => ({
-    date: (m.monthShort_ as any)[date.getMonth() + 1],
-    count,
-  })
+    ({date, count}: CountByDate): { date: string; count: number } => ({
+      date: (m.monthShort_ as any)[date.getMonth() + 1],
+      count,
+    })
 
 export const CompanyComponent = () => {
-  const {id} = useParams<{id: Id}>()
+  const {id} = useParams<{ id: Id }>()
   const {m, formatDate, formatLargeNumber} = useI18n()
   const _company = useCompaniesContext()
   const _stats = useCompanyStats(id)
@@ -154,7 +151,7 @@ export const CompanyComponent = () => {
         <span>
           {m.reportStatusShort[status]}
           <Tooltip title={m.reportStatusDesc[status]}>
-            <Icon fontSize="small" className={css.statusInfo}>
+            <Icon fontSize="small" className={css.info}>
               help
             </Icon>
           </Tooltip>
@@ -165,7 +162,55 @@ export const CompanyComponent = () => {
     })),
   )
 
-  const tagsDistribution = useMemoFn(_stats.tags.entity, _ => Object.entries(_).map(([label, count]) => ({label, value: count})))
+  const reviewDistribution = useMemoFn(_stats.responseReviews.entity, _ =>
+    (_.positive > 0 || _.negative > 0 || _.neutral > 0) ? (
+    [
+      {
+        label: (
+          <Box sx={{display: 'flex', alignItems: 'center'}}>
+            <Emoticon sx={{fontSize: 30}} label="happy">😀</Emoticon>
+            <Tooltip title={m.positive}>
+              <Icon fontSize="small" className={css.info}>
+                help
+              </Icon>
+            </Tooltip>
+          </Box>),
+        value: _.positive,
+        color: '#4caf50'
+      },
+      {
+        label: (
+          <Box sx={{display: 'flex', alignItems: 'center'}}>
+            <Emoticon sx={{fontSize: 30}} label="neutral">😐</Emoticon>
+            <Tooltip title={m.neutral}>
+              <Icon fontSize="small" className={css.info}>
+                help
+              </Icon>
+            </Tooltip>
+          </Box>),
+        value: _.neutral,
+        color: '#f57c00'
+      },
+      {
+        label: (
+          <Box sx={{display: 'flex', alignItems: 'center'}}>
+            <Emoticon sx={{fontSize: 30}} label="sad">🙁</Emoticon>
+            <Tooltip title={m.negative}>
+              <Icon fontSize="small" className={css.info}>
+                help
+              </Icon>
+            </Tooltip>
+          </Box>),
+        value: _.negative,
+        color: '#d32f2f'
+      }
+    ]) : []
+  )
+
+  const tagsDistribution = useMemoFn(_stats.tags.entity, _ => Object.entries(_).map(([label, count]) => ({
+    label,
+    value: count
+  })))
 
   return (
     <Page loading={_company.byId.loading}>
@@ -189,14 +234,15 @@ export const CompanyComponent = () => {
             <Grid item xs={12} sm={6} md={3}>
               <Widget title={m.avgResponseTime}>
                 {_stats.responseDelay.loading ? (
-                  <WidgetLoading />
+                  <WidgetLoading/>
                 ) : (
                   <WidgetValue>
                     <span>
                       {_stats.responseDelay.entity ? _stats.responseDelay.entity.toDays : '∞'}&nbsp;
                       <Txt size="big">{m.days}</Txt>
                       &nbsp;
-                      <Tooltip title={_stats.responseDelay.entity ? m.avgResponseTimeDesc : m.avgResponseTimeDescNoData}>
+                      <Tooltip
+                        title={_stats.responseDelay.entity ? m.avgResponseTimeDesc : m.avgResponseTimeDescNoData}>
                         <Icon className={cssUtils.colorTxtHint} fontSize="medium">
                           help
                         </Icon>
@@ -210,14 +256,15 @@ export const CompanyComponent = () => {
               <Widget title={m.activationDocReturned} loading={_event.companyEvents.loading}>
                 {fromNullable(postActivationDocEvents)
                   .map(_ => <WidgetValue>{_.length}</WidgetValue>)
-                  .getOrElse(<WidgetLoading />)}
+                  .getOrElse(<WidgetLoading/>)}
               </Widget>
             </Grid>
             <Grid item xs={12} sm={6} md={3}>
-              <Widget title={m.accountsActivated} loading={_accesses.loading} to={siteMap.logged.companyAccesses(company.siret)}>
+              <Widget title={m.accountsActivated} loading={_accesses.loading}
+                      to={siteMap.logged.companyAccesses(company.siret)}>
                 {fromNullable(_accesses.entity)
                   .map(_ => <WidgetValue>{_.length}</WidgetValue>)
-                  .getOrElse(<WidgetLoading />)}
+                  .getOrElse(<WidgetLoading/>)}
               </Widget>
             </Grid>
           </Grid>
@@ -268,52 +315,38 @@ export const CompanyComponent = () => {
 
           <Grid container spacing={2}>
             <Grid item sm={12} md={7}>
-              <Panel>
+              <Panel loading={_stats.status.loading} >
                 <PanelHead>{m.status}</PanelHead>
                 <PanelBody>
-                  <HorizontalBarChart data={statusDistribution} grid />
+                  <HorizontalBarChart data={statusDistribution} grid/>
                 </PanelBody>
               </Panel>
               <Panel>
                 <PanelHead>{m.tags}</PanelHead>
                 <PanelBody>
-                  <HorizontalBarChart data={tagsDistribution} grid />
+                  <HorizontalBarChart data={tagsDistribution} grid/>
                 </PanelBody>
               </Panel>
               <Panel loading={_report.fetching}>
                 <PanelHead>{m.lastReports}</PanelHead>
-                {_report.list && <ReportsShortList reports={_report.list} />}
+                {_report.list && <ReportsShortList reports={_report.list}/>}
               </Panel>
             </Grid>
             <Grid item sm={12} md={5}>
-              <Panel>
+              <Panel >
                 <PanelHead>{m.consumerReviews}</PanelHead>
                 {fromNullable(_stats.responseReviews.entity)
                   .map(_ => (
                     <PanelBody>
-                      <Txt color="hint" block className={cssUtils.marginBottom2}>
+                      <Txt color="hint" block className={cssUtils.marginBottom3}>
                         {m.consumerReviewsDesc}
                       </Txt>
-                      <div className={css.reviews}>
-                        <div className={css.reviews_type}>
-                          <div className={css.reviews_type_value}>{_.positive}</div>
-                          <Icon className={classes(css.reviews_type_icon, cssUtils.colorSuccess)}>thumb_up</Icon>
-                        </div>
-                        <div className={css.reviews_type}>
-                          <Icon className={classes(css.reviews_type_icon, cssUtils.colorError)}>thumb_down</Icon>
-                          <div className={css.reviews_type_value}>{_.negative}</div>
-                        </div>
-                      </div>
-                      <LinearProgress
-                        className={cssUtils.marginTop2}
-                        variant="determinate"
-                        value={(_.positive / (_.positive + _.negative)) * 100}
-                      />
+                      <HorizontalBarChart width={80} data={reviewDistribution} grid/>
                     </PanelBody>
                   ))
                   .getOrElse(
                     <PanelBody>
-                      <Skeleton height={66} width="100%" />
+                      <Skeleton height={66} width="100%"/>
                     </PanelBody>,
                   )}
               </Panel>
@@ -325,21 +358,21 @@ export const CompanyComponent = () => {
                       <ListItemIcon>
                         <Icon>location_on</Icon>
                       </ListItemIcon>
-                      <ListItemText primary={m.address} secondary={<AddressComponent address={company.address} />} />
+                      <ListItemText primary={m.address} secondary={<AddressComponent address={company.address}/>}/>
                     </ListItem>
-                    <Divider variant="inset" component="li" />
+                    <Divider variant="inset" component="li"/>
                     <ListItem>
                       <ListItemIcon>
                         <Icon>event</Icon>
                       </ListItemIcon>
-                      <ListItemText primary={m.creationDate} secondary={formatDate(company.creationDate)} />
+                      <ListItemText primary={m.creationDate} secondary={formatDate(company.creationDate)}/>
                     </ListItem>
-                    <Divider variant="inset" component="li" />
+                    <Divider variant="inset" component="li"/>
                     <ListItem>
                       <ListItemIcon>
                         <Icon>label</Icon>
                       </ListItemIcon>
-                      <ListItemText primary={m.activityCode} secondary={company.activityCode} />
+                      <ListItemText primary={m.activityCode} secondary={company.activityCode}/>
                     </ListItem>
                   </List>
                 </PanelBody>

@@ -1,4 +1,4 @@
-import {CompanySearchResult} from '@signal-conso/signalconso-api-sdk-js'
+import {CompanySearchResult, Report} from '@signal-conso/signalconso-api-sdk-js'
 import {ScRadioGroupItem} from '../RadioGroup/RadioGroupItem'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
 import {Icon, Theme} from '@mui/material'
@@ -8,7 +8,7 @@ import React from 'react'
 import {useCssUtils} from '../../core/helper/useCssUtils'
 import {useI18n} from '../../core/i18n'
 import {AddressComponent} from '../Address/Address'
-import {Report} from '@signal-conso/signalconso-api-sdk-js'
+
 
 interface Props {
   companies: CompanySearchResult[]
