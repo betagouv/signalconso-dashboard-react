@@ -54,7 +54,6 @@ export const ConsumerReview = ({onSubmit}: Props) => {
 
   const getEvaluationFromQueryString = (qs: string): ResponseEvaluation | undefined => {
     const parsed = QueryString.parse(qs.replace(/^\?/, '')).evaluation as unknown as ResponseEvaluation
-    console.log(parsed)
     return ResponseEvaluation[parsed]
   }
 
