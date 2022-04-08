@@ -17,6 +17,7 @@ export interface HorizontalBarChartData {
 interface Props {
   data?: HorizontalBarChartData[]
   grid?: boolean
+  width?: number
 }
 
 const useStyles = makeStyles((t: Theme) => ({
@@ -28,14 +29,10 @@ const useStyles = makeStyles((t: Theme) => ({
     margin: t.spacing(0.5, 0, 0.5, 0),
   },
   label: {
-    width: 200,
-    minWidth: 200,
     textAlign: 'right',
-    color: t.palette.text.secondary,
     padding: t.spacing(0, 2, 0, 0),
     textOverflow: 'ellipsis',
     whiteSpace: 'nowrap',
-    overflow: 'hidden',
   },
   barContainer: {
     padding: t.spacing(0.25, 0, 0.25, 0),
@@ -76,7 +73,7 @@ const useStyles = makeStyles((t: Theme) => ({
   },
 }))
 
-export const HorizontalBarChart = ({data, grid}: Props) => {
+export const HorizontalBarChart = ({data, grid, width = 200}: Props) => {
   const css = useStyles()
   const maxValue = useMemo(() => data && Math.max(...data.map(_ => _.value)), [data])
   const sumValue = useMemo(() => data && data.reduce((sum, _) => _.value + sum, 0), [data])
@@ -93,7 +90,7 @@ export const HorizontalBarChart = ({data, grid}: Props) => {
           const percentOfAll = (item.value / sumValue) * 100
           return (
             <div key={i} className={css.item}>
-              <div className={css.label}>{item.label}</div>
+              <div className={css.label} style={ { width : width, minWidth : width}} >{item.label}</div>
               <LightTooltip
                 title={
                   <>
@@ -125,7 +122,7 @@ export const HorizontalBarChart = ({data, grid}: Props) => {
       )}
       {grid && (
         <div className={css.item}>
-          <div className={css.label} />
+          <div className={css.label} style={ { width : width, minWidth : width}} />
           <div className={css.legend}>
             {mapFor(gridAxis + 1, i => (
               <div key={i} className={css.legendTick} style={{left: `calc(${i * (100 / gridAxis)}% - 1px)`}} />
