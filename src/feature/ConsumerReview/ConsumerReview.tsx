@@ -53,13 +53,9 @@ export const ConsumerReview = ({onSubmit}: Props) => {
   const css = useStyles()
 
   const getEvaluationFromQueryString = (qs: string): ResponseEvaluation | undefined => {
-    const parsed = QueryString.parse(qs.replace(/^\?/, '')) as unknown as ResponseEvaluation
+    const parsed = QueryString.parse(qs.replace(/^\?/, '')).evaluation as unknown as ResponseEvaluation
     return ResponseEvaluation[parsed]
   }
-
-  const defaultValueProps = useMemo(() => {
-    getEvaluationFromQueryString(search)
-  }, [])
 
   const _post = useAsync(onSubmit)
   const {isMobileWidth} = useLayoutContext()
@@ -88,7 +84,7 @@ export const ConsumerReview = ({onSubmit}: Props) => {
               <Txt block gutterBottom color="hint" dangerouslySetInnerHTML={{__html: m.didTheCompanyAnsweredWell}}/>
               <Controller
                 name="evaluation"
-                {...defaultValueProps}
+                defaultValue={getEvaluationFromQueryString(search)}
                 rules={{required: {value: true, message: m.required}}}
                 control={control}
                 render={({field}) => (
