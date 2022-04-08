@@ -564,6 +564,10 @@ export const fr = {
           title: `Réponse de l'entreprise`,
           desc: `Email envoyé au conso lorsque l'entreprise a répondue`,
         },
+        report_ack_case_dangerous_product: {
+          title: `Signalement envoyé`,
+          desc: `Signalement produit dangereux`,
+        },
         report_ack_case_euro_and_dispute: {
           title: `Signalement envoyé`,
           desc: `Signalement pays européen + <b>litige</b>`,
