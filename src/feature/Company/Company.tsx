@@ -163,6 +163,7 @@ export const CompanyComponent = () => {
   )
 
   const reviewDistribution = useMemoFn(_stats.responseReviews.entity, _ =>
+    (_.positive > 0 || _.negative > 0 || _.neutral > 0) ? (
     [
       {
         label: (
@@ -203,7 +204,7 @@ export const CompanyComponent = () => {
         value: _.negative,
         color: '#d32f2f'
       }
-    ]
+    ]) : []
   )
 
   const tagsDistribution = useMemoFn(_stats.tags.entity, _ => Object.entries(_).map(([label, count]) => ({
@@ -314,7 +315,7 @@ export const CompanyComponent = () => {
 
           <Grid container spacing={2}>
             <Grid item sm={12} md={7}>
-              <Panel>
+              <Panel loading={_stats.status.loading} >
                 <PanelHead>{m.status}</PanelHead>
                 <PanelBody>
                   <HorizontalBarChart data={statusDistribution} grid/>
@@ -332,7 +333,7 @@ export const CompanyComponent = () => {
               </Panel>
             </Grid>
             <Grid item sm={12} md={5}>
-              <Panel>
+              <Panel >
                 <PanelHead>{m.consumerReviews}</PanelHead>
                 {fromNullable(_stats.responseReviews.entity)
                   .map(_ => (

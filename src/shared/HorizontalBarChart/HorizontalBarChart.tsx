@@ -1,6 +1,6 @@
 import * as React from 'react'
 import {ReactNode, useMemo, useState} from 'react'
-import {alpha, Theme, Tooltip} from '@mui/material'
+import {alpha, Box, Theme, Tooltip} from '@mui/material'
 import makeStyles from '@mui/styles/makeStyles'
 import withStyles from '@mui/styles/withStyles'
 import {useTimeout} from 'mui-extension/lib/core/utils/useTimeout'
@@ -75,6 +75,7 @@ const useStyles = makeStyles((t: Theme) => ({
 
 export const HorizontalBarChart = ({data, grid, width = 200}: Props) => {
   const css = useStyles()
+  const {m} = useI18n()
   const maxValue = useMemo(() => data && Math.max(...data.map(_ => _.value)), [data])
   const sumValue = useMemo(() => data && data.reduce((sum, _) => _.value + sum, 0), [data])
   const [appeared, setAppeared] = useState<boolean>(false)
@@ -84,7 +85,8 @@ export const HorizontalBarChart = ({data, grid, width = 200}: Props) => {
 
   return (
     <div className={css.root}>
-      {data && maxValue && sumValue ? (
+      {
+        data && maxValue && sumValue ? (
         data.map((item, i) => {
           const percentOfMax = (item.value / maxValue) * 100
           const percentOfAll = (item.value / sumValue) * 100
@@ -118,9 +120,9 @@ export const HorizontalBarChart = ({data, grid, width = 200}: Props) => {
           )
         })
       ) : (
-        <div></div>
+        <Box className={css.label}> {m.noDataAtm} </Box>
       )}
-      {grid && (
+      {grid && data && data.length > 0 && (
         <div className={css.item}>
           <div className={css.label} style={ { width : width, minWidth : width}} />
           <div className={css.legend}>
