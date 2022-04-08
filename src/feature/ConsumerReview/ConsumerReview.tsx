@@ -52,11 +52,15 @@ export const ConsumerReview = ({onSubmit}: Props) => {
   const {search} = useLocation()
   const css = useStyles()
 
+  const getEvaluationFromQueryString = (qs: string): ResponseEvaluation | undefined => {
+    const parsed = QueryString.parse(qs.replace(/^\?/, '')) as unknown as ResponseEvaluation
+    return ResponseEvaluation[parsed]
+  }
+
   const defaultValueProps = useMemo(() => {
-    let queryParamEvaluation = (QueryString.parse(search.replace(/^\?/, '')).evaluation as string)
-    let responseEvaluation = new Map(Object.entries(ResponseEvaluation)).get(queryParamEvaluation)
-    return responseEvaluation ? {defaultValue: responseEvaluation} : {}
+    getEvaluationFromQueryString(search)
   }, [])
+
   const _post = useAsync(onSubmit)
   const {isMobileWidth} = useLayoutContext()
 
@@ -65,7 +69,6 @@ export const ConsumerReview = ({onSubmit}: Props) => {
     await _post.call(reportId, {...form})
     setDone(true)
   }
-  type ResponseEvaluation = string;
   useEffect(() => {
     fromNullable(_post.error).map(toastError)
   }, [_post.error])
@@ -90,9 +93,9 @@ export const ConsumerReview = ({onSubmit}: Props) => {
                 control={control}
                 render={({field}) => (
                   <ScRadioGroup className={cssUtils.marginTop3} inline={!isMobileWidth} error={!!errors.evaluation} {...field}>
-                    <ScRadioGroupItem value={ResponseEvaluation.Positive}><Emoticon className={css.large} label="happy">😀</Emoticon></ScRadioGroupItem>
-                    <ScRadioGroupItem value={ResponseEvaluation.Neutral}><Emoticon className={css.large} label="neutral">😐</Emoticon></ScRadioGroupItem>
-                    <ScRadioGroupItem value={ResponseEvaluation.Negative}><Emoticon className={css.large} label="sad">🙁</Emoticon></ScRadioGroupItem>
+                    <ScRadioGroupItem value={ResponseEvaluation.Positive}><Emoticon sx={{fontSize: 50}} label="happy">😀</Emoticon></ScRadioGroupItem>
+                    <ScRadioGroupItem value={ResponseEvaluation.Neutral}><Emoticon sx={{fontSize: 50}} label="neutral">😐</Emoticon></ScRadioGroupItem>
+                    <ScRadioGroupItem value={ResponseEvaluation.Negative}><Emoticon sx={{fontSize: 50}} label="sad">🙁</Emoticon></ScRadioGroupItem>
                   </ScRadioGroup>
                 )}
               />

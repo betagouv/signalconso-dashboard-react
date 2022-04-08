@@ -113,7 +113,7 @@ export const ReportComponent = () => {
                 {connectedUser.isAdmin && report.companySiret && (
                   <Confirm
                     title={m.removeAsk}
-                    content={m.removeReportDesc(report.companySiret ?? "")}
+                    content={m.removeReportDesc(report.companySiret ?? '')}
                     onConfirm={(event, close) =>
                       _report.remove
                         .fetch({}, report.id)

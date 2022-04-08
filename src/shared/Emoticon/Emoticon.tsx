@@ -1,18 +1,16 @@
 import * as React from 'react'
 
-import {Box, Theme} from '@mui/material'
+import {Box, BoxProps, Theme} from '@mui/material'
 
 
-export interface EmoticonProps {
+export interface EmoticonProps extends BoxProps{
   label: string,
-  className?: string
-  large?: boolean
   children: React.ReactNode
 }
 
 
-export const Emoticon = ({ label, className, children}: EmoticonProps) => {
+export const Emoticon = ({ label, children,sx}: EmoticonProps) => {
   return (
-    <Box className={className} role="img" aria-label={label}>{children}</Box>
+    <Box  sx={sx} role="img" aria-label={label}>{children}</Box>
   )
 }
