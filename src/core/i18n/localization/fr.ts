@@ -7,6 +7,7 @@ import {
 } from '@signal-conso/signalconso-api-sdk-js'
 import {config} from '../../../conf/config'
 import {formatDistance, formatDuration as formatDurationFns} from 'date-fns'
+import {ResponseEvaluation} from "@signal-conso/signalconso-api-sdk-js/lib/client/event/Event";
 
 const invalidDate = '-'
 
@@ -377,6 +378,8 @@ export const fr = {
     commentAdded: 'Commentaire ajouté',
     dgccrfControlDone: 'Contrôle effectué',
     noAnswerFromPro: "Le professionnel n'a pas encore répondu au signalement.",
+    noReviewFromConsumer: "Pas d'avis de consommateur sur la réponse du professionnel.",
+    noReviewDetailsFromConsumer: "Aucun commentaire sur l'évaluation.",
     companiesSearchPlaceholder: 'Rechercher par nom, SIREN, SIRET, identifiant...',
     companySearch: 'Rechercher une entreprise',
     emailValidation: `Validation de l'adresse email`,
@@ -644,6 +647,11 @@ export const fr = {
       [ReportResponseTypes.Accepted]: 'Signalement pris en compte',
       [ReportResponseTypes.Rejected]: 'Signalement infondé',
       [ReportResponseTypes.NotConcerned]: 'Etablissement non concerné par le signalement',
+    },
+    responseEvaluation: {
+      [ResponseEvaluation.Positive]: 'Avis positif du consommateur',
+      [ResponseEvaluation.Neutral]: 'Avis mitigé du consommateur',
+      [ResponseEvaluation.Negative]: 'Avis négatif du consommateur',
     },
     reportStatusShort: {
       [ReportStatus.NA]: 'NA',

@@ -1,5 +1,5 @@
 import {PanelBody} from '../../shared/Panel'
-import React from 'react'
+import React, {useEffect, useState} from 'react'
 import {useI18n} from '../../core/i18n'
 import {
   EventActionValues,
@@ -8,11 +8,12 @@ import {
   ReportEvent,
   ReportResponse,
   ReportResponseTypes,
+  ResponseConsumerReview,
   UploadedFile,
 } from '@signal-conso/signalconso-api-sdk-js'
 import {classes, fnSwitch} from '../../core/helper/utils'
 import {fromNullable} from 'fp-ts/lib/Option'
-import {Icon, Theme} from '@mui/material'
+import {Divider, Icon, Theme} from '@mui/material'
 import makeStyles from '@mui/styles/makeStyles'
 import {useCssUtils} from '../../core/helper/useCssUtils'
 import {styleUtils} from '../../core/theme'
@@ -20,6 +21,8 @@ import {ReportFiles} from './File/ReportFiles'
 import {useReportContext} from '../../core/context/ReportContext'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
 import {useEventContext} from '../../core/context/EventContext'
+import {Emoticon} from "../../shared/Emoticon/Emoticon";
+import {ResponseEvaluation} from "@signal-conso/signalconso-api-sdk-js/lib/client/event/Event";
 
 interface Props {
   canEditFile?: boolean
@@ -46,6 +49,11 @@ export const ReportResponseComponent = ({canEditFile, response, reportId, files}
   const css = useStyles()
   const _report = useReportContext()
   const _event = useEventContext()
+  const [consumerReportReview, setConsumerReportReview] = useState<ResponseConsumerReview | undefined>()
+
+  useEffect(() => {
+    _report.getReviewOnReportResponse.fetch({}, reportId).then(setConsumerReportReview)
+  }, [])
 
   return (
     <PanelBody>
@@ -103,6 +111,32 @@ export const ReportResponseComponent = ({canEditFile, response, reportId, files}
             .then(() => _event.reportEvents.fetch({force: true, clean: false}, reportId))
         }}
       />
+      <Divider className={cssUtils.divider}/>
+      {fromNullable(consumerReportReview).map( review =>
+        <div>
+          {fnSwitch(review.evaluation, {
+            [ResponseEvaluation.Positive]: _ => (
+              <div className={classes(css.responseType, cssUtils.colorSuccess)}>
+                <Icon className={classes(cssUtils.marginRight, cssUtils.inlineIcon)}>check_circle</Icon>
+                {m.responseEvaluation[_]}
+              </div>
+            ),
+            [ResponseEvaluation.Neutral]: _ => (
+              <div className={classes(css.responseType, cssUtils.colorInfo)}>
+                <Icon className={classes(cssUtils.marginRight, cssUtils.inlineIcon)}>hide_source</Icon>
+                {m.responseEvaluation[_]}
+              </div>
+            ),
+            [ResponseEvaluation.Negative]: _ => (
+              <div className={classes(css.responseType, cssUtils.colorError)}>
+                <Icon className={classes(cssUtils.marginRight, cssUtils.inlineIcon)}>cancel</Icon>
+                {m.responseEvaluation[_]}
+              </div>
+            ),
+          })}
+        <div className={cssUtils.colorTxtSecondary}> {review.details ? review.details : <div>{m.noReviewDetailsFromConsumer}</div>}</div>
+        </div>).getOrElse(<div className={cssUtils.marginTop3}>{m.noReviewFromConsumer}</div>)
+      }
     </PanelBody>
   )
 }
