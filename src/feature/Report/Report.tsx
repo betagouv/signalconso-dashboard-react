@@ -86,7 +86,7 @@ export const ReportComponent = () => {
                     onAdd={() => _event.reportEvents.fetch({force: true, clean: false}, id)}
                   >
                     <Tooltip title={m.markDgccrfControlDone}>
-                      <Btn color="primary" icon="check_circle">
+                      <Btn color="primary" icon="add_comment">
                         {m.dgccrfControlDone}
                       </Btn>
                     </Tooltip>
