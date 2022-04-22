@@ -3,10 +3,16 @@ import {useEffect, useState} from 'react'
 import {Page, PageTitle} from 'shared/Layout'
 import {useCompaniesContext} from '../../core/context/CompaniesContext'
 import {useParams} from 'react-router'
-import {CountByDate, EventActionValues, Id, Period} from '@signal-conso/signalconso-api-sdk-js'
+import {
+  CountByDate,
+  EventActionValues,
+  Id,
+  Period, ReportStatus, ReportStatusPro,
+  Roles
+} from '@signal-conso/signalconso-api-sdk-js'
 import {Panel, PanelBody, PanelHead} from '../../shared/Panel'
 import {HorizontalBarChart} from '../../shared/HorizontalBarChart/HorizontalBarChart'
-import {reportStatusColor} from '../../shared/ReportStatus/ReportStatus'
+import {reportStatusColor, reportStatusProColor} from '../../shared/ReportStatus/ReportStatus'
 import {useI18n} from '../../core/i18n'
 import {Enum} from '@alexandreannic/ts-utils/lib/common/enum/Enum'
 import {
@@ -44,12 +50,12 @@ import {WidgetLoading} from '../../shared/Widget/WidgetLoading'
 import {AddressComponent} from '../../shared/Address/Address'
 import {useReportsContext} from '../../core/context/ReportsContext'
 import {ReportsShortList} from './ReportsShortList'
-import {styleUtils} from '../../core/theme'
 import {useCompanyStats} from './useCompanyStats'
 import {NavLink} from 'react-router-dom'
 import {ScLineChart} from '../../shared/Chart/Chart'
 import {I18nContextProps} from '../../core/i18n/I18n'
 import {Emoticon} from "../../shared/Emoticon/Emoticon";
+import {ReportStatusDistribution} from "@signal-conso/signalconso-api-sdk-js/lib/client/stats/Stats";
 
 const useStyles = makeStyles((t: Theme) => ({
   reviews: {
@@ -99,7 +105,10 @@ export const CompanyComponent = () => {
   const {id} = useParams<{ id: Id }>()
   const {m, formatDate, formatLargeNumber} = useI18n()
   const _company = useCompaniesContext()
+  const {connectedUser} = useLogin()
   const _stats = useCompanyStats(id)
+  const status = useCompanyStats(id).status
+  const statusPro = useCompanyStats(id).statusPro
   const _event = useEventContext()
   const _accesses = useFetcher((siret: string) => apiSdk.secured.companyAccess.fetch(siret))
   const _report = useReportsContext()
@@ -110,6 +119,15 @@ export const CompanyComponent = () => {
   const {toastError} = useToast()
   const [reportsCurvePeriod, setReportsCurvePeriod] = useState<Period>('Month')
 
+
+  const _activityCodes = useFetcher(() => import('../../core/activityCodes').then(_ => _.activityCodes))
+  useEffect(() => {
+    _activityCodes.fetch()
+  }, [])
+
+  const activityCodes = useMemoFn(_activityCodes.entity, _ => Object.keys(_).sort())
+  const activities = _activityCodes.entity
+
   const fetchCurve = (period: Period) => {
     setReportsCurvePeriod(period)
     _stats.curve.reportCount.fetch({}, {ticks, tickDuration: period})
@@ -118,11 +136,13 @@ export const CompanyComponent = () => {
 
   useEffect(() => {
     _company.byId.fetch({}, id)
-    _company.hosts.fetch({}, id)
+    if (!connectedUser.isPro) {
+      _company.hosts.fetch({}, id)
+    }
     _company.responseRate.fetch({}, id)
     fetchCurve('Month')
     _stats.tags.fetch()
-    _stats.status.fetch()
+    connectedUser.isPro ? _stats.statusPro.fetch() : _stats.status.fetch()
     _stats.responseReviews.fetch()
     _stats.responseDelay.fetch()
   }, [])
@@ -132,6 +152,7 @@ export const CompanyComponent = () => {
   useEffectFn(_stats.reportCount.error, toastError)
   useEffectFn(_stats.tags.error, toastError)
   useEffectFn(_stats.status.error, toastError)
+  useEffectFn(_stats.statusPro.error, toastError)
   useEffectFn(_stats.responseReviews.error, toastError)
   useEffectFn(_stats.responseDelay.error, toastError)
 
@@ -159,6 +180,23 @@ export const CompanyComponent = () => {
       ),
       value: count,
       color: reportStatusColor[status] ?? undefined,
+    })),
+  )
+
+  const statusProDistribution = useMemoFn(_stats.statusPro.entity, _ =>
+    Enum.entries(_).map(([status, count]) => ({
+      label: (
+        <span>
+          {m.reportStatusShortPro[status]}
+          <Tooltip title={m.reportStatusDescPro[status]}>
+            <Icon fontSize="small" className={css.info}>
+              help
+            </Icon>
+          </Tooltip>
+        </span>
+      ),
+      value: count,
+      color: reportStatusProColor[status] ?? undefined,
     })),
   )
 
@@ -318,7 +356,7 @@ export const CompanyComponent = () => {
               <Panel loading={_stats.status.loading} >
                 <PanelHead>{m.status}</PanelHead>
                 <PanelBody>
-                  <HorizontalBarChart data={statusDistribution} grid/>
+                  <HorizontalBarChart data={connectedUser.isPro ? statusProDistribution : statusDistribution} grid/>
                 </PanelBody>
               </Panel>
               <Panel>
@@ -372,21 +410,23 @@ export const CompanyComponent = () => {
                       <ListItemIcon>
                         <Icon>label</Icon>
                       </ListItemIcon>
-                      <ListItemText primary={m.activityCode} secondary={company.activityCode}/>
+                      <ListItemText primary={m.activityCode} secondary={company.activityCode ? activities[company.activityCode]: ''}/>
                     </ListItem>
                   </List>
                 </PanelBody>
               </Panel>
-              <Panel loading={_company.hosts.loading}>
-                <PanelHead>{m.websites}</PanelHead>
-                <div style={{maxHeight: 260, overflow: 'auto'}}>
-                  <List dense>
-                    {_company.hosts.entity?.map((host, i) => (
-                      <ListItem key={i}>{host}</ListItem>
-                    ))}
-                  </List>
-                </div>
-              </Panel>
+              {(!connectedUser.isPro) && (
+                <Panel loading={_company.hosts.loading}>
+                  <PanelHead>{m.websites}</PanelHead>
+                  <div style={{maxHeight: 260, overflow: 'auto'}}>
+                    <List dense>
+                      {_company.hosts.entity?.map((host, i) => (
+                        <ListItem key={i}>{host}</ListItem>
+                      ))}
+                    </List>
+                  </div>
+                </Panel>
+              )}
             </Grid>
           </Grid>
         </>
