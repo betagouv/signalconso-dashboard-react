@@ -8,12 +8,13 @@ import {HorizontalBarChart} from '../../../shared/HorizontalBarChart/HorizontalB
 import {ReportStatus, ReportStatusPro} from '@signal-conso/signalconso-api-sdk-js'
 import {Emoticon} from '../../../shared/Emoticon/Emoticon'
 import {useCompanyStats} from '../useCompanyStats'
-import {useEffect} from 'react'
+import {ReactElement, useEffect} from 'react'
 import {useEffectFn} from '../../../shared/hooks/UseEffectFn'
 import {fromNullable} from 'fp-ts/es6/Option'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
 import {useCssUtils} from '../../../core/helper/useCssUtils'
 import {useToast} from '../../../core/toast'
+import {ReviewLabel} from "./ReviewLabel";
 
 interface Props {
   companyId: string
@@ -35,69 +36,21 @@ export const ReviewDistribution = <T extends ReportStatus | ReportStatusPro>({co
       ? [
           {
             label: (
-              <Box sx={{display: 'flex', alignItems: 'center'}}>
-                <Emoticon sx={{fontSize: 30}} label="happy">
-                  😀
-                </Emoticon>
-                <Tooltip title={m.positive}>
-                  <Icon
-                    fontSize="small"
-                    sx={{
-                      verticalAlign: 'middle',
-                      color: t => t.palette.text.disabled,
-                      marginLeft: t => t.spacing(1),
-                    }}
-                  >
-                    help
-                  </Icon>
-                </Tooltip>
-              </Box>
+              <ReviewLabel tooltip={m.positive} aria-label="happy">😀</ReviewLabel>
             ),
             value: _.positive,
             color: '#4caf50',
           },
           {
             label: (
-              <Box sx={{display: 'flex', alignItems: 'center'}}>
-                <Emoticon sx={{fontSize: 30}} label="neutral">
-                  😐
-                </Emoticon>
-                <Tooltip title={m.neutral}>
-                  <Icon
-                    fontSize="small"
-                    sx={{
-                      verticalAlign: 'middle',
-                      color: t => t.palette.text.disabled,
-                      marginLeft: t => t.spacing(1),
-                    }}
-                  >
-                    help
-                  </Icon>
-                </Tooltip>
-              </Box>
+              <ReviewLabel tooltip={m.neutral} aria-label="neutral">😐</ReviewLabel>
             ),
             value: _.neutral,
             color: '#f57c00',
           },
           {
             label: (
-              <Box sx={{display: 'flex', alignItems: 'center'}}>
-                <Emoticon sx={{fontSize: 30}} label="sad">
-                  🙁
-                </Emoticon>
-                <Tooltip title={m.negative}>
-                  <Icon
-                    fontSize="small"
-                    sx={{
-                      verticalAlign: 'middle',
-                      color: t => t.palette.text.disabled,
-                      marginLeft: t => t.spacing(1),
-                    }}
-                  >
-                    help
-                  </Icon>
-                </Tooltip>
-              </Box>
+              <ReviewLabel tooltip={m.neutral} aria-label="sad">🙁</ReviewLabel>
             ),
             value: _.negative,
             color: '#d32f2f',

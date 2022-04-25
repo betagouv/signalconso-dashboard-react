@@ -89,17 +89,17 @@ export const ConsumerReview = ({onSubmit}: Props) => {
                 render={({field}) => (
                   <ScRadioGroup className={cssUtils.marginTop3} inline={!isMobileWidth} error={!!errors.evaluation} {...field}>
                     <ScRadioGroupItem value={ResponseEvaluation.Positive}>
-                      <Emoticon sx={{fontSize: 50}} label="happy">
+                      <Emoticon sx={{fontSize: 50}} aria-label="happy">
                         😀
                       </Emoticon>
                     </ScRadioGroupItem>
                     <ScRadioGroupItem value={ResponseEvaluation.Neutral}>
-                      <Emoticon sx={{fontSize: 50}} label="neutral">
+                      <Emoticon sx={{fontSize: 50}} aria-label="neutral">
                         😐
                       </Emoticon>
                     </ScRadioGroupItem>
                     <ScRadioGroupItem value={ResponseEvaluation.Negative}>
-                      <Emoticon sx={{fontSize: 50}} label="sad">
+                      <Emoticon sx={{fontSize: 50}} aria-label="sad">
                         🙁
                       </Emoticon>
                     </ScRadioGroupItem>

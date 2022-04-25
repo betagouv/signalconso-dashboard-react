@@ -10,7 +10,6 @@ import {
   Period,
   ReportStatus,
   ReportStatusPro,
-  Roles,
 } from '@signal-conso/signalconso-api-sdk-js'
 import {Panel, PanelBody, PanelHead} from '../../shared/Panel'
 import {HorizontalBarChart} from '../../shared/HorizontalBarChart/HorizontalBarChart'
@@ -44,24 +43,6 @@ import {ReviewDistribution} from './stats/ReviewDistribution'
 import {CompanyInfo} from './stats/CompanyInfo'
 
 const useStyles = makeStyles((t: Theme) => ({
-  reviews: {
-    display: 'flex',
-    justifyContent: 'space-around',
-    textAlign: 'center',
-    margin: t.spacing(4, 0, 4, 0),
-    width: '100%',
-  },
-  report: {
-    margin: t.spacing(1, 1, 1, 1),
-    '&:not(:last-of-type)': {
-      borderBottom: `1px solid ${t.palette.divider}`,
-    },
-  },
-  info: {
-    verticalAlign: 'middle',
-    color: t.palette.text.disabled,
-    marginLeft: t.spacing(1),
-  },
   btnPeriodActive: {
     background: alpha(t.palette.primary.main, 0.14),
   },
@@ -140,12 +121,12 @@ export const CompanyComponent = () => {
   return (
     <Page loading={_company.byId.loading}>
       <PageTitle>
-        <div>
+        <Box>
           {company?.name}
           <Txt block size="big" color="hint">
             {company?.siret}
           </Txt>
-        </div>
+        </Box>
       </PageTitle>
 
       {_company.byId.entity && company && (
@@ -162,7 +143,7 @@ export const CompanyComponent = () => {
                   <WidgetLoading />
                 ) : (
                   <WidgetValue>
-                    <span>
+                    <Box component="span">
                       {_stats.responseDelay.entity ? _stats.responseDelay.entity.toDays : '∞'}&nbsp;
                       <Txt size="big">{m.days}</Txt>
                       &nbsp;
@@ -171,7 +152,7 @@ export const CompanyComponent = () => {
                           help
                         </Icon>
                       </Tooltip>
-                    </span>
+                    </Box>
                   </WidgetValue>
                 )}
               </Widget>
@@ -272,13 +253,13 @@ export const CompanyComponent = () => {
               {connectedUser.isNotPro && (
                 <Panel loading={_company.hosts.loading}>
                   <PanelHead>{m.websites}</PanelHead>
-                  <div style={{maxHeight: 260, overflow: 'auto'}}>
+                  <Box sx={{maxHeight: 260, overflow: 'auto'}}>
                     <List dense>
                       {_company.hosts.entity?.map((host, i) => (
                         <ListItem key={i}>{host}</ListItem>
                       ))}
                     </List>
-                  </div>
+                  </Box>
                 </Panel>
               )}
             </Grid>
