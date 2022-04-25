@@ -9,7 +9,6 @@ import {useCssUtils} from '../../core/helper/useCssUtils'
 import {useI18n} from '../../core/i18n'
 import {AddressComponent} from '../Address/Address'
 
-
 interface Props {
   companies: CompanySearchResult[]
   onChange: (_: CompanySearchResult) => void

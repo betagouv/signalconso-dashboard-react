@@ -5,13 +5,13 @@ import {useI18n} from '../../core/i18n'
 import {stopPropagation} from '../../core/helper/utils'
 
 interface ScMultiSelectProps<T extends E[], E> extends Omit<SelectProps<T>, 'multiple' | 'onChange'> {
-  label?: string;
-  children?: React.ReactNode;
-  className?: string;
-  style?: CSSProperties;
-  small?: boolean;
-  withSelectAll?: boolean;
-  onChange?: (_: T) => void;
+  label?: string
+  children?: React.ReactNode
+  className?: string
+  style?: CSSProperties
+  small?: boolean
+  withSelectAll?: boolean
+  onChange?: (_: T) => void
 }
 
 const _ScMultiSelect = <T extends E[], E>(
@@ -59,9 +59,7 @@ const _ScMultiSelect = <T extends E[], E>(
       </InputLabel>
       <Select
         {...selectProps}
-        onChange={e =>
-          onChange?.(e.target.value as T)
-        }
+        onChange={e => onChange?.(e.target.value as T)}
         inputRef={ref}
         multiple={true}
         labelId={id + '-label'}
@@ -71,15 +69,15 @@ const _ScMultiSelect = <T extends E[], E>(
           <MenuItem
             divider
             sx={{fontWeight: t => t.typography.fontWeightBold}}
-            onClickCapture={e => stopPropagation(toggleAll)(e)}>
+            onClickCapture={e => stopPropagation(toggleAll)(e)}
+          >
             <Checkbox
               checked={allChecked}
               indeterminate={!allChecked && someValuesSelected}
               size="small"
               style={{paddingLeft: 0, paddingTop: 0, paddingBottom: 0}}
             />
-            <span>{m.selectAll}
-            </span>
+            <span>{m.selectAll}</span>
           </MenuItem>
         )}
         {React.Children.map(children as ReactElement<ScMenuItemProps<E>>[], c =>

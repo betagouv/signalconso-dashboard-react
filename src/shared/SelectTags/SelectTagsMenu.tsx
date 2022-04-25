@@ -7,7 +7,7 @@ import {useEffect, useState} from 'react'
 
 export type SelectTagsMenuValue = 'included' | 'excluded' | undefined
 
-export type SelectTagsMenuValues = Partial<{ [key in ReportTag]: SelectTagsMenuValue }>
+export type SelectTagsMenuValues = Partial<{[key in ReportTag]: SelectTagsMenuValue}>
 
 interface ScSelectTagsMenuProps {
   onClose: () => void
@@ -25,35 +25,33 @@ const TagButton = ({
   ...props
 }: {
   status?: 'active' | 'inactive' | 'default'
-  children: string,
+  children: string
   color: (t: Theme) => string
 } & Pick<IconProps, 'sx' | 'onClick'>) => {
   const parsedColor = status === 'active' ? color : (t: Theme) => t.palette.text.disabled
   return (
-    <IconButton {...props} size="small" sx={{
-      color: parsedColor,
-      border: t => `1px solid ${alpha(parsedColor(t), .3)}`,
-      ...(status === 'active') && {
-        boxShadow: t => `inset 0 0 0 1px ${parsedColor(t)}`,
-        borderColor: t => parsedColor(t),
-      },
-      ...(status !== 'active') && {
-        opacity: .5,
-      },
-      ...sx,
-    }}>
+    <IconButton
+      {...props}
+      size="small"
+      sx={{
+        color: parsedColor,
+        border: t => `1px solid ${alpha(parsedColor(t), 0.3)}`,
+        ...(status === 'active' && {
+          boxShadow: t => `inset 0 0 0 1px ${parsedColor(t)}`,
+          borderColor: t => parsedColor(t),
+        }),
+        ...(status !== 'active' && {
+          opacity: 0.5,
+        }),
+        ...sx,
+      }}
+    >
       <Icon fontSize="small">{children}</Icon>
     </IconButton>
   )
 }
 
-export const SelectTagsMenu = ({
-  onClose,
-  onChange,
-  open,
-  value,
-  anchorEl,
-}: ScSelectTagsMenuProps) => {
+export const SelectTagsMenu = ({onClose, onChange, open, value, anchorEl}: ScSelectTagsMenuProps) => {
   const {m} = useI18n()
 
   const [innerValue, setInnerValue] = useState<SelectTagsMenuValues | undefined>()
@@ -68,10 +66,7 @@ export const SelectTagsMenu = ({
     onChange(newValue)
   }
 
-  const switchTagValue = <T, >(
-    tag: ReportTag,
-    {included, excluded, notdefined}: {included: T, excluded: T, notdefined: T},
-  ): T => {
+  const switchTagValue = <T,>(tag: ReportTag, {included, excluded, notdefined}: {included: T; excluded: T; notdefined: T}): T => {
     if (innerValue?.[tag] === 'included') return included
     if (innerValue?.[tag] === 'excluded') return excluded
     return notdefined
@@ -79,7 +74,7 @@ export const SelectTagsMenu = ({
 
   return (
     <Menu anchorEl={anchorEl} open={open} onClose={onClose}>
-      {(Enum.keys(ReportTag) as ReportTag[]).map(tag =>
+      {(Enum.keys(ReportTag) as ReportTag[]).map(tag => (
         <MenuItem
           key={tag}
           // sx={iff(ReportTag.ReponseConso, {
@@ -132,8 +127,8 @@ export const SelectTagsMenu = ({
           >
             {m.reportTagDesc[tag]}
           </Txt>
-        </MenuItem>,
-      )}
+        </MenuItem>
+      ))}
     </Menu>
   )
 }
