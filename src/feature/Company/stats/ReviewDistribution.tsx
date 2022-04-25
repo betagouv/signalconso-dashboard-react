@@ -14,7 +14,7 @@ import {fromNullable} from 'fp-ts/es6/Option'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
 import {useCssUtils} from '../../../core/helper/useCssUtils'
 import {useToast} from '../../../core/toast'
-import {ReviewLabel} from "./ReviewLabel";
+import {ReviewLabel} from './ReviewLabel'
 
 interface Props {
   companyId: string
@@ -36,21 +36,27 @@ export const ReviewDistribution = <T extends ReportStatus | ReportStatusPro>({co
       ? [
           {
             label: (
-              <ReviewLabel tooltip={m.positive} aria-label="happy">😀</ReviewLabel>
+              <ReviewLabel tooltip={m.positive} aria-label="happy">
+                😀
+              </ReviewLabel>
             ),
             value: _.positive,
             color: '#4caf50',
           },
           {
             label: (
-              <ReviewLabel tooltip={m.neutral} aria-label="neutral">😐</ReviewLabel>
+              <ReviewLabel tooltip={m.neutral} aria-label="neutral">
+                😐
+              </ReviewLabel>
             ),
             value: _.neutral,
             color: '#f57c00',
           },
           {
             label: (
-              <ReviewLabel tooltip={m.neutral} aria-label="sad">🙁</ReviewLabel>
+              <ReviewLabel tooltip={m.neutral} aria-label="sad">
+                🙁
+              </ReviewLabel>
             ),
             value: _.negative,
             color: '#d32f2f',

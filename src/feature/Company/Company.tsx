@@ -3,14 +3,7 @@ import {useEffect, useState} from 'react'
 import {Page, PageTitle} from 'shared/Layout'
 import {useCompaniesContext} from '../../core/context/CompaniesContext'
 import {useParams} from 'react-router'
-import {
-  CountByDate,
-  EventActionValues,
-  Id,
-  Period,
-  ReportStatus,
-  ReportStatusPro,
-} from '@signal-conso/signalconso-api-sdk-js'
+import {CountByDate, EventActionValues, Id, Period, ReportStatus, ReportStatusPro} from '@signal-conso/signalconso-api-sdk-js'
 import {Panel, PanelBody, PanelHead} from '../../shared/Panel'
 import {HorizontalBarChart} from '../../shared/HorizontalBarChart/HorizontalBarChart'
 import {reportStatusColor, reportStatusProColor} from '../../shared/ReportStatus/ReportStatus'
