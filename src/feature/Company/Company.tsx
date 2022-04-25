@@ -7,31 +7,17 @@ import {
   CountByDate,
   EventActionValues,
   Id,
-  Period, ReportStatus, ReportStatusPro,
-  Roles
+  Period,
+  ReportStatus,
+  ReportStatusPro,
+  Roles,
 } from '@signal-conso/signalconso-api-sdk-js'
 import {Panel, PanelBody, PanelHead} from '../../shared/Panel'
 import {HorizontalBarChart} from '../../shared/HorizontalBarChart/HorizontalBarChart'
 import {reportStatusColor, reportStatusProColor} from '../../shared/ReportStatus/ReportStatus'
 import {useI18n} from '../../core/i18n'
-import {Enum} from '@alexandreannic/ts-utils/lib/common/enum/Enum'
-import {
-  alpha, Box,
-  Button,
-  ButtonGroup,
-  Divider,
-  Grid,
-  Icon,
-  IconButton,
-  LinearProgress,
-  List,
-  ListItem,
-  ListItemIcon,
-  ListItemText,
-  Skeleton,
-  Theme,
-  Tooltip,
-} from '@mui/material'
+
+import {alpha, Box, Button, ButtonGroup, Grid, Icon, IconButton, List, ListItem, Theme, Tooltip} from '@mui/material'
 import makeStyles from '@mui/styles/makeStyles'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
 import {useMemoFn} from '../../shared/hooks/UseMemoFn'
@@ -47,15 +33,15 @@ import {useCssUtils} from '../../core/helper/useCssUtils'
 import {classes} from '../../core/helper/utils'
 import {fromNullable} from 'fp-ts/es6/Option'
 import {WidgetLoading} from '../../shared/Widget/WidgetLoading'
-import {AddressComponent} from '../../shared/Address/Address'
 import {useReportsContext} from '../../core/context/ReportsContext'
 import {ReportsShortList} from './ReportsShortList'
 import {useCompanyStats} from './useCompanyStats'
 import {NavLink} from 'react-router-dom'
 import {ScLineChart} from '../../shared/Chart/Chart'
 import {I18nContextProps} from '../../core/i18n/I18n'
-import {Emoticon} from "../../shared/Emoticon/Emoticon";
-import {ReportStatusDistribution} from "@signal-conso/signalconso-api-sdk-js/lib/client/stats/Stats";
+import {StatusDistribution} from './stats/StatusDistribution'
+import {ReviewDistribution} from './stats/ReviewDistribution'
+import {CompanyInfo} from './stats/CompanyInfo'
 
 const useStyles = makeStyles((t: Theme) => ({
   reviews: {
@@ -64,15 +50,6 @@ const useStyles = makeStyles((t: Theme) => ({
     textAlign: 'center',
     margin: t.spacing(4, 0, 4, 0),
     width: '100%',
-  },
-  reviews_type: {
-    display: 'flex',
-    alignItems: 'center',
-  },
-  reviews_type_value: {
-    fontWeight: t.typography.fontWeightBold,
-    fontSize: 20,
-    margin: t.spacing(2),
   },
   report: {
     margin: t.spacing(1, 1, 1, 1),
@@ -96,19 +73,17 @@ const periods: Period[] = ['Day', 'Month']
 
 const formatCurveDate =
   (m: I18nContextProps['m']) =>
-    ({date, count}: CountByDate): { date: string; count: number } => ({
-      date: (m.monthShort_ as any)[date.getMonth() + 1],
-      count,
-    })
+  ({date, count}: CountByDate): {date: string; count: number} => ({
+    date: (m.monthShort_ as any)[date.getMonth() + 1],
+    count,
+  })
 
 export const CompanyComponent = () => {
-  const {id} = useParams<{ id: Id }>()
-  const {m, formatDate, formatLargeNumber} = useI18n()
+  const {id} = useParams<{id: Id}>()
+  const {m, formatLargeNumber} = useI18n()
   const _company = useCompaniesContext()
   const {connectedUser} = useLogin()
   const _stats = useCompanyStats(id)
-  const status = useCompanyStats(id).status
-  const statusPro = useCompanyStats(id).statusPro
   const _event = useEventContext()
   const _accesses = useFetcher((siret: string) => apiSdk.secured.companyAccess.fetch(siret))
   const _report = useReportsContext()
@@ -118,15 +93,6 @@ export const CompanyComponent = () => {
   const company = _company.byId.entity
   const {toastError} = useToast()
   const [reportsCurvePeriod, setReportsCurvePeriod] = useState<Period>('Month')
-
-
-  const _activityCodes = useFetcher(() => import('../../core/activityCodes').then(_ => _.activityCodes))
-  useEffect(() => {
-    _activityCodes.fetch()
-  }, [])
-
-  const activityCodes = useMemoFn(_activityCodes.entity, _ => Object.keys(_).sort())
-  const activities = _activityCodes.entity
 
   const fetchCurve = (period: Period) => {
     setReportsCurvePeriod(period)
@@ -143,7 +109,6 @@ export const CompanyComponent = () => {
     fetchCurve('Month')
     _stats.tags.fetch()
     connectedUser.isPro ? _stats.statusPro.fetch() : _stats.status.fetch()
-    _stats.responseReviews.fetch()
     _stats.responseDelay.fetch()
   }, [])
 
@@ -153,7 +118,6 @@ export const CompanyComponent = () => {
   useEffectFn(_stats.tags.error, toastError)
   useEffectFn(_stats.status.error, toastError)
   useEffectFn(_stats.statusPro.error, toastError)
-  useEffectFn(_stats.responseReviews.error, toastError)
   useEffectFn(_stats.responseDelay.error, toastError)
 
   useEffectFn(_company.byId.entity, _ => {
@@ -166,89 +130,12 @@ export const CompanyComponent = () => {
     events.map(_ => _.data).filter(_ => _.action === EventActionValues.PostAccountActivationDoc),
   )
 
-  const statusDistribution = useMemoFn(_stats.status.entity, _ =>
-    Enum.entries(_).map(([status, count]) => ({
-      label: (
-        <span>
-          {m.reportStatusShort[status]}
-          <Tooltip title={m.reportStatusDesc[status]}>
-            <Icon fontSize="small" className={css.info}>
-              help
-            </Icon>
-          </Tooltip>
-        </span>
-      ),
+  const tagsDistribution = useMemoFn(_stats.tags.entity, _ =>
+    Object.entries(_).map(([label, count]) => ({
+      label,
       value: count,
-      color: reportStatusColor[status] ?? undefined,
     })),
   )
-
-  const statusProDistribution = useMemoFn(_stats.statusPro.entity, _ =>
-    Enum.entries(_).map(([status, count]) => ({
-      label: (
-        <span>
-          {m.reportStatusShortPro[status]}
-          <Tooltip title={m.reportStatusDescPro[status]}>
-            <Icon fontSize="small" className={css.info}>
-              help
-            </Icon>
-          </Tooltip>
-        </span>
-      ),
-      value: count,
-      color: reportStatusProColor[status] ?? undefined,
-    })),
-  )
-
-  const reviewDistribution = useMemoFn(_stats.responseReviews.entity, _ =>
-    (_.positive > 0 || _.negative > 0 || _.neutral > 0) ? (
-    [
-      {
-        label: (
-          <Box sx={{display: 'flex', alignItems: 'center'}}>
-            <Emoticon sx={{fontSize: 30}} label="happy">😀</Emoticon>
-            <Tooltip title={m.positive}>
-              <Icon fontSize="small" className={css.info}>
-                help
-              </Icon>
-            </Tooltip>
-          </Box>),
-        value: _.positive,
-        color: '#4caf50'
-      },
-      {
-        label: (
-          <Box sx={{display: 'flex', alignItems: 'center'}}>
-            <Emoticon sx={{fontSize: 30}} label="neutral">😐</Emoticon>
-            <Tooltip title={m.neutral}>
-              <Icon fontSize="small" className={css.info}>
-                help
-              </Icon>
-            </Tooltip>
-          </Box>),
-        value: _.neutral,
-        color: '#f57c00'
-      },
-      {
-        label: (
-          <Box sx={{display: 'flex', alignItems: 'center'}}>
-            <Emoticon sx={{fontSize: 30}} label="sad">🙁</Emoticon>
-            <Tooltip title={m.negative}>
-              <Icon fontSize="small" className={css.info}>
-                help
-              </Icon>
-            </Tooltip>
-          </Box>),
-        value: _.negative,
-        color: '#d32f2f'
-      }
-    ]) : []
-  )
-
-  const tagsDistribution = useMemoFn(_stats.tags.entity, _ => Object.entries(_).map(([label, count]) => ({
-    label,
-    value: count
-  })))
 
   return (
     <Page loading={_company.byId.loading}>
@@ -272,15 +159,14 @@ export const CompanyComponent = () => {
             <Grid item xs={12} sm={6} md={3}>
               <Widget title={m.avgResponseTime}>
                 {_stats.responseDelay.loading ? (
-                  <WidgetLoading/>
+                  <WidgetLoading />
                 ) : (
                   <WidgetValue>
                     <span>
                       {_stats.responseDelay.entity ? _stats.responseDelay.entity.toDays : '∞'}&nbsp;
                       <Txt size="big">{m.days}</Txt>
                       &nbsp;
-                      <Tooltip
-                        title={_stats.responseDelay.entity ? m.avgResponseTimeDesc : m.avgResponseTimeDescNoData}>
+                      <Tooltip title={_stats.responseDelay.entity ? m.avgResponseTimeDesc : m.avgResponseTimeDescNoData}>
                         <Icon className={cssUtils.colorTxtHint} fontSize="medium">
                           help
                         </Icon>
@@ -294,15 +180,14 @@ export const CompanyComponent = () => {
               <Widget title={m.activationDocReturned} loading={_event.companyEvents.loading}>
                 {fromNullable(postActivationDocEvents)
                   .map(_ => <WidgetValue>{_.length}</WidgetValue>)
-                  .getOrElse(<WidgetLoading/>)}
+                  .getOrElse(<WidgetLoading />)}
               </Widget>
             </Grid>
             <Grid item xs={12} sm={6} md={3}>
-              <Widget title={m.accountsActivated} loading={_accesses.loading}
-                      to={siteMap.logged.companyAccesses(company.siret)}>
+              <Widget title={m.accountsActivated} loading={_accesses.loading} to={siteMap.logged.companyAccesses(company.siret)}>
                 {fromNullable(_accesses.entity)
                   .map(_ => <WidgetValue>{_.length}</WidgetValue>)
-                  .getOrElse(<WidgetLoading/>)}
+                  .getOrElse(<WidgetLoading />)}
               </Widget>
             </Grid>
           </Grid>
@@ -353,69 +238,38 @@ export const CompanyComponent = () => {
 
           <Grid container spacing={2}>
             <Grid item sm={12} md={7}>
-              <Panel loading={_stats.status.loading} >
-                <PanelHead>{m.status}</PanelHead>
-                <PanelBody>
-                  <HorizontalBarChart data={connectedUser.isPro ? statusProDistribution : statusDistribution} grid/>
-                </PanelBody>
-              </Panel>
+              {connectedUser.isPro ? (
+                <StatusDistribution<ReportStatusPro>
+                  values={_stats.statusPro.entity}
+                  loading={_stats.statusPro.loading}
+                  statusDesc={(s: ReportStatusPro) => m.reportStatusDescPro[s]}
+                  statusShortLabel={(s: ReportStatusPro) => m.reportStatusShortPro[s]}
+                  statusColor={(s: ReportStatusPro) => reportStatusProColor[s]}
+                />
+              ) : (
+                <StatusDistribution<ReportStatus>
+                  loading={_stats.status.loading}
+                  values={_stats.status.entity}
+                  statusDesc={(s: ReportStatus) => m.reportStatusDesc[s]}
+                  statusShortLabel={(s: ReportStatus) => m.reportStatusShort[s]}
+                  statusColor={(s: ReportStatus) => reportStatusColor[s]}
+                />
+              )}
               <Panel>
                 <PanelHead>{m.tags}</PanelHead>
                 <PanelBody>
-                  <HorizontalBarChart data={tagsDistribution} grid/>
+                  <HorizontalBarChart data={tagsDistribution} grid />
                 </PanelBody>
               </Panel>
               <Panel loading={_report.fetching}>
                 <PanelHead>{m.lastReports}</PanelHead>
-                {_report.list && <ReportsShortList reports={_report.list}/>}
+                {_report.list && <ReportsShortList reports={_report.list} />}
               </Panel>
             </Grid>
             <Grid item sm={12} md={5}>
-              <Panel >
-                <PanelHead>{m.consumerReviews}</PanelHead>
-                {fromNullable(_stats.responseReviews.entity)
-                  .map(_ => (
-                    <PanelBody>
-                      <Txt color="hint" block className={cssUtils.marginBottom3}>
-                        {m.consumerReviewsDesc}
-                      </Txt>
-                      <HorizontalBarChart width={80} data={reviewDistribution} grid/>
-                    </PanelBody>
-                  ))
-                  .getOrElse(
-                    <PanelBody>
-                      <Skeleton height={66} width="100%"/>
-                    </PanelBody>,
-                  )}
-              </Panel>
-              <Panel>
-                <PanelHead>{m.informations}</PanelHead>
-                <PanelBody>
-                  <List>
-                    <ListItem>
-                      <ListItemIcon>
-                        <Icon>location_on</Icon>
-                      </ListItemIcon>
-                      <ListItemText primary={m.address} secondary={<AddressComponent address={company.address}/>}/>
-                    </ListItem>
-                    <Divider variant="inset" component="li"/>
-                    <ListItem>
-                      <ListItemIcon>
-                        <Icon>event</Icon>
-                      </ListItemIcon>
-                      <ListItemText primary={m.creationDate} secondary={formatDate(company.creationDate)}/>
-                    </ListItem>
-                    <Divider variant="inset" component="li"/>
-                    <ListItem>
-                      <ListItemIcon>
-                        <Icon>label</Icon>
-                      </ListItemIcon>
-                      <ListItemText primary={m.activityCode} secondary={company.activityCode ? activities[company.activityCode]: ''}/>
-                    </ListItem>
-                  </List>
-                </PanelBody>
-              </Panel>
-              {(!connectedUser.isPro) && (
+              <ReviewDistribution companyId={id} />
+              <CompanyInfo company={company} />
+              {connectedUser.isNotPro && (
                 <Panel loading={_company.hosts.loading}>
                   <PanelHead>{m.websites}</PanelHead>
                   <div style={{maxHeight: 260, overflow: 'auto'}}>

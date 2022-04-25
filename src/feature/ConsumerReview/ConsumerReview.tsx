@@ -16,11 +16,11 @@ import {useLocation, useParams} from 'react-router'
 import {fromNullable} from 'fp-ts/es6/Option'
 import {useToast} from '../../core/toast'
 import {Alert} from 'mui-extension'
-import {QueryString} from "../../core/helper/useQueryString";
-import {Box, Icon, Theme} from "@mui/material";
-import {useLayoutContext} from "../../core/Layout/LayoutContext";
-import {Emoticon} from "../../shared/Emoticon/Emoticon";
-import makeStyles from "@mui/styles/makeStyles";
+import {QueryString} from '../../core/helper/useQueryString'
+import {Box, Icon, Theme} from '@mui/material'
+import {useLayoutContext} from '../../core/Layout/LayoutContext'
+import {Emoticon} from '../../shared/Emoticon/Emoticon'
+import makeStyles from '@mui/styles/makeStyles'
 
 interface Props {
   onSubmit: (reportId: Id, review: ResponseConsumerReview) => Promise<any>
@@ -38,7 +38,7 @@ const useStyles = makeStyles((t: Theme) => ({
 }))
 
 export const ConsumerReview = ({onSubmit}: Props) => {
-  const {reportId} = useParams<{ reportId: Id }>()
+  const {reportId} = useParams<{reportId: Id}>()
   const {m} = useI18n()
   const cssUtils = useCssUtils()
   const {toastError} = useToast()
@@ -60,7 +60,6 @@ export const ConsumerReview = ({onSubmit}: Props) => {
   const _post = useAsync(onSubmit)
   const {isMobileWidth} = useLayoutContext()
 
-
   const submit = async (form: Form) => {
     await _post.call(reportId, {...form})
     setDone(true)
@@ -81,7 +80,7 @@ export const ConsumerReview = ({onSubmit}: Props) => {
             <PanelHead>{m.shareYourMind}</PanelHead>
 
             <PanelBody>
-              <Txt block gutterBottom color="hint" dangerouslySetInnerHTML={{__html: m.didTheCompanyAnsweredWell}}/>
+              <Txt block gutterBottom color="hint" dangerouslySetInnerHTML={{__html: m.didTheCompanyAnsweredWell}} />
               <Controller
                 name="evaluation"
                 defaultValue={getEvaluationFromQueryString(search)}
@@ -89,9 +88,21 @@ export const ConsumerReview = ({onSubmit}: Props) => {
                 control={control}
                 render={({field}) => (
                   <ScRadioGroup className={cssUtils.marginTop3} inline={!isMobileWidth} error={!!errors.evaluation} {...field}>
-                    <ScRadioGroupItem value={ResponseEvaluation.Positive}><Emoticon sx={{fontSize: 50}} label="happy">😀</Emoticon></ScRadioGroupItem>
-                    <ScRadioGroupItem value={ResponseEvaluation.Neutral}><Emoticon sx={{fontSize: 50}} label="neutral">😐</Emoticon></ScRadioGroupItem>
-                    <ScRadioGroupItem value={ResponseEvaluation.Negative}><Emoticon sx={{fontSize: 50}} label="sad">🙁</Emoticon></ScRadioGroupItem>
+                    <ScRadioGroupItem value={ResponseEvaluation.Positive}>
+                      <Emoticon sx={{fontSize: 50}} label="happy">
+                        😀
+                      </Emoticon>
+                    </ScRadioGroupItem>
+                    <ScRadioGroupItem value={ResponseEvaluation.Neutral}>
+                      <Emoticon sx={{fontSize: 50}} label="neutral">
+                        😐
+                      </Emoticon>
+                    </ScRadioGroupItem>
+                    <ScRadioGroupItem value={ResponseEvaluation.Negative}>
+                      <Emoticon sx={{fontSize: 50}} label="sad">
+                        🙁
+                      </Emoticon>
+                    </ScRadioGroupItem>
                   </ScRadioGroup>
                 )}
               />
@@ -102,7 +113,7 @@ export const ConsumerReview = ({onSubmit}: Props) => {
                 color="hint"
                 dangerouslySetInnerHTML={{__html: m.youCanAddCommentForDGCCRF}}
               />
-              <ScInput {...register('details')} multiline fullWidth rows={5} maxRows={12}/>
+              <ScInput {...register('details')} multiline fullWidth rows={5} maxRows={12} />
             </PanelBody>
             <PanelFoot alignEnd>
               <ScButton loading={_post.loading} type="submit" icon="send" variant="contained" color="primary">

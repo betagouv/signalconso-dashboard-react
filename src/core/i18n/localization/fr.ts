@@ -7,7 +7,7 @@ import {
 } from '@signal-conso/signalconso-api-sdk-js'
 import {config} from '../../../conf/config'
 import {formatDistance, formatDuration as formatDurationFns} from 'date-fns'
-import {ResponseEvaluation} from "@signal-conso/signalconso-api-sdk-js/lib/client/event/Event";
+import {ResponseEvaluation} from '@signal-conso/signalconso-api-sdk-js/lib/client/event/Event'
 
 const invalidDate = '-'
 
@@ -69,9 +69,9 @@ export const fr = {
     filter: 'Filtrer',
     yes: 'Oui',
     no: 'Non',
-    positive: 'Nombre d\'utilisateurs satisfaits de la réponse donnée par l\'entreprise',
+    positive: "Nombre d'utilisateurs satisfaits de la réponse donnée par l'entreprise",
     negative: "Nombre d'utilisateurs insatisfaits de la réponse donnée par l'entreprise",
-    neutral: 'Nombre d\'utilisateurs partiellement satisfait de la réponse donnée par l\'entreprise',
+    neutral: "Nombre d'utilisateurs partiellement satisfait de la réponse donnée par l'entreprise",
     search: 'Rechercher',
     edit: 'Modifier',
     next: 'Suivant',

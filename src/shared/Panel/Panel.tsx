@@ -20,7 +20,7 @@ const useStyles = makeStyles((t: Theme) =>
     align: {
       display: 'block',
       marginLeft: 'auto',
-      marginRight: 'auto'
+      marginRight: 'auto',
     },
     hover: {
       cursor: 'pointer',
@@ -58,13 +58,16 @@ export const Panel = forwardRef(
         {...other}
       >
         {loading && <LinearProgress className={css.loader} />}
-        {loading ?
-          (<Stack sx={{marginTop : '20px', marginBottom : '20px'}}>
-          <Skeleton variant={"text"} className={css.align} width={'90%'} />
-          <Skeleton variant={"text"} className={css.align} width={'90%'} />
-          <Skeleton variant={"text"} className={css.align} width={'90%'} />
-          <Skeleton variant={"text"} className={css.align} width={'90%'} />
-        </Stack>) : children}
+        {loading ? (
+          <Stack sx={{marginTop: '20px', marginBottom: '20px'}}>
+            <Skeleton variant={'text'} className={css.align} width={'90%'} />
+            <Skeleton variant={'text'} className={css.align} width={'90%'} />
+            <Skeleton variant={'text'} className={css.align} width={'90%'} />
+            <Skeleton variant={'text'} className={css.align} width={'90%'} />
+          </Stack>
+        ) : (
+          children
+        )}
       </Card>
     )
   },

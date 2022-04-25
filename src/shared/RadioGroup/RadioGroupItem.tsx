@@ -36,8 +36,8 @@ const useStyle = makeStyles((t: Theme) => ({
   rootInline: {
     borderRightColor: 'transparent',
     '&:last-of-type': {
-      borderRight:  '1px solid ' + t.palette.divider,
-      borderTopRightRadius:  t.shape.borderRadius,
+      borderRight: '1px solid ' + t.palette.divider,
+      borderTopRightRadius: t.shape.borderRadius,
       borderBottom: '1px solid ' + t.palette.divider,
       borderBottomRightRadius: 6,
       borderBottomLeftRadius: 0,
@@ -100,7 +100,14 @@ export const ScRadioGroupItem = ({
 
   return (
     <div
-      className={classes(css.root, inline && css.rootInline, dense && css.rootDense, selected && css.rootSelected, error && css.rootError, className)}
+      className={classes(
+        css.root,
+        inline && css.rootInline,
+        dense && css.rootDense,
+        selected && css.rootSelected,
+        error && css.rootError,
+        className,
+      )}
       onClick={onClick}
     >
       <Radio checked={selected} />

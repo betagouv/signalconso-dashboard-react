@@ -45,7 +45,9 @@ const rationalizeFilters = (f: ReportSearch): ReportSearch => ({
   hasCompany: (f.siretSirenList ?? []).length > 0 ? true : f.hasCompany,
 })
 
-export const toReportTagValues = <T extends Pick<ReportSearch, 'withTags' | 'withoutTags'>>(filters: T): T & {tags: SelectTagsMenuValues} => {
+export const toReportTagValues = <T extends Pick<ReportSearch, 'withTags' | 'withoutTags'>>(
+  filters: T,
+): T & {tags: SelectTagsMenuValues} => {
   const tags: SelectTagsMenuValues = {}
   filters.withTags?.forEach(tag => {
     tags[tag] = 'included'
@@ -68,10 +70,12 @@ export const ReportFilters = ({filters, updateFilters, ...props}: ReportsFilters
     <_ReportsFilters
       {...props}
       filters={compose(toReportTagValues, rationalizeFilters)(filters)}
-      updateFilters={form => updateFilters({
-        ...form,
-        ...fromReportTagValues(form.tags),
-      })}
+      updateFilters={form =>
+        updateFilters({
+          ...form,
+          ...fromReportTagValues(form.tags),
+        })
+      }
     />
   )
 }
@@ -185,9 +189,7 @@ const _ReportsFilters = ({filters, updateFilters, children}: _ReportsFiltersProp
                   name="tags"
                   defaultValue={filters.tags ?? {}}
                   control={control}
-                  render={({field}) => (
-                    <SelectTags {...field}/>
-                  )}
+                  render={({field}) => <SelectTags {...field} />}
                 />
               </DialogInputRow>
               <DialogInputRow label={m.status}>
@@ -232,12 +234,7 @@ const _ReportsFilters = ({filters, updateFilters, children}: _ReportsFiltersProp
                 />
                 {watch('hasWebsite') === true && (
                   <DialogInputRowExtra>
-                    <ScInput
-                      label={m.url}
-                      fullWidth
-                      {...register('websiteURL')}
-                      defaultValue={filters.websiteURL ?? ''}
-                    />
+                    <ScInput label={m.url} fullWidth {...register('websiteURL')} defaultValue={filters.websiteURL ?? ''} />
                   </DialogInputRowExtra>
                 )}
               </DialogInputRow>
@@ -262,12 +259,7 @@ const _ReportsFilters = ({filters, updateFilters, children}: _ReportsFiltersProp
                 />
                 {watch('hasPhone') === true && (
                   <DialogInputRowExtra>
-                    <ScInput
-                      label={m.phone}
-                      fullWidth
-                      {...register('phone')}
-                      defaultValue={filters.phone ?? ''}
-                    />
+                    <ScInput label={m.phone} fullWidth {...register('phone')} defaultValue={filters.phone ?? ''} />
                   </DialogInputRowExtra>
                 )}
               </DialogInputRow>
@@ -296,9 +288,7 @@ const _ReportsFilters = ({filters, updateFilters, children}: _ReportsFiltersProp
                       name="companyCountries"
                       defaultValue={filters.companyCountries ?? []}
                       control={control}
-                      render={({field}) => (
-                        <SelectCountries label={m.foreignCountry} fullWidth {...field} />
-                      )}
+                      render={({field}) => <SelectCountries label={m.foreignCountry} fullWidth {...field} />}
                     />
                   </DialogInputRowExtra>
                 )}

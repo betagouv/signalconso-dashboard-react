@@ -4,7 +4,15 @@ import {useHistory} from 'react-router-dom'
 import {parse as _parse, stringify as _stringify} from 'qs'
 
 export interface ParsedUrlQueryInput {
-  [key: string]: string | number | boolean | ReadonlyArray<string> | ReadonlyArray<number> | ReadonlyArray<boolean> | undefined | null;
+  [key: string]:
+    | string
+    | number
+    | boolean
+    | ReadonlyArray<string>
+    | ReadonlyArray<number>
+    | ReadonlyArray<boolean>
+    | undefined
+    | null
 }
 
 export class QueryString {

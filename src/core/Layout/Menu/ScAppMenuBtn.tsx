@@ -54,10 +54,13 @@ export const ScAppMenuBtn = ({connectedUser}: Props) => {
 
   return (
     <Box sx={{position: 'relative'}}>
-      <Box sx={{display: 'flex', alignItems: 'center'}} onClick={() => {
-        if (connectedUser) openMenu.toggle()
-        else history.push(siteMap.loggedout.login)
-      }}>
+      <Box
+        sx={{display: 'flex', alignItems: 'center'}}
+        onClick={() => {
+          if (connectedUser) openMenu.toggle()
+          else history.push(siteMap.loggedout.login)
+        }}
+      >
         <IconBtn
           size="large"
           disabled={!connectedUser}
@@ -68,9 +71,7 @@ export const ScAppMenuBtn = ({connectedUser}: Props) => {
         >
           <Icon fontSize="large">{connectedUser ? 'menu' : 'no_accounts'}</Icon>
         </IconBtn>
-        {connectedUser && (
-          <Icon>arrow_drop_down</Icon>
-        )}
+        {connectedUser && <Icon>arrow_drop_down</Icon>}
       </Box>
       {/*<Avatar*/}
       {/*>*/}

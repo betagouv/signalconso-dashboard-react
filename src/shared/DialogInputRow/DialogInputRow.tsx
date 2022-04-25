@@ -44,9 +44,15 @@ export const DialogInputRow = ({label, children}: DialogInputRowProps) => {
 }
 
 export const DialogInputRowExtra = ({children}: DialogInputRowExtraProps) => {
-  return <Box sx={{
-    pb: 2,
-    mb: 2,
-    borderBottom: t => `1px solid ${t.palette.divider}`,
-  }}>{children}</Box>
+  return (
+    <Box
+      sx={{
+        pb: 2,
+        mb: 2,
+        borderBottom: t => `1px solid ${t.palette.divider}`,
+      }}
+    >
+      {children}
+    </Box>
+  )
 }

@@ -1,4 +1,16 @@
-import {Bar, BarChart, CartesianGrid, LabelList, Legend, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis} from 'recharts'
+import {
+  Bar,
+  BarChart,
+  CartesianGrid,
+  LabelList,
+  Legend,
+  Line,
+  LineChart,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from 'recharts'
 import * as React from 'react'
 import {useMemo, useState} from 'react'
 import {Box, Checkbox, Theme, useTheme} from '@mui/material'
@@ -38,15 +50,15 @@ export const ScLineChart = ({curves, height}: Props) => {
     <div style={{height: height ?? 300}}>
       <Box sx={{display: 'flex', alignItems: 'center', justifyContent: 'flex-end'}}>
         {m.showLabels}
-        {curves.map((c, i) =>
+        {curves.map((c, i) => (
           <>
             <Checkbox
               checked={showCurves[i]}
-              onChange={e => setShowCurves(prev => prev.map((_, index) => i === index ? e.currentTarget.checked : _))}
+              onChange={e => setShowCurves(prev => prev.map((_, index) => (i === index ? e.currentTarget.checked : _)))}
               sx={{'& svg': {fill: c.color ?? colors(theme)[i] ?? colors(theme)[0] + ' !important'}}}
             />
-          </>,
-        )}
+          </>
+        ))}
       </Box>
       <ResponsiveContainer width="100%" height="100%">
         <LineChart width={500} height={300} data={mappedData}>
@@ -65,10 +77,14 @@ export const ScLineChart = ({curves, height}: Props) => {
               strokeWidth={2}
             >
               {showCurves[i] && (
-                <LabelList dataKey={_.key} position="top" style={{
-                  fill: _.color ?? colors(theme)[i] ?? colors(theme)[0],
-                  fontSize: styleUtils(theme).fontSize.small,
-                }} />
+                <LabelList
+                  dataKey={_.key}
+                  position="top"
+                  style={{
+                    fill: _.color ?? colors(theme)[i] ?? colors(theme)[0],
+                    fontSize: styleUtils(theme).fontSize.small,
+                  }}
+                />
               )}
             </Line>
           ))}
