@@ -59,7 +59,7 @@ export const CompanyComponent = () => {
   const {connectedUser} = useLogin()
   const _stats = useCompanyStats(id)
   const _event = useEventContext()
-  const _accesses = useFetcher((siret: string) => apiSdk.secured.companyAccess.fetch(siret))
+  const _accesses = useFetcher((siret: string) => apiSdk.secured.companyAccess.count(siret))
   const _report = useReportsContext()
   const css = useStyles()
   const cssUtils = useCssUtils()
@@ -159,9 +159,7 @@ export const CompanyComponent = () => {
             </Grid>
             <Grid item xs={12} sm={6} md={3}>
               <Widget title={m.accountsActivated} loading={_accesses.loading} to={siteMap.logged.companyAccesses(company.siret)}>
-                {fromNullable(_accesses.entity)
-                  .map(_ => <WidgetValue>{_.length}</WidgetValue>)
-                  .getOrElse(<WidgetLoading />)}
+                <WidgetValue>{_accesses.entity}</WidgetValue>
               </Widget>
             </Grid>
           </Grid>
