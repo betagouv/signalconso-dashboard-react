@@ -209,6 +209,13 @@ export const CompaniesPro = () => {
                       </Tooltip>
                     </NavLink>
                   )}
+                  <NavLink to={siteMap.logged.company(_.id)}>
+                    <Tooltip title={m.myStats}>
+                      <IconBtn color="primary">
+                        <Icon>bar_chart</Icon>
+                      </IconBtn>
+                    </Tooltip>
+                  </NavLink>
                   <NavLink to={siteMap.logged.reports({siretSirenList: [_.siret]})}>
                     <Tooltip title={m.reports}>
                       <IconBtn color="primary">

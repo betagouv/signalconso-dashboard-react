@@ -85,14 +85,15 @@ export const HorizontalBarChart = ({data, grid, width = 200}: Props) => {
 
   return (
     <div className={css.root}>
-      {
-        data && maxValue && sumValue ? (
+      {data && maxValue && sumValue ? (
         data.map((item, i) => {
           const percentOfMax = (item.value / maxValue) * 100
           const percentOfAll = (item.value / sumValue) * 100
           return (
             <div key={i} className={css.item}>
-              <div className={css.label} style={ { width : width, minWidth : width}} >{item.label}</div>
+              <div className={css.label} style={{width: width, minWidth: width}}>
+                {item.label}
+              </div>
               <LightTooltip
                 title={
                   <>
@@ -124,7 +125,7 @@ export const HorizontalBarChart = ({data, grid, width = 200}: Props) => {
       )}
       {grid && data && data.length > 0 && (
         <div className={css.item}>
-          <div className={css.label} style={ { width : width, minWidth : width}} />
+          <div className={css.label} style={{width: width, minWidth: width}} />
           <div className={css.legend}>
             {mapFor(gridAxis + 1, i => (
               <div key={i} className={css.legendTick} style={{left: `calc(${i * (100 / gridAxis)}% - 1px)`}} />

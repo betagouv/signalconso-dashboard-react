@@ -9,6 +9,7 @@ export const useCompanyStats = (id: Id) => {
     reportCount: useFetcher(() => api.public.stats.getReportCount({companyIds: [id]})),
     tags: useFetcher(() => api.secured.stats.getTags(id)),
     status: useFetcher(() => api.secured.stats.getStatus(id)),
+    statusPro: useFetcher(() => api.secured.stats.getProStatus(id)),
     responseReviews: useFetcher(() => api.secured.stats.getResponseReviews(id)),
     readDelay: useFetcher(() => api.secured.stats.getReadDelay(id)),
     responseDelay: useFetcher(() => api.secured.stats.getResponseDelay(id)),

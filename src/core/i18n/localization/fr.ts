@@ -7,7 +7,7 @@ import {
 } from '@signal-conso/signalconso-api-sdk-js'
 import {config} from '../../../conf/config'
 import {formatDistance, formatDuration as formatDurationFns} from 'date-fns'
-import {ResponseEvaluation} from "@signal-conso/signalconso-api-sdk-js/lib/client/event/Event";
+import {ResponseEvaluation} from '@signal-conso/signalconso-api-sdk-js/lib/client/event/Event'
 
 const invalidDate = '-'
 
@@ -69,9 +69,9 @@ export const fr = {
     filter: 'Filtrer',
     yes: 'Oui',
     no: 'Non',
-    positive: 'Nombre d\'utilisateurs satisfaits de la réponse donnée par l\'entreprise',
+    positive: "Nombre d'utilisateurs satisfaits de la réponse donnée par l'entreprise",
     negative: "Nombre d'utilisateurs insatisfaits de la réponse donnée par l'entreprise",
-    neutral: 'Nombre d\'utilisateurs partiellement satisfait de la réponse donnée par l\'entreprise',
+    neutral: "Nombre d'utilisateurs partiellement satisfait de la réponse donnée par l'entreprise",
     search: 'Rechercher',
     edit: 'Modifier',
     next: 'Suivant',
@@ -188,6 +188,7 @@ export const fr = {
     companyRegisteredEmailSent: "Un email vous a été envoyé avec les instructions pour accéder au compte de l'entreprise.",
     departments: 'Départements',
     reports: 'Signalements',
+    myStats: 'Statistiques de mon entreprise',
     responseRate: '% réponse',
     report: 'Signalement',
     you: 'Vous',
@@ -668,6 +669,11 @@ export const fr = {
       [ReportStatusPro.NonConsulte]: 'Non consulté',
       [ReportStatusPro.ARepondre]: 'À répondre',
       [ReportStatusPro.Cloture]: 'Clôturé',
+    },
+    reportStatusDescPro: {
+      [ReportStatusPro.NonConsulte]: 'Signalements non consultés malgré les relances',
+      [ReportStatusPro.ARepondre]: 'Signalements transmis',
+      [ReportStatusPro.Cloture]: "Signalements ayant fait l'objet d'une réponse ou dont le délais de réponse a expiré",
     },
     reportStatusDesc: {
       [ReportStatus.NA]: `Il y a eu un signalement déposé par un consommateur. Mais, le consommateur n’a pas pu identifier la société. Cela peut être le cas pour les sites internet et des démarchages téléphoniques ou à domicile.`,
