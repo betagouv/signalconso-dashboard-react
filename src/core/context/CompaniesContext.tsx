@@ -60,7 +60,7 @@ export const CompaniesProvider = ({api, children}: Props) => {
   const confirmCompaniesPosted = useFetcher(api.secured.company.confirmCompaniesPosted)
   const saveUndeliveredDocument = useFetcher(api.secured.company.saveUndeliveredDocument)
   const accessibleByPro = useFetcher(api.secured.company.getAccessibleByPro)
-  const byId = useFetcher((id: Id) => api.secured.company.search({identity: id, limit: 1, offset: 0}).then(_ => _.entities[0]))
+  const byId = useFetcher((id: Id) => api.secured.company.byId(id).then(_ => _.entities[0]))
   const hosts = useFetcher(api.secured.company.getHosts)
   const responseRate = useFetcher(api.secured.company.getResponseRate)
 
