@@ -6,7 +6,7 @@ import {useLogin} from '../../core/context/LoginContext'
 export const useCompanyStats = (id: Id) => {
   const {apiSdk: api} = useLogin()
   return {
-    reportCount: useFetcher(() => api.public.stats.getReportCount({companyIds: [id]})),
+    reportCount: useFetcher(() => api.publicConnected.stats.getReportCount({companyIds: [id]})),
     tags: useFetcher(() => api.secured.stats.getTags(id)),
     status: useFetcher(() => api.secured.stats.getStatus(id)),
     statusPro: useFetcher(() => api.secured.stats.getProStatus(id)),
@@ -14,9 +14,9 @@ export const useCompanyStats = (id: Id) => {
     readDelay: useFetcher(() => api.secured.stats.getReadDelay(id)),
     responseDelay: useFetcher(() => api.secured.stats.getResponseDelay(id)),
     curve: {
-      reportCount: useFetcher((_: CurveStatsParams) => api.public.stats.getReportCountCurve({companyIds: [id], ..._})),
+      reportCount: useFetcher((_: CurveStatsParams) => api.publicConnected.stats.getReportCountCurve({companyIds: [id], ..._})),
       reportRespondedCount: useFetcher((_: CurveStatsParams) =>
-        api.public.stats.getReportCountCurve({
+        api.publicConnected.stats.getReportCountCurve({
           ..._,
           companyIds: [id],
           status: [ReportStatus.PromesseAction, ReportStatus.Infonde, ReportStatus.MalAttribue],
