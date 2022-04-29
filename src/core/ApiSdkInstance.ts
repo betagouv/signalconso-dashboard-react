@@ -18,7 +18,8 @@ export const apiPublicSdk = new SignalConsoPublicSdk(
 )
 
 export const makeSecuredSdk = (token: string) => ({
-  public: new SignalConsoPublicSdk(
+  public: apiPublicSdk,
+  publicConnected: new SignalConsoPublicSdk(
     new ApiClient({
       baseUrl,
       headers: {...headers, 'X-Auth-Token': token},
