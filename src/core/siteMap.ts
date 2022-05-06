@@ -27,6 +27,7 @@ export const siteMap = {
     stats: `/stats`,
     proStats: `/stats/pro-stats`,
     dgccrfStats: `/stats/dgccrf-stats`,
+    dataEconomie: `/stats/data-economie`,
     reportStats: `/stats/report-stats`,
   },
   loggedout: {

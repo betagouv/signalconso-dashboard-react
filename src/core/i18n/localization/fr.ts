@@ -236,6 +236,7 @@ export const fr = {
     statsDgccrf: 'DGCCRF',
     statsReports: 'Signalements',
     dgccrfUser: 'Comptes DGCCRF',
+    dataEconomie: 'Data Economie',
     dgccrfUserDesc: `   
     <div>Statistique des comptes DGCCRF :</div>
     <ul>
