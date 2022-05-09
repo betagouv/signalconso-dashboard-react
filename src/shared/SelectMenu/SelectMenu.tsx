@@ -76,7 +76,7 @@ export const SelectMenu = <T,>({
       {options.map((option, i) => (
         <MenuItem
           className={css.menuItem}
-          key={toString(option)}
+          key={toString(option) + '' + i}
           value={toString(option)}
           dense
           onClick={() => {
