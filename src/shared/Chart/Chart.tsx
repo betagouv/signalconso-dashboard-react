@@ -1,22 +1,9 @@
-import {
-  Bar,
-  BarChart,
-  CartesianGrid,
-  LabelList,
-  Legend,
-  Line,
-  LineChart,
-  ResponsiveContainer,
-  Tooltip,
-  XAxis,
-  YAxis,
-} from 'recharts'
+import {Bar, BarChart, CartesianGrid, LabelList, Legend, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis} from 'recharts'
 import * as React from 'react'
 import {useMemo, useState} from 'react'
 import {Box, Checkbox, Theme, useTheme} from '@mui/material'
 import {styleUtils} from '../../core/theme'
 import {useI18n} from '../../core/i18n'
-import {usePersistentState} from 'react-persistent-state/build'
 
 interface Props {
   height?: number
