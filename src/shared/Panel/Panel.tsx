@@ -1,9 +1,8 @@
 import * as React from 'react'
 import {forwardRef, ReactNode} from 'react'
-import {Card, LinearProgress, Skeleton, Stack, Theme} from '@mui/material'
+import {Card, CardProps, LinearProgress, Theme} from '@mui/material'
 import {classes} from '../../core/helper/utils'
-import {CardProps} from '@mui/material'
-import {makeStyles, createStyles} from '@mui/styles'
+import {createStyles, makeStyles} from '@mui/styles'
 
 const useStyles = makeStyles((t: Theme) =>
   createStyles({
@@ -16,11 +15,6 @@ const useStyles = makeStyles((t: Theme) =>
     },
     loader: {
       marginBottom: -4,
-    },
-    align: {
-      display: 'block',
-      marginLeft: 'auto',
-      marginRight: 'auto',
     },
     hover: {
       cursor: 'pointer',
@@ -58,16 +52,7 @@ export const Panel = forwardRef(
         {...other}
       >
         {loading && <LinearProgress className={css.loader} />}
-        {loading ? (
-          <Stack sx={{marginTop: '20px', marginBottom: '20px'}}>
-            <Skeleton variant={'text'} className={css.align} width={'90%'} />
-            <Skeleton variant={'text'} className={css.align} width={'90%'} />
-            <Skeleton variant={'text'} className={css.align} width={'90%'} />
-            <Skeleton variant={'text'} className={css.align} width={'90%'} />
-          </Stack>
-        ) : (
-          children
-        )}
+        {children}
       </Card>
     )
   },
