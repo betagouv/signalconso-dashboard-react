@@ -80,21 +80,23 @@ export const StatsReportsCurvePanel = ({ticks, tickDuration = 'Month'}: Props) =
             () => api.public.stats.getReportCountCurve({ticks, tickDuration, withTags: [ReportTag.DemarchageADomicile, ReportTag.DemarchageTelephonique]}),
           ]}
           curves={[
-            {label:
-              m.reportsCount,
+            {
+              label: m.reportsCount,
               key: 'all',
-              curve: _ => _[0].map(statsFormatCurveDate(m))
+              curve: ([total,]) => total.map(statsFormatCurveDate(m))
             }, {
               label: m.reportsCountInternet,
               key: 'internet',
-              curve: _ => _[1].map(statsFormatCurveDate(m)),
-            },
-            {
+              curve: ([, internet]) => internet.map(statsFormatCurveDate(m)),
+            }, {
               label: m.reportsCountDemarchage,
               key: 'demarchage',
-              curve: _ => _[2].map(statsFormatCurveDate(m)),
+              curve: ([,,demarchage])  => demarchage.map(statsFormatCurveDate(m)),
+            }, {
+              label: m.reportsCountPhysique,
+              key: 'physique',
+              curve: _ => computeCurveReportPhysique(..._).map(statsFormatCurveDate(m))
             },
-            {label: m.reportsCountPhysique, key: 'physique', curve: _ => computeCurveReportPhysique(..._).map(statsFormatCurveDate(m))},
           ]}
         />
         {/*{reportCountCurve.entity && reportInternetCountCurve.entity && reportDemarchageCountCurve.entity && (*/}

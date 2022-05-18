@@ -40,6 +40,7 @@ export const ScLineChart = ({curves, height}: Props) => {
         {curves.map((c, i) => (
           <>
             <Checkbox
+              key={c.key}
               checked={showCurves[i]}
               onChange={e => setShowCurves(prev => prev.map((_, index) => (i === index ? e.currentTarget.checked : _)))}
               sx={{'& svg': {fill: c.color ?? colors(theme)[i] ?? colors(theme)[0] + ' !important'}}}

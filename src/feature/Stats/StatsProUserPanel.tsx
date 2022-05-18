@@ -1,49 +1,45 @@
 import {Panel, PanelBody, PanelHead} from '../../shared/Panel'
-import {ScLineChart} from '../../shared/Chart/Chart'
 import * as React from 'react'
-import {useEffect} from 'react'
 import {statsFormatCurveDate} from './Stats'
-import {useFetcher} from '@alexandreannic/react-hooks-lib'
 import {useI18n} from '../../core/i18n'
 import {useLogin} from '../../core/context/LoginContext'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
+import {ChartAsync} from '../../shared/Chart/ChartAsync'
+import {Period} from '@signal-conso/signalconso-api-sdk-js'
 
 interface Props {
   ticks: number
+  tickDuration?: Period
+
 }
 
-export const StatsProUserPanel = ({ticks}: Props) => {
+export const StatsProUserPanel = ({ticks, tickDuration}: Props) => {
   const {apiSdk: api} = useLogin()
   const {m} = useI18n()
-  const reportedActiveProAccountRate = useFetcher(api.secured.stats.getReportedInactiveProAccountRate)
-  const reportVisibleByProCountCurve = useFetcher(api.secured.stats.getProReportTransmittedStat)
-
-  useEffect(() => {
-    reportedActiveProAccountRate.fetch({}, {ticks})
-    reportVisibleByProCountCurve.fetch({}, {ticks})
-  }, [ticks])
 
   return (
-    <Panel loading={reportedActiveProAccountRate.loading || reportVisibleByProCountCurve.loading}>
+    <Panel>
       <PanelHead>{m.reportsOnFisrtProActivationAccount}</PanelHead>
       <PanelBody>
         <Txt color="hint" gutterBottom block dangerouslySetInnerHTML={{__html: m.reportsProUserDesc}} />
-        {reportedActiveProAccountRate.entity && reportVisibleByProCountCurve.entity && (
-          <ScLineChart
-            curves={[
-              {
-                label: m.reportsProVisibleCount,
-                key: 'visible_by_pro',
-                curve: reportVisibleByProCountCurve.entity.map(statsFormatCurveDate(m)),
-              },
-              {
-                label: m.proFirstAccountActivation,
-                key: 'pro',
-                curve: reportedActiveProAccountRate.entity.map(statsFormatCurveDate(m)),
-              },
-            ]}
-          />
-        )}
+        <ChartAsync
+          promises={[
+            () => api.secured.stats.getReportedInactiveProAccountRate({ticks, tickDuration}),
+            () => api.secured.stats.getProReportTransmittedStat({ticks, tickDuration}),
+          ]}
+          curves={[
+            {
+              label: m.reportsProVisibleCount,
+              key: 'visible_by_pro',
+              curve: _ => _[0].map(statsFormatCurveDate(m)),
+            },
+            {
+              label: m.proFirstAccountActivation,
+              key: 'pro',
+              curve: _ => _[1].map(statsFormatCurveDate(m)),
+            },
+          ]}
+        />
       </PanelBody>
     </Panel>
   )

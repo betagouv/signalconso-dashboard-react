@@ -1,14 +1,16 @@
-import {useFetcher} from '@alexandreannic/react-hooks-lib'
 import {Skeleton} from '@mui/material'
-import {useEffect} from 'react'
+import {memo, useEffect, useState} from 'react'
 import {ScLineChart} from './Chart'
+import {ApiError} from '@signal-conso/signalconso-api-sdk-js'
+import {useToast} from '../../core/toast'
+import {useEffectFn} from '@alexandreannic/react-hooks-lib'
 
 type Promises = readonly (() => Promise<any>)[] | []
-// type Promises = ReadonlyArray<() =>  unknown>
 
 type ThenArg<T> = T extends PromiseLike<infer U> ? U : T
 
 interface ChartAsyncProps<T extends Promises> {
+  readonly fetchDeps?: any[]
   readonly height?: number
   readonly promises: T
   readonly curves: {
@@ -16,30 +18,40 @@ interface ChartAsyncProps<T extends Promises> {
     key: string
     color?: string
     // @ts-ignore
-    curve: (a: { -readonly [P in keyof T]: ThenArg<ReturnType<T[P]>> }) => {date: string; count: number}[]
+    curve: (resolvedPromises: { -readonly [P in keyof T]: ThenArg<ReturnType<T[P]>> }) => {date: string; count: number}[]
   }[]
-  // readonly data: { -readonly [P in keyof T]: ThenArg<ReturnType<T[P]>> }
 }
 
 export const ChartAsync = <T extends Promises>({
   promises,
   curves,
   height = 300,
+  fetchDeps = [],
 }: ChartAsyncProps<T>) => {
-  const fetchers = promises.map(_ => useFetcher(_))
-  const loading = !!fetchers.find(_ => _.loading)
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState<ApiError | undefined>()
+  const {toastError} = useToast()
+  // @ts-ignore
+  const [data, setData] = useState<undefined | { -readonly [P in keyof T]: ThenArg<ReturnType<T[P]>> }>()
   useEffect(() => {
-    fetchers.forEach(_ => _.fetch)
-  }, [])
+    console.log('refresh', promises)
+    setLoading(true)
+    Promise.all(promises.map(_ => _()))
+      .then(_ => setData(_ as any))
+      .then(() => setLoading(false))
+      .catch(setError)
+  }, fetchDeps)
+
+  useEffectFn(error, toastError)
 
   return (
     <>
-      {loading ? (
-        <Skeleton variant="rectangular" height={height - 30} width="100%" sx={{borderRadius: '8px'}} />
+      {loading || !data ? (
+        <Skeleton variant="rectangular" height={height} width="100%" sx={{borderRadius: '8px'}} />
       ) : (
         <ScLineChart curves={curves.map((c, i) => ({
           ...c,
-          curve: c.curve(fetchers.map(_ => _.entity) as any),
+          curve: c.curve(data),
         }))} />
       )}
     </>
