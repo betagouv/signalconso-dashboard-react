@@ -1,5 +1,5 @@
 import {red} from '@mui/material/colors'
-import {alpha, createTheme, Theme} from '@mui/material'
+import {alpha, createTheme, PaletteColorOptions, Theme} from '@mui/material'
 import {ThemeOptions} from '@mui/material/styles/createTheme'
 
 export const styleUtils = (t: Theme) => ({
@@ -33,22 +33,24 @@ export const defaultSpacing = 8
 
 export const muiTheme = (dark?: boolean): Theme => {
   const defaultTheme = createTheme()
-  const colorMain = '#407e99'
-  const colorMainLight = '#6697ad'
-  const colorMainDark = '#2c586b'
+  const colorPrimary = {
+    main: '#2b7c9f',
+    light: '#6fd3ff',
+    dark: '#1c536b',
+    // main: '#407e99',
+    // light: '#6697ad',
+    // dark: '#2c586b',
+  }
+  const colorSecondary = {
+    main: '#1e2b50',
+    light: '#1e2b50',
+    dark: '#1e2b50',
+  }
   const theme: ThemeOptions = {
     spacing: defaultSpacing,
     palette: {
-      primary: {
-        light: colorMainLight,
-        main: colorMain,
-        dark: colorMainDark,
-      },
-      secondary: {
-        light: colorMainLight,
-        main: colorMain,
-        dark: colorMainDark,
-      },
+      primary: colorPrimary,
+      secondary: colorSecondary,
       error: red,
       mode: dark ? 'dark' : 'light',
     },
@@ -161,7 +163,7 @@ export const muiTheme = (dark?: boolean): Theme => {
         styleOverrides: {
           root: {
             '&:hover $notchedOutline': {
-              borderColor: alpha(colorMain, 0.7),
+              borderColor: alpha(colorPrimary.main, 0.7),
             },
           },
           notchedOutline: {
