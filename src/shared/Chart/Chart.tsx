@@ -1,22 +1,9 @@
-import {
-  Bar,
-  BarChart,
-  CartesianGrid,
-  LabelList,
-  Legend,
-  Line,
-  LineChart,
-  ResponsiveContainer,
-  Tooltip,
-  XAxis,
-  YAxis,
-} from 'recharts'
+import {Bar, BarChart, CartesianGrid, LabelList, Legend, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis} from 'recharts'
 import * as React from 'react'
 import {useMemo, useState} from 'react'
 import {Box, Checkbox, Theme, useTheme} from '@mui/material'
 import {styleUtils} from '../../core/theme'
 import {useI18n} from '../../core/i18n'
-import {usePersistentState} from 'react-persistent-state/build'
 
 interface Props {
   height?: number
@@ -53,6 +40,7 @@ export const ScLineChart = ({curves, height}: Props) => {
         {curves.map((c, i) => (
           <>
             <Checkbox
+              key={c.key}
               checked={showCurves[i]}
               onChange={e => setShowCurves(prev => prev.map((_, index) => (i === index ? e.currentTarget.checked : _)))}
               sx={{'& svg': {fill: c.color ?? colors(theme)[i] ?? colors(theme)[0] + ' !important'}}}

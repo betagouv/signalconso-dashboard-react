@@ -1,5 +1,4 @@
 import {Panel, PanelBody, PanelHead} from '../../shared/Panel'
-import {ScLineChart} from '../../shared/Chart/Chart'
 import * as React from 'react'
 import {useEffect} from 'react'
 import {useLogin} from '../../core/context/LoginContext'
@@ -9,6 +8,7 @@ import {statsFormatCurveDate} from './Stats'
 import {curveRatio} from './ReportStats'
 import {ReportResponseStatsParams} from '@signal-conso/signalconso-api-sdk-js'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
+import {ChartAsync} from '../../shared/Chart/ChartAsync'
 
 interface Props {
   ticks?: number
@@ -64,34 +64,43 @@ export const StatsReportsProResponsePanel = ({ticks}: Props) => {
       <PanelHead>{m.reportsProResponseType}</PanelHead>
       <PanelBody>
         <Txt color="hint" gutterBottom block dangerouslySetInnerHTML={{__html: m.reportsProResponseTypeDesc}} />
-        {reportCountMalAttribueCurve.entity &&
-          reportCountInfondeCurve.entity &&
-          reportCountPromesseActionCurve.entity &&
-          reportResponseCountCurve.entity && (
-            <ScLineChart
-              curves={[
-                {
-                  label: m.reportsProMalAttribue,
-                  key: 'mal_attribue',
-                  curve: curveRatio(reportCountMalAttribueCurve.entity, reportResponseCountCurve.entity).map(
-                    statsFormatCurveDate(m),
-                  ),
-                },
-                {
-                  label: m.reportsProInfonde,
-                  key: 'infonde',
-                  curve: curveRatio(reportCountInfondeCurve.entity, reportResponseCountCurve.entity).map(statsFormatCurveDate(m)),
-                },
-                {
-                  label: m.reportsProPromesseAction,
-                  key: 'promesse_action',
-                  curve: curveRatio(reportCountPromesseActionCurve.entity, reportResponseCountCurve.entity).map(
-                    statsFormatCurveDate(m),
-                  ),
-                },
-              ]}
-            />
-          )}
+        <ChartAsync
+          promisesDeps={[ticks]}
+          promises={[
+            () => api.secured.stats.getProReportResponseStat({ticks}),
+            () => api.secured.stats.getProReportResponseStat({
+              ticks,
+              responseStatusQuery: ['NOT_CONCERNED'],
+            }),
+            () => api.secured.stats.getProReportResponseStat({
+              ticks,
+              responseStatusQuery: ['REJECTED'],
+            }),
+            () => api.secured.stats.getProReportResponseStat({
+              ticks,
+              responseStatusQuery: ['ACCEPTED'],
+            }),
+          ]}
+          curves={[
+            {
+              label: m.reportsProMalAttribue,
+              key: 'mal_attribue',
+              curve: promises => curveRatio(promises[1], promises[0]).map(
+                statsFormatCurveDate(m),
+              ),
+            }, {
+              label: m.reportsProInfonde,
+              key: 'infonde',
+              curve: promises => curveRatio(promises[2], promises[0]).map(statsFormatCurveDate(m)),
+            }, {
+              label: m.reportsProPromesseAction,
+              key: 'promesse_action',
+              curve: promises => curveRatio(promises[3], promises[0]).map(
+                statsFormatCurveDate(m),
+              ),
+            },
+          ]}
+        />
       </PanelBody>
     </Panel>
   )
