@@ -61,6 +61,7 @@ export const CompanyChartPanel = ({
       </PanelHead>
       <PanelBody>
         <ChartAsync
+          hideLabelToggle={true}
           promisesDeps={[reportsCurvePeriod, ticks]}
           promises={[
             () => apiSdk.publicConnected.stats.getReportCountCurve({
@@ -80,7 +81,8 @@ export const CompanyChartPanel = ({
               label: m.reportsCount,
               key: 'count',
               curve: ([total]) => total.map(formatCurveDate(m)),
-            }, {
+            },
+            {
               label: m.responsesCount,
               key: 'countResponded',
               curve: ([, responded]) => responded.map(formatCurveDate(m)),
