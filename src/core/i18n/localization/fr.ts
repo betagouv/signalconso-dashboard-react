@@ -99,6 +99,7 @@ export const fr = {
     saved: 'Sauvegardé',
     duplicate: 'Duplicate',
     all: 'Tous',
+    menu: 'Menu',
     anErrorOccurred: "Une erreur s'est produite.",
     minimize: 'Minimize',
     required: 'Requis',

@@ -10,21 +10,12 @@ import {classes} from '../../helper/utils'
 import {useHistory} from 'react-router'
 import {siteMap} from '../../siteMap'
 import {IconBtn} from 'mui-extension/lib'
+import {ScButton} from '../../../shared/Button/Button'
+import {useI18n} from '../../i18n'
 
 const useMenuStyles = makeStyles((t: Theme) => ({
-  avatar: {
-    height: 46,
-    width: 46,
-    // transition: t.transitions.create('all'),
-    color: lightBlue[50],
-    backgroundColor: lightBlue[500] + ' !important',
-    margin: t.spacing(0, 1),
-    marginRight: 0,
-  },
-  avatarOffline: {
-    boxShadow: 'none',
-    color: grey[50] + ' !important',
-    backgroundColor: grey[500] + ' !important',
+  btn: {
+    textTransform: 'initial'
   },
   userName: {
     ...styleUtils(t).truncate,
@@ -51,28 +42,25 @@ export const ScAppMenuBtn = ({connectedUser}: Props) => {
   const css = useMenuStyles()
   const openMenu = useBoolean(false)
   const history = useHistory()
+  const {m} = useI18n()
 
   return (
     <Box sx={{position: 'relative'}}>
-      <Box
+      <ScButton
+        variant="contained"
+        color="secondary"
+        iconAfter="arrow_drop_down"
+        className={css.btn}
+        disabled={!connectedUser}
         sx={{display: 'flex', alignItems: 'center'}}
         onClick={() => {
           if (connectedUser) openMenu.toggle()
           else history.push(siteMap.loggedout.login)
         }}
       >
-        <IconBtn
-          size="large"
-          disabled={!connectedUser}
-          sx={{
-            boxShadow: t => t.shadows[2],
-          }}
-          className={classes(css.avatar, !connectedUser && css.avatarOffline)}
-        >
-          <Icon fontSize="large">{connectedUser ? 'menu' : 'no_accounts'}</Icon>
-        </IconBtn>
-        {connectedUser && <Icon>arrow_drop_down</Icon>}
-      </Box>
+        <Icon sx={{opacity: .7, mr: 1}}>menu</Icon>
+        {m.menu}
+      </ScButton>
       {/*<Avatar*/}
       {/*>*/}
       {/*<Icon>{connectedUser ? 'person' : 'no_accounts'}</Icon>*/}
