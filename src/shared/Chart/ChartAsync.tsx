@@ -1,6 +1,6 @@
 import {Skeleton} from '@mui/material'
-import {memo, useEffect, useState} from 'react'
-import {ScLineChart} from './Chart'
+import {useEffect, useState} from 'react'
+import {ScBarChart, ScLineChart} from './Chart'
 import {ApiError} from '@signal-conso/signalconso-api-sdk-js'
 import {useToast} from '../../core/toast'
 import {useEffectFn} from '@alexandreannic/react-hooks-lib'
@@ -10,9 +10,10 @@ type Promises = readonly (() => Promise<any>)[] | []
 type ThenArg<T> = T extends PromiseLike<infer U> ? U : T
 
 interface ChartAsyncProps<T extends Promises> {
-  readonly fetchDeps?: any[]
-  readonly height?: number
-  readonly promises: T
+  type?: 'line' | 'bar'
+  promisesDeps?: any[]
+  height?: number
+  promises: T
   readonly curves: {
     label: string
     key: string
@@ -23,10 +24,11 @@ interface ChartAsyncProps<T extends Promises> {
 }
 
 export const ChartAsync = <T extends Promises>({
+  type = 'line',
   promises,
   curves,
   height = 300,
-  fetchDeps = [],
+  promisesDeps = [],
 }: ChartAsyncProps<T>) => {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<ApiError | undefined>()
@@ -34,13 +36,12 @@ export const ChartAsync = <T extends Promises>({
   // @ts-ignore
   const [data, setData] = useState<undefined | { -readonly [P in keyof T]: ThenArg<ReturnType<T[P]>> }>()
   useEffect(() => {
-    console.log('refresh', promises)
     setLoading(true)
     Promise.all(promises.map(_ => _()))
       .then(_ => setData(_ as any))
       .then(() => setLoading(false))
       .catch(setError)
-  }, fetchDeps)
+  }, promisesDeps)
 
   useEffectFn(error, toastError)
 
@@ -48,8 +49,13 @@ export const ChartAsync = <T extends Promises>({
     <>
       {loading || !data ? (
         <Skeleton variant="rectangular" height={height} width="100%" sx={{borderRadius: '8px'}} />
-      ) : (
+      ) : type === 'line' ? (
         <ScLineChart curves={curves.map((c, i) => ({
+          ...c,
+          curve: c.curve(data),
+        }))} />
+      ) : (
+        <ScBarChart curves={curves.map((c, i) => ({
           ...c,
           curve: c.curve(data),
         }))} />

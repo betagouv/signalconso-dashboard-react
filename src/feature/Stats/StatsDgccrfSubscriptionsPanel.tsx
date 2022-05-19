@@ -8,6 +8,7 @@ import {useI18n} from '../../core/i18n'
 import {useFetcher} from '@alexandreannic/react-hooks-lib'
 import {useCssUtils} from '../../core/helper/useCssUtils'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
+import {ChartAsync} from '../../shared/Chart/ChartAsync'
 
 interface Props {
   ticks: number
@@ -16,37 +17,30 @@ interface Props {
 export const StatsDgccrfSubscriptionsPanel = ({ticks}: Props) => {
   const {apiSdk: api} = useLogin()
   const {m} = useI18n()
-
-  const dgccrfControlsCurve = useFetcher(api.secured.stats.getDgccrfControlsCurve)
-  const dgccrfSubscriptionsCurve = useFetcher(api.secured.stats.getDgccrfSubscriptionsCurve)
-  const cssUtils = useCssUtils()
-
-  useEffect(() => {
-    dgccrfControlsCurve.fetch({}, {ticks})
-    dgccrfSubscriptionsCurve.fetch({}, {ticks})
-  }, [ticks])
-
   return (
-    <Panel loading={dgccrfSubscriptionsCurve.loading || dgccrfControlsCurve.loading}>
+    <Panel>
       <PanelHead>{m.dgccrfActions}</PanelHead>
       <PanelBody>
         <Txt color="hint" gutterBottom block dangerouslySetInnerHTML={{__html: m.dgccrfActionsDesc}} />
-        {dgccrfSubscriptionsCurve.entity && dgccrfControlsCurve.entity && (
-          <ScLineChart
+          <ChartAsync
+            promisesDeps={[ticks]}
+            promises={[
+              () => api.secured.stats.getDgccrfControlsCurve({ticks}),
+              () => api.secured.stats.getDgccrfSubscriptionsCurve({ticks}),
+            ]}
             curves={[
               {
                 label: m.dgccrfSubscriptionsCurve,
                 key: 'getDgccrfSubscriptionsCurve',
-                curve: dgccrfSubscriptionsCurve.entity.map(statsFormatCurveDate(m)),
+                curve: promises => promises[0].map(statsFormatCurveDate(m)),
               },
               {
                 label: m.dgccrfControlsCurve,
                 key: 'getDgccrfControlsCurve',
-                curve: dgccrfControlsCurve.entity.map(statsFormatCurveDate(m)),
+                curve: promises => promises[1].map(statsFormatCurveDate(m)),
               },
             ]}
           />
-        )}
       </PanelBody>
     </Panel>
   )

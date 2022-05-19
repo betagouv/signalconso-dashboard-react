@@ -23,6 +23,7 @@ export const StatsProUserPanel = ({ticks, tickDuration}: Props) => {
       <PanelBody>
         <Txt color="hint" gutterBottom block dangerouslySetInnerHTML={{__html: m.reportsProUserDesc}} />
         <ChartAsync
+          promisesDeps={[ticks, tickDuration]}
           promises={[
             () => api.secured.stats.getReportedInactiveProAccountRate({ticks, tickDuration}),
             () => api.secured.stats.getProReportTransmittedStat({ticks, tickDuration}),

@@ -61,7 +61,7 @@ export const CompanyChartPanel = ({
       </PanelHead>
       <PanelBody>
         <ChartAsync
-          fetchDeps={[reportsCurvePeriod, ticks]}
+          promisesDeps={[reportsCurvePeriod, ticks]}
           promises={[
             () => apiSdk.publicConnected.stats.getReportCountCurve({
               companyIds: [companyId],
