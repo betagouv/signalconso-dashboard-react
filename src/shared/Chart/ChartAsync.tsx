@@ -1,6 +1,6 @@
 import {Skeleton} from '@mui/material'
 import {useEffect, useState} from 'react'
-import {ScBarChart, ScLineChart} from './Chart'
+import {ScBarChart, ScLineChart, ScLineChartPropsBase} from './Chart'
 import {ApiError} from '@signal-conso/signalconso-api-sdk-js'
 import {useToast} from '../../core/toast'
 import {useEffectFn} from '@alexandreannic/react-hooks-lib'
@@ -9,10 +9,9 @@ type Promises = readonly (() => Promise<any>)[] | []
 
 type ThenArg<T> = T extends PromiseLike<infer U> ? U : T
 
-interface ChartAsyncProps<T extends Promises> {
+interface ChartAsyncProps<T extends Promises> extends ScLineChartPropsBase {
   type?: 'line' | 'bar'
   promisesDeps?: any[]
-  height?: number
   promises: T
   readonly curves: {
     label: string
@@ -24,6 +23,7 @@ interface ChartAsyncProps<T extends Promises> {
 }
 
 export const ChartAsync = <T extends Promises>({
+  hideLabelToggle,
   type = 'line',
   promises,
   curves,
@@ -50,7 +50,7 @@ export const ChartAsync = <T extends Promises>({
       {loading || !data ? (
         <Skeleton variant="rectangular" height={height} width="100%" sx={{borderRadius: '8px'}} />
       ) : type === 'line' ? (
-        <ScLineChart curves={curves.map((c, i) => ({
+        <ScLineChart hideLabelToggle={hideLabelToggle} curves={curves.map((c, i) => ({
           ...c,
           curve: c.curve(data),
         }))} />
