@@ -307,7 +307,7 @@ export const Reports = ({}) => {
                       <b>{_.report.category}</b>
                       <ul className={css.tooltipUl}>
                         {_.report.subcategories.map((s, i) => (
-                          <li key={i}>{s}</li>
+                          <li key={i}>{s.title}</li>
                         ))}
                       </ul>
                     </>

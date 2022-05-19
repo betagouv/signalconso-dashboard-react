@@ -92,8 +92,10 @@ export const SelectMenu = <T,>({
             }
           }}
         >
-          {multiple && <Checkbox checked={innerValue.indexOf(option) >= 0} />}
-          {renderValue ? renderValue(option) : option}
+          <>
+            {multiple && <Checkbox checked={innerValue.indexOf(option) >= 0} />}
+            {renderValue ? renderValue(option) : option}
+          </>
         </MenuItem>
       ))}
     </Menu>
