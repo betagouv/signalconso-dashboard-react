@@ -129,7 +129,7 @@ export const CompanyComponent = () => {
               <Widget title={m.accountsActivated} loading={_accesses.loading} to={siteMap.logged.companyAccesses(company.siret)}>
                 <WidgetValue>{_accesses.entity}</WidgetValue>
               </Widget>
-            </Grid>periods
+            </Grid>
           </Grid>
           <CompanyChartPanel companyId={id} company={company}/>
 
