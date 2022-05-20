@@ -5,7 +5,7 @@ import {cleanObject, Company, CompanySearch, PaginatedSearch} from '@signal-cons
 import React, {useEffect, useMemo, useState} from 'react'
 import {useCompaniesContext} from '../../core/context/CompaniesContext'
 import {useCssUtils} from '../../core/helper/useCssUtils'
-import {Icon, InputBase, ListItemIcon, ListItemText, MenuItem, Theme, Tooltip} from '@mui/material'
+import {Badge, Icon, InputBase, ListItemIcon, ListItemText, MenuItem, Theme, Tooltip} from '@mui/material'
 import makeStyles from '@mui/styles/makeStyles'
 import {NavLink} from 'react-router-dom'
 import {siteMap} from '../../core/siteMap'
@@ -235,6 +235,13 @@ export const CompaniesRegistered = () => {
             className: cssUtils.txtRight,
             render: _ => (
               <>
+                <Badge color="error" badgeContent=" " variant="dot" overlap="circular">
+                  <NavLink to={siteMap.logged.company(_.id)}>
+                    <IconBtn color="primary">
+                      <Icon>query_stats</Icon>
+                    </IconBtn>
+                  </NavLink>
+                </Badge>
                 <ScMenu>
                   <NavLink to={siteMap.logged.companyAccesses(_.siret)}>
                     <MenuItem>
@@ -270,11 +277,6 @@ export const CompaniesRegistered = () => {
                     </EditAddressDialog>
                   )}
                 </ScMenu>
-                <NavLink to={siteMap.logged.company(_.id)}>
-                  <IconBtn color="primary">
-                    <Icon>query_stats</Icon>
-                  </IconBtn>
-                </NavLink>
               </>
             ),
           },
