@@ -24,6 +24,7 @@ import {ClipboardApi} from '@alexandreannic/ts-utils/lib/browser/clipboard/Clipb
 import {classes} from '../../core/helper/utils'
 import {CompaniesRegisteredFilters} from './CompaniesRegisteredFilters'
 import {ScMenu} from '../../shared/Menu/Menu'
+import {Txt} from 'mui-extension/lib/Txt/Txt'
 
 const useStyles = makeStyles((t: Theme) => ({
   tdName_label: {
@@ -161,7 +162,9 @@ export const CompaniesRegistered = () => {
             render: _ => (
               <Tooltip title={_.name}>
                 <span>
-                  <span className={css.tdName_label}>{_.name}</span>
+                  <NavLink to={siteMap.logged.company(_.id)}>
+                    <Txt link className={css.tdName_label}>{_.name}</Txt>
+                  </NavLink>
                   <br />
                   <span className={css.tdName_desc}>{_.siret}</span>
                 </span>
@@ -269,7 +272,7 @@ export const CompaniesRegistered = () => {
                 </ScMenu>
                 <NavLink to={siteMap.logged.company(_.id)}>
                   <IconBtn color="primary">
-                    <Icon>chevron_right</Icon>
+                    <Icon>query_stats</Icon>
                   </IconBtn>
                 </NavLink>
               </>
