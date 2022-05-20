@@ -5,7 +5,7 @@ import {cleanObject, Company, CompanySearch, PaginatedSearch} from '@signal-cons
 import React, {useEffect, useMemo, useState} from 'react'
 import {useCompaniesContext} from '../../core/context/CompaniesContext'
 import {useCssUtils} from '../../core/helper/useCssUtils'
-import {Icon, InputBase, ListItemIcon, ListItemText, MenuItem, Theme, Tooltip} from '@mui/material'
+import {Badge, Icon, InputBase, ListItemIcon, ListItemText, MenuItem, Theme, Tooltip} from '@mui/material'
 import makeStyles from '@mui/styles/makeStyles'
 import {NavLink} from 'react-router-dom'
 import {siteMap} from '../../core/siteMap'
@@ -24,6 +24,7 @@ import {ClipboardApi} from '@alexandreannic/ts-utils/lib/browser/clipboard/Clipb
 import {classes} from '../../core/helper/utils'
 import {CompaniesRegisteredFilters} from './CompaniesRegisteredFilters'
 import {ScMenu} from '../../shared/Menu/Menu'
+import {Txt} from 'mui-extension/lib/Txt/Txt'
 
 const useStyles = makeStyles((t: Theme) => ({
   tdName_label: {
@@ -161,7 +162,9 @@ export const CompaniesRegistered = () => {
             render: _ => (
               <Tooltip title={_.name}>
                 <span>
-                  <span className={css.tdName_label}>{_.name}</span>
+                  <NavLink to={siteMap.logged.company(_.id)}>
+                    <Txt link className={css.tdName_label}>{_.name}</Txt>
+                  </NavLink>
                   <br />
                   <span className={css.tdName_desc}>{_.siret}</span>
                 </span>
@@ -232,6 +235,13 @@ export const CompaniesRegistered = () => {
             className: cssUtils.txtRight,
             render: _ => (
               <>
+                <Badge color="error" badgeContent=" " variant="dot" overlap="circular">
+                  <NavLink to={siteMap.logged.company(_.id)}>
+                    <IconBtn color="primary">
+                      <Icon>query_stats</Icon>
+                    </IconBtn>
+                  </NavLink>
+                </Badge>
                 <ScMenu>
                   <NavLink to={siteMap.logged.companyAccesses(_.siret)}>
                     <MenuItem>
@@ -267,11 +277,6 @@ export const CompaniesRegistered = () => {
                     </EditAddressDialog>
                   )}
                 </ScMenu>
-                <NavLink to={siteMap.logged.company(_.id)}>
-                  <IconBtn color="primary">
-                    <Icon>chevron_right</Icon>
-                  </IconBtn>
-                </NavLink>
               </>
             ),
           },
