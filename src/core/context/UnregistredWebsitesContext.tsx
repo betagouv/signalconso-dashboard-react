@@ -1,9 +1,9 @@
 import * as React from 'react'
 import {ReactNode, useContext} from 'react'
-import {UseFetcher, useFetcher, usePaginate, UsePaginate} from '@alexandreannic/react-hooks-lib/lib'
+import {UseFetcher, useFetcher, UsePaginate} from '@alexandreannic/react-hooks-lib/lib'
 import {SignalConsoApiSdk} from '../ApiSdkInstance'
 import {ApiHostWithReportCount, HostReportCountSearch} from '@signal-conso/signalconso-api-sdk-js'
-import {mapPromiseSdkPaginate} from '../helper/utils'
+import {useScPaginate} from '../../shared/usePaginate/usePaginate'
 
 export interface UnregistredWebsiteWithCompanyContextProps extends UsePaginate<ApiHostWithReportCount, HostReportCountSearch> {
   extractUnregistered: UseFetcher<() => Promise<void>>
@@ -21,8 +21,8 @@ const UnregistredWebsitesContext = React.createContext<UnregistredWebsiteWithCom
 )
 
 export const UnregistredWebsitesProvider = ({api, children}: Props) => {
-  const listUnregistred = usePaginate<ApiHostWithReportCount, HostReportCountSearch>(
-    mapPromiseSdkPaginate(api.secured.website.listUnregistered),
+  const listUnregistred = useScPaginate<ApiHostWithReportCount, HostReportCountSearch>(
+    api.secured.website.listUnregistered,
     {limit: 10, offset: 0, q: ''},
   )
 
