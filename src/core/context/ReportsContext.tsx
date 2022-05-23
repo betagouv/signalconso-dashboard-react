@@ -1,10 +1,9 @@
 import * as React from 'react'
 import {ReactNode, useContext} from 'react'
-import {usePaginate, UsePaginate} from '@alexandreannic/react-hooks-lib/lib'
+import {UsePaginate} from '@alexandreannic/react-hooks-lib/lib'
 import {SignalConsoApiSdk} from '../ApiSdkInstance'
-import {mapSdkPaginate} from '../helper/utils'
-import {ReportSearch, ReportSearchResult, PaginatedFilters} from '@signal-conso/signalconso-api-sdk-js'
-import {mapPromise} from '@alexandreannic/ts-utils/lib/common'
+import {PaginatedFilters, ReportSearch, ReportSearchResult} from '@signal-conso/signalconso-api-sdk-js'
+import {useScPaginate} from '../../shared/usePaginate/usePaginate'
 
 export interface ReportsContextProps extends UsePaginate<ReportSearchResult, ReportSearch & PaginatedFilters> {
   extract: (_?: ReportSearch) => Promise<void>
@@ -20,16 +19,10 @@ const defaultContext: Partial<ReportsContextProps> = {}
 const ReportsContext = React.createContext<ReportsContextProps>(defaultContext as ReportsContextProps)
 
 export const ReportsProvider = ({api, children}: Props) => {
-  const _paginate = usePaginate<ReportSearchResult, ReportSearch & PaginatedFilters>(
-    mapPromise({
-      promise: api.secured.reports.search,
-      mapThen: mapSdkPaginate,
-    }),
-    {
-      limit: 10,
-      offset: 0,
-    },
-  )
+  const _paginate = useScPaginate<ReportSearchResult, ReportSearch & PaginatedFilters>(api.secured.reports.search, {
+    limit: 10,
+    offset: 0,
+  })
 
   return (
     <ReportsContext.Provider

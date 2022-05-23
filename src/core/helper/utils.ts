@@ -105,19 +105,6 @@ export const stringToBoolean = (str?: string): boolean | undefined => {
   }
 }
 
-export const mapSdkPaginate = <T>(_: ApiPaginate<T>): Paginate<T> => ({
-  data: _.entities,
-  totalSize: _.totalCount,
-})
-
-export const mapPromiseSdkPaginate = <F extends (...args: any[]) => Promise<ApiPaginate<any>>>(
-  promise: F,
-): PromiseFnResult<F> extends ApiPaginate<infer U> ? (...args: Parameters<F>) => Promise<Paginate<U>> : F =>
-  mapPromise({
-    promise: promise,
-    mapThen: mapSdkPaginate,
-  }) as any
-
 export const openInNew = (path: string) => {
   window.open((config.useHashRouter ? '/#' : '') + path, '_blank')
 }

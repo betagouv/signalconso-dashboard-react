@@ -221,6 +221,8 @@ export const fr = {
     problem: 'Problème',
     creation: 'Création',
     creationDate: 'Date de création',
+    lastAttempt: `Dernière tentative`,
+    lastValidationDate: `Dernière validation`,
     reportsDivision: 'Répartition des signalements',
     reportsDivisionDesc: `   
     <div>Répartition des signalements :</div>
@@ -441,10 +443,11 @@ export const fr = {
     validateLetterSentDesc:
       'Les courriers seront considérés envoyés pour les entreprises sélectionnées. Cette action est irrévocable.',
     dgccrfUsers: 'Agents DGCCRF',
+    dgccrfUsersPending: 'Agents en attente',
+    consumers: 'Consomateurs',
     lastReports: `Derniers signalements`,
     invitationDate: "Date d'invitation",
     connectedUnder3Months: 'Connecté dans les 3 derniers mois',
-    pendingInvitation: 'Invitation en attente',
     users_invite_dialog_title: 'Inviter un agent DGCCRF',
     enableAll: `Tout activer`,
     disable: `Désactiver`,

@@ -55,6 +55,7 @@ import {Matomo} from './core/plugins/Matomo'
 import {apiPublicSdk, makeSecuredSdk, SignalConsoApiSdk} from './core/ApiSdkInstance'
 import {Stats} from './feature/Stats/Stats'
 import {Admin} from './feature/Admin/Admin'
+import {ConsumerEmailValidationProvider} from './core/context/EmailValidationContext'
 
 const useStyles = makeStyles((t: Theme) => ({
   '@global': {
@@ -207,6 +208,7 @@ const AppLogged = () => {
         _ => <AsyncFileProvider api={apiSdk} children={_} />,
         _ => <CompaniesProvider api={apiSdk} children={_} />,
         _ => <UsersProvider api={apiSdk} children={_} />,
+        _ => <ConsumerEmailValidationProvider api={apiSdk} children={_} />,
         _ => <ReportedWebsitesProvider api={apiSdk} children={_} />,
         _ => <UnregistredWebsitesProvider api={apiSdk} children={_} />,
         _ => <SubscriptionsProvider api={apiSdk} children={_} />,
