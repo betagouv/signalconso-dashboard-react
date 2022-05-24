@@ -87,7 +87,7 @@ export const Users = () => {
       <PageTabs>
         <PageTab to={siteMap.logged.users_dgccrf_all} label={m.dgccrfUsers} />
         <PageTab to={siteMap.logged.users_dgccrf_pending} label={m.dgccrfUsersPending} />
-        <PageTab to={siteMap.logged.users_consumer_validation} label={m.consumers} />
+        <PageTab to={siteMap.logged.users_consumer_validation} label={m.consumersPending} />
       </PageTabs>
       <Switch>
         <Redirect exact from={path} to={siteMap.logged.users_dgccrf_all} />
