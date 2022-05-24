@@ -97,7 +97,7 @@ export const ConsumerListPending = () => {
               <>
                 <Box sx={{display: 'flex', justifyContent: 'flex-end'}}>
                   {_.lastValidationDate !== undefined || _validate.isNowValid(_.email) ? (
-                    <Tooltip title={formatDate(_.lastValidationDate ?? new Date())}>
+                    <Tooltip title={formatDate(_.lastValidationDate ?? new Date())} placement="left">
                       <span>
                         <IconBtn disabled={true}>
                           <Icon sx={{color: t => t.palette.success.light}}>check_circle</Icon>
@@ -105,7 +105,7 @@ export const ConsumerListPending = () => {
                       </span>
                     </Tooltip>
                   ) : (
-                    <Tooltip title={m.validate}>
+                    <Tooltip title={m.validate} placement="left">
                       <IconBtn
                         color={_validate.hasError(_.email) ? 'error' : 'primary'}
                         loading={_validate.isLoading(_.email)}
