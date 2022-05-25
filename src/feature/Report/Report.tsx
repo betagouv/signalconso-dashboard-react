@@ -4,7 +4,7 @@ import {useParams} from 'react-router'
 import {useI18n} from '../../core/i18n'
 import {Panel} from '../../shared/Panel'
 import {useReportContext} from '../../core/context/ReportContext'
-import {EventActionValues, FileOrigin, Id, Report, ReportEvent} from '@signal-conso/signalconso-api-sdk-js'
+import {EventActionValues, EventType, FileOrigin, Id, Report, ReportEvent} from '@signal-conso/signalconso-api-sdk-js'
 import {Grid, Tab, Tabs, Theme, Tooltip} from '@mui/material'
 import makeStyles from '@mui/styles/makeStyles'
 import {useCssUtils} from '../../core/helper/useCssUtils'
@@ -28,13 +28,15 @@ const useStyles = makeStyles((t: Theme) => ({
   },
 }))
 
+let CONSO : EventType = 'CONSO' as const;
+
 export const creationReportEvent = (report: Report): ReportEvent =>
   Object.freeze({
     data: {
       id: 'dummy',
       details: {} as any,
       reportId: report.id,
-      eventType: 'CONSO',
+      eventType: CONSO,
       creationDate: report.creationDate,
       action: EventActionValues.Creation,
     },
