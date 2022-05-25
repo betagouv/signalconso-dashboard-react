@@ -28,12 +28,13 @@ interface Accesses {
   email?: string
   level: CompanyAccessLevel
   tokenId?: Id
+  token?: string
   editable?: Boolean
   isHeadOffice?: Boolean
 }
 
 export const CompanyAccesses = () => {
-  const {siret} = useParams<{siret: string}>()
+  const {siret} = useParams<{ siret: string }>()
 
   const _crudAccess = useCompanyAccess(useLogin().apiSdk, siret).crudAccess
   const _crudToken = useCompanyAccess(useLogin().apiSdk, siret).crudToken
@@ -43,6 +44,12 @@ export const CompanyAccesses = () => {
   const cssUtils = useCssUtils()
   const {connectedUser} = useLogin()
   const {toastSuccess, toastError} = useToast()
+
+  const copyActivationLink = (token: string) => {
+    let activationLink = window.location.host + '/#/entreprise/rejoindre/' + siret + '?token=' + token
+    navigator.clipboard.writeText(activationLink)
+      .then(_ => toastSuccess(m.addressCopied))
+  }
 
   const accesses: Accesses[] = useMemo(() => {
     return [
@@ -54,7 +61,7 @@ export const CompanyAccesses = () => {
         editable: _.editable,
         isHeadOffice: _.isHeadOffice,
       })),
-      ...(_crudToken.list ?? []).map(_ => ({email: _.emailedTo, level: _.level, tokenId: _.id})),
+      ...(_crudToken.list ?? []).map(_ => ({email: _.emailedTo, level: _.level, tokenId: _.id, token: _.token})),
     ]
   }, [_crudAccess.list, _crudToken.list])
 
@@ -75,13 +82,14 @@ export const CompanyAccesses = () => {
     if (accesses?.find(_ => _.email === email)) {
       toastError({message: m.invitationToProAlreadySent(email)})
     } else {
-      await _crudToken.create({}, email, level)
-      toastSuccess(m.userInvitationSent)
+      await  _crudToken.create({}, email, level)
+        .then(() => toastSuccess(m.userInvitationSent))
+        .then(() => window.location.reload())
     }
   }
 
   return (
-    <Page size="s">
+    <Page size="m">
       <PageTitle
         action={
           !connectedUser.isDGCCRF && (
@@ -177,6 +185,54 @@ export const CompanyAccesses = () => {
                     </ScButton>
                   </Tooltip>
                 </ScDialog>
+              ),
+            },
+            {
+              id: 'resend',
+              head: '',
+              className: cssUtils.marginRight,
+              render: _ => (
+                <>
+                  {
+                    connectedUser.isAdmin && !(_.name) && (
+                      fromNullable(_.email)
+                        .map(email => (
+                          <ScDialog
+                            title={m.resendCompanyAccessToken(_.email)}
+                            onConfirm={(event, close) =>
+                              _crudToken.create({preventInsert: true}, email, _.level)
+                                .then(_ => close())
+                                .then(_ => toastSuccess(m.userInvitationSent))}
+                            maxWidth="xs"
+                          >
+                            <IconBtn>
+                              <Icon>send</Icon>
+                            </IconBtn>
+                          </ScDialog>
+                        ))
+                        .getOrElse(<></>)
+                    )}
+                </>
+              ),
+            },
+            {
+              id: 'copy',
+              head: '',
+              className: cssUtils.txtRight,
+              render: _ => (
+                <>
+                  {
+                    connectedUser.isAdmin && !(_.name) && (
+                      fromNullable(_.token)
+                        .map(token => (
+                            <IconBtn onClick={(_) =>
+                              copyActivationLink(token)}>
+                              <Icon>content_copy</Icon>
+                            </IconBtn>
+                        ))
+                        .getOrElse(<></>)
+                    )}
+                </>
               ),
             },
             {

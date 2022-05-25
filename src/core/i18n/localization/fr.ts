@@ -497,6 +497,7 @@ export const fr = {
     positionComparedToLastMonth: `Position vs mois précédent`,
     deleteCompanyAccess: (name: string) => `Supprimer l\'accès à ${name} ?`,
     deleteCompanyAccessToken: (email?: string) => `Annuler l'invitation  ${email ? 'à ' + email + ' ' : ''}?`,
+    resendCompanyAccessToken: (email?: string) => `Renvoyer l'invitation  ${email ? 'à ' + email + ' ' : ''}?`,
     resetPasswordNotFound: `Le lien permettant de demander un nouveau mot de passe n'est pas valide, veuillez refaire une demande.`,
     resetPasswordSuccess: `Votre mot de passe est maintenant créé, vous pouvez vous connecter pour accéder à votre espace entreprise.`,
     loginIssueTip: `En cas de difficultés, vous pouvez contacter par email le service <a href="mailto:${config.contactEmail}">${config.contactEmail}</a>.`,
