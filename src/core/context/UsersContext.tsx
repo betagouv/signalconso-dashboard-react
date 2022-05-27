@@ -1,12 +1,12 @@
 import * as React from 'react'
 import {ReactNode, useContext} from 'react'
-import {UseFetcher, useFetcher, usePaginate, UsePaginate} from '@alexandreannic/react-hooks-lib/lib'
+import {UseFetcher, useFetcher, UsePaginate} from '@alexandreannic/react-hooks-lib/lib'
 import {ApiError, User, UserSearch} from '@signal-conso/signalconso-api-sdk-js'
-import {mapPromiseSdkPaginate} from '../helper/utils'
 import {SignalConsoApiSdk} from '../ApiSdkInstance'
+import {useScPaginate} from '../../shared/usePaginate/usePaginate'
 
 export interface UsersContextProps {
-  dgccrf: UsePaginate<User, UserSearch>
+  searchDgccrf: UsePaginate<User, UserSearch>
   dgccrfPending: UseFetcher<SignalConsoApiSdk['secured']['user']['fetchPendingDGCCRF'], ApiError>
   invite: UseFetcher<SignalConsoApiSdk['secured']['user']['inviteDGCCRF'], ApiError>
   changePassword: UseFetcher<SignalConsoApiSdk['secured']['user']['changePassword'], ApiError>
@@ -25,7 +25,7 @@ const defaultContext: Partial<UsersContextProps> = {}
 const UsersContext = React.createContext<UsersContextProps>(defaultContext as UsersContextProps)
 
 export const UsersProvider = ({api, children}: Props) => {
-  const dgccrf = usePaginate<User, UserSearch, ApiError>(mapPromiseSdkPaginate(api.secured.user.fetchDGCCRF), {
+  const searchDgccrf = useScPaginate<User, UserSearch, ApiError>(api.secured.user.fetchDGCCRF, {
     limit: 10,
     offset: 0,
   })
@@ -35,11 +35,10 @@ export const UsersProvider = ({api, children}: Props) => {
   const invite = useFetcher(api.secured.user.inviteDGCCRF)
   const fetchTokenInfo = useFetcher(api.public.user.fetchTokenInfo)
   const getConnectedUser = useFetcher(api.secured.user.fetchConnectedUser)
-
   return (
     <UsersContext.Provider
       value={{
-        dgccrf,
+        searchDgccrf,
         dgccrfPending,
         invite,
         changePassword,

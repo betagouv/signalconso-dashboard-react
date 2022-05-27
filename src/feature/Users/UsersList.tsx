@@ -14,7 +14,7 @@ import {User} from '@signal-conso/signalconso-api-sdk-js'
 
 export const UsersList = () => {
   const {m} = useI18n()
-  const _users = useUsersContext().dgccrf
+  const _users = useUsersContext().searchDgccrf
   const cssUtils = useCssUtils()
   const {toastError} = useToast()
 

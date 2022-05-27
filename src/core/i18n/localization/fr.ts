@@ -221,6 +221,8 @@ export const fr = {
     problem: 'Problème',
     creation: 'Création',
     creationDate: 'Date de création',
+    lastAttempt: `Dernière tentative`,
+    lastValidationDate: `Dernière validation`,
     reportsDivision: 'Répartition des signalements',
     reportsDivisionDesc: `   
     <div>Répartition des signalements :</div>
@@ -319,7 +321,7 @@ export const fr = {
     menu_admin: 'Administration',
     menu_stats: 'Présentation',
     menu_exports: 'Mes exports',
-    menu_users: 'Utilisateurs DGCCRF',
+    menu_users: 'Utilisateurs',
     menu_subscriptions: 'Abonnements',
     menu_settings: 'Paramètres',
     category: 'Catégorie',
@@ -441,10 +443,11 @@ export const fr = {
     validateLetterSentDesc:
       'Les courriers seront considérés envoyés pour les entreprises sélectionnées. Cette action est irrévocable.',
     dgccrfUsers: 'Agents DGCCRF',
+    dgccrfUsersPending: 'Agents en attente',
+    consumersPending: 'Consomateurs non validé',
     lastReports: `Derniers signalements`,
     invitationDate: "Date d'invitation",
     connectedUnder3Months: 'Connecté dans les 3 derniers mois',
-    pendingInvitation: 'Invitation en attente',
     users_invite_dialog_title: 'Inviter un agent DGCCRF',
     enableAll: `Tout activer`,
     disable: `Désactiver`,
@@ -494,6 +497,7 @@ export const fr = {
     positionComparedToLastMonth: `Position vs mois précédent`,
     deleteCompanyAccess: (name: string) => `Supprimer l\'accès à ${name} ?`,
     deleteCompanyAccessToken: (email?: string) => `Annuler l'invitation  ${email ? 'à ' + email + ' ' : ''}?`,
+    resendCompanyAccessToken: (email?: string) => `Renvoyer l'invitation  ${email ? 'à ' + email + ' ' : ''}?`,
     resetPasswordNotFound: `Le lien permettant de demander un nouveau mot de passe n'est pas valide, veuillez refaire une demande.`,
     resetPasswordSuccess: `Votre mot de passe est maintenant créé, vous pouvez vous connecter pour accéder à votre espace entreprise.`,
     loginIssueTip: `En cas de difficultés, vous pouvez contacter par email le service <a href="mailto:${config.contactEmail}">${config.contactEmail}</a>.`,

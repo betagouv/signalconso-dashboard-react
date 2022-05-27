@@ -66,7 +66,7 @@ export const fnSwitch: FnSwitch = (value, cases, defaultCase?) => {
   const res = cases[value]
   if (!res && !defaultCase) {
     throw new Error(
-      `[fnSwitch] ${value} does not match any of theses cases ${Object.keys(cases).join(
+      `[fnSwitch] ${String(value)} does not match any of theses cases ${Object.keys(cases).join(
         ', ',
       )} defaultCase parameter is not provided.`,
     )
@@ -104,19 +104,6 @@ export const stringToBoolean = (str?: string): boolean | undefined => {
     else if (str === 'false') return false
   }
 }
-
-export const mapSdkPaginate = <T>(_: ApiPaginate<T>): Paginate<T> => ({
-  data: _.entities,
-  totalSize: _.totalCount,
-})
-
-export const mapPromiseSdkPaginate = <F extends (...args: any[]) => Promise<ApiPaginate<any>>>(
-  promise: F,
-): PromiseFnResult<F> extends ApiPaginate<infer U> ? (...args: Parameters<F>) => Promise<Paginate<U>> : F =>
-  mapPromise({
-    promise: promise,
-    mapThen: mapSdkPaginate,
-  }) as any
 
 export const openInNew = (path: string) => {
   window.open((config.useHashRouter ? '/#' : '') + path, '_blank')
