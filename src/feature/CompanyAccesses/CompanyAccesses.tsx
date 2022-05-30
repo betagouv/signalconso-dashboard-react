@@ -205,9 +205,11 @@ export const CompanyAccesses = () => {
                                 .then(_ => toastSuccess(m.userInvitationSent))}
                             maxWidth="xs"
                           >
-                            <IconBtn>
-                              <Icon>send</Icon>
-                            </IconBtn>
+                            <Tooltip title={m.resendInvite}>
+                              <IconBtn>
+                                <Icon>send</Icon>
+                              </IconBtn>
+                            </Tooltip>
                           </ScDialog>
                         ))
                         .getOrElse(<></>)
@@ -225,10 +227,12 @@ export const CompanyAccesses = () => {
                     connectedUser.isAdmin && !(_.name) && (
                       fromNullable(_.token)
                         .map(token => (
+                          <Tooltip title={m.copyInviteLink}>
                             <IconBtn onClick={(_) =>
                               copyActivationLink(token)}>
                               <Icon>content_copy</Icon>
                             </IconBtn>
+                          </Tooltip>
                         ))
                         .getOrElse(<></>)
                     )}
@@ -251,9 +255,11 @@ export const CompanyAccesses = () => {
                         maxWidth="xs"
                         confirmLabel={m.delete}
                       >
+                        <Tooltip title={m.delete}>
                         <IconBtn loading={_crudAccess.removing(userId)}>
                           <Icon>delete</Icon>
                         </IconBtn>
+                        </Tooltip>
                       </ScDialog>
                     ))
                     .getOrElse(

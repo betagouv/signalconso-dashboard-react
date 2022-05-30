@@ -11,12 +11,15 @@ import {useToast} from '../../core/toast'
 import {DebouncedInput} from '../../shared/DebouncedInput/DebouncedInput'
 import {TrueFalseUndefined} from '../../shared/TrueFalseUndefined/TrueFalseUndefined'
 import {User} from '@signal-conso/signalconso-api-sdk-js'
+import {ScDialog} from "../../shared/Confirm/ScDialog";
+import {IconBtn} from "mui-extension";
 
 export const UsersList = () => {
-  const {m} = useI18n()
+  const {m, formatDate} = useI18n()
   const _users = useUsersContext().searchDgccrf
+  const _validateEmail = useUsersContext().forceValidateEmail
   const cssUtils = useCssUtils()
-  const {toastError} = useToast()
+  const {toastError, toastSuccess} = useToast()
 
   useEffect(() => {
     _users.fetch()
@@ -86,13 +89,39 @@ export const UsersList = () => {
             render: _ => _.lastName,
           },
           {
+            head: m.lastValidationDate,
+            id: 'lastValidation',
+            render: _ => formatDate(_.lastEmailValidation),
+          },
+          {
             head: (
               <Tooltip title={m.connectedUnder3Months}>
                 <span>{m.active}</span>
               </Tooltip>
             ),
-            id: 'lastEmailValidation',
-            render: _ => User.isUserActive(_) && <Icon className={cssUtils.colorSuccess}>check_circle</Icon>,
+            id: 'active',
+            render: _ =>
+              (<ScDialog
+                title={m.activateUser(_.email)}
+                onConfirm={(event, close) =>
+                  _validateEmail.fetch({}, _.email)
+                    .then(_ => _users.fetch())
+                    .then(_ => close())
+                    .then(_ => toastSuccess(m.userValidationDone))}
+                maxWidth="xs"
+              >
+                {User.isUserActive(_) ? (<Tooltip title={m.extendValidation}>
+                  <IconBtn>
+                    <Icon className={cssUtils.colorSuccess}>check_circle</Icon>
+                  </IconBtn>
+                </Tooltip>)
+                  :
+                  <Tooltip title={m.validate}>
+                  <IconBtn>
+                    <Icon>task_alt</Icon>
+                  </IconBtn>
+                  </Tooltip>}
+              </ScDialog>)
           },
         ]}
       />
