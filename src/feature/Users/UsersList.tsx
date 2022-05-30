@@ -111,11 +111,15 @@ export const UsersList = () => {
                 maxWidth="xs"
               >
                 {User.isUserActive(_) ? (<Tooltip title={m.extendValidation}>
-                  <Icon className={cssUtils.colorSuccess}>check_circle</Icon>
+                  <IconBtn>
+                    <Icon className={cssUtils.colorSuccess}>check_circle</Icon>
+                  </IconBtn>
                 </Tooltip>)
                   :
                   <Tooltip title={m.validate}>
+                  <IconBtn>
                     <Icon>task_alt</Icon>
+                  </IconBtn>
                   </Tooltip>}
               </ScDialog>)
           },
