@@ -127,10 +127,7 @@ const _ReportsFilters = ({filters, updateFilters, children}: _ReportsFiltersProp
               <DialogInputRow
                 label={
                   <>
-                    <div>{m.identifiedCompany}</div>
-                    <Txt size="small" color="disabled" block style={{marginTop: -14}}>
-                      ({m.siret})
-                    </Txt>
+                    <div>{m.siretFound}</div>
                   </>
                 }
               >

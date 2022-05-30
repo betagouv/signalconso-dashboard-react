@@ -216,6 +216,7 @@ export const fr = {
     reportConsumerWantToBeAnonymous: 'Le consommateur souhaite rester anonyme',
     cannotExportMoreReports: (reportCount: number) => `Impossible d'exporter plus de ${reportCount} signalements.`,
     siret: 'SIRET',
+    siretFound: 'SIRET identifié',
     postalCodeShort: 'CP',
     files: 'Fichiers',
     problem: 'Problème',

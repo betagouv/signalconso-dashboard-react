@@ -22,8 +22,8 @@ export const DialogInputRow = ({label, children}: DialogInputRowProps) => {
       alignItems: 'center',
       minHeight: 50,
       color: t.palette.text.secondary,
-      minWidth: 160,
-      maxWidth: 160,
+      minWidth: 130,
+      maxWidth: 130,
       flexWrap: 'wrap',
     },
     content: {
