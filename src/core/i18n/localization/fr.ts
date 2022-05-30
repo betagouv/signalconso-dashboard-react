@@ -273,6 +273,7 @@ export const fr = {
     reportsCountPhysique: 'Nombre de signalements établissement physique',
     responsesCount: 'Nombre de réponses',
     emailConsumer: 'Email conso.',
+    consoAnonyme: 'Conso. anonyme',
     reportsProProcessed: 'Traitement des signalements par les pros',
     reportsProProcessedDesc: `   
     <div>Pourcentage du traitement des signalements visibles par les professionnels (une partie des signalements ne sont pas transmis aux professionnels) sur le total des signalements</div>
