@@ -3,7 +3,7 @@ import {ReportTag} from '@signal-conso/signalconso-api-sdk-js'
 import {Enum} from '@alexandreannic/ts-utils/lib/common/enum/Enum'
 import {useI18n} from '../../core/i18n'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
-import {useEffect, useState} from 'react'
+import {useEffect, useMemo, useState} from 'react'
 
 export type SelectTagsMenuValue = 'included' | 'excluded' | undefined
 
@@ -53,6 +53,13 @@ const TagButton = ({
 
 export const SelectTagsMenu = ({onClose, onChange, open, value, anchorEl}: ScSelectTagsMenuProps) => {
   const {m} = useI18n()
+
+  const tags = useMemo(() => {
+    const reponseConsoTag = ReportTag.ReponseConso
+    const tagsWithoutReponseConso = (Enum.keys(ReportTag) as ReportTag[]).filter(_ => _ !== reponseConsoTag)
+    const reorderedTags = [reponseConsoTag, ...tagsWithoutReponseConso]
+    return reorderedTags
+  }, [])
   const [innerValue, setInnerValue] = useState<SelectTagsMenuValues | undefined>()
 
   useEffect(() => {
