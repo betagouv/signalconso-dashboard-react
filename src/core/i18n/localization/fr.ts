@@ -216,6 +216,7 @@ export const fr = {
     reportConsumerWantToBeAnonymous: 'Le consommateur souhaite rester anonyme',
     cannotExportMoreReports: (reportCount: number) => `Impossible d'exporter plus de ${reportCount} signalements.`,
     siret: 'SIRET',
+    siretFound: 'SIRET identifié',
     postalCodeShort: 'CP',
     files: 'Fichiers',
     problem: 'Problème',
@@ -272,6 +273,7 @@ export const fr = {
     reportsCountPhysique: 'Nombre de signalements établissement physique',
     responsesCount: 'Nombre de réponses',
     emailConsumer: 'Email conso.',
+    consoAnonyme: 'Conso. anonyme',
     reportsProProcessed: 'Traitement des signalements par les pros',
     reportsProProcessedDesc: `   
     <div>Pourcentage du traitement des signalements visibles par les professionnels (une partie des signalements ne sont pas transmis aux professionnels) sur le total des signalements</div>

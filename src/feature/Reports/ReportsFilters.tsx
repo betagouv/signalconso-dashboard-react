@@ -13,7 +13,6 @@ import {TrueFalseUndefined} from '../../shared/TrueFalseUndefined/TrueFalseUndef
 import {useCssUtils} from '../../core/helper/useCssUtils'
 import {SelectCountries} from '../../shared/SelectCountries/SelectCountries'
 import {SelectActivityCode} from '../../shared/SelectActivityCode/SelectActivityCode'
-import {Txt} from 'mui-extension/lib/Txt/Txt'
 import {ScMultiSelect} from 'shared/Select/MultiSelect'
 import {ScMenuItem} from '../../shared/MenuItem/ScMenuItem'
 import {SelectTags} from '../../shared/SelectTags/SelectTags'
@@ -124,16 +123,7 @@ const _ReportsFilters = ({filters, updateFilters, children}: _ReportsFiltersProp
         {_category.entity && (
           <>
             <DialogContent>
-              <DialogInputRow
-                label={
-                  <>
-                    <div>{m.identifiedCompany}</div>
-                    <Txt size="small" color="disabled" block style={{marginTop: -14}}>
-                      ({m.siret})
-                    </Txt>
-                  </>
-                }
-              >
+              <DialogInputRow label={m.siretFound}>
                 <Controller
                   name="hasCompany"
                   defaultValue={filters.hasCompany}
@@ -295,6 +285,21 @@ const _ReportsFilters = ({filters, updateFilters, children}: _ReportsFiltersProp
               </DialogInputRow>
               <DialogInputRow label={m.emailConsumer}>
                 <ScInput fullWidth {...register('email')} defaultValue={filters.email ?? ''} />
+              </DialogInputRow>
+              <DialogInputRow label={m.consoAnonyme}>
+                <Controller
+                  name="contactAgreement"
+                  defaultValue={!filters.contactAgreement}
+                  control={control}
+                  render={({field: {value, onChange, ...otherField}}) => (
+                    <TrueFalseUndefined
+                      {...otherField}
+                      value={!value}
+                      onChange={_ => onChange(_ === undefined ? undefined : !_)}
+                      className={cssUtils.marginTop}
+                    />
+                  )}
+                />
               </DialogInputRow>
             </DialogContent>
             <DialogActions>
