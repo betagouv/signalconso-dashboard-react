@@ -37,13 +37,11 @@ export const TrueFalseUndefined = forwardRef(({gutter, value, onChange, label, .
       {...props}
       exclusive
       sx={
-        gutter
-          ? {
-              mt: 1,
-              mb: 0.5,
-              display: 'block',
-            }
-          : {}
+        gutter ? {
+          mt: 1,
+          mb: 0.5,
+          display: 'block',
+        } : {}
       }
       size="small"
       color="primary"

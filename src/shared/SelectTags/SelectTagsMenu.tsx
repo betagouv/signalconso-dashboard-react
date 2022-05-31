@@ -53,7 +53,6 @@ const TagButton = ({
 
 export const SelectTagsMenu = ({onClose, onChange, open, value, anchorEl}: ScSelectTagsMenuProps) => {
   const {m} = useI18n()
-
   const [innerValue, setInnerValue] = useState<SelectTagsMenuValues | undefined>()
 
   useEffect(() => {
@@ -75,14 +74,7 @@ export const SelectTagsMenu = ({onClose, onChange, open, value, anchorEl}: ScSel
   return (
     <Menu anchorEl={anchorEl} open={open} onClose={onClose}>
       {(Enum.keys(ReportTag) as ReportTag[]).map(tag => (
-        <MenuItem
-          key={tag}
-          // sx={iff(ReportTag.ReponseConso, {
-          //   excluded: {background: (t: Theme) => alpha(t.palette.error.main, .4)},
-          //   included: {background: (t: Theme) => alpha(t.palette.success.light, .4)},
-          //   notdefined: {},
-          // })}
-        >
+        <MenuItem key={tag}>
           <TagButton
             status={switchTagValue(tag, {
               excluded: 'inactive',
