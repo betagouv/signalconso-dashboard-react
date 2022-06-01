@@ -23,15 +23,13 @@ const useStyles = makeStyles((t: Theme) => ({
 }))
 
 export const DatatableColumnToggle = ({className, title, columns, hiddenColumns, onChange}: Props) => {
+  const css = useStyles()
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget)
   }
 
-  const css = useStyles()
-
-  // console.log(hiddenColumns, columns)
   return (
     <>
       <Tooltip title={title ?? ''}>

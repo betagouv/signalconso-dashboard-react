@@ -126,7 +126,6 @@ export const Reports = ({}) => {
     ),
   })
 
-
   useEffect(() => {
     _reports.updateFilters({..._reports.initialFilters, ...queryString.get()})
   }, [])

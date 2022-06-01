@@ -59,9 +59,8 @@ export const muiTheme = (dark?: boolean): Theme => {
       borderRadius: 10,
     },
     typography: {
-      // fontSize,
+      fontSize,
       fontFamily,
-      // fontFamily: 'Evolventa, sans-serif',
       fontWeightBold: 500,
     },
   })
