@@ -7,6 +7,7 @@ import {useTimeout} from 'mui-extension/lib/core/utils/useTimeout'
 import {mapFor} from '@alexandreannic/ts-utils/lib/common'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
 import {useI18n} from '../../core/i18n'
+import {styleUtils} from '../../core/theme'
 
 export interface HorizontalBarChartData {
   label: ReactNode
@@ -29,6 +30,7 @@ const useStyles = makeStyles((t: Theme) => ({
     margin: t.spacing(0.5, 0, 0.5, 0),
   },
   label: {
+    alignSelf: 'flex-end',
     textAlign: 'right',
     padding: t.spacing(0, 2, 0, 0),
     textOverflow: 'ellipsis',
@@ -48,13 +50,13 @@ const useStyles = makeStyles((t: Theme) => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'flex-end',
-    minHeight: 26,
-    backgroundColor: t.palette.primary.main,
+    minHeight: 24,
+    borderBottom: `4px solid ${t.palette.primary.main}`,
+    color: t.palette.primary.main,
   },
   bar_label: {
-    color: t.palette.primary.contrastText,
+    fontSize: styleUtils(t).fontSize.small,
     fontWeight: t.typography.fontWeightBold,
-    marginRight: t.spacing(1),
   },
   legend: {
     position: 'relative',
@@ -112,8 +114,8 @@ export const HorizontalBarChart = ({data, grid, width = 200}: Props) => {
                 }
               >
                 <div className={css.barContainer}>
-                  <div className={css.bar} style={{width: appeared ? `${percentOfMax}%` : 0, backgroundColor: item.color}}>
-                    {percentOfMax > 40 && <div className={css.bar_label}>{formatLargeNumber(item.value)}</div>}
+                  <div className={css.bar} style={{width: appeared ? `calc(${percentOfMax * .9}%)` : 0, color: item.color, borderColor: item.color}}>
+                    {percentOfMax > 10 && <div className={css.bar_label}>{formatLargeNumber(item.value)}</div>}
                   </div>
                 </div>
               </LightTooltip>
