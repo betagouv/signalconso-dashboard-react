@@ -1,29 +1,16 @@
 import {Page, PageTitle} from '../../shared/Layout'
 import {useI18n} from '../../core/i18n'
 import {useReportsContext} from '../../core/context/ReportsContext'
-import {
-  cleanObject,
-  getHostFromUrl,
-  Report,
-  ReportingDateLabel,
-  ReportSearch,
-  ReportTag,
-} from '@signal-conso/signalconso-api-sdk-js'
+import {cleanObject, getHostFromUrl, Id, Report, ReportingDateLabel, ReportSearch, ReportTag} from '@signal-conso/signalconso-api-sdk-js'
 import {Panel} from '../../shared/Panel'
 import {useCssUtils} from '../../core/helper/useCssUtils'
 import {Datatable} from '../../shared/Datatable/Datatable'
 import {fromNullable, some} from 'fp-ts/lib/Option'
-import {alpha, Badge, Button, Chip, Grid, Icon, Theme, Tooltip} from '@mui/material'
+import {alpha, Badge, Button, Checkbox, Chip, Grid, Icon, Theme, Tooltip} from '@mui/material'
 import makeStyles from '@mui/styles/makeStyles'
 import {classes, textOverflowMiddleCropping} from '../../core/helper/utils'
 import React, {useEffect, useMemo} from 'react'
-import {
-  mapArrayFromQuerystring,
-  mapBooleanFromQueryString,
-  mapDateFromQueryString,
-  mapDatesToQueryString,
-  useQueryString,
-} from '../../core/helper/useQueryString'
+import {mapArrayFromQuerystring, mapBooleanFromQueryString, mapDateFromQueryString, mapDatesToQueryString, useQueryString} from '../../core/helper/useQueryString'
 import {NavLink} from 'react-router-dom'
 import {SelectDepartments} from '../../shared/SelectDepartments/SelectDepartments'
 import {Fender, IconBtn} from 'mui-extension/lib'
@@ -42,7 +29,9 @@ import {ReportDetailValues} from '../../shared/ReportDetailValues/ReportDetailVa
 import {styleUtils} from '../../core/theme'
 import compose from '../../core/helper/compose'
 import {Alert} from 'mui-extension'
-import {difference, intersection} from '../../core/lodashNamedExport'
+import {intersection} from '../../core/lodashNamedExport'
+import {useSetState} from '@alexandreannic/react-hooks-lib/lib'
+import {ReportsSelectedToolbar} from './ReportsSelectedToolbar'
 
 const useStyles = makeStyles((t: Theme) => ({
   toolbar: {},
@@ -124,6 +113,7 @@ interface ReportSearchQs {
 export const Reports = ({}) => {
   const {m, formatDate} = useI18n()
   const _reports = useReportsContext()
+  const selectReport = useSetState<Id>()
   const cssUtils = useCssUtils()
   const css = useStyles()
   const {toastError} = useToast()
@@ -135,6 +125,7 @@ export const Reports = ({}) => {
       mapBooleanFromQueryString(['hasCompany', 'hasForeignCountry', 'hasPhone', 'hasWebsite']),
     ),
   })
+
 
   useEffect(() => {
     _reports.updateFilters({..._reports.initialFilters, ...queryString.get()})
@@ -176,40 +167,43 @@ export const Reports = ({}) => {
           </Alert>
         </Panel>
       )}
-      <Panel>
+      <Panel sx={{overflow: 'visible'}}>
         <Datatable
           id="reports"
           header={
-            <Grid container spacing={1}>
-              <Grid item xs={12} md={6}>
-                <DebouncedInput
-                  value={_reports.filters.departments}
-                  onChange={departments => _reports.updateFilters(prev => ({...prev, departments}))}
-                >
-                  {(value, onChange) => (
-                    <SelectDepartments
-                      label={m.departments}
-                      value={value}
-                      onChange={onChange}
-                      className={cssUtils.marginRight}
-                      fullWidth
-                    />
-                  )}
-                </DebouncedInput>
+            <>
+              <Grid container spacing={1}>
+                <Grid item xs={12} md={6}>
+                  <DebouncedInput
+                    value={_reports.filters.departments}
+                    onChange={departments => _reports.updateFilters(prev => ({...prev, departments}))}
+                  >
+                    {(value, onChange) => (
+                      <SelectDepartments
+                        label={m.departments}
+                        value={value}
+                        onChange={onChange}
+                        className={cssUtils.marginRight}
+                        fullWidth
+                      />
+                    )}
+                  </DebouncedInput>
+                </Grid>
+                <Grid item xs={12} md={6}>
+                  <DebouncedInput<[Date | undefined, Date | undefined]>
+                    value={[_reports.filters.start, _reports.filters.end]}
+                    onChange={([start, end]) => {
+                      _reports.updateFilters(prev => ({...prev, start: start ?? prev.start, end: end ?? prev.end}))
+                    }}
+                  >
+                    {(value, onChange) => (
+                      <PeriodPicker value={value} onChange={onChange} className={cssUtils.marginRight} fullWidth />
+                    )}
+                  </DebouncedInput>
+                </Grid>
               </Grid>
-              <Grid item xs={12} md={6}>
-                <DebouncedInput<[Date | undefined, Date | undefined]>
-                  value={[_reports.filters.start, _reports.filters.end]}
-                  onChange={([start, end]) => {
-                    _reports.updateFilters(prev => ({...prev, start: start ?? prev.start, end: end ?? prev.end}))
-                  }}
-                >
-                  {(value, onChange) => (
-                    <PeriodPicker value={value} onChange={onChange} className={cssUtils.marginRight} fullWidth />
-                  )}
-                </DebouncedInput>
-              </Grid>
-            </Grid>
+              <ReportsSelectedToolbar ids={selectReport.toArray()} />
+            </>
           }
           actions={
             <>
@@ -261,6 +255,29 @@ export const Reports = ({}) => {
           total={_reports.list?.totalSize}
           showColumnsToggle={true}
           columns={[
+            {
+              id: 'checkbox',
+              head: (() => {
+                const allChecked = selectReport.size === _reports.list?.data.length
+                return (
+                  <Checkbox
+                    indeterminate={selectReport.size > 0 && !allChecked}
+                    checked={allChecked}
+                    onChange={() => {
+                      if (allChecked) {
+                        selectReport.clear()
+                      } else {
+                        selectReport.add(_reports.list!.data!.map(_ => _.report.id))
+                      }
+                    }}
+                  />
+                )
+              })(),
+              style: {width: 0},
+              render: _ => (
+                <Checkbox checked={selectReport.has(_.report.id)} onChange={() => selectReport.toggle(_.report.id)} />
+              ),
+            },
             {
               id: 'companyPostalCode',
               head: m.postalCodeShort,
