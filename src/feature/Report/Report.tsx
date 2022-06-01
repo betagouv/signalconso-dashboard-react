@@ -21,6 +21,7 @@ import {ReportCompany} from './ReportCompany/ReportCompany'
 import {ReportDescription} from './ReportDescription'
 import {useEventContext} from '../../core/context/EventContext'
 import {useEffectFn} from '../../shared/hooks/UseEffectFn'
+import {map} from '@alexandreannic/ts-utils'
 
 const useStyles = makeStyles((t: Theme) => ({
   tabs: {
@@ -71,115 +72,113 @@ export const ReportComponent = () => {
   useEffectFn(_event.companyEvents.error, toastError)
   useEffectFn(_event.reportEvents.error, toastError)
 
-  const downloadReport = (reportId: Id) => _report.download.fetch({}, reportId)
+  const downloadReport = (reportId: Id) => _report.download.fetch({}, [reportId])
 
   return (
     <Page loading={_report.get.loading}>
-      {fromNullable(_report.get.entity?.report)
-        .map(report => (
-          <>
-            <ReportHeader elevated report={report} hideSiret>
-              <div className={cssUtils.nowrap}>
-                {connectedUser.isDGCCRF && (
-                  <ReportPostAction
-                    actionType={EventActionValues.Control}
-                    label={m.markDgccrfControlDone}
-                    report={report}
-                    onAdd={() => _event.reportEvents.fetch({force: true, clean: false}, id)}
-                  >
-                    <Tooltip title={m.markDgccrfControlDone}>
-                      <Btn color="primary" icon="add_comment">
-                        {m.dgccrfControlDone}
-                      </Btn>
-                    </Tooltip>
-                  </ReportPostAction>
-                )}
-
+      {map(_report.get.entity?.report, report => (
+        <>
+          <ReportHeader elevated report={report} hideSiret>
+            <div className={cssUtils.nowrap}>
+              {connectedUser.isDGCCRF && (
                 <ReportPostAction
-                  actionType={EventActionValues.Comment}
-                  label={m.addDgccrfComment}
+                  actionType={EventActionValues.Control}
+                  label={m.markDgccrfControlDone}
                   report={report}
                   onAdd={() => _event.reportEvents.fetch({force: true, clean: false}, id)}
                 >
-                  <Tooltip title={m.addDgccrfComment}>
+                  <Tooltip title={m.markDgccrfControlDone}>
                     <Btn color="primary" icon="add_comment">
-                      {m.comment}
+                      {m.dgccrfControlDone}
                     </Btn>
                   </Tooltip>
                 </ReportPostAction>
+              )}
 
-                <Btn color="primary" icon="download" loading={_report.download.loading} onClick={() => downloadReport(report.id)}>
-                  {m.download}
-                </Btn>
+              <ReportPostAction
+                actionType={EventActionValues.Comment}
+                label={m.addDgccrfComment}
+                report={report}
+                onAdd={() => _event.reportEvents.fetch({force: true, clean: false}, id)}
+              >
+                <Tooltip title={m.addDgccrfComment}>
+                  <Btn color="primary" icon="add_comment">
+                    {m.comment}
+                  </Btn>
+                </Tooltip>
+              </ReportPostAction>
 
-                {connectedUser.isAdmin && (
-                  <Confirm
-                    title={m.removeAsk}
-                    content={m.removeReportDesc(report.companySiret ?? '')}
-                    onConfirm={(event, close) =>
-                      _report.remove
-                        .fetch({}, report.id)
-                        .then(() => window.history.back())
-                        .finally(close)
-                    }
-                  >
-                    <Btn loading={_report.remove.loading} className={cssUtils.colorError} icon="delete">
-                      {m.delete}
-                    </Btn>
-                  </Confirm>
-                )}
-              </div>
-            </ReportHeader>
+              <Btn color="primary" icon="download" loading={_report.download.loading} onClick={() => downloadReport(report.id)}>
+                {m.download}
+              </Btn>
 
-            <Grid container spacing={2} alignItems="stretch">
-              <Grid item xs={12} sm={6}>
-                <ReportConsumer report={report} canEdit={connectedUser.isAdmin} />
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <ReportCompany report={report} canEdit={connectedUser.isAdmin} />
-              </Grid>
-            </Grid>
-
-            <ReportDescription report={report} files={_report.get.entity?.files} />
-
-            <Panel loading={_event.reportEvents.loading}>
-              <>
-                <Tabs
-                  className={css.tabs}
-                  value={activeTab}
-                  onChange={(event: React.ChangeEvent<{}>, newValue: number) => setActiveTab(newValue)}
-                  indicatorColor="primary"
-                  textColor="primary"
+              {connectedUser.isAdmin && (
+                <Confirm
+                  title={m.removeAsk}
+                  content={m.removeReportDesc(report.companySiret ?? '')}
+                  onConfirm={(event, close) =>
+                    _report.remove
+                      .fetch({}, report.id)
+                      .then(() => window.history.back())
+                      .finally(close)
+                  }
                 >
-                  <Tab label={m.proResponse} />
-                  <Tab label={m.reportHistory} />
-                  <Tab label={m.companyHistory} />
-                </Tabs>
-                <ReportTabPanel value={activeTab} index={0}>
-                  <ReportResponseComponent
-                    canEditFile
-                    reportId={report.id}
-                    response={response}
-                    files={_report.get.entity?.files.filter(_ => _.origin === FileOrigin.Professional)}
-                  />
-                </ReportTabPanel>
-                <ReportTabPanel value={activeTab} index={1}>
-                  <ReportEvents
-                    events={
-                      _event.reportEvents.loading
-                        ? undefined
-                        : [creationReportEvent(report), ...(_event.reportEvents.entity ?? [])]
-                    }
-                  />
-                </ReportTabPanel>
-                <ReportTabPanel value={activeTab} index={2}>
-                  <ReportEvents events={_event.companyEvents.loading ? undefined : _event.companyEvents.entity ?? []} />
-                </ReportTabPanel>
-              </>
-            </Panel>
-          </>
-        ))
-        .getOrElse(<></>)}
+                  <Btn loading={_report.remove.loading} className={cssUtils.colorError} icon="delete">
+                    {m.delete}
+                  </Btn>
+                </Confirm>
+              )}
+            </div>
+          </ReportHeader>
+
+          <Grid container spacing={2} alignItems="stretch">
+            <Grid item xs={12} sm={6}>
+              <ReportConsumer report={report} canEdit={connectedUser.isAdmin} />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <ReportCompany report={report} canEdit={connectedUser.isAdmin} />
+            </Grid>
+          </Grid>
+
+          <ReportDescription report={report} files={_report.get.entity?.files} />
+
+          <Panel loading={_event.reportEvents.loading}>
+            <>
+              <Tabs
+                className={css.tabs}
+                value={activeTab}
+                onChange={(event: React.ChangeEvent<{}>, newValue: number) => setActiveTab(newValue)}
+                indicatorColor="primary"
+                textColor="primary"
+              >
+                <Tab label={m.proResponse} />
+                <Tab label={m.reportHistory} />
+                <Tab label={m.companyHistory} />
+              </Tabs>
+              <ReportTabPanel value={activeTab} index={0}>
+                <ReportResponseComponent
+                  canEditFile
+                  reportId={report.id}
+                  response={response}
+                  files={_report.get.entity?.files.filter(_ => _.origin === FileOrigin.Professional)}
+                />
+              </ReportTabPanel>
+              <ReportTabPanel value={activeTab} index={1}>
+                <ReportEvents
+                  events={
+                    _event.reportEvents.loading
+                      ? undefined
+                      : [creationReportEvent(report), ...(_event.reportEvents.entity ?? [])]
+                  }
+                />
+              </ReportTabPanel>
+              <ReportTabPanel value={activeTab} index={2}>
+                <ReportEvents events={_event.companyEvents.loading ? undefined : _event.companyEvents.entity ?? []} />
+              </ReportTabPanel>
+            </>
+          </Panel>
+        </>
+      ))}
     </Page>
   )
 }

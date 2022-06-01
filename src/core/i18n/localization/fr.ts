@@ -273,6 +273,7 @@ export const fr = {
     reportsCountPhysique: 'Nombre de signalements établissement physique',
     responsesCount: 'Nombre de réponses',
     emailConsumer: 'Email conso.',
+    nSelected: (n: number) => `<b>${n}</b> sélectionnés`,
     consoAnonyme: 'Conso. anonyme',
     reportsProProcessed: 'Traitement des signalements par les pros',
     reportsProProcessedDesc: `   

@@ -82,6 +82,7 @@ const useStyles = makeStyles((t: Theme) => ({
     marginLeft: 'auto',
   },
   header: {
+    position: 'relative',
     display: 'flex',
     flexWrap: 'wrap',
     alignItems: 'center',
