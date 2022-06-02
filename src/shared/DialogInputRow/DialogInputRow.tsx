@@ -42,12 +42,12 @@ export const DialogInputRow = ({icon, label, children}: DialogInputRowProps) => 
         display: 'flex',
         alignItems: 'center'
       }}>
-        {icon && (
-          <Icon fontSize="small" sx={{
-            color: t => t.palette.text.disabled,
-            mr: 1
-          }}>{icon}</Icon>
-        )}
+        {/*{icon && (*/}
+        {/*  <Icon fontSize="small" sx={{*/}
+        {/*    color: t => t.palette.text.disabled,*/}
+        {/*    mr: 1*/}
+        {/*  }}>{icon}</Icon>*/}
+        {/*)}*/}
         <div className={css.label}>{label}</div>
       </Box>
       <div className={css.content}>{children}</div>
