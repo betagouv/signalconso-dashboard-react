@@ -1,5 +1,5 @@
 import makeStyles from '@mui/styles/makeStyles'
-import {Icon, Menu, MenuItem, Slide, Theme} from '@mui/material'
+import {Box, Icon, Menu, MenuItem, Slide, Theme} from '@mui/material'
 import logoGouvMobile from './gouv-mobile.svg'
 import logoSignalConso from './signalconso.svg'
 import logoDgccrf from './logo-dgccrf.png'
@@ -13,40 +13,11 @@ import {ScAppMenuBtn} from '../Menu/ScAppMenuBtn'
 import {useLayoutContext} from '../LayoutContext'
 import {LayoutConnectedUser} from '../Layout'
 
-const useStyles = makeStyles((t: Theme) => ({
-  root: {
-    minHeight: headerHeight,
-    padding: t.spacing(0.5, 2),
-    display: 'flex',
-    alignItems: 'center',
-    background: t.palette.background.paper,
-    borderBottom: '1px solid ' + t.palette.divider,
-  },
-  logo: {
-    display: 'flex',
-    alignItems: 'center',
-  },
-  logoGouvMobile: {
-    height: 40,
-    marginRight: t.spacing(2),
-  },
-  logoSignalConsoMobile: {
-    height: 40,
-    marginRight: t.spacing(1),
-  },
-  menu: {
-    display: 'flex',
-    alignItems: 'center',
-    marginLeft: 'auto',
-  },
-}))
-
 interface Props {
   connectedUser?: LayoutConnectedUser
 }
 
 export const Header = ({connectedUser}: Props) => {
-  const css = useStyles()
   const {m} = useI18n()
   const {isMobileWidth} = useLayoutContext()
 
@@ -62,15 +33,35 @@ export const Header = ({connectedUser}: Props) => {
 
   return (
     <Slide direction="down" in={true} mountOnEnter unmountOnExit>
-      <header className={css.root}>
-        <div className={css.logo}>
-          <img src={logoGouvMobile} alt={m.altLogoGouv} className={css.logoGouvMobile} />
-          {!isMobileWidth && <img src={logoDgccrf} alt={m.altLogoDGCCRF} className={css.logoGouvMobile} />}
+      <Box component="header" sx={{
+        minHeight: headerHeight,
+        py: .5, px: 2,
+        display: 'flex',
+        alignItems: 'center',
+        background: t => t.palette.background.paper,
+        borderBottom: t => '1px solid ' + t.palette.divider,
+      }}>
+        <div style={{display: 'flex', alignItems: 'center'}}>
+          <Box component="img" src={logoGouvMobile} alt={m.altLogoGouv} sx={{
+            height: 40,
+            mr: 2,
+          }} />
+          {!isMobileWidth && <Box component="img" src={logoDgccrf} alt={m.altLogoDGCCRF} sx={{
+            height: 40,
+            mr: 2,
+          }} />}
           <a href={config.appBaseUrl}>
-            <img src={logoSignalConso} alt={m.altLogoSignalConso} className={css.logoSignalConsoMobile} />
+            <Box component="img" src={logoSignalConso} alt={m.altLogoSignalConso} sx={{
+              height: 40,
+              mr: 1,
+            }} />
           </a>
         </div>
-        <div className={css.menu}>
+        <div style={{
+          display: 'flex',
+          alignItems: 'center',
+          marginLeft: 'auto',
+        }}>
           {isMobileWidth ? (
             <>
               <IconBtn aria-haspopup="true" onClick={handleClick}>
@@ -97,7 +88,7 @@ export const Header = ({connectedUser}: Props) => {
           )}
           <ScAppMenuBtn connectedUser={connectedUser} />
         </div>
-      </header>
+      </Box>
     </Slide>
   )
 }

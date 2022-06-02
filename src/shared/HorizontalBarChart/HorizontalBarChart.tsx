@@ -9,6 +9,7 @@ import {Txt} from 'mui-extension/lib/Txt/Txt'
 import {useI18n} from '../../core/i18n'
 import {styleUtils} from '../../core/theme'
 import {Index} from '../../core/helper/utils'
+import {makeSx} from 'mui-extension'
 
 export interface HorizontalBarChartData {
   label: ReactNode
@@ -22,22 +23,23 @@ interface Props {
   width?: number
 }
 
+const sx = makeSx({
+  item: {
+    display: 'flex',
+    my: .5,
+    mx: 0,
+  },
+  label: {
+    alignSelf: 'flex-end',
+    textAlign: 'right',
+    p: 0,
+    pr: 2,
+    textOverflow: 'ellipsis',
+    whiteSpace: 'nowrap',
+  },
+})
+
 export const HorizontalBarChart = ({data, grid, width = 200}: Props) => {
-  const sx: Index<SxProps<Theme>> = {
-    item: {
-      display: 'flex',
-      my: .5,
-      mx: 0,
-    },
-    label: {
-      alignSelf: 'flex-end',
-      textAlign: 'right',
-      p: 0,
-      pr: 2,
-      textOverflow: 'ellipsis',
-      whiteSpace: 'nowrap',
-    },
-  }
   const {m} = useI18n()
   const maxValue = useMemo(() => data && Math.max(...data.map(_ => _.value)), [data])
   const sumValue = useMemo(() => data && data.reduce((sum, _) => _.value + sum, 0), [data])

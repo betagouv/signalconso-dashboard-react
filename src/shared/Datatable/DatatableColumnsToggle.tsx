@@ -1,4 +1,4 @@
-import {Badge, BoxProps, Checkbox, Icon, IconButtonProps, Menu, MenuItem, Theme, Tooltip} from '@mui/material'
+import {Badge, Checkbox, Icon, IconButtonProps, Menu, MenuItem, Theme, Tooltip} from '@mui/material'
 import makeStyles from '@mui/styles/makeStyles'
 import React from 'react'
 import {IconBtn} from 'mui-extension/lib'
@@ -13,16 +13,7 @@ interface Props extends Omit<IconButtonProps, 'onChange'> {
   title?: string
 }
 
-const useStyles = makeStyles((t: Theme) => ({
-  cb: {
-    paddingLeft: 0,
-    paddingBottom: t.spacing(0.25),
-    paddingTop: t.spacing(0.25),
-  },
-}))
-
 export const DatatableColumnToggle = ({className, title, columns, hiddenColumns, onChange, ...props}: Props) => {
-  const css = useStyles()
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -51,7 +42,14 @@ export const DatatableColumnToggle = ({className, title, columns, hiddenColumns,
               key={col.id}
               onClick={() => onChange(checked ? [...hiddenColumns, col.id] : hiddenColumns.filter(_ => _ !== col.id))}
             >
-              <Checkbox className={css.cb} checked={checked} />
+              <Checkbox
+                sx={{
+                  pl: 0,
+                  pb: .25,
+                  pt: .25,
+                }}
+                checked={checked}
+              />
               {col.head}
             </MenuItem>
           )

@@ -27,20 +27,8 @@ interface Form {
   activationDocumentRequired?: boolean
 }
 
-const useStyles = makeStyles((t: Theme) =>
-  createStyles({
-    inputNumber: {
-      maxWidth: 80,
-    },
-    inputCP: {
-      maxWidth: 100,
-    },
-  }),
-)
 export const EditAddressDialog = ({address, children, onChange, onChangeError}: EditAddressDialogProps) => {
   const {m} = useI18n()
-  const css = useStyles()
-  const cssUtils = useCssUtils()
 
   const {
     register,
@@ -62,12 +50,12 @@ export const EditAddressDialog = ({address, children, onChange, onChangeError}: 
       content={close => (
         <>
           {onChangeError && <Alert type="error">{onChangeError}</Alert>}
-          <div className={cssUtils.flex}>
+          <div style={{display: 'flex'}}>
             <ScInput
               defaultValue={address.number}
               error={!!errors.number}
               helperText={errors.number?.message ?? ' '}
-              className={classes(css.inputNumber, cssUtils.marginRight)}
+              sx={{mr: 1, maxWidth: 80}}
               placeholder={m.numberShort}
               {...register('number', {
                 required: {value: true, message: m.required},
@@ -92,12 +80,12 @@ export const EditAddressDialog = ({address, children, onChange, onChangeError}: 
             placeholder={m.addressSupplement}
             {...register('addressSupplement')}
           />
-          <div className={cssUtils.flex}>
+          <div style={{display: 'flex'}}>
             <ScInput
               defaultValue={address.postalCode}
               error={!!errors.postalCode}
               helperText={errors.postalCode?.message ?? ' '}
-              className={classes(css.inputCP, cssUtils.marginRight)}
+              sx={{mr: 1, maxWidth: 100}}
               fullWidth
               placeholder={m.postalCode}
               {...register('postalCode', {

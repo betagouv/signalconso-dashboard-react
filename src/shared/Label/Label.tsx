@@ -5,6 +5,7 @@ import makeStyles from '@mui/styles/makeStyles'
 import {alpha} from '@mui/material/styles'
 import {styleUtils} from '../../core/theme'
 import {classes} from '../../core/helper/utils'
+import {makeSx} from 'mui-extension'
 
 export type LabelColor = 'error' | 'warning' | 'info' | 'success' | 'disable'
 
@@ -23,14 +24,14 @@ const colorize = (color: string): CSSProperties => ({
   color: color,
 })
 
-const useStyles = makeStyles((t: Theme) => ({
-  root: {
+const sx = makeSx({
+  root: t => ({
     whiteSpace: 'nowrap',
-    borderRadius: 40,
-    paddingTop: t.spacing(1 / 1.5),
-    paddingBottom: t.spacing(1 / 1.5),
-    paddingRight: t.spacing(2),
-    paddingLeft: t.spacing(2),
+    borderRadius: '40px',
+    paddingTop: 1 / 1.5,
+    paddingBottom: 1 / 1.5,
+    paddingRight: 2,
+    paddingLeft: 2,
     fontWeight: 'bold',
     letterSpacing: '1px',
     display: 'inline-flex',
@@ -38,14 +39,14 @@ const useStyles = makeStyles((t: Theme) => ({
     alignItems: 'center',
     transition: t.transitions.create('all'),
     ...colorize(t.palette.text.disabled),
-  },
+  }),
   border: {
     // border: `1px solid ${t.palette.divider}`,
   },
   dense: {
     fontWeight: '500' as any,
-    fontSize: styleUtils(t).fontSize.small,
-    padding: t.spacing(0, 1, 0, 1),
+    fontSize: t => styleUtils(t).fontSize.small,
+    padding: t => t.spacing(0, 1, 0, 1),
   },
   fullWidth: {
     width: '100%',
@@ -54,37 +55,36 @@ const useStyles = makeStyles((t: Theme) => ({
     marginTop: -10,
     marginBottom: -10,
   },
-  error: {
+  error: t => ({
     ...colorize(styleUtils(t).color.error),
-  },
-  warning: {
+  }),
+  warning: t => ({
     ...colorize(styleUtils(t).color.warning),
-  },
-  success: {
+  }),
+  success: t => ({
     ...colorize(styleUtils(t).color.success),
-  },
-  info: {
+  }),
+  info: t => ({
     ...colorize(styleUtils(t).color.info),
-  },
-  disable: {
+  }),
+  disable: t => ({
     ...colorize(t.palette.text.disabled),
-  },
-}))
+  }),
+})
 
 export const Label = ({type, children, className, fullWidth, dense, elevation = 0, inSelectOptions, ...props}: LabelProps) => {
-  const css = useStyles()
   return (
     <Paper
       elevation={elevation}
-      className={classes(
-        css.root,
-        type && css[type],
-        elevation === 0 && css.border,
-        fullWidth && css.fullWidth,
-        dense && css.dense,
-        inSelectOptions && css.inSelectOptions,
-        className,
-      )}
+      sx={{
+        ...sx.root,
+        ...type && sx[type],
+        ...elevation === 0 && sx.border,
+        ...fullWidth && sx.fullWidth,
+        ...dense && sx.dense,
+        ...inSelectOptions && sx.inSelectOptions,
+      }}
+      className={className}
       {...props}
     >
       {children}
