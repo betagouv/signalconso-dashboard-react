@@ -1,8 +1,9 @@
 import makeStyles from '@mui/styles/makeStyles'
-import {Box, Theme} from '@mui/material'
+import {Box, Icon, Theme} from '@mui/material'
 import React, {ReactNode} from 'react'
 
 export interface DialogInputRowProps {
+  icon?: string
   label: string | ReactNode
   children: ReactNode
 }
@@ -11,7 +12,7 @@ export interface DialogInputRowExtraProps {
   children: ReactNode
 }
 
-export const DialogInputRow = ({label, children}: DialogInputRowProps) => {
+export const DialogInputRow = ({icon, label, children}: DialogInputRowProps) => {
   const useRowStyles = makeStyles((t: Theme) => ({
     root: {
       display: 'flex',
@@ -22,8 +23,8 @@ export const DialogInputRow = ({label, children}: DialogInputRowProps) => {
       alignItems: 'center',
       minHeight: 50,
       color: t.palette.text.secondary,
-      minWidth: 130,
-      maxWidth: 130,
+      minWidth: 136,
+      maxWidth: 136,
       flexWrap: 'wrap',
     },
     content: {
@@ -37,7 +38,18 @@ export const DialogInputRow = ({label, children}: DialogInputRowProps) => {
   const css = useRowStyles()
   return (
     <div className={css.root}>
-      <div className={css.label}>{label}</div>
+      <Box sx={{
+        display: 'flex',
+        alignItems: 'center'
+      }}>
+        {icon && (
+          <Icon fontSize="small" sx={{
+            color: t => t.palette.text.disabled,
+            mr: 1
+          }}>{icon}</Icon>
+        )}
+        <div className={css.label}>{label}</div>
+      </Box>
       <div className={css.content}>{children}</div>
     </div>
   )

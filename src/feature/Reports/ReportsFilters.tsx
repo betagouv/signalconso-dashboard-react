@@ -5,7 +5,6 @@ import {ReportSearch, ReportStatus} from '@signal-conso/signalconso-api-sdk-js'
 import {Controller, useForm} from 'react-hook-form'
 import {ScSelect} from '../../shared/Select/Select'
 import {ReportStatusLabel} from '../../shared/ReportStatus/ReportStatus'
-import {Btn} from 'mui-extension/lib'
 import {ScInput} from '../../shared/Input/ScInput'
 import {useAnomalyContext} from '../../core/context/AnomalyContext'
 import {Enum} from '@alexandreannic/ts-utils/lib/common/enum/Enum'
@@ -19,6 +18,8 @@ import {SelectTags} from '../../shared/SelectTags/SelectTags'
 import {SelectTagsMenuValues} from '../../shared/SelectTags/SelectTagsMenu'
 import {DialogInputRow, DialogInputRowExtra} from '../../shared/DialogInputRow/DialogInputRow'
 import compose from '../../core/helper/compose'
+import {Btn} from 'mui-extension'
+import {useLayoutContext} from '../../core/Layout/LayoutContext'
 
 export interface ReportsFiltersProps {
   updateFilters: (_: ReportSearch) => void
@@ -79,6 +80,15 @@ export const ReportFilters = ({filters, updateFilters, ...props}: ReportsFilters
   )
 }
 
+const TrueLabel = () => {
+  const {m} = useI18n()
+  return (
+    <>
+      {m.yes} <Icon fontSize="inherit" sx={{mr: '-4px'}}>arrow_drop_down</Icon>
+    </>
+  )
+}
+
 const _ReportsFilters = ({filters, updateFilters, children}: _ReportsFiltersProps) => {
   const {m} = useI18n()
   const cssUtils = useCssUtils()
@@ -91,7 +101,8 @@ const _ReportsFilters = ({filters, updateFilters, children}: _ReportsFiltersProp
     watch,
     formState: {errors},
   } = useForm<Form>()
-  const [open, setOpen] = useState<boolean>(false)
+  const layout = useLayoutContext()
+  const [open, setOpen] = useState<boolean>(true)
   const {category: _category} = useAnomalyContext()
 
   const close = () => {
@@ -118,12 +129,12 @@ const _ReportsFilters = ({filters, updateFilters, children}: _ReportsFiltersProp
           setOpen(true)
         },
       })}
-      <Dialog open={open ?? false} onClose={close}>
+      <Dialog fullScreen={layout.isMobileWidth} open={open ?? false} onClose={close}>
         <DialogTitle>{m.search}</DialogTitle>
         {_category.entity && (
           <>
             <DialogContent>
-              <DialogInputRow label={m.siretFound}>
+              <DialogInputRow icon="business" label={m.siretFound}>
                 <Controller
                   name="hasCompany"
                   defaultValue={filters.hasCompany}
@@ -131,11 +142,7 @@ const _ReportsFilters = ({filters, updateFilters, children}: _ReportsFiltersProp
                   render={({field}) => (
                     <TrueFalseUndefined
                       label={{
-                        true: (
-                          <>
-                            {m.yes} <Icon fontSize="inherit">arrow_drop_down</Icon>
-                          </>
-                        ),
+                        true: <TrueLabel />,
                       }}
                       className={cssUtils.marginTop}
                       {...field}
@@ -153,10 +160,10 @@ const _ReportsFilters = ({filters, updateFilters, children}: _ReportsFiltersProp
                   </DialogInputRowExtra>
                 )}
               </DialogInputRow>
-              <DialogInputRow label={m.keywords}>
+              <DialogInputRow icon="format_quote" label={m.keywords}>
                 <ScInput fullWidth {...register('details')} defaultValue={filters.details ?? ''} />
               </DialogInputRow>
-              <DialogInputRow label={m.codeNaf}>
+              <DialogInputRow icon="label" label={m.codeNaf}>
                 <Controller
                   name="activityCodes"
                   defaultValue={filters.activityCodes ?? []}
@@ -164,7 +171,7 @@ const _ReportsFilters = ({filters, updateFilters, children}: _ReportsFiltersProp
                   render={({field}) => <SelectActivityCode {...field} fullWidth onChange={(e, value) => field.onChange(value)} />}
                 />
               </DialogInputRow>
-              <DialogInputRow label={m.categories}>
+              <DialogInputRow icon="category" label={m.categories}>
                 <ScSelect small fullWidth {...register('category')} defaultValue={filters.category ?? []}>
                   <MenuItem value="">&nbsp;</MenuItem>
                   {_category?.entity.map(category => (
@@ -174,7 +181,7 @@ const _ReportsFilters = ({filters, updateFilters, children}: _ReportsFiltersProp
                   ))}
                 </ScSelect>
               </DialogInputRow>
-              <DialogInputRow label={m.tags}>
+              <DialogInputRow icon="label" label={m.tags}>
                 <Controller
                   name="tags"
                   defaultValue={filters.tags ?? {}}
@@ -182,7 +189,7 @@ const _ReportsFilters = ({filters, updateFilters, children}: _ReportsFiltersProp
                   render={({field}) => <SelectTags {...field} />}
                 />
               </DialogInputRow>
-              <DialogInputRow label={m.status}>
+              <DialogInputRow icon="check_circle" label={m.status}>
                 <Controller
                   defaultValue={filters.status ?? []}
                   name="status"
@@ -203,7 +210,7 @@ const _ReportsFilters = ({filters, updateFilters, children}: _ReportsFiltersProp
                   )}
                 />
               </DialogInputRow>
-              <DialogInputRow label={m.website}>
+              <DialogInputRow icon="language" label={m.website}>
                 <Controller
                   name="hasWebsite"
                   defaultValue={filters.hasWebsite}
@@ -212,11 +219,7 @@ const _ReportsFilters = ({filters, updateFilters, children}: _ReportsFiltersProp
                     <TrueFalseUndefined
                       {...field}
                       label={{
-                        true: (
-                          <>
-                            {m.yes} <Icon fontSize="inherit">arrow_drop_down</Icon>
-                          </>
-                        ),
+                        true: <TrueLabel />,
                       }}
                       className={cssUtils.marginTop}
                     />
@@ -228,7 +231,7 @@ const _ReportsFilters = ({filters, updateFilters, children}: _ReportsFiltersProp
                   </DialogInputRowExtra>
                 )}
               </DialogInputRow>
-              <DialogInputRow label={m.phone}>
+              <DialogInputRow icon="phone" label={m.phone}>
                 <Controller
                   name="hasPhone"
                   defaultValue={filters.hasPhone}
@@ -237,11 +240,7 @@ const _ReportsFilters = ({filters, updateFilters, children}: _ReportsFiltersProp
                     <TrueFalseUndefined
                       {...field}
                       label={{
-                        true: (
-                          <>
-                            {m.yes} <Icon fontSize="inherit">arrow_drop_down</Icon>
-                          </>
-                        ),
+                        true: <TrueLabel />,
                       }}
                       className={cssUtils.marginTop}
                     />
@@ -253,7 +252,7 @@ const _ReportsFilters = ({filters, updateFilters, children}: _ReportsFiltersProp
                   </DialogInputRowExtra>
                 )}
               </DialogInputRow>
-              <DialogInputRow label={m.foreignCountry}>
+              <DialogInputRow icon="flag" label={m.foreignCountry}>
                 <Controller
                   name="hasForeignCountry"
                   defaultValue={filters.hasForeignCountry}
@@ -262,11 +261,7 @@ const _ReportsFilters = ({filters, updateFilters, children}: _ReportsFiltersProp
                     <TrueFalseUndefined
                       {...field}
                       label={{
-                        true: (
-                          <>
-                            {m.yes} <Icon fontSize="inherit">arrow_drop_down</Icon>
-                          </>
-                        ),
+                        true: <TrueLabel />,
                       }}
                       className={cssUtils.marginTop}
                     />
@@ -283,10 +278,10 @@ const _ReportsFilters = ({filters, updateFilters, children}: _ReportsFiltersProp
                   </DialogInputRowExtra>
                 )}
               </DialogInputRow>
-              <DialogInputRow label={m.emailConsumer}>
+              <DialogInputRow icon="email" label={m.emailConsumer}>
                 <ScInput fullWidth {...register('email')} defaultValue={filters.email ?? ''} />
               </DialogInputRow>
-              <DialogInputRow label={m.consoAnonyme}>
+              <DialogInputRow icon="person" label={m.consoAnonyme}>
                 <Controller
                   name="contactAgreement"
                   defaultValue={!filters.contactAgreement}
@@ -296,6 +291,19 @@ const _ReportsFilters = ({filters, updateFilters, children}: _ReportsFiltersProp
                       {...otherField}
                       value={!value}
                       onChange={_ => onChange(_ === undefined ? undefined : !_)}
+                      className={cssUtils.marginTop}
+                    />
+                  )}
+                />
+              </DialogInputRow>
+              <DialogInputRow icon="attach_file" label={m.hasAttachement}>
+                <Controller
+                  name="hasAttachment"
+                  defaultValue={filters.hasAttachment}
+                  control={control}
+                  render={({field}) => (
+                    <TrueFalseUndefined
+                      {...field}
                       className={cssUtils.marginTop}
                     />
                   )}

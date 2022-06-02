@@ -249,6 +249,9 @@ export const muiTheme = (dark?: boolean): Theme => {
             paddingRight: 8,
             paddingLeft: 8,
           },
+          head: {
+            lineHeight: 1.2,
+          },
           sizeSmall: {
             height: 40,
             minHeight: 40,
