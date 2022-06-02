@@ -102,7 +102,7 @@ const _ReportsFilters = ({filters, updateFilters, children}: _ReportsFiltersProp
     formState: {errors},
   } = useForm<Form>()
   const layout = useLayoutContext()
-  const [open, setOpen] = useState<boolean>(true)
+  const [open, setOpen] = useState<boolean>(false)
   const {category: _category} = useAnomalyContext()
 
   const close = () => {
