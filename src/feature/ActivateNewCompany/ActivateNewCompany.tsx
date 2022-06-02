@@ -5,9 +5,7 @@ import {useI18n} from '../../core/i18n'
 import {ScInput} from '../../shared/Input/ScInput'
 import {regexp} from '../../core/helper/regexp'
 import {ScButton} from '../../shared/Button/Button'
-import {useCssUtils} from '../../core/helper/useCssUtils'
-import makeStyles from '@mui/styles/makeStyles'
-import {Theme} from '@mui/material'
+import {Box} from '@mui/material'
 import {useLogin} from '../../core/context/LoginContext'
 import {useForm} from 'react-hook-form'
 import {useAccessesContext} from '../../core/context/AccessesContext'
@@ -25,18 +23,8 @@ interface Form {
   code: string
 }
 
-const useStyles = makeStyles((t: Theme) => ({
-  foot: {
-    marginTop: t.spacing(2),
-    display: 'flex',
-    alignItems: 'center',
-  },
-}))
-
 export const ActivateNewCompany = () => {
   const {m} = useI18n()
-  const cssUtils = useCssUtils()
-  const css = useStyles()
   const {connectedUser} = useLogin()
   const _acceptToken = useAccessesContext().acceptToken
   const {toastSuccess} = useToast()
@@ -65,7 +53,7 @@ export const ActivateNewCompany = () => {
     <Page size="s">
       <LoginPanel title={m.youReceivedNewLetter}>
         {_acceptToken.error && (
-          <Alert type="error" className={cssUtils.marginBottom2}>
+          <Alert type="error" sx={{mb: 2}}>
             <Txt size="big" block bold>
               {m.registerCompanyError}
             </Txt>
@@ -74,7 +62,7 @@ export const ActivateNewCompany = () => {
         )}
         <form onSubmit={handleSubmit(acceptToken)}>
           <ScInput
-            className={cssUtils.marginBottom}
+            sx={{mb: 1}}
             fullWidth
             error={!!errors.siret}
             helperText={errors.siret?.message ?? m.siretOfYourCompanyDesc}
@@ -85,7 +73,7 @@ export const ActivateNewCompany = () => {
             })}
           />
           <ScInputPassword
-            className={cssUtils.marginBottom}
+            sx={{mb: 1}}
             fullWidth
             error={!!errors.code}
             helperText={errors.code?.message ?? m.activationCodeDesc}
@@ -95,12 +83,16 @@ export const ActivateNewCompany = () => {
               pattern: {value: regexp.activationCode, message: m.activationCodeInvalid},
             })}
           />
-          <ScInput className={cssUtils.marginBottom} disabled fullWidth label={m.email} value={connectedUser.email} />
-          <div className={css.foot}>
+          <ScInput sx={{mb: 1}} disabled fullWidth label={m.email} value={connectedUser.email} />
+          <Box sx={{
+            mt: 2,
+            display: 'flex',
+            alignItems: 'center',
+          }}>
             <ScButton loading={_acceptToken.loading} type="submit" color="primary" variant="contained">
               {m.addCompany}
             </ScButton>
-          </div>
+          </Box>
         </form>
       </LoginPanel>
       <HelpContactInfo />

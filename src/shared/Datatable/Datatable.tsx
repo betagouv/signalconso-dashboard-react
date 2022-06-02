@@ -1,5 +1,5 @@
 import {
-  LinearProgress,
+  LinearProgress, SxProps,
   Table,
   TableBody,
   TableCell,
@@ -56,6 +56,7 @@ export interface DatatableColumnProps<T> {
   alwaysVisible?: boolean
   className?: string | ((_: T) => string | undefined)
   style?: CSSProperties
+  sx?: SxProps<Theme>
   stickyEnd?: boolean
 }
 
@@ -224,6 +225,7 @@ export const Datatable = <T extends any = any>(props: DatatableProps<T>) => {
                 {filteredColumns.map((_, i) => (
                   <TableCell
                     key={i}
+                    sx={_.sx}
                     style={_.style}
                     className={classes(
                       typeof _.className === 'function' ? _.className(item) : _.className,

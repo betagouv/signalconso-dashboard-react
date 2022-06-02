@@ -1,6 +1,12 @@
 import {red} from '@mui/material/colors'
-import {alpha, createTheme, Theme} from '@mui/material'
+import {alpha, createTheme, SxProps, Theme} from '@mui/material'
 import {ThemeOptions} from '@mui/material/styles/createTheme'
+
+export const sxUtils: {[key: string]: SxProps} = {
+  tdActions: {
+    textAlign: 'right',
+  }
+}
 
 export const styleUtils = (t: Theme) => ({
   defaultRadius: 4,

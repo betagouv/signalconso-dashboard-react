@@ -1,7 +1,7 @@
 import {Txt} from 'mui-extension/lib/Txt/Txt'
 import {Panel, PanelBody} from 'shared/Panel'
 import {CompaniesDbSyncInfo} from '@signal-conso/signalconso-api-sdk-js'
-import {alpha, CircularProgress, Grid, Theme, useTheme} from '@mui/material'
+import {alpha, Box, CircularProgress, Grid, Theme, useTheme} from '@mui/material'
 import makeStyles from '@mui/styles/makeStyles'
 import {styleUtils} from '../../core/theme'
 import {useI18n} from '../../core/i18n'
@@ -21,52 +21,45 @@ interface Props {
 
 const progressSize = 110
 
-const useStyles = makeStyles((t: Theme) => ({
-  progressContainer: {
-    marginBottom: t.spacing(1),
-    height: progressSize,
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    position: 'relative',
-  },
-  percent: {
-    position: 'absolute',
-    fontSize: styleUtils(t).fontSize.big,
-  },
-  percentActive: {
-    fontWeight: t.typography.fontWeightBold,
-    color: t.palette.primary.main,
-  },
-  circleBackground: {
-    color: alpha(t.palette.primary.light, 0.2),
-    height: progressSize,
-    width: progressSize,
-    position: 'absolute',
-  },
-}))
 
 export const CompaniesDbSyncCard = ({name, info, start, cancel}: Props) => {
-  const css = useStyles()
-  const theme = useTheme()
-  const cssUtils = useCssUtils()
+  const t = useTheme()
   const {m, dateFromNow, formatLargeNumber} = useI18n()
-
   const percent = useMemoFn(info, _ => (_.linesDone / _.linesCount) * 100)
 
   return (
     <Panel>
       <PanelBody>
-        <div className={css.progressContainer}>
+        <Box sx={{
+          mb: 1,
+          height: progressSize,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          position: 'relative',
+        }}>
           <CircularProgress
             value={100}
             size={progressSize}
             variant={info && !info.endedAt ? 'indeterminate' : 'determinate'}
-            className={css.circleBackground}
+            sx={{
+              color: t => alpha(t.palette.primary.light, 0.2),
+              height: progressSize,
+              width: progressSize,
+              position: 'absolute',
+            }}
           />
           <CircularProgress value={percent} size={progressSize} variant="determinate" />
-          <div className={classes(css.percent, !info?.endedAt && css.percentActive)}>{Math.round(percent ?? 0)} %</div>
-        </div>
+          <Box
+            sx={{
+              position: 'absolute',
+              fontSize: t => styleUtils(t).fontSize.big,
+              ...!info?.endedAt && {
+                fontWeight: t.typography.fontWeightBold,
+                color: t.palette.primary.main,
+              }
+            }}>{Math.round(percent ?? 0)} %</Box>
+        </Box>
         <div style={{textAlign: 'center'}}>
           <Txt size="big">{formatLargeNumber(info?.linesDone ?? 0)}</Txt>
           <Txt color="hint">
@@ -75,7 +68,7 @@ export const CompaniesDbSyncCard = ({name, info, start, cancel}: Props) => {
           </Txt>
         </div>
 
-        <Txt block bold size="big" className={cssUtils.marginTop3}>
+        <Txt block bold size="big" sx={{mt: 3}}>
           {info?.fileName ?? name}
         </Txt>
         <a href={info?.fileUrl ?? '#'}>
@@ -85,7 +78,7 @@ export const CompaniesDbSyncCard = ({name, info, start, cancel}: Props) => {
         </a>
 
         {info && (
-          <Grid container className={cssUtils.marginTop2}>
+          <Grid container sx={{mt: 2}}>
             <Grid item xs={6}>
               <Txt block size="small" color="hint" uppercase>
                 {m.beginning}
@@ -105,7 +98,7 @@ export const CompaniesDbSyncCard = ({name, info, start, cancel}: Props) => {
                   </Txt>
                 </>
               ) : (
-                <Txt block size="title" bold className={cssUtils.colorWarning}>
+                <Txt block size="title" bold sx={{color: t => t.palette.warning.main}}>
                   {m.inProgress}
                 </Txt>
               )}
@@ -120,7 +113,7 @@ export const CompaniesDbSyncCard = ({name, info, start, cancel}: Props) => {
           </ScButton>
         )}
         {info && !info.endedAt && (
-          <ScButton className={cssUtils.colorError} icon="stop" onClick={cancel.call} loading={cancel.loading}>
+          <ScButton sx={{color: t => t.palette.error.main}} icon="stop" onClick={cancel.call} loading={cancel.loading}>
             {m.cancel}
           </ScButton>
         )}
