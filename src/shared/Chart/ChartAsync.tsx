@@ -27,6 +27,7 @@ export const ChartAsync = <T extends Promises>({
   promises,
   curves,
   promisesDeps = [],
+  height = 300,
   ...otherProps
 }: ChartAsyncProps<T>) => {
   const [loading, setLoading] = useState(false)
@@ -47,9 +48,9 @@ export const ChartAsync = <T extends Promises>({
   return (
     <>
       {loading || !data ? (
-        <Skeleton variant="rectangular" height={otherProps.height} width="100%" sx={{borderRadius: '8px'}} />
+        <Skeleton variant="rectangular" height={height} width="100%" sx={{borderRadius: '8px'}} />
       ) : type === 'line' ? (
-        <ScLineChart {...otherProps} curves={curves.map((c, i) => ({
+        <ScLineChart {...otherProps} height={height} curves={curves.map((c, i) => ({
           ...c,
           curve: c.curve(data),
         }))} />
