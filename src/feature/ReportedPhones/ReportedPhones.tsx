@@ -18,6 +18,7 @@ import makeStyles from '@mui/styles/makeStyles'
 import {PeriodPicker} from '../../shared/PeriodPicker/PeriodPicker'
 import {DebouncedInput} from '../../shared/DebouncedInput/DebouncedInput'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
+import {sxUtils} from '../../core/theme'
 
 const useStyles = makeStyles((t: Theme) => ({
   tdSiret: {

@@ -63,7 +63,7 @@ export const ConsumerReview = ({onSubmit}: Props) => {
   return (
     <Page size="s">
       {done ? (
-        <Alert type="success" className={cssUtils.marginBottom2}>
+        <Alert type="success" sx={{mb: 2}}>
           {m.thanksForSharingYourMind}
         </Alert>
       ) : (
@@ -100,7 +100,7 @@ export const ConsumerReview = ({onSubmit}: Props) => {
               />
 
               <Txt
-                className={cssUtils.marginTop3}
+                sx={{mt: 3}}
                 block
                 color="hint"
                 dangerouslySetInnerHTML={{__html: m.youCanAddCommentForDGCCRF}}
@@ -119,8 +119,9 @@ export const ConsumerReview = ({onSubmit}: Props) => {
         <Txt block gutterBottom color="disabled">
           {m.youCanNoteSignalConso}
         </Txt>
-        <a
-          className={cssUtils.marginTop}
+        <Box
+          component="a"
+          sx={{mt: 1}}
           href="https://monavis.numerique.gouv.fr/Demarches/2071?&view-mode=formulaire-avis&nd_mode=en-ligne-enti%C3%A8rement&nd_source=button&key=5a58254dab900906fe4924e37c1c5bba"
         >
           <img
@@ -128,7 +129,7 @@ export const ConsumerReview = ({onSubmit}: Props) => {
             alt="Je donne mon avis sur voxusagers.gouv.fr"
             title="Je donne mon avis sur cette démarche"
           />
-        </a>
+        </Box>
       </div>
     </Page>
   )

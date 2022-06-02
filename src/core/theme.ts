@@ -2,7 +2,7 @@ import {red} from '@mui/material/colors'
 import {alpha, createTheme, SxProps, Theme} from '@mui/material'
 import {ThemeOptions} from '@mui/material/styles/createTheme'
 
-export const sxUtils: {[key: string]: SxProps<Theme>} = {
+export const sxUtils = {
   tdActions: {
     textAlign: 'right',
   },
@@ -10,7 +10,7 @@ export const sxUtils: {[key: string]: SxProps<Theme>} = {
     whiteSpace: 'nowrap',
     textOverflow: 'ellipsis',
     overflow: 'hidden',
-  },
+  } as SxProps<Theme>,
 }
 
 export const styleUtils = (t: Theme) => ({

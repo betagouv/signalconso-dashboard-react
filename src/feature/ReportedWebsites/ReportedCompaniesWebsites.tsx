@@ -19,6 +19,7 @@ import {useConstantContext} from '../../core/context/ConstantContext'
 import {SelectCountry} from './SelectCountry'
 import {classes} from '../../core/helper/utils'
 import {ScMenuItem} from '../MenuItem/MenuItem'
+import {sxUtils} from '../../core/theme'
 
 const useStyles = makeStyles((t: Theme) => {
   const iconWidth = 50

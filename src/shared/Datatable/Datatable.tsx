@@ -192,7 +192,8 @@ export const Datatable = <T extends any = any>(props: DatatableProps<T>) => {
                 {filteredColumns.map((_, i) => (
                   <TableCell
                     key={i}
-                    sx={{..._.sx, ...sxUtils.truncate, ...sxStickyEnd}}
+                    // TODO(Alex) Fix as any
+                    sx={{..._.sx, ...sxUtils.truncate as any, ...sxStickyEnd as any}}
                     style={_.style}
                     className={typeof _.className === 'function' ? _.className(item) : _.className}
                   >

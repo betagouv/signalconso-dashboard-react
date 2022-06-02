@@ -168,7 +168,7 @@ export const CompaniesRegistered = () => {
             render: _ => (
               <>
                 <span>{_.address.postalCode?.slice(0, 2)}</span>
-                <Box component="span" sx={{color: t => t.palette.disabled}}>{_.address.postalCode?.substr(2, 5)}</Box>
+                <Box component="span" sx={{color: t => t.palette.text.disabled}}>{_.address.postalCode?.substr(2, 5)}</Box>
               </>
             ),
           },
@@ -207,7 +207,7 @@ export const CompaniesRegistered = () => {
           {
             head: m.activityCode,
             id: 'activityCode',
-            className: cssUtils.txtRight,
+            sx: {textAlign: 'right'},
             render: _ => <span>{_?.activityCode}</span>,
           },
           {
@@ -264,7 +264,7 @@ export const CompaniesRegistered = () => {
           },
         ]}
         renderEmptyState={
-          <Fender title={m.noCompanyFound} icon="store" className={css.fender}>
+          <Fender title={m.noCompanyFound} icon="store" sx={{margin: 'auto', mt: 1, mb: 2}}>
             {connectedUser.isAdmin && (
               <SelectCompany
                 onChange={company => {
@@ -276,7 +276,7 @@ export const CompaniesRegistered = () => {
                   }
                 }}
               >
-                <ScButton variant="contained" color="primary" icon="add" className={cssUtils.marginTop}>
+                <ScButton variant="contained" color="primary" icon="add" sx={{mt: 1}}>
                   {m.registerACompany}
                 </ScButton>
               </SelectCompany>

@@ -1,9 +1,11 @@
 import React, {forwardRef, ReactElement, useEffect, useState} from 'react'
 import {ScRadioGroupItemProps} from './RadioGroupItem'
 import makeStyles from '@mui/styles/makeStyles'
-import {Box, BoxProps, Theme} from '@mui/material'
+import {Box, BoxProps, SxProps, Theme} from '@mui/material'
 
-interface Props extends Omit<BoxProps, 'children'> {
+interface Props {
+  className?: string
+  sx?: SxProps<Theme>
   dense?: boolean
   children: React.ReactNode //ReactElement<ScRadioGroupItemProps>[]
   value?: string

@@ -172,7 +172,7 @@ export const CompaniesToActivate = () => {
               pt: .5,
               pb: .5,
               fontSize: t => styleUtils(t).fontSize.small,
-              color: t.palette.text.secondary,
+              color: t => t.palette.text.secondary,
               maxWidth: 300,
               ...sxUtils.truncate,
             },
