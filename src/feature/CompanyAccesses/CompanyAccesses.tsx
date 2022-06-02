@@ -7,7 +7,7 @@ import {Icon, Tooltip} from '@mui/material'
 import {Panel} from '../../shared/Panel'
 import {useCssUtils} from '../../core/helper/useCssUtils'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
-import {CompanyAccessLevel, Id} from '@signal-conso/signalconso-api-sdk-js'
+import {CompanyAccessLevel, Id, toQueryString} from '@signal-conso/signalconso-api-sdk-js'
 import {IconBtn} from 'mui-extension/lib'
 import {fromNullable, some} from 'fp-ts/lib/Option'
 import {useLogin} from '../../core/context/LoginContext'
@@ -21,6 +21,8 @@ import {ScDialog} from '../../shared/Confirm/ScDialog'
 import {ScButton} from '../../shared/Button/Button'
 import {ScRadioGroupItem} from '../../shared/RadioGroup/RadioGroupItem'
 import {ScRadioGroup} from '../../shared/RadioGroup/RadioGroup'
+import {siteMap} from '../../core/siteMap'
+import {getAbsoluteLocalUrl} from '../../core/helper/utils'
 
 interface Accesses {
   name?: string
@@ -46,9 +48,9 @@ export const CompanyAccesses = () => {
   const {toastSuccess, toastError} = useToast()
 
   const copyActivationLink = (token: string) => {
-    let activationLink = window.location.host + '/#/entreprise/rejoindre/' + siret + '?token=' + token
-    navigator.clipboard.writeText(activationLink)
-      .then(_ => toastSuccess(m.addressCopied))
+    const patch = getAbsoluteLocalUrl(siteMap.loggedout.activatePro(siret) + toQueryString({token}))
+    const activationLink = window.location.host + patch
+    navigator.clipboard.writeText(activationLink).then(_ => toastSuccess(m.addressCopied))
   }
 
   const accesses: Accesses[] = useMemo(() => {
@@ -188,63 +190,38 @@ export const CompanyAccesses = () => {
               ),
             },
             {
-              id: 'resend',
-              head: '',
-              className: cssUtils.marginRight,
-              render: _ => (
-                <>
-                  {
-                    connectedUser.isAdmin && !(_.name) && (
-                      fromNullable(_.email)
-                        .map(email => (
-                          <ScDialog
-                            title={m.resendCompanyAccessToken(_.email)}
-                            onConfirm={(event, close) =>
-                              _crudToken.create({preventInsert: true}, email, _.level)
-                                .then(_ => close())
-                                .then(_ => toastSuccess(m.userInvitationSent))}
-                            maxWidth="xs"
-                          >
-                            <Tooltip title={m.resendInvite}>
-                              <IconBtn>
-                                <Icon>send</Icon>
-                              </IconBtn>
-                            </Tooltip>
-                          </ScDialog>
-                        ))
-                        .getOrElse(<></>)
-                    )}
-                </>
-              ),
-            },
-            {
-              id: 'copy',
-              head: '',
-              className: cssUtils.txtRight,
-              render: _ => (
-                <>
-                  {
-                    connectedUser.isAdmin && !(_.name) && (
-                      fromNullable(_.token)
-                        .map(token => (
-                          <Tooltip title={m.copyInviteLink}>
-                            <IconBtn onClick={(_) =>
-                              copyActivationLink(token)}>
-                              <Icon>content_copy</Icon>
-                            </IconBtn>
-                          </Tooltip>
-                        ))
-                        .getOrElse(<></>)
-                    )}
-                </>
-              ),
-            },
-            {
               id: 'action',
               head: '',
-              className: cssUtils.txtRight,
+              className: cssUtils.tdActions,
               render: _ => (
                 <>
+                  {connectedUser.isAdmin && !(_.name) && (
+                    fromNullable(_.email).map(email => (
+                      <ScDialog
+                        title={m.resendCompanyAccessToken(_.email)}
+                        onConfirm={(event, close) =>
+                          _crudToken.create({preventInsert: true}, email, _.level)
+                            .then(_ => close())
+                            .then(_ => toastSuccess(m.userInvitationSent))}
+                        maxWidth="xs"
+                      >
+                        <Tooltip title={m.resendInvite}>
+                          <IconBtn>
+                            <Icon>send</Icon>
+                          </IconBtn>
+                        </Tooltip>
+                      </ScDialog>
+                    )).getOrElse(<></>)
+                  )}
+                  {connectedUser.isAdmin && !(_.name) && (
+                    fromNullable(_.token).map(token => (
+                      <Tooltip title={m.copyInviteLink}>
+                        <IconBtn onClick={(_) => copyActivationLink(token)}>
+                          <Icon>content_copy</Icon>
+                        </IconBtn>
+                      </Tooltip>
+                    )).getOrElse(<></>)
+                  )}
                   {some(_)
                     .filter(_ => _.editable === true)
                     .mapNullable(_ => _.userId)
@@ -263,19 +240,17 @@ export const CompanyAccesses = () => {
                       </ScDialog>
                     ))
                     .getOrElse(
-                      fromNullable(_.tokenId)
-                        .map(tokenId => (
-                          <ScDialog
-                            title={m.deleteCompanyAccessToken(_.email)}
-                            onConfirm={() => _crudToken.remove(tokenId)}
-                            maxWidth="xs"
-                          >
-                            <IconBtn loading={_crudToken.removing(tokenId)}>
-                              <Icon>delete</Icon>
-                            </IconBtn>
-                          </ScDialog>
-                        ))
-                        .getOrElse(<></>),
+                      fromNullable(_.tokenId).map(tokenId => (
+                        <ScDialog
+                          title={m.deleteCompanyAccessToken(_.email)}
+                          onConfirm={() => _crudToken.remove(tokenId)}
+                          maxWidth="xs"
+                        >
+                          <IconBtn loading={_crudToken.removing(tokenId)}>
+                            <Icon>delete</Icon>
+                          </IconBtn>
+                        </ScDialog>
+                      )).getOrElse(<></>),
                     )}
                 </>
               ),

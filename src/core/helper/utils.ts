@@ -105,8 +105,12 @@ export const stringToBoolean = (str?: string): boolean | undefined => {
   }
 }
 
+export const getAbsoluteLocalUrl = (path: string) => {
+  return (config.useHashRouter ? '/#' : '') + path
+}
+
 export const openInNew = (path: string) => {
-  window.open((config.useHashRouter ? '/#' : '') + path, '_blank')
+  window.open(getAbsoluteLocalUrl(path), '_blank')
 }
 
 export const sxIf = (condition: boolean | undefined, sx: SxProps<Theme>): SxProps<Theme> => {
