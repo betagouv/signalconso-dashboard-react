@@ -65,6 +65,7 @@ export const StatsReportsProResponsePanel = ({ticks}: Props) => {
       <PanelBody>
         <Txt color="hint" gutterBottom block dangerouslySetInnerHTML={{__html: m.reportsProResponseTypeDesc}} />
         <ChartAsync
+          disableAnimation
           promisesDeps={[ticks]}
           promises={[
             () => api.secured.stats.getProReportResponseStat({ticks}),

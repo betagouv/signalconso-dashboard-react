@@ -1,5 +1,5 @@
 import {red} from '@mui/material/colors'
-import {alpha, createTheme, PaletteColorOptions, Theme} from '@mui/material'
+import {alpha, createTheme, Theme} from '@mui/material'
 import {ThemeOptions} from '@mui/material/styles/createTheme'
 
 export const styleUtils = (t: Theme) => ({
@@ -32,7 +32,8 @@ export const styleUtils = (t: Theme) => ({
 export const defaultSpacing = 8
 
 export const muiTheme = (dark?: boolean): Theme => {
-  const defaultTheme = createTheme()
+  const fontFamily = '"Open Sans", sans-serif'
+  const fontSize = 15
   const colorPrimary = {
     main: '#2b7c9f',
     light: '#6fd3ff',
@@ -46,6 +47,23 @@ export const muiTheme = (dark?: boolean): Theme => {
     light: '#1e2b50',
     dark: '#1e2b50',
   }
+  const baseTheme = createTheme({
+    spacing: defaultSpacing,
+    palette: {
+      primary: colorPrimary,
+      secondary: colorSecondary,
+      error: red,
+      mode: dark ? 'dark' : 'light',
+    },
+    shape: {
+      borderRadius: 10,
+    },
+    typography: {
+      fontSize,
+      fontFamily,
+      fontWeightBold: 500,
+    },
+  })
   const theme: ThemeOptions = {
     spacing: defaultSpacing,
     palette: {
@@ -55,19 +73,119 @@ export const muiTheme = (dark?: boolean): Theme => {
       mode: dark ? 'dark' : 'light',
     },
     typography: {
-      fontSize: 15,
-      // fontFamily: '"Open Sans", sans-serif',
-      fontFamily: 'Roboto, sans-serif',
+      fontSize,
+      fontFamily,
       fontWeightBold: 500,
     },
     components: {
+      MuiCssBaseline: {
+        styleOverrides: {
+          '*': {
+            boxSizing: 'border-box',
+          },
+          '.material-icons': {
+            display: 'inherit',
+          },
+          html: {
+            fontFamily,
+            fontSize,
+            color: baseTheme.palette.text.primary,
+          },
+          '.blog': {
+            'a': {
+              color: colorPrimary.main,
+            },
+            'li + li': {
+              marginTop: defaultSpacing * 2,
+            },
+            ul: {
+              marginTop: '.5em',
+            },
+          },
+          '.root': {
+            minHeight: '100vh',
+            display: 'flex',
+            flexDirection: 'column',
+          },
+          body: {
+            lineHeight: '1.5',
+            fontFamily,
+            background: baseTheme.palette.background.paper,
+            margin: 0,
+            color: baseTheme.palette.text.primary,
+            boxSizing: 'border-box',
+          },
+          main: {
+            flex: 1,
+          },
+          h1: {
+            ...baseTheme.typography.h4,
+            marginTop: 0,
+          },
+          h2: {
+            ...baseTheme.typography.h5,
+            marginTop: defaultSpacing * 4,
+          },
+          h3: {
+            ...baseTheme.typography.h6,
+            marginTop: defaultSpacing * 4,
+          },
+          h4: {
+            ...baseTheme.typography.h6,
+            fontSize: '1.25rem',
+          },
+          h6: {
+            color: 'red',
+            ...baseTheme.typography.h6,
+            fontSize: '1.25rem',
+          },
+          blockquote: {
+            color: baseTheme.palette.text.secondary,
+            marginLeft: 0,
+            paddingLeft: baseTheme.spacing(2),
+            borderLeft: `2px solid ${baseTheme.palette.divider}`,
+          },
+          hr: {
+            border: 'none',
+            borderBottom: `1px solid ${baseTheme.palette.divider}`,
+          },
+          table: {
+            background: baseTheme.palette.background.paper,
+            border: `1px solid ${baseTheme.palette.divider}`,
+            borderLeft: 0,
+            borderRight: 0,
+            borderRadius: 2,
+            position: 'relative',
+            width: '100%',
+            borderCollapse: 'collapse',
+
+            '& td': {
+              fontWeight: 400,
+              padding: '1em',
+              textAlign: 'left',
+              borderTop: `1px solid ${baseTheme.palette.divider}`,
+            },
+            '& th': {
+              padding: '1em',
+              textAlign: 'left',
+            },
+            '& thead th': {
+              background: baseTheme.palette.action.disabledBackground,
+              borderBottom: `1px solid ${baseTheme.palette.divider}`,
+              // font-size: 0.875em,
+              // font-weight: 700,
+              textTransform: 'uppercase',
+            },
+          },
+        },
+      },
       MuiButton: {
         styleOverrides: {
           root: {
             borderRadius: 20,
           },
           outlinedPrimary: {
-            borderColor: defaultTheme.palette.divider,
+            borderColor: baseTheme.palette.divider,
           },
         },
       },
@@ -92,7 +210,7 @@ export const muiTheme = (dark?: boolean): Theme => {
       MuiChip: {
         styleOverrides: {
           outlined: {
-            borderColor: defaultTheme.palette.divider,
+            borderColor: baseTheme.palette.divider,
           },
         },
       },
@@ -101,7 +219,7 @@ export const muiTheme = (dark?: boolean): Theme => {
           root: {
             fontSize: '1rem',
             minHeight: 42,
-            [defaultTheme.breakpoints.up('xs')]: {
+            [baseTheme.breakpoints.up('xs')]: {
               minHeight: 42,
             },
           },
@@ -131,6 +249,9 @@ export const muiTheme = (dark?: boolean): Theme => {
             paddingRight: 8,
             paddingLeft: 8,
           },
+          head: {
+            lineHeight: 1.2,
+          },
           sizeSmall: {
             height: 40,
             minHeight: 40,
@@ -140,7 +261,7 @@ export const muiTheme = (dark?: boolean): Theme => {
       MuiTooltip: {
         styleOverrides: {
           tooltip: {
-            fontSize: defaultTheme.typography.fontSize,
+            fontSize: baseTheme.typography.fontSize,
             fontWeight: 'normal',
           },
         },

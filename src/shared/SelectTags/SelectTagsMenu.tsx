@@ -3,7 +3,7 @@ import {ReportTag} from '@signal-conso/signalconso-api-sdk-js'
 import {Enum} from '@alexandreannic/ts-utils/lib/common/enum/Enum'
 import {useI18n} from '../../core/i18n'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
-import {useEffect, useState} from 'react'
+import {useEffect, useMemo, useState} from 'react'
 
 export type SelectTagsMenuValue = 'included' | 'excluded' | undefined
 
@@ -54,6 +54,12 @@ const TagButton = ({
 export const SelectTagsMenu = ({onClose, onChange, open, value, anchorEl}: ScSelectTagsMenuProps) => {
   const {m} = useI18n()
 
+  const tags = useMemo(() => {
+    const reponseConsoTag = ReportTag.ReponseConso
+    const tagsWithoutReponseConso = (Enum.keys(ReportTag) as ReportTag[]).filter(_ => _ !== reponseConsoTag)
+    const reorderedTags = [reponseConsoTag, ...tagsWithoutReponseConso]
+    return reorderedTags
+  }, [])
   const [innerValue, setInnerValue] = useState<SelectTagsMenuValues | undefined>()
 
   useEffect(() => {
@@ -75,14 +81,7 @@ export const SelectTagsMenu = ({onClose, onChange, open, value, anchorEl}: ScSel
   return (
     <Menu anchorEl={anchorEl} open={open} onClose={onClose}>
       {(Enum.keys(ReportTag) as ReportTag[]).map(tag => (
-        <MenuItem
-          key={tag}
-          // sx={iff(ReportTag.ReponseConso, {
-          //   excluded: {background: (t: Theme) => alpha(t.palette.error.main, .4)},
-          //   included: {background: (t: Theme) => alpha(t.palette.success.light, .4)},
-          //   notdefined: {},
-          // })}
-        >
+        <MenuItem key={tag}>
           <TagButton
             status={switchTagValue(tag, {
               excluded: 'inactive',

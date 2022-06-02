@@ -286,6 +286,7 @@ export const ReportedCompaniesWebsites = () => {
           {
             id: 'actions',
             stickyEnd: true,
+            className: cssUtils.tdActions,
             render: _ => (
               <IconBtn className={cssUtils.colorTxtHint} onClick={() => _remove.fetch({}, _.id).then(_ => _fetch.fetch())}>
                 <Icon>delete</Icon>

@@ -232,7 +232,7 @@ export const CompaniesRegistered = () => {
             head: '',
             id: 'actions',
             stickyEnd: true,
-            className: cssUtils.txtRight,
+            className: cssUtils.tdActions,
             render: _ => (
               <>
                 <Badge color="error" badgeContent=" " variant="dot" overlap="circular">

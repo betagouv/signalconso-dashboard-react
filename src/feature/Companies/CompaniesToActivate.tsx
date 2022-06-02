@@ -153,7 +153,7 @@ export const CompaniesToActivate = () => {
         total={_companiesToActivate.list?.totalSize}
         getRenderRowKey={_ => _.company.id}
         showColumnsToggle={true}
-        rowsPerPageOptions={[5, 10, 25, 100, 500]}
+        rowsPerPageOptions={[5, 10, 25, 100, 250]}
         columns={[
           {
             head: (
@@ -208,6 +208,7 @@ export const CompaniesToActivate = () => {
           },
           {
             id: 'actions',
+            className: cssUtils.tdActions,
             stickyEnd: true,
             render: _ => (
               <>

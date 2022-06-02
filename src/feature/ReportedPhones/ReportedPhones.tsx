@@ -131,6 +131,7 @@ export const ReportedPhones = () => {
             },
             {
               id: 'actions',
+              className: cssUtils.tdActions,
               render: _ => (
                 <>
                   <NavLink

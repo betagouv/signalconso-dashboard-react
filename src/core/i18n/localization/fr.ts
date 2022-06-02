@@ -1,10 +1,4 @@
-import {
-  CompanyAccessLevel,
-  ReportResponseTypes,
-  ReportStatus,
-  ReportStatusPro,
-  ReportTag,
-} from '@signal-conso/signalconso-api-sdk-js'
+import {CompanyAccessLevel, ReportResponseTypes, ReportStatus, ReportStatusPro, ReportTag} from '@signal-conso/signalconso-api-sdk-js'
 import {config} from '../../../conf/config'
 import {formatDistance, formatDuration as formatDurationFns} from 'date-fns'
 import {ResponseEvaluation} from '@signal-conso/signalconso-api-sdk-js/lib/client/event/Event'
@@ -216,6 +210,7 @@ export const fr = {
     reportConsumerWantToBeAnonymous: 'Le consommateur souhaite rester anonyme',
     cannotExportMoreReports: (reportCount: number) => `Impossible d'exporter plus de ${reportCount} signalements.`,
     siret: 'SIRET',
+    siretFound: 'SIRET identifié',
     postalCodeShort: 'CP',
     files: 'Fichiers',
     problem: 'Problème',
@@ -272,6 +267,9 @@ export const fr = {
     reportsCountPhysique: 'Nombre de signalements établissement physique',
     responsesCount: 'Nombre de réponses',
     emailConsumer: 'Email conso.',
+    nSelected: (n: number) => `<b>${n}</b> sélectionnés`,
+    consoAnonyme: 'Conso. anonyme',
+    hasAttachement: `Pièces jointes`,
     reportsProProcessed: 'Traitement des signalements par les pros',
     reportsProProcessedDesc: `   
     <div>Pourcentage du traitement des signalements visibles par les professionnels (une partie des signalements ne sont pas transmis aux professionnels) sur le total des signalements</div>

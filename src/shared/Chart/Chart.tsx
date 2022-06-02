@@ -6,6 +6,11 @@ import {styleUtils} from '../../core/theme'
 import {useI18n} from '../../core/i18n'
 
 export interface ScLineChartPropsBase {
+  /**
+   * This props may be needed because sometimes label are not showing because of animation.
+   * https://github.com/recharts/recharts/issues/1135
+   */
+  disableAnimation?: boolean
   hideLabelToggle?: boolean
   height?: number
 }
@@ -21,7 +26,7 @@ interface Props extends ScLineChartPropsBase {
 
 const colors = (t: Theme) => [t.palette.primary.main, '#e48c00', 'red', 'green']
 
-export const ScLineChart = memo(({hideLabelToggle, curves, height = 300}: Props) => {
+export const ScLineChart = memo(({disableAnimation, hideLabelToggle, curves, height = 300}: Props) => {
   const theme = useTheme()
   const [showCurves, setShowCurves] = useState<boolean[]>(new Array(curves.length).fill(false))
   const {m} = useI18n()
@@ -64,6 +69,7 @@ export const ScLineChart = memo(({hideLabelToggle, curves, height = 300}: Props)
             <Legend />
             {curves.map((_, i) => (
               <Line
+                isAnimationActive={!disableAnimation}
                 key={_.key}
                 name={_.label}
                 type="monotone"

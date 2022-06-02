@@ -129,5 +129,9 @@ export const useCssUtils = makeStyles((t: Theme) => {
     nowrap: {
       whiteSpace: 'nowrap',
     },
+    tdActions: {
+      textAlign: 'right',
+      width: 0,
+    },
   }
 })

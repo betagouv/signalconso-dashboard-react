@@ -24,6 +24,7 @@ export const StatsReportsProProcessedPanel = ({ticks}: Props) => {
       <PanelBody>
         <Txt color="hint" gutterBottom block dangerouslySetInnerHTML={{__html: m.reportsProProcessedDesc}} />
         <ChartAsync
+          disableAnimation
           promisesDeps={[ticks]}
           promises={[
             () => api.public.stats.getReportCountCurve({ticks}),

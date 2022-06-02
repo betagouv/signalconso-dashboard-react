@@ -23,20 +23,23 @@ const useStyles = makeStyles((t: Theme) => ({
 }))
 
 export const DatatableColumnToggle = ({className, title, columns, hiddenColumns, onChange}: Props) => {
+  const css = useStyles()
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget)
   }
 
-  const css = useStyles()
-
   return (
     <>
       <Tooltip title={title ?? ''}>
         <IconBtn className={className} color="primary" onClick={handleClick}>
-          <Badge color="error" badgeContent="!" invisible={columns.length !== hiddenColumns.length}>
-            <Icon>table_chart</Icon>
+          <Badge
+            color="error"
+            badgeContent={columns.length === hiddenColumns.length ? '!' : columns.length - hiddenColumns.length}
+            invisible={hiddenColumns.length === 0}
+          >
+            <Icon color={columns.length === hiddenColumns.length ? 'error' : undefined}>table_chart</Icon>
           </Badge>
         </IconBtn>
       </Tooltip>

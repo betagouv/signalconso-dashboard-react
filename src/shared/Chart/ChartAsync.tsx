@@ -23,12 +23,12 @@ interface ChartAsyncProps<T extends Promises> extends ScLineChartPropsBase {
 }
 
 export const ChartAsync = <T extends Promises>({
-  hideLabelToggle,
   type = 'line',
   promises,
   curves,
-  height = 300,
   promisesDeps = [],
+  height = 300,
+  ...otherProps
 }: ChartAsyncProps<T>) => {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<ApiError | undefined>()
@@ -50,7 +50,7 @@ export const ChartAsync = <T extends Promises>({
       {loading || !data ? (
         <Skeleton variant="rectangular" height={height} width="100%" sx={{borderRadius: '8px'}} />
       ) : type === 'line' ? (
-        <ScLineChart hideLabelToggle={hideLabelToggle} curves={curves.map((c, i) => ({
+        <ScLineChart {...otherProps} height={height} curves={curves.map((c, i) => ({
           ...c,
           curve: c.curve(data),
         }))} />

@@ -51,10 +51,6 @@ const useStyles = makeStyles((t: Theme) => ({
   fender: {
     margin: `${t.spacing(1)}px auto ${t.spacing(2)}px auto`,
   },
-  tdActions: {
-    textAlign: 'right',
-    width: 0,
-  },
 }))
 
 export const CompaniesPro = () => {
@@ -197,7 +193,7 @@ export const CompaniesPro = () => {
             {
               head: '',
               id: 'actions',
-              className: css.tdActions,
+              className: cssUtils.tdActions,
               render: _ => (
                 <>
                   {_.level === AccessLevel.ADMIN && (

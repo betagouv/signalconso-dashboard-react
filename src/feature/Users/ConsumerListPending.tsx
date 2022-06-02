@@ -66,7 +66,7 @@ export const ConsumerListPending = () => {
           onPaginationChange: pagination => _users.updateFilters(prev => ({...prev, ...pagination})),
         }}
         showColumnsToggle
-        rowsPerPageOptions={[5, 10, 25, 100, ...(_users.list ? [_users.list.totalSize] : [])]}
+        rowsPerPageOptions={[5, 10, 25, 100]}
         getRenderRowKey={_ => _.email}
         data={_users.list?.data}
         columns={[
@@ -91,8 +91,9 @@ export const ConsumerListPending = () => {
             render: _ => _.attempts,
           },
           {
-            head: '',
             id: 'actions',
+            head: '',
+            className: cssUtils.tdActions,
             render: _ => (
               <>
                 <Box sx={{display: 'flex', justifyContent: 'flex-end'}}>
