@@ -201,7 +201,7 @@ export const Reports = ({}) => {
                   </DebouncedInput>
                 </Grid>
               </Grid>
-              <ReportsSelectedToolbar ids={selectReport.toArray()} />
+              <ReportsSelectedToolbar ids={selectReport.toArray()} onClear={selectReport.clear} />
             </>
           }
           actions={
@@ -260,6 +260,7 @@ export const Reports = ({}) => {
                 const allChecked = selectReport.size === _reports.list?.data.length
                 return (
                   <Checkbox
+                    disabled={_reports.fetching || !_reports.list || _reports.list.data.length === 0}
                     indeterminate={selectReport.size > 0 && !allChecked}
                     checked={allChecked}
                     onChange={() => {

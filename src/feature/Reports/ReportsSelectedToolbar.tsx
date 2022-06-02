@@ -1,14 +1,17 @@
 import {lighten} from '@mui/system/colorManipulator'
 import {ScButton} from '../../shared/Button/Button'
-import {Box} from '@mui/material'
+import {Box, Icon} from '@mui/material'
 import React from 'react'
 import {useI18n} from '../../core/i18n'
 import {Id} from '@signal-conso/signalconso-api-sdk-js'
 import {useReportContext} from '../../core/context/ReportContext'
+import {IconBtn} from 'mui-extension/lib'
 
 export const ReportsSelectedToolbar = ({
   ids,
+  onClear,
 }: {
+  onClear?: () => void
   ids: Id[]
 }) => {
   const _report = useReportContext()
@@ -17,8 +20,8 @@ export const ReportsSelectedToolbar = ({
     <Box sx={{
       display: 'flex',
       alignItems: 'center',
-      pr: 2,
-      pl: 2,
+      pr: 1,
+      pl: 1,
       zIndex: 2,
       overflow: 'hidden',
       transition: t => t.transitions.create('all'),
@@ -28,12 +31,15 @@ export const ReportsSelectedToolbar = ({
       left: 0,
       opacity: ids.length > 0 ? 1 : 0,
       height: ids.length > 0 ? 'calc(100% + 2px)' : 0,
-      background: t => lighten(t.palette.primary.main, .85),
+      background: t => lighten(t.palette.primary.main, .86),
       borderTopRightRadius: t => t.shape.borderRadius,
       borderTopLeftRadius: t => t.shape.borderRadius,
       margin: `-1px`,
       border: t => `2px solid ${t.palette.primary.main}`,
     }}>
+      <IconBtn sx={{mr: 1}} color="primary" onClick={onClear}>
+        <Icon>clear</Icon>
+      </IconBtn>
       <span dangerouslySetInnerHTML={{__html: m.nSelected(ids.length)}} />
       <ScButton
         loading={_report.download.loading}
