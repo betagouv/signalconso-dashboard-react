@@ -31,16 +31,9 @@ interface Form {
   details?: string
 }
 
-const useStyles = makeStyles((t: Theme) => ({
-  large: {
-    fontSize: 50,
-  },
-}))
-
 export const ConsumerReview = ({onSubmit}: Props) => {
   const {reportId} = useParams<{reportId: Id}>()
   const {m} = useI18n()
-  const cssUtils = useCssUtils()
   const {toastError} = useToast()
   const [done, setDone] = useState(false)
   const {
@@ -50,7 +43,6 @@ export const ConsumerReview = ({onSubmit}: Props) => {
     formState: {errors, isValid},
   } = useForm<Form>()
   const {search} = useLocation()
-  const css = useStyles()
 
   const getEvaluationFromQueryString = (qs: string): ResponseEvaluation | undefined => {
     const parsed = QueryString.parse(qs.replace(/^\?/, '')).evaluation as unknown as ResponseEvaluation
@@ -87,7 +79,7 @@ export const ConsumerReview = ({onSubmit}: Props) => {
                 rules={{required: {value: true, message: m.required}}}
                 control={control}
                 render={({field}) => (
-                  <ScRadioGroup className={cssUtils.marginTop3} inline={!isMobileWidth} error={!!errors.evaluation} {...field}>
+                  <ScRadioGroup sx={{mt: 3}} inline={!isMobileWidth} error={!!errors.evaluation} {...field}>
                     <ScRadioGroupItem value={ResponseEvaluation.Positive}>
                       <Emoticon sx={{fontSize: 50}} aria-label="happy">
                         😀

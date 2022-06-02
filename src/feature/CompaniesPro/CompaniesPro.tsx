@@ -22,34 +22,6 @@ import {ConfirmDisableNotificationDialog} from './ConfirmDisableNotificationDial
 import {groupBy} from '../../core/lodashNamedExport'
 import {PanelFoot} from '../../shared/Panel/PanelFoot'
 
-const useStyles = makeStyles((t: Theme) => ({
-  tdName_label: {
-    fontWeight: 'bold',
-    marginBottom: -1,
-  },
-  tdName: {
-    lineHeight: 1.4,
-    maxWidth: 200,
-  },
-  tdName_desc: {
-    fontSize: t.typography.fontSize * 0.875,
-    color: t.palette.text.disabled,
-  },
-  tdAddress: {
-    maxWidth: 240,
-    color: t.palette.text.secondary,
-    ...styleUtils(t).truncate,
-  },
-  tdNotification: {
-    width: 0,
-    textAlign: 'center',
-    padding: 0,
-  },
-  fender: {
-    margin: `${t.spacing(1)}px auto ${t.spacing(2)}px auto`,
-  },
-}))
-
 export const CompaniesPro = () => {
   const {m} = useI18n()
   const theme = useTheme()

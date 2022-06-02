@@ -1,16 +1,15 @@
-import {Badge, Checkbox, Icon, Menu, MenuItem, Theme, Tooltip} from '@mui/material'
+import {Badge, BoxProps, Checkbox, Icon, IconButtonProps, Menu, MenuItem, Theme, Tooltip} from '@mui/material'
 import makeStyles from '@mui/styles/makeStyles'
 import React from 'react'
 import {IconBtn} from 'mui-extension/lib'
 import {DatatableColumnProps} from './Datatable'
 
-interface Props {
+interface Props extends Omit<IconButtonProps, 'onChange'> {
   // Hack because there is no way to make TS understand that the key of an object can
   // only be a string ({[key: string]: string} does not work...)
   columns: (Omit<DatatableColumnProps<any>, 'id'> & {id: string})[]
   hiddenColumns: string[]
   onChange: (_: string[]) => void
-  className?: string
   title?: string
 }
 
@@ -22,7 +21,7 @@ const useStyles = makeStyles((t: Theme) => ({
   },
 }))
 
-export const DatatableColumnToggle = ({className, title, columns, hiddenColumns, onChange}: Props) => {
+export const DatatableColumnToggle = ({className, title, columns, hiddenColumns, onChange, ...props}: Props) => {
   const css = useStyles()
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
 
@@ -33,7 +32,7 @@ export const DatatableColumnToggle = ({className, title, columns, hiddenColumns,
   return (
     <>
       <Tooltip title={title ?? ''}>
-        <IconBtn className={className} color="primary" onClick={handleClick}>
+        <IconBtn {...props} color="primary" onClick={handleClick}>
           <Badge
             color="error"
             badgeContent={columns.length === hiddenColumns.length ? '!' : columns.length - hiddenColumns.length}

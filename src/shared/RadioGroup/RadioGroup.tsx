@@ -1,10 +1,9 @@
 import React, {forwardRef, ReactElement, useEffect, useState} from 'react'
 import {ScRadioGroupItemProps} from './RadioGroupItem'
-import {classes} from '../../core/helper/utils'
 import makeStyles from '@mui/styles/makeStyles'
-import {alpha, Theme} from '@mui/material'
+import {Box, BoxProps, Theme} from '@mui/material'
 
-interface Props {
+interface Props extends Omit<BoxProps, 'children'> {
   dense?: boolean
   children: React.ReactNode //ReactElement<ScRadioGroupItemProps>[]
   value?: string
@@ -12,26 +11,27 @@ interface Props {
   border?: boolean
   error?: boolean
   onChange?: (_: string) => void
-  className?: string
 }
 
-const useStyle = makeStyles((t: Theme) => ({
-  rootFlex: {
-    display: 'flex',
-  },
-}))
-
-export const ScRadioGroup = forwardRef(
-  ({error, className, children, dense, value, inline, border, onChange}: Props, ref: any) => {
+export const ScRadioGroup = forwardRef(({
+    error,
+    className,
+    children,
+    dense,
+    value,
+    inline,
+    border,
+    onChange,
+    sx,
+  }: Props, ref: any) => {
     const [innerValue, setInnerValue] = useState<string>()
 
-    const css = useStyle()
     useEffect(() => {
       setInnerValue(value)
     }, [])
 
     return (
-      <div className={classes(inline && css.rootFlex, className)} ref={ref}>
+      <Box sx={{...inline && {display: 'flex'}}} className={className} ref={ref}>
         {React.Children.map(children as ReactElement<ScRadioGroupItemProps>[], child =>
           React.cloneElement(child, {
             ...child.props,
@@ -46,7 +46,7 @@ export const ScRadioGroup = forwardRef(
             },
           }),
         )}
-      </div>
+      </Box>
     )
   },
 )

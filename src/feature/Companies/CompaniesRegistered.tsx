@@ -4,13 +4,11 @@ import {Datatable} from '../../shared/Datatable/Datatable'
 import {cleanObject, Company, CompanySearch, PaginatedSearch} from '@signal-conso/signalconso-api-sdk-js'
 import React, {useEffect, useMemo, useState} from 'react'
 import {useCompaniesContext} from '../../core/context/CompaniesContext'
-import {useCssUtils} from '../../core/helper/useCssUtils'
-import {Badge, Icon, InputBase, ListItemIcon, ListItemText, MenuItem, Theme, Tooltip} from '@mui/material'
-import makeStyles from '@mui/styles/makeStyles'
+import {Badge, Box, Icon, InputBase, ListItemIcon, ListItemText, MenuItem, Tooltip} from '@mui/material'
 import {NavLink} from 'react-router-dom'
 import {siteMap} from '../../core/siteMap'
 import {ScButton} from '../../shared/Button/Button'
-import {styleUtils} from '../../core/theme'
+import {styleUtils, sxUtils} from '../../core/theme'
 import {Fender, IconBtn} from 'mui-extension/lib'
 import {mapArrayFromQuerystring, useQueryString} from '../../core/helper/useQueryString'
 import {DebouncedInput} from '../../shared/DebouncedInput/DebouncedInput'
@@ -21,32 +19,9 @@ import {SelectCompany} from '../../shared/SelectCompany/SelectCompany'
 import {EditAddressDialog} from './EditAddressDialog'
 import {useLogin} from '../../core/context/LoginContext'
 import {ClipboardApi} from '@alexandreannic/ts-utils/lib/browser/clipboard/ClipboardApi'
-import {classes} from '../../core/helper/utils'
 import {CompaniesRegisteredFilters} from './CompaniesRegisteredFilters'
 import {ScMenu} from '../../shared/Menu/Menu'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
-
-const useStyles = makeStyles((t: Theme) => ({
-  tdName_label: {
-    fontWeight: 'bold',
-    marginBottom: -1,
-  },
-  tdName: {
-    lineHeight: 1.4,
-    maxWidth: 170,
-  },
-  tdName_desc: {
-    fontSize: t.typography.fontSize * 0.875,
-    color: t.palette.text.disabled,
-  },
-  tdAddress: {
-    maxWidth: 260,
-    ...styleUtils(t).truncate,
-  },
-  fender: {
-    margin: `${t.spacing(1)}px auto ${t.spacing(2)}px auto`,
-  },
-}))
 
 export interface CompanySearchQs extends PaginatedSearch<any> {
   departments?: string[] | string
@@ -59,8 +34,6 @@ export const CompaniesRegistered = () => {
   const _companies = useCompaniesContext().activated
   const _companyUpdateAddress = useCompaniesContext().updateAddress
   const _companyCreate = useCompaniesContext().create
-  const cssUtils = useCssUtils()
-  const css = useStyles()
   const {toastError, toastSuccess} = useToast()
   const {connectedUser} = useLogin()
   const [sortByResponseRate, setSortByResponseRate] = useState<'asc' | 'desc' | undefined>()
@@ -158,15 +131,21 @@ export const CompaniesRegistered = () => {
           {
             head: m.name,
             id: 'siret',
-            className: css.tdName,
+            sx: {
+              lineHeight: 1.4,
+              maxWidth: 170,
+            },
             render: _ => (
               <Tooltip title={_.name}>
                 <span>
                   <NavLink to={siteMap.logged.company(_.id)}>
-                    <Txt link className={css.tdName_label}>{_.name}</Txt>
+                    <Txt link sx={{fontWeight: 'bold', marginBottom: '-1px'}}>{_.name}</Txt>
                   </NavLink>
                   <br />
-                  <span className={css.tdName_desc}>{_.siret}</span>
+                  <Box component="span" sx={{
+                    fontSize: t => styleUtils(t).fontSize.small,
+                    color: t => t.palette.text.disabled,
+                  }}>{_.siret}</Box>
                 </span>
               </Tooltip>
             ),
@@ -174,7 +153,7 @@ export const CompaniesRegistered = () => {
           {
             head: m.address,
             id: 'address',
-            className: css.tdAddress,
+            sx: {maxWidth: 260, ...sxUtils.truncate},
             render: _ => (
               <Tooltip title={<AddressComponent address={_.address} />}>
                 <span>
@@ -189,14 +168,14 @@ export const CompaniesRegistered = () => {
             render: _ => (
               <>
                 <span>{_.address.postalCode?.slice(0, 2)}</span>
-                <span className={cssUtils.colorDisabled}>{_.address.postalCode?.substr(2, 5)}</span>
+                <Box component="span" sx={{color: t => t.palette.disabled}}>{_.address.postalCode?.substr(2, 5)}</Box>
               </>
             ),
           },
           {
             head: m.reports,
             id: 'count',
-            className: cssUtils.txtRight,
+            sx: {textAlign: 'right'},
             render: _ => (
               <NavLink to={siteMap.logged.reports({siretSirenList: [_.siret], departments: _companies.filters.departments})}>
                 <ScButton color="primary">{formatLargeNumber(_.count)}</ScButton>
@@ -206,20 +185,23 @@ export const CompaniesRegistered = () => {
           {
             head: m.responseRate,
             id: 'responseRate',
-            className: cssUtils.txtRight,
+            sx: {textAlign: 'right'},
             render: _ => (
-              <span
-                className={classes(
-                  cssUtils.txtBold,
-                  _.responseRate > 50
-                    ? cssUtils.colorSuccess
-                    : _.responseRate === 0
-                    ? cssUtils.colorError
-                    : cssUtils.colorWarning,
-                )}
+              <Box
+                component="span"
+                sx={{
+                  fontWeight: t => t.typography.fontWeightBold,
+                  ..._.responseRate > 50 ? {
+                    color: t => t.palette.success.light,
+                  } : _.responseRate === 0 ? {
+                    color: t => t.palette.error.light,
+                  } : {
+                    color: t => t.palette.warning.light,
+                  },
+                }}
               >
                 {_.responseRate} %
-              </span>
+              </Box>
             ),
           },
           {
