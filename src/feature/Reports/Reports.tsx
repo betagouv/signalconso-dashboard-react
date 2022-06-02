@@ -260,7 +260,7 @@ export const Reports = ({}) => {
                 const allChecked = selectReport.size === _reports.list?.data.length
                 return (
                   <Checkbox
-                    disabled={_reports.fetching || !_reports.list || _reports.list.data.length === 0}
+                    disabled={_reports.fetching}
                     indeterminate={selectReport.size > 0 && !allChecked}
                     checked={allChecked}
                     onChange={() => {
