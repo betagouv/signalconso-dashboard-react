@@ -1,13 +1,12 @@
-import React, {ReactElement, useEffect, useState} from 'react'
+import React, {ReactElement, ReactNode, useEffect, useState} from 'react'
 import {Btn} from 'mui-extension/lib'
-import {CircularProgress, Icon, Menu, MenuItem, Theme, Tooltip} from '@mui/material'
+import {Box, CircularProgress, Icon, Menu, MenuItem, Theme, Tooltip} from '@mui/material'
 import makeStyles from '@mui/styles/makeStyles'
 import {useI18n} from '../../core/i18n'
 import {AsyncFile, AsyncFileKind, AsyncFileStatus} from '@signal-conso/signalconso-api-sdk-js'
 import {useAsyncFileContext} from '../../core/context/AsyncFileContext'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
 import {fnSwitch} from '../../core/helper/utils'
-import {useCssUtils} from '../../core/helper/useCssUtils'
 import {useReportedPhonesContext} from '../../core/context/ReportedPhonesContext'
 import {useInterval} from 'mui-extension/lib/core/utils/useInterval'
 import {Fetch} from '@alexandreannic/react-hooks-lib/lib'
@@ -27,37 +26,24 @@ interface Props {
   onClick?: (event: any) => void
 }
 
-const useStyles = makeStyles((t: Theme) => ({
-  btnContainer: {
-    padding: t.spacing(0, 2, 0.5, 2),
-  },
-  btnNew: {
-    width: '100%',
-  },
-  fileItemBody: {
-    marginLeft: t.spacing(1),
-    minWidth: 200,
-  },
-  menuItem: {
-    '&:not(:last-of-type)': {
-      borderBottom: '1px solid ' + t.palette.divider,
-    },
-  },
-  fileItem: {
-    display: 'flex',
-  },
-  progress: {
-    minHeight: 100,
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  noData: {
-    textAlign: 'center',
-    margin: t.spacing(1),
-    color: t.palette.text.disabled,
-  },
-}))
+export const FileItem = ({
+  icon,
+  children,
+  onClick,
+}: {
+  onClick?: () => void
+  icon: ReactNode,
+  children: ReactNode,
+}) => {
+  return (
+    <Box sx={{display: 'flex'}} onClick={onClick}>
+      {icon}
+      <Box sx={{ml: 1, minWidth: 200,}}>
+        {children}
+      </Box>
+    </Box>
+  )
+}
 
 export const ExportPopperBtn = ({
   children,
@@ -72,8 +58,6 @@ export const ExportPopperBtn = ({
   onNewExport,
 }: Props) => {
   const {m, formatDateTime} = useI18n()
-  const css = useStyles()
-  const cssUtils = useCssUtils()
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
   const [initialLoading, setInitialLoading] = useState(true)
 
@@ -111,7 +95,7 @@ export const ExportPopperBtn = ({
         </span>
       </Tooltip>
       <Menu keepMounted open={!!anchorEl} onClose={handleClose} anchorEl={anchorEl}>
-        <div className={css.btnContainer}>
+        <Box sx={{pt: 0, pr: 2, pb: .5, pl: 2}}>
           <Tooltip title={tooltipBtnNew ?? ''}>
             <span>
               <Btn
@@ -119,7 +103,7 @@ export const ExportPopperBtn = ({
                 color="primary"
                 variant="outlined"
                 size="small"
-                className={css.btnNew}
+                sx={{width: '100%'}}
                 icon="add"
                 onClick={() => onNewExport().then(() => fetch({clean: false}))}
               >
@@ -127,46 +111,58 @@ export const ExportPopperBtn = ({
               </Btn>
             </span>
           </Tooltip>
-        </div>
+        </Box>
         {initialLoading && loading && (
-          <div className={css.progress}>
+          <Box sx={{
+            minHeight: 100,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}>
             <CircularProgress />
-          </div>
+          </Box>
         )}
-        {files?.length === 0 && <div className={css.noData}>{m.noExport}</div>}
+        {files?.length === 0 && (
+          <Box sx={{
+            textAlign: 'center',
+            m: 1,
+            color: t => t.palette.text.disabled,
+          }}>{m.noExport}</Box>
+        )}
         {files
           ?.filter(_ => _.kind === fileType)
           .map(file => (
-            <MenuItem className={css.menuItem} dense key={file.id}>
+            <MenuItem sx={{
+              '&:not(:last-of-type)': {
+                borderBottom: t => '1px solid ' + t.palette.divider,
+              },
+            }} dense key={file.id}>
               {fnSwitch(file.status, {
                 [AsyncFileStatus.Successed]: _ => (
-                  <div className={css.fileItem} onClick={() => window.open(file.url, '_blank')}>
-                    <Icon className={cssUtils.colorSuccess}>file_download_done</Icon>
-                    <div className={css.fileItemBody}>
-                      <Txt bold block>
-                        {file.filename.match(/.*?\-(\w+.?\.xlsx)/)?.[1]}
-                      </Txt>
-                      <Txt color="hint">{formatDateTime(file.creationDate)}</Txt>
-                    </div>
-                  </div>
+                  <FileItem onClick={() => window.open(file.url, '_blank')} icon={
+                    <Icon sx={{color: t => t.palette.success.light}}>file_download_done</Icon>
+                  }>
+                    <Txt bold block>
+                      {file.filename.match(/.*?\-(\w+.?\.xlsx)/)?.[1]}
+                    </Txt>
+                    <Txt color="hint">{formatDateTime(file.creationDate)}</Txt>
+                  </FileItem>
                 ),
                 [AsyncFileStatus.Loading]: _ => (
-                  <div className={css.fileItem}>
+                  <FileItem icon={
                     <CircularProgress size={24} />
-                    <div className={css.fileItemBody}>
-                      <Txt skeleton="100%" block />
-                      <Txt color="hint">{formatDateTime(file.creationDate)}</Txt>
-                    </div>
-                  </div>
+                  }>
+                    <Txt skeleton="100%" block />
+                    <Txt color="hint">{formatDateTime(file.creationDate)}</Txt>
+                  </FileItem>
                 ),
                 [AsyncFileStatus.Failed]: _ => (
-                  <div className={css.fileItem}>
-                    <Icon className={cssUtils.colorError}>error_outline</Icon>
-                    <div className={css.fileItemBody}>
-                      <div>{m.error}</div>
-                      <Txt color="hint">{formatDateTime(file.creationDate)}</Txt>
-                    </div>
-                  </div>
+                  <FileItem icon={
+                    <Icon sx={{color: t => t.palette.error.main}}>error_outline</Icon>
+                  }>
+                    <div>{m.error}</div>
+                    <Txt color="hint">{formatDateTime(file.creationDate)}</Txt>
+                  </FileItem>
                 ),
               })}
             </MenuItem>
