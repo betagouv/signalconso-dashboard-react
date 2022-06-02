@@ -192,7 +192,7 @@ export const CompanyAccesses = () => {
             {
               id: 'action',
               head: '',
-              className: cssUtils.tdActions,
+              sx: sxUtils.tdActions,
               render: _ => (
                 <>
                   {connectedUser.isAdmin && !(_.name) && (

@@ -208,7 +208,7 @@ export const CompaniesToActivate = () => {
           },
           {
             id: 'actions',
-            className: cssUtils.tdActions,
+            sx: sxUtils.tdActions,
             stickyEnd: true,
             render: _ => (
               <>

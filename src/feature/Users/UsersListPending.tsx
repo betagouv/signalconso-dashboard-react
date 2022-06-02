@@ -53,7 +53,7 @@ export const UsersListPending = () => {
           },
           {
             id: 'actions',
-            className: cssUtils.tdActions,
+            sx: sxUtils.tdActions,
             head: '',
             render: _ => (
               <>

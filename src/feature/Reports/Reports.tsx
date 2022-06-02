@@ -400,7 +400,7 @@ export const Reports = ({}) => {
             {
               id: 'actions',
               stickyEnd: true,
-              className: cssUtils.tdActions,
+              sx: sxUtils.tdActions,
               render: _ => (
                 <NavLink to={siteMap.logged.report(_.report.id)}>
                   <IconBtn color="primary">
