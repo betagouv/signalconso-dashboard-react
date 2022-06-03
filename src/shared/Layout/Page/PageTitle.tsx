@@ -1,29 +1,26 @@
 import * as React from "react";
-import { ReactNode } from "react";
-import { Theme, Typography } from "@mui/material";
-import makeStyles from "@mui/styles/makeStyles";
+import {ReactNode} from "react";
+import {BoxProps, Typography} from "@mui/material";
 
-interface Props {
-  children?: ReactNode;
-  action?: ReactNode;
-  className?: string;
+interface Props extends BoxProps {
+  action?: ReactNode
 }
 
-export const PageTitle = ({ className, action, children, ...props }: Props) => {
+export const PageTitle = ({action, children, sx, ...props}: Props) => {
   return (
     <Typography
       variant="h5"
-      className={className}
       sx={{
+        ...sx,
         mt: 1,
         mb: 3,
-        display: 'flex',
-        alignItems: 'center'
+        display: "flex",
+        alignItems: "center"
       }}
       {...props}
     >
       {children}
-      {action && <div style={{marginLeft: 'auto'}}>{action}</div>}
+      {action && <div style={{marginLeft: "auto"}}>{action}</div>}
     </Typography>
   );
 };

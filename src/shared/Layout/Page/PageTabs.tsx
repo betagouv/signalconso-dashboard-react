@@ -1,4 +1,4 @@
-import {Tab, Tabs, Theme} from '@mui/material'
+import {BoxProps, Tab, Tabs, Theme} from "@mui/material";
 import makeStyles from '@mui/styles/makeStyles'
 import * as React from 'react'
 import {ReactElement, useMemo, useState} from 'react'
@@ -8,17 +8,9 @@ interface Props {
   children: Array<ReactElement<PageTabProps>>
 }
 
-const useStyles = makeStyles((t: Theme) => ({
-  root: {
-    marginBottom: t.spacing(3),
-    borderBottom: '1px solid ' + t.palette.divider,
-  },
-}))
-
 export const PageTabs = ({children}: Props) => {
   const {pathname} = useLocation()
   const index = useMemo(() => children.map(_ => _.props.to).indexOf(pathname), [pathname])
-  const css = useStyles()
   const [value, setValue] = useState(Math.max(0, index))
 
   const handleChange = (event: any, index: number) => {
@@ -26,13 +18,16 @@ export const PageTabs = ({children}: Props) => {
   }
 
   return (
-    <Tabs value={value} indicatorColor="primary" textColor="primary" onChange={handleChange} className={css.root}>
+    <Tabs value={value} indicatorColor="primary" textColor="primary" onChange={handleChange} sx={{
+      mb: 3,
+      borderBottom: t=> '1px solid ' + t.palette.divider,
+    }}>
       {children}
     </Tabs>
   )
 }
 
-export interface PageTabProps {
+export interface PageTabProps extends BoxProps {
   to: string
   label?: string
   icon?: string | React.ReactElement

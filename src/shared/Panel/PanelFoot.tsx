@@ -9,25 +9,24 @@ export interface PanelFootProps extends CardActionsProps {
   border?: boolean
 }
 
-const useStyles = makeStyles((t: Theme) => ({
-  root: {
-    marginTop: 'auto',
-    padding: t.spacing(0, 2, 1, 2),
-  },
-  border: {
-    paddingTop: t.spacing(1),
-    borderTop: '1px solid ' + t.palette.divider,
-  },
-  alignEnd: {
-    display: 'flex',
-    justifyContent: 'flex-end',
-  },
-}))
-
-export const PanelFoot = ({children, className, alignEnd, border, ...props}: PanelFootProps) => {
-  const css = useStyles()
+export const PanelFoot = ({children, alignEnd, border, sx, ...props}: PanelFootProps) => {
   return (
-    <CardActions {...props} className={classes(className, css.root, alignEnd && css.alignEnd, border && css.border)}>
+    <CardActions
+      {...props}
+      sx={{
+        ...sx,
+        marginTop: 'auto',
+        mx: 2,
+        pb: 1,
+        ...alignEnd && {
+          display: 'flex',
+          justifyContent: 'flex-end',
+        },
+        ...border && {
+          pt: 1,
+          borderTop:  t => '1px solid ' + t.palette.divider,
+        }
+      }}>
       {children}
     </CardActions>
   )
