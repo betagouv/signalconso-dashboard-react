@@ -55,6 +55,7 @@ import {apiPublicSdk, makeSecuredSdk, SignalConsoApiSdk} from './core/ApiSdkInst
 import {Stats} from './feature/Stats/Stats'
 import {Admin} from './feature/Admin/Admin'
 import {ConsumerEmailValidationProvider} from './core/context/EmailValidationContext'
+import {WebsiteInvestigationProvider} from './core/context/WebsiteInvestigationContext'
 import {ScSidebar} from './core/ScSidebar/ScSidebar'
 import {ScHeader} from './core/ScHeader/ScHeader'
 
@@ -172,6 +173,7 @@ const AppLogged = () => {
         _ => <UsersProvider api={apiSdk} children={_} />,
         _ => <ConsumerEmailValidationProvider api={apiSdk} children={_} />,
         _ => <ReportedWebsitesProvider api={apiSdk} children={_} />,
+        _ => <WebsiteInvestigationProvider api={apiSdk} children={_} />,
         _ => <UnregistredWebsitesProvider api={apiSdk} children={_} />,
         _ => <SubscriptionsProvider api={apiSdk} children={_} />,
         _ => <AccessesProvider api={apiSdk} children={_} />,

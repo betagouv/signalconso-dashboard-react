@@ -7,6 +7,7 @@ import {PageTab, PageTabs} from '../../shared/Layout/Page/PageTabs'
 import {ReportedUnknownWebsites} from './ReportedUnknownWebsites'
 import {ReportedCompaniesWebsites} from './ReportedCompaniesWebsites'
 import {useLogin} from '../../core/context/LoginContext'
+import {WebsitesInvestigation} from './WebsitesInvestigation'
 
 export const ReportedWebsites = () => {
   const {m} = useI18n()
@@ -23,14 +24,23 @@ export const ReportedWebsites = () => {
           <PageTab to={siteMap.logged.reportedWebsites_unknown} label={m.reportedUnknownWebsites} />
         </PageTabs>
       )}
+
+      {connectedUser.isDGCCRF && (
+        <PageTabs>
+          <PageTab to={siteMap.logged.websitesInvestigation} label={m.websitesInvestigation} />
+          <PageTab to={siteMap.logged.reportedWebsites_unknown} label={m.reportedUnknownWebsites} />
+        </PageTabs>
+      )}
+
       <Switch>
         {connectedUser.isAdmin ? (
           <Redirect exact from={path} to={siteMap.logged.reportedWebsites_association} />
         ) : (
-          <Redirect exact from={path} to={siteMap.logged.reportedWebsites_unknown} />
+          <Redirect exact from={path} to={siteMap.logged.websitesInvestigation} />
         )}
         <Route path={siteMap.logged.reportedWebsites_association} component={ReportedCompaniesWebsites} />
         <Route path={siteMap.logged.reportedWebsites_unknown} component={ReportedUnknownWebsites} />
+        <Route path={siteMap.logged.websitesInvestigation} component={WebsitesInvestigation} />
       </Switch>
     </Page>
   )
