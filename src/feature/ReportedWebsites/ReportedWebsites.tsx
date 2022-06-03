@@ -22,6 +22,7 @@ export const ReportedWebsites = () => {
         <PageTabs>
           <PageTab to={siteMap.logged.reportedWebsites_association} label={m.reportedCompaniesWebsites} />
           <PageTab to={siteMap.logged.reportedWebsites_unknown} label={m.reportedUnknownWebsites} />
+          <PageTab to={siteMap.logged.websitesInvestigation} label={m.websitesInvestigation} />
         </PageTabs>
       )}
 
@@ -29,6 +30,7 @@ export const ReportedWebsites = () => {
         <PageTabs>
           <PageTab to={siteMap.logged.websitesInvestigation} label={m.websitesInvestigation} />
           <PageTab to={siteMap.logged.reportedWebsites_unknown} label={m.reportedUnknownWebsites} />
+          <PageTab to={siteMap.logged.reportedWebsites_association} label={m.reportedCompaniesWebsites} />
         </PageTabs>
       )}
 

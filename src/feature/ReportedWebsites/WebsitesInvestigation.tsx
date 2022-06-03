@@ -37,42 +37,8 @@ import {NavLink} from "react-router-dom";
 import {siteMap} from "../../core/siteMap";
 import {ScMenu} from "../../shared/Menu/Menu";
 import {EditAddressDialog} from "../Companies/EditAddressDialog";
-
-const useStyles = makeStyles((t: Theme) => {
-  const iconWidth = 50
-  return createStyles({
-    tdName_label: {
-      fontWeight: 'bold',
-      marginBottom: -1,
-      maxWidth: 200,
-    },
-    tdName_desc: {
-      fontSize: t.typography.fontSize * 0.875,
-      color: t.palette.text.disabled,
-    },
-    chipEnterprise: {
-      height: 42,
-      borderRadius: 42,
-    },
-    flag: {
-      color: 'rgba(0, 0, 0, 1)',
-      fontSize: 18,
-      textAlign: 'center',
-    },
-    iconWidth: {
-      width: iconWidth,
-    },
-    status: {
-      maxWidth: 180,
-    },
-  })
-})
-
-const countryToFlag = (isoCode: string) => {
-  return typeof String.fromCodePoint !== 'undefined'
-    ? isoCode.toUpperCase().replace(/./g, char => String.fromCodePoint(char.charCodeAt(0) + 127397))
-    : isoCode
-}
+import {CompanyChip} from "./CompanyChip";
+import {StatusChip} from "./StatusChip";
 
 const useAnchoredMenu = () => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
@@ -86,12 +52,14 @@ export const WebsitesInvestigation = () => {
 
   const _countries = useConstantContext().countries
   const _websiteInvestigation = useWebsiteInvestigationContext().getWebsiteInvestigation
+  const _departmentDivision = useWebsiteInvestigationContext().listDepartmentDivision
   const _updateStatus = useReportedWebsiteWithCompanyContext().update
   const _updateCompany = useReportedWebsiteWithCompanyContext().updateCompany
   const _updateCountry = useReportedWebsiteWithCompanyContext().updateCountry
   const [countries, setCountries] = useState<Country[]>([])
+  const [departmentDivision, setDepartmentDivision] = useState<string[]>([])
   const countriesAnchor = useAnchoredMenu()
-  const css = useStyles()
+  // const css = useStyles()
   const cssUtils = useCssUtils()
   const {toastError, toastInfo, toastSuccess} = useToast()
 
@@ -105,6 +73,10 @@ export const WebsitesInvestigation = () => {
 
   useEffect(() => {
     _countries.fetch({}).then(setCountries)
+  }, [])
+
+  useEffect(() => {
+    _departmentDivision.fetch({}).then(setDepartmentDivision)
   }, [])
 
   useEffect(() => {
@@ -186,34 +158,7 @@ export const WebsitesInvestigation = () => {
                   }
                 }}
               >
-                {_.company ? (
-                  <Tooltip title={_.company.name}>
-                    <Chip
-                      variant={'outlined'}
-                      className={css.chipEnterprise}
-                      label={
-                        <div>
-                          <Txt truncate className={css.tdName_label} block>
-                            {_.company.name}
-                          </Txt>
-                          <span className={css.tdName_desc}>{_.company.siret}</span>
-                        </div>
-                      }
-                    />
-                  </Tooltip>
-                ) : (
-                  <Tooltip title={m.linkCompany}>
-                    <Chip
-                      variant={'outlined'}
-                      className={css.chipEnterprise}
-                      label={
-                        <div>
-                          <span className={css.tdName_desc}>{m.noAssociation}</span>
-                        </div>
-                      }
-                    />
-                  </Tooltip>
-                )}
+                <CompanyChip company={_.company} />
               </SelectCompany>
             ),
           },
@@ -248,7 +193,7 @@ export const WebsitesInvestigation = () => {
           {
             head: m.affectation,
             id: 'affectation',
-            render: _ => <Box> {_.attribution}</Box>,
+            render: _ => <StatusChip value={_.attribution ?? m.authorization}/>,
           }
           ,
         ]}
