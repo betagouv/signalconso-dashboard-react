@@ -1,31 +1,29 @@
-import * as React from "react";
-import {ReactNode} from "react";
-import {Page as MuiPage} from "mui-extension";
-import {LinearProgress, Theme} from "@mui/material";
-import makeStyles from "@mui/styles/makeStyles";
+import * as React from 'react'
+import {ReactNode} from 'react'
+import {Page as MuiPage} from 'mui-extension'
+import {BoxProps, LinearProgress} from '@mui/material'
 
 export const pageWidth = {
   xl: 1400,
   l: 1100,
   m: 932,
   s: 680
-};
+}
 
-export interface PageProps {
-  className?: string
+export interface PageProps extends BoxProps {
   large?: boolean
   size?: 'xl' | 'l' | 's' | 'm'
   children: ReactNode
   loading?: boolean
 }
 
-export const Page = ({className, loading, size, ...props}: PageProps) => {
+export const Page = ({loading, size, sx, ...props}: PageProps) => {
   return (
     <>
       {loading && (
-        <div style={{position: "relative"}}>
+        <div style={{position: 'relative'}}>
           <LinearProgress sx={{
-            position: "absolute",
+            position: 'absolute',
             top: 0,
             right: 0,
             left: 0
@@ -33,12 +31,13 @@ export const Page = ({className, loading, size, ...props}: PageProps) => {
         </div>
       )}
       <MuiPage
+        {...props}
         sx={{
+          ...sx,
           p: 2,
-          pt: 3,
+          pt: 3
         }}
-        width={pageWidth[size ?? "m"]}
-        className={className}
+        width={pageWidth[size ?? 'm']}
         {...props}
       />
     </>

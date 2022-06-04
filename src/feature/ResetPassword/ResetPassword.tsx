@@ -28,17 +28,10 @@ interface Props {
   onResetPassword: (password: string, token: Id) => Promise<any>
 }
 
-const useStyles = makeStyles((t: Theme) => ({
-  page: {
-    maxWidth: `500px !important`,
-  },
-}))
-
 export const ResetPassword = ({onResetPassword}: Props) => {
   const {m} = useI18n()
   const {token} = useParams<{token: Id}>()
   const _resetPassword = useAsync(onResetPassword)
-  const css = useStyles()
   const history = useHistory()
   const {toastError, toastSuccess} = useToast()
   const {
@@ -73,7 +66,7 @@ export const ResetPassword = ({onResetPassword}: Props) => {
 
   return (
     <CenteredContent offset={headerHeight}>
-      <Page size="s" className={css.page}>
+      <Page size="s" sx={{maxWidth: `500px !important`,}}>
         <form onSubmit={handleSubmit(resetPassword)}>
           <Panel>
             <PanelHead>{m.newPassword}</PanelHead>

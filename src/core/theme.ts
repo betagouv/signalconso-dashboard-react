@@ -1,17 +1,43 @@
 import {red} from '@mui/material/colors'
-import {alpha, createTheme, SxProps, Theme} from '@mui/material'
+import {alpha, createTheme, Theme} from '@mui/material'
 import {ThemeOptions} from '@mui/material/styles/createTheme'
+import {makeSx} from 'mui-extension'
 
-export const sxUtils = {
+export const sxUtils = makeSx({
+  fontBig: {
+    fontSize: t => t.typography.fontSize * 1.15,
+  },
+  fontNormal: {
+    fontSize: t => t.typography.fontSize,
+  },
+  fontSmall: {
+    fontSize: t => t.typography.fontSize * 0.85,
+  },
+  fontTitle: {
+    fontSize: t => t.typography.fontSize * 1.3,
+  },
+  fontBigTitle: {
+    fontSize: t => t.typography.fontSize * 1.6,
+  },
   tdActions: {
-    textAlign: 'right',
+    textAlign: 'right'
   },
   truncate: {
     whiteSpace: 'nowrap',
     textOverflow: 'ellipsis',
-    overflow: 'hidden',
-  } as SxProps<Theme>,
-}
+    overflow: 'hidden'
+  },
+  inlineIcon: {
+    display: 'inline !important',
+    fontSize: 'inherit',
+    lineHeight: 1,
+    verticalAlign: 'text-top'
+  },
+  divider: {
+    mt: 2,
+    mb: 2
+  },
+})
 
 export const styleUtils = (t: Theme) => ({
   defaultRadius: 4,
@@ -40,6 +66,7 @@ export const styleUtils = (t: Theme) => ({
   } as any,
 })
 
+/** @deprecated use t.spacing(1) instead */
 export const defaultSpacing = 8
 
 export const muiTheme = (dark?: boolean): Theme => {

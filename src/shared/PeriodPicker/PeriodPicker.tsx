@@ -1,45 +1,21 @@
 import {addDays, subDays} from 'date-fns'
-import React, {CSSProperties, useEffect, useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import {useI18n} from '../../core/i18n'
-import {Theme} from '@mui/material'
+import {Box, BoxProps, Theme} from '@mui/material'
 import makeStyles from '@mui/styles/makeStyles'
 import {Datepicker} from '../Datepicker/Datepicker'
-import {classes} from '../../core/helper/utils'
-import {useCssUtils} from '../../core/helper/useCssUtils'
 
-export interface DatepickerProps {
+export interface DatepickerProps extends Omit<BoxProps, 'onChange'> {
   value?: [Date | undefined, Date | undefined]
   onChange: (_: [Date | undefined, Date | undefined]) => void
   label?: [string, string]
-  className?: string
-  style?: CSSProperties
   fullWidth?: boolean
 }
 
-const useStyles = makeStyles((t: Theme) => ({
-  root: {
-    display: 'flex',
-    alignItems: 'center',
-  },
-  start: {
-    marginRight: -1,
-  },
-  startInput: {
-    borderBottomRightRadius: 0,
-    borderTopRightRadius: 0,
-  },
-  endInput: {
-    borderBottomLeftRadius: 0,
-    borderTopLeftRadius: 0,
-  },
-}))
-
-export const PeriodPicker = ({value, onChange, label, fullWidth, className, style}: DatepickerProps) => {
+export const PeriodPicker = ({value, onChange, label, fullWidth, sx, ...props}: DatepickerProps) => {
   const [start, setStart] = useState<Date | undefined>(undefined)
   const [end, setEnd] = useState<Date | undefined>(undefined)
   const {m} = useI18n()
-  const css = useStyles()
-  const cssUtils = useCssUtils()
 
   useEffect(() => {
     if (value) {
@@ -62,14 +38,24 @@ export const PeriodPicker = ({value, onChange, label, fullWidth, className, styl
   }
 
   return (
-    <div className={classes(css.root, className, fullWidth && cssUtils.fullWidth)} style={style}>
+    <Box {...props} sx={{
+      ...sx,
+      display: 'flex',
+      alignItems: 'center',
+      ...fullWidth && {width: '100%'}
+    }}>
       <Datepicker
         label={label?.[0] ?? m.start}
         fullWidth={fullWidth}
         value={start}
         onChange={handleStartChange}
-        className={css.start}
-        InputProps={{className: css.startInput}}
+        sx={{marginRight: '-1px',}}
+        InputProps={{
+          sx: {
+            borderBottomRightRadius: 0,
+            borderTopRightRadius: 0
+          },
+        }}
       />
 
       <Datepicker
@@ -77,8 +63,13 @@ export const PeriodPicker = ({value, onChange, label, fullWidth, className, styl
         fullWidth={fullWidth}
         value={end}
         onChange={handleEndChange}
-        InputProps={{className: css.endInput}}
+        InputProps={{
+          sx: {
+            borderBottomLeftRadius: 0,
+            borderTopLeftRadius: 0
+          }
+        }}
       />
-    </div>
+    </Box>
   )
 }

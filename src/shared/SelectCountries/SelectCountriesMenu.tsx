@@ -3,13 +3,12 @@ import {useEffect, useMemo} from 'react'
 import {useConstantContext} from '../../core/context/ConstantContext'
 import {fromNullable} from 'fp-ts/lib/Option'
 import {Country} from '@signal-conso/signalconso-api-sdk-js'
-import {alpha, Checkbox, Menu, Theme} from '@mui/material'
-import createStyles from '@mui/styles/createStyles'
-import makeStyles from '@mui/styles/makeStyles'
+import {alpha, Box, Checkbox, Menu} from '@mui/material'
 import {useCssUtils} from '../../core/helper/useCssUtils'
 import {useI18n} from '../../core/i18n'
 import {classes} from '../../core/helper/utils'
 import {useSetState, UseSetState} from '@alexandreannic/react-hooks-lib/lib'
+import {makeSx} from 'mui-extension'
 
 const withRegions = (WrappedComponent: React.ComponentType<Props>) => (props: Omit<Props, 'countries'>) => {
   const {countries} = useConstantContext()
@@ -21,46 +20,45 @@ const withRegions = (WrappedComponent: React.ComponentType<Props>) => (props: Om
     .getOrElse(<></>)
 }
 
-const useStyles = makeStyles((t: Theme) => {
-  const iconWidth = 50
-  return createStyles({
-    menuItem: {
-      minHeight: 36,
-      display: 'flex',
-      alignItems: 'center',
-      padding: t.spacing(0, 1, 0, 0),
-      cursor: 'pointer',
-      color: t.palette.text.secondary,
-      '&:hover': {
-        background: t.palette.action.hover,
-      },
-      '&:active, &:focus': {
-        background: t.palette.action.focus,
-      },
+const iconWidth = 50
+const css = makeSx({
+  menuItem: {
+    minHeight: 36,
+    display: 'flex',
+    alignItems: 'center',
+    p: 0,
+    pr: 1,
+    cursor: 'pointer',
+    color: t => t.palette.text.secondary,
+    '&:hover': {
+      background: t => t.palette.action.hover
     },
-    menuItemActive: {
-      fontWeight: t.typography.fontWeightBold,
-      color: t.palette.primary.main + ' !important',
-      background: alpha(t.palette.primary.main, 0.1) + ' !important',
-    },
-    menuItemCategory: {
-      '&:not(:first-of-type)': {
-        borderTop: `1px solid ${t.palette.divider}`,
-      },
-    },
-    cbDepartment: {
-      paddingTop: `6px !important`,
-      paddingBottom: `6px !important`,
-    },
-    flag: {
-      color: 'rgba(0, 0, 0, 1)',
-      fontSize: 18,
-      textAlign: 'center',
-    },
-    iconWidth: {
-      width: iconWidth,
-    },
-  })
+    '&:active, &:focus': {
+      background: t => t.palette.action.focus
+    }
+  },
+  menuItemActive: {
+    fontWeight: t => t.typography.fontWeightBold,
+    color: t => t.palette.primary.main + ' !important',
+    background: t => alpha(t.palette.primary.main, 0.1) + ' !important'
+  },
+  menuItemCategory: {
+    '&:not(:first-of-type)': {
+      borderTop: t => `1px solid ${t.palette.divider}`
+    }
+  },
+  cbDepartment: {
+    paddingTop: `6px !important`,
+    paddingBottom: `6px !important`
+  },
+  flag: {
+    color: 'rgba(0, 0, 0, 1)',
+    fontSize: 18,
+    textAlign: 'center'
+  },
+  iconWidth: {
+    width: iconWidth
+  }
 })
 
 interface Props {
@@ -79,8 +77,6 @@ const countryToFlag = (isoCode: string) => {
 }
 
 export const SelectCountriesMenu = withRegions(({countries, anchorEl, open, initialValues, onChange, onClose}: Props) => {
-  const cssUtils = useCssUtils()
-  const css = useStyles()
   const {m} = useI18n()
   const indexedValues: UseSetState<string> = useSetState<string>()
   // const [inputValue, setInputValue] = useState('')
@@ -108,16 +104,16 @@ export const SelectCountriesMenu = withRegions(({countries, anchorEl, open, init
     return [
       {
         label: m.selectCountries_onlyEU,
-        countries: euCountries,
+        countries: euCountries
       },
       {
         label: m.selectCountries_onlyTransfer,
-        countries: transfersCountries,
+        countries: transfersCountries
       },
       {
         label: m.others,
-        countries: othersCountries,
-      },
+        countries: othersCountries
+      }
     ]
   }, [countries])
 
@@ -156,20 +152,23 @@ export const SelectCountriesMenu = withRegions(({countries, anchorEl, open, init
         }
 
         return [
-          <div className={classes(css.menuItem, css.menuItemCategory)} onClick={handleSelectAll}>
-            <Checkbox className={css.iconWidth} indeterminate={someSelected && !allSelected} checked={allSelected} />
-            <span className={cssUtils.txtBold}>{countries.label}</span>
-          </div>,
+          <Box sx={{...css.menuItem, ...css.menuItemCategory}} onClick={handleSelectAll}>
+            <Checkbox sx={css.iconWidth} indeterminate={someSelected && !allSelected} checked={allSelected} />
+            <Box component="span" sx={{fontWeight: t => t.typography.fontWeightBold}}>{countries.label}</Box>
+          </Box>,
           countries.countries.map(country => (
-            <div
+            <Box
               key={country.code}
-              className={classes(css.menuItem, indexedValues.has(country.code) && css.menuItemActive)}
+              sx={{
+                ...css.menuItem,
+                ...indexedValues.has(country.code) && css.menuItemActive
+              }}
               onClick={() => handleToggle(country)}
             >
-              <span className={classes(css.flag, css.iconWidth)}>{countryToFlag(country.code)}</span>
+              <Box component="span" sx={{...css.flag, ...css.iconWidth}}>{countryToFlag(country.code)}</Box>
               <span>{country.name}</span>
-            </div>
-          )),
+            </Box>
+          ))
         ]
       })}
     </Menu>

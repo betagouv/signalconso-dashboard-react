@@ -20,17 +20,9 @@ import {DebouncedInput} from '../../shared/DebouncedInput/DebouncedInput'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
 import {sxUtils} from '../../core/theme'
 
-const useStyles = makeStyles((t: Theme) => ({
-  tdSiret: {
-    maxWidth: 200,
-  },
-}))
-
 export const ReportedPhones = () => {
   const _reportedPhone = useReportedPhonesContext()
   const {m} = useI18n()
-  const cssUtils = useCssUtils()
-  const css = useStyles()
   const {toastError} = useToast()
 
   useEffect(() => {
@@ -60,7 +52,7 @@ export const ReportedPhones = () => {
                     value={value}
                     onChange={e => onChange(e.target.value)}
                     fullWidth
-                    className={cssUtils.marginRight}
+                    sx={{mr: 1}}
                     label={m.phone}
                   />
                 )}
@@ -116,7 +108,9 @@ export const ReportedPhones = () => {
             {
               id: 'siret',
               head: m.siret,
-              className: css.tdSiret,
+              sx: {
+                maxWidth: 200,
+              },
               render: _ => (
                 <>
                   <Txt bold>{_.siret}</Txt>

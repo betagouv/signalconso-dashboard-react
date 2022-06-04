@@ -16,15 +16,16 @@ import {Controller, useForm} from 'react-hook-form'
 import {useReportContext} from '../../../core/context/ReportContext'
 import {fromNullable} from 'fp-ts/lib/Option'
 import {useToast} from '../../../core/toast'
+import {BoxProps} from '@mui/material'
+import {PanelProps} from '../../../shared/Panel/Panel'
 
-interface Props {
+interface Props extends PanelProps {
   report: Report
-  className?: string
   onCancel: () => void
   onConfirm?: (_: ReportResponse) => void
 }
 
-export const ReportResponseForm = forwardRef(({report, className, onCancel, onConfirm}: Props, ref: any) => {
+export const ReportResponseForm = forwardRef(({report, onCancel, onConfirm, ...props}: Props, ref: any) => {
   const {m} = useI18n()
   const cssUtils = useCssUtils()
   const {
@@ -49,7 +50,7 @@ export const ReportResponseForm = forwardRef(({report, className, onCancel, onCo
   }, [_report.postResponse.error])
 
   return (
-    <Panel elevation={5} className={className} ref={ref}>
+    <Panel elevation={5} ref={ref} {...props}>
       <PanelHead>{m.answer}</PanelHead>
       <PanelBody>
         <Alert type="info" deletable persistentDelete gutterBottom>

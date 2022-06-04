@@ -1,84 +1,14 @@
-import {alpha, Radio, Theme} from '@mui/material'
+import {alpha, Box, BoxProps, Radio, Theme} from '@mui/material'
 import makeStyles from '@mui/styles/makeStyles'
 import React, {MouseEventHandler, ReactNode} from 'react'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
 import {classes} from 'core/helper/utils'
 
-const useStyle = makeStyles((t: Theme) => ({
-  root: {
-    display: 'flex',
-    // alignItems: 'center',
-    alignItems: 'flex-start',
-    border: '1px solid ' + t.palette.divider,
-    borderBottomColor: 'transparent',
-    padding: t.spacing(1.5, 2, 1.5, 1),
-    transition: 'all .2s ease-in-out',
-    cursor: 'pointer',
-    '&:last-of-type': {
-      borderBottom: '1px solid ' + t.palette.divider,
-      borderBottomRightRadius: 6,
-      borderBottomLeftRadius: 6,
-    },
-    '&:first-of-type': {
-      borderTopRightRadius: 6,
-      borderTopLeftRadius: 6,
-    },
-    '&:hover': {
-      zIndex: 1,
-      border: `1px solid ${t.palette.primary.main}`,
-      background: 'rgba(0,0,0,.04)',
-    },
-  },
-  rootDense: {
-    paddingTop: t.spacing(1 / 4),
-    paddingBottom: t.spacing(1 / 4),
-  },
-  rootInline: {
-    borderRightColor: 'transparent',
-    '&:last-of-type': {
-      borderRight: '1px solid ' + t.palette.divider,
-      borderTopRightRadius: t.shape.borderRadius,
-      borderBottom: '1px solid ' + t.palette.divider,
-      borderBottomRightRadius: 6,
-      borderBottomLeftRadius: 0,
-    },
-    '&:first-of-type': {
-      borderBottom: '1px solid ' + t.palette.divider,
-      borderBottomRightRadius: 0,
-      borderBottomLeftRadius: 6,
-      borderTopRightRadius: 0,
-    },
-    '&:not(:first-of-type)': {
-      marginLeft: '-1px',
-      borderBottom: '1px solid ' + t.palette.divider,
-    },
-  },
-  rootSelected: {
-    zIndex: 1,
-    border: `1px solid ${t.palette.primary.main} !important`,
-    background: alpha(t.palette.primary.main, 0.1),
-    boxShadow: `inset 0 0 0 1px ${t.palette.primary.main}`,
-  },
-  rootError: {
-    borderColor: t.palette.error.main + ' !important',
-  },
-  body: {
-    display: 'flex',
-    justifyContent: 'center',
-    minHeight: 42,
-    flexDirection: 'column',
-    marginLeft: t.spacing(1),
-  },
-}))
-
-export interface ScRadioGroupItemProps {
-  className?: string
+export interface ScRadioGroupItemProps extends Omit<BoxProps, 'title'> {
   title?: string | ReactNode
   description?: string | ReactNode
   value: string
   selected?: boolean
-  children?: ReactNode
-  onClick?: MouseEventHandler<HTMLDivElement>
   dense?: boolean
   inline?: boolean
   error?: boolean
@@ -94,24 +24,82 @@ export const ScRadioGroupItem = ({
   children,
   selected,
   onClick,
-  className,
+  sx,
+  ...props
 }: ScRadioGroupItemProps) => {
-  const css = useStyle()
-
   return (
-    <div
-      className={classes(
-        css.root,
-        inline && css.rootInline,
-        dense && css.rootDense,
-        selected && css.rootSelected,
-        error && css.rootError,
-        className,
-      )}
+    <Box
+      {...props}
+      sx={{
+        ...sx,
+        display: 'flex',
+        // alignItems: 'center',
+        alignItems: 'flex-start',
+        border: t=> '1px solid ' + t.palette.divider,
+        borderBottomColor: 'transparent',
+        py: 1.5,
+        px: 2,
+        transition: 'all .2s ease-in-out',
+        cursor: 'pointer',
+        '&:last-of-type': {
+          borderBottom: t => '1px solid ' + t.palette.divider,
+          borderBottomRightRadius: '6px',
+          borderBottomLeftRadius: '6px',
+        },
+        '&:first-of-type': {
+          borderTopRightRadius: '6px',
+          borderTopLeftRadius: '6px',
+        },
+        '&:hover': {
+          zIndex: 1,
+          border: t => `1px solid ${t.palette.primary.main}`,
+          background: 'rgba(0,0,0,.04)',
+        },
+        ...inline && /*css.rootInline,*/ {
+          borderRightColor: 'transparent',
+          '&:last-of-type': {
+            borderRight: t=> '1px solid ' + t.palette.divider,
+            borderTopRightRadius: t=> t.shape.borderRadius,
+            borderBottom: t=> '1px solid ' + t.palette.divider,
+            borderBottomRightRadius: '6px',
+            borderBottomLeftRadius: '0px',
+          },
+          '&:first-of-type': {
+            borderBottom: t=> '1px solid ' + t.palette.divider,
+            borderBottomRightRadius: '0px',
+            borderBottomLeftRadius: '6px',
+            borderTopRightRadius: '0px',
+          },
+          '&:not(:first-of-type)': {
+            marginLeft: '-1px',
+            borderBottom: t=> '1px solid ' + t.palette.divider,
+          },
+        },
+        ...dense && /*css.rootDense,*/ {
+          pt: 1 / 4,
+          pb: 1 / 4,
+        },
+        ...selected && /*css.rootSelected,*/ {
+          zIndex: 1,
+          border: t => `1px solid ${t.palette.primary.main} !important`,
+          background: t => alpha(t.palette.primary.main, 0.1),
+          boxShadow: t => `inset 0 0 0 1px ${t.palette.primary.main}`,
+
+        },
+        ...error && /*css.rootError,*/ {
+          borderColor: t => t.palette.error.main + ' !important',
+        },
+      }}
       onClick={onClick}
     >
       <Radio checked={selected} />
-      <div className={css.body}>
+      <Box sx={{
+        display: 'flex',
+        justifyContent: 'center',
+        minHeight: 42,
+        flexDirection: 'column',
+        ml: 1,
+      }}>
         {title && (
           <Txt block size="big">
             {title}
@@ -123,7 +111,7 @@ export const ScRadioGroupItem = ({
           </Txt>
         )}
         {children && children}
-      </div>
-    </div>
+      </Box>
+    </Box>
   )
 }

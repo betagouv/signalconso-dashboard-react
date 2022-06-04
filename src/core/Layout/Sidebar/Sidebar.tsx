@@ -1,6 +1,6 @@
 import * as React from 'react'
 import {ReactNode} from 'react'
-import {SwipeableDrawer, Theme} from '@mui/material'
+import {Box, BoxProps, SwipeableDrawer, Theme} from '@mui/material'
 import createStyles from '@mui/styles/createStyles'
 import makeStyles from '@mui/styles/makeStyles'
 import classNames from 'classnames'
@@ -8,25 +8,10 @@ import {sidebarWith} from '../Layout'
 import {SidebarTitle} from './SidebarTitle'
 import {useLayoutContext} from '../LayoutContext'
 
-const useStyles = makeStyles((t: Theme) =>
-  createStyles({
-    root: {
-      width: sidebarWith,
-      height: '100vh',
-      display: 'flex',
-      flexDirection: 'column',
-      borderRadius: 0,
-    },
-  }),
-)
-
-export interface SidebarProps {
-  className?: string
-  children?: ReactNode
+export interface SidebarProps extends BoxProps {
 }
 
-export const Sidebar = ({children, className}: SidebarProps) => {
-  const classes = useStyles()
+export const Sidebar = ({children, sx, ...props}: SidebarProps) => {
   const {isMobileWidth, isMobileSidebarOpened, openMobileSidebar, closeMobileSidebar} = useLayoutContext()
   const opened = !isMobileWidth || isMobileSidebarOpened
 
@@ -38,10 +23,17 @@ export const Sidebar = ({children, className}: SidebarProps) => {
       variant={isMobileWidth ? 'temporary' : 'permanent'}
     >
       <>
-        <div className={classNames(classes.root, className)}>
+        <Box {...props} sx={{
+          ...sx,
+          width: sidebarWith,
+          height: '100vh',
+          display: 'flex',
+          flexDirection: 'column',
+          borderRadius: 0,
+        }}>
           <SidebarTitle />
           {children}
-        </div>
+        </Box>
       </>
     </SwipeableDrawer>
   )

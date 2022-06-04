@@ -2,31 +2,19 @@ import {DetailInputValue} from '@signal-conso/signalconso-api-sdk-js'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
 import * as React from 'react'
 import {CSSProperties} from 'react'
-import {Theme, Tooltip} from '@mui/material'
+import {Box, BoxProps, Theme, Tooltip} from '@mui/material'
 import makeStyles from '@mui/styles/makeStyles'
 import {useCssUtils} from '../../core/helper/useCssUtils'
-import {classes} from '../../core/helper/utils'
 import {useMemoFn} from '../hooks/UseMemoFn'
 
-interface Props {
+interface Props extends BoxProps {
   input: DetailInputValue[]
   lines?: number
   hideTooltip?: boolean
-  className?: string
-  style?: CSSProperties
 }
 
-const useStyles = makeStyles((t: Theme) => ({
-  desc: (lines: {lines: number}) => ({
-    display: '-webkit-box',
-    '-webkit-line-clamp': lines.lines,
-    '-webkit-box-orient': 'vertical',
-    overflow: 'hidden',
-  }),
-}))
-export const ReportDetailValues = ({input, lines = 2, hideTooltip, style, className}: Props) => {
+export const ReportDetailValues = ({input, lines = 2, hideTooltip, sx, ...props}: Props) => {
   const cssUtils = useCssUtils()
-  const css = useStyles({lines})
   const description = useMemoFn(input, _ => _.find(_ => _.label === 'Description :')?.value)
 
   return (
@@ -40,15 +28,21 @@ export const ReportDetailValues = ({input, lines = 2, hideTooltip, style, classN
         </div>
       ))}
     >
-      <div className={classes(css.desc, className)} style={style}>
+      <Box {...props} sx={{
+        ...sx,
+        display: '-webkit-box',
+        '-webkit-line-clamp': lines,
+        '-webkit-box-orient': 'vertical',
+        overflow: 'hidden'
+      }}>
         {description ||
-          input.map((_, i) => (
-            <span key={i}>
+        input.map((_, i) => (
+          <span key={i}>
               <Txt bold>{_.label}</Txt> <span dangerouslySetInnerHTML={{__html: _.value}} />
               <br />
             </span>
-          ))}
-      </div>
+        ))}
+      </Box>
     </Tooltip>
   )
 }

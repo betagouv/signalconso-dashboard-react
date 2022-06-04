@@ -1,6 +1,6 @@
 import * as React from 'react'
 import {useEffect, useState} from 'react'
-import {Icon, InputAdornment, TextField, Theme} from '@mui/material'
+import {Icon, InputAdornment, TextField, TextFieldProps, Theme} from '@mui/material'
 import createStyles from '@mui/styles/createStyles'
 import makeStyles from '@mui/styles/makeStyles'
 import {SelectCompaniesByProMenu} from './SelectCompaniesByProMenu'
@@ -8,40 +8,28 @@ import {useI18n} from '../../core/i18n'
 import {CompanyWithAccessLevel} from '@signal-conso/signalconso-api-sdk-js'
 import {fromNullable} from 'fp-ts/lib/Option'
 
-export interface SelectDepartmentsProps {
+export interface SelectDepartmentsProps extends Omit<TextFieldProps, 'onChange'> {
   accessibleCompanies: CompanyWithAccessLevel[]
   placeholder?: string
   label?: string
   values?: string[]
   readonly?: boolean
   onChange: (_: string[]) => void
-  className?: string
   fullWidth?: boolean
 }
-
-const useStyles = makeStyles((t: Theme) =>
-  createStyles({
-    adornment: {
-      height: 20,
-      color: t.palette.text.secondary,
-      verticalAlign: 'top',
-    },
-  }),
-)
 
 export const SelectCompaniesByPro = ({
   accessibleCompanies,
   placeholder,
   label,
   values,
-  className,
   readonly,
   onChange,
   fullWidth,
+  ...props
 }: SelectDepartmentsProps) => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
   let $input: HTMLElement | undefined = undefined
-  const css = useStyles()
   const {m} = useI18n()
   const [innerValues, setInnerValues] = useState<string[]>()
 
@@ -58,11 +46,11 @@ export const SelectCompaniesByPro = ({
   return (
     <>
       <TextField
+        {...props}
         fullWidth={fullWidth}
         variant="outlined"
         margin="dense"
         size="small"
-        className={className}
         placeholder={placeholder}
         label={label ?? m.siret}
         onClick={open}
@@ -76,7 +64,11 @@ export const SelectCompaniesByPro = ({
           readOnly: true,
           endAdornment: (
             <InputAdornment position="end">
-              <Icon className={css.adornment}>arrow_drop_down</Icon>
+              <Icon sx={{
+                height: 20,
+                color: t => t.palette.text.secondary,
+                verticalAlign: 'top',
+              }}>arrow_drop_down</Icon>
             </InputAdornment>
           ),
         }}

@@ -8,24 +8,14 @@ import React from 'react'
 import {useCssUtils} from '../../core/helper/useCssUtils'
 import {useI18n} from '../../core/i18n'
 import {AddressComponent} from '../Address/Address'
+import {sxUtils} from '../../core/theme'
 
 interface Props {
   companies: CompanySearchResult[]
   onChange: (_: CompanySearchResult) => void
 }
 
-const useStyles = makeStyles((t: Theme) => ({
-  root: {
-    maxWidth: 400,
-  },
-  address: {
-    marginTop: t.spacing(1 / 2),
-  },
-}))
-
 export const SelectCompanyList = ({companies, onChange}: Props) => {
-  const cssUtils = useCssUtils()
-  const css = useStyles()
   const {m} = useI18n()
 
   return (
@@ -33,33 +23,33 @@ export const SelectCompanyList = ({companies, onChange}: Props) => {
       {companies.map(company => {
         const isGovernment = Report.isGovernmentCompany(company)
         return (
-          <ScRadioGroupItem key={company.siret} value={company.siret!} className={css.root} onClick={() => onChange(company)}>
+          <ScRadioGroupItem key={company.siret} value={company.siret!} sx={{maxWidth: 400,}} onClick={() => onChange(company)}>
             <Txt truncate block bold>
               {company.name}
             </Txt>
             {company.brand && <Txt block>{company.brand}</Txt>}
             {company.isHeadOffice && (
               <Txt color="primary">
-                <Icon className={cssUtils.inlineIcon}>business</Icon>
+                <Icon sx={sxUtils.inlineIcon}>business</Icon>
                 &nbsp;
                 {m.isHeadOffice}
               </Txt>
             )}
             {!company.isHeadOffice && company.activityLabel && (
               <Txt color="hint">
-                <Icon className={cssUtils.inlineIcon}>label</Icon>
+                <Icon sx={sxUtils.inlineIcon}>label</Icon>
                 &nbsp;
                 {company.activityLabel}
               </Txt>
             )}
             {isGovernment && (
               <Txt color="error" bold>
-                <Icon className={cssUtils.inlineIcon}>error</Icon>
+                <Icon sx={sxUtils.inlineIcon}>error</Icon>
                 {m.governmentCompany}
               </Txt>
             )}
             {company.address && (
-              <Txt color="hint" block size="small" className={css.address}>
+              <Txt color="hint" block size="small" sx={{mt: 1/2}}>
                 <AddressComponent address={company.address} />
               </Txt>
             )}

@@ -17,18 +17,10 @@ interface Props {
   onChange: (_: CompanySearchResult) => void
 }
 
-const useStyles = makeStyles((t: Theme) => ({
-  input: {
-    marginBottom: t.spacing(1.5),
-    minWidth: 280,
-  },
-}))
-
 export const SelectCompany = ({children, onChange, siret}: Props) => {
   const {m} = useI18n()
   const _company = useCompaniesContext().searchByIdentity
   const [inputValue, setInputValue] = useState<Id | undefined>(siret)
-  const css = useStyles()
 
   useEffect(() => {
     fromNullable(siret)
@@ -49,7 +41,10 @@ export const SelectCompany = ({children, onChange, siret}: Props) => {
       content={close => (
         <>
           <ScInput
-            className={css.input}
+            sx={{
+              mb: 1.5,
+              minWidth: 280,
+            }}
             fullWidth
             value={inputValue ?? ''}
             placeholder={m.companySearchLabel}

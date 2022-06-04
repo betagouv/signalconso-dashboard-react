@@ -93,18 +93,14 @@ export const Header = ({connectedUser}: Props) => {
   )
 }
 
-const useHeaderItemStyles = makeStyles((t: Theme) => ({
-  root: {
-    textTransform: 'initial',
-    fontSize: styleUtils(t).fontSize.normal,
-    padding: t.spacing(0, 2),
-  },
-}))
-
 const HeaderItem = ({children, href}: {children: any; href: string}) => {
-  const css = useHeaderItemStyles()
   return (
-    <Btn color="primary" href={href} className={css.root}>
+    <Btn color="primary" href={href} sx={{
+      textTransform: 'initial',
+      fontSize: t => styleUtils(t).fontSize.normal,
+      py: 0,
+      px: 2,
+    }}>
       {children}
     </Btn>
   )

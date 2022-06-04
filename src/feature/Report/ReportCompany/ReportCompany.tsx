@@ -3,7 +3,7 @@ import {classes} from '../../../core/helper/utils'
 import {AddressComponent} from '../../../shared/Address/Address'
 import {fromNullable} from 'fp-ts/lib/Option'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
-import {Icon, IconButton, Theme, useTheme} from '@mui/material'
+import {Box, Icon, IconButton, Theme, useTheme} from '@mui/material'
 import makeStyles from '@mui/styles/makeStyles'
 import {SelectCompany} from '../../../shared/SelectCompany/SelectCompany'
 import {ScButton} from '../../../shared/Button/Button'
@@ -15,27 +15,16 @@ import {useCssUtils} from '../../../core/helper/useCssUtils'
 import {IconBtn} from 'mui-extension/lib'
 import {siteMap} from '../../../core/siteMap'
 import {NavLink} from 'react-router-dom'
+import {styleUtils} from '../../../core/theme'
 
 interface Props {
   report: Report
   canEdit?: boolean
 }
 
-const useStyles = makeStyles((t: Theme) => ({
-  cardBody: {
-    display: 'flex',
-    justifyContent: 'space-between',
-  },
-  cardBody_icon: {
-    fontSize: 64,
-    color: t.palette.divider,
-  },
-}))
-
 export const ReportCompany = ({report, canEdit}: Props) => {
   const _report = useReportContext()
   const {m} = useI18n()
-  const css = useStyles()
   const cssUtils = useCssUtils()
   const theme = useTheme()
   return (
@@ -58,24 +47,30 @@ export const ReportCompany = ({report, canEdit}: Props) => {
       >
         <NavLink to={siteMap.logged.company(report.companyId)}>
           {m.company}
-          <IconButton size="small" className={cssUtils.marginLeft}>
+          <IconButton size="small" sx={{ml: 1}}>
             <Icon>open_in_new</Icon>
           </IconButton>
         </NavLink>
       </PanelHead>
-      <PanelBody className={css.cardBody}>
+      <PanelBody sx={{
+        display: 'flex',
+        justifyContent: 'space-between',
+      }}>
         <div>
           <div className={cssUtils.txtBig} style={{marginBottom: theme.spacing(1 / 2)}}>
             {report.companySiret}
           </div>
-          <div className={classes(cssUtils.colorTxtSecondary, cssUtils.txtSmall)}>
-            <div className={cssUtils.txtBold}>{report.companyName}</div>
+          <Box sx={{
+            color: t => t.palette.primary.main,
+            fontSize: t => styleUtils(t).fontSize.small,
+          }}>
+            <Box sx={{fontWeight: t => t.typography.fontWeightBold}}>{report.companyName}</Box>
             <AddressComponent address={report.companyAddress} />
-          </div>
+          </Box>
           <div>{report.vendor}</div>
           {fromNullable(report.websiteURL)
             .map(_ => (
-              <Txt link block className={cssUtils.marginTop}>
+              <Txt link block sx={{mt: 1}}>
                 <a href={_} target="_blank">
                   {_}
                 </a>
@@ -83,7 +78,12 @@ export const ReportCompany = ({report, canEdit}: Props) => {
             ))
             .toUndefined()}
         </div>
-        <Icon className={css.cardBody_icon}>store</Icon>
+        <Icon sx={{
+          fontSize: 64,
+          color: t => t.palette.divider,
+        }}>
+          store
+        </Icon>
       </PanelBody>
     </Panel>
   )

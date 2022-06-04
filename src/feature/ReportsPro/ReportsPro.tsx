@@ -34,51 +34,53 @@ import {PeriodPicker} from '../../shared/PeriodPicker/PeriodPicker'
 import {useCompaniesContext} from '../../core/context/CompaniesContext'
 import {SelectCompaniesByPro} from '../../shared/SelectCompaniesByPro/SelectCompaniesByPro'
 import compose from '../../core/helper/compose'
-import {Alert} from 'mui-extension'
+import {Alert, makeSx} from 'mui-extension'
 import {DebouncedInput} from 'shared/DebouncedInput/DebouncedInput'
 import {Enum} from '@alexandreannic/ts-utils/lib/common/enum/Enum'
 
-const useStyles = makeStyles((t: Theme) => ({
+const css = makeSx({
   tdFiles: {
     minWidth: 44,
     maxWidth: 100,
   },
   card: {
-    fontSize: styleUtils(t).fontSize.normal,
+    fontSize: t => styleUtils(t).fontSize.normal,
     display: 'flex',
     alignItems: 'center',
-    padding: t.spacing(1, 2),
+    py: 1,
+    px: 2,
   },
   card_content: {
     flex: 1,
   },
   iconDash: {
-    margin: t.spacing(0, 1),
+    my: 0,
+    mx: 1,
   },
   card_head: {
     display: 'flex',
     alignItems: 'center',
-    marginBottom: t.spacing(1 / 2),
+    mb: 1 / 2,
   },
   filters: {
-    marginBottom: t.spacing(3),
+    mb: 3,
   },
   filtersBody: {
-    paddingBottom: `${t.spacing(1)}px !important`,
+    pb: t => `${t.spacing(1)} !important`,
   },
   actions: {
     flexWrap: 'wrap',
     whiteSpace: 'nowrap',
-    marginTop: t.spacing(2),
+    mt: 2,
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'flex-end',
     '& > *': {
-      marginBottom: t.spacing(1),
-      marginLeft: t.spacing(1),
+      mb: 1,
+      ml: 1,
     },
   },
-}))
+})
 
 const minRowsBeforeDisplayFilters = 2
 
@@ -98,8 +100,6 @@ export const ReportsPro = () => {
   const history = useHistory()
   const {toastError} = useToast()
   const {formatDate, m} = useI18n()
-  const css = useStyles()
-  const cssUtils = useCssUtils()
 
   const hasFilters = useMemo(() => {
     const {limit, offset, ...values} = _reports.filters
@@ -152,7 +152,7 @@ export const ReportsPro = () => {
             href={config.appBaseUrl + '/comment-ca-marche'}
           >
             {m.help}
-            <Icon className={classes(cssUtils.marginLeft, cssUtils.colorTxtHint)}>open_in_new</Icon>
+            <Icon sx={{ml: 1, color: t => t.palette.text.disabled}}>open_in_new</Icon>
           </Btn>
         }
       >
@@ -160,7 +160,7 @@ export const ReportsPro = () => {
       </PageTitle>
 
       {isFirstVisit && (
-        <Alert type="success" deletable persistentDelete className={cssUtils.marginBottom2}>
+        <Alert type="success" deletable persistentDelete sx={{mb: 2}}>
           <span dangerouslySetInnerHTML={{__html: m.yourAccountIsActivated}} />
         </Alert>
       )}
@@ -168,8 +168,8 @@ export const ReportsPro = () => {
         .map(companies => (
           <>
             {displayFilters && (
-              <Panel elevation={3} className={css.filters}>
-                <PanelBody className={css.filtersBody}>
+              <Panel elevation={3} sx={css.filters}>
+                <PanelBody sx={css.filtersBody}>
                   <Grid container spacing={1}>
                     <Grid item sm={4} xs={12}>
                       <DebouncedInput
@@ -181,7 +181,7 @@ export const ReportsPro = () => {
                             values={value}
                             onChange={onChange}
                             fullWidth
-                            className={cssUtils.marginRight}
+                            sx={{mr: 1}}
                             accessibleCompanies={companies}
                           />
                         )}
@@ -241,7 +241,7 @@ export const ReportsPro = () => {
                   >
                     {(value, onChange) => <PeriodPicker fullWidth value={value} onChange={onChange} />}
                   </DebouncedInput>
-                  <div className={css.actions}>
+                  <div sx={css.actions}>
                     <Badge color="error" badgeContent={filtersCount} hidden={filtersCount === 0}>
                       <ScButton icon="clear" onClick={_reports.clearFilters} variant="outlined" color="primary">
                         {m.removeAllFilters}
@@ -292,9 +292,9 @@ export const ReportsPro = () => {
                           id: 'all',
                           head: '',
                           render: _ => (
-                            <div className={css.card}>
-                              <div className={css.card_content}>
-                                <div className={css.card_head}>
+                            <div sx={css.card}>
+                              <div sx={css.card_content}>
+                                <div sx={css.card_head}>
                                   <Txt bold size="big">
                                     {_.report.companySiret}
                                   </Txt>

@@ -14,20 +14,11 @@ interface Props {
   onChange: (_: Country) => void
 }
 
-const useStyles = makeStyles((t: Theme) => ({
-  input: {
-    marginBottom: t.spacing(1.5),
-    minWidth: 280,
-    width: 300,
-  },
-}))
-
 export const SelectCountry = ({children, onChange, country}: Props) => {
   const {m} = useI18n()
   const _countries = useConstantContext().countries
   const [countries, setCountries] = useState<Country[]>([])
   const [value, setValue] = React.useState<Country | undefined>(country)
-  const css = useStyles()
 
   useEffect(() => {
     _countries.fetch({}).then(setCountries)
@@ -46,7 +37,11 @@ export const SelectCountry = ({children, onChange, country}: Props) => {
             multiple={false}
             defaultValue={country}
             id="combo-country"
-            className={css.input}
+            sx={{
+              mb: 1.5,
+              minWidth: 280,
+              width: 300,
+            }}
             onChange={(event, newInputValue) => {
               setValue(fromNullable(newInputValue).toUndefined())
             }}

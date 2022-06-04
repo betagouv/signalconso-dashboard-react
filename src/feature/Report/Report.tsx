@@ -5,10 +5,8 @@ import {useI18n} from '../../core/i18n'
 import {Panel} from '../../shared/Panel'
 import {useReportContext} from '../../core/context/ReportContext'
 import {EventActionValues, EventType, FileOrigin, Id, Report, ReportEvent} from '@signal-conso/signalconso-api-sdk-js'
-import {Grid, Tab, Tabs, Theme, Tooltip} from '@mui/material'
-import makeStyles from '@mui/styles/makeStyles'
+import {Grid, Tab, Tabs, Tooltip} from '@mui/material'
 import {useCssUtils} from '../../core/helper/useCssUtils'
-import {fromNullable} from 'fp-ts/lib/Option'
 import {useToast} from '../../core/toast'
 import {ReportEvents} from './Event/ReportEvents'
 import {ReportResponseComponent} from './ReportResponse'
@@ -23,13 +21,7 @@ import {useEventContext} from '../../core/context/EventContext'
 import {useEffectFn} from '../../shared/hooks/UseEffectFn'
 import {map} from '@alexandreannic/ts-utils'
 
-const useStyles = makeStyles((t: Theme) => ({
-  tabs: {
-    borderBottom: '1px solid ' + t.palette.divider,
-  },
-}))
-
-let CONSO : EventType = 'CONSO' as const;
+const CONSO: EventType = 'CONSO'
 
 export const creationReportEvent = (report: Report): ReportEvent =>
   Object.freeze({
@@ -50,7 +42,6 @@ export const ReportComponent = () => {
   const _event = useEventContext()
   const {connectedUser} = useLogin()
   const cssUtils = useCssUtils()
-  const css = useStyles()
   const {toastError} = useToast()
   const [activeTab, setActiveTab] = useState(0)
   const response = useMemo(
@@ -145,7 +136,9 @@ export const ReportComponent = () => {
           <Panel loading={_event.reportEvents.loading}>
             <>
               <Tabs
-                className={css.tabs}
+                sx={{
+                  borderBottom: t => '1px solid ' + t.palette.divider,
+                }}
                 value={activeTab}
                 onChange={(event: React.ChangeEvent<{}>, newValue: number) => setActiveTab(newValue)}
                 indicatorColor="primary"

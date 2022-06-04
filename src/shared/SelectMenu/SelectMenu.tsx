@@ -1,8 +1,7 @@
-import {Checkbox, Menu, MenuItem, Theme} from '@mui/material'
-import createStyles from '@mui/styles/createStyles'
-import makeStyles from '@mui/styles/makeStyles'
+import {Checkbox, Menu, MenuItem} from '@mui/material'
 import React, {useEffect, useState} from 'react'
 import {useI18n} from '../../core/i18n'
+import {makeSx} from 'mui-extension'
 
 interface Props<T> {
   options: T[]
@@ -16,18 +15,16 @@ interface Props<T> {
   renderValue?: (value: T) => React.ReactNode
 }
 
-const useStyles = makeStyles((t: Theme) =>
-  createStyles({
-    menuItem: {
-      paddingTop: 0,
-      paddingBottom: 0,
-      paddingRight: t.spacing(1 / 2),
-      paddingLeft: t.spacing(1 / 2),
-    },
-  }),
-)
+const sx = makeSx({
+  menuItem: {
+    paddingTop: 0,
+    paddingBottom: 0,
+    paddingRight: t.spacing(1 / 2),
+    paddingLeft: t.spacing(1 / 2)
+  }
+})
 
-export const SelectMenu = <T,>({
+export const SelectMenu = <T, >({
   options,
   open,
   anchorEl,
@@ -55,7 +52,7 @@ export const SelectMenu = <T,>({
       {!multiple && <MenuItem value="">&nbsp;</MenuItem>}
       {multiple && (
         <MenuItem
-          className={css.menuItem}
+          sx={css.menuItem}
           dense
           key="all"
           value="all"
@@ -75,7 +72,7 @@ export const SelectMenu = <T,>({
       )}
       {options.map((option, i) => (
         <MenuItem
-          className={css.menuItem}
+          sx={css.menuItem}
           key={toString(option) + '' + i}
           value={toString(option)}
           dense

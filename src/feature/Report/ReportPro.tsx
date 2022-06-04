@@ -22,23 +22,23 @@ import {ReportResponseComponent} from './ReportResponse'
 import {ReportEvents} from './Event/ReportEvents'
 import {creationReportEvent} from './Report'
 import {useEventContext} from '../../core/context/EventContext'
+import {makeSx} from 'mui-extension'
 
-const useStyles = makeStyles((t: Theme) => ({
+const css = makeSx({
   answerPanel: {
-    transition: t.transitions.create('box-shadow'),
+    transition: t => t.transitions.create('box-shadow'),
   },
   responseDateTime: {
-    color: t.palette.text.disabled,
-    fontSize: styleUtils(t).fontSize.normal,
+    color: t => t.palette.text.disabled,
+    fontSize: t => styleUtils(t).fontSize.normal,
     fontWeight: 'normal',
     display: 'inline',
   },
-}))
+})
 
 export const ReportPro = () => {
   const {id} = useParams<{id: Id}>()
   const {m, formatDateTime} = useI18n()
-  const css = useStyles()
   const _report = useReportContext()
   const _event = useEventContext()
   const {toastError} = useToast()
@@ -135,7 +135,7 @@ export const ReportPro = () => {
                   _report.get.fetch({clean: false, force: true}, id)
                 }}
                 onCancel={openAnswerPanel.setFalse}
-                className={css.answerPanel}
+                sx={css.answerPanel}
               />
             </Collapse>
 

@@ -1,17 +1,15 @@
 import React, {useEffect, useState} from 'react'
 import {useI18n} from '../../core/i18n'
 import {useCssUtils} from '../../core/helper/useCssUtils'
-import {Chip, FormControlLabel, Icon, InputBase, MenuItem, Switch, Theme, Tooltip} from '@mui/material'
-import createStyles from '@mui/styles/createStyles'
-import makeStyles from '@mui/styles/makeStyles'
+import {Box, Chip, FormControlLabel, Icon, InputBase, Switch, Tooltip} from '@mui/material'
 import {useToast} from '../../core/toast'
 import {fromNullable} from 'fp-ts/lib/Option'
 import {Panel} from '../../shared/Panel'
 import {Datatable} from '../../shared/Datatable/Datatable'
 import {DebouncedInput} from '../../shared/DebouncedInput/DebouncedInput'
 import {useReportedWebsiteWithCompanyContext} from '../../core/context/ReportedWebsitesContext'
-import {Country, WebsiteKind, WebsiteWithCompany} from '@signal-conso/signalconso-api-sdk-js'
-import {IconBtn} from 'mui-extension'
+import {Country, WebsiteKind} from '@signal-conso/signalconso-api-sdk-js'
+import {IconBtn, makeSx} from 'mui-extension'
 import {ScSelect} from '../../shared/Select/Select'
 import {SelectCompany} from '../../shared/SelectCompany/SelectCompany'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
@@ -21,19 +19,19 @@ import {classes} from '../../core/helper/utils'
 import {ScMenuItem} from '../MenuItem/MenuItem'
 import {sxUtils} from '../../core/theme'
 
-const useStyles = makeStyles((t: Theme) => {
-  const iconWidth = 50
-  return createStyles({
-    tdName_label: {
-      fontWeight: 'bold',
-      marginBottom: -1,
-      maxWidth: 200,
-    },
-    tdName_desc: {
-      fontSize: t.typography.fontSize * 0.875,
-      color: t.palette.text.disabled,
-    },
-    chipEnterprise: {
+const iconWidth = 50
+
+const css = makeSx({
+  tdName_label: {
+    fontWeight: 'bold',
+    marginBottom: -1,
+    maxWidth: 200
+  },
+  tdName_desc: {
+    fontSize: t =>  t.typography.fontSize * 0.875,
+    color: t => t.palette.text.disabled
+  },
+  chipEnterprise: {
       height: 42,
       borderRadius: 42,
     },
@@ -49,7 +47,6 @@ const useStyles = makeStyles((t: Theme) => {
       maxWidth: 180,
     },
   })
-})
 
 const countryToFlag = (isoCode: string) => {
   return typeof String.fromCodePoint !== 'undefined'
@@ -74,7 +71,6 @@ export const ReportedCompaniesWebsites = () => {
   const _updateCountry = useReportedWebsiteWithCompanyContext().updateCountry
   const [countries, setCountries] = useState<Country[]>([])
   const countriesAnchor = useAnchoredMenu()
-  const css = useStyles()
   const cssUtils = useCssUtils()
   const {toastError, toastInfo, toastSuccess} = useToast()
 
@@ -111,7 +107,7 @@ export const ReportedCompaniesWebsites = () => {
                   value={value}
                   placeholder={m.searchByHost + '...'}
                   fullWidth
-                  className={cssUtils.marginLeft}
+                  sx={{ml: 1}}
                   onChange={e => onChange(e.target.value)}
                 />
               )}
@@ -126,7 +122,7 @@ export const ReportedCompaniesWebsites = () => {
                   onChange={e => onChange(e.target.value as WebsiteKind[])}
                   fullWidth
                   multiple
-                  className={css.status}
+                  sx={css.status}
                 >
                   {[WebsiteKind.PENDING, WebsiteKind.DEFAULT].map(kind => (
                     <ScMenuItem key={kind} value={kind}>
@@ -196,13 +192,13 @@ export const ReportedCompaniesWebsites = () => {
                   <Tooltip title={_.company.name}>
                     <Chip
                       variant={'outlined'}
-                      className={css.chipEnterprise}
+                      sx={css.chipEnterprise}
                       label={
                         <div>
-                          <Txt truncate className={css.tdName_label} block>
+                          <Txt truncate sx={css.tdName_label} block>
                             {_.company.name}
                           </Txt>
-                          <span className={css.tdName_desc}>{_.company.siret}</span>
+                          <Box component="span" sx={css.tdName_desc}>{_.company.siret}</Box>
                         </div>
                       }
                     />
@@ -211,10 +207,10 @@ export const ReportedCompaniesWebsites = () => {
                   <Tooltip title={m.linkCompany}>
                     <Chip
                       variant={'outlined'}
-                      className={css.chipEnterprise}
+                      sx={css.chipEnterprise}
                       label={
                         <div>
-                          <span className={css.tdName_desc}>{m.noAssociation}</span>
+                          <Box component="span" sx={css.tdName_desc}>{m.noAssociation}</Box>
                         </div>
                       }
                     />
@@ -241,13 +237,13 @@ export const ReportedCompaniesWebsites = () => {
                   <Tooltip title={m.linkCountry}>
                     <Chip
                       variant={'outlined'}
-                      className={css.chipEnterprise}
+                      sx={css.chipEnterprise}
                       label={
                         <div>
                           <Txt truncate block>
                             <span className={classes(css.flag, css.iconWidth)}>{countryToFlag(_.companyCountry.code)}</span>
                             &nbsp;
-                            <span className={css.tdName_desc}>{_.companyCountry.name}</span>
+                            <Box sx={css.tdName_desc}>{_.companyCountry.name}</Box>
                           </Txt>
                         </div>
                       }
@@ -257,10 +253,10 @@ export const ReportedCompaniesWebsites = () => {
                   <Tooltip title={m.linkCountry}>
                     <Chip
                       variant={'outlined'}
-                      className={css.chipEnterprise}
+                      sx={css.chipEnterprise}
                       label={
                         <div>
-                          <span className={css.tdName_desc}>{m.noAssociation}</span>
+                          <Box sx={css.tdName_desc}>{m.noAssociation}</Box>
                         </div>
                       }
                     />
@@ -289,7 +285,7 @@ export const ReportedCompaniesWebsites = () => {
             stickyEnd: true,
             sx: sxUtils.tdActions,
             render: _ => (
-              <IconBtn className={cssUtils.colorTxtHint} onClick={() => _remove.fetch({}, _.id).then(_ => _fetch.fetch())}>
+              <IconBtn sx={{color: t => t.palette.text.disabled}} onClick={() => _remove.fetch({}, _.id).then(_ => _fetch.fetch())}>
                 <Icon>delete</Icon>
               </IconBtn>
             ),

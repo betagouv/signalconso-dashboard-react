@@ -1,5 +1,4 @@
-import {Icon, Theme} from '@mui/material'
-import makeStyles from '@mui/styles/makeStyles'
+import {Box, Icon} from '@mui/material'
 import {ReportSearchResult} from '@signal-conso/signalconso-api-sdk-js'
 import {Paginate} from '@alexandreannic/react-hooks-lib/lib'
 import {ReportStatusLabel} from '../../shared/ReportStatus/ReportStatus'
@@ -9,69 +8,65 @@ import {IconBtn} from 'mui-extension/lib'
 import {siteMap} from '../../core/siteMap'
 import {NavLink} from 'react-router-dom'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
-import {useCssUtils} from '../../core/helper/useCssUtils'
 import {ReportDetailValues} from '../../shared/ReportDetailValues/ReportDetailValues'
-import {useLogin} from '../../core/context/LoginContext'
+import {makeSx} from 'mui-extension'
 
 interface Props {
   reports: Paginate<ReportSearchResult>
 }
 
-const useStyles = makeStyles((t: Theme) => ({
+const css = makeSx({
   report: {
     display: 'flex',
     alignItems: 'center',
-    paddingBottom: t.spacing(2),
-    margin: t.spacing(2, 2, 2, 2),
+    paddingBottom: t => t.spacing(2),
+    m: 2,
     '&:not(:last-of-type)': {
-      borderBottom: `1px solid ${t.palette.divider}`,
-    },
+      borderBottom: t => `1px solid ${t.palette.divider}`
+    }
   },
   reportTag: {
-    marginBottom: t.spacing(1),
+    mb: 1,
     display: 'flex',
     alignItems: 'center',
-    color: t.palette.text.disabled,
+    color: t => t.palette.text.disabled
   },
   body: {
-    flex: 1,
-  },
-  title: {},
-}))
+    flex: 1
+  }
+})
 
 export const ReportsShortList = ({reports}: Props) => {
-  const css = useStyles()
-  const cssUtils = useCssUtils()
   const {m, formatDate} = useI18n()
   return (
     <div>
       {reports.data.map(_ => (
-        <div className={css.report} key={_.report.id}>
-          <div className={css.body}>
-            <div className={css.title}>
+        <Box sx={css.report} key={_.report.id}>
+          <Box sx={css.body}>
+            <Box>
               <Txt size="big" bold truncate style={{flex: 1, width: 0}}>
                 {_.report.category}
               </Txt>
-              <div className={css.reportTag}>
-                <ReportStatusLabel status={_.report.status} dense className={cssUtils.marginRight} />
+              <Box sx={css.reportTag}>
+                <ReportStatusLabel status={_.report.status} dense sx={{mr: 1}} />
                 <Txt color="hint">{formatDate(_.report.creationDate)}</Txt>
-                <Icon fontSize="inherit" className={cssUtils.marginLeft}>
+                <Icon fontSize="inherit" sx={{ml: 1}}>
                   label
                 </Icon>
                 &nbsp;
                 <Txt color="disabled" truncate style={{width: 0, flex: 1}}>
                   {_.report.tags.map(x => m.reportTagDesc[x]).join(', ')}
                 </Txt>
-              </div>
-            </div>
+              </Box>
+            </Box>
             <ReportDetailValues input={_.report.details} lines={3} />
-          </div>
+          </Box>
           <NavLink to={siteMap.logged.report(_.report.id)}>
             <IconBtn color="primary">
               <Icon>chevron_right</Icon>
             </IconBtn>
           </NavLink>
-        </div>
+        </Box>
       ))}
     </div>
   )

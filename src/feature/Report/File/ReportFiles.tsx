@@ -1,5 +1,5 @@
 import {FileOrigin, Id, UploadedFile} from '@signal-conso/signalconso-api-sdk-js'
-import {Theme} from '@mui/material'
+import {Box, Theme} from '@mui/material'
 import makeStyles from '@mui/styles/makeStyles'
 import React, {useEffect, useState} from 'react'
 import {ReportFileAdd} from './ReportFileAdd'
@@ -16,20 +16,6 @@ export interface ReportFilesProps {
   hideAddBtn?: boolean
 }
 
-const useReportFilesStyles = makeStyles((t: Theme) => ({
-  root: {
-    display: 'flex',
-    flexWrap: 'wrap',
-    margin: t.spacing(-1),
-    // marginRight: t.spacing(-1),
-    // marginLeft: t.spacing(-1),
-  },
-  noAttachment: {
-    marginTop: t.spacing(1),
-    marginBottom: t.spacing(1),
-  },
-}))
-
 export const ReportFiles = ({
   reportId,
   fileOrigin,
@@ -38,7 +24,6 @@ export const ReportFiles = ({
   onRemoveFile = () => void 0,
   onNewFile = () => void 0,
 }: ReportFilesProps) => {
-  const css = useReportFilesStyles()
   const [innerFiles, setInnerFiles] = useState<UploadedFile[]>()
   const {m} = useI18n()
 
@@ -58,16 +43,20 @@ export const ReportFiles = ({
 
   return (
     <>
-      <div className={css.root}>
+      <Box sx={{
+        display: 'flex',
+        flexWrap: 'wrap',
+        m: -1,
+      }}>
         {innerFiles
           ?.filter(_ => _.origin === fileOrigin)
           .map(_ => (
             <ReportFile key={_.id} file={_} onRemove={hideAddBtn ? undefined : removeFile} />
           ))}
         {!hideAddBtn && <ReportFileAdd reportId={reportId} fileOrigin={fileOrigin} onUploaded={newFile} />}
-      </div>
+      </Box>
       {hideAddBtn && innerFiles?.length === 0 && (
-        <Txt block color="hint" className={css.noAttachment}>
+        <Txt block color="hint" sx={{my: 1}}>
           {m.noAttachment}
         </Txt>
       )}

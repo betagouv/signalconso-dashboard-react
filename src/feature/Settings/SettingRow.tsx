@@ -1,5 +1,5 @@
 import React, {ReactNode} from 'react'
-import {Icon, Theme} from '@mui/material'
+import {Box, Icon, Theme} from '@mui/material'
 import makeStyles from '@mui/styles/makeStyles'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
 import {useI18n} from '../../core/i18n'
@@ -11,32 +11,22 @@ interface Props {
   description?: string
 }
 
-const useStyles = makeStyles((t: Theme) => ({
-  icon: {
-    color: t.palette.text.secondary,
-    marginRight: t.spacing(2),
-  },
-  root: {
-    padding: t.spacing(1.5, 2),
-    display: 'flex',
-    alignItems: 'center',
-    '&:not(:last-of-type)': {
-      borderBottom: '1px solid ' + t.palette.divider,
-    },
-  },
-  body: {
-    flex: 1,
-  },
-}))
-
 export const SettingRow = ({title, description, icon, children}: Props) => {
-  const {m} = useI18n()
-  const css = useStyles()
-
   return (
-    <div className={css.root}>
-      <Icon className={css.icon}>{icon}</Icon>
-      <div className={css.body}>
+    <Box sx={{
+      py: 1.5,
+      px: 2,
+      display: 'flex',
+      alignItems: 'center',
+      '&:not(:last-of-type)': {
+        borderBottom: t => '1px solid ' + t.palette.divider,
+      },
+    }}>
+      <Icon sx={{
+        color: t => t.palette.text.secondary,
+        mr: 2,
+      }}>{icon}</Icon>
+      <Box sx={{flex: 1}}>
         <Txt block size="big">
           {title}
         </Txt>
@@ -45,8 +35,8 @@ export const SettingRow = ({title, description, icon, children}: Props) => {
             {description}
           </Txt>
         )}
-      </div>
+      </Box>
       <div>{children}</div>
-    </div>
+    </Box>
   )
 }
