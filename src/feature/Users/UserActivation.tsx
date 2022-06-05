@@ -6,13 +6,13 @@ import {TokenInfo, UserToActivate} from '@signal-conso/signalconso-api-sdk-js'
 import {useI18n} from '../../core/i18n'
 import {ScInput} from '../../shared/Input/ScInput'
 import makeStyles from '@mui/styles/makeStyles'
-import {Checkbox, FormControl, FormControlLabel, FormHelperText, Theme} from '@mui/material'
+import {Box, Checkbox, FormControl, FormControlLabel, FormHelperText, Theme} from '@mui/material'
 import {ScButton} from '../../shared/Button/Button'
 import {Page, PageTitle} from '../../shared/Layout'
 import {useHistory, useLocation, useParams} from 'react-router'
 import {siteMap} from '../../core/siteMap'
 import {useAsync} from '@alexandreannic/react-hooks-lib'
-import {Alert, PanelFoot} from 'mui-extension'
+import {Alert, makeSx, PanelFoot} from 'mui-extension'
 import {AccountEventActions, ActionResultNames, EventCategories, Matomo} from '../../core/plugins/Matomo'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
 import {useFetcher} from '@alexandreannic/react-hooks-lib/lib'
@@ -24,14 +24,14 @@ interface UserActivationForm extends UserToActivate {
   consent: boolean
 }
 
-const useStyles = makeStyles((t: Theme) => ({
+const sx = makeSx({
   hint: {
     '& a': {
-      color: t.palette.primary.main,
-      fontWeight: t.typography.fontWeightBold,
+      color: t => t.palette.primary.main,
+      fontWeight: t => t.typography.fontWeightBold,
     },
   },
-}))
+})
 
 interface Props {
   onActivateUser: (user: UserToActivate, token: string, companySiret?: string) => Promise<void>
@@ -42,7 +42,6 @@ export const UserActivation = ({onActivateUser, onFetchTokenInfo}: Props) => {
   const {m} = useI18n()
   const _activate = useAsync(onActivateUser)
   const _tokenInfo = useFetcher(onFetchTokenInfo)
-  const css = useStyles()
   const {toastSuccess, toastError} = useToast()
 
   const {search} = useLocation()
@@ -88,7 +87,7 @@ export const UserActivation = ({onActivateUser, onFetchTokenInfo}: Props) => {
 
       <Panel loading={_tokenInfo.loading}>
         {_tokenInfo.error ? (
-          <Alert type="error" className={css.hint}>
+          <Alert type="error" sx={sx.hint}>
             <Txt size="big" block bold gutterBottom>
               {m.cannotActivateAccountAlertTitle}
             </Txt>
@@ -162,7 +161,7 @@ export const UserActivation = ({onActivateUser, onFetchTokenInfo}: Props) => {
                     <FormControl required error={!!errors.consent}>
                       <FormControlLabel
                         control={<Checkbox {...field} checked={field.value} />}
-                        label={<div className={css.hint} dangerouslySetInnerHTML={{__html: m.consent}} />}
+                        label={<Box sx={sx.hint} dangerouslySetInnerHTML={{__html: m.consent}} />}
                       />
                       <FormHelperText> {errors.consent?.message ?? ' '}</FormHelperText>
                     </FormControl>

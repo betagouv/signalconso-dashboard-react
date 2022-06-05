@@ -5,7 +5,6 @@ import {ReactNode} from 'react'
 import {Icon, Theme} from '@mui/material'
 import makeStyles from '@mui/styles/makeStyles'
 import {NavLink} from 'react-router-dom'
-import {useCssUtils} from '../../core/helper/useCssUtils'
 import {styleUtils} from '../../core/theme'
 
 interface Props {
@@ -15,36 +14,29 @@ interface Props {
   to?: string
 }
 
-const useStyles = makeStyles((t: Theme) => ({
-  title: {
-    display: 'flex',
-    alignItems: 'center',
-  },
-  toIcon: {
-    marginLeft: t.spacing(1),
-    color: t.palette.text.disabled,
-    fontSize: styleUtils(t).fontSize.big,
-  },
-  hoverable: {
-    transition: t.transitions.create('all'),
-    '&:hover': {
-      borderColor: t.palette.background.default,
-      boxShadow: t.shadows[3],
-      // borderColor: t.palette.primary.main,
-      // boxShadow: `inset 0 0 0 1px ${t.palette.primary.main}`,
-    },
-  },
-}))
-
 export const Widget = ({loading, title, to, children}: Props) => {
-  const css = useStyles()
   const body = (
-    <Panel className={to && css.hoverable}>
+    <Panel sx={{
+      ...to && {
+        transition: t => t.transitions.create('all'),
+        '&:hover': {
+          borderColor: t => t.palette.background.default,
+          boxShadow: t => t.shadows[3]
+        }
+      }
+    }}>
       <PanelBody>
-        <Txt block uppercase color="hint" size="small" gutterBottom className={css.title}>
+        <Txt block uppercase color="hint" size="small" gutterBottom sx={{
+          display: 'flex',
+          alignItems: 'center'
+        }}>
           {title}
           {to && (
-            <Icon fontSize="inherit" className={css.toIcon}>
+            <Icon fontSize="inherit" sx={{
+              ml: 1,
+              color: t => t.palette.text.disabled,
+              fontSize: t => styleUtils(t).fontSize.big
+            }}>
               open_in_new
             </Icon>
           )}

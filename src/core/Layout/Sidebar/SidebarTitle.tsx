@@ -1,4 +1,4 @@
-import {Icon, Theme} from '@mui/material'
+import {Box, BoxProps, Icon, Theme} from '@mui/material'
 import createStyles from '@mui/styles/createStyles'
 import makeStyles from '@mui/styles/makeStyles'
 import * as React from 'react'
@@ -8,35 +8,27 @@ import {IconBtn} from 'mui-extension/lib'
 
 export const headerHeight = 52
 
-const useStyles = makeStyles((t: Theme) =>
-  createStyles({
-    root: {
+export const SidebarTitle = ({sx, ...props}: BoxProps) => {
+  const {title, isMobileWidth, isMobileSidebarOpened, toggleMobileSidebar} = useLayoutContext()
+  return (
+    <Box {...props} sx={{
+      ...sx,
       height: headerHeight,
       display: 'flex',
       alignItems: 'center',
-      paddingRight: t.spacing(2),
-      paddingLeft: t.spacing(1) + 2,
-      background: t.palette.background.paper,
-    },
-    hidden: {
-      visibility: 'hidden' as any,
-    },
-    title: {
-      flex: 1,
-      fontSize: t.typography.h6.fontSize,
-    },
-  }),
-)
-
-export const SidebarTitle = ({className}: any) => {
-  const classes = useStyles()
-  const {title, isMobileWidth, isMobileSidebarOpened, toggleMobileSidebar} = useLayoutContext()
-  return (
-    <header className={classNames(classes.root, className)}>
-      <IconBtn onClick={toggleMobileSidebar} className={isMobileWidth ? '' : classes.hidden}>
+      pr: 2,
+      pl: 1.25,
+      background: t => t.palette.background.paper,
+    }}>
+      <IconBtn onClick={toggleMobileSidebar} sx={{...(!isMobileWidth && {visibility: 'hidden'})}}>
         <Icon>{isMobileSidebarOpened ? 'clear' : 'menu'}</Icon>
       </IconBtn>
-      <div className={classes.title}>{title}</div>
-    </header>
+      <Box sx={{
+        flex: 1,
+        fontSize: t => t.typography.h6.fontSize,
+      }}>
+        {title}
+      </Box>
+    </Box>
   )
 }
