@@ -11,7 +11,6 @@ import {useReportContext} from '../../core/context/ReportContext'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
 import {useEventContext} from '../../core/context/EventContext'
 import {ResponseEvaluation} from '@signal-conso/signalconso-api-sdk-js/lib/client/event/Event'
-import {makeSx} from 'mui-extension'
 
 interface Props {
   canEditFile?: boolean

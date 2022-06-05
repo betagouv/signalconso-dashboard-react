@@ -1,5 +1,4 @@
-import {Box, Icon, Theme} from '@mui/material'
-import makeStyles from '@mui/styles/makeStyles'
+import {Box, Icon} from '@mui/material'
 import React from 'react'
 
 const ReportCategory = ({children}: {children: any}) => {

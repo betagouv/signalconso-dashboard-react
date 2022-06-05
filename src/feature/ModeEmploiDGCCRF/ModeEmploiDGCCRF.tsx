@@ -1,11 +1,8 @@
 import {Page} from 'shared/Layout'
 import {Panel, PanelBody} from '../../shared/Panel'
-import {Divider, Theme, Typography} from '@mui/material'
-import {useCssUtils} from '../../core/helper/useCssUtils'
-import {classes} from '../../core/helper/utils'
-import makeStyles from '@mui/styles/makeStyles'
+import {Divider, Typography} from '@mui/material'
 import {styleUtils} from '../../core/theme'
-import {makeSx} from "mui-extension";
+import {makeSx} from 'mui-extension'
 
 const sx = makeSx({
   mark: {

@@ -1,9 +1,6 @@
-import {Box, BoxProps, Icon, Theme} from '@mui/material'
-import createStyles from '@mui/styles/createStyles'
-import makeStyles from '@mui/styles/makeStyles'
+import {Box, BoxProps, Icon} from '@mui/material'
 import * as React from 'react'
 import {useLayoutContext} from '../LayoutContext'
-import classNames from 'classnames'
 import {IconBtn} from 'mui-extension/lib'
 
 export const headerHeight = 52

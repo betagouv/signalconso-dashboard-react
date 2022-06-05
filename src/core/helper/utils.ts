@@ -2,8 +2,6 @@ import classNames from 'classnames'
 import {fromNullable} from 'fp-ts/lib/Option'
 import {OrderBy, Paginate} from '@alexandreannic/react-hooks-lib/lib'
 import {config} from 'conf/config'
-import {Paginate as ApiPaginate} from '@signal-conso/signalconso-api-sdk-js'
-import {mapPromise, PromiseFnResult} from '@alexandreannic/ts-utils/lib/common'
 import {SxProps, Theme} from '@mui/material'
 
 export const isJsonValid = (json: string): boolean => {

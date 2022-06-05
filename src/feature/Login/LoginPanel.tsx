@@ -1,9 +1,8 @@
-import makeStyles from '@mui/styles/makeStyles'
-import {Box, Theme} from "@mui/material";
+import {Box} from '@mui/material'
 import {styleUtils} from '../../core/theme'
 import * as React from 'react'
-import {Panel, PanelBody} from '../../shared/Panel'
 import {ReactNode} from 'react'
+import {Panel, PanelBody} from '../../shared/Panel'
 
 interface Props {
   title: string

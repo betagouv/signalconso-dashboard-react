@@ -1,8 +1,7 @@
 import {addDays, subDays} from 'date-fns'
 import React, {useEffect, useState} from 'react'
 import {useI18n} from '../../core/i18n'
-import {Box, BoxProps, Theme} from '@mui/material'
-import makeStyles from '@mui/styles/makeStyles'
+import {Box, BoxProps} from '@mui/material'
 import {Datepicker} from '../Datepicker/Datepicker'
 
 export interface DatepickerProps extends Omit<BoxProps, 'onChange'> {

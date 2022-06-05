@@ -1,5 +1,4 @@
-import makeStyles from '@mui/styles/makeStyles'
-import {Box, Icon, Theme} from '@mui/material'
+import {Box} from '@mui/material'
 import React, {ReactNode} from 'react'
 
 export interface DialogInputRowProps {

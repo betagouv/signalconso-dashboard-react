@@ -1,6 +1,5 @@
 import React, {useRef, useState} from 'react'
-import {Box, Button, CircularProgress, Icon, Theme, Tooltip} from '@mui/material'
-import makeStyles from '@mui/styles/makeStyles'
+import {Box, Button, CircularProgress, Icon, Tooltip} from '@mui/material'
 import {reportFileConfig} from './reportFileConfig'
 import {useI18n} from '../../../core/i18n'
 import {styleUtils} from '../../../core/theme'

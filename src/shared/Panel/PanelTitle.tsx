@@ -1,6 +1,5 @@
-import {Box, BoxProps, Theme} from "@mui/material";
-import makeStyles from "@mui/styles/makeStyles";
-import {styleUtils} from "../../core/theme";
+import {Box, BoxProps} from '@mui/material'
+import {styleUtils} from '../../core/theme'
 
 interface Props extends BoxProps {
 }

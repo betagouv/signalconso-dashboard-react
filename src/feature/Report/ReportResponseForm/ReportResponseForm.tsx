@@ -16,7 +16,6 @@ import {Controller, useForm} from 'react-hook-form'
 import {useReportContext} from '../../../core/context/ReportContext'
 import {fromNullable} from 'fp-ts/lib/Option'
 import {useToast} from '../../../core/toast'
-import {BoxProps} from '@mui/material'
 import {PanelProps} from '../../../shared/Panel/Panel'
 
 interface Props extends PanelProps {

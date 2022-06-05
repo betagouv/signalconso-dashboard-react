@@ -1,9 +1,7 @@
-import * as React from "react";
-import {ReactNode} from "react";
-import {BoxProps, Icon, Theme} from "@mui/material";
-import makeStyles from "@mui/styles/makeStyles";
-import {styleUtils} from "../../core/theme";
-import {PanelTitle} from "./PanelTitle";
+import * as React from 'react'
+import {ReactNode} from 'react'
+import {BoxProps, Icon} from '@mui/material'
+import {PanelTitle} from './PanelTitle'
 
 interface Props extends BoxProps {
   className?: string

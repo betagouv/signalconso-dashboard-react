@@ -1,6 +1,5 @@
-import {ReactNode, useMemo} from 'react'
-import makeStyles from '@mui/styles/makeStyles'
-import {Box, Theme} from '@mui/material'
+import {ReactNode} from 'react'
+import {Box} from '@mui/material'
 
 interface Props {
   children: ReactNode

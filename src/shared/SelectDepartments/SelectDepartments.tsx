@@ -1,6 +1,6 @@
 import * as React from 'react'
 import {forwardRef, useEffect} from 'react'
-import {BoxProps, Icon, InputAdornment, TextField, TextFieldProps} from '@mui/material'
+import {Icon, InputAdornment, TextField, TextFieldProps} from '@mui/material'
 import {useSetState, UseSetState} from '@alexandreannic/react-hooks-lib/lib'
 import {SelectDepartmentsMenu} from './SelectDepartmentsMenu'
 

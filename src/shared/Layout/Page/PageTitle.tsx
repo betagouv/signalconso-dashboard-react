@@ -1,6 +1,6 @@
-import * as React from "react";
-import {ReactNode} from "react";
-import {BoxProps, Typography} from "@mui/material";
+import * as React from 'react'
+import {ReactNode} from 'react'
+import {BoxProps, Typography} from '@mui/material'
 
 interface Props extends BoxProps {
   action?: ReactNode

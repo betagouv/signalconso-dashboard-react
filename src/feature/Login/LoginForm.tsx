@@ -1,20 +1,18 @@
-import {Theme} from "@mui/material";
-import * as React from "react";
-import {useI18n} from "../../core/i18n";
-import {regexp} from "../../core/helper/regexp";
-import {LoginPanel} from "./LoginPanel";
-import makeStyles from "@mui/styles/makeStyles";
-import {ActionProps} from "./LoginPage";
-import {ScInputPassword} from "../../shared/InputPassword/InputPassword";
-import {ScInput} from "../../shared/Input/ScInput";
-import {useForm} from "react-hook-form";
-import {ScButton} from "../../shared/Button/Button";
-import {fromNullable} from "fp-ts/es6/Option";
-import {ForgottenPasswordDialog} from "./ForgottenPasswordDialog";
-import {ApiError, SignalConsoPublicSdk} from "@signal-conso/signalconso-api-sdk-js";
-import {AuthenticationEventActions, EventCategories, Matomo} from "../../core/plugins/Matomo";
-import {Alert} from "mui-extension";
-import {Txt} from "mui-extension/lib/Txt/Txt";
+import * as React from 'react'
+import {useI18n} from '../../core/i18n'
+import {regexp} from '../../core/helper/regexp'
+import {LoginPanel} from './LoginPanel'
+import {ActionProps} from './LoginPage'
+import {ScInputPassword} from '../../shared/InputPassword/InputPassword'
+import {ScInput} from '../../shared/Input/ScInput'
+import {useForm} from 'react-hook-form'
+import {ScButton} from '../../shared/Button/Button'
+import {fromNullable} from 'fp-ts/es6/Option'
+import {ForgottenPasswordDialog} from './ForgottenPasswordDialog'
+import {ApiError, SignalConsoPublicSdk} from '@signal-conso/signalconso-api-sdk-js'
+import {AuthenticationEventActions, EventCategories, Matomo} from '../../core/plugins/Matomo'
+import {Alert} from 'mui-extension'
+import {Txt} from 'mui-extension/lib/Txt/Txt'
 
 interface Props {
   login: ActionProps<SignalConsoPublicSdk["authenticate"]["login"]>;

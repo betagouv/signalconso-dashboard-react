@@ -1,12 +1,8 @@
 import * as React from 'react'
 import {forwardRef, useEffect, useState} from 'react'
-import {Icon, IconButton, TextField, Theme} from '@mui/material'
-import createStyles from '@mui/styles/createStyles'
-import makeStyles from '@mui/styles/makeStyles'
+import {Icon, IconButton, TextField} from '@mui/material'
 import {AutocompleteProps} from '@mui/material/Autocomplete'
-import {useCssUtils} from '../../core/helper/useCssUtils'
-import {useI18n} from '../../core/i18n'
-import {classes, stopPropagation} from '../../core/helper/utils'
+import {stopPropagation} from '../../core/helper/utils'
 import {SelectCountriesMenu} from './SelectCountriesMenu'
 
 interface Props

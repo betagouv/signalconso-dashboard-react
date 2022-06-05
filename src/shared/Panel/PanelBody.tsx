@@ -1,9 +1,5 @@
 import * as React from 'react'
-import {ReactNode} from 'react'
-import {BoxProps, CardContent as MuiCardContent, Theme} from "@mui/material";
-import makeStyles from '@mui/styles/makeStyles'
-import {classes} from '../../core/helper/utils'
-import {styleUtils} from '../../core/theme'
+import {BoxProps, CardContent as MuiCardContent} from '@mui/material'
 
 interface Props extends BoxProps {
 }

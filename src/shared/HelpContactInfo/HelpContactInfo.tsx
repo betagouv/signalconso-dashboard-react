@@ -1,5 +1,3 @@
-import makeStyles from '@mui/styles/makeStyles'
-import {Theme} from '@mui/material'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
 import React from 'react'
 import {useI18n} from '../../core/i18n'

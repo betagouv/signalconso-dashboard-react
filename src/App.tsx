@@ -1,8 +1,7 @@
 import React, {useEffect} from 'react'
 import {ApiError} from '@signal-conso/signalconso-api-sdk-js'
 import {config} from './conf/config'
-import makeStyles from '@mui/styles/makeStyles'
-import { CircularProgress, CssBaseline, StyledEngineProvider, Theme, ThemeProvider } from "@mui/material";
+import {CircularProgress, CssBaseline, StyledEngineProvider, ThemeProvider} from '@mui/material'
 import {BrowserRouter, HashRouter, Redirect, Route, Switch} from 'react-router-dom'
 import {I18nProvider} from './core/i18n'
 import {ReportProvider} from './core/context/ReportContext'

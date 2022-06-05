@@ -1,5 +1,4 @@
-import makeStyles from '@mui/styles/makeStyles'
-import {Box, Icon, Menu, MenuItem, Slide, Theme} from '@mui/material'
+import {Box, Icon, Menu, MenuItem, Slide} from '@mui/material'
 import logoGouvMobile from './gouv-mobile.svg'
 import logoSignalConso from './signalconso.svg'
 import logoDgccrf from './logo-dgccrf.png'

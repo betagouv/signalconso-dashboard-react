@@ -1,8 +1,6 @@
-import {alpha, Box, BoxProps, Radio, Theme} from '@mui/material'
-import makeStyles from '@mui/styles/makeStyles'
-import React, {MouseEventHandler, ReactNode} from 'react'
+import {alpha, Box, BoxProps, Radio} from '@mui/material'
+import React, {ReactNode} from 'react'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
-import {classes} from 'core/helper/utils'
 
 export interface ScRadioGroupItemProps extends Omit<BoxProps, 'title'> {
   title?: string | ReactNode

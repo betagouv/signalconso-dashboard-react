@@ -1,6 +1,6 @@
 import * as React from 'react'
 
-import {Box, BoxProps, Theme} from '@mui/material'
+import {Box, BoxProps} from '@mui/material'
 
 export interface EmoticonProps extends BoxProps {
   children: React.ReactNode

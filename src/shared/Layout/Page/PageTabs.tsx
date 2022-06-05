@@ -1,5 +1,4 @@
-import {BoxProps, Tab, Tabs, Theme} from "@mui/material";
-import makeStyles from '@mui/styles/makeStyles'
+import {BoxProps, Tab, Tabs} from '@mui/material'
 import * as React from 'react'
 import {ReactElement, useMemo, useState} from 'react'
 import {useHistory, useLocation} from 'react-router'

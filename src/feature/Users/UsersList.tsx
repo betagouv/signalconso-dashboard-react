@@ -11,8 +11,8 @@ import {useToast} from '../../core/toast'
 import {DebouncedInput} from '../../shared/DebouncedInput/DebouncedInput'
 import {TrueFalseUndefined} from '../../shared/TrueFalseUndefined/TrueFalseUndefined'
 import {User} from '@signal-conso/signalconso-api-sdk-js'
-import {ScDialog} from "../../shared/Confirm/ScDialog";
-import {IconBtn} from "mui-extension";
+import {ScDialog} from '../../shared/Confirm/ScDialog'
+import {IconBtn} from 'mui-extension'
 
 export const UsersList = () => {
   const {m, formatDate} = useI18n()

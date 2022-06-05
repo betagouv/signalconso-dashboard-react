@@ -1,7 +1,6 @@
 import * as React from 'react'
 import {forwardRef} from 'react'
-import {Card, CardProps, LinearProgress, Theme} from '@mui/material'
-import {createStyles, makeStyles} from '@mui/styles'
+import {Card, CardProps, LinearProgress} from '@mui/material'
 
 export interface PanelProps extends CardProps {
   loading?: boolean

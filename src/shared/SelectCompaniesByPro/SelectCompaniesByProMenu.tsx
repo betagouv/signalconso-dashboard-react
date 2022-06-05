@@ -1,5 +1,4 @@
 import {Box, Checkbox, Icon, Menu, MenuItem} from '@mui/material'
-import {classes} from '../../core/helper/utils'
 import * as React from 'react'
 import {useEffect, useMemo} from 'react'
 import {useCssUtils} from '../../core/helper/useCssUtils'

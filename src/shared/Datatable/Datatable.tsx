@@ -1,7 +1,5 @@
 import {Box, LinearProgress, SxProps, Table, TableBody, TableCell, TableHead, TablePagination, TableRow, TableSortLabel, Theme} from '@mui/material'
-import makeStyles from '@mui/styles/makeStyles'
 import React, {CSSProperties, ReactNode, useMemo} from 'react'
-import {classes} from '../../core/helper/utils'
 import {DatatableColumnToggle} from './DatatableColumnsToggle'
 import {useI18n} from '../../core/i18n'
 import {Fender} from 'mui-extension/lib'

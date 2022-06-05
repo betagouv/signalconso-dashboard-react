@@ -1,7 +1,6 @@
 import React, {ReactElement, ReactNode, useEffect, useState} from 'react'
 import {Btn} from 'mui-extension/lib'
-import {Box, CircularProgress, Icon, Menu, MenuItem, Theme, Tooltip} from '@mui/material'
-import makeStyles from '@mui/styles/makeStyles'
+import {Box, CircularProgress, Icon, Menu, MenuItem, Tooltip} from '@mui/material'
 import {useI18n} from '../../core/i18n'
 import {AsyncFile, AsyncFileKind, AsyncFileStatus} from '@signal-conso/signalconso-api-sdk-js'
 import {useAsyncFileContext} from '../../core/context/AsyncFileContext'

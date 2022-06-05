@@ -1,8 +1,6 @@
 import {Txt} from 'mui-extension/lib/Txt/Txt'
 import React from 'react'
-import {Box, Theme} from '@mui/material'
-
-import makeStyles from '@mui/styles/makeStyles'
+import {Box} from '@mui/material'
 
 interface ReportAnswerProItemProps {
   title: string

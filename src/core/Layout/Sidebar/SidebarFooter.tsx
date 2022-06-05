@@ -1,7 +1,5 @@
 import * as React from 'react'
-import {Box, BoxProps, Theme} from '@mui/material'
-import createStyles from '@mui/styles/createStyles'
-import makeStyles from '@mui/styles/makeStyles'
+import {Box, BoxProps} from '@mui/material'
 
 export interface SidebarFooterProps extends BoxProps {
 }

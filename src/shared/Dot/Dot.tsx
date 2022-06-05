@@ -1,7 +1,5 @@
-import {Icon, Theme} from '@mui/material'
-import makeStyles from '@mui/styles/makeStyles'
+import {Icon} from '@mui/material'
 import * as React from 'react'
-import {classes} from '../../core/helper/utils'
 
 export interface DotProps {
   className?: string

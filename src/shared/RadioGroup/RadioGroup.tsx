@@ -1,6 +1,6 @@
-import React, {forwardRef, ReactElement, useEffect, useState} from "react";
-import {ScRadioGroupItemProps} from "./RadioGroupItem";
-import {Box, SxProps, Theme} from "@mui/material";
+import React, {forwardRef, ReactElement, useEffect, useState} from 'react'
+import {ScRadioGroupItemProps} from './RadioGroupItem'
+import {Box, SxProps, Theme} from '@mui/material'
 
 interface Props {
   className?: string

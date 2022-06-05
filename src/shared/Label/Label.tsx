@@ -1,10 +1,8 @@
 import * as React from 'react'
 import {CSSProperties, ReactNode} from 'react'
-import {Paper, PaperProps, Theme} from '@mui/material'
-import makeStyles from '@mui/styles/makeStyles'
+import {Paper, PaperProps} from '@mui/material'
 import {alpha} from '@mui/material/styles'
 import {styleUtils} from '../../core/theme'
-import {classes} from '../../core/helper/utils'
 import {makeSx} from 'mui-extension'
 
 export type LabelColor = 'error' | 'warning' | 'info' | 'success' | 'disable'

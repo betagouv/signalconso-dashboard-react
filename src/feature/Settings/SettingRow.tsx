@@ -1,8 +1,6 @@
 import React, {ReactNode} from 'react'
-import {Box, Icon, Theme} from '@mui/material'
-import makeStyles from '@mui/styles/makeStyles'
+import {Box, Icon} from '@mui/material'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
-import {useI18n} from '../../core/i18n'
 
 interface Props {
   icon?: string

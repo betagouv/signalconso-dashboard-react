@@ -1,9 +1,6 @@
 import React, {ReactNode} from 'react'
-import {Box, Divider, Icon, Theme} from '@mui/material'
-import makeStyles from '@mui/styles/makeStyles'
+import {Box, Divider, Icon} from '@mui/material'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
-import {useCssUtils} from '../../core/helper/useCssUtils'
-import {classes} from '../../core/helper/utils'
 
 interface SubscriptionCardRowProps {
   icon: string

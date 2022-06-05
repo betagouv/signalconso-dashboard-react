@@ -1,16 +1,11 @@
-import {Box, Icon, Theme} from '@mui/material'
+import {Box, Icon} from '@mui/material'
 import React from 'react'
-import makeStyles from '@mui/styles/makeStyles'
-import {styleUtils, sxUtils} from '../../theme'
 import {useBoolean} from '@alexandreannic/react-hooks-lib/lib'
 import {ScAppMenu} from './ScAppMenu'
 import {LayoutConnectedUser} from '../Layout'
 import {useHistory} from 'react-router'
-import {useI18n} from '../../i18n'
-import {classes} from '../../helper/utils'
 import {IconBtn} from 'mui-extension/lib'
 import {siteMap} from '../../siteMap'
-import {makeSx} from 'mui-extension'
 
 interface Props {
   connectedUser?: LayoutConnectedUser
