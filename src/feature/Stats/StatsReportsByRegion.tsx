@@ -3,10 +3,8 @@ import {useEffect, useMemo, useState} from 'react'
 import {useFetcher} from '@alexandreannic/react-hooks-lib'
 import {useLogin} from '../../core/context/LoginContext'
 import {useI18n} from '../../core/i18n'
-import {Divider, Icon, Table, TableBody, TableCell, TableHead, TableRow, Tooltip} from '@mui/material'
+import {Box, BoxProps, Divider, Icon, Table, TableBody, TableCell, TableHead, TableRow, Tooltip} from '@mui/material'
 import {useConstantContext} from '../../core/context/ConstantContext'
-import {useCssUtils} from '../../core/helper/useCssUtils'
-import {classes} from '../../core/helper/utils'
 import {Panel, PanelBody, PanelHead} from '../../shared/Panel'
 import {ScButton} from '../../shared/Button/Button'
 import {siteMap} from '../../core/siteMap'
@@ -17,10 +15,20 @@ import {SelectMonth} from '../../shared/SelectMonth/SelectMonth'
 import {useGetDateForMonthAndPreviousOne} from './useGetDateForMonthAndPreviousOne'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
 
+const CellNewPosition = ({sx, ...props}: BoxProps) => {
+  return (
+    <Box
+      {...props}
+      component="span"
+      sx={{fontWeight: t => t.typography.fontWeightBold, ...sx}}
+    />
+  )
+
+}
+
 export const StatsReportsByRegion = () => {
   const {apiSdk: api} = useLogin()
   const {m, formatLargeNumber} = useI18n()
-  const cssUtils = useCssUtils()
   const {toastError} = useToast()
 
   const _constant = useConstantContext()
@@ -57,7 +65,7 @@ export const StatsReportsByRegion = () => {
 
   return (
     <Panel loading={_countByDepCurrentMonth.loading || _countByDepLastMonth.loading}>
-      <PanelHead className={cssUtils.marginBottom2} action={<SelectMonth value={selectedMonth} onChange={setSelectedMonth} />}>
+      <PanelHead sx={{mb: 2}} action={<SelectMonth value={selectedMonth} onChange={setSelectedMonth} />}>
         {m.reportsDistribution}
       </PanelHead>
       <PanelBody>
@@ -73,7 +81,7 @@ export const StatsReportsByRegion = () => {
               <TableCell>{m.reports}</TableCell>
               <TableCell>
                 <Tooltip title={m.positionComparedToLastMonth}>
-                  <Icon className={cssUtils.colorTxtHint}>show_chart</Icon>
+                  <Icon sx={{color: t => t.palette.text.disabled}}>show_chart</Icon>
                 </Tooltip>
               </TableCell>
               <TableCell />
@@ -87,7 +95,7 @@ export const StatsReportsByRegion = () => {
                   <TableCell>
                     {depNumber ? (
                       <span>
-                        {_constant.departmentsIndex![depNumber]} <span className={cssUtils.colorTxtHint}>({depNumber})</span>
+                        {_constant.departmentsIndex![depNumber]} <Box component="span" sx={{color: t => t.palette.text.disabled}}>({depNumber})</Box>
                       </span>
                     ) : (
                       <span>N/A</span>
@@ -98,11 +106,11 @@ export const StatsReportsByRegion = () => {
                     {(() => {
                       const oldPosition = positionByDep[depNumber]
                       if (oldPosition === i) {
-                        return <span className={classes(cssUtils.txtBold, cssUtils.colorTxtHint)}>=</span>
+                        return <CellNewPosition sx={{color: t => t.palette.text.disabled}}>=</CellNewPosition>
                       } else if (oldPosition > i) {
-                        return <span className={classes(cssUtils.txtBold, cssUtils.colorError)}>+{oldPosition - i}</span>
+                        return <CellNewPosition sx={{color: t => t.palette.error.main}}>+{oldPosition - i}</CellNewPosition>
                       } else {
-                        return <span className={classes(cssUtils.txtBold, cssUtils.colorSuccess)}>{oldPosition - i}</span>
+                        return <CellNewPosition sx={{color: t => t.palette.success.light}}>{oldPosition - i}</CellNewPosition>
                       }
                     })()}
                   </TableCell>

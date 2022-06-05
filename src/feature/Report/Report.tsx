@@ -5,8 +5,7 @@ import {useI18n} from '../../core/i18n'
 import {Panel} from '../../shared/Panel'
 import {useReportContext} from '../../core/context/ReportContext'
 import {EventActionValues, EventType, FileOrigin, Id, Report, ReportEvent} from '@signal-conso/signalconso-api-sdk-js'
-import {Grid, Tab, Tabs, Tooltip} from '@mui/material'
-import {useCssUtils} from '../../core/helper/useCssUtils'
+import {Box, Grid, Tab, Tabs, Tooltip} from '@mui/material'
 import {useToast} from '../../core/toast'
 import {ReportEvents} from './Event/ReportEvents'
 import {ReportResponseComponent} from './ReportResponse'
@@ -41,7 +40,6 @@ export const ReportComponent = () => {
   const _report = useReportContext()
   const _event = useEventContext()
   const {connectedUser} = useLogin()
-  const cssUtils = useCssUtils()
   const {toastError} = useToast()
   const [activeTab, setActiveTab] = useState(0)
   const response = useMemo(
@@ -70,7 +68,7 @@ export const ReportComponent = () => {
       {map(_report.get.entity?.report, report => (
         <>
           <ReportHeader elevated report={report} hideSiret>
-            <div className={cssUtils.nowrap}>
+            <Box sx={{whiteSpace: 'nowrap'}}>
               {connectedUser.isDGCCRF && (
                 <ReportPostAction
                   actionType={EventActionValues.Control}
@@ -119,7 +117,7 @@ export const ReportComponent = () => {
                   </Btn>
                 </Confirm>
               )}
-            </div>
+            </Box>
           </ReportHeader>
 
           <Grid container spacing={2} alignItems="stretch">

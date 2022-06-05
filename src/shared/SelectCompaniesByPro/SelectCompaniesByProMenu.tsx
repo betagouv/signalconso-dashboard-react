@@ -1,7 +1,6 @@
 import {Box, Checkbox, Icon, Menu, MenuItem} from '@mui/material'
 import * as React from 'react'
 import {useEffect, useMemo} from 'react'
-import {useCssUtils} from '../../core/helper/useCssUtils'
 import {useSetState, UseSetState} from '@alexandreannic/react-hooks-lib/lib'
 import {Company, CompanyWithAccessLevel} from '@signal-conso/signalconso-api-sdk-js'
 import {useI18n} from '../../core/i18n'
@@ -61,7 +60,6 @@ export const SelectCompaniesByProMenu = ({
   onChange,
   accessibleCompanies,
 }: SelectCompaniesProMenuProps) => {
-  const cssUtils = useCssUtils()
   const indexValues: UseSetState<string> = useSetState<string>()
   const {m} = useI18n()
 

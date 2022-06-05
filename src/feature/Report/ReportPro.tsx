@@ -8,11 +8,10 @@ import {useToast} from '../../core/toast'
 import {Page} from '../../shared/Layout'
 import {ReportHeader} from './ReportHeader'
 import {useBoolean} from '@alexandreannic/react-hooks-lib/lib'
-import {Collapse} from '@mui/material'
+import {Box, Collapse} from '@mui/material'
 import {ScButton} from '../../shared/Button/Button'
 import {styleUtils} from '../../core/theme'
 import {capitalize} from '../../core/helper/utils'
-import {useCssUtils} from '../../core/helper/useCssUtils'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
 import {ReportDescription} from './ReportDescription'
 import {ReportResponseForm} from './ReportResponseForm/ReportResponseForm'
@@ -46,7 +45,6 @@ export const ReportPro = () => {
     () => _event.reportEvents.entity?.find(_ => _.data.action === EventActionValues.ReportProResponse),
     [_event.reportEvents],
   )
-  const cssUtils = useCssUtils()
   const responseFormRef = useRef<any>(null)
 
   useEffect(() => {
@@ -93,7 +91,7 @@ export const ReportPro = () => {
               </Txt>
               {report.contactAgreement ? (
                 <>
-                  <div className={cssUtils.colorTxtSecondary}>
+                  <Box sx={{color: t => t.palette.text.secondary}}>
                     {fromNullable(report.firstName)
                       .map(_ => capitalize(_))
                       .getOrElse('')}
@@ -101,7 +99,7 @@ export const ReportPro = () => {
                     {fromNullable(report.lastName)
                       .map(_ => _.toLocaleUpperCase())
                       .getOrElse('')}
-                  </div>
+                  </Box>
                   <Txt color="hint">{report.email}</Txt>
                 </>
               ) : (

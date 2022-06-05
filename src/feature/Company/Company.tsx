@@ -19,7 +19,6 @@ import {Widget} from 'shared/Widget/Widget'
 import {siteMap} from 'core/siteMap'
 import {useToast} from 'core/toast'
 import {WidgetValue} from 'shared/Widget/WidgetValue'
-import {useCssUtils} from 'core/helper/useCssUtils'
 import {fromNullable} from 'fp-ts/es6/Option'
 import {WidgetLoading} from 'shared/Widget/WidgetLoading'
 import {useReportsContext} from 'core/context/ReportsContext'
@@ -40,7 +39,6 @@ export const CompanyComponent = () => {
   const _event = useEventContext()
   const _accesses = useFetcher((siret: string) => apiSdk.secured.companyAccess.count(siret))
   const _report = useReportsContext()
-  const cssUtils = useCssUtils()
   const company = _company.byId.entity
 
   useEffect(() => {
@@ -109,7 +107,7 @@ export const CompanyComponent = () => {
                       <Txt size="big">{m.days}</Txt>
                       &nbsp;
                       <Tooltip title={_stats.responseDelay.entity ? m.avgResponseTimeDesc : m.avgResponseTimeDescNoData}>
-                        <Icon className={cssUtils.colorTxtHint} fontSize="medium">
+                        <Icon sx={{color: t => t.palette.text.disabled}} fontSize="medium">
                           help
                         </Icon>
                       </Tooltip>

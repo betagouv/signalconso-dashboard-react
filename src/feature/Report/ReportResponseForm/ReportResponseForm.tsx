@@ -6,7 +6,6 @@ import {ScRadioGroupItem} from '../../../shared/RadioGroup/RadioGroupItem'
 import {Enum} from '@alexandreannic/ts-utils/lib/common/enum/Enum'
 import {Alert} from 'mui-extension/lib'
 import {ScInput} from '../../../shared/Input/ScInput'
-import {useCssUtils} from '../../../core/helper/useCssUtils'
 import {ReportResponseFormItem} from './ReportResponseFormItem'
 import {Panel, PanelBody, PanelHead} from '../../../shared/Panel'
 import {PanelFoot} from '../../../shared/Panel/PanelFoot'
@@ -26,7 +25,6 @@ interface Props extends PanelProps {
 
 export const ReportResponseForm = forwardRef(({report, onCancel, onConfirm, ...props}: Props, ref: any) => {
   const {m} = useI18n()
-  const cssUtils = useCssUtils()
   const {
     register,
     handleSubmit,
@@ -62,7 +60,7 @@ export const ReportResponseForm = forwardRef(({report, onCancel, onConfirm, ...p
             rules={{required: {value: true, message: m.required}}}
             control={control}
             render={({field}) => (
-              <ScRadioGroup error={!!errors.responseType} dense className={cssUtils.marginBottom2} {...field}>
+              <ScRadioGroup error={!!errors.responseType} dense sx={{mb: 2}} {...field}>
                 {Enum.values(ReportResponseTypes).map(responseType => (
                   <ScRadioGroupItem value={responseType} key={responseType}>
                     {m.reportResponseDesc[responseType]}

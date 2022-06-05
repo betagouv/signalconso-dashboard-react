@@ -2,7 +2,6 @@ import {DetailInputValue} from '@signal-conso/signalconso-api-sdk-js'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
 import * as React from 'react'
 import {Box, BoxProps, Tooltip} from '@mui/material'
-import {useCssUtils} from '../../core/helper/useCssUtils'
 import {useMemoFn} from '../hooks/UseMemoFn'
 
 interface Props extends BoxProps {
@@ -12,7 +11,6 @@ interface Props extends BoxProps {
 }
 
 export const ReportDetailValues = ({input, lines = 2, hideTooltip, sx, ...props}: Props) => {
-  const cssUtils = useCssUtils()
   const description = useMemoFn(input, _ => _.find(_ => _.label === 'Description :')?.value)
 
   return (
@@ -20,9 +18,9 @@ export const ReportDetailValues = ({input, lines = 2, hideTooltip, sx, ...props}
       hidden={hideTooltip}
       title={input.map((detail, i) => (
         <div key={i}>
-          <span dangerouslySetInnerHTML={{__html: detail.label}} className={cssUtils.txtBold} />
+          <Box component="span" dangerouslySetInnerHTML={{__html: detail.label}} sx={{fontWeight: t => t.typography.fontWeightBold}} />
           &nbsp;
-          <span dangerouslySetInnerHTML={{__html: detail.value}} className={cssUtils.tooltipColorTxtSecondary} />
+          <Box component="span" dangerouslySetInnerHTML={{__html: detail.value}} sx={{color: t => t.palette.text.secondary}} />
         </div>
       ))}
     >

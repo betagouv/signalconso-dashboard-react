@@ -5,7 +5,6 @@ import {useParams} from 'react-router'
 import {Datatable} from '../../shared/Datatable/Datatable'
 import {Icon, Tooltip} from '@mui/material'
 import {Panel} from '../../shared/Panel'
-import {useCssUtils} from '../../core/helper/useCssUtils'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
 import {CompanyAccessLevel, Id, toQueryString} from '@signal-conso/signalconso-api-sdk-js'
 import {IconBtn} from 'mui-extension/lib'
@@ -44,7 +43,6 @@ export const CompanyAccesses = () => {
   const _company = useCompaniesContext()
 
   const {m} = useI18n()
-  const cssUtils = useCssUtils()
   const {connectedUser} = useLogin()
   const {toastSuccess, toastError} = useToast()
 
@@ -101,7 +99,7 @@ export const CompanyAccesses = () => {
                 <SaveUndeliveredDocBtn
                   loading={_company.saveUndeliveredDocument.loading}
                   onChange={date => _company.saveUndeliveredDocument.fetch({}, siret, date)}
-                  className={cssUtils.marginRight}
+                  sx={{mr: 1,}}
                 />
               )}
               <CompanyAccessCreateBtn

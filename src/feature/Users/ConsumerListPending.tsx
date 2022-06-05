@@ -3,7 +3,6 @@ import {Datatable} from '../../shared/Datatable/Datatable'
 import {useI18n} from '../../core/i18n'
 import React, {useEffect} from 'react'
 import {Box, Icon, InputBase, Tooltip} from '@mui/material'
-import {useCssUtils} from '../../core/helper/useCssUtils'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
 import {useToast} from '../../core/toast'
 import {DebouncedInput} from '../../shared/DebouncedInput/DebouncedInput'
@@ -17,7 +16,6 @@ export const ConsumerListPending = () => {
   const {m} = useI18n()
   const _users = useConsumerEmailValidationContext().search
   const _validate = useConsumerEmailValidationContext().validate
-  const cssUtils = useCssUtils()
   const {toastError} = useToast()
   const {formatDate} = useI18n()
 
@@ -43,7 +41,7 @@ export const ConsumerListPending = () => {
                   value={value}
                   placeholder={m.searchByEmail + '...'}
                   fullWidth
-                  className={cssUtils.marginLeft}
+                  sx={{ml: 1}}
                   onChange={e => onChange(e.target.value)}
                 />
               )}

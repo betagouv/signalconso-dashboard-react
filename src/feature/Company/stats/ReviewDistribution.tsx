@@ -10,7 +10,6 @@ import {useCompanyStats} from '../useCompanyStats'
 import {useEffectFn} from '../../../shared/hooks/UseEffectFn'
 import {fromNullable} from 'fp-ts/es6/Option'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
-import {useCssUtils} from '../../../core/helper/useCssUtils'
 import {useToast} from '../../../core/toast'
 import {ReviewLabel} from './ReviewLabel'
 
@@ -21,7 +20,6 @@ interface Props {
 export const ReviewDistribution = <T extends ReportStatus | ReportStatusPro>({companyId}: Props) => {
   const {m} = useI18n()
   const _stats = useCompanyStats(companyId)
-  const cssUtils = useCssUtils()
   const {toastError} = useToast()
   useEffect(() => {
     _stats.responseReviews.fetch()
@@ -69,7 +67,7 @@ export const ReviewDistribution = <T extends ReportStatus | ReportStatusPro>({co
       {fromNullable(_stats.responseReviews.entity)
         .map(_ => (
           <PanelBody>
-            <Txt color="hint" block className={cssUtils.marginBottom3}>
+            <Txt color="hint" block sx={{mb: 3}}>
               {m.consumerReviewsDesc}
             </Txt>
             <HorizontalBarChart width={80} data={reviewDistribution} grid />

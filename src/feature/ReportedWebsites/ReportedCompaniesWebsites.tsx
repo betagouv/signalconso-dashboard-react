@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from 'react'
 import {useI18n} from '../../core/i18n'
-import {useCssUtils} from '../../core/helper/useCssUtils'
 import {Box, Chip, FormControlLabel, Icon, InputBase, Switch, Tooltip} from '@mui/material'
 import {useToast} from '../../core/toast'
 import {fromNullable} from 'fp-ts/lib/Option'
@@ -70,8 +69,6 @@ export const ReportedCompaniesWebsites = () => {
   const _updateCompany = useReportedWebsiteWithCompanyContext().updateCompany
   const _updateCountry = useReportedWebsiteWithCompanyContext().updateCountry
   const [countries, setCountries] = useState<Country[]>([])
-  const countriesAnchor = useAnchoredMenu()
-  const cssUtils = useCssUtils()
   const {toastError, toastInfo, toastSuccess} = useToast()
 
   useEffect(() => {

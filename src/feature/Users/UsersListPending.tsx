@@ -10,7 +10,6 @@ import {ScDialog} from '../../shared/Confirm/ScDialog'
 import {IconBtn} from 'mui-extension'
 import {Icon, Tooltip} from '@mui/material'
 import {useLogin} from '../../core/context/LoginContext'
-import {useCssUtils} from '../../core/helper/useCssUtils'
 import {sxUtils} from '../../core/theme'
 
 export const UsersListPending = () => {
@@ -19,7 +18,6 @@ export const UsersListPending = () => {
   const {m, formatDate} = useI18n()
   const {connectedUser} = useLogin()
   const {toastError, toastSuccess} = useToast()
-  const cssUtils = useCssUtils()
   const copyActivationLink = (token: string) => {
     let activationLink = window.location.host + '/#/dgccrf/rejoindre/?token=' + token
     navigator.clipboard.writeText(activationLink)

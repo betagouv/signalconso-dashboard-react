@@ -3,7 +3,6 @@ import {useI18n} from '../../core/i18n'
 import React, {useState} from 'react'
 import {useLogin} from '../../core/context/LoginContext'
 import {Datepicker} from '../../shared/Datepicker/Datepicker'
-import {useCssUtils} from '../../core/helper/useCssUtils'
 import {useToast} from '../../core/toast'
 import {ScDialog} from '../../shared/Confirm/ScDialog'
 
@@ -15,7 +14,6 @@ interface Props {
 
 export const SaveUndeliveredDocBtn = ({loading, onChange, className}: Props) => {
   const {m} = useI18n()
-  const cssUtils = useCssUtils()
   const {connectedUser} = useLogin()
   const {toastSuccess} = useToast()
   const [returnDate, setReturnDate] = useState(new Date())
@@ -37,7 +35,7 @@ export const SaveUndeliveredDocBtn = ({loading, onChange, className}: Props) => 
       content={
         <>
           <Datepicker
-            className={cssUtils.marginRight}
+            sx={{mr: 1}
             fullWidth
             label={m.returnDate}
             value={returnDate}

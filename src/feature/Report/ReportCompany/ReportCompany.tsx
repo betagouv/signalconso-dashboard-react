@@ -9,10 +9,9 @@ import React from 'react'
 import {Report} from '@signal-conso/signalconso-api-sdk-js'
 import {useReportContext} from '../../../core/context/ReportContext'
 import {useI18n} from '../../../core/i18n'
-import {useCssUtils} from '../../../core/helper/useCssUtils'
 import {siteMap} from '../../../core/siteMap'
 import {NavLink} from 'react-router-dom'
-import {styleUtils} from '../../../core/theme'
+import {styleUtils, sxUtils} from '../../../core/theme'
 
 interface Props {
   report: Report
@@ -22,7 +21,6 @@ interface Props {
 export const ReportCompany = ({report, canEdit}: Props) => {
   const _report = useReportContext()
   const {m} = useI18n()
-  const cssUtils = useCssUtils()
   const theme = useTheme()
   return (
     <Panel stretch>
@@ -54,9 +52,9 @@ export const ReportCompany = ({report, canEdit}: Props) => {
         justifyContent: 'space-between',
       }}>
         <div>
-          <div className={cssUtils.txtBig} style={{marginBottom: theme.spacing(1 / 2)}}>
+          <Box sx={sxUtils.fontBig} style={{marginBottom: theme.spacing(1 / 2)}}>
             {report.companySiret}
-          </div>
+          </Box>
           <Box sx={{
             color: t => t.palette.primary.main,
             fontSize: t => styleUtils(t).fontSize.small,

@@ -1,6 +1,5 @@
 import React, {useEffect} from 'react'
 import {useI18n} from '../../core/i18n'
-import {useCssUtils} from '../../core/helper/useCssUtils'
 import {Icon, InputBase, Tooltip} from '@mui/material'
 import {Panel} from '../../shared/Panel'
 import {Datatable} from '../../shared/Datatable/Datatable'
@@ -19,7 +18,6 @@ import {sxUtils} from '../../core/theme'
 export const ReportedUnknownWebsites = () => {
   const {m} = useI18n()
   const _fetch = useUnregistredWebsiteWithCompanyContext()
-  const cssUtils = useCssUtils()
   const {toastError, toastSuccess} = useToast()
 
   useEffect(() => {
@@ -47,7 +45,7 @@ export const ReportedUnknownWebsites = () => {
                   placeholder={m.searchByHost + '...'}
                   fullWidth
                   style={{minWidth: 120}}
-                  className={cssUtils.marginLeft}
+                  sx={{ml: 1}}
                   onChange={e => onChange(e.target.value)}
                 />
               )}
