@@ -4,12 +4,12 @@ import {Panel, PanelBody} from '../../shared/Panel'
 import {useReportsContext} from '../../core/context/ReportsContext'
 import {Datatable} from '../../shared/Datatable/Datatable'
 import {useI18n} from '../../core/i18n'
-import {Badge, Grid, Icon, MenuItem} from '@mui/material'
+import {Badge, Box, Grid, Icon, MenuItem} from '@mui/material'
 import {ReportStatusLabel, ReportStatusProLabel} from '../../shared/ReportStatus/ReportStatus'
 import {useLayoutContext} from '../../core/Layout/LayoutContext'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
 import {cleanObject, Report, ReportSearch, ReportStatus, ReportStatusPro} from '@signal-conso/signalconso-api-sdk-js'
-import {styleUtils} from '../../core/theme'
+import {styleUtils, sxUtils} from '../../core/theme'
 import {SelectDepartments} from '../../shared/SelectDepartments/SelectDepartments'
 import {ScSelect} from '../../shared/Select/Select'
 import {useHistory} from 'react-router'
@@ -190,7 +190,7 @@ export const ReportsPro = () => {
                             label={m.departments}
                             value={value}
                             onChange={onChange}
-                            className={cssUtils.marginRight}
+                            sx={{mr: 1}}
                             fullWidth
                           />
                         )}
@@ -234,7 +234,7 @@ export const ReportsPro = () => {
                   >
                     {(value, onChange) => <PeriodPicker fullWidth value={value} onChange={onChange} />}
                   </DebouncedInput>
-                  <div sx={css.actions}>
+                  <Box sx={css.actions}>
                     <Badge color="error" badgeContent={filtersCount} hidden={filtersCount === 0}>
                       <ScButton icon="clear" onClick={_reports.clearFilters} variant="outlined" color="primary">
                         {m.removeAllFilters}
@@ -254,7 +254,7 @@ export const ReportsPro = () => {
                         {m.exportInXLS}
                       </Btn>
                     </ExportReportsPopper>
-                  </div>
+                  </Box>
                 </PanelBody>
               </Panel>
             )}
@@ -285,18 +285,18 @@ export const ReportsPro = () => {
                           id: 'all',
                           head: '',
                           render: _ => (
-                            <div sx={css.card}>
-                              <div sx={css.card_content}>
-                                <div sx={css.card_head}>
+                            <Box sx={css.card}>
+                              <Box sx={css.card_content}>
+                                <Box sx={css.card_head}>
                                   <Txt bold size="big">
                                     {_.report.companySiret}
                                   </Txt>
-                                  <Icon className={classes(css.iconDash, cssUtils.inlineIcon)}>remove</Icon>
+                                  <Icon sx={{...css.iconDash, ...sxUtils.inlineIcon}}>remove</Icon>
                                   <Txt color="disabled">
-                                    <Icon className={cssUtils.inlineIcon}>location_on</Icon>
+                                    <Icon sx={sxUtils.inlineIcon}>location_on</Icon>
                                     {_.report.companyAddress.postalCode}
                                   </Txt>
-                                </div>
+                                </Box>
                                 <Txt block color="hint">
                                   {m.thisDate(formatDate(_.report.creationDate))}
                                 </Txt>
@@ -305,9 +305,9 @@ export const ReportsPro = () => {
                                     ? m.byHim(_.report.firstName + ' ' + _.report.lastName)
                                     : m.anonymousReport}
                                 </Txt>
-                              </div>
+                              </Box>
                               <ReportStatusLabel dense status={_.report.status} />
-                            </div>
+                            </Box>
                           ),
                         },
                       ]

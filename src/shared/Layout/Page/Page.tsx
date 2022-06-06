@@ -34,7 +34,7 @@ export const Page = ({loading, size, sx, ...props}: PageProps) => {
         {...props}
         sx={{
           p: 2,
-          pt: 3
+          pt: 3,
           ...sx,
         }}
         width={pageWidth[size ?? 'm']}

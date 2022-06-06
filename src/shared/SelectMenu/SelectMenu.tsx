@@ -15,7 +15,7 @@ interface Props<T> {
   renderValue?: (value: T) => React.ReactNode
 }
 
-const sx = makeSx({
+const css = makeSx({
   menuItem: {
     my: 0,
     px: 1/2,
@@ -34,7 +34,6 @@ export const SelectMenu = <T, >({
   toString = _ => _ + '',
 }: Props<T>) => {
   const [innerValue, setInnerValue] = useState<T[]>([])
-  const css = useStyles()
   const {m} = useI18n()
   const emptyOptions: T[] = []
   const allSelected = options.length === innerValue.length

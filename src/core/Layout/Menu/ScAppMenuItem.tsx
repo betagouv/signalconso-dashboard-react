@@ -1,7 +1,6 @@
 import * as React from 'react'
 import {HTMLProps, ReactNode} from 'react'
-import {Box, Icon, useTheme} from '@mui/material'
-import classNames from 'classnames'
+import {Box, Icon, Theme, useTheme} from '@mui/material'
 import {alpha} from '@mui/material/styles'
 import {useLayoutContext} from '../LayoutContext'
 import {NavLink} from 'react-router-dom'
@@ -54,23 +53,24 @@ export interface MenuItemProps extends HTMLProps<any> {
   to?: string
 }
 
+const styleActive = (t: Theme) => ({
+  color: t.palette.primary.main,
+  background: alpha(t.palette.primary.main, 0.16)
+})
+
 export const ScAppMenuItem = ({children, to, icon, className, active, large, ...other}: MenuItemProps) => {
   const {closeMobileSidebar} = useLayoutContext()
-  const theme = useTheme()
   return (
     <div onClick={closeMobileSidebar}>
       <Box
         {...(other as any)}
         component={NavLink}
         to={to}
-        activeStyle={{
-          color: theme.palette.primary.main,
-          background: alpha(theme.palette.primary.main, 0.16)
-        }}
+        activeStyle={styleActive}
+        style={active && styleActive}
         sx={{
           ...sx.root,
           ...sx.rootClickable,
-          ...active && sx.rootActive,
           ...large && sx.rootLarge
         }}
       >
@@ -79,9 +79,9 @@ export const ScAppMenuItem = ({children, to, icon, className, active, large, ...
           (typeof icon === 'string' ? (
             <Icon sx={sx.i}>{icon}</Icon>
           ) : (
-            <Box className={sx.i}>{icon}</Box>
+            <Box sx={sx.i}>{icon}</Box>
           ))}
-          <Box component="span" className={sx.label}>{children}</Box>
+          <Box component="span" sx={sx.label}>{children}</Box>
         </>
       </Box>
     </div>

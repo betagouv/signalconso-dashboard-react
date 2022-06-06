@@ -5,14 +5,14 @@ import {useLogin} from '../../core/context/LoginContext'
 import {Datepicker} from '../../shared/Datepicker/Datepicker'
 import {useToast} from '../../core/toast'
 import {ScDialog} from '../../shared/Confirm/ScDialog'
+import {BoxProps} from '@mui/material'
 
-interface Props {
+interface Props extends Omit<BoxProps, 'onChange'> {
   loading: boolean
-  className?: string
   onChange: (date: Date) => Promise<any>
 }
 
-export const SaveUndeliveredDocBtn = ({loading, onChange, className}: Props) => {
+export const SaveUndeliveredDocBtn = ({loading, onChange, ...props}: Props) => {
   const {m} = useI18n()
   const {connectedUser} = useLogin()
   const {toastSuccess} = useToast()
@@ -44,7 +44,7 @@ export const SaveUndeliveredDocBtn = ({loading, onChange, className}: Props) => 
         </>
       }
     >
-      <ScButton variant="outlined" className={className} icon="cancel_schedule_send" color="primary">
+      <ScButton variant="outlined" icon="cancel_schedule_send" color="primary"  {...props} >
         {m.undeliveredDoc}
       </ScButton>
     </ScDialog>

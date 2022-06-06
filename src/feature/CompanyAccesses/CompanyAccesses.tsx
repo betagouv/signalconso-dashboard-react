@@ -125,9 +125,9 @@ export const CompanyAccesses = () => {
               head: '',
               render: _ =>
                 _.name ? (
-                  <Icon className={cssUtils.colorSuccess}>check_circle</Icon>
+                  <Icon sx={{color: t => t.palette.success.light}}>check_circle</Icon>
                 ) : (
-                  <Icon className={cssUtils.colorWarning}>watch_later</Icon>
+                  <Icon sx={{color: t => t.palette.warning.main}}>watch_later</Icon>
                 ),
             },
             {
@@ -175,7 +175,7 @@ export const CompanyAccesses = () => {
                 >
                   <Tooltip title={m.editAccess}>
                     <ScButton
-                      className={cssUtils.txtCapitalize}
+                      sx={{textTransform: 'capitalize'}}
                       loading={_crudAccess.updating(_.userId ?? '')}
                       color="primary"
                       icon="manage_accounts"
