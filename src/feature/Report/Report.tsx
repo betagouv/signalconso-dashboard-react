@@ -112,7 +112,7 @@ export const ReportComponent = () => {
                       .finally(close)
                   }
                 >
-                  <Btn loading={_report.remove.loading} className={cssUtils.colorError} icon="delete">
+                  <Btn loading={_report.remove.loading} sx={{color: t => t.palette.error.main}} icon="delete">
                     {m.delete}
                   </Btn>
                 </Confirm>

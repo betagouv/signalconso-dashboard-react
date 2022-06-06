@@ -315,19 +315,19 @@ export const ReportsPro = () => {
                         {
                           id: 'companyPostalCode',
                           head: m.postalCodeShort,
-                          className: _ => (_.report.status === ReportStatus.TraitementEnCours ? cssUtils.txtBold : undefined),
+                          sx: _ => (_.report.status === ReportStatus.TraitementEnCours ? {fontWeight: t => t.typography.fontWeightBold} : undefined),
                           render: _ => _.report.companyAddress.postalCode,
                         },
                         {
                           id: 'siret',
                           head: m.siret,
-                          className: _ => (_.report.status === ReportStatus.TraitementEnCours ? cssUtils.txtBold : undefined),
+                          sx: _ => (_.report.status === ReportStatus.TraitementEnCours ? {fontWeight: t => t.typography.fontWeightBold} : undefined),
                           render: _ => _.report.companySiret,
                         },
                         {
                           id: 'createDate',
                           head: m.receivedAt,
-                          className: _ => (_.report.status === ReportStatus.TraitementEnCours ? cssUtils.txtBold : undefined),
+                          sx: _ => (_.report.status === ReportStatus.TraitementEnCours ? {fontWeight: t => t.typography.fontWeightBold} : undefined),
                           render: _ => formatDate(_.report.creationDate),
                         },
                         {
@@ -338,7 +338,7 @@ export const ReportsPro = () => {
                         {
                           id: 'consumer',
                           head: m.consumer,
-                          className: _ => (_.report.status === ReportStatus.TraitementEnCours ? cssUtils.txtBold : undefined),
+                          sx: _ => (_.report.status === ReportStatus.TraitementEnCours ? {fontWeight: t => t.typography.fontWeightBold} : undefined),
                           render: _ =>
                             _.report.contactAgreement ? _.report.firstName + ' ' + _.report.lastName : m.anonymousReport,
                         },
@@ -349,7 +349,7 @@ export const ReportsPro = () => {
                           render: _ =>
                             _.files.length > 0 && (
                               <Badge badgeContent={_.files.length} color="primary" invisible={_.files.length === 1}>
-                                <Icon className={cssUtils.colorTxtHint}>insert_drive_file</Icon>
+                                <Icon sx={{color: t => t.palette.text.disabled}}>insert_drive_file</Icon>
                               </Badge>
                             ),
                         },

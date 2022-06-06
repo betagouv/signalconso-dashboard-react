@@ -44,7 +44,7 @@ export interface DatatableColumnProps<T> {
   alwaysVisible?: boolean
   className?: string | ((_: T) => string | undefined)
   style?: CSSProperties
-  sx?: SxProps<Theme>
+  sx?: SxProps<Theme> | ((_: T) => SxProps<Theme> | undefined)
   stickyEnd?: boolean
 }
 
@@ -191,7 +191,7 @@ export const Datatable = <T extends any = any>(props: DatatableProps<T>) => {
                   <TableCell
                     key={i}
                     // TODO(Alex) Fix as any
-                    sx={{..._.sx, ...sxUtils.truncate as any, ...sxStickyEnd as any}}
+                    sx={{...(typeof _.sx === 'function' ? _.sx(item) : _.sx), ...sxUtils.truncate as any, ...sxStickyEnd as any}}
                     style={_.style}
                     className={typeof _.className === 'function' ? _.className(item) : _.className}
                   >
