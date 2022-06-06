@@ -284,7 +284,7 @@ const _ReportsFilters = ({filters, updateFilters, children}: _ReportsFiltersProp
               <DialogInputRow icon="person" label={m.consoAnonyme}>
                 <Controller
                   name="contactAgreement"
-                  defaultValue={!filters.contactAgreement}
+                  defaultValue={filters.contactAgreement === undefined ? undefined : !filters.contactAgreement}
                   control={control}
                   render={({field: {value, onChange, ...otherField}}) => (
                     <TrueFalseUndefined
