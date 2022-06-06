@@ -88,6 +88,8 @@ export const fr = {
     status: 'Statut',
     investigation: 'Enquête',
     affectation: 'Affectation',
+    affectationTitle: 'Attribuer à une DD',
+    noValue: 'N/A',
     practice: 'Type de pratique',
     notification: 'Notification',
     notifications: 'Notifications',
@@ -657,6 +659,7 @@ export const fr = {
     },
     alreadySelectedCompany: (name?: string) => `L'entreprise ${name ?? ''} est déjà sélectionnée`,
     alreadySelectedCountry: (name?: string) => `Le pays ${name ?? ''} est déjà sélectionnée`,
+    alreadySelectedValue: (name?: string) => `La valeur ${name ?? ''} est déjà sélectionnée`,
     nLines: (n: number) => `<b>${n}</b> lignes`,
     reportResponse: {
       [ReportResponseTypes.Accepted]: 'Signalement pris en compte',

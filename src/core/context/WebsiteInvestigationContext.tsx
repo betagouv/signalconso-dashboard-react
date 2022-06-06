@@ -4,7 +4,7 @@ import {UsePaginate} from '@alexandreannic/react-hooks-lib/lib'
 import {SignalConsoApiSdk} from '../ApiSdkInstance'
 import {
   ApiError,
-  WebsiteInvestigation,
+  WebsiteInvestigationWithCount,
   WebsiteKind,
   WebsiteWithCompanySearch
 } from '@signal-conso/signalconso-api-sdk-js'
@@ -12,8 +12,11 @@ import {useScPaginate} from '../../shared/usePaginate/usePaginate'
 import {useFetcher, UseFetcher} from "@alexandreannic/react-hooks-lib";
 
 export interface WebsiteInvestigationContextProps {
-  getWebsiteInvestigation: UsePaginate<WebsiteInvestigation, WebsiteWithCompanySearch>
+  getWebsiteInvestigation: UsePaginate<WebsiteInvestigationWithCount, WebsiteWithCompanySearch>
   listDepartmentDivision: UseFetcher<SignalConsoApiSdk['secured']['website']['listDepartmentDivision'], ApiError>
+  listPractice: UseFetcher<SignalConsoApiSdk['secured']['website']['listPractice'], ApiError>
+  listInvestigationStatus: UseFetcher<SignalConsoApiSdk['secured']['website']['listInvestigationStatus'], ApiError>
+  createOrUpdateInvestigation: UseFetcher<SignalConsoApiSdk['secured']['website']['createOrUpdateInvestigation'], ApiError>
 }
 
 interface Props {
@@ -28,9 +31,9 @@ const WebsiteInvestigationContext = React.createContext<WebsiteInvestigationCont
 )
 
 export const WebsiteInvestigationProvider = ({api, children}: Props) => {
-  const listWebsiteInvestigation = useScPaginate<WebsiteInvestigation, WebsiteWithCompanySearch>(
+  const listWebsiteInvestigation = useScPaginate<WebsiteInvestigationWithCount, WebsiteWithCompanySearch>(
     api.secured.website.listInvestigation,
-    {limit: 10, offset: 0, kinds: [WebsiteKind.PENDING]},
+    {limit: 10, offset: 0, kinds: [WebsiteKind.DEFAULT, WebsiteKind.PENDING]},
   )
 
 
@@ -40,6 +43,9 @@ export const WebsiteInvestigationProvider = ({api, children}: Props) => {
       value={{
         getWebsiteInvestigation: listWebsiteInvestigation,
         listDepartmentDivision: useFetcher(api.secured.website.listDepartmentDivision),
+        listPractice: useFetcher(api.secured.website.listPractice),
+        listInvestigationStatus: useFetcher(api.secured.website.listInvestigationStatus),
+        createOrUpdateInvestigation: useFetcher(api.secured.website.createOrUpdateInvestigation),
       }}
     >
       {children}

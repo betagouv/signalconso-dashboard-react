@@ -22,7 +22,7 @@ import {Panel} from '../../shared/Panel'
 import {Datatable} from '../../shared/Datatable/Datatable'
 import {DebouncedInput} from '../../shared/DebouncedInput/DebouncedInput'
 import {useReportedWebsiteWithCompanyContext} from '../../core/context/ReportedWebsitesContext'
-import {Country, WebsiteKind, WebsiteWithCompany} from '@signal-conso/signalconso-api-sdk-js'
+import {Country, DepartmentDivision, WebsiteKind, WebsiteWithCompany} from '@signal-conso/signalconso-api-sdk-js'
 import {IconBtn} from 'mui-extension'
 import {ScSelect} from '../../shared/Select/Select'
 import {SelectCompany} from '../../shared/SelectCompany/SelectCompany'
@@ -39,6 +39,7 @@ import {ScMenu} from "../../shared/Menu/Menu";
 import {EditAddressDialog} from "../Companies/EditAddressDialog";
 import {CompanyChip} from "./CompanyChip";
 import {StatusChip} from "./StatusChip";
+import {SelectXXXX} from "./SelectXXXX";
 
 const useAnchoredMenu = () => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
@@ -52,12 +53,16 @@ export const WebsitesInvestigation = () => {
 
   const _countries = useConstantContext().countries
   const _websiteInvestigation = useWebsiteInvestigationContext().getWebsiteInvestigation
+  const _createOrUpdate = useWebsiteInvestigationContext().createOrUpdateInvestigation
   const _departmentDivision = useWebsiteInvestigationContext().listDepartmentDivision
+  const _practice = useWebsiteInvestigationContext().listPractice
+  const _investigationStatus = useWebsiteInvestigationContext().listInvestigationStatus
   const _updateStatus = useReportedWebsiteWithCompanyContext().update
   const _updateCompany = useReportedWebsiteWithCompanyContext().updateCompany
   const _updateCountry = useReportedWebsiteWithCompanyContext().updateCountry
   const [countries, setCountries] = useState<Country[]>([])
-  const [departmentDivision, setDepartmentDivision] = useState<string[]>([])
+  const [departmentDivision, setDepartmentDivision] = useState<DepartmentDivision[]>([])
+  const [investigationStatus, setInvestigationStatus] = useState<string[]>([])
   const countriesAnchor = useAnchoredMenu()
   // const css = useStyles()
   const cssUtils = useCssUtils()
@@ -77,6 +82,10 @@ export const WebsitesInvestigation = () => {
 
   useEffect(() => {
     _departmentDivision.fetch({}).then(setDepartmentDivision)
+  }, [])
+
+  useEffect(() => {
+    _investigationStatus.fetch({}).then(setInvestigationStatus)
   }, [])
 
   useEffect(() => {
@@ -158,7 +167,7 @@ export const WebsitesInvestigation = () => {
                   }
                 }}
               >
-                <CompanyChip company={_.company} />
+                <CompanyChip company={_.company}/>
               </SelectCompany>
             ),
           },
@@ -188,12 +197,48 @@ export const WebsitesInvestigation = () => {
           {
             head: m.investigation,
             id: 'investigation',
-            render: _ => <Box> {_.investigation}</Box>,
+            render: _ =>
+          (
+            <SelectXXXX<string> title={m.affectationTitle}
+                                            inputLabel={m.affectation}
+                                            getValueName={_ => _}
+                                            onChange={investigationStatus => {
+                                              if (_.investigationStatus === investigationStatus) {
+                                                toastInfo(m.alreadySelectedValue(investigationStatus))
+                                              } else {
+                                                _createOrUpdate.fetch({},{
+                                                  'investigationStatus' : investigationStatus
+                                                  ,..._}).then(_ => _websiteInvestigation.fetch({clean: false}))
+                                              }
+                                            }}
+                                            listValues={investigationStatus}>
+              <StatusChip tooltipTitle={m.investigation} value={_.investigationStatus ?? m.noValue}/>
+            </SelectXXXX>
+          )
+          ,
           },
           {
             head: m.affectation,
             id: 'affectation',
-            render: _ => <StatusChip value={_.attribution ?? m.authorization}/>,
+            render: _ =>
+              (
+                <SelectXXXX<DepartmentDivision> title={m.affectationTitle}
+                                                inputLabel={m.affectation}
+                                                getValueName={_ => _.name}
+                                                onChange={departmentDivision => {
+                                                  if (_.attribution === departmentDivision.code) {
+                                                    toastInfo(m.alreadySelectedValue(departmentDivision?.name))
+                                                  } else {
+                                                    _createOrUpdate.fetch({},{
+                                                      'attribution' : departmentDivision.code
+                                                      ,..._}).then(_ => _websiteInvestigation.fetch({clean: false}))
+                                                  }
+                                                }}
+                                                listValues={departmentDivision}>
+                  <StatusChip tooltipTitle={m.affectation} value={_.attribution ?? m.noValue}/>
+                </SelectXXXX>
+              )
+            ,
           }
           ,
         ]}

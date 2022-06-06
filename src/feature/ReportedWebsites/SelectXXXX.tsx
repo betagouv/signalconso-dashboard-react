@@ -1,22 +1,19 @@
-import React, {ReactElement, useEffect, useState} from 'react'
+import React, {ReactElement} from 'react'
 import {useI18n} from '../../core/i18n'
-import {Country} from '@signal-conso/signalconso-api-sdk-js'
-import {TextField, Theme} from '@mui/material'
+import {Autocomplete, TextField, Theme} from '@mui/material'
 import makeStyles from '@mui/styles/makeStyles'
-import {useConstantContext} from '../../core/context/ConstantContext'
 import {ScDialog} from '../../shared/Confirm/ScDialog'
-import {Autocomplete} from '@mui/material'
 import {fromNullable} from 'fp-ts/es6/Option'
 
 
-
-
-
-interface Props {
+interface Props<T> {
   children: ReactElement<any>
-  getValue :
-  country?: T
-  onChange: (_: Country) => void
+  inputLabel: string
+  title: string
+  defaultValue?: T
+  getValueName: (_: T) => string
+  onChange: (_: T) => void,
+  listValues: T[]
 }
 
 const useStyles = makeStyles((t: Theme) => ({
@@ -27,37 +24,32 @@ const useStyles = makeStyles((t: Theme) => ({
   },
 }))
 
-export const SelectXXXX = <T extends unknown> ({children, onChange, country}: Props) => {
+export const SelectXXXX = <T extends unknown>({children, inputLabel,title, defaultValue, getValueName, onChange, listValues}: Props<T>) => {
   const {m} = useI18n()
-  const _countries = useConstantContext().countries
-  const [countries, setCountries] = useState<Country[]>([])
-  const [value, setValue] = React.useState<T | undefined>(country)
+  const [value, setValue] = React.useState<T | undefined>(defaultValue)
   const css = useStyles()
 
-  useEffect(() => {
-    _countries.fetch({}).then(setCountries)
-  }, [])
 
   return (
     <ScDialog
       PaperProps={{style: {position: 'static'}}}
       confirmDisabled={!value}
       maxWidth="sm"
-      title={m.identification}
+      title={title}
       content={_ => (
         <>
           <Autocomplete
             disablePortal
             multiple={false}
-            defaultValue={country}
+            defaultValue={defaultValue}
             id="combo-country"
             className={css.input}
             onChange={(event, newInputValue) => {
               setValue(fromNullable(newInputValue).toUndefined())
             }}
-            options={countries}
-            getOptionLabel={option => option.name}
-            renderInput={params => <TextField {...params} label={m.foreignCountry} />}
+            options={listValues}
+            getOptionLabel={getValueName}
+            renderInput={params => <TextField {...params} label={inputLabel}/>}
           />
         </>
       )}

@@ -6,14 +6,15 @@ import {Company, CompanySearchResult, Country, Id} from '@signal-conso/signalcon
 import {makeSx} from "mui-extension";
 
 interface Props extends BoxProps{
+  tooltipTitle: string
   value?: string
 }
 
-export const StatusChip = ({value, ...props}: Props) => {
+export const StatusChip = ({value,tooltipTitle, ...props}: Props) => {
   const {m} = useI18n()
 
   return (
-    <Tooltip title={m.linkCountry}>
+    <Tooltip title={tooltipTitle}>
       <Chip
         onClick={props.onClick}
         variant={'outlined'}
