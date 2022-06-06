@@ -8,6 +8,7 @@ import {fromNullable} from 'fp-ts/lib/Option'
 import {Region} from '@signal-conso/signalconso-api-sdk-js'
 import {useI18n} from '../../core/i18n'
 import {makeSx} from 'mui-extension'
+import {combineSx} from '../../core/theme'
 
 const withRegions =
   (WrappedComponent: React.ComponentType<SelectDepartmentsMenuProps>) => (props: Omit<SelectDepartmentsMenuProps, 'regions'>) => {
@@ -97,7 +98,7 @@ export const SelectDepartmentsMenu = withRegions(
 
     return (
       <Menu anchorEl={anchorEl} open={open} onClose={onClose}>
-        <MenuItem sx={{...css.menuItem, ...css.menuItemRegion}} onClick={() => onSelectAll()}>
+        <MenuItem sx={combineSx(css.menuItem, css.menuItemRegion)} onClick={() => onSelectAll()}>
           <Checkbox indeterminate={someDepartmentsSelected && !allDepartmentsSelected} checked={allDepartmentsSelected} />
           {selectAllLabel}
         </MenuItem>
@@ -106,7 +107,7 @@ export const SelectDepartmentsMenu = withRegions(
           const atLeastOneChecked = !!region.departments.find(_ => indexValues.has(_.code))
           return [
             <MenuItem
-              sx={{...css.menuItem, ...css.menuItemRegion}}
+              sx={combineSx(css.menuItem, css.menuItemRegion)}
               key={region.label}
               onClick={() => onSelectDepartments(region.departments.map(_ => _.code))}
             >

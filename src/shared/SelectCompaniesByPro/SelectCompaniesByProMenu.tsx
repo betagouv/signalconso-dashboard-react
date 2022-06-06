@@ -5,6 +5,7 @@ import {useSetState, UseSetState} from '@alexandreannic/react-hooks-lib/lib'
 import {Company, CompanyWithAccessLevel} from '@signal-conso/signalconso-api-sdk-js'
 import {useI18n} from '../../core/i18n'
 import {makeSx} from 'mui-extension'
+import {combineSx, sxUtils} from '../../core/theme'
 
 const css = makeSx({
   regionLabel: {
@@ -85,7 +86,7 @@ export const SelectCompaniesByProMenu = ({
 
   return (
     <Menu anchorEl={anchorEl} open={open} onClose={onClose}>
-      <MenuItem sx={{...css.menuItem, ...css.menuItemImportant}} onClick={() => onSelectAll()}>
+      <MenuItem sx={combineSx(css.menuItem, css.menuItemImportant)} onClick={() => onSelectAll()}>
         <Checkbox indeterminate={someSelected} checked={allSelected} />
         {m.selectAll}
       </MenuItem>
@@ -95,7 +96,7 @@ export const SelectCompaniesByProMenu = ({
           <Box component="span" sx={{color: t => t.palette.text.secondary}}>{company.siret.slice(0, 9)}</Box>
           <Box component="span" sx={{fontWeight: t => t.typography.fontWeightBold}}>{company.siret.substr(9, 14)}</Box>
           <Box component="span" sx={{ml: 1, color: t => t.palette.text.disabled}}>
-            <Icon sx={{...sxUtils.inlineIcon, ...css.locationIcon}}>location_on</Icon>
+            <Icon sx={combineSx(sxUtils.inlineIcon, css.locationIcon)}>location_on</Icon>
             {company.address?.postalCode}
           </Box>
         </MenuItem>

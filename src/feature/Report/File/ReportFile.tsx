@@ -10,7 +10,7 @@ import {IconBtn} from 'mui-extension/lib'
 import {useToast} from '../../../core/toast'
 import {useI18n} from '../../../core/i18n'
 import {ScDialog} from '../../../shared/Confirm/ScDialog'
-import {defaultSpacing} from 'core/theme'
+import {combineSx, defaultSpacing} from 'core/theme'
 import {makeSx} from 'mui-extension'
 
 export interface ReportFileProps {
@@ -114,7 +114,7 @@ export const ReportFile = ({file, dense, onRemove}: ReportFileProps) => {
               case FileType.Image: {
                 return (
                   <div>
-                    <Box sx={{...css.backgroundImage, backgroundImage: `url(${fileUrl})`}}/>
+                    <Box sx={combineSx(css.backgroundImage, {backgroundImage: `url(${fileUrl})`})}/>
                     <Icon sx={css.imgImage}>image</Icon>
                   </div>
                 )

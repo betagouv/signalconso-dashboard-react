@@ -9,7 +9,7 @@ import {ReportStatusLabel, ReportStatusProLabel} from '../../shared/ReportStatus
 import {useLayoutContext} from '../../core/Layout/LayoutContext'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
 import {cleanObject, Report, ReportSearch, ReportSearchResult, ReportStatus, ReportStatusPro} from '@signal-conso/signalconso-api-sdk-js'
-import {styleUtils, sxUtils} from '../../core/theme'
+import {combineSx, styleUtils, sxUtils} from '../../core/theme'
 import {SelectDepartments} from '../../shared/SelectDepartments/SelectDepartments'
 import {ScSelect} from '../../shared/Select/Select'
 import {useHistory} from 'react-router'
@@ -287,7 +287,7 @@ export const ReportsPro = () => {
                                   <Txt bold size="big">
                                     {_.report.companySiret}
                                   </Txt>
-                                  <Icon sx={{...css.iconDash, ...sxUtils.inlineIcon} as any}>remove</Icon>
+                                  <Icon sx={combineSx(css.iconDash, sxUtils.inlineIcon)}>remove</Icon>
                                   <Txt color="disabled">
                                     <Icon sx={sxUtils.inlineIcon}>location_on</Icon>
                                     {_.report.companyAddress.postalCode}

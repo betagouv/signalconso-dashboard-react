@@ -8,7 +8,7 @@ import React from 'react'
 import {Report} from '@signal-conso/signalconso-api-sdk-js'
 import {useI18n} from '../../../core/i18n'
 import {useReportContext} from '../../../core/context/ReportContext'
-import {styleUtils, sxUtils} from '../../../core/theme'
+import {combineSx, styleUtils, sxUtils} from '../../../core/theme'
 
 interface Props {
   report: Report
@@ -58,7 +58,7 @@ export const ReportConsumer = ({report, canEdit}: Props) => {
           {report.consumerPhone && <Box sx={{color: t => t.palette.text.secondary}}>{report.consumerPhone}</Box>}
           {!report.contactAgreement && (
             <Box sx={{color: t => t.palette.error.main}} style={{marginTop: theme.spacing(0.5)}}>
-              <Icon sx={{...sxUtils.inlineIcon}}>warning</Icon>
+              <Icon sx={sxUtils.inlineIcon}>warning</Icon>
               &nbsp;
               {m.reportConsumerWantToBeAnonymous}
             </Box>

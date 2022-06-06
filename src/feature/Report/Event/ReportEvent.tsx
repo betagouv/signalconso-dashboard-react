@@ -3,7 +3,7 @@ import React from 'react'
 import {useI18n} from '../../../core/i18n'
 import {ReportEventIcon} from './ReportEventIcon'
 import {Box, Icon} from '@mui/material'
-import {styleUtils, sxUtils} from '../../../core/theme'
+import {combineSx, styleUtils, sxUtils} from '../../../core/theme'
 import {makeSx} from 'mui-extension'
 
 export interface ReportComponentEventProps {
@@ -67,7 +67,7 @@ export const ReportEventComponent = ({event}: ReportComponentEventProps) => {
 
         {event.user && (
           <div>
-            <Icon sx={{...sxUtils.inlineIcon, color: t => t.palette.text.secondary}}>person</Icon>
+            <Icon sx={combineSx(sxUtils.inlineIcon, {color: t => t.palette.text.secondary})}>person</Icon>
             &nbsp;
             {event.user.firstName} {event.user.lastName} {event.user.role}
           </div>

@@ -114,7 +114,7 @@ export const HorizontalBarChart = ({data, grid, width = 200}: Props) => {
         <Box sx={sx.label}> {m.noDataAtm} </Box>
       )}
       {grid && data && data.length > 0 && (
-        <Box sx={{...sx.item}}>
+        <Box sx={sx.item}>
           <Box sx={sx.label} style={{width: width, minWidth: width}} />
           <div style={{position: 'relative', width: '100%'}}>
             {mapFor(gridAxis + 1, i => (

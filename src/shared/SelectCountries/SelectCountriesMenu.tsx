@@ -7,6 +7,7 @@ import {alpha, Box, Checkbox, Menu} from '@mui/material'
 import {useI18n} from '../../core/i18n'
 import {useSetState, UseSetState} from '@alexandreannic/react-hooks-lib/lib'
 import {makeSx} from 'mui-extension'
+import {combineSx} from '../../core/theme'
 
 const withRegions = (WrappedComponent: React.ComponentType<Props>) => (props: Omit<Props, 'countries'>) => {
   const {countries} = useConstantContext()
@@ -150,7 +151,7 @@ export const SelectCountriesMenu = withRegions(({countries, anchorEl, open, init
         }
 
         return [
-          <Box sx={{...css.menuItem, ...css.menuItemCategory}} onClick={handleSelectAll}>
+          <Box sx={combineSx(css.menuItem, css.menuItemCategory)} onClick={handleSelectAll}>
             <Checkbox sx={css.iconWidth} indeterminate={someSelected && !allSelected} checked={allSelected} />
             <Box component="span" sx={{fontWeight: t => t.typography.fontWeightBold}}>{countries.label}</Box>
           </Box>,
@@ -163,7 +164,7 @@ export const SelectCountriesMenu = withRegions(({countries, anchorEl, open, init
               }}
               onClick={() => handleToggle(country)}
             >
-              <Box component="span" sx={{...css.flag, ...css.iconWidth}}>{countryToFlag(country.code)}</Box>
+              <Box component="span" sx={combineSx(css.flag, css.iconWidth)}>{countryToFlag(country.code)}</Box>
               <span>{country.name}</span>
             </Box>
           ))

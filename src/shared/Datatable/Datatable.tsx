@@ -4,7 +4,7 @@ import {DatatableColumnToggle} from './DatatableColumnsToggle'
 import {useI18n} from '../../core/i18n'
 import {Fender} from 'mui-extension/lib'
 import {usePersistentState} from 'react-persistent-state/build'
-import {sxUtils} from '../../core/theme'
+import {combineSx, sxUtils} from '../../core/theme'
 
 type OrderBy = 'asc' | 'desc'
 
@@ -190,7 +190,7 @@ export const Datatable = <T extends any = any>(props: DatatableProps<T>) => {
                 {filteredColumns.map((_, i) => (
                   <TableCell
                     key={i}
-                    sx={{..._.sx(item), ...sxUtils.truncate, ...sxStickyEnd}}
+                    sx={combineSx(_.sx?.(item), sxUtils.truncate, sxStickyEnd)}
                     style={_.style}
                     className={typeof _.className === 'function' ? _.className(item) : _.className}
                   >
