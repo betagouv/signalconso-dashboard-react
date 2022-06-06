@@ -52,7 +52,7 @@ export const UsersListPending = () => {
           },
           {
             id: 'actions',
-            sx: sxUtils.tdActions,
+            sx: _ => sxUtils.tdActions,
             head: '',
             render: _ => (
               <>

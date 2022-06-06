@@ -146,10 +146,10 @@ export const CompaniesToActivate = () => {
           {
             id: 'siret',
             head: m.name,
-            sx: {
+            sx: _ => ({
               lineHeight: 1.4,
               maxWidth: 390,
-            },
+            }),
             render: _ => (
               <Tooltip title={_.company.name}>
                 <span>
@@ -167,14 +167,14 @@ export const CompaniesToActivate = () => {
           {
             head: m.address,
             id: 'address',
-            sx: {
+            sx: _ => ({
               pt: .5,
               pb: .5,
               fontSize: t => styleUtils(t).fontSize.small,
               color: t => t.palette.text.secondary,
               maxWidth: 300,
               ...sxUtils.truncate,
-            },
+            }),
             render: _ => (
               <Tooltip title={<AddressComponent address={_.company.address} />}>
                 <span>
@@ -195,7 +195,7 @@ export const CompaniesToActivate = () => {
           },
           {
             id: 'actions',
-            sx: sxUtils.tdActions,
+            sx: _ => sxUtils.tdActions,
             stickyEnd: true,
             render: _ => (
               <>

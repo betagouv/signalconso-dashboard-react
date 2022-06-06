@@ -43,8 +43,8 @@ export interface DatatableColumnProps<T> {
   hidden?: boolean
   alwaysVisible?: boolean
   className?: string | ((_: T) => string | undefined)
+  sx?: (_: T) => SxProps<Theme> | undefined
   style?: CSSProperties
-  sx?: SxProps<Theme> | ((_: T) => SxProps<Theme> | undefined)
   stickyEnd?: boolean
 }
 
@@ -190,8 +190,7 @@ export const Datatable = <T extends any = any>(props: DatatableProps<T>) => {
                 {filteredColumns.map((_, i) => (
                   <TableCell
                     key={i}
-                    // TODO(Alex) Fix as any
-                    sx={{...(typeof _.sx === 'function' ? _.sx(item) : _.sx), ...sxUtils.truncate as any, ...sxStickyEnd as any}}
+                    sx={{..._.sx(item), ...sxUtils.truncate, ...sxStickyEnd}}
                     style={_.style}
                     className={typeof _.className === 'function' ? _.className(item) : _.className}
                   >

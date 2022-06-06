@@ -228,9 +228,9 @@ export const Reports = ({}) => {
             {
               id: 'companyPostalCode',
               head: m.postalCodeShort,
-              sx: {
+              sx: _ => ({
                 maxWidth: 76
-              },
+              }),
               render: _ => (
                 <>
                   <span>{_.report.companyAddress.postalCode?.slice(0, 2)}</span>
@@ -241,10 +241,10 @@ export const Reports = ({}) => {
             {
               id: 'companyName',
               head: m.company,
-              sx: {
+              sx: _ => ({
                 lineHeight: 1.4,
                 maxWidth: 170
-              },
+              }),
               render: _ => (
                 <>
                   <Box component="span" sx={{
@@ -276,9 +276,9 @@ export const Reports = ({}) => {
             {
               id: 'category',
               head: m.problem,
-              sx: {
+              sx: _ => ({
                 maxWidth: 200
-              },
+              }),
               render: _ => (
                 <Tooltip
                   title={
@@ -309,14 +309,14 @@ export const Reports = ({}) => {
             {
               id: 'details',
               head: m.details,
-              sx: {
+              sx: _ => ({
                 fontSize: t => styleUtils(t).fontSize.small,
                 color: t => t.palette.text.secondary,
                 maxWidth: 200,
                 minWidth: 200,
                 lineHeight: 1.4,
                 whiteSpace: 'initial'
-              },
+              }),
               render: _ => <ReportDetailValues input={_.report.details} lines={2} />
             },
             {
@@ -345,9 +345,9 @@ export const Reports = ({}) => {
             {
               id: 'email',
               head: m.consumer,
-              sx: {
+              sx: _ => ({
                 maxWidth: 160
-              },
+              }),
               render: _ => (
                 <span>
                   <Box
@@ -372,10 +372,10 @@ export const Reports = ({}) => {
             {
               id: 'file',
               head: m.files,
-              sx: {
+              sx: _ => ({
                 minWidth: 44,
                 maxWidth: 100
-              },
+              }),
               render: _ =>
                 _.files.length > 0 && (
                   <Badge badgeContent={_.files.length} color="primary" invisible={_.files.length === 1}>
@@ -386,7 +386,7 @@ export const Reports = ({}) => {
             {
               id: 'actions',
               stickyEnd: true,
-              sx: sxUtils.tdActions,
+              sx: _ => sxUtils.tdActions,
               render: _ => (
                 <NavLink to={siteMap.logged.report(_.report.id)}>
                   <IconBtn color="primary">

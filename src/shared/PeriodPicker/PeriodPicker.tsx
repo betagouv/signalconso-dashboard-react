@@ -50,10 +50,10 @@ export const PeriodPicker = ({value, onChange, label, fullWidth, sx, ...props}: 
         onChange={handleStartChange}
         sx={{marginRight: '-1px',}}
         InputProps={{
-          sx: {
+          sx: _ => ({
             borderBottomRightRadius: 0,
             borderTopRightRadius: 0
-          },
+          }),
         }}
       />
 
@@ -63,10 +63,10 @@ export const PeriodPicker = ({value, onChange, label, fullWidth, sx, ...props}: 
         value={end}
         onChange={handleEndChange}
         InputProps={{
-          sx: {
+          sx: _ => ({
             borderBottomLeftRadius: 0,
             borderTopLeftRadius: 0
-          }
+          })
         }}
       />
     </Box>

@@ -1,7 +1,7 @@
 import {useI18n} from '../../core/i18n'
 import {Panel} from '../../shared/Panel'
 import {Datatable} from '../../shared/Datatable/Datatable'
-import {cleanObject, Company, CompanySearch, PaginatedSearch} from '@signal-conso/signalconso-api-sdk-js'
+import {cleanObject, Company, CompanySearch, CompanyWithReportsCount, PaginatedSearch, ReportSearchResult} from '@signal-conso/signalconso-api-sdk-js'
 import React, {useEffect, useMemo, useState} from 'react'
 import {useCompaniesContext} from '../../core/context/CompaniesContext'
 import {Badge, Box, Icon, InputBase, ListItemIcon, ListItemText, MenuItem, Tooltip} from '@mui/material'
@@ -131,10 +131,10 @@ export const CompaniesRegistered = () => {
           {
             head: m.name,
             id: 'siret',
-            sx: {
+            sx: _ => ({
               lineHeight: 1.4,
               maxWidth: 170,
-            },
+            }),
             render: _ => (
               <Tooltip title={_.name}>
                 <span>
@@ -153,7 +153,7 @@ export const CompaniesRegistered = () => {
           {
             head: m.address,
             id: 'address',
-            sx: {maxWidth: 260, ...sxUtils.truncate},
+            sx: _ => ({maxWidth: 260, ...sxUtils.truncate}),
             render: _ => (
               <Tooltip title={<AddressComponent address={_.address} />}>
                 <span>
@@ -175,7 +175,7 @@ export const CompaniesRegistered = () => {
           {
             head: m.reports,
             id: 'count',
-            sx: {textAlign: 'right'},
+            sx: _ => ({textAlign: 'right'}),
             render: _ => (
               <NavLink to={siteMap.logged.reports({siretSirenList: [_.siret], departments: _companies.filters.departments})}>
                 <ScButton color="primary">{formatLargeNumber(_.count)}</ScButton>
@@ -185,7 +185,7 @@ export const CompaniesRegistered = () => {
           {
             head: m.responseRate,
             id: 'responseRate',
-            sx: {textAlign: 'right'},
+            sx: _ => ({textAlign: 'right'}),
             render: _ => (
               <Box
                 component="span"
@@ -207,14 +207,14 @@ export const CompaniesRegistered = () => {
           {
             head: m.activityCode,
             id: 'activityCode',
-            sx: {textAlign: 'right'},
+            sx: _ => ({textAlign: 'right'}),
             render: _ => <span>{_?.activityCode}</span>,
           },
           {
             head: '',
             id: 'actions',
             stickyEnd: true,
-            sx: sxUtils.tdActions,
+            sx: _ => sxUtils.tdActions,
             render: _ => (
               <>
                 <Badge color="error" badgeContent=" " variant="dot" overlap="circular">

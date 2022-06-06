@@ -8,13 +8,13 @@ import {Badge, Box, Grid, Icon, MenuItem} from '@mui/material'
 import {ReportStatusLabel, ReportStatusProLabel} from '../../shared/ReportStatus/ReportStatus'
 import {useLayoutContext} from '../../core/Layout/LayoutContext'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
-import {cleanObject, Report, ReportSearch, ReportStatus, ReportStatusPro} from '@signal-conso/signalconso-api-sdk-js'
+import {cleanObject, Report, ReportSearch, ReportSearchResult, ReportStatus, ReportStatusPro} from '@signal-conso/signalconso-api-sdk-js'
 import {styleUtils, sxUtils} from '../../core/theme'
 import {SelectDepartments} from '../../shared/SelectDepartments/SelectDepartments'
 import {ScSelect} from '../../shared/Select/Select'
 import {useHistory} from 'react-router'
 import {siteMap} from '../../core/siteMap'
-import {classes, openInNew} from '../../core/helper/utils'
+import {openInNew} from '../../core/helper/utils'
 import {Btn, Fender} from 'mui-extension/lib'
 import {EntityIcon} from '../../core/EntityIcon'
 import {ScButton} from '../../shared/Button/Button'
@@ -32,10 +32,6 @@ import {DebouncedInput} from 'shared/DebouncedInput/DebouncedInput'
 import {Enum} from '@alexandreannic/ts-utils/lib/common/enum/Enum'
 
 const css = makeSx({
-  tdFiles: {
-    minWidth: 44,
-    maxWidth: 100,
-  },
   card: {
     fontSize: t => styleUtils(t).fontSize.normal,
     display: 'flex',
@@ -260,13 +256,13 @@ export const ReportsPro = () => {
             )}
 
             <Panel>
-              <Datatable
+              <Datatable<ReportSearchResult>
                 id="reportspro"
                 paginate={{
                   minRowsBeforeDisplay: minRowsBeforeDisplayFilters,
                   offset: _reports.filters.offset,
                   limit: _reports.filters.limit,
-                  onPaginationChange: pagination => _reports.updateFilters(prev => ({...prev, ...pagination})),
+                  onPaginationChange: pagination => _reports.updateFilters(prev => ({...prev, ...pagination}))
                 }}
                 data={_reports.list?.data}
                 loading={_reports.fetching}
@@ -291,7 +287,7 @@ export const ReportsPro = () => {
                                   <Txt bold size="big">
                                     {_.report.companySiret}
                                   </Txt>
-                                  <Icon sx={{...css.iconDash, ...sxUtils.inlineIcon}}>remove</Icon>
+                                  <Icon sx={{...css.iconDash, ...sxUtils.inlineIcon} as any}>remove</Icon>
                                   <Txt color="disabled">
                                     <Icon sx={sxUtils.inlineIcon}>location_on</Icon>
                                     {_.report.companyAddress.postalCode}
@@ -310,50 +306,52 @@ export const ReportsPro = () => {
                             </Box>
                           ),
                         },
-                      ]
-                    : [
-                        {
-                          id: 'companyPostalCode',
-                          head: m.postalCodeShort,
-                          sx: _ => (_.report.status === ReportStatus.TraitementEnCours ? {fontWeight: t => t.typography.fontWeightBold} : undefined),
-                          render: _ => _.report.companyAddress.postalCode,
+                    ] : [
+                      {
+                        id: 'companyPostalCode',
+                        head: m.postalCodeShort,
+                        sx: _ => (_.report.status === ReportStatus.TraitementEnCours ? {fontWeight: t => t.typography.fontWeightBold} : undefined),
+                        render: _ => _.report.companyAddress.postalCode
+                      },
+                      {
+                        id: 'siret',
+                        head: m.siret,
+                        sx: _ => (_.report.status === ReportStatus.TraitementEnCours ? {fontWeight: t => t.typography.fontWeightBold} : undefined),
+                        render: _ => _.report.companySiret
+                      },
+                      {
+                        id: 'createDate',
+                        head: m.receivedAt,
+                        sx: _ => (_.report.status === ReportStatus.TraitementEnCours ? {fontWeight: t => t.typography.fontWeightBold} : undefined),
+                        render: _ => formatDate(_.report.creationDate)
+                      },
+                      {
+                        id: 'status',
+                        head: m.status,
+                        render: _ => <ReportStatusProLabel dense status={Report.getStatusProByStatus(_.report.status)} />
+                      },
+                      {
+                        id: 'consumer',
+                        head: m.consumer,
+                        sx: _ => (_.report.status === ReportStatus.TraitementEnCours ? {fontWeight: t => t.typography.fontWeightBold} : undefined),
+                        render: _ =>
+                          _.report.contactAgreement ? _.report.firstName + ' ' + _.report.lastName : m.anonymousReport
+                      },
+                      {
+                        id: 'file',
+                        head: m.files,
+                        sx: {
+                          minWidth: 44,
+                          maxWidth: 100,
                         },
-                        {
-                          id: 'siret',
-                          head: m.siret,
-                          sx: _ => (_.report.status === ReportStatus.TraitementEnCours ? {fontWeight: t => t.typography.fontWeightBold} : undefined),
-                          render: _ => _.report.companySiret,
-                        },
-                        {
-                          id: 'createDate',
-                          head: m.receivedAt,
-                          sx: _ => (_.report.status === ReportStatus.TraitementEnCours ? {fontWeight: t => t.typography.fontWeightBold} : undefined),
-                          render: _ => formatDate(_.report.creationDate),
-                        },
-                        {
-                          id: 'status',
-                          head: m.status,
-                          render: _ => <ReportStatusProLabel dense status={Report.getStatusProByStatus(_.report.status)} />,
-                        },
-                        {
-                          id: 'consumer',
-                          head: m.consumer,
-                          sx: _ => (_.report.status === ReportStatus.TraitementEnCours ? {fontWeight: t => t.typography.fontWeightBold} : undefined),
-                          render: _ =>
-                            _.report.contactAgreement ? _.report.firstName + ' ' + _.report.lastName : m.anonymousReport,
-                        },
-                        {
-                          id: 'file',
-                          head: m.files,
-                          className: css.tdFiles,
-                          render: _ =>
-                            _.files.length > 0 && (
-                              <Badge badgeContent={_.files.length} color="primary" invisible={_.files.length === 1}>
-                                <Icon sx={{color: t => t.palette.text.disabled}}>insert_drive_file</Icon>
-                              </Badge>
-                            ),
-                        },
-                      ]
+                        render: _ =>
+                          _.files.length > 0 && (
+                            <Badge badgeContent={_.files.length} color="primary" invisible={_.files.length === 1}>
+                              <Icon sx={{color: t => t.palette.text.disabled}}>insert_drive_file</Icon>
+                            </Badge>
+                          )
+                      }
+                    ]
                 }
                 renderEmptyState={
                   <Fender

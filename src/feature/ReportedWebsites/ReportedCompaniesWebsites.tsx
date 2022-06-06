@@ -280,7 +280,7 @@ export const ReportedCompaniesWebsites = () => {
           {
             id: 'actions',
             stickyEnd: true,
-            sx: sxUtils.tdActions,
+            sx: _ => sxUtils.tdActions,
             render: _ => (
               <IconBtn sx={{color: t => t.palette.text.disabled}} onClick={() => _remove.fetch({}, _.id).then(_ => _fetch.fetch())}>
                 <Icon>delete</Icon>

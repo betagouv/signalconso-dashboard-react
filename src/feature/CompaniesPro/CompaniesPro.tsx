@@ -143,11 +143,11 @@ export const CompaniesPro = () => {
             {
               head: m.address,
               id: 'address',
-              sx: {
+              sx: _ => ({
                 maxWidth: 240,
                 color: t => t.palette.text.secondary,
                 ...styleUtils(theme).truncate,
-              },
+              }),
               render: _ => (
                 <Tooltip title={<AddressComponent address={_.address} />}>
                   <span>
@@ -163,11 +163,11 @@ export const CompaniesPro = () => {
                 </Box>
               ),
               id: 'status',
-              sx: {
+              sx: _ => ({
                 width: 0,
                 textAlign: 'center',
                 p: 0,
-              },
+              }),
               render: _ => (
                 <>
                   <Switch
@@ -183,7 +183,7 @@ export const CompaniesPro = () => {
             {
               head: '',
               id: 'actions',
-              sx: sxUtils.tdActions,
+              sx: _ => sxUtils.tdActions,
               render: _ => (
                 <>
                   {_.level === AccessLevel.ADMIN && (

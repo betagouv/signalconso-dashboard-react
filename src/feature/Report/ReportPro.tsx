@@ -22,18 +22,6 @@ import {creationReportEvent} from './Report'
 import {useEventContext} from '../../core/context/EventContext'
 import {makeSx} from 'mui-extension'
 
-const css = makeSx({
-  answerPanel: {
-    transition: t => t.transitions.create('box-shadow'),
-  },
-  responseDateTime: {
-    color: t => t.palette.text.disabled,
-    fontSize: t => styleUtils(t).fontSize.normal,
-    fontWeight: 'normal',
-    display: 'inline',
-  },
-})
-
 export const ReportPro = () => {
   const {id} = useParams<{id: Id}>()
   const {m, formatDateTime} = useI18n()
@@ -109,8 +97,16 @@ export const ReportPro = () => {
 
             <Collapse in={_event.reportEvents.entity && !!response}>
               <Panel>
-                <PanelHead
-                  action={response && <div className={css.responseDateTime}>{formatDateTime(response.data.creationDate)}</div>}
+                <PanelHead action={response && (
+                  <Box sx={{
+                    color: t => t.palette.text.disabled,
+                    fontSize: t => styleUtils(t).fontSize.normal,
+                    fontWeight: 'normal',
+                    display: 'inline',
+                  }}>
+                    {formatDateTime(response.data.creationDate)}
+                  </Box>
+                )}
                 >
                   {m.proAnswerYourAnswer}
                 </PanelHead>
@@ -132,7 +128,9 @@ export const ReportPro = () => {
                   _report.get.fetch({clean: false, force: true}, id)
                 }}
                 onCancel={openAnswerPanel.setFalse}
-                sx={css.answerPanel}
+                sx={{
+                  transition: t => t.transitions.create('box-shadow'),
+                }}
               />
             </Collapse>
 

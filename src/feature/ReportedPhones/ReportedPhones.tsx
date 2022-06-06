@@ -105,9 +105,9 @@ export const ReportedPhones = () => {
             {
               id: 'siret',
               head: m.siret,
-              sx: {
+              sx: _ => ({
                 maxWidth: 200,
-              },
+              }),
               render: _ => (
                 <>
                   <Txt bold>{_.siret}</Txt>
@@ -123,7 +123,7 @@ export const ReportedPhones = () => {
             },
             {
               id: 'actions',
-              sx: sxUtils.tdActions,
+              sx: _ => sxUtils.tdActions,
               render: _ => (
                 <>
                   <NavLink

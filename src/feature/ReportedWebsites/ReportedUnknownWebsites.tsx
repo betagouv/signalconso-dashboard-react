@@ -104,7 +104,7 @@ export const ReportedUnknownWebsites = () => {
           },
           {
             id: 'actions',
-            sx: sxUtils.tdActions,
+            sx: _ => sxUtils.tdActions,
             render: _ => (
               <>
                 <NavLink

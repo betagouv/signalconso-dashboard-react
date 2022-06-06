@@ -92,7 +92,7 @@ export const ConsumerListPending = () => {
           {
             id: 'actions',
             head: '',
-            sx: sxUtils.tdActions,
+            sx: _ => sxUtils.tdActions,
             render: _ => (
               <>
                 <Box sx={{display: 'flex', justifyContent: 'flex-end'}}>
