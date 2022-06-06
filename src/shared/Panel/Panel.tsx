@@ -1,6 +1,6 @@
 import * as React from 'react'
 import {forwardRef} from 'react'
-import {Card, CardProps, LinearProgress} from '@mui/material'
+import {Card, CardProps, LinearProgress, useTheme} from '@mui/material'
 
 export interface PanelProps extends CardProps {
   loading?: boolean
@@ -18,12 +18,14 @@ export const Panel = forwardRef(({
   sx,
   ...other
 }: PanelProps, ref: any) => {
+  const theme = useTheme()
+  console.log('t.shape.borderRadius', theme.shape.borderRadius)
   return (
     <Card
       ref={ref}
       elevation={elevation}
       sx={{
-        borderRadius: t => t.shape.borderRadius + 'px',
+        borderRadius: t => t.shape.borderRadius + 'px' + 'px',
         mb: 2,
         ...hoverable && {
           cursor: 'pointer',

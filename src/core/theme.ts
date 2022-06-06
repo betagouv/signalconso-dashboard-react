@@ -40,7 +40,6 @@ export const sxUtils = makeSx({
 })
 
 export const styleUtils = (t: Theme) => ({
-  defaultRadius: 6,
   gridSpacing: 3 as any,
   fontSize: {
     big: t.typography.fontSize * 1.15,
@@ -70,7 +69,8 @@ export const styleUtils = (t: Theme) => ({
 export const defaultSpacing = 8
 
 export const muiTheme = (dark?: boolean): Theme => {
-  const defaultRadius = 4
+  const defaultRadius = 6
+  // const defaultRadius = '6px'
   const fontFamily = '"Open Sans", sans-serif'
   const fontSize = 15
   const colorPrimary = {
@@ -104,18 +104,6 @@ export const muiTheme = (dark?: boolean): Theme => {
     },
   })
   const theme: ThemeOptions = {
-    spacing: defaultSpacing,
-    palette: {
-      primary: colorPrimary,
-      secondary: colorSecondary,
-      error: red,
-      mode: dark ? 'dark' : 'light',
-    },
-    typography: {
-      fontSize,
-      fontFamily,
-      fontWeightBold: 500,
-    },
     components: {
       MuiCssBaseline: {
         styleOverrides: {
@@ -228,6 +216,13 @@ export const muiTheme = (dark?: boolean): Theme => {
           },
         },
       },
+      // MuiCard: {
+      //   styleOverrides: {
+      //     root: {
+      //       borderRadius: defaultRadius,
+      //     },
+      //   },
+      // },
       MuiTabs: {
         styleOverrides: {
           root: {
@@ -235,7 +230,6 @@ export const muiTheme = (dark?: boolean): Theme => {
           },
         },
       },
-
       MuiTab: {
         styleOverrides: {
           root: {
@@ -336,6 +330,7 @@ export const muiTheme = (dark?: boolean): Theme => {
     },
   }
   return createTheme({
+    ...baseTheme,
     ...theme,
     ...(dark
       ? {

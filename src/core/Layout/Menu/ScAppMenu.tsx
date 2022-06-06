@@ -20,7 +20,7 @@ const css = makeSx({
     right: 0,
     background: t => t.palette.background.paper,
     boxShadow: t => t.shadows[6],
-    borderRadius: 4,
+    borderRadius: t => t.shape.borderRadius + 'px',
     zIndex: 100,
     minWidth: 280,
   },

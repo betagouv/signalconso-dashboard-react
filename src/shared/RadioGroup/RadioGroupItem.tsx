@@ -29,7 +29,6 @@ export const ScRadioGroupItem = ({
     <Box
       {...props}
       sx={{
-        ...sx,
         display: 'flex',
         // alignItems: 'center',
         alignItems: 'flex-start',
@@ -41,12 +40,12 @@ export const ScRadioGroupItem = ({
         cursor: 'pointer',
         '&:last-of-type': {
           borderBottom: t => '1px solid ' + t.palette.divider,
-          borderBottomRightRadius: '6px',
-          borderBottomLeftRadius: '6px',
+          borderBottomRightRadius: t => t.shape.borderRadius + 'px',
+          borderBottomLeftRadius: t => t.shape.borderRadius + 'px',
         },
         '&:first-of-type': {
-          borderTopRightRadius: '6px',
-          borderTopLeftRadius: '6px',
+          borderTopRightRadius: t => t.shape.borderRadius + 'px',
+          borderTopLeftRadius: t => t.shape.borderRadius + 'px',
         },
         '&:hover': {
           zIndex: 1,
@@ -59,13 +58,13 @@ export const ScRadioGroupItem = ({
             borderRight: t=> '1px solid ' + t.palette.divider,
             borderTopRightRadius: t=> t.shape.borderRadius,
             borderBottom: t=> '1px solid ' + t.palette.divider,
-            borderBottomRightRadius: '6px',
+            borderBottomRightRadius: t => t.shape.borderRadius + 'px',
             borderBottomLeftRadius: '0px',
           },
           '&:first-of-type': {
             borderBottom: t=> '1px solid ' + t.palette.divider,
             borderBottomRightRadius: '0px',
-            borderBottomLeftRadius: '6px',
+            borderBottomLeftRadius: t => t.shape.borderRadius + 'px',
             borderTopRightRadius: '0px',
           },
           '&:not(:first-of-type)': {
@@ -87,6 +86,7 @@ export const ScRadioGroupItem = ({
         ...error && /*css.rootError,*/ {
           borderColor: t => t.palette.error.main + ' !important',
         },
+        ...sx,
       }}
       onClick={onClick}
     >

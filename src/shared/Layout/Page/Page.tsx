@@ -33,9 +33,9 @@ export const Page = ({loading, size, sx, ...props}: PageProps) => {
       <MuiPage
         {...props}
         sx={{
-          ...sx,
           p: 2,
           pt: 3
+          ...sx,
         }}
         width={pageWidth[size ?? 'm']}
         {...props}

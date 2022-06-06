@@ -40,7 +40,7 @@ export const Subscriptions = () => {
               border: t => `1px dashed ${t.palette.divider}`,
               color: t => t.palette.primary.main,
               fontSize: t => styleUtils(t).fontSize.title,
-              borderRadius: 4,
+              borderRadius: t => t.shape.borderRadius + 'px',
             }}
             title={m.add}
             onClick={() => !_subscriptions.creating && _subscriptions.create({insertBefore: true})}

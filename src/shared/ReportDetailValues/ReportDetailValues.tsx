@@ -25,11 +25,11 @@ export const ReportDetailValues = ({input, lines = 2, hideTooltip, sx, ...props}
       ))}
     >
       <Box {...props} sx={{
-        ...sx,
         display: '-webkit-box',
         WebkitLineClamp: lines,
         WebkitBoxOrient: 'vertical',
-        overflow: 'hidden'
+        overflow: 'hidden',
+        ...sx,
       }}>
         {description ||
         input.map((_, i) => (

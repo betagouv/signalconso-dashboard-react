@@ -23,7 +23,6 @@ export const ScAppMenuBtn = ({connectedUser}: Props) => {
           else history.push(siteMap.loggedout.login)
         }}>
           <IconBtn
-            size="large"
             disabled={!connectedUser}
             sx={{
               transition: t => t.transitions.create('all'),

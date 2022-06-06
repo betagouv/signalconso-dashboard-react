@@ -18,7 +18,7 @@ const css = makeSx({
     alignItems: 'center',
     justifyContent: 'center',
     ml: 1,
-    borderRadius: 4,
+    borderRadius: t => t.shape.borderRadius + 'px',
     color: t => t.palette.text.disabled,
     '&:hover, &:active, &:focus': {
       background: t => t.palette.action.hover,

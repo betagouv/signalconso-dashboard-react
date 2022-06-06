@@ -11,7 +11,6 @@ export const PanelFoot = ({children, alignEnd, border, sx, ...props}: PanelFootP
     <CardActions
       {...props}
       sx={{
-        ...sx,
         marginTop: 'auto',
         mx: 2,
         pb: 1,
@@ -22,7 +21,8 @@ export const PanelFoot = ({children, alignEnd, border, sx, ...props}: PanelFootP
         ...border && {
           pt: 1,
           borderTop:  t => '1px solid ' + t.palette.divider,
-        }
+        },
+        ...sx,
       }}>
       {children}
     </CardActions>

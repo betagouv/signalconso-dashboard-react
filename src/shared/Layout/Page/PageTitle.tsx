@@ -11,11 +11,11 @@ export const PageTitle = ({action, children, sx, ...props}: Props) => {
     <Typography
       variant="h5"
       sx={{
-        ...sx,
         mt: 1,
         mb: 3,
         display: "flex",
-        alignItems: "center"
+        alignItems: "center",
+        ...sx,
       }}
       {...props}
     >

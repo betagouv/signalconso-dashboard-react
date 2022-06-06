@@ -38,10 +38,10 @@ export const PeriodPicker = ({value, onChange, label, fullWidth, sx, ...props}: 
 
   return (
     <Box {...props} sx={{
-      ...sx,
       display: 'flex',
       alignItems: 'center',
-      ...fullWidth && {width: '100%'}
+      ...fullWidth && {width: '100%'},
+      ...sx,
     }}>
       <Datepicker
         label={label?.[0] ?? m.start}
