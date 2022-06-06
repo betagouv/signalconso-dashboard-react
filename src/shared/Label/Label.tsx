@@ -44,7 +44,8 @@ const sx = makeSx({
   dense: {
     fontWeight: '500' as any,
     fontSize: t => styleUtils(t).fontSize.small,
-    padding: t => t.spacing(0, 1, 0, 1),
+    py: 0,
+    px: 1,
   },
   fullWidth: {
     width: '100%',

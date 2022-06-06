@@ -17,10 +17,8 @@ interface Props<T> {
 
 const sx = makeSx({
   menuItem: {
-    paddingTop: 0,
-    paddingBottom: 0,
-    paddingRight: t.spacing(1 / 2),
-    paddingLeft: t.spacing(1 / 2)
+    my: 0,
+    px: 1/2,
   }
 })
 

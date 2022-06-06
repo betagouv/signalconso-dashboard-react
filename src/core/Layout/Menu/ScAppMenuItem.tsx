@@ -15,11 +15,11 @@ const useStyles = makeStyles((t: Theme) =>
       display: 'flex',
       alignItems: 'center',
       textDecoration: 'inherit',
-      paddingRight: t.spacing(3),
-      paddingLeft: t.spacing(2),
+      pr: 3,
+      pl: 2,
       color: t.palette.text.secondary,
       minHeight: 32,
-      margin: t.spacing(1, 1),
+      m: 1,
       borderRadius: 42,
     },
     rootLarge: {
@@ -38,7 +38,7 @@ const useStyles = makeStyles((t: Theme) =>
     i: {
       // color: t.palette.text.secondary,
       textAlign: 'center',
-      marginRight: t.spacing(1.5),
+      mr: 1.5,
     },
     label: {
       whiteSpace: 'nowrap',

@@ -19,7 +19,7 @@ const css = makeSx({
   report: {
     display: 'flex',
     alignItems: 'center',
-    paddingBottom: t => t.spacing(2),
+    pb: 2,
     m: 2,
     '&:not(:last-of-type)': {
       borderBottom: t => `1px solid ${t.palette.divider}`

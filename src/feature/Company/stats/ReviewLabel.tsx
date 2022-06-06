@@ -19,7 +19,7 @@ export const ReviewLabel = ({tooltip, children, ...props}: Props) => {
           sx={{
             verticalAlign: 'middle',
             color: t => t.palette.text.disabled,
-            marginLeft: t => t.spacing(1),
+            ml: 1,
           }}
         >
           help

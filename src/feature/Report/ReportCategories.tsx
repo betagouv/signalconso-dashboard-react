@@ -6,7 +6,7 @@ const ReportCategory = ({children}: {children: any}) => {
     <Box sx={{
       display: 'inline-flex',
       alignItems: 'center',
-      marginBottom: t => t.spacing(0.5),
+      pb: .5,
       border: t => '1px solid ' + t.palette.divider,
       borderRadius: 40,
       py: .5,
