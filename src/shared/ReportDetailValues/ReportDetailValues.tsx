@@ -34,9 +34,9 @@ export const ReportDetailValues = ({input, lines = 2, hideTooltip, sx, ...props}
         {description ||
         input.map((_, i) => (
           <span key={i}>
-              <Txt bold>{_.label}</Txt> <span dangerouslySetInnerHTML={{__html: _.value}} />
-              <br />
-            </span>
+            <Txt bold>{_.label}</Txt> <span dangerouslySetInnerHTML={{__html: _.value}} />
+            <br />
+          </span>
         ))}
       </Box>
     </Tooltip>

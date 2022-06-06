@@ -15,7 +15,7 @@ export const SubscriptionCardRow = ({icon, label, children, onClick}: Subscripti
       <Box sx={{
         cursor: 'pointer',
         py: 1.5,
-        px: 2,
+        px: 0,
         display: 'flex',
         alignItems: 'center',
         transition: t => t.transitions.create('background'),
@@ -31,7 +31,7 @@ export const SubscriptionCardRow = ({icon, label, children, onClick}: Subscripti
         }}>
           {icon}
         </Icon>
-        <Box sx={{minWidth: 110,}}>
+        <Box sx={{minWidth: 115,}}>
           <Txt color="hint">{label}</Txt>
         </Box>
         <Box sx={{flex: 1}}>{children}</Box>

@@ -32,61 +32,62 @@ export const ScRadioGroupItem = ({
         display: 'flex',
         // alignItems: 'center',
         alignItems: 'flex-start',
-        border: t=> '1px solid ' + t.palette.divider,
+        border: t => '1px solid ' + t.palette.divider,
         borderBottomColor: 'transparent',
         py: 1.5,
-        px: 2,
+        pr: 2,
+        pl: 1,
         transition: 'all .2s ease-in-out',
         cursor: 'pointer',
         '&:last-of-type': {
           borderBottom: t => '1px solid ' + t.palette.divider,
           borderBottomRightRadius: t => t.shape.borderRadius + 'px',
-          borderBottomLeftRadius: t => t.shape.borderRadius + 'px',
+          borderBottomLeftRadius: t => t.shape.borderRadius + 'px'
         },
         '&:first-of-type': {
           borderTopRightRadius: t => t.shape.borderRadius + 'px',
-          borderTopLeftRadius: t => t.shape.borderRadius + 'px',
+          borderTopLeftRadius: t => t.shape.borderRadius + 'px'
         },
         '&:hover': {
           zIndex: 1,
           border: t => `1px solid ${t.palette.primary.main}`,
-          background: 'rgba(0,0,0,.04)',
+          background: 'rgba(0,0,0,.04)'
         },
         ...inline && /*css.rootInline,*/ {
           borderRightColor: 'transparent',
           '&:last-of-type': {
-            borderRight: t=> '1px solid ' + t.palette.divider,
-            borderTopRightRadius: t=> t.shape.borderRadius,
-            borderBottom: t=> '1px solid ' + t.palette.divider,
+            borderRight: t => '1px solid ' + t.palette.divider,
+            borderTopRightRadius: t => t.shape.borderRadius,
+            borderBottom: t => '1px solid ' + t.palette.divider,
             borderBottomRightRadius: t => t.shape.borderRadius + 'px',
-            borderBottomLeftRadius: '0px',
+            borderBottomLeftRadius: '0px'
           },
           '&:first-of-type': {
-            borderBottom: t=> '1px solid ' + t.palette.divider,
+            borderBottom: t => '1px solid ' + t.palette.divider,
             borderBottomRightRadius: '0px',
             borderBottomLeftRadius: t => t.shape.borderRadius + 'px',
-            borderTopRightRadius: '0px',
+            borderTopRightRadius: '0px'
           },
           '&:not(:first-of-type)': {
             marginLeft: '-1px',
-            borderBottom: t=> '1px solid ' + t.palette.divider,
-          },
+            borderBottom: t => '1px solid ' + t.palette.divider
+          }
         },
         ...dense && /*css.rootDense,*/ {
           pt: 1 / 4,
-          pb: 1 / 4,
+          pb: 1 / 4
         },
         ...selected && /*css.rootSelected,*/ {
           zIndex: 1,
           border: t => `1px solid ${t.palette.primary.main} !important`,
           background: t => alpha(t.palette.primary.main, 0.1),
-          boxShadow: t => `inset 0 0 0 1px ${t.palette.primary.main}`,
+          boxShadow: t => `inset 0 0 0 1px ${t.palette.primary.main}`
 
         },
         ...error && /*css.rootError,*/ {
-          borderColor: t => t.palette.error.main + ' !important',
+          borderColor: t => t.palette.error.main + ' !important'
         },
-        ...sx,
+        ...sx
       }}
       onClick={onClick}
     >
@@ -96,7 +97,7 @@ export const ScRadioGroupItem = ({
         justifyContent: 'center',
         minHeight: 42,
         flexDirection: 'column',
-        ml: 1,
+        ml: 1
       }}>
         {title && (
           <Txt block size="big">

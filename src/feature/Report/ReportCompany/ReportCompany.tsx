@@ -56,7 +56,7 @@ export const ReportCompany = ({report, canEdit}: Props) => {
             {report.companySiret}
           </Box>
           <Box sx={{
-            color: t => t.palette.primary.main,
+            color: t => t.palette.text.secondary,
             fontSize: t => styleUtils(t).fontSize.small,
           }}>
             <Box sx={{fontWeight: t => t.typography.fontWeightBold}}>{report.companyName}</Box>

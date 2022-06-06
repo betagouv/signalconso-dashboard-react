@@ -44,7 +44,7 @@ const css = makeSx({
     color: t => t.palette.text.disabled,
   },
   divider: {
-    '& + $divider': {
+    '& + &': {
       display: 'none',
     },
   },
@@ -78,7 +78,7 @@ export const ScAppMenu = ({onClose, connectedUser}: Props) => {
             {m.logout}
           </Btn>
         </Box>
-        <Divider/>
+        <Divider sx={css.divider}/>
         {[Roles.Admin, Roles.DGCCRF].includes(connectedUser.role) && (
           <ScAppMenuItem onClick={onClose} to={path(siteMap.logged.stats)} icon={EntityIcon.stats}>
             {m.menu_stats}
@@ -107,7 +107,7 @@ export const ScAppMenu = ({onClose, connectedUser}: Props) => {
             {m.menu_subscriptions}
           </ScAppMenuItem>
         )}
-        <Divider margin/>
+        <Divider sx={css.divider}/>
         {[Roles.Admin, Roles.DGCCRF].includes(connectedUser.role) && (
           <ScAppMenuItem onClick={onClose} to={path(siteMap.logged.reportedWebsites)} icon={EntityIcon.website}>
             {m.menu_websites}
@@ -123,7 +123,7 @@ export const ScAppMenu = ({onClose, connectedUser}: Props) => {
             {m.menu_modeEmploiDGCCRF}
           </ScAppMenuItem>
         )}
-        <Divider margin/>
+        <Divider sx={css.divider}/>
         {[Roles.Admin].includes(connectedUser.role) && (
           <ScAppMenuItem onClick={onClose} to={path(siteMap.logged.admin)} icon={EntityIcon.admin}>
             {m.menu_admin}
@@ -134,7 +134,7 @@ export const ScAppMenu = ({onClose, connectedUser}: Props) => {
             {m.database}
           </ScAppMenuItem>
         )}
-        <Divider margin/>
+        <Divider sx={css.divider}/>
         <ScAppMenuItem onClick={onClose} to={path(siteMap.logged.settings)} icon="settings">
           {m.menu_settings}
         </ScAppMenuItem>

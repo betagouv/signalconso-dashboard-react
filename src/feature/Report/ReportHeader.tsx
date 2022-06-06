@@ -43,7 +43,6 @@ interface Props {
 
 export const ReportHeader = ({hideTags, hideSiret, report, children, elevated}: Props) => {
   const {m} = useI18n()
-  const {connectedUser} = useLogin()
 
   return (
     <Panel elevation={elevated ? 3 : 0} sx={css.root}>

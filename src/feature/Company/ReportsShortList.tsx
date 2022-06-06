@@ -10,6 +10,7 @@ import {NavLink} from 'react-router-dom'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
 import {ReportDetailValues} from '../../shared/ReportDetailValues/ReportDetailValues'
 import {makeSx} from 'mui-extension'
+import {styleUtils} from '../../core/theme'
 
 interface Props {
   reports: Paginate<ReportSearchResult>
@@ -44,7 +45,7 @@ export const ReportsShortList = ({reports}: Props) => {
         <Box sx={css.report} key={_.report.id}>
           <Box sx={css.body}>
             <Box>
-              <Txt size="big" bold truncate style={{flex: 1, width: 0}}>
+              <Txt size="big" bold block truncate sx={{flex: 1, mb: .5}}>
                 {_.report.category}
               </Txt>
               <Box sx={css.reportTag}>
@@ -54,12 +55,14 @@ export const ReportsShortList = ({reports}: Props) => {
                   label
                 </Icon>
                 &nbsp;
-                <Txt color="disabled" truncate style={{width: 0, flex: 1}}>
-                  {_.report.tags.map(x => m.reportTagDesc[x]).join(', ')}
-                </Txt>
+                {_.report.tags && _.report.tags.length > 0 && (
+                  <Txt color="disabled" truncate style={{width: 0, flex: 1}}>
+                    {_.report.tags.map(x => m.reportTagDesc[x]).join(', ')}
+                  </Txt>
+                )}
               </Box>
             </Box>
-            <ReportDetailValues input={_.report.details} lines={3} />
+            <ReportDetailValues input={_.report.details} lines={3} sx={{fontSize: t => styleUtils(t).fontSize.normal}}/>
           </Box>
           <NavLink to={siteMap.logged.report(_.report.id)}>
             <IconBtn color="primary">

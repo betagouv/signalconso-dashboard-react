@@ -9,21 +9,24 @@ export interface PanelFootProps extends CardActionsProps {
 export const PanelFoot = ({children, alignEnd, border, sx, ...props}: PanelFootProps) => {
   return (
     <CardActions
-      {...props}
       sx={{
         marginTop: 'auto',
-        mx: 2,
+        pt: 0,
+        pr: 2,
         pb: 1,
+        pl: 2,
         ...alignEnd && {
           display: 'flex',
-          justifyContent: 'flex-end',
+          justifyContent: 'flex-end'
         },
         ...border && {
           pt: 1,
-          borderTop:  t => '1px solid ' + t.palette.divider,
+          borderTop: t => '1px solid ' + t.palette.divider
         },
-        ...sx,
-      }}>
+        ...sx
+      }}
+      {...props}
+    >
       {children}
     </CardActions>
   )

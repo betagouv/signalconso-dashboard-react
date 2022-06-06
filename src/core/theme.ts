@@ -104,7 +104,7 @@ export const muiTheme = (dark?: boolean): Theme => {
     typography: {
       fontSize,
       fontFamily,
-      fontWeightBold: 500,
+      fontWeightBold: 600,
     },
   })
   const theme: ThemeOptions = {
@@ -115,100 +115,44 @@ export const muiTheme = (dark?: boolean): Theme => {
             boxSizing: 'border-box',
           },
           '.material-icons': {
-            display: 'inherit',
+            // display: 'inherit',
+          },
+          '.recharts-surface': {
+            overflow: 'visible',
           },
           html: {
-            fontFamily,
-            fontSize,
+            fontSize: baseTheme.typography.fontSize,
             color: baseTheme.palette.text.primary,
           },
-          '.blog': {
-            'a': {
-              color: colorPrimary.main,
-            },
-            'li + li': {
-              marginTop: defaultSpacing * 2,
-            },
-            ul: {
-              marginTop: '.5em',
-            },
-          },
-          '.root': {
-            minHeight: '100vh',
-            display: 'flex',
-            flexDirection: 'column',
-          },
           body: {
-            lineHeight: '1.5',
-            fontFamily,
+            fontSize: '1rem',
+            lineHeight: '1.5rem',
             background: baseTheme.palette.background.paper,
             margin: 0,
             color: baseTheme.palette.text.primary,
             boxSizing: 'border-box',
           },
-          main: {
-            flex: 1,
+          ul: {
+            marginTop: '.5em',
           },
-          h1: {
-            ...baseTheme.typography.h4,
-            marginTop: 0,
-          },
+          h1: baseTheme.typography.h4,
           h2: {
-            ...baseTheme.typography.h5,
-            marginTop: defaultSpacing * 4,
-          },
-          h3: {
             ...baseTheme.typography.h6,
-            marginTop: defaultSpacing * 4,
+            mb: 2,
+            mt: 3,
           },
-          h4: {
-            ...baseTheme.typography.h6,
-            fontSize: '1.25rem',
+          p: {
+            ...baseTheme.typography.body1,
+            textAlign: 'justify',
           },
-          h6: {
-            color: 'red',
-            ...baseTheme.typography.h6,
-            fontSize: '1.25rem',
+          a: {
+            color: 'inherit',
+            textDecoration: 'none',
           },
-          blockquote: {
-            color: baseTheme.palette.text.secondary,
-            marginLeft: 0,
-            paddingLeft: baseTheme.spacing(2),
-            borderLeft: `2px solid ${baseTheme.palette.divider}`,
+          ':focus': {
+            outline: 0,
           },
-          hr: {
-            border: 'none',
-            borderBottom: `1px solid ${baseTheme.palette.divider}`,
-          },
-          // table: {
-          //   background: baseTheme.palette.background.paper,
-          //   border: `1px solid ${baseTheme.palette.divider}`,
-          //   borderLeft: 0,
-          //   borderRight: 0,
-          //   borderRadius: defaultRadius,
-          //   position: 'relative',
-          //   width: '100%',
-          //   borderCollapse: 'collapse',
-          //
-          //   '& td': {
-          //     fontWeight: 400,
-          //     padding: '1em',
-          //     textAlign: 'left',
-          //     borderTop: `1px solid ${baseTheme.palette.divider}`,
-          //   },
-          //   '& th': {
-          //     padding: '1em',
-          //     textAlign: 'left',
-          //   },
-          //   '& thead th': {
-          //     background: baseTheme.palette.action.disabledBackground,
-          //     borderBottom: `1px solid ${baseTheme.palette.divider}`,
-          //     // font-size: 0.875em,
-          //     // font-weight: 700,
-          //     // textTransform: 'uppercase',
-          //   },
-          // },
-        },
+        }
       },
       MuiButton: {
         styleOverrides: {

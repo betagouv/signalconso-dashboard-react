@@ -61,7 +61,7 @@ export const SubscriptionCard = ({subscription, onUpdate, onDelete, removing, lo
         <PanelHead
           sx={{
             display: 'flex',
-            alignItems: 'center',
+            alignItems: 'center'
           }}
           action={
             <>

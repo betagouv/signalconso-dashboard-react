@@ -23,7 +23,7 @@ const iconWidth = 50
 const css = makeSx({
   tdName_label: {
     fontWeight: 'bold',
-    marginBottom: -1,
+    marginBottom: '-2px',
     maxWidth: 200
   },
   tdName_desc: {
