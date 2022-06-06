@@ -27,8 +27,8 @@ export const ReportDetailValues = ({input, lines = 2, hideTooltip, sx, ...props}
       <Box {...props} sx={{
         ...sx,
         display: '-webkit-box',
-        '-webkit-line-clamp': lines,
-        '-webkit-box-orient': 'vertical',
+        WebkitLineClamp: lines,
+        WebkitBoxOrient: 'vertical',
         overflow: 'hidden'
       }}>
         {description ||

@@ -331,7 +331,7 @@ export const Reports = ({}) => {
                     label={m.reportTagDesc[tag]}
                     sx={{
                       fontWeight: t => t.typography.fontWeightBold,
-                      color: t => t.plalette.text.secondary
+                      color: t => t.palette.text.secondary,
                     }}
                     style={{marginRight: 2}}
                   />
