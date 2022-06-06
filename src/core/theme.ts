@@ -40,7 +40,7 @@ export const sxUtils = makeSx({
 })
 
 export const styleUtils = (t: Theme) => ({
-  defaultRadius: 4,
+  defaultRadius: 6,
   gridSpacing: 3 as any,
   fontSize: {
     big: t.typography.fontSize * 1.15,
@@ -188,34 +188,34 @@ export const muiTheme = (dark?: boolean): Theme => {
             border: 'none',
             borderBottom: `1px solid ${baseTheme.palette.divider}`,
           },
-          table: {
-            background: baseTheme.palette.background.paper,
-            border: `1px solid ${baseTheme.palette.divider}`,
-            borderLeft: 0,
-            borderRight: 0,
-            borderRadius: defaultRadius,
-            position: 'relative',
-            width: '100%',
-            borderCollapse: 'collapse',
-
-            '& td': {
-              fontWeight: 400,
-              padding: '1em',
-              textAlign: 'left',
-              borderTop: `1px solid ${baseTheme.palette.divider}`,
-            },
-            '& th': {
-              padding: '1em',
-              textAlign: 'left',
-            },
-            '& thead th': {
-              background: baseTheme.palette.action.disabledBackground,
-              borderBottom: `1px solid ${baseTheme.palette.divider}`,
-              // font-size: 0.875em,
-              // font-weight: 700,
-              textTransform: 'uppercase',
-            },
-          },
+          // table: {
+          //   background: baseTheme.palette.background.paper,
+          //   border: `1px solid ${baseTheme.palette.divider}`,
+          //   borderLeft: 0,
+          //   borderRight: 0,
+          //   borderRadius: defaultRadius,
+          //   position: 'relative',
+          //   width: '100%',
+          //   borderCollapse: 'collapse',
+          //
+          //   '& td': {
+          //     fontWeight: 400,
+          //     padding: '1em',
+          //     textAlign: 'left',
+          //     borderTop: `1px solid ${baseTheme.palette.divider}`,
+          //   },
+          //   '& th': {
+          //     padding: '1em',
+          //     textAlign: 'left',
+          //   },
+          //   '& thead th': {
+          //     background: baseTheme.palette.action.disabledBackground,
+          //     borderBottom: `1px solid ${baseTheme.palette.divider}`,
+          //     // font-size: 0.875em,
+          //     // font-weight: 700,
+          //     // textTransform: 'uppercase',
+          //   },
+          // },
         },
       },
       MuiButton: {

@@ -15,6 +15,7 @@ export const Panel = forwardRef(({
   loading,
   children,
   stretch,
+  sx,
   ...other
 }: PanelProps, ref: any) => {
   return (
@@ -22,7 +23,7 @@ export const Panel = forwardRef(({
       ref={ref}
       elevation={elevation}
       sx={{
-        borderRadius: '6px',
+        borderRadius: t => t.shape.borderRadius + 'px',
         mb: 2,
         ...hoverable && {
           cursor: 'pointer',
@@ -39,7 +40,8 @@ export const Panel = forwardRef(({
         },
         ...elevation === 0 && {
           border: t => `1px solid ${t.palette.divider}`
-        }
+        },
+        ...sx,
       }}
       {...other}
     >

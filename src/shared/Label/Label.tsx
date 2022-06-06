@@ -1,9 +1,8 @@
 import * as React from 'react'
 import {CSSProperties, ReactNode} from 'react'
-import {Paper, PaperProps} from '@mui/material'
+import {Paper, PaperProps, Theme, useTheme} from '@mui/material'
 import {alpha} from '@mui/material/styles'
 import {styleUtils} from '../../core/theme'
-import {makeSx} from 'mui-extension'
 
 export type LabelColor = 'error' | 'warning' | 'info' | 'success' | 'disable'
 
@@ -22,68 +21,69 @@ const colorize = (color: string): CSSProperties => ({
   color: color,
 })
 
-const sx = makeSx({
-  root: t => ({
-    whiteSpace: 'nowrap',
-    borderRadius: '40px',
-    pt: 1 / 1.5,
-    pb: 1 / 1.5,
-    pr: 2,
-    pl: 2,
-    fontWeight: 'bold',
-    letterSpacing: '1px',
-    display: 'inline-flex',
-    minHeight: 24,
-    alignItems: 'center',
-    transition: t.transitions.create('all'),
-    ...colorize(t.palette.text.disabled),
-  }),
-  border: {
-    // border: `1px solid ${t.palette.divider}`,
+const colors = (t: Theme) => ({
+  error: {
+    ...colorize(styleUtils(t).color.error)
   },
-  dense: {
-    fontWeight: '500' as any,
-    fontSize: t => styleUtils(t).fontSize.small,
-    py: 0,
-    px: 1,
+  warning: {
+    ...colorize(styleUtils(t).color.warning)
   },
-  fullWidth: {
-    width: '100%',
+  success: {
+    ...colorize(styleUtils(t).color.success)
   },
-  inSelectOptions: {
-    marginTop: -10,
-    marginBottom: -10,
+  info: {
+    ...colorize(styleUtils(t).color.info)
   },
-  error: t => ({
-    ...colorize(styleUtils(t).color.error),
-  }),
-  warning: t => ({
-    ...colorize(styleUtils(t).color.warning),
-  }),
-  success: t => ({
-    ...colorize(styleUtils(t).color.success),
-  }),
-  info: t => ({
-    ...colorize(styleUtils(t).color.info),
-  }),
-  disable: t => ({
-    ...colorize(t.palette.text.disabled),
-  }),
+  disable: {
+    ...colorize(t.palette.text.disabled)
+  }
 })
 
-export const Label = ({type, children, className, fullWidth, dense, elevation = 0, inSelectOptions, ...props}: LabelProps) => {
+export const Label = ({
+  type,
+  children,
+  sx,
+  fullWidth,
+  dense,
+  elevation = 0,
+  inSelectOptions,
+  ...props
+}: LabelProps) => {
+  const t = useTheme()
   return (
     <Paper
       elevation={elevation}
       sx={{
-        ...sx.root,
-        ...type && sx[type],
-        ...elevation === 0 && sx.border,
-        ...fullWidth && sx.fullWidth,
-        ...dense && sx.dense,
-        ...inSelectOptions && sx.inSelectOptions,
+        whiteSpace: 'nowrap',
+        borderRadius: 40,
+        py: 1 / 1.5,
+        px: 2,
+        fontWeight: 'bold',
+        letterSpacing: '1px',
+        display: 'inline-flex',
+        minHeight: 24,
+        alignItems: 'center',
+        transition: t => t.transitions.create('all'),
+        ...colorize(t.palette.text.disabled),
+        ...colors(t)[type],
+        // ...elevation > 0 && {
+        //   border: 'none'
+        // },
+        ...fullWidth && {
+          width: '100%'
+        },
+        ...dense && {
+          fontWeight: '500' as any,
+          fontSize: t => styleUtils(t).fontSize.small,
+          py: 0,
+          px: 1
+        },
+        ...inSelectOptions && {
+          marginTop: -10,
+          marginBottom: -10
+        },
+        ...sx
       }}
-      className={className}
       {...props}
     >
       {children}

@@ -1,6 +1,6 @@
 import {useI18n} from '../../i18n'
 import {Btn} from 'mui-extension/lib'
-import {Box, ClickAwayListener, Divider} from '@mui/material'
+import {Box, ClickAwayListener} from '@mui/material'
 import {EntityIcon} from '../../EntityIcon'
 import React from 'react'
 import {styleUtils, sxUtils} from '../../theme'
@@ -11,6 +11,7 @@ import {stopPropagation} from '../../helper/utils'
 import {LayoutConnectedUser} from '../Layout'
 import {Roles} from '@signal-conso/signalconso-api-sdk-js'
 import {makeSx} from 'mui-extension'
+import {Divider} from '../../../shared/Divider/Divider'
 
 const css = makeSx({
   root: {
