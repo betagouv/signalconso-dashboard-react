@@ -1,6 +1,6 @@
 import {Dialog, DialogActions, DialogContent, DialogTitle, Icon, MenuItem} from '@mui/material'
 import {useI18n} from '../../core/i18n'
-import React, {ReactElement, useEffect, useState} from 'react'
+import React, {ReactElement, useEffect, useMemo, useState} from 'react'
 import {ReportSearch, ReportStatus} from '@signal-conso/signalconso-api-sdk-js'
 import {Controller, useForm} from 'react-hook-form'
 import {ScSelect} from '../../shared/Select/Select'
@@ -65,16 +65,19 @@ export const fromReportTagValues = (tags: SelectTagsMenuValues): Pick<ReportSear
 }
 
 export const ReportFilters = ({filters, updateFilters, ...props}: ReportsFiltersProps) => {
+  const parsedFilters = useMemo(() => {
+    return compose(toReportTagValues, rationalizeFilters)(filters)
+  }, [filters])
   return (
     <_ReportsFilters
       {...props}
-      filters={compose(toReportTagValues, rationalizeFilters)(filters)}
-      updateFilters={form =>
-        updateFilters({
+      filters={parsedFilters}
+      updateFilters={form => {
+        return updateFilters({
           ...form,
           ...fromReportTagValues(form.tags),
         })
-      }
+      }}
     />
   )
 }
