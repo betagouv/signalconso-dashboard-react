@@ -70,6 +70,7 @@ export const styleUtils = (t: Theme) => ({
 export const defaultSpacing = 8
 
 export const muiTheme = (dark?: boolean): Theme => {
+  const defaultRadius = 4
   const fontFamily = '"Open Sans", sans-serif'
   const fontSize = 15
   const colorPrimary = {
@@ -94,7 +95,7 @@ export const muiTheme = (dark?: boolean): Theme => {
       mode: dark ? 'dark' : 'light',
     },
     shape: {
-      borderRadius: 10,
+      borderRadius: defaultRadius,
     },
     typography: {
       fontSize,
@@ -192,7 +193,7 @@ export const muiTheme = (dark?: boolean): Theme => {
             border: `1px solid ${baseTheme.palette.divider}`,
             borderLeft: 0,
             borderRight: 0,
-            borderRadius: 2,
+            borderRadius: defaultRadius,
             position: 'relative',
             width: '100%',
             borderCollapse: 'collapse',
