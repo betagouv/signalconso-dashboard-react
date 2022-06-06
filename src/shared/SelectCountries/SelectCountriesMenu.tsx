@@ -158,10 +158,10 @@ export const SelectCountriesMenu = withRegions(({countries, anchorEl, open, init
           countries.countries.map(country => (
             <Box
               key={country.code}
-              sx={{
-                ...css.menuItem,
-                ...indexedValues.has(country.code) && css.menuItemActive
-              }}
+              sx={combineSx(
+                css.menuItem,
+                indexedValues.has(country.code) && css.menuItemActive
+              )}
               onClick={() => handleToggle(country)}
             >
               <Box component="span" sx={combineSx(css.flag, css.iconWidth)}>{countryToFlag(country.code)}</Box>

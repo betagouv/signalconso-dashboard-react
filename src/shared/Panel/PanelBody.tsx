@@ -1,7 +1,7 @@
 import * as React from 'react'
-import {BoxProps, CardContent as MuiCardContent} from '@mui/material'
+import {CardContent as MuiCardContent, CardContentProps} from '@mui/material'
 
-interface Props extends BoxProps {
+interface Props extends CardContentProps {
 }
 
 export const PanelBody = ({sx, children, ...other}: Props) => {

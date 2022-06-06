@@ -42,7 +42,7 @@ export const UsersList = () => {
                   value={value}
                   placeholder={m.searchByEmail + '...'}
                   fullWidth
-                  color={{ml: 1}}
+                  sx={{ml: 1}}
                   onChange={e => onChange(e.target.value)}
                 />
               )}

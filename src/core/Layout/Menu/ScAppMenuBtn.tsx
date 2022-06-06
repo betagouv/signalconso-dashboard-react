@@ -41,7 +41,7 @@ export const ScAppMenuBtn = ({connectedUser}: Props) => {
               }),
             }}
           >
-            <Icon fontSize="large">{connectedUser ? 'person' : 'no_accounts'}</Icon>
+            <Icon>{connectedUser ? 'person' : 'no_accounts'}</Icon>
           </IconBtn>
           <Icon sx={connectedUser ? {} : {visibility: 'hidden'}}>arrow_drop_down</Icon>
         </Box>

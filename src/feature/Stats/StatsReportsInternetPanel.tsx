@@ -6,8 +6,9 @@ import {Dispatch, SetStateAction, useEffect, useMemo, useState} from 'react'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
 import {SelectMonth} from '../../shared/SelectMonth/SelectMonth'
 import {useGetDateForMonthAndPreviousOne} from './useGetDateForMonthAndPreviousOne'
-import {Box} from '@mui/material'
+import {Box, BoxProps, CardProps} from '@mui/material'
 import {styleUtils} from '../../core/theme'
+import {PanelProps} from '../../shared/Panel/Panel'
 
 interface AsyncPercent {
   loading: boolean
@@ -155,21 +156,20 @@ export const StatsReportsInternetPanel = () => {
   )
 }
 
-interface StatsCardProps {
-  className?: string
+interface StatsCardProps extends PanelProps {
   value: number
   previousValue: number
   title: string
   desc?: string
 }
 
-const StatsCard = ({className, value, previousValue, title, desc}: StatsCardProps) => {
+const StatsCard = ({sx, value, previousValue, title, desc, ...props}: StatsCardProps) => {
   const evolution = useMemo(() => {
     return Math.round(value - previousValue)
   }, [value, previousValue])
 
   return (
-    <Panel elevation={2} style={{maxWidth: 300}} className={className}>
+    <Panel elevation={2} sx={{maxWidth: 300, ...sx}} {...props}>
       <PanelBody>
         <div style={{lineHeight: 1.5, display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
           <span>

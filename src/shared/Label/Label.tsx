@@ -65,7 +65,7 @@ export const Label = ({
         alignItems: 'center',
         transition: t => t.transitions.create('all'),
         ...colorize(t.palette.text.disabled),
-        ...colors(t)[type],
+        ...type && colors(t)[type],
         // ...elevation > 0 && {
         //   border: 'none'
         // },

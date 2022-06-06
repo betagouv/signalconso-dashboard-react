@@ -27,13 +27,13 @@ const css = makeSx({
     flex: 1
   },
   regionToggleArrow: {
-    width: 40,
+    width: 36,
     height: 36,
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
     ml: 1,
-    borderRadius: t => t.shape.borderRadius + 'px',
+    borderRadius: 30,
     color: t => t.palette.text.disabled,
     '&:hover, &:active, &:focus': {
       background: t => t.palette.action.hover,
@@ -41,8 +41,8 @@ const css = makeSx({
     }
   },
   menuItem: {
-    my: 0,
-    mx: 1/2,
+    py: 0,
+    px: 1/2,
   },
   menuItemRegion: {
     borderBottom: t => `1px solid ${t.palette.divider}`

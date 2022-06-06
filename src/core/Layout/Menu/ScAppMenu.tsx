@@ -26,7 +26,7 @@ const css = makeSx({
   },
   user: {
     p: 2,
-    pr: .5,
+    pb: .5,
   },
   userName: {
     ...sxUtils.truncate,
@@ -78,7 +78,7 @@ export const ScAppMenu = ({onClose, connectedUser}: Props) => {
             {m.logout}
           </Btn>
         </Box>
-        <Divider margin/>
+        <Divider/>
         {[Roles.Admin, Roles.DGCCRF].includes(connectedUser.role) && (
           <ScAppMenuItem onClick={onClose} to={path(siteMap.logged.stats)} icon={EntityIcon.stats}>
             {m.menu_stats}

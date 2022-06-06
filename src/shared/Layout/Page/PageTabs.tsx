@@ -1,4 +1,4 @@
-import {BoxProps, Tab, Tabs} from '@mui/material'
+import {BoxProps, Tab, TabProps, Tabs} from '@mui/material'
 import * as React from 'react'
 import {ReactElement, useMemo, useState} from 'react'
 import {useHistory, useLocation} from 'react-router'
@@ -26,7 +26,7 @@ export const PageTabs = ({children}: Props) => {
   )
 }
 
-export interface PageTabProps extends BoxProps {
+export interface PageTabProps extends TabProps {
   to: string
   label?: string
   icon?: string | React.ReactElement

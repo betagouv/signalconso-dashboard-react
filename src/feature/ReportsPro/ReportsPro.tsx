@@ -340,10 +340,10 @@ export const ReportsPro = () => {
                       {
                         id: 'file',
                         head: m.files,
-                        sx: {
+                        sx: _ => ({
                           minWidth: 44,
                           maxWidth: 100,
-                        },
+                        }),
                         render: _ =>
                           _.files.length > 0 && (
                             <Badge badgeContent={_.files.length} color="primary" invisible={_.files.length === 1}>

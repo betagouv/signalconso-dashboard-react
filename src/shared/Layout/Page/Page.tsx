@@ -1,7 +1,8 @@
 import * as React from 'react'
 import {ReactNode} from 'react'
-import {Page as MuiPage} from 'mui-extension'
-import {BoxProps, LinearProgress} from '@mui/material'
+import {Page as MxPage} from 'mui-extension'
+import {LinearProgress} from '@mui/material'
+import {PageProps as MxPageProps} from 'mui-extension/lib/Page/Page'
 
 export const pageWidth = {
   xl: 1400,
@@ -10,7 +11,7 @@ export const pageWidth = {
   s: 680
 }
 
-export interface PageProps extends BoxProps {
+export interface PageProps extends MxPageProps {
   large?: boolean
   size?: 'xl' | 'l' | 's' | 'm'
   children: ReactNode
@@ -30,7 +31,7 @@ export const Page = ({loading, size, sx, ...props}: PageProps) => {
           }} />
         </div>
       )}
-      <MuiPage
+      <MxPage
         {...props}
         sx={{
           p: 2,
