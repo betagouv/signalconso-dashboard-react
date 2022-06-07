@@ -8,14 +8,7 @@ import {Badge, Box, Grid, Icon, MenuItem} from '@mui/material'
 import {ReportStatusLabel, ReportStatusProLabel} from '../../shared/ReportStatus/ReportStatus'
 import {useLayoutContext} from '../../core/Layout/LayoutContext'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
-import {
-  cleanObject,
-  Report,
-  ReportSearch,
-  ReportSearchResult,
-  ReportStatus,
-  ReportStatusPro,
-} from '@signal-conso/signalconso-api-sdk-js'
+import {cleanObject, Report, ReportSearch, ReportSearchResult, ReportStatus, ReportStatusPro} from '@signal-conso/signalconso-api-sdk-js'
 import {combineSx, styleUtils, sxUtils} from '../../core/theme'
 import {SelectDepartments} from '../../shared/SelectDepartments/SelectDepartments'
 import {ScSelect} from '../../shared/Select/Select'
@@ -25,12 +18,7 @@ import {openInNew} from '../../core/helper/utils'
 import {Btn, Fender} from 'mui-extension/lib'
 import {EntityIcon} from '../../core/EntityIcon'
 import {ScButton} from '../../shared/Button/Button'
-import {
-  mapArrayFromQuerystring,
-  mapDateFromQueryString,
-  mapDatesToQueryString,
-  useQueryString,
-} from '../../core/helper/useQueryString'
+import {mapArrayFromQuerystring, mapDateFromQueryString, mapDatesToQueryString, useQueryString} from '../../core/helper/useQueryString'
 import {fromNullable} from 'fp-ts/lib/Option'
 import {useToast} from '../../core/toast'
 import {config} from '../../conf/config'

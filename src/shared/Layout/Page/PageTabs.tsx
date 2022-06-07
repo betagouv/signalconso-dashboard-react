@@ -1,4 +1,4 @@
-import {BoxProps, Tab, TabProps, Tabs} from '@mui/material'
+import {Tab, TabProps, Tabs} from '@mui/material'
 import * as React from 'react'
 import {ReactElement, useMemo, useState} from 'react'
 import {useHistory, useLocation} from 'react-router'

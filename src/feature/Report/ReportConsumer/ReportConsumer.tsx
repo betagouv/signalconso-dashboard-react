@@ -8,7 +8,7 @@ import React from 'react'
 import {Report} from '@signal-conso/signalconso-api-sdk-js'
 import {useI18n} from '../../../core/i18n'
 import {useReportContext} from '../../../core/context/ReportContext'
-import {combineSx, styleUtils, sxUtils} from '../../../core/theme'
+import {styleUtils, sxUtils} from '../../../core/theme'
 
 interface Props {
   report: Report

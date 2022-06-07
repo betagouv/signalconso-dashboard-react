@@ -1,5 +1,5 @@
 import {format} from 'date-fns'
-import {BoxProps, InputProps as StandardInputProps, TextField, TextFieldProps} from '@mui/material'
+import {InputProps as StandardInputProps, TextField, TextFieldProps} from '@mui/material'
 import React from 'react'
 
 export interface DatepickerProps extends Omit<TextFieldProps, 'onChange'> {

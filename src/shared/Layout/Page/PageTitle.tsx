@@ -1,6 +1,6 @@
 import * as React from 'react'
 import {ReactNode} from 'react'
-import {BoxProps, Typography, TypographyProps} from '@mui/material'
+import {Typography, TypographyProps} from '@mui/material'
 
 interface Props extends TypographyProps {
   action?: ReactNode

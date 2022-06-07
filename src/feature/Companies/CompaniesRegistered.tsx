@@ -1,14 +1,7 @@
 import {useI18n} from '../../core/i18n'
 import {Panel} from '../../shared/Panel'
 import {Datatable} from '../../shared/Datatable/Datatable'
-import {
-  cleanObject,
-  Company,
-  CompanySearch,
-  CompanyWithReportsCount,
-  PaginatedSearch,
-  ReportSearchResult,
-} from '@signal-conso/signalconso-api-sdk-js'
+import {cleanObject, Company, CompanySearch, PaginatedSearch} from '@signal-conso/signalconso-api-sdk-js'
 import React, {useEffect, useMemo, useState} from 'react'
 import {useCompaniesContext} from '../../core/context/CompaniesContext'
 import {Badge, Box, Icon, InputBase, ListItemIcon, ListItemText, MenuItem, Tooltip} from '@mui/material'

@@ -5,7 +5,7 @@ import {useLogin} from '../../core/context/LoginContext'
 import {Datepicker} from '../../shared/Datepicker/Datepicker'
 import {useToast} from '../../core/toast'
 import {ScDialog} from '../../shared/Confirm/ScDialog'
-import {BoxProps, ButtonProps} from '@mui/material'
+import {ButtonProps} from '@mui/material'
 
 interface Props extends Omit<ButtonProps, 'onChange'> {
   loading: boolean

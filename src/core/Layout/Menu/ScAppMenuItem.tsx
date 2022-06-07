@@ -1,6 +1,6 @@
 import * as React from 'react'
 import {HTMLProps, ReactNode} from 'react'
-import {Box, Icon, Theme, useTheme} from '@mui/material'
+import {Box, Icon, Theme} from '@mui/material'
 import {alpha} from '@mui/material/styles'
 import {useLayoutContext} from '../LayoutContext'
 import {NavLink} from 'react-router-dom'

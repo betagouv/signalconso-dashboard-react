@@ -1,10 +1,4 @@
-import {
-  CompanyAccessLevel,
-  ReportResponseTypes,
-  ReportStatus,
-  ReportStatusPro,
-  ReportTag,
-} from '@signal-conso/signalconso-api-sdk-js'
+import {CompanyAccessLevel, ReportResponseTypes, ReportStatus, ReportStatusPro, ReportTag} from '@signal-conso/signalconso-api-sdk-js'
 import {config} from '../../../conf/config'
 import {formatDistance, formatDuration as formatDurationFns} from 'date-fns'
 import {ResponseEvaluation} from '@signal-conso/signalconso-api-sdk-js/lib/client/event/Event'

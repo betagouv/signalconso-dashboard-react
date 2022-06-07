@@ -6,7 +6,7 @@ import {Dispatch, SetStateAction, useEffect, useMemo, useState} from 'react'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
 import {SelectMonth} from '../../shared/SelectMonth/SelectMonth'
 import {useGetDateForMonthAndPreviousOne} from './useGetDateForMonthAndPreviousOne'
-import {Box, BoxProps, CardProps} from '@mui/material'
+import {Box} from '@mui/material'
 import {styleUtils} from '../../core/theme'
 import {PanelProps} from '../../shared/Panel/Panel'
 

@@ -20,7 +20,6 @@ import {ReportResponseComponent} from './ReportResponse'
 import {ReportEvents} from './Event/ReportEvents'
 import {creationReportEvent} from './Report'
 import {useEventContext} from '../../core/context/EventContext'
-import {makeSx} from 'mui-extension'
 
 export const ReportPro = () => {
   const {id} = useParams<{id: Id}>()

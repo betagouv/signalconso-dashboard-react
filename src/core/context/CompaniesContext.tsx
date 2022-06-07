@@ -1,16 +1,7 @@
 import * as React from 'react'
 import {ReactNode, useContext} from 'react'
 import {UseFetcher, useFetcher, usePaginate, UsePaginate} from '@alexandreannic/react-hooks-lib/lib'
-import {
-  Address,
-  ApiError,
-  CompanySearch,
-  CompanyToActivate,
-  CompanyUpdate,
-  CompanyWithReportsCount,
-  Id,
-  PaginatedFilters,
-} from '@signal-conso/signalconso-api-sdk-js'
+import {Address, ApiError, CompanySearch, CompanyToActivate, CompanyUpdate, CompanyWithReportsCount, Id, PaginatedFilters} from '@signal-conso/signalconso-api-sdk-js'
 import {SignalConsoApiSdk} from '../ApiSdkInstance'
 import {paginateData} from '../helper/utils'
 import {useScPaginate} from '../../shared/usePaginate/usePaginate'
