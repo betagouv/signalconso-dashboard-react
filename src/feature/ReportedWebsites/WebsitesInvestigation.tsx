@@ -14,8 +14,6 @@ import {
   Theme,
   Tooltip,
 } from '@mui/material'
-import createStyles from '@mui/styles/createStyles'
-import makeStyles from '@mui/styles/makeStyles'
 import {useToast} from '../../core/toast'
 import {fromNullable} from 'fp-ts/lib/Option'
 import {Panel} from '../../shared/Panel'
@@ -24,22 +22,18 @@ import {DebouncedInput} from '../../shared/DebouncedInput/DebouncedInput'
 import {useReportedWebsiteWithCompanyContext} from '../../core/context/ReportedWebsitesContext'
 import {Country, DepartmentDivision, WebsiteKind, WebsiteWithCompany} from '@signal-conso/signalconso-api-sdk-js'
 import {IconBtn} from 'mui-extension'
-import {ScSelect} from '../../shared/Select/Select'
 import {SelectCompany} from '../../shared/SelectCompany/SelectCompany'
-import {Txt} from 'mui-extension/lib/Txt/Txt'
 import {useConstantContext} from '../../core/context/ConstantContext'
 import {SelectCountry} from './SelectCountry'
-import {classes} from '../../core/helper/utils'
-import {ScMenuItem} from '../MenuItem/MenuItem'
 import {useWebsiteInvestigationContext} from '../../core/context/WebsiteInvestigationContext'
 import {CountryChip} from './CountryChip'
-import {NavLink} from 'react-router-dom'
-import {siteMap} from '../../core/siteMap'
-import {ScMenu} from '../../shared/Menu/Menu'
-import {EditAddressDialog} from '../Companies/EditAddressDialog'
 import {CompanyChip} from './CompanyChip'
 import {StatusChip} from './StatusChip'
 import {SelectXXXX} from './SelectXXXX'
+import {ScSelect} from "../../shared/Select/Select";
+import {ScMenuItem} from "../MenuItem/MenuItem";
+import {ReportFilters} from "../Reports/ReportsFilters";
+import {WebsitesFilters} from "./WebsitesFilters";
 
 const useAnchoredMenu = () => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
@@ -63,6 +57,7 @@ export const WebsitesInvestigation = () => {
   const [countries, setCountries] = useState<Country[]>([])
   const [departmentDivision, setDepartmentDivision] = useState<DepartmentDivision[]>([])
   const [investigationStatus, setInvestigationStatus] = useState<string[]>([])
+  const [practice, setPractice] = useState<string[]>([])
   const countriesAnchor = useAnchoredMenu()
   const {toastError, toastInfo, toastSuccess} = useToast()
 
@@ -85,6 +80,11 @@ export const WebsitesInvestigation = () => {
   useEffect(() => {
     _investigationStatus.fetch({}).then(setInvestigationStatus)
   }, [])
+
+  useEffect(() => {
+    _practice.fetch({}).then(setPractice)
+  }, [])
+
 
   useEffect(() => {
     fromNullable(_updateStatus.error).map(toastError)
@@ -114,14 +114,25 @@ export const WebsitesInvestigation = () => {
                 />
               )}
             </DebouncedInput>
-          </>
+            </>
         }
         actions={
+        <>
           <Tooltip title={m.removeAllFilters}>
             <IconBtn color="primary" onClick={_websiteInvestigation.clearFilters}>
               <Icon>clear</Icon>
             </IconBtn>
           </Tooltip>
+          <WebsitesFilters
+          filters={_websiteInvestigation.filters}
+          updateFilters={ _ => {_websiteInvestigation.updateFilters(prev => ({...prev, ..._}))}}>
+          <Tooltip title={m.advancedFilters}>
+          <IconBtn color="primary">
+          <Icon>filter_list</Icon>
+          </IconBtn>
+          </Tooltip>
+          </WebsitesFilters>
+        </>
         }
         loading={_websiteInvestigation.fetching}
         total={_websiteInvestigation.list?.totalSize}
@@ -204,11 +215,35 @@ export const WebsitesInvestigation = () => {
           {
             head: m.practice,
             id: 'practice',
-            render: _ => <Box> {_.practice}</Box>,
+            render: _ => (
+              <SelectXXXX<string>
+                title={m.practiceTitle}
+                inputLabel={m.practice}
+                getValueName={_ => _}
+                onChange={practice => {
+                  if (_.practice === practice) {
+                    toastInfo(m.alreadySelectedValue(practice))
+                  } else {
+                    _createOrUpdate
+                      .fetch(
+                        {},
+                        {
+                          practice: practice,
+                          ..._,
+                        },
+                      )
+                      .then(_ => _websiteInvestigation.fetch({clean: false}))
+                  }
+                }}
+                listValues={practice}
+              >
+                <StatusChip tooltipTitle={m.practice} value={_.practice ?? m.noValue} />
+              </SelectXXXX>
+            ),
           },
           {
             head: m.investigation,
-            id: 'investigation',
+            id: 'investigationStatus',
             render: _ => (
               <SelectXXXX<string>
                 title={m.affectationTitle}
@@ -222,8 +257,8 @@ export const WebsitesInvestigation = () => {
                       .fetch(
                         {},
                         {
-                          investigationStatus: investigationStatus,
                           ..._,
+                          investigationStatus: investigationStatus,
                         },
                       )
                       .then(_ => _websiteInvestigation.fetch({clean: false}))
