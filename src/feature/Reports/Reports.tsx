@@ -15,14 +15,8 @@ import {Datatable} from '../../shared/Datatable/Datatable'
 import {fromNullable, some} from 'fp-ts/lib/Option'
 import {alpha, Badge, Box, Button, Checkbox, Chip, Grid, Icon, Tooltip} from '@mui/material'
 import {textOverflowMiddleCropping} from '../../core/helper/utils'
-import React, {useEffect, useMemo} from 'react'
-import {
-  mapArrayFromQuerystring,
-  mapBooleanFromQueryString,
-  mapDateFromQueryString,
-  mapDatesToQueryString,
-  useQueryString,
-} from '../../core/helper/useQueryString'
+import React, {useCallback, useEffect, useMemo} from 'react'
+import {mapArrayFromQuerystring, mapBooleanFromQueryString, mapDateFromQueryString, mapDatesToQueryString, useQueryString} from '../../core/helper/useQueryString'
 import {NavLink} from 'react-router-dom'
 import {SelectDepartments} from '../../shared/SelectDepartments/SelectDepartments'
 import {Fender, IconBtn} from 'mui-extension/lib'

@@ -8,6 +8,7 @@ import {siteMap} from '../../core/siteMap'
 import {ScButton} from '../../shared/Button/Button'
 import {EditPasswordDialog} from './EditPasswordDialog'
 import {useLogin} from '../../core/context/LoginContext'
+import {EditProfileDialog} from './EditProfileDialog'
 
 export const Settings = () => {
   const {m} = useI18n()
@@ -17,6 +18,17 @@ export const Settings = () => {
     <Page size="s">
       <PageTitle>{m.menu_settings}</PageTitle>
       <Panel>
+        <SettingRow icon="person" title={m.name} description={
+          <>
+            {connectedUser.firstName} {connectedUser.lastName}
+          </>
+        }>
+          <EditProfileDialog>
+            <ScButton icon="edit" color="primary">
+              {m.edit}
+            </ScButton>
+          </EditProfileDialog>
+        </SettingRow>
         <SettingRow icon="vpn_key" title={m.password} description={m.editPasswordDesc}>
           <EditPasswordDialog>
             <ScButton icon="edit" color="primary">
