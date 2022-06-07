@@ -6,7 +6,7 @@ interface Props {
   icon?: string
   children?: ReactNode
   title?: string
-  description?: string
+  description?: ReactNode
 }
 
 export const SettingRow = ({title, description, icon, children}: Props) => {

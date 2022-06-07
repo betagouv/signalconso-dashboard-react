@@ -10,7 +10,7 @@ import {useToast} from '../../core/toast'
 import {ReportEvents} from './Event/ReportEvents'
 import {ReportResponseComponent} from './ReportResponse'
 import {ReportHeader} from './ReportHeader'
-import {Btn, Confirm} from 'mui-extension/lib'
+import {Btn, Modal} from 'mui-extension/lib'
 import {ReportPostAction} from './ReportPostAction'
 import {useLogin} from '../../core/context/LoginContext'
 import {ReportConsumer} from './ReportConsumer/ReportConsumer'
@@ -19,6 +19,7 @@ import {ReportDescription} from './ReportDescription'
 import {useEventContext} from '../../core/context/EventContext'
 import {useEffectFn} from '../../shared/hooks/UseEffectFn'
 import {map} from '@alexandreannic/ts-utils'
+import {ScDialog} from '../../shared/Confirm/ScDialog'
 
 const CONSO: EventType = 'CONSO'
 
@@ -102,7 +103,7 @@ export const ReportComponent = () => {
               </Btn>
 
               {connectedUser.isAdmin && (
-                <Confirm
+                <ScDialog
                   title={m.removeAsk}
                   content={m.removeReportDesc(report.companySiret ?? '')}
                   onConfirm={(event, close) =>
@@ -115,7 +116,7 @@ export const ReportComponent = () => {
                   <Btn loading={_report.remove.loading} sx={{color: t => t.palette.error.main}} icon="delete">
                     {m.delete}
                   </Btn>
-                </Confirm>
+                </ScDialog>
               )}
             </Box>
           </ReportHeader>
