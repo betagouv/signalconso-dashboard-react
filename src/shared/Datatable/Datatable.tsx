@@ -62,32 +62,31 @@ export interface DatatableColumnProps<T> {
 
 const safeParseInt = (maybeInt: any, defaultValue: number): number => (isNaN(maybeInt) ? defaultValue : parseInt(maybeInt))
 
-export const Datatable = <T extends any = any>(props: DatatableProps<T>) => {
-  const sxStickyEnd: SxProps<Theme> = {
-    paddingTop: '1px',
-    position: 'sticky',
-    right: 0,
-    background: t => t.palette.background.paper,
-  }
-  const {m} = useI18n()
-  const {
-    id,
-    loading,
-    total,
-    data,
-    columns,
-    getRenderRowKey,
-    actions,
-    header,
-    showColumnsToggle,
-    showColumnsToggleBtnTooltip = m.toggleDatatableColumns,
-    renderEmptyState,
-    rowsPerPageOptions = [5, 10, 25, 100],
-    sort,
-    onClickRows,
-    paginate,
-  } = props
+const sxStickyEnd: SxProps<Theme> = {
+  paddingTop: '1px',
+  position: 'sticky',
+  right: 0,
+  background: t => t.palette.background.paper,
+}
 
+export const Datatable = <T extends any = any>({
+  id,
+  loading,
+  total,
+  data,
+  columns,
+  getRenderRowKey,
+  actions,
+  header,
+  showColumnsToggle,
+  showColumnsToggleBtnTooltip,
+  renderEmptyState,
+  rowsPerPageOptions = [5, 10, 25, 100],
+  sort,
+  onClickRows,
+  paginate,
+}: DatatableProps<T>) => {
+  const {m} = useI18n()
   const displayableColumns = useMemo(() => columns.filter(_ => !_.hidden), [columns])
   const toggleableColumnsName = useMemo(
     () => displayableColumns.filter(_ => !_.alwaysVisible && _.head && _.head !== ''),
@@ -134,7 +133,7 @@ export const Datatable = <T extends any = any>(props: DatatableProps<T>) => {
                 columns={toggleableColumnsName}
                 hiddenColumns={hiddenColumns}
                 onChange={_ => setHiddenColumns(_)}
-                title={showColumnsToggleBtnTooltip}
+                title={showColumnsToggleBtnTooltip ?? m.toggleDatatableColumns}
               />
             )}
           </Box>

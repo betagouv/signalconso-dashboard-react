@@ -9,7 +9,6 @@ import {ScChip} from '../../shared/Chip/ScChip'
 import React, {ReactNode} from 'react'
 import {styleUtils} from '../../core/theme'
 import {useI18n} from '../../core/i18n'
-import {useLogin} from '../../core/context/LoginContext'
 import {makeSx} from 'mui-extension'
 
 const css = makeSx({
