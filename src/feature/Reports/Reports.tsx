@@ -29,7 +29,6 @@ import compose from '../../core/helper/compose'
 import {Alert} from 'mui-extension'
 import {intersection} from '../../core/lodashNamedExport'
 import {useSetState} from '@alexandreannic/react-hooks-lib/lib'
-import {ReportsSelectedToolbar} from './ReportsSelectedToolbar'
 import {DatatableToolbar} from '../../shared/Datatable/DatatableToolbar'
 import {useReportContext} from '../../core/context/ReportContext'
 
