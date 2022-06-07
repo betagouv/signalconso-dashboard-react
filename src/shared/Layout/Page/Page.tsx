@@ -1,50 +1,46 @@
 import * as React from 'react'
 import {ReactNode} from 'react'
-import {Page as MuiPage} from 'mui-extension'
-import {LinearProgress, Theme} from '@mui/material'
-import makeStyles from '@mui/styles/makeStyles'
-import {classes} from '../../../core/helper/utils'
+import {Page as MxPage} from 'mui-extension'
+import {LinearProgress} from '@mui/material'
+import {PageProps as MxPageProps} from 'mui-extension/lib/Page/Page'
 
 export const pageWidth = {
   xl: 1400,
   l: 1100,
   m: 932,
-  s: 680,
+  s: 680
 }
 
-const useStyles = makeStyles((t: Theme) => ({
-  root: {
-    padding: `${t.spacing(3)} ${t.spacing(2)} ${t.spacing(2)} ${t.spacing(2)} !important`,
-  },
-  loading: {
-    position: 'relative',
-  },
-  loadingSpinner: {
-    position: 'absolute',
-    top: 0,
-    right: 0,
-    left: 0,
-  },
-}))
-
-export interface PageProps {
-  className?: string
+export interface PageProps extends MxPageProps {
   large?: boolean
   size?: 'xl' | 'l' | 's' | 'm'
   children: ReactNode
   loading?: boolean
 }
 
-export const Page = ({className, loading, size, ...props}: PageProps) => {
-  const css = useStyles()
+export const Page = ({loading, size, sx, ...props}: PageProps) => {
   return (
     <>
       {loading && (
-        <div className={css.loading}>
-          <LinearProgress className={css.loadingSpinner} />
+        <div style={{position: 'relative'}}>
+          <LinearProgress sx={{
+            position: 'absolute',
+            top: 0,
+            right: 0,
+            left: 0
+          }} />
         </div>
       )}
-      <MuiPage width={pageWidth[size ?? 'm']} className={classes(className, css.root)} {...props} />
+      <MxPage
+        {...props}
+        sx={{
+          p: 2,
+          pt: 3,
+          ...sx,
+        }}
+        width={pageWidth[size ?? 'm']}
+        {...props}
+      />
     </>
   )
 }

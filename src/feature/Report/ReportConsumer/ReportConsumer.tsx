@@ -2,38 +2,22 @@ import {Panel, PanelBody, PanelHead} from '../../../shared/Panel'
 import {EditConsumerDialog} from './EditConsumerDialog'
 import {ScButton} from '../../../shared/Button/Button'
 import {fromNullable} from 'fp-ts/lib/Option'
-import {capitalize, classes} from '../../../core/helper/utils'
-import {Icon, Theme, useTheme} from '@mui/material'
-import makeStyles from '@mui/styles/makeStyles'
+import {capitalize} from '../../../core/helper/utils'
+import {Box, Icon, useTheme} from '@mui/material'
 import React from 'react'
 import {Report} from '@signal-conso/signalconso-api-sdk-js'
 import {useI18n} from '../../../core/i18n'
 import {useReportContext} from '../../../core/context/ReportContext'
-import {useCssUtils} from '../../../core/helper/useCssUtils'
+import {combineSx, styleUtils, sxUtils} from '../../../core/theme'
 
 interface Props {
   report: Report
   canEdit?: boolean
 }
 
-const useStyles = makeStyles((t: Theme) => ({
-  cardBody: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    // alignItems: 'center',
-  },
-  cardBody_icon: {
-    fontSize: 64,
-    // color: t.palette.primary.main,
-    color: t.palette.divider,
-  },
-}))
-
 export const ReportConsumer = ({report, canEdit}: Props) => {
   const _report = useReportContext()
   const {m} = useI18n()
-  const css = useStyles()
-  const cssUtils = useCssUtils()
   const theme = useTheme()
 
   return (
@@ -56,9 +40,12 @@ export const ReportConsumer = ({report, canEdit}: Props) => {
       >
         {m.consumer}
       </PanelHead>
-      <PanelBody className={css.cardBody}>
+      <PanelBody sx={{
+        display: 'flex',
+        justifyContent: 'space-between',
+      }}>
         <div>
-          <div className={cssUtils.txtBig}>
+          <Box sx={{fontSize: t => styleUtils(t).fontSize.big}}>
             {fromNullable(report.firstName)
               .map(_ => capitalize(_))
               .getOrElse('')}
@@ -66,18 +53,21 @@ export const ReportConsumer = ({report, canEdit}: Props) => {
             {fromNullable(report.lastName)
               .map(_ => _.toLocaleUpperCase())
               .getOrElse('')}
-          </div>
-          <div className={cssUtils.colorTxtSecondary}>{report.email}</div>
-          {report.consumerPhone && <div className={cssUtils.colorTxtSecondary}>{report.consumerPhone}</div>}
+          </Box>
+          <Box sx={{color: t => t.palette.text.secondary}}>{report.email}</Box>
+          {report.consumerPhone && <Box sx={{color: t => t.palette.text.secondary}}>{report.consumerPhone}</Box>}
           {!report.contactAgreement && (
-            <div className={classes(cssUtils.colorError)} style={{marginTop: theme.spacing(0.5)}}>
-              <Icon className={cssUtils.inlineIcon}>warning</Icon>
+            <Box sx={{color: t => t.palette.error.main}} style={{marginTop: theme.spacing(0.5)}}>
+              <Icon sx={sxUtils.inlineIcon}>warning</Icon>
               &nbsp;
               {m.reportConsumerWantToBeAnonymous}
-            </div>
+            </Box>
           )}
         </div>
-        <Icon className={css.cardBody_icon}>person</Icon>
+        <Icon sx={{
+          fontSize: 64,
+          color: t => t.palette.divider,
+        }}>person</Icon>
       </PanelBody>
     </Panel>
   )

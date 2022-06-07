@@ -1,13 +1,13 @@
 import {some} from 'fp-ts/lib/Option'
 import {config} from '../../../conf/config'
-import {Icon, Theme, Tooltip} from '@mui/material'
-import makeStyles from '@mui/styles/makeStyles'
+import {Icon, Tooltip} from '@mui/material'
 import React from 'react'
 import {extensionToType, FileType} from './reportFileConfig'
 import {ReportFileProps} from './ReportFile'
 import {useLogin} from '../../../core/context/LoginContext'
+import {makeSx} from 'mui-extension'
 
-const useReportFileSmallStyles = makeStyles((t: Theme) => ({
+const css = makeSx({
   imgPdf: {
     color: '#db4537',
   },
@@ -17,11 +17,10 @@ const useReportFileSmallStyles = makeStyles((t: Theme) => ({
   imgPicture: {
     color: '#00c385',
   },
-}))
+})
 
 export const ReportFileSmall = ({file}: ReportFileProps) => {
   const fileType = extensionToType(file.filename)
-  const css = useReportFileSmallStyles()
   const {apiSdk} = useLogin()
   const fileUrl = some(apiSdk.public.document.getLink(file))
     .map(_ => (config.isDev ? _.replace(config.apiBaseUrl, 'https://signal-api.conso.gouv.fr') : _))
@@ -33,13 +32,13 @@ export const ReportFileSmall = ({file}: ReportFileProps) => {
         {(() => {
           switch (fileType) {
             case FileType.Image: {
-              return <Icon className={css.imgPicture}>image</Icon>
+              return <Icon sx={css.imgPicture}>image</Icon>
             }
             case FileType.PDF: {
-              return <Icon className={css.imgPdf}>picture_as_pdf</Icon>
+              return <Icon sx={css.imgPdf}>picture_as_pdf</Icon>
             }
             case FileType.Doc: {
-              return <Icon className={css.imgDoc}>article</Icon>
+              return <Icon sx={css.imgDoc}>article</Icon>
             }
             default: {
               return <Icon>insert_drive_file</Icon>

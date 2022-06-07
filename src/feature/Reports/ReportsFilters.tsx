@@ -9,7 +9,6 @@ import {ScInput} from '../../shared/Input/ScInput'
 import {useAnomalyContext} from '../../core/context/AnomalyContext'
 import {Enum} from '@alexandreannic/ts-utils/lib/common/enum/Enum'
 import {TrueFalseUndefined} from '../../shared/TrueFalseUndefined/TrueFalseUndefined'
-import {useCssUtils} from '../../core/helper/useCssUtils'
 import {SelectCountries} from '../../shared/SelectCountries/SelectCountries'
 import {SelectActivityCode} from '../../shared/SelectActivityCode/SelectActivityCode'
 import {ScMultiSelect} from 'shared/Select/MultiSelect'
@@ -91,7 +90,6 @@ const TrueLabel = () => {
 
 const _ReportsFilters = ({filters, updateFilters, children}: _ReportsFiltersProps) => {
   const {m} = useI18n()
-  const cssUtils = useCssUtils()
   const {
     register,
     handleSubmit,
@@ -144,7 +142,7 @@ const _ReportsFilters = ({filters, updateFilters, children}: _ReportsFiltersProp
                       label={{
                         true: <TrueLabel />,
                       }}
-                      className={cssUtils.marginTop}
+                      sx={{mt: 1}}
                       {...field}
                     />
                   )}
@@ -221,7 +219,7 @@ const _ReportsFilters = ({filters, updateFilters, children}: _ReportsFiltersProp
                       label={{
                         true: <TrueLabel />,
                       }}
-                      className={cssUtils.marginTop}
+                      sx={{mt: 1}}
                     />
                   )}
                 />
@@ -242,7 +240,7 @@ const _ReportsFilters = ({filters, updateFilters, children}: _ReportsFiltersProp
                       label={{
                         true: <TrueLabel />,
                       }}
-                      className={cssUtils.marginTop}
+                      sx={{mt: 1}}
                     />
                   )}
                 />
@@ -263,7 +261,7 @@ const _ReportsFilters = ({filters, updateFilters, children}: _ReportsFiltersProp
                       label={{
                         true: <TrueLabel />,
                       }}
-                      className={cssUtils.marginTop}
+                      sx={{mt: 1}}
                     />
                   )}
                 />
@@ -291,7 +289,7 @@ const _ReportsFilters = ({filters, updateFilters, children}: _ReportsFiltersProp
                       {...otherField}
                       value={!value}
                       onChange={_ => onChange(_ === undefined ? undefined : !_)}
-                      className={cssUtils.marginTop}
+                      sx={{mt: 1}}
                     />
                   )}
                 />
@@ -304,7 +302,7 @@ const _ReportsFilters = ({filters, updateFilters, children}: _ReportsFiltersProp
                   render={({field}) => (
                     <TrueFalseUndefined
                       {...field}
-                      className={cssUtils.marginTop}
+                      sx={{mt: 1}}
                     />
                   )}
                 />

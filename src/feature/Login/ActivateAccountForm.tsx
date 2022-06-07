@@ -2,11 +2,9 @@ import {useI18n} from '../../core/i18n'
 import {ScInput} from '../../shared/Input/ScInput'
 import {useForm} from 'react-hook-form'
 import {regexp} from '../../core/helper/regexp'
-import {useCssUtils} from '../../core/helper/useCssUtils'
 import {LoginPanel} from './LoginPanel'
 import {ScButton} from '../../shared/Button/Button'
-import makeStyles from '@mui/styles/makeStyles'
-import {Theme} from '@mui/material'
+import {Box} from '@mui/material'
 import {ActionProps} from './LoginPage'
 import {Alert} from 'mui-extension'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
@@ -25,22 +23,12 @@ interface Form {
   apiError: string
 }
 
-const useStyles = makeStyles((t: Theme) => ({
-  foot: {
-    marginTop: t.spacing(2),
-    display: 'flex',
-    alignItems: 'center',
-  },
-}))
-
 interface Props {
   register: ActionProps<(siret: string, code: string, email: string) => Promise<any>>
 }
 
 export const ActivateAccountForm = ({register: registerAction}: Props) => {
   const {m} = useI18n()
-  const cssUtils = useCssUtils()
-  const css = useStyles()
   const {toastSuccess} = useToast()
   const history = useHistory()
   const {
@@ -73,7 +61,7 @@ export const ActivateAccountForm = ({register: registerAction}: Props) => {
     <LoginPanel title={m.youReceivedNewLetter}>
       <form onSubmit={handleSubmit(activateAccount)}>
         {errors.apiError && (
-          <Alert type="error" className={cssUtils.marginBottom2}>
+          <Alert type="error" sx={{mb: 2}}>
             <Txt size="big" block bold>
               {m.registerCompanyError}
             </Txt>
@@ -81,7 +69,7 @@ export const ActivateAccountForm = ({register: registerAction}: Props) => {
           </Alert>
         )}
         <ScInput
-          className={cssUtils.marginBottom}
+          sx={{mb: 1}}
           fullWidth
           error={!!errors.siret}
           helperText={errors.siret?.message ?? m.siretOfYourCompanyDesc}
@@ -92,7 +80,7 @@ export const ActivateAccountForm = ({register: registerAction}: Props) => {
           })}
         />
         <ScInputPassword
-          className={cssUtils.marginBottom}
+          sx={{mb: 1}}
           fullWidth
           error={!!errors.code}
           helperText={errors.code?.message ?? m.activationCodeDesc}
@@ -103,7 +91,7 @@ export const ActivateAccountForm = ({register: registerAction}: Props) => {
           })}
         />
         <ScInput
-          className={cssUtils.marginBottom}
+          sx={{mb: 1}}
           fullWidth
           error={!!errors.email}
           helperText={errors.email?.message ?? m.emailDesc}
@@ -113,7 +101,11 @@ export const ActivateAccountForm = ({register: registerAction}: Props) => {
             pattern: {value: regexp.email, message: m.invalidEmail},
           })}
         />
-        <div className={css.foot}>
+        <Box sx={{
+          mt: 2,
+          display: 'flex',
+          alignItems: 'center',
+        }}>
           <ScButton
             loading={registerAction.loading}
             onClick={_ => clearErrors('apiError')}
@@ -123,7 +115,7 @@ export const ActivateAccountForm = ({register: registerAction}: Props) => {
           >
             {m.activateMyAccount}
           </ScButton>
-        </div>
+        </Box>
       </form>
     </LoginPanel>
   )

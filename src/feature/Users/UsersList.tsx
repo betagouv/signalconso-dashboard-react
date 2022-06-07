@@ -4,21 +4,19 @@ import {useI18n} from '../../core/i18n'
 import React, {useEffect} from 'react'
 import {useUsersContext} from '../../core/context/UsersContext'
 import {Icon, InputBase, Tooltip} from '@mui/material'
-import {useCssUtils} from '../../core/helper/useCssUtils'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
 import {fromNullable} from 'fp-ts/lib/Option'
 import {useToast} from '../../core/toast'
 import {DebouncedInput} from '../../shared/DebouncedInput/DebouncedInput'
 import {TrueFalseUndefined} from '../../shared/TrueFalseUndefined/TrueFalseUndefined'
 import {User} from '@signal-conso/signalconso-api-sdk-js'
-import {ScDialog} from "../../shared/Confirm/ScDialog";
-import {IconBtn} from "mui-extension";
+import {ScDialog} from '../../shared/Confirm/ScDialog'
+import {IconBtn} from 'mui-extension'
 
 export const UsersList = () => {
   const {m, formatDate} = useI18n()
   const _users = useUsersContext().searchDgccrf
   const _validateEmail = useUsersContext().forceValidateEmail
-  const cssUtils = useCssUtils()
   const {toastError, toastSuccess} = useToast()
 
   useEffect(() => {
@@ -44,7 +42,7 @@ export const UsersList = () => {
                   value={value}
                   placeholder={m.searchByEmail + '...'}
                   fullWidth
-                  className={cssUtils.marginLeft}
+                  sx={{ml: 1}}
                   onChange={e => onChange(e.target.value)}
                 />
               )}
@@ -112,7 +110,7 @@ export const UsersList = () => {
               >
                 {User.isUserActive(_) ? (<Tooltip title={m.extendValidation}>
                   <IconBtn>
-                    <Icon className={cssUtils.colorSuccess}>check_circle</Icon>
+                    <Icon sx={{color: t => t.palette.success.light}}>check_circle</Icon>
                   </IconBtn>
                 </Tooltip>)
                   :

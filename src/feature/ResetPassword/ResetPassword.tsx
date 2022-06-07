@@ -11,8 +11,6 @@ import {ScButton} from '../../shared/Button/Button'
 import {useHistory, useParams} from 'react-router'
 import {Id} from '@signal-conso/signalconso-api-sdk-js'
 import {useAsync} from '@alexandreannic/react-hooks-lib'
-import makeStyles from '@mui/styles/makeStyles'
-import {Theme} from '@mui/material'
 import {HelpContactInfo} from '../../shared/HelpContactInfo/HelpContactInfo'
 import {AuthenticationEventActions, EventCategories, Matomo} from '../../core/plugins/Matomo'
 import {useToast} from '../../core/toast'
@@ -28,17 +26,10 @@ interface Props {
   onResetPassword: (password: string, token: Id) => Promise<any>
 }
 
-const useStyles = makeStyles((t: Theme) => ({
-  page: {
-    maxWidth: `500px !important`,
-  },
-}))
-
 export const ResetPassword = ({onResetPassword}: Props) => {
   const {m} = useI18n()
   const {token} = useParams<{token: Id}>()
   const _resetPassword = useAsync(onResetPassword)
-  const css = useStyles()
   const history = useHistory()
   const {toastError, toastSuccess} = useToast()
   const {
@@ -73,7 +64,7 @@ export const ResetPassword = ({onResetPassword}: Props) => {
 
   return (
     <CenteredContent offset={headerHeight}>
-      <Page size="s" className={css.page}>
+      <Page size="s" sx={{maxWidth: `500px !important`,}}>
         <form onSubmit={handleSubmit(resetPassword)}>
           <Panel>
             <PanelHead>{m.newPassword}</PanelHead>

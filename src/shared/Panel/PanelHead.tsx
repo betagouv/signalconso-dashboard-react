@@ -1,26 +1,7 @@
 import * as React from 'react'
 import {ReactNode} from 'react'
-import {BoxProps, Icon, Theme} from '@mui/material'
-import makeStyles from '@mui/styles/makeStyles'
-import {styleUtils} from '../../core/theme'
-import {classes} from '../../core/helper/utils'
+import {BoxProps, Icon} from '@mui/material'
 import {PanelTitle} from './PanelTitle'
-
-const useStyles = makeStyles((t: Theme) => ({
-  root: {
-    padding: styleUtils(t).spacing(2, 2, 0, 2),
-    margin: 0,
-    display: 'flex',
-    alignItems: 'center',
-  },
-  content: {
-    flex: 1,
-  },
-  icon: {
-    color: t.palette.text.disabled,
-    marginRight: t.spacing(1),
-  },
-}))
 
 interface Props extends BoxProps {
   className?: string
@@ -29,12 +10,18 @@ interface Props extends BoxProps {
   icon?: string
 }
 
-export const PanelHead = ({className, icon, children, action, ...other}: Props) => {
-  const css = useStyles()
+export const PanelHead = ({icon, children, action, sx, ...other}: Props) => {
   return (
-    <PanelTitle {...other} className={classes(css.root, className)}>
-      {icon && <Icon className={css.icon}>{icon}</Icon>}
-      <div className={css.content}>{children}</div>
+    <PanelTitle {...other} sx={{
+      p: 2,
+      pb: 0,
+      m: 0,
+      display: 'flex',
+      alignItems: 'center',
+      ...sx,
+    }}>
+      {icon && <Icon sx={{color: t => t.palette.text.disabled, mr: 1}}>{icon}</Icon>}
+      <div style={{flex: 1}}>{children}</div>
       {action}
     </PanelTitle>
   )

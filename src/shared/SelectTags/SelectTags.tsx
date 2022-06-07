@@ -1,5 +1,5 @@
 import * as React from 'react'
-import {CSSProperties, forwardRef, useEffect, useMemo} from 'react'
+import {CSSProperties, forwardRef, useEffect} from 'react'
 import {Icon, InputAdornment, TextField} from '@mui/material'
 import {SelectTagsMenu, SelectTagsMenuValues} from './SelectTagsMenu'
 import {useMemoFn} from '../hooks/UseMemoFn'

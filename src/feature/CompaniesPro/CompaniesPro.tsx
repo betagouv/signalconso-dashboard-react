@@ -3,11 +3,9 @@ import {useI18n} from '../../core/i18n'
 import React, {useEffect, useMemo, useState} from 'react'
 import {Panel, PanelBody} from '../../shared/Panel'
 import {useCompaniesContext} from '../../core/context/CompaniesContext'
-import {useCssUtils} from '../../core/helper/useCssUtils'
 import {Datatable} from '../../shared/Datatable/Datatable'
-import {Icon, Switch, Theme, Tooltip} from '@mui/material'
-import makeStyles from '@mui/styles/makeStyles'
-import {styleUtils} from '../../core/theme'
+import {Box, Icon, Switch, Tooltip, useTheme} from '@mui/material'
+import {styleUtils, sxUtils} from '../../core/theme'
 import {Fender, IconBtn} from 'mui-extension/lib'
 import {ScButton} from '../../shared/Button/Button'
 import {AddressComponent} from '../../shared/Address/Address'
@@ -16,49 +14,18 @@ import {NavLink} from 'react-router-dom'
 import {AccessLevel, Id} from '@signal-conso/signalconso-api-sdk-js'
 import {useUsersContext} from '../../core/context/UsersContext'
 import {fromNullable} from 'fp-ts/lib/Option'
-import {classes} from '../../core/helper/utils'
 import {useBlockedReportNotificationContext} from '../../core/context/BlockedReportNotificationProviderContext'
 import {useToast} from '../../core/toast'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
 import {ConfirmDisableNotificationDialog} from './ConfirmDisableNotificationDialog'
 import {groupBy} from '../../core/lodashNamedExport'
 import {PanelFoot} from '../../shared/Panel/PanelFoot'
-import {useLogin} from '../../core/context/LoginContext'
-
-const useStyles = makeStyles((t: Theme) => ({
-  tdName_label: {
-    fontWeight: 'bold',
-    marginBottom: -1,
-  },
-  tdName: {
-    lineHeight: 1.4,
-    maxWidth: 200,
-  },
-  tdName_desc: {
-    fontSize: t.typography.fontSize * 0.875,
-    color: t.palette.text.disabled,
-  },
-  tdAddress: {
-    maxWidth: 240,
-    color: t.palette.text.secondary,
-    ...styleUtils(t).truncate,
-  },
-  tdNotification: {
-    width: 0,
-    textAlign: 'center',
-    padding: 0,
-  },
-  fender: {
-    margin: `${t.spacing(1)}px auto ${t.spacing(2)}px auto`,
-  },
-}))
 
 export const CompaniesPro = () => {
   const {m} = useI18n()
+  const theme = useTheme()
   const _companies = useCompaniesContext()
   const _blockedNotifications = useBlockedReportNotificationContext()
-  const cssUtils = useCssUtils()
-  const css = useStyles()
   const _users = useUsersContext()
   const {toastError} = useToast()
   const [state, setState] = useState<Id | Id[] | undefined>()
@@ -131,7 +98,7 @@ export const CompaniesPro = () => {
                     disabled={_blockedNotifications.list.entity?.length === 0}
                     color="primary"
                     icon="notifications_active"
-                    className={cssUtils.marginRight}
+                    sx={{mr: 1}}
                     onClick={() => _blockedNotifications.remove.call(companies.map(_ => _.id))}
                   >
                     {m.enableAll}
@@ -150,14 +117,25 @@ export const CompaniesPro = () => {
           columns={[
             {
               id: '',
-              className: css.tdName,
+              style: {
+                lineHeight: 1.4,
+                maxWidth: 200,
+              },
               head: m.name,
               render: _ => (
                 <Tooltip title={_.name}>
                   <span>
-                    <span className={css.tdName_label}>{_.name}</span>
+                    <Box component="span" sx={{
+                      fontWeight: 'bold',
+                      mb: '-1px',
+                    }}>
+                      {_.name}
+                    </Box>
                     <br />
-                    <span className={css.tdName_desc}>{_.siret}</span>
+                    <Box component="span" sx={{
+                      fontSize: t => styleUtils(t).fontSize.small,
+                      color: t => t.palette.text.disabled,
+                    }}>{_.siret}</Box>
                   </span>
                 </Tooltip>
               ),
@@ -165,7 +143,11 @@ export const CompaniesPro = () => {
             {
               head: m.address,
               id: 'address',
-              className: css.tdAddress,
+              sx: _ => ({
+                maxWidth: 240,
+                color: t => t.palette.text.secondary,
+                ...styleUtils(theme).truncate,
+              }),
               render: _ => (
                 <Tooltip title={<AddressComponent address={_.address} />}>
                   <span>
@@ -175,9 +157,17 @@ export const CompaniesPro = () => {
               ),
             },
             {
-              head: <span className={classes(cssUtils.nowrap, cssUtils.vaMiddle)}>{m.notification}</span>,
+              head: (
+                <Box component="span" sx={{whiteSpace: 'nowrap', verticalAlign: 'middle',}}>
+                  {m.notification}
+                </Box>
+              ),
               id: 'status',
-              className: css.tdNotification,
+              sx: _ => ({
+                width: 0,
+                textAlign: 'center',
+                p: 0,
+              }),
               render: _ => (
                 <>
                   <Switch
@@ -193,7 +183,7 @@ export const CompaniesPro = () => {
             {
               head: '',
               id: 'actions',
-              className: cssUtils.tdActions,
+              sx: _ => sxUtils.tdActions,
               render: _ => (
                 <>
                   {_.level === AccessLevel.ADMIN && (
@@ -224,8 +214,12 @@ export const CompaniesPro = () => {
             },
           ]}
           renderEmptyState={
-            <Fender title={m.noCompanyFound} icon="store" className={css.fender}>
-              <ScButton variant="contained" color="primary" icon="add" className={cssUtils.marginTop}>
+            <Fender title={m.noCompanyFound} icon="store" sx={{
+              margin: 'auto',
+              mt: 1,
+              mb: 2,
+            }}>
+              <ScButton variant="contained" color="primary" icon="add" sx={{mt: 1}}>
                 {m.registerACompany}
               </ScButton>
             </Fender>

@@ -8,12 +8,10 @@ import {useToast} from '../../core/toast'
 import {Page} from '../../shared/Layout'
 import {ReportHeader} from './ReportHeader'
 import {useBoolean} from '@alexandreannic/react-hooks-lib/lib'
-import {Collapse, Theme} from '@mui/material'
-import makeStyles from '@mui/styles/makeStyles'
+import {Box, Collapse} from '@mui/material'
 import {ScButton} from '../../shared/Button/Button'
 import {styleUtils} from '../../core/theme'
 import {capitalize} from '../../core/helper/utils'
-import {useCssUtils} from '../../core/helper/useCssUtils'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
 import {ReportDescription} from './ReportDescription'
 import {ReportResponseForm} from './ReportResponseForm/ReportResponseForm'
@@ -22,23 +20,11 @@ import {ReportResponseComponent} from './ReportResponse'
 import {ReportEvents} from './Event/ReportEvents'
 import {creationReportEvent} from './Report'
 import {useEventContext} from '../../core/context/EventContext'
-
-const useStyles = makeStyles((t: Theme) => ({
-  answerPanel: {
-    transition: t.transitions.create('box-shadow'),
-  },
-  responseDateTime: {
-    color: t.palette.text.disabled,
-    fontSize: styleUtils(t).fontSize.normal,
-    fontWeight: 'normal',
-    display: 'inline',
-  },
-}))
+import {makeSx} from 'mui-extension'
 
 export const ReportPro = () => {
   const {id} = useParams<{id: Id}>()
   const {m, formatDateTime} = useI18n()
-  const css = useStyles()
   const _report = useReportContext()
   const _event = useEventContext()
   const {toastError} = useToast()
@@ -47,7 +33,6 @@ export const ReportPro = () => {
     () => _event.reportEvents.entity?.find(_ => _.data.action === EventActionValues.ReportProResponse),
     [_event.reportEvents],
   )
-  const cssUtils = useCssUtils()
   const responseFormRef = useRef<any>(null)
 
   useEffect(() => {
@@ -94,7 +79,7 @@ export const ReportPro = () => {
               </Txt>
               {report.contactAgreement ? (
                 <>
-                  <div className={cssUtils.colorTxtSecondary}>
+                  <Box sx={{color: t => t.palette.text.secondary}}>
                     {fromNullable(report.firstName)
                       .map(_ => capitalize(_))
                       .getOrElse('')}
@@ -102,7 +87,7 @@ export const ReportPro = () => {
                     {fromNullable(report.lastName)
                       .map(_ => _.toLocaleUpperCase())
                       .getOrElse('')}
-                  </div>
+                  </Box>
                   <Txt color="hint">{report.email}</Txt>
                 </>
               ) : (
@@ -112,8 +97,16 @@ export const ReportPro = () => {
 
             <Collapse in={_event.reportEvents.entity && !!response}>
               <Panel>
-                <PanelHead
-                  action={response && <div className={css.responseDateTime}>{formatDateTime(response.data.creationDate)}</div>}
+                <PanelHead action={response && (
+                  <Box sx={{
+                    color: t => t.palette.text.disabled,
+                    fontSize: t => styleUtils(t).fontSize.normal,
+                    fontWeight: 'normal',
+                    display: 'inline',
+                  }}>
+                    {formatDateTime(response.data.creationDate)}
+                  </Box>
+                )}
                 >
                   {m.proAnswerYourAnswer}
                 </PanelHead>
@@ -135,7 +128,9 @@ export const ReportPro = () => {
                   _report.get.fetch({clean: false, force: true}, id)
                 }}
                 onCancel={openAnswerPanel.setFalse}
-                className={css.answerPanel}
+                sx={{
+                  transition: t => t.transitions.create('box-shadow'),
+                }}
               />
             </Collapse>
 

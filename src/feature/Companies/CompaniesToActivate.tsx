@@ -1,13 +1,11 @@
 import {useI18n} from '../../core/i18n'
 import {Panel} from '../../shared/Panel'
 import {Datatable} from '../../shared/Datatable/Datatable'
-import {CompanyToActivate, Id} from '@signal-conso/signalconso-api-sdk-js'
+import {Id} from '@signal-conso/signalconso-api-sdk-js'
 import React, {SyntheticEvent, useEffect} from 'react'
 import {useCompaniesContext} from '../../core/context/CompaniesContext'
-import {useCssUtils} from '../../core/helper/useCssUtils'
-import {Checkbox, Icon, Theme, Tooltip} from '@mui/material'
-import makeStyles from '@mui/styles/makeStyles'
-import {styleUtils} from '../../core/theme'
+import {Box, Checkbox, Icon, Tooltip} from '@mui/material'
+import {styleUtils, sxUtils} from '../../core/theme'
 import {Fender, IconBtn} from 'mui-extension/lib'
 import {Link} from 'react-router-dom'
 import {siteMap} from '../../core/siteMap'
@@ -20,49 +18,11 @@ import {fromNullable} from 'fp-ts/lib/Option'
 import {EntityIcon} from '../../core/EntityIcon'
 import {AddressComponent} from '../../shared/Address/Address'
 import {ScDialog} from '../../shared/Confirm/ScDialog'
-import {useLogin} from '../../core/context/LoginContext'
-
-const useStyles = makeStyles((t: Theme) => ({
-  tdName_label: {
-    fontWeight: 'bold',
-    marginBottom: -1,
-  },
-  selectedCountBadge: {
-    borderRadius: 30,
-    minWidth: 22,
-    height: 22,
-    lineHeight: '22px',
-    padding: t.spacing(0, 1),
-    textAlign: 'center',
-    background: t.palette.primary.main,
-    color: t.palette.primary.contrastText,
-    fontWeight: 'bold',
-    marginRight: 4,
-  },
-  tdName: {
-    lineHeight: 1.4,
-    maxWidth: 390,
-  },
-  tdName_desc: {
-    fontSize: t.typography.fontSize * 0.875,
-    color: t.palette.text.disabled,
-  },
-  tdAddress: {
-    paddingTop: t.spacing(0.5),
-    paddingBottom: t.spacing(0.5),
-    fontSize: styleUtils(t).fontSize.small,
-    color: t.palette.text.secondary,
-    maxWidth: 300,
-    ...styleUtils(t).truncate,
-  },
-}))
 
 export const CompaniesToActivate = () => {
-  const {m, formatLargeNumber, formatDate} = useI18n()
+  const {m, formatDate} = useI18n()
   const _companies = useCompaniesContext()
   const _companiesToActivate = _companies.toActivate
-  const cssUtils = useCssUtils()
-  const css = useStyles()
 
   const [selectedCompanies, setSelectedCompanies] = usePersistentState<string[]>([], 'CompaniesToActivate')
   const selectedCompaniesSet = useSetState(selectedCompanies)
@@ -118,7 +78,7 @@ export const CompaniesToActivate = () => {
               color="primary"
               variant="outlined"
               icon="file_download"
-              className={cssUtils.marginRight}
+              sx={{mr: 1}}
               onClick={() => _companies.downloadActivationDocument.fetch({}, selectedCompaniesSet.toArray()).catch(toastError)}
             >
               {m.download}
@@ -127,7 +87,7 @@ export const CompaniesToActivate = () => {
               <ScButton
                 disabled={_companiesToActivate.fetching || selectedCompaniesSet.size === 0}
                 loading={_companies.confirmCompaniesPosted.loading}
-                className={cssUtils.marginRight}
+                sx={{mr: 1}}
                 color="error"
                 variant="contained"
                 icon="check_circle"
@@ -137,7 +97,20 @@ export const CompaniesToActivate = () => {
             </ScDialog>
             {!_companiesToActivate.fetching && selectedCompaniesSet.size > 0 && (
               <div>
-                <span className={css.selectedCountBadge}>{selectedCompaniesSet.size}</span>
+                <Box component="span" sx={{
+                  borderRadius: '30px',
+                  minWidth: 22,
+                  height: 22,
+                  lineHeight: '22px',
+                  px: 1,
+                  textAlign: 'center',
+                  background: t => t.palette.primary.main,
+                  color: t => t.palette.primary.contrastText,
+                  fontWeight: 'bold',
+                  marginRight: '4px',
+                }}>
+                  {selectedCompaniesSet.size}
+                </Box>
                 <Txt color="hint">{m.selectedCompanies}</Txt>
               </div>
             )}
@@ -173,13 +146,20 @@ export const CompaniesToActivate = () => {
           {
             id: 'siret',
             head: m.name,
-            className: css.tdName,
+            sx: _ => ({
+              lineHeight: 1.4,
+              maxWidth: 390,
+            }),
             render: _ => (
               <Tooltip title={_.company.name}>
                 <span>
-                  <span className={css.tdName_label}>{_.company.name}</span>
+                  <Box component="span" sx={{marginBottom: '-1px', fontWeight: t => t.typography.fontWeightBold}}>
+                    {_.company.name}
+                  </Box>
                   <br />
-                  <span className={css.tdName_desc}>{_.company.siret}</span>
+                  <Box component="span" sx={{fontSize: t => styleUtils(t).fontSize.small, color: t => t.palette.text.disabled}}>
+                    {_.company.siret}
+                  </Box>
                 </span>
               </Tooltip>
             ),
@@ -187,7 +167,14 @@ export const CompaniesToActivate = () => {
           {
             head: m.address,
             id: 'address',
-            className: css.tdAddress,
+            sx: _ => ({
+              pt: .5,
+              pb: .5,
+              fontSize: t => styleUtils(t).fontSize.small,
+              color: t => t.palette.text.secondary,
+              maxWidth: 300,
+              ...sxUtils.truncate,
+            }),
             render: _ => (
               <Tooltip title={<AddressComponent address={_.company.address} />}>
                 <span>
@@ -208,7 +195,7 @@ export const CompaniesToActivate = () => {
           },
           {
             id: 'actions',
-            className: cssUtils.tdActions,
+            sx: _ => sxUtils.tdActions,
             stickyEnd: true,
             render: _ => (
               <>

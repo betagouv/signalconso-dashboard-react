@@ -35,7 +35,7 @@ export const StatusDistribution = <T extends ReportStatus | ReportStatusPro>({
               sx={{
                 verticalAlign: 'middle',
                 color: t => t.palette.text.disabled,
-                marginLeft: t => t.spacing(1),
+                ml: 1,
               }}
             >
               help

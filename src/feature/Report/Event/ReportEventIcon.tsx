@@ -1,11 +1,10 @@
 import {EventActionValues} from '@signal-conso/signalconso-api-sdk-js'
-import {Icon, Theme, useTheme} from '@mui/material'
+import {Icon, IconProps, Theme, useTheme} from '@mui/material'
 import {styleUtils} from '../../../core/theme'
 import {fnSwitch} from '../../../core/helper/utils'
 
-export interface ReportEventIconProps {
+export interface ReportEventIconProps extends IconProps {
   action: EventActionValues
-  className?: string
 }
 
 export const getReportEventIcon = (action: EventActionValues) =>
@@ -49,10 +48,10 @@ export const getReportEventColor = (t: Theme) => (action: EventActionValues) =>
     _ => t.palette.text.disabled,
   )
 
-export const ReportEventIcon = ({action, className}: ReportEventIconProps) => {
+export const ReportEventIcon = ({action, ...props}: ReportEventIconProps) => {
   const theme = useTheme()
   return (
-    <Icon className={className} style={{color: getReportEventColor(theme)(action)}}>
+    <Icon {...props} style={{color: getReportEventColor(theme)(action)}}>
       {getReportEventIcon(action)}
     </Icon>
   )

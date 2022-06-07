@@ -32,8 +32,8 @@ export const ReportsSelectedToolbar = ({
       opacity: ids.length > 0 ? 1 : 0,
       height: ids.length > 0 ? 'calc(100% + 2px)' : 0,
       background: t => lighten(t.palette.primary.main, .86),
-      borderTopRightRadius: t => t.shape.borderRadius,
-      borderTopLeftRadius: t => t.shape.borderRadius,
+      borderTopRightRadius: t => t.shape.borderRadius + 'px',
+      borderTopLeftRadius: t => t.shape.borderRadius + 'px',
       margin: `-1px`,
       border: t => `2px solid ${t.palette.primary.main}`,
     }}>

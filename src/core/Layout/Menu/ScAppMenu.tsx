@@ -1,52 +1,54 @@
 import {useI18n} from '../../i18n'
 import {Btn} from 'mui-extension/lib'
-import {ClickAwayListener, Divider, Theme} from '@mui/material'
+import {Box, ClickAwayListener} from '@mui/material'
 import {EntityIcon} from '../../EntityIcon'
 import React from 'react'
-import makeStyles from '@mui/styles/makeStyles'
-import {styleUtils} from '../../theme'
+import {styleUtils, sxUtils} from '../../theme'
 import {ScAppMenuItem} from './ScAppMenuItem'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
 import {siteMap} from '../../siteMap'
 import {stopPropagation} from '../../helper/utils'
 import {LayoutConnectedUser} from '../Layout'
 import {Roles} from '@signal-conso/signalconso-api-sdk-js'
+import {makeSx} from 'mui-extension'
+import {Divider} from '../../../shared/Divider/Divider'
 
-const useMenuStyles = makeStyles((t: Theme) => ({
+const css = makeSx({
   root: {
     position: 'absolute',
     top: 50,
     right: 0,
-    background: t.palette.background.paper,
-    boxShadow: t.shadows[6],
-    borderRadius: 4,
+    background: t => t.palette.background.paper,
+    boxShadow: t => t.shadows[6],
+    borderRadius: t => t.shape.borderRadius + 'px',
     zIndex: 100,
     minWidth: 280,
   },
   user: {
-    padding: t.spacing(2, 2, 0.5, 2),
+    p: 2,
+    pb: .5,
   },
   userName: {
-    ...styleUtils(t).truncate,
+    ...sxUtils.truncate,
   },
   userEmail: {
-    ...styleUtils(t).truncate,
-    color: t.palette.text.secondary,
-    fontSize: styleUtils(t).fontSize.small,
+    ...sxUtils.truncate,
+    color: t => t.palette.text.secondary,
+    fontSize: t => styleUtils(t).fontSize.small,
   },
   logoutBtn: {
-    margin: `${t.spacing(1, 0)} !important`,
+    margin: t => `${t.spacing(1, 0)} !important`,
   },
   useRole: {
-    fontSize: styleUtils(t).fontSize.small,
-    color: t.palette.text.disabled,
+    fontSize: t => styleUtils(t).fontSize.small,
+    color: t => t.palette.text.disabled,
   },
   divider: {
-    '& + $divider': {
+    '& + &': {
       display: 'none',
     },
   },
-}))
+})
 
 interface Props {
   onClose: () => void
@@ -56,7 +58,6 @@ interface Props {
 export const ScAppMenu = ({onClose, connectedUser}: Props) => {
   const path = (page: string) => '' + page
   const {m} = useI18n()
-  const css = useMenuStyles()
 
   const logout = () => {
     connectedUser.logout()
@@ -65,19 +66,19 @@ export const ScAppMenu = ({onClose, connectedUser}: Props) => {
 
   return (
     <ClickAwayListener onClickAway={stopPropagation(onClose)}>
-      <div className={css.root}>
-        <div className={css.user}>
-          <Txt block truncate className={css.userName}>
+      <Box sx={css.root}>
+        <Box sx={css.user}>
+          <Txt block truncate sx={css.userName}>
             {connectedUser.firstName} {connectedUser.lastName}
           </Txt>
-          <Txt block truncate className={css.userEmail}>
+          <Txt block truncate sx={css.userEmail}>
             {connectedUser.email}
           </Txt>
-          <Btn variant="outlined" size="small" icon="logout" color="primary" className={css.logoutBtn} onClick={logout}>
+          <Btn variant="outlined" size="small" icon="logout" color="primary" sx={css.logoutBtn} onClick={logout}>
             {m.logout}
           </Btn>
-        </div>
-        <Divider className={css.divider} />
+        </Box>
+        <Divider sx={css.divider}/>
         {[Roles.Admin, Roles.DGCCRF].includes(connectedUser.role) && (
           <ScAppMenuItem onClick={onClose} to={path(siteMap.logged.stats)} icon={EntityIcon.stats}>
             {m.menu_stats}
@@ -106,7 +107,7 @@ export const ScAppMenu = ({onClose, connectedUser}: Props) => {
             {m.menu_subscriptions}
           </ScAppMenuItem>
         )}
-        <Divider className={css.divider} />
+        <Divider sx={css.divider}/>
         {[Roles.Admin, Roles.DGCCRF].includes(connectedUser.role) && (
           <ScAppMenuItem onClick={onClose} to={path(siteMap.logged.reportedWebsites)} icon={EntityIcon.website}>
             {m.menu_websites}
@@ -122,7 +123,7 @@ export const ScAppMenu = ({onClose, connectedUser}: Props) => {
             {m.menu_modeEmploiDGCCRF}
           </ScAppMenuItem>
         )}
-        <Divider className={css.divider} />
+        <Divider sx={css.divider}/>
         {[Roles.Admin].includes(connectedUser.role) && (
           <ScAppMenuItem onClick={onClose} to={path(siteMap.logged.admin)} icon={EntityIcon.admin}>
             {m.menu_admin}
@@ -133,11 +134,11 @@ export const ScAppMenu = ({onClose, connectedUser}: Props) => {
             {m.database}
           </ScAppMenuItem>
         )}
-        <Divider className={css.divider} />
+        <Divider sx={css.divider}/>
         <ScAppMenuItem onClick={onClose} to={path(siteMap.logged.settings)} icon="settings">
           {m.menu_settings}
         </ScAppMenuItem>
-      </div>
+      </Box>
     </ClickAwayListener>
   )
 }

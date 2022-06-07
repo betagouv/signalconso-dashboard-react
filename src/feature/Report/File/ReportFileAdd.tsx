@@ -1,6 +1,5 @@
 import React, {useRef, useState} from 'react'
-import {Button, CircularProgress, Icon, Theme, Tooltip} from '@mui/material'
-import makeStyles from '@mui/styles/makeStyles'
+import {Box, Button, CircularProgress, Icon, Tooltip} from '@mui/material'
 import {reportFileConfig} from './reportFileConfig'
 import {useI18n} from '../../../core/i18n'
 import {styleUtils} from '../../../core/theme'
@@ -8,15 +7,16 @@ import {config} from '../../../conf/config'
 import {FileOrigin, Id, UploadedFile} from '@signal-conso/signalconso-api-sdk-js'
 import {useToast} from '../../../core/toast'
 import {useLogin} from '../../../core/context/LoginContext'
+import {makeSx} from 'mui-extension'
 
-const useStyles = makeStyles((t: Theme) => ({
+const css = makeSx({
   root: {
-    border: '1px solid ' + t.palette.divider,
-    margin: t.spacing(1),
+    border: t => '1px solid ' + t.palette.divider,
+    m: 1,
     borderRadius: reportFileConfig.cardBorderRadius,
     height: reportFileConfig.cardSize,
     width: reportFileConfig.cardSize,
-    color: t.palette.text.disabled,
+    color: t => t.palette.text.disabled,
     overflow: 'hidden',
     display: 'inline-flex',
     alignItems: 'center',
@@ -32,12 +32,12 @@ const useStyles = makeStyles((t: Theme) => ({
     fontSize: 32,
   },
   label: {
-    fontSize: styleUtils(t).fontSize.small,
+    fontSize: t => styleUtils(t).fontSize.small,
     textTransform: 'initial',
     fontWeight: 'normal',
     lineHeight: 1.4,
   },
-}))
+})
 
 interface Props {
   reportId: Id
@@ -46,7 +46,6 @@ interface Props {
 }
 
 export const ReportFileAdd = ({reportId, onUploaded, fileOrigin}: Props) => {
-  const css = useStyles()
   const {m} = useI18n()
   const {apiSdk} = useLogin()
   const {toastError} = useToast()
@@ -78,19 +77,19 @@ export const ReportFileAdd = ({reportId, onUploaded, fileOrigin}: Props) => {
 
   if (uploading) {
     return (
-      <div className={css.root}>
-        <div className={css.body}>
+      <Box sx={css.root}>
+        <Box sx={css.body}>
           <CircularProgress />
-        </div>
-      </div>
+        </Box>
+      </Box>
     )
   } else {
     return (
       <Tooltip title={m.addAttachmentFile}>
-        <Button className={css.root} onClick={openFileSelection}>
-          <div className={css.body}>
-            <Icon className={css.icon}>add</Icon>
-          </div>
+        <Button sx={css.root} onClick={openFileSelection}>
+          <Box sx={css.body}>
+            <Icon sx={css.icon}>add</Icon>
+          </Box>
           <input style={{display: 'none'}} type="file" ref={fileInputEl} onChange={e => handleChange(e.target.files)} />
         </Button>
       </Tooltip>

@@ -6,30 +6,20 @@ import {Panel} from '../../shared/Panel'
 import {Datatable} from '../../shared/Datatable/Datatable'
 import {NavLink} from 'react-router-dom'
 import {siteMap} from '../../core/siteMap'
-import {ReportedPhone} from '@signal-conso/signalconso-api-sdk-js'
 import {Btn, IconBtn} from 'mui-extension/lib'
-import {useCssUtils} from '../../core/helper/useCssUtils'
 import {ScInput} from '../../shared/Input/ScInput'
 import {ExportPhonesPopper} from '../../shared/ExportPopper/ExportPopperBtn'
 import {fromNullable} from 'fp-ts/lib/Option'
 import {useToast} from '../../core/toast'
-import {Icon, Theme, Tooltip} from '@mui/material'
-import makeStyles from '@mui/styles/makeStyles'
+import {Icon, Tooltip} from '@mui/material'
 import {PeriodPicker} from '../../shared/PeriodPicker/PeriodPicker'
 import {DebouncedInput} from '../../shared/DebouncedInput/DebouncedInput'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
-
-const useStyles = makeStyles((t: Theme) => ({
-  tdSiret: {
-    maxWidth: 200,
-  },
-}))
+import {sxUtils} from '../../core/theme'
 
 export const ReportedPhones = () => {
   const _reportedPhone = useReportedPhonesContext()
   const {m} = useI18n()
-  const cssUtils = useCssUtils()
-  const css = useStyles()
   const {toastError} = useToast()
 
   useEffect(() => {
@@ -59,7 +49,7 @@ export const ReportedPhones = () => {
                     value={value}
                     onChange={e => onChange(e.target.value)}
                     fullWidth
-                    className={cssUtils.marginRight}
+                    sx={{mr: 1}}
                     label={m.phone}
                   />
                 )}
@@ -115,7 +105,9 @@ export const ReportedPhones = () => {
             {
               id: 'siret',
               head: m.siret,
-              className: css.tdSiret,
+              sx: _ => ({
+                maxWidth: 200,
+              }),
               render: _ => (
                 <>
                   <Txt bold>{_.siret}</Txt>
@@ -131,7 +123,7 @@ export const ReportedPhones = () => {
             },
             {
               id: 'actions',
-              className: cssUtils.tdActions,
+              sx: _ => sxUtils.tdActions,
               render: _ => (
                 <>
                   <NavLink

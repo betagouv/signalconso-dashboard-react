@@ -5,7 +5,6 @@ import {useParams} from 'react-router'
 import {Datatable} from '../../shared/Datatable/Datatable'
 import {Icon, Tooltip} from '@mui/material'
 import {Panel} from '../../shared/Panel'
-import {useCssUtils} from '../../core/helper/useCssUtils'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
 import {CompanyAccessLevel, Id, toQueryString} from '@signal-conso/signalconso-api-sdk-js'
 import {IconBtn} from 'mui-extension/lib'
@@ -23,6 +22,7 @@ import {ScRadioGroupItem} from '../../shared/RadioGroup/RadioGroupItem'
 import {ScRadioGroup} from '../../shared/RadioGroup/RadioGroup'
 import {siteMap} from '../../core/siteMap'
 import {getAbsoluteLocalUrl} from '../../core/helper/utils'
+import {sxUtils} from '../../core/theme'
 
 interface Accesses {
   name?: string
@@ -43,7 +43,6 @@ export const CompanyAccesses = () => {
   const _company = useCompaniesContext()
 
   const {m} = useI18n()
-  const cssUtils = useCssUtils()
   const {connectedUser} = useLogin()
   const {toastSuccess, toastError} = useToast()
 
@@ -100,7 +99,7 @@ export const CompanyAccesses = () => {
                 <SaveUndeliveredDocBtn
                   loading={_company.saveUndeliveredDocument.loading}
                   onChange={date => _company.saveUndeliveredDocument.fetch({}, siret, date)}
-                  className={cssUtils.marginRight}
+                  sx={{mr: 1,}}
                 />
               )}
               <CompanyAccessCreateBtn
@@ -126,9 +125,9 @@ export const CompanyAccesses = () => {
               head: '',
               render: _ =>
                 _.name ? (
-                  <Icon className={cssUtils.colorSuccess}>check_circle</Icon>
+                  <Icon sx={{color: t => t.palette.success.light}}>check_circle</Icon>
                 ) : (
-                  <Icon className={cssUtils.colorWarning}>watch_later</Icon>
+                  <Icon sx={{color: t => t.palette.warning.main}}>watch_later</Icon>
                 ),
             },
             {
@@ -176,7 +175,7 @@ export const CompanyAccesses = () => {
                 >
                   <Tooltip title={m.editAccess}>
                     <ScButton
-                      className={cssUtils.txtCapitalize}
+                      sx={{textTransform: 'capitalize'}}
                       loading={_crudAccess.updating(_.userId ?? '')}
                       color="primary"
                       icon="manage_accounts"
@@ -192,7 +191,7 @@ export const CompanyAccesses = () => {
             {
               id: 'action',
               head: '',
-              className: cssUtils.tdActions,
+              sx: _ => sxUtils.tdActions,
               render: _ => (
                 <>
                   {connectedUser.isAdmin && !(_.name) && (

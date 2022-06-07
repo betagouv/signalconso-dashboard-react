@@ -2,22 +2,18 @@ import {ScButton} from '../../shared/Button/Button'
 import {useI18n} from '../../core/i18n'
 import React, {useState} from 'react'
 import {useLogin} from '../../core/context/LoginContext'
-import {Roles} from '@signal-conso/signalconso-api-sdk-js'
-import {Confirm} from 'mui-extension/lib'
 import {Datepicker} from '../../shared/Datepicker/Datepicker'
-import {useCssUtils} from '../../core/helper/useCssUtils'
 import {useToast} from '../../core/toast'
 import {ScDialog} from '../../shared/Confirm/ScDialog'
+import {BoxProps, ButtonProps} from '@mui/material'
 
-interface Props {
+interface Props extends Omit<ButtonProps, 'onChange'> {
   loading: boolean
-  className?: string
   onChange: (date: Date) => Promise<any>
 }
 
-export const SaveUndeliveredDocBtn = ({loading, onChange, className}: Props) => {
+export const SaveUndeliveredDocBtn = ({loading, onChange, ...props}: Props) => {
   const {m} = useI18n()
-  const cssUtils = useCssUtils()
   const {connectedUser} = useLogin()
   const {toastSuccess} = useToast()
   const [returnDate, setReturnDate] = useState(new Date())
@@ -39,7 +35,7 @@ export const SaveUndeliveredDocBtn = ({loading, onChange, className}: Props) => 
       content={
         <>
           <Datepicker
-            className={cssUtils.marginRight}
+            sx={{mr: 1}}
             fullWidth
             label={m.returnDate}
             value={returnDate}
@@ -48,7 +44,7 @@ export const SaveUndeliveredDocBtn = ({loading, onChange, className}: Props) => 
         </>
       }
     >
-      <ScButton variant="outlined" className={className} icon="cancel_schedule_send" color="primary">
+      <ScButton variant="outlined" icon="cancel_schedule_send" color="primary" {...props} >
         {m.undeliveredDoc}
       </ScButton>
     </ScDialog>

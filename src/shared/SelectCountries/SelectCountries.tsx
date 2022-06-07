@@ -1,23 +1,9 @@
 import * as React from 'react'
 import {forwardRef, useEffect, useState} from 'react'
-import {Icon, IconButton, TextField, Theme} from '@mui/material'
-import createStyles from '@mui/styles/createStyles'
-import makeStyles from '@mui/styles/makeStyles'
+import {Icon, IconButton, TextField} from '@mui/material'
 import {AutocompleteProps} from '@mui/material/Autocomplete'
-import {useCssUtils} from '../../core/helper/useCssUtils'
-import {useI18n} from '../../core/i18n'
-import {classes, stopPropagation} from '../../core/helper/utils'
+import {stopPropagation} from '../../core/helper/utils'
 import {SelectCountriesMenu} from './SelectCountriesMenu'
-
-const useStyles = makeStyles((t: Theme) => {
-  return createStyles({
-    adornment: {
-      height: 20,
-      color: t.palette.text.secondary,
-      verticalAlign: 'top',
-    },
-  })
-})
 
 interface Props
   extends Pick<
@@ -35,9 +21,6 @@ interface Props
 }
 
 export const SelectCountries = forwardRef(({value, onChange, disabled, ...props}: Props, ref: any) => {
-  const cssUtils = useCssUtils()
-  const css = useStyles()
-  const {m} = useI18n()
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
   const [innerValue, setInnerValue] = useState<string[]>([])
 
@@ -89,7 +72,9 @@ export const SelectCountries = forwardRef(({value, onChange, disabled, ...props}
               <IconButton
                 size="small"
                 onClick={_ => stopPropagation(clear)(_)}
-                className={classes(innerValue.length === 0 && cssUtils.hidden)}
+                sx={{
+                  ...innerValue.length === 0 && {visibility: 'hidden'},
+                }}
               >
                 <Icon>clear</Icon>
               </IconButton>

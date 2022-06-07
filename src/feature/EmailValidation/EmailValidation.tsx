@@ -11,7 +11,6 @@ import {siteMap} from '../../core/siteMap'
 import {CenteredContent} from '../../shared/CenteredContent/CenteredContent'
 import {headerHeight} from '../../core/Layout'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
-import {useCssUtils} from '../../core/helper/useCssUtils'
 import {QueryString} from '../../core/helper/useQueryString'
 
 interface Props {
@@ -27,7 +26,6 @@ interface FenderProps {
 
 export const EmailValidation = ({onValidateEmail, onSaveToken}: Props) => {
   const {m} = useI18n()
-  const cssUtils = useCssUtils()
   const _validateEmail = useAsync(onValidateEmail)
   const {search} = useLocation()
 
@@ -61,13 +59,13 @@ export const EmailValidation = ({onValidateEmail, onSaveToken}: Props) => {
     <CenteredContent offset={headerHeight}>
       <Page size="s">
         <Fender type={fenderProps.type} title={fenderProps.title}>
-          <Txt block gutterBottom color="hint" size="big" className={cssUtils.marginTop2}>
+          <Txt block gutterBottom color="hint" size="big" sx={{mt: 2}}>
             {fenderProps.description}
           </Txt>
 
           {fenderProps.type !== 'loading' && (
             <NavLink to={siteMap.loggedout.login}>
-              <ScButton className={cssUtils.marginTop} icon="login" variant="contained" color="primary">
+              <ScButton sx={{mt: 1}} icon="login" variant="contained" color="primary">
                 {m.login}
               </ScButton>
             </NavLink>

@@ -1,13 +1,13 @@
 import * as React from 'react'
 import {ReactNode, useMemo, useState} from 'react'
 import {alpha, Box, Theme, Tooltip} from '@mui/material'
-import makeStyles from '@mui/styles/makeStyles'
 import withStyles from '@mui/styles/withStyles'
 import {useTimeout} from 'mui-extension/lib/core/utils/useTimeout'
 import {mapFor} from '@alexandreannic/ts-utils/lib/common'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
 import {useI18n} from '../../core/i18n'
 import {styleUtils} from '../../core/theme'
+import {makeSx} from 'mui-extension'
 
 export interface HorizontalBarChartData {
   label: ReactNode
@@ -21,62 +21,23 @@ interface Props {
   width?: number
 }
 
-const useStyles = makeStyles((t: Theme) => ({
-  root: {
-    overflow: 'hidden',
-  },
+const sx = makeSx({
   item: {
     display: 'flex',
-    margin: t.spacing(0.5, 0, 0.5, 0),
+    my: .5,
+    mx: 0,
   },
   label: {
     alignSelf: 'flex-end',
     textAlign: 'right',
-    padding: t.spacing(0, 2, 0, 0),
+    p: 0,
+    pr: 2,
     textOverflow: 'ellipsis',
     whiteSpace: 'nowrap',
   },
-  barContainer: {
-    padding: t.spacing(0.25, 0, 0.25, 0),
-    flex: 1,
-    transition: t.transitions.create('background'),
-    '&:hover': {
-      background: alpha(t.palette.primary.main, 0.1),
-    },
-  },
-  bar: {
-    transition: t.transitions.create('width', {duration: 1000}),
-    width: 0,
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'flex-end',
-    minHeight: 24,
-    borderBottom: `4px solid ${t.palette.primary.main}`,
-    color: t.palette.primary.main,
-  },
-  bar_label: {
-    fontSize: styleUtils(t).fontSize.small,
-    fontWeight: t.typography.fontWeightBold,
-  },
-  legend: {
-    position: 'relative',
-    width: '100%',
-  },
-  legendTick: {
-    width: 1,
-    height: 1000,
-    background: t.palette.divider,
-    position: 'absolute',
-    bottom: 0,
-    right: 0,
-  },
-  tooltipBody: {
-    textAlign: 'right',
-  },
-}))
+})
 
 export const HorizontalBarChart = ({data, grid, width = 200}: Props) => {
-  const css = useStyles()
   const {m} = useI18n()
   const maxValue = useMemo(() => data && Math.max(...data.map(_ => _.value)), [data])
   const sumValue = useMemo(() => data && data.reduce((sum, _) => _.value + sum, 0), [data])
@@ -86,23 +47,28 @@ export const HorizontalBarChart = ({data, grid, width = 200}: Props) => {
   useTimeout(() => setAppeared(true), 0)
 
   return (
-    <div className={css.root}>
+    <Box sx={{
+      overflow: 'hidden',
+    }}>
       {data && maxValue && sumValue ? (
         data.map((item, i) => {
           const percentOfMax = (item.value / maxValue) * 100
           const percentOfAll = (item.value / sumValue) * 100
           return (
-            <div key={i} className={css.item}>
-              <div className={css.label} style={{width: width, minWidth: width}}>
+            <Box key={i} sx={sx.item}>
+              <Box
+                sx={sx.label}
+                style={{width: width, minWidth: width}}
+              >
                 {item.label}
-              </div>
+              </Box>
               <LightTooltip
                 title={
                   <>
                     <Txt size="big" block bold>
                       {item.label}
                     </Txt>
-                    <div className={css.tooltipBody}>
+                    <div style={{textAlign: 'right'}}>
                       <Txt size="title" color="primary" block>
                         {formatLargeNumber(item.value)}
                       </Txt>
@@ -113,29 +79,60 @@ export const HorizontalBarChart = ({data, grid, width = 200}: Props) => {
                   </>
                 }
               >
-                <div className={css.barContainer}>
-                  <div className={css.bar} style={{width: appeared ? `calc(${percentOfMax * .9}%)` : 0, color: item.color, borderColor: item.color}}>
-                    {percentOfMax > 5 && <div className={css.bar_label}>{formatLargeNumber(item.value)}</div>}
-                  </div>
-                </div>
+                <Box sx={{
+                  py: .25,
+                  px: 0,
+                  flex: 1,
+                  transition: t => t.transitions.create('background'),
+                  '&:hover': {
+                    background: t => alpha(t.palette.primary.main, 0.1),
+                  },
+                }}>
+                  <Box
+                    sx={{
+                      fontSize: t => styleUtils(t).fontSize.small,
+                      fontWeight: t => t.typography.fontWeightBold,
+                      transition: t => t.transitions.create('width', {duration: 1000}),
+                      width: 0,
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'flex-end',
+                      minHeight: 24,
+                      borderBottom: t => `4px solid ${t.palette.primary.main}`,
+                      color: t => t.palette.primary.main,
+                    }}
+                    style={{width: appeared ? `calc(${percentOfMax * .9}%)` : 0, color: item.color, borderColor: item.color}}
+                  >
+                    {percentOfMax > 5 && <div>{formatLargeNumber(item.value)}</div>}
+                  </Box>
+                </Box>
               </LightTooltip>
-            </div>
+            </Box>
           )
         })
       ) : (
-        <Box className={css.label}> {m.noDataAtm} </Box>
+        <Box sx={sx.label}> {m.noDataAtm} </Box>
       )}
       {grid && data && data.length > 0 && (
-        <div className={css.item}>
-          <div className={css.label} style={{width: width, minWidth: width}} />
-          <div className={css.legend}>
+        <Box sx={sx.item}>
+          <Box sx={sx.label} style={{width: width, minWidth: width}} />
+          <div style={{position: 'relative', width: '100%'}}>
             {mapFor(gridAxis + 1, i => (
-              <div key={i} className={css.legendTick} style={{left: `calc(${i * (100 / gridAxis)}% - 1px)`}} />
+              <Box key={i} sx={{
+                width: '1px',
+                height: 1000,
+                background: t => t.palette.divider,
+                position: 'absolute',
+                bottom: 0,
+                right: 0,
+                left: `calc(${i * (100 / gridAxis)}% - 1px)`
+              }}
+              />
             ))}
           </div>
-        </div>
+        </Box>
       )}
-    </div>
+    </Box>
   )
 }
 

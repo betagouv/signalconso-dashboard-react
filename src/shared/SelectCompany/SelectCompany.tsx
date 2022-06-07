@@ -1,12 +1,10 @@
-import {Confirm} from 'mui-extension'
 import React, {ReactElement, useEffect, useState} from 'react'
 import {useI18n} from '../../core/i18n'
 import {ScInput} from '../Input/ScInput'
 import {CompanySearchResult, Id} from '@signal-conso/signalconso-api-sdk-js'
 import {useCompaniesContext} from '../../core/context/CompaniesContext'
 import {fromNullable} from 'fp-ts/lib/Option'
-import {Icon, Theme} from '@mui/material'
-import makeStyles from '@mui/styles/makeStyles'
+import {Icon} from '@mui/material'
 import {SelectCompanyList} from './SelectCompanyList'
 import {IconBtn} from 'mui-extension/lib'
 import {ScDialog} from '../Confirm/ScDialog'
@@ -17,18 +15,10 @@ interface Props {
   onChange: (_: CompanySearchResult) => void
 }
 
-const useStyles = makeStyles((t: Theme) => ({
-  input: {
-    marginBottom: t.spacing(1.5),
-    minWidth: 280,
-  },
-}))
-
 export const SelectCompany = ({children, onChange, siret}: Props) => {
   const {m} = useI18n()
   const _company = useCompaniesContext().searchByIdentity
   const [inputValue, setInputValue] = useState<Id | undefined>(siret)
-  const css = useStyles()
 
   useEffect(() => {
     fromNullable(siret)
@@ -49,7 +39,10 @@ export const SelectCompany = ({children, onChange, siret}: Props) => {
       content={close => (
         <>
           <ScInput
-            className={css.input}
+            sx={{
+              mb: 1.5,
+              minWidth: 280,
+            }}
             fullWidth
             value={inputValue ?? ''}
             placeholder={m.companySearchLabel}

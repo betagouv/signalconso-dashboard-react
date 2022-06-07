@@ -1,18 +1,15 @@
 import * as React from 'react'
+import {useEffect} from 'react'
 import {useI18n} from '../../../core/i18n'
 import {useMemoFn} from '../../../shared/hooks/UseMemoFn'
-import {Enum} from '@alexandreannic/ts-utils/lib/common/enum/Enum'
-import {Box, Icon, Skeleton, Tooltip} from '@mui/material'
+import {Skeleton} from '@mui/material'
 import {Panel, PanelBody, PanelHead} from '../../../shared/Panel'
 import {HorizontalBarChart} from '../../../shared/HorizontalBarChart/HorizontalBarChart'
 import {ReportStatus, ReportStatusPro} from '@signal-conso/signalconso-api-sdk-js'
-import {Emoticon} from '../../../shared/Emoticon/Emoticon'
 import {useCompanyStats} from '../useCompanyStats'
-import {ReactElement, useEffect} from 'react'
 import {useEffectFn} from '../../../shared/hooks/UseEffectFn'
 import {fromNullable} from 'fp-ts/es6/Option'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
-import {useCssUtils} from '../../../core/helper/useCssUtils'
 import {useToast} from '../../../core/toast'
 import {ReviewLabel} from './ReviewLabel'
 
@@ -23,7 +20,6 @@ interface Props {
 export const ReviewDistribution = <T extends ReportStatus | ReportStatusPro>({companyId}: Props) => {
   const {m} = useI18n()
   const _stats = useCompanyStats(companyId)
-  const cssUtils = useCssUtils()
   const {toastError} = useToast()
   useEffect(() => {
     _stats.responseReviews.fetch()
@@ -71,7 +67,7 @@ export const ReviewDistribution = <T extends ReportStatus | ReportStatusPro>({co
       {fromNullable(_stats.responseReviews.entity)
         .map(_ => (
           <PanelBody>
-            <Txt color="hint" block className={cssUtils.marginBottom3}>
+            <Txt color="hint" block sx={{mb: 3}}>
               {m.consumerReviewsDesc}
             </Txt>
             <HorizontalBarChart width={80} data={reviewDistribution} grid />

@@ -1,7 +1,5 @@
 import {ReactNode} from 'react'
-import {Theme} from '@mui/material'
-
-import makeStyles from '@mui/styles/makeStyles'
+import {Box} from '@mui/material'
 
 interface Props {
   children: ReactNode
@@ -9,15 +7,10 @@ interface Props {
 
 export const widgetBodyHeight = 44
 
-const useStyles = makeStyles((t: Theme) => ({
-  root: {
+export const WidgetBody = ({children}: Props) => {
+  return <Box sx={{
     height: widgetBodyHeight,
     display: 'flex',
     alignItems: 'center',
-  },
-}))
-
-export const WidgetBody = ({children}: Props) => {
-  const css = useStyles()
-  return <div className={css.root}>{children}</div>
+  }}>{children}</Box>
 }

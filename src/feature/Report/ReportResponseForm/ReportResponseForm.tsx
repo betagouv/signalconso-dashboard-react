@@ -6,7 +6,6 @@ import {ScRadioGroupItem} from '../../../shared/RadioGroup/RadioGroupItem'
 import {Enum} from '@alexandreannic/ts-utils/lib/common/enum/Enum'
 import {Alert} from 'mui-extension/lib'
 import {ScInput} from '../../../shared/Input/ScInput'
-import {useCssUtils} from '../../../core/helper/useCssUtils'
 import {ReportResponseFormItem} from './ReportResponseFormItem'
 import {Panel, PanelBody, PanelHead} from '../../../shared/Panel'
 import {PanelFoot} from '../../../shared/Panel/PanelFoot'
@@ -16,17 +15,16 @@ import {Controller, useForm} from 'react-hook-form'
 import {useReportContext} from '../../../core/context/ReportContext'
 import {fromNullable} from 'fp-ts/lib/Option'
 import {useToast} from '../../../core/toast'
+import {PanelProps} from '../../../shared/Panel/Panel'
 
-interface Props {
+interface Props extends PanelProps {
   report: Report
-  className?: string
   onCancel: () => void
   onConfirm?: (_: ReportResponse) => void
 }
 
-export const ReportResponseForm = forwardRef(({report, className, onCancel, onConfirm}: Props, ref: any) => {
+export const ReportResponseForm = forwardRef(({report, onCancel, onConfirm, ...props}: Props, ref: any) => {
   const {m} = useI18n()
-  const cssUtils = useCssUtils()
   const {
     register,
     handleSubmit,
@@ -49,7 +47,7 @@ export const ReportResponseForm = forwardRef(({report, className, onCancel, onCo
   }, [_report.postResponse.error])
 
   return (
-    <Panel elevation={5} className={className} ref={ref}>
+    <Panel elevation={5} ref={ref} {...props}>
       <PanelHead>{m.answer}</PanelHead>
       <PanelBody>
         <Alert type="info" deletable persistentDelete gutterBottom>
@@ -62,7 +60,7 @@ export const ReportResponseForm = forwardRef(({report, className, onCancel, onCo
             rules={{required: {value: true, message: m.required}}}
             control={control}
             render={({field}) => (
-              <ScRadioGroup error={!!errors.responseType} dense className={cssUtils.marginBottom2} {...field}>
+              <ScRadioGroup error={!!errors.responseType} dense sx={{mb: 2}} {...field}>
                 {Enum.values(ReportResponseTypes).map(responseType => (
                   <ScRadioGroupItem value={responseType} key={responseType}>
                     {m.reportResponseDesc[responseType]}

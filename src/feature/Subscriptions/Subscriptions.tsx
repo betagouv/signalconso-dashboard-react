@@ -4,36 +4,12 @@ import {useI18n} from '../../core/i18n'
 import {useSubscriptionsContext} from '../../core/context/SubscriptionsContext'
 import {SubscriptionCard} from './SubscriptionCard'
 import {Alert, Animate} from 'mui-extension/lib'
-import makeStyles from '@mui/styles/makeStyles'
-import {Icon, LinearProgress, Theme} from '@mui/material'
+import {Box, Icon, LinearProgress} from '@mui/material'
 import {Ripple} from '../../shared/Ripple/Ripple'
 import {styleUtils} from '../../core/theme'
-import {useCssUtils} from '../../core/helper/useCssUtils'
-
-const useStyles = makeStyles((t: Theme) => ({
-  alert: {
-    marginBottom: t.spacing(2),
-  },
-  btnAdd: {
-    marginTop: t.spacing(3),
-    overflow: 'hidden',
-    cursor: 'pointer',
-    fontWeight: t.typography.fontWeightBold,
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: t.spacing(2),
-    border: `1px dashed ${t.palette.divider}`,
-    marginBottom: t.spacing(3),
-    color: t.palette.primary.main,
-    fontSize: styleUtils(t).fontSize.title,
-    borderRadius: 4,
-  },
-}))
 
 export const Subscriptions = () => {
   const {m} = useI18n()
-  const css = useStyles()
   const _subscriptions = useSubscriptionsContext()
 
   useEffect(() => {
@@ -44,21 +20,34 @@ export const Subscriptions = () => {
     <Page size="s">
       <PageTitle>{m.menu_subscriptions}</PageTitle>
 
-      <Alert id="subscriptions-info" type="info" deletable className={css.alert}>
+      <Alert id="subscriptions-info" type="info" deletable sx={{mb: 2}}>
         <div dangerouslySetInnerHTML={{__html: m.subscriptionsAlertInfo}} />
       </Alert>
 
       {_subscriptions.fetching && <LinearProgress />}
       <Animate>
         <Ripple>
-          <div
-            className={css.btnAdd}
+          <Box
+            sx={{
+              my: 3,
+              overflow: 'hidden',
+              cursor: 'pointer',
+              fontWeight: t => t.typography.fontWeightBold,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              p: 2,
+              border: t => `1px dashed ${t.palette.divider}`,
+              color: t => t.palette.primary.main,
+              fontSize: t => styleUtils(t).fontSize.title,
+              borderRadius: t => t.shape.borderRadius + 'px',
+            }}
             title={m.add}
             onClick={() => !_subscriptions.creating && _subscriptions.create({insertBefore: true})}
           >
             <Icon>add</Icon>
             {m.add}
-          </div>
+          </Box>
         </Ripple>
       </Animate>
       {_subscriptions.list?.map(subscription => (

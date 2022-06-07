@@ -1,7 +1,5 @@
-import {TextFieldProps} from '@mui/material'
+import {FilledInputProps, TextField, TextFieldProps} from '@mui/material'
 import React from 'react'
-import {TextField} from '@mui/material'
-import {FilledInputProps} from '@mui/material'
 
 export type ScInputProps = Omit<TextFieldProps, 'variant' | 'margin'> & {
   small?: boolean

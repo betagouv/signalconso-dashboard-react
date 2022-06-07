@@ -1,7 +1,6 @@
-import {Autocomplete, Skeleton} from '@mui/material'
+import {Autocomplete, Chip, Skeleton, Tooltip} from '@mui/material'
 import {ScInput} from '../Input/ScInput'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
-import {Chip, Tooltip} from '@mui/material'
 import {forwardRef, useEffect} from 'react'
 import {useFetcher} from '@alexandreannic/react-hooks-lib/lib'
 import {AutocompleteProps} from '@mui/material/Autocomplete'
