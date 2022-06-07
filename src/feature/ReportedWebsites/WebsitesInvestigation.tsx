@@ -64,7 +64,6 @@ export const WebsitesInvestigation = () => {
   const [departmentDivision, setDepartmentDivision] = useState<DepartmentDivision[]>([])
   const [investigationStatus, setInvestigationStatus] = useState<string[]>([])
   const countriesAnchor = useAnchoredMenu()
-  // const css = useStyles()
   const cssUtils = useCssUtils()
   const {toastError, toastInfo, toastSuccess} = useToast()
 
@@ -136,6 +135,19 @@ export const WebsitesInvestigation = () => {
         data={_websiteInvestigation.list?.data}
         showColumnsToggle={true}
         columns={[
+          {
+            id: 'status',
+            head: '',
+            render: _ => _.kind === WebsiteKind.DEFAULT ? (
+              <Tooltip title={m.associationDone}>
+                  <Icon className={cssUtils.colorSuccess}>check_circle</Icon>
+              </Tooltip>
+            ) : (
+              <Tooltip title={m.needAssociation}>
+                <Icon className={cssUtils.colorWarning}>check_circle</Icon>
+              </Tooltip>
+            ),
+          },
           {
             id: 'host',
             head: m.website,

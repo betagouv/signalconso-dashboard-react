@@ -86,6 +86,8 @@ export const fr = {
     try: 'Try',
     settings: 'Paramètres',
     status: 'Statut',
+    associationDone: 'Identifié par un admin ou un agent',
+    needAssociation: 'Non associé / association faite par le consomateur',
     investigation: 'Enquête',
     affectation: 'Affectation',
     affectationTitle: 'Attribuer à une DD',
