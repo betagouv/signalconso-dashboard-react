@@ -1,15 +1,7 @@
 import {Page, PageTitle} from '../../shared/Layout'
 import {useI18n} from '../../core/i18n'
 import {useReportsContext} from '../../core/context/ReportsContext'
-import {
-  cleanObject,
-  getHostFromUrl,
-  Id,
-  Report,
-  ReportingDateLabel,
-  ReportSearch,
-  ReportTag,
-} from '@signal-conso/signalconso-api-sdk-js'
+import {cleanObject, getHostFromUrl, Id, Report, ReportingDateLabel, ReportSearch, ReportTag} from '@signal-conso/signalconso-api-sdk-js'
 import {Panel} from '../../shared/Panel'
 import {Datatable} from '../../shared/Datatable/Datatable'
 import {fromNullable, some} from 'fp-ts/lib/Option'
@@ -37,7 +29,8 @@ import compose from '../../core/helper/compose'
 import {Alert} from 'mui-extension'
 import {intersection} from '../../core/lodashNamedExport'
 import {useSetState} from '@alexandreannic/react-hooks-lib/lib'
-import {ReportsSelectedToolbar} from './ReportsSelectedToolbar'
+import {DatatableToolbar} from '../../shared/Datatable/DatatableToolbar'
+import {useReportContext} from '../../core/context/ReportContext'
 
 interface ReportSearchQs {
   readonly departments?: string[] | string
@@ -63,6 +56,7 @@ interface ReportSearchQs {
 
 export const Reports = ({}) => {
   const {m, formatDate} = useI18n()
+  const _report = useReportContext()
   const _reports = useReportsContext()
   const selectReport = useSetState<Id>()
   const {toastError} = useToast()
@@ -146,7 +140,27 @@ export const Reports = ({}) => {
                   </DebouncedInput>
                 </Grid>
               </Grid>
-              <ReportsSelectedToolbar ids={selectReport.toArray()} onClear={selectReport.clear} />
+              <DatatableToolbar
+                open={selectReport.size > 0}
+                onClear={selectReport.clear}
+                actions={
+                  <ScButton
+                    loading={_report.download.loading}
+                    variant="contained"
+                    icon="file_download"
+                    onClick={() => {
+                      _report.download.fetch({}, selectReport.toArray())
+                    }}
+                    sx={{
+                      marginLeft: 'auto'
+                    }}
+                  >
+                    {m.download}
+                  </ScButton>
+                }
+              >
+                <span dangerouslySetInnerHTML={{__html: m.nSelected(selectReport.size)}} />
+              </DatatableToolbar>
             </>
           }
           actions={

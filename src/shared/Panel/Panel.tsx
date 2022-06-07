@@ -11,7 +11,6 @@ export interface PanelProps extends CardProps {
 
 export const Panel = forwardRef(({elevation = 0, hoverable, loading, children, stretch, sx, ...other}: PanelProps, ref: any) => {
   const theme = useTheme()
-  console.log('t.shape.borderRadius', theme.shape.borderRadius)
   return (
     <Card
       ref={ref}

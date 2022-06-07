@@ -13,11 +13,12 @@ import {usePersistentState} from 'react-persistent-state'
 import {useSetState} from '@alexandreannic/react-hooks-lib/lib'
 import {ScButton} from '../../shared/Button/Button'
 import {useToast} from '../../core/toast'
-import {Txt} from 'mui-extension/lib/Txt/Txt'
 import {fromNullable} from 'fp-ts/lib/Option'
 import {EntityIcon} from '../../core/EntityIcon'
 import {AddressComponent} from '../../shared/Address/Address'
 import {ScDialog} from '../../shared/Confirm/ScDialog'
+import {DatatableToolbar} from '../../shared/Datatable/DatatableToolbar'
+import {Txt} from 'mui-extension/lib/Txt/Txt'
 
 export const CompaniesToActivate = () => {
   const {m, formatDate} = useI18n()
@@ -67,57 +68,43 @@ export const CompaniesToActivate = () => {
   }
 
   return (
-    <Panel>
+    <Panel sx={{overflow: 'visible'}}>
       <Datatable
         id="companiestoactivate"
         header={
-          <>
-            <ScButton
-              disabled={_companiesToActivate.fetching || selectedCompaniesSet.size === 0}
-              loading={_companies.downloadActivationDocument.loading}
-              color="primary"
-              variant="outlined"
-              icon="file_download"
-              sx={{mr: 1}}
-              onClick={() => _companies.downloadActivationDocument.fetch({}, selectedCompaniesSet.toArray()).catch(toastError)}
-            >
-              {m.download}
-            </ScButton>
-            <ScDialog title={m.validateLetterSentTitle} content={m.validateLetterSentDesc} onConfirm={confirmCompaniesPosted}>
-              <ScButton
-                disabled={_companiesToActivate.fetching || selectedCompaniesSet.size === 0}
-                loading={_companies.confirmCompaniesPosted.loading}
-                sx={{mr: 1}}
-                color="error"
-                variant="contained"
-                icon="check_circle"
-              >
-                {m.validateLetterSent}
-              </ScButton>
-            </ScDialog>
-            {!_companiesToActivate.fetching && selectedCompaniesSet.size > 0 && (
-              <div>
-                <Box
-                  component="span"
-                  sx={{
-                    borderRadius: '30px',
-                    minWidth: 22,
-                    height: 22,
-                    lineHeight: '22px',
-                    px: 1,
-                    textAlign: 'center',
-                    background: t => t.palette.primary.main,
-                    color: t => t.palette.primary.contrastText,
-                    fontWeight: 'bold',
-                    marginRight: '4px',
-                  }}
+          <DatatableToolbar
+            onClear={selectedCompaniesSet.clear}
+            open={!_companiesToActivate.fetching && selectedCompaniesSet.size > 0}
+            actions={
+              <>
+                <ScButton
+                  disabled={_companiesToActivate.fetching || selectedCompaniesSet.size === 0}
+                  loading={_companies.downloadActivationDocument.loading}
+                  color="primary"
+                  variant="outlined"
+                  icon="file_download"
+                  sx={{mr: 1}}
+                  onClick={() => _companies.downloadActivationDocument.fetch({}, selectedCompaniesSet.toArray()).catch(toastError)}
                 >
-                  {selectedCompaniesSet.size}
-                </Box>
-                <Txt color="hint">{m.selectedCompanies}</Txt>
-              </div>
-            )}
-          </>
+                  {m.download}
+                </ScButton>
+                <ScDialog title={m.validateLetterSentTitle} content={m.validateLetterSentDesc} onConfirm={confirmCompaniesPosted}>
+                  <ScButton
+                    disabled={_companiesToActivate.fetching || selectedCompaniesSet.size === 0}
+                    loading={_companies.confirmCompaniesPosted.loading}
+                    sx={{mr: 1}}
+                    color="error"
+                    variant="contained"
+                    icon="check_circle"
+                  >
+                    {m.validateLetterSent}
+                  </ScButton>
+                </ScDialog>
+              </>
+            }
+          >
+            <Txt bold>{selectedCompaniesSet.size}</Txt>&nbsp;{m.selectedCompanies}
+          </DatatableToolbar>
         }
         loading={_companiesToActivate.fetching}
         data={_companiesToActivate.list?.data}

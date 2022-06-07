@@ -428,7 +428,7 @@ export const fr = {
     noReportsDesc: 'Aucun signalement ne correspond à votre recherche.',
     lastNotice: 'Relancé le',
     validatingEmail: `Validation de l'adresse email...`,
-    validateLetterSent: "Valider l'envoi des courriers",
+    validateLetterSent: "Valider courriers envoyés",
     emailValidated: `Votre email est validé.`,
     emailValidatedDesc: `Vous pouvez vous connecter à l'aide de votre adresse email et mot de passe.`,
     validateLetterSentTitle: "Valider l'envoi des courriers",
