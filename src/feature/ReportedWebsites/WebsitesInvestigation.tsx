@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from 'react'
 import {useI18n} from '../../core/i18n'
-import {useCssUtils} from '../../core/helper/useCssUtils'
 import {
   Badge,
   Box,
@@ -65,7 +64,6 @@ export const WebsitesInvestigation = () => {
   const [departmentDivision, setDepartmentDivision] = useState<DepartmentDivision[]>([])
   const [investigationStatus, setInvestigationStatus] = useState<string[]>([])
   const countriesAnchor = useAnchoredMenu()
-  const cssUtils = useCssUtils()
   const {toastError, toastInfo, toastSuccess} = useToast()
 
   useEffect(() => {
@@ -111,7 +109,7 @@ export const WebsitesInvestigation = () => {
                   value={value}
                   placeholder={m.searchByHost + '...'}
                   fullWidth
-                  className={cssUtils.marginLeft}
+                  sx={{ml: 1}}
                   onChange={e => onChange(e.target.value)}
                 />
               )}
@@ -142,11 +140,11 @@ export const WebsitesInvestigation = () => {
             render: _ =>
               _.kind === WebsiteKind.DEFAULT ? (
                 <Tooltip title={m.associationDone}>
-                  <Icon className={cssUtils.colorSuccess}>check_circle</Icon>
+                  <Icon sx={{color: t => t.palette.success.light}}>check_circle</Icon>
                 </Tooltip>
               ) : (
                 <Tooltip title={m.needAssociation}>
-                  <Icon className={cssUtils.colorWarning}>check_circle</Icon>
+                  <Icon sx={{color: t => t.palette.warning.main}}>check_circle</Icon>
                 </Tooltip>
               ),
           },
