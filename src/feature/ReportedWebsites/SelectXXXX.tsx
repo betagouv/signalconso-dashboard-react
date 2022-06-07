@@ -5,14 +5,13 @@ import makeStyles from '@mui/styles/makeStyles'
 import {ScDialog} from '../../shared/Confirm/ScDialog'
 import {fromNullable} from 'fp-ts/es6/Option'
 
-
 interface Props<T> {
   children: ReactElement<any>
   inputLabel: string
   title: string
   defaultValue?: T
   getValueName: (_: T) => string
-  onChange: (_: T) => void,
+  onChange: (_: T) => void
   listValues: T[]
 }
 
@@ -24,11 +23,18 @@ const useStyles = makeStyles((t: Theme) => ({
   },
 }))
 
-export const SelectXXXX = <T extends unknown>({children, inputLabel,title, defaultValue, getValueName, onChange, listValues}: Props<T>) => {
+export const SelectXXXX = <T extends unknown>({
+  children,
+  inputLabel,
+  title,
+  defaultValue,
+  getValueName,
+  onChange,
+  listValues,
+}: Props<T>) => {
   const {m} = useI18n()
   const [value, setValue] = React.useState<T | undefined>(defaultValue)
   const css = useStyles()
-
 
   return (
     <ScDialog
@@ -49,7 +55,7 @@ export const SelectXXXX = <T extends unknown>({children, inputLabel,title, defau
             }}
             options={listValues}
             getOptionLabel={getValueName}
-            renderInput={params => <TextField {...params} label={inputLabel}/>}
+            renderInput={params => <TextField {...params} label={inputLabel} />}
           />
         </>
       )}

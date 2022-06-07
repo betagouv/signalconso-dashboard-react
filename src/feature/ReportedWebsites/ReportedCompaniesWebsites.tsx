@@ -17,8 +17,8 @@ import {SelectCountry} from './SelectCountry'
 import {classes} from '../../core/helper/utils'
 import {ScMenuItem} from '../MenuItem/MenuItem'
 import {sxUtils} from '../../core/theme'
-import {CountryChip} from "./CountryChip";
-import {CompanyChip} from "./CompanyChip";
+import {CountryChip} from './CountryChip'
+import {CompanyChip} from './CompanyChip'
 
 const iconWidth = 50
 
@@ -265,7 +265,7 @@ export const ReportedCompaniesWebsites = () => {
                     />
                   </Tooltip>
                 )}
-                {/*<CountryChip country={_.companyCountry}/>*/}
+                {/*<CountryChip country={_.companyCountry} />*/}
               </SelectCountry>
             ),
           },

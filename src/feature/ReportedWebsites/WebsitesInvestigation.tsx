@@ -8,11 +8,12 @@ import {
   FormControlLabel,
   Icon,
   InputBase,
-  ListItemIcon, ListItemText,
+  ListItemIcon,
+  ListItemText,
   MenuItem,
   Switch,
   Theme,
-  Tooltip
+  Tooltip,
 } from '@mui/material'
 import createStyles from '@mui/styles/createStyles'
 import makeStyles from '@mui/styles/makeStyles'
@@ -32,14 +33,14 @@ import {SelectCountry} from './SelectCountry'
 import {classes} from '../../core/helper/utils'
 import {ScMenuItem} from '../MenuItem/MenuItem'
 import {useWebsiteInvestigationContext} from '../../core/context/WebsiteInvestigationContext'
-import {CountryChip} from "./CountryChip";
-import {NavLink} from "react-router-dom";
-import {siteMap} from "../../core/siteMap";
-import {ScMenu} from "../../shared/Menu/Menu";
-import {EditAddressDialog} from "../Companies/EditAddressDialog";
-import {CompanyChip} from "./CompanyChip";
-import {StatusChip} from "./StatusChip";
-import {SelectXXXX} from "./SelectXXXX";
+import {CountryChip} from './CountryChip'
+import {NavLink} from 'react-router-dom'
+import {siteMap} from '../../core/siteMap'
+import {ScMenu} from '../../shared/Menu/Menu'
+import {EditAddressDialog} from '../Companies/EditAddressDialog'
+import {CompanyChip} from './CompanyChip'
+import {StatusChip} from './StatusChip'
+import {SelectXXXX} from './SelectXXXX'
 
 const useAnchoredMenu = () => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
@@ -138,15 +139,16 @@ export const WebsitesInvestigation = () => {
           {
             id: 'status',
             head: '',
-            render: _ => _.kind === WebsiteKind.DEFAULT ? (
-              <Tooltip title={m.associationDone}>
+            render: _ =>
+              _.kind === WebsiteKind.DEFAULT ? (
+                <Tooltip title={m.associationDone}>
                   <Icon className={cssUtils.colorSuccess}>check_circle</Icon>
-              </Tooltip>
-            ) : (
-              <Tooltip title={m.needAssociation}>
-                <Icon className={cssUtils.colorWarning}>check_circle</Icon>
-              </Tooltip>
-            ),
+                </Tooltip>
+              ) : (
+                <Tooltip title={m.needAssociation}>
+                  <Icon className={cssUtils.colorWarning}>check_circle</Icon>
+                </Tooltip>
+              ),
           },
           {
             id: 'host',
@@ -179,7 +181,7 @@ export const WebsitesInvestigation = () => {
                   }
                 }}
               >
-                <CompanyChip company={_.company}/>
+                <CompanyChip company={_.company} />
               </SelectCompany>
             ),
           },
@@ -197,7 +199,7 @@ export const WebsitesInvestigation = () => {
                   }
                 }}
               >
-                <CountryChip country={_.companyCountry}/>
+                <CountryChip country={_.companyCountry} />
               </SelectCountry>
             ),
           },
@@ -209,50 +211,61 @@ export const WebsitesInvestigation = () => {
           {
             head: m.investigation,
             id: 'investigation',
-            render: _ =>
-          (
-            <SelectXXXX<string> title={m.affectationTitle}
-                                            inputLabel={m.affectation}
-                                            getValueName={_ => _}
-                                            onChange={investigationStatus => {
-                                              if (_.investigationStatus === investigationStatus) {
-                                                toastInfo(m.alreadySelectedValue(investigationStatus))
-                                              } else {
-                                                _createOrUpdate.fetch({},{
-                                                  'investigationStatus' : investigationStatus
-                                                  ,..._}).then(_ => _websiteInvestigation.fetch({clean: false}))
-                                              }
-                                            }}
-                                            listValues={investigationStatus}>
-              <StatusChip tooltipTitle={m.investigation} value={_.investigationStatus ?? m.noValue}/>
-            </SelectXXXX>
-          )
-          ,
+            render: _ => (
+              <SelectXXXX<string>
+                title={m.affectationTitle}
+                inputLabel={m.affectation}
+                getValueName={_ => _}
+                onChange={investigationStatus => {
+                  if (_.investigationStatus === investigationStatus) {
+                    toastInfo(m.alreadySelectedValue(investigationStatus))
+                  } else {
+                    _createOrUpdate
+                      .fetch(
+                        {},
+                        {
+                          investigationStatus: investigationStatus,
+                          ..._,
+                        },
+                      )
+                      .then(_ => _websiteInvestigation.fetch({clean: false}))
+                  }
+                }}
+                listValues={investigationStatus}
+              >
+                <StatusChip tooltipTitle={m.investigation} value={_.investigationStatus ?? m.noValue} />
+              </SelectXXXX>
+            ),
           },
           {
             head: m.affectation,
             id: 'affectation',
-            render: _ =>
-              (
-                <SelectXXXX<DepartmentDivision> title={m.affectationTitle}
-                                                inputLabel={m.affectation}
-                                                getValueName={_ => _.name}
-                                                onChange={departmentDivision => {
-                                                  if (_.attribution === departmentDivision.code) {
-                                                    toastInfo(m.alreadySelectedValue(departmentDivision?.name))
-                                                  } else {
-                                                    _createOrUpdate.fetch({},{
-                                                      'attribution' : departmentDivision.code
-                                                      ,..._}).then(_ => _websiteInvestigation.fetch({clean: false}))
-                                                  }
-                                                }}
-                                                listValues={departmentDivision}>
-                  <StatusChip tooltipTitle={m.affectation} value={_.attribution ?? m.noValue}/>
-                </SelectXXXX>
-              )
-            ,
-          }
-          ,
+            render: _ => (
+              <SelectXXXX<DepartmentDivision>
+                title={m.affectationTitle}
+                inputLabel={m.affectation}
+                getValueName={_ => _.name}
+                onChange={departmentDivision => {
+                  if (_.attribution === departmentDivision.code) {
+                    toastInfo(m.alreadySelectedValue(departmentDivision?.name))
+                  } else {
+                    _createOrUpdate
+                      .fetch(
+                        {},
+                        {
+                          attribution: departmentDivision.code,
+                          ..._,
+                        },
+                      )
+                      .then(_ => _websiteInvestigation.fetch({clean: false}))
+                  }
+                }}
+                listValues={departmentDivision}
+              >
+                <StatusChip tooltipTitle={m.affectation} value={_.attribution ?? m.noValue} />
+              </SelectXXXX>
+            ),
+          },
         ]}
       />
     </Panel>

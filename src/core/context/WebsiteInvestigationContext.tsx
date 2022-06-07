@@ -6,10 +6,10 @@ import {
   ApiError,
   WebsiteInvestigationWithCount,
   WebsiteKind,
-  WebsiteWithCompanySearch
+  WebsiteWithCompanySearch,
 } from '@signal-conso/signalconso-api-sdk-js'
 import {useScPaginate} from '../../shared/usePaginate/usePaginate'
-import {useFetcher, UseFetcher} from "@alexandreannic/react-hooks-lib";
+import {useFetcher, UseFetcher} from '@alexandreannic/react-hooks-lib'
 
 export interface WebsiteInvestigationContextProps {
   getWebsiteInvestigation: UsePaginate<WebsiteInvestigationWithCount, WebsiteWithCompanySearch>
@@ -35,8 +35,6 @@ export const WebsiteInvestigationProvider = ({api, children}: Props) => {
     api.secured.website.listInvestigation,
     {limit: 10, offset: 0, kinds: [WebsiteKind.DEFAULT, WebsiteKind.PENDING]},
   )
-
-
 
   return (
     <WebsiteInvestigationContext.Provider
