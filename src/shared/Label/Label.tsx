@@ -23,32 +23,23 @@ const colorize = (color: string): CSSProperties => ({
 
 const colors = (t: Theme) => ({
   error: {
-    ...colorize(styleUtils(t).color.error)
+    ...colorize(styleUtils(t).color.error),
   },
   warning: {
-    ...colorize(styleUtils(t).color.warning)
+    ...colorize(styleUtils(t).color.warning),
   },
   success: {
-    ...colorize(styleUtils(t).color.success)
+    ...colorize(styleUtils(t).color.success),
   },
   info: {
-    ...colorize(styleUtils(t).color.info)
+    ...colorize(styleUtils(t).color.info),
   },
   disable: {
-    ...colorize(t.palette.text.disabled)
-  }
+    ...colorize(t.palette.text.disabled),
+  },
 })
 
-export const Label = ({
-  type,
-  children,
-  sx,
-  fullWidth,
-  dense,
-  elevation = 0,
-  inSelectOptions,
-  ...props
-}: LabelProps) => {
+export const Label = ({type, children, sx, fullWidth, dense, elevation = 0, inSelectOptions, ...props}: LabelProps) => {
   const t = useTheme()
   return (
     <Paper
@@ -65,24 +56,24 @@ export const Label = ({
         alignItems: 'center',
         transition: t => t.transitions.create('all'),
         ...colorize(t.palette.text.disabled),
-        ...type && colors(t)[type],
+        ...(type && colors(t)[type]),
         // ...elevation > 0 && {
         //   border: 'none'
         // },
-        ...fullWidth && {
-          width: '100%'
-        },
-        ...dense && {
+        ...(fullWidth && {
+          width: '100%',
+        }),
+        ...(dense && {
           fontWeight: '500' as any,
           fontSize: t => styleUtils(t).fontSize.small,
           py: 0,
-          px: 1
-        },
-        ...inSelectOptions && {
+          px: 1,
+        }),
+        ...(inSelectOptions && {
           marginTop: -10,
-          marginBottom: -10
-        },
-        ...sx
+          marginBottom: -10,
+        }),
+        ...sx,
       }}
       {...props}
     >

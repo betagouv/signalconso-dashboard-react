@@ -43,8 +43,8 @@ export const LoginPage = ({login, register, forgottenPassword}: Props) => {
               <Tabs
                 variant="fullWidth"
                 sx={{
-                  border: t=>'1px solid ' + t.palette.divider,
-                  borderRadius:t => t.shape.borderRadius + 'px',
+                  border: t => '1px solid ' + t.palette.divider,
+                  borderRadius: t => t.shape.borderRadius + 'px',
                   mb: 3,
                 }}
                 value={allTabs.find(_ => _ === location.pathname) ?? allTabs[0]}

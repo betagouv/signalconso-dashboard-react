@@ -22,7 +22,9 @@ interface Props {
 
 const defaultContext: Partial<ConsumerEmailValidationContextProps> = {}
 
-const ConsumerEmailValidationContext = React.createContext<ConsumerEmailValidationContextProps>(defaultContext as ConsumerEmailValidationContextProps)
+const ConsumerEmailValidationContext = React.createContext<ConsumerEmailValidationContextProps>(
+  defaultContext as ConsumerEmailValidationContextProps,
+)
 
 export const ConsumerEmailValidationProvider = ({api, children}: Props) => {
   const search = useScPaginate(api.secured.consumerEmailValidation.search, {

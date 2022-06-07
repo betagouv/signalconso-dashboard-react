@@ -18,10 +18,13 @@ export const ScAppMenuBtn = ({connectedUser}: Props) => {
   return (
     <Box sx={{position: 'relative'}}>
       <Box sx={{position: 'relative'}}>
-        <Box sx={{display: 'flex', alignItems: 'center'}} onClick={() => {
-          if (connectedUser) openMenu.toggle()
-          else history.push(siteMap.loggedout.login)
-        }}>
+        <Box
+          sx={{display: 'flex', alignItems: 'center'}}
+          onClick={() => {
+            if (connectedUser) openMenu.toggle()
+            else history.push(siteMap.loggedout.login)
+          }}
+        >
           <IconBtn
             disabled={!connectedUser}
             sx={{
@@ -37,7 +40,7 @@ export const ScAppMenuBtn = ({connectedUser}: Props) => {
               mr: 0,
               ...(!connectedUser && {
                 boxShadow: 'none',
-                opacity: .4,
+                opacity: 0.4,
               }),
             }}
           >

@@ -36,7 +36,7 @@ interface Accesses {
 }
 
 export const CompanyAccesses = () => {
-  const {siret} = useParams<{ siret: string }>()
+  const {siret} = useParams<{siret: string}>()
 
   const _crudAccess = useCompanyAccess(useLogin().apiSdk, siret).crudAccess
   const _crudToken = useCompanyAccess(useLogin().apiSdk, siret).crudToken
@@ -83,7 +83,8 @@ export const CompanyAccesses = () => {
     if (accesses?.find(_ => _.email === email)) {
       toastError({message: m.invitationToProAlreadySent(email)})
     } else {
-      await  _crudToken.create({}, email, level)
+      await _crudToken
+        .create({}, email, level)
         .then(() => toastSuccess(m.userInvitationSent))
         .then(() => window.location.reload())
     }
@@ -99,7 +100,7 @@ export const CompanyAccesses = () => {
                 <SaveUndeliveredDocBtn
                   loading={_company.saveUndeliveredDocument.loading}
                   onChange={date => _company.saveUndeliveredDocument.fetch({}, siret, date)}
-                  sx={{mr: 1,}}
+                  sx={{mr: 1}}
                 />
               )}
               <CompanyAccessCreateBtn
@@ -194,33 +195,39 @@ export const CompanyAccesses = () => {
               sx: _ => sxUtils.tdActions,
               render: _ => (
                 <>
-                  {connectedUser.isAdmin && !(_.name) && (
-                    fromNullable(_.email).map(email => (
-                      <ScDialog
-                        title={m.resendCompanyAccessToken(_.email)}
-                        onConfirm={(event, close) =>
-                          _crudToken.create({preventInsert: true}, email, _.level)
-                            .then(_ => close())
-                            .then(_ => toastSuccess(m.userInvitationSent))}
-                        maxWidth="xs"
-                      >
-                        <Tooltip title={m.resendInvite}>
-                          <IconBtn>
-                            <Icon>send</Icon>
+                  {connectedUser.isAdmin &&
+                    !_.name &&
+                    fromNullable(_.email)
+                      .map(email => (
+                        <ScDialog
+                          title={m.resendCompanyAccessToken(_.email)}
+                          onConfirm={(event, close) =>
+                            _crudToken
+                              .create({preventInsert: true}, email, _.level)
+                              .then(_ => close())
+                              .then(_ => toastSuccess(m.userInvitationSent))
+                          }
+                          maxWidth="xs"
+                        >
+                          <Tooltip title={m.resendInvite}>
+                            <IconBtn>
+                              <Icon>send</Icon>
+                            </IconBtn>
+                          </Tooltip>
+                        </ScDialog>
+                      ))
+                      .getOrElse(<></>)}
+                  {connectedUser.isAdmin &&
+                    !_.name &&
+                    fromNullable(_.token)
+                      .map(token => (
+                        <Tooltip title={m.copyInviteLink}>
+                          <IconBtn onClick={_ => copyActivationLink(token)}>
+                            <Icon>content_copy</Icon>
                           </IconBtn>
                         </Tooltip>
-                      </ScDialog>
-                    )).getOrElse(<></>)
-                  )}
-                  {connectedUser.isAdmin && !(_.name) && (
-                    fromNullable(_.token).map(token => (
-                      <Tooltip title={m.copyInviteLink}>
-                        <IconBtn onClick={(_) => copyActivationLink(token)}>
-                          <Icon>content_copy</Icon>
-                        </IconBtn>
-                      </Tooltip>
-                    )).getOrElse(<></>)
-                  )}
+                      ))
+                      .getOrElse(<></>)}
                   {some(_)
                     .filter(_ => _.editable === true)
                     .mapNullable(_ => _.userId)
@@ -232,24 +239,26 @@ export const CompanyAccesses = () => {
                         confirmLabel={m.delete}
                       >
                         <Tooltip title={m.delete}>
-                        <IconBtn loading={_crudAccess.removing(userId)}>
-                          <Icon>delete</Icon>
-                        </IconBtn>
+                          <IconBtn loading={_crudAccess.removing(userId)}>
+                            <Icon>delete</Icon>
+                          </IconBtn>
                         </Tooltip>
                       </ScDialog>
                     ))
                     .getOrElse(
-                      fromNullable(_.tokenId).map(tokenId => (
-                        <ScDialog
-                          title={m.deleteCompanyAccessToken(_.email)}
-                          onConfirm={() => _crudToken.remove(tokenId)}
-                          maxWidth="xs"
-                        >
-                          <IconBtn loading={_crudToken.removing(tokenId)}>
-                            <Icon>delete</Icon>
-                          </IconBtn>
-                        </ScDialog>
-                      )).getOrElse(<></>),
+                      fromNullable(_.tokenId)
+                        .map(tokenId => (
+                          <ScDialog
+                            title={m.deleteCompanyAccessToken(_.email)}
+                            onConfirm={() => _crudToken.remove(tokenId)}
+                            maxWidth="xs"
+                          >
+                            <IconBtn loading={_crudToken.removing(tokenId)}>
+                              <Icon>delete</Icon>
+                            </IconBtn>
+                          </ScDialog>
+                        ))
+                        .getOrElse(<></>),
                     )}
                 </>
               ),

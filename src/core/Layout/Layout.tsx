@@ -33,12 +33,16 @@ const LayoutUsingContext = ({children, connectedUser}: any) => {
   return (
     <>
       <Header connectedUser={connectedUser} />
-      <main style={{
-        overflow: 'hidden',
-        position: 'relative',
-        display: 'flex',
-        flexDirection: 'column',
-      }}>{children}</main>
+      <main
+        style={{
+          overflow: 'hidden',
+          position: 'relative',
+          display: 'flex',
+          flexDirection: 'column',
+        }}
+      >
+        {children}
+      </main>
     </>
   )
 }

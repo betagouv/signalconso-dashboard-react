@@ -1,7 +1,14 @@
 import {useI18n} from '../../core/i18n'
 import {Panel} from '../../shared/Panel'
 import {Datatable} from '../../shared/Datatable/Datatable'
-import {cleanObject, Company, CompanySearch, CompanyWithReportsCount, PaginatedSearch, ReportSearchResult} from '@signal-conso/signalconso-api-sdk-js'
+import {
+  cleanObject,
+  Company,
+  CompanySearch,
+  CompanyWithReportsCount,
+  PaginatedSearch,
+  ReportSearchResult,
+} from '@signal-conso/signalconso-api-sdk-js'
 import React, {useEffect, useMemo, useState} from 'react'
 import {useCompaniesContext} from '../../core/context/CompaniesContext'
 import {Badge, Box, Icon, InputBase, ListItemIcon, ListItemText, MenuItem, Tooltip} from '@mui/material'
@@ -139,13 +146,20 @@ export const CompaniesRegistered = () => {
               <Tooltip title={_.name}>
                 <span>
                   <NavLink to={siteMap.logged.company(_.id)}>
-                    <Txt link sx={{fontWeight: 'bold', marginBottom: '-1px'}}>{_.name}</Txt>
+                    <Txt link sx={{fontWeight: 'bold', marginBottom: '-1px'}}>
+                      {_.name}
+                    </Txt>
                   </NavLink>
                   <br />
-                  <Box component="span" sx={{
-                    fontSize: t => styleUtils(t).fontSize.small,
-                    color: t => t.palette.text.disabled,
-                  }}>{_.siret}</Box>
+                  <Box
+                    component="span"
+                    sx={{
+                      fontSize: t => styleUtils(t).fontSize.small,
+                      color: t => t.palette.text.disabled,
+                    }}
+                  >
+                    {_.siret}
+                  </Box>
                 </span>
               </Tooltip>
             ),
@@ -168,7 +182,9 @@ export const CompaniesRegistered = () => {
             render: _ => (
               <>
                 <span>{_.address.postalCode?.slice(0, 2)}</span>
-                <Box component="span" sx={{color: t => t.palette.text.disabled}}>{_.address.postalCode?.substr(2, 5)}</Box>
+                <Box component="span" sx={{color: t => t.palette.text.disabled}}>
+                  {_.address.postalCode?.substr(2, 5)}
+                </Box>
               </>
             ),
           },
@@ -191,13 +207,17 @@ export const CompaniesRegistered = () => {
                 component="span"
                 sx={{
                   fontWeight: t => t.typography.fontWeightBold,
-                  ..._.responseRate > 50 ? {
-                    color: t => t.palette.success.light,
-                  } : _.responseRate === 0 ? {
-                    color: t => t.palette.error.light,
-                  } : {
-                    color: t => t.palette.warning.light,
-                  },
+                  ...(_.responseRate > 50
+                    ? {
+                        color: t => t.palette.success.light,
+                      }
+                    : _.responseRate === 0
+                    ? {
+                        color: t => t.palette.error.light,
+                      }
+                    : {
+                        color: t => t.palette.warning.light,
+                      }),
                 }}
               >
                 {_.responseRate} %

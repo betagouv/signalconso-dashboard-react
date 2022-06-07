@@ -18,7 +18,7 @@ interface ChartAsyncProps<T extends Promises> extends ScLineChartPropsBase {
     key: string
     color?: string
     // @ts-ignore
-    curve: (resolvedPromises: { -readonly [P in keyof T]: ThenArg<ReturnType<T[P]>> }) => {date: string; count: number}[]
+    curve: (resolvedPromises: {-readonly [P in keyof T]: ThenArg<ReturnType<T[P]>>}) => {date: string; count: number}[]
   }[]
 }
 
@@ -34,7 +34,7 @@ export const ChartAsync = <T extends Promises>({
   const [error, setError] = useState<ApiError | undefined>()
   const {toastError} = useToast()
   // @ts-ignore
-  const [data, setData] = useState<undefined | { -readonly [P in keyof T]: ThenArg<ReturnType<T[P]>> }>()
+  const [data, setData] = useState<undefined | {-readonly [P in keyof T]: ThenArg<ReturnType<T[P]>>}>()
   useEffect(() => {
     setLoading(true)
     Promise.all(promises.map(_ => _()))
@@ -50,15 +50,21 @@ export const ChartAsync = <T extends Promises>({
       {loading || !data ? (
         <Skeleton variant="rectangular" height={height} width="100%" sx={{borderRadius: '8px'}} />
       ) : type === 'line' ? (
-        <ScLineChart {...otherProps} height={height} curves={curves.map((c, i) => ({
-          ...c,
-          curve: c.curve(data),
-        }))} />
+        <ScLineChart
+          {...otherProps}
+          height={height}
+          curves={curves.map((c, i) => ({
+            ...c,
+            curve: c.curve(data),
+          }))}
+        />
       ) : (
-        <ScBarChart curves={curves.map((c, i) => ({
-          ...c,
-          curve: c.curve(data),
-        }))} />
+        <ScBarChart
+          curves={curves.map((c, i) => ({
+            ...c,
+            curve: c.curve(data),
+          }))}
+        />
       )}
     </>
   )

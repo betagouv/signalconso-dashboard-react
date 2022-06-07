@@ -97,12 +97,7 @@ export const ConsumerReview = ({onSubmit}: Props) => {
                 )}
               />
 
-              <Txt
-                sx={{mt: 3}}
-                block
-                color="hint"
-                dangerouslySetInnerHTML={{__html: m.youCanAddCommentForDGCCRF}}
-              />
+              <Txt sx={{mt: 3}} block color="hint" dangerouslySetInnerHTML={{__html: m.youCanAddCommentForDGCCRF}} />
               <ScInput {...register('details')} multiline fullWidth rows={5} maxRows={12} />
             </PanelBody>
             <PanelFoot alignEnd>

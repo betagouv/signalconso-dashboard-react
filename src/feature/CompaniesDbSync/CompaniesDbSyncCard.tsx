@@ -18,7 +18,6 @@ interface Props {
 
 const progressSize = 110
 
-
 export const CompaniesDbSyncCard = ({name, info, start, cancel}: Props) => {
   const t = useTheme()
   const {m, dateFromNow, formatLargeNumber} = useI18n()
@@ -27,14 +26,16 @@ export const CompaniesDbSyncCard = ({name, info, start, cancel}: Props) => {
   return (
     <Panel>
       <PanelBody>
-        <Box sx={{
-          mb: 1,
-          height: progressSize,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          position: 'relative',
-        }}>
+        <Box
+          sx={{
+            mb: 1,
+            height: progressSize,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            position: 'relative',
+          }}
+        >
           <CircularProgress
             value={100}
             size={progressSize}
@@ -51,11 +52,14 @@ export const CompaniesDbSyncCard = ({name, info, start, cancel}: Props) => {
             sx={{
               position: 'absolute',
               fontSize: t => styleUtils(t).fontSize.big,
-              ...!info?.endedAt && {
+              ...(!info?.endedAt && {
                 fontWeight: t.typography.fontWeightBold,
                 color: t.palette.primary.main,
-              }
-            }}>{Math.round(percent ?? 0)} %</Box>
+              }),
+            }}
+          >
+            {Math.round(percent ?? 0)} %
+          </Box>
         </Box>
         <div style={{textAlign: 'center'}}>
           <Txt size="big">{formatLargeNumber(info?.linesDone ?? 0)}</Txt>

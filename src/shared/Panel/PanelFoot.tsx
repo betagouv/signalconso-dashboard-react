@@ -15,15 +15,15 @@ export const PanelFoot = ({children, alignEnd, border, sx, ...props}: PanelFootP
         pr: 2,
         pb: 1,
         pl: 2,
-        ...alignEnd && {
+        ...(alignEnd && {
           display: 'flex',
-          justifyContent: 'flex-end'
-        },
-        ...border && {
+          justifyContent: 'flex-end',
+        }),
+        ...(border && {
           pt: 1,
-          borderTop: t => '1px solid ' + t.palette.divider
-        },
-        ...sx
+          borderTop: t => '1px solid ' + t.palette.divider,
+        }),
+        ...sx,
       }}
       {...props}
     >

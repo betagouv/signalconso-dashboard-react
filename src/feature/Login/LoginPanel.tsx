@@ -13,12 +13,15 @@ export const LoginPanel = ({title, children}: Props) => {
   return (
     <Panel>
       <PanelBody sx={{p: 4}}>
-        <Box component="h1" sx={{
-          mt: 0,
-          mb: 3,
-          textAlign: 'center',
-          fontSize: t => styleUtils(t).fontSize.bigTitle,
-        }}>
+        <Box
+          component="h1"
+          sx={{
+            mt: 0,
+            mb: 3,
+            textAlign: 'center',
+            fontSize: t => styleUtils(t).fontSize.bigTitle,
+          }}
+        >
           {title}
         </Box>
         {children}

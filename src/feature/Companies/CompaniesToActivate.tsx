@@ -97,18 +97,21 @@ export const CompaniesToActivate = () => {
             </ScDialog>
             {!_companiesToActivate.fetching && selectedCompaniesSet.size > 0 && (
               <div>
-                <Box component="span" sx={{
-                  borderRadius: '30px',
-                  minWidth: 22,
-                  height: 22,
-                  lineHeight: '22px',
-                  px: 1,
-                  textAlign: 'center',
-                  background: t => t.palette.primary.main,
-                  color: t => t.palette.primary.contrastText,
-                  fontWeight: 'bold',
-                  marginRight: '4px',
-                }}>
+                <Box
+                  component="span"
+                  sx={{
+                    borderRadius: '30px',
+                    minWidth: 22,
+                    height: 22,
+                    lineHeight: '22px',
+                    px: 1,
+                    textAlign: 'center',
+                    background: t => t.palette.primary.main,
+                    color: t => t.palette.primary.contrastText,
+                    fontWeight: 'bold',
+                    marginRight: '4px',
+                  }}
+                >
                   {selectedCompaniesSet.size}
                 </Box>
                 <Txt color="hint">{m.selectedCompanies}</Txt>
@@ -168,8 +171,8 @@ export const CompaniesToActivate = () => {
             head: m.address,
             id: 'address',
             sx: _ => ({
-              pt: .5,
-              pb: .5,
+              pt: 0.5,
+              pb: 0.5,
               fontSize: t => styleUtils(t).fontSize.small,
               color: t => t.palette.text.secondary,
               maxWidth: 300,

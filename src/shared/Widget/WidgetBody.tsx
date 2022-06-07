@@ -8,9 +8,15 @@ interface Props {
 export const widgetBodyHeight = 44
 
 export const WidgetBody = ({children}: Props) => {
-  return <Box sx={{
-    height: widgetBodyHeight,
-    display: 'flex',
-    alignItems: 'center',
-  }}>{children}</Box>
+  return (
+    <Box
+      sx={{
+        height: widgetBodyHeight,
+        display: 'flex',
+        alignItems: 'center',
+      }}
+    >
+      {children}
+    </Box>
+  )
 }

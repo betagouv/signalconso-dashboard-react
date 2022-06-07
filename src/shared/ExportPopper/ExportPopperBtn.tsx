@@ -25,21 +25,11 @@ interface Props {
   onClick?: (event: any) => void
 }
 
-export const FileItem = ({
-  icon,
-  children,
-  onClick,
-}: {
-  onClick?: () => void
-  icon: ReactNode,
-  children: ReactNode,
-}) => {
+export const FileItem = ({icon, children, onClick}: {onClick?: () => void; icon: ReactNode; children: ReactNode}) => {
   return (
     <Box sx={{display: 'flex'}} onClick={onClick}>
       {icon}
-      <Box sx={{ml: 1, minWidth: 200,}}>
-        {children}
-      </Box>
+      <Box sx={{ml: 1, minWidth: 200}}>{children}</Box>
     </Box>
   )
 }
@@ -94,7 +84,7 @@ export const ExportPopperBtn = ({
         </span>
       </Tooltip>
       <Menu keepMounted open={!!anchorEl} onClose={handleClose} anchorEl={anchorEl}>
-        <Box sx={{pt: 0, pr: 2, pb: .5, pl: 2}}>
+        <Box sx={{pt: 0, pr: 2, pb: 0.5, pl: 2}}>
           <Tooltip title={tooltipBtnNew ?? ''}>
             <span>
               <Btn
@@ -112,35 +102,46 @@ export const ExportPopperBtn = ({
           </Tooltip>
         </Box>
         {initialLoading && loading && (
-          <Box sx={{
-            minHeight: 100,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}>
+          <Box
+            sx={{
+              minHeight: 100,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
             <CircularProgress />
           </Box>
         )}
         {files?.length === 0 && (
-          <Box sx={{
-            textAlign: 'center',
-            m: 1,
-            color: t => t.palette.text.disabled,
-          }}>{m.noExport}</Box>
+          <Box
+            sx={{
+              textAlign: 'center',
+              m: 1,
+              color: t => t.palette.text.disabled,
+            }}
+          >
+            {m.noExport}
+          </Box>
         )}
         {files
           ?.filter(_ => _.kind === fileType)
           .map(file => (
-            <MenuItem sx={{
-              '&:not(:last-of-type)': {
-                borderBottom: t => '1px solid ' + t.palette.divider,
-              },
-            }} dense key={file.id}>
+            <MenuItem
+              sx={{
+                '&:not(:last-of-type)': {
+                  borderBottom: t => '1px solid ' + t.palette.divider,
+                },
+              }}
+              dense
+              key={file.id}
+            >
               {fnSwitch(file.status, {
                 [AsyncFileStatus.Successed]: _ => (
-                  <FileItem onClick={() => window.open(file.url, '_blank')} icon={
-                    <Icon sx={{color: t => t.palette.success.light}}>file_download_done</Icon>
-                  }>
+                  <FileItem
+                    onClick={() => window.open(file.url, '_blank')}
+                    icon={<Icon sx={{color: t => t.palette.success.light}}>file_download_done</Icon>}
+                  >
                     <Txt bold block>
                       {file.filename.match(/.*?\-(\w+.?\.xlsx)/)?.[1]}
                     </Txt>
@@ -148,17 +149,13 @@ export const ExportPopperBtn = ({
                   </FileItem>
                 ),
                 [AsyncFileStatus.Loading]: _ => (
-                  <FileItem icon={
-                    <CircularProgress size={24} />
-                  }>
+                  <FileItem icon={<CircularProgress size={24} />}>
                     <Txt skeleton="100%" block />
                     <Txt color="hint">{formatDateTime(file.creationDate)}</Txt>
                   </FileItem>
                 ),
                 [AsyncFileStatus.Failed]: _ => (
-                  <FileItem icon={
-                    <Icon sx={{color: t => t.palette.error.main}}>error_outline</Icon>
-                  }>
+                  <FileItem icon={<Icon sx={{color: t => t.palette.error.main}}>error_outline</Icon>}>
                     <div>{m.error}</div>
                     <Txt color="hint">{formatDateTime(file.creationDate)}</Txt>
                   </FileItem>

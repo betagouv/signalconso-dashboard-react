@@ -62,11 +62,15 @@ export const SelectCompaniesByPro = ({
           readOnly: true,
           endAdornment: (
             <InputAdornment position="end">
-              <Icon sx={{
-                height: 20,
-                color: t => t.palette.text.secondary,
-                verticalAlign: 'top',
-              }}>arrow_drop_down</Icon>
+              <Icon
+                sx={{
+                  height: 20,
+                  color: t => t.palette.text.secondary,
+                  verticalAlign: 'top',
+                }}
+              >
+                arrow_drop_down
+              </Icon>
             </InputAdornment>
           ),
         }}

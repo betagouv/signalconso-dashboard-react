@@ -17,21 +17,21 @@ const sx = makeSx({
     color: t => t.palette.text.secondary,
     minHeight: 32,
     m: 1,
-    borderRadius: 42
+    borderRadius: 42,
   },
   rootLarge: {
-    minHeight: 38
+    minHeight: 38,
   },
   rootClickable: {
     cursor: 'pointer',
     '&:hover': {
-      background: 'rgba(0, 0, 0, .05)'
-    }
+      background: 'rgba(0, 0, 0, .05)',
+    },
   },
   i: {
     // color: t.palette.text.secondary,
     textAlign: 'center',
-    mr: 1.5
+    mr: 1.5,
   },
   label: {
     whiteSpace: 'nowrap',
@@ -41,8 +41,8 @@ const sx = makeSx({
     alignItems: 'center',
     flex: 1,
     // fontSize: t.typography.fontSize,
-    fontWeight: t => t.typography.fontWeightMedium
-  }
+    fontWeight: t => t.typography.fontWeightMedium,
+  },
 })
 
 export interface MenuItemProps extends HTMLProps<any> {
@@ -55,7 +55,7 @@ export interface MenuItemProps extends HTMLProps<any> {
 
 const styleActive = (t: Theme) => ({
   color: t.palette.primary.main,
-  background: alpha(t.palette.primary.main, 0.16)
+  background: alpha(t.palette.primary.main, 0.16),
 })
 
 export const ScAppMenuItem = ({children, to, icon, className, active, large, ...other}: MenuItemProps) => {
@@ -71,17 +71,14 @@ export const ScAppMenuItem = ({children, to, icon, className, active, large, ...
         sx={{
           ...sx.root,
           ...sx.rootClickable,
-          ...large && sx.rootLarge
+          ...(large && sx.rootLarge),
         }}
       >
         <>
-          {icon &&
-          (typeof icon === 'string' ? (
-            <Icon sx={sx.i}>{icon}</Icon>
-          ) : (
-            <Box sx={sx.i}>{icon}</Box>
-          ))}
-          <Box component="span" sx={sx.label}>{children}</Box>
+          {icon && (typeof icon === 'string' ? <Icon sx={sx.i}>{icon}</Icon> : <Box sx={sx.i}>{icon}</Box>)}
+          <Box component="span" sx={sx.label}>
+            {children}
+          </Box>
         </>
       </Box>
     </div>

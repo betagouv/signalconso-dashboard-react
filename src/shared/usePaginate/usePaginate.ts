@@ -16,11 +16,10 @@ const mapPromiseSdkPaginate = <F extends (...args: any[]) => Promise<ApiPaginate
     mapThen: mapSdkPaginate,
   }) as any
 
-
 export const useScPaginate = <T, S extends ISearch<any>, E = any>(
   fetcher: (search: S) => Promise<ApiPaginate<T>>,
   initialFilters: S,
-  mapError?: (_: any) => E
+  mapError?: (_: any) => E,
 ): UsePaginate<T, S, E> => {
   return usePaginate(mapPromiseSdkPaginate(fetcher), initialFilters, mapError)
 }

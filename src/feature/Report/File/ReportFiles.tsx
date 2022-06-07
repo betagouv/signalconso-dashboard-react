@@ -42,11 +42,13 @@ export const ReportFiles = ({
 
   return (
     <>
-      <Box sx={{
-        display: 'flex',
-        flexWrap: 'wrap',
-        m: -1,
-      }}>
+      <Box
+        sx={{
+          display: 'flex',
+          flexWrap: 'wrap',
+          m: -1,
+        }}
+      >
         {innerFiles
           ?.filter(_ => _.origin === fileOrigin)
           .map(_ => (

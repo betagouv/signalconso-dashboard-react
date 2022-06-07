@@ -97,16 +97,21 @@ export const ReportPro = () => {
 
             <Collapse in={_event.reportEvents.entity && !!response}>
               <Panel>
-                <PanelHead action={response && (
-                  <Box sx={{
-                    color: t => t.palette.text.disabled,
-                    fontSize: t => styleUtils(t).fontSize.normal,
-                    fontWeight: 'normal',
-                    display: 'inline',
-                  }}>
-                    {formatDateTime(response.data.creationDate)}
-                  </Box>
-                )}
+                <PanelHead
+                  action={
+                    response && (
+                      <Box
+                        sx={{
+                          color: t => t.palette.text.disabled,
+                          fontSize: t => styleUtils(t).fontSize.normal,
+                          fontWeight: 'normal',
+                          display: 'inline',
+                        }}
+                      >
+                        {formatDateTime(response.data.creationDate)}
+                      </Box>
+                    )
+                  }
                 >
                   {m.proAnswerYourAnswer}
                 </PanelHead>

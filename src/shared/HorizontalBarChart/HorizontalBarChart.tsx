@@ -24,7 +24,7 @@ interface Props {
 const sx = makeSx({
   item: {
     display: 'flex',
-    my: .5,
+    my: 0.5,
     mx: 0,
   },
   label: {
@@ -47,19 +47,18 @@ export const HorizontalBarChart = ({data, grid, width = 200}: Props) => {
   useTimeout(() => setAppeared(true), 0)
 
   return (
-    <Box sx={{
-      overflow: 'hidden',
-    }}>
+    <Box
+      sx={{
+        overflow: 'hidden',
+      }}
+    >
       {data && maxValue && sumValue ? (
         data.map((item, i) => {
           const percentOfMax = (item.value / maxValue) * 100
           const percentOfAll = (item.value / sumValue) * 100
           return (
             <Box key={i} sx={sx.item}>
-              <Box
-                sx={sx.label}
-                style={{width: width, minWidth: width}}
-              >
+              <Box sx={sx.label} style={{width: width, minWidth: width}}>
                 {item.label}
               </Box>
               <LightTooltip
@@ -79,15 +78,17 @@ export const HorizontalBarChart = ({data, grid, width = 200}: Props) => {
                   </>
                 }
               >
-                <Box sx={{
-                  py: .25,
-                  px: 0,
-                  flex: 1,
-                  transition: t => t.transitions.create('background'),
-                  '&:hover': {
-                    background: t => alpha(t.palette.primary.main, 0.1),
-                  },
-                }}>
+                <Box
+                  sx={{
+                    py: 0.25,
+                    px: 0,
+                    flex: 1,
+                    transition: t => t.transitions.create('background'),
+                    '&:hover': {
+                      background: t => alpha(t.palette.primary.main, 0.1),
+                    },
+                  }}
+                >
                   <Box
                     sx={{
                       fontSize: t => styleUtils(t).fontSize.small,
@@ -101,7 +102,7 @@ export const HorizontalBarChart = ({data, grid, width = 200}: Props) => {
                       borderBottom: t => `4px solid ${t.palette.primary.main}`,
                       color: t => t.palette.primary.main,
                     }}
-                    style={{width: appeared ? `calc(${percentOfMax * .9}%)` : 0, color: item.color, borderColor: item.color}}
+                    style={{width: appeared ? `calc(${percentOfMax * 0.9}%)` : 0, color: item.color, borderColor: item.color}}
                   >
                     {percentOfMax > 5 && <div>{formatLargeNumber(item.value)}</div>}
                   </Box>
@@ -118,15 +119,17 @@ export const HorizontalBarChart = ({data, grid, width = 200}: Props) => {
           <Box sx={sx.label} style={{width: width, minWidth: width}} />
           <div style={{position: 'relative', width: '100%'}}>
             {mapFor(gridAxis + 1, i => (
-              <Box key={i} sx={{
-                width: '1px',
-                height: 1000,
-                background: t => t.palette.divider,
-                position: 'absolute',
-                bottom: 0,
-                right: 0,
-                left: `calc(${i * (100 / gridAxis)}% - 1px)`
-              }}
+              <Box
+                key={i}
+                sx={{
+                  width: '1px',
+                  height: 1000,
+                  background: t => t.palette.divider,
+                  position: 'absolute',
+                  bottom: 0,
+                  right: 0,
+                  left: `calc(${i * (100 / gridAxis)}% - 1px)`,
+                }}
               />
             ))}
           </div>

@@ -11,19 +11,25 @@ interface Props {
 
 export const SettingRow = ({title, description, icon, children}: Props) => {
   return (
-    <Box sx={{
-      py: 1.5,
-      px: 2,
-      display: 'flex',
-      alignItems: 'center',
-      '&:not(:last-of-type)': {
-        borderBottom: t => '1px solid ' + t.palette.divider,
-      },
-    }}>
-      <Icon sx={{
-        color: t => t.palette.text.secondary,
-        mr: 2,
-      }}>{icon}</Icon>
+    <Box
+      sx={{
+        py: 1.5,
+        px: 2,
+        display: 'flex',
+        alignItems: 'center',
+        '&:not(:last-of-type)': {
+          borderBottom: t => '1px solid ' + t.palette.divider,
+        },
+      }}
+    >
+      <Icon
+        sx={{
+          color: t => t.palette.text.secondary,
+          mr: 2,
+        }}
+      >
+        {icon}
+      </Icon>
       <Box sx={{flex: 1}}>
         <Txt block size="big">
           {title}

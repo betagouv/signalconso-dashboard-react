@@ -16,14 +16,7 @@ import {useGetDateForMonthAndPreviousOne} from './useGetDateForMonthAndPreviousO
 import {Txt} from 'mui-extension/lib/Txt/Txt'
 
 const CellNewPosition = ({sx, ...props}: BoxProps) => {
-  return (
-    <Box
-      {...props}
-      component="span"
-      sx={{fontWeight: t => t.typography.fontWeightBold, ...sx}}
-    />
-  )
-
+  return <Box {...props} component="span" sx={{fontWeight: t => t.typography.fontWeightBold, ...sx}} />
 }
 
 export const StatsReportsByRegion = () => {
@@ -95,7 +88,10 @@ export const StatsReportsByRegion = () => {
                   <TableCell>
                     {depNumber ? (
                       <span>
-                        {_constant.departmentsIndex![depNumber]} <Box component="span" sx={{color: t => t.palette.text.disabled}}>({depNumber})</Box>
+                        {_constant.departmentsIndex![depNumber]}{' '}
+                        <Box component="span" sx={{color: t => t.palette.text.disabled}}>
+                          ({depNumber})
+                        </Box>
                       </span>
                     ) : (
                       <span>N/A</span>

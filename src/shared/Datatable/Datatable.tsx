@@ -1,4 +1,16 @@
-import {Box, LinearProgress, SxProps, Table, TableBody, TableCell, TableHead, TablePagination, TableRow, TableSortLabel, Theme} from '@mui/material'
+import {
+  Box,
+  LinearProgress,
+  SxProps,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TablePagination,
+  TableRow,
+  TableSortLabel,
+  Theme,
+} from '@mui/material'
 import React, {CSSProperties, ReactNode, useMemo} from 'react'
 import {DatatableColumnToggle} from './DatatableColumnsToggle'
 import {useI18n} from '../../core/i18n'
@@ -88,27 +100,33 @@ export const Datatable = <T extends any = any>(props: DatatableProps<T>) => {
   return (
     <>
       {(header || showColumnsToggle) && (
-        <Box sx={{
-          position: 'relative',
-          display: 'flex',
-          flexWrap: 'wrap',
-          alignItems: 'center',
-          minHeight: 52,
-          borderBottom: t => `1px solid ${t.palette.divider}`,
-          pl: 1,
-          pr: 1,
-        }}>
-          <Box sx={{
+        <Box
+          sx={{
+            position: 'relative',
             display: 'flex',
+            flexWrap: 'wrap',
             alignItems: 'center',
-            flex: 1,
-          }}>
+            minHeight: 52,
+            borderBottom: t => `1px solid ${t.palette.divider}`,
+            pl: 1,
+            pr: 1,
+          }}
+        >
+          <Box
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              flex: 1,
+            }}
+          >
             {header}
           </Box>
-          <Box sx={{
-            ml: 1,
-            whiteSpace: 'nowrap',
-          }}>
+          <Box
+            sx={{
+              ml: 1,
+              whiteSpace: 'nowrap',
+            }}
+          >
             {actions}
             {showColumnsToggle && (
               <DatatableColumnToggle
@@ -123,11 +141,13 @@ export const Datatable = <T extends any = any>(props: DatatableProps<T>) => {
         </Box>
       )}
       <Box sx={{overflowX: 'auto', position: 'relative'}} id={id}>
-        <Table sx={{
-          minWidth: '100%',
-          tableLayout: 'fixed',
-          width: 'auto', // Override width: 100% from Material-UI that breaks sticky columns
-        }}>
+        <Table
+          sx={{
+            minWidth: '100%',
+            tableLayout: 'fixed',
+            width: 'auto', // Override width: 100% from Material-UI that breaks sticky columns
+          }}
+        >
           {displayTableHeader && (
             <TableHead>
               <TableRow>
@@ -136,7 +156,7 @@ export const Datatable = <T extends any = any>(props: DatatableProps<T>) => {
                     key={i}
                     sx={{
                       color: t => t.palette.text.secondary,
-                      ..._.stickyEnd && sxStickyEnd,
+                      ...(_.stickyEnd && sxStickyEnd),
                     }}
                   >
                     {sort && (sort.sortableColumns?.includes(_.id) ?? true) ? (
@@ -165,12 +185,15 @@ export const Datatable = <T extends any = any>(props: DatatableProps<T>) => {
           <TableBody>
             {loading && (
               <TableRow>
-                <TableCell colSpan={filteredColumns.length} sx={{
-                  height: 0,
-                  marginBottom: '-1px',
-                  padding: 0,
-                  border: 'none',
-                }}>
+                <TableCell
+                  colSpan={filteredColumns.length}
+                  sx={{
+                    height: 0,
+                    marginBottom: '-1px',
+                    padding: 0,
+                    border: 'none',
+                  }}
+                >
                   <LinearProgress />
                 </TableCell>
               </TableRow>
@@ -180,11 +203,11 @@ export const Datatable = <T extends any = any>(props: DatatableProps<T>) => {
                 key={getRenderRowKey ? getRenderRowKey(item) : i}
                 onClick={e => onClickRows?.(item, e)}
                 sx={{
-                  ...onClickRows && {
+                  ...(onClickRows && {
                     '&:hover': {
                       background: t => t.palette.action.hover,
                     },
-                  }
+                  }),
                 }}
               >
                 {filteredColumns.map((_, i) => (
@@ -228,14 +251,16 @@ export const Datatable = <T extends any = any>(props: DatatableProps<T>) => {
             )
           })()
         : data && (
-            <Box sx={{
-              py: 0,
-              px: 2,
-              minHeight: 52,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'flex-end',
-            }}>
+            <Box
+              sx={{
+                py: 0,
+                px: 2,
+                minHeight: 52,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'flex-end',
+              }}
+            >
               <span dangerouslySetInnerHTML={{__html: m.nLines(data.length)}} />
             </Box>
           )}

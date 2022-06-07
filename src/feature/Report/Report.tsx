@@ -157,9 +157,7 @@ export const ReportComponent = () => {
               <ReportTabPanel value={activeTab} index={1}>
                 <ReportEvents
                   events={
-                    _event.reportEvents.loading
-                      ? undefined
-                      : [creationReportEvent(report), ...(_event.reportEvents.entity ?? [])]
+                    _event.reportEvents.loading ? undefined : [creationReportEvent(report), ...(_event.reportEvents.entity ?? [])]
                   }
                 />
               </ReportTabPanel>

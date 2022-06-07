@@ -83,7 +83,10 @@ const TrueLabel = () => {
   const {m} = useI18n()
   return (
     <>
-      {m.yes} <Icon fontSize="inherit" sx={{mr: '-4px'}}>arrow_drop_down</Icon>
+      {m.yes}{' '}
+      <Icon fontSize="inherit" sx={{mr: '-4px'}}>
+        arrow_drop_down
+      </Icon>
     </>
   )
 }
@@ -299,12 +302,7 @@ const _ReportsFilters = ({filters, updateFilters, children}: _ReportsFiltersProp
                   name="hasAttachment"
                   defaultValue={filters.hasAttachment}
                   control={control}
-                  render={({field}) => (
-                    <TrueFalseUndefined
-                      {...field}
-                      sx={{mt: 1}}
-                    />
-                  )}
+                  render={({field}) => <TrueFalseUndefined {...field} sx={{mt: 1}} />}
                 />
               </DialogInputRow>
             </DialogContent>

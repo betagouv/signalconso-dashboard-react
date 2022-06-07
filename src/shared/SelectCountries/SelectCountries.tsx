@@ -73,7 +73,7 @@ export const SelectCountries = forwardRef(({value, onChange, disabled, ...props}
                 size="small"
                 onClick={_ => stopPropagation(clear)(_)}
                 sx={{
-                  ...innerValue.length === 0 && {visibility: 'hidden'},
+                  ...(innerValue.length === 0 && {visibility: 'hidden'}),
                 }}
               >
                 <Icon>clear</Icon>

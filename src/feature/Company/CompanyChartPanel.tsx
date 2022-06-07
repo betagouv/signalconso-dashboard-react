@@ -15,18 +15,13 @@ const periods: Period[] = ['Day', 'Month']
 const ticks = 7
 
 const formatCurveDate =
-  (m: I18nContextProps['m']) => ({date, count}: CountByDate): {date: string; count: number} => ({
+  (m: I18nContextProps['m']) =>
+  ({date, count}: CountByDate): {date: string; count: number} => ({
     date: (m.monthShort_ as any)[date.getMonth() + 1],
     count,
   })
 
-export const CompanyChartPanel = ({
-  companyId,
-  company,
-}: {
-  company: CompanyWithReportsCount
-  companyId: Id
-}) => {
+export const CompanyChartPanel = ({companyId, company}: {company: CompanyWithReportsCount; companyId: Id}) => {
   const {apiSdk} = useLogin()
   const {m, formatLargeNumber} = useI18n()
   const [reportsCurvePeriod, setReportsCurvePeriod] = useState<Period>('Month')
@@ -38,10 +33,7 @@ export const CompanyChartPanel = ({
             {periods.map(p => (
               <Button
                 key={p}
-                sx={p === reportsCurvePeriod
-                  ? {background: t => alpha(t.palette.primary.main, 0.14)}
-                  : {}
-                }
+                sx={p === reportsCurvePeriod ? {background: t => alpha(t.palette.primary.main, 0.14)} : {}}
                 onClick={() => setReportsCurvePeriod(p)}
               >
                 {p === 'Day' ? m.day : m.month}
@@ -64,17 +56,19 @@ export const CompanyChartPanel = ({
           hideLabelToggle={true}
           promisesDeps={[reportsCurvePeriod, ticks]}
           promises={[
-            () => apiSdk.publicConnected.stats.getReportCountCurve({
-              companyIds: [companyId],
-              ticks,
-              tickDuration: reportsCurvePeriod,
-            }),
-            () => apiSdk.publicConnected.stats.getReportCountCurve({
-              companyIds: [companyId],
-              status: [ReportStatus.PromesseAction, ReportStatus.Infonde, ReportStatus.MalAttribue],
-              ticks,
-              tickDuration: reportsCurvePeriod,
-            }),
+            () =>
+              apiSdk.publicConnected.stats.getReportCountCurve({
+                companyIds: [companyId],
+                ticks,
+                tickDuration: reportsCurvePeriod,
+              }),
+            () =>
+              apiSdk.publicConnected.stats.getReportCountCurve({
+                companyIds: [companyId],
+                status: [ReportStatus.PromesseAction, ReportStatus.Infonde, ReportStatus.MalAttribue],
+                ticks,
+                tickDuration: reportsCurvePeriod,
+              }),
           ]}
           curves={[
             {

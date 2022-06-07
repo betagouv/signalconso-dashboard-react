@@ -8,7 +8,7 @@ const sx = makeSx({
   mark: {
     display: 'block',
     mt: 1.5,
-    mb: .25,
+    mb: 0.25,
     background: 'none',
     fontSize: t => styleUtils(t).fontSize.big,
   },
@@ -45,35 +45,49 @@ export const ModeEmploiDGCCRF = () => {
 
             <ul>
               <li>
-                <Box component="mark" sx={sx.mark}>Traitement en cours:</Box>
+                <Box component="mark" sx={sx.mark}>
+                  Traitement en cours:
+                </Box>
                 Il s'agit d'un statut intermédiaire pendant lequel le signalement suit son cours et n'est pas clos. C'est
                 notamment la période laissée au professionnel pour prendre connaissance du signalement ou y répondre.
               </li>
               <li>
-                <Box component="mark" sx={sx.mark}>N.A (non-applicable):</Box>
+                <Box component="mark" sx={sx.mark}>
+                  N.A (non-applicable):
+                </Box>
                 Soit les signalements sont rattachés à une URL et donc ne rentrent pas dans le flow classique d'envoi à
                 l'entreprise. Soit l'entreprise signalée ne faisait pas partie du périmètre géographique de l’expérimentation au
                 moment du signalement. Si la région n'a pas fait partie tout de suite de l'expérimentation, les signalements reçus
                 sur cette période n'ont pas été traités et sont classés en N.A.
               </li>
               <li>
-                <Box component="mark" sx={sx.mark}>Promesse d'action:</Box>
+                <Box component="mark" sx={sx.mark}>
+                  Promesse d'action:
+                </Box>
                 Le professionnel souhaite mettre en place une action préventive ou corrective.
               </li>
               <li>
-                <Box component="mark" sx={sx.mark}>Signalement infondé:</Box>
+                <Box component="mark" sx={sx.mark}>
+                  Signalement infondé:
+                </Box>
                 Le professionnel a déclaré le signalement comme infondé selon lui.
               </li>
               <li>
-                <Box component="mark" sx={sx.mark}>Signalement non consulté:</Box>
+                <Box component="mark" sx={sx.mark}>
+                  Signalement non consulté:
+                </Box>
                 Le professionnel n'a pas créé de compte pour lire le signalement.
               </li>
               <li>
-                <Box component="mark" sx={sx.mark}>Signalement consulté ignoré:</Box>
+                <Box component="mark" sx={sx.mark}>
+                  Signalement consulté ignoré:
+                </Box>
                 Le professionnel a lu le signalement mais il n'a pas répondu malgré les relances.
               </li>
               <li>
-                <Box component="mark" sx={sx.mark}>Signalement mal attribué:</Box>
+                <Box component="mark" sx={sx.mark}>
+                  Signalement mal attribué:
+                </Box>
                 Le consommateur n'a pas sélectionné le bon établissement.
               </li>
             </ul>
@@ -113,11 +127,15 @@ export const ModeEmploiDGCCRF = () => {
 
             <ul>
               <li>
-                <Box component="mark" sx={sx.mark}>Ajout d'un commentaire interne à la DGCCRF:</Box>
+                <Box component="mark" sx={sx.mark}>
+                  Ajout d'un commentaire interne à la DGCCRF:
+                </Box>
                 ce commentaire n'est visible que par la DGCCRF.
               </li>
               <li>
-                <Box component="mark" sx={sx.mark}>Contrôle effectué:</Box>
+                <Box component="mark" sx={sx.mark}>
+                  Contrôle effectué:
+                </Box>
                 en l'absence de rattachement avec SORA, le suivi des contrôles peut être enregistré directement sur le site.
                 <br /> Cette information n'est visible que par la DGCCRF actuellement.
               </li>

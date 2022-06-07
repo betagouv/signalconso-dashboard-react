@@ -2,7 +2,7 @@ import {format} from 'date-fns'
 import {BoxProps, InputProps as StandardInputProps, TextField, TextFieldProps} from '@mui/material'
 import React from 'react'
 
-export interface DatepickerProps  extends Omit<TextFieldProps, 'onChange'> {
+export interface DatepickerProps extends Omit<TextFieldProps, 'onChange'> {
   value?: Date
   onChange: (_: Date) => void
   label?: string

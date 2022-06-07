@@ -10,7 +10,6 @@ import {Period} from '@signal-conso/signalconso-api-sdk-js'
 interface Props {
   ticks: number
   tickDuration?: Period
-
 }
 
 export const StatsProUserPanel = ({ticks, tickDuration}: Props) => {

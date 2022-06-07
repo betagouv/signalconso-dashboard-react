@@ -6,9 +6,16 @@ export interface DotProps {
 }
 
 export const Dot = ({className}: DotProps) => {
-  return <Icon className={className} sx={{
-    fontSize: '9px !important',
-    verticalAlign: 'middle',
-    mx: 1,
-  }}>fiber_manual_record</Icon>
+  return (
+    <Icon
+      className={className}
+      sx={{
+        fontSize: '9px !important',
+        verticalAlign: 'middle',
+        mx: 1,
+      }}
+    >
+      fiber_manual_record
+    </Icon>
+  )
 }

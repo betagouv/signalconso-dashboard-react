@@ -15,8 +15,8 @@ import {Alert} from 'mui-extension'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
 
 interface Props {
-  login: ActionProps<SignalConsoPublicSdk["authenticate"]["login"]>;
-  forgottenPassword?: ActionProps<SignalConsoPublicSdk["authenticate"]["forgotPassword"]>;
+  login: ActionProps<SignalConsoPublicSdk['authenticate']['login']>
+  forgottenPassword?: ActionProps<SignalConsoPublicSdk['authenticate']['forgotPassword']>
 }
 
 interface Form {
@@ -55,7 +55,7 @@ export const LoginForm = ({login, forgottenPassword}: Props) => {
 
   return (
     <LoginPanel title={m.login}>
-      <form style={{display: "flex", flexDirection: "column"}} onSubmit={handleSubmit(onLogin)} action="#">
+      <form style={{display: 'flex', flexDirection: 'column'}} onSubmit={handleSubmit(onLogin)} action="#">
         {errors.apiError && (
           <Alert type="error" sx={{mb: 2}}>
             <Txt size="big" block bold>

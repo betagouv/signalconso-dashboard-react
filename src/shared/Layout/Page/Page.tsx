@@ -8,7 +8,7 @@ export const pageWidth = {
   xl: 1400,
   l: 1100,
   m: 932,
-  s: 680
+  s: 680,
 }
 
 export interface PageProps extends MxPageProps {
@@ -23,12 +23,14 @@ export const Page = ({loading, size, sx, ...props}: PageProps) => {
     <>
       {loading && (
         <div style={{position: 'relative'}}>
-          <LinearProgress sx={{
-            position: 'absolute',
-            top: 0,
-            right: 0,
-            left: 0
-          }} />
+          <LinearProgress
+            sx={{
+              position: 'absolute',
+              top: 0,
+              right: 0,
+              left: 0,
+            }}
+          />
         </div>
       )}
       <MxPage

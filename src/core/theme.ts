@@ -4,18 +4,18 @@ import {ThemeOptions} from '@mui/material/styles/createTheme'
 import {makeSx} from 'mui-extension'
 
 export const combineSx = (...sxs: (SxProps<Theme> | undefined | false)[]): SxProps<Theme> => {
-  return sxs.reduce((res, sx) => (sx !== undefined && sx !== false) ? {...res, ...sx} : res, {} as any)
+  return sxs.reduce((res, sx) => (sx !== undefined && sx !== false ? {...res, ...sx} : res), {} as any)
 }
 
 export const sxUtils = makeSx({
   fontBig: {
-    fontSize: t => t.typography.fontSize * 1.15
+    fontSize: t => t.typography.fontSize * 1.15,
   },
   fontNormal: {
-    fontSize: t => t.typography.fontSize
+    fontSize: t => t.typography.fontSize,
   },
   fontSmall: {
-    fontSize: t => t.typography.fontSize * 0.85
+    fontSize: t => t.typography.fontSize * 0.85,
   },
   fontTitle: {
     fontSize: t => t.typography.fontSize * 1.3,
@@ -24,22 +24,22 @@ export const sxUtils = makeSx({
     fontSize: t => t.typography.fontSize * 1.6,
   },
   tdActions: {
-    textAlign: 'right'
+    textAlign: 'right',
   },
   truncate: {
     whiteSpace: 'nowrap',
     textOverflow: 'ellipsis',
-    overflow: 'hidden'
+    overflow: 'hidden',
   },
   inlineIcon: {
     display: 'inline !important',
     fontSize: 'inherit',
     lineHeight: 1,
-    verticalAlign: 'text-top'
+    verticalAlign: 'text-top',
   },
   divider: {
     mt: 2,
-    mb: 2
+    mb: 2,
   },
 })
 
@@ -152,7 +152,7 @@ export const muiTheme = (dark?: boolean): Theme => {
           ':focus': {
             outline: 0,
           },
-        }
+        },
       },
       MuiButton: {
         styleOverrides: {

@@ -114,7 +114,7 @@ export const ReportFile = ({file, dense, onRemove}: ReportFileProps) => {
               case FileType.Image: {
                 return (
                   <div>
-                    <Box sx={combineSx(css.backgroundImage, {backgroundImage: `url(${fileUrl})`})}/>
+                    <Box sx={combineSx(css.backgroundImage, {backgroundImage: `url(${fileUrl})`})} />
                     <Icon sx={css.imgImage}>image</Icon>
                   </div>
                 )

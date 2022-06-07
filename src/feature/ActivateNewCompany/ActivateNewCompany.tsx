@@ -84,11 +84,13 @@ export const ActivateNewCompany = () => {
             })}
           />
           <ScInput sx={{mb: 1}} disabled fullWidth label={m.email} value={connectedUser.email} />
-          <Box sx={{
-            mt: 2,
-            display: 'flex',
-            alignItems: 'center',
-          }}>
+          <Box
+            sx={{
+              mt: 2,
+              display: 'flex',
+              alignItems: 'center',
+            }}
+          >
             <ScButton loading={_acceptToken.loading} type="submit" color="primary" variant="contained">
               {m.addCompany}
             </ScButton>

@@ -15,27 +15,39 @@ interface Props {
 
 export const Widget = ({loading, title, to, children}: Props) => {
   const body = (
-    <Panel sx={{
-      ...to && {
-        transition: t => t.transitions.create('all'),
-        '&:hover': {
-          borderColor: t => t.palette.background.default,
-          boxShadow: t => t.shadows[3]
-        }
-      }
-    }}>
+    <Panel
+      sx={{
+        ...(to && {
+          transition: t => t.transitions.create('all'),
+          '&:hover': {
+            borderColor: t => t.palette.background.default,
+            boxShadow: t => t.shadows[3],
+          },
+        }),
+      }}
+    >
       <PanelBody>
-        <Txt block uppercase color="hint" size="small" gutterBottom sx={{
-          display: 'flex',
-          alignItems: 'center'
-        }}>
+        <Txt
+          block
+          uppercase
+          color="hint"
+          size="small"
+          gutterBottom
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+          }}
+        >
           {title}
           {to && (
-            <Icon fontSize="inherit" sx={{
-              ml: 1,
-              color: t => t.palette.text.disabled,
-              fontSize: t => styleUtils(t).fontSize.big
-            }}>
+            <Icon
+              fontSize="inherit"
+              sx={{
+                ml: 1,
+                color: t => t.palette.text.disabled,
+                fontSize: t => styleUtils(t).fontSize.big,
+              }}
+            >
               open_in_new
             </Icon>
           )}

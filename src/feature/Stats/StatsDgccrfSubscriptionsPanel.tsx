@@ -18,25 +18,25 @@ export const StatsDgccrfSubscriptionsPanel = ({ticks}: Props) => {
       <PanelHead>{m.dgccrfActions}</PanelHead>
       <PanelBody>
         <Txt color="hint" gutterBottom block dangerouslySetInnerHTML={{__html: m.dgccrfActionsDesc}} />
-          <ChartAsync
-            promisesDeps={[ticks]}
-            promises={[
-              () => api.secured.stats.getDgccrfControlsCurve({ticks}),
-              () => api.secured.stats.getDgccrfSubscriptionsCurve({ticks}),
-            ]}
-            curves={[
-              {
-                label: m.dgccrfSubscriptionsCurve,
-                key: 'getDgccrfSubscriptionsCurve',
-                curve: promises => promises[0].map(statsFormatCurveDate(m)),
-              },
-              {
-                label: m.dgccrfControlsCurve,
-                key: 'getDgccrfControlsCurve',
-                curve: promises => promises[1].map(statsFormatCurveDate(m)),
-              },
-            ]}
-          />
+        <ChartAsync
+          promisesDeps={[ticks]}
+          promises={[
+            () => api.secured.stats.getDgccrfControlsCurve({ticks}),
+            () => api.secured.stats.getDgccrfSubscriptionsCurve({ticks}),
+          ]}
+          curves={[
+            {
+              label: m.dgccrfSubscriptionsCurve,
+              key: 'getDgccrfSubscriptionsCurve',
+              curve: promises => promises[0].map(statsFormatCurveDate(m)),
+            },
+            {
+              label: m.dgccrfControlsCurve,
+              key: 'getDgccrfControlsCurve',
+              curve: promises => promises[1].map(statsFormatCurveDate(m)),
+            },
+          ]}
+        />
       </PanelBody>
     </Panel>
   )

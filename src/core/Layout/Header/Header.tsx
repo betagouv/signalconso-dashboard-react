@@ -32,35 +32,58 @@ export const Header = ({connectedUser}: Props) => {
 
   return (
     <Slide direction="down" in={true} mountOnEnter unmountOnExit>
-      <Box component="header" sx={{
-        minHeight: headerHeight,
-        py: .5, px: 2,
-        display: 'flex',
-        alignItems: 'center',
-        background: t => t.palette.background.paper,
-        borderBottom: t => '1px solid ' + t.palette.divider,
-      }}>
-        <div style={{display: 'flex', alignItems: 'center'}}>
-          <Box component="img" src={logoGouvMobile} alt={m.altLogoGouv} sx={{
-            height: 40,
-            mr: 2,
-          }} />
-          {!isMobileWidth && <Box component="img" src={logoDgccrf} alt={m.altLogoDGCCRF} sx={{
-            height: 40,
-            mr: 2,
-          }} />}
-          <a href={config.appBaseUrl}>
-            <Box component="img" src={logoSignalConso} alt={m.altLogoSignalConso} sx={{
-              height: 40,
-              mr: 1,
-            }} />
-          </a>
-        </div>
-        <div style={{
+      <Box
+        component="header"
+        sx={{
+          minHeight: headerHeight,
+          py: 0.5,
+          px: 2,
           display: 'flex',
           alignItems: 'center',
-          marginLeft: 'auto',
-        }}>
+          background: t => t.palette.background.paper,
+          borderBottom: t => '1px solid ' + t.palette.divider,
+        }}
+      >
+        <div style={{display: 'flex', alignItems: 'center'}}>
+          <Box
+            component="img"
+            src={logoGouvMobile}
+            alt={m.altLogoGouv}
+            sx={{
+              height: 40,
+              mr: 2,
+            }}
+          />
+          {!isMobileWidth && (
+            <Box
+              component="img"
+              src={logoDgccrf}
+              alt={m.altLogoDGCCRF}
+              sx={{
+                height: 40,
+                mr: 2,
+              }}
+            />
+          )}
+          <a href={config.appBaseUrl}>
+            <Box
+              component="img"
+              src={logoSignalConso}
+              alt={m.altLogoSignalConso}
+              sx={{
+                height: 40,
+                mr: 1,
+              }}
+            />
+          </a>
+        </div>
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            marginLeft: 'auto',
+          }}
+        >
           {isMobileWidth ? (
             <>
               <IconBtn aria-haspopup="true" onClick={handleClick}>
@@ -94,12 +117,16 @@ export const Header = ({connectedUser}: Props) => {
 
 const HeaderItem = ({children, href}: {children: any; href: string}) => {
   return (
-    <Btn color="primary" href={href} sx={{
-      textTransform: 'initial',
-      fontSize: t => styleUtils(t).fontSize.normal,
-      py: 0,
-      px: 2,
-    }}>
+    <Btn
+      color="primary"
+      href={href}
+      sx={{
+        textTransform: 'initial',
+        fontSize: t => styleUtils(t).fontSize.normal,
+        py: 0,
+        px: 2,
+      }}
+    >
       {children}
     </Btn>
   )

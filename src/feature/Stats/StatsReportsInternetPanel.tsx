@@ -181,7 +181,7 @@ const StatsCard = ({sx, value, previousValue, title, desc, ...props}: StatsCardP
             sx={{
               fontSize: t => styleUtils(t).fontSize.big,
               fontWeight: t => t.typography.fontWeightBold,
-              color: t => evolution > 0 ? t.palette.success.light : t.palette.error.main,
+              color: t => (evolution > 0 ? t.palette.success.light : t.palette.error.main),
             }}
           >
             {evolution > 0 ? '+' : '-'}

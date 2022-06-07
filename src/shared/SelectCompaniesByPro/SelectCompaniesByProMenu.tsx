@@ -10,7 +10,7 @@ import {combineSx, sxUtils} from '../../core/theme'
 const css = makeSx({
   regionLabel: {
     fontWeight: t => t.typography.fontWeightBold,
-    flex: 1
+    flex: 1,
   },
   regionToggleArrow: {
     width: 40,
@@ -23,25 +23,25 @@ const css = makeSx({
     color: t => t.palette.text.disabled,
     '&:hover, &:active, &:focus': {
       background: t => t.palette.action.hover,
-      color: t => t.palette.primary.main
-    }
+      color: t => t.palette.primary.main,
+    },
   },
   locationIcon: {
-    fontSize: 20
+    fontSize: 20,
   },
   menuItem: {
     pt: 0,
     pb: 0,
-    pl: 1/2,
+    pl: 1 / 2,
   },
   menuItemImportant: {
     fontWeight: t => t.typography.fontWeightBold,
-    borderBottom: t => `1px solid ${t.palette.divider}`
+    borderBottom: t => `1px solid ${t.palette.divider}`,
   },
   cbDepartment: {
     paddingTop: `6px !important`,
-    paddingBottom: `6px !important`
-  }
+    paddingBottom: `6px !important`,
+  },
 })
 
 interface SelectCompaniesProMenuProps {
@@ -93,8 +93,12 @@ export const SelectCompaniesByProMenu = ({
       {accessibleCompanies.map((company, index) => (
         <MenuItem sx={css.menuItem} key={company.siret} dense onClick={() => onSelect(company, index)}>
           <Checkbox sx={css.cbDepartment} checked={indexValues.has(company.siret)} />
-          <Box component="span" sx={{color: t => t.palette.text.secondary}}>{company.siret.slice(0, 9)}</Box>
-          <Box component="span" sx={{fontWeight: t => t.typography.fontWeightBold}}>{company.siret.substr(9, 14)}</Box>
+          <Box component="span" sx={{color: t => t.palette.text.secondary}}>
+            {company.siret.slice(0, 9)}
+          </Box>
+          <Box component="span" sx={{fontWeight: t => t.typography.fontWeightBold}}>
+            {company.siret.substr(9, 14)}
+          </Box>
           <Box component="span" sx={{ml: 1, color: t => t.palette.text.disabled}}>
             <Icon sx={combineSx(sxUtils.inlineIcon, css.locationIcon)}>location_on</Icon>
             {company.address?.postalCode}

@@ -24,7 +24,7 @@ const withRegions =
 const css = makeSx({
   regionLabel: {
     fontWeight: t => t.typography.fontWeightBold,
-    flex: 1
+    flex: 1,
   },
   regionToggleArrow: {
     width: 36,
@@ -37,20 +37,20 @@ const css = makeSx({
     color: t => t.palette.text.disabled,
     '&:hover, &:active, &:focus': {
       background: t => t.palette.action.hover,
-      color: t => t.palette.primary.main
-    }
+      color: t => t.palette.primary.main,
+    },
   },
   menuItem: {
     py: 0,
-    px: 1/2,
+    px: 1 / 2,
   },
   menuItemRegion: {
-    borderBottom: t => `1px solid ${t.palette.divider}`
+    borderBottom: t => `1px solid ${t.palette.divider}`,
   },
   cbDepartment: {
     paddingTop: `6px !important`,
-    paddingBottom: `6px !important`
-  }
+    paddingBottom: `6px !important`,
+  },
 })
 
 interface SelectDepartmentsMenuProps {
@@ -112,11 +112,13 @@ export const SelectDepartmentsMenu = withRegions(
               onClick={() => onSelectDepartments(region.departments.map(_ => _.code))}
             >
               <Checkbox indeterminate={atLeastOneChecked && !allChecked} checked={allChecked} />
-              <Box component="span" sx={css.regionLabel}>{region.label}</Box>
+              <Box component="span" sx={css.regionLabel}>
+                {region.label}
+              </Box>
               <Icon
                 sx={{
-                  ...openedRegions.has(region.label) && {color: t => t.palette.primary.main},
-                  ...css.regionToggleArrow
+                  ...(openedRegions.has(region.label) && {color: t => t.palette.primary.main}),
+                  ...css.regionToggleArrow,
                 }}
                 onClick={stopPropagation(() => toggleRegionOpen(region.label))}
               >
@@ -127,7 +129,9 @@ export const SelectDepartmentsMenu = withRegions(
               ? region.departments.map(department => (
                   <MenuItem sx={css.menuItem} dense onClick={() => onSelectDepartment(department.code)}>
                     <Checkbox sx={css.cbDepartment} checked={indexValues.has(department.code)} />
-                    <Box component="span" sx={{color: t => t.palette.text.disabled}}>({department.code})</Box>
+                    <Box component="span" sx={{color: t => t.palette.text.disabled}}>
+                      ({department.code})
+                    </Box>
                     &nbsp;
                     {department.label}
                   </MenuItem>

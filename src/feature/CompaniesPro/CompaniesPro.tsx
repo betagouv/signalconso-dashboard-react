@@ -125,17 +125,25 @@ export const CompaniesPro = () => {
               render: _ => (
                 <Tooltip title={_.name}>
                   <span>
-                    <Box component="span" sx={{
-                      fontWeight: 'bold',
-                      mb: '-1px',
-                    }}>
+                    <Box
+                      component="span"
+                      sx={{
+                        fontWeight: 'bold',
+                        mb: '-1px',
+                      }}
+                    >
                       {_.name}
                     </Box>
                     <br />
-                    <Box component="span" sx={{
-                      fontSize: t => styleUtils(t).fontSize.small,
-                      color: t => t.palette.text.disabled,
-                    }}>{_.siret}</Box>
+                    <Box
+                      component="span"
+                      sx={{
+                        fontSize: t => styleUtils(t).fontSize.small,
+                        color: t => t.palette.text.disabled,
+                      }}
+                    >
+                      {_.siret}
+                    </Box>
                   </span>
                 </Tooltip>
               ),
@@ -158,7 +166,7 @@ export const CompaniesPro = () => {
             },
             {
               head: (
-                <Box component="span" sx={{whiteSpace: 'nowrap', verticalAlign: 'middle',}}>
+                <Box component="span" sx={{whiteSpace: 'nowrap', verticalAlign: 'middle'}}>
                   {m.notification}
                 </Box>
               ),
@@ -214,11 +222,15 @@ export const CompaniesPro = () => {
             },
           ]}
           renderEmptyState={
-            <Fender title={m.noCompanyFound} icon="store" sx={{
-              margin: 'auto',
-              mt: 1,
-              mb: 2,
-            }}>
+            <Fender
+              title={m.noCompanyFound}
+              icon="store"
+              sx={{
+                margin: 'auto',
+                mt: 1,
+                mb: 2,
+              }}
+            >
               <ScButton variant="contained" color="primary" icon="add" sx={{mt: 1}}>
                 {m.registerACompany}
               </ScButton>

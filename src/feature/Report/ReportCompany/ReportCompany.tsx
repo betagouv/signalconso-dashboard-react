@@ -47,18 +47,22 @@ export const ReportCompany = ({report, canEdit}: Props) => {
           </IconButton>
         </NavLink>
       </PanelHead>
-      <PanelBody sx={{
-        display: 'flex',
-        justifyContent: 'space-between',
-      }}>
+      <PanelBody
+        sx={{
+          display: 'flex',
+          justifyContent: 'space-between',
+        }}
+      >
         <div>
           <Box sx={sxUtils.fontBig} style={{marginBottom: theme.spacing(1 / 2)}}>
             {report.companySiret}
           </Box>
-          <Box sx={{
-            color: t => t.palette.text.secondary,
-            fontSize: t => styleUtils(t).fontSize.small,
-          }}>
+          <Box
+            sx={{
+              color: t => t.palette.text.secondary,
+              fontSize: t => styleUtils(t).fontSize.small,
+            }}
+          >
             <Box sx={{fontWeight: t => t.typography.fontWeightBold}}>{report.companyName}</Box>
             <AddressComponent address={report.companyAddress} />
           </Box>
@@ -73,10 +77,12 @@ export const ReportCompany = ({report, canEdit}: Props) => {
             ))
             .toUndefined()}
         </div>
-        <Icon sx={{
-          fontSize: 64,
-          color: t => t.palette.divider,
-        }}>
+        <Icon
+          sx={{
+            fontSize: 64,
+            color: t => t.palette.divider,
+          }}
+        >
           store
         </Icon>
       </PanelBody>

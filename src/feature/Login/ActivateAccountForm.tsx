@@ -101,11 +101,13 @@ export const ActivateAccountForm = ({register: registerAction}: Props) => {
             pattern: {value: regexp.email, message: m.invalidEmail},
           })}
         />
-        <Box sx={{
-          mt: 2,
-          display: 'flex',
-          alignItems: 'center',
-        }}>
+        <Box
+          sx={{
+            mt: 2,
+            display: 'flex',
+            alignItems: 'center',
+          }}
+        >
           <ScButton
             loading={registerAction.loading}
             onClick={_ => clearErrors('apiError')}

@@ -8,7 +8,14 @@ import {Badge, Box, Grid, Icon, MenuItem} from '@mui/material'
 import {ReportStatusLabel, ReportStatusProLabel} from '../../shared/ReportStatus/ReportStatus'
 import {useLayoutContext} from '../../core/Layout/LayoutContext'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
-import {cleanObject, Report, ReportSearch, ReportSearchResult, ReportStatus, ReportStatusPro} from '@signal-conso/signalconso-api-sdk-js'
+import {
+  cleanObject,
+  Report,
+  ReportSearch,
+  ReportSearchResult,
+  ReportStatus,
+  ReportStatusPro,
+} from '@signal-conso/signalconso-api-sdk-js'
 import {combineSx, styleUtils, sxUtils} from '../../core/theme'
 import {SelectDepartments} from '../../shared/SelectDepartments/SelectDepartments'
 import {ScSelect} from '../../shared/Select/Select'
@@ -18,7 +25,12 @@ import {openInNew} from '../../core/helper/utils'
 import {Btn, Fender} from 'mui-extension/lib'
 import {EntityIcon} from '../../core/EntityIcon'
 import {ScButton} from '../../shared/Button/Button'
-import {mapArrayFromQuerystring, mapDateFromQueryString, mapDatesToQueryString, useQueryString} from '../../core/helper/useQueryString'
+import {
+  mapArrayFromQuerystring,
+  mapDateFromQueryString,
+  mapDatesToQueryString,
+  useQueryString,
+} from '../../core/helper/useQueryString'
 import {fromNullable} from 'fp-ts/lib/Option'
 import {useToast} from '../../core/toast'
 import {config} from '../../conf/config'
@@ -182,13 +194,7 @@ export const ReportsPro = () => {
                         onChange={departments => _reports.updateFilters(prev => ({...prev, departments}))}
                       >
                         {(value, onChange) => (
-                          <SelectDepartments
-                            label={m.departments}
-                            value={value}
-                            onChange={onChange}
-                            sx={{mr: 1}}
-                            fullWidth
-                          />
+                          <SelectDepartments label={m.departments} value={value} onChange={onChange} sx={{mr: 1}} fullWidth />
                         )}
                       </DebouncedInput>
                     </Grid>
@@ -262,7 +268,7 @@ export const ReportsPro = () => {
                   minRowsBeforeDisplay: minRowsBeforeDisplayFilters,
                   offset: _reports.filters.offset,
                   limit: _reports.filters.limit,
-                  onPaginationChange: pagination => _reports.updateFilters(prev => ({...prev, ...pagination}))
+                  onPaginationChange: pagination => _reports.updateFilters(prev => ({...prev, ...pagination})),
                 }}
                 data={_reports.list?.data}
                 loading={_reports.fetching}
@@ -306,52 +312,65 @@ export const ReportsPro = () => {
                             </Box>
                           ),
                         },
-                    ] : [
-                      {
-                        id: 'companyPostalCode',
-                        head: m.postalCodeShort,
-                        sx: _ => (_.report.status === ReportStatus.TraitementEnCours ? {fontWeight: t => t.typography.fontWeightBold} : undefined),
-                        render: _ => _.report.companyAddress.postalCode
-                      },
-                      {
-                        id: 'siret',
-                        head: m.siret,
-                        sx: _ => (_.report.status === ReportStatus.TraitementEnCours ? {fontWeight: t => t.typography.fontWeightBold} : undefined),
-                        render: _ => _.report.companySiret
-                      },
-                      {
-                        id: 'createDate',
-                        head: m.receivedAt,
-                        sx: _ => (_.report.status === ReportStatus.TraitementEnCours ? {fontWeight: t => t.typography.fontWeightBold} : undefined),
-                        render: _ => formatDate(_.report.creationDate)
-                      },
-                      {
-                        id: 'status',
-                        head: m.status,
-                        render: _ => <ReportStatusProLabel dense status={Report.getStatusProByStatus(_.report.status)} />
-                      },
-                      {
-                        id: 'consumer',
-                        head: m.consumer,
-                        sx: _ => (_.report.status === ReportStatus.TraitementEnCours ? {fontWeight: t => t.typography.fontWeightBold} : undefined),
-                        render: _ =>
-                          _.report.contactAgreement ? _.report.firstName + ' ' + _.report.lastName : m.anonymousReport
-                      },
-                      {
-                        id: 'file',
-                        head: m.files,
-                        sx: _ => ({
-                          minWidth: 44,
-                          maxWidth: 100,
-                        }),
-                        render: _ =>
-                          _.files.length > 0 && (
-                            <Badge badgeContent={_.files.length} color="primary" invisible={_.files.length === 1}>
-                              <Icon sx={{color: t => t.palette.text.disabled}}>insert_drive_file</Icon>
-                            </Badge>
-                          )
-                      }
-                    ]
+                      ]
+                    : [
+                        {
+                          id: 'companyPostalCode',
+                          head: m.postalCodeShort,
+                          sx: _ =>
+                            _.report.status === ReportStatus.TraitementEnCours
+                              ? {fontWeight: t => t.typography.fontWeightBold}
+                              : undefined,
+                          render: _ => _.report.companyAddress.postalCode,
+                        },
+                        {
+                          id: 'siret',
+                          head: m.siret,
+                          sx: _ =>
+                            _.report.status === ReportStatus.TraitementEnCours
+                              ? {fontWeight: t => t.typography.fontWeightBold}
+                              : undefined,
+                          render: _ => _.report.companySiret,
+                        },
+                        {
+                          id: 'createDate',
+                          head: m.receivedAt,
+                          sx: _ =>
+                            _.report.status === ReportStatus.TraitementEnCours
+                              ? {fontWeight: t => t.typography.fontWeightBold}
+                              : undefined,
+                          render: _ => formatDate(_.report.creationDate),
+                        },
+                        {
+                          id: 'status',
+                          head: m.status,
+                          render: _ => <ReportStatusProLabel dense status={Report.getStatusProByStatus(_.report.status)} />,
+                        },
+                        {
+                          id: 'consumer',
+                          head: m.consumer,
+                          sx: _ =>
+                            _.report.status === ReportStatus.TraitementEnCours
+                              ? {fontWeight: t => t.typography.fontWeightBold}
+                              : undefined,
+                          render: _ =>
+                            _.report.contactAgreement ? _.report.firstName + ' ' + _.report.lastName : m.anonymousReport,
+                        },
+                        {
+                          id: 'file',
+                          head: m.files,
+                          sx: _ => ({
+                            minWidth: 44,
+                            maxWidth: 100,
+                          }),
+                          render: _ =>
+                            _.files.length > 0 && (
+                              <Badge badgeContent={_.files.length} color="primary" invisible={_.files.length === 1}>
+                                <Icon sx={{color: t => t.palette.text.disabled}}>insert_drive_file</Icon>
+                              </Badge>
+                            ),
+                        },
+                      ]
                 }
                 renderEmptyState={
                   <Fender

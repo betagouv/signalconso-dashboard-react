@@ -30,34 +30,34 @@ const css = makeSx({
     cursor: 'pointer',
     color: t => t.palette.text.secondary,
     '&:hover': {
-      background: t => t.palette.action.hover
+      background: t => t.palette.action.hover,
     },
     '&:active, &:focus': {
-      background: t => t.palette.action.focus
-    }
+      background: t => t.palette.action.focus,
+    },
   },
   menuItemActive: {
     fontWeight: t => t.typography.fontWeightBold,
     color: t => t.palette.primary.main + ' !important',
-    background: t => alpha(t.palette.primary.main, 0.1) + ' !important'
+    background: t => alpha(t.palette.primary.main, 0.1) + ' !important',
   },
   menuItemCategory: {
     '&:not(:first-of-type)': {
-      borderTop: t => `1px solid ${t.palette.divider}`
-    }
+      borderTop: t => `1px solid ${t.palette.divider}`,
+    },
   },
   cbDepartment: {
     paddingTop: `6px !important`,
-    paddingBottom: `6px !important`
+    paddingBottom: `6px !important`,
   },
   flag: {
     color: 'rgba(0, 0, 0, 1)',
     fontSize: 18,
-    textAlign: 'center'
+    textAlign: 'center',
   },
   iconWidth: {
-    width: iconWidth
-  }
+    width: iconWidth,
+  },
 })
 
 interface Props {
@@ -103,16 +103,16 @@ export const SelectCountriesMenu = withRegions(({countries, anchorEl, open, init
     return [
       {
         label: m.selectCountries_onlyEU,
-        countries: euCountries
+        countries: euCountries,
       },
       {
         label: m.selectCountries_onlyTransfer,
-        countries: transfersCountries
+        countries: transfersCountries,
       },
       {
         label: m.others,
-        countries: othersCountries
-      }
+        countries: othersCountries,
+      },
     ]
   }, [countries])
 
@@ -153,21 +153,22 @@ export const SelectCountriesMenu = withRegions(({countries, anchorEl, open, init
         return [
           <Box sx={combineSx(css.menuItem, css.menuItemCategory)} onClick={handleSelectAll}>
             <Checkbox sx={css.iconWidth} indeterminate={someSelected && !allSelected} checked={allSelected} />
-            <Box component="span" sx={{fontWeight: t => t.typography.fontWeightBold}}>{countries.label}</Box>
+            <Box component="span" sx={{fontWeight: t => t.typography.fontWeightBold}}>
+              {countries.label}
+            </Box>
           </Box>,
           countries.countries.map(country => (
             <Box
               key={country.code}
-              sx={combineSx(
-                css.menuItem,
-                indexedValues.has(country.code) && css.menuItemActive
-              )}
+              sx={combineSx(css.menuItem, indexedValues.has(country.code) && css.menuItemActive)}
               onClick={() => handleToggle(country)}
             >
-              <Box component="span" sx={combineSx(css.flag, css.iconWidth)}>{countryToFlag(country.code)}</Box>
+              <Box component="span" sx={combineSx(css.flag, css.iconWidth)}>
+                {countryToFlag(country.code)}
+              </Box>
               <span>{country.name}</span>
             </Box>
-          ))
+          )),
         ]
       })}
     </Menu>

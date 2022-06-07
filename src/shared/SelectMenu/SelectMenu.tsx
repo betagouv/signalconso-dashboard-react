@@ -18,11 +18,11 @@ interface Props<T> {
 const css = makeSx({
   menuItem: {
     my: 0,
-    px: 1/2,
-  }
+    px: 1 / 2,
+  },
 })
 
-export const SelectMenu = <T, >({
+export const SelectMenu = <T,>({
   options,
   open,
   anchorEl,

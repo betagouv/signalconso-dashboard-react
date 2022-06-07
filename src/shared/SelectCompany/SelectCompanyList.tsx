@@ -21,7 +21,7 @@ export const SelectCompanyList = ({companies, onChange}: Props) => {
       {companies.map(company => {
         const isGovernment = Report.isGovernmentCompany(company)
         return (
-          <ScRadioGroupItem key={company.siret} value={company.siret!} sx={{maxWidth: 400,}} onClick={() => onChange(company)}>
+          <ScRadioGroupItem key={company.siret} value={company.siret!} sx={{maxWidth: 400}} onClick={() => onChange(company)}>
             <Txt truncate block bold>
               {company.name}
             </Txt>
@@ -47,7 +47,7 @@ export const SelectCompanyList = ({companies, onChange}: Props) => {
               </Txt>
             )}
             {company.address && (
-              <Txt color="hint" block size="small" sx={{mt: 1/2}}>
+              <Txt color="hint" block size="small" sx={{mt: 1 / 2}}>
                 <AddressComponent address={company.address} />
               </Txt>
             )}

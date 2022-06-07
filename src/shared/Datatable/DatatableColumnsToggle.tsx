@@ -44,8 +44,8 @@ export const DatatableColumnToggle = ({className, title, columns, hiddenColumns,
               <Checkbox
                 sx={{
                   pl: 0,
-                  pb: .25,
-                  pt: .25,
+                  pb: 0.25,
+                  pt: 0.25,
                 }}
                 checked={checked}
               />

@@ -13,14 +13,14 @@ export const PageTitle = ({action, children, sx, ...props}: Props) => {
       sx={{
         mt: 1,
         mb: 3,
-        display: "flex",
-        alignItems: "center",
+        display: 'flex',
+        alignItems: 'center',
         ...sx,
       }}
       {...props}
     >
       {children}
-      {action && <div style={{marginLeft: "auto"}}>{action}</div>}
+      {action && <div style={{marginLeft: 'auto'}}>{action}</div>}
     </Typography>
-  );
-};
+  )
+}

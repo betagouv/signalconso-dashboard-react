@@ -18,26 +18,33 @@ export const ReportDetailValues = ({input, lines = 2, hideTooltip, sx, ...props}
       hidden={hideTooltip}
       title={input.map((detail, i) => (
         <div key={i}>
-          <Box component="span" dangerouslySetInnerHTML={{__html: detail.label}} sx={{fontWeight: t => t.typography.fontWeightBold}} />
+          <Box
+            component="span"
+            dangerouslySetInnerHTML={{__html: detail.label}}
+            sx={{fontWeight: t => t.typography.fontWeightBold}}
+          />
           &nbsp;
           <Box component="span" dangerouslySetInnerHTML={{__html: detail.value}} sx={{color: t => t.palette.text.secondary}} />
         </div>
       ))}
     >
-      <Box {...props} sx={{
-        display: '-webkit-box',
-        WebkitLineClamp: lines,
-        WebkitBoxOrient: 'vertical',
-        overflow: 'hidden',
-        ...sx,
-      }}>
+      <Box
+        {...props}
+        sx={{
+          display: '-webkit-box',
+          WebkitLineClamp: lines,
+          WebkitBoxOrient: 'vertical',
+          overflow: 'hidden',
+          ...sx,
+        }}
+      >
         {description ||
-        input.map((_, i) => (
-          <span key={i}>
-            <Txt bold>{_.label}</Txt> <span dangerouslySetInnerHTML={{__html: _.value}} />
-            <br />
-          </span>
-        ))}
+          input.map((_, i) => (
+            <span key={i}>
+              <Txt bold>{_.label}</Txt> <span dangerouslySetInnerHTML={{__html: _.value}} />
+              <br />
+            </span>
+          ))}
       </Box>
     </Tooltip>
   )

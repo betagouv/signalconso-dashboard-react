@@ -129,7 +129,7 @@ export const CompanyComponent = () => {
               </Widget>
             </Grid>
           </Grid>
-          <CompanyChartPanel companyId={id} company={company}/>
+          <CompanyChartPanel companyId={id} company={company} />
 
           <Grid container spacing={2}>
             <Grid item sm={12} md={7}>

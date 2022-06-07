@@ -23,18 +23,18 @@ const css = makeSx({
     pb: 2,
     m: 2,
     '&:not(:last-of-type)': {
-      borderBottom: t => `1px solid ${t.palette.divider}`
-    }
+      borderBottom: t => `1px solid ${t.palette.divider}`,
+    },
   },
   reportTag: {
     mb: 1,
     display: 'flex',
     alignItems: 'center',
-    color: t => t.palette.text.disabled
+    color: t => t.palette.text.disabled,
   },
   body: {
-    flex: 1
-  }
+    flex: 1,
+  },
 })
 
 export const ReportsShortList = ({reports}: Props) => {
@@ -45,7 +45,7 @@ export const ReportsShortList = ({reports}: Props) => {
         <Box sx={css.report} key={_.report.id}>
           <Box sx={css.body}>
             <Box>
-              <Txt size="big" bold block truncate sx={{flex: 1, mb: .5}}>
+              <Txt size="big" bold block truncate sx={{flex: 1, mb: 0.5}}>
                 {_.report.category}
               </Txt>
               <Box sx={css.reportTag}>
@@ -62,7 +62,7 @@ export const ReportsShortList = ({reports}: Props) => {
                 )}
               </Box>
             </Box>
-            <ReportDetailValues input={_.report.details} lines={3} sx={{fontSize: t => styleUtils(t).fontSize.normal}}/>
+            <ReportDetailValues input={_.report.details} lines={3} sx={{fontSize: t => styleUtils(t).fontSize.normal}} />
           </Box>
           <NavLink to={siteMap.logged.report(_.report.id)}>
             <IconBtn color="primary">

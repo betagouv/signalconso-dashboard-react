@@ -64,7 +64,7 @@ export const App = () => {
       providers={[
         _ => <ThemeProvider theme={muiTheme()} children={_} />,
         _ => <StyledEngineProvider children={_} />,
-        _ => <CssBaseline children={_}/>,
+        _ => <CssBaseline children={_} />,
         _ => <Router children={_} />,
         _ => <I18nProvider children={_} />,
         _ => <ToastProvider horizontal="right" children={_} />,

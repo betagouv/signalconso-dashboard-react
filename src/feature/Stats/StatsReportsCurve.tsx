@@ -21,10 +21,7 @@ const computeCurveReportPhysique = (
   for (let i = 0; i < reportCountCurve.length; i++) {
     res[i] = {
       date: reportCountCurve[i].date,
-      count:
-        reportCountCurve[i].count -
-        reportInternetCountCurve[i]?.count -
-        reportDemarchageCountCurve[i]?.count,
+      count: reportCountCurve[i].count - reportInternetCountCurve[i]?.count - reportDemarchageCountCurve[i]?.count,
     }
   }
   return res
@@ -44,25 +41,33 @@ export const StatsReportsCurvePanel = ({ticks, tickDuration = 'Month'}: Props) =
           promises={[
             () => api.public.stats.getReportCountCurve({ticks, tickDuration}),
             () => api.public.stats.getReportCountCurve({ticks, tickDuration, withTags: [ReportTag.Internet]}),
-            () => api.public.stats.getReportCountCurve({ticks, tickDuration, withTags: [ReportTag.DemarchageADomicile, ReportTag.DemarchageTelephonique]}),
+            () =>
+              api.public.stats.getReportCountCurve({
+                ticks,
+                tickDuration,
+                withTags: [ReportTag.DemarchageADomicile, ReportTag.DemarchageTelephonique],
+              }),
           ]}
           curves={[
             {
               label: m.reportsCount,
               key: 'all',
-              curve: ([total,]) => total.map(statsFormatCurveDate(m))
-            }, {
+              curve: ([total]) => total.map(statsFormatCurveDate(m)),
+            },
+            {
               label: m.reportsCountInternet,
               key: 'internet',
               curve: ([, internet]) => internet.map(statsFormatCurveDate(m)),
-            }, {
+            },
+            {
               label: m.reportsCountDemarchage,
               key: 'demarchage',
-              curve: ([,,demarchage])  => demarchage.map(statsFormatCurveDate(m)),
-            }, {
+              curve: ([, , demarchage]) => demarchage.map(statsFormatCurveDate(m)),
+            },
+            {
               label: m.reportsCountPhysique,
               key: 'physique',
-              curve: _ => computeCurveReportPhysique(..._).map(statsFormatCurveDate(m))
+              curve: _ => computeCurveReportPhysique(..._).map(statsFormatCurveDate(m)),
             },
           ]}
         />

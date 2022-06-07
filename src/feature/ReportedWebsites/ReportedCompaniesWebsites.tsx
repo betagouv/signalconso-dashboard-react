@@ -24,28 +24,28 @@ const css = makeSx({
   tdName_label: {
     fontWeight: 'bold',
     marginBottom: '-2px',
-    maxWidth: 200
+    maxWidth: 200,
   },
   tdName_desc: {
-    fontSize: t =>  t.typography.fontSize * 0.875,
-    color: t => t.palette.text.disabled
+    fontSize: t => t.typography.fontSize * 0.875,
+    color: t => t.palette.text.disabled,
   },
   chipEnterprise: {
-      height: 42,
-      borderRadius: 42,
-    },
-    flag: {
-      color: 'rgba(0, 0, 0, 1)',
-      fontSize: 18,
-      textAlign: 'center',
-    },
-    iconWidth: {
-      width: iconWidth,
-    },
-    status: {
-      maxWidth: 180,
-    },
-  })
+    height: 42,
+    borderRadius: 42,
+  },
+  flag: {
+    color: 'rgba(0, 0, 0, 1)',
+    fontSize: 18,
+    textAlign: 'center',
+  },
+  iconWidth: {
+    width: iconWidth,
+  },
+  status: {
+    maxWidth: 180,
+  },
+})
 
 const countryToFlag = (isoCode: string) => {
   return typeof String.fromCodePoint !== 'undefined'
@@ -195,7 +195,9 @@ export const ReportedCompaniesWebsites = () => {
                           <Txt truncate sx={css.tdName_label} block>
                             {_.company.name}
                           </Txt>
-                          <Box component="span" sx={css.tdName_desc}>{_.company.siret}</Box>
+                          <Box component="span" sx={css.tdName_desc}>
+                            {_.company.siret}
+                          </Box>
                         </div>
                       }
                     />
@@ -207,7 +209,9 @@ export const ReportedCompaniesWebsites = () => {
                       sx={css.chipEnterprise}
                       label={
                         <div>
-                          <Box component="span" sx={css.tdName_desc}>{m.noAssociation}</Box>
+                          <Box component="span" sx={css.tdName_desc}>
+                            {m.noAssociation}
+                          </Box>
                         </div>
                       }
                     />
@@ -282,7 +286,10 @@ export const ReportedCompaniesWebsites = () => {
             stickyEnd: true,
             sx: _ => sxUtils.tdActions,
             render: _ => (
-              <IconBtn sx={{color: t => t.palette.text.disabled}} onClick={() => _remove.fetch({}, _.id).then(_ => _fetch.fetch())}>
+              <IconBtn
+                sx={{color: t => t.palette.text.disabled}}
+                onClick={() => _remove.fetch({}, _.id).then(_ => _fetch.fetch())}
+              >
                 <Icon>delete</Icon>
               </IconBtn>
             ),

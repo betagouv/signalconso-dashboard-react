@@ -9,15 +9,7 @@ export interface PanelProps extends CardProps {
   elevation?: number
 }
 
-export const Panel = forwardRef(({
-  elevation = 0,
-  hoverable,
-  loading,
-  children,
-  stretch,
-  sx,
-  ...other
-}: PanelProps, ref: any) => {
+export const Panel = forwardRef(({elevation = 0, hoverable, loading, children, stretch, sx, ...other}: PanelProps, ref: any) => {
   const theme = useTheme()
   console.log('t.shape.borderRadius', theme.shape.borderRadius)
   return (
@@ -27,22 +19,22 @@ export const Panel = forwardRef(({
       sx={{
         borderRadius: t => t.shape.borderRadius + 'px' + 'px',
         mb: 2,
-        ...hoverable && {
+        ...(hoverable && {
           cursor: 'pointer',
           transition: t => t.transitions.create('all'),
           '&:hover': {
             transform: 'scale(1.01)',
-            boxShadow: t => t.shadows[4]
-          }
-        },
-        ...stretch && {
+            boxShadow: t => t.shadows[4],
+          },
+        }),
+        ...(stretch && {
           display: 'flex',
           flexDirection: 'column',
-          height: t => `calc(100% - ${t.spacing(2)})`
-        },
-        ...elevation === 0 && {
-          border: t => `1px solid ${t.palette.divider}`
-        },
+          height: t => `calc(100% - ${t.spacing(2)})`,
+        }),
+        ...(elevation === 0 && {
+          border: t => `1px solid ${t.palette.divider}`,
+        }),
         ...sx,
       }}
       {...other}

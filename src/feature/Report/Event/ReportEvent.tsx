@@ -13,7 +13,7 @@ export interface ReportComponentEventProps {
 const css = makeSx({
   root: {
     display: 'flex',
-    mb:  1.5,
+    mb: 1.5,
     '&:last-of-type': {
       mb: 0,
       '& $body': {
@@ -43,13 +43,13 @@ const css = makeSx({
     justifyContent: 'space-between',
   },
   title: {
-    fontWeight:  t=> t.typography.fontWeightBold,
+    fontWeight: t => t.typography.fontWeightBold,
     fontSize: t => styleUtils(t).fontSize.normal,
   },
   date: {
     whiteSpace: 'nowrap',
-    color:  t=> t.palette.text.disabled,
-    mt:  0.5,
+    color: t => t.palette.text.disabled,
+    mt: 0.5,
   },
 })
 
@@ -72,9 +72,7 @@ export const ReportEventComponent = ({event}: ReportComponentEventProps) => {
             {event.user.firstName} {event.user.lastName} {event.user.role}
           </div>
         )}
-        <Box sx={{color: t => t.palette.text.secondary}}>
-          {(event.data.details as any)?.description}
-        </Box>
+        <Box sx={{color: t => t.palette.text.secondary}}>{(event.data.details as any)?.description}</Box>
       </Box>
     </Box>
   )

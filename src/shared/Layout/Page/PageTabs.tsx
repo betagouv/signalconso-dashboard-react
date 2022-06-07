@@ -17,10 +17,16 @@ export const PageTabs = ({children}: Props) => {
   }
 
   return (
-    <Tabs value={value} indicatorColor="primary" textColor="primary" onChange={handleChange} sx={{
-      mb: 3,
-      borderBottom: t=> '1px solid ' + t.palette.divider,
-    }}>
+    <Tabs
+      value={value}
+      indicatorColor="primary"
+      textColor="primary"
+      onChange={handleChange}
+      sx={{
+        mb: 3,
+        borderBottom: t => '1px solid ' + t.palette.divider,
+      }}
+    >
       {children}
     </Tabs>
   )

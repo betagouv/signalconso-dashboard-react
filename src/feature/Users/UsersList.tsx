@@ -98,28 +98,33 @@ export const UsersList = () => {
               </Tooltip>
             ),
             id: 'active',
-            render: _ =>
-              (<ScDialog
+            render: _ => (
+              <ScDialog
                 title={m.activateUser(_.email)}
                 onConfirm={(event, close) =>
-                  _validateEmail.fetch({}, _.email)
+                  _validateEmail
+                    .fetch({}, _.email)
                     .then(_ => _users.fetch())
                     .then(_ => close())
-                    .then(_ => toastSuccess(m.userValidationDone))}
+                    .then(_ => toastSuccess(m.userValidationDone))
+                }
                 maxWidth="xs"
               >
-                {User.isUserActive(_) ? (<Tooltip title={m.extendValidation}>
-                  <IconBtn>
-                    <Icon sx={{color: t => t.palette.success.light}}>check_circle</Icon>
-                  </IconBtn>
-                </Tooltip>)
-                  :
+                {User.isUserActive(_) ? (
+                  <Tooltip title={m.extendValidation}>
+                    <IconBtn>
+                      <Icon sx={{color: t => t.palette.success.light}}>check_circle</Icon>
+                    </IconBtn>
+                  </Tooltip>
+                ) : (
                   <Tooltip title={m.validate}>
-                  <IconBtn>
-                    <Icon>task_alt</Icon>
-                  </IconBtn>
-                  </Tooltip>}
-              </ScDialog>)
+                    <IconBtn>
+                      <Icon>task_alt</Icon>
+                    </IconBtn>
+                  </Tooltip>
+                )}
+              </ScDialog>
+            ),
           },
         ]}
       />

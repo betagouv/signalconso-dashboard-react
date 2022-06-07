@@ -9,10 +9,12 @@ interface Props {
 export const WidgetValue = ({children}: Props) => {
   return (
     <WidgetBody>
-      <Box sx={{
-        fontSize: 36,
-        lineHeight: 1,
-      }}>
+      <Box
+        sx={{
+          fontSize: 36,
+          lineHeight: 1,
+        }}
+      >
         {children}
       </Box>
     </WidgetBody>

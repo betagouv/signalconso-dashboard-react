@@ -34,17 +34,11 @@ export const SaveUndeliveredDocBtn = ({loading, onChange, ...props}: Props) => {
       }
       content={
         <>
-          <Datepicker
-            sx={{mr: 1}}
-            fullWidth
-            label={m.returnDate}
-            value={returnDate}
-            onChange={setReturnDate}
-          />
+          <Datepicker sx={{mr: 1}} fullWidth label={m.returnDate} value={returnDate} onChange={setReturnDate} />
         </>
       }
     >
-      <ScButton variant="outlined" icon="cancel_schedule_send" color="primary" {...props} >
+      <ScButton variant="outlined" icon="cancel_schedule_send" color="primary" {...props}>
         {m.undeliveredDoc}
       </ScButton>
     </ScDialog>

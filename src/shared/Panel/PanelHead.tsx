@@ -12,14 +12,17 @@ interface Props extends BoxProps {
 
 export const PanelHead = ({icon, children, action, sx, ...other}: Props) => {
   return (
-    <PanelTitle {...other} sx={{
-      p: 2,
-      pb: 0,
-      m: 0,
-      display: 'flex',
-      alignItems: 'center',
-      ...sx,
-    }}>
+    <PanelTitle
+      {...other}
+      sx={{
+        p: 2,
+        pb: 0,
+        m: 0,
+        display: 'flex',
+        alignItems: 'center',
+        ...sx,
+      }}
+    >
       {icon && <Icon sx={{color: t => t.palette.text.disabled, mr: 1}}>{icon}</Icon>}
       <div style={{flex: 1}}>{children}</div>
       {action}

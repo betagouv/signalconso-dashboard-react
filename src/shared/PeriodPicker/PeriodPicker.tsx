@@ -37,22 +37,25 @@ export const PeriodPicker = ({value, onChange, label, fullWidth, sx, ...props}: 
   }
 
   return (
-    <Box {...props} sx={{
-      display: 'flex',
-      alignItems: 'center',
-      ...fullWidth && {width: '100%'},
-      ...sx,
-    }}>
+    <Box
+      {...props}
+      sx={{
+        display: 'flex',
+        alignItems: 'center',
+        ...(fullWidth && {width: '100%'}),
+        ...sx,
+      }}
+    >
       <Datepicker
         label={label?.[0] ?? m.start}
         fullWidth={fullWidth}
         value={start}
         onChange={handleStartChange}
-        sx={{marginRight: '-1px',}}
+        sx={{marginRight: '-1px'}}
         InputProps={{
           sx: _ => ({
             borderBottomRightRadius: 0,
-            borderTopRightRadius: 0
+            borderTopRightRadius: 0,
           }),
         }}
       />
@@ -65,8 +68,8 @@ export const PeriodPicker = ({value, onChange, label, fullWidth, sx, ...props}: 
         InputProps={{
           sx: _ => ({
             borderBottomLeftRadius: 0,
-            borderTopLeftRadius: 0
-          })
+            borderTopLeftRadius: 0,
+          }),
         }}
       />
     </Box>

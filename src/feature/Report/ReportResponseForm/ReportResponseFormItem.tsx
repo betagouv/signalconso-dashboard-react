@@ -19,7 +19,7 @@ export const ReportResponseFormItem = ({children, title, desc}: ReportAnswerProI
           <span dangerouslySetInnerHTML={{__html: desc}} />
         </Txt>
       )}
-      <Box sx={{mt: .5}}>{children}</Box>
+      <Box sx={{mt: 0.5}}>{children}</Box>
     </Box>
   )
 }

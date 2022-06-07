@@ -40,10 +40,12 @@ export const ReportConsumer = ({report, canEdit}: Props) => {
       >
         {m.consumer}
       </PanelHead>
-      <PanelBody sx={{
-        display: 'flex',
-        justifyContent: 'space-between',
-      }}>
+      <PanelBody
+        sx={{
+          display: 'flex',
+          justifyContent: 'space-between',
+        }}
+      >
         <div>
           <Box sx={{fontSize: t => styleUtils(t).fontSize.big}}>
             {fromNullable(report.firstName)
@@ -64,10 +66,14 @@ export const ReportConsumer = ({report, canEdit}: Props) => {
             </Box>
           )}
         </div>
-        <Icon sx={{
-          fontSize: 64,
-          color: t => t.palette.divider,
-        }}>person</Icon>
+        <Icon
+          sx={{
+            fontSize: 64,
+            color: t => t.palette.divider,
+          }}
+        >
+          person
+        </Icon>
       </PanelBody>
     </Panel>
   )

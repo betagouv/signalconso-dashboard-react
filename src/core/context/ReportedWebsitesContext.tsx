@@ -25,10 +25,11 @@ const ReportedWebsitesContext = React.createContext<ReportedWebsiteWithCompanyCo
 )
 
 export const ReportedWebsitesProvider = ({api, children}: Props) => {
-  const listReportedWebsiteWithCompany = useScPaginate<WebsiteWithCompany, WebsiteWithCompanySearch>(
-    api.secured.website.list,
-    {limit: 10, offset: 0, kinds: [WebsiteKind.PENDING]},
-  )
+  const listReportedWebsiteWithCompany = useScPaginate<WebsiteWithCompany, WebsiteWithCompanySearch>(api.secured.website.list, {
+    limit: 10,
+    offset: 0,
+    kinds: [WebsiteKind.PENDING],
+  })
 
   const remove = useFetcher(api.secured.website.remove)
   const update = useFetcher(api.secured.website.updateStatus)

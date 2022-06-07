@@ -1,14 +1,28 @@
 import {Page, PageTitle} from '../../shared/Layout'
 import {useI18n} from '../../core/i18n'
 import {useReportsContext} from '../../core/context/ReportsContext'
-import {cleanObject, getHostFromUrl, Id, Report, ReportingDateLabel, ReportSearch, ReportTag} from '@signal-conso/signalconso-api-sdk-js'
+import {
+  cleanObject,
+  getHostFromUrl,
+  Id,
+  Report,
+  ReportingDateLabel,
+  ReportSearch,
+  ReportTag,
+} from '@signal-conso/signalconso-api-sdk-js'
 import {Panel} from '../../shared/Panel'
 import {Datatable} from '../../shared/Datatable/Datatable'
 import {fromNullable, some} from 'fp-ts/lib/Option'
 import {alpha, Badge, Box, Button, Checkbox, Chip, Grid, Icon, Tooltip} from '@mui/material'
 import {textOverflowMiddleCropping} from '../../core/helper/utils'
 import React, {useEffect, useMemo} from 'react'
-import {mapArrayFromQuerystring, mapBooleanFromQueryString, mapDateFromQueryString, mapDatesToQueryString, useQueryString} from '../../core/helper/useQueryString'
+import {
+  mapArrayFromQuerystring,
+  mapBooleanFromQueryString,
+  mapDateFromQueryString,
+  mapDatesToQueryString,
+  useQueryString,
+} from '../../core/helper/useQueryString'
 import {NavLink} from 'react-router-dom'
 import {SelectDepartments} from '../../shared/SelectDepartments/SelectDepartments'
 import {Fender, IconBtn} from 'mui-extension/lib'
@@ -119,13 +133,7 @@ export const Reports = ({}) => {
                     onChange={departments => _reports.updateFilters(prev => ({...prev, departments}))}
                   >
                     {(value, onChange) => (
-                      <SelectDepartments
-                        label={m.departments}
-                        value={value}
-                        onChange={onChange}
-                        sx={{mr: 1}}
-                        fullWidth
-                      />
+                      <SelectDepartments label={m.departments} value={value} onChange={onChange} sx={{mr: 1}} fullWidth />
                     )}
                   </DebouncedInput>
                 </Grid>
@@ -136,9 +144,7 @@ export const Reports = ({}) => {
                       _reports.updateFilters(prev => ({...prev, start: start ?? prev.start, end: end ?? prev.end}))
                     }}
                   >
-                    {(value, onChange) => (
-                      <PeriodPicker value={value} onChange={onChange} sx={{mr: 1}} fullWidth />
-                    )}
+                    {(value, onChange) => <PeriodPicker value={value} onChange={onChange} sx={{mr: 1}} fullWidth />}
                   </DebouncedInput>
                 </Grid>
               </Grid>
@@ -154,10 +160,10 @@ export const Reports = ({}) => {
                     onClick={_reports.clearFilters}
                     sx={{
                       minWidth: 'auto',
-                      ...filtersCount && {
+                      ...(filtersCount && {
                         border: t => '1px solid ' + t.palette.divider,
-                        background: t => alpha(t.palette.primary.main, 0.12)
-                      }
+                        background: t => alpha(t.palette.primary.main, 0.12),
+                      }),
                     }}
                   >
                     <Icon>clear</Icon>
@@ -221,43 +227,49 @@ export const Reports = ({}) => {
                 )
               })(),
               style: {width: 0},
-              render: _ => (
-                <Checkbox checked={selectReport.has(_.report.id)} onChange={() => selectReport.toggle(_.report.id)} />
-              ),
+              render: _ => <Checkbox checked={selectReport.has(_.report.id)} onChange={() => selectReport.toggle(_.report.id)} />,
             },
             {
               id: 'companyPostalCode',
               head: m.postalCodeShort,
               sx: _ => ({
-                maxWidth: 76
+                maxWidth: 76,
               }),
               render: _ => (
                 <>
                   <span>{_.report.companyAddress.postalCode?.slice(0, 2)}</span>
-                  <Box component="span" sx={{color: t => t.palette.text.disabled}}>{_.report.companyAddress.postalCode?.substr(2, 5)}</Box>
+                  <Box component="span" sx={{color: t => t.palette.text.disabled}}>
+                    {_.report.companyAddress.postalCode?.substr(2, 5)}
+                  </Box>
                 </>
-              )
+              ),
             },
             {
               id: 'companyName',
               head: m.company,
               sx: _ => ({
                 lineHeight: 1.4,
-                maxWidth: 170
+                maxWidth: 170,
               }),
               render: _ => (
                 <>
-                  <Box component="span" sx={{
-                    fontWeight: 'bold',
-                    marginBottom: -1
-                  }}>
+                  <Box
+                    component="span"
+                    sx={{
+                      fontWeight: 'bold',
+                      marginBottom: -1,
+                    }}
+                  >
                     {_.report.companyName}
                   </Box>
                   <br />
-                  <Box component="span" sx={{
-                    fontSize: t => styleUtils(t).fontSize.small,
-                    color: t => t.palette.text.disabled
-                  }}>
+                  <Box
+                    component="span"
+                    sx={{
+                      fontSize: t => styleUtils(t).fontSize.small,
+                      color: t => t.palette.text.disabled,
+                    }}
+                  >
                     {fromNullable(_.report.websiteURL).map(getHostFromUrl).alt(some(_.report.phone)).getOrElse('')}
                   </Box>
                 </>
@@ -277,7 +289,7 @@ export const Reports = ({}) => {
               id: 'category',
               head: m.problem,
               sx: _ => ({
-                maxWidth: 200
+                maxWidth: 200,
               }),
               render: _ => (
                 <Tooltip
@@ -315,9 +327,9 @@ export const Reports = ({}) => {
                 maxWidth: 200,
                 minWidth: 200,
                 lineHeight: 1.4,
-                whiteSpace: 'initial'
+                whiteSpace: 'initial',
               }),
-              render: _ => <ReportDetailValues input={_.report.details} lines={2} />
+              render: _ => <ReportDetailValues input={_.report.details} lines={2} />,
             },
             {
               id: 'tags',
@@ -346,18 +358,20 @@ export const Reports = ({}) => {
               id: 'email',
               head: m.consumer,
               sx: _ => ({
-                maxWidth: 160
+                maxWidth: 160,
               }),
               render: _ => (
                 <span>
                   <Box
                     component="span"
                     sx={{
-                      ..._.report.contactAgreement ? {
-                        color: t => t.palette.success.light
-                      } : {
-                        color: t => t.palette.error.main
-                      }
+                      ...(_.report.contactAgreement
+                        ? {
+                            color: t => t.palette.success.light,
+                          }
+                        : {
+                            color: t => t.palette.error.main,
+                          }),
                     }}
                   >
                     {textOverflowMiddleCropping(_.report.email ?? '', 25)}
@@ -374,14 +388,14 @@ export const Reports = ({}) => {
               head: m.files,
               sx: _ => ({
                 minWidth: 44,
-                maxWidth: 100
+                maxWidth: 100,
               }),
               render: _ =>
                 _.files.length > 0 && (
                   <Badge badgeContent={_.files.length} color="primary" invisible={_.files.length === 1}>
                     <Icon sx={{color: t => t.palette.text.disabled}}>insert_drive_file</Icon>
                   </Badge>
-                )
+                ),
             },
             {
               id: 'actions',

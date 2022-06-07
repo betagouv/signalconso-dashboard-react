@@ -20,8 +20,7 @@ export const UsersListPending = () => {
   const {toastError, toastSuccess} = useToast()
   const copyActivationLink = (token: string) => {
     let activationLink = window.location.host + '/#/dgccrf/rejoindre/?token=' + token
-    navigator.clipboard.writeText(activationLink)
-      .then(_ => toastSuccess(m.addressCopied))
+    navigator.clipboard.writeText(activationLink).then(_ => toastSuccess(m.addressCopied))
   }
 
   useEffect(() => {
@@ -56,34 +55,37 @@ export const UsersListPending = () => {
             head: '',
             render: _ => (
               <>
-                {connectedUser.isAdmin && (
-                  fromNullable(_.email).map(email => (
-                    <ScDialog
-                      title={m.resendCompanyAccessToken(_.email)}
-                      onConfirm={(event, close) =>
-                        _invite.fetch({}, email)
-                          .then(_ => close())
-                          .then(_ => toastSuccess(m.userInvitationSent))}
-                      maxWidth="xs"
-                    >
-                      <Tooltip title={m.resendInvite}>
-                        <IconBtn>
-                          <Icon>send</Icon>
+                {connectedUser.isAdmin &&
+                  fromNullable(_.email)
+                    .map(email => (
+                      <ScDialog
+                        title={m.resendCompanyAccessToken(_.email)}
+                        onConfirm={(event, close) =>
+                          _invite
+                            .fetch({}, email)
+                            .then(_ => close())
+                            .then(_ => toastSuccess(m.userInvitationSent))
+                        }
+                        maxWidth="xs"
+                      >
+                        <Tooltip title={m.resendInvite}>
+                          <IconBtn>
+                            <Icon>send</Icon>
+                          </IconBtn>
+                        </Tooltip>
+                      </ScDialog>
+                    ))
+                    .getOrElse(<></>)}
+                {connectedUser.isAdmin &&
+                  fromNullable(_.token)
+                    .map(token => (
+                      <Tooltip title={m.copyInviteLink}>
+                        <IconBtn onClick={_ => copyActivationLink(token)}>
+                          <Icon>content_copy</Icon>
                         </IconBtn>
                       </Tooltip>
-                    </ScDialog>
-                  )).getOrElse(<></>)
-                )}
-                {connectedUser.isAdmin && (
-                  fromNullable(_.token).map(token => (
-                    <Tooltip title={m.copyInviteLink}>
-                      <IconBtn onClick={(_) =>
-                        copyActivationLink(token)}>
-                        <Icon>content_copy</Icon>
-                      </IconBtn>
-                    </Tooltip>
-                  )).getOrElse(<></>)
-                )}
+                    ))
+                    .getOrElse(<></>)}
               </>
             ),
           },

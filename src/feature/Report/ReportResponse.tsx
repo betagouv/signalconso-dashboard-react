@@ -1,7 +1,16 @@
 import {PanelBody} from '../../shared/Panel'
 import React, {useEffect, useState} from 'react'
 import {useI18n} from '../../core/i18n'
-import {EventActionValues, FileOrigin, Id, ReportEvent, ReportResponse, ReportResponseTypes, ResponseConsumerReview, UploadedFile} from '@signal-conso/signalconso-api-sdk-js'
+import {
+  EventActionValues,
+  FileOrigin,
+  Id,
+  ReportEvent,
+  ReportResponse,
+  ReportResponseTypes,
+  ResponseConsumerReview,
+  UploadedFile,
+} from '@signal-conso/signalconso-api-sdk-js'
 import {fnSwitch} from '../../core/helper/utils'
 import {fromNullable} from 'fp-ts/lib/Option'
 import {Box, BoxProps, Icon} from '@mui/material'
@@ -26,20 +35,23 @@ const Response = ({
   sx,
   ...props
 }: {
-  icon: string,
+  icon: string
 } & BoxProps) => {
   return (
-    <Box {...props} sx={{
-      fontSize: t => styleUtils(t).fontSize.big,
-      display: 'inline-flex',
-      alignItems: 'center',
-      mb: 1,
-      borderRadius: 40,
-      border: t => '1px solid ' + t.palette.divider,
-      py: .5,
-      px: 1,
-      ...sx
-    }}>
+    <Box
+      {...props}
+      sx={{
+        fontSize: t => styleUtils(t).fontSize.big,
+        display: 'inline-flex',
+        alignItems: 'center',
+        mb: 1,
+        borderRadius: 40,
+        border: t => '1px solid ' + t.palette.divider,
+        py: 0.5,
+        px: 1,
+        ...sx,
+      }}
+    >
       <Icon sx={{mr: 1, ...sxUtils.inlineIcon}}>{icon}</Icon>
       {children}
     </Box>
@@ -61,11 +73,7 @@ export const ReportResponseComponent = ({canEditFile, response, reportId, files}
         .map(details => (
           <div>
             {fnSwitch(details.responseType, {
-              [ReportResponseTypes.Accepted]: _ => (
-                <Response icon="check_circle">
-                  {m.reportResponse[_]}
-                </Response>
-              ),
+              [ReportResponseTypes.Accepted]: _ => <Response icon="check_circle">{m.reportResponse[_]}</Response>,
               [ReportResponseTypes.NotConcerned]: _ => (
                 <Response icon="hide_source" sx={{color: t => t.palette.info.main}}>
                   {m.reportResponse[_]}
@@ -103,34 +111,35 @@ export const ReportResponseComponent = ({canEditFile, response, reportId, files}
             .fetch({}, reportId, {
               details: '',
               fileIds: [file.id],
-              actionType: EventActionValues.ProfessionalAttachments
+              actionType: EventActionValues.ProfessionalAttachments,
             })
             .then(() => _event.reportEvents.fetch({force: true, clean: false}, reportId))
         }}
       />
       <Divider margin />
-      {fromNullable(consumerReportReview).map(review => (
-        <div>
-          {fnSwitch(review.evaluation, {
-            [ResponseEvaluation.Positive]: _ => (
-              <Response icon="check_circle" sx={{color: t => t.palette.success.light}}>
-                {m.responseEvaluation[_]}
-              </Response>
-            ),
-            [ResponseEvaluation.Neutral]: _ => (
-              <Response icon="hide_source" sx={{color: t => t.palette.info.light}}>
-                {m.responseEvaluation[_]}
-              </Response>
-            ),
-            [ResponseEvaluation.Negative]: _ => (
-              <Response icon="cancel" sx={{color: t => t.palette.error.light}}>
-                {m.responseEvaluation[_]}
-              </Response>
-            )
-          })}
-          <Box sx={{color: t => t.palette.text.secondary}}>
-            {' '}
-            {review.details ? review.details : <div>{m.noReviewDetailsFromConsumer}</div>}
+      {fromNullable(consumerReportReview)
+        .map(review => (
+          <div>
+            {fnSwitch(review.evaluation, {
+              [ResponseEvaluation.Positive]: _ => (
+                <Response icon="check_circle" sx={{color: t => t.palette.success.light}}>
+                  {m.responseEvaluation[_]}
+                </Response>
+              ),
+              [ResponseEvaluation.Neutral]: _ => (
+                <Response icon="hide_source" sx={{color: t => t.palette.info.light}}>
+                  {m.responseEvaluation[_]}
+                </Response>
+              ),
+              [ResponseEvaluation.Negative]: _ => (
+                <Response icon="cancel" sx={{color: t => t.palette.error.light}}>
+                  {m.responseEvaluation[_]}
+                </Response>
+              ),
+            })}
+            <Box sx={{color: t => t.palette.text.secondary}}>
+              {' '}
+              {review.details ? review.details : <div>{m.noReviewDetailsFromConsumer}</div>}
             </Box>
           </div>
         ))
