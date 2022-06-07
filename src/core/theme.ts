@@ -104,7 +104,7 @@ export const muiTheme = (dark?: boolean): Theme => {
     typography: {
       fontSize,
       fontFamily,
-      fontWeightBold: 600,
+      fontWeightBold: 500,
     },
   })
   const theme: ThemeOptions = {
