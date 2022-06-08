@@ -69,7 +69,6 @@ export const styleUtils = (t: Theme) => ({
   } as any,
 })
 
-/** @deprecated use t.spacing(1) instead */
 export const defaultSpacing = 8
 
 export const muiTheme = (dark?: boolean): Theme => {

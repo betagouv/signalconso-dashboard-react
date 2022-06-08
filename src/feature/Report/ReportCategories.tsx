@@ -33,4 +33,30 @@ export interface ReportCategoriesProps {
   categories: any[]
 }
 
-
+export const ReportCategories = ({categories}: ReportCategoriesProps) => {
+  return (
+    <Box
+      sx={{
+        display: 'flex',
+        alignItems: 'center',
+        flexWrap: 'wrap',
+      }}
+    >
+      {categories.map((category, i) => (
+        <React.Fragment key={i}>
+          <ReportCategory>{category}</ReportCategory>
+          {i < categories.length - 1 && (
+            <Icon
+              sx={{
+                color: t => t.palette.divider,
+                display: 'inline',
+              }}
+            >
+              chevron_right
+            </Icon>
+          )}
+        </React.Fragment>
+      ))}
+    </Box>
+  )
+}
