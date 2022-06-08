@@ -5,7 +5,7 @@ import {ResponseEvaluation} from '@signal-conso/signalconso-api-sdk-js/lib/clien
 
 const invalidDate = '-'
 
-const isDateValid = (d?: Date): boolean => {
+const isDateValid = (d?: Date | any): boolean => {
   return !!d && d instanceof Date && !isNaN(d.getTime())
 }
 
@@ -275,7 +275,7 @@ export const fr = {
     reportsProProcessedDesc: `   
     <div>Pourcentage du traitement des signalements visibles par les professionnels (une partie des signalements ne sont pas transmis aux professionnels) sur le total des signalements</div>
     <ul>
-        <li>Part des signalements transmis :  Envoyé, Lu, Non consulté, Consulte ignoré, Promesse d'action, infondé, Mal attribué</li>
+        <li>Part des signalements transmis : Envoyé, Lu, Non consulté, Consulte ignoré, Promesse d'action, infondé, Mal attribué</li>
         <li>Part des réponses aux signalements : Promesse d'action, infondé, Mal attribué</li>
     </ul>
   `,
@@ -496,7 +496,7 @@ export const fr = {
     changesSaved: 'Modification enregistrée',
     selectAllDepartments: 'Tous les départements',
     positionComparedToLastMonth: `Position vs mois précédent`,
-    deleteCompanyAccess: (name: string) => `Supprimer l\'accès à ${name} ?`,
+    deleteCompanyAccess: (name: string) => `Supprimer l'accès à ${name} ?`,
     deleteCompanyAccessToken: (email?: string) => `Annuler l'invitation  ${email ? 'à ' + email + ' ' : ''}?`,
     resendCompanyAccessToken: (email?: string) => `Renvoyer l'invitation  ${email ? 'à ' + email + ' ' : ''}?`,
     activateUser: (email?: string) => `Prolonger la validité du compte  ${email} ?`,

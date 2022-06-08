@@ -27,7 +27,7 @@ export const ReportDescription = ({report, files, children}: Props) => {
           <Box key={i} sx={{mb: 1}}>
             <Box
               sx={{fontWeight: t => t.typography.fontWeightBold}}
-              dangerouslySetInnerHTML={{__html: detail.label.replace(/\:$/, '')}}
+              dangerouslySetInnerHTML={{__html: detail.label.replace(/:$/, '')}}
             />
             <Box sx={{color: t => t.palette.text.secondary}} dangerouslySetInnerHTML={{__html: detail.value}} />
           </Box>

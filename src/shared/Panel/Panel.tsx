@@ -1,6 +1,6 @@
 import * as React from 'react'
 import {forwardRef} from 'react'
-import {Card, CardProps, LinearProgress, useTheme} from '@mui/material'
+import {Card, CardProps, LinearProgress} from '@mui/material'
 
 export interface PanelProps extends CardProps {
   loading?: boolean
@@ -10,7 +10,6 @@ export interface PanelProps extends CardProps {
 }
 
 export const Panel = forwardRef(({elevation = 0, hoverable, loading, children, stretch, sx, ...other}: PanelProps, ref: any) => {
-  const theme = useTheme()
   return (
     <Card
       ref={ref}
@@ -18,22 +17,22 @@ export const Panel = forwardRef(({elevation = 0, hoverable, loading, children, s
       sx={{
         borderRadius: t => t.shape.borderRadius + 'px' + 'px',
         mb: 2,
-        ...(hoverable && {
+        ...hoverable && {
           cursor: 'pointer',
           transition: t => t.transitions.create('all'),
           '&:hover': {
             transform: 'scale(1.01)',
             boxShadow: t => t.shadows[4],
           },
-        }),
-        ...(stretch && {
+        },
+        ...stretch && {
           display: 'flex',
           flexDirection: 'column',
           height: t => `calc(100% - ${t.spacing(2)})`,
-        }),
-        ...(elevation === 0 && {
+        },
+        ...elevation === 0 && {
           border: t => `1px solid ${t.palette.divider}`,
-        }),
+        },
         ...sx,
       }}
       {...other}

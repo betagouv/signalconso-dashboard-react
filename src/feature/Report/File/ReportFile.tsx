@@ -10,7 +10,7 @@ import {IconBtn} from 'mui-extension/lib'
 import {useToast} from '../../../core/toast'
 import {useI18n} from '../../../core/i18n'
 import {ScDialog} from '../../../shared/Confirm/ScDialog'
-import {combineSx, defaultSpacing} from 'core/theme'
+import {combineSx} from 'core/theme'
 import {makeSx} from 'mui-extension'
 
 export interface ReportFileProps {
@@ -56,8 +56,8 @@ const css = makeSx({
   removeBtn: {
     display: 'none !important',
     position: 'absolute',
-    top: (removeBtnSize - defaultSpacing * cardMargin) / -2,
-    right: (removeBtnSize - defaultSpacing * cardMargin) / -2,
+    top: t => (removeBtnSize - t.spacing() * cardMargin) / -2,
+    right: t => (removeBtnSize - t.spacing() * cardMargin) / -2,
     width: removeBtnSize,
     height: removeBtnSize,
     borderRadius: removeBtnSize,

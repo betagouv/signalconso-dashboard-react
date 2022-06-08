@@ -53,14 +53,14 @@ export const ChartAsync = <T extends Promises>({
         <ScLineChart
           {...otherProps}
           height={height}
-          curves={curves.map((c, i) => ({
+          curves={curves.map((c) => ({
             ...c,
             curve: c.curve(data),
           }))}
         />
       ) : (
         <ScBarChart
-          curves={curves.map((c, i) => ({
+          curves={curves.map((c) => ({
             ...c,
             curve: c.curve(data),
           }))}

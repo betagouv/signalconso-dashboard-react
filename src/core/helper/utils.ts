@@ -16,7 +16,7 @@ export const isJsonValid = (json: string): boolean => {
 export type Index<T> = {[key: string]: T}
 
 export const textOverflowMiddleCropping = (text: string, limit: number) => {
-  return text.length > limit ? `${text.substr(0, limit / 2)}...${text.substr(text.length - limit / 2, text.length)}` : text
+  return text.length > limit ? `${text.slice(0, limit / 2)}...${text.slice(text.length - limit / 2, text.length)}` : text
 }
 
 export const fromQueryString = <T = object>(qs: string): {[key in keyof T]: string | number} => {
