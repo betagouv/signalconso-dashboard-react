@@ -443,7 +443,7 @@ export const fr = {
       'Les courriers seront considérés envoyés pour les entreprises sélectionnées. Cette action est irrévocable.',
     dgccrfUsers: 'Agents DGCCRF',
     dgccrfUsersPending: 'Agents en attente',
-    consumersPending: 'Consomateurs non validé',
+    consumersPending: 'Consommateurs non validés',
     lastReports: `Derniers signalements`,
     invitationDate: "Date d'invitation",
     connectedUnder3Months: 'Connecté dans les 3 derniers mois',
