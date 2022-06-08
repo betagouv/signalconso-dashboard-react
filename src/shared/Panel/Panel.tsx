@@ -15,7 +15,7 @@ export const Panel = forwardRef(({elevation = 0, hoverable, loading, children, s
       ref={ref}
       elevation={elevation}
       sx={{
-        borderRadius: t => t.shape.borderRadius + 'px' + 'px',
+        borderRadius: t => t.shape.borderRadius + 'px',
         mb: 2,
         ...hoverable && {
           cursor: 'pointer',
