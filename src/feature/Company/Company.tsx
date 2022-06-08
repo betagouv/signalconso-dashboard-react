@@ -49,7 +49,7 @@ export const CompanyComponent = () => {
     _stats.tags.fetch()
     connectedUser.isPro ? _stats.statusPro.fetch() : _stats.status.fetch()
     _stats.responseDelay.fetch()
-  }, [])
+  }, [id])
 
   useEffectFn(_company.byId.error, toastError)
   useEffectFn(_company.hosts.error, toastError)
