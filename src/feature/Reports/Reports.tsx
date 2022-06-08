@@ -54,7 +54,7 @@ interface ReportSearchQs {
   limit: number
 }
 
-export const Reports = ({}) => {
+export const Reports = () => {
   const {m, formatDate} = useI18n()
   const _report = useReportContext()
   const _reports = useReportsContext()
