@@ -65,6 +65,7 @@ export const LoginForm = ({login, forgottenPassword}: Props) => {
           </Alert>
         )}
         <ScInput
+          autoComplete="username"
           autoFocus
           type="email"
           error={!!errors.email}
@@ -77,6 +78,7 @@ export const LoginForm = ({login, forgottenPassword}: Props) => {
           })}
         />
         <ScInputPassword
+          autoComplete="current-password"
           label={m.password}
           error={!!errors.password}
           helperText={errors.password?.message ?? ' '}
