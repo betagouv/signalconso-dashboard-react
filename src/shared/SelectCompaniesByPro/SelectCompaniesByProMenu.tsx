@@ -67,7 +67,7 @@ export const SelectCompaniesByProMenu = ({
   const allSelected = useMemo(() => indexValues.size === accessibleCompanies.length, [indexValues, accessibleCompanies])
   const someSelected = useMemo(
     () => !allSelected && !!accessibleCompanies.find(_ => indexValues.has(_.siret)),
-    [indexValues, accessibleCompanies],
+    [allSelected, indexValues, accessibleCompanies],
   )
 
   useEffect(() => {
