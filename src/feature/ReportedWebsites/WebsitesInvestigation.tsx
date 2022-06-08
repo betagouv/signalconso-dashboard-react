@@ -34,6 +34,7 @@ import {ScSelect} from "../../shared/Select/Select";
 import {ScMenuItem} from "../MenuItem/MenuItem";
 import {ReportFilters} from "../Reports/ReportsFilters";
 import {WebsitesFilters} from "./WebsitesFilters";
+import {WebsiteIdentification} from "./WebsiteIdentification";
 
 const useAnchoredMenu = () => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
@@ -173,25 +174,10 @@ export const WebsitesInvestigation = () => {
             head: m.company,
             id: 'company',
             render: _ => (
-              <SelectCompany
-                siret={_.company?.siret}
-                onChange={company => {
-                  if (_.company?.siret === company.siret) {
-                    toastInfo(m.alreadySelectedCompany(company.name))
-                  } else {
-                    _updateCompany
-                      .fetch({}, _.id, {
-                        siret: company.siret,
-                        name: company.name,
-                        address: company.address,
-                        activityCode: company.activityCode,
-                      })
-                      .then(_ => _websiteInvestigation.fetch({clean: false}))
-                  }
-                }}
-              >
-                <CompanyChip company={_.company} />
-              </SelectCompany>
+              <WebsiteIdentification
+                website={_}
+                onChangeDone={() => _websiteInvestigation.fetch({clean: true})}
+              />
             ),
           },
           {
