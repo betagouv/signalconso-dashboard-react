@@ -2,9 +2,8 @@ import {Autocomplete, Chip, Skeleton, Tooltip} from '@mui/material'
 import {ScInput} from '../Input/ScInput'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
 import {forwardRef, useEffect} from 'react'
-import {useFetcher} from '@alexandreannic/react-hooks-lib/lib'
+import {useFetcher, useMemoFn} from '@alexandreannic/react-hooks-lib/lib'
 import {AutocompleteProps} from '@mui/material/Autocomplete'
-import {useMemoFn} from '../hooks/UseMemoFn'
 
 interface Props
   extends Pick<

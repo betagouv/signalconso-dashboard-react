@@ -8,7 +8,7 @@ import {useEffect} from 'react'
 import {Box, Icon} from '@mui/material'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
 import {Alert, IconBtn} from 'mui-extension'
-import {useEffectFn} from '../../shared/hooks/UseEffectFn'
+import {useEffectFn} from '@alexandreannic/react-hooks-lib'
 import {useToast} from '../../core/toast'
 import {capitalize} from '../../core/helper/utils'
 

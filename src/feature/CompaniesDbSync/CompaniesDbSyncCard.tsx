@@ -6,8 +6,7 @@ import {styleUtils} from '../../core/theme'
 import {useI18n} from '../../core/i18n'
 import {PanelFoot} from '../../shared/Panel/PanelFoot'
 import {ScButton} from '../../shared/Button/Button'
-import {UseAsync} from '@alexandreannic/react-hooks-lib/lib'
-import {useMemoFn} from '../../shared/hooks/UseMemoFn'
+import {UseAsync, useMemoFn} from '@alexandreannic/react-hooks-lib/lib'
 
 interface Props {
   name: string
