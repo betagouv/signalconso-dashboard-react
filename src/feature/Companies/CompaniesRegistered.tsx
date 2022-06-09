@@ -176,7 +176,7 @@ export const CompaniesRegistered = () => {
               <>
                 <span>{_.address.postalCode?.slice(0, 2)}</span>
                 <Box component="span" sx={{color: t => t.palette.text.disabled}}>
-                  {_.address.postalCode?.substr(2, 5)}
+                  {_.address.postalCode?.slice(2, 5)}
                 </Box>
               </>
             ),

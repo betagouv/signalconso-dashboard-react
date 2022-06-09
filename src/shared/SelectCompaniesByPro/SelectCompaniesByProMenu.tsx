@@ -67,7 +67,7 @@ export const SelectCompaniesByProMenu = ({
   const allSelected = useMemo(() => indexValues.size === accessibleCompanies.length, [indexValues, accessibleCompanies])
   const someSelected = useMemo(
     () => !allSelected && !!accessibleCompanies.find(_ => indexValues.has(_.siret)),
-    [indexValues, accessibleCompanies],
+    [allSelected, indexValues, accessibleCompanies],
   )
 
   useEffect(() => {
@@ -97,7 +97,7 @@ export const SelectCompaniesByProMenu = ({
             {company.siret.slice(0, 9)}
           </Box>
           <Box component="span" sx={{fontWeight: t => t.typography.fontWeightBold}}>
-            {company.siret.substr(9, 14)}
+            {company.siret.slice(9, 14)}
           </Box>
           <Box component="span" sx={{ml: 1, color: t => t.palette.text.disabled}}>
             <Icon sx={combineSx(sxUtils.inlineIcon, css.locationIcon)}>location_on</Icon>

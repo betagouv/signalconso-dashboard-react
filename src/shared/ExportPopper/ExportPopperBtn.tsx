@@ -143,7 +143,7 @@ export const ExportPopperBtn = ({
                     icon={<Icon sx={{color: t => t.palette.success.light}}>file_download_done</Icon>}
                   >
                     <Txt bold block>
-                      {file.filename.match(/.*?\-(\w+.?\.xlsx)/)?.[1]}
+                      {file.filename.match(/.*?-(\w+.?\.xlsx)/)?.[1]}
                     </Txt>
                     <Txt color="hint">{formatDateTime(file.creationDate)}</Txt>
                   </FileItem>

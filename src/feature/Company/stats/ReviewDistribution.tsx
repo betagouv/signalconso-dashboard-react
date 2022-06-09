@@ -1,17 +1,17 @@
 import * as React from 'react'
 import {useEffect} from 'react'
 import {useI18n} from '../../../core/i18n'
-import {useMemoFn} from '../../../shared/hooks/UseMemoFn'
 import {Skeleton} from '@mui/material'
 import {Panel, PanelBody, PanelHead} from '../../../shared/Panel'
 import {HorizontalBarChart} from '../../../shared/HorizontalBarChart/HorizontalBarChart'
 import {ReportStatus, ReportStatusPro} from '@signal-conso/signalconso-api-sdk-js'
 import {useCompanyStats} from '../useCompanyStats'
-import {useEffectFn} from '../../../shared/hooks/UseEffectFn'
+import {useEffectFn} from '@alexandreannic/react-hooks-lib'
 import {fromNullable} from 'fp-ts/es6/Option'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
 import {useToast} from '../../../core/toast'
 import {ReviewLabel} from './ReviewLabel'
+import {useMemoFn} from '@alexandreannic/react-hooks-lib/lib'
 
 interface Props {
   companyId: string

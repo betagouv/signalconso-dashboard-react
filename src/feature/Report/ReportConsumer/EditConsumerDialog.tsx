@@ -24,10 +24,9 @@ export const EditConsumerDialog = ({report, onChange, children}: Props) => {
   const {m} = useI18n()
   const {
     register,
-    handleSubmit,
     getValues,
     control,
-    formState: {errors, isValid},
+    formState: {errors},
   } = useForm<Form>({mode: 'onChange'})
   return (
     <ScDialog

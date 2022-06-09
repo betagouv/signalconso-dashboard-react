@@ -57,8 +57,7 @@ export const SelectTagsMenu = ({onClose, onChange, open, value, anchorEl}: ScSel
   const tags = useMemo(() => {
     const reponseConsoTag = ReportTag.ReponseConso
     const tagsWithoutReponseConso = (Enum.keys(ReportTag) as ReportTag[]).filter(_ => _ !== reponseConsoTag)
-    const reorderedTags = [reponseConsoTag, ...tagsWithoutReponseConso]
-    return reorderedTags
+    return [reponseConsoTag, ...tagsWithoutReponseConso]
   }, [])
   const [innerValue, setInnerValue] = useState<SelectTagsMenuValues | undefined>()
 
@@ -80,7 +79,7 @@ export const SelectTagsMenu = ({onClose, onChange, open, value, anchorEl}: ScSel
 
   return (
     <Menu anchorEl={anchorEl} open={open} onClose={onClose}>
-      {(Enum.keys(ReportTag) as ReportTag[]).map(tag => (
+      {tags.map(tag => (
         <MenuItem key={tag}>
           <TagButton
             status={switchTagValue(tag, {
