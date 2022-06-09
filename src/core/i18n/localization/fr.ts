@@ -514,7 +514,7 @@ export const fr = {
     statsInternets_withCountry_desc: '(statut NA - le signalement n’est pas transmis au professionnel)',
     statsInternets_withNothing: 'pour lesquels les entreprises et le pays ne sont pas identifiés',
     statsInternets_withNothing_desc: '(statut NA - le signalement n’est pas transmis au professionnel)',
-    sendDummyEmail: `Envoie d'emails tests`,
+    sendDummyEmail: `Envoi d'emails tests`,
     allMailsWillBeSendTo: (email: string) =>
       `Les mails seront envoyés à l'adresse <b>${email}</b> avec de fausses données générées.`,
     subscriptionsAlertInfo: `
@@ -537,12 +537,12 @@ export const fr = {
           desc: `Email envoyé à la suite d'un abonnement`,
         },
         report_dangerous_product_notification: {
-          title: `Produit dangeureux`,
+          title: `Produit dangereux`,
           desc: `Email envoyé lors d'un nouveau signalement concernant un produit dangereux`,
         },
         access_link: {
           title: `Accéder à SignalConso`,
-          desc: `Email envoyé lors de le l'invitation d'un agent`,
+          desc: `Email envoyé lors de l'invitation d'un agent`,
         },
       },
       pro: {
@@ -555,19 +555,19 @@ export const fr = {
           desc: `Lorsqu'un pro n'a pas consulté un signalement`,
         },
         new_company_access: {
-          title: `Invitation à un entreprise pour utilisateur existant`,
+          title: `Invitation à une entreprise pour utilisateur existant`,
           desc: `Email d'invitation à rejoindre une entreprise pour un utilisateur ayant déjà un compte sur SignalConso`,
         },
         report_notification: {
-          title: `Noueau signalement`,
+          title: `Nouveau signalement`,
           desc: `Email envoyé au pro lors d'un nouveau signalement sur son entreprise`,
         },
         report_ack_pro: {
           title: `Réponse à un signalement`,
-          desc: `Email envoyé lorsque le pro a répondu à un signalement, peu importe le status`,
+          desc: `Email envoyé lorsque le pro a répondu à un signalement, peu importe le statut`,
         },
         access_invitation: {
-          title: `Invitation à un entreprise pour utilisateur sans compte`,
+          title: `Invitation à une entreprise pour utilisateur sans compte`,
           desc: `Email d'invitation à rejoindre une entreprise pour un utilisateur n'ayant pas de compte sur SignalConso`,
         },
       },
@@ -578,7 +578,7 @@ export const fr = {
         },
         report_ack_pro_consumer: {
           title: `Réponse de l'entreprise`,
-          desc: `Email envoyé au conso lorsque l'entreprise a répondue`,
+          desc: `Email envoyé au conso lorsque l'entreprise a répondu`,
         },
         report_ack_case_dangerous_product: {
           title: `Signalement envoyé`,
@@ -646,7 +646,7 @@ export const fr = {
         },
         report_ack_case_euro: {
           title: `Signalement envoyé`,
-          desc: `Pays européeen`,
+          desc: `Pays européen`,
         },
       },
     },
