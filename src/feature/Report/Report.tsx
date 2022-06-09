@@ -5,15 +5,12 @@ import {useI18n} from '../../core/i18n'
 import {Panel} from '../../shared/Panel'
 import {useReportContext} from '../../core/context/ReportContext'
 import {EventActionValues, EventType, FileOrigin, Id, Report, ReportEvent} from '@signal-conso/signalconso-api-sdk-js'
-import {Grid, Tab, Tabs, Theme, Tooltip} from '@mui/material'
-import makeStyles from '@mui/styles/makeStyles'
-import {useCssUtils} from '../../core/helper/useCssUtils'
-import {fromNullable} from 'fp-ts/lib/Option'
+import {Box, Grid, Tab, Tabs, Tooltip} from '@mui/material'
 import {useToast} from '../../core/toast'
 import {ReportEvents} from './Event/ReportEvents'
 import {ReportResponseComponent} from './ReportResponse'
 import {ReportHeader} from './ReportHeader'
-import {Btn, Confirm} from 'mui-extension/lib'
+import {Btn} from 'mui-extension/lib'
 import {ReportPostAction} from './ReportPostAction'
 import {useLogin} from '../../core/context/LoginContext'
 import {ReportConsumer} from './ReportConsumer/ReportConsumer'
@@ -22,14 +19,9 @@ import {ReportDescription} from './ReportDescription'
 import {useEventContext} from '../../core/context/EventContext'
 import {useEffectFn} from '../../shared/hooks/UseEffectFn'
 import {map} from '@alexandreannic/ts-utils'
+import {ScDialog} from '../../shared/Confirm/ScDialog'
 
-const useStyles = makeStyles((t: Theme) => ({
-  tabs: {
-    borderBottom: '1px solid ' + t.palette.divider,
-  },
-}))
-
-let CONSO : EventType = 'CONSO' as const;
+const CONSO: EventType = 'CONSO'
 
 export const creationReportEvent = (report: Report): ReportEvent =>
   Object.freeze({
@@ -49,8 +41,6 @@ export const ReportComponent = () => {
   const _report = useReportContext()
   const _event = useEventContext()
   const {connectedUser} = useLogin()
-  const cssUtils = useCssUtils()
-  const css = useStyles()
   const {toastError} = useToast()
   const [activeTab, setActiveTab] = useState(0)
   const response = useMemo(
@@ -79,7 +69,7 @@ export const ReportComponent = () => {
       {map(_report.get.entity?.report, report => (
         <>
           <ReportHeader elevated report={report} hideSiret>
-            <div className={cssUtils.nowrap}>
+            <Box sx={{whiteSpace: 'nowrap'}}>
               {connectedUser.isDGCCRF && (
                 <ReportPostAction
                   actionType={EventActionValues.Control}
@@ -113,7 +103,7 @@ export const ReportComponent = () => {
               </Btn>
 
               {connectedUser.isAdmin && (
-                <Confirm
+                <ScDialog
                   title={m.removeAsk}
                   content={m.removeReportDesc(report.companySiret ?? '')}
                   onConfirm={(event, close) =>
@@ -123,12 +113,12 @@ export const ReportComponent = () => {
                       .finally(close)
                   }
                 >
-                  <Btn loading={_report.remove.loading} className={cssUtils.colorError} icon="delete">
+                  <Btn loading={_report.remove.loading} sx={{color: t => t.palette.error.main}} icon="delete">
                     {m.delete}
                   </Btn>
-                </Confirm>
+                </ScDialog>
               )}
-            </div>
+            </Box>
           </ReportHeader>
 
           <Grid container spacing={2} alignItems="stretch">
@@ -145,7 +135,9 @@ export const ReportComponent = () => {
           <Panel loading={_event.reportEvents.loading}>
             <>
               <Tabs
-                className={css.tabs}
+                sx={{
+                  borderBottom: t => '1px solid ' + t.palette.divider,
+                }}
                 value={activeTab}
                 onChange={(event: React.ChangeEvent<{}>, newValue: number) => setActiveTab(newValue)}
                 indicatorColor="primary"
@@ -166,9 +158,7 @@ export const ReportComponent = () => {
               <ReportTabPanel value={activeTab} index={1}>
                 <ReportEvents
                   events={
-                    _event.reportEvents.loading
-                      ? undefined
-                      : [creationReportEvent(report), ...(_event.reportEvents.entity ?? [])]
+                    _event.reportEvents.loading ? undefined : [creationReportEvent(report), ...(_event.reportEvents.entity ?? [])]
                   }
                 />
               </ReportTabPanel>

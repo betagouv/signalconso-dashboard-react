@@ -1,13 +1,11 @@
 import {useI18n} from '../../core/i18n'
 import {Panel} from '../../shared/Panel'
 import {Datatable} from '../../shared/Datatable/Datatable'
-import {CompanyToActivate, Id} from '@signal-conso/signalconso-api-sdk-js'
+import {Id} from '@signal-conso/signalconso-api-sdk-js'
 import React, {SyntheticEvent, useEffect} from 'react'
 import {useCompaniesContext} from '../../core/context/CompaniesContext'
-import {useCssUtils} from '../../core/helper/useCssUtils'
-import {Checkbox, Icon, Theme, Tooltip} from '@mui/material'
-import makeStyles from '@mui/styles/makeStyles'
-import {styleUtils} from '../../core/theme'
+import {Box, Checkbox, Icon, Tooltip} from '@mui/material'
+import {styleUtils, sxUtils} from '../../core/theme'
 import {Fender, IconBtn} from 'mui-extension/lib'
 import {Link} from 'react-router-dom'
 import {siteMap} from '../../core/siteMap'
@@ -15,54 +13,17 @@ import {usePersistentState} from 'react-persistent-state'
 import {useSetState} from '@alexandreannic/react-hooks-lib/lib'
 import {ScButton} from '../../shared/Button/Button'
 import {useToast} from '../../core/toast'
-import {Txt} from 'mui-extension/lib/Txt/Txt'
 import {fromNullable} from 'fp-ts/lib/Option'
 import {EntityIcon} from '../../core/EntityIcon'
 import {AddressComponent} from '../../shared/Address/Address'
 import {ScDialog} from '../../shared/Confirm/ScDialog'
-import {useLogin} from '../../core/context/LoginContext'
-
-const useStyles = makeStyles((t: Theme) => ({
-  tdName_label: {
-    fontWeight: 'bold',
-    marginBottom: -1,
-  },
-  selectedCountBadge: {
-    borderRadius: 30,
-    minWidth: 22,
-    height: 22,
-    lineHeight: '22px',
-    padding: t.spacing(0, 1),
-    textAlign: 'center',
-    background: t.palette.primary.main,
-    color: t.palette.primary.contrastText,
-    fontWeight: 'bold',
-    marginRight: 4,
-  },
-  tdName: {
-    lineHeight: 1.4,
-    maxWidth: 390,
-  },
-  tdName_desc: {
-    fontSize: t.typography.fontSize * 0.875,
-    color: t.palette.text.disabled,
-  },
-  tdAddress: {
-    paddingTop: t.spacing(0.5),
-    paddingBottom: t.spacing(0.5),
-    fontSize: styleUtils(t).fontSize.small,
-    color: t.palette.text.secondary,
-    maxWidth: 300,
-    ...styleUtils(t).truncate,
-  },
-}))
+import {DatatableToolbar} from '../../shared/Datatable/DatatableToolbar'
+import {Txt} from 'mui-extension/lib/Txt/Txt'
 
 export const CompaniesToActivate = () => {
-  const {m, formatLargeNumber, formatDate} = useI18n()
+  const {m, formatDate} = useI18n()
   const _companies = useCompaniesContext()
   const _companiesToActivate = _companies.toActivate
-  const cssUtils = useCssUtils()
-  const css = useStyles()
 
   const [selectedCompanies, setSelectedCompanies] = usePersistentState<string[]>([], 'CompaniesToActivate')
   const selectedCompaniesSet = useSetState(selectedCompanies)
@@ -107,41 +68,43 @@ export const CompaniesToActivate = () => {
   }
 
   return (
-    <Panel>
+    <Panel sx={{overflow: 'visible'}}>
       <Datatable
         id="companiestoactivate"
         header={
-          <>
-            <ScButton
-              disabled={_companiesToActivate.fetching || selectedCompaniesSet.size === 0}
-              loading={_companies.downloadActivationDocument.loading}
-              color="primary"
-              variant="outlined"
-              icon="file_download"
-              className={cssUtils.marginRight}
-              onClick={() => _companies.downloadActivationDocument.fetch({}, selectedCompaniesSet.toArray()).catch(toastError)}
-            >
-              {m.download}
-            </ScButton>
-            <ScDialog title={m.validateLetterSentTitle} content={m.validateLetterSentDesc} onConfirm={confirmCompaniesPosted}>
-              <ScButton
-                disabled={_companiesToActivate.fetching || selectedCompaniesSet.size === 0}
-                loading={_companies.confirmCompaniesPosted.loading}
-                className={cssUtils.marginRight}
-                color="error"
-                variant="contained"
-                icon="check_circle"
-              >
-                {m.validateLetterSent}
-              </ScButton>
-            </ScDialog>
-            {!_companiesToActivate.fetching && selectedCompaniesSet.size > 0 && (
-              <div>
-                <span className={css.selectedCountBadge}>{selectedCompaniesSet.size}</span>
-                <Txt color="hint">{m.selectedCompanies}</Txt>
-              </div>
-            )}
-          </>
+          <DatatableToolbar
+            onClear={selectedCompaniesSet.clear}
+            open={!_companiesToActivate.fetching && selectedCompaniesSet.size > 0}
+            actions={
+              <>
+                <ScButton
+                  disabled={_companiesToActivate.fetching || selectedCompaniesSet.size === 0}
+                  loading={_companies.downloadActivationDocument.loading}
+                  color="primary"
+                  variant="outlined"
+                  icon="file_download"
+                  sx={{mr: 1}}
+                  onClick={() => _companies.downloadActivationDocument.fetch({}, selectedCompaniesSet.toArray()).catch(toastError)}
+                >
+                  {m.download}
+                </ScButton>
+                <ScDialog title={m.validateLetterSentTitle} content={m.validateLetterSentDesc} onConfirm={confirmCompaniesPosted}>
+                  <ScButton
+                    disabled={_companiesToActivate.fetching || selectedCompaniesSet.size === 0}
+                    loading={_companies.confirmCompaniesPosted.loading}
+                    sx={{mr: 1}}
+                    color="error"
+                    variant="contained"
+                    icon="check_circle"
+                  >
+                    {m.validateLetterSent}
+                  </ScButton>
+                </ScDialog>
+              </>
+            }
+          >
+            <Txt bold>{selectedCompaniesSet.size}</Txt>&nbsp;{m.selectedCompanies}
+          </DatatableToolbar>
         }
         loading={_companiesToActivate.fetching}
         data={_companiesToActivate.list?.data}
@@ -173,13 +136,20 @@ export const CompaniesToActivate = () => {
           {
             id: 'siret',
             head: m.name,
-            className: css.tdName,
+            sx: _ => ({
+              lineHeight: 1.4,
+              maxWidth: 390,
+            }),
             render: _ => (
               <Tooltip title={_.company.name}>
                 <span>
-                  <span className={css.tdName_label}>{_.company.name}</span>
+                  <Box component="span" sx={{marginBottom: '-1px', fontWeight: t => t.typography.fontWeightBold}}>
+                    {_.company.name}
+                  </Box>
                   <br />
-                  <span className={css.tdName_desc}>{_.company.siret}</span>
+                  <Box component="span" sx={{fontSize: t => styleUtils(t).fontSize.small, color: t => t.palette.text.disabled}}>
+                    {_.company.siret}
+                  </Box>
                 </span>
               </Tooltip>
             ),
@@ -187,7 +157,14 @@ export const CompaniesToActivate = () => {
           {
             head: m.address,
             id: 'address',
-            className: css.tdAddress,
+            sx: _ => ({
+              pt: 0.5,
+              pb: 0.5,
+              fontSize: t => styleUtils(t).fontSize.small,
+              color: t => t.palette.text.secondary,
+              maxWidth: 300,
+              ...sxUtils.truncate,
+            }),
             render: _ => (
               <Tooltip title={<AddressComponent address={_.company.address} />}>
                 <span>
@@ -208,7 +185,7 @@ export const CompaniesToActivate = () => {
           },
           {
             id: 'actions',
-            className: cssUtils.tdActions,
+            sx: _ => sxUtils.tdActions,
             stickyEnd: true,
             render: _ => (
               <>

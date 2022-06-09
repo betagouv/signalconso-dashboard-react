@@ -1,4 +1,4 @@
-import React, {ReactNode, useContext} from 'react'
+import React, {Dispatch, ReactNode, SetStateAction, useContext, useEffect, useState} from 'react'
 import {SignalConsoApiSdk} from '../ApiSdkInstance'
 import {Roles, UserWithPermission} from '@signal-conso/signalconso-api-sdk-js'
 
@@ -14,15 +14,23 @@ interface LoginProviderProps {
 
 interface UseLoginProps {
   connectedUser: UserWithPermission & {isDGCCRF: boolean; isPro: boolean; isNotPro: boolean; isAdmin: boolean}
+  setConnectedUser: Dispatch<SetStateAction<UserWithPermission>>
   logout: () => void
   apiSdk: SignalConsoApiSdk
   token: string
 }
 
-export const LoginProvider = ({apiSdk, token, connectedUser, onLogout, children}: LoginProviderProps) => {
+export const LoginProvider = ({apiSdk, token, connectedUser: _connectedUser, onLogout, children}: LoginProviderProps) => {
+  const [connectedUser, setConnectedUser] = useState<UserWithPermission>(_connectedUser)
+
+  useEffect(() => {
+    setConnectedUser(_connectedUser)
+  }, [_connectedUser])
+
   return (
     <LoginContext.Provider
       value={{
+        setConnectedUser,
         connectedUser: {
           ...connectedUser,
           isDGCCRF: connectedUser.role === Roles.DGCCRF,

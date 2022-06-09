@@ -1,15 +1,12 @@
 import {format} from 'date-fns'
-import {TextField} from '@mui/material'
-import React, {CSSProperties} from 'react'
-import {InputProps as StandardInputProps} from '@mui/material'
+import {InputProps as StandardInputProps, TextField, TextFieldProps} from '@mui/material'
+import React from 'react'
 
-export interface DatepickerProps {
+export interface DatepickerProps extends Omit<TextFieldProps, 'onChange'> {
   value?: Date
   onChange: (_: Date) => void
   label?: string
-  className?: string
   InputProps?: Partial<StandardInputProps>
-  style?: CSSProperties
   fullWidth?: boolean
 }
 
@@ -19,15 +16,14 @@ const onChangeDate = (callback: (date: Date) => any) => (e: React.ChangeEvent<HT
 
 const mapDate = (date: Date): string => format(date, 'yyyy-MM-dd')
 
-export const Datepicker = ({value, onChange, label, fullWidth, InputProps, className, style}: DatepickerProps) => {
+export const Datepicker = ({value, onChange, label, fullWidth, InputProps, ...props}: DatepickerProps) => {
   return (
     <TextField
+      {...props}
       type="date"
       margin="dense"
       variant="outlined"
-      className={className}
       size="small"
-      style={style}
       label={label}
       InputProps={InputProps}
       value={value ? mapDate(value) : ''}

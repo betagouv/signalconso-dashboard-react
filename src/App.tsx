@@ -1,8 +1,7 @@
 import React, {useEffect} from 'react'
 import {ApiError} from '@signal-conso/signalconso-api-sdk-js'
 import {config} from './conf/config'
-import makeStyles from '@mui/styles/makeStyles'
-import {CircularProgress, StyledEngineProvider, Theme, ThemeProvider} from '@mui/material'
+import {CircularProgress, CssBaseline, StyledEngineProvider, ThemeProvider} from '@mui/material'
 import {BrowserRouter, HashRouter, Redirect, Route, Switch} from 'react-router-dom'
 import {I18nProvider} from './core/i18n'
 import {ReportProvider} from './core/context/ReportContext'
@@ -57,62 +56,17 @@ import {Stats} from './feature/Stats/Stats'
 import {Admin} from './feature/Admin/Admin'
 import {ConsumerEmailValidationProvider} from './core/context/EmailValidationContext'
 
-const useStyles = makeStyles((t: Theme) => ({
-  '@global': {
-    '*': {
-      boxSizing: 'border-box',
-    },
-    '.material-icons': {
-      display: 'inherit',
-    },
-    '.recharts-surface': {
-      overflow: 'visible',
-    },
-    html: {
-      fontSize: t.typography.fontSize,
-      color: t.palette.text.primary,
-    },
-    body: {
-      lineHeight: '1.5rem',
-      fontFamily: t.typography.fontFamily,
-      background: t.palette.background.paper,
-      margin: 0,
-      color: t.palette.text.primary,
-      boxSizing: 'border-box',
-    },
-    ul: {
-      marginTop: '.5em',
-    },
-    h1: t.typography.h4,
-    h2: {
-      ...t.typography.h6,
-      marginBottom: t.spacing(2),
-      marginTop: t.spacing(3),
-    },
-    p: {
-      ...t.typography.body1,
-      textAlign: 'justify',
-    },
-    a: {
-      color: 'inherit',
-      textDecoration: 'none',
-    },
-    ':focus': {
-      outline: 0,
-    },
-  },
-}))
-
 const Router: typeof HashRouter = config.useHashRouter ? HashRouter : BrowserRouter
 
 export const App = () => {
   return (
     <Provide
       providers={[
-        _ => <StyledEngineProvider injectFirst children={_} />,
         _ => <ThemeProvider theme={muiTheme()} children={_} />,
-        _ => <I18nProvider children={_} />,
+        _ => <StyledEngineProvider children={_} />,
+        _ => <CssBaseline children={_} />,
         _ => <Router children={_} />,
+        _ => <I18nProvider children={_} />,
         _ => <ToastProvider horizontal="right" children={_} />,
       ]}
     >
@@ -122,7 +76,6 @@ export const App = () => {
 }
 
 const AppLogin = () => {
-  useStyles()
   const history = useHistory()
   const forgottenPassword = useFetcher<SignalConsoApiSdk['public']['authenticate']['forgotPassword'], ApiError>(
     apiPublicSdk.authenticate.forgotPassword,

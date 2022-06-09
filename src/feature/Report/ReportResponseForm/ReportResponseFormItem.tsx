@@ -1,8 +1,6 @@
 import {Txt} from 'mui-extension/lib/Txt/Txt'
 import React from 'react'
-import {Theme} from '@mui/material'
-
-import makeStyles from '@mui/styles/makeStyles'
+import {Box} from '@mui/material'
 
 interface ReportAnswerProItemProps {
   title: string
@@ -10,19 +8,9 @@ interface ReportAnswerProItemProps {
   children?: any
 }
 
-const useStyles = makeStyles((t: Theme) => ({
-  root: {
-    marginBottom: t.spacing(2),
-  },
-  body: {
-    marginTop: t.spacing(1 / 2),
-  },
-}))
-
 export const ReportResponseFormItem = ({children, title, desc}: ReportAnswerProItemProps) => {
-  const css = useStyles()
   return (
-    <div className={css.root}>
+    <Box sx={{mb: 2}}>
       <Txt block size="big" bold>
         {title}
       </Txt>
@@ -31,7 +19,7 @@ export const ReportResponseFormItem = ({children, title, desc}: ReportAnswerProI
           <span dangerouslySetInnerHTML={{__html: desc}} />
         </Txt>
       )}
-      <div className={css.body}>{children}</div>
-    </div>
+      <Box sx={{mt: 0.5}}>{children}</Box>
+    </Box>
   )
 }

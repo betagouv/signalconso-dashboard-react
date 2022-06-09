@@ -3,13 +3,11 @@ import {useI18n} from '../../core/i18n'
 import {useReportsContext} from '../../core/context/ReportsContext'
 import {cleanObject, getHostFromUrl, Id, Report, ReportingDateLabel, ReportSearch, ReportTag} from '@signal-conso/signalconso-api-sdk-js'
 import {Panel} from '../../shared/Panel'
-import {useCssUtils} from '../../core/helper/useCssUtils'
 import {Datatable} from '../../shared/Datatable/Datatable'
 import {fromNullable, some} from 'fp-ts/lib/Option'
-import {alpha, Badge, Button, Checkbox, Chip, Grid, Icon, Theme, Tooltip} from '@mui/material'
-import makeStyles from '@mui/styles/makeStyles'
-import {classes, textOverflowMiddleCropping} from '../../core/helper/utils'
-import React, {useEffect, useMemo} from 'react'
+import {alpha, Badge, Box, Button, Checkbox, Chip, Grid, Icon, Tooltip} from '@mui/material'
+import {textOverflowMiddleCropping} from '../../core/helper/utils'
+import React, {useCallback, useEffect, useMemo} from 'react'
 import {mapArrayFromQuerystring, mapBooleanFromQueryString, mapDateFromQueryString, mapDatesToQueryString, useQueryString} from '../../core/helper/useQueryString'
 import {NavLink} from 'react-router-dom'
 import {SelectDepartments} from '../../shared/SelectDepartments/SelectDepartments'
@@ -26,67 +24,13 @@ import {Txt} from 'mui-extension/lib/Txt/Txt'
 import {PeriodPicker} from '../../shared/PeriodPicker/PeriodPicker'
 import {DebouncedInput} from '../../shared/DebouncedInput/DebouncedInput'
 import {ReportDetailValues} from '../../shared/ReportDetailValues/ReportDetailValues'
-import {styleUtils} from '../../core/theme'
+import {styleUtils, sxUtils} from '../../core/theme'
 import compose from '../../core/helper/compose'
 import {Alert} from 'mui-extension'
 import {intersection} from '../../core/lodashNamedExport'
 import {useSetState} from '@alexandreannic/react-hooks-lib/lib'
-import {ReportsSelectedToolbar} from './ReportsSelectedToolbar'
-
-const useStyles = makeStyles((t: Theme) => ({
-  toolbar: {},
-  tdName: {
-    lineHeight: 1.4,
-    maxWidth: 170,
-  },
-  tdName_label: {
-    fontWeight: 'bold',
-    marginBottom: -1,
-  },
-  tdName_desc: {
-    fontSize: t.typography.fontSize * 0.875,
-    color: t.palette.text.disabled,
-  },
-  tdPostal: {
-    maxWidth: 76,
-  },
-  tdConsumer: {
-    maxWidth: 160,
-  },
-  tdDesc: {
-    fontSize: styleUtils(t).fontSize.small,
-    color: t.palette.text.secondary,
-    maxWidth: 200,
-    minWidth: 200,
-    lineHeight: 1.4,
-    whiteSpace: 'initial',
-  },
-  tdFiles: {
-    minWidth: 44,
-    maxWidth: 100,
-  },
-  tdCategory: {
-    maxWidth: 140,
-  },
-  actions: {
-    paddingRight: t.spacing(0.25),
-    paddingLeft: t.spacing(0.25),
-  },
-  tdProblem: {
-    maxWidth: 200,
-  },
-  tooltipUl: {
-    margin: 0,
-    padding: 16,
-  },
-  clearIcons: {
-    minWidth: 'auto',
-  },
-  clearIconWithFilters: {
-    border: '1px solid ' + t.palette.divider,
-    background: alpha(t.palette.primary.main, 0.12),
-  },
-}))
+import {DatatableToolbar} from '../../shared/Datatable/DatatableToolbar'
+import {useReportContext} from '../../core/context/ReportContext'
 
 interface ReportSearchQs {
   readonly departments?: string[] | string
@@ -112,10 +56,9 @@ interface ReportSearchQs {
 
 export const Reports = ({}) => {
   const {m, formatDate} = useI18n()
+  const _report = useReportContext()
   const _reports = useReportsContext()
   const selectReport = useSetState<Id>()
-  const cssUtils = useCssUtils()
-  const css = useStyles()
   const {toastError} = useToast()
   const queryString = useQueryString<Partial<ReportSearch>, Partial<ReportSearchQs>>({
     toQueryString: mapDatesToQueryString,
@@ -127,6 +70,7 @@ export const Reports = ({}) => {
   })
 
   useEffect(() => {
+    console.log('update filters')
     _reports.updateFilters({..._reports.initialFilters, ...queryString.get()})
   }, [])
 
@@ -145,6 +89,10 @@ export const Reports = ({}) => {
     const {offset, limit, ...filters} = _reports.filters
     return Object.keys(cleanObject(filters)).length
   }, [_reports.filters])
+
+  const updateFilters = useCallback((_: ReportSearch) => {
+    _reports.updateFilters(prev => ({...prev, ..._}))
+  }, [])
 
   return (
     <Page size="xl">
@@ -178,13 +126,7 @@ export const Reports = ({}) => {
                     onChange={departments => _reports.updateFilters(prev => ({...prev, departments}))}
                   >
                     {(value, onChange) => (
-                      <SelectDepartments
-                        label={m.departments}
-                        value={value}
-                        onChange={onChange}
-                        className={cssUtils.marginRight}
-                        fullWidth
-                      />
+                      <SelectDepartments label={m.departments} value={value} onChange={onChange} sx={{mr: 1}} fullWidth />
                     )}
                   </DebouncedInput>
                 </Grid>
@@ -195,13 +137,31 @@ export const Reports = ({}) => {
                       _reports.updateFilters(prev => ({...prev, start: start ?? prev.start, end: end ?? prev.end}))
                     }}
                   >
-                    {(value, onChange) => (
-                      <PeriodPicker value={value} onChange={onChange} className={cssUtils.marginRight} fullWidth />
-                    )}
+                    {(value, onChange) => <PeriodPicker value={value} onChange={onChange} sx={{mr: 1}} fullWidth />}
                   </DebouncedInput>
                 </Grid>
               </Grid>
-              <ReportsSelectedToolbar ids={selectReport.toArray()} onClear={selectReport.clear} />
+              <DatatableToolbar
+                open={selectReport.size > 0}
+                onClear={selectReport.clear}
+                actions={
+                  <ScButton
+                    loading={_report.download.loading}
+                    variant="contained"
+                    icon="file_download"
+                    onClick={() => {
+                      _report.download.fetch({}, selectReport.toArray())
+                    }}
+                    sx={{
+                      marginLeft: 'auto'
+                    }}
+                  >
+                    {m.download}
+                  </ScButton>
+                }
+              >
+                <span dangerouslySetInnerHTML={{__html: m.nSelected(selectReport.size)}} />
+              </DatatableToolbar>
             </>
           }
           actions={
@@ -211,7 +171,13 @@ export const Reports = ({}) => {
                   <Button
                     color="primary"
                     onClick={_reports.clearFilters}
-                    className={classes(css.clearIcons, filtersCount && css.clearIconWithFilters)}
+                    sx={{
+                      minWidth: 'auto',
+                      ...(filtersCount && {
+                        border: t => '1px solid ' + t.palette.divider,
+                        background: t => alpha(t.palette.primary.main, 0.12),
+                      }),
+                    }}
                   >
                     <Icon>clear</Icon>
                   </Button>
@@ -231,9 +197,7 @@ export const Reports = ({}) => {
               </ExportReportsPopper>
               <ReportFilters
                 filters={_reports.filters}
-                updateFilters={_ => {
-                  _reports.updateFilters(prev => ({...prev, ..._}))
-                }}
+                updateFilters={updateFilters}
               >
                 <Tooltip title={m.advancedFilters}>
                   <IconBtn color="primary">
@@ -274,32 +238,51 @@ export const Reports = ({}) => {
                 )
               })(),
               style: {width: 0},
-              render: _ => (
-                <Checkbox checked={selectReport.has(_.report.id)} onChange={() => selectReport.toggle(_.report.id)} />
-              ),
+              render: _ => <Checkbox checked={selectReport.has(_.report.id)} onChange={() => selectReport.toggle(_.report.id)} />,
             },
             {
               id: 'companyPostalCode',
               head: m.postalCodeShort,
-              className: css.tdPostal,
+              sx: _ => ({
+                maxWidth: 76,
+              }),
               render: _ => (
                 <>
                   <span>{_.report.companyAddress.postalCode?.slice(0, 2)}</span>
-                  <span className={cssUtils.colorDisabled}>{_.report.companyAddress.postalCode?.substr(2, 5)}</span>
+                  <Box component="span" sx={{color: t => t.palette.text.disabled}}>
+                    {_.report.companyAddress.postalCode?.substr(2, 5)}
+                  </Box>
                 </>
               ),
             },
             {
               id: 'companyName',
               head: m.company,
-              className: css.tdName,
+              sx: _ => ({
+                lineHeight: 1.4,
+                maxWidth: 170,
+              }),
               render: _ => (
                 <>
-                  <span className={css.tdName_label}>{_.report.companyName}</span>
+                  <Box
+                    component="span"
+                    sx={{
+                      fontWeight: 'bold',
+                      marginBottom: -1,
+                    }}
+                  >
+                    {_.report.companyName}
+                  </Box>
                   <br />
-                  <span className={css.tdName_desc}>
+                  <Box
+                    component="span"
+                    sx={{
+                      fontSize: t => styleUtils(t).fontSize.small,
+                      color: t => t.palette.text.disabled,
+                    }}
+                  >
                     {fromNullable(_.report.websiteURL).map(getHostFromUrl).alt(some(_.report.phone)).getOrElse('')}
-                  </span>
+                  </Box>
                 </>
               ),
             },
@@ -316,17 +299,19 @@ export const Reports = ({}) => {
             {
               id: 'category',
               head: m.problem,
-              className: css.tdProblem,
+              sx: _ => ({
+                maxWidth: 200,
+              }),
               render: _ => (
                 <Tooltip
                   title={
                     <>
                       <b>{_.report.category}</b>
-                      <ul className={css.tooltipUl}>
+                      <Box component="ul" sx={{m: 0, p: 2}}>
                         {_.report.subcategories.map((s, i) => (
                           <li key={i}>{s.title}</li>
                         ))}
-                      </ul>
+                      </Box>
                     </>
                   }
                 >
@@ -347,7 +332,14 @@ export const Reports = ({}) => {
             {
               id: 'details',
               head: m.details,
-              className: css.tdDesc,
+              sx: _ => ({
+                fontSize: t => styleUtils(t).fontSize.small,
+                color: t => t.palette.text.secondary,
+                maxWidth: 200,
+                minWidth: 200,
+                lineHeight: 1.4,
+                whiteSpace: 'initial',
+              }),
               render: _ => <ReportDetailValues input={_.report.details} lines={2} />,
             },
             {
@@ -360,7 +352,10 @@ export const Reports = ({}) => {
                     size="small"
                     variant="outlined"
                     label={m.reportTagDesc[tag]}
-                    className={classes(cssUtils.colorTxtSecondary, cssUtils.txtBold)}
+                    sx={{
+                      fontWeight: t => t.typography.fontWeightBold,
+                      color: t => t.palette.text.secondary,
+                    }}
                     style={{marginRight: 2}}
                   />
                 )),
@@ -373,12 +368,25 @@ export const Reports = ({}) => {
             {
               id: 'email',
               head: m.consumer,
-              className: css.tdConsumer,
+              sx: _ => ({
+                maxWidth: 160,
+              }),
               render: _ => (
                 <span>
-                  <span className={classes(_.report.contactAgreement ? cssUtils.colorSuccess : cssUtils.colorError)}>
+                  <Box
+                    component="span"
+                    sx={{
+                      ...(_.report.contactAgreement
+                        ? {
+                            color: t => t.palette.success.light,
+                          }
+                        : {
+                            color: t => t.palette.error.main,
+                          }),
+                    }}
+                  >
                     {textOverflowMiddleCropping(_.report.email ?? '', 25)}
-                  </span>
+                  </Box>
                   <br />
                   <Txt color="hint" size="small">
                     {_.report.consumerPhone ?? ''}
@@ -389,18 +397,21 @@ export const Reports = ({}) => {
             {
               id: 'file',
               head: m.files,
-              className: css.tdFiles,
+              sx: _ => ({
+                minWidth: 44,
+                maxWidth: 100,
+              }),
               render: _ =>
                 _.files.length > 0 && (
                   <Badge badgeContent={_.files.length} color="primary" invisible={_.files.length === 1}>
-                    <Icon className={cssUtils.colorTxtHint}>insert_drive_file</Icon>
+                    <Icon sx={{color: t => t.palette.text.disabled}}>insert_drive_file</Icon>
                   </Badge>
                 ),
             },
             {
               id: 'actions',
               stickyEnd: true,
-              className: cssUtils.tdActions,
+              sx: _ => sxUtils.tdActions,
               render: _ => (
                 <NavLink to={siteMap.logged.report(_.report.id)}>
                   <IconBtn color="primary">

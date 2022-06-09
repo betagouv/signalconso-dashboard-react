@@ -43,7 +43,7 @@ export const CompaniesProvider = ({api, children}: Props) => {
         .fetchToActivate()
         .then(_ => _.sort((a, b) => b.tokenCreation.getTime() - a.tokenCreation.getTime()))
         .then(paginateData(filter.limit, filter.offset)),
-    {limit: 500, offset: 0},
+    {limit: 250, offset: 0},
   )
   const create = useFetcher(api.secured.company.create)
   const updateAddress = useFetcher(api.secured.company.updateAddress)

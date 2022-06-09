@@ -6,12 +6,10 @@ import {CompaniesDbSyncCard} from './CompaniesDbSyncCard'
 import {Grid} from '@mui/material'
 import {ScButton} from '../../shared/Button/Button'
 import {Alert} from 'mui-extension'
-import {useCssUtils} from '../../core/helper/useCssUtils'
 
 export const CompaniesDbSync = () => {
   const {m} = useI18n()
   const _companiesDbSync = useCompaniesDbSyncContext()
-  const cssUtils = useCssUtils()
 
   useEffect(() => {
     _companiesDbSync.getInfo.fetch()
@@ -38,7 +36,7 @@ export const CompaniesDbSync = () => {
       >
         {m.database}
       </PageTitle>
-      <Alert type="info" className={cssUtils.marginBottom2}>
+      <Alert type="info" sx={{mb: 2}}>
         <div dangerouslySetInnerHTML={{__html: m.companiesDbSyncInfo}} />
       </Alert>
       {_companiesDbSync.getInfo.entity && (

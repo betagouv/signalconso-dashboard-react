@@ -111,6 +111,8 @@ export enum AuthenticationEventActions {
 }
 
 export enum AccountEventActions {
+  changeNameSuccess = 'Changement de nom réussi',
+  changeNameFail = 'Changement de nom échec',
   changePasswordSuccess = 'Changement mdp réussi',
   changePasswordFail = 'Changement mdp en échec',
   registerUser = "Inscription d'un utilisateur",

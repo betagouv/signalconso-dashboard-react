@@ -1,10 +1,8 @@
 import * as React from 'react'
 import {CSSProperties, ReactNode} from 'react'
-import {Paper, PaperProps, Theme} from '@mui/material'
-import makeStyles from '@mui/styles/makeStyles'
+import {Paper, PaperProps, Theme, useTheme} from '@mui/material'
 import {alpha} from '@mui/material/styles'
 import {styleUtils} from '../../core/theme'
-import {classes} from '../../core/helper/utils'
 
 export type LabelColor = 'error' | 'warning' | 'info' | 'success' | 'disable'
 
@@ -23,37 +21,7 @@ const colorize = (color: string): CSSProperties => ({
   color: color,
 })
 
-const useStyles = makeStyles((t: Theme) => ({
-  root: {
-    whiteSpace: 'nowrap',
-    borderRadius: 40,
-    paddingTop: t.spacing(1 / 1.5),
-    paddingBottom: t.spacing(1 / 1.5),
-    paddingRight: t.spacing(2),
-    paddingLeft: t.spacing(2),
-    fontWeight: 'bold',
-    letterSpacing: '1px',
-    display: 'inline-flex',
-    minHeight: 24,
-    alignItems: 'center',
-    transition: t.transitions.create('all'),
-    ...colorize(t.palette.text.disabled),
-  },
-  border: {
-    // border: `1px solid ${t.palette.divider}`,
-  },
-  dense: {
-    fontWeight: '500' as any,
-    fontSize: styleUtils(t).fontSize.small,
-    padding: t.spacing(0, 1, 0, 1),
-  },
-  fullWidth: {
-    width: '100%',
-  },
-  inSelectOptions: {
-    marginTop: -10,
-    marginBottom: -10,
-  },
+const colors = (t: Theme) => ({
   error: {
     ...colorize(styleUtils(t).color.error),
   },
@@ -69,22 +37,44 @@ const useStyles = makeStyles((t: Theme) => ({
   disable: {
     ...colorize(t.palette.text.disabled),
   },
-}))
+})
 
-export const Label = ({type, children, className, fullWidth, dense, elevation = 0, inSelectOptions, ...props}: LabelProps) => {
-  const css = useStyles()
+export const Label = ({type, children, sx, fullWidth, dense, elevation = 0, inSelectOptions, ...props}: LabelProps) => {
+  const t = useTheme()
   return (
     <Paper
       elevation={elevation}
-      className={classes(
-        css.root,
-        type && css[type],
-        elevation === 0 && css.border,
-        fullWidth && css.fullWidth,
-        dense && css.dense,
-        inSelectOptions && css.inSelectOptions,
-        className,
-      )}
+      sx={{
+        whiteSpace: 'nowrap',
+        borderRadius: 40,
+        py: 1 / 1.5,
+        px: 2,
+        fontWeight: 'bold',
+        letterSpacing: '1px',
+        display: 'inline-flex',
+        minHeight: 24,
+        alignItems: 'center',
+        transition: t => t.transitions.create('all'),
+        ...colorize(t.palette.text.disabled),
+        ...(type && colors(t)[type]),
+        // ...elevation > 0 && {
+        //   border: 'none'
+        // },
+        ...(fullWidth && {
+          width: '100%',
+        }),
+        ...(dense && {
+          fontWeight: '500' as any,
+          fontSize: t => styleUtils(t).fontSize.small,
+          py: 0,
+          px: 1,
+        }),
+        ...(inSelectOptions && {
+          marginTop: -10,
+          marginBottom: -10,
+        }),
+        ...sx,
+      }}
       {...props}
     >
       {children}

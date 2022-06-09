@@ -1,32 +1,16 @@
 import {DetailInputValue} from '@signal-conso/signalconso-api-sdk-js'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
 import * as React from 'react'
-import {CSSProperties} from 'react'
-import {Theme, Tooltip} from '@mui/material'
-import makeStyles from '@mui/styles/makeStyles'
-import {useCssUtils} from '../../core/helper/useCssUtils'
-import {classes} from '../../core/helper/utils'
+import {Box, BoxProps, Tooltip} from '@mui/material'
 import {useMemoFn} from '../hooks/UseMemoFn'
 
-interface Props {
+interface Props extends BoxProps {
   input: DetailInputValue[]
   lines?: number
   hideTooltip?: boolean
-  className?: string
-  style?: CSSProperties
 }
 
-const useStyles = makeStyles((t: Theme) => ({
-  desc: (lines: {lines: number}) => ({
-    display: '-webkit-box',
-    '-webkit-line-clamp': lines.lines,
-    '-webkit-box-orient': 'vertical',
-    overflow: 'hidden',
-  }),
-}))
-export const ReportDetailValues = ({input, lines = 2, hideTooltip, style, className}: Props) => {
-  const cssUtils = useCssUtils()
-  const css = useStyles({lines})
+export const ReportDetailValues = ({input, lines = 2, hideTooltip, sx, ...props}: Props) => {
   const description = useMemoFn(input, _ => _.find(_ => _.label === 'Description :')?.value)
 
   return (
@@ -34,13 +18,26 @@ export const ReportDetailValues = ({input, lines = 2, hideTooltip, style, classN
       hidden={hideTooltip}
       title={input.map((detail, i) => (
         <div key={i}>
-          <span dangerouslySetInnerHTML={{__html: detail.label}} className={cssUtils.txtBold} />
+          <Box
+            component="span"
+            dangerouslySetInnerHTML={{__html: detail.label}}
+            sx={{fontWeight: t => t.typography.fontWeightBold}}
+          />
           &nbsp;
-          <span dangerouslySetInnerHTML={{__html: detail.value}} className={cssUtils.tooltipColorTxtSecondary} />
+          <Box component="span" dangerouslySetInnerHTML={{__html: detail.value}} sx={{color: t => t.palette.text.secondary}} />
         </div>
       ))}
     >
-      <div className={classes(css.desc, className)} style={style}>
+      <Box
+        {...props}
+        sx={{
+          display: '-webkit-box',
+          WebkitLineClamp: lines,
+          WebkitBoxOrient: 'vertical',
+          overflow: 'hidden',
+          ...sx,
+        }}
+      >
         {description ||
           input.map((_, i) => (
             <span key={i}>
@@ -48,7 +45,7 @@ export const ReportDetailValues = ({input, lines = 2, hideTooltip, style, classN
               <br />
             </span>
           ))}
-      </div>
+      </Box>
     </Tooltip>
   )
 }

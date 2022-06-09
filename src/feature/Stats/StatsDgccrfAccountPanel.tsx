@@ -30,7 +30,8 @@ export const StatsDgccrfAccountPanel = ({ticks}: Props) => {
               label: m.dgccrfCountActiveAccount,
               key: 'dgccrfActiveAccount',
               curve: ([activeAccounts]) => activeAccounts.map(statsFormatCurveDate(m)),
-            }, {
+            },
+            {
               label: m.dgccrfCountAccount,
               key: 'dgccrfAccount',
               curve: ([, allAccounts]) => allAccounts.map(statsFormatCurveDate(m)),

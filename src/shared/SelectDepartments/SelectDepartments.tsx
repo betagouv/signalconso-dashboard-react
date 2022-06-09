@@ -1,17 +1,15 @@
 import * as React from 'react'
-import {CSSProperties, forwardRef, useEffect} from 'react'
-import {Icon, InputAdornment, TextField} from '@mui/material'
+import {forwardRef, useEffect} from 'react'
+import {Icon, InputAdornment, TextField, TextFieldProps} from '@mui/material'
 import {useSetState, UseSetState} from '@alexandreannic/react-hooks-lib/lib'
 import {SelectDepartmentsMenu} from './SelectDepartmentsMenu'
 
-export interface SelectDepartmentsProps {
+export interface SelectDepartmentsProps extends Omit<TextFieldProps, 'value' | 'onChange'> {
   placeholder?: string
   selectAllLabel?: string
   value?: string[]
-  style?: CSSProperties
   readonly?: boolean
   onChange: (_: string[]) => void
-  className?: string
   fullWidth?: boolean
   disabled?: boolean
   label?: string

@@ -1,5 +1,5 @@
 import {Panel, PanelBody} from '../../shared/Panel'
-import {Divider} from '@mui/material'
+import {Box} from '@mui/material'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
 import {ReportFiles} from './File/ReportFiles'
 import {EventActionValues, FileOrigin, Report, UploadedFile} from '@signal-conso/signalconso-api-sdk-js'
@@ -7,7 +7,7 @@ import React, {ReactNode} from 'react'
 import {useReportContext} from '../../core/context/ReportContext'
 import {useLogin} from '../../core/context/LoginContext'
 import {useI18n} from '../../core/i18n'
-import {useCssUtils} from '../../core/helper/useCssUtils'
+import {Divider} from '../../shared/Divider/Divider'
 
 interface Props {
   files?: UploadedFile[]
@@ -19,18 +19,20 @@ export const ReportDescription = ({report, files, children}: Props) => {
   const _report = useReportContext()
   const {connectedUser} = useLogin()
   const {m} = useI18n()
-  const cssUtils = useCssUtils()
 
   return (
     <Panel>
       <PanelBody>
         {report.details.map((detail, i) => (
-          <div key={i} className={cssUtils.marginBottom}>
-            <div className={cssUtils.txtBold} dangerouslySetInnerHTML={{__html: detail.label.replace(/\:$/, '')}} />
-            <div className={cssUtils.colorTxtSecondary} dangerouslySetInnerHTML={{__html: detail.value}} />
-          </div>
+          <Box key={i} sx={{mb: 1}}>
+            <Box
+              sx={{fontWeight: t => t.typography.fontWeightBold}}
+              dangerouslySetInnerHTML={{__html: detail.label.replace(/\:$/, '')}}
+            />
+            <Box sx={{color: t => t.palette.text.secondary}} dangerouslySetInnerHTML={{__html: detail.value}} />
+          </Box>
         ))}
-        <Divider className={cssUtils.divider} />
+        <Divider margin />
         <Txt bold block gutterBottom>
           {m.attachedFiles}
         </Txt>
@@ -51,7 +53,7 @@ export const ReportDescription = ({report, files, children}: Props) => {
         />
         {children && (
           <>
-            <Divider className={cssUtils.divider} />
+            <Divider margin />
             {children}
           </>
         )}

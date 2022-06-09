@@ -1,6 +1,6 @@
 export const reportFileConfig = {
   cardSize: 90,
-  cardBorderRadius: 8,
+  cardBorderRadius: '8px',
 }
 
 export enum FileType {

@@ -1,38 +1,36 @@
 import {Panel, PanelBody} from '../../shared/Panel'
-import {ReportStatusLabel, ReportStatusProLabel} from '../../shared/ReportStatus/ReportStatus'
+import {ReportStatusLabel} from '../../shared/ReportStatus/ReportStatus'
 import {Alert} from 'mui-extension/lib'
 import {ReportCategories} from './ReportCategories'
-import {Icon, Theme} from '@mui/material'
-import makeStyles from '@mui/styles/makeStyles'
+import {Box, Icon} from '@mui/material'
 import {Report} from '@signal-conso/signalconso-api-sdk-js'
 import {PanelFoot} from '../../shared/Panel/PanelFoot'
 import {ScChip} from '../../shared/Chip/ScChip'
 import React, {ReactNode} from 'react'
 import {styleUtils} from '../../core/theme'
-import {useCssUtils} from '../../core/helper/useCssUtils'
 import {useI18n} from '../../core/i18n'
-import {useLogin} from '../../core/context/LoginContext'
+import {makeSx} from 'mui-extension'
 
-const useStyles = makeStyles((t: Theme) => ({
+const css = makeSx({
   root: {
-    transition: t.transitions.create('box-shadow'),
+    transition: t => t.transitions.create('box-shadow'),
   },
   pageTitle: {
     display: 'flex',
     alignItems: 'flex-start',
     flexWrap: 'wrap',
     justifyContent: 'space-between',
-    marginBottom: t.spacing(2),
+    mb: 2,
   },
   pageTitle_txt: {
     margin: 0,
-    fontSize: styleUtils(t).fontSize.bigTitle,
+    fontSize: t => styleUtils(t).fontSize.bigTitle,
   },
   actions: {
     flexWrap: 'wrap',
     whiteSpace: 'nowrap',
   },
-}))
+})
 
 interface Props {
   report: Report
@@ -43,17 +41,14 @@ interface Props {
 }
 
 export const ReportHeader = ({hideTags, hideSiret, report, children, elevated}: Props) => {
-  const css = useStyles()
-  const cssUtils = useCssUtils()
   const {m} = useI18n()
-  const {connectedUser} = useLogin()
 
   return (
-    <Panel elevation={elevated ? 3 : 0} className={css.root}>
+    <Panel elevation={elevated ? 3 : 0} sx={css.root}>
       <PanelBody>
-        <div className={css.pageTitle}>
+        <Box sx={css.pageTitle}>
           <div>
-            <h1 className={css.pageTitle_txt}>
+            <Box component="h1" sx={css.pageTitle_txt}>
               {m.report_pageTitle}
               {!hideSiret && (
                 <>
@@ -61,25 +56,25 @@ export const ReportHeader = ({hideTags, hideSiret, report, children, elevated}: 
                   {report.companySiret}
                 </>
               )}
-            </h1>
-            {!hideSiret && <div className={cssUtils.colorTxtHint}>{report.companyName}</div>}
-            <div className={cssUtils.colorTxtHint}>ID {report.id}</div>
+            </Box>
+            {!hideSiret && <Box sx={{color: t => t.palette.text.disabled}}>{report.companyName}</Box>}
+            <Box sx={{color: t => t.palette.text.disabled}}>ID {report.id}</Box>
           </div>
-          <ReportStatusLabel className={cssUtils.marginLeftAuto} status={report.status} />
-        </div>
-        <Alert id="report-info" dense type="info" deletable persistentDelete className={cssUtils.marginBottom2}>
+          <ReportStatusLabel style={{marginLeft: 'auto'}} status={report.status} />
+        </Box>
+        <Alert id="report-info" dense type="info" deletable persistentDelete sx={{mb: 2}}>
           {m.reportCategoriesAreSelectByConsumer}
         </Alert>
         <ReportCategories categories={[report.category, ...report.subcategories]} />
       </PanelBody>
       {(!hideTags || children) && (
-        <PanelFoot className={css.actions} border>
+        <PanelFoot sx={css.actions} border>
           {!hideTags && (
             <div style={{flex: 1}}>
               {report.tags.map(tag => [
                 <ScChip
                   icon={
-                    <Icon style={{fontSize: 20}} className={cssUtils.colorTxtHint}>
+                    <Icon style={{fontSize: 20}} sx={{color: t => t.palette.text.disabled}}>
                       sell
                     </Icon>
                   }

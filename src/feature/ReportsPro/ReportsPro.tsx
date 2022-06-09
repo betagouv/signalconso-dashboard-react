@@ -4,28 +4,21 @@ import {Panel, PanelBody} from '../../shared/Panel'
 import {useReportsContext} from '../../core/context/ReportsContext'
 import {Datatable} from '../../shared/Datatable/Datatable'
 import {useI18n} from '../../core/i18n'
-import {useCssUtils} from '../../core/helper/useCssUtils'
-import {Badge, Grid, Icon, MenuItem, Theme} from '@mui/material'
-import makeStyles from '@mui/styles/makeStyles'
+import {Badge, Box, Grid, Icon, MenuItem} from '@mui/material'
 import {ReportStatusLabel, ReportStatusProLabel} from '../../shared/ReportStatus/ReportStatus'
 import {useLayoutContext} from '../../core/Layout/LayoutContext'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
-import {cleanObject, Report, ReportSearch, ReportStatus, ReportStatusPro} from '@signal-conso/signalconso-api-sdk-js'
-import {styleUtils} from '../../core/theme'
+import {cleanObject, Report, ReportSearch, ReportSearchResult, ReportStatus, ReportStatusPro} from '@signal-conso/signalconso-api-sdk-js'
+import {combineSx, styleUtils, sxUtils} from '../../core/theme'
 import {SelectDepartments} from '../../shared/SelectDepartments/SelectDepartments'
 import {ScSelect} from '../../shared/Select/Select'
 import {useHistory} from 'react-router'
 import {siteMap} from '../../core/siteMap'
-import {classes, openInNew} from '../../core/helper/utils'
+import {openInNew} from '../../core/helper/utils'
 import {Btn, Fender} from 'mui-extension/lib'
 import {EntityIcon} from '../../core/EntityIcon'
 import {ScButton} from '../../shared/Button/Button'
-import {
-  mapArrayFromQuerystring,
-  mapDateFromQueryString,
-  mapDatesToQueryString,
-  useQueryString,
-} from '../../core/helper/useQueryString'
+import {mapArrayFromQuerystring, mapDateFromQueryString, mapDatesToQueryString, useQueryString} from '../../core/helper/useQueryString'
 import {fromNullable} from 'fp-ts/lib/Option'
 import {useToast} from '../../core/toast'
 import {config} from '../../conf/config'
@@ -34,51 +27,49 @@ import {PeriodPicker} from '../../shared/PeriodPicker/PeriodPicker'
 import {useCompaniesContext} from '../../core/context/CompaniesContext'
 import {SelectCompaniesByPro} from '../../shared/SelectCompaniesByPro/SelectCompaniesByPro'
 import compose from '../../core/helper/compose'
-import {Alert} from 'mui-extension'
+import {Alert, makeSx} from 'mui-extension'
 import {DebouncedInput} from 'shared/DebouncedInput/DebouncedInput'
 import {Enum} from '@alexandreannic/ts-utils/lib/common/enum/Enum'
 
-const useStyles = makeStyles((t: Theme) => ({
-  tdFiles: {
-    minWidth: 44,
-    maxWidth: 100,
-  },
+const css = makeSx({
   card: {
-    fontSize: styleUtils(t).fontSize.normal,
+    fontSize: t => styleUtils(t).fontSize.normal,
     display: 'flex',
     alignItems: 'center',
-    padding: t.spacing(1, 2),
+    py: 1,
+    px: 2,
   },
   card_content: {
     flex: 1,
   },
   iconDash: {
-    margin: t.spacing(0, 1),
+    my: 0,
+    mx: 1,
   },
   card_head: {
     display: 'flex',
     alignItems: 'center',
-    marginBottom: t.spacing(1 / 2),
+    mb: 1 / 2,
   },
   filters: {
-    marginBottom: t.spacing(3),
+    mb: 3,
   },
   filtersBody: {
-    paddingBottom: `${t.spacing(1)}px !important`,
+    pb: t => `${t.spacing(1)} !important`,
   },
   actions: {
     flexWrap: 'wrap',
     whiteSpace: 'nowrap',
-    marginTop: t.spacing(2),
+    mt: 2,
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'flex-end',
     '& > *': {
-      marginBottom: t.spacing(1),
-      marginLeft: t.spacing(1),
+      mb: 1,
+      ml: 1,
     },
   },
-}))
+})
 
 const minRowsBeforeDisplayFilters = 2
 
@@ -98,8 +89,6 @@ export const ReportsPro = () => {
   const history = useHistory()
   const {toastError} = useToast()
   const {formatDate, m} = useI18n()
-  const css = useStyles()
-  const cssUtils = useCssUtils()
 
   const hasFilters = useMemo(() => {
     const {limit, offset, ...values} = _reports.filters
@@ -152,7 +141,7 @@ export const ReportsPro = () => {
             href={config.appBaseUrl + '/comment-ca-marche'}
           >
             {m.help}
-            <Icon className={classes(cssUtils.marginLeft, cssUtils.colorTxtHint)}>open_in_new</Icon>
+            <Icon sx={{ml: 1, color: t => t.palette.text.disabled}}>open_in_new</Icon>
           </Btn>
         }
       >
@@ -160,7 +149,7 @@ export const ReportsPro = () => {
       </PageTitle>
 
       {isFirstVisit && (
-        <Alert type="success" deletable persistentDelete className={cssUtils.marginBottom2}>
+        <Alert type="success" deletable persistentDelete sx={{mb: 2}}>
           <span dangerouslySetInnerHTML={{__html: m.yourAccountIsActivated}} />
         </Alert>
       )}
@@ -168,8 +157,8 @@ export const ReportsPro = () => {
         .map(companies => (
           <>
             {displayFilters && (
-              <Panel elevation={3} className={css.filters}>
-                <PanelBody className={css.filtersBody}>
+              <Panel elevation={3} sx={css.filters}>
+                <PanelBody sx={css.filtersBody}>
                   <Grid container spacing={1}>
                     <Grid item sm={4} xs={12}>
                       <DebouncedInput
@@ -181,7 +170,7 @@ export const ReportsPro = () => {
                             values={value}
                             onChange={onChange}
                             fullWidth
-                            className={cssUtils.marginRight}
+                            sx={{mr: 1}}
                             accessibleCompanies={companies}
                           />
                         )}
@@ -193,13 +182,7 @@ export const ReportsPro = () => {
                         onChange={departments => _reports.updateFilters(prev => ({...prev, departments}))}
                       >
                         {(value, onChange) => (
-                          <SelectDepartments
-                            label={m.departments}
-                            value={value}
-                            onChange={onChange}
-                            className={cssUtils.marginRight}
-                            fullWidth
-                          />
+                          <SelectDepartments label={m.departments} value={value} onChange={onChange} sx={{mr: 1}} fullWidth />
                         )}
                       </DebouncedInput>
                     </Grid>
@@ -241,7 +224,7 @@ export const ReportsPro = () => {
                   >
                     {(value, onChange) => <PeriodPicker fullWidth value={value} onChange={onChange} />}
                   </DebouncedInput>
-                  <div className={css.actions}>
+                  <Box sx={css.actions}>
                     <Badge color="error" badgeContent={filtersCount} hidden={filtersCount === 0}>
                       <ScButton icon="clear" onClick={_reports.clearFilters} variant="outlined" color="primary">
                         {m.removeAllFilters}
@@ -261,13 +244,13 @@ export const ReportsPro = () => {
                         {m.exportInXLS}
                       </Btn>
                     </ExportReportsPopper>
-                  </div>
+                  </Box>
                 </PanelBody>
               </Panel>
             )}
 
             <Panel>
-              <Datatable
+              <Datatable<ReportSearchResult>
                 id="reportspro"
                 paginate={{
                   minRowsBeforeDisplay: minRowsBeforeDisplayFilters,
@@ -292,18 +275,18 @@ export const ReportsPro = () => {
                           id: 'all',
                           head: '',
                           render: _ => (
-                            <div className={css.card}>
-                              <div className={css.card_content}>
-                                <div className={css.card_head}>
+                            <Box sx={css.card}>
+                              <Box sx={css.card_content}>
+                                <Box sx={css.card_head}>
                                   <Txt bold size="big">
                                     {_.report.companySiret}
                                   </Txt>
-                                  <Icon className={classes(css.iconDash, cssUtils.inlineIcon)}>remove</Icon>
+                                  <Icon sx={combineSx(css.iconDash, sxUtils.inlineIcon)}>remove</Icon>
                                   <Txt color="disabled">
-                                    <Icon className={cssUtils.inlineIcon}>location_on</Icon>
+                                    <Icon sx={sxUtils.inlineIcon}>location_on</Icon>
                                     {_.report.companyAddress.postalCode}
                                   </Txt>
-                                </div>
+                                </Box>
                                 <Txt block color="hint">
                                   {m.thisDate(formatDate(_.report.creationDate))}
                                 </Txt>
@@ -312,9 +295,9 @@ export const ReportsPro = () => {
                                     ? m.byHim(_.report.firstName + ' ' + _.report.lastName)
                                     : m.anonymousReport}
                                 </Txt>
-                              </div>
+                              </Box>
                               <ReportStatusLabel dense status={_.report.status} />
-                            </div>
+                            </Box>
                           ),
                         },
                       ]
@@ -322,19 +305,28 @@ export const ReportsPro = () => {
                         {
                           id: 'companyPostalCode',
                           head: m.postalCodeShort,
-                          className: _ => (_.report.status === ReportStatus.TraitementEnCours ? cssUtils.txtBold : undefined),
+                          sx: _ =>
+                            _.report.status === ReportStatus.TraitementEnCours
+                              ? {fontWeight: t => t.typography.fontWeightBold}
+                              : undefined,
                           render: _ => _.report.companyAddress.postalCode,
                         },
                         {
                           id: 'siret',
                           head: m.siret,
-                          className: _ => (_.report.status === ReportStatus.TraitementEnCours ? cssUtils.txtBold : undefined),
+                          sx: _ =>
+                            _.report.status === ReportStatus.TraitementEnCours
+                              ? {fontWeight: t => t.typography.fontWeightBold}
+                              : undefined,
                           render: _ => _.report.companySiret,
                         },
                         {
                           id: 'createDate',
                           head: m.receivedAt,
-                          className: _ => (_.report.status === ReportStatus.TraitementEnCours ? cssUtils.txtBold : undefined),
+                          sx: _ =>
+                            _.report.status === ReportStatus.TraitementEnCours
+                              ? {fontWeight: t => t.typography.fontWeightBold}
+                              : undefined,
                           render: _ => formatDate(_.report.creationDate),
                         },
                         {
@@ -345,18 +337,24 @@ export const ReportsPro = () => {
                         {
                           id: 'consumer',
                           head: m.consumer,
-                          className: _ => (_.report.status === ReportStatus.TraitementEnCours ? cssUtils.txtBold : undefined),
+                          sx: _ =>
+                            _.report.status === ReportStatus.TraitementEnCours
+                              ? {fontWeight: t => t.typography.fontWeightBold}
+                              : undefined,
                           render: _ =>
                             _.report.contactAgreement ? _.report.firstName + ' ' + _.report.lastName : m.anonymousReport,
                         },
                         {
                           id: 'file',
                           head: m.files,
-                          className: css.tdFiles,
+                          sx: _ => ({
+                            minWidth: 44,
+                            maxWidth: 100,
+                          }),
                           render: _ =>
                             _.files.length > 0 && (
                               <Badge badgeContent={_.files.length} color="primary" invisible={_.files.length === 1}>
-                                <Icon className={cssUtils.colorTxtHint}>insert_drive_file</Icon>
+                                <Icon sx={{color: t => t.palette.text.disabled}}>insert_drive_file</Icon>
                               </Badge>
                             ),
                         },

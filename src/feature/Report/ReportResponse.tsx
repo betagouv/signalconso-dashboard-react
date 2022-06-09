@@ -1,28 +1,17 @@
 import {PanelBody} from '../../shared/Panel'
 import React, {useEffect, useState} from 'react'
 import {useI18n} from '../../core/i18n'
-import {
-  EventActionValues,
-  FileOrigin,
-  Id,
-  ReportEvent,
-  ReportResponse,
-  ReportResponseTypes,
-  ResponseConsumerReview,
-  UploadedFile,
-} from '@signal-conso/signalconso-api-sdk-js'
-import {classes, fnSwitch} from '../../core/helper/utils'
+import {EventActionValues, FileOrigin, Id, ReportEvent, ReportResponse, ReportResponseTypes, ResponseConsumerReview, UploadedFile} from '@signal-conso/signalconso-api-sdk-js'
+import {fnSwitch} from '../../core/helper/utils'
 import {fromNullable} from 'fp-ts/lib/Option'
-import {Divider, Icon, Theme} from '@mui/material'
-import makeStyles from '@mui/styles/makeStyles'
-import {useCssUtils} from '../../core/helper/useCssUtils'
-import {styleUtils} from '../../core/theme'
+import {Box, BoxProps, Icon} from '@mui/material'
+import {styleUtils, sxUtils} from '../../core/theme'
 import {ReportFiles} from './File/ReportFiles'
 import {useReportContext} from '../../core/context/ReportContext'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
 import {useEventContext} from '../../core/context/EventContext'
-import {Emoticon} from '../../shared/Emoticon/Emoticon'
 import {ResponseEvaluation} from '@signal-conso/signalconso-api-sdk-js/lib/client/event/Event'
+import {Divider} from '../../shared/Divider/Divider'
 
 interface Props {
   canEditFile?: boolean
@@ -31,22 +20,36 @@ interface Props {
   files?: UploadedFile[]
 }
 
-const useStyles = makeStyles((t: Theme) => ({
-  responseType: {
-    fontSize: styleUtils(t).fontSize.big,
-    display: 'inline-flex',
-    alignItems: 'center',
-    marginBottom: t.spacing(1),
-    borderRadius: 40,
-    border: '1px solid ' + t.palette.divider,
-    padding: t.spacing(0.5, 1, 0.5, 1),
-  },
-}))
-
+const Response = ({
+  icon,
+  children,
+  sx,
+  ...props
+}: {
+  icon: string
+} & BoxProps) => {
+  return (
+    <Box
+      {...props}
+      sx={{
+        fontSize: t => styleUtils(t).fontSize.big,
+        display: 'inline-flex',
+        alignItems: 'center',
+        mb: 1,
+        borderRadius: 40,
+        border: t => '1px solid ' + t.palette.divider,
+        py: 0.5,
+        px: 1,
+        ...sx,
+      }}
+    >
+      <Icon sx={{mr: 1, ...sxUtils.inlineIcon}}>{icon}</Icon>
+      {children}
+    </Box>
+  )
+}
 export const ReportResponseComponent = ({canEditFile, response, reportId, files}: Props) => {
   const {m} = useI18n()
-  const cssUtils = useCssUtils()
-  const css = useStyles()
   const _report = useReportContext()
   const _event = useEventContext()
   const [consumerReportReview, setConsumerReportReview] = useState<ResponseConsumerReview | undefined>()
@@ -61,39 +64,32 @@ export const ReportResponseComponent = ({canEditFile, response, reportId, files}
         .map(details => (
           <div>
             {fnSwitch(details.responseType, {
-              [ReportResponseTypes.Accepted]: _ => (
-                <div className={classes(css.responseType, cssUtils.colorSuccess)}>
-                  <Icon className={classes(cssUtils.marginRight, cssUtils.inlineIcon)}>check_circle</Icon>
-                  {m.reportResponse[_]}
-                </div>
-              ),
+              [ReportResponseTypes.Accepted]: _ => <Response icon="check_circle">{m.reportResponse[_]}</Response>,
               [ReportResponseTypes.NotConcerned]: _ => (
-                <div className={classes(css.responseType, cssUtils.colorInfo)}>
-                  <Icon className={classes(cssUtils.marginRight, cssUtils.inlineIcon)}>hide_source</Icon>
+                <Response icon="hide_source" sx={{color: t => t.palette.info.main}}>
                   {m.reportResponse[_]}
-                </div>
+                </Response>
               ),
               [ReportResponseTypes.Rejected]: _ => (
-                <div className={classes(css.responseType, cssUtils.colorError)}>
-                  <Icon className={classes(cssUtils.marginRight, cssUtils.inlineIcon)}>cancel</Icon>
+                <Response icon="cancel" sx={{color: t => t.palette.error.main}}>
                   {m.reportResponse[_]}
-                </div>
+                </Response>
               ),
             })}
-            <div className={cssUtils.colorTxtSecondary}>{(response?.data.details as ReportResponse).consumerDetails}</div>
+            <Box sx={{color: t => t.palette.text.disabled}}>{(response?.data.details as ReportResponse).consumerDetails}</Box>
 
             {details.dgccrfDetails && details.dgccrfDetails !== '' && (
               <>
-                <Txt className={cssUtils.marginTop2} bold size="big" block>
+                <Txt sx={{mt: 2}} bold size="big" block>
                   {m.reportDgccrfDetails}
                 </Txt>
-                <div className={cssUtils.colorTxtSecondary}>{details.dgccrfDetails}</div>
+                <Box sx={{color: t => t.palette.text.disabled}}>{details.dgccrfDetails}</Box>
               </>
             )}
           </div>
         ))
         .getOrElse(<div>{m.noAnswerFromPro}</div>)}
-      <Txt className={cssUtils.marginTop2} gutterBottom bold size="big" block>
+      <Txt sx={{mt: 2}} gutterBottom bold size="big" block>
         {m.attachedFiles}
       </Txt>
       <ReportFiles
@@ -111,37 +107,34 @@ export const ReportResponseComponent = ({canEditFile, response, reportId, files}
             .then(() => _event.reportEvents.fetch({force: true, clean: false}, reportId))
         }}
       />
-      <Divider className={cssUtils.divider} />
+      <Divider margin />
       {fromNullable(consumerReportReview)
         .map(review => (
           <div>
             {fnSwitch(review.evaluation, {
               [ResponseEvaluation.Positive]: _ => (
-                <div className={classes(css.responseType, cssUtils.colorSuccess)}>
-                  <Icon className={classes(cssUtils.marginRight, cssUtils.inlineIcon)}>check_circle</Icon>
+                <Response icon="check_circle" sx={{color: t => t.palette.success.light}}>
                   {m.responseEvaluation[_]}
-                </div>
+                </Response>
               ),
               [ResponseEvaluation.Neutral]: _ => (
-                <div className={classes(css.responseType, cssUtils.colorInfo)}>
-                  <Icon className={classes(cssUtils.marginRight, cssUtils.inlineIcon)}>hide_source</Icon>
+                <Response icon="hide_source" sx={{color: t => t.palette.info.light}}>
                   {m.responseEvaluation[_]}
-                </div>
+                </Response>
               ),
               [ResponseEvaluation.Negative]: _ => (
-                <div className={classes(css.responseType, cssUtils.colorError)}>
-                  <Icon className={classes(cssUtils.marginRight, cssUtils.inlineIcon)}>cancel</Icon>
+                <Response icon="cancel" sx={{color: t => t.palette.error.light}}>
                   {m.responseEvaluation[_]}
-                </div>
+                </Response>
               ),
             })}
-            <div className={cssUtils.colorTxtSecondary}>
+            <Box sx={{color: t => t.palette.text.secondary}}>
               {' '}
               {review.details ? review.details : <div>{m.noReviewDetailsFromConsumer}</div>}
-            </div>
+            </Box>
           </div>
         ))
-        .getOrElse(<div className={cssUtils.marginTop3}>{m.noReviewFromConsumer}</div>)}
+        .getOrElse(<Box sx={{mt: 3}}>{m.noReviewFromConsumer}</Box>)}
     </PanelBody>
   )
 }

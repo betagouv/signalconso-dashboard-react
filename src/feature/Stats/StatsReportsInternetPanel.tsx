@@ -6,9 +6,9 @@ import {Dispatch, SetStateAction, useEffect, useMemo, useState} from 'react'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
 import {SelectMonth} from '../../shared/SelectMonth/SelectMonth'
 import {useGetDateForMonthAndPreviousOne} from './useGetDateForMonthAndPreviousOne'
-import {classes} from '../../core/helper/utils'
-import {useCssUtils} from '../../core/helper/useCssUtils'
 import {Box} from '@mui/material'
+import {styleUtils} from '../../core/theme'
+import {PanelProps} from '../../shared/Panel/Panel'
 
 interface AsyncPercent {
   loading: boolean
@@ -32,8 +32,6 @@ export const StatsReportsInternetPanel = () => {
   const [asyncPercentLastMonth, setAsyncPercentLastMonth] = useState<AsyncPercent>({loading: false})
 
   const dates = useGetDateForMonthAndPreviousOne(selectedMonth)
-
-  const cssUtils = useCssUtils()
 
   const fetch = (start: Date, end: Date) => {
     return Promise.all([
@@ -118,7 +116,7 @@ export const StatsReportsInternetPanel = () => {
         {asyncPercent.value && asyncPercentLastMonth.value && (
           <div style={{display: 'flex', flexWrap: 'wrap', justifyContent: 'space-around', alignItems: 'center'}}>
             <StatsCard
-              className={cssUtils.marginRight}
+              sx={{mr: 1}}
               title={m.statsInternets_all}
               desc={m.statsInternets_all_desc}
               value={asyncPercent.value.reportsInternets}
@@ -132,7 +130,7 @@ export const StatsReportsInternetPanel = () => {
             >
               {'{'}
             </Box>
-            <div className={cssUtils.marginLeft}>
+            <Box sx={{ml: 1}}>
               <StatsCard
                 title={m.statsInternets_withCompany}
                 value={asyncPercent.value.reportsInternetsWithCompany}
@@ -150,7 +148,7 @@ export const StatsReportsInternetPanel = () => {
                 value={asyncPercent.value.reportsInternetsWithoutAnything}
                 previousValue={asyncPercentLastMonth.value.reportsInternetsWithoutAnything}
               />
-            </div>
+            </Box>
           </div>
         )}
       </PanelBody>
@@ -158,34 +156,37 @@ export const StatsReportsInternetPanel = () => {
   )
 }
 
-interface StatsCardProps {
-  className?: string
+interface StatsCardProps extends PanelProps {
   value: number
   previousValue: number
   title: string
   desc?: string
 }
 
-const StatsCard = ({className, value, previousValue, title, desc}: StatsCardProps) => {
-  const cssUtils = useCssUtils()
+const StatsCard = ({sx, value, previousValue, title, desc, ...props}: StatsCardProps) => {
   const evolution = useMemo(() => {
     return Math.round(value - previousValue)
   }, [value, previousValue])
 
   return (
-    <Panel elevation={2} style={{maxWidth: 300}} className={className}>
+    <Panel elevation={2} sx={{maxWidth: 300, ...sx}} {...props}>
       <PanelBody>
         <div style={{lineHeight: 1.5, display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
           <span>
             <span style={{fontSize: 36}}>{Math.round(value)}</span>
             <span style={{fontSize: 22}}> %</span>
           </span>
-          <span
-            className={classes(cssUtils.txtBig, cssUtils.txtBold, evolution > 0 ? cssUtils.colorSuccess : cssUtils.colorError)}
+          <Box
+            component="span"
+            sx={{
+              fontSize: t => styleUtils(t).fontSize.big,
+              fontWeight: t => t.typography.fontWeightBold,
+              color: t => (evolution > 0 ? t.palette.success.light : t.palette.error.main),
+            }}
           >
             {evolution > 0 ? '+' : '-'}
             {Math.abs(evolution)}
-          </span>
+          </Box>
         </div>
         <Txt block bold>
           {title}

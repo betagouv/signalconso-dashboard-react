@@ -1,24 +1,20 @@
 import {Page} from 'shared/Layout'
 import {Panel, PanelBody} from '../../shared/Panel'
-import {Divider, Theme, Typography} from '@mui/material'
-import {useCssUtils} from '../../core/helper/useCssUtils'
-import {classes} from '../../core/helper/utils'
-import makeStyles from '@mui/styles/makeStyles'
+import {Box, Divider, Typography} from '@mui/material'
 import {styleUtils} from '../../core/theme'
+import {makeSx} from 'mui-extension'
 
-const useStyles = makeStyles((t: Theme) => ({
+const sx = makeSx({
   mark: {
     display: 'block',
-    marginTop: t.spacing(1.5),
-    marginBottom: t.spacing(0.25),
+    mt: 1.5,
+    mb: 0.25,
     background: 'none',
-    fontSize: styleUtils(t).fontSize.big,
+    fontSize: t => styleUtils(t).fontSize.big,
   },
-}))
+})
 
 export const ModeEmploiDGCCRF = () => {
-  const cssUtils = useCssUtils()
-  const css = useStyles()
   return (
     <Page size="s">
       <Panel>
@@ -39,7 +35,7 @@ export const ModeEmploiDGCCRF = () => {
             </p>
           </div>
 
-          <Divider className={classes(cssUtils.marginBottom2, cssUtils.marginTop2)} />
+          <Divider sx={{my: 2}} />
 
           <Typography variant="h5" color="primary">
             Que signifie la colonne "Statut" ?
@@ -49,41 +45,55 @@ export const ModeEmploiDGCCRF = () => {
 
             <ul>
               <li>
-                <mark className={css.mark}>Traitement en cours:</mark>
+                <Box component="mark" sx={sx.mark}>
+                  Traitement en cours:
+                </Box>
                 Il s'agit d'un statut intermédiaire pendant lequel le signalement suit son cours et n'est pas clos. C'est
                 notamment la période laissée au professionnel pour prendre connaissance du signalement ou y répondre.
               </li>
               <li>
-                <mark className={css.mark}>N.A (non-applicable):</mark>
+                <Box component="mark" sx={sx.mark}>
+                  N.A (non-applicable):
+                </Box>
                 Soit les signalements sont rattachés à une URL et donc ne rentrent pas dans le flow classique d'envoi à
                 l'entreprise. Soit l'entreprise signalée ne faisait pas partie du périmètre géographique de l’expérimentation au
                 moment du signalement. Si la région n'a pas fait partie tout de suite de l'expérimentation, les signalements reçus
                 sur cette période n'ont pas été traités et sont classés en N.A.
               </li>
               <li>
-                <mark className={css.mark}>Promesse d'action:</mark>
+                <Box component="mark" sx={sx.mark}>
+                  Promesse d'action:
+                </Box>
                 Le professionnel souhaite mettre en place une action préventive ou corrective.
               </li>
               <li>
-                <mark className={css.mark}>Signalement infondé:</mark>
+                <Box component="mark" sx={sx.mark}>
+                  Signalement infondé:
+                </Box>
                 Le professionnel a déclaré le signalement comme infondé selon lui.
               </li>
               <li>
-                <mark className={css.mark}>Signalement non consulté:</mark>
+                <Box component="mark" sx={sx.mark}>
+                  Signalement non consulté:
+                </Box>
                 Le professionnel n'a pas créé de compte pour lire le signalement.
               </li>
               <li>
-                <mark className={css.mark}>Signalement consulté ignoré:</mark>
+                <Box component="mark" sx={sx.mark}>
+                  Signalement consulté ignoré:
+                </Box>
                 Le professionnel a lu le signalement mais il n'a pas répondu malgré les relances.
               </li>
               <li>
-                <mark className={css.mark}>Signalement mal attribué:</mark>
+                <Box component="mark" sx={sx.mark}>
+                  Signalement mal attribué:
+                </Box>
                 Le consommateur n'a pas sélectionné le bon établissement.
               </li>
             </ul>
           </div>
 
-          <Divider className={classes(cssUtils.marginBottom2, cssUtils.marginTop2)} />
+          <Divider sx={{my: 2}} />
 
           <Typography variant="h5" color="primary">
             Comment fonctionne le système de relance ?
@@ -107,7 +117,7 @@ export const ModeEmploiDGCCRF = () => {
             </ul>
           </div>
 
-          <Divider className={classes(cssUtils.marginBottom2, cssUtils.marginTop2)} />
+          <Divider sx={{my: 2}} />
 
           <Typography variant="h5" color="primary">
             Comment apporter des éléments à un signalement (courrier reçu, contrôle réalisé) ?
@@ -117,11 +127,15 @@ export const ModeEmploiDGCCRF = () => {
 
             <ul>
               <li>
-                <mark className={css.mark}>Ajout d'un commentaire interne à la DGCCRF:</mark>
+                <Box component="mark" sx={sx.mark}>
+                  Ajout d'un commentaire interne à la DGCCRF:
+                </Box>
                 ce commentaire n'est visible que par la DGCCRF.
               </li>
               <li>
-                <mark className={css.mark}>Contrôle effectué:</mark>
+                <Box component="mark" sx={sx.mark}>
+                  Contrôle effectué:
+                </Box>
                 en l'absence de rattachement avec SORA, le suivi des contrôles peut être enregistré directement sur le site.
                 <br /> Cette information n'est visible que par la DGCCRF actuellement.
               </li>

@@ -1,10 +1,9 @@
-import {Theme, ToggleButton, ToggleButtonGroup} from '@mui/material'
+import {BoxProps, Theme, ToggleButton, ToggleButtonGroup} from '@mui/material'
 import React, {forwardRef, ReactNode, useMemo} from 'react'
 import {useI18n} from '../../core/i18n'
 import {SxProps} from '@mui/system'
 
-interface Props {
-  className?: string
+interface Props extends Omit<BoxProps, 'onChange'> {
   gutter?: boolean
   value?: boolean
   onChange: (_?: boolean) => void
@@ -24,7 +23,7 @@ const buttonStyle: SxProps<Theme> = {
   whiteSpace: 'nowrap',
 }
 
-export const TrueFalseUndefined = forwardRef(({gutter, value, onChange, label, ...props}: Props, ref: any) => {
+export const TrueFalseUndefined = forwardRef(({gutter, value, onChange, label, sx, ...props}: Props, ref: any) => {
   const {m} = useI18n()
   const parsedValue = useMemo(() => {
     if ([true, 'true'].includes(value as any)) return 'true'
@@ -36,13 +35,16 @@ export const TrueFalseUndefined = forwardRef(({gutter, value, onChange, label, .
     <ToggleButtonGroup
       {...props}
       exclusive
-      sx={
-        gutter ? {
-          mt: 1,
-          mb: 0.5,
-          display: 'block',
-        } : {}
-      }
+      sx={{
+        ...(gutter
+          ? {
+              mt: 1,
+              mb: 0.5,
+              display: 'block',
+            }
+          : {}),
+        ...sx,
+      }}
       size="small"
       color="primary"
       ref={ref}

@@ -1,7 +1,13 @@
-import {Confirm, ConfirmProps} from 'mui-extension/lib/Confirm/Confirm'
+import {Modal, ModalProps} from 'mui-extension'
 import {useI18n} from '../../core/i18n'
 
-export const ScDialog = ({confirmLabel, cancelLabel, ...props}: ConfirmProps) => {
+export const ScDialog = ({confirmLabel, cancelLabel, ...props}: ModalProps) => {
   const {m} = useI18n()
-  return <Confirm confirmLabel={confirmLabel ?? m.confirm} cancelLabel={cancelLabel ?? m.close} {...props} />
+  return (
+    <Modal
+      confirmLabel={confirmLabel ?? m.confirm}
+      cancelLabel={cancelLabel ?? m.close}
+      {...props}
+    />
+  )
 }

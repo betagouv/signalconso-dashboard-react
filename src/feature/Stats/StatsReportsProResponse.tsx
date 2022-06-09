@@ -69,36 +69,37 @@ export const StatsReportsProResponsePanel = ({ticks}: Props) => {
           promisesDeps={[ticks]}
           promises={[
             () => api.secured.stats.getProReportResponseStat({ticks}),
-            () => api.secured.stats.getProReportResponseStat({
-              ticks,
-              responseStatusQuery: ['NOT_CONCERNED'],
-            }),
-            () => api.secured.stats.getProReportResponseStat({
-              ticks,
-              responseStatusQuery: ['REJECTED'],
-            }),
-            () => api.secured.stats.getProReportResponseStat({
-              ticks,
-              responseStatusQuery: ['ACCEPTED'],
-            }),
+            () =>
+              api.secured.stats.getProReportResponseStat({
+                ticks,
+                responseStatusQuery: ['NOT_CONCERNED'],
+              }),
+            () =>
+              api.secured.stats.getProReportResponseStat({
+                ticks,
+                responseStatusQuery: ['REJECTED'],
+              }),
+            () =>
+              api.secured.stats.getProReportResponseStat({
+                ticks,
+                responseStatusQuery: ['ACCEPTED'],
+              }),
           ]}
           curves={[
             {
               label: m.reportsProMalAttribue,
               key: 'mal_attribue',
-              curve: promises => curveRatio(promises[1], promises[0]).map(
-                statsFormatCurveDate(m),
-              ),
-            }, {
+              curve: promises => curveRatio(promises[1], promises[0]).map(statsFormatCurveDate(m)),
+            },
+            {
               label: m.reportsProInfonde,
               key: 'infonde',
               curve: promises => curveRatio(promises[2], promises[0]).map(statsFormatCurveDate(m)),
-            }, {
+            },
+            {
               label: m.reportsProPromesseAction,
               key: 'promesse_action',
-              curve: promises => curveRatio(promises[3], promises[0]).map(
-                statsFormatCurveDate(m),
-              ),
+              curve: promises => curveRatio(promises[3], promises[0]).map(statsFormatCurveDate(m)),
             },
           ]}
         />

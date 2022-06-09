@@ -3,7 +3,6 @@ import {SelectDepartments} from '../../shared/SelectDepartments/SelectDepartment
 import {SelectActivityCode} from '../../shared/SelectActivityCode/SelectActivityCode'
 import React, {ReactElement, useEffect, useState} from 'react'
 import {useI18n} from '../../core/i18n'
-import {useCssUtils} from '../../core/helper/useCssUtils'
 import {Controller, useForm} from 'react-hook-form'
 import {cleanObject, CompanySearch} from '@signal-conso/signalconso-api-sdk-js'
 import {Btn} from 'mui-extension'
@@ -18,7 +17,6 @@ export interface CompaniesRegisteredFiltersProps {
 
 export const CompaniesRegisteredFilters = ({updateFilters, children, filters}: CompaniesRegisteredFiltersProps) => {
   const [open, setOpen] = useState<boolean>(false)
-  const cssUtils = useCssUtils()
   const {m} = useI18n()
   const {register, handleSubmit, control, reset} = useForm<CompanySearch>()
 
@@ -50,7 +48,7 @@ export const CompaniesRegisteredFilters = ({updateFilters, children, filters}: C
               name="departments"
               defaultValue={filters.departments}
               control={control}
-              render={({field}) => <SelectDepartments {...field} fullWidth className={cssUtils.marginRight} />}
+              render={({field}) => <SelectDepartments {...field} fullWidth sx={{mr: 1}} />}
             />
           </DialogInputRow>
           <DialogInputRow label={m.codeNaf}>

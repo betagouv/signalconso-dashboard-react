@@ -21,10 +21,11 @@ const UnregistredWebsitesContext = React.createContext<UnregistredWebsiteWithCom
 )
 
 export const UnregistredWebsitesProvider = ({api, children}: Props) => {
-  const listUnregistred = useScPaginate<ApiHostWithReportCount, HostReportCountSearch>(
-    api.secured.website.listUnregistered,
-    {limit: 10, offset: 0, q: ''},
-  )
+  const listUnregistred = useScPaginate<ApiHostWithReportCount, HostReportCountSearch>(api.secured.website.listUnregistered, {
+    limit: 10,
+    offset: 0,
+    q: '',
+  })
 
   const extractUnregistered = useFetcher(() => api.secured.website.extractUnregistered(listUnregistred.filters))
 

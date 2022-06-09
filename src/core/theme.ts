@@ -1,9 +1,49 @@
 import {red} from '@mui/material/colors'
-import {alpha, createTheme, Theme} from '@mui/material'
+import {alpha, createTheme, SxProps, Theme} from '@mui/material'
 import {ThemeOptions} from '@mui/material/styles/createTheme'
+import {makeSx} from 'mui-extension'
+
+export const combineSx = (...sxs: (SxProps<Theme> | undefined | false)[]): SxProps<Theme> => {
+  return sxs.reduce((res, sx) => (sx !== undefined && sx !== false ? {...res, ...sx} : res), {} as any)
+}
+
+export const sxUtils = makeSx({
+  fontBig: {
+    fontSize: t => t.typography.fontSize * 1.15,
+  },
+  fontNormal: {
+    fontSize: t => t.typography.fontSize,
+  },
+  fontSmall: {
+    fontSize: t => t.typography.fontSize * 0.85,
+  },
+  fontTitle: {
+    fontSize: t => t.typography.fontSize * 1.3,
+  },
+  fontBigTitle: {
+    fontSize: t => t.typography.fontSize * 1.6,
+  },
+  tdActions: {
+    textAlign: 'right',
+  },
+  truncate: {
+    whiteSpace: 'nowrap',
+    textOverflow: 'ellipsis',
+    overflow: 'hidden',
+  },
+  inlineIcon: {
+    display: 'inline !important',
+    fontSize: 'inherit',
+    lineHeight: 1,
+    verticalAlign: 'text-top',
+  },
+  divider: {
+    mt: 2,
+    mb: 2,
+  },
+})
 
 export const styleUtils = (t: Theme) => ({
-  defaultRadius: 4,
   gridSpacing: 3 as any,
   fontSize: {
     big: t.typography.fontSize * 1.15,
@@ -29,9 +69,11 @@ export const styleUtils = (t: Theme) => ({
   } as any,
 })
 
+/** @deprecated use t.spacing(1) instead */
 export const defaultSpacing = 8
 
 export const muiTheme = (dark?: boolean): Theme => {
+  const defaultRadius = 6
   const fontFamily = '"Open Sans", sans-serif'
   const fontSize = 15
   const colorPrimary = {
@@ -56,7 +98,7 @@ export const muiTheme = (dark?: boolean): Theme => {
       mode: dark ? 'dark' : 'light',
     },
     shape: {
-      borderRadius: 10,
+      borderRadius: defaultRadius,
     },
     typography: {
       fontSize,
@@ -65,18 +107,6 @@ export const muiTheme = (dark?: boolean): Theme => {
     },
   })
   const theme: ThemeOptions = {
-    spacing: defaultSpacing,
-    palette: {
-      primary: colorPrimary,
-      secondary: colorSecondary,
-      error: red,
-      mode: dark ? 'dark' : 'light',
-    },
-    typography: {
-      fontSize,
-      fontFamily,
-      fontWeightBold: 500,
-    },
     components: {
       MuiCssBaseline: {
         styleOverrides: {
@@ -84,98 +114,42 @@ export const muiTheme = (dark?: boolean): Theme => {
             boxSizing: 'border-box',
           },
           '.material-icons': {
-            display: 'inherit',
+            // display: 'inherit',
+          },
+          '.recharts-surface': {
+            overflow: 'visible',
           },
           html: {
-            fontFamily,
-            fontSize,
+            fontSize: baseTheme.typography.fontSize,
             color: baseTheme.palette.text.primary,
           },
-          '.blog': {
-            'a': {
-              color: colorPrimary.main,
-            },
-            'li + li': {
-              marginTop: defaultSpacing * 2,
-            },
-            ul: {
-              marginTop: '.5em',
-            },
-          },
-          '.root': {
-            minHeight: '100vh',
-            display: 'flex',
-            flexDirection: 'column',
-          },
           body: {
-            lineHeight: '1.5',
-            fontFamily,
+            fontSize: '1rem',
+            lineHeight: '1.5rem',
             background: baseTheme.palette.background.paper,
             margin: 0,
             color: baseTheme.palette.text.primary,
             boxSizing: 'border-box',
           },
-          main: {
-            flex: 1,
+          ul: {
+            marginTop: '.5em',
           },
-          h1: {
-            ...baseTheme.typography.h4,
-            marginTop: 0,
-          },
+          h1: baseTheme.typography.h4,
           h2: {
-            ...baseTheme.typography.h5,
-            marginTop: defaultSpacing * 4,
-          },
-          h3: {
             ...baseTheme.typography.h6,
-            marginTop: defaultSpacing * 4,
+            mb: 2,
+            mt: 3,
           },
-          h4: {
-            ...baseTheme.typography.h6,
-            fontSize: '1.25rem',
+          p: {
+            ...baseTheme.typography.body1,
+            textAlign: 'justify',
           },
-          h6: {
-            color: 'red',
-            ...baseTheme.typography.h6,
-            fontSize: '1.25rem',
+          a: {
+            color: 'inherit',
+            textDecoration: 'none',
           },
-          blockquote: {
-            color: baseTheme.palette.text.secondary,
-            marginLeft: 0,
-            paddingLeft: baseTheme.spacing(2),
-            borderLeft: `2px solid ${baseTheme.palette.divider}`,
-          },
-          hr: {
-            border: 'none',
-            borderBottom: `1px solid ${baseTheme.palette.divider}`,
-          },
-          table: {
-            background: baseTheme.palette.background.paper,
-            border: `1px solid ${baseTheme.palette.divider}`,
-            borderLeft: 0,
-            borderRight: 0,
-            borderRadius: 2,
-            position: 'relative',
-            width: '100%',
-            borderCollapse: 'collapse',
-
-            '& td': {
-              fontWeight: 400,
-              padding: '1em',
-              textAlign: 'left',
-              borderTop: `1px solid ${baseTheme.palette.divider}`,
-            },
-            '& th': {
-              padding: '1em',
-              textAlign: 'left',
-            },
-            '& thead th': {
-              background: baseTheme.palette.action.disabledBackground,
-              borderBottom: `1px solid ${baseTheme.palette.divider}`,
-              // font-size: 0.875em,
-              // font-weight: 700,
-              textTransform: 'uppercase',
-            },
+          ':focus': {
+            outline: 0,
           },
         },
       },
@@ -189,6 +163,13 @@ export const muiTheme = (dark?: boolean): Theme => {
           },
         },
       },
+      // MuiCard: {
+      //   styleOverrides: {
+      //     root: {
+      //       borderRadius: defaultRadius,
+      //     },
+      //   },
+      // },
       MuiTabs: {
         styleOverrides: {
           root: {
@@ -196,7 +177,6 @@ export const muiTheme = (dark?: boolean): Theme => {
           },
         },
       },
-
       MuiTab: {
         styleOverrides: {
           root: {
@@ -297,6 +277,7 @@ export const muiTheme = (dark?: boolean): Theme => {
     },
   }
   return createTheme({
+    ...baseTheme,
     ...theme,
     ...(dark
       ? {

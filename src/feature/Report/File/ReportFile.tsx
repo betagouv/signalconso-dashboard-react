@@ -1,6 +1,5 @@
 import {UploadedFile} from '@signal-conso/signalconso-api-sdk-js'
-import {Icon, Theme, Tooltip} from '@mui/material'
-import makeStyles from '@mui/styles/makeStyles'
+import {Box, Icon, Tooltip} from '@mui/material'
 import {extensionToType, FileType, reportFileConfig} from './reportFileConfig'
 import {useLogin} from '../../../core/context/LoginContext'
 import {fromNullable, some} from 'fp-ts/lib/Option'
@@ -11,7 +10,8 @@ import {IconBtn} from 'mui-extension/lib'
 import {useToast} from '../../../core/toast'
 import {useI18n} from '../../../core/i18n'
 import {ScDialog} from '../../../shared/Confirm/ScDialog'
-import {defaultSpacing} from 'core/theme'
+import {combineSx, defaultSpacing} from 'core/theme'
+import {makeSx} from 'mui-extension'
 
 export interface ReportFileProps {
   file: UploadedFile
@@ -22,27 +22,27 @@ export interface ReportFileProps {
 const removeBtnSize = 30
 const cardMargin = 1
 
-const useStyles = makeStyles((t: Theme) => ({
+const css = makeSx({
   root: {
     display: 'block',
     position: 'relative',
-    padding: t.spacing(cardMargin),
+    padding: t => t.spacing(cardMargin),
     '&:hover > $removeBtn': {
       display: 'flex !important',
     },
   },
   image: {
     display: 'inline-flex',
-    border: '1px solid ' + t.palette.divider,
+    border: t => '1px solid ' + t.palette.divider,
     borderRadius: reportFileConfig.cardBorderRadius,
     height: reportFileConfig.cardSize,
     width: reportFileConfig.cardSize,
-    color: t.palette.text.disabled,
+    color: t => t.palette.text.disabled,
     overflow: 'hidden',
     position: 'relative',
-    transition: t.transitions.create('all'),
+    transition: t => t.transitions.create('all'),
     '&:hover': {
-      boxShadow: t.shadows[4],
+      boxShadow: t => t.shadows[4],
     },
     '& > div': {
       display: 'flex',
@@ -63,8 +63,8 @@ const useStyles = makeStyles((t: Theme) => ({
     borderRadius: removeBtnSize,
     alignItems: 'center',
     justifyContent: 'center',
-    boxShadow: t.shadows[4],
-    background: t.palette.background.paper + ' !important',
+    boxShadow: t => t.shadows[4],
+    background: t => t.palette.background.paper + ' !important',
   },
   imgImage: {
     color: '#00b50f',
@@ -83,11 +83,10 @@ const useStyles = makeStyles((t: Theme) => ({
     bottom: 0,
     backgroundSize: 'cover',
   },
-}))
+})
 
 export const ReportFile = ({file, dense, onRemove}: ReportFileProps) => {
   const fileType = extensionToType(file.filename)
-  const css = useStyles()
   const {apiSdk} = useLogin()
   const _remove = useFetcher(apiSdk.secured.document.remove)
   const {toastError} = useToast()
@@ -108,29 +107,29 @@ export const ReportFile = ({file, dense, onRemove}: ReportFileProps) => {
 
   return (
     <Tooltip title={file.filename}>
-      <a target="_blank" href={fileUrl} className={css.root}>
-        <div className={css.image}>
+      <Box component="a" target="_blank" href={fileUrl} sx={css.root}>
+        <Box sx={css.image}>
           {(() => {
             switch (fileType) {
               case FileType.Image: {
                 return (
                   <div>
-                    <div className={css.backgroundImage} style={{backgroundImage: `url(${fileUrl})`}} />
-                    <Icon className={css.imgImage}>image</Icon>
+                    <Box sx={combineSx(css.backgroundImage, {backgroundImage: `url(${fileUrl})`})} />
+                    <Icon sx={css.imgImage}>image</Icon>
                   </div>
                 )
               }
               case FileType.PDF: {
                 return (
                   <div>
-                    <Icon className={css.imgPdf}>picture_as_pdf</Icon>
+                    <Icon sx={css.imgPdf}>picture_as_pdf</Icon>
                   </div>
                 )
               }
               case FileType.Doc: {
                 return (
                   <div>
-                    <Icon className={css.imgDoc}>article</Icon>
+                    <Icon sx={css.imgDoc}>article</Icon>
                   </div>
                 )
               }
@@ -143,7 +142,7 @@ export const ReportFile = ({file, dense, onRemove}: ReportFileProps) => {
               }
             }
           })()}
-        </div>
+        </Box>
         {onRemove && (
           <ScDialog
             title={m.removeAsk}
@@ -159,12 +158,12 @@ export const ReportFile = ({file, dense, onRemove}: ReportFileProps) => {
             }}
             confirmLabel={m.delete}
           >
-            <IconBtn loading={_remove.loading} size="small" className={css.removeBtn}>
+            <IconBtn loading={_remove.loading} size="small" sx={css.removeBtn}>
               <Icon>clear</Icon>
             </IconBtn>
           </ScDialog>
         )}
-      </a>
+      </Box>
     </Tooltip>
   )
 }

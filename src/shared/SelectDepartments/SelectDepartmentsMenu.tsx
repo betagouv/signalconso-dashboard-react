@@ -1,15 +1,14 @@
-import {Checkbox, Icon, Menu, MenuItem, Theme} from '@mui/material'
-import createStyles from '@mui/styles/createStyles'
-import makeStyles from '@mui/styles/makeStyles'
-import {classes, stopPropagation} from '../../core/helper/utils'
+import {Box, Checkbox, Icon, Menu, MenuItem} from '@mui/material'
+import {stopPropagation} from '../../core/helper/utils'
 import * as React from 'react'
 import {useEffect, useMemo} from 'react'
-import {useCssUtils} from '../../core/helper/useCssUtils'
 import {useSetState, UseSetState} from '@alexandreannic/react-hooks-lib/lib'
 import {useConstantContext} from '../../core/context/ConstantContext'
 import {fromNullable} from 'fp-ts/lib/Option'
 import {Region} from '@signal-conso/signalconso-api-sdk-js'
 import {useI18n} from '../../core/i18n'
+import {makeSx} from 'mui-extension'
+import {combineSx} from '../../core/theme'
 
 const withRegions =
   (WrappedComponent: React.ComponentType<SelectDepartmentsMenuProps>) => (props: Omit<SelectDepartmentsMenuProps, 'regions'>) => {
@@ -22,41 +21,37 @@ const withRegions =
       .getOrElse(<></>)
   }
 
-const useStyles = makeStyles((t: Theme) =>
-  createStyles({
-    regionLabel: {
-      fontWeight: t.typography.fontWeightBold,
-      flex: 1,
+const css = makeSx({
+  regionLabel: {
+    fontWeight: t => t.typography.fontWeightBold,
+    flex: 1,
+  },
+  regionToggleArrow: {
+    width: 36,
+    height: 36,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    ml: 1,
+    borderRadius: 30,
+    color: t => t.palette.text.disabled,
+    '&:hover, &:active, &:focus': {
+      background: t => t.palette.action.hover,
+      color: t => t.palette.primary.main,
     },
-    regionToggleArrow: {
-      width: 40,
-      height: 36,
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      marginLeft: t.spacing(1),
-      borderRadius: 4,
-      color: t.palette.text.disabled,
-      '&:hover, &:active, &:focus': {
-        background: t.palette.action.hover,
-        color: t.palette.primary.main,
-      },
-    },
-    menuItem: {
-      paddingTop: 0,
-      paddingBottom: 0,
-      paddingRight: t.spacing(1 / 2),
-      paddingLeft: t.spacing(1 / 2),
-    },
-    menuItemRegion: {
-      borderBottom: `1px solid ${t.palette.divider}`,
-    },
-    cbDepartment: {
-      paddingTop: `6px !important`,
-      paddingBottom: `6px !important`,
-    },
-  }),
-)
+  },
+  menuItem: {
+    py: 0,
+    px: 1 / 2,
+  },
+  menuItemRegion: {
+    borderBottom: t => `1px solid ${t.palette.divider}`,
+  },
+  cbDepartment: {
+    paddingTop: `6px !important`,
+    paddingBottom: `6px !important`,
+  },
+})
 
 interface SelectDepartmentsMenuProps {
   onClose: () => void
@@ -70,8 +65,6 @@ interface SelectDepartmentsMenuProps {
 
 export const SelectDepartmentsMenu = withRegions(
   ({selectAllLabel, onClose, regions, initialValues, anchorEl, open, onChange}: SelectDepartmentsMenuProps) => {
-    const css = useStyles()
-    const cssUtils = useCssUtils()
     const indexValues: UseSetState<string> = useSetState<string>()
     const openedRegions: UseSetState<string> = useSetState<string>()
     const allDepartments = useMemo(() => regions.flatMap(_ => _.departments).map(_ => _.code), [])
@@ -105,7 +98,7 @@ export const SelectDepartmentsMenu = withRegions(
 
     return (
       <Menu anchorEl={anchorEl} open={open} onClose={onClose}>
-        <MenuItem className={classes(css.menuItem, css.menuItemRegion)} onClick={() => onSelectAll()}>
+        <MenuItem sx={combineSx(css.menuItem, css.menuItemRegion)} onClick={() => onSelectAll()}>
           <Checkbox indeterminate={someDepartmentsSelected && !allDepartmentsSelected} checked={allDepartmentsSelected} />
           {selectAllLabel}
         </MenuItem>
@@ -114,14 +107,19 @@ export const SelectDepartmentsMenu = withRegions(
           const atLeastOneChecked = !!region.departments.find(_ => indexValues.has(_.code))
           return [
             <MenuItem
-              className={classes(css.menuItem, css.menuItemRegion)}
+              sx={combineSx(css.menuItem, css.menuItemRegion)}
               key={region.label}
               onClick={() => onSelectDepartments(region.departments.map(_ => _.code))}
             >
               <Checkbox indeterminate={atLeastOneChecked && !allChecked} checked={allChecked} />
-              <span className={css.regionLabel}>{region.label}</span>
+              <Box component="span" sx={css.regionLabel}>
+                {region.label}
+              </Box>
               <Icon
-                className={classes(css.regionToggleArrow, openedRegions.has(region.label) && cssUtils.colorPrimary)}
+                sx={{
+                  ...(openedRegions.has(region.label) && {color: t => t.palette.primary.main}),
+                  ...css.regionToggleArrow,
+                }}
                 onClick={stopPropagation(() => toggleRegionOpen(region.label))}
               >
                 {openedRegions.has(region.label) ? 'expand_less' : 'expand_more'}
@@ -129,9 +127,11 @@ export const SelectDepartmentsMenu = withRegions(
             </MenuItem>,
             openedRegions.has(region.label)
               ? region.departments.map(department => (
-                  <MenuItem className={css.menuItem} dense onClick={() => onSelectDepartment(department.code)}>
-                    <Checkbox className={css.cbDepartment} checked={indexValues.has(department.code)} />
-                    <span className={cssUtils.colorTxtHint}>({department.code})</span>
+                  <MenuItem sx={css.menuItem} dense onClick={() => onSelectDepartment(department.code)}>
+                    <Checkbox sx={css.cbDepartment} checked={indexValues.has(department.code)} />
+                    <Box component="span" sx={{color: t => t.palette.text.disabled}}>
+                      ({department.code})
+                    </Box>
                     &nbsp;
                     {department.label}
                   </MenuItem>

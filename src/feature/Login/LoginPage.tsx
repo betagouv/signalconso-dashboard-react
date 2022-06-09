@@ -1,8 +1,7 @@
 import {Page} from 'mui-extension/lib'
-import {Icon, Tab, Tabs, Theme} from '@mui/material'
+import {Icon, Tab, Tabs} from '@mui/material'
 import * as React from 'react'
 import {useEffect} from 'react'
-import makeStyles from '@mui/styles/makeStyles'
 import {useI18n} from '../../core/i18n'
 import {CenteredContent} from '../../shared/CenteredContent/CenteredContent'
 import {headerHeight} from '../../core/Layout'
@@ -14,21 +13,6 @@ import {ApiError, SignalConsoPublicSdk} from '@signal-conso/signalconso-api-sdk-
 import {HelpContactInfo} from '../../shared/HelpContactInfo/HelpContactInfo'
 import {useHistory} from 'react-router'
 import {Matomo} from '../../core/plugins/Matomo'
-
-const useStyles = makeStyles((t: Theme) => ({
-  root: {
-    maxWidth: 400,
-  },
-  body: {
-    display: 'flex',
-    flexDirection: 'column',
-  },
-  tabs: {
-    border: '1px solid ' + t.palette.divider,
-    borderRadius: t.shape.borderRadius,
-    marginBottom: t.spacing(3),
-  },
-}))
 
 export interface ActionProps<F extends (...args: any[]) => Promise<any>> {
   action: F
@@ -44,7 +28,6 @@ interface Props {
 
 export const LoginPage = ({login, register, forgottenPassword}: Props) => {
   const {m} = useI18n()
-  const css = useStyles()
   const history = useHistory()
   useEffect(() => history.listen(_ => Matomo.trackPage(_.pathname)), [history])
 
@@ -52,14 +35,18 @@ export const LoginPage = ({login, register, forgottenPassword}: Props) => {
 
   return (
     <CenteredContent offset={headerHeight}>
-      <Page className={css.root}>
+      <Page sx={{maxWidth: 400}}>
         <Route
           path="/"
           render={({location}) => (
             <>
               <Tabs
                 variant="fullWidth"
-                className={css.tabs}
+                sx={{
+                  border: t => '1px solid ' + t.palette.divider,
+                  borderRadius: t => t.shape.borderRadius + 'px',
+                  mb: 3,
+                }}
                 value={allTabs.find(_ => _ === location.pathname) ?? allTabs[0]}
                 indicatorColor="primary"
                 textColor="primary"

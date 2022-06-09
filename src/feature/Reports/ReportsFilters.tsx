@@ -1,6 +1,6 @@
 import {Dialog, DialogActions, DialogContent, DialogTitle, Icon, MenuItem} from '@mui/material'
 import {useI18n} from '../../core/i18n'
-import React, {ReactElement, useEffect, useState} from 'react'
+import React, {ReactElement, useEffect, useMemo, useState} from 'react'
 import {ReportSearch, ReportStatus} from '@signal-conso/signalconso-api-sdk-js'
 import {Controller, useForm} from 'react-hook-form'
 import {ScSelect} from '../../shared/Select/Select'
@@ -9,7 +9,6 @@ import {ScInput} from '../../shared/Input/ScInput'
 import {useAnomalyContext} from '../../core/context/AnomalyContext'
 import {Enum} from '@alexandreannic/ts-utils/lib/common/enum/Enum'
 import {TrueFalseUndefined} from '../../shared/TrueFalseUndefined/TrueFalseUndefined'
-import {useCssUtils} from '../../core/helper/useCssUtils'
 import {SelectCountries} from '../../shared/SelectCountries/SelectCountries'
 import {SelectActivityCode} from '../../shared/SelectActivityCode/SelectActivityCode'
 import {ScMultiSelect} from 'shared/Select/MultiSelect'
@@ -66,16 +65,19 @@ export const fromReportTagValues = (tags: SelectTagsMenuValues): Pick<ReportSear
 }
 
 export const ReportFilters = ({filters, updateFilters, ...props}: ReportsFiltersProps) => {
+  const parsedFilters = useMemo(() => {
+    return compose(toReportTagValues, rationalizeFilters)(filters)
+  }, [filters])
   return (
     <_ReportsFilters
       {...props}
-      filters={compose(toReportTagValues, rationalizeFilters)(filters)}
-      updateFilters={form =>
-        updateFilters({
+      filters={parsedFilters}
+      updateFilters={form => {
+        return updateFilters({
           ...form,
           ...fromReportTagValues(form.tags),
         })
-      }
+      }}
     />
   )
 }
@@ -84,14 +86,16 @@ const TrueLabel = () => {
   const {m} = useI18n()
   return (
     <>
-      {m.yes} <Icon fontSize="inherit" sx={{mr: '-4px'}}>arrow_drop_down</Icon>
+      {m.yes}{' '}
+      <Icon fontSize="inherit" sx={{mr: '-4px'}}>
+        arrow_drop_down
+      </Icon>
     </>
   )
 }
 
 const _ReportsFilters = ({filters, updateFilters, children}: _ReportsFiltersProps) => {
   const {m} = useI18n()
-  const cssUtils = useCssUtils()
   const {
     register,
     handleSubmit,
@@ -144,7 +148,7 @@ const _ReportsFilters = ({filters, updateFilters, children}: _ReportsFiltersProp
                       label={{
                         true: <TrueLabel />,
                       }}
-                      className={cssUtils.marginTop}
+                      sx={{mt: 1}}
                       {...field}
                     />
                   )}
@@ -221,7 +225,7 @@ const _ReportsFilters = ({filters, updateFilters, children}: _ReportsFiltersProp
                       label={{
                         true: <TrueLabel />,
                       }}
-                      className={cssUtils.marginTop}
+                      sx={{mt: 1}}
                     />
                   )}
                 />
@@ -242,7 +246,7 @@ const _ReportsFilters = ({filters, updateFilters, children}: _ReportsFiltersProp
                       label={{
                         true: <TrueLabel />,
                       }}
-                      className={cssUtils.marginTop}
+                      sx={{mt: 1}}
                     />
                   )}
                 />
@@ -263,7 +267,7 @@ const _ReportsFilters = ({filters, updateFilters, children}: _ReportsFiltersProp
                       label={{
                         true: <TrueLabel />,
                       }}
-                      className={cssUtils.marginTop}
+                      sx={{mt: 1}}
                     />
                   )}
                 />
@@ -291,7 +295,7 @@ const _ReportsFilters = ({filters, updateFilters, children}: _ReportsFiltersProp
                       {...otherField}
                       value={!value}
                       onChange={_ => onChange(_ === undefined ? undefined : !_)}
-                      className={cssUtils.marginTop}
+                      sx={{mt: 1}}
                     />
                   )}
                 />
@@ -301,12 +305,7 @@ const _ReportsFilters = ({filters, updateFilters, children}: _ReportsFiltersProp
                   name="hasAttachment"
                   defaultValue={filters.hasAttachment}
                   control={control}
-                  render={({field}) => (
-                    <TrueFalseUndefined
-                      {...field}
-                      className={cssUtils.marginTop}
-                    />
-                  )}
+                  render={({field}) => <TrueFalseUndefined {...field} sx={{mt: 1}} />}
                 />
               </DialogInputRow>
             </DialogContent>
