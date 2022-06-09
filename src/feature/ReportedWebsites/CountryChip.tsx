@@ -6,7 +6,7 @@ import {CompanySearchResult, Country, Id} from '@signal-conso/signalconso-api-sd
 import {makeSx} from 'mui-extension'
 
 interface Props extends BoxProps {
-  country?: Country
+  country: Country
 }
 
 const countryToFlag = (isoCode: string) => {
@@ -32,7 +32,6 @@ export const CountryChip = ({country, ...props}: Props) => {
         variant={'outlined'}
         sx={{height: 42, borderRadius: 42}}
         label={
-          country ? (
             <Txt truncate block>
               <Box
                 sx={{
@@ -47,9 +46,6 @@ export const CountryChip = ({country, ...props}: Props) => {
               &nbsp;
               <Box sx={sx.tdName_desc}>{country.name}</Box>
             </Txt>
-          ) : (
-            <Box sx={sx.tdName_desc}>{m.noAssociation}</Box>
-          )
         }
       />
     </Tooltip>

@@ -181,24 +181,6 @@ export const WebsitesInvestigation = () => {
             ),
           },
           {
-            head: m.foreignCountry,
-            id: 'company_country',
-            render: _ => (
-              <SelectCountry
-                country={_.companyCountry}
-                onChange={companyCountry => {
-                  if (_.companyCountry === companyCountry) {
-                    toastInfo(m.alreadySelectedCountry(companyCountry?.name))
-                  } else {
-                    _updateCountry.fetch({}, _.id, companyCountry).then(_ => _websiteInvestigation.fetch({clean: false}))
-                  }
-                }}
-              >
-                <CountryChip country={_.companyCountry} />
-              </SelectCountry>
-            ),
-          },
-          {
             head: m.practice,
             id: 'practice',
             render: _ => (

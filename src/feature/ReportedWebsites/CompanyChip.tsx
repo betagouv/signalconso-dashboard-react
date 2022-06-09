@@ -6,7 +6,7 @@ import {Company, CompanySearchResult, Country, Id} from '@signal-conso/signalcon
 import {makeSx} from 'mui-extension'
 
 interface Props extends BoxProps {
-  company?: Company
+  company: Company
 }
 
 const sx = makeSx({
@@ -26,7 +26,7 @@ export const CompanyChip = ({company, ...props}: Props) => {
         variant={'outlined'}
         sx={{height: 42, borderRadius: 42}}
         label={
-          company ? (
+           (
             <Box component="div">
               <Txt
                 truncate
@@ -43,8 +43,6 @@ export const CompanyChip = ({company, ...props}: Props) => {
                 {company.siret}
               </Box>
             </Box>
-          ) : (
-            <Box sx={sx.tdName_desc}>{m.noAssociation}</Box>
           )
         }
       />

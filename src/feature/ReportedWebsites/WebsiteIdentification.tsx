@@ -15,13 +15,15 @@ import {useToast} from "../../core/toast";
 import {WebsiteUpdateCompany} from "@signal-conso/signalconso-api-sdk-js/lib/model";
 import {CountryChip} from "./CountryChip";
 import {CompanyChip} from "./CompanyChip";
-import {BoxProps} from "@mui/material";
+import {Box, BoxProps} from "@mui/material";
+import {Txt} from "mui-extension/lib/Txt/Txt";
+import {NoAssociationChip} from "./NoAssociationChip";
 
 
 interface Website {
   websiteId: Id
   company?: Company
-  country?: Country
+  companyCountry?: Country
 }
 
 interface Props extends BoxProps {
@@ -37,7 +39,7 @@ export const WebsiteIdentification = ({onChangeDone, website,...props}: Props) =
   const _updateCompany = useReportedWebsiteWithCompanyContext().updateCompany
   const _updateCountry = useReportedWebsiteWithCompanyContext().updateCountry
   const [company, setCompany] = useState<WebsiteUpdateCompany | undefined>(website.company)
-  const [country, setCountry] = useState<Country | undefined>(website.country)
+  const [country, setCountry] = useState<Country | undefined>(website.companyCountry)
 
   const {toastError, toastInfo, toastSuccess} = useToast()
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
@@ -45,8 +47,9 @@ export const WebsiteIdentification = ({onChangeDone, website,...props}: Props) =
   };
 
 
+
   const updateCompany = () => {
-    if (company && website.country === country) {
+    if (company && website.companyCountry === country) {
       if (website.company &&  website.company.siret === company.siret) {
         toastInfo(m.alreadySelectedCompany(company.name))
       } else {
@@ -64,7 +67,7 @@ export const WebsiteIdentification = ({onChangeDone, website,...props}: Props) =
 
   const updateCountry = () => {
     if (country && website.company === company) {
-      if (country === website.country) {
+      if (country === website.companyCountry) {
         toastInfo(m.alreadySelectedCountry(country?.name))
       } else {
         _updateCountry.fetch({},website.websiteId, country)
@@ -76,6 +79,7 @@ export const WebsiteIdentification = ({onChangeDone, website,...props}: Props) =
 
   return (
     <ScDialog
+      PaperProps={{style: {overflow : "visible"}}}
       maxWidth="sm"
       title={"Identification du site internet"}
       content={_ => (
@@ -89,12 +93,12 @@ export const WebsiteIdentification = ({onChangeDone, website,...props}: Props) =
             <TabPanel value={"1"}>
               <CompanyIdentification siret={company?.siret} onChange={companyChanged => {
                 setCompany(companyChanged)
-                setCountry(website.country)
+                setCountry(website.companyCountry)
               }}/>
             </TabPanel>
 
             <TabPanel value={"2"}>
-              <CountryIdentification country={website.country} onChange={companyCountry => {
+              <CountryIdentification country={website.companyCountry} onChange={companyCountry => {
                 setCompany(website.company)
                 setCountry(companyCountry)
               }}/>
@@ -103,7 +107,7 @@ export const WebsiteIdentification = ({onChangeDone, website,...props}: Props) =
         </>
       )}
       onConfirm={(event, close) => {
-        if (company && website.country === country){
+        if (company && website.companyCountry === country){
           updateCompany()
           close()
           onChangeDone && onChangeDone()
@@ -115,10 +119,13 @@ export const WebsiteIdentification = ({onChangeDone, website,...props}: Props) =
         }
       }}
     >
-      <>
-      {website.country ? (<CountryChip onClick={props.onClick} country={website.country}/>) : <></>}
-      {website.company ? (<CompanyChip onClick={props.onClick} company={website.company} />) : <></>}
-      </>
+
+      {
+        website.companyCountry ?
+          <CountryChip onClick={props.onClick} country={website.companyCountry}/>
+          : website.company ? <CompanyChip onClick={props.onClick} company={website.company}/> :
+            <NoAssociationChip/>
+      }
     </ScDialog>
   )
 }
