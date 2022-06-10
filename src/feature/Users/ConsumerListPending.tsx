@@ -25,7 +25,6 @@ export const ConsumerListPending = () => {
 
   useEffectFn(_users.error, toastError)
 
-  console.log(_users.list?.data)
   return (
     <Panel>
       <Datatable

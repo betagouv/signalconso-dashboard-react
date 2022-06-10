@@ -18,7 +18,7 @@ const countryToFlag = (isoCode: string) => {
 const sx = makeSx({
   tdName_desc: t => ({
     fontSize: t.typography.fontSize * 0.875,
-    color: t.palette.text.disabled,
+    fontWeight: 'bold',
   }),
 })
 
@@ -32,20 +32,19 @@ export const CountryChip = ({country, ...props}: Props) => {
         variant={'outlined'}
         sx={{height: 42, borderRadius: 42}}
         label={
-            <Txt truncate block>
-              <Box
-                sx={{
-                  color: 'rgba(0, 0, 0, 1)',
-                  fontSize: 18,
-                  textAlign: 'center',
-                  width: 50,
-                }}
-              >
-                {countryToFlag(country.code)}
-              </Box>
-              &nbsp;
-              <Box sx={sx.tdName_desc}>{country.name}</Box>
-            </Txt>
+          <Txt sx={{
+            display: 'flex'
+          }} truncate block>
+            <Box
+              sx={{
+                fontSize: t => t.typography.fontSize * 0.875,
+              }}
+            >
+              {countryToFlag(country.code)}
+            </Box>
+            &nbsp;
+            <Box sx={sx.tdName_desc}>{country.name.toUpperCase()}</Box>
+          </Txt>
         }
       />
     </Tooltip>

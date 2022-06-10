@@ -1,17 +1,9 @@
 import React, {useEffect, useState} from 'react'
 import {useI18n} from '../../core/i18n'
 import {
-  Badge,
-  Box,
-  Chip,
-  FormControlLabel,
+  Badge, Box,
   Icon,
-  InputBase,
-  ListItemIcon,
-  ListItemText,
-  MenuItem,
-  Switch,
-  Theme,
+  InputBase, ListItemIcon, ListItemText, MenuItem,
   Tooltip,
 } from '@mui/material'
 import {useToast} from '../../core/toast'
@@ -20,46 +12,30 @@ import {Panel} from '../../shared/Panel'
 import {Datatable} from '../../shared/Datatable/Datatable'
 import {DebouncedInput} from '../../shared/DebouncedInput/DebouncedInput'
 import {useReportedWebsiteWithCompanyContext} from '../../core/context/ReportedWebsitesContext'
-import {Country, DepartmentDivision, WebsiteKind, WebsiteWithCompany} from '@signal-conso/signalconso-api-sdk-js'
+import {DepartmentDivision, WebsiteKind} from '@signal-conso/signalconso-api-sdk-js'
 import {IconBtn} from 'mui-extension'
-import {SelectCompany} from '../../shared/SelectCompany/SelectCompany'
-import {useConstantContext} from '../../core/context/ConstantContext'
-import {SelectCountry} from './SelectCountry'
+
 import {useWebsiteInvestigationContext} from '../../core/context/WebsiteInvestigationContext'
-import {CountryChip} from './CountryChip'
-import {CompanyChip} from './CompanyChip'
 import {StatusChip} from './StatusChip'
 import {SelectXXXX} from './SelectXXXX'
-import {ScSelect} from "../../shared/Select/Select";
-import {ScMenuItem} from "../MenuItem/MenuItem";
-import {ReportFilters} from "../Reports/ReportsFilters";
 import {WebsitesFilters} from "./WebsitesFilters";
 import {WebsiteIdentification} from "./WebsiteIdentification";
-
-const useAnchoredMenu = () => {
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
-  const open = (event: any) => setAnchorEl(event.currentTarget)
-  const close = () => setAnchorEl(null)
-  return {open, close, element: anchorEl}
-}
+import {WebsiteActions} from "./WebsiteActions";
 
 export const WebsitesInvestigation = () => {
   const {m, formatDate} = useI18n()
 
-  const _countries = useConstantContext().countries
+
   const _websiteInvestigation = useWebsiteInvestigationContext().getWebsiteInvestigation
   const _createOrUpdate = useWebsiteInvestigationContext().createOrUpdateInvestigation
   const _departmentDivision = useWebsiteInvestigationContext().listDepartmentDivision
   const _practice = useWebsiteInvestigationContext().listPractice
   const _investigationStatus = useWebsiteInvestigationContext().listInvestigationStatus
   const _updateStatus = useReportedWebsiteWithCompanyContext().update
-  const _updateCompany = useReportedWebsiteWithCompanyContext().updateCompany
-  const _updateCountry = useReportedWebsiteWithCompanyContext().updateCountry
-  const [countries, setCountries] = useState<Country[]>([])
+  const _remove = useReportedWebsiteWithCompanyContext().remove
   const [departmentDivision, setDepartmentDivision] = useState<DepartmentDivision[]>([])
   const [investigationStatus, setInvestigationStatus] = useState<string[]>([])
   const [practice, setPractice] = useState<string[]>([])
-  const countriesAnchor = useAnchoredMenu()
   const {toastError, toastInfo, toastSuccess} = useToast()
 
   useEffect(() => {
@@ -68,10 +44,6 @@ export const WebsitesInvestigation = () => {
 
   useEffect(() => {
     _websiteInvestigation.fetch()
-  }, [])
-
-  useEffect(() => {
-    _countries.fetch({}).then(setCountries)
   }, [])
 
   useEffect(() => {
@@ -86,14 +58,13 @@ export const WebsitesInvestigation = () => {
     _practice.fetch({}).then(setPractice)
   }, [])
 
-
   useEffect(() => {
     fromNullable(_updateStatus.error).map(toastError)
-  }, [_updateStatus.error])
-
-  useEffect(() => {
     fromNullable(_websiteInvestigation.error).map(toastError)
-  }, [_websiteInvestigation.error])
+    fromNullable(_remove.error).map(toastError)
+  }, [_updateStatus.error, _websiteInvestigation.error, _remove.error])
+
+
 
   return (
     <Panel>
@@ -115,25 +86,27 @@ export const WebsitesInvestigation = () => {
                 />
               )}
             </DebouncedInput>
-            </>
+          </>
         }
         actions={
-        <>
-          <Tooltip title={m.removeAllFilters}>
-            <IconBtn color="primary" onClick={_websiteInvestigation.clearFilters}>
-              <Icon>clear</Icon>
-            </IconBtn>
-          </Tooltip>
-          <WebsitesFilters
-          filters={_websiteInvestigation.filters}
-          updateFilters={ _ => {_websiteInvestigation.updateFilters(prev => ({...prev, ..._}))}}>
-          <Tooltip title={m.advancedFilters}>
-          <IconBtn color="primary">
-          <Icon>filter_list</Icon>
-          </IconBtn>
-          </Tooltip>
-          </WebsitesFilters>
-        </>
+          <>
+            <Tooltip title={m.removeAllFilters}>
+              <IconBtn color="primary" onClick={_websiteInvestigation.clearFilters}>
+                <Icon>clear</Icon>
+              </IconBtn>
+            </Tooltip>
+            <WebsitesFilters
+              filters={_websiteInvestigation.filters}
+              updateFilters={_ => {
+                _websiteInvestigation.updateFilters(prev => ({...prev, ..._}))
+              }}>
+              <Tooltip title={m.advancedFilters}>
+                <IconBtn color="primary">
+                  <Icon>filter_list</Icon>
+                </IconBtn>
+              </Tooltip>
+            </WebsitesFilters>
+          </>
         }
         loading={_websiteInvestigation.fetching}
         total={_websiteInvestigation.list?.totalSize}
@@ -147,20 +120,6 @@ export const WebsitesInvestigation = () => {
         showColumnsToggle={true}
         columns={[
           {
-            id: 'status',
-            head: '',
-            render: _ =>
-              _.kind === WebsiteKind.DEFAULT ? (
-                <Tooltip title={m.associationDone}>
-                  <Icon sx={{color: t => t.palette.success.light}}>check_circle</Icon>
-                </Tooltip>
-              ) : (
-                <Tooltip title={m.needAssociation}>
-                  <Icon sx={{color: t => t.palette.warning.main}}>check_circle</Icon>
-                </Tooltip>
-              ),
-          },
-          {
             id: 'host',
             head: m.website,
             render: _ => <a href={'https://' + _.host}>{_.host}</a>,
@@ -171,12 +130,12 @@ export const WebsitesInvestigation = () => {
             render: _ => _.count,
           },
           {
-            head: m.company,
-            id: 'company',
+            head: m.identication,
+            id: 'identication',
             render: _ => (
               <WebsiteIdentification
                 website={_}
-                onChangeDone={() => _websiteInvestigation.fetch({clean: true})}
+                onChangeDone={() => _websiteInvestigation.fetch({clean: false})}
               />
             ),
           },
@@ -205,7 +164,7 @@ export const WebsitesInvestigation = () => {
                 }}
                 listValues={practice}
               >
-                <StatusChip tooltipTitle={m.practice} value={_.practice ?? m.noValue} />
+                <StatusChip tooltipTitle={m.practice} value={_.practice ?? m.noValue}/>
               </SelectXXXX>
             ),
           },
@@ -221,20 +180,20 @@ export const WebsitesInvestigation = () => {
                   if (_.investigationStatus === investigationStatus) {
                     toastInfo(m.alreadySelectedValue(investigationStatus))
                   } else {
+                    console.log(investigationStatus)
                     _createOrUpdate
                       .fetch(
                         {},
-                        {
-                          ..._,
+                        Object.assign({..._},{
                           investigationStatus: investigationStatus,
                         },
-                      )
+                      ))
                       .then(_ => _websiteInvestigation.fetch({clean: false}))
                   }
                 }}
                 listValues={investigationStatus}
               >
-                <StatusChip tooltipTitle={m.investigation} value={_.investigationStatus ?? m.noValue} />
+                <StatusChip tooltipTitle={m.investigation} value={_.investigationStatus ?? m.noValue}/>
               </SelectXXXX>
             ),
           },
@@ -247,26 +206,36 @@ export const WebsitesInvestigation = () => {
                 inputLabel={m.affectation}
                 getValueName={_ => _.name}
                 onChange={departmentDivision => {
-                  if (_.attribution === departmentDivision.code) {
+                  if (departmentDivision && _.attribution === departmentDivision.code) {
                     toastInfo(m.alreadySelectedValue(departmentDivision?.name))
                   } else {
+                    console.log(departmentDivision)
                     _createOrUpdate
                       .fetch(
                         {},
-                        {
-                          attribution: departmentDivision.code,
-                          ..._,
-                        },
-                      )
+                        Object.assign({..._},{
+                          attribution: departmentDivision && departmentDivision.code,
+                          },
+                        ))
                       .then(_ => _websiteInvestigation.fetch({clean: false}))
                   }
                 }}
                 listValues={departmentDivision}
               >
-                <StatusChip tooltipTitle={m.affectation} value={_.attribution ?? m.noValue} />
+                <StatusChip tooltipTitle={m.affectation} value={_.attribution ?? m.noValue}/>
               </SelectXXXX>
             ),
           },
+          {
+            id: 'status',
+            stickyEnd: true,
+            render: _ =>
+                <WebsiteActions
+                  website={_}
+                  refreshData={() => _websiteInvestigation.fetch({clean: false})}
+                />
+            ,
+          }
         ]}
       />
     </Panel>

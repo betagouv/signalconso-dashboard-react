@@ -4,6 +4,7 @@ import {Autocomplete, TextField, Theme} from '@mui/material'
 import makeStyles from '@mui/styles/makeStyles'
 import {ScDialog} from '../../shared/Confirm/ScDialog'
 import {fromNullable} from 'fp-ts/es6/Option'
+import {ScInput} from "../../shared/Input/ScInput";
 
 interface Props<T> {
   children: ReactElement<any>
@@ -11,7 +12,7 @@ interface Props<T> {
   title: string
   defaultValue?: T
   getValueName: (_: T) => string
-  onChange: (_: T) => void
+  onChange: (_?: T) => void
   listValues: T[]
 }
 
@@ -39,7 +40,7 @@ export const SelectXXXX = <T extends unknown>({
   return (
     <ScDialog
       PaperProps={{style: {position: 'static'}}}
-      confirmDisabled={!value}
+      // confirmDisabled={!value}
       maxWidth="sm"
       title={title}
       content={_ => (
@@ -48,19 +49,20 @@ export const SelectXXXX = <T extends unknown>({
             disablePortal
             multiple={false}
             defaultValue={defaultValue}
-            id="combo-country"
+            id="combo-value"
             className={css.input}
             onChange={(event, newInputValue) => {
               setValue(fromNullable(newInputValue).toUndefined())
             }}
             options={listValues}
             getOptionLabel={getValueName}
-            renderInput={params => <TextField {...params} label={inputLabel} />}
+            renderInput={params => <ScInput {...params} label={inputLabel} />}
           />
         </>
       )}
       onConfirm={(_, close) => {
-        value && onChange(value)
+        // value &&
+        onChange(value)
         close()
       }}
       confirmLabel={m.edit}
