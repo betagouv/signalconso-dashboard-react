@@ -136,6 +136,7 @@ export const fr = {
     startedAt: 'Démarré le',
     startedBy: 'Démarré le',
     receivedAt: 'Reçu le',
+    pin: `Épingler`,
     endedAt: 'Terminé le',
     anonymous: 'Anonyme',
     active: 'Actif',

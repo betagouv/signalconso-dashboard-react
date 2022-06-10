@@ -2,16 +2,17 @@ import {Box, Icon} from '@mui/material'
 import React from 'react'
 import {useBoolean} from '@alexandreannic/react-hooks-lib/lib'
 import {ScAppMenu} from './ScAppMenu'
-import {LayoutConnectedUser} from '../Layout'
 import {useHistory} from 'react-router'
 import {IconBtn} from 'mui-extension/lib'
 import {siteMap} from '../../siteMap'
+import {UserWithPermission} from '@signal-conso/signalconso-api-sdk-js/lib/client/authenticate/Authenticate'
 
 interface Props {
-  connectedUser?: LayoutConnectedUser
+  logout?: () => void
+  connectedUser?: UserWithPermission
 }
 
-export const ScAppMenuBtn = ({connectedUser}: Props) => {
+export const ScAppMenuBtn = ({logout, connectedUser}: Props) => {
   const openMenu = useBoolean(false)
   const history = useHistory()
 
@@ -49,7 +50,7 @@ export const ScAppMenuBtn = ({connectedUser}: Props) => {
           <Icon sx={connectedUser ? {} : {visibility: 'hidden'}}>arrow_drop_down</Icon>
         </Box>
       </Box>
-      {connectedUser && openMenu.value && <ScAppMenu onClose={openMenu.setFalse} connectedUser={connectedUser} />}
+      {connectedUser && logout && openMenu.value && <ScAppMenu onClose={openMenu.setFalse} connectedUser={connectedUser} logout={logout}/>}
     </Box>
   )
 }

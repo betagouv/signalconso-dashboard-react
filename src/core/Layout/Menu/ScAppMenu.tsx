@@ -8,10 +8,10 @@ import {ScAppMenuItem} from './ScAppMenuItem'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
 import {siteMap} from '../../siteMap'
 import {stopPropagation} from '../../helper/utils'
-import {LayoutConnectedUser} from '../Layout'
 import {Roles} from '@signal-conso/signalconso-api-sdk-js'
 import {makeSx} from 'mui-extension'
 import {Divider} from '../../../shared/Divider/Divider'
+import {UserWithPermission} from '@signal-conso/signalconso-api-sdk-js/lib/client/authenticate/Authenticate'
 
 const css = makeSx({
   root: {
@@ -52,15 +52,16 @@ const css = makeSx({
 
 interface Props {
   onClose: () => void
-  connectedUser: LayoutConnectedUser
+  connectedUser: UserWithPermission
+  logout: () => void
 }
 
-export const ScAppMenu = ({onClose, connectedUser}: Props) => {
+export const ScAppMenu = ({onClose, connectedUser, logout: _logout}: Props) => {
   const path = (page: string) => '' + page
   const {m} = useI18n()
 
   const logout = () => {
-    connectedUser.logout()
+    _logout()
     onClose()
   }
 

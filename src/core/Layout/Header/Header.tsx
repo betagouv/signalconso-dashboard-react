@@ -1,3 +1,4 @@
+import {lighten} from '@mui/system/colorManipulator'
 import {Box, Icon, Menu, MenuItem, Slide} from '@mui/material'
 import logoGouvMobile from './gouv-mobile.svg'
 import logoSignalConso from './signalconso.svg'
@@ -6,19 +7,19 @@ import {useI18n} from '../../i18n'
 import {Btn, IconBtn} from 'mui-extension/lib'
 import {config} from '../../../conf/config'
 import {styleUtils} from 'core/theme'
-import {headerHeight} from '../index'
+import {layoutConfig} from '../index'
 import React from 'react'
 import {ScAppMenuBtn} from '../Menu/ScAppMenuBtn'
 import {useLayoutContext} from '../LayoutContext'
-import {LayoutConnectedUser} from '../Layout'
+import {UserWithPermission} from '@signal-conso/signalconso-api-sdk-js/lib/client/authenticate/Authenticate'
 
 interface Props {
-  connectedUser?: LayoutConnectedUser
+  connectedUser?: UserWithPermission
 }
 
 export const Header = ({connectedUser}: Props) => {
   const {m} = useI18n()
-  const {isMobileWidth} = useLayoutContext()
+  const {sidebarOpen, isMobileWidth, setSidebarOpen} = useLayoutContext()
 
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
 
@@ -30,28 +31,43 @@ export const Header = ({connectedUser}: Props) => {
     setAnchorEl(null)
   }
 
+  const {sidebarPinned} = useLayoutContext()
   return (
     <Slide direction="down" in={true} mountOnEnter unmountOnExit>
       <Box
         component="header"
         sx={{
-          minHeight: headerHeight,
+          minHeight: layoutConfig.headerHeight,
+          px: layoutConfig.headerPx,
           py: 0.5,
-          px: 2,
           display: 'flex',
           alignItems: 'center',
           background: t => t.palette.background.paper,
-          borderBottom: t => '1px solid ' + t.palette.divider,
+          borderBottom: t => '1px solid ' + t.palette.divider
         }}
       >
         <div style={{display: 'flex', alignItems: 'center'}}>
+          <IconBtn
+            sx={{
+              mr: 1,
+              color: t => sidebarOpen ? t.palette.primary.main : t.palette.text.disabled,
+              background: t => sidebarOpen ? lighten(t.palette.primary.light, .4) : t.palette.divider,
+              '&:hover': {
+                // boxShadow: ''
+                background: t => t.palette.primary.light,
+              }
+            }}
+            onClick={() => setSidebarOpen(_ => !_)}
+          >
+            <Icon>menu</Icon>
+          </IconBtn>
           <Box
             component="img"
             src={logoGouvMobile}
             alt={m.altLogoGouv}
             sx={{
               height: 40,
-              mr: 2,
+              mr: 2
             }}
           />
           {!isMobileWidth && (
@@ -108,7 +124,6 @@ export const Header = ({connectedUser}: Props) => {
               <HeaderItem href={config.appBaseUrl + '/centre-aide/consommateur'}>{m.helpCenter}</HeaderItem>
             </nav>
           )}
-          <ScAppMenuBtn connectedUser={connectedUser} />
         </div>
       </Box>
     </Slide>

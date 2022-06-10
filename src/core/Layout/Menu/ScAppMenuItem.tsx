@@ -59,9 +59,8 @@ const styleActive = (t: Theme) => ({
 })
 
 export const ScAppMenuItem = ({children, to, icon, className, active, large, ...other}: MenuItemProps) => {
-  const {closeMobileSidebar} = useLayoutContext()
   return (
-    <div onClick={closeMobileSidebar}>
+    <div>
       <Box
         {...(other as any)}
         component={NavLink}

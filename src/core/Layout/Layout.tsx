@@ -1,48 +1,59 @@
 import * as React from 'react'
-import {ReactNode} from 'react'
-import {LayoutProvider} from './LayoutContext'
+import {ReactElement, ReactNode} from 'react'
+import {LayoutProvider, useLayoutContext} from './LayoutContext'
 import {Header} from './Header/Header'
-import {Roles} from '@signal-conso/signalconso-api-sdk-js'
+import {Box} from '@mui/material'
+import {layoutConfig} from './index'
+import {defaultSpacing} from '../theme'
 
 export const sidebarWith = 220
 
-export interface LayoutConnectedUser {
-  firstName: string
-  lastName: string
-  email: string
-  role: Roles
-  logout: () => void
-}
-
 export interface LayoutProps {
+  sidebar?: ReactElement<any>
   title?: string
   children?: ReactNode
   mobileBreakpoint?: number
-  connectedUser?: LayoutConnectedUser
 }
 
-export const Layout = ({title, mobileBreakpoint, children, connectedUser}: LayoutProps) => {
+export const Layout = ({sidebar, title, mobileBreakpoint, children}: LayoutProps) => {
   return (
     <LayoutProvider title={title} mobileBreakpoint={mobileBreakpoint}>
-      <LayoutUsingContext connectedUser={connectedUser}>{children}</LayoutUsingContext>
+      <LayoutUsingContext sidebar={sidebar}>{children}</LayoutUsingContext>
     </LayoutProvider>
   )
 }
 
-const LayoutUsingContext = ({children, connectedUser}: any) => {
+const LayoutUsingContext = ({sidebar, children}: Pick<LayoutProps, 'sidebar' | 'children'>) => {
+  const {sidebarOpen, sidebarPinned, isMobileWidth} = useLayoutContext()
+  console.log(layoutConfig.sidebarWith, defaultSpacing, layoutConfig.sidebarWith + defaultSpacing)
+  const width = sidebarOpen && sidebarPinned && !isMobileWidth ?  layoutConfig.sidebarWith : 0
   return (
     <>
-      <Header connectedUser={connectedUser} />
-      <main
-        style={{
-          overflow: 'hidden',
-          position: 'relative',
-          display: 'flex',
-          flexDirection: 'column',
-        }}
-      >
-        {children}
-      </main>
+      <Header />
+      <Box sx={{
+        display: 'flex'
+      }}>
+        <Box component="aside" sx={{
+          transition: t => t.transitions.create('all'),
+          width, 
+          minWidth: width,
+        }}>
+          {sidebar}
+        </Box>
+        <Box
+          component="main"
+          sx={{
+            transition: t => t.transitions.create('all'),
+            // paddingLeft: ((sidebarOpen ? layoutConfig.sidebarWith : 0) + defaultSpacing) + 'px',
+            overflow: 'hidden',
+            position: 'relative',
+            display: 'flex',
+            flexDirection: 'column'
+          }}
+        >
+          {children}
+        </Box>
+      </Box>
     </>
   )
 }

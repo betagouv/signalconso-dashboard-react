@@ -1,6 +1,5 @@
 import {CenteredContent} from '../../shared/CenteredContent/CenteredContent'
 import {Page} from '../../shared/Layout'
-import {headerHeight} from '../../core/Layout'
 import {useForm} from 'react-hook-form'
 import {Panel, PanelBody, PanelHead} from '../../shared/Panel'
 import {ScInputPassword} from '../../shared/InputPassword/InputPassword'
@@ -16,6 +15,7 @@ import {AuthenticationEventActions, EventCategories, Matomo} from '../../core/pl
 import {useToast} from '../../core/toast'
 import {fnSwitch} from '../../core/helper/utils'
 import {siteMap} from '../../core/siteMap'
+import {layoutConfig} from '../../core/Layout'
 
 interface Form {
   newPassword: string
@@ -63,7 +63,7 @@ export const ResetPassword = ({onResetPassword}: Props) => {
   }
 
   return (
-    <CenteredContent offset={headerHeight}>
+    <CenteredContent offset={layoutConfig.headerHeight}>
       <Page size="s" sx={{maxWidth: `500px !important`}}>
         <form onSubmit={handleSubmit(resetPassword)}>
           <Panel>

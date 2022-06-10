@@ -9,9 +9,9 @@ import {ScButton} from '../../shared/Button/Button'
 import {NavLink} from 'react-router-dom'
 import {siteMap} from '../../core/siteMap'
 import {CenteredContent} from '../../shared/CenteredContent/CenteredContent'
-import {headerHeight} from '../../core/Layout'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
 import {QueryString} from '../../core/helper/useQueryString'
+import {layoutConfig} from '../../core/Layout'
 
 interface Props {
   onValidateEmail: (token: Id) => Promise<AuthUser>
@@ -56,7 +56,7 @@ export const EmailValidation = ({onValidateEmail, onSaveToken}: Props) => {
   }, [_validateEmail.loading, _validateEmail.error])
 
   return (
-    <CenteredContent offset={headerHeight}>
+    <CenteredContent offset={layoutConfig.headerHeight}>
       <Page size="s">
         <Fender type={fenderProps.type} title={fenderProps.title}>
           <Txt block gutterBottom color="hint" size="big" sx={{mt: 2}}>
