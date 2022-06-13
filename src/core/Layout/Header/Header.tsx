@@ -19,14 +19,17 @@ export const Header = ({children}: Props) => {
           minHeight: layoutConfig.headerHeight,
           px: layoutConfig.headerPx,
           py: 0.5,
-          width: '100%',
           display: 'flex',
           alignItems: 'center',
           background: t => t.palette.background.paper,
           borderBottom: t => '1px solid ' + t.palette.divider
         }}
       >
-        <div style={{display: 'flex', alignItems: 'center'}}>
+        <div style={{
+          display: 'flex',
+          alignItems: 'center',
+          width: '100%',
+        }}>
           {showSidebarButton && (
             <IconBtn
               sx={{
