@@ -1,6 +1,6 @@
 import {Box, BoxProps, Icon, ListItemIcon, ListItemText, MenuItem, Tooltip} from "@mui/material";
 import React, {useEffect} from "react";
-import {Website, WebsiteInvestigationWithCount, WebsiteKind} from "@signal-conso/signalconso-api-sdk-js";
+import {Website, WebsiteKind, WebsiteWithCompany} from "@signal-conso/signalconso-api-sdk-js";
 import {IconBtn} from "mui-extension";
 import {ScMenu} from "../../shared/Menu/Menu";
 import {WebsiteTool} from "./WebsiteTool";
@@ -15,7 +15,7 @@ import {useToast} from "../../core/toast";
 
 
 interface WebsiteActionsProps extends BoxProps {
-  website: WebsiteInvestigationWithCount,
+  website: WebsiteWithCompany,
   refreshData : () => void
 }
 
@@ -27,11 +27,11 @@ export const WebsiteActions = ({website, refreshData}: WebsiteActionsProps) => {
   const _remove = useReportedWebsiteWithCompanyContext().remove
   const {toastError, toastInfo, toastSuccess} = useToast()
 
-  const handleUpdateStatus = (website: WebsiteInvestigationWithCount, reload: () => void) => {
+  const handleUpdateStatus = (website: WebsiteWithCompany, reload: () => void) => {
     website.kind === WebsiteKind.DEFAULT ?
-      _updateStatus.fetch({}, website.websiteId, WebsiteKind.PENDING).then(_ => reload())
+      _updateStatus.fetch({}, website.id, WebsiteKind.PENDING).then(_ => reload())
       : (website.company || website.companyCountry) ? _updateStatus
-          .fetch({}, website.websiteId, WebsiteKind.DEFAULT).then(_ => reload())
+          .fetch({}, website.id, WebsiteKind.DEFAULT).then(_ => reload())
         : toastError({message: m.cannotUpdateWebsiteStatus})
   }
 
@@ -64,7 +64,7 @@ export const WebsiteActions = ({website, refreshData}: WebsiteActionsProps) => {
       <Tooltip title={m.delete}>
         <IconBtn
           sx={{color: t => t.palette.text.disabled}}
-          onClick={() => _remove.fetch({}, website.websiteId).then(_ => refreshData())}>
+          onClick={() => _remove.fetch({}, website.id).then(_ => refreshData())}>
           <Icon>delete</Icon>
         </IconBtn>
       </Tooltip>

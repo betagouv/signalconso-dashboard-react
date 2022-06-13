@@ -21,7 +21,7 @@ import {NoAssociationChip} from "./NoAssociationChip";
 
 
 interface Website {
-  websiteId: Id
+  id: Id
   company?: Company
   companyCountry?: Country
 }
@@ -54,7 +54,7 @@ export const WebsiteIdentification = ({onChangeDone, website,...props}: Props) =
         toastInfo(m.alreadySelectedCompany(company.name))
       } else {
         _updateCompany
-          .fetch({}, website.websiteId, {
+          .fetch({}, website.id, {
             siret: company.siret,
             name: company.name,
             address: company.address,
@@ -70,7 +70,7 @@ export const WebsiteIdentification = ({onChangeDone, website,...props}: Props) =
       if (country === website.companyCountry) {
         toastInfo(m.alreadySelectedCountry(country?.name))
       } else {
-        _updateCountry.fetch({},website.websiteId, country)
+        _updateCountry.fetch({},website.id, country)
       }
       }
 

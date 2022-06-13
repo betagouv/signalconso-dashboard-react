@@ -24,7 +24,7 @@ const useStyles = makeStyles((t: Theme) => ({
   },
 }))
 
-export const SelectXXXX = <T extends unknown>({
+export const SelectInvestigationAttributes = <T extends unknown>({
   children,
   inputLabel,
   title,

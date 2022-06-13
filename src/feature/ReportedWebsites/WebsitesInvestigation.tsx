@@ -17,16 +17,17 @@ import {IconBtn} from 'mui-extension'
 
 import {useWebsiteInvestigationContext} from '../../core/context/WebsiteInvestigationContext'
 import {StatusChip} from './StatusChip'
-import {SelectXXXX} from './SelectXXXX'
+// import {SelectInvestigationAttributes} from './SelectInvestigationAttributes'
 import {WebsitesFilters} from "./WebsitesFilters";
 import {WebsiteIdentification} from "./WebsiteIdentification";
 import {WebsiteActions} from "./WebsiteActions";
+import {SelectInvestigationAttributes} from "./SelectInvestigationAttributes";
 
 export const WebsitesInvestigation = () => {
   const {m, formatDate} = useI18n()
 
 
-  const _websiteInvestigation = useWebsiteInvestigationContext().getWebsiteInvestigation
+  const fetch = useReportedWebsiteWithCompanyContext().getWebsiteWithCompany
   const _createOrUpdate = useWebsiteInvestigationContext().createOrUpdateInvestigation
   const _departmentDivision = useWebsiteInvestigationContext().listDepartmentDivision
   const _practice = useWebsiteInvestigationContext().listPractice
@@ -39,11 +40,11 @@ export const WebsitesInvestigation = () => {
   const {toastError, toastInfo, toastSuccess} = useToast()
 
   useEffect(() => {
-    _websiteInvestigation.updateFilters({..._websiteInvestigation.initialFilters})
+    fetch.updateFilters({...fetch.initialFilters})
   }, [])
 
   useEffect(() => {
-    _websiteInvestigation.fetch()
+    fetch.fetch()
   }, [])
 
   useEffect(() => {
@@ -60,9 +61,9 @@ export const WebsitesInvestigation = () => {
 
   useEffect(() => {
     fromNullable(_updateStatus.error).map(toastError)
-    fromNullable(_websiteInvestigation.error).map(toastError)
+    fromNullable(fetch.error).map(toastError)
     fromNullable(_remove.error).map(toastError)
-  }, [_updateStatus.error, _websiteInvestigation.error, _remove.error])
+  }, [_updateStatus.error, fetch.error, _remove.error])
 
 
 
@@ -73,8 +74,8 @@ export const WebsitesInvestigation = () => {
         header={
           <>
             <DebouncedInput
-              value={_websiteInvestigation.filters.host ?? ''}
-              onChange={host => _websiteInvestigation.updateFilters(prev => ({...prev, host: host}))}
+              value={fetch.filters.host ?? ''}
+              onChange={host => fetch.updateFilters(prev => ({...prev, host: host}))}
             >
               {(value, onChange) => (
                 <InputBase
@@ -91,14 +92,14 @@ export const WebsitesInvestigation = () => {
         actions={
           <>
             <Tooltip title={m.removeAllFilters}>
-              <IconBtn color="primary" onClick={_websiteInvestigation.clearFilters}>
+              <IconBtn color="primary" onClick={fetch.clearFilters}>
                 <Icon>clear</Icon>
               </IconBtn>
             </Tooltip>
             <WebsitesFilters
-              filters={_websiteInvestigation.filters}
+              filters={fetch.filters}
               updateFilters={_ => {
-                _websiteInvestigation.updateFilters(prev => ({...prev, ..._}))
+                fetch.updateFilters(prev => ({...prev, ..._}))
               }}>
               <Tooltip title={m.advancedFilters}>
                 <IconBtn color="primary">
@@ -108,15 +109,15 @@ export const WebsitesInvestigation = () => {
             </WebsitesFilters>
           </>
         }
-        loading={_websiteInvestigation.fetching}
-        total={_websiteInvestigation.list?.totalSize}
+        loading={fetch.fetching}
+        total={fetch.list?.totalSize}
         paginate={{
-          limit: _websiteInvestigation.filters.limit,
-          offset: _websiteInvestigation.filters.offset,
-          onPaginationChange: pagination => _websiteInvestigation.updateFilters(prev => ({...prev, ...pagination})),
+          limit: fetch.filters.limit,
+          offset: fetch.filters.offset,
+          onPaginationChange: pagination => fetch.updateFilters(prev => ({...prev, ...pagination})),
         }}
         getRenderRowKey={_ => _.id}
-        data={_websiteInvestigation.list?.data}
+        data={fetch.list?.data}
         showColumnsToggle={true}
         columns={[
           {
@@ -135,7 +136,7 @@ export const WebsitesInvestigation = () => {
             render: _ => (
               <WebsiteIdentification
                 website={_}
-                onChangeDone={() => _websiteInvestigation.fetch({clean: false})}
+                onChangeDone={() => fetch.fetch({clean: false})}
               />
             ),
           },
@@ -143,7 +144,7 @@ export const WebsitesInvestigation = () => {
             head: m.practice,
             id: 'practice',
             render: _ => (
-              <SelectXXXX<string>
+              <SelectInvestigationAttributes<string>
                 title={m.practiceTitle}
                 inputLabel={m.practice}
                 getValueName={_ => _}
@@ -159,20 +160,20 @@ export const WebsitesInvestigation = () => {
                           ..._,
                         },
                       )
-                      .then(_ => _websiteInvestigation.fetch({clean: false}))
+                      .then(_ => fetch.fetch({clean: false}))
                   }
                 }}
                 listValues={practice}
               >
                 <StatusChip tooltipTitle={m.practice} value={_.practice ?? m.noValue}/>
-              </SelectXXXX>
+              </SelectInvestigationAttributes>
             ),
           },
           {
             head: m.investigation,
             id: 'investigationStatus',
             render: _ => (
-              <SelectXXXX<string>
+              <SelectInvestigationAttributes<string>
                 title={m.affectationTitle}
                 inputLabel={m.affectation}
                 getValueName={_ => _}
@@ -188,20 +189,20 @@ export const WebsitesInvestigation = () => {
                           investigationStatus: investigationStatus,
                         },
                       ))
-                      .then(_ => _websiteInvestigation.fetch({clean: false}))
+                      .then(_ => fetch.fetch({clean: false}))
                   }
                 }}
                 listValues={investigationStatus}
               >
                 <StatusChip tooltipTitle={m.investigation} value={_.investigationStatus ?? m.noValue}/>
-              </SelectXXXX>
+              </SelectInvestigationAttributes>
             ),
           },
           {
             head: m.affectation,
             id: 'affectation',
             render: _ => (
-              <SelectXXXX<DepartmentDivision>
+              <SelectInvestigationAttributes<DepartmentDivision>
                 title={m.affectationTitle}
                 inputLabel={m.affectation}
                 getValueName={_ => _.name}
@@ -217,13 +218,13 @@ export const WebsitesInvestigation = () => {
                           attribution: departmentDivision && departmentDivision.code,
                           },
                         ))
-                      .then(_ => _websiteInvestigation.fetch({clean: false}))
+                      .then(_ => fetch.fetch({clean: false}))
                   }
                 }}
                 listValues={departmentDivision}
               >
                 <StatusChip tooltipTitle={m.affectation} value={_.attribution ?? m.noValue}/>
-              </SelectXXXX>
+              </SelectInvestigationAttributes>
             ),
           },
           {
@@ -232,7 +233,7 @@ export const WebsitesInvestigation = () => {
             render: _ =>
                 <WebsiteActions
                   website={_}
-                  refreshData={() => _websiteInvestigation.fetch({clean: false})}
+                  refreshData={() => fetch.fetch({clean: false})}
                 />
             ,
           }
