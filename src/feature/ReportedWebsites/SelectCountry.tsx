@@ -1,7 +1,7 @@
 import React, {ReactElement, useEffect, useState} from 'react'
 import {useI18n} from '../../core/i18n'
 import {Country} from '@signal-conso/signalconso-api-sdk-js'
-import {Autocomplete, TextField} from '@mui/material'
+import {Autocomplete} from '@mui/material'
 import {useConstantContext} from '../../core/context/ConstantContext'
 import {ScDialog} from '../../shared/Confirm/ScDialog'
 import {fromNullable} from 'fp-ts/es6/Option'

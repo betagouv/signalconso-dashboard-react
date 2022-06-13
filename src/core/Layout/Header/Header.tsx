@@ -1,4 +1,3 @@
-import {lighten} from '@mui/system/colorManipulator'
 import {Box, BoxProps, Icon, Slide} from '@mui/material'
 import {IconBtn} from 'mui-extension/lib'
 import {layoutConfig} from '../index'
