@@ -28,7 +28,7 @@ export const ReportedWebsitesProvider = ({api, children}: Props) => {
   const listReportedWebsiteWithCompany = useScPaginate<WebsiteWithCompany, WebsiteWithCompanySearch>(api.secured.website.list, {
     limit: 10,
     offset: 0,
-    kinds: [WebsiteKind.PENDING],
+    kinds: [WebsiteKind.PENDING, WebsiteKind.DEFAULT],
   })
 
   const remove = useFetcher(api.secured.website.remove)
