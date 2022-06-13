@@ -1,13 +1,13 @@
-import {Sidebar, SidebarHr, SidebarItem} from './core/Layout/Sidebar'
+import {Sidebar, SidebarHr, SidebarItem} from '../Layout/Sidebar'
 import {UserWithPermission} from '@signal-conso/signalconso-api-sdk-js/lib/client/authenticate/Authenticate'
 import {Box, Tooltip} from '@mui/material'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
 import {Btn} from 'mui-extension'
 import {Roles} from '@signal-conso/signalconso-api-sdk-js'
-import {siteMap} from './core/siteMap'
-import {EntityIcon} from './core/EntityIcon'
+import {siteMap} from '../siteMap'
+import {EntityIcon} from '../EntityIcon'
 import * as React from 'react'
-import {useI18n} from './core/i18n'
+import {useI18n} from '../i18n'
 
 export const ScSidebar = ({
   connectedUser,

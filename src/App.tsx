@@ -55,7 +55,7 @@ import {apiPublicSdk, makeSecuredSdk, SignalConsoApiSdk} from './core/ApiSdkInst
 import {Stats} from './feature/Stats/Stats'
 import {Admin} from './feature/Admin/Admin'
 import {ConsumerEmailValidationProvider} from './core/context/EmailValidationContext'
-import {ScSidebar} from './ScSidebar'
+import {ScSidebar} from './core/ScSidebar/ScSidebar'
 import {ScHeader} from './core/ScHeader/ScHeader'
 
 const Router: typeof HashRouter = config.useHashRouter ? HashRouter : BrowserRouter
