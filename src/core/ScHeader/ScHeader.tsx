@@ -28,7 +28,7 @@ const HeaderItem = ({children, href}: { children: any; href: string }) => {
 }
 
 export const ScHeader = () => {
-  const {sidebarOpen, isMobileWidth, setSidebarOpen} = useLayoutContext()
+  const {isMobileWidth} = useLayoutContext()
   const {m} = useI18n()
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
 

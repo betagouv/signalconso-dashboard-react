@@ -16,6 +16,8 @@ export const SidebarHeader = ({hidden, children, sx, ...props}: SidebarHeaderPro
     transition: t => t.transitions.create('all'),
     pt: 1,
     pb: 1,
+    display: 'flex',
+    alignItems: 'center',
     px: layoutConfig.headerPx,
     borderTop: t => '1px solid ' + t.palette.divider,
     borderBottom: t => '1px solid ' + t.palette.divider,

@@ -1,8 +1,9 @@
-import {Box, BoxProps, Icon, Slide} from '@mui/material'
+import {alpha, Box, BoxProps, Icon, Slide} from '@mui/material'
 import {IconBtn} from 'mui-extension/lib'
 import {layoutConfig} from '../index'
 import React from 'react'
 import {useLayoutContext} from '../LayoutContext'
+import {lighten} from '@mui/system/colorManipulator'
 
 interface Props extends BoxProps {
 }
@@ -34,11 +35,11 @@ export const Header = ({children}: Props) => {
             <IconBtn
               sx={{
                 mr: 1,
-                ...!sidebarOpen && {boxShadow: t => t.shadows[3]},
-                color: t => t.palette.secondary.contrastText,
-                backgroundColor: t => t.palette.secondary.main,
+                border: t => `2px solid ${t.palette.primary.main}`,
+                background: t => sidebarOpen ? 'none' : alpha(t.palette.primary.main, 0.1),
+                color: t => t.palette.primary.main,
                 '&:hover': {
-                  background: t => t.palette.secondary.light
+                  background: t => alpha(t.palette.primary.main, 0.1)
                 }
               }}
               onClick={() => setSidebarOpen(_ => !_)}

@@ -8,6 +8,7 @@ import {SidebarFooter} from './SidebarFooter'
 import {SidebarItem} from './SidebarItem'
 import {SidebarBody} from './SidebarBody'
 import {SidebarHeader} from './SidebarHeader'
+import {stopPropagation} from 'mui-extension'
 
 const sidebarId = 'signalconso-sidebar-id'
 
@@ -36,11 +37,11 @@ export const Sidebar = ({children, sx, ...props}: BoxProps) => {
   const {m} = useI18n()
 
   useEffect(() => {
-    // Element has been re-created by SwipeableDrawer, thus so reference is dead. 
+    // Element has been re-created by SwipeableDrawer, thus variable point to nothing. 
     sidebar = null
     stickSidebarToHeader()
     setSidebarOpen(_ => !isMobileWidth)
-  }, [isMobileWidth])
+  }, [isMobileWidth, sidebarPinned])
   
   useEffect(() => {
     window.addEventListener('scroll', stickSidebarToHeader)
@@ -84,7 +85,7 @@ export const Sidebar = ({children, sx, ...props}: BoxProps) => {
         </SidebarBody>
         {!isMobileWidth && (
           <SidebarFooter>
-            <SidebarItem icon="push_pin">
+            <SidebarItem onClick={stopPropagation(() => setSidebarPinned(_ => !_))} icon="push_pin" sx={{mr: 0, pr: 0}}>
               {m.pin}
               <Switch
                 color="primary"

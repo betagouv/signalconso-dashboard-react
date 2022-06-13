@@ -30,7 +30,6 @@ export const ScRadioGroupItem = ({
       {...props}
       sx={{
         display: 'flex',
-        // alignItems: 'center',
         alignItems: 'flex-start',
         border: t => '1px solid ' + t.palette.divider,
         borderBottomColor: 'transparent',
@@ -53,7 +52,7 @@ export const ScRadioGroupItem = ({
           border: t => `1px solid ${t.palette.primary.main}`,
           background: 'rgba(0,0,0,.04)',
         },
-        ...(inline && /*css.rootInline,*/ {
+        ...(inline && {
           borderRightColor: 'transparent',
           '&:last-of-type': {
             borderRight: t => '1px solid ' + t.palette.divider,
@@ -73,17 +72,17 @@ export const ScRadioGroupItem = ({
             borderBottom: t => '1px solid ' + t.palette.divider,
           },
         }),
-        ...(dense && /*css.rootDense,*/ {
+        ...(dense && {
           pt: 1 / 4,
           pb: 1 / 4,
         }),
-        ...(selected && /*css.rootSelected,*/ {
+        ...(selected && {
           zIndex: 1,
           border: t => `1px solid ${t.palette.primary.main} !important`,
           background: t => alpha(t.palette.primary.main, 0.1),
           boxShadow: t => `inset 0 0 0 1px ${t.palette.primary.main}`,
         }),
-        ...(error && /*css.rootError,*/ {
+        ...(error && {
           borderColor: t => t.palette.error.main + ' !important',
         }),
         ...sx,
