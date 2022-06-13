@@ -1,5 +1,6 @@
 import * as React from 'react'
-import {Box, BoxProps, SwipeableDrawer, Switch, useScrollTrigger} from '@mui/material'
+import {useEffect} from 'react'
+import {Box, BoxProps, SwipeableDrawer, Switch} from '@mui/material'
 import {useLayoutContext} from '../LayoutContext'
 import {layoutConfig} from '../index'
 import {useI18n} from '../../i18n'
@@ -7,7 +8,22 @@ import {SidebarFooter} from './SidebarFooter'
 import {SidebarItem} from './SidebarItem'
 import {SidebarBody} from './SidebarBody'
 import {SidebarHeader} from './SidebarHeader'
-import {useScroll} from '../../../shared/useScroll'
+
+const sidebarId = 'signalconso-sidebar-id'
+
+let sidebar: HTMLElement | null = null
+
+/**
+ * Don't do it the React way to improve perfs
+ */
+const stickSidebarToHeader = () => {
+  if (!sidebar) {
+    sidebar = document.getElementById(sidebarId)
+  }
+  if (sidebar) {
+    sidebar.style.top = Math.max(layoutConfig.headerHeight - window.scrollY, 0) + 'px'
+  }
+}
 
 export const Sidebar = ({children, sx, ...props}: BoxProps) => {
   const {
@@ -17,40 +33,33 @@ export const Sidebar = ({children, sx, ...props}: BoxProps) => {
     sidebarPinned,
     setSidebarPinned
   } = useLayoutContext()
-  const scrolled = useScrollTrigger({
-    disableHysteresis: true,
-    threshold: layoutConfig.headerHeight
-  })
   const {m} = useI18n()
 
-  const {scrollY} = useScroll()
-
+  useEffect(() => {
+    // Element has been re-created by SwipeableDrawer, thus so reference is dead. 
+    sidebar = null
+    stickSidebarToHeader()
+    setSidebarOpen(_ => !isMobileWidth)
+  }, [isMobileWidth])
+  
+  useEffect(() => {
+    window.addEventListener('scroll', stickSidebarToHeader)
+  }, [])
+  
   const isTemporary = isMobileWidth || !sidebarPinned
+  
   return (
     <SwipeableDrawer
-      // hideBackdrop
-      sx={{
-        // height: `calc(100vh - ${layoutConfig.headerHeight})`,
-        // width: '100vw'
-      }}
       PaperProps={{
+        id: sidebarId,
         sx: {
           position: 'fixed',
           border: 'none',
           bottom: 0,
-          top: Math.max(layoutConfig.headerHeight - scrollY, 0),
-          // width: layoutConfig.sidebarWith,
-          // ...scrolled || isTemporary ? {
-          // minHeight: '100vh',
-          // } : {
-          //   // minHeight: `calc(100vh - ${layoutConfig.headerHeight}px)`,
-          //   // top: 'auto',
-          //   position: 'absolute'
-          //   // top: layoutConfig.headerHeight,
-          //   // bottom: 0,
-          //   // mt: layoutConfig.headerHeight + 'px'
-          //   // position: 'absolute',
-          // }
+          height: 'auto',
+          ...isTemporary && {
+            top: '0 !important'
+          }
         }
       }}
       open={sidebarOpen}
@@ -59,15 +68,11 @@ export const Sidebar = ({children, sx, ...props}: BoxProps) => {
       variant={isTemporary ? 'temporary' : 'persistent'}
     >
       <Box sx={{
-        // height: '100%',
-        // ...scrolled || isTemporary ? {
-        // } : {
-        //   minHeight: `calc(100vh - ${layoutConfig.headerHeight}px)`
-        // },
-        transition: t => t.transitions.create('all'),
+        width: layoutConfig.sidebarWith,
+        height: '100%',
+        transition: t => t.transitions.create('width'),
         overflowY: 'auto',
         background: t => t.palette.background.default,
-        // height: `calc(100vh - ${headerHeight})`,
         display: 'flex',
         flexDirection: 'column',
         borderRadius: 0,
@@ -75,26 +80,21 @@ export const Sidebar = ({children, sx, ...props}: BoxProps) => {
       }} {...props}>
         <SidebarHeader hidden={!isTemporary} />
         <SidebarBody>
-          {/*<IconBtn size="small" color={sidebarPinned ? 'primary' : undefined}>*/}
-          {/*  <Icon*/}
-          {/*    fontSize="small"*/}
-          {/*    onClick={() => setSidebarPinned(_ => !_)}*/}
-          {/*  >*/}
-          {/*    pin*/}
-          {/*  </Icon>*/}
-          {/*</IconBtn>*/}
           {children}
         </SidebarBody>
-        <SidebarFooter>
-          <SidebarItem icon="lock">
-            {m.pin}
-            <Switch
-              color="primary"
-              sx={{ml: 'auto'}}
-              checked={sidebarPinned}
-              onChange={() => setSidebarPinned(_ => !_)} />
-          </SidebarItem>
-        </SidebarFooter>
+        {!isMobileWidth && (
+          <SidebarFooter>
+            <SidebarItem icon="push_pin">
+              {m.pin}
+              <Switch
+                color="primary"
+                sx={{ml: 'auto'}}
+                checked={sidebarPinned}
+                onChange={() => setSidebarPinned(_ => !_)}
+              />
+            </SidebarItem>
+          </SidebarFooter>
+        )}
       </Box>
     </SwipeableDrawer>
   )

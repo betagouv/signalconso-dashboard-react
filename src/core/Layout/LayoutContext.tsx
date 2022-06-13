@@ -8,6 +8,7 @@ export interface LayoutProviderProps {
   children: ReactNode
   mobileBreakpoint?: number
   title?: string
+  showSidebarButton?: boolean
 }
 
 export interface UseLayoutContextProps {
@@ -17,16 +18,21 @@ export interface UseLayoutContextProps {
   setSidebarPinned: Dispatch<SetStateAction<boolean>>
   title?: string
   isMobileWidth: boolean
+  showSidebarButton?: boolean
 }
 
-export const LayoutProvider = ({title, mobileBreakpoint = 700, children}: LayoutProviderProps) => {
+export const LayoutProvider = ({
+  title,
+  showSidebarButton,
+  mobileBreakpoint = 760,
+  children
+}: LayoutProviderProps) => {
   const [pageWidth, setPageWidth] = useState(getWidth())
   const [sidebarOpen, setSidebarOpen] = usePersistentState(true, 'sidebarOpen')
   const [sidebarPinned, setSidebarPinned] = usePersistentState(true, 'sidebarPinned')
   
   useEffect(() => {
     window.addEventListener('resize', () => setPageWidth(getWidth()))
-    // window.addEventListener('resize', debounce(() => setMobileWidth(getWidth()), 600))
   }, [])
 
   return (
@@ -38,6 +44,7 @@ export const LayoutProvider = ({title, mobileBreakpoint = 700, children}: Layout
         setSidebarPinned,
         title,
         isMobileWidth: pageWidth < mobileBreakpoint,
+        showSidebarButton,
       }}
     >
       {children}

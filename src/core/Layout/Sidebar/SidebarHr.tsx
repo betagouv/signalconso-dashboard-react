@@ -12,7 +12,7 @@ export const SidebarHr = ({sx, margin, ...props}: SidebarHrProps) => {
       height: '1px',
       background: t => t.palette.divider,
       ...margin && {
-        my: .5
+        my: 1,
       },
       '& + &': {
         display: 'none'

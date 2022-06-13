@@ -91,7 +91,7 @@ export const SidebarItemBody = ({children, to, icon, className, active, large, s
       display: 'flex',
       alignItems: 'center',
       textDecoration: 'inherit',
-      minHeight: 32,
+      minHeight: 34,
       color: t => t.palette.text.secondary,
       // py: 1 / 2,
       // pr: 1,
@@ -100,7 +100,7 @@ export const SidebarItemBody = ({children, to, icon, className, active, large, s
       pr: 1,
       pl: 2,
       my: 1 / 2,
-      ml: 1,
+      mx: 1,
       borderRadius: 42,
       ...large && {
         minHeight: 38
