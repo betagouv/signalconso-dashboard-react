@@ -1,11 +1,11 @@
 import * as React from 'react'
 import {useI18n} from '../../../core/i18n'
-import {useMemoFn} from '../../../shared/hooks/UseMemoFn'
 import {Enum} from '@alexandreannic/ts-utils/lib/common/enum/Enum'
 import {Icon, Tooltip} from '@mui/material'
 import {Panel, PanelBody, PanelHead} from '../../../shared/Panel'
 import {HorizontalBarChart} from '../../../shared/HorizontalBarChart/HorizontalBarChart'
 import {ReportStatus, ReportStatusPro} from '@signal-conso/signalconso-api-sdk-js'
+import {useMemoFn} from '@alexandreannic/react-hooks-lib/lib'
 
 interface Props<T extends ReportStatus | ReportStatusPro> {
   values: {[key in T]: number} | undefined

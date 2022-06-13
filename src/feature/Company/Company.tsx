@@ -1,6 +1,6 @@
 import * as React from 'react'
 import {useEffect} from 'react'
-import {useFetcher} from '@alexandreannic/react-hooks-lib/lib'
+import {useFetcher, useMemoFn} from '@alexandreannic/react-hooks-lib/lib'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
 import {useParams} from 'react-router'
 import {Page, PageTitle} from 'shared/Layout'
@@ -11,9 +11,8 @@ import {HorizontalBarChart} from 'shared/HorizontalBarChart/HorizontalBarChart'
 import {reportStatusColor, reportStatusProColor} from 'shared/ReportStatus/ReportStatus'
 import {useI18n} from 'core/i18n'
 import {Box, Grid, Icon, List, ListItem, Tooltip} from '@mui/material'
-import {useMemoFn} from 'shared/hooks/UseMemoFn'
 import {useEventContext} from 'core/context/EventContext'
-import {useEffectFn} from 'shared/hooks/UseEffectFn'
+import {useEffectFn} from '@alexandreannic/react-hooks-lib'
 import {useLogin} from 'core/context/LoginContext'
 import {Widget} from 'shared/Widget/Widget'
 import {siteMap} from 'core/siteMap'
@@ -32,7 +31,7 @@ import {CompanyChartPanel} from './CompanyChartPanel'
 export const CompanyComponent = () => {
   const {id} = useParams<{id: Id}>()
   const {apiSdk, connectedUser} = useLogin()
-  const {m, formatLargeNumber} = useI18n()
+  const {m} = useI18n()
   const {toastError} = useToast()
   const _company = useCompaniesContext()
   const _stats = useCompanyStats(id)
@@ -50,7 +49,7 @@ export const CompanyComponent = () => {
     _stats.tags.fetch()
     connectedUser.isPro ? _stats.statusPro.fetch() : _stats.status.fetch()
     _stats.responseDelay.fetch()
-  }, [])
+  }, [id])
 
   useEffectFn(_company.byId.error, toastError)
   useEffectFn(_company.hosts.error, toastError)

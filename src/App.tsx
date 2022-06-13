@@ -26,7 +26,7 @@ import {Settings} from './feature/Settings/Settings'
 import {Subscriptions} from './feature/Subscriptions/Subscriptions'
 import {SubscriptionsProvider} from './core/context/SubscriptionsContext'
 import {LoginPage} from './feature/Login/LoginPage'
-import {headerHeight, Layout} from './core/Layout'
+import {Layout, layoutConfig} from './core/Layout'
 import {Login} from './shared/Login/Login'
 import {LoginProvider, useLogin} from './core/context/LoginContext'
 import {useFetcher} from '@alexandreannic/react-hooks-lib/lib'
@@ -55,6 +55,8 @@ import {apiPublicSdk, makeSecuredSdk, SignalConsoApiSdk} from './core/ApiSdkInst
 import {Stats} from './feature/Stats/Stats'
 import {Admin} from './feature/Admin/Admin'
 import {ConsumerEmailValidationProvider} from './core/context/EmailValidationContext'
+import {ScSidebar} from './core/ScSidebar/ScSidebar'
+import {ScHeader} from './core/ScHeader/ScHeader'
 
 const Router: typeof HashRouter = config.useHashRouter ? HashRouter : BrowserRouter
 
@@ -89,7 +91,14 @@ const AppLogin = () => {
       getTokenFromResponse={_ => _.token}
     >
       {({authResponse, login, logout, register, isCheckingToken, setToken}) => (
-        <Layout connectedUser={authResponse ? {...authResponse.user, logout: logout} : undefined}>
+        <Layout
+          header={
+            <ScHeader/>
+          }
+          sidebar={authResponse?.user && (
+            <ScSidebar connectedUser={authResponse.user} logout={logout} />
+          )}
+        >
           <Switch>
             <Route path={siteMap.loggedout.emailValidation}>
               <EmailValidation onSaveToken={setToken} onValidateEmail={apiPublicSdk.authenticate.validateEmail} />
@@ -123,7 +132,7 @@ const AppLogin = () => {
                   <AppLogged />
                 </LoginProvider>
               ) : isCheckingToken ? (
-                <CenteredContent offset={headerHeight}>
+                <CenteredContent offset={layoutConfig.headerHeight}>
                   <CircularProgress />
                 </CenteredContent>
               ) : (
@@ -146,7 +155,7 @@ const AppLogin = () => {
 }
 
 const AppLogged = () => {
-  const {apiSdk, connectedUser} = useLogin()
+  const {apiSdk, connectedUser, logout} = useLogin()
   const history = useHistory()
   useEffect(() => history.listen(_ => Matomo.trackPage(`/${connectedUser.role.toLocaleLowerCase()}${_.pathname}`)), [history])
 
@@ -168,7 +177,7 @@ const AppLogged = () => {
         _ => <AccessesProvider api={apiSdk} children={_} />,
         _ => <BlockedReportNotificationProvider api={apiSdk} children={_} />,
         _ => <CompaniesDbSyncProvider api={apiSdk} children={_} />,
-        _ => <EventProvider api={apiSdk} children={_} />,
+        _ => <EventProvider api={apiSdk} children={_} />
       ]}
     >
       <Switch>

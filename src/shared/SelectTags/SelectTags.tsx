@@ -2,8 +2,8 @@ import * as React from 'react'
 import {CSSProperties, forwardRef, useEffect} from 'react'
 import {Icon, InputAdornment, TextField} from '@mui/material'
 import {SelectTagsMenu, SelectTagsMenuValues} from './SelectTagsMenu'
-import {useMemoFn} from '../hooks/UseMemoFn'
 import {Enum} from '@alexandreannic/ts-utils/lib/common/enum/Enum'
+import {useMemoFn} from '@alexandreannic/react-hooks-lib/lib'
 
 export interface SelectDepartmentsProps {
   value?: SelectTagsMenuValues

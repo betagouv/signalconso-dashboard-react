@@ -17,7 +17,7 @@ import {ReportConsumer} from './ReportConsumer/ReportConsumer'
 import {ReportCompany} from './ReportCompany/ReportCompany'
 import {ReportDescription} from './ReportDescription'
 import {useEventContext} from '../../core/context/EventContext'
-import {useEffectFn} from '../../shared/hooks/UseEffectFn'
+import {useEffectFn} from '@alexandreannic/react-hooks-lib'
 import {map} from '@alexandreannic/ts-utils'
 import {ScDialog} from '../../shared/Confirm/ScDialog'
 
