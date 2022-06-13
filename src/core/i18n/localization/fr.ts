@@ -1,4 +1,11 @@
-import {CompanyAccessLevel, ReportResponseTypes, ReportStatus, ReportStatusPro, ReportTag} from '@signal-conso/signalconso-api-sdk-js'
+import {
+  CompanyAccessLevel,
+  ReportResponseTypes,
+  ReportStatus,
+  ReportStatusPro,
+  ReportTag,
+  WebsiteKind,
+} from '@signal-conso/signalconso-api-sdk-js'
 import {config} from '../../../conf/config'
 import {formatDistance, formatDuration as formatDurationFns} from 'date-fns'
 import {ResponseEvaluation} from '@signal-conso/signalconso-api-sdk-js/lib/client/event/Event'
@@ -59,6 +66,25 @@ export const fr = {
       [ReportTag.CompagnieAerienne]: 'Compagnie aérienne',
       NA: 'Aucun tag',
     },
+    websiteKindDesc: {
+      [WebsiteKind.DEFAULT]: 'Identifié',
+      [WebsiteKind.PENDING]: 'Non identifié',
+      [WebsiteKind.MARKETPLACE]: 'Market Place'
+    },
+    investigationStatus : (s : string) => {
+      switch (s) {
+        case "NotProcessed":
+          return 'N/A'
+        case "Processing":
+          return 'Identification en cours'
+        case "UnderInvestigation":
+          return 'Enquête en cours'
+        case "InvestigationDone":
+          return 'Enquête terminée'
+        default:
+          return s;
+      }
+    },
     hide: 'Masquer',
     filter: 'Filtrer',
     yes: 'Oui',
@@ -110,8 +136,8 @@ export const fr = {
     help: 'Aide',
     created_at: 'Créé le',
     kind: "Status d'identification",
-    validated: 'Validé',
-    notValidated: 'Non validé',
+    identified: 'identifié',
+    notIdentified: 'Non identifié',
     configuration: 'Configuration',
     general: 'General',
     name: 'Nom',

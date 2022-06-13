@@ -5,7 +5,6 @@ import {Redirect, Route, Switch, useRouteMatch} from 'react-router-dom'
 import {siteMap} from '../../core/siteMap'
 import {PageTab, PageTabs} from '../../shared/Layout/Page/PageTabs'
 import {ReportedUnknownWebsites} from './ReportedUnknownWebsites'
-import {ReportedCompaniesWebsites} from './ReportedCompaniesWebsites'
 import {useLogin} from '../../core/context/LoginContext'
 import {WebsitesInvestigation} from './WebsitesInvestigation'
 
@@ -18,31 +17,19 @@ export const ReportedWebsites = () => {
     <Page size="xl">
       <PageTitle>{m.reportedWebsites}</PageTitle>
 
-      {connectedUser.isAdmin && (
-        <PageTabs>
-          <PageTab to={siteMap.logged.reportedWebsites_association} label={m.reportedCompaniesWebsites} />
-          <PageTab to={siteMap.logged.reportedWebsites_unknown} label={m.reportedUnknownWebsites} />
-          <PageTab to={siteMap.logged.websitesInvestigation} label={m.websitesInvestigation} />
-        </PageTabs>
-      )}
-
-      {connectedUser.isDGCCRF && (
         <PageTabs>
           <PageTab to={siteMap.logged.websitesInvestigation} label={m.websitesInvestigation} />
           <PageTab to={siteMap.logged.reportedWebsites_unknown} label={m.reportedUnknownWebsites} />
-          <PageTab to={siteMap.logged.reportedWebsites_association} label={m.reportedCompaniesWebsites} />
         </PageTabs>
-      )}
 
       <Switch>
         {connectedUser.isAdmin ? (
-          <Redirect exact from={path} to={siteMap.logged.reportedWebsites_association} />
+          <Redirect exact from={path} to={siteMap.logged.websitesInvestigation} />
         ) : (
           <Redirect exact from={path} to={siteMap.logged.websitesInvestigation} />
         )}
-        <Route path={siteMap.logged.reportedWebsites_association} component={ReportedCompaniesWebsites} />
-        <Route path={siteMap.logged.reportedWebsites_unknown} component={ReportedUnknownWebsites} />
         <Route path={siteMap.logged.websitesInvestigation} component={WebsitesInvestigation} />
+        <Route path={siteMap.logged.reportedWebsites_unknown} component={ReportedUnknownWebsites} />
       </Switch>
     </Page>
   )

@@ -125,7 +125,7 @@ export const ReportedCompaniesWebsites = () => {
                 >
                   {[WebsiteKind.PENDING, WebsiteKind.DEFAULT].map(kind => (
                     <ScMenuItem key={kind} value={kind}>
-                      {kind === WebsiteKind.PENDING ? m.notValidated : m.validated}
+                      {kind === WebsiteKind.PENDING ? m.notIdentified : m.identified}
                     </ScMenuItem>
                   ))}
                 </ScSelect>

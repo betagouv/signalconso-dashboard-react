@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react'
+import React, {useEffect, useMemo, useState} from 'react'
 import {useI18n} from '../../core/i18n'
 import {
   Badge, Box,
@@ -12,12 +12,11 @@ import {Panel} from '../../shared/Panel'
 import {Datatable} from '../../shared/Datatable/Datatable'
 import {DebouncedInput} from '../../shared/DebouncedInput/DebouncedInput'
 import {useReportedWebsiteWithCompanyContext} from '../../core/context/ReportedWebsitesContext'
-import {DepartmentDivision, WebsiteKind} from '@signal-conso/signalconso-api-sdk-js'
+import {cleanObject, DepartmentDivision, WebsiteKind} from '@signal-conso/signalconso-api-sdk-js'
 import {IconBtn} from 'mui-extension'
 
 import {useWebsiteInvestigationContext} from '../../core/context/WebsiteInvestigationContext'
 import {StatusChip} from './StatusChip'
-// import {SelectInvestigationAttributes} from './SelectInvestigationAttributes'
 import {WebsitesFilters} from "./WebsitesFilters";
 import {WebsiteIdentification} from "./WebsiteIdentification";
 import {WebsiteActions} from "./WebsiteActions";
@@ -65,6 +64,11 @@ export const WebsitesInvestigation = () => {
     fromNullable(_remove.error).map(toastError)
   }, [_updateStatus.error, fetch.error, _remove.error])
 
+  const filtersCount = useMemo(() => {
+    const {offset, limit, ...filters} = fetch.filters
+    return Object.keys(cleanObject(filters)).length
+  }, [fetch.filters])
+
 
 
   return (
@@ -92,9 +96,11 @@ export const WebsitesInvestigation = () => {
         actions={
           <>
             <Tooltip title={m.removeAllFilters}>
+              <Badge color="error" badgeContent={filtersCount} hidden={filtersCount === 0} overlap="circular">
               <IconBtn color="primary" onClick={fetch.clearFilters}>
                 <Icon>clear</Icon>
               </IconBtn>
+              </Badge>
             </Tooltip>
             <WebsitesFilters
               filters={fetch.filters}
@@ -176,7 +182,7 @@ export const WebsitesInvestigation = () => {
               <SelectInvestigationAttributes<string>
                 title={m.affectationTitle}
                 inputLabel={m.affectation}
-                getValueName={_ => _}
+                getValueName={_ => m.investigationStatus(_)}
                 onChange={investigationStatus => {
                   if (_.investigationStatus === investigationStatus) {
                     toastInfo(m.alreadySelectedValue(investigationStatus))
@@ -194,7 +200,7 @@ export const WebsitesInvestigation = () => {
                 }}
                 listValues={investigationStatus}
               >
-                <StatusChip tooltipTitle={m.investigation} value={_.investigationStatus ?? m.noValue}/>
+                <StatusChip tooltipTitle={m.investigation} value={_.investigationStatus ? m.investigationStatus(_.investigationStatus) : m.noValue}/>
               </SelectInvestigationAttributes>
             ),
           },
@@ -205,7 +211,7 @@ export const WebsitesInvestigation = () => {
               <SelectInvestigationAttributes<DepartmentDivision>
                 title={m.affectationTitle}
                 inputLabel={m.affectation}
-                getValueName={_ => _.name}
+                getValueName={_ => _.code +" - " + _.name}
                 onChange={departmentDivision => {
                   if (departmentDivision && _.attribution === departmentDivision.code) {
                     toastInfo(m.alreadySelectedValue(departmentDivision?.name))

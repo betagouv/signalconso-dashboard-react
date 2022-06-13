@@ -73,12 +73,12 @@ export const WebsitesFilters = ({filters, updateFilters, children, ...props}: We
                   {...field}
                   fullWidth
                   withSelectAll
-                  renderValue={kinds => `(${kinds.length}) ${kinds.join(',')}`}
+                  renderValue={kinds => `(${kinds.length}) ${kinds.map(kind => m.websiteKindDesc[kind]).join(',')}`}
                 >
                   {[WebsiteKind.PENDING, WebsiteKind.DEFAULT].map(kind => (
                     <ScMenuItem withCheckbox key={kind} value={kind}>
                       <Label {...props}>
-                        {kind === WebsiteKind.PENDING ? m.notValidated : m.validated}
+                        {m.websiteKindDesc[kind]}
                       </Label>
                     </ScMenuItem>
                   ))}
