@@ -40,7 +40,6 @@ export const SelectInvestigationAttributes = <T extends unknown>({
   return (
     <ScDialog
       PaperProps={{style: {position: 'static'}}}
-      // confirmDisabled={!value}
       maxWidth="sm"
       title={title}
       content={_ => (
@@ -61,7 +60,6 @@ export const SelectInvestigationAttributes = <T extends unknown>({
         </>
       )}
       onConfirm={(_, close) => {
-        // value &&
         onChange(value)
         close()
       }}
