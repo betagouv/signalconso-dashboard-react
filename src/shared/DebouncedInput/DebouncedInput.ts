@@ -8,13 +8,14 @@ interface DebouncedInputProps<V> {
   children: (value: V | undefined, onChange: (e: V) => void) => any
 }
 
-// FIXME(Alex) Trigger only one onChange but 2 API calls.
 export const DebouncedInput = <V>({debounce: debounceTime = 450, value, onChange, children}: DebouncedInputProps<V>) => {
   const [innerValue, setInnerValue] = useState<V | undefined>(value)
   const debounced = useCallback(debounce(onChange, debounceTime), [onChange])
 
   useEffect(() => {
-    setInnerValue(value)
+    if (value !== innerValue) {
+      setInnerValue(value)
+    }
   }, [value])
 
   const innerOnChange = (newValue: V) => {

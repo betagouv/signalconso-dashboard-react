@@ -21,11 +21,10 @@ export const ConsumerListPending = () => {
 
   useEffect(() => {
     _users.fetch()
-  }, [])
+  }, [_users.filters])
 
   useEffectFn(_users.error, toastError)
 
-  console.log(_users.list?.data)
   return (
     <Panel>
       <Datatable

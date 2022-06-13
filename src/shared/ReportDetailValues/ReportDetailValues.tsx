@@ -24,7 +24,7 @@ export const ReportDetailValues = ({input, lines = 2, hideTooltip, sx, ...props}
             sx={{fontWeight: t => t.typography.fontWeightBold}}
           />
           &nbsp;
-          <Box component="span" dangerouslySetInnerHTML={{__html: detail.value}} sx={{color: t => t.palette.text.secondary}} />
+          <Box component="span" dangerouslySetInnerHTML={{__html: detail.value}}/>
         </div>
       ))}
     >

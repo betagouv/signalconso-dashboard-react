@@ -2,7 +2,6 @@ import React, {useEffect, useState} from 'react'
 import {useI18n} from '../../core/i18n'
 import {Box, Chip, FormControlLabel, Icon, InputBase, Switch, Tooltip} from '@mui/material'
 import {useToast} from '../../core/toast'
-import {fromNullable} from 'fp-ts/lib/Option'
 import {Panel} from '../../shared/Panel'
 import {Datatable} from '../../shared/Datatable/Datatable'
 import {DebouncedInput} from '../../shared/DebouncedInput/DebouncedInput'
@@ -17,6 +16,7 @@ import {SelectCountry} from './SelectCountry'
 import {classes} from '../../core/helper/utils'
 import {ScMenuItem} from '../MenuItem/MenuItem'
 import {sxUtils} from '../../core/theme'
+import {useEffectFn} from '@alexandreannic/react-hooks-lib'
 
 const iconWidth = 50
 
@@ -42,9 +42,6 @@ const css = makeSx({
   iconWidth: {
     width: iconWidth,
   },
-  status: {
-    maxWidth: 180,
-  },
 })
 
 const countryToFlag = (isoCode: string) => {
@@ -68,26 +65,20 @@ export const ReportedCompaniesWebsites = () => {
   const _updateStatus = useReportedWebsiteWithCompanyContext().update
   const _updateCompany = useReportedWebsiteWithCompanyContext().updateCompany
   const _updateCountry = useReportedWebsiteWithCompanyContext().updateCountry
-  const [countries, setCountries] = useState<Country[]>([])
-  const {toastError, toastInfo, toastSuccess} = useToast()
+  const {toastError, toastInfo} = useToast()
 
   useEffect(() => {
     _fetch.updateFilters({..._fetch.initialFilters})
+    _countries.fetch({})
   }, [])
 
   useEffect(() => {
     _fetch.fetch()
-  }, [])
+  }, [_fetch.filters])
 
-  useEffect(() => {
-    _countries.fetch({}).then(setCountries)
-  }, [])
-
-  useEffect(() => {
-    fromNullable(_fetch.error).map(toastError)
-    fromNullable(_updateStatus.error).map(toastError)
-    fromNullable(_remove.error).map(toastError)
-  }, [_fetch.error, _updateStatus.error, _remove.error])
+  useEffectFn(_fetch.error, toastError)
+  useEffectFn(_updateStatus.error, toastError)
+  useEffectFn(_remove.error, toastError)
 
   return (
     <Panel>
@@ -103,8 +94,7 @@ export const ReportedCompaniesWebsites = () => {
                 <InputBase
                   value={value}
                   placeholder={m.searchByHost + '...'}
-                  fullWidth
-                  sx={{ml: 1}}
+                  sx={{ml: 1, flex: 1}}
                   onChange={e => onChange(e.target.value)}
                 />
               )}
@@ -117,9 +107,8 @@ export const ReportedCompaniesWebsites = () => {
                 <ScSelect
                   value={value}
                   onChange={e => onChange(e.target.value as WebsiteKind[])}
-                  fullWidth
                   multiple
-                  sx={css.status}
+                  sx={{width: 160}}
                 >
                   {[WebsiteKind.PENDING, WebsiteKind.DEFAULT].map(kind => (
                     <ScMenuItem key={kind} value={kind}>

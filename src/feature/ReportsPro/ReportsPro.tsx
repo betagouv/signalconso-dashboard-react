@@ -127,6 +127,7 @@ export const ReportsPro = () => {
 
   useEffect(() => {
     queryString.update(cleanObject(_reports.filters))
+    _reports.fetch()
   }, [_reports.filters])
 
   return (
