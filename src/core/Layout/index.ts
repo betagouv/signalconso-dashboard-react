@@ -1,6 +1,6 @@
 export const layoutConfig = {
   headerHeight: 64,
-  sidebarWith: 226,
+  sidebarWith: 230,
   headerPx: 2,
 }
 

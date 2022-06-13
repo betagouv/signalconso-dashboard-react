@@ -32,10 +32,13 @@ export const Header = ({children}: Props) => {
             <IconBtn
               sx={{
                 mr: 1,
-                color: t => sidebarOpen ? t.palette.primary.main : t.palette.text.disabled,
-                background: t => sidebarOpen ? lighten(t.palette.primary.light, .4) : t.palette.divider,
+                ...!sidebarOpen && {boxShadow: t => t.shadows[3]},
+                color: t => t.palette.secondary.contrastText,
+                backgroundColor: t => t.palette.secondary.main,
+                // color: t => sidebarOpen ? t.palette.primary.main : t.palette.text.disabled,
+                // background: t => sidebarOpen ? lighten(t.palette.primary.light, .4) : t.palette.divider,
                 '&:hover': {
-                  background: t => t.palette.primary.light
+                  background: t => t.palette.secondary.light
                 }
               }}
               onClick={() => setSidebarOpen(_ => !_)}
