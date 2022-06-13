@@ -1,7 +1,8 @@
 import {red} from '@mui/material/colors'
-import {alpha, createTheme, SxProps, Theme} from '@mui/material'
+import {alpha, createTheme, darken, SxProps, Theme} from '@mui/material'
 import {ThemeOptions} from '@mui/material/styles/createTheme'
 import {makeSx} from 'mui-extension'
+import {lighten} from '@mui/system/colorManipulator'
 
 export const combineSx = (...sxs: (SxProps<Theme> | undefined | false)[]): SxProps<Theme> => {
   return sxs.reduce((res, sx) => (sx !== undefined && sx !== false ? {...res, ...sx} : res), {} as any)
@@ -85,8 +86,8 @@ export const muiTheme = (dark?: boolean): Theme => {
   }
   const colorSecondary = {
     main: '#1e2b50',
-    light: '#1e2b50',
-    dark: '#1e2b50',
+    light: lighten('#1e2b50', .3),
+    dark: darken('#1e2b50', .3),
   }
   const baseTheme = createTheme({
     spacing: defaultSpacing,

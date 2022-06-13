@@ -1,45 +1,50 @@
 import * as React from 'react'
-import {createContext, ReactNode, useContext, useEffect, useState} from 'react'
+import {createContext, Dispatch, ReactNode, SetStateAction, useContext, useEffect, useState} from 'react'
+import {usePersistentState} from 'react-persistent-state'
 
-const LayoutContext = createContext<LayoutContextProps>({} as LayoutContextProps)
+const LayoutContext = createContext<UseLayoutContextProps>({} as UseLayoutContextProps)
 
 export interface LayoutProviderProps {
   children: ReactNode
   mobileBreakpoint?: number
   title?: string
+  showSidebarButton?: boolean
 }
 
-export interface LayoutContextProps {
+export interface UseLayoutContextProps {
+  sidebarOpen: boolean
+  setSidebarOpen: Dispatch<SetStateAction<boolean>>
+  sidebarPinned: boolean
+  setSidebarPinned: Dispatch<SetStateAction<boolean>>
   title?: string
   isMobileWidth: boolean
-  isMobileSidebarOpened: boolean
-  openMobileSidebar: () => void
-  closeMobileSidebar: () => void
-  toggleMobileSidebar: () => void
+  showSidebarButton?: boolean
 }
 
-export const LayoutProvider = ({title, mobileBreakpoint = 700, children}: LayoutProviderProps) => {
-  const [isMobileSidebarOpened, setIsMobileSidebarOpened] = useState(false)
+export const LayoutProvider = ({
+  title,
+  showSidebarButton,
+  mobileBreakpoint = 760,
+  children
+}: LayoutProviderProps) => {
   const [pageWidth, setPageWidth] = useState(getWidth())
-
-  const openMobileSidebar = () => setIsMobileSidebarOpened(true)
-  const closeMobileSidebar = () => setIsMobileSidebarOpened(false)
-  const toggleMobileSidebar = () => setIsMobileSidebarOpened(!isMobileSidebarOpened)
-
+  const [sidebarOpen, setSidebarOpen] = usePersistentState(true, 'sidebarOpen')
+  const [sidebarPinned, setSidebarPinned] = usePersistentState(true, 'sidebarPinned')
+  
   useEffect(() => {
     window.addEventListener('resize', () => setPageWidth(getWidth()))
-    // window.addEventListener('resize', debounce(() => setMobileWidth(getWidth()), 600))
   }, [])
 
   return (
     <LayoutContext.Provider
       value={{
-        isMobileSidebarOpened,
-        openMobileSidebar,
-        closeMobileSidebar,
-        toggleMobileSidebar,
+        sidebarOpen, 
+        setSidebarOpen,
+        sidebarPinned, 
+        setSidebarPinned,
         title,
         isMobileWidth: pageWidth < mobileBreakpoint,
+        showSidebarButton,
       }}
     >
       {children}
@@ -51,6 +56,6 @@ function getWidth(): number {
   return window.outerWidth
 }
 
-export const useLayoutContext = (): LayoutContextProps => {
-  return useContext<LayoutContextProps>(LayoutContext)
+export const useLayoutContext = (): UseLayoutContextProps => {
+  return useContext<UseLayoutContextProps>(LayoutContext)
 }

@@ -30,6 +30,7 @@ export const EditConsumerDialog = ({report, onChange, children}: Props) => {
   } = useForm<Form>({mode: 'onChange'})
   return (
     <ScDialog
+      PaperProps={{sx: {overflow: 'visible'}}}
       title={m.editConsumer}
       maxWidth="xs"
       confirmLabel={m.edit}

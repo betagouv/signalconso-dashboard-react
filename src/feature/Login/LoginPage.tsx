@@ -4,7 +4,6 @@ import * as React from 'react'
 import {useEffect} from 'react'
 import {useI18n} from '../../core/i18n'
 import {CenteredContent} from '../../shared/CenteredContent/CenteredContent'
-import {headerHeight} from '../../core/Layout'
 import {ActivateAccountForm} from './ActivateAccountForm'
 import {LoginForm} from './LoginForm'
 import {Link, Redirect, Route, Switch} from 'react-router-dom'
@@ -13,6 +12,7 @@ import {ApiError, SignalConsoPublicSdk} from '@signal-conso/signalconso-api-sdk-
 import {HelpContactInfo} from '../../shared/HelpContactInfo/HelpContactInfo'
 import {useHistory} from 'react-router'
 import {Matomo} from '../../core/plugins/Matomo'
+import {layoutConfig} from '../../core/Layout'
 
 export interface ActionProps<F extends (...args: any[]) => Promise<any>> {
   action: F
@@ -34,7 +34,7 @@ export const LoginPage = ({login, register, forgottenPassword}: Props) => {
   const allTabs = [siteMap.loggedout.login, siteMap.loggedout.register]
 
   return (
-    <CenteredContent offset={headerHeight}>
+    <CenteredContent offset={layoutConfig.headerHeight}>
       <Page sx={{maxWidth: 400}}>
         <Route
           path="/"

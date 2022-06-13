@@ -1,10 +1,11 @@
 import React, {ReactElement, useEffect, useState} from 'react'
 import {useI18n} from '../../core/i18n'
 import {Country} from '@signal-conso/signalconso-api-sdk-js'
-import {Autocomplete, TextField} from '@mui/material'
+import {Autocomplete} from '@mui/material'
 import {useConstantContext} from '../../core/context/ConstantContext'
 import {ScDialog} from '../../shared/Confirm/ScDialog'
 import {fromNullable} from 'fp-ts/es6/Option'
+import {ScInput} from '../../shared/Input/ScInput'
 
 interface Props {
   children: ReactElement<any>
@@ -45,7 +46,7 @@ export const SelectCountry = ({children, onChange, country}: Props) => {
             }}
             options={countries}
             getOptionLabel={option => option.name}
-            renderInput={params => <TextField {...params} label={m.foreignCountry} />}
+            renderInput={params => <ScInput {...params} label={m.foreignCountry} />}
           />
         </>
       )}
