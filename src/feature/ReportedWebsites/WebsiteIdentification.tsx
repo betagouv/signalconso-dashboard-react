@@ -34,7 +34,8 @@ interface Props extends BoxProps {
 export const WebsiteIdentification = ({onChangeDone, website, ...props}: Props) => {
 
   const {m} = useI18n()
-  const [value, setValue] = React.useState('1');
+  const companyTab = "1";
+  const [selectedTab, setSelectedTab] = React.useState(companyTab);
   const [open, setOpen] = React.useState(false);
   const _updateCompany = useReportedWebsiteWithCompanyContext().updateCompany
   const _updateCountry = useReportedWebsiteWithCompanyContext().updateCountry
@@ -44,11 +45,11 @@ export const WebsiteIdentification = ({onChangeDone, website, ...props}: Props) 
   const {toastError, toastInfo, toastSuccess} = useToast()
 
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
-    setValue(newValue);
+    setSelectedTab(newValue);
   };
 
 
-  const updateCompany = (close: () => void) => {
+  const updateCompany = () => {
     if (company) {
       if (website.company && website.company.siret === company.siret) {
         toastInfo(m.alreadySelectedCompany(company.name))
@@ -62,12 +63,11 @@ export const WebsiteIdentification = ({onChangeDone, website, ...props}: Props) 
           })
           .then(_ => toastSuccess(m.websiteEdited))
           .then( _ => onChangeDone())
-          .then( _ => close())
       }
     }
   }
 
-  const updateCountry = (close: () => void) => {
+  const updateCountry = () => {
     if (country) {
       if (country === website.companyCountry) {
         toastInfo(m.alreadySelectedCountry(country?.name))
@@ -75,12 +75,12 @@ export const WebsiteIdentification = ({onChangeDone, website, ...props}: Props) 
         _updateCountry.fetch({}, website.id, country)
           .then(_ => toastSuccess(m.websiteEdited))
           .then( _ => onChangeDone())
-          .then( _ => close())
       }
     }
   }
 
 
+  const countryTab = "2";
   return (
     <ScDialog
       PaperProps={{style: {overflow: "visible"}}}
@@ -88,7 +88,7 @@ export const WebsiteIdentification = ({onChangeDone, website, ...props}: Props) 
       title="Identification du site internet"
       content={_ => (
         <>
-          <TabContext value={value}>
+          <TabContext value={selectedTab}>
             <TabList onChange={handleChange} aria-label="basic tabs example">
               <Tab id={"tab-1"} label="Attacher à une entreprise" value="1"/>
               <Tab id={"tab-2"} label="Attacher à un pays étranger" value="2"/>
@@ -110,10 +110,11 @@ export const WebsiteIdentification = ({onChangeDone, website, ...props}: Props) 
           </TabContext>
         </>
       )}
-      confirmDisabled={(value === "1" && company === undefined) || (value === "2" && country === undefined) }
+      confirmDisabled={(selectedTab === companyTab && company === undefined) || (selectedTab === countryTab && country === undefined) }
       onConfirm={(event, close) => {
-        company && updateCompany(close)
-        country && updateCountry(close)
+        company && updateCompany()
+        country && updateCountry()
+        close()
       }}
     >
 

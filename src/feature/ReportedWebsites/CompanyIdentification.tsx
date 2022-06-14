@@ -25,7 +25,6 @@ export const CompanyIdentification = ({onChange, siret}: Props) => {
   const {m} = useI18n()
   const _company = useCompaniesContext().searchByIdentity
   const [inputValue, setInputValue] = useState<Id | undefined>(siret)
-  const {toastError, toastInfo, toastSuccess} = useToast()
 
   useEffect(() => {
     _company.clearCache()
