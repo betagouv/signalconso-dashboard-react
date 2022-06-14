@@ -28,10 +28,10 @@ interface Website {
 
 interface Props extends BoxProps {
   website: Website
-  onChangeDone?: () => void
+  onChangeDone: () => void
 }
 
-export const WebsiteIdentification = ({onChangeDone, website,...props}: Props) => {
+export const WebsiteIdentification = ({onChangeDone, website, ...props}: Props) => {
 
   const {m} = useI18n()
   const [value, setValue] = React.useState('1');
@@ -42,15 +42,15 @@ export const WebsiteIdentification = ({onChangeDone, website,...props}: Props) =
   const [country, setCountry] = useState<Country | undefined>(website.companyCountry)
 
   const {toastError, toastInfo, toastSuccess} = useToast()
+
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setValue(newValue);
   };
 
 
-
-  const updateCompany = () => {
-    if (company && website.companyCountry === country) {
-      if (website.company &&  website.company.siret === company.siret) {
+  const updateCompany = (close: () => void) => {
+    if (company) {
+      if (website.company && website.company.siret === company.siret) {
         toastInfo(m.alreadySelectedCompany(company.name))
       } else {
         _updateCompany
@@ -59,29 +59,33 @@ export const WebsiteIdentification = ({onChangeDone, website,...props}: Props) =
             name: company.name,
             address: company.address,
             activityCode: company.activityCode,
-          }).then(_ => toastSuccess(m.websiteEdited))
+          })
+          .then(_ => toastSuccess(m.websiteEdited))
+          .then( _ => onChangeDone())
+          .then( _ => close())
+      }
+    }
+  }
+
+  const updateCountry = (close: () => void) => {
+    if (country) {
+      if (country === website.companyCountry) {
+        toastInfo(m.alreadySelectedCountry(country?.name))
+      } else {
+        _updateCountry.fetch({}, website.id, country)
+          .then(_ => toastSuccess(m.websiteEdited))
+          .then( _ => onChangeDone())
+          .then( _ => close())
       }
     }
   }
 
 
-  const updateCountry = () => {
-    if (country && website.company === company) {
-      if (country === website.companyCountry) {
-        toastInfo(m.alreadySelectedCountry(country?.name))
-      } else {
-        _updateCountry.fetch({},website.id, country)
-      }
-      }
-
-  }
-
-
   return (
     <ScDialog
-      PaperProps={{style: {overflow : "visible"}}}
+      PaperProps={{style: {overflow: "visible"}}}
       maxWidth="sm"
-      title={"Identification du site internet"}
+      title="Identification du site internet"
       content={_ => (
         <>
           <TabContext value={value}>
@@ -90,33 +94,26 @@ export const WebsiteIdentification = ({onChangeDone, website,...props}: Props) =
               <Tab id={"tab-2"} label="Attacher à un pays étranger" value="2"/>
             </TabList>
 
-            <TabPanel value={"1"}>
+            <TabPanel value="1">
               <CompanyIdentification siret={company?.siret} onChange={companyChanged => {
                 setCompany(companyChanged)
-                setCountry(website.companyCountry)
+                setCountry(undefined)
               }}/>
             </TabPanel>
 
-            <TabPanel value={"2"}>
+            <TabPanel value="2">
               <CountryIdentification country={website.companyCountry} onChange={companyCountry => {
-                setCompany(website.company)
+                setCompany(undefined)
                 setCountry(companyCountry)
               }}/>
             </TabPanel>
           </TabContext>
         </>
       )}
+      confirmDisabled={(value === "1" && company === undefined) || (value === "2" && country === undefined) }
       onConfirm={(event, close) => {
-        if (company && website.companyCountry === country){
-          updateCompany()
-          close()
-          onChangeDone && onChangeDone()
-        }
-        if (country && website.company === company){
-          updateCountry()
-          close()
-          onChangeDone && onChangeDone()
-        }
+        company && updateCompany(close)
+        country && updateCountry(close)
       }}
     >
 

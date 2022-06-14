@@ -28,6 +28,7 @@ export const CompanyIdentification = ({onChange, siret}: Props) => {
   const {toastError, toastInfo, toastSuccess} = useToast()
 
   useEffect(() => {
+    _company.clearCache()
     fromNullable(siret)
       .filter(x => x === inputValue)
       .map(setInputValue)
