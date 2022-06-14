@@ -10,7 +10,7 @@ import {Panel, PanelBody, PanelHead} from 'shared/Panel'
 import {HorizontalBarChart} from 'shared/HorizontalBarChart/HorizontalBarChart'
 import {reportStatusColor, reportStatusProColor} from 'shared/ReportStatus/ReportStatus'
 import {useI18n} from 'core/i18n'
-import {Box, Grid, Icon, List, ListItem, Tooltip} from '@mui/material'
+import {Box, Grid, Icon, Tooltip} from '@mui/material'
 import {useEventContext} from 'core/context/EventContext'
 import {useEffectFn} from '@alexandreannic/react-hooks-lib'
 import {useLogin} from 'core/context/LoginContext'
@@ -27,6 +27,7 @@ import {StatusDistribution} from './stats/StatusDistribution'
 import {ReviewDistribution} from './stats/ReviewDistribution'
 import {CompanyInfo} from './stats/CompanyInfo'
 import {CompanyChartPanel} from './CompanyChartPanel'
+import {map} from '@alexandreannic/ts-utils'
 
 export const CompanyComponent = () => {
   const {id} = useParams<{id: Id}>()
@@ -64,16 +65,19 @@ export const CompanyComponent = () => {
     _accesses.fetch({}, _.siret)
     _report.updateFilters({siretSirenList: [_.siret], offset: 0, limit: 5})
   })
+  useEffect(() => {
+    _report.fetch()
+  }, [_report.filters])
 
   const postActivationDocEvents = useMemoFn(_event.companyEvents.entity, events =>
-    events.map(_ => _.data).filter(_ => _.action === EventActionValues.PostAccountActivationDoc),
+    events.map(_ => _.data).filter(_ => _.action === EventActionValues.PostAccountActivationDoc)
   )
 
   const tagsDistribution = useMemoFn(_stats.tags.entity, _ =>
     Object.entries(_).map(([label, count]) => ({
       label,
-      value: count,
-    })),
+      value: count
+    }))
   )
 
   return (
@@ -165,14 +169,20 @@ export const CompanyComponent = () => {
               <CompanyInfo company={company} />
               {connectedUser.isNotPro && (
                 <Panel loading={_company.hosts.loading}>
-                  <PanelHead>{m.websites}</PanelHead>
-                  <Box sx={{maxHeight: 260, overflow: 'auto'}}>
-                    <List dense>
+                  <PanelHead>{m.websites} {map(_company.hosts.entity, _ => `(${_.length})`)}</PanelHead>
+                  <PanelBody>
+                    <Box component="ul" sx={{
+                      maxHeight: 260,
+                      overflow: 'auto',
+                      listStyle: 'none',
+                      p: 0,
+                      m: 0,
+                    }}>
                       {_company.hosts.entity?.map((host, i) => (
-                        <ListItem key={i}>{host}</ListItem>
+                        <Box component="li" key={i} sx={{mb: 1}}>{host}</Box>
                       ))}
-                    </List>
-                  </Box>
+                    </Box>
+                  </PanelBody>
                 </Panel>
               )}
             </Grid>

@@ -31,8 +31,8 @@ export const CompaniesToActivate = () => {
 
   useEffect(() => {
     _companiesToActivate.fetch()
-  }, [])
-
+  }, [_companiesToActivate.filters])
+  
   useEffect(() => {
     fromNullable(_companiesToActivate.error).map(toastError)
   }, [_companiesToActivate.error])

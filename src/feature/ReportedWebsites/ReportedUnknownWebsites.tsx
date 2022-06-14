@@ -18,11 +18,11 @@ import {sxUtils} from '../../core/theme'
 export const ReportedUnknownWebsites = () => {
   const {m} = useI18n()
   const _fetch = useUnregistredWebsiteWithCompanyContext()
-  const {toastError, toastSuccess} = useToast()
+  const {toastError} = useToast()
 
   useEffect(() => {
     _fetch.fetch()
-  }, [])
+  }, [_fetch.filters])
 
   useEffect(() => {
     fromNullable(_fetch.error).map(toastError)

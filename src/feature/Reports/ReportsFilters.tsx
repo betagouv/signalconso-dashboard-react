@@ -46,7 +46,7 @@ const rationalizeFilters = (f: ReportSearch): ReportSearch => ({
 
 export const toReportTagValues = <T extends Pick<ReportSearch, 'withTags' | 'withoutTags'>>(
   filters: T,
-): T & {tags: SelectTagsMenuValues} => {
+): T & { tags: SelectTagsMenuValues } => {
   const tags: SelectTagsMenuValues = {}
   filters.withTags?.forEach(tag => {
     tags[tag] = 'included'
@@ -145,6 +145,7 @@ const _ReportsFilters = ({filters, updateFilters, children}: _ReportsFiltersProp
                   control={control}
                   render={({field}) => (
                     <TrueFalseUndefined
+                      emitEmptyString
                       label={{
                         true: <TrueLabel />,
                       }}
@@ -221,6 +222,7 @@ const _ReportsFilters = ({filters, updateFilters, children}: _ReportsFiltersProp
                   control={control}
                   render={({field}) => (
                     <TrueFalseUndefined
+                      emitEmptyString
                       {...field}
                       label={{
                         true: <TrueLabel />,
@@ -242,6 +244,7 @@ const _ReportsFilters = ({filters, updateFilters, children}: _ReportsFiltersProp
                   control={control}
                   render={({field}) => (
                     <TrueFalseUndefined
+                      emitEmptyString
                       {...field}
                       label={{
                         true: <TrueLabel />,
@@ -263,6 +266,7 @@ const _ReportsFilters = ({filters, updateFilters, children}: _ReportsFiltersProp
                   control={control}
                   render={({field}) => (
                     <TrueFalseUndefined
+                      emitEmptyString
                       {...field}
                       label={{
                         true: <TrueLabel />,
@@ -292,6 +296,7 @@ const _ReportsFilters = ({filters, updateFilters, children}: _ReportsFiltersProp
                   control={control}
                   render={({field: {value, onChange, ...otherField}}) => (
                     <TrueFalseUndefined
+                      emitEmptyString
                       {...otherField}
                       value={!value}
                       onChange={_ => onChange(_ === undefined ? undefined : !_)}
@@ -305,7 +310,9 @@ const _ReportsFilters = ({filters, updateFilters, children}: _ReportsFiltersProp
                   name="hasAttachment"
                   defaultValue={filters.hasAttachment}
                   control={control}
-                  render={({field}) => <TrueFalseUndefined {...field} sx={{mt: 1}} />}
+                  render={({field}) => <TrueFalseUndefined
+                    emitEmptyString
+                    {...field} sx={{mt: 1}} />}
                 />
               </DialogInputRow>
             </DialogContent>

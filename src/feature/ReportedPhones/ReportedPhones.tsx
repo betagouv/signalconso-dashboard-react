@@ -24,7 +24,7 @@ export const ReportedPhones = () => {
 
   useEffect(() => {
     _reportedPhone.fetch()
-  }, [])
+  }, [_reportedPhone.filters])
 
   useEffect(() => {
     fromNullable(_reportedPhone.error).map(toastError)

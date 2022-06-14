@@ -3,14 +3,12 @@ import {IconBtn} from 'mui-extension/lib'
 import {layoutConfig} from '../index'
 import React from 'react'
 import {useLayoutContext} from '../LayoutContext'
-import {lighten} from '@mui/system/colorManipulator'
 
 interface Props extends BoxProps {
 }
 
 export const Header = ({children}: Props) => {
   const {sidebarOpen, showSidebarButton, setSidebarOpen} = useLayoutContext()
-
 
   return (
     <Slide direction="down" in={true} mountOnEnter unmountOnExit>
