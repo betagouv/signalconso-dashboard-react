@@ -1,10 +1,9 @@
 import React, {ReactElement} from 'react'
 import {useI18n} from '../../core/i18n'
-import {Autocomplete, TextField, Theme} from '@mui/material'
-import makeStyles from '@mui/styles/makeStyles'
-import {ScDialog} from '../../shared/Confirm/ScDialog'
+import {Autocomplete} from '@mui/material'
+import {ScDialog} from '../Confirm/ScDialog'
 import {fromNullable} from 'fp-ts/es6/Option'
-import {ScInput} from "../../shared/Input/ScInput";
+import {ScInput} from '../Input/ScInput'
 
 interface Props<T> {
   children: ReactElement<any>
@@ -16,15 +15,7 @@ interface Props<T> {
   options?: T[]
 }
 
-const useStyles = makeStyles((t: Theme) => ({
-  input: {
-    marginBottom: t.spacing(1.5),
-    minWidth: 280,
-    width: 300,
-  },
-}))
-
-export const SelectInvestigationAttributes = <T extends unknown>({
+export const AutocompleteDialog = <T extends unknown>({
   children,
   inputLabel,
   title,
@@ -35,7 +26,6 @@ export const SelectInvestigationAttributes = <T extends unknown>({
 }: Props<T>) => {
   const {m} = useI18n()
   const [value, setValue] = React.useState<T | undefined>(defaultValue)
-  const css = useStyles()
 
   return (
     <ScDialog
@@ -48,13 +38,17 @@ export const SelectInvestigationAttributes = <T extends unknown>({
             disablePortal
             multiple={false}
             defaultValue={defaultValue}
-            className={css.input}
+            sx={{
+              mb: 1.5,
+              minWidth: 280,
+              width: 300,
+            }}
             onChange={(event, newInputValue) => {
               setValue(fromNullable(newInputValue).toUndefined())
             }}
             options={options ?? []}
             getOptionLabel={getValueName}
-            renderInput={params => <ScInput {...params} label={inputLabel} />}
+            renderInput={params => <ScInput autoFocus {...params} label={inputLabel} />}
           />
         </>
       )}

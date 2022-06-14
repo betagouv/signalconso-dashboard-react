@@ -12,7 +12,7 @@ import {useWebsiteInvestigationContext} from '../../core/context/WebsiteInvestig
 import {StatusChip} from './StatusChip'
 import {WebsitesFilters} from './WebsitesFilters'
 import {WebsiteIdentification} from './WebsiteIdentification'
-import {SelectInvestigationAttributes} from './SelectInvestigationAttributes'
+import {AutocompleteDialog} from '../../shared/AutocompleteDialog/AutocompleteDialog'
 import {useEffectFn} from '@alexandreannic/react-hooks-lib'
 import {WebsiteTools} from './WebsiteTools'
 
@@ -130,7 +130,7 @@ export const WebsitesInvestigation = () => {
             head: m.practice,
             id: 'practice',
             render: _ => (
-              <SelectInvestigationAttributes<string>
+              <AutocompleteDialog<string>
                 title={m.practiceTitle}
                 inputLabel={m.practice}
                 getValueName={_ => _}
@@ -149,14 +149,14 @@ export const WebsitesInvestigation = () => {
                 options={_practice.entity}
               >
                 <StatusChip tooltipTitle={m.practice} value={_.practice ?? m.noValue} />
-              </SelectInvestigationAttributes>
+              </AutocompleteDialog>
             ),
           },
           {
             head: m.investigation,
             id: 'investigationStatus',
             render: _ => (
-              <SelectInvestigationAttributes<string>
+              <AutocompleteDialog<string>
                 title={m.affectationTitle}
                 inputLabel={m.affectation}
                 getValueName={_ => m.investigationStatus(_)}
@@ -175,14 +175,14 @@ export const WebsitesInvestigation = () => {
                 options={_investigationStatus.entity}
               >
                 <StatusChip tooltipTitle={m.investigation} value={_.investigationStatus ? m.investigationStatus(_.investigationStatus) : m.noValue} />
-              </SelectInvestigationAttributes>
+              </AutocompleteDialog>
             ),
           },
           {
             head: m.affectation,
             id: 'affectation',
             render: _ => (
-              <SelectInvestigationAttributes<DepartmentDivision>
+              <AutocompleteDialog<DepartmentDivision>
                 title={m.affectationTitle}
                 inputLabel={m.affectation}
                 getValueName={_ => _.code + ' - ' + _.name}
@@ -201,7 +201,7 @@ export const WebsitesInvestigation = () => {
                 options={_departmentDivision.entity}
               >
                 <StatusChip tooltipTitle={m.affectation} value={_.attribution ?? m.noValue} />
-              </SelectInvestigationAttributes>
+              </AutocompleteDialog>
             ),
           },
           {

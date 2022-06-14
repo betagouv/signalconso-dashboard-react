@@ -1,4 +1,4 @@
-import React, {EventHandler, ReactElement, ReactNode, SyntheticEvent, useState} from 'react'
+import React, {EventHandler, forwardRef, ReactElement, ReactNode, SyntheticEvent, useState} from 'react'
 import {Icon, Menu} from '@mui/material'
 import {IconBtn} from 'mui-extension/lib'
 
@@ -9,7 +9,7 @@ interface Props {
   onClick?: EventHandler<SyntheticEvent<any>>
 }
 
-export const ScMenu = ({icon = 'more_vert', children, button, onClick}: Props) => {
+export const ScMenu = forwardRef(({icon = 'more_vert', children, button, onClick}: Props, ref: any) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const open = Boolean(anchorEl)
 
@@ -40,4 +40,4 @@ export const ScMenu = ({icon = 'more_vert', children, button, onClick}: Props) =
       </Menu>
     </>
   )
-}
+})

@@ -41,7 +41,7 @@ export const WebsiteTools = ({website}: WebsiteActionsProps) => {
     <Tooltip title={m.identicationTools}>
       <ScMenu>
         {websiteAnalyzeTool.map(tool =>
-          <MenuItem onClick={() => window.open(tool.url(website.host), '_blank')}>
+          <MenuItem key={tool.label} onClick={() => window.open(tool.url(website.host), '_blank')}>
             <ListItemIcon>
               <Box
                 component="img"
