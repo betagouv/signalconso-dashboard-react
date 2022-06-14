@@ -1,30 +1,18 @@
-import {Box, BoxProps, Chip, Theme, Tooltip} from '@mui/material'
-import React, {ReactElement} from 'react'
+import {ChipProps, Tooltip} from '@mui/material'
+import React from 'react'
 import {useI18n} from '../../core/i18n'
-import {makeSx} from 'mui-extension'
+import {ScChip} from '../../shared/Chip/ScChip'
 
-
-const sx = makeSx({
-  tdName_desc: t => ({
-    fontSize: t.typography.fontSize * 0.875,
-    color: t.palette.text.disabled,
-  }),
-})
-
-export const NoAssociationChip = ({...props}: BoxProps) => {
+export const NoAssociationChip = ({...props}: ChipProps) => {
   const {m} = useI18n()
 
   return (
     <Tooltip title={m.linkCountry}>
-      <Chip
+      <ScChip
+        size="small"
         onClick={props.onClick}
-        variant={'outlined'}
-        sx={{height: 42, borderRadius: 42}}
-        label={
-           (
-             <Box sx={sx.tdName_desc}>{m.noAssociation}</Box>
-          )
-        }
+        label={m.noAssociation}
+        {...props}
       />
     </Tooltip>
   )

@@ -1,23 +1,20 @@
-import React, {ReactElement, useEffect, useState} from 'react'
+import React, {useState} from 'react'
 import {useI18n} from '../../core/i18n'
 import {Company, Country, Id} from '@signal-conso/signalconso-api-sdk-js'
 
-import Tab from '@mui/material/Tab';
-import {TabList, TabPanel} from "@mui/lab";
-import TabContext from '@mui/lab/TabContext';
-import {ScDialog} from "../../shared/Confirm/ScDialog";
-import {CompanyIdentification} from "./CompanyIdentification";
-import {CountryIdentification} from "./CountryIdentification";
-import {fromNullable} from "fp-ts/lib/Option";
-import {useCompaniesContext} from "../../core/context/CompaniesContext";
-import {useReportedWebsiteWithCompanyContext} from "../../core/context/ReportedWebsitesContext";
-import {useToast} from "../../core/toast";
-import {WebsiteUpdateCompany} from "@signal-conso/signalconso-api-sdk-js/lib/model";
-import {CountryChip} from "./CountryChip";
-import {CompanyChip} from "./CompanyChip";
-import {Box, BoxProps} from "@mui/material";
-import {Txt} from "mui-extension/lib/Txt/Txt";
-import {NoAssociationChip} from "./NoAssociationChip";
+import Tab from '@mui/material/Tab'
+import {TabList, TabPanel} from '@mui/lab'
+import TabContext from '@mui/lab/TabContext'
+import {ScDialog} from '../../shared/Confirm/ScDialog'
+import {CompanyIdentification} from './CompanyIdentification'
+import {SelectCountry} from '../../shared/SelectCountry/SelectCountry'
+import {useReportedWebsiteWithCompanyContext} from '../../core/context/ReportedWebsitesContext'
+import {useToast} from '../../core/toast'
+import {WebsiteUpdateCompany} from '@signal-conso/signalconso-api-sdk-js/lib/model'
+import {CountryChip} from './CountryChip'
+import {CompanyChip} from './CompanyChip'
+import {BoxProps} from '@mui/material'
+import {NoAssociationChip} from './NoAssociationChip'
 
 
 interface Website {
@@ -102,7 +99,7 @@ export const WebsiteIdentification = ({onChangeDone, website, ...props}: Props) 
             </TabPanel>
 
             <TabPanel value="2">
-              <CountryIdentification country={website.companyCountry} onChange={companyCountry => {
+              <SelectCountry country={website.companyCountry} onChange={companyCountry => {
                 setCompany(undefined)
                 setCountry(companyCountry)
               }}/>

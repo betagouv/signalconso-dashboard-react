@@ -3,12 +3,13 @@ import {Icon, Menu} from '@mui/material'
 import {IconBtn} from 'mui-extension/lib'
 
 interface Props {
+  icon?: string
   button?: ReactElement<any>
   children: ReactNode
   onClick?: EventHandler<SyntheticEvent<any>>
 }
 
-export const ScMenu = ({children, button, onClick}: Props) => {
+export const ScMenu = ({icon = 'more_vert', children, button, onClick}: Props) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const open = Boolean(anchorEl)
 
@@ -31,7 +32,7 @@ export const ScMenu = ({children, button, onClick}: Props) => {
         })
       ) : (
         <IconBtn onClick={handleClick} color="primary">
-          <Icon>more_vert</Icon>
+          <Icon>{icon}</Icon>
         </IconBtn>
       )}
       <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>

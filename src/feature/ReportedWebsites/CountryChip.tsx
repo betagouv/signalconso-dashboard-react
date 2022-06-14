@@ -1,9 +1,11 @@
-import {Box, BoxProps, Chip, Theme, Tooltip} from '@mui/material'
+import {Box, BoxProps, Tooltip} from '@mui/material'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
-import React, {ReactElement} from 'react'
+import React from 'react'
 import {useI18n} from '../../core/i18n'
-import {CompanySearchResult, Country, Id} from '@signal-conso/signalconso-api-sdk-js'
+import {Country} from '@signal-conso/signalconso-api-sdk-js'
 import {makeSx} from 'mui-extension'
+import {styleUtils} from '../../core/theme'
+import {ScChip} from '../../shared/Chip/ScChip'
 
 interface Props extends BoxProps {
   country: Country
@@ -17,8 +19,7 @@ const countryToFlag = (isoCode: string) => {
 
 const sx = makeSx({
   tdName_desc: t => ({
-    fontSize: t.typography.fontSize * 0.875,
-    fontWeight: 'bold',
+
   }),
 })
 
@@ -27,23 +28,18 @@ export const CountryChip = ({country, ...props}: Props) => {
 
   return (
     <Tooltip title={m.linkCountry}>
-      <Chip
+      <ScChip
+        icon={
+          <Box sx={{
+            fontSize: t => styleUtils(t).fontSize.big,
+          }}>
+            {countryToFlag(country.code)}
+          </Box>
+        }
         onClick={props.onClick}
-        variant={'outlined'}
-        sx={{height: 42, borderRadius: 42}}
         label={
-          <Txt sx={{
-            display: 'flex'
-          }} truncate block>
-            <Box
-              sx={{
-                fontSize: t => t.typography.fontSize * 0.875,
-              }}
-            >
-              {countryToFlag(country.code)}
-            </Box>
-            &nbsp;
-            <Box sx={sx.tdName_desc}>{country.name.toUpperCase()}</Box>
+          <Txt truncate block>
+            {country.name.toUpperCase()}
           </Txt>
         }
       />

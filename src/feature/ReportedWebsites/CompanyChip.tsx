@@ -1,49 +1,35 @@
-import {Box, BoxProps, Chip, Theme, Tooltip} from '@mui/material'
+import {Box, BoxProps, Tooltip} from '@mui/material'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
-import React, {ReactElement} from 'react'
+import React from 'react'
 import {useI18n} from '../../core/i18n'
-import {Company, CompanySearchResult, Country, Id} from '@signal-conso/signalconso-api-sdk-js'
-import {makeSx} from 'mui-extension'
+import {Company} from '@signal-conso/signalconso-api-sdk-js'
+import {ScChip} from '../../shared/Chip/ScChip'
 
 interface Props extends BoxProps {
   company: Company
 }
-
-const sx = makeSx({
-  tdName_desc: t => ({
-    fontSize: t.typography.fontSize * 0.875,
-    color: t.palette.text.disabled,
-  }),
-})
 
 export const CompanyChip = ({company, ...props}: Props) => {
   const {m} = useI18n()
 
   return (
     <Tooltip title={m.linkCountry}>
-      <Chip
+      <ScChip
         onClick={props.onClick}
-        variant={'outlined'}
-        sx={{height: 42, borderRadius: 42}}
+        sx={{
+          minHeight: 40,
+          borderRadius: 50,
+        }}
         label={
-           (
-            <Box component="div">
-              <Txt
-                truncate
-                sx={{
-                  fontWeight: 'bold',
-                  marginBottom: -1,
-                  maxWidth: 200,
-                }}
-                block
-              >
-                {company.name}
-              </Txt>
-              <Box component="span" sx={sx.tdName_desc}>
-                {company.siret}
-              </Box>
-            </Box>
-          )
+          <Box sx={{mx: .5}}>
+            <Txt block truncate bold sx={{
+              marginBottom: -.5,
+              maxWidth: 200,
+            }}>
+              {company.name}
+            </Txt>
+            <Txt color="hint" fontSize="small">{company.siret}</Txt>
+          </Box>
         }
       />
     </Tooltip>

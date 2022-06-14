@@ -3,7 +3,7 @@ import {WebsiteWithCompanySearch} from "@signal-conso/signalconso-api-sdk-js/lib
 import {useLayoutContext} from "../../core/Layout/LayoutContext";
 import {Dialog, DialogActions, DialogContent, DialogTitle} from '@mui/material'
 import {useI18n} from "../../core/i18n";
-import {IdentificationStatus,} from "@signal-conso/signalconso-api-sdk-js";
+import {IdentificationStatus} from "@signal-conso/signalconso-api-sdk-js";
 import {ScMenuItem} from "../MenuItem/MenuItem";
 import {DialogInputRow} from "../../shared/DialogInputRow/DialogInputRow";
 import {Controller, useForm} from "react-hook-form";
@@ -22,9 +22,7 @@ export interface WebsitesFiltersProps {
 interface Form extends WebsiteWithCompanySearch {
 }
 
-
 export const WebsitesFilters = ({filters, updateFilters, children, ...props}: WebsitesFiltersProps) => {
-
   const {m} = useI18n()
   const [open, setOpen] = useState<boolean>(false)
   const close = () => {
