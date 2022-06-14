@@ -13,7 +13,7 @@ interface Props<T> {
   defaultValue?: T
   getValueName: (_: T) => string
   onChange: (_?: T) => void
-  listValues: T[]
+  options?: T[]
 }
 
 const useStyles = makeStyles((t: Theme) => ({
@@ -31,7 +31,7 @@ export const SelectInvestigationAttributes = <T extends unknown>({
   defaultValue,
   getValueName,
   onChange,
-  listValues,
+  options,
 }: Props<T>) => {
   const {m} = useI18n()
   const [value, setValue] = React.useState<T | undefined>(defaultValue)
@@ -48,12 +48,11 @@ export const SelectInvestigationAttributes = <T extends unknown>({
             disablePortal
             multiple={false}
             defaultValue={defaultValue}
-            id="combo-value"
             className={css.input}
             onChange={(event, newInputValue) => {
               setValue(fromNullable(newInputValue).toUndefined())
             }}
-            options={listValues}
+            options={options ?? []}
             getOptionLabel={getValueName}
             renderInput={params => <ScInput {...params} label={inputLabel} />}
           />

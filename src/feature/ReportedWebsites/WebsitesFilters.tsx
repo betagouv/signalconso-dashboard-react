@@ -1,21 +1,15 @@
-import React, {cloneElement, ReactElement, useEffect, useState} from 'react'
-import {WebsiteWithCompanySearch} from "@signal-conso/signalconso-api-sdk-js/lib/model";
-import {useLayoutContext} from "../../core/Layout/LayoutContext";
-import {Dialog, DialogActions, DialogContent, DialogTitle, Icon, MenuItem} from '@mui/material'
-import {useI18n} from "../../core/i18n";
-import {DebouncedInput} from "../../shared/DebouncedInput/DebouncedInput";
-import {ReportSearch, ReportStatus, WebsiteKind} from "@signal-conso/signalconso-api-sdk-js";
-import {ScSelect} from "../../shared/Select/Select";
-import {ScMenuItem} from "../MenuItem/MenuItem";
-import {DialogInputRow} from "../../shared/DialogInputRow/DialogInputRow";
-import {ScInput} from "../../shared/Input/ScInput";
-import {Controller, useForm} from "react-hook-form";
-import {ScMultiSelect} from "../../shared/Select/MultiSelect";
-import {Enum} from "@alexandreannic/ts-utils/lib/common/enum/Enum";
-import {reportStatusColor, ReportStatusLabel} from "../../shared/ReportStatus/ReportStatus";
-import {Label} from "../../shared/Label/Label";
-import {SelectTagsMenuValues} from "../../shared/SelectTags/SelectTagsMenu";
-import {Btn} from "mui-extension";
+import React, {ReactElement, useState} from 'react'
+import {WebsiteWithCompanySearch} from '@signal-conso/signalconso-api-sdk-js/lib/model'
+import {useLayoutContext} from '../../core/Layout/LayoutContext'
+import {Dialog, DialogActions, DialogContent, DialogTitle} from '@mui/material'
+import {useI18n} from '../../core/i18n'
+import {WebsiteKind} from '@signal-conso/signalconso-api-sdk-js'
+import {ScMenuItem} from '../MenuItem/MenuItem'
+import {DialogInputRow} from '../../shared/DialogInputRow/DialogInputRow'
+import {Controller, useForm} from 'react-hook-form'
+import {ScMultiSelect} from '../../shared/Select/MultiSelect'
+import {Label} from '../../shared/Label/Label'
+import {Btn} from 'mui-extension'
 
 
 export interface WebsitesFiltersProps {
@@ -27,9 +21,7 @@ export interface WebsitesFiltersProps {
 interface Form extends WebsiteWithCompanySearch {
 }
 
-
 export const WebsitesFilters = ({filters, updateFilters, children, ...props}: WebsitesFiltersProps) => {
-
   const {m} = useI18n()
   const [open, setOpen] = useState<boolean>(false)
   const close = () => {

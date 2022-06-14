@@ -1,75 +1,55 @@
-import React, {useEffect, useMemo, useState} from 'react'
+import React, {useEffect, useMemo} from 'react'
 import {useI18n} from '../../core/i18n'
-import {
-  Badge, Box,
-  Icon,
-  InputBase, ListItemIcon, ListItemText, MenuItem,
-  Tooltip,
-} from '@mui/material'
+import {Badge, Icon, InputBase, Switch, Tooltip} from '@mui/material'
 import {useToast} from '../../core/toast'
-import {fromNullable} from 'fp-ts/lib/Option'
 import {Panel} from '../../shared/Panel'
 import {Datatable} from '../../shared/Datatable/Datatable'
 import {DebouncedInput} from '../../shared/DebouncedInput/DebouncedInput'
 import {useReportedWebsiteWithCompanyContext} from '../../core/context/ReportedWebsitesContext'
-import {cleanObject, DepartmentDivision, WebsiteKind} from '@signal-conso/signalconso-api-sdk-js'
+import {cleanObject, DepartmentDivision, WebsiteKind, WebsiteWithCompany} from '@signal-conso/signalconso-api-sdk-js'
 import {IconBtn} from 'mui-extension'
-
 import {useWebsiteInvestigationContext} from '../../core/context/WebsiteInvestigationContext'
 import {StatusChip} from './StatusChip'
-import {WebsitesFilters} from "./WebsitesFilters";
-import {WebsiteIdentification} from "./WebsiteIdentification";
-import {WebsiteActions} from "./WebsiteActions";
-import {SelectInvestigationAttributes} from "./SelectInvestigationAttributes";
+import {WebsitesFilters} from './WebsitesFilters'
+import {WebsiteIdentification} from './WebsiteIdentification'
+import {SelectInvestigationAttributes} from './SelectInvestigationAttributes'
+import {useEffectFn} from '@alexandreannic/react-hooks-lib'
+import {WebsiteTools} from './WebsiteTools'
 
 export const WebsitesInvestigation = () => {
-  const {m, formatDate} = useI18n()
-
-
-  const fetch = useReportedWebsiteWithCompanyContext().getWebsiteWithCompany
+  const {m} = useI18n()
+  const _websiteWithCompany = useReportedWebsiteWithCompanyContext().getWebsiteWithCompany
   const _createOrUpdate = useWebsiteInvestigationContext().createOrUpdateInvestigation
   const _departmentDivision = useWebsiteInvestigationContext().listDepartmentDivision
   const _practice = useWebsiteInvestigationContext().listPractice
   const _investigationStatus = useWebsiteInvestigationContext().listInvestigationStatus
   const _updateStatus = useReportedWebsiteWithCompanyContext().update
   const _remove = useReportedWebsiteWithCompanyContext().remove
-  const [departmentDivision, setDepartmentDivision] = useState<DepartmentDivision[]>([])
-  const [investigationStatus, setInvestigationStatus] = useState<string[]>([])
-  const [practice, setPractice] = useState<string[]>([])
-  const {toastError, toastInfo, toastSuccess} = useToast()
+  const {toastError, toastInfo} = useToast()
 
   useEffect(() => {
-    fetch.updateFilters({...fetch.initialFilters})
+    _websiteWithCompany.fetch({clean: false})
+  }, [_websiteWithCompany.filters])
+
+  useEffect(() => {
+    _websiteWithCompany.updateFilters({..._websiteWithCompany.initialFilters})
+    _departmentDivision.fetch()
+    _investigationStatus.fetch()
+    _practice.fetch()
   }, [])
 
-  useEffect(() => {
-    fetch.fetch()
-  }, [])
+  useEffectFn(_updateStatus.error, toastError)
+  useEffectFn(_websiteWithCompany.error, toastError)
+  useEffectFn(_remove.error, toastError)
 
-  useEffect(() => {
-    _departmentDivision.fetch({}).then(setDepartmentDivision)
-  }, [])
-
-  useEffect(() => {
-    _investigationStatus.fetch({}).then(setInvestigationStatus)
-  }, [])
-
-  useEffect(() => {
-    _practice.fetch({}).then(setPractice)
-  }, [])
-
-  useEffect(() => {
-    fromNullable(_updateStatus.error).map(toastError)
-    fromNullable(fetch.error).map(toastError)
-    fromNullable(_remove.error).map(toastError)
-  }, [_updateStatus.error, fetch.error, _remove.error])
+  const handleUpdateKind = (website: WebsiteWithCompany, kind: WebsiteKind) => {
+    _updateStatus.fetch({}, website.id, kind).then(() => _websiteWithCompany.fetch({clean: false}))
+  }
 
   const filtersCount = useMemo(() => {
-    const {offset, limit, ...filters} = fetch.filters
+    const {offset, limit, ...filters} = _websiteWithCompany.filters
     return Object.keys(cleanObject(filters)).length
-  }, [fetch.filters])
-
-
+  }, [_websiteWithCompany.filters])
 
   return (
     <Panel>
@@ -78,8 +58,8 @@ export const WebsitesInvestigation = () => {
         header={
           <>
             <DebouncedInput
-              value={fetch.filters.host ?? ''}
-              onChange={host => fetch.updateFilters(prev => ({...prev, host: host}))}
+              value={_websiteWithCompany.filters.host ?? ''}
+              onChange={host => _websiteWithCompany.updateFilters(prev => ({...prev, host: host}))}
             >
               {(value, onChange) => (
                 <InputBase
@@ -97,15 +77,15 @@ export const WebsitesInvestigation = () => {
           <>
             <Tooltip title={m.removeAllFilters}>
               <Badge color="error" badgeContent={filtersCount} hidden={filtersCount === 0} overlap="circular">
-              <IconBtn color="primary" onClick={fetch.clearFilters}>
-                <Icon>clear</Icon>
-              </IconBtn>
+                <IconBtn color="primary" onClick={_websiteWithCompany.clearFilters}>
+                  <Icon>clear</Icon>
+                </IconBtn>
               </Badge>
             </Tooltip>
             <WebsitesFilters
-              filters={fetch.filters}
+              filters={_websiteWithCompany.filters}
               updateFilters={_ => {
-                fetch.updateFilters(prev => ({...prev, ..._}))
+                _websiteWithCompany.updateFilters(prev => ({...prev, ..._}))
               }}>
               <Tooltip title={m.advancedFilters}>
                 <IconBtn color="primary">
@@ -115,15 +95,15 @@ export const WebsitesInvestigation = () => {
             </WebsitesFilters>
           </>
         }
-        loading={fetch.fetching}
-        total={fetch.list?.totalSize}
+        loading={_websiteWithCompany.fetching}
+        total={_websiteWithCompany.list?.totalSize}
         paginate={{
-          limit: fetch.filters.limit,
-          offset: fetch.filters.offset,
-          onPaginationChange: pagination => fetch.updateFilters(prev => ({...prev, ...pagination})),
+          limit: _websiteWithCompany.filters.limit,
+          offset: _websiteWithCompany.filters.offset,
+          onPaginationChange: pagination => _websiteWithCompany.updateFilters(prev => ({...prev, ...pagination})),
         }}
         getRenderRowKey={_ => _.id}
-        data={fetch.list?.data}
+        data={_websiteWithCompany.list?.data}
         showColumnsToggle={true}
         columns={[
           {
@@ -142,7 +122,7 @@ export const WebsitesInvestigation = () => {
             render: _ => (
               <WebsiteIdentification
                 website={_}
-                onChangeDone={() => fetch.fetch({clean: false})}
+                onChangeDone={() => _websiteWithCompany.fetch({clean: false})}
               />
             ),
           },
@@ -159,19 +139,16 @@ export const WebsitesInvestigation = () => {
                     toastInfo(m.alreadySelectedValue(practice))
                   } else {
                     _createOrUpdate
-                      .fetch(
-                        {},
-                        {
-                          practice: practice,
-                          ..._,
-                        },
-                      )
-                      .then(_ => fetch.fetch({clean: false}))
+                      .fetch({}, {
+                        practice: practice,
+                        ..._,
+                      })
+                      .then(_ => _websiteWithCompany.fetch({clean: false}))
                   }
                 }}
-                listValues={practice}
+                options={_practice.entity}
               >
-                <StatusChip tooltipTitle={m.practice} value={_.practice ?? m.noValue}/>
+                <StatusChip tooltipTitle={m.practice} value={_.practice ?? m.noValue} />
               </SelectInvestigationAttributes>
             ),
           },
@@ -187,20 +164,17 @@ export const WebsitesInvestigation = () => {
                   if (_.investigationStatus === investigationStatus) {
                     toastInfo(m.alreadySelectedValue(investigationStatus))
                   } else {
-                    console.log(investigationStatus)
                     _createOrUpdate
-                      .fetch(
-                        {},
-                        Object.assign({..._},{
-                          investigationStatus: investigationStatus,
-                        },
-                      ))
-                      .then(_ => fetch.fetch({clean: false}))
+                      .fetch({}, {
+                        ..._,
+                        investigationStatus: investigationStatus,
+                      })
+                      .then(_ => _websiteWithCompany.fetch({clean: false}))
                   }
                 }}
-                listValues={investigationStatus}
+                options={_investigationStatus.entity}
               >
-                <StatusChip tooltipTitle={m.investigation} value={_.investigationStatus ? m.investigationStatus(_.investigationStatus) : m.noValue}/>
+                <StatusChip tooltipTitle={m.investigation} value={_.investigationStatus ? m.investigationStatus(_.investigationStatus) : m.noValue} />
               </SelectInvestigationAttributes>
             ),
           },
@@ -211,38 +185,55 @@ export const WebsitesInvestigation = () => {
               <SelectInvestigationAttributes<DepartmentDivision>
                 title={m.affectationTitle}
                 inputLabel={m.affectation}
-                getValueName={_ => _.code +" - " + _.name}
+                getValueName={_ => _.code + ' - ' + _.name}
                 onChange={departmentDivision => {
                   if (departmentDivision && _.attribution === departmentDivision.code) {
                     toastInfo(m.alreadySelectedValue(departmentDivision?.name))
                   } else {
-                    console.log(departmentDivision)
                     _createOrUpdate
-                      .fetch(
-                        {},
-                        Object.assign({..._},{
-                          attribution: departmentDivision && departmentDivision.code,
-                          },
-                        ))
-                      .then(_ => fetch.fetch({clean: false}))
+                      .fetch({}, {
+                        ..._,
+                        attribution: departmentDivision?.code,
+                      })
+                      .then(_ => _websiteWithCompany.fetch({clean: false}))
                   }
                 }}
-                listValues={departmentDivision}
+                options={_departmentDivision.entity}
               >
-                <StatusChip tooltipTitle={m.affectation} value={_.attribution ?? m.noValue}/>
+                <StatusChip tooltipTitle={m.affectation} value={_.attribution ?? m.noValue} />
               </SelectInvestigationAttributes>
             ),
           },
           {
             id: 'status',
             stickyEnd: true,
+            head: m.identified,
+            render: _ => (
+              <Switch
+                checked={_.kind === WebsiteKind.DEFAULT}
+                onChange={e => handleUpdateKind(_, e.target.checked ? WebsiteKind.DEFAULT : WebsiteKind.PENDING)}
+              />
+            ),
+          },
+          {
+            id: 'status',
+            stickyEnd: true,
             render: _ =>
-                <WebsiteActions
-                  website={_}
-                  refreshData={() => fetch.fetch({clean: false})}
-                />
-            ,
-          }
+              <>
+                <WebsiteTools website={_} />
+                <Tooltip title={m.delete}>
+                  <IconBtn
+                    loading={_remove.loading}
+                    color="primary"
+                    onClick={() => _remove
+                      .fetch({}, _.id)
+                      .then(_ => () => _websiteWithCompany.fetch({clean: false}))
+                    }>
+                    <Icon>delete</Icon>
+                  </IconBtn>
+                </Tooltip>
+              </>,
+          },
         ]}
       />
     </Panel>
