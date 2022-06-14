@@ -59,6 +59,13 @@ const countryToFlag = (isoCode: string) => {
 export const CountryIdentification = ({onChange, country}: Props) => {
   const {m} = useI18n()
   const _countries = useConstantContext().countries
+  const [countries, setCountries] = useState<Country[]>([])
+
+
+  useEffect(() => {
+    _countries.fetch({}).then(setCountries)
+  }, [country])
+
 
   return (
     <>
@@ -75,7 +82,7 @@ export const CountryIdentification = ({onChange, country}: Props) => {
           const newCountry = fromNullable(newInputValue).toUndefined()
           newCountry && onChange(newCountry)
         }}
-        options={_countries.entity ?? []}
+        options={countries ?? []}
         getOptionLabel={option => option.name}
         renderOption={ (props, option) =>
           <Box
