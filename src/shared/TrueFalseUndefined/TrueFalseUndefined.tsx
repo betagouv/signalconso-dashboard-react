@@ -4,6 +4,11 @@ import {useI18n} from '../../core/i18n'
 import {SxProps} from '@mui/system'
 
 interface Props extends Omit<BoxProps, 'onChange'> {
+  /**
+   * Hack to work with react-hook-form since undefined value doesn't work as expected.
+   * It is type inconsistent but do the job.
+   */
+  emitEmptyString?: boolean
   gutter?: boolean
   value?: boolean
   onChange: (_?: boolean) => void
@@ -16,14 +21,20 @@ interface Props extends Omit<BoxProps, 'onChange'> {
 
 const buttonStyle: SxProps<Theme> = {
   textTransform: 'none',
-  // paddingTop: .5,
-  // paddingBottom: .5,
   paddingRight: 1.5,
   paddingLeft: 1.5,
   whiteSpace: 'nowrap',
 }
 
-export const TrueFalseUndefined = forwardRef(({gutter, value, onChange, label, sx, ...props}: Props, ref: any) => {
+export const TrueFalseUndefined = forwardRef(({
+  emitEmptyString,
+  gutter,
+  value,
+  onChange,
+  label,
+  sx,
+  ...props
+}: Props, ref: any) => {
   const {m} = useI18n()
   const parsedValue = useMemo(() => {
     if ([true, 'true'].includes(value as any)) return 'true'
@@ -53,7 +64,8 @@ export const TrueFalseUndefined = forwardRef(({gutter, value, onChange, label, s
       onChange={(e, value: string | null) => {
         if (value !== null) {
           const valueAsBoolean = {true: true, false: false}[value]
-          onChange(valueAsBoolean)
+          // @ts-ignore
+          onChange(emitEmptyString && valueAsBoolean === undefined ? '' : valueAsBoolean)
         }
       }}
     >
