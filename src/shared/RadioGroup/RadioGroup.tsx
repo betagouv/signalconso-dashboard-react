@@ -1,44 +1,101 @@
-import React, {forwardRef, ReactElement, useEffect, useState} from 'react'
+import React, {ReactElement, ReactNode, useEffect, useState} from 'react'
 import {ScRadioGroupItemProps} from './RadioGroupItem'
-import {Box, SxProps, Theme} from '@mui/material'
+import {Box, FormHelperText} from '@mui/material'
+import {SxProps} from '@mui/system'
+import {Theme} from '@mui/material/styles'
 
-interface Props {
+interface BaseProps<T> {
+  dense?: boolean
+  inline?: boolean
+  children: React.ReactNode //ReactElement<ScRadioGroupItemProps>[]
+  error?: boolean
   className?: string
   sx?: SxProps<Theme>
-  dense?: boolean
-  children: React.ReactNode //ReactElement<ScRadioGroupItemProps>[]
-  value?: string
-  inline?: boolean
-  border?: boolean
-  error?: boolean
-  onChange?: (_: string) => void
+  helperText?: ReactNode
+  disabled?: boolean
 }
 
-export const ScRadioGroup = forwardRef(
-  ({error, className, children, dense, value, inline, border, onChange, sx}: Props, ref: any) => {
-    const [innerValue, setInnerValue] = useState<string>()
+interface SingleProps<T> extends BaseProps<T> {
+  defaultValue?: T
+  value?: T
+  onChange?: (_: T) => void
+  multiple?: false
+}
 
-    useEffect(() => {
+interface MultipleProps<T> extends BaseProps<T> {
+  defaultValue?: T[]
+  value?: T[]
+  onChange?: (_: T[]) => void
+  multiple: true
+}
+
+type Props<T> = SingleProps<T> | MultipleProps<T>
+
+const isMultiple = <T, >(multiple: boolean | undefined, t: T | T[]): t is T[] => {
+  return !!multiple
+}
+
+const _ScRadioGroup = <T, >({inline, disabled, error, children, dense, value, onChange, multiple, helperText, defaultValue, sx, ...props}: Props<T>, ref: any) => {
+  const [innerValue, setInnerValue] = useState<T | T[]>()
+
+  useEffect(() => {
+    if (value !== undefined) {
       setInnerValue(value)
-    }, [])
+    } else if (multiple) {
+      setInnerValue([])
+    }
+  }, [value])
 
-    return (
-      <Box sx={{...(inline && {display: 'flex'})}} className={className} ref={ref}>
-        {React.Children.map(children as ReactElement<ScRadioGroupItemProps>[], child =>
-          React.cloneElement(child, {
-            ...child.props,
-            dense,
-            inline,
-            error,
-            selected: innerValue === child.props.value,
-            onClick: (e: any) => {
-              setInnerValue(child.props.value)
-              if (child.props.onClick) child.props.onClick(e)
-              if (onChange) onChange(child.props.value)
-            },
-          }),
-        )}
-      </Box>
-    )
-  },
-)
+  return (
+    <Box ref={ref} {...props} role="listbox" sx={{
+      ...inline && {
+        display: 'flex',
+      },
+      ...sx,
+    }}>
+      {React.Children.map(children as ReactElement<ScRadioGroupItemProps<T>>[], (child, i) => child &&
+        React.cloneElement(child, {
+          ...child.props,
+          key: child.key ?? i,
+          dense,
+          error,
+          disabled,
+          multiple,
+          inline,
+          selected: innerValue && isMultiple(multiple, innerValue) ? innerValue.includes(child.props.value) : innerValue === child.props.value,
+          onClick: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+            if (child.props.onClick) child.props.onClick(event)
+            if (!disabled) {
+              const value = child.props.value
+              setInnerValue(currentValue => {
+                const newValue = (() => {
+                  if (isMultiple(multiple, currentValue)) {
+                    if (currentValue.includes(value)) {
+                      return currentValue.filter(_ => _ !== value)
+                    } else {
+                      return [...currentValue, value]
+                    }
+                  }
+                  return value
+                })()
+                if (onChange) onChange(newValue as any)
+                return newValue
+              })
+            }
+          },
+        }),
+      )}
+      {helperText && (
+        <FormHelperText error={error} sx={{marginLeft: '14px'}}>{helperText}</FormHelperText>
+      )}
+    </Box>
+  )
+}
+
+/**
+ * Workaround because forwardRef break the generic type of ScSelect.
+ */
+export const ScRadioGroup = React.forwardRef(_ScRadioGroup as any) as <T>(
+  props: Props<T> & {ref?: React.ForwardedRef<any>},
+) => ReturnType<typeof _ScRadioGroup>
+

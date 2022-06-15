@@ -6,7 +6,7 @@ export const siteMap = {
     admin: `/admin`,
     reportedWebsites: `/moderation-url-entreprises`,
     reportedWebsites_unknown: `/moderation-url-entreprises/sites-internet/non-identifies`,
-    reportedWebsites_association: `/moderation-url-entreprises/site-internet`,
+    websitesInvestigation: `/moderation-url-entreprises/enquete`,
     reportedPhone: `/suivi-des-telephones`,
     reports: (_?: Partial<ReportSearch>) => `/suivi-des-signalements` + (_ ? toQueryString(mapDatesToQueryString(_)) : ``),
     subscriptions: `/abonnements`,

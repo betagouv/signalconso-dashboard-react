@@ -1,13 +1,13 @@
 import {Address} from '@signal-conso/signalconso-api-sdk-js'
-import React from 'react'
+import React, {forwardRef} from 'react'
 
 interface Props {
   address: Address
 }
 
-export const AddressComponent = ({address}: Props) => {
+export const AddressComponent = forwardRef(({address}: Props, ref: any) => {
   return (
-    <span>
+    <span ref={ref}>
       {address.number}&nbsp;
       {address.street}&nbsp;
       {address.addressSupplement}
@@ -22,4 +22,4 @@ export const AddressComponent = ({address}: Props) => {
       )}
     </span>
   )
-}
+})
