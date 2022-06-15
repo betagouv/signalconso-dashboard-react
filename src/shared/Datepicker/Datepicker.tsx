@@ -8,15 +8,23 @@ export interface DatepickerProps extends Omit<TextFieldProps, 'onChange'> {
   label?: string
   InputProps?: Partial<StandardInputProps>
   fullWidth?: boolean
+  time: 
+    // when picking a date, the Date returned will be at 00:00:000 in the user timezone
+    'startOfDay' |
+    // with this, it will be at 23:59:999 in the user timezone
+    'endOfDay'
 }
-
-const onChangeDate = (callback: (date: Date) => any) => (e: React.ChangeEvent<HTMLInputElement>) => {
-  callback(e.target.valueAsDate!)
-}
-
-const mapDate = (date: Date): string => format(date, 'yyyy-MM-dd')
 
 export const Datepicker = ({value, onChange, label, fullWidth, InputProps, ...props}: DatepickerProps) => {
+
+  const onChangeDate = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const midnightUtcDate = e.target.valueAsDate!
+
+    // TODO alter the date based on "time" prop
+
+    onChange(midnightUtcDate)
+  }
+
   return (
     <TextField
       {...props}
@@ -26,8 +34,8 @@ export const Datepicker = ({value, onChange, label, fullWidth, InputProps, ...pr
       size="small"
       label={label}
       InputProps={InputProps}
-      value={value ? mapDate(value) : ''}
-      onChange={onChangeDate(onChange)}
+      value={value}
+      onChange={onChangeDate}
       fullWidth={fullWidth}
       InputLabelProps={{shrink: true}}
     />
