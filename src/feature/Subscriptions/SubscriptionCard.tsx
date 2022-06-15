@@ -5,7 +5,7 @@ import {Panel, PanelHead} from '../../shared/Panel'
 import {ScSelect} from '../../shared/Select/Select'
 import {Chip, Collapse, duration, Icon} from '@mui/material'
 import {SubscriptionCardRow} from './SubscriptionCardRow'
-import {SelectCompany} from '../../shared/SelectCompany/SelectCompany'
+import {SelectCompanyDialog} from '../../shared/SelectCompany/SelectCompanyDialog'
 import {ScChip} from '../../shared/Chip/ScChip'
 import {ScChipContainer} from '../../shared/Chip/ScChipContainer'
 import {useToast} from '../../core/toast'
@@ -142,7 +142,7 @@ export const SubscriptionCard = ({subscription, onUpdate, onDelete, removing, lo
                 onDelete={() => onUpdate({sirets: subscription.sirets.filter(_ => _ !== siret)})}
               />
             ))}
-            <SelectCompany
+            <SelectCompanyDialog
               onChange={company => {
                 if (!subscription.sirets.find(_ => _ === company.siret)) {
                   onUpdate({sirets: [...subscription.sirets, company.siret]})
@@ -152,7 +152,7 @@ export const SubscriptionCard = ({subscription, onUpdate, onDelete, removing, lo
               }}
             >
               <ScChip label={<Icon>add</Icon>} />
-            </SelectCompany>
+            </SelectCompanyDialog>
           </ScChipContainer>
         </SubscriptionCardRow>
 

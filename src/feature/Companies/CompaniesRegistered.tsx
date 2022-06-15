@@ -15,7 +15,7 @@ import {DebouncedInput} from '../../shared/DebouncedInput/DebouncedInput'
 import {fromNullable} from 'fp-ts/lib/Option'
 import {useToast} from '../../core/toast'
 import {AddressComponent} from '../../shared/Address/Address'
-import {SelectCompany} from '../../shared/SelectCompany/SelectCompany'
+import {SelectCompanyDialog} from '../../shared/SelectCompany/SelectCompanyDialog'
 import {EditAddressDialog} from './EditAddressDialog'
 import {useLogin} from '../../core/context/LoginContext'
 import {ClipboardApi} from '@alexandreannic/ts-utils/lib/browser/clipboard/ClipboardApi'
@@ -279,7 +279,7 @@ export const CompaniesRegistered = () => {
         renderEmptyState={
           <Fender title={m.noCompanyFound} icon="store" sx={{margin: 'auto', mt: 1, mb: 2}}>
             {connectedUser.isAdmin && (
-              <SelectCompany
+              <SelectCompanyDialog
                 onChange={company => {
                   const {siret, name, address, activityCode} = company
                   if (name && address && siret) {
@@ -292,7 +292,7 @@ export const CompaniesRegistered = () => {
                 <ScButton variant="contained" color="primary" icon="add" sx={{mt: 1}}>
                   {m.registerACompany}
                 </ScButton>
-              </SelectCompany>
+              </SelectCompanyDialog>
             )}
           </Fender>
         }

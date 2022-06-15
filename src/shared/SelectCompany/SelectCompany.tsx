@@ -1,90 +1,80 @@
-import React, {ReactElement, useEffect, useState} from 'react'
-import {useI18n} from '../../core/i18n'
 import {ScInput} from '../Input/ScInput'
-import {CompanySearchResult, Id} from '@signal-conso/signalconso-api-sdk-js'
+import {IconBtn} from 'mui-extension'
+import {Divider, Icon} from '@mui/material'
+import {SelectCompanyList} from './SelectCompanyList'
+import React, {useEffect, useState} from 'react'
+import {useI18n} from '../../core/i18n'
 import {useCompaniesContext} from '../../core/context/CompaniesContext'
+import {CompanySearchResult, Id} from '@signal-conso/signalconso-api-sdk-js'
 import {fromNullable} from 'fp-ts/lib/Option'
-import {Icon} from '@mui/material'
-<<<<<<< HEAD
-import Tab from '@mui/material/Tab'
-import {SelectCompanyList} from './SelectCompanyList'
-import {IconBtn} from 'mui-extension/lib'
-import {ScDialog} from '../Confirm/ScDialog'
-import {TabList, TabPanel} from '@mui/lab'
-import TabContext from '@mui/lab/TabContext'
-=======
-import {SelectCompanyList} from './SelectCompanyList'
-import {IconBtn} from 'mui-extension/lib'
-import {ScDialog} from '../Confirm/ScDialog'
->>>>>>> parent of dea656b (TRELLO-1015: adding identification component)
+import {useEffectFn} from '@alexandreannic/react-hooks-lib'
 
-interface Props {
-  children: ReactElement<any>
+export interface SelectCompanyProps {
   siret?: Id
   onChange: (_: CompanySearchResult) => void
 }
 
-export const SelectCompany = ({children, onChange, siret}: Props) => {
+export const SelectCompany = ({
+  siret,
+  onChange,
+}: SelectCompanyProps) => {
   const {m} = useI18n()
   const _company = useCompaniesContext().searchByIdentity
   const [inputValue, setInputValue] = useState<Id | undefined>(siret)
-
+  
+  const search = () => {
+    if (inputValue) _company.fetch({}, inputValue)
+  }
+  
   useEffect(() => {
     fromNullable(siret)
       .filter(x => x === inputValue)
       .map(setInputValue)
   }, [siret])
-
-  const search = () => {
-    if (inputValue) _company.fetch({}, inputValue)
-  }
-
+  
   return (
-    <ScDialog
-      onClick={_ => search()}
-      maxWidth="sm"
-      loading={_company.loading}
-      title={m.companySearch}
-      content={close => (
-        <>
-          <ScInput
-            sx={{
-              mb: 1.5,
-              minWidth: 280,
-            }}
-            fullWidth
-            value={inputValue ?? ''}
-            placeholder={m.companySearchLabel}
-            onChange={e => setInputValue(e.target.value)}
-            InputProps={{
-              endAdornment: (
-                <IconBtn
-                  style={{marginRight: -12}}
-                  onClick={() => {
-                    setInputValue(undefined)
-                    _company.clearCache()
-                  }}
-                >
-                  <Icon>clear</Icon>
-                </IconBtn>
-              ),
-            }}
-          />
-          {_company.entity && (
-            <SelectCompanyList
-              companies={_company.entity}
-              onChange={_ => {
-                onChange(_)
-                setTimeout(close, 300)
-              }}
-            />
-          )}
-        </>
+    <>
+      <ScInput
+        sx={{
+          mb: 1.5,
+          minWidth: 280,
+        }}
+        error={!!_company.error}
+        helperText={_company.error ? _company.error.message : undefined}
+        fullWidth
+        value={inputValue ?? ''}
+        placeholder={m.companySearchLabel}
+        onChange={e => setInputValue(e.target.value)}
+        InputProps={{
+          endAdornment: (
+            <>
+              <IconBtn
+                onClick={() => {
+                  setInputValue(undefined)
+                  _company.clearCache()
+                }}
+              >
+                <Icon>clear</Icon>
+              </IconBtn>
+              <Divider sx={{my: .25}} orientation="vertical" variant="middle" flexItem />
+              <IconBtn
+                loading={_company.loading}
+                color="primary"
+                sx={{mr: -1.5}}
+                onClick={search}
+              >
+                <Icon>search</Icon>
+              </IconBtn>
+            </>
+          ),
+        }}
+      />
+      {_company.entity && (
+        <SelectCompanyList
+          companies={_company.entity}
+          onChange={onChange}
+        />
       )}
-      onConfirm={search}
-      confirmLabel={m.search}
-    >
-      {children}
-    </ScDialog>
+    </>
   )
 }

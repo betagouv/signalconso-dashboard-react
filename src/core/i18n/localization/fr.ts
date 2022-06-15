@@ -8,6 +8,7 @@ import {
 import {config} from '../../../conf/config'
 import {formatDistance, formatDuration as formatDurationFns} from 'date-fns'
 import {ResponseEvaluation} from '@signal-conso/signalconso-api-sdk-js/lib/client/event/Event'
+import {IdentificationType} from 'feature/ReportedWebsites/SelectWebsiteIdentification/SelectWebsiteIdentification'
 
 const invalidDate = '-'
 
@@ -188,7 +189,7 @@ export const fr = {
     company: 'Entreprise',
     identication: 'Identification',
     country: 'Pays',
-    identification: 'Identification du pays',
+    companyWebsiteIdentification: `Identification du site internet`,
     address: 'Adresse',
     activateMyAccount: 'Activer mon compte',
     createMyAccount: 'Créer mon compte',
@@ -196,6 +197,11 @@ export const fr = {
     invalidEmail: 'Email invalide',
     firstName: 'Prénom',
     lastName: 'Nom',
+    attachTo: `Attacher à`,
+    attachToType: {
+      [IdentificationType.COMPANY]: `Une entreprise`,
+      [IdentificationType.COUNTRY]: `Un pays étranger`,
+    },
     addCompany: `Enregister l'entreprise`,
     addACompany: `Enregister une entreprise`,
     youReceivedNewLetter: `Vous avez reçu un courrier postal ?`,

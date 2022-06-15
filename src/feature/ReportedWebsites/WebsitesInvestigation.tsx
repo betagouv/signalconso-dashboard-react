@@ -16,7 +16,7 @@ import {IconBtn} from 'mui-extension'
 import {useWebsiteInvestigationContext} from '../../core/context/WebsiteInvestigationContext'
 import {StatusChip} from './StatusChip'
 import {WebsitesFilters} from './WebsitesFilters'
-import {SeleectWebsiteIdentificationDialog} from './SeleectWebsiteIdentificationDialog/SeleectWebsiteIdentificationDialog'
+import {SelectWebsiteIdentification} from './SelectWebsiteIdentification/SelectWebsiteIdentification'
 import {AutocompleteDialog} from '../../shared/AutocompleteDialog/AutocompleteDialog'
 import {useEffectFn} from '@alexandreannic/react-hooks-lib'
 import {WebsiteTools} from './WebsiteTools'
@@ -133,7 +133,7 @@ export const WebsitesInvestigation = () => {
             head: m.identication,
             id: 'identication',
             render: _ => (
-              <SeleectWebsiteIdentificationDialog
+              <SelectWebsiteIdentification
                 website={_}
                 onChangeDone={() => _websiteWithCompany.fetch({clean: false})}
               />
