@@ -155,75 +155,75 @@ export const WebsitesInvestigation = () => {
               />
             ),
           },
-          {
-            head: m.practice,
-            id: 'practice',
-            render: _ => (
-              <AutocompleteDialog<string>
-                value={_.practice}
-                title={m.practiceTitle}
-                inputLabel={m.practice}
-                getOptionLabel={_ => _}
-                onChange={practice => {
-                  if (_.practice === practice) {
-                    toastInfo(m.alreadySelectedValue(practice))
-                  } else {
-                    _createOrUpdate.fetch({}, {practice: practice, ..._})
-                    websitesIndex.set(_.id, {..._, practice})
-                  }
-                }}
-                options={_practice.entity}
-              >
-                <StatusChip tooltipTitle={m.practice} value={_.practice ?? m.noValue} />
-              </AutocompleteDialog>
-            ),
-          },
-          {
-            head: m.investigation,
-            id: 'investigationStatus',
-            render: _ => (
-              <AutocompleteDialog<string>
-                value={_.investigationStatus}
-                title={m.affectationTitle}
-                inputLabel={m.affectation}
-                getOptionLabel={_ => m.investigationStatus(_)}
-                options={_investigationStatus.entity}
-                onChange={investigationStatus => {
-                  if (_.investigationStatus === investigationStatus) {
-                    toastInfo(m.alreadySelectedValue(investigationStatus))
-                  } else {
-                    _createOrUpdate.fetch({}, {..._, investigationStatus})
-                    websitesIndex.set(_.id, {..._, investigationStatus})
-                  }
-                }}
-              >
-                <StatusChip tooltipTitle={m.investigation} value={_.investigationStatus ? m.investigationStatus(_.investigationStatus) : m.noValue} />
-              </AutocompleteDialog>
-            ),
-          },
-          {
-            head: m.affectation,
-            id: 'affectation',
-            render: w => (
-              <AutocompleteDialog<DepartmentDivision>
-                value={map(w.attribution, departmentDivisionIndex, (attribution, dep) => dep[attribution][0])}
-                title={m.affectationTitle}
-                inputLabel={m.affectation}
-                getOptionLabel={_ => _.code + ' - ' + _.name}
-                options={_departmentDivision.entity}
-                onChange={departmentDivision => {
-                  if (departmentDivision && w.attribution === departmentDivision.code) {
-                    toastInfo(m.alreadySelectedValue(departmentDivision?.name))
-                  } else {
-                    _createOrUpdate.fetch({}, {...w, attribution: departmentDivision?.code})
-                    websitesIndex.set(w.id, {...w, attribution: departmentDivision?.code})
-                  }
-                }}
-              >
-                <StatusChip tooltipTitle={m.affectation} value={w.attribution ?? m.noValue} />
-              </AutocompleteDialog>
-            ),
-          },
+          // {
+          //   head: m.practice,
+          //   id: 'practice',
+          //   render: _ => (
+          //     <AutocompleteDialog<string>
+          //       value={_.practice}
+          //       title={m.practiceTitle}
+          //       inputLabel={m.practice}
+          //       getOptionLabel={_ => _}
+          //       onChange={practice => {
+          //         if (_.practice === practice) {
+          //           toastInfo(m.alreadySelectedValue(practice))
+          //         } else {
+          //           _createOrUpdate.fetch({}, {practice: practice, ..._})
+          //           websitesIndex.set(_.id, {..._, practice})
+          //         }
+          //       }}
+          //       options={_practice.entity}
+          //     >
+          //       <StatusChip tooltipTitle={m.practice} value={_.practice ?? m.noValue} />
+          //     </AutocompleteDialog>
+          //   ),
+          // },
+          // {
+          //   head: m.investigation,
+          //   id: 'investigationStatus',
+          //   render: _ => (
+          //     <AutocompleteDialog<string>
+          //       value={_.investigationStatus}
+          //       title={m.affectationTitle}
+          //       inputLabel={m.affectation}
+          //       getOptionLabel={_ => m.investigationStatus(_)}
+          //       options={_investigationStatus.entity}
+          //       onChange={investigationStatus => {
+          //         if (_.investigationStatus === investigationStatus) {
+          //           toastInfo(m.alreadySelectedValue(investigationStatus))
+          //         } else {
+          //           _createOrUpdate.fetch({}, {..._, investigationStatus})
+          //           websitesIndex.set(_.id, {..._, investigationStatus})
+          //         }
+          //       }}
+          //     >
+          //       <StatusChip tooltipTitle={m.investigation} value={_.investigationStatus ? m.investigationStatus(_.investigationStatus) : m.noValue} />
+          //     </AutocompleteDialog>
+          //   ),
+          // },
+          // {
+          //   head: m.affectation,
+          //   id: 'affectation',
+          //   render: w => (
+          //     <AutocompleteDialog<DepartmentDivision>
+          //       value={map(w.attribution, departmentDivisionIndex, (attribution, dep) => dep[attribution][0])}
+          //       title={m.affectationTitle}
+          //       inputLabel={m.affectation}
+          //       getOptionLabel={_ => _.code + ' - ' + _.name}
+          //       options={_departmentDivision.entity}
+          //       onChange={departmentDivision => {
+          //         if (departmentDivision && w.attribution === departmentDivision.code) {
+          //           toastInfo(m.alreadySelectedValue(departmentDivision?.name))
+          //         } else {
+          //           _createOrUpdate.fetch({}, {...w, attribution: departmentDivision?.code})
+          //           websitesIndex.set(w.id, {...w, attribution: departmentDivision?.code})
+          //         }
+          //       }}
+          //     >
+          //       <StatusChip tooltipTitle={m.affectation} value={w.attribution ?? m.noValue} />
+          //     </AutocompleteDialog>
+          //   ),
+          // },
           {
             id: 'status',
             stickyEnd: true,

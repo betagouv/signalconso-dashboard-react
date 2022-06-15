@@ -16,17 +16,17 @@ export const ReportedWebsites = () => {
   return (
     <Page size="xl">
       <PageTitle>{m.reportedWebsites}</PageTitle>
-
+      {connectedUser.isAdmin && (
         <PageTabs>
           <PageTab to={siteMap.logged.websitesInvestigation} label={m.websitesInvestigation} />
           <PageTab to={siteMap.logged.reportedWebsites_unknown} label={m.reportedUnknownWebsites} />
         </PageTabs>
-
+      )}
       <Switch>
         {connectedUser.isAdmin ? (
           <Redirect exact from={path} to={siteMap.logged.websitesInvestigation} />
         ) : (
-          <Redirect exact from={path} to={siteMap.logged.websitesInvestigation} />
+          <Redirect exact from={path} to={siteMap.logged.reportedWebsites_unknown} />
         )}
         <Route path={siteMap.logged.websitesInvestigation} component={WebsitesInvestigation} />
         <Route path={siteMap.logged.reportedWebsites_unknown} component={ReportedUnknownWebsites} />
