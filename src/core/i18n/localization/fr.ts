@@ -1,10 +1,9 @@
 import {
-  CompanyAccessLevel,
+  CompanyAccessLevel, IdentificationStatus,
   ReportResponseTypes,
   ReportStatus,
   ReportStatusPro,
   ReportTag,
-  WebsiteKind,
 } from '@signal-conso/signalconso-api-sdk-js'
 import {config} from '../../../conf/config'
 import {formatDistance, formatDuration as formatDurationFns} from 'date-fns'
@@ -66,10 +65,9 @@ export const fr = {
       [ReportTag.CompagnieAerienne]: 'Compagnie aérienne',
       NA: 'Aucun tag',
     },
-    websiteKindDesc: {
-      [WebsiteKind.DEFAULT]: 'Identifié',
-      [WebsiteKind.PENDING]: 'Non identifié',
-      [WebsiteKind.MARKETPLACE]: 'Market Place'
+    IdentificationStatusDesc: {
+      [IdentificationStatus.Identified]: 'Identifié',
+      [IdentificationStatus.NotIdentified]: 'Non identifié',
     },
     investigationStatus : (s : string) => {
       switch (s) {

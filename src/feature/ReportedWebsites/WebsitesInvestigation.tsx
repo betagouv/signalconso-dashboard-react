@@ -12,7 +12,7 @@ import {Panel} from '../../shared/Panel'
 import {Datatable} from '../../shared/Datatable/Datatable'
 import {DebouncedInput} from '../../shared/DebouncedInput/DebouncedInput'
 import {useReportedWebsiteWithCompanyContext} from '../../core/context/ReportedWebsitesContext'
-import {cleanObject, DepartmentDivision, WebsiteKind} from '@signal-conso/signalconso-api-sdk-js'
+import {cleanObject, DepartmentDivision} from '@signal-conso/signalconso-api-sdk-js'
 import {IconBtn} from 'mui-extension'
 
 import {useWebsiteInvestigationContext} from '../../core/context/WebsiteInvestigationContext'

@@ -1,6 +1,6 @@
-import {Box, BoxProps, Icon, ListItemIcon, ListItemText, MenuItem, Tooltip} from "@mui/material";
+import {BoxProps, Icon, Tooltip} from "@mui/material";
 import React, {useEffect} from "react";
-import {Website, WebsiteKind, WebsiteWithCompany} from "@signal-conso/signalconso-api-sdk-js";
+import {IdentificationStatus, WebsiteWithCompany} from "@signal-conso/signalconso-api-sdk-js";
 import {IconBtn} from "mui-extension";
 import {ScMenu} from "../../shared/Menu/Menu";
 import {WebsiteTool} from "./WebsiteTool";
@@ -25,13 +25,13 @@ export const WebsiteActions = ({website, refreshData}: WebsiteActionsProps) => {
   const {m} = useI18n()
   const _updateStatus = useReportedWebsiteWithCompanyContext().update
   const _remove = useReportedWebsiteWithCompanyContext().remove
-  const {toastError, toastInfo, toastSuccess} = useToast()
+  const {toastError} = useToast()
 
   const handleUpdateStatus = (website: WebsiteWithCompany, reload: () => void) => {
-    website.kind === WebsiteKind.DEFAULT ?
-      _updateStatus.fetch({}, website.id, WebsiteKind.PENDING).then(_ => reload())
+    website.identificationStatus === IdentificationStatus.Identified ?
+      _updateStatus.fetch({}, website.id, IdentificationStatus.NotIdentified).then(_ => reload())
       : (website.company || website.companyCountry) ? _updateStatus
-          .fetch({}, website.id, WebsiteKind.DEFAULT).then(_ => reload())
+          .fetch({}, website.id, IdentificationStatus.Identified).then(_ => reload())
         : toastError({message: m.cannotUpdateWebsiteStatus})
   }
 
@@ -43,7 +43,7 @@ export const WebsiteActions = ({website, refreshData}: WebsiteActionsProps) => {
 
   return (
     <>
-      {website.kind === WebsiteKind.DEFAULT ? <Tooltip title={m.associationDone}>
+      {website.identificationStatus === IdentificationStatus.Identified ? <Tooltip title={m.associationDone}>
           <IconBtn onClick={() => handleUpdateStatus(website,refreshData)}>
             <Icon sx={{color: t => t.palette.success.light}}>check_circle</Icon>
           </IconBtn>
