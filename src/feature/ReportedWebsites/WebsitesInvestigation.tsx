@@ -44,7 +44,6 @@ export const WebsitesInvestigation = () => {
   const websitesIndex = useMap<Id, WebsiteWithCompany>()
   useEffectFn(_websiteWithCompany.list, w => websitesIndex.reset(w.data, _ => _.id))
 
-
   useEffect(() => {
     _websiteWithCompany.fetch({clean: false})
   }, [_websiteWithCompany.filters])

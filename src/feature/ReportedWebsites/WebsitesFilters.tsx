@@ -88,7 +88,6 @@ export const WebsitesFilters = ({filters, updateFilters, children, ...props}: We
             {m.search}
           </Btn>
         </DialogActions>
-
       </Dialog>
     </>
   )

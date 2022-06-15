@@ -20,14 +20,14 @@ export const SelectCompanyDialog = ({children, onChange, siret}: Props) => {
       content={close => (
         <SelectCompany
           siret={siret}
-          onChange={_ => {
-            setSelected(_)
-            setTimeout(close, 300)
-          }}
+          onChange={setSelected}
         />
       )}
       confirmDisabled={!selected}
-      onConfirm={() => selected && onChange(selected)}
+      onConfirm={(e, close) => {
+        selected && onChange(selected)
+        close()
+      }}
       confirmLabel={m.validate}
     >
       {children}

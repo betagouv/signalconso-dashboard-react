@@ -27,10 +27,12 @@ export const SelectCompany = ({
   }
   
   useEffect(() => {
+    _company.clearCache()
     fromNullable(siret)
       .filter(x => x === inputValue)
       .map(setInputValue)
   }, [siret])
+  
   
   return (
     <>

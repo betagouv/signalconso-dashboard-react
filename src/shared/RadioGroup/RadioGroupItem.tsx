@@ -91,9 +91,9 @@ export const ScRadioGroupItem = <T, >({
             borderColor: t => t.palette.error.main + ' !important',
           },
           boxShadow: t => `inset 0 0 0 1px ${t.palette.error.main}`,
-        }
+        },
+        background: 'red',
       }}
-      // className={classes(css.root, selected && css.rootSelected, error && css.rootError, className)}
       onClick={onClick}
       {...rest}
     >
