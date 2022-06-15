@@ -266,8 +266,8 @@ const _ReportsFilters = ({filters, updateFilters, children}: _ReportsFiltersProp
                   control={control}
                   render={({field}) => (
                     <TrueFalseUndefined
-                      {...field}
                       emitEmptyString
+                      {...field}
                       label={{
                         true: <TrueLabel />,
                       }}
@@ -296,8 +296,8 @@ const _ReportsFilters = ({filters, updateFilters, children}: _ReportsFiltersProp
                   control={control}
                   render={({field: {value, onChange, ...otherField}}) => (
                     <TrueFalseUndefined
-                      {...otherField}
                       emitEmptyString
+                      {...otherField}
                       value={value === undefined ? undefined : !value}
                       onChange={_ => onChange(_ === undefined ? undefined : !_)}
                       sx={{mt: 1}}
@@ -311,10 +311,8 @@ const _ReportsFilters = ({filters, updateFilters, children}: _ReportsFiltersProp
                   defaultValue={filters.hasAttachment}
                   control={control}
                   render={({field}) => <TrueFalseUndefined
-                    {...field}
                     emitEmptyString
-                    sx={{mt: 1}}
-                  />}
+                    {...field} sx={{mt: 1}} />}
                 />
               </DialogInputRow>
             </DialogContent>

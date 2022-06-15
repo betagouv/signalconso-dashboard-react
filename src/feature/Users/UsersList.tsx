@@ -11,7 +11,7 @@ import {DebouncedInput} from '../../shared/DebouncedInput/DebouncedInput'
 import {TrueFalseUndefined} from '../../shared/TrueFalseUndefined/TrueFalseUndefined'
 import {User} from '@signal-conso/signalconso-api-sdk-js'
 import {ScDialog} from '../../shared/Confirm/ScDialog'
-import {ScButton} from '../../shared/Button/Button'
+import {IconBtn} from 'mui-extension'
 
 export const UsersList = () => {
   const {m, formatDate} = useI18n()
@@ -72,21 +72,6 @@ export const UsersList = () => {
         data={_users.list?.data}
         columns={[
           {
-            head: (
-              <Tooltip title={m.connectedUnder3Months}>
-                <span>{m.active}</span>
-              </Tooltip>
-            ),
-            id: 'active',
-            render: _ => (
-              User.isUserActive(_) ? (
-                <Icon sx={{verticalAlign: 'middle'}} color="success">check_circle</Icon>
-              ) : (
-                <Icon sx={{verticalAlign: 'middle'}} color="error">error</Icon>
-              )
-            ),
-          },
-          {
             id: '',
             head: m.email,
             render: _ => <Txt bold>{_.email}</Txt>,
@@ -107,7 +92,12 @@ export const UsersList = () => {
             render: _ => formatDate(_.lastEmailValidation),
           },
           {
-            id: 'actions',
+            head: (
+              <Tooltip title={m.connectedUnder3Months}>
+                <span>{m.active}</span>
+              </Tooltip>
+            ),
+            id: 'active',
             render: _ => (
               <ScDialog
                 title={m.activateUser(_.email)}
@@ -121,13 +111,17 @@ export const UsersList = () => {
                 maxWidth="xs"
               >
                 {User.isUserActive(_) ? (
-                  <ScButton size="small" icon="update">
-                    {m.extendValidation}
-                  </ScButton>
+                  <Tooltip title={m.extendValidation}>
+                    <IconBtn>
+                      <Icon sx={{color: t => t.palette.success.light}}>check_circle</Icon>
+                    </IconBtn>
+                  </Tooltip>
                 ) : (
-                  <ScButton size="small" icon="check">
-                    {m.validate}
-                  </ScButton>
+                  <Tooltip title={m.validate}>
+                    <IconBtn>
+                      <Icon>task_alt</Icon>
+                    </IconBtn>
+                  </Tooltip>
                 )}
               </ScDialog>
             ),
