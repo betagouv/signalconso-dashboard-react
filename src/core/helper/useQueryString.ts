@@ -20,10 +20,10 @@ export class QueryString {
   static readonly stringify = _stringify
 }
 
-type QueryStringOf<T> = {
+type ParsedQueryString<T> = {
   [K in keyof T]: T[K] extends Date ? ParsedDate : T[K] extends Date | undefined ? ParsedDate | undefined : T[K]
 }
-type ParsedQueryStringOf<T> = {
+type MappedQueryString<T> = {
   [K in keyof T]: T[K] extends ParsedDate ? Date : T[K] extends ParsedDate | undefined ? Date | undefined : T[K]
 }
 
@@ -39,7 +39,7 @@ export const useQueryString = <E, QS extends ParsedUrlQueryInput>({
   const history = useHistory()
 
   const update = (t: E) => {
-    history.replace({search: QueryString.stringify(toQueryString(t), {arrayFormat: 'comma', encodeValuesOnly: true})})
+    history.replace({search: QueryString.stringify(toQueryString(t))})
   }
 
   const get = (): E => {
@@ -49,9 +49,7 @@ export const useQueryString = <E, QS extends ParsedUrlQueryInput>({
   return {update, get}
 }
 
-const parseArray = (_?: string): string[] | undefined => {
-  return (_ ? _.split(',') : undefined)
-}
+const parseArray = (_?: string | string[]): string[] | undefined => (_ ? [_].flatMap(_ => _) : undefined)
 
 export const mapArrayFromQuerystring =
   <QS extends {[key: string]: any}>(arrayProperties: (keyof QS)[]) =>
@@ -71,24 +69,24 @@ export const mapBooleanFromQueryString =
     return obj as any
   }
 
-export const mapDatesToQueryString = <T extends object>(_: T): Readonly<QueryStringOf<T>> => {
+export const mapDatesToQueryString = <T extends object>(_: T): Readonly<ParsedQueryString<T>> => {
   return Object.entries(_).reduce(
     (acc, [key, value]) => ({
       ...acc,
       [key]: value instanceof Date ? dateToYYYYMMDD(value) : value,
     }),
-    {} as Readonly<QueryStringOf<T>>,
+    {} as Readonly<ParsedQueryString<T>>,
   )
 }
 
 export const mapDateFromQueryString = <T extends object>(
-  _: QueryStringOf<T>,
-): Readonly<ParsedQueryStringOf<QueryStringOf<T>>> => {
+  _: ParsedQueryString<T>,
+): Readonly<MappedQueryString<ParsedQueryString<T>>> => {
   return Object.entries(_).reduce(
     (acc, [key, value]: [string, any]) => ({
       ...acc,
       [key]: regexp.yyyyMMdd.test(value) ? new Date(value) : value,
     }),
-    {} as ParsedQueryStringOf<QueryStringOf<T>>,
+    {} as MappedQueryString<ParsedQueryString<T>>,
   )
 }
