@@ -9,11 +9,11 @@ export const ScChipContainer = ({children}: ScChipContainer) => {
   return (
     <Box
       sx={{
-        m: -1 / 4,
+        m: -1 / 2,
         flexWrap: 'wrap',
         display: 'flex',
         '& > *': {
-          m: t => t.spacing(1 / 4) + ' !important',
+          m: 1 / 2,
         },
       }}
     >

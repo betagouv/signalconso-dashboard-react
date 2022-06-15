@@ -1,6 +1,6 @@
 import * as React from 'react'
-import {Dispatch, ReactNode, SetStateAction, useCallback, useContext, useEffect, useState} from 'react'
-import {Fetch, UseFetcher, useFetcher, usePaginate, UsePaginate} from '@alexandreannic/react-hooks-lib/lib'
+import {ReactNode, useContext} from 'react'
+import {UseFetcher, useFetcher, UsePaginate, usePaginate} from '@alexandreannic/react-hooks-lib/lib'
 import {paginateData, sortData} from '../helper/utils'
 import {SignalConsoApiSdk} from '../ApiSdkInstance'
 import {ReportedPhone, ReportedPhoneSearch} from '@signal-conso/signalconso-api-sdk-js'
@@ -29,7 +29,7 @@ export const ReportedPhonesProvider = ({api, children}: Props) => {
     },
     {limit: 10, offset: 0},
   )
-  
+
   const extract = useFetcher(() => api.secured.reportedPhone.extract(paginated.filters))
 
   return (
