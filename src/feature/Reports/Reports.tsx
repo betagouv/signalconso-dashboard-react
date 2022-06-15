@@ -70,12 +70,12 @@ export const Reports = () => {
   })
 
   useEffect(() => {
+    console.log('update filters')
     _reports.updateFilters({..._reports.initialFilters, ...queryString.get()})
   }, [])
 
   useEffect(() => {
     queryString.update(cleanObject(_reports.filters))
-    _reports.fetch()
   }, [_reports.filters])
 
   useEffect(() => {

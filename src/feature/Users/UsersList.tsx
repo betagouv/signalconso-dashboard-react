@@ -21,7 +21,7 @@ export const UsersList = () => {
 
   useEffect(() => {
     _users.fetch()
-  }, [_users.filters])
+  }, [])
 
   useEffect(() => {
     fromNullable(_users.error).map(toastError)

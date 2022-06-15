@@ -48,7 +48,6 @@ export const CompaniesRegistered = () => {
   }, [])
 
   useEffect(() => {
-    _companies.fetch()
     queryString.update(cleanObject(_companies.filters))
   }, [_companies.filters])
 
