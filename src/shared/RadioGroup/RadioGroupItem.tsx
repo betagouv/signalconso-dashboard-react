@@ -31,6 +31,7 @@ export const ScRadioGroupItem = <T, >({
   onClick,
   className,
   multiple,
+  sx,
   ...rest
 }: ScRadioGroupItemProps<T>) => {
   const minHeight = dense ? 40 : 50
@@ -92,7 +93,7 @@ export const ScRadioGroupItem = <T, >({
           },
           boxShadow: t => `inset 0 0 0 1px ${t.palette.error.main}`,
         },
-        background: 'red',
+        ...sx,
       }}
       onClick={onClick}
       {...rest}
