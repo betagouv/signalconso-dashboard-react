@@ -19,16 +19,15 @@ import {ScButton} from '../../../shared/Button/Button'
 import {useEffectFn} from '@alexandreannic/react-hooks-lib'
 import {SelectCompany} from '../../../shared/SelectCompany/SelectCompany'
 
-
 interface Website {
   id: Id
   company?: Company
   companyCountry?: Country
 }
 
-interface Props extends BoxProps {
+interface Props extends Omit<BoxProps, 'onChange'> {
   website: Website
-  onChangeDone: () => void
+  onChange: (company?: WebsiteUpdateCompany, companyCountry?: Country) => void
 }
 
 export enum IdentificationType {
@@ -36,7 +35,7 @@ export enum IdentificationType {
   COUNTRY = 'COUNTRY',
 }
 
-export const SelectWebsiteIdentification = ({onChangeDone, website, ...props}: Props) => {
+export const SelectWebsiteIdentification = ({onChange, website, ...props}: Props) => {
   const {m} = useI18n()
   const {toastError, toastInfo, toastSuccess} = useToast()
   const [selectedIdentification, setSelectedIdentification] = useState<IdentificationType>(
@@ -50,34 +49,33 @@ export const SelectWebsiteIdentification = ({onChangeDone, website, ...props}: P
   useEffectFn(_updateCompany.error, toastError)
   useEffectFn(_updateCountry.error, toastError)
 
-  const updateCompany = (close: () => void) => {
+  const updateCompany = async (close: () => void) => {
     if (company) {
       if (website.company && website.company.siret === company.siret) {
         toastInfo(m.alreadySelectedCompany(company.name))
       } else {
-        _updateCompany
-          .fetch({}, website.id, {
-            siret: company.siret,
-            name: company.name,
-            address: company.address,
-            activityCode: company.activityCode,
-          })
-          .then(_ => toastSuccess(m.websiteEdited))
-          .then(close)
-          .then(onChangeDone)
+        await _updateCompany.fetch({}, website.id, {
+          siret: company.siret,
+          name: company.name,
+          address: company.address,
+          activityCode: company.activityCode,
+        })
+        toastSuccess(m.websiteEdited)
+        close()
+        onChange(company)
       }
     }
   }
 
-  const updateCountry = (close: () => void) => {
+  const updateCountry = async (close: () => void) => {
     if (country) {
       if (country === website.companyCountry) {
         toastInfo(m.alreadySelectedCountry(country?.name))
       } else {
-        _updateCountry.fetch({}, website.id, country)
-          .then(_ => toastSuccess(m.websiteEdited))
-          .then(close)
-          .then(onChangeDone)
+        await _updateCountry.fetch({}, website.id, country)
+        toastSuccess(m.websiteEdited)
+        close()
+        onChange(undefined, country)
       }
     }
   }

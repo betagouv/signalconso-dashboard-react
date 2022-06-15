@@ -6,9 +6,7 @@ import {Panel} from '../../shared/Panel'
 import {Datatable} from '../../shared/Datatable/Datatable'
 import {DebouncedInput} from '../../shared/DebouncedInput/DebouncedInput'
 import {useReportedWebsiteWithCompanyContext} from '../../core/context/ReportedWebsitesContext'
-import {
-  cleanObject,
-  DepartmentDivision,
+import {cleanObject, Company, DepartmentDivision,
   Id,
   IdentificationStatus,
   WebsiteWithCompany
@@ -143,7 +141,18 @@ export const WebsitesInvestigation = () => {
             render: _ => (
               <SelectWebsiteIdentification
                 website={_}
-                onChangeDone={() => _websiteWithCompany.fetch({clean: false})}
+                onChange={(company, companyCountry) => {
+                  // TODO(Saïd) Not sure it is clean.
+                  // Can address and name be undefined in WebsiteUpdateCompany if they are not in Company.
+                  const dummyCompany: Company | undefined = company !== undefined ? {
+                    ...company,
+                    address: company.address ?? {},
+                    id: 'temp' + Math.random(),
+                    creationDate: new Date(),
+                    name: company?.name ?? '',
+                  } : undefined
+                  websitesIndex.set(_.id, {..._, company: dummyCompany, companyCountry})
+                }}
               />
             ),
           },
@@ -160,12 +169,8 @@ export const WebsitesInvestigation = () => {
                   if (_.practice === practice) {
                     toastInfo(m.alreadySelectedValue(practice))
                   } else {
-                    _createOrUpdate
-                      .fetch({}, {
-                        practice: practice,
-                        ..._,
-                      })
-                      .then(_ => _websiteWithCompany.fetch({clean: false}))
+                    _createOrUpdate.fetch({}, {practice: practice, ..._})
+                    websitesIndex.set(_.id, {..._, practice})
                   }
                 }}
                 options={_practice.entity}
@@ -188,12 +193,8 @@ export const WebsitesInvestigation = () => {
                   if (_.investigationStatus === investigationStatus) {
                     toastInfo(m.alreadySelectedValue(investigationStatus))
                   } else {
-                    _createOrUpdate
-                      .fetch({}, {
-                        ..._,
-                        investigationStatus,
-                      })
-                      .then(_ => _websiteWithCompany.fetch({clean: false}))
+                    _createOrUpdate.fetch({}, {..._, investigationStatus})
+                    websitesIndex.set(_.id, {..._, investigationStatus})
                   }
                 }}
               >
@@ -215,12 +216,8 @@ export const WebsitesInvestigation = () => {
                   if (departmentDivision && w.attribution === departmentDivision.code) {
                     toastInfo(m.alreadySelectedValue(departmentDivision?.name))
                   } else {
-                    _createOrUpdate
-                      .fetch({}, {
-                        ...w,
-                        attribution: departmentDivision?.code,
-                      })
-                      .then(_ => _websiteWithCompany.fetch({clean: false}))
+                    _createOrUpdate.fetch({}, {...w, attribution: departmentDivision?.code})
+                    websitesIndex.set(w.id, {...w, attribution: departmentDivision?.code})
                   }
                 }}
               >
