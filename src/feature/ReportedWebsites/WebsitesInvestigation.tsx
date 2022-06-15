@@ -9,6 +9,7 @@ import {useReportedWebsiteWithCompanyContext} from '../../core/context/ReportedW
 import {
   cleanObject,
   DepartmentDivision,
+  Id,
   IdentificationStatus,
   WebsiteWithCompany
 } from '@signal-conso/signalconso-api-sdk-js'
@@ -18,11 +19,13 @@ import {StatusChip} from './StatusChip'
 import {WebsitesFilters} from './WebsitesFilters'
 import {SelectWebsiteIdentification} from './SelectWebsiteIdentification/SelectWebsiteIdentification'
 import {AutocompleteDialog} from '../../shared/AutocompleteDialog/AutocompleteDialog'
-import {useEffectFn} from '@alexandreannic/react-hooks-lib'
+import {useEffectFn, useMap} from '@alexandreannic/react-hooks-lib'
 import {WebsiteTools} from './WebsiteTools'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
 import {groupBy} from '../../core/lodashNamedExport'
 import {map} from '@alexandreannic/ts-utils'
+import {sxUtils} from '../../core/theme'
+import {useMemoFn} from '@alexandreannic/react-hooks-lib/lib'
 
 export const WebsitesInvestigation = () => {
   const {m} = useI18n()
@@ -35,10 +38,14 @@ export const WebsitesInvestigation = () => {
   const _remove = useReportedWebsiteWithCompanyContext().remove
   const {toastError, toastInfo} = useToast()
 
-  const departmentDivisionIndex = useMemo(
-    () => map(_departmentDivision.entity, deps => groupBy(deps, _ => _.code)),
-    [_departmentDivision.entity],
+  const departmentDivisionIndex = useMemoFn(
+    _departmentDivision.entity,
+    deps => groupBy(deps, _ => _.code),
   )
+
+  const websitesIndex = useMap<Id, WebsiteWithCompany>()
+  useEffectFn(_websiteWithCompany.list, w => websitesIndex.reset(w.data, _ => _.id))
+
 
   useEffect(() => {
     _websiteWithCompany.fetch({clean: false})
@@ -56,7 +63,8 @@ export const WebsitesInvestigation = () => {
   useEffectFn(_remove.error, toastError)
 
   const handleUpdateKind = (website: WebsiteWithCompany, identificationStatus: IdentificationStatus) => {
-    _updateStatus.fetch({}, website.id, identificationStatus).then(() => _websiteWithCompany.fetch({clean: false}))
+    _updateStatus.fetch({}, website.id, identificationStatus)
+    websitesIndex.set(website.id, {...website, identificationStatus})
   }
 
   const filtersCount = useMemo(() => {
@@ -116,7 +124,7 @@ export const WebsitesInvestigation = () => {
           onPaginationChange: pagination => _websiteWithCompany.updateFilters(prev => ({...prev, ...pagination})),
         }}
         getRenderRowKey={_ => _.id}
-        data={_websiteWithCompany.list?.data}
+        data={websitesIndex.values()}
         showColumnsToggle={true}
         columns={[
           {
@@ -234,6 +242,7 @@ export const WebsitesInvestigation = () => {
           {
             id: 'status',
             stickyEnd: true,
+            sx: _ => sxUtils.tdActions,
             render: _ =>
               <>
                 <WebsiteTools website={_} />
