@@ -1,5 +1,5 @@
 import React, {ReactNode} from 'react'
-import {Box, Divider, Icon} from '@mui/material'
+import {Box, Icon} from '@mui/material'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
 
 interface SubscriptionCardRowProps {
@@ -11,45 +11,40 @@ interface SubscriptionCardRowProps {
 
 export const SubscriptionCardRow = ({icon, label, children, onClick}: SubscriptionCardRowProps) => {
   return (
-    <>
-      <Box
-        sx={{
-          cursor: 'pointer',
-          py: 1.5,
-          px: 0,
-          display: 'flex',
-          alignItems: 'center',
-          transition: t => t.transitions.create('background'),
-          '&:hover': {
-            background: t => t.palette.action.hover,
-          },
-        }}
-        onClick={onClick}
-      >
+    <Box
+      sx={{
+        mx: 2,
+        cursor: 'pointer',
+        py: 2,
+        px: 0,
+        '&:not(:last-of-type)': {
+          borderBottom: t => `1px solid ${t.palette.divider}`,
+        },
+        transition: t => t.transitions.create('background'),
+        '&:hover': {
+          background: t => t.palette.action.hover,
+        },
+      }}
+      onClick={onClick}
+    >
+      <Box sx={{
+        display: 'flex',
+        alignItems: 'center',
+      }}>
         <Icon
           sx={{
             color: t => t.palette.text.secondary,
-            my: 0.5,
-            mr: 2,
-            ml: 3,
+            mr: 1.5,
           }}
         >
           {icon}
         </Icon>
-        <Box sx={{minWidth: 115}}>
+        <Box sx={{flex: 1}}>
           <Txt color="hint">{label}</Txt>
         </Box>
-        <Box sx={{flex: 1}}>{children}</Box>
         <Icon sx={{mr: 1, color: t => t.palette.text.disabled}}>chevron_right</Icon>
       </Box>
-      <Divider
-        sx={{
-          ml: 3,
-          '&:last-of-type': {
-            display: 'none',
-          },
-        }}
-      />
-    </>
+      {children && <Box sx={{mt: 1}}>{children}</Box>}
+    </Box>
   )
 }

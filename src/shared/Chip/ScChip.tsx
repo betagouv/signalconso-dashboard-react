@@ -4,6 +4,6 @@ import {combineSx, sxUtils} from '../../core/theme'
 
 interface ChipProps extends MatChipProps {}
 
-export const ScChip = ({variant = 'outlined', sx = {}, ...props}: ChipProps) => {
+export const ScChip = ({variant = 'outlined', sx, ...props}: ChipProps) => {
   return <MatChip variant={variant} {...props} sx={combineSx(sxUtils.fontNormal, sx)} />
 }

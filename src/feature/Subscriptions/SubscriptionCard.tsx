@@ -1,4 +1,4 @@
-import React, {CSSProperties, SyntheticEvent, useEffect, useMemo, useState} from 'react'
+import React, {SyntheticEvent, useEffect, useMemo, useState} from 'react'
 import {useI18n} from '../../core/i18n'
 import {Subscription, SubscriptionCreate} from '@signal-conso/signalconso-api-sdk-js'
 import {Panel, PanelHead} from '../../shared/Panel'
@@ -18,15 +18,14 @@ import {ScDialog} from '../../shared/Confirm/ScDialog'
 import {ScMenuItem} from '../MenuItem/MenuItem'
 import {SelectTagsMenu, SelectTagsMenuValues} from '../../shared/SelectTags/SelectTagsMenu'
 import {fromReportTagValues, toReportTagValues} from '../Reports/ReportsFilters'
+import {PanelProps} from '../../shared/Panel/Panel'
 
-interface Props {
+interface Props extends PanelProps {
   subscription: Subscription
   onUpdate: (_: Partial<SubscriptionCreate>) => Promise<Subscription>
   onDelete: (event: SyntheticEvent<any>) => void
   removing: boolean
   loading?: boolean
-  className?: string
-  style?: CSSProperties
 }
 
 const useAnchoredMenu = () => {
@@ -36,7 +35,7 @@ const useAnchoredMenu = () => {
   return {open, close, element: anchorEl}
 }
 
-export const SubscriptionCard = ({subscription, onUpdate, onDelete, removing, loading, className, style}: Props) => {
+export const SubscriptionCard = ({subscription, onUpdate, onDelete, removing, loading, ...props}: Props) => {
   const {m} = useI18n()
   const {toastInfo} = useToast()
   const departmentAnchor = useAnchoredMenu()
@@ -57,7 +56,7 @@ export const SubscriptionCard = ({subscription, onUpdate, onDelete, removing, lo
 
   return (
     <Collapse in={isMounted} timeout={duration.standard * 1.5}>
-      <Panel loading={loading} className={className} style={style}>
+      <Panel loading={loading} {...props}>
         <PanelHead
           sx={{
             display: 'flex',
@@ -151,7 +150,11 @@ export const SubscriptionCard = ({subscription, onUpdate, onDelete, removing, lo
                 }
               }}
             >
-              <ScChip label={<Icon>add</Icon>} />
+              <ScChip label={
+                <Icon sx={{display: 'flex', alignItems: 'center'}}>
+                  add
+                </Icon>
+              } />
             </SelectCompany>
           </ScChipContainer>
         </SubscriptionCardRow>
