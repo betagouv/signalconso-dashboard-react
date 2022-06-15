@@ -230,7 +230,7 @@ export const WebsitesInvestigation = () => {
             head: m.identified,
             render: _ => (
               <Switch
-                checked={_.kind === IdentificationStatus.Identified}
+                checked={_.identificationStatus === IdentificationStatus.Identified}
                 onChange={e => handleUpdateKind(_, e.target.checked ? IdentificationStatus.Identified : IdentificationStatus.NotIdentified)}
               />
             ),
