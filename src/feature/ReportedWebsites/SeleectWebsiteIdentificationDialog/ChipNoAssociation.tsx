@@ -1,9 +1,9 @@
 import {ChipProps, Tooltip} from '@mui/material'
 import React from 'react'
-import {useI18n} from '../../core/i18n'
-import {ScChip} from '../../shared/Chip/ScChip'
+import {useI18n} from '../../../core/i18n'
+import {ScChip} from '../../../shared/Chip/ScChip'
 
-export const NoAssociationChip = ({...props}: ChipProps) => {
+export const ChipNoAssociation = ({...props}: ChipProps) => {
   const {m} = useI18n()
 
   return (

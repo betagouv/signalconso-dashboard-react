@@ -1,20 +1,20 @@
 import React, {useState} from 'react'
-import {useI18n} from '../../core/i18n'
+import {useI18n} from '../../../core/i18n'
 import {Company, Country, Id} from '@signal-conso/signalconso-api-sdk-js'
 
 import Tab from '@mui/material/Tab'
 import {TabList, TabPanel} from '@mui/lab'
 import TabContext from '@mui/lab/TabContext'
-import {ScDialog} from '../../shared/Confirm/ScDialog'
-import {CompanyIdentification} from './CompanyIdentification'
-import {SelectCountry} from '../../shared/SelectCountry/SelectCountry'
-import {useReportedWebsiteWithCompanyContext} from '../../core/context/ReportedWebsitesContext'
-import {useToast} from '../../core/toast'
+import {ScDialog} from '../../../shared/Confirm/ScDialog'
+import {CompanyIdentification} from '../CompanyIdentification'
+import {SelectCountry} from '../../../shared/SelectCountry/SelectCountry'
+import {useReportedWebsiteWithCompanyContext} from '../../../core/context/ReportedWebsitesContext'
+import {useToast} from '../../../core/toast'
 import {WebsiteUpdateCompany} from '@signal-conso/signalconso-api-sdk-js/lib/model'
-import {CountryChip} from './CountryChip'
-import {CompanyChip} from './CompanyChip'
+import {ChipCountry} from './ChipCountry'
+import {ChipCompany} from './ChipCompany'
 import {BoxProps} from '@mui/material'
-import {NoAssociationChip} from './NoAssociationChip'
+import {ChipNoAssociation} from './ChipNoAssociation'
 
 
 interface Website {
@@ -28,7 +28,7 @@ interface Props extends BoxProps {
   onChangeDone: () => void
 }
 
-export const WebsiteIdentification = ({onChangeDone, website, ...props}: Props) => {
+export const SeleectWebsiteIdentificationDialog = ({onChangeDone, website, ...props}: Props) => {
 
   const {m} = useI18n()
   const companyTab = "1";
@@ -117,9 +117,9 @@ export const WebsiteIdentification = ({onChangeDone, website, ...props}: Props) 
 
       {
         website.companyCountry ?
-          <CountryChip onClick={props.onClick} country={website.companyCountry}/>
-          : website.company ? <CompanyChip onClick={props.onClick} company={website.company}/> :
-            <NoAssociationChip/>
+          <ChipCountry onClick={props.onClick} country={website.companyCountry}/>
+          : website.company ? <ChipCompany onClick={props.onClick} company={website.company}/> :
+            <ChipNoAssociation/>
       }
     </ScDialog>
   )

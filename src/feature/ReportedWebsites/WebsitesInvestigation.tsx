@@ -11,10 +11,13 @@ import {IconBtn} from 'mui-extension'
 import {useWebsiteInvestigationContext} from '../../core/context/WebsiteInvestigationContext'
 import {StatusChip} from './StatusChip'
 import {WebsitesFilters} from './WebsitesFilters'
-import {WebsiteIdentification} from './WebsiteIdentification'
+import {SeleectWebsiteIdentificationDialog} from './SeleectWebsiteIdentificationDialog/SeleectWebsiteIdentificationDialog'
 import {AutocompleteDialog} from '../../shared/AutocompleteDialog/AutocompleteDialog'
 import {useEffectFn} from '@alexandreannic/react-hooks-lib'
 import {WebsiteTools} from './WebsiteTools'
+import {Txt} from 'mui-extension/lib/Txt/Txt'
+import {groupBy} from '../../core/lodashNamedExport'
+import {map} from '@alexandreannic/ts-utils'
 
 export const WebsitesInvestigation = () => {
   const {m} = useI18n()
@@ -26,6 +29,11 @@ export const WebsitesInvestigation = () => {
   const _updateStatus = useReportedWebsiteWithCompanyContext().update
   const _remove = useReportedWebsiteWithCompanyContext().remove
   const {toastError, toastInfo} = useToast()
+
+  const departmentDivisionIndex = useMemo(
+    () => map(_departmentDivision.entity, deps => groupBy(deps, _ => _.code)),
+    [_departmentDivision.entity],
+  )
 
   useEffect(() => {
     _websiteWithCompany.fetch({clean: false})
@@ -109,7 +117,7 @@ export const WebsitesInvestigation = () => {
           {
             id: 'host',
             head: m.website,
-            render: _ => <a href={'https://' + _.host}>{_.host}</a>,
+            render: _ => <Txt link><a href={'https://' + _.host}>{_.host}</a></Txt>,
           },
           {
             head: m.reports,
@@ -120,7 +128,7 @@ export const WebsitesInvestigation = () => {
             head: m.identication,
             id: 'identication',
             render: _ => (
-              <WebsiteIdentification
+              <SeleectWebsiteIdentificationDialog
                 website={_}
                 onChangeDone={() => _websiteWithCompany.fetch({clean: false})}
               />
@@ -131,9 +139,10 @@ export const WebsitesInvestigation = () => {
             id: 'practice',
             render: _ => (
               <AutocompleteDialog<string>
+                value={_.practice}
                 title={m.practiceTitle}
                 inputLabel={m.practice}
-                getValueName={_ => _}
+                getOptionLabel={_ => _}
                 onChange={practice => {
                   if (_.practice === practice) {
                     toastInfo(m.alreadySelectedValue(practice))
@@ -157,9 +166,11 @@ export const WebsitesInvestigation = () => {
             id: 'investigationStatus',
             render: _ => (
               <AutocompleteDialog<string>
+                value={_.investigationStatus}
                 title={m.affectationTitle}
                 inputLabel={m.affectation}
-                getValueName={_ => m.investigationStatus(_)}
+                getOptionLabel={_ => m.investigationStatus(_)}
+                options={_investigationStatus.entity}
                 onChange={investigationStatus => {
                   if (_.investigationStatus === investigationStatus) {
                     toastInfo(m.alreadySelectedValue(investigationStatus))
@@ -167,12 +178,11 @@ export const WebsitesInvestigation = () => {
                     _createOrUpdate
                       .fetch({}, {
                         ..._,
-                        investigationStatus: investigationStatus,
+                        investigationStatus,
                       })
                       .then(_ => _websiteWithCompany.fetch({clean: false}))
                   }
                 }}
-                options={_investigationStatus.entity}
               >
                 <StatusChip tooltipTitle={m.investigation} value={_.investigationStatus ? m.investigationStatus(_.investigationStatus) : m.noValue} />
               </AutocompleteDialog>
@@ -181,26 +191,27 @@ export const WebsitesInvestigation = () => {
           {
             head: m.affectation,
             id: 'affectation',
-            render: _ => (
+            render: w => (
               <AutocompleteDialog<DepartmentDivision>
+                value={map(w.attribution, departmentDivisionIndex, (attribution, dep) => dep[attribution][0])}
                 title={m.affectationTitle}
                 inputLabel={m.affectation}
-                getValueName={_ => _.code + ' - ' + _.name}
+                getOptionLabel={_ => _.code + ' - ' + _.name}
+                options={_departmentDivision.entity}
                 onChange={departmentDivision => {
-                  if (departmentDivision && _.attribution === departmentDivision.code) {
+                  if (departmentDivision && w.attribution === departmentDivision.code) {
                     toastInfo(m.alreadySelectedValue(departmentDivision?.name))
                   } else {
                     _createOrUpdate
                       .fetch({}, {
-                        ..._,
+                        ...w,
                         attribution: departmentDivision?.code,
                       })
                       .then(_ => _websiteWithCompany.fetch({clean: false}))
                   }
                 }}
-                options={_departmentDivision.entity}
               >
-                <StatusChip tooltipTitle={m.affectation} value={_.attribution ?? m.noValue} />
+                <StatusChip tooltipTitle={m.affectation} value={w.attribution ?? m.noValue} />
               </AutocompleteDialog>
             ),
           },

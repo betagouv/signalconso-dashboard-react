@@ -1,20 +1,13 @@
-import React, {ReactElement, useEffect, useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import {useI18n} from '../../core/i18n'
-import {Company, CompanySearchResult, Id} from '@signal-conso/signalconso-api-sdk-js'
+import {Id} from '@signal-conso/signalconso-api-sdk-js'
 import {useCompaniesContext} from '../../core/context/CompaniesContext'
 import {fromNullable} from 'fp-ts/lib/Option'
-import {Box, Divider, Icon} from '@mui/material'
-import Tabs from '@mui/material/Tabs';
-import Tab from '@mui/material/Tab';
+import {Divider, Icon} from '@mui/material'
 import {IconBtn} from 'mui-extension/lib'
-import {TabList, TabPanel} from "@mui/lab";
-import TabContext from '@mui/lab/TabContext';
-import {ScDialog} from "../../shared/Confirm/ScDialog";
-import {ScInput} from "../../shared/Input/ScInput";
-import {SelectCompanyList} from "../../shared/SelectCompany/SelectCompanyList";
-import {useReportedWebsiteWithCompanyContext} from "../../core/context/ReportedWebsitesContext";
-import {useToast} from "../../core/toast";
-import {WebsiteUpdateCompany} from "@signal-conso/signalconso-api-sdk-js/lib/model";
+import {ScInput} from '../../shared/Input/ScInput'
+import {SelectCompanyList} from '../../shared/SelectCompany/SelectCompanyList'
+import {WebsiteUpdateCompany} from '@signal-conso/signalconso-api-sdk-js/lib/model'
 
 interface Props {
   siret?: string
