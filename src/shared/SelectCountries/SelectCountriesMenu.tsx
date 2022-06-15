@@ -8,6 +8,7 @@ import {useI18n} from '../../core/i18n'
 import {useSetState, UseSetState} from '@alexandreannic/react-hooks-lib/lib'
 import {makeSx} from 'mui-extension'
 import {combineSx} from '../../core/theme'
+import {countryToFlag} from "../../core/helper/utils";
 
 const withRegions = (WrappedComponent: React.ComponentType<Props>) => (props: Omit<Props, 'countries'>) => {
   const {countries} = useConstantContext()
@@ -69,27 +70,13 @@ interface Props {
   onClose: () => void
 }
 
-const countryToFlag = (isoCode: string) => {
-  return typeof String.fromCodePoint !== 'undefined'
-    ? isoCode.toUpperCase().replace(/./g, char => String.fromCodePoint(char.charCodeAt(0) + 127397))
-    : isoCode
-}
-
 export const SelectCountriesMenu = withRegions(({countries, anchorEl, open, initialValues, onChange, onClose}: Props) => {
   const {m} = useI18n()
   const indexedValues: UseSetState<string> = useSetState<string>()
-  // const [inputValue, setInputValue] = useState('')
 
   useEffect(() => {
     indexedValues.reset(initialValues)
   }, [])
-  // const [inputValue, setInputValue] = useState('')
-
-  // const indexedCountries = useMemo(() => countries.reduce((acc, country) => {
-  //     acc[country.code] = country
-  //     return acc
-  //   }, {} as Index<Country>
-  // ), [countries])
 
   const innerCountries = useMemo(() => {
     const euCountries: Country[] = []

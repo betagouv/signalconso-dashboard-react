@@ -1,28 +1,18 @@
-import React, {ReactElement, useEffect, useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import {useI18n} from '../../core/i18n'
-import {CompanySearchResult, Country, Id} from '@signal-conso/signalconso-api-sdk-js'
-import {useCompaniesContext} from '../../core/context/CompaniesContext'
+import {Country} from '@signal-conso/signalconso-api-sdk-js'
 import {fromNullable} from 'fp-ts/lib/Option'
-import {alpha, Autocomplete, Box, Divider, Icon, TextField} from '@mui/material'
-import Tabs from '@mui/material/Tabs';
-import Tab from '@mui/material/Tab';
-import {IconBtn} from 'mui-extension/lib'
-import {TabList, TabPanel} from "@mui/lab";
-import TabContext from '@mui/lab/TabContext';
-import {ScDialog} from "../../shared/Confirm/ScDialog";
-import {ScInput} from "../../shared/Input/ScInput";
-import {SelectCompanyList} from "../../shared/SelectCompany/SelectCompanyList";
-import {useReportedWebsiteWithCompanyContext} from "../../core/context/ReportedWebsitesContext";
-import {useToast} from "../../core/toast";
-import {useConstantContext} from "../../core/context/ConstantContext";
-import {combineSx} from "../../core/theme";
-import {makeSx} from "mui-extension";
+import {Autocomplete, Box} from '@mui/material'
+import {ScInput} from '../Input/ScInput'
+import {useConstantContext} from '../../core/context/ConstantContext'
+import {combineSx} from '../../core/theme'
+import {makeSx} from 'mui-extension'
+import {countryToFlag} from '../../core/helper/utils'
 
 interface Props {
   country?: Country
   onChange: (_ :Country) => void
 }
-
 
 const css = makeSx({
   menuItem: {
@@ -50,23 +40,15 @@ const css = makeSx({
   },
 })
 
-const countryToFlag = (isoCode: string) => {
-  return typeof String.fromCodePoint !== 'undefined'
-    ? isoCode.toUpperCase().replace(/./g, char => String.fromCodePoint(char.charCodeAt(0) + 127397))
-    : isoCode
-}
-
-export const CountryIdentification = ({onChange, country}: Props) => {
+export const SelectCountry = ({onChange, country}: Props) => {
   const {m} = useI18n()
   const _countries = useConstantContext().countries
   const [countries, setCountries] = useState<Country[]>([])
 
-
   useEffect(() => {
     _countries.fetch({}).then(setCountries)
   }, [country])
-
-
+  
   return (
     <>
       <Autocomplete

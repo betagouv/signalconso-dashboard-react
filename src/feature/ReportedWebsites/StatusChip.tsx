@@ -1,24 +1,17 @@
-import {Box, BoxProps, Chip, Theme, Tooltip} from '@mui/material'
+import {ChipProps, Tooltip} from '@mui/material'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
-import React, {ReactElement} from 'react'
-import {useI18n} from '../../core/i18n'
-import {Company, CompanySearchResult, Country, Id} from '@signal-conso/signalconso-api-sdk-js'
-import {makeSx} from 'mui-extension'
+import React from 'react'
+import {ScChip} from 'shared/Chip/ScChip'
 
-interface Props extends BoxProps {
+interface Props extends ChipProps {
   tooltipTitle: string
   value?: string
 }
 
 export const StatusChip = ({value, tooltipTitle, ...props}: Props) => {
-  const {m} = useI18n()
-
   return (
     <Tooltip title={tooltipTitle}>
-      <Chip
-        onClick={props.onClick}
-        variant={'outlined'}
-        sx={{height: 42, borderRadius: 42}}
+      <ScChip
         label={
           <Txt
             truncate
@@ -31,6 +24,7 @@ export const StatusChip = ({value, tooltipTitle, ...props}: Props) => {
             {value}
           </Txt>
         }
+        {...props}
       />
     </Tooltip>
   )
