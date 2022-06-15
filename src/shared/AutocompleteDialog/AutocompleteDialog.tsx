@@ -2,15 +2,16 @@ import React, {ReactElement} from 'react'
 import {useI18n} from '../../core/i18n'
 import {Autocomplete} from '@mui/material'
 import {ScDialog} from '../Confirm/ScDialog'
-import {fromNullable} from 'fp-ts/es6/Option'
 import {ScInput} from '../Input/ScInput'
+import {useEffectFn} from '@alexandreannic/react-hooks-lib'
 
 interface Props<T> {
+  value?: T
   children: ReactElement<any>
   inputLabel: string
   title: string
   defaultValue?: T
-  getValueName: (_: T) => string
+  getOptionLabel: (_: T) => string
   onChange: (_?: T) => void
   options?: T[]
 }
@@ -18,25 +19,28 @@ interface Props<T> {
 export const AutocompleteDialog = <T extends unknown>({
   children,
   inputLabel,
+  value,
   title,
   defaultValue,
-  getValueName,
+  getOptionLabel,
   onChange,
   options,
 }: Props<T>) => {
   const {m} = useI18n()
-  const [value, setValue] = React.useState<T | undefined>(defaultValue)
+  const [innerValue, setInnerValue] = React.useState<T | undefined>(defaultValue)
 
+  useEffectFn(value, setInnerValue)
+  
   return (
     <ScDialog
       PaperProps={{style: {position: 'static'}}}
-      maxWidth="sm"
+      maxWidth="xs"
       title={title}
       content={_ => (
         <>
           <Autocomplete
-            disablePortal
             multiple={false}
+            value={innerValue}
             defaultValue={defaultValue}
             sx={{
               mb: 1.5,
@@ -44,16 +48,16 @@ export const AutocompleteDialog = <T extends unknown>({
               width: 300,
             }}
             onChange={(event, newInputValue) => {
-              setValue(fromNullable(newInputValue).toUndefined())
+              setInnerValue(newInputValue ?? undefined)
             }}
             options={options ?? []}
-            getOptionLabel={getValueName}
+            getOptionLabel={getOptionLabel}
             renderInput={params => <ScInput autoFocus {...params} label={inputLabel} />}
           />
         </>
       )}
       onConfirm={(_, close) => {
-        onChange(value)
+        onChange(innerValue)
         close()
       }}
       confirmLabel={m.edit}

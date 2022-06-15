@@ -1,15 +1,15 @@
 import {Box, BoxProps, Tooltip} from '@mui/material'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
 import React from 'react'
-import {useI18n} from '../../core/i18n'
+import {useI18n} from '../../../core/i18n'
 import {Company} from '@signal-conso/signalconso-api-sdk-js'
-import {ScChip} from '../../shared/Chip/ScChip'
+import {ScChip} from '../../../shared/Chip/ScChip'
 
 interface Props extends BoxProps {
   company: Company
 }
 
-export const CompanyChip = ({company, ...props}: Props) => {
+export const ChipCompany = ({company, ...props}: Props) => {
   const {m} = useI18n()
 
   return (

@@ -5,13 +5,12 @@ import {CompanySearchResult, Id} from '@signal-conso/signalconso-api-sdk-js'
 import {useCompaniesContext} from '../../core/context/CompaniesContext'
 import {fromNullable} from 'fp-ts/lib/Option'
 import {Icon} from '@mui/material'
-import Tabs from '@mui/material/Tabs';
-import Tab from '@mui/material/Tab';
+import Tab from '@mui/material/Tab'
 import {SelectCompanyList} from './SelectCompanyList'
 import {IconBtn} from 'mui-extension/lib'
 import {ScDialog} from '../Confirm/ScDialog'
-import {TabList, TabPanel} from "@mui/lab";
-import TabContext from '@mui/lab/TabContext';
+import {TabList, TabPanel} from '@mui/lab'
+import TabContext from '@mui/lab/TabContext'
 
 interface Props {
   children: ReactElement<any>

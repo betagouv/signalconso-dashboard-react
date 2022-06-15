@@ -1,11 +1,11 @@
 import {Box, BoxProps, Tooltip} from '@mui/material'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
 import React from 'react'
-import {useI18n} from '../../core/i18n'
+import {useI18n} from '../../../core/i18n'
 import {Country} from '@signal-conso/signalconso-api-sdk-js'
 import {makeSx} from 'mui-extension'
-import {styleUtils} from '../../core/theme'
-import {ScChip} from '../../shared/Chip/ScChip'
+import {styleUtils} from '../../../core/theme'
+import {ScChip} from '../../../shared/Chip/ScChip'
 
 interface Props extends BoxProps {
   country: Country
@@ -23,7 +23,7 @@ const sx = makeSx({
   }),
 })
 
-export const CountryChip = ({country, ...props}: Props) => {
+export const ChipCountry = ({country, ...props}: Props) => {
   const {m} = useI18n()
 
   return (
