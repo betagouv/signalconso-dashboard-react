@@ -298,7 +298,7 @@ const _ReportsFilters = ({filters, updateFilters, children}: _ReportsFiltersProp
                     <TrueFalseUndefined
                       emitEmptyString
                       {...otherField}
-                      value={value === undefined ? undefined : !value}
+                      value={!value}
                       onChange={_ => onChange(_ === undefined ? undefined : !_)}
                       sx={{mt: 1}}
                     />
