@@ -4,6 +4,10 @@
   "private": false,
   "main": "build/",
   "repository": "https://github.com/betagouv/signalconso-dashboard-react/pulls",
+  "engines": {
+    "node": "16.15.1",
+    "npm": "8.11.0"
+  },
   "scripts": {
     "analyze": "source-map-explorer 'build/static/js/*.js'",
     "start": "react-scripts start",
