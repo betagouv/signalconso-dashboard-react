@@ -32,7 +32,7 @@ export const ScSidebar = ({
         pb: 0.5,
         px: 2
       }}>
-        <Tooltip placement="right" title={
+        <Tooltip title={
           <>
             <Txt block bold>
               {connectedUser.firstName} {connectedUser.lastName}
