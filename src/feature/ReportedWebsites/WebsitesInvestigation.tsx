@@ -1,4 +1,4 @@
-import React, {useEffect, useMemo} from 'react'
+import React, {useEffect, useMemo, useState} from 'react'
 import {useI18n} from '../../core/i18n'
 import {Badge, Icon, InputBase, Switch, Tooltip} from '@mui/material'
 import {useToast} from '../../core/toast'
@@ -6,7 +6,8 @@ import {Panel} from '../../shared/Panel'
 import {Datatable} from '../../shared/Datatable/Datatable'
 import {DebouncedInput} from '../../shared/DebouncedInput/DebouncedInput'
 import {useReportedWebsiteWithCompanyContext} from '../../core/context/ReportedWebsitesContext'
-import {cleanObject, Company, DepartmentDivision,
+import {
+  cleanObject, Company, Country, DepartmentDivision,
   Id,
   IdentificationStatus,
   WebsiteWithCompany
@@ -24,6 +25,7 @@ import {groupBy} from '../../core/lodashNamedExport'
 import {map} from '@alexandreannic/ts-utils'
 import {sxUtils} from '../../core/theme'
 import {useMemoFn} from '@alexandreannic/react-hooks-lib/lib'
+import {UseMap} from "@alexandreannic/react-hooks-lib/src/useMap/UseMap";
 
 export const WebsitesInvestigation = () => {
   const {m} = useI18n()
@@ -42,7 +44,12 @@ export const WebsitesInvestigation = () => {
   )
 
   const websitesIndex = useMap<Id, WebsiteWithCompany>()
-  useEffectFn(_websiteWithCompany.list, w => websitesIndex.reset(w.data, _ => _.id))
+
+  useEffectFn(_websiteWithCompany.list, w => {
+    websitesIndex.clear()
+    w.data.map(_ => websitesIndex.set(_.id,_))
+  }
+  )
 
   useEffect(() => {
     _websiteWithCompany.fetch({clean: false})
