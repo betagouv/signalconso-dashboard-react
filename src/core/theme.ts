@@ -86,8 +86,8 @@ export const muiTheme = (dark?: boolean): Theme => {
   }
   const colorSecondary = {
     main: '#1e2b50',
-    light: lighten('#1e2b50', .3),
-    dark: darken('#1e2b50', .3),
+    light: lighten('#1e2b50', 0.3),
+    dark: darken('#1e2b50', 0.3),
   }
   const baseTheme = createTheme({
     spacing: defaultSpacing,

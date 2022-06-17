@@ -93,12 +93,8 @@ const AppLogin = () => {
     >
       {({authResponse, login, logout, register, isCheckingToken, setToken}) => (
         <Layout
-          header={
-            <ScHeader/>
-          }
-          sidebar={authResponse?.user && (
-            <ScSidebar connectedUser={authResponse.user} logout={logout} />
-          )}
+          header={<ScHeader />}
+          sidebar={authResponse?.user && <ScSidebar connectedUser={authResponse.user} logout={logout} />}
         >
           <Switch>
             <Route path={siteMap.loggedout.emailValidation}>
@@ -179,7 +175,7 @@ const AppLogged = () => {
         _ => <AccessesProvider api={apiSdk} children={_} />,
         _ => <BlockedReportNotificationProvider api={apiSdk} children={_} />,
         _ => <CompaniesDbSyncProvider api={apiSdk} children={_} />,
-        _ => <EventProvider api={apiSdk} children={_} />
+        _ => <EventProvider api={apiSdk} children={_} />,
       ]}
     >
       <Switch>

@@ -104,7 +104,7 @@ export const HorizontalBarChart = ({data, grid, width = 200}: Props) => {
                     }}
                     style={{width: appeared ? `calc(${percentOfMax * 0.9}%)` : 0, color: item.color, borderColor: item.color}}
                   >
-                    {percentOfMax > 5 && <div >{formatLargeNumber(item.value)}</div>}
+                    {percentOfMax > 5 && <div>{formatLargeNumber(item.value)}</div>}
                   </Box>
                 </Box>
               </LightTooltip>

@@ -11,12 +11,7 @@ interface DatatableToolbarProps {
   open?: boolean
 }
 
-export const DatatableToolbar = ({
-  open,
-  onClear,
-  children,
-  actions
-}: DatatableToolbarProps) => {
+export const DatatableToolbar = ({open, onClear, children, actions}: DatatableToolbarProps) => {
   const {m} = useI18n()
   return (
     <Box
@@ -38,7 +33,7 @@ export const DatatableToolbar = ({
         borderTopRightRadius: t => t.shape.borderRadius + 'px',
         borderTopLeftRadius: t => t.shape.borderRadius + 'px',
         margin: `-1px`,
-        border: t => `2px solid ${t.palette.primary.main}`
+        border: t => `2px solid ${t.palette.primary.main}`,
       }}
     >
       {onClear && (

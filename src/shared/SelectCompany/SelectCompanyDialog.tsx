@@ -17,12 +17,7 @@ export const SelectCompanyDialog = ({children, onChange, siret}: Props) => {
     <ScDialog
       maxWidth="sm"
       title={m.companySearch}
-      content={close => (
-        <SelectCompany
-          siret={siret}
-          onChange={setSelected}
-        />
-      )}
+      content={close => <SelectCompany siret={siret} onChange={setSelected} />}
       confirmDisabled={!selected}
       onConfirm={(e, close) => {
         selected && onChange(selected)

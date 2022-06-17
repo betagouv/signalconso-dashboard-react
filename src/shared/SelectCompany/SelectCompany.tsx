@@ -14,26 +14,22 @@ export interface SelectCompanyProps {
   onChange: (_: CompanySearchResult) => void
 }
 
-export const SelectCompany = ({
-  siret,
-  onChange,
-}: SelectCompanyProps) => {
+export const SelectCompany = ({siret, onChange}: SelectCompanyProps) => {
   const {m} = useI18n()
   const _company = useCompaniesContext().searchByIdentity
   const [inputValue, setInputValue] = useState<Id | undefined>(siret)
-  
+
   const search = () => {
     if (inputValue) _company.fetch({}, inputValue)
   }
-  
+
   useEffect(() => {
     _company.clearCache()
     fromNullable(siret)
       .filter(x => x === inputValue)
       .map(setInputValue)
   }, [siret])
-  
-  
+
   return (
     <>
       <ScInput
@@ -58,25 +54,15 @@ export const SelectCompany = ({
               >
                 <Icon>clear</Icon>
               </IconBtn>
-              <Divider sx={{my: .25}} orientation="vertical" variant="middle" flexItem />
-              <IconBtn
-                loading={_company.loading}
-                color="primary"
-                sx={{mr: -1.5}}
-                onClick={search}
-              >
+              <Divider sx={{my: 0.25}} orientation="vertical" variant="middle" flexItem />
+              <IconBtn loading={_company.loading} color="primary" sx={{mr: -1.5}} onClick={search}>
                 <Icon>search</Icon>
               </IconBtn>
             </>
           ),
         }}
       />
-      {_company.entity && (
-        <SelectCompanyList
-          companies={_company.entity}
-          onChange={onChange}
-        />
-      )}
+      {_company.entity && <SelectCompanyList companies={_company.entity} onChange={onChange} />}
     </>
   )
 }

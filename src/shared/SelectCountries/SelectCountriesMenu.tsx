@@ -8,7 +8,7 @@ import {useI18n} from '../../core/i18n'
 import {useSetState, UseSetState} from '@alexandreannic/react-hooks-lib/lib'
 import {makeSx} from 'mui-extension'
 import {combineSx} from '../../core/theme'
-import {countryToFlag} from "../../core/helper/utils";
+import {countryToFlag} from '../../core/helper/utils'
 
 const withRegions = (WrappedComponent: React.ComponentType<Props>) => (props: Omit<Props, 'countries'>) => {
   const {countries} = useConstantContext()

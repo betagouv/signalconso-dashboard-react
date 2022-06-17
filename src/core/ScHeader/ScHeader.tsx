@@ -10,7 +10,7 @@ import {useLayoutContext} from '../Layout/LayoutContext'
 import {styleUtils} from '../theme'
 import {Header} from '../Layout/Header/Header'
 
-const HeaderItem = ({children, href}: { children: any; href: string }) => {
+const HeaderItem = ({children, href}: {children: any; href: string}) => {
   return (
     <Btn
       color="primary"
@@ -19,7 +19,7 @@ const HeaderItem = ({children, href}: { children: any; href: string }) => {
         textTransform: 'initial',
         fontSize: t => styleUtils(t).fontSize.normal,
         py: 0,
-        px: 2
+        px: 2,
       }}
     >
       {children}
@@ -47,7 +47,7 @@ export const ScHeader = () => {
         alt={m.altLogoGouv}
         sx={{
           height: 40,
-          mr: 2
+          mr: 2,
         }}
       />
       {!isMobileWidth && (
@@ -57,7 +57,7 @@ export const ScHeader = () => {
           alt={m.altLogoDGCCRF}
           sx={{
             height: 40,
-            mr: 2
+            mr: 2,
           }}
         />
       )}
@@ -68,7 +68,7 @@ export const ScHeader = () => {
           alt={m.altLogoSignalConso}
           sx={{
             height: 40,
-            mr: 1
+            mr: 1,
           }}
         />
       </a>
@@ -76,7 +76,7 @@ export const ScHeader = () => {
         style={{
           display: 'flex',
           alignItems: 'center',
-          marginLeft: 'auto'
+          marginLeft: 'auto',
         }}
       >
         {isMobileWidth ? (

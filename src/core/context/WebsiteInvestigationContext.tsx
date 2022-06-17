@@ -1,7 +1,7 @@
 import * as React from 'react'
 import {ReactNode, useContext} from 'react'
 import {SignalConsoApiSdk} from '../ApiSdkInstance'
-import {ApiError,} from '@signal-conso/signalconso-api-sdk-js'
+import {ApiError} from '@signal-conso/signalconso-api-sdk-js'
 import {useFetcher, UseFetcher} from '@alexandreannic/react-hooks-lib'
 
 export interface WebsiteInvestigationContextProps {
@@ -23,7 +23,6 @@ const WebsiteInvestigationContext = React.createContext<WebsiteInvestigationCont
 )
 
 export const WebsiteInvestigationProvider = ({api, children}: Props) => {
-
   return (
     <WebsiteInvestigationContext.Provider
       value={{

@@ -21,14 +21,21 @@ export const ChipCompany = ({company, ...props}: Props) => {
           borderRadius: 50,
         }}
         label={
-          <Box sx={{mx: .5}}>
-            <Txt block truncate bold sx={{
-              marginBottom: -.5,
-              maxWidth: 200,
-            }}>
+          <Box sx={{mx: 0.5}}>
+            <Txt
+              block
+              truncate
+              bold
+              sx={{
+                marginBottom: -0.5,
+                maxWidth: 200,
+              }}
+            >
               {company.name}
             </Txt>
-            <Txt color="hint" fontSize="small">{company.siret}</Txt>
+            <Txt color="hint" fontSize="small">
+              {company.siret}
+            </Txt>
           </Box>
         }
       />

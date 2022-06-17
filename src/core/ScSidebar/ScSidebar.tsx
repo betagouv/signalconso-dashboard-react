@@ -10,13 +10,7 @@ import * as React from 'react'
 import {useI18n} from '../i18n'
 import {useLayoutContext} from '../Layout/LayoutContext'
 
-export const ScSidebar = ({
-  connectedUser,
-  logout
-}: {
-  connectedUser: UserWithPermission
-  logout: () => void
-}) => {
+export const ScSidebar = ({connectedUser, logout}: {connectedUser: UserWithPermission; logout: () => void}) => {
   const path = (page: string) => '' + page
   const {m} = useI18n()
   const {setSidebarOpen, isMobileWidth, sidebarPinned} = useLayoutContext()
@@ -27,21 +21,25 @@ export const ScSidebar = ({
   }
   return (
     <Sidebar>
-      <Box sx={{
-        pt: 1,
-        pb: 0.5,
-        px: 2
-      }}>
-        <Tooltip title={
-          <>
-            <Txt block bold>
-              {connectedUser.firstName} {connectedUser.lastName}
-            </Txt>
-            <Txt block fontSize="small">
-              {connectedUser.email}
-            </Txt>
-          </>
-        }>
+      <Box
+        sx={{
+          pt: 1,
+          pb: 0.5,
+          px: 2,
+        }}
+      >
+        <Tooltip
+          title={
+            <>
+              <Txt block bold>
+                {connectedUser.firstName} {connectedUser.lastName}
+              </Txt>
+              <Txt block fontSize="small">
+                {connectedUser.email}
+              </Txt>
+            </>
+          }
+        >
           <Box>
             <Txt block truncate bold>
               {connectedUser.firstName} {connectedUser.lastName}
@@ -58,7 +56,7 @@ export const ScSidebar = ({
           color="primary"
           onClick={logout}
           sx={{
-            mt: 1
+            mt: 1,
           }}
         >
           {m.logout}

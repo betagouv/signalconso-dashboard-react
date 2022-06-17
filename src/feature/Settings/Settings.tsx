@@ -18,11 +18,15 @@ export const Settings = () => {
     <Page size="s">
       <PageTitle>{m.menu_settings}</PageTitle>
       <Panel>
-        <SettingRow icon="person" title={m.name} description={
-          <>
-            {connectedUser.firstName} {connectedUser.lastName}
-          </>
-        }>
+        <SettingRow
+          icon="person"
+          title={m.name}
+          description={
+            <>
+              {connectedUser.firstName} {connectedUser.lastName}
+            </>
+          }
+        >
           <EditProfileDialog>
             <ScButton icon="edit" color="primary">
               {m.edit}

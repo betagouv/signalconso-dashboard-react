@@ -8,12 +8,7 @@ export const ChipNoAssociation = ({...props}: ChipProps) => {
 
   return (
     <Tooltip title={m.linkCountry}>
-      <ScChip
-        size="small"
-        onClick={props.onClick}
-        label={m.noAssociation}
-        {...props}
-      />
+      <ScChip size="small" onClick={props.onClick} label={m.noAssociation} {...props} />
     </Tooltip>
   )
 }

@@ -7,10 +7,13 @@ import {Datatable} from '../../shared/Datatable/Datatable'
 import {DebouncedInput} from '../../shared/DebouncedInput/DebouncedInput'
 import {useReportedWebsiteWithCompanyContext} from '../../core/context/ReportedWebsitesContext'
 import {
-  cleanObject, Company, Country, DepartmentDivision,
+  cleanObject,
+  Company,
+  Country,
+  DepartmentDivision,
   Id,
   IdentificationStatus,
-  WebsiteWithCompany
+  WebsiteWithCompany,
 } from '@signal-conso/signalconso-api-sdk-js'
 import {IconBtn} from 'mui-extension'
 import {useWebsiteInvestigationContext} from '../../core/context/WebsiteInvestigationContext'
@@ -25,7 +28,7 @@ import {groupBy} from '../../core/lodashNamedExport'
 import {map} from '@alexandreannic/ts-utils'
 import {sxUtils} from '../../core/theme'
 import {useMemoFn} from '@alexandreannic/react-hooks-lib/lib'
-import {UseMap} from "@alexandreannic/react-hooks-lib/src/useMap/UseMap";
+import {UseMap} from '@alexandreannic/react-hooks-lib/src/useMap/UseMap'
 
 export const WebsitesInvestigation = () => {
   const {m} = useI18n()
@@ -38,18 +41,14 @@ export const WebsitesInvestigation = () => {
   const _remove = useReportedWebsiteWithCompanyContext().remove
   const {toastError, toastInfo} = useToast()
 
-  const departmentDivisionIndex = useMemoFn(
-    _departmentDivision.entity,
-    deps => groupBy(deps, _ => _.code),
-  )
+  const departmentDivisionIndex = useMemoFn(_departmentDivision.entity, deps => groupBy(deps, _ => _.code))
 
   const websitesIndex = useMap<Id, WebsiteWithCompany>()
 
   useEffectFn(_websiteWithCompany.list, w => {
     websitesIndex.clear()
-    w.data.map(_ => websitesIndex.set(_.id,_))
-  }
-  )
+    w.data.map(_ => websitesIndex.set(_.id, _))
+  })
 
   useEffect(() => {
     _websiteWithCompany.fetch({clean: false})
@@ -111,7 +110,8 @@ export const WebsitesInvestigation = () => {
               filters={_websiteWithCompany.filters}
               updateFilters={_ => {
                 _websiteWithCompany.updateFilters(prev => ({...prev, ..._}))
-              }}>
+              }}
+            >
               <Tooltip title={m.advancedFilters}>
                 <IconBtn color="primary">
                   <Icon>filter_list</Icon>
@@ -134,7 +134,11 @@ export const WebsitesInvestigation = () => {
           {
             id: 'host',
             head: m.website,
-            render: _ => <Txt link><a href={'https://' + _.host}>{_.host}</a></Txt>,
+            render: _ => (
+              <Txt link>
+                <a href={'https://' + _.host}>{_.host}</a>
+              </Txt>
+            ),
           },
           {
             head: m.reports,
@@ -150,13 +154,16 @@ export const WebsitesInvestigation = () => {
                 onChange={(company, companyCountry) => {
                   // TODO(Saïd) Not sure it is clean.
                   // Can address and name be undefined in WebsiteUpdateCompany if they are not in Company.
-                  const dummyCompany: Company | undefined = company !== undefined ? {
-                    ...company,
-                    address: company.address ?? {},
-                    id: 'temp' + Math.random(),
-                    creationDate: new Date(),
-                    name: company?.name ?? '',
-                  } : undefined
+                  const dummyCompany: Company | undefined =
+                    company !== undefined
+                      ? {
+                          ...company,
+                          address: company.address ?? {},
+                          id: 'temp' + Math.random(),
+                          creationDate: new Date(),
+                          name: company?.name ?? '',
+                        }
+                      : undefined
                   websitesIndex.set(_.id, {..._, company: dummyCompany, companyCountry})
                 }}
               />
@@ -238,7 +245,9 @@ export const WebsitesInvestigation = () => {
             render: _ => (
               <Switch
                 checked={_.identificationStatus === IdentificationStatus.Identified}
-                onChange={e => handleUpdateKind(_, e.target.checked ? IdentificationStatus.Identified : IdentificationStatus.NotIdentified)}
+                onChange={e =>
+                  handleUpdateKind(_, e.target.checked ? IdentificationStatus.Identified : IdentificationStatus.NotIdentified)
+                }
               />
             ),
           },
@@ -246,21 +255,20 @@ export const WebsitesInvestigation = () => {
             id: 'status',
             stickyEnd: true,
             sx: _ => sxUtils.tdActions,
-            render: _ =>
+            render: _ => (
               <>
                 <WebsiteTools website={_} />
                 <Tooltip title={m.delete}>
                   <IconBtn
                     loading={_remove.loading}
                     color="primary"
-                    onClick={() => _remove
-                      .fetch({}, _.id)
-                      .then(_ => () => _websiteWithCompany.fetch({clean: false}))
-                    }>
+                    onClick={() => _remove.fetch({}, _.id).then(_ => () => _websiteWithCompany.fetch({clean: false}))}
+                  >
                     <Icon>delete</Icon>
                   </IconBtn>
                 </Tooltip>
-              </>,
+              </>
+            ),
           },
         ]}
       />
