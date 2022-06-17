@@ -9,6 +9,7 @@
     "npm": "8.11.0"
   },
   "scripts": {
+    "heroku-prebuild": "npm i --force",
     "analyze": "source-map-explorer 'build/static/js/*.js'",
     "start": "react-scripts start",
     "build": "react-scripts build",
