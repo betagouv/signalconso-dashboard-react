@@ -34,7 +34,11 @@ export const ReportedWebsites = () => {
       )}
 
       <Switch>
-        <Redirect exact from={path} to={siteMap.logged.websitesInvestigation} />
+        {displayDropShipping ? (q
+          <Redirect exact from={path} to={siteMap.logged.websitesInvestigation} />
+        ) : (
+          <Redirect exact from={path} to={siteMap.logged.reportedWebsites_unknown} />
+        )}
         <Route path={siteMap.logged.websitesInvestigation} component={WebsitesInvestigation} />
         <Route path={siteMap.logged.reportedWebsites_unknown} component={ReportedUnknownWebsites} />
       </Switch>
