@@ -21,16 +21,11 @@ export interface UseLayoutContextProps {
   showSidebarButton?: boolean
 }
 
-export const LayoutProvider = ({
-  title,
-  showSidebarButton,
-  mobileBreakpoint = 760,
-  children
-}: LayoutProviderProps) => {
+export const LayoutProvider = ({title, showSidebarButton, mobileBreakpoint = 760, children}: LayoutProviderProps) => {
   const [pageWidth, setPageWidth] = useState(getWidth())
   const [sidebarOpen, setSidebarOpen] = usePersistentState(true, 'sidebarOpen')
   const [sidebarPinned, setSidebarPinned] = usePersistentState(true, 'sidebarPinned')
-  
+
   useEffect(() => {
     window.addEventListener('resize', () => setPageWidth(getWidth()))
   }, [])
@@ -38,9 +33,9 @@ export const LayoutProvider = ({
   return (
     <LayoutContext.Provider
       value={{
-        sidebarOpen, 
+        sidebarOpen,
         setSidebarOpen,
-        sidebarPinned, 
+        sidebarPinned,
         setSidebarPinned,
         title,
         isMobileWidth: pageWidth < mobileBreakpoint,

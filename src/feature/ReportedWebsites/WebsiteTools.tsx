@@ -9,7 +9,7 @@ import scamdocIcon from './img/scamdoc.png'
 import {useI18n} from '../../core/i18n'
 
 interface WebsiteActionsProps extends BoxProps {
-  website: WebsiteWithCompany,
+  website: WebsiteWithCompany
 }
 
 const websiteAnalyzeTool = [
@@ -40,7 +40,7 @@ export const WebsiteTools = ({website}: WebsiteActionsProps) => {
   return (
     <Tooltip title={m.identicationTools}>
       <ScMenu>
-        {websiteAnalyzeTool.map(tool =>
+        {websiteAnalyzeTool.map(tool => (
           <MenuItem key={tool.label} onClick={() => window.open(tool.url(website.host), '_blank')}>
             <ListItemIcon>
               <Box
@@ -53,8 +53,8 @@ export const WebsiteTools = ({website}: WebsiteActionsProps) => {
               />
             </ListItemIcon>
             <ListItemText>{tool.label}</ListItemText>
-          </MenuItem>,
-        )}
+          </MenuItem>
+        ))}
       </ScMenu>
     </Tooltip>
   )

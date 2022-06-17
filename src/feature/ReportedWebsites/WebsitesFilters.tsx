@@ -1,17 +1,16 @@
 import React, {ReactElement, useState} from 'react'
-import {WebsiteWithCompanySearch} from "@signal-conso/signalconso-api-sdk-js/lib/model";
-import {useLayoutContext} from "../../core/Layout/LayoutContext";
+import {WebsiteWithCompanySearch} from '@signal-conso/signalconso-api-sdk-js/lib/model'
+import {useLayoutContext} from '../../core/Layout/LayoutContext'
 import {Dialog, DialogActions, DialogContent, DialogTitle} from '@mui/material'
-import {useI18n} from "../../core/i18n";
-import {IdentificationStatus} from "@signal-conso/signalconso-api-sdk-js";
-import {ScMenuItem} from "../MenuItem/MenuItem";
-import {DialogInputRow} from "../../shared/DialogInputRow/DialogInputRow";
-import {Controller, useForm} from "react-hook-form";
-import {ScMultiSelect} from "../../shared/Select/MultiSelect";
-import {Enum} from "@alexandreannic/ts-utils/lib/common/enum/Enum";
-import {Label} from "../../shared/Label/Label";
-import {Btn} from "mui-extension";
-
+import {useI18n} from '../../core/i18n'
+import {IdentificationStatus} from '@signal-conso/signalconso-api-sdk-js'
+import {ScMenuItem} from '../MenuItem/MenuItem'
+import {DialogInputRow} from '../../shared/DialogInputRow/DialogInputRow'
+import {Controller, useForm} from 'react-hook-form'
+import {ScMultiSelect} from '../../shared/Select/MultiSelect'
+import {Enum} from '@alexandreannic/ts-utils/lib/common/enum/Enum'
+import {Label} from '../../shared/Label/Label'
+import {Btn} from 'mui-extension'
 
 export interface WebsitesFiltersProps {
   updateFilters: (_: WebsiteWithCompanySearch) => void
@@ -19,8 +18,7 @@ export interface WebsitesFiltersProps {
   children: ReactElement<any>
 }
 
-interface Form extends WebsiteWithCompanySearch {
-}
+interface Form extends WebsiteWithCompanySearch {}
 
 export const WebsitesFilters = ({filters, updateFilters, children, ...props}: WebsitesFiltersProps) => {
   const {m} = useI18n()
@@ -66,13 +64,15 @@ export const WebsitesFilters = ({filters, updateFilters, children, ...props}: We
                   {...field}
                   fullWidth
                   withSelectAll
-                  renderValue={identificationStatus => `(${identificationStatus.length}) ${identificationStatus.map(status => m.IdentificationStatusDesc[status]).join(',')}`}
+                  renderValue={identificationStatus =>
+                    `(${identificationStatus.length}) ${identificationStatus
+                      .map(status => m.IdentificationStatusDesc[status])
+                      .join(',')}`
+                  }
                 >
                   {Enum.values(IdentificationStatus).map(kind => (
                     <ScMenuItem withCheckbox key={kind} value={kind}>
-                      <Label {...props}>
-                        {m.IdentificationStatusDesc[kind]}
-                      </Label>
+                      <Label {...props}>{m.IdentificationStatusDesc[kind]}</Label>
                     </ScMenuItem>
                   ))}
                 </ScMultiSelect>
@@ -91,5 +91,4 @@ export const WebsitesFilters = ({filters, updateFilters, children, ...props}: We
       </Dialog>
     </>
   )
-
 }

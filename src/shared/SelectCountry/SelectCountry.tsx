@@ -11,7 +11,7 @@ import {countryToFlag} from '../../core/helper/utils'
 
 interface Props {
   country?: Country
-  onChange: (_ :Country) => void
+  onChange: (_: Country) => void
 }
 
 const css = makeSx({
@@ -48,7 +48,7 @@ export const SelectCountry = ({onChange, country}: Props) => {
   useEffect(() => {
     _countries.fetch({}).then(setCountries)
   }, [country])
-  
+
   return (
     <>
       <Autocomplete
@@ -66,19 +66,14 @@ export const SelectCountry = ({onChange, country}: Props) => {
         }}
         options={countries ?? []}
         getOptionLabel={option => option.name}
-        renderOption={ (props, option) =>
-          <Box
-            component="li"
-            key={option.code + Math.random()}
-            sx={css.menuItem}
-            {...props}
-          >
+        renderOption={(props, option) => (
+          <Box component="li" key={option.code + Math.random()} sx={css.menuItem} {...props}>
             <Box component="span" sx={combineSx(css.flag, css.iconWidth)}>
               {countryToFlag(option.code)}
             </Box>
             <span>{option.name}</span>
           </Box>
-      }
+        )}
         renderInput={params => <ScInput {...params} label={m.foreignCountry} />}
       />
     </>

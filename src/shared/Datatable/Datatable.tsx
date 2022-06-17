@@ -1,4 +1,16 @@
-import {Box, LinearProgress, SxProps, Table, TableBody, TableCell, TableHead, TablePagination, TableRow, TableSortLabel, Theme} from '@mui/material'
+import {
+  Box,
+  LinearProgress,
+  SxProps,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TablePagination,
+  TableRow,
+  TableSortLabel,
+  Theme,
+} from '@mui/material'
 import React, {CSSProperties, ReactNode, useMemo} from 'react'
 import {DatatableColumnToggle} from './DatatableColumnsToggle'
 import {useI18n} from '../../core/i18n'

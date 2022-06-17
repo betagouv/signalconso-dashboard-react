@@ -5,7 +5,7 @@ import {useI18n} from '../../../core/i18n'
 import {Country} from '@signal-conso/signalconso-api-sdk-js'
 import {styleUtils} from '../../../core/theme'
 import {ScChip} from '../../../shared/Chip/ScChip'
-import {countryToFlag} from "../../../core/helper/utils";
+import {countryToFlag} from '../../../core/helper/utils'
 
 interface Props extends BoxProps {
   country: Country
@@ -18,9 +18,11 @@ export const ChipCountry = ({country, ...props}: Props) => {
     <Tooltip title={m.linkCountry}>
       <ScChip
         icon={
-          <Box sx={{
-            fontSize: t => styleUtils(t).fontSize.big,
-          }}>
+          <Box
+            sx={{
+              fontSize: t => styleUtils(t).fontSize.big,
+            }}
+          >
             {countryToFlag(country.code)}
           </Box>
         }

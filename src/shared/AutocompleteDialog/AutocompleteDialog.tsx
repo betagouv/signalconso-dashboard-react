@@ -30,7 +30,7 @@ export const AutocompleteDialog = <T extends unknown>({
   const [innerValue, setInnerValue] = React.useState<T | undefined>(defaultValue)
 
   useEffectFn(value, setInnerValue)
-  
+
   return (
     <ScDialog
       PaperProps={{style: {position: 'static'}}}

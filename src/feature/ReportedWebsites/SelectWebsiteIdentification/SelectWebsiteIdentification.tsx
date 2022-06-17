@@ -87,58 +87,54 @@ export const SelectWebsiteIdentification = ({onChange, website, ...props}: Props
       title={m.companyWebsiteIdentification}
       content={_ => (
         <>
-          <Txt block sx={{mb: 1}}>{m.attachTo}</Txt>
-          <ScRadioGroup
-            sx={{mb: 2}}
-            dense
-            inline
-            value={selectedIdentification}
-            onChange={setSelectedIdentification}
-          >
-            {Enum.keys(IdentificationType).map(_ =>
-              <ScRadioGroupItem key={_} value={_} title={m.attachToType[_]} />,
-            )}
+          <Txt block sx={{mb: 1}}>
+            {m.attachTo}
+          </Txt>
+          <ScRadioGroup sx={{mb: 2}} dense inline value={selectedIdentification} onChange={setSelectedIdentification}>
+            {Enum.keys(IdentificationType).map(_ => (
+              <ScRadioGroupItem key={_} value={_} title={m.attachToType[_]} />
+            ))}
           </ScRadioGroup>
 
-          {selectedIdentification && fnSwitch(selectedIdentification, {
-            [IdentificationType.COMPANY]: () => (
-              <SelectCompany siret={company?.siret} onChange={companyChanged => {
-                setCompany(companyChanged)
-                setCountry(undefined)
-              }} />
-            ),
-            [IdentificationType.COUNTRY]: () => (
-              <SelectCountry country={website.companyCountry} onChange={companyCountry => {
-                setCompany(undefined)
-                setCountry(companyCountry)
-              }} />
-            ),
-          })}
+          {selectedIdentification &&
+            fnSwitch(selectedIdentification, {
+              [IdentificationType.COMPANY]: () => (
+                <SelectCompany
+                  siret={company?.siret}
+                  onChange={companyChanged => {
+                    setCompany(companyChanged)
+                    setCountry(undefined)
+                  }}
+                />
+              ),
+              [IdentificationType.COUNTRY]: () => (
+                <SelectCountry
+                  country={website.companyCountry}
+                  onChange={companyCountry => {
+                    setCompany(undefined)
+                    setCountry(companyCountry)
+                  }}
+                />
+              ),
+            })}
         </>
       )}
       overrideActions={close => (
         <>
           <ScButton onClick={close}>{m.close}</ScButton>
-          {selectedIdentification && fnSwitch(selectedIdentification, {
-            [IdentificationType.COMPANY]: () => (
-              <ScButton
-                loading={_updateCompany.loading}
-                disabled={!company}
-                onClick={() => updateCompany(close)}
-              >
-                {m.confirm}
-              </ScButton>
-            ),
-            [IdentificationType.COUNTRY]: () => (
-              <ScButton
-                loading={_updateCountry.loading}
-                disabled={!country}
-                onClick={() => updateCountry(close)}
-              >
-                {m.confirm}
-              </ScButton>
-            ),
-          })}
+          {selectedIdentification &&
+            fnSwitch(selectedIdentification, {
+              [IdentificationType.COMPANY]: () => (
+                <ScButton loading={_updateCompany.loading} disabled={!company} onClick={() => updateCompany(close)}>
+                  {m.confirm}
+                </ScButton>
+              ),
+              [IdentificationType.COUNTRY]: () => (
+                <ScButton loading={_updateCountry.loading} disabled={!country} onClick={() => updateCountry(close)}>
+                  {m.confirm}
+                </ScButton>
+              ),
+            })}
         </>
       )}
     >
