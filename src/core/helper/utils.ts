@@ -120,3 +120,7 @@ export const countryToFlag = (isoCode: string) => {
     ? isoCode.toUpperCase().replace(/./g, char => String.fromCodePoint(char.charCodeAt(0) + 127397))
     : isoCode
 }
+
+export const null2Undefined = <A>(value: A | null): A | undefined => (value === null ? undefined : value)
+
+export const undefined2Null = <A>(value: A | undefined): A | null => (value === undefined ? null : value)

@@ -29,7 +29,7 @@ import {Fender, IconBtn} from 'mui-extension/lib'
 import {useToast} from '../../core/toast'
 import {ReportStatusLabel} from '../../shared/ReportStatus/ReportStatus'
 import {config} from '../../conf/config'
-import {ReportFilters} from './ReportsFilters'
+import {ReportsFilters} from './ReportsFilters'
 import {siteMap} from '../../core/siteMap'
 import {ExportReportsPopper} from '../../shared/ExportPopper/ExportPopperBtn'
 import {EntityIcon} from '../../core/EntityIcon'
@@ -209,13 +209,13 @@ export const Reports = () => {
                   <Icon>file_download</Icon>
                 </IconBtn>
               </ExportReportsPopper>
-              <ReportFilters filters={_reports.filters} updateFilters={updateFilters}>
+              <ReportsFilters filters={_reports.filters} updateFilters={updateFilters}>
                 <Tooltip title={m.advancedFilters}>
                   <IconBtn color="primary">
                     <Icon>filter_list</Icon>
                   </IconBtn>
                 </Tooltip>
-              </ReportFilters>
+              </ReportsFilters>
             </>
           }
           loading={_reports.fetching}
