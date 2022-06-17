@@ -34,8 +34,8 @@ export const ReportedWebsites = () => {
       )}
 
       <Switch>
-        {displayDropShipping ? (q
-          <Redirect exact from={path} to={siteMap.logged.websitesInvestigation} />
+        {displayDropShipping ? (
+          <Redirect exact from={path} to={siteMap.logged.gst} />
         ) : (
           <Redirect exact from={path} to={siteMap.logged.reportedWebsites_unknown} />
         )}
