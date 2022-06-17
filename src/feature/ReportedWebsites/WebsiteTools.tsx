@@ -39,7 +39,7 @@ export const WebsiteTools = ({website}: WebsiteActionsProps) => {
   const {m} = useI18n()
   return (
     <Tooltip title={m.identicationTools}>
-      <ScMenu>
+      <ScMenu icon="travel_explore">
         {websiteAnalyzeTool.map(tool => (
           <MenuItem key={tool.label} onClick={() => window.open(tool.url(website.host), '_blank')}>
             <ListItemIcon>

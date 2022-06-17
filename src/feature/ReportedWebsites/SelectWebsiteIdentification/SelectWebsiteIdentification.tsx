@@ -27,7 +27,7 @@ interface Website {
 
 interface Props extends Omit<BoxProps, 'onChange'> {
   website: Website
-  onChange: (company?: WebsiteUpdateCompany, companyCountry?: Country) => void
+  onChange: (company?: Company, companyCountry?: Country) => void
 }
 
 export enum IdentificationType {
@@ -54,15 +54,16 @@ export const SelectWebsiteIdentification = ({onChange, website, ...props}: Props
       if (website.company && website.company.siret === company.siret) {
         toastInfo(m.alreadySelectedCompany(company.name))
       } else {
-        await _updateCompany.fetch({}, website.id, {
-          siret: company.siret,
-          name: company.name,
-          address: company.address,
-          activityCode: company.activityCode,
-        })
-        toastSuccess(m.websiteEdited)
-        close()
-        onChange(company)
+        _updateCompany
+          .fetch({}, website.id, {
+            siret: company.siret,
+            name: company.name,
+            address: company.address,
+            activityCode: company.activityCode,
+          })
+          .then(_ => onChange(_.company))
+          .then(_ => toastSuccess(m.websiteEdited))
+          .then(_ => close())
       }
     }
   }

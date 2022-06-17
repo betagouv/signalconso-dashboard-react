@@ -1,4 +1,4 @@
-import React, {useEffect, useMemo, useState} from 'react'
+import React, {useEffect, useMemo} from 'react'
 import {useI18n} from '../../core/i18n'
 import {Badge, Icon, InputBase, Switch, Tooltip} from '@mui/material'
 import {useToast} from '../../core/toast'
@@ -6,15 +6,7 @@ import {Panel} from '../../shared/Panel'
 import {Datatable} from '../../shared/Datatable/Datatable'
 import {DebouncedInput} from '../../shared/DebouncedInput/DebouncedInput'
 import {useReportedWebsiteWithCompanyContext} from '../../core/context/ReportedWebsitesContext'
-import {
-  cleanObject,
-  Company,
-  Country,
-  DepartmentDivision,
-  Id,
-  IdentificationStatus,
-  WebsiteWithCompany,
-} from '@signal-conso/signalconso-api-sdk-js'
+import {cleanObject, DepartmentDivision, Id, IdentificationStatus, WebsiteWithCompany} from '@signal-conso/signalconso-api-sdk-js'
 import {IconBtn} from 'mui-extension'
 import {useWebsiteInvestigationContext} from '../../core/context/WebsiteInvestigationContext'
 import {StatusChip} from './StatusChip'
@@ -28,7 +20,7 @@ import {groupBy} from '../../core/lodashNamedExport'
 import {map} from '@alexandreannic/ts-utils'
 import {sxUtils} from '../../core/theme'
 import {useMemoFn} from '@alexandreannic/react-hooks-lib/lib'
-import {UseMap} from '@alexandreannic/react-hooks-lib/src/useMap/UseMap'
+import {useLogin} from '../../core/context/LoginContext'
 
 export const WebsitesInvestigation = () => {
   const {m} = useI18n()
@@ -40,6 +32,8 @@ export const WebsitesInvestigation = () => {
   const _updateStatus = useReportedWebsiteWithCompanyContext().update
   const _remove = useReportedWebsiteWithCompanyContext().remove
   const {toastError, toastInfo} = useToast()
+
+  const {connectedUser} = useLogin()
 
   const departmentDivisionIndex = useMemoFn(_departmentDivision.entity, deps => groupBy(deps, _ => _.code))
 
@@ -152,92 +146,83 @@ export const WebsitesInvestigation = () => {
               <SelectWebsiteIdentification
                 website={_}
                 onChange={(company, companyCountry) => {
-                  // TODO(Saïd) Not sure it is clean.
-                  // Can address and name be undefined in WebsiteUpdateCompany if they are not in Company.
-                  const dummyCompany: Company | undefined =
-                    company !== undefined
-                      ? {
-                          ...company,
-                          address: company.address ?? {},
-                          id: 'temp' + Math.random(),
-                          creationDate: new Date(),
-                          name: company?.name ?? '',
-                        }
-                      : undefined
-                  websitesIndex.set(_.id, {..._, company: dummyCompany, companyCountry})
+                  websitesIndex.set(_.id, {..._, company, companyCountry})
                 }}
               />
             ),
           },
-          // {
-          //   head: m.practice,
-          //   id: 'practice',
-          //   render: _ => (
-          //     <AutocompleteDialog<string>
-          //       value={_.practice}
-          //       title={m.practiceTitle}
-          //       inputLabel={m.practice}
-          //       getOptionLabel={_ => _}
-          //       onChange={practice => {
-          //         if (_.practice === practice) {
-          //           toastInfo(m.alreadySelectedValue(practice))
-          //         } else {
-          //           _createOrUpdate.fetch({}, {practice: practice, ..._})
-          //           websitesIndex.set(_.id, {..._, practice})
-          //         }
-          //       }}
-          //       options={_practice.entity}
-          //     >
-          //       <StatusChip tooltipTitle={m.practice} value={_.practice ?? m.noValue} />
-          //     </AutocompleteDialog>
-          //   ),
-          // },
-          // {
-          //   head: m.investigation,
-          //   id: 'investigationStatus',
-          //   render: _ => (
-          //     <AutocompleteDialog<string>
-          //       value={_.investigationStatus}
-          //       title={m.affectationTitle}
-          //       inputLabel={m.affectation}
-          //       getOptionLabel={_ => m.investigationStatus(_)}
-          //       options={_investigationStatus.entity}
-          //       onChange={investigationStatus => {
-          //         if (_.investigationStatus === investigationStatus) {
-          //           toastInfo(m.alreadySelectedValue(investigationStatus))
-          //         } else {
-          //           _createOrUpdate.fetch({}, {..._, investigationStatus})
-          //           websitesIndex.set(_.id, {..._, investigationStatus})
-          //         }
-          //       }}
-          //     >
-          //       <StatusChip tooltipTitle={m.investigation} value={_.investigationStatus ? m.investigationStatus(_.investigationStatus) : m.noValue} />
-          //     </AutocompleteDialog>
-          //   ),
-          // },
-          // {
-          //   head: m.affectation,
-          //   id: 'affectation',
-          //   render: w => (
-          //     <AutocompleteDialog<DepartmentDivision>
-          //       value={map(w.attribution, departmentDivisionIndex, (attribution, dep) => dep[attribution][0])}
-          //       title={m.affectationTitle}
-          //       inputLabel={m.affectation}
-          //       getOptionLabel={_ => _.code + ' - ' + _.name}
-          //       options={_departmentDivision.entity}
-          //       onChange={departmentDivision => {
-          //         if (departmentDivision && w.attribution === departmentDivision.code) {
-          //           toastInfo(m.alreadySelectedValue(departmentDivision?.name))
-          //         } else {
-          //           _createOrUpdate.fetch({}, {...w, attribution: departmentDivision?.code})
-          //           websitesIndex.set(w.id, {...w, attribution: departmentDivision?.code})
-          //         }
-          //       }}
-          //     >
-          //       <StatusChip tooltipTitle={m.affectation} value={w.attribution ?? m.noValue} />
-          //     </AutocompleteDialog>
-          //   ),
-          // },
+          {
+            head: m.practice,
+            id: 'practice',
+            render: _ => (
+              <AutocompleteDialog<string>
+                value={_.practice}
+                title={m.practiceTitle}
+                inputLabel={m.practice}
+                getOptionLabel={_ => _}
+                onChange={practice => {
+                  if (_.practice === practice) {
+                    toastInfo(m.alreadySelectedValue(practice))
+                  } else {
+                    _createOrUpdate.fetch({}, {practice: practice, ..._})
+                    websitesIndex.set(_.id, {..._, practice})
+                  }
+                }}
+                options={_practice.entity}
+              >
+                <StatusChip tooltipTitle={m.practice} value={_.practice ?? m.noValue} />
+              </AutocompleteDialog>
+            ),
+          },
+          {
+            head: m.investigation,
+            id: 'investigationStatus',
+            render: _ => (
+              <AutocompleteDialog<string>
+                value={_.investigationStatus}
+                title={m.affectationTitle}
+                inputLabel={m.affectation}
+                getOptionLabel={_ => m.investigationStatus(_)}
+                options={_investigationStatus.entity}
+                onChange={investigationStatus => {
+                  if (_.investigationStatus === investigationStatus) {
+                    toastInfo(m.alreadySelectedValue(investigationStatus))
+                  } else {
+                    _createOrUpdate.fetch({}, {..._, investigationStatus})
+                    websitesIndex.set(_.id, {..._, investigationStatus})
+                  }
+                }}
+              >
+                <StatusChip
+                  tooltipTitle={m.investigation}
+                  value={_.investigationStatus ? m.investigationStatus(_.investigationStatus) : m.noValue}
+                />
+              </AutocompleteDialog>
+            ),
+          },
+          {
+            head: m.affectation,
+            id: 'affectation',
+            render: w => (
+              <AutocompleteDialog<DepartmentDivision>
+                value={map(w.attribution, departmentDivisionIndex, (attribution, dep) => dep[attribution][0])}
+                title={m.affectationTitle}
+                inputLabel={m.affectation}
+                getOptionLabel={_ => _.code + ' - ' + _.name}
+                options={_departmentDivision.entity}
+                onChange={departmentDivision => {
+                  if (departmentDivision && w.attribution === departmentDivision.code) {
+                    toastInfo(m.alreadySelectedValue(departmentDivision?.name))
+                  } else {
+                    _createOrUpdate.fetch({}, {...w, attribution: departmentDivision?.code})
+                    websitesIndex.set(w.id, {...w, attribution: departmentDivision?.code})
+                  }
+                }}
+              >
+                <StatusChip tooltipTitle={m.affectation} value={w.attribution ?? m.noValue} />
+              </AutocompleteDialog>
+            ),
+          },
           {
             id: 'status',
             stickyEnd: true,
@@ -251,22 +236,27 @@ export const WebsitesInvestigation = () => {
               />
             ),
           },
+
           {
-            id: 'status',
+            id: 'action',
             stickyEnd: true,
             sx: _ => sxUtils.tdActions,
             render: _ => (
               <>
                 <WebsiteTools website={_} />
-                <Tooltip title={m.delete}>
-                  <IconBtn
-                    loading={_remove.loading}
-                    color="primary"
-                    onClick={() => _remove.fetch({}, _.id).then(_ => () => _websiteWithCompany.fetch({clean: false}))}
-                  >
-                    <Icon>delete</Icon>
-                  </IconBtn>
-                </Tooltip>
+                {connectedUser.isAdmin ? (
+                  <Tooltip title={m.delete}>
+                    <IconBtn
+                      loading={_remove.loading}
+                      color="primary"
+                      onClick={() => _remove.fetch({}, _.id).then(_ => () => _websiteWithCompany.fetch({clean: false}))}
+                    >
+                      <Icon>delete</Icon>
+                    </IconBtn>
+                  </Tooltip>
+                ) : (
+                  <></>
+                )}
               </>
             ),
           },
