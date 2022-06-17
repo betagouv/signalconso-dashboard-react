@@ -14,7 +14,7 @@ export const ReportedWebsites = () => {
   const {path} = useRouteMatch()
   const {connectedUser} = useLogin()
 
-  const displayDropShipping: boolean = config.enable_feature_dropshipping || connectedUser.isAdmin
+  const displayDropShipping: boolean = config.enable_feature_dropshipping === 1 || connectedUser.isAdmin
 
   console.log('////')
   console.log(config.enable_feature_dropshipping)

@@ -28,7 +28,7 @@ export const config = {
   contactEmail: 'support@signal.conso.gouv.fr',
   sentry_dns: env()(Env.REACT_APP_SENTRY_DNS),
   sentry_traceRate: env(int, defaultValue(0.5))(Env.REACT_APP_SENTRY_TRACE_RATE),
-  enable_feature_dropshipping: env(bool)(Env.ENABLE_FEATURE_DROPSHIPPING),
+  enable_feature_dropshipping: env(int)(Env.ENABLE_FEATURE_DROPSHIPPING),
   useHashRouter: true,
 }
 
