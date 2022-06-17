@@ -9,7 +9,7 @@ enum Env {
   REACT_APP_BASE_PATH = 'REACT_APP_BASE_PATH',
   REACT_APP_UPLOAD_MAX_SIZE_MB = 'REACT_APP_UPLOAD_MAX_SIZE_MB',
   REACT_APP_SENTRY_DNS = 'REACT_APP_SENTRY_DNS',
-  ENABLE_FEATURE_DROPSHIPPING = 'ENABLE_FEATURE_DROPSHIPPING',
+  REACT_APP_ENABLE_FEATURE_DROPSHIPPING = 'REACT_APP_ENABLE_FEATURE_DROPSHIPPING',
   REACT_APP_SENTRY_TRACE_RATE = 'REACT_APP_SENTRY_TRACE_RATE',
 }
 
@@ -28,7 +28,7 @@ export const config = {
   contactEmail: 'support@signal.conso.gouv.fr',
   sentry_dns: env()(Env.REACT_APP_SENTRY_DNS),
   sentry_traceRate: env(int, defaultValue(0.5))(Env.REACT_APP_SENTRY_TRACE_RATE),
-  enable_feature_dropshipping: env(int)(Env.ENABLE_FEATURE_DROPSHIPPING),
+  enable_feature_dropshipping: env(int)(Env.REACT_APP_ENABLE_FEATURE_DROPSHIPPING),
   useHashRouter: true,
 }
 
