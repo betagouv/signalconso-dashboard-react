@@ -1,14 +1,28 @@
 import {Page, PageTitle} from '../../shared/Layout'
 import {useI18n} from '../../core/i18n'
 import {useReportsContext} from '../../core/context/ReportsContext'
-import {cleanObject, getHostFromUrl, Id, Report, ReportingDateLabel, ReportSearch, ReportTag} from '@signal-conso/signalconso-api-sdk-js'
+import {
+  cleanObject,
+  getHostFromUrl,
+  Id,
+  Report,
+  ReportingDateLabel,
+  ReportSearch,
+  ReportTag,
+} from '@signal-conso/signalconso-api-sdk-js'
 import {Panel} from '../../shared/Panel'
 import {Datatable} from '../../shared/Datatable/Datatable'
 import {fromNullable, some} from 'fp-ts/lib/Option'
 import {alpha, Badge, Box, Button, Checkbox, Chip, Grid, Icon, Tooltip} from '@mui/material'
 import {textOverflowMiddleCropping} from '../../core/helper/utils'
 import React, {useCallback, useEffect, useMemo} from 'react'
-import {mapArrayFromQuerystring, mapBooleanFromQueryString, mapDateFromQueryString, mapDatesToQueryString, useQueryString} from '../../core/helper/useQueryString'
+import {
+  mapArrayFromQuerystring,
+  mapBooleanFromQueryString,
+  mapDateFromQueryString,
+  mapDatesToQueryString,
+  useQueryString,
+} from '../../core/helper/useQueryString'
 import {NavLink} from 'react-router-dom'
 import {SelectDepartments} from '../../shared/SelectDepartments/SelectDepartments'
 import {Fender, IconBtn} from 'mui-extension/lib'
@@ -153,7 +167,7 @@ export const Reports = () => {
                       _report.download.fetch({}, selectReport.toArray())
                     }}
                     sx={{
-                      marginLeft: 'auto'
+                      marginLeft: 'auto',
                     }}
                   >
                     {m.download}
@@ -195,10 +209,7 @@ export const Reports = () => {
                   <Icon>file_download</Icon>
                 </IconBtn>
               </ExportReportsPopper>
-              <ReportFilters
-                filters={_reports.filters}
-                updateFilters={updateFilters}
-              >
+              <ReportFilters filters={_reports.filters} updateFilters={updateFilters}>
                 <Tooltip title={m.advancedFilters}>
                   <IconBtn color="primary">
                     <Icon>filter_list</Icon>

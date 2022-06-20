@@ -55,6 +55,7 @@ import {apiPublicSdk, makeSecuredSdk, SignalConsoApiSdk} from './core/ApiSdkInst
 import {Stats} from './feature/Stats/Stats'
 import {Admin} from './feature/Admin/Admin'
 import {ConsumerEmailValidationProvider} from './core/context/EmailValidationContext'
+import {WebsiteInvestigationProvider} from './core/context/WebsiteInvestigationContext'
 import {ScSidebar} from './core/ScSidebar/ScSidebar'
 import {ScHeader} from './core/ScHeader/ScHeader'
 
@@ -92,12 +93,8 @@ const AppLogin = () => {
     >
       {({authResponse, login, logout, register, isCheckingToken, setToken}) => (
         <Layout
-          header={
-            <ScHeader/>
-          }
-          sidebar={authResponse?.user && (
-            <ScSidebar connectedUser={authResponse.user} logout={logout} />
-          )}
+          header={<ScHeader />}
+          sidebar={authResponse?.user && <ScSidebar connectedUser={authResponse.user} logout={logout} />}
         >
           <Switch>
             <Route path={siteMap.loggedout.emailValidation}>
@@ -172,12 +169,13 @@ const AppLogged = () => {
         _ => <UsersProvider api={apiSdk} children={_} />,
         _ => <ConsumerEmailValidationProvider api={apiSdk} children={_} />,
         _ => <ReportedWebsitesProvider api={apiSdk} children={_} />,
+        _ => <WebsiteInvestigationProvider api={apiSdk} children={_} />,
         _ => <UnregistredWebsitesProvider api={apiSdk} children={_} />,
         _ => <SubscriptionsProvider api={apiSdk} children={_} />,
         _ => <AccessesProvider api={apiSdk} children={_} />,
         _ => <BlockedReportNotificationProvider api={apiSdk} children={_} />,
         _ => <CompaniesDbSyncProvider api={apiSdk} children={_} />,
-        _ => <EventProvider api={apiSdk} children={_} />
+        _ => <EventProvider api={apiSdk} children={_} />,
       ]}
     >
       <Switch>

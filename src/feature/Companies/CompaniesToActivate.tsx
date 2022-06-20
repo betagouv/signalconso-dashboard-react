@@ -84,7 +84,9 @@ export const CompaniesToActivate = () => {
                   variant="outlined"
                   icon="file_download"
                   sx={{mr: 1}}
-                  onClick={() => _companies.downloadActivationDocument.fetch({}, selectedCompaniesSet.toArray()).catch(toastError)}
+                  onClick={() =>
+                    _companies.downloadActivationDocument.fetch({}, selectedCompaniesSet.toArray()).catch(toastError)
+                  }
                 >
                   {m.download}
                 </ScButton>

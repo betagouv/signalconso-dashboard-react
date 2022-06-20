@@ -3,7 +3,7 @@ import {AddressComponent} from '../../../shared/Address/Address'
 import {fromNullable} from 'fp-ts/lib/Option'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
 import {Box, Icon, IconButton, useTheme} from '@mui/material'
-import {SelectCompany} from '../../../shared/SelectCompany/SelectCompany'
+import {SelectCompanyDialog} from '../../../shared/SelectCompany/SelectCompanyDialog'
 import {ScButton} from '../../../shared/Button/Button'
 import React from 'react'
 import {Report} from '@signal-conso/signalconso-api-sdk-js'
@@ -27,7 +27,7 @@ export const ReportCompany = ({report, canEdit}: Props) => {
       <PanelHead
         action={
           canEdit && (
-            <SelectCompany
+            <SelectCompanyDialog
               siret={report.companySiret}
               onChange={company => {
                 _report.updateCompany.fetch({}, report.id, company)
@@ -36,7 +36,7 @@ export const ReportCompany = ({report, canEdit}: Props) => {
               <ScButton icon="edit" color="primary" loading={_report.updateCompany.loading}>
                 {m.edit}
               </ScButton>
-            </SelectCompany>
+            </SelectCompanyDialog>
           )
         }
       >

@@ -17,12 +17,10 @@ export interface LayoutProps {
 
 export const Layout = ({sidebar, header, title, mobileBreakpoint, children}: LayoutProps) => {
   return (
-    <LayoutProvider
-      title={title} 
-      mobileBreakpoint={mobileBreakpoint}
-      showSidebarButton={!!sidebar}
-    >
-      <LayoutUsingContext sidebar={sidebar} header={header}>{children}</LayoutUsingContext>
+    <LayoutProvider title={title} mobileBreakpoint={mobileBreakpoint} showSidebarButton={!!sidebar}>
+      <LayoutUsingContext sidebar={sidebar} header={header}>
+        {children}
+      </LayoutUsingContext>
     </LayoutProvider>
   )
 }
@@ -37,11 +35,12 @@ const LayoutUsingContext = ({sidebar, header, children}: Pick<LayoutProps, 'side
         component="main"
         sx={{
           transition: t => t.transitions.create('all'),
-          paddingLeft: (sidebar && sidebarOpen && sidebarPinned && !isMobileWidth ? layoutConfig.sidebarWith + defaultSpacing : 0) + 'px',
+          paddingLeft:
+            (sidebar && sidebarOpen && sidebarPinned && !isMobileWidth ? layoutConfig.sidebarWith + defaultSpacing : 0) + 'px',
           overflow: 'hidden',
           position: 'relative',
           display: 'flex',
-          flexDirection: 'column'
+          flexDirection: 'column',
         }}
       >
         {children}
@@ -49,4 +48,3 @@ const LayoutUsingContext = ({sidebar, header, children}: Pick<LayoutProps, 'side
     </>
   )
 }
-

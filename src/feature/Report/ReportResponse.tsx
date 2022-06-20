@@ -1,7 +1,16 @@
 import {PanelBody} from '../../shared/Panel'
 import React, {useEffect, useState} from 'react'
 import {useI18n} from '../../core/i18n'
-import {EventActionValues, FileOrigin, Id, ReportEvent, ReportResponse, ReportResponseTypes, ResponseConsumerReview, UploadedFile} from '@signal-conso/signalconso-api-sdk-js'
+import {
+  EventActionValues,
+  FileOrigin,
+  Id,
+  ReportEvent,
+  ReportResponse,
+  ReportResponseTypes,
+  ResponseConsumerReview,
+  UploadedFile,
+} from '@signal-conso/signalconso-api-sdk-js'
 import {fnSwitch} from '../../core/helper/utils'
 import {fromNullable} from 'fp-ts/lib/Option'
 import {Box, BoxProps, Icon} from '@mui/material'

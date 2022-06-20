@@ -1,7 +1,15 @@
-import {CompanyAccessLevel, ReportResponseTypes, ReportStatus, ReportStatusPro, ReportTag} from '@signal-conso/signalconso-api-sdk-js'
+import {
+  CompanyAccessLevel,
+  IdentificationStatus,
+  ReportResponseTypes,
+  ReportStatus,
+  ReportStatusPro,
+  ReportTag,
+} from '@signal-conso/signalconso-api-sdk-js'
 import {config} from '../../../conf/config'
 import {formatDistance, formatDuration as formatDurationFns} from 'date-fns'
 import {ResponseEvaluation} from '@signal-conso/signalconso-api-sdk-js/lib/client/event/Event'
+import {IdentificationType} from 'feature/ReportedWebsites/SelectWebsiteIdentification/SelectWebsiteIdentification'
 
 const invalidDate = '-'
 
@@ -59,6 +67,24 @@ export const fr = {
       [ReportTag.CompagnieAerienne]: 'Compagnie aérienne',
       NA: 'Aucun tag',
     },
+    IdentificationStatusDesc: {
+      [IdentificationStatus.Identified]: 'Identifié',
+      [IdentificationStatus.NotIdentified]: 'Non identifié',
+    },
+    investigationStatus: (s: string) => {
+      switch (s) {
+        case 'NotProcessed':
+          return 'N/A'
+        case 'Processing':
+          return 'Identification en cours'
+        case 'UnderInvestigation':
+          return 'Enquête en cours'
+        case 'InvestigationDone':
+          return 'Enquête terminée'
+        default:
+          return s
+      }
+    },
     hide: 'Masquer',
     filter: 'Filtrer',
     yes: 'Oui',
@@ -86,6 +112,13 @@ export const fr = {
     try: 'Try',
     settings: 'Paramètres',
     status: 'Statut',
+    identicationTools: "Outils d'identification",
+    investigation: 'Enquête',
+    affectation: 'Affectation',
+    affectationTitle: 'Attribuer à une DD',
+    noValue: 'N/A',
+    practiceTitle: 'Attribuer une pratique',
+    practice: 'Pratique',
     notification: 'Notification',
     notifications: 'Notifications',
     statusEdited: 'Status modifié.',
@@ -100,8 +133,9 @@ export const fr = {
     cancel: 'Annuler',
     help: 'Aide',
     created_at: 'Créé le',
-    validated: 'Validé',
-    notValidated: 'Non validé',
+    kind: "Status d'identification",
+    identified: 'Identifié',
+    notIdentified: 'Non identifié',
     configuration: 'Configuration',
     general: 'General',
     name: 'Nom',
@@ -117,6 +151,7 @@ export const fr = {
     clear: 'Clear',
     cron: 'Cron',
     removeAsk: 'Supprimer ? ',
+    cannotUpdateWebsiteStatus: 'La validation nécéssite que le site soit identifié par une entreprise ou un pays',
     thisWillBeRemoved: (_: string) => `La pièce jointe <b>${_}</b> sera définitivement supprimée.`,
     exportInXLS: 'Exporter en XLS',
     removeAllFilters: 'Supprimer les filtres',
@@ -153,8 +188,9 @@ export const fr = {
     home: 'Accueil',
     consumer: 'Consommateur',
     company: 'Entreprise',
+    identication: 'Identification',
     country: 'Pays',
-    identification: 'Identification du pays',
+    companyWebsiteIdentification: `Identification du site internet`,
     address: 'Adresse',
     activateMyAccount: 'Activer mon compte',
     createMyAccount: 'Créer mon compte',
@@ -162,6 +198,11 @@ export const fr = {
     invalidEmail: 'Email invalide',
     firstName: 'Prénom',
     lastName: 'Nom',
+    attachTo: `Attacher à`,
+    attachToType: {
+      [IdentificationType.COMPANY]: `Une entreprise`,
+      [IdentificationType.COUNTRY]: `Un pays étranger`,
+    },
     addCompany: `Enregister l'entreprise`,
     addACompany: `Enregister une entreprise`,
     youReceivedNewLetter: `Vous avez reçu un courrier postal ?`,
@@ -191,6 +232,7 @@ export const fr = {
     reportHistory: 'Historique du signalement',
     reportedWebsites: 'Suivi des sites internet',
     reportedCompaniesWebsites: 'Associations sites / entreprises',
+    websitesInvestigation: 'Suivi des sites internet',
     showLabels: 'Afficher les valeurs :',
     reportedUnknownWebsites: 'Sites non identifiés',
     companyHistory: "Historique de l'entreprise",
@@ -423,7 +465,7 @@ export const fr = {
     noReportsDesc: 'Aucun signalement ne correspond à votre recherche.',
     lastNotice: 'Relancé le',
     validatingEmail: `Validation de l'adresse email...`,
-    validateLetterSent: "Valider courriers envoyés",
+    validateLetterSent: 'Valider courriers envoyés',
     emailValidated: `Votre email est validé.`,
     emailValidatedDesc: `Vous pouvez vous connecter à l'aide de votre adresse email et mot de passe.`,
     validateLetterSentTitle: "Valider l'envoi des courriers",
@@ -651,8 +693,10 @@ export const fr = {
         },
       },
     },
+    websiteEdited: 'Site web identifié.',
     alreadySelectedCompany: (name?: string) => `L'entreprise ${name ?? ''} est déjà sélectionnée`,
     alreadySelectedCountry: (name?: string) => `Le pays ${name ?? ''} est déjà sélectionnée`,
+    alreadySelectedValue: (name?: string) => `La valeur ${name ?? ''} est déjà sélectionnée`,
     nLines: (n: number) => `<b>${n}</b> lignes`,
     reportResponse: {
       [ReportResponseTypes.Accepted]: 'Signalement pris en compte',

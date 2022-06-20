@@ -1,81 +1,88 @@
-import {alpha, Box, BoxProps, Radio} from '@mui/material'
+import {alpha, Box, BoxProps, Checkbox, Radio} from '@mui/material'
 import React, {ReactNode} from 'react'
-import {Txt} from 'mui-extension/lib/Txt/Txt'
+import {Txt} from 'mui-extension/lib'
 
-export interface ScRadioGroupItemProps extends Omit<BoxProps, 'title'> {
+const defaultMuiRadioPadding = 9
+
+export interface ScRadioGroupItemProps<T> extends Omit<BoxProps, 'title'> {
   title?: string | ReactNode
   description?: string | ReactNode
-  value: string
+  value: T
+  disabled?: boolean
   selected?: boolean
+  children?: ReactNode
+  onClick?: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void
   dense?: boolean
   inline?: boolean
   error?: boolean
+  multiple?: boolean
 }
 
-export const ScRadioGroupItem = ({
+export const ScRadioGroupItem = <T,>({
   title,
   description,
   error,
   dense,
   inline,
+  disabled,
   value,
   children,
   selected,
   onClick,
+  className,
+  multiple,
   sx,
-  ...props
-}: ScRadioGroupItemProps) => {
+  ...rest
+}: ScRadioGroupItemProps<T>) => {
+  const minHeight = dense ? 40 : 50
   return (
     <Box
-      {...props}
+      role={multiple ? 'checkbox' : 'radio'}
       sx={{
+        minHeight,
         display: 'flex',
         alignItems: 'flex-start',
         border: t => '1px solid ' + t.palette.divider,
-        borderBottomColor: 'transparent',
-        py: 1.5,
-        pr: 2,
-        pl: 1,
+        paddingRight: '2px',
+        paddingBottom: '2px',
         transition: 'all .2s ease-in-out',
         cursor: 'pointer',
-        '&:last-of-type': {
-          borderBottom: t => '1px solid ' + t.palette.divider,
-          borderBottomRightRadius: t => t.shape.borderRadius + 'px',
-          borderBottomLeftRadius: t => t.shape.borderRadius + 'px',
-        },
-        '&:first-of-type': {
-          borderTopRightRadius: t => t.shape.borderRadius + 'px',
-          borderTopLeftRadius: t => t.shape.borderRadius + 'px',
-        },
+        ...(inline
+          ? {
+              borderRightColor: 'transparent',
+              '&:last-of-type': {
+                borderRight: t => '1px solid ' + t.palette.divider,
+                borderBottomRightRadius: t => t.shape.borderRadius,
+                borderTopRightRadius: t => t.shape.borderRadius,
+              },
+              '&:first-of-type': {
+                borderBottomLeftRadius: t => t.shape.borderRadius,
+                borderTopLeftRadius: t => t.shape.borderRadius,
+              },
+              '&:not(:first-of-type)': {
+                marginLeft: '-1px',
+              },
+            }
+          : {
+              borderBottomColor: 'transparent',
+              '&:last-of-type': {
+                borderBottom: t => '1px solid ' + t.palette.divider,
+                borderBottomRightRadius: t => t.shape.borderRadius,
+                borderBottomLeftRadius: t => t.shape.borderRadius,
+              },
+              '&:first-of-type': {
+                borderTopRightRadius: t => t.shape.borderRadius,
+                borderTopLeftRadius: t => t.shape.borderRadius,
+              },
+              '&:not(:first-of-type)': {
+                marginTop: '-2px',
+              },
+            }),
         '&:hover': {
           zIndex: 1,
           border: t => `1px solid ${t.palette.primary.main}`,
           background: 'rgba(0,0,0,.04)',
         },
-        ...(inline && {
-          borderRightColor: 'transparent',
-          '&:last-of-type': {
-            borderRight: t => '1px solid ' + t.palette.divider,
-            borderTopRightRadius: t => t.shape.borderRadius,
-            borderBottom: t => '1px solid ' + t.palette.divider,
-            borderBottomRightRadius: t => t.shape.borderRadius + 'px',
-            borderBottomLeftRadius: '0px',
-          },
-          '&:first-of-type': {
-            borderBottom: t => '1px solid ' + t.palette.divider,
-            borderBottomRightRadius: '0px',
-            borderBottomLeftRadius: t => t.shape.borderRadius + 'px',
-            borderTopRightRadius: '0px',
-          },
-          '&:not(:first-of-type)': {
-            marginLeft: '-1px',
-            borderBottom: t => '1px solid ' + t.palette.divider,
-          },
-        }),
-        ...(dense && {
-          pt: 1 / 4,
-          pb: 1 / 4,
-        }),
         ...(selected && {
           zIndex: 1,
           border: t => `1px solid ${t.palette.primary.main} !important`,
@@ -83,29 +90,58 @@ export const ScRadioGroupItem = ({
           boxShadow: t => `inset 0 0 0 1px ${t.palette.primary.main}`,
         }),
         ...(error && {
-          borderColor: t => t.palette.error.main + ' !important',
+          '&$rootSelected': {
+            borderColor: t => t.palette.error.main + ' !important',
+          },
+          boxShadow: t => `inset 0 0 0 1px ${t.palette.error.main}`,
         }),
         ...sx,
       }}
       onClick={onClick}
+      {...rest}
     >
-      <Radio checked={selected} />
+      {multiple ? (
+        <Checkbox
+          disabled={disabled}
+          size={dense ? 'small' : undefined}
+          checked={selected}
+          sx={{
+            marginLeft: 1,
+            minHeight: minHeight,
+          }}
+        />
+      ) : (
+        <Radio
+          disabled={disabled}
+          size={dense ? 'small' : undefined}
+          checked={selected}
+          sx={{
+            marginLeft: 1,
+            minHeight: minHeight,
+          }}
+        />
+      )}
       <Box
         sx={{
+          alignSelf: 'center',
           display: 'flex',
           justifyContent: 'center',
-          minHeight: 42,
+          pt: 1.5,
+          pb: 1.5,
+          // minHeight: 42,
           flexDirection: 'column',
-          ml: 1,
+          ml: 0.5,
+          mr: 2,
+          width: '100%',
+          ...(dense && {
+            pt: 1,
+            pb: 1,
+          }),
         }}
       >
-        {title && (
-          <Txt block size="big">
-            {title}
-          </Txt>
-        )}
+        {title && <Txt block>{title}</Txt>}
         {description && (
-          <Txt block color="hint">
+          <Txt block color="hint" size="small">
             {description}
           </Txt>
         )}

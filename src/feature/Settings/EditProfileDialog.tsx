@@ -27,7 +27,7 @@ export const EditProfileDialog = ({children}: Props) => {
   const {toastSuccess} = useToast()
   const defaultFormValues: Form = {
     firstName: connectedUser.firstName,
-    lastName: connectedUser.lastName
+    lastName: connectedUser.lastName,
   }
   const {
     getValues,
@@ -35,10 +35,10 @@ export const EditProfileDialog = ({children}: Props) => {
     control,
     reset,
     watch,
-    formState: {errors, isValid}
+    formState: {errors, isValid},
   } = useForm<Form>({
     mode: 'onChange',
-    defaultValues: defaultFormValues
+    defaultValues: defaultFormValues,
   })
 
   watch('firstName')
@@ -57,7 +57,8 @@ export const EditProfileDialog = ({children}: Props) => {
       loading={_editUser.loading}
       onConfirm={(event, close) => {
         handleSubmit((form: Form) => {
-          _editUser.call(connectedUser.id, form)
+          _editUser
+            .call(connectedUser.id, form)
             .then(() => {
               toastSuccess(m.saved)
               close()

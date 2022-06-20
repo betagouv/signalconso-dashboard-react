@@ -27,28 +27,22 @@ const stickSidebarToHeader = () => {
 }
 
 export const Sidebar = ({children, sx, ...props}: BoxProps) => {
-  const {
-    isMobileWidth,
-    sidebarOpen,
-    setSidebarOpen,
-    sidebarPinned,
-    setSidebarPinned
-  } = useLayoutContext()
+  const {isMobileWidth, sidebarOpen, setSidebarOpen, sidebarPinned, setSidebarPinned} = useLayoutContext()
   const {m} = useI18n()
 
   useEffect(() => {
-    // Element has been re-created by SwipeableDrawer, thus variable point to nothing. 
+    // Element has been re-created by SwipeableDrawer, thus variable point to nothing.
     sidebar = null
     stickSidebarToHeader()
     setSidebarOpen(_ => !isMobileWidth)
   }, [isMobileWidth, sidebarPinned])
-  
+
   useEffect(() => {
     window.addEventListener('scroll', stickSidebarToHeader)
   }, [])
-  
+
   const isTemporary = isMobileWidth || !sidebarPinned
-  
+
   return (
     <SwipeableDrawer
       PaperProps={{
@@ -58,41 +52,37 @@ export const Sidebar = ({children, sx, ...props}: BoxProps) => {
           border: 'none',
           bottom: 0,
           height: 'auto',
-          ...isTemporary && {
-            top: '0 !important'
-          }
-        }
+          ...(isTemporary && {
+            top: '0 !important',
+          }),
+        },
       }}
       open={sidebarOpen}
       onOpen={() => setSidebarOpen(true)}
       onClose={() => setSidebarOpen(false)}
       variant={isTemporary ? 'temporary' : 'persistent'}
     >
-      <Box sx={{
-        width: layoutConfig.sidebarWith,
-        height: '100%',
-        transition: t => t.transitions.create('width'),
-        overflowY: 'auto',
-        background: t => t.palette.background.default,
-        display: 'flex',
-        flexDirection: 'column',
-        borderRadius: 0,
-        ...sx
-      }} {...props}>
+      <Box
+        sx={{
+          width: layoutConfig.sidebarWith,
+          height: '100%',
+          transition: t => t.transitions.create('width'),
+          overflowY: 'auto',
+          background: t => t.palette.background.default,
+          display: 'flex',
+          flexDirection: 'column',
+          borderRadius: 0,
+          ...sx,
+        }}
+        {...props}
+      >
         <SidebarHeader hidden={!isTemporary} />
-        <SidebarBody>
-          {children}
-        </SidebarBody>
+        <SidebarBody>{children}</SidebarBody>
         {!isMobileWidth && (
           <SidebarFooter>
             <SidebarItem onClick={stopPropagation(() => setSidebarPinned(_ => !_))} icon="push_pin" sx={{mr: 0, pr: 0}}>
               {m.pin}
-              <Switch
-                color="primary"
-                sx={{ml: 'auto'}}
-                checked={sidebarPinned}
-                onChange={() => setSidebarPinned(_ => !_)}
-              />
+              <Switch color="primary" sx={{ml: 'auto'}} checked={sidebarPinned} onChange={() => setSidebarPinned(_ => !_)} />
             </SidebarItem>
           </SidebarFooter>
         )}

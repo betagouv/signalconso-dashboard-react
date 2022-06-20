@@ -25,7 +25,6 @@ export const ConsumerListPending = () => {
 
   useEffectFn(_users.error, toastError)
 
-  console.log(_users.list?.data)
   return (
     <Panel>
       <Datatable
@@ -48,10 +47,10 @@ export const ConsumerListPending = () => {
             </DebouncedInput>
             <TrueFalseUndefined
               value={_users.filters.validated}
-              onChange={_ => _users.updateFilters(prev => ({...prev, validated: _}))}
+              onChange={_ => _users.updateFilters(prev => ({...prev, identified: _}))}
               label={{
-                true: m.validated,
-                false: m.notValidated,
+                true: m.identified,
+                false: m.notIdentified,
                 undefined: m.all,
               }}
             />
