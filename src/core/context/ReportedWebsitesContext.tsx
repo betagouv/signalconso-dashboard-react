@@ -4,6 +4,7 @@ import {UseFetcher, useFetcher, UsePaginate} from '@alexandreannic/react-hooks-l
 import {SignalConsoApiSdk} from '../ApiSdkInstance'
 import {ApiError, WebsiteWithCompany, WebsiteWithCompanySearch} from '@signal-conso/signalconso-api-sdk-js'
 import {useScPaginate} from '../../shared/usePaginate/usePaginate'
+import {IdentificationStatus} from '@signal-conso/signalconso-api-sdk-js/lib/client/website/Website'
 
 export interface ReportedWebsiteWithCompanyContextProps {
   getWebsiteWithCompany: UsePaginate<WebsiteWithCompany, WebsiteWithCompanySearch>
@@ -28,6 +29,7 @@ export const ReportedWebsitesProvider = ({api, children}: Props) => {
   const listReportedWebsiteWithCompany = useScPaginate<WebsiteWithCompany, WebsiteWithCompanySearch>(api.secured.website.list, {
     limit: 10,
     offset: 0,
+    identificationStatus: [IdentificationStatus.NotIdentified],
   })
 
   const remove = useFetcher(api.secured.website.remove)
