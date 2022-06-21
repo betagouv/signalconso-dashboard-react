@@ -16,6 +16,6 @@ jobs:
         with:
           node-version: 16
           registry-url: https://registry.npmjs.org/
-      - run: npm ci
+      - run: npm ci --force
       - run: npx prettier -l .
       - run: npm test
