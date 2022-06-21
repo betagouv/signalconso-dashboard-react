@@ -27,7 +27,7 @@ interface Website {
 
 interface Props extends Omit<BoxProps, 'onChange'> {
   website: Website
-  onChange: (company?: Company, companyCountry?: Country) => void
+  onChange: () => void
 }
 
 export enum IdentificationType {
@@ -61,7 +61,7 @@ export const SelectWebsiteIdentification = ({onChange, website, ...props}: Props
             address: company.address,
             activityCode: company.activityCode,
           })
-          .then(_ => onChange(_.company))
+          .then(_ => onChange())
           .then(_ => toastSuccess(m.websiteEdited))
           .then(_ => close())
       }
@@ -76,7 +76,7 @@ export const SelectWebsiteIdentification = ({onChange, website, ...props}: Props
         await _updateCountry.fetch({}, website.id, country)
         toastSuccess(m.websiteEdited)
         close()
-        onChange(undefined, country)
+        onChange()
       }
     }
   }

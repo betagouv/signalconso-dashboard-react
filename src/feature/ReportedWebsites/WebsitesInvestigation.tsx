@@ -60,8 +60,7 @@ export const WebsitesInvestigation = () => {
   useEffectFn(_remove.error, toastError)
 
   const handleUpdateKind = (website: WebsiteWithCompany, identificationStatus: IdentificationStatus) => {
-    _updateStatus.fetch({}, website.id, identificationStatus)
-    websitesIndex.set(website.id, {...website, identificationStatus})
+    _updateStatus.fetch({}, website.id, identificationStatus).then(_ => _websiteWithCompany.fetch({clean: false}))
   }
 
   const filtersCount = useMemo(() => {
@@ -145,8 +144,8 @@ export const WebsitesInvestigation = () => {
             render: _ => (
               <SelectWebsiteIdentification
                 website={_}
-                onChange={(company, companyCountry) => {
-                  websitesIndex.set(_.id, {..._, company, companyCountry})
+                onChange={() => {
+                  _websiteWithCompany.fetch({clean: false})
                 }}
               />
             ),
