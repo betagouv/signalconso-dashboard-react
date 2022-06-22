@@ -1,14 +1,14 @@
 import {Dialog, DialogActions, DialogContent, DialogTitle, Icon, MenuItem} from '@mui/material'
 import {useI18n} from '../../core/i18n'
 import React, {ReactElement, useEffect, useMemo, useState} from 'react'
-import {ReportSearch, ReportStatus} from '@signal-conso/signalconso-api-sdk-js'
+import {Id, ReportSearch, ReportStatus} from '@signal-conso/signalconso-api-sdk-js'
 import {Controller, useForm} from 'react-hook-form'
 import {ScSelect} from '../../shared/Select/Select'
 import {ReportStatusLabel} from '../../shared/ReportStatus/ReportStatus'
 import {ScInput} from '../../shared/Input/ScInput'
 import {useAnomalyContext} from '../../core/context/AnomalyContext'
 import {Enum} from '@alexandreannic/ts-utils/lib/common/enum/Enum'
-import {TrueFalseUndefined} from '../../shared/TrueFalseUndefined/TrueFalseUndefined'
+import {TrueFalseNull} from '../../shared/TrueFalseUndefined/TrueFalseNull'
 import {SelectCountries} from '../../shared/SelectCountries/SelectCountries'
 import {SelectActivityCode} from '../../shared/SelectActivityCode/SelectActivityCode'
 import {ScMultiSelect} from 'shared/Select/MultiSelect'
@@ -16,70 +16,38 @@ import {ScMenuItem} from '../../shared/MenuItem/ScMenuItem'
 import {SelectTags} from '../../shared/SelectTags/SelectTags'
 import {SelectTagsMenuValues} from '../../shared/SelectTags/SelectTagsMenu'
 import {DialogInputRow, DialogInputRowExtra} from '../../shared/DialogInputRow/DialogInputRow'
-import compose from '../../core/helper/compose'
 import {Btn} from 'mui-extension'
 import {useLayoutContext} from '../../core/Layout/LayoutContext'
 
-export interface ReportsFiltersProps {
+interface Props {
   updateFilters: (_: ReportSearch) => void
   filters: ReportSearch
   children: ReactElement<any>
 }
 
-export interface _ReportsFiltersProps {
-  updateFilters: (_: Form) => void
-  filters: Form
-  children: ReactElement<any>
-}
-
-interface Form extends Omit<ReportSearch, 'withTags' | 'withoutTags'> {
+interface Form {
+  // For some inputs, react-form can't work with undefined, so we use null
+  // Yet for some other inputs, it seems we need to use undefined
+  departments: string[] | null
+  companyCountries: string[] | undefined
+  siretSirenList: string[] | null
+  activityCodes: string[] | undefined
+  status: ReportStatus[] | undefined
+  companyIds: Id[] | null
+  start: Date | null
+  end: Date | null
+  email: string | null
+  websiteURL: string | null
+  phone: string | null
+  category: string | null
+  details: string | null
+  contactAgreement: boolean | null
+  hasPhone: boolean | null
+  hasWebsite: boolean | null
+  hasForeignCountry: boolean | null
+  hasCompany: boolean | null
+  hasAttachment: boolean | null
   tags: SelectTagsMenuValues
-}
-
-const rationalizeFilters = (f: ReportSearch): ReportSearch => ({
-  ...f,
-  hasWebsite: f.websiteURL && f.websiteURL !== '' ? true : f.hasWebsite,
-  hasPhone: f.phone && f.phone !== '' ? true : f.hasPhone,
-  hasForeignCountry: (f.companyCountries ?? []).length > 0 ? true : f.hasForeignCountry,
-  hasCompany: (f.siretSirenList ?? []).length > 0 ? true : f.hasCompany,
-})
-
-export const toReportTagValues = <T extends Pick<ReportSearch, 'withTags' | 'withoutTags'>>(
-  filters: T,
-): T & {tags: SelectTagsMenuValues} => {
-  const tags: SelectTagsMenuValues = {}
-  filters.withTags?.forEach(tag => {
-    tags[tag] = 'included'
-  })
-  filters.withoutTags?.forEach(tag => {
-    tags[tag] = 'excluded'
-  })
-  return {...filters, tags}
-}
-
-export const fromReportTagValues = (tags: SelectTagsMenuValues): Pick<ReportSearch, 'withTags' | 'withoutTags'> => {
-  return {
-    withTags: Enum.keys(tags).filter(tag => tags[tag] === 'included'),
-    withoutTags: Enum.keys(tags).filter(tag => tags[tag] === 'excluded'),
-  }
-}
-
-export const ReportFilters = ({filters, updateFilters, ...props}: ReportsFiltersProps) => {
-  const parsedFilters = useMemo(() => {
-    return compose(toReportTagValues, rationalizeFilters)(filters)
-  }, [filters])
-  return (
-    <_ReportsFilters
-      {...props}
-      filters={parsedFilters}
-      updateFilters={form => {
-        return updateFilters({
-          ...form,
-          ...fromReportTagValues(form.tags),
-        })
-      }}
-    />
-  )
 }
 
 const TrueLabel = () => {
@@ -94,7 +62,114 @@ const TrueLabel = () => {
   )
 }
 
-const _ReportsFilters = ({filters, updateFilters, children}: _ReportsFiltersProps) => {
+function invertIfDefined(bool: boolean | null) {
+  return bool === null ? null : !bool
+}
+
+function reportSearch2Form(_: ReportSearch): Form {
+  const {
+    departments,
+    withTags,
+    withoutTags,
+    companyCountries,
+    siretSirenList,
+    activityCodes,
+    status,
+    companyIds,
+    start,
+    end,
+    email,
+    websiteURL,
+    phone,
+    category,
+    details,
+    contactAgreement,
+    hasPhone,
+    hasWebsite,
+    hasForeignCountry,
+    hasCompany,
+    hasAttachment,
+  } = _
+  const tags: SelectTagsMenuValues = {}
+  withTags?.forEach(tag => {
+    tags[tag] = 'included'
+  })
+  withoutTags?.forEach(tag => {
+    tags[tag] = 'excluded'
+  })
+  return {
+    departments: departments ?? null,
+    companyCountries,
+    siretSirenList: siretSirenList ?? null,
+    activityCodes,
+    status,
+    companyIds: companyIds ?? null,
+    start: start ?? null,
+    end: end ?? null,
+    email: email ?? null,
+    websiteURL: websiteURL ?? null,
+    phone: phone ?? null,
+    category: category ?? null,
+    details: details ?? null,
+    contactAgreement: contactAgreement ?? null,
+    hasPhone: (phone && phone !== '' ? true : hasPhone) ?? null,
+    hasWebsite: (websiteURL && websiteURL !== '' ? true : hasWebsite) ?? null,
+    hasForeignCountry: ((companyCountries ?? []).length > 0 ? true : hasForeignCountry) ?? null,
+    hasCompany: ((siretSirenList ?? []).length > 0 ? true : hasCompany) ?? null,
+    hasAttachment: hasAttachment ?? null,
+    tags,
+  }
+}
+
+function form2ReportSearch(_: Form): ReportSearch {
+  const {
+    departments,
+    companyCountries,
+    siretSirenList,
+    activityCodes,
+    status,
+    companyIds,
+    start,
+    end,
+    email,
+    websiteURL,
+    phone,
+    category,
+    details,
+    contactAgreement,
+    hasPhone,
+    hasWebsite,
+    hasForeignCountry,
+    hasCompany,
+    hasAttachment,
+    tags,
+  } = _
+  return {
+    departments: departments ?? undefined,
+    withTags: Enum.keys(tags).filter(tag => tags[tag] === 'included'),
+    withoutTags: Enum.keys(tags).filter(tag => tags[tag] === 'excluded'),
+    companyCountries: companyCountries,
+    siretSirenList: siretSirenList ?? undefined,
+    activityCodes,
+    status,
+    companyIds: companyIds ?? undefined,
+    start: start ?? undefined,
+    end: end ?? undefined,
+    email: email ?? undefined,
+    websiteURL: websiteURL ?? undefined,
+    phone: phone ?? undefined,
+    category: category ?? undefined,
+    details: details ?? undefined,
+    contactAgreement: contactAgreement ?? undefined,
+    hasPhone: hasPhone ?? undefined,
+    hasWebsite: hasWebsite ?? undefined,
+    hasForeignCountry: hasForeignCountry ?? undefined,
+    hasCompany: hasCompany ?? undefined,
+    hasAttachment: hasAttachment ?? undefined,
+  }
+}
+
+export const ReportsFilters = ({filters: rawFilters, updateFilters, children}: Props) => {
   const {m} = useI18n()
   const {
     register,
@@ -115,12 +190,18 @@ const _ReportsFilters = ({filters, updateFilters, children}: _ReportsFiltersProp
 
   const confirm = (e: any) => {
     close()
-    handleSubmit(updateFilters)(e)
+    handleSubmit((form: Form) => {
+      return updateFilters(form2ReportSearch(form))
+    })(e)
   }
 
   useEffect(() => {
     _category.fetch({force: false})
   }, [])
+
+  const filters = useMemo(() => {
+    return reportSearch2Form(rawFilters)
+  }, [rawFilters])
 
   useEffect(() => {
     reset(filters)
@@ -144,7 +225,7 @@ const _ReportsFilters = ({filters, updateFilters, children}: _ReportsFiltersProp
                   defaultValue={filters.hasCompany}
                   control={control}
                   render={({field}) => (
-                    <TrueFalseUndefined
+                    <TrueFalseNull
                       label={{
                         true: <TrueLabel />,
                       }}
@@ -220,7 +301,7 @@ const _ReportsFilters = ({filters, updateFilters, children}: _ReportsFiltersProp
                   defaultValue={filters.hasWebsite}
                   control={control}
                   render={({field}) => (
-                    <TrueFalseUndefined
+                    <TrueFalseNull
                       {...field}
                       label={{
                         true: <TrueLabel />,
@@ -241,7 +322,7 @@ const _ReportsFilters = ({filters, updateFilters, children}: _ReportsFiltersProp
                   defaultValue={filters.hasPhone}
                   control={control}
                   render={({field}) => (
-                    <TrueFalseUndefined
+                    <TrueFalseNull
                       {...field}
                       label={{
                         true: <TrueLabel />,
@@ -262,7 +343,7 @@ const _ReportsFilters = ({filters, updateFilters, children}: _ReportsFiltersProp
                   defaultValue={filters.hasForeignCountry}
                   control={control}
                   render={({field}) => (
-                    <TrueFalseUndefined
+                    <TrueFalseNull
                       {...field}
                       label={{
                         true: <TrueLabel />,
@@ -288,13 +369,13 @@ const _ReportsFilters = ({filters, updateFilters, children}: _ReportsFiltersProp
               <DialogInputRow icon="person" label={m.consoAnonyme}>
                 <Controller
                   name="contactAgreement"
-                  defaultValue={filters.contactAgreement === undefined ? undefined : !filters.contactAgreement}
+                  defaultValue={invertIfDefined(filters.contactAgreement)}
                   control={control}
                   render={({field: {value, onChange, ...otherField}}) => (
-                    <TrueFalseUndefined
+                    <TrueFalseNull
                       {...otherField}
-                      value={!value}
-                      onChange={_ => onChange(_ === undefined ? undefined : !_)}
+                      value={invertIfDefined(value)}
+                      onChange={_ => onChange(invertIfDefined(_))}
                       sx={{mt: 1}}
                     />
                   )}
@@ -305,7 +386,7 @@ const _ReportsFilters = ({filters, updateFilters, children}: _ReportsFiltersProp
                   name="hasAttachment"
                   defaultValue={filters.hasAttachment}
                   control={control}
-                  render={({field}) => <TrueFalseUndefined {...field} sx={{mt: 1}} />}
+                  render={({field}) => <TrueFalseNull {...field} sx={{mt: 1}} />}
                 />
               </DialogInputRow>
             </DialogContent>

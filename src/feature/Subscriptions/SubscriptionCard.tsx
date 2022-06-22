@@ -1,6 +1,6 @@
 import React, {CSSProperties, SyntheticEvent, useEffect, useMemo, useState} from 'react'
 import {useI18n} from '../../core/i18n'
-import {Subscription, SubscriptionCreate} from '@signal-conso/signalconso-api-sdk-js'
+import {ReportSearch, Subscription, SubscriptionCreate} from '@signal-conso/signalconso-api-sdk-js'
 import {Panel, PanelHead} from '../../shared/Panel'
 import {ScSelect} from '../../shared/Select/Select'
 import {Chip, Collapse, duration, Icon} from '@mui/material'
@@ -17,7 +17,7 @@ import {IconBtn} from 'mui-extension/lib'
 import {ScDialog} from '../../shared/Confirm/ScDialog'
 import {ScMenuItem} from '../MenuItem/MenuItem'
 import {SelectTagsMenu, SelectTagsMenuValues} from '../../shared/SelectTags/SelectTagsMenu'
-import {fromReportTagValues, toReportTagValues} from '../Reports/ReportsFilters'
+import {Enum} from '@alexandreannic/ts-utils/lib/common/enum/Enum'
 
 interface Props {
   subscription: Subscription
@@ -52,8 +52,23 @@ export const SubscriptionCard = ({subscription, onUpdate, onDelete, removing, lo
   }, [])
 
   const tags: SelectTagsMenuValues = useMemo(() => {
-    return toReportTagValues(subscription).tags
+    const tags: SelectTagsMenuValues = {}
+    subscription.withTags?.forEach(tag => {
+      tags[tag] = 'included'
+    })
+    subscription.withoutTags?.forEach(tag => {
+      tags[tag] = 'excluded'
+    })
+    return tags
   }, [subscription.withTags, subscription.withoutTags])
+
+  const fromReportTagValues = (tags: SelectTagsMenuValues): Pick<ReportSearch, 'withTags' | 'withoutTags'> => {
+    const res = {
+      withTags: Enum.keys(tags).filter(tag => tags[tag] === 'included'),
+      withoutTags: Enum.keys(tags).filter(tag => tags[tag] === 'excluded'),
+    }
+    return res
+  }
 
   return (
     <Collapse in={isMounted} timeout={duration.standard * 1.5}>

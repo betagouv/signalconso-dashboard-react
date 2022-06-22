@@ -47,7 +47,7 @@ export const ConsumerListPending = () => {
             </DebouncedInput>
             <TrueFalseUndefined
               value={_users.filters.validated}
-              onChange={_ => _users.updateFilters(prev => ({...prev, identified: _}))}
+              onChange={_ => _users.updateFilters(prev => ({...prev, validated: _}))}
               label={{
                 true: m.identified,
                 false: m.notIdentified,
