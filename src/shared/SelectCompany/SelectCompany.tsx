@@ -7,7 +7,7 @@ import {useI18n} from '../../core/i18n'
 import {useCompaniesContext} from '../../core/context/CompaniesContext'
 import {CompanySearchResult, Id} from '@signal-conso/signalconso-api-sdk-js'
 import {fromNullable} from 'fp-ts/lib/Option'
-import {useEffectFn} from '@alexandreannic/react-hooks-lib'
+import {useEffectFn} from '../../alexlibs/react-hooks-lib'
 
 export interface SelectCompanyProps {
   siret?: Id

@@ -8,7 +8,7 @@ import {Txt} from 'mui-extension/lib/Txt/Txt'
 import {fnSwitch} from '../../core/helper/utils'
 import {useReportedPhonesContext} from '../../core/context/ReportedPhonesContext'
 import {useInterval} from 'mui-extension/lib/core/utils/useInterval'
-import {Fetch} from '@alexandreannic/react-hooks-lib/lib'
+import {Fetch} from '../../alexlibs/react-hooks-lib'
 import {useReportsContext} from '../../core/context/ReportsContext'
 import {useUnregistredWebsiteWithCompanyContext} from '../../core/context/UnregistredWebsitesContext'
 

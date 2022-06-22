@@ -1,6 +1,6 @@
 import {Box, Icon} from '@mui/material'
 import {ReportSearchResult} from '@signal-conso/signalconso-api-sdk-js'
-import {Paginate} from '@alexandreannic/react-hooks-lib/lib'
+import {Paginate} from '../../alexlibs/react-hooks-lib'
 import {ReportStatusLabel} from '../../shared/ReportStatus/ReportStatus'
 import * as React from 'react'
 import {useI18n} from '../../core/i18n'

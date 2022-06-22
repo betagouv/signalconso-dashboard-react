@@ -6,12 +6,12 @@ import {Panel, PanelBody, PanelHead} from '../../../shared/Panel'
 import {HorizontalBarChart} from '../../../shared/HorizontalBarChart/HorizontalBarChart'
 import {ReportStatus, ReportStatusPro} from '@signal-conso/signalconso-api-sdk-js'
 import {useCompanyStats} from '../useCompanyStats'
-import {useEffectFn} from '@alexandreannic/react-hooks-lib'
+import {useEffectFn} from '../../../alexlibs/react-hooks-lib'
 import {fromNullable} from 'fp-ts/es6/Option'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
 import {useToast} from '../../../core/toast'
 import {ReviewLabel} from './ReviewLabel'
-import {useMemoFn} from '@alexandreannic/react-hooks-lib/lib'
+import {useMemoFn} from '../../../alexlibs/react-hooks-lib'
 
 interface Props {
   companyId: string

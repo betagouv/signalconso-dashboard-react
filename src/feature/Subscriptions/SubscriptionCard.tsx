@@ -17,7 +17,7 @@ import {IconBtn} from 'mui-extension/lib'
 import {ScDialog} from '../../shared/Confirm/ScDialog'
 import {ScMenuItem} from '../MenuItem/MenuItem'
 import {SelectTagsMenu, SelectTagsMenuValues} from '../../shared/SelectTags/SelectTagsMenu'
-import {Enum} from '@alexandreannic/ts-utils/lib/common/enum/Enum'
+import {Enum} from '../../alexlibs/ts-utils'
 
 interface Props {
   subscription: Subscription

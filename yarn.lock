@@ -5,17 +5,6 @@ __metadata:
   version: 6
   cacheKey: 8
 
-"@alexandreannic/react-hooks-lib@npm:1.11.9":
-  version: 1.11.9
-  resolution: "@alexandreannic/react-hooks-lib@npm:1.11.9"
-  dependencies:
-    ts-node: ^10.7.0
-  peerDependencies:
-    react: 17.0.2
-  checksum: 6e53370663a1d5e5c9599f65ff8c9ceee6c1ea5a424f5ff8bb78e88f1394353da9b3cab08c9a4d27b50b8d0bc555ee4436e237c5e12e0b32e2b0cb0c325664ac
-  languageName: node
-  linkType: hard
-
 "@alexandreannic/react-hooks-lib@npm:^1.11.4":
   version: 1.11.12
   resolution: "@alexandreannic/react-hooks-lib@npm:1.11.12"
@@ -27,7 +16,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@alexandreannic/ts-utils@npm:1.7.8, @alexandreannic/ts-utils@npm:^1.7.3":
+"@alexandreannic/ts-utils@npm:^1.7.3":
   version: 1.7.8
   resolution: "@alexandreannic/ts-utils@npm:1.7.8"
   dependencies:
@@ -3037,8 +3026,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@signalconso/dashboard-react@workspace:."
   dependencies:
-    "@alexandreannic/react-hooks-lib": 1.11.9
-    "@alexandreannic/ts-utils": 1.7.8
     "@date-io/date-fns": 1.3.13
     "@emotion/react": 11.9.3
     "@emotion/styled": 11.9.3

@@ -2,7 +2,7 @@ import {DetailInputValue} from '@signal-conso/signalconso-api-sdk-js'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
 import * as React from 'react'
 import {Box, BoxProps, Tooltip} from '@mui/material'
-import {useMemoFn} from '@alexandreannic/react-hooks-lib/lib'
+import {useMemoFn} from '../../alexlibs/react-hooks-lib'
 
 interface Props extends BoxProps {
   input: DetailInputValue[]

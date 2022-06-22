@@ -1,6 +1,6 @@
 import * as React from 'react'
 import {useEffect, useMemo, useState} from 'react'
-import {useEffectFn, useFetcher} from '@alexandreannic/react-hooks-lib'
+import {useEffectFn, useFetcher} from '../../alexlibs/react-hooks-lib'
 import {useLogin} from '../../core/context/LoginContext'
 import {useI18n} from '../../core/i18n'
 import {Box, BoxProps, Divider, Icon, Table, TableBody, TableCell, TableHead, TableRow, Tooltip} from '@mui/material'

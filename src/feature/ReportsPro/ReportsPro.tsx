@@ -41,7 +41,7 @@ import {SelectCompaniesByPro} from '../../shared/SelectCompaniesByPro/SelectComp
 import compose from '../../core/helper/compose'
 import {Alert, makeSx} from 'mui-extension'
 import {DebouncedInput} from 'shared/DebouncedInput/DebouncedInput'
-import {Enum} from '@alexandreannic/ts-utils/lib/common/enum/Enum'
+import {Enum} from '../../alexlibs/ts-utils'
 
 const css = makeSx({
   card: {

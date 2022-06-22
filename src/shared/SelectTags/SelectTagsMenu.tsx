@@ -1,6 +1,6 @@
 import {alpha, Icon, IconButton, IconProps, Menu, MenuItem, SxProps, Theme} from '@mui/material'
 import {ReportTag} from '@signal-conso/signalconso-api-sdk-js'
-import {Enum} from '@alexandreannic/ts-utils/lib/common/enum/Enum'
+import {Enum} from '../../alexlibs/ts-utils'
 import {useI18n} from '../../core/i18n'
 import {Txt} from 'mui-extension/lib/Txt/Txt'
 import {useEffect, useMemo, useState} from 'react'

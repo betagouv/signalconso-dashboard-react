@@ -8,7 +8,7 @@ import {useToast} from '../../core/toast'
 import {DebouncedInput} from '../../shared/DebouncedInput/DebouncedInput'
 import {IconBtn} from 'mui-extension/lib'
 import {useConsumerEmailValidationContext} from '../../core/context/EmailValidationContext'
-import {useEffectFn} from '@alexandreannic/react-hooks-lib'
+import {useEffectFn} from '../../alexlibs/react-hooks-lib'
 import {TrueFalseUndefined} from '../../shared/TrueFalseUndefined/TrueFalseUndefined'
 import {sxUtils} from '../../core/theme'
 
