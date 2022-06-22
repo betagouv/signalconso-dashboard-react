@@ -6,8 +6,8 @@ type UseObjectStateReturn<T> = [
   (k: string, t: T) => void,
   (k: string) => void,
   (oldKey: string, newKey: string) => void,
-  Dispatch<SetStateAction<{[key: string]: T}>>
-];
+  Dispatch<SetStateAction<{[key: string]: T}>>,
+]
 
 export const useObjectState = <T>(initialValue: {[key: string]: T} = {}): UseObjectStateReturn<T> => {
   const [obj, setObj] = useState<{[key: string]: T}>(initialValue)

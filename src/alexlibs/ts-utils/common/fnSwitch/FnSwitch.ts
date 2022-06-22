@@ -1,8 +1,5 @@
 interface FnSwitch {
-  <T extends string | number | symbol, R = any>(
-    value: T,
-    cases: {[key in T]: ((_: T) => R) | R},
-  ): R
+  <T extends string | number | symbol, R = any>(value: T, cases: {[key in T]: ((_: T) => R) | R}): R
 
   <T extends string | number | symbol, R = any>(
     value: T,

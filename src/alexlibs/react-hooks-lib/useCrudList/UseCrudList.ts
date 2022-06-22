@@ -1,13 +1,13 @@
 import {Fetch, Func, useFetcher, useMap, useSetState} from '..'
 import {useState} from 'react'
 
-type ReadAction<E> = (...args: any[]) => Promise<E>;
-type CreateAction<E> = (...args: any[]) => Promise<E>;
+type ReadAction<E> = (...args: any[]) => Promise<E>
+type CreateAction<E> = (...args: any[]) => Promise<E>
 type UpdateAction<E, PK extends keyof E> = (pk: E[PK], ...args: any[]) => Promise<E>
 type DeleteAction<E, PK extends keyof E> = (pk: E[PK], ...args: any[]) => Promise<void>
 
 interface CreateActionParams {
-  preventInsert?: boolean,
+  preventInsert?: boolean
   insertBefore?: boolean
 }
 
@@ -39,23 +39,72 @@ export interface Delete<E, PK extends keyof E, F extends Func<Promise<any>>, ERR
 }
 
 export type CrudListR<E, PK extends keyof E, CRUD extends CrudParams<E, PK>, ERR = any> = Read<E, PK, CRUD['r'], ERR>
-export type CrudListCR<E, PK extends keyof E, CRUD extends CrudParams<E, PK>, ERR = any> = Create<E, Exclude<CRUD['c'], undefined>, ERR> & Read<E, PK, CRUD['r'], ERR>
-export type CrudListRU<E, PK extends keyof E, CRUD extends CrudParams<E, PK>, ERR = any> = Read<E, PK, CRUD['r'], ERR> & Update<E, PK, Exclude<CRUD['u'], undefined>, ERR>
-export type CrudListCRU<E, PK extends keyof E, CRUD extends CrudParams<E, PK>, ERR = any> = Create<E, Exclude<CRUD['c'], undefined>, ERR> & Read<E, PK, CRUD['r'], ERR> & Update<E, PK, Exclude<CRUD['u'], undefined>, ERR>
-export type CrudListRD<E, PK extends keyof E, CRUD extends CrudParams<E, PK>, ERR = any> = Read<E, PK, CRUD['r'], ERR> & Delete<E, PK, Exclude<CRUD['d'], undefined>, ERR>
-export type CrudListRUD<E, PK extends keyof E, CRUD extends CrudParams<E, PK>, ERR = any> = Read<E, PK, CRUD['r'], ERR> & Update<E, PK, Exclude<CRUD['u'], undefined>, ERR> & Delete<E, PK, Exclude<CRUD['d'], undefined>, ERR>
-export type CrudListCRD<E, PK extends keyof E, CRUD extends CrudParams<E, PK>, ERR = any> = Create<E, Exclude<CRUD['c'], undefined>, ERR> & Read<E, PK, CRUD['r'], ERR> & Delete<E, PK, Exclude<CRUD['d'], undefined>, ERR>
-export type CrudListCRUD<E, PK extends keyof E, CRUD extends CrudParams<E, PK>, ERR = any> = Create<E, Exclude<CRUD['c'], undefined>, ERR> & Read<E, PK, CRUD['r'], ERR> & Delete<E, PK, Exclude<CRUD['d'], undefined>, ERR> & Update<E, PK, Exclude<CRUD['u'], undefined>, ERR>
+export type CrudListCR<E, PK extends keyof E, CRUD extends CrudParams<E, PK>, ERR = any> = Create<
+  E,
+  Exclude<CRUD['c'], undefined>,
+  ERR
+> &
+  Read<E, PK, CRUD['r'], ERR>
+export type CrudListRU<E, PK extends keyof E, CRUD extends CrudParams<E, PK>, ERR = any> = Read<E, PK, CRUD['r'], ERR> &
+  Update<E, PK, Exclude<CRUD['u'], undefined>, ERR>
+export type CrudListCRU<E, PK extends keyof E, CRUD extends CrudParams<E, PK>, ERR = any> = Create<
+  E,
+  Exclude<CRUD['c'], undefined>,
+  ERR
+> &
+  Read<E, PK, CRUD['r'], ERR> &
+  Update<E, PK, Exclude<CRUD['u'], undefined>, ERR>
+export type CrudListRD<E, PK extends keyof E, CRUD extends CrudParams<E, PK>, ERR = any> = Read<E, PK, CRUD['r'], ERR> &
+  Delete<E, PK, Exclude<CRUD['d'], undefined>, ERR>
+export type CrudListRUD<E, PK extends keyof E, CRUD extends CrudParams<E, PK>, ERR = any> = Read<E, PK, CRUD['r'], ERR> &
+  Update<E, PK, Exclude<CRUD['u'], undefined>, ERR> &
+  Delete<E, PK, Exclude<CRUD['d'], undefined>, ERR>
+export type CrudListCRD<E, PK extends keyof E, CRUD extends CrudParams<E, PK>, ERR = any> = Create<
+  E,
+  Exclude<CRUD['c'], undefined>,
+  ERR
+> &
+  Read<E, PK, CRUD['r'], ERR> &
+  Delete<E, PK, Exclude<CRUD['d'], undefined>, ERR>
+export type CrudListCRUD<E, PK extends keyof E, CRUD extends CrudParams<E, PK>, ERR = any> = Create<
+  E,
+  Exclude<CRUD['c'], undefined>,
+  ERR
+> &
+  Read<E, PK, CRUD['r'], ERR> &
+  Delete<E, PK, Exclude<CRUD['d'], undefined>, ERR> &
+  Update<E, PK, Exclude<CRUD['u'], undefined>, ERR>
 
 export interface UseCrudList {
   <E, PK extends keyof E, CRUD extends CrudParams<E, PK>, ERR = any>(pk: PK, _: {r: ReadAction<E[]>}): CrudListR<E, PK, CRUD, ERR>
-  <E, PK extends keyof E, CRUD extends CrudParams<E, PK>, ERR = any>(pk: PK, _: {r: ReadAction<E[]>, c: CreateAction<E>}): CrudListCR<E, PK, CRUD, ERR>
-  <E, PK extends keyof E, CRUD extends CrudParams<E, PK>, ERR = any>(pk: PK, _: {r: ReadAction<E[]>, u: UpdateAction<E, PK>}): CrudListRU<E, PK, CRUD, ERR>
-  <E, PK extends keyof E, CRUD extends CrudParams<E, PK>, ERR = any>(pk: PK, _: {c: CreateAction<E>, r: ReadAction<E[]>, u: UpdateAction<E, PK>}): CrudListCRU<E, PK, CRUD, ERR>
-  <E, PK extends keyof E, CRUD extends CrudParams<E, PK>, ERR = any>(pk: PK, _: {r: ReadAction<E[]>, d: DeleteAction<E, PK>}): CrudListRD<E, PK, CRUD, ERR>
-  <E, PK extends keyof E, CRUD extends CrudParams<E, PK>, ERR = any>(pk: PK, _: {r: ReadAction<E[]>, u: UpdateAction<E, PK>, d: DeleteAction<E, PK>}): CrudListRUD<E, PK, CRUD, ERR>
-  <E, PK extends keyof E, CRUD extends CrudParams<E, PK>, ERR = any>(pk: PK, _: {r: ReadAction<E[]>, c: CreateAction<E>, u: UpdateAction<E, PK>, d: DeleteAction<E, PK>}): CrudListCRUD<E, PK, CRUD, ERR>
-  <E, PK extends keyof E, CRUD extends CrudParams<E, PK>, ERR = any>(pk: PK, _: {r: ReadAction<E[]>, c: CreateAction<E>, d: DeleteAction<E, PK>}): CrudListCRD<E, PK, CRUD, ERR>
+  <E, PK extends keyof E, CRUD extends CrudParams<E, PK>, ERR = any>(
+    pk: PK,
+    _: {r: ReadAction<E[]>; c: CreateAction<E>},
+  ): CrudListCR<E, PK, CRUD, ERR>
+  <E, PK extends keyof E, CRUD extends CrudParams<E, PK>, ERR = any>(
+    pk: PK,
+    _: {r: ReadAction<E[]>; u: UpdateAction<E, PK>},
+  ): CrudListRU<E, PK, CRUD, ERR>
+  <E, PK extends keyof E, CRUD extends CrudParams<E, PK>, ERR = any>(
+    pk: PK,
+    _: {c: CreateAction<E>; r: ReadAction<E[]>; u: UpdateAction<E, PK>},
+  ): CrudListCRU<E, PK, CRUD, ERR>
+  <E, PK extends keyof E, CRUD extends CrudParams<E, PK>, ERR = any>(
+    pk: PK,
+    _: {r: ReadAction<E[]>; d: DeleteAction<E, PK>},
+  ): CrudListRD<E, PK, CRUD, ERR>
+  <E, PK extends keyof E, CRUD extends CrudParams<E, PK>, ERR = any>(
+    pk: PK,
+    _: {r: ReadAction<E[]>; u: UpdateAction<E, PK>; d: DeleteAction<E, PK>},
+  ): CrudListRUD<E, PK, CRUD, ERR>
+  <E, PK extends keyof E, CRUD extends CrudParams<E, PK>, ERR = any>(
+    pk: PK,
+    _: {r: ReadAction<E[]>; c: CreateAction<E>; u: UpdateAction<E, PK>; d: DeleteAction<E, PK>},
+  ): CrudListCRUD<E, PK, CRUD, ERR>
+  <E, PK extends keyof E, CRUD extends CrudParams<E, PK>, ERR = any>(
+    pk: PK,
+    _: {r: ReadAction<E[]>; c: CreateAction<E>; d: DeleteAction<E, PK>},
+  ): CrudListCRD<E, PK, CRUD, ERR>
 }
 
 interface CrudParams<E, PK extends keyof E> {
@@ -65,27 +114,23 @@ interface CrudParams<E, PK extends keyof E> {
   d?: DeleteAction<E, PK>
 }
 
-
-interface UseCrudParams<E,
+interface UseCrudParams<
+  E,
   PK extends keyof E,
   C extends CreateAction<E> | undefined,
   R extends ReadAction<E[]>,
   U extends UpdateAction<E, PK> | undefined,
-  D extends DeleteAction<E, PK> | undefined
-  > {
-  c?: C,
-  r: R,
-  u?: U,
-  d?: D,
+  D extends DeleteAction<E, PK> | undefined,
+> {
+  c?: C
+  r: R
+  u?: U
+  d?: D
 }
 
-export const useCrudList: UseCrudList = <E,
-  PK extends keyof E,
-  CRUD extends CrudParams<E, PK>,
-  ERR = any>
-(
+export const useCrudList: UseCrudList = <E, PK extends keyof E, CRUD extends CrudParams<E, PK>, ERR = any>(
   pk: keyof E,
-  {c, r, u, d}: UseCrudParams<E, PK, CRUD['c'], CRUD['r'], CRUD['u'], CRUD['d']>
+  {c, r, u, d}: UseCrudParams<E, PK, CRUD['c'], CRUD['r'], CRUD['u'], CRUD['d']>,
 ) => {
   const {entity: list, loading: fetching, fetch, setEntity: set, clearCache, error: fetchError} = useFetcher<ReadAction<E[]>>(r!)
 
@@ -112,7 +157,7 @@ export const useCrudList: UseCrudList = <E,
       setCreateError(undefined)
       return entity
     } catch (e) {
-      setCreateError(e)
+      setCreateError(e as ERR)
       setCreating(false)
       throw e
     }
@@ -126,7 +171,7 @@ export const useCrudList: UseCrudList = <E,
       removeListError.delete(primaryKey)
       removingList.delete(primaryKey)
     } catch (e) {
-      removeListError.set(primaryKey, e)
+      removeListError.set(primaryKey, e as ERR)
       removingList.delete(primaryKey)
       throw e
     }
@@ -135,11 +180,11 @@ export const useCrudList: UseCrudList = <E,
     try {
       updatingList.add(primaryKey)
       const updatedEntity = await u!(primaryKey, ...args)
-      set(n => n!.map(x => (x[pk] === primaryKey) ? {...x, ...updatedEntity} : x))
+      set(n => n!.map(x => (x[pk] === primaryKey ? {...x, ...updatedEntity} : x)))
       updatingListError.set(primaryKey, undefined)
       return updatedEntity
     } catch (e) {
-      updatingListError.set(primaryKey, e)
+      updatingListError.set(primaryKey, e as ERR)
       throw e
     } finally {
       updatingList.delete(primaryKey)

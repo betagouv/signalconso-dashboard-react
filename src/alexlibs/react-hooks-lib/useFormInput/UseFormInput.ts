@@ -11,10 +11,10 @@ export interface useFormInput {
   inputProps: {
     required: boolean
     pattern: string
-    value: string,
-    onChange: (e: any) => void,
+    value: string
+    onChange: (e: any) => void
   }
-  setValue: Dispatch<SetStateAction<string>>,
+  setValue: Dispatch<SetStateAction<string>>
 }
 
 export const useFormInput = (name: string, options?: UseFormInputOptions) => {
@@ -22,10 +22,7 @@ export const useFormInput = (name: string, options?: UseFormInputOptions) => {
   const [value, setValue] = useState(initialValue || '')
   const [isTouched, setIsTouched] = useState(false)
   const [isBlured, setIsBlured] = useState(false)
-  const isValid = !options || (
-    (!pattern || new RegExp(pattern).test(value || '')) &&
-    (!required || (value && value !== ''))
-  )
+  const isValid = !options || ((!pattern || new RegExp(pattern).test(value || '')) && (!required || (value && value !== '')))
   const showError = isBlured && !isValid
   return {
     props: {
@@ -39,6 +36,6 @@ export const useFormInput = (name: string, options?: UseFormInputOptions) => {
       onBlur: () => setIsBlured(true),
     },
     setValue,
-    isValid: () => isValid
+    isValid: () => isValid,
   }
 }

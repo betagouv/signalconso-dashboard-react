@@ -11,7 +11,7 @@ export interface UseSetState<T> {
   size: number
   has: (t: T) => boolean
   reset: (values?: T[]) => void
-  get: () => Set<T>,
+  get: () => Set<T>
 }
 
 export const useSetState = <T>(initialValue: T[] = []): UseSetState<T> => {

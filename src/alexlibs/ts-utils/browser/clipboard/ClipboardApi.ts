@@ -1,5 +1,4 @@
 export class ClipboardApi {
-
   static readonly copy = (text: string) => {
     const copyFrom = document.createElement('textarea')
     copyFrom.textContent = text
