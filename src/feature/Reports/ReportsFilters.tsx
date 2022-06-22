@@ -50,26 +50,6 @@ interface Form {
   tags: SelectTagsMenuValues
 }
 
-export const toReportTagValues = <T extends Pick<ReportSearch, 'withTags' | 'withoutTags'>>(
-  filters: T,
-): T & {tags: SelectTagsMenuValues} => {
-  const tags: SelectTagsMenuValues = {}
-  filters.withTags?.forEach(tag => {
-    tags[tag] = 'included'
-  })
-  filters.withoutTags?.forEach(tag => {
-    tags[tag] = 'excluded'
-  })
-  return {...filters, tags}
-}
-
-export const fromReportTagValues = (tags: SelectTagsMenuValues): Pick<ReportSearch, 'withTags' | 'withoutTags'> => {
-  return {
-    withTags: Enum.keys(tags).filter(tag => tags[tag] === 'included'),
-    withoutTags: Enum.keys(tags).filter(tag => tags[tag] === 'excluded'),
-  }
-}
-
 const TrueLabel = () => {
   const {m} = useI18n()
   return (
