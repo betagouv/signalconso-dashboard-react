@@ -24,7 +24,6 @@ export const PeriodPicker = ({value, onChange, label, fullWidth, sx, ...props}: 
   }, [value])
 
   const handleStartChange = (newStart?: Date) => {
-    console.log('@@@@ handleStartChange', {newStart})
     const newEnd = end && newStart ? (newStart.getTime() > end.getTime() ? addDays(newStart, 1) : end) : undefined
     setStart(newStart)
     setEnd(newEnd)
@@ -59,7 +58,7 @@ export const PeriodPicker = ({value, onChange, label, fullWidth, sx, ...props}: 
             borderTopRightRadius: 0,
           }),
         }}
-        time="startOfDay"
+        timeOfDay="startOfDay"
       />
 
       <Datepicker
@@ -73,7 +72,7 @@ export const PeriodPicker = ({value, onChange, label, fullWidth, sx, ...props}: 
             borderTopLeftRadius: 0,
           }),
         }}
-        time="endOfDay"
+        timeOfDay="endOfDay"
       />
     </Box>
   )
