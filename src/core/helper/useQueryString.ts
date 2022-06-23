@@ -1,7 +1,9 @@
-import {dateToYYYYMMDD} from '@signal-conso/signalconso-api-sdk-js'
 import {regexp} from './regexp'
 import {useHistory} from 'react-router-dom'
 import {parse as _parse, stringify as _stringify} from 'qs'
+import format from 'date-fns/format'
+
+const dateToYYYYMMDD = (date: Date): string => format(date, 'yyyy-MM-dd')
 
 export interface ParsedUrlQueryInput {
   [key: string]:
