@@ -1,9 +1,6 @@
 import {regexp} from './regexp'
 import {useHistory} from 'react-router-dom'
 import {parse as _parse, stringify as _stringify} from 'qs'
-import format from 'date-fns/format'
-
-const dateToYYYYMMDD = (date: Date | undefined): string | undefined => date && format(date, 'yyyy-MM-dd')
 
 export interface ParsedUrlQueryInput {
   [key: string]:
@@ -75,7 +72,7 @@ export const mapDatesToQueryString = <T extends object>(_: T): Readonly<ParsedQu
   return Object.entries(_).reduce(
     (acc, [key, value]) => ({
       ...acc,
-      [key]: value instanceof Date ? dateToYYYYMMDD(value) : value,
+      [key]: value instanceof Date ? value.toISOString() : value,
     }),
     {} as Readonly<ParsedQueryString<T>>,
   )
@@ -87,7 +84,7 @@ export const mapDateFromQueryString = <T extends object>(
   return Object.entries(_).reduce(
     (acc, [key, value]: [string, any]) => ({
       ...acc,
-      [key]: regexp.yyyyMMdd.test(value) ? new Date(value) : value,
+      [key]: regexp.isoDate.test(value) ? new Date(value) : value,
     }),
     {} as MappedQueryString<ParsedQueryString<T>>,
   )
