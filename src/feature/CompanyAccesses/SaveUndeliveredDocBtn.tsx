@@ -34,7 +34,14 @@ export const SaveUndeliveredDocBtn = ({loading, onChange, ...props}: Props) => {
       }
       content={
         <>
-          <Datepicker sx={{mr: 1}} fullWidth label={m.returnDate} value={returnDate} onChange={setReturnDate} />
+          <Datepicker
+            sx={{mr: 1}}
+            fullWidth
+            label={m.returnDate}
+            value={returnDate}
+            onChange={setReturnDate}
+            timeOfDay={'startOfDay'}
+          />
         </>
       }
     >

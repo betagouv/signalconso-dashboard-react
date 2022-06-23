@@ -3,7 +3,7 @@ import {useHistory} from 'react-router-dom'
 import {parse as _parse, stringify as _stringify} from 'qs'
 import format from 'date-fns/format'
 
-const dateToYYYYMMDD = (date: Date): string => format(date, 'yyyy-MM-dd')
+const dateToYYYYMMDD = (date: Date | undefined): string | undefined => date && format(date, 'yyyy-MM-dd')
 
 export interface ParsedUrlQueryInput {
   [key: string]:
