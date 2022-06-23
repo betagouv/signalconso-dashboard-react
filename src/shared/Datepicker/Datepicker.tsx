@@ -1,7 +1,6 @@
-import {format} from 'date-fns'
-import {zonedTimeToUtc} from 'date-fns-tz'
 import {InputProps as StandardInputProps, TextField, TextFieldProps} from '@mui/material'
-import React from 'react'
+import {zonedTimeToUtc} from 'date-fns-tz'
+import React, {useEffect, useState} from 'react'
 
 export interface DatepickerProps extends Omit<TextFieldProps, 'onChange'> {
   value?: Date
@@ -16,7 +15,6 @@ export interface DatepickerProps extends Omit<TextFieldProps, 'onChange'> {
 }
 
 export const Datepicker = ({value, onChange, label, fullWidth, InputProps, timeOfDay, ...props}: DatepickerProps) => {
-  console.log('@@@ Datepicker render', label, value)
   // unit tests would be good on that function
   const onChangeDate = (e: React.ChangeEvent<HTMLInputElement>) => {
     // The datepicker gives us a date at 00:00:00 in UTC, but that's not what we want
@@ -27,11 +25,28 @@ export const Datepicker = ({value, onChange, label, fullWidth, InputProps, timeO
       (midnightUtcDate.getUTCMonth() + 1).toString().padStart(2, '0'),
       midnightUtcDate.getUTCDate().toString().padStart(2, '0'),
     ].join('-')
-    const dateAndTime = timeOfDay ? `${yyyymmdd} 00:00:000` : `${yyyymmdd} 23:59:999`
+    const dateAndTime = `${yyyymmdd}T${timeOfDay === 'startOfDay' ? '00:00:00.000' : '23:59:59.999'}`
     const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone
     const utcDate = zonedTimeToUtc(dateAndTime, userTimeZone)
     onChange(utcDate)
   }
+
+  const [displayedDate, setDisplayedDate] = useState<string | undefined>(undefined)
+
+  useEffect(() => {
+    // translate back the value to its internal format
+    if (value) {
+      // Just the yyyy-mm-dd string is enough
+      const yyyymmdd = [
+        value.getFullYear(),
+        (value.getMonth() + 1).toString().padStart(2, '0'),
+        value.getDate().toString().padStart(2, '0'),
+      ].join('-')
+      setDisplayedDate(yyyymmdd)
+    } else {
+      setDisplayedDate(undefined)
+    }
+  }, [setDisplayedDate, value])
 
   return (
     <TextField
@@ -42,7 +57,7 @@ export const Datepicker = ({value, onChange, label, fullWidth, InputProps, timeO
       size="small"
       label={label}
       InputProps={InputProps}
-      value={value}
+      value={displayedDate}
       onChange={onChangeDate}
       fullWidth={fullWidth}
       InputLabelProps={{shrink: true}}
