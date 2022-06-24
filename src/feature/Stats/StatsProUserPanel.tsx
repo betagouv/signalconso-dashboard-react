@@ -24,8 +24,8 @@ export const StatsProUserPanel = ({ticks, tickDuration}: Props) => {
         <ChartAsync
           promisesDeps={[ticks, tickDuration]}
           promises={[
-            () => api.secured.stats.getReportedInactiveProAccountRate({ticks, tickDuration}),
             () => api.secured.stats.getProReportTransmittedStat({ticks, tickDuration}),
+            () => api.secured.stats.getReportedInactiveProAccountRate({ticks, tickDuration}),
           ]}
           curves={[
             {
