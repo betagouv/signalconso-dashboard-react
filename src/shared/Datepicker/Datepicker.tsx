@@ -4,7 +4,7 @@ import React, {useEffect, useState} from 'react'
 
 export interface DatepickerProps extends Omit<TextFieldProps, 'onChange'> {
   value?: Date
-  onChange: (_: Date) => void
+  onChange: (_: Date | undefined) => void
   label?: string
   InputProps?: Partial<StandardInputProps>
   fullWidth?: boolean
@@ -15,28 +15,23 @@ export interface DatepickerProps extends Omit<TextFieldProps, 'onChange'> {
 }
 
 export const Datepicker = ({value, onChange, label, fullWidth, InputProps, timeOfDay, ...props}: DatepickerProps) => {
-  // unit tests would be good on that function
   const onChangeDate = (e: React.ChangeEvent<HTMLInputElement>) => {
-    // The datepicker gives us a date at 00:00:00 in UTC, but that's not what we want
-    // We want to extract the year/month/date information and build our date ourselves
-    const midnightUtcDate = e.target.valueAsDate!
-    const yyyymmdd = [
-      midnightUtcDate.getUTCFullYear(),
-      (midnightUtcDate.getUTCMonth() + 1).toString().padStart(2, '0'),
-      midnightUtcDate.getUTCDate().toString().padStart(2, '0'),
-    ].join('-')
-    const dateAndTime = `${yyyymmdd}T${timeOfDay === 'startOfDay' ? '00:00:00.000' : '23:59:59.999'}`
-    const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone
-    const utcDate = zonedTimeToUtc(dateAndTime, userTimeZone)
-    onChange(utcDate)
+    const newValue = e.target.value
+    // it is either an empty string or yyyy-mm-dd
+    if (newValue.length) {
+      const dateAndTime = `${newValue}T${timeOfDay === 'startOfDay' ? '00:00:00.000' : '23:59:59.999'}`
+      const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone
+      const utcDate = zonedTimeToUtc(dateAndTime, userTimeZone)
+      onChange(utcDate)
+    } else {
+      onChange(undefined)
+    }
   }
 
   const [displayedDate, setDisplayedDate] = useState<string | undefined>(undefined)
 
   useEffect(() => {
-    // translate back the value to its internal format
     if (value) {
-      // Just the yyyy-mm-dd string is enough
       const yyyymmdd = [
         value.getFullYear(),
         (value.getMonth() + 1).toString().padStart(2, '0'),
