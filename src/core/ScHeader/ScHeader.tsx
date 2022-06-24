@@ -91,7 +91,7 @@ export const ScHeader = () => {
               <a href={config.appBaseUrl + '/comment-ca-marche'}>
                 <MenuItem>{m.howItWorks}</MenuItem>
               </a>
-              <a href={config.appBaseUrl + '/centre-aide/consommateur'}>
+              <a href={config.appBaseUrl + '/centre-aide'}>
                 <MenuItem>{m.helpCenter}</MenuItem>
               </a>
             </Menu>
@@ -100,7 +100,7 @@ export const ScHeader = () => {
           <nav>
             <HeaderItem href={config.appBaseUrl}>{m.home}</HeaderItem>
             <HeaderItem href={config.appBaseUrl + '/comment-ca-marche'}>{m.howItWorks}</HeaderItem>
-            <HeaderItem href={config.appBaseUrl + '/centre-aide/consommateur'}>{m.helpCenter}</HeaderItem>
+            <HeaderItem href={config.appBaseUrl + '/centre-aide'}>{m.helpCenter}</HeaderItem>
           </nav>
         )}
       </div>
