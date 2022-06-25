@@ -2,12 +2,12 @@ import * as React from 'react'
 import {ReactNode, useMemo, useState} from 'react'
 import {alpha, Box, Theme, Tooltip} from '@mui/material'
 import withStyles from '@mui/styles/withStyles'
-import {useTimeout} from 'mui-extension/lib/core/utils/useTimeout'
+import {useTimeout} from '../../alexlibs/mui-extension'
 import {mapFor} from '../../alexlibs/ts-utils'
-import {Txt} from 'mui-extension/lib/Txt/Txt'
+import {Txt} from '../../alexlibs/mui-extension'
 import {useI18n} from '../../core/i18n'
 import {styleUtils} from '../../core/theme'
-import {makeSx} from 'mui-extension'
+import {makeSx} from '../../alexlibs/mui-extension'
 
 export interface HorizontalBarChartData {
   label: ReactNode

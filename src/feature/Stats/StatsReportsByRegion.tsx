@@ -12,7 +12,7 @@ import {NavLink} from 'react-router-dom'
 import {useToast} from '../../core/toast'
 import {SelectMonth} from '../../shared/SelectMonth/SelectMonth'
 import {useGetDateForMonthAndPreviousOne} from './useGetDateForMonthAndPreviousOne'
-import {Txt} from 'mui-extension/lib/Txt/Txt'
+import {Txt} from '../../alexlibs/mui-extension'
 
 const CellNewPosition = ({sx, ...props}: BoxProps) => {
   return <Box {...props} component="span" sx={{fontWeight: t => t.typography.fontWeightBold, ...sx}} />

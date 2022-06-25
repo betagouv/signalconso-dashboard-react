@@ -1,6 +1,6 @@
 import React, {ReactNode} from 'react'
 import {Box, Icon} from '@mui/material'
-import {Txt} from 'mui-extension/lib/Txt/Txt'
+import {Txt} from '../../alexlibs/mui-extension'
 
 interface Props {
   icon?: string

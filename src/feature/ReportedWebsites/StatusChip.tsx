@@ -1,5 +1,5 @@
 import {ChipProps, Tooltip} from '@mui/material'
-import {Txt} from 'mui-extension/lib/Txt/Txt'
+import {Txt} from '../../alexlibs/mui-extension'
 import React from 'react'
 import {ScChip} from 'shared/Chip/ScChip'
 

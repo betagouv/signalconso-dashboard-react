@@ -7,7 +7,7 @@ import {useConstantContext} from '../../core/context/ConstantContext'
 import {fromNullable} from 'fp-ts/lib/Option'
 import {Region} from '@signal-conso/signalconso-api-sdk-js'
 import {useI18n} from '../../core/i18n'
-import {makeSx} from 'mui-extension'
+import {makeSx} from '../../alexlibs/mui-extension'
 import {combineSx} from '../../core/theme'
 
 const withRegions =

@@ -1,5 +1,5 @@
 import React, {ReactElement, useState} from 'react'
-import {Alert} from 'mui-extension/lib'
+import {Alert} from '../../alexlibs/mui-extension'
 import {EventActionValues, Report} from '@signal-conso/signalconso-api-sdk-js'
 import {useI18n} from '../../core/i18n'
 import {ScInput} from '../../shared/Input/ScInput'

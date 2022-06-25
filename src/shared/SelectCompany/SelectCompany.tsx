@@ -1,5 +1,5 @@
 import {ScInput} from '../Input/ScInput'
-import {IconBtn} from 'mui-extension'
+import {IconBtn} from '../../alexlibs/mui-extension'
 import {Divider, Icon} from '@mui/material'
 import {SelectCompanyList} from './SelectCompanyList'
 import React, {useEffect, useState} from 'react'

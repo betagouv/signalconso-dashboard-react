@@ -1,7 +1,7 @@
 import React, {ReactElement} from 'react'
 import {useI18n} from '../../core/i18n'
 import {Controller, useForm} from 'react-hook-form'
-import {Alert} from 'mui-extension/lib'
+import {Alert} from '../../alexlibs/mui-extension'
 import {useToast} from '../../core/toast'
 import {ScDialog} from '../../shared/Confirm/ScDialog'
 import {AccountEventActions, EventCategories, Matomo} from '../../core/plugins/Matomo'

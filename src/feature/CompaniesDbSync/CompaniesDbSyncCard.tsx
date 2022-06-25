@@ -1,4 +1,4 @@
-import {Txt} from 'mui-extension/lib/Txt/Txt'
+import {Txt} from '../../alexlibs/mui-extension'
 import {Panel, PanelBody} from 'shared/Panel'
 import {CompaniesDbSyncInfo} from '@signal-conso/signalconso-api-sdk-js'
 import {alpha, Box, CircularProgress, Grid, useTheme} from '@mui/material'

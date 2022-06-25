@@ -13,7 +13,7 @@ import {SelectDepartmentsMenu} from '../../shared/SelectDepartments/SelectDepart
 import {SelectCountriesMenu} from '../../shared/SelectCountries/SelectCountriesMenu'
 import {SelectMenu} from '../../shared/SelectMenu/SelectMenu'
 import {useAnomalyContext} from '../../core/context/AnomalyContext'
-import {IconBtn} from 'mui-extension/lib'
+import {IconBtn} from '../../alexlibs/mui-extension'
 import {ScDialog} from '../../shared/Confirm/ScDialog'
 import {ScMenuItem} from '../MenuItem/MenuItem'
 import {SelectTagsMenu, SelectTagsMenuValues} from '../../shared/SelectTags/SelectTagsMenu'

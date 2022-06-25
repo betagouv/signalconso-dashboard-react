@@ -8,7 +8,7 @@ import {ReportStatus, ReportStatusPro} from '@signal-conso/signalconso-api-sdk-j
 import {useCompanyStats} from '../useCompanyStats'
 import {useEffectFn} from '../../../alexlibs/react-hooks-lib'
 import {fromNullable} from 'fp-ts/es6/Option'
-import {Txt} from 'mui-extension/lib/Txt/Txt'
+import {Txt} from '../../../alexlibs/mui-extension'
 import {useToast} from '../../../core/toast'
 import {ReviewLabel} from './ReviewLabel'
 import {useMemoFn} from '../../../alexlibs/react-hooks-lib'

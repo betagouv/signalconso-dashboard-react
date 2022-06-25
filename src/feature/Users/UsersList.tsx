@@ -4,14 +4,14 @@ import {useI18n} from '../../core/i18n'
 import React, {useEffect} from 'react'
 import {useUsersContext} from '../../core/context/UsersContext'
 import {Icon, InputBase, Tooltip} from '@mui/material'
-import {Txt} from 'mui-extension/lib/Txt/Txt'
+import {Txt} from '../../alexlibs/mui-extension'
 import {fromNullable} from 'fp-ts/lib/Option'
 import {useToast} from '../../core/toast'
 import {DebouncedInput} from '../../shared/DebouncedInput/DebouncedInput'
 import {TrueFalseUndefined} from '../../shared/TrueFalseUndefined/TrueFalseUndefined'
 import {User} from '@signal-conso/signalconso-api-sdk-js'
 import {ScDialog} from '../../shared/Confirm/ScDialog'
-import {IconBtn} from 'mui-extension'
+import {IconBtn} from '../../alexlibs/mui-extension'
 
 export const UsersList = () => {
   const {m, formatDate} = useI18n()

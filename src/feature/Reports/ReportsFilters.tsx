@@ -16,7 +16,7 @@ import {ScMenuItem} from '../../shared/MenuItem/ScMenuItem'
 import {SelectTags} from '../../shared/SelectTags/SelectTags'
 import {SelectTagsMenuValues} from '../../shared/SelectTags/SelectTagsMenu'
 import {DialogInputRow, DialogInputRowExtra} from '../../shared/DialogInputRow/DialogInputRow'
-import {Btn} from 'mui-extension'
+import {Btn} from '../../alexlibs/mui-extension'
 import {useLayoutContext} from '../../core/Layout/LayoutContext'
 
 interface Props {

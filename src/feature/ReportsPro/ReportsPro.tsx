@@ -7,7 +7,7 @@ import {useI18n} from '../../core/i18n'
 import {Badge, Box, Grid, Icon, MenuItem} from '@mui/material'
 import {ReportStatusLabel, ReportStatusProLabel} from '../../shared/ReportStatus/ReportStatus'
 import {useLayoutContext} from '../../core/Layout/LayoutContext'
-import {Txt} from 'mui-extension/lib/Txt/Txt'
+import {Txt} from '../../alexlibs/mui-extension'
 import {
   cleanObject,
   Report,
@@ -22,7 +22,7 @@ import {ScSelect} from '../../shared/Select/Select'
 import {useHistory} from 'react-router'
 import {siteMap} from '../../core/siteMap'
 import {openInNew} from '../../core/helper/utils'
-import {Btn, Fender} from 'mui-extension/lib'
+import {Btn, Fender} from '../../alexlibs/mui-extension'
 import {EntityIcon} from '../../core/EntityIcon'
 import {ScButton} from '../../shared/Button/Button'
 import {
@@ -39,7 +39,7 @@ import {PeriodPicker} from '../../shared/PeriodPicker/PeriodPicker'
 import {useCompaniesContext} from '../../core/context/CompaniesContext'
 import {SelectCompaniesByPro} from '../../shared/SelectCompaniesByPro/SelectCompaniesByPro'
 import compose from '../../core/helper/compose'
-import {Alert, makeSx} from 'mui-extension'
+import {Alert, makeSx} from '../../alexlibs/mui-extension'
 import {DebouncedInput} from 'shared/DebouncedInput/DebouncedInput'
 import {Enum} from '../../alexlibs/ts-utils'
 

@@ -5,7 +5,7 @@ import React from 'react'
 import {extensionToType, FileType} from './reportFileConfig'
 import {ReportFileProps} from './ReportFile'
 import {useLogin} from '../../../core/context/LoginContext'
-import {makeSx} from 'mui-extension'
+import {makeSx} from '../../../alexlibs/mui-extension'
 
 const css = makeSx({
   imgPdf: {

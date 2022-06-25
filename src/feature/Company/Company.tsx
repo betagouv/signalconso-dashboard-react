@@ -1,7 +1,7 @@
 import * as React from 'react'
 import {useEffect} from 'react'
 import {useFetcher, useMemoFn} from '../../alexlibs/react-hooks-lib'
-import {Txt} from 'mui-extension/lib/Txt/Txt'
+import {Txt} from '../../alexlibs/mui-extension'
 import {useParams} from 'react-router'
 import {Page, PageTitle} from 'shared/Layout'
 import {useCompaniesContext} from 'core/context/CompaniesContext'

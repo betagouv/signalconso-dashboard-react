@@ -6,7 +6,7 @@ import {Country} from '@signal-conso/signalconso-api-sdk-js'
 import {alpha, Box, Checkbox, Menu} from '@mui/material'
 import {useI18n} from '../../core/i18n'
 import {useSetState, UseSetState} from '../../alexlibs/react-hooks-lib'
-import {makeSx} from 'mui-extension'
+import {makeSx} from '../../alexlibs/mui-extension'
 import {combineSx} from '../../core/theme'
 import {countryToFlag} from '../../core/helper/utils'
 
