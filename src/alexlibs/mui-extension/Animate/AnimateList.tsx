@@ -4,6 +4,7 @@ import {Animate} from './index'
 export interface AnimateListProps {
   delay?: number
   initialDelay?: number
+  children: React.ReactNode
 }
 
 class AnimateList extends React.Component<AnimateListProps, any> {

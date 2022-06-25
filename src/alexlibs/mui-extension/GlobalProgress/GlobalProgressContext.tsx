@@ -11,7 +11,9 @@ export interface IProgressState {
   started: boolean
 }
 
-export interface GlobalProgressProviderProps {}
+export interface GlobalProgressProviderProps {
+  children: React.ReactNode
+}
 
 export interface WithProgress {
   readonly progressStart: (steps?: number) => void

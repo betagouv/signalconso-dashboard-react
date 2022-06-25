@@ -55,7 +55,7 @@ export const Fender = ({children, icon, iconSize = 100, type = 'empty', title, d
                 color: colorError,
               },
               empty: {
-                color: t => t.palette.text.disabled,
+                color: (t: any) => t.palette.text.disabled,
               },
               warning: {
                 color: colorWarning,
@@ -63,6 +63,7 @@ export const Fender = ({children, icon, iconSize = 100, type = 'empty', title, d
               success: {
                 color: colorSuccess,
               },
+              loading: null,
             }[type],
           }}
         >
