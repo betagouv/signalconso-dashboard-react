@@ -3,8 +3,8 @@ import {ReactNode} from 'react'
 import {CardActions, CardActionsProps} from '@mui/material'
 
 export interface PanelFootProps extends CardActionsProps {
-  children?: ReactNode;
-  className?: string;
+  children?: ReactNode
+  className?: string
 }
 
 export const PanelFoot = ({children, className, ...props}: PanelFootProps) => {

@@ -30,17 +30,17 @@ const Page = ({children, width, sx, animated = true, ...props}: PageProps) => {
         transform: 'scale(.90)',
         maxWidth: 932,
         width: '100%',
-        ...(!animated || appeared) && {
+        ...((!animated || appeared) && {
           opacity: 1,
           transform: 'scale(1)',
-        },
-        ...width && {maxWidth: width},
+        }),
+        ...(width && {maxWidth: width}),
         ...sx,
-      }}>
+      }}
+    >
       {children}
     </Box>
   )
 }
 
 export default Page
-

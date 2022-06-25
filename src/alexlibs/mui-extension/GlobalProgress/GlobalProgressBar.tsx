@@ -32,28 +32,30 @@ const GlobalProgressBar = ({styleProgress, sxProgress, ...props}: GlobalProgress
   const percent = Math.min(INITIAL_PERCENT + stepProgress * currentStep + Math.min(autoIncrement, stepProgress), 100)
 
   return (
-    <Box sx={{
-      position: 'absolute',
-      top: 0,
-      left: 0,
-      right: 0,
-      width: '100%',
-      visibility: 'visible',
-      opacity: 1,
-      transition: 'all 400ms',
-      zIndex: 9999,
-    }} {...props}>
+    <Box
+      sx={{
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        width: '100%',
+        visibility: 'visible',
+        opacity: 1,
+        transition: 'all 400ms',
+        zIndex: 9999,
+      }}
+      {...props}
+    >
       <Box
         sx={{
           background: t => progressbarColor(t),
           boxShadow: t => `0 0 10px ${progressbarColor(t)}, 0 0 5px ${progressbarColor(t)}`,
           height: 2,
           transition: t => t.transitions.create('all', {duration: progressbarAnimationDuration}),
-          ...!started && {
+          ...(!started && {
             height: '0px !important',
-
-          },
-          ...sxProgress
+          }),
+          ...sxProgress,
         }}
         style={{...styleProgress, width: percent + '%'}}
       />

@@ -4,8 +4,8 @@ import {useTheme} from '@mui/material'
 import {useTimeout} from '@alexandreannic/react-hooks-lib'
 
 export interface AnimateProps {
-  delay?: number,
-  children: any,
+  delay?: number
+  children: any
 }
 
 export const Animate = ({children, delay}: AnimateProps) => {
@@ -18,10 +18,10 @@ export const Animate = ({children, delay}: AnimateProps) => {
       transition: theme.transitions.create('all'),
       opacity: 0,
       transform: 'translateY(60px)',
-      ...appeared && {
+      ...(appeared && {
         opacity: 1,
         transform: 'translateY(0)',
-      }
-    }
+      }),
+    },
   })
 }

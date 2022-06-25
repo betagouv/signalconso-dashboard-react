@@ -14,7 +14,7 @@ export interface ModalProps extends Omit<DialogProps, 'children' | 'onClick' | '
   onConfirm?: (event: SyntheticEvent<any>, close: () => void) => void
   confirmDisabled?: boolean
   onClick?: EventHandler<SyntheticEvent<any>>
-  PaperProps?: Partial<PaperProps>,
+  PaperProps?: Partial<PaperProps>
   loading?: boolean
 }
 
@@ -35,7 +35,6 @@ export const Modal = ({
   PaperProps,
   ...props
 }: ModalProps) => {
-
   const [isOpen, setIsOpen] = useState<boolean>(false)
 
   const open = () => {
@@ -65,19 +64,21 @@ export const Modal = ({
           if (children.props.onClick) children.props.onClick(event)
           if (onClick) onClick(event)
           open()
-        }
+        },
       })}
       <Dialog open={isOpen} {...props} PaperProps={PaperProps}>
         {loading && (
-          <LinearProgress sx={{
-            position: 'absolute',
-            top: 0,
-            right: 0,
-            left: 0,
-          }}/>
+          <LinearProgress
+            sx={{
+              position: 'absolute',
+              top: 0,
+              right: 0,
+              left: 0,
+            }}
+          />
         )}
         <DialogTitle>{title}</DialogTitle>
-        <DialogContent>{(typeof content === 'function') ? content(close) : content}</DialogContent>
+        <DialogContent>{typeof content === 'function' ? content(close) : content}</DialogContent>
         <DialogActions>
           <Button color="primary" onClick={close}>
             {cancelLabel || 'Cancel'}

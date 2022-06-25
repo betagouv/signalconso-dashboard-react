@@ -3,6 +3,5 @@ export const generateId = (key?: string | number): string => {
 }
 
 const generateHash = (x: string): number => {
-  return x.split('').reduce((prevHash, currVal) => (((prevHash << 5) - prevHash) + currVal.charCodeAt(0)) | 0, 0)
+  return x.split('').reduce((prevHash, currVal) => ((prevHash << 5) - prevHash + currVal.charCodeAt(0)) | 0, 0)
 }
-

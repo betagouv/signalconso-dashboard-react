@@ -17,7 +17,7 @@ const storage = {
 
   save: (key: string, value: any): void => {
     try {
-      const serializedState = (typeof value === 'object') ? JSON.stringify(value) : value
+      const serializedState = typeof value === 'object' ? JSON.stringify(value) : value
       localStorage.setItem(key, serializedState)
     } catch (err) {
       console.error(err)
@@ -26,16 +26,14 @@ const storage = {
 
   clear: (key: string): void => {
     localStorage.removeItem(key)
-  }
+  },
 }
 
 /**
  * Alternative API
  */
 export class LocalStorageEntity<T> {
-
-  constructor(private key: string) {
-  }
+  constructor(private key: string) {}
 
   save = (value: T): void => {
     return storage.save(this.key, value)

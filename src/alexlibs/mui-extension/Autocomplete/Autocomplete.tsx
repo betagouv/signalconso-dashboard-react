@@ -32,7 +32,7 @@ const sx = makeSx({
     height: 20,
     color: t => t.palette.text.secondary,
     verticalAlign: 'top',
-  }
+  },
 })
 
 interface AutocompletePropsBase extends Omit<InputProps, 'value' | 'onChange' | 'children'> {
@@ -70,7 +70,9 @@ export const Autocomplete = ({value, multiple, searchLabel, readonly, children, 
   const handleChange = (changedValue: string) => {
     const getValue = () => {
       if (multiple) {
-        return (value?.indexOf(changedValue) === -1) ? (value as string[]).concat(changedValue) : (value as string[]).filter(_ => _ !== changedValue)
+        return value?.indexOf(changedValue) === -1
+          ? (value as string[]).concat(changedValue)
+          : (value as string[]).filter(_ => _ !== changedValue)
       } else {
         close()
         return value !== changedValue ? changedValue : ''
@@ -82,14 +84,14 @@ export const Autocomplete = ({value, multiple, searchLabel, readonly, children, 
   const getFilteredChildren = (): ReactElement<AutocompleteItemProps>[] => {
     if (!children) return []
     const items = React.Children.map(children, _ => _)
-    return (filter && filter !== '')
-      ? items.filter(_ => _.props.value.toLowerCase().indexOf(filter.toLowerCase()) !== -1)
-      : items
+    return filter && filter !== '' ? items.filter(_ => _.props.value.toLowerCase().indexOf(filter.toLowerCase()) !== -1) : items
   }
 
   const selectAll = (event: any, checked: boolean) => {
-    if(children) {
-      const values: string[] = checked ? React.Children.map(children, (_: ReactElement<AutocompleteItemProps>) => _.props.value) : []
+    if (children) {
+      const values: string[] = checked
+        ? React.Children.map(children, (_: ReactElement<AutocompleteItemProps>) => _.props.value)
+        : []
       onChange(values as any)
     }
   }
@@ -103,7 +105,7 @@ export const Autocomplete = ({value, multiple, searchLabel, readonly, children, 
         onClick={open}
         value={multiple ? value && (value as string[]).join(', ') : value}
         disabled={readonly}
-        inputRef={(n: any) => $input = n ?? undefined}
+        inputRef={(n: any) => ($input = n ?? undefined)}
         endAdornment={
           <InputAdornment position="end">
             <Icon sx={sx.adornment}>arrow_drop_down</Icon>
@@ -111,14 +113,15 @@ export const Autocomplete = ({value, multiple, searchLabel, readonly, children, 
         }
       />
       <Menu anchorEl={anchorEl} open={!!anchorEl} onClose={close}>
-        <Box sx={{...sx.menu_head, ...multiple && sx.menu_headWithCb}}>
-          {multiple &&
-          <Checkbox
-            checked={!!value && value.length === optionsCount}
-            onChange={selectAll}
-            indeterminate={!!value && (value.length > 0 && value.length < optionsCount)}
-            disabled={readonly}/>
-          }
+        <Box sx={{...sx.menu_head, ...(multiple && sx.menu_headWithCb)}}>
+          {multiple && (
+            <Checkbox
+              checked={!!value && value.length === optionsCount}
+              onChange={selectAll}
+              indeterminate={!!value && value.length > 0 && value.length < optionsCount}
+              disabled={readonly}
+            />
+          )}
           <Box
             component="input"
             autoFocus
@@ -136,7 +139,7 @@ export const Autocomplete = ({value, multiple, searchLabel, readonly, children, 
               multiple: multiple,
               checked: !!value && value.indexOf(_.props.value) !== -1,
               onClick: handleChange,
-            })
+            }),
           )}
         </Box>
       </Menu>

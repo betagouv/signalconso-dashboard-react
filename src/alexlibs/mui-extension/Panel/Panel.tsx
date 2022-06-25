@@ -15,22 +15,22 @@ export const Panel = ({sx, hoverable, loading, children, elevation, ...other}: P
         flexDirection: 'column',
         mb: 2,
         border: t => `1px solid ${t.palette.divider}`,
-        ...hoverable && {
+        ...(hoverable && {
           cursor: 'pointer',
           transition: t => t.transitions.create('all'),
           '&:hover': {
             transform: 'scale(1.01)',
             boxShadow: t => t.shadows[4],
-          }
-        },
-        ...elevation && {
+          },
+        }),
+        ...(elevation && {
           border: 'none',
-        },
-        ...sx
+        }),
+        ...sx,
       }}
       {...other}
     >
-      {loading && <LinearProgress sx={{mb: '-5px'}}/>}
+      {loading && <LinearProgress sx={{mb: '-5px'}} />}
       {children}
     </Card>
   )

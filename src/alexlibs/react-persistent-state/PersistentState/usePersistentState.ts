@@ -10,9 +10,5 @@ export function usePersistentState<S>(initialState: S | (() => S), key?: string)
   const throttled = useRef(throttle(localStorage.save, 1000))
   useEffect(() => throttled.current(state), [state])
 
-  return [
-    state,
-    setState,
-    () => localStorage.clear()
-  ]
+  return [state, setState, () => localStorage.clear()]
 }

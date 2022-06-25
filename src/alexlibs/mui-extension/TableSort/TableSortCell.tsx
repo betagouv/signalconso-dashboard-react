@@ -10,17 +10,14 @@ export interface ITableSortCellProps extends TableCellProps {
 }
 
 class TableSortCell extends React.Component<ITableSortCellProps, {}> {
-
   render() {
     const {name, active, orderBy, onSort, children, ...rest} = this.props
     return (
       <TableCell sortDirection={false} {...rest}>
         {name ? (
-          <TableSortLabel
-            active={active}
-            direction={orderBy}
-            onClick={onSort}
-          >{children}</TableSortLabel>
+          <TableSortLabel active={active} direction={orderBy} onClick={onSort}>
+            {children}
+          </TableSortLabel>
         ) : (
           children
         )}
@@ -30,4 +27,3 @@ class TableSortCell extends React.Component<ITableSortCellProps, {}> {
 }
 
 export default TableSortCell
-

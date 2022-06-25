@@ -18,7 +18,6 @@ interface State {
 }
 
 export class ExpensionStepper extends React.Component<ExpensionProps, State> {
-
   constructor(props) {
     super(props)
     const stepsCount = React.Children.count(this.props.children)
@@ -45,7 +44,7 @@ export class ExpensionStepper extends React.Component<ExpensionProps, State> {
             done: castedStep.props.done || i < this.state.reached,
             autoScroll,
             isCurrent: i == this.state.current,
-            isLast: i == React.Children.count(children) - 1
+            isLast: i == React.Children.count(children) - 1,
           })
         })}
       </div>
@@ -67,7 +66,7 @@ export class ExpensionStepper extends React.Component<ExpensionProps, State> {
       this.props.onNext && this.props.onNext(this.state.current, data)
       this.setState({
         current: this.state.current + 1,
-        reached: Math.max(this.state.reached, this.state.current + 1)
+        reached: Math.max(this.state.reached, this.state.current + 1),
       })
     } else if (this.props.onEnd) {
       this.props.onEnd(data)

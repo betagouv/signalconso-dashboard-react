@@ -4,8 +4,7 @@ import {sidebarWith} from '../Layout'
 import {Header} from '../Header/Header'
 import {useLayoutContext} from '../LayoutContext'
 
-export interface SidebarProps extends BoxProps {
-}
+export interface SidebarProps extends BoxProps {}
 
 export const Sidebar = ({children, sx, ...props}: SidebarProps) => {
   const {isMobileWidth, isMobileSidebarOpened, openMobileSidebar, closeMobileSidebar} = useLayoutContext()
@@ -16,17 +15,21 @@ export const Sidebar = ({children, sx, ...props}: SidebarProps) => {
       open={opened}
       onOpen={openMobileSidebar}
       onClose={closeMobileSidebar}
-      variant={isMobileWidth ? 'temporary' : 'permanent'}>
+      variant={isMobileWidth ? 'temporary' : 'permanent'}
+    >
       <>
-        <Box {...props} sx={{
-          width: sidebarWith,
-          height: '100vh',
-          display: 'flex',
-          flexDirection: 'column',
-          borderRadius: 0,
-          ...sx
-        }}>
-          <Header/>
+        <Box
+          {...props}
+          sx={{
+            width: sidebarWith,
+            height: '100vh',
+            display: 'flex',
+            flexDirection: 'column',
+            borderRadius: 0,
+            ...sx,
+          }}
+        >
+          <Header />
           {children}
         </Box>
       </>

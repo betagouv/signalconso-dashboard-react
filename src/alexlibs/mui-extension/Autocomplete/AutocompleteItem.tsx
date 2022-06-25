@@ -14,10 +14,7 @@ export interface AutocompleteItemProps {
 export const AutocompleteItem = ({checked, disabled, multiple, value, children, onClick}: AutocompleteItemProps) => {
   return (
     <MenuItem onClick={() => onClick!(value)} style={{paddingLeft: 0}} disabled={disabled}>
-      {multiple
-        ? <Checkbox disabled={disabled} checked={checked}/>
-        : <Radio disabled={disabled} checked={checked}/>
-      }
+      {multiple ? <Checkbox disabled={disabled} checked={checked} /> : <Radio disabled={disabled} checked={checked} />}
       {children}
     </MenuItem>
   )

@@ -12,18 +12,18 @@ export interface TableSortProps {
 }
 
 class TableSort extends React.Component<TableSortProps, {}> {
-
   render() {
     const {orderBy, sortBy, children} = this.props
     return (
       <TableHead>
         <TableRow>
-          {(React.Children.toArray(children) as ReactElement<ITableSortCellProps>[]).map((step: ReactElement<ITableSortCellProps>) =>
-            React.cloneElement(step, {
-              active: step.props.name === sortBy,
-              orderBy,
-              ...(step.props.name && {onSort: this.sort(step.props.name)}),
-            })
+          {(React.Children.toArray(children) as ReactElement<ITableSortCellProps>[]).map(
+            (step: ReactElement<ITableSortCellProps>) =>
+              React.cloneElement(step, {
+                active: step.props.name === sortBy,
+                orderBy,
+                ...(step.props.name && {onSort: this.sort(step.props.name)}),
+              }),
           )}
         </TableRow>
       </TableHead>
@@ -33,9 +33,7 @@ class TableSort extends React.Component<TableSortProps, {}> {
   private readonly sort = (name: string) => {
     return () => {
       const {sortBy, orderBy} = this.props
-      const newOrderBy = (name === sortBy && orderBy === 'asc')
-        ? 'desc'
-        : 'asc'
+      const newOrderBy = name === sortBy && orderBy === 'asc' ? 'desc' : 'asc'
       this.props.onSort(name, newOrderBy)
     }
   }

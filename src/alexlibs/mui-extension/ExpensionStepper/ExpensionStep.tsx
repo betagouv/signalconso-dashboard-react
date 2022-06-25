@@ -53,8 +53,7 @@ export const ExpensionStep = ({
   }, [isCurrent])
 
   useEffect(() => {
-    if (autoScroll && !isCurrentRef.current && isCurrent)
-      setTimeout(scrollTop, animationDuration)
+    if (autoScroll && !isCurrentRef.current && isCurrent) setTimeout(scrollTop, animationDuration)
   })
 
   return (
@@ -63,9 +62,9 @@ export const ExpensionStep = ({
         '&:not(:first-of-type)': {
           borderTop: t => `1px solid ${t.palette.divider}`,
         },
-        ...sx
+        ...sx,
       }}
-      ref={node => $root = node ?? undefined}
+      ref={node => ($root = node ?? undefined)}
       {...other}
     >
       <Box
@@ -77,38 +76,48 @@ export const ExpensionStep = ({
           display: 'flex',
           alignItems: 'center',
           fontSize: t => t.typography.subtitle1.fontSize,
-          ...isCurrent && {
+          ...(isCurrent && {
             fontSize: t => t.typography.h6.fontSize,
-          },
-          ...isClickable() && {
+          }),
+          ...(isClickable() && {
             cursor: 'pointer',
             '&:hover': {
               background: t => t.palette.background.default,
-            }
-          }
+            },
+          }),
         }}
-        onClick={() => goTo!(index!)}>
+        onClick={() => goTo!(index!)}
+      >
         {!free && done && !isCurrent && (
-          <Icon sx={{
-            fontWeight: t => t.typography.fontWeightMedium,
-            borderRadius: '50%',
-            color: colorSuccess,
-            mr: 1,
-          }}>
+          <Icon
+            sx={{
+              fontWeight: t => t.typography.fontWeightMedium,
+              borderRadius: '50%',
+              color: colorSuccess,
+              mr: 1,
+            }}
+          >
             check
           </Icon>
         )}
-        {!free && <>{index! + 1}. </>}{label}
+        {!free && <>{index! + 1}. </>}
+        {label}
       </Box>
-      <Collapse in={isCurrent} timeout={animationDuration} sx={{
-        transition: t => t.transitions.create('all'),
-        overflow: 'hidden',
-      }}>
-        <Box sx={{
-          pt: 0,
-          px: 3,
-          pb: 0,
-        }}>
+      <Collapse
+        in={isCurrent}
+        timeout={animationDuration}
+        sx={{
+          transition: t => t.transitions.create('all'),
+          overflow: 'hidden',
+        }}
+      >
+        <Box
+          sx={{
+            pt: 0,
+            px: 3,
+            pb: 0,
+          }}
+        >
           {React.cloneElement(component, {prev, next, goTo, free, index, disabled, done, isCurrent, isLast})}
         </Box>
       </Collapse>

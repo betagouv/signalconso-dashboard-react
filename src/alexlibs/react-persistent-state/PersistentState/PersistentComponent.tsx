@@ -4,7 +4,6 @@ import {generateId} from '../utils/hash'
 import throttle from 'lodash.throttle'
 
 export abstract class PersistentComponent<P = {}, S = {}, SS = any> extends React.Component<P, S, SS> {
-
   private localStorage: LocalStorageEntity<S>
 
   protected constructor(props: P, key?: string) {
@@ -20,8 +19,8 @@ export abstract class PersistentComponent<P = {}, S = {}, SS = any> extends Reac
   }
 
   setState<K extends keyof S>(
-    state: ((prevState: Readonly<S>, props: P) => (Pick<S, K> | S | null)) | (Pick<S, K> | S | null),
-    callback?: () => void
+    state: ((prevState: Readonly<S>, props: P) => Pick<S, K> | S | null) | (Pick<S, K> | S | null),
+    callback?: () => void,
   ): void {
     super.setState(state, () => {
       if (callback) callback()

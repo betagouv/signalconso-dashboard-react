@@ -26,19 +26,19 @@ const LayoutUsingContext = ({children, sidebar: Sidebar, sx, ...rest}: BoxProps 
   const {isMobileWidth} = useLayoutContext()
   return (
     <>
-      <MobileHeader/>
+      <MobileHeader />
       <Box
         sx={{
           overflow: 'hidden',
           position: 'relative',
           display: 'flex',
-          ...!isMobileWidth && {
+          ...(!isMobileWidth && {
             marginLeft: sidebarWith + 'px',
-          }
+          }),
         }}
         {...rest}
       >
-        {Sidebar && <Sidebar/>}
+        {Sidebar && <Sidebar />}
         {children}
       </Box>
     </>

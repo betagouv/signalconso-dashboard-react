@@ -8,17 +8,21 @@ export const MobileHeader = () => {
   return (
     <Slide direction="down" in={isMobileWidth} mountOnEnter unmountOnExit>
       <>
-        <Box sx={{
-          height: headerHeight + 'px',
-        }}/>
-        <Header sx={{
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          right: 0,
-          zIndex: 10,
-          boxShadow: t => t.shadows[3],
-        }}/>
+        <Box
+          sx={{
+            height: headerHeight + 'px',
+          }}
+        />
+        <Header
+          sx={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            right: 0,
+            zIndex: 10,
+            boxShadow: t => t.shadows[3],
+          }}
+        />
       </>
     </Slide>
   )

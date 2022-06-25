@@ -31,29 +31,28 @@ export const Demo = ({component: Component, raw, reloadable}: DemoProps) => {
 
   return (
     <Panel>
-      <Box sx={{
-        mt: 1,
-        mr: 2,
-        mb: 1 / 2,
-        ml: 2,
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'flex-end'
-      }}>
-        {reloadable &&
-        <IconButton disabled={!show} onClick={reload} size="large">
-          <Icon>refresh</Icon>
-        </IconButton>
-        }
-        <IconButton
-          color={codeOpened ? 'primary' : undefined}
-          onClick={() => setCodeOponed(!codeOpened)}
-          size="large">
+      <Box
+        sx={{
+          mt: 1,
+          mr: 2,
+          mb: 1 / 2,
+          ml: 2,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'flex-end',
+        }}
+      >
+        {reloadable && (
+          <IconButton disabled={!show} onClick={reload} size="large">
+            <Icon>refresh</Icon>
+          </IconButton>
+        )}
+        <IconButton color={codeOpened ? 'primary' : undefined} onClick={() => setCodeOponed(!codeOpened)} size="large">
           <Icon>code</Icon>
         </IconButton>
       </Box>
       <Collapse in={codeOpened} unmountOnExit>
-        <Pre raw={parseComponentCode(raw)} style={{margin: 0, borderRadius: 0}}/>
+        <Pre raw={parseComponentCode(raw)} style={{margin: 0, borderRadius: 0}} />
       </Collapse>
       <Box
         sx={{
@@ -64,9 +63,8 @@ export const Demo = ({component: Component, raw, reloadable}: DemoProps) => {
         ref={componentContainer as any}
         style={{height: containerHeight}}
       >
-        {show && <Component/>}
+        {show && <Component />}
       </Box>
     </Panel>
-  );
+  )
 }
-
