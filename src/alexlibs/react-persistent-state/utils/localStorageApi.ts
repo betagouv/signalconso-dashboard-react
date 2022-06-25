@@ -1,6 +1,6 @@
 const storage = {
   load: (key: string): any => {
-    let serializedState
+    let serializedState: string | null
     try {
       serializedState = localStorage.getItem(key)
     } catch (err) {
@@ -8,7 +8,7 @@ const storage = {
       return null
     }
     try {
-      return JSON.parse(serializedState)
+      return serializedState && JSON.parse(serializedState)
     } catch (err) {
       // Parsing will fail when it's not an object, so simply return the value
       return serializedState
