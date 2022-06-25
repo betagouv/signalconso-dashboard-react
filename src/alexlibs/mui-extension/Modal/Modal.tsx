@@ -16,6 +16,7 @@ export interface ModalProps extends Omit<DialogProps, 'children' | 'onClick' | '
   onClick?: EventHandler<SyntheticEvent<any>>
   PaperProps?: Partial<PaperProps>
   loading?: boolean
+  overrideActions?: (_: () => void) => ReactNode
 }
 
 const enterKeyCode = 13
@@ -33,6 +34,7 @@ export const Modal = ({
   confirmDisabled,
   loading,
   PaperProps,
+  overrideActions,
   ...props
 }: ModalProps) => {
   const [isOpen, setIsOpen] = useState<boolean>(false)
@@ -80,13 +82,19 @@ export const Modal = ({
         <DialogTitle>{title}</DialogTitle>
         <DialogContent>{typeof content === 'function' ? content(close) : content}</DialogContent>
         <DialogActions>
-          <Button color="primary" onClick={close}>
-            {cancelLabel || 'Cancel'}
-          </Button>
-          {onConfirm && (
-            <Button color="primary" onClick={confirm} disabled={confirmDisabled}>
-              {confirmLabel || 'Confirm'}
-            </Button>
+          {overrideActions ? (
+            overrideActions(close)
+          ) : (
+            <>
+              <Button color="primary" onClick={close}>
+                {cancelLabel || 'Cancel'}
+              </Button>
+              {onConfirm && (
+                <Button color="primary" onClick={confirm} disabled={confirmDisabled}>
+                  {confirmLabel || 'Confirm'}
+                </Button>
+              )}
+            </>
           )}
         </DialogActions>
       </Dialog>
