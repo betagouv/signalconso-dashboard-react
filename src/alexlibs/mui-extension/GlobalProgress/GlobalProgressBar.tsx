@@ -2,7 +2,7 @@ import * as React from 'react'
 import {useEffect, useState} from 'react'
 import {Box, BoxProps, Theme} from '@mui/material'
 import {progressbarAnimationDuration, useGlobalProgressState} from './GlobalProgressContext'
-import {useInterval} from '@alexandreannic/react-hooks-lib'
+import {useInterval} from '../../react-hooks-lib'
 import {SxProps} from '@mui/system'
 
 const progressbarColor = (t: Theme) => {

@@ -1,7 +1,7 @@
 import * as React from 'react'
 import {useState} from 'react'
 import {useTheme} from '@mui/material'
-import {useTimeout} from '@alexandreannic/react-hooks-lib'
+import {useTimeout} from '../../react-hooks-lib'
 
 export interface AnimateProps {
   delay?: number
