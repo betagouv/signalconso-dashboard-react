@@ -56,22 +56,22 @@ export const Txt = forwardRef(
           ...(color &&
             {
               primary: {
-                color: t => t.palette.primary.main,
+                color: (t: any) => t.palette.primary.main,
               },
               secondary: {
-                color: t => t.palette.secondary.main,
+                color: (t: any) => t.palette.secondary.main,
               },
               disabled: {
-                color: t => t.palette.text.disabled,
+                color: (t: any) => t.palette.text.disabled,
               },
               hint: {
-                color: t => t.palette.text.secondary,
+                color: (t: any) => t.palette.text.secondary,
               },
               error: {
-                color: t => t.palette.error.main,
+                color: (t: any) => t.palette.error.main,
               },
               default: {
-                color: t => t.palette.text.primary,
+                color: (t: any) => t.palette.text.primary,
               },
             }[color]),
           ...(block && {
@@ -87,7 +87,7 @@ export const Txt = forwardRef(
             mb: 1,
           }),
           ...(link && {
-            color: t => t.palette.primary.main,
+            color: (t: any) => t.palette.primary.main,
           }),
           ...(uppercase && {
             textTransform: 'uppercase' as any,

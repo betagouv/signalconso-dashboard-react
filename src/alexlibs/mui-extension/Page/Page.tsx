@@ -10,7 +10,7 @@ export interface PageProps extends BoxProps {
   children: ReactNode
 }
 
-let timeout: NodeJS.Timeout | undefined
+let timeout: number | undefined
 
 const Page = ({children, width, sx, animated = true, ...props}: PageProps) => {
   const [appeared, setAppeared] = useState(false)
@@ -18,7 +18,7 @@ const Page = ({children, width, sx, animated = true, ...props}: PageProps) => {
   useEffect(() => {
     if (animated) timeout = setTimeout(() => setAppeared(true))
     return () => {
-      if (timeout) {
+      if (timeout !== undefined) {
         clearTimeout(timeout)
       }
     }
