@@ -3013,9 +3013,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@signal-conso/signalconso-api-sdk-js@npm:0.0.1-TEST-1655971922413":
-  version: 0.0.1-TEST-1655971922413
-  resolution: "@signal-conso/signalconso-api-sdk-js@npm:0.0.1-TEST-1655971922413"
+"@signal-conso/signalconso-api-sdk-js@npm:4.3.0":
+  version: 4.3.0
+  resolution: "@signal-conso/signalconso-api-sdk-js@npm:4.3.0"
   dependencies:
     "@alexandreannic/ts-utils": ^1.7.3
     axios: 0.26.1
@@ -3029,7 +3029,7 @@ __metadata:
     qs: ^6.10.1
     rxjs: ^6.6.7
     yaml-import: ^2.0.0
-  checksum: 3c0541b2b2a82cc40a29bfad360f94211c3a45bfddfdaa0af2768488a9cd0c94372f8d3b3c40d5d40c08f51266e0cc54c29c898d9a2ad7d082ed2e4fb236176a
+  checksum: 3109f47250c3c1d9906c3831a0304352849c398d2e2360d3166a10931038d6881c755674bbb49864bfb06dd163f9e4b0b325f2af32f0212e05988c925f2586f5
   languageName: node
   linkType: hard
 
@@ -3047,7 +3047,7 @@ __metadata:
     "@mui/styles": 5.8.4
     "@sentry/react": 6.19.7
     "@sentry/tracing": 6.19.7
-    "@signal-conso/signalconso-api-sdk-js": 0.0.1-TEST-1655971922413
+    "@signal-conso/signalconso-api-sdk-js": 4.3.0
     "@testing-library/jest-dom": 5.16.4
     "@testing-library/react": 11.2.7
     "@testing-library/user-event": 12.8.3
