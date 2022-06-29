@@ -84,7 +84,6 @@ export const Reports = () => {
   })
 
   useEffect(() => {
-    console.log('update filters')
     _reports.updateFilters({..._reports.initialFilters, ...queryString.get()})
   }, [])
 

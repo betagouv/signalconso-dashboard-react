@@ -1,4 +1,3 @@
-import {dateToYYYYMMDD} from '@signal-conso/signalconso-api-sdk-js'
 import {regexp} from './regexp'
 import {useHistory} from 'react-router-dom'
 import {parse as _parse, stringify as _stringify} from 'qs'
@@ -73,7 +72,7 @@ export const mapDatesToQueryString = <T extends object>(_: T): Readonly<ParsedQu
   return Object.entries(_).reduce(
     (acc, [key, value]) => ({
       ...acc,
-      [key]: value instanceof Date ? dateToYYYYMMDD(value) : value,
+      [key]: value instanceof Date ? value.toISOString() : value,
     }),
     {} as Readonly<ParsedQueryString<T>>,
   )
@@ -85,7 +84,7 @@ export const mapDateFromQueryString = <T extends object>(
   return Object.entries(_).reduce(
     (acc, [key, value]: [string, any]) => ({
       ...acc,
-      [key]: regexp.yyyyMMdd.test(value) ? new Date(value) : value,
+      [key]: regexp.isoDate.test(value) ? new Date(value) : value,
     }),
     {} as MappedQueryString<ParsedQueryString<T>>,
   )

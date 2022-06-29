@@ -99,7 +99,10 @@ export const CompanyAccesses = () => {
               {_crudAccess.list?.length === 0 && (
                 <SaveUndeliveredDocBtn
                   loading={_company.saveUndeliveredDocument.loading}
-                  onChange={date => _company.saveUndeliveredDocument.fetch({}, siret, date)}
+                  onChange={async date => {
+                    if (date) return _company.saveUndeliveredDocument.fetch({}, siret, date)
+                    else throw new Error("Can't save with an empty date")
+                  }}
                   sx={{mr: 1}}
                 />
               )}
