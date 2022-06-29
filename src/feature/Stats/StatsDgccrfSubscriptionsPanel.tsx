@@ -21,8 +21,8 @@ export const StatsDgccrfSubscriptionsPanel = ({ticks}: Props) => {
         <ChartAsync
           promisesDeps={[ticks]}
           promises={[
-            () => api.secured.stats.getDgccrfControlsCurve({ticks}),
             () => api.secured.stats.getDgccrfSubscriptionsCurve({ticks}),
+            () => api.secured.stats.getDgccrfControlsCurve({ticks}),
           ]}
           curves={[
             {
