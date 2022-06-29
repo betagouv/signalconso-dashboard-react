@@ -1,5 +1,5 @@
-import {Alert} from 'mui-extension'
-import {Txt} from 'mui-extension/lib/Txt/Txt'
+import {Alert} from '../../alexlibs/mui-extension'
+import {Txt} from '../../alexlibs/mui-extension'
 import {ScInput} from '../../shared/Input/ScInput'
 import {regexp} from '../../core/helper/regexp'
 import * as React from 'react'

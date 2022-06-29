@@ -1,6 +1,6 @@
 import * as React from 'react'
 import {ReactNode, useContext} from 'react'
-import {CrudListCRUD, useCrudList} from '@alexandreannic/react-hooks-lib/lib'
+import {CrudListCRUD, useCrudList} from '../../alexlibs/react-hooks-lib'
 import {SignalConsoApiSdk} from '../ApiSdkInstance'
 import {ApiError, SignalConsoSecuredSdk, Subscription} from '@signal-conso/signalconso-api-sdk-js'
 

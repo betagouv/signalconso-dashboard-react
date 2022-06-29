@@ -1,5 +1,5 @@
 import {CurveStatsParams, Id, ReportStatus} from '@signal-conso/signalconso-api-sdk-js'
-import {useFetcher} from '@alexandreannic/react-hooks-lib/lib'
+import {useFetcher} from '../../alexlibs/react-hooks-lib'
 import React from 'react'
 import {useLogin} from '../../core/context/LoginContext'
 

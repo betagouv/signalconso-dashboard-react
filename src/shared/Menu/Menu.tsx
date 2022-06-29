@@ -1,6 +1,6 @@
 import React, {EventHandler, forwardRef, ReactElement, ReactNode, SyntheticEvent, useState} from 'react'
 import {Icon, Menu} from '@mui/material'
-import {IconBtn} from 'mui-extension/lib'
+import {IconBtn} from '../../alexlibs/mui-extension'
 
 interface Props {
   icon?: string

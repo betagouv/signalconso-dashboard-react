@@ -4,7 +4,7 @@ import {useI18n} from '../../../core/i18n'
 import {ReportEventIcon} from './ReportEventIcon'
 import {Box, Icon} from '@mui/material'
 import {combineSx, styleUtils, sxUtils} from '../../../core/theme'
-import {makeSx} from 'mui-extension'
+import {makeSx} from '../../../alexlibs/mui-extension'
 
 export interface ReportComponentEventProps {
   event: ReportEvent

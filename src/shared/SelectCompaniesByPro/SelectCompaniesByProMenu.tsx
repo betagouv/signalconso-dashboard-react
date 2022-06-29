@@ -1,10 +1,10 @@
 import {Box, Checkbox, Icon, Menu, MenuItem} from '@mui/material'
 import * as React from 'react'
 import {useEffect, useMemo} from 'react'
-import {useSetState, UseSetState} from '@alexandreannic/react-hooks-lib/lib'
+import {useSetState, UseSetState} from '../../alexlibs/react-hooks-lib'
 import {Company, CompanyWithAccessLevel} from '@signal-conso/signalconso-api-sdk-js'
 import {useI18n} from '../../core/i18n'
-import {makeSx} from 'mui-extension'
+import {makeSx} from '../../alexlibs/mui-extension'
 import {combineSx, sxUtils} from '../../core/theme'
 
 const css = makeSx({

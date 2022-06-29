@@ -1,5 +1,5 @@
 import {Box, BoxProps, Tooltip} from '@mui/material'
-import {Txt} from 'mui-extension/lib/Txt/Txt'
+import {Txt} from '../../../alexlibs/mui-extension'
 import React from 'react'
 import {useI18n} from '../../../core/i18n'
 import {Company} from '@signal-conso/signalconso-api-sdk-js'

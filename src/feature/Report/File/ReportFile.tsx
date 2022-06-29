@@ -5,13 +5,13 @@ import {useLogin} from '../../../core/context/LoginContext'
 import {fromNullable, some} from 'fp-ts/lib/Option'
 import {config} from '../../../conf/config'
 import React, {useEffect} from 'react'
-import {useFetcher} from '@alexandreannic/react-hooks-lib/lib'
-import {IconBtn} from 'mui-extension/lib'
+import {useFetcher} from '../../../alexlibs/react-hooks-lib'
+import {IconBtn} from '../../../alexlibs/mui-extension'
 import {useToast} from '../../../core/toast'
 import {useI18n} from '../../../core/i18n'
 import {ScDialog} from '../../../shared/Confirm/ScDialog'
 import {combineSx, defaultSpacing} from 'core/theme'
-import {makeSx} from 'mui-extension'
+import {makeSx} from '../../../alexlibs/mui-extension'
 
 export interface ReportFileProps {
   file: UploadedFile

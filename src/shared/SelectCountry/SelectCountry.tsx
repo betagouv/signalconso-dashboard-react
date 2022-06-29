@@ -6,7 +6,7 @@ import {Autocomplete, Box} from '@mui/material'
 import {ScInput} from '../Input/ScInput'
 import {useConstantContext} from '../../core/context/ConstantContext'
 import {combineSx} from '../../core/theme'
-import {makeSx} from 'mui-extension'
+import {makeSx} from '../../alexlibs/mui-extension'
 import {countryToFlag} from '../../core/helper/utils'
 
 interface Props {

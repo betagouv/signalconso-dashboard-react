@@ -11,8 +11,8 @@ import {fromNullable} from 'fp-ts/es6/Option'
 import {ForgottenPasswordDialog} from './ForgottenPasswordDialog'
 import {ApiError, SignalConsoPublicSdk} from '@signal-conso/signalconso-api-sdk-js'
 import {AuthenticationEventActions, EventCategories, Matomo} from '../../core/plugins/Matomo'
-import {Alert} from 'mui-extension'
-import {Txt} from 'mui-extension/lib/Txt/Txt'
+import {Alert} from '../../alexlibs/mui-extension'
+import {Txt} from '../../alexlibs/mui-extension'
 
 interface Props {
   login: ActionProps<SignalConsoPublicSdk['authenticate']['login']>

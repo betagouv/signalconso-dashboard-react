@@ -1,6 +1,6 @@
 import {Panel, PanelBody} from '../../shared/Panel'
 import {ReportStatusLabel} from '../../shared/ReportStatus/ReportStatus'
-import {Alert} from 'mui-extension/lib'
+import {Alert} from '../../alexlibs/mui-extension'
 import {ReportCategories} from './ReportCategories'
 import {Box, Icon} from '@mui/material'
 import {Report} from '@signal-conso/signalconso-api-sdk-js'
@@ -9,7 +9,7 @@ import {ScChip} from '../../shared/Chip/ScChip'
 import React, {ReactNode} from 'react'
 import {styleUtils} from '../../core/theme'
 import {useI18n} from '../../core/i18n'
-import {makeSx} from 'mui-extension'
+import {makeSx} from '../../alexlibs/mui-extension'
 
 const css = makeSx({
   root: {

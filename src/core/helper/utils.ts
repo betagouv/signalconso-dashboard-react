@@ -1,6 +1,6 @@
 import classNames from 'classnames'
 import {fromNullable} from 'fp-ts/lib/Option'
-import {OrderBy, Paginate} from '@alexandreannic/react-hooks-lib/lib'
+import {OrderBy, Paginate} from '../../alexlibs/react-hooks-lib'
 import {config} from 'conf/config'
 import {SxProps, Theme} from '@mui/material'
 

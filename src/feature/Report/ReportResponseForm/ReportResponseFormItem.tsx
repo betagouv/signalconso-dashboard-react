@@ -1,4 +1,4 @@
-import {Txt} from 'mui-extension/lib/Txt/Txt'
+import {Txt} from '../../../alexlibs/mui-extension'
 import React from 'react'
 import {Box} from '@mui/material'
 

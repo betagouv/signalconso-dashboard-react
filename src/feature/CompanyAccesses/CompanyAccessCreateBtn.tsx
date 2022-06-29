@@ -1,16 +1,16 @@
 import {ScButton} from '../../shared/Button/Button'
-import {Alert} from 'mui-extension/lib'
+import {Alert} from '../../alexlibs/mui-extension'
 import React from 'react'
 import {useI18n} from '../../core/i18n'
 import {CompanyAccessLevel} from '@signal-conso/signalconso-api-sdk-js'
 import {Controller, useForm} from 'react-hook-form'
 import {ScInput} from '../../shared/Input/ScInput'
 import {regexp} from '../../core/helper/regexp'
-import {Enum} from '@alexandreannic/ts-utils/lib/common/enum/Enum'
+import {Enum} from '../../alexlibs/ts-utils'
 import {ScDialog} from '../../shared/Confirm/ScDialog'
 import {ScRadioGroup} from '../../shared/RadioGroup/RadioGroup'
 import {ScRadioGroupItem} from '../../shared/RadioGroup/RadioGroupItem'
-import {Txt} from 'mui-extension/lib/Txt/Txt'
+import {Txt} from '../../alexlibs/mui-extension'
 
 interface Props {
   errorMessage?: string

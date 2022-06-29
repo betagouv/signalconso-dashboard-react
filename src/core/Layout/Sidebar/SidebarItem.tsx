@@ -2,7 +2,7 @@ import * as React from 'react'
 import {ReactNode} from 'react'
 import {Box, BoxProps, Icon, Theme, useTheme} from '@mui/material'
 import {alpha} from '@mui/material/styles'
-import {makeSx} from 'mui-extension'
+import {makeSx} from '../../../alexlibs/mui-extension'
 import {NavLink} from 'react-router-dom'
 
 const css = makeSx({

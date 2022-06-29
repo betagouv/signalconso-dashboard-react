@@ -1,6 +1,6 @@
 import {Badge, Checkbox, Icon, IconButtonProps, Menu, MenuItem, Tooltip} from '@mui/material'
 import React from 'react'
-import {IconBtn} from 'mui-extension/lib'
+import {IconBtn} from '../../alexlibs/mui-extension'
 import {DatatableColumnProps} from './Datatable'
 
 interface Props extends Omit<IconButtonProps, 'onChange'> {

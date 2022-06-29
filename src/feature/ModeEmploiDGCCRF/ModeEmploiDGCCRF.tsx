@@ -2,7 +2,7 @@ import {Page} from 'shared/Layout'
 import {Panel, PanelBody} from '../../shared/Panel'
 import {Box, Divider, Typography} from '@mui/material'
 import {styleUtils} from '../../core/theme'
-import {makeSx} from 'mui-extension'
+import {makeSx} from '../../alexlibs/mui-extension'
 
 const sx = makeSx({
   mark: {

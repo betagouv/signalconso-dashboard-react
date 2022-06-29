@@ -1,7 +1,7 @@
 import * as React from 'react'
 import {forwardRef, useEffect} from 'react'
 import {Icon, InputAdornment, TextField, TextFieldProps} from '@mui/material'
-import {useSetState, UseSetState} from '@alexandreannic/react-hooks-lib/lib'
+import {useSetState, UseSetState} from '../../alexlibs/react-hooks-lib'
 import {SelectDepartmentsMenu} from './SelectDepartmentsMenu'
 
 export interface SelectDepartmentsProps extends Omit<TextFieldProps, 'value' | 'onChange'> {

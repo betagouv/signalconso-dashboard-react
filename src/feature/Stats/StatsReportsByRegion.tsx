@@ -1,6 +1,6 @@
 import * as React from 'react'
 import {useEffect, useMemo, useState} from 'react'
-import {useEffectFn, useFetcher} from '@alexandreannic/react-hooks-lib'
+import {useEffectFn, useFetcher} from '../../alexlibs/react-hooks-lib'
 import {useLogin} from '../../core/context/LoginContext'
 import {useI18n} from '../../core/i18n'
 import {Box, BoxProps, Divider, Icon, Table, TableBody, TableCell, TableHead, TableRow, Tooltip} from '@mui/material'
@@ -12,7 +12,7 @@ import {NavLink} from 'react-router-dom'
 import {useToast} from '../../core/toast'
 import {SelectMonth} from '../../shared/SelectMonth/SelectMonth'
 import {useGetDateForMonthAndPreviousOne} from './useGetDateForMonthAndPreviousOne'
-import {Txt} from 'mui-extension/lib/Txt/Txt'
+import {Txt} from '../../alexlibs/mui-extension'
 
 const CellNewPosition = ({sx, ...props}: BoxProps) => {
   return <Box {...props} component="span" sx={{fontWeight: t => t.typography.fontWeightBold, ...sx}} />

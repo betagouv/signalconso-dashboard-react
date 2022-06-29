@@ -1,5 +1,5 @@
 import {ScInput} from '../Input/ScInput'
-import {IconBtn} from 'mui-extension'
+import {IconBtn} from '../../alexlibs/mui-extension'
 import {Divider, Icon} from '@mui/material'
 import {SelectCompanyList} from './SelectCompanyList'
 import React, {useEffect, useState} from 'react'
@@ -7,7 +7,7 @@ import {useI18n} from '../../core/i18n'
 import {useCompaniesContext} from '../../core/context/CompaniesContext'
 import {CompanySearchResult, Id} from '@signal-conso/signalconso-api-sdk-js'
 import {fromNullable} from 'fp-ts/lib/Option'
-import {useEffectFn} from '@alexandreannic/react-hooks-lib'
+import {useEffectFn} from '../../alexlibs/react-hooks-lib'
 
 export interface SelectCompanyProps {
   siret?: Id

@@ -4,7 +4,7 @@ import {useLogin} from '../../core/context/LoginContext'
 import {useI18n} from '../../core/i18n'
 import {CountByDate, Period, ReportTag} from '@signal-conso/signalconso-api-sdk-js'
 import {statsFormatCurveDate} from './Stats'
-import {Txt} from 'mui-extension/lib/Txt/Txt'
+import {Txt} from '../../alexlibs/mui-extension'
 import {ChartAsync} from '../../shared/Chart/ChartAsync'
 
 interface Props {

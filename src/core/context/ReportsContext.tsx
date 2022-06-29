@@ -1,6 +1,6 @@
 import * as React from 'react'
 import {ReactNode, useContext} from 'react'
-import {UsePaginate} from '@alexandreannic/react-hooks-lib/lib'
+import {UsePaginate} from '../../alexlibs/react-hooks-lib'
 import {SignalConsoApiSdk} from '../ApiSdkInstance'
 import {PaginatedFilters, ReportSearch, ReportSearchResult} from '@signal-conso/signalconso-api-sdk-js'
 import {useScPaginate} from '../../shared/usePaginate/usePaginate'

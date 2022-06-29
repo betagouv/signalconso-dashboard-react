@@ -1,6 +1,6 @@
 import {Panel, PanelBody} from '../../shared/Panel'
 import {Box} from '@mui/material'
-import {Txt} from 'mui-extension/lib/Txt/Txt'
+import {Txt} from '../../alexlibs/mui-extension'
 import {ReportFiles} from './File/ReportFiles'
 import {EventActionValues, FileOrigin, Report, UploadedFile} from '@signal-conso/signalconso-api-sdk-js'
 import React, {ReactNode} from 'react'

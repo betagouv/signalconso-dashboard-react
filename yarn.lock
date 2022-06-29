@@ -5,29 +5,7 @@ __metadata:
   version: 6
   cacheKey: 8
 
-"@alexandreannic/react-hooks-lib@npm:1.11.9":
-  version: 1.11.9
-  resolution: "@alexandreannic/react-hooks-lib@npm:1.11.9"
-  dependencies:
-    ts-node: ^10.7.0
-  peerDependencies:
-    react: 17.0.2
-  checksum: 6e53370663a1d5e5c9599f65ff8c9ceee6c1ea5a424f5ff8bb78e88f1394353da9b3cab08c9a4d27b50b8d0bc555ee4436e237c5e12e0b32e2b0cb0c325664ac
-  languageName: node
-  linkType: hard
-
-"@alexandreannic/react-hooks-lib@npm:^1.11.4":
-  version: 1.11.12
-  resolution: "@alexandreannic/react-hooks-lib@npm:1.11.12"
-  dependencies:
-    ts-node: ^10.7.0
-  peerDependencies:
-    react: 17.0.2
-  checksum: 0ab7711ddeca23ac9f28855b21f94f921b5ddd37c2d08ae60068e31a845c95a14ec4e6181efa25d0dd4a8c2ecc834728501b76eeed972ff2125dcb000043eb0b
-  languageName: node
-  linkType: hard
-
-"@alexandreannic/ts-utils@npm:1.7.8, @alexandreannic/ts-utils@npm:^1.7.3":
+"@alexandreannic/ts-utils@npm:^1.7.3":
   version: 1.7.8
   resolution: "@alexandreannic/ts-utils@npm:1.7.8"
   dependencies:
@@ -3037,8 +3015,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@signalconso/dashboard-react@workspace:."
   dependencies:
-    "@alexandreannic/react-hooks-lib": 1.11.9
-    "@alexandreannic/ts-utils": 1.7.8
     "@date-io/date-fns": 1.3.13
     "@emotion/react": 11.9.3
     "@emotion/styled": 11.9.3
@@ -3053,6 +3029,7 @@ __metadata:
     "@testing-library/user-event": 12.8.3
     "@types/jest": 26.0.24
     "@types/lodash": 4.14.182
+    "@types/lodash.throttle": ^4.1.7
     "@types/node": 12.20.55
     "@types/qs": 6.9.7
     "@types/react": 18.0.14
@@ -3070,7 +3047,7 @@ __metadata:
     js-yaml: 4.1.0
     jwt-decode: 3.1.2
     lodash: 4.17.21
-    mui-extension: 4.1.2
+    lodash.throttle: ^4.1.1
     path: 0.12.7
     prettier: 2.7.1
     qs: 6.10.5
@@ -3078,7 +3055,6 @@ __metadata:
     react-app-polyfill: 2.0.0
     react-dom: 18.2.0
     react-hook-form: 7.32.2
-    react-persistent-state: 1.1.1
     react-router-dom: 5.3.3
     react-scripts: 5.0.1
     recharts: 2.1.10
@@ -3633,7 +3609,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/lodash.throttle@npm:^4.1.6, @types/lodash.throttle@npm:ts4.3":
+"@types/lodash.throttle@npm:^4.1.7":
   version: 4.1.7
   resolution: "@types/lodash.throttle@npm:4.1.7"
   dependencies:
@@ -4658,13 +4634,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"autobind-decorator@npm:^2.1.0":
-  version: 2.4.0
-  resolution: "autobind-decorator@npm:2.4.0"
-  checksum: 6fcc922580d3585a3aeef1a480f935c0827b1a4505b9e39ff9bcad9039958bd47b27a4e35152f566e01befb2924701dbc9f744ec29eeb880c99eef8e39fce4a3
-  languageName: node
-  linkType: hard
-
 "autoprefixer@npm:^10.4.7":
   version: 10.4.7
   resolution: "autoprefixer@npm:10.4.7"
@@ -5382,7 +5351,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"classnames@npm:2.3.1, classnames@npm:^2.2.5, classnames@npm:^2.2.6":
+"classnames@npm:2.3.1, classnames@npm:^2.2.5":
   version: 2.3.1
   resolution: "classnames@npm:2.3.1"
   checksum: 14db8889d56c267a591f08b0834989fe542d47fac659af5a539e110cc4266694e8de86e4e3bbd271157dbd831361310a8293e0167141e80b0f03a0f175c80960
@@ -10594,26 +10563,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"mui-extension@npm:4.1.2":
-  version: 4.1.2
-  resolution: "mui-extension@npm:4.1.2"
-  dependencies:
-    "@alexandreannic/react-hooks-lib": ^1.11.4
-    autobind-decorator: ^2.1.0
-    classnames: ^2.2.6
-    lodash.debounce: ^4.0.8
-    prismjs: ^1.15.0
-    react-persistent-state: ^1.1.1
-  peerDependencies:
-    "@emotion/react": ^11.5.0
-    "@emotion/styled": ^11.3.0
-    "@mui/material": ^5.0.4
-    react: 17.0.2
-    react-dom: 17.0.2
-  checksum: fcfe10fbeb30a9b8c67dc2b1feb88c4725339610072bb78dd1358302d51ef919fdb84e36a42b66e08038b516f56f7b02622622102dd54abfd72dd9e954c17276
-  languageName: node
-  linkType: hard
-
 "multicast-dns@npm:^7.2.5":
   version: 7.2.5
   resolution: "multicast-dns@npm:7.2.5"
@@ -12194,13 +12143,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prismjs@npm:^1.15.0":
-  version: 1.28.0
-  resolution: "prismjs@npm:1.28.0"
-  checksum: bde93fb2beb45b7243219fc53855f59ee54b3fa179f315e8f9d66244d756ef984462e10561bbdc6713d3d7e051852472d7c284f5794a8791eeaefea2fb910b16
-  languageName: node
-  linkType: hard
-
 "process-nextick-args@npm:~2.0.0":
   version: 2.0.1
   resolution: "process-nextick-args@npm:2.0.1"
@@ -12483,32 +12425,6 @@ __metadata:
   version: 3.0.4
   resolution: "react-lifecycles-compat@npm:3.0.4"
   checksum: a904b0fc0a8eeb15a148c9feb7bc17cec7ef96e71188280061fc340043fd6d8ee3ff233381f0e8f95c1cf926210b2c4a31f38182c8f35ac55057e453d6df204f
-  languageName: node
-  linkType: hard
-
-"react-persistent-state@npm:1.1.1":
-  version: 1.1.1
-  resolution: "react-persistent-state@npm:1.1.1"
-  dependencies:
-    "@types/lodash.throttle": ts4.3
-    lodash.throttle: ^4.1.1
-  peerDependencies:
-    react: 17.0.2
-    react-dom: 17.0.2
-  checksum: 24cceadb116a8bb8e9726b7b4077a4eaf7ce237c231614e5b5915b7d66f350f822d10d7fc7e32c4563b597054b80268c2022a0286ebbf3fb496e0ec9eca6b9b8
-  languageName: node
-  linkType: hard
-
-"react-persistent-state@npm:^1.1.1":
-  version: 1.1.7
-  resolution: "react-persistent-state@npm:1.1.7"
-  dependencies:
-    "@types/lodash.throttle": ^4.1.6
-    lodash.throttle: ^4.1.1
-  peerDependencies:
-    react: 17.0.2
-    react-dom: 17.0.2
-  checksum: 7936cd8e962c0514a7589fc507d802e894c62b473a30b930839d1ceb9d17d2d693f807c98c789e7712030e2e5c17be28cd194314455ec004e9e9e80f7c77b8fb
   languageName: node
   linkType: hard
 

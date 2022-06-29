@@ -4,7 +4,7 @@ import {useLogin} from '../../core/context/LoginContext'
 import {useI18n} from '../../core/i18n'
 import {statsFormatCurveDate} from './Stats'
 import {curveRatio} from './ReportStats'
-import {Txt} from 'mui-extension/lib/Txt/Txt'
+import {Txt} from '../../alexlibs/mui-extension'
 import {ChartAsync} from '../../shared/Chart/ChartAsync'
 
 interface Props {
