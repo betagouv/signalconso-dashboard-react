@@ -1,5 +1,5 @@
 import {alpha, Box, BoxProps, Icon, Slide} from '@mui/material'
-import {IconBtn} from 'mui-extension/lib'
+import {IconBtn} from '../../../alexlibs/mui-extension'
 import {layoutConfig} from '../index'
 import React from 'react'
 import {useLayoutContext} from '../LayoutContext'

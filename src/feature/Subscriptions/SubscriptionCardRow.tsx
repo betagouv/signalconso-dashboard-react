@@ -1,6 +1,6 @@
 import React, {ReactNode} from 'react'
 import {Box, Divider, Icon} from '@mui/material'
-import {Txt} from 'mui-extension/lib/Txt/Txt'
+import {Txt} from '../../alexlibs/mui-extension'
 
 interface SubscriptionCardRowProps {
   icon: string

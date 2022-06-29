@@ -3,7 +3,7 @@ import {useEffect, useState} from 'react'
 import {ScBarChart, ScLineChart, ScLineChartPropsBase} from './Chart'
 import {ApiError} from '@signal-conso/signalconso-api-sdk-js'
 import {useToast} from '../../core/toast'
-import {useEffectFn} from '@alexandreannic/react-hooks-lib'
+import {useEffectFn} from '../../alexlibs/react-hooks-lib'
 
 type Promises = readonly (() => Promise<any>)[] | []
 

@@ -1,5 +1,5 @@
 import {Panel, PanelBody} from '../Panel'
-import {Txt} from 'mui-extension/lib/Txt/Txt'
+import {Txt} from '../../alexlibs/mui-extension'
 import * as React from 'react'
 import {ReactNode} from 'react'
 import {Icon} from '@mui/material'

@@ -8,9 +8,9 @@ import {ScMenuItem} from '../MenuItem/MenuItem'
 import {DialogInputRow} from '../../shared/DialogInputRow/DialogInputRow'
 import {Controller, useForm} from 'react-hook-form'
 import {ScMultiSelect} from '../../shared/Select/MultiSelect'
-import {Enum} from '@alexandreannic/ts-utils/lib/common/enum/Enum'
+import {Enum} from '../../alexlibs/ts-utils'
 import {Label} from '../../shared/Label/Label'
-import {Btn} from 'mui-extension'
+import {Btn} from '../../alexlibs/mui-extension'
 
 export interface WebsitesFiltersProps {
   updateFilters: (_: WebsiteWithCompanySearch) => void

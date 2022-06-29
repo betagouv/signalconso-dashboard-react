@@ -3,7 +3,7 @@ import {ReportEventComponent} from './ReportEvent'
 import React from 'react'
 import {useI18n} from '../../../core/i18n'
 import {ReportEvent} from '@signal-conso/signalconso-api-sdk-js'
-import {Fender} from 'mui-extension/lib'
+import {Fender} from '../../../alexlibs/mui-extension'
 
 interface Props {
   events?: ReportEvent[]

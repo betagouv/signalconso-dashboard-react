@@ -5,7 +5,7 @@ import React, {ReactElement, useEffect, useState} from 'react'
 import {useI18n} from '../../core/i18n'
 import {Controller, useForm} from 'react-hook-form'
 import {cleanObject, CompanySearch} from '@signal-conso/signalconso-api-sdk-js'
-import {Btn} from 'mui-extension'
+import {Btn} from '../../alexlibs/mui-extension'
 import {ScInput} from '../../shared/Input/ScInput'
 import {DialogInputRow} from '../../shared/DialogInputRow/DialogInputRow'
 

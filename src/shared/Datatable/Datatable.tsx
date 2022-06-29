@@ -14,8 +14,8 @@ import {
 import React, {CSSProperties, ReactNode, useMemo} from 'react'
 import {DatatableColumnToggle} from './DatatableColumnsToggle'
 import {useI18n} from '../../core/i18n'
-import {Fender} from 'mui-extension/lib'
-import {usePersistentState} from 'react-persistent-state/build'
+import {Fender} from '../../alexlibs/mui-extension'
+import {usePersistentState} from '../../alexlibs/react-persistent-state'
 import {combineSx, sxUtils} from '../../core/theme'
 
 type OrderBy = 'asc' | 'desc'

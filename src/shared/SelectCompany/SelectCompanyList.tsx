@@ -1,6 +1,6 @@
 import {CompanySearchResult, Report} from '@signal-conso/signalconso-api-sdk-js'
 import {ScRadioGroupItem} from '../RadioGroup/RadioGroupItem'
-import {Txt} from 'mui-extension/lib/Txt/Txt'
+import {Txt} from '../../alexlibs/mui-extension'
 import {Icon} from '@mui/material'
 import {ScRadioGroup} from '../RadioGroup/RadioGroup'
 import React from 'react'

@@ -1,7 +1,7 @@
-import {ISearch, Paginate, UsePaginate} from '@alexandreannic/react-hooks-lib/lib/usePaginate/UsePaginate'
-import {usePaginate} from '@alexandreannic/react-hooks-lib/lib'
+import {ISearch, Paginate, UsePaginate} from '../../alexlibs/react-hooks-lib'
+import {usePaginate} from '../../alexlibs/react-hooks-lib'
 import {Paginate as ApiPaginate} from '@signal-conso/signalconso-api-sdk-js'
-import {mapPromise, PromiseFnResult} from '@alexandreannic/ts-utils/lib/common'
+import {mapPromise, PromiseFnResult} from '../../alexlibs/ts-utils'
 
 const mapSdkPaginate = <T>(_: ApiPaginate<T>): Paginate<T> => ({
   data: _.entities,

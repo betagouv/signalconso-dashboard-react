@@ -1,4 +1,4 @@
-import {Modal, ModalProps} from 'mui-extension'
+import {Modal, ModalProps} from '../../alexlibs/mui-extension'
 import {useI18n} from '../../core/i18n'
 
 export const ScDialog = ({confirmLabel, cancelLabel, ...props}: ModalProps) => {

@@ -1,4 +1,4 @@
-import {Page} from 'mui-extension/lib'
+import {Page} from '../../alexlibs/mui-extension'
 import {Icon, Tab, Tabs} from '@mui/material'
 import * as React from 'react'
 import {useEffect} from 'react'

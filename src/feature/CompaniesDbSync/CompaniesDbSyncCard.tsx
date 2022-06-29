@@ -1,4 +1,4 @@
-import {Txt} from 'mui-extension/lib/Txt/Txt'
+import {Txt} from '../../alexlibs/mui-extension'
 import {Panel, PanelBody} from 'shared/Panel'
 import {CompaniesDbSyncInfo} from '@signal-conso/signalconso-api-sdk-js'
 import {alpha, Box, CircularProgress, Grid, useTheme} from '@mui/material'
@@ -6,7 +6,7 @@ import {styleUtils} from '../../core/theme'
 import {useI18n} from '../../core/i18n'
 import {PanelFoot} from '../../shared/Panel/PanelFoot'
 import {ScButton} from '../../shared/Button/Button'
-import {UseAsync, useMemoFn} from '@alexandreannic/react-hooks-lib/lib'
+import {UseAsync, useMemoFn} from '../../alexlibs/react-hooks-lib'
 
 interface Props {
   name: string

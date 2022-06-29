@@ -3,7 +3,7 @@ import {useI18n} from '../../core/i18n'
 import {Autocomplete} from '@mui/material'
 import {ScDialog} from '../Confirm/ScDialog'
 import {ScInput} from '../Input/ScInput'
-import {useEffectFn} from '@alexandreannic/react-hooks-lib'
+import {useEffectFn} from '../../alexlibs/react-hooks-lib'
 
 interface Props<T> {
   value?: T

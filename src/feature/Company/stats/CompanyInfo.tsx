@@ -5,7 +5,7 @@ import {Divider, Icon, List, ListItem, ListItemIcon, ListItemText} from '@mui/ma
 import {Panel, PanelBody, PanelHead} from '../../../shared/Panel'
 import {Company} from '@signal-conso/signalconso-api-sdk-js'
 import {AddressComponent} from '../../../shared/Address/Address'
-import {useFetcher} from '@alexandreannic/react-hooks-lib'
+import {useFetcher} from '../../../alexlibs/react-hooks-lib'
 
 interface Props {
   company: Company

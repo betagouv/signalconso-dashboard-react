@@ -3,11 +3,11 @@ import * as React from 'react'
 import {useEffect} from 'react'
 import {useLogin} from '../../core/context/LoginContext'
 import {useI18n} from '../../core/i18n'
-import {useFetcher} from '@alexandreannic/react-hooks-lib'
+import {useFetcher} from '../../alexlibs/react-hooks-lib'
 import {statsFormatCurveDate} from './Stats'
 import {curveRatio} from './ReportStats'
 import {ReportResponseStatsParams} from '@signal-conso/signalconso-api-sdk-js'
-import {Txt} from 'mui-extension/lib/Txt/Txt'
+import {Txt} from '../../alexlibs/mui-extension'
 import {ChartAsync} from '../../shared/Chart/ChartAsync'
 
 interface Props {

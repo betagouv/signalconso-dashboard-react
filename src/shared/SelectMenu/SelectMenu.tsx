@@ -1,7 +1,7 @@
 import {Checkbox, Menu, MenuItem} from '@mui/material'
 import React, {useEffect, useState} from 'react'
 import {useI18n} from '../../core/i18n'
-import {makeSx} from 'mui-extension'
+import {makeSx} from '../../alexlibs/mui-extension'
 
 interface Props<T> {
   options: T[]

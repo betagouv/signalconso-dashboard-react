@@ -3,7 +3,7 @@ import * as React from 'react'
 import {statsFormatCurveDate} from './Stats'
 import {useI18n} from '../../core/i18n'
 import {useLogin} from '../../core/context/LoginContext'
-import {Txt} from 'mui-extension/lib/Txt/Txt'
+import {Txt} from '../../alexlibs/mui-extension'
 import {ChartAsync} from '../../shared/Chart/ChartAsync'
 import {Period} from '@signal-conso/signalconso-api-sdk-js'
 

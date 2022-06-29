@@ -1,7 +1,7 @@
 import * as React from 'react'
 import {Box, BoxProps, Icon} from '@mui/material'
 import {layoutConfig} from '../index'
-import {IconBtn} from 'mui-extension/lib'
+import {IconBtn} from '../../../alexlibs/mui-extension'
 import {useLayoutContext} from '../LayoutContext'
 
 export interface SidebarHeaderProps extends BoxProps {

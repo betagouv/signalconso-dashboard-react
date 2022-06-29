@@ -1,6 +1,6 @@
 import * as React from 'react'
 import {ReactNode, useContext} from 'react'
-import {UseFetcher, useFetcher} from '@alexandreannic/react-hooks-lib/lib'
+import {UseFetcher, useFetcher} from '../../alexlibs/react-hooks-lib'
 import {ApiError, CompanySearchResult, Report} from '@signal-conso/signalconso-api-sdk-js'
 import {SignalConsoApiSdk} from '../ApiSdkInstance'
 

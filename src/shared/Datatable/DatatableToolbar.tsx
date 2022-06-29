@@ -1,7 +1,7 @@
 import {useI18n} from '../../core/i18n'
 import {Box, Icon} from '@mui/material'
 import {lighten} from '@mui/system/colorManipulator'
-import {IconBtn} from 'mui-extension'
+import {IconBtn} from '../../alexlibs/mui-extension'
 import React, {ReactNode} from 'react'
 
 interface DatatableToolbarProps {

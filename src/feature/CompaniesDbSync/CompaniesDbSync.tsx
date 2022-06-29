@@ -5,7 +5,7 @@ import {useI18n} from '../../core/i18n'
 import {CompaniesDbSyncCard} from './CompaniesDbSyncCard'
 import {Grid} from '@mui/material'
 import {ScButton} from '../../shared/Button/Button'
-import {Alert} from 'mui-extension'
+import {Alert} from '../../alexlibs/mui-extension'
 
 export const CompaniesDbSync = () => {
   const {m} = useI18n()

@@ -1,5 +1,5 @@
 import {ApiError, CompanyAccess, CompanyAccessLevel, CompanyAccessToken, Id} from '@signal-conso/signalconso-api-sdk-js'
-import {useCrudList} from '@alexandreannic/react-hooks-lib/lib'
+import {useCrudList} from '../../alexlibs/react-hooks-lib'
 import {SignalConsoApiSdk} from '../../core/ApiSdkInstance'
 
 export const useCompanyAccess = (api: SignalConsoApiSdk, siret: string) => {

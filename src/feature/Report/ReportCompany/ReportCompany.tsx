@@ -1,7 +1,7 @@
 import {Panel, PanelBody, PanelHead} from '../../../shared/Panel'
 import {AddressComponent} from '../../../shared/Address/Address'
 import {fromNullable} from 'fp-ts/lib/Option'
-import {Txt} from 'mui-extension/lib/Txt/Txt'
+import {Txt} from '../../../alexlibs/mui-extension'
 import {Box, Icon, IconButton, useTheme} from '@mui/material'
 import {SelectCompanyDialog} from '../../../shared/SelectCompany/SelectCompanyDialog'
 import {ScButton} from '../../../shared/Button/Button'

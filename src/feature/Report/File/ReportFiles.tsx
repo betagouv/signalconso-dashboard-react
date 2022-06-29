@@ -4,7 +4,7 @@ import React, {useEffect, useState} from 'react'
 import {ReportFileAdd} from './ReportFileAdd'
 import {ReportFile} from './ReportFile'
 import {useI18n} from '../../../core/i18n'
-import {Txt} from 'mui-extension/lib/Txt/Txt'
+import {Txt} from '../../../alexlibs/mui-extension'
 
 export interface ReportFilesProps {
   files?: UploadedFile[]

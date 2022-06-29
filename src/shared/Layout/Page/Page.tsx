@@ -1,8 +1,8 @@
 import * as React from 'react'
 import {ReactNode} from 'react'
-import {Page as MxPage} from 'mui-extension'
+import {Page as MxPage} from '../../../alexlibs/mui-extension'
 import {LinearProgress} from '@mui/material'
-import {PageProps as MxPageProps} from 'mui-extension/lib/Page/Page'
+import {PageProps as MxPageProps} from '../../../alexlibs/mui-extension'
 
 export const pageWidth = {
   xl: 1400,
