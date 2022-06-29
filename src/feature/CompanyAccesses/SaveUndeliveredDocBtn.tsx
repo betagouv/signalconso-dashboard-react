@@ -9,14 +9,14 @@ import {ButtonProps} from '@mui/material'
 
 interface Props extends Omit<ButtonProps, 'onChange'> {
   loading: boolean
-  onChange: (date: Date) => Promise<any>
+  onChange: (date: Date | undefined) => Promise<any>
 }
 
 export const SaveUndeliveredDocBtn = ({loading, onChange, ...props}: Props) => {
   const {m} = useI18n()
   const {connectedUser} = useLogin()
   const {toastSuccess} = useToast()
-  const [returnDate, setReturnDate] = useState(new Date())
+  const [returnDate, setReturnDate] = useState<Date | undefined>(new Date())
 
   if (!connectedUser.isAdmin) {
     return <></>
@@ -34,7 +34,14 @@ export const SaveUndeliveredDocBtn = ({loading, onChange, ...props}: Props) => {
       }
       content={
         <>
-          <Datepicker sx={{mr: 1}} fullWidth label={m.returnDate} value={returnDate} onChange={setReturnDate} />
+          <Datepicker
+            sx={{mr: 1}}
+            fullWidth
+            label={m.returnDate}
+            value={returnDate}
+            onChange={setReturnDate}
+            timeOfDay={'startOfDay'}
+          />
         </>
       }
     >
