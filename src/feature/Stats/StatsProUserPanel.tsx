@@ -6,6 +6,7 @@ import {useLogin} from '../../core/context/LoginContext'
 import {Txt} from '../../alexlibs/mui-extension'
 import {ChartAsync} from '../../shared/Chart/ChartAsync'
 import {Period} from '@signal-conso/signalconso-api-sdk-js'
+import {useTheme} from '@mui/material'
 
 interface Props {
   ticks: number
@@ -15,7 +16,7 @@ interface Props {
 export const StatsProUserPanel = ({ticks, tickDuration}: Props) => {
   const {apiSdk: api} = useLogin()
   const {m} = useI18n()
-
+  const theme = useTheme()
   return (
     <Panel>
       <PanelHead>{m.reportsOnFisrtProActivationAccount}</PanelHead>
@@ -31,11 +32,13 @@ export const StatsProUserPanel = ({ticks, tickDuration}: Props) => {
             {
               label: m.reportsProVisibleCount,
               key: 'visible_by_pro',
+              color: theme.palette.primary.main,
               curve: _ => _[0].map(statsFormatCurveDate(m)),
             },
             {
               label: m.proFirstAccountActivation,
               key: 'pro',
+              color: '#e48c00',
               curve: _ => _[1].map(statsFormatCurveDate(m)),
             },
           ]}

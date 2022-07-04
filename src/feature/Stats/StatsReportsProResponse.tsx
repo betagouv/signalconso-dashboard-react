@@ -9,6 +9,7 @@ import {curveRatio} from './ReportStats'
 import {ReportResponseStatsParams} from '@signal-conso/signalconso-api-sdk-js'
 import {Txt} from '../../alexlibs/mui-extension'
 import {ChartAsync} from '../../shared/Chart/ChartAsync'
+import {useTheme} from '@mui/material'
 
 interface Props {
   ticks?: number
@@ -17,6 +18,7 @@ interface Props {
 export const StatsReportsProResponsePanel = ({ticks}: Props) => {
   const {apiSdk: api} = useLogin()
   const {m} = useI18n()
+  const theme = useTheme()
 
   const reportResponseCountCurve = useFetcher(api.secured.stats.getProReportResponseStat)
 
@@ -89,16 +91,19 @@ export const StatsReportsProResponsePanel = ({ticks}: Props) => {
             {
               label: m.reportsProMalAttribue,
               key: 'mal_attribue',
+              color: theme.palette.primary.main,
               curve: promises => curveRatio(promises[1], promises[0]).map(statsFormatCurveDate(m)),
             },
             {
               label: m.reportsProInfonde,
               key: 'infonde',
+              color: '#e48c00',
               curve: promises => curveRatio(promises[2], promises[0]).map(statsFormatCurveDate(m)),
             },
             {
               label: m.reportsProPromesseAction,
               key: 'promesse_action',
+              color: 'red',
               curve: promises => curveRatio(promises[3], promises[0]).map(statsFormatCurveDate(m)),
             },
           ]}

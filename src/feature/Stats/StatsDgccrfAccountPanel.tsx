@@ -5,6 +5,7 @@ import {useLogin} from '../../core/context/LoginContext'
 import {useI18n} from '../../core/i18n'
 import {Txt} from '../../alexlibs/mui-extension'
 import {ChartAsync} from '../../shared/Chart/ChartAsync'
+import {useTheme} from '@mui/material'
 
 interface Props {
   ticks: number
@@ -13,6 +14,7 @@ interface Props {
 export const StatsDgccrfAccountPanel = ({ticks}: Props) => {
   const {apiSdk: api} = useLogin()
   const {m} = useI18n()
+  const theme = useTheme()
 
   return (
     <Panel>
@@ -29,11 +31,13 @@ export const StatsDgccrfAccountPanel = ({ticks}: Props) => {
             {
               label: m.dgccrfCountActiveAccount,
               key: 'dgccrfActiveAccount',
+              color: '#e48c00',
               curve: ([activeAccounts]) => activeAccounts.map(statsFormatCurveDate(m)),
             },
             {
               label: m.dgccrfCountAccount,
               key: 'dgccrfAccount',
+              color: theme.palette.primary.main,
               curve: ([, allAccounts]) => allAccounts.map(statsFormatCurveDate(m)),
             },
           ]}

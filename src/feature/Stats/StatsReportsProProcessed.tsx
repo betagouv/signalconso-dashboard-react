@@ -6,6 +6,7 @@ import {statsFormatCurveDate} from './Stats'
 import {curveRatio} from './ReportStats'
 import {Txt} from '../../alexlibs/mui-extension'
 import {ChartAsync} from '../../shared/Chart/ChartAsync'
+import {useTheme} from '@mui/material'
 
 interface Props {
   ticks?: number
@@ -14,6 +15,7 @@ interface Props {
 export const StatsReportsProProcessedPanel = ({ticks}: Props) => {
   const {apiSdk: api} = useLogin()
   const {m} = useI18n()
+  const theme = useTheme()
 
   return (
     <Panel>
@@ -32,11 +34,13 @@ export const StatsReportsProProcessedPanel = ({ticks}: Props) => {
             {
               label: m.reportsProVisible,
               key: 'visible_by_pro',
+              color: theme.palette.primary.main,
               curve: promises => curveRatio(promises[2], promises[0]).map(statsFormatCurveDate(m)),
             },
             {
               label: m.reportsProResponse,
               key: 'response_pro',
+              color: '#e48c00',
               curve: promises => curveRatio(promises[1], promises[0]).map(statsFormatCurveDate(m)),
             },
           ]}
