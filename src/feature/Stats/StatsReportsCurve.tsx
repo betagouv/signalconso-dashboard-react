@@ -6,6 +6,7 @@ import {CountByDate, Period, ReportTag} from '@signal-conso/signalconso-api-sdk-
 import {statsFormatCurveDate} from './Stats'
 import {Txt} from '../../alexlibs/mui-extension'
 import {ChartAsync} from '../../shared/Chart/ChartAsync'
+import {useTheme} from '@mui/material'
 
 interface Props {
   ticks?: number
@@ -30,7 +31,7 @@ const computeCurveReportPhysique = (
 export const StatsReportsCurvePanel = ({ticks, tickDuration = 'Month'}: Props) => {
   const {apiSdk: api} = useLogin()
   const {m} = useI18n()
-
+  const theme = useTheme()
   return (
     <Panel>
       <PanelHead>{m.reportsDivision}</PanelHead>
@@ -39,34 +40,45 @@ export const StatsReportsCurvePanel = ({ticks, tickDuration = 'Month'}: Props) =
         <ChartAsync
           promisesDeps={[ticks, tickDuration]}
           promises={[
-            () => api.public.stats.getReportCountCurve({ticks, tickDuration}),
-            () => api.public.stats.getReportCountCurve({ticks, tickDuration, withTags: [ReportTag.Internet]}),
+            () => api.public.stats.getReportCountCurve({ticks, tickDuration, withoutTags: [ReportTag.Bloctel]}),
+            () =>
+              api.public.stats.getReportCountCurve({
+                ticks,
+                tickDuration,
+                withTags: [ReportTag.Internet],
+                withoutTags: [ReportTag.Bloctel],
+              }),
             () =>
               api.public.stats.getReportCountCurve({
                 ticks,
                 tickDuration,
                 withTags: [ReportTag.DemarchageADomicile, ReportTag.DemarchageTelephonique],
+                withoutTags: [ReportTag.Bloctel],
               }),
           ]}
           curves={[
             {
               label: m.reportsCount,
               key: 'all',
+              color: theme.palette.primary.main,
               curve: ([total]) => total.map(statsFormatCurveDate(m)),
             },
             {
               label: m.reportsCountInternet,
               key: 'internet',
+              color: '#e48c00',
               curve: ([, internet]) => internet.map(statsFormatCurveDate(m)),
             },
             {
               label: m.reportsCountDemarchage,
               key: 'demarchage',
+              color: 'red',
               curve: ([, , demarchage]) => demarchage.map(statsFormatCurveDate(m)),
             },
             {
               label: m.reportsCountPhysique,
               key: 'physique',
+              color: 'green',
               curve: _ => computeCurveReportPhysique(..._).map(statsFormatCurveDate(m)),
             },
           ]}
