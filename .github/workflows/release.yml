@@ -16,6 +16,6 @@ jobs:
         with:
           node-version: 16
           registry-url: https://registry.npmjs.org/
-      - run: npm i --force
-      - run: npx prettier -l .
-      - run: npm test
+      - run: yarn install --immutable
+      - run: yarn checkformat
+      - run: yarn test
