@@ -89,19 +89,15 @@ const AppLogin = () => {
       onRegister={apiPublicSdk.authenticate.sendActivationLink}
       onLogin={apiPublicSdk.authenticate.login}
       onLogout={() => history.push('/')}
-               getTokenFromResponse={_ => _.token}
-
-
+      getTokenFromResponse={_ => _.token}
     >
       {({authResponse, login, logout, register, isCheckingToken, setToken}) => (
         <Layout
           header={<ScHeader />}
           sidebar={authResponse?.user && <ScSidebar connectedUser={authResponse.user} logout={logout} />}
-
-
         >
           <Switch>
-   			         <Route path={siteMap.loggedout.emailValidation}>
+            <Route path={siteMap.loggedout.emailValidation}>
               <EmailValidation onSaveToken={setToken} onValidateEmail={apiPublicSdk.authenticate.validateEmail} />
             </Route>
             <Route path={siteMap.loggedout.resetPassword()}>
