@@ -4,7 +4,6 @@ import {NavLink} from 'react-router-dom'
 import {siteMap} from 'core/siteMap'
 import {ChartAsync} from 'shared/Chart/ChartAsync'
 import {CompanyWithReportsCount, CountByDate, Id, Period, ReportStatus} from '@signal-conso/signalconso-api-sdk-js'
-import * as React from 'react'
 import {useState} from 'react'
 import {useLogin} from 'core/context/LoginContext'
 import {useI18n} from 'core/i18n'
@@ -25,6 +24,7 @@ export const CompanyChartPanel = ({companyId, company}: {company: CompanyWithRep
   const {apiSdk} = useLogin()
   const {m, formatLargeNumber} = useI18n()
   const [reportsCurvePeriod, setReportsCurvePeriod] = useState<Period>('Month')
+  const companyIds = [companyId]
   return (
     <Panel>
       <PanelHead
@@ -42,11 +42,11 @@ export const CompanyChartPanel = ({companyId, company}: {company: CompanyWithRep
           </ButtonGroup>
         }
       >
-        {company.count && formatLargeNumber(company.count)}
-        &nbsp;
-        {m.reports.toLocaleLowerCase()}
-        <NavLink to={siteMap.logged.reports()}>
-          <IconButton size={'small'} sx={{color: t => t.palette.text.secondary, ml: 1}}>
+        <NavLink to={siteMap.logged.reports({companyIds})}>
+          {company.count && formatLargeNumber(company.count)}
+          &nbsp;
+          {m.reports.toLocaleLowerCase()}
+          <IconButton size={'small'} sx={{color: t => t.palette.text.secondary}}>
             <Icon>open_in_new</Icon>
           </IconButton>
         </NavLink>
@@ -58,13 +58,13 @@ export const CompanyChartPanel = ({companyId, company}: {company: CompanyWithRep
           promises={[
             () =>
               apiSdk.publicConnected.stats.getReportCountCurve({
-                companyIds: [companyId],
+                companyIds,
                 ticks,
                 tickDuration: reportsCurvePeriod,
               }),
             () =>
               apiSdk.publicConnected.stats.getReportCountCurve({
-                companyIds: [companyId],
+                companyIds,
                 status: [ReportStatus.PromesseAction, ReportStatus.Infonde, ReportStatus.MalAttribue],
                 ticks,
                 tickDuration: reportsCurvePeriod,
