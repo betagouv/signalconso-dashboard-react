@@ -488,6 +488,7 @@ export const fr = {
     dgccrfUsersPending: 'Agents en attente',
     consumersPending: 'Consommateurs non validés',
     lastReports: `Derniers signalements`,
+    reportCloudWord: `Nuage de mots signalements`,
     invitationDate: "Date d'invitation",
     connectedUnder3Months: 'Connecté dans les 3 derniers mois',
     users_invite_dialog_title: 'Inviter un agent DGCCRF',

@@ -27,6 +27,7 @@ import {StatusDistribution} from './stats/StatusDistribution'
 import {ReviewDistribution} from './stats/ReviewDistribution'
 import {CompanyInfo} from './stats/CompanyInfo'
 import {CompanyChartPanel} from './CompanyChartPanel'
+import {TagCloud} from 'react-tagcloud'
 
 export const CompanyComponent = () => {
   const {id} = useParams<{id: Id}>()
@@ -38,6 +39,7 @@ export const CompanyComponent = () => {
   const _event = useEventContext()
   const _accesses = useFetcher((siret: string) => apiSdk.secured.companyAccess.count(siret))
   const _report = useReportsContext()
+  const _cloudWord = useFetcher((companyId: Id) => apiSdk.secured.reports.getCloudWord(companyId))
   const company = _company.byId.entity
 
   useEffect(() => {
@@ -47,11 +49,13 @@ export const CompanyComponent = () => {
     }
     _company.responseRate.fetch({}, id)
     _stats.tags.fetch()
+    _cloudWord.fetch({}, id)
     connectedUser.isPro ? _stats.statusPro.fetch() : _stats.status.fetch()
     _stats.responseDelay.fetch()
   }, [id])
 
   useEffectFn(_company.byId.error, toastError)
+  useEffectFn(_cloudWord.error, toastError)
   useEffectFn(_company.hosts.error, toastError)
   useEffectFn(_stats.reportCount.error, toastError)
   useEffectFn(_stats.tags.error, toastError)
@@ -175,6 +179,22 @@ export const CompanyComponent = () => {
                   </Box>
                 </Panel>
               )}
+              <Panel loading={_cloudWord.loading}>
+                <PanelHead>{m.reportCloudWord}</PanelHead>
+                {_cloudWord.entity && (
+                  <Box sx={{margin: '30px'}}>
+                    <TagCloud
+                      colorOptions={{
+                        luminosity: 'dark',
+                        hue: 'blue',
+                      }}
+                      minSize={18}
+                      maxSize={40}
+                      tags={_cloudWord.entity}
+                    />
+                  </Box>
+                )}
+              </Panel>
             </Grid>
           </Grid>
         </>
