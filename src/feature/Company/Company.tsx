@@ -180,9 +180,18 @@ export const CompanyComponent = () => {
                 </Panel>
               )}
               <Panel loading={_cloudWord.loading}>
-                <PanelHead>{m.reportCloudWord}</PanelHead>
-                {_cloudWord.entity && (
-                  <Box sx={{margin: '30px'}}>
+                <PanelHead>
+                  <Tooltip title={m.helpCloudWord}>
+                    <Box sx={{display: 'flex'}}>
+                      {m.reportCloudWord}
+                      <Icon sx={{color: t => t.palette.text.disabled, marginLeft: '5px'}} fontSize="medium">
+                        help
+                      </Icon>
+                    </Box>
+                  </Tooltip>
+                </PanelHead>
+                <Box sx={{margin: '30px'}}>
+                  {_cloudWord.entity && _cloudWord.entity.length > 0 ? (
                     <TagCloud
                       colorOptions={{
                         luminosity: 'dark',
@@ -192,8 +201,10 @@ export const CompanyComponent = () => {
                       maxSize={40}
                       tags={_cloudWord.entity}
                     />
-                  </Box>
-                )}
+                  ) : (
+                    m.cannotGenerateCloudWord
+                  )}
+                </Box>
               </Panel>
             </Grid>
           </Grid>
