@@ -248,7 +248,7 @@ export const WebsitesInvestigation = () => {
                     <IconBtn
                       loading={_remove.loading}
                       color="primary"
-                      onClick={() => _remove.fetch({}, _.id).then(_ => () => _websiteWithCompany.fetch({clean: false}))}
+                      onClick={() => _remove.fetch({}, _.id).then(_ => _websiteWithCompany.fetch({clean: false}))}
                     >
                       <Icon>delete</Icon>
                     </IconBtn>
