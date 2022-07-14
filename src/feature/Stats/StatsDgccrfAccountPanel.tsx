@@ -1,44 +1,28 @@
 import {Panel, PanelBody, PanelHead} from '../../shared/Panel'
-import * as React from 'react'
-import {statsFormatCurveDate} from './Stats'
 import {useLogin} from '../../core/context/LoginContext'
 import {useI18n} from '../../core/i18n'
 import {Txt} from '../../alexlibs/mui-extension'
-import {ChartAsync} from '../../shared/Chart/ChartAsync'
 import {useTheme} from '@mui/material'
+import {SimplifiedAsyncLineChart} from 'shared/Chart/LineChartWrappers'
 
-interface Props {
-  ticks: number
-}
-
-export const StatsDgccrfAccountPanel = ({ticks}: Props) => {
+export const StatsDgccrfAccountPanel = () => {
   const {apiSdk: api} = useLogin()
   const {m} = useI18n()
-  const theme = useTheme()
-
+  const ticks = 12
   return (
     <Panel>
       <PanelHead>{m.dgccrfUser}</PanelHead>
       <PanelBody>
         <Txt color="hint" gutterBottom block dangerouslySetInnerHTML={{__html: m.dgccrfUserDesc}} />
-        <ChartAsync
-          promisesDeps={[ticks]}
-          promises={[
-            () => api.secured.stats.getActiveDgccrfAccountCurve({ticks}),
-            () => api.secured.stats.getDgccrfAccountCurve({ticks}),
-          ]}
+        <SimplifiedAsyncLineChart
           curves={[
             {
               label: m.dgccrfCountActiveAccount,
-              key: 'dgccrfActiveAccount',
-              color: '#e48c00',
-              curve: ([activeAccounts]) => activeAccounts.map(statsFormatCurveDate(m)),
+              loadData: () => api.secured.stats.getActiveDgccrfAccountCurve({ticks}),
             },
             {
               label: m.dgccrfCountAccount,
-              key: 'dgccrfAccount',
-              color: theme.palette.primary.main,
-              curve: ([, allAccounts]) => allAccounts.map(statsFormatCurveDate(m)),
+              loadData: () => api.secured.stats.getDgccrfAccountCurve({ticks}),
             },
           ]}
         />

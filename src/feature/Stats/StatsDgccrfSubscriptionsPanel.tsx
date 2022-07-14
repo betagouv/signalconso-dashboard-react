@@ -1,43 +1,29 @@
-import {Panel, PanelBody, PanelHead} from '../../shared/Panel'
-import * as React from 'react'
-import {statsFormatCurveDate} from './Stats'
+import {useTheme} from '@mui/material'
+import {SimplifiedAsyncLineChart} from 'shared/Chart/LineChartWrappers'
+import {Txt} from '../../alexlibs/mui-extension'
 import {useLogin} from '../../core/context/LoginContext'
 import {useI18n} from '../../core/i18n'
-import {Txt} from '../../alexlibs/mui-extension'
-import {ChartAsync} from '../../shared/Chart/ChartAsync'
-import {useTheme} from '@mui/material'
+import {Panel, PanelBody, PanelHead} from '../../shared/Panel'
 
-interface Props {
-  ticks: number
-}
-
-export const StatsDgccrfSubscriptionsPanel = ({ticks}: Props) => {
+export const StatsDgccrfSubscriptionsPanel = () => {
   const {apiSdk: api} = useLogin()
   const {m} = useI18n()
   const theme = useTheme()
+  const ticks = 12
   return (
     <Panel>
       <PanelHead>{m.dgccrfActions}</PanelHead>
       <PanelBody>
         <Txt color="hint" gutterBottom block dangerouslySetInnerHTML={{__html: m.dgccrfActionsDesc}} />
-        <ChartAsync
-          promisesDeps={[ticks]}
-          promises={[
-            () => api.secured.stats.getDgccrfSubscriptionsCurve({ticks}),
-            () => api.secured.stats.getDgccrfControlsCurve({ticks}),
-          ]}
+        <SimplifiedAsyncLineChart
           curves={[
             {
               label: m.dgccrfSubscriptionsCurve,
-              key: 'getDgccrfSubscriptionsCurve',
-              color: theme.palette.primary.main,
-              curve: promises => promises[0].map(statsFormatCurveDate(m)),
+              loadData: () => api.secured.stats.getDgccrfSubscriptionsCurve({ticks}),
             },
             {
               label: m.dgccrfControlsCurve,
-              key: 'getDgccrfControlsCurve',
-              color: '#e48c00',
-              curve: promises => promises[1].map(statsFormatCurveDate(m)),
+              loadData: () => api.secured.stats.getDgccrfControlsCurve({ticks}),
             },
           ]}
         />
