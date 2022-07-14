@@ -310,13 +310,7 @@ export const fr = {
     consoAnonyme: 'Conso. anonyme',
     hasAttachement: `Pièces jointes`,
     reportsProProcessed: 'Traitement des signalements par les pros',
-    reportsProProcessedDesc: `   
-    <div>Pourcentage du traitement des signalements visibles par les professionnels (une partie des signalements ne sont pas transmis aux professionnels) sur le total des signalements</div>
-    <ul>
-        <li>Part des signalements transmis : Envoyé, Lu, Non consulté, Consulte ignoré, Promesse d'action, infondé, Mal attribué</li>
-        <li>Part des réponses aux signalements : Promesse d'action, infondé, Mal attribué</li>
-    </ul>
-  `,
+    reportsProProcessedDesc: `Pourcentage du traitement des signalements visibles par les professionnels (une partie des signalements ne sont pas transmis aux professionnels) auxquels les professionnels ont répondu`,
     reportsProResponseType: 'Types de réponse - évolution',
     reportsProResponseTypeDesc: `   
     Répartition des réponses des professionels sur les signalements transmis
