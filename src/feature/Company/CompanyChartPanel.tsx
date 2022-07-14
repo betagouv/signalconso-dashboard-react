@@ -1,30 +1,54 @@
-import {Panel, PanelBody, PanelHead} from 'shared/Panel'
 import {alpha, Button, ButtonGroup, Icon, IconButton} from '@mui/material'
-import {NavLink} from 'react-router-dom'
-import {siteMap} from 'core/siteMap'
-import {ChartAsync} from 'shared/Chart/ChartAsync'
-import {CompanyWithReportsCount, CountByDate, Id, Period, ReportStatus} from '@signal-conso/signalconso-api-sdk-js'
-import {useState} from 'react'
+import {CompanyWithReportsCount, Id, Period, ReportStatus} from '@signal-conso/signalconso-api-sdk-js'
 import {useLogin} from 'core/context/LoginContext'
 import {useI18n} from 'core/i18n'
-import {I18nContextProps} from 'core/i18n/I18n'
+import {siteMap} from 'core/siteMap'
+import {useEffect, useState} from 'react'
+import {NavLink} from 'react-router-dom'
+import {CurveDefinition, LineChartOrPlaceholder} from 'shared/Chart/LineChartWrappers'
+import {Panel, PanelBody, PanelHead} from 'shared/Panel'
 
 const periods: Period[] = ['Day', 'Month']
 
 const ticks = 7
-
-const formatCurveDate =
-  (m: I18nContextProps['m']) =>
-  ({date, count}: CountByDate): {date: string; count: number} => ({
-    date: (m.monthShort_ as any)[date.getMonth() + 1],
-    count,
-  })
 
 export const CompanyChartPanel = ({companyId, company}: {company: CompanyWithReportsCount; companyId: Id}) => {
   const {apiSdk} = useLogin()
   const {m, formatLargeNumber} = useI18n()
   const [reportsCurvePeriod, setReportsCurvePeriod] = useState<Period>('Month')
   const companyIds = [companyId]
+  const [curves, setCurves] = useState<CurveDefinition[] | undefined>()
+
+  useEffect(() => {
+    async function inner() {
+      setCurves(undefined)
+      const [reports, responses] = await Promise.all([
+        apiSdk.publicConnected.stats.getReportCountCurve({
+          companyIds,
+          ticks,
+          tickDuration: reportsCurvePeriod,
+        }),
+        apiSdk.publicConnected.stats.getReportCountCurve({
+          companyIds,
+          status: [ReportStatus.PromesseAction, ReportStatus.Infonde, ReportStatus.MalAttribue],
+          ticks,
+          tickDuration: reportsCurvePeriod,
+        }),
+      ])
+      setCurves([
+        {
+          label: m.reportsCount,
+          data: reports,
+        },
+        {
+          label: m.responsesCount,
+          data: responses,
+        },
+      ])
+    }
+    inner()
+  }, [reportsCurvePeriod])
+
   return (
     <Panel>
       <PanelHead
@@ -52,37 +76,7 @@ export const CompanyChartPanel = ({companyId, company}: {company: CompanyWithRep
         </NavLink>
       </PanelHead>
       <PanelBody>
-        <ChartAsync
-          hideLabelToggle={true}
-          promisesDeps={[reportsCurvePeriod, ticks]}
-          promises={[
-            () =>
-              apiSdk.publicConnected.stats.getReportCountCurve({
-                companyIds,
-                ticks,
-                tickDuration: reportsCurvePeriod,
-              }),
-            () =>
-              apiSdk.publicConnected.stats.getReportCountCurve({
-                companyIds,
-                status: [ReportStatus.PromesseAction, ReportStatus.Infonde, ReportStatus.MalAttribue],
-                ticks,
-                tickDuration: reportsCurvePeriod,
-              }),
-          ]}
-          curves={[
-            {
-              label: m.reportsCount,
-              key: 'count',
-              curve: ([total]) => total.map(formatCurveDate(m)),
-            },
-            {
-              label: m.responsesCount,
-              key: 'countResponded',
-              curve: ([, responded]) => responded.map(formatCurveDate(m)),
-            },
-          ]}
-        />
+        <LineChartOrPlaceholder hideLabelToggle={true} {...{curves}} />
       </PanelBody>
     </Panel>
   )

@@ -1,88 +1,77 @@
-import {Panel, PanelBody, PanelHead} from '../../shared/Panel'
-import * as React from 'react'
+import {useTheme} from '@mui/material'
+import {CountByDate, ReportTag} from '@signal-conso/signalconso-api-sdk-js'
+import {AsyncLineChart} from 'shared/Chart/LineChartWrappers'
+import {Txt} from '../../alexlibs/mui-extension'
 import {useLogin} from '../../core/context/LoginContext'
 import {useI18n} from '../../core/i18n'
-import {CountByDate, Period, ReportTag} from '@signal-conso/signalconso-api-sdk-js'
-import {statsFormatCurveDate} from './Stats'
-import {Txt} from '../../alexlibs/mui-extension'
-import {ChartAsync} from '../../shared/Chart/ChartAsync'
-import {useTheme} from '@mui/material'
+import {Panel, PanelBody, PanelHead} from '../../shared/Panel'
 
-interface Props {
-  ticks?: number
-  tickDuration?: Period
-}
-
-const computeCurveReportPhysique = (
-  reportCountCurve: {date: Date; count: number}[],
-  reportInternetCountCurve: {date: Date; count: number}[],
-  reportDemarchageCountCurve: {date: Date; count: number}[],
-) => {
+const computeCurveReportPhysique = ({
+  all,
+  internet,
+  demarchages,
+}: {
+  all: CountByDate[]
+  internet: CountByDate[]
+  demarchages: CountByDate[]
+}) => {
   const res: CountByDate[] = []
-  for (let i = 0; i < reportCountCurve.length; i++) {
+  for (let i = 0; i < all.length; i++) {
     res[i] = {
-      date: reportCountCurve[i].date,
-      count: reportCountCurve[i].count - reportInternetCountCurve[i]?.count - reportDemarchageCountCurve[i]?.count,
+      date: all[i].date,
+      count: all[i].count - internet[i]?.count - demarchages[i]?.count,
     }
   }
   return res
 }
 
-export const StatsReportsCurvePanel = ({ticks, tickDuration = 'Month'}: Props) => {
+export const StatsReportsCurvePanel = () => {
   const {apiSdk: api} = useLogin()
   const {m} = useI18n()
   const theme = useTheme()
+  const tickDuration = 'Month'
+  const ticks = 12
+  const loadCurves = async () => {
+    const [all, internet, demarchages] = await Promise.all([
+      api.public.stats.getReportCountCurve({ticks, tickDuration, withoutTags: [ReportTag.Bloctel]}),
+      api.public.stats.getReportCountCurve({
+        ticks,
+        tickDuration,
+        withTags: [ReportTag.Internet],
+        withoutTags: [ReportTag.Bloctel],
+      }),
+      api.public.stats.getReportCountCurve({
+        ticks,
+        tickDuration,
+        withTags: [ReportTag.DemarchageADomicile, ReportTag.DemarchageTelephonique],
+        withoutTags: [ReportTag.Bloctel],
+      }),
+    ])
+    return [
+      {
+        label: m.reportsCount,
+        data: all,
+      },
+      {
+        label: m.reportsCountInternet,
+        data: internet,
+      },
+      {
+        label: m.reportsCountDemarchage,
+        data: demarchages,
+      },
+      {
+        label: m.reportsCountPhysique,
+        data: computeCurveReportPhysique({all, internet, demarchages}),
+      },
+    ]
+  }
   return (
     <Panel>
       <PanelHead>{m.reportsDivision}</PanelHead>
       <PanelBody>
         <Txt color="hint" gutterBottom block dangerouslySetInnerHTML={{__html: m.reportsDivisionDesc}} />
-        <ChartAsync
-          promisesDeps={[ticks, tickDuration]}
-          promises={[
-            () => api.public.stats.getReportCountCurve({ticks, tickDuration, withoutTags: [ReportTag.Bloctel]}),
-            () =>
-              api.public.stats.getReportCountCurve({
-                ticks,
-                tickDuration,
-                withTags: [ReportTag.Internet],
-                withoutTags: [ReportTag.Bloctel],
-              }),
-            () =>
-              api.public.stats.getReportCountCurve({
-                ticks,
-                tickDuration,
-                withTags: [ReportTag.DemarchageADomicile, ReportTag.DemarchageTelephonique],
-                withoutTags: [ReportTag.Bloctel],
-              }),
-          ]}
-          curves={[
-            {
-              label: m.reportsCount,
-              key: 'all',
-              color: theme.palette.primary.main,
-              curve: ([total]) => total.map(statsFormatCurveDate(m)),
-            },
-            {
-              label: m.reportsCountInternet,
-              key: 'internet',
-              color: '#e48c00',
-              curve: ([, internet]) => internet.map(statsFormatCurveDate(m)),
-            },
-            {
-              label: m.reportsCountDemarchage,
-              key: 'demarchage',
-              color: 'red',
-              curve: ([, , demarchage]) => demarchage.map(statsFormatCurveDate(m)),
-            },
-            {
-              label: m.reportsCountPhysique,
-              key: 'physique',
-              color: 'green',
-              curve: _ => computeCurveReportPhysique(..._).map(statsFormatCurveDate(m)),
-            },
-          ]}
-        />
+        <AsyncLineChart {...{loadCurves}} />
       </PanelBody>
     </Panel>
   )

@@ -1,45 +1,29 @@
-import {Panel, PanelBody, PanelHead} from '../../shared/Panel'
-import * as React from 'react'
-import {statsFormatCurveDate} from './Stats'
-import {useI18n} from '../../core/i18n'
-import {useLogin} from '../../core/context/LoginContext'
-import {Txt} from '../../alexlibs/mui-extension'
-import {ChartAsync} from '../../shared/Chart/ChartAsync'
-import {Period} from '@signal-conso/signalconso-api-sdk-js'
 import {useTheme} from '@mui/material'
+import {SimplifiedAsyncLineChart} from 'shared/Chart/LineChartWrappers'
+import {Txt} from '../../alexlibs/mui-extension'
+import {useLogin} from '../../core/context/LoginContext'
+import {useI18n} from '../../core/i18n'
+import {Panel, PanelBody, PanelHead} from '../../shared/Panel'
 
-interface Props {
-  ticks: number
-  tickDuration?: Period
-}
-
-export const StatsProUserPanel = ({ticks, tickDuration}: Props) => {
+export const StatsProUserPanel = () => {
   const {apiSdk: api} = useLogin()
   const {m} = useI18n()
   const theme = useTheme()
+  const ticks = 12
   return (
     <Panel>
       <PanelHead>{m.reportsOnFisrtProActivationAccount}</PanelHead>
       <PanelBody>
         <Txt color="hint" gutterBottom block dangerouslySetInnerHTML={{__html: m.reportsProUserDesc}} />
-        <ChartAsync
-          promisesDeps={[ticks, tickDuration]}
-          promises={[
-            () => api.secured.stats.getProReportTransmittedStat({ticks, tickDuration}),
-            () => api.secured.stats.getReportedInactiveProAccountRate({ticks, tickDuration}),
-          ]}
+        <SimplifiedAsyncLineChart
           curves={[
             {
               label: m.reportsProVisibleCount,
-              key: 'visible_by_pro',
-              color: theme.palette.primary.main,
-              curve: _ => _[0].map(statsFormatCurveDate(m)),
+              loadData: () => api.secured.stats.getProReportTransmittedStat({ticks}),
             },
             {
               label: m.proFirstAccountActivation,
-              key: 'pro',
-              color: '#e48c00',
-              curve: _ => _[1].map(statsFormatCurveDate(m)),
+              loadData: () => api.secured.stats.getReportedInactiveProAccountRate({ticks}),
             },
           ]}
         />
