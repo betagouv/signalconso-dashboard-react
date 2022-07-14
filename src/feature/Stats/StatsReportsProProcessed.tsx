@@ -1,50 +1,38 @@
-import {Panel, PanelBody, PanelHead} from '../../shared/Panel'
-import * as React from 'react'
+import {useTheme} from '@mui/material'
+import {toPercentage, AsyncLineChart} from 'shared/Chart/LineChartWrappers'
+import {Txt} from '../../alexlibs/mui-extension'
 import {useLogin} from '../../core/context/LoginContext'
 import {useI18n} from '../../core/i18n'
-import {statsFormatCurveDate} from './Stats'
-import {curveRatio} from './ReportStats'
-import {Txt} from '../../alexlibs/mui-extension'
-import {ChartAsync} from '../../shared/Chart/ChartAsync'
-import {useTheme} from '@mui/material'
+import {Panel, PanelBody, PanelHead} from '../../shared/Panel'
 
-interface Props {
-  ticks?: number
-}
-
-export const StatsReportsProProcessedPanel = ({ticks}: Props) => {
+export const StatsReportsProProcessedPanel = () => {
   const {apiSdk: api} = useLogin()
   const {m} = useI18n()
-  const theme = useTheme()
+
+  const loadCurves = async () => {
+    const [reports, transmitted, responses] = await Promise.all([
+      api.public.stats.getReportCountCurve(),
+      api.secured.stats.getProReportTransmittedStat(),
+      api.secured.stats.getProReportResponseStat(),
+    ])
+    return [
+      {
+        label: m.reportsProVisible,
+        data: toPercentage(transmitted, reports),
+      },
+      {
+        label: m.reportsProResponse,
+        data: toPercentage(responses, reports),
+      },
+    ]
+  }
 
   return (
     <Panel>
       <PanelHead>{m.reportsProProcessed}</PanelHead>
       <PanelBody>
         <Txt color="hint" gutterBottom block dangerouslySetInnerHTML={{__html: m.reportsProProcessedDesc}} />
-        <ChartAsync
-          disableAnimation
-          promisesDeps={[ticks]}
-          promises={[
-            () => api.public.stats.getReportCountCurve({ticks}),
-            () => api.secured.stats.getProReportResponseStat({ticks}),
-            () => api.secured.stats.getProReportTransmittedStat({ticks}),
-          ]}
-          curves={[
-            {
-              label: m.reportsProVisible,
-              key: 'visible_by_pro',
-              color: theme.palette.primary.main,
-              curve: promises => curveRatio(promises[2], promises[0]).map(statsFormatCurveDate(m)),
-            },
-            {
-              label: m.reportsProResponse,
-              key: 'response_pro',
-              color: '#e48c00',
-              curve: promises => curveRatio(promises[1], promises[0]).map(statsFormatCurveDate(m)),
-            },
-          ]}
-        />
+        <AsyncLineChart {...{loadCurves}} />
       </PanelBody>
     </Panel>
   )

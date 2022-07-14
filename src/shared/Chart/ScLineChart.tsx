@@ -1,21 +1,10 @@
-import {
-  Bar,
-  BarChart,
-  CartesianGrid,
-  LabelList,
-  Legend,
-  Line,
-  LineChart,
-  ResponsiveContainer,
-  Tooltip,
-  XAxis,
-  YAxis,
-} from 'recharts'
-import * as React from 'react'
-import {memo, useMemo, useState} from 'react'
 import {Box, Checkbox, Theme, useTheme} from '@mui/material'
-import {styleUtils} from '../../core/theme'
+import {memo, useMemo, useState} from 'react'
+import {CartesianGrid, LabelList, Legend, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis} from 'recharts'
 import {useI18n} from '../../core/i18n'
+import {styleUtils} from '../../core/theme'
+import {CountByDate} from '@signal-conso/signalconso-api-sdk-js'
+import {I18nContextProps} from 'core/i18n/I18n'
 
 export interface ScLineChartPropsBase {
   /**
@@ -31,10 +20,12 @@ interface Props extends ScLineChartPropsBase {
   curves: {
     label: string
     key: string
-    curve: {date: string; count: number}[]
+    curve: CountByDate[]
     color?: string
   }[]
 }
+
+const formatDate = (m: I18nContextProps['m'], date: Date): string => (m.monthShort_ as any)[date.getMonth() + 1]
 
 const colors = (t: Theme) => [t.palette.primary.main, '#e48c00', 'red', 'green']
 
@@ -46,7 +37,7 @@ export const ScLineChart = memo(({disableAnimation, hideLabelToggle, curves, hei
     const res: any[] = []
     curves.forEach((curve, i) => {
       curve.curve.forEach((data, j) => {
-        if (!res[j]) res[j] = {date: data.date} as any
+        if (!res[j]) res[j] = {date: formatDate(m, data.date)} as any
         res[j][curve.key] = data.count
       })
       res.push()
@@ -107,43 +98,3 @@ export const ScLineChart = memo(({disableAnimation, hideLabelToggle, curves, hei
     </>
   )
 })
-
-export const ScBarChart = ({curves, height}: Props) => {
-  const theme = useTheme()
-
-  const mappedData = useMemo(() => {
-    const res: any[] = []
-    curves.forEach((curve, i) => {
-      curve.curve.forEach((data, j) => {
-        if (!res[j]) res[j] = {date: data.date} as any
-        res[j][curve.key] = data.count
-      })
-      res.push()
-    })
-    return res
-  }, [curves])
-
-  return (
-    <div style={{height: height ?? 300}}>
-      <ResponsiveContainer width="100%" height="100%">
-        <BarChart width={500} height={300} data={mappedData}>
-          <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="date" />
-          <YAxis />
-          <Tooltip />
-          <Legend wrapperStyle={{position: 'relative', marginTop: -16}} />
-          {curves.map((_, i) => (
-            <Bar
-              stackId="_"
-              key={_.key}
-              name={_.label}
-              type="monotone"
-              dataKey={_.key}
-              fill={_.color ?? colors(theme)[i] ?? colors(theme)[0]}
-            />
-          ))}
-        </BarChart>
-      </ResponsiveContainer>
-    </div>
-  )
-}

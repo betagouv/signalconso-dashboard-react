@@ -6,8 +6,8 @@ import {StatsDgccrfSubscriptionsPanel} from './StatsDgccrfSubscriptionsPanel'
 export const DgccrfStats = () => {
   return (
     <Page>
-      <StatsDgccrfAccountPanel ticks={12} />
-      <StatsDgccrfSubscriptionsPanel ticks={12} />
+      <StatsDgccrfAccountPanel />
+      <StatsDgccrfSubscriptionsPanel />
     </Page>
   )
 }
