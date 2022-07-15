@@ -4,10 +4,11 @@ import {SelectActivityCode} from '../../shared/SelectActivityCode/SelectActivity
 import React, {ReactElement, useEffect, useState} from 'react'
 import {useI18n} from '../../core/i18n'
 import {Controller, useForm} from 'react-hook-form'
-import {cleanObject, CompanySearch} from '@signal-conso/signalconso-api-sdk-js'
 import {Btn} from '../../alexlibs/mui-extension'
 import {ScInput} from '../../shared/Input/ScInput'
 import {DialogInputRow} from '../../shared/DialogInputRow/DialogInputRow'
+import {CompanySearch} from '../../core/client/company/Company'
+import {cleanObject} from '../../core/helper'
 
 export interface CompaniesRegisteredFiltersProps {
   updateFilters: (_: Partial<CompanySearch>) => void

@@ -4,8 +4,8 @@ import {Enum} from '../../../alexlibs/ts-utils'
 import {Icon, Tooltip} from '@mui/material'
 import {Panel, PanelBody, PanelHead} from '../../../shared/Panel'
 import {HorizontalBarChart} from '../../../shared/HorizontalBarChart/HorizontalBarChart'
-import {ReportStatus, ReportStatusPro} from '@signal-conso/signalconso-api-sdk-js'
 import {useMemoFn} from '../../../alexlibs/react-hooks-lib'
+import {ReportStatus, ReportStatusPro} from '../../../core/client/report/Report'
 
 interface Props<T extends ReportStatus | ReportStatusPro> {
   values: {[key in T]: number} | undefined

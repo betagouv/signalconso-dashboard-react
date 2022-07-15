@@ -8,8 +8,8 @@ import {AccountEventActions, EventCategories, Matomo} from '../../core/plugins/M
 import {useAsync} from '../../alexlibs/react-hooks-lib'
 import {useLogin} from '../../core/context/LoginContext'
 import {map} from '../../alexlibs/ts-utils'
-import {ApiError} from '@signal-conso/signalconso-api-sdk-js'
 import {ScInput} from '../../shared/Input/ScInput'
+import {ApiError} from '../../core/client/ApiClient'
 
 interface Form {
   firstName: string

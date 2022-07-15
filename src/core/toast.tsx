@@ -1,7 +1,7 @@
 import {useToast as useMuiToast} from '../alexlibs/mui-extension'
-import {ApiError} from '@signal-conso/signalconso-api-sdk-js'
 import {useI18n} from './i18n'
-import {Index} from './helper/utils'
+import {ApiError} from './client/ApiClient'
+import {Index} from './helper'
 
 export const useToast = () => {
   const {toastError, ...toasts} = useMuiToast()

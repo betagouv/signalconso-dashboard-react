@@ -1,6 +1,4 @@
 import {Box, Icon} from '@mui/material'
-import {ReportSearchResult} from '@signal-conso/signalconso-api-sdk-js'
-import {Paginate} from '../../alexlibs/react-hooks-lib'
 import {ReportStatusLabel} from '../../shared/ReportStatus/ReportStatus'
 import * as React from 'react'
 import {useI18n} from '../../core/i18n'
@@ -11,6 +9,8 @@ import {Txt} from '../../alexlibs/mui-extension'
 import {ReportDetailValues} from '../../shared/ReportDetailValues/ReportDetailValues'
 import {makeSx} from '../../alexlibs/mui-extension'
 import {styleUtils} from '../../core/theme'
+import {ReportSearchResult} from '../../core/client/report/Report'
+import {Paginate} from '../../core/model'
 
 interface Props {
   reports: Paginate<ReportSearchResult>
@@ -41,7 +41,7 @@ export const ReportsShortList = ({reports}: Props) => {
   const {m, formatDate} = useI18n()
   return (
     <div>
-      {reports.data.map(_ => (
+      {reports.entities.map(_ => (
         <Box sx={css.report} key={_.report.id}>
           <Box sx={css.body}>
             <Box>

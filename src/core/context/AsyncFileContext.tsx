@@ -2,7 +2,7 @@ import * as React from 'react'
 import {ReactNode, useContext} from 'react'
 import {UseFetcher, useFetcher} from '../../alexlibs/react-hooks-lib'
 import {SignalConsoApiSdk} from '../ApiSdkInstance'
-import {ApiError} from '@signal-conso/signalconso-api-sdk-js'
+import {ApiError} from '../client/ApiClient'
 
 export interface AsyncFileContextProps extends UseFetcher<SignalConsoApiSdk['secured']['asyncFiles']['fetch'], ApiError> {}
 

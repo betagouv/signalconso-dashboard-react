@@ -1,11 +1,9 @@
 import React, {useState} from 'react'
 import {useI18n} from '../../../core/i18n'
-import {Company, Country, Id} from '@signal-conso/signalconso-api-sdk-js'
 import {ScDialog} from '../../../shared/Confirm/ScDialog'
 import {SelectCountry} from '../../../shared/SelectCountry/SelectCountry'
 import {useReportedWebsiteWithCompanyContext} from '../../../core/context/ReportedWebsitesContext'
 import {useToast} from '../../../core/toast'
-import {WebsiteUpdateCompany} from '@signal-conso/signalconso-api-sdk-js/lib/model'
 import {ChipCountry} from './ChipCountry'
 import {ChipCompany} from './ChipCompany'
 import {BoxProps} from '@mui/material'
@@ -18,6 +16,10 @@ import {fnSwitch} from '../../../alexlibs/ts-utils'
 import {ScButton} from '../../../shared/Button/Button'
 import {useEffectFn} from '../../../alexlibs/react-hooks-lib'
 import {SelectCompany} from '../../../shared/SelectCompany/SelectCompany'
+import {Company} from '../../../core/client/company/Company'
+import {WebsiteUpdateCompany} from '../../../core/client/website/Website'
+import {Country} from '../../../core/client/constant/Country'
+import {Id} from '../../../core/model'
 
 interface Website {
   id: Id

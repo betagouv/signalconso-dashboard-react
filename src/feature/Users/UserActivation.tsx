@@ -2,7 +2,6 @@ import React, {useEffect, useMemo} from 'react'
 import {useToast} from '../../core/toast'
 import {ScInputPassword} from '../../shared/InputPassword/InputPassword'
 import {Controller, useForm} from 'react-hook-form'
-import {TokenInfo, UserToActivate} from '@signal-conso/signalconso-api-sdk-js'
 import {useI18n} from '../../core/i18n'
 import {ScInput} from '../../shared/Input/ScInput'
 import {Box, Checkbox, FormControl, FormControlLabel, FormHelperText} from '@mui/material'
@@ -17,6 +16,8 @@ import {Txt} from '../../alexlibs/mui-extension'
 import {useFetcher} from '../../alexlibs/react-hooks-lib'
 import {Panel, PanelBody} from '../../shared/Panel'
 import {QueryString} from '../../core/helper/useQueryString'
+import {UserToActivate} from '../../core/client/user/User'
+import {TokenInfo} from '../../core/client/authenticate/Authenticate'
 
 interface UserActivationForm extends UserToActivate {
   repeatPassword: string

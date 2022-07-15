@@ -1,7 +1,7 @@
-import {EventActionValues} from '@signal-conso/signalconso-api-sdk-js'
 import {Icon, IconProps, Theme, useTheme} from '@mui/material'
 import {styleUtils} from '../../../core/theme'
-import {fnSwitch} from '../../../core/helper/utils'
+import {EventActionValues} from '../../../core/client/event/Event'
+import {fnSwitch} from '../../../alexlibs/ts-utils'
 
 export interface ReportEventIconProps extends IconProps {
   action: EventActionValues

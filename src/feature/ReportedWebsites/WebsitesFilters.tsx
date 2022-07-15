@@ -1,9 +1,7 @@
 import React, {ReactElement, useState} from 'react'
-import {WebsiteWithCompanySearch} from '@signal-conso/signalconso-api-sdk-js/lib/model'
 import {useLayoutContext} from '../../core/Layout/LayoutContext'
 import {Dialog, DialogActions, DialogContent, DialogTitle} from '@mui/material'
 import {useI18n} from '../../core/i18n'
-import {IdentificationStatus} from '@signal-conso/signalconso-api-sdk-js'
 import {ScMenuItem} from '../MenuItem/MenuItem'
 import {DialogInputRow} from '../../shared/DialogInputRow/DialogInputRow'
 import {Controller, useForm} from 'react-hook-form'
@@ -11,6 +9,7 @@ import {ScMultiSelect} from '../../shared/Select/MultiSelect'
 import {Enum} from '../../alexlibs/ts-utils'
 import {Label} from '../../shared/Label/Label'
 import {Btn} from '../../alexlibs/mui-extension'
+import {IdentificationStatus, WebsiteWithCompanySearch} from '../../core/client/website/Website'
 
 export interface WebsitesFiltersProps {
   updateFilters: (_: WebsiteWithCompanySearch) => void

@@ -8,20 +8,12 @@ import {Badge, Box, Grid, Icon, MenuItem} from '@mui/material'
 import {ReportStatusLabel, ReportStatusProLabel} from '../../shared/ReportStatus/ReportStatus'
 import {useLayoutContext} from '../../core/Layout/LayoutContext'
 import {Txt} from '../../alexlibs/mui-extension'
-import {
-  cleanObject,
-  Report,
-  ReportSearch,
-  ReportSearchResult,
-  ReportStatus,
-  ReportStatusPro,
-} from '@signal-conso/signalconso-api-sdk-js'
+
 import {combineSx, styleUtils, sxUtils} from '../../core/theme'
 import {SelectDepartments} from '../../shared/SelectDepartments/SelectDepartments'
 import {ScSelect} from '../../shared/Select/Select'
 import {useHistory} from 'react-router'
 import {siteMap} from '../../core/siteMap'
-import {openInNew} from '../../core/helper/utils'
 import {Btn, Fender} from '../../alexlibs/mui-extension'
 import {EntityIcon} from '../../core/EntityIcon'
 import {ScButton} from '../../shared/Button/Button'
@@ -42,6 +34,9 @@ import compose from '../../core/helper/compose'
 import {Alert, makeSx} from '../../alexlibs/mui-extension'
 import {DebouncedInput} from 'shared/DebouncedInput/DebouncedInput'
 import {Enum} from '../../alexlibs/ts-utils'
+import {cleanObject, openInNew} from '../../core/helper'
+import {Report, ReportSearchResult, ReportStatus, ReportStatusPro} from '../../core/client/report/Report'
+import {ReportSearch} from '../../core/client/report/ReportSearch'
 
 const css = makeSx({
   card: {
@@ -108,12 +103,12 @@ export const ReportsPro = () => {
   }, [_reports.filters])
 
   const isFirstVisit = useMemo(
-    () => !hasFilters && _reports.list?.data.every(_ => _.report.status === ReportStatus.TraitementEnCours),
+    () => !hasFilters && _reports.list?.entities.every(_ => _.report.status === ReportStatus.TraitementEnCours),
     [_reports.list],
   )
 
   const displayFilters = useMemo(
-    () => (_reports.list && _reports.list.totalSize > minRowsBeforeDisplayFilters) || hasFilters,
+    () => (_reports.list && _reports.list.totalCount > minRowsBeforeDisplayFilters) || hasFilters,
     [_reports.list],
   )
 
@@ -243,10 +238,10 @@ export const ReportsPro = () => {
                       </ScButton>
                     </Badge>
                     <ExportReportsPopper
-                      disabled={fromNullable(_reports?.list?.totalSize)
+                      disabled={fromNullable(_reports?.list?.totalCount)
                         .map(_ => _ > config.reportsLimitForExport)
                         .getOrElse(false)}
-                      tooltipBtnNew={fromNullable(_reports?.list?.totalSize)
+                      tooltipBtnNew={fromNullable(_reports?.list?.totalCount)
                         .map(_ =>
                           _ > config.reportsLimitForExport ? m.cannotExportMoreReports(config.reportsLimitForExport) : '',
                         )
@@ -270,9 +265,9 @@ export const ReportsPro = () => {
                   limit: _reports.filters.limit,
                   onPaginationChange: pagination => _reports.updateFilters(prev => ({...prev, ...pagination})),
                 }}
-                data={_reports.list?.data}
+                data={_reports.list?.entities}
                 loading={_reports.fetching}
-                total={_reports.list?.totalSize}
+                total={_reports.list?.totalCount}
                 onClickRows={(_, e) => {
                   if (e.metaKey || e.ctrlKey) {
                     openInNew(siteMap.logged.report(_.report.id))

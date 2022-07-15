@@ -6,12 +6,12 @@ import {Box, Icon, IconButton, useTheme} from '@mui/material'
 import {SelectCompanyDialog} from '../../../shared/SelectCompany/SelectCompanyDialog'
 import {ScButton} from '../../../shared/Button/Button'
 import React from 'react'
-import {Report} from '@signal-conso/signalconso-api-sdk-js'
 import {useReportContext} from '../../../core/context/ReportContext'
 import {useI18n} from '../../../core/i18n'
 import {siteMap} from '../../../core/siteMap'
 import {NavLink} from 'react-router-dom'
 import {styleUtils, sxUtils} from '../../../core/theme'
+import {Report} from '../../../core/client/report/Report'
 
 interface Props {
   report: Report

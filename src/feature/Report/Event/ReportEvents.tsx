@@ -2,8 +2,8 @@ import {PanelBody} from '../../../shared/Panel'
 import {ReportEventComponent} from './ReportEvent'
 import React from 'react'
 import {useI18n} from '../../../core/i18n'
-import {ReportEvent} from '@signal-conso/signalconso-api-sdk-js'
 import {Fender} from '../../../alexlibs/mui-extension'
+import {ReportEvent} from '../../../core/client/event/Event'
 
 interface Props {
   events?: ReportEvent[]

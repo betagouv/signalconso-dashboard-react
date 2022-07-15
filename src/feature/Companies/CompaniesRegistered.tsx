@@ -1,7 +1,6 @@
 import {useI18n} from '../../core/i18n'
 import {Panel} from '../../shared/Panel'
 import {Datatable} from '../../shared/Datatable/Datatable'
-import {cleanObject, Company, CompanySearch, PaginatedSearch} from '@signal-conso/signalconso-api-sdk-js'
 import React, {useEffect, useMemo, useState} from 'react'
 import {useCompaniesContext} from '../../core/context/CompaniesContext'
 import {Badge, Box, Icon, InputBase, ListItemIcon, ListItemText, MenuItem, Tooltip} from '@mui/material'
@@ -22,6 +21,9 @@ import {ClipboardApi} from '../../alexlibs/ts-utils/browser/clipboard/ClipboardA
 import {CompaniesRegisteredFilters} from './CompaniesRegisteredFilters'
 import {ScMenu} from '../../shared/Menu/Menu'
 import {Txt} from '../../alexlibs/mui-extension'
+import {Company, CompanySearch} from '../../core/client/company/Company'
+import {cleanObject} from '../../core/helper'
+import {PaginatedSearch} from '../../core/model'
 
 export interface CompanySearchQs extends PaginatedSearch<any> {
   departments?: string[] | string
@@ -65,11 +67,11 @@ export const CompaniesRegistered = () => {
 
   const data = useMemo(() => {
     if (sortByResponseRate && _companies.list)
-      return [..._companies.list.data].sort(
+      return [..._companies.list.entities].sort(
         (a, b) => (a.responseRate - b.responseRate) * (sortByResponseRate === 'desc' ? -1 : 1),
       )
-    return _companies.list?.data
-  }, [_companies.list?.data, sortByResponseRate])
+    return _companies.list?.entities
+  }, [_companies.list?.entities, sortByResponseRate])
 
   return (
     <Panel>
@@ -124,7 +126,7 @@ export const CompaniesRegistered = () => {
           limit: _companies.filters.limit,
           onPaginationChange: pagination => _companies.updateFilters(prev => ({...prev, ...pagination})),
         }}
-        total={_companies.list?.totalSize}
+        total={_companies.list?.totalCount}
         getRenderRowKey={_ => _.id}
         showColumnsToggle={true}
         columns={[

@@ -2,15 +2,15 @@ import React, {ReactElement, ReactNode, useEffect, useState} from 'react'
 import {Btn} from '../../alexlibs/mui-extension'
 import {Box, CircularProgress, Icon, Menu, MenuItem, Tooltip} from '@mui/material'
 import {useI18n} from '../../core/i18n'
-import {AsyncFile, AsyncFileKind, AsyncFileStatus} from '@signal-conso/signalconso-api-sdk-js'
 import {useAsyncFileContext} from '../../core/context/AsyncFileContext'
 import {Txt} from '../../alexlibs/mui-extension'
-import {fnSwitch} from '../../core/helper/utils'
 import {useReportedPhonesContext} from '../../core/context/ReportedPhonesContext'
 import {useInterval} from '../../alexlibs/react-hooks-lib'
 import {Fetch} from '../../alexlibs/react-hooks-lib'
 import {useReportsContext} from '../../core/context/ReportsContext'
 import {useUnregistredWebsiteWithCompanyContext} from '../../core/context/UnregistredWebsitesContext'
+import {AsyncFile, AsyncFileKind, AsyncFileStatus} from '../../core/client/async-file/AsyncFile'
+import {fnSwitch} from '../../alexlibs/ts-utils'
 
 interface Props {
   className?: string

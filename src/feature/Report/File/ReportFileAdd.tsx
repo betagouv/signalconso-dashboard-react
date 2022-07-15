@@ -4,10 +4,11 @@ import {reportFileConfig} from './reportFileConfig'
 import {useI18n} from '../../../core/i18n'
 import {styleUtils} from '../../../core/theme'
 import {config} from '../../../conf/config'
-import {FileOrigin, Id, UploadedFile} from '@signal-conso/signalconso-api-sdk-js'
 import {useToast} from '../../../core/toast'
 import {useLogin} from '../../../core/context/LoginContext'
 import {makeSx} from '../../../alexlibs/mui-extension'
+import {FileOrigin, UploadedFile} from '../../../core/client/file/UploadedFile'
+import {Id} from '../../../core/model'
 
 const css = makeSx({
   root: {

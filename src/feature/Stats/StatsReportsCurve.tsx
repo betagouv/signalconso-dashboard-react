@@ -1,10 +1,11 @@
 import {useTheme} from '@mui/material'
-import {CountByDate, ReportTag} from '@signal-conso/signalconso-api-sdk-js'
 import {AsyncLineChart} from 'shared/Chart/LineChartWrappers'
 import {Txt} from '../../alexlibs/mui-extension'
 import {useLogin} from '../../core/context/LoginContext'
 import {useI18n} from '../../core/i18n'
 import {Panel, PanelBody, PanelHead} from '../../shared/Panel'
+import {CountByDate} from '../../core/client/stats/Stats'
+import {ReportTag} from '../../core/client/report/Report'
 
 const computeCurveReportPhysique = ({
   all,

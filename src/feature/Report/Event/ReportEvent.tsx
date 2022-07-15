@@ -1,10 +1,10 @@
-import {ReportEvent} from '@signal-conso/signalconso-api-sdk-js'
 import React from 'react'
 import {useI18n} from '../../../core/i18n'
 import {ReportEventIcon} from './ReportEventIcon'
 import {Box, Icon} from '@mui/material'
 import {combineSx, styleUtils, sxUtils} from '../../../core/theme'
 import {makeSx} from '../../../alexlibs/mui-extension'
+import {ReportEvent} from '../../../core/client/event/Event'
 
 export interface ReportComponentEventProps {
   event: ReportEvent

@@ -1,7 +1,6 @@
 import {useLogin} from '../../core/context/LoginContext'
 import {useI18n} from '../../core/i18n'
 import {Panel, PanelBody, PanelHead} from '../../shared/Panel'
-import {ApiError, ReportTag} from '@signal-conso/signalconso-api-sdk-js'
 import {Dispatch, SetStateAction, useEffect, useMemo, useState} from 'react'
 import {Txt} from '../../alexlibs/mui-extension'
 import {SelectMonth} from '../../shared/SelectMonth/SelectMonth'
@@ -9,6 +8,8 @@ import {useGetDateForMonthAndPreviousOne} from './useGetDateForMonthAndPreviousO
 import {Box} from '@mui/material'
 import {styleUtils} from '../../core/theme'
 import {PanelProps} from '../../shared/Panel/Panel'
+import {ReportTag} from '../../core/client/report/Report'
+import {ApiError} from '../../core/client/ApiClient'
 
 interface AsyncPercent {
   loading: boolean

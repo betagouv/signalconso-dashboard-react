@@ -1,4 +1,3 @@
-import {UploadedFile} from '@signal-conso/signalconso-api-sdk-js'
 import {Box, Icon, Tooltip} from '@mui/material'
 import {extensionToType, FileType, reportFileConfig} from './reportFileConfig'
 import {useLogin} from '../../../core/context/LoginContext'
@@ -12,6 +11,7 @@ import {useI18n} from '../../../core/i18n'
 import {ScDialog} from '../../../shared/Confirm/ScDialog'
 import {combineSx, defaultSpacing} from 'core/theme'
 import {makeSx} from '../../../alexlibs/mui-extension'
+import {UploadedFile} from '../../../core/client/file/UploadedFile'
 
 export interface ReportFileProps {
   file: UploadedFile

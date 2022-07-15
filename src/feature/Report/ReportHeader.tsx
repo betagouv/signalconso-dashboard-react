@@ -3,13 +3,13 @@ import {ReportStatusLabel} from '../../shared/ReportStatus/ReportStatus'
 import {Alert} from '../../alexlibs/mui-extension'
 import {ReportCategories} from './ReportCategories'
 import {Box, Icon} from '@mui/material'
-import {Report} from '@signal-conso/signalconso-api-sdk-js'
 import {PanelFoot} from '../../shared/Panel/PanelFoot'
 import {ScChip} from '../../shared/Chip/ScChip'
 import React, {ReactNode} from 'react'
 import {styleUtils} from '../../core/theme'
 import {useI18n} from '../../core/i18n'
 import {makeSx} from '../../alexlibs/mui-extension'
+import {Report} from '../../core/client/report/Report'
 
 const css = makeSx({
   root: {

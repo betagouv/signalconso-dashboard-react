@@ -5,9 +5,10 @@ import {SelectCompanyList} from './SelectCompanyList'
 import React, {useEffect, useState} from 'react'
 import {useI18n} from '../../core/i18n'
 import {useCompaniesContext} from '../../core/context/CompaniesContext'
-import {CompanySearchResult, Id} from '@signal-conso/signalconso-api-sdk-js'
 import {fromNullable} from 'fp-ts/lib/Option'
 import {useEffectFn} from '../../alexlibs/react-hooks-lib'
+import {CompanySearchResult} from '../../core/client/company/Company'
+import {Id} from '../../core/model'
 
 export interface SelectCompanyProps {
   siret?: Id

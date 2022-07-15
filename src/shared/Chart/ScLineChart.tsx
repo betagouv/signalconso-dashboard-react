@@ -3,8 +3,8 @@ import {memo, useMemo, useState} from 'react'
 import {CartesianGrid, LabelList, Legend, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis} from 'recharts'
 import {useI18n} from '../../core/i18n'
 import {styleUtils} from '../../core/theme'
-import {CountByDate} from '@signal-conso/signalconso-api-sdk-js'
 import {I18nContextProps} from 'core/i18n/I18n'
+import {CountByDate} from '../../core/client/stats/Stats'
 
 export interface ScLineChartPropsBase {
   /**

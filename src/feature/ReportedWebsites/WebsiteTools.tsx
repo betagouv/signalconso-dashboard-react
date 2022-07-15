@@ -1,12 +1,12 @@
 import {Box, BoxProps, ListItemIcon, ListItemText, MenuItem, Tooltip} from '@mui/material'
 import React from 'react'
-import {WebsiteWithCompany} from '@signal-conso/signalconso-api-sdk-js'
 import {ScMenu} from '../../shared/Menu/Menu'
 import antidropIcon from './img/antidrop.png'
 import whoisIcon from './img/whois.png'
 import internetArchiveIcon from './img/internetArchive.svg'
 import scamdocIcon from './img/scamdoc.png'
 import {useI18n} from '../../core/i18n'
+import {WebsiteWithCompany} from '../../core/client/website/Website'
 
 interface WebsiteActionsProps extends BoxProps {
   website: WebsiteWithCompany
