@@ -88,9 +88,9 @@ export const ReportedPhones = () => {
             offset: _reportedPhone.filters.offset,
             limit: _reportedPhone.filters.limit,
           }}
-          total={_reportedPhone.list?.totalSize}
+          total={_reportedPhone.list?.totalCount}
           loading={_reportedPhone.fetching}
-          data={_reportedPhone.list?.data}
+          data={_reportedPhone.list?.entities}
           columns={[
             {
               id: 'phone',

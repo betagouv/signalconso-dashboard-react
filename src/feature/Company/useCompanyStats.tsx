@@ -1,7 +1,8 @@
-import {CurveStatsParams, Id, ReportStatus} from '@signal-conso/signalconso-api-sdk-js'
 import {useFetcher} from '../../alexlibs/react-hooks-lib'
 import React from 'react'
 import {useLogin} from '../../core/context/LoginContext'
+import {CurveStatsParams} from '../../core/client/stats/Stats'
+import {Id, ReportStatus} from '../../core/model'
 
 export const useCompanyStats = (id: Id) => {
   const {apiSdk: api} = useLogin()

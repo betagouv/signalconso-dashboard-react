@@ -8,7 +8,6 @@ import {Txt} from '../../alexlibs/mui-extension'
 import {ScButton} from '../../shared/Button/Button'
 import {PanelFoot} from '../../shared/Panel/PanelFoot'
 import {Controller, useForm} from 'react-hook-form'
-import {Id, ResponseConsumerReview, ResponseEvaluation} from '@signal-conso/signalconso-api-sdk-js'
 import {useAsync} from '../../alexlibs/react-hooks-lib'
 import React, {useEffect, useState} from 'react'
 import {useLocation, useParams} from 'react-router'
@@ -19,6 +18,7 @@ import {QueryString} from '../../core/helper/useQueryString'
 import {Box} from '@mui/material'
 import {useLayoutContext} from '../../core/Layout/LayoutContext'
 import {Emoticon} from '../../shared/Emoticon/Emoticon'
+import {Id, ResponseConsumerReview, ResponseEvaluation} from '../../core/model'
 
 interface Props {
   onSubmit: (reportId: Id, review: ResponseConsumerReview) => Promise<any>

@@ -57,7 +57,7 @@ export const ConsumerListPending = () => {
           </>
         }
         loading={_users.fetching}
-        total={_users.list?.totalSize}
+        total={_users.list?.totalCount}
         paginate={{
           limit: _users.filters.limit,
           offset: _users.filters.offset,
@@ -66,7 +66,7 @@ export const ConsumerListPending = () => {
         showColumnsToggle
         rowsPerPageOptions={[5, 10, 25, 100]}
         getRenderRowKey={_ => _.email}
-        data={_users.list?.data}
+        data={_users.list?.entities}
         columns={[
           {
             id: '',

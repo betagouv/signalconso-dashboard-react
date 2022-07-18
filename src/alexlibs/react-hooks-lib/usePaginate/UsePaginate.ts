@@ -1,10 +1,11 @@
 import {Fetch, useFetcher} from '..'
 import {Dispatch, SetStateAction, useCallback, useState} from 'react'
+import {Paginate} from '../../../core/model'
 
-export interface Paginate<T> {
-  data: T[]
-  totalSize: number
-}
+// export interface Paginate<T> {
+//   data: T[]
+//   totalSize: number
+// }
 
 export type OrderBy = 'desc' | 'asc'
 

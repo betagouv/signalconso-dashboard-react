@@ -2,8 +2,8 @@ import * as React from 'react'
 import {forwardRef, useEffect, useState} from 'react'
 import {Icon, IconButton, TextField} from '@mui/material'
 import {AutocompleteProps} from '@mui/material/Autocomplete'
-import {stopPropagation} from '../../core/helper/utils'
 import {SelectCountriesMenu} from './SelectCountriesMenu'
+import {stopPropagation} from '../../core/helper'
 
 interface Props
   extends Pick<

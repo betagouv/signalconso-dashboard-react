@@ -5,7 +5,6 @@ import {Txt} from '../../alexlibs/mui-extension'
 import {useParams} from 'react-router'
 import {Page, PageTitle} from 'shared/Layout'
 import {useCompaniesContext} from 'core/context/CompaniesContext'
-import {EventActionValues, Id, ReportStatus, ReportStatusPro} from '@signal-conso/signalconso-api-sdk-js'
 import {Panel, PanelBody, PanelHead} from 'shared/Panel'
 import {HorizontalBarChart} from 'shared/HorizontalBarChart/HorizontalBarChart'
 import {reportStatusColor, reportStatusProColor} from 'shared/ReportStatus/ReportStatus'
@@ -28,6 +27,9 @@ import {ReviewDistribution} from './stats/ReviewDistribution'
 import {CompanyInfo} from './stats/CompanyInfo'
 import {CompanyChartPanel} from './CompanyChartPanel'
 import {TagCloud} from 'react-tagcloud'
+import {EventActionValues} from '../../core/client/event/Event'
+import {ReportStatus, ReportStatusPro} from '../../core/client/report/Report'
+import {Id} from '../../core/model'
 
 export const CompanyComponent = () => {
   const {id} = useParams<{id: Id}>()

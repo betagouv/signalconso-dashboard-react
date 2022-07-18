@@ -1,8 +1,10 @@
 import * as React from 'react'
 import {ReactNode, useContext} from 'react'
 import {UseFetcher, useFetcher} from '../../alexlibs/react-hooks-lib'
-import {ApiError, CompanySearchResult, Report} from '@signal-conso/signalconso-api-sdk-js'
 import {SignalConsoApiSdk} from '../ApiSdkInstance'
+import {Report} from '../client/report/Report'
+import {CompanySearchResult} from '../client/company/Company'
+import {ApiError} from '../client/ApiClient'
 
 export interface ReportContextProps {
   get: UseFetcher<SignalConsoApiSdk['secured']['reports']['getById'], ApiError>

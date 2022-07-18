@@ -2,12 +2,14 @@ import {Panel, PanelBody} from '../../shared/Panel'
 import {Box} from '@mui/material'
 import {Txt} from '../../alexlibs/mui-extension'
 import {ReportFiles} from './File/ReportFiles'
-import {EventActionValues, FileOrigin, Report, UploadedFile} from '@signal-conso/signalconso-api-sdk-js'
 import React, {ReactNode} from 'react'
 import {useReportContext} from '../../core/context/ReportContext'
 import {useLogin} from '../../core/context/LoginContext'
 import {useI18n} from '../../core/i18n'
 import {Divider} from '../../shared/Divider/Divider'
+import {EventActionValues} from '../../core/client/event/Event'
+import {FileOrigin, UploadedFile} from '../../core/client/file/UploadedFile'
+import {Report} from '../../core/client/report/Report'
 
 interface Props {
   files?: UploadedFile[]

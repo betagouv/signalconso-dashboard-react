@@ -1,14 +1,13 @@
 import {Sidebar, SidebarHr, SidebarItem} from '../Layout/Sidebar'
-import {UserWithPermission} from '@signal-conso/signalconso-api-sdk-js/lib/client/authenticate/Authenticate'
 import {Box, Tooltip} from '@mui/material'
 import {Txt} from '../../alexlibs/mui-extension'
 import {Btn} from '../../alexlibs/mui-extension'
-import {Roles} from '@signal-conso/signalconso-api-sdk-js'
 import {siteMap} from '../siteMap'
 import {EntityIcon} from '../EntityIcon'
 import * as React from 'react'
 import {useI18n} from '../i18n'
 import {useLayoutContext} from '../Layout/LayoutContext'
+import {Roles, UserWithPermission} from '../client/authenticate/Authenticate'
 
 export const ScSidebar = ({connectedUser, logout}: {connectedUser: UserWithPermission; logout: () => void}) => {
   const path = (page: string) => '' + page

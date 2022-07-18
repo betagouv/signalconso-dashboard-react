@@ -1,7 +1,6 @@
 import {Page} from '../../shared/Layout'
 import {useI18n} from '../../core/i18n'
 import {useLocation} from 'react-router'
-import {AuthUser, Id} from '@signal-conso/signalconso-api-sdk-js'
 import {useAsync} from '../../alexlibs/react-hooks-lib'
 import {useEffect, useMemo} from 'react'
 import {Fender} from '../../alexlibs/mui-extension'
@@ -12,6 +11,8 @@ import {CenteredContent} from '../../shared/CenteredContent/CenteredContent'
 import {Txt} from '../../alexlibs/mui-extension'
 import {QueryString} from '../../core/helper/useQueryString'
 import {layoutConfig} from '../../core/Layout'
+import {AuthUser} from '../../core/client/authenticate/Authenticate'
+import {Id} from '../../core/model'
 
 interface Props {
   onValidateEmail: (token: Id) => Promise<AuthUser>

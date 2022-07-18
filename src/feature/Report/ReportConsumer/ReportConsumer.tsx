@@ -2,13 +2,13 @@ import {Panel, PanelBody, PanelHead} from '../../../shared/Panel'
 import {EditConsumerDialog} from './EditConsumerDialog'
 import {ScButton} from '../../../shared/Button/Button'
 import {fromNullable} from 'fp-ts/lib/Option'
-import {capitalize} from '../../../core/helper/utils'
 import {Box, Icon, useTheme} from '@mui/material'
 import React from 'react'
-import {Report} from '@signal-conso/signalconso-api-sdk-js'
 import {useI18n} from '../../../core/i18n'
 import {useReportContext} from '../../../core/context/ReportContext'
 import {styleUtils, sxUtils} from '../../../core/theme'
+import {Report} from '../../../core/client/report/Report'
+import {capitalize} from '../../../core/helper'
 
 interface Props {
   report: Report

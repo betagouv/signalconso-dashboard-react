@@ -1,5 +1,4 @@
 import React, {useEffect} from 'react'
-import {ApiError} from '@signal-conso/signalconso-api-sdk-js'
 import {config} from './conf/config'
 import {CircularProgress, CssBaseline, StyledEngineProvider, ThemeProvider} from '@mui/material'
 import {BrowserRouter, HashRouter, Redirect, Route, Switch} from 'react-router-dom'
@@ -15,7 +14,6 @@ import {siteMap} from './core/siteMap'
 import {Companies} from './feature/Companies/Companies'
 import {Users} from './feature/Users/Users'
 import {ConstantProvider} from './core/context/ConstantContext'
-import {AnomalyProvider} from './core/context/AnomalyContext'
 import {ReportedPhonesProvider} from './core/context/ReportedPhonesContext'
 import {AsyncFileProvider} from './core/context/AsyncFileContext'
 import {CompaniesProvider} from './core/context/CompaniesContext'
@@ -58,6 +56,7 @@ import {ConsumerEmailValidationProvider} from './core/context/EmailValidationCon
 import {WebsiteInvestigationProvider} from './core/context/WebsiteInvestigationContext'
 import {ScSidebar} from './core/ScSidebar/ScSidebar'
 import {ScHeader} from './core/ScHeader/ScHeader'
+import {ApiError} from './core/client/ApiClient'
 
 const Router: typeof HashRouter = config.useHashRouter ? HashRouter : BrowserRouter
 
@@ -162,7 +161,6 @@ const AppLogged = () => {
         _ => <ReportsProvider api={apiSdk} children={_} />,
         _ => <ReportProvider api={apiSdk} children={_} />,
         _ => <ConstantProvider api={apiSdk} children={_} />,
-        _ => <AnomalyProvider api={apiSdk} children={_} />,
         _ => <ReportedPhonesProvider api={apiSdk} children={_} />,
         _ => <AsyncFileProvider api={apiSdk} children={_} />,
         _ => <CompaniesProvider api={apiSdk} children={_} />,

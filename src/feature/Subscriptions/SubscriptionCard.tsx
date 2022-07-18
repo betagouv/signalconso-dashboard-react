@@ -1,6 +1,5 @@
 import React, {CSSProperties, SyntheticEvent, useEffect, useMemo, useState} from 'react'
 import {useI18n} from '../../core/i18n'
-import {ReportSearch, Subscription, SubscriptionCreate} from '@signal-conso/signalconso-api-sdk-js'
 import {Panel, PanelHead} from '../../shared/Panel'
 import {ScSelect} from '../../shared/Select/Select'
 import {Chip, Collapse, duration, Icon} from '@mui/material'
@@ -12,12 +11,14 @@ import {useToast} from '../../core/toast'
 import {SelectDepartmentsMenu} from '../../shared/SelectDepartments/SelectDepartmentsMenu'
 import {SelectCountriesMenu} from '../../shared/SelectCountries/SelectCountriesMenu'
 import {SelectMenu} from '../../shared/SelectMenu/SelectMenu'
-import {useAnomalyContext} from '../../core/context/AnomalyContext'
 import {IconBtn} from '../../alexlibs/mui-extension'
 import {ScDialog} from '../../shared/Confirm/ScDialog'
 import {ScMenuItem} from '../MenuItem/MenuItem'
 import {SelectTagsMenu, SelectTagsMenuValues} from '../../shared/SelectTags/SelectTagsMenu'
 import {Enum} from '../../alexlibs/ts-utils'
+import {Subscription, SubscriptionCreate} from '../../core/client/subscription/Subscription'
+import {ReportSearch} from '../../core/client/report/ReportSearch'
+import {useConstantContext} from '../../core/context/ConstantContext'
 
 interface Props {
   subscription: Subscription
@@ -43,7 +44,7 @@ export const SubscriptionCard = ({subscription, onUpdate, onDelete, removing, lo
   const countriesAnchor = useAnchoredMenu()
   const categoryAnchor = useAnchoredMenu()
   const tagsAnchor = useAnchoredMenu()
-  const _category = useAnomalyContext().category
+  const _category = useConstantContext().categories
   const [isMounted, setIsMounted] = useState(false)
 
   useEffect(() => {

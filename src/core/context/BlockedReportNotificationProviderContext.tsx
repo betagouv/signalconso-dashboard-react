@@ -1,10 +1,11 @@
 import * as React from 'react'
 import {ReactNode, useContext} from 'react'
 import {UseAsync, UseFetcher, useFetcher} from '../../alexlibs/react-hooks-lib'
-import {BlockedReportNotification, Id, SignalConsoSecuredSdk} from '@signal-conso/signalconso-api-sdk-js'
 import {SignalConsoApiSdk} from '../ApiSdkInstance'
 import {useAsync} from '../../alexlibs/react-hooks-lib'
 import {uniqBy} from '../lodashNamedExport'
+import {SignalConsoSecuredSdk} from '../client/SignalConsoSecuredSdk'
+import {BlockedReportNotification, Id} from '../model'
 
 export interface BlockedReportNotificationContextProps {
   list: UseFetcher<SignalConsoSecuredSdk['reportBlockedNotification']['fetch']>

@@ -1,14 +1,14 @@
 import {Box, Checkbox, Icon, Menu, MenuItem} from '@mui/material'
-import {stopPropagation} from '../../core/helper/utils'
 import * as React from 'react'
 import {useEffect, useMemo} from 'react'
 import {useSetState, UseSetState} from '../../alexlibs/react-hooks-lib'
 import {useConstantContext} from '../../core/context/ConstantContext'
 import {fromNullable} from 'fp-ts/lib/Option'
-import {Region} from '@signal-conso/signalconso-api-sdk-js'
 import {useI18n} from '../../core/i18n'
 import {makeSx} from '../../alexlibs/mui-extension'
 import {combineSx} from '../../core/theme'
+import {Region} from '../../core/client/constant/Country'
+import {stopPropagation} from '../../core/helper'
 
 const withRegions =
   (WrappedComponent: React.ComponentType<SelectDepartmentsMenuProps>) => (props: Omit<SelectDepartmentsMenuProps, 'regions'>) => {

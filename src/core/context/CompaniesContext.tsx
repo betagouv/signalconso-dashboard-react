@@ -1,19 +1,14 @@
 import * as React from 'react'
 import {ReactNode, useContext} from 'react'
 import {UseFetcher, useFetcher, usePaginate, UsePaginate} from '../../alexlibs/react-hooks-lib'
-import {
-  Address,
-  ApiError,
-  CompanySearch,
-  CompanyToActivate,
-  CompanyUpdate,
-  CompanyWithReportsCount,
-  Id,
-  PaginatedFilters,
-} from '@signal-conso/signalconso-api-sdk-js'
+
 import {SignalConsoApiSdk} from '../ApiSdkInstance'
-import {paginateData} from '../helper/utils'
+
 import {useScPaginate} from '../../shared/usePaginate/usePaginate'
+import {CompanySearch, CompanyToActivate, CompanyUpdate, CompanyWithReportsCount} from '../client/company/Company'
+import {Address, Id, PaginatedFilters} from '../model'
+import {ApiError} from '../client/ApiClient'
+import {paginateData} from '../helper'
 
 type Sdk = SignalConsoApiSdk['secured']['company']
 
@@ -68,7 +63,7 @@ export const CompaniesProvider = ({api, children}: Props) => {
   const updateRegisteredCompanyAddress = (id: Id, address: Address) => {
     activated.setEntity(companies => {
       if (!companies) return companies
-      const company = companies?.data.find(company => company.id === id)
+      const company = companies?.entities.find(company => company.id === id)
       if (company) {
         company.address = address
         return {...companies}

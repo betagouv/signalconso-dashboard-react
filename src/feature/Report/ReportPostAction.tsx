@@ -1,12 +1,13 @@
 import React, {ReactElement, useState} from 'react'
 import {Alert} from '../../alexlibs/mui-extension'
-import {EventActionValues, Report} from '@signal-conso/signalconso-api-sdk-js'
 import {useI18n} from '../../core/i18n'
 import {ScInput} from '../../shared/Input/ScInput'
 import {useFetcher} from '../../alexlibs/react-hooks-lib'
 import {useLogin} from '../../core/context/LoginContext'
 import {useToast} from '../../core/toast'
 import {ScDialog} from '../../shared/Confirm/ScDialog'
+import {EventActionValues} from '../../core/client/event/Event'
+import {Report} from '../../core/client/report/Report'
 
 interface Props {
   report: Report

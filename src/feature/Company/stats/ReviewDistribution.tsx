@@ -4,7 +4,6 @@ import {useI18n} from '../../../core/i18n'
 import {Skeleton} from '@mui/material'
 import {Panel, PanelBody, PanelHead} from '../../../shared/Panel'
 import {HorizontalBarChart} from '../../../shared/HorizontalBarChart/HorizontalBarChart'
-import {ReportStatus, ReportStatusPro} from '@signal-conso/signalconso-api-sdk-js'
 import {useCompanyStats} from '../useCompanyStats'
 import {useEffectFn} from '../../../alexlibs/react-hooks-lib'
 import {fromNullable} from 'fp-ts/es6/Option'
@@ -12,6 +11,7 @@ import {Txt} from '../../../alexlibs/mui-extension'
 import {useToast} from '../../../core/toast'
 import {ReviewLabel} from './ReviewLabel'
 import {useMemoFn} from '../../../alexlibs/react-hooks-lib'
+import {ReportStatus, ReportStatusPro} from '../../../core/client/report/Report'
 
 interface Props {
   companyId: string

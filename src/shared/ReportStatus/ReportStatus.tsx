@@ -1,7 +1,7 @@
-import {Report, ReportStatus, ReportStatusPro} from '@signal-conso/signalconso-api-sdk-js'
 import {Label, LabelProps} from '../Label/Label'
 import {useI18n} from '../../core/i18n'
 import {useLogin} from '../../core/context/LoginContext'
+import {Report, ReportStatus, ReportStatusPro} from '../../core/client/report/Report'
 
 interface ReportStatusLabelProps extends Omit<LabelProps, 'children'> {
   status: ReportStatus

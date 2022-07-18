@@ -8,7 +8,7 @@ import {SidebarFooter} from './SidebarFooter'
 import {SidebarItem} from './SidebarItem'
 import {SidebarBody} from './SidebarBody'
 import {SidebarHeader} from './SidebarHeader'
-import {stopPropagation} from '../../../alexlibs/mui-extension'
+import {stopPropagation} from '../../helper'
 
 const sidebarId = 'signalconso-sidebar-id'
 
