@@ -1,6 +1,6 @@
-import {ReportTag} from '@signal-conso/signalconso-api-sdk-js'
 import {Label, LabelProps} from '../Label/Label'
 import {useI18n} from '../../core/i18n'
+import {ReportTag} from '../../core/client/report/Report'
 
 interface ReportTagProps extends Omit<LabelProps, 'children'> {
   tag: ReportTag

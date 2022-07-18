@@ -6,7 +6,6 @@ import {Panel} from '../../shared/Panel'
 import {Datatable} from '../../shared/Datatable/Datatable'
 import {DebouncedInput} from '../../shared/DebouncedInput/DebouncedInput'
 import {useReportedWebsiteWithCompanyContext} from '../../core/context/ReportedWebsitesContext'
-import {cleanObject, DepartmentDivision, Id, IdentificationStatus, WebsiteWithCompany} from '@signal-conso/signalconso-api-sdk-js'
 import {IconBtn} from '../../alexlibs/mui-extension'
 import {useWebsiteInvestigationContext} from '../../core/context/WebsiteInvestigationContext'
 import {StatusChip} from './StatusChip'
@@ -21,6 +20,9 @@ import {map} from '../../alexlibs/ts-utils'
 import {sxUtils} from '../../core/theme'
 import {useMemoFn} from '../../alexlibs/react-hooks-lib'
 import {useLogin} from '../../core/context/LoginContext'
+import {DepartmentDivision, IdentificationStatus, WebsiteWithCompany} from '../../core/client/website/Website'
+import {cleanObject} from '../../core/helper'
+import {Id} from '../../core/model'
 
 export const WebsitesInvestigation = () => {
   const {m} = useI18n()
@@ -41,7 +43,7 @@ export const WebsitesInvestigation = () => {
 
   useEffectFn(_websiteWithCompany.list, w => {
     websitesIndex.clear()
-    w.data.map(_ => websitesIndex.set(_.id, _))
+    w.entities.map(_ => websitesIndex.set(_.id, _))
   })
 
   useEffect(() => {
@@ -114,7 +116,7 @@ export const WebsitesInvestigation = () => {
           </>
         }
         loading={_websiteWithCompany.fetching}
-        total={_websiteWithCompany.list?.totalSize}
+        total={_websiteWithCompany.list?.totalCount}
         paginate={{
           limit: _websiteWithCompany.filters.limit,
           offset: _websiteWithCompany.filters.offset,

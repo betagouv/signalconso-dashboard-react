@@ -1,12 +1,10 @@
 import {Dialog, DialogActions, DialogContent, DialogTitle, Icon, MenuItem} from '@mui/material'
 import {useI18n} from '../../core/i18n'
 import React, {ReactElement, useEffect, useMemo, useState} from 'react'
-import {Id, ReportSearch, ReportStatus} from '@signal-conso/signalconso-api-sdk-js'
 import {Controller, useForm} from 'react-hook-form'
 import {ScSelect} from '../../shared/Select/Select'
 import {ReportStatusLabel} from '../../shared/ReportStatus/ReportStatus'
 import {ScInput} from '../../shared/Input/ScInput'
-import {useAnomalyContext} from '../../core/context/AnomalyContext'
 import {Enum} from '../../alexlibs/ts-utils'
 import {TrueFalseNull} from '../../shared/TrueFalseUndefined/TrueFalseNull'
 import {SelectCountries} from '../../shared/SelectCountries/SelectCountries'
@@ -18,6 +16,9 @@ import {SelectTagsMenuValues} from '../../shared/SelectTags/SelectTagsMenu'
 import {DialogInputRow, DialogInputRowExtra} from '../../shared/DialogInputRow/DialogInputRow'
 import {Btn} from '../../alexlibs/mui-extension'
 import {useLayoutContext} from '../../core/Layout/LayoutContext'
+import {ReportSearch} from '../../core/client/report/ReportSearch'
+import {Id, ReportStatus} from '../../core/model'
+import {useConstantContext} from '../../core/context/ConstantContext'
 
 interface Props {
   updateFilters: (_: ReportSearch) => void
@@ -182,7 +183,7 @@ export const ReportsFilters = ({filters: rawFilters, updateFilters, children}: P
   } = useForm<Form>()
   const layout = useLayoutContext()
   const [open, setOpen] = useState<boolean>(false)
-  const {category: _category} = useAnomalyContext()
+  const _category = useConstantContext().categories
 
   const close = () => {
     setOpen(false)

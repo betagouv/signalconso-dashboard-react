@@ -1,5 +1,4 @@
 import {alpha, Button, ButtonGroup, Icon, IconButton} from '@mui/material'
-import {CompanyWithReportsCount, Id, Period, ReportStatus} from '@signal-conso/signalconso-api-sdk-js'
 import {useLogin} from 'core/context/LoginContext'
 import {useI18n} from 'core/i18n'
 import {siteMap} from 'core/siteMap'
@@ -7,6 +6,9 @@ import {useEffect, useState} from 'react'
 import {NavLink} from 'react-router-dom'
 import {CurveDefinition, LineChartOrPlaceholder} from 'shared/Chart/LineChartWrappers'
 import {Panel, PanelBody, PanelHead} from 'shared/Panel'
+import {CompanyWithReportsCount} from '../../core/client/company/Company'
+import {Period} from '../../core/client/stats/Stats'
+import {Id, ReportStatus} from '../../core/model'
 
 const periods: Period[] = ['Day', 'Month']
 

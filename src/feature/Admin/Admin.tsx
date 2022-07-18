@@ -9,7 +9,7 @@ import {Box, Icon} from '@mui/material'
 import {Txt} from '../../alexlibs/mui-extension'
 import {Alert, IconBtn} from '../../alexlibs/mui-extension'
 import {useToast} from '../../core/toast'
-import {capitalize} from '../../core/helper/utils'
+import {capitalize} from '../../core/helper'
 
 export const Admin = () => {
   const {m} = useI18n()

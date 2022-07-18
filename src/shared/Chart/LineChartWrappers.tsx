@@ -1,8 +1,8 @@
 import {Skeleton} from '@mui/material'
-import {CountByDate} from '@signal-conso/signalconso-api-sdk-js'
 import {useI18n} from 'core/i18n'
 import {ScLineChart} from './ScLineChart'
 import {useEffect, useState} from 'react'
+import {CountByDate} from '../../core/client/stats/Stats'
 
 export const toPercentage = (numerator: CountByDate[], denominator: CountByDate[]): CountByDate[] => {
   return numerator.map<CountByDate>((k, i) => ({

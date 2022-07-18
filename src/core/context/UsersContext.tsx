@@ -1,9 +1,10 @@
 import * as React from 'react'
 import {ReactNode, useContext} from 'react'
 import {UseFetcher, useFetcher, UsePaginate} from '../../alexlibs/react-hooks-lib'
-import {ApiError, User, UserSearch} from '@signal-conso/signalconso-api-sdk-js'
 import {SignalConsoApiSdk} from '../ApiSdkInstance'
 import {useScPaginate} from '../../shared/usePaginate/usePaginate'
+import {ApiError} from '../client/ApiClient'
+import {User, UserSearch} from '../client/user/User'
 
 export interface UsersContextProps {
   searchDgccrf: UsePaginate<User, UserSearch>

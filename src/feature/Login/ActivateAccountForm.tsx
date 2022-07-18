@@ -14,7 +14,7 @@ import {useHistory} from 'react-router'
 import {siteMap} from '../../core/siteMap'
 import {ScInputPassword} from '../../shared/InputPassword/InputPassword'
 import {AccessEventActions, ActionResultNames, EventCategories, Matomo} from '../../core/plugins/Matomo'
-import {ApiError} from '@signal-conso/signalconso-api-sdk-js'
+import {ApiError} from '../../core/client/ApiClient'
 
 interface Form {
   siret: string

@@ -1,15 +1,10 @@
-import {
-  CompanyAccessLevel,
-  IdentificationStatus,
-  ReportResponseTypes,
-  ReportStatus,
-  ReportStatusPro,
-  ReportTag,
-} from '@signal-conso/signalconso-api-sdk-js'
 import {config} from '../../../conf/config'
 import {formatDistance, formatDuration as formatDurationFns} from 'date-fns'
-import {ResponseEvaluation} from '@signal-conso/signalconso-api-sdk-js/lib/client/event/Event'
 import {IdentificationType} from 'feature/ReportedWebsites/SelectWebsiteIdentification/SelectWebsiteIdentification'
+import {ReportStatus, ReportStatusPro, ReportTag} from '../../client/report/Report'
+import {CompanyAccessLevel} from '../../client/company-access/CompanyAccess'
+import {IdentificationStatus} from '../../client/website/Website'
+import {ReportResponseTypes, ResponseEvaluation} from '../../client/event/Event'
 
 const invalidDate = '-'
 

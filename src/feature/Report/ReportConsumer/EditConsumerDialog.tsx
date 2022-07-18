@@ -4,8 +4,8 @@ import {ScInput} from '../../../shared/Input/ScInput'
 import {Controller, useForm} from 'react-hook-form'
 import {regexp} from '../../../core/helper/regexp'
 import {Checkbox, FormControlLabel} from '@mui/material'
-import {Report} from '@signal-conso/signalconso-api-sdk-js'
 import {ScDialog} from '../../../shared/Confirm/ScDialog'
+import {Report} from '../../../core/client/report/Report'
 
 interface Form {
   firstName: string

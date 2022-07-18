@@ -1,5 +1,7 @@
-import {Id, ReportSearch, toQueryString} from '@signal-conso/signalconso-api-sdk-js'
 import {mapDatesToQueryString} from './helper/useQueryString'
+import {toQueryString} from './helper'
+import {ReportSearch} from './client/report/ReportSearch'
+import {Id} from './model'
 
 export const siteMap = {
   logged: {

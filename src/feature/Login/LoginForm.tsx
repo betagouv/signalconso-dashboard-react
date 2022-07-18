@@ -9,10 +9,11 @@ import {useForm} from 'react-hook-form'
 import {ScButton} from '../../shared/Button/Button'
 import {fromNullable} from 'fp-ts/es6/Option'
 import {ForgottenPasswordDialog} from './ForgottenPasswordDialog'
-import {ApiError, SignalConsoPublicSdk} from '@signal-conso/signalconso-api-sdk-js'
 import {AuthenticationEventActions, EventCategories, Matomo} from '../../core/plugins/Matomo'
 import {Alert} from '../../alexlibs/mui-extension'
 import {Txt} from '../../alexlibs/mui-extension'
+import {ApiError} from '../../core/client/ApiClient'
+import {SignalConsoPublicSdk} from '../../core/client/SignalConsoPublicSdk'
 
 interface Props {
   login: ActionProps<SignalConsoPublicSdk['authenticate']['login']>

@@ -1,9 +1,9 @@
 import * as React from 'react'
 import {ReactNode, useContext} from 'react'
 import {UseAsync} from '../../alexlibs/react-hooks-lib'
-import {SignalConsoSecuredSdk} from '@signal-conso/signalconso-api-sdk-js'
 import {SignalConsoApiSdk} from '../ApiSdkInstance'
 import {useAsync} from '../../alexlibs/react-hooks-lib'
+import {SignalConsoSecuredSdk} from '../client/SignalConsoSecuredSdk'
 
 export interface AccessesContextProps {
   acceptToken: UseAsync<SignalConsoSecuredSdk['accesses']['acceptToken']>

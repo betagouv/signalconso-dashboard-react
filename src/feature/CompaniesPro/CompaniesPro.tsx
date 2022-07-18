@@ -11,7 +11,6 @@ import {ScButton} from '../../shared/Button/Button'
 import {AddressComponent} from '../../shared/Address/Address'
 import {siteMap} from '../../core/siteMap'
 import {NavLink} from 'react-router-dom'
-import {AccessLevel, Id} from '@signal-conso/signalconso-api-sdk-js'
 import {useUsersContext} from '../../core/context/UsersContext'
 import {fromNullable} from 'fp-ts/lib/Option'
 import {useBlockedReportNotificationContext} from '../../core/context/BlockedReportNotificationProviderContext'
@@ -20,6 +19,7 @@ import {Txt} from '../../alexlibs/mui-extension'
 import {ConfirmDisableNotificationDialog} from './ConfirmDisableNotificationDialog'
 import {groupBy} from '../../core/lodashNamedExport'
 import {PanelFoot} from '../../shared/Panel/PanelFoot'
+import {AccessLevel, Id} from '../../core/model'
 
 export const CompaniesPro = () => {
   const {m} = useI18n()

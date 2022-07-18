@@ -3,8 +3,8 @@ import {useEffect, useState} from 'react'
 import {Icon, InputAdornment, TextField, TextFieldProps} from '@mui/material'
 import {SelectCompaniesByProMenu} from './SelectCompaniesByProMenu'
 import {useI18n} from '../../core/i18n'
-import {CompanyWithAccessLevel} from '@signal-conso/signalconso-api-sdk-js'
 import {fromNullable} from 'fp-ts/lib/Option'
+import {CompanyWithAccessLevel} from '../../core/client/company/Company'
 
 export interface SelectDepartmentsProps extends Omit<TextFieldProps, 'onChange'> {
   accessibleCompanies: CompanyWithAccessLevel[]

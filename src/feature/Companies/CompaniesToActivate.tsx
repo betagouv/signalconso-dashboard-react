@@ -1,7 +1,6 @@
 import {useI18n} from '../../core/i18n'
 import {Panel} from '../../shared/Panel'
 import {Datatable} from '../../shared/Datatable/Datatable'
-import {Id} from '@signal-conso/signalconso-api-sdk-js'
 import React, {SyntheticEvent, useEffect} from 'react'
 import {useCompaniesContext} from '../../core/context/CompaniesContext'
 import {Box, Checkbox, Icon, Tooltip} from '@mui/material'
@@ -19,6 +18,7 @@ import {AddressComponent} from '../../shared/Address/Address'
 import {ScDialog} from '../../shared/Confirm/ScDialog'
 import {DatatableToolbar} from '../../shared/Datatable/DatatableToolbar'
 import {Txt} from '../../alexlibs/mui-extension'
+import {Id} from '../../core/model'
 
 export const CompaniesToActivate = () => {
   const {m, formatDate} = useI18n()
@@ -42,11 +42,11 @@ export const CompaniesToActivate = () => {
     setSelectedCompanies(selectedCompaniesSet.toArray())
   }
 
-  const allChecked = selectedCompaniesSet.size === (_companiesToActivate.list?.data.length ?? 0)
+  const allChecked = selectedCompaniesSet.size === (_companiesToActivate.list?.entities.length ?? 0)
 
   const selectAll = () => {
     if (selectedCompaniesSet.size === 0 && !allChecked)
-      selectedCompaniesSet.reset(_companiesToActivate.list?.data.map(_ => _.company.id))
+      selectedCompaniesSet.reset(_companiesToActivate.list?.entities.map(_ => _.company.id))
     else selectedCompaniesSet.clear()
     setSelectedCompanies(selectedCompaniesSet.toArray())
   }
@@ -109,13 +109,13 @@ export const CompaniesToActivate = () => {
           </DatatableToolbar>
         }
         loading={_companiesToActivate.fetching}
-        data={_companiesToActivate.list?.data}
+        data={_companiesToActivate.list?.entities}
         paginate={{
           offset: _companiesToActivate.filters.offset,
           limit: _companiesToActivate.filters.limit,
           onPaginationChange: pagination => _companiesToActivate.updateFilters(prev => ({...prev, ...pagination})),
         }}
-        total={_companiesToActivate.list?.totalSize}
+        total={_companiesToActivate.list?.totalCount}
         getRenderRowKey={_ => _.company.id}
         showColumnsToggle={true}
         rowsPerPageOptions={[5, 10, 25, 100, 250]}

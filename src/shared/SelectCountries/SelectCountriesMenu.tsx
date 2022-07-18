@@ -2,13 +2,13 @@ import * as React from 'react'
 import {useEffect, useMemo} from 'react'
 import {useConstantContext} from '../../core/context/ConstantContext'
 import {fromNullable} from 'fp-ts/lib/Option'
-import {Country} from '@signal-conso/signalconso-api-sdk-js'
 import {alpha, Box, Checkbox, Menu} from '@mui/material'
 import {useI18n} from '../../core/i18n'
 import {useSetState, UseSetState} from '../../alexlibs/react-hooks-lib'
 import {makeSx} from '../../alexlibs/mui-extension'
 import {combineSx} from '../../core/theme'
-import {countryToFlag} from '../../core/helper/utils'
+import {countryToFlag} from '../../core/helper'
+import {Country} from '../../core/client/constant/Country'
 
 const withRegions = (WrappedComponent: React.ComponentType<Props>) => (props: Omit<Props, 'countries'>) => {
   const {countries} = useConstantContext()
@@ -103,21 +103,8 @@ export const SelectCountriesMenu = withRegions(({countries, anchorEl, open, init
     ]
   }, [countries])
 
-  // // const handleInputChange = (event: any) => {
-  //   setInputValue(event.target.value)
-  //   if (inputValue !== '') open(event)
-  // }
-
   return (
-    <Menu
-      style={{maxHeight: 500}}
-      open={open}
-      anchorEl={anchorEl}
-      // getContentAnchorEl={null}
-      // anchorOrigin={{vertical: 'bottom', horizontal: 'left'}}
-      // transformOrigin={{vertical: 'top', horizontal: 'left'}}
-      onClose={onClose}
-    >
+    <Menu style={{maxHeight: 500}} open={open} anchorEl={anchorEl} onClose={onClose}>
       {innerCountries.map((countries, i) => {
         const countriesCode = countries.countries.map(_ => _.code)
         const someSelected = !!countriesCode.find(indexedValues.has)

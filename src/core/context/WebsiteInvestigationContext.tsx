@@ -1,8 +1,8 @@
 import * as React from 'react'
 import {ReactNode, useContext} from 'react'
 import {SignalConsoApiSdk} from '../ApiSdkInstance'
-import {ApiError} from '@signal-conso/signalconso-api-sdk-js'
 import {useFetcher, UseFetcher} from '../../alexlibs/react-hooks-lib'
+import {ApiError} from '../client/ApiClient'
 
 export interface WebsiteInvestigationContextProps {
   listDepartmentDivision: UseFetcher<SignalConsoApiSdk['secured']['website']['listDepartmentDivision'], ApiError>

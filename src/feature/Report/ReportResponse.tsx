@@ -1,17 +1,7 @@
 import {PanelBody} from '../../shared/Panel'
 import React, {useEffect, useState} from 'react'
 import {useI18n} from '../../core/i18n'
-import {
-  EventActionValues,
-  FileOrigin,
-  Id,
-  ReportEvent,
-  ReportResponse,
-  ReportResponseTypes,
-  ResponseConsumerReview,
-  UploadedFile,
-} from '@signal-conso/signalconso-api-sdk-js'
-import {fnSwitch} from '../../core/helper/utils'
+
 import {fromNullable} from 'fp-ts/lib/Option'
 import {Box, BoxProps, Icon} from '@mui/material'
 import {styleUtils, sxUtils} from '../../core/theme'
@@ -19,8 +9,18 @@ import {ReportFiles} from './File/ReportFiles'
 import {useReportContext} from '../../core/context/ReportContext'
 import {Txt} from '../../alexlibs/mui-extension'
 import {useEventContext} from '../../core/context/EventContext'
-import {ResponseEvaluation} from '@signal-conso/signalconso-api-sdk-js/lib/client/event/Event'
 import {Divider} from '../../shared/Divider/Divider'
+import {
+  EventActionValues,
+  ReportEvent,
+  ReportResponse,
+  ReportResponseTypes,
+  ResponseConsumerReview,
+  ResponseEvaluation,
+} from '../../core/client/event/Event'
+import {FileOrigin, UploadedFile} from '../../core/client/file/UploadedFile'
+import {Id} from '../../core/model'
+import {fnSwitch} from '../../core/helper'
 
 interface Props {
   canEditFile?: boolean

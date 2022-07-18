@@ -1,7 +1,6 @@
 import React, {forwardRef, useEffect} from 'react'
 import {useI18n} from '../../../core/i18n'
 import {ScRadioGroup} from '../../../shared/RadioGroup/RadioGroup'
-import {FileOrigin, Report, ReportResponse, ReportResponseTypes} from '@signal-conso/signalconso-api-sdk-js'
 import {ScRadioGroupItem} from '../../../shared/RadioGroup/RadioGroupItem'
 import {Enum} from '../../../alexlibs/ts-utils'
 import {Alert} from '../../../alexlibs/mui-extension'
@@ -16,6 +15,9 @@ import {useReportContext} from '../../../core/context/ReportContext'
 import {fromNullable} from 'fp-ts/lib/Option'
 import {useToast} from '../../../core/toast'
 import {PanelProps} from '../../../shared/Panel/Panel'
+import {ReportResponse, ReportResponseTypes} from '../../../core/client/event/Event'
+import {FileOrigin} from '../../../core/client/file/UploadedFile'
+import {Report} from '../../../core/client/report/Report'
 
 interface Props extends PanelProps {
   report: Report

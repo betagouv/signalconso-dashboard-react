@@ -3,9 +3,9 @@ import {useEffect} from 'react'
 import {useI18n} from '../../../core/i18n'
 import {Divider, Icon, List, ListItem, ListItemIcon, ListItemText} from '@mui/material'
 import {Panel, PanelBody, PanelHead} from '../../../shared/Panel'
-import {Company} from '@signal-conso/signalconso-api-sdk-js'
 import {AddressComponent} from '../../../shared/Address/Address'
 import {useFetcher} from '../../../alexlibs/react-hooks-lib'
+import {Company} from '../../../core/client/company/Company'
 
 interface Props {
   company: Company

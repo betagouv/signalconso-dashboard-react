@@ -1,5 +1,5 @@
-import {Address} from '@signal-conso/signalconso-api-sdk-js'
 import React, {forwardRef} from 'react'
+import {Address} from '../../core/model'
 
 interface Props {
   address: Address

@@ -1,20 +1,12 @@
 import {Page, PageTitle} from '../../shared/Layout'
 import {useI18n} from '../../core/i18n'
 import {useReportsContext} from '../../core/context/ReportsContext'
-import {
-  cleanObject,
-  getHostFromUrl,
-  Id,
-  Report,
-  ReportingDateLabel,
-  ReportSearch,
-  ReportTag,
-} from '@signal-conso/signalconso-api-sdk-js'
+
 import {Panel} from '../../shared/Panel'
 import {Datatable} from '../../shared/Datatable/Datatable'
 import {fromNullable, some} from 'fp-ts/lib/Option'
 import {alpha, Badge, Box, Button, Checkbox, Chip, Grid, Icon, Tooltip} from '@mui/material'
-import {textOverflowMiddleCropping} from '../../core/helper/utils'
+import {cleanObject, getHostFromUrl, textOverflowMiddleCropping} from '../../core/helper'
 import React, {useCallback, useEffect, useMemo} from 'react'
 import {
   mapArrayFromQuerystring,
@@ -45,6 +37,8 @@ import {intersection} from '../../core/lodashNamedExport'
 import {useSetState} from '../../alexlibs/react-hooks-lib'
 import {DatatableToolbar} from '../../shared/Datatable/DatatableToolbar'
 import {useReportContext} from '../../core/context/ReportContext'
+import {Report, ReportingDateLabel, ReportTag} from '../../core/client/report/Report'
+import {Id, ReportSearch} from '../../core/model'
 
 interface ReportSearchQs {
   readonly departments?: string[] | string
@@ -197,10 +191,10 @@ export const Reports = () => {
                 </Badge>
               </Tooltip>
               <ExportReportsPopper
-                disabled={fromNullable(_reports?.list?.totalSize)
+                disabled={fromNullable(_reports?.list?.totalCount)
                   .map(_ => _ > config.reportsLimitForExport)
                   .getOrElse(false)}
-                tooltipBtnNew={fromNullable(_reports?.list?.totalSize)
+                tooltipBtnNew={fromNullable(_reports?.list?.totalCount)
                   .map(_ => (_ > config.reportsLimitForExport ? m.cannotExportMoreReports(config.reportsLimitForExport) : ''))
                   .getOrElse('')}
               >
@@ -224,14 +218,14 @@ export const Reports = () => {
             onPaginationChange: pagination => _reports.updateFilters(prev => ({...prev, ...pagination})),
           }}
           getRenderRowKey={_ => _.report.id}
-          data={_reports.list?.data}
-          total={_reports.list?.totalSize}
+          data={_reports.list?.entities}
+          total={_reports.list?.totalCount}
           showColumnsToggle={true}
           columns={[
             {
               id: 'checkbox',
               head: (() => {
-                const allChecked = selectReport.size === _reports.list?.data.length
+                const allChecked = selectReport.size === _reports.list?.entities.length
                 return (
                   <Checkbox
                     disabled={_reports.fetching}
@@ -241,7 +235,7 @@ export const Reports = () => {
                       if (allChecked) {
                         selectReport.clear()
                       } else {
-                        selectReport.add(_reports.list!.data!.map(_ => _.report.id))
+                        selectReport.add(_reports.list!.entities!.map(_ => _.report.id))
                       }
                     }}
                   />

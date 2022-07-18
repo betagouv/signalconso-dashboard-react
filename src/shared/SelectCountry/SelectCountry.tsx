@@ -1,13 +1,13 @@
 import React, {useEffect, useState} from 'react'
 import {useI18n} from '../../core/i18n'
-import {Country} from '@signal-conso/signalconso-api-sdk-js'
 import {fromNullable} from 'fp-ts/lib/Option'
 import {Autocomplete, Box} from '@mui/material'
 import {ScInput} from '../Input/ScInput'
 import {useConstantContext} from '../../core/context/ConstantContext'
 import {combineSx} from '../../core/theme'
 import {makeSx} from '../../alexlibs/mui-extension'
-import {countryToFlag} from '../../core/helper/utils'
+import {Country} from '../../core/client/constant/Country'
+import {countryToFlag} from '../../core/helper'
 
 interface Props {
   country?: Country

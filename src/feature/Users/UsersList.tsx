@@ -9,9 +9,9 @@ import {fromNullable} from 'fp-ts/lib/Option'
 import {useToast} from '../../core/toast'
 import {DebouncedInput} from '../../shared/DebouncedInput/DebouncedInput'
 import {TrueFalseUndefined} from '../../shared/TrueFalseUndefined/TrueFalseUndefined'
-import {User} from '@signal-conso/signalconso-api-sdk-js'
 import {ScDialog} from '../../shared/Confirm/ScDialog'
 import {IconBtn} from '../../alexlibs/mui-extension'
+import {User} from '../../core/client/user/User'
 
 export const UsersList = () => {
   const {m, formatDate} = useI18n()
@@ -60,16 +60,16 @@ export const UsersList = () => {
           </>
         }
         loading={_users.fetching}
-        total={_users.list?.totalSize}
+        total={_users.list?.totalCount}
         paginate={{
           limit: _users.filters.limit,
           offset: _users.filters.offset,
           onPaginationChange: pagination => _users.updateFilters(prev => ({...prev, ...pagination})),
         }}
         showColumnsToggle
-        rowsPerPageOptions={[5, 10, 25, 100, ...(_users.list ? [_users.list.totalSize] : [])]}
+        rowsPerPageOptions={[5, 10, 25, 100, ...(_users.list ? [_users.list.totalCount] : [])]}
         getRenderRowKey={_ => _.email}
-        data={_users.list?.data}
+        data={_users.list?.entities}
         columns={[
           {
             id: '',

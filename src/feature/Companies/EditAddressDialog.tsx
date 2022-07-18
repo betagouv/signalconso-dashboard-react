@@ -4,8 +4,8 @@ import {ScDialog} from '../../shared/Confirm/ScDialog'
 import {useI18n} from '../../core/i18n'
 import {Controller, useForm} from 'react-hook-form'
 import {Checkbox, FormControlLabel} from '@mui/material'
-import {Address} from '@signal-conso/signalconso-api-sdk-js'
 import {Alert} from '../../alexlibs/mui-extension'
+import {Address} from '../../core/model'
 
 interface EditAddressDialogProps {
   children: ReactElement<any>

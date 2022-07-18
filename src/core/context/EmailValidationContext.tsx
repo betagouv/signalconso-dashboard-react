@@ -2,8 +2,8 @@ import * as React from 'react'
 import {ReactNode, useCallback, useContext} from 'react'
 import {UsePaginate, useSetState} from '../../alexlibs/react-hooks-lib'
 import {SignalConsoApiSdk} from '../ApiSdkInstance'
-import {ConsumerEmailValidation, ConsumerEmailValidationSearch} from '@signal-conso/signalconso-api-sdk-js'
 import {useScPaginate} from '../../shared/usePaginate/usePaginate'
+import {ConsumerEmailValidation, ConsumerEmailValidationSearch} from '../client/consumer-email-validation/ConsumerEmailValidation'
 
 export interface ConsumerEmailValidationContextProps {
   search: UsePaginate<ConsumerEmailValidation, ConsumerEmailValidationSearch>

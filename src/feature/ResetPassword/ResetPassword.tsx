@@ -8,14 +8,14 @@ import {useI18n} from '../../core/i18n'
 import {PanelFoot} from '../../shared/Panel/PanelFoot'
 import {ScButton} from '../../shared/Button/Button'
 import {useHistory, useParams} from 'react-router'
-import {Id} from '@signal-conso/signalconso-api-sdk-js'
 import {useAsync} from '../../alexlibs/react-hooks-lib'
 import {HelpContactInfo} from '../../shared/HelpContactInfo/HelpContactInfo'
 import {AuthenticationEventActions, EventCategories, Matomo} from '../../core/plugins/Matomo'
 import {useToast} from '../../core/toast'
-import {fnSwitch} from '../../core/helper/utils'
 import {siteMap} from '../../core/siteMap'
 import {layoutConfig} from '../../core/Layout'
+import {Id} from '../../core/model'
+import {fnSwitch} from '../../alexlibs/ts-utils'
 
 interface Form {
   newPassword: string

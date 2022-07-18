@@ -69,10 +69,10 @@ export const ReportedUnknownWebsites = () => {
             </Tooltip>
 
             <ExportUnknownWebsitesPopper
-              disabled={fromNullable(_fetch?.list?.totalSize)
+              disabled={fromNullable(_fetch?.list?.totalCount)
                 .map(_ => _ > config.reportsLimitForExport)
                 .getOrElse(false)}
-              tooltipBtnNew={fromNullable(_fetch?.list?.totalSize)
+              tooltipBtnNew={fromNullable(_fetch?.list?.totalCount)
                 .map(_ => (_ > config.reportsLimitForExport ? m.cannotExportMoreReports(config.reportsLimitForExport) : ''))
                 .getOrElse('')}
             >
@@ -83,14 +83,14 @@ export const ReportedUnknownWebsites = () => {
           </>
         }
         loading={_fetch.fetching}
-        total={_fetch.list?.totalSize}
+        total={_fetch.list?.totalCount}
         paginate={{
           limit: _fetch.filters.limit,
           offset: _fetch.filters.offset,
           onPaginationChange: pagination => _fetch.updateFilters(prev => ({...prev, ...pagination})),
         }}
         getRenderRowKey={_ => _.host}
-        data={_fetch.list?.data}
+        data={_fetch.list?.entities}
         columns={[
           {
             id: 'host',
