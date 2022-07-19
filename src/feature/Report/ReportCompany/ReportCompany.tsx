@@ -40,13 +40,16 @@ export const ReportCompany = ({report, canEdit}: Props) => {
           )
         }
       >
-
-        {report.companyId ? (<NavLink to={siteMap.logged.company(report.companyId)}>
-          {m.company}
-          <IconButton size="small" sx={{ml: 1}}>
-            <Icon>open_in_new</Icon>
-          </IconButton>
-        </NavLink>) : <> {m.company} </>}
+        {report.companyId ? (
+          <NavLink to={siteMap.logged.company(report.companyId)}>
+            {m.company}
+            <IconButton size="small" sx={{ml: 1}}>
+              <Icon>open_in_new</Icon>
+            </IconButton>
+          </NavLink>
+        ) : (
+          <> {m.company} </>
+        )}
       </PanelHead>
       <PanelBody
         sx={{
