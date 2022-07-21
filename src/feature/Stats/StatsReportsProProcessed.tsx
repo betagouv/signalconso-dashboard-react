@@ -1,5 +1,4 @@
-import {useTheme} from '@mui/material'
-import {toPercentage, AsyncLineChart} from 'shared/Chart/LineChartWrappers'
+import {AsyncLineChart, toPercentage} from 'shared/Chart/LineChartWrappers'
 import {Txt} from '../../alexlibs/mui-extension'
 import {useLogin} from '../../core/context/LoginContext'
 import {useI18n} from '../../core/i18n'
@@ -11,8 +10,8 @@ export const StatsReportsProProcessedPanel = () => {
 
   const loadCurves = async () => {
     const [transmitted, responses] = await Promise.all([
-      api.secured.stats.doTmpQuery('transmissible'),
-      api.secured.stats.doTmpQuery('responses_corrected_to_transmissibles'),
+      api.secured.stats.doTmpQuery('transmissible_or_nonidentified'),
+      api.secured.stats.doTmpQuery('reponses_aux_transmissibles_base_sur_table_reports'),
     ])
     return [
       {
