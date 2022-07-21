@@ -41,6 +41,12 @@ export class StatsClient {
       .then(res => res.map(_ => ({..._, date: new Date(_.date)})))
   }
 
+  readonly getProReportVisibleStat = () => {
+    return this.client
+      .get<CountByDate[]>(`/stats/reports/pro-visible`)
+      .then(res => res.map(_ => ({..._, date: new Date(_.date)})))
+  }
+
   readonly getProReportTransmittedStat = (search?: CurveStatsParams) => {
     return this.client
       .get<CountByDate[]>(`/stats/reports/pro-transmitted`, {qs: search})

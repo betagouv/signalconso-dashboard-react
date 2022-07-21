@@ -1,3 +1,4 @@
+import {Report, ReportStatus, ReportTag} from 'core/model'
 import {AsyncLineChart, toPercentage} from 'shared/Chart/LineChartWrappers'
 import {Txt} from '../../alexlibs/mui-extension'
 import {useLogin} from '../../core/context/LoginContext'
@@ -10,8 +11,8 @@ export const StatsReportsProProcessedPanel = () => {
 
   const loadCurves = async () => {
     const [transmitted, responses] = await Promise.all([
-      api.secured.stats.doTmpQuery('transmissible_or_nonidentified'),
-      api.secured.stats.doTmpQuery('reponses_aux_transmissibles_base_sur_table_reports'),
+      api.secured.stats.getProReportVisibleStat(),
+      api.secured.stats.getProReportResponseStat(),
     ])
     return [
       {
