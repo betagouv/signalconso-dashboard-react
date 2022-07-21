@@ -53,12 +53,6 @@ export class StatsClient {
       .then(res => res.map(_ => ({..._, date: new Date(_.date)})))
   }
 
-  readonly doTmpQuery = (queryName: string) => {
-    return this.client
-      .get<CountByDate[]>(`/tmpquery`, {qs: {queryName}})
-      .then(res => res.map(_ => ({..._, date: new Date(_.date)})))
-  }
-
   readonly getProReportResponseStat = (search?: ReportResponseStatsParams) => {
     return this.client
       .get<CountByDate[]>(`/stats/reports/pro-response`, {qs: search})
