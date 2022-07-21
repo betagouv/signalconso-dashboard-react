@@ -10,14 +10,19 @@ export const StatsReportsProProcessedPanel = () => {
   const {m} = useI18n()
 
   const loadCurves = async () => {
-    const [transmitted, responses] = await Promise.all([
-      api.secured.stats.getProReportVisibleStat(),
+    const [toTransmit, transmitted, responses] = await Promise.all([
+      api.secured.stats.getProReportToTransmitStat(),
+      api.secured.stats.getProReportTransmittedStat(),
       api.secured.stats.getProReportResponseStat(),
     ])
     return [
       {
+        label: m.reportsProTransmitted,
+        data: toPercentage(transmitted, toTransmit),
+      },
+      {
         label: m.reportsProResponse,
-        data: toPercentage(responses, transmitted),
+        data: toPercentage(responses, toTransmit),
       },
     ]
   }

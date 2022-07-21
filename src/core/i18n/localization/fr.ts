@@ -310,11 +310,18 @@ export const fr = {
     consoAnonyme: 'Conso. anonyme',
     hasAttachement: `Pièces jointes`,
     reportsProProcessed: 'Traitement des signalements par les pros',
-    reportsProProcessedDesc: `Pourcentage du traitement des signalements visibles par les professionnels (une partie des signalements ne sont pas transmis aux professionnels) auxquels les professionnels ont répondu`,
+    reportsProProcessedDesc: `
+    <ul>
+        <li>Nombre de signalements transmis aux professionnels (certains signalements ne sont pas transmis, faute de pouvoir identifier l'entreprise, ou parce qu'elle n'est pas française)</li>
+        <li>Nombre de signalements auxquels les professsionnels ont répondu
+    </ul>
+    Ces deux courbes sont affichées en pourcentage des signalements qu'on souhaite transmettre aux pros (on ne veut pas transmettre certains signalements relatifs aux produits dangereux, lanceurs d'alertes, ...)
+    `,
     reportsProResponseType: 'Types de réponse - évolution',
     reportsProResponseTypeDesc: `   
     Répartition des réponses des professionels sur les signalements transmis
   `,
+    reportsProTransmitted: '% Transmis',
     reportsProResponse: '% Réponses',
     reportsProVisibleCount: ' Nombre de signalements visibles par les pro',
     reportsProVisible: ' % Signalements visibles par les pro',

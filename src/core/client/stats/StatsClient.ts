@@ -41,9 +41,9 @@ export class StatsClient {
       .then(res => res.map(_ => ({..._, date: new Date(_.date)})))
   }
 
-  readonly getProReportVisibleStat = () => {
+  readonly getProReportToTransmitStat = () => {
     return this.client
-      .get<CountByDate[]>(`/stats/reports/pro-visible`)
+      .get<CountByDate[]>(`/stats/reports/pro-totransmit`)
       .then(res => res.map(_ => ({..._, date: new Date(_.date)})))
   }
 
