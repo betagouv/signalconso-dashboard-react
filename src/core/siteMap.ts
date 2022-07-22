@@ -13,8 +13,6 @@ export const siteMap = {
     reports: (_?: Partial<ReportSearch>) => `/suivi-des-signalements` + (_ ? toQueryString(mapDatesToQueryString(_)) : ``),
     subscriptions: `/abonnements`,
     report: (id: Id = `:id`) => `/suivi-des-signalements/report/${id}`,
-    //Route below is used to track subscription use by dgccrf agent
-    reportDgccrf: (id: Id = `:id`) => `/dgccrf/suivi-des-signalements/report/${id}`,
     exports: `/mes-telechargements`,
     companies_toActivate: `/entreprises/a-activer`,
     companies_registered: `/entreprises/les-plus-signalees`,
@@ -23,7 +21,6 @@ export const siteMap = {
     companyAccesses: (siret: string = `:siret`) => `/entreprise/acces/${siret}`,
     users: `/users`,
     company: (id: Id = `:id`) => `/bilan-entreprise/${id}`,
-    companyDgccrf: (id: Id = `:id`) => `/dgccrf/bilan-entreprise/${id}`,
     users_dgccrf_pending: `/users/pending`,
     users_consumer_validation: `/users/consumers`,
     users_dgccrf_all: `/users/all`,

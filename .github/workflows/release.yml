@@ -1,6 +1,8 @@
 name: Build, format & test workflow
 
 on: [push]
+env:
+  DISABLE_ESLINT_PLUGIN: true
 
 jobs:
   # This workflow contains a single job called "greet"
@@ -17,5 +19,6 @@ jobs:
           node-version: 16
           registry-url: https://registry.npmjs.org/
       - run: yarn install --immutable
+      - run: yarn build
       - run: yarn checkformat
       - run: yarn test

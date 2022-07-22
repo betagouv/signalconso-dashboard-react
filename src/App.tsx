@@ -181,13 +181,11 @@ const AppLogged = () => {
         <Route path={siteMap.logged.reportedWebsites} component={ReportedWebsites} />
         <Route path={siteMap.logged.reportedPhone} component={ReportedPhones} />
         <Route path={siteMap.logged.report()} component={connectedUser.isPro ? ReportPro : ReportComponent} />
-        <Route path={siteMap.logged.reportDgccrf()} component={connectedUser.isPro ? ReportPro : ReportComponent} />
         <Route path={siteMap.logged.reports()} component={connectedUser.isPro ? ReportsPro : Reports} />
         <Route path={siteMap.logged.users} component={Users} />
         <Route path={siteMap.logged.companies} component={Companies} />
         <Route path={siteMap.logged.companyAccesses()} component={CompanyAccesses} />
         <Route path={siteMap.logged.company()} component={CompanyComponent} />
-        <Route path={siteMap.logged.companyDgccrf()} component={CompanyComponent} />
         <Route path={siteMap.logged.subscriptions} component={Subscriptions} />
         <Route path={siteMap.logged.companiesPro} component={CompaniesPro} />
         <Route path={siteMap.logged.settings} component={Settings} />

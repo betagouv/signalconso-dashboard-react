@@ -356,7 +356,7 @@ export const fr = {
     menu_reports: 'Signalements',
     menu_companies: 'Entreprises',
     menu_admin: 'Administration',
-    menu_stats: 'Présentation',
+    menu_stats: 'Statistiques',
     menu_exports: 'Mes exports',
     menu_users: 'Utilisateurs',
     menu_subscriptions: 'Abonnements',
