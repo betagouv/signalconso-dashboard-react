@@ -1,5 +1,5 @@
 import {Box} from '@mui/material'
-import React, {useEffect, useState} from 'react'
+import React, {useEffect, useMemo, useRef, useState} from 'react'
 import {ReportFileAdd} from './ReportFileAdd'
 import {ReportFile} from './ReportFile'
 import {useI18n} from '../../../core/i18n'
@@ -26,10 +26,19 @@ export const ReportFiles = ({
 }: ReportFilesProps) => {
   const [innerFiles, setInnerFiles] = useState<UploadedFile[]>()
   const {m} = useI18n()
+  const attachmentRef = useRef<any>()
 
   useEffect(() => {
     setInnerFiles(files)
   }, [files])
+
+  if (attachmentRef.current && window.location.href.includes('anchor=attachment')) {
+    attachmentRef.current.scrollIntoView({
+      behavior: 'smooth',
+      block: 'start',
+      inline: 'center',
+    })
+  }
 
   const newFile = (f: UploadedFile) => {
     onNewFile(f)
@@ -44,6 +53,7 @@ export const ReportFiles = ({
   return (
     <>
       <Box
+        ref={attachmentRef}
         sx={{
           display: 'flex',
           flexWrap: 'wrap',

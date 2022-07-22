@@ -17,5 +17,6 @@ jobs:
           node-version: 16
           registry-url: https://registry.npmjs.org/
       - run: yarn install --immutable
+      - run: yarn build
       - run: yarn checkformat
       - run: yarn test
