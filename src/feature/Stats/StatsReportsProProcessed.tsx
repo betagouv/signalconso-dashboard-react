@@ -1,6 +1,6 @@
-import {useTheme} from '@mui/material'
-import {toPercentage, AsyncLineChart} from 'shared/Chart/LineChartWrappers'
-import {Txt} from '../../alexlibs/mui-extension'
+import {Report, ReportStatus, ReportTag} from 'core/model'
+import {AsyncLineChart, toPercentage} from 'shared/Chart/LineChartWrappers'
+import {Alert, Txt} from '../../alexlibs/mui-extension'
 import {useLogin} from '../../core/context/LoginContext'
 import {useI18n} from '../../core/i18n'
 import {Panel, PanelBody, PanelHead} from '../../shared/Panel'
@@ -10,19 +10,19 @@ export const StatsReportsProProcessedPanel = () => {
   const {m} = useI18n()
 
   const loadCurves = async () => {
-    const [reports, transmitted, responses] = await Promise.all([
-      api.public.stats.getReportCountCurve(),
+    const [toTransmit, transmitted, responses] = await Promise.all([
+      api.secured.stats.getProReportToTransmitStat(),
       api.secured.stats.getProReportTransmittedStat(),
       api.secured.stats.getProReportResponseStat(),
     ])
     return [
       {
-        label: m.reportsProVisible,
-        data: toPercentage(transmitted, reports),
+        label: m.reportsProTransmitted,
+        data: toPercentage(transmitted, toTransmit),
       },
       {
         label: m.reportsProResponse,
-        data: toPercentage(responses, reports),
+        data: toPercentage(responses, toTransmit),
       },
     ]
   }
@@ -33,6 +33,9 @@ export const StatsReportsProProcessedPanel = () => {
       <PanelBody>
         <Txt color="hint" gutterBottom block dangerouslySetInnerHTML={{__html: m.reportsProProcessedDesc}} />
         <AsyncLineChart {...{loadCurves}} />
+        <Alert type="info" gutterTop>
+          {m.reportsProProcessedInfo}
+        </Alert>
       </PanelBody>
     </Panel>
   )
