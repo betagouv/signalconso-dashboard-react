@@ -325,7 +325,6 @@ export const fr = {
     reportsProTransmitted: '% Transmis',
     reportsProResponse: '% Réponses',
     reportsProVisibleCount: ' Nombre de signalements visibles par les pro',
-    reportsProVisible: ' % Signalements visibles par les pro',
     reportsProInfonde: '% infondés',
     reportsProMalAttribue: '% mauvaises attributions',
     reportsProPromesseAction: `% promesses d'action`,
