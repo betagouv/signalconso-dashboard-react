@@ -32,7 +32,7 @@ export const ReportFiles = ({
     setInnerFiles(files)
   }, [files])
 
-  useEffect( () => {
+  useEffect(() => {
     if (attachmentRef.current && window.location.href.includes('anchor=attachment')) {
       attachmentRef.current.scrollIntoView({
         behavior: 'smooth',
