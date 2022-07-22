@@ -1,6 +1,6 @@
 import {Report, ReportStatus, ReportTag} from 'core/model'
 import {AsyncLineChart, toPercentage} from 'shared/Chart/LineChartWrappers'
-import {Txt} from '../../alexlibs/mui-extension'
+import {Alert, Txt} from '../../alexlibs/mui-extension'
 import {useLogin} from '../../core/context/LoginContext'
 import {useI18n} from '../../core/i18n'
 import {Panel, PanelBody, PanelHead} from '../../shared/Panel'
@@ -33,6 +33,9 @@ export const StatsReportsProProcessedPanel = () => {
       <PanelBody>
         <Txt color="hint" gutterBottom block dangerouslySetInnerHTML={{__html: m.reportsProProcessedDesc}} />
         <AsyncLineChart {...{loadCurves}} />
+        <Alert type="info" gutterTop>
+          {m.reportsProProcessedInfo}
+        </Alert>
       </PanelBody>
     </Panel>
   )
