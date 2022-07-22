@@ -1,6 +1,8 @@
 name: Build, format & test workflow
 
 on: [push]
+env:
+  ESLINT_NO_DEV_ERRORS: true
 
 jobs:
   # This workflow contains a single job called "greet"
