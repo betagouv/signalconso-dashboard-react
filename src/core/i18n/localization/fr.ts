@@ -295,7 +295,7 @@ export const fr = {
     reportsOnFisrtProActivationAccount: `Adhésion de nouveaux professionnels`,
     reportsProUserDesc: `   
     <ul>
-        <li>Nombre de signalements transmis aux professionnels (une partie des signalements relatifs aux produits dangereux, lanceurs d'alertes, démarchage téléphonique, Question pour RéponseConso ne sont pas transmis aux professionnels).</li>
+        <li>Nombre de signalements transmis aux professionnels (certains signalements n'ont pas vocation à être transmis, par exemple ceux relatifs aux produit dangereux. D'autres ne peuvent être transmis, par exemple si l'entreprise n'a pu être identifiée)</li>
         <li>Nombre d'entreprises ayant activé un compte utilisateur la première fois.</li>
     </ul>
   `,
@@ -324,7 +324,7 @@ export const fr = {
   `,
     reportsProTransmitted: '% Transmis',
     reportsProResponse: '% Réponses',
-    reportsProVisibleCount: ' Nombre de signalements visibles par les pro',
+    reportsProTransmittedCount: 'Nombre de signalements transmis aux professionnels',
     reportsProInfonde: '% infondés',
     reportsProMalAttribue: '% mauvaises attributions',
     reportsProPromesseAction: `% promesses d'action`,

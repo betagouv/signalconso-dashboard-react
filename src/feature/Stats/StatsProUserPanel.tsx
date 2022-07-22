@@ -18,7 +18,7 @@ export const StatsProUserPanel = () => {
         <SimplifiedAsyncLineChart
           curves={[
             {
-              label: m.reportsProVisibleCount,
+              label: m.reportsProTransmittedCount,
               loadData: () => api.secured.stats.getProReportTransmittedStat({ticks}),
             },
             {
