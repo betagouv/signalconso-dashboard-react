@@ -32,13 +32,15 @@ export const ReportFiles = ({
     setInnerFiles(files)
   }, [files])
 
-  if (attachmentRef.current && window.location.href.includes('anchor=attachment')) {
-    attachmentRef.current.scrollIntoView({
-      behavior: 'smooth',
-      block: 'start',
-      inline: 'center',
-    })
-  }
+  useEffect( () => {
+    if (attachmentRef.current && window.location.href.includes('anchor=attachment')) {
+      attachmentRef.current.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start',
+        inline: 'center',
+      })
+    }
+  }, [attachmentRef])
 
   const newFile = (f: UploadedFile) => {
     onNewFile(f)
