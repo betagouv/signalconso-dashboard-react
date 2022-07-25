@@ -9,6 +9,7 @@
   "scripts": {
     "analyze": "source-map-explorer 'build/static/js/*.js'",
     "start": "react-scripts start",
+    "startdemo": "REACT_APP_API_BASE_URL=https://demo-signalement-api.cleverapps.io react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --transformIgnorePatterns \"node_modules/(?!@mui)/\"",
     "eject": "react-scripts eject",

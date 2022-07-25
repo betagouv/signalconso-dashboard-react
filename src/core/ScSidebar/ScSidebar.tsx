@@ -62,11 +62,7 @@ export const ScSidebar = ({connectedUser, logout}: {connectedUser: UserWithPermi
         </Btn>
       </Box>
       <SidebarHr margin />
-      {[Roles.Admin, Roles.DGCCRF].includes(connectedUser.role) && (
-        <SidebarItem onClick={closeSidebarIfNotPinned} to={path(siteMap.logged.stats)} icon={EntityIcon.stats}>
-          {m.menu_stats}
-        </SidebarItem>
-      )}
+
       <SidebarItem onClick={closeSidebarIfNotPinned} to={path(siteMap.logged.reports())} icon={EntityIcon.report}>
         {m.menu_reports}
       </SidebarItem>
@@ -88,6 +84,11 @@ export const ScSidebar = ({connectedUser, logout}: {connectedUser: UserWithPermi
       {[Roles.Admin, Roles.DGCCRF].includes(connectedUser.role) && (
         <SidebarItem onClick={closeSidebarIfNotPinned} to={path(siteMap.logged.subscriptions)} icon={EntityIcon.subscription}>
           {m.menu_subscriptions}
+        </SidebarItem>
+      )}
+      {[Roles.Admin, Roles.DGCCRF].includes(connectedUser.role) && (
+        <SidebarItem onClick={closeSidebarIfNotPinned} to={path(siteMap.logged.stats)} icon={EntityIcon.stats}>
+          {m.menu_stats}
         </SidebarItem>
       )}
       <SidebarHr margin />
