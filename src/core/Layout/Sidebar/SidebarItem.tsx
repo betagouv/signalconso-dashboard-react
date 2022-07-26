@@ -24,20 +24,18 @@ export interface SidebarItemProps extends BoxProps {
   to?: string
 }
 
-export const SidebarItem = ({to, ...props}: SidebarItemProps) => {
+export const SidebarItem = ({children, to, icon, className, active, large, sx, ...props}: SidebarItemProps) => {
   const theme = useTheme()
-  return to ? (
-    <Box component={NavLink} to={to} activeStyle={styleActive(theme)}>
-      <SidebarItemBody {...props} to={to} />
-    </Box>
-  ) : (
-    <SidebarItemBody {...props} />
-  )
-}
-
-export const SidebarItemBody = ({children, to, icon, className, active, large, sx, ...props}: SidebarItemProps) => {
+  const navLinkProps = to
+    ? {
+        component: NavLink,
+        to,
+        activeStyle: styleActive(theme),
+      }
+    : {}
   return (
     <Box
+      {...navLinkProps}
       sx={{
         transition: t => t.transitions.create('all'),
         display: 'flex',
