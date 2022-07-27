@@ -15,6 +15,7 @@ interface AlertProps extends BoxProps {
   persistentDelete?: boolean
   action?: ReactNode
   dense?: boolean
+  gutterTop?: boolean
   gutterBottom?: boolean
 }
 
@@ -27,6 +28,7 @@ export const Alert = ({
   deletable,
   persistentDelete,
   sx,
+  gutterTop,
   gutterBottom,
   children,
   dangerouslySetInnerHTML,
@@ -93,6 +95,9 @@ export const Alert = ({
           height: '0 !important',
           opacity: '0 !important',
           margin: '0 !important',
+        }),
+        ...(gutterTop && {
+          mt: 1,
         }),
         ...(gutterBottom && {
           mb: 1,

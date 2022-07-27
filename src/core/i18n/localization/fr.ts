@@ -295,7 +295,7 @@ export const fr = {
     reportsOnFisrtProActivationAccount: `Adhésion de nouveaux professionnels`,
     reportsProUserDesc: `   
     <ul>
-        <li>Nombre de signalements transmis aux professionnels (une partie des signalements relatifs aux produits dangereux, lanceurs d'alertes, démarchage téléphonique, Question pour RéponseConso ne sont pas transmis aux professionnels).</li>
+        <li>Nombre de signalements transmis aux professionnels (certains signalements n'ont pas vocation à être transmis, par exemple ceux relatifs aux produit dangereux. D'autres ne peuvent être transmis, par exemple si l'entreprise n'a pu être identifiée)</li>
         <li>Nombre d'entreprises ayant activé un compte utilisateur la première fois.</li>
     </ul>
   `,
@@ -309,21 +309,22 @@ export const fr = {
     nSelected: (n: number) => `<b>${n}</b> sélectionnés`,
     consoAnonyme: 'Conso. anonyme',
     hasAttachement: `Pièces jointes`,
-    reportsProProcessed: 'Traitement des signalements par les pros',
-    reportsProProcessedDesc: `   
-    <div>Pourcentage du traitement des signalements visibles par les professionnels (une partie des signalements ne sont pas transmis aux professionnels) sur le total des signalements</div>
+    reportsProProcessed: 'Traitement des signalements par les professionnels',
+    reportsProProcessedDesc: `
     <ul>
-        <li>Part des signalements transmis : Envoyé, Lu, Non consulté, Consulte ignoré, Promesse d'action, infondé, Mal attribué</li>
-        <li>Part des réponses aux signalements : Promesse d'action, infondé, Mal attribué</li>
+        <li>Nombre de signalements transmis aux professionnels (certains signalements ne sont pas transmis, faute de pouvoir identifier l'entreprise, ou parce qu'elle n'est pas française)</li>
+        <li>Nombre de signalements auxquels les professsionnels ont répondu
     </ul>
-  `,
+    Ces deux courbes sont affichées en pourcentage des signalements qu'on souhaite transmettre aux pros (on ne veut pas transmettre certains signalements relatifs aux produits dangereux, lanceurs d'alertes, ...)
+    `,
+    reportsProProcessedInfo: `Les chiffres des 2-3 derniers mois peuvent encore augmenter, au fur et à mesure que les professionnels traitent leurs signalements`,
     reportsProResponseType: 'Types de réponse - évolution',
     reportsProResponseTypeDesc: `   
     Répartition des réponses des professionels sur les signalements transmis
   `,
+    reportsProTransmitted: '% Transmis',
     reportsProResponse: '% Réponses',
-    reportsProVisibleCount: ' Nombre de signalements visibles par les pro',
-    reportsProVisible: ' % Signalements visibles par les pro',
+    reportsProTransmittedCount: 'Nombre de signalements transmis aux professionnels',
     reportsProInfonde: '% infondés',
     reportsProMalAttribue: '% mauvaises attributions',
     reportsProPromesseAction: `% promesses d'action`,
