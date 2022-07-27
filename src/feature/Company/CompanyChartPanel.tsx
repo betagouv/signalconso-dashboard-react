@@ -25,12 +25,12 @@ export const CompanyChartPanel = ({companyId, company}: {company: CompanyWithRep
     async function inner() {
       setCurves(undefined)
       const [reports, responses] = await Promise.all([
-        apiSdk.publicConnected.stats.getReportCountCurve({
+        apiSdk.secured.stats.getReportCountCurve({
           companyIds,
           ticks,
           tickDuration: reportsCurvePeriod,
         }),
-        apiSdk.publicConnected.stats.getReportCountCurve({
+        apiSdk.secured.stats.getReportCountCurve({
           companyIds,
           status: [ReportStatus.PromesseAction, ReportStatus.Infonde, ReportStatus.MalAttribue],
           ticks,

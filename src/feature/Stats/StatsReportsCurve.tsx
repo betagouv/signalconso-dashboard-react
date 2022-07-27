@@ -34,14 +34,14 @@ export const StatsReportsCurvePanel = () => {
   const ticks = 12
   const loadCurves = async () => {
     const [all, internet, demarchages] = await Promise.all([
-      api.public.stats.getReportCountCurve({ticks, tickDuration, withoutTags: [ReportTag.Bloctel]}),
-      api.public.stats.getReportCountCurve({
+      api.secured.stats.getReportCountCurve({ticks, tickDuration, withoutTags: [ReportTag.Bloctel]}),
+      api.secured.stats.getReportCountCurve({
         ticks,
         tickDuration,
         withTags: [ReportTag.Internet],
         withoutTags: [ReportTag.Bloctel],
       }),
-      api.public.stats.getReportCountCurve({
+      api.secured.stats.getReportCountCurve({
         ticks,
         tickDuration,
         withTags: [ReportTag.DemarchageADomicile, ReportTag.DemarchageTelephonique],
