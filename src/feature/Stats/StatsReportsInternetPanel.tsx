@@ -36,20 +36,20 @@ export const StatsReportsInternetPanel = () => {
 
   const fetch = (start: Date, end: Date) => {
     return Promise.all([
-      api.public.stats
+      api.secured.stats
         .getReportCount({
           start,
           end,
         })
         .then(_ => _.value),
-      api.public.stats
+      api.secured.stats
         .getReportCount({
           start,
           end,
           withTags: [ReportTag.Internet],
         })
         .then(_ => _.value),
-      api.public.stats
+      api.secured.stats
         .getReportCount({
           start,
           end,
@@ -57,7 +57,7 @@ export const StatsReportsInternetPanel = () => {
           hasCompany: true,
         })
         .then(_ => _.value),
-      api.public.stats
+      api.secured.stats
         .getReportCount({
           start,
           end,
@@ -66,7 +66,7 @@ export const StatsReportsInternetPanel = () => {
           hasForeignCountry: true,
         })
         .then(_ => _.value),
-      api.public.stats
+      api.secured.stats
         .getReportCount({
           start,
           end,
