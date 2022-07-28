@@ -60,6 +60,20 @@ export const PeriodPicker = ({value, onChange, label, fullWidth, sx, ...props}: 
         }}
         timeOfDay="startOfDay"
       />
+
+      <Datepicker
+        label={label?.[1] ?? m.end}
+        fullWidth={fullWidth}
+        value={end}
+        onChange={handleEndChange}
+        InputProps={{
+          sx: _ => ({
+            borderBottomLeftRadius: 0,
+            borderTopLeftRadius: 0,
+          }),
+        }}
+        timeOfDay="endOfDay"
+      />
     </Box>
   )
 }
