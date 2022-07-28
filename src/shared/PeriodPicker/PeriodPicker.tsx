@@ -1,7 +1,6 @@
-import {addDays, subDays} from 'date-fns'
-import React, {useEffect, useState} from 'react'
-import {useI18n} from '../../core/i18n'
 import {Box, BoxProps} from '@mui/material'
+import {addDays, subDays} from 'date-fns'
+import {useI18n} from '../../core/i18n'
 import {Datepicker} from '../Datepicker/Datepicker'
 
 export interface DatepickerProps extends Omit<BoxProps, 'onChange'> {
@@ -11,28 +10,19 @@ export interface DatepickerProps extends Omit<BoxProps, 'onChange'> {
   fullWidth?: boolean
 }
 
-export const PeriodPicker = ({value, onChange, label, fullWidth, sx, ...props}: DatepickerProps) => {
-  const [start, setStart] = useState<Date | undefined>(undefined)
-  const [end, setEnd] = useState<Date | undefined>(undefined)
+const datesAreInterverted = (start: Date, end: Date) => start.getTime() > end.getTime()
+
+export const PeriodPicker = ({value = [undefined, undefined], onChange, label, fullWidth, sx, ...props}: DatepickerProps) => {
+  const [start, end] = value ?? [undefined, undefined]
   const {m} = useI18n()
 
-  useEffect(() => {
-    if (value) {
-      if (value[0] && value[0].getTime() !== start?.getTime()) setStart(value[0])
-      if (value[1] && value[1].getTime() !== end?.getTime()) setEnd(value[1])
-    }
-  }, [value])
-
   const handleStartChange = (newStart?: Date) => {
-    const newEnd = end && newStart ? (newStart.getTime() > end.getTime() ? addDays(newStart, 1) : end) : undefined
-    setStart(newStart)
-    setEnd(newEnd)
+    const newEnd = newStart && end && datesAreInterverted(newStart, end) ? addDays(newStart, 1) : end
     onChange([newStart, newEnd])
   }
+
   const handleEndChange = (newEnd?: Date) => {
-    const newStart = start && newEnd ? (newEnd.getTime() < start.getTime() ? subDays(newEnd, 1) : start) : undefined
-    setStart(newStart)
-    setEnd(newEnd)
+    const newStart = start && newEnd && datesAreInterverted(start, newEnd) ? subDays(newEnd, 1) : start
     onChange([newStart, newEnd])
   }
 

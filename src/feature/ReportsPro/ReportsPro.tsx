@@ -225,9 +225,7 @@ export const ReportsPro = () => {
                   </Grid>
                   <DebouncedInput<[Date | undefined, Date | undefined]>
                     value={[_reports.filters.start, _reports.filters.end]}
-                    onChange={([start, end]) =>
-                      _reports.updateFilters(prev => ({...prev, start: start ?? prev.start, end: end ?? prev.end}))
-                    }
+                    onChange={([start, end]) => _reports.updateFilters(prev => ({...prev, start, end}))}
                   >
                     {(value, onChange) => <PeriodPicker fullWidth value={value} onChange={onChange} />}
                   </DebouncedInput>

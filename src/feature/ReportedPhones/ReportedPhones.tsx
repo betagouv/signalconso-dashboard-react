@@ -56,11 +56,9 @@ export const ReportedPhones = () => {
               </DebouncedInput>
               <DebouncedInput<[Date | undefined, Date | undefined]>
                 value={[_reportedPhone.filters.start, _reportedPhone.filters.end]}
-                onChange={([start, end]) =>
-                  _reportedPhone.updateFilters(prev => ({...prev, start: start ?? prev.start, end: end ?? prev.end}))
-                }
+                onChange={([start, end]) => _reportedPhone.updateFilters(prev => ({...prev, start, end}))}
               >
-                {(value, onChange) => <PeriodPicker value={value ?? [undefined, undefined]} onChange={onChange} fullWidth />}
+                {(value, onChange) => <PeriodPicker value={value} onChange={onChange} fullWidth />}
               </DebouncedInput>
             </>
           }
