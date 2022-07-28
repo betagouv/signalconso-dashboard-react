@@ -11,6 +11,8 @@ import {
   WebsiteInvestigation,
   IdentificationStatus,
   Paginate,
+  InvestigationStatus,
+  Practice,
 } from '../../model'
 import {ApiSdkLogger} from '../../helper/Logger'
 import {dateToApiDate, paginateData} from '../../helper'
@@ -76,15 +78,20 @@ export class WebsiteClient {
   }
 
   readonly listInvestigationStatus = () => {
-    return this.client.get<string[]>(`resources/investigation-status`)
+    return this.client.get<InvestigationStatus[]>(`resources/investigation-status`)
   }
 
   readonly listPractice = () => {
-    return this.client.get<string[]>(`resources/practice`)
+    return this.client.get<Practice[]>(`resources/practice`)
   }
 
   readonly createOrUpdateInvestigation = (websiteInvestigation: WebsiteInvestigation): Promise<WebsiteInvestigation> => {
-    return this.client.post<WebsiteInvestigation>(`/website-investigations`, {body: websiteInvestigation})
+    return this.client.post<WebsiteInvestigation>(`/website-investigations`, {
+      body: {
+        ...websiteInvestigation,
+        attribution: websiteInvestigation.attribution?.code,
+      },
+    })
   }
 
   readonly listUnregistered = (filters: HostReportCountSearch): Promise<Paginate<ApiHostWithReportCount>> => {

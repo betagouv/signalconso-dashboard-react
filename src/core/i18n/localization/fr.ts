@@ -3,7 +3,7 @@ import {formatDistance, formatDuration as formatDurationFns} from 'date-fns'
 import {IdentificationType} from 'feature/ReportedWebsites/SelectWebsiteIdentification/SelectWebsiteIdentification'
 import {ReportStatus, ReportStatusPro, ReportTag} from '../../client/report/Report'
 import {CompanyAccessLevel} from '../../client/company-access/CompanyAccess'
-import {IdentificationStatus} from '../../client/website/Website'
+import {IdentificationStatus, InvestigationStatus, Practice} from '../../client/website/Website'
 import {ReportResponseTypes, ResponseEvaluation} from '../../client/event/Event'
 
 const invalidDate = '-'
@@ -66,19 +66,12 @@ export const fr = {
       [IdentificationStatus.Identified]: 'Identifié',
       [IdentificationStatus.NotIdentified]: 'Non identifié',
     },
-    investigationStatus: (s: string) => {
-      switch (s) {
-        case 'NotProcessed':
-          return 'N/A'
-        case 'Processing':
-          return 'Identification en cours'
-        case 'UnderInvestigation':
-          return 'Enquête en cours'
-        case 'InvestigationDone':
-          return 'Enquête terminée'
-        default:
-          return s
-      }
+    InvestigationStatusDesc: {
+      [InvestigationStatus.NotProcessed]: 'N/A',
+      [InvestigationStatus.SignalConsoIdentificationFailed]: 'Echec identification Admin',
+      [InvestigationStatus.Processing]: 'Identification en cours',
+      [InvestigationStatus.UnderInvestigation]: 'Enquête en cours',
+      [InvestigationStatus.InvestigationDone]: 'Enquête terminée',
     },
     hide: 'Masquer',
     filter: 'Filtrer',

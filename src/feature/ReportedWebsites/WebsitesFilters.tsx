@@ -9,7 +9,7 @@ import {ScMultiSelect} from '../../shared/Select/MultiSelect'
 import {Enum} from '../../alexlibs/ts-utils'
 import {Label} from '../../shared/Label/Label'
 import {Btn} from '../../alexlibs/mui-extension'
-import {IdentificationStatus, WebsiteWithCompanySearch} from '../../core/client/website/Website'
+import {IdentificationStatus, Practice, WebsiteWithCompanySearch} from '../../core/client/website/Website'
 
 export interface WebsitesFiltersProps {
   updateFilters: (_: WebsiteWithCompanySearch) => void
@@ -53,6 +53,54 @@ export const WebsitesFilters = ({filters, updateFilters, children, ...props}: We
       <Dialog fullScreen={layout.isMobileWidth} open={open ?? false} onClose={close}>
         <DialogTitle>{m.search}</DialogTitle>
         <DialogContent>
+          <DialogInputRow icon="check_circle" label={m.practice}>
+            <Controller
+              defaultValue={filters.practice ?? []}
+              name="practice"
+              control={control}
+              render={({field}) => (
+                <ScMultiSelect
+                  {...field}
+                  fullWidth
+                  withSelectAll
+                  renderValue={practice => `(${practice.length}) ${practice.join(',')}`}
+                >
+                  {Enum.values(Practice).map(practice => (
+                    <ScMenuItem withCheckbox key={practice} value={practice}>
+                      <Label {...props}>{practice}</Label>
+                    </ScMenuItem>
+                  ))}
+                </ScMultiSelect>
+              )}
+            />
+          </DialogInputRow>
+
+          <DialogInputRow icon="check_circle" label={m.investigation}>
+            <Controller
+              defaultValue={filters.investigationStatus ?? []}
+              name="investigationStatus"
+              control={control}
+              render={({field}) => (
+                <ScMultiSelect
+                  {...field}
+                  fullWidth
+                  withSelectAll
+                  renderValue={investigationStatus =>
+                    `(${investigationStatus.length}) ${investigationStatus
+                      .map(status => m.InvestigationStatusDesc[status])
+                      .join(',')}`
+                  }
+                >
+                  {Enum.values(IdentificationStatus).map(kind => (
+                    <ScMenuItem withCheckbox key={kind} value={kind}>
+                      <Label {...props}>{m.IdentificationStatusDesc[kind]}</Label>
+                    </ScMenuItem>
+                  ))}
+                </ScMultiSelect>
+              )}
+            />
+          </DialogInputRow>
+
           <DialogInputRow icon="check_circle" label={m.kind}>
             <Controller
               defaultValue={filters.identificationStatus ?? []}

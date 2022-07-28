@@ -20,7 +20,13 @@ import {map} from '../../alexlibs/ts-utils'
 import {sxUtils} from '../../core/theme'
 import {useMemoFn} from '../../alexlibs/react-hooks-lib'
 import {useLogin} from '../../core/context/LoginContext'
-import {DepartmentDivision, IdentificationStatus, WebsiteWithCompany} from '../../core/client/website/Website'
+import {
+  DepartmentDivision,
+  IdentificationStatus,
+  InvestigationStatus,
+  Practice,
+  WebsiteWithCompany,
+} from '../../core/client/website/Website'
 import {cleanObject} from '../../core/helper'
 import {Id} from '../../core/model'
 
@@ -156,7 +162,7 @@ export const WebsitesInvestigation = () => {
             head: m.practice,
             id: 'practice',
             render: _ => (
-              <AutocompleteDialog<string>
+              <AutocompleteDialog<Practice>
                 value={_.practice}
                 title={m.practiceTitle}
                 inputLabel={m.practice}
@@ -179,11 +185,11 @@ export const WebsitesInvestigation = () => {
             head: m.investigation,
             id: 'investigationStatus',
             render: _ => (
-              <AutocompleteDialog<string>
+              <AutocompleteDialog<InvestigationStatus>
                 value={_.investigationStatus}
                 title={m.affectationTitle}
-                inputLabel={m.affectation}
-                getOptionLabel={_ => m.investigationStatus(_)}
+                inputLabel={m.investigation}
+                getOptionLabel={_ => m.InvestigationStatusDesc[_]}
                 options={_investigationStatus.entity}
                 onChange={investigationStatus => {
                   if (_.investigationStatus === investigationStatus) {
@@ -196,7 +202,7 @@ export const WebsitesInvestigation = () => {
               >
                 <StatusChip
                   tooltipTitle={m.investigation}
-                  value={_.investigationStatus ? m.investigationStatus(_.investigationStatus) : m.noValue}
+                  value={_.investigationStatus ? m.InvestigationStatusDesc[_.investigationStatus] : m.noValue}
                 />
               </AutocompleteDialog>
             ),
@@ -206,21 +212,23 @@ export const WebsitesInvestigation = () => {
             id: 'affectation',
             render: w => (
               <AutocompleteDialog<DepartmentDivision>
-                value={map(w.attribution, departmentDivisionIndex, (attribution, dep) => dep[attribution][0])}
+                value={map(w.attribution, departmentDivisionIndex, (attribution, dep) =>
+                  dep[attribution.code] && dep[attribution.code].length > 0 ? dep[attribution.code][0] : undefined,
+                )}
                 title={m.affectationTitle}
                 inputLabel={m.affectation}
                 getOptionLabel={_ => _.code + ' - ' + _.name}
                 options={_departmentDivision.entity}
                 onChange={departmentDivision => {
-                  if (departmentDivision && w.attribution === departmentDivision.code) {
+                  if (departmentDivision && w.attribution === departmentDivision) {
                     toastInfo(m.alreadySelectedValue(departmentDivision?.name))
                   } else {
-                    _createOrUpdate.fetch({}, {...w, attribution: departmentDivision?.code})
-                    websitesIndex.set(w.id, {...w, attribution: departmentDivision?.code})
+                    _createOrUpdate.fetch({}, {...w, attribution: departmentDivision})
+                    websitesIndex.set(w.id, {...w, attribution: departmentDivision})
                   }
                 }}
               >
-                <StatusChip tooltipTitle={m.affectation} value={w.attribution ?? m.noValue} />
+                <StatusChip tooltipTitle={m.affectation} value={w.attribution ? w.attribution.name : m.noValue} />
               </AutocompleteDialog>
             ),
           },
