@@ -54,9 +54,7 @@ export const ReportedUnknownWebsites = () => {
             <PeriodPicker
               fullWidth
               value={[_fetch.filters.start, _fetch.filters.end]}
-              onChange={([start, end]) =>
-                _fetch.updateFilters(prev => ({...prev, start: start ?? prev.start, end: end ?? prev.end}))
-              }
+              onChange={([start, end]) => _fetch.updateFilters(prev => ({...prev, start, end}))}
             />
           </>
         }
