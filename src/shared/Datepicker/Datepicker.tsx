@@ -28,7 +28,7 @@ export const Datepicker = ({value, onChange, label, fullWidth, InputProps, timeO
     }
   }
 
-  const [displayedDate, setDisplayedDate] = useState<string | undefined>(undefined)
+  const [displayedDate, setDisplayedDate] = useState<string>('')
 
   useEffect(() => {
     if (value) {
@@ -39,7 +39,7 @@ export const Datepicker = ({value, onChange, label, fullWidth, InputProps, timeO
       ].join('-')
       setDisplayedDate(yyyymmdd)
     } else {
-      setDisplayedDate(undefined)
+      setDisplayedDate('')
     }
   }, [setDisplayedDate, value])
 
