@@ -3,6 +3,7 @@
 /.pnp
 .pnp.js
 .svg
+.yarn
 # testing
 /coverage
 

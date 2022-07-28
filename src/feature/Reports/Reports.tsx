@@ -141,7 +141,7 @@ export const Reports = () => {
                   <DebouncedInput<[Date | undefined, Date | undefined]>
                     value={[_reports.filters.start, _reports.filters.end]}
                     onChange={([start, end]) => {
-                      _reports.updateFilters(prev => ({...prev, start: start ?? prev.start, end: end ?? prev.end}))
+                      _reports.updateFilters(prev => ({...prev, start, end}))
                     }}
                   >
                     {(value, onChange) => <PeriodPicker value={value} onChange={onChange} sx={{mr: 1}} fullWidth />}
