@@ -1,14 +1,14 @@
+import {Box, Icon, Tooltip, useTheme} from '@mui/material'
+import {Txt} from 'alexlibs/mui-extension'
+import {fromNullable} from 'fp-ts/lib/Option'
+import {Report} from '../../../core/client/report/Report'
+import {useReportContext} from '../../../core/context/ReportContext'
+import {capitalize} from '../../../core/helper'
+import {useI18n} from '../../../core/i18n'
+import {styleUtils, sxUtils} from '../../../core/theme'
+import {ScButton} from '../../../shared/Button/Button'
 import {Panel, PanelBody, PanelHead} from '../../../shared/Panel'
 import {EditConsumerDialog} from './EditConsumerDialog'
-import {ScButton} from '../../../shared/Button/Button'
-import {fromNullable} from 'fp-ts/lib/Option'
-import {Box, Icon, useTheme} from '@mui/material'
-import React from 'react'
-import {useI18n} from '../../../core/i18n'
-import {useReportContext} from '../../../core/context/ReportContext'
-import {styleUtils, sxUtils} from '../../../core/theme'
-import {Report} from '../../../core/client/report/Report'
-import {capitalize} from '../../../core/helper'
 
 interface Props {
   report: Report
@@ -58,6 +58,22 @@ export const ReportConsumer = ({report, canEdit}: Props) => {
           </Box>
           <Box sx={{color: t => t.palette.text.secondary}}>{report.email}</Box>
           {report.consumerPhone && <Box sx={{color: t => t.palette.text.secondary}}>{report.consumerPhone}</Box>}
+          {report.consumerReferenceNumber && (
+            <Box>
+              <Tooltip arrow title={m.reportConsumerReferenceNumberDesc}>
+                <Txt sx={{cursor: 'pointer'}}>
+                  <Txt sx={{color: t => t.palette.text.secondary}}>
+                    {m.reportConsumerReferenceNumber}
+                    <Icon fontSize="small" sx={{mb: -0.5, ml: 0.5}}>
+                      help_outline
+                    </Icon>{' '}
+                    :
+                  </Txt>{' '}
+                  <Txt sx={{fontSize: t => styleUtils(t).fontSize.big}}>{report.consumerReferenceNumber}</Txt>
+                </Txt>
+              </Tooltip>
+            </Box>
+          )}
           {!report.contactAgreement && (
             <Box sx={{color: t => t.palette.error.main}} style={{marginTop: theme.spacing(0.5)}}>
               <Icon sx={sxUtils.inlineIcon}>warning</Icon>
