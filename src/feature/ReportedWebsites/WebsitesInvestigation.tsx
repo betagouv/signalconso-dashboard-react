@@ -29,9 +29,10 @@ import {
 } from '../../core/client/website/Website'
 import {cleanObject} from '../../core/helper'
 import {Id} from '../../core/model'
+import {PeriodPicker} from '../../shared/PeriodPicker/PeriodPicker'
 
 export const WebsitesInvestigation = () => {
-  const {m} = useI18n()
+  const {m, formatDate} = useI18n()
   const _websiteWithCompany = useReportedWebsiteWithCompanyContext().getWebsiteWithCompany
   const _createOrUpdate = useWebsiteInvestigationContext().createOrUpdateInvestigation
   const _departmentDivision = useWebsiteInvestigationContext().listDepartmentDivision
@@ -93,6 +94,15 @@ export const WebsitesInvestigation = () => {
                   onChange={e => onChange(e.target.value)}
                 />
               )}
+            </DebouncedInput>
+
+            <DebouncedInput<[Date | undefined, Date | undefined]>
+              value={[_websiteWithCompany.filters.start, _websiteWithCompany.filters.end]}
+              onChange={([start, end]) => {
+                _websiteWithCompany.updateFilters(prev => ({...prev, start, end}))
+              }}
+            >
+              {(value, onChange) => <PeriodPicker value={value} onChange={onChange} sx={{mr: 1}} fullWidth />}
             </DebouncedInput>
           </>
         }
@@ -156,6 +166,11 @@ export const WebsitesInvestigation = () => {
                 }}
               />
             ),
+          },
+          {
+            head: m.creationDate,
+            id: 'creationDate',
+            render: _ => formatDate(_.creationDate),
           },
           {
             head: m.practice,

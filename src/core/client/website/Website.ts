@@ -69,6 +69,8 @@ export interface WebsiteWithCompanySearch extends PaginatedFilters {
   practice?: Practice[]
   investigationStatus?: InvestigationStatus[]
   attribution?: string[]
+  start?: Date
+  end?: Date
 }
 
 export interface HostReportCountSearch extends PaginatedFilters {
