@@ -43,8 +43,6 @@ export const WebsitesInvestigation = () => {
 
   const {connectedUser} = useLogin()
 
-  const departmentDivisionIndex = useMemoFn(_departmentDivision.entity, deps => groupBy(deps, _ => _.code))
-
   const websitesIndex = useMap<Id, WebsiteWithCompany>()
 
   useEffectFn(_websiteWithCompany.list, w => {
@@ -109,6 +107,7 @@ export const WebsitesInvestigation = () => {
             </Tooltip>
             <WebsitesFilters
               filters={_websiteWithCompany.filters}
+              departmentDivisionList={_departmentDivision.entity ?? []}
               updateFilters={_ => {
                 _websiteWithCompany.updateFilters(prev => ({...prev, ..._}))
               }}
@@ -212,23 +211,25 @@ export const WebsitesInvestigation = () => {
             id: 'affectation',
             render: w => (
               <AutocompleteDialog<DepartmentDivision>
-                value={map(w.attribution, departmentDivisionIndex, (attribution, dep) =>
-                  dep[attribution.code] && dep[attribution.code].length > 0 ? dep[attribution.code][0] : undefined,
+                value={map(w.attribution, _departmentDivision.entity, (attribution, dep) =>
+                  dep.find(a => {
+                    return a.code === attribution
+                  }),
                 )}
                 title={m.affectationTitle}
                 inputLabel={m.affectation}
                 getOptionLabel={_ => _.code + ' - ' + _.name}
                 options={_departmentDivision.entity}
                 onChange={departmentDivision => {
-                  if (departmentDivision && w.attribution === departmentDivision) {
+                  if (departmentDivision && w.attribution === departmentDivision.code) {
                     toastInfo(m.alreadySelectedValue(departmentDivision?.name))
                   } else {
-                    _createOrUpdate.fetch({}, {...w, attribution: departmentDivision})
-                    websitesIndex.set(w.id, {...w, attribution: departmentDivision})
+                    _createOrUpdate.fetch({}, {...w, attribution: departmentDivision?.code})
+                    websitesIndex.set(w.id, {...w, attribution: departmentDivision?.code})
                   }
                 }}
               >
-                <StatusChip tooltipTitle={m.affectation} value={w.attribution ? w.attribution.name : m.noValue} />
+                <StatusChip tooltipTitle={m.affectation} value={w.attribution ? w.attribution : m.noValue} />
               </AutocompleteDialog>
             ),
           },

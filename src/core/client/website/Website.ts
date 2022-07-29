@@ -29,7 +29,7 @@ export interface WebsiteInvestigation {
   practice?: Practice
   investigationStatus?: InvestigationStatus
   identificationStatus?: IdentificationStatus
-  attribution?: DepartmentDivision
+  attribution?: string
   lastUpdated?: Date
   id: Id
 }
@@ -41,7 +41,7 @@ export interface Website extends Entity {
   identificationStatus: IdentificationStatus
   practice?: Practice
   investigationStatus?: InvestigationStatus
-  attribution?: DepartmentDivision
+  attribution?: string
   lastUpdated?: Date
 }
 
@@ -68,7 +68,7 @@ export interface WebsiteWithCompanySearch extends PaginatedFilters {
   identificationStatus?: IdentificationStatus[]
   practice?: Practice[]
   investigationStatus?: InvestigationStatus[]
-  attribution?: DepartmentDivision[]
+  attribution?: string[]
 }
 
 export interface HostReportCountSearch extends PaginatedFilters {
