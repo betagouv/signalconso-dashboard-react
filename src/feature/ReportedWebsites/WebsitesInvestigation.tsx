@@ -20,12 +20,19 @@ import {map} from '../../alexlibs/ts-utils'
 import {sxUtils} from '../../core/theme'
 import {useMemoFn} from '../../alexlibs/react-hooks-lib'
 import {useLogin} from '../../core/context/LoginContext'
-import {DepartmentDivision, IdentificationStatus, WebsiteWithCompany} from '../../core/client/website/Website'
+import {
+  DepartmentDivision,
+  IdentificationStatus,
+  InvestigationStatus,
+  Practice,
+  WebsiteWithCompany,
+} from '../../core/client/website/Website'
 import {cleanObject} from '../../core/helper'
 import {Id} from '../../core/model'
+import {PeriodPicker} from '../../shared/PeriodPicker/PeriodPicker'
 
 export const WebsitesInvestigation = () => {
-  const {m} = useI18n()
+  const {m, formatDate} = useI18n()
   const _websiteWithCompany = useReportedWebsiteWithCompanyContext().getWebsiteWithCompany
   const _createOrUpdate = useWebsiteInvestigationContext().createOrUpdateInvestigation
   const _departmentDivision = useWebsiteInvestigationContext().listDepartmentDivision
@@ -36,8 +43,6 @@ export const WebsitesInvestigation = () => {
   const {toastError, toastInfo} = useToast()
 
   const {connectedUser} = useLogin()
-
-  const departmentDivisionIndex = useMemoFn(_departmentDivision.entity, deps => groupBy(deps, _ => _.code))
 
   const websitesIndex = useMap<Id, WebsiteWithCompany>()
 
@@ -90,6 +95,15 @@ export const WebsitesInvestigation = () => {
                 />
               )}
             </DebouncedInput>
+
+            <DebouncedInput<[Date | undefined, Date | undefined]>
+              value={[_websiteWithCompany.filters.start, _websiteWithCompany.filters.end]}
+              onChange={([start, end]) => {
+                _websiteWithCompany.updateFilters(prev => ({...prev, start, end}))
+              }}
+            >
+              {(value, onChange) => <PeriodPicker value={value} onChange={onChange} sx={{mr: 1}} fullWidth />}
+            </DebouncedInput>
           </>
         }
         actions={
@@ -103,6 +117,7 @@ export const WebsitesInvestigation = () => {
             </Tooltip>
             <WebsitesFilters
               filters={_websiteWithCompany.filters}
+              departmentDivisionList={_departmentDivision.entity ?? []}
               updateFilters={_ => {
                 _websiteWithCompany.updateFilters(prev => ({...prev, ..._}))
               }}
@@ -153,10 +168,20 @@ export const WebsitesInvestigation = () => {
             ),
           },
           {
+            head: m.creationDate,
+            id: 'creationDate',
+            render: _ => formatDate(_.creationDate),
+          },
+          {
+            head: m.lastUpdated,
+            id: 'lastUpdated',
+            render: _ => formatDate(_.lastUpdated),
+          },
+          {
             head: m.practice,
             id: 'practice',
             render: _ => (
-              <AutocompleteDialog<string>
+              <AutocompleteDialog<Practice>
                 value={_.practice}
                 title={m.practiceTitle}
                 inputLabel={m.practice}
@@ -165,8 +190,8 @@ export const WebsitesInvestigation = () => {
                   if (_.practice === practice) {
                     toastInfo(m.alreadySelectedValue(practice))
                   } else {
-                    _createOrUpdate.fetch({}, {practice: practice, ..._})
-                    websitesIndex.set(_.id, {..._, practice})
+                    _createOrUpdate.fetch({}, {..._, practice: practice})
+                    websitesIndex.set(_.id, {..._, lastUpdated: new Date(Date.now()), practice})
                   }
                 }}
                 options={_practice.entity}
@@ -179,24 +204,24 @@ export const WebsitesInvestigation = () => {
             head: m.investigation,
             id: 'investigationStatus',
             render: _ => (
-              <AutocompleteDialog<string>
+              <AutocompleteDialog<InvestigationStatus>
                 value={_.investigationStatus}
-                title={m.affectationTitle}
-                inputLabel={m.affectation}
-                getOptionLabel={_ => m.investigationStatus(_)}
+                title={m.investigation}
+                inputLabel={m.investigation}
+                getOptionLabel={_ => m.InvestigationStatusDesc[_]}
                 options={_investigationStatus.entity}
                 onChange={investigationStatus => {
                   if (_.investigationStatus === investigationStatus) {
                     toastInfo(m.alreadySelectedValue(investigationStatus))
                   } else {
                     _createOrUpdate.fetch({}, {..._, investigationStatus})
-                    websitesIndex.set(_.id, {..._, investigationStatus})
+                    websitesIndex.set(_.id, {..._, lastUpdated: new Date(Date.now()), investigationStatus})
                   }
                 }}
               >
                 <StatusChip
                   tooltipTitle={m.investigation}
-                  value={_.investigationStatus ? m.investigationStatus(_.investigationStatus) : m.noValue}
+                  value={_.investigationStatus ? m.InvestigationStatusDesc[_.investigationStatus] : m.noValue}
                 />
               </AutocompleteDialog>
             ),
@@ -206,7 +231,11 @@ export const WebsitesInvestigation = () => {
             id: 'affectation',
             render: w => (
               <AutocompleteDialog<DepartmentDivision>
-                value={map(w.attribution, departmentDivisionIndex, (attribution, dep) => dep[attribution][0])}
+                value={map(w.attribution, _departmentDivision.entity, (attribution, dep) =>
+                  dep.find(a => {
+                    return a.code === attribution
+                  }),
+                )}
                 title={m.affectationTitle}
                 inputLabel={m.affectation}
                 getOptionLabel={_ => _.code + ' - ' + _.name}
@@ -216,11 +245,11 @@ export const WebsitesInvestigation = () => {
                     toastInfo(m.alreadySelectedValue(departmentDivision?.name))
                   } else {
                     _createOrUpdate.fetch({}, {...w, attribution: departmentDivision?.code})
-                    websitesIndex.set(w.id, {...w, attribution: departmentDivision?.code})
+                    websitesIndex.set(w.id, {...w, lastUpdated: new Date(Date.now()), attribution: departmentDivision?.code})
                   }
                 }}
               >
-                <StatusChip tooltipTitle={m.affectation} value={w.attribution ?? m.noValue} />
+                <StatusChip tooltipTitle={m.affectation} value={w.attribution ? w.attribution : m.noValue} />
               </AutocompleteDialog>
             ),
           },
