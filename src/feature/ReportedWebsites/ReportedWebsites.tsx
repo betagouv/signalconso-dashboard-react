@@ -16,10 +16,6 @@ export const ReportedWebsites = () => {
 
   const displayDropShipping: boolean = config.enable_feature_dropshipping === 1 || connectedUser.isAdmin
 
-  console.log('////')
-  console.log(config.enable_feature_dropshipping)
-  console.log('////')
-
   return (
     <Page size="xl">
       <PageTitle>{m.reportedWebsites}</PageTitle>

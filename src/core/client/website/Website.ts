@@ -31,6 +31,7 @@ export interface WebsiteInvestigation {
   identificationStatus?: IdentificationStatus
   attribution?: string
   lastUpdated?: Date
+  creationDate: Date
   id: Id
 }
 

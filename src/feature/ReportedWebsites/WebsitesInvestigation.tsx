@@ -173,6 +173,11 @@ export const WebsitesInvestigation = () => {
             render: _ => formatDate(_.creationDate),
           },
           {
+            head: m.lastUpdated,
+            id: 'lastUpdated',
+            render: _ => formatDate(_.lastUpdated),
+          },
+          {
             head: m.practice,
             id: 'practice',
             render: _ => (
@@ -185,8 +190,8 @@ export const WebsitesInvestigation = () => {
                   if (_.practice === practice) {
                     toastInfo(m.alreadySelectedValue(practice))
                   } else {
-                    _createOrUpdate.fetch({}, {practice: practice, ..._})
-                    websitesIndex.set(_.id, {..._, practice})
+                    _createOrUpdate.fetch({}, {..._, practice: practice})
+                    websitesIndex.set(_.id, {..._, lastUpdated: new Date(Date.now()), practice})
                   }
                 }}
                 options={_practice.entity}
@@ -201,7 +206,7 @@ export const WebsitesInvestigation = () => {
             render: _ => (
               <AutocompleteDialog<InvestigationStatus>
                 value={_.investigationStatus}
-                title={m.affectationTitle}
+                title={m.investigation}
                 inputLabel={m.investigation}
                 getOptionLabel={_ => m.InvestigationStatusDesc[_]}
                 options={_investigationStatus.entity}
@@ -210,7 +215,7 @@ export const WebsitesInvestigation = () => {
                     toastInfo(m.alreadySelectedValue(investigationStatus))
                   } else {
                     _createOrUpdate.fetch({}, {..._, investigationStatus})
-                    websitesIndex.set(_.id, {..._, investigationStatus})
+                    websitesIndex.set(_.id, {..._, lastUpdated: new Date(Date.now()), investigationStatus})
                   }
                 }}
               >
@@ -240,7 +245,7 @@ export const WebsitesInvestigation = () => {
                     toastInfo(m.alreadySelectedValue(departmentDivision?.name))
                   } else {
                     _createOrUpdate.fetch({}, {...w, attribution: departmentDivision?.code})
-                    websitesIndex.set(w.id, {...w, attribution: departmentDivision?.code})
+                    websitesIndex.set(w.id, {...w, lastUpdated: new Date(Date.now()), attribution: departmentDivision?.code})
                   }
                 }}
               >
