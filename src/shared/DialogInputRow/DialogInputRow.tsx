@@ -47,7 +47,7 @@ export const DialogInputRow = ({icon, label, children}: DialogInputRowProps) => 
       </Box>
       <Box
         sx={{
-          maxWidth: 240,
+          maxWidth: 500,
           width: '100%',
           minHeight: 50,
           flex: 1,

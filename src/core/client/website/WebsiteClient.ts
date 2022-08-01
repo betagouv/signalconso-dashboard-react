@@ -11,6 +11,8 @@ import {
   WebsiteInvestigation,
   IdentificationStatus,
   Paginate,
+  InvestigationStatus,
+  Practice,
 } from '../../model'
 import {ApiSdkLogger} from '../../helper/Logger'
 import {dateToApiDate, paginateData} from '../../helper'
@@ -58,6 +60,10 @@ export class WebsiteClient {
   constructor(private client: ApiClientApi) {}
 
   readonly list = (filters: WebsiteWithCompanySearch) => {
+    console.log('------')
+    console.log(filters.attribution)
+    console.log('------')
+
     return this.client
       .get<PaginatedData<WebsiteWithCompany>>(`/websites`, {qs: cleanFilter(filters)})
       .then(paginated => Object.assign({}, paginated, {entities: paginated.entities}))
@@ -76,15 +82,17 @@ export class WebsiteClient {
   }
 
   readonly listInvestigationStatus = () => {
-    return this.client.get<string[]>(`resources/investigation-status`)
+    return this.client.get<InvestigationStatus[]>(`resources/investigation-status`)
   }
 
   readonly listPractice = () => {
-    return this.client.get<string[]>(`resources/practice`)
+    return this.client.get<Practice[]>(`resources/practice`)
   }
 
   readonly createOrUpdateInvestigation = (websiteInvestigation: WebsiteInvestigation): Promise<WebsiteInvestigation> => {
-    return this.client.post<WebsiteInvestigation>(`/website-investigations`, {body: websiteInvestigation})
+    return this.client.post<WebsiteInvestigation>(`/website-investigations`, {
+      body: {websiteInvestigation},
+    })
   }
 
   readonly listUnregistered = (filters: HostReportCountSearch): Promise<Paginate<ApiHostWithReportCount>> => {

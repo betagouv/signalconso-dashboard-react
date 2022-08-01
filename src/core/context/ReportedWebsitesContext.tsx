@@ -3,7 +3,14 @@ import {ReactNode, useContext} from 'react'
 import {UseFetcher, useFetcher, UsePaginate} from '../../alexlibs/react-hooks-lib'
 import {SignalConsoApiSdk} from '../ApiSdkInstance'
 import {useScPaginate} from '../../shared/usePaginate/usePaginate'
-import {IdentificationStatus, WebsiteWithCompany, WebsiteWithCompanySearch} from '../client/website/Website'
+import {
+  DepartmentDivision,
+  IdentificationStatus,
+  InvestigationStatus,
+  Practice,
+  WebsiteWithCompany,
+  WebsiteWithCompanySearch,
+} from '../client/website/Website'
 import {ApiError} from '../client/ApiClient'
 
 export interface ReportedWebsiteWithCompanyContextProps {
