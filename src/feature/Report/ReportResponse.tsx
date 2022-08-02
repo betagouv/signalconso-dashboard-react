@@ -21,6 +21,7 @@ import {
 import {FileOrigin, UploadedFile} from '../../core/client/file/UploadedFile'
 import {Id} from '../../core/model'
 import {fnSwitch} from '../../core/helper'
+import {useLogin} from '../../core/context/LoginContext'
 
 interface Props {
   canEditFile?: boolean
@@ -61,6 +62,7 @@ export const ReportResponseComponent = ({canEditFile, response, reportId, files}
   const {m} = useI18n()
   const _report = useReportContext()
   const _event = useEventContext()
+  const {connectedUser} = useLogin()
   const [consumerReportReview, setConsumerReportReview] = useState<ResponseConsumerReview | undefined>()
 
   useEffect(() => {
@@ -137,10 +139,12 @@ export const ReportResponseComponent = ({canEditFile, response, reportId, files}
                 </Response>
               ),
             })}
-            <Box sx={{color: t => t.palette.text.secondary}}>
-              {' '}
-              {review.details ? review.details : <div>{m.noReviewDetailsFromConsumer}</div>}
-            </Box>
+            {connectedUser.isNotPro && (
+              <Box sx={{color: t => t.palette.text.secondary}}>
+                {' '}
+                {review.details ? review.details : <div>{m.noReviewDetailsFromConsumer}</div>}
+              </Box>
+            )}
           </div>
         ))
         .getOrElse(<Box sx={{mt: 3}}>{m.noReviewFromConsumer}</Box>)}
