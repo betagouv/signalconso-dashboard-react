@@ -10,7 +10,7 @@ import {Report, ReportConsumerUpdate} from '../../../core/client/report/Report'
 interface Props {
   report: Report
   children: ReactElement<any>
-  onChange: (userForm: ReportConsumerUpdate) => any
+  onChange: (userForm: ReportConsumerUpdate) => unknown
 }
 
 export const EditConsumerDialog = ({report, onChange, children}: Props) => {
@@ -66,6 +66,15 @@ export const EditConsumerDialog = ({report, onChange, children}: Props) => {
               pattern: {value: regexp.email, message: m.invalidEmail},
               required: {value: true, message: m.required},
             })}
+          />
+
+          <ScInput
+            fullWidth
+            label={m.reportConsumerReferenceNumber}
+            error={!!errors.consumerReferenceNumber}
+            helperText={errors.consumerReferenceNumber?.message ?? ' '}
+            defaultValue={report.consumerReferenceNumber}
+            {...register('consumerReferenceNumber')}
           />
 
           <Controller
