@@ -57,8 +57,6 @@ export const ReportPro = () => {
     }, 200)
   }
 
-  console.log('@@ render reportpro', _report.get.entity?.report)
-
   return (
     <Page size="s" loading={_report.get.loading}>
       {fromNullable(_report.get.entity?.report)
