@@ -154,6 +154,11 @@ export enum ReportStatusPro {
   Cloture = 'Cloture',
 }
 
+export type ReportConsumerUpdate = Pick<
+  Report,
+  'firstName' | 'lastName' | 'email' | 'contactAgreement' | 'consumerReferenceNumber'
+>
+
 export class Report {
   static readonly closedStatus = [
     ReportStatus.PromesseAction,

@@ -26,12 +26,7 @@ export const ReportConsumer = ({report, canEdit}: Props) => {
       <PanelHead
         action={
           canEdit && (
-            <EditConsumerDialog
-              report={report}
-              onChange={user =>
-                _report.updateConsumer.fetch({}, report.id, user.firstName, user.lastName, user.email, user.contactAgreement)
-              }
-            >
+            <EditConsumerDialog report={report} onChange={user => _report.updateConsumer.fetch({}, report.id, user)}>
               <ScButton icon="edit" color="primary" loading={_report.updateConsumer.loading}>
                 {m.edit}
               </ScButton>

@@ -5,19 +5,12 @@ import {Controller, useForm} from 'react-hook-form'
 import {regexp} from '../../../core/helper/regexp'
 import {Checkbox, FormControlLabel} from '@mui/material'
 import {ScDialog} from '../../../shared/Confirm/ScDialog'
-import {Report} from '../../../core/client/report/Report'
-
-interface Form {
-  firstName: string
-  lastName: string
-  email: string
-  contactAgreement: boolean
-}
+import {Report, ReportConsumerUpdate} from '../../../core/client/report/Report'
 
 interface Props {
   report: Report
   children: ReactElement<any>
-  onChange: (userForm: Form) => any
+  onChange: (userForm: ReportConsumerUpdate) => any
 }
 
 export const EditConsumerDialog = ({report, onChange, children}: Props) => {
@@ -27,7 +20,7 @@ export const EditConsumerDialog = ({report, onChange, children}: Props) => {
     getValues,
     control,
     formState: {errors},
-  } = useForm<Form>({mode: 'onChange'})
+  } = useForm<ReportConsumerUpdate>({mode: 'onChange'})
   return (
     <ScDialog
       PaperProps={{sx: {overflow: 'visible'}}}
