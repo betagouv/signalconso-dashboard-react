@@ -22,7 +22,7 @@ export const ReportReferenceNumber = ({consumerReferenceNumber}: Props) => {
           </Txt>
         </Txt>
       </Tooltip>
-      <Txt sx={{fontSize: t => styleUtils(t).fontSize.big}}>{consumerReferenceNumber}</Txt>
+      <Txt sx={{fontSize: t => styleUtils(t).fontSize.big, overflowWrap: 'anywhere'}}>{consumerReferenceNumber}</Txt>
     </Box>
   ) : null
 }
