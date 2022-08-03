@@ -1,6 +1,6 @@
 import {Box, Icon, Tooltip, useTheme} from '@mui/material'
 import {Txt} from 'alexlibs/mui-extension'
-import { ReportReferenceNumber } from 'feature/Report/ReportReferenceNumber'
+import {ReportReferenceNumber} from 'feature/Report/ReportReferenceNumber'
 import {fromNullable} from 'fp-ts/lib/Option'
 import {Report} from '../../../core/client/report/Report'
 import {useReportContext} from '../../../core/context/ReportContext'
