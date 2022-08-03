@@ -7,7 +7,7 @@ import {useToast} from '../../core/toast'
 import {Page} from '../../shared/Layout'
 import {ReportHeader} from './ReportHeader'
 import {useBoolean} from '../../alexlibs/react-hooks-lib'
-import {Box, Collapse} from '@mui/material'
+import {Box, Collapse, Icon, Tooltip} from '@mui/material'
 import {ScButton} from '../../shared/Button/Button'
 import {styleUtils} from '../../core/theme'
 import {Txt} from '../../alexlibs/mui-extension'
@@ -23,6 +23,7 @@ import {FileOrigin} from '../../core/client/file/UploadedFile'
 import {Report} from '../../core/client/report/Report'
 import {Id} from '../../core/model'
 import {capitalize} from '../../core/helper'
+import {ReportReferenceNumber} from 'feature/Report/ReportReferenceNumber'
 
 export const ReportPro = () => {
   const {id} = useParams<{id: Id}>()
@@ -55,6 +56,8 @@ export const ReportPro = () => {
       }
     }, 200)
   }
+
+  console.log('@@ render reportpro', _report.get.entity?.report)
 
   return (
     <Page size="s" loading={_report.get.loading}>
@@ -91,6 +94,7 @@ export const ReportPro = () => {
                       .getOrElse('')}
                   </Box>
                   <Txt color="hint">{report.email}</Txt>
+                  <ReportReferenceNumber consumerReferenceNumber={report.consumerReferenceNumber} />
                 </>
               ) : (
                 <Txt color="hint">{m.reportConsumerWantToBeAnonymous}</Txt>

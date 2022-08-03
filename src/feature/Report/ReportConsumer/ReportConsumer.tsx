@@ -1,5 +1,6 @@
 import {Box, Icon, Tooltip, useTheme} from '@mui/material'
 import {Txt} from 'alexlibs/mui-extension'
+import { ReportReferenceNumber } from 'feature/Report/ReportReferenceNumber'
 import {fromNullable} from 'fp-ts/lib/Option'
 import {Report} from '../../../core/client/report/Report'
 import {useReportContext} from '../../../core/context/ReportContext'
@@ -58,22 +59,7 @@ export const ReportConsumer = ({report, canEdit}: Props) => {
           </Box>
           <Box sx={{color: t => t.palette.text.secondary}}>{report.email}</Box>
           {report.consumerPhone && <Box sx={{color: t => t.palette.text.secondary}}>{report.consumerPhone}</Box>}
-          {report.consumerReferenceNumber && (
-            <Box>
-              <Tooltip arrow title={m.reportConsumerReferenceNumberDesc}>
-                <Txt sx={{cursor: 'pointer'}}>
-                  <Txt sx={{color: t => t.palette.text.secondary}}>
-                    {m.reportConsumerReferenceNumber}
-                    <Icon fontSize="small" sx={{mb: -0.5, ml: 0.5}}>
-                      help_outline
-                    </Icon>{' '}
-                    :
-                  </Txt>{' '}
-                  <Txt sx={{fontSize: t => styleUtils(t).fontSize.big}}>{report.consumerReferenceNumber}</Txt>
-                </Txt>
-              </Tooltip>
-            </Box>
-          )}
+          <ReportReferenceNumber consumerReferenceNumber={report.consumerReferenceNumber} />
           {!report.contactAgreement && (
             <Box sx={{color: t => t.palette.error.main}} style={{marginTop: theme.spacing(0.5)}}>
               <Icon sx={sxUtils.inlineIcon}>warning</Icon>
