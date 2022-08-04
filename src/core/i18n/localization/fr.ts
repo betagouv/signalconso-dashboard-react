@@ -1,6 +1,6 @@
 import {config} from '../../../conf/config'
 import {formatDistance, formatDuration as formatDurationFns} from 'date-fns'
-import {IdentificationType} from 'feature/ReportedWebsites/SelectWebsiteIdentification/SelectWebsiteIdentification'
+import {AssociationType} from 'feature/ReportedWebsites/SelectWebsiteIdentification/SelectWebsiteAssociation'
 import {ReportStatus, ReportStatusPro, ReportTag} from '../../client/report/Report'
 import {CompanyAccessLevel} from '../../client/company-access/CompanyAccess'
 import {IdentificationStatus, InvestigationStatus, Practice} from '../../client/website/Website'
@@ -176,9 +176,9 @@ export const fr = {
     home: 'Accueil',
     consumer: 'Consommateur',
     company: 'Entreprise',
-    identication: 'Identification',
+    association: 'Association',
     country: 'Pays',
-    companyWebsiteIdentification: `Identification du site internet`,
+    companyWebsiteAssociation: `Association du site internet`,
     address: 'Adresse',
     activateMyAccount: 'Activer mon compte',
     createMyAccount: 'Créer mon compte',
@@ -188,8 +188,8 @@ export const fr = {
     lastName: 'Nom',
     attachTo: `Attacher à`,
     attachToType: {
-      [IdentificationType.COMPANY]: `Une entreprise`,
-      [IdentificationType.COUNTRY]: `Un pays étranger`,
+      [AssociationType.COMPANY]: `Une entreprise`,
+      [AssociationType.COUNTRY]: `Un pays étranger`,
     },
     addCompany: `Enregister l'entreprise`,
     addACompany: `Enregister une entreprise`,

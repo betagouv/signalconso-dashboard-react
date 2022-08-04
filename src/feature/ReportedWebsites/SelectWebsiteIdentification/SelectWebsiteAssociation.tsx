@@ -32,16 +32,16 @@ interface Props extends Omit<BoxProps, 'onChange'> {
   onChange: () => void
 }
 
-export enum IdentificationType {
+export enum AssociationType {
   COMPANY = 'COMPANY',
   COUNTRY = 'COUNTRY',
 }
 
-export const SelectWebsiteIdentification = ({onChange, website, ...props}: Props) => {
+export const SelectWebsiteAssociation = ({onChange, website, ...props}: Props) => {
   const {m} = useI18n()
   const {toastError, toastInfo, toastSuccess} = useToast()
-  const [selectedIdentification, setSelectedIdentification] = useState<IdentificationType>(
-    website.companyCountry ? IdentificationType.COUNTRY : IdentificationType.COMPANY,
+  const [selectedAssociation, setSelectedAssociation] = useState<AssociationType>(
+    website.companyCountry ? AssociationType.COUNTRY : AssociationType.COMPANY,
   )
   const _updateCompany = useReportedWebsiteWithCompanyContext().updateCompany
   const _updateCountry = useReportedWebsiteWithCompanyContext().updateCountry
@@ -87,21 +87,21 @@ export const SelectWebsiteIdentification = ({onChange, website, ...props}: Props
     <ScDialog
       PaperProps={{style: {overflow: 'visible'}}}
       maxWidth="sm"
-      title={m.companyWebsiteIdentification}
+      title={m.companyWebsiteAssociation}
       content={_ => (
         <>
           <Txt block sx={{mb: 1}}>
             {m.attachTo}
           </Txt>
-          <ScRadioGroup sx={{mb: 2}} dense inline value={selectedIdentification} onChange={setSelectedIdentification}>
-            {Enum.keys(IdentificationType).map(_ => (
+          <ScRadioGroup sx={{mb: 2}} dense inline value={selectedAssociation} onChange={setSelectedAssociation}>
+            {Enum.keys(AssociationType).map(_ => (
               <ScRadioGroupItem key={_} value={_} title={m.attachToType[_]} />
             ))}
           </ScRadioGroup>
 
-          {selectedIdentification &&
-            fnSwitch(selectedIdentification, {
-              [IdentificationType.COMPANY]: () => (
+          {selectedAssociation &&
+            fnSwitch(selectedAssociation, {
+              [AssociationType.COMPANY]: () => (
                 <SelectCompany
                   siret={company?.siret}
                   onChange={companyChanged => {
@@ -110,7 +110,7 @@ export const SelectWebsiteIdentification = ({onChange, website, ...props}: Props
                   }}
                 />
               ),
-              [IdentificationType.COUNTRY]: () => (
+              [AssociationType.COUNTRY]: () => (
                 <SelectCountry
                   country={website.companyCountry}
                   onChange={companyCountry => {
@@ -125,14 +125,14 @@ export const SelectWebsiteIdentification = ({onChange, website, ...props}: Props
       overrideActions={close => (
         <>
           <ScButton onClick={close}>{m.close}</ScButton>
-          {selectedIdentification &&
-            fnSwitch(selectedIdentification, {
-              [IdentificationType.COMPANY]: () => (
+          {selectedAssociation &&
+            fnSwitch(selectedAssociation, {
+              [AssociationType.COMPANY]: () => (
                 <ScButton loading={_updateCompany.loading} disabled={!company} onClick={() => updateCompany(close)}>
                   {m.confirm}
                 </ScButton>
               ),
-              [IdentificationType.COUNTRY]: () => (
+              [AssociationType.COUNTRY]: () => (
                 <ScButton loading={_updateCountry.loading} disabled={!country} onClick={() => updateCountry(close)}>
                   {m.confirm}
                 </ScButton>
