@@ -5,19 +5,27 @@ import {Controller, useForm} from 'react-hook-form'
 import {regexp} from '../../../core/helper/regexp'
 import {Checkbox, FormControlLabel} from '@mui/material'
 import {ScDialog} from '../../../shared/Confirm/ScDialog'
-import {Report} from '../../../core/client/report/Report'
-
-interface Form {
-  firstName: string
-  lastName: string
-  email: string
-  contactAgreement: boolean
-}
+import {Report, ReportConsumerUpdate} from '../../../core/client/report/Report'
+import {emptyStringToUndefined} from '../../../core/helper/utils'
 
 interface Props {
   report: Report
   children: ReactElement<any>
-  onChange: (userForm: Form) => any
+  onChange: (userForm: ReportConsumerUpdate) => unknown
+}
+
+// Inside this component, we replace empty string by undefined
+type FormData = Omit<ReportConsumerUpdate, 'consumerReferenceNumber'> & {
+  consumerReferenceNumber: string
+}
+
+function buildFormData(report: Report): FormData {
+  const {firstName, lastName, email, contactAgreement, consumerReferenceNumber} = report
+  return {firstName, lastName, email, contactAgreement, consumerReferenceNumber: consumerReferenceNumber ?? ''}
+}
+
+function translateFormData({consumerReferenceNumber, ...rest}: FormData): ReportConsumerUpdate {
+  return {consumerReferenceNumber: emptyStringToUndefined(consumerReferenceNumber), ...rest}
 }
 
 export const EditConsumerDialog = ({report, onChange, children}: Props) => {
@@ -27,15 +35,15 @@ export const EditConsumerDialog = ({report, onChange, children}: Props) => {
     getValues,
     control,
     formState: {errors},
-  } = useForm<Form>({mode: 'onChange'})
+  } = useForm<FormData>({mode: 'onChange', defaultValues: buildFormData(report)})
   return (
     <ScDialog
       PaperProps={{sx: {overflow: 'visible'}}}
       title={m.editConsumer}
       maxWidth="xs"
       confirmLabel={m.edit}
-      onConfirm={(event, close) => {
-        onChange(getValues())
+      onConfirm={(e, close) => {
+        onChange(translateFormData(getValues()))
         close()
       }}
       content={
@@ -46,7 +54,6 @@ export const EditConsumerDialog = ({report, onChange, children}: Props) => {
             label={m.firstName}
             error={!!errors.firstName}
             helperText={errors.firstName?.message ?? ' '}
-            defaultValue={report.firstName}
             {...register('firstName', {
               required: {value: true, message: m.required},
             })}
@@ -57,7 +64,6 @@ export const EditConsumerDialog = ({report, onChange, children}: Props) => {
             label={m.lastName}
             error={!!errors.lastName}
             helperText={errors.lastName?.message ?? ' '}
-            defaultValue={report.lastName}
             {...register('lastName', {
               required: {value: true, message: m.required},
             })}
@@ -68,16 +74,22 @@ export const EditConsumerDialog = ({report, onChange, children}: Props) => {
             label={m.email}
             error={!!errors.email}
             helperText={errors.email?.message ?? ' '}
-            defaultValue={report.email}
             {...register('email', {
               pattern: {value: regexp.email, message: m.invalidEmail},
               required: {value: true, message: m.required},
             })}
           />
 
+          <ScInput
+            fullWidth
+            label={m.reportConsumerReferenceNumber}
+            error={!!errors.consumerReferenceNumber}
+            helperText={errors.consumerReferenceNumber?.message ?? ' '}
+            {...register('consumerReferenceNumber')}
+          />
+
           <Controller
             name="contactAgreement"
-            defaultValue={report.contactAgreement}
             control={control}
             render={({field}) => (
               <FormControlLabel

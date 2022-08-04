@@ -2,7 +2,7 @@ import * as React from 'react'
 import {ReactNode, useContext} from 'react'
 import {UseFetcher, useFetcher} from '../../alexlibs/react-hooks-lib'
 import {SignalConsoApiSdk} from '../ApiSdkInstance'
-import {Report} from '../client/report/Report'
+import {Report, ReportConsumerUpdate} from '../client/report/Report'
 import {CompanySearchResult} from '../client/company/Company'
 import {ApiError} from '../client/ApiClient'
 
@@ -39,9 +39,8 @@ export const ReportProvider = ({api, children}: Props) => {
   const updateCompany = useFetcher((reportId: string, company: CompanySearchResult) =>
     api.secured.reports.updateReportCompany(reportId, company).then(updateReport),
   )
-  const updateConsumer = useFetcher(
-    (reportId: string, firstName: string, lastName: string, email: string, contactAgreement: boolean) =>
-      api.secured.reports.updateReportConsumer(reportId, firstName, lastName, email, contactAgreement).then(updateReport),
+  const updateConsumer = useFetcher((reportId: string, reportConsumerUpdate: ReportConsumerUpdate) =>
+    api.secured.reports.updateReportConsumer(reportId, reportConsumerUpdate).then(updateReport),
   )
 
   return (

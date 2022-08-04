@@ -240,6 +240,8 @@ export const fr = {
     editPasswordDialogDesc: 'Le mot de passe doit avoir 8 caractères minimum.',
     reportCategoriesAreSelectByConsumer: 'Les catégories du signalement sont sélectionnées par le consommateur.',
     reportConsumerWantToBeAnonymous: 'Le consommateur souhaite rester anonyme',
+    reportConsumerReferenceNumber: 'Numéro de référence',
+    reportConsumerReferenceNumberDesc: 'Numéro de billet, ou de réservation, de facture, de contrat, de client, etc.',
     cannotExportMoreReports: (reportCount: number) => `Impossible d'exporter plus de ${reportCount} signalements.`,
     siret: 'SIRET',
     siretFound: 'SIRET identifié',
