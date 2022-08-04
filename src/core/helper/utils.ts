@@ -3,6 +3,7 @@ import {fromNullable} from 'fp-ts/lib/Option'
 import {config} from 'conf/config'
 import {SxProps, Theme} from '@mui/material'
 import format from 'date-fns/format'
+import {values} from 'lodash'
 
 export type Index<T> = {[key: string]: T}
 
@@ -21,6 +22,8 @@ export const isNotDefined = (value: any): value is undefined | null | '' => {
 }
 
 export const isDefined = <T>(value: T | undefined | null | ''): value is T => !isNotDefined(value)
+
+export const emptyStringToUndefined = (value: string): string | undefined => (value.length === 0 ? undefined : value)
 
 export const toNumberOrDefault = (value: any, defaultValue: number): number =>
   isNaN(value) || value == '' || value == null ? defaultValue : value
