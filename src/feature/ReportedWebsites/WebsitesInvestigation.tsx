@@ -10,7 +10,7 @@ import {IconBtn} from '../../alexlibs/mui-extension'
 import {useWebsiteInvestigationContext} from '../../core/context/WebsiteInvestigationContext'
 import {StatusChip} from './StatusChip'
 import {WebsitesFilters} from './WebsitesFilters'
-import {SelectWebsiteIdentification} from './SelectWebsiteIdentification/SelectWebsiteIdentification'
+import {SelectWebsiteAssociation} from './SelectWebsiteIdentification/SelectWebsiteAssociation'
 import {AutocompleteDialog} from '../../shared/AutocompleteDialog/AutocompleteDialog'
 import {useEffectFn, useMap} from '../../alexlibs/react-hooks-lib'
 import {WebsiteTools} from './WebsiteTools'
@@ -156,10 +156,10 @@ export const WebsitesInvestigation = () => {
             render: _ => _.count,
           },
           {
-            head: m.identication,
-            id: 'identication',
+            head: m.association,
+            id: 'association',
             render: _ => (
-              <SelectWebsiteIdentification
+              <SelectWebsiteAssociation
                 website={_}
                 onChange={() => {
                   _websiteWithCompany.fetch({clean: false})

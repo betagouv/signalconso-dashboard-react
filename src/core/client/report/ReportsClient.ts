@@ -13,6 +13,7 @@ import {
   ReportTag,
   ReportWordCount,
   ResponseConsumerReview,
+  ReportConsumerUpdate,
 } from '../../model'
 import {pipe} from 'rxjs'
 import {ApiSdkLogger} from '../../helper/Logger'
@@ -144,20 +145,9 @@ export class ReportsClient {
     })
   }
 
-  readonly updateReportConsumer = (
-    reportId: string,
-    firstName: string,
-    lastName: string,
-    email: string,
-    contactAgreement: boolean,
-  ) => {
+  readonly updateReportConsumer = (reportId: string, reportConsumerUpdate: ReportConsumerUpdate) => {
     return this.client.post(`reports/${reportId}/consumer`, {
-      body: {
-        firstName: firstName,
-        lastName: lastName,
-        email: email,
-        contactAgreement,
-      },
+      body: reportConsumerUpdate,
     })
   }
 

@@ -117,6 +117,7 @@ export interface Report {
   lastName: string
   email: string
   consumerPhone?: string
+  consumerReferenceNumber?: string
   employeeConsumer: boolean
   contactAgreement: boolean
   creationDate: Date
@@ -152,6 +153,11 @@ export enum ReportStatusPro {
   ARepondre = 'ARepondre',
   Cloture = 'Cloture',
 }
+
+export type ReportConsumerUpdate = Pick<
+  Report,
+  'firstName' | 'lastName' | 'email' | 'contactAgreement' | 'consumerReferenceNumber'
+>
 
 export class Report {
   static readonly closedStatus = [
