@@ -12,7 +12,8 @@ export interface Company {
   creationDate: Date
   name: string
   address: Address
-  // postalCode?: string
+  isHeadOffice: boolean
+  isOpen: boolean
   activityCode?: string
 }
 
@@ -26,7 +27,8 @@ export interface CompanyCreation {
   siret: string
   name: string
   address: Address
-  // postalCode?: string
+  isHeadOffice: boolean
+  isOpen: boolean
   activityCode?: string
 }
 
@@ -41,6 +43,7 @@ export interface CompanySearchResult {
   name?: string
   brand?: string
   isHeadOffice: boolean
+  isOpen: boolean
   address: Address
   activityCode: string
   activityLabel?: string

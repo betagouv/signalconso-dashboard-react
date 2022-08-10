@@ -283,9 +283,11 @@ export const CompaniesRegistered = () => {
             {connectedUser.isAdmin && (
               <SelectCompanyDialog
                 onChange={company => {
-                  const {siret, name, address, activityCode} = company
+                  const {siret, name, address, activityCode, isOpen, isHeadOffice} = company
                   if (name && address && siret) {
-                    _companyCreate.fetch({}, {siret, name, address, activityCode}).then(() => toastSuccess(m.companyCreated))
+                    _companyCreate
+                      .fetch({}, {siret, name, address, activityCode, isOpen, isHeadOffice})
+                      .then(() => toastSuccess(m.companyCreated))
                   } else {
                     toastError({message: m.cannotCreateCompanyMissingInfo})
                   }
