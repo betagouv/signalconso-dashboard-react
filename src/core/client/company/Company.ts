@@ -27,7 +27,8 @@ export interface CompanyCreation {
   siret: string
   name: string
   address: Address
-  // postalCode?: string
+  isHeadOffice: boolean
+  isOpen: boolean
   activityCode?: string
 }
 
