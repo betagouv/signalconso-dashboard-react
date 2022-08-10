@@ -51,6 +51,8 @@ export interface WebsiteUpdateCompany {
   name?: string
   address?: Address
   activityCode?: string
+  isHeadOffice: boolean
+  isOpen: boolean
 }
 
 export interface WebsiteWithCompany extends Website {
