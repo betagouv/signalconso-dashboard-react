@@ -1,9 +1,7 @@
-import classNames from 'classnames'
 import {fromNullable} from 'fp-ts/lib/Option'
 import {config} from 'conf/config'
 import {SxProps, Theme} from '@mui/material'
 import format from 'date-fns/format'
-import {values} from 'lodash'
 
 export type Index<T> = {[key: string]: T}
 
@@ -104,9 +102,6 @@ export const capitalize = (str?: string, othersInLowerCase = true): string | und
   fromNullable(str)
     .map(_ => _.charAt(0).toUpperCase() + (othersInLowerCase ? _.slice(1).toLowerCase() : _.slice(1)))
     .toUndefined()
-
-// Because default imports are very very annoying since they break autocomplete
-export const classes = classNames
 
 interface FnSwitch {
   <T extends string | number | symbol, R = any>(value: T, cases: {[key in T]: ((_: T) => R) | R}): R
