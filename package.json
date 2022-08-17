@@ -61,7 +61,7 @@
     "react-router-dom": "5.3.3",
     "react-scripts": "5.0.1",
     "react-tagcloud": "^2.3.0",
-    "recharts": "2.1.10"
+    "recharts": "2.1.12"
   },
   "devDependencies": {
     "@types/jest": "28.1.7",
