@@ -1,3 +1,9 @@
+// Container wrapping a value that may be undefined
+
+// This is a very minimal implementation, with very few methods
+// This class was written to replace our usages of the lib "fp-ts" which could not be upgraded
+//
+// In most cases you don't need this class, just use "&&", "?.", "if ()", etc.
 export class ScOption<A> {
   optVal: A | undefined
 

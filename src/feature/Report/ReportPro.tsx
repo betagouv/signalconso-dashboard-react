@@ -1,7 +1,6 @@
 import {useParams} from 'react-router'
 import {useI18n} from '../../core/i18n'
 import React, {useEffect, useMemo, useRef} from 'react'
-import {fromNullable} from 'fp-ts/lib/Option'
 import {useReportContext} from '../../core/context/ReportContext'
 import {useToast} from '../../core/toast'
 import {Page} from '../../shared/Layout'
@@ -24,13 +23,14 @@ import {Report} from '../../core/client/report/Report'
 import {Id} from '../../core/model'
 import {capitalize} from '../../core/helper'
 import {ReportReferenceNumber} from 'feature/Report/ReportReferenceNumber'
+import {ScOption} from 'core/helper/ScOption'
 
 export const ReportPro = () => {
   const {id} = useParams<{id: Id}>()
   const {m, formatDateTime} = useI18n()
   const _report = useReportContext()
   const _event = useEventContext()
-  const {toastError} = useToast()
+  const {toastErrorIfDefined} = useToast()
   const openAnswerPanel = useBoolean(false)
   const response = useMemo(
     () => _event.reportEvents.entity?.find(_ => _.data.action === EventActionValues.ReportProResponse),
@@ -44,8 +44,8 @@ export const ReportPro = () => {
   }, [])
 
   useEffect(() => {
-    fromNullable(_report.get.error).map(toastError)
-    fromNullable(_event.reportEvents.error).map(toastError)
+    toastErrorIfDefined(_report.get.error)
+    toastErrorIfDefined(_event.reportEvents.error)
   }, [_report.get.error, _event.reportEvents.error])
 
   const openResponsePanel = () => {
@@ -59,7 +59,7 @@ export const ReportPro = () => {
 
   return (
     <Page size="s" loading={_report.get.loading}>
-      {fromNullable(_report.get.entity?.report)
+      {ScOption.from(_report.get.entity?.report)
         .map(report => (
           <>
             <ReportHeader hideTags={true} elevated={!openAnswerPanel.value} report={report}>
@@ -83,11 +83,11 @@ export const ReportPro = () => {
               {report.contactAgreement ? (
                 <>
                   <Box sx={{color: t => t.palette.text.secondary}}>
-                    {fromNullable(report.firstName)
+                    {ScOption.from(report.firstName)
                       .map(_ => capitalize(_))
                       .getOrElse('')}
                     &nbsp;
-                    {fromNullable(report.lastName)
+                    {ScOption.from(report.lastName)
                       .map(_ => _.toLocaleUpperCase())
                       .getOrElse('')}
                   </Box>

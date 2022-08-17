@@ -1,7 +1,7 @@
 import * as React from 'react'
 import {useEffect, useMemo} from 'react'
 import {useConstantContext} from '../../core/context/ConstantContext'
-import {fromNullable} from 'fp-ts/lib/Option'
+
 import {alpha, Box, Checkbox, Menu} from '@mui/material'
 import {useI18n} from '../../core/i18n'
 import {useSetState, UseSetState} from '../../alexlibs/react-hooks-lib'
@@ -9,13 +9,14 @@ import {makeSx} from '../../alexlibs/mui-extension'
 import {combineSx} from '../../core/theme'
 import {countryToFlag} from '../../core/helper'
 import {Country} from '../../core/client/constant/Country'
+import {ScOption} from 'core/helper/ScOption'
 
 const withRegions = (WrappedComponent: React.ComponentType<Props>) => (props: Omit<Props, 'countries'>) => {
   const {countries} = useConstantContext()
   useEffect(() => {
     countries.fetch({force: false})
   }, [])
-  return fromNullable(countries.entity)
+  return ScOption.from(countries.entity)
     .map(_ => <WrappedComponent {...props} countries={_.filter(_ => _.code !== 'FR')} />)
     .getOrElse(<></>)
 }

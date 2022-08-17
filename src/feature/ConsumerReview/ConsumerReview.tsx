@@ -11,7 +11,6 @@ import {Controller, useForm} from 'react-hook-form'
 import {useAsync} from '../../alexlibs/react-hooks-lib'
 import React, {useEffect, useState} from 'react'
 import {useLocation, useParams} from 'react-router'
-import {fromNullable} from 'fp-ts/es6/Option'
 import {useToast} from '../../core/toast'
 import {Alert} from '../../alexlibs/mui-extension'
 import {QueryString} from '../../core/helper/useQueryString'
@@ -32,7 +31,7 @@ interface Form {
 export const ConsumerReview = ({onSubmit}: Props) => {
   const {reportId} = useParams<{reportId: Id}>()
   const {m} = useI18n()
-  const {toastError} = useToast()
+  const {toastError, toastErrorIfDefined} = useToast()
   const [done, setDone] = useState(false)
   const {
     register,
@@ -55,7 +54,7 @@ export const ConsumerReview = ({onSubmit}: Props) => {
     setDone(true)
   }
   useEffect(() => {
-    fromNullable(_post.error).map(toastError)
+    toastErrorIfDefined(_post.error)
   }, [_post.error])
 
   return (

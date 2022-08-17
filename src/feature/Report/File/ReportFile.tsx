@@ -1,7 +1,6 @@
 import {Box, Icon, Tooltip} from '@mui/material'
 import {extensionToType, FileType, reportFileConfig} from './reportFileConfig'
 import {useLogin} from '../../../core/context/LoginContext'
-import {fromNullable, some} from 'fp-ts/lib/Option'
 import {config} from '../../../conf/config'
 import React, {useEffect} from 'react'
 import {useFetcher} from '../../../alexlibs/react-hooks-lib'
@@ -12,6 +11,7 @@ import {ScDialog} from '../../../shared/Confirm/ScDialog'
 import {combineSx, defaultSpacing} from 'core/theme'
 import {makeSx} from '../../../alexlibs/mui-extension'
 import {UploadedFile} from '../../../core/client/file/UploadedFile'
+import { ScOption } from 'core/helper/ScOption'
 
 export interface ReportFileProps {
   file: UploadedFile
@@ -92,7 +92,7 @@ export const ReportFile = ({file, dense, onRemove}: ReportFileProps) => {
   const {toastError} = useToast()
   const {m} = useI18n()
 
-  const fileUrl = some(apiSdk.public.document.getLink(file))
+  const fileUrl = ScOption.from(apiSdk.public.document.getLink(file))
     .map(_ => (config.isDev ? _.replace(config.apiBaseUrl, 'https://signal-api.conso.gouv.fr') : _))
     .toUndefined()
 
@@ -102,7 +102,7 @@ export const ReportFile = ({file, dense, onRemove}: ReportFileProps) => {
   }
 
   useEffect(() => {
-    fromNullable(_remove.error).map(toastError)
+    ScOption.from(_remove.error).map(toastError)
   }, [_remove.error])
 
   return (

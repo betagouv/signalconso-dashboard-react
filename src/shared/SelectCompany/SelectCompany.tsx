@@ -5,10 +5,11 @@ import {SelectCompanyList} from './SelectCompanyList'
 import React, {useEffect, useState} from 'react'
 import {useI18n} from '../../core/i18n'
 import {useCompaniesContext} from '../../core/context/CompaniesContext'
-import {fromNullable} from 'fp-ts/lib/Option'
+
 import {useEffectFn} from '../../alexlibs/react-hooks-lib'
 import {CompanySearchResult} from '../../core/client/company/Company'
 import {Id} from '../../core/model'
+import {ScOption} from 'core/helper/ScOption'
 
 export interface SelectCompanyProps {
   siret?: Id
@@ -26,7 +27,7 @@ export const SelectCompany = ({siret, onChange}: SelectCompanyProps) => {
 
   useEffect(() => {
     _company.clearCache()
-    fromNullable(siret)
+    ScOption.from(siret)
       .filter(x => x === inputValue)
       .map(setInputValue)
   }, [siret])

@@ -2,7 +2,6 @@ import {PanelBody} from '../../shared/Panel'
 import React, {useEffect, useState} from 'react'
 import {useI18n} from '../../core/i18n'
 
-import {fromNullable} from 'fp-ts/lib/Option'
 import {Box, BoxProps, Icon} from '@mui/material'
 import {styleUtils, sxUtils} from '../../core/theme'
 import {ReportFiles} from './File/ReportFiles'
@@ -22,6 +21,7 @@ import {FileOrigin, UploadedFile} from '../../core/client/file/UploadedFile'
 import {Id} from '../../core/model'
 import {fnSwitch} from '../../core/helper'
 import {useLogin} from '../../core/context/LoginContext'
+import { ScOption } from 'core/helper/ScOption'
 
 interface Props {
   canEditFile?: boolean
@@ -71,7 +71,7 @@ export const ReportResponseComponent = ({canEditFile, response, reportId, files}
 
   return (
     <PanelBody>
-      {fromNullable(response?.data.details as ReportResponse)
+      {ScOption.from(response?.data.details as ReportResponse)
         .map(details => (
           <div>
             {fnSwitch(details.responseType, {
@@ -119,7 +119,7 @@ export const ReportResponseComponent = ({canEditFile, response, reportId, files}
         }}
       />
       <Divider margin />
-      {fromNullable(consumerReportReview)
+      {ScOption.from(consumerReportReview)
         .map(review => (
           <div>
             {fnSwitch(review.evaluation, {

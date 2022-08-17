@@ -5,13 +5,14 @@ import React, {useEffect} from 'react'
 import {useUsersContext} from '../../core/context/UsersContext'
 import {Icon, InputBase, Tooltip} from '@mui/material'
 import {Txt} from '../../alexlibs/mui-extension'
-import {fromNullable} from 'fp-ts/lib/Option'
+
 import {useToast} from '../../core/toast'
 import {DebouncedInput} from '../../shared/DebouncedInput/DebouncedInput'
 import {TrueFalseUndefined} from '../../shared/TrueFalseUndefined/TrueFalseUndefined'
 import {ScDialog} from '../../shared/Confirm/ScDialog'
 import {IconBtn} from '../../alexlibs/mui-extension'
 import {User} from '../../core/client/user/User'
+import {ScOption} from 'core/helper/ScOption'
 
 export const UsersList = () => {
   const {m, formatDate} = useI18n()
@@ -24,7 +25,7 @@ export const UsersList = () => {
   }, [])
 
   useEffect(() => {
-    fromNullable(_users.error).map(toastError)
+    ScOption.from(_users.error).map(toastError)
   }, [_users.error])
 
   return (
