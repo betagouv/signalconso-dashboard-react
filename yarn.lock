@@ -2757,7 +2757,6 @@ __metadata:
     core-js: 3.24.1
     date-fns: 2.29.1
     date-fns-tz: ^1.3.6
-    fp-ts: 1.19.5
     jwt-decode: 3.1.2
     lodash: 4.17.21
     prettier: 2.7.1
@@ -6980,13 +6979,6 @@ __metadata:
   version: 0.2.0
   resolution: "forwarded@npm:0.2.0"
   checksum: fd27e2394d8887ebd16a66ffc889dc983fbbd797d5d3f01087c020283c0f019a7d05ee85669383d8e0d216b116d720fc0cef2f6e9b7eb9f4c90c6e0bc7fd28e6
-  languageName: node
-  linkType: hard
-
-"fp-ts@npm:1.19.5":
-  version: 1.19.5
-  resolution: "fp-ts@npm:1.19.5"
-  checksum: 67d2d9c3855d211ca2592b1ef805f98b618157e7681791a776d9d0f7f3e52fcca2122ebf5bc215908c9099fad69756d40e37210cf46cb4075dae1b61efe69e40
   languageName: node
   linkType: hard
 
