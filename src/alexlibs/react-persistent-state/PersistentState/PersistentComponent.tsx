@@ -1,7 +1,7 @@
 import * as React from 'react'
 import {LocalStorageEntity} from '../utils/localStorageApi'
 import {generateId} from '../utils/hash'
-import throttle from 'lodash.throttle'
+import { throttle } from 'core/lodashNamedExport'
 
 export abstract class PersistentComponent<P = {}, S = {}, SS = any> extends React.Component<P, S, SS> {
   private localStorage: LocalStorageEntity<S>
