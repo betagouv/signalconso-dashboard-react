@@ -1,6 +1,5 @@
 import {cleanReportFilter, reportFilter2QueryString} from 'core/client/report/ReportsClient'
 import {subDays} from 'date-fns'
-import {pipe} from 'rxjs'
 import {Duration, duration} from '../../../alexlibs/ts-utils'
 import {cleanObject, roundValue, toNumberOrDefault} from '../../helper'
 import {
@@ -27,7 +26,7 @@ export class StatsClient {
   readonly percentageCurve = new StatsCurveClient(this)
 
   readonly getReportCount = (filters?: ReportSearch) => {
-    const qs = filters ? pipe(cleanReportFilter, reportFilter2QueryString, cleanObject)(filters) : undefined
+    const qs = filters && cleanObject(reportFilter2QueryString(cleanReportFilter(filters)))
     return this.client.get<SimpleStat>(`stats/reports/count`, {qs})
   }
   readonly getReportCountCurve = (search?: ReportSearch & CurveStatsParams) => {

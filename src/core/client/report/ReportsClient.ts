@@ -15,9 +15,7 @@ import {
   ResponseConsumerReview,
   ReportConsumerUpdate,
 } from '../../model'
-import {pipe} from 'rxjs'
 import {ApiSdkLogger} from '../../helper/Logger'
-import format from 'date-fns/format'
 import {ApiClientApi} from '../ApiClient'
 import {cleanObject, dateToApiDate, dateToApiTime, directDownloadBlob} from '../../helper'
 
@@ -92,16 +90,13 @@ export class ReportsClient {
   }
 
   readonly search = (filters: ReportSearch & PaginatedFilters) => {
-    return this.client
-      .get<PaginatedData<ReportSearchResult>>(`/reports`, {
-        qs: pipe(cleanReportFilter, reportFilter2QueryString, cleanObject)(filters),
+    const qs = cleanObject(reportFilter2QueryString(cleanReportFilter(filters)))
+    return this.client.get<PaginatedData<ReportSearchResult>>(`/reports`, {qs}).then(result => {
+      result.entities.forEach(entity => {
+        entity.report = ReportsClient.mapReport(entity.report)
       })
-      .then(result => {
-        result.entities.forEach(entity => {
-          entity.report = ReportsClient.mapReport(entity.report)
-        })
-        return result
-      })
+      return result
+    })
   }
 
   readonly download = (ids: Id[]) => {
