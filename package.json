@@ -63,7 +63,6 @@
     "react-tagcloud": "^2.2.0",
     "recharts": "2.1.10",
     "rxjs": "6.6.7",
-    "web-vitals": "1.1.2",
     "yaml-import": "2.0.0"
   },
   "devDependencies": {
