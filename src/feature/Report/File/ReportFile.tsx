@@ -11,7 +11,7 @@ import {ScDialog} from '../../../shared/Confirm/ScDialog'
 import {combineSx, defaultSpacing} from 'core/theme'
 import {makeSx} from '../../../alexlibs/mui-extension'
 import {UploadedFile} from '../../../core/client/file/UploadedFile'
-import { ScOption } from 'core/helper/ScOption'
+import {ScOption} from 'core/helper/ScOption'
 
 export interface ReportFileProps {
   file: UploadedFile

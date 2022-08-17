@@ -21,7 +21,7 @@ import {FileOrigin, UploadedFile} from '../../core/client/file/UploadedFile'
 import {Id} from '../../core/model'
 import {fnSwitch} from '../../core/helper'
 import {useLogin} from '../../core/context/LoginContext'
-import { ScOption } from 'core/helper/ScOption'
+import {ScOption} from 'core/helper/ScOption'
 
 interface Props {
   canEditFile?: boolean
