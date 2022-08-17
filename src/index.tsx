@@ -24,4 +24,3 @@ ReactDOM.render(
   </StylesProvider>,
   document.getElementById('root'),
 )
-
