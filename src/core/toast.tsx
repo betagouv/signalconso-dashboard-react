@@ -18,8 +18,15 @@ export const useToast = () => {
     return m.anErrorOccurred
   }
 
+  const doToastError = (error: Partial<ApiError>) => toastError(getErrorMessage(error))
+
   return {
-    toastError: (error: Partial<ApiError>) => toastError(getErrorMessage(error)),
+    toastError: doToastError,
+    toastErrorIfDefined: (error: Partial<ApiError> | undefined) => {
+      if (error !== undefined) {
+        doToastError(error)
+      }
+    },
     ...toasts,
   }
 }

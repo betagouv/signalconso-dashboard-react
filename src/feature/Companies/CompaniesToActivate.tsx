@@ -27,14 +27,14 @@ export const CompaniesToActivate = () => {
 
   const [selectedCompanies, setSelectedCompanies] = usePersistentState<string[]>([], 'CompaniesToActivate')
   const selectedCompaniesSet = useSetState(selectedCompanies)
-  const {toastError} = useToast()
+  const {toastError, toastErrorIfDefined} = useToast()
 
   useEffect(() => {
     _companiesToActivate.fetch()
   }, [])
 
   useEffect(() => {
-    fromNullable(_companiesToActivate.error).map(toastError)
+    toastErrorIfDefined(_companiesToActivate.error)
   }, [_companiesToActivate.error])
 
   const toggleSelectedCompany = (companyId: Id) => {

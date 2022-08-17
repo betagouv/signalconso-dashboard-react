@@ -1,7 +1,7 @@
-import {fromNullable} from 'fp-ts/lib/Option'
 import {config} from 'conf/config'
 import {SxProps, Theme} from '@mui/material'
 import format from 'date-fns/format'
+import {ScOption} from './ScOption'
 
 export type Index<T> = {[key: string]: T}
 
@@ -99,9 +99,9 @@ export const stopPropagation =
   }
 
 export const capitalize = (str?: string, othersInLowerCase = true): string | undefined =>
-  fromNullable(str)
+  ScOption.from(str)
     .map(_ => _.charAt(0).toUpperCase() + (othersInLowerCase ? _.slice(1).toLowerCase() : _.slice(1)))
-    .toUndefined()
+    .getOrElse(undefined)
 
 interface FnSwitch {
   <T extends string | number | symbol, R = any>(value: T, cases: {[key in T]: ((_: T) => R) | R}): R
