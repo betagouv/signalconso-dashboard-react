@@ -53,14 +53,14 @@
     "fp-ts": "1.19.5",
     "jwt-decode": "3.1.2",
     "lodash": "4.17.21",
-    "qs": "6.10.5",
+    "qs": "6.11.0",
     "react": "18.2.0",
     "react-app-polyfill": "2.0.0",
     "react-dom": "18.2.0",
-    "react-hook-form": "7.32.2",
+    "react-hook-form": "7.34.2",
     "react-router-dom": "5.3.3",
     "react-scripts": "5.0.1",
-    "react-tagcloud": "^2.2.0",
+    "react-tagcloud": "^2.3.0",
     "recharts": "2.1.10"
   },
   "devDependencies": {

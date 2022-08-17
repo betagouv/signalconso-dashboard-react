@@ -2783,14 +2783,14 @@ __metadata:
     jwt-decode: 3.1.2
     lodash: 4.17.21
     prettier: 2.7.1
-    qs: 6.10.5
+    qs: 6.11.0
     react: 18.2.0
     react-app-polyfill: 2.0.0
     react-dom: 18.2.0
-    react-hook-form: 7.32.2
+    react-hook-form: 7.34.2
     react-router-dom: 5.3.3
     react-scripts: 5.0.1
-    react-tagcloud: ^2.2.0
+    react-tagcloud: ^2.3.0
     recharts: 2.1.10
     typescript: 4.7.4
   languageName: unknown
@@ -11265,12 +11265,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"qs@npm:6.10.5":
-  version: 6.10.5
-  resolution: "qs@npm:6.10.5"
+"qs@npm:6.11.0":
+  version: 6.11.0
+  resolution: "qs@npm:6.11.0"
   dependencies:
     side-channel: ^1.0.4
-  checksum: b3873189a11bcf48445864b3ba66f7a76db0d9d874955d197779f561addfa604884f7b107971526ce1eca02c99bf7d1e47f28a3e7e6e29204d798fb279164226
+  checksum: 6e1f29dd5385f7488ec74ac7b6c92f4d09a90408882d0c208414a34dd33badc1a621019d4c799a3df15ab9b1d0292f97c1dd71dc7c045e69f81a8064e5af7297
   languageName: node
   linkType: hard
 
@@ -11412,12 +11412,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-hook-form@npm:7.32.2":
-  version: 7.32.2
-  resolution: "react-hook-form@npm:7.32.2"
+"react-hook-form@npm:7.34.2":
+  version: 7.34.2
+  resolution: "react-hook-form@npm:7.34.2"
   peerDependencies:
     react: ^16.8.0 || ^17 || ^18
-  checksum: abe8ba146c313d206f99a01260457bc72af03b2c73d7bd4be5af11598140ec45ef1ef37bac64b80c4dbc298d6aa21af4caa259a133f305a04ddf583faa18e7d0
+  checksum: 485cde0248e668ad1845b927f9cc05b434c384141bb03bc143a7d7cc937eebf119c935114ccbfa397b463808283dab5b2334022fe5dba975402b201e601d6876
   languageName: node
   linkType: hard
 
@@ -11588,9 +11588,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-tagcloud@npm:^2.2.0":
-  version: 2.2.0
-  resolution: "react-tagcloud@npm:2.2.0"
+"react-tagcloud@npm:^2.3.0":
+  version: 2.3.0
+  resolution: "react-tagcloud@npm:2.3.0"
   dependencies:
     prop-types: ^15.6.2
     randomcolor: ^0.6.2
@@ -11598,7 +11598,7 @@ __metadata:
     shuffle-array: ^1.0.1
   peerDependencies:
     react: ">=16.8.0"
-  checksum: dfe68f11675f858490f583c5e59a663be7dd53b9b699085c7cbf8cb3318baab1d77ee9eccc9d26f0f54fe81eacaf617f315304269106263ba7a0244487593106
+  checksum: 8ab9c5a7be2a8b0b0a762452bcec47799618eb01b2a5ac544f03492e9021757e4e5ed88db65135da027334027258e5ddaf631ddab18dadd865ec519eb3e1e709
   languageName: node
   linkType: hard
 
