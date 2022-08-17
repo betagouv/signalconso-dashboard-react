@@ -62,8 +62,7 @@
     "react-scripts": "5.0.1",
     "react-tagcloud": "^2.2.0",
     "recharts": "2.1.10",
-    "rxjs": "6.6.7",
-    "yaml-import": "2.0.0"
+    "rxjs": "6.6.7"
   },
   "devDependencies": {
     "@types/jest": "26.0.24",
