@@ -73,6 +73,10 @@ export class ScOption<A> {
     return this.optVal
   }
 
+  toUndefined(): A | undefined {
+    return this.optVal
+  }
+
   // groupBy<K>(f: (A) => K): Map<K, collection.Seq<A>>
   // Partitions this iterable collection into a map of iterable collections according to some discriminator function.
 
@@ -124,6 +128,17 @@ export class ScOption<A> {
       return ScOption.none()
     }
     return ScOption.from(f(this.optVal))
+  }
+
+  flatMap<U>(f: (value: A) => U | undefined | null): ScOption<U> {
+    if (this.optVal === undefined) {
+      return ScOption.none()
+    }
+    const newVal = f(this.optVal)
+    if (newVal === null || newVal === undefined) {
+      return ScOption.none()
+    }
+    return ScOption.from(newVal)
   }
 
   //   /**

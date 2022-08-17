@@ -7,7 +7,6 @@ import {Icon, Tooltip} from '@mui/material'
 import {Panel} from '../../shared/Panel'
 import {Txt} from '../../alexlibs/mui-extension'
 import {IconBtn} from '../../alexlibs/mui-extension'
-import {fromNullable, some} from 'fp-ts/lib/Option'
 import {useLogin} from '../../core/context/LoginContext'
 import {useCompanyAccess} from './useCompaniesAccess'
 import {CompanyAccessCreateBtn} from './CompanyAccessCreateBtn'
@@ -24,6 +23,7 @@ import {sxUtils} from '../../core/theme'
 import {getAbsoluteLocalUrl, toQueryString} from '../../core/helper'
 import {CompanyAccessLevel} from '../../core/client/company-access/CompanyAccess'
 import {Id} from '../../core/model'
+import {ScOption} from 'core/helper/ScOption'
 
 interface Accesses {
   name?: string
@@ -45,7 +45,7 @@ export const CompanyAccesses = () => {
 
   const {m} = useI18n()
   const {connectedUser} = useLogin()
-  const {toastSuccess, toastError} = useToast()
+  const {toastSuccess, toastError, toastErrorIfDefined} = useToast()
 
   const copyActivationLink = (token: string) => {
     const patch = getAbsoluteLocalUrl(siteMap.loggedout.activatePro(siret) + toQueryString({token}))
@@ -73,11 +73,11 @@ export const CompanyAccesses = () => {
   }, [])
 
   useEffect(() => {
-    fromNullable(_crudToken.fetchError).map(toastError)
+    toastErrorIfDefined(_crudToken.fetchError)
   }, [_crudToken.list, _crudToken.fetchError])
 
   useEffect(() => {
-    fromNullable(_crudAccess.fetchError).map(toastError)
+    toastErrorIfDefined(_crudAccess.fetchError)
   }, [_crudAccess.list, _crudAccess.fetchError])
 
   const inviteNewUser = async (email: string, level: CompanyAccessLevel): Promise<any> => {
@@ -201,7 +201,7 @@ export const CompanyAccesses = () => {
                 <>
                   {connectedUser.isAdmin &&
                     !_.name &&
-                    fromNullable(_.email)
+                    ScOption.from(_.email)
                       .map(email => (
                         <ScDialog
                           title={m.resendCompanyAccessToken(_.email)}
@@ -223,7 +223,7 @@ export const CompanyAccesses = () => {
                       .getOrElse(<></>)}
                   {connectedUser.isAdmin &&
                     !_.name &&
-                    fromNullable(_.token)
+                    ScOption.from(_.token)
                       .map(token => (
                         <Tooltip title={m.copyInviteLink}>
                           <IconBtn onClick={_ => copyActivationLink(token)}>
@@ -232,9 +232,9 @@ export const CompanyAccesses = () => {
                         </Tooltip>
                       ))
                       .getOrElse(<></>)}
-                  {some(_)
+                  {ScOption.from(_)
                     .filter(_ => _.editable === true)
-                    .mapNullable(_ => _.userId)
+                    .flatMap(_ => _.userId)
                     .map(userId => (
                       <ScDialog
                         title={m.deleteCompanyAccess(_.name!)}
@@ -250,7 +250,7 @@ export const CompanyAccesses = () => {
                       </ScDialog>
                     ))
                     .getOrElse(
-                      fromNullable(_.tokenId)
+                      ScOption.from(_.tokenId)
                         .map(tokenId => (
                           <ScDialog
                             title={m.deleteCompanyAccessToken(_.email)}

@@ -12,7 +12,6 @@ import {AddressComponent} from '../../shared/Address/Address'
 import {siteMap} from '../../core/siteMap'
 import {NavLink} from 'react-router-dom'
 import {useUsersContext} from '../../core/context/UsersContext'
-import {fromNullable} from 'fp-ts/lib/Option'
 import {useBlockedReportNotificationContext} from '../../core/context/BlockedReportNotificationProviderContext'
 import {useToast} from '../../core/toast'
 import {Txt} from '../../alexlibs/mui-extension'
@@ -20,6 +19,7 @@ import {ConfirmDisableNotificationDialog} from './ConfirmDisableNotificationDial
 import {groupBy} from '../../core/lodashNamedExport'
 import {PanelFoot} from '../../shared/Panel/PanelFoot'
 import {AccessLevel, Id} from '../../core/model'
+import {ScOption} from 'core/helper/ScOption'
 
 export const CompaniesPro = () => {
   const {m} = useI18n()
@@ -37,16 +37,16 @@ export const CompaniesPro = () => {
   }, [])
 
   const blockedNotificationIndex = useMemo(() => {
-    return fromNullable(_blockedNotifications.list.entity)
+    return ScOption.from(_blockedNotifications.list.entity)
       .map(blockedNotification => groupBy(blockedNotification, _ => _.companyId))
-      .toUndefined()
+      .getOrElse(undefined)
   }, [_blockedNotifications.list.entity])
 
   useEffect(() => {
-    fromNullable(_blockedNotifications.create.error)
+    ScOption.from(_blockedNotifications.create.error)
       .map(toastError)
       .map(() => _blockedNotifications.list.fetch({clean: false}))
-    fromNullable(_blockedNotifications.remove.error)
+    ScOption.from(_blockedNotifications.remove.error)
       .map(toastError)
       .map(() => _blockedNotifications.list.fetch({clean: false}))
   }, [_blockedNotifications.create.error, _blockedNotifications.remove.error])
@@ -72,7 +72,7 @@ export const CompaniesPro = () => {
         {m.myCompanies}
       </PageTitle>
 
-      {fromNullable(_companies.accessibleByPro.entity)
+      {ScOption.from(_companies.accessibleByPro.entity)
         .map(
           companies =>
             companies.length > 5 && (
@@ -107,7 +107,7 @@ export const CompaniesPro = () => {
               </Panel>
             ),
         )
-        .toUndefined()}
+        .getOrElse(undefined)}
 
       <Panel>
         <Datatable

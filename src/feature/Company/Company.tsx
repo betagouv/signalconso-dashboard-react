@@ -17,7 +17,6 @@ import {Widget} from 'shared/Widget/Widget'
 import {siteMap} from 'core/siteMap'
 import {useToast} from 'core/toast'
 import {WidgetValue} from 'shared/Widget/WidgetValue'
-import {fromNullable} from 'fp-ts/es6/Option'
 import {WidgetLoading} from 'shared/Widget/WidgetLoading'
 import {useReportsContext} from 'core/context/ReportsContext'
 import {ReportsShortList} from './ReportsShortList'
@@ -30,6 +29,7 @@ import {TagCloud} from 'react-tagcloud'
 import {EventActionValues} from '../../core/client/event/Event'
 import {ReportStatus, ReportStatusPro} from '../../core/client/report/Report'
 import {Id} from '../../core/model'
+import {ScOption} from 'core/helper/ScOption'
 
 export const CompanyComponent = () => {
   const {id} = useParams<{id: Id}>()
@@ -123,7 +123,7 @@ export const CompanyComponent = () => {
             </Grid>
             <Grid item xs={12} sm={6} md={3}>
               <Widget title={m.activationDocReturned} loading={_event.companyEvents.loading}>
-                {fromNullable(postActivationDocEvents)
+                {ScOption.from(postActivationDocEvents)
                   .map(_ => <WidgetValue>{_.length}</WidgetValue>)
                   .getOrElse(<WidgetLoading />)}
               </Widget>
