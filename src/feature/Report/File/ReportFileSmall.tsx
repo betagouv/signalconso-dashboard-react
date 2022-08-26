@@ -1,4 +1,3 @@
-import {some} from 'fp-ts/lib/Option'
 import {config} from '../../../conf/config'
 import {Icon, Tooltip} from '@mui/material'
 import React from 'react'
@@ -6,6 +5,7 @@ import {extensionToType, FileType} from './reportFileConfig'
 import {ReportFileProps} from './ReportFile'
 import {useLogin} from '../../../core/context/LoginContext'
 import {makeSx} from '../../../alexlibs/mui-extension'
+import {ScOption} from 'core/helper/ScOption'
 
 const css = makeSx({
   imgPdf: {
@@ -22,7 +22,7 @@ const css = makeSx({
 export const ReportFileSmall = ({file}: ReportFileProps) => {
   const fileType = extensionToType(file.filename)
   const {apiSdk} = useLogin()
-  const fileUrl = some(apiSdk.public.document.getLink(file))
+  const fileUrl = ScOption.from(apiSdk.public.document.getLink(file))
     .map(_ => (config.isDev ? _.replace(config.apiBaseUrl, 'https://signal-api.conso.gouv.fr') : _))
     .toUndefined()
 

@@ -14,9 +14,10 @@ import {Txt} from '../../alexlibs/mui-extension'
 import {useUsersContext} from '../../core/context/UsersContext'
 import {regexp} from '../../core/helper/regexp'
 import {useToast} from '../../core/toast'
-import {fromNullable} from 'fp-ts/lib/Option'
+
 import {ScDialog} from '../../shared/Confirm/ScDialog'
 import {ConsumerListPending} from './ConsumerListPending'
+import {ScOption} from 'core/helper/ScOption'
 
 export const Users = () => {
   const {m} = useI18n()
@@ -49,7 +50,7 @@ export const Users = () => {
             title={m.users_invite_dialog_title}
             content={
               <>
-                {fromNullable(_invite.error?.details?.id)
+                {ScOption.from(_invite.error?.details?.id)
                   .map(errId => (
                     <Alert dense type="error" deletable gutterBottom>
                       {m.apiErrorsCode[errId as keyof typeof m.apiErrorsCode]}

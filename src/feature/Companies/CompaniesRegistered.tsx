@@ -11,7 +11,6 @@ import {styleUtils, sxUtils} from '../../core/theme'
 import {Fender, IconBtn} from '../../alexlibs/mui-extension'
 import {mapArrayFromQuerystring, useQueryString} from '../../core/helper/useQueryString'
 import {DebouncedInput} from '../../shared/DebouncedInput/DebouncedInput'
-import {fromNullable} from 'fp-ts/lib/Option'
 import {useToast} from '../../core/toast'
 import {AddressComponent} from '../../shared/Address/Address'
 import {SelectCompanyDialog} from '../../shared/SelectCompany/SelectCompanyDialog'
@@ -24,6 +23,7 @@ import {Txt} from '../../alexlibs/mui-extension'
 import {Company, CompanySearch} from '../../core/client/company/Company'
 import {cleanObject} from '../../core/helper'
 import {PaginatedSearch} from '../../core/model'
+import {ScOption} from 'core/helper/ScOption'
 
 export interface CompanySearchQs extends PaginatedSearch<any> {
   departments?: string[] | string
@@ -36,7 +36,7 @@ export const CompaniesRegistered = () => {
   const _companies = useCompaniesContext().activated
   const _companyUpdateAddress = useCompaniesContext().updateAddress
   const _companyCreate = useCompaniesContext().create
-  const {toastError, toastSuccess} = useToast()
+  const {toastError, toastErrorIfDefined, toastSuccess} = useToast()
   const {connectedUser} = useLogin()
   const [sortByResponseRate, setSortByResponseRate] = useState<'asc' | 'desc' | undefined>()
 
@@ -54,8 +54,8 @@ export const CompaniesRegistered = () => {
   }, [_companies.filters])
 
   useEffect(() => {
-    fromNullable(_companies.error).map(toastError)
-    fromNullable(_companyCreate.error).map(toastError)
+    toastErrorIfDefined(_companies.error)
+    toastErrorIfDefined(_companyCreate.error)
   }, [_companies.error, _companyCreate.error])
 
   const copyAddress = (c: Company) => {

@@ -4,7 +4,6 @@ import {useReportsContext} from '../../core/context/ReportsContext'
 
 import {Panel} from '../../shared/Panel'
 import {Datatable} from '../../shared/Datatable/Datatable'
-import {fromNullable, some} from 'fp-ts/lib/Option'
 import {alpha, Badge, Box, Button, Checkbox, Chip, Grid, Icon, Tooltip} from '@mui/material'
 import {cleanObject, getHostFromUrl, textOverflowMiddleCropping} from '../../core/helper'
 import React, {useCallback, useEffect, useMemo} from 'react'
@@ -39,6 +38,7 @@ import {DatatableToolbar} from '../../shared/Datatable/DatatableToolbar'
 import {useReportContext} from '../../core/context/ReportContext'
 import {Report, ReportingDateLabel, ReportTag} from '../../core/client/report/Report'
 import {Id, ReportSearch} from '../../core/model'
+import {ScOption} from 'core/helper/ScOption'
 
 interface ReportSearchQs {
   readonly departments?: string[] | string
@@ -86,7 +86,7 @@ export const Reports = () => {
   }, [_reports.filters])
 
   useEffect(() => {
-    fromNullable(_reports.error).map(toastError)
+    ScOption.from(_reports.error).map(toastError)
   }, [_reports.list, _reports.error])
 
   const getReportingDate = (report: Report) =>
@@ -191,10 +191,10 @@ export const Reports = () => {
                 </Badge>
               </Tooltip>
               <ExportReportsPopper
-                disabled={fromNullable(_reports?.list?.totalCount)
+                disabled={ScOption.from(_reports?.list?.totalCount)
                   .map(_ => _ > config.reportsLimitForExport)
                   .getOrElse(false)}
-                tooltipBtnNew={fromNullable(_reports?.list?.totalCount)
+                tooltipBtnNew={ScOption.from(_reports?.list?.totalCount)
                   .map(_ => (_ > config.reportsLimitForExport ? m.cannotExportMoreReports(config.reportsLimitForExport) : ''))
                   .getOrElse('')}
               >
@@ -285,7 +285,7 @@ export const Reports = () => {
                       color: t => t.palette.text.disabled,
                     }}
                   >
-                    {fromNullable(_.report.websiteURL).map(getHostFromUrl).alt(some(_.report.phone)).getOrElse('')}
+                    {_.report.websiteURL ? getHostFromUrl(_.report.websiteURL) : _.report.phone ?? ''}
                   </Box>
                 </>
               ),

@@ -7,13 +7,13 @@ import {ScInputPassword} from '../../shared/InputPassword/InputPassword'
 import {ScInput} from '../../shared/Input/ScInput'
 import {useForm} from 'react-hook-form'
 import {ScButton} from '../../shared/Button/Button'
-import {fromNullable} from 'fp-ts/es6/Option'
 import {ForgottenPasswordDialog} from './ForgottenPasswordDialog'
 import {AuthenticationEventActions, EventCategories, Matomo} from '../../core/plugins/Matomo'
 import {Alert} from '../../alexlibs/mui-extension'
 import {Txt} from '../../alexlibs/mui-extension'
 import {ApiError} from '../../core/client/ApiClient'
 import {SignalConsoPublicSdk} from '../../core/client/SignalConsoPublicSdk'
+import {ScOption} from 'core/helper/ScOption'
 
 interface Props {
   login: ActionProps<SignalConsoPublicSdk['authenticate']['login']>
@@ -99,7 +99,7 @@ export const LoginForm = ({login, forgottenPassword}: Props) => {
           >
             {m.login}
           </ScButton>
-          {fromNullable(forgottenPassword)
+          {ScOption.from(forgottenPassword)
             .map(_ => (
               <ForgottenPasswordDialog value={watch('email')} loading={_.loading} error={_.error} onSubmit={_.action}>
                 <ScButton color="primary">{m.forgottenPassword}</ScButton>

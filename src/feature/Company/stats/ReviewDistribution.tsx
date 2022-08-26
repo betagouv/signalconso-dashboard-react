@@ -6,12 +6,12 @@ import {Panel, PanelBody, PanelHead} from '../../../shared/Panel'
 import {HorizontalBarChart} from '../../../shared/HorizontalBarChart/HorizontalBarChart'
 import {useCompanyStats} from '../useCompanyStats'
 import {useEffectFn} from '../../../alexlibs/react-hooks-lib'
-import {fromNullable} from 'fp-ts/es6/Option'
 import {Txt} from '../../../alexlibs/mui-extension'
 import {useToast} from '../../../core/toast'
 import {ReviewLabel} from './ReviewLabel'
 import {useMemoFn} from '../../../alexlibs/react-hooks-lib'
 import {ReportStatus, ReportStatusPro} from '../../../core/client/report/Report'
+import {ScOption} from 'core/helper/ScOption'
 
 interface Props {
   companyId: string
@@ -64,7 +64,7 @@ export const ReviewDistribution = <T extends ReportStatus | ReportStatusPro>({co
   return (
     <Panel>
       <PanelHead>{m.consumerReviews}</PanelHead>
-      {fromNullable(_stats.responseReviews.entity)
+      {ScOption.from(_stats.responseReviews.entity)
         .map(_ => (
           <PanelBody>
             <Txt color="hint" block sx={{mb: 3}}>
