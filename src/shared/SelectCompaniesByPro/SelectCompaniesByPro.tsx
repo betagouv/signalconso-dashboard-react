@@ -3,8 +3,9 @@ import {useEffect, useState} from 'react'
 import {Icon, InputAdornment, TextField, TextFieldProps} from '@mui/material'
 import {SelectCompaniesByProMenu} from './SelectCompaniesByProMenu'
 import {useI18n} from '../../core/i18n'
-import {fromNullable} from 'fp-ts/lib/Option'
+
 import {CompanyWithAccessLevel} from '../../core/client/company/Company'
+import {ScOption} from 'core/helper/ScOption'
 
 export interface SelectDepartmentsProps extends Omit<TextFieldProps, 'onChange'> {
   accessibleCompanies: CompanyWithAccessLevel[]
@@ -52,7 +53,7 @@ export const SelectCompaniesByPro = ({
         placeholder={placeholder}
         label={label ?? m.siret}
         onClick={open}
-        value={fromNullable(innerValues)
+        value={ScOption.from(innerValues)
           .filter(_ => _.length > 0)
           .map(_ => `(${_.length}) ${_.join(', ')}`)
           .getOrElse('')}

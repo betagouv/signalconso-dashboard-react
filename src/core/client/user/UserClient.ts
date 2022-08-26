@@ -1,8 +1,8 @@
 import {User, UserEdit, UserPending, UserSearch} from './User'
-import {fromNullable} from 'fp-ts/lib/Option'
 import {ApiClientApi} from '../ApiClient'
 import {Id, Paginate} from '../../model'
 import {paginateData} from '../../helper'
+import {ScOption} from 'core/helper/ScOption'
 
 export class UserClient {
   constructor(private client: ApiClientApi) {}
@@ -21,13 +21,13 @@ export class UserClient {
         }),
       )
       .then(users =>
-        fromNullable(filters.email)
+        ScOption.from(filters.email)
           .filter(_ => _ !== '')
           .map(user => users.filter(_ => _.email.includes(user)))
           .getOrElse(users),
       )
       .then(users =>
-        fromNullable(filters.active)
+        ScOption.from(filters.active)
           .map(active => users.filter(_ => User.isUserActive(_) === active))
           .getOrElse(users),
       )

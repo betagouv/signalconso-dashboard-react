@@ -1,7 +1,7 @@
 import React, {ReactElement, useEffect, useState} from 'react'
 import {useI18n} from '../../core/i18n'
 import {useCompaniesContext} from '../../core/context/CompaniesContext'
-import {fromNullable} from 'fp-ts/lib/Option'
+
 import {ScDialog} from '../Confirm/ScDialog'
 import {SelectCompany, SelectCompanyProps} from './SelectCompany'
 import {CompanySearchResult} from '../../core/client/company/Company'

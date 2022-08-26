@@ -1,6 +1,6 @@
 import {Panel, PanelBody, PanelHead} from '../../../shared/Panel'
 import {AddressComponent} from '../../../shared/Address/Address'
-import {fromNullable} from 'fp-ts/lib/Option'
+
 import {Txt} from '../../../alexlibs/mui-extension'
 import {Box, Icon, IconButton, useTheme} from '@mui/material'
 import {SelectCompanyDialog} from '../../../shared/SelectCompany/SelectCompanyDialog'
@@ -12,6 +12,7 @@ import {siteMap} from '../../../core/siteMap'
 import {NavLink} from 'react-router-dom'
 import {styleUtils, sxUtils} from '../../../core/theme'
 import {Report} from '../../../core/client/report/Report'
+import {ScOption} from 'core/helper/ScOption'
 
 interface Props {
   report: Report
@@ -71,7 +72,7 @@ export const ReportCompany = ({report, canEdit}: Props) => {
             <AddressComponent address={report.companyAddress} />
           </Box>
           <div>{report.vendor}</div>
-          {fromNullable(report.websiteURL)
+          {ScOption.from(report.websiteURL)
             .map(_ => (
               <Txt link block sx={{mt: 1}}>
                 <a href={_} target="_blank">

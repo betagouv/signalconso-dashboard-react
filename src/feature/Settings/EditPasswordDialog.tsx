@@ -5,10 +5,11 @@ import {useForm} from 'react-hook-form'
 import {useUsersContext} from '../../core/context/UsersContext'
 import {Alert} from '../../alexlibs/mui-extension'
 import {useToast} from '../../core/toast'
-import {fromNullable} from 'fp-ts/lib/Option'
+
 import {ScDialog} from '../../shared/Confirm/ScDialog'
 import {ScInputPassword} from '../../shared/InputPassword/InputPassword'
 import {AccountEventActions, EventCategories, Matomo} from '../../core/plugins/Matomo'
+import {ScOption} from 'core/helper/ScOption'
 
 interface Form {
   oldPassword: string
@@ -54,7 +55,7 @@ export const EditPasswordDialog = ({children}: Props) => {
       }}
       content={
         <>
-          {fromNullable(_changePassword.error)
+          {ScOption.from(_changePassword.error)
             .map(error => (
               <Alert dense type="error" deletable gutterBottom>
                 {error.details?.code === 401 ? m.invalidPassword : m.failedToChangePassword}

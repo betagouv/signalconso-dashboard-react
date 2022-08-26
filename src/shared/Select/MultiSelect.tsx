@@ -4,7 +4,7 @@ import {ScMenuItemProps} from '../MenuItem/ScMenuItem'
 import {useI18n} from '../../core/i18n'
 import {stopPropagation} from '../../core/helper'
 
-interface ScMultiSelectProps<T extends E[], E> extends Omit<SelectProps<T>, 'multiple' | 'onChange'> {
+interface ScMultiSelectProps<T extends E[], E extends string> extends Omit<SelectProps<T>, 'multiple' | 'onChange'> {
   label?: string
   children?: React.ReactNode
   className?: string
@@ -14,7 +14,7 @@ interface ScMultiSelectProps<T extends E[], E> extends Omit<SelectProps<T>, 'mul
   onChange?: (_: T) => void
 }
 
-const _ScMultiSelect = <T extends E[], E>(
+const _ScMultiSelect = <T extends E[], E extends string>(
   {
     id: argId,
     label,
@@ -93,6 +93,6 @@ const _ScMultiSelect = <T extends E[], E>(
 /**
  * Workaround because forwardRef break the generic type of ScSelect.
  */
-export const ScMultiSelect = React.forwardRef(_ScMultiSelect) as <T extends E[], E>(
+export const ScMultiSelect = React.forwardRef(_ScMultiSelect) as <T extends E[], E extends string>(
   props: ScMultiSelectProps<T, E> & {ref?: React.ForwardedRef<any>},
 ) => ReturnType<typeof _ScMultiSelect>

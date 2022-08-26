@@ -1,7 +1,8 @@
 import {Box, Icon, Tooltip, useTheme} from '@mui/material'
 import {Txt} from 'alexlibs/mui-extension'
+import {ScOption} from 'core/helper/ScOption'
 import {ReportReferenceNumber} from 'feature/Report/ReportReferenceNumber'
-import {fromNullable} from 'fp-ts/lib/Option'
+
 import {Report} from '../../../core/client/report/Report'
 import {useReportContext} from '../../../core/context/ReportContext'
 import {capitalize} from '../../../core/helper'
@@ -44,11 +45,11 @@ export const ReportConsumer = ({report, canEdit}: Props) => {
       >
         <div>
           <Box sx={{fontSize: t => styleUtils(t).fontSize.big}}>
-            {fromNullable(report.firstName)
+            {ScOption.from(report.firstName)
               .map(_ => capitalize(_))
               .getOrElse('')}
             &nbsp;
-            {fromNullable(report.lastName)
+            {ScOption.from(report.lastName)
               .map(_ => _.toLocaleUpperCase())
               .getOrElse('')}
           </Box>

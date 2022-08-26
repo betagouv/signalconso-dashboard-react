@@ -6,7 +6,7 @@ import {Datatable} from '../../shared/Datatable/Datatable'
 import {DebouncedInput} from '../../shared/DebouncedInput/DebouncedInput'
 import {useUnregistredWebsiteWithCompanyContext} from '../../core/context/UnregistredWebsitesContext'
 import {useToast} from '../../core/toast'
-import {fromNullable} from 'fp-ts/lib/Option'
+
 import {NavLink} from 'react-router-dom'
 import {siteMap} from '../../core/siteMap'
 import {Btn, IconBtn} from '../../alexlibs/mui-extension'
@@ -14,6 +14,7 @@ import {ExportUnknownWebsitesPopper} from '../../shared/ExportPopper/ExportPoppe
 import {config} from '../../conf/config'
 import {PeriodPicker} from '../../shared/PeriodPicker/PeriodPicker'
 import {sxUtils} from '../../core/theme'
+import {ScOption} from 'core/helper/ScOption'
 
 export const ReportedUnknownWebsites = () => {
   const {m} = useI18n()
@@ -25,7 +26,7 @@ export const ReportedUnknownWebsites = () => {
   }, [])
 
   useEffect(() => {
-    fromNullable(_fetch.error).map(toastError)
+    ScOption.from(_fetch.error).map(toastError)
   }, [_fetch.error])
 
   return (
@@ -67,10 +68,10 @@ export const ReportedUnknownWebsites = () => {
             </Tooltip>
 
             <ExportUnknownWebsitesPopper
-              disabled={fromNullable(_fetch?.list?.totalCount)
+              disabled={ScOption.from(_fetch?.list?.totalCount)
                 .map(_ => _ > config.reportsLimitForExport)
                 .getOrElse(false)}
-              tooltipBtnNew={fromNullable(_fetch?.list?.totalCount)
+              tooltipBtnNew={ScOption.from(_fetch?.list?.totalCount)
                 .map(_ => (_ > config.reportsLimitForExport ? m.cannotExportMoreReports(config.reportsLimitForExport) : ''))
                 .getOrElse('')}
             >

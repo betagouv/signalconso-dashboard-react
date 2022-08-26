@@ -23,7 +23,7 @@ import {
   mapDatesToQueryString,
   useQueryString,
 } from '../../core/helper/useQueryString'
-import {fromNullable} from 'fp-ts/lib/Option'
+
 import {useToast} from '../../core/toast'
 import {config} from '../../conf/config'
 import {ExportReportsPopper} from '../../shared/ExportPopper/ExportPopperBtn'
@@ -37,6 +37,7 @@ import {Enum} from '../../alexlibs/ts-utils'
 import {cleanObject, openInNew} from '../../core/helper'
 import {Report, ReportSearchResult, ReportStatus, ReportStatusPro} from '../../core/client/report/Report'
 import {ReportSearch} from '../../core/client/report/ReportSearch'
+import {ScOption} from 'core/helper/ScOption'
 
 const css = makeSx({
   card: {
@@ -128,8 +129,8 @@ export const ReportsPro = () => {
   }, [])
 
   useEffect(() => {
-    fromNullable(_companies.accessibleByPro.error).map(toastError)
-    fromNullable(_reports.error).map(toastError)
+    ScOption.from(_companies.accessibleByPro.error).map(toastError)
+    ScOption.from(_reports.error).map(toastError)
   }, [_reports.error, _companies.accessibleByPro.error])
 
   useEffect(() => {
@@ -160,7 +161,7 @@ export const ReportsPro = () => {
           <span dangerouslySetInnerHTML={{__html: m.yourAccountIsActivated}} />
         </Alert>
       )}
-      {fromNullable(_companies.accessibleByPro.entity)
+      {ScOption.from(_companies.accessibleByPro.entity)
         .map(companies => (
           <>
             {displayFilters && (
@@ -197,7 +198,7 @@ export const ReportsPro = () => {
                       <DebouncedInput
                         value={_reports.filters.status?.[0] ? Report.getStatusProByStatus(_reports.filters.status[0]) : ''}
                         onChange={e => {
-                          const status = fromNullable(e)
+                          const status = ScOption.from(e)
                             .filter(_ => _ in ReportStatusPro)
                             .map(_ => Report.getStatusByStatusPro(_ as ReportStatusPro))
                             .toUndefined()
@@ -236,10 +237,10 @@ export const ReportsPro = () => {
                       </ScButton>
                     </Badge>
                     <ExportReportsPopper
-                      disabled={fromNullable(_reports?.list?.totalCount)
+                      disabled={ScOption.from(_reports?.list?.totalCount)
                         .map(_ => _ > config.reportsLimitForExport)
                         .getOrElse(false)}
-                      tooltipBtnNew={fromNullable(_reports?.list?.totalCount)
+                      tooltipBtnNew={ScOption.from(_reports?.list?.totalCount)
                         .map(_ =>
                           _ > config.reportsLimitForExport ? m.cannotExportMoreReports(config.reportsLimitForExport) : '',
                         )

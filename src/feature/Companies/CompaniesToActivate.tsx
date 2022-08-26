@@ -12,7 +12,6 @@ import {usePersistentState} from '../../alexlibs/react-persistent-state'
 import {useSetState} from '../../alexlibs/react-hooks-lib'
 import {ScButton} from '../../shared/Button/Button'
 import {useToast} from '../../core/toast'
-import {fromNullable} from 'fp-ts/lib/Option'
 import {EntityIcon} from '../../core/EntityIcon'
 import {AddressComponent} from '../../shared/Address/Address'
 import {ScDialog} from '../../shared/Confirm/ScDialog'
@@ -27,14 +26,14 @@ export const CompaniesToActivate = () => {
 
   const [selectedCompanies, setSelectedCompanies] = usePersistentState<string[]>([], 'CompaniesToActivate')
   const selectedCompaniesSet = useSetState(selectedCompanies)
-  const {toastError} = useToast()
+  const {toastError, toastErrorIfDefined} = useToast()
 
   useEffect(() => {
     _companiesToActivate.fetch()
   }, [])
 
   useEffect(() => {
-    fromNullable(_companiesToActivate.error).map(toastError)
+    toastErrorIfDefined(_companiesToActivate.error)
   }, [_companiesToActivate.error])
 
   const toggleSelectedCompany = (companyId: Id) => {

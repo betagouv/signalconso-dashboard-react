@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react'
 import {useI18n} from '../../core/i18n'
-import {fromNullable} from 'fp-ts/lib/Option'
+
 import {Autocomplete, Box} from '@mui/material'
 import {ScInput} from '../Input/ScInput'
 import {useConstantContext} from '../../core/context/ConstantContext'
@@ -8,6 +8,7 @@ import {combineSx} from '../../core/theme'
 import {makeSx} from '../../alexlibs/mui-extension'
 import {Country} from '../../core/client/constant/Country'
 import {countryToFlag} from '../../core/helper'
+import {ScOption} from 'core/helper/ScOption'
 
 interface Props {
   country?: Country
@@ -61,7 +62,7 @@ export const SelectCountry = ({onChange, country}: Props) => {
           minWidth: 280,
         }}
         onChange={(event, newInputValue) => {
-          const newCountry = fromNullable(newInputValue).toUndefined()
+          const newCountry = ScOption.from(newInputValue).toUndefined()
           newCountry && onChange(newCountry)
         }}
         options={countries ?? []}

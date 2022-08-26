@@ -9,13 +9,14 @@ import {siteMap} from '../../core/siteMap'
 import {Btn, IconBtn} from '../../alexlibs/mui-extension'
 import {ScInput} from '../../shared/Input/ScInput'
 import {ExportPhonesPopper} from '../../shared/ExportPopper/ExportPopperBtn'
-import {fromNullable} from 'fp-ts/lib/Option'
+
 import {useToast} from '../../core/toast'
 import {Icon, Tooltip} from '@mui/material'
 import {PeriodPicker} from '../../shared/PeriodPicker/PeriodPicker'
 import {DebouncedInput} from '../../shared/DebouncedInput/DebouncedInput'
 import {Txt} from '../../alexlibs/mui-extension'
 import {sxUtils} from '../../core/theme'
+import {ScOption} from 'core/helper/ScOption'
 
 export const ReportedPhones = () => {
   const _reportedPhone = useReportedPhonesContext()
@@ -27,7 +28,7 @@ export const ReportedPhones = () => {
   }, [])
 
   useEffect(() => {
-    fromNullable(_reportedPhone.error).map(toastError)
+    ScOption.from(_reportedPhone.error).map(toastError)
   }, [_reportedPhone.error])
 
   return (

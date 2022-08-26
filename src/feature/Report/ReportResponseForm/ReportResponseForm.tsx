@@ -12,12 +12,13 @@ import {ScButton} from '../../../shared/Button/Button'
 import {ReportFiles} from '../File/ReportFiles'
 import {Controller, useForm} from 'react-hook-form'
 import {useReportContext} from '../../../core/context/ReportContext'
-import {fromNullable} from 'fp-ts/lib/Option'
+
 import {useToast} from '../../../core/toast'
 import {PanelProps} from '../../../shared/Panel/Panel'
 import {ReportResponse, ReportResponseTypes} from '../../../core/client/event/Event'
 import {FileOrigin} from '../../../core/client/file/UploadedFile'
 import {Report} from '../../../core/client/report/Report'
+import {ScOption} from 'core/helper/ScOption'
 
 interface Props extends PanelProps {
   report: Report
@@ -45,7 +46,7 @@ export const ReportResponseForm = forwardRef(({report, onCancel, onConfirm, ...p
   }
 
   useEffect(() => {
-    fromNullable(_report.postResponse.error).map(toastError)
+    ScOption.from(_report.postResponse.error).map(toastError)
   }, [_report.postResponse.error])
 
   return (
