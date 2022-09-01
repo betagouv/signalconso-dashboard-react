@@ -136,6 +136,8 @@ export class ReportsClient {
         address: company.address,
         siret: company.siret,
         activityCode: company.activityCode,
+        isHeadOffice: company.isHeadOffice,
+        isOpen: company.isOpen,
       },
     })
   }
@@ -147,7 +149,12 @@ export class ReportsClient {
   }
 
   readonly getCountByDepartments = ({start, end}: {start?: Date; end?: Date} = {}): Promise<[string, number][]> => {
-    return this.client.get(`/reports/count-by-departments`, {qs: {start: dateToApiDate(start), end: dateToApiDate(end)}})
+    return this.client.get(`/reports/count-by-departments`, {
+      qs: {
+        start: dateToApiDate(start),
+        end: dateToApiDate(end),
+      },
+    })
   }
 
   static readonly mapReport = (report: {[key in keyof Report]: any}): Report => ({
