@@ -771,7 +771,7 @@ export const fr = {
       'SC-0005': `Le site web n'existe pas.`,
       'SC-0006': `L'entreprise est déjà associée à un site.`,
       'SC-0007': `URL invalide.`,
-      'SC-0008': `Email DGCCRF invalide.`,
+      'SC-0008': `Email invalide pour ce type d'utilisateur.`,
       'SC-0009': `L'utilisateur existe déjà.`,
       'SC-0010': `L'entreprise a déjà été activée.`,
       'SC-0011': `L'entreprise n'existe pas.`,
