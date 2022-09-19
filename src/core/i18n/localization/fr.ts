@@ -153,6 +153,8 @@ export const fr = {
     key: 'Key',
     value: 'Value',
     invite: 'Inviter',
+    invite_admin: 'Inviter (admin)',
+    invite_dgccrf: 'Inviter (agent DGCCRF)',
     activate_all: 'Tout Activer',
     block_all: 'Tout Bloquer',
     parameters: 'Paramètres',
@@ -485,12 +487,15 @@ export const fr = {
     helpCloudWord: `Nuage de mots généré à partir de la description de l'ensemble des signalements  pour l'entreprise. La taille du mot est proportionnelle à l'utilisation qui en est faite par les consommateurs dans la description des signalements. Les mots affichés correspondent à la racine du mot utilisé dans le signalement (par exemple, le mot "annul" correspond à l'utilisation de termes comme "annulé", "annulation", "annulée" et autres dérivés).`,
     invitationDate: "Date d'invitation",
     connectedUnder3Months: 'Connecté dans les 3 derniers mois',
-    users_invite_dialog_title: 'Inviter un agent DGCCRF',
+    users_invite_dialog_title_dgcrrf: 'Inviter un agent DGCCRF',
+    users_invite_dialog_title_admin: 'Inviter un administrateur SignalConso',
     enableAll: `Tout activer`,
     disable: `Désactiver`,
     disableAll: `Tout désactiver`,
-    users_invite_dialog_desc:
+    users_invite_dialog_desc_dgccrf:
       "Un courrier électronique sera envoyé à l'adresse e-mail saisie ci-dessus avec un lien sécurisé permettant de créer un compte DGCCRF.",
+    users_invite_dialog_desc_admin:
+      "Un courrier électronique sera envoyé à l'adresse e-mail saisie ci-dessus avec un lien sécurisé permettant de créer un compte administrateur SignalConso. ⚠️ Cet utilisateur aura tous les droits administrateur sur l'ensemble de SignalConso, à réserver aux membres de l'équipe !",
     selectedCompanies: `entreprises sélectionnées`,
     passwordNotLongEnough: '8 caractères minimum',
     oldPassword: 'Ancien mot de passe',

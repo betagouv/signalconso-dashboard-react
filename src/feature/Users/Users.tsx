@@ -18,10 +18,10 @@ import {useToast} from '../../core/toast'
 import {ScDialog} from '../../shared/Confirm/ScDialog'
 import {ConsumerListPending} from './ConsumerListPending'
 import {ScOption} from 'core/helper/ScOption'
+import {Box, DialogContent} from '@mui/material'
 
-export const Users = () => {
+const InvitationDialog = ({kind}: {kind: 'admin' | 'dgccrf'}) => {
   const {m} = useI18n()
-  const {path, url} = useRouteMatch()
   const {
     register,
     handleSubmit,
@@ -30,57 +30,81 @@ export const Users = () => {
   const _invite = useUsersContext().invite
   const {toastSuccess} = useToast()
 
+  const buttonLabel = kind === 'admin' ? m.invite_admin : m.invite_dgccrf
+  const dialogTitle = kind === 'admin' ? m.users_invite_dialog_title_admin : m.users_invite_dialog_title_dgcrrf
+  // TODO séparer le warning, le mettre dans un vrai warning
+  const dialogDesc = kind === 'admin' ? m.users_invite_dialog_desc_admin : m.users_invite_dialog_desc_dgccrf
+  // TODO faire varier ça
+  const emailRegexp = regexp.emailDGCCRF
+  const emailValidationMessage = m.emailDGCCRFValidation
+
+  return (
+    <ScDialog
+      maxWidth="xs"
+      onConfirm={(event, close) => {
+        handleSubmit(({email}) => {
+          _invite
+            .fetch({}, email)
+            .then(() => toastSuccess(m.userInvitationSent))
+            .then(close)
+        })()
+      }}
+      confirmLabel={m.invite}
+      loading={_invite.loading}
+      confirmDisabled={!isValid}
+      title={dialogTitle}
+      content={
+        <>
+          {ScOption.from(_invite.error?.details?.id)
+            .map(errId => (
+              <Alert dense type="error" deletable gutterBottom>
+                {m.apiErrorsCode[errId as keyof typeof m.apiErrorsCode]}
+              </Alert>
+            ))
+            .toUndefined()}
+          <Txt color="hint" block gutterBottom>
+            {dialogDesc}
+          </Txt>
+          <ScInput
+            autoFocus
+            fullWidth
+            label={m.email}
+            error={!!errors.email}
+            helperText={errors.email?.message}
+            {...register('email', {
+              required: m.required,
+              pattern: {
+                value: regexp.emailDGCCRF,
+                message: m.emailDGCCRFValidation,
+              },
+            })}
+          />
+        </>
+      }
+    >
+      <ScButton icon="person_add" variant="contained" color="primary">
+        {buttonLabel}
+      </ScButton>
+    </ScDialog>
+  )
+}
+
+export const Users = () => {
+  const {m} = useI18n()
+  const {path} = useRouteMatch()
+
   return (
     <Page>
       <PageTitle
         action={
-          <ScDialog
-            maxWidth="xs"
-            onConfirm={(event, close) => {
-              handleSubmit(({email}) => {
-                _invite
-                  .fetch({}, email)
-                  .then(() => toastSuccess(m.userInvitationSent))
-                  .then(close)
-              })()
-            }}
-            confirmLabel={m.invite}
-            loading={_invite.loading}
-            confirmDisabled={!isValid}
-            title={m.users_invite_dialog_title}
-            content={
-              <>
-                {ScOption.from(_invite.error?.details?.id)
-                  .map(errId => (
-                    <Alert dense type="error" deletable gutterBottom>
-                      {m.apiErrorsCode[errId as keyof typeof m.apiErrorsCode]}
-                    </Alert>
-                  ))
-                  .toUndefined()}
-                <Txt color="hint" block gutterBottom>
-                  {m.users_invite_dialog_desc}
-                </Txt>
-                <ScInput
-                  autoFocus
-                  fullWidth
-                  label={m.email}
-                  error={!!errors.email}
-                  helperText={errors.email?.message}
-                  {...register('email', {
-                    required: m.required,
-                    pattern: {
-                      value: regexp.emailDGCCRF,
-                      message: m.emailDGCCRFValidation,
-                    },
-                  })}
-                />
-              </>
-            }
-          >
-            <ScButton icon="person_add" variant="contained" color="primary">
-              {m.invite}
-            </ScButton>
-          </ScDialog>
+          <>
+            <Box>
+              <InvitationDialog kind="admin" />
+            </Box>
+            <Box>
+              <InvitationDialog kind="dgccrf" />
+            </Box>
+          </>
         }
       >
         {m.menu_users}
