@@ -495,7 +495,8 @@ export const fr = {
     users_invite_dialog_desc_dgccrf:
       "Un courrier électronique sera envoyé à l'adresse e-mail saisie ci-dessus avec un lien sécurisé permettant de créer un compte DGCCRF.",
     users_invite_dialog_desc_admin:
-      "Un courrier électronique sera envoyé à l'adresse e-mail saisie ci-dessus avec un lien sécurisé permettant de créer un compte administrateur SignalConso. ⚠️ Cet utilisateur aura tous les droits administrateur sur l'ensemble de SignalConso, à réserver aux membres de l'équipe !",
+      "Un courrier électronique sera envoyé à l'adresse e-mail saisie ci-dessus avec un lien sécurisé permettant de créer un compte administrateur SignalConso.",
+    users_invite_dialog_alert_admin: "Cet utilisateur aura les droits ADMINISTRATEUR sur l'ensemble de SignalConso !",
     selectedCompanies: `entreprises sélectionnées`,
     passwordNotLongEnough: '8 caractères minimum',
     oldPassword: 'Ancien mot de passe',
@@ -523,6 +524,8 @@ export const fr = {
     userValidationDone: 'Le compte utilisateur a été prolongé.',
     companyAccessLevel: 'Autorisation',
     editAccess: `Modifier l'accès`,
+    // TODO faire varier
+    emailAdminValidation: 'Email invalide. Email acceptés : *.gouv.fr',
     emailDGCCRFValidation: 'Email invalide. Email acceptés : *.gouv.fr',
     companyAccessesTitle: 'Gestion des accès',
     daily: 'Quotidienne',

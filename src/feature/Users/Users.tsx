@@ -32,11 +32,10 @@ const InvitationDialog = ({kind}: {kind: 'admin' | 'dgccrf'}) => {
 
   const buttonLabel = kind === 'admin' ? m.invite_admin : m.invite_dgccrf
   const dialogTitle = kind === 'admin' ? m.users_invite_dialog_title_admin : m.users_invite_dialog_title_dgcrrf
-  // TODO séparer le warning, le mettre dans un vrai warning
   const dialogDesc = kind === 'admin' ? m.users_invite_dialog_desc_admin : m.users_invite_dialog_desc_dgccrf
-  // TODO faire varier ça
-  const emailRegexp = regexp.emailDGCCRF
-  const emailValidationMessage = m.emailDGCCRFValidation
+  // TODO corriger les regexp
+  const emailRegexp = kind === 'admin' ? regexp.emailAdmin : regexp.emailDGCCRF
+  const emailValidationMessage = kind === 'admin' ? m.emailDGCCRFValidation : m.emailDGCCRFValidation
 
   return (
     <ScDialog
@@ -65,6 +64,11 @@ const InvitationDialog = ({kind}: {kind: 'admin' | 'dgccrf'}) => {
           <Txt color="hint" block gutterBottom>
             {dialogDesc}
           </Txt>
+          {kind === 'admin' && (
+            <Alert type="warning" sx={{mb: 2}} dense>
+              <Txt bold>{m.users_invite_dialog_alert_admin}</Txt>
+            </Alert>
+          )}
           <ScInput
             autoFocus
             fullWidth
@@ -74,8 +78,8 @@ const InvitationDialog = ({kind}: {kind: 'admin' | 'dgccrf'}) => {
             {...register('email', {
               required: m.required,
               pattern: {
-                value: regexp.emailDGCCRF,
-                message: m.emailDGCCRFValidation,
+                value: emailRegexp,
+                message: emailValidationMessage,
               },
             })}
           />
