@@ -524,9 +524,8 @@ export const fr = {
     userValidationDone: 'Le compte utilisateur a été prolongé.',
     companyAccessLevel: 'Autorisation',
     editAccess: `Modifier l'accès`,
-    // TODO faire varier
-    emailAdminValidation: 'Email invalide. Email acceptés : *.gouv.fr',
-    emailDGCCRFValidation: 'Email invalide. Email acceptés : *.gouv.fr',
+    emailAdminValidation: 'Email invalide. Emails acceptés : *@beta.gouv.fr ou *.betagouv@gmail.com',
+    emailDGCCRFValidation: 'Email invalide. Emails acceptés : *.gouv.fr',
     companyAccessesTitle: 'Gestion des accès',
     daily: 'Quotidienne',
     yourAccountIsActivated: `Votre compte est bien activé, vous pouvez consulter <strong>votre signalement</strong>.`,

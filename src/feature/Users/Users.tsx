@@ -18,7 +18,7 @@ import {useToast} from '../../core/toast'
 import {ScDialog} from '../../shared/Confirm/ScDialog'
 import {ConsumerListPending} from './ConsumerListPending'
 import {ScOption} from 'core/helper/ScOption'
-import {Box, DialogContent} from '@mui/material'
+import {Box} from '@mui/material'
 
 const InvitationDialog = ({kind}: {kind: 'admin' | 'dgccrf'}) => {
   const {m} = useI18n()
@@ -35,7 +35,7 @@ const InvitationDialog = ({kind}: {kind: 'admin' | 'dgccrf'}) => {
   const dialogDesc = kind === 'admin' ? m.users_invite_dialog_desc_admin : m.users_invite_dialog_desc_dgccrf
   // TODO corriger les regexp
   const emailRegexp = kind === 'admin' ? regexp.emailAdmin : regexp.emailDGCCRF
-  const emailValidationMessage = kind === 'admin' ? m.emailDGCCRFValidation : m.emailDGCCRFValidation
+  const emailValidationMessage = kind === 'admin' ? m.emailAdminValidation : m.emailDGCCRFValidation
 
   return (
     <ScDialog
