@@ -33,7 +33,6 @@ const InvitationDialog = ({kind}: {kind: 'admin' | 'dgccrf'}) => {
   const buttonLabel = kind === 'admin' ? m.invite_admin : m.invite_dgccrf
   const dialogTitle = kind === 'admin' ? m.users_invite_dialog_title_admin : m.users_invite_dialog_title_dgcrrf
   const dialogDesc = kind === 'admin' ? m.users_invite_dialog_desc_admin : m.users_invite_dialog_desc_dgccrf
-  // TODO corriger les regexp
   const emailRegexp = kind === 'admin' ? regexp.emailAdmin : regexp.emailDGCCRF
   const emailValidationMessage = kind === 'admin' ? m.emailAdminValidation : m.emailDGCCRFValidation
 
@@ -86,7 +85,7 @@ const InvitationDialog = ({kind}: {kind: 'admin' | 'dgccrf'}) => {
         </>
       }
     >
-      <ScButton icon="person_add" variant="contained" color="primary">
+      <ScButton sx={{ml: 2}} icon="person_add" variant="contained" color={kind === 'admin' ? 'primary' : 'primary'}>
         {buttonLabel}
       </ScButton>
     </ScDialog>
@@ -103,10 +102,8 @@ export const Users = () => {
         action={
           <>
             <Box>
-              <InvitationDialog kind="admin" />
-            </Box>
-            <Box>
               <InvitationDialog kind="dgccrf" />
+              <InvitationDialog kind="admin" />
             </Box>
           </>
         }
