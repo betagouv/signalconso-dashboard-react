@@ -17,9 +17,10 @@ export const UserInvitationDialog = ({kind}: {kind: 'admin' | 'dgccrf'}) => {
     handleSubmit,
     formState: {errors, isValid},
   } = useForm<{email: string}>({mode: 'onChange'})
-  const _invite = useUsersContext().invite
+  const usersContext = useUsersContext()
   const {toastSuccess} = useToast()
 
+  const _invite = kind === 'admin' ? usersContext.inviteAdmin : usersContext.inviteDgccrf
   const buttonLabel = kind === 'admin' ? m.invite_admin : m.invite_dgccrf
   const dialogTitle = kind === 'admin' ? m.users_invite_dialog_title_admin : m.users_invite_dialog_title_dgcrrf
   const dialogDesc = kind === 'admin' ? m.users_invite_dialog_desc_admin : m.users_invite_dialog_desc_dgccrf
