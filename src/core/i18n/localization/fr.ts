@@ -98,7 +98,6 @@ export const fr = {
     delete: 'Supprimer',
     deleted: 'Supprimé',
     try: 'Try',
-    settings: 'Paramètres',
     status: 'Statut',
     identicationTools: "Outils d'identification",
     investigation: 'Enquête',

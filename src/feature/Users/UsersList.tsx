@@ -1,24 +1,24 @@
-import {Panel} from '../../shared/Panel'
-import {Datatable} from '../../shared/Datatable/Datatable'
-import {useI18n} from '../../core/i18n'
-import React, {useEffect} from 'react'
-import {useUsersContext} from '../../core/context/UsersContext'
 import {Icon, InputBase, Tooltip} from '@mui/material'
+import {useEffect} from 'react'
 import {Txt} from '../../alexlibs/mui-extension'
+import {useUsersContext} from '../../core/context/UsersContext'
+import {useI18n} from '../../core/i18n'
+import {Datatable} from '../../shared/Datatable/Datatable'
+import {Panel} from '../../shared/Panel'
 
+import {ScOption} from 'core/helper/ScOption'
+import {IconBtn} from '../../alexlibs/mui-extension'
+import {isUserActive, RoleAdminOrDggcrf} from '../../core/client/user/User'
 import {useToast} from '../../core/toast'
+import {ScDialog} from '../../shared/Confirm/ScDialog'
 import {DebouncedInput} from '../../shared/DebouncedInput/DebouncedInput'
 import {TrueFalseUndefined} from '../../shared/TrueFalseUndefined/TrueFalseUndefined'
-import {ScDialog} from '../../shared/Confirm/ScDialog'
-import {IconBtn} from '../../alexlibs/mui-extension'
-import {isUserActive, User} from '../../core/client/user/User'
-import {ScOption} from 'core/helper/ScOption'
 
 export const AdminUsersList = () => <UsersList role="Admin" />
 export const DgccrfUsersList = () => <UsersList role="DGCCRF" />
 
 interface Props {
-  role: User['role']
+  role: RoleAdminOrDggcrf
 }
 
 const UsersList = ({role}: Props) => {
@@ -85,7 +85,9 @@ const UsersList = ({role}: Props) => {
             head: m.email,
             render: _ => (
               <Txt bold>
-                <Icon>{role === 'Admin' ? 'local_police' : 'badge'}</Icon>
+                <Icon sx={{mb: -0.5, mr: 1, color: t => t.palette.primary.main}}>
+                  {role === 'Admin' ? 'local_police' : 'badge'}
+                </Icon>
                 {_.email}
               </Txt>
             ),
