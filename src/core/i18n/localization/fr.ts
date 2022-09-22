@@ -186,6 +186,7 @@ export const fr = {
     createMyAccount: 'Créer mon compte',
     atLeast8Characters: '8 caractères minimum',
     invalidEmail: 'Email invalide',
+    role: 'Rôle',
     firstName: 'Prénom',
     lastName: 'Nom',
     attachTo: `Attacher à`,
@@ -479,7 +480,8 @@ export const fr = {
     validateLetterSentDesc:
       'Les courriers seront considérés envoyés pour les entreprises sélectionnées. Cette action est irrévocable.',
     dgccrfUsers: 'Agents DGCCRF',
-    dgccrfUsersPending: 'Agents en attente',
+    dgccrfUsersPending: 'Agents DGCCRF en attente',
+    adminUsers: 'Admins',
     consumersPending: 'Consommateurs non validés',
     lastReports: `Derniers signalements`,
     reportCloudWord: `Nuage de mots signalements`,

@@ -11,13 +11,21 @@ import {DebouncedInput} from '../../shared/DebouncedInput/DebouncedInput'
 import {TrueFalseUndefined} from '../../shared/TrueFalseUndefined/TrueFalseUndefined'
 import {ScDialog} from '../../shared/Confirm/ScDialog'
 import {IconBtn} from '../../alexlibs/mui-extension'
-import {User} from '../../core/client/user/User'
+import {isUserActive, User} from '../../core/client/user/User'
 import {ScOption} from 'core/helper/ScOption'
 
-export const UsersList = () => {
+export const AdminUsersList = () => <UsersList role="Admin" />
+export const DgccrfUsersList = () => <UsersList role="DGCCRF" />
+
+interface Props {
+  role: User['role']
+}
+
+const UsersList = ({role}: Props) => {
   const {m, formatDate} = useI18n()
-  const _users = useUsersContext().searchDgccrf
-  const _validateEmail = useUsersContext().forceValidateEmail
+  const usersContext = useUsersContext()
+  const _users = role === 'Admin' ? usersContext.searchAdmin : usersContext.searchDgccrf
+  const _validateEmail = usersContext.forceValidateEmail
   const {toastError, toastSuccess} = useToast()
 
   useEffect(() => {
@@ -75,7 +83,12 @@ export const UsersList = () => {
           {
             id: '',
             head: m.email,
-            render: _ => <Txt bold>{_.email}</Txt>,
+            render: _ => (
+              <Txt bold>
+                <Icon>{role === 'Admin' ? 'local_police' : 'badge'}</Icon>
+                {_.email}
+              </Txt>
+            ),
           },
           {
             head: m.firstName,
@@ -111,7 +124,7 @@ export const UsersList = () => {
                 }
                 maxWidth="xs"
               >
-                {User.isUserActive(_) ? (
+                {isUserActive(_) ? (
                   <Tooltip title={m.extendValidation}>
                     <IconBtn>
                       <Icon sx={{color: t => t.palette.success.light}}>check_circle</Icon>

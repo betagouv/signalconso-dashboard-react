@@ -7,6 +7,7 @@ import {ApiError} from '../client/ApiClient'
 import {User, UserSearch} from '../client/user/User'
 
 export interface UsersContextProps {
+  searchAdmin: UsePaginate<User, UserSearch>
   searchDgccrf: UsePaginate<User, UserSearch>
   dgccrfPending: UseFetcher<SignalConsoApiSdk['secured']['user']['fetchPendingDGCCRF'], ApiError>
   inviteDgccrf: UseFetcher<SignalConsoApiSdk['secured']['user']['inviteDGCCRF'], ApiError>
@@ -28,9 +29,15 @@ const defaultContext: Partial<UsersContextProps> = {}
 const UsersContext = React.createContext<UsersContextProps>(defaultContext as UsersContextProps)
 
 export const UsersProvider = ({api, children}: Props) => {
-  const searchDgccrf = useScPaginate<User, UserSearch, ApiError>(api.secured.user.fetchDGCCRF, {
+  const searchAdmin = useScPaginate<User, UserSearch, ApiError>(api.secured.user.searchAdminOrDgccrf, {
+    limit: 50,
+    offset: 0,
+    role: 'Admin',
+  })
+  const searchDgccrf = useScPaginate<User, UserSearch, ApiError>(api.secured.user.searchAdminOrDgccrf, {
     limit: 10,
     offset: 0,
+    role: 'DGCCRF',
   })
   const changePassword = useFetcher(api.secured.user.changePassword)
   const forceValidateEmail = useFetcher(api.secured.user.forceValidateEmail)
@@ -43,6 +50,7 @@ export const UsersProvider = ({api, children}: Props) => {
   return (
     <UsersContext.Provider
       value={{
+        searchAdmin,
         searchDgccrf,
         dgccrfPending,
         inviteDgccrf,

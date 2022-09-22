@@ -6,11 +6,14 @@ export interface User {
   firstName: string
   lastName: string
   lastEmailValidation: Date
+  role: 'Admin' | 'DGCCRF'
 }
 
-export class User {
-  static readonly isUserActive = (user: User) => user.lastEmailValidation.getTime() > subMonths(new Date(), 3).getTime()
+export type UserRaw = Omit<User, 'lastEmailValidation'> & {
+  lastEmailValidation: string
 }
+
+export const isUserActive = (user: User) => user.lastEmailValidation.getTime() > subMonths(new Date(), 3).getTime()
 
 export interface UserEdit {
   firstName?: string
@@ -25,6 +28,7 @@ export interface UserPending {
 }
 
 export interface UserSearch extends PaginatedFilters {
+  role?: User['role']
   email?: string
   active?: boolean
 }
