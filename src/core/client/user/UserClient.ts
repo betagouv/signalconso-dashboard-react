@@ -48,6 +48,10 @@ export class UserClient {
     return this.client.post<void>(`/account/dgccrf/invitation`, {body: {email}})
   }
 
+  readonly inviteAdmin = (email: string) => {
+    return this.client.post<void>(`/account/admin/invitation`, {body: {email}})
+  }
+
   readonly changePassword = (oldPassword: string, newPassword: string) => {
     return this.client.post(`/account/password`, {body: {oldPassword, newPassword}})
   }

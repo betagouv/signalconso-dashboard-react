@@ -15,7 +15,7 @@ import {ScOption} from 'core/helper/ScOption'
 
 export const UsersListPending = () => {
   const _users = useUsersContext().dgccrfPending
-  const _invite = useUsersContext().invite
+  const _invite = useUsersContext().inviteDgccrf
   const {m, formatDate} = useI18n()
   const {connectedUser} = useLogin()
   const {toastError, toastSuccess} = useToast()
