@@ -53,6 +53,7 @@ export interface WebsiteUpdateCompany {
   activityCode?: string
   isHeadOffice: boolean
   isOpen: boolean
+  isPublic: boolean
 }
 
 export interface WebsiteWithCompany extends Website {

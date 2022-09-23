@@ -11,7 +11,7 @@ export const AddressComponent = forwardRef(({address}: Props, ref: any) => {
       {address.number}&nbsp;
       {address.street}&nbsp;
       {address.addressSupplement}
-      <br />
+      {(address.number || address.street || address.addressSupplement) && <br />}
       {address.postalCode}&nbsp;
       {address.city}
       {address.country && (

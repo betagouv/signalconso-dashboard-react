@@ -14,6 +14,7 @@ export interface Company {
   address: Address
   isHeadOffice: boolean
   isOpen: boolean
+  isPublic: boolean
   activityCode?: string
 }
 
@@ -29,6 +30,7 @@ export interface CompanyCreation {
   address: Address
   isHeadOffice: boolean
   isOpen: boolean
+  isPublic: boolean
   activityCode?: string
 }
 
@@ -44,6 +46,7 @@ export interface CompanySearchResult {
   brand?: string
   isHeadOffice: boolean
   isOpen: boolean
+  isPublic: boolean
   address: Address
   activityCode: string
   activityLabel?: string

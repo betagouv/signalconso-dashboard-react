@@ -64,6 +64,7 @@ export const SelectWebsiteAssociation = ({onChange, website, ...props}: Props) =
             activityCode: company.activityCode,
             isHeadOffice: company.isHeadOffice,
             isOpen: company.isOpen,
+            isPublic: company.isPublic,
           })
           .then(_ => onChange())
           .then(_ => toastSuccess(m.websiteEdited))
