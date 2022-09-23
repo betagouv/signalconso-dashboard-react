@@ -3,11 +3,9 @@ import {useI18n} from '../../core/i18n'
 import {siteMap} from '../../core/siteMap'
 import {Page, PageTitle} from '../../shared/Layout'
 import {PageTab, PageTabs} from '../../shared/Layout/Page/PageTabs'
+import {ConsumerListPending} from './ConsumerListPending'
 import {AdminUsersList, DgccrfUsersList} from './UsersList'
 import {UsersListPending} from './UsersListPending'
-import {Box} from '@mui/material'
-import {ConsumerListPending} from './ConsumerListPending'
-import {UserInvitationDialog} from './UserInvitationDialog'
 
 export const Users = () => {
   const {m} = useI18n()
@@ -15,18 +13,7 @@ export const Users = () => {
 
   return (
     <Page>
-      <PageTitle
-        action={
-          <>
-            <Box>
-              <UserInvitationDialog kind="dgccrf" />
-              <UserInvitationDialog kind="admin" />
-            </Box>
-          </>
-        }
-      >
-        {m.menu_users}
-      </PageTitle>
+      <PageTitle>{m.menu_users}</PageTitle>
       <PageTabs>
         <PageTab to={siteMap.logged.users_dgccrf} label={m.dgccrfUsers} />
         <PageTab to={siteMap.logged.users_dgccrf_pending} label={m.dgccrfUsersPending} />

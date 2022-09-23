@@ -152,8 +152,8 @@ export const fr = {
     key: 'Key',
     value: 'Value',
     invite: 'Inviter',
-    invite_admin: 'Inviter (admin)',
-    invite_dgccrf: 'Inviter (agent DGCCRF)',
+    invite_admin: 'Inviter un admin',
+    invite_dgccrf: 'Inviter un agent',
     activate_all: 'Tout Activer',
     block_all: 'Tout Bloquer',
     parameters: 'Paramètres',
@@ -470,7 +470,7 @@ export const fr = {
     Le fichier <b>StockUniteLegale</b> permet d'obtenir le nom de l'établissement lorsqu'il est absent du fichier <b>StockEtablissement</b>.
     <br/>
     <br/>
-    La sychronisation peut être lancée et annulée à tout moment sans risque.
+    La synchronisation peut être lancée et annulée à tout moment sans risque.
   `,
     loginForbidden: `Compte bloqué (trop de tentatives, veuillez réessayer dans 30 minutes)`,
     loginLocked: `Votre adresse email doit être validée, un e-mail vient de vous être envoyé avec un lien à cet effet.`,

@@ -3,6 +3,7 @@ import {Card, CardProps, LinearProgress} from '@mui/material'
 
 export interface PanelProps extends CardProps {
   loading?: boolean
+  // props "hoverable" is never used and seems useless, to delete
   hoverable?: boolean
 }
 
