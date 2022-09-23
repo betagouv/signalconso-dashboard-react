@@ -3,11 +3,9 @@ import {useI18n} from '../../core/i18n'
 import {siteMap} from '../../core/siteMap'
 import {Page, PageTitle} from '../../shared/Layout'
 import {PageTab, PageTabs} from '../../shared/Layout/Page/PageTabs'
-import {UsersList} from './UsersList'
-import {UsersListPending} from './UsersListPending'
-import {Box} from '@mui/material'
 import {ConsumerListPending} from './ConsumerListPending'
-import {UserInvitationDialog} from './UserInvitationDialog'
+import {AdminUsersList, DgccrfUsersList} from './UsersList'
+import {UsersListPending} from './UsersListPending'
 
 export const Users = () => {
   const {m} = useI18n()
@@ -15,27 +13,18 @@ export const Users = () => {
 
   return (
     <Page>
-      <PageTitle
-        action={
-          <>
-            <Box>
-              <UserInvitationDialog kind="dgccrf" />
-              <UserInvitationDialog kind="admin" />
-            </Box>
-          </>
-        }
-      >
-        {m.menu_users}
-      </PageTitle>
+      <PageTitle>{m.menu_users}</PageTitle>
       <PageTabs>
-        <PageTab to={siteMap.logged.users_dgccrf_all} label={m.dgccrfUsers} />
+        <PageTab to={siteMap.logged.users_dgccrf} label={m.dgccrfUsers} />
         <PageTab to={siteMap.logged.users_dgccrf_pending} label={m.dgccrfUsersPending} />
+        <PageTab to={siteMap.logged.users_admin} label={m.adminUsers} />
         <PageTab to={siteMap.logged.users_consumer_validation} label={m.consumersPending} />
       </PageTabs>
       <Switch>
-        <Redirect exact from={path} to={siteMap.logged.users_dgccrf_all} />
-        <Route path={siteMap.logged.users_dgccrf_all} component={UsersList} />
+        <Redirect exact from={path} to={siteMap.logged.users_dgccrf} />
+        <Route path={siteMap.logged.users_dgccrf} component={DgccrfUsersList} />
         <Route path={siteMap.logged.users_dgccrf_pending} component={UsersListPending} />
+        <Route path={siteMap.logged.users_admin} component={AdminUsersList} />
         <Route path={siteMap.logged.users_consumer_validation} component={ConsumerListPending} />
       </Switch>
     </Page>

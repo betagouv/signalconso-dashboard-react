@@ -1,6 +1,6 @@
 import * as React from 'react'
 import {ReactNode} from 'react'
-import {BoxProps, Icon} from '@mui/material'
+import {BoxProps, Divider, Icon} from '@mui/material'
 import {PanelTitle} from './PanelTitle'
 
 interface Props extends BoxProps {
@@ -8,24 +8,28 @@ interface Props extends BoxProps {
   children: ReactNode
   action?: ReactNode
   icon?: string
+  bottomDivider?: boolean
 }
 
-export const PanelHead = ({icon, children, action, sx, ...other}: Props) => {
+export const PanelHead = ({icon, children, action, bottomDivider, sx, ...other}: Props) => {
   return (
-    <PanelTitle
-      {...other}
-      sx={{
-        p: 2,
-        pb: 0,
-        m: 0,
-        display: 'flex',
-        alignItems: 'center',
-        ...sx,
-      }}
-    >
-      {icon && <Icon sx={{color: t => t.palette.text.disabled, mr: 1}}>{icon}</Icon>}
-      <div style={{flex: 1}}>{children}</div>
-      {action}
-    </PanelTitle>
+    <>
+      <PanelTitle
+        {...other}
+        sx={{
+          p: 2,
+          pb: 0,
+          m: 0,
+          display: 'flex',
+          alignItems: 'center',
+          ...sx,
+        }}
+      >
+        {icon && <Icon sx={{color: t => t.palette.text.disabled, mr: 1}}>{icon}</Icon>}
+        <div style={{flex: 1}}>{children}</div>
+        {action}
+      </PanelTitle>
+      {bottomDivider && <Divider />}
+    </>
   )
 }

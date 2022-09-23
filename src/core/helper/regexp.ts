@@ -1,7 +1,7 @@
 export const regexpPattern = {
   email: "^[a-zA-Z0-9_!#$'%&’*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$",
   emailDGCCRF: `^[^@]+@[a-zA-Z0-9_\\-.]*\\.gouv\\.fr$`,
-  emailAdmin: '(^[^@]+\\.betagouv(\\+[^@]+)?@gmail\\.com$)|(^[^@]+@beta\\.gouv\\.fr$)',
+  emailAdmin: '(^[^@]+\\.betagouv(\\+[^@]+)?@gmail\\.com$)|(^[^@]+@beta\\.gouv\\.fr$)|(^[^@]+@dgccrf\\.finances\\.gouv\\.fr$)',
   siren: '[0-9]{9}',
   siret: '[0-9]{14}',
   activationCode: '[0-9]{6}',

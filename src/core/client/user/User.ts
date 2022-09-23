@@ -1,16 +1,21 @@
 import {PaginatedFilters} from '../../model'
 import {subMonths} from 'date-fns'
 
+export type RoleAdminOrDggcrf = 'Admin' | 'DGCCRF'
+
 export interface User {
   email: string
   firstName: string
   lastName: string
   lastEmailValidation: Date
+  role: RoleAdminOrDggcrf
 }
 
-export class User {
-  static readonly isUserActive = (user: User) => user.lastEmailValidation.getTime() > subMonths(new Date(), 3).getTime()
+export type UserRaw = Omit<User, 'lastEmailValidation'> & {
+  lastEmailValidation: string
 }
+
+export const isUserActive = (user: User) => user.lastEmailValidation.getTime() > subMonths(new Date(), 3).getTime()
 
 export interface UserEdit {
   firstName?: string
@@ -25,6 +30,7 @@ export interface UserPending {
 }
 
 export interface UserSearch extends PaginatedFilters {
+  role?: RoleAdminOrDggcrf
   email?: string
   active?: boolean
 }

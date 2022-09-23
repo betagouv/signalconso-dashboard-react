@@ -9,8 +9,9 @@ import {ScInput} from '../../shared/Input/ScInput'
 
 import {ScOption} from 'core/helper/ScOption'
 import {ScDialog} from '../../shared/Confirm/ScDialog'
+import {RoleAdminOrDggcrf} from 'core/model'
 
-export const UserInvitationDialog = ({kind}: {kind: 'admin' | 'dgccrf'}) => {
+export const UserInvitationDialog = ({role}: {role: RoleAdminOrDggcrf}) => {
   const {m} = useI18n()
   const {
     register,
@@ -20,12 +21,12 @@ export const UserInvitationDialog = ({kind}: {kind: 'admin' | 'dgccrf'}) => {
   const usersContext = useUsersContext()
   const {toastSuccess} = useToast()
 
-  const _invite = kind === 'admin' ? usersContext.inviteAdmin : usersContext.inviteDgccrf
-  const buttonLabel = kind === 'admin' ? m.invite_admin : m.invite_dgccrf
-  const dialogTitle = kind === 'admin' ? m.users_invite_dialog_title_admin : m.users_invite_dialog_title_dgcrrf
-  const dialogDesc = kind === 'admin' ? m.users_invite_dialog_desc_admin : m.users_invite_dialog_desc_dgccrf
-  const emailRegexp = kind === 'admin' ? regexp.emailAdmin : regexp.emailDGCCRF
-  const emailValidationMessage = kind === 'admin' ? m.emailAdminValidation : m.emailDGCCRFValidation
+  const _invite = role === 'Admin' ? usersContext.inviteAdmin : usersContext.inviteDgccrf
+  const buttonLabel = role === 'Admin' ? m.invite_admin : m.invite_dgccrf
+  const dialogTitle = role === 'Admin' ? m.users_invite_dialog_title_admin : m.users_invite_dialog_title_dgcrrf
+  const dialogDesc = role === 'Admin' ? m.users_invite_dialog_desc_admin : m.users_invite_dialog_desc_dgccrf
+  const emailRegexp = role === 'Admin' ? regexp.emailAdmin : regexp.emailDGCCRF
+  const emailValidationMessage = role === 'Admin' ? m.emailAdminValidation : m.emailDGCCRFValidation
 
   return (
     <ScDialog
@@ -54,7 +55,7 @@ export const UserInvitationDialog = ({kind}: {kind: 'admin' | 'dgccrf'}) => {
           <Txt color="hint" block gutterBottom>
             {dialogDesc}
           </Txt>
-          {kind === 'admin' && (
+          {role === 'Admin' && (
             <Alert type="warning" sx={{mb: 2}} dense>
               <Txt bold>{m.users_invite_dialog_alert_admin}</Txt>
             </Alert>
@@ -76,7 +77,7 @@ export const UserInvitationDialog = ({kind}: {kind: 'admin' | 'dgccrf'}) => {
         </>
       }
     >
-      <ScButton sx={{ml: 2}} icon="person_add" variant="contained" color={kind === 'admin' ? 'primary' : 'primary'}>
+      <ScButton icon="person_add" variant="outlined" color="primary">
         {buttonLabel}
       </ScButton>
     </ScDialog>
