@@ -526,7 +526,7 @@ export const fr = {
     companyAccessLevel: 'Autorisation',
     editAccess: `Modifier l'accès`,
     emailAdminValidation:
-      'Email invalide. Emails acceptés : *@beta.gouv.fr, ou *.betagouv@gmail.com, ou *.betagouv+suffixe@gmail.com',
+      'Email invalide. Emails acceptés : *@dgccrf.finances.gouv.fr, ou *@beta.gouv.fr, ou *.betagouv@gmail.com, ou *.betagouv+suffixe@gmail.com',
     emailDGCCRFValidation: 'Email invalide. Emails acceptés : *.gouv.fr',
     companyAccessesTitle: 'Gestion des accès',
     daily: 'Quotidienne',
