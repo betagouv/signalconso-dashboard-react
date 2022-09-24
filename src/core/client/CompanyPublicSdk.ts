@@ -4,12 +4,8 @@ import {PublicCompanyClient} from './company/PublicCompanyClient'
 import {PublicUserClient} from './user/PublicUserClient'
 import {PublicReportClient} from './report/PublicReportClient'
 
-export class SignalConsoPublicSdk {
+export class CompanyPublicSdk {
   constructor(private client: ApiClientApi) {}
 
-  readonly report = new PublicReportClient(this.client)
-  readonly user = new PublicUserClient(this.client)
-  readonly constant = new PublicConstantClient(this.client)
-  readonly authenticate = new AuthenticateClient(this.client)
-  readonly document = new FileClient(this.client)
+  readonly company = new PublicCompanyClient(this.client)
 }
