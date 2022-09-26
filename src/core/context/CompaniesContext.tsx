@@ -9,6 +9,7 @@ import {CompanySearch, CompanyToActivate, CompanyUpdate, CompanyWithReportsCount
 import {Address, Id, PaginatedFilters} from '../model'
 import {ApiError} from '../client/ApiClient'
 import {paginateData} from '../helper'
+import {CompanyPublicSdk} from '../client/CompanyPublicSdk'
 
 type Sdk = SignalConsoApiSdk['secured']['company']
 
@@ -19,7 +20,7 @@ export interface CompaniesContextProps {
   updateAddress: UseFetcher<Sdk['updateAddress'], ApiError>
   downloadActivationDocument: UseFetcher<Sdk['downloadActivationDocument'], ApiError>
   confirmCompaniesPosted: UseFetcher<Sdk['confirmCompaniesPosted'], ApiError>
-  searchByIdentity: UseFetcher<SignalConsoApiSdk['public']['company']['searchCompaniesByIdentity'], ApiError>
+  searchByIdentity: UseFetcher<CompanyPublicSdk['company']['searchCompaniesByIdentity'], ApiError>
   accessibleByPro: UseFetcher<Sdk['getAccessibleByPro'], ApiError>
   saveUndeliveredDocument: UseFetcher<Sdk['saveUndeliveredDocument'], ApiError>
   byId: UseFetcher<(id: Id) => Promise<CompanyWithReportsCount>, ApiError>
@@ -51,7 +52,7 @@ export const CompaniesProvider = ({api, children}: Props) => {
   )
   const create = useFetcher(api.secured.company.create)
   const updateAddress = useFetcher(api.secured.company.updateAddress)
-  const searchByIdentity = useFetcher(api.public.company.searchCompaniesByIdentity)
+  const searchByIdentity = useFetcher(api.companySdk.company.searchCompaniesByIdentity)
   const downloadActivationDocument = useFetcher(api.secured.company.downloadActivationDocument)
   const confirmCompaniesPosted = useFetcher(api.secured.company.confirmCompaniesPosted)
   const saveUndeliveredDocument = useFetcher(api.secured.company.saveUndeliveredDocument)

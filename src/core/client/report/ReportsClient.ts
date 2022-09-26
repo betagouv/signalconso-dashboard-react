@@ -138,6 +138,7 @@ export class ReportsClient {
         activityCode: company.activityCode,
         isHeadOffice: company.isHeadOffice,
         isOpen: company.isOpen,
+        isPublic: company.isPublic,
       },
     })
   }
