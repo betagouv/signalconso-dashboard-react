@@ -8,7 +8,7 @@ export interface UserWithPermission {
   firstName: string
   lastName: string
   role: Roles
-  permissions: Permissions[]
+  permissions: Permissions[] // field seems unused. Could probably merge User and UserWithPermission
 }
 
 export enum Roles {
