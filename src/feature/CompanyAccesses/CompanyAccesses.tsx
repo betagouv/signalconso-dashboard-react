@@ -129,7 +129,13 @@ export const CompanyAccesses = () => {
             {
               id: 'delete',
               sx: _ => ({ml: 0, pl: 0, mr: 0, pr: 0}),
-              render: _ => <>{connectedUser.isAdmin && _.userId && <UserDeleteButton userId={_.userId} compact />}</>,
+              render: _ => (
+                <>
+                  {connectedUser.isAdmin && _.userId && (
+                    <UserDeleteButton userId={_.userId} compact onDelete={_crudAccess.fetch} />
+                  )}
+                </>
+              ),
             },
             {
               id: 'status',

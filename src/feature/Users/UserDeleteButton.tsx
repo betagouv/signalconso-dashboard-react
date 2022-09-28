@@ -10,9 +10,10 @@ import {ScDialog} from '../../shared/Confirm/ScDialog'
 interface Props {
   userId: string
   compact?: boolean
+  onDelete?: () => void
 }
 
-export const UserDeleteButton = ({userId, compact}: Props) => {
+export const UserDeleteButton = ({userId, compact, onDelete = () => {}}: Props) => {
   const {m} = useI18n()
   const _softDelete = useUsersContext().softDelete
   const {toastError, toastSuccess} = useToast()
@@ -42,7 +43,8 @@ export const UserDeleteButton = ({userId, compact}: Props) => {
         _softDelete
           .fetch({}, userId)
           .then(_ => close())
-          .then(_ => toastSuccess(m.userValidationDone))
+          .then(_ => toastSuccess(m.delete_user_done))
+          .then(_ => onDelete())
       }}
       confirmLabel={m.delete_user}
     >

@@ -105,7 +105,7 @@ const UsersList = ({role}: Props) => {
     ...(role === 'Admin' ? [] : extraColumnsForDgccrf),
     {
       id: 'delete',
-      render: _ => <UserDeleteButton userId={_.id} />,
+      render: _ => <UserDeleteButton userId={_.id} onDelete={_users.fetch} />,
     },
   ]
 

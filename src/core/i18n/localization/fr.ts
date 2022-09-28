@@ -103,6 +103,7 @@ export const fr = {
     delete_user_warning: 'Attention',
     delete_user_ask: "Supprimer l'utilisateur ?",
     delete_access: "Supprimer l'accès",
+    delete_user_done: "L'utilisateur a été supprimé",
     operation_irreversible: 'Cette opération est irréversible !',
     deleted: 'Supprimé',
     try: 'Try',
