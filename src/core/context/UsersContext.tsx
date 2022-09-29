@@ -17,6 +17,7 @@ export interface UsersContextProps {
   fetchTokenInfo: UseFetcher<SignalConsoApiSdk['public']['user']['fetchTokenInfo'], ApiError>
   getConnectedUser: UseFetcher<SignalConsoApiSdk['secured']['user']['fetchConnectedUser']>
   forceValidateEmail: UseFetcher<SignalConsoApiSdk['secured']['user']['forceValidateEmail']>
+  softDelete: UseFetcher<SignalConsoApiSdk['secured']['user']['softDelete']>
 }
 
 interface Props {
@@ -47,6 +48,7 @@ export const UsersProvider = ({api, children}: Props) => {
   const inviteAdmin = useFetcher(api.secured.user.inviteAdmin)
   const fetchTokenInfo = useFetcher(api.public.user.fetchTokenInfo)
   const getConnectedUser = useFetcher(api.secured.user.fetchConnectedUser)
+  const softDelete = useFetcher(api.secured.user.softDelete)
   return (
     <UsersContext.Provider
       value={{
@@ -60,6 +62,7 @@ export const UsersProvider = ({api, children}: Props) => {
         fetchTokenInfo,
         getConnectedUser,
         forceValidateEmail,
+        softDelete,
       }}
     >
       {children}

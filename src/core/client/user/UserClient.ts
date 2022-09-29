@@ -60,4 +60,8 @@ export class UserClient {
   readonly edit = (id: Id, body: UserEdit) => {
     return this.client.put<User>(`/account/${id}`, {body})
   }
+
+  readonly softDelete = (id: Id) => {
+    return this.client.delete<void>(`/account/${id}`)
+  }
 }

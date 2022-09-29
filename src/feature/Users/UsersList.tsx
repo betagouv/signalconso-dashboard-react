@@ -1,19 +1,20 @@
 import {Icon, InputBase, Tooltip} from '@mui/material'
 import {useEffect} from 'react'
-import {Txt} from '../../alexlibs/mui-extension'
+import {Btn, Txt} from '../../alexlibs/mui-extension'
 import {useUsersContext} from '../../core/context/UsersContext'
 import {useI18n} from '../../core/i18n'
-import {Datatable} from '../../shared/Datatable/Datatable'
+import {Datatable, DatatableColumnProps} from '../../shared/Datatable/Datatable'
 import {Panel, PanelHead} from '../../shared/Panel'
 
 import {ScOption} from 'core/helper/ScOption'
 import {IconBtn} from '../../alexlibs/mui-extension'
-import {isUserActive, RoleAdminOrDggcrf} from '../../core/client/user/User'
+import {isUserActive, RoleAdminOrDggcrf, User} from '../../core/client/user/User'
 import {useToast} from '../../core/toast'
 import {ScDialog} from '../../shared/Confirm/ScDialog'
 import {DebouncedInput} from '../../shared/DebouncedInput/DebouncedInput'
 import {TrueFalseUndefined} from '../../shared/TrueFalseUndefined/TrueFalseUndefined'
 import {UserInvitationDialog} from './UserInvitationDialog'
+import {UserDeleteButton} from './UserDeleteButton'
 
 export const AdminUsersList = () => <UsersList role="Admin" />
 export const DgccrfUsersList = () => <UsersList role="DGCCRF" />
@@ -36,6 +37,77 @@ const UsersList = ({role}: Props) => {
   useEffect(() => {
     ScOption.from(_users.error).map(toastError)
   }, [_users.error])
+
+  const extraColumnsForDgccrf: DatatableColumnProps<User>[] = [
+    {
+      head: m.lastValidationDate,
+      id: 'lastValidation',
+      render: _ => formatDate(_.lastEmailValidation),
+    },
+    {
+      head: (
+        <Tooltip title={m.connectedUnder3Months}>
+          <span>{m.active}</span>
+        </Tooltip>
+      ),
+      id: 'active',
+      render: _ => (
+        <ScDialog
+          title={m.activateUser(_.email)}
+          onConfirm={(event, close) =>
+            _validateEmail
+              .fetch({}, _.email)
+              .then(_ => _users.fetch())
+              .then(_ => close())
+              .then(_ => toastSuccess(m.userValidationDone))
+          }
+          maxWidth="xs"
+        >
+          {isUserActive(_) ? (
+            <Tooltip title={m.extendValidation}>
+              <IconBtn>
+                <Icon sx={{color: t => t.palette.success.light}}>check_circle</Icon>
+              </IconBtn>
+            </Tooltip>
+          ) : (
+            <Tooltip title={m.validate}>
+              <IconBtn>
+                <Icon>task_alt</Icon>
+              </IconBtn>
+            </Tooltip>
+          )}
+        </ScDialog>
+      ),
+    },
+  ]
+
+  const columns: DatatableColumnProps<User>[] = [
+    {
+      id: '',
+      head: m.email,
+      render: _ => (
+        <Txt bold>
+          <Icon sx={{mb: -0.5, mr: 1, color: t => t.palette.primary.main}}>{role === 'Admin' ? 'local_police' : 'badge'}</Icon>
+          {_.email}
+        </Txt>
+      ),
+    },
+    {
+      head: m.firstName,
+      id: 'firstName',
+      render: _ => _.firstName,
+    },
+    {
+      head: m.lastName,
+      id: 'lastName',
+      render: _ => _.lastName,
+    },
+    ...(role === 'Admin' ? [] : extraColumnsForDgccrf),
+    {
+      id: 'delete',
+      render: _ => <UserDeleteButton userId={_.id} onDelete={_users.fetch} />,
+    },
+  ]
 
   return (
     <>
@@ -84,70 +156,7 @@ const UsersList = ({role}: Props) => {
           rowsPerPageOptions={[5, 10, 25, 100, ...(_users.list ? [_users.list.totalCount] : [])]}
           getRenderRowKey={_ => _.email}
           data={_users.list?.entities}
-          columns={[
-            {
-              id: '',
-              head: m.email,
-              render: _ => (
-                <Txt bold>
-                  <Icon sx={{mb: -0.5, mr: 1, color: t => t.palette.primary.main}}>
-                    {role === 'Admin' ? 'local_police' : 'badge'}
-                  </Icon>
-                  {_.email}
-                </Txt>
-              ),
-            },
-            {
-              head: m.firstName,
-              id: 'firstName',
-              render: _ => _.firstName,
-            },
-            {
-              head: m.lastName,
-              id: 'lastName',
-              render: _ => _.lastName,
-            },
-            {
-              head: m.lastValidationDate,
-              id: 'lastValidation',
-              render: _ => formatDate(_.lastEmailValidation),
-            },
-            {
-              head: (
-                <Tooltip title={m.connectedUnder3Months}>
-                  <span>{m.active}</span>
-                </Tooltip>
-              ),
-              id: 'active',
-              render: _ => (
-                <ScDialog
-                  title={m.activateUser(_.email)}
-                  onConfirm={(event, close) =>
-                    _validateEmail
-                      .fetch({}, _.email)
-                      .then(_ => _users.fetch())
-                      .then(_ => close())
-                      .then(_ => toastSuccess(m.userValidationDone))
-                  }
-                  maxWidth="xs"
-                >
-                  {isUserActive(_) ? (
-                    <Tooltip title={m.extendValidation}>
-                      <IconBtn>
-                        <Icon sx={{color: t => t.palette.success.light}}>check_circle</Icon>
-                      </IconBtn>
-                    </Tooltip>
-                  ) : (
-                    <Tooltip title={m.validate}>
-                      <IconBtn>
-                        <Icon>task_alt</Icon>
-                      </IconBtn>
-                    </Tooltip>
-                  )}
-                </ScDialog>
-              ),
-            },
-          ]}
+          columns={columns}
         />
       </Panel>
     </>
