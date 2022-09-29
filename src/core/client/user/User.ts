@@ -4,6 +4,7 @@ import {subMonths} from 'date-fns'
 export type RoleAdminOrDggcrf = 'Admin' | 'DGCCRF'
 
 export interface User {
+  id: string
   email: string
   firstName: string
   lastName: string

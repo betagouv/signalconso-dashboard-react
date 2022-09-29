@@ -5,7 +5,7 @@ import {useParams} from 'react-router'
 import {Datatable} from '../../shared/Datatable/Datatable'
 import {Icon, Tooltip} from '@mui/material'
 import {Panel} from '../../shared/Panel'
-import {Txt} from '../../alexlibs/mui-extension'
+import {Btn, Txt} from '../../alexlibs/mui-extension'
 import {IconBtn} from '../../alexlibs/mui-extension'
 import {useLogin} from '../../core/context/LoginContext'
 import {useCompanyAccess} from './useCompaniesAccess'
@@ -24,6 +24,7 @@ import {getAbsoluteLocalUrl, toQueryString} from '../../core/helper'
 import {CompanyAccessLevel} from '../../core/client/company-access/CompanyAccess'
 import {Id} from '../../core/model'
 import {ScOption} from 'core/helper/ScOption'
+import {UserDeleteButton} from 'feature/Users/UserDeleteButton'
 
 interface Accesses {
   name?: string
@@ -126,6 +127,17 @@ export const CompanyAccesses = () => {
           getRenderRowKey={_ => _.email ?? _.tokenId!}
           columns={[
             {
+              id: 'delete',
+              sx: _ => ({ml: 0, pl: 0, mr: 0, pr: 0}),
+              render: _ => (
+                <>
+                  {connectedUser.isAdmin && _.userId && (
+                    <UserDeleteButton userId={_.userId} compact onDelete={_crudAccess.fetch} />
+                  )}
+                </>
+              ),
+            },
+            {
               id: 'status',
               head: '',
               render: _ =>
@@ -195,7 +207,6 @@ export const CompanyAccesses = () => {
             },
             {
               id: 'action',
-              head: '',
               sx: _ => sxUtils.tdActions,
               render: _ => (
                 <>
@@ -240,11 +251,11 @@ export const CompanyAccesses = () => {
                         title={m.deleteCompanyAccess(_.name!)}
                         onConfirm={() => _crudAccess.remove(userId)}
                         maxWidth="xs"
-                        confirmLabel={m.delete}
+                        confirmLabel={m.delete_access}
                       >
-                        <Tooltip title={m.delete}>
+                        <Tooltip title={m.delete_access}>
                           <IconBtn loading={_crudAccess.removing(userId)}>
-                            <Icon>delete</Icon>
+                            <Icon>remove_circle</Icon>
                           </IconBtn>
                         </Tooltip>
                       </ScDialog>
@@ -258,7 +269,7 @@ export const CompanyAccesses = () => {
                             maxWidth="xs"
                           >
                             <IconBtn loading={_crudToken.removing(tokenId)}>
-                              <Icon>delete</Icon>
+                              <Icon>remove_circle</Icon>
                             </IconBtn>
                           </ScDialog>
                         ))
