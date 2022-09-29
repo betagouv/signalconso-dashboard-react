@@ -58,7 +58,7 @@ export const EditProfileDialog = ({children}: Props) => {
       onConfirm={(event, close) => {
         handleSubmit((form: Form) => {
           _editUser
-            .call(connectedUser.id, form)
+            .call(form)
             .then(() => {
               toastSuccess(m.saved)
               close()
