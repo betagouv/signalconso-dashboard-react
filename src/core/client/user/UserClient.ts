@@ -57,8 +57,8 @@ export class UserClient {
     return this.client.post<void>(`/account/validate-email/${email}`, {})
   }
 
-  readonly edit = (id: Id, body: UserEdit) => {
-    return this.client.put<User>(`/account/${id}`, {body})
+  readonly edit = (body: UserEdit) => {
+    return this.client.put<User>(`/account`, {body})
   }
 
   readonly softDelete = (id: Id) => {
