@@ -220,7 +220,7 @@ export const ReportsFilters = ({filters: rawFilters, updateFilters, children}: P
         {_category.entity && (
           <>
             <DialogContent>
-              <DialogInputRow icon="business" label={m.siretFound}>
+              <DialogInputRow icon="business" label={m.siretOrSirenFound}>
                 <Controller
                   name="hasCompany"
                   defaultValue={filters.hasCompany}
@@ -238,7 +238,7 @@ export const ReportsFilters = ({filters: rawFilters, updateFilters, children}: P
                 {watch('hasCompany') === true && (
                   <DialogInputRowExtra>
                     <ScInput
-                      label={m.siret}
+                      label={m.siretOrSiren}
                       fullWidth
                       {...register('siretSirenList')}
                       defaultValue={filters.siretSirenList ?? ''}
