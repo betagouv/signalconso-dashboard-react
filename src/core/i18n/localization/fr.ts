@@ -94,7 +94,7 @@ export const fr = {
     add: 'Ajouter',
     previous: 'Précédent',
     back: 'Retour',
-    count: 'Nombre',
+    nbAttempts: 'Tentatives',
     delete: 'Supprimer',
     delete_user: "Supprimer l'utilisateur",
     delete_user_desc_main: 'Vous allez supprimer un compte utilisateur.',
