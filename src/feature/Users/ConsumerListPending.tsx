@@ -84,7 +84,7 @@ export const ConsumerListPending = () => {
             render: _ => formatDate(_.lastAttempt),
           },
           {
-            head: m.count,
+            head: m.nbAttempts,
             id: 'attempts',
             render: _ => _.attempts,
           },

@@ -37,8 +37,8 @@ export const DialogInputRow = ({icon, label, children}: DialogInputRowProps) => 
             alignItems: 'center',
             minHeight: 50,
             color: t => t.palette.text.secondary,
-            minWidth: 136,
-            maxWidth: 136,
+            minWidth: 162,
+            maxWidth: 162,
             flexWrap: 'wrap',
           }}
         >
