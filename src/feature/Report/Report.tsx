@@ -71,7 +71,7 @@ export const ReportComponent = () => {
     <Page loading={_report.get.loading}>
       {map(_report.get.entity?.report, report => (
         <>
-          <ReportHeader elevated report={report} hideSiret>
+          <ReportHeader elevated report={report}>
             <Box sx={{whiteSpace: 'nowrap'}}>
               {connectedUser.isDGCCRF && (
                 <ReportPostAction

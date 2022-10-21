@@ -124,6 +124,7 @@ export interface Report {
   status: ReportStatus
   reponseconsoCode: string[]
   ccrfCode: string[]
+  expirationDate: Date
 }
 
 export interface DetailInputValue {

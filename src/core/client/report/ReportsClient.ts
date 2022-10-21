@@ -162,6 +162,7 @@ export class ReportsClient {
     ...report,
     companyAddress: ReportsClient.mapAddress(report.companyAddress),
     creationDate: new Date(report.creationDate),
+    expirationDate: new Date(report.expirationDate),
   })
 
   static readonly mapAddress = (address: {[key in keyof Address]: any | undefined}): Address => ({
