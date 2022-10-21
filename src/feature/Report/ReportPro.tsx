@@ -62,7 +62,7 @@ export const ReportPro = () => {
       {ScOption.from(_report.get.entity?.report)
         .map(report => (
           <>
-            <ReportHeader hideTags={true} elevated={!openAnswerPanel.value} report={report}>
+            <ReportHeader isUserPro elevated={!openAnswerPanel.value} report={report}>
               {!response && !Report.isClosed(report.status) && (
                 <ScButton
                   style={{marginLeft: 'auto'}}
@@ -75,7 +75,6 @@ export const ReportPro = () => {
                 </ScButton>
               )}
             </ReportHeader>
-
             <ReportDescription report={report} files={_report.get.entity?.files}>
               <Txt block bold>
                 {m.consumer}

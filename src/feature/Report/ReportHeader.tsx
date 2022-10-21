@@ -1,5 +1,5 @@
 import {Panel, PanelBody} from '../../shared/Panel'
-import {ReportStatusLabel} from '../../shared/ReportStatus/ReportStatus'
+import {isStatusFinal, ReportStatusLabel} from '../../shared/ReportStatus/ReportStatus'
 import {Alert} from '../../alexlibs/mui-extension'
 import {ReportCategories} from './ReportCategories'
 import {Box, Icon} from '@mui/material'
@@ -36,12 +36,44 @@ interface Props {
   report: Report
   elevated?: boolean
   children?: ReactNode
-  hideTags?: boolean
-  hideSiret?: boolean
+  isUserPro?: boolean
 }
 
-export const ReportHeader = ({hideTags, hideSiret, report, children, elevated}: Props) => {
+const ExpiresSoonWarning = ({report, isUserPro}: {report: Report; isUserPro: boolean}) => {
   const {m} = useI18n()
+  const expectResponse = isUserPro && !isStatusFinal(report.status)
+  const sevenDaysInMilliseconds = 7 * 24 * 60 * 60 * 1000
+  const expiresSoon = Math.abs(report.expirationDate.getTime() - new Date().getTime()) < sevenDaysInMilliseconds
+  if (expectResponse && expiresSoon) {
+    return (
+      <Alert type="warning" sx={{mb: 2}}>
+        {m.reportLimitedTimeToAnswer}
+      </Alert>
+    )
+  }
+  return null
+}
+
+const ExpirationDate = ({report, isUserPro}: {report: Report; isUserPro: boolean}) => {
+  const {m, formatDate} = useI18n()
+  const isClosed = isStatusFinal(report.status)
+  if (isUserPro && isClosed) {
+    return null
+  }
+  const dateFormatted = formatDate(report.expirationDate)
+  const text = isUserPro ? m.reportNeedsAnswerBefore : m.reportProMustAnswerBefore
+  return (
+    <Box sx={{color: t => t.palette.text.primary}}>
+      {text} {dateFormatted}
+    </Box>
+  )
+}
+
+export const ReportHeader = ({report, children, elevated, isUserPro = false}: Props) => {
+  const {m} = useI18n()
+
+  const hideSiret = !isUserPro
+  const hideTags = isUserPro
 
   return (
     <Panel elevation={elevated ? 3 : 0} sx={css.root}>
@@ -59,9 +91,11 @@ export const ReportHeader = ({hideTags, hideSiret, report, children, elevated}: 
             </Box>
             {!hideSiret && <Box sx={{color: t => t.palette.text.disabled}}>{report.companyName}</Box>}
             <Box sx={{color: t => t.palette.text.disabled}}>ID {report.id}</Box>
+            <ExpirationDate {...{report, isUserPro}} />
           </div>
           <ReportStatusLabel style={{marginLeft: 'auto'}} status={report.status} />
         </Box>
+        <ExpiresSoonWarning {...{report, isUserPro}} />
         <Alert id="report-info" dense type="info" deletable persistentDelete sx={{mb: 2}}>
           {m.reportCategoriesAreSelectByConsumer}
         </Alert>

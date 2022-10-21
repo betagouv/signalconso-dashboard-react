@@ -29,6 +29,14 @@ export const reportStatusProColor = {
   [ReportStatusPro.Cloture]: '#03a9f4',
 }
 
+const statusWithProResponse = [ReportStatus.PromesseAction, ReportStatus.Infonde, ReportStatus.ConsulteIgnore]
+const statusClosedBySystem = [ReportStatus.NonConsulte, ReportStatus.ConsulteIgnore]
+const finalStatus = [...statusWithProResponse, ...statusClosedBySystem]
+
+export const isStatusFinal = (status: ReportStatus): Boolean => {
+  return finalStatus.includes(status)
+}
+
 export const ReportStatusLabel = ({status, ...props}: ReportStatusLabelProps) => {
   const {connectedUser} = useLogin()
   return connectedUser.isPro ? (
