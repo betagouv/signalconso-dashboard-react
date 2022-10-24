@@ -106,6 +106,7 @@ export const SelectWebsiteAssociation = ({onChange, website, ...props}: Props) =
             fnSwitch(selectedAssociation, {
               [AssociationType.COMPANY]: () => (
                 <SelectCompany
+                  openOnly={false}
                   siret={company?.siret}
                   onChange={companyChanged => {
                     setCompany(companyChanged)

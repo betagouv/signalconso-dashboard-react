@@ -4,8 +4,7 @@ import {ApiClientApi} from '../ApiClient'
 export class PublicCompanyClient {
   constructor(private client: ApiClientApi) {}
 
-  readonly searchCompaniesByIdentity = (identity: string) => {
-    return this.client.get<CompanySearchResult[]>(`/companies/search/${identity}`, {})
-    // .then(companies => companies.filter(_ => _.postalCode));
+  readonly searchCompaniesByIdentity = (identity: string, openOnly: boolean) => {
+    return this.client.get<CompanySearchResult[]>(`/companies/search/${identity}?openOnly=${openOnly}`, {})
   }
 }

@@ -14,15 +14,16 @@ import {ScOption} from 'core/helper/ScOption'
 export interface SelectCompanyProps {
   siret?: Id
   onChange: (_: CompanySearchResult) => void
+  openOnly?: boolean
 }
 
-export const SelectCompany = ({siret, onChange}: SelectCompanyProps) => {
+export const SelectCompany = ({siret, onChange, openOnly}: SelectCompanyProps) => {
   const {m} = useI18n()
   const _company = useCompaniesContext().searchByIdentity
   const [inputValue, setInputValue] = useState<Id | undefined>(siret)
 
   const search = () => {
-    if (inputValue) _company.fetch({}, inputValue)
+    if (inputValue) _company.fetch({}, inputValue, openOnly ?? true)
   }
 
   useEffect(() => {
