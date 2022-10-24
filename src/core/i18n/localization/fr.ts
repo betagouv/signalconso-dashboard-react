@@ -464,6 +464,7 @@ export const fr = {
     youCanNoteSignalConso: `Vous pouvez également donner votre avis sur SignalConso`,
     addressCopied: `Adresse copiée`,
     governmentCompany: 'Administration publique',
+    closedCompany: 'Établissement fermé (non sélectionnable)',
     registerACompany: 'Enregistrer une entreprise',
     noDataAtm: 'Aucune donnée',
     linkNotValidAnymore: `Le lien sur lequel vous avez cliqué n'est plus valide.`,
