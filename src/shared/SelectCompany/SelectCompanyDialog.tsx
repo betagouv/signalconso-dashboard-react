@@ -10,14 +10,14 @@ interface Props extends SelectCompanyProps {
   children: ReactElement<any>
 }
 
-export const SelectCompanyDialog = ({children, onChange, siret}: Props) => {
+export const SelectCompanyDialog = ({children, onChange, siret, openOnly}: Props) => {
   const {m} = useI18n()
   const [selected, setSelected] = useState<CompanySearchResult | undefined>()
   return (
     <ScDialog
       maxWidth="sm"
       title={m.companySearch}
-      content={close => <SelectCompany siret={siret} onChange={setSelected} />}
+      content={close => <SelectCompany siret={siret} onChange={setSelected} openOnly={openOnly} />}
       confirmDisabled={!selected}
       onConfirm={(e, close) => {
         selected && onChange(selected)
