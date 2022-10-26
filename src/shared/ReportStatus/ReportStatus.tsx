@@ -29,12 +29,16 @@ export const reportStatusProColor = {
   [ReportStatusPro.Cloture]: '#03a9f4',
 }
 
+const statusInvisibleToPro = [ReportStatus.NA, ReportStatus.LanceurAlerte]
 const statusWithProResponse = [ReportStatus.PromesseAction, ReportStatus.Infonde, ReportStatus.ConsulteIgnore]
 const statusClosedBySystem = [ReportStatus.NonConsulte, ReportStatus.ConsulteIgnore]
 const finalStatus = [...statusWithProResponse, ...statusClosedBySystem]
 
 export const isStatusFinal = (status: ReportStatus): Boolean => {
   return finalStatus.includes(status)
+}
+export const isStatusInvisibleToPro = (status: ReportStatus): Boolean => {
+  return statusInvisibleToPro.includes(status)
 }
 
 export const ReportStatusLabel = ({status, ...props}: ReportStatusLabelProps) => {

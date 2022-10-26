@@ -1,5 +1,5 @@
 import {Panel, PanelBody} from '../../shared/Panel'
-import {isStatusFinal, ReportStatusLabel} from '../../shared/ReportStatus/ReportStatus'
+import {isStatusFinal, isStatusInvisibleToPro, ReportStatusLabel} from '../../shared/ReportStatus/ReportStatus'
 import {Alert} from '../../alexlibs/mui-extension'
 import {ReportCategories} from './ReportCategories'
 import {Box, Icon} from '@mui/material'
@@ -56,14 +56,27 @@ const ExpiresSoonWarning = ({report, isUserPro}: {report: Report; isUserPro: boo
 
 const ExpirationDate = ({report, isUserPro}: {report: Report; isUserPro: boolean}) => {
   const {m, formatDate} = useI18n()
-  const isClosed = isStatusFinal(report.status)
-  if (isUserPro && isClosed) {
-    return null
+  const isFinal = isStatusFinal(report.status)
+  const isInvisibleToPro = isStatusInvisibleToPro(report.status)
+  function getTextAndColor() {
+    if (isInvisibleToPro) return null
+    if (isUserPro) {
+      if (isFinal) {
+        return null
+      }
+      return {text: m.reportNeedsAnswerBefore}
+    }
+    if (isFinal) {
+      return {text: m.reportProHadToAnswerBefore, grayedOut: true}
+    }
+    return {text: m.reportProMustAnswerBefore}
   }
+  const textAndColor = getTextAndColor()
+  if (!textAndColor) return null
+  const {text, grayedOut} = textAndColor
   const dateFormatted = formatDate(report.expirationDate)
-  const text = isUserPro ? m.reportNeedsAnswerBefore : m.reportProMustAnswerBefore
   return (
-    <Box sx={{color: t => t.palette.text.primary}}>
+    <Box sx={{color: t => (grayedOut ? t.palette.text.disabled : t.palette.text.primary)}}>
       {text} {dateFormatted}
     </Box>
   )

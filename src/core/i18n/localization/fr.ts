@@ -251,6 +251,7 @@ export const fr = {
     editPasswordDialogDesc: 'Le mot de passe doit avoir 8 caractères minimum.',
     reportNeedsAnswerBefore: 'A répondre avant le',
     reportProMustAnswerBefore: 'Le pro doit répondre avant le',
+    reportProHadToAnswerBefore: 'Le pro devait répondre avant le',
     reportLimitedTimeToAnswer: "Vous n'avez plus beaucoup de temps pour répondre à ce signalement !",
     reportCategoriesAreSelectByConsumer: 'Les catégories du signalement sont sélectionnées par le consommateur.',
     reportConsumerWantToBeAnonymous: 'Le consommateur souhaite rester anonyme',
