@@ -10,14 +10,13 @@ import {Txt} from '../../../alexlibs/mui-extension'
 import {useToast} from '../../../core/toast'
 import {ReviewLabel} from './ReviewLabel'
 import {useMemoFn} from '../../../alexlibs/react-hooks-lib'
-import {ReportStatus, ReportStatusPro} from '../../../core/client/report/Report'
 import {ScOption} from 'core/helper/ScOption'
 
 interface Props {
   companyId: string
 }
 
-export const ReviewDistribution = <T extends ReportStatus | ReportStatusPro>({companyId}: Props) => {
+export const ReviewDistribution = ({companyId}: Props) => {
   const {m} = useI18n()
   const _stats = useCompanyStats(companyId)
   const {toastError} = useToast()

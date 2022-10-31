@@ -25,11 +25,11 @@ import {StatusDistribution} from './stats/StatusDistribution'
 import {ReviewDistribution} from './stats/ReviewDistribution'
 import {CompanyInfo} from './stats/CompanyInfo'
 import {CompanyChartPanel} from './CompanyChartPanel'
-import {TagCloud} from 'react-tagcloud'
 import {EventActionValues} from '../../core/client/event/Event'
 import {ReportStatus, ReportStatusPro} from '../../core/client/report/Report'
 import {Id} from '../../core/model'
 import {ScOption} from 'core/helper/ScOption'
+import {ReportWordDistribution} from './stats/ReportWordDistribution'
 
 export const CompanyComponent = () => {
   const {id} = useParams<{id: Id}>()
@@ -167,8 +167,9 @@ export const CompanyComponent = () => {
               </Panel>
             </Grid>
             <Grid item sm={12} md={5}>
-              <ReviewDistribution companyId={id} />
               <CompanyInfo company={company} />
+              <ReviewDistribution companyId={id} />
+              <ReportWordDistribution companyId={id} />
               {connectedUser.isNotPro && (
                 <Panel loading={_company.hosts.loading}>
                   <PanelHead>{m.websites}</PanelHead>
@@ -181,33 +182,6 @@ export const CompanyComponent = () => {
                   </Box>
                 </Panel>
               )}
-              <Panel loading={_cloudWord.loading}>
-                <PanelHead>
-                  <Tooltip title={m.helpCloudWord}>
-                    <Box sx={{display: 'flex'}}>
-                      {m.reportCloudWord}
-                      <Icon sx={{color: t => t.palette.text.disabled, marginLeft: '5px'}} fontSize="medium">
-                        help
-                      </Icon>
-                    </Box>
-                  </Tooltip>
-                </PanelHead>
-                <Box sx={{margin: '30px'}}>
-                  {_cloudWord.entity && _cloudWord.entity.length > 0 ? (
-                    <TagCloud
-                      colorOptions={{
-                        luminosity: 'dark',
-                        hue: 'blue',
-                      }}
-                      minSize={18}
-                      maxSize={40}
-                      tags={_cloudWord.entity}
-                    />
-                  ) : (
-                    m.cannotGenerateCloudWord
-                  )}
-                </Box>
-              </Panel>
             </Grid>
           </Grid>
         </>
