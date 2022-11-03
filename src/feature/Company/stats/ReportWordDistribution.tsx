@@ -34,7 +34,7 @@ export const ReportWordDistribution = ({companyId}: Props) => {
           label: (
             <NavLink
               to={siteMap.logged.reports({
-                details: reportWordCount.value,
+                description: reportWordCount.value,
                 companyIds: [companyId],
               })}
             >
