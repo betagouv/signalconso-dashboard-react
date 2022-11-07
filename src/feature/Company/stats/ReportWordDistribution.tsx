@@ -1,7 +1,7 @@
 import * as React from 'react'
 import {useEffect} from 'react'
 import {useI18n} from '../../../core/i18n'
-import {Box, Icon, Skeleton, Tooltip} from '@mui/material'
+import {Box, Icon, List, ListItem, Skeleton, Tooltip} from '@mui/material'
 import {Panel, PanelBody, PanelHead} from '../../../shared/Panel'
 import {HorizontalBarChart, HorizontalBarChartData} from '../../../shared/HorizontalBarChart/HorizontalBarChart'
 import {useEffectFn, useFetcher} from '../../../alexlibs/react-hooks-lib'
@@ -20,17 +20,17 @@ interface Props {
 export const ReportWordDistribution = ({companyId}: Props) => {
   const {m} = useI18n()
   const {apiSdk} = useLogin()
-  const _cloudWord = useFetcher((companyId: Id) => apiSdk.secured.reports.getCloudWord(companyId))
+  const _wordDistribution = useFetcher((companyId: Id) => apiSdk.secured.reports.getCloudWord(companyId))
   const {toastError} = useToast()
   useEffect(() => {
-    _cloudWord.fetch({}, companyId)
+    _wordDistribution.fetch({}, companyId)
   }, [companyId])
 
-  useEffectFn(_cloudWord.error, toastError)
+  useEffectFn(_wordDistribution.error, toastError)
 
-  const reviewDistribution: HorizontalBarChartData[] | undefined = useMemoFn(_cloudWord.entity, _ =>
+  const reviewDistribution: HorizontalBarChartData[] | undefined = useMemoFn(_wordDistribution.entity, _ =>
     _.length > 0
-      ? Object.entries(_).map(([label, reportWordCount]) => ({
+      ? Object.entries(_).map(([label, reportWordCount], index) => ({
           label: (
             <NavLink
               to={siteMap.logged.reports({
@@ -38,7 +38,7 @@ export const ReportWordDistribution = ({companyId}: Props) => {
                 companyIds: [companyId],
               })}
             >
-              {reportWordCount.value}
+              {index + 1} - {reportWordCount.value}
             </NavLink>
           ),
           value: reportWordCount.count,
@@ -47,7 +47,7 @@ export const ReportWordDistribution = ({companyId}: Props) => {
   )
 
   return (
-    <Panel loading={_cloudWord.loading}>
+    <Panel loading={_wordDistribution.loading}>
       <PanelHead>
         <Tooltip title={m.helpCloudWord}>
           <Box sx={{display: 'flex'}}>
@@ -58,11 +58,17 @@ export const ReportWordDistribution = ({companyId}: Props) => {
           </Box>
         </Tooltip>
       </PanelHead>
-      {ScOption.from(_cloudWord.entity)
+      {ScOption.from(_wordDistribution.entity)
         .map(_ => (
           <PanelBody>
             {reviewDistribution && reviewDistribution.length > 1 ? (
-              <HorizontalBarChart width={120} data={reviewDistribution} grid />
+              <Box sx={{maxHeight: 260, overflow: 'auto'}}>
+                <List dense>
+                  {reviewDistribution.map((host, i) => (
+                    <ListItem key={i}>{host.label}</ListItem>
+                  ))}
+                </List>
+              </Box>
             ) : (
               m.cannotGenerateCloudWord
             )}
