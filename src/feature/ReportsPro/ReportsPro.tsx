@@ -5,7 +5,7 @@ import {useReportsContext} from '../../core/context/ReportsContext'
 import {Datatable} from '../../shared/Datatable/Datatable'
 import {useI18n} from '../../core/i18n'
 import {Badge, Box, Grid, Icon, MenuItem} from '@mui/material'
-import {ReportStatusLabel, ReportStatusProLabel} from '../../shared/ReportStatus/ReportStatus'
+import {ReportStatusLabel, reportStatusProColor, ReportStatusProLabel} from '../../shared/ReportStatus/ReportStatus'
 import {useLayoutContext} from '../../core/Layout/LayoutContext'
 import {Txt} from '../../alexlibs/mui-extension'
 
@@ -38,6 +38,7 @@ import {cleanObject, openInNew} from '../../core/helper'
 import {Report, ReportSearchResult, ReportStatus, ReportStatusPro} from '../../core/client/report/Report'
 import {ReportSearch} from '../../core/client/report/ReportSearch'
 import {ScOption} from 'core/helper/ScOption'
+import {Label} from '../../shared/Label/Label'
 
 const css = makeSx({
   card: {
@@ -80,6 +81,18 @@ const css = makeSx({
 })
 
 const minRowsBeforeDisplayFilters = 2
+
+function hasExpired(date: Date): Boolean {
+  console.log(date.getTime())
+  console.log(Date.now())
+  return date.getTime() < Date.now()
+}
+
+function expiresSoon(date: Date): Boolean {
+  let now = new Date()
+  let nowPlus10Days = now.setDate(now.getDate() + 10)
+  return date.getTime() > Date.now() && date.getTime() < nowPlus10Days
+}
 
 interface ReportFiltersQs {
   readonly departments?: string[] | string
@@ -138,7 +151,7 @@ export const ReportsPro = () => {
   }, [_reports.filters])
 
   return (
-    <Page size="s" loading={_companies.accessibleByPro.loading || _companies.accessibleByPro.loading}>
+    <Page size="xl" loading={_companies.accessibleByPro.loading || _companies.accessibleByPro.loading}>
       <PageTitle
         action={
           <Btn
@@ -334,6 +347,22 @@ export const ReportsPro = () => {
                               ? {fontWeight: t => t.typography.fontWeightBold}
                               : undefined,
                           render: _ => formatDate(_.report.creationDate),
+                        },
+                        {
+                          id: 'expirationDate',
+                          head: m.expireOn,
+                          render: _ =>
+                            expiresSoon(_.report.expirationDate) ? (
+                              <Label dense style={{color: 'white', background: 'red'}}>
+                                {m.warnExpireOn(formatDate(_.report.expirationDate))}
+                              </Label>
+                            ) : hasExpired(_.report.expirationDate) ? (
+                              <Label dense style={{color: 'white', background: 'grey'}}>
+                                {m.expired}
+                              </Label>
+                            ) : (
+                              formatDate(_.report.expirationDate)
+                            ),
                         },
                         {
                           id: 'status',
