@@ -171,7 +171,7 @@ export const fr = {
     receivedAt: 'Reçu le',
     expireOn: 'Expire le',
     warnExpireOn: (date: String) => `Expire le ${date}`,
-    expired: 'Expiré',
+    expiredOn: (date: String) => `Expiré le ${date}`,
     pin: `Épingler`,
     endedAt: 'Terminé le',
     anonymous: 'Anonyme',

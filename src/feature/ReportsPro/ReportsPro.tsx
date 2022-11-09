@@ -358,7 +358,7 @@ export const ReportsPro = () => {
                               </Label>
                             ) : hasExpired(_.report.expirationDate) ? (
                               <Label dense style={{color: 'white', background: 'grey'}}>
-                                {m.expired}
+                                {m.expiredOn(formatDate(_.report.expirationDate))}
                               </Label>
                             ) : (
                               formatDate(_.report.expirationDate)
