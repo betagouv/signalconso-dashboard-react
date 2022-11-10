@@ -90,7 +90,7 @@ function hasExpired(date: Date): Boolean {
 
 function expiresSoon(date: Date): Boolean {
   let now = new Date()
-  let nowPlus10Days = now.setDate(now.getDate() + 10)
+  let nowPlus10Days = now.setDate(now.getDate() + 7)
   return date.getTime() > Date.now() && date.getTime() < nowPlus10Days
 }
 
@@ -357,11 +357,13 @@ export const ReportsPro = () => {
                                 {m.warnExpireOn(formatDate(_.report.expirationDate))}
                               </Label>
                             ) : hasExpired(_.report.expirationDate) ? (
-                              <Label dense style={{color: 'white', background: 'grey'}}>
-                                {m.expiredOn(formatDate(_.report.expirationDate))}
+                              <Label dense style={{color: 'darkgray', background: 'white'}}>
+                                {formatDate(_.report.expirationDate)}
                               </Label>
                             ) : (
-                              formatDate(_.report.expirationDate)
+                              <Label dense style={{color: 'black', background: 'white'}}>
+                                {formatDate(_.report.expirationDate)}
+                              </Label>
                             ),
                         },
                         {
