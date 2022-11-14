@@ -1,9 +1,9 @@
 import {config} from '../../../conf/config'
 import {formatDistance, formatDuration as formatDurationFns} from 'date-fns'
 import {AssociationType} from 'feature/ReportedWebsites/SelectWebsiteIdentification/SelectWebsiteAssociation'
-import {ReportStatus, ReportStatusPro, ReportTag} from '../../client/report/Report'
+import {ReportStatus, ReportStatusPro, ReportTag, ReportType} from '../../client/report/Report'
 import {CompanyAccessLevel} from '../../client/company-access/CompanyAccess'
-import {IdentificationStatus, InvestigationStatus, Practice} from '../../client/website/Website'
+import {IdentificationStatus, InvestigationStatus} from '../../client/website/Website'
 import {ReportResponseTypes, ResponseEvaluation} from '../../client/event/Event'
 
 const invalidDate = '-'
@@ -45,6 +45,11 @@ export const fr = {
   formatDuration,
   formatLargeNumber,
   messages: {
+    ReportTypeDesc: {
+      [ReportType.Both]: 'Sites internet et établissements physiques',
+      [ReportType.Internet]: 'Sites internet seulement',
+      [ReportType.Shop]: 'Établissements physiques',
+    },
     reportTagDesc: {
       [ReportTag.LitigeContractuel]: 'Litige contractuel',
       [ReportTag.Hygiene]: 'Hygiène',
@@ -108,6 +113,7 @@ export const fr = {
     deleted: 'Supprimé',
     try: 'Try',
     status: 'Statut',
+    reportType: 'Type de signalement',
     identicationTools: "Outils d'identification",
     investigation: 'Enquête',
     affectation: 'Affectation',
