@@ -15,7 +15,6 @@ import {CompanyAccessTokenClient} from './company-access-token/CompanyAccessToke
 import {SecuredFileClient} from './file/SecuredFileClient'
 import {ReportBlockedNotificationClient} from './blocked-report-notifications/ReportBlockedNotificationClient'
 import {AccessesClient} from './accesses/AccessesClient'
-import {CompaniesDbSyncClient} from './companies-db-sync/CompaniesDbSyncClient'
 import {StatsClient} from './stats/StatsClient'
 import {AdminClient} from './admin/AdminClient'
 import {ConsumerEmailValidationClient} from './consumer-email-validation/ConsumerEmailValidationClient'
@@ -40,5 +39,4 @@ export class SignalConsoSecuredSdk {
   readonly user = new UserClient(this.client)
   readonly document = new SecuredFileClient(this.client)
   readonly reportBlockedNotification = new ReportBlockedNotificationClient(this.client)
-  readonly companiesDbSync = new CompaniesDbSyncClient(this.client)
 }
