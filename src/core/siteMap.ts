@@ -27,7 +27,6 @@ export const siteMap = {
     users_admin: `/users/admin`,
     settings: `/parametres`,
     modeEmploiDGCCRF: `/mode-emploi-dgccrf`,
-    companiesDbSync: `/companies-db-sync`,
     stats: `/stats`,
     proStats: `/stats/pro-stats`,
     dgccrfStats: `/stats/dgccrf-stats`,
