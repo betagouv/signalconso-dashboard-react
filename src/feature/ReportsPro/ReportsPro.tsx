@@ -5,16 +5,15 @@ import {useReportsContext} from '../../core/context/ReportsContext'
 import {Datatable} from '../../shared/Datatable/Datatable'
 import {useI18n} from '../../core/i18n'
 import {Badge, Box, Grid, Icon, MenuItem} from '@mui/material'
-import {ReportStatusLabel, reportStatusProColor, ReportStatusProLabel} from '../../shared/ReportStatus/ReportStatus'
+import {ReportStatusLabel, ReportStatusProLabel} from '../../shared/ReportStatus/ReportStatus'
 import {useLayoutContext} from '../../core/Layout/LayoutContext'
-import {Txt} from '../../alexlibs/mui-extension'
+import {Alert, Btn, Fender, makeSx, Txt} from '../../alexlibs/mui-extension'
 
 import {combineSx, styleUtils, sxUtils} from '../../core/theme'
 import {SelectDepartments} from '../../shared/SelectDepartments/SelectDepartments'
 import {ScSelect} from '../../shared/Select/Select'
 import {useHistory} from 'react-router'
 import {siteMap} from '../../core/siteMap'
-import {Btn, Fender} from '../../alexlibs/mui-extension'
 import {EntityIcon} from '../../core/EntityIcon'
 import {ScButton} from '../../shared/Button/Button'
 import {
@@ -31,11 +30,10 @@ import {PeriodPicker} from '../../shared/PeriodPicker/PeriodPicker'
 import {useCompaniesContext} from '../../core/context/CompaniesContext'
 import {SelectCompaniesByPro} from '../../shared/SelectCompaniesByPro/SelectCompaniesByPro'
 import compose from '../../core/helper/compose'
-import {Alert, makeSx} from '../../alexlibs/mui-extension'
 import {DebouncedInput} from 'shared/DebouncedInput/DebouncedInput'
 import {Enum} from '../../alexlibs/ts-utils'
 import {cleanObject, openInNew} from '../../core/helper'
-import {Report, ReportSearchResult, ReportStatus, ReportStatusPro} from '../../core/client/report/Report'
+import {Report, ReportSearchResult, ReportStatus, ReportStatusPro, ReportType} from '../../core/client/report/Report'
 import {ReportSearch} from '../../core/client/report/ReportSearch'
 import {ScOption} from 'core/helper/ScOption'
 import {Label} from '../../shared/Label/Label'
@@ -181,7 +179,7 @@ export const ReportsPro = () => {
               <Panel elevation={3} sx={css.filters}>
                 <PanelBody sx={css.filtersBody}>
                   <Grid container spacing={1}>
-                    <Grid item sm={4} xs={12}>
+                    <Grid item sm={6} xs={12}>
                       <DebouncedInput
                         value={_reports.filters.siretSirenList}
                         onChange={_ => _reports.updateFilters(prev => ({...prev, siretSirenList: _}))}
@@ -197,7 +195,7 @@ export const ReportsPro = () => {
                         )}
                       </DebouncedInput>
                     </Grid>
-                    <Grid item sm={4} xs={12}>
+                    <Grid item sm={6} xs={12}>
                       <DebouncedInput
                         value={_reports.filters.departments}
                         onChange={departments => _reports.updateFilters(prev => ({...prev, departments}))}
@@ -207,7 +205,42 @@ export const ReportsPro = () => {
                         )}
                       </DebouncedInput>
                     </Grid>
-                    <Grid item sm={4} xs={12}>
+                    <Grid item sm={6} xs={12}>
+                      <DebouncedInput
+                        value={
+                          _reports.filters.hasWebsite === undefined
+                            ? ReportType.Both
+                            : _reports.filters.hasWebsite
+                            ? ReportType.Internet
+                            : ReportType.Shop
+                        }
+                        onChange={e => {
+                          const hasWebsite = e === ReportType.Both ? undefined : e === ReportType.Internet
+                          _reports.updateFilters(prev => ({...prev, hasWebsite}))
+                        }}
+                      >
+                        {(value, onChange) => (
+                          <ScSelect
+                            value={value}
+                            variant="outlined"
+                            onChange={x => {
+                              onChange(x.target.value as ReportType)
+                            }}
+                            id="select-report-type-pro"
+                            sx={{mr: 1}}
+                            label={m.reportType}
+                            fullWidth
+                          >
+                            {Enum.values(ReportType).map(type => (
+                              <MenuItem key={type} value={type}>
+                                {m.ReportTypeDesc[type]}
+                              </MenuItem>
+                            ))}
+                          </ScSelect>
+                        )}
+                      </DebouncedInput>
+                    </Grid>
+                    <Grid item sm={6} xs={12}>
                       <DebouncedInput
                         value={_reports.filters.status?.[0] ? Report.getStatusProByStatus(_reports.filters.status[0]) : ''}
                         onChange={e => {
@@ -237,6 +270,7 @@ export const ReportsPro = () => {
                       </DebouncedInput>
                     </Grid>
                   </Grid>
+
                   <DebouncedInput<[Date | undefined, Date | undefined]>
                     value={[_reports.filters.start, _reports.filters.end]}
                     onChange={([start, end]) => _reports.updateFilters(prev => ({...prev, start, end}))}

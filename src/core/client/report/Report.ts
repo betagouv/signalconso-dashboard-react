@@ -62,6 +62,12 @@ export interface Action {
   answer: string
 }
 
+export enum ReportType {
+  Shop = 'Shop',
+  Internet = 'Internet',
+  Both = 'Both',
+}
+
 export enum ReportTag {
   LitigeContractuel = 'LitigeContractuel',
   Hygiene = 'Hygiene',
