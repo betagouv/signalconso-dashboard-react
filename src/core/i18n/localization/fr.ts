@@ -147,9 +147,7 @@ export const fr = {
     unknown: 'Inconnu',
     new: 'New',
     start: 'Début',
-    startUp: 'Démarrer',
-    inProgress: 'En cours...',
-    cancelAll: `Tout annuler`,
+
     clear: 'Clear',
     cron: 'Cron',
     removeAsk: 'Supprimer ? ',
@@ -393,8 +391,6 @@ export const fr = {
     addProAttachmentFile: "Ajouter une pièces jointe fournie par l'entreprise",
     addAttachmentFile: 'Ajouter une pièces jointe',
     attachedFiles: 'Pièces jointes',
-    database: `Base de données`,
-    beginning: `Début`,
     reportsDistribution: `Répartition des signalements par départements`,
     reportsDistributionDesc: `Classement des signalements par départements (N/A correspond aux signalements dont les départements non renseignés).`,
     invalidSize: (maxSize: number) => `La taille du fichier dépasse les ${maxSize} Mb`,
@@ -487,14 +483,6 @@ export const fr = {
     emailValidatedDesc: `Vous pouvez vous connecter à l'aide de votre adresse email et mot de passe.`,
     validateLetterSentTitle: "Valider l'envoi des courriers",
     sendNewPostal: `Envoyer un nouveau courrier`,
-    companiesDbSyncInfo: `
-    Le fichier <b>StockEtablissement</b> doit être, de préférence, lancé en premier. 
-    <br/>
-    Le fichier <b>StockUniteLegale</b> permet d'obtenir le nom de l'établissement lorsqu'il est absent du fichier <b>StockEtablissement</b>.
-    <br/>
-    <br/>
-    La synchronisation peut être lancée et annulée à tout moment sans risque.
-  `,
     loginForbidden: `Compte bloqué (trop de tentatives, veuillez réessayer dans 30 minutes)`,
     loginLocked: `Votre adresse email doit être validée, un e-mail vient de vous être envoyé avec un lien à cet effet.`,
     loginFailed: `Échec de l'authentification`,

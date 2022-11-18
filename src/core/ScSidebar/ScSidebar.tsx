@@ -108,11 +108,6 @@ export const ScSidebar = ({connectedUser, logout}: {connectedUser: UserWithPermi
           {m.menu_admin}
         </SidebarItem>
       )}
-      {[Roles.Admin].includes(connectedUser.role) && (
-        <SidebarItem onClick={closeSidebarIfNotPinned} to={path(siteMap.logged.companiesDbSync)} icon="sync">
-          {m.database}
-        </SidebarItem>
-      )}
       <SidebarHr margin />
       <SidebarItem onClick={closeSidebarIfNotPinned} to={path(siteMap.logged.settings)} icon="settings">
         {m.menu_settings}
