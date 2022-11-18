@@ -14,19 +14,19 @@ interface ReportStatusProLabelProps extends Omit<LabelProps, 'children'> {
 export const reportStatusColor = {
   [ReportStatus.NA]: '#a1a1a1',
   [ReportStatus.LanceurAlerte]: '#a1a1a1',
-  [ReportStatus.TraitementEnCours]: '#f57c00',
-  [ReportStatus.Transmis]: '#f57c00',
-  [ReportStatus.NonConsulte]: '#03a9f4',
-  [ReportStatus.MalAttribue]: '#03a9f4',
+  [ReportStatus.TraitementEnCours]: '#e67e00',
+  [ReportStatus.Transmis]: '#e67e00',
+  [ReportStatus.NonConsulte]: '#3582A3FF',
+  [ReportStatus.MalAttribue]: '#3582A3FF',
   [ReportStatus.PromesseAction]: '#4caf50',
   [ReportStatus.Infonde]: '#4caf50',
-  [ReportStatus.ConsulteIgnore]: '#d32f2f',
+  [ReportStatus.ConsulteIgnore]: '#8B0000',
 }
 
 export const reportStatusProColor = {
-  [ReportStatusPro.ARepondre]: '#f57c00',
-  [ReportStatusPro.NonConsulte]: '#d32f2f',
-  [ReportStatusPro.Cloture]: '#03a9f4',
+  [ReportStatusPro.ARepondre]: '#e67e00',
+  [ReportStatusPro.NonConsulte]: '#8B0000',
+  [ReportStatusPro.Cloture]: '#3582A3FF',
 }
 
 const statusInvisibleToPro = [ReportStatus.NA, ReportStatus.LanceurAlerte]

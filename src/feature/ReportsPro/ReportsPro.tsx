@@ -386,8 +386,8 @@ export const ReportsPro = () => {
                           id: 'expirationDate',
                           head: m.expireOn,
                           render: _ =>
-                            expiresSoon(_.report.expirationDate) ? (
-                              <Label dense style={{color: 'white', background: 'red'}}>
+                            expiresSoon(_.report.expirationDate) && !Report.isClosed(_.report.status) ? (
+                              <Label dense style={{color: 'white', background: 'darkred'}}>
                                 {m.warnExpireOn(formatDate(_.report.expirationDate))}
                               </Label>
                             ) : hasExpired(_.report.expirationDate) ? (
