@@ -1,0 +1,1 @@
+Header add Content-Security-Policy "default-src 'self'; report-uri /csp-violation-report-endpoint/"
