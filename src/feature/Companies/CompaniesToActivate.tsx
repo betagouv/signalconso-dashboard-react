@@ -95,7 +95,7 @@ export const CompaniesToActivate = () => {
                     _companies.downloadActivationDocument.fetch({}, selectedCompaniesSet.toArray()).catch(toastError)
                   }
                 >
-                  {m.download}
+                  {m.downloadNotice}
                 </ScButton>
                 <ScDialog title={m.validateLetterSentTitle} content={m.validateLetterSentDesc} onConfirm={confirmCompaniesPosted}>
                   <ScButton
@@ -106,7 +106,7 @@ export const CompaniesToActivate = () => {
                     variant="contained"
                     icon="check_circle"
                   >
-                    {m.validateLetterSent}
+                    {m.markNoticesSent}
                   </ScButton>
                 </ScDialog>
               </>
