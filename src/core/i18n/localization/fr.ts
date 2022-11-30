@@ -452,6 +452,8 @@ export const fr = {
     accountActivated: 'Compte activé',
     accountsActivated: `Comptes activés`,
     companiesToActivate: "En attente d'activation",
+    companiesToActivateDesc: "Cette page liste les entreprises auquel il faudrait envoyer un courrier d'activation.",
+    companiesToActivateDescDetail: "Il peut s'agir de leur premier courrier, ou d'un courrier de relance.",
     activationFailed: "Erreur inattendue , impossible d'activer le compte. Merci de bien vouloir réessayer ultérieurement.",
     companiesActivated: 'Entreprises identifiées',
     noCompanyFound: 'Aucune entreprise trouvée',
