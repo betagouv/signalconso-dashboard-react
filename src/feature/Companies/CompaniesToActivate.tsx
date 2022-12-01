@@ -1,11 +1,11 @@
 import {useI18n} from '../../core/i18n'
-import {Panel} from '../../shared/Panel'
+import {Panel, PanelHead} from '../../shared/Panel'
 import {Datatable} from '../../shared/Datatable/Datatable'
 import React, {SyntheticEvent, useEffect} from 'react'
 import {useCompaniesContext} from '../../core/context/CompaniesContext'
 import {Box, Checkbox, Icon, Tooltip} from '@mui/material'
 import {styleUtils, sxUtils} from '../../core/theme'
-import {Fender, IconBtn} from '../../alexlibs/mui-extension'
+import {Alert, Fender, IconBtn, PanelBody} from '../../alexlibs/mui-extension'
 import {Link} from 'react-router-dom'
 import {siteMap} from '../../core/siteMap'
 import {usePersistentState} from '../../alexlibs/react-persistent-state'
@@ -68,6 +68,14 @@ export const CompaniesToActivate = () => {
 
   return (
     <Panel sx={{overflow: 'visible'}}>
+      <Box sx={{p: 2}}>
+        <Txt color="default">
+          {m.companiesToActivateDesc}{' '}
+          <Txt color="hint" italic>
+            {m.companiesToActivateDescDetail}
+          </Txt>
+        </Txt>
+      </Box>
       <Datatable
         id="companiestoactivate"
         header={
@@ -87,7 +95,7 @@ export const CompaniesToActivate = () => {
                     _companies.downloadActivationDocument.fetch({}, selectedCompaniesSet.toArray()).catch(toastError)
                   }
                 >
-                  {m.download}
+                  {m.downloadNotice}
                 </ScButton>
                 <ScDialog title={m.validateLetterSentTitle} content={m.validateLetterSentDesc} onConfirm={confirmCompaniesPosted}>
                   <ScButton
@@ -98,7 +106,7 @@ export const CompaniesToActivate = () => {
                     variant="contained"
                     icon="check_circle"
                   >
-                    {m.validateLetterSent}
+                    {m.markNoticesSent}
                   </ScButton>
                 </ScDialog>
               </>
