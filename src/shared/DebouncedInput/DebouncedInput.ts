@@ -12,7 +12,8 @@ const debounceTime = 450
 // FIXME(Alex) Trigger only one onChange but 2 API calls.
 export const DebouncedInput = <V>({value, onChange, children}: DebouncedInputProps<V>) => {
   const [innerValue, setInnerValue] = useState<V | undefined>(value)
-  const debounced = useCallback(debounce(onChange, debounceTime), [onChange])
+
+  const debounced = useCallback(debounce(onChange, debounceTime), [onChange, debounceTime])
 
   useEffect(() => {
     setInnerValue(value)
