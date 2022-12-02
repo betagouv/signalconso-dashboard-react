@@ -36,7 +36,6 @@ export const ReportedUnknownWebsites = () => {
         header={
           <>
             <DebouncedInput
-              debounce={400}
               value={_fetch.filters.q ?? ''}
               onChange={q => _fetch.updateFilters(prev => ({...prev, q: q}))}
             >
