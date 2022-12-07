@@ -28,16 +28,14 @@ export interface CompaniesContextProps {
   responseRate: UseFetcher<Sdk['getResponseRate'], ApiError>
 }
 
-interface Props {
+const CompaniesContext = React.createContext<CompaniesContextProps>(null as any as CompaniesContextProps)
+
+interface ProviderProps {
   children: ReactNode
   api: SignalConsoApiSdk
 }
 
-const defaultContext: Partial<CompaniesContextProps> = {}
-
-const CompaniesContext = React.createContext<CompaniesContextProps>(defaultContext as CompaniesContextProps)
-
-export const CompaniesProvider = ({api, children}: Props) => {
+export const CompaniesProvider = ({api, children}: ProviderProps) => {
   const activated = useScPaginate<CompanyWithReportsCount, CompanySearch>(api.secured.company.search, {
     limit: 10,
     offset: 0,

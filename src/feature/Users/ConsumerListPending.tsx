@@ -1,7 +1,7 @@
 import {Panel} from '../../shared/Panel'
 import {Datatable} from '../../shared/Datatable/Datatable'
 import {useI18n} from '../../core/i18n'
-import React, {useEffect} from 'react'
+import React, {useCallback, useEffect} from 'react'
 import {Box, Icon, InputBase, Tooltip} from '@mui/material'
 import {Txt} from '../../alexlibs/mui-extension'
 import {useToast} from '../../core/toast'
@@ -25,16 +25,21 @@ export const ConsumerListPending = () => {
 
   useEffectFn(_users.error, toastError)
 
+  const onEmailChange = useCallback((email: string) => {
+    _users.updateFilters(prev => ({...prev, email}))
+    // TRELLO-1391 The object _users change all the time.
+    // If we put it in dependencies, it causes problems with the debounce,
+    // and the search input "stutters" when typing fast
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
   return (
     <Panel>
       <Datatable
         id="userslist"
         header={
           <>
-            <DebouncedInput
-              value={_users.filters.email ?? ''}
-              onChange={email => _users.updateFilters(prev => ({...prev, email}))}
-            >
+            <DebouncedInput value={_users.filters.email ?? ''} onChange={onEmailChange}>
               {(value, onChange) => (
                 <InputBase
                   value={value}

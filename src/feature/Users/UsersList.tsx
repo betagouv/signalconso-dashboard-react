@@ -1,5 +1,5 @@
 import {Icon, InputBase, Tooltip} from '@mui/material'
-import {useEffect} from 'react'
+import {useCallback, useEffect} from 'react'
 import {Btn, Txt} from '../../alexlibs/mui-extension'
 import {useUsersContext} from '../../core/context/UsersContext'
 import {useI18n} from '../../core/i18n'
@@ -109,6 +109,14 @@ const UsersList = ({role}: Props) => {
     },
   ]
 
+  const onEmailChange = useCallback((email: string) => {
+    _users.updateFilters(prev => ({...prev, email}))
+    // TRELLO-1391 The object _users change all the time.
+    // If we put it in dependencies, it causes problems with the debounce,
+    // and the search input "stutters" when typing fast
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
   return (
     <>
       <Panel elevation={3}>
@@ -119,10 +127,7 @@ const UsersList = ({role}: Props) => {
           id="userslist"
           header={
             <>
-              <DebouncedInput
-                value={_users.filters.email ?? ''}
-                onChange={email => _users.updateFilters(prev => ({...prev, email}))}
-              >
+              <DebouncedInput value={_users.filters.email ?? ''} onChange={onEmailChange}>
                 {(value, onChange) => (
                   <InputBase
                     value={value}

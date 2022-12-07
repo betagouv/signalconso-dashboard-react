@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react'
+import React, {useCallback, useEffect} from 'react'
 import {Page, PageTitle} from '../../shared/Layout'
 import {useReportedPhonesContext} from '../../core/context/ReportedPhonesContext'
 import {useI18n} from '../../core/i18n'
@@ -31,6 +31,14 @@ export const ReportedPhones = () => {
     ScOption.from(_reportedPhone.error).map(toastError)
   }, [_reportedPhone.error])
 
+  const onPhoneChange = useCallback((phone: string) => {
+    _reportedPhone.updateFilters(prev => ({...prev, phone}))
+    // TRELLO-1391 The object _reportedPhone changes all the time.
+    // If we put it in dependencies, it causes problems with the debounce,
+    // and the search input "stutters" when typing fast
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
   return (
     <Page>
       <PageTitle>{m.reportedPhoneTitle}</PageTitle>
@@ -40,10 +48,7 @@ export const ReportedPhones = () => {
           showColumnsToggle
           header={
             <>
-              <DebouncedInput
-                value={_reportedPhone.filters.phone ?? ''}
-                onChange={phone => _reportedPhone.updateFilters(prev => ({...prev, phone}))}
-              >
+              <DebouncedInput value={_reportedPhone.filters.phone ?? ''} onChange={onPhoneChange}>
                 {(value, onChange) => (
                   <ScInput
                     style={{minWidth: 120}}
