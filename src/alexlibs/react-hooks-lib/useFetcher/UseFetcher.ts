@@ -4,8 +4,10 @@ import {Dispatch, SetStateAction, useRef, useState} from 'react'
 // a function with any arguments, returning R
 export type Func<R = any> = (...args: any[]) => R
 
-export interface FetchParams {
+export interface FetchOptions {
+  // force to fetch, even if we stored a previous result
   force?: boolean
+  // cleans the cache of the last result
   clean?: boolean
 }
 
@@ -22,7 +24,7 @@ type ThenReturnTypeOf<F extends Func> = ThenContentOf<ReturnType<F>>
 // with just one extra parameter at the start :
 // a "options" object with the {force, clean} settings.
 export type Fetch<F extends Func<Promise<ThenReturnTypeOf<F>>>> = (
-  options?: {force?: boolean; clean?: boolean},
+  options?: FetchOptions,
   ...args: Parameters<F>
 ) => ReturnType<F>
 
@@ -37,9 +39,14 @@ export type Fetcher<F extends Func<Promise<ThenReturnTypeOf<F>>>, E = ApiError> 
   clearCache: () => void
 }
 
-// Factorize fetching logic which goal is to prevent unneeded fetchs and expose loading indicator + error status.
+// Wraps a function which fetchs some data
+// Avoids performing the fetch if there's already a cached result
+// Add a loading indicator
+// Add additional ways to manipulated the cached result
+// Note : the "fetch" function that's returned will expect an extra parameter
+// at the start : the {force, clean} options.
 export const useFetcher = <F extends Func<Promise<any>>, E = any>(
-  fetchingFunction: F,
+  rawFetchingFunction: F,
   // These two last parameters seem unused ?
   initialValue?: ThenReturnTypeOf<F>,
   mapError: (_: any) => E = _ => _,
@@ -49,7 +56,9 @@ export const useFetcher = <F extends Func<Promise<any>>, E = any>(
   const [loading, setLoading] = useState<boolean>(false)
   const promiseRef = useRef<Promise<ThenReturnTypeOf<F>>>()
 
-  const fetch = ({force = true, clean = true}: FetchParams = {}, ...args: any[]): Promise<ThenReturnTypeOf<F>> => {
+  // This should be a Fetch<F>, but it doesn't compile, not sure why
+  const fetch = (fetchOptions: FetchOptions = {}, ...args: any[]): Promise<ThenReturnTypeOf<F>> => {
+    const {force, clean} = fetchOptions
     if (!force) {
       if (promiseRef.current) {
         return promiseRef.current!
@@ -63,7 +72,7 @@ export const useFetcher = <F extends Func<Promise<any>>, E = any>(
       setEntity(undefined)
     }
     setLoading(true)
-    promiseRef.current = fetchingFunction(...args)
+    promiseRef.current = rawFetchingFunction(...args)
     promiseRef.current
       .then((x: ThenReturnTypeOf<F>) => {
         setLoading(false)
