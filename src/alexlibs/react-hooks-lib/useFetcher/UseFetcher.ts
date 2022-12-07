@@ -1,8 +1,9 @@
 import {Dispatch, SetStateAction, useRef, useState} from 'react'
 
+// a function with any arguments, returning R
 export type Func<R = any> = (...args: any[]) => R
 
-export type Fetch<T extends Func<Promise<FetcherResult<T>>>> = (
+export type Fetch<T extends Func<Promise<ThenReturnTypeOf<T>>>> = (
   p?: {force?: boolean; clean?: boolean},
   ..._: Parameters<T>
 ) => ReturnType<T>
@@ -12,16 +13,20 @@ export interface FetchParams {
   clean?: boolean
 }
 
-type ThenArg<T> = T extends PromiseLike<infer U> ? U : T
+// If the type T is a promise, returns the type of the promise content
+// Otherwise returns the type T itself
+type ThenContentOf<T> = T extends Promise<infer U> ? U : T
 
-type FetcherResult<T extends Func> = ThenArg<ReturnType<T>>
+// Given of type of function F, returns the return type of this promise
+// But if the return type is a promise, returns the type of the promise content
+type ThenReturnTypeOf<F extends Func> = ThenContentOf<ReturnType<F>>
 
-export type UseFetcher<F extends Func<Promise<FetcherResult<F>>>, E = any> = {
-  entity?: FetcherResult<F>
+export type UseFetcher<F extends Func<Promise<ThenReturnTypeOf<F>>>, E = any> = {
+  entity?: ThenReturnTypeOf<F>
   loading: boolean
   error?: E
   fetch: Fetch<F>
-  setEntity: Dispatch<SetStateAction<FetcherResult<F> | undefined>>
+  setEntity: Dispatch<SetStateAction<ThenReturnTypeOf<F> | undefined>>
   clearCache: () => void
 }
 
@@ -30,15 +35,15 @@ export type UseFetcher<F extends Func<Promise<FetcherResult<F>>>, E = any> = {
  */
 export const useFetcher = <F extends Func<Promise<any>>, E = any>(
   fetcher: F,
-  initialValue?: FetcherResult<F>,
+  initialValue?: ThenReturnTypeOf<F>,
   mapError: (_: any) => E = _ => _,
 ): UseFetcher<F, E> => {
-  const [entity, setEntity] = useState<FetcherResult<F> | undefined>(initialValue)
+  const [entity, setEntity] = useState<ThenReturnTypeOf<F> | undefined>(initialValue)
   const [error, setError] = useState<E | undefined>()
   const [loading, setLoading] = useState<boolean>(false)
-  const fetch$ = useRef<Promise<FetcherResult<F>>>()
+  const fetch$ = useRef<Promise<ThenReturnTypeOf<F>>>()
 
-  const fetch = ({force = true, clean = true}: FetchParams = {}, ...args: any[]): Promise<FetcherResult<F>> => {
+  const fetch = ({force = true, clean = true}: FetchParams = {}, ...args: any[]): Promise<ThenReturnTypeOf<F>> => {
     if (!force) {
       if (fetch$.current) {
         return fetch$.current!
@@ -54,7 +59,7 @@ export const useFetcher = <F extends Func<Promise<any>>, E = any>(
     setLoading(true)
     fetch$.current = fetcher(...args)
     fetch$.current
-      .then((x: FetcherResult<F>) => {
+      .then((x: ThenReturnTypeOf<F>) => {
         setLoading(false)
         setEntity(x)
         fetch$.current = undefined
