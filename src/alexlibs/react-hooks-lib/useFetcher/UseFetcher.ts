@@ -1,12 +1,8 @@
+import {ApiError} from 'core/client/ApiClient'
 import {Dispatch, SetStateAction, useRef, useState} from 'react'
 
 // a function with any arguments, returning R
 export type Func<R = any> = (...args: any[]) => R
-
-export type Fetch<T extends Func<Promise<ThenReturnTypeOf<T>>>> = (
-  p?: {force?: boolean; clean?: boolean},
-  ..._: Parameters<T>
-) => ReturnType<T>
 
 export interface FetchParams {
   force?: boolean
@@ -21,7 +17,18 @@ type ThenContentOf<T> = T extends Promise<infer U> ? U : T
 // But if the return type is a promise, returns the type of the promise content
 type ThenReturnTypeOf<F extends Func> = ThenContentOf<ReturnType<F>>
 
-export type UseFetcher<F extends Func<Promise<ThenReturnTypeOf<F>>>, E = any> = {
+// Given a function of type F
+// This type Fetch<F> describes a function wrapping the original function
+// with just one extra parameter at the start :
+// a "settings" object with the {force, clean} settings.
+export type Fetch<F extends Func<Promise<ThenReturnTypeOf<F>>>> = (
+  p?: {force?: boolean; clean?: boolean},
+  ..._: Parameters<F>
+) => ReturnType<F>
+
+// F est le type de la fonction qui fetch (sa définition est récursive, je pense que c'est simplifiable)
+// E est le type d'erreur, c'est tout le temps ApiError donc il devrait être supprimé
+export type UseFetcher<F extends Func<Promise<ThenReturnTypeOf<F>>>, E = ApiError> = {
   entity?: ThenReturnTypeOf<F>
   loading: boolean
   error?: E
