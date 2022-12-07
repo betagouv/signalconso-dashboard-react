@@ -1,12 +1,12 @@
 import * as React from 'react'
 import {ReactNode, useContext} from 'react'
-import {UseFetcher, useFetcher, UsePaginate} from '../../alexlibs/react-hooks-lib'
+import {Fetcher, useFetcher, UsePaginate} from '../../alexlibs/react-hooks-lib'
 import {SignalConsoApiSdk} from '../ApiSdkInstance'
 import {useScPaginate} from '../../shared/usePaginate/usePaginate'
 import {ApiHostWithReportCount, HostReportCountSearch} from '../client/website/Website'
 
 export interface UnregistredWebsiteWithCompanyContextProps extends UsePaginate<ApiHostWithReportCount, HostReportCountSearch> {
-  extractUnregistered: UseFetcher<() => Promise<void>>
+  extractUnregistered: Fetcher<() => Promise<void>>
 }
 
 interface Props {

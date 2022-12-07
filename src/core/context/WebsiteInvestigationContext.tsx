@@ -1,14 +1,14 @@
 import * as React from 'react'
 import {ReactNode, useContext} from 'react'
 import {SignalConsoApiSdk} from '../ApiSdkInstance'
-import {useFetcher, UseFetcher} from '../../alexlibs/react-hooks-lib'
+import {useFetcher, Fetcher} from '../../alexlibs/react-hooks-lib'
 import {ApiError} from '../client/ApiClient'
 
 export interface WebsiteInvestigationContextProps {
-  listDepartmentDivision: UseFetcher<SignalConsoApiSdk['secured']['website']['listDepartmentDivision'], ApiError>
-  listPractice: UseFetcher<SignalConsoApiSdk['secured']['website']['listPractice'], ApiError>
-  listInvestigationStatus: UseFetcher<SignalConsoApiSdk['secured']['website']['listInvestigationStatus'], ApiError>
-  createOrUpdateInvestigation: UseFetcher<SignalConsoApiSdk['secured']['website']['createOrUpdateInvestigation'], ApiError>
+  listDepartmentDivision: Fetcher<SignalConsoApiSdk['secured']['website']['listDepartmentDivision'], ApiError>
+  listPractice: Fetcher<SignalConsoApiSdk['secured']['website']['listPractice'], ApiError>
+  listInvestigationStatus: Fetcher<SignalConsoApiSdk['secured']['website']['listInvestigationStatus'], ApiError>
+  createOrUpdateInvestigation: Fetcher<SignalConsoApiSdk['secured']['website']['createOrUpdateInvestigation'], ApiError>
 }
 
 interface Props {

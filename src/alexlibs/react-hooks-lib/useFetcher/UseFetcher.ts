@@ -20,15 +20,15 @@ type ThenReturnTypeOf<F extends Func> = ThenContentOf<ReturnType<F>>
 // Given a function of type F
 // This type Fetch<F> describes a function wrapping the original function
 // with just one extra parameter at the start :
-// a "settings" object with the {force, clean} settings.
+// a "options" object with the {force, clean} settings.
 export type Fetch<F extends Func<Promise<ThenReturnTypeOf<F>>>> = (
-  p?: {force?: boolean; clean?: boolean},
-  ..._: Parameters<F>
+  options?: {force?: boolean; clean?: boolean},
+  ...args: Parameters<F>
 ) => ReturnType<F>
 
 // F est le type de la fonction qui fetch (sa définition est récursive, je pense que c'est simplifiable)
 // E est le type d'erreur, c'est tout le temps ApiError donc il devrait être supprimé
-export type UseFetcher<F extends Func<Promise<ThenReturnTypeOf<F>>>, E = ApiError> = {
+export type Fetcher<F extends Func<Promise<ThenReturnTypeOf<F>>>, E = ApiError> = {
   entity?: ThenReturnTypeOf<F>
   loading: boolean
   error?: E
@@ -37,23 +37,22 @@ export type UseFetcher<F extends Func<Promise<ThenReturnTypeOf<F>>>, E = ApiErro
   clearCache: () => void
 }
 
-/**
- * Factorize fetching logic which goal is to prevent unneeded fetchs and expose loading indicator + error status.
- */
+// Factorize fetching logic which goal is to prevent unneeded fetchs and expose loading indicator + error status.
 export const useFetcher = <F extends Func<Promise<any>>, E = any>(
-  fetcher: F,
+  fetchingFunction: F,
+  // These two last parameters seem unused ?
   initialValue?: ThenReturnTypeOf<F>,
   mapError: (_: any) => E = _ => _,
-): UseFetcher<F, E> => {
+): Fetcher<F, E> => {
   const [entity, setEntity] = useState<ThenReturnTypeOf<F> | undefined>(initialValue)
   const [error, setError] = useState<E | undefined>()
   const [loading, setLoading] = useState<boolean>(false)
-  const fetch$ = useRef<Promise<ThenReturnTypeOf<F>>>()
+  const promiseRef = useRef<Promise<ThenReturnTypeOf<F>>>()
 
   const fetch = ({force = true, clean = true}: FetchParams = {}, ...args: any[]): Promise<ThenReturnTypeOf<F>> => {
     if (!force) {
-      if (fetch$.current) {
-        return fetch$.current!
+      if (promiseRef.current) {
+        return promiseRef.current!
       }
       if (entity) {
         return Promise.resolve(entity)
@@ -64,28 +63,28 @@ export const useFetcher = <F extends Func<Promise<any>>, E = any>(
       setEntity(undefined)
     }
     setLoading(true)
-    fetch$.current = fetcher(...args)
-    fetch$.current
+    promiseRef.current = fetchingFunction(...args)
+    promiseRef.current
       .then((x: ThenReturnTypeOf<F>) => {
         setLoading(false)
         setEntity(x)
-        fetch$.current = undefined
+        promiseRef.current = undefined
       })
       .catch(e => {
         setLoading(false)
-        fetch$.current = undefined
+        promiseRef.current = undefined
         setError(mapError(e))
         setEntity(undefined)
         // return Promise.reject(e)
         throw e
       })
-    return fetch$.current
+    return promiseRef.current
   }
 
   const clearCache = () => {
     setEntity(undefined)
     setError(undefined)
-    fetch$.current = undefined
+    promiseRef.current = undefined
   }
 
   return {
