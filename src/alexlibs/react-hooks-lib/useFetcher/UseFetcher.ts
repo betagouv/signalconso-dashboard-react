@@ -1,47 +1,64 @@
+import {ApiError} from 'core/client/ApiClient'
 import {Dispatch, SetStateAction, useRef, useState} from 'react'
 
+// a function with any arguments, returning R
 export type Func<R = any> = (...args: any[]) => R
 
-export type Fetch<T extends Func<Promise<FetcherResult<T>>>> = (
-  p?: {force?: boolean; clean?: boolean},
-  ..._: Parameters<T>
-) => ReturnType<T>
-
-export interface FetchParams {
+export interface FetchOptions {
+  // force to fetch, even if we stored a previous result
   force?: boolean
+  // cleans the cache of the last result
   clean?: boolean
 }
 
-type ThenArg<T> = T extends PromiseLike<infer U> ? U : T
+// If the type T is a promise, returns the type of the promise content
+// Otherwise returns the type T itself
+type ThenContentOf<T> = T extends Promise<infer U> ? U : T
 
-type FetcherResult<T extends Func> = ThenArg<ReturnType<T>>
+// Given of type of function F, returns the return type of this promise
+// But if the return type is a promise, returns the type of the promise content
+type ThenReturnTypeOf<F extends Func> = ThenContentOf<ReturnType<F>>
 
-export type UseFetcher<F extends Func<Promise<FetcherResult<F>>>, E = any> = {
-  entity?: FetcherResult<F>
+// Given a function of type F
+// This type Fetch<F> describes a function wrapping the original function
+// with just one extra parameter at the start :
+// a "options" object with the {force, clean} settings.
+export type Fetch<F extends Func<Promise<unknown>>> = (options?: FetchOptions, ...args: Parameters<F>) => ReturnType<F>
+
+// F est le type de la fonction qui fetch
+// E est le type d'erreur, c'est tout le temps ApiError donc il devrait être supprimé
+export type Fetcher<F extends Func<Promise<unknown>>, E = ApiError> = {
+  entity?: ThenReturnTypeOf<F>
   loading: boolean
   error?: E
   fetch: Fetch<F>
-  setEntity: Dispatch<SetStateAction<FetcherResult<F> | undefined>>
+  setEntity: Dispatch<SetStateAction<ThenReturnTypeOf<F> | undefined>>
   clearCache: () => void
 }
 
-/**
- * Factorize fetching logic which goal is to prevent unneeded fetchs and expose loading indicator + error status.
- */
+// Wraps a function which fetchs some data
+// Avoids performing the fetch if there's already a cached result
+// Add a loading indicator
+// Add additional ways to manipulated the cached result
+// Note : the "fetch" function that's returned will expect an extra parameter
+// at the start : the {force, clean} options.
 export const useFetcher = <F extends Func<Promise<any>>, E = any>(
-  fetcher: F,
-  initialValue?: FetcherResult<F>,
+  rawFetchingFunction: F,
+  // These two last parameters seem unused ?
+  initialValue?: ThenReturnTypeOf<F>,
   mapError: (_: any) => E = _ => _,
-): UseFetcher<F, E> => {
-  const [entity, setEntity] = useState<FetcherResult<F> | undefined>(initialValue)
+): Fetcher<F, E> => {
+  const [entity, setEntity] = useState<ThenReturnTypeOf<F> | undefined>(initialValue)
   const [error, setError] = useState<E | undefined>()
   const [loading, setLoading] = useState<boolean>(false)
-  const fetch$ = useRef<Promise<FetcherResult<F>>>()
+  const promiseRef = useRef<Promise<ThenReturnTypeOf<F>>>()
 
-  const fetch = ({force = true, clean = true}: FetchParams = {}, ...args: any[]): Promise<FetcherResult<F>> => {
+  // This should be a Fetch<F>, but it doesn't compile, not sure why
+  const fetch = (fetchOptions: FetchOptions = {}, ...args: any[]): Promise<ThenReturnTypeOf<F>> => {
+    const {force, clean} = fetchOptions
     if (!force) {
-      if (fetch$.current) {
-        return fetch$.current!
+      if (promiseRef.current) {
+        return promiseRef.current!
       }
       if (entity) {
         return Promise.resolve(entity)
@@ -52,28 +69,28 @@ export const useFetcher = <F extends Func<Promise<any>>, E = any>(
       setEntity(undefined)
     }
     setLoading(true)
-    fetch$.current = fetcher(...args)
-    fetch$.current
-      .then((x: FetcherResult<F>) => {
+    promiseRef.current = rawFetchingFunction(...args)
+    promiseRef.current
+      .then((x: ThenReturnTypeOf<F>) => {
         setLoading(false)
         setEntity(x)
-        fetch$.current = undefined
+        promiseRef.current = undefined
       })
       .catch(e => {
         setLoading(false)
-        fetch$.current = undefined
+        promiseRef.current = undefined
         setError(mapError(e))
         setEntity(undefined)
         // return Promise.reject(e)
         throw e
       })
-    return fetch$.current
+    return promiseRef.current
   }
 
   const clearCache = () => {
     setEntity(undefined)
     setError(undefined)
-    fetch$.current = undefined
+    promiseRef.current = undefined
   }
 
   return {

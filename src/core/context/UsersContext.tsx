@@ -1,6 +1,6 @@
 import * as React from 'react'
 import {ReactNode, useContext} from 'react'
-import {UseFetcher, useFetcher, UsePaginate} from '../../alexlibs/react-hooks-lib'
+import {Fetcher, useFetcher, UsePaginate} from '../../alexlibs/react-hooks-lib'
 import {SignalConsoApiSdk} from '../ApiSdkInstance'
 import {useScPaginate} from '../../shared/usePaginate/usePaginate'
 import {ApiError} from '../client/ApiClient'
@@ -9,15 +9,15 @@ import {User, UserSearch} from '../client/user/User'
 export interface UsersContextProps {
   searchAdmin: UsePaginate<User, UserSearch>
   searchDgccrf: UsePaginate<User, UserSearch>
-  dgccrfPending: UseFetcher<SignalConsoApiSdk['secured']['user']['fetchPendingDGCCRF'], ApiError>
-  inviteDgccrf: UseFetcher<SignalConsoApiSdk['secured']['user']['inviteDGCCRF'], ApiError>
-  inviteAdmin: UseFetcher<SignalConsoApiSdk['secured']['user']['inviteAdmin'], ApiError>
-  changePassword: UseFetcher<SignalConsoApiSdk['secured']['user']['changePassword'], ApiError>
-  activate: UseFetcher<SignalConsoApiSdk['public']['user']['activateAccount'], ApiError>
-  fetchTokenInfo: UseFetcher<SignalConsoApiSdk['public']['user']['fetchTokenInfo'], ApiError>
-  getConnectedUser: UseFetcher<SignalConsoApiSdk['secured']['user']['fetchConnectedUser']>
-  forceValidateEmail: UseFetcher<SignalConsoApiSdk['secured']['user']['forceValidateEmail']>
-  softDelete: UseFetcher<SignalConsoApiSdk['secured']['user']['softDelete']>
+  dgccrfPending: Fetcher<SignalConsoApiSdk['secured']['user']['fetchPendingDGCCRF'], ApiError>
+  inviteDgccrf: Fetcher<SignalConsoApiSdk['secured']['user']['inviteDGCCRF'], ApiError>
+  inviteAdmin: Fetcher<SignalConsoApiSdk['secured']['user']['inviteAdmin'], ApiError>
+  changePassword: Fetcher<SignalConsoApiSdk['secured']['user']['changePassword'], ApiError>
+  activate: Fetcher<SignalConsoApiSdk['public']['user']['activateAccount'], ApiError>
+  fetchTokenInfo: Fetcher<SignalConsoApiSdk['public']['user']['fetchTokenInfo'], ApiError>
+  getConnectedUser: Fetcher<SignalConsoApiSdk['secured']['user']['fetchConnectedUser']>
+  forceValidateEmail: Fetcher<SignalConsoApiSdk['secured']['user']['forceValidateEmail']>
+  softDelete: Fetcher<SignalConsoApiSdk['secured']['user']['softDelete']>
 }
 
 interface Props {
