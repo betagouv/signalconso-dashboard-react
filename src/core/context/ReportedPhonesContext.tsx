@@ -1,12 +1,12 @@
 import * as React from 'react'
 import {ReactNode, useContext} from 'react'
-import {UseFetcher, useFetcher, UsePaginate, usePaginate} from '../../alexlibs/react-hooks-lib'
+import {Fetcher, useFetcher, UsePaginate, usePaginate} from '../../alexlibs/react-hooks-lib'
 import {SignalConsoApiSdk} from '../ApiSdkInstance'
 import {ReportedPhone, ReportedPhoneSearch} from '../client/reported-phone/ReportedPhone'
 import {paginateData, sortData} from '../helper'
 
 export interface ReportedPhonesContextProps extends UsePaginate<ReportedPhone, ReportedPhoneSearch> {
-  extract: UseFetcher<() => Promise<void>>
+  extract: Fetcher<() => Promise<void>>
 }
 
 interface Props {

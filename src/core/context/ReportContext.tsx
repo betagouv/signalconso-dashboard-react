@@ -1,20 +1,20 @@
 import * as React from 'react'
 import {ReactNode, useContext} from 'react'
-import {UseFetcher, useFetcher} from '../../alexlibs/react-hooks-lib'
+import {Fetcher, useFetcher} from '../../alexlibs/react-hooks-lib'
 import {SignalConsoApiSdk} from '../ApiSdkInstance'
 import {Report, ReportConsumerUpdate} from '../client/report/Report'
 import {CompanySearchResult} from '../client/company/Company'
 import {ApiError} from '../client/ApiClient'
 
 export interface ReportContextProps {
-  get: UseFetcher<SignalConsoApiSdk['secured']['reports']['getById'], ApiError>
-  remove: UseFetcher<SignalConsoApiSdk['secured']['reports']['remove'], ApiError>
-  download: UseFetcher<SignalConsoApiSdk['secured']['reports']['download'], ApiError>
-  updateCompany: UseFetcher<SignalConsoApiSdk['secured']['reports']['updateReportCompany'], ApiError>
-  updateConsumer: UseFetcher<SignalConsoApiSdk['secured']['reports']['updateReportConsumer'], ApiError>
-  postAction: UseFetcher<SignalConsoApiSdk['secured']['reports']['postAction']>
-  postResponse: UseFetcher<SignalConsoApiSdk['secured']['reports']['postResponse']>
-  getReviewOnReportResponse: UseFetcher<SignalConsoApiSdk['secured']['reports']['getReviewOnReportResponse']>
+  get: Fetcher<SignalConsoApiSdk['secured']['reports']['getById'], ApiError>
+  remove: Fetcher<SignalConsoApiSdk['secured']['reports']['remove'], ApiError>
+  download: Fetcher<SignalConsoApiSdk['secured']['reports']['download'], ApiError>
+  updateCompany: Fetcher<SignalConsoApiSdk['secured']['reports']['updateReportCompany'], ApiError>
+  updateConsumer: Fetcher<SignalConsoApiSdk['secured']['reports']['updateReportConsumer'], ApiError>
+  postAction: Fetcher<SignalConsoApiSdk['secured']['reports']['postAction']>
+  postResponse: Fetcher<SignalConsoApiSdk['secured']['reports']['postResponse']>
+  getReviewOnReportResponse: Fetcher<SignalConsoApiSdk['secured']['reports']['getReviewOnReportResponse']>
 }
 
 interface Props {

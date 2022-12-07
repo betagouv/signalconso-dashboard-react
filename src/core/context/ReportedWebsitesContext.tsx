@@ -1,6 +1,6 @@
 import * as React from 'react'
 import {ReactNode, useContext} from 'react'
-import {UseFetcher, useFetcher, UsePaginate} from '../../alexlibs/react-hooks-lib'
+import {Fetcher, useFetcher, UsePaginate} from '../../alexlibs/react-hooks-lib'
 import {SignalConsoApiSdk} from '../ApiSdkInstance'
 import {useScPaginate} from '../../shared/usePaginate/usePaginate'
 import {IdentificationStatus, WebsiteWithCompany, WebsiteWithCompanySearch} from '../client/website/Website'
@@ -8,10 +8,10 @@ import {ApiError} from '../client/ApiClient'
 
 export interface ReportedWebsiteWithCompanyContextProps {
   getWebsiteWithCompany: UsePaginate<WebsiteWithCompany, WebsiteWithCompanySearch>
-  remove: UseFetcher<SignalConsoApiSdk['secured']['website']['remove'], ApiError>
-  update: UseFetcher<SignalConsoApiSdk['secured']['website']['updateStatus'], ApiError>
-  updateCompany: UseFetcher<SignalConsoApiSdk['secured']['website']['updateCompany'], ApiError>
-  updateCountry: UseFetcher<SignalConsoApiSdk['secured']['website']['updateCountry'], ApiError>
+  remove: Fetcher<SignalConsoApiSdk['secured']['website']['remove'], ApiError>
+  update: Fetcher<SignalConsoApiSdk['secured']['website']['updateStatus'], ApiError>
+  updateCompany: Fetcher<SignalConsoApiSdk['secured']['website']['updateCompany'], ApiError>
+  updateCountry: Fetcher<SignalConsoApiSdk['secured']['website']['updateCountry'], ApiError>
 }
 
 interface Props {
