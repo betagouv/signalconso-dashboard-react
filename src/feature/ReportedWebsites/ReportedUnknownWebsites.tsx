@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react'
+import React, {useCallback, useEffect} from 'react'
 import {useI18n} from '../../core/i18n'
 import {Icon, InputBase, Tooltip} from '@mui/material'
 import {Panel} from '../../shared/Panel'
@@ -29,16 +29,21 @@ export const ReportedUnknownWebsites = () => {
     ScOption.from(_fetch.error).map(toastError)
   }, [_fetch.error])
 
+  const onQueryChange = useCallback((query: string) => {
+    _fetch.updateFilters(prev => ({...prev, q: query}))
+    // TRELLO-1391 The object _fetch changes all the time.
+    // If we put it in dependencies, it causes problems with the debounce,
+    // and the search input "stutters" when typing fast
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
   return (
     <Panel>
       <Datatable
         id="reportedunknownwebsites"
         header={
           <>
-            <DebouncedInput
-              value={_fetch.filters.q ?? ''}
-              onChange={q => _fetch.updateFilters(prev => ({...prev, q: q}))}
-            >
+            <DebouncedInput value={_fetch.filters.q ?? ''} onChange={onQueryChange}>
               {(value, onChange) => (
                 <InputBase
                   value={value}
