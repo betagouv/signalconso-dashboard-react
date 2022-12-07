@@ -1,7 +1,7 @@
 import {useI18n} from '../../core/i18n'
 import {Panel} from '../../shared/Panel'
 import {Datatable} from '../../shared/Datatable/Datatable'
-import React, {useEffect, useMemo, useState} from 'react'
+import {useCallback, useEffect, useMemo, useState} from 'react'
 import {useCompaniesContext} from '../../core/context/CompaniesContext'
 import {Badge, Box, Icon, InputBase, ListItemIcon, ListItemText, MenuItem, Tooltip} from '@mui/material'
 import {NavLink} from 'react-router-dom'
@@ -73,15 +73,20 @@ export const CompaniesRegistered = () => {
     return _companies.list?.entities
   }, [_companies.list?.entities, sortByResponseRate])
 
+  const onInputChange = useCallback((value: string) => {
+    _companies.updateFilters(prev => ({...prev, identity: value}))
+    // TRELLO-1391 The object _companies change all the time.
+    // If we put it in dependencies, it causes problems with the debounce,
+    // and the search input "stutters" when typing fast
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
   return (
     <Panel>
       <Datatable
         id="companiesregistered"
         header={
-          <DebouncedInput
-            value={_companies.filters.identity ?? ''}
-            onChange={value => _companies.updateFilters(prev => ({...prev, identity: value}))}
-          >
+          <DebouncedInput value={_companies.filters.identity ?? ''} onChange={onInputChange}>
             {(value, onChange) => (
               <InputBase
                 value={value}

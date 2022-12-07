@@ -1,4 +1,4 @@
-import React, {useEffect, useMemo} from 'react'
+import React, {useCallback, useEffect, useMemo} from 'react'
 import {useI18n} from '../../core/i18n'
 import {Badge, Icon, InputBase, Switch, Tooltip} from '@mui/material'
 import {useToast} from '../../core/toast'
@@ -75,16 +75,21 @@ export const WebsitesInvestigation = () => {
     return Object.keys(cleanObject(filters)).length
   }, [_websiteWithCompany.filters])
 
+  const onHostChange = useCallback((host: string) => {
+    _websiteWithCompany.updateFilters(prev => ({...prev, host: host}))
+    // TRELLO-1391 The object _websiteWithCompany change all the time.
+    // If we put it in dependencies, it causes problems with the debounce,
+    // and the search input "stutters" when typing fast
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
   return (
     <Panel>
       <Datatable
         id="reportcompanieswebsites"
         header={
           <>
-            <DebouncedInput
-              value={_websiteWithCompany.filters.host ?? ''}
-              onChange={host => _websiteWithCompany.updateFilters(prev => ({...prev, host: host}))}
-            >
+            <DebouncedInput value={_websiteWithCompany.filters.host ?? ''} onChange={onHostChange}>
               {(value, onChange) => (
                 <InputBase
                   value={value}
