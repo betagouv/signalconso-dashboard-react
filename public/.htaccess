@@ -1,4 +1,4 @@
-Header add Content-Security-Policy "default-src 'self' *.sentry.io *.data.gouv.fr *.aticdn.net 'sha256-id/gce/WjIvVb3FcRTQyZ2jIVkhAPE8WiqQ5mKIjoGo=' *.cleverapps.io *.conso.gouv.fr; style-src 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com https://fonts.googleapis.com;img-src 'self' *.xiti.com *.cleverapps.io *.conso.gouv.fr data: *.cellar-c2.services.clever-cloud.com; report-uri /csp-violation-report-endpoint/"
+Header add Content-Security-Policy "default-src 'self' *.sentry.io *.data.gouv.fr *.aticdn.net 'sha256-id/gce/WjIvVb3FcRTQyZ2jIVkhAPE8WiqQ5mKIjoGo=' 'nonce-2726c7f26c' *.cleverapps.io *.conso.gouv.fr; style-src 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com https://fonts.googleapis.com;img-src 'self' *.xiti.com *.cleverapps.io *.conso.gouv.fr data: *.cellar-c2.services.clever-cloud.com; report-uri /csp-violation-report-endpoint/"
 Header add Strict-Transport-Security "max-age=63072000; includeSubDomains; preload"
 Header add X-Frame-Options "SAMEORIGIN"
 Header add X-XSS-Protection "1; mode=block"
