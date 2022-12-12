@@ -1,13 +1,13 @@
 import * as React from 'react'
 import {ReactNode, useContext, useMemo} from 'react'
-import {Fetcher, useFetcher} from '../../alexlibs/react-hooks-lib'
+import {UseFetcher, useFetcher} from '../../alexlibs/react-hooks-lib'
 import {SignalConsoApiSdk} from '../ApiSdkInstance'
 import {ApiError} from '../client/ApiClient'
 
 export interface ConstantContextProps {
-  regions: Fetcher<SignalConsoApiSdk['public']['constant']['getRegions'], ApiError>
-  countries: Fetcher<SignalConsoApiSdk['public']['constant']['getCountries'], ApiError>
-  categories: Fetcher<SignalConsoApiSdk['public']['constant']['getCategories'], ApiError>
+  regions: UseFetcher<SignalConsoApiSdk['public']['constant']['getRegions'], ApiError>
+  countries: UseFetcher<SignalConsoApiSdk['public']['constant']['getCountries'], ApiError>
+  categories: UseFetcher<SignalConsoApiSdk['public']['constant']['getCategories'], ApiError>
   departmentsIndex?: {[key: string]: string}
 }
 
