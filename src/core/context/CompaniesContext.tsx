@@ -1,6 +1,6 @@
 import * as React from 'react'
 import {ReactNode, useContext} from 'react'
-import {Fetcher, useFetcher, usePaginate, UsePaginate} from '../../alexlibs/react-hooks-lib'
+import {UseFetcher, useFetcher, usePaginate, UsePaginate} from '../../alexlibs/react-hooks-lib'
 
 import {SignalConsoApiSdk} from '../ApiSdkInstance'
 
@@ -16,16 +16,16 @@ type Sdk = SignalConsoApiSdk['secured']['company']
 export interface CompaniesContextProps {
   activated: UsePaginate<CompanyWithReportsCount, CompanySearch>
   toActivate: UsePaginate<CompanyToActivate, PaginatedFilters>
-  create: Fetcher<Sdk['create'], ApiError>
-  updateAddress: Fetcher<Sdk['updateAddress'], ApiError>
-  downloadActivationDocument: Fetcher<Sdk['downloadActivationDocument'], ApiError>
-  confirmCompaniesPosted: Fetcher<Sdk['confirmCompaniesPosted'], ApiError>
-  searchByIdentity: Fetcher<CompanyPublicSdk['company']['searchCompaniesByIdentity'], ApiError>
-  accessibleByPro: Fetcher<Sdk['getAccessibleByPro'], ApiError>
-  saveUndeliveredDocument: Fetcher<Sdk['saveUndeliveredDocument'], ApiError>
-  byId: Fetcher<(id: Id) => Promise<CompanyWithReportsCount>, ApiError>
-  hosts: Fetcher<Sdk['getHosts'], ApiError>
-  responseRate: Fetcher<Sdk['getResponseRate'], ApiError>
+  create: UseFetcher<Sdk['create'], ApiError>
+  updateAddress: UseFetcher<Sdk['updateAddress'], ApiError>
+  downloadActivationDocument: UseFetcher<Sdk['downloadActivationDocument'], ApiError>
+  confirmCompaniesPosted: UseFetcher<Sdk['confirmCompaniesPosted'], ApiError>
+  searchByIdentity: UseFetcher<CompanyPublicSdk['company']['searchCompaniesByIdentity'], ApiError>
+  accessibleByPro: UseFetcher<Sdk['getAccessibleByPro'], ApiError>
+  saveUndeliveredDocument: UseFetcher<Sdk['saveUndeliveredDocument'], ApiError>
+  byId: UseFetcher<(id: Id) => Promise<CompanyWithReportsCount>, ApiError>
+  hosts: UseFetcher<Sdk['getHosts'], ApiError>
+  responseRate: UseFetcher<Sdk['getResponseRate'], ApiError>
 }
 
 const CompaniesContext = React.createContext<CompaniesContextProps>(null as any as CompaniesContextProps)
