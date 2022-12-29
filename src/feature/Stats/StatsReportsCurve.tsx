@@ -44,7 +44,7 @@ export const StatsReportsCurvePanel = () => {
       api.secured.stats.getReportCountCurve({
         ticks,
         tickDuration,
-        withTags: [ReportTag.DemarchageADomicile, ReportTag.DemarchageTelephonique],
+        withTags: [ReportTag.DemarchageADomicile, ReportTag.DemarchageTelephonique, ReportTag.DemarchageInternet],
         withoutTags: [ReportTag.Bloctel],
       }),
     ])

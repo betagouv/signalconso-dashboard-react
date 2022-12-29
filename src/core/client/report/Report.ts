@@ -75,6 +75,7 @@ export enum ReportTag {
   DemarchageADomicile = 'DemarchageADomicile',
   Ehpad = 'Ehpad',
   DemarchageTelephonique = 'DemarchageTelephonique',
+  DemarchageInternet = 'DemarchageInternet',
   AbsenceDeMediateur = 'AbsenceDeMediateur',
   Bloctel = 'Bloctel',
   Influenceur = 'Influenceur',
