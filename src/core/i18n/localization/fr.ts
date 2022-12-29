@@ -55,6 +55,7 @@ export const fr = {
       [ReportTag.Hygiene]: 'Hygiène',
       [ReportTag.ProduitDangereux]: 'Produit dangereux',
       [ReportTag.DemarchageADomicile]: 'Démarchage à domicile',
+      [ReportTag.DemarchageInternet]: 'Démarchage internet',
       [ReportTag.Ehpad]: 'Ehpad',
       [ReportTag.DemarchageTelephonique]: 'Démarchage téléphonique',
       [ReportTag.AbsenceDeMediateur]: 'Absence de médiateur',
