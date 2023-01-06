@@ -1,12 +1,11 @@
-import React, {ReactElement} from 'react'
-import {useI18n} from '../../../core/i18n'
-import {ScInput} from '../../../shared/Input/ScInput'
-import {Controller, useForm} from 'react-hook-form'
-import {regexp} from '../../../core/helper/regexp'
-import {Checkbox, FormControlLabel} from '@mui/material'
-import {ScDialog} from '../../../shared/Confirm/ScDialog'
+import {ReactElement} from 'react'
+import {useForm} from 'react-hook-form'
 import {Report, ReportConsumerUpdate} from '../../../core/client/report/Report'
+import {regexp} from '../../../core/helper/regexp'
 import {emptyStringToUndefined} from '../../../core/helper/utils'
+import {useI18n} from '../../../core/i18n'
+import {ScDialog} from '../../../shared/Confirm/ScDialog'
+import {ScInput} from '../../../shared/Input/ScInput'
 
 interface Props {
   report: Report
@@ -20,8 +19,8 @@ type FormData = Omit<ReportConsumerUpdate, 'consumerReferenceNumber'> & {
 }
 
 function buildFormData(report: Report): FormData {
-  const {firstName, lastName, email, contactAgreement, consumerReferenceNumber} = report
-  return {firstName, lastName, email, contactAgreement, consumerReferenceNumber: consumerReferenceNumber ?? ''}
+  const {firstName, lastName, email, consumerReferenceNumber} = report
+  return {firstName, lastName, email, consumerReferenceNumber: consumerReferenceNumber ?? ''}
 }
 
 function translateFormData({consumerReferenceNumber, ...rest}: FormData): ReportConsumerUpdate {
@@ -33,7 +32,6 @@ export const EditConsumerDialog = ({report, onChange, children}: Props) => {
   const {
     register,
     getValues,
-    control,
     formState: {errors},
   } = useForm<FormData>({mode: 'onChange', defaultValues: buildFormData(report)})
   return (
@@ -86,17 +84,6 @@ export const EditConsumerDialog = ({report, onChange, children}: Props) => {
             error={!!errors.consumerReferenceNumber}
             helperText={errors.consumerReferenceNumber?.message ?? ' '}
             {...register('consumerReferenceNumber')}
-          />
-
-          <Controller
-            name="contactAgreement"
-            control={control}
-            render={({field}) => (
-              <FormControlLabel
-                control={<Checkbox {...field} checked={field.value} disabled={report.contactAgreement} />}
-                label={m.contactAgreement}
-              />
-            )}
           />
         </>
       }
