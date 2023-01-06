@@ -9,7 +9,7 @@ import {useToast} from '../../core/toast'
 import {ReportEvents} from './Event/ReportEvents'
 import {ReportResponseComponent} from './ReportResponse'
 import {ReportHeader} from './ReportHeader'
-import {Btn} from '../../alexlibs/mui-extension'
+import {Btn, Txt} from '../../alexlibs/mui-extension'
 import {ReportPostAction} from './ReportPostAction'
 import {useLogin} from '../../core/context/LoginContext'
 import {ReportConsumer} from './ReportConsumer/ReportConsumer'
@@ -108,7 +108,17 @@ export const ReportComponent = () => {
               {connectedUser.isAdmin && (
                 <ScDialog
                   title={m.removeAsk}
-                  content={m.removeReportDesc(report.companySiret ?? '')}
+                  content={
+                    <>
+                      {m.removeReportDesc(report.id)}
+                      <Txt color="hint" block size="small" italic>
+                        {' '}
+                        Cela supprimera le signalement entier, y compris ses pièces jointes, la réponse du pro, et l'avis du
+                        consommateur sur la réponse du pro. Si l'entreprise n'avait pas d'autres signalements, et qu'elle n'avait
+                        pas encore créé son compte, son code qui lui a été envoyé par courrier sera également supprimé.
+                      </Txt>
+                    </>
+                  }
                   onConfirm={(event, close) =>
                     _report.remove
                       .fetch({}, report.id)
