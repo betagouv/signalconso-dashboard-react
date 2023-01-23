@@ -193,8 +193,8 @@ export const ModeEmploiDGCCRF = () => {
             <li>Détail de la réponse de l'établissement (au consommateur et à la DGCCRF)</li>
             <li>Prénom, Nom, Email (du consommateur)</li>
             <li>
-              Accord pour contact ( oui = le consommateur a souhaité laissé visible ses coordonnées auprès du professionnel, non =
-              le consommateur a souhaité rester anonyme vis-à-vis du professionnel )
+              Accord pour contact ( oui = le consommateur a souhaité laisser visible ses coordonnées auprès du professionnel, non
+              = le consommateur a souhaité rester anonyme vis-à-vis du professionnel )
             </li>
             <li>Actions de la DGCCRF (commentaire, contrôle)</li>
           </ul>
