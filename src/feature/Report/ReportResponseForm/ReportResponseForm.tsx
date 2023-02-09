@@ -37,6 +37,7 @@ export const ReportResponseForm = forwardRef(({report, onCancel, onConfirm, ...p
   } = useForm<ReportResponse>()
   const _report = useReportContext()
   const {toastError, toastSuccess} = useToast()
+  const maxDetailsCharLength = 10000
 
   const submitForm = async (form: ReportResponse) => {
     await _report.postResponse.fetch({}, report.id, form)
@@ -78,6 +79,7 @@ export const ReportResponseForm = forwardRef(({report, onCancel, onConfirm, ...p
           <ScInput
             {...register('consumerDetails', {
               required: {value: true, message: m.required},
+              maxLength: {value: maxDetailsCharLength, message: m.textTooLarge(maxDetailsCharLength)},
             })}
             helperText={errors.consumerDetails?.message}
             error={!!errors.consumerDetails}
@@ -91,7 +93,10 @@ export const ReportResponseForm = forwardRef(({report, onCancel, onConfirm, ...p
 
         <ReportResponseFormItem title={m.proAnswerYourDGCCRFAnswer} desc={m.proAnswerYourDGCCRFAnswerDesc}>
           <ScInput
-            {...register('dgccrfDetails')}
+            {...(register('dgccrfDetails'),
+            {
+              maxLength: {value: maxDetailsCharLength, message: m.textTooLarge(maxDetailsCharLength)},
+            })}
             helperText={errors.dgccrfDetails?.message}
             error={!!errors.dgccrfDetails}
             fullWidth

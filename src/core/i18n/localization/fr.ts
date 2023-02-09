@@ -133,6 +133,7 @@ export const fr = {
     anErrorOccurred: "Une erreur s'est produite.",
     minimize: 'Minimize',
     required: 'Requis',
+    textTooLarge: (maxCharSize: number) => `Le nombre de caractères est limité à ${maxCharSize}`,
     cancel: 'Annuler',
     help: 'Aide',
     created_at: 'Créé le',
