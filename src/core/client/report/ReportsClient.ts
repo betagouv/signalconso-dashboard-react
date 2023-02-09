@@ -144,9 +144,11 @@ export class ReportsClient {
   }
 
   readonly updateReportConsumer = (reportId: string, reportConsumerUpdate: ReportConsumerUpdate) => {
-    return this.client.post(`reports/${reportId}/consumer`, {
-      body: reportConsumerUpdate,
-    })
+    return this.client
+      .post(`reports/${reportId}/consumer`, {
+        body: reportConsumerUpdate,
+      })
+      .then(report => ReportsClient.mapReport(report))
   }
 
   readonly getCountByDepartments = ({start, end}: {start?: Date; end?: Date} = {}): Promise<[string, number][]> => {
