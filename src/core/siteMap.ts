@@ -23,6 +23,7 @@ export const siteMap = {
     company: (id: Id = `:id`) => `/bilan-entreprise/${id}`,
     users_dgccrf_pending: `/users/pending`,
     users_consumer_validation: `/users/consumers`,
+    users_blacklist: `/users/blacklist`,
     users_dgccrf: `/users/dgccrf`,
     users_admin: `/users/admin`,
     settings: `/parametres`,

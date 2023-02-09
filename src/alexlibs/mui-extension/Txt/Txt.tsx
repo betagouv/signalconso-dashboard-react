@@ -5,6 +5,7 @@ import {forwardRef} from 'react'
 interface Props extends BoxProps {
   bold?: boolean
   italic?: boolean
+  gutterTop?: boolean
   gutterBottom?: boolean
   block?: boolean
   skeleton?: boolean | number | string
@@ -22,6 +23,7 @@ export const Txt = forwardRef(
       skeleton,
       children,
       gutterBottom,
+      gutterTop,
       block,
       bold,
       size,
@@ -82,6 +84,9 @@ export const Txt = forwardRef(
           }),
           ...(italic && {
             fontStyle: 'italic',
+          }),
+          ...(gutterTop && {
+            mt: 1,
           }),
           ...(gutterBottom && {
             mb: 1,

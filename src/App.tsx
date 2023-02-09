@@ -55,6 +55,7 @@ import {WebsiteInvestigationProvider} from './core/context/WebsiteInvestigationC
 import {ScSidebar} from './core/ScSidebar/ScSidebar'
 import {ScHeader} from './core/ScHeader/ScHeader'
 import {ApiError} from './core/client/ApiClient'
+import {ApiProvider} from 'core/context/ApiContext'
 
 const Router: typeof HashRouter = config.useHashRouter ? HashRouter : BrowserRouter
 
@@ -156,6 +157,7 @@ const AppLogged = () => {
   return (
     <Provide
       providers={[
+        _ => <ApiProvider api={apiSdk} children={_} />,
         _ => <ReportsProvider api={apiSdk} children={_} />,
         _ => <ReportProvider api={apiSdk} children={_} />,
         _ => <ConstantProvider api={apiSdk} children={_} />,

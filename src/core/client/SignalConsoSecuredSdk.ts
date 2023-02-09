@@ -9,15 +9,16 @@ import {
   UserClient,
   WebsiteClient,
 } from '.'
+import {AccessesClient} from './accesses/AccessesClient'
+import {AdminClient} from './admin/AdminClient'
 import {ApiClientApi} from './ApiClient'
 import {AsyncFileClient} from './async-file/AsyncFileClient'
-import {CompanyAccessTokenClient} from './company-access-token/CompanyAccessTokenClient'
-import {SecuredFileClient} from './file/SecuredFileClient'
 import {ReportBlockedNotificationClient} from './blocked-report-notifications/ReportBlockedNotificationClient'
-import {AccessesClient} from './accesses/AccessesClient'
-import {StatsClient} from './stats/StatsClient'
-import {AdminClient} from './admin/AdminClient'
+import {CompanyAccessTokenClient} from './company-access-token/CompanyAccessTokenClient'
+import {ConsumerBlacklistClient} from './consumer-blacklist/ConsumerBlacklistClient'
 import {ConsumerEmailValidationClient} from './consumer-email-validation/ConsumerEmailValidationClient'
+import {SecuredFileClient} from './file/SecuredFileClient'
+import {StatsClient} from './stats/StatsClient'
 
 export class SignalConsoSecuredSdk {
   constructor(private client: ApiClientApi) {}
@@ -30,6 +31,7 @@ export class SignalConsoSecuredSdk {
   readonly subscription = new SubscriptionClient(this.client)
   readonly company = new CompanyClient(this.client)
   readonly consumerEmailValidation = new ConsumerEmailValidationClient(this.client)
+  readonly consumerBlacklist = new ConsumerBlacklistClient(this.client)
   readonly stats = new StatsClient(this.client)
   readonly companyAccess = new CompanyAccessClient(this.client)
   readonly companyAccessToken = new CompanyAccessTokenClient(this.client)
