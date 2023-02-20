@@ -19,6 +19,7 @@ import {useLayoutContext} from '../../core/Layout/LayoutContext'
 import {ReportSearch} from '../../core/client/report/ReportSearch'
 import {Id, ReportStatus} from '../../core/model'
 import {useConstantContext} from '../../core/context/ConstantContext'
+import {useReportsContext} from '../../core/context/ReportsContext'
 
 interface Props {
   updateFilters: (_: ReportSearch) => void
@@ -31,7 +32,7 @@ interface Form {
   // Yet for some other inputs, it seems we need to use undefined
   departments: string[] | null
   companyCountries: string[] | undefined
-  siretSirenList: string[] | null
+  siretSirenList: string | null
   activityCodes: string[] | undefined
   status: ReportStatus[] | undefined
   companyIds: Id[] | null
@@ -101,7 +102,7 @@ function reportSearch2Form(_: ReportSearch): Form {
   return {
     departments: departments ?? null,
     companyCountries,
-    siretSirenList: siretSirenList ?? null,
+    siretSirenList: siretSirenList ? siretSirenList[0] : null,
     activityCodes,
     status,
     companyIds: companyIds ?? null,
@@ -150,7 +151,7 @@ function form2ReportSearch(_: Form): ReportSearch {
     withTags: Enum.keys(tags).filter(tag => tags[tag] === 'included'),
     withoutTags: Enum.keys(tags).filter(tag => tags[tag] === 'excluded'),
     companyCountries: companyCountries,
-    siretSirenList: siretSirenList ?? undefined,
+    siretSirenList: siretSirenList ? [siretSirenList] : undefined,
     activityCodes,
     status,
     companyIds: companyIds ?? undefined,
@@ -183,12 +184,19 @@ export const ReportsFilters = ({filters: rawFilters, updateFilters, children}: P
   } = useForm<Form>()
   const layout = useLayoutContext()
   const [open, setOpen] = useState<boolean>(false)
+  const [canBeSaved, setCanBeSaved] = useState<boolean>(false)
   const _category = useConstantContext().categories
+  const _reports = useReportsContext()
 
   const close = () => {
     setOpen(false)
   }
 
+  const save = () => {
+    const form = getValues()
+    const reportSearch = form2ReportSearch(form)
+    _reports.saveFilters.fetch({}, reportSearch).then(_ => setCanBeSaved(false))
+  }
   const confirm = (e: any) => {
     close()
     handleSubmit((form: Form) => {
@@ -212,6 +220,11 @@ export const ReportsFilters = ({filters: rawFilters, updateFilters, children}: P
       }
     }
   }, [open])
+
+  useEffect(() => {
+    const subscription = watch(() => setCanBeSaved(true))
+    return () => subscription.unsubscribe()
+  }, [watch])
 
   useEffect(() => {
     _category.fetch({force: false})
@@ -275,14 +288,21 @@ export const ReportsFilters = ({filters: rawFilters, updateFilters, children}: P
                 />
               </DialogInputRow>
               <DialogInputRow icon="category" label={m.categories}>
-                <ScSelect small fullWidth {...register('category')} defaultValue={filters.category ?? []}>
-                  <MenuItem value="">&nbsp;</MenuItem>
-                  {_category?.entity.map(category => (
-                    <MenuItem key={category} value={category}>
-                      {category}
-                    </MenuItem>
-                  ))}
-                </ScSelect>
+                <Controller
+                  name="category"
+                  defaultValue={filters.category ?? '1'}
+                  control={control}
+                  render={({field: {onChange, value}}) => (
+                    <ScSelect small fullWidth value={value} onChange={onChange}>
+                      <MenuItem value="">&nbsp;</MenuItem>
+                      {_category?.entity?.map(category => (
+                        <MenuItem key={category} value={category}>
+                          {category}
+                        </MenuItem>
+                      ))}
+                    </ScSelect>
+                  )}
+                />
               </DialogInputRow>
               <DialogInputRow icon="label" label={m.tags}>
                 <Controller
@@ -409,6 +429,9 @@ export const ReportsFilters = ({filters: rawFilters, updateFilters, children}: P
               </DialogInputRow>
             </DialogContent>
             <DialogActions>
+              <Btn onClick={save} color="secondary" loading={_reports.saveFilters.loading} disabled={!canBeSaved}>
+                {m.save}
+              </Btn>
               <Btn onClick={close} color="primary">
                 {m.close}
               </Btn>

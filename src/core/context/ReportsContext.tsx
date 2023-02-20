@@ -1,12 +1,17 @@
 import * as React from 'react'
 import {ReactNode, useContext} from 'react'
-import {UsePaginate} from '../../alexlibs/react-hooks-lib'
+import {useFetcher, UseFetcher, UsePaginate} from '../../alexlibs/react-hooks-lib'
 import {SignalConsoApiSdk} from '../ApiSdkInstance'
 import {useScPaginate} from '../../shared/usePaginate/usePaginate'
 import {PaginatedFilters, ReportSearch, ReportSearchResult} from '../model'
+import {ApiError} from '../client/ApiClient'
 
 export interface ReportsContextProps extends UsePaginate<ReportSearchResult, ReportSearch & PaginatedFilters> {
   extract: (_?: ReportSearch) => Promise<void>
+
+  saveFilters: UseFetcher<SignalConsoApiSdk['secured']['reports']['saveFilters'], ApiError> //(r: ReportSearch) => Promise<void>
+
+  getFilters: () => Promise<ReportSearch>
 }
 
 interface Props {
@@ -24,11 +29,15 @@ export const ReportsProvider = ({api, children}: Props) => {
     offset: 0,
   })
 
+  const saveFilters = useFetcher(api.secured.reports.saveFilters)
+
   return (
     <ReportsContext.Provider
       value={{
         ..._paginate,
         extract: () => api.secured.reports.extract(_paginate.filters),
+        saveFilters: saveFilters,
+        getFilters: () => api.secured.reports.getFilters(),
       }}
     >
       {children}

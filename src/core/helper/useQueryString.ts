@@ -45,7 +45,9 @@ export const useQueryString = <E, QS extends ParsedUrlQueryInput>({
     return fromQueryString(QueryString.parse(history.location.search.replace(/^\?/, '')) as any)
   }
 
-  return {update, get}
+  const isEmpty = (): boolean => Object.keys(QueryString.parse(history.location.search.replace(/^\?/, ''))).length === 0
+
+  return {update, get, isEmpty}
 }
 
 const parseArray = (_?: string | string[]): string[] | undefined => (_ ? [_].flatMap(_ => _) : undefined)

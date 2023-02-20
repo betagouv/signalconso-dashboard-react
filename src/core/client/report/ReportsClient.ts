@@ -104,6 +104,14 @@ export class ReportsClient {
     return this.client.getPdf<any>(`/reports/download`, {qs: {ids}}).then(directDownloadBlob('Signalement.pdf'))
   }
 
+  readonly saveFilters = (filters: ReportSearch) => {
+    return this.client.post<void>(`/user-settings/reports/filters`, {body: filters})
+  }
+
+  readonly getFilters = (): Promise<ReportSearch> => {
+    return this.client.get<ReportSearch>(`/user-settings/reports/filters`)
+  }
+
   readonly remove = (id: Id) => {
     return this.client.delete<void>(`reports/${id}`)
   }
