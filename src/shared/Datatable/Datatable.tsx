@@ -66,6 +66,7 @@ const sxStickyEnd: SxProps<Theme> = {
   paddingTop: '1px',
   position: 'sticky',
   right: 0,
+  zIndex: 1, // Otherwise, badges are visible over the sticky element
   background: t => t.palette.background.paper,
 }
 
@@ -142,6 +143,7 @@ export const Datatable = <T extends any = any>({
       <Box sx={{overflowX: 'auto', position: 'relative'}} id={id}>
         <Table
           sx={{
+            borderCollapse: 'separate', // Sticky elements don't have any border otherwise
             minWidth: '100%',
             tableLayout: 'fixed',
             width: 'auto', // Override width: 100% from Material-UI that breaks sticky columns
@@ -212,7 +214,11 @@ export const Datatable = <T extends any = any>({
                 {filteredColumns.map((_, i) => (
                   <TableCell
                     key={i}
-                    sx={combineSx(_.sx?.(item), sxUtils.truncate, sxStickyEnd)}
+                    sx={
+                      _.stickyEnd
+                        ? combineSx(_.sx?.(item), sxUtils.truncate, sxStickyEnd)
+                        : combineSx(_.sx?.(item), sxUtils.truncate)
+                    }
                     style={_.style}
                     className={typeof _.className === 'function' ? _.className(item) : _.className}
                   >
