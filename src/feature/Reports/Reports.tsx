@@ -268,14 +268,10 @@ export const Reports = () => {
               }),
               render: _ => (
                 <>
-                  <Box
-                    component="span"
-                    sx={{
-                      fontWeight: 'bold',
-                      marginBottom: -1,
-                    }}
-                  >
-                    {_.report.companyName}
+                  <Box component="span" sx={{fontWeight: 'bold', marginBottom: '-1px'}}>
+                    <NavLink to={siteMap.logged.company(_.report.companyId)}>
+                      <Txt link>{_.report.companyName}</Txt>
+                    </NavLink>
                   </Box>
                   <br />
                   <Box
@@ -293,7 +289,15 @@ export const Reports = () => {
             {
               id: 'companySiret',
               head: m.siret,
-              render: _ => _.report.companySiret,
+              render: _ => (
+                <>
+                  <NavLink to={siteMap.logged.company(_.report.companyId)}>
+                    <Txt link sx={{fontWeight: 'bold', marginBottom: '-1px'}}>
+                      {_.report.companySiret}
+                    </Txt>
+                  </NavLink>
+                </>
+              ),
             },
             {
               id: 'companyCountry',
