@@ -614,6 +614,18 @@ export const fr = {
           title: `Accéder à SignalConso`,
           desc: `Email envoyé lors de l'invitation d'un agent`,
         },
+        reset_password: {
+          title: `Réinitialiser le mot de passe`,
+          desc: `Email envoyé lors de la demande de réinitialiser du mot de passer`,
+        },
+        validate_email: {
+          title: `Valider l'email`,
+          desc: `Email envoyé lorsque l'email de l'agent n'a pas été validé depuis un certain temps`,
+        },
+        inactive_account_reminder: {
+          title: `Rappel de compte inactif`,
+          desc: `Email envoyé lorsque le compte est inactif depuis un certain temps. Rappel avant suppression définitive`,
+        },
       },
       pro: {
         report_transmitted_reminder: {
