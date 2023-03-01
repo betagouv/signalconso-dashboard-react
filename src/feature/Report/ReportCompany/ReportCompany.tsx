@@ -23,13 +23,15 @@ export const ReportCompany = ({report, canEdit}: Props) => {
   const _report = useReportContext()
   const {m} = useI18n()
   const theme = useTheme()
+  const {websiteURL, vendor, companyAddress, companyName, companySiret} = report
+
   return (
     <Panel stretch>
       <PanelHead
         action={
           canEdit && (
             <SelectCompanyDialog
-              siret={report.companySiret}
+              siret={companySiret}
               onChange={company => {
                 _report.updateCompany.fetch({}, report.id, company)
               }}
@@ -59,28 +61,28 @@ export const ReportCompany = ({report, canEdit}: Props) => {
         }}
       >
         <div>
-          <Box sx={sxUtils.fontBig} style={{marginBottom: theme.spacing(1 / 2)}}>
-            {report.companySiret}
-          </Box>
+          {companySiret && (
+            <Box sx={sxUtils.fontBig} style={{marginBottom: theme.spacing(1 / 2)}}>
+              {companySiret}
+            </Box>
+          )}
           <Box
             sx={{
               color: t => t.palette.text.secondary,
               fontSize: t => styleUtils(t).fontSize.small,
             }}
           >
-            <Box sx={{fontWeight: t => t.typography.fontWeightBold}}>{report.companyName}</Box>
-            <AddressComponent address={report.companyAddress} />
+            {companyName && <Box sx={{fontWeight: t => t.typography.fontWeightBold}}>{companyName}</Box>}
+            <AddressComponent address={companyAddress} />
           </Box>
-          <div>{report.vendor}</div>
-          {ScOption.from(report.websiteURL)
-            .map(_ => (
-              <Txt link block sx={{mt: 1}}>
-                <a href={_} target="_blank">
-                  {_}
-                </a>
-              </Txt>
-            ))
-            .toUndefined()}
+          {vendor && <div>{vendor}</div>}
+          {websiteURL && (
+            <Txt link block sx={{mt: 1}}>
+              <a href={websiteURL} target="_blank" rel="noreferrer">
+                {websiteURL}
+              </a>
+            </Txt>
+          )}
         </div>
         <Icon
           sx={{
