@@ -23,7 +23,7 @@ export const ReportCompany = ({report, canEdit}: Props) => {
   const _report = useReportContext()
   const {m} = useI18n()
   const theme = useTheme()
-  const {websiteURL, vendor, companyAddress, companyName, companySiret} = report
+  const {websiteURL, vendor, companyAddress, companyName, companySiret, phone} = report
 
   return (
     <Panel stretch>
@@ -83,6 +83,7 @@ export const ReportCompany = ({report, canEdit}: Props) => {
               </a>
             </Txt>
           )}
+          {phone && <Phone {...{phone}} />}
         </div>
         <Icon
           sx={{
@@ -94,5 +95,26 @@ export const ReportCompany = ({report, canEdit}: Props) => {
         </Icon>
       </PanelBody>
     </Panel>
+  )
+}
+
+function Phone({phone}: {phone: string}) {
+  return (
+    <div
+      style={{
+        display: 'inline-flex',
+        alignItems: 'center',
+      }}
+    >
+      <Icon
+        sx={{
+          fontSize: 20,
+          mr: 0.5,
+        }}
+      >
+        phone
+      </Icon>
+      {phone}
+    </div>
   )
 }
