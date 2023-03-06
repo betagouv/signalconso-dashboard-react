@@ -6,7 +6,7 @@ import {Panel} from '../../shared/Panel'
 import {Datatable} from '../../shared/Datatable/Datatable'
 import {alpha, Badge, Box, Button, Checkbox, Chip, Grid, Icon, Tooltip} from '@mui/material'
 import {cleanObject, getHostFromUrl, textOverflowMiddleCropping} from '../../core/helper'
-import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react'
+import React, {useCallback, useEffect, useMemo} from 'react'
 import {
   mapArrayFromQuerystring,
   mapBooleanFromQueryString,
@@ -16,7 +16,7 @@ import {
 } from '../../core/helper/useQueryString'
 import {NavLink} from 'react-router-dom'
 import {SelectDepartments} from '../../shared/SelectDepartments/SelectDepartments'
-import {Btn, Fender, IconBtn} from '../../alexlibs/mui-extension'
+import {Fender, IconBtn} from '../../alexlibs/mui-extension'
 import {useToast} from '../../core/toast'
 import {ReportStatusLabel} from '../../shared/ReportStatus/ReportStatus'
 import {config} from '../../conf/config'
@@ -67,8 +67,6 @@ export const Reports = () => {
   const _report = useReportContext()
   const _reports = useReportsContext()
   const selectReport = useSetState<Id>()
-  const [canSaveFilters, setCanSaveFilters] = useState<boolean>(false)
-  const mounted = useRef<number>(0)
   const {toastError} = useToast()
   const queryString = useQueryString<Partial<ReportSearch>, Partial<ReportSearchQs>>({
     toQueryString: mapDatesToQueryString,
@@ -81,12 +79,13 @@ export const Reports = () => {
 
   useEffect(() => {
     if (queryString.isEmpty()) {
-      _reports
-        .getFilters()
-        .then(filters => {
-          const initialFilters = filters
+      _reports.listSavedFilters
+        .fetch({})
+        .then(savedFilters => {
+          const defaultFilters = savedFilters.find(_ => _.default)?.reportSearch
+          const initialFilters = defaultFilters
             ? {
-                ...filters,
+                ...defaultFilters,
                 limit: _reports.initialFilters.limit,
                 offset: _reports.initialFilters.offset,
               }
@@ -96,18 +95,13 @@ export const Reports = () => {
         })
         .catch(_ => _reports.updateFilters({..._reports.initialFilters}))
     } else {
+      _reports.listSavedFilters.fetch({})
       _reports.updateFilters({..._reports.initialFilters, ...queryString.get()})
-      setCanSaveFilters(true)
     }
   }, [])
 
   useEffect(() => {
     queryString.update(cleanObject(_reports.filters))
-    if (mounted.current < 2) {
-      mounted.current += 1
-    } else {
-      setCanSaveFilters(true)
-    }
   }, [_reports.filters])
 
   useEffect(() => {
@@ -125,9 +119,6 @@ export const Reports = () => {
   const updateFilters = useCallback((_: ReportSearch) => {
     _reports.updateFilters(prev => ({...prev, ..._}))
   }, [])
-  const saveFilters = () => {
-    _reports.saveFilters.fetch({}, _reports.filters).then(_ => setCanSaveFilters(false))
-  }
 
   return (
     <Page size="xl">
@@ -218,11 +209,6 @@ export const Reports = () => {
                   </Button>
                 </Badge>
               </Tooltip>
-              <Tooltip title={m.saveFilters}>
-                <Btn loading={_reports.saveFilters.loading} disabled={!canSaveFilters} color="primary" onClick={saveFilters}>
-                  <Icon>save</Icon>
-                </Btn>
-              </Tooltip>
               <ExportReportsPopper
                 disabled={ScOption.from(_reports?.list?.totalCount)
                   .map(_ => _ > config.reportsLimitForExport)
@@ -235,7 +221,17 @@ export const Reports = () => {
                   <Icon>file_download</Icon>
                 </IconBtn>
               </ExportReportsPopper>
-              <ReportsFilters filters={_reports.filters} updateFilters={updateFilters}>
+              <ReportsFilters
+                filters={_reports.filters}
+                updateFilters={updateFilters}
+                savedFilters={_reports.listSavedFilters.entity ?? []}
+                savedFiltersLoading={_reports.listSavedFilters.loading}
+                saveFilters={filters => _reports.saveFilters.fetch({}, filters)}
+                renameFilters={(oldName, newName) => _reports.renameSavedFilters.fetch({}, oldName, newName)}
+                deleteFilters={name => _reports.deleteSavedFilters.fetch({}, name)}
+                setDefault={name => _reports.setDefaultFilters.fetch({}, name)}
+                unsetDefault={name => _reports.unsetDefaultFilters.fetch({}, name)}
+              >
                 <Tooltip title={m.advancedFilters}>
                   <IconBtn color="primary">
                     <Icon>filter_list</Icon>

@@ -18,6 +18,7 @@ import {
 import {ApiSdkLogger} from '../../helper/Logger'
 import {ApiClientApi} from '../ApiClient'
 import {cleanObject, dateToApiDate, dateToApiTime, directDownloadBlob} from '../../helper'
+import {NamedReportSearch} from './NamedReportSearch'
 
 export interface ReportFilterQuerystring {
   readonly departments?: string[]
@@ -104,12 +105,34 @@ export class ReportsClient {
     return this.client.getPdf<any>(`/reports/download`, {qs: {ids}}).then(directDownloadBlob('Signalement.pdf'))
   }
 
-  readonly saveFilters = (filters: ReportSearch) => {
-    return this.client.post<void>(`/user-settings/reports/filters`, {body: filters})
+  readonly saveFilters = (filters: NamedReportSearch) => {
+    return this.client.post<void>(`/user-reports-filters`, {body: {name: filters.name, filters: filters.reportSearch}})
   }
 
-  readonly getFilters = (): Promise<ReportSearch> => {
-    return this.client.get<ReportSearch>(`/user-settings/reports/filters`)
+  readonly getSavedFilters = (name: String): Promise<ReportSearch> => {
+    return this.client.get<ReportSearch>(`/user-reports-filters/${name}`)
+  }
+
+  readonly listSavedFilters = (): Promise<NamedReportSearch[]> => {
+    return this.client
+      .get(`/user-reports-filters`)
+      .then(_ => _.map((result: any) => ({name: result.name, reportSearch: result.filters, default: result.default})))
+  }
+
+  readonly deleteSavedFilters = (name: String): Promise<void> => {
+    return this.client.delete<void>(`/user-reports-filters/${name}`)
+  }
+
+  readonly renameSavedFilters = (oldName: String, newName: String): Promise<void> => {
+    return this.client.put<void>(`/user-reports-filters/${oldName}/${newName}`)
+  }
+
+  readonly setDefaultFilters = (name: String): Promise<void> => {
+    return this.client.put<void>(`/user-reports-filters/default/${name}`)
+  }
+
+  readonly unsetDefaultFilters = (name: String): Promise<void> => {
+    return this.client.delete<void>(`/user-reports-filters/default/${name}`)
   }
 
   readonly remove = (id: Id) => {
