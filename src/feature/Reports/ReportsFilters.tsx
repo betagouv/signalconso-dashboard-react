@@ -196,6 +196,23 @@ export const ReportsFilters = ({filters: rawFilters, updateFilters, children}: P
     })(e)
   }
 
+  const triggerSearch = (e: any) => {
+    //Trigger search on 'ENTER'
+    if (e.keyCode === 13) {
+      return confirm(e)
+    }
+  }
+
+  useEffect(() => {
+    if (open) {
+      window.addEventListener('keydown', triggerSearch)
+      return () => {
+        //Makes sure event is added once https://stackoverflow.com/questions/71822354/onkeydown-onkeyup-listener-in-react
+        window.removeEventListener('keydown', triggerSearch)
+      }
+    }
+  }, [open])
+
   useEffect(() => {
     _category.fetch({force: false})
   }, [])
