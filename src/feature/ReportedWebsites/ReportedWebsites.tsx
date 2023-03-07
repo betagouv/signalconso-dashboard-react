@@ -18,7 +18,11 @@ export const ReportedWebsites = () => {
 
   return (
     <Page size="xl">
-      <PageTitle>{m.reportedWebsites}</PageTitle>
+      {displayDropShipping ? (
+        <PageTitle>{m.reportedWebsites}</PageTitle>
+      ) : (
+        <PageTitle>{m.reportedUnknownWebsitesDGCCRF}</PageTitle>
+      )}
 
       {displayDropShipping ? (
         <PageTabs>
