@@ -748,7 +748,7 @@ export const fr = {
       [ResponseEvaluation.Negative]: 'Avis négatif du consommateur',
     },
     reportStatusShort: {
-      [ReportStatus.NA]: 'NA',
+      [ReportStatus.NA]: 'Non transmis',
       [ReportStatus.LanceurAlerte]: "Lanceur d'alerte",
       [ReportStatus.TraitementEnCours]: 'Traitement en cours',
       [ReportStatus.NonConsulte]: 'Non consulté',
