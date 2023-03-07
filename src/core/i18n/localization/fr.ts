@@ -244,6 +244,9 @@ export const fr = {
     websitesInvestigation: 'Suivi des sites internet',
     showLabels: 'Afficher les valeurs :',
     reportedUnknownWebsites: 'Sites non identifiés',
+    reportedUnknownWebsitesText:
+      "Liste des sites internet pas encore associés à un numéro SIRET ou pas encore identifiés comme se situant à l'étranger.",
+    reportedUnknownWebsitesDGCCRF: 'Suivi des sites internet non identifiés',
     companyHistory: "Historique de l'entreprise",
     reports_pageTitle: 'Suivi des signalements',
     notificationsAreDisabled: `Inclus les notifications concernant les signalements des entreprises.`,

@@ -1,7 +1,7 @@
 import React, {useCallback, useEffect} from 'react'
 import {useI18n} from '../../core/i18n'
-import {Icon, InputBase, Tooltip} from '@mui/material'
-import {Panel} from '../../shared/Panel'
+import {Box, Divider, Icon, InputBase, List, ListItem, Tooltip} from '@mui/material'
+import {Panel, PanelHead} from '../../shared/Panel'
 import {Datatable} from '../../shared/Datatable/Datatable'
 import {DebouncedInput} from '../../shared/DebouncedInput/DebouncedInput'
 import {useUnregistredWebsiteWithCompanyContext} from '../../core/context/UnregistredWebsitesContext'
@@ -9,7 +9,7 @@ import {useToast} from '../../core/toast'
 
 import {NavLink} from 'react-router-dom'
 import {siteMap} from '../../core/siteMap'
-import {Btn, IconBtn} from '../../alexlibs/mui-extension'
+import {Btn, IconBtn, Txt} from '../../alexlibs/mui-extension'
 import {ExportUnknownWebsitesPopper} from '../../shared/ExportPopper/ExportPopperBtn'
 import {config} from '../../conf/config'
 import {PeriodPicker} from '../../shared/PeriodPicker/PeriodPicker'
@@ -39,6 +39,12 @@ export const ReportedUnknownWebsites = () => {
 
   return (
     <Panel>
+      <Box sx={{p: 2}}>
+        <Txt color="hint" italic>
+          {m.reportedUnknownWebsitesText}
+        </Txt>
+      </Box>
+      <Divider />
       <Datatable
         id="reportedunknownwebsites"
         header={
