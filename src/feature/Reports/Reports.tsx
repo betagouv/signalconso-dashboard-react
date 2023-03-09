@@ -317,7 +317,7 @@ export const Reports = () => {
                       <b>{_.report.category}</b>
                       <Box component="ul" sx={{m: 0, p: 2}}>
                         {_.report.subcategories.map((s, i) => (
-                          <li key={i}>{s.title}</li>
+                          <li key={i}>{s}</li>
                         ))}
                       </Box>
                     </>
