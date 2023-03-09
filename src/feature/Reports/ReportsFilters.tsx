@@ -229,6 +229,7 @@ export const ReportsFilters = ({
   const save = () => {
     const form = getValues()
     const reportSearch = form2ReportSearch(form)
+    setFilterName('')
     return saveFilters({name: filterName, reportSearch, default: false})
   }
   const confirm = (e: any) => {
