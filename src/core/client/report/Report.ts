@@ -18,14 +18,6 @@ export enum CompanyKinds {
   INFLUENCEUR = 'INFLUENCEUR',
 }
 
-export interface Category {
-  id: string
-  title: string
-  subcategoriesTitle?: string
-  subcategories?: Subcategory[]
-  companyKind?: CompanyKinds
-}
-
 export enum DetailInputType {
   TEXT = 'TEXT',
   DATE_NOT_IN_FUTURE = 'DATE_NOT_IN_FUTURE',
@@ -86,31 +78,11 @@ export enum ReportTag {
   CompagnieAerienne = 'CompagnieAerienne',
 }
 
-export interface SubcategoryBase extends Category {
-  description?: string
-  tags?: ReportTag[]
-  example?: string
-  reponseconsoCode?: string[]
-  ccrfCode?: string[]
-}
-
-export interface SubcategoryInput extends SubcategoryBase {
-  detailTitle?: string
-  fileLabel?: string
-  detailInputs?: DetailInput[]
-}
-
-export interface SubcategoryInformation extends SubcategoryBase {
-  information: Information
-}
-
-export type Subcategory = SubcategoryBase | SubcategoryInput | SubcategoryInformation
-
 export interface Report {
   id: string
   gender?: Gender
   category: string
-  subcategories: Subcategory[]
+  subcategories: string[]
   tags: ReportTag[]
   companyId: string
   companyName: string
