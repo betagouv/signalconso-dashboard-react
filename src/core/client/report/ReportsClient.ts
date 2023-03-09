@@ -124,7 +124,7 @@ export class ReportsClient {
   }
 
   readonly renameSavedFilters = (oldName: String, newName: String): Promise<void> => {
-    return this.client.put<void>(`/user-reports-filters/${oldName}/${newName}`)
+    return this.client.put<void>(`/user-reports-filters/rename/${oldName}/${newName}`)
   }
 
   readonly setDefaultFilters = (name: String): Promise<void> => {
