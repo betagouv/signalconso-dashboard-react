@@ -110,13 +110,19 @@ export class ReportsClient {
   }
 
   readonly getSavedFilters = (name: String): Promise<ReportSearch> => {
-    return this.client.get<ReportSearch>(`/user-reports-filters/${name}`)
+    return this.client.get<ReportSearch>(`/user-reports-filters/${name}`).then(_ => ReportsClient.mapFilters(_))
   }
 
   readonly listSavedFilters = (): Promise<NamedReportSearch[]> => {
     return this.client
       .get(`/user-reports-filters`)
-      .then(_ => _.map((result: any) => ({name: result.name, reportSearch: result.filters, default: result.default})))
+      .then(_ =>
+        _.map((result: any) => ({
+          name: result.name,
+          reportSearch: ReportsClient.mapFilters(result.filters),
+          default: result.default,
+        })),
+      )
   }
 
   readonly deleteSavedFilters = (name: String): Promise<void> => {
@@ -190,6 +196,12 @@ export class ReportsClient {
       },
     })
   }
+
+  static readonly mapFilters = (filters: ReportSearch): ReportSearch => ({
+    ...filters,
+    start: filters.start && new Date(filters.start),
+    end: filters.end && new Date(filters.end),
+  })
 
   static readonly mapReport = (report: {[key in keyof Report]: any}): Report => ({
     ...report,

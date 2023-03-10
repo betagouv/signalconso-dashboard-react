@@ -224,6 +224,7 @@ export const ReportsFilters = ({
 
   const close = () => {
     setOpen(false)
+    setTimeout(() => setEditFilters(false), 100)
   }
 
   const save = () => {
@@ -292,7 +293,7 @@ export const ReportsFilters = ({
             </Typography>
             {!editFilters || (
               <Typography variant="h6" color="text.primary">
-                Gestion des filtres enregistrés
+                Gestion des recherches enregistrées
               </Typography>
             )}
           </Breadcrumbs>
@@ -301,14 +302,14 @@ export const ReportsFilters = ({
           <>
             <DialogContent>
               <Txt color="hint" italic>
-                Retrouvez ici vos filtres enregistrés. Vous pouvez les renommer ou les supprimer.
+                Retrouvez ici vos recherches enregistrées. Vous pouvez les renommer ou les supprimer.
               </Txt>
               {savedFiltersLoading ? (
                 <Box sx={{textAlign: 'center'}}>
                   <CircularProgress size={64} />
                 </Box>
               ) : savedFilters.length === 0 ? (
-                <Fender title="Aucun filtre enregistré" icon="sentiment_very_dissatisfied" />
+                <Fender title="Aucune recherche enregistrée" icon="sentiment_very_dissatisfied" />
               ) : (
                 <SavedReportsFilters
                   filters={savedFilters}
@@ -339,8 +340,8 @@ export const ReportsFilters = ({
                   }}
                 >
                   <Txt color="hint" italic>
-                    Choisissez un de vos filtres enregistrés pour l'appliquer ci-dessus. Cliquer sur "Gérer les filtres" pour
-                    retrouver tous vos filtrer et les gérer.
+                    Sélectionner une de vos recherches enregistrées pour l'appliquer. Cliquez sur "Gérer les recherches" pour
+                    retrouver toutes vos recherches et les gérer.
                   </Txt>
                   <Box
                     sx={{
@@ -353,10 +354,10 @@ export const ReportsFilters = ({
                       disablePortal
                       onChange={(e: any, filterName: string | null) => selectFilterToApply(filterName)}
                       options={savedFilters.map(_ => _.name)}
-                      renderInput={params => <ScInput {...params} label="Appliquer un filtre enregistré" />}
+                      renderInput={params => <ScInput {...params} label="Sélectionner une recherche" />}
                     />
                     <Btn color="primary" onClick={() => setEditFilters(true)}>
-                      Gérer les filtres
+                      Gérer les recherches
                     </Btn>
                   </Box>
                   <Box
@@ -366,15 +367,14 @@ export const ReportsFilters = ({
                   >
                     <ScInput
                       sx={{width: '50%'}}
-                      label="Nom du filtre"
+                      label="Nom de la recherche"
                       value={filterName}
                       error={filterNameAlreadyExists}
-                      helperText={filterNameAlreadyExists ? 'Le filtre existe déjà' : ''}
+                      helperText={filterNameAlreadyExists ? 'Une recherche avec ce nom existe déjà' : ''}
                       onChange={(event: React.ChangeEvent<HTMLInputElement>) => setFilterName(event.target.value)}
                     />
                     <Btn onClick={save} color="primary" disabled={!canCreateFilter}>
-                      {/*<Icon>save</Icon>*/}
-                      Créer un filtre
+                      Enregistrer
                     </Btn>
                   </Box>
                 </Box>

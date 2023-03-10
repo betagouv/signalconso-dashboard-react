@@ -43,9 +43,9 @@ const SavedFiltersItem = ({
   return (
     <ListItem>
       <ScInput
-        label="Nom du filtre"
+        label="Nom de la recherche"
         error={alreadyExists}
-        helperText={alreadyExists ? 'Le filtre existe déjà' : ''}
+        helperText={alreadyExists ? 'Ce nom existe déjà' : ''}
         value={name}
         onChange={changeName}
         disabled={!edit}
