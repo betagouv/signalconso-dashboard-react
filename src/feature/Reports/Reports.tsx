@@ -78,7 +78,26 @@ export const Reports = () => {
   })
 
   useEffect(() => {
-    _reports.updateFilters({..._reports.initialFilters, ...queryString.get()})
+    if (queryString.isEmpty()) {
+      _reports.listSavedFilters
+        .fetch({})
+        .then(savedFilters => {
+          const defaultFilters = savedFilters.find(_ => _.default)?.reportSearch
+          const initialFilters = defaultFilters
+            ? {
+                ...defaultFilters,
+                limit: _reports.initialFilters.limit,
+                offset: _reports.initialFilters.offset,
+              }
+            : _reports.initialFilters
+
+          _reports.updateFilters({...initialFilters})
+        })
+        .catch(_ => _reports.updateFilters({..._reports.initialFilters}))
+    } else {
+      _reports.listSavedFilters.fetch({})
+      _reports.updateFilters({..._reports.initialFilters, ...queryString.get()})
+    }
   }, [])
 
   useEffect(() => {
@@ -202,7 +221,17 @@ export const Reports = () => {
                   <Icon>file_download</Icon>
                 </IconBtn>
               </ExportReportsPopper>
-              <ReportsFilters filters={_reports.filters} updateFilters={updateFilters}>
+              <ReportsFilters
+                filters={_reports.filters}
+                updateFilters={updateFilters}
+                savedFilters={_reports.listSavedFilters.entity ?? []}
+                savedFiltersLoading={_reports.listSavedFilters.loading}
+                saveFilters={filters => _reports.saveFilters.fetch({}, filters)}
+                renameFilters={(oldName, newName) => _reports.renameSavedFilters.fetch({}, oldName, newName)}
+                deleteFilters={name => _reports.deleteSavedFilters.fetch({}, name)}
+                setDefault={name => _reports.setDefaultFilters.fetch({}, name)}
+                unsetDefault={name => _reports.unsetDefaultFilters.fetch({}, name)}
+              >
                 <Tooltip title={m.advancedFilters}>
                   <IconBtn color="primary">
                     <Icon>filter_list</Icon>

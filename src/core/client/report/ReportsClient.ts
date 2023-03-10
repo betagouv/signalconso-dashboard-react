@@ -18,6 +18,7 @@ import {
 import {ApiSdkLogger} from '../../helper/Logger'
 import {ApiClientApi} from '../ApiClient'
 import {cleanObject, dateToApiDate, dateToApiTime, directDownloadBlob} from '../../helper'
+import {NamedReportSearch} from './NamedReportSearch'
 
 export interface ReportFilterQuerystring {
   readonly departments?: string[]
@@ -104,6 +105,42 @@ export class ReportsClient {
     return this.client.getPdf<any>(`/reports/download`, {qs: {ids}}).then(directDownloadBlob('Signalement.pdf'))
   }
 
+  readonly saveFilters = (filters: NamedReportSearch) => {
+    return this.client.post<void>(`/user-reports-filters`, {body: {name: filters.name, filters: filters.reportSearch}})
+  }
+
+  readonly getSavedFilters = (name: String): Promise<ReportSearch> => {
+    return this.client.get<ReportSearch>(`/user-reports-filters/${name}`).then(_ => ReportsClient.mapFilters(_))
+  }
+
+  readonly listSavedFilters = (): Promise<NamedReportSearch[]> => {
+    return this.client
+      .get(`/user-reports-filters`)
+      .then(_ =>
+        _.map((result: any) => ({
+          name: result.name,
+          reportSearch: ReportsClient.mapFilters(result.filters),
+          default: result.default,
+        })),
+      )
+  }
+
+  readonly deleteSavedFilters = (name: String): Promise<void> => {
+    return this.client.delete<void>(`/user-reports-filters/${name}`)
+  }
+
+  readonly renameSavedFilters = (oldName: String, newName: String): Promise<void> => {
+    return this.client.put<void>(`/user-reports-filters/rename/${oldName}/${newName}`)
+  }
+
+  readonly setDefaultFilters = (name: String): Promise<void> => {
+    return this.client.put<void>(`/user-reports-filters/default/${name}`)
+  }
+
+  readonly unsetDefaultFilters = (name: String): Promise<void> => {
+    return this.client.delete<void>(`/user-reports-filters/default/${name}`)
+  }
+
   readonly remove = (id: Id) => {
     return this.client.delete<void>(`reports/${id}`)
   }
@@ -159,6 +196,12 @@ export class ReportsClient {
       },
     })
   }
+
+  static readonly mapFilters = (filters: ReportSearch): ReportSearch => ({
+    ...filters,
+    start: filters.start && new Date(filters.start),
+    end: filters.end && new Date(filters.end),
+  })
 
   static readonly mapReport = (report: {[key in keyof Report]: any}): Report => ({
     ...report,

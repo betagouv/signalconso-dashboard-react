@@ -157,6 +157,7 @@ export const fr = {
     thisWillBeRemoved: (_: string) => `La pièce jointe <b>${_}</b> sera définitivement supprimée.`,
     exportInXLS: 'Exporter en XLS',
     removeAllFilters: 'Supprimer les filtres',
+    saveFilters: 'Sauvegarder les filtres sélectionnés',
     removeReportDesc: (id: string) => `Le signalement "${id}" sera supprimé. Cette action est irréversible.`,
     download: 'Télécharger',
     downloadNotice: 'Télécharger le courrier',
