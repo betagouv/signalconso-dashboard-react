@@ -43,6 +43,7 @@ export const PeriodPicker = ({value = [undefined, undefined], onChange, label, f
         onChange={handleStartChange}
         sx={{marginRight: '-1px'}}
         InputProps={{
+          inputProps: {min: '1000-01-01'},
           sx: _ => ({
             borderBottomRightRadius: 0,
             borderTopRightRadius: 0,
@@ -57,6 +58,7 @@ export const PeriodPicker = ({value = [undefined, undefined], onChange, label, f
         value={end}
         onChange={handleEndChange}
         InputProps={{
+          inputProps: {min: '1000-01-01'},
           sx: _ => ({
             borderBottomLeftRadius: 0,
             borderTopLeftRadius: 0,
