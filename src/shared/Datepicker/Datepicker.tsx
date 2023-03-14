@@ -16,21 +16,27 @@ export interface DatepickerProps extends Omit<TextFieldProps, 'onChange'> {
 
 export const Datepicker = ({value, onChange, label, fullWidth, InputProps, timeOfDay, ...props}: DatepickerProps) => {
   const onChangeDate = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newValue = e.target.value
-    // it is either an empty string or yyyy-mm-dd
-    if (newValue.length) {
-      const dateAndTime = `${newValue}T${timeOfDay === 'startOfDay' ? '00:00:00.000' : '23:59:59.999'}`
-      const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone
-      const utcDate = zonedTimeToUtc(dateAndTime, userTimeZone)
-      onChange(utcDate)
-    } else {
-      onChange(undefined)
+    setIsIsValidDate(e.target.value === '' || e.target.checkValidity())
+    if (e.target.checkValidity()) {
+      const newValue = e.target.value
+      // it is either an empty string or yyyy-mm-dd
+      if (newValue.length) {
+        const dateAndTime = `${newValue}T${timeOfDay === 'startOfDay' ? '00:00:00.000' : '23:59:59.999'}`
+        const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone
+        const utcDate = zonedTimeToUtc(dateAndTime, userTimeZone)
+        onChange(utcDate)
+      } else {
+        onChange(undefined)
+      }
     }
+    setDisplayedDate(e.target.value)
   }
 
   const [displayedDate, setDisplayedDate] = useState<string>('')
+  const [isValidDate, setIsIsValidDate] = useState<boolean>(true)
 
   useEffect(() => {
+    setIsIsValidDate(true)
     if (value) {
       const yyyymmdd = [
         value.getFullYear(),
@@ -41,7 +47,7 @@ export const Datepicker = ({value, onChange, label, fullWidth, InputProps, timeO
     } else {
       setDisplayedDate('')
     }
-  }, [setDisplayedDate, value])
+  }, [value])
 
   return (
     <TextField
@@ -56,6 +62,7 @@ export const Datepicker = ({value, onChange, label, fullWidth, InputProps, timeO
       onChange={onChangeDate}
       fullWidth={fullWidth}
       InputLabelProps={{shrink: true}}
+      error={!isValidDate}
     />
   )
 }
