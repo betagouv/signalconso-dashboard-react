@@ -11,8 +11,8 @@ import {useI18n} from '../../../core/i18n'
 import {siteMap} from '../../../core/siteMap'
 import {NavLink} from 'react-router-dom'
 import {styleUtils, sxUtils} from '../../../core/theme'
-import {Report} from '../../../core/client/report/Report'
-import {ScOption} from 'core/helper/ScOption'
+import {Influencer, Report} from '../../../core/client/report/Report'
+import {ReportInfluencer} from '../ReportInfluencer'
 
 interface Props {
   report: Report
@@ -23,7 +23,7 @@ export const ReportCompany = ({report, canEdit}: Props) => {
   const _report = useReportContext()
   const {m} = useI18n()
   const theme = useTheme()
-  const {websiteURL, vendor, companyAddress, companyName, companySiret, phone} = report
+  const {websiteURL, vendor, companyAddress, companyName, companySiret, phone, influencer} = report
 
   return (
     <Panel stretch>
@@ -84,6 +84,7 @@ export const ReportCompany = ({report, canEdit}: Props) => {
             </Txt>
           )}
           {phone && <Phone {...{phone}} />}
+          {influencer && <InfluencerBlock {...{influencer}} />}
         </div>
         <Icon
           sx={{
@@ -116,5 +117,17 @@ function Phone({phone}: {phone: string}) {
       </Icon>
       {phone}
     </div>
+  )
+}
+
+function InfluencerBlock({influencer}: {influencer: Influencer}) {
+  const theme = useTheme()
+  const {m} = useI18n()
+
+  return (
+    <Box sx={{mt: theme.spacing(2)}}>
+      <Txt sx={sxUtils.fontBig}>{m.influencerIdentifiedTitle}</Txt>
+      <ReportInfluencer influencer={influencer} />
+    </Box>
   )
 }

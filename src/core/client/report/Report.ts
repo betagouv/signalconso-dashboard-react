@@ -104,6 +104,12 @@ export interface Report {
   reponseconsoCode: string[]
   ccrfCode: string[]
   expirationDate: Date
+  influencer?: Influencer
+}
+
+export interface Influencer {
+  socialNetwork: string
+  name: string
 }
 
 export interface DetailInputValue {

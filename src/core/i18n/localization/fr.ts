@@ -45,6 +45,7 @@ export const fr = {
   formatDuration,
   formatLargeNumber,
   messages: {
+    influencerIdentifiedTitle: 'Influenceur ou influenceuse identifié(e)',
     ReportTypeDesc: {
       [ReportType.Both]: 'Sites internet et établissements physiques',
       [ReportType.Internet]: 'Sites internet seulement',
