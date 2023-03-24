@@ -6,24 +6,25 @@ import {useToast} from '../../core/toast'
 import {Page} from '../../shared/Layout'
 import {ReportHeader} from './ReportHeader'
 import {useBoolean} from '../../alexlibs/react-hooks-lib'
-import {Box, Collapse, Icon, Tooltip} from '@mui/material'
+import {Box, Collapse} from '@mui/material'
 import {ScButton} from '../../shared/Button/Button'
 import {styleUtils} from '../../core/theme'
 import {Txt} from '../../alexlibs/mui-extension'
 import {ReportDescription} from './ReportDescription'
 import {ReportResponseForm} from './ReportResponseForm/ReportResponseForm'
-import {Panel, PanelHead} from '../../shared/Panel'
+import {Panel, PanelBody, PanelHead} from '../../shared/Panel'
 import {ReportResponseComponent} from './ReportResponse'
 import {ReportEvents} from './Event/ReportEvents'
 import {creationReportEvent} from './Report'
 import {useEventContext} from '../../core/context/EventContext'
 import {EventActionValues} from '../../core/client/event/Event'
 import {FileOrigin} from '../../core/client/file/UploadedFile'
-import {Report} from '../../core/client/report/Report'
+import {Influencer, Report} from '../../core/client/report/Report'
 import {Id} from '../../core/model'
 import {capitalize} from '../../core/helper'
 import {ReportReferenceNumber} from 'feature/Report/ReportReferenceNumber'
 import {ScOption} from 'core/helper/ScOption'
+import {ReportInfluencer} from './ReportInfluencer'
 
 export const ReportPro = () => {
   const {id} = useParams<{id: Id}>()
@@ -75,6 +76,7 @@ export const ReportPro = () => {
                 </ScButton>
               )}
             </ReportHeader>
+            {report.influencer && <ReportInfluencerPanel influencer={report.influencer} />}
             <ReportDescription report={report} files={_report.get.entity?.files}>
               <Txt block bold>
                 {m.consumer}
@@ -152,5 +154,21 @@ export const ReportPro = () => {
         ))
         .toUndefined()}
     </Page>
+  )
+}
+
+interface ReportInfluencerPanelProps {
+  influencer: Influencer
+}
+export const ReportInfluencerPanel = ({influencer}: ReportInfluencerPanelProps) => {
+  const {m} = useI18n()
+
+  return (
+    <Panel>
+      <PanelHead>{m.influencerIdentifiedTitle}</PanelHead>
+      <PanelBody>
+        <ReportInfluencer influencer={influencer} />
+      </PanelBody>
+    </Panel>
   )
 }
