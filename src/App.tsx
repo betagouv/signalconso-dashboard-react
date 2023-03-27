@@ -113,7 +113,10 @@ const AppLogin = () => {
               <Route path={siteMap.loggedout.activateAdmin}>{userActivation}</Route>
               <Route path={siteMap.loggedout.activateDgccrf}>{userActivation}</Route>
               <Route path={siteMap.loggedout.consumerReview()}>
-                <ConsumerReview onSubmit={apiPublicSdk.report.postReviewOnReportResponse} />
+                <ConsumerReview
+                  reviewExists={apiPublicSdk.report.reviewExists}
+                  onSubmit={apiPublicSdk.report.postReviewOnReportResponse}
+                />
               </Route>
               <Route path="/">
                 {authResponse ? (

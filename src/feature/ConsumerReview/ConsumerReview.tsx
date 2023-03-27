@@ -9,7 +9,7 @@ import {ScButton} from '../../shared/Button/Button'
 import {PanelFoot} from '../../shared/Panel/PanelFoot'
 import {Controller, useForm} from 'react-hook-form'
 import {useAsync} from '../../alexlibs/react-hooks-lib'
-import React, {useEffect, useState} from 'react'
+import React, {useEffect, useMemo, useState} from 'react'
 import {useLocation, useParams} from 'react-router'
 import {useToast} from '../../core/toast'
 import {Alert} from '../../alexlibs/mui-extension'
@@ -17,10 +17,12 @@ import {QueryString} from '../../core/helper/useQueryString'
 import {Box} from '@mui/material'
 import {useLayoutContext} from '../../core/Layout/LayoutContext'
 import {Emoticon} from '../../shared/Emoticon/Emoticon'
-import {Id, ResponseConsumerReview, ResponseEvaluation} from '../../core/model'
+import {Id, ResponseConsumerReview, ResponseConsumerReviewExists, ResponseEvaluation} from '../../core/model'
+import {ApiError} from '../../core/client/ApiClient'
 
 interface Props {
   onSubmit: (reportId: Id, review: ResponseConsumerReview) => Promise<any>
+  reviewExists: (reportId: Id) => Promise<any>
 }
 
 interface Form {
@@ -28,11 +30,12 @@ interface Form {
   details?: string
 }
 
-export const ConsumerReview = ({onSubmit}: Props) => {
+export const ConsumerReview = ({onSubmit, reviewExists}: Props) => {
   const {reportId} = useParams<{reportId: Id}>()
   const {m} = useI18n()
   const {toastError, toastErrorIfDefined} = useToast()
   const [done, setDone] = useState(false)
+  const [evaluation, setEvaluation] = useState<ResponseEvaluation | undefined>(undefined)
   const {
     register,
     handleSubmit,
@@ -47,15 +50,44 @@ export const ConsumerReview = ({onSubmit}: Props) => {
   }
 
   const _post = useAsync(onSubmit)
+  const _reviewExists = useAsync(reviewExists)
   const {isMobileWidth} = useLayoutContext()
 
   const submit = async (form: Form) => {
     await _post.call(reportId, {...form})
     setDone(true)
   }
+
   useEffect(() => {
     toastErrorIfDefined(_post.error)
   }, [_post.error])
+
+  useMemo(() => {
+    const parsed = QueryString.parse(search.replace(/^\?/, '')).evaluation as unknown as ResponseEvaluation
+    setEvaluation(parsed)
+  }, [])
+
+  useEffect(() => {
+    _reviewExists
+      .call(reportId)
+      .then((x: ResponseConsumerReviewExists) => {
+        console.log(x.value)
+        console.log('BEFORE SET STATE')
+        console.log(done)
+        setDone(x.value)
+        console.log(done)
+        console.log('AFTER SET STATE')
+      })
+      .then(_ => {
+        console.log('POST BEGIN')
+        console.log('eval_POST   ' + evaluation)
+        console.log('done_POST   ' + done)
+        if (evaluation && !done) {
+          // const parsed = QueryString.parse(search.replace(/^\?/, '')).evaluation as unknown as ResponseEvaluation
+          _post.call(reportId, {evaluation: evaluation}).then(_ => console.log('POST DONE'))
+        }
+      })
+  }, [])
 
   return (
     <Page size="s">
@@ -72,7 +104,7 @@ export const ConsumerReview = ({onSubmit}: Props) => {
               <Txt block gutterBottom color="hint" dangerouslySetInnerHTML={{__html: m.didTheCompanyAnsweredWell}} />
               <Controller
                 name="evaluation"
-                defaultValue={getEvaluationFromQueryString(search)}
+                defaultValue={evaluation}
                 rules={{required: {value: true, message: m.required}}}
                 control={control}
                 render={({field}) => (
