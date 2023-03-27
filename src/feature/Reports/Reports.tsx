@@ -314,7 +314,7 @@ export const Reports = () => {
                 <Tooltip
                   title={
                     <>
-                      <b>{_.report.category}</b>
+                      <b>{m.ReportCategoryDesc[_.report.category]}</b>
                       <Box component="ul" sx={{m: 0, p: 2}}>
                         {_.report.subcategories.map((s, i) => (
                           <li key={i}>{s}</li>
@@ -323,7 +323,7 @@ export const Reports = () => {
                     </>
                   }
                 >
-                  <span>{_.report.category}</span>
+                  <span>{m.ReportCategoryDesc[_.report.category]}</span>
                 </Tooltip>
               ),
             },

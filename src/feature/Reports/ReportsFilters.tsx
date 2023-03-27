@@ -279,7 +279,7 @@ export const ReportsFilters = ({filters: rawFilters, updateFilters, children}: P
                   <MenuItem value="">&nbsp;</MenuItem>
                   {_category?.entity.map(category => (
                     <MenuItem key={category} value={category}>
-                      {category}
+                      {m.ReportCategoryDesc[category]}
                     </MenuItem>
                   ))}
                 </ScSelect>

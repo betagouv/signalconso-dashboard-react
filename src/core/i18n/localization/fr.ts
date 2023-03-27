@@ -5,6 +5,7 @@ import {ReportStatus, ReportStatusPro, ReportTag, ReportType} from '../../client
 import {CompanyAccessLevel} from '../../client/company-access/CompanyAccess'
 import {IdentificationStatus, InvestigationStatus} from '../../client/website/Website'
 import {ReportResponseTypes, ResponseEvaluation} from '../../client/event/Event'
+import {Category} from '../../client/constant/Category'
 
 const invalidDate = '-'
 
@@ -46,6 +47,28 @@ export const fr = {
   formatLargeNumber,
   messages: {
     influencerIdentifiedTitle: 'Influenceur ou influenceuse identifié(e)',
+    ReportCategoryDesc: {
+      [Category.RetraitRappelSpecifique]: 'Retrait-Rappel spécifique',
+      [Category.Coronavirus]: 'COVID-19 (coronavirus)',
+      [Category.CafeRestaurant]: 'Café / Restaurant',
+      [Category.AchatMagasinInternet]: 'Achat (Magasin ou Internet) - ANCIENNE CATEGORIE',
+      [Category.AchatMagasin]: 'Achat en Magasin',
+      [Category.AchatInternet]: 'Achat sur Internet',
+      [Category.ServicesAuxParticuliers]: 'Services aux particuliers',
+      [Category.EauGazElectricite]: 'Eau / Gaz / Electricité',
+      [Category.TelephonieFaiMedias]: "Téléphonie / Fournisseur d'accès internet / médias",
+      [Category.BanqueAssuranceMutuelle]: 'Banque / Assurance / Mutuelle',
+      [Category.IntoxicationAlimentaire]: 'Intoxication alimentaire',
+      [Category.Internet]: 'Internet (hors achats)',
+      [Category.TravauxRenovations]: 'Travaux / Rénovation',
+      [Category.VoyageLoisirs]: 'Voyage / Loisirs',
+      [Category.Immobilier]: 'Immobilier',
+      [Category.Sante]: 'Secteur de la santé',
+      [Category.Animaux]: 'Animaux',
+      [Category.DemarchesAdministratives]: 'Démarches administratives',
+      [Category.VoitureVehiculeVelo]: 'Voiture / Véhicule / Vélo',
+      [Category.DemarchageAbusif]: 'Démarchage abusif',
+    },
     ReportTypeDesc: {
       [ReportType.Both]: 'Sites internet et établissements physiques',
       [ReportType.Internet]: 'Sites internet seulement',

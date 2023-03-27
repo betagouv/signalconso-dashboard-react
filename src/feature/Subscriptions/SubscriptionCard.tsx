@@ -19,6 +19,7 @@ import {Enum} from '../../alexlibs/ts-utils'
 import {Subscription, SubscriptionCreate} from '../../core/client/subscription/Subscription'
 import {ReportSearch} from '../../core/client/report/ReportSearch'
 import {useConstantContext} from '../../core/context/ConstantContext'
+import {Category} from '../../core/client/constant/Category'
 
 interface Props {
   subscription: Subscription
@@ -141,6 +142,7 @@ export const SubscriptionCard = ({subscription, onUpdate, onDelete, removing, lo
           <SelectMenu
             multiple
             options={_category.entity}
+            renderValue={(option: Category) => m.ReportCategoryDesc[option]}
             initialValue={subscription.categories}
             onClose={categoryAnchor.close}
             open={!!categoryAnchor.element}

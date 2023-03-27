@@ -1,12 +1,13 @@
 import {Country, Department} from '../constant/Country'
 import {ReportTag} from '../report/Report'
+import {Category} from '../constant/Category'
 
 export type SubscriptionFrequency = 'P7D' | 'P1D'
 
 export interface Subscription {
   id: string
   departments: Department[]
-  categories: string[]
+  categories: Category[]
   sirets: string[]
   frequency: SubscriptionFrequency
   countries: Country[]

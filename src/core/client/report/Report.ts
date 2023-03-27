@@ -1,5 +1,6 @@
 import {Address, UploadedFile} from '../../model'
 import format from 'date-fns/format'
+import {Category} from '../constant/Category'
 
 export const ReportingDateLabel = 'Date du constat'
 export const ReportingTimeslotLabel = 'Heure du constat'
@@ -81,7 +82,7 @@ export enum ReportTag {
 export interface Report {
   id: string
   gender?: Gender
-  category: string
+  category: Category
   subcategories: string[]
   tags: ReportTag[]
   companyId: string
