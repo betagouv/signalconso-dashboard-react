@@ -71,23 +71,19 @@ export const ConsumerReview = ({onSubmit, reviewExists}: Props) => {
     _reviewExists
       .call(reportId)
       .then((x: ResponseConsumerReviewExists) => {
-        console.log(x.value)
-        console.log('BEFORE SET STATE')
-        console.log(done)
         setDone(x.value)
-        console.log(done)
-        console.log('AFTER SET STATE')
+        return x.value
       })
-      .then(_ => {
+      .then(exist => {
         console.log('POST BEGIN')
         console.log('eval_POST   ' + evaluation)
         console.log('done_POST   ' + done)
-        if (evaluation && !done) {
+        if (evaluation && !exist) {
           // const parsed = QueryString.parse(search.replace(/^\?/, '')).evaluation as unknown as ResponseEvaluation
           _post.call(reportId, {evaluation: evaluation}).then(_ => console.log('POST DONE'))
         }
       })
-  }, [])
+  }, [done])
 
   return (
     <Page size="s">
