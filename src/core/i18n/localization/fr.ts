@@ -110,6 +110,7 @@ export const fr = {
     positive: "Nombre d'utilisateurs satisfaits de la réponse donnée par l'entreprise",
     negative: "Nombre d'utilisateurs insatisfaits de la réponse donnée par l'entreprise",
     neutral: "Nombre d'utilisateurs partiellement satisfait de la réponse donnée par l'entreprise",
+    searchByNameOrReference: 'Nom, prénom ou numéro de référence',
     search: 'Rechercher',
     edit: 'Modifier',
     next: 'Suivant',
