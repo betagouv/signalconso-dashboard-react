@@ -112,7 +112,7 @@ export const ReportHeader = ({report, children, elevated, isUserPro = false}: Pr
         <Alert id="report-info" dense type="info" deletable persistentDelete sx={{mb: 2}}>
           {m.reportCategoriesAreSelectByConsumer}
         </Alert>
-        <ReportCategories categories={[report.category, ...report.subcategories]} />
+        <ReportCategories categories={[m.ReportCategoryDesc[report.category], ...report.subcategories]} />
       </PanelBody>
       {(!hideTags || children) && (
         <PanelFoot sx={css.actions} border>

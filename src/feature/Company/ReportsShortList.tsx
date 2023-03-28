@@ -46,7 +46,7 @@ export const ReportsShortList = ({reports}: Props) => {
           <Box sx={css.body}>
             <Box>
               <Txt size="big" bold block truncate sx={{flex: 1, mb: 0.5}}>
-                {_.report.category}
+                {m.ReportCategoryDesc[_.report.category]}
               </Txt>
               <Box sx={css.reportTag}>
                 <ReportStatusLabel status={_.report.status} dense sx={{mr: 1}} />
