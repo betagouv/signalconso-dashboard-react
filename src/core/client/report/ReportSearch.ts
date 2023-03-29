@@ -24,4 +24,5 @@ export interface ReportSearch {
   hasForeignCountry?: boolean
   hasCompany?: boolean
   hasAttachment?: boolean
+  fullText?: String
 }

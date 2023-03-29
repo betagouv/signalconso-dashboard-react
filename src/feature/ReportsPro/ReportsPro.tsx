@@ -37,6 +37,7 @@ import {Report, ReportSearchResult, ReportStatus, ReportStatusPro, ReportType} f
 import {ReportSearch} from '../../core/client/report/ReportSearch'
 import {ScOption} from 'core/helper/ScOption'
 import {Label} from '../../shared/Label/Label'
+import {ScInput} from '../../shared/Input/ScInput'
 
 const css = makeSx({
   card: {
@@ -181,27 +182,18 @@ export const ReportsPro = () => {
                   <Grid container spacing={1}>
                     <Grid item sm={6} xs={12}>
                       <DebouncedInput
-                        value={_reports.filters.siretSirenList}
-                        onChange={_ => _reports.updateFilters(prev => ({...prev, siretSirenList: _}))}
+                        value={_reports.filters.fullText ?? ''}
+                        onChange={_ => _reports.updateFilters(prev => ({...prev, fullText: _}))}
                       >
                         {(value, onChange) => (
-                          <SelectCompaniesByPro
-                            values={value}
-                            onChange={onChange}
+                          <ScInput
+                            label={m.search}
+                            placeholder={m.searchByNameOrReference}
+                            value={value}
+                            onChange={e => onChange(e.target.value)}
                             fullWidth
                             sx={{mr: 1}}
-                            accessibleCompanies={companies}
                           />
-                        )}
-                      </DebouncedInput>
-                    </Grid>
-                    <Grid item sm={6} xs={12}>
-                      <DebouncedInput
-                        value={_reports.filters.departments}
-                        onChange={departments => _reports.updateFilters(prev => ({...prev, departments}))}
-                      >
-                        {(value, onChange) => (
-                          <SelectDepartments label={m.departments} value={value} onChange={onChange} sx={{mr: 1}} fullWidth />
                         )}
                       </DebouncedInput>
                     </Grid>
@@ -240,7 +232,33 @@ export const ReportsPro = () => {
                         )}
                       </DebouncedInput>
                     </Grid>
-                    <Grid item sm={6} xs={12}>
+                    <Grid item sm={4} xs={12}>
+                      <DebouncedInput
+                        value={_reports.filters.siretSirenList}
+                        onChange={_ => _reports.updateFilters(prev => ({...prev, siretSirenList: _}))}
+                      >
+                        {(value, onChange) => (
+                          <SelectCompaniesByPro
+                            values={value}
+                            onChange={onChange}
+                            fullWidth
+                            sx={{mr: 1}}
+                            accessibleCompanies={companies}
+                          />
+                        )}
+                      </DebouncedInput>
+                    </Grid>
+                    <Grid item sm={4} xs={12}>
+                      <DebouncedInput
+                        value={_reports.filters.departments}
+                        onChange={departments => _reports.updateFilters(prev => ({...prev, departments}))}
+                      >
+                        {(value, onChange) => (
+                          <SelectDepartments label={m.departments} value={value} onChange={onChange} sx={{mr: 1}} fullWidth />
+                        )}
+                      </DebouncedInput>
+                    </Grid>
+                    <Grid item sm={4} xs={12}>
                       <DebouncedInput
                         value={_reports.filters.status?.[0] ? Report.getStatusProByStatus(_reports.filters.status[0]) : ''}
                         onChange={e => {

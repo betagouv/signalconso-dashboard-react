@@ -10,7 +10,7 @@ import {CompanyWithReportsCount} from '../../core/client/company/Company'
 import {Period} from '../../core/client/stats/Stats'
 import {Id, ReportStatus} from '../../core/model'
 
-const periods: Period[] = ['Day', 'Month']
+const periods: Period[] = ['Day', 'Week', 'Month']
 
 const ticks = 7
 
@@ -51,6 +51,17 @@ export const CompanyChartPanel = ({companyId, company}: {company: CompanyWithRep
     inner()
   }, [reportsCurvePeriod])
 
+  const periodToString = (period: Period): string => {
+    switch (period) {
+      case 'Day':
+        return m.day
+      case 'Week':
+        return m.week
+      case 'Month':
+        return m.month
+    }
+  }
+
   return (
     <Panel>
       <PanelHead
@@ -62,7 +73,7 @@ export const CompanyChartPanel = ({companyId, company}: {company: CompanyWithRep
                 sx={p === reportsCurvePeriod ? {background: t => alpha(t.palette.primary.main, 0.14)} : {}}
                 onClick={() => setReportsCurvePeriod(p)}
               >
-                {p === 'Day' ? m.day : m.month}
+                {periodToString(p)}
               </Button>
             ))}
           </ButtonGroup>
@@ -78,7 +89,7 @@ export const CompanyChartPanel = ({companyId, company}: {company: CompanyWithRep
         </NavLink>
       </PanelHead>
       <PanelBody>
-        <LineChartOrPlaceholder hideLabelToggle={true} {...{curves}} />
+        <LineChartOrPlaceholder hideLabelToggle={true} {...{curves}} period={reportsCurvePeriod} />
       </PanelBody>
     </Panel>
   )

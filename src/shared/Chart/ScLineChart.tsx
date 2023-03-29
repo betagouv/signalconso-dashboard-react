@@ -4,7 +4,7 @@ import {CartesianGrid, LabelList, Legend, Line, LineChart, ResponsiveContainer, 
 import {useI18n} from '../../core/i18n'
 import {styleUtils} from '../../core/theme'
 import {I18nContextProps} from 'core/i18n/I18n'
-import {CountByDate} from '../../core/client/stats/Stats'
+import {CountByDate, Period} from '../../core/client/stats/Stats'
 
 export interface ScLineChartPropsBase {
   /**
@@ -17,6 +17,7 @@ export interface ScLineChartPropsBase {
 }
 
 interface Props extends ScLineChartPropsBase {
+  period?: Period
   curves: {
     label: string
     key: string
@@ -25,11 +26,37 @@ interface Props extends ScLineChartPropsBase {
   }[]
 }
 
-const formatDate = (m: I18nContextProps['m'], date: Date): string => (m.monthShort_ as any)[date.getMonth() + 1]
+// INSPIRED FROM https://stackoverflow.com/questions/6117814/get-week-of-year-in-javascript-like-in-php
+function getWeek(date: Date): [number, number] {
+  // Copy date so don't modify original
+  const d: Date = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()))
+  // Set to nearest Thursday: current date + 4 - current day number
+  // Make Sunday's day number 7
+  d.setUTCDate(d.getUTCDate() + 4 - (d.getUTCDay() || 7))
+  // Get first day of year
+  const yearStart: Date = new Date(Date.UTC(d.getUTCFullYear(), 0, 1))
+  // Calculate full weeks to nearest Thursday
+  const weekNo: number = Math.ceil(((d.valueOf() - yearStart.valueOf()) / 86400000 + 1) / 7)
+  // Return week number and year
+  return [d.getUTCFullYear(), weekNo]
+}
+
+const formatDate = (m: I18nContextProps['m'], date: Date, period?: Period): string => {
+  switch (period) {
+    case 'Day':
+      return `${(m.dayShort_ as any)[date.getDay() + 1]} ${date.getDate()}`
+    case 'Week':
+      const [y, w] = getWeek(date)
+      return `S${w} ${y}`
+    case 'Month':
+    case undefined:
+      return (m.monthShort_ as any)[date.getMonth() + 1]
+  }
+}
 
 const colors = (t: Theme) => [t.palette.primary.main, '#e48c00', 'red', 'green']
 
-export const ScLineChart = memo(({disableAnimation, hideLabelToggle, curves, height = 300}: Props) => {
+export const ScLineChart = memo(({period, disableAnimation, hideLabelToggle, curves, height = 300}: Props) => {
   const theme = useTheme()
   const [showCurves, setShowCurves] = useState<boolean[]>(new Array(curves.length).fill(false))
   const {m} = useI18n()
@@ -37,7 +64,8 @@ export const ScLineChart = memo(({disableAnimation, hideLabelToggle, curves, hei
     const res: any[] = []
     curves.forEach((curve, i) => {
       curve.curve.forEach((data, j) => {
-        if (!res[j]) res[j] = {date: formatDate(m, data.date)} as any
+        console.log(curve)
+        if (!res[j]) res[j] = {date: formatDate(m, data.date, period)} as any
         res[j][curve.key] = data.count
       })
       res.push()
