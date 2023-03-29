@@ -78,7 +78,7 @@ export const CompanyChartPanel = ({companyId, company}: {company: CompanyWithRep
         </NavLink>
       </PanelHead>
       <PanelBody>
-        <LineChartOrPlaceholder hideLabelToggle={true} {...{curves}} />
+        <LineChartOrPlaceholder hideLabelToggle={true} {...{curves}} period={reportsCurvePeriod} />
       </PanelBody>
     </Panel>
   )

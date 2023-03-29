@@ -835,6 +835,15 @@ export const fr = {
       11: 'Nov',
       12: 'Déc',
     },
+    dayShort_: {
+      1: 'Dim',
+      2: 'Lun',
+      3: 'Mar',
+      4: 'Mer',
+      5: 'Jeu',
+      6: 'Ven',
+      7: 'Sam',
+    },
     apiErrorsCode: {
       'SC-0001': `Une erreur s'est produite`,
       'SC-0002': `L'utilisateur DGCCRF n'existe pas.`,
