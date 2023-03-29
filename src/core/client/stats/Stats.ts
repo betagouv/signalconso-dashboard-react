@@ -5,7 +5,7 @@ export interface SimpleStat {
   value: string | number
 }
 
-export type Period = 'Day' | 'Month'
+export type Period = 'Day' | 'Week' | 'Month'
 
 export type ReportResponseType = 'ACCEPTED' | 'REJECTED' | 'NOT_CONCERNED'
 

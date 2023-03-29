@@ -26,10 +26,32 @@ interface Props extends ScLineChartPropsBase {
   }[]
 }
 
+// INSPIRED FROM https://stackoverflow.com/questions/6117814/get-week-of-year-in-javascript-like-in-php
+function getWeek(date: Date): [number, number] {
+  // Copy date so don't modify original
+  const d: Date = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()))
+  // Set to nearest Thursday: current date + 4 - current day number
+  // Make Sunday's day number 7
+  d.setUTCDate(d.getUTCDate() + 4 - (d.getUTCDay() || 7))
+  // Get first day of year
+  const yearStart: Date = new Date(Date.UTC(d.getUTCFullYear(), 0, 1))
+  // Calculate full weeks to nearest Thursday
+  const weekNo: number = Math.ceil(((d.valueOf() - yearStart.valueOf()) / 86400000 + 1) / 7)
+  // Return week number and year
+  return [d.getUTCFullYear(), weekNo]
+}
+
 const formatDate = (m: I18nContextProps['m'], date: Date, period?: Period): string => {
-  return period === 'Day'
-    ? `${(m.dayShort_ as any)[date.getDay() + 1]} ${date.getDate()}`
-    : (m.monthShort_ as any)[date.getMonth() + 1]
+  switch (period) {
+    case 'Day':
+      return `${(m.dayShort_ as any)[date.getDay() + 1]} ${date.getDate()}`
+    case 'Week':
+      const [y, w] = getWeek(date)
+      return `S${w} ${y}`
+    case 'Month':
+    case undefined:
+      return (m.monthShort_ as any)[date.getMonth() + 1]
+  }
 }
 
 const colors = (t: Theme) => [t.palette.primary.main, '#e48c00', 'red', 'green']
