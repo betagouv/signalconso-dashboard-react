@@ -1,8 +1,7 @@
 import {Skeleton} from '@mui/material'
-import {useI18n} from 'core/i18n'
 import {ScLineChart} from './ScLineChart'
 import {useEffect, useState} from 'react'
-import {CountByDate} from '../../core/client/stats/Stats'
+import {CountByDate, Period} from '../../core/client/stats/Stats'
 
 export const toPercentage = (numerator: CountByDate[], denominator: CountByDate[]): CountByDate[] => {
   return numerator.map<CountByDate>((k, i) => ({
@@ -17,6 +16,7 @@ export interface CurveDefinition {
 }
 
 interface LineChartOrPlaceholderProps {
+  period?: Period
   curves?: CurveDefinition[]
   hideLabelToggle?: boolean
 }

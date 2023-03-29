@@ -4,7 +4,7 @@ import {CartesianGrid, LabelList, Legend, Line, LineChart, ResponsiveContainer, 
 import {useI18n} from '../../core/i18n'
 import {styleUtils} from '../../core/theme'
 import {I18nContextProps} from 'core/i18n/I18n'
-import {CountByDate} from '../../core/client/stats/Stats'
+import {CountByDate, Period} from '../../core/client/stats/Stats'
 
 export interface ScLineChartPropsBase {
   /**
@@ -17,6 +17,7 @@ export interface ScLineChartPropsBase {
 }
 
 interface Props extends ScLineChartPropsBase {
+  period?: Period
   curves: {
     label: string
     key: string
@@ -25,11 +26,15 @@ interface Props extends ScLineChartPropsBase {
   }[]
 }
 
-const formatDate = (m: I18nContextProps['m'], date: Date): string => (m.monthShort_ as any)[date.getMonth() + 1]
+const formatDate = (m: I18nContextProps['m'], date: Date, period?: Period): string => {
+  return period === 'Day'
+    ? `${(m.dayShort_ as any)[date.getDay() + 1]} ${date.getDate()}`
+    : (m.monthShort_ as any)[date.getMonth() + 1]
+}
 
 const colors = (t: Theme) => [t.palette.primary.main, '#e48c00', 'red', 'green']
 
-export const ScLineChart = memo(({disableAnimation, hideLabelToggle, curves, height = 300}: Props) => {
+export const ScLineChart = memo(({period, disableAnimation, hideLabelToggle, curves, height = 300}: Props) => {
   const theme = useTheme()
   const [showCurves, setShowCurves] = useState<boolean[]>(new Array(curves.length).fill(false))
   const {m} = useI18n()
@@ -37,7 +42,8 @@ export const ScLineChart = memo(({disableAnimation, hideLabelToggle, curves, hei
     const res: any[] = []
     curves.forEach((curve, i) => {
       curve.curve.forEach((data, j) => {
-        if (!res[j]) res[j] = {date: formatDate(m, data.date)} as any
+        console.log(curve)
+        if (!res[j]) res[j] = {date: formatDate(m, data.date, period)} as any
         res[j][curve.key] = data.count
       })
       res.push()
