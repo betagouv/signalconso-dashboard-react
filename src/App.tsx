@@ -17,6 +17,7 @@ import {ConstantProvider} from './core/context/ConstantContext'
 import {ReportedPhonesProvider} from './core/context/ReportedPhonesContext'
 import {AsyncFileProvider} from './core/context/AsyncFileContext'
 import {CompaniesProvider} from './core/context/CompaniesContext'
+import {QueryClient, QueryClientProvider} from '@tanstack/react-query'
 import {ReportsProvider} from './core/context/ReportsContext'
 import {Provide} from './shared/Provide/Provide'
 import {UsersProvider} from './core/context/UsersContext'
@@ -155,11 +156,13 @@ const AppLogin = () => {
 const AppLogged = () => {
   const {apiSdk, connectedUser, logout} = useLogin()
   const history = useHistory()
+  const queryClient = new QueryClient()
   useEffect(() => history.listen(_ => Matomo.trackPage(`/${connectedUser.role.toLocaleLowerCase()}${_.pathname}`)), [history])
 
   return (
     <Provide
       providers={[
+        _ => <QueryClientProvider client={queryClient} children={_} />,
         _ => <ApiProvider api={apiSdk} children={_} />,
         _ => <ReportsProvider api={apiSdk} children={_} />,
         _ => <ReportProvider api={apiSdk} children={_} />,

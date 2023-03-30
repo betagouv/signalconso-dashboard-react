@@ -49,18 +49,18 @@ export const ConsumerReview = ({onSubmit, reviewExists}: Props) => {
     return ResponseEvaluation[parsed]
   }
 
-  const _post = useAsync(onSubmit)
+  const _saveReview = useAsync(onSubmit)
   const _reviewExists = useAsync(reviewExists)
   const {isMobileWidth} = useLayoutContext()
 
   const submit = async (form: Form) => {
-    await _post.call(reportId, {...form})
+    await _saveReview.call(reportId, {...form})
     setDone(true)
   }
 
   useEffect(() => {
-    toastErrorIfDefined(_post.error)
-  }, [_post.error])
+    toastErrorIfDefined(_saveReview.error)
+  }, [_saveReview.error])
 
   useMemo(() => {
     const parsed = QueryString.parse(search.replace(/^\?/, '')).evaluation as unknown as ResponseEvaluation
@@ -70,17 +70,13 @@ export const ConsumerReview = ({onSubmit, reviewExists}: Props) => {
   useEffect(() => {
     _reviewExists
       .call(reportId)
-      .then((x: ResponseConsumerReviewExists) => {
-        setDone(x.value)
-        return x.value
+      .then((exists: ResponseConsumerReviewExists) => {
+        setDone(exists.value)
+        return exists.value
       })
       .then(exist => {
-        console.log('POST BEGIN')
-        console.log('eval_POST   ' + evaluation)
-        console.log('done_POST   ' + done)
         if (evaluation && !exist) {
-          // const parsed = QueryString.parse(search.replace(/^\?/, '')).evaluation as unknown as ResponseEvaluation
-          _post.call(reportId, {evaluation: evaluation}).then(_ => console.log('POST DONE'))
+          _saveReview.call(reportId, {evaluation: evaluation}).then(_ => console.log('POST DONE'))
         }
       })
   }, [done])
@@ -128,7 +124,7 @@ export const ConsumerReview = ({onSubmit, reviewExists}: Props) => {
               <ScInput {...register('details')} multiline fullWidth rows={5} maxRows={12} />
             </PanelBody>
             <PanelFoot alignEnd>
-              <ScButton loading={_post.loading} type="submit" icon="send" variant="contained" color="primary">
+              <ScButton loading={_saveReview.loading} type="submit" icon="send" variant="contained" color="primary">
                 {m.send}
               </ScButton>
             </PanelFoot>
