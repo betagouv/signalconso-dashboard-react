@@ -116,6 +116,10 @@ export class ReportsClient {
     return this.client.get<ResponseConsumerReview>(`/reports/${reportId}/response/review`)
   }
 
+  readonly generateConsumerReportEmailAsPDF = (reportId: Id) => {
+    return this.client.getPdf<any>(`/reports/${reportId}/consumer-email-pdf`).then(directDownloadBlob('email-consommateur.pdf'))
+  }
+
   readonly getCloudWord = (companyId: Id) => {
     return this.client.get<ReportWordCount[]>(`/reports/cloudword/${companyId}`)
   }
