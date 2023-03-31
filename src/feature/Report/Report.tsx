@@ -23,6 +23,7 @@ import {EventActionValues, EventType, ReportEvent} from '../../core/client/event
 import {FileOrigin} from '../../core/client/file/UploadedFile'
 import {Report} from '../../core/client/report/Report'
 import {Id} from '../../core/model'
+import {ScButton} from '../../shared/Button/Button'
 
 const CONSO: EventType = 'CONSO'
 
@@ -72,39 +73,7 @@ export const ReportComponent = () => {
       {map(_report.get.entity?.report, report => (
         <>
           <ReportHeader elevated report={report}>
-            <Box sx={{whiteSpace: 'nowrap'}}>
-              {connectedUser.isDGCCRF && (
-                <ReportPostAction
-                  actionType={EventActionValues.Control}
-                  label={m.markDgccrfControlDone}
-                  report={report}
-                  onAdd={() => _event.reportEvents.fetch({force: true, clean: false}, id)}
-                >
-                  <Tooltip title={m.markDgccrfControlDone}>
-                    <Btn color="primary" icon="add_comment">
-                      {m.dgccrfControlDone}
-                    </Btn>
-                  </Tooltip>
-                </ReportPostAction>
-              )}
-
-              <ReportPostAction
-                actionType={EventActionValues.Comment}
-                label={m.addDgccrfComment}
-                report={report}
-                onAdd={() => _event.reportEvents.fetch({force: true, clean: false}, id)}
-              >
-                <Tooltip title={m.addDgccrfComment}>
-                  <Btn color="primary" icon="add_comment">
-                    {m.comment}
-                  </Btn>
-                </Tooltip>
-              </ReportPostAction>
-
-              <Btn color="primary" icon="download" loading={_report.download.loading} onClick={() => downloadReport(report.id)}>
-                {m.download}
-              </Btn>
-
+            <Box sx={{whiteSpace: 'nowrap', display: 'flex', flexDirection: 'row-reverse', flexWrap: 'wrap'}}>
               {connectedUser.isAdmin && (
                 <ScDialog
                   title={m.removeAsk}
@@ -130,6 +99,48 @@ export const ReportComponent = () => {
                     {m.delete}
                   </Btn>
                 </ScDialog>
+              )}
+
+              <Btn color="primary" icon="download" loading={_report.download.loading} onClick={() => downloadReport(report.id)}>
+                {m.download}
+              </Btn>
+
+              <ReportPostAction
+                actionType={EventActionValues.Comment}
+                label={m.addDgccrfComment}
+                report={report}
+                onAdd={() => _event.reportEvents.fetch({force: true, clean: false}, id)}
+              >
+                <Tooltip title={m.addDgccrfComment}>
+                  <Btn color="primary" icon="add_comment">
+                    {m.comment}
+                  </Btn>
+                </Tooltip>
+              </ReportPostAction>
+
+              {connectedUser.isDGCCRF && (
+                <ReportPostAction
+                  actionType={EventActionValues.Control}
+                  label={m.markDgccrfControlDone}
+                  report={report}
+                  onAdd={() => _event.reportEvents.fetch({force: true, clean: false}, id)}
+                >
+                  <Tooltip title={m.markDgccrfControlDone}>
+                    <Btn color="primary" icon="add_comment">
+                      {m.dgccrfControlDone}
+                    </Btn>
+                  </Tooltip>
+                </ReportPostAction>
+              )}
+
+              {connectedUser.isAdmin && (
+                <ScButton
+                  loading={_report.generateConsumerReportEmailAsPDF.loading}
+                  icon="download"
+                  onClick={() => _report.generateConsumerReportEmailAsPDF.fetch({}, report.id)}
+                >
+                  Email consommateur
+                </ScButton>
               )}
             </Box>
           </ReportHeader>
