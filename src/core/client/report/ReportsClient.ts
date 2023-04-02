@@ -116,8 +116,10 @@ export class ReportsClient {
     return this.client.get<ResponseConsumerReview>(`/reports/${reportId}/response/review`)
   }
 
-  readonly generateConsumerReportEmailAsPDF = (reportId: Id) => {
-    return this.client.getPdf<any>(`/reports/${reportId}/consumer-email-pdf`).then(directDownloadBlob('email-consommateur.pdf'))
+  readonly generateConsumerNotificationAsPDF = (reportId: Id) => {
+    return this.client
+      .getPdf<any>(`/reports/${reportId}/consumer-email-pdf`)
+      .then(directDownloadBlob('accuse-reception-consommateur.pdf'))
   }
 
   readonly getCloudWord = (companyId: Id) => {
