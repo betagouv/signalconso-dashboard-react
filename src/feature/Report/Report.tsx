@@ -73,7 +73,14 @@ export const ReportComponent = () => {
       {map(_report.get.entity?.report, report => (
         <>
           <ReportHeader elevated report={report}>
-            <Box sx={{whiteSpace: 'nowrap', display: 'flex', flexDirection: 'row-reverse', flexWrap: 'wrap'}}>
+            <Box
+              sx={{
+                whiteSpace: 'nowrap',
+                display: 'flex',
+                flexDirection: 'row-reverse',
+                flexWrap: 'wrap',
+              }}
+            >
               {connectedUser.isAdmin && (
                 <ScDialog
                   title={m.removeAsk}
@@ -135,11 +142,11 @@ export const ReportComponent = () => {
 
               {connectedUser.isAdmin && (
                 <ScButton
-                  loading={_report.generateConsumerReportEmailAsPDF.loading}
+                  loading={_report.generateConsumerNotificationAsPDF.loading}
                   icon="download"
-                  onClick={() => _report.generateConsumerReportEmailAsPDF.fetch({}, report.id)}
+                  onClick={() => _report.generateConsumerNotificationAsPDF.fetch({}, report.id)}
                 >
-                  Email consommateur
+                  Accusé reception
                 </ScButton>
               )}
             </Box>

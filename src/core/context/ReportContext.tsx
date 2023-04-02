@@ -15,8 +15,8 @@ export interface ReportContextProps {
   postAction: UseFetcher<SignalConsoApiSdk['secured']['reports']['postAction']>
   postResponse: UseFetcher<SignalConsoApiSdk['secured']['reports']['postResponse']>
   getReviewOnReportResponse: UseFetcher<SignalConsoApiSdk['secured']['reports']['getReviewOnReportResponse']>
-  generateConsumerReportEmailAsPDF: UseFetcher<
-    SignalConsoApiSdk['secured']['reports']['generateConsumerReportEmailAsPDF'],
+  generateConsumerNotificationAsPDF: UseFetcher<
+    SignalConsoApiSdk['secured']['reports']['generateConsumerNotificationAsPDF'],
     ApiError
   >
 }
@@ -37,7 +37,7 @@ export const ReportProvider = ({api, children}: Props) => {
   const postAction = useFetcher(api.secured.reports.postAction)
   const postResponse = useFetcher(api.secured.reports.postResponse)
   const getReviewOnReportResponse = useFetcher(api.secured.reports.getReviewOnReportResponse)
-  const generateConsumerReportEmailAsPDF = useFetcher(api.secured.reports.generateConsumerReportEmailAsPDF)
+  const generateConsumerNotificationAsPDF = useFetcher(api.secured.reports.generateConsumerNotificationAsPDF)
 
   const updateReport = (report: Report) => get.setEntity(prev => ({report, files: prev?.files ?? []}))
 
@@ -59,7 +59,7 @@ export const ReportProvider = ({api, children}: Props) => {
         postAction,
         postResponse,
         getReviewOnReportResponse,
-        generateConsumerReportEmailAsPDF,
+        generateConsumerNotificationAsPDF,
       }}
     >
       {children}
