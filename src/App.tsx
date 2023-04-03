@@ -17,6 +17,7 @@ import {ConstantProvider} from './core/context/ConstantContext'
 import {ReportedPhonesProvider} from './core/context/ReportedPhonesContext'
 import {AsyncFileProvider} from './core/context/AsyncFileContext'
 import {CompaniesProvider} from './core/context/CompaniesContext'
+import {QueryClient, QueryClientProvider} from '@tanstack/react-query'
 import {ReportsProvider} from './core/context/ReportsContext'
 import {Provide} from './shared/Provide/Provide'
 import {UsersProvider} from './core/context/UsersContext'
@@ -78,6 +79,7 @@ export const App = () => {
 
 const AppLogin = () => {
   const history = useHistory()
+  const queryClient = new QueryClient()
   const forgottenPassword = useFetcher<SignalConsoApiSdk['public']['authenticate']['forgotPassword'], ApiError>(
     apiPublicSdk.authenticate.forgotPassword,
   )
@@ -102,46 +104,51 @@ const AppLogin = () => {
             header={<ScHeader />}
             sidebar={authResponse?.user && <ScSidebar connectedUser={authResponse.user} logout={logout} />}
           >
-            <Switch>
-              <Route path={siteMap.loggedout.emailValidation}>
-                <EmailValidation onSaveToken={setToken} onValidateEmail={apiPublicSdk.authenticate.validateEmail} />
-              </Route>
-              <Route path={siteMap.loggedout.resetPassword()}>
-                <ResetPassword onResetPassword={apiPublicSdk.authenticate.resetPassword} />
-              </Route>
-              <Route path={siteMap.loggedout.activatePro()}>{userActivation}</Route>
-              <Route path={siteMap.loggedout.activateAdmin}>{userActivation}</Route>
-              <Route path={siteMap.loggedout.activateDgccrf}>{userActivation}</Route>
-              <Route path={siteMap.loggedout.consumerReview()}>
-                <ConsumerReview onSubmit={apiPublicSdk.report.postReviewOnReportResponse} />
-              </Route>
-              <Route path="/">
-                {authResponse ? (
-                  <LoginProvider
-                    connectedUser={authResponse.user}
-                    token={authResponse.token}
-                    onLogout={logout}
-                    apiSdk={makeSecuredSdk(authResponse.token)}
-                  >
-                    <AppLogged />
-                  </LoginProvider>
-                ) : isCheckingToken ? (
-                  <CenteredContent offset={layoutConfig.headerHeight}>
-                    <CircularProgress />
-                  </CenteredContent>
-                ) : (
-                  <LoginPage
-                    login={login}
-                    register={register}
-                    forgottenPassword={{
-                      action: (email: string) => forgottenPassword.fetch({}, email),
-                      loading: forgottenPassword.loading,
-                      error: forgottenPassword.error,
-                    }}
+            <Provide providers={[_ => <QueryClientProvider client={queryClient} children={_} />]}>
+              <Switch>
+                <Route path={siteMap.loggedout.emailValidation}>
+                  <EmailValidation onSaveToken={setToken} onValidateEmail={apiPublicSdk.authenticate.validateEmail} />
+                </Route>
+                <Route path={siteMap.loggedout.resetPassword()}>
+                  <ResetPassword onResetPassword={apiPublicSdk.authenticate.resetPassword} />
+                </Route>
+                <Route path={siteMap.loggedout.activatePro()}>{userActivation}</Route>
+                <Route path={siteMap.loggedout.activateAdmin}>{userActivation}</Route>
+                <Route path={siteMap.loggedout.activateDgccrf}>{userActivation}</Route>
+                <Route path={siteMap.loggedout.consumerReview()}>
+                  <ConsumerReview
+                    reviewExists={apiPublicSdk.report.reviewExists}
+                    onSubmit={apiPublicSdk.report.postReviewOnReportResponse}
                   />
-                )}
-              </Route>
-            </Switch>
+                </Route>
+                <Route path="/">
+                  {authResponse ? (
+                    <LoginProvider
+                      connectedUser={authResponse.user}
+                      token={authResponse.token}
+                      onLogout={logout}
+                      apiSdk={makeSecuredSdk(authResponse.token)}
+                    >
+                      <AppLogged />
+                    </LoginProvider>
+                  ) : isCheckingToken ? (
+                    <CenteredContent offset={layoutConfig.headerHeight}>
+                      <CircularProgress />
+                    </CenteredContent>
+                  ) : (
+                    <LoginPage
+                      login={login}
+                      register={register}
+                      forgottenPassword={{
+                        action: (email: string) => forgottenPassword.fetch({}, email),
+                        loading: forgottenPassword.loading,
+                        error: forgottenPassword.error,
+                      }}
+                    />
+                  )}
+                </Route>
+              </Switch>
+            </Provide>
           </Layout>
         )
       }}
@@ -152,11 +159,13 @@ const AppLogin = () => {
 const AppLogged = () => {
   const {apiSdk, connectedUser, logout} = useLogin()
   const history = useHistory()
+  const queryClient = new QueryClient()
   useEffect(() => history.listen(_ => Matomo.trackPage(`/${connectedUser.role.toLocaleLowerCase()}${_.pathname}`)), [history])
 
   return (
     <Provide
       providers={[
+        _ => <QueryClientProvider client={queryClient} children={_} />,
         _ => <ApiProvider api={apiSdk} children={_} />,
         _ => <ReportsProvider api={apiSdk} children={_} />,
         _ => <ReportProvider api={apiSdk} children={_} />,

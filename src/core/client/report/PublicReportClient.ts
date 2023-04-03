@@ -1,4 +1,4 @@
-import {Id, ResponseConsumerReview} from '../../model'
+import {Id, ResponseConsumerReview, ResponseConsumerReviewExists} from '../../model'
 import {ApiClientApi} from '../ApiClient'
 
 export class PublicReportClient {
@@ -6,5 +6,9 @@ export class PublicReportClient {
 
   readonly postReviewOnReportResponse = (reportId: Id, review: ResponseConsumerReview) => {
     return this.client.post<void>(`/reports/${reportId}/response/review`, {body: review})
+  }
+
+  readonly reviewExists = (reportId: Id) => {
+    return this.client.get<ResponseConsumerReviewExists>(`/reports/${reportId}/response/review/exists`)
   }
 }

@@ -21,6 +21,7 @@ export interface ApiClientParams {
 export interface ApiClientApi {
   readonly baseUrl: string
   readonly get: <T = any>(uri: string, options?: RequestOption) => Promise<T>
+  readonly head: <T = any>(uri: string, options?: RequestOption) => Promise<T>
   readonly post: <T = any>(uri: string, options?: RequestOption) => Promise<T>
   readonly postGetPdf: <T = any>(uri: string, options?: RequestOption) => Promise<Blob>
   readonly getPdf: <T = any>(uri: string, options?: RequestOption) => Promise<Blob>
@@ -71,7 +72,7 @@ export interface Detail {
   details: string
 }
 
-export type Method = 'POST' | 'GET' | 'PUT' | 'DELETE' | 'PATCH'
+export type Method = 'POST' | 'GET' | 'PUT' | 'DELETE' | 'PATCH' | 'HEAD'
 
 export class ApiClient {
   private readonly request: (method: Method, url: string, options?: RequestOption) => Promise<any>
@@ -117,7 +118,7 @@ export class ApiClient {
                 })
               }
               throw new ApiError(`Something not caught went wrong`, {
-                code: 'front-side',
+                code: _.response ? _.response.status : 'front-side',
                 error: _,
                 request,
               })
@@ -160,6 +161,10 @@ export class ApiClient {
 
   readonly get = <T = any>(uri: string, options?: RequestOption): Promise<T> => {
     return this.request('GET', uri, options)
+  }
+
+  readonly head = <T = any>(uri: string, options?: RequestOption): Promise<T> => {
+    return this.request('HEAD', uri, options)
   }
 
   readonly post = <T = any>(uri: string, options?: RequestOption): Promise<T> => {
