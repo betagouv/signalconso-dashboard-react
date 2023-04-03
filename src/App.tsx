@@ -79,6 +79,7 @@ export const App = () => {
 
 const AppLogin = () => {
   const history = useHistory()
+  const queryClient = new QueryClient()
   const forgottenPassword = useFetcher<SignalConsoApiSdk['public']['authenticate']['forgotPassword'], ApiError>(
     apiPublicSdk.authenticate.forgotPassword,
   )
@@ -103,49 +104,51 @@ const AppLogin = () => {
             header={<ScHeader />}
             sidebar={authResponse?.user && <ScSidebar connectedUser={authResponse.user} logout={logout} />}
           >
-            <Switch>
-              <Route path={siteMap.loggedout.emailValidation}>
-                <EmailValidation onSaveToken={setToken} onValidateEmail={apiPublicSdk.authenticate.validateEmail} />
-              </Route>
-              <Route path={siteMap.loggedout.resetPassword()}>
-                <ResetPassword onResetPassword={apiPublicSdk.authenticate.resetPassword} />
-              </Route>
-              <Route path={siteMap.loggedout.activatePro()}>{userActivation}</Route>
-              <Route path={siteMap.loggedout.activateAdmin}>{userActivation}</Route>
-              <Route path={siteMap.loggedout.activateDgccrf}>{userActivation}</Route>
-              <Route path={siteMap.loggedout.consumerReview()}>
-                <ConsumerReview
-                  reviewExists={apiPublicSdk.report.reviewExists}
-                  onSubmit={apiPublicSdk.report.postReviewOnReportResponse}
-                />
-              </Route>
-              <Route path="/">
-                {authResponse ? (
-                  <LoginProvider
-                    connectedUser={authResponse.user}
-                    token={authResponse.token}
-                    onLogout={logout}
-                    apiSdk={makeSecuredSdk(authResponse.token)}
-                  >
-                    <AppLogged />
-                  </LoginProvider>
-                ) : isCheckingToken ? (
-                  <CenteredContent offset={layoutConfig.headerHeight}>
-                    <CircularProgress />
-                  </CenteredContent>
-                ) : (
-                  <LoginPage
-                    login={login}
-                    register={register}
-                    forgottenPassword={{
-                      action: (email: string) => forgottenPassword.fetch({}, email),
-                      loading: forgottenPassword.loading,
-                      error: forgottenPassword.error,
-                    }}
+            <Provide providers={[_ => <QueryClientProvider client={queryClient} children={_} />]}>
+              <Switch>
+                <Route path={siteMap.loggedout.emailValidation}>
+                  <EmailValidation onSaveToken={setToken} onValidateEmail={apiPublicSdk.authenticate.validateEmail} />
+                </Route>
+                <Route path={siteMap.loggedout.resetPassword()}>
+                  <ResetPassword onResetPassword={apiPublicSdk.authenticate.resetPassword} />
+                </Route>
+                <Route path={siteMap.loggedout.activatePro()}>{userActivation}</Route>
+                <Route path={siteMap.loggedout.activateAdmin}>{userActivation}</Route>
+                <Route path={siteMap.loggedout.activateDgccrf}>{userActivation}</Route>
+                <Route path={siteMap.loggedout.consumerReview()}>
+                  <ConsumerReview
+                    reviewExists={apiPublicSdk.report.reviewExists}
+                    onSubmit={apiPublicSdk.report.postReviewOnReportResponse}
                   />
-                )}
-              </Route>
-            </Switch>
+                </Route>
+                <Route path="/">
+                  {authResponse ? (
+                    <LoginProvider
+                      connectedUser={authResponse.user}
+                      token={authResponse.token}
+                      onLogout={logout}
+                      apiSdk={makeSecuredSdk(authResponse.token)}
+                    >
+                      <AppLogged />
+                    </LoginProvider>
+                  ) : isCheckingToken ? (
+                    <CenteredContent offset={layoutConfig.headerHeight}>
+                      <CircularProgress />
+                    </CenteredContent>
+                  ) : (
+                    <LoginPage
+                      login={login}
+                      register={register}
+                      forgottenPassword={{
+                        action: (email: string) => forgottenPassword.fetch({}, email),
+                        loading: forgottenPassword.loading,
+                        error: forgottenPassword.error,
+                      }}
+                    />
+                  )}
+                </Route>
+              </Switch>
+            </Provide>
           </Layout>
         )
       }}

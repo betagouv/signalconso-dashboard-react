@@ -8,7 +8,6 @@ import {Txt} from '../../alexlibs/mui-extension'
 import {ScButton} from '../../shared/Button/Button'
 import {PanelFoot} from '../../shared/Panel/PanelFoot'
 import {Controller, useForm} from 'react-hook-form'
-import {useAsync} from '../../alexlibs/react-hooks-lib'
 import React, {useEffect, useMemo, useState} from 'react'
 import {useLocation, useParams} from 'react-router'
 import {useToast} from '../../core/toast'
@@ -18,11 +17,12 @@ import {Box} from '@mui/material'
 import {useLayoutContext} from '../../core/Layout/LayoutContext'
 import {Emoticon} from '../../shared/Emoticon/Emoticon'
 import {Id, ResponseConsumerReview, ResponseConsumerReviewExists, ResponseEvaluation} from '../../core/model'
+import {useMutation, useQuery} from '@tanstack/react-query'
 import {ApiError} from '../../core/client/ApiClient'
 
 interface Props {
   onSubmit: (reportId: Id, review: ResponseConsumerReview) => Promise<any>
-  reviewExists: (reportId: Id) => Promise<any>
+  reviewExists: (reportId: Id) => Promise<ResponseConsumerReviewExists>
 }
 
 interface Form {
@@ -42,55 +42,55 @@ export const ConsumerReview = ({onSubmit, reviewExists}: Props) => {
     control,
     formState: {errors, isValid},
   } = useForm<Form>()
+
   const {search} = useLocation()
 
-  const getEvaluationFromQueryString = (qs: string): ResponseEvaluation | undefined => {
-    const parsed = QueryString.parse(qs.replace(/^\?/, '')).evaluation as unknown as ResponseEvaluation
-    return ResponseEvaluation[parsed]
-  }
+  const _saveReview = useMutation(['saveReview'], (review: ResponseConsumerReview) => onSubmit(reportId, review))
 
-  const _saveReview = useAsync(onSubmit)
-  const _reviewExists = useAsync(reviewExists)
+  const _reviewExists = useQuery(['reviewExists'], () => reviewExists(reportId))
+
   const {isMobileWidth} = useLayoutContext()
 
   const submit = async (form: Form) => {
-    await _saveReview.call(reportId, {...form})
-    setDone(true)
+    _saveReview.mutate({...form})
+    if (_saveReview.isSuccess) {
+      setDone(true)
+    }
   }
 
   useEffect(() => {
-    toastErrorIfDefined(_saveReview.error)
+    _saveReview.error && toastError(_saveReview.error as ApiError)
   }, [_saveReview.error])
 
+  useEffect(() => {
+    _reviewExists.error && toastError(_reviewExists.error as ApiError)
+  }, [_reviewExists.error])
+
   useMemo(() => {
-    const parsed = QueryString.parse(search.replace(/^\?/, '')).evaluation as unknown as ResponseEvaluation
+    const parsed = QueryString.parse(search.replace(/^\?/, '')).evaluation as ResponseEvaluation
     setEvaluation(parsed)
   }, [])
 
   useEffect(() => {
-    _reviewExists
-      .call(reportId)
-      .then((exists: ResponseConsumerReviewExists) => {
-        setDone(exists.value)
-        return exists.value
-      })
-      .then(exist => {
-        if (evaluation && !exist) {
-          _saveReview.call(reportId, {evaluation: evaluation}).then(_ => console.log('POST DONE'))
-        }
-      })
-  }, [done])
+    if (_reviewExists.isSuccess) {
+      const exists = _reviewExists.data.value
+      if (evaluation && !exists) {
+        _saveReview.mutate({evaluation: evaluation})
+      }
+      setDone(exists)
+    }
+  }, [_reviewExists.data])
 
   return (
     <Page size="s">
       {done ? (
         <Alert type="success" sx={{mb: 2}}>
-          {m.thanksForSharingYourMind}
+          {m.thanksForSharingYourReview}
         </Alert>
       ) : (
         <form onSubmit={handleSubmit(submit)}>
           <Panel>
-            <PanelHead>{m.shareYourMind}</PanelHead>
+            <PanelHead>{m.shareYourReview}</PanelHead>
 
             <PanelBody>
               <Txt block gutterBottom color="hint" dangerouslySetInnerHTML={{__html: m.didTheCompanyAnsweredWell}} />
@@ -124,7 +124,7 @@ export const ConsumerReview = ({onSubmit, reviewExists}: Props) => {
               <ScInput {...register('details')} multiline fullWidth rows={5} maxRows={12} />
             </PanelBody>
             <PanelFoot alignEnd>
-              <ScButton loading={_saveReview.loading} type="submit" icon="send" variant="contained" color="primary">
+              <ScButton loading={_saveReview.isLoading} type="submit" icon="send" variant="contained" color="primary">
                 {m.send}
               </ScButton>
             </PanelFoot>
@@ -133,7 +133,7 @@ export const ConsumerReview = ({onSubmit, reviewExists}: Props) => {
       )}
       <div>
         <Txt block gutterBottom color="disabled">
-          {m.youCanNoteSignalConso}
+          {m.youCanRateSignalConso}
         </Txt>
         <Box
           component="a"
