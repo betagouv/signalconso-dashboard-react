@@ -76,6 +76,10 @@ export interface ResponseConsumerReview {
   details?: string
 }
 
+export interface ResponseConsumerReviewExists {
+  value: boolean
+}
+
 export interface ReportWordCount {
   value: string
   count: number
