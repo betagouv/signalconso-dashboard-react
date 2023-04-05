@@ -237,7 +237,7 @@ export const Reports = () => {
             </Grid>
           </Grid>
 
-          <Collapse in={expanded} timeout="auto">
+          <Collapse in={expanded} timeout="auto" unmountOnExit>
             <Grid container spacing={1}>
               <Grid item xs={12} md={6}>
                 <SelectActivityCode
