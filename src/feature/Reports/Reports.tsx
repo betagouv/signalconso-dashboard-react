@@ -4,9 +4,10 @@ import {useReportsContext} from '../../core/context/ReportsContext'
 
 import {Panel} from '../../shared/Panel'
 import {Datatable} from '../../shared/Datatable/Datatable'
-import {alpha, Badge, Box, Button, Checkbox, Chip, Grid, Icon, Tooltip} from '@mui/material'
+import {Badge, Box, Checkbox, Chip, Collapse, Grid, Icon, MenuItem, Tooltip} from '@mui/material'
+import {styled} from '@mui/material/styles'
 import {cleanObject, getHostFromUrl, textOverflowMiddleCropping} from '../../core/helper'
-import React, {useCallback, useEffect, useMemo} from 'react'
+import React, {useEffect, useMemo} from 'react'
 import {
   mapArrayFromQuerystring,
   mapBooleanFromQueryString,
@@ -16,29 +17,60 @@ import {
 } from '../../core/helper/useQueryString'
 import {NavLink} from 'react-router-dom'
 import {SelectDepartments} from '../../shared/SelectDepartments/SelectDepartments'
-import {Fender, IconBtn} from '../../alexlibs/mui-extension'
+import {Fender, IconBtn, PanelBody, Txt} from '../../alexlibs/mui-extension'
 import {useToast} from '../../core/toast'
 import {ReportStatusLabel} from '../../shared/ReportStatus/ReportStatus'
 import {config} from '../../conf/config'
-import {ReportsFilters} from './ReportsFilters'
 import {siteMap} from '../../core/siteMap'
 import {ExportReportsPopper} from '../../shared/ExportPopper/ExportPopperBtn'
 import {EntityIcon} from '../../core/EntityIcon'
 import {ScButton} from '../../shared/Button/Button'
-import {Txt} from '../../alexlibs/mui-extension'
 import {PeriodPicker} from '../../shared/PeriodPicker/PeriodPicker'
 import {DebouncedInput} from '../../shared/DebouncedInput/DebouncedInput'
 import {ReportDetailValues} from '../../shared/ReportDetailValues/ReportDetailValues'
 import {styleUtils, sxUtils} from '../../core/theme'
 import compose from '../../core/helper/compose'
-import {Alert} from '../../alexlibs/mui-extension'
-import {intersection} from '../../core/lodashNamedExport'
 import {useSetState} from '../../alexlibs/react-hooks-lib'
 import {DatatableToolbar} from '../../shared/Datatable/DatatableToolbar'
 import {useReportContext} from '../../core/context/ReportContext'
-import {Report, ReportingDateLabel, ReportTag} from '../../core/client/report/Report'
+import {Report, ReportingDateLabel, ReportStatus, ReportTag} from '../../core/client/report/Report'
 import {Id, ReportSearch} from '../../core/model'
 import {ScOption} from 'core/helper/ScOption'
+import {TrueFalseNull} from '../../shared/TrueFalseUndefined/TrueFalseNull'
+import {ScInput} from '../../shared/Input/ScInput'
+import {SelectActivityCode} from '../../shared/SelectActivityCode/SelectActivityCode'
+import {SelectTags} from '../../shared/SelectTags/SelectTags'
+import {SelectTagsMenuValues} from '../../shared/SelectTags/SelectTagsMenu'
+import {Enum} from '../../alexlibs/ts-utils'
+import {ScSelect} from '../../shared/Select/Select'
+import {useConstantContext} from '../../core/context/ConstantContext'
+import {ScMenuItem} from '../../shared/MenuItem/ScMenuItem'
+import {ScMultiSelect} from '../../shared/Select/MultiSelect'
+import {SelectCountries} from '../../shared/SelectCountries/SelectCountries'
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
+
+const TrueLabel = () => {
+  const {m} = useI18n()
+  return (
+    <>
+      {m.yes}{' '}
+      <Icon fontSize="inherit" sx={{mr: '-4px'}}>
+        arrow_drop_down
+      </Icon>
+    </>
+  )
+}
+
+const ExpandMore = styled((props: {expand: boolean}) => {
+  const {expand, ...other} = props
+  return <ExpandMoreIcon {...other} />
+})(({theme, expand}) => ({
+  transform: !expand ? 'rotate(0deg)' : 'rotate(180deg)',
+  marginLeft: 'auto',
+  transition: theme.transitions.create('transform', {
+    duration: theme.transitions.duration.shortest,
+  }),
+}))
 
 interface ReportSearchQs {
   readonly departments?: string[] | string
@@ -67,6 +99,7 @@ export const Reports = () => {
   const _report = useReportContext()
   const _reports = useReportsContext()
   const selectReport = useSetState<Id>()
+  const [expanded, setExpanded] = React.useState(false)
   const {toastError} = useToast()
   const queryString = useQueryString<Partial<ReportSearch>, Partial<ReportSearchQs>>({
     toQueryString: mapDatesToQueryString,
@@ -97,57 +130,366 @@ export const Reports = () => {
     return Object.keys(cleanObject(filters)).length
   }, [_reports.filters])
 
-  const updateFilters = useCallback((_: ReportSearch) => {
-    _reports.updateFilters(prev => ({...prev, ..._}))
+  const tags: SelectTagsMenuValues = {}
+  _reports.filters.withTags?.forEach(tag => {
+    tags[tag] = 'included'
+  })
+  _reports.filters.withoutTags?.forEach(tag => {
+    tags[tag] = 'excluded'
+  })
+
+  const _category = useConstantContext().categories
+
+  useEffect(() => {
+    _category.fetch({force: false})
   }, [])
+
+  function invertIfDefined(bool: boolean | null) {
+    return bool === null ? null : !bool
+  }
 
   return (
     <Page size="xl">
       <PageTitle>{m.reports_pageTitle}</PageTitle>
-      {intersection([ReportTag.ReponseConso, ReportTag.Bloctel], _reports.filters.withoutTags ?? []).length !== 2 && (
-        <Panel>
-          <Alert
-            type="info"
-            action={
-              <ScButton
-                color="primary"
-                onClick={() => _reports.updateFilters(_ => ({..._, withoutTags: [ReportTag.ReponseConso, ReportTag.Bloctel]}))}
+      <Panel elevation={3}>
+        <PanelBody>
+          <Grid container spacing={1}>
+            <Grid item sm={6} xs={12}>
+              <DebouncedInput
+                value={_reports.filters.departments}
+                onChange={departments => _reports.updateFilters(prev => ({...prev, departments}))}
               >
-                {m.filter}
-              </ScButton>
-            }
-          >
-            <span dangerouslySetInnerHTML={{__html: m.hideAllReponseConsoAndBloctelReports}} />
-          </Alert>
-        </Panel>
-      )}
+                {(value, onChange) => (
+                  <SelectDepartments label={m.departments} value={value} onChange={onChange} sx={{mr: 1}} fullWidth />
+                )}
+              </DebouncedInput>
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <DebouncedInput<[Date | undefined, Date | undefined]>
+                value={[_reports.filters.start, _reports.filters.end]}
+                onChange={([start, end]) => {
+                  _reports.updateFilters(prev => ({...prev, start, end}))
+                }}
+              >
+                {(value, onChange) => <PeriodPicker value={value} onChange={onChange} sx={{mr: 1}} fullWidth />}
+              </DebouncedInput>
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <DebouncedInput
+                value={_reports.filters.details ?? ''}
+                onChange={details => _reports.updateFilters(prev => ({...prev, details}))}
+              >
+                {(value, onChange) => (
+                  <ScInput label={m.keywords} fullWidth value={value} onChange={e => onChange(e.target.value)} />
+                )}
+              </DebouncedInput>
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <SelectTags
+                label={m.tags}
+                fullWidth
+                value={tags}
+                onChange={e =>
+                  _reports.updateFilters(prev => ({
+                    ...prev,
+                    withTags: Enum.keys(e).filter(tag => e[tag] === 'included'),
+                    withoutTags: Enum.keys(e).filter(tag => e[tag] === 'excluded'),
+                  }))
+                }
+              />
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <Box>
+                <Box
+                  sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    mt: '8px',
+                  }}
+                >
+                  <Box>{m.siretOrSirenFound}</Box>
+                  <TrueFalseNull
+                    label={{
+                      true: <TrueLabel />,
+                    }}
+                    sx={{mt: 1}}
+                    value={_reports.filters.hasCompany ?? null}
+                    onChange={hasCompany =>
+                      _reports.updateFilters(prev => ({
+                        ...prev,
+                        hasCompany: hasCompany ?? undefined,
+                      }))
+                    }
+                  />
+                </Box>
+                {_reports.filters.hasCompany === true && (
+                  <DebouncedInput
+                    value={_reports.filters.siretSirenList ?? []}
+                    onChange={siretSirenList => _reports.updateFilters(prev => ({...prev, siretSirenList}))}
+                  >
+                    {(value, onChange) => (
+                      <ScInput label={m.siretOrSiren} fullWidth value={value} onChange={e => onChange([e.target.value])} />
+                    )}
+                  </DebouncedInput>
+                )}
+              </Box>
+            </Grid>
+          </Grid>
+
+          <Collapse in={expanded} timeout="auto" unmountOnExit>
+            <Grid container spacing={1}>
+              <Grid item xs={12} md={6}>
+                <SelectActivityCode
+                  label={m.codeNaf}
+                  value={_reports.filters.activityCodes ?? []}
+                  fullWidth
+                  onChange={(e, value) =>
+                    _reports.updateFilters(prev => ({
+                      ...prev,
+                      activityCodes: value,
+                    }))
+                  }
+                />
+              </Grid>
+              <Grid item xs={12} md={6}>
+                <ScSelect
+                  small
+                  label={m.categories}
+                  fullWidth
+                  value={_reports.filters.category ?? ''}
+                  onChange={e => _reports.updateFilters(prev => ({...prev, category: e.target.value}))}
+                >
+                  <MenuItem value="">&nbsp;</MenuItem>
+                  {_category?.entity?.map(category => (
+                    <MenuItem key={category} value={category}>
+                      {m.ReportCategoryDesc[category]}
+                    </MenuItem>
+                  ))}
+                </ScSelect>
+              </Grid>
+              <Grid item xs={12} md={6}>
+                <ScMultiSelect
+                  label={m.status}
+                  value={_reports.filters.status ?? []}
+                  onChange={status => _reports.updateFilters(prev => ({...prev, status}))}
+                  fullWidth
+                  withSelectAll
+                  renderValue={status => `(${status.length}) ${status.map(_ => m.reportStatusShort[_]).join(',')}`}
+                >
+                  {Enum.values(ReportStatus).map(status => (
+                    <ScMenuItem withCheckbox key={status} value={status}>
+                      <ReportStatusLabel inSelectOptions dense fullWidth status={status} />
+                    </ScMenuItem>
+                  ))}
+                </ScMultiSelect>
+              </Grid>
+              <Grid item xs={12} md={6}>
+                <DebouncedInput
+                  value={_reports.filters.email ?? ''}
+                  onChange={email => _reports.updateFilters(prev => ({...prev, email}))}
+                >
+                  {(value, onChange) => (
+                    <ScInput label={m.emailConsumer} fullWidth value={value} onChange={e => onChange(e.target.value)} />
+                  )}
+                </DebouncedInput>
+              </Grid>
+              <Grid item xs={12} md={6}>
+                <Box>
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                      mt: '8px',
+                    }}
+                  >
+                    <Box>{m.website}</Box>
+                    <TrueFalseNull
+                      label={{
+                        true: <TrueLabel />,
+                      }}
+                      sx={{mt: 1}}
+                      value={_reports.filters.hasWebsite ?? null}
+                      onChange={hasWebsite =>
+                        _reports.updateFilters(prev => ({
+                          ...prev,
+                          hasWebsite: hasWebsite ?? undefined,
+                        }))
+                      }
+                    />
+                  </Box>
+                  {_reports.filters.hasWebsite === true && (
+                    <DebouncedInput
+                      value={_reports.filters.websiteURL ?? ''}
+                      onChange={websiteURL => _reports.updateFilters(prev => ({...prev, websiteURL}))}
+                    >
+                      {(value, onChange) => (
+                        <ScInput label={m.url} fullWidth value={value} onChange={e => onChange(e.target.value)} />
+                      )}
+                    </DebouncedInput>
+                  )}
+                </Box>
+              </Grid>
+              <Grid item xs={12} md={6}>
+                <Box>
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                      mt: '8px',
+                    }}
+                  >
+                    <Box>{m.phone}</Box>
+                    <TrueFalseNull
+                      label={{
+                        true: <TrueLabel />,
+                      }}
+                      sx={{mt: 1}}
+                      value={_reports.filters.hasPhone ?? null}
+                      onChange={hasPhone =>
+                        _reports.updateFilters(prev => ({
+                          ...prev,
+                          hasPhone: hasPhone ?? undefined,
+                        }))
+                      }
+                    />
+                  </Box>
+                  {_reports.filters.hasPhone === true && (
+                    <DebouncedInput
+                      value={_reports.filters.phone ?? ''}
+                      onChange={phone => _reports.updateFilters(prev => ({...prev, phone}))}
+                    >
+                      {(value, onChange) => (
+                        <ScInput label={m.phone} fullWidth value={value} onChange={e => onChange(e.target.value)} />
+                      )}
+                    </DebouncedInput>
+                  )}
+                </Box>
+              </Grid>
+              <Grid item xs={12} md={6}>
+                <Box>
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                      mt: '8px',
+                    }}
+                  >
+                    <Box>{m.foreignCountry}</Box>
+                    <TrueFalseNull
+                      label={{
+                        true: <TrueLabel />,
+                      }}
+                      sx={{mt: 1}}
+                      value={_reports.filters.hasForeignCountry ?? null}
+                      onChange={hasForeignCountry =>
+                        _reports.updateFilters(prev => ({
+                          ...prev,
+                          hasForeignCountry: hasForeignCountry ?? undefined,
+                        }))
+                      }
+                    />
+                  </Box>
+                  {_reports.filters.hasForeignCountry === true && (
+                    <SelectCountries
+                      label={m.foreignCountry}
+                      fullWidth
+                      value={_reports.filters.companyCountries}
+                      onChange={companyCountries =>
+                        _reports.updateFilters(prev => ({
+                          ...prev,
+                          companyCountries,
+                        }))
+                      }
+                    />
+                  )}
+                </Box>
+              </Grid>
+              <Grid item xs={12} md={6}>
+                <Box
+                  sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    mt: '8px',
+                  }}
+                >
+                  <Box>{m.consoAnonyme}</Box>
+                  <TrueFalseNull
+                    value={invertIfDefined(_reports.filters.contactAgreement ?? null)}
+                    onChange={contactAgreement =>
+                      _reports.updateFilters(prev => ({
+                        ...prev,
+                        contactAgreement: invertIfDefined(contactAgreement) ?? undefined,
+                      }))
+                    }
+                    sx={{mt: 1}}
+                  />
+                </Box>
+              </Grid>
+              <Grid item xs={12} md={6}>
+                <Box
+                  sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    mt: '8px',
+                  }}
+                >
+                  <Box>{m.hasAttachement}</Box>
+                  <TrueFalseNull
+                    value={_reports.filters.hasAttachment ?? null}
+                    onChange={hasAttachment =>
+                      _reports.updateFilters(prev => ({
+                        ...prev,
+                        hasAttachment: hasAttachment ?? undefined,
+                      }))
+                    }
+                    sx={{mt: 1}}
+                  />
+                </Box>
+              </Grid>
+            </Grid>
+          </Collapse>
+        </PanelBody>
+        <Box
+          sx={{
+            flexWrap: 'wrap',
+            whiteSpace: 'nowrap',
+            mt: 2,
+            mr: 3,
+            ml: 3,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            '& > *': {
+              mb: 1,
+              ml: 1,
+            },
+          }}
+        >
+          <ScButton onClick={_ => setExpanded(prev => !prev)}>
+            <span style={{display: 'flex', alignItems: 'center'}}>
+              <span>Recherche avancée&nbsp;</span>
+              <ExpandMore expand={expanded} />
+            </span>
+          </ScButton>
+          <Badge color="error" badgeContent={filtersCount} hidden={filtersCount === 0}>
+            <ScButton icon="clear" onClick={_reports.clearFilters} variant="outlined" color="primary">
+              {m.removeAllFilters}
+            </ScButton>
+          </Badge>
+        </Box>
+      </Panel>
+
       <Panel sx={{overflow: 'visible'}}>
         <Datatable
           id="reports"
           header={
             <>
-              <Grid container spacing={1}>
-                <Grid item xs={12} md={6}>
-                  <DebouncedInput
-                    value={_reports.filters.departments}
-                    onChange={departments => _reports.updateFilters(prev => ({...prev, departments}))}
-                  >
-                    {(value, onChange) => (
-                      <SelectDepartments label={m.departments} value={value} onChange={onChange} sx={{mr: 1}} fullWidth />
-                    )}
-                  </DebouncedInput>
-                </Grid>
-                <Grid item xs={12} md={6}>
-                  <DebouncedInput<[Date | undefined, Date | undefined]>
-                    value={[_reports.filters.start, _reports.filters.end]}
-                    onChange={([start, end]) => {
-                      _reports.updateFilters(prev => ({...prev, start, end}))
-                    }}
-                  >
-                    {(value, onChange) => <PeriodPicker value={value} onChange={onChange} sx={{mr: 1}} fullWidth />}
-                  </DebouncedInput>
-                </Grid>
-              </Grid>
               <DatatableToolbar
                 open={selectReport.size > 0}
                 onClear={selectReport.clear}
@@ -173,23 +515,6 @@ export const Reports = () => {
           }
           actions={
             <>
-              <Tooltip title={m.removeAllFilters}>
-                <Badge color="error" badgeContent={filtersCount} hidden={filtersCount === 0} overlap="circular">
-                  <Button
-                    color="primary"
-                    onClick={_reports.clearFilters}
-                    sx={{
-                      minWidth: 'auto',
-                      ...(filtersCount && {
-                        border: t => '1px solid ' + t.palette.divider,
-                        background: t => alpha(t.palette.primary.main, 0.12),
-                      }),
-                    }}
-                  >
-                    <Icon>clear</Icon>
-                  </Button>
-                </Badge>
-              </Tooltip>
               <ExportReportsPopper
                 disabled={ScOption.from(_reports?.list?.totalCount)
                   .map(_ => _ > config.reportsLimitForExport)
@@ -202,13 +527,6 @@ export const Reports = () => {
                   <Icon>file_download</Icon>
                 </IconBtn>
               </ExportReportsPopper>
-              <ReportsFilters filters={_reports.filters} updateFilters={updateFilters}>
-                <Tooltip title={m.advancedFilters}>
-                  <IconBtn color="primary">
-                    <Icon>filter_list</Icon>
-                  </IconBtn>
-                </Tooltip>
-              </ReportsFilters>
             </>
           }
           loading={_reports.fetching}

@@ -32,6 +32,7 @@ export const ReportCompany = ({report, canEdit}: Props) => {
           canEdit && (
             <SelectCompanyDialog
               siret={companySiret}
+              openOnly={false}
               onChange={company => {
                 _report.updateCompany.fetch({}, report.id, company)
               }}
