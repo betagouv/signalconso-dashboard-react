@@ -2,6 +2,7 @@ import {Badge, Checkbox, Icon, IconButtonProps, Menu, MenuItem, Tooltip} from '@
 import React from 'react'
 import {IconBtn} from '../../alexlibs/mui-extension'
 import {DatatableColumnProps} from './Datatable'
+import {ScButton} from '../Button/Button'
 
 interface Props extends Omit<IconButtonProps, 'onChange'> {
   // Hack because there is no way to make TS understand that the key of an object can
@@ -10,9 +11,10 @@ interface Props extends Omit<IconButtonProps, 'onChange'> {
   hiddenColumns: string[]
   onChange: (_: string[]) => void
   title?: string
+  plainTextButton?: boolean
 }
 
-export const DatatableColumnToggle = ({className, title, columns, hiddenColumns, onChange, ...props}: Props) => {
+export const DatatableColumnToggle = ({className, title, columns, hiddenColumns, onChange, plainTextButton, ...props}: Props) => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -22,15 +24,27 @@ export const DatatableColumnToggle = ({className, title, columns, hiddenColumns,
   return (
     <>
       <Tooltip title={title ?? ''}>
-        <IconBtn {...props} color="primary" onClick={handleClick}>
+        {plainTextButton && title ? (
           <Badge
             color="error"
             badgeContent={columns.length === hiddenColumns.length ? '!' : columns.length - hiddenColumns.length}
             invisible={hiddenColumns.length === 0}
           >
-            <Icon color={columns.length === hiddenColumns.length ? 'error' : undefined}>table_chart</Icon>
+            <ScButton onClick={handleClick} variant="outlined" color="primary">
+              {title}
+            </ScButton>
           </Badge>
-        </IconBtn>
+        ) : (
+          <IconBtn {...props} color="primary" onClick={handleClick}>
+            <Badge
+              color="error"
+              badgeContent={columns.length === hiddenColumns.length ? '!' : columns.length - hiddenColumns.length}
+              invisible={hiddenColumns.length === 0}
+            >
+              <Icon color={columns.length === hiddenColumns.length ? 'error' : undefined}>table_chart</Icon>
+            </Badge>
+          </IconBtn>
+        )}
       </Tooltip>
       <Menu anchorEl={anchorEl} keepMounted open={!!anchorEl} onClose={() => setAnchorEl(null)}>
         {columns.map(col => {

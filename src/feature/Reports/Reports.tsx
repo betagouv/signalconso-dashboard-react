@@ -48,6 +48,7 @@ import {ScMenuItem} from '../../shared/MenuItem/ScMenuItem'
 import {ScMultiSelect} from '../../shared/Select/MultiSelect'
 import {SelectCountries} from '../../shared/SelectCountries/SelectCountries'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
+import {useLogin} from '../../core/context/LoginContext'
 
 const TrueLabel = () => {
   const {m} = useI18n()
@@ -99,6 +100,7 @@ export const Reports = () => {
   const _report = useReportContext()
   const _reports = useReportsContext()
   const selectReport = useSetState<Id>()
+  const {connectedUser} = useLogin()
   const [expanded, setExpanded] = React.useState(false)
   const {toastError} = useToast()
   const queryString = useQueryString<Partial<ReportSearch>, Partial<ReportSearchQs>>({
@@ -205,7 +207,6 @@ export const Reports = () => {
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'space-between',
-                    mt: '8px',
                   }}
                 >
                   <Box>{m.siretOrSirenFound}</Box>
@@ -235,6 +236,18 @@ export const Reports = () => {
                 )}
               </Box>
             </Grid>
+            {connectedUser.isAdmin && (
+              <Grid item xs={12} md={6}>
+                <DebouncedInput
+                  value={_reports.filters.email ?? ''}
+                  onChange={email => _reports.updateFilters(prev => ({...prev, email}))}
+                >
+                  {(value, onChange) => (
+                    <ScInput label={m.emailConsumer} fullWidth value={value} onChange={e => onChange(e.target.value)} />
+                  )}
+                </DebouncedInput>
+              </Grid>
+            )}
           </Grid>
 
           <Collapse in={expanded} timeout="auto" unmountOnExit>
@@ -284,16 +297,18 @@ export const Reports = () => {
                   ))}
                 </ScMultiSelect>
               </Grid>
-              <Grid item xs={12} md={6}>
-                <DebouncedInput
-                  value={_reports.filters.email ?? ''}
-                  onChange={email => _reports.updateFilters(prev => ({...prev, email}))}
-                >
-                  {(value, onChange) => (
-                    <ScInput label={m.emailConsumer} fullWidth value={value} onChange={e => onChange(e.target.value)} />
-                  )}
-                </DebouncedInput>
-              </Grid>
+              {connectedUser.isDGCCRF && (
+                <Grid item xs={12} md={6}>
+                  <DebouncedInput
+                    value={_reports.filters.email ?? ''}
+                    onChange={email => _reports.updateFilters(prev => ({...prev, email}))}
+                  >
+                    {(value, onChange) => (
+                      <ScInput label={m.emailConsumer} fullWidth value={value} onChange={e => onChange(e.target.value)} />
+                    )}
+                  </DebouncedInput>
+                </Grid>
+              )}
               <Grid item xs={12} md={6}>
                 <Box>
                   <Box
@@ -301,7 +316,6 @@ export const Reports = () => {
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'space-between',
-                      mt: '8px',
                     }}
                   >
                     <Box>{m.website}</Box>
@@ -338,7 +352,6 @@ export const Reports = () => {
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'space-between',
-                      mt: '8px',
                     }}
                   >
                     <Box>{m.phone}</Box>
@@ -375,7 +388,6 @@ export const Reports = () => {
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'space-between',
-                      mt: '8px',
                     }}
                   >
                     <Box>{m.foreignCountry}</Box>
@@ -414,7 +426,6 @@ export const Reports = () => {
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'space-between',
-                    mt: '8px',
                   }}
                 >
                   <Box>{m.consoAnonyme}</Box>
@@ -436,7 +447,6 @@ export const Reports = () => {
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'space-between',
-                    mt: '8px',
                   }}
                 >
                   <Box>{m.hasAttachement}</Box>
@@ -548,6 +558,7 @@ export const Reports = () => {
           data={_reports.list?.entities}
           total={_reports.list?.totalCount}
           showColumnsToggle={true}
+          plainTextColumnsToggle={true}
           columns={[
             {
               id: 'checkbox',
