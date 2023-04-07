@@ -12,21 +12,9 @@ export enum InvestigationStatus {
   NotProcessed = 'NotProcessed',
   SignalConsoIdentificationFailed = 'SignalConsoIdentificationFailed',
   Processing = 'Processing',
-  UnderInvestigation = 'UnderInvestigation',
-  InvestigationDone = 'InvestigationDone',
-}
-
-export enum Practice {
-  DropShipping = 'DropShipping',
-}
-
-export interface DepartmentDivision {
-  code: string
-  name: string
 }
 
 export interface WebsiteInvestigation {
-  practice?: Practice
   investigationStatus?: InvestigationStatus
   identificationStatus?: IdentificationStatus
   attribution?: string
@@ -40,7 +28,6 @@ export interface Website extends Entity {
   host: string
   companyId: Id
   identificationStatus: IdentificationStatus
-  practice?: Practice
   investigationStatus?: InvestigationStatus
   attribution?: string
   lastUpdated?: Date
@@ -70,9 +57,7 @@ export interface ApiHostWithReportCount {
 export interface WebsiteWithCompanySearch extends PaginatedFilters {
   host?: string
   identificationStatus?: IdentificationStatus[]
-  practice?: Practice[]
   investigationStatus?: InvestigationStatus[]
-  attribution?: string[]
   start?: Date
   end?: Date
 }
