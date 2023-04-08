@@ -31,6 +31,7 @@ export interface DatatableProps<T> {
   onClickRows?: (_: T, event: React.MouseEvent<HTMLTableRowElement>) => void
   columns: DatatableColumnProps<T>[]
   showColumnsToggle?: boolean
+  plainTextColumnsToggle?: boolean
   showColumnsToggleBtnTooltip?: string
   renderEmptyState?: ReactNode
   rowsPerPageOptions?: number[]
@@ -86,6 +87,7 @@ export const Datatable = <T extends any = any>({
   sort,
   onClickRows,
   paginate,
+  plainTextColumnsToggle,
 }: DatatableProps<T>) => {
   const {m} = useI18n()
   const displayableColumns = useMemo(() => columns.filter(_ => !_.hidden), [columns])
@@ -133,6 +135,7 @@ export const Datatable = <T extends any = any>({
                 style={{marginLeft: 'auto'}}
                 columns={toggleableColumnsName}
                 hiddenColumns={hiddenColumns}
+                plainTextButton={plainTextColumnsToggle}
                 onChange={_ => setHiddenColumns(_)}
                 title={showColumnsToggleBtnTooltip ?? m.toggleDatatableColumns}
               />
