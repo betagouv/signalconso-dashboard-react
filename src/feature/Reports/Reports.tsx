@@ -150,6 +150,19 @@ export const Reports = () => {
     return bool === null ? null : !bool
   }
 
+  const css = {
+    trueFalseNullBox: {
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      mt: 1,
+    },
+    trueFalseNullLabel: {
+      color: 'rgba(0, 0, 0, 0.6)',
+      ml: 1,
+    },
+  }
+
   return (
     <Page size="xl">
       <PageTitle>{m.reports_pageTitle}</PageTitle>
@@ -202,19 +215,13 @@ export const Reports = () => {
             </Grid>
             <Grid item xs={12} md={6}>
               <Box>
-                <Box
-                  sx={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'space-between',
-                  }}
-                >
-                  <Box>{m.siretOrSirenFound}</Box>
+                <Box sx={css.trueFalseNullBox}>
+                  <Box sx={css.trueFalseNullLabel}>{m.siretOrSirenFound}</Box>
                   <TrueFalseNull
                     label={{
                       true: <TrueLabel />,
                     }}
-                    sx={{mt: 1}}
+                    sx={{flexBasis: '50%'}}
                     value={_reports.filters.hasCompany ?? null}
                     onChange={hasCompany =>
                       _reports.updateFilters(prev => ({
@@ -251,7 +258,7 @@ export const Reports = () => {
           </Grid>
 
           <Collapse in={expanded} timeout="auto" unmountOnExit>
-            <Grid container spacing={1}>
+            <Grid container spacing={1} sx={{mt: 0}}>
               <Grid item xs={12} md={6}>
                 <SelectActivityCode
                   label={m.codeNaf}
@@ -311,19 +318,13 @@ export const Reports = () => {
               )}
               <Grid item xs={12} md={6}>
                 <Box>
-                  <Box
-                    sx={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'space-between',
-                    }}
-                  >
-                    <Box>{m.website}</Box>
+                  <Box sx={css.trueFalseNullBox}>
+                    <Box sx={css.trueFalseNullLabel}>{m.website}</Box>
                     <TrueFalseNull
                       label={{
                         true: <TrueLabel />,
                       }}
-                      sx={{mt: 1}}
+                      sx={{flexBasis: '50%'}}
                       value={_reports.filters.hasWebsite ?? null}
                       onChange={hasWebsite =>
                         _reports.updateFilters(prev => ({
@@ -347,19 +348,13 @@ export const Reports = () => {
               </Grid>
               <Grid item xs={12} md={6}>
                 <Box>
-                  <Box
-                    sx={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'space-between',
-                    }}
-                  >
-                    <Box>{m.phone}</Box>
+                  <Box sx={css.trueFalseNullBox}>
+                    <Box sx={css.trueFalseNullLabel}>{m.phone}</Box>
                     <TrueFalseNull
                       label={{
                         true: <TrueLabel />,
                       }}
-                      sx={{mt: 1}}
+                      sx={{flexBasis: '50%'}}
                       value={_reports.filters.hasPhone ?? null}
                       onChange={hasPhone =>
                         _reports.updateFilters(prev => ({
@@ -383,19 +378,13 @@ export const Reports = () => {
               </Grid>
               <Grid item xs={12} md={6}>
                 <Box>
-                  <Box
-                    sx={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'space-between',
-                    }}
-                  >
-                    <Box>{m.foreignCountry}</Box>
+                  <Box sx={css.trueFalseNullBox}>
+                    <Box sx={css.trueFalseNullLabel}>{m.foreignCountry}</Box>
                     <TrueFalseNull
                       label={{
                         true: <TrueLabel />,
                       }}
-                      sx={{mt: 1}}
+                      sx={{flexBasis: '50%'}}
                       value={_reports.filters.hasForeignCountry ?? null}
                       onChange={hasForeignCountry =>
                         _reports.updateFilters(prev => ({
@@ -421,14 +410,8 @@ export const Reports = () => {
                 </Box>
               </Grid>
               <Grid item xs={12} md={6}>
-                <Box
-                  sx={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'space-between',
-                  }}
-                >
-                  <Box>{m.consoAnonyme}</Box>
+                <Box sx={css.trueFalseNullBox}>
+                  <Box sx={css.trueFalseNullLabel}>{m.consoAnonyme}</Box>
                   <TrueFalseNull
                     value={invertIfDefined(_reports.filters.contactAgreement ?? null)}
                     onChange={contactAgreement =>
@@ -437,19 +420,13 @@ export const Reports = () => {
                         contactAgreement: invertIfDefined(contactAgreement) ?? undefined,
                       }))
                     }
-                    sx={{mt: 1}}
+                    sx={{flexBasis: '50%'}}
                   />
                 </Box>
               </Grid>
               <Grid item xs={12} md={6}>
-                <Box
-                  sx={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'space-between',
-                  }}
-                >
-                  <Box>{m.hasAttachement}</Box>
+                <Box sx={css.trueFalseNullBox}>
+                  <Box sx={css.trueFalseNullLabel}>{m.hasAttachement}</Box>
                   <TrueFalseNull
                     value={_reports.filters.hasAttachment ?? null}
                     onChange={hasAttachment =>
@@ -458,7 +435,7 @@ export const Reports = () => {
                         hasAttachment: hasAttachment ?? undefined,
                       }))
                     }
-                    sx={{mt: 1}}
+                    sx={{flexBasis: '50%'}}
                   />
                 </Box>
               </Grid>
