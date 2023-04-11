@@ -60,6 +60,9 @@ const css = makeSx({
   iconWidth: {
     width: iconWidth,
   },
+  innerCheckbox: {
+    ml: '15px',
+  },
 })
 
 interface Props {
@@ -138,6 +141,7 @@ export const SelectCountriesMenu = withRegions(({countries, anchorEl, open, init
               sx={combineSx(css.menuItem, indexedValues.has(country.code) && css.menuItemActive)}
               onClick={() => handleToggle(country)}
             >
+              <Checkbox sx={combineSx(css.innerCheckbox, css.iconWidth)} checked={indexedValues.has(country.code)} />
               <Box component="span" sx={combineSx(css.flag, css.iconWidth)}>
                 {countryToFlag(country.code)}
               </Box>
