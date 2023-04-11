@@ -21,6 +21,7 @@ const buttonStyle: SxProps<Theme> = {
   paddingRight: 1.5,
   paddingLeft: 1.5,
   whiteSpace: 'nowrap',
+  width: '100%',
 }
 
 export const TrueFalseNull = forwardRef(({gutter, value, onChange, label, sx, ...props}: TrueFalseNullProps, ref: any) => {
