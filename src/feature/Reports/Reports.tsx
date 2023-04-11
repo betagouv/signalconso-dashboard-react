@@ -17,7 +17,7 @@ import {
 } from '../../core/helper/useQueryString'
 import {NavLink} from 'react-router-dom'
 import {SelectDepartments} from '../../shared/SelectDepartments/SelectDepartments'
-import {Fender, IconBtn, PanelBody, Txt} from '../../alexlibs/mui-extension'
+import {Btn, Fender, IconBtn, PanelBody, Txt} from '../../alexlibs/mui-extension'
 import {useToast} from '../../core/toast'
 import {ReportStatusLabel} from '../../shared/ReportStatus/ReportStatus'
 import {config} from '../../conf/config'
@@ -48,6 +48,7 @@ import {ScMenuItem} from '../../shared/MenuItem/ScMenuItem'
 import {ScMultiSelect} from '../../shared/Select/MultiSelect'
 import {SelectCountries} from '../../shared/SelectCountries/SelectCountries'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
+import {useLogin} from '../../core/context/LoginContext'
 
 const TrueLabel = () => {
   const {m} = useI18n()
@@ -99,6 +100,7 @@ export const Reports = () => {
   const _report = useReportContext()
   const _reports = useReportsContext()
   const selectReport = useSetState<Id>()
+  const {connectedUser} = useLogin()
   const [expanded, setExpanded] = React.useState(false)
   const {toastError} = useToast()
   const queryString = useQueryString<Partial<ReportSearch>, Partial<ReportSearchQs>>({
@@ -205,7 +207,6 @@ export const Reports = () => {
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'space-between',
-                    mt: '8px',
                   }}
                 >
                   <Box>{m.siretOrSirenFound}</Box>
@@ -235,6 +236,18 @@ export const Reports = () => {
                 )}
               </Box>
             </Grid>
+            {connectedUser.isAdmin && (
+              <Grid item xs={12} md={6}>
+                <DebouncedInput
+                  value={_reports.filters.email ?? ''}
+                  onChange={email => _reports.updateFilters(prev => ({...prev, email}))}
+                >
+                  {(value, onChange) => (
+                    <ScInput label={m.emailConsumer} fullWidth value={value} onChange={e => onChange(e.target.value)} />
+                  )}
+                </DebouncedInput>
+              </Grid>
+            )}
           </Grid>
 
           <Collapse in={expanded} timeout="auto" unmountOnExit>
@@ -284,16 +297,18 @@ export const Reports = () => {
                   ))}
                 </ScMultiSelect>
               </Grid>
-              <Grid item xs={12} md={6}>
-                <DebouncedInput
-                  value={_reports.filters.email ?? ''}
-                  onChange={email => _reports.updateFilters(prev => ({...prev, email}))}
-                >
-                  {(value, onChange) => (
-                    <ScInput label={m.emailConsumer} fullWidth value={value} onChange={e => onChange(e.target.value)} />
-                  )}
-                </DebouncedInput>
-              </Grid>
+              {connectedUser.isDGCCRF && (
+                <Grid item xs={12} md={6}>
+                  <DebouncedInput
+                    value={_reports.filters.email ?? ''}
+                    onChange={email => _reports.updateFilters(prev => ({...prev, email}))}
+                  >
+                    {(value, onChange) => (
+                      <ScInput label={m.emailConsumer} fullWidth value={value} onChange={e => onChange(e.target.value)} />
+                    )}
+                  </DebouncedInput>
+                </Grid>
+              )}
               <Grid item xs={12} md={6}>
                 <Box>
                   <Box
@@ -301,7 +316,6 @@ export const Reports = () => {
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'space-between',
-                      mt: '8px',
                     }}
                   >
                     <Box>{m.website}</Box>
@@ -338,7 +352,6 @@ export const Reports = () => {
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'space-between',
-                      mt: '8px',
                     }}
                   >
                     <Box>{m.phone}</Box>
@@ -375,7 +388,6 @@ export const Reports = () => {
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'space-between',
-                      mt: '8px',
                     }}
                   >
                     <Box>{m.foreignCountry}</Box>
@@ -414,7 +426,6 @@ export const Reports = () => {
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'space-between',
-                    mt: '8px',
                   }}
                 >
                   <Box>{m.consoAnonyme}</Box>
@@ -436,7 +447,6 @@ export const Reports = () => {
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'space-between',
-                    mt: '8px',
                   }}
                 >
                   <Box>{m.hasAttachement}</Box>
@@ -462,13 +472,10 @@ export const Reports = () => {
             mt: 2,
             mr: 3,
             ml: 3,
+            mb: 1,
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
-            '& > *': {
-              mb: 1,
-              ml: 1,
-            },
           }}
         >
           <ScButton onClick={_ => setExpanded(prev => !prev)}>
@@ -477,11 +484,39 @@ export const Reports = () => {
               <ExpandMore expand={expanded} />
             </span>
           </ScButton>
-          <Badge color="error" badgeContent={filtersCount} hidden={filtersCount === 0}>
-            <ScButton icon="clear" onClick={_reports.clearFilters} variant="outlined" color="primary">
-              {m.removeAllFilters}
-            </ScButton>
-          </Badge>
+          <Box
+            sx={{
+              flexWrap: 'wrap',
+              whiteSpace: 'nowrap',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'flex-end',
+              '& > *': {
+                mb: 1,
+                ml: 1,
+              },
+            }}
+          >
+            {filtersCount !== 0 && (
+              <Badge color="error" badgeContent={filtersCount} hidden={filtersCount === 0}>
+                <ScButton icon="clear" onClick={_reports.clearFilters} variant="outlined" color="primary">
+                  {m.removeAllFilters}
+                </ScButton>
+              </Badge>
+            )}
+            <ExportReportsPopper
+              disabled={ScOption.from(_reports?.list?.totalCount)
+                .map(_ => _ > config.reportsLimitForExport)
+                .getOrElse(false)}
+              tooltipBtnNew={ScOption.from(_reports?.list?.totalCount)
+                .map(_ => (_ > config.reportsLimitForExport ? m.cannotExportMoreReports(config.reportsLimitForExport) : ''))
+                .getOrElse('')}
+            >
+              <Btn variant="outlined" color="primary" icon="get_app">
+                {m.exportInXLS}
+              </Btn>
+            </ExportReportsPopper>
+          </Box>
         </Box>
       </Panel>
 
@@ -513,22 +548,6 @@ export const Reports = () => {
               </DatatableToolbar>
             </>
           }
-          actions={
-            <>
-              <ExportReportsPopper
-                disabled={ScOption.from(_reports?.list?.totalCount)
-                  .map(_ => _ > config.reportsLimitForExport)
-                  .getOrElse(false)}
-                tooltipBtnNew={ScOption.from(_reports?.list?.totalCount)
-                  .map(_ => (_ > config.reportsLimitForExport ? m.cannotExportMoreReports(config.reportsLimitForExport) : ''))
-                  .getOrElse('')}
-              >
-                <IconBtn color="primary">
-                  <Icon>file_download</Icon>
-                </IconBtn>
-              </ExportReportsPopper>
-            </>
-          }
           loading={_reports.fetching}
           paginate={{
             offset: _reports.filters.offset,
@@ -539,6 +558,7 @@ export const Reports = () => {
           data={_reports.list?.entities}
           total={_reports.list?.totalCount}
           showColumnsToggle={true}
+          plainTextColumnsToggle={true}
           columns={[
             {
               id: 'checkbox',

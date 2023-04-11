@@ -5,8 +5,6 @@ import {useFetcher, UseFetcher} from '../../alexlibs/react-hooks-lib'
 import {ApiError} from '../client/ApiClient'
 
 export interface WebsiteInvestigationContextProps {
-  listDepartmentDivision: UseFetcher<SignalConsoApiSdk['secured']['website']['listDepartmentDivision'], ApiError>
-  listPractice: UseFetcher<SignalConsoApiSdk['secured']['website']['listPractice'], ApiError>
   listInvestigationStatus: UseFetcher<SignalConsoApiSdk['secured']['website']['listInvestigationStatus'], ApiError>
   createOrUpdateInvestigation: UseFetcher<SignalConsoApiSdk['secured']['website']['createOrUpdateInvestigation'], ApiError>
 }
@@ -26,8 +24,6 @@ export const WebsiteInvestigationProvider = ({api, children}: Props) => {
   return (
     <WebsiteInvestigationContext.Provider
       value={{
-        listDepartmentDivision: useFetcher(api.secured.website.listDepartmentDivision),
-        listPractice: useFetcher(api.secured.website.listPractice),
         listInvestigationStatus: useFetcher(api.secured.website.listInvestigationStatus),
         createOrUpdateInvestigation: useFetcher(api.secured.website.createOrUpdateInvestigation),
       }}
