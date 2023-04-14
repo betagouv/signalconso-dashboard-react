@@ -7,7 +7,7 @@ import {Datatable} from '../../shared/Datatable/Datatable'
 import {Badge, Box, Checkbox, Chip, Collapse, Grid, Icon, MenuItem, Tooltip} from '@mui/material'
 import {styled} from '@mui/material/styles'
 import {cleanObject, getHostFromUrl, textOverflowMiddleCropping} from '../../core/helper'
-import React, {useEffect, useMemo} from 'react'
+import React, {useCallback, useEffect, useMemo} from 'react'
 import {
   mapArrayFromQuerystring,
   mapBooleanFromQueryString,
@@ -163,6 +163,30 @@ export const Reports = () => {
     },
   }
 
+  // TRELLO-1728 The object _reports change all the time.
+  // If we put it in dependencies, it causes problems with the debounce,
+  // and the search input "stutters" when typing fast
+  const onDetailsChange = useCallback((details: string) => {
+    _reports.updateFilters(prev => ({...prev, details}))
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+  const onSiretSirenChange = useCallback((siretSirenList: string[]) => {
+    _reports.updateFilters(prev => ({...prev, siretSirenList}))
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+  const onEmailChange = useCallback((email: string) => {
+    _reports.updateFilters(prev => ({...prev, email}))
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+  const onWebsiteURLChange = useCallback((websiteURL: string) => {
+    _reports.updateFilters(prev => ({...prev, websiteURL}))
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+  const onPhoneChange = useCallback((phone: string) => {
+    _reports.updateFilters(prev => ({...prev, phone}))
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
   return (
     <Page size="xl">
       <PageTitle>{m.reports_pageTitle}</PageTitle>
@@ -170,14 +194,13 @@ export const Reports = () => {
         <PanelBody>
           <Grid container spacing={1}>
             <Grid item sm={6} xs={12}>
-              <DebouncedInput
+              <SelectDepartments
+                label={m.departments}
                 value={_reports.filters.departments}
                 onChange={departments => _reports.updateFilters(prev => ({...prev, departments}))}
-              >
-                {(value, onChange) => (
-                  <SelectDepartments label={m.departments} value={value} onChange={onChange} sx={{mr: 1}} fullWidth />
-                )}
-              </DebouncedInput>
+                sx={{mr: 1}}
+                fullWidth
+              />
             </Grid>
             <Grid item xs={12} md={6}>
               <DebouncedInput<[Date | undefined, Date | undefined]>
@@ -190,10 +213,7 @@ export const Reports = () => {
               </DebouncedInput>
             </Grid>
             <Grid item xs={12} md={6}>
-              <DebouncedInput
-                value={_reports.filters.details ?? ''}
-                onChange={details => _reports.updateFilters(prev => ({...prev, details}))}
-              >
+              <DebouncedInput value={_reports.filters.details ?? ''} onChange={onDetailsChange}>
                 {(value, onChange) => (
                   <ScInput label={m.keywords} fullWidth value={value} onChange={e => onChange(e.target.value)} />
                 )}
@@ -232,10 +252,7 @@ export const Reports = () => {
                   />
                 </Box>
                 {_reports.filters.hasCompany === true && (
-                  <DebouncedInput
-                    value={_reports.filters.siretSirenList ?? []}
-                    onChange={siretSirenList => _reports.updateFilters(prev => ({...prev, siretSirenList}))}
-                  >
+                  <DebouncedInput value={_reports.filters.siretSirenList ?? []} onChange={onSiretSirenChange}>
                     {(value, onChange) => (
                       <ScInput label={m.siretOrSiren} fullWidth value={value} onChange={e => onChange([e.target.value])} />
                     )}
@@ -245,10 +262,7 @@ export const Reports = () => {
             </Grid>
             {connectedUser.isAdmin && (
               <Grid item xs={12} md={6}>
-                <DebouncedInput
-                  value={_reports.filters.email ?? ''}
-                  onChange={email => _reports.updateFilters(prev => ({...prev, email}))}
-                >
+                <DebouncedInput value={_reports.filters.email ?? ''} onChange={onEmailChange}>
                   {(value, onChange) => (
                     <ScInput label={m.emailConsumer} fullWidth value={value} onChange={e => onChange(e.target.value)} />
                   )}
@@ -306,10 +320,7 @@ export const Reports = () => {
               </Grid>
               {connectedUser.isDGCCRF && (
                 <Grid item xs={12} md={6}>
-                  <DebouncedInput
-                    value={_reports.filters.email ?? ''}
-                    onChange={email => _reports.updateFilters(prev => ({...prev, email}))}
-                  >
+                  <DebouncedInput value={_reports.filters.email ?? ''} onChange={onEmailChange}>
                     {(value, onChange) => (
                       <ScInput label={m.emailConsumer} fullWidth value={value} onChange={e => onChange(e.target.value)} />
                     )}
@@ -335,10 +346,7 @@ export const Reports = () => {
                     />
                   </Box>
                   {_reports.filters.hasWebsite === true && (
-                    <DebouncedInput
-                      value={_reports.filters.websiteURL ?? ''}
-                      onChange={websiteURL => _reports.updateFilters(prev => ({...prev, websiteURL}))}
-                    >
+                    <DebouncedInput value={_reports.filters.websiteURL ?? ''} onChange={onWebsiteURLChange}>
                       {(value, onChange) => (
                         <ScInput label={m.url} fullWidth value={value} onChange={e => onChange(e.target.value)} />
                       )}
@@ -365,10 +373,7 @@ export const Reports = () => {
                     />
                   </Box>
                   {_reports.filters.hasPhone === true && (
-                    <DebouncedInput
-                      value={_reports.filters.phone ?? ''}
-                      onChange={phone => _reports.updateFilters(prev => ({...prev, phone}))}
-                    >
+                    <DebouncedInput value={_reports.filters.phone ?? ''} onChange={onPhoneChange}>
                       {(value, onChange) => (
                         <ScInput label={m.phone} fullWidth value={value} onChange={e => onChange(e.target.value)} />
                       )}
