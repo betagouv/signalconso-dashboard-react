@@ -30,6 +30,7 @@ export interface DatatableProps<T> {
   getRenderRowKey?: (_: T) => string
   onClickRows?: (_: T, event: React.MouseEvent<HTMLTableRowElement>) => void
   columns: DatatableColumnProps<T>[]
+  initialHiddenColumns?: string[]
   showColumnsToggle?: boolean
   plainTextColumnsToggle?: boolean
   showColumnsToggleBtnTooltip?: string
@@ -77,6 +78,7 @@ export const Datatable = <T extends any = any>({
   total,
   data,
   columns,
+  initialHiddenColumns,
   getRenderRowKey,
   actions,
   header,
@@ -95,7 +97,7 @@ export const Datatable = <T extends any = any>({
     () => displayableColumns.filter(_ => !_.alwaysVisible && _.head && _.head !== ''),
     [displayableColumns],
   )
-  const [hiddenColumns, setHiddenColumns] = usePersistentState<string[]>([], id)
+  const [hiddenColumns, setHiddenColumns] = usePersistentState<string[]>(initialHiddenColumns ?? [], id)
   const filteredColumns = useMemo(() => displayableColumns.filter(_ => !hiddenColumns.includes(_.id)), [columns, hiddenColumns])
   const displayTableHeader = useMemo(() => !!displayableColumns.find(_ => _.head !== ''), [displayableColumns])
 

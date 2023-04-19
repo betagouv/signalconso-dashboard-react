@@ -1,5 +1,5 @@
 import {PanelBody} from '../../shared/Panel'
-import React, {useEffect, useState} from 'react'
+import React from 'react'
 import {useI18n} from '../../core/i18n'
 
 import {Box, BoxProps, Icon} from '@mui/material'
@@ -11,7 +11,7 @@ import {useEventContext} from '../../core/context/EventContext'
 import {Divider} from '../../shared/Divider/Divider'
 import {
   EventActionValues,
-  ReportEvent,
+  Event,
   ReportResponse,
   ReportResponseTypes,
   ResponseConsumerReview,
@@ -25,7 +25,8 @@ import {ScOption} from 'core/helper/ScOption'
 
 interface Props {
   canEditFile?: boolean
-  response?: ReportEvent
+  response?: Event
+  consumerReportReview?: ResponseConsumerReview
   reportId: Id
   files?: UploadedFile[]
 }
@@ -58,20 +59,15 @@ const Response = ({
     </Box>
   )
 }
-export const ReportResponseComponent = ({canEditFile, response, reportId, files}: Props) => {
+export const ReportResponseComponent = ({canEditFile, response, consumerReportReview, reportId, files}: Props) => {
   const {m} = useI18n()
   const _report = useReportContext()
   const _event = useEventContext()
   const {connectedUser} = useLogin()
-  const [consumerReportReview, setConsumerReportReview] = useState<ResponseConsumerReview | undefined>()
-
-  useEffect(() => {
-    _report.getReviewOnReportResponse.fetch({}, reportId).then(setConsumerReportReview)
-  }, [])
 
   return (
     <PanelBody>
-      {ScOption.from(response?.data.details as ReportResponse)
+      {ScOption.from(response?.details as ReportResponse)
         .map(details => (
           <div>
             {fnSwitch(details.responseType, {
@@ -87,7 +83,7 @@ export const ReportResponseComponent = ({canEditFile, response, reportId, files}
                 </Response>
               ),
             })}
-            <Box sx={{color: t => t.palette.text.disabled}}>{(response?.data.details as ReportResponse).consumerDetails}</Box>
+            <Box sx={{color: t => t.palette.text.disabled}}>{(response?.details as ReportResponse).consumerDetails}</Box>
 
             {details.dgccrfDetails && details.dgccrfDetails !== '' && (
               <>
