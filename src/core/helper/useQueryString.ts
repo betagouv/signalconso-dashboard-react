@@ -42,7 +42,8 @@ export const useQueryString = <E, QS extends ParsedUrlQueryInput>({
   }
 
   const get = (): E => {
-    return fromQueryString(QueryString.parse(history.location.search.replace(/^\?/, '')) as any)
+    // arrayLimit raised from 20 to 200 otherwise the departments list may not be parsed correctly
+    return fromQueryString(QueryString.parse(history.location.search.replace(/^\?/, ''), {arrayLimit: 200}) as any)
   }
 
   return {update, get}
