@@ -9,7 +9,7 @@ export class AuthenticateClient {
     return this.client.post<AuthUser>(`/authenticate`, {body: {login, password}})
   }
 
-  readonly forgotPassword = (login: string) => {
+  readonly forgotPassword = (login: string): Promise<void> => {
     return this.client.post<void>(`/authenticate/password/forgot`, {body: {login}})
   }
 
