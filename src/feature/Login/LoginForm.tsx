@@ -1,23 +1,21 @@
-import * as React from 'react'
-import {useI18n} from '../../core/i18n'
-import {regexp} from '../../core/helper/regexp'
-import {LoginPanel} from './LoginPanel'
-import {ActionProps} from './LoginPage'
-import {ScInputPassword} from '../../shared/InputPassword/InputPassword'
-import {ScInput} from '../../shared/Input/ScInput'
+import {useMutation} from '@tanstack/react-query'
+import {apiPublicSdk} from 'core/ApiSdkInstance'
 import {useForm} from 'react-hook-form'
-import {ScButton} from '../../shared/Button/Button'
-import {ForgottenPasswordDialog} from './ForgottenPasswordDialog'
-import {AuthenticationEventActions, EventCategories, Matomo} from '../../core/plugins/Matomo'
-import {Alert} from '../../alexlibs/mui-extension'
-import {Txt} from '../../alexlibs/mui-extension'
+import {Alert, Txt} from '../../alexlibs/mui-extension'
 import {ApiError} from '../../core/client/ApiClient'
 import {SignalConsoPublicSdk} from '../../core/client/SignalConsoPublicSdk'
-import {ScOption} from 'core/helper/ScOption'
+import {regexp} from '../../core/helper/regexp'
+import {useI18n} from '../../core/i18n'
+import {AuthenticationEventActions, EventCategories, Matomo} from '../../core/plugins/Matomo'
+import {ScButton} from '../../shared/Button/Button'
+import {ScInput} from '../../shared/Input/ScInput'
+import {ScInputPassword} from '../../shared/InputPassword/InputPassword'
+import {ForgottenPasswordDialog} from './ForgottenPasswordDialog'
+import {ActionProps} from './LoginPage'
+import {LoginPanel} from './LoginPanel'
 
 interface Props {
   login: ActionProps<SignalConsoPublicSdk['authenticate']['login']>
-  forgottenPassword?: ActionProps<SignalConsoPublicSdk['authenticate']['forgotPassword']>
 }
 
 interface Form {
@@ -26,9 +24,8 @@ interface Form {
   apiError: string
 }
 
-export const LoginForm = ({login, forgottenPassword}: Props) => {
+export const LoginForm = ({login}: Props) => {
   const {m} = useI18n()
-
   const {
     register,
     handleSubmit,
@@ -99,13 +96,9 @@ export const LoginForm = ({login, forgottenPassword}: Props) => {
           >
             {m.login}
           </ScButton>
-          {ScOption.from(forgottenPassword)
-            .map(_ => (
-              <ForgottenPasswordDialog value={watch('email')} loading={_.loading} error={_.error} onSubmit={_.action}>
-                <ScButton color="primary">{m.forgottenPassword}</ScButton>
-              </ForgottenPasswordDialog>
-            ))
-            .toUndefined()}
+          <ForgottenPasswordDialog value={watch('email')}>
+            <ScButton color="primary">{m.forgottenPassword}</ScButton>
+          </ForgottenPasswordDialog>
         </div>
       </form>
     </LoginPanel>

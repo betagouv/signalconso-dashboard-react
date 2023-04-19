@@ -1,19 +1,18 @@
-import {Page} from '../../alexlibs/mui-extension'
 import {Icon, Tab, Tabs} from '@mui/material'
-import * as React from 'react'
 import {useEffect} from 'react'
-import {useI18n} from '../../core/i18n'
-import {CenteredContent} from '../../shared/CenteredContent/CenteredContent'
-import {ActivateAccountForm} from './ActivateAccountForm'
-import {LoginForm} from './LoginForm'
-import {Link, Redirect, Route, Switch} from 'react-router-dom'
-import {siteMap} from '../../core/siteMap'
-import {HelpContactInfo} from '../../shared/HelpContactInfo/HelpContactInfo'
 import {useHistory} from 'react-router'
-import {Matomo} from '../../core/plugins/Matomo'
+import {Link, Redirect, Route, Switch} from 'react-router-dom'
+import {Page} from '../../alexlibs/mui-extension'
 import {layoutConfig} from '../../core/Layout'
 import {ApiError} from '../../core/client/ApiClient'
 import {SignalConsoPublicSdk} from '../../core/client/SignalConsoPublicSdk'
+import {useI18n} from '../../core/i18n'
+import {Matomo} from '../../core/plugins/Matomo'
+import {siteMap} from '../../core/siteMap'
+import {CenteredContent} from '../../shared/CenteredContent/CenteredContent'
+import {HelpContactInfo} from '../../shared/HelpContactInfo/HelpContactInfo'
+import {ActivateAccountForm} from './ActivateAccountForm'
+import {LoginForm} from './LoginForm'
 
 export interface ActionProps<F extends (...args: any[]) => Promise<any>> {
   action: F
@@ -23,11 +22,10 @@ export interface ActionProps<F extends (...args: any[]) => Promise<any>> {
 
 interface Props {
   login: ActionProps<SignalConsoPublicSdk['authenticate']['login']>
-  forgottenPassword?: ActionProps<SignalConsoPublicSdk['authenticate']['forgotPassword']>
   register: ActionProps<SignalConsoPublicSdk['authenticate']['sendActivationLink']>
 }
 
-export const LoginPage = ({login, register, forgottenPassword}: Props) => {
+export const LoginPage = ({login, register}: Props) => {
   const {m} = useI18n()
   const history = useHistory()
   useEffect(() => history.listen(_ => Matomo.trackPage(_.pathname)), [history])
@@ -57,7 +55,7 @@ export const LoginPage = ({login, register, forgottenPassword}: Props) => {
               </Tabs>
               <Switch>
                 <Route path={allTabs[0]}>
-                  <LoginForm login={login} forgottenPassword={forgottenPassword} />
+                  <LoginForm login={login} />
                 </Route>
                 <Route path={allTabs[1]}>
                   <ActivateAccountForm register={register} />
