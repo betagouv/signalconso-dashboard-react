@@ -1,20 +1,16 @@
-import {Alert} from '../../alexlibs/mui-extension'
-import {Txt} from '../../alexlibs/mui-extension'
-import {ScInput} from '../../shared/Input/ScInput'
-import {regexp} from '../../core/helper/regexp'
-import * as React from 'react'
 import {ReactElement, useEffect} from 'react'
 import {useForm} from 'react-hook-form'
+import {Alert, Txt} from '../../alexlibs/mui-extension'
+import {regexp} from '../../core/helper/regexp'
 import {useI18n} from '../../core/i18n'
+import {AuthenticationEventActions, EventCategories, Matomo} from '../../core/plugins/Matomo'
 import {useToast} from '../../core/toast'
 import {ScDialog} from '../../shared/Confirm/ScDialog'
-import {AuthenticationEventActions, EventCategories, Matomo} from '../../core/plugins/Matomo'
-import {ApiError} from '../../core/client/ApiClient'
+import {ScInput} from '../../shared/Input/ScInput'
+import {useMutation} from '@tanstack/react-query'
+import {apiPublicSdk} from 'core/ApiSdkInstance'
 
 interface Props {
-  onSubmit: (email: string) => Promise<any>
-  loading?: boolean
-  error?: ApiError
   children: ReactElement<any>
   value?: string
 }
@@ -23,9 +19,12 @@ interface Form {
   emailForgotten: string
 }
 
-export const ForgottenPasswordDialog = ({value, onSubmit, loading, error, children}: Props) => {
+export const ForgottenPasswordDialog = ({value, children}: Props) => {
   const {m} = useI18n()
   const {toastSuccess} = useToast()
+  const _forgotPassword = useMutation({
+    mutationFn: apiPublicSdk.authenticate.forgotPassword,
+  })
   const {
     register,
     getValues,
@@ -39,7 +38,8 @@ export const ForgottenPasswordDialog = ({value, onSubmit, loading, error, childr
   }, [value])
 
   const submit = (form: Form, close: () => void) => {
-    onSubmit(form.emailForgotten)
+    _forgotPassword
+      .mutateAsync(form.emailForgotten)
       .then(() => {
         close()
         toastSuccess(m.emailSentToYou)
@@ -52,14 +52,14 @@ export const ForgottenPasswordDialog = ({value, onSubmit, loading, error, childr
 
   return (
     <ScDialog
-      loading={loading}
+      loading={_forgotPassword.isLoading}
       title={m.forgottenPassword}
       confirmLabel={m.createNewPassword}
       maxWidth="xs"
       onConfirm={(e, close) => handleSubmit(() => submit(getValues(), close))()}
       content={
         <>
-          {error !== undefined && (
+          {_forgotPassword.isError && (
             <Alert type="error" gutterBottom deletable>
               {m.anErrorOccurred}
             </Alert>
