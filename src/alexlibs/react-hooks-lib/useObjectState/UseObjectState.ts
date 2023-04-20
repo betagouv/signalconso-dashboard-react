@@ -1,5 +1,4 @@
 import {Dispatch, SetStateAction, useState} from 'react'
-import {useFetcher} from '..'
 
 type UseObjectStateReturn<T> = [
   {[key: string]: T},
