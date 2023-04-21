@@ -6,7 +6,7 @@ import {Panel} from '../../shared/Panel'
 import {Datatable} from '../../shared/Datatable/Datatable'
 import {Badge, Box, Checkbox, Chip, Collapse, Grid, Icon, MenuItem, Tooltip} from '@mui/material'
 import {styled} from '@mui/material/styles'
-import {cleanObject, getHostFromUrl, textOverflowMiddleCropping} from '../../core/helper'
+import {cleanObject, fnSwitch, getHostFromUrl, textOverflowMiddleCropping} from '../../core/helper'
 import React, {useCallback, useEffect, useMemo} from 'react'
 import {
   mapArrayFromQuerystring,
@@ -34,7 +34,7 @@ import {useSetState} from '../../alexlibs/react-hooks-lib'
 import {DatatableToolbar} from '../../shared/Datatable/DatatableToolbar'
 import {useReportContext} from '../../core/context/ReportContext'
 import {Report, ReportingDateLabel, ReportStatus, ReportTag} from '../../core/client/report/Report'
-import {Id, ReportSearch} from '../../core/model'
+import {Id, ReportResponse, ReportResponseTypes, ReportSearch, ResponseEvaluation} from '../../core/model'
 import {ScOption} from 'core/helper/ScOption'
 import {TrueFalseNull} from '../../shared/TrueFalseUndefined/TrueFalseNull'
 import {ScInput} from '../../shared/Input/ScInput'
@@ -541,6 +541,9 @@ export const Reports = () => {
           total={_reports.list?.totalCount}
           showColumnsToggle={true}
           plainTextColumnsToggle={true}
+          initialHiddenColumns={
+            connectedUser.isDGCCRF ? ['companyPostalCode', 'companySiret', 'companyCountry', 'reportDate', 'status', 'file'] : []
+          }
           columns={[
             {
               id: 'checkbox',
@@ -721,6 +724,117 @@ export const Reports = () => {
                   </Txt>
                 </span>
               ),
+            },
+            {
+              id: 'proResponse',
+              head: 'Réponse du professionnel',
+              render: _ => (
+                <>
+                  {ScOption.from(_.professionalResponse?.details as ReportResponse)
+                    .map(r => (
+                      <Tooltip
+                        title={
+                          <>
+                            <Box sx={{fontWeight: t => t.typography.fontWeightBold, fontSize: 'larger', mb: 1}}>
+                              {m.reportResponse[r.responseType]}
+                            </Box>
+                            <Box
+                              sx={{display: '-webkit-box', WebkitLineClamp: 20, WebkitBoxOrient: 'vertical', overflow: 'hidden'}}
+                            >
+                              {r.consumerDetails}
+                            </Box>
+                            {r.dgccrfDetails && r.dgccrfDetails !== '' && (
+                              <>
+                                <Box sx={{fontWeight: t => t.typography.fontWeightBold, fontSize: 'larger', mt: 4, mb: 1}}>
+                                  {m.reportDgccrfDetails}
+                                </Box>
+                                <Box>{r.dgccrfDetails}</Box>
+                              </>
+                            )}
+                          </>
+                        }
+                      >
+                        {fnSwitch(r.responseType, {
+                          [ReportResponseTypes.Accepted]: _ => (
+                            <Box
+                              component="span"
+                              sx={{
+                                pl: '8px',
+                                pr: '8px',
+                                borderRadius: '240px',
+                                background: t => t.palette.success.light,
+                                color: 'white',
+                              }}
+                            >
+                              {m.reportResponseShort[_]}
+                            </Box>
+                          ),
+                          [ReportResponseTypes.NotConcerned]: _ => (
+                            <Box
+                              component="span"
+                              sx={{
+                                pl: '8px',
+                                pr: '8px',
+                                borderRadius: '240px',
+                                background: t => t.palette.info.light,
+                                color: 'white',
+                              }}
+                            >
+                              {m.reportResponseShort[_]}
+                            </Box>
+                          ),
+                          [ReportResponseTypes.Rejected]: _ => (
+                            <Box
+                              component="span"
+                              sx={{
+                                pl: '8px',
+                                pr: '8px',
+                                borderRadius: '240px',
+                                background: t => t.palette.error.light,
+                                color: 'white',
+                              }}
+                            >
+                              {m.reportResponseShort[_]}
+                            </Box>
+                          ),
+                        })}
+                      </Tooltip>
+                    ))
+                    .getOrElse('')}
+                </>
+              ),
+            },
+            {
+              id: 'avisConso',
+              head: 'Avis Conso',
+              render: _ => (
+                <>
+                  {_.consumerReview && (
+                    <Tooltip
+                      title={
+                        <Box sx={{display: '-webkit-box', WebkitLineClamp: 20, WebkitBoxOrient: 'vertical', overflow: 'hidden'}}>
+                          {_.consumerReview.details}
+                        </Box>
+                      }
+                    >
+                      {fnSwitch(_.consumerReview.evaluation, {
+                        [ResponseEvaluation.Positive]: _ => (
+                          <Icon sx={{color: t => t.palette.success.light}}>sentiment_very_satisfied</Icon>
+                        ),
+                        [ResponseEvaluation.Neutral]: _ => <Icon sx={{color: t => t.palette.info.light}}>sentiment_neutral</Icon>,
+                        [ResponseEvaluation.Negative]: _ => (
+                          <Icon sx={{color: t => t.palette.error.light}}>sentiment_very_dissatisfied</Icon>
+                        ),
+                      })}
+                    </Tooltip>
+                  )}
+                </>
+              ),
+            },
+            {
+              id: 'dateAvisConso',
+              head: "Date de l'avis Conso",
+              render: _ => formatDate(_.consumerReview?.creationDate),
             },
             {
               id: 'file',

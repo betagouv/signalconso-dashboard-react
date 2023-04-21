@@ -74,6 +74,7 @@ export enum ResponseEvaluation {
 export interface ResponseConsumerReview {
   evaluation: ResponseEvaluation
   details?: string
+  creationDate?: Date
 }
 
 export interface ResponseConsumerReviewExists {

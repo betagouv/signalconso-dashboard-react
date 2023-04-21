@@ -40,7 +40,9 @@ export const ReportPro = () => {
   const responseFormRef = useRef<any>(null)
 
   useEffect(() => {
-    _report.get.fetch({}, id)
+    _report.get.fetch({}, id).then(({report}) => {
+      _report.getReviewOnReportResponse.fetch({}, report.id)
+    })
     _event.reportEvents.fetch({}, id)
   }, [])
 
@@ -122,7 +124,8 @@ export const ReportPro = () => {
                 </PanelHead>
                 <ReportResponseComponent
                   canEditFile={false}
-                  response={response}
+                  response={response?.data}
+                  consumerReportReview={_report.getReviewOnReportResponse.entity}
                   reportId={report.id}
                   files={_report.get.entity?.files.filter(_ => _.origin === FileOrigin.Professional)}
                 />
