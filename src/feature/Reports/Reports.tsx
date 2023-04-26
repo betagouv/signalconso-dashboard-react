@@ -6,8 +6,8 @@ import {Panel} from '../../shared/Panel'
 import {Datatable} from '../../shared/Datatable/Datatable'
 import {Badge, Box, Checkbox, Chip, Collapse, Grid, Icon, MenuItem, Tooltip} from '@mui/material'
 import {styled} from '@mui/material/styles'
-import {cleanObject, fnSwitch, getHostFromUrl, textOverflowMiddleCropping} from '../../core/helper'
-import React, {useCallback, useEffect, useMemo} from 'react'
+import {cleanObject, getHostFromUrl, textOverflowMiddleCropping} from '../../core/helper'
+import React, {useCallback, useEffect, useMemo, useState} from 'react'
 import {
   mapArrayFromQuerystring,
   mapBooleanFromQueryString,
@@ -49,6 +49,8 @@ import {ScMultiSelect} from '../../shared/Select/MultiSelect'
 import {SelectCountries} from '../../shared/SelectCountries/SelectCountries'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import {useLogin} from '../../core/context/LoginContext'
+import {ConsumerReviewLabel} from '../../shared/ConsumerReviewLabel/ConsumerReviewLabel'
+import {ProResponseLabel} from '../../shared/ProResponseLabel/ProResponseLabel'
 
 const TrueLabel = () => {
   const {m} = useI18n()
@@ -91,6 +93,8 @@ interface ReportSearchQs {
   hasPhone?: boolean
   hasCompany?: boolean
   hasForeignCountry?: boolean
+  hasEvaluation?: boolean
+  evaluation?: ResponseEvaluation[]
   offset: number
   limit: number
 }
@@ -107,8 +111,16 @@ export const Reports = () => {
     toQueryString: mapDatesToQueryString,
     fromQueryString: compose(
       mapDateFromQueryString,
-      mapArrayFromQuerystring(['status', 'departments', 'tags', 'companyCountries', 'siretSirenList', 'activityCodes']),
-      mapBooleanFromQueryString(['hasCompany', 'hasForeignCountry', 'hasPhone', 'hasWebsite']),
+      mapArrayFromQuerystring([
+        'status',
+        'departments',
+        'tags',
+        'companyCountries',
+        'siretSirenList',
+        'activityCodes',
+        'evaluation',
+      ]),
+      mapBooleanFromQueryString(['hasCompany', 'hasForeignCountry', 'hasPhone', 'hasWebsite', 'hasEvaluation']),
     ),
   })
 
@@ -145,6 +157,31 @@ export const Reports = () => {
   useEffect(() => {
     _category.fetch({force: false})
   }, [])
+
+  const [proResponseFilter, setProResponseFilter] = useState<ReportResponseTypes[]>([])
+
+  const proResponseToStatus = {
+    [ReportResponseTypes.Accepted]: ReportStatus.PromesseAction,
+    [ReportResponseTypes.NotConcerned]: ReportStatus.MalAttribue,
+    [ReportResponseTypes.Rejected]: ReportStatus.Infonde,
+  }
+
+  const onChangeProResponseFilter = (responses: ReportResponseTypes[]) => {
+    setProResponseFilter(responses)
+    const status = responses.length === 0 ? Report.respondedStatus : responses.map(_ => proResponseToStatus[_])
+    _reports.updateFilters(prev => ({...prev, status}))
+  }
+
+  const hasProResponse = _reports.filters.status?.every(status => Report.respondedStatus.includes(status))
+    ? true
+    : _reports.filters.status?.every(status => Report.notRespondedStatus.includes(status))
+    ? false
+    : null
+  const onChangeHasProResponse = (b: boolean | null) => {
+    if (b) _reports.updateFilters(prev => ({...prev, status: Report.respondedStatus}))
+    else if (b === false) _reports.updateFilters(prev => ({...prev, status: Report.notRespondedStatus}))
+    else _reports.updateFilters(prev => ({...prev, status: undefined}))
+  }
 
   function invertIfDefined(bool: boolean | null) {
     return bool === null ? null : !bool
@@ -444,6 +481,77 @@ export const Reports = () => {
                   />
                 </Box>
               </Grid>
+              <Grid item xs={12} md={6}>
+                <Box>
+                  <Box sx={css.trueFalseNullBox}>
+                    <Box sx={css.trueFalseNullLabel}>{m.consumerReviews}</Box>
+                    <TrueFalseNull
+                      label={{
+                        true: <TrueLabel />,
+                      }}
+                      sx={{flexBasis: '50%'}}
+                      value={_reports.filters.hasEvaluation ?? null}
+                      onChange={hasEvaluation =>
+                        _reports.updateFilters(prev => ({
+                          ...prev,
+                          hasEvaluation: hasEvaluation ?? undefined,
+                        }))
+                      }
+                    />
+                  </Box>
+                  {_reports.filters.hasEvaluation === true && (
+                    <ScMultiSelect
+                      label={m.consumerReviews}
+                      value={_reports.filters.evaluation ?? []}
+                      onChange={evaluation => _reports.updateFilters(prev => ({...prev, evaluation}))}
+                      fullWidth
+                      withSelectAll
+                      renderValue={evaluation =>
+                        `(${evaluation.length}) ${evaluation.map(_ => m.responseEvaluationShort[_]).join(',')}`
+                      }
+                    >
+                      {Enum.values(ResponseEvaluation).map(evaluation => (
+                        <ScMenuItem withCheckbox key={evaluation} value={evaluation}>
+                          <ConsumerReviewLabel evaluation={evaluation} displayLabel />
+                        </ScMenuItem>
+                      ))}
+                    </ScMultiSelect>
+                  )}
+                </Box>
+              </Grid>
+              <Grid item xs={12} md={6}>
+                <Box>
+                  <Box sx={css.trueFalseNullBox}>
+                    <Box sx={css.trueFalseNullLabel}>{m.proResponse}</Box>
+                    <TrueFalseNull
+                      label={{
+                        true: <TrueLabel />,
+                      }}
+                      sx={{flexBasis: '50%'}}
+                      value={hasProResponse}
+                      onChange={onChangeHasProResponse}
+                    />
+                  </Box>
+                  {hasProResponse === true && (
+                    <ScMultiSelect
+                      label={m.proResponse}
+                      value={proResponseFilter}
+                      onChange={onChangeProResponseFilter}
+                      fullWidth
+                      withSelectAll
+                      renderValue={proResponse =>
+                        `(${proResponse.length}) ${proResponse.map(_ => m.reportResponseShort[_]).join(',')}`
+                      }
+                    >
+                      {Enum.values(ReportResponseTypes).map(proResponse => (
+                        <ScMenuItem withCheckbox key={proResponse} value={proResponse}>
+                          <ProResponseLabel proResponse={proResponse} />
+                        </ScMenuItem>
+                      ))}
+                    </ScMultiSelect>
+                  )}
+                </Box>
+              </Grid>
             </Grid>
           </Collapse>
         </PanelBody>
@@ -727,7 +835,7 @@ export const Reports = () => {
             },
             {
               id: 'proResponse',
-              head: 'Réponse du professionnel',
+              head: m.proResponse,
               render: _ => (
                 <>
                   {ScOption.from(_.professionalResponse?.details as ReportResponse)
@@ -754,50 +862,7 @@ export const Reports = () => {
                           </>
                         }
                       >
-                        {fnSwitch(r.responseType, {
-                          [ReportResponseTypes.Accepted]: _ => (
-                            <Box
-                              component="span"
-                              sx={{
-                                pl: '8px',
-                                pr: '8px',
-                                borderRadius: '240px',
-                                background: t => t.palette.success.light,
-                                color: 'white',
-                              }}
-                            >
-                              {m.reportResponseShort[_]}
-                            </Box>
-                          ),
-                          [ReportResponseTypes.NotConcerned]: _ => (
-                            <Box
-                              component="span"
-                              sx={{
-                                pl: '8px',
-                                pr: '8px',
-                                borderRadius: '240px',
-                                background: t => t.palette.info.light,
-                                color: 'white',
-                              }}
-                            >
-                              {m.reportResponseShort[_]}
-                            </Box>
-                          ),
-                          [ReportResponseTypes.Rejected]: _ => (
-                            <Box
-                              component="span"
-                              sx={{
-                                pl: '8px',
-                                pr: '8px',
-                                borderRadius: '240px',
-                                background: t => t.palette.error.light,
-                                color: 'white',
-                              }}
-                            >
-                              {m.reportResponseShort[_]}
-                            </Box>
-                          ),
-                        })}
+                        <ProResponseLabel proResponse={r.responseType} />
                       </Tooltip>
                     ))
                     .getOrElse('')}
@@ -806,26 +871,25 @@ export const Reports = () => {
             },
             {
               id: 'avisConso',
-              head: 'Avis Conso',
+              head: m.consumerReviews,
               render: _ => (
                 <>
                   {_.consumerReview && (
                     <Tooltip
                       title={
-                        <Box sx={{display: '-webkit-box', WebkitLineClamp: 20, WebkitBoxOrient: 'vertical', overflow: 'hidden'}}>
-                          {_.consumerReview.details}
-                        </Box>
+                        <>
+                          <Box sx={{fontWeight: t => t.typography.fontWeightBold, fontSize: 'larger', mb: 1}}>
+                            {m.responseEvaluationShort[_.consumerReview.evaluation]}
+                          </Box>
+                          <Box
+                            sx={{display: '-webkit-box', WebkitLineClamp: 20, WebkitBoxOrient: 'vertical', overflow: 'hidden'}}
+                          >
+                            {_.consumerReview.details}
+                          </Box>
+                        </>
                       }
                     >
-                      {fnSwitch(_.consumerReview.evaluation, {
-                        [ResponseEvaluation.Positive]: _ => (
-                          <Icon sx={{color: t => t.palette.success.light}}>sentiment_very_satisfied</Icon>
-                        ),
-                        [ResponseEvaluation.Neutral]: _ => <Icon sx={{color: t => t.palette.info.light}}>sentiment_neutral</Icon>,
-                        [ResponseEvaluation.Negative]: _ => (
-                          <Icon sx={{color: t => t.palette.error.light}}>sentiment_very_dissatisfied</Icon>
-                        ),
-                      })}
+                      <ConsumerReviewLabel evaluation={_.consumerReview.evaluation} center />
                     </Tooltip>
                   )}
                 </>

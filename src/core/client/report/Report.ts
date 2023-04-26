@@ -172,6 +172,14 @@ export class Report {
   ]
 
   static readonly respondedStatus = [ReportStatus.PromesseAction, ReportStatus.Infonde, ReportStatus.MalAttribue]
+  static readonly notRespondedStatus = [
+    ReportStatus.NA,
+    ReportStatus.LanceurAlerte,
+    ReportStatus.TraitementEnCours,
+    ReportStatus.Transmis,
+    ReportStatus.NonConsulte,
+    ReportStatus.ConsulteIgnore,
+  ]
 
   static readonly isClosed = (status: ReportStatus) => {
     return Report.closedStatus.includes(status)
