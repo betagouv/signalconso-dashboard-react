@@ -62,19 +62,19 @@ export const reportFilter2QueryString = (report: ReportSearch): ReportFilterQuer
 }
 
 export const cleanReportFilter = (filter: ReportSearch): ReportSearch => {
-  if (filter.hasCompany === false) {
+  if (!filter.hasCompany) {
     delete filter.siretSirenList
   }
-  if (filter.hasForeignCountry === false) {
+  if (!filter.hasForeignCountry) {
     delete filter.companyCountries
   }
-  if (filter.hasWebsite === false) {
+  if (!filter.hasWebsite) {
     delete filter.websiteURL
   }
-  if (filter.hasPhone === false) {
+  if (!filter.hasPhone) {
     delete filter.phone
   }
-  if (filter.hasEvaluation === false) {
+  if (!filter.hasEvaluation) {
     delete filter.evaluation
   }
   return filter
