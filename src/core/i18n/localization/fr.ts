@@ -773,6 +773,11 @@ export const fr = {
       [ResponseEvaluation.Neutral]: 'Avis mitigé du consommateur',
       [ResponseEvaluation.Negative]: 'Avis négatif du consommateur',
     },
+    responseEvaluationShort: {
+      [ResponseEvaluation.Positive]: 'Positif',
+      [ResponseEvaluation.Neutral]: 'Mitigé',
+      [ResponseEvaluation.Negative]: 'Négatif',
+    },
     reportStatusShort: {
       [ReportStatus.NA]: 'Non transmis',
       [ReportStatus.LanceurAlerte]: "Lanceur d'alerte",

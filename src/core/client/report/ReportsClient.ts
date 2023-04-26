@@ -74,6 +74,9 @@ export const cleanReportFilter = (filter: ReportSearch): ReportSearch => {
   if (filter.hasPhone === false) {
     delete filter.phone
   }
+  if (filter.hasEvaluation === false) {
+    delete filter.evaluation
+  }
   return filter
 }
 
