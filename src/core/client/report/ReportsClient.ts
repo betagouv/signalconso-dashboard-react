@@ -14,6 +14,7 @@ import {
   ReportWordCount,
   ResponseConsumerReview,
   ReportConsumerUpdate,
+  Event,
 } from '../../model'
 import {ApiSdkLogger} from '../../helper/Logger'
 import {ApiClientApi} from '../ApiClient'
@@ -61,17 +62,20 @@ export const reportFilter2QueryString = (report: ReportSearch): ReportFilterQuer
 }
 
 export const cleanReportFilter = (filter: ReportSearch): ReportSearch => {
-  if (filter.hasCompany === false) {
+  if (!filter.hasCompany) {
     delete filter.siretSirenList
   }
-  if (filter.hasForeignCountry === false) {
+  if (!filter.hasForeignCountry) {
     delete filter.companyCountries
   }
-  if (filter.hasWebsite === false) {
+  if (!filter.hasWebsite) {
     delete filter.websiteURL
   }
-  if (filter.hasPhone === false) {
+  if (!filter.hasPhone) {
     delete filter.phone
+  }
+  if (!filter.hasEvaluation) {
+    delete filter.evaluation
   }
   return filter
 }
@@ -94,6 +98,7 @@ export class ReportsClient {
     return this.client.get<PaginatedData<ReportSearchResult>>(`/reports`, {qs}).then(result => {
       result.entities.forEach(entity => {
         entity.report = ReportsClient.mapReport(entity.report)
+        entity.consumerReview = entity.consumerReview && ReportsClient.mapConsumerReview(entity.consumerReview)
       })
       return result
     })
@@ -113,7 +118,7 @@ export class ReportsClient {
   }
 
   readonly getReviewOnReportResponse = (reportId: Id) => {
-    return this.client.get<ResponseConsumerReview>(`/reports/${reportId}/response/review`)
+    return this.client.get<ResponseConsumerReview>(`/reports/${reportId}/response/review`).then(ReportsClient.mapConsumerReview)
   }
 
   readonly generateConsumerNotificationAsPDF = (reportId: Id) => {
@@ -176,5 +181,10 @@ export class ReportsClient {
   static readonly mapAddress = (address: {[key in keyof Address]: any | undefined}): Address => ({
     ...address,
     country: address.country?.name,
+  })
+
+  static readonly mapConsumerReview = (_: {[key in keyof ResponseConsumerReview]: any}): ResponseConsumerReview => ({
+    ..._,
+    creationDate: new Date(_.creationDate),
   })
 }

@@ -1,5 +1,5 @@
 import {ReportStatus, ReportTag} from './Report'
-import {Id} from '../../model'
+import {Id, ReportResponseTypes, ResponseEvaluation} from '../../model'
 
 export interface ReportSearch {
   departments?: string[]
@@ -24,5 +24,7 @@ export interface ReportSearch {
   hasForeignCountry?: boolean
   hasCompany?: boolean
   hasAttachment?: boolean
+  hasEvaluation?: boolean
+  evaluation?: ResponseEvaluation[]
   fullText?: String
 }

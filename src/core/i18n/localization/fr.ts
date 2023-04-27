@@ -763,10 +763,20 @@ export const fr = {
       [ReportResponseTypes.Rejected]: 'Signalement infondé',
       [ReportResponseTypes.NotConcerned]: 'Etablissement non concerné par le signalement',
     },
+    reportResponseShort: {
+      [ReportResponseTypes.Accepted]: 'Pris en compte',
+      [ReportResponseTypes.Rejected]: 'Infondé',
+      [ReportResponseTypes.NotConcerned]: 'Non concerné',
+    },
     responseEvaluation: {
       [ResponseEvaluation.Positive]: 'Avis positif du consommateur',
       [ResponseEvaluation.Neutral]: 'Avis mitigé du consommateur',
       [ResponseEvaluation.Negative]: 'Avis négatif du consommateur',
+    },
+    responseEvaluationShort: {
+      [ResponseEvaluation.Positive]: 'Positif',
+      [ResponseEvaluation.Neutral]: 'Mitigé',
+      [ResponseEvaluation.Negative]: 'Négatif',
     },
     reportStatusShort: {
       [ReportStatus.NA]: 'Non transmis',

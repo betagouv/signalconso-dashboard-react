@@ -19,7 +19,7 @@ import {useEventContext} from '../../core/context/EventContext'
 import {useEffectFn} from '../../alexlibs/react-hooks-lib'
 import {map} from '../../alexlibs/ts-utils'
 import {ScDialog} from '../../shared/Confirm/ScDialog'
-import {EventActionValues, EventType, ReportEvent} from '../../core/client/event/Event'
+import {EventActionValues, EventType, ReportEvent, ResponseConsumerReview} from '../../core/client/event/Event'
 import {FileOrigin} from '../../core/client/file/UploadedFile'
 import {Report} from '../../core/client/report/Report'
 import {Id} from '../../core/model'
@@ -55,6 +55,7 @@ export const ReportComponent = () => {
   useEffect(() => {
     _report.get.clearCache()
     _report.get.fetch({}, id).then(({report}) => {
+      _report.getReviewOnReportResponse.fetch({}, report.id)
       if (report.companySiret) _event.companyEvents.fetch({}, report.companySiret)
     })
     _event.reportEvents.fetch({}, id)
@@ -182,7 +183,8 @@ export const ReportComponent = () => {
                 <ReportResponseComponent
                   canEditFile
                   reportId={report.id}
-                  response={response}
+                  response={response?.data}
+                  consumerReportReview={_report.getReviewOnReportResponse.entity}
                   files={_report.get.entity?.files.filter(_ => _.origin === FileOrigin.Professional)}
                 />
               </ReportTabPanel>

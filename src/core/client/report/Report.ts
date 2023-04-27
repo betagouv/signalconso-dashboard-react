@@ -1,5 +1,4 @@
-import {Address, UploadedFile} from '../../model'
-import format from 'date-fns/format'
+import {Address, Event, ResponseConsumerReview, UploadedFile} from '../../model'
 import {Category} from '../constant/Category'
 
 export const ReportingDateLabel = 'Date du constat'
@@ -121,6 +120,8 @@ export interface DetailInputValue {
 export interface ReportSearchResult {
   report: Report
   files: UploadedFile[]
+  professionalResponse?: Event
+  consumerReview?: ResponseConsumerReview
 }
 
 export enum ReportStatus {
@@ -171,6 +172,14 @@ export class Report {
   ]
 
   static readonly respondedStatus = [ReportStatus.PromesseAction, ReportStatus.Infonde, ReportStatus.MalAttribue]
+  static readonly notRespondedStatus = [
+    ReportStatus.NA,
+    ReportStatus.LanceurAlerte,
+    ReportStatus.TraitementEnCours,
+    ReportStatus.Transmis,
+    ReportStatus.NonConsulte,
+    ReportStatus.ConsulteIgnore,
+  ]
 
   static readonly isClosed = (status: ReportStatus) => {
     return Report.closedStatus.includes(status)

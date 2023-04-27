@@ -1,11 +1,9 @@
-import * as React from 'react'
-import {useEffect} from 'react'
-import {useI18n} from '../../../core/i18n'
 import {Divider, Icon, List, ListItem, ListItemIcon, ListItemText} from '@mui/material'
-import {Panel, PanelBody, PanelHead} from '../../../shared/Panel'
-import {AddressComponent} from '../../../shared/Address/Address'
-import {useFetcher} from '../../../alexlibs/react-hooks-lib'
+import {useQuery} from '@tanstack/react-query'
 import {Company} from '../../../core/client/company/Company'
+import {useI18n} from '../../../core/i18n'
+import {AddressComponent} from '../../../shared/Address/Address'
+import {Panel, PanelBody, PanelHead} from '../../../shared/Panel'
 
 interface Props {
   company: Company
@@ -14,17 +12,14 @@ interface Props {
 export const CompanyInfo = ({company}: Props) => {
   const {m, formatDate} = useI18n()
 
-  const _activityCodes = useFetcher(() => import('../../../core/activityCodes').then(_ => _.activityCodes))
-
-  useEffect(() => {
-    _activityCodes.fetch()
-  }, [company])
-
-  const activities = _activityCodes.entity
+  const _activityCodes = useQuery({
+    queryKey: ['asyncImportActivityCodes'],
+    queryFn: () => import('../../../core/activityCodes').then(_ => _.activityCodes),
+  })
 
   return (
-    <Panel loading={_activityCodes.loading}>
-      <PanelHead>{m.informations}</PanelHead>
+    <Panel loading={_activityCodes.isLoading}>
+      <PanelHead>{m.informations} COMPANYINFO</PanelHead>
       <PanelBody>
         <List>
           <ListItem>
@@ -45,8 +40,11 @@ export const CompanyInfo = ({company}: Props) => {
             <ListItemIcon>
               <Icon>label</Icon>
             </ListItemIcon>
-            {activities && (
-              <ListItemText primary={m.activityCode} secondary={company.activityCode ? activities[company.activityCode] : ''} />
+            {_activityCodes.data && (
+              <ListItemText
+                primary={m.activityCode}
+                secondary={company.activityCode ? _activityCodes.data[company.activityCode] : ''}
+              />
             )}
           </ListItem>
         </List>
