@@ -166,17 +166,37 @@ export const Reports = () => {
     [ReportResponseTypes.Rejected]: ReportStatus.Infonde,
   }
 
+  const onChangeStatus = (status: ReportStatus[]) => {
+    const responses = status.flatMap(reportStatus => {
+      switch (reportStatus) {
+        case ReportStatus.PromesseAction:
+          return [ReportResponseTypes.Accepted]
+        case ReportStatus.MalAttribue:
+          return [ReportResponseTypes.NotConcerned]
+        case ReportStatus.Infonde:
+          return [ReportResponseTypes.Rejected]
+        default:
+          return []
+      }
+    })
+    setProResponseFilter(responses)
+    _reports.updateFilters(prev => ({...prev, status}))
+  }
+
   const onChangeProResponseFilter = (responses: ReportResponseTypes[]) => {
     setProResponseFilter(responses)
     const status = responses.length === 0 ? Report.respondedStatus : responses.map(_ => proResponseToStatus[_])
     _reports.updateFilters(prev => ({...prev, status}))
   }
 
-  const hasProResponse = _reports.filters.status?.every(status => Report.respondedStatus.includes(status))
-    ? true
-    : _reports.filters.status?.every(status => Report.notRespondedStatus.includes(status))
-    ? false
-    : null
+  const hasProResponse =
+    _reports.filters.status?.length === 0
+      ? null
+      : _reports.filters.status?.every(status => Report.respondedStatus.includes(status))
+      ? true
+      : _reports.filters.status?.every(status => Report.notRespondedStatus.includes(status))
+      ? false
+      : null
   const onChangeHasProResponse = (b: boolean | null) => {
     if (b) _reports.updateFilters(prev => ({...prev, status: Report.respondedStatus}))
     else if (b === false) _reports.updateFilters(prev => ({...prev, status: Report.notRespondedStatus}))
@@ -343,7 +363,7 @@ export const Reports = () => {
                 <ScMultiSelect
                   label={m.status}
                   value={_reports.filters.status ?? []}
-                  onChange={status => _reports.updateFilters(prev => ({...prev, status}))}
+                  onChange={onChangeStatus}
                   fullWidth
                   withSelectAll
                   renderValue={status => `(${status.length}) ${status.map(_ => m.reportStatusShort[_]).join(',')}`}
@@ -847,7 +867,12 @@ export const Reports = () => {
                               {m.reportResponse[r.responseType]}
                             </Box>
                             <Box
-                              sx={{display: '-webkit-box', WebkitLineClamp: 20, WebkitBoxOrient: 'vertical', overflow: 'hidden'}}
+                              sx={{
+                                display: '-webkit-box',
+                                WebkitLineClamp: 20,
+                                WebkitBoxOrient: 'vertical',
+                                overflow: 'hidden',
+                              }}
                             >
                               {r.consumerDetails}
                             </Box>
@@ -882,7 +907,12 @@ export const Reports = () => {
                             {m.responseEvaluationShort[_.consumerReview.evaluation]}
                           </Box>
                           <Box
-                            sx={{display: '-webkit-box', WebkitLineClamp: 20, WebkitBoxOrient: 'vertical', overflow: 'hidden'}}
+                            sx={{
+                              display: '-webkit-box',
+                              WebkitLineClamp: 20,
+                              WebkitBoxOrient: 'vertical',
+                              overflow: 'hidden',
+                            }}
                           >
                             {_.consumerReview.details}
                           </Box>
