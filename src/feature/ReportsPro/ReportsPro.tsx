@@ -82,8 +82,6 @@ const css = makeSx({
 const minRowsBeforeDisplayFilters = 2
 
 function hasExpired(date: Date): Boolean {
-  console.log(date.getTime())
-  console.log(Date.now())
   return date.getTime() < Date.now()
 }
 
@@ -235,7 +233,13 @@ export const ReportsPro = () => {
                     <Grid item sm={4} xs={12}>
                       <DebouncedInput
                         value={_reports.filters.siretSirenList}
-                        onChange={_ => _reports.updateFilters(prev => ({...prev, siretSirenList: _}))}
+                        onChange={_ =>
+                          _reports.updateFilters(prev => ({
+                            ...prev,
+                            hasCompany: true,
+                            siretSirenList: _,
+                          }))
+                        }
                       >
                         {(value, onChange) => (
                           <SelectCompaniesByPro
