@@ -99,11 +99,7 @@ interface ReportFiltersQs {
   status?: string[]
 }
 
-interface ReportsProProps {
-  timestamp: number
-}
-
-export const ReportsPro = (props: ReportsProProps) => {
+export const ReportsPro = () => {
   const _reports = useReportsContext()
   const _companies = useCompaniesContext()
 
@@ -140,7 +136,7 @@ export const ReportsPro = (props: ReportsProProps) => {
   useEffect(() => {
     _companies.accessibleByPro.fetch({force: false})
     _reports.updateFilters({..._reports.initialFilters, ...queryString.get()})
-  }, [props.timestamp])
+  }, [])
 
   useEffect(() => {
     ScOption.from(_companies.accessibleByPro.error).map(toastError)
@@ -237,7 +233,13 @@ export const ReportsPro = (props: ReportsProProps) => {
                     <Grid item sm={4} xs={12}>
                       <DebouncedInput
                         value={_reports.filters.siretSirenList}
-                        onChange={_ => _reports.updateFilters(prev => ({...prev, siretSirenList: _}))}
+                        onChange={_ =>
+                          _reports.updateFilters(prev => ({
+                            ...prev,
+                            hasCompany: true,
+                            siretSirenList: _,
+                          }))
+                        }
                       >
                         {(value, onChange) => (
                           <SelectCompaniesByPro

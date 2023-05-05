@@ -68,7 +68,7 @@ export const CompanyComponent = () => {
   useEffectFn(_company.byId.entity, _ => {
     _event.companyEvents.fetch({}, _.siret)
     _accesses.fetch({}, _.siret)
-    _report.updateFilters({siretSirenList: [_.siret], offset: 0, limit: 5})
+    _report.updateFilters({hasCompany: true, siretSirenList: [_.siret], offset: 0, limit: 5})
   })
 
   const postActivationDocEvents = useMemoFn(_event.companyEvents.entity, events =>

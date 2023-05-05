@@ -132,8 +132,9 @@ export const ReportedPhones = () => {
                 <>
                   <NavLink
                     to={siteMap.logged.reports({
+                      hasPhone: true,
                       phone: _.phone,
-                      ...(_.siret ? {siretSirenList: [_.siret]} : {}),
+                      ...(_.siret ? {hasCompany: true, siretSirenList: [_.siret]} : {}),
                       ...(_.category ? {category: _.category} : {}),
                     })}
                   >

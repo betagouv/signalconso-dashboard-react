@@ -210,7 +210,7 @@ export const CompaniesPro = () => {
                       </IconBtn>
                     </Tooltip>
                   </NavLink>
-                  <NavLink to={siteMap.logged.reports({siretSirenList: [_.siret]})}>
+                  <NavLink to={siteMap.logged.reports({hasCompany: true, siretSirenList: [_.siret]})}>
                     <Tooltip title={m.reports}>
                       <IconBtn color="primary">
                         <Icon>chevron_right</Icon>
