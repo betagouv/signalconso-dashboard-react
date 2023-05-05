@@ -193,7 +193,13 @@ export const CompaniesRegistered = () => {
             id: 'count',
             sx: _ => ({textAlign: 'right'}),
             render: _ => (
-              <NavLink to={siteMap.logged.reports({siretSirenList: [_.siret], departments: _companies.filters.departments})}>
+              <NavLink
+                to={siteMap.logged.reports({
+                  hasCompany: true,
+                  siretSirenList: [_.siret],
+                  departments: _companies.filters.departments,
+                })}
+              >
                 <ScButton color="primary">{formatLargeNumber(_.count)}</ScButton>
               </NavLink>
             ),
