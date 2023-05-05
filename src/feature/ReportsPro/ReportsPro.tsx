@@ -82,6 +82,8 @@ const css = makeSx({
 const minRowsBeforeDisplayFilters = 2
 
 function hasExpired(date: Date): Boolean {
+  console.log(date.getTime())
+  console.log(Date.now())
   return date.getTime() < Date.now()
 }
 
@@ -99,11 +101,7 @@ interface ReportFiltersQs {
   status?: string[]
 }
 
-interface ReportsProProps {
-  timestamp: number
-}
-
-export const ReportsPro = (props: ReportsProProps) => {
+export const ReportsPro = () => {
   const _reports = useReportsContext()
   const _companies = useCompaniesContext()
 
@@ -140,7 +138,7 @@ export const ReportsPro = (props: ReportsProProps) => {
   useEffect(() => {
     _companies.accessibleByPro.fetch({force: false})
     _reports.updateFilters({..._reports.initialFilters, ...queryString.get()})
-  }, [props.timestamp])
+  }, [])
 
   useEffect(() => {
     ScOption.from(_companies.accessibleByPro.error).map(toastError)

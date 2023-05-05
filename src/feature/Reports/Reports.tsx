@@ -99,14 +99,7 @@ interface ReportSearchQs {
   limit: number
 }
 
-interface ReportsProps {
-  // Trick to force re-renderer data properly.
-  // We can't use forceRefresh of react router because it will rerender the whole page
-  // We just want the filters to be reset.
-  timestamp: number
-}
-
-export const Reports = (props: ReportsProps) => {
+export const Reports = () => {
   const {m, formatDate} = useI18n()
   const _report = useReportContext()
   const _reports = useReportsContext()
@@ -133,7 +126,7 @@ export const Reports = (props: ReportsProps) => {
 
   useEffect(() => {
     _reports.updateFilters({..._reports.initialFilters, ...queryString.get()})
-  }, [props.timestamp])
+  }, [])
 
   useEffect(() => {
     queryString.update(cleanObject(_reports.filters))
