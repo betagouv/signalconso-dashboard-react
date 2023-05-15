@@ -50,15 +50,15 @@ type AnalyticAction =
   | ContractualDisputeActions
   | AccountEventActions
   | AccessEventActions
+  | ConsumerShareReviewEventActions
   | StatisticsActions
 
 export enum EventCategories {
   report = 'Signalement',
-  companySearch = "Identification de l'établissement",
+  consumerReview = 'Avis consommateur',
   auth = 'Authentification',
   account = 'Compte utilisateur',
   companyAccess = "Accès de l'entreprise",
-  contractualDispute = 'Litige contractuel',
   dgccrf = 'DGCCRF',
   statistics = 'Statistiques',
 }
@@ -68,38 +68,22 @@ export enum DgccrfEventActions {
 }
 
 export enum ReportEventActions {
-  outOfBounds = "Affichage d'un message problème hors périmètre",
   information = "Consultation du détail d'un message d'information",
-  secondaryCategories = 'Affichage des autres problèmes',
-  validateCategory = "Sélection d'une catégorie",
-  validateSubcategory = "Sélection d'une sous catégorie",
-  employee = "Consommateur employé de l'entreprise",
-  notEmployee = "Consommateur non employé de l'entreprise",
-  validateDetails = 'Validation de la description',
-  validateCompany = "Validation de l'établissement",
-  validateConsumer = 'Validation du consommateur',
-  validateConfirmation = "Validation de l'envoi d'un signalement",
-  reportSendSuccess = "Envoi d'un signalement",
-  reportSendFail = "Echec de l'envoi d'un signalement",
-  keywordsDetection = 'Mots-clés détectés',
-  informationFromKeywordsDetection = "Consultation du détail d'un message d'information suite à la détection de mots-clés",
-  contactualReport = 'Litige contractuel',
 }
 
 export enum CompanySearchEventActions {
   search = 'Recherche',
   select = 'Sélection dans la liste de résultats',
-  searchByIdentity = 'Recherche par SIRET / SIREN / RCS',
-  searchByUrl = 'Recherche par URL',
 }
 
 export enum ContractualDisputeActions {
   consult = 'Consultation',
-  downloadTemplate = 'Téléchargement lettre type',
 }
 
-export enum ContractualDisputeNames {
-  step = 'Démarche',
+export enum ConsumerShareReviewEventActions {
+  twitter = 'Partage sur Twitter',
+  facebook = 'Partage sur Facebook',
+  servicePublicPlus = 'Partage sur Service-public.fr',
 }
 
 export enum AuthenticationEventActions {
@@ -118,10 +102,6 @@ export enum AccountEventActions {
   changePasswordSuccess = 'Changement mdp réussi',
   changePasswordFail = 'Changement mdp en échec',
   registerUser = "Inscription d'un utilisateur",
-}
-
-export enum AccountEventNames {
-  userAlreadyRegistered = 'Compte déjà existant',
 }
 
 export enum AccessEventActions {
