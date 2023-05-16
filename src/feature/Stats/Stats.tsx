@@ -6,6 +6,7 @@ import {PageTab, PageTabs} from '../../shared/Layout/Page/PageTabs'
 import {DgccrfStats} from './DgccrfStats'
 import {ProStats} from './ProStats'
 import {ReportStats} from './ReportStats'
+import {ArborescenceWithCounts} from "./ArborescenceWithCounts";
 
 export const Stats = () => {
   const {path} = useRouteMatch()
@@ -17,12 +18,14 @@ export const Stats = () => {
         <PageTab to={siteMap.logged.reportStats} label={m.statsReports} />
         <PageTab to={siteMap.logged.proStats} label={m.statsPro} />
         <PageTab to={siteMap.logged.dgccrfStats} label={m.statsDgccrf} />
+        <PageTab to={siteMap.logged.countBySubCategories} label={m.statsCountBySubCategoriesTab} />
       </PageTabs>
       <Switch>
         <Redirect exact from={path} to={siteMap.logged.reportStats} />
         <Route path={siteMap.logged.reportStats} component={ReportStats} />
         <Route path={siteMap.logged.proStats} component={ProStats} />
         <Route path={siteMap.logged.dgccrfStats} component={DgccrfStats} />
+        <Route path={siteMap.logged.countBySubCategories} component={ArborescenceWithCounts} />
       </Switch>
     </Page>
   )
