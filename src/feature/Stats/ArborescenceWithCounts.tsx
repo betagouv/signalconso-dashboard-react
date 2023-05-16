@@ -1,29 +1,30 @@
-import React, {useEffect, useMemo, useState} from "react";
-import {useFetcher} from "../../alexlibs/react-hooks-lib";
-import {useLogin} from "../../core/context/LoginContext";
-import {Panel, PanelBody, PanelHead} from "../../shared/Panel";
-import {PeriodPicker} from "../../shared/PeriodPicker/PeriodPicker";
-import {DebouncedInput} from "../../shared/DebouncedInput/DebouncedInput";
-import {ReportNode} from "../../core/client/report/ReportNode";
-import {Badge, Box, Icon, useTheme} from "@mui/material";
-import {IconBtn, Txt} from "../../alexlibs/mui-extension";
-import {useI18n} from "../../core/i18n";
-import {ScButton} from "../../shared/Button/Button";
-import {Page} from "../../shared/Layout";
-import {parseInt} from "lodash";
+import React, {useEffect, useMemo, useState} from 'react'
+import {useFetcher} from '../../alexlibs/react-hooks-lib'
+import {useLogin} from '../../core/context/LoginContext'
+import {Panel, PanelBody, PanelHead} from '../../shared/Panel'
+import {PeriodPicker} from '../../shared/PeriodPicker/PeriodPicker'
+import {DebouncedInput} from '../../shared/DebouncedInput/DebouncedInput'
+import {ReportNode} from '../../core/client/report/ReportNode'
+import {Badge, Box, Icon, useTheme} from '@mui/material'
+import {IconBtn, Txt} from '../../alexlibs/mui-extension'
+import {useI18n} from '../../core/i18n'
+import {ScButton} from '../../shared/Button/Button'
+import {Page} from '../../shared/Layout'
+import {parseInt} from 'lodash'
 
 const compare = (a: string[], b: string[]): number => {
   if (a.length === 0 || b.length === 0) return 0
   else if (a[0] === b[0]) return compare(a.slice(1), b.slice(1))
-  else return (parseInt(a[0]) - parseInt(b[0]))
+  else return parseInt(a[0]) - parseInt(b[0])
 }
-const sortById = (reportNode1: ReportNode, reportNode2: ReportNode) => compare(reportNode1.id.split("."), reportNode2.id.split("."))
+const sortById = (reportNode1: ReportNode, reportNode2: ReportNode) =>
+  compare(reportNode1.id.split('.'), reportNode2.id.split('.'))
 
 export const ArborescenceWithCounts = () => {
   const {apiSdk: api} = useLogin()
   const {m} = useI18n()
 
-  const begin= new Date()
+  const begin = new Date()
   begin.setDate(begin.getDate() - 90)
 
   const [openAll, setOpenAll] = useState(false)
@@ -41,7 +42,7 @@ export const ArborescenceWithCounts = () => {
     setEnd(undefined)
   }
 
-  const badgeCount = start && end ? 2 : (start || end) ? 1 : 0
+  const badgeCount = start && end ? 2 : start || end ? 1 : 0
 
   return (
     <Page>
@@ -82,8 +83,9 @@ export const ArborescenceWithCounts = () => {
             sx={{
               display: 'flex',
               justifyContent: 'space-between',
-              alignItems: 'center'
-            }}>
+              alignItems: 'center',
+            }}
+          >
             {m.statsCountBySubCategories}
             <ScButton onClick={() => setOpenAll(!openAll)} variant="contained" color="primary">
               {m.expandAll}
@@ -98,7 +100,6 @@ export const ArborescenceWithCounts = () => {
       </Panel>
     </Page>
   )
-
 }
 
 const Node = ({reportNode, open}: {reportNode: ReportNode; open?: boolean}) => {

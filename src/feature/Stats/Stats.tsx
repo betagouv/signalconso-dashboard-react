@@ -6,7 +6,7 @@ import {PageTab, PageTabs} from '../../shared/Layout/Page/PageTabs'
 import {DgccrfStats} from './DgccrfStats'
 import {ProStats} from './ProStats'
 import {ReportStats} from './ReportStats'
-import {ArborescenceWithCounts} from "./ArborescenceWithCounts";
+import {ArborescenceWithCounts} from './ArborescenceWithCounts'
 
 export const Stats = () => {
   const {path} = useRouteMatch()

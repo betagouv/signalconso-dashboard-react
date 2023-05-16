@@ -19,7 +19,7 @@ import {
 import {ApiSdkLogger} from '../../helper/Logger'
 import {ApiClientApi} from '../ApiClient'
 import {cleanObject, dateToApiDate, dateToApiTime, directDownloadBlob} from '../../helper'
-import {ReportNode} from "./ReportNode";
+import {ReportNode} from './ReportNode'
 
 export interface ReportFilterQuerystring {
   readonly departments?: string[]
