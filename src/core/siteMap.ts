@@ -32,6 +32,7 @@ export const siteMap = {
     proStats: `/stats/pro-stats`,
     dgccrfStats: `/stats/dgccrf-stats`,
     reportStats: `/stats/report-stats`,
+    countBySubCategories: `/stats/countBySubCategories`,
   },
   loggedout: {
     activatePro: (siret: string = `:siret`) => `/entreprise/rejoindre/${siret}`,
