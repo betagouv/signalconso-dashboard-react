@@ -5,20 +5,22 @@ import {Panel, PanelBody, PanelHead} from '../../shared/Panel'
 import {PeriodPicker} from '../../shared/PeriodPicker/PeriodPicker'
 import {DebouncedInput} from '../../shared/DebouncedInput/DebouncedInput'
 import {ReportNode} from '../../core/client/report/ReportNode'
-import {Badge, Box, Icon, useTheme} from '@mui/material'
+import {Badge, Box, Grid, Icon, useTheme} from '@mui/material'
 import {IconBtn, Txt} from '../../alexlibs/mui-extension'
 import {useI18n} from '../../core/i18n'
 import {ScButton} from '../../shared/Button/Button'
 import {Page} from '../../shared/Layout'
 import {parseInt} from 'lodash'
+import {SelectDepartments} from '../../shared/SelectDepartments/SelectDepartments'
 
-const compare = (a: string[], b: string[]): number => {
-  if (a.length === 0 || b.length === 0) return 0
+const compare = (a?: string[], b?: string[]): number => {
+  if (!a || !b) return 0
+  else if (a.length === 0 || b.length === 0) return 0
   else if (a[0] === b[0]) return compare(a.slice(1), b.slice(1))
   else return parseInt(a[0]) - parseInt(b[0])
 }
 const sortById = (reportNode1: ReportNode, reportNode2: ReportNode) =>
-  compare(reportNode1.id.split('.'), reportNode2.id.split('.'))
+  compare(reportNode1.id?.split('.'), reportNode2.id?.split('.'))
 
 export const ArborescenceWithCounts = () => {
   const {apiSdk: api} = useLogin()
@@ -30,16 +32,18 @@ export const ArborescenceWithCounts = () => {
   const [openAll, setOpenAll] = useState(false)
   const [start, setStart] = useState<Date | undefined>(begin)
   const [end, setEnd] = useState<Date | undefined>(undefined)
+  const [departments, setDepartments] = useState<string[] | undefined>(undefined)
 
   const countBySubCategories = useFetcher(api.secured.reports.getCountBySubCategories)
 
   useEffect(() => {
-    countBySubCategories.fetch({force: true}, {start, end})
-  }, [start, end])
+    countBySubCategories.fetch({force: true}, {start, end, departments})
+  }, [start, end, departments])
 
   const resetFilters = () => {
     setStart(undefined)
     setEnd(undefined)
+    setDepartments(undefined)
   }
 
   const badgeCount = start && end ? 2 : start || end ? 1 : 0
@@ -49,15 +53,28 @@ export const ArborescenceWithCounts = () => {
       <Panel>
         <PanelHead>{m.dateFilters}</PanelHead>
         <PanelBody>
-          <DebouncedInput<[Date | undefined, Date | undefined]>
-            value={[start, end]}
-            onChange={([start, end]) => {
-              setStart(start)
-              setEnd(end)
-            }}
-          >
-            {(value, onChange) => <PeriodPicker value={value} onChange={onChange} sx={{mr: 1}} fullWidth />}
-          </DebouncedInput>
+          <Grid container spacing={1}>
+            <Grid item sm={6} xs={12}>
+              <DebouncedInput<[Date | undefined, Date | undefined]>
+                value={[start, end]}
+                onChange={([start, end]) => {
+                  setStart(start)
+                  setEnd(end)
+                }}
+              >
+                {(value, onChange) => <PeriodPicker value={value} onChange={onChange} sx={{mr: 1}} fullWidth />}
+              </DebouncedInput>
+            </Grid>
+            <Grid item sm={6} xs={12}>
+              <SelectDepartments
+                label={m.departments}
+                value={departments}
+                onChange={departments => setDepartments(departments)}
+                sx={{mr: 1}}
+                fullWidth
+              />
+            </Grid>
+          </Grid>
           <Box
             sx={{
               mt: 2,
@@ -131,10 +148,17 @@ const Node = ({reportNode, open}: {reportNode: ReportNode; open?: boolean}) => {
       </Box>
       <Box>
         <Box sx={{minHeight: 42, display: 'flex', flexDirection: 'column', justifyContent: 'center'}}>
-          <Txt block>
-            <span dangerouslySetInnerHTML={{__html: reportNode.name}} /> <Txt color="hint">{reportNode.id}</Txt>
-          </Txt>
-          <Txt color="primary"> Signalements: {reportNode.count}</Txt>
+          {reportNode.id ? (
+            <Box>
+              <Txt>{reportNode.name}</Txt> <Txt color="hint">{reportNode.id}</Txt>
+            </Box>
+          ) : (
+            <Box>
+              <Txt color="hint">{reportNode.name}</Txt> <Txt color="hint">(Ancienne catégorie)</Txt>
+            </Box>
+          )}
+          <Txt color="primary"> Signalements : {reportNode.count}</Txt>
+          <Txt color="primary"> Réclamations : {reportNode.reclamations}</Txt>
           <Box>
             {reportNode.tags?.map(tag => (
               <Box
