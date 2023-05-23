@@ -2,7 +2,7 @@ import {Icon, Tab, Tabs} from '@mui/material'
 import {useEffect} from 'react'
 import {useHistory} from 'react-router'
 import {Link, Redirect, Route, Switch} from 'react-router-dom'
-import {Page} from '../../alexlibs/mui-extension'
+import {Alert, Page} from '../../alexlibs/mui-extension'
 import {layoutConfig} from '../../core/Layout'
 import {ApiError} from '../../core/client/ApiClient'
 import {SignalConsoPublicSdk} from '../../core/client/SignalConsoPublicSdk'
@@ -13,6 +13,8 @@ import {CenteredContent} from '../../shared/CenteredContent/CenteredContent'
 import {HelpContactInfo} from '../../shared/HelpContactInfo/HelpContactInfo'
 import {ActivateAccountForm} from './ActivateAccountForm'
 import {LoginForm} from './LoginForm'
+import {config} from '../../conf/config'
+import {colorInfo} from 'alexlibs/mui-extension/_core/style/color'
 
 export interface ActionProps<F extends (...args: any[]) => Promise<any>> {
   action: F
@@ -34,11 +36,30 @@ export const LoginPage = ({login, register}: Props) => {
 
   return (
     <CenteredContent offset={layoutConfig.headerHeight}>
-      <Page sx={{maxWidth: 400}}>
+      <Page sx={{maxWidth: 600}}>
         <Route
           path="/"
           render={({location}) => (
-            <>
+            <div className="mx-2">
+              <div className="mb-2">
+                <h1 className="text-3xl mb-4">
+                  <span>SignalConso</span> <span className="font-bold text-scblue">Espace Pro</span>
+                </h1>
+
+                <Alert type="info" sx={{mb: 2}}>
+                  <p className="text-left mb-2">
+                    Cette page permet aux <span className="font-bold">professionnels</span> de consulter et de répondre aux
+                    signalements des consommateurs.
+                  </p>
+                  <p className="text-left">
+                    Vous êtes un <span className="font-bold">consommateur</span> et vous souhaitez faire un signalement ?
+                    Rendez-vous plutôt sur{' '}
+                    <a href={config.appBaseUrl} className="underline">
+                      la page d'accueil de SignalConso.
+                    </a>
+                  </p>
+                </Alert>
+              </div>
               <Tabs
                 variant="fullWidth"
                 sx={{
@@ -62,10 +83,10 @@ export const LoginPage = ({login, register}: Props) => {
                 </Route>
                 <Redirect from="/" to={allTabs[0]} />
               </Switch>
-            </>
+              <HelpContactInfo />
+            </div>
           )}
         />
-        <HelpContactInfo />
       </Page>
     </CenteredContent>
   )
