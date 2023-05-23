@@ -55,6 +55,7 @@ import {Users} from './feature/Users/Users'
 import {CenteredContent} from './shared/CenteredContent/CenteredContent'
 import {Login} from './shared/Login/Login'
 import {Provide} from './shared/Provide/Provide'
+import './style.css'
 
 const Router: typeof HashRouter = config.useHashRouter ? HashRouter : BrowserRouter
 
