@@ -50,6 +50,7 @@ type AnalyticAction =
   | ContractualDisputeActions
   | AccountEventActions
   | AccessEventActions
+  | StatisticsActions
 
 export enum EventCategories {
   report = 'Signalement',
@@ -59,6 +60,7 @@ export enum EventCategories {
   companyAccess = "Accès de l'entreprise",
   contractualDispute = 'Litige contractuel',
   dgccrf = 'DGCCRF',
+  statistics = 'Statistiques',
 }
 
 export enum DgccrfEventActions {
@@ -125,6 +127,10 @@ export enum AccountEventNames {
 export enum AccessEventActions {
   addCompanyToAccount = "Ajout d'une entreprise à un compte",
   activateCompanyCode = "Activation d'une entreprise",
+}
+
+export enum StatisticsActions {
+  reportCountsBySubcategories = 'Consultation de la page du nombre de signalements par sous catégories',
 }
 
 export enum ActionResultNames {
