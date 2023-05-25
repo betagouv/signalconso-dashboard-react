@@ -12,6 +12,7 @@ import {ScButton} from '../../shared/Button/Button'
 import {Page} from '../../shared/Layout'
 import {parseInt} from 'lodash'
 import {SelectDepartments} from '../../shared/SelectDepartments/SelectDepartments'
+import {AccountEventActions, ActionResultNames, EventCategories, Matomo, StatisticsActions} from '../../core/plugins/Matomo'
 
 const compare = (a?: string[], b?: string[]): number => {
   if (!a || !b) return 0
@@ -37,7 +38,11 @@ export const ArborescenceWithCounts = () => {
   const countBySubCategories = useFetcher(api.secured.reports.getCountBySubCategories)
 
   useEffect(() => {
-    countBySubCategories.fetch({force: true}, {start, end, departments})
+    countBySubCategories
+      .fetch({force: true}, {start, end, departments})
+      .then(_ =>
+        Matomo.trackEvent(EventCategories.statistics, StatisticsActions.reportCountsBySubcategories, ActionResultNames.success),
+      )
   }, [start, end, departments])
 
   const resetFilters = () => {
