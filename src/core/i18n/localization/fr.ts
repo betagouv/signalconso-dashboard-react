@@ -498,7 +498,7 @@ export const fr = {
     byHim: (_: string) => `Par ${_}`,
     copyAddress: `Copier l'adresse`,
     youCanAddCommentForDGCCRF: `Vous pouvez, si vous le souhaitez, apporter une précision <b>à l'attention de la DGCCRF</b> qui ne sera pas transmise à l'entreprise`,
-    youCanRateSignalConso: `Vous pouvez également donner votre avis sur SignalConso`,
+    youCanRateSignalConso: `Je recommande SignalConso :`,
     addressCopied: `Adresse copiée`,
     governmentCompany: 'Administration publique',
     closedCompany: 'Établissement fermé (non sélectionnable)',
