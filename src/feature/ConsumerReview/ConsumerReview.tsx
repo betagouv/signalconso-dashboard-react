@@ -19,6 +19,13 @@ import {Emoticon} from '../../shared/Emoticon/Emoticon'
 import {Id, ResponseConsumerReview, ResponseConsumerReviewExists, ResponseEvaluation} from '../../core/model'
 import {useMutation, useQuery} from '@tanstack/react-query'
 import {ApiError} from '../../core/client/ApiClient'
+import facebookLogo from '../Report/ReportCompany/facebook.svg'
+import twitterLogo from '../Report/ReportCompany/twitter.svg'
+import {Image} from '@mui/icons-material'
+import {AuthenticationEventActions, ConsumerShareReviewEventActions, EventCategories, Matomo} from '../../core/plugins/Matomo'
+import TwitterShareButton from './TweeterShareButton'
+import FacebookShareButton from './FacebookShareButton'
+import ServicePublicShareButton from './ServicePublicShareButton'
 
 interface Props {
   onSubmit: (reportId: Id, review: ResponseConsumerReview) => Promise<any>
@@ -55,6 +62,7 @@ export const ConsumerReview = ({onSubmit, reviewExists}: Props) => {
     _saveReview.mutate({...form})
     if (_saveReview.isSuccess) {
       setDone(true)
+      setEvaluation(form.evaluation)
     }
   }
 
@@ -84,9 +92,24 @@ export const ConsumerReview = ({onSubmit, reviewExists}: Props) => {
   return (
     <Page size="s">
       {done ? (
-        <Alert type="success" sx={{mb: 2}}>
-          {m.thanksForSharingYourReview}
-        </Alert>
+        <>
+          <Alert type="success" sx={{mb: 2}}>
+            {m.thanksForSharingYourReview}
+          </Alert>
+
+          <Box sx={{mt: 3}}>
+            <Box component="p">{m.youCanRateSignalConso}</Box>
+            <Box sx={{display: 'flex', lineHeight: 1, mt: 3}}>
+              {evaluation === ResponseEvaluation.Positive && (
+                <>
+                  <FacebookShareButton />
+                  <TwitterShareButton />
+                </>
+              )}
+              <ServicePublicShareButton />
+            </Box>
+          </Box>
+        </>
       ) : (
         <form onSubmit={handleSubmit(submit)}>
           <Panel>
@@ -131,22 +154,6 @@ export const ConsumerReview = ({onSubmit, reviewExists}: Props) => {
           </Panel>
         </form>
       )}
-      <div>
-        <Txt block gutterBottom color="disabled">
-          {m.youCanRateSignalConso}
-        </Txt>
-        <Box
-          component="a"
-          sx={{mt: 1}}
-          href="https://monavis.numerique.gouv.fr/Demarches/2071?&view-mode=formulaire-avis&nd_mode=en-ligne-enti%C3%A8rement&nd_source=button&key=5a58254dab900906fe4924e37c1c5bba"
-        >
-          <img
-            src="https://monavis.numerique.gouv.fr/monavis-static/bouton-bleu.png"
-            alt="Je donne mon avis sur voxusagers.gouv.fr"
-            title="Je donne mon avis sur cette démarche"
-          />
-        </Box>
-      </div>
     </Page>
   )
 }
