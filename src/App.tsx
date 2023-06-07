@@ -181,7 +181,7 @@ const AppLogged = () => {
         <Route path={siteMap.logged.users} component={Users} />
         <Route path={siteMap.logged.companies} component={Companies} />
         <Route path={siteMap.logged.companyAccesses()} component={CompanyAccesses} />
-        <Route path={siteMap.logged.company()} component={CompanyComponent} />
+        <Route path={siteMap.logged.company(':id')} component={CompanyComponent} />
         <Route path={siteMap.logged.subscriptions} component={Subscriptions} />
         <Route path={siteMap.logged.companiesPro} component={CompaniesPro} />
         <Route path={siteMap.logged.settings} component={Settings} />

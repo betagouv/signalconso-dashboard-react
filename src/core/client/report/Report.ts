@@ -84,8 +84,8 @@ export interface Report {
   category: Category
   subcategories: string[]
   tags: ReportTag[]
-  companyId: string
-  companyName: string
+  companyId?: string
+  companyName?: string
   companyAddress: Address
   companySiret?: string
   websiteURL?: string
