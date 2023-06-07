@@ -20,7 +20,7 @@ export const siteMap = {
     companiesPro: `/mes-entreprises`,
     companyAccesses: (siret: string = `:siret`) => `/entreprise/acces/${siret}`,
     users: `/users`,
-    company: (id: Id = `:id`) => `/bilan-entreprise/${id}`,
+    company: (id: Id) => `/bilan-entreprise/${id}`,
     users_dgccrf_pending: `/users/pending`,
     users_consumer_validation: `/users/consumers`,
     users_blacklist: `/users/blacklist`,

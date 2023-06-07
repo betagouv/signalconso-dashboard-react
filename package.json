@@ -14,7 +14,9 @@
     "test": "react-scripts test --transformIgnorePatterns \"node_modules/(?!@mui)/\"",
     "eject": "react-scripts eject",
     "format": "npx prettier --write .",
-    "checkformat": "npx prettier --check ."
+    "checkformat": "npx prettier --check .",
+    "checktypes": "tsc --noEmit",
+    "checkall": "yarn checktypes && yarn checkformat"
   },
   "eslintConfig": {
     "extends": [
