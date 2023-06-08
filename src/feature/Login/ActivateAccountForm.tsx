@@ -8,7 +8,7 @@ import {Box} from '@mui/material'
 import {ActionProps} from './LoginPage'
 import {Alert} from '../../alexlibs/mui-extension'
 import {Txt} from '../../alexlibs/mui-extension'
-import React from 'react'
+import React, {useState} from 'react'
 import {useToast} from '../../core/toast'
 import {useHistory} from 'react-router'
 import {siteMap} from '../../core/siteMap'
@@ -31,6 +31,7 @@ export const ActivateAccountForm = ({register: registerAction}: Props) => {
   const {m} = useI18n()
   const {toastSuccess} = useToast()
   const history = useHistory()
+  const [done, setDone] = useState(false)
   const {
     register,
     handleSubmit,
@@ -44,9 +45,8 @@ export const ActivateAccountForm = ({register: registerAction}: Props) => {
     registerAction
       .action(form.siret, form.code, form.email)
       .then(() => {
-        toastSuccess(m.companyRegisteredEmailSent)
-        setTimeout(() => history.push(siteMap.loggedout.login), 400)
         Matomo.trackEvent(EventCategories.account, AccessEventActions.activateCompanyCode, ActionResultNames.success)
+        setDone(true)
       })
       .catch((err: ApiError) => {
         setError('apiError', {
@@ -59,66 +59,78 @@ export const ActivateAccountForm = ({register: registerAction}: Props) => {
 
   return (
     <LoginPanel title={m.youReceivedNewLetter}>
-      <form onSubmit={handleSubmit(activateAccount)}>
-        {errors.apiError && (
-          <Alert type="error" sx={{mb: 2}}>
+      {done ? (
+        <div>
+          <Alert type="success" sx={{mb: 2}}>
             <Txt size="big" block bold>
-              {m.registerCompanyError}
+              {m.companyRegistered}
             </Txt>
-            <Txt>{errors.apiError.message}</Txt>
+            <Txt dangerouslySetInnerHTML={{__html: m.companyRegisteredEmailSent}} />
           </Alert>
-        )}
-        <ScInput
-          sx={{mb: 1}}
-          fullWidth
-          error={!!errors.siret}
-          helperText={errors.siret?.message ?? m.siretOfYourCompanyDesc}
-          label={m.siretOfYourCompany}
-          {...register('siret', {
-            required: {value: true, message: m.required},
-            pattern: {value: regexp.siret, message: m.siretOfYourCompanyInvalid},
-          })}
-        />
-        <ScInputPassword
-          sx={{mb: 1}}
-          fullWidth
-          error={!!errors.code}
-          helperText={errors.code?.message ?? m.activationCodeDesc}
-          label={m.activationCode}
-          {...register('code', {
-            required: {value: true, message: m.required},
-            pattern: {value: regexp.activationCode, message: m.activationCodeInvalid},
-          })}
-        />
-        <ScInput
-          sx={{mb: 1}}
-          fullWidth
-          error={!!errors.email}
-          helperText={errors.email?.message ?? m.emailDesc}
-          label={m.email}
-          {...register('email', {
-            required: {value: true, message: m.required},
-            pattern: {value: regexp.email, message: m.invalidEmail},
-          })}
-        />
-        <Box
-          sx={{
-            mt: 2,
-            display: 'flex',
-            alignItems: 'center',
-          }}
-        >
-          <ScButton
-            loading={registerAction.loading}
-            onClick={_ => clearErrors('apiError')}
-            type="submit"
-            color="primary"
-            variant="contained"
+          <br />
+        </div>
+      ) : (
+        <form onSubmit={handleSubmit(activateAccount)}>
+          {errors.apiError && (
+            <Alert type="error" sx={{mb: 2}}>
+              <Txt size="big" block bold>
+                {m.registerCompanyError}
+              </Txt>
+              <Txt>{errors.apiError.message}</Txt>
+            </Alert>
+          )}
+          <ScInput
+            sx={{mb: 1}}
+            fullWidth
+            error={!!errors.siret}
+            helperText={errors.siret?.message ?? m.siretOfYourCompanyDesc}
+            label={m.siretOfYourCompany}
+            {...register('siret', {
+              required: {value: true, message: m.required},
+              pattern: {value: regexp.siret, message: m.siretOfYourCompanyInvalid},
+            })}
+          />
+          <ScInputPassword
+            sx={{mb: 1}}
+            fullWidth
+            error={!!errors.code}
+            helperText={errors.code?.message ?? m.activationCodeDesc}
+            label={m.activationCode}
+            {...register('code', {
+              required: {value: true, message: m.required},
+              pattern: {value: regexp.activationCode, message: m.activationCodeInvalid},
+            })}
+          />
+          <ScInput
+            sx={{mb: 1}}
+            fullWidth
+            error={!!errors.email}
+            helperText={errors.email?.message ?? m.emailDesc}
+            label={m.email}
+            {...register('email', {
+              required: {value: true, message: m.required},
+              pattern: {value: regexp.email, message: m.invalidEmail},
+            })}
+          />
+          <Box
+            sx={{
+              mt: 2,
+              display: 'flex',
+              alignItems: 'center',
+            }}
           >
-            {m.activateMyAccount}
-          </ScButton>
-        </Box>
-      </form>
+            <ScButton
+              loading={registerAction.loading}
+              onClick={_ => clearErrors('apiError')}
+              type="submit"
+              color="primary"
+              variant="contained"
+            >
+              {m.activateMyAccount}
+            </ScButton>
+          </Box>
+        </form>
+      )}
     </LoginPanel>
   )
 }
