@@ -487,7 +487,7 @@ export const fr = {
     activationFailed: "Erreur inattendue , impossible d'activer le compte. Merci de bien vouloir réessayer ultérieurement.",
     companiesActivated: 'Entreprises identifiées',
     noCompanyFound: 'Aucune entreprise trouvée',
-    isHeadOffice: 'Siège sociale',
+    isHeadOffice: 'Siège social',
     activationDocReturned: `Courriers retournés`,
     shareYourReview: `Donner votre avis`,
     thanksForSharingYourReview: `Votre avis a bien été pris en compte, nous vous en remercions.`,
