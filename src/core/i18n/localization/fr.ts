@@ -233,7 +233,7 @@ export const fr = {
     },
     addCompany: `Enregister l'entreprise`,
     addACompany: `Enregister une entreprise`,
-    youReceivedNewLetter: `Vous avez reçu un courrier postal ?`,
+    youReceivedNewLetter: `Activation par courrier postal`,
     siretOfYourCompany: `SIRET de votre entreprise`,
     siretOfYourCompanyDesc: `Il doit correspondre à la raison sociale indiquée sur le courrier.`,
     siretOfYourCompanyInvalid: `Le SIRET doit comporter 14 chiffres.`,
@@ -250,7 +250,14 @@ export const fr = {
     department: 'Département',
     url: 'URL',
     companyRegistered: 'Entreprise enregistrée',
-    companyRegisteredEmailSent: "Un email vous a été envoyé avec les instructions pour accéder au compte de l'entreprise.",
+    companyRegisteredSuccess: 'Activation réussie',
+    companyRegisteredEmailSent: `
+        <br/>
+        <p >Un email a été envoyé à votre adresse email avec des instructions pour accéder au compte de l'entreprise. </p>
+        <br/>
+        <p>Vérifiez vos spams s'il n'apparaît pas dans votre boîte de réception.</p>
+        <p>Si vous ne le recevez toujours pas, contactez <u><a href='mailto:${config.contactEmail}'>${config.contactEmail}</a></u> en indiquant <b>votre adresse email et numéro de siret</b></p>
+    `,
     departments: 'Départements',
     reports: 'Signalements',
     myStats: 'Statistiques de mon entreprise',
@@ -445,7 +452,7 @@ export const fr = {
     proAnswerResponseType: 'Pouvez-vous préciser votre réponse ?',
     proAnswerYourAnswer: 'Votre réponse',
     text: 'Text',
-    onlyVisibleByDGCCRF: `Visibles uniquement par la <b>DGCCRF</b><div class=""></div>`,
+    onlyVisibleByDGCCRF: `Visibles uniquement par la <b>DGCCRF</b><div class=''></div>`,
     proAnswerYourAnswerDesc: `
     <b>Le consommateur</b> la recevra par mail. Elle pourra aussi être consultée par la <b>DGCCRF</b>.<br/>
     Nous vous demandons de rester courtois dans votre réponse. Les menaces et insultes n'ont pas leur place dans SignalConso !
@@ -487,7 +494,7 @@ export const fr = {
     activationFailed: "Erreur inattendue , impossible d'activer le compte. Merci de bien vouloir réessayer ultérieurement.",
     companiesActivated: 'Entreprises identifiées',
     noCompanyFound: 'Aucune entreprise trouvée',
-    isHeadOffice: 'Siège sociale',
+    isHeadOffice: 'Siège social',
     activationDocReturned: `Courriers retournés`,
     shareYourReview: `Donner votre avis`,
     thanksForSharingYourReview: `Votre avis a bien été pris en compte, nous vous en remercions.`,
@@ -599,8 +606,8 @@ export const fr = {
     copyInviteLink: `Copier le lien de l'invitation`,
     resetPasswordNotFound: `Le lien permettant de demander un nouveau mot de passe n'est pas valide, veuillez refaire une demande.`,
     resetPasswordSuccess: `Votre mot de passe est maintenant créé, vous pouvez vous connecter pour accéder à votre espace entreprise.`,
-    loginIssueTip: `En cas de difficultés, vous pouvez contacter par email le service <a href="mailto:${config.contactEmail}">${config.contactEmail}</a>.`,
-    consent: ` Je reconnais avoir pris connaissance des  <a href="${config.appBaseUrl}/conditions-generales-utilisation"> conditions générales d'utilisation</a> de SignalConso.`,
+    loginIssueTip: `En cas de difficultés, vous pouvez contacter par email le service <a href='mailto:${config.contactEmail}'>${config.contactEmail}</a>.`,
+    consent: ` Je reconnais avoir pris connaissance des  <a href='${config.appBaseUrl}/conditions-generales-utilisation'> conditions générales d'utilisation</a> de SignalConso.`,
     statsInternetsTitle: 'Signalements internet',
     statsInternets_all: 'des signalements sont des signalements Internet',
     statsInternets_all_desc: 'le consommateur indique que le problème rencontré concerne une entreprise en ligne',
@@ -622,7 +629,7 @@ export const fr = {
   `,
     cannotActivateAccountAlertTitle: `Le lien sur lequel vous avez cliqué n'est plus valide.`,
     cannotActivateAccountAlertInfo: `
-    <p>Si vous avez déjà créé votre compte, vous pouvez vous <a href="/connexion">connecter</a> à l'aide de votre adresse email et mot de passe.</p>
+    <p>Si vous avez déjà créé votre compte, vous pouvez vous <a href='/connexion'>connecter</a> à l'aide de votre adresse email et mot de passe.</p>
     Sinon, vous pouvez demander au gestionnaire de l'entreprise de vous envoyer une nouvelle invitation.
   `,
     testMails: {
