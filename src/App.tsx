@@ -2,7 +2,7 @@ import {CircularProgress, CssBaseline, StyledEngineProvider, ThemeProvider} from
 import {QueryClient, QueryClientProvider} from '@tanstack/react-query'
 import {ApiProvider} from 'core/context/ApiContext'
 import {useEffect} from 'react'
-import {useHistory} from 'react-router'
+import {useHistory, useParams} from 'react-router'
 import {BrowserRouter, HashRouter, Redirect, Route, Switch} from 'react-router-dom'
 import {ToastProvider} from './alexlibs/mui-extension'
 import {config} from './conf/config'
@@ -36,7 +36,6 @@ import {Companies} from './feature/Companies/Companies'
 import {CompaniesPro} from './feature/CompaniesPro/CompaniesPro'
 import {CompanyComponent} from './feature/Company/Company'
 import {CompanyAccesses} from './feature/CompanyAccesses/CompanyAccesses'
-import {ConsumerReview} from './feature/ConsumerReview/ConsumerReview'
 import {EmailValidation} from './feature/EmailValidation/EmailValidation'
 import {LoginPage} from './feature/Login/LoginPage'
 import {ModeEmploiDGCCRF} from './feature/ModeEmploiDGCCRF/ModeEmploiDGCCRF'
@@ -111,12 +110,7 @@ const AppLogin = () => {
                 <Route path={siteMap.loggedout.activatePro()}>{userActivation}</Route>
                 <Route path={siteMap.loggedout.activateAdmin}>{userActivation}</Route>
                 <Route path={siteMap.loggedout.activateDgccrf}>{userActivation}</Route>
-                <Route path={siteMap.loggedout.consumerReview()}>
-                  <ConsumerReview
-                    reviewExists={apiPublicSdk.report.reviewExists}
-                    onSubmit={apiPublicSdk.report.postReviewOnReportResponse}
-                  />
-                </Route>
+                <Route path={siteMap.loggedout.consumerReview()} component={RedirectToWebsite} />
                 <Route path="/">
                   {authResponse ? (
                     <LoginProvider
@@ -192,4 +186,10 @@ const AppLogged = () => {
       </Switch>
     </Provide>
   )
+}
+
+const RedirectToWebsite = () => {
+  const {reportId} = useParams<{reportId: string}>()
+  window.location.href = `${config.appBaseUrl}/avis/${reportId}`
+  return null
 }
