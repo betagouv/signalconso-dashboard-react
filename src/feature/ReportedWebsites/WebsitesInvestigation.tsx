@@ -15,13 +15,13 @@ import {AutocompleteDialog} from '../../shared/AutocompleteDialog/AutocompleteDi
 import {useEffectFn, useMap} from '../../alexlibs/react-hooks-lib'
 import {WebsiteTools} from './WebsiteTools'
 import {Txt} from '../../alexlibs/mui-extension'
-import {map} from '../../alexlibs/ts-utils'
 import {sxUtils} from '../../core/theme'
 import {useLogin} from '../../core/context/LoginContext'
 import {IdentificationStatus, InvestigationStatus, WebsiteWithCompany} from '../../core/client/website/Website'
 import {cleanObject} from '../../core/helper'
 import {Id} from '../../core/model'
 import {PeriodPicker} from '../../shared/PeriodPicker/PeriodPicker'
+import {SiretExtraction} from './SiretExtraction'
 
 export const WebsitesInvestigation = () => {
   const {m, formatDate} = useI18n()
@@ -70,6 +70,8 @@ export const WebsitesInvestigation = () => {
     // and the search input "stutters" when typing fast
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+
+  const onRemove = (id: string) => _remove.fetch({}, id).then(_ => _websiteWithCompany.fetch({clean: false}))
 
   return (
     <Panel>
@@ -160,6 +162,17 @@ export const WebsitesInvestigation = () => {
             ),
           },
           {
+            head: 'Recherche de Siret',
+            id: 'extraction',
+            render: _ => (
+              <SiretExtraction
+                websiteWithCompany={_}
+                remove={() => onRemove(_.id)}
+                identify={() => handleUpdateKind(_, IdentificationStatus.Identified)}
+              />
+            ),
+          },
+          {
             head: m.creationDate,
             id: 'creationDate',
             render: _ => formatDate(_.creationDate),
@@ -218,11 +231,7 @@ export const WebsitesInvestigation = () => {
                 <WebsiteTools website={_} />
                 {connectedUser.isAdmin ? (
                   <Tooltip title={m.delete}>
-                    <IconBtn
-                      loading={_remove.loading}
-                      color="primary"
-                      onClick={() => _remove.fetch({}, _.id).then(_ => _websiteWithCompany.fetch({clean: false}))}
-                    >
+                    <IconBtn loading={_remove.loading} color="primary" onClick={() => onRemove(_.id)}>
                       <Icon>delete</Icon>
                     </IconBtn>
                   </Tooltip>
