@@ -142,7 +142,6 @@ export const muiTheme = (dark?: boolean): Theme => {
           },
           p: {
             ...baseTheme.typography.body1,
-            textAlign: 'justify',
           },
           a: {
             color: 'inherit',
