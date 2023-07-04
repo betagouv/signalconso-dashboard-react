@@ -255,8 +255,7 @@ export const fr = {
         <br/>
         <p >Un email a été envoyé à votre adresse email avec des instructions pour accéder au compte de l'entreprise. </p>
         <br/>
-        <p>Vérifiez vos spams s'il n'apparaît pas dans votre boîte de réception.</p>
-        <p>Si vous ne le recevez toujours pas, contactez <u><a href='mailto:${config.contactEmail}'>${config.contactEmail}</a></u> en indiquant <b>votre adresse email et numéro de siret</b></p>
+        <p>Vérifiez vos spams s'il n'apparaît pas dans votre boîte de réception. Si vous ne le recevez toujours pas, contactez <u><a href='mailto:${config.contactEmail}'>${config.contactEmail}</a></u> en indiquant bien <b>votre adresse email et numéro SIRET</b>.</p>
     `,
     departments: 'Départements',
     reports: 'Signalements',
