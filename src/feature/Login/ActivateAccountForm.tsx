@@ -1,20 +1,16 @@
-import {useI18n} from '../../core/i18n'
-import {ScInput} from '../../shared/Input/ScInput'
-import {useForm} from 'react-hook-form'
-import {regexp} from '../../core/helper/regexp'
-import {LoginPanel} from './LoginPanel'
-import {ScButton} from '../../shared/Button/Button'
 import {Box} from '@mui/material'
-import {ActionProps} from './LoginPage'
-import {Alert} from '../../alexlibs/mui-extension'
-import {Txt} from '../../alexlibs/mui-extension'
-import React, {useState} from 'react'
-import {useToast} from '../../core/toast'
-import {useHistory} from 'react-router'
-import {siteMap} from '../../core/siteMap'
-import {ScInputPassword} from '../../shared/InputPassword/InputPassword'
-import {AccessEventActions, ActionResultNames, EventCategories, Matomo} from '../../core/plugins/Matomo'
+import {useState} from 'react'
+import {useForm} from 'react-hook-form'
+import {Alert, Txt} from '../../alexlibs/mui-extension'
 import {ApiError} from '../../core/client/ApiClient'
+import {regexp} from '../../core/helper/regexp'
+import {useI18n} from '../../core/i18n'
+import {AccessEventActions, ActionResultNames, EventCategories, Matomo} from '../../core/plugins/Matomo'
+import {ScButton} from '../../shared/Button/Button'
+import {ScInput} from '../../shared/Input/ScInput'
+import {ScInputPassword} from '../../shared/InputPassword/InputPassword'
+import {ActionProps} from './LoginPage'
+import {LoginPanel} from './LoginPanel'
 
 interface Form {
   siret: string
@@ -29,8 +25,6 @@ interface Props {
 
 export const ActivateAccountForm = ({register: registerAction}: Props) => {
   const {m} = useI18n()
-  const {toastSuccess} = useToast()
-  const history = useHistory()
   const [done, setDone] = useState(false)
   const {
     register,
