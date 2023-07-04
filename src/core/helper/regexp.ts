@@ -4,7 +4,7 @@ export const regexpPattern = {
   emailAdmin: '(^[^@]+\\.betagouv(\\+[^@]+)?@gmail\\.com$)|(^[^@]+@beta\\.gouv\\.fr$)|(^[^@]+@dgccrf\\.finances\\.gouv\\.fr$)',
   siren: '[0-9]{9}',
   siret: '^[0-9]{14}$',
-  activationCode: '[0-9]{6}',
+  activationCode: '^[0-9]{6}$',
   // https://stackoverflow.com/questions/12756159/regex-and-iso8601-formatted-datetime
   // Accepts formats :
   // YYYY-MM-DDThh:mm:ss
