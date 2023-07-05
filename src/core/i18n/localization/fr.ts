@@ -411,7 +411,7 @@ export const fr = {
     menu_websites: 'Sites webs signalés',
     menu_reports: 'Signalements',
     menu_companies: 'Entreprises',
-    menu_admin: 'Administration',
+    menu_test_emails: `Outils de test`,
     menu_stats: 'Statistiques',
     menu_exports: 'Mes exports',
     menu_users: 'Utilisateurs',
@@ -616,7 +616,7 @@ export const fr = {
     statsInternets_withCountry_desc: '(statut NA - le signalement n’est pas transmis au professionnel)',
     statsInternets_withNothing: 'pour lesquels les entreprises et le pays ne sont pas identifiés',
     statsInternets_withNothing_desc: '(statut NA - le signalement n’est pas transmis au professionnel)',
-    sendDummyEmail: `Envoi d'emails tests`,
+    sendDummyEmail: `Envoi d'emails de test`,
     allMailsWillBeSendTo: (email: string) =>
       `Les mails seront envoyés à l'adresse <b>${email}</b> avec de fausses données générées.`,
     subscriptionsAlertInfo: `
