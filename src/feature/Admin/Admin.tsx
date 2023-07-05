@@ -37,7 +37,7 @@ export const Admin = () => {
 
   return (
     <Page size="s">
-      <PageTitle>{m.menu_admin}</PageTitle>
+      <PageTitle>{m.menu_test_emails}</PageTitle>
       <Panel loading={_emailCodes.loading}>
         <PanelHead>{m.sendDummyEmail}</PanelHead>
         <PanelBody>
