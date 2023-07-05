@@ -11,16 +11,18 @@ const computeCurveReportPhysique = ({
   all,
   internet,
   demarchages,
+  influenceurs,
 }: {
   all: CountByDate[]
   internet: CountByDate[]
   demarchages: CountByDate[]
+  influenceurs: CountByDate[]
 }) => {
   const res: CountByDate[] = []
   for (let i = 0; i < all.length; i++) {
     res[i] = {
       date: all[i].date,
-      count: all[i].count - internet[i]?.count - demarchages[i]?.count,
+      count: all[i].count - internet[i]?.count - demarchages[i]?.count - influenceurs[i]?.count,
     }
   }
   return res
@@ -33,7 +35,7 @@ export const StatsReportsCurvePanel = () => {
   const tickDuration = 'Month'
   const ticks = 12
   const loadCurves = async () => {
-    const [all, internet, demarchages] = await Promise.all([
+    const [all, internet, demarchages, influenceurs] = await Promise.all([
       api.secured.stats.getReportCountCurve({ticks, tickDuration, withoutTags: [ReportTag.Bloctel]}),
       api.secured.stats.getReportCountCurve({
         ticks,
@@ -45,6 +47,12 @@ export const StatsReportsCurvePanel = () => {
         ticks,
         tickDuration,
         withTags: [ReportTag.DemarchageADomicile, ReportTag.DemarchageTelephonique, ReportTag.DemarchageInternet],
+        withoutTags: [ReportTag.Bloctel],
+      }),
+      api.secured.stats.getReportCountCurve({
+        ticks,
+        tickDuration,
+        withTags: [ReportTag.Influenceur],
         withoutTags: [ReportTag.Bloctel],
       }),
     ])
@@ -62,8 +70,12 @@ export const StatsReportsCurvePanel = () => {
         data: demarchages,
       },
       {
+        label: m.reportsCountInfluenceurs,
+        data: influenceurs,
+      },
+      {
         label: m.reportsCountPhysique,
-        data: computeCurveReportPhysique({all, internet, demarchages}),
+        data: computeCurveReportPhysique({all, internet, demarchages, influenceurs}),
       },
     ]
   }
