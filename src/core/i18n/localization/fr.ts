@@ -359,6 +359,7 @@ export const fr = {
     reportsCountInternet: 'Nombre de signalements internet',
     reportsCountDemarchage: 'Nombre de signalements démarchage',
     reportsCountPhysique: 'Nombre de signalements établissement physique',
+    reportsCountInfluenceurs: 'Nombre de signalements influenceurs',
     responsesCount: 'Nombre de réponses',
     emailConsumer: 'Email conso.',
     nSelected: (n: number) => `<b>${n}</b> sélectionnés`,
