@@ -19,6 +19,7 @@ import {ConsumerBlacklistClient} from './consumer-blacklist/ConsumerBlacklistCli
 import {ConsumerEmailValidationClient} from './consumer-email-validation/ConsumerEmailValidationClient'
 import {SecuredFileClient} from './file/SecuredFileClient'
 import {StatsClient} from './stats/StatsClient'
+import {SiretExtractorClient} from './siret-extractor/SiretExtractorClient'
 
 export class SignalConsoSecuredSdk {
   constructor(private client: ApiClientApi) {}
@@ -41,4 +42,5 @@ export class SignalConsoSecuredSdk {
   readonly user = new UserClient(this.client)
   readonly document = new SecuredFileClient(this.client)
   readonly reportBlockedNotification = new ReportBlockedNotificationClient(this.client)
+  readonly siretExtractor = new SiretExtractorClient(this.client)
 }

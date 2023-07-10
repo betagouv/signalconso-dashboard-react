@@ -43,6 +43,7 @@ export interface CompanyUpdate {
 export interface CompanySearchResult {
   siret: string
   name?: string
+  commercialName?: string
   brand?: string
   isHeadOffice: boolean
   isOpen: boolean
