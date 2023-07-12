@@ -30,7 +30,7 @@ export const WebsitesInvestigation = () => {
   const _investigationStatus = useWebsiteInvestigationContext().listInvestigationStatus
   const _updateStatus = useReportedWebsiteWithCompanyContext().update
   const _remove = useReportedWebsiteWithCompanyContext().remove
-  const {toastError, toastInfo} = useToast()
+  const {toastError, toastInfo, toastSuccess} = useToast()
 
   const {connectedUser} = useLogin()
 
@@ -71,7 +71,11 @@ export const WebsitesInvestigation = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  const onRemove = (id: string) => _remove.fetch({}, id).then(_ => _websiteWithCompany.fetch({clean: false}))
+  const onRemove = (id: string) =>
+    _remove
+      .fetch({}, id)
+      .then(_ => _websiteWithCompany.fetch({clean: false}))
+      .then(_ => toastSuccess(m.websiteDeleted))
 
   return (
     <Panel>
@@ -168,7 +172,7 @@ export const WebsitesInvestigation = () => {
               <SiretExtraction
                 websiteWithCompany={_}
                 remove={() => onRemove(_.id)}
-                identify={() => handleUpdateKind(_, IdentificationStatus.Identified)}
+                identify={() => _websiteWithCompany.fetch({clean: false})}
               />
             ),
           },

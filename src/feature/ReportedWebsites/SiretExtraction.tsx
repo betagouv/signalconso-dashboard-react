@@ -2,7 +2,7 @@ import {useApiContext} from '../../core/context/ApiContext'
 import {useQuery} from '@tanstack/react-query'
 import React, {useEffect} from 'react'
 import {ExtractionResult, SiretExtraction as ISiretExtraction} from '../../core/client/siret-extractor/SiretExtraction'
-import {CircularProgress, Icon} from '@mui/material'
+import {Icon} from '@mui/material'
 import {Fender, IconBtn, Modal, Txt} from '../../alexlibs/mui-extension'
 import {useI18n} from '../../core/i18n'
 import {ScButton} from '../../shared/Button/Button'
@@ -13,8 +13,8 @@ import {useToast} from '../../core/toast'
 
 export interface SiretExtractionProps {
   websiteWithCompany: WebsiteWithCompany
-  remove: () => void
-  identify: () => void
+  remove: () => Promise<any>
+  identify: () => Promise<any>
 }
 
 export const SiretExtraction = ({websiteWithCompany, remove, identify}: SiretExtractionProps) => {
@@ -38,7 +38,7 @@ export const SiretExtraction = ({websiteWithCompany, remove, identify}: SiretExt
   }, [isError, error])
 
   const associateAndIdentify = (company: CompanySearchResult) => {
-    _updateCompany
+    return _updateCompany
       .fetch({}, websiteWithCompany.id, {
         siret: company.siret,
         name: company.name,
@@ -133,7 +133,7 @@ export const SiretExtraction = ({websiteWithCompany, remove, identify}: SiretExt
     )
   }
 
-  const successBlock = (extraction: ISiretExtraction) => {
+  const successBlock = (extraction: ISiretExtraction, close: () => void) => {
     return (
       <div className="flex flex-col mb-4 p-4 rounded-xl border shadow-xl">
         {siretBlock(extraction)}
@@ -152,7 +152,7 @@ export const SiretExtraction = ({websiteWithCompany, remove, identify}: SiretExt
         {matchingAssociatedCompanyBlock(extraction, websiteWithCompany.company)}
         <div className="flex flex-row-reverse">
           {extraction.sirene?.isOpen && (
-            <ScButton color="primary" onClick={() => associateAndIdentify(extraction.sirene!)}>
+            <ScButton color="primary" onClick={() => associateAndIdentify(extraction.sirene!).then(_ => close())}>
               Associer & Identifier
             </ScButton>
           )}
@@ -161,10 +161,10 @@ export const SiretExtraction = ({websiteWithCompany, remove, identify}: SiretExt
     )
   }
 
-  const displayResults = (result: ExtractionResult) => {
+  const displayResults = (result: ExtractionResult, close: () => void) => {
     if (result.status === 'success') {
       if (result.extractions?.length !== 0) {
-        return <>{result.extractions?.map(extraction => successBlock(extraction))}</>
+        return <>{result.extractions?.map(extraction => successBlock(extraction, close))}</>
       } else {
         return (
           <Fender
@@ -191,7 +191,7 @@ export const SiretExtraction = ({websiteWithCompany, remove, identify}: SiretExt
               <Txt color="hint" size="big" block gutterBottom sx={{mb: 2}}>
                 Impossible de se connecter au site : il n'existe pas ou plus.
               </Txt>
-              <ScButton variant="contained" onClick={remove}>
+              <ScButton variant="contained" onClick={() => remove().then(_ => close())}>
                 Supprimer le site
               </ScButton>
             </>
@@ -223,17 +223,8 @@ export const SiretExtraction = ({websiteWithCompany, remove, identify}: SiretExt
       maxWidth="sm"
       fullWidth
       title={`Recherche du Siret sur ${website}`}
-      content={_ => (
-        <>
-          {isLoading ? (
-            <div className="text-center">
-              <CircularProgress />
-            </div>
-          ) : (
-            data && displayResults(data)
-          )}
-        </>
-      )}
+      loading={isLoading}
+      content={close => data && displayResults(data, close)}
     >
       <IconBtn>
         <Icon>search</Icon>
