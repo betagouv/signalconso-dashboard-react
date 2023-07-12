@@ -765,6 +765,7 @@ export const fr = {
       },
     },
     websiteEdited: 'Site web identifié.',
+    websiteDeleted: 'Site web supprimé.',
     alreadySelectedCompany: (name?: string) => `L'entreprise ${name ?? ''} est déjà sélectionnée`,
     alreadySelectedCountry: (name?: string) => `Le pays ${name ?? ''} est déjà sélectionnée`,
     alreadySelectedValue: (name?: string) => `La valeur ${name ?? ''} est déjà sélectionnée`,
