@@ -43,7 +43,7 @@ export const LoginPage = ({login, register}: Props) => {
             <div className="mx-2">
               <div className="mb-2">
                 <h1 className="text-3xl mb-4">
-                  <span>SignalConso</span> <span className="font-bold text-scblue">Espace Pro</span>
+                  <span>SignalConso</span> <span className="font-bold text-scbluefrance">Espace Pro</span>
                 </h1>
 
                 <Alert type="info" sx={{mb: 2}}>

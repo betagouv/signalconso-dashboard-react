@@ -2,7 +2,7 @@ import * as React from 'react'
 import {CSSProperties, ReactNode, useState} from 'react'
 import {Box, BoxProps, darken, Icon, IconButton} from '@mui/material'
 import {usePersistentState} from '../../react-persistent-state'
-import {colorError, colorInfo, colorSuccess, colorWarning} from '../_core/style/color'
+import {colorBlueFrance, colorError, colorInfo, colorSuccess, colorWarning} from '../_core/style/color'
 
 const height = (dense?: boolean) => (dense ? 44 : 52)
 
@@ -78,8 +78,8 @@ export const Alert = ({
             color: darken(colorSuccess, 0.1),
           },
           info: {
-            background: 'rgba(50, 200, 255, .08)', //'#e1f5fe',
-            color: darken(colorInfo, 0.1),
+            background: colorInfo,
+            color: colorBlueFrance,
           },
           error: {
             background: 'rgba(255, 0, 0, .08)', //'#ffdede',
