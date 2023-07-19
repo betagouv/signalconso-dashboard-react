@@ -73,7 +73,7 @@ export const ScSidebar = ({connectedUser, logout}: {connectedUser: UserWithPermi
       )}
       {[Roles.Pro].includes(connectedUser.role) && (
         <SidebarItem onClick={closeSidebarIfNotPinned} to={path(siteMap.logged.companiesPro)} icon={EntityIcon.company}>
-          {m.menu_companies}
+          {m.menu_my_companies}
         </SidebarItem>
       )}
       {[Roles.Admin].includes(connectedUser.role) && (
