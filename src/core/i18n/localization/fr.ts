@@ -762,6 +762,10 @@ export const fr = {
           title: `Signalement envoyé`,
           desc: `Pays européen`,
         },
+        validate_email: {
+          title: `Valider l'email`,
+          desc: `Valider l'email du conso lors de son premier signalement`,
+        },
       },
     },
     websiteEdited: 'Site web identifié.',
