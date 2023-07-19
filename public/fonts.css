@@ -1,0 +1,27 @@
+/* 
+We don't really use the DSFR, but we copy/pasted their fonts to imitate it a bit
+*/
+
+@font-face {
+  font-family: Marianne;
+  src: url('fonts/Marianne-Regular.woff2') format('woff2'), url('fonts/Marianne-Regular.woff') format('woff');
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: Marianne;
+  src: url('fonts/Marianne-Medium.woff2') format('woff2'), url('fonts/Marianne-Medium.woff') format('woff');
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: Marianne;
+  src: url('fonts/Marianne-Bold.woff2') format('woff2'), url('fonts/Marianne-Bold.woff') format('woff');
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+}

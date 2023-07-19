@@ -128,7 +128,6 @@ export const CompaniesPro = () => {
                     <Box
                       component="span"
                       sx={{
-                        fontWeight: 'bold',
                         mb: '-1px',
                       }}
                     >

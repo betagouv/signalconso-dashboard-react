@@ -120,7 +120,9 @@ export class ReportsClient {
   }
 
   readonly getReviewOnReportResponse = (reportId: Id) => {
-    return this.client.get<ResponseConsumerReview>(`/reports/${reportId}/response/review`).then(ReportsClient.mapConsumerReview)
+    return this.client
+      .get<ResponseConsumerReview | null>(`/reports/${reportId}/response/review`)
+      .then(ReportsClient.mapConsumerReview)
   }
 
   readonly generateConsumerNotificationAsPDF = (reportId: Id) => {
@@ -195,8 +197,15 @@ export class ReportsClient {
     country: address.country?.name,
   })
 
-  static readonly mapConsumerReview = (_: {[key in keyof ResponseConsumerReview]: any}): ResponseConsumerReview => ({
-    ..._,
-    creationDate: new Date(_.creationDate),
-  })
+  static readonly mapConsumerReview = (
+    _: null | {[key in keyof ResponseConsumerReview]: any},
+  ): ResponseConsumerReview | undefined => {
+    if (!_) {
+      return undefined
+    }
+    return {
+      ..._,
+      creationDate: new Date(_.creationDate),
+    }
+  }
 }

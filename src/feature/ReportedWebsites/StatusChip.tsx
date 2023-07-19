@@ -16,7 +16,6 @@ export const StatusChip = ({value, tooltipTitle, ...props}: Props) => {
           <Txt
             truncate
             sx={{
-              fontWeight: 'bold',
               maxWidth: 200,
             }}
             block

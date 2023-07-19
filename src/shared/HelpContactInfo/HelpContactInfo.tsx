@@ -11,7 +11,6 @@ export const HelpContactInfo = () => {
         mb: 1,
         '& a': {
           color: t => t.palette.primary.main,
-          fontWeight: t => t.typography.fontWeightBold,
         },
       }}
     >

@@ -146,7 +146,7 @@ export const CompaniesRegistered = () => {
               <Tooltip title={_.name}>
                 <span>
                   <NavLink to={siteMap.logged.company(_.id)}>
-                    <Txt link sx={{fontWeight: 'bold', marginBottom: '-1px'}}>
+                    <Txt link sx={{marginBottom: '-1px'}}>
                       {_.name}
                     </Txt>
                   </NavLink>

@@ -18,7 +18,6 @@ export const ChipCompany = ({company, ...props}: Props) => {
         onClick={props.onClick}
         sx={{
           minHeight: 40,
-          borderRadius: 50,
         }}
         label={
           <Box sx={{mx: 0.5}}>

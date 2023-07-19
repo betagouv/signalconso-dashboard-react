@@ -606,7 +606,7 @@ export const fr = {
     copyInviteLink: `Copier le lien de l'invitation`,
     resetPasswordNotFound: `Le lien permettant de demander un nouveau mot de passe n'est pas valide, veuillez refaire une demande.`,
     resetPasswordSuccess: `Votre mot de passe est maintenant créé, vous pouvez vous connecter pour accéder à votre espace entreprise.`,
-    loginIssueTip: `En cas de difficultés, vous pouvez contacter par email le service <a href='mailto:${config.contactEmail}'>${config.contactEmail}</a>.`,
+    loginIssueTip: `En cas de difficultés, vous pouvez nous demander de l'aide par email : <a href='mailto:${config.contactEmail}'>${config.contactEmail}</a>.`,
     consent: ` Je reconnais avoir pris connaissance des  <a href='${config.appBaseUrl}/conditions-generales-utilisation'> conditions générales d'utilisation</a> de SignalConso.`,
     statsInternetsTitle: 'Signalements internet',
     statsInternets_all: 'des signalements sont des signalements Internet',
@@ -761,6 +761,10 @@ export const fr = {
         report_ack_case_euro: {
           title: `Signalement envoyé`,
           desc: `Pays européen`,
+        },
+        validate_email: {
+          title: `Valider l'email`,
+          desc: `Valider l'email du conso lors de son premier signalement`,
         },
       },
     },
