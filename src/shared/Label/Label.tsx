@@ -49,7 +49,6 @@ export const Label = ({type, children, sx, fullWidth, dense, elevation = 0, inSe
         borderRadius: 40,
         py: 1 / 1.5,
         px: 2,
-        fontWeight: 'bold',
         letterSpacing: '1px',
         display: 'inline-flex',
         minHeight: 24,

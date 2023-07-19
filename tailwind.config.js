@@ -4,7 +4,8 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        scblue: '#2b7c9f',
+        scbluefrance: '#000091',
+        scdarkblue: '#1e2b50',
       },
     },
   },
