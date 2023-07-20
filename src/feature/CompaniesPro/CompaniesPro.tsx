@@ -1,25 +1,24 @@
-import {Page, PageTitle} from '../../shared/Layout'
-import {useI18n} from '../../core/i18n'
-import React, {useEffect, useMemo, useState} from 'react'
-import {Panel, PanelBody} from '../../shared/Panel'
-import {useCompaniesContext} from '../../core/context/CompaniesContext'
-import {Datatable} from '../../shared/Datatable/Datatable'
-import {Box, Icon, Switch, Tooltip, useTheme} from '@mui/material'
-import {styleUtils, sxUtils} from '../../core/theme'
-import {Fender, IconBtn} from '../../alexlibs/mui-extension'
-import {ScButton} from '../../shared/Button/Button'
-import {AddressComponent} from '../../shared/Address/Address'
-import {siteMap} from '../../core/siteMap'
-import {NavLink} from 'react-router-dom'
-import {useUsersContext} from '../../core/context/UsersContext'
-import {useBlockedReportNotificationContext} from '../../core/context/BlockedReportNotificationProviderContext'
-import {useToast} from '../../core/toast'
-import {Txt} from '../../alexlibs/mui-extension'
-import {ConfirmDisableNotificationDialog} from './ConfirmDisableNotificationDialog'
-import {groupBy} from '../../core/lodashNamedExport'
-import {PanelFoot} from '../../shared/Panel/PanelFoot'
-import {AccessLevel, Id} from '../../core/model'
+import {Box, FormControlLabel, Icon, Switch, Tooltip, useTheme} from '@mui/material'
 import {ScOption} from 'core/helper/ScOption'
+import {useEffect, useMemo, useState} from 'react'
+import {NavLink} from 'react-router-dom'
+import {Btn, Fender, IconBtn, Txt} from '../../alexlibs/mui-extension'
+import {useBlockedReportNotificationContext} from '../../core/context/BlockedReportNotificationProviderContext'
+import {useCompaniesContext} from '../../core/context/CompaniesContext'
+import {useUsersContext} from '../../core/context/UsersContext'
+import {useI18n} from '../../core/i18n'
+import {groupBy} from '../../core/lodashNamedExport'
+import {AccessLevel, Id} from '../../core/model'
+import {siteMap} from '../../core/siteMap'
+import {styleUtils, sxUtils} from '../../core/theme'
+import {useToast} from '../../core/toast'
+import {AddressComponent} from '../../shared/Address/Address'
+import {ScButton} from '../../shared/Button/Button'
+import {Datatable} from '../../shared/Datatable/Datatable'
+import {Page, PageTitle} from '../../shared/Layout'
+import {Panel, PanelBody} from '../../shared/Panel'
+import {PanelFoot} from '../../shared/Panel/PanelFoot'
+import {ConfirmDisableNotificationDialog} from './ConfirmDisableNotificationDialog'
 
 export const CompaniesPro = () => {
   const {m} = useI18n()
@@ -28,7 +27,9 @@ export const CompaniesPro = () => {
   const _blockedNotifications = useBlockedReportNotificationContext()
   const _users = useUsersContext()
   const {toastError} = useToast()
-  const [state, setState] = useState<Id | Id[] | undefined>()
+  const [currentlyDisablingNotificationsForCompanies, setCurrentlyDisablingNotificationsForCompanies] = useState<
+    Id | Id[] | undefined
+  >()
 
   useEffect(() => {
     _users.getConnectedUser.fetch({force: false})
@@ -58,8 +59,10 @@ export const CompaniesPro = () => {
     return false
   }, [_companies.accessibleByPro.entity, blockedNotificationIndex])
 
+  const companies = _companies.accessibleByPro.entity
+
   return (
-    <Page size="s">
+    <Page size="l">
       <PageTitle
         action={
           <NavLink to={siteMap.loggedout.register}>
@@ -72,42 +75,37 @@ export const CompaniesPro = () => {
         {m.myCompanies}
       </PageTitle>
 
-      {ScOption.from(_companies.accessibleByPro.entity)
-        .map(
-          companies =>
-            companies.length > 5 && (
-              <Panel>
-                <PanelBody>
-                  <Txt block size="big" bold>
-                    {m.notifications}
-                  </Txt>
-                  <Txt block color="hint">
-                    {m.notificationAcceptForCompany}
-                  </Txt>
-                </PanelBody>
-                <PanelFoot alignEnd>
-                  <ScButton
-                    disabled={allNotificationsAreBlocked}
-                    color="primary"
-                    icon="notifications_off"
-                    onClick={() => setState(companies.map(_ => _.id))}
-                  >
-                    {m.disableAll}
-                  </ScButton>
-                  <ScButton
-                    disabled={_blockedNotifications.list.entity?.length === 0}
-                    color="primary"
-                    icon="notifications_active"
-                    sx={{mr: 1}}
-                    onClick={() => _blockedNotifications.remove.call(companies.map(_ => _.id))}
-                  >
-                    {m.enableAll}
-                  </ScButton>
-                </PanelFoot>
-              </Panel>
-            ),
-        )
-        .getOrElse(undefined)}
+      {companies && companies.length > 5 && (
+        <Panel>
+          <PanelBody>
+            <Txt block size="big" bold>
+              {m.notifications}
+            </Txt>
+            <Txt block color="hint">
+              {m.notificationAcceptForCompany}
+            </Txt>
+          </PanelBody>
+          <PanelFoot alignEnd>
+            <ScButton
+              disabled={allNotificationsAreBlocked}
+              color="primary"
+              icon="notifications_off"
+              onClick={() => setCurrentlyDisablingNotificationsForCompanies(companies.map(_ => _.id))}
+            >
+              {m.disableAll}
+            </ScButton>
+            <ScButton
+              disabled={_blockedNotifications.list.entity?.length === 0}
+              color="primary"
+              icon="notifications_active"
+              sx={{mr: 1}}
+              onClick={() => _blockedNotifications.remove.call(companies.map(_ => _.id))}
+            >
+              {m.enableAll}
+            </ScButton>
+          </PanelFoot>
+        </Panel>
+      )}
 
       <Panel>
         <Datatable
@@ -117,106 +115,56 @@ export const CompaniesPro = () => {
           columns={[
             {
               id: '',
-              style: {
-                lineHeight: 1.4,
-                maxWidth: 200,
-              },
-              head: m.name,
               render: _ => (
-                <Tooltip title={_.name}>
-                  <span>
-                    <Box
-                      component="span"
-                      sx={{
-                        mb: '-1px',
-                      }}
-                    >
-                      {_.name}
-                    </Box>
-                    <br />
-                    <Box
-                      component="span"
-                      sx={{
-                        fontSize: t => styleUtils(t).fontSize.small,
-                        color: t => t.palette.text.disabled,
-                      }}
-                    >
-                      {_.siret}
-                    </Box>
-                  </span>
-                </Tooltip>
-              ),
-            },
-            {
-              head: m.address,
-              id: 'address',
-              sx: _ => ({
-                maxWidth: 240,
-                color: t => t.palette.text.secondary,
-                ...styleUtils(theme).truncate,
-              }),
-              render: _ => (
-                <Tooltip title={<AddressComponent address={_.address} />}>
-                  <span>
+                <div>
+                  <NavLink to={siteMap.logged.company(_.id)} className="text-lg text-scbluefrance">
+                    {_.name}
+                  </NavLink>
+                  <div className="text-gray-500">
                     <AddressComponent address={_.address} />
-                  </span>
-                </Tooltip>
+                  </div>
+                  <div className="text-gray-500">SIRET {_.siret}</div>
+                </div>
               ),
             },
             {
-              head: (
-                <Box component="span" sx={{whiteSpace: 'nowrap', verticalAlign: 'middle'}}>
-                  {m.notification}
-                </Box>
-              ),
-              id: 'status',
-              sx: _ => ({
-                width: 0,
-                textAlign: 'center',
-                p: 0,
-              }),
-              render: _ => (
-                <>
-                  <Switch
-                    disabled={!blockedNotificationIndex}
-                    checked={!blockedNotificationIndex?.[_.id]}
-                    onChange={e => {
-                      e.target.checked ? _blockedNotifications.remove.call([_.id]) : setState(_.id)
-                    }}
-                  />
-                </>
-              ),
-            },
-            {
-              head: '',
               id: 'actions',
               sx: _ => sxUtils.tdActions,
               render: _ => (
-                <>
-                  {_.level === AccessLevel.ADMIN && (
-                    <NavLink to={siteMap.logged.companyAccesses(_.siret)}>
-                      <Tooltip title={m.handleAccesses}>
-                        <IconBtn color="primary">
-                          <Icon>vpn_key</Icon>
-                        </IconBtn>
-                      </Tooltip>
-                    </NavLink>
-                  )}
-                  <NavLink to={siteMap.logged.company(_.id)}>
-                    <Tooltip title={m.myStats}>
-                      <IconBtn color="primary">
-                        <Icon>bar_chart</Icon>
-                      </IconBtn>
-                    </Tooltip>
-                  </NavLink>
-                  <NavLink to={siteMap.logged.reports({hasCompany: true, siretSirenList: [_.siret]})}>
-                    <Tooltip title={m.reports}>
-                      <IconBtn color="primary">
-                        <Icon>chevron_right</Icon>
-                      </IconBtn>
-                    </Tooltip>
-                  </NavLink>
-                </>
+                <div className="pt-6 space-y-2">
+                  <div className="flex items-center justify-end gap-2">
+                    {_.level === AccessLevel.ADMIN && (
+                      <Btn href={'#' + siteMap.logged.companyAccesses(_.siret)} variant="outlined" size="small" icon="group">
+                        {m.handleAccesses}
+                      </Btn>
+                    )}
+                    <Btn href={'#' + siteMap.logged.company(_.id)} variant="outlined" size="small" icon="query_stats">
+                      {m.myStats}
+                    </Btn>
+                    <Btn
+                      href={'#' + siteMap.logged.reports({hasCompany: true, siretSirenList: [_.siret]})}
+                      variant="contained"
+                      icon="assignment_late"
+                      size="small"
+                    >
+                      {m.see_reports}
+                    </Btn>
+                  </div>
+                  <FormControlLabel
+                    control={
+                      <Switch
+                        disabled={!blockedNotificationIndex}
+                        checked={!blockedNotificationIndex?.[_.id]}
+                        onChange={e => {
+                          e.target.checked
+                            ? _blockedNotifications.remove.call([_.id])
+                            : setCurrentlyDisablingNotificationsForCompanies(_.id)
+                        }}
+                      />
+                    }
+                    label={<span className="text-sm">Notifications par email</span>}
+                  />
+                </div>
               ),
             },
           ]}
@@ -238,11 +186,11 @@ export const CompaniesPro = () => {
         />
       </Panel>
       <ConfirmDisableNotificationDialog
-        open={!!state}
-        onClose={() => setState(undefined)}
+        open={!!currentlyDisablingNotificationsForCompanies}
+        onClose={() => setCurrentlyDisablingNotificationsForCompanies(undefined)}
         onConfirm={() => {
-          _blockedNotifications.create.call([state!].flatMap(_ => _))
-          setState(undefined)
+          _blockedNotifications.create.call([currentlyDisablingNotificationsForCompanies!].flatMap(_ => _))
+          setCurrentlyDisablingNotificationsForCompanies(undefined)
         }}
       />
     </Page>

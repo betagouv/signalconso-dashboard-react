@@ -260,20 +260,7 @@ export const Datatable = <T extends any = any>({
               />
             )
           })()
-        : data && (
-            <Box
-              sx={{
-                py: 0,
-                px: 2,
-                minHeight: 52,
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'flex-end',
-              }}
-            >
-              <span dangerouslySetInnerHTML={{__html: m.nLines(data.length)}} />
-            </Box>
-          )}
+        : null}
     </>
   )
 }
