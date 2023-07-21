@@ -198,6 +198,20 @@ export const SiretExtraction = ({websiteWithCompany, remove, identify}: SiretExt
           }
         />
       )
+    } else if (result.error === 'ANTIBOT') {
+      return (
+        <Fender
+          icon="exclamation_mark"
+          title="Site web protégé"
+          description={
+            <>
+              <Txt color="hint" size="big" block gutterBottom sx={{mb: 2}}>
+                Le site web possède une protection anti robot. Essayez une recherche manuelle sur le site.
+              </Txt>
+            </>
+          }
+        />
+      )
     } else {
       return (
         <Fender
