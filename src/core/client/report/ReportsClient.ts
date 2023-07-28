@@ -145,17 +145,19 @@ export class ReportsClient {
   }
 
   readonly updateReportCompany = (reportId: string, company: CompanySearchResult) => {
-    return this.client.post<Report>(`/reports/${reportId}/company`, {
-      body: {
-        name: company.name,
-        address: company.address,
-        siret: company.siret,
-        activityCode: company.activityCode,
-        isHeadOffice: company.isHeadOffice,
-        isOpen: company.isOpen,
-        isPublic: company.isPublic,
-      },
-    })
+    return this.client
+      .post<Report>(`/reports/${reportId}/company`, {
+        body: {
+          name: company.name,
+          address: company.address,
+          siret: company.siret,
+          activityCode: company.activityCode,
+          isHeadOffice: company.isHeadOffice,
+          isOpen: company.isOpen,
+          isPublic: company.isPublic,
+        },
+      })
+      .then(report => ReportsClient.mapReport(report))
   }
 
   readonly updateReportConsumer = (reportId: string, reportConsumerUpdate: ReportConsumerUpdate) => {
