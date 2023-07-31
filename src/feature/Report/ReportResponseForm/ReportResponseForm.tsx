@@ -93,8 +93,7 @@ export const ReportResponseForm = forwardRef(({report, onCancel, onConfirm, ...p
 
         <ReportResponseFormItem title={m.proAnswerYourDGCCRFAnswer} desc={m.proAnswerYourDGCCRFAnswerDesc}>
           <ScInput
-            {...(register('dgccrfDetails'),
-            {
+            {...register('dgccrfDetails', {
               maxLength: {value: maxDetailsCharLength, message: m.textTooLarge(maxDetailsCharLength)},
             })}
             helperText={errors.dgccrfDetails?.message}
