@@ -5,7 +5,7 @@ import {Id} from './model'
 
 export const siteMap = {
   logged: {
-    admin: `/admin`,
+    adminTools: `/admin-tools`,
     reportedWebsites: `/moderation-url-entreprises`,
     reportedWebsites_unknown: `/moderation-url-entreprises/sites-internet/non-identifies`,
     websitesInvestigation: `/moderation-url-entreprises/enquete`,
@@ -35,6 +35,7 @@ export const siteMap = {
     countBySubCategories: `/stats/countBySubCategories`,
   },
   loggedout: {
+    welcome: '/',
     activatePro: (siret: string = `:siret`) => `/entreprise/rejoindre/${siret}`,
     activateDgccrf: `/dgccrf/rejoindre`,
     activateAdmin: `/admin/rejoindre`,

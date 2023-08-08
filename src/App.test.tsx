@@ -4,6 +4,6 @@ import {App} from './App'
 
 test('renders app', () => {
   render(<App />)
-  const linkElement = screen.getByText(/login/i)
-  expect(linkElement).toBeInTheDocument()
+  const loginLink = screen.getByText(/Je me connecte/i)
+  expect(loginLink).toBeInTheDocument()
 })

@@ -57,7 +57,7 @@ export const EmailValidation = ({onValidateEmail, onSaveToken}: Props) => {
   }, [_validateEmail.loading, _validateEmail.error])
 
   return (
-    <CenteredContent offset={layoutConfig.headerHeight}>
+    <CenteredContent>
       <Page size="s">
         <Fender type={fenderProps.type} title={fenderProps.title}>
           <Txt block gutterBottom color="hint" size="big" sx={{mt: 2}}>

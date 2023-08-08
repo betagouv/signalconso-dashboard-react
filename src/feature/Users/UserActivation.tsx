@@ -4,7 +4,7 @@ import {ScInputPassword} from '../../shared/InputPassword/InputPassword'
 import {Controller, useForm} from 'react-hook-form'
 import {useI18n} from '../../core/i18n'
 import {ScInput} from '../../shared/Input/ScInput'
-import {Box, Checkbox, FormControl, FormControlLabel, FormHelperText} from '@mui/material'
+import {Box, Checkbox, FormControl, FormControlLabel, FormHelperText, TextField} from '@mui/material'
 import {ScButton} from '../../shared/Button/Button'
 import {Page, PageTitle} from '../../shared/Layout'
 import {useHistory, useLocation, useParams} from 'react-router'
@@ -83,7 +83,7 @@ export const UserActivation = ({onActivateUser, onFetchTokenInfo}: Props) => {
 
   return (
     <Page size="s">
-      <PageTitle>{m.createMyAccount}</PageTitle>
+      <PageTitle>{m.finishCreatingMyAccount}</PageTitle>
 
       <Panel loading={_tokenInfo.loading}>
         {_tokenInfo.error ? (
@@ -97,16 +97,18 @@ export const UserActivation = ({onActivateUser, onFetchTokenInfo}: Props) => {
           _tokenInfo.entity && (
             <form onSubmit={handleSubmit(onSubmit)}>
               <PanelBody>
-                <ScInput
+                <TextField
                   fullWidth
+                  variant="filled"
                   error={!!errors.email}
                   helperText={errors.email?.message ?? ' '}
                   disabled={true}
                   label={m.email}
                   value={_tokenInfo.entity.emailedTo}
                 />
-                <ScInput
+                <TextField
                   fullWidth
+                  variant="filled"
                   error={!!errors.firstName}
                   helperText={errors.firstName?.message ?? ' '}
                   label={m.firstName}
@@ -114,8 +116,9 @@ export const UserActivation = ({onActivateUser, onFetchTokenInfo}: Props) => {
                     required: {value: true, message: m.required},
                   })}
                 />
-                <ScInput
+                <TextField
                   fullWidth
+                  variant="filled"
                   error={!!errors.lastName}
                   helperText={errors.lastName?.message ?? ' '}
                   label={m.lastName}
@@ -168,11 +171,11 @@ export const UserActivation = ({onActivateUser, onFetchTokenInfo}: Props) => {
                   )}
                 />
               </PanelBody>
-              <PanelFoot>
-                <ScButton loading={_activate.loading} type="submit" color="primary" variant="contained">
-                  {m.activateMyAccount}
+              <div className="flex justify-center mb-4">
+                <ScButton loading={_activate.loading} type="submit" color="primary" size="large" variant="contained">
+                  {m.createMyAccount}
                 </ScButton>
-              </PanelFoot>
+              </div>
             </form>
           )
         )}

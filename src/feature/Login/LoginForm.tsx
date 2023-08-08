@@ -1,6 +1,7 @@
-import {useMutation} from '@tanstack/react-query'
-import {apiPublicSdk} from 'core/ApiSdkInstance'
+import {TextField} from '@mui/material'
+import {AlertContactSupport, EspaceProTitle} from 'feature/Login/loggedOutComponents'
 import {useForm} from 'react-hook-form'
+import {CenteredContent} from 'shared/CenteredContent/CenteredContent'
 import {Alert, Txt} from '../../alexlibs/mui-extension'
 import {ApiError} from '../../core/client/ApiClient'
 import {SignalConsoPublicSdk} from '../../core/client/SignalConsoPublicSdk'
@@ -8,11 +9,14 @@ import {regexp} from '../../core/helper/regexp'
 import {useI18n} from '../../core/i18n'
 import {AuthenticationEventActions, EventCategories, Matomo} from '../../core/plugins/Matomo'
 import {ScButton} from '../../shared/Button/Button'
-import {ScInput} from '../../shared/Input/ScInput'
 import {ScInputPassword} from '../../shared/InputPassword/InputPassword'
 import {ForgottenPasswordDialog} from './ForgottenPasswordDialog'
-import {ActionProps} from './LoginPage'
-import {LoginPanel} from './LoginPanel'
+
+interface ActionProps<F extends (...args: any[]) => Promise<any>> {
+  action: F
+  loading?: boolean
+  error?: ApiError
+}
 
 interface Props {
   login: ActionProps<SignalConsoPublicSdk['authenticate']['login']>
@@ -52,55 +56,59 @@ export const LoginForm = ({login}: Props) => {
   }
 
   return (
-    <LoginPanel title={m.login}>
-      <form style={{display: 'flex', flexDirection: 'column'}} onSubmit={handleSubmit(onLogin)} action="#">
-        {errors.apiError && (
-          <Alert type="error" sx={{mb: 2}}>
-            <Txt size="big" block bold>
-              {m.somethingWentWrong}
-            </Txt>
-            <Txt>{errors.apiError.message}</Txt>
-          </Alert>
-        )}
-        <ScInput
-          autoComplete="username"
-          autoFocus
-          type="email"
-          error={!!errors.email}
-          helperText={errors.email?.message ?? ' '}
-          label={m.email}
-          sx={{mb: 1}}
-          {...register('email', {
-            required: {value: true, message: m.required},
-            pattern: {value: regexp.email, message: m.invalidEmail},
-          })}
-        />
-        <ScInputPassword
-          autoComplete="current-password"
-          label={m.password}
-          error={!!errors.password}
-          helperText={errors.password?.message ?? ' '}
-          sx={{mb: 1}}
-          {...register('password', {
-            required: {value: true, message: m.atLeast8Characters},
-          })}
-        />
-        <div style={{display: 'flex', alignItems: 'center'}}>
-          <ScButton
-            loading={login.loading}
-            type="submit"
-            onClick={_ => clearErrors('apiError')}
-            variant="contained"
-            color="primary"
-            sx={{mr: 1}}
-          >
-            {m.login}
-          </ScButton>
-          <ForgottenPasswordDialog value={watch('email')}>
-            <ScButton color="primary">{m.forgottenPassword}</ScButton>
-          </ForgottenPasswordDialog>
-        </div>
-      </form>
-    </LoginPanel>
+    <CenteredContent>
+      <EspaceProTitle subPageTitle={m.login} />
+      <div className="w-full max-w-xl">
+        <form className="flex flex-col mb-8" onSubmit={handleSubmit(onLogin)} action="#">
+          {errors.apiError && (
+            <Alert type="error" sx={{mb: 2}}>
+              <Txt size="big" block bold>
+                {m.somethingWentWrong}
+              </Txt>
+              <Txt>{errors.apiError.message}</Txt>
+            </Alert>
+          )}
+          <TextField
+            autoComplete="username"
+            type="email"
+            variant="filled"
+            error={!!errors.email}
+            helperText={errors.email?.message ?? ' '}
+            label={m.yourEmail}
+            {...register('email', {
+              required: {value: true, message: m.required},
+              pattern: {value: regexp.email, message: m.invalidEmail},
+            })}
+          />
+          <ScInputPassword
+            autoComplete="current-password"
+            label={m.password}
+            error={!!errors.password}
+            helperText={errors.password?.message ?? ' '}
+            {...register('password', {
+              required: {value: true, message: m.atLeast8Characters},
+            })}
+          />
+          <div className="flex gap-4 items-center justify-center">
+            <ForgottenPasswordDialog value={watch('email')}>
+              <ScButton color="primary" size="large" variant="text">
+                {m.forgottenPassword}
+              </ScButton>
+            </ForgottenPasswordDialog>
+            <ScButton
+              loading={login.loading}
+              type="submit"
+              onClick={_ => clearErrors('apiError')}
+              variant="contained"
+              color="primary"
+              size="large"
+            >
+              {m.imLoggingIn}
+            </ScButton>
+          </div>
+        </form>
+        <AlertContactSupport />
+      </div>
+    </CenteredContent>
   )
 }
