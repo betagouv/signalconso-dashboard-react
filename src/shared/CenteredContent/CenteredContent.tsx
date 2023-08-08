@@ -1,28 +1,19 @@
+import {layoutConfig} from 'core/Layout'
 import {ReactNode} from 'react'
-import {Box} from '@mui/material'
 
 interface Props {
   children: ReactNode
-  offset?: number
 }
 
-export const CenteredContent = ({children, offset = 0}: Props) => {
+export function CenteredContent({children}: Props) {
   return (
-    <Box
-      sx={{
-        minHeight: `calc(100vh - ${offset}px)`,
-        position: 'relative',
-        display: 'flex',
-        flexDirection: 'column',
-        '&:before, &:after': {
-          content: '" "',
-          display: 'block',
-          flexGrow: 1,
-          height: 24,
-        },
+    <div
+      className="flex flex-col items-center justify-center my-4 mx-2"
+      style={{
+        minHeight: `calc(100vh - ${layoutConfig.headerHeight}px)`,
       }}
     >
       {children}
-    </Box>
+    </div>
   )
 }

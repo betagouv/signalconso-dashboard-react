@@ -1,13 +1,16 @@
 import {CircularProgress, CssBaseline, StyledEngineProvider, ThemeProvider} from '@mui/material'
 import {QueryClient, QueryClientProvider} from '@tanstack/react-query'
 import {ApiProvider} from 'core/context/ApiContext'
+import {RegisterForm} from 'feature/Login/RegisterForm'
+import {LoginForm} from 'feature/Login/LoginForm'
+import {WelcomePage} from 'feature/Login/WelcomePage'
 import {useEffect} from 'react'
 import {useHistory, useParams} from 'react-router'
 import {BrowserRouter, HashRouter, Redirect, Route, Switch} from 'react-router-dom'
 import {ToastProvider} from './alexlibs/mui-extension'
 import {config} from './conf/config'
 import {apiPublicSdk, makeSecuredSdk} from './core/ApiSdkInstance'
-import {Layout, layoutConfig} from './core/Layout'
+import {Layout} from './core/Layout'
 import {ScHeader} from './core/ScHeader/ScHeader'
 import {ScSidebar} from './core/ScSidebar/ScSidebar'
 import {AccessesProvider} from './core/context/AccessesContext'
@@ -30,14 +33,13 @@ import {I18nProvider} from './core/i18n'
 import {Matomo} from './core/plugins/Matomo'
 import {siteMap} from './core/siteMap'
 import {muiTheme} from './core/theme'
-import {ActivateNewCompany} from './feature/ActivateNewCompany/ActivateNewCompany'
-import {Admin} from './feature/Admin/Admin'
+import {AddCompanyForm} from './feature/AddCompany/AddCompanyForm'
+import {AdminTools} from './feature/AdminTools/AdminTools'
 import {Companies} from './feature/Companies/Companies'
 import {CompaniesPro} from './feature/CompaniesPro/CompaniesPro'
 import {CompanyComponent} from './feature/Company/Company'
 import {CompanyAccesses} from './feature/CompanyAccesses/CompanyAccesses'
 import {EmailValidation} from './feature/EmailValidation/EmailValidation'
-import {LoginPage} from './feature/Login/LoginPage'
 import {ModeEmploiDGCCRF} from './feature/ModeEmploiDGCCRF/ModeEmploiDGCCRF'
 import {ReportComponent} from './feature/Report/Report'
 import {ReportPro} from './feature/Report/ReportPro'
@@ -122,11 +124,19 @@ const AppLogin = () => {
                       <AppLogged />
                     </LoginProvider>
                   ) : isCheckingToken ? (
-                    <CenteredContent offset={layoutConfig.headerHeight}>
+                    <CenteredContent>
                       <CircularProgress />
                     </CenteredContent>
                   ) : (
-                    <LoginPage login={login} register={register} />
+                    <Switch>
+                      <Route path={siteMap.loggedout.register}>
+                        <RegisterForm {...{register}} />
+                      </Route>
+                      <Route path={siteMap.loggedout.login}>
+                        <LoginForm {...{login}} />
+                      </Route>
+                      <Route path="/" component={WelcomePage} />
+                    </Switch>
                   )}
                 </Route>
               </Switch>
@@ -167,7 +177,7 @@ const AppLogged = () => {
       ]}
     >
       <Switch>
-        <Route path={siteMap.logged.admin} component={Admin} />
+        <Route path={siteMap.logged.adminTools} component={AdminTools} />
         <Route path={siteMap.logged.reportedWebsites} component={ReportedWebsites} />
         <Route path={siteMap.logged.reportedPhone} component={ReportedPhones} />
         <Route path={siteMap.logged.report()} component={connectedUser.isPro ? ReportPro : ReportComponent} />
@@ -181,7 +191,7 @@ const AppLogged = () => {
         <Route path={siteMap.logged.settings} component={Settings} />
         <Route path={siteMap.logged.modeEmploiDGCCRF} component={ModeEmploiDGCCRF} />
         <Route path={siteMap.logged.stats} component={Stats} />
-        <Route path={siteMap.loggedout.register} component={ActivateNewCompany} />
+        <Route path={siteMap.loggedout.register} component={AddCompanyForm} />
         <Redirect from="/" to={siteMap.logged.reports()} />
       </Switch>
     </Provide>

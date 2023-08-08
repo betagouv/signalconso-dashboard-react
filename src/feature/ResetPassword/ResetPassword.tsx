@@ -16,6 +16,7 @@ import {siteMap} from '../../core/siteMap'
 import {layoutConfig} from '../../core/Layout'
 import {Id} from '../../core/model'
 import {fnSwitch} from '../../alexlibs/ts-utils'
+import {AlertContactSupport} from 'feature/Login/loggedOutComponents'
 
 interface Form {
   newPassword: string
@@ -63,44 +64,38 @@ export const ResetPassword = ({onResetPassword}: Props) => {
   }
 
   return (
-    <CenteredContent offset={layoutConfig.headerHeight}>
-      <Page size="s" sx={{maxWidth: `500px !important`}}>
-        <form onSubmit={handleSubmit(resetPassword)}>
-          <Panel>
-            <PanelHead>{m.newPassword}</PanelHead>
-            <PanelBody>
-              <ScInputPassword
-                error={!!errors.newPassword}
-                helperText={errors.newPassword?.message ?? ' '}
-                fullWidth
-                label={m.newPassword}
-                {...register('newPassword', {
-                  required: {value: true, message: m.required},
-                  minLength: {value: 8, message: m.passwordNotLongEnough},
-                  validate: value => value === getValues().newPasswordConfirmation || m.passwordDoesntMatch,
-                })}
-              />
-              <ScInputPassword
-                error={!!errors.newPasswordConfirmation}
-                helperText={errors.newPasswordConfirmation?.message ?? ' '}
-                fullWidth
-                label={m.newPasswordConfirmation}
-                {...register('newPasswordConfirmation', {
-                  required: {value: true, message: m.required},
-                  minLength: {value: 8, message: m.passwordNotLongEnough},
-                  validate: value => value === getValues().newPassword || m.passwordDoesntMatch,
-                })}
-              />
-            </PanelBody>
-            <PanelFoot alignEnd>
-              <ScButton variant="contained" color="primary" type="submit">
-                {m.validate}
-              </ScButton>
-            </PanelFoot>
-          </Panel>
-          <HelpContactInfo />
-        </form>
-      </Page>
+    <CenteredContent>
+      <form onSubmit={handleSubmit(resetPassword)}>
+        <h1 className="text-2xl mb-6">{m.passwordChange}</h1>
+        <ScInputPassword
+          error={!!errors.newPassword}
+          helperText={errors.newPassword?.message ?? ' '}
+          fullWidth
+          label={m.newPassword}
+          {...register('newPassword', {
+            required: {value: true, message: m.required},
+            minLength: {value: 8, message: m.passwordNotLongEnough},
+            validate: value => value === getValues().newPasswordConfirmation || m.passwordDoesntMatch,
+          })}
+        />
+        <ScInputPassword
+          error={!!errors.newPasswordConfirmation}
+          helperText={errors.newPasswordConfirmation?.message ?? ' '}
+          fullWidth
+          label={m.newPasswordConfirmation}
+          {...register('newPasswordConfirmation', {
+            required: {value: true, message: m.required},
+            minLength: {value: 8, message: m.passwordNotLongEnough},
+            validate: value => value === getValues().newPassword || m.passwordDoesntMatch,
+          })}
+        />
+        <div className="flex justify-center mb-4">
+          <ScButton variant="contained" color="primary" type="submit" size="large">
+            {m.validate}
+          </ScButton>
+        </div>
+        <AlertContactSupport />{' '}
+      </form>
     </CenteredContent>
   )
 }

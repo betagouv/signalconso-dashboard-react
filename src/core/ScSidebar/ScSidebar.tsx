@@ -27,27 +27,14 @@ export const ScSidebar = ({connectedUser, logout}: {connectedUser: UserWithPermi
           px: 2,
         }}
       >
-        <Tooltip
-          title={
-            <>
-              <Txt block bold>
-                {connectedUser.firstName} {connectedUser.lastName}
-              </Txt>
-              <Txt block fontSize="small">
-                {connectedUser.email}
-              </Txt>
-            </>
-          }
-        >
-          <Box>
-            <Txt block truncate bold>
-              {connectedUser.firstName} {connectedUser.lastName}
-            </Txt>
-            <Txt block truncate color="primary" fontSize="small">
-              {connectedUser.email}
-            </Txt>
-          </Box>
-        </Tooltip>
+        <div className="cursor-default">
+          <Txt block truncate bold>
+            {connectedUser.firstName} {connectedUser.lastName}
+          </Txt>
+          <Txt block truncate color="primary" fontSize="small">
+            {connectedUser.email}
+          </Txt>
+        </div>
         <Btn
           variant="outlined"
           size="small"
@@ -104,7 +91,7 @@ export const ScSidebar = ({connectedUser, logout}: {connectedUser: UserWithPermi
       )}
       <SidebarHr margin />
       {[Roles.Admin].includes(connectedUser.role) && (
-        <SidebarItem onClick={closeSidebarIfNotPinned} to={path(siteMap.logged.admin)} icon={EntityIcon.admin}>
+        <SidebarItem onClick={closeSidebarIfNotPinned} to={path(siteMap.logged.adminTools)} icon={EntityIcon.admin}>
           {m.menu_test_emails}
         </SidebarItem>
       )}

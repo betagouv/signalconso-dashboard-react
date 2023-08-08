@@ -1,20 +1,21 @@
-import {ScInput, ScInputProps} from '../Input/ScInput'
-import {Icon, InputAdornment} from '@mui/material'
-import React, {forwardRef, useState} from 'react'
+import {Icon, InputAdornment, TextField} from '@mui/material'
+import {forwardRef, useState} from 'react'
+import {ScInputProps} from '../Input/ScInput'
 
 interface ScInputPasswordProps extends Omit<ScInputProps, 'type'> {}
 
 export const ScInputPassword = forwardRef((props: ScInputPasswordProps, ref: any) => {
   const [passwordVisible, setPasswordVisible] = useState<boolean>(false)
   return (
-    <ScInput
+    <TextField
       {...props}
       ref={ref}
+      variant="filled"
       type={passwordVisible ? 'text' : 'password'}
       InputProps={{
         ...props.InputProps,
         endAdornment: (
-          <InputAdornment position="end" onClick={() => setPasswordVisible(_ => !_)}>
+          <InputAdornment className="cursor-pointer" position="end" onClick={() => setPasswordVisible(_ => !_)}>
             <Icon color="action">{passwordVisible ? 'visibility_off' : 'visibility'}</Icon>
           </InputAdornment>
         ),
