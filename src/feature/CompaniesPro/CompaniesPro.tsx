@@ -1,8 +1,8 @@
-import {Box, FormControlLabel, Icon, Switch, Tooltip, useTheme} from '@mui/material'
+import {FormControlLabel, Switch, useTheme} from '@mui/material'
 import {ScOption} from 'core/helper/ScOption'
 import {useEffect, useMemo, useState} from 'react'
 import {NavLink} from 'react-router-dom'
-import {Btn, Fender, IconBtn, Txt} from '../../alexlibs/mui-extension'
+import {Btn, Fender, Txt} from '../../alexlibs/mui-extension'
 import {useBlockedReportNotificationContext} from '../../core/context/BlockedReportNotificationProviderContext'
 import {useCompaniesContext} from '../../core/context/CompaniesContext'
 import {useUsersContext} from '../../core/context/UsersContext'
@@ -10,7 +10,7 @@ import {useI18n} from '../../core/i18n'
 import {groupBy} from '../../core/lodashNamedExport'
 import {AccessLevel, Id} from '../../core/model'
 import {siteMap} from '../../core/siteMap'
-import {styleUtils, sxUtils} from '../../core/theme'
+import {sxUtils} from '../../core/theme'
 import {useToast} from '../../core/toast'
 import {AddressComponent} from '../../shared/Address/Address'
 import {ScButton} from '../../shared/Button/Button'
@@ -22,7 +22,6 @@ import {ConfirmDisableNotificationDialog} from './ConfirmDisableNotificationDial
 
 export const CompaniesPro = () => {
   const {m} = useI18n()
-  const theme = useTheme()
   const _companies = useCompaniesContext()
   const _blockedNotifications = useBlockedReportNotificationContext()
   const _users = useUsersContext()

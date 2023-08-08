@@ -1,3 +1,8 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.MuiFormHelperText-root {
+  /* a bit bigger than the default */
+  font-size: 1rem !important;
+}

@@ -9,6 +9,7 @@ import {ScDialog} from '../../shared/Confirm/ScDialog'
 import {ScInput} from '../../shared/Input/ScInput'
 import {useMutation} from '@tanstack/react-query'
 import {apiPublicSdk} from 'core/ApiSdkInstance'
+import {TextField} from '@mui/material'
 
 interface Props {
   children: ReactElement<any>
@@ -67,11 +68,13 @@ export const ForgottenPasswordDialog = ({value, children}: Props) => {
           <Txt color="hint" block gutterBottom>
             {m.forgottenPasswordDesc}
           </Txt>
-          <ScInput
+          <TextField
             fullWidth
             autoFocus
+            variant="filled"
             type="email"
-            label={m.email}
+            label={m.yourEmail}
+            size="small"
             error={!!errors.emailForgotten}
             helperText={errors.emailForgotten?.message}
             {...register('emailForgotten', {

@@ -180,7 +180,7 @@ export const fr = {
     download: 'Télécharger',
     downloadNotice: 'Télécharger le courrier',
     remainingTime: 'Temps restant',
-    forgottenPassword: 'Mot de passe oublié',
+    forgottenPassword: 'Mot de passe oublié ?',
     forgottenPasswordDesc: 'Vous recevrez un email vous permettant de créer un nouveau mot de passe.',
     createNewPassword: 'Créer un nouveau mot de passe',
     speed: 'Speed',
@@ -206,8 +206,10 @@ export const fr = {
     seeMore: 'Voir plus',
     apiToken: 'Api token',
     login: 'Connexion',
+    imLoggingIn: 'Je me connecte',
     error: 'Erreur',
     email: 'Email',
+    yourEmail: 'Votre adresse email',
     signin: 'Connexion',
     signup: 'Inscription',
     password: 'Mot de passe',
@@ -219,8 +221,11 @@ export const fr = {
     country: 'Pays',
     companyWebsiteAssociation: `Association du site internet`,
     address: 'Adresse',
-    activateMyAccount: 'Activer mon compte',
+    imCreatingMyAccount: 'Je crée mon compte',
     createMyAccount: 'Créer mon compte',
+    accountCreation: 'Création de compte',
+    accountAlmostReady: 'Votre compte est (presque) prêt',
+    finishCreatingMyAccount: 'Terminer la création de mon compte',
     atLeast8Characters: '8 caractères minimum',
     invalidEmail: 'Email invalide',
     role: 'Rôle',
@@ -231,16 +236,22 @@ export const fr = {
       [AssociationType.COMPANY]: `Une entreprise`,
       [AssociationType.COUNTRY]: `Un pays étranger`,
     },
-    addCompany: `Enregister l'entreprise`,
-    addACompany: `Enregister une entreprise`,
+    addCompany: `Ajouter l'entreprise`,
+    addACompany: `Ajouter une entreprise`,
     youReceivedNewLetter: `Activation par courrier postal`,
     siretOfYourCompany: `SIRET de votre entreprise`,
-    siretOfYourCompanyDesc: `Il doit correspondre à la raison sociale indiquée sur le courrier.`,
+    siretOfYourCompanyDesc: `Renseignez le numéro SIRET mentionné dans le courrier que vous avez reçu.`,
     siretOfYourCompanyInvalid: `Le SIRET doit comporter 14 chiffres.`,
+    siretExample: 'ex : 12002503600035', // c'est le siret de la DGCCRF
     activationCode: `Code d'activation`,
-    activationCodeDesc: `Code à 6 chiffres indiqué sur le courrier.`,
+    activationCodeDesc: `Code à 6 chiffres indiqué dans le courrier que vous avez reçu.`,
     activationCodeInvalid: `Le code doit comporter 6 chiffres.`,
+    activationCodeExample: 'ex : 123456',
     emailDesc: `Adresse email de votre choix.`,
+    willReceiveVerificationEmail: 'Vous allez recevoir un email de vérification à cette adresse.',
+    willUseThisEmailToCommunicate: `C'est via cette adresse email que SignalConso communiquera avec vous désormais`,
+    newReportsWillBeSentThere: `S'il y a des nouveaux signalements concernant votre entreprise, ils vous seront notifiés à cette adresse.`,
+    willUseItToConnect: `C'est avec cette adresse email que vous vous connecterez à l'Espace Pro pour consulter vos signalements.`,
     activityCode: `Code d'activité`,
     days: `jours`,
     avgResponseTime: `Temps de réponse moyen`,
@@ -253,9 +264,9 @@ export const fr = {
     companyRegisteredSuccess: 'Activation réussie',
     companyRegisteredEmailSent: `
         <br/>
-        <p >Un email a été envoyé à votre adresse email avec des instructions pour accéder au compte de l'entreprise. </p>
+        <p >Un email a été envoyé à votre adresse email avec des instructions pour terminer la création du compte. </p>
         <br/>
-        <p>Vérifiez vos spams s'il n'apparaît pas dans votre boîte de réception. Si vous ne le recevez toujours pas, contactez <u><a href='mailto:${config.contactEmail}'>${config.contactEmail}</a></u> en indiquant bien <b>votre adresse email et numéro SIRET</b>.</p>
+        <p><b>Vérifiez vos spams</b> s'il n'apparaît pas dans votre boîte de réception. Si vous ne le recevez toujours pas, contactez <u><a href='mailto:${config.contactEmail}'>${config.contactEmail}</a></u> en indiquant bien <b>votre adresse email et votre numéro SIRET</b>.</p>
     `,
     departments: 'Départements',
     reports: 'Signalements',
@@ -453,7 +464,7 @@ export const fr = {
     proAnswerVisibleByDGCCRF: 'Votre réponse sera visible par le consommateur et la DGCCRF.',
     proAnswerResponseType: 'Pouvez-vous préciser votre réponse ?',
     proAnswerYourAnswer: 'Votre réponse',
-    text: 'Text',
+    text: 'Votre texte',
     onlyVisibleByDGCCRF: `Visibles uniquement par la <b>DGCCRF</b><div class=''></div>`,
     proAnswerYourAnswerDesc: `
     <b>Le consommateur</b> la recevra par mail. Elle pourra aussi être consultée par la <b>DGCCRF</b>.<br/>
@@ -572,11 +583,12 @@ export const fr = {
     passwordEdited: 'Mot de passe modifié.',
     invalidPassword: 'Mot de passe incorrect',
     newPassword: 'Nouveau mot de passe',
+    passwordChange: 'Changement de mot de passe',
     subscription: 'Abonnement',
     emailSentToYou: 'Un email vous a été envoyé.',
     removeSubscription: "Supprimer l'abonnement",
     unblockConsumer: 'Retirer cet email de la liste noire',
-    newPasswordConfirmation: 'Confirmer le mot de passe',
+    newPasswordConfirmation: 'Confirmer le nouveau mot de passe',
     userInvitationSent: 'Invitation envoyée',
     added: 'Ajouté',
     userValidationDone: 'Le compte utilisateur a été prolongé.',
@@ -607,8 +619,8 @@ export const fr = {
     resendInvite: `Renvoyer l'invitation`,
     copyInviteLink: `Copier le lien de l'invitation`,
     resetPasswordNotFound: `Le lien permettant de demander un nouveau mot de passe n'est pas valide, veuillez refaire une demande.`,
-    resetPasswordSuccess: `Votre mot de passe est maintenant créé, vous pouvez vous connecter pour accéder à votre espace entreprise.`,
-    loginIssueTip: `En cas de difficultés, vous pouvez nous demander de l'aide par email : <a href='mailto:${config.contactEmail}'>${config.contactEmail}</a>.`,
+    resetPasswordSuccess: `Votre mot de passe a été changé. Vous pouvez vous connecter avec votre nouveau mot de passe.`,
+    loginIssueTip: `En cas de difficultés, vous pouvez nous demander de l'aide par email à <a href='mailto:${config.contactEmail}'>${config.contactEmail}</a>.`,
     consent: ` Je reconnais avoir pris connaissance des  <a href='${config.appBaseUrl}/conditions-generales-utilisation'> conditions générales d'utilisation</a> de SignalConso.`,
     statsInternetsTitle: 'Signalements internet',
     statsInternets_all: 'des signalements sont des signalements Internet',
@@ -619,6 +631,7 @@ export const fr = {
     statsInternets_withNothing: 'pour lesquels les entreprises et le pays ne sont pas identifiés',
     statsInternets_withNothing_desc: '(statut NA - le signalement n’est pas transmis au professionnel)',
     sendDummyEmail: `Envoi d'emails de test`,
+    downloadDummyPdfs: `Téléchargements de PDFs de test`,
     allMailsWillBeSendTo: (email: string) =>
       `Les mails seront envoyés à l'adresse <b>${email}</b> avec de fausses données générées.`,
     subscriptionsAlertInfo: `
@@ -768,6 +781,25 @@ export const fr = {
           title: `Valider l'email`,
           desc: `Valider l'email du conso lors de son premier signalement`,
         },
+      },
+    },
+    testPdfs: {
+      accountActivation: {
+        title: `Courrier d'activation`,
+      },
+      accountActivationReminder: {
+        title: `Courrier d'activation (relance)`,
+      },
+      accountActivationLastReminder: {
+        title: `Courrier d'activation (dernière relance)`,
+      },
+      report: {
+        title: `Téléchargement du signalement`,
+        desc: `Récapitulatif du signalement, à l'intention des agents de la DGCCRF. Correspond au bouton "Télécharger" sur la fiche du signalement.`,
+      },
+      proResponse: {
+        title: 'Réponse du pro',
+        desc: `Récap de la réponse du professionel. Il est ajouté à la fin du PDF "Accusé de réception", accessible depuis la fiche du signalement.`,
       },
     },
     websiteEdited: 'Site web identifié.',
