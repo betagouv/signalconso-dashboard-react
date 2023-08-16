@@ -104,7 +104,7 @@ export const RegisterForm = ({register: registerAction}: Props) => {
                 pattern: {value: regexp.activationCode, message: m.activationCodeInvalid},
               })}
             />
-            <div className="flex flex-col gap-2">
+            <div className="flex flex-col gap-2 mb-4">
               <TextField
                 {...textFieldProps}
                 error={!!errors.email}
