@@ -31,11 +31,6 @@ export const roleUrlParam = (_: UserWithPermission): string => {
   }
 }
 
-export interface AuthUser {
-  token: string
-  user: UserWithPermission
-}
-
 export enum TokenKind {
   companyInit = 'COMPANY_INIT',
   companyJoin = 'COMPANY_JOIN',

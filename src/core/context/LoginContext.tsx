@@ -6,7 +6,6 @@ const LoginContext = React.createContext({} as any)
 
 interface LoginProviderProps {
   apiSdk: SignalConsoApiSdk
-  token: string
   connectedUser: UserWithPermission
   onLogout: () => void
   children: ReactNode
@@ -17,10 +16,9 @@ interface UseLoginProps {
   setConnectedUser: Dispatch<SetStateAction<UserWithPermission>>
   logout: () => void
   apiSdk: SignalConsoApiSdk
-  token: string
 }
 
-export const LoginProvider = ({apiSdk, token, connectedUser: _connectedUser, onLogout, children}: LoginProviderProps) => {
+export const LoginProvider = ({apiSdk, connectedUser: _connectedUser, onLogout, children}: LoginProviderProps) => {
   const [connectedUser, setConnectedUser] = useState<UserWithPermission>(_connectedUser)
 
   useEffect(() => {
@@ -39,7 +37,6 @@ export const LoginProvider = ({apiSdk, token, connectedUser: _connectedUser, onL
           isAdmin: connectedUser.role === Roles.Admin,
         },
         logout: onLogout,
-        token,
         apiSdk,
       }}
     >
