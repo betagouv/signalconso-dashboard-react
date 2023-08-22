@@ -31,7 +31,6 @@ const computeCurveReportPhysique = ({
 export const StatsReportsCurvePanel = () => {
   const {apiSdk: api} = useLogin()
   const {m} = useI18n()
-  const theme = useTheme()
   const tickDuration = 'Month'
   const ticks = 12
   const loadCurves = async () => {
@@ -84,7 +83,7 @@ export const StatsReportsCurvePanel = () => {
       <PanelHead>{m.reportsDivision}</PanelHead>
       <PanelBody>
         <Txt color="hint" gutterBottom block dangerouslySetInnerHTML={{__html: m.reportsDivisionDesc}} />
-        <AsyncLineChart {...{loadCurves}} />
+        <AsyncLineChart {...{loadCurves}} smallFontYAxis />
       </PanelBody>
     </Panel>
   )

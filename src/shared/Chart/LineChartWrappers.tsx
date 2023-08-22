@@ -19,6 +19,7 @@ interface LineChartOrPlaceholderProps {
   period?: Period
   curves?: CurveDefinition[]
   hideLabelToggle?: boolean
+  smallFontYAxis?: boolean
 }
 
 // Displays the data, or a loading placeholder if the data is undefined
@@ -46,6 +47,7 @@ export const LineChartOrPlaceholder = ({curves, ...rest}: LineChartOrPlaceholder
 type AsyncLineChartProps = {
   loadCurves: () => Promise<CurveDefinition[]>
   hideLabelToggle?: boolean
+  smallFontYAxis?: boolean
 }
 
 // You provide one loading function that returns all the data
@@ -64,6 +66,7 @@ interface SimplifiedAsyncLineChartProps {
     loadData: () => Promise<CountByDate[]>
   }[]
   hideLabelToggle?: boolean
+  smallFontYAxis?: boolean
 }
 
 // You provide a loading function for each line

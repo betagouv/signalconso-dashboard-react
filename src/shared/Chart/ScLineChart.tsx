@@ -14,6 +14,7 @@ export interface ScLineChartPropsBase {
   disableAnimation?: boolean
   hideLabelToggle?: boolean
   height?: number
+  smallFontYAxis?: boolean
 }
 
 interface Props extends ScLineChartPropsBase {
@@ -56,7 +57,7 @@ const formatDate = (m: I18nContextProps['m'], date: Date, period?: Period): stri
 
 const colors = (t: Theme) => [t.palette.primary.main, '#e48c00', 'red', 'green']
 
-export const ScLineChart = memo(({period, disableAnimation, hideLabelToggle, curves, height = 300}: Props) => {
+export const ScLineChart = memo(({period, disableAnimation, hideLabelToggle, curves, height = 300, smallFontYAxis}: Props) => {
   const theme = useTheme()
   const [showCurves, setShowCurves] = useState<boolean[]>(new Array(curves.length).fill(false))
   const {m} = useI18n()
@@ -72,6 +73,9 @@ export const ScLineChart = memo(({period, disableAnimation, hideLabelToggle, cur
     })
     return res
   }, [curves])
+
+  // the labels may go a little bit outside the graph
+  const margin = hideLabelToggle ? undefined : {top: 20, right: 20}
 
   return (
     <>
@@ -90,12 +94,12 @@ export const ScLineChart = memo(({period, disableAnimation, hideLabelToggle, cur
           ))}
         </Box>
       )}
-      <Box sx={{height}}>
+      <div style={{height}}>
         <ResponsiveContainer width="100%" height="100%">
-          <LineChart width={500} height={height - 60} data={mappedData}>
+          <LineChart data={mappedData} margin={margin}>
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis dataKey="date" />
-            <YAxis />
+            <YAxis {...(smallFontYAxis && {fontSize: '0.85em'})} />
             <Tooltip />
             <Legend />
             {curves.map((_, i) => (
@@ -122,7 +126,7 @@ export const ScLineChart = memo(({period, disableAnimation, hideLabelToggle, cur
             ))}
           </LineChart>
         </ResponsiveContainer>
-      </Box>
+      </div>
     </>
   )
 })
