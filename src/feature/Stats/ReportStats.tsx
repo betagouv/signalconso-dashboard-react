@@ -1,5 +1,4 @@
 import {Page} from '../../shared/Layout'
-import * as React from 'react'
 
 import {StatsReportsByRegion} from './StatsReportsByRegion'
 import {StatsReportsCurvePanel} from './StatsReportsCurve'
