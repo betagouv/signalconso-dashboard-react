@@ -1,6 +1,6 @@
 import React, {useEffect, useMemo} from 'react'
 import {useToast} from '../../core/toast'
-import {ScInputPassword} from '../../shared/InputPassword/InputPassword'
+import {ScInputPassword} from '../../shared/ScInputPassword/ScInputPassword'
 import {Controller, useForm} from 'react-hook-form'
 import {useI18n} from '../../core/i18n'
 import {ScInput} from '../../shared/Input/ScInput'
@@ -18,6 +18,8 @@ import {Panel, PanelBody} from '../../shared/Panel'
 import {QueryString} from '../../core/helper/useQueryString'
 import {UserToActivate} from '../../core/client/user/User'
 import {TokenInfo} from '../../core/client/authenticate/Authenticate'
+import {validatePasswordComplexity} from 'core/helper/passwordComplexity'
+import {PasswordRequirementsDesc} from 'shared/PasswordRequirementsDesc'
 
 interface UserActivationForm extends UserToActivate {
   repeatPassword: string
@@ -126,6 +128,7 @@ export const UserActivation = ({onActivateUser, onFetchTokenInfo}: Props) => {
                     required: {value: true, message: m.required},
                   })}
                 />
+                <PasswordRequirementsDesc />
                 <ScInputPassword
                   inputProps={{
                     autocomplete: 'false',
@@ -137,7 +140,12 @@ export const UserActivation = ({onActivateUser, onFetchTokenInfo}: Props) => {
                   label={m.password}
                   {...register('password', {
                     required: {value: true, message: m.required},
-                    minLength: {value: 8, message: m.passwordNotLongEnough},
+                    validate: (value: string) => {
+                      const complexityMessage = validatePasswordComplexity(value)
+                      if (complexityMessage) {
+                        return m[complexityMessage]
+                      }
+                    },
                   })}
                 />
                 <ScInputPassword
@@ -151,7 +159,6 @@ export const UserActivation = ({onActivateUser, onFetchTokenInfo}: Props) => {
                   label={m.newPasswordConfirmation}
                   {...register('repeatPassword', {
                     required: {value: true, message: m.required},
-                    minLength: {value: 8, message: m.passwordNotLongEnough},
                     validate: value => value === getValues().password || m.passwordDoesntMatch,
                   })}
                 />
