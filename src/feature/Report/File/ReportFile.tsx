@@ -92,9 +92,7 @@ export const ReportFile = ({file, dense, onRemove}: ReportFileProps) => {
   const {toastError} = useToast()
   const {m} = useI18n()
 
-  const fileUrl = ScOption.from(apiSdk.public.document.getLink(file))
-    .map(_ => (config.isDev ? _.replace(config.apiBaseUrl, 'https://signal-api.conso.gouv.fr') : _))
-    .toUndefined()
+  const fileUrl = ScOption.from(apiSdk.public.document.getLink(file)).toUndefined()
 
   const remove = async () => {
     await _remove.fetch({}, file)
