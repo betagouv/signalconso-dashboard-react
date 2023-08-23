@@ -138,6 +138,7 @@ export class ApiClient {
         method,
         headers: builtOptions?.headers,
         body: builtOptions.body ? JSON.stringify(builtOptions?.body) : undefined,
+        credentials: options?.withCredentials || withCredentials ? 'include' : undefined,
       })
     }
 
