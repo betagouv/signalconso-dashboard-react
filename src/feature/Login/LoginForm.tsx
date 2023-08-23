@@ -42,9 +42,9 @@ export const LoginForm = ({login}: Props) => {
   const onLogin = async (form: Form) => {
     login
       .action(form.email, form.password)
-      .then(auth => {
-        Matomo.trackEvent(EventCategories.auth, AuthenticationEventActions.success, auth.user.id)
-        Matomo.trackEvent(EventCategories.auth, AuthenticationEventActions.role, auth.user.role)
+      .then(user => {
+        Matomo.trackEvent(EventCategories.auth, AuthenticationEventActions.success, user.id)
+        Matomo.trackEvent(EventCategories.auth, AuthenticationEventActions.role, user.role)
       })
       .catch((err: ApiError) => {
         setError('apiError', {

@@ -7,6 +7,7 @@ export interface RequestOption {
   readonly body?: any
   readonly timeout?: number
   readonly responseType?: ResponseType
+  readonly withCredentials?: boolean
 }
 
 export interface ApiClientParams {
@@ -16,6 +17,7 @@ export interface ApiClientParams {
   readonly proxy?: string
   readonly mapData?: (_: any) => any
   readonly mapError?: (_: any) => never
+  readonly withCredentials?: boolean
 }
 
 export interface ApiClientApi {
@@ -83,7 +85,7 @@ export class ApiClient {
 
   readonly baseUrl: string
 
-  constructor({baseUrl, headers, requestInterceptor, mapData, mapError}: ApiClientParams) {
+  constructor({baseUrl, headers, requestInterceptor, mapData, mapError, withCredentials}: ApiClientParams) {
     const client = axios.create({
       baseURL: baseUrl,
       headers: {...headers},
@@ -100,6 +102,7 @@ export class ApiClient {
           headers: builtOptions?.headers,
           params: options?.qs,
           data: options?.body,
+          withCredentials: options?.withCredentials || withCredentials,
           paramsSerializer: params => qs.stringify(params, {arrayFormat: 'repeat'}),
         })
         .then(mapData ?? ((_: AxiosResponse) => _.data))
@@ -135,6 +138,7 @@ export class ApiClient {
         method,
         headers: builtOptions?.headers,
         body: builtOptions.body ? JSON.stringify(builtOptions?.body) : undefined,
+        credentials: options?.withCredentials || withCredentials ? 'include' : undefined,
       })
     }
 

@@ -53,10 +53,10 @@ import {Stats} from './feature/Stats/Stats'
 import {Subscriptions} from './feature/Subscriptions/Subscriptions'
 import {UserActivation} from './feature/Users/UserActivation'
 import {Users} from './feature/Users/Users'
-import {CenteredContent} from './shared/CenteredContent/CenteredContent'
 import {Login} from './shared/Login/Login'
 import {Provide} from './shared/Provide/Provide'
 import './style.css'
+import {CenteredContent} from './shared/CenteredContent/CenteredContent'
 
 const Router: typeof HashRouter = config.useHashRouter ? HashRouter : BrowserRouter
 
@@ -81,14 +81,18 @@ const AppLogin = () => {
   const history = useHistory()
   const queryClient = new QueryClient()
 
+  const onLogout = () => {
+    apiPublicSdk.authenticate.logout().then(_ => history.push('/'))
+  }
+
   return (
     <Login
       onRegister={apiPublicSdk.authenticate.sendActivationLink}
       onLogin={apiPublicSdk.authenticate.login}
-      onLogout={() => history.push('/')}
-      getTokenFromResponse={_ => _.token}
+      onLogout={onLogout}
+      getUser={apiPublicSdk.authenticate.getUser}
     >
-      {({authResponse, login, logout, register, isCheckingToken, setToken}) => {
+      {({authResponse, login, logout, register, setUser, isFetchingUser}) => {
         const userActivation = (
           <UserActivation
             onActivateUser={apiPublicSdk.user.activateAccount}
@@ -97,14 +101,11 @@ const AppLogin = () => {
         )
 
         return (
-          <Layout
-            header={<ScHeader />}
-            sidebar={authResponse?.user && <ScSidebar connectedUser={authResponse.user} logout={logout} />}
-          >
+          <Layout header={<ScHeader />} sidebar={authResponse && <ScSidebar connectedUser={authResponse} logout={logout} />}>
             <Provide providers={[_ => <QueryClientProvider client={queryClient} children={_} />]}>
               <Switch>
                 <Route path={siteMap.loggedout.emailValidation}>
-                  <EmailValidation onSaveToken={setToken} onValidateEmail={apiPublicSdk.authenticate.validateEmail} />
+                  <EmailValidation onSaveUser={setUser} onValidateEmail={apiPublicSdk.authenticate.validateEmail} />
                 </Route>
                 <Route path={siteMap.loggedout.resetPassword()}>
                   <ResetPassword onResetPassword={apiPublicSdk.authenticate.resetPassword} />
@@ -115,15 +116,10 @@ const AppLogin = () => {
                 <Route path={siteMap.loggedout.consumerReview()} component={RedirectToWebsite} />
                 <Route path="/">
                   {authResponse ? (
-                    <LoginProvider
-                      connectedUser={authResponse.user}
-                      token={authResponse.token}
-                      onLogout={logout}
-                      apiSdk={makeSecuredSdk(authResponse.token)}
-                    >
+                    <LoginProvider connectedUser={authResponse} onLogout={logout} apiSdk={makeSecuredSdk()}>
                       <AppLogged />
                     </LoginProvider>
-                  ) : isCheckingToken ? (
+                  ) : isFetchingUser ? (
                     <CenteredContent>
                       <CircularProgress />
                     </CenteredContent>
