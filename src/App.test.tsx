@@ -1,11 +1,9 @@
 import React from 'react'
-import {render, screen, waitFor} from '@testing-library/react'
+import {render, screen} from '@testing-library/react'
 import {App} from './App'
 
-test('renders app', async () => {
+test('renders app', () => {
   render(<App />)
-  await waitFor(() => {
-    const loginLink = screen.getByText(/Je me connecte/i)
-    expect(loginLink).toBeInTheDocument()
-  })
+  const loginLink = screen.getByText(/Je me connecte/i)
+  expect(loginLink).toBeInTheDocument()
 })
