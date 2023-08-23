@@ -10,12 +10,13 @@ import {siteMap} from '../../core/siteMap'
 import {CenteredContent} from '../../shared/CenteredContent/CenteredContent'
 import {Txt} from '../../alexlibs/mui-extension'
 import {QueryString} from '../../core/helper/useQueryString'
-import {UserWithPermission} from '../../core/client/authenticate/Authenticate'
+import {layoutConfig} from '../../core/Layout'
+import {AuthUser} from '../../core/client/authenticate/Authenticate'
 import {Id} from '../../core/model'
 
 interface Props {
-  onValidateEmail: (token: Id) => Promise<UserWithPermission>
-  onSaveUser: (_: UserWithPermission) => void
+  onValidateEmail: (token: Id) => Promise<AuthUser>
+  onSaveToken: (_: AuthUser) => void
 }
 
 interface FenderProps {
@@ -24,14 +25,14 @@ interface FenderProps {
   description?: string
 }
 
-export const EmailValidation = ({onValidateEmail, onSaveUser}: Props) => {
+export const EmailValidation = ({onValidateEmail, onSaveToken}: Props) => {
   const {m} = useI18n()
   const _validateEmail = useAsync(onValidateEmail)
   const {search} = useLocation()
 
   useEffect(() => {
     const token = QueryString.parse(search.replace(/^\?/, '')).token as string
-    _validateEmail.call(token).then(onSaveUser)
+    _validateEmail.call(token).then(onSaveToken)
   }, [])
 
   const fenderProps = useMemo((): FenderProps => {

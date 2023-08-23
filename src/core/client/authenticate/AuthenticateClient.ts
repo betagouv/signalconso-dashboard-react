@@ -1,4 +1,4 @@
-import {UserWithPermission} from './Authenticate'
+import {AuthUser} from './Authenticate'
 import {ApiClientApi} from '../ApiClient'
 import {Id} from '../../model'
 
@@ -6,13 +6,7 @@ export class AuthenticateClient {
   constructor(private client: ApiClientApi) {}
 
   readonly login = (login: string, password: string) => {
-    return this.client.post<UserWithPermission>(`/authenticate`, {body: {login, password}, withCredentials: true})
-  }
-  readonly logout = () => {
-    return this.client.post<void>(`/logout`, {withCredentials: true})
-  }
-  readonly getUser = () => {
-    return this.client.get<UserWithPermission>(`/current-user`, {withCredentials: true})
+    return this.client.post<AuthUser>(`/authenticate`, {body: {login, password}})
   }
 
   readonly forgotPassword = (login: string): Promise<void> => {
@@ -24,7 +18,7 @@ export class AuthenticateClient {
   }
 
   readonly validateEmail = (token: Id) => {
-    return this.client.post<UserWithPermission>(`/account/validate-email`, {body: {token}, withCredentials: true})
+    return this.client.post<AuthUser>(`/account/validate-email`, {body: {token}})
   }
 
   readonly resetPassword = (password: string, token: string) => {
