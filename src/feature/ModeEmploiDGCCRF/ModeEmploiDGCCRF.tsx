@@ -1,4 +1,4 @@
-import {Page} from 'shared/Layout'
+import {Page} from 'shared/Page'
 import {Panel, PanelBody} from '../../shared/Panel'
 import {Box, Divider, Typography} from '@mui/material'
 import {styleUtils} from '../../core/theme'

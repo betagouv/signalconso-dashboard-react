@@ -1,12 +1,13 @@
-import {Page, PageTitle} from '../../shared/Layout'
+import {Page, PageTitle} from '../../shared/Page'
 import React, {useEffect} from 'react'
 import {useI18n} from '../../core/i18n'
 import {useSubscriptionsContext} from '../../core/context/SubscriptionsContext'
 import {SubscriptionCard} from './SubscriptionCard'
-import {Alert, Animate} from '../../alexlibs/mui-extension'
+import {Alert} from '../../alexlibs/mui-extension'
 import {Box, Icon, LinearProgress} from '@mui/material'
-import {Ripple} from '../../shared/Ripple/Ripple'
+import {Ripple} from '../../shared/Ripple'
 import {styleUtils} from '../../core/theme'
+import {Animate} from 'alexlibs/mui-extension/Animate'
 
 export const Subscriptions = () => {
   const {m} = useI18n()

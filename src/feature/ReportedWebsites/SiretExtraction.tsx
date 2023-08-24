@@ -5,7 +5,7 @@ import {ExtractionResult, SiretExtraction as ISiretExtraction} from '../../core/
 import {Icon} from '@mui/material'
 import {Fender, IconBtn, Modal, Txt} from '../../alexlibs/mui-extension'
 import {useI18n} from '../../core/i18n'
-import {ScButton} from '../../shared/Button/Button'
+import {ScButton} from '../../shared/Button'
 import {useReportedWebsiteWithCompanyContext} from '../../core/context/ReportedWebsitesContext'
 import {Company, CompanySearchResult} from '../../core/client/company/Company'
 import {WebsiteWithCompany} from '../../core/client/website/Website'

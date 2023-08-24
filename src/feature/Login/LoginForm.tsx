@@ -1,15 +1,15 @@
 import {TextField} from '@mui/material'
 import {AlertContactSupport, EspaceProTitle} from 'feature/Login/loggedOutComponents'
 import {useForm} from 'react-hook-form'
-import {CenteredContent} from 'shared/CenteredContent/CenteredContent'
+import {CenteredContent} from 'shared/CenteredContent'
 import {Alert, Txt} from '../../alexlibs/mui-extension'
 import {ApiError} from '../../core/client/ApiClient'
 import {SignalConsoPublicSdk} from '../../core/client/SignalConsoPublicSdk'
 import {regexp} from '../../core/helper/regexp'
 import {useI18n} from '../../core/i18n'
 import {AuthenticationEventActions, EventCategories, Matomo} from '../../core/plugins/Matomo'
-import {ScButton} from '../../shared/Button/Button'
-import {ScInputPassword} from '../../shared/ScInputPassword/ScInputPassword'
+import {ScButton} from '../../shared/Button'
+import {ScInputPassword} from '../../shared/ScInputPassword'
 import {ForgottenPasswordDialog} from './ForgottenPasswordDialog'
 
 interface ActionProps<F extends (...args: any[]) => Promise<any>> {

@@ -1,5 +1,5 @@
 import * as React from 'react'
-import {Page} from 'shared/Layout'
+import {Page} from 'shared/Page'
 import {StatsDgccrfAccountPanel} from './StatsDgccrfAccountPanel'
 import {StatsDgccrfSubscriptionsPanel} from './StatsDgccrfSubscriptionsPanel'
 

@@ -5,11 +5,11 @@ import React, {useCallback, useEffect} from 'react'
 import {Box, Icon, InputBase, Tooltip} from '@mui/material'
 import {Txt} from '../../alexlibs/mui-extension'
 import {useToast} from '../../core/toast'
-import {DebouncedInput} from '../../shared/DebouncedInput/DebouncedInput'
+import {DebouncedInput} from '../../shared/DebouncedInput'
 import {IconBtn} from '../../alexlibs/mui-extension'
 import {useConsumerEmailValidationContext} from '../../core/context/EmailValidationContext'
 import {useEffectFn} from '../../alexlibs/react-hooks-lib'
-import {TrueFalseUndefined} from '../../shared/TrueFalseUndefined/TrueFalseUndefined'
+import {TrueFalseUndefined} from '../../shared/TrueFalseUndefined'
 import {sxUtils} from '../../core/theme'
 
 export const ConsumerListPending = () => {

@@ -1,6 +1,6 @@
-import {ScInput} from '../../shared/Input/ScInput'
+import {ScInput} from '../../shared/ScInput'
 import React, {ReactElement} from 'react'
-import {ScDialog} from '../../shared/Confirm/ScDialog'
+import {ScDialog} from '../../shared/ScDialog'
 import {useI18n} from '../../core/i18n'
 import {Controller, useForm} from 'react-hook-form'
 import {Checkbox, FormControlLabel} from '@mui/material'

@@ -1,4 +1,4 @@
-import {ScInput} from '../Input/ScInput'
+import {ScInput} from '../ScInput'
 import {IconBtn} from '../../alexlibs/mui-extension'
 import {Divider, Icon} from '@mui/material'
 import {SelectCompanyList} from './SelectCompanyList'

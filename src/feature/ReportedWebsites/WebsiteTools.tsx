@@ -1,6 +1,6 @@
 import {Box, BoxProps, ListItemIcon, ListItemText, MenuItem, Tooltip} from '@mui/material'
 import React from 'react'
-import {ScMenu} from '../../shared/Menu/Menu'
+import {ScMenu} from '../../shared/Menu'
 import antidropIcon from './img/antidrop.png'
 import whoisIcon from './img/whois.png'
 import internetArchiveIcon from './img/internetArchive.svg'

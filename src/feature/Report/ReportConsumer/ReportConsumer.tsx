@@ -8,7 +8,7 @@ import {useReportContext} from '../../../core/context/ReportContext'
 import {capitalize} from '../../../core/helper'
 import {useI18n} from '../../../core/i18n'
 import {styleUtils, sxUtils} from '../../../core/theme'
-import {ScButton} from '../../../shared/Button/Button'
+import {ScButton} from '../../../shared/Button'
 import {Panel, PanelBody, PanelHead} from '../../../shared/Panel'
 import {EditConsumerDialog} from './EditConsumerDialog'
 

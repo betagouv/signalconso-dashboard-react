@@ -9,8 +9,8 @@ import {useI18n} from '../../core/i18n'
 import {AccessEventActions, ActionResultNames, EventCategories, Matomo} from '../../core/plugins/Matomo'
 import {siteMap} from '../../core/siteMap'
 import {useToast} from '../../core/toast'
-import {HelpContactInfo} from '../../shared/HelpContactInfo/HelpContactInfo'
-import {ScInputPassword} from '../../shared/ScInputPassword/ScInputPassword'
+import {HelpContactInfo} from '../../shared/HelpContactInfo'
+import {ScInputPassword} from '../../shared/ScInputPassword'
 import {AlertContactSupport} from 'feature/Login/loggedOutComponents'
 
 interface Form {

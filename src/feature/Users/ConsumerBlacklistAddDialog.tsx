@@ -3,13 +3,13 @@ import {Alert, Txt} from '../../alexlibs/mui-extension'
 import {regexp} from '../../core/helper/regexp'
 import {useI18n} from '../../core/i18n'
 import {useToast} from '../../core/toast'
-import {ScButton} from '../../shared/Button/Button'
-import {ScInput} from '../../shared/Input/ScInput'
+import {ScButton} from '../../shared/Button'
+import {ScInput} from '../../shared/ScInput'
 
 import {useFetcher} from 'alexlibs/react-hooks-lib'
 import {useApiContext} from 'core/context/ApiContext'
 import {ScOption} from 'core/helper/ScOption'
-import {ScDialog} from '../../shared/Confirm/ScDialog'
+import {ScDialog} from '../../shared/ScDialog'
 
 export const ConsumerBlacklistAddDialog = ({onAdd}: {onAdd: () => unknown}) => {
   const {m} = useI18n()

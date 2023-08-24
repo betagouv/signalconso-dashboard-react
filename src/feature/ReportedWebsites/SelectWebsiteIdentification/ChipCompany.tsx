@@ -2,7 +2,7 @@ import {Box, BoxProps, Tooltip} from '@mui/material'
 import {Txt} from '../../../alexlibs/mui-extension'
 import React from 'react'
 import {useI18n} from '../../../core/i18n'
-import {ScChip} from '../../../shared/Chip/ScChip'
+import {ScChip} from '../../../shared/ScChip'
 import {Company} from '../../../core/client/company/Company'
 
 interface Props extends BoxProps {

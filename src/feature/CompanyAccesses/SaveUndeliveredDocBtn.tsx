@@ -1,10 +1,10 @@
-import {ScButton} from '../../shared/Button/Button'
+import {ScButton} from '../../shared/Button'
 import {useI18n} from '../../core/i18n'
 import React, {useState} from 'react'
 import {useLogin} from '../../core/context/LoginContext'
-import {Datepicker} from '../../shared/Datepicker/Datepicker'
+import {Datepicker} from '../../shared/Datepicker'
 import {useToast} from '../../core/toast'
-import {ScDialog} from '../../shared/Confirm/ScDialog'
+import {ScDialog} from '../../shared/ScDialog'
 import {ButtonProps} from '@mui/material'
 
 interface Props extends Omit<ButtonProps, 'onChange'> {

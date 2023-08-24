@@ -1,11 +1,11 @@
 import React, {useEffect, useMemo} from 'react'
-import {Page, PageTitle} from '../../shared/Layout'
+import {Page, PageTitle} from '../../shared/Page'
 import {Panel, PanelBody} from '../../shared/Panel'
 import {useReportsContext} from '../../core/context/ReportsContext'
 import {Datatable} from '../../shared/Datatable/Datatable'
 import {useI18n} from '../../core/i18n'
 import {Badge, Box, Grid, Icon, MenuItem} from '@mui/material'
-import {ReportStatusLabel, ReportStatusProLabel} from '../../shared/ReportStatus/ReportStatus'
+import {ReportStatusLabel, ReportStatusProLabel} from '../../shared/ReportStatus'
 import {useLayoutContext} from '../../core/Layout/LayoutContext'
 import {Alert, Btn, Fender, makeSx, Txt} from '../../alexlibs/mui-extension'
 
@@ -15,7 +15,7 @@ import {ScSelect} from '../../shared/Select/Select'
 import {useHistory} from 'react-router'
 import {siteMap} from '../../core/siteMap'
 import {EntityIcon} from '../../core/EntityIcon'
-import {ScButton} from '../../shared/Button/Button'
+import {ScButton} from '../../shared/Button'
 import {
   mapArrayFromQuerystring,
   mapDateFromQueryString,
@@ -25,19 +25,19 @@ import {
 
 import {useToast} from '../../core/toast'
 import {config} from '../../conf/config'
-import {ExportReportsPopper} from '../../shared/ExportPopper/ExportPopperBtn'
-import {PeriodPicker} from '../../shared/PeriodPicker/PeriodPicker'
+import {ExportReportsPopper} from '../../shared/ExportPopperBtn'
+import {PeriodPicker} from '../../shared/PeriodPicker'
 import {useCompaniesContext} from '../../core/context/CompaniesContext'
 import {SelectCompaniesByPro} from '../../shared/SelectCompaniesByPro/SelectCompaniesByPro'
 import compose from '../../core/helper/compose'
-import {DebouncedInput} from 'shared/DebouncedInput/DebouncedInput'
+import {DebouncedInput} from 'shared/DebouncedInput'
 import {Enum} from '../../alexlibs/ts-utils'
 import {cleanObject, openInNew} from '../../core/helper'
 import {Report, ReportSearchResult, ReportStatus, ReportStatusPro, ReportType} from '../../core/client/report/Report'
 import {ReportSearch} from '../../core/client/report/ReportSearch'
 import {ScOption} from 'core/helper/ScOption'
-import {Label} from '../../shared/Label/Label'
-import {ScInput} from '../../shared/Input/ScInput'
+import {Label} from '../../shared/Label'
+import {ScInput} from '../../shared/ScInput'
 
 const css = makeSx({
   card: {

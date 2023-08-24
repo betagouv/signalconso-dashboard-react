@@ -1,6 +1,6 @@
 import React, {CSSProperties, ReactElement, useMemo} from 'react'
 import {Checkbox, FormControl, InputLabel, MenuItem, Select, SelectProps} from '@mui/material'
-import {ScMenuItemProps} from '../MenuItem/ScMenuItem'
+import {ScMenuItemProps} from '../ScMenuItem'
 import {useI18n} from '../../core/i18n'
 import {stopPropagation} from '../../core/helper'
 

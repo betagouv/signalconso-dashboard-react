@@ -1,6 +1,6 @@
 import {createTheme, SxProps, Theme} from '@mui/material'
 import {ThemeOptions} from '@mui/material/styles/createTheme'
-import {colorBlueFrance} from 'alexlibs/mui-extension/_core/style/color'
+import {colorBlueFrance} from 'alexlibs/mui-extension/color'
 import {makeSx} from '../alexlibs/mui-extension'
 
 export const combineSx = (...sxs: (SxProps<Theme> | undefined | false)[]): SxProps<Theme> => {

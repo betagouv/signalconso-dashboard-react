@@ -4,8 +4,8 @@ import {Report, ReportConsumerUpdate} from '../../../core/client/report/Report'
 import {regexp} from '../../../core/helper/regexp'
 import {emptyStringToUndefined} from '../../../core/helper/utils'
 import {useI18n} from '../../../core/i18n'
-import {ScDialog} from '../../../shared/Confirm/ScDialog'
-import {ScInput} from '../../../shared/Input/ScInput'
+import {ScDialog} from '../../../shared/ScDialog'
+import {ScInput} from '../../../shared/ScInput'
 
 interface Props {
   report: Report
