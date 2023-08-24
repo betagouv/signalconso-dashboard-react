@@ -7,8 +7,8 @@ import {useToast} from '../../core/toast'
 import {ScOption} from 'core/helper/ScOption'
 import {validatePasswordComplexity} from 'core/helper/passwordComplexity'
 import {AccountEventActions, EventCategories, Matomo} from '../../core/plugins/Matomo'
-import {ScDialog} from '../../shared/Confirm/ScDialog'
-import {ScInputPassword} from '../../shared/ScInputPassword/ScInputPassword'
+import {ScDialog} from '../../shared/ScDialog'
+import {ScInputPassword} from '../../shared/ScInputPassword'
 import {PasswordRequirementsDesc} from 'shared/PasswordRequirementsDesc'
 
 interface Form {

@@ -53,10 +53,10 @@ import {Stats} from './feature/Stats/Stats'
 import {Subscriptions} from './feature/Subscriptions/Subscriptions'
 import {UserActivation} from './feature/Users/UserActivation'
 import {Users} from './feature/Users/Users'
-import {Login} from './shared/Login/Login'
-import {Provide} from './shared/Provide/Provide'
+import {Login} from './shared/Login'
+import {Provide} from './shared/Provide'
 import './style.css'
-import {CenteredContent} from './shared/CenteredContent/CenteredContent'
+import {CenteredContent} from './shared/CenteredContent'
 
 const Router: typeof HashRouter = config.useHashRouter ? HashRouter : BrowserRouter
 

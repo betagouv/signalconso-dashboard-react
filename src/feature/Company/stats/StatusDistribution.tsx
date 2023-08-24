@@ -3,7 +3,7 @@ import {useI18n} from '../../../core/i18n'
 import {Enum} from '../../../alexlibs/ts-utils'
 import {Icon, Tooltip} from '@mui/material'
 import {Panel, PanelBody, PanelHead} from '../../../shared/Panel'
-import {HorizontalBarChart} from '../../../shared/HorizontalBarChart/HorizontalBarChart'
+import {HorizontalBarChart} from '../../../shared/Chart/HorizontalBarChart'
 import {useMemoFn} from '../../../alexlibs/react-hooks-lib'
 import {ReportStatus, ReportStatusPro} from '../../../core/client/report/Report'
 

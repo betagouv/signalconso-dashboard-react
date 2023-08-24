@@ -2,7 +2,7 @@ import * as React from 'react'
 import {ReactNode, useContext} from 'react'
 import {UseFetcher, useFetcher, UsePaginate} from '../../alexlibs/react-hooks-lib'
 import {SignalConsoApiSdk} from '../ApiSdkInstance'
-import {useScPaginate} from '../../shared/usePaginate/usePaginate'
+import {useScPaginate} from '../../shared/usePaginate'
 import {ApiError} from '../client/ApiClient'
 import {User, UserSearch} from '../client/user/User'
 

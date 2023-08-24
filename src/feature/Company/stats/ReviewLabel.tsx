@@ -1,5 +1,5 @@
 import {Box, BoxProps, Icon, Tooltip} from '@mui/material'
-import {Emoticon} from '../../../shared/Emoticon/Emoticon'
+import {Emoticon} from '../../../shared/Emoticon'
 import * as React from 'react'
 
 interface Props extends BoxProps {

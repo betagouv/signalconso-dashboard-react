@@ -1,7 +1,7 @@
-import {Page} from 'alexlibs/mui-extension'
+import MxPage from 'alexlibs/mui-extension/MxPage'
 import {siteMap} from 'core/siteMap'
 import {Link} from 'react-router-dom'
-import {CenteredContent} from 'shared/CenteredContent/CenteredContent'
+import {CenteredContent} from 'shared/CenteredContent'
 import {AlertNotForConso, EspaceProTitle} from './loggedOutComponents'
 import {Icon} from '@mui/material'
 

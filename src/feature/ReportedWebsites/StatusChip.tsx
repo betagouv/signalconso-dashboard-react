@@ -1,7 +1,7 @@
 import {ChipProps, Tooltip} from '@mui/material'
 import {Txt} from '../../alexlibs/mui-extension'
 import React from 'react'
-import {ScChip} from 'shared/Chip/ScChip'
+import {ScChip} from 'shared/ScChip'
 
 interface Props extends ChipProps {
   tooltipTitle: string

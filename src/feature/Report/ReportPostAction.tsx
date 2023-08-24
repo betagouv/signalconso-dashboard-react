@@ -1,11 +1,11 @@
 import React, {ReactElement, useState} from 'react'
 import {Alert} from '../../alexlibs/mui-extension'
 import {useI18n} from '../../core/i18n'
-import {ScInput} from '../../shared/Input/ScInput'
+import {ScInput} from '../../shared/ScInput'
 import {useFetcher} from '../../alexlibs/react-hooks-lib'
 import {useLogin} from '../../core/context/LoginContext'
 import {useToast} from '../../core/toast'
-import {ScDialog} from '../../shared/Confirm/ScDialog'
+import {ScDialog} from '../../shared/ScDialog'
 import {EventActionValues} from '../../core/client/event/Event'
 import {Report} from '../../core/client/report/Report'
 

@@ -1,10 +1,10 @@
 import {Panel, PanelBody, PanelHead} from '../../../shared/Panel'
-import {AddressComponent} from '../../../shared/Address/Address'
+import {AddressComponent} from '../../../shared/Address'
 
 import {Txt} from '../../../alexlibs/mui-extension'
 import {Box, Icon, IconButton, useTheme} from '@mui/material'
 import {SelectCompanyDialog} from '../../../shared/SelectCompany/SelectCompanyDialog'
-import {ScButton} from '../../../shared/Button/Button'
+import {ScButton} from '../../../shared/Button'
 import React from 'react'
 import {useReportContext} from '../../../core/context/ReportContext'
 import {useI18n} from '../../../core/i18n'

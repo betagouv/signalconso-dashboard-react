@@ -5,7 +5,7 @@ import {useUsersContext} from '../../core/context/UsersContext'
 import {useI18n} from '../../core/i18n'
 
 import {useToast} from '../../core/toast'
-import {ScDialog} from '../../shared/Confirm/ScDialog'
+import {ScDialog} from '../../shared/ScDialog'
 
 interface Props {
   userId: string

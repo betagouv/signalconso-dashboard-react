@@ -4,11 +4,11 @@ import {useUsersContext} from '../../core/context/UsersContext'
 import {regexp} from '../../core/helper/regexp'
 import {useI18n} from '../../core/i18n'
 import {useToast} from '../../core/toast'
-import {ScButton} from '../../shared/Button/Button'
-import {ScInput} from '../../shared/Input/ScInput'
+import {ScButton} from '../../shared/Button'
+import {ScInput} from '../../shared/ScInput'
 
 import {ScOption} from 'core/helper/ScOption'
-import {ScDialog} from '../../shared/Confirm/ScDialog'
+import {ScDialog} from '../../shared/ScDialog'
 import {RoleAdminOrDggcrf} from 'core/model'
 
 export const UserInvitationDialog = ({role}: {role: RoleAdminOrDggcrf}) => {

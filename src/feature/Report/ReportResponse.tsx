@@ -8,7 +8,7 @@ import {ReportFiles} from './File/ReportFiles'
 import {useReportContext} from '../../core/context/ReportContext'
 import {Txt} from '../../alexlibs/mui-extension'
 import {useEventContext} from '../../core/context/EventContext'
-import {Divider} from '../../shared/Divider/Divider'
+import {Divider} from '../../shared/Divider'
 import {
   EventActionValues,
   Event,

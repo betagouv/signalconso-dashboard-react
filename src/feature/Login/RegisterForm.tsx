@@ -2,13 +2,13 @@ import {Icon, TextField} from '@mui/material'
 import {AlertContactSupport, EspaceProTitle} from 'feature/Login/loggedOutComponents'
 import {useState} from 'react'
 import {useForm} from 'react-hook-form'
-import {CenteredContent} from 'shared/CenteredContent/CenteredContent'
+import {CenteredContent} from 'shared/CenteredContent'
 import {Alert, Txt} from '../../alexlibs/mui-extension'
 import {ApiError} from '../../core/client/ApiClient'
 import {regexp} from '../../core/helper/regexp'
 import {useI18n} from '../../core/i18n'
 import {AccessEventActions, ActionResultNames, EventCategories, Matomo} from '../../core/plugins/Matomo'
-import {ScButton} from '../../shared/Button/Button'
+import {ScButton} from '../../shared/Button'
 
 interface ActionProps<F extends (...args: any[]) => Promise<any>> {
   action: F

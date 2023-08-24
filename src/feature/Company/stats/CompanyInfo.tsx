@@ -2,7 +2,7 @@ import {Divider, Icon, List, ListItem, ListItemIcon, ListItemText} from '@mui/ma
 import {useQuery} from '@tanstack/react-query'
 import {Company} from '../../../core/client/company/Company'
 import {useI18n} from '../../../core/i18n'
-import {AddressComponent} from '../../../shared/Address/Address'
+import {AddressComponent} from '../../../shared/Address'
 import {Panel, PanelBody, PanelHead} from '../../../shared/Panel'
 
 interface Props {

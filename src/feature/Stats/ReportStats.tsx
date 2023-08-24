@@ -1,4 +1,4 @@
-import {Page} from '../../shared/Layout'
+import {Page} from '../../shared/Page'
 
 import {StatsReportsByRegion} from './StatsReportsByRegion'
 import {StatsReportsCurvePanel} from './StatsReportsCurve'

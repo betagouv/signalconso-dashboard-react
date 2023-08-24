@@ -3,7 +3,7 @@ import {Txt} from '../../../alexlibs/mui-extension'
 import React from 'react'
 import {useI18n} from '../../../core/i18n'
 import {styleUtils} from '../../../core/theme'
-import {ScChip} from '../../../shared/Chip/ScChip'
+import {ScChip} from '../../../shared/ScChip'
 import {countryToFlag} from '../../../core/helper'
 import {Country} from '../../../core/client/constant/Country'
 

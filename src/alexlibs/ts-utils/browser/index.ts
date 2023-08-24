@@ -1,1 +1,1 @@
-export * from './clipboard/ClipboardApi'
+export * from './ClipboardApi'

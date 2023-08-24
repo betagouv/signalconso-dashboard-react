@@ -4,7 +4,7 @@ import {UseFetcher, useFetcher, usePaginate, UsePaginate} from '../../alexlibs/r
 
 import {SignalConsoApiSdk} from '../ApiSdkInstance'
 
-import {useScPaginate} from '../../shared/usePaginate/usePaginate'
+import {useScPaginate} from '../../shared/usePaginate'
 import {CompanySearch, CompanyToActivate, CompanyUpdate, CompanyWithReportsCount} from '../client/company/Company'
 import {Address, Id, PaginatedFilters} from '../model'
 import {ApiError} from '../client/ApiClient'

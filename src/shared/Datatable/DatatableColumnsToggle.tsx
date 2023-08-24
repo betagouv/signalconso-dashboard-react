@@ -2,7 +2,7 @@ import {Badge, Checkbox, Icon, IconButtonProps, Menu, MenuItem, Tooltip} from '@
 import React from 'react'
 import {IconBtn} from '../../alexlibs/mui-extension'
 import {DatatableColumnProps} from './Datatable'
-import {ScButton} from '../Button/Button'
+import {ScButton} from '../Button'
 
 interface Props extends Omit<IconButtonProps, 'onChange'> {
   // Hack because there is no way to make TS understand that the key of an object can

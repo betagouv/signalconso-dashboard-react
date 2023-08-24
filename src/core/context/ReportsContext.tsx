@@ -2,7 +2,7 @@ import * as React from 'react'
 import {ReactNode, useContext} from 'react'
 import {UsePaginate} from '../../alexlibs/react-hooks-lib'
 import {SignalConsoApiSdk} from '../ApiSdkInstance'
-import {useScPaginate} from '../../shared/usePaginate/usePaginate'
+import {useScPaginate} from '../../shared/usePaginate'
 import {PaginatedFilters, ReportSearch, ReportSearchResult} from '../model'
 
 export interface ReportsContextProps extends UsePaginate<ReportSearchResult, ReportSearch & PaginatedFilters> {

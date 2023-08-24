@@ -6,7 +6,7 @@ import {useI18n} from '../../core/i18n'
 import {Txt} from '../../alexlibs/mui-extension'
 
 import {useToast} from '../../core/toast'
-import {ScDialog} from '../../shared/Confirm/ScDialog'
+import {ScDialog} from '../../shared/ScDialog'
 import {IconBtn} from '../../alexlibs/mui-extension'
 import {Icon, Tooltip} from '@mui/material'
 import {useLogin} from '../../core/context/LoginContext'
