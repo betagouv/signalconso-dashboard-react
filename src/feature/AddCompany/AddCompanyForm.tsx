@@ -10,7 +10,7 @@ import {AccessEventActions, ActionResultNames, EventCategories, Matomo} from '..
 import {siteMap} from '../../core/siteMap'
 import {useToast} from '../../core/toast'
 import {HelpContactInfo} from '../../shared/HelpContactInfo/HelpContactInfo'
-import {ScInputPassword} from '../../shared/InputPassword/InputPassword'
+import {ScInputPassword} from '../../shared/ScInputPassword/ScInputPassword'
 import {AlertContactSupport} from 'feature/Login/loggedOutComponents'
 
 interface Form {

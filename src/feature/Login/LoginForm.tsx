@@ -9,7 +9,7 @@ import {regexp} from '../../core/helper/regexp'
 import {useI18n} from '../../core/i18n'
 import {AuthenticationEventActions, EventCategories, Matomo} from '../../core/plugins/Matomo'
 import {ScButton} from '../../shared/Button/Button'
-import {ScInputPassword} from '../../shared/InputPassword/InputPassword'
+import {ScInputPassword} from '../../shared/ScInputPassword/ScInputPassword'
 import {ForgottenPasswordDialog} from './ForgottenPasswordDialog'
 
 interface ActionProps<F extends (...args: any[]) => Promise<any>> {
@@ -86,7 +86,7 @@ export const LoginForm = ({login}: Props) => {
             error={!!errors.password}
             helperText={errors.password?.message ?? ' '}
             {...register('password', {
-              required: {value: true, message: m.atLeast8Characters},
+              required: {value: true, message: m.required},
             })}
           />
           <div className="flex gap-4 items-center justify-center">

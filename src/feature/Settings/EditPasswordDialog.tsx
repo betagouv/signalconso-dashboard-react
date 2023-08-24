@@ -1,15 +1,15 @@
-import React, {ReactElement} from 'react'
-import {useI18n} from '../../core/i18n'
-import {Txt} from '../../alexlibs/mui-extension'
+import {ReactElement} from 'react'
 import {useForm} from 'react-hook-form'
-import {useUsersContext} from '../../core/context/UsersContext'
 import {Alert} from '../../alexlibs/mui-extension'
+import {useUsersContext} from '../../core/context/UsersContext'
+import {useI18n} from '../../core/i18n'
 import {useToast} from '../../core/toast'
-
-import {ScDialog} from '../../shared/Confirm/ScDialog'
-import {ScInputPassword} from '../../shared/InputPassword/InputPassword'
-import {AccountEventActions, EventCategories, Matomo} from '../../core/plugins/Matomo'
 import {ScOption} from 'core/helper/ScOption'
+import {validatePasswordComplexity} from 'core/helper/passwordComplexity'
+import {AccountEventActions, EventCategories, Matomo} from '../../core/plugins/Matomo'
+import {ScDialog} from '../../shared/Confirm/ScDialog'
+import {ScInputPassword} from '../../shared/ScInputPassword/ScInputPassword'
+import {PasswordRequirementsDesc} from 'shared/PasswordRequirementsDesc'
 
 interface Form {
   oldPassword: string
@@ -62,9 +62,7 @@ export const EditPasswordDialog = ({children}: Props) => {
               </Alert>
             ))
             .toUndefined()}
-          <Txt color="hint" block gutterBottom>
-            {m.editPasswordDialogDesc}
-          </Txt>
+
           <ScInputPassword
             inputProps={{
               autocomplete: 'false',
@@ -76,9 +74,9 @@ export const EditPasswordDialog = ({children}: Props) => {
             label={m.oldPassword}
             {...register('oldPassword', {
               required: {value: true, message: m.required},
-              minLength: {value: 8, message: m.passwordNotLongEnough},
             })}
           />
+          <PasswordRequirementsDesc />
           <ScInputPassword
             error={!!errors.newPassword}
             helperText={errors.newPassword?.message ?? ' '}
@@ -86,8 +84,15 @@ export const EditPasswordDialog = ({children}: Props) => {
             label={m.newPassword}
             {...register('newPassword', {
               required: {value: true, message: m.required},
-              minLength: {value: 8, message: m.passwordNotLongEnough},
-              validate: value => value !== getValues().oldPassword || m.passwordAreIdentical,
+              validate: (value: string) => {
+                if (value === getValues().oldPassword) {
+                  return m.passwordAreIdentical
+                }
+                const complexityMessage = validatePasswordComplexity(value)
+                if (complexityMessage) {
+                  return m[complexityMessage]
+                }
+              },
             })}
           />
           <ScInputPassword
@@ -97,7 +102,6 @@ export const EditPasswordDialog = ({children}: Props) => {
             label={m.newPasswordConfirmation}
             {...register('newPasswordConfirmation', {
               required: {value: true, message: m.required},
-              minLength: {value: 8, message: m.passwordNotLongEnough},
               validate: value => value === getValues().newPassword || m.passwordDoesntMatch,
             })}
           />

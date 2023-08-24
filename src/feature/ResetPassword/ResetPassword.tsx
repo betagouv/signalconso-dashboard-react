@@ -2,7 +2,7 @@ import {CenteredContent} from '../../shared/CenteredContent/CenteredContent'
 import {Page} from '../../shared/Layout'
 import {useForm} from 'react-hook-form'
 import {Panel, PanelBody, PanelHead} from '../../shared/Panel'
-import {ScInputPassword} from '../../shared/InputPassword/InputPassword'
+import {ScInputPassword} from '../../shared/ScInputPassword/ScInputPassword'
 import React from 'react'
 import {useI18n} from '../../core/i18n'
 import {PanelFoot} from '../../shared/Panel/PanelFoot'
@@ -17,6 +17,8 @@ import {layoutConfig} from '../../core/Layout'
 import {Id} from '../../core/model'
 import {fnSwitch} from '../../alexlibs/ts-utils'
 import {AlertContactSupport} from 'feature/Login/loggedOutComponents'
+import {PasswordRequirementsDesc} from 'shared/PasswordRequirementsDesc'
+import {validatePasswordComplexity} from 'core/helper/passwordComplexity'
 
 interface Form {
   newPassword: string
@@ -65,37 +67,43 @@ export const ResetPassword = ({onResetPassword}: Props) => {
 
   return (
     <CenteredContent>
-      <form onSubmit={handleSubmit(resetPassword)}>
-        <h1 className="text-2xl mb-6">{m.passwordChange}</h1>
-        <ScInputPassword
-          error={!!errors.newPassword}
-          helperText={errors.newPassword?.message ?? ' '}
-          fullWidth
-          label={m.newPassword}
-          {...register('newPassword', {
-            required: {value: true, message: m.required},
-            minLength: {value: 8, message: m.passwordNotLongEnough},
-            validate: value => value === getValues().newPasswordConfirmation || m.passwordDoesntMatch,
-          })}
-        />
-        <ScInputPassword
-          error={!!errors.newPasswordConfirmation}
-          helperText={errors.newPasswordConfirmation?.message ?? ' '}
-          fullWidth
-          label={m.newPasswordConfirmation}
-          {...register('newPasswordConfirmation', {
-            required: {value: true, message: m.required},
-            minLength: {value: 8, message: m.passwordNotLongEnough},
-            validate: value => value === getValues().newPassword || m.passwordDoesntMatch,
-          })}
-        />
-        <div className="flex justify-center mb-4">
-          <ScButton variant="contained" color="primary" type="submit" size="large">
-            {m.validate}
-          </ScButton>
-        </div>
-        <AlertContactSupport />{' '}
-      </form>
+      <div className="w-full max-w-xl">
+        <form onSubmit={handleSubmit(resetPassword)}>
+          <h1 className="text-2xl mb-6">{m.passwordChange}</h1>
+          <PasswordRequirementsDesc />
+          <ScInputPassword
+            error={!!errors.newPassword}
+            helperText={errors.newPassword?.message ?? ' '}
+            fullWidth
+            label={m.newPassword}
+            {...register('newPassword', {
+              required: {value: true, message: m.required},
+              validate: (value: string) => {
+                const complexityMessage = validatePasswordComplexity(value)
+                if (complexityMessage) {
+                  return m[complexityMessage]
+                }
+              },
+            })}
+          />
+          <ScInputPassword
+            error={!!errors.newPasswordConfirmation}
+            helperText={errors.newPasswordConfirmation?.message ?? ' '}
+            fullWidth
+            label={m.newPasswordConfirmation}
+            {...register('newPasswordConfirmation', {
+              required: {value: true, message: m.required},
+              validate: value => value === getValues().newPassword || m.passwordDoesntMatch,
+            })}
+          />
+          <div className="flex justify-center mb-4">
+            <ScButton variant="contained" color="primary" type="submit" size="large">
+              {m.validate}
+            </ScButton>
+          </div>
+          <AlertContactSupport />{' '}
+        </form>
+      </div>
     </CenteredContent>
   )
 }
