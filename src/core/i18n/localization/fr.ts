@@ -90,6 +90,7 @@ export const fr = {
       [ReportTag.ProduitIndustriel]: 'Produit industriel',
       [ReportTag.ProduitAlimentaire]: 'Produit alimentaire',
       [ReportTag.CompagnieAerienne]: 'Compagnie aérienne',
+      [ReportTag.Resiliation]: 'Résiliation',
       NA: 'Aucun tag',
     },
     IdentificationStatusDesc: {
