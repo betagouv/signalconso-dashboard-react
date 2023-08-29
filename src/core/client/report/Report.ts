@@ -76,6 +76,7 @@ export enum ReportTag {
   ProduitIndustriel = 'ProduitIndustriel',
   ProduitAlimentaire = 'ProduitAlimentaire',
   CompagnieAerienne = 'CompagnieAerienne',
+  Resiliation = 'Resiliation',
 }
 
 export interface Report {
