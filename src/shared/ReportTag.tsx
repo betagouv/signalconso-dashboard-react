@@ -22,6 +22,7 @@ export const reportTagColor = {
   [ReportTag.ProduitIndustriel]: '#a1a1a1',
   [ReportTag.ProduitAlimentaire]: '#a1a1a1',
   [ReportTag.CompagnieAerienne]: '#a1a1a1',
+  [ReportTag.Resiliation]: '#a1a1a1',
 }
 
 export const ReportTagLabel = ({tag, style, ...props}: ReportTagProps) => {
