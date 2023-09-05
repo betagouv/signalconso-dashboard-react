@@ -433,6 +433,7 @@ export const fr = {
     myCompanies: 'Mes entreprises',
     returnDate: 'Date de retour',
     proResponse: 'Réponse du professionnel',
+    foreignReport: 'Signalement étranger',
     searchByEmail: 'Rechercher par email',
     undeliveredDoc: 'Courrier retourné',
     undeliveredDocTitle: "Retour du courrier d'activation",

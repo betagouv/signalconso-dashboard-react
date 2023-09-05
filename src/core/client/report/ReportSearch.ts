@@ -27,4 +27,5 @@ export interface ReportSearch {
   hasEvaluation?: boolean
   evaluation?: ResponseEvaluation[]
   fullText?: String
+  isForeign?: boolean
 }
