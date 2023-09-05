@@ -573,6 +573,23 @@ export const Reports = () => {
                   )}
                 </Box>
               </Grid>
+              <Grid item xs={12} md={6}>
+                <Box>
+                  <Box sx={css.trueFalseNullBox}>
+                    <Box sx={css.trueFalseNullLabel}>{m.foreignReport}</Box>
+                    <TrueFalseNull
+                      sx={{flexBasis: '50%'}}
+                      value={_reports.filters.isForeign ?? null}
+                      onChange={isForeign =>
+                        _reports.updateFilters(prev => ({
+                          ...prev,
+                          isForeign: isForeign ?? undefined,
+                        }))
+                      }
+                    />
+                  </Box>
+                </Box>
+              </Grid>
             </Grid>
           </Collapse>
         </PanelBody>
