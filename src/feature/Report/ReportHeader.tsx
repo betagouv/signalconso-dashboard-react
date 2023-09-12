@@ -108,7 +108,15 @@ export const ReportHeader = ({report, children, elevated, isUserPro = false}: Pr
           </div>
           <ReportStatusLabel style={{marginLeft: 'auto'}} status={report.status} />
         </Box>
+
         <ExpiresSoonWarning {...{report, isUserPro}} />
+
+        {!isUserPro && !report.visibleToPro && (
+          <Alert type="warning" sx={{mb: 2}}>
+            {m.reportNotTransmittable}
+          </Alert>
+        )}
+
         <Alert id="report-info" dense type="info" deletable persistentDelete sx={{mb: 2}}>
           {m.reportCategoriesAreSelectByConsumer}
         </Alert>
