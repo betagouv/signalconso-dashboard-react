@@ -303,6 +303,7 @@ export const fr = {
     reportProHadToAnswerBefore: 'Le pro devait répondre avant le',
     reportLimitedTimeToAnswer: "Vous n'avez plus beaucoup de temps pour répondre à ce signalement !",
     reportCategoriesAreSelectByConsumer: 'Les catégories du signalement sont sélectionnées par le consommateur.',
+    reportNotTransmittable: "Ce signalement n'a pas été transmis et ne doit pas être transmis au professionnel.",
     reportConsumerWantToBeAnonymous: 'Le consommateur souhaite rester anonyme',
     reportConsumerReferenceNumber: 'Numéro de référence',
     reportConsumerReferenceNumberDesc: 'Numéro de billet, ou de réservation, de facture, de contrat, de client, etc.',
