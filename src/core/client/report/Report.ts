@@ -106,6 +106,7 @@ export interface Report {
   ccrfCode: string[]
   expirationDate: Date
   influencer?: Influencer
+  visibleToPro?: boolean
 }
 
 export interface Influencer {
