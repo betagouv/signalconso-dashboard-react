@@ -98,7 +98,7 @@ export class WebsiteClient {
   }
 
   readonly updateCountry = (id: Id, country: Country): Promise<WebsiteWithCompany> => {
-    return this.client.put<WebsiteWithCompany>(`/websites/${id}/country`, {qs: {companyCountry: country.name}})
+    return this.client.put<WebsiteWithCompany>(`/websites/${id}/country`, {qs: {companyCountry: country.code}})
   }
 
   readonly remove = (id: Id): Promise<void> => {

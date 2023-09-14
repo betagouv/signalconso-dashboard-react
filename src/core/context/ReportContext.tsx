@@ -5,12 +5,14 @@ import {SignalConsoApiSdk} from '../ApiSdkInstance'
 import {Report, ReportConsumerUpdate} from '../client/report/Report'
 import {CompanySearchResult} from '../client/company/Company'
 import {ApiError} from '../client/ApiClient'
+import {Country} from '../client/constant/Country'
 
 export interface ReportContextProps {
   get: UseFetcher<SignalConsoApiSdk['secured']['reports']['getById'], ApiError>
   remove: UseFetcher<SignalConsoApiSdk['secured']['reports']['remove'], ApiError>
   download: UseFetcher<SignalConsoApiSdk['secured']['reports']['download'], ApiError>
   updateCompany: UseFetcher<SignalConsoApiSdk['secured']['reports']['updateReportCompany'], ApiError>
+  updateCountry: UseFetcher<SignalConsoApiSdk['secured']['reports']['updateReportCountry'], ApiError>
   updateConsumer: UseFetcher<SignalConsoApiSdk['secured']['reports']['updateReportConsumer'], ApiError>
   postAction: UseFetcher<SignalConsoApiSdk['secured']['reports']['postAction']>
   postResponse: UseFetcher<SignalConsoApiSdk['secured']['reports']['postResponse']>
@@ -44,6 +46,9 @@ export const ReportProvider = ({api, children}: Props) => {
   const updateCompany = useFetcher((reportId: string, company: CompanySearchResult) =>
     api.secured.reports.updateReportCompany(reportId, company).then(updateReport),
   )
+  const updateCountry = useFetcher((reportId: string, country: Country) =>
+    api.secured.reports.updateReportCountry(reportId, country).then(updateReport),
+  )
   const updateConsumer = useFetcher((reportId: string, reportConsumerUpdate: ReportConsumerUpdate) =>
     api.secured.reports.updateReportConsumer(reportId, reportConsumerUpdate).then(updateReport),
   )
@@ -55,6 +60,7 @@ export const ReportProvider = ({api, children}: Props) => {
         remove,
         download,
         updateCompany,
+        updateCountry,
         updateConsumer,
         postAction,
         postResponse,

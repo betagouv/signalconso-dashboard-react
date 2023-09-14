@@ -13,6 +13,7 @@ import {NavLink} from 'react-router-dom'
 import {styleUtils, sxUtils} from '../../../core/theme'
 import {Influencer, Report} from '../../../core/client/report/Report'
 import {ReportInfluencer} from '../ReportInfluencer'
+import {SelectReportAssociation} from '../SelectReportAssociation'
 
 interface Props {
   report: Report
@@ -30,17 +31,11 @@ export const ReportCompany = ({report, canEdit}: Props) => {
       <PanelHead
         action={
           canEdit && (
-            <SelectCompanyDialog
-              siret={companySiret}
-              openOnly={false}
-              onChange={company => {
-                _report.updateCompany.fetch({}, report.id, company)
-              }}
-            >
+            <SelectReportAssociation reportId={report.id} currentSiret={companySiret} currentCountry={companyAddress.country}>
               <ScButton icon="edit" color="primary" loading={_report.updateCompany.loading}>
                 {m.edit}
               </ScButton>
-            </SelectCompanyDialog>
+            </SelectReportAssociation>
           )
         }
       >
