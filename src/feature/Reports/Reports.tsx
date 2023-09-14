@@ -779,7 +779,7 @@ export const Reports = () => {
             {
               id: 'companyCountry',
               head: m.country,
-              render: _ => _.report.companyAddress.country,
+              render: _ => _.report.companyAddress.country?.name,
             },
             {
               id: 'category',
