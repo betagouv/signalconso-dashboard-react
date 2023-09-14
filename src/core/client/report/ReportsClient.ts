@@ -15,6 +15,7 @@ import {
   ResponseConsumerReview,
   ReportConsumerUpdate,
   Event,
+  Country,
 } from '../../model'
 import {ApiSdkLogger} from '../../helper/Logger'
 import {ApiClientApi} from '../ApiClient'
@@ -160,6 +161,12 @@ export class ReportsClient {
       .then(report => ReportsClient.mapReport(report))
   }
 
+  readonly updateReportCountry = (reportId: string, country: Country) => {
+    return this.client
+      .put<Report>(`/reports/${reportId}/country`, {qs: {countryCode: country.code}})
+      .then(report => ReportsClient.mapReport(report))
+  }
+
   readonly updateReportConsumer = (reportId: string, reportConsumerUpdate: ReportConsumerUpdate) => {
     return this.client
       .post(`reports/${reportId}/consumer`, {
@@ -189,7 +196,6 @@ export class ReportsClient {
 
   static readonly mapReport = (report: {[key in keyof Report]: any}): Report => ({
     ...report,
-    companyAddress: ReportsClient.mapAddress(report.companyAddress),
     creationDate: new Date(report.creationDate),
     expirationDate: new Date(report.expirationDate),
   })

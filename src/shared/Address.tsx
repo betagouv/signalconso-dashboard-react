@@ -17,7 +17,7 @@ export const AddressComponent = forwardRef(({address}: Props, ref: any) => {
       {address.country && (
         <>
           <br />
-          {address.country}
+          {address.country.name}
         </>
       )}
     </span>

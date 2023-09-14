@@ -19,7 +19,7 @@ export const CompanyInfo = ({company}: Props) => {
 
   return (
     <Panel loading={_activityCodes.isLoading}>
-      <PanelHead>{m.informations} COMPANYINFO</PanelHead>
+      <PanelHead>{m.informations}</PanelHead>
       <PanelBody>
         <List>
           <ListItem>
