@@ -1,5 +1,4 @@
-import {Id, PaginatedFilters} from '../../model'
-import {Address} from '../../model/Address'
+import {Id, PaginatedFilters, Address} from '../../model'
 
 export interface CompanyWithReportsCount extends Company {
   count: number
@@ -11,6 +10,7 @@ export interface Company {
   siret: string
   creationDate: Date
   name: string
+  brand?: string
   address: Address
   isHeadOffice: boolean
   isOpen: boolean

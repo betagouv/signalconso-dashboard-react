@@ -143,13 +143,40 @@ export const CompaniesRegistered = () => {
               maxWidth: 170,
             }),
             render: _ => (
-              <Tooltip title={_.name}>
+              <Tooltip
+                title={
+                  _.brand ? (
+                    <>
+                      {_.name}
+                      <br />
+                      {_.brand}
+                    </>
+                  ) : (
+                    _.name
+                  )
+                }
+              >
                 <span>
                   <NavLink to={siteMap.logged.company(_.id)}>
                     <Txt link sx={{marginBottom: '-1px'}}>
                       {_.name}
                     </Txt>
                   </NavLink>
+                  {_.brand && (
+                    <>
+                      <br />
+                      <Box
+                        component="span"
+                        sx={{
+                          fontSize: t => styleUtils(t).fontSize.small,
+                          fontStyle: 'italic',
+                          color: t => t.palette.text.primary,
+                        }}
+                      >
+                        {_.brand}
+                      </Box>
+                    </>
+                  )}
                   <br />
                   <Box
                     component="span"

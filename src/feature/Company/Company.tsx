@@ -87,6 +87,11 @@ export const CompanyComponent = () => {
       <PageTitle>
         <Box>
           {company?.name}
+          {company?.brand && (
+            <Txt block size="small" fontStyle="italic">
+              {company.brand}
+            </Txt>
+          )}
           <Txt block size="big" color="hint">
             {company?.siret}
           </Txt>
