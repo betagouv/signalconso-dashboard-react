@@ -739,9 +739,26 @@ export const Reports = () => {
                 <>
                   <Box component="span" sx={{marginBottom: '-1px'}}>
                     {_.report.companyId ? (
-                      <NavLink to={siteMap.logged.company(_.report.companyId)}>
-                        <Txt link>{_.report.companyName}</Txt>
-                      </NavLink>
+                      <>
+                        <NavLink to={siteMap.logged.company(_.report.companyId)}>
+                          <Txt link>{_.report.companyName}</Txt>
+                        </NavLink>
+                        {_.report.companyBrand && (
+                          <>
+                            <br />
+                            <Txt
+                              component="span"
+                              sx={{
+                                fontSize: t => styleUtils(t).fontSize.small,
+                                fontStyle: 'italic',
+                                color: t => t.palette.text.primary,
+                              }}
+                            >
+                              {_.report.companyBrand}
+                            </Txt>
+                          </>
+                        )}
+                      </>
                     ) : (
                       <span>{_.report.companyName}</span>
                     )}

@@ -24,7 +24,7 @@ export const ReportCompany = ({report, canEdit}: Props) => {
   const _report = useReportContext()
   const {m} = useI18n()
   const theme = useTheme()
-  const {websiteURL, vendor, companyAddress, companyName, companySiret, phone, influencer} = report
+  const {websiteURL, vendor, companyAddress, companyName, companyBrand, companySiret, phone, influencer} = report
 
   return (
     <Panel stretch>
@@ -69,6 +69,7 @@ export const ReportCompany = ({report, canEdit}: Props) => {
             }}
           >
             {companyName && <Box sx={{fontWeight: t => t.typography.fontWeightBold}}>{companyName}</Box>}
+            {companyBrand && <Box fontStyle="italic">{companyBrand}</Box>}
             <AddressComponent address={companyAddress} />
           </Box>
           {vendor && <div>{vendor}</div>}
