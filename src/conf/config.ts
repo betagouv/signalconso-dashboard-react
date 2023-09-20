@@ -12,11 +12,22 @@ enum Env {
   REACT_APP_SENTRY_DNS = 'REACT_APP_SENTRY_DNS',
   REACT_APP_ENABLE_FEATURE_DROPSHIPPING = 'REACT_APP_ENABLE_FEATURE_DROPSHIPPING',
   REACT_APP_SENTRY_TRACE_RATE = 'REACT_APP_SENTRY_TRACE_RATE',
+  REACT_APP_INFO_BANNER = 'REACT_APP_INFO_BANNER',
+  REACT_APP_INFO_BANNER_SEVERITY = 'REACT_APP_INFO_BANNER_SEVERITY',
 }
 
 const env = _env(process.env)
 
 const parseUrl = (_: string): string => _.replace(/\/$/, '')
+
+const severities = ['info', 'warning', 'error', 'success'] as const
+type Severity = typeof severities[number]
+function readSeverity(severity?: string): Severity | null {
+  if (severity && severities.includes(severity as any)) {
+    return severity as Severity
+  }
+  return null
+}
 
 export const config = {
   isDev: env()(Env.NODE_ENV) === 'development',
@@ -32,6 +43,8 @@ export const config = {
   sentry_traceRate: env(int, defaultValue(0.5))(Env.REACT_APP_SENTRY_TRACE_RATE),
   enable_feature_dropshipping: env(int)(Env.REACT_APP_ENABLE_FEATURE_DROPSHIPPING),
   useHashRouter: true,
+  infoBanner: env()(Env.REACT_APP_INFO_BANNER),
+  infoBannerSeverity: readSeverity(env()(Env.REACT_APP_INFO_BANNER_SEVERITY)) ?? 'warning',
 }
 
 export type Config = typeof config
