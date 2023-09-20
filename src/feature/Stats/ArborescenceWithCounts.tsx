@@ -31,6 +31,7 @@ export const ArborescenceWithCounts = () => {
   begin.setDate(begin.getDate() - 90)
 
   const [openAll, setOpenAll] = useState(false)
+  const [openAllForeign, setOpenAllForeign] = useState(false)
   const [start, setStart] = useState<Date | undefined>(begin)
   const [end, setEnd] = useState<Date | undefined>(undefined)
   const [departments, setDepartments] = useState<string[] | undefined>(undefined)
@@ -115,8 +116,29 @@ export const ArborescenceWithCounts = () => {
           </Box>
         </PanelHead>
         <PanelBody>
-          {countBySubCategories.entity?.sort(sortById).map(reportNode => (
+          {countBySubCategories.entity?.fr.sort(sortById).map(reportNode => (
             <Node open={openAll} reportNode={reportNode} />
+          ))}
+        </PanelBody>
+      </Panel>
+      <Panel loading={countBySubCategories.loading}>
+        <PanelHead>
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+            }}
+          >
+            {m.statsCountBySubCategoriesForeign}
+            <ScButton onClick={() => setOpenAllForeign(!openAllForeign)} variant="contained" color="primary">
+              {m.expandAll}
+            </ScButton>
+          </Box>
+        </PanelHead>
+        <PanelBody>
+          {countBySubCategories.entity?.en.sort(sortById).map(reportNode => (
+            <Node open={openAllForeign} reportNode={reportNode} />
           ))}
         </PanelBody>
       </Panel>
