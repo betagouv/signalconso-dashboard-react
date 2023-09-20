@@ -6,3 +6,8 @@ export interface ReportNode {
   tags: string[]
   children: ReportNode[]
 }
+
+export interface ReportNodes {
+  fr: ReportNode[]
+  en: ReportNode[]
+}

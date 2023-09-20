@@ -20,7 +20,7 @@ import {
 import {ApiSdkLogger} from '../../helper/Logger'
 import {ApiClientApi} from '../ApiClient'
 import {cleanObject, dateToApiDate, dateToApiTime, directDownloadBlob} from '../../helper'
-import {ReportNode} from './ReportNode'
+import {ReportNode, ReportNodes} from './ReportNode'
 import {ReportNodeSearch} from './ReportNodeSearch'
 
 export interface ReportFilterQuerystring {
@@ -184,7 +184,7 @@ export class ReportsClient {
     })
   }
 
-  readonly getCountBySubCategories = ({start, end, departments}: ReportNodeSearch = {}): Promise<ReportNode[]> => {
+  readonly getCountBySubCategories = ({start, end, departments}: ReportNodeSearch = {}): Promise<ReportNodes> => {
     return this.client.get(`/reports/count-by-subcategories`, {
       qs: {
         start: dateToApiDate(start),
