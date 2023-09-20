@@ -9,6 +9,7 @@ import {regexp} from '../../core/helper/regexp'
 import {useI18n} from '../../core/i18n'
 import {AccessEventActions, ActionResultNames, EventCategories, Matomo} from '../../core/plugins/Matomo'
 import {ScButton} from '../../shared/Button'
+import {InfoBanner} from '../../shared/InfoBanner'
 
 interface ActionProps<F extends (...args: any[]) => Promise<any>> {
   action: F
@@ -62,6 +63,7 @@ export const RegisterForm = ({register: registerAction}: Props) => {
 
   return (
     <CenteredContent>
+      <InfoBanner />
       <EspaceProTitle subPageTitle={m.accountCreation} />
 
       <div className="w-full max-w-xl px-2">
