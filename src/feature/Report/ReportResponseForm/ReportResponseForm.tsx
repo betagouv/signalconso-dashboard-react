@@ -19,7 +19,7 @@ import {ReportResponse, ReportResponseTypes} from '../../../core/client/event/Ev
 import {FileOrigin} from '../../../core/client/file/UploadedFile'
 import {Report} from '../../../core/client/report/Report'
 import {ScOption} from 'core/helper/ScOption'
-import {Box, Step, StepButton, StepLabel, Stepper, Typography} from '@mui/material'
+import {Box, Step, StepButton, Stepper} from '@mui/material'
 
 interface Props extends PanelProps {
   report: Report
@@ -41,7 +41,7 @@ export const ReportResponseForm = forwardRef(({report, onCancel, onConfirm, ...p
   const {toastError, toastSuccess} = useToast()
   const maxDetailsCharLength = 10000
 
-  const steps = [{label: 'Réponse au consommateur'}, {label: 'Réponse à la DGGCRF', optional: true}]
+  const steps = [{label: m.responseToConsumer}, {label: m.responseToDGCCRF, optional: true}]
   const [activeStep, setActiveStep] = useState(0)
   const watchResponseType = watch('responseType')
   const watchConsumerDetails = watch('consumerDetails')
@@ -154,13 +154,13 @@ export const ReportResponseForm = forwardRef(({report, onCancel, onConfirm, ...p
               variant="contained"
               disabled={!watchResponseType || !watchConsumerDetails}
             >
-              Suivant
+              {m.next}
             </ScButton>
           </>
         ) : (
           <>
             <ScButton onClick={() => setActiveStep(0)} color="primary" variant="contained">
-              Précedent
+              {m.previous}
             </ScButton>
             <Box sx={{pl: 2}}>
               <ScButton onClick={onCancel} color="primary">
