@@ -295,6 +295,8 @@ export const fr = {
     report_pageTitle: `Signalement`,
     details: 'Détails',
     answer: 'Répondre',
+    responseToConsumer: 'Votre réponse au consommateur',
+    responseToDGCCRF: 'Précisions pour la DGCCRF',
     invitNewUser: 'Inviter un nouvel utilisateur',
     editPassword: 'Modification du mot de passe',
     editName: 'Modification du nom',
@@ -468,7 +470,7 @@ export const fr = {
     proAnswerResponseType: 'Pouvez-vous préciser votre réponse ?',
     proAnswerYourAnswer: 'Votre réponse',
     text: 'Votre texte',
-    onlyVisibleByDGCCRF: `Visibles uniquement par la <b>DGCCRF</b><div class=''></div>`,
+    onlyVisibleByDGCCRF: `Visibles uniquement par la <b>DGCCRF</b>. <span class="text-red-600 font-bold">Elles ne seront jamais transmises au consommateur.</span>`,
     proAnswerYourAnswerDesc: `
     <b>Le consommateur</b> la recevra par mail. Elle pourra aussi être consultée par la <b>DGCCRF</b>.<br/>
     Nous vous demandons de rester courtois dans votre réponse. Les menaces et insultes n'ont pas leur place dans SignalConso !

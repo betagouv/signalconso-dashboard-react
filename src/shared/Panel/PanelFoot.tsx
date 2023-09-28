@@ -3,10 +3,11 @@ import {CardActions, CardActionsProps} from '@mui/material'
 
 export interface PanelFootProps extends CardActionsProps {
   alignEnd?: boolean
+  spaceBetween?: boolean
   border?: boolean
 }
 
-export const PanelFoot = ({children, alignEnd, border, sx, ...props}: PanelFootProps) => {
+export const PanelFoot = ({children, alignEnd, spaceBetween, border, sx, ...props}: PanelFootProps) => {
   return (
     <CardActions
       sx={{
@@ -18,6 +19,10 @@ export const PanelFoot = ({children, alignEnd, border, sx, ...props}: PanelFootP
         ...(alignEnd && {
           display: 'flex',
           justifyContent: 'flex-end',
+        }),
+        ...(spaceBetween && {
+          display: 'flex',
+          justifyContent: 'space-between',
         }),
         ...(border && {
           pt: 1,
