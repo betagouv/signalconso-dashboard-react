@@ -689,13 +689,13 @@ export const fr = {
         },
       },
       pro: {
-        report_transmitted_reminder: {
-          title: `Rappel signalement en attente de réponse`,
-          desc: `Lorsqu'un pro a lu mais n'a pas répondu à un signalement après 7 jours`,
+        reports_transmitted_reminder: {
+          title: `Rappel signalements en attente de réponse`,
+          desc: `Lorsqu'un pro a lu mais n'a pas répondu à un ou plusieurs signalements après 7 jours`,
         },
-        report_unread_reminder: {
-          title: `Rappel signalement non lu`,
-          desc: `Lorsqu'un pro n'a pas consulté un signalement`,
+        reports_unread_reminder: {
+          title: `Rappel signalements non lu`,
+          desc: `Lorsqu'un pro n'a pas consulté un ou plusieurs signalements`,
         },
         new_company_access: {
           title: `Invitation à une entreprise pour utilisateur existant`,
