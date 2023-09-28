@@ -27,6 +27,20 @@ interface Props extends PanelProps {
   onConfirm?: (_: ReportResponse) => void
 }
 
+const stepStyles = {
+  mb: 4,
+  mt: 2,
+  '& .Mui-active': {
+    '&.MuiStepIcon-root': {
+      fontSize: '32px',
+      mt: '-4px',
+    },
+    '&.MuiStepLabel-label': {
+      fontSize: '20px',
+    },
+  },
+}
+
 export const ReportResponseForm = forwardRef(({report, onCancel, onConfirm, ...props}: Props, ref: any) => {
   const {m} = useI18n()
   const {
@@ -63,10 +77,7 @@ export const ReportResponseForm = forwardRef(({report, onCancel, onConfirm, ...p
     <Panel elevation={5} ref={ref} {...props}>
       <PanelHead>{m.answer}</PanelHead>
       <PanelBody>
-        <Alert type="info" deletable persistentDelete gutterBottom>
-          {m.proAnswerVisibleByDGCCRF}
-        </Alert>
-        <Stepper activeStep={activeStep} sx={{mb: 2, mt: 2}} alternativeLabel>
+        <Stepper activeStep={activeStep} alternativeLabel sx={stepStyles}>
           {steps.map(({label, optional}, index) => {
             return (
               <Step key={label}>
@@ -109,6 +120,9 @@ export const ReportResponseForm = forwardRef(({report, onCancel, onConfirm, ...p
                 maxRows={8}
               />
             </ReportResponseFormItem>
+            <Alert type="info" deletable persistentDelete gutterBottom>
+              {m.proAnswerVisibleByDGCCRF}
+            </Alert>
           </>
         ) : (
           <>
@@ -159,7 +173,7 @@ export const ReportResponseForm = forwardRef(({report, onCancel, onConfirm, ...p
           </>
         ) : (
           <>
-            <ScButton onClick={() => setActiveStep(0)} color="primary" variant="contained">
+            <ScButton onClick={() => setActiveStep(0)} color="primary">
               {m.previous}
             </ScButton>
             <Box sx={{pl: 2}}>
