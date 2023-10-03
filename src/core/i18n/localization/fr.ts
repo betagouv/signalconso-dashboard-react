@@ -295,6 +295,8 @@ export const fr = {
     report_pageTitle: `Signalement`,
     details: 'Détails',
     answer: 'Répondre',
+    responseToConsumer: 'Votre réponse au consommateur',
+    responseToDGCCRF: 'Précisions pour la DGCCRF',
     invitNewUser: 'Inviter un nouvel utilisateur',
     editPassword: 'Modification du mot de passe',
     editName: 'Modification du nom',
@@ -468,7 +470,7 @@ export const fr = {
     proAnswerResponseType: 'Pouvez-vous préciser votre réponse ?',
     proAnswerYourAnswer: 'Votre réponse',
     text: 'Votre texte',
-    onlyVisibleByDGCCRF: `Visibles uniquement par la <b>DGCCRF</b><div class=''></div>`,
+    onlyVisibleByDGCCRF: `Visibles uniquement par la <b>DGCCRF</b>. <span class="text-red-600 font-bold">Elles ne seront jamais transmises au consommateur.</span>`,
     proAnswerYourAnswerDesc: `
     <b>Le consommateur</b> la recevra par mail. Elle pourra aussi être consultée par la <b>DGCCRF</b>.<br/>
     Nous vous demandons de rester courtois dans votre réponse. Les menaces et insultes n'ont pas leur place dans SignalConso !
@@ -687,13 +689,13 @@ export const fr = {
         },
       },
       pro: {
-        report_transmitted_reminder: {
-          title: `Rappel signalement en attente de réponse`,
-          desc: `Lorsqu'un pro a lu mais n'a pas répondu à un signalement après 7 jours`,
+        reports_transmitted_reminder: {
+          title: `Rappel signalements en attente de réponse`,
+          desc: `Lorsqu'un pro a lu mais n'a pas répondu à un ou plusieurs signalements après 7 jours`,
         },
-        report_unread_reminder: {
-          title: `Rappel signalement non lu`,
-          desc: `Lorsqu'un pro n'a pas consulté un signalement`,
+        reports_unread_reminder: {
+          title: `Rappel signalements non lu`,
+          desc: `Lorsqu'un pro n'a pas consulté un ou plusieurs signalements`,
         },
         new_company_access: {
           title: `Invitation à une entreprise pour utilisateur existant`,
