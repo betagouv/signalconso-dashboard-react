@@ -34,6 +34,12 @@ export interface CompanyCreation {
   activityCode?: string
 }
 
+export interface CompaniesToImport {
+  siren?: string
+  sirets: string[]
+  emails: string[]
+}
+
 export interface CompanyUpdate {
   address: Address
   // postalCode: string
