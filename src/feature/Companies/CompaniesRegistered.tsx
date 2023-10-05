@@ -117,13 +117,15 @@ export const CompaniesRegistered = () => {
                 <Icon>clear</Icon>
               </IconBtn>
             </Tooltip>
-            <MassImport>
-              <Tooltip title="Importer">
-                <IconBtn color="primary">
-                  <Icon>upload</Icon>
-                </IconBtn>
-              </Tooltip>
-            </MassImport>
+            {connectedUser.isAdmin && (
+              <MassImport>
+                <Tooltip title="Importer">
+                  <IconBtn color="primary">
+                    <Icon>upload</Icon>
+                  </IconBtn>
+                </Tooltip>
+              </MassImport>
+            )}
           </>
         }
         sort={{
