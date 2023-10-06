@@ -1,4 +1,5 @@
 import {
+  CompaniesToImport,
   Company,
   CompanyCreation,
   CompanySearch,
@@ -47,6 +48,10 @@ export class CompanyClient {
 
   readonly create = (company: CompanyCreation) => {
     return this.client.post<Company>(`/companies`, {body: company})
+  }
+
+  readonly importCompanies = (companiesToImport: CompaniesToImport) => {
+    return this.client.post(`/import/companies`, {body: companiesToImport})
   }
 
   readonly downloadActivationDocument = (companyIds: Id[]) => {

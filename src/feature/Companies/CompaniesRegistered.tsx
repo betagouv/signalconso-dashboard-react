@@ -24,6 +24,7 @@ import {Company, CompanySearch} from '../../core/client/company/Company'
 import {cleanObject} from '../../core/helper'
 import {PaginatedSearch} from '../../core/model'
 import {ScOption} from 'core/helper/ScOption'
+import {MassImport} from './MassImport'
 
 export interface CompanySearchQs extends PaginatedSearch<any> {
   departments?: string[] | string
@@ -116,6 +117,15 @@ export const CompaniesRegistered = () => {
                 <Icon>clear</Icon>
               </IconBtn>
             </Tooltip>
+            {connectedUser.isAdmin && (
+              <MassImport>
+                <Tooltip title="Importer">
+                  <IconBtn color="primary">
+                    <Icon>upload</Icon>
+                  </IconBtn>
+                </Tooltip>
+              </MassImport>
+            )}
           </>
         }
         sort={{
