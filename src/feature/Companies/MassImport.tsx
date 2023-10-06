@@ -8,6 +8,7 @@ import {Controller, useForm} from 'react-hook-form'
 import {CompaniesToImport} from '../../core/client/company/Company'
 import {useApiContext} from '../../core/context/ApiContext'
 import {useMutation} from '@tanstack/react-query'
+import {useToast} from '../../core/toast'
 
 export interface MassImportProps {
   children: ReactElement<any>
@@ -16,12 +17,12 @@ export interface MassImportProps {
 export const MassImport = ({children}: MassImportProps) => {
   const [open, setOpen] = useState<boolean>(false)
   const {m} = useI18n()
+  const {toastError, toastSuccess} = useToast()
   const {
     register,
     handleSubmit,
     control,
-    reset,
-    formState: {errors, isValid},
+    formState: {errors},
   } = useForm<CompaniesToImport>()
   const {api} = useApiContext()
 
@@ -35,6 +36,9 @@ export const MassImport = ({children}: MassImportProps) => {
 
   const confirm = (e: any) => {
     handleSubmit(_ => mutation.mutate(_))(e)
+      .then(() => toastSuccess('Import réussi'))
+      .then(() => close())
+      .catch(e => toastError(e))
   }
 
   return (
@@ -45,7 +49,7 @@ export const MassImport = ({children}: MassImportProps) => {
         },
       })}
       <Dialog fullWidth open={open ?? false} onClose={close}>
-        <DialogTitle>Import massif</DialogTitle>
+        <DialogTitle>Importer</DialogTitle>
         <DialogContent>
           <DialogInputRow label="SIREN">
             <ScInput
@@ -55,7 +59,7 @@ export const MassImport = ({children}: MassImportProps) => {
               {...register('siren', {
                 pattern: {
                   value: /^[0-9]{9}$/,
-                  message: 'not a siren',
+                  message: 'SIREN invalide',
                 },
               })}
             />
@@ -65,7 +69,7 @@ export const MassImport = ({children}: MassImportProps) => {
               name="sirets"
               defaultValue={[]}
               rules={{
-                validate: value => !!value.every(_ => _.match(/^[0-9]{14}$/)) || 'not a valid siret',
+                validate: value => !!value.every(_ => _.match(/^[0-9]{14}$/)) || 'SIRET invalide',
               }}
               control={control}
               render={({field: {ref, onChange, ...field}}) => (
@@ -95,7 +99,7 @@ export const MassImport = ({children}: MassImportProps) => {
               name="emails"
               rules={{
                 required: 'requis',
-                validate: value => !!value.every(_ => _.match(/.+@.+\..+/)) || 'not a valid email',
+                validate: value => !!value.every(_ => _.match(/.+@.+\..+/)) || 'Email invalide',
               }}
               control={control}
               render={({field: {ref, onChange, ...field}}) => (
