@@ -4,6 +4,7 @@ import {
   CompanyCreation,
   CompanySearch,
   CompanyToActivate,
+  CompanyToFollowUp,
   CompanyUpdate,
   CompanyWithAccessLevel,
   CompanyWithReportsCount,
@@ -60,6 +61,12 @@ export class CompanyClient {
       .then(directDownloadBlob(`signalement_depot_${format(new Date(), 'ddMMyy')}`))
   }
 
+  readonly downloadFollowUpDocument = (companyIds: Id[]) => {
+    return this.client
+      .postGetPdf(`/companies/follow-up-document `, {body: {companyIds}})
+      .then(directDownloadBlob(`signalement_relance_${format(new Date(), 'ddMMyy')}`))
+  }
+
   readonly getHosts = (id: Id) => {
     return this.client.get<string[]>(`/companies/hosts/${id}`)
   }
@@ -77,6 +84,10 @@ export class CompanyClient {
         return _
       }),
     )
+  }
+
+  readonly fetchToFollowUp = () => {
+    return this.client.get<CompanyToFollowUp[]>(`/companies/inactive-companies`)
   }
 
   readonly confirmCompaniesPosted = (ids: Id[]) => {

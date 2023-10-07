@@ -15,6 +15,7 @@ export const siteMap = {
     report: (id: Id = `:id`) => `/suivi-des-signalements/report/${id}`,
     exports: `/mes-telechargements`,
     companies_toActivate: `/entreprises/a-activer`,
+    companies_toFollowUp: `/entreprises/a-relancer`,
     companies_registered: `/entreprises/les-plus-signalees`,
     companies: `/entreprises`,
     companiesPro: `/mes-entreprises`,

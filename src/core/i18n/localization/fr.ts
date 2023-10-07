@@ -157,6 +157,7 @@ export const fr = {
     cancel: 'Annuler',
     help: 'Aide',
     created_at: 'Créé le',
+    ignoredReportCount: 'Signalements ignorés',
     kind: "Status d'identification",
     identified: 'Identifié',
     notIdentified: 'Non identifié',
@@ -507,7 +508,12 @@ export const fr = {
     accountActivated: 'Compte activé',
     accountsActivated: `Comptes activés`,
     companiesToActivate: "En attente d'activation",
+    companiesToFollowUp: 'Entreprises à relancer',
     companiesToActivateDesc: "Cette page liste les entreprises auquel il faudrait envoyer un courrier d'activation.",
+    companiesToFollowUpDesc:
+      'Cette page liste les entreprises qui ne consultent plus leur signalements sur une période de 3 mois mais qui ont un compte actif.',
+    companiesToFollowUpDescDetail:
+      "Il s'agit de relancer ces entreprise qui pourraient avoir perdu l'accès à leur compte ( par exemple un utilisateur qui quitterait l'entreprise, etc).",
     companiesToActivateDescDetail: "Il peut s'agir de leur premier courrier, ou d'un courrier de relance.",
     activationFailed: "Erreur inattendue , impossible d'activer le compte. Merci de bien vouloir réessayer ultérieurement.",
     companiesActivated: 'Entreprises identifiées',

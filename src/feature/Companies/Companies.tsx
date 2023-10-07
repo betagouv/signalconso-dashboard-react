@@ -7,6 +7,7 @@ import {PageTab, PageTabs} from '../../shared/Page/PageTabs'
 import {CompaniesToActivate} from './CompaniesToActivate'
 import {CompaniesRegistered} from './CompaniesRegistered'
 import {useLogin} from '../../core/context/LoginContext'
+import {CompaniesToFollowUp} from './CompaniesToFollowUp'
 
 export const Companies = () => {
   const {m} = useI18n()
@@ -20,12 +21,14 @@ export const Companies = () => {
         <PageTabs>
           <PageTab to={siteMap.logged.companies_registered} label={m.companiesActivated} />
           <PageTab to={siteMap.logged.companies_toActivate} label={m.companiesToActivate} />
+          <PageTab to={siteMap.logged.companies_toFollowUp} label={m.companiesToFollowUp} />
         </PageTabs>
       )}
       <Switch>
         <Redirect exact from={path} to={siteMap.logged.companies_registered} />
         <Route path={siteMap.logged.companies_registered} component={CompaniesRegistered} />
         <Route path={siteMap.logged.companies_toActivate} component={CompaniesToActivate} />
+        <Route path={siteMap.logged.companies_toFollowUp} component={CompaniesToFollowUp} />
       </Switch>
     </Page>
   )

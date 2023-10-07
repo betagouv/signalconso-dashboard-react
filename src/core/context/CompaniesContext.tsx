@@ -5,7 +5,13 @@ import {UseFetcher, useFetcher, usePaginate, UsePaginate} from '../../alexlibs/r
 import {SignalConsoApiSdk} from '../ApiSdkInstance'
 
 import {useScPaginate} from '../../shared/usePaginate'
-import {CompanySearch, CompanyToActivate, CompanyUpdate, CompanyWithReportsCount} from '../client/company/Company'
+import {
+  CompanySearch,
+  CompanyToActivate,
+  CompanyToFollowUp,
+  CompanyUpdate,
+  CompanyWithReportsCount,
+} from '../client/company/Company'
 import {Address, Id, PaginatedFilters} from '../model'
 import {ApiError} from '../client/ApiClient'
 import {paginateData} from '../helper'
@@ -16,9 +22,11 @@ type Sdk = SignalConsoApiSdk['secured']['company']
 export interface CompaniesContextProps {
   activated: UsePaginate<CompanyWithReportsCount, CompanySearch>
   toActivate: UsePaginate<CompanyToActivate, PaginatedFilters>
+  toFollowUp: UsePaginate<CompanyToFollowUp, PaginatedFilters>
   create: UseFetcher<Sdk['create'], ApiError>
   updateAddress: UseFetcher<Sdk['updateAddress'], ApiError>
   downloadActivationDocument: UseFetcher<Sdk['downloadActivationDocument'], ApiError>
+  downloadFollowUpDocument: UseFetcher<Sdk['downloadFollowUpDocument'], ApiError>
   confirmCompaniesPosted: UseFetcher<Sdk['confirmCompaniesPosted'], ApiError>
   searchByIdentity: UseFetcher<CompanyPublicSdk['company']['searchCompaniesByIdentity'], ApiError>
   accessibleByPro: UseFetcher<Sdk['getAccessibleByPro'], ApiError>
@@ -48,10 +56,17 @@ export const CompaniesProvider = ({api, children}: ProviderProps) => {
         .then(paginateData(filter.limit, filter.offset)),
     {limit: 250, offset: 0},
   )
+
+  const toFollowUp = usePaginate<CompanyToFollowUp, PaginatedFilters>(
+    (filter: PaginatedFilters) => api.secured.company.fetchToFollowUp().then(paginateData(filter.limit, filter.offset)),
+    {limit: 250, offset: 0},
+  )
+
   const create = useFetcher(api.secured.company.create)
   const updateAddress = useFetcher(api.secured.company.updateAddress)
   const searchByIdentity = useFetcher(api.companySdk.company.searchCompaniesByIdentity)
   const downloadActivationDocument = useFetcher(api.secured.company.downloadActivationDocument)
+  const downloadFollowUpDocument = useFetcher(api.secured.company.downloadFollowUpDocument)
   const confirmCompaniesPosted = useFetcher(api.secured.company.confirmCompaniesPosted)
   const saveUndeliveredDocument = useFetcher(api.secured.company.saveUndeliveredDocument)
   const accessibleByPro = useFetcher(api.secured.company.getAccessibleByPro)
@@ -86,8 +101,10 @@ export const CompaniesProvider = ({api, children}: ProviderProps) => {
         create,
         activated,
         toActivate,
+        toFollowUp,
         searchByIdentity,
         downloadActivationDocument,
+        downloadFollowUpDocument,
         confirmCompaniesPosted,
         accessibleByPro,
         saveUndeliveredDocument,
