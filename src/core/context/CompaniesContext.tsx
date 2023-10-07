@@ -28,6 +28,7 @@ export interface CompaniesContextProps {
   downloadActivationDocument: UseFetcher<Sdk['downloadActivationDocument'], ApiError>
   downloadFollowUpDocument: UseFetcher<Sdk['downloadFollowUpDocument'], ApiError>
   confirmCompaniesPosted: UseFetcher<Sdk['confirmCompaniesPosted'], ApiError>
+  confirmCompaniesFollowedUp: UseFetcher<Sdk['confirmCompaniesFollowedUp'], ApiError>
   searchByIdentity: UseFetcher<CompanyPublicSdk['company']['searchCompaniesByIdentity'], ApiError>
   accessibleByPro: UseFetcher<Sdk['getAccessibleByPro'], ApiError>
   saveUndeliveredDocument: UseFetcher<Sdk['saveUndeliveredDocument'], ApiError>
@@ -68,6 +69,7 @@ export const CompaniesProvider = ({api, children}: ProviderProps) => {
   const downloadActivationDocument = useFetcher(api.secured.company.downloadActivationDocument)
   const downloadFollowUpDocument = useFetcher(api.secured.company.downloadFollowUpDocument)
   const confirmCompaniesPosted = useFetcher(api.secured.company.confirmCompaniesPosted)
+  const confirmCompaniesFollowedUp = useFetcher(api.secured.company.confirmCompaniesFollowedUp)
   const saveUndeliveredDocument = useFetcher(api.secured.company.saveUndeliveredDocument)
   const accessibleByPro = useFetcher(api.secured.company.getAccessibleByPro)
   const byId = useFetcher((id: Id) => api.secured.company.byId(id).then(_ => _.entities[0]))
@@ -106,6 +108,7 @@ export const CompaniesProvider = ({api, children}: ProviderProps) => {
         downloadActivationDocument,
         downloadFollowUpDocument,
         confirmCompaniesPosted,
+        confirmCompaniesFollowedUp,
         accessibleByPro,
         saveUndeliveredDocument,
         byId,

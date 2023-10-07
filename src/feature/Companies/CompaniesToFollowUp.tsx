@@ -54,8 +54,8 @@ export const CompaniesToFollowUp = () => {
     setSelectedCompanies(selectedCompaniesSet.toArray())
   }
 
-  const confirmCompaniesPosted = (event: SyntheticEvent<any>, closeDialog: () => void) => {
-    _companies.confirmCompaniesPosted
+  const confirmCompaniesFollowedUp = (event: SyntheticEvent<any>, closeDialog: () => void) => {
+    _companies.confirmCompaniesFollowedUp
       .fetch({}, selectedCompaniesSet.toArray())
       .then(() => {
         _companiesToFollowUp.fetch({clean: false})
@@ -96,10 +96,14 @@ export const CompaniesToFollowUp = () => {
                 >
                   {m.downloadNotice}
                 </ScButton>
-                <ScDialog title={m.validateLetterSentTitle} content={m.validateLetterSentDesc} onConfirm={confirmCompaniesPosted}>
+                <ScDialog
+                  title={m.validateLetterSentTitle}
+                  content={m.validateLetterSentDesc}
+                  onConfirm={confirmCompaniesFollowedUp}
+                >
                   <ScButton
                     disabled={_companiesToFollowUp.fetching || selectedCompaniesSet.size === 0}
-                    loading={_companies.confirmCompaniesPosted.loading}
+                    loading={_companies.confirmCompaniesFollowedUp.loading}
                     sx={{mr: 1}}
                     color="error"
                     variant="contained"

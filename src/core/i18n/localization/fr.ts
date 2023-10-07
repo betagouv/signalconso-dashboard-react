@@ -158,6 +158,7 @@ export const fr = {
     help: 'Aide',
     created_at: 'Créé le',
     ignoredReportCount: 'Signalements ignorés',
+    followUpCount: 'Nb relances',
     kind: "Status d'identification",
     identified: 'Identifié',
     notIdentified: 'Non identifié',

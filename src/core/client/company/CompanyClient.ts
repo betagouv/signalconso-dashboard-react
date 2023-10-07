@@ -94,6 +94,10 @@ export class CompanyClient {
     return this.client.post<void>(`/companies/companies-posted`, {body: {companyIds: ids}})
   }
 
+  readonly confirmCompaniesFollowedUp = (ids: Id[]) => {
+    return this.client.post<void>(`/companies/follow-up-posted`, {body: {companyIds: ids}})
+  }
+
   private static readonly mapCompany = (company: {[key in keyof CompanyWithReportsCount]: any}): CompanyWithReportsCount => ({
     ...company,
     creationDate: new Date(company.creationDate),
