@@ -24,6 +24,11 @@ export interface CompanyToActivate {
   tokenCreation: Date
 }
 
+export interface CompanyToFollowUp {
+  company: Company
+  ignoredReportCount: number
+}
+
 export interface CompanyCreation {
   siret: string
   name: string
