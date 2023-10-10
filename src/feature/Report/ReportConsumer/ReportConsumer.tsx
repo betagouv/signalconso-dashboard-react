@@ -42,7 +42,7 @@ export const ReportConsumer = ({report, canEdit}: Props) => {
             <div className="font-bold text-sm text-red-600 mb-2">
               {m.reportConsumerWantToBeAnonymous}.
               <br />
-              Ne pas divulger ces informations à l'entreprise.
+              Ne pas divulguer ces informations à l'entreprise.
             </div>
           )}
           <div>

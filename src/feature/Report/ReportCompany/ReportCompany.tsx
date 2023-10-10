@@ -49,7 +49,14 @@ export const ReportCompany = ({report, canEdit}: Props) => {
         </div>
       </PanelHead>
       <PanelBody className="flex justify-between">
-        <div>
+        <div className="bg-red-100 py-2 px-4 w-full">
+          {!report.visibleToPro && (
+            <div className="font-bold text-sm text-red-600 mb-2">
+              Ce signalement n'a pas été transmis à l'entreprise. L'entreprise ne sait même pas que ce signalement existe.
+              <br />
+              <span className="font-bold"> Ne pas lui divulguer !</span>
+            </div>
+          )}
           {companySiret && <div className="mb-1">{companySiret}</div>}
           <div className="text-gray-500 text-sm">
             {companyName && <div className="font-bold">{companyName}</div>}
