@@ -1,4 +1,4 @@
-import {Box, useTheme} from '@mui/material'
+import {useTheme} from '@mui/material'
 import {ReportReferenceNumber} from 'feature/Report/ReportReferenceNumber'
 
 import {WithInlineIcon} from 'shared/WithInlineIcon'
@@ -18,9 +18,8 @@ interface Props {
 export const ReportConsumer = ({report, canEdit}: Props) => {
   const _report = useReportContext()
   const {m} = useI18n()
-  const theme = useTheme()
 
-  const {firstName, lastName} = report
+  const {firstName, lastName, contactAgreement} = report
 
   return (
     <Panel stretch>
@@ -37,17 +36,14 @@ export const ReportConsumer = ({report, canEdit}: Props) => {
       >
         <WithInlineIcon icon="person">{m.consumer}</WithInlineIcon>
       </PanelHead>
-      <PanelBody
-        sx={{
-          display: 'flex',
-          justifyContent: 'space-between',
-        }}
-      >
-        <div>
-          {!report.contactAgreement && (
-            <Box sx={{color: t => t.palette.error.main}} style={{marginTop: theme.spacing(0.5)}}>
-              <WithInlineIcon icon="warning">{m.reportConsumerWantToBeAnonymous}</WithInlineIcon>
-            </Box>
+      <PanelBody>
+        <div className={contactAgreement ? '' : 'bg-red-100 py-2 px-4 w-full'}>
+          {contactAgreement || (
+            <div className="font-bold text-sm text-red-600 mb-2">
+              {m.reportConsumerWantToBeAnonymous}.
+              <br />
+              Ne pas divulger ces informations à l'entreprise.
+            </div>
           )}
           <div>
             {firstName ? capitalize(firstName) : ''}&nbsp;
