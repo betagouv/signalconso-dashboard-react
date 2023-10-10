@@ -37,14 +37,7 @@ export const ReportConsumer = ({report, canEdit}: Props) => {
         <WithInlineIcon icon="person">{m.consumer}</WithInlineIcon>
       </PanelHead>
       <PanelBody>
-        <div className={contactAgreement ? '' : 'bg-red-100 py-2 px-4 w-full'}>
-          {contactAgreement || (
-            <div className="font-bold text-sm text-red-600 mb-2">
-              {m.reportConsumerWantToBeAnonymous}.
-              <br />
-              Ne pas divulguer ces informations à l'entreprise.
-            </div>
-          )}
+        <div>
           <div>
             {firstName ? capitalize(firstName) : ''}&nbsp;
             {lastName ? capitalize(lastName) : ''}
@@ -52,6 +45,14 @@ export const ReportConsumer = ({report, canEdit}: Props) => {
           <div className="text-gray-500">{report.email}</div>
           {report.consumerPhone && <div className="text-gray-500">{report.consumerPhone}</div>}
           <ReportReferenceNumber consumerReferenceNumber={report.consumerReferenceNumber} />
+          {contactAgreement || (
+            <div className="bg-yellow-100  border border-gray-700 px-2 py-2 mb-1 mt-2 mx-2">
+              <WithInlineIcon icon="visibility_off">
+                <span className="font-bold">{m.reportConsumerWantToBeAnonymous}</span>
+              </WithInlineIcon>
+              <div className=" text-black text-sm">Ne pas divulguer ces informations à l'entreprise.</div>
+            </div>
+          )}
         </div>
       </PanelBody>
     </Panel>

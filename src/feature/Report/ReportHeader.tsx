@@ -112,14 +112,6 @@ export const ReportHeader = ({report, children, elevated, isUserPro = false}: Pr
 
         <ExpiresSoonWarning {...{report, isUserPro}} />
 
-        {!isUserPro && !report.visibleToPro && (
-          <div className="bg-red-100 text-red-500 font-bold text-base text-left p-2 mb-4">
-            Ce signalement n'a pas été transmis à l'entreprise. L'entreprise ne sait même pas que ce signalement existe.
-            <br />
-            <span className="font-bold"> Ne pas lui divulguer</span>.
-          </div>
-        )}
-
         <Alert id="report-info" dense type="info" deletable persistentDelete sx={{mb: 2}}>
           {m.reportCategoriesAreSelectByConsumer}
         </Alert>
