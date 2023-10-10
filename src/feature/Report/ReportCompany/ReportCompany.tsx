@@ -13,7 +13,6 @@ import {sxUtils} from '../../../core/theme'
 import {ScButton} from '../../../shared/Button'
 import {ReportInfluencer} from '../ReportInfluencer'
 import {SelectReportAssociation} from '../SelectReportAssociation'
-import {ReactNode} from 'react'
 
 interface Props {
   report: Report

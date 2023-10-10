@@ -10,6 +10,7 @@ import {styleUtils} from '../../core/theme'
 import {useI18n} from '../../core/i18n'
 import {makeSx} from '../../alexlibs/mui-extension'
 import {Report} from '../../core/client/report/Report'
+import {WithInlineIcon} from 'shared/WithInlineIcon'
 
 const css = makeSx({
   root: {
@@ -110,12 +111,6 @@ export const ReportHeader = ({report, children, elevated, isUserPro = false}: Pr
         </Box>
 
         <ExpiresSoonWarning {...{report, isUserPro}} />
-
-        {!isUserPro && !report.visibleToPro && (
-          <Alert type="warning" sx={{mb: 2}}>
-            {m.reportNotTransmittable}
-          </Alert>
-        )}
 
         <Alert id="report-info" dense type="info" deletable persistentDelete sx={{mb: 2}}>
           {m.reportCategoriesAreSelectByConsumer}
