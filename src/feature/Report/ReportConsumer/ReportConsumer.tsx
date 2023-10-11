@@ -1,13 +1,10 @@
-import {Box, Icon, Tooltip, useTheme} from '@mui/material'
-import {Txt} from 'alexlibs/mui-extension'
-import {ScOption} from 'core/helper/ScOption'
 import {ReportReferenceNumber} from 'feature/Report/ReportReferenceNumber'
 
+import {WithInlineIcon} from 'shared/WithInlineIcon'
 import {Report} from '../../../core/client/report/Report'
 import {useReportContext} from '../../../core/context/ReportContext'
 import {capitalize} from '../../../core/helper'
 import {useI18n} from '../../../core/i18n'
-import {styleUtils, sxUtils} from '../../../core/theme'
 import {ScButton} from '../../../shared/Button'
 import {Panel, PanelBody, PanelHead} from '../../../shared/Panel'
 import {EditConsumerDialog} from './EditConsumerDialog'
@@ -20,7 +17,8 @@ interface Props {
 export const ReportConsumer = ({report, canEdit}: Props) => {
   const _report = useReportContext()
   const {m} = useI18n()
-  const theme = useTheme()
+
+  const {firstName, lastName, contactAgreement} = report
 
   return (
     <Panel stretch>
@@ -35,43 +33,26 @@ export const ReportConsumer = ({report, canEdit}: Props) => {
           )
         }
       >
-        {m.consumer}
+        <WithInlineIcon icon="person">{m.consumer}</WithInlineIcon>
       </PanelHead>
-      <PanelBody
-        sx={{
-          display: 'flex',
-          justifyContent: 'space-between',
-        }}
-      >
-        <div>
-          <Box sx={{fontSize: t => styleUtils(t).fontSize.big}}>
-            {ScOption.from(report.firstName)
-              .map(_ => capitalize(_))
-              .getOrElse('')}
-            &nbsp;
-            {ScOption.from(report.lastName)
-              .map(_ => _.toLocaleUpperCase())
-              .getOrElse('')}
-          </Box>
-          <Box sx={{color: t => t.palette.text.secondary}}>{report.email}</Box>
-          {report.consumerPhone && <Box sx={{color: t => t.palette.text.secondary}}>{report.consumerPhone}</Box>}
-          <ReportReferenceNumber consumerReferenceNumber={report.consumerReferenceNumber} />
-          {!report.contactAgreement && (
-            <Box sx={{color: t => t.palette.error.main}} style={{marginTop: theme.spacing(0.5)}}>
-              <Icon sx={sxUtils.inlineIcon}>warning</Icon>
-              &nbsp;
-              {m.reportConsumerWantToBeAnonymous}
-            </Box>
+      <PanelBody>
+        <div className={contactAgreement ? '' : 'bg-red-100 py-2 px-4 w-full'}>
+          {contactAgreement || (
+            <div className="font-bold text-sm text-red-600 mb-2">
+              {m.reportConsumerWantToBeAnonymous}.
+              <br />
+              Ne pas divulguer ces informations à l'entreprise.
+            </div>
           )}
+
+          <div>
+            {firstName ? capitalize(firstName) : ''}&nbsp;
+            {lastName ? capitalize(lastName) : ''}
+          </div>
+          <div className="text-gray-500">{report.email}</div>
+          {report.consumerPhone && <div className="text-gray-500">{report.consumerPhone}</div>}
+          <ReportReferenceNumber consumerReferenceNumber={report.consumerReferenceNumber} />
         </div>
-        <Icon
-          sx={{
-            fontSize: 64,
-            color: t => t.palette.divider,
-          }}
-        >
-          person
-        </Icon>
       </PanelBody>
     </Panel>
   )

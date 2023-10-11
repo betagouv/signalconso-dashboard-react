@@ -2,7 +2,7 @@ import React, {useEffect, useMemo, useState} from 'react'
 import {Page} from '../../shared/Page'
 import {useParams} from 'react-router'
 import {useI18n} from '../../core/i18n'
-import {Panel} from '../../shared/Panel'
+import {Panel, PanelBody, PanelHead} from '../../shared/Panel'
 import {useReportContext} from '../../core/context/ReportContext'
 import {Box, Grid, Tab, Tabs, Tooltip} from '@mui/material'
 import {useToast} from '../../core/toast'
@@ -24,6 +24,7 @@ import {FileOrigin} from '../../core/client/file/UploadedFile'
 import {Report} from '../../core/client/report/Report'
 import {Id} from '../../core/model'
 import {ScButton} from '../../shared/Button'
+import {WithInlineIcon} from 'shared/WithInlineIcon'
 
 const CONSO: EventType = 'CONSO'
 
@@ -152,7 +153,16 @@ export const ReportComponent = () => {
               )}
             </Box>
           </ReportHeader>
-
+          {!report.visibleToPro && (
+            <div className="bg-yellow-100  border border-gray-700 mx-2 p-4 mb-4">
+              <h3 className="font-bold">
+                <WithInlineIcon icon="visibility_off">Signalement confidentiel</WithInlineIcon>
+              </h3>
+              Ce signalement n'a pas été transmis à l'entreprise.
+              <br />
+              L'entreprise <span className="font-bold">ne sait même pas que ce signalement existe</span>. Ne pas lui divulguer.
+            </div>
+          )}
           <Grid container spacing={2} alignItems="stretch">
             <Grid item xs={12} sm={6}>
               <ReportConsumer report={report} canEdit={connectedUser.isAdmin} />

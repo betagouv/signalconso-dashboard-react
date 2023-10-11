@@ -1,17 +1,16 @@
-import {Panel, PanelBody, PanelHead} from '../../../shared/Panel'
 import {AddressComponent} from '../../../shared/Address'
+import {Panel, PanelBody, PanelHead} from '../../../shared/Panel'
 
+import {Box, Icon, useTheme} from '@mui/material'
+import {NavLink} from 'react-router-dom'
+import {WithInlineIcon} from 'shared/WithInlineIcon'
 import {Txt} from '../../../alexlibs/mui-extension'
-import {Box, Icon, IconButton, useTheme} from '@mui/material'
-import {SelectCompanyDialog} from '../../../shared/SelectCompany/SelectCompanyDialog'
-import {ScButton} from '../../../shared/Button'
-import React from 'react'
+import {Influencer, Report} from '../../../core/client/report/Report'
 import {useReportContext} from '../../../core/context/ReportContext'
 import {useI18n} from '../../../core/i18n'
 import {siteMap} from '../../../core/siteMap'
-import {NavLink} from 'react-router-dom'
-import {styleUtils, sxUtils} from '../../../core/theme'
-import {Influencer, Report} from '../../../core/client/report/Report'
+import {sxUtils} from '../../../core/theme'
+import {ScButton} from '../../../shared/Button'
 import {ReportInfluencer} from '../ReportInfluencer'
 import {SelectReportAssociation} from '../SelectReportAssociation'
 
@@ -23,9 +22,7 @@ interface Props {
 export const ReportCompany = ({report, canEdit}: Props) => {
   const _report = useReportContext()
   const {m} = useI18n()
-  const theme = useTheme()
-  const {websiteURL, vendor, companyAddress, companyName, companyBrand, companySiret, phone, influencer} = report
-
+  const {websiteURL, vendor, companyAddress, companyId, companyName, companyBrand, companySiret, phone, influencer} = report
   return (
     <Panel stretch>
       <PanelHead
@@ -39,39 +36,25 @@ export const ReportCompany = ({report, canEdit}: Props) => {
           )
         }
       >
-        {report.companyId ? (
-          <NavLink to={siteMap.logged.company(report.companyId)}>
-            {m.company}
-            <IconButton size="small" sx={{ml: 1}}>
-              <Icon>open_in_new</Icon>
-            </IconButton>
-          </NavLink>
-        ) : (
-          <> {m.company} </>
-        )}
+        <div className="">
+          <WithInlineIcon icon="store">
+            {m.company}{' '}
+            {companyId && (
+              <NavLink to={siteMap.logged.company(companyId)}>
+                <span className="text-sm">(voir sa fiche)</span>
+              </NavLink>
+            )}
+          </WithInlineIcon>
+        </div>
       </PanelHead>
-      <PanelBody
-        sx={{
-          display: 'flex',
-          justifyContent: 'space-between',
-        }}
-      >
+      <PanelBody className="flex justify-between">
         <div>
-          {companySiret && (
-            <Box sx={sxUtils.fontBig} style={{marginBottom: theme.spacing(1 / 2)}}>
-              {companySiret}
-            </Box>
-          )}
-          <Box
-            sx={{
-              color: t => t.palette.text.secondary,
-              fontSize: t => styleUtils(t).fontSize.small,
-            }}
-          >
-            {companyName && <Box sx={{fontWeight: t => t.typography.fontWeightBold}}>{companyName}</Box>}
-            {companyBrand && <Box fontStyle="italic">{companyBrand}</Box>}
+          {companySiret && <div className="mb-1">{companySiret}</div>}
+          <div className="text-gray-500 text-sm">
+            {companyName && <div className="font-bold">{companyName}</div>}
+            {companyBrand && <div className="italic">{companyBrand}</div>}
             <AddressComponent address={companyAddress} />
-          </Box>
+          </div>
           {vendor && <div>{vendor}</div>}
           {websiteURL && (
             <Txt link block sx={{mt: 1}}>
@@ -83,14 +66,6 @@ export const ReportCompany = ({report, canEdit}: Props) => {
           {phone && <Phone {...{phone}} />}
           {influencer && <InfluencerBlock {...{influencer}} />}
         </div>
-        <Icon
-          sx={{
-            fontSize: 64,
-            color: t => t.palette.divider,
-          }}
-        >
-          store
-        </Icon>
       </PanelBody>
     </Panel>
   )

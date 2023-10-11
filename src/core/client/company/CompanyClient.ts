@@ -1,8 +1,10 @@
 import {
+  CompaniesToImport,
   Company,
   CompanyCreation,
   CompanySearch,
   CompanyToActivate,
+  CompanyToFollowUp,
   CompanyUpdate,
   CompanyWithAccessLevel,
   CompanyWithReportsCount,
@@ -49,10 +51,20 @@ export class CompanyClient {
     return this.client.post<Company>(`/companies`, {body: company})
   }
 
+  readonly importCompanies = (companiesToImport: CompaniesToImport) => {
+    return this.client.post(`/import/companies`, {body: companiesToImport})
+  }
+
   readonly downloadActivationDocument = (companyIds: Id[]) => {
     return this.client
       .postGetPdf(`/companies/activation-document`, {body: {companyIds}})
       .then(directDownloadBlob(`signalement_depot_${format(new Date(), 'ddMMyy')}`))
+  }
+
+  readonly downloadFollowUpDocument = (companyIds: Id[]) => {
+    return this.client
+      .postGetPdf(`/companies/follow-up-document `, {body: {companyIds}})
+      .then(directDownloadBlob(`signalement_relance_${format(new Date(), 'ddMMyy')}`))
   }
 
   readonly getHosts = (id: Id) => {
@@ -74,8 +86,16 @@ export class CompanyClient {
     )
   }
 
+  readonly fetchToFollowUp = () => {
+    return this.client.get<CompanyToFollowUp[]>(`/companies/inactive-companies`)
+  }
+
   readonly confirmCompaniesPosted = (ids: Id[]) => {
     return this.client.post<void>(`/companies/companies-posted`, {body: {companyIds: ids}})
+  }
+
+  readonly confirmCompaniesFollowedUp = (ids: Id[]) => {
+    return this.client.post<void>(`/companies/follow-up-posted`, {body: {companyIds: ids}})
   }
 
   private static readonly mapCompany = (company: {[key in keyof CompanyWithReportsCount]: any}): CompanyWithReportsCount => ({
