@@ -127,7 +127,7 @@ export const ReportComponent = () => {
                 </Tooltip>
               </ReportPostAction>
 
-              {connectedUser.isDGCCRF && (
+              {(connectedUser.isDGCCRF || connectedUser.isDGAL) && (
                 <ReportPostAction
                   actionType={EventActionValues.Control}
                   label={m.markDgccrfControlDone}

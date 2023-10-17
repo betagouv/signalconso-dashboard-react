@@ -68,7 +68,7 @@ export const ScSidebar = ({connectedUser, logout}: {connectedUser: UserWithPermi
           {m.menu_users}
         </SidebarItem>
       )}
-      {[Roles.Admin, Roles.DGCCRF].includes(connectedUser.role) && (
+      {[Roles.Admin, Roles.DGCCRF, Roles.DGAL].includes(connectedUser.role) && (
         <SidebarItem onClick={closeSidebarIfNotPinned} to={path(siteMap.logged.subscriptions)} icon={EntityIcon.subscription}>
           {m.menu_subscriptions}
         </SidebarItem>
@@ -99,7 +99,7 @@ export const ScSidebar = ({connectedUser, logout}: {connectedUser: UserWithPermi
       <SidebarItem onClick={closeSidebarIfNotPinned} to={path(siteMap.logged.settings)} icon="settings">
         {m.menu_settings}
       </SidebarItem>
-      {[Roles.Admin, Roles.DGCCRF].includes(connectedUser.role) && (
+      {[Roles.Admin, Roles.DGCCRF, Roles.DGAL].includes(connectedUser.role) && (
         <SidebarItem onClick={closeSidebarIfNotPinned} to={path(siteMap.logged.modeEmploiDGCCRF)} icon="help">
           {m.menu_modeEmploiDGCCRF}
         </SidebarItem>

@@ -8,7 +8,7 @@ import {Panel, PanelHead} from '../../shared/Panel'
 
 import {ScOption} from 'core/helper/ScOption'
 import {IconBtn} from '../../alexlibs/mui-extension'
-import {isUserActive, RoleAdminOrDggcrf, User} from '../../core/client/user/User'
+import {isUserActive, RoleAdminOrDggcrfOrDgal, User} from '../../core/client/user/User'
 import {useToast} from '../../core/toast'
 import {ScDialog} from '../../shared/ScDialog'
 import {DebouncedInput} from '../../shared/DebouncedInput'
@@ -18,15 +18,17 @@ import {UserDeleteButton} from './UserDeleteButton'
 
 export const AdminUsersList = () => <UsersList role="Admin" />
 export const DgccrfUsersList = () => <UsersList role="DGCCRF" />
+export const DgalUsersList = () => <UsersList role="DGAL" />
 
 interface Props {
-  role: RoleAdminOrDggcrf
+  role: RoleAdminOrDggcrfOrDgal
 }
 
 const UsersList = ({role}: Props) => {
   const {m, formatDate} = useI18n()
   const usersContext = useUsersContext()
-  const _users = role === 'Admin' ? usersContext.searchAdmin : usersContext.searchDgccrf
+  const _users =
+    role === 'Admin' ? usersContext.searchAdmin : role === 'DGCCRF' ? usersContext.searchDgccrf : usersContext.searchDgal
   const _validateEmail = usersContext.forceValidateEmail
   const {toastError, toastSuccess} = useToast()
 

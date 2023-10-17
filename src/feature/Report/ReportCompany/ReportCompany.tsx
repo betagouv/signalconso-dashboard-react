@@ -13,6 +13,7 @@ import {sxUtils} from '../../../core/theme'
 import {ScButton} from '../../../shared/Button'
 import {ReportInfluencer} from '../ReportInfluencer'
 import {SelectReportAssociation} from '../SelectReportAssociation'
+import {useLogin} from '../../../core/context/LoginContext'
 
 interface Props {
   report: Report
@@ -21,6 +22,7 @@ interface Props {
 
 export const ReportCompany = ({report, canEdit}: Props) => {
   const _report = useReportContext()
+  const {connectedUser} = useLogin()
   const {m} = useI18n()
   const {websiteURL, vendor, companyAddress, companyId, companyName, companyBrand, companySiret, phone, influencer} = report
   return (
@@ -39,7 +41,7 @@ export const ReportCompany = ({report, canEdit}: Props) => {
         <div className="">
           <WithInlineIcon icon="store">
             {m.company}{' '}
-            {companyId && (
+            {companyId && !connectedUser.isDGAL && (
               <NavLink to={siteMap.logged.company(companyId)}>
                 <span className="text-sm">(voir sa fiche)</span>
               </NavLink>
