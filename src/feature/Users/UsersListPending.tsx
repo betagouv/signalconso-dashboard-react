@@ -29,7 +29,7 @@ const UsersListPending = ({role}: Props) => {
   const {connectedUser} = useLogin()
   const {toastError, toastSuccess} = useToast()
   const copyActivationLink = (token: string) => {
-    let activationLink = window.location.host + '/#/dgccrf/rejoindre/?token=' + token
+    let activationLink = window.location.host + '/#/agent/rejoindre/?token=' + token
     navigator.clipboard.writeText(activationLink).then(_ => toastSuccess(m.addressCopied))
   }
 

@@ -40,7 +40,7 @@ export const siteMap = {
   loggedout: {
     welcome: '/',
     activatePro: (siret: string = `:siret`) => `/entreprise/rejoindre/${siret}`,
-    activateDgccrf: `/dgccrf/rejoindre`,
+    activateAgent: `/agent/rejoindre`,
     activateAdmin: `/admin/rejoindre`,
     consumerReview: (reportId: Id = `:reportId`) => `/suivi-des-signalements/${reportId}/avis`,
     register: `/activation`,
