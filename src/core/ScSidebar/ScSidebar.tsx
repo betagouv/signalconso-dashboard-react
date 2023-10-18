@@ -73,7 +73,7 @@ export const ScSidebar = ({connectedUser, logout}: {connectedUser: UserWithPermi
           {m.menu_subscriptions}
         </SidebarItem>
       )}
-      {[Roles.Admin, Roles.DGCCRF].includes(connectedUser.role) && (
+      {[Roles.Admin, Roles.DGCCRF, Roles.DGAL].includes(connectedUser.role) && (
         <SidebarItem onClick={closeSidebarIfNotPinned} to={path(siteMap.logged.stats)} icon={EntityIcon.stats}>
           {m.menu_stats}
         </SidebarItem>
