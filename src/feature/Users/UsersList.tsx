@@ -8,27 +8,27 @@ import {Panel, PanelHead} from '../../shared/Panel'
 
 import {ScOption} from 'core/helper/ScOption'
 import {IconBtn} from '../../alexlibs/mui-extension'
-import {isUserActive, RoleAdminOrDggcrfOrDgal, User} from '../../core/client/user/User'
+import {isUserActive, RoleAdminOrAgent, RoleAgents, roleAgents, User} from '../../core/client/user/User'
 import {useToast} from '../../core/toast'
 import {ScDialog} from '../../shared/ScDialog'
 import {DebouncedInput} from '../../shared/DebouncedInput'
 import {TrueFalseUndefined} from '../../shared/TrueFalseUndefined'
-import {UserInvitationDialog} from './UserInvitationDialog'
+import {UserAgentInvitationDialog} from './UserAgentInvitationDialog'
 import {UserDeleteButton} from './UserDeleteButton'
+import {SelectRoleAgent} from '../../shared/SelectRoleAgent'
+import {UserAdminInvitationDialog} from './UserAdminInvitationDialog'
 
-export const AdminUsersList = () => <UsersList role="Admin" />
-export const DgccrfUsersList = () => <UsersList role="DGCCRF" />
-export const DgalUsersList = () => <UsersList role="DGAL" />
+export const AdminUsersList = () => <UsersList adminView />
+export const AgentUsersList = () => <UsersList />
 
 interface Props {
-  role: RoleAdminOrDggcrfOrDgal
+  adminView?: boolean
 }
 
-const UsersList = ({role}: Props) => {
+const UsersList = ({adminView}: Props) => {
   const {m, formatDate} = useI18n()
   const usersContext = useUsersContext()
-  const _users =
-    role === 'Admin' ? usersContext.searchAdmin : role === 'DGCCRF' ? usersContext.searchDgccrf : usersContext.searchDgal
+  const _users = adminView ? usersContext.searchAdmin : usersContext.searchAgent
   const _validateEmail = usersContext.forceValidateEmail
   const {toastError, toastSuccess} = useToast()
 
@@ -41,6 +41,11 @@ const UsersList = ({role}: Props) => {
   }, [_users.error])
 
   const extraColumnsForDgccrf: DatatableColumnProps<User>[] = [
+    {
+      head: 'Type',
+      id: 'type',
+      render: _ => _.role,
+    },
     {
       head: m.lastValidationDate,
       id: 'lastValidation',
@@ -89,7 +94,7 @@ const UsersList = ({role}: Props) => {
       head: m.email,
       render: _ => (
         <Txt bold>
-          <Icon sx={{mb: -0.5, mr: 1, color: t => t.palette.primary.main}}>{role === 'Admin' ? 'local_police' : 'badge'}</Icon>
+          <Icon sx={{mb: -0.5, mr: 1, color: t => t.palette.primary.main}}>{adminView ? 'local_police' : 'badge'}</Icon>
           {_.email}
         </Txt>
       ),
@@ -104,7 +109,7 @@ const UsersList = ({role}: Props) => {
       id: 'lastName',
       render: _ => _.lastName,
     },
-    ...(role === 'Admin' ? [] : extraColumnsForDgccrf),
+    ...(adminView ? [] : extraColumnsForDgccrf),
     {
       id: 'delete',
       render: _ => <UserDeleteButton userId={_.id} onDelete={_users.fetch} />,
@@ -119,11 +124,13 @@ const UsersList = ({role}: Props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
+  const parsedRole = (_users.filters.role ?? roleAgents) as RoleAgents[]
+
   return (
     <>
       <Panel elevation={3}>
         <PanelHead sx={{pb: 2}} bottomDivider={true}>
-          <UserInvitationDialog role={role} />
+          {adminView ? <UserAdminInvitationDialog /> : <UserAgentInvitationDialog />}
         </PanelHead>
         <Datatable
           id="userslist"
@@ -140,6 +147,14 @@ const UsersList = ({role}: Props) => {
                   />
                 )}
               </DebouncedInput>
+
+              {!adminView && (
+                <SelectRoleAgent
+                  sx={{mr: 2}}
+                  value={parsedRole}
+                  onChange={_ => _users.updateFilters(prev => ({...prev, role: _}))}
+                />
+              )}
 
               <TrueFalseUndefined
                 value={_users.filters.active}

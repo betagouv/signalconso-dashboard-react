@@ -1,4 +1,4 @@
-import {isUserActive, User, UserEdit, UserPending, UserRaw, UserSearch} from './User'
+import {isUserActive, RoleAgents, User, UserEdit, UserPending, UserRaw, UserSearch} from './User'
 import {ApiClientApi} from '../ApiClient'
 import {Id, Paginate} from '../../model'
 import {paginateData} from '../../helper'
@@ -26,23 +26,14 @@ export class UserClient {
         return filters.active === undefined || isUserActive(_) === filters.active
       })
       .filter(_ => {
-        return !filters.role || _.role === filters.role
+        return !filters.role || filters.role.length === 0 || filters.role.includes(_.role)
       })
     return paginateData<User>(filters.limit, filters.offset)(users)
   }
 
-  readonly fetchPendingDGCCRF = () => {
-    return this.client.get<UserPending[]>(`/account/agent/pending?role=DGCCRF`).then(_ =>
-      _.map(_ => {
-        _.tokenCreation = new Date(_.tokenCreation)
-        _.tokenExpiration = new Date(_.tokenExpiration)
-        return _
-      }),
-    )
-  }
-
-  readonly fetchPendingDGAL = () => {
-    return this.client.get<UserPending[]>(`/account/agent/pending?role=DGAL`).then(_ =>
+  readonly fetchPendingAgent = (role?: RoleAgents) => {
+    const url = role ? `/account/agent/pending?role=${role}` : '/account/agent/pending'
+    return this.client.get<UserPending[]>(url).then(_ =>
       _.map(_ => {
         _.tokenCreation = new Date(_.tokenCreation)
         _.tokenExpiration = new Date(_.tokenExpiration)
