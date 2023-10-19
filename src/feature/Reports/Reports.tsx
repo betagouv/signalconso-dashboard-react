@@ -738,7 +738,7 @@ export const Reports = () => {
               render: _ => (
                 <>
                   <Box component="span" sx={{marginBottom: '-1px'}}>
-                    {_.report.companyId ? (
+                    {_.report.companyId && !connectedUser.isDGAL ? (
                       <>
                         <NavLink to={siteMap.logged.company(_.report.companyId)}>
                           <Txt link>{_.report.companyName}</Txt>
@@ -781,7 +781,7 @@ export const Reports = () => {
               head: m.siret,
               render: _ => (
                 <>
-                  {_.report.companyId ? (
+                  {_.report.companyId && !connectedUser.isDGAL ? (
                     <NavLink to={siteMap.logged.company(_.report.companyId)}>
                       <Txt link sx={{marginBottom: '-1px'}}>
                         {_.report.companySiret}

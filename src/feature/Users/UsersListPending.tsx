@@ -12,15 +12,24 @@ import {Icon, Tooltip} from '@mui/material'
 import {useLogin} from '../../core/context/LoginContext'
 import {sxUtils} from '../../core/theme'
 import {ScOption} from 'core/helper/ScOption'
+import {RoleAdminOrDggcrfOrDgal} from '../../core/client/user/User'
 
-export const UsersListPending = () => {
-  const _users = useUsersContext().dgccrfPending
-  const _invite = useUsersContext().inviteDgccrf
+export const DgccrfUsersListPending = () => <UsersListPending role="DGCCRF" />
+export const DgalUsersListPending = () => <UsersListPending role="DGAL" />
+
+interface Props {
+  role: 'DGCCRF' | 'DGAL'
+}
+
+const UsersListPending = ({role}: Props) => {
+  const usersContext = useUsersContext()
+  const _users = role === 'DGCCRF' ? usersContext.dgccrfPending : usersContext.dgalPending
+  const _invite = role === 'DGCCRF' ? usersContext.inviteDgccrf : usersContext.inviteDgal
   const {m, formatDate} = useI18n()
   const {connectedUser} = useLogin()
   const {toastError, toastSuccess} = useToast()
   const copyActivationLink = (token: string) => {
-    let activationLink = window.location.host + '/#/dgccrf/rejoindre/?token=' + token
+    let activationLink = window.location.host + '/#/agent/rejoindre/?token=' + token
     navigator.clipboard.writeText(activationLink).then(_ => toastSuccess(m.addressCopied))
   }
 

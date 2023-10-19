@@ -9,9 +9,9 @@ import {ScInput} from '../../shared/ScInput'
 
 import {ScOption} from 'core/helper/ScOption'
 import {ScDialog} from '../../shared/ScDialog'
-import {RoleAdminOrDggcrf} from 'core/model'
+import {RoleAdminOrDggcrfOrDgal} from 'core/model'
 
-export const UserInvitationDialog = ({role}: {role: RoleAdminOrDggcrf}) => {
+export const UserInvitationDialog = ({role}: {role: RoleAdminOrDggcrfOrDgal}) => {
   const {m} = useI18n()
   const {
     register,
@@ -21,12 +21,33 @@ export const UserInvitationDialog = ({role}: {role: RoleAdminOrDggcrf}) => {
   const usersContext = useUsersContext()
   const {toastSuccess} = useToast()
 
-  const _invite = role === 'Admin' ? usersContext.inviteAdmin : usersContext.inviteDgccrf
-  const buttonLabel = role === 'Admin' ? m.invite_admin : m.invite_dgccrf
-  const dialogTitle = role === 'Admin' ? m.users_invite_dialog_title_admin : m.users_invite_dialog_title_dgcrrf
-  const dialogDesc = role === 'Admin' ? m.users_invite_dialog_desc_admin : m.users_invite_dialog_desc_dgccrf
-  const emailRegexp = role === 'Admin' ? regexp.emailAdmin : regexp.emailDGCCRF
-  const emailValidationMessage = role === 'Admin' ? m.emailAdminValidation : m.emailDGCCRFValidation
+  const selectFromRole = <T,>(role: RoleAdminOrDggcrfOrDgal, admin: T, dgccrf: T, dgal: T) => {
+    switch (role) {
+      case 'Admin':
+        return admin
+      case 'DGCCRF':
+        return dgccrf
+      case 'DGAL':
+        return dgal
+    }
+  }
+
+  const _invite = selectFromRole(role, usersContext.inviteAdmin, usersContext.inviteDgccrf, usersContext.inviteDgal)
+  const buttonLabel = selectFromRole(role, m.invite_admin, m.invite_dgccrf, m.invite_dgal)
+  const dialogTitle = selectFromRole(
+    role,
+    m.users_invite_dialog_title_admin,
+    m.users_invite_dialog_title_dgcrrf,
+    m.users_invite_dialog_title_dgal,
+  )
+  const dialogDesc = selectFromRole(
+    role,
+    m.users_invite_dialog_desc_admin,
+    m.users_invite_dialog_desc_dgccrf,
+    m.users_invite_dialog_desc_dgal,
+  )
+  const emailRegexp = selectFromRole(role, regexp.emailAdmin, regexp.emailDGCCRF, regexp.emailDGAL)
+  const emailValidationMessage = selectFromRole(role, m.emailAdminValidation, m.emailDGCCRFValidation, m.emailDGALValidation)
 
   return (
     <ScDialog

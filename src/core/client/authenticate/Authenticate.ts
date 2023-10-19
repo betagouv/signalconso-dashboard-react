@@ -14,6 +14,7 @@ export interface UserWithPermission {
 export enum Roles {
   Admin = 'Admin',
   DGCCRF = 'DGCCRF',
+  DGAL = 'DGAL',
   Pro = 'Professionnel',
   ToActivate = 'ToActivate',
 }
