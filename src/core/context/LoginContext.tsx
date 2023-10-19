@@ -12,7 +12,7 @@ interface LoginProviderProps {
 }
 
 interface UseLoginProps {
-  connectedUser: UserWithPermission & {isDGCCRF: boolean; isPro: boolean; isNotPro: boolean; isAdmin: boolean}
+  connectedUser: UserWithPermission & {isDGCCRF: boolean; isDGAL: boolean; isPro: boolean; isNotPro: boolean; isAdmin: boolean}
   setConnectedUser: Dispatch<SetStateAction<UserWithPermission>>
   logout: () => void
   apiSdk: SignalConsoApiSdk
@@ -32,6 +32,7 @@ export const LoginProvider = ({apiSdk, connectedUser: _connectedUser, onLogout, 
         connectedUser: {
           ...connectedUser,
           isDGCCRF: connectedUser.role === Roles.DGCCRF,
+          isDGAL: connectedUser.role === Roles.DGAL,
           isPro: connectedUser.role === Roles.Pro,
           isNotPro: connectedUser.role !== Roles.Pro,
           isAdmin: connectedUser.role === Roles.Admin,

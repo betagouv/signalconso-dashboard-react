@@ -10,8 +10,8 @@ export class UserClient {
     return this.client.get<User>(`/account`)
   }
 
-  readonly searchAdminOrDgccrf = async (filters: UserSearch): Promise<Paginate<User>> => {
-    const rawUsers = await this.client.get<UserRaw[]>(`/account/admin-or-dgccrf/users`)
+  readonly searchAdminOrAgent = async (filters: UserSearch): Promise<Paginate<User>> => {
+    const rawUsers = await this.client.get<UserRaw[]>(`/account/admin-or-agent/users`)
     const users: User[] = rawUsers
       .map(({lastEmailValidation, ...rest}) => {
         return {
@@ -32,7 +32,17 @@ export class UserClient {
   }
 
   readonly fetchPendingDGCCRF = () => {
-    return this.client.get<UserPending[]>(`/account/dgccrf/pending`).then(_ =>
+    return this.client.get<UserPending[]>(`/account/agent/pending?role=DGCCRF`).then(_ =>
+      _.map(_ => {
+        _.tokenCreation = new Date(_.tokenCreation)
+        _.tokenExpiration = new Date(_.tokenExpiration)
+        return _
+      }),
+    )
+  }
+
+  readonly fetchPendingDGAL = () => {
+    return this.client.get<UserPending[]>(`/account/agent/pending?role=DGAL`).then(_ =>
       _.map(_ => {
         _.tokenCreation = new Date(_.tokenCreation)
         _.tokenExpiration = new Date(_.tokenExpiration)
@@ -42,7 +52,11 @@ export class UserClient {
   }
 
   readonly inviteDGCCRF = (email: string) => {
-    return this.client.post<void>(`/account/dgccrf/invitation`, {body: {email}})
+    return this.client.post<void>(`/account/agent/invitation?role=DGCCRF`, {body: {email}})
+  }
+
+  readonly inviteDGAL = (email: string) => {
+    return this.client.post<void>(`/account/agent/invitation?role=DGAL`, {body: {email}})
   }
 
   readonly inviteAdmin = (email: string) => {

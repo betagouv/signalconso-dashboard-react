@@ -157,7 +157,7 @@ export const fr = {
     cancel: 'Annuler',
     help: 'Aide',
     created_at: 'Créé le',
-    ignoredReportCount: 'Signalements ignorés',
+    ignoredReportCount: 'Signalements ignorés sous 3 mois',
     followUpCount: 'Nb relances',
     kind: "Status d'identification",
     identified: 'Identifié',
@@ -191,7 +191,8 @@ export const fr = {
     value: 'Value',
     invite: 'Inviter',
     invite_admin: 'Inviter un admin',
-    invite_dgccrf: 'Inviter un agent',
+    invite_dgccrf: 'Inviter un agent DGCCRF',
+    invite_dgal: 'Inviter un agent DGAL',
     add_email_to_blacklist: 'Ajouter un email à la liste noire',
     activate_all: 'Tout Activer',
     block_all: 'Tout Bloquer',
@@ -509,7 +510,7 @@ export const fr = {
     accountActivated: 'Compte activé',
     accountsActivated: `Comptes activés`,
     companiesToActivate: "En attente d'activation",
-    companiesToFollowUp: 'Entreprises à relancer',
+    companiesToFollowUp: 'Entreprise inactives',
     companiesToActivateDesc: "Cette page liste les entreprises auquel il faudrait envoyer un courrier d'activation.",
     companiesToFollowUpDesc:
       'Cette page liste les entreprises qui ne consultent plus leurs signalements sur une période de 3 mois, mais qui ont un compte enregistrant au moins une connexion.',
@@ -554,7 +555,9 @@ export const fr = {
     validateLetterSentDesc:
       'Les courriers seront considérés envoyés pour les entreprises sélectionnées. Cette action est irrévocable.',
     dgccrfUsers: 'Agents DGCCRF',
+    dgalUsers: 'Agents DGAL',
     dgccrfUsersPending: 'Agents DGCCRF en attente',
+    dgalUsersPending: 'Agents DGAL en attente',
     adminUsers: 'Admins',
     consumersPending: 'Consos non validés',
     blacklistedConsumers: 'Liste noire des consos',
@@ -565,6 +568,7 @@ export const fr = {
     invitationDate: "Date d'invitation",
     connectedUnder3Months: 'Connecté dans les 3 derniers mois',
     users_invite_dialog_title_dgcrrf: 'Inviter un agent DGCCRF',
+    users_invite_dialog_title_dgal: 'Inviter un agent DGAL',
     users_invite_dialog_title_admin: 'Inviter un administrateur SignalConso',
     enableAll: `Tout activer`,
     disable: `Désactiver`,
@@ -573,6 +577,8 @@ export const fr = {
     add_email_to_blacklist_desc_alert: 'Les signalements envoyés en utilisant cet email ne seront plus enregistrés.',
     users_invite_dialog_desc_dgccrf:
       "Un courrier électronique sera envoyé à l'adresse e-mail saisie ci-dessus avec un lien sécurisé permettant de créer un compte DGCCRF.",
+    users_invite_dialog_desc_dgal:
+      "Un courrier électronique sera envoyé à l'adresse e-mail saisie ci-dessus avec un lien sécurisé permettant de créer un compte DGAL.",
     users_invite_dialog_desc_admin:
       "Un courrier électronique sera envoyé à l'adresse e-mail saisie ci-dessus avec un lien sécurisé permettant de créer un compte administrateur SignalConso.",
     users_invite_dialog_alert_admin: "Cet utilisateur aura les droits ADMINISTRATEUR sur l'ensemble de SignalConso !",
@@ -618,6 +624,7 @@ export const fr = {
     emailAdminValidation:
       'Email invalide. Emails acceptés : *@dgccrf.finances.gouv.fr, ou *@beta.gouv.fr, ou *.betagouv@gmail.com, ou *.betagouv+suffixe@gmail.com',
     emailDGCCRFValidation: 'Email invalide. Emails acceptés : *.gouv.fr',
+    emailDGALValidation: 'Email invalide. Emails acceptés : *.gouv.fr',
     companyAccessesTitle: 'Gestion des accès',
     daily: 'Quotidienne',
     yourAccountIsActivated: `Votre compte est bien activé, vous pouvez consulter vos signalements.`,

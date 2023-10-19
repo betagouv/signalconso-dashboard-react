@@ -21,6 +21,8 @@ export const PageTabs = ({children}: Props) => {
       value={value}
       indicatorColor="primary"
       textColor="primary"
+      variant="scrollable"
+      scrollButtons="auto"
       onChange={handleChange}
       sx={{
         mb: 3,

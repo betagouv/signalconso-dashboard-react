@@ -112,7 +112,7 @@ const AppLogin = () => {
                 </Route>
                 <Route path={siteMap.loggedout.activatePro()}>{userActivation}</Route>
                 <Route path={siteMap.loggedout.activateAdmin}>{userActivation}</Route>
-                <Route path={siteMap.loggedout.activateDgccrf}>{userActivation}</Route>
+                <Route path={siteMap.loggedout.activateAgent}>{userActivation}</Route>
                 <Route path={siteMap.loggedout.consumerReview()} component={RedirectToWebsite} />
                 <Route path="/">
                   {authResponse ? (
