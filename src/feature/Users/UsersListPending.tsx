@@ -60,6 +60,11 @@ export const UsersListPending = () => {
             render: _ => <Txt bold>{_.email}</Txt>,
           },
           {
+            head: 'Type',
+            id: 'type',
+            render: _ => _.role,
+          },
+          {
             id: 'tokenCreation',
             head: m.invitationDate,
             render: _ => formatDate(_.tokenCreation),
