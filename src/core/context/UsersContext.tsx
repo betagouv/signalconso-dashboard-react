@@ -10,8 +10,8 @@ export interface UsersContextProps {
   searchAdmin: UsePaginate<User, UserSearch>
   searchAgent: UsePaginate<User, UserSearch>
   agentPending: UseFetcher<SignalConsoApiSdk['secured']['user']['fetchPendingAgent'], ApiError>
-  inviteDgccrf: UseFetcher<SignalConsoApiSdk['secured']['user']['inviteDGCCRF'], ApiError>
-  inviteDgal: UseFetcher<SignalConsoApiSdk['secured']['user']['inviteDGAL'], ApiError>
+  inviteAgent: UseFetcher<SignalConsoApiSdk['secured']['user']['inviteAgent'], ApiError>
+  importAgents: UseFetcher<SignalConsoApiSdk['secured']['user']['importAgents'], ApiError>
   inviteAdmin: UseFetcher<SignalConsoApiSdk['secured']['user']['inviteAdmin'], ApiError>
   changePassword: UseFetcher<SignalConsoApiSdk['secured']['user']['changePassword'], ApiError>
   activate: UseFetcher<SignalConsoApiSdk['public']['user']['activateAccount'], ApiError>
@@ -45,8 +45,8 @@ export const UsersProvider = ({api, children}: Props) => {
   const forceValidateEmail = useFetcher(api.secured.user.forceValidateEmail)
   const activate = useFetcher(api.public.user.activateAccount)
   const agentPending = useFetcher(api.secured.user.fetchPendingAgent)
-  const inviteDgccrf = useFetcher(api.secured.user.inviteDGCCRF)
-  const inviteDgal = useFetcher(api.secured.user.inviteDGAL)
+  const inviteAgent = useFetcher(api.secured.user.inviteAgent)
+  const importAgents = useFetcher(api.secured.user.importAgents)
   const inviteAdmin = useFetcher(api.secured.user.inviteAdmin)
   const fetchTokenInfo = useFetcher(api.public.user.fetchTokenInfo)
   const getConnectedUser = useFetcher(api.secured.user.fetchConnectedUser)
@@ -57,8 +57,8 @@ export const UsersProvider = ({api, children}: Props) => {
         searchAdmin,
         searchAgent,
         agentPending,
-        inviteDgccrf,
-        inviteDgal,
+        inviteAgent,
+        importAgents,
         inviteAdmin,
         changePassword,
         activate,

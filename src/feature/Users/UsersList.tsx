@@ -1,6 +1,6 @@
 import {Icon, InputBase, Tooltip} from '@mui/material'
 import {useCallback, useEffect} from 'react'
-import {Btn, Txt} from '../../alexlibs/mui-extension'
+import {Txt} from '../../alexlibs/mui-extension'
 import {useUsersContext} from '../../core/context/UsersContext'
 import {useI18n} from '../../core/i18n'
 import {Datatable, DatatableColumnProps} from '../../shared/Datatable/Datatable'
@@ -8,7 +8,7 @@ import {Panel, PanelHead} from '../../shared/Panel'
 
 import {ScOption} from 'core/helper/ScOption'
 import {IconBtn} from '../../alexlibs/mui-extension'
-import {isUserActive, RoleAdminOrAgent, RoleAgents, roleAgents, User} from '../../core/client/user/User'
+import {isUserActive, RoleAgents, roleAgents, User} from '../../core/client/user/User'
 import {useToast} from '../../core/toast'
 import {ScDialog} from '../../shared/ScDialog'
 import {DebouncedInput} from '../../shared/DebouncedInput'
@@ -17,6 +17,7 @@ import {UserAgentInvitationDialog} from './UserAgentInvitationDialog'
 import {UserDeleteButton} from './UserDeleteButton'
 import {SelectRoleAgent} from '../../shared/SelectRoleAgent'
 import {UserAdminInvitationDialog} from './UserAdminInvitationDialog'
+import {UserAgentsImportDialog} from './UserAgentsImportDialog'
 
 export const AdminUsersList = () => <UsersList adminView />
 export const AgentUsersList = () => <UsersList />
@@ -130,7 +131,14 @@ const UsersList = ({adminView}: Props) => {
     <>
       <Panel elevation={3}>
         <PanelHead sx={{pb: 2}} bottomDivider={true}>
-          {adminView ? <UserAdminInvitationDialog /> : <UserAgentInvitationDialog />}
+          {adminView ? (
+            <UserAdminInvitationDialog />
+          ) : (
+            <>
+              <UserAgentInvitationDialog />
+              <UserAgentsImportDialog />
+            </>
+          )}
         </PanelHead>
         <Datatable
           id="userslist"

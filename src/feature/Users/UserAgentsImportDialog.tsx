@@ -1,65 +1,48 @@
-import {Controller, useForm} from 'react-hook-form'
-import {Alert, Txt} from '../../alexlibs/mui-extension'
-import {useUsersContext} from '../../core/context/UsersContext'
-import {regexp} from '../../core/helper/regexp'
 import {useI18n} from '../../core/i18n'
-import {useToast} from '../../core/toast'
-import {ScButton} from '../../shared/Button'
-import {ScInput} from '../../shared/ScInput'
-
-import {ScOption} from 'core/helper/ScOption'
-import {ScDialog} from '../../shared/ScDialog'
-import {RoleAgents} from 'core/model'
-import {ToggleButton, ToggleButtonGroup} from '@mui/material'
 import React from 'react'
+import {Controller, useForm} from 'react-hook-form'
+import {RoleAgents} from '../../core/client/user/User'
+import {useUsersContext} from '../../core/context/UsersContext'
+import {useToast} from '../../core/toast'
+import {ScDialog} from '../../shared/ScDialog'
+import {ScOption} from '../../core/helper/ScOption'
+import {Alert, Txt} from '../../alexlibs/mui-extension'
+import {ToggleButton, ToggleButtonGroup} from '@mui/material'
+import {ScButton} from '../../shared/Button'
 
-export const UserAgentInvitationDialog = () => {
+export const UserAgentsImportDialog = () => {
   const {m} = useI18n()
   const {
     register,
     handleSubmit,
-    watch,
     control,
-    formState: {errors, isValid},
-  } = useForm<{role: RoleAgents; email: string}>({mode: 'onChange'})
+    formState: {isValid},
+  } = useForm<{role: RoleAgents; emailFiles: FileList}>({mode: 'onChange'})
   const usersContext = useUsersContext()
   const {toastSuccess} = useToast()
-  const _role = watch('role')
 
-  const selectFromRole = <T,>(role: RoleAgents, dgccrf: T, dgal: T) => {
-    switch (role) {
-      case 'DGCCRF':
-        return dgccrf
-      case 'DGAL':
-        return dgal
-    }
-  }
-
-  const _invite = usersContext.inviteAgent
-  const emailRegexp = selectFromRole(_role, regexp.emailDGCCRF, regexp.emailDGAL)
-  const emailValidationMessage = selectFromRole(_role, m.emailDGCCRFValidation, m.emailDGALValidation)
-  const buttonLabel = m.invite_agent
-  const dialogTitle = m.users_invite_dialog_title_agent
-  const dialogDesc = m.users_invite_dialog_desc_agent
+  const _invite = usersContext.importAgents
 
   return (
     <ScDialog
       maxWidth="xs"
       onConfirm={(event, close) => {
-        handleSubmit(({role, email}) => {
-          _invite
-            .fetch({}, email, role)
-            .then(() => toastSuccess(m.userInvitationSent))
-            .then(close)
+        handleSubmit(({role, emailFiles}) => {
+          if (emailFiles && emailFiles[0]) {
+            _invite
+              .fetch({}, emailFiles[0], role)
+              .then(() => toastSuccess(m.userInvitationSent))
+              .then(close)
+          }
         })()
       }}
       confirmLabel={m.invite}
-      loading={_invite.loading}
+      loading={_invite?.loading}
       confirmDisabled={!isValid}
-      title={dialogTitle}
+      title="Inviter des agents"
       content={
         <>
-          {ScOption.from(_invite.error?.details?.id)
+          {ScOption.from(_invite?.error?.details?.id)
             .map(errId => (
               <Alert dense type="error" deletable gutterBottom>
                 {m.apiErrorsCode[errId as keyof typeof m.apiErrorsCode]}
@@ -92,27 +75,15 @@ export const UserAgentInvitationDialog = () => {
           </Alert>
 
           <Txt color="hint" block gutterBottom>
-            {dialogDesc}
+            Un courrier électronique sera envoyé à chaque adresse e-mail saisie dans le fichier avec un lien sécurisé permettant
+            de créer un compte DGCCRF / DGAL.
           </Txt>
-          <ScInput
-            autoFocus
-            fullWidth
-            label={m.email}
-            error={!!errors.email}
-            helperText={errors.email?.message}
-            {...register('email', {
-              required: m.required,
-              pattern: {
-                value: emailRegexp,
-                message: emailValidationMessage,
-              },
-            })}
-          />
+          <input type="file" {...register('emailFiles', {required: m.required})} />
         </>
       }
     >
       <ScButton icon="person_add" variant="outlined" color="primary">
-        {buttonLabel}
+        Import
       </ScButton>
     </ScDialog>
   )
