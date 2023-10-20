@@ -1,7 +1,9 @@
 import {PaginatedFilters} from '../../model'
 import {subMonths} from 'date-fns'
 
-export type RoleAdminOrDggcrfOrDgal = 'Admin' | 'DGCCRF' | 'DGAL'
+export const roleAgents = ['DGCCRF', 'DGAL'] as const
+export type RoleAgents = typeof roleAgents[number]
+export type RoleAdminOrAgent = 'Admin' | RoleAgents
 
 export interface User {
   id: string
@@ -9,7 +11,7 @@ export interface User {
   firstName: string
   lastName: string
   lastEmailValidation: Date
-  role: RoleAdminOrDggcrfOrDgal
+  role: RoleAdminOrAgent
 }
 
 export type UserRaw = Omit<User, 'lastEmailValidation'> & {
@@ -24,6 +26,7 @@ export interface UserEdit {
 }
 
 export interface UserPending {
+  role: RoleAgents
   email: string
   token: string
   tokenCreation: Date
@@ -31,7 +34,7 @@ export interface UserPending {
 }
 
 export interface UserSearch extends PaginatedFilters {
-  role?: RoleAdminOrDggcrfOrDgal
+  role?: RoleAdminOrAgent[]
   email?: string
   active?: boolean
 }

@@ -4,14 +4,12 @@ import {UseFetcher, useFetcher, UsePaginate} from '../../alexlibs/react-hooks-li
 import {SignalConsoApiSdk} from '../ApiSdkInstance'
 import {useScPaginate} from '../../shared/usePaginate'
 import {ApiError} from '../client/ApiClient'
-import {User, UserSearch} from '../client/user/User'
+import {RoleAdminOrAgent, roleAgents, User, UserSearch} from '../client/user/User'
 
 export interface UsersContextProps {
   searchAdmin: UsePaginate<User, UserSearch>
-  searchDgccrf: UsePaginate<User, UserSearch>
-  searchDgal: UsePaginate<User, UserSearch>
-  dgccrfPending: UseFetcher<SignalConsoApiSdk['secured']['user']['fetchPendingDGCCRF'], ApiError>
-  dgalPending: UseFetcher<SignalConsoApiSdk['secured']['user']['fetchPendingDGAL'], ApiError>
+  searchAgent: UsePaginate<User, UserSearch>
+  agentPending: UseFetcher<SignalConsoApiSdk['secured']['user']['fetchPendingAgent'], ApiError>
   inviteDgccrf: UseFetcher<SignalConsoApiSdk['secured']['user']['inviteDGCCRF'], ApiError>
   inviteDgal: UseFetcher<SignalConsoApiSdk['secured']['user']['inviteDGAL'], ApiError>
   inviteAdmin: UseFetcher<SignalConsoApiSdk['secured']['user']['inviteAdmin'], ApiError>
@@ -36,23 +34,17 @@ export const UsersProvider = ({api, children}: Props) => {
   const searchAdmin = useScPaginate<User, UserSearch, ApiError>(api.secured.user.searchAdminOrAgent, {
     limit: 50,
     offset: 0,
-    role: 'Admin',
+    role: ['Admin'],
   })
-  const searchDgccrf = useScPaginate<User, UserSearch, ApiError>(api.secured.user.searchAdminOrAgent, {
+  const searchAgent = useScPaginate<User, UserSearch, ApiError>(api.secured.user.searchAdminOrAgent, {
     limit: 10,
     offset: 0,
-    role: 'DGCCRF',
-  })
-  const searchDgal = useScPaginate<User, UserSearch, ApiError>(api.secured.user.searchAdminOrAgent, {
-    limit: 10,
-    offset: 0,
-    role: 'DGAL',
+    role: roleAgents.map(_ => _ as RoleAdminOrAgent),
   })
   const changePassword = useFetcher(api.secured.user.changePassword)
   const forceValidateEmail = useFetcher(api.secured.user.forceValidateEmail)
   const activate = useFetcher(api.public.user.activateAccount)
-  const dgccrfPending = useFetcher(api.secured.user.fetchPendingDGCCRF)
-  const dgalPending = useFetcher(api.secured.user.fetchPendingDGAL)
+  const agentPending = useFetcher(api.secured.user.fetchPendingAgent)
   const inviteDgccrf = useFetcher(api.secured.user.inviteDGCCRF)
   const inviteDgal = useFetcher(api.secured.user.inviteDGAL)
   const inviteAdmin = useFetcher(api.secured.user.inviteAdmin)
@@ -63,10 +55,8 @@ export const UsersProvider = ({api, children}: Props) => {
     <UsersContext.Provider
       value={{
         searchAdmin,
-        searchDgccrf,
-        searchDgal,
-        dgccrfPending,
-        dgalPending,
+        searchAgent,
+        agentPending,
         inviteDgccrf,
         inviteDgal,
         inviteAdmin,

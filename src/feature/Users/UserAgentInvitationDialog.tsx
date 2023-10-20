@@ -1,4 +1,4 @@
-import {useForm} from 'react-hook-form'
+import {Controller, useForm} from 'react-hook-form'
 import {Alert, Txt} from '../../alexlibs/mui-extension'
 import {useUsersContext} from '../../core/context/UsersContext'
 import {regexp} from '../../core/helper/regexp'
@@ -9,22 +9,25 @@ import {ScInput} from '../../shared/ScInput'
 
 import {ScOption} from 'core/helper/ScOption'
 import {ScDialog} from '../../shared/ScDialog'
-import {RoleAdminOrDggcrfOrDgal} from 'core/model'
+import {RoleAgents} from 'core/model'
+import {ToggleButton, ToggleButtonGroup} from '@mui/material'
+import React from 'react'
 
-export const UserInvitationDialog = ({role}: {role: RoleAdminOrDggcrfOrDgal}) => {
+export const UserAgentInvitationDialog = () => {
   const {m} = useI18n()
   const {
     register,
     handleSubmit,
+    watch,
+    control,
     formState: {errors, isValid},
-  } = useForm<{email: string}>({mode: 'onChange'})
+  } = useForm<{role: RoleAgents; email: string}>({mode: 'onChange'})
   const usersContext = useUsersContext()
   const {toastSuccess} = useToast()
+  const _role = watch('role')
 
-  const selectFromRole = <T,>(role: RoleAdminOrDggcrfOrDgal, admin: T, dgccrf: T, dgal: T) => {
+  const selectFromRole = <T,>(role: RoleAgents, dgccrf: T, dgal: T) => {
     switch (role) {
-      case 'Admin':
-        return admin
       case 'DGCCRF':
         return dgccrf
       case 'DGAL':
@@ -32,28 +35,18 @@ export const UserInvitationDialog = ({role}: {role: RoleAdminOrDggcrfOrDgal}) =>
     }
   }
 
-  const _invite = selectFromRole(role, usersContext.inviteAdmin, usersContext.inviteDgccrf, usersContext.inviteDgal)
-  const buttonLabel = selectFromRole(role, m.invite_admin, m.invite_dgccrf, m.invite_dgal)
-  const dialogTitle = selectFromRole(
-    role,
-    m.users_invite_dialog_title_admin,
-    m.users_invite_dialog_title_dgcrrf,
-    m.users_invite_dialog_title_dgal,
-  )
-  const dialogDesc = selectFromRole(
-    role,
-    m.users_invite_dialog_desc_admin,
-    m.users_invite_dialog_desc_dgccrf,
-    m.users_invite_dialog_desc_dgal,
-  )
-  const emailRegexp = selectFromRole(role, regexp.emailAdmin, regexp.emailDGCCRF, regexp.emailDGAL)
-  const emailValidationMessage = selectFromRole(role, m.emailAdminValidation, m.emailDGCCRFValidation, m.emailDGALValidation)
+  const _invite = selectFromRole(_role, usersContext.inviteDgccrf, usersContext.inviteDgal)
+  const emailRegexp = selectFromRole(_role, regexp.emailDGCCRF, regexp.emailDGAL)
+  const emailValidationMessage = selectFromRole(_role, m.emailDGCCRFValidation, m.emailDGALValidation)
+  const buttonLabel = m.invite_agent
+  const dialogTitle = m.users_invite_dialog_title_agent
+  const dialogDesc = m.users_invite_dialog_desc_agent
 
   return (
     <ScDialog
       maxWidth="xs"
       onConfirm={(event, close) => {
-        handleSubmit(({email}) => {
+        handleSubmit(({role, email}) => {
           _invite
             .fetch({}, email)
             .then(() => toastSuccess(m.userInvitationSent))
@@ -61,12 +54,12 @@ export const UserInvitationDialog = ({role}: {role: RoleAdminOrDggcrfOrDgal}) =>
         })()
       }}
       confirmLabel={m.invite}
-      loading={_invite.loading}
+      loading={_invite?.loading}
       confirmDisabled={!isValid}
       title={dialogTitle}
       content={
         <>
-          {ScOption.from(_invite.error?.details?.id)
+          {ScOption.from(_invite?.error?.details?.id)
             .map(errId => (
               <Alert dense type="error" deletable gutterBottom>
                 {m.apiErrorsCode[errId as keyof typeof m.apiErrorsCode]}
@@ -74,13 +67,33 @@ export const UserInvitationDialog = ({role}: {role: RoleAdminOrDggcrfOrDgal}) =>
             ))
             .toUndefined()}
           <Txt color="hint" block gutterBottom>
+            Sélectionner le type d'agent que vous souhaitez inviter
+          </Txt>
+          <Controller
+            name="role"
+            control={control}
+            rules={{
+              required: m.required,
+            }}
+            render={({field}) => (
+              <ToggleButtonGroup color="primary" fullWidth value={field.value} onChange={field.onChange}>
+                <ToggleButton value="DGCCRF">DGCCRF</ToggleButton>
+                <ToggleButton value="DGAL">DGAL</ToggleButton>
+              </ToggleButtonGroup>
+            )}
+          />
+          <Alert id="agent-invitation-select" dense type="warning" sx={{mb: 2}}>
+            <>
+              Vérifiez bien le type d'agent sélectionné,{' '}
+              <u>
+                <b>ils n'ont pas les même droits !</b>
+              </u>
+            </>
+          </Alert>
+
+          <Txt color="hint" block gutterBottom>
             {dialogDesc}
           </Txt>
-          {role === 'Admin' && (
-            <Alert type="warning" sx={{mb: 2}} dense>
-              <Txt bold>{m.users_invite_dialog_alert_admin}</Txt>
-            </Alert>
-          )}
           <ScInput
             autoFocus
             fullWidth
