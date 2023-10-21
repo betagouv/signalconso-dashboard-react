@@ -25,6 +25,7 @@ import {Report} from '../../core/client/report/Report'
 import {Id} from '../../core/model'
 import {ScButton} from '../../shared/Button'
 import {WithInlineIcon} from 'shared/WithInlineIcon'
+import {ReportAdminResolution} from './ReportAdminResolution'
 
 const CONSO: EventType = 'CONSO'
 
@@ -83,31 +84,45 @@ export const ReportComponent = () => {
                 flexWrap: 'wrap',
               }}
             >
+              {/*{connectedUser.isAdmin && (*/}
+              {/*  <ScDialog*/}
+              {/*    title={m.removeAsk}*/}
+              {/*    content={*/}
+              {/*      <>*/}
+              {/*        {m.removeReportDesc(report.id)}*/}
+              {/*        <Txt color="hint" block size="small" italic>*/}
+              {/*          {' '}*/}
+              {/*          Cela supprimera le signalement entier, y compris ses pièces jointes, la réponse du pro, et l'avis du*/}
+              {/*          consommateur sur la réponse du pro. Si l'entreprise n'avait pas d'autres signalements, et qu'elle n'avait*/}
+              {/*          pas encore créé son compte, son code qui lui a été envoyé par courrier sera également supprimé.*/}
+              {/*        </Txt>*/}
+              {/*      </>*/}
+              {/*    }*/}
+              {/*    onConfirm={(event, close) =>*/}
+              {/*      _report.remove*/}
+              {/*        .fetch({}, report.id)*/}
+              {/*        .then(() => window.history.back())*/}
+              {/*        .finally(close)*/}
+              {/*    }*/}
+              {/*  >*/}
+              {/*    <Btn loading={_report.remove.loading} sx={{color: t => t.palette.error.main}} icon="delete">*/}
+              {/*      {m.delete}*/}
+              {/*    </Btn>*/}
+              {/*  </ScDialog>*/}
+              {/*)}*/}
+
               {connectedUser.isAdmin && (
-                <ScDialog
-                  title={m.removeAsk}
-                  content={
-                    <>
-                      {m.removeReportDesc(report.id)}
-                      <Txt color="hint" block size="small" italic>
-                        {' '}
-                        Cela supprimera le signalement entier, y compris ses pièces jointes, la réponse du pro, et l'avis du
-                        consommateur sur la réponse du pro. Si l'entreprise n'avait pas d'autres signalements, et qu'elle n'avait
-                        pas encore créé son compte, son code qui lui a été envoyé par courrier sera également supprimé.
-                      </Txt>
-                    </>
-                  }
-                  onConfirm={(event, close) =>
-                    _report.remove
-                      .fetch({}, report.id)
-                      .then(() => window.history.back())
-                      .finally(close)
-                  }
+                <ReportAdminResolution
+                  label={m.administratorAction}
+                  report={report}
+                  onAdd={() => _event.reportEvents.fetch({force: true, clean: false}, id)}
                 >
-                  <Btn loading={_report.remove.loading} sx={{color: t => t.palette.error.main}} icon="delete">
-                    {m.delete}
-                  </Btn>
-                </ScDialog>
+                  <Tooltip title={m.administratorAction}>
+                    <Btn color="primary" icon="add_comment">
+                      {m.administratorAction}
+                    </Btn>
+                  </Tooltip>
+                </ReportAdminResolution>
               )}
 
               <Btn color="primary" icon="download" loading={_report.download.loading} onClick={() => downloadReport(report.id)}>
