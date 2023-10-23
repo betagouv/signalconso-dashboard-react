@@ -44,7 +44,7 @@ export const ReportAdminResolution = ({label, report, children, onAdd}: Props) =
         })
       }
       confirmLabel={m.validate}
-      confirmDisabled={deletionType === undefined && comment === ''}
+      confirmDisabled={deletionType === undefined || comment === ''}
       content={
         <>
           {_removeReport.error && <Alert type="error">{m.anErrorOccurred}</Alert>}
