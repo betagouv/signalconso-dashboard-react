@@ -36,12 +36,15 @@ export const ReportAdminResolution = ({label, report, children, onAdd}: Props) =
       loading={_removeReport.loading}
       onConfirm={(event, close) =>
         deletionType &&
-        performAdminAction(deletionType).then(() => {
-          setComment('')
-          onAdd()
-          toastSuccess(m.actionDone)
-          close()
-        })
+        performAdminAction(deletionType)
+          .then(() => {
+            setComment('')
+            onAdd()
+            toastSuccess(m.actionDone)
+            close()
+          })
+          .then(() => window.history.back())
+          .finally(close)
       }
       confirmLabel={m.validate}
       confirmDisabled={deletionType === undefined || comment === ''}

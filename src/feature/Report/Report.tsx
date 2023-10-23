@@ -21,7 +21,7 @@ import {map} from '../../alexlibs/ts-utils'
 import {ScDialog} from '../../shared/ScDialog'
 import {EventActionValues, EventType, ReportEvent, ResponseConsumerReview} from '../../core/client/event/Event'
 import {FileOrigin} from '../../core/client/file/UploadedFile'
-import {Report} from '../../core/client/report/Report'
+import {Report, ReportStatus} from '../../core/client/report/Report'
 import {Id} from '../../core/model'
 import {ScButton} from '../../shared/Button'
 import {WithInlineIcon} from 'shared/WithInlineIcon'
@@ -111,7 +111,7 @@ export const ReportComponent = () => {
               {/*  </ScDialog>*/}
               {/*)}*/}
 
-              {connectedUser.isAdmin && (
+              {connectedUser.isAdmin && report.status !== ReportStatus.PromesseAction && (
                 <ReportAdminResolution
                   label={m.administratorAction}
                   report={report}
