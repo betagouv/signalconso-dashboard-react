@@ -44,7 +44,7 @@ export const ReportAdminResolution = ({label, report, children, onAdd}: Props) =
         })
       }
       confirmLabel={m.validate}
-      confirmDisabled={deletionType === undefined}
+      confirmDisabled={deletionType === undefined && comment === ''}
       content={
         <>
           {_removeReport.error && <Alert type="error">{m.anErrorOccurred}</Alert>}
@@ -71,7 +71,7 @@ export const ReportAdminResolution = ({label, report, children, onAdd}: Props) =
               />
             ))}
           </ScRadioGroup>
-          <b className={'mt-10 mb-10'}>Commentaire :</b>
+          <b className={'mt-10 mb-10'}>Commentaire (Obligatoire) :</b>
           <ScInput value={comment} onChange={e => setComment(e.target.value)} multiline fullWidth rows={3} maxRows={8} />
         </>
       }
