@@ -134,10 +134,10 @@ const UsersList = ({adminView}: Props) => {
           {adminView ? (
             <UserAdminInvitationDialog />
           ) : (
-            <>
+            <div className="flex justify-between">
               <UserAgentInvitationDialog />
               <UserAgentsImportDialog />
-            </>
+            </div>
           )}
         </PanelHead>
         <Datatable

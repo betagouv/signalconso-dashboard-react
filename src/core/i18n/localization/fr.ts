@@ -611,6 +611,7 @@ export const fr = {
     unblockConsumer: 'Retirer cet email de la liste noire',
     newPasswordConfirmation: 'Confirmer le nouveau mot de passe',
     userInvitationSent: 'Invitation envoyée',
+    userInvitationsSent: 'Invitations envoyée',
     added: 'Ajouté',
     userValidationDone: 'Le compte utilisateur a été prolongé.',
     companyAccessLevel: 'Autorisation',

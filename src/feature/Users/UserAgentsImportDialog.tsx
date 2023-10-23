@@ -31,12 +31,12 @@ export const UserAgentsImportDialog = () => {
           if (emailFiles && emailFiles[0]) {
             _invite
               .fetch({}, emailFiles[0], role)
-              .then(() => toastSuccess(m.userInvitationSent))
+              .then(() => toastSuccess(m.userInvitationsSent))
               .then(close)
           }
         })()
       }}
-      confirmLabel={m.invite}
+      confirmLabel="Importer"
       loading={_invite?.loading}
       confirmDisabled={!isValid}
       title="Inviter des agents"
@@ -75,15 +75,16 @@ export const UserAgentsImportDialog = () => {
           </Alert>
 
           <Txt color="hint" block gutterBottom>
-            Un courrier électronique sera envoyé à chaque adresse e-mail saisie dans le fichier avec un lien sécurisé permettant
-            de créer un compte DGCCRF / DGAL.
+            Pour inviter plusieurs agents à la fois, créez un fichier contenant la liste des emails. Séparez chaque email par une
+            virgule, ou bien mettez une adresse par ligne. Un courrier électronique sera envoyé à chaque adresse e-mail saisie
+            dans le fichier avec un lien sécurisé permettant de créer un compte DGCCRF / DGAL.
           </Txt>
           <input type="file" {...register('emailFiles', {required: m.required})} />
         </>
       }
     >
       <ScButton icon="person_add" variant="outlined" color="primary">
-        Import
+        Importer
       </ScButton>
     </ScDialog>
   )
