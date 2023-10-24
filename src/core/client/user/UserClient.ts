@@ -42,12 +42,19 @@ export class UserClient {
     )
   }
 
-  readonly inviteDGCCRF = (email: string) => {
-    return this.client.post<void>(`/account/agent/invitation?role=DGCCRF`, {body: {email}})
+  readonly importAgents = (file: File, role: RoleAgents) => {
+    const fileFormData: FormData = new FormData()
+    fileFormData.append('emails', file, file.name)
+    // We need to put manually the header since axios 1.x https://github.com/axios/axios/issues/5556
+    // There are other ways but this is the quickest
+    return this.client.post<void>(`/account/agent/invitations?role=${role}`, {
+      body: fileFormData,
+      headers: {'Content-Type': 'multipart/form-data'},
+    })
   }
 
-  readonly inviteDGAL = (email: string) => {
-    return this.client.post<void>(`/account/agent/invitation?role=DGAL`, {body: {email}})
+  readonly inviteAgent = (email: string, role: RoleAgents) => {
+    return this.client.post<void>(`/account/agent/invitation?role=${role}`, {body: {email}})
   }
 
   readonly inviteAdmin = (email: string) => {

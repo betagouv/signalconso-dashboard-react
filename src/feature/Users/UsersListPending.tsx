@@ -8,11 +8,11 @@ import {Txt} from '../../alexlibs/mui-extension'
 import {useToast} from '../../core/toast'
 import {ScDialog} from '../../shared/ScDialog'
 import {IconBtn} from '../../alexlibs/mui-extension'
-import {Box, Icon, ToggleButtonGroup, Tooltip} from '@mui/material'
+import {Box, Icon, Tooltip} from '@mui/material'
 import {useLogin} from '../../core/context/LoginContext'
 import {sxUtils} from '../../core/theme'
 import {ScOption} from 'core/helper/ScOption'
-import {RoleAdminOrAgent, roleAgents, RoleAgents} from '../../core/client/user/User'
+import {roleAgents, RoleAgents} from '../../core/client/user/User'
 import {SelectRoleAgent} from '../../shared/SelectRoleAgent'
 
 export const UsersListPending = () => {

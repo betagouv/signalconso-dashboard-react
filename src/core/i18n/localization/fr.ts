@@ -611,6 +611,7 @@ export const fr = {
     unblockConsumer: 'Retirer cet email de la liste noire',
     newPasswordConfirmation: 'Confirmer le nouveau mot de passe',
     userInvitationSent: 'Invitation envoyée',
+    userInvitationsSent: 'Invitations envoyée',
     added: 'Ajouté',
     userValidationDone: 'Le compte utilisateur a été prolongé.',
     companyAccessLevel: 'Autorisation',
@@ -666,7 +667,7 @@ export const fr = {
   `,
     cannotActivateAccountAlertTitle: `Le lien sur lequel vous avez cliqué n'est plus valide.`,
     cannotActivateAccountAlertInfo: `
-    <p>Si vous avez déjà créé votre compte, vous pouvez vous <a href='/connexion'>connecter</a> à l'aide de votre adresse email et mot de passe.</p>
+    <p>Si vous avez déjà créé votre compte, vous pouvez vous <a href='/#/connexion'>connecter</a> à l'aide de votre adresse email et mot de passe.</p>
     Sinon, vous pouvez demander au gestionnaire de l'entreprise de vous envoyer une nouvelle invitation.
   `,
     testMails: {

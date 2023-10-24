@@ -9,7 +9,6 @@ import {ScInput} from '../../shared/ScInput'
 
 import {ScOption} from 'core/helper/ScOption'
 import {ScDialog} from '../../shared/ScDialog'
-import {RoleAdminOrAgent} from 'core/model'
 
 export const UserAdminInvitationDialog = () => {
   const {m} = useI18n()
