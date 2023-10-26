@@ -16,6 +16,7 @@ import {
   ReportConsumerUpdate,
   Event,
   Country,
+  ReportDeletionReason,
 } from '../../model'
 import {ApiSdkLogger} from '../../helper/Logger'
 import {ApiClientApi} from '../ApiClient'
@@ -112,8 +113,8 @@ export class ReportsClient {
     return this.client.getPdf<any>(`/reports/download`, {qs: {ids}}).then(directDownloadBlob('Signalement.pdf'))
   }
 
-  readonly remove = (id: Id) => {
-    return this.client.delete<void>(`reports/${id}`)
+  readonly remove = (id: Id, reportDeletionReason: ReportDeletionReason) => {
+    return this.client.delete<void>(`reports/${id}`, {body: {...reportDeletionReason}})
   }
 
   readonly getById = (id: Id): Promise<ReportSearchResult> => {

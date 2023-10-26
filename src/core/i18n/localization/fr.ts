@@ -1,7 +1,7 @@
 import {config} from '../../../conf/config'
 import {formatDistance, formatDuration as formatDurationFns} from 'date-fns'
 import {AssociationType} from 'feature/ReportedWebsites/SelectWebsiteIdentification/SelectWebsiteAssociation'
-import {ReportStatus, ReportStatusPro, ReportTag, ReportType} from '../../client/report/Report'
+import {ReportAdminActionType, ReportStatus, ReportStatusPro, ReportTag, ReportType} from '../../client/report/Report'
 import {CompanyAccessLevel} from '../../client/company-access/CompanyAccess'
 import {IdentificationStatus, InvestigationStatus} from '../../client/website/Website'
 import {ReportResponseTypes, ResponseEvaluation} from '../../client/event/Event'
@@ -472,7 +472,7 @@ export const fr = {
     proAnswerResponseType: 'Pouvez-vous préciser votre réponse ?',
     proAnswerYourAnswer: 'Votre réponse',
     text: 'Votre texte',
-    onlyVisibleByDGCCRF: `Visibles uniquement par la <b>DGCCRF</b>. <span class="text-red-600 font-bold">Elles ne seront jamais transmises au consommateur.</span>`,
+    onlyVisibleByDGCCRF: `Visibles uniquement par la <b>DGCCRF</b>. <span class='text-red-600 font-bold'>Elles ne seront jamais transmises au consommateur.</span>`,
     proAnswerYourAnswerDesc: `
     <b>Le consommateur</b> la recevra par mail. Elle pourra aussi être consultée par la <b>DGCCRF</b>.<br/>
     Nous vous demandons de rester courtois dans votre réponse. Les menaces et insultes n'ont pas leur place dans SignalConso !
@@ -491,6 +491,8 @@ export const fr = {
     advancedFilters: 'Filtres avancés',
     comment: 'Commentaire',
     commentAdded: 'Commentaire ajouté',
+    actionDone: 'Action effectuée avec succès',
+
     dgccrfControlDone: 'Déclarer un contrôle',
     noAnswerFromPro: "Le professionnel n'a pas encore répondu au signalement.",
     noReviewFromConsumer: "Pas d'avis de consommateur sur la réponse du professionnel.",
@@ -525,6 +527,7 @@ export const fr = {
     thanksForSharingYourReview: `Votre avis a bien été pris en compte, nous vous en remercions.`,
     didTheCompanyAnsweredWell: `Est-ce que la réponse de l'entreprise vous satisfait ? <b>(Attention, une fois l'avis déposé, il ne sera plus possible de le modifier.)</b>`,
     addDgccrfComment: 'Commentaire (interne à la DGCCRF)',
+    administratorAction: 'Action administrateur',
     markDgccrfControlDone: 'Déclarer un contrôle (interne à la DGCCRF)',
     thisDate: (_: string) => `Le ${_}`,
     byHim: (_: string) => `Par ${_}`,
@@ -595,6 +598,22 @@ export const fr = {
     companyAccessLevelDescription: {
       [CompanyAccessLevel.admin]: 'Peut  consulter, répondre aux signalements et inviter/supprimer des nouveaux utilisateurs.',
       [CompanyAccessLevel.member]: 'Peut consulter et répondre aux signalements.',
+    },
+    reportDeletionTypeDescription: {
+      [ReportAdminActionType.ConsumerThreatenByPro]:
+        'Le consommateur est victime de menaces de la part du professionnel et souhaite supprimer son signalement par crainte de représailles. Le signalement ne sera plus visible sur la plateforme.',
+      [ReportAdminActionType.RefundBlackMail]:
+        "Le consommateur demande la suppression du signalement en raison d'un chantage de la part du professionnel pour la résolution de son litige. Le signalement ne sera plus visible sur la plateforme.",
+      [ReportAdminActionType.RGPDRequest]:
+        'Le consommateur exprime le souhait de retirer son signalement de notre plateforme sans donner de raisons particulières. Le signalement ne sera plus visible sur la plateforme.',
+      [ReportAdminActionType.SolvedContractualDispute]:
+        "Le consommateur nous informe que le litige a été réglé en dehors de la plateforme. Le signalement passera au statut 'Promesse d'action' puis le consommateur et le professionnel seront informés par email de la clôture du signalement.",
+    },
+    reportDeletionTypeName: {
+      [ReportAdminActionType.ConsumerThreatenByPro]: 'Suppression suite à la menace du pro',
+      [ReportAdminActionType.RefundBlackMail]: 'Supression suite au chantage du pro',
+      [ReportAdminActionType.RGPDRequest]: 'Suppression RGPD',
+      [ReportAdminActionType.SolvedContractualDispute]: 'Résolution du signalement hors SignalConso',
     },
     invitationToProAlreadySent: (email: string) => `Une invitation a déjà été envoyée à l'adresse ${email}.`,
     editedAddress: `Adresse modifiée`,

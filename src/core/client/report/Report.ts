@@ -60,6 +60,18 @@ export enum ReportType {
   Both = 'Both',
 }
 
+export interface ReportDeletionReason {
+  reportAdminActionType: ReportAdminActionType
+  comment?: string
+}
+
+export enum ReportAdminActionType {
+  SolvedContractualDispute = 'SolvedContractualDispute',
+  ConsumerThreatenByPro = 'ConsumerThreatenByPro',
+  RefundBlackMail = 'RefundBlackMail',
+  RGPDRequest = 'RGPDRequest',
+}
+
 export enum ReportTag {
   LitigeContractuel = 'LitigeContractuel',
   Hygiene = 'Hygiene',
