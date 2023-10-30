@@ -51,6 +51,8 @@ export const CompanyComponent = () => {
     }
     _company.responseRate.fetch({}, id)
     _stats.tags.fetch()
+    _stats.getCompanyThreat.fetch({})
+    _stats.getCompanyRefundBlackMail.fetch({})
     _cloudWord.fetch({}, id)
     connectedUser.isPro ? _stats.statusPro.fetch() : _stats.status.fetch()
     _stats.responseDelay.fetch()
@@ -101,12 +103,12 @@ export const CompanyComponent = () => {
       {_company.byId.entity && company && (
         <>
           <Grid container spacing={2}>
-            <Grid item xs={12} sm={6} md={3}>
+            <Grid item xs={4}>
               <Widget title={m.responseRate}>
                 <WidgetValue>{_company.responseRate.entity}%</WidgetValue>
               </Widget>
             </Grid>
-            <Grid item xs={12} sm={6} md={3}>
+            <Grid item xs={4}>
               <Widget title={m.avgResponseTime}>
                 {_stats.responseDelay.loading ? (
                   <WidgetLoading />
@@ -126,14 +128,40 @@ export const CompanyComponent = () => {
                 )}
               </Widget>
             </Grid>
-            <Grid item xs={12} sm={6} md={3}>
+            <Grid item xs={4}>
+              <Widget title={m.proTheatToConsumer} loading={_stats.getCompanyThreat.loading}>
+                <WidgetValue>
+                  {_stats.getCompanyThreat.entity && _stats.getCompanyThreat.entity.value}
+                  &nbsp;
+                  <Tooltip title={m.proTheatToConsumerDesc}>
+                    <Icon sx={{color: t => t.palette.text.disabled}} fontSize="medium">
+                      help
+                    </Icon>
+                  </Tooltip>
+                </WidgetValue>
+              </Widget>
+            </Grid>
+            <Grid item xs={4}>
+              <Widget title={m.proRefundBlackMail} loading={_stats.getCompanyRefundBlackMail.loading}>
+                <WidgetValue>
+                  {_stats.getCompanyRefundBlackMail.entity && _stats.getCompanyRefundBlackMail.entity.value}
+                  &nbsp;
+                  <Tooltip title={m.proRefundBlackMailDesc}>
+                    <Icon sx={{color: t => t.palette.text.disabled}} fontSize="medium">
+                      help
+                    </Icon>
+                  </Tooltip>
+                </WidgetValue>
+              </Widget>
+            </Grid>
+            <Grid item xs={4}>
               <Widget title={m.activationDocReturned} loading={_event.companyEvents.loading}>
                 {ScOption.from(postActivationDocEvents)
                   .map(_ => <WidgetValue>{_.length}</WidgetValue>)
                   .getOrElse(<WidgetLoading />)}
               </Widget>
             </Grid>
-            <Grid item xs={12} sm={6} md={3}>
+            <Grid item xs={4}>
               <Widget title={m.accountsActivated} loading={_accesses.loading} to={siteMap.logged.companyAccesses(company.siret)}>
                 <WidgetValue>{_accesses.entity}</WidgetValue>
               </Widget>

@@ -7,6 +7,7 @@ import {
   CurveStatsParams,
   Id,
   Report,
+  ReportAdminActionType,
   ReportResponseStatsParams,
   ReportSearch,
   ReportStatus,
@@ -29,6 +30,15 @@ export class StatsClient {
     const qs = filters && cleanObject(reportFilter2QueryString(cleanReportFilter(filters)))
     return this.client.get<SimpleStat>(`stats/reports/count`, {qs})
   }
+
+  readonly getAdminActionCount = (companyId: Id, reportAdminActionType: ReportAdminActionType) => {
+    const qs = {
+      reportAdminActionType,
+      companyId,
+    }
+    return this.client.get<SimpleStat>(`/stats/count-by-adminactions`, {qs})
+  }
+
   readonly getReportCountCurve = (search?: ReportSearch & CurveStatsParams) => {
     return this.client
       .get<CountByDate[]>(`stats/reports/curve`, {qs: search})
@@ -206,7 +216,11 @@ class StatsCurveClient {
     tickDuration,
     status,
     baseStatus,
-  }: CurveStatsParams & {companyId?: Id; status: ReportStatus[]; baseStatus?: ReportStatus[]}): Promise<CountByDate[]> => {
+  }: CurveStatsParams & {
+    companyId?: Id
+    status: ReportStatus[]
+    baseStatus?: ReportStatus[]
+  }): Promise<CountByDate[]> => {
     const params = {
       status,
       ticks,
@@ -245,7 +259,11 @@ class StatsCurveClient {
     return Promise.resolve(res)
   }
 
-  readonly getReportForwardedPercentage = async (params: CurveStatsParams & {companyId?: Id}): Promise<CountByDate[]> => {
+  readonly getReportForwardedPercentage = async (
+    params: CurveStatsParams & {
+      companyId?: Id
+    },
+  ): Promise<CountByDate[]> => {
     return this.getReportPercentageCurve({
       ...params,
       status: Report.transmittedStatus,

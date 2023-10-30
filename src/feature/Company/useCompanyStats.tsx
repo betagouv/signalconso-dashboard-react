@@ -2,7 +2,7 @@ import {useFetcher} from '../../alexlibs/react-hooks-lib'
 import React from 'react'
 import {useLogin} from '../../core/context/LoginContext'
 import {CurveStatsParams} from '../../core/client/stats/Stats'
-import {Id, ReportStatus} from '../../core/model'
+import {Id, ReportAdminActionType, ReportStatus} from '../../core/model'
 
 export const useCompanyStats = (id: Id) => {
   const {apiSdk: api} = useLogin()
@@ -14,6 +14,8 @@ export const useCompanyStats = (id: Id) => {
     responseReviews: useFetcher(() => api.secured.stats.getResponseReviews(id)),
     readDelay: useFetcher(() => api.secured.stats.getReadDelay(id)),
     responseDelay: useFetcher(() => api.secured.stats.getResponseDelay(id)),
+    getCompanyThreat: useFetcher(() => api.secured.stats.getAdminActionCount(id, ReportAdminActionType.ConsumerThreatenByPro)),
+    getCompanyRefundBlackMail: useFetcher(() => api.secured.stats.getAdminActionCount(id, ReportAdminActionType.RefundBlackMail)),
     curve: {
       reportCount: useFetcher((_: CurveStatsParams) => api.secured.stats.getReportCountCurve({companyIds: [id], ..._})),
       reportRespondedCount: useFetcher((_: CurveStatsParams) =>
