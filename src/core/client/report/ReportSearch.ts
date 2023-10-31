@@ -28,4 +28,5 @@ export interface ReportSearch {
   evaluation?: ResponseEvaluation[]
   fullText?: String
   isForeign?: boolean
+  hasBarcode?: boolean
 }

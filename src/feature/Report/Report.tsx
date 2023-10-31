@@ -26,6 +26,7 @@ import {Id} from '../../core/model'
 import {ScButton} from '../../shared/Button'
 import {WithInlineIcon} from 'shared/WithInlineIcon'
 import {ReportAdminResolution} from './ReportAdminResolution'
+import {ReportGS1Product} from './ReportGS1Product'
 import {ReportReOpening} from './ReportReOpening'
 
 const CONSO: EventType = 'CONSO'
@@ -173,6 +174,8 @@ export const ReportComponent = () => {
           </Grid>
 
           <ReportDescription report={report} files={_report.get.entity?.files} />
+
+          {_report.get.entity?.report.gs1ProductId && <ReportGS1Product gs1ProductId={_report.get.entity.report.gs1ProductId} />}
 
           <Panel loading={_event.reportEvents.loading}>
             <>
