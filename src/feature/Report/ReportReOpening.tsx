@@ -41,7 +41,7 @@ export const ReportReOpening = ({report, children}: Props) => {
           .finally(close)
       }
     >
-      <Btn loading={_reOpenReport.loading} sx={{color: t => t.palette.error.main}} icon="replay">
+      <Btn loading={_reOpenReport.loading} icon="replay">
         {m.reOpen}
       </Btn>
     </ScDialog>
