@@ -117,6 +117,10 @@ export class ReportsClient {
     return this.client.delete<void>(`reports/${id}`, {body: {...reportDeletionReason}})
   }
 
+  readonly reOpen = (id: Id) => {
+    return this.client.post<void>(`reports/${id}/reopen`)
+  }
+
   readonly getById = (id: Id): Promise<ReportSearchResult> => {
     return this.client.get(`/reports/${id}`).then(_ => ({files: _.files, report: ReportsClient.mapReport(_.report)}))
   }
