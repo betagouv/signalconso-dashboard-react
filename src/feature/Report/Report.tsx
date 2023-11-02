@@ -26,6 +26,7 @@ import {Id} from '../../core/model'
 import {ScButton} from '../../shared/Button'
 import {WithInlineIcon} from 'shared/WithInlineIcon'
 import {ReportAdminResolution} from './ReportAdminResolution'
+import {ReportReOpening} from './ReportReOpening'
 
 const CONSO: EventType = 'CONSO'
 
@@ -84,32 +85,16 @@ export const ReportComponent = () => {
                 flexWrap: 'wrap',
               }}
             >
-              {/*{connectedUser.isAdmin && (*/}
-              {/*  <ScDialog*/}
-              {/*    title={m.removeAsk}*/}
-              {/*    content={*/}
-              {/*      <>*/}
-              {/*        {m.removeReportDesc(report.id)}*/}
-              {/*        <Txt color="hint" block size="small" italic>*/}
-              {/*          {' '}*/}
-              {/*          Cela supprimera le signalement entier, y compris ses pièces jointes, la réponse du pro, et l'avis du*/}
-              {/*          consommateur sur la réponse du pro. Si l'entreprise n'avait pas d'autres signalements, et qu'elle n'avait*/}
-              {/*          pas encore créé son compte, son code qui lui a été envoyé par courrier sera également supprimé.*/}
-              {/*        </Txt>*/}
-              {/*      </>*/}
-              {/*    }*/}
-              {/*    onConfirm={(event, close) =>*/}
-              {/*      _report.remove*/}
-              {/*        .fetch({}, report.id)*/}
-              {/*        .then(() => window.history.back())*/}
-              {/*        .finally(close)*/}
-              {/*    }*/}
-              {/*  >*/}
-              {/*    <Btn loading={_report.remove.loading} sx={{color: t => t.palette.error.main}} icon="delete">*/}
-              {/*      {m.delete}*/}
-              {/*    </Btn>*/}
-              {/*  </ScDialog>*/}
-              {/*)}*/}
+              {connectedUser.isAdmin &&
+                (report.status === ReportStatus.NonConsulte || report.status === ReportStatus.ConsulteIgnore) && (
+                  <ReportReOpening report={report}>
+                    <Tooltip title={m.reportReopening}>
+                      <Btn color="primary" icon="replay">
+                        {m.reportReopening}
+                      </Btn>
+                    </Tooltip>
+                  </ReportReOpening>
+                )}
 
               {connectedUser.isAdmin && report.status !== ReportStatus.PromesseAction && (
                 <ReportAdminResolution

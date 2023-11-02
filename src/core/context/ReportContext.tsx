@@ -10,6 +10,7 @@ import {Country} from '../client/constant/Country'
 export interface ReportContextProps {
   get: UseFetcher<SignalConsoApiSdk['secured']['reports']['getById'], ApiError>
   remove: UseFetcher<SignalConsoApiSdk['secured']['reports']['remove'], ApiError>
+  reOpen: UseFetcher<SignalConsoApiSdk['secured']['reports']['reOpen'], ApiError>
   download: UseFetcher<SignalConsoApiSdk['secured']['reports']['download'], ApiError>
   updateCompany: UseFetcher<SignalConsoApiSdk['secured']['reports']['updateReportCompany'], ApiError>
   updateCountry: UseFetcher<SignalConsoApiSdk['secured']['reports']['updateReportCountry'], ApiError>
@@ -35,6 +36,7 @@ const ReportContext = React.createContext<ReportContextProps>(defaultContext as 
 export const ReportProvider = ({api, children}: Props) => {
   const get = useFetcher(api.secured.reports.getById)
   const remove = useFetcher(api.secured.reports.remove)
+  const reOpen = useFetcher(api.secured.reports.reOpen)
   const download = useFetcher(api.secured.reports.download)
   const postAction = useFetcher(api.secured.reports.postAction)
   const postResponse = useFetcher(api.secured.reports.postResponse)
@@ -58,6 +60,7 @@ export const ReportProvider = ({api, children}: Props) => {
       value={{
         get,
         remove,
+        reOpen,
         download,
         updateCompany,
         updateCountry,
