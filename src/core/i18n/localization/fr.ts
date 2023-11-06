@@ -747,6 +747,10 @@ export const fr = {
           title: `Invitation à une entreprise pour utilisateur sans compte`,
           desc: `Email d'invitation à rejoindre une entreprise pour un utilisateur n'ayant pas de compte sur SignalConso`,
         },
+        report_reopening_notification: {
+          title: `Réouverture du signalement`,
+          desc: `Email de ré-ouverture du signalement suite à la demande du pro`,
+        },
       },
       consumer: {
         report_transmitted: {
