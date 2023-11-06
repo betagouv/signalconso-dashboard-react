@@ -69,7 +69,7 @@ export enum ReportAdminActionType {
   SolvedContractualDispute = 'SolvedContractualDispute',
   ConsumerThreatenByPro = 'ConsumerThreatenByPro',
   RefundBlackMail = 'RefundBlackMail',
-  RGPDRequest = 'RGPDRequest',
+  OtherReasonDeleteRequest = 'OtherReasonDeleteRequest',
 }
 
 export enum ReportTag {

@@ -610,7 +610,7 @@ export const fr = {
         'Le consommateur est victime de menaces de la part du professionnel et souhaite supprimer son signalement par crainte de représailles. Le signalement ne sera plus visible sur la plateforme.',
       [ReportAdminActionType.RefundBlackMail]:
         "Le consommateur demande la suppression du signalement en raison d'un chantage de la part du professionnel pour la résolution de son litige. Le signalement ne sera plus visible sur la plateforme.",
-      [ReportAdminActionType.RGPDRequest]:
+      [ReportAdminActionType.OtherReasonDeleteRequest]:
         'Le consommateur exprime le souhait de retirer son signalement de notre plateforme sans donner de raisons particulières. Le signalement ne sera plus visible sur la plateforme.',
       [ReportAdminActionType.SolvedContractualDispute]:
         "Le consommateur nous informe que le litige a été réglé en dehors de la plateforme. Le signalement passera au statut 'Promesse d'action' puis le consommateur et le professionnel seront informés par email de la clôture du signalement.",
@@ -618,7 +618,7 @@ export const fr = {
     reportDeletionTypeName: {
       [ReportAdminActionType.ConsumerThreatenByPro]: 'Suppression suite à la menace du pro',
       [ReportAdminActionType.RefundBlackMail]: 'Supression suite au chantage du pro',
-      [ReportAdminActionType.RGPDRequest]: 'Suppression RGPD',
+      [ReportAdminActionType.OtherReasonDeleteRequest]: 'Autre suppression',
       [ReportAdminActionType.SolvedContractualDispute]: 'Résolution du signalement hors SignalConso',
     },
     invitationToProAlreadySent: (email: string) => `Une invitation a déjà été envoyée à l'adresse ${email}.`,
