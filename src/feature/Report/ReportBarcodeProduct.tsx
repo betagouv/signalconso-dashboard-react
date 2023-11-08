@@ -1,4 +1,3 @@
-import {GS1Product} from '../../core/client/gs1/GS1Product'
 import {Panel, PanelBody, PanelHead} from '../../shared/Panel'
 import {Id} from '../../core/model'
 import {useApiContext} from '../../core/context/ApiContext'
@@ -6,8 +5,8 @@ import {useQuery} from '@tanstack/react-query'
 import {WithInlineIcon} from '../../shared/WithInlineIcon'
 import {Chip, Grid, Paper} from '@mui/material'
 
-interface ReportGS1ProductProps {
-  gs1ProductId: Id
+interface ReportBarcodeProductProps {
+  barcodeProductId: Id
 }
 
 interface RowProps {
@@ -24,11 +23,11 @@ const Row = ({label, value}: RowProps) => {
   )
 }
 
-export const ReportGS1Product = ({gs1ProductId}: ReportGS1ProductProps) => {
+export const ReportBarcodeProduct = ({barcodeProductId}: ReportBarcodeProductProps) => {
   const {api} = useApiContext()
   const {refetch, isLoading, isError, data, error} = useQuery({
-    queryKey: ['gs1', gs1ProductId],
-    queryFn: () => api.secured.gs1.get(gs1ProductId),
+    queryKey: ['barcode', barcodeProductId],
+    queryFn: () => api.secured.barcode.get(barcodeProductId),
   })
 
   return (

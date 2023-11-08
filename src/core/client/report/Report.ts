@@ -120,7 +120,7 @@ export interface Report {
   expirationDate: Date
   influencer?: Influencer
   visibleToPro?: boolean
-  gs1ProductId?: string
+  barcodeProductId?: string
 }
 
 export interface Influencer {

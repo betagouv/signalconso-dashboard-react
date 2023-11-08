@@ -20,7 +20,7 @@ import {ConsumerEmailValidationClient} from './consumer-email-validation/Consume
 import {SecuredFileClient} from './file/SecuredFileClient'
 import {StatsClient} from './stats/StatsClient'
 import {SiretExtractorClient} from './siret-extractor/SiretExtractorClient'
-import {GS1Client} from './gs1/GS1Client'
+import {BarcodeClient} from './gs1/BarcodeClient'
 
 export class SignalConsoSecuredSdk {
   constructor(private client: ApiClientApi) {}
@@ -44,5 +44,5 @@ export class SignalConsoSecuredSdk {
   readonly document = new SecuredFileClient(this.client)
   readonly reportBlockedNotification = new ReportBlockedNotificationClient(this.client)
   readonly siretExtractor = new SiretExtractorClient(this.client)
-  readonly gs1 = new GS1Client(this.client)
+  readonly barcode = new BarcodeClient(this.client)
 }

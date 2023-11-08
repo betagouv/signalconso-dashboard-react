@@ -1,6 +1,6 @@
 import {Address, Id} from '../../model'
 
-export interface GS1Product {
+export interface BarcodeProduct {
   id: Id
   gtin: string
   productDescription?: string
