@@ -3,7 +3,7 @@ import {Id} from '../../core/model'
 import {useApiContext} from '../../core/context/ApiContext'
 import {useQuery} from '@tanstack/react-query'
 import {WithInlineIcon} from '../../shared/WithInlineIcon'
-import {Chip, Grid, Paper} from '@mui/material'
+import {Chip} from '@mui/material'
 
 interface ReportBarcodeProductProps {
   barcodeProductId: Id
@@ -16,8 +16,8 @@ interface RowProps {
 
 const Row = ({label, value}: RowProps) => {
   return (
-    <div className="flex w-1/2">
-      <span className="min-w-[30%]">{label} :</span>
+    <div className="flex w-full">
+      <span className="min-w-[20%] font-bold">{label} :</span>
       <span> {value}</span>
     </div>
   )
@@ -25,7 +25,7 @@ const Row = ({label, value}: RowProps) => {
 
 export const ReportBarcodeProduct = ({barcodeProductId}: ReportBarcodeProductProps) => {
   const {api} = useApiContext()
-  const {refetch, isLoading, isError, data, error} = useQuery({
+  const {data} = useQuery({
     queryKey: ['barcode', barcodeProductId],
     queryFn: () => api.secured.barcode.get(barcodeProductId),
   })
@@ -39,41 +39,22 @@ export const ReportBarcodeProduct = ({barcodeProductId}: ReportBarcodeProductPro
         </div>
       </PanelHead>
       <PanelBody>
-        <Row label="Descprtion" value={data?.productDescription ?? 'N/A'} />
+        <Row label="Nom du produit" value={data?.productName ?? 'N/A'} />
         <Row label="Marque" value={data?.brandName ?? 'N/A'} />
-        <Row label="Sous-marque" value={data?.subBrandName ?? 'N/A'} />
-        <Grid sx={{mt: 2}} container spacing={2} alignItems="stretch">
-          <Grid item xs={12} sm={6}>
-            <Panel>
-              <PanelHead>
-                <WithInlineIcon icon="scale">Contenu</WithInlineIcon>
-              </PanelHead>
-              <PanelBody>
-                <ul>
-                  {data?.netContent?.map(netContent => (
-                    <li>
-                      {netContent.quantity} {netContent.unitCode}
-                    </li>
-                  ))}
-                </ul>
-              </PanelBody>
-            </Panel>
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <Panel>
-              <PanelHead>
-                <WithInlineIcon icon="scale">Entreprise</WithInlineIcon>
-              </PanelHead>
-              <PanelBody>
-                <div>Nom: {data?.companyName}</div>
-                <div>Ville: {data?.postalAddress?.city}</div>
-                <div>Code postal: {data?.postalAddress?.postalCode}</div>
-                <div>globalLocationNumber: {data?.globalLocationNumber}</div>
-                <div>Siren: {data?.siren}</div>
-              </PanelBody>
-            </Panel>
-          </Grid>
-        </Grid>
+        <Row label="Conditionnement" value={data?.packaging ?? 'N/A'} />
+        <Row label="Codes tracabilité" value={data?.emb_codes ?? 'N/A'} />
+        <div className="flex flex-row-reverse">
+          {data?.existOnOpenFoodFacts && (
+            <a href={`https://fr.openfoodfacts.org/produit/${data.gtin}`} target="_blank">
+              Page Open food facts
+            </a>
+          )}
+          {data?.existOnOpenBeautyFacts && (
+            <a href={`https://fr.openbeautyfacts.org/produit/${data.gtin}`} target="_blank">
+              Page Open beauty facts
+            </a>
+          )}
+        </div>
       </PanelBody>
     </Panel>
   )

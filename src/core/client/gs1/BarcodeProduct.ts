@@ -1,16 +1,14 @@
-import {Address, Id} from '../../model'
+import {Id} from '../../model'
 
 export interface BarcodeProduct {
   id: Id
   gtin: string
-  productDescription?: string
+  productName?: string
   brandName?: string
-  subBrandName?: string
-  netContent?: NetContent[]
-  globalLocationNumber?: string
-  companyName?: string
-  postalAddress?: Address
-  siren?: string
+  emb_codes?: string
+  packaging?: string
+  existOnOpenFoodFacts: boolean
+  existOnOpenBeautyFacts: boolean
 }
 
 interface NetContent {
