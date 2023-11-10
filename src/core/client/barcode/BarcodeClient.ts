@@ -1,4 +1,3 @@
-import {Company, CompanyCreation} from '../company/Company'
 import {ApiClientApi} from '../ApiClient'
 import {BarcodeProduct} from './BarcodeProduct'
 import {Id} from '../../model'

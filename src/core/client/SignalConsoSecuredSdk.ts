@@ -20,7 +20,7 @@ import {ConsumerEmailValidationClient} from './consumer-email-validation/Consume
 import {SecuredFileClient} from './file/SecuredFileClient'
 import {StatsClient} from './stats/StatsClient'
 import {SiretExtractorClient} from './siret-extractor/SiretExtractorClient'
-import {BarcodeClient} from './gs1/BarcodeClient'
+import {BarcodeClient} from './barcode/BarcodeClient'
 
 export class SignalConsoSecuredSdk {
   constructor(private client: ApiClientApi) {}

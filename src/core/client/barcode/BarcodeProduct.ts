@@ -10,8 +10,3 @@ export interface BarcodeProduct {
   existOnOpenFoodFacts: boolean
   existOnOpenBeautyFacts: boolean
 }
-
-interface NetContent {
-  unitCode?: string
-  quantity?: string
-}
