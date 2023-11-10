@@ -173,11 +173,11 @@ export const ReportComponent = () => {
             </Grid>
           </Grid>
 
-          <ReportDescription report={report} files={_report.get.entity?.files} />
-
           {_report.get.entity?.report.barcodeProductId && (
             <ReportBarcodeProduct barcodeProductId={_report.get.entity.report.barcodeProductId} />
           )}
+
+          <ReportDescription report={report} files={_report.get.entity?.files} />
 
           <Panel loading={_event.reportEvents.loading}>
             <>
