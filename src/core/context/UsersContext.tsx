@@ -5,6 +5,8 @@ import {SignalConsoApiSdk} from '../ApiSdkInstance'
 import {useScPaginate} from '../../shared/usePaginate'
 import {ApiError} from '../client/ApiClient'
 import {RoleAdminOrAgent, roleAgents, User, UserSearch} from '../client/user/User'
+import {AuthAttemptsSearch} from '../client/auth-attempts/AuthAttemptClient'
+import {AuthAttempt} from '../client/auth-attempts/AuthAttempt'
 
 export interface UsersContextProps {
   searchAdmin: UsePaginate<User, UserSearch>
@@ -19,6 +21,7 @@ export interface UsersContextProps {
   getConnectedUser: UseFetcher<SignalConsoApiSdk['secured']['user']['fetchConnectedUser']>
   forceValidateEmail: UseFetcher<SignalConsoApiSdk['secured']['user']['forceValidateEmail']>
   softDelete: UseFetcher<SignalConsoApiSdk['secured']['user']['softDelete']>
+  authAttempts: UsePaginate<AuthAttempt, AuthAttemptsSearch>
 }
 
 interface Props {
@@ -36,6 +39,13 @@ export const UsersProvider = ({api, children}: Props) => {
     offset: 0,
     role: ['Admin'],
   })
+
+  const authAttempts = useScPaginate<AuthAttempt, AuthAttemptsSearch, ApiError>(api.secured.authAttemptClient.fetch, {
+    limit: 50,
+    offset: 0,
+    login: undefined,
+  })
+
   const searchAgent = useScPaginate<User, UserSearch, ApiError>(api.secured.user.searchAdminOrAgent, {
     limit: 10,
     offset: 0,
@@ -66,6 +76,7 @@ export const UsersProvider = ({api, children}: Props) => {
         getConnectedUser,
         forceValidateEmail,
         softDelete,
+        authAttempts,
       }}
     >
       {children}

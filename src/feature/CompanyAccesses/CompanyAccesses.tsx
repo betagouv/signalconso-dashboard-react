@@ -232,6 +232,7 @@ export const CompanyAccesses = () => {
                         </ScDialog>
                       ))
                       .getOrElse(<></>)}
+
                   {connectedUser.isAdmin &&
                     !_.name &&
                     ScOption.from(_.token)
@@ -243,6 +244,7 @@ export const CompanyAccesses = () => {
                         </Tooltip>
                       ))
                       .getOrElse(<></>)}
+
                   {ScOption.from(_)
                     .filter(_ => _.editable === true)
                     .flatMap(_ => _.userId)
