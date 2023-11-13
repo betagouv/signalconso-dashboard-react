@@ -1,5 +1,5 @@
 import {Icon, InputBase, Tooltip} from '@mui/material'
-import {useCallback, useEffect} from 'react'
+import React, {useCallback, useEffect} from 'react'
 import {Txt} from '../../alexlibs/mui-extension'
 import {useUsersContext} from '../../core/context/UsersContext'
 import {useI18n} from '../../core/i18n'
@@ -18,6 +18,8 @@ import {UserDeleteButton} from './UserDeleteButton'
 import {SelectRoleAgent} from '../../shared/SelectRoleAgent'
 import {UserAdminInvitationDialog} from './UserAdminInvitationDialog'
 import {UserAgentsImportDialog} from './UserAgentsImportDialog'
+import {NavLink} from 'react-router-dom'
+import {siteMap} from '../../core/siteMap'
 
 export const AdminUsersList = () => <UsersList adminView />
 export const AgentUsersList = () => <UsersList />
@@ -111,6 +113,23 @@ const UsersList = ({adminView}: Props) => {
       render: _ => _.lastName,
     },
     ...(adminView ? [] : extraColumnsForDgccrf),
+    {
+      id: 'authAttemptsHistory',
+      sx: _ => ({ml: 0, pl: 0, mr: 0, pr: 0}),
+      render: _ => (
+        <>
+          {!adminView && _.id && (
+            <Tooltip title={m.authAttemptsHistory}>
+              <NavLink to={siteMap.logged.users_auth_attempts(_.email)}>
+                <IconBtn color="primary">
+                  <Icon>history</Icon>
+                </IconBtn>
+              </NavLink>
+            </Tooltip>
+          )}
+        </>
+      ),
+    },
     {
       id: 'delete',
       render: _ => <UserDeleteButton userId={_.id} onDelete={_users.fetch} />,
