@@ -3,7 +3,7 @@ import {Page, PageTitle} from '../../shared/Page'
 import {useI18n} from '../../core/i18n'
 import {useParams} from 'react-router'
 import {Datatable} from '../../shared/Datatable/Datatable'
-import {Icon, Tooltip} from '@mui/material'
+import {Button, Icon, Tooltip} from '@mui/material'
 import {Panel} from '../../shared/Panel'
 import {Btn, Txt} from '../../alexlibs/mui-extension'
 import {IconBtn} from '../../alexlibs/mui-extension'
@@ -25,6 +25,8 @@ import {CompanyAccessLevel} from '../../core/client/company-access/CompanyAccess
 import {Id} from '../../core/model'
 import {ScOption} from 'core/helper/ScOption'
 import {UserDeleteButton} from 'feature/Users/UserDeleteButton'
+import {Link, NavLink} from 'react-router-dom'
+import {BubbleChartOutlined} from '@mui/icons-material'
 
 interface Accesses {
   name?: string
@@ -232,6 +234,7 @@ export const CompanyAccesses = () => {
                         </ScDialog>
                       ))
                       .getOrElse(<></>)}
+
                   {connectedUser.isAdmin &&
                     !_.name &&
                     ScOption.from(_.token)
@@ -243,6 +246,7 @@ export const CompanyAccesses = () => {
                         </Tooltip>
                       ))
                       .getOrElse(<></>)}
+
                   {ScOption.from(_)
                     .filter(_ => _.editable === true)
                     .flatMap(_ => _.userId)
@@ -254,7 +258,7 @@ export const CompanyAccesses = () => {
                         confirmLabel={m.delete_access}
                       >
                         <Tooltip title={m.delete_access}>
-                          <IconBtn loading={_crudAccess.removing(userId)}>
+                          <IconBtn color="error" loading={_crudAccess.removing(userId)}>
                             <Icon>remove_circle</Icon>
                           </IconBtn>
                         </Tooltip>
@@ -268,13 +272,30 @@ export const CompanyAccesses = () => {
                             onConfirm={() => _crudToken.remove(tokenId)}
                             maxWidth="xs"
                           >
-                            <IconBtn loading={_crudToken.removing(tokenId)}>
+                            <IconBtn color="error" loading={_crudToken.removing(tokenId)}>
                               <Icon>remove_circle</Icon>
                             </IconBtn>
                           </ScDialog>
                         ))
                         .getOrElse(<></>),
                     )}
+                </>
+              ),
+            },
+            {
+              id: 'authAttemptsHistory',
+              sx: _ => ({ml: 0, pl: 0, mr: 0, pr: 0}),
+              render: _ => (
+                <>
+                  {connectedUser.isAdmin && _.userId && (
+                    <Tooltip title={m.authAttemptsHistory}>
+                      <NavLink to={siteMap.logged.users_auth_attempts(_.email)}>
+                        <IconBtn color="primary">
+                          <Icon>history</Icon>
+                        </IconBtn>
+                      </NavLink>
+                    </Tooltip>
+                  )}
                 </>
               ),
             },

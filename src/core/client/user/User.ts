@@ -1,4 +1,4 @@
-import {PaginatedFilters} from '../../model'
+import {Id, PaginatedFilters} from '../../model'
 import {subMonths} from 'date-fns'
 
 export const roleAgents = ['DGCCRF', 'DGAL'] as const
