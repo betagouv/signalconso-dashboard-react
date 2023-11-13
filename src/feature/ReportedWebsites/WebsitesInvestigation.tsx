@@ -177,14 +177,9 @@ export const WebsitesInvestigation = () => {
             ),
           },
           {
-            head: m.creationDate,
-            id: 'creationDate',
+            head: m.firstReportDate,
+            id: 'firstReportDate',
             render: _ => formatDate(_.creationDate),
-          },
-          {
-            head: m.lastUpdated,
-            id: 'lastUpdated',
-            render: _ => formatDate(_.lastUpdated),
           },
           {
             head: m.investigation,
