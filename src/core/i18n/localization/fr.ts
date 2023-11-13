@@ -322,6 +322,7 @@ export const fr = {
     problem: 'Problème',
     creation: 'Création',
     creationDate: 'Date de création',
+    firstReportDate: 'Date du 1er signalement',
     addedDate: "Date d'ajout",
     lastUpdated: 'Dernière modification',
     lastAttempt: `Dernière tentative`,
