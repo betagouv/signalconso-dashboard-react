@@ -21,13 +21,13 @@ export const Users = () => {
         <PageTab to={siteMap.logged.users_agent_pending} label={m.agentUsersPending} />
         <PageTab to={siteMap.logged.users_admin} label={m.adminUsers} />
         <PageTab to={siteMap.logged.users_consumer_validation} label={m.consumersPending} />
-        <PageTab to={siteMap.logged.users_auth_attempts} label={m.authAttempts} />
+        <PageTab to={siteMap.logged.users_auth_attempts()} label={m.authAttempts} />
         <PageTab to={siteMap.logged.users_blacklist} label={m.blacklistedConsumers} />
       </PageTabs>
       <Switch>
         <Redirect exact from={path} to={siteMap.logged.users_agent} />
         <Route path={siteMap.logged.users_agent} component={AgentUsersList} />
-        <Route path={siteMap.logged.users_auth_attempts} component={UserAuthAttempts} />
+        <Route path={siteMap.logged.users_auth_attempts()} component={UserAuthAttempts} />
         <Route path={siteMap.logged.users_agent_pending} component={UsersListPending} />
         <Route path={siteMap.logged.users_admin} component={AdminUsersList} />
         <Route path={siteMap.logged.users_consumer_validation} component={ConsumerListPending} />

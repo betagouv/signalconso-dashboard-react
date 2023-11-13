@@ -41,7 +41,7 @@ export const UsersProvider = ({api, children}: Props) => {
   })
 
   const authAttempts = useScPaginate<AuthAttempt, AuthAttemptsSearch, ApiError>(api.secured.authAttemptClient.fetch, {
-    limit: 50,
+    limit: 25,
     offset: 0,
     login: undefined,
   })

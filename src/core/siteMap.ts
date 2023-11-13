@@ -24,7 +24,7 @@ export const siteMap = {
     company: (id: Id) => `/bilan-entreprise/${id}`,
     users_agent_pending: `/users/pending`,
     users_consumer_validation: `/users/consumers`,
-    users_auth_attempts: `/users/auth-attempts`,
+    users_auth_attempts: (email?: string) => `/users/auth-attempts` + (email ? toQueryString({email}) : ``),
     users_blacklist: `/users/blacklist`,
     users_agent: `/users/agent`,
     users_admin: `/users/admin`,

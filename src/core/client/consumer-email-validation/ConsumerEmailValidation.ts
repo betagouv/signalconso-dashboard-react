@@ -19,5 +19,3 @@ export interface ConsumerEmailResult {
   valid: boolean
   reason?: ValidationRejectReason
 }
-
-

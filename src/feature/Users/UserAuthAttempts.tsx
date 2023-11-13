@@ -2,27 +2,26 @@ import {Panel} from '../../shared/Panel'
 import {Datatable} from '../../shared/Datatable/Datatable'
 import {useI18n} from '../../core/i18n'
 import React, {useCallback, useEffect} from 'react'
-import {Box, Icon, InputBase, Tooltip} from '@mui/material'
+import {Icon, InputBase} from '@mui/material'
 import {Txt} from '../../alexlibs/mui-extension'
 import {useToast} from '../../core/toast'
 import {DebouncedInput} from '../../shared/DebouncedInput'
-import {IconBtn} from '../../alexlibs/mui-extension'
-import {useConsumerEmailValidationContext} from '../../core/context/EmailValidationContext'
 import {useEffectFn} from '../../alexlibs/react-hooks-lib'
-import {TrueFalseUndefined} from '../../shared/TrueFalseUndefined'
-import {sxUtils} from '../../core/theme'
 import {useUsersContext} from '../../core/context/UsersContext'
+import {useLocation} from 'react-router'
 
 export const UserAuthAttempts = () => {
   const {m} = useI18n()
   const authAttempts = useUsersContext().authAttempts
-
+  const location = useLocation()
+  const queryParams = new URLSearchParams(location.search)
+  const emailQueryParam = queryParams.get('email')
   const {toastError} = useToast()
   const {formatDateTime} = useI18n()
 
   useEffect(() => {
-    authAttempts.fetch()
-  }, [])
+    authAttempts.updateFilters(prev => ({...prev, login: emailQueryParam ?? ''}))
+  }, [emailQueryParam])
 
   useEffectFn(authAttempts.error, toastError)
 
@@ -40,7 +39,7 @@ export const UserAuthAttempts = () => {
         id="userslist"
         header={
           <>
-            <DebouncedInput value={authAttempts.filters.login ?? ''} onChange={onEmailChange}>
+            <DebouncedInput value={emailQueryParam || authAttempts.filters.login || ''} onChange={onEmailChange}>
               {(value, onChange) => (
                 <InputBase
                   value={value}
@@ -63,11 +62,7 @@ export const UserAuthAttempts = () => {
         showColumnsToggle
         rowsPerPageOptions={[5, 10, 25, 100]}
         getRenderRowKey={_ => _.timestamp}
-        data={(() => {
-          console.log('receiving data')
-          console.log(authAttempts.list)
-          return authAttempts.list?.entities
-        })()}
+        data={authAttempts.list?.entities}
         columns={[
           {
             id: '',
@@ -88,6 +83,11 @@ export const UserAuthAttempts = () => {
               ) : (
                 <Icon sx={{color: t => t.palette.error.main}}>error</Icon>
               ),
+          },
+          {
+            head: m.failureCause,
+            id: 'failureCause',
+            render: _ => _.failureCause,
           },
         ]}
       />
