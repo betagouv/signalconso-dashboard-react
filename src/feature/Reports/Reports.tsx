@@ -590,6 +590,23 @@ export const Reports = () => {
                   </Box>
                 </Box>
               </Grid>
+              <Grid item xs={12} md={6}>
+                <Box>
+                  <Box sx={css.trueFalseNullBox}>
+                    <Box sx={css.trueFalseNullLabel}>Code-barres</Box>
+                    <TrueFalseNull
+                      sx={{flexBasis: '50%'}}
+                      value={_reports.filters.hasBarcode ?? null}
+                      onChange={hasBarcode =>
+                        _reports.updateFilters(prev => ({
+                          ...prev,
+                          hasBarcode: hasBarcode ?? undefined,
+                        }))
+                      }
+                    />
+                  </Box>
+                </Box>
+              </Grid>
             </Grid>
           </Collapse>
         </PanelBody>

@@ -26,6 +26,7 @@ import {Id} from '../../core/model'
 import {ScButton} from '../../shared/Button'
 import {WithInlineIcon} from 'shared/WithInlineIcon'
 import {ReportAdminResolution} from './ReportAdminResolution'
+import {ReportBarcodeProduct} from './ReportBarcodeProduct'
 import {ReportReOpening} from './ReportReOpening'
 
 const CONSO: EventType = 'CONSO'
@@ -171,6 +172,10 @@ export const ReportComponent = () => {
               <ReportCompany report={report} canEdit={connectedUser.isAdmin} />
             </Grid>
           </Grid>
+
+          {_report.get.entity?.report.barcodeProductId && (
+            <ReportBarcodeProduct barcodeProductId={_report.get.entity.report.barcodeProductId} />
+          )}
 
           <ReportDescription report={report} files={_report.get.entity?.files} />
 
