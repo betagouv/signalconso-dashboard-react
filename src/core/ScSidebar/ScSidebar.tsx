@@ -91,8 +91,13 @@ export const ScSidebar = ({connectedUser, logout}: {connectedUser: UserWithPermi
       )}
       <SidebarHr margin />
       {[Roles.Admin].includes(connectedUser.role) && (
-        <SidebarItem onClick={closeSidebarIfNotPinned} to={path(siteMap.logged.adminTools)} icon={EntityIcon.admin}>
+        <SidebarItem onClick={closeSidebarIfNotPinned} to={path(siteMap.logged.testTools)} icon={EntityIcon.admin}>
           {m.menu_test_emails}
+        </SidebarItem>
+      )}
+      {[Roles.Admin].includes(connectedUser.role) && (
+        <SidebarItem onClick={closeSidebarIfNotPinned} to={path(siteMap.logged.adminTools)} icon={EntityIcon.admin}>
+          {m.menu_admin}
         </SidebarItem>
       )}
       <SidebarHr margin />

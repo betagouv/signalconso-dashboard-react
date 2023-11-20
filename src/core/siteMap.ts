@@ -5,6 +5,7 @@ import {Id} from './model'
 
 export const siteMap = {
   logged: {
+    testTools: `/test-tools`,
     adminTools: `/admin-tools`,
     reportedWebsites: `/moderation-url-entreprises`,
     reportedWebsites_unknown: `/moderation-url-entreprises/sites-internet/non-identifies`,
