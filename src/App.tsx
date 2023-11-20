@@ -58,6 +58,7 @@ import {Provide} from './shared/Provide'
 import './style.css'
 import {CenteredContent} from './shared/CenteredContent'
 import {AdminTools} from './feature/AdminTools/AdminTools'
+import {Tools} from './feature/AdminTools/Tools'
 
 const Router: typeof HashRouter = config.useHashRouter ? HashRouter : BrowserRouter
 
@@ -174,8 +175,7 @@ const AppLogged = () => {
       ]}
     >
       <Switch>
-        <Route path={siteMap.logged.testTools} component={TestTools} />
-        <Route path={siteMap.logged.adminTools} component={AdminTools} />
+        <Route path={siteMap.logged.tools} component={Tools} />
         <Route path={siteMap.logged.reportedWebsites} component={ReportedWebsites} />
         <Route path={siteMap.logged.reportedPhone} component={ReportedPhones} />
         <Route path={siteMap.logged.report()} component={connectedUser.isPro ? ReportPro : ReportComponent} />
