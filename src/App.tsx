@@ -34,7 +34,7 @@ import {Matomo} from './core/plugins/Matomo'
 import {siteMap} from './core/siteMap'
 import {muiTheme} from './core/theme'
 import {AddCompanyForm} from './feature/AddCompany/AddCompanyForm'
-import {AdminTools} from './feature/AdminTools/AdminTools'
+import {TestTools} from './feature/AdminTools/TestTools'
 import {Companies} from './feature/Companies/Companies'
 import {CompaniesPro} from './feature/CompaniesPro/CompaniesPro'
 import {CompanyComponent} from './feature/Company/Company'
@@ -57,6 +57,8 @@ import {Login} from './shared/Login'
 import {Provide} from './shared/Provide'
 import './style.css'
 import {CenteredContent} from './shared/CenteredContent'
+import {AdminTools} from './feature/AdminTools/AdminTools'
+import {Tools} from './feature/AdminTools/Tools'
 
 const Router: typeof HashRouter = config.useHashRouter ? HashRouter : BrowserRouter
 
@@ -173,7 +175,7 @@ const AppLogged = () => {
       ]}
     >
       <Switch>
-        <Route path={siteMap.logged.adminTools} component={AdminTools} />
+        <Route path={siteMap.logged.tools} component={Tools} />
         <Route path={siteMap.logged.reportedWebsites} component={ReportedWebsites} />
         <Route path={siteMap.logged.reportedPhone} component={ReportedPhones} />
         <Route path={siteMap.logged.report()} component={connectedUser.isPro ? ReportPro : ReportComponent} />

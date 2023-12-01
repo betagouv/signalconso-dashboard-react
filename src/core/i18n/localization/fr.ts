@@ -434,7 +434,7 @@ export const fr = {
     menu_reports: 'Signalements',
     menu_companies: 'Entreprises',
     menu_my_companies: 'Mes entreprises',
-    menu_test_emails: `Outils de test`,
+    menu_admin_tools: `Outils`,
     menu_stats: 'Statistiques',
     menu_exports: 'Mes exports',
     menu_users: 'Utilisateurs',

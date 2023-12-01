@@ -73,7 +73,7 @@ export const usePaginate = <T, S extends ISearch, E = any>(
     fetching,
     fetch: (args: {force?: boolean; clean?: boolean} = {}) => fetch(args, filters),
     filters,
-    pageNumber: filters.offset / filters.limit,
+    pageNumber: Math.round(filters.offset / filters.limit),
     updateFilters,
     clearFilters,
     initialFilters,
