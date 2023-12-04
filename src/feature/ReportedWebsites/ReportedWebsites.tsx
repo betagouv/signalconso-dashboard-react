@@ -7,24 +7,21 @@ import {PageTab, PageTabs} from '../../shared/Page/PageTabs'
 import {ReportedUnknownWebsites} from './ReportedUnknownWebsites'
 import {useLogin} from '../../core/context/LoginContext'
 import {WebsitesInvestigation} from './WebsitesInvestigation'
-import {config} from '../../conf/config'
 
 export const ReportedWebsites = () => {
   const {m} = useI18n()
   const {path} = useRouteMatch()
   const {connectedUser} = useLogin()
 
-  const displayDropShipping: boolean = config.enable_feature_dropshipping === 1 || connectedUser.isAdmin
-
   return (
     <Page size="xl">
-      {displayDropShipping ? (
+      {connectedUser.isAdmin ? (
         <PageTitle>{m.reportedWebsites}</PageTitle>
       ) : (
         <PageTitle>{m.reportedUnknownWebsitesDGCCRF}</PageTitle>
       )}
 
-      {displayDropShipping ? (
+      {connectedUser.isAdmin ? (
         <PageTabs>
           <PageTab to={siteMap.logged.websitesInvestigation} label={m.websitesInvestigation} />
           <PageTab to={siteMap.logged.reportedWebsites_unknown} label={m.reportedUnknownWebsites} />
@@ -34,7 +31,7 @@ export const ReportedWebsites = () => {
       )}
 
       <Switch>
-        {displayDropShipping ? (
+        {connectedUser.isAdmin ? (
           <Redirect exact from={path} to={siteMap.logged.websitesInvestigation} />
         ) : (
           <Redirect exact from={path} to={siteMap.logged.reportedWebsites_unknown} />

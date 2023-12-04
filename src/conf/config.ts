@@ -1,6 +1,6 @@
 // Env variables must start with 'REACT_APP_' to be considered by CreateReactApp
 import {env as _env} from '../alexlibs/ts-utils'
-import {bool, defaultValue, int, required} from '../alexlibs/ts-utils'
+import {defaultValue, int} from '../alexlibs/ts-utils'
 
 enum Env {
   NODE_ENV = 'NODE_ENV',
@@ -10,7 +10,6 @@ enum Env {
   REACT_APP_BASE_PATH = 'REACT_APP_BASE_PATH',
   REACT_APP_UPLOAD_MAX_SIZE_MB = 'REACT_APP_UPLOAD_MAX_SIZE_MB',
   REACT_APP_SENTRY_DNS = 'REACT_APP_SENTRY_DNS',
-  REACT_APP_ENABLE_FEATURE_DROPSHIPPING = 'REACT_APP_ENABLE_FEATURE_DROPSHIPPING',
   REACT_APP_SENTRY_TRACE_RATE = 'REACT_APP_SENTRY_TRACE_RATE',
   REACT_APP_INFO_BANNER = 'REACT_APP_INFO_BANNER',
   REACT_APP_INFO_BANNER_SEVERITY = 'REACT_APP_INFO_BANNER_SEVERITY',
@@ -41,7 +40,6 @@ export const config = {
   contactEmail: 'support@signal.conso.gouv.fr',
   sentry_dns: env()(Env.REACT_APP_SENTRY_DNS),
   sentry_traceRate: env(int, defaultValue(0.5))(Env.REACT_APP_SENTRY_TRACE_RATE),
-  enable_feature_dropshipping: env(int)(Env.REACT_APP_ENABLE_FEATURE_DROPSHIPPING),
   useHashRouter: true,
   infoBanner: env()(Env.REACT_APP_INFO_BANNER),
   infoBannerSeverity: readSeverity(env()(Env.REACT_APP_INFO_BANNER_SEVERITY)) ?? 'warning',
