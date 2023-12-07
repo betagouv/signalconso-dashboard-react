@@ -1,5 +1,7 @@
 import {config} from 'conf/config'
 
+export const MATOMO_ENABLED = false
+
 declare const _paq: any
 
 export class Matomo {
@@ -27,7 +29,7 @@ export class Matomo {
   }
 
   private static readonly push = (args: any[]) => {
-    if (config.isDev) {
+    if (config.isDev || !MATOMO_ENABLED) {
       console.info('[Matomo]', args)
     } else {
       try {
@@ -116,4 +118,29 @@ export enum StatisticsActions {
 export enum ActionResultNames {
   success = 'Succès',
   fail = 'Echec',
+}
+
+export function injectMatomoScript() {
+  if (MATOMO_ENABLED) {
+    var _paq = ((window as any)._paq = (window as any)._paq || [])
+    /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
+    _paq.push(['setDocumentTitle', document.domain + '/' + document.title])
+    _paq.push(['setCookieDomain', '*.signal.conso.gouv.fr'])
+    _paq.push(['setDomains', ['*.signal.conso.gouv.fr']])
+    _paq.push(['trackPageView'])
+    _paq.push(['enableLinkTracking'])
+    ;(function () {
+      var u = 'https://stats.beta.gouv.fr/'
+      _paq.push(['setTrackerUrl', u + 'matomo.php'])
+      _paq.push(['setSiteId', '62'])
+      var d = document,
+        g = d.createElement('script'),
+        s = d.getElementsByTagName('script')[0]
+      g.async = true
+      g.src = u + 'matomo.js'
+      s.parentNode?.insertBefore(g, s)
+    })()
+  } else {
+    console.log('[Matomo] Injection of Matomo script disabled')
+  }
 }
