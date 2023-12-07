@@ -6,8 +6,10 @@ import createGenerateClassName from '@mui/styles/createGenerateClassName'
 import StylesProvider from '@mui/styles/StylesProvider'
 import {ErrorBundary} from './core/ErrorBundary'
 import {Sentry} from './core/plugins/Sentry'
+import {injectMatomoScript} from 'core/plugins/Matomo'
 
 Sentry.init()
+injectMatomoScript()
 
 // https://github.com/mui-org/material-ui/issues/11843
 // I think it should not be necessary. There is some miss configuration somewhere
