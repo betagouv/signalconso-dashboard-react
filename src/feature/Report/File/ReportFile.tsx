@@ -105,7 +105,15 @@ export const ReportFile = ({file, dense, onRemove}: ReportFileProps) => {
 
   return (
     <Tooltip title={file.filename}>
-      <Box component="a" target="_blank" href={fileUrl} sx={css.root}>
+      <Box
+        component="a"
+        target="_blank"
+        href={fileUrl}
+        sx={css.root}
+        // Matomo tracks all clicks on links
+        // But these filenames are potentially sensitive
+        className="matomo_ignore"
+      >
         <Box sx={css.image}>
           {(() => {
             switch (fileType) {
