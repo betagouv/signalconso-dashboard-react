@@ -276,7 +276,6 @@ export const ReportsPro = () => {
                         {(value, onChange) => (
                           <ScSelect
                             value={value}
-                            // className='flex flex-col gap-20 '
                             onChange={x => onChange(x.target.value)}
                             id="select-status-pro"
                             label={m.status}
