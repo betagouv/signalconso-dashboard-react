@@ -1,5 +1,5 @@
 import {CircularProgress, CssBaseline, StyledEngineProvider, ThemeProvider} from '@mui/material'
-import {QueryClient, QueryClientProvider} from '@tanstack/react-query'
+import {QueryCache, QueryClient, QueryClientProvider} from '@tanstack/react-query'
 import {ApiProvider} from 'core/context/ApiContext'
 import {RegisterForm} from 'feature/Login/RegisterForm'
 import {LoginForm} from 'feature/Login/LoginForm'
@@ -34,7 +34,6 @@ import {Matomo} from './core/plugins/Matomo'
 import {siteMap} from './core/siteMap'
 import {muiTheme} from './core/theme'
 import {AddCompanyForm} from './feature/AddCompany/AddCompanyForm'
-import {TestTools} from './feature/AdminTools/TestTools'
 import {Companies} from './feature/Companies/Companies'
 import {CompaniesPro} from './feature/CompaniesPro/CompaniesPro'
 import {JoinNewsletter} from './feature/JoinNewsletter/JoinNewsletter'
@@ -58,8 +57,9 @@ import {Login} from './shared/Login'
 import {Provide} from './shared/Provide'
 import './style.css'
 import {CenteredContent} from './shared/CenteredContent'
-import {AdminTools} from './feature/AdminTools/AdminTools'
 import {Tools} from './feature/AdminTools/Tools'
+import {useToast} from './core/toast'
+import {ApiError} from './core/client/ApiClient'
 
 const Router: typeof HashRouter = config.useHashRouter ? HashRouter : BrowserRouter
 
@@ -150,7 +150,16 @@ const AppLogin = () => {
 const AppLogged = () => {
   const {apiSdk, connectedUser, logout} = useLogin()
   const history = useHistory()
-  const queryClient = new QueryClient()
+  const {toastError} = useToast()
+  const queryClient = new QueryClient({
+    queryCache: new QueryCache({
+      onError: error => {
+        if (error instanceof ApiError) {
+          toastError(error)
+        }
+      },
+    }),
+  })
   useEffect(() => history.listen(_ => Matomo.trackPage(`/${connectedUser.role.toLocaleLowerCase()}${_.pathname}`)), [history])
 
   return (

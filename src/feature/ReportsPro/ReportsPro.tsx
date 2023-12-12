@@ -1,7 +1,6 @@
 import React, {useEffect, useMemo} from 'react'
 import {Page, PageTitle} from '../../shared/Page'
 import {Panel, PanelBody} from '../../shared/Panel'
-import {useReportsContext} from '../../core/context/ReportsContext'
 import {Datatable} from '../../shared/Datatable/Datatable'
 import {useI18n} from '../../core/i18n'
 import {Badge, Box, Grid, Icon, MenuItem} from '@mui/material'
@@ -27,7 +26,6 @@ import {useToast} from '../../core/toast'
 import {config} from '../../conf/config'
 import {ExportReportsPopper} from '../../shared/ExportPopperBtn'
 import {PeriodPicker} from '../../shared/PeriodPicker'
-import {useCompaniesContext} from '../../core/context/CompaniesContext'
 import {SelectCompaniesByPro} from '../../shared/SelectCompaniesByPro/SelectCompaniesByPro'
 import compose from '../../core/helper/compose'
 import {DebouncedInput} from 'shared/DebouncedInput'
@@ -38,6 +36,8 @@ import {ReportSearch} from '../../core/client/report/ReportSearch'
 import {ScOption} from 'core/helper/ScOption'
 import {Label} from '../../shared/Label'
 import {ScInput} from '../../shared/ScInput'
+import {useGetAccessibleByProQuery} from '../../core/hooks/companiesHooks'
+import {useReportSearchQuery} from '../../core/hooks/reportsHooks'
 
 const css = makeSx({
   card: {
@@ -100,8 +100,8 @@ interface ReportFiltersQs {
 }
 
 export const ReportsPro = () => {
-  const _reports = useReportsContext()
-  const _companies = useCompaniesContext()
+  const _reports = useReportSearchQuery()
+  const _accessibleByPro = useGetAccessibleByProQuery()
 
   const {isMobileWidth} = useLayoutContext()
   const history = useHistory()
@@ -134,21 +134,15 @@ export const ReportsPro = () => {
   }, [_reports.filters])
 
   useEffect(() => {
-    _companies.accessibleByPro.fetch({force: false})
     _reports.updateFilters({..._reports.initialFilters, ...queryString.get()})
   }, [])
-
-  useEffect(() => {
-    ScOption.from(_companies.accessibleByPro.error).map(toastError)
-    ScOption.from(_reports.error).map(toastError)
-  }, [_reports.error, _companies.accessibleByPro.error])
 
   useEffect(() => {
     queryString.update(cleanObject(_reports.filters))
   }, [_reports.filters])
 
   return (
-    <Page size="xl" loading={_companies.accessibleByPro.loading || _companies.accessibleByPro.loading}>
+    <Page size="xl" loading={_accessibleByPro.isLoading}>
       <PageTitle
         action={
           <Btn
@@ -171,7 +165,7 @@ export const ReportsPro = () => {
           <span dangerouslySetInnerHTML={{__html: m.yourAccountIsActivated}} />
         </Alert>
       )}
-      {ScOption.from(_companies.accessibleByPro.entity)
+      {ScOption.from(_accessibleByPro.data)
         .map(companies => (
           <>
             {displayFilters && (
@@ -340,7 +334,7 @@ export const ReportsPro = () => {
                   onPaginationChange: pagination => _reports.updateFilters(prev => ({...prev, ...pagination})),
                 }}
                 data={_reports.list?.entities}
-                loading={_reports.fetching}
+                loading={_accessibleByPro.isLoading}
                 total={_reports.list?.totalCount}
                 onClickRows={(_, e) => {
                   if (e.metaKey || e.ctrlKey) {

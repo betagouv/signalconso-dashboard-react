@@ -1,4 +1,3 @@
-import {useReportsContext} from '../../core/context/ReportsContext'
 import {useI18n} from '../../core/i18n'
 import {Page, PageTitle} from '../../shared/Page'
 
@@ -13,10 +12,9 @@ import {useSetState} from '../../alexlibs/react-hooks-lib'
 import {Enum} from '../../alexlibs/ts-utils'
 import {config} from '../../conf/config'
 import {EntityIcon} from '../../core/EntityIcon'
-import {Report, ReportStatus, ReportTag, ReportingDateLabel} from '../../core/client/report/Report'
+import {Report, ReportingDateLabel, ReportStatus, ReportTag} from '../../core/client/report/Report'
 import {useConstantContext} from '../../core/context/ConstantContext'
 import {useLogin} from '../../core/context/LoginContext'
-import {useReportContext} from '../../core/context/ReportContext'
 import {cleanObject, getHostFromUrl, textOverflowMiddleCropping} from '../../core/helper'
 import compose from '../../core/helper/compose'
 import {
@@ -29,7 +27,6 @@ import {
 import {Id, ReportResponse, ReportResponseTypes, ReportSearch, ResponseEvaluation} from '../../core/model'
 import {siteMap} from '../../core/siteMap'
 import {styleUtils, sxUtils} from '../../core/theme'
-import {useToast} from '../../core/toast'
 import {ScButton} from '../../shared/Button'
 import {ConsumerReviewLabel} from '../../shared/ConsumerReviewLabel'
 import {Datatable} from '../../shared/Datatable/Datatable'
@@ -52,6 +49,8 @@ import {SelectTags} from '../../shared/SelectTags/SelectTags'
 import {SelectTagsMenuValues} from '../../shared/SelectTags/SelectTagsMenu'
 import {TrueFalseNull} from '../../shared/TrueFalseNull'
 import {PanelBody} from 'alexlibs/mui-extension/Panel/PanelBody'
+import {useMutation} from '@tanstack/react-query'
+import {useReportSearchQuery} from '../../core/hooks/reportsHooks'
 
 const TrueLabel = () => {
   const {m} = useI18n()
@@ -102,12 +101,13 @@ interface ReportSearchQs {
 
 export const Reports = () => {
   const {m, formatDate} = useI18n()
-  const _report = useReportContext()
-  const _reports = useReportsContext()
+  const {connectedUser, apiSdk} = useLogin()
+
+  const downloadReports = useMutation((reportIds: Id[]) => apiSdk.secured.reports.download(reportIds))
+  const _reports = useReportSearchQuery()
+
   const selectReport = useSetState<Id>()
-  const {connectedUser} = useLogin()
   const [expanded, setExpanded] = React.useState(false)
-  const {toastError} = useToast()
   const queryString = useQueryString<Partial<ReportSearch>, Partial<ReportSearchQs>>({
     toQueryString: mapDatesToQueryString,
     fromQueryString: compose(
@@ -132,10 +132,6 @@ export const Reports = () => {
   useEffect(() => {
     queryString.update(cleanObject(_reports.filters))
   }, [_reports.filters])
-
-  useEffect(() => {
-    ScOption.from(_reports.error).map(toastError)
-  }, [_reports.list, _reports.error])
 
   const getReportingDate = (report: Report) =>
     report.details.filter(_ => _.label.indexOf(ReportingDateLabel) !== -1).map(_ => _.value)
@@ -675,11 +671,11 @@ export const Reports = () => {
                 onClear={selectReport.clear}
                 actions={
                   <ScButton
-                    loading={_report.download.loading}
+                    loading={downloadReports.isLoading}
                     variant="contained"
                     icon="file_download"
                     onClick={() => {
-                      _report.download.fetch({}, selectReport.toArray())
+                      downloadReports.mutate(selectReport.toArray())
                     }}
                     sx={{
                       marginLeft: 'auto',
@@ -693,7 +689,7 @@ export const Reports = () => {
               </DatatableToolbar>
             </>
           }
-          loading={_reports.fetching}
+          loading={_reports.isLoading}
           paginate={{
             offset: _reports.filters.offset,
             limit: _reports.filters.limit,
@@ -714,7 +710,7 @@ export const Reports = () => {
                 const allChecked = selectReport.size === _reports.list?.entities.length
                 return (
                   <Checkbox
-                    disabled={_reports.fetching}
+                    disabled={_reports.isLoading}
                     indeterminate={selectReport.size > 0 && !allChecked}
                     checked={allChecked}
                     onChange={() => {
