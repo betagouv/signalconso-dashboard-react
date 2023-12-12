@@ -13,6 +13,7 @@ enum Env {
   REACT_APP_SENTRY_TRACE_RATE = 'REACT_APP_SENTRY_TRACE_RATE',
   REACT_APP_INFO_BANNER = 'REACT_APP_INFO_BANNER',
   REACT_APP_INFO_BANNER_SEVERITY = 'REACT_APP_INFO_BANNER_SEVERITY',
+  REACT_APP_ENABLE_MATOMO = 'REACT_APP_ENABLE_MATOMO',
 }
 
 const env = _env(process.env)
@@ -40,6 +41,7 @@ export const config = {
   contactEmail: 'support@signal.conso.gouv.fr',
   sentry_dns: env()(Env.REACT_APP_SENTRY_DNS),
   sentry_traceRate: env(int, defaultValue(0.5))(Env.REACT_APP_SENTRY_TRACE_RATE),
+  enableMatomo: env()(Env.REACT_APP_ENABLE_MATOMO) === 'true',
   useHashRouter: true,
   infoBanner: env()(Env.REACT_APP_INFO_BANNER),
   infoBannerSeverity: readSeverity(env()(Env.REACT_APP_INFO_BANNER_SEVERITY)) ?? 'warning',

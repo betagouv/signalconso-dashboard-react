@@ -1,6 +1,6 @@
 import {config} from 'conf/config'
 
-export const MATOMO_ENABLED = true
+export const MATOMO_ENABLED = config.enableMatomo
 
 declare const _paq: any
 
@@ -29,9 +29,8 @@ export class Matomo {
   }
 
   private static readonly push = (args: any[]) => {
-    if (config.isDev || !MATOMO_ENABLED) {
-      console.info('[Matomo]', args)
-    } else {
+    console.info('[Matomo]', ...args)
+    if (MATOMO_ENABLED) {
       try {
         _paq.push(args)
       } catch (e) {
