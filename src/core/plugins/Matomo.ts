@@ -124,8 +124,8 @@ export function injectMatomoScript() {
     var _paq = ((window as any)._paq = (window as any)._paq || [])
     /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
     _paq.push(['setDocumentTitle', document.domain + '/' + document.title])
-    _paq.push(['setCookieDomain', '*.signal.conso.gouv.fr'])
-    _paq.push(['setDomains', ['*.signal.conso.gouv.fr']])
+    _paq.push(['setCookieDomain', 'admin.signal.conso.gouv.fr'])
+    _paq.push(['setDomains', ['admin.signal.conso.gouv.fr']])
     _paq.push(['trackPageView'])
     _paq.push(['enableLinkTracking'])
     ;(function () {
