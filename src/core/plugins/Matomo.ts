@@ -1,6 +1,6 @@
 import {config} from 'conf/config'
 
-export const MATOMO_ENABLED = false
+export const MATOMO_ENABLED = true
 
 declare const _paq: any
 
