@@ -1,24 +1,10 @@
-// Env variables must start with 'REACT_APP_' to be considered by CreateReactApp
-import {env as _env} from '../alexlibs/ts-utils'
-import {defaultValue, int} from '../alexlibs/ts-utils'
 
-enum Env {
-  NODE_ENV = 'NODE_ENV',
-  REACT_APP_API_BASE_URL = 'REACT_APP_API_BASE_URL',
-  REACT_APP_APP_BASE_URL = 'REACT_APP_APP_BASE_URL',
-  REACT_APP_COMPANY_API_BASE_URL = 'REACT_APP_COMPANY_API_BASE_URL',
-  REACT_APP_BASE_PATH = 'REACT_APP_BASE_PATH',
-  REACT_APP_UPLOAD_MAX_SIZE_MB = 'REACT_APP_UPLOAD_MAX_SIZE_MB',
-  REACT_APP_SENTRY_DNS = 'REACT_APP_SENTRY_DNS',
-  REACT_APP_SENTRY_TRACE_RATE = 'REACT_APP_SENTRY_TRACE_RATE',
-  REACT_APP_INFO_BANNER = 'REACT_APP_INFO_BANNER',
-  REACT_APP_INFO_BANNER_SEVERITY = 'REACT_APP_INFO_BANNER_SEVERITY',
-  REACT_APP_ENABLE_MATOMO = 'REACT_APP_ENABLE_MATOMO',
+function noTrailingSlash(str: string) {
+  return str.replace(/\/$/, '')
 }
-
-const env = _env(process.env)
-
-const parseUrl = (_: string): string => _.replace(/\/$/, '')
+function readInt(str: string | undefined, defaultValue: number) {
+  return str === undefined ? defaultValue : parseInt(str, 10)
+}
 
 const severities = ['info', 'warning', 'error', 'success'] as const
 type Severity = typeof severities[number]
@@ -30,21 +16,22 @@ function readSeverity(severity?: string): Severity | null {
 }
 
 export const config = {
-  isDev: env()(Env.NODE_ENV) === 'development',
-  apiBaseUrl: env(defaultValue('http://localhost:9000'), parseUrl)(Env.REACT_APP_API_BASE_URL),
-  companyApiBaseUrl: env(defaultValue('http://localhost:9002'), parseUrl)(Env.REACT_APP_COMPANY_API_BASE_URL),
-  appBaseUrl: env(defaultValue('http://localhost:3001'), parseUrl)(Env.REACT_APP_APP_BASE_URL),
-  basePath: env(defaultValue('/'))(Env.REACT_APP_BASE_PATH),
+  isDev: process.env.REACT_APP_NODE_ENV === 'development',
+  apiBaseUrl: noTrailingSlash(process.env.REACT_APP_API_BASE_URL ?? 'http://localhost:9000'),
+  companyApiBaseUrl: noTrailingSlash(process.env.REACT_APP_COMPANY_API_BASE_URL?? 'http://localhost:9002'),
+  appBaseUrl: noTrailingSlash(process.env.REACT_APP_APP_BASE_URL?? 'http://localhost:3001'),
+  basePath: process.env.REACT_APP_BASE_PATH ?? '/',
   reportsLimitForExport: 30000,
   upload_allowedExtensions: ['jpg', 'jpeg', 'pdf', 'png', 'gif', 'docx'],
-  upload_maxSizeMb: env(int, defaultValue(5))(Env.REACT_APP_UPLOAD_MAX_SIZE_MB),
+  upload_maxSizeMb: readInt(process.env.REACT_APP_UPLOAD_MAX_SIZE_MB, 5),
   contactEmail: 'support@signal.conso.gouv.fr',
-  sentry_dns: env()(Env.REACT_APP_SENTRY_DNS),
-  sentry_traceRate: env(int, defaultValue(0.5))(Env.REACT_APP_SENTRY_TRACE_RATE),
-  enableMatomo: env()(Env.REACT_APP_ENABLE_MATOMO) === 'true',
+  sentry_dns: process.env.REACT_APP_SENTRY_DNS,
+  sentry_traceRate: readInt(process.env.REACT_APP_SENTRY_TRACE_RATE, 0.5),
+  enableMatomo: process.env.REACT_APP_ENABLE_MATOMO === 'true',
   useHashRouter: true,
-  infoBanner: env()(Env.REACT_APP_INFO_BANNER),
-  infoBannerSeverity: readSeverity(env()(Env.REACT_APP_INFO_BANNER_SEVERITY)) ?? 'warning',
+  infoBanner: process.env.REACT_APP_INFO_BANNER,
+  infoBannerSeverity: readSeverity(process.env.REACT_APP_INFO_BANNER_SEVERITY) ?? 'warning',
+
 }
 
 export type Config = typeof config
