@@ -17,45 +17,58 @@ import {WebsiteTools} from './WebsiteTools'
 import {Txt} from '../../alexlibs/mui-extension'
 import {sxUtils} from '../../core/theme'
 import {useLogin} from '../../core/context/LoginContext'
-import {IdentificationStatus, InvestigationStatus, WebsiteWithCompany} from '../../core/client/website/Website'
+import {
+  IdentificationStatus,
+  InvestigationStatus,
+  WebsiteInvestigation,
+  WebsiteWithCompany,
+} from '../../core/client/website/Website'
 import {cleanObject} from '../../core/helper'
 import {Id} from '../../core/model'
 import {PeriodPicker} from '../../shared/PeriodPicker'
 import {SiretExtraction} from './SiretExtraction'
+import {
+  useListInvestigationStatusQuery,
+  useWebsiteWithCompanySearchQuery,
+  WebsiteWithCompanySearchKeys,
+} from '../../core/queryhooks/websiteHooks'
+import {useMutation, useQueryClient} from '@tanstack/react-query'
 
 export const WebsitesInvestigation = () => {
   const {m, formatDate} = useI18n()
-  const _websiteWithCompany = useReportedWebsiteWithCompanyContext().getWebsiteWithCompany
-  const _createOrUpdate = useWebsiteInvestigationContext().createOrUpdateInvestigation
-  const _investigationStatus = useWebsiteInvestigationContext().listInvestigationStatus
-  const _updateStatus = useReportedWebsiteWithCompanyContext().update
-  const _remove = useReportedWebsiteWithCompanyContext().remove
-  const {toastError, toastInfo, toastSuccess} = useToast()
+  const {connectedUser, apiSdk} = useLogin()
+  const queryClient = useQueryClient()
 
-  const {connectedUser} = useLogin()
+  const _websiteWithCompany = useWebsiteWithCompanySearchQuery()
+  const _investigationStatus = useListInvestigationStatusQuery()
+  const _createOrUpdate = useMutation((websiteInvestigation: WebsiteInvestigation) =>
+    apiSdk.secured.website.createOrUpdateInvestigation(websiteInvestigation),
+  )
+  const _updateStatus = useMutation(
+    (params: {id: Id; identificationStatus: IdentificationStatus}) =>
+      apiSdk.secured.website.updateStatus(params.id, params.identificationStatus),
+    {
+      onSuccess: _ => queryClient.invalidateQueries(WebsiteWithCompanySearchKeys),
+    },
+  )
+  const _remove = useMutation((id: Id) => apiSdk.secured.website.remove(id), {
+    onSuccess: _ => queryClient.invalidateQueries(WebsiteWithCompanySearchKeys).then(_ => toastSuccess(m.websiteDeleted)),
+  })
+  const {toastInfo, toastSuccess} = useToast()
 
   const websitesIndex = useMap<Id, WebsiteWithCompany>()
 
-  useEffectFn(_websiteWithCompany.list, w => {
+  useEffectFn(_websiteWithCompany.result.data, w => {
     websitesIndex.clear()
     w.entities.map(_ => websitesIndex.set(_.id, _))
   })
 
-  useEffect(() => {
-    _websiteWithCompany.fetch({clean: false})
-  }, [_websiteWithCompany.filters])
-
-  useEffect(() => {
-    _websiteWithCompany.updateFilters({..._websiteWithCompany.initialFilters})
-    _investigationStatus.fetch()
-  }, [])
-
-  useEffectFn(_updateStatus.error, toastError)
-  useEffectFn(_websiteWithCompany.error, toastError)
-  useEffectFn(_remove.error, toastError)
+  // useEffect(() => {
+  //   _websiteWithCompany.updateFilters({..._websiteWithCompany.initialFilters})
+  // }, [])
 
   const handleUpdateKind = (website: WebsiteWithCompany, identificationStatus: IdentificationStatus) => {
-    _updateStatus.fetch({}, website.id, identificationStatus).then(_ => _websiteWithCompany.fetch({clean: false}))
+    _updateStatus.mutate({id: website.id, identificationStatus})
   }
 
   const filtersCount = useMemo(() => {
@@ -71,11 +84,7 @@ export const WebsitesInvestigation = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  const onRemove = (id: string) =>
-    _remove
-      .fetch({}, id)
-      .then(_ => _websiteWithCompany.fetch({clean: false}))
-      .then(_ => toastSuccess(m.websiteDeleted))
+  const onRemove = (id: string) => _remove.mutateAsync(id)
 
   return (
     <Panel>
@@ -128,8 +137,8 @@ export const WebsitesInvestigation = () => {
             </WebsitesFilters>
           </>
         }
-        loading={_websiteWithCompany.fetching}
-        total={_websiteWithCompany.list?.totalCount}
+        loading={_websiteWithCompany.result.isFetching}
+        total={_websiteWithCompany.result.data?.totalCount}
         paginate={{
           limit: _websiteWithCompany.filters.limit,
           offset: _websiteWithCompany.filters.offset,
@@ -159,9 +168,7 @@ export const WebsitesInvestigation = () => {
             render: _ => (
               <SelectWebsiteAssociation
                 website={_}
-                onChange={() => {
-                  _websiteWithCompany.fetch({clean: false})
-                }}
+                onChange={() => queryClient.invalidateQueries(WebsiteWithCompanySearchKeys)}
               />
             ),
           },
@@ -172,7 +179,7 @@ export const WebsitesInvestigation = () => {
               <SiretExtraction
                 websiteWithCompany={_}
                 remove={() => onRemove(_.id)}
-                identify={() => _websiteWithCompany.fetch({clean: false})}
+                identify={() => queryClient.invalidateQueries(WebsiteWithCompanySearchKeys)}
               />
             ),
           },
@@ -190,12 +197,12 @@ export const WebsitesInvestigation = () => {
                 title={m.investigation}
                 inputLabel={m.investigation}
                 getOptionLabel={_ => m.InvestigationStatusDesc[_]}
-                options={_investigationStatus.entity}
+                options={_investigationStatus.data}
                 onChange={investigationStatus => {
                   if (_.investigationStatus === investigationStatus) {
                     toastInfo(m.alreadySelectedValue(investigationStatus))
                   } else {
-                    _createOrUpdate.fetch({}, {..._, investigationStatus})
+                    _createOrUpdate.mutate({..._, investigationStatus})
                     websitesIndex.set(_.id, {..._, lastUpdated: new Date(Date.now()), investigationStatus})
                   }
                 }}
@@ -230,7 +237,7 @@ export const WebsitesInvestigation = () => {
                 <WebsiteTools website={_} />
                 {connectedUser.isAdmin ? (
                   <Tooltip title={m.delete}>
-                    <IconBtn loading={_remove.loading} color="primary" onClick={() => onRemove(_.id)}>
+                    <IconBtn loading={_remove.isLoading} color="primary" onClick={() => onRemove(_.id)}>
                       <Icon>delete</Icon>
                     </IconBtn>
                   </Tooltip>

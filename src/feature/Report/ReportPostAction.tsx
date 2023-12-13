@@ -2,12 +2,13 @@ import React, {ReactElement, useState} from 'react'
 import {Alert} from '../../alexlibs/mui-extension'
 import {useI18n} from '../../core/i18n'
 import {ScInput} from '../../shared/ScInput'
-import {useFetcher} from '../../alexlibs/react-hooks-lib'
 import {useLogin} from '../../core/context/LoginContext'
 import {useToast} from '../../core/toast'
 import {ScDialog} from '../../shared/ScDialog'
-import {EventActionValues} from '../../core/client/event/Event'
+import {EventActionValues, ReportAction} from '../../core/client/event/Event'
 import {Report} from '../../core/client/report/Report'
+import {useMutation} from '@tanstack/react-query'
+import {Id} from '../../core/model'
 
 interface Props {
   report: Report
@@ -21,25 +22,25 @@ interface Props {
 export const ReportPostAction = ({label, actionType, report, children, onAdd, required}: Props) => {
   const {m} = useI18n()
   const {apiSdk} = useLogin()
-  const _addComment = useFetcher(apiSdk.secured.reports.postAction)
+  const _addComment = useMutation((params: {id: Id; action: ReportAction}) =>
+    apiSdk.secured.reports.postAction(params.id, params.action),
+  )
   const [comment, setComment] = useState('')
   const {toastSuccess} = useToast()
-
-  const addComment = () => {
-    return _addComment.fetch({}, report.id, {actionType, details: comment, fileIds: []})
-  }
 
   return (
     <ScDialog
       title={label}
-      loading={_addComment.loading}
+      loading={_addComment.isLoading}
       onConfirm={(event, close) =>
-        addComment().then(() => {
-          setComment('')
-          onAdd()
-          toastSuccess(m.commentAdded)
-          close()
-        })
+        _addComment
+          .mutateAsync({id: report.id, action: {actionType, details: comment, fileIds: []}})
+          .then(() => {
+            setComment('')
+            onAdd()
+            toastSuccess(m.commentAdded)
+          })
+          .finally(close)
       }
       confirmLabel={m.add}
       confirmDisabled={required && comment === ''}

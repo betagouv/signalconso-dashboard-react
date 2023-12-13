@@ -1,13 +1,15 @@
 import {ReportReferenceNumber} from 'feature/Report/ReportReferenceNumber'
 
 import {WithInlineIcon} from 'shared/WithInlineIcon'
-import {Report} from '../../../core/client/report/Report'
-import {useReportContext} from '../../../core/context/ReportContext'
+import {Report, ReportConsumerUpdate} from '../../../core/client/report/Report'
 import {capitalize} from '../../../core/helper'
 import {useI18n} from '../../../core/i18n'
 import {ScButton} from '../../../shared/Button'
 import {Panel, PanelBody, PanelHead} from '../../../shared/Panel'
 import {EditConsumerDialog} from './EditConsumerDialog'
+import {useMutation, useQueryClient} from '@tanstack/react-query'
+import {useApiContext} from '../../../core/context/ApiContext'
+import {GetReportQueryKeys} from '../../../core/queryhooks/reportsHooks'
 
 interface Props {
   report: Report
@@ -15,8 +17,16 @@ interface Props {
 }
 
 export const ReportConsumer = ({report, canEdit}: Props) => {
-  const _report = useReportContext()
   const {m} = useI18n()
+  const {api} = useApiContext()
+  const queryClient = useQueryClient()
+  const _updateReportConsumer = useMutation(
+    (params: {reportId: string; reportConsumerUpdate: ReportConsumerUpdate}) =>
+      api.secured.reports.updateReportConsumer(params.reportId, params.reportConsumerUpdate),
+    {
+      onSuccess: () => queryClient.invalidateQueries(GetReportQueryKeys(report.id)),
+    },
+  )
 
   const {firstName, lastName, contactAgreement} = report
 
@@ -25,8 +35,11 @@ export const ReportConsumer = ({report, canEdit}: Props) => {
       <PanelHead
         action={
           canEdit && (
-            <EditConsumerDialog report={report} onChange={consumer => _report.updateConsumer.fetch({}, report.id, consumer)}>
-              <ScButton icon="edit" color="primary" loading={_report.updateConsumer.loading}>
+            <EditConsumerDialog
+              report={report}
+              onChange={consumer => _updateReportConsumer.mutate({reportId: report.id, reportConsumerUpdate: consumer})}
+            >
+              <ScButton icon="edit" color="primary" loading={_updateReportConsumer.isLoading}>
                 {m.edit}
               </ScButton>
             </EditConsumerDialog>

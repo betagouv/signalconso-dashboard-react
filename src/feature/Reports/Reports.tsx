@@ -50,7 +50,7 @@ import {SelectTagsMenuValues} from '../../shared/SelectTags/SelectTagsMenu'
 import {TrueFalseNull} from '../../shared/TrueFalseNull'
 import {PanelBody} from 'alexlibs/mui-extension/Panel/PanelBody'
 import {useMutation} from '@tanstack/react-query'
-import {useReportSearchQuery} from '../../core/hooks/reportsHooks'
+import {useReportSearchQuery} from '../../core/queryhooks/reportsHooks'
 
 const TrueLabel = () => {
   const {m} = useI18n()
@@ -646,10 +646,10 @@ export const Reports = () => {
               </Badge>
             )}
             <ExportReportsPopper
-              disabled={ScOption.from(_reports?.list?.totalCount)
+              disabled={ScOption.from(_reports?.result.data?.totalCount)
                 .map(_ => _ > config.reportsLimitForExport)
                 .getOrElse(false)}
-              tooltipBtnNew={ScOption.from(_reports?.list?.totalCount)
+              tooltipBtnNew={ScOption.from(_reports?.result.data?.totalCount)
                 .map(_ => (_ > config.reportsLimitForExport ? m.cannotExportMoreReports(config.reportsLimitForExport) : ''))
                 .getOrElse('')}
             >
@@ -689,15 +689,15 @@ export const Reports = () => {
               </DatatableToolbar>
             </>
           }
-          loading={_reports.isLoading}
+          loading={_reports.result.isFetching}
           paginate={{
             offset: _reports.filters.offset,
             limit: _reports.filters.limit,
             onPaginationChange: pagination => _reports.updateFilters(prev => ({...prev, ...pagination})),
           }}
           getRenderRowKey={_ => _.report.id}
-          data={_reports.list?.entities}
-          total={_reports.list?.totalCount}
+          data={_reports.result.data?.entities}
+          total={_reports.result.data?.totalCount}
           showColumnsToggle={true}
           plainTextColumnsToggle={true}
           initialHiddenColumns={
@@ -707,17 +707,17 @@ export const Reports = () => {
             {
               id: 'checkbox',
               head: (() => {
-                const allChecked = selectReport.size === _reports.list?.entities.length
+                const allChecked = selectReport.size === _reports.result.data?.entities.length
                 return (
                   <Checkbox
-                    disabled={_reports.isLoading}
+                    disabled={_reports.result.isFetching}
                     indeterminate={selectReport.size > 0 && !allChecked}
                     checked={allChecked}
                     onChange={() => {
                       if (allChecked) {
                         selectReport.clear()
                       } else {
-                        selectReport.add(_reports.list!.entities!.map(_ => _.report.id))
+                        selectReport.add(_reports.result.data!.entities!.map(_ => _.report.id))
                       }
                     }}
                   />

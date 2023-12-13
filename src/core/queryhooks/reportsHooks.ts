@@ -5,11 +5,12 @@ import {ResponseConsumerReview} from '../client/event/Event'
 import {UseQueryOpts} from './types'
 import {useQueryPaginate} from './UseQueryPaginate'
 import {ReportSearch} from '../client/report/ReportSearch'
-import {PaginatedFilters} from '../model'
+import {Id, PaginatedFilters} from '../model'
 
+export const GetReportQueryKeys = (id: Id) => ['reports_getById', id]
 export const useGetReportQuery = (id: string, options?: UseQueryOpts<ReportSearchResult, string[]>) => {
   const {api} = useApiContext()
-  return useQuery(['reports_getById', id], () => api.secured.reports.getById(id), options)
+  return useQuery(GetReportQueryKeys(id), () => api.secured.reports.getById(id), options)
 }
 
 export const useGetReviewOnReportResponseQuery = (

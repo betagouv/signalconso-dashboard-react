@@ -36,8 +36,8 @@ import {ReportSearch} from '../../core/client/report/ReportSearch'
 import {ScOption} from 'core/helper/ScOption'
 import {Label} from '../../shared/Label'
 import {ScInput} from '../../shared/ScInput'
-import {useGetAccessibleByProQuery} from '../../core/hooks/companiesHooks'
-import {useReportSearchQuery} from '../../core/hooks/reportsHooks'
+import {useGetAccessibleByProQuery} from '../../core/queryhooks/companiesHooks'
+import {useReportSearchQuery} from '../../core/queryhooks/reportsHooks'
 
 const css = makeSx({
   card: {
@@ -114,13 +114,13 @@ export const ReportsPro = () => {
   }, [_reports.filters])
 
   const isFirstVisit = useMemo(
-    () => !hasFilters && _reports.list?.entities.every(_ => _.report.status === ReportStatus.TraitementEnCours),
-    [_reports.list],
+    () => !hasFilters && _reports.result.data?.entities.every(_ => _.report.status === ReportStatus.TraitementEnCours),
+    [_reports.result.data],
   )
 
   const displayFilters = useMemo(
-    () => (_reports.list && _reports.list.totalCount > minRowsBeforeDisplayFilters) || hasFilters,
-    [_reports.list],
+    () => (_reports.result.data && _reports.result.data.totalCount > minRowsBeforeDisplayFilters) || hasFilters,
+    [_reports.result.data],
   )
 
   const queryString = useQueryString<Partial<ReportSearch>, Partial<ReportFiltersQs>>({
@@ -306,10 +306,10 @@ export const ReportsPro = () => {
                       </ScButton>
                     </Badge>
                     <ExportReportsPopper
-                      disabled={ScOption.from(_reports?.list?.totalCount)
+                      disabled={ScOption.from(_reports?.result.data?.totalCount)
                         .map(_ => _ > config.reportsLimitForExport)
                         .getOrElse(false)}
-                      tooltipBtnNew={ScOption.from(_reports?.list?.totalCount)
+                      tooltipBtnNew={ScOption.from(_reports?.result.data?.totalCount)
                         .map(_ =>
                           _ > config.reportsLimitForExport ? m.cannotExportMoreReports(config.reportsLimitForExport) : '',
                         )
@@ -333,9 +333,9 @@ export const ReportsPro = () => {
                   limit: _reports.filters.limit,
                   onPaginationChange: pagination => _reports.updateFilters(prev => ({...prev, ...pagination})),
                 }}
-                data={_reports.list?.entities}
+                data={_reports.result.data?.entities}
                 loading={_accessibleByPro.isLoading}
-                total={_reports.list?.totalCount}
+                total={_reports.result.data?.totalCount}
                 onClickRows={(_, e) => {
                   if (e.metaKey || e.ctrlKey) {
                     openInNew(siteMap.logged.report(_.report.id))

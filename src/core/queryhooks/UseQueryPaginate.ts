@@ -2,6 +2,7 @@ import {SetStateAction, useCallback, useState} from 'react'
 import {useQuery} from '@tanstack/react-query'
 import type {QueryKey} from '@tanstack/query-core'
 import {Paginate} from '../model'
+import type {UseQueryResult} from '@tanstack/react-query/src/types'
 
 export type OrderBy = 'desc' | 'asc'
 
@@ -12,14 +13,13 @@ export interface ISearch<T = any> {
   sortBy?: keyof T
 }
 
-export interface UsePaginate<T, S> {
-  list?: Paginate<T>
-  isLoading: boolean
+export interface UseQueryPaginateResult<S, T, E> {
+  result: UseQueryResult<T, E>
   filters: S
   updateFilters: (_: SetStateAction<S>, params?: UpdateFiltersParams) => void
   clearFilters: () => void
-  pageNumber: number
   initialFilters: S
+  pageNumber: number
 }
 
 export interface UpdateFiltersParams {
@@ -28,13 +28,13 @@ export interface UpdateFiltersParams {
 
 const defaultFilters: ISearch = {offset: 0, limit: 10}
 
-export const useQueryPaginate = <S extends ISearch, TQueryFnData = unknown, TQueryKey extends QueryKey = QueryKey>(
+export const useQueryPaginate = <S extends ISearch, T = unknown, TQueryKey extends QueryKey = QueryKey>(
   queryKey: TQueryKey,
-  queryFn: (search: S) => Promise<Paginate<TQueryFnData>>,
+  queryFn: (search: S) => Promise<Paginate<T>>,
   initialFilters: S,
-): UsePaginate<TQueryFnData, S> => {
+): UseQueryPaginateResult<S, Paginate<T>, unknown> => {
   const [filters, setFilters] = useState<S>({...defaultFilters, ...initialFilters})
-  const res = useQuery([...queryKey, filters], () => queryFn(filters))
+  const result = useQuery([...queryKey, filters], () => queryFn(filters))
 
   const updateFilters = useCallback((update: SetStateAction<S>, {preserveOffset}: UpdateFiltersParams = {}) => {
     setFilters(mutableFilters => {
@@ -50,12 +50,11 @@ export const useQueryPaginate = <S extends ISearch, TQueryFnData = unknown, TQue
   const clearFilters = useCallback(() => updateFilters(initialFilters), [])
 
   return {
-    list: res.data,
-    isLoading: res.isLoading,
+    result,
     filters,
-    pageNumber: Math.round(filters.offset / filters.limit),
     updateFilters,
     clearFilters,
     initialFilters,
+    pageNumber: Math.round(filters.offset / filters.limit),
   }
 }

@@ -6,7 +6,6 @@ import {NavLink} from 'react-router-dom'
 import {WithInlineIcon} from 'shared/WithInlineIcon'
 import {Txt} from '../../../alexlibs/mui-extension'
 import {Influencer, Report} from '../../../core/client/report/Report'
-import {useReportContext} from '../../../core/context/ReportContext'
 import {useI18n} from '../../../core/i18n'
 import {siteMap} from '../../../core/siteMap'
 import {sxUtils} from '../../../core/theme'
@@ -21,9 +20,9 @@ interface Props {
 }
 
 export const ReportCompany = ({report, canEdit}: Props) => {
-  const _report = useReportContext()
   const {connectedUser} = useLogin()
   const {m} = useI18n()
+
   const {websiteURL, vendor, companyAddress, companyId, companyName, companyBrand, companySiret, phone, influencer} = report
   return (
     <Panel stretch>
@@ -31,7 +30,7 @@ export const ReportCompany = ({report, canEdit}: Props) => {
         action={
           canEdit && (
             <SelectReportAssociation reportId={report.id} currentSiret={companySiret} currentCountry={companyAddress.country}>
-              <ScButton icon="edit" color="primary" loading={_report.updateCompany.loading}>
+              <ScButton icon="edit" color="primary">
                 {m.edit}
               </ScButton>
             </SelectReportAssociation>

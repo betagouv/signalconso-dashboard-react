@@ -1,0 +1,10 @@
+import {useQuery} from '@tanstack/react-query'
+import {useApiContext} from '../context/ApiContext'
+import {UseQueryOpts} from './types'
+import {Id} from '../model'
+import {BarcodeProduct} from '../client/barcode/BarcodeProduct'
+
+export const useGetBarcodeQuery = (barcodeProductId: Id, options?: UseQueryOpts<BarcodeProduct, string[]>) => {
+  const {api} = useApiContext()
+  return useQuery(['barcode_get', barcodeProductId], () => api.secured.barcode.get(barcodeProductId), options)
+}

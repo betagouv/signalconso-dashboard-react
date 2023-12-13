@@ -24,8 +24,8 @@ import {ReportAdminResolution} from './ReportAdminResolution'
 import {ReportBarcodeProduct} from './ReportBarcodeProduct'
 import {ReportReOpening} from './ReportReOpening'
 import {useMutation} from '@tanstack/react-query'
-import {useGetReportQuery, useGetReviewOnReportResponseQuery} from '../../core/hooks/reportsHooks'
-import {useGetCompanyEventsQuery, useGetReportEventsQuery} from '../../core/hooks/eventsHooks'
+import {useGetReportQuery, useGetReviewOnReportResponseQuery} from '../../core/queryhooks/reportsHooks'
+import {useGetCompanyEventsQuery, useGetReportEventsQuery} from '../../core/queryhooks/eventsHooks'
 
 const CONSO: EventType = 'CONSO'
 
@@ -59,10 +59,8 @@ export const ReportComponent = () => {
     [_getReportEvents.data],
   )
 
-  const downloadReport = useMutation((reportId: Id) => apiSdk.secured.reports.download([reportId]))
-  const generateConsumerNotificationAsPDF = useMutation((reportId: Id) =>
-    apiSdk.secured.reports.generateConsumerNotificationAsPDF(reportId),
-  )
+  const downloadReport = useMutation((id: Id) => apiSdk.secured.reports.download([id]))
+  const generateConsumerNotificationAsPDF = useMutation(apiSdk.secured.reports.generateConsumerNotificationAsPDF)
 
   return (
     <Page loading={_getReport.isLoading}>
