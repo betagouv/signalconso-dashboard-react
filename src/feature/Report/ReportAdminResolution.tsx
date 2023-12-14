@@ -22,9 +22,10 @@ interface Props {
 export const ReportAdminResolution = ({label, report, children, onAdd}: Props) => {
   const {m} = useI18n()
   const {apiSdk} = useLogin()
-  const _removeReport = useMutation((params: {id: Id; reportDeletionReason: ReportDeletionReason}) =>
-    apiSdk.secured.reports.remove(params.id, params.reportDeletionReason),
-  )
+  const _removeReport = useMutation({
+    mutationFn: (params: {id: Id; reportDeletionReason: ReportDeletionReason}) =>
+      apiSdk.secured.reports.remove(params.id, params.reportDeletionReason),
+  })
   const [comment, setComment] = useState('')
   const [deletionType, setDeletionType] = useState<ReportAdminActionType | undefined>(undefined)
   const {toastSuccess} = useToast()
@@ -36,7 +37,7 @@ export const ReportAdminResolution = ({label, report, children, onAdd}: Props) =
   return (
     <ScDialog
       title={label}
-      loading={_removeReport.isLoading}
+      loading={_removeReport.isPending}
       onConfirm={(event, close) =>
         deletionType &&
         performAdminAction(deletionType)

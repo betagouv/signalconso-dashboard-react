@@ -9,7 +9,7 @@ import {Panel, PanelBody, PanelHead} from '../../../shared/Panel'
 import {EditConsumerDialog} from './EditConsumerDialog'
 import {useMutation, useQueryClient} from '@tanstack/react-query'
 import {useApiContext} from '../../../core/context/ApiContext'
-import {GetReportQueryKeys} from '../../../core/queryhooks/reportsHooks'
+import {GetReportQueryKeys} from '../../../core/queryhooks/reportQueryHooks'
 
 interface Props {
   report: Report
@@ -20,13 +20,11 @@ export const ReportConsumer = ({report, canEdit}: Props) => {
   const {m} = useI18n()
   const {api} = useApiContext()
   const queryClient = useQueryClient()
-  const _updateReportConsumer = useMutation(
-    (params: {reportId: string; reportConsumerUpdate: ReportConsumerUpdate}) =>
+  const _updateReportConsumer = useMutation({
+    mutationFn: (params: {reportId: string; reportConsumerUpdate: ReportConsumerUpdate}) =>
       api.secured.reports.updateReportConsumer(params.reportId, params.reportConsumerUpdate),
-    {
-      onSuccess: () => queryClient.invalidateQueries(GetReportQueryKeys(report.id)),
-    },
-  )
+    onSuccess: () => queryClient.invalidateQueries({queryKey: GetReportQueryKeys(report.id)}),
+  })
 
   const {firstName, lastName, contactAgreement} = report
 
@@ -39,7 +37,7 @@ export const ReportConsumer = ({report, canEdit}: Props) => {
               report={report}
               onChange={consumer => _updateReportConsumer.mutate({reportId: report.id, reportConsumerUpdate: consumer})}
             >
-              <ScButton icon="edit" color="primary" loading={_updateReportConsumer.isLoading}>
+              <ScButton icon="edit" color="primary" loading={_updateReportConsumer.isPending}>
                 {m.edit}
               </ScButton>
             </EditConsumerDialog>

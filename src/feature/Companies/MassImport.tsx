@@ -26,9 +26,7 @@ export const MassImport = ({children}: MassImportProps) => {
   } = useForm<CompaniesToImport>()
   const {api} = useApiContext()
 
-  const mutation = useMutation((companiesToImport: CompaniesToImport) => {
-    return api.secured.company.importCompanies(companiesToImport)
-  })
+  const mutation = useMutation({mutationFn: api.secured.company.importCompanies})
 
   const close = () => {
     setOpen(false)
@@ -128,7 +126,7 @@ export const MassImport = ({children}: MassImportProps) => {
           <Btn onClick={close} color="primary">
             {m.close}
           </Btn>
-          <Btn loading={mutation.isLoading} onClick={confirm} color="primary" variant="contained">
+          <Btn loading={mutation.isPending} onClick={confirm} color="primary" variant="contained">
             Importer
           </Btn>
         </DialogActions>

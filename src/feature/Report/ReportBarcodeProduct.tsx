@@ -2,7 +2,7 @@ import {Panel, PanelBody, PanelHead} from '../../shared/Panel'
 import {Id} from '../../core/model'
 import {WithInlineIcon} from '../../shared/WithInlineIcon'
 import {Chip, Tooltip} from '@mui/material'
-import {useGetBarcodeQuery} from '../../core/queryhooks/barcodeHooks'
+import {useGetBarcodeQuery} from '../../core/queryhooks/barcodeQueryHooks'
 
 interface ReportBarcodeProductProps {
   barcodeProductId: Id

@@ -22,16 +22,16 @@ interface Props {
 export const ReportPostAction = ({label, actionType, report, children, onAdd, required}: Props) => {
   const {m} = useI18n()
   const {apiSdk} = useLogin()
-  const _addComment = useMutation((params: {id: Id; action: ReportAction}) =>
-    apiSdk.secured.reports.postAction(params.id, params.action),
-  )
+  const _addComment = useMutation({
+    mutationFn: (params: {id: Id; action: ReportAction}) => apiSdk.secured.reports.postAction(params.id, params.action),
+  })
   const [comment, setComment] = useState('')
   const {toastSuccess} = useToast()
 
   return (
     <ScDialog
       title={label}
-      loading={_addComment.isLoading}
+      loading={_addComment.isPending}
       onConfirm={(event, close) =>
         _addComment
           .mutateAsync({id: report.id, action: {actionType, details: comment, fileIds: []}})

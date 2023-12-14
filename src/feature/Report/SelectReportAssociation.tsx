@@ -13,9 +13,8 @@ import {SelectCompany} from '../../shared/SelectCompany/SelectCompany'
 import {SelectCountry} from '../../shared/SelectCountry'
 import {ScButton} from '../../shared/Button'
 import {useMutation, useQueryClient} from '@tanstack/react-query'
-import {GetReportQueryKeys} from '../../core/queryhooks/reportsHooks'
+import {GetReportQueryKeys} from '../../core/queryhooks/reportQueryHooks'
 import {useApiContext} from '../../core/context/ApiContext'
-import {ApiError} from '../../core/client/ApiClient'
 
 interface Props extends Omit<BoxProps, 'onChange'> {
   children: ReactElement<any>
@@ -33,30 +32,21 @@ export enum AssociationType {
 export const SelectReportAssociation = ({children, onChange, reportId, currentSiret, currentCountry, ...props}: Props) => {
   const {m} = useI18n()
   const {api} = useApiContext()
-  const {toastError, toastInfo, toastSuccess} = useToast()
+  const {toastInfo, toastSuccess} = useToast()
   const queryClient = useQueryClient()
   const [selectedAssociation, setSelectedAssociation] = useState<AssociationType>(
     currentCountry ? AssociationType.COUNTRY : AssociationType.COMPANY,
   )
-  const _updateCompany = useMutation(
-    (params: {reportId: string; company: CompanySearchResult}) =>
+  const _updateCompany = useMutation({
+    mutationFn: (params: {reportId: string; company: CompanySearchResult}) =>
       api.secured.reports.updateReportCompany(params.reportId, params.company),
-    {
-      onSuccess: () => queryClient.invalidateQueries(GetReportQueryKeys(reportId)),
-      onError: error => {
-        if (error instanceof ApiError) toastError(error)
-      },
-    },
-  )
-  const _updateCountry = useMutation(
-    (params: {reportId: string; country: Country}) => api.secured.reports.updateReportCountry(params.reportId, params.country),
-    {
-      onSuccess: () => queryClient.invalidateQueries(GetReportQueryKeys(reportId)),
-      onError: error => {
-        if (error instanceof ApiError) toastError(error)
-      },
-    },
-  )
+    onSuccess: () => queryClient.invalidateQueries({queryKey: GetReportQueryKeys(reportId)}),
+  })
+  const _updateCountry = useMutation({
+    mutationFn: (params: {reportId: string; country: Country}) =>
+      api.secured.reports.updateReportCountry(params.reportId, params.country),
+    onSuccess: () => queryClient.invalidateQueries({queryKey: GetReportQueryKeys(reportId)}),
+  })
 
   const [company, setCompany] = useState<CompanySearchResult | undefined>()
   const [country, setCountry] = useState<Country | undefined>(currentCountry)
@@ -135,12 +125,12 @@ export const SelectReportAssociation = ({children, onChange, reportId, currentSi
           {selectedAssociation &&
             fnSwitch(selectedAssociation, {
               [AssociationType.COMPANY]: () => (
-                <ScButton loading={_updateCompany.isLoading} disabled={!company} onClick={() => updateCompany(close)}>
+                <ScButton loading={_updateCompany.isPending} disabled={!company} onClick={() => updateCompany(close)}>
                   {m.confirm}
                 </ScButton>
               ),
               [AssociationType.COUNTRY]: () => (
-                <ScButton loading={_updateCountry.isLoading} disabled={!country} onClick={() => updateCountry(close)}>
+                <ScButton loading={_updateCountry.isPending} disabled={!country} onClick={() => updateCountry(close)}>
                   {m.confirm}
                 </ScButton>
               ),

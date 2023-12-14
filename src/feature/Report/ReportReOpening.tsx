@@ -15,7 +15,7 @@ interface Props {
 export const ReportReOpening = ({report, children}: Props) => {
   const {m} = useI18n()
   const {apiSdk} = useLogin()
-  const _reOpenReport = useMutation(apiSdk.secured.reports.reOpen)
+  const _reOpenReport = useMutation({mutationFn: apiSdk.secured.reports.reOpen})
   const {toastSuccess} = useToast()
 
   return (
@@ -37,7 +37,7 @@ export const ReportReOpening = ({report, children}: Props) => {
           .finally(close)
       }
     >
-      <Btn loading={_reOpenReport.isLoading} icon="replay">
+      <Btn loading={_reOpenReport.isPending} icon="replay">
         {m.reOpen}
       </Btn>
     </ScDialog>

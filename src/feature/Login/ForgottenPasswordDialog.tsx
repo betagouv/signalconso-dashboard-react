@@ -6,7 +6,6 @@ import {useI18n} from '../../core/i18n'
 import {AuthenticationEventActions, EventCategories, Matomo} from '../../core/plugins/Matomo'
 import {useToast} from '../../core/toast'
 import {ScDialog} from '../../shared/ScDialog'
-import {ScInput} from '../../shared/ScInput'
 import {useMutation} from '@tanstack/react-query'
 import {apiPublicSdk} from 'core/ApiSdkInstance'
 import {TextField} from '@mui/material'
@@ -53,7 +52,7 @@ export const ForgottenPasswordDialog = ({value, children}: Props) => {
 
   return (
     <ScDialog
-      loading={_forgotPassword.isLoading}
+      loading={_forgotPassword.isPending}
       title={m.forgottenPassword}
       confirmLabel={m.createNewPassword}
       maxWidth="xs"

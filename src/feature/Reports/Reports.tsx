@@ -50,7 +50,7 @@ import {SelectTagsMenuValues} from '../../shared/SelectTags/SelectTagsMenu'
 import {TrueFalseNull} from '../../shared/TrueFalseNull'
 import {PanelBody} from 'alexlibs/mui-extension/Panel/PanelBody'
 import {useMutation} from '@tanstack/react-query'
-import {useReportSearchQuery} from '../../core/queryhooks/reportsHooks'
+import {useReportSearchQuery} from '../../core/queryhooks/reportQueryHooks'
 
 const TrueLabel = () => {
   const {m} = useI18n()
@@ -103,7 +103,7 @@ export const Reports = () => {
   const {m, formatDate} = useI18n()
   const {connectedUser, apiSdk} = useLogin()
 
-  const downloadReports = useMutation((reportIds: Id[]) => apiSdk.secured.reports.download(reportIds))
+  const downloadReports = useMutation({mutationFn: apiSdk.secured.reports.download})
   const _reports = useReportSearchQuery()
 
   const selectReport = useSetState<Id>()
@@ -671,7 +671,7 @@ export const Reports = () => {
                 onClear={selectReport.clear}
                 actions={
                   <ScButton
-                    loading={downloadReports.isLoading}
+                    loading={downloadReports.isPending}
                     variant="contained"
                     icon="file_download"
                     onClick={() => {

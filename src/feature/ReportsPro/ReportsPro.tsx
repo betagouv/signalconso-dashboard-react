@@ -21,8 +21,6 @@ import {
   mapDatesToQueryString,
   useQueryString,
 } from '../../core/helper/useQueryString'
-
-import {useToast} from '../../core/toast'
 import {config} from '../../conf/config'
 import {ExportReportsPopper} from '../../shared/ExportPopperBtn'
 import {PeriodPicker} from '../../shared/PeriodPicker'
@@ -36,8 +34,8 @@ import {ReportSearch} from '../../core/client/report/ReportSearch'
 import {ScOption} from 'core/helper/ScOption'
 import {Label} from '../../shared/Label'
 import {ScInput} from '../../shared/ScInput'
-import {useGetAccessibleByProQuery} from '../../core/queryhooks/companiesHooks'
-import {useReportSearchQuery} from '../../core/queryhooks/reportsHooks'
+import {useGetAccessibleByProQuery} from '../../core/queryhooks/companyQueryHooks'
+import {useReportSearchQuery} from '../../core/queryhooks/reportQueryHooks'
 
 const css = makeSx({
   card: {
@@ -105,7 +103,6 @@ export const ReportsPro = () => {
 
   const {isMobileWidth} = useLayoutContext()
   const history = useHistory()
-  const {toastError} = useToast()
   const {formatDate, m} = useI18n()
 
   const hasFilters = useMemo(() => {

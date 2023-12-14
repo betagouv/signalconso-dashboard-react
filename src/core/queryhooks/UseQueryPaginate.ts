@@ -34,7 +34,7 @@ export const useQueryPaginate = <S extends ISearch, T = unknown, TQueryKey exten
   initialFilters: S,
 ): UseQueryPaginateResult<S, Paginate<T>, unknown> => {
   const [filters, setFilters] = useState<S>({...defaultFilters, ...initialFilters})
-  const result = useQuery([...queryKey, filters], () => queryFn(filters))
+  const result = useQuery({queryKey: [...queryKey, filters], queryFn: () => queryFn(filters)})
 
   const updateFilters = useCallback((update: SetStateAction<S>, {preserveOffset}: UpdateFiltersParams = {}) => {
     setFilters(mutableFilters => {

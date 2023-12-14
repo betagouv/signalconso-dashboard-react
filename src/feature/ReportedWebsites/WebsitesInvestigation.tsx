@@ -1,28 +1,20 @@
-import React, {useCallback, useEffect, useMemo} from 'react'
+import React, {useCallback, useMemo} from 'react'
 import {useI18n} from '../../core/i18n'
 import {Badge, Icon, InputBase, Switch, Tooltip} from '@mui/material'
 import {useToast} from '../../core/toast'
 import {Panel} from '../../shared/Panel'
 import {Datatable} from '../../shared/Datatable/Datatable'
 import {DebouncedInput} from '../../shared/DebouncedInput'
-import {useReportedWebsiteWithCompanyContext} from '../../core/context/ReportedWebsitesContext'
-import {IconBtn} from '../../alexlibs/mui-extension'
-import {useWebsiteInvestigationContext} from '../../core/context/WebsiteInvestigationContext'
+import {IconBtn, Txt} from '../../alexlibs/mui-extension'
 import {StatusChip} from './StatusChip'
 import {WebsitesFilters} from './WebsitesFilters'
 import {SelectWebsiteAssociation} from './SelectWebsiteIdentification/SelectWebsiteAssociation'
 import {AutocompleteDialog} from '../../shared/AutocompleteDialog'
 import {useEffectFn, useMap} from '../../alexlibs/react-hooks-lib'
 import {WebsiteTools} from './WebsiteTools'
-import {Txt} from '../../alexlibs/mui-extension'
 import {sxUtils} from '../../core/theme'
 import {useLogin} from '../../core/context/LoginContext'
-import {
-  IdentificationStatus,
-  InvestigationStatus,
-  WebsiteInvestigation,
-  WebsiteWithCompany,
-} from '../../core/client/website/Website'
+import {IdentificationStatus, InvestigationStatus, WebsiteWithCompany} from '../../core/client/website/Website'
 import {cleanObject} from '../../core/helper'
 import {Id} from '../../core/model'
 import {PeriodPicker} from '../../shared/PeriodPicker'
@@ -31,7 +23,7 @@ import {
   useListInvestigationStatusQuery,
   useWebsiteWithCompanySearchQuery,
   WebsiteWithCompanySearchKeys,
-} from '../../core/queryhooks/websiteHooks'
+} from '../../core/queryhooks/websiteQueryHooks'
 import {useMutation, useQueryClient} from '@tanstack/react-query'
 
 export const WebsitesInvestigation = () => {
@@ -41,18 +33,18 @@ export const WebsitesInvestigation = () => {
 
   const _websiteWithCompany = useWebsiteWithCompanySearchQuery()
   const _investigationStatus = useListInvestigationStatusQuery()
-  const _createOrUpdate = useMutation((websiteInvestigation: WebsiteInvestigation) =>
-    apiSdk.secured.website.createOrUpdateInvestigation(websiteInvestigation),
-  )
-  const _updateStatus = useMutation(
-    (params: {id: Id; identificationStatus: IdentificationStatus}) =>
+  const _createOrUpdate = useMutation({mutationFn: apiSdk.secured.website.createOrUpdateInvestigation})
+  const _updateStatus = useMutation({
+    mutationFn: (params: {id: Id; identificationStatus: IdentificationStatus}) =>
       apiSdk.secured.website.updateStatus(params.id, params.identificationStatus),
-    {
-      onSuccess: _ => queryClient.invalidateQueries(WebsiteWithCompanySearchKeys),
+    onSuccess: _ => queryClient.invalidateQueries({queryKey: WebsiteWithCompanySearchKeys}),
+  })
+  const _remove = useMutation({
+    mutationFn: apiSdk.secured.website.remove,
+    onSuccess: _ => {
+      queryClient.invalidateQueries({queryKey: WebsiteWithCompanySearchKeys})
+      toastSuccess(m.websiteDeleted)
     },
-  )
-  const _remove = useMutation((id: Id) => apiSdk.secured.website.remove(id), {
-    onSuccess: _ => queryClient.invalidateQueries(WebsiteWithCompanySearchKeys).then(_ => toastSuccess(m.websiteDeleted)),
   })
   const {toastInfo, toastSuccess} = useToast()
 
@@ -63,6 +55,7 @@ export const WebsitesInvestigation = () => {
     w.entities.map(_ => websitesIndex.set(_.id, _))
   })
 
+  // TODO Check
   // useEffect(() => {
   //   _websiteWithCompany.updateFilters({..._websiteWithCompany.initialFilters})
   // }, [])
@@ -168,7 +161,7 @@ export const WebsitesInvestigation = () => {
             render: _ => (
               <SelectWebsiteAssociation
                 website={_}
-                onChange={() => queryClient.invalidateQueries(WebsiteWithCompanySearchKeys)}
+                onChange={() => queryClient.invalidateQueries({queryKey: WebsiteWithCompanySearchKeys})}
               />
             ),
           },
@@ -179,7 +172,7 @@ export const WebsitesInvestigation = () => {
               <SiretExtraction
                 websiteWithCompany={_}
                 remove={() => onRemove(_.id)}
-                identify={() => queryClient.invalidateQueries(WebsiteWithCompanySearchKeys)}
+                identify={() => queryClient.invalidateQueries({queryKey: WebsiteWithCompanySearchKeys})}
               />
             ),
           },
@@ -237,7 +230,7 @@ export const WebsitesInvestigation = () => {
                 <WebsiteTools website={_} />
                 {connectedUser.isAdmin ? (
                   <Tooltip title={m.delete}>
-                    <IconBtn loading={_remove.isLoading} color="primary" onClick={() => onRemove(_.id)}>
+                    <IconBtn loading={_remove.isPending} color="primary" onClick={() => onRemove(_.id)}>
                       <Icon>delete</Icon>
                     </IconBtn>
                   </Tooltip>

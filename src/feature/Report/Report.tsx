@@ -24,8 +24,8 @@ import {ReportAdminResolution} from './ReportAdminResolution'
 import {ReportBarcodeProduct} from './ReportBarcodeProduct'
 import {ReportReOpening} from './ReportReOpening'
 import {useMutation} from '@tanstack/react-query'
-import {useGetReportQuery, useGetReviewOnReportResponseQuery} from '../../core/queryhooks/reportsHooks'
-import {useGetCompanyEventsQuery, useGetReportEventsQuery} from '../../core/queryhooks/eventsHooks'
+import {useGetReportQuery, useGetReviewOnReportResponseQuery} from '../../core/queryhooks/reportQueryHooks'
+import {useGetCompanyEventsQuery, useGetReportEventsQuery} from '../../core/queryhooks/eventQueryHooks'
 
 const CONSO: EventType = 'CONSO'
 
@@ -59,8 +59,8 @@ export const ReportComponent = () => {
     [_getReportEvents.data],
   )
 
-  const downloadReport = useMutation((id: Id) => apiSdk.secured.reports.download([id]))
-  const generateConsumerNotificationAsPDF = useMutation(apiSdk.secured.reports.generateConsumerNotificationAsPDF)
+  const downloadReport = useMutation({mutationFn: (id: Id) => apiSdk.secured.reports.download([id])})
+  const generateConsumerNotificationAsPDF = useMutation({mutationFn: apiSdk.secured.reports.generateConsumerNotificationAsPDF})
 
   return (
     <Page loading={_getReport.isLoading}>
@@ -99,7 +99,7 @@ export const ReportComponent = () => {
               <Btn
                 color="primary"
                 icon="download"
-                loading={downloadReport.isLoading}
+                loading={downloadReport.isPending}
                 onClick={() => downloadReport.mutate(report.id)}
               >
                 {m.download}
@@ -135,7 +135,7 @@ export const ReportComponent = () => {
 
               {connectedUser.isAdmin && (
                 <ScButton
-                  loading={generateConsumerNotificationAsPDF.isLoading}
+                  loading={generateConsumerNotificationAsPDF.isPending}
                   icon="download"
                   onClick={() => generateConsumerNotificationAsPDF.mutate(report.id)}
                 >

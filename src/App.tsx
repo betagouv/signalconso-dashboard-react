@@ -1,5 +1,5 @@
 import {CircularProgress, CssBaseline, StyledEngineProvider, ThemeProvider} from '@mui/material'
-import {QueryCache, QueryClient, QueryClientProvider} from '@tanstack/react-query'
+import {MutationCache, QueryCache, QueryClient, QueryClientProvider} from '@tanstack/react-query'
 import {ApiProvider} from 'core/context/ApiContext'
 import {RegisterForm} from 'feature/Login/RegisterForm'
 import {LoginForm} from 'feature/Login/LoginForm'
@@ -59,7 +59,6 @@ import './style.css'
 import {CenteredContent} from './shared/CenteredContent'
 import {Tools} from './feature/AdminTools/Tools'
 import {useToast} from './core/toast'
-import {ApiError} from './core/client/ApiClient'
 
 const Router: typeof HashRouter = config.useHashRouter ? HashRouter : BrowserRouter
 
@@ -153,10 +152,14 @@ const AppLogged = () => {
   const {toastError} = useToast()
   const queryClient = new QueryClient({
     queryCache: new QueryCache({
-      onError: error => {
-        if (error instanceof ApiError) {
-          toastError(error)
-        }
+      onError: (error, query) => {
+        toastError(error)
+      },
+    }),
+    mutationCache: new MutationCache({
+      onError: (error, _variables, _context, mutation) => {
+        if (mutation.options.onError) return
+        toastError(error)
       },
     }),
   })

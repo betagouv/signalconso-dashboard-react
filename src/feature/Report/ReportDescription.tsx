@@ -12,7 +12,7 @@ import {Report} from '../../core/client/report/Report'
 import {ReportFileDeleteButton} from './File/ReportFileDownloadAllButton'
 import {useMutation, useQueryClient} from '@tanstack/react-query'
 import {Id} from '../../core/model'
-import {GetReportQueryKeys} from '../../core/queryhooks/reportsHooks'
+import {GetReportQueryKeys} from '../../core/queryhooks/reportQueryHooks'
 
 interface Props {
   files?: UploadedFile[]
@@ -25,12 +25,10 @@ export const ReportDescription = ({report, files, children}: Props) => {
   const queryClient = useQueryClient()
   const {m} = useI18n()
 
-  const postAction = useMutation(
-    (params: {id: Id; action: ReportAction}) => apiSdk.secured.reports.postAction(params.id, params.action),
-    {
-      onSuccess: () => queryClient.invalidateQueries(GetReportQueryKeys(report.id)),
-    },
-  )
+  const postAction = useMutation({
+    mutationFn: (params: {id: Id; action: ReportAction}) => apiSdk.secured.reports.postAction(params.id, params.action),
+    onSuccess: () => queryClient.invalidateQueries({queryKey: GetReportQueryKeys(report.id)}),
+  })
 
   return (
     <Panel>
