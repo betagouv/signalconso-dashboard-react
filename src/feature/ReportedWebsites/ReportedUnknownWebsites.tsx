@@ -1,11 +1,9 @@
-import React, {useCallback, useEffect} from 'react'
+import React, {useCallback} from 'react'
 import {useI18n} from '../../core/i18n'
-import {Box, Divider, Icon, InputBase, List, ListItem, Tooltip} from '@mui/material'
-import {Panel, PanelHead} from '../../shared/Panel'
+import {Box, Divider, Icon, InputBase, Tooltip} from '@mui/material'
+import {Panel} from '../../shared/Panel'
 import {Datatable} from '../../shared/Datatable/Datatable'
 import {DebouncedInput} from '../../shared/DebouncedInput'
-import {useUnregistredWebsiteWithCompanyContext} from '../../core/context/UnregistredWebsitesContext'
-import {useToast} from '../../core/toast'
 
 import {NavLink} from 'react-router-dom'
 import {siteMap} from '../../core/siteMap'
@@ -15,22 +13,14 @@ import {config} from '../../conf/config'
 import {PeriodPicker} from '../../shared/PeriodPicker'
 import {sxUtils} from '../../core/theme'
 import {ScOption} from 'core/helper/ScOption'
+import {useListUnregisteredWebsitesSearchQuery} from '../../core/queryhooks/websiteQueryHooks'
 
 export const ReportedUnknownWebsites = () => {
   const {m} = useI18n()
-  const _fetch = useUnregistredWebsiteWithCompanyContext()
-  const {toastError, toastSuccess} = useToast()
-
-  useEffect(() => {
-    _fetch.fetch()
-  }, [])
-
-  useEffect(() => {
-    ScOption.from(_fetch.error).map(toastError)
-  }, [_fetch.error])
+  const unregisteredWebsites = useListUnregisteredWebsitesSearchQuery()
 
   const onQueryChange = useCallback((query: string) => {
-    _fetch.updateFilters(prev => ({...prev, q: query}))
+    unregisteredWebsites.updateFilters(prev => ({...prev, q: query}))
     // TRELLO-1391 The object _fetch changes all the time.
     // If we put it in dependencies, it causes problems with the debounce,
     // and the search input "stutters" when typing fast
@@ -49,7 +39,7 @@ export const ReportedUnknownWebsites = () => {
         id="reportedunknownwebsites"
         header={
           <>
-            <DebouncedInput value={_fetch.filters.q ?? ''} onChange={onQueryChange}>
+            <DebouncedInput value={unregisteredWebsites.filters.q ?? ''} onChange={onQueryChange}>
               {(value, onChange) => (
                 <InputBase
                   value={value}
@@ -64,26 +54,27 @@ export const ReportedUnknownWebsites = () => {
 
             <PeriodPicker
               fullWidth
-              value={[_fetch.filters.start, _fetch.filters.end]}
-              onChange={([start, end]) => _fetch.updateFilters(prev => ({...prev, start, end}))}
+              value={[unregisteredWebsites.filters.start, unregisteredWebsites.filters.end]}
+              onChange={([start, end]) => unregisteredWebsites.updateFilters(prev => ({...prev, start, end}))}
             />
           </>
         }
         actions={
           <>
             <Tooltip title={m.removeAllFilters}>
-              <IconBtn color="primary" onClick={_fetch.clearFilters}>
+              <IconBtn color="primary" onClick={unregisteredWebsites.clearFilters}>
                 <Icon>clear</Icon>
               </IconBtn>
             </Tooltip>
 
             <ExportUnknownWebsitesPopper
-              disabled={ScOption.from(_fetch?.list?.totalCount)
+              disabled={ScOption.from(unregisteredWebsites.result.data?.totalCount)
                 .map(_ => _ > config.reportsLimitForExport)
                 .getOrElse(false)}
-              tooltipBtnNew={ScOption.from(_fetch?.list?.totalCount)
+              tooltipBtnNew={ScOption.from(unregisteredWebsites.result.data?.totalCount)
                 .map(_ => (_ > config.reportsLimitForExport ? m.cannotExportMoreReports(config.reportsLimitForExport) : ''))
                 .getOrElse('')}
+              filters={unregisteredWebsites.filters}
             >
               <IconBtn color="primary">
                 <Icon>file_download</Icon>
@@ -91,15 +82,15 @@ export const ReportedUnknownWebsites = () => {
             </ExportUnknownWebsitesPopper>
           </>
         }
-        loading={_fetch.fetching}
-        total={_fetch.list?.totalCount}
+        loading={unregisteredWebsites.result.isFetching}
+        total={unregisteredWebsites.result.data?.totalCount}
         paginate={{
-          limit: _fetch.filters.limit,
-          offset: _fetch.filters.offset,
-          onPaginationChange: pagination => _fetch.updateFilters(prev => ({...prev, ...pagination})),
+          limit: unregisteredWebsites.filters.limit,
+          offset: unregisteredWebsites.filters.offset,
+          onPaginationChange: pagination => unregisteredWebsites.updateFilters(prev => ({...prev, ...pagination})),
         }}
         getRenderRowKey={_ => _.host}
-        data={_fetch.list?.entities}
+        data={unregisteredWebsites.result.data?.entities}
         columns={[
           {
             id: 'host',

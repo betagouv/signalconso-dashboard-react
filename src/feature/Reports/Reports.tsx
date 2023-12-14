@@ -652,6 +652,7 @@ export const Reports = () => {
               tooltipBtnNew={ScOption.from(_reports?.result.data?.totalCount)
                 .map(_ => (_ > config.reportsLimitForExport ? m.cannotExportMoreReports(config.reportsLimitForExport) : ''))
                 .getOrElse('')}
+              filters={_reports.filters}
             >
               <Btn variant="outlined" color="primary" icon="get_app">
                 {m.exportInXLS}

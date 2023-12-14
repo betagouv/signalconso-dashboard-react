@@ -18,7 +18,6 @@ import {siteMap} from 'core/siteMap'
 import {useToast} from 'core/toast'
 import {WidgetValue} from 'shared/Widget/WidgetValue'
 import {WidgetLoading} from 'shared/Widget/WidgetLoading'
-import {useReportsContext} from 'core/context/ReportsContext'
 import {ReportsShortList} from './ReportsShortList'
 import {useCompanyStats} from './useCompanyStats'
 import {StatusDistribution} from './stats/StatusDistribution'
@@ -30,6 +29,7 @@ import {ReportStatus, ReportStatusPro} from '../../core/client/report/Report'
 import {Id} from '../../core/model'
 import {ScOption} from 'core/helper/ScOption'
 import {ReportWordDistribution} from './stats/ReportWordDistribution'
+import {useReportSearchQuery} from '../../core/queryhooks/reportQueryHooks'
 
 export const CompanyComponent = () => {
   const {id} = useParams<{id: Id}>()
@@ -40,7 +40,7 @@ export const CompanyComponent = () => {
   const _stats = useCompanyStats(id)
   const _event = useEventContext()
   const _accesses = useFetcher((siret: string) => apiSdk.secured.companyAccess.count(siret))
-  const _report = useReportsContext()
+  const _reports = useReportSearchQuery()
   const _cloudWord = useFetcher((companyId: Id) => apiSdk.secured.reports.getCloudWord(companyId))
   const company = _company.byId.entity
 
@@ -70,7 +70,7 @@ export const CompanyComponent = () => {
   useEffectFn(_company.byId.entity, _ => {
     _event.companyEvents.fetch({}, _.siret)
     _accesses.fetch({}, _.siret)
-    _report.updateFilters({hasCompany: true, siretSirenList: [_.siret], offset: 0, limit: 5})
+    _reports.updateFilters({hasCompany: true, siretSirenList: [_.siret], offset: 0, limit: 5})
   })
 
   const postActivationDocEvents = useMemoFn(_event.companyEvents.entity, events =>
@@ -194,9 +194,9 @@ export const CompanyComponent = () => {
                   <HorizontalBarChart data={tagsDistribution} grid />
                 </PanelBody>
               </Panel>
-              <Panel loading={_report.fetching}>
+              <Panel loading={_reports.result.isFetching}>
                 <PanelHead>{m.lastReports}</PanelHead>
-                {_report.list && <ReportsShortList reports={_report.list} />}
+                {_reports.result.data && <ReportsShortList reports={_reports.result.data} />}
               </Panel>
             </Grid>
             <Grid item sm={12} md={5}>

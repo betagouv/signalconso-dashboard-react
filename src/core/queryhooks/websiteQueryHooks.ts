@@ -6,6 +6,7 @@ import {useQueryPaginate} from './UseQueryPaginate'
 
 export const ListInvestigationStatusKeys = ['website_listInvestigationStatus']
 export const WebsiteWithCompanySearchKeys = ['website_list']
+export const ListUnregisteredWebsitesSearchQueryKeys = ['website_listUnregistered']
 
 export const useListInvestigationStatusQuery = (options?: UseQueryOpts<InvestigationStatus[], string[]>) => {
   const {api} = useApiContext()
@@ -18,5 +19,14 @@ export const useWebsiteWithCompanySearchQuery = () => {
     limit: 10,
     offset: 0,
     identificationStatus: [IdentificationStatus.NotIdentified],
+  })
+}
+
+export const useListUnregisteredWebsitesSearchQuery = () => {
+  const {api} = useApiContext()
+  return useQueryPaginate(ListUnregisteredWebsitesSearchQueryKeys, api.secured.website.listUnregistered, {
+    limit: 10,
+    offset: 0,
+    q: '',
   })
 }

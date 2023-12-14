@@ -1,7 +1,7 @@
 import {ReportReferenceNumber} from 'feature/Report/ReportReferenceNumber'
 
 import {WithInlineIcon} from 'shared/WithInlineIcon'
-import {Report, ReportConsumerUpdate} from '../../../core/client/report/Report'
+import {Report, ReportConsumerUpdate, ReportSearchResult} from '../../../core/client/report/Report'
 import {capitalize} from '../../../core/helper'
 import {useI18n} from '../../../core/i18n'
 import {ScButton} from '../../../shared/Button'
@@ -23,7 +23,10 @@ export const ReportConsumer = ({report, canEdit}: Props) => {
   const _updateReportConsumer = useMutation({
     mutationFn: (params: {reportId: string; reportConsumerUpdate: ReportConsumerUpdate}) =>
       api.secured.reports.updateReportConsumer(params.reportId, params.reportConsumerUpdate),
-    onSuccess: () => queryClient.invalidateQueries({queryKey: GetReportQueryKeys(report.id)}),
+    onSuccess: report =>
+      queryClient.setQueryData(GetReportQueryKeys(report.id), (prev: ReportSearchResult) => {
+        return {report, files: prev?.files ?? []}
+      }),
   })
 
   const {firstName, lastName, contactAgreement} = report

@@ -37,13 +37,13 @@ export const WebsitesInvestigation = () => {
   const _updateStatus = useMutation({
     mutationFn: (params: {id: Id; identificationStatus: IdentificationStatus}) =>
       apiSdk.secured.website.updateStatus(params.id, params.identificationStatus),
-    onSuccess: _ => queryClient.invalidateQueries({queryKey: WebsiteWithCompanySearchKeys}),
+    onSuccess: () => queryClient.invalidateQueries({queryKey: WebsiteWithCompanySearchKeys}),
   })
   const _remove = useMutation({
     mutationFn: apiSdk.secured.website.remove,
-    onSuccess: _ => {
-      queryClient.invalidateQueries({queryKey: WebsiteWithCompanySearchKeys})
+    onSuccess: () => {
       toastSuccess(m.websiteDeleted)
+      return queryClient.invalidateQueries({queryKey: WebsiteWithCompanySearchKeys})
     },
   })
   const {toastInfo, toastSuccess} = useToast()
@@ -54,11 +54,6 @@ export const WebsitesInvestigation = () => {
     websitesIndex.clear()
     w.entities.map(_ => websitesIndex.set(_.id, _))
   })
-
-  // TODO Check
-  // useEffect(() => {
-  //   _websiteWithCompany.updateFilters({..._websiteWithCompany.initialFilters})
-  // }, [])
 
   const handleUpdateKind = (website: WebsiteWithCompany, identificationStatus: IdentificationStatus) => {
     _updateStatus.mutate({id: website.id, identificationStatus})

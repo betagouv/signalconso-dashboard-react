@@ -15,7 +15,13 @@ interface Props {
 export const ReportReOpening = ({report, children}: Props) => {
   const {m} = useI18n()
   const {apiSdk} = useLogin()
-  const _reOpenReport = useMutation({mutationFn: apiSdk.secured.reports.reOpen})
+  const _reOpenReport = useMutation({
+    mutationFn: apiSdk.secured.reports.reOpen,
+    onSuccess: () => {
+      window.location.reload()
+      toastSuccess('Signalement ré-ouvert avec succès.')
+    },
+  })
   const {toastSuccess} = useToast()
 
   return (
@@ -29,13 +35,7 @@ export const ReportReOpening = ({report, children}: Props) => {
           </Txt>
         </>
       }
-      onConfirm={(event, close) =>
-        _reOpenReport
-          .mutateAsync(report.id)
-          .then(() => window.location.reload())
-          .then(() => toastSuccess('Signalement ré-ouvert avec succès.'))
-          .finally(close)
-      }
+      onConfirm={(event, close) => _reOpenReport.mutateAsync(report.id).finally(close)}
     >
       <Btn loading={_reOpenReport.isPending} icon="replay">
         {m.reOpen}

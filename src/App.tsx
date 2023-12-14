@@ -18,17 +18,12 @@ import {AsyncFileProvider} from './core/context/AsyncFileContext'
 import {BlockedReportNotificationProvider} from './core/context/BlockedReportNotificationProviderContext'
 import {CompaniesProvider} from './core/context/CompaniesContext'
 import {ConstantProvider} from './core/context/ConstantContext'
-import {ConsumerEmailValidationProvider} from './core/context/EmailValidationContext'
 import {EventProvider} from './core/context/EventContext'
 import {LoginProvider, useLogin} from './core/context/LoginContext'
 import {ReportProvider} from './core/context/ReportContext'
-import {ReportedPhonesProvider} from './core/context/ReportedPhonesContext'
 import {ReportedWebsitesProvider} from './core/context/ReportedWebsitesContext'
-import {ReportsProvider} from './core/context/ReportsContext'
 import {SubscriptionsProvider} from './core/context/SubscriptionsContext'
-import {UnregistredWebsitesProvider} from './core/context/UnregistredWebsitesContext'
 import {UsersProvider} from './core/context/UsersContext'
-import {WebsiteInvestigationProvider} from './core/context/WebsiteInvestigationContext'
 import {I18nProvider} from './core/i18n'
 import {Matomo} from './core/plugins/Matomo'
 import {siteMap} from './core/siteMap'
@@ -170,17 +165,12 @@ const AppLogged = () => {
       providers={[
         _ => <QueryClientProvider client={queryClient} children={_} />,
         _ => <ApiProvider api={apiSdk} children={_} />,
-        _ => <ReportsProvider api={apiSdk} children={_} />,
         _ => <ReportProvider api={apiSdk} children={_} />,
         _ => <ConstantProvider api={apiSdk} children={_} />,
-        _ => <ReportedPhonesProvider api={apiSdk} children={_} />,
         _ => <AsyncFileProvider api={apiSdk} children={_} />,
         _ => <CompaniesProvider api={apiSdk} children={_} />,
         _ => <UsersProvider api={apiSdk} children={_} />,
-        _ => <ConsumerEmailValidationProvider api={apiSdk} children={_} />,
         _ => <ReportedWebsitesProvider api={apiSdk} children={_} />,
-        _ => <WebsiteInvestigationProvider api={apiSdk} children={_} />,
-        _ => <UnregistredWebsitesProvider api={apiSdk} children={_} />,
         _ => <SubscriptionsProvider api={apiSdk} children={_} />,
         _ => <AccessesProvider api={apiSdk} children={_} />,
         _ => <BlockedReportNotificationProvider api={apiSdk} children={_} />,

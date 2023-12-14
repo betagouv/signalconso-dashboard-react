@@ -1,35 +1,22 @@
-import React, {useCallback, useEffect} from 'react'
+import React, {useCallback} from 'react'
 import {Page, PageTitle} from '../../shared/Page'
-import {useReportedPhonesContext} from '../../core/context/ReportedPhonesContext'
 import {useI18n} from '../../core/i18n'
 import {Panel} from '../../shared/Panel'
 import {Datatable} from '../../shared/Datatable/Datatable'
 import {NavLink} from 'react-router-dom'
 import {siteMap} from '../../core/siteMap'
-import {Btn, IconBtn} from '../../alexlibs/mui-extension'
+import {Btn, IconBtn, Txt} from '../../alexlibs/mui-extension'
 import {ScInput} from '../../shared/ScInput'
 import {ExportPhonesPopper} from '../../shared/ExportPopperBtn'
-
-import {useToast} from '../../core/toast'
 import {Icon, Tooltip} from '@mui/material'
 import {PeriodPicker} from '../../shared/PeriodPicker'
 import {DebouncedInput} from '../../shared/DebouncedInput'
-import {Txt} from '../../alexlibs/mui-extension'
 import {sxUtils} from '../../core/theme'
-import {ScOption} from 'core/helper/ScOption'
+import {useReportedPhonesSearchQuery} from '../../core/queryhooks/phoneQueryHooks'
 
 export const ReportedPhones = () => {
-  const _reportedPhone = useReportedPhonesContext()
+  const _reportedPhone = useReportedPhonesSearchQuery()
   const {m} = useI18n()
-  const {toastError} = useToast()
-
-  useEffect(() => {
-    _reportedPhone.fetch()
-  }, [])
-
-  useEffect(() => {
-    ScOption.from(_reportedPhone.error).map(toastError)
-  }, [_reportedPhone.error])
 
   const onPhoneChange = useCallback((phone: string) => {
     _reportedPhone.updateFilters(prev => ({...prev, phone}))
@@ -75,7 +62,7 @@ export const ReportedPhones = () => {
                   <Icon>clear</Icon>
                 </IconBtn>
               </Tooltip>
-              <ExportPhonesPopper>
+              <ExportPhonesPopper filters={_reportedPhone.filters}>
                 <IconBtn color="primary">
                   <Icon>file_download</Icon>
                 </IconBtn>
@@ -92,9 +79,9 @@ export const ReportedPhones = () => {
             offset: _reportedPhone.filters.offset,
             limit: _reportedPhone.filters.limit,
           }}
-          total={_reportedPhone.list?.totalCount}
-          loading={_reportedPhone.fetching}
-          data={_reportedPhone.list?.entities}
+          total={_reportedPhone.result.data?.totalCount}
+          loading={_reportedPhone.result.isFetching}
+          data={_reportedPhone.result.data?.entities}
           columns={[
             {
               id: 'phone',

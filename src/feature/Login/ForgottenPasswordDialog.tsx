@@ -24,6 +24,7 @@ export const ForgottenPasswordDialog = ({value, children}: Props) => {
   const {toastSuccess} = useToast()
   const _forgotPassword = useMutation({
     mutationFn: apiPublicSdk.authenticate.forgotPassword,
+    onSuccess: () => toastSuccess(m.emailSentToYou),
   })
   const {
     register,
@@ -42,7 +43,6 @@ export const ForgottenPasswordDialog = ({value, children}: Props) => {
       .mutateAsync(form.emailForgotten)
       .then(() => {
         close()
-        toastSuccess(m.emailSentToYou)
         Matomo.trackEvent(EventCategories.auth, AuthenticationEventActions.forgotPasswordSuccess)
       })
       .catch(() => {

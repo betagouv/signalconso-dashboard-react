@@ -1,16 +1,17 @@
 import React, {ReactElement, ReactNode, useEffect, useState} from 'react'
-import {Btn} from '../alexlibs/mui-extension'
+import {Btn, Txt} from '../alexlibs/mui-extension'
 import {Box, CircularProgress, Icon, Menu, MenuItem, Tooltip} from '@mui/material'
 import {useI18n} from '../core/i18n'
 import {useAsyncFileContext} from '../core/context/AsyncFileContext'
-import {Txt} from '../alexlibs/mui-extension'
-import {useReportedPhonesContext} from '../core/context/ReportedPhonesContext'
-import {useInterval} from '../alexlibs/react-hooks-lib'
-import {Fetch} from '../alexlibs/react-hooks-lib'
-import {useReportsContext} from '../core/context/ReportsContext'
-import {useUnregistredWebsiteWithCompanyContext} from '../core/context/UnregistredWebsitesContext'
+import {Fetch, useInterval} from '../alexlibs/react-hooks-lib'
 import {AsyncFile, AsyncFileKind, AsyncFileStatus} from '../core/client/async-file/AsyncFile'
 import {fnSwitch} from '../alexlibs/ts-utils'
+import {ReportedPhoneSearch} from '../core/client/reported-phone/ReportedPhone'
+import {HostReportCountSearch} from '../core/client/website/Website'
+import {ReportSearch} from '../core/client/report/ReportSearch'
+import {PaginatedFilters} from '../core/model'
+import {useMutation} from '@tanstack/react-query'
+import {useApiContext} from '../core/context/ApiContext'
 
 interface Props {
   className?: string
@@ -168,53 +169,57 @@ export const ExportPopperBtn = ({
   )
 }
 
-interface ExportReportProps {
+interface ExportReportProps<S> {
   className?: string
   children: ReactElement<any>
   disabled?: boolean
   onClick?: (event: any) => void
   tooltipBtnNew?: string
+  filters: S
 }
 
-export const ExportPhonesPopper = (props: ExportReportProps) => {
+export const ExportPhonesPopper = (props: ExportReportProps<ReportedPhoneSearch>) => {
   const _asyncFile = useAsyncFileContext()
-  const _reportPhone = useReportedPhonesContext()
+  const {api} = useApiContext()
+  const _extract = useMutation({mutationFn: () => api.secured.reportedPhone.extract(props.filters)})
   return (
     <ExportPopperBtn
       {...props}
       loading={_asyncFile.loading}
       fileType={AsyncFileKind.ReportedPhones}
-      onNewExport={_reportPhone.extract.fetch}
+      onNewExport={_extract.mutateAsync}
       fetch={_asyncFile.fetch}
       files={_asyncFile.entity}
     />
   )
 }
 
-export const ExportReportsPopper = (props: ExportReportProps) => {
+export const ExportReportsPopper = (props: ExportReportProps<ReportSearch & PaginatedFilters>) => {
   const _asyncFile = useAsyncFileContext()
-  const _reports = useReportsContext()
+  const {api} = useApiContext()
+  const _extract = useMutation({mutationFn: () => api.secured.reports.extract(props.filters)})
   return (
     <ExportPopperBtn
       {...props}
       loading={_asyncFile.loading}
       fileType={AsyncFileKind.Reports}
-      onNewExport={_reports.extract}
+      onNewExport={_extract.mutateAsync}
       fetch={_asyncFile.fetch}
       files={_asyncFile.entity}
     />
   )
 }
 
-export const ExportUnknownWebsitesPopper = (props: ExportReportProps) => {
+export const ExportUnknownWebsitesPopper = (props: ExportReportProps<HostReportCountSearch>) => {
   const _asyncFile = useAsyncFileContext()
-  const _extract = useUnregistredWebsiteWithCompanyContext()
+  const {api} = useApiContext()
+  const _extract = useMutation({mutationFn: () => api.secured.website.extractUnregistered(props.filters)})
   return (
     <ExportPopperBtn
       {...props}
       loading={_asyncFile.loading}
       fileType={AsyncFileKind.ReportedWebsites}
-      onNewExport={_extract.extractUnregistered.fetch}
+      onNewExport={_extract.mutateAsync}
       fetch={_asyncFile.fetch}
       files={_asyncFile.entity}
     />

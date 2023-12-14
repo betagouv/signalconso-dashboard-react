@@ -15,6 +15,7 @@ import {ScButton} from '../../shared/Button'
 import {useMutation, useQueryClient} from '@tanstack/react-query'
 import {GetReportQueryKeys} from '../../core/queryhooks/reportQueryHooks'
 import {useApiContext} from '../../core/context/ApiContext'
+import {ReportSearchResult} from '../../core/client/report/Report'
 
 interface Props extends Omit<BoxProps, 'onChange'> {
   children: ReactElement<any>
@@ -40,12 +41,18 @@ export const SelectReportAssociation = ({children, onChange, reportId, currentSi
   const _updateCompany = useMutation({
     mutationFn: (params: {reportId: string; company: CompanySearchResult}) =>
       api.secured.reports.updateReportCompany(params.reportId, params.company),
-    onSuccess: () => queryClient.invalidateQueries({queryKey: GetReportQueryKeys(reportId)}),
+    onSuccess: report =>
+      queryClient.setQueryData(GetReportQueryKeys(reportId), (prev: ReportSearchResult) => {
+        return {report, files: prev?.files ?? []}
+      }),
   })
   const _updateCountry = useMutation({
     mutationFn: (params: {reportId: string; country: Country}) =>
       api.secured.reports.updateReportCountry(params.reportId, params.country),
-    onSuccess: () => queryClient.invalidateQueries({queryKey: GetReportQueryKeys(reportId)}),
+    onSuccess: report =>
+      queryClient.setQueryData(GetReportQueryKeys(reportId), (prev: ReportSearchResult) => {
+        return {report, files: prev?.files ?? []}
+      }),
   })
 
   const [company, setCompany] = useState<CompanySearchResult | undefined>()

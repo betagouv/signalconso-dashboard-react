@@ -24,6 +24,11 @@ export const ReportPostAction = ({label, actionType, report, children, onAdd, re
   const {apiSdk} = useLogin()
   const _addComment = useMutation({
     mutationFn: (params: {id: Id; action: ReportAction}) => apiSdk.secured.reports.postAction(params.id, params.action),
+    onSuccess: () => {
+      setComment('')
+      onAdd()
+      toastSuccess(m.commentAdded)
+    },
   })
   const [comment, setComment] = useState('')
   const {toastSuccess} = useToast()
@@ -33,14 +38,7 @@ export const ReportPostAction = ({label, actionType, report, children, onAdd, re
       title={label}
       loading={_addComment.isPending}
       onConfirm={(event, close) =>
-        _addComment
-          .mutateAsync({id: report.id, action: {actionType, details: comment, fileIds: []}})
-          .then(() => {
-            setComment('')
-            onAdd()
-            toastSuccess(m.commentAdded)
-          })
-          .finally(close)
+        _addComment.mutateAsync({id: report.id, action: {actionType, details: comment, fileIds: []}}).finally(close)
       }
       confirmLabel={m.add}
       confirmDisabled={required && comment === ''}

@@ -1,29 +1,20 @@
 import {Panel} from '../../shared/Panel'
 import {Datatable} from '../../shared/Datatable/Datatable'
 import {useI18n} from '../../core/i18n'
-import React, {useCallback, useEffect} from 'react'
+import React, {useCallback} from 'react'
 import {Box, Icon, InputBase, Tooltip} from '@mui/material'
-import {Txt} from '../../alexlibs/mui-extension'
-import {useToast} from '../../core/toast'
+import {IconBtn, Txt} from '../../alexlibs/mui-extension'
 import {DebouncedInput} from '../../shared/DebouncedInput'
-import {IconBtn} from '../../alexlibs/mui-extension'
-import {useConsumerEmailValidationContext} from '../../core/context/EmailValidationContext'
-import {useEffectFn} from '../../alexlibs/react-hooks-lib'
 import {TrueFalseUndefined} from '../../shared/TrueFalseUndefined'
 import {sxUtils} from '../../core/theme'
+import {useConsumerEmailValidationSearchQuery} from '../../core/queryhooks/consumerEmailValidationQueryHooks'
+import {useMutation} from '@tanstack/react-query'
+import {useApiContext} from '../../core/context/ApiContext'
+import {ConsumerEmailValidation} from '../../core/client/consumer-email-validation/ConsumerEmailValidation'
 
 export const ConsumerListPending = () => {
-  const {m} = useI18n()
-  const _users = useConsumerEmailValidationContext().search
-  const _validate = useConsumerEmailValidationContext().validate
-  const {toastError} = useToast()
-  const {formatDate} = useI18n()
-
-  useEffect(() => {
-    _users.fetch()
-  }, [])
-
-  useEffectFn(_users.error, toastError)
+  const {m, formatDate} = useI18n()
+  const _users = useConsumerEmailValidationSearchQuery()
 
   const onEmailChange = useCallback((email: string) => {
     _users.updateFilters(prev => ({...prev, email}))
@@ -61,8 +52,8 @@ export const ConsumerListPending = () => {
             />
           </>
         }
-        loading={_users.fetching}
-        total={_users.list?.totalCount}
+        loading={_users.result.isFetching}
+        total={_users.result.data?.totalCount}
         paginate={{
           limit: _users.filters.limit,
           offset: _users.filters.offset,
@@ -71,7 +62,7 @@ export const ConsumerListPending = () => {
         showColumnsToggle
         rowsPerPageOptions={[5, 10, 25, 100]}
         getRenderRowKey={_ => _.email}
-        data={_users.list?.entities}
+        data={_users.result.data?.entities}
         columns={[
           {
             id: '',
@@ -97,34 +88,43 @@ export const ConsumerListPending = () => {
             id: 'actions',
             head: '',
             sx: _ => sxUtils.tdActions,
-            render: _ => (
-              <>
-                <Box sx={{display: 'flex', justifyContent: 'flex-end'}}>
-                  {_.lastValidationDate !== undefined || _validate.isNowValid(_.email) ? (
-                    <Tooltip title={formatDate(_.lastValidationDate ?? new Date())} placement="left">
-                      <span>
-                        <IconBtn disabled={true}>
-                          <Icon sx={{color: t => t.palette.success.light}}>check_circle</Icon>
-                        </IconBtn>
-                      </span>
-                    </Tooltip>
-                  ) : (
-                    <Tooltip title={m.validate} placement="left">
-                      <IconBtn
-                        color={_validate.hasError(_.email) ? 'error' : 'primary'}
-                        loading={_validate.isLoading(_.email)}
-                        onClick={() => _validate.call(_.email)}
-                      >
-                        <Icon>task_alt</Icon>
-                      </IconBtn>
-                    </Tooltip>
-                  )}
-                </Box>
-              </>
-            ),
+            render: _ => <Action consumerEmailValidation={_} />,
           },
         ]}
       />
     </Panel>
+  )
+}
+
+const Action = (props: {consumerEmailValidation: ConsumerEmailValidation}) => {
+  const {m, formatDate} = useI18n()
+  const {consumerEmailValidation: _} = props
+  const {api} = useApiContext()
+  const _validate = useMutation({mutationFn: () => api.secured.consumerEmailValidation.validate(_.email)})
+
+  return (
+    <>
+      <Box sx={{display: 'flex', justifyContent: 'flex-end'}}>
+        {_.lastValidationDate !== undefined || _validate.isSuccess ? (
+          <Tooltip title={formatDate(_.lastValidationDate ?? new Date())} placement="left">
+            <span>
+              <IconBtn disabled={true}>
+                <Icon sx={{color: t => t.palette.success.light}}>check_circle</Icon>
+              </IconBtn>
+            </span>
+          </Tooltip>
+        ) : (
+          <Tooltip title={m.validate} placement="left">
+            <IconBtn
+              color={_validate.isError ? 'error' : 'primary'}
+              loading={_validate.isPending}
+              onClick={() => _validate.mutate()}
+            >
+              <Icon>task_alt</Icon>
+            </IconBtn>
+          </Tooltip>
+        )}
+      </Box>
+    </>
   )
 }

@@ -25,6 +25,12 @@ export const ReportAdminResolution = ({label, report, children, onAdd}: Props) =
   const _removeReport = useMutation({
     mutationFn: (params: {id: Id; reportDeletionReason: ReportDeletionReason}) =>
       apiSdk.secured.reports.remove(params.id, params.reportDeletionReason),
+    onSuccess: () => {
+      setComment('')
+      onAdd()
+      toastSuccess(m.actionDone)
+      window.history.back()
+    },
   })
   const [comment, setComment] = useState('')
   const [deletionType, setDeletionType] = useState<ReportAdminActionType | undefined>(undefined)
@@ -38,17 +44,7 @@ export const ReportAdminResolution = ({label, report, children, onAdd}: Props) =
     <ScDialog
       title={label}
       loading={_removeReport.isPending}
-      onConfirm={(event, close) =>
-        deletionType &&
-        performAdminAction(deletionType)
-          .then(() => {
-            setComment('')
-            onAdd()
-            toastSuccess(m.actionDone)
-          })
-          .then(() => window.history.back())
-          .finally(close)
-      }
+      onConfirm={(event, close) => deletionType && performAdminAction(deletionType).finally(close)}
       confirmLabel={m.validate}
       confirmDisabled={deletionType === undefined || comment === ''}
       content={
