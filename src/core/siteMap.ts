@@ -21,6 +21,7 @@ export const siteMap = {
     companies_registered: `/entreprises/les-plus-signalees`,
     companies: `/entreprises`,
     companiesPro: `/mes-entreprises`,
+    joinNewsletter: `/newsletter`,
     companyAccesses: (siret: string = `:siret`) => `/entreprise/acces/${siret}`,
     users: `/users`,
     company: (id: Id) => `/bilan-entreprise/${id}`,
