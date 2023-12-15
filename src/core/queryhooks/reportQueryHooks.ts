@@ -15,10 +15,7 @@ export const useGetReportQuery = (id: string, options?: UseQueryOpts<ReportSearc
   return useQuery({queryKey: GetReportQueryKeys(id), queryFn: () => api.secured.reports.getById(id), ...options})
 }
 
-export const useGetReviewOnReportResponseQuery = (
-  id: string,
-  options?: UseQueryOpts<ResponseConsumerReview | undefined, string[]>,
-) => {
+export const useGetReviewOnReportResponseQuery = (id: string, options?: UseQueryOpts<ResponseConsumerReview, string[]>) => {
   const {api} = useApiContext()
   return useQuery({
     queryKey: GetReviewOnReportResponseQueryKeys(id),

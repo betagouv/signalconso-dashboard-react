@@ -54,6 +54,7 @@ import './style.css'
 import {CenteredContent} from './shared/CenteredContent'
 import {Tools} from './feature/AdminTools/Tools'
 import {useToast} from './core/toast'
+import {ApiError} from './core/client/ApiClient'
 
 const Router: typeof HashRouter = config.useHashRouter ? HashRouter : BrowserRouter
 
@@ -145,9 +146,24 @@ const AppLogged = () => {
   const {apiSdk, connectedUser, logout} = useLogin()
   const history = useHistory()
   const {toastError} = useToast()
+
+  const MAX_RETRIES = 3
+  const HTTP_STATUS_TO_NOT_RETRY: (string | number)[] = [400, 401, 403, 404]
   const queryClient = new QueryClient({
+    defaultOptions: {
+      queries: {
+        retry: (failureCount, error) => {
+          if (failureCount > MAX_RETRIES) {
+            return false
+          }
+
+          return !(error instanceof ApiError && HTTP_STATUS_TO_NOT_RETRY.includes(error.details.code))
+        },
+      },
+    },
     queryCache: new QueryCache({
       onError: (error, query) => {
+        if (query.queryKey.includes('reports_getReviewOnReportResponse')) return
         toastError(error)
       },
     }),
