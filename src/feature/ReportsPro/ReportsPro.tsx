@@ -284,10 +284,12 @@ export const ReportsPro = () => {
                             <MenuItem value="">&nbsp;</MenuItem>
                             {Enum.values(ReportStatusPro).map(statusPro => (
                               <MenuItem
-                              sx={{
-                                p: 2,
-                              }}
-                              key={statusPro} value={statusPro}>
+                                sx={{
+                                  p: 2,
+                                }}
+                                key={statusPro}
+                                value={statusPro}
+                              >
                                 <ReportStatusProLabel dense fullWidth inSelectOptions status={statusPro} />
                               </MenuItem>
                             ))}
