@@ -63,7 +63,7 @@ export enum EventCategories {
   companyAccess = "Accès de l'entreprise",
   dgccrf = 'DGCCRF',
   statistics = 'Statistiques',
-  ProEventActions = 'Newsletter'
+  ProEventActions = 'Newsletter',
 }
 
 export enum DgccrfEventActions {

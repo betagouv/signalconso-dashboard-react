@@ -1,13 +1,12 @@
 import {Button} from '@mui/material'
-import { Matomo, EventCategories, newsletter } from 'core/plugins/Matomo'
+import {Matomo, EventCategories, newsletter} from 'core/plugins/Matomo'
 import {Page, PageTitle} from 'shared/Page'
 
-
 export const JoinNewsletter = () => {
-    const handleSubscribeClick = () => {
-        alert("Bouton ABONNEZ-VOUS cliqué");
-        Matomo.trackEvent(EventCategories.ProEventActions, newsletter.reportsClik , 'Bouton ABONNEZ-VOUS');
-      };
+  const handleSubscribeClick = () => {
+    alert('Bouton ABONNEZ-VOUS cliqué')
+    Matomo.trackEvent(EventCategories.ProEventActions, newsletter.reportsClik, 'Bouton ABONNEZ-VOUS')
+  }
   return (
     <Page>
       <PageTitle>Restez informé de l’actualité de la consommation et de la concurrence.</PageTitle>
@@ -32,7 +31,12 @@ export const JoinNewsletter = () => {
         domaines d'action de la DGCCRF.
       </p>
       <br />
-      <Button color="primary" variant="contained" href="https://lettres-infos.bercy.gouv.fr/DGCCRF/inscription" onClick={handleSubscribeClick}>
+      <Button
+        color="primary"
+        variant="contained"
+        href="https://lettres-infos.bercy.gouv.fr/DGCCRF/inscription"
+        onClick={handleSubscribeClick}
+      >
         ABONNEZ-VOUS
       </Button>
     </Page>
