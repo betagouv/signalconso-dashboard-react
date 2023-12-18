@@ -1,50 +1,48 @@
 import {Box, Checkbox, Icon, Tooltip} from '@mui/material'
-import {SyntheticEvent, useEffect} from 'react'
+import {SyntheticEvent} from 'react'
 import {Link} from 'react-router-dom'
 import {Fender, IconBtn, Txt} from '../../alexlibs/mui-extension'
 import {useSetState} from '../../alexlibs/react-hooks-lib'
 import {usePersistentState} from '../../alexlibs/react-persistent-state'
 import {EntityIcon} from '../../core/EntityIcon'
-import {useCompaniesContext} from '../../core/context/CompaniesContext'
 import {useI18n} from '../../core/i18n'
 import {Id} from '../../core/model'
 import {siteMap} from '../../core/siteMap'
 import {styleUtils, sxUtils} from '../../core/theme'
-import {useToast} from '../../core/toast'
 import {AddressComponent} from '../../shared/Address'
 import {ScButton} from '../../shared/Button'
 import {ScDialog} from '../../shared/ScDialog'
 import {Datatable} from '../../shared/Datatable/Datatable'
 import {DatatableToolbar} from '../../shared/Datatable/DatatableToolbar'
 import {Panel} from '../../shared/Panel'
+import {CompanyToFollowUpSearchQueryKeys, useCompanyToFollowUpSearchQuery} from '../../core/queryhooks/companyQueryHooks'
+import {useMutation, useQueryClient} from '@tanstack/react-query'
+import {useApiContext} from '../../core/context/ApiContext'
 
 export const CompaniesToFollowUp = () => {
   const {m, formatDate} = useI18n()
-  const _companies = useCompaniesContext()
-  const _companiesToFollowUp = _companies.toFollowUp
+  const {api} = useApiContext()
+  const queryClient = useQueryClient()
+  const _companiesToFollowUp = useCompanyToFollowUpSearchQuery()
+  const _confirmCompaniesFollowedUp = useMutation({
+    mutationFn: api.secured.company.confirmCompaniesFollowedUp,
+    onSuccess: () => queryClient.invalidateQueries({queryKey: CompanyToFollowUpSearchQueryKeys}).then(unselectAll),
+  })
+  const _downloadActivationDocument = useMutation({mutationFn: api.secured.company.downloadFollowUpDocument})
 
   const [selectedCompanies, setSelectedCompanies] = usePersistentState<string[]>([], 'CompaniesToFollowUp')
   const selectedCompaniesSet = useSetState(selectedCompanies)
-  const {toastError, toastErrorIfDefined} = useToast()
-
-  useEffect(() => {
-    _companiesToFollowUp.fetch()
-  }, [])
-
-  useEffect(() => {
-    toastErrorIfDefined(_companiesToFollowUp.error)
-  }, [_companiesToFollowUp.error])
 
   const toggleSelectedCompany = (companyId: Id) => {
     selectedCompaniesSet.has(companyId) ? selectedCompaniesSet.delete(companyId) : selectedCompaniesSet.add(companyId)
     setSelectedCompanies(selectedCompaniesSet.toArray())
   }
 
-  const allChecked = selectedCompaniesSet.size === (_companiesToFollowUp.list?.entities.length ?? 0)
+  const allChecked = selectedCompaniesSet.size === (_companiesToFollowUp.result.data?.entities.length ?? 0)
 
   const selectAll = () => {
     if (selectedCompaniesSet.size === 0 && !allChecked)
-      selectedCompaniesSet.reset(_companiesToFollowUp.list?.entities.map(_ => _.company.id))
+      selectedCompaniesSet.reset(_companiesToFollowUp.result.data?.entities.map(_ => _.company.id))
     else selectedCompaniesSet.clear()
     setSelectedCompanies(selectedCompaniesSet.toArray())
   }
@@ -55,14 +53,7 @@ export const CompaniesToFollowUp = () => {
   }
 
   const confirmCompaniesFollowedUp = (event: SyntheticEvent<any>, closeDialog: () => void) => {
-    _companies.confirmCompaniesFollowedUp
-      .fetch({}, selectedCompaniesSet.toArray())
-      .then(() => {
-        _companiesToFollowUp.fetch({clean: false})
-      })
-      .then(unselectAll)
-      .catch(toastError)
-      .finally(closeDialog)
+    _confirmCompaniesFollowedUp.mutateAsync(selectedCompaniesSet.toArray()).finally(closeDialog)
   }
 
   return (
@@ -82,17 +73,17 @@ export const CompaniesToFollowUp = () => {
         header={
           <DatatableToolbar
             onClear={selectedCompaniesSet.clear}
-            open={!_companiesToFollowUp.fetching && selectedCompaniesSet.size > 0}
+            open={!_companiesToFollowUp.result.isFetching && selectedCompaniesSet.size > 0}
             actions={
               <>
                 <ScButton
-                  disabled={_companiesToFollowUp.fetching || selectedCompaniesSet.size === 0}
-                  loading={_companies.downloadFollowUpDocument.loading}
+                  disabled={_companiesToFollowUp.result.isFetching || selectedCompaniesSet.size === 0}
+                  loading={_downloadActivationDocument.isPending}
                   color="primary"
                   variant="outlined"
                   icon="file_download"
                   sx={{mr: 1}}
-                  onClick={() => _companies.downloadFollowUpDocument.fetch({}, selectedCompaniesSet.toArray()).catch(toastError)}
+                  onClick={() => _downloadActivationDocument.mutate(selectedCompaniesSet.toArray())}
                 >
                   {m.downloadNotice}
                 </ScButton>
@@ -102,8 +93,8 @@ export const CompaniesToFollowUp = () => {
                   onConfirm={confirmCompaniesFollowedUp}
                 >
                   <ScButton
-                    disabled={_companiesToFollowUp.fetching || selectedCompaniesSet.size === 0}
-                    loading={_companies.confirmCompaniesFollowedUp.loading}
+                    disabled={_companiesToFollowUp.result.isFetching || selectedCompaniesSet.size === 0}
+                    loading={_confirmCompaniesFollowedUp.isPending}
                     sx={{mr: 1}}
                     color="error"
                     variant="contained"
@@ -118,14 +109,14 @@ export const CompaniesToFollowUp = () => {
             <Txt bold>{selectedCompaniesSet.size}</Txt>&nbsp;{m.selectedCompanies}
           </DatatableToolbar>
         }
-        loading={_companiesToFollowUp.fetching}
-        data={_companiesToFollowUp.list?.entities}
+        loading={_companiesToFollowUp.result.isFetching}
+        data={_companiesToFollowUp.result.data?.entities}
         paginate={{
           offset: _companiesToFollowUp.filters.offset,
           limit: _companiesToFollowUp.filters.limit,
           onPaginationChange: pagination => _companiesToFollowUp.updateFilters(prev => ({...prev, ...pagination})),
         }}
-        total={_companiesToFollowUp.list?.totalCount}
+        total={_companiesToFollowUp.result.data?.totalCount}
         getRenderRowKey={_ => _.company.id}
         showColumnsToggle={true}
         rowsPerPageOptions={[5, 10, 25, 100, 250]}
@@ -135,7 +126,7 @@ export const CompaniesToFollowUp = () => {
               <Checkbox
                 indeterminate={!allChecked && selectedCompaniesSet.size > 0}
                 checked={allChecked}
-                disabled={_companiesToFollowUp.fetching}
+                disabled={_companiesToFollowUp.result.isFetching}
                 onClick={selectAll}
               />
             ),

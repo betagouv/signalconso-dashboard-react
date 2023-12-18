@@ -13,16 +13,10 @@ import {apiPublicSdk, makeSecuredSdk} from './core/ApiSdkInstance'
 import {Layout} from './core/Layout'
 import {ScHeader} from './core/ScHeader/ScHeader'
 import {ScSidebar} from './core/ScSidebar/ScSidebar'
-import {AccessesProvider} from './core/context/AccessesContext'
-import {AsyncFileProvider} from './core/context/AsyncFileContext'
-import {BlockedReportNotificationProvider} from './core/context/BlockedReportNotificationProviderContext'
 import {CompaniesProvider} from './core/context/CompaniesContext'
-import {ConstantProvider} from './core/context/ConstantContext'
-import {EventProvider} from './core/context/EventContext'
 import {LoginProvider, useLogin} from './core/context/LoginContext'
 import {ReportProvider} from './core/context/ReportContext'
 import {ReportedWebsitesProvider} from './core/context/ReportedWebsitesContext'
-import {SubscriptionsProvider} from './core/context/SubscriptionsContext'
 import {UsersProvider} from './core/context/UsersContext'
 import {I18nProvider} from './core/i18n'
 import {Matomo} from './core/plugins/Matomo'
@@ -182,15 +176,9 @@ const AppLogged = () => {
         _ => <QueryClientProvider client={queryClient} children={_} />,
         _ => <ApiProvider api={apiSdk} children={_} />,
         _ => <ReportProvider api={apiSdk} children={_} />,
-        _ => <ConstantProvider api={apiSdk} children={_} />,
-        _ => <AsyncFileProvider api={apiSdk} children={_} />,
         _ => <CompaniesProvider api={apiSdk} children={_} />,
         _ => <UsersProvider api={apiSdk} children={_} />,
         _ => <ReportedWebsitesProvider api={apiSdk} children={_} />,
-        _ => <SubscriptionsProvider api={apiSdk} children={_} />,
-        _ => <AccessesProvider api={apiSdk} children={_} />,
-        _ => <BlockedReportNotificationProvider api={apiSdk} children={_} />,
-        _ => <EventProvider api={apiSdk} children={_} />,
       ]}
     >
       <Switch>

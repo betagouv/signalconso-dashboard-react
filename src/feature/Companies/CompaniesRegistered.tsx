@@ -2,13 +2,12 @@ import {useI18n} from '../../core/i18n'
 import {Panel} from '../../shared/Panel'
 import {Datatable} from '../../shared/Datatable/Datatable'
 import {useCallback, useEffect, useMemo, useState} from 'react'
-import {useCompaniesContext} from '../../core/context/CompaniesContext'
 import {Badge, Box, Icon, InputBase, ListItemIcon, ListItemText, MenuItem, Tooltip} from '@mui/material'
 import {NavLink} from 'react-router-dom'
 import {siteMap} from '../../core/siteMap'
 import {ScButton} from '../../shared/Button'
 import {styleUtils, sxUtils} from '../../core/theme'
-import {Fender, IconBtn} from '../../alexlibs/mui-extension'
+import {Fender, IconBtn, Txt} from '../../alexlibs/mui-extension'
 import {mapArrayFromQuerystring, useQueryString} from '../../core/helper/useQueryString'
 import {DebouncedInput} from '../../shared/DebouncedInput'
 import {useToast} from '../../core/toast'
@@ -19,12 +18,12 @@ import {useLogin} from '../../core/context/LoginContext'
 import {ClipboardApi} from '../../alexlibs/ts-utils/browser/ClipboardApi'
 import {CompaniesRegisteredFilters} from './CompaniesRegisteredFilters'
 import {ScMenu} from '../../shared/Menu'
-import {Txt} from '../../alexlibs/mui-extension'
-import {Company, CompanySearch} from '../../core/client/company/Company'
+import {Company, CompanySearch, CompanyUpdate} from '../../core/client/company/Company'
 import {cleanObject} from '../../core/helper'
-import {PaginatedSearch} from '../../core/model'
-import {ScOption} from 'core/helper/ScOption'
+import {Id, PaginatedSearch} from '../../core/model'
 import {MassImport} from './MassImport'
+import {useActivatedCompanySearchQuery} from '../../core/queryhooks/companyQueryHooks'
+import {useMutation} from '@tanstack/react-query'
 
 export interface CompanySearchQs extends PaginatedSearch<any> {
   departments?: string[] | string
@@ -34,11 +33,17 @@ export interface CompanySearchQs extends PaginatedSearch<any> {
 
 export const CompaniesRegistered = () => {
   const {m, formatLargeNumber} = useI18n()
-  const _companies = useCompaniesContext().activated
-  const _companyUpdateAddress = useCompaniesContext().updateAddress
-  const _companyCreate = useCompaniesContext().create
-  const {toastError, toastErrorIfDefined, toastSuccess} = useToast()
-  const {connectedUser} = useLogin()
+  const {connectedUser, apiSdk} = useLogin()
+  const _companies = useActivatedCompanySearchQuery()
+  const _companyUpdateAddress = useMutation({
+    mutationFn: (params: {id: Id; update: CompanyUpdate}) => apiSdk.secured.company.updateAddress(params.id, params.update),
+    onSuccess: () => toastSuccess(m.editedAddress),
+  })
+  const _companyCreate = useMutation({
+    mutationFn: apiSdk.secured.company.create,
+    onSuccess: () => toastSuccess(m.companyCreated),
+  })
+  const {toastError, toastSuccess} = useToast()
   const [sortByResponseRate, setSortByResponseRate] = useState<'asc' | 'desc' | undefined>()
 
   const queryString = useQueryString<Partial<CompanySearch>, Partial<CompanySearchQs>>({
@@ -54,11 +59,6 @@ export const CompaniesRegistered = () => {
     queryString.update(cleanObject(_companies.filters))
   }, [_companies.filters])
 
-  useEffect(() => {
-    toastErrorIfDefined(_companies.error)
-    toastErrorIfDefined(_companyCreate.error)
-  }, [_companies.error, _companyCreate.error])
-
   const copyAddress = (c: Company) => {
     const a = c.address
     const address = `${c.name} - ${a.number} ${a.street} ${a.addressSupplement} ${a.postalCode} ${a.city} (${c.siret})`
@@ -67,12 +67,12 @@ export const CompaniesRegistered = () => {
   }
 
   const data = useMemo(() => {
-    if (sortByResponseRate && _companies.list)
-      return [..._companies.list.entities].sort(
+    if (sortByResponseRate && _companies.result.data)
+      return [..._companies.result.data.entities].sort(
         (a, b) => (a.responseRate - b.responseRate) * (sortByResponseRate === 'desc' ? -1 : 1),
       )
-    return _companies.list?.entities
-  }, [_companies.list?.entities, sortByResponseRate])
+    return _companies.result.data?.entities
+  }, [_companies.result.data?.entities, sortByResponseRate])
 
   const onInputChange = useCallback((value: string) => {
     _companies.updateFilters(prev => ({...prev, identity: value}))
@@ -134,14 +134,14 @@ export const CompaniesRegistered = () => {
           orderBy: sortByResponseRate,
           onSortChange: _ => setSortByResponseRate(_.sortBy === 'responseRate' ? _.orderBy : undefined),
         }}
-        loading={_companies.fetching}
+        loading={_companies.result.isFetching}
         data={data}
         paginate={{
           offset: _companies.filters.offset,
           limit: _companies.filters.limit,
           onPaginationChange: pagination => _companies.updateFilters(prev => ({...prev, ...pagination})),
         }}
-        total={_companies.list?.totalCount}
+        total={_companies.result.data?.totalCount}
         getRenderRowKey={_ => _.id}
         showColumnsToggle={true}
         columns={[
@@ -308,9 +308,7 @@ export const CompaniesRegistered = () => {
                       onChangeError={_companyUpdateAddress.error?.message}
                       onChange={form => {
                         const {activationDocumentRequired = false, ...address} = form
-                        return _companyUpdateAddress
-                          .fetch({}, _.id, {address, activationDocumentRequired})
-                          .then(() => toastSuccess(m.editedAddress))
+                        return _companyUpdateAddress.mutateAsync({id: _.id, update: {address, activationDocumentRequired}})
                       }}
                     >
                       <MenuItem>
@@ -333,9 +331,7 @@ export const CompaniesRegistered = () => {
                 onChange={company => {
                   const {siret, name, address, activityCode, isOpen, isHeadOffice, isPublic} = company
                   if (name && address && siret) {
-                    _companyCreate
-                      .fetch({}, {siret, name, address, activityCode, isOpen, isHeadOffice, isPublic})
-                      .then(() => toastSuccess(m.companyCreated))
+                    _companyCreate.mutateAsync({siret, name, address, activityCode, isOpen, isHeadOffice, isPublic})
                   } else {
                     toastError({message: m.cannotCreateCompanyMissingInfo})
                   }

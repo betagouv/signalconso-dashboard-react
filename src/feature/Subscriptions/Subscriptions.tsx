@@ -1,21 +1,21 @@
 import {Page, PageTitle} from '../../shared/Page'
-import React, {useEffect} from 'react'
+import React from 'react'
 import {useI18n} from '../../core/i18n'
-import {useSubscriptionsContext} from '../../core/context/SubscriptionsContext'
 import {SubscriptionCard} from './SubscriptionCard'
 import {Alert} from '../../alexlibs/mui-extension'
 import {Box, Icon, LinearProgress} from '@mui/material'
 import {Ripple} from '../../shared/Ripple'
 import {styleUtils} from '../../core/theme'
 import {Animate} from 'alexlibs/mui-extension/Animate'
+import {useListSubscriptionsQuery} from '../../core/queryhooks/subscriptionQueryHooks'
+import {useMutation} from '@tanstack/react-query'
+import {useApiContext} from '../../core/context/ApiContext'
 
 export const Subscriptions = () => {
   const {m} = useI18n()
-  const _subscriptions = useSubscriptionsContext()
-
-  useEffect(() => {
-    _subscriptions.fetch()
-  }, [])
+  const _subscriptions = useListSubscriptionsQuery()
+  const {api} = useApiContext()
+  const _createSubscription = useMutation({mutationFn: api.secured.subscription.create})
 
   return (
     <Page size="s">
@@ -25,7 +25,7 @@ export const Subscriptions = () => {
         <div dangerouslySetInnerHTML={{__html: m.subscriptionsAlertInfo}} />
       </Alert>
 
-      {_subscriptions.fetching && <LinearProgress />}
+      {_subscriptions.isFetching && <LinearProgress />}
       <Animate>
         <Ripple>
           <Box
@@ -44,21 +44,15 @@ export const Subscriptions = () => {
               borderRadius: t => t.shape.borderRadius + 'px',
             }}
             title={m.add}
-            onClick={() => !_subscriptions.creating && _subscriptions.create({insertBefore: true})}
+            onClick={() => !_createSubscription.isPending && _createSubscription.mutate(undefined)}
           >
             <Icon>add</Icon>
             {m.add}
           </Box>
         </Ripple>
       </Animate>
-      {_subscriptions.list?.map(subscription => (
-        <SubscriptionCard
-          key={subscription.id}
-          subscription={subscription}
-          removing={_subscriptions.removing(subscription.id)}
-          onUpdate={_ => _subscriptions.update(subscription.id, _)}
-          onDelete={() => _subscriptions.remove(subscription.id)}
-        />
+      {_subscriptions.data?.map(subscription => (
+        <SubscriptionCard key={subscription.id} subscription={subscription} />
       ))}
     </Page>
   )

@@ -3,8 +3,8 @@ import {useApiContext} from '../context/ApiContext'
 import {UseQueryOpts} from './types'
 import {ReportEvent} from '../client/event/Event'
 
-const GetCompanyEventsQueryKeys = (companySiret: string | undefined) => ['events_getBySiret', companySiret]
-const GetReportEventsQueryKeys = (id: string) => ['events_getByReportId', id]
+export const GetCompanyEventsQueryKeys = (companySiret: string | undefined) => ['events_getBySiret', companySiret]
+export const GetReportEventsQueryKeys = (id: string) => ['events_getByReportId', id]
 
 export const useGetCompanyEventsQuery = (
   companySiret: string | undefined,

@@ -7,11 +7,10 @@ import {styleUtils, sxUtils} from '../../core/theme'
 import {ReportFiles} from './File/ReportFiles'
 import {useReportContext} from '../../core/context/ReportContext'
 import {Txt} from '../../alexlibs/mui-extension'
-import {useEventContext} from '../../core/context/EventContext'
 import {Divider} from '../../shared/Divider'
 import {
-  EventActionValues,
   Event,
+  EventActionValues,
   ReportResponse,
   ReportResponseTypes,
   ResponseConsumerReview,
@@ -22,6 +21,8 @@ import {Id, Report} from '../../core/model'
 import {fnSwitch} from '../../core/helper'
 import {useLogin} from '../../core/context/LoginContext'
 import {ScOption} from 'core/helper/ScOption'
+import {GetReportEventsQueryKeys} from '../../core/queryhooks/eventQueryHooks'
+import {useQueryClient} from '@tanstack/react-query'
 import {ReportFileDeleteButton} from './File/ReportFileDownloadAllButton'
 
 interface Props {
@@ -62,8 +63,8 @@ const Response = ({
 }
 export const ReportResponseComponent = ({canEditFile, response, consumerReportReview, report, files}: Props) => {
   const {m} = useI18n()
+  const queryClient = useQueryClient()
   const _report = useReportContext()
-  const _event = useEventContext()
   const {connectedUser} = useLogin()
 
   return (
@@ -115,7 +116,7 @@ export const ReportResponseComponent = ({canEditFile, response, consumerReportRe
               fileIds: [file.id],
               actionType: EventActionValues.ProfessionalAttachments,
             })
-            .then(() => _event.reportEvents.fetch({force: true, clean: false}, report.id))
+            .then(() => queryClient.invalidateQueries({queryKey: GetReportEventsQueryKeys(report.id)}))
         }}
       />
       <Divider margin />

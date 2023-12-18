@@ -4,7 +4,6 @@ import {useEffectFn, useFetcher} from '../../alexlibs/react-hooks-lib'
 import {useLogin} from '../../core/context/LoginContext'
 import {useI18n} from '../../core/i18n'
 import {Box, BoxProps, Divider, Icon, Table, TableBody, TableCell, TableHead, TableRow, Tooltip} from '@mui/material'
-import {useConstantContext} from '../../core/context/ConstantContext'
 import {Panel, PanelBody, PanelHead} from '../../shared/Panel'
 import {ScButton} from '../../shared/Button'
 import {siteMap} from '../../core/siteMap'
@@ -13,6 +12,7 @@ import {useToast} from '../../core/toast'
 import {SelectMonth} from '../../shared/SelectMonth'
 import {useGetDateForMonthAndPreviousOne} from './useGetDateForMonthAndPreviousOne'
 import {Txt} from '../../alexlibs/mui-extension'
+import {useRegionsQuery} from '../../core/queryhooks/constantQueryHooks'
 
 const CellNewPosition = ({sx, ...props}: BoxProps) => {
   return <Box {...props} component="span" sx={{fontWeight: t => t.typography.fontWeightBold, ...sx}} />
@@ -23,7 +23,11 @@ export const StatsReportsByRegion = () => {
   const {m, formatLargeNumber} = useI18n()
   const {toastError} = useToast()
 
-  const _constant = useConstantContext()
+  const _regions = useRegionsQuery()
+  const departmentsIndex: {[key: string]: string} | undefined = useMemo(
+    () => _regions.data?.flatMap(_ => _.departments).reduce((acc, dep) => ({...acc, [dep.code]: dep.label}), {}),
+    [_regions.data],
+  )
 
   const currentMonth = useMemo(() => new Date().getMonth(), [])
   const [selectedMonth, setSelectedMonth] = useState<number>(currentMonth)
@@ -37,10 +41,6 @@ export const StatsReportsByRegion = () => {
     _countByDepCurrentMonth.fetch({clean: false}, {...dates.current})
     _countByDepLastMonth.fetch({clean: false}, {...dates.lastMonth})
   }
-
-  useEffect(() => {
-    _constant.regions.fetch({force: false})
-  }, [])
 
   useEffect(() => {
     fetch()
@@ -79,7 +79,7 @@ export const StatsReportsByRegion = () => {
               <TableCell />
             </TableRow>
           </TableHead>
-          {_countByDepCurrentMonth.entity && positionByDep && _constant.regions.entity && _constant.departmentsIndex && (
+          {_countByDepCurrentMonth.entity && positionByDep && _regions.data && departmentsIndex && (
             <TableBody>
               {_countByDepCurrentMonth.entity.slice(0, 20).map(([depNumber, count], i) => (
                 <TableRow key={depNumber}>
@@ -87,7 +87,7 @@ export const StatsReportsByRegion = () => {
                   <TableCell>
                     {depNumber ? (
                       <span>
-                        {_constant.departmentsIndex![depNumber]}{' '}
+                        {departmentsIndex![depNumber]}{' '}
                         <Box component="span" sx={{color: t => t.palette.text.disabled}}>
                           ({depNumber})
                         </Box>

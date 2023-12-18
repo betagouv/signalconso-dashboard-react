@@ -13,7 +13,6 @@ import {Enum} from '../../alexlibs/ts-utils'
 import {config} from '../../conf/config'
 import {EntityIcon} from '../../core/EntityIcon'
 import {Report, ReportingDateLabel, ReportStatus, ReportTag} from '../../core/client/report/Report'
-import {useConstantContext} from '../../core/context/ConstantContext'
 import {useLogin} from '../../core/context/LoginContext'
 import {cleanObject, getHostFromUrl, textOverflowMiddleCropping} from '../../core/helper'
 import compose from '../../core/helper/compose'
@@ -51,6 +50,7 @@ import {TrueFalseNull} from '../../shared/TrueFalseNull'
 import {PanelBody} from 'alexlibs/mui-extension/Panel/PanelBody'
 import {useMutation} from '@tanstack/react-query'
 import {useReportSearchQuery} from '../../core/queryhooks/reportQueryHooks'
+import {useCategoriesQuery} from '../../core/queryhooks/constantQueryHooks'
 
 const TrueLabel = () => {
   const {m} = useI18n()
@@ -149,11 +149,7 @@ export const Reports = () => {
     tags[tag] = 'excluded'
   })
 
-  const _category = useConstantContext().categories
-
-  useEffect(() => {
-    _category.fetch({force: false})
-  }, [])
+  const _category = useCategoriesQuery()
 
   const [proResponseFilter, setProResponseFilter] = useState<ReportResponseTypes[]>([])
 
@@ -349,7 +345,7 @@ export const Reports = () => {
                   onChange={e => _reports.updateFilters(prev => ({...prev, category: e.target.value}))}
                 >
                   <MenuItem value="">&nbsp;</MenuItem>
-                  {_category?.entity?.map(category => (
+                  {_category?.data?.map(category => (
                     <MenuItem key={category} value={category}>
                       {m.ReportCategoryDesc[category]}
                     </MenuItem>

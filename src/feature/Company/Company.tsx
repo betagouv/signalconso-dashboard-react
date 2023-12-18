@@ -1,6 +1,6 @@
 import * as React from 'react'
 import {useEffect} from 'react'
-import {useFetcher, useMemoFn} from '../../alexlibs/react-hooks-lib'
+import {useEffectFn, useFetcher, useMemoFn} from '../../alexlibs/react-hooks-lib'
 import {Txt} from '../../alexlibs/mui-extension'
 import {useParams} from 'react-router'
 import {Page, PageTitle} from 'shared/Page'
@@ -10,8 +10,6 @@ import {HorizontalBarChart} from 'shared/Chart/HorizontalBarChart'
 import {reportStatusColor, reportStatusProColor} from 'shared/ReportStatus'
 import {useI18n} from 'core/i18n'
 import {Box, Grid, Icon, List, ListItem, Tooltip} from '@mui/material'
-import {useEventContext} from 'core/context/EventContext'
-import {useEffectFn} from '../../alexlibs/react-hooks-lib'
 import {useLogin} from 'core/context/LoginContext'
 import {Widget} from 'shared/Widget/Widget'
 import {siteMap} from 'core/siteMap'
@@ -30,6 +28,7 @@ import {Id} from '../../core/model'
 import {ScOption} from 'core/helper/ScOption'
 import {ReportWordDistribution} from './stats/ReportWordDistribution'
 import {useReportSearchQuery} from '../../core/queryhooks/reportQueryHooks'
+import {useGetCompanyEventsQuery} from '../../core/queryhooks/eventQueryHooks'
 
 export const CompanyComponent = () => {
   const {id} = useParams<{id: Id}>()
@@ -38,7 +37,8 @@ export const CompanyComponent = () => {
   const {toastError} = useToast()
   const _company = useCompaniesContext()
   const _stats = useCompanyStats(id)
-  const _event = useEventContext()
+  const companyEvents = useGetCompanyEventsQuery(_company.byId.entity?.siret)
+
   const _accesses = useFetcher((siret: string) => apiSdk.secured.companyAccess.count(siret))
   const _reports = useReportSearchQuery()
   const _cloudWord = useFetcher((companyId: Id) => apiSdk.secured.reports.getCloudWord(companyId))
@@ -68,12 +68,11 @@ export const CompanyComponent = () => {
   useEffectFn(_stats.responseDelay.error, toastError)
 
   useEffectFn(_company.byId.entity, _ => {
-    _event.companyEvents.fetch({}, _.siret)
     _accesses.fetch({}, _.siret)
     _reports.updateFilters({hasCompany: true, siretSirenList: [_.siret], offset: 0, limit: 5})
   })
 
-  const postActivationDocEvents = useMemoFn(_event.companyEvents.entity, events =>
+  const postActivationDocEvents = useMemoFn(companyEvents.data, events =>
     events.map(_ => _.data).filter(_ => _.action === EventActionValues.PostAccountActivationDoc),
   )
 
@@ -155,7 +154,7 @@ export const CompanyComponent = () => {
               </Widget>
             </Grid>
             <Grid item xs={4}>
-              <Widget title={m.activationDocReturned} loading={_event.companyEvents.loading}>
+              <Widget title={m.activationDocReturned} loading={companyEvents.isLoading}>
                 {ScOption.from(postActivationDocEvents)
                   .map(_ => <WidgetValue>{_.length}</WidgetValue>)
                   .getOrElse(<WidgetLoading />)}

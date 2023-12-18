@@ -2,7 +2,6 @@ import {Box, Checkbox, Icon, Menu, MenuItem} from '@mui/material'
 import * as React from 'react'
 import {useEffect, useMemo} from 'react'
 import {useSetState, UseSetState} from '../../alexlibs/react-hooks-lib'
-import {useConstantContext} from '../../core/context/ConstantContext'
 
 import {useI18n} from '../../core/i18n'
 import {makeSx} from '../../alexlibs/mui-extension'
@@ -10,14 +9,13 @@ import {combineSx} from '../../core/theme'
 import {Region} from '../../core/client/constant/Country'
 import {stopPropagation} from '../../core/helper'
 import {ScOption} from 'core/helper/ScOption'
+import {useRegionsQuery} from '../../core/queryhooks/constantQueryHooks'
 
 const withRegions =
   (WrappedComponent: React.ComponentType<SelectDepartmentsMenuProps>) => (props: Omit<SelectDepartmentsMenuProps, 'regions'>) => {
-    const {regions} = useConstantContext()
-    useEffect(() => {
-      regions.fetch({force: false})
-    }, [])
-    return ScOption.from(regions.entity)
+    const regions = useRegionsQuery()
+
+    return ScOption.from(regions.data)
       .map(_ => <WrappedComponent {...props} regions={_} />)
       .getOrElse(<></>)
   }
