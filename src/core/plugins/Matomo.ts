@@ -1,6 +1,6 @@
 import {config} from 'conf/config'
 
-export const MATOMO_ENABLED = false
+export const MATOMO_ENABLED = config.enableMatomo
 
 declare const _paq: any
 
@@ -29,9 +29,8 @@ export class Matomo {
   }
 
   private static readonly push = (args: any[]) => {
-    if (config.isDev || !MATOMO_ENABLED) {
-      console.info('[Matomo]', args)
-    } else {
+    console.info('[Matomo]', ...args)
+    if (MATOMO_ENABLED) {
       try {
         _paq.push(args)
       } catch (e) {
@@ -125,8 +124,8 @@ export function injectMatomoScript() {
     var _paq = ((window as any)._paq = (window as any)._paq || [])
     /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
     _paq.push(['setDocumentTitle', document.domain + '/' + document.title])
-    _paq.push(['setCookieDomain', '*.signal.conso.gouv.fr'])
-    _paq.push(['setDomains', ['*.signal.conso.gouv.fr']])
+    _paq.push(['setCookieDomain', 'admin.signal.conso.gouv.fr'])
+    _paq.push(['setDomains', ['admin.signal.conso.gouv.fr']])
     _paq.push(['trackPageView'])
     _paq.push(['enableLinkTracking'])
     ;(function () {

@@ -1,5 +1,5 @@
 export const reportFileConfig = {
-  cardSize: 90,
+  cardSize: 120,
   cardBorderRadius: '8px',
 }
 

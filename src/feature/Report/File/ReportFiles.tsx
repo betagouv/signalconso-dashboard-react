@@ -6,6 +6,7 @@ import {useI18n} from '../../../core/i18n'
 import {Txt} from '../../../alexlibs/mui-extension'
 import {FileOrigin, UploadedFile} from '../../../core/client/file/UploadedFile'
 import {Id} from '../../../core/model'
+import {useLogin} from '../../../core/context/LoginContext'
 
 export interface ReportFilesProps {
   files?: UploadedFile[]
@@ -27,7 +28,7 @@ export const ReportFiles = ({
   const [innerFiles, setInnerFiles] = useState<UploadedFile[]>()
   const {m} = useI18n()
   const attachmentRef = useRef<any>()
-
+  const {connectedUser} = useLogin()
   useEffect(() => {
     setInnerFiles(files)
   }, [files])
@@ -59,14 +60,18 @@ export const ReportFiles = ({
         sx={{
           display: 'flex',
           flexWrap: 'wrap',
-          m: -1,
+          mt: 2,
+          mb: 2,
         }}
       >
         {innerFiles
           ?.filter(_ => _.origin === fileOrigin)
-          .map(_ => (
-            <ReportFile key={_.id} file={_} onRemove={hideAddBtn ? undefined : removeFile} />
-          ))}
+          .map(_ => {
+            // Pro is the only user who can remove file. Pro can only remove its own file
+            // In order to prevent Admin / Agent from removing pro / consumer file
+            const canRemove = !hideAddBtn && fileOrigin === FileOrigin.Professional && connectedUser.isPro
+            return <ReportFile key={_.id} file={_} onRemove={canRemove ? removeFile : undefined} />
+          })}
         {!hideAddBtn && <ReportFileAdd reportId={reportId} fileOrigin={fileOrigin} onUploaded={newFile} />}
       </Box>
       {hideAddBtn && innerFiles?.length === 0 && (

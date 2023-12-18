@@ -35,7 +35,7 @@ export const ReportDescription = ({report, files, children}: Props) => {
           </Box>
         ))}
         <Divider margin />
-        <Txt bold block gutterBottom>
+        <Txt bold block size="big" gutterBottom>
           {m.attachedFiles}
         </Txt>
         <ReportFiles
