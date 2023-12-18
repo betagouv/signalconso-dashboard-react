@@ -80,12 +80,12 @@ export const ReportFile = ({file, onRemove}: ReportFileProps) => {
         <div className="block relative p-2">
           <Tooltip title={file.filename} placement="top">
             <Button
-        sx={css.image}
-        // Matomo tracks all clicks on links
-        // But these filenames are potentially sensitive
-        className="matomo_ignore"
-      >
-        <Modal
+              sx={css.image}
+              // Matomo tracks all clicks on links
+              // But these filenames are potentially sensitive
+              className="matomo_ignore"
+            >
+              <Modal
                 PaperProps={{style: {overflow: 'visible', maxHeight: '800px'}}}
                 maxWidth="md"
                 cancelLabel="close"
