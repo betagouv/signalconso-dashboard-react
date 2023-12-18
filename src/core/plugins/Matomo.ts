@@ -53,6 +53,7 @@ type AnalyticAction =
   | AccessEventActions
   | ConsumerShareReviewEventActions
   | StatisticsActions
+  | newsletter
 
 export enum EventCategories {
   report = 'Signalement',
@@ -62,10 +63,14 @@ export enum EventCategories {
   companyAccess = "Accès de l'entreprise",
   dgccrf = 'DGCCRF',
   statistics = 'Statistiques',
+  ProEventActions = 'Newsletter',
 }
 
 export enum DgccrfEventActions {
   reportsSearch = 'Recherche de signalements',
+}
+export enum newsletter {
+  reportsClik = 'ClickNewsletterSubscribeButton',
 }
 
 export enum ReportEventActions {
