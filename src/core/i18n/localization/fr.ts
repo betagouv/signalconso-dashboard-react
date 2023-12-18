@@ -440,6 +440,7 @@ export const fr = {
     menu_users: 'Utilisateurs',
     menu_subscriptions: 'Abonnements',
     menu_settings: 'Paramètres',
+    menu_join_informations: 'Informations',
     category: 'Catégorie',
     myCompanies: 'Mes entreprises',
     returnDate: 'Date de retour',

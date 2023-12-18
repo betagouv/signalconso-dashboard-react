@@ -96,9 +96,15 @@ export const ScSidebar = ({connectedUser, logout}: {connectedUser: UserWithPermi
         </SidebarItem>
       )}
       <SidebarHr margin />
+      {[Roles.Pro].includes(connectedUser.role) && (
+        <SidebarItem onClick={closeSidebarIfNotPinned} to={path(siteMap.logged.joinInformation)} icon="info">
+          {m.menu_join_informations}
+        </SidebarItem>
+      )}
       <SidebarItem onClick={closeSidebarIfNotPinned} to={path(siteMap.logged.settings)} icon="settings">
         {m.menu_settings}
       </SidebarItem>
+
       {[Roles.Admin, Roles.DGCCRF, Roles.DGAL].includes(connectedUser.role) && (
         <SidebarItem onClick={closeSidebarIfNotPinned} to={path(siteMap.logged.modeEmploiDGCCRF)} icon="help">
           {m.menu_modeEmploiDGCCRF}

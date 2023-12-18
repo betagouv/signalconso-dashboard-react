@@ -37,6 +37,7 @@ import {AddCompanyForm} from './feature/AddCompany/AddCompanyForm'
 import {TestTools} from './feature/AdminTools/TestTools'
 import {Companies} from './feature/Companies/Companies'
 import {CompaniesPro} from './feature/CompaniesPro/CompaniesPro'
+import {JoinNewsletter} from './feature/JoinNewsletter/JoinNewsletter'
 import {CompanyComponent} from './feature/Company/Company'
 import {CompanyAccesses} from './feature/CompanyAccesses/CompanyAccesses'
 import {EmailValidation} from './feature/EmailValidation/EmailValidation'
@@ -186,8 +187,9 @@ const AppLogged = () => {
         <Route path={siteMap.logged.company(':id')} component={CompanyComponent} />
         <Route path={siteMap.logged.subscriptions} component={Subscriptions} />
         <Route path={siteMap.logged.companiesPro} component={CompaniesPro} />
+        <Route path={siteMap.logged.joinInformation} component={JoinNewsletter} />
         <Route path={siteMap.logged.settings} component={Settings} />
-        <Route path={siteMap.logged.modeEmploiDGCCRF} component={ModeEmploiDGCCRF} />
+        <Route path={siteMap.logged.modeEmploiDGCCRF} component={connectedUser.isPro ? ReportsPro : ModeEmploiDGCCRF} />
         <Route path={siteMap.logged.stats} component={Stats} />
         <Route path={siteMap.loggedout.register} component={AddCompanyForm} />
         <Redirect from="/" to={siteMap.logged.reports()} />
