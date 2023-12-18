@@ -4,7 +4,6 @@ import {Page, PageTitle} from 'shared/Page'
 
 export const JoinNewsletter = () => {
   const handleSubscribeClick = () => {
-    alert('Bouton ABONNEZ-VOUS cliqué')
     Matomo.trackEvent(EventCategories.ProEventActions, newsletter.reportsClik, 'Bouton ABONNEZ-VOUS')
   }
   return (
