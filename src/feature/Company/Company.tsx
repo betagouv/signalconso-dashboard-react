@@ -44,7 +44,7 @@ export const CompanyComponent = () => {
   const _hosts = useGetHostsQuery(id, {enabled: !connectedUser.isPro})
   const _responseRate = useGetResponseRateQuery(id)
   const _stats = useCompanyStats(id)
-  const companyEvents = useGetCompanyEventsQuery(_companyById.data?.siret)
+  const companyEvents = useGetCompanyEventsQuery(_companyById.data?.siret!, {enabled: !!_companyById.data?.siret})
 
   const company = _companyById.data
 

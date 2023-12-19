@@ -49,7 +49,7 @@ export const ReportComponent = () => {
 
   const _getReport = useGetReportQuery(id)
   const _getReviewOnReportResponse = useGetReviewOnReportResponseQuery(id, {enabled: !!_getReport.data?.report.id})
-  const _getCompanyEvents = useGetCompanyEventsQuery(_getReport.data?.report.companySiret, {
+  const _getCompanyEvents = useGetCompanyEventsQuery(_getReport.data?.report.companySiret!, {
     enabled: !!_getReport.data?.report.companySiret,
   })
   const _getReportEvents = useGetReportEventsQuery(id)
