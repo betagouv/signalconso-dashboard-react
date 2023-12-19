@@ -10,8 +10,10 @@ export const SearchAdminQueryKeys = ['user_searchAdmin']
 export const SearchAgentQueryKeys = ['user_searchAgent']
 export const SearchAuthAttemptsQueryKeys = ['authAttemptClient_fetch']
 export const GetConnectedUserQueryKeys = ['user_fetchConnectedUser']
-export const FetchTokenInfoQueryKeys = ['user_fetchTokenInfo']
-export const GetAgentPendingQueryKeys = ['user_fetchPendingAgent']
+export const FetchTokenInfoQueryKeys = (token: string, companySiret?: string) =>
+  companySiret ? ['user_fetchTokenInfo', token, companySiret] : ['user_fetchTokenInfo', token]
+export const GetAgentPendingQueryKeys = (role?: RoleAgents) =>
+  role ? ['user_fetchPendingAgent', role] : ['user_fetchPendingAgent']
 
 export const useSearchAdminQuery = (options?: UseQueryOpts<Paginate<User>, string[]>) => {
   const {api} = useApiContext()
@@ -58,7 +60,7 @@ export const useGetConnectedUserQuery = (options?: UseQueryOpts<User, string[]>)
 export const useFetchTokenInfoQuery = (token: string, companySiret?: string, options?: UseQueryOpts<TokenInfo, string[]>) => {
   const {api} = useApiContext()
   return useQuery({
-    queryKey: FetchTokenInfoQueryKeys,
+    queryKey: FetchTokenInfoQueryKeys(token, companySiret),
     queryFn: () => api.public.user.fetchTokenInfo(token, companySiret),
     ...options,
   })
@@ -66,5 +68,5 @@ export const useFetchTokenInfoQuery = (token: string, companySiret?: string, opt
 
 export const useGetAgentPendingQuery = (role?: RoleAgents, options?: UseQueryOpts<UserPending[], string[]>) => {
   const {api} = useApiContext()
-  return useQuery({queryKey: GetAgentPendingQueryKeys, queryFn: () => api.secured.user.fetchPendingAgent(role), ...options})
+  return useQuery({queryKey: GetAgentPendingQueryKeys(role), queryFn: () => api.secured.user.fetchPendingAgent(role), ...options})
 }

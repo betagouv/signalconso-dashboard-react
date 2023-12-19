@@ -1,9 +1,10 @@
 import {Autocomplete, Chip, Skeleton, Tooltip} from '@mui/material'
 import {ScInput} from './ScInput'
 import {Txt} from '../alexlibs/mui-extension'
-import {forwardRef, useEffect} from 'react'
-import {useFetcher, useMemoFn} from '../alexlibs/react-hooks-lib'
+import {forwardRef} from 'react'
+import {useMemoFn} from '../alexlibs/react-hooks-lib'
 import {AutocompleteProps} from '@mui/material/Autocomplete'
+import {useQuery} from '@tanstack/react-query'
 
 interface Props
   extends Pick<
@@ -14,17 +15,17 @@ interface Props
 }
 
 export const SelectActivityCode = forwardRef((props: Props, ref) => {
-  const _activityCodes = useFetcher(() => import('../core/activityCodes').then(_ => _.activityCodes))
-  useEffect(() => {
-    _activityCodes.fetch()
-  }, [])
+  const _activityCodes = useQuery({
+    queryKey: ['activityCodes'],
+    queryFn: () => import('../core/activityCodes').then(_ => _.activityCodes),
+  })
 
-  const activityCodes = useMemoFn(_activityCodes.entity, _ => Object.keys(_).sort())
-  const activities = _activityCodes.entity
+  const activityCodes = useMemoFn(_activityCodes.data, _ => Object.keys(_).sort())
+  const activities = _activityCodes.data
 
   return (
     <>
-      {_activityCodes.loading ? (
+      {_activityCodes.isPending ? (
         <Skeleton height={50} />
       ) : (
         activityCodes &&

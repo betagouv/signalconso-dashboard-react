@@ -17,6 +17,7 @@ export const SearchByIdentityQueryKeys = (identity: string, openOnly: boolean) =
   identity,
   `${openOnly}`,
 ]
+export const CompanyAccessCountQueryKeys = (siret: string) => ['companyAccess_count', siret]
 
 export const useGetAccessibleByProQuery = (options?: UseQueryOpts<CompanyWithAccessLevel[], string[]>) => {
   const {api} = useApiContext()
@@ -90,6 +91,15 @@ export const useSearchByIdentityQuery = (
   return useQuery({
     queryKey: SearchByIdentityQueryKeys(identity, openOnly),
     queryFn: () => api.companySdk.company.searchCompaniesByIdentity(identity, openOnly),
+    ...options,
+  })
+}
+
+export const useCompanyAccessCountQuery = (siret: string, options?: UseQueryOpts<number, string[]>) => {
+  const {api} = useApiContext()
+  return useQuery({
+    queryKey: CompanyAccessCountQueryKeys(siret),
+    queryFn: () => api.secured.companyAccess.count(siret),
     ...options,
   })
 }

@@ -1,6 +1,6 @@
 import * as React from 'react'
 import {useEffect} from 'react'
-import {useEffectFn, useFetcher, useMemoFn} from '../../alexlibs/react-hooks-lib'
+import {useEffectFn, useMemoFn} from '../../alexlibs/react-hooks-lib'
 import {Txt} from '../../alexlibs/mui-extension'
 import {useParams} from 'react-router'
 import {Page, PageTitle} from 'shared/Page'
@@ -28,7 +28,12 @@ import {ScOption} from 'core/helper/ScOption'
 import {ReportWordDistribution} from './stats/ReportWordDistribution'
 import {useReportSearchQuery} from '../../core/queryhooks/reportQueryHooks'
 import {useGetCompanyEventsQuery} from '../../core/queryhooks/eventQueryHooks'
-import {useGetCompanyByIdQuery, useGetHostsQuery, useGetResponseRateQuery} from '../../core/queryhooks/companyQueryHooks'
+import {
+  useCompanyAccessCountQuery,
+  useGetCompanyByIdQuery,
+  useGetHostsQuery,
+  useGetResponseRateQuery,
+} from '../../core/queryhooks/companyQueryHooks'
 
 export const CompanyComponent = () => {
   const {id} = useParams<{id: Id}>()
@@ -41,21 +46,19 @@ export const CompanyComponent = () => {
   const _stats = useCompanyStats(id)
   const companyEvents = useGetCompanyEventsQuery(_companyById.data?.siret)
 
-  const _accesses = useFetcher((siret: string) => apiSdk.secured.companyAccess.count(siret))
-  const _reports = useReportSearchQuery()
-  const _cloudWord = useFetcher((companyId: Id) => apiSdk.secured.reports.getCloudWord(companyId))
   const company = _companyById.data
+
+  const _accesses = useCompanyAccessCountQuery(company?.siret!, {enabled: !!company})
+  const _reports = useReportSearchQuery()
 
   useEffect(() => {
     _stats.tags.fetch()
     _stats.getCompanyThreat.fetch({})
     _stats.getCompanyRefundBlackMail.fetch({})
-    _cloudWord.fetch({}, id)
     connectedUser.isPro ? _stats.statusPro.fetch() : _stats.status.fetch()
     _stats.responseDelay.fetch()
   }, [id])
 
-  useEffectFn(_cloudWord.error, toastError)
   useEffectFn(_stats.reportCount.error, toastError)
   useEffectFn(_stats.tags.error, toastError)
   useEffectFn(_stats.status.error, toastError)
@@ -63,7 +66,6 @@ export const CompanyComponent = () => {
   useEffectFn(_stats.responseDelay.error, toastError)
 
   useEffectFn(company, _ => {
-    _accesses.fetch({}, _.siret)
     _reports.updateFilters({hasCompany: true, siretSirenList: [_.siret], offset: 0, limit: 5})
   })
 
@@ -156,8 +158,12 @@ export const CompanyComponent = () => {
               </Widget>
             </Grid>
             <Grid item xs={4}>
-              <Widget title={m.accountsActivated} loading={_accesses.loading} to={siteMap.logged.companyAccesses(company.siret)}>
-                <WidgetValue>{_accesses.entity}</WidgetValue>
+              <Widget
+                title={m.accountsActivated}
+                loading={_accesses.isLoading}
+                to={siteMap.logged.companyAccesses(company.siret)}
+              >
+                <WidgetValue>{_accesses.data}</WidgetValue>
               </Widget>
             </Grid>
           </Grid>
