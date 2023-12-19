@@ -1,6 +1,5 @@
 import {Controller, useForm} from 'react-hook-form'
 import {Alert, Txt} from '../../alexlibs/mui-extension'
-import {useUsersContext} from '../../core/context/UsersContext'
 import {regexp} from '../../core/helper/regexp'
 import {useI18n} from '../../core/i18n'
 import {useToast} from '../../core/toast'
@@ -12,6 +11,9 @@ import {ScDialog} from '../../shared/ScDialog'
 import {RoleAgents} from 'core/model'
 import {ToggleButton, ToggleButtonGroup} from '@mui/material'
 import React from 'react'
+import {useMutation} from '@tanstack/react-query'
+import {ApiError} from '../../core/client/ApiClient'
+import {useApiContext} from '../../core/context/ApiContext'
 
 export const UserAgentInvitationDialog = () => {
   const {m} = useI18n()
@@ -22,8 +24,8 @@ export const UserAgentInvitationDialog = () => {
     control,
     formState: {errors, isValid},
   } = useForm<{role: RoleAgents; email: string}>({mode: 'onChange'})
-  const usersContext = useUsersContext()
   const {toastSuccess} = useToast()
+  const {api} = useApiContext()
   const _role = watch('role')
 
   const selectFromRole = <T,>(role: RoleAgents, dgccrf: T, dgal: T) => {
@@ -35,7 +37,9 @@ export const UserAgentInvitationDialog = () => {
     }
   }
 
-  const _invite = usersContext.inviteAgent
+  const _invite = useMutation<void, ApiError, {email: string; role: RoleAgents}, unknown>({
+    mutationFn: (params: {email: string; role: RoleAgents}) => api.secured.user.inviteAgent(params.email, params.role),
+  })
   const emailRegexp = selectFromRole(_role, regexp.emailDGCCRF, regexp.emailDGAL)
   const emailValidationMessage = selectFromRole(_role, m.emailDGCCRFValidation, m.emailDGALValidation)
   const buttonLabel = m.invite_agent
@@ -48,13 +52,13 @@ export const UserAgentInvitationDialog = () => {
       onConfirm={(event, close) => {
         handleSubmit(({role, email}) => {
           _invite
-            .fetch({}, email, role)
+            .mutateAsync({email, role})
             .then(() => toastSuccess(m.userInvitationSent))
             .then(close)
         })()
       }}
       confirmLabel={m.invite}
-      loading={_invite.loading}
+      loading={_invite.isPending}
       confirmDisabled={!isValid}
       title={dialogTitle}
       content={

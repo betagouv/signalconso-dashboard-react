@@ -1,7 +1,7 @@
 import {useQuery} from '@tanstack/react-query'
 import {useApiContext} from '../context/ApiContext'
 import {UseQueryOpts} from './types'
-import {CompanyWithAccessLevel, PaginatedFilters} from '../model'
+import {CompanySearchResult, CompanyWithAccessLevel, CompanyWithReportsCount, Id, PaginatedFilters} from '../model'
 import {useQueryPaginate} from './UseQueryPaginate'
 import {paginateData} from '../helper'
 
@@ -9,6 +9,14 @@ export const GetAccessibleByProQueryKeys = ['company_getAccessibleByPro']
 export const ActivatedCompanySearchQueryKeys = ['company_search']
 export const CompanyToActivateSearchQueryKeys = ['company_fetchToActivate']
 export const CompanyToFollowUpSearchQueryKeys = ['company_fetchToFollowUp']
+export const GetCompanyByIdQueryKeys = (id: Id) => ['company_byId', id]
+export const GetHostsQueryKeys = (id: Id) => ['company_getHosts', id]
+export const GetResponseRateQueryKeys = (id: Id) => ['company_getHosts', id]
+export const SearchByIdentityQueryKeys = (identity: string, openOnly: boolean) => [
+  'company_searchCompaniesByIdentity',
+  identity,
+  `${openOnly}`,
+]
 
 export const useGetAccessibleByProQuery = (options?: UseQueryOpts<CompanyWithAccessLevel[], string[]>) => {
   const {api} = useApiContext()
@@ -52,4 +60,36 @@ export const useCompanyToFollowUpSearchQuery = () => {
     (filter: PaginatedFilters) => api.secured.company.fetchToFollowUp().then(paginateData(filter.limit, filter.offset)),
     defaultFilters,
   )
+}
+
+export const useGetCompanyByIdQuery = (id: Id, options?: UseQueryOpts<CompanyWithReportsCount, string[]>) => {
+  const {api} = useApiContext()
+  return useQuery({
+    queryKey: GetCompanyByIdQueryKeys(id),
+    queryFn: () => api.secured.company.byId(id).then(_ => _.entities[0]),
+    ...options,
+  })
+}
+
+export const useGetHostsQuery = (id: Id, options?: UseQueryOpts<string[], string[]>) => {
+  const {api} = useApiContext()
+  return useQuery({queryKey: GetHostsQueryKeys(id), queryFn: () => api.secured.company.getHosts(id), ...options})
+}
+
+export const useGetResponseRateQuery = (id: Id, options?: UseQueryOpts<number, string[]>) => {
+  const {api} = useApiContext()
+  return useQuery({queryKey: GetResponseRateQueryKeys(id), queryFn: () => api.secured.company.getResponseRate(id), ...options})
+}
+
+export const useSearchByIdentityQuery = (
+  identity: string,
+  openOnly: boolean,
+  options?: UseQueryOpts<CompanySearchResult[], string[]>,
+) => {
+  const {api} = useApiContext()
+  return useQuery({
+    queryKey: SearchByIdentityQueryKeys(identity, openOnly),
+    queryFn: () => api.companySdk.company.searchCompaniesByIdentity(identity, openOnly),
+    ...options,
+  })
 }

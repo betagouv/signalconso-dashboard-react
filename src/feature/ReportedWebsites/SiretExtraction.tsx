@@ -1,15 +1,15 @@
 import {useApiContext} from '../../core/context/ApiContext'
-import {useQuery} from '@tanstack/react-query'
+import {useMutation, useQuery} from '@tanstack/react-query'
 import React, {useEffect} from 'react'
 import {ExtractionResult, SiretExtraction as ISiretExtraction} from '../../core/client/siret-extractor/SiretExtraction'
 import {Icon} from '@mui/material'
 import {Fender, IconBtn, Modal, Txt} from '../../alexlibs/mui-extension'
 import {useI18n} from '../../core/i18n'
 import {ScButton} from '../../shared/Button'
-import {useReportedWebsiteWithCompanyContext} from '../../core/context/ReportedWebsitesContext'
 import {Company, CompanySearchResult} from '../../core/client/company/Company'
-import {WebsiteWithCompany} from '../../core/client/website/Website'
+import {WebsiteUpdateCompany, WebsiteWithCompany} from '../../core/client/website/Website'
 import {useToast} from '../../core/toast'
+import {Id} from '../../core/model'
 
 export interface SiretExtractionProps {
   websiteWithCompany: WebsiteWithCompany
@@ -22,11 +22,14 @@ export const SiretExtraction = ({websiteWithCompany, remove, identify}: SiretExt
   const {m} = useI18n()
   const {toastError, toastSuccess} = useToast()
 
-  const _updateCompany = useReportedWebsiteWithCompanyContext().updateCompany
+  const _updateCompany = useMutation({
+    mutationFn: (params: {id: Id; website: WebsiteUpdateCompany}) => api.secured.website.updateCompany(params.id, params.website),
+    onSuccess: () => identify().then(_ => toastSuccess(m.websiteEdited)),
+  })
 
   const website = websiteWithCompany.host
   const {refetch, isLoading, isError, data, error} = useQuery({
-    queryKey: ['website', website],
+    queryKey: ['siretExtractor_extractSiret', website],
     queryFn: () => api.secured.siretExtractor.extractSiret(website),
     enabled: false,
   })
@@ -38,8 +41,9 @@ export const SiretExtraction = ({websiteWithCompany, remove, identify}: SiretExt
   }, [isError, error])
 
   const associateAndIdentify = (company: CompanySearchResult) => {
-    return _updateCompany
-      .fetch({}, websiteWithCompany.id, {
+    return _updateCompany.mutateAsync({
+      id: websiteWithCompany.id,
+      website: {
         siret: company.siret,
         name: company.name,
         address: company.address,
@@ -47,9 +51,8 @@ export const SiretExtraction = ({websiteWithCompany, remove, identify}: SiretExt
         isHeadOffice: company.isHeadOffice,
         isOpen: company.isOpen,
         isPublic: company.isPublic,
-      })
-      .then(identify)
-      .then(_ => toastSuccess(m.websiteEdited))
+      },
+    })
   }
 
   const matchingAssociatedCompanyBlock = (extraction: ISiretExtraction, associatedCompany?: Company) => {

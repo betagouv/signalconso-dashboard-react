@@ -1,9 +1,8 @@
 import {FormControlLabel, Switch} from '@mui/material'
 import {ScOption} from 'core/helper/ScOption'
-import {useEffect, useMemo, useState} from 'react'
+import {useMemo, useState} from 'react'
 import {NavLink} from 'react-router-dom'
 import {Btn, Fender, Txt} from '../../alexlibs/mui-extension'
-import {useUsersContext} from '../../core/context/UsersContext'
 import {useI18n} from '../../core/i18n'
 import {groupBy, uniqBy} from '../../core/lodashNamedExport'
 import {AccessLevel, BlockedReportNotification, Id} from '../../core/model'
@@ -32,7 +31,10 @@ export const CompaniesPro = () => {
   const _blockedNotifications = useListReportBlockedNotificationsQuery()
   const _create = useMutation({
     mutationFn: (companyIds: Id[]) => {
-      const newBlocked: BlockedReportNotification[] = companyIds.map(companyId => ({companyId, dateCreation: new Date()}))
+      const newBlocked: BlockedReportNotification[] = companyIds.map(companyId => ({
+        companyId,
+        dateCreation: new Date(),
+      }))
       queryClient.setQueryData(ListReportBlockedNotificationsQueryKeys, (prev: BlockedReportNotification[]) =>
         uniqBy([...(prev ?? []), ...newBlocked], _ => _.companyId),
       )
@@ -47,14 +49,9 @@ export const CompaniesPro = () => {
       return api.secured.reportBlockedNotification.delete(companyIds)
     },
   })
-  const _users = useUsersContext()
   const [currentlyDisablingNotificationsForCompanies, setCurrentlyDisablingNotificationsForCompanies] = useState<
     Id | Id[] | undefined
   >()
-
-  useEffect(() => {
-    _users.getConnectedUser.fetch({force: false})
-  }, [])
 
   const blockedNotificationIndex = useMemo(() => {
     return ScOption.from(_blockedNotifications.data)

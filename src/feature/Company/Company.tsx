@@ -4,7 +4,6 @@ import {useEffectFn, useFetcher, useMemoFn} from '../../alexlibs/react-hooks-lib
 import {Txt} from '../../alexlibs/mui-extension'
 import {useParams} from 'react-router'
 import {Page, PageTitle} from 'shared/Page'
-import {useCompaniesContext} from 'core/context/CompaniesContext'
 import {Panel, PanelBody, PanelHead} from 'shared/Panel'
 import {HorizontalBarChart} from 'shared/Chart/HorizontalBarChart'
 import {reportStatusColor, reportStatusProColor} from 'shared/ReportStatus'
@@ -29,27 +28,25 @@ import {ScOption} from 'core/helper/ScOption'
 import {ReportWordDistribution} from './stats/ReportWordDistribution'
 import {useReportSearchQuery} from '../../core/queryhooks/reportQueryHooks'
 import {useGetCompanyEventsQuery} from '../../core/queryhooks/eventQueryHooks'
+import {useGetCompanyByIdQuery, useGetHostsQuery, useGetResponseRateQuery} from '../../core/queryhooks/companyQueryHooks'
 
 export const CompanyComponent = () => {
   const {id} = useParams<{id: Id}>()
   const {apiSdk, connectedUser} = useLogin()
   const {m} = useI18n()
   const {toastError} = useToast()
-  const _company = useCompaniesContext()
+  const _companyById = useGetCompanyByIdQuery(id)
+  const _hosts = useGetHostsQuery(id, {enabled: !connectedUser.isPro})
+  const _responseRate = useGetResponseRateQuery(id)
   const _stats = useCompanyStats(id)
-  const companyEvents = useGetCompanyEventsQuery(_company.byId.entity?.siret)
+  const companyEvents = useGetCompanyEventsQuery(_companyById.data?.siret)
 
   const _accesses = useFetcher((siret: string) => apiSdk.secured.companyAccess.count(siret))
   const _reports = useReportSearchQuery()
   const _cloudWord = useFetcher((companyId: Id) => apiSdk.secured.reports.getCloudWord(companyId))
-  const company = _company.byId.entity
+  const company = _companyById.data
 
   useEffect(() => {
-    _company.byId.fetch({}, id)
-    if (!connectedUser.isPro) {
-      _company.hosts.fetch({}, id)
-    }
-    _company.responseRate.fetch({}, id)
     _stats.tags.fetch()
     _stats.getCompanyThreat.fetch({})
     _stats.getCompanyRefundBlackMail.fetch({})
@@ -58,16 +55,14 @@ export const CompanyComponent = () => {
     _stats.responseDelay.fetch()
   }, [id])
 
-  useEffectFn(_company.byId.error, toastError)
   useEffectFn(_cloudWord.error, toastError)
-  useEffectFn(_company.hosts.error, toastError)
   useEffectFn(_stats.reportCount.error, toastError)
   useEffectFn(_stats.tags.error, toastError)
   useEffectFn(_stats.status.error, toastError)
   useEffectFn(_stats.statusPro.error, toastError)
   useEffectFn(_stats.responseDelay.error, toastError)
 
-  useEffectFn(_company.byId.entity, _ => {
+  useEffectFn(company, _ => {
     _accesses.fetch({}, _.siret)
     _reports.updateFilters({hasCompany: true, siretSirenList: [_.siret], offset: 0, limit: 5})
   })
@@ -84,7 +79,7 @@ export const CompanyComponent = () => {
   )
 
   return (
-    <Page loading={_company.byId.loading}>
+    <Page loading={_companyById.isLoading}>
       <PageTitle>
         <Box>
           {company?.name}
@@ -99,12 +94,12 @@ export const CompanyComponent = () => {
         </Box>
       </PageTitle>
 
-      {_company.byId.entity && company && (
+      {company && (
         <>
           <Grid container spacing={2}>
             <Grid item xs={4}>
               <Widget title={m.responseRate}>
-                <WidgetValue>{_company.responseRate.entity}%</WidgetValue>
+                <WidgetValue>{_responseRate.data}%</WidgetValue>
               </Widget>
             </Grid>
             <Grid item xs={4}>
@@ -203,11 +198,11 @@ export const CompanyComponent = () => {
               <ReviewDistribution companyId={id} />
               <ReportWordDistribution companyId={id} />
               {connectedUser.isNotPro && (
-                <Panel loading={_company.hosts.loading}>
+                <Panel loading={_hosts.isLoading}>
                   <PanelHead>{m.websites}</PanelHead>
                   <Box sx={{maxHeight: 260, overflow: 'auto'}}>
                     <List dense>
-                      {_company.hosts.entity?.map((host, i) => (
+                      {_hosts.data?.map((host, i) => (
                         <ListItem key={i}>{host}</ListItem>
                       ))}
                     </List>

@@ -18,12 +18,12 @@ import {useLogin} from '../../core/context/LoginContext'
 import {ClipboardApi} from '../../alexlibs/ts-utils/browser/ClipboardApi'
 import {CompaniesRegisteredFilters} from './CompaniesRegisteredFilters'
 import {ScMenu} from '../../shared/Menu'
-import {Company, CompanySearch, CompanyUpdate} from '../../core/client/company/Company'
+import {Company, CompanySearch, CompanyUpdate, CompanyWithReportsCount} from '../../core/client/company/Company'
 import {cleanObject} from '../../core/helper'
-import {Id, PaginatedSearch} from '../../core/model'
+import {Address, Id, Paginate, PaginatedSearch} from '../../core/model'
 import {MassImport} from './MassImport'
-import {useActivatedCompanySearchQuery} from '../../core/queryhooks/companyQueryHooks'
-import {useMutation} from '@tanstack/react-query'
+import {ActivatedCompanySearchQueryKeys, useActivatedCompanySearchQuery} from '../../core/queryhooks/companyQueryHooks'
+import {useMutation, useQueryClient} from '@tanstack/react-query'
 
 export interface CompanySearchQs extends PaginatedSearch<any> {
   departments?: string[] | string
@@ -33,10 +33,28 @@ export interface CompanySearchQs extends PaginatedSearch<any> {
 
 export const CompaniesRegistered = () => {
   const {m, formatLargeNumber} = useI18n()
+  const queryClient = useQueryClient()
   const {connectedUser, apiSdk} = useLogin()
   const _companies = useActivatedCompanySearchQuery()
+
+  const updateRegisteredCompanyAddress = (id: Id, address: Address) => {
+    queryClient.setQueryData(ActivatedCompanySearchQueryKeys, (companies: Paginate<CompanyWithReportsCount>) => {
+      if (!companies) return companies
+      const company = companies?.entities.find(company => company.id === id)
+      if (company) {
+        company.address = address
+        return {...companies}
+      }
+      return companies
+    })
+  }
+
   const _companyUpdateAddress = useMutation({
-    mutationFn: (params: {id: Id; update: CompanyUpdate}) => apiSdk.secured.company.updateAddress(params.id, params.update),
+    mutationFn: (params: {id: Id; update: CompanyUpdate}) =>
+      apiSdk.secured.company.updateAddress(params.id, params.update).then(_ => {
+        updateRegisteredCompanyAddress(params.id, params.update.address)
+        return _
+      }),
     onSuccess: () => toastSuccess(m.editedAddress),
   })
   const _companyCreate = useMutation({

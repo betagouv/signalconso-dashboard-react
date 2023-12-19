@@ -1,24 +1,20 @@
-import React, {useEffect, useState} from 'react'
+import React, {useState} from 'react'
 import {Panel} from '../../shared/Panel'
 import {Datatable} from '../../shared/Datatable/Datatable'
-import {useUsersContext} from '../../core/context/UsersContext'
 import {useI18n} from '../../core/i18n'
-import {Txt} from '../../alexlibs/mui-extension'
+import {IconBtn, Txt} from '../../alexlibs/mui-extension'
 
 import {useToast} from '../../core/toast'
 import {ScDialog} from '../../shared/ScDialog'
-import {IconBtn} from '../../alexlibs/mui-extension'
 import {Box, Icon, Tooltip} from '@mui/material'
 import {useLogin} from '../../core/context/LoginContext'
 import {sxUtils} from '../../core/theme'
 import {ScOption} from 'core/helper/ScOption'
 import {roleAgents, RoleAgents} from '../../core/client/user/User'
 import {SelectRoleAgent} from '../../shared/SelectRoleAgent'
+import {useGetAgentPendingQuery} from '../../core/queryhooks/userQueryHooks'
 
 export const UsersListPending = () => {
-  const usersContext = useUsersContext()
-  const _users = usersContext.agentPending
-  // const _invite = role === 'DGCCRF' ? usersContext.inviteDgccrf : usersContext.inviteDgal
   const {m, formatDate} = useI18n()
   const {connectedUser} = useLogin()
   const {toastError, toastSuccess} = useToast()
@@ -29,17 +25,7 @@ export const UsersListPending = () => {
 
   const [selectedRole, setSelectedRole] = useState<RoleAgents[]>(roleAgents.map(_ => _))
 
-  useEffect(() => {
-    if (selectedRole.length === 1) {
-      _users.fetch({}, selectedRole[0])
-    } else {
-      _users.fetch()
-    }
-  }, [selectedRole])
-
-  useEffect(() => {
-    ScOption.from(_users.error).map(toastError)
-  }, [_users.error])
+  const _agentPending = useGetAgentPendingQuery(selectedRole.length === 1 ? selectedRole[0] : undefined)
 
   return (
     <Panel>
@@ -50,9 +36,9 @@ export const UsersListPending = () => {
             <SelectRoleAgent value={selectedRole} onChange={_ => setSelectedRole(_)} />
           </Box>
         }
-        loading={_users.loading}
-        total={_users.entity?.length}
-        data={_users.entity}
+        loading={_agentPending.isLoading}
+        total={_agentPending.data?.length}
+        data={_agentPending.data}
         columns={[
           {
             id: 'email',

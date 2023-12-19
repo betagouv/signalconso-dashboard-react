@@ -3,6 +3,7 @@ import {useQuery} from '@tanstack/react-query'
 import type {QueryKey} from '@tanstack/query-core'
 import {Paginate} from '../model'
 import type {UseQueryResult} from '@tanstack/react-query/src/types'
+import {UseQueryOpts} from './types'
 
 export type OrderBy = 'desc' | 'asc'
 
@@ -32,9 +33,10 @@ export const useQueryPaginate = <S extends ISearch, T = unknown, TQueryKey exten
   queryKey: TQueryKey,
   queryFn: (search: S) => Promise<Paginate<T>>,
   initialFilters: S,
+  options?: UseQueryOpts<Paginate<T>, any[]>,
 ): UseQueryPaginateResult<S, Paginate<T>, unknown> => {
   const [filters, setFilters] = useState<S>({...defaultFilters, ...initialFilters})
-  const result = useQuery({queryKey: [...queryKey, filters], queryFn: () => queryFn(filters)})
+  const result = useQuery({queryKey: [...queryKey, filters], queryFn: () => queryFn(filters), ...options})
 
   const updateFilters = useCallback((update: SetStateAction<S>, {preserveOffset}: UpdateFiltersParams = {}) => {
     setFilters(mutableFilters => {

@@ -1,7 +1,6 @@
 import {ReactElement} from 'react'
 import {useForm} from 'react-hook-form'
 import {Alert} from '../../alexlibs/mui-extension'
-import {useUsersContext} from '../../core/context/UsersContext'
 import {useI18n} from '../../core/i18n'
 import {useToast} from '../../core/toast'
 import {ScOption} from 'core/helper/ScOption'
@@ -10,6 +9,9 @@ import {AccountEventActions, EventCategories, Matomo} from '../../core/plugins/M
 import {ScDialog} from '../../shared/ScDialog'
 import {ScInputPassword} from '../../shared/ScInputPassword'
 import {PasswordRequirementsDesc} from 'shared/PasswordRequirementsDesc'
+import {useMutation} from '@tanstack/react-query'
+import {useApiContext} from '../../core/context/ApiContext'
+import {ApiError} from '../../core/client/ApiClient'
 
 interface Form {
   oldPassword: string
@@ -23,7 +25,18 @@ interface Props {
 
 export const EditPasswordDialog = ({children}: Props) => {
   const {m} = useI18n()
-  const _changePassword = useUsersContext().changePassword
+  const {api} = useApiContext()
+  const _changePassword = useMutation({
+    mutationFn: (params: {oldPassword: string; newPassword: string}) =>
+      api.secured.user.changePassword(params.oldPassword, params.newPassword),
+    onSuccess: () => {
+      toastSuccess(m.passwordEdited)
+      Matomo.trackEvent(EventCategories.account, AccountEventActions.changePasswordSuccess)
+    },
+    onError: (error: ApiError) => {
+      Matomo.trackEvent(EventCategories.account, AccountEventActions.changePasswordFail)
+    },
+  })
   const {
     register,
     handleSubmit,
@@ -38,19 +51,10 @@ export const EditPasswordDialog = ({children}: Props) => {
       maxWidth="xs"
       confirmLabel={m.edit}
       confirmDisabled={!isValid}
-      loading={_changePassword.loading}
+      loading={_changePassword.isPending}
       onConfirm={(event, close) => {
         handleSubmit((form: Form) => {
-          _changePassword
-            .fetch({}, form.oldPassword, form.newPassword)
-            .then(() => {
-              toastSuccess(m.passwordEdited)
-              close()
-              Matomo.trackEvent(EventCategories.account, AccountEventActions.changePasswordSuccess)
-            })
-            .catch(_ => {
-              Matomo.trackEvent(EventCategories.account, AccountEventActions.changePasswordFail)
-            })
+          _changePassword.mutateAsync({oldPassword: form.oldPassword, newPassword: form.newPassword}).then(close)
         })()
       }}
       content={

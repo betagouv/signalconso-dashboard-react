@@ -13,11 +13,7 @@ import {apiPublicSdk, makeSecuredSdk} from './core/ApiSdkInstance'
 import {Layout} from './core/Layout'
 import {ScHeader} from './core/ScHeader/ScHeader'
 import {ScSidebar} from './core/ScSidebar/ScSidebar'
-import {CompaniesProvider} from './core/context/CompaniesContext'
 import {LoginProvider, useLogin} from './core/context/LoginContext'
-import {ReportProvider} from './core/context/ReportContext'
-import {ReportedWebsitesProvider} from './core/context/ReportedWebsitesContext'
-import {UsersProvider} from './core/context/UsersContext'
 import {I18nProvider} from './core/i18n'
 import {Matomo} from './core/plugins/Matomo'
 import {siteMap} from './core/siteMap'
@@ -172,14 +168,7 @@ const AppLogged = () => {
 
   return (
     <Provide
-      providers={[
-        _ => <QueryClientProvider client={queryClient} children={_} />,
-        _ => <ApiProvider api={apiSdk} children={_} />,
-        _ => <ReportProvider api={apiSdk} children={_} />,
-        _ => <CompaniesProvider api={apiSdk} children={_} />,
-        _ => <UsersProvider api={apiSdk} children={_} />,
-        _ => <ReportedWebsitesProvider api={apiSdk} children={_} />,
-      ]}
+      providers={[_ => <QueryClientProvider client={queryClient} children={_} />, _ => <ApiProvider api={apiSdk} children={_} />]}
     >
       <Switch>
         <Route path={siteMap.logged.tools} component={Tools} />

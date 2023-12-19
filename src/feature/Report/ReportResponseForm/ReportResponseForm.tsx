@@ -1,4 +1,4 @@
-import React, {forwardRef, useEffect, useState} from 'react'
+import React, {forwardRef, useState} from 'react'
 import {useI18n} from '../../../core/i18n'
 import {ScRadioGroup} from '../../../shared/RadioGroup'
 import {ScRadioGroupItem} from '../../../shared/RadioGroupItem'
@@ -11,15 +11,16 @@ import {PanelFoot} from '../../../shared/Panel/PanelFoot'
 import {ScButton} from '../../../shared/Button'
 import {ReportFiles} from '../File/ReportFiles'
 import {Controller, useForm} from 'react-hook-form'
-import {useReportContext} from '../../../core/context/ReportContext'
 
 import {useToast} from '../../../core/toast'
 import {PanelProps} from '../../../shared/Panel/Panel'
 import {ReportResponse, ReportResponseTypes} from '../../../core/client/event/Event'
 import {FileOrigin} from '../../../core/client/file/UploadedFile'
 import {Report} from '../../../core/client/report/Report'
-import {ScOption} from 'core/helper/ScOption'
 import {Box, Step, StepButton, Stepper} from '@mui/material'
+import {useMutation} from '@tanstack/react-query'
+import {useApiContext} from '../../../core/context/ApiContext'
+import {Id} from '../../../core/model'
 
 interface Props extends PanelProps {
   report: Report
@@ -51,7 +52,10 @@ export const ReportResponseForm = forwardRef(({report, onCancel, onConfirm, ...p
     watch,
     formState: {errors, isValid},
   } = useForm<ReportResponse>()
-  const _report = useReportContext()
+  const {api} = useApiContext()
+  const _postResponse = useMutation({
+    mutationFn: (params: {id: Id; response: ReportResponse}) => api.secured.reports.postResponse(params.id, params.response),
+  })
   const {toastError, toastSuccess} = useToast()
   const maxDetailsCharLength = 10000
 
@@ -63,15 +67,11 @@ export const ReportResponseForm = forwardRef(({report, onCancel, onConfirm, ...p
   const dgccrfStep = activeStep === 1
 
   const submitForm = async (form: ReportResponse) => {
-    await _report.postResponse.fetch({}, report.id, form)
+    await _postResponse.mutateAsync({id: report.id, response: form})
     toastSuccess(m.proAnswerSent)
     onConfirm?.(form)
     reset()
   }
-
-  useEffect(() => {
-    ScOption.from(_report.postResponse.error).map(toastError)
-  }, [_report.postResponse.error])
 
   return (
     <Panel elevation={5} ref={ref} {...props}>
@@ -180,12 +180,7 @@ export const ReportResponseForm = forwardRef(({report, onCancel, onConfirm, ...p
               <ScButton onClick={onCancel} color="primary">
                 {m.close}
               </ScButton>
-              <ScButton
-                loading={_report.postResponse.loading}
-                onClick={handleSubmit(submitForm)}
-                color="primary"
-                variant="contained"
-              >
+              <ScButton loading={_postResponse.isPending} onClick={handleSubmit(submitForm)} color="primary" variant="contained">
                 {m.confirm}
               </ScButton>
             </Box>

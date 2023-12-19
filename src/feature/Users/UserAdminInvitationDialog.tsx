@@ -1,6 +1,5 @@
 import {useForm} from 'react-hook-form'
 import {Alert, Txt} from '../../alexlibs/mui-extension'
-import {useUsersContext} from '../../core/context/UsersContext'
 import {regexp} from '../../core/helper/regexp'
 import {useI18n} from '../../core/i18n'
 import {useToast} from '../../core/toast'
@@ -9,6 +8,9 @@ import {ScInput} from '../../shared/ScInput'
 
 import {ScOption} from 'core/helper/ScOption'
 import {ScDialog} from '../../shared/ScDialog'
+import {useMutation} from '@tanstack/react-query'
+import {useApiContext} from '../../core/context/ApiContext'
+import {ApiError} from '../../core/client/ApiClient'
 
 export const UserAdminInvitationDialog = () => {
   const {m} = useI18n()
@@ -17,10 +19,12 @@ export const UserAdminInvitationDialog = () => {
     handleSubmit,
     formState: {errors, isValid},
   } = useForm<{email: string}>({mode: 'onChange'})
-  const usersContext = useUsersContext()
   const {toastSuccess} = useToast()
+  const {api} = useApiContext()
 
-  const _invite = usersContext.inviteAdmin
+  const _invite = useMutation<void, ApiError, string, unknown>({
+    mutationFn: api.secured.user.inviteAdmin,
+  })
   const buttonLabel = m.invite_admin
   const dialogTitle = m.users_invite_dialog_title_admin
   const dialogDesc = m.users_invite_dialog_desc_admin
@@ -33,13 +37,13 @@ export const UserAdminInvitationDialog = () => {
       onConfirm={(event, close) => {
         handleSubmit(({email}) => {
           _invite
-            .fetch({}, email)
+            .mutateAsync(email)
             .then(() => toastSuccess(m.userInvitationSent))
             .then(close)
         })()
       }}
       confirmLabel={m.invite}
-      loading={_invite.loading}
+      loading={_invite.isPending}
       confirmDisabled={!isValid}
       title={dialogTitle}
       content={
