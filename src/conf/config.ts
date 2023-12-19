@@ -1,4 +1,3 @@
-
 function noTrailingSlash(str: string) {
   return str.replace(/\/$/, '')
 }
@@ -18,8 +17,8 @@ function readSeverity(severity?: string): Severity | null {
 export const config = {
   isDev: process.env.REACT_APP_NODE_ENV === 'development',
   apiBaseUrl: noTrailingSlash(process.env.REACT_APP_API_BASE_URL ?? 'http://localhost:9000'),
-  companyApiBaseUrl: noTrailingSlash(process.env.REACT_APP_COMPANY_API_BASE_URL?? 'http://localhost:9002'),
-  appBaseUrl: noTrailingSlash(process.env.REACT_APP_APP_BASE_URL?? 'http://localhost:3001'),
+  companyApiBaseUrl: noTrailingSlash(process.env.REACT_APP_COMPANY_API_BASE_URL ?? 'http://localhost:9002'),
+  appBaseUrl: noTrailingSlash(process.env.REACT_APP_APP_BASE_URL ?? 'http://localhost:3001'),
   basePath: process.env.REACT_APP_BASE_PATH ?? '/',
   reportsLimitForExport: 30000,
   upload_allowedExtensions: ['jpg', 'jpeg', 'pdf', 'png', 'gif', 'docx'],
@@ -31,7 +30,6 @@ export const config = {
   useHashRouter: true,
   infoBanner: process.env.REACT_APP_INFO_BANNER,
   infoBannerSeverity: readSeverity(process.env.REACT_APP_INFO_BANNER_SEVERITY) ?? 'warning',
-
 }
 
 export type Config = typeof config
