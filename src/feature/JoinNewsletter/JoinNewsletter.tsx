@@ -33,6 +33,7 @@ export const JoinNewsletter = () => {
       <Button
         color="primary"
         variant="contained"
+        target="_blank"
         href="https://lettres-infos.bercy.gouv.fr/DGCCRF/inscription"
         onClick={handleSubscribeClick}
       >
