@@ -21,7 +21,8 @@ import {ReportSearch} from '../../core/client/report/ReportSearch'
 import {Category} from '../../core/client/constant/Category'
 import {useCategoriesQuery} from '../../core/queryhooks/constantQueryHooks'
 import {useApiContext} from '../../core/context/ApiContext'
-import {useMutation} from '@tanstack/react-query'
+import {useMutation, useQueryClient} from '@tanstack/react-query'
+import {ListSubscriptionsQueryKeys} from '../../core/queryhooks/subscriptionQueryHooks'
 
 interface Props {
   subscription: Subscription
@@ -45,10 +46,19 @@ export const SubscriptionCard = ({subscription, className, style}: Props) => {
   const tagsAnchor = useAnchoredMenu()
   const _category = useCategoriesQuery()
   const {api} = useApiContext()
+  const queryClient = useQueryClient()
   const _updateSubscription = useMutation({
     mutationFn: (body: Partial<SubscriptionCreate>) => api.secured.subscription.update(subscription.id, body),
+    onSuccess: data =>
+      queryClient.setQueryData(ListSubscriptionsQueryKeys, (prev: Subscription[]) => {
+        const index = prev.findIndex(sub => sub.id === data.id)
+        return Object.assign([], prev, {[index]: data}) // replace the subscription
+      }),
   })
-  const _deleteSubscription = useMutation({mutationFn: () => api.secured.subscription.remove(subscription.id)})
+  const _deleteSubscription = useMutation({
+    mutationFn: () => api.secured.subscription.remove(subscription.id),
+    onSuccess: () => queryClient.invalidateQueries({queryKey: ListSubscriptionsQueryKeys}),
+  })
 
   const [isMounted, setIsMounted] = useState(false)
 
@@ -93,7 +103,14 @@ export const SubscriptionCard = ({subscription, className, style}: Props) => {
                 <ScMenuItem value="P7D">{m.weekly}</ScMenuItem>
               </ScSelect>
               &nbsp;
-              <ScDialog title={m.removeSubscription} confirmLabel={m.delete} onConfirm={() => _deleteSubscription.mutate()}>
+              <ScDialog
+                title={m.removeSubscription}
+                confirmLabel={m.delete}
+                onConfirm={(event, close) => {
+                  _deleteSubscription.mutate()
+                  close()
+                }}
+              >
                 <IconBtn color="primary" loading={_deleteSubscription.isPending}>
                   <Icon>delete</Icon>
                 </IconBtn>

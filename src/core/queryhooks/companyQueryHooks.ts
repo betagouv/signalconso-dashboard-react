@@ -1,7 +1,7 @@
 import {useQuery} from '@tanstack/react-query'
 import {useApiContext} from '../context/ApiContext'
 import {UseQueryOpts} from './types'
-import {CompanySearchResult, CompanyWithAccessLevel, CompanyWithReportsCount, Id, PaginatedFilters} from '../model'
+import {CompanySearch, CompanySearchResult, CompanyWithAccessLevel, CompanyWithReportsCount, Id, PaginatedFilters} from '../model'
 import {useQueryPaginate} from './UseQueryPaginate'
 import {paginateData} from '../helper'
 
@@ -11,7 +11,7 @@ export const CompanyToActivateSearchQueryKeys = ['company_fetchToActivate']
 export const CompanyToFollowUpSearchQueryKeys = ['company_fetchToFollowUp']
 export const GetCompanyByIdQueryKeys = (id: Id) => ['company_byId', id]
 export const GetHostsQueryKeys = (id: Id) => ['company_getHosts', id]
-export const GetResponseRateQueryKeys = (id: Id) => ['company_getHosts', id]
+export const GetResponseRateQueryKeys = (id: Id) => ['company_getResponseRate', id]
 export const SearchByIdentityQueryKeys = (identity: string, openOnly: boolean) => [
   'company_searchCompaniesByIdentity',
   identity,
@@ -24,13 +24,9 @@ export const useGetAccessibleByProQuery = (options?: UseQueryOpts<CompanyWithAcc
   return useQuery({queryKey: GetAccessibleByProQueryKeys, queryFn: api.secured.company.getAccessibleByPro, ...options})
 }
 
-export const useActivatedCompanySearchQuery = () => {
+export const useActivatedCompanySearchQuery = (filters: CompanySearch) => {
   const {api} = useApiContext()
-  const defaultFilters = {
-    limit: 10,
-    offset: 0,
-  }
-  return useQueryPaginate(ActivatedCompanySearchQueryKeys, api.secured.company.search, defaultFilters)
+  return useQueryPaginate(ActivatedCompanySearchQueryKeys, api.secured.company.search, filters)
 }
 
 export const useCompanyToActivateSearchQuery = () => {

@@ -7,15 +7,22 @@ import {Box, Icon, LinearProgress} from '@mui/material'
 import {Ripple} from '../../shared/Ripple'
 import {styleUtils} from '../../core/theme'
 import {Animate} from 'alexlibs/mui-extension/Animate'
-import {useListSubscriptionsQuery} from '../../core/queryhooks/subscriptionQueryHooks'
-import {useMutation} from '@tanstack/react-query'
+import {ListSubscriptionsQueryKeys, useListSubscriptionsQuery} from '../../core/queryhooks/subscriptionQueryHooks'
+import {useMutation, useQueryClient} from '@tanstack/react-query'
 import {useApiContext} from '../../core/context/ApiContext'
+import {Subscription} from '../../core/client/subscription/Subscription'
 
 export const Subscriptions = () => {
   const {m} = useI18n()
   const _subscriptions = useListSubscriptionsQuery()
   const {api} = useApiContext()
-  const _createSubscription = useMutation({mutationFn: api.secured.subscription.create})
+  const queryClient = useQueryClient()
+  const _createSubscription = useMutation({
+    mutationFn: () => api.secured.subscription.create(),
+    onSuccess: data => {
+      queryClient.setQueryData(ListSubscriptionsQueryKeys, (prev: Subscription[]) => [data, ...prev])
+    },
+  })
 
   return (
     <Page size="s">
@@ -44,7 +51,7 @@ export const Subscriptions = () => {
               borderRadius: t => t.shape.borderRadius + 'px',
             }}
             title={m.add}
-            onClick={() => !_createSubscription.isPending && _createSubscription.mutate(undefined)}
+            onClick={() => !_createSubscription.isPending && _createSubscription.mutate()}
           >
             <Icon>add</Icon>
             {m.add}

@@ -52,7 +52,7 @@ export const CompanyComponent = () => {
   const company = _companyById.data
 
   const _accesses = useCompanyAccessCountQuery(company?.siret!, {enabled: !!company})
-  const _reports = useReportSearchQuery()
+  const _reports = useReportSearchQuery({hasCompany: true, offset: 0, limit: 5}, false)
 
   const _tags = useGetTagsQuery(id)
   const _getCompanyThreat = useGetCompanyThreatQuery(id)
@@ -63,6 +63,7 @@ export const CompanyComponent = () => {
 
   useEffectFn(company, _ => {
     _reports.updateFilters({hasCompany: true, siretSirenList: [_.siret], offset: 0, limit: 5})
+    _reports.enable()
   })
 
   const postActivationDocEvents = useMemoFn(companyEvents.data, events =>

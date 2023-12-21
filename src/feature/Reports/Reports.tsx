@@ -104,7 +104,6 @@ export const Reports = () => {
   const {connectedUser, apiSdk} = useLogin()
 
   const downloadReports = useMutation({mutationFn: apiSdk.secured.reports.download})
-  const _reports = useReportSearchQuery()
 
   const selectReport = useSetState<Id>()
   const [expanded, setExpanded] = React.useState(false)
@@ -125,9 +124,7 @@ export const Reports = () => {
     ),
   })
 
-  useEffect(() => {
-    _reports.updateFilters({..._reports.initialFilters, ...queryString.get()})
-  }, [])
+  const _reports = useReportSearchQuery({offset: 0, limit: 10, ...queryString.get()})
 
   useEffect(() => {
     queryString.update(cleanObject(_reports.filters))

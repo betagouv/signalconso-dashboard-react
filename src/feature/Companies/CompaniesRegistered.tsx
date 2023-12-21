@@ -32,10 +32,14 @@ export interface CompanySearchQs extends PaginatedSearch<any> {
 }
 
 export const CompaniesRegistered = () => {
+  const queryString = useQueryString<Partial<CompanySearch>, Partial<CompanySearchQs>>({
+    toQueryString: _ => _,
+    fromQueryString: mapArrayFromQuerystring(['activityCodes', 'departments']),
+  })
   const {m, formatLargeNumber} = useI18n()
   const queryClient = useQueryClient()
   const {connectedUser, apiSdk} = useLogin()
-  const _companies = useActivatedCompanySearchQuery()
+  const _companies = useActivatedCompanySearchQuery({offset: 0, limit: 10, ...queryString.get()})
 
   const updateRegisteredCompanyAddress = (id: Id, address: Address) => {
     queryClient.setQueryData(ActivatedCompanySearchQueryKeys, (companies: Paginate<CompanyWithReportsCount>) => {
@@ -63,15 +67,6 @@ export const CompaniesRegistered = () => {
   })
   const {toastError, toastSuccess} = useToast()
   const [sortByResponseRate, setSortByResponseRate] = useState<'asc' | 'desc' | undefined>()
-
-  const queryString = useQueryString<Partial<CompanySearch>, Partial<CompanySearchQs>>({
-    toQueryString: _ => _,
-    fromQueryString: mapArrayFromQuerystring(['activityCodes', 'departments']),
-  })
-
-  useEffect(() => {
-    _companies.updateFilters({..._companies.initialFilters, ...queryString.get()})
-  }, [])
 
   useEffect(() => {
     queryString.update(cleanObject(_companies.filters))

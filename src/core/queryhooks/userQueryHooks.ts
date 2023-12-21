@@ -4,7 +4,6 @@ import {RoleAdminOrAgent, RoleAgents, roleAgents, User, UserPending} from '../cl
 import {UseQueryOpts} from './types'
 import {useQuery} from '@tanstack/react-query'
 import {TokenInfo} from '../client/authenticate/Authenticate'
-import {Paginate} from '../model'
 
 export const SearchAdminQueryKeys = ['user_searchAdmin']
 export const SearchAgentQueryKeys = ['user_searchAgent']
@@ -15,7 +14,7 @@ export const FetchTokenInfoQueryKeys = (token: string, companySiret?: string) =>
 export const GetAgentPendingQueryKeys = (role?: RoleAgents) =>
   role ? ['user_fetchPendingAgent', role] : ['user_fetchPendingAgent']
 
-export const useSearchAdminQuery = (options?: UseQueryOpts<Paginate<User>, string[]>) => {
+export const useSearchAdminQuery = (enabled: boolean) => {
   const {api} = useApiContext()
   return useQueryPaginate(
     SearchAdminQueryKeys,
@@ -25,11 +24,12 @@ export const useSearchAdminQuery = (options?: UseQueryOpts<Paginate<User>, strin
       offset: 0,
       role: ['Admin'],
     },
-    options,
+    undefined,
+    enabled,
   )
 }
 
-export const useSearchAgentQuery = (options?: UseQueryOpts<Paginate<User>, string[]>) => {
+export const useSearchAgentQuery = (enabled: boolean) => {
   const {api} = useApiContext()
   return useQueryPaginate(
     SearchAgentQueryKeys,
@@ -39,7 +39,8 @@ export const useSearchAgentQuery = (options?: UseQueryOpts<Paginate<User>, strin
       offset: 0,
       role: roleAgents.map(_ => _ as RoleAdminOrAgent),
     },
-    options,
+    undefined,
+    enabled,
   )
 }
 

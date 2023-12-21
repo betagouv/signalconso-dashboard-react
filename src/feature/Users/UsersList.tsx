@@ -37,8 +37,8 @@ const UsersList = ({adminView}: Props) => {
   const {api} = useApiContext()
   const queryClient = useQueryClient()
   const {toastSuccess} = useToast()
-  const _admins = useSearchAdminQuery({enabled: !!adminView})
-  const _agents = useSearchAgentQuery({enabled: !adminView})
+  const _admins = useSearchAdminQuery(!!adminView)
+  const _agents = useSearchAgentQuery(!adminView)
   const _users = adminView ? _admins : _agents
   const invalidate = () => {
     if (adminView) {

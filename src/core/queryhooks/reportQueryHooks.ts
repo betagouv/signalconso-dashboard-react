@@ -4,7 +4,7 @@ import {ReportSearchResult} from '../client/report/Report'
 import {ReportWordCount, ResponseConsumerReview} from '../client/event/Event'
 import {UseQueryOpts} from './types'
 import {useQueryPaginate} from './UseQueryPaginate'
-import {Id} from '../model'
+import {Id, PaginatedFilters, ReportSearch} from '../model'
 import {ReportNodeSearch} from '../client/report/ReportNodeSearch'
 import {ReportNodes} from '../client/report/ReportNode'
 
@@ -29,13 +29,10 @@ export const useGetReviewOnReportResponseQuery = (id: string, options?: UseQuery
   })
 }
 
-export const useReportSearchQuery = () => {
+export const useReportSearchQuery = (initialFilters?: ReportSearch & PaginatedFilters, enabled?: boolean) => {
   const {api} = useApiContext()
-  const defaultFilters = {
-    limit: 10,
-    offset: 0,
-  }
-  return useQueryPaginate(ReportSearchQuery, api.secured.reports.search, defaultFilters)
+  const defaultFilters = {offset: 0, limit: 10}
+  return useQueryPaginate(ReportSearchQuery, api.secured.reports.search, defaultFilters, initialFilters, enabled)
 }
 
 export const useGetCountBySubCategoriesQuery = (filters: ReportNodeSearch, options?: UseQueryOpts<ReportNodes, any[]>) => {

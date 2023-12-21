@@ -3,7 +3,6 @@ import {useQuery} from '@tanstack/react-query'
 import type {QueryKey} from '@tanstack/query-core'
 import {Paginate} from '../model'
 import type {UseQueryResult} from '@tanstack/react-query/src/types'
-import {UseQueryOpts} from './types'
 
 export type OrderBy = 'desc' | 'asc'
 
@@ -19,7 +18,9 @@ export interface UseQueryPaginateResult<S, T, E> {
   filters: S
   updateFilters: (_: SetStateAction<S>, params?: UpdateFiltersParams) => void
   clearFilters: () => void
-  initialFilters: S
+  enable: () => void
+  defaultFilters: S
+  initialFilters?: S
   pageNumber: number
 }
 
@@ -27,16 +28,15 @@ export interface UpdateFiltersParams {
   preserveOffset?: boolean
 }
 
-const defaultFilters: ISearch = {offset: 0, limit: 10}
-
 export const useQueryPaginate = <S extends ISearch, T = unknown, TQueryKey extends QueryKey = QueryKey>(
   queryKey: TQueryKey,
   queryFn: (search: S) => Promise<Paginate<T>>,
-  initialFilters: S,
-  options?: UseQueryOpts<Paginate<T>, any[]>,
+  defaultFilters: S,
+  initialFilters?: S,
+  initiallyEnabled?: boolean,
 ): UseQueryPaginateResult<S, Paginate<T>, unknown> => {
   const [filters, setFilters] = useState<S>({...defaultFilters, ...initialFilters})
-  const result = useQuery({queryKey: [...queryKey, filters], queryFn: () => queryFn(filters), ...options})
+  const [enabled, setEnabled] = useState<boolean>(initiallyEnabled ?? true)
 
   const updateFilters = useCallback((update: SetStateAction<S>, {preserveOffset}: UpdateFiltersParams = {}) => {
     setFilters(mutableFilters => {
@@ -49,13 +49,19 @@ export const useQueryPaginate = <S extends ISearch, T = unknown, TQueryKey exten
     })
   }, [])
 
-  const clearFilters = useCallback(() => updateFilters(initialFilters), [])
+  const clearFilters = useCallback(() => updateFilters(defaultFilters), [])
+
+  const enable = useCallback(() => setEnabled(true), [])
+
+  const result = useQuery({queryKey: [...queryKey, filters], queryFn: () => queryFn(filters), enabled})
 
   return {
     result,
     filters,
     updateFilters,
     clearFilters,
+    enable,
+    defaultFilters,
     initialFilters,
     pageNumber: Math.round(filters.offset / filters.limit),
   }

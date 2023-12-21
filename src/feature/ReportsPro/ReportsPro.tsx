@@ -98,7 +98,12 @@ interface ReportFiltersQs {
 }
 
 export const ReportsPro = () => {
-  const _reports = useReportSearchQuery()
+  const queryString = useQueryString<Partial<ReportSearch>, Partial<ReportFiltersQs>>({
+    toQueryString: mapDatesToQueryString,
+    fromQueryString: compose(mapDateFromQueryString, mapArrayFromQuerystring(['status', 'siretSirenList', 'departments'])),
+  })
+
+  const _reports = useReportSearchQuery({offset: 0, limit: 10, ...queryString.get()})
   const _accessibleByPro = useGetAccessibleByProQuery()
 
   const {isMobileWidth} = useLayoutContext()
@@ -120,19 +125,10 @@ export const ReportsPro = () => {
     [_reports.result.data],
   )
 
-  const queryString = useQueryString<Partial<ReportSearch>, Partial<ReportFiltersQs>>({
-    toQueryString: mapDatesToQueryString,
-    fromQueryString: compose(mapDateFromQueryString, mapArrayFromQuerystring(['status', 'siretSirenList', 'departments'])),
-  })
-
   const filtersCount = useMemo(() => {
     const {offset, limit, ...filters} = _reports.filters
     return Object.keys(cleanObject(filters)).length
   }, [_reports.filters])
-
-  useEffect(() => {
-    _reports.updateFilters({..._reports.initialFilters, ...queryString.get()})
-  }, [])
 
   useEffect(() => {
     queryString.update(cleanObject(_reports.filters))
