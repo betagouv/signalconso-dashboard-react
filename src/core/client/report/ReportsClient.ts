@@ -17,6 +17,7 @@ import {
   Event,
   Country,
   ReportDeletionReason,
+  FileOrigin,
 } from '../../model'
 import {ApiSdkLogger} from '../../helper/Logger'
 import {ApiClientApi} from '../ApiClient'
@@ -87,6 +88,14 @@ export const cleanReportFilter = (filter: ReportSearch): ReportSearch => {
 export class ReportsClient {
   constructor(private client: ApiClientApi) {}
 
+  readonly downloadAll = async (reportId: string, origin?: FileOrigin) => {
+    const baseQuery = `/reports/files?reportId=${reportId}`
+
+    return this.client
+      .getBlob<any>(origin ? `${baseQuery}&origin=${origin}` : baseQuery)
+      .then(blob => directDownloadBlob(`pj_${origin}_${reportId}`, 'application/zip')(blob))
+  }
+
   readonly extract = (filters: ReportSearch & PaginatedFilters) => {
     return this.client.post<void>(`reports/extract`, {
       qs: cleanObject({
@@ -110,7 +119,7 @@ export class ReportsClient {
 
   readonly download = (ids: Id[]) => {
     // TODO Type it and maybe improve it
-    return this.client.getPdf<any>(`/reports/download`, {qs: {ids}}).then(directDownloadBlob('Signalement.pdf'))
+    return this.client.get<any>(`/reports/download`, {qs: {ids}}).then(directDownloadBlob('Signalement.pdf', 'application/pdf'))
   }
 
   readonly remove = (id: Id, reportDeletionReason: ReportDeletionReason) => {
@@ -133,8 +142,8 @@ export class ReportsClient {
 
   readonly generateConsumerNotificationAsPDF = (reportId: Id) => {
     return this.client
-      .getPdf<any>(`/reports/${reportId}/consumer-email-pdf`)
-      .then(directDownloadBlob('accuse-reception-consommateur.pdf'))
+      .getBlob<any>(`/reports/${reportId}/consumer-email-pdf`)
+      .then(directDownloadBlob('accuse-reception-consommateur.pdf', 'application/pdf'))
   }
 
   readonly getCloudWord = (companyId: Id) => {

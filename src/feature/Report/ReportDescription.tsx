@@ -1,6 +1,6 @@
-import {Panel, PanelBody} from '../../shared/Panel'
+import {Panel, PanelBody, PanelHead} from '../../shared/Panel'
 import {Box} from '@mui/material'
-import {Txt} from '../../alexlibs/mui-extension'
+import {Btn, Txt} from '../../alexlibs/mui-extension'
 import {ReportFiles} from './File/ReportFiles'
 import React, {ReactNode} from 'react'
 import {useReportContext} from '../../core/context/ReportContext'
@@ -10,6 +10,7 @@ import {Divider} from '../../shared/Divider'
 import {EventActionValues} from '../../core/client/event/Event'
 import {FileOrigin, UploadedFile} from '../../core/client/file/UploadedFile'
 import {Report} from '../../core/client/report/Report'
+import {ReportFileDeleteButton} from './File/ReportFileDownloadAllButton'
 
 interface Props {
   files?: UploadedFile[]
@@ -21,7 +22,6 @@ export const ReportDescription = ({report, files, children}: Props) => {
   const _report = useReportContext()
   const {connectedUser} = useLogin()
   const {m} = useI18n()
-
   return (
     <Panel>
       <PanelBody>
@@ -35,9 +35,12 @@ export const ReportDescription = ({report, files, children}: Props) => {
           </Box>
         ))}
         <Divider margin />
-        <Txt bold block size="big" gutterBottom>
-          {m.attachedFiles}
-        </Txt>
+        <div className="flex flex-row ">
+          <Txt bold block size="big" gutterBottom>
+            {m.attachedFiles}
+          </Txt>
+          <ReportFileDeleteButton reportId={report.id} fileOrigin={FileOrigin.Consumer} />
+        </div>
         <ReportFiles
           hideAddBtn={!connectedUser.isAdmin}
           files={files?.filter(_ => _.origin === FileOrigin.Consumer)}

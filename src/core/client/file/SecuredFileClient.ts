@@ -1,4 +1,4 @@
-import {UploadedFile} from './UploadedFile'
+import {FileOrigin, UploadedFile} from './UploadedFile'
 import {ApiClientApi} from '../ApiClient'
 
 export class SecuredFileClient {
