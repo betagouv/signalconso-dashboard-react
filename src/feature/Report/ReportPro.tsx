@@ -126,7 +126,7 @@ export const ReportPro = () => {
                   canEditFile={false}
                   response={response?.data}
                   consumerReportReview={_report.getReviewOnReportResponse.entity}
-                  reportId={report.id}
+                  report={report}
                   files={_report.get.entity?.files.filter(_ => _.origin === FileOrigin.Professional)}
                 />
               </Panel>

@@ -8,14 +8,15 @@ import {FileOrigin} from '../../../core/client/file/UploadedFile'
 import {useReportContext} from '../../../core/context/ReportContext'
 import {Link} from 'react-router-dom'
 import {Txt} from 'alexlibs/mui-extension/Txt'
+import {Report} from '../../../core/client/report/Report'
 
-export function ReportFileDeleteButton({reportId, fileOrigin}: {reportId: string; fileOrigin?: FileOrigin}) {
+export function ReportFileDeleteButton({report, fileOrigin}: {report: Report; fileOrigin?: FileOrigin}) {
   const {m} = useI18n()
   const {apiSdk} = useLogin()
   const reportContext = useReportContext()
 
   const download = async () => {
-    await reportContext.downloadAll.fetch({}, reportId, fileOrigin)
+    await reportContext.downloadAll.fetch({}, report, fileOrigin)
   }
 
   return (

@@ -88,12 +88,15 @@ export const cleanReportFilter = (filter: ReportSearch): ReportSearch => {
 export class ReportsClient {
   constructor(private client: ApiClientApi) {}
 
-  readonly downloadAll = async (reportId: string, origin?: FileOrigin) => {
-    const baseQuery = `/reports/files?reportId=${reportId}`
+  readonly downloadAll = async (report: Report, origin?: FileOrigin) => {
+    const baseQuery = `/reports/files?reportId=${report.id}`
+    const day = String(report.creationDate.getDate()).padStart(2, '0')
+    const month = String(report.creationDate.getMonth() + 1).padStart(2, '0') // Months are 0-indexed
+    const year = report.creationDate.getFullYear()
 
     return this.client
       .getBlob<any>(origin ? `${baseQuery}&origin=${origin}` : baseQuery)
-      .then(blob => directDownloadBlob(`pj_${origin}_${reportId}`, 'application/zip')(blob))
+      .then(blob => directDownloadBlob(`${day}-${month}-${year}-PJ`, 'application/zip')(blob))
   }
 
   readonly extract = (filters: ReportSearch & PaginatedFilters) => {
