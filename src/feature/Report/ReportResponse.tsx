@@ -18,16 +18,17 @@ import {
   ResponseEvaluation,
 } from '../../core/client/event/Event'
 import {FileOrigin, UploadedFile} from '../../core/client/file/UploadedFile'
-import {Id} from '../../core/model'
+import {Id, Report} from '../../core/model'
 import {fnSwitch} from '../../core/helper'
 import {useLogin} from '../../core/context/LoginContext'
 import {ScOption} from 'core/helper/ScOption'
+import {ReportFileDeleteButton} from './File/ReportFileDownloadAllButton'
 
 interface Props {
   canEditFile?: boolean
   response?: Event
   consumerReportReview?: ResponseConsumerReview
-  reportId: Id
+  report: Report
   files?: UploadedFile[]
 }
 
@@ -59,7 +60,7 @@ const Response = ({
     </Box>
   )
 }
-export const ReportResponseComponent = ({canEditFile, response, consumerReportReview, reportId, files}: Props) => {
+export const ReportResponseComponent = ({canEditFile, response, consumerReportReview, report, files}: Props) => {
   const {m} = useI18n()
   const _report = useReportContext()
   const _event = useEventContext()
@@ -95,23 +96,26 @@ export const ReportResponseComponent = ({canEditFile, response, consumerReportRe
             )}
           </div>
         ))
-        .getOrElse(<div>{m.noAnswerFromPro}</div>)}
-      <Txt sx={{mt: 2}} gutterBottom bold size="big" block>
-        {m.attachedFiles}
-      </Txt>
+        .getOrElse(<div className="mt-2">{m.noAnswerFromPro}</div>)}
+      <div className="flex flex-row mt-5 ">
+        <Txt gutterBottom bold size="big" block>
+          {m.attachedFiles}
+        </Txt>
+        {files && files.length > 0 && <ReportFileDeleteButton report={report} fileOrigin={FileOrigin.Professional} />}
+      </div>
       <ReportFiles
         hideAddBtn={!canEditFile}
-        reportId={reportId}
+        reportId={report.id}
         files={files}
         fileOrigin={FileOrigin.Professional}
         onNewFile={file => {
           _report.postAction
-            .fetch({}, reportId, {
+            .fetch({}, report.id, {
               details: '',
               fileIds: [file.id],
               actionType: EventActionValues.ProfessionalAttachments,
             })
-            .then(() => _event.reportEvents.fetch({force: true, clean: false}, reportId))
+            .then(() => _event.reportEvents.fetch({force: true, clean: false}, report.id))
         }}
       />
       <Divider margin />

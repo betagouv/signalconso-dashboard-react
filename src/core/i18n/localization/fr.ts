@@ -184,6 +184,7 @@ export const fr = {
     removeAllFilters: 'Supprimer les filtres',
     reOpenReportDesc: `Voulez-vous vraiment ré-ouvrir le signalement ?`,
     download: 'Télécharger',
+    downloadAll: 'Tout télécharger',
     downloadNotice: 'Télécharger le courrier',
     remainingTime: 'Temps restant',
     forgottenPassword: 'Mot de passe oublié ?',

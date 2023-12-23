@@ -12,6 +12,7 @@ export interface ReportContextProps {
   remove: UseFetcher<SignalConsoApiSdk['secured']['reports']['remove'], ApiError>
   reOpen: UseFetcher<SignalConsoApiSdk['secured']['reports']['reOpen'], ApiError>
   download: UseFetcher<SignalConsoApiSdk['secured']['reports']['download'], ApiError>
+  downloadAll: UseFetcher<SignalConsoApiSdk['secured']['reports']['downloadAll'], ApiError>
   updateCompany: UseFetcher<SignalConsoApiSdk['secured']['reports']['updateReportCompany'], ApiError>
   updateCountry: UseFetcher<SignalConsoApiSdk['secured']['reports']['updateReportCountry'], ApiError>
   updateConsumer: UseFetcher<SignalConsoApiSdk['secured']['reports']['updateReportConsumer'], ApiError>
@@ -38,6 +39,7 @@ export const ReportProvider = ({api, children}: Props) => {
   const remove = useFetcher(api.secured.reports.remove)
   const reOpen = useFetcher(api.secured.reports.reOpen)
   const download = useFetcher(api.secured.reports.download)
+  const downloadAll = useFetcher(api.secured.reports.downloadAll)
   const postAction = useFetcher(api.secured.reports.postAction)
   const postResponse = useFetcher(api.secured.reports.postResponse)
   const getReviewOnReportResponse = useFetcher(api.secured.reports.getReviewOnReportResponse)
@@ -62,6 +64,7 @@ export const ReportProvider = ({api, children}: Props) => {
         remove,
         reOpen,
         download,
+        downloadAll,
         updateCompany,
         updateCountry,
         updateConsumer,

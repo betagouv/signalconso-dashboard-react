@@ -18,7 +18,9 @@ export class AdminClient {
   }
 
   readonly downloadTestPdf = (templateRef: string) => {
-    return this.client.postGetPdf(`/admin/test-pdf`, {qs: {templateRef}}).then(directDownloadBlob(`${templateRef}_${Date.now()}`))
+    return this.client
+      .postGetPdf(`/admin/test-pdf`, {qs: {templateRef}})
+      .then(directDownloadBlob(`${templateRef}_${Date.now()}`, 'application/pdf'))
   }
 
   readonly resendEmails = (start: Date, end: Date, emailType: ResendEmailType) => {

@@ -58,13 +58,13 @@ export class CompanyClient {
   readonly downloadActivationDocument = (companyIds: Id[]) => {
     return this.client
       .postGetPdf(`/companies/activation-document`, {body: {companyIds}})
-      .then(directDownloadBlob(`signalement_depot_${format(new Date(), 'ddMMyy')}`))
+      .then(directDownloadBlob(`signalement_depot_${format(new Date(), 'ddMMyy')}`, 'application/pdf'))
   }
 
   readonly downloadFollowUpDocument = (companyIds: Id[]) => {
     return this.client
       .postGetPdf(`/companies/follow-up-document `, {body: {companyIds}})
-      .then(directDownloadBlob(`signalement_relance_${format(new Date(), 'ddMMyy')}`))
+      .then(directDownloadBlob(`signalement_relance_${format(new Date(), 'ddMMyy')}`, 'application/pdf'))
   }
 
   readonly getHosts = (id: Id) => {
