@@ -197,7 +197,7 @@ export const ReportComponent = () => {
               <ReportTabPanel value={activeTab} index={0}>
                 <ReportResponseComponent
                   canEditFile
-                  reportId={report.id}
+                  report={report}
                   response={response?.data}
                   consumerReportReview={_report.getReviewOnReportResponse.entity}
                   files={_report.get.entity?.files.filter(_ => _.origin === FileOrigin.Professional)}

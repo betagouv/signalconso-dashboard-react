@@ -26,7 +26,7 @@ export interface ApiClientApi {
   readonly head: <T = any>(uri: string, options?: RequestOption) => Promise<T>
   readonly post: <T = any>(uri: string, options?: RequestOption) => Promise<T>
   readonly postGetPdf: <T = any>(uri: string, options?: RequestOption) => Promise<Blob>
-  readonly getPdf: <T = any>(uri: string, options?: RequestOption) => Promise<Blob>
+  readonly getBlob: <T = any>(uri: string, options?: RequestOption) => Promise<Blob>
   readonly delete: <T = any>(uri: string, options?: RequestOption) => Promise<T>
   readonly put: <T = any>(uri: string, options?: RequestOption) => Promise<T>
   readonly patch: <T = any>(uri: string, options?: RequestOption) => Promise<T>
@@ -54,14 +54,6 @@ export class ApiError extends Error {
   }
 }
 
-// /** @deprecated*/
-// export interface ApiError {
-//   code: StatusCode
-//   id: string
-//   message: string
-//   error?: Error
-// }
-//
 export interface ApiDetailedError {
   code: StatusCode
   message: Detail
@@ -81,7 +73,7 @@ export class ApiClient {
 
   readonly postGetPdf: (url: string, options?: RequestOption) => Promise<Blob>
 
-  readonly getPdf: (url: string, options?: RequestOption) => Promise<Blob>
+  readonly getBlob: (url: string, options?: RequestOption) => Promise<Blob>
 
   readonly baseUrl: string
 
@@ -146,7 +138,7 @@ export class ApiClient {
       return requestUsingFetchApi('POST', url, options).then(_ => _.blob())
     }
 
-    this.getPdf = async (url: string, options?: RequestOption) => {
+    this.getBlob = async (url: string, options?: RequestOption) => {
       return requestUsingFetchApi('GET', url, options).then(_ => _.blob())
     }
   }

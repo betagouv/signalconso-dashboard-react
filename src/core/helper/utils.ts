@@ -51,9 +51,9 @@ export const toQueryString = (obj: any): string => {
 }
 
 export const directDownloadBlob =
-  (fileName: string) =>
+  (fileName: string, mimeType: string) =>
   (blob: Blob): void => {
-    const url = window.URL.createObjectURL(new Blob([blob], {type: 'application/pdf'}))
+    const url = window.URL.createObjectURL(new Blob([blob], {type: mimeType}))
     const link = document.createElement('a')
     link.href = url
     link.setAttribute('download', fileName)
