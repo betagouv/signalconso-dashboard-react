@@ -1,14 +1,14 @@
-import React, {useEffect, useState} from 'react'
+import React from 'react'
 import {useI18n} from '../core/i18n'
 
 import {Autocomplete, Box} from '@mui/material'
 import {ScInput} from './ScInput'
-import {useConstantContext} from '../core/context/ConstantContext'
 import {combineSx} from '../core/theme'
 import {makeSx} from '../alexlibs/mui-extension'
 import {Country} from '../core/client/constant/Country'
 import {countryToFlag} from '../core/helper'
 import {ScOption} from 'core/helper/ScOption'
+import {useCountriesQuery} from '../core/queryhooks/constantQueryHooks'
 
 interface Props {
   country?: Country
@@ -43,12 +43,7 @@ const css = makeSx({
 
 export const SelectCountry = ({onChange, country}: Props) => {
   const {m} = useI18n()
-  const _countries = useConstantContext().countries
-  const [countries, setCountries] = useState<Country[]>([])
-
-  useEffect(() => {
-    _countries.fetch({}).then(setCountries)
-  }, [country])
+  const _countries = useCountriesQuery()
 
   return (
     <>
@@ -65,7 +60,7 @@ export const SelectCountry = ({onChange, country}: Props) => {
           const newCountry = ScOption.from(newInputValue).toUndefined()
           newCountry && onChange(newCountry)
         }}
-        options={countries ?? []}
+        options={_countries.data ?? []}
         getOptionLabel={option => option.name}
         renderOption={(props, option) => (
           <Box component="li" key={option.code + Math.random()} sx={css.menuItem} {...props}>

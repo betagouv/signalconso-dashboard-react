@@ -1,15 +1,11 @@
-import React, {ReactElement, useState} from 'react'
-import {Alert, Btn, Txt} from '../../alexlibs/mui-extension'
+import React, {ReactElement} from 'react'
+import {Btn, Txt} from '../../alexlibs/mui-extension'
 import {useI18n} from '../../core/i18n'
-import {ScInput} from '../../shared/ScInput'
-import {useFetcher} from '../../alexlibs/react-hooks-lib'
 import {useLogin} from '../../core/context/LoginContext'
 import {useToast} from '../../core/toast'
 import {ScDialog} from '../../shared/ScDialog'
-import {Report, ReportAdminActionType} from '../../core/client/report/Report'
-import {ScRadioGroup} from '../../shared/RadioGroup'
-import {Enum} from '../../alexlibs/ts-utils'
-import {ScRadioGroupItem} from '../../shared/RadioGroupItem'
+import {Report} from '../../core/client/report/Report'
+import {useMutation} from '@tanstack/react-query'
 
 interface Props {
   report: Report
@@ -19,7 +15,13 @@ interface Props {
 export const ReportReOpening = ({report, children}: Props) => {
   const {m} = useI18n()
   const {apiSdk} = useLogin()
-  const _reOpenReport = useFetcher(apiSdk.secured.reports.reOpen)
+  const _reOpenReport = useMutation({
+    mutationFn: apiSdk.secured.reports.reOpen,
+    onSuccess: () => {
+      window.location.reload()
+      toastSuccess('Signalement ré-ouvert avec succès.')
+    },
+  })
   const {toastSuccess} = useToast()
 
   return (
@@ -33,15 +35,9 @@ export const ReportReOpening = ({report, children}: Props) => {
           </Txt>
         </>
       }
-      onConfirm={(event, close) =>
-        _reOpenReport
-          .fetch({}, report.id)
-          .then(() => window.location.reload())
-          .then(() => toastSuccess('Signalement ré-ouvert avec succès.'))
-          .finally(close)
-      }
+      onConfirm={(event, close) => _reOpenReport.mutateAsync(report.id).finally(close)}
     >
-      <Btn loading={_reOpenReport.loading} icon="replay">
+      <Btn loading={_reOpenReport.isPending} icon="replay">
         {m.reOpen}
       </Btn>
     </ScDialog>

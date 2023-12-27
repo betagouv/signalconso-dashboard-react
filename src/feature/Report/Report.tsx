@@ -1,24 +1,19 @@
-import React, {useEffect, useMemo, useState} from 'react'
+import React, {useMemo, useState} from 'react'
 import {Page} from '../../shared/Page'
 import {useParams} from 'react-router'
 import {useI18n} from '../../core/i18n'
 import {Panel} from '../../shared/Panel'
-import {useReportContext} from '../../core/context/ReportContext'
 import {Box, Grid, Tab, Tabs, Tooltip} from '@mui/material'
-import {useToast} from '../../core/toast'
 import {ReportEvents} from './Event/ReportEvents'
 import {ReportResponseComponent} from './ReportResponse'
 import {ReportHeader} from './ReportHeader'
-import {Btn, Txt} from '../../alexlibs/mui-extension'
+import {Btn} from '../../alexlibs/mui-extension'
 import {ReportPostAction} from './ReportPostAction'
 import {useLogin} from '../../core/context/LoginContext'
 import {ReportConsumer} from './ReportConsumer/ReportConsumer'
 import {ReportCompany} from './ReportCompany/ReportCompany'
 import {ReportDescription} from './ReportDescription'
-import {useEventContext} from '../../core/context/EventContext'
-import {useEffectFn} from '../../alexlibs/react-hooks-lib'
 import {map} from '../../alexlibs/ts-utils'
-import {ScDialog} from '../../shared/ScDialog'
 import {EventActionValues, EventType, ReportEvent} from '../../core/client/event/Event'
 import {FileOrigin} from '../../core/client/file/UploadedFile'
 import {Report, ReportStatus} from '../../core/client/report/Report'
@@ -28,6 +23,9 @@ import {WithInlineIcon} from 'shared/WithInlineIcon'
 import {ReportAdminResolution} from './ReportAdminResolution'
 import {ReportBarcodeProduct} from './ReportBarcodeProduct'
 import {ReportReOpening} from './ReportReOpening'
+import {useMutation} from '@tanstack/react-query'
+import {useGetReportQuery, useGetReviewOnReportResponseQuery} from '../../core/queryhooks/reportQueryHooks'
+import {useGetCompanyEventsQuery, useGetReportEventsQuery} from '../../core/queryhooks/eventQueryHooks'
 
 const CONSO: EventType = 'CONSO'
 
@@ -46,36 +44,27 @@ export const creationReportEvent = (report: Report): ReportEvent =>
 export const ReportComponent = () => {
   const {id} = useParams<{id: Id}>()
   const {m} = useI18n()
-  const _report = useReportContext()
-  const _event = useEventContext()
-  const {connectedUser} = useLogin()
-  const {toastError} = useToast()
+  const {connectedUser, apiSdk} = useLogin()
   const [activeTab, setActiveTab] = useState(0)
+
+  const _getReport = useGetReportQuery(id)
+  const _getReviewOnReportResponse = useGetReviewOnReportResponseQuery(id, {enabled: !!_getReport.data?.report.id})
+  const _getCompanyEvents = useGetCompanyEventsQuery(_getReport.data?.report.companySiret!, {
+    enabled: !!_getReport.data?.report.companySiret,
+  })
+  const _getReportEvents = useGetReportEventsQuery(id)
+
   const response = useMemo(
-    () => _event.reportEvents.entity?.find(_ => _.data.action === EventActionValues.ReportProResponse),
-    [_event.reportEvents],
+    () => _getReportEvents.data?.find(_ => _.data.action === EventActionValues.ReportProResponse),
+    [_getReportEvents.data],
   )
 
-  useEffect(() => {
-    _report.get.clearCache()
-    _report.get.fetch({}, id).then(({report}) => {
-      _report.getReviewOnReportResponse.fetch({}, report.id)
-      if (report.companySiret) _event.companyEvents.fetch({}, report.companySiret)
-    })
-    _event.reportEvents.fetch({}, id)
-  }, [])
-
-  useEffectFn(_report.get.error, toastError)
-  useEffectFn(_report.remove.error, toastError)
-  useEffectFn(_report.updateCompany.error, toastError)
-  useEffectFn(_event.companyEvents.error, toastError)
-  useEffectFn(_event.reportEvents.error, toastError)
-
-  const downloadReport = (reportId: Id) => _report.download.fetch({}, [reportId])
+  const downloadReport = useMutation({mutationFn: (id: Id) => apiSdk.secured.reports.download([id])})
+  const generateConsumerNotificationAsPDF = useMutation({mutationFn: apiSdk.secured.reports.generateConsumerNotificationAsPDF})
 
   return (
-    <Page loading={_report.get.loading}>
-      {map(_report.get.entity?.report, report => (
+    <Page loading={_getReport.isLoading}>
+      {map(_getReport.data?.report, report => (
         <>
           <ReportHeader elevated report={report}>
             <Box
@@ -98,11 +87,7 @@ export const ReportComponent = () => {
                 )}
 
               {connectedUser.isAdmin && report.status !== ReportStatus.PromesseAction && (
-                <ReportAdminResolution
-                  label={m.administratorAction}
-                  report={report}
-                  onAdd={() => _event.reportEvents.fetch({force: true, clean: false}, id)}
-                >
+                <ReportAdminResolution label={m.administratorAction} report={report} onAdd={() => _getReportEvents.refetch()}>
                   <Tooltip title={m.administratorAction}>
                     <Btn color="primary" icon="add_comment">
                       {m.administratorAction}
@@ -111,7 +96,12 @@ export const ReportComponent = () => {
                 </ReportAdminResolution>
               )}
 
-              <Btn color="primary" icon="download" loading={_report.download.loading} onClick={() => downloadReport(report.id)}>
+              <Btn
+                color="primary"
+                icon="download"
+                loading={downloadReport.isPending}
+                onClick={() => downloadReport.mutate(report.id)}
+              >
                 {m.download}
               </Btn>
 
@@ -119,7 +109,7 @@ export const ReportComponent = () => {
                 actionType={EventActionValues.Comment}
                 label={m.addDgccrfComment}
                 report={report}
-                onAdd={() => _event.reportEvents.fetch({force: true, clean: false}, id)}
+                onAdd={() => _getReportEvents.refetch()}
               >
                 <Tooltip title={m.addDgccrfComment}>
                   <Btn color="primary" icon="add_comment">
@@ -133,7 +123,7 @@ export const ReportComponent = () => {
                   actionType={EventActionValues.Control}
                   label={m.markDgccrfControlDone}
                   report={report}
-                  onAdd={() => _event.reportEvents.fetch({force: true, clean: false}, id)}
+                  onAdd={() => _getReportEvents.refetch()}
                 >
                   <Tooltip title={m.markDgccrfControlDone}>
                     <Btn color="primary" icon="add_comment">
@@ -145,9 +135,9 @@ export const ReportComponent = () => {
 
               {connectedUser.isAdmin && (
                 <ScButton
-                  loading={_report.generateConsumerNotificationAsPDF.loading}
+                  loading={generateConsumerNotificationAsPDF.isPending}
                   icon="download"
-                  onClick={() => _report.generateConsumerNotificationAsPDF.fetch({}, report.id)}
+                  onClick={() => generateConsumerNotificationAsPDF.mutate(report.id)}
                 >
                   Accusé reception
                 </ScButton>
@@ -173,13 +163,13 @@ export const ReportComponent = () => {
             </Grid>
           </Grid>
 
-          {_report.get.entity?.report.barcodeProductId && (
-            <ReportBarcodeProduct barcodeProductId={_report.get.entity.report.barcodeProductId} />
+          {_getReport.data?.report.barcodeProductId && (
+            <ReportBarcodeProduct barcodeProductId={_getReport.data.report.barcodeProductId} />
           )}
 
-          <ReportDescription report={report} files={_report.get.entity?.files} />
+          <ReportDescription report={report} files={_getReport.data?.files} />
 
-          <Panel loading={_event.reportEvents.loading}>
+          <Panel loading={_getReportEvents.isLoading}>
             <>
               <Tabs
                 sx={{
@@ -199,19 +189,19 @@ export const ReportComponent = () => {
                   canEditFile
                   report={report}
                   response={response?.data}
-                  consumerReportReview={_report.getReviewOnReportResponse.entity}
-                  files={_report.get.entity?.files.filter(_ => _.origin === FileOrigin.Professional)}
+                  consumerReportReview={_getReviewOnReportResponse.data}
+                  files={_getReport.data?.files.filter(_ => _.origin === FileOrigin.Professional)}
                 />
               </ReportTabPanel>
               <ReportTabPanel value={activeTab} index={1}>
                 <ReportEvents
                   events={
-                    _event.reportEvents.loading ? undefined : [creationReportEvent(report), ...(_event.reportEvents.entity ?? [])]
+                    _getReportEvents.isLoading ? undefined : [creationReportEvent(report), ...(_getReportEvents.data ?? [])]
                   }
                 />
               </ReportTabPanel>
               <ReportTabPanel value={activeTab} index={2}>
-                <ReportEvents events={_event.companyEvents.loading ? undefined : _event.companyEvents.entity ?? []} />
+                <ReportEvents events={_getCompanyEvents.isLoading ? undefined : _getCompanyEvents.data ?? []} />
               </ReportTabPanel>
             </>
           </Panel>

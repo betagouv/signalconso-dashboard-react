@@ -1,6 +1,4 @@
-import React, {useEffect, useMemo, useState} from 'react'
-import {useFetcher} from '../../alexlibs/react-hooks-lib'
-import {useLogin} from '../../core/context/LoginContext'
+import React, {useEffect, useState} from 'react'
 import {Panel, PanelBody, PanelHead} from '../../shared/Panel'
 import {PeriodPicker} from '../../shared/PeriodPicker'
 import {DebouncedInput} from '../../shared/DebouncedInput'
@@ -12,7 +10,8 @@ import {ScButton} from '../../shared/Button'
 import {Page} from '../../shared/Page'
 import {parseInt} from 'lodash'
 import {SelectDepartments} from '../../shared/SelectDepartments/SelectDepartments'
-import {AccountEventActions, ActionResultNames, EventCategories, Matomo, StatisticsActions} from '../../core/plugins/Matomo'
+import {ActionResultNames, EventCategories, Matomo, StatisticsActions} from '../../core/plugins/Matomo'
+import {useGetCountBySubCategoriesQuery} from '../../core/queryhooks/reportQueryHooks'
 
 const compare = (a?: string[], b?: string[]): number => {
   if (!a || !b) return 0
@@ -24,7 +23,6 @@ const sortById = (reportNode1: ReportNode, reportNode2: ReportNode) =>
   compare(reportNode1.id?.split('.'), reportNode2.id?.split('.'))
 
 export const ArborescenceWithCounts = () => {
-  const {apiSdk: api} = useLogin()
   const {m} = useI18n()
 
   const begin = new Date()
@@ -36,15 +34,13 @@ export const ArborescenceWithCounts = () => {
   const [end, setEnd] = useState<Date | undefined>(undefined)
   const [departments, setDepartments] = useState<string[] | undefined>(undefined)
 
-  const countBySubCategories = useFetcher(api.secured.reports.getCountBySubCategories)
+  const countBySubCategories = useGetCountBySubCategoriesQuery({start, end, departments})
 
   useEffect(() => {
-    countBySubCategories
-      .fetch({force: true}, {start, end, departments})
-      .then(_ =>
-        Matomo.trackEvent(EventCategories.statistics, StatisticsActions.reportCountsBySubcategories, ActionResultNames.success),
-      )
-  }, [start, end, departments])
+    if (countBySubCategories.data) {
+      Matomo.trackEvent(EventCategories.statistics, StatisticsActions.reportCountsBySubcategories, ActionResultNames.success)
+    }
+  }, [countBySubCategories.data])
 
   const resetFilters = () => {
     setStart(undefined)
@@ -100,7 +96,7 @@ export const ArborescenceWithCounts = () => {
           </Box>
         </PanelBody>
       </Panel>
-      <Panel loading={countBySubCategories.loading}>
+      <Panel loading={countBySubCategories.isLoading}>
         <PanelHead>
           <Box
             sx={{
@@ -116,12 +112,12 @@ export const ArborescenceWithCounts = () => {
           </Box>
         </PanelHead>
         <PanelBody>
-          {countBySubCategories.entity?.fr.sort(sortById).map(reportNode => (
+          {countBySubCategories.data?.fr.sort(sortById).map(reportNode => (
             <Node open={openAll} reportNode={reportNode} />
           ))}
         </PanelBody>
       </Panel>
-      <Panel loading={countBySubCategories.loading}>
+      <Panel loading={countBySubCategories.isLoading}>
         <PanelHead>
           <Box
             sx={{
@@ -137,7 +133,7 @@ export const ArborescenceWithCounts = () => {
           </Box>
         </PanelHead>
         <PanelBody>
-          {countBySubCategories.entity?.en.sort(sortById).map(reportNode => (
+          {countBySubCategories.data?.en.sort(sortById).map(reportNode => (
             <Node open={openAllForeign} reportNode={reportNode} />
           ))}
         </PanelBody>

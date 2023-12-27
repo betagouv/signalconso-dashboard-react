@@ -5,13 +5,12 @@ import {useI18n} from '../../core/i18n'
 import {Box, BoxProps, Icon} from '@mui/material'
 import {styleUtils, sxUtils} from '../../core/theme'
 import {ReportFiles} from './File/ReportFiles'
-import {useReportContext} from '../../core/context/ReportContext'
 import {Txt} from '../../alexlibs/mui-extension'
-import {useEventContext} from '../../core/context/EventContext'
 import {Divider} from '../../shared/Divider'
 import {
-  EventActionValues,
   Event,
+  EventActionValues,
+  ReportAction,
   ReportResponse,
   ReportResponseTypes,
   ResponseConsumerReview,
@@ -22,7 +21,10 @@ import {Id, Report} from '../../core/model'
 import {fnSwitch} from '../../core/helper'
 import {useLogin} from '../../core/context/LoginContext'
 import {ScOption} from 'core/helper/ScOption'
+import {GetReportEventsQueryKeys} from '../../core/queryhooks/eventQueryHooks'
+import {useMutation, useQueryClient} from '@tanstack/react-query'
 import {ReportFileDeleteButton} from './File/ReportFileDownloadAllButton'
+import {useApiContext} from '../../core/context/ApiContext'
 
 interface Props {
   canEditFile?: boolean
@@ -62,8 +64,12 @@ const Response = ({
 }
 export const ReportResponseComponent = ({canEditFile, response, consumerReportReview, report, files}: Props) => {
   const {m} = useI18n()
-  const _report = useReportContext()
-  const _event = useEventContext()
+  const {api} = useApiContext()
+  const queryClient = useQueryClient()
+  const _postAction = useMutation({
+    mutationFn: (params: {id: Id; action: ReportAction}) => api.secured.reports.postAction(params.id, params.action),
+    onSuccess: () => queryClient.invalidateQueries({queryKey: GetReportEventsQueryKeys(report.id)}),
+  })
   const {connectedUser} = useLogin()
 
   return (
@@ -109,13 +115,14 @@ export const ReportResponseComponent = ({canEditFile, response, consumerReportRe
         files={files}
         fileOrigin={FileOrigin.Professional}
         onNewFile={file => {
-          _report.postAction
-            .fetch({}, report.id, {
+          _postAction.mutate({
+            id: report.id,
+            action: {
               details: '',
               fileIds: [file.id],
               actionType: EventActionValues.ProfessionalAttachments,
-            })
-            .then(() => _event.reportEvents.fetch({force: true, clean: false}, report.id))
+            },
+          })
         }}
       />
       <Divider margin />

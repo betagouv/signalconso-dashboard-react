@@ -1,17 +1,13 @@
-import {FormControlLabel, Switch, useTheme} from '@mui/material'
+import {FormControlLabel, Switch} from '@mui/material'
 import {ScOption} from 'core/helper/ScOption'
-import {useEffect, useMemo, useState} from 'react'
+import {useMemo, useState} from 'react'
 import {NavLink} from 'react-router-dom'
 import {Btn, Fender, Txt} from '../../alexlibs/mui-extension'
-import {useBlockedReportNotificationContext} from '../../core/context/BlockedReportNotificationProviderContext'
-import {useCompaniesContext} from '../../core/context/CompaniesContext'
-import {useUsersContext} from '../../core/context/UsersContext'
 import {useI18n} from '../../core/i18n'
-import {groupBy} from '../../core/lodashNamedExport'
-import {AccessLevel, Id} from '../../core/model'
+import {groupBy, uniqBy} from '../../core/lodashNamedExport'
+import {AccessLevel, BlockedReportNotification, Id} from '../../core/model'
 import {siteMap} from '../../core/siteMap'
 import {sxUtils} from '../../core/theme'
-import {useToast} from '../../core/toast'
 import {AddressComponent} from '../../shared/Address'
 import {ScButton} from '../../shared/Button'
 import {Datatable} from '../../shared/Datatable/Datatable'
@@ -19,46 +15,58 @@ import {Page, PageTitle} from '../../shared/Page'
 import {Panel, PanelBody} from '../../shared/Panel'
 import {PanelFoot} from '../../shared/Panel/PanelFoot'
 import {ConfirmDisableNotificationDialog} from './ConfirmDisableNotificationDialog'
+import {
+  ListReportBlockedNotificationsQueryKeys,
+  useListReportBlockedNotificationsQuery,
+} from '../../core/queryhooks/reportBlockedNotificationQueryHooks'
+import {useMutation, useQueryClient} from '@tanstack/react-query'
+import {useApiContext} from '../../core/context/ApiContext'
+import {useGetAccessibleByProQuery} from '../../core/queryhooks/companyQueryHooks'
 
 export const CompaniesPro = () => {
   const {m} = useI18n()
-  const _companies = useCompaniesContext()
-  const _blockedNotifications = useBlockedReportNotificationContext()
-  const _users = useUsersContext()
-  const {toastError} = useToast()
+  const {api} = useApiContext()
+  const queryClient = useQueryClient()
+  const _companiesAccessibleByPro = useGetAccessibleByProQuery()
+  const _blockedNotifications = useListReportBlockedNotificationsQuery()
+  const _create = useMutation({
+    mutationFn: (companyIds: Id[]) => {
+      const newBlocked: BlockedReportNotification[] = companyIds.map(companyId => ({
+        companyId,
+        dateCreation: new Date(),
+      }))
+      queryClient.setQueryData(ListReportBlockedNotificationsQueryKeys, (prev: BlockedReportNotification[]) =>
+        uniqBy([...(prev ?? []), ...newBlocked], _ => _.companyId),
+      )
+      return api.secured.reportBlockedNotification.create(companyIds)
+    },
+  })
+  const _remove = useMutation({
+    mutationFn: (companyIds: Id[]) => {
+      queryClient.setQueryData(ListReportBlockedNotificationsQueryKeys, (currentCompanyIds: BlockedReportNotification[]) =>
+        currentCompanyIds?.filter(_ => !companyIds.includes(_.companyId)),
+      )
+      return api.secured.reportBlockedNotification.delete(companyIds)
+    },
+  })
   const [currentlyDisablingNotificationsForCompanies, setCurrentlyDisablingNotificationsForCompanies] = useState<
     Id | Id[] | undefined
   >()
 
-  useEffect(() => {
-    _users.getConnectedUser.fetch({force: false})
-    _blockedNotifications.list.fetch()
-    _companies.accessibleByPro.fetch({force: false})
-  }, [])
-
   const blockedNotificationIndex = useMemo(() => {
-    return ScOption.from(_blockedNotifications.list.entity)
+    return ScOption.from(_blockedNotifications.data)
       .map(blockedNotification => groupBy(blockedNotification, _ => _.companyId))
       .getOrElse(undefined)
-  }, [_blockedNotifications.list.entity])
-
-  useEffect(() => {
-    ScOption.from(_blockedNotifications.create.error)
-      .map(toastError)
-      .map(() => _blockedNotifications.list.fetch({clean: false}))
-    ScOption.from(_blockedNotifications.remove.error)
-      .map(toastError)
-      .map(() => _blockedNotifications.list.fetch({clean: false}))
-  }, [_blockedNotifications.create.error, _blockedNotifications.remove.error])
+  }, [_blockedNotifications.data])
 
   const allNotificationsAreBlocked = useMemo(() => {
-    if (_companies.accessibleByPro.entity && blockedNotificationIndex) {
-      return _companies.accessibleByPro.entity?.every(_ => blockedNotificationIndex[_.id])
+    if (_companiesAccessibleByPro.data && blockedNotificationIndex) {
+      return _companiesAccessibleByPro.data?.every(_ => blockedNotificationIndex[_.id])
     }
     return false
-  }, [_companies.accessibleByPro.entity, blockedNotificationIndex])
+  }, [_companiesAccessibleByPro.data, blockedNotificationIndex])
 
-  const companies = _companies.accessibleByPro.entity
+  const companies = _companiesAccessibleByPro.data
 
   return (
     <Page size="l">
@@ -94,11 +102,11 @@ export const CompaniesPro = () => {
               {m.disableAll}
             </ScButton>
             <ScButton
-              disabled={_blockedNotifications.list.entity?.length === 0}
+              disabled={_blockedNotifications.data?.length === 0}
               color="primary"
               icon="notifications_active"
               sx={{mr: 1}}
-              onClick={() => _blockedNotifications.remove.call(companies.map(_ => _.id))}
+              onClick={() => _remove.mutate(companies.map(_ => _.id))}
             >
               {m.enableAll}
             </ScButton>
@@ -108,8 +116,8 @@ export const CompaniesPro = () => {
 
       <Panel>
         <Datatable
-          data={_companies.accessibleByPro.entity}
-          loading={_companies.accessibleByPro.loading || _blockedNotifications.list.loading}
+          data={companies}
+          loading={_companiesAccessibleByPro.isLoading || _blockedNotifications.isLoading}
           getRenderRowKey={_ => _.id}
           columns={[
             {
@@ -155,9 +163,7 @@ export const CompaniesPro = () => {
                         disabled={!blockedNotificationIndex}
                         checked={!blockedNotificationIndex?.[_.id]}
                         onChange={e => {
-                          e.target.checked
-                            ? _blockedNotifications.remove.call([_.id])
-                            : setCurrentlyDisablingNotificationsForCompanies(_.id)
+                          e.target.checked ? _remove.mutate([_.id]) : setCurrentlyDisablingNotificationsForCompanies(_.id)
                         }}
                       />
                     }
@@ -188,7 +194,7 @@ export const CompaniesPro = () => {
         open={!!currentlyDisablingNotificationsForCompanies}
         onClose={() => setCurrentlyDisablingNotificationsForCompanies(undefined)}
         onConfirm={() => {
-          _blockedNotifications.create.call([currentlyDisablingNotificationsForCompanies!].flatMap(_ => _))
+          _create.mutate([currentlyDisablingNotificationsForCompanies!].flatMap(_ => _))
           setCurrentlyDisablingNotificationsForCompanies(undefined)
         }}
       />

@@ -1,8 +1,6 @@
 import {useParams} from 'react-router'
 import {useI18n} from '../../core/i18n'
-import React, {useEffect, useMemo, useRef} from 'react'
-import {useReportContext} from '../../core/context/ReportContext'
-import {useToast} from '../../core/toast'
+import React, {useMemo, useRef} from 'react'
 import {Page} from '../../shared/Page'
 import {ReportHeader} from './ReportHeader'
 import {useBoolean} from '../../alexlibs/react-hooks-lib'
@@ -16,7 +14,6 @@ import {Panel, PanelBody, PanelHead} from '../../shared/Panel'
 import {ReportResponseComponent} from './ReportResponse'
 import {ReportEvents} from './Event/ReportEvents'
 import {creationReportEvent} from './Report'
-import {useEventContext} from '../../core/context/EventContext'
 import {EventActionValues} from '../../core/client/event/Event'
 import {FileOrigin} from '../../core/client/file/UploadedFile'
 import {Influencer, Report} from '../../core/client/report/Report'
@@ -25,31 +22,23 @@ import {capitalize} from '../../core/helper'
 import {ReportReferenceNumber} from 'feature/Report/ReportReferenceNumber'
 import {ScOption} from 'core/helper/ScOption'
 import {ReportInfluencer} from './ReportInfluencer'
+import {GetReportQueryKeys, useGetReportQuery, useGetReviewOnReportResponseQuery} from '../../core/queryhooks/reportQueryHooks'
+import {GetReportEventsQueryKeys, useGetReportEventsQuery} from '../../core/queryhooks/eventQueryHooks'
+import {useQueryClient} from '@tanstack/react-query'
 
 export const ReportPro = () => {
   const {id} = useParams<{id: Id}>()
   const {m, formatDateTime} = useI18n()
-  const _report = useReportContext()
-  const _event = useEventContext()
-  const {toastErrorIfDefined} = useToast()
+  const queryClient = useQueryClient()
+  const _getReport = useGetReportQuery(id)
+  const reportEvents = useGetReportEventsQuery(id)
+  const _getReviewOnReportResponse = useGetReviewOnReportResponseQuery(id, {enabled: !!_getReport.data?.report.id})
   const openAnswerPanel = useBoolean(false)
   const response = useMemo(
-    () => _event.reportEvents.entity?.find(_ => _.data.action === EventActionValues.ReportProResponse),
-    [_event.reportEvents],
+    () => reportEvents.data?.find(_ => _.data.action === EventActionValues.ReportProResponse),
+    [reportEvents.data],
   )
   const responseFormRef = useRef<any>(null)
-
-  useEffect(() => {
-    _report.get.fetch({}, id).then(({report}) => {
-      _report.getReviewOnReportResponse.fetch({}, report.id)
-    })
-    _event.reportEvents.fetch({}, id)
-  }, [])
-
-  useEffect(() => {
-    toastErrorIfDefined(_report.get.error)
-    toastErrorIfDefined(_event.reportEvents.error)
-  }, [_report.get.error, _event.reportEvents.error])
 
   const openResponsePanel = () => {
     openAnswerPanel.setTrue()
@@ -61,8 +50,8 @@ export const ReportPro = () => {
   }
 
   return (
-    <Page size="s" loading={_report.get.loading}>
-      {ScOption.from(_report.get.entity?.report)
+    <Page size="s" loading={_getReport.isLoading}>
+      {ScOption.from(_getReport.data?.report)
         .map(report => (
           <>
             <ReportHeader isUserPro elevated={!openAnswerPanel.value} report={report}>
@@ -79,7 +68,7 @@ export const ReportPro = () => {
               )}
             </ReportHeader>
             {report.influencer && <ReportInfluencerPanel influencer={report.influencer} />}
-            <ReportDescription report={report} files={_report.get.entity?.files}>
+            <ReportDescription report={report} files={_getReport.data?.files}>
               <Txt block bold>
                 {m.consumer}
               </Txt>
@@ -102,7 +91,7 @@ export const ReportPro = () => {
               )}
             </ReportDescription>
 
-            <Collapse in={_event.reportEvents.entity && !!response}>
+            <Collapse in={reportEvents.data && !!response}>
               <Panel>
                 <PanelHead
                   action={
@@ -125,9 +114,9 @@ export const ReportPro = () => {
                 <ReportResponseComponent
                   canEditFile={false}
                   response={response?.data}
-                  consumerReportReview={_report.getReviewOnReportResponse.entity}
+                  consumerReportReview={_getReviewOnReportResponse.data}
                   report={report}
-                  files={_report.get.entity?.files.filter(_ => _.origin === FileOrigin.Professional)}
+                  files={_getReport.data?.files.filter(_ => _.origin === FileOrigin.Professional)}
                 />
               </Panel>
             </Collapse>
@@ -137,8 +126,9 @@ export const ReportPro = () => {
                 report={report}
                 onConfirm={() => {
                   openAnswerPanel.setFalse()
-                  _event.reportEvents.fetch({clean: false, force: true}, report.id)
-                  _report.get.fetch({clean: false, force: true}, id)
+                  queryClient
+                    .invalidateQueries({queryKey: GetReportEventsQueryKeys(report.id)})
+                    .then(() => queryClient.invalidateQueries({queryKey: GetReportQueryKeys(report.id)}))
                 }}
                 onCancel={openAnswerPanel.setFalse}
                 sx={{
@@ -147,10 +137,10 @@ export const ReportPro = () => {
               />
             </Collapse>
 
-            {_event.reportEvents.entity && (
+            {reportEvents.data && (
               <Panel>
                 <PanelHead>{m.reportHistory}</PanelHead>
-                <ReportEvents events={[creationReportEvent(report), ..._event.reportEvents.entity]} />
+                <ReportEvents events={[creationReportEvent(report), ...reportEvents.data]} />
               </Panel>
             )}
           </>

@@ -1,52 +1,52 @@
 import {Box, Icon} from '@mui/material'
-import {useEffect} from 'react'
 import {Alert, IconBtn, Txt} from '../../alexlibs/mui-extension'
-import {useAsync, useEffectFn, useFetcher} from '../../alexlibs/react-hooks-lib'
+import {useAsync, useEffectFn} from '../../alexlibs/react-hooks-lib'
 import {useLogin} from '../../core/context/LoginContext'
 import {useI18n} from '../../core/i18n'
 import {useToast} from '../../core/toast'
 import {Panel, PanelBody, PanelHead} from '../../shared/Panel'
+import {useQuery} from '@tanstack/react-query'
 
 export const TestTools = () => {
   const {m} = useI18n()
   const {apiSdk: api, connectedUser} = useLogin()
   const {toastError} = useToast()
 
-  const _emailCodes = useFetcher<() => Promise<{dgccrf: string[]; pro: string[]; consumer: string[]}>>(() =>
-    api.secured.admin
-      .getEmailCodes()
-      .then(emailCodes => emailCodes.sort())
-      .then(emailCodes => ({
-        dgccrf: emailCodes.filter(_ => _.startsWith('dgccrf.')),
-        pro: emailCodes.filter(_ => _.startsWith('pro.')),
-        consumer: emailCodes.filter(_ => _.startsWith('consumer.')),
-      })),
-  )
-  const _pdfCodes = useFetcher<() => Promise<string[]>>(() => api.secured.admin.getPdfCodes())
+  const _emailCodes = useQuery({
+    queryKey: ['admin_getEmailCodes'],
+    queryFn: () =>
+      api.secured.admin
+        .getEmailCodes()
+        .then(emailCodes => emailCodes.sort())
+        .then(emailCodes => ({
+          dgccrf: emailCodes.filter(_ => _.startsWith('dgccrf.')),
+          pro: emailCodes.filter(_ => _.startsWith('pro.')),
+          consumer: emailCodes.filter(_ => _.startsWith('consumer.')),
+        })),
+  })
+  const _pdfCodes = useQuery({
+    queryKey: ['admin_getPdfCodes'],
+    queryFn: api.secured.admin.getPdfCodes,
+  })
+
   const _sendEmail = useAsync(api.secured.admin.sendTestEmail)
   const _downloadTestPdf = useAsync(api.secured.admin.downloadTestPdf)
 
-  useEffect(() => {
-    _emailCodes.fetch()
-    _pdfCodes.fetch()
-  }, [])
-
-  useEffectFn(_emailCodes.error, toastError)
   useEffectFn(_sendEmail.error, toastError)
   useEffectFn(_downloadTestPdf.error, toastError)
 
   return (
     <div className="flex justify-center gap-4 mx-auto mt-10">
       <div className="w-full max-w-lg">
-        <Panel loading={_emailCodes.loading}>
+        <Panel loading={_emailCodes.isLoading}>
           <PanelHead>{m.sendDummyEmail}</PanelHead>
           <PanelBody>
             <Alert type="info" gutterBottom>
               <div dangerouslySetInnerHTML={{__html: m.allMailsWillBeSendTo(connectedUser.email)}} />
             </Alert>
 
-            {_emailCodes.entity &&
-              Object.entries(_emailCodes.entity).map(([type, emailCodes]) => (
+            {_emailCodes.data &&
+              Object.entries(_emailCodes.data).map(([type, emailCodes]) => (
                 <Box key={type} sx={{mt: 3, mb: 4}}>
                   <p className="text-xl capitalize text-center text-black font-bold">{type}</p>
                   {emailCodes.map(emailCode => (
@@ -100,12 +100,12 @@ export const TestTools = () => {
         </Panel>
       </div>
       <div className="w-full max-w-lg mx-auto">
-        <Panel loading={_pdfCodes.loading}>
+        <Panel loading={_pdfCodes.isLoading}>
           <PanelHead>{m.downloadDummyPdfs}</PanelHead>
           <PanelBody>
-            {_pdfCodes.entity && (
+            {_pdfCodes.data && (
               <Box sx={{mt: 3, mb: 4}}>
-                {_pdfCodes.entity.map(code => {
+                {_pdfCodes.data.map(code => {
                   const {title, desc} = ((m.testPdfs as any)[code] ?? {}) as {title?: string; desc?: string}
                   return (
                     <Box

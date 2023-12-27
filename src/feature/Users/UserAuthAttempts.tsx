@@ -1,29 +1,20 @@
 import {Panel} from '../../shared/Panel'
 import {Datatable} from '../../shared/Datatable/Datatable'
 import {useI18n} from '../../core/i18n'
-import React, {useCallback, useEffect} from 'react'
+import React, {useCallback} from 'react'
 import {Icon, InputBase} from '@mui/material'
 import {Txt} from '../../alexlibs/mui-extension'
-import {useToast} from '../../core/toast'
 import {DebouncedInput} from '../../shared/DebouncedInput'
-import {useEffectFn} from '../../alexlibs/react-hooks-lib'
-import {useUsersContext} from '../../core/context/UsersContext'
 import {useLocation} from 'react-router'
+import {useSearchAuthAttemptsQuery} from '../../core/queryhooks/userQueryHooks'
 
 export const UserAuthAttempts = () => {
   const {m} = useI18n()
-  const authAttempts = useUsersContext().authAttempts
   const location = useLocation()
   const queryParams = new URLSearchParams(location.search)
   const emailQueryParam = queryParams.get('email')
-  const {toastError} = useToast()
   const {formatDateTime} = useI18n()
-
-  useEffect(() => {
-    authAttempts.updateFilters(prev => ({...prev, login: emailQueryParam ?? ''}))
-  }, [emailQueryParam])
-
-  useEffectFn(authAttempts.error, toastError)
+  const authAttempts = useSearchAuthAttemptsQuery({limit: 25, offset: 0, login: emailQueryParam ?? ''})
 
   const onEmailChange = useCallback((email: string) => {
     authAttempts.updateFilters(prev => ({...prev, login: email}))
@@ -52,8 +43,8 @@ export const UserAuthAttempts = () => {
             </DebouncedInput>
           </>
         }
-        loading={authAttempts.fetching}
-        total={authAttempts.list?.totalCount}
+        loading={authAttempts.result.isFetching}
+        total={authAttempts.result.data?.totalCount}
         paginate={{
           limit: authAttempts.filters.limit,
           offset: authAttempts.filters.offset,
@@ -62,7 +53,7 @@ export const UserAuthAttempts = () => {
         showColumnsToggle
         rowsPerPageOptions={[5, 10, 25, 100]}
         getRenderRowKey={_ => _.timestamp}
-        data={authAttempts.list?.entities}
+        data={authAttempts.result.data?.entities}
         columns={[
           {
             id: '',

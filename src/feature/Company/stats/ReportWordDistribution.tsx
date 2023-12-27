@@ -1,17 +1,13 @@
 import * as React from 'react'
-import {useEffect} from 'react'
 import {useI18n} from '../../../core/i18n'
 import {Box, Icon, List, ListItem, Skeleton, Tooltip} from '@mui/material'
 import {Panel, PanelBody, PanelHead} from '../../../shared/Panel'
-import {HorizontalBarChart, HorizontalBarChartData} from '../../../shared/Chart/HorizontalBarChart'
-import {useEffectFn, useFetcher} from '../../../alexlibs/react-hooks-lib'
-import {useToast} from '../../../core/toast'
+import {HorizontalBarChartData} from '../../../shared/Chart/HorizontalBarChart'
 import {useMemoFn} from '../../../alexlibs/react-hooks-lib'
 import {ScOption} from 'core/helper/ScOption'
-import {Id} from '../../../core/model'
-import {useLogin} from '../../../core/context/LoginContext'
 import {siteMap} from '../../../core/siteMap'
 import {NavLink} from 'react-router-dom'
+import {useGetCloudWordQuery} from '../../../core/queryhooks/reportQueryHooks'
 
 interface Props {
   companyId: string
@@ -19,16 +15,9 @@ interface Props {
 
 export const ReportWordDistribution = ({companyId}: Props) => {
   const {m} = useI18n()
-  const {apiSdk} = useLogin()
-  const _wordDistribution = useFetcher((companyId: Id) => apiSdk.secured.reports.getCloudWord(companyId))
-  const {toastError} = useToast()
-  useEffect(() => {
-    _wordDistribution.fetch({}, companyId)
-  }, [companyId])
+  const _wordDistribution = useGetCloudWordQuery(companyId)
 
-  useEffectFn(_wordDistribution.error, toastError)
-
-  const reviewDistribution: HorizontalBarChartData[] | undefined = useMemoFn(_wordDistribution.entity, _ =>
+  const reviewDistribution: HorizontalBarChartData[] | undefined = useMemoFn(_wordDistribution.data, _ =>
     _.length > 0
       ? Object.entries(_).map(([label, reportWordCount], index) => ({
           label: (
@@ -47,7 +36,7 @@ export const ReportWordDistribution = ({companyId}: Props) => {
   )
 
   return (
-    <Panel loading={_wordDistribution.loading}>
+    <Panel loading={_wordDistribution.isLoading}>
       <PanelHead>
         <Tooltip title={m.helpCloudWord}>
           <Box sx={{display: 'flex'}}>
@@ -58,7 +47,7 @@ export const ReportWordDistribution = ({companyId}: Props) => {
           </Box>
         </Tooltip>
       </PanelHead>
-      {ScOption.from(_wordDistribution.entity)
+      {ScOption.from(_wordDistribution.data)
         .map(_ => (
           <PanelBody>
             {reviewDistribution && reviewDistribution.length > 1 ? (

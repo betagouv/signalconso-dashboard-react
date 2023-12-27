@@ -1,9 +1,8 @@
 import {Panel, PanelBody, PanelHead} from '../../shared/Panel'
 import {Id} from '../../core/model'
-import {useApiContext} from '../../core/context/ApiContext'
-import {useQuery} from '@tanstack/react-query'
 import {WithInlineIcon} from '../../shared/WithInlineIcon'
 import {Chip, Tooltip} from '@mui/material'
+import {useGetBarcodeQuery} from '../../core/queryhooks/barcodeQueryHooks'
 
 interface ReportBarcodeProductProps {
   barcodeProductId: Id
@@ -26,11 +25,7 @@ const Row = ({label, value}: RowProps) => {
 }
 
 export const ReportBarcodeProduct = ({barcodeProductId}: ReportBarcodeProductProps) => {
-  const {api} = useApiContext()
-  const {data} = useQuery({
-    queryKey: ['barcode', barcodeProductId],
-    queryFn: () => api.secured.barcode.get(barcodeProductId),
-  })
+  const {data} = useGetBarcodeQuery(barcodeProductId)
 
   return (
     <Panel>

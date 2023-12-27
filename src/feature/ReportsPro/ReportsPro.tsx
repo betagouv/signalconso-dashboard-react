@@ -1,7 +1,6 @@
 import React, {useEffect, useMemo} from 'react'
 import {Page, PageTitle} from '../../shared/Page'
 import {Panel, PanelBody} from '../../shared/Panel'
-import {useReportsContext} from '../../core/context/ReportsContext'
 import {Datatable} from '../../shared/Datatable/Datatable'
 import {useI18n} from '../../core/i18n'
 import {Badge, Box, Grid, Icon, MenuItem} from '@mui/material'
@@ -22,12 +21,9 @@ import {
   mapDatesToQueryString,
   useQueryString,
 } from '../../core/helper/useQueryString'
-
-import {useToast} from '../../core/toast'
 import {config} from '../../conf/config'
 import {ExportReportsPopper} from '../../shared/ExportPopperBtn'
 import {PeriodPicker} from '../../shared/PeriodPicker'
-import {useCompaniesContext} from '../../core/context/CompaniesContext'
 import {SelectCompaniesByPro} from '../../shared/SelectCompaniesByPro/SelectCompaniesByPro'
 import compose from '../../core/helper/compose'
 import {DebouncedInput} from 'shared/DebouncedInput'
@@ -38,6 +34,8 @@ import {ReportSearch} from '../../core/client/report/ReportSearch'
 import {ScOption} from 'core/helper/ScOption'
 import {Label} from '../../shared/Label'
 import {ScInput} from '../../shared/ScInput'
+import {useGetAccessibleByProQuery} from '../../core/queryhooks/companyQueryHooks'
+import {useReportSearchQuery} from '../../core/queryhooks/reportQueryHooks'
 
 const css = makeSx({
   card: {
@@ -100,12 +98,16 @@ interface ReportFiltersQs {
 }
 
 export const ReportsPro = () => {
-  const _reports = useReportsContext()
-  const _companies = useCompaniesContext()
+  const queryString = useQueryString<Partial<ReportSearch>, Partial<ReportFiltersQs>>({
+    toQueryString: mapDatesToQueryString,
+    fromQueryString: compose(mapDateFromQueryString, mapArrayFromQuerystring(['status', 'siretSirenList', 'departments'])),
+  })
+
+  const _reports = useReportSearchQuery({offset: 0, limit: 10, ...queryString.get()})
+  const _accessibleByPro = useGetAccessibleByProQuery()
 
   const {isMobileWidth} = useLayoutContext()
   const history = useHistory()
-  const {toastError} = useToast()
   const {formatDate, m} = useI18n()
 
   const hasFilters = useMemo(() => {
@@ -114,19 +116,14 @@ export const ReportsPro = () => {
   }, [_reports.filters])
 
   const isFirstVisit = useMemo(
-    () => !hasFilters && _reports.list?.entities.every(_ => _.report.status === ReportStatus.TraitementEnCours),
-    [_reports.list],
+    () => !hasFilters && _reports.result.data?.entities.every(_ => _.report.status === ReportStatus.TraitementEnCours),
+    [_reports.result.data],
   )
 
   const displayFilters = useMemo(
-    () => (_reports.list && _reports.list.totalCount > minRowsBeforeDisplayFilters) || hasFilters,
-    [_reports.list],
+    () => (_reports.result.data && _reports.result.data.totalCount > minRowsBeforeDisplayFilters) || hasFilters,
+    [_reports.result.data],
   )
-
-  const queryString = useQueryString<Partial<ReportSearch>, Partial<ReportFiltersQs>>({
-    toQueryString: mapDatesToQueryString,
-    fromQueryString: compose(mapDateFromQueryString, mapArrayFromQuerystring(['status', 'siretSirenList', 'departments'])),
-  })
 
   const filtersCount = useMemo(() => {
     const {offset, limit, ...filters} = _reports.filters
@@ -134,21 +131,11 @@ export const ReportsPro = () => {
   }, [_reports.filters])
 
   useEffect(() => {
-    _companies.accessibleByPro.fetch({force: false})
-    _reports.updateFilters({..._reports.initialFilters, ...queryString.get()})
-  }, [])
-
-  useEffect(() => {
-    ScOption.from(_companies.accessibleByPro.error).map(toastError)
-    ScOption.from(_reports.error).map(toastError)
-  }, [_reports.error, _companies.accessibleByPro.error])
-
-  useEffect(() => {
     queryString.update(cleanObject(_reports.filters))
   }, [_reports.filters])
 
   return (
-    <Page size="xl" loading={_companies.accessibleByPro.loading || _companies.accessibleByPro.loading}>
+    <Page size="xl" loading={_accessibleByPro.isLoading}>
       <PageTitle
         action={
           <Btn
@@ -171,7 +158,7 @@ export const ReportsPro = () => {
           <span dangerouslySetInnerHTML={{__html: m.yourAccountIsActivated}} />
         </Alert>
       )}
-      {ScOption.from(_companies.accessibleByPro.entity)
+      {ScOption.from(_accessibleByPro.data)
         .map(companies => (
           <>
             {displayFilters && (
@@ -312,14 +299,15 @@ export const ReportsPro = () => {
                       </ScButton>
                     </Badge>
                     <ExportReportsPopper
-                      disabled={ScOption.from(_reports?.list?.totalCount)
+                      disabled={ScOption.from(_reports?.result.data?.totalCount)
                         .map(_ => _ > config.reportsLimitForExport)
                         .getOrElse(false)}
-                      tooltipBtnNew={ScOption.from(_reports?.list?.totalCount)
+                      tooltipBtnNew={ScOption.from(_reports?.result.data?.totalCount)
                         .map(_ =>
                           _ > config.reportsLimitForExport ? m.cannotExportMoreReports(config.reportsLimitForExport) : '',
                         )
                         .getOrElse('')}
+                      filters={_reports.filters}
                     >
                       <Btn variant="outlined" color="primary" icon="get_app">
                         {m.exportInXLS}
@@ -339,9 +327,9 @@ export const ReportsPro = () => {
                   limit: _reports.filters.limit,
                   onPaginationChange: pagination => _reports.updateFilters(prev => ({...prev, ...pagination})),
                 }}
-                data={_reports.list?.entities}
-                loading={_reports.fetching}
-                total={_reports.list?.totalCount}
+                data={_reports.result.data?.entities}
+                loading={_accessibleByPro.isLoading}
+                total={_reports.result.data?.totalCount}
                 onClickRows={(_, e) => {
                   if (e.metaKey || e.ctrlKey) {
                     openInNew(siteMap.logged.report(_.report.id))

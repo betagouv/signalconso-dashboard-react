@@ -2,13 +2,13 @@ import {Box, Button, Icon, Tooltip} from '@mui/material'
 import {extensionToType, FileType, reportFileConfig} from './reportFileConfig'
 import {useLogin} from '../../../core/context/LoginContext'
 import React, {useEffect} from 'react'
-import {useFetcher} from '../../../alexlibs/react-hooks-lib'
 import {makeSx, Modal} from '../../../alexlibs/mui-extension'
 import {useToast} from '../../../core/toast'
 import {useI18n} from '../../../core/i18n'
 import {UploadedFile} from '../../../core/client/file/UploadedFile'
 import {ScOption} from 'core/helper/ScOption'
 import {ReportFileDeleteButton} from './ReportFileDeleteButton'
+import {useMutation} from '@tanstack/react-query'
 
 export interface ReportFileProps {
   file: UploadedFile
@@ -44,19 +44,17 @@ const css = makeSx({
 export const ReportFile = ({file, onRemove}: ReportFileProps) => {
   const fileType = extensionToType(file.filename)
   const {apiSdk} = useLogin()
-  const _remove = useFetcher(apiSdk.secured.document.remove)
+  const _remove = useMutation({
+    mutationFn: apiSdk.secured.document.remove,
+    onSuccess: () => onRemove?.(file),
+  })
   const {toastError} = useToast()
   const {m} = useI18n()
 
   const fileUrl = ScOption.from(apiSdk.public.document.getLink(file)).toUndefined()
 
-  const remove = async () => {
-    await _remove.fetch({}, file)
-    onRemove?.(file)
-  }
-
   const RemoveButton = () => {
-    return onRemove ? <ReportFileDeleteButton filename={file.filename} onConfirm={remove} /> : <></>
+    return onRemove ? <ReportFileDeleteButton filename={file.filename} onConfirm={() => _remove.mutate(file)} /> : <></>
   }
 
   const DownloadButton = () => {

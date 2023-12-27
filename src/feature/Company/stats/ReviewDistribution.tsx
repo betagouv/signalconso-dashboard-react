@@ -1,16 +1,13 @@
 import * as React from 'react'
-import {useEffect} from 'react'
 import {useI18n} from '../../../core/i18n'
 import {Skeleton} from '@mui/material'
 import {Panel, PanelBody, PanelHead} from '../../../shared/Panel'
 import {HorizontalBarChart} from '../../../shared/Chart/HorizontalBarChart'
-import {useCompanyStats} from '../useCompanyStats'
-import {useEffectFn} from '../../../alexlibs/react-hooks-lib'
-import {Txt} from '../../../alexlibs/mui-extension'
-import {useToast} from '../../../core/toast'
-import {ReviewLabel} from './ReviewLabel'
 import {useMemoFn} from '../../../alexlibs/react-hooks-lib'
+import {Txt} from '../../../alexlibs/mui-extension'
+import {ReviewLabel} from './ReviewLabel'
 import {ScOption} from 'core/helper/ScOption'
+import {useGetResponseReviewsQuery} from '../../../core/queryhooks/statsQueryHooks'
 
 interface Props {
   companyId: string
@@ -18,15 +15,9 @@ interface Props {
 
 export const ReviewDistribution = ({companyId}: Props) => {
   const {m} = useI18n()
-  const _stats = useCompanyStats(companyId)
-  const {toastError} = useToast()
-  useEffect(() => {
-    _stats.responseReviews.fetch()
-  }, [companyId])
+  const _responseReviews = useGetResponseReviewsQuery(companyId)
 
-  useEffectFn(_stats.responseReviews.error, toastError)
-
-  const reviewDistribution = useMemoFn(_stats.responseReviews.entity, _ =>
+  const reviewDistribution = useMemoFn(_responseReviews.data, _ =>
     _.positive > 0 || _.negative > 0 || _.neutral > 0
       ? [
           {
@@ -63,7 +54,7 @@ export const ReviewDistribution = ({companyId}: Props) => {
   return (
     <Panel>
       <PanelHead>{m.consumerReviews}</PanelHead>
-      {ScOption.from(_stats.responseReviews.entity)
+      {ScOption.from(_responseReviews.data)
         .map(_ => (
           <PanelBody>
             <Txt color="hint" block sx={{mb: 3}}>

@@ -1,28 +1,28 @@
 import {
   Address,
   CompanySearchResult,
+  Country,
+  Event,
   Id,
   PaginatedData,
   PaginatedFilters,
   paginateFilters2QueryString,
   Report,
   ReportAction,
+  ReportConsumerUpdate,
+  ReportDeletionReason,
   ReportResponse,
   ReportSearch,
   ReportSearchResult,
   ReportTag,
   ReportWordCount,
   ResponseConsumerReview,
-  ReportConsumerUpdate,
-  Event,
-  Country,
-  ReportDeletionReason,
   FileOrigin,
 } from '../../model'
 import {ApiSdkLogger} from '../../helper/Logger'
 import {ApiClientApi} from '../ApiClient'
 import {cleanObject, dateToApiDate, dateToApiTime, directDownloadBlob} from '../../helper'
-import {ReportNode, ReportNodes} from './ReportNode'
+import {ReportNodes} from './ReportNode'
 import {ReportNodeSearch} from './ReportNodeSearch'
 
 export interface ReportFilterQuerystring {
@@ -138,9 +138,7 @@ export class ReportsClient {
   }
 
   readonly getReviewOnReportResponse = (reportId: Id) => {
-    return this.client
-      .get<ResponseConsumerReview | null>(`/reports/${reportId}/response/review`)
-      .then(ReportsClient.mapConsumerReview)
+    return this.client.get<ResponseConsumerReview>(`/reports/${reportId}/response/review`).then(ReportsClient.mapConsumerReview)
   }
 
   readonly generateConsumerNotificationAsPDF = (reportId: Id) => {
@@ -222,12 +220,7 @@ export class ReportsClient {
     country: address.country?.name,
   })
 
-  static readonly mapConsumerReview = (
-    _: null | {[key in keyof ResponseConsumerReview]: any},
-  ): ResponseConsumerReview | undefined => {
-    if (!_) {
-      return undefined
-    }
+  static readonly mapConsumerReview = (_: {[key in keyof ResponseConsumerReview]: any}): ResponseConsumerReview => {
     return {
       ..._,
       creationDate: new Date(_.creationDate),
