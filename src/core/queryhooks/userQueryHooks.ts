@@ -4,6 +4,7 @@ import {RoleAdminOrAgent, RoleAgents, roleAgents, User, UserPending} from '../cl
 import {UseQueryOpts} from './types'
 import {useQuery} from '@tanstack/react-query'
 import {TokenInfo} from '../client/authenticate/Authenticate'
+import {AuthAttemptsSearch} from '../client/auth-attempts/AuthAttemptClient'
 
 export const SearchAdminQueryKeys = ['user_searchAdmin']
 export const SearchAgentQueryKeys = ['user_searchAgent']
@@ -44,13 +45,13 @@ export const useSearchAgentQuery = (enabled: boolean) => {
   )
 }
 
-export const useSearchAuthAttemptsQuery = () => {
+export const useSearchAuthAttemptsQuery = (filters: AuthAttemptsSearch) => {
   const {api} = useApiContext()
   const defaultFilters: {limit: number; offset: number; login?: string} = {
     limit: 25,
     offset: 0,
   }
-  return useQueryPaginate(SearchAuthAttemptsQueryKeys, api.secured.authAttemptClient.fetch, defaultFilters)
+  return useQueryPaginate(SearchAuthAttemptsQueryKeys, api.secured.authAttemptClient.fetch, defaultFilters, filters)
 }
 
 export const useGetConnectedUserQuery = (options?: UseQueryOpts<User, string[]>) => {

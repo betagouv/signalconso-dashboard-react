@@ -1,7 +1,7 @@
 import {Panel} from '../../shared/Panel'
 import {Datatable} from '../../shared/Datatable/Datatable'
 import {useI18n} from '../../core/i18n'
-import React, {useCallback, useEffect} from 'react'
+import React, {useCallback} from 'react'
 import {Icon, InputBase} from '@mui/material'
 import {Txt} from '../../alexlibs/mui-extension'
 import {DebouncedInput} from '../../shared/DebouncedInput'
@@ -10,15 +10,11 @@ import {useSearchAuthAttemptsQuery} from '../../core/queryhooks/userQueryHooks'
 
 export const UserAuthAttempts = () => {
   const {m} = useI18n()
-  const authAttempts = useSearchAuthAttemptsQuery()
   const location = useLocation()
   const queryParams = new URLSearchParams(location.search)
   const emailQueryParam = queryParams.get('email')
   const {formatDateTime} = useI18n()
-
-  useEffect(() => {
-    authAttempts.updateFilters(prev => ({...prev, login: emailQueryParam ?? ''}))
-  }, [emailQueryParam])
+  const authAttempts = useSearchAuthAttemptsQuery({limit: 25, offset: 0, login: emailQueryParam ?? ''})
 
   const onEmailChange = useCallback((email: string) => {
     authAttempts.updateFilters(prev => ({...prev, login: email}))
