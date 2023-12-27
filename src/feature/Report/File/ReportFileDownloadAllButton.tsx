@@ -17,7 +17,7 @@ export function ReportFileDeleteButton({report, fileOrigin}: {report: Report; fi
       api.secured.reports.downloadAll(params.report, params.fileOrigin),
   })
 
-  const download = async (event: any) => {
+  const download = (event: any) => {
     event.preventDefault() // Prevent default link behavior
     downloadReport.mutate({report, fileOrigin})
   }
