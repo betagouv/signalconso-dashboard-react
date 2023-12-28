@@ -2,14 +2,12 @@ import {ScInput} from '../ScInput'
 import {IconBtn} from '../../alexlibs/mui-extension'
 import {Divider, Icon} from '@mui/material'
 import {SelectCompanyList} from './SelectCompanyList'
-import React, {useEffect, useState} from 'react'
+import React, {useState} from 'react'
 import {useI18n} from '../../core/i18n'
-import {useCompaniesContext} from '../../core/context/CompaniesContext'
-
-import {useEffectFn} from '../../alexlibs/react-hooks-lib'
 import {CompanySearchResult} from '../../core/client/company/Company'
 import {Id} from '../../core/model'
-import {ScOption} from 'core/helper/ScOption'
+import {useSearchByIdentityQuery} from '../../core/queryhooks/companyQueryHooks'
+import {useQueryClient} from '@tanstack/react-query'
 
 export interface SelectCompanyProps {
   siret?: Id
@@ -19,19 +17,10 @@ export interface SelectCompanyProps {
 
 export const SelectCompany = ({siret, onChange, openOnly}: SelectCompanyProps) => {
   const {m} = useI18n()
-  const _company = useCompaniesContext().searchByIdentity
+  const queryClient = useQueryClient()
   const [inputValue, setInputValue] = useState<Id | undefined>(siret)
-
-  const search = () => {
-    if (inputValue) _company.fetch({}, inputValue, openOnly ?? true)
-  }
-
-  useEffect(() => {
-    _company.clearCache()
-    ScOption.from(siret)
-      .filter(x => x === inputValue)
-      .map(setInputValue)
-  }, [siret])
+  const [inputSiret, setInputSiret] = useState<Id | undefined>(siret)
+  const _company = useSearchByIdentityQuery(inputSiret!, openOnly ?? true, {enabled: !!inputSiret})
 
   return (
     <>
@@ -52,20 +41,20 @@ export const SelectCompany = ({siret, onChange, openOnly}: SelectCompanyProps) =
               <IconBtn
                 onClick={() => {
                   setInputValue(undefined)
-                  _company.clearCache()
+                  setInputSiret(undefined)
                 }}
               >
                 <Icon>clear</Icon>
               </IconBtn>
               <Divider sx={{my: 0.25}} orientation="vertical" variant="middle" flexItem />
-              <IconBtn loading={_company.loading} color="primary" sx={{mr: -1.5}} onClick={search}>
+              <IconBtn loading={_company.isLoading} color="primary" sx={{mr: -1.5}} onClick={() => setInputSiret(inputValue)}>
                 <Icon>search</Icon>
               </IconBtn>
             </>
           ),
         }}
       />
-      {_company.entity && <SelectCompanyList companies={_company.entity} onChange={onChange} />}
+      {inputSiret && _company.data && <SelectCompanyList companies={_company.data} onChange={onChange} />}
     </>
   )
 }

@@ -1,6 +1,5 @@
-import React, {ReactElement, useEffect, useState} from 'react'
+import React, {ReactElement, useState} from 'react'
 import {useI18n} from '../../core/i18n'
-import {useCompaniesContext} from '../../core/context/CompaniesContext'
 
 import {ScDialog} from '../ScDialog'
 import {SelectCompany, SelectCompanyProps} from './SelectCompany'

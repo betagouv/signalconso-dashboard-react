@@ -3,14 +3,16 @@ import {Box} from '@mui/material'
 import {Btn, Txt} from '../../alexlibs/mui-extension'
 import {ReportFiles} from './File/ReportFiles'
 import React, {ReactNode} from 'react'
-import {useReportContext} from '../../core/context/ReportContext'
 import {useLogin} from '../../core/context/LoginContext'
 import {useI18n} from '../../core/i18n'
 import {Divider} from '../../shared/Divider'
-import {EventActionValues} from '../../core/client/event/Event'
+import {EventActionValues, ReportAction} from '../../core/client/event/Event'
 import {FileOrigin, UploadedFile} from '../../core/client/file/UploadedFile'
 import {Report} from '../../core/client/report/Report'
 import {ReportFileDeleteButton} from './File/ReportFileDownloadAllButton'
+import {useMutation, useQueryClient} from '@tanstack/react-query'
+import {Id} from '../../core/model'
+import {GetReportQueryKeys} from '../../core/queryhooks/reportQueryHooks'
 
 interface Props {
   files?: UploadedFile[]
@@ -19,9 +21,15 @@ interface Props {
 }
 
 export const ReportDescription = ({report, files, children}: Props) => {
-  const _report = useReportContext()
-  const {connectedUser} = useLogin()
+  const {connectedUser, apiSdk} = useLogin()
+  const queryClient = useQueryClient()
   const {m} = useI18n()
+
+  const postAction = useMutation({
+    mutationFn: (params: {id: Id; action: ReportAction}) => apiSdk.secured.reports.postAction(params.id, params.action),
+    onSuccess: () => queryClient.invalidateQueries({queryKey: GetReportQueryKeys(report.id)}),
+  })
+
   return (
     <Panel>
       <PanelBody>
@@ -47,13 +55,14 @@ export const ReportDescription = ({report, files, children}: Props) => {
           reportId={report.id}
           fileOrigin={FileOrigin.Consumer}
           onNewFile={file => {
-            _report.postAction
-              .fetch({}, report.id, {
+            postAction.mutate({
+              id: report.id,
+              action: {
                 details: '',
                 fileIds: [file.id],
                 actionType: EventActionValues.ConsumerAttachments,
-              })
-              .then(() => _report.get.fetch({force: true, clean: false}, report.id))
+              },
+            })
           }}
         />
         {children && (

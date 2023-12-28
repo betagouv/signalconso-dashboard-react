@@ -1,50 +1,48 @@
 import {Box, Checkbox, Icon, Tooltip} from '@mui/material'
-import {SyntheticEvent, useEffect} from 'react'
+import {SyntheticEvent} from 'react'
 import {Link} from 'react-router-dom'
 import {Fender, IconBtn, Txt} from '../../alexlibs/mui-extension'
 import {useSetState} from '../../alexlibs/react-hooks-lib'
 import {usePersistentState} from '../../alexlibs/react-persistent-state'
 import {EntityIcon} from '../../core/EntityIcon'
-import {useCompaniesContext} from '../../core/context/CompaniesContext'
 import {useI18n} from '../../core/i18n'
 import {Id} from '../../core/model'
 import {siteMap} from '../../core/siteMap'
 import {styleUtils, sxUtils} from '../../core/theme'
-import {useToast} from '../../core/toast'
 import {AddressComponent} from '../../shared/Address'
 import {ScButton} from '../../shared/Button'
 import {ScDialog} from '../../shared/ScDialog'
 import {Datatable} from '../../shared/Datatable/Datatable'
 import {DatatableToolbar} from '../../shared/Datatable/DatatableToolbar'
 import {Panel} from '../../shared/Panel'
+import {CompanyToActivateSearchQueryKeys, useCompanyToActivateSearchQuery} from '../../core/queryhooks/companyQueryHooks'
+import {useMutation, useQueryClient} from '@tanstack/react-query'
+import {useApiContext} from '../../core/context/ApiContext'
 
 export const CompaniesToActivate = () => {
   const {m, formatDate} = useI18n()
-  const _companies = useCompaniesContext()
-  const _companiesToActivate = _companies.toActivate
+  const {api} = useApiContext()
+  const queryClient = useQueryClient()
+  const _companiesToActivate = useCompanyToActivateSearchQuery()
+  const _confirmCompaniesPosted = useMutation({
+    mutationFn: api.secured.company.confirmCompaniesPosted,
+    onSuccess: () => queryClient.invalidateQueries({queryKey: CompanyToActivateSearchQueryKeys}).then(unselectAll),
+  })
+  const _downloadActivationDocument = useMutation({mutationFn: api.secured.company.downloadActivationDocument})
 
   const [selectedCompanies, setSelectedCompanies] = usePersistentState<string[]>([], 'CompaniesToActivate')
   const selectedCompaniesSet = useSetState(selectedCompanies)
-  const {toastError, toastErrorIfDefined} = useToast()
-
-  useEffect(() => {
-    _companiesToActivate.fetch()
-  }, [])
-
-  useEffect(() => {
-    toastErrorIfDefined(_companiesToActivate.error)
-  }, [_companiesToActivate.error])
 
   const toggleSelectedCompany = (companyId: Id) => {
     selectedCompaniesSet.has(companyId) ? selectedCompaniesSet.delete(companyId) : selectedCompaniesSet.add(companyId)
     setSelectedCompanies(selectedCompaniesSet.toArray())
   }
 
-  const allChecked = selectedCompaniesSet.size === (_companiesToActivate.list?.entities.length ?? 0)
+  const allChecked = selectedCompaniesSet.size === (_companiesToActivate.result.data?.entities.length ?? 0)
 
   const selectAll = () => {
     if (selectedCompaniesSet.size === 0 && !allChecked)
-      selectedCompaniesSet.reset(_companiesToActivate.list?.entities.map(_ => _.company.id))
+      selectedCompaniesSet.reset(_companiesToActivate.result.data?.entities.map(_ => _.company.id))
     else selectedCompaniesSet.clear()
     setSelectedCompanies(selectedCompaniesSet.toArray())
   }
@@ -55,14 +53,7 @@ export const CompaniesToActivate = () => {
   }
 
   const confirmCompaniesPosted = (event: SyntheticEvent<any>, closeDialog: () => void) => {
-    _companies.confirmCompaniesPosted
-      .fetch({}, selectedCompaniesSet.toArray())
-      .then(() => {
-        _companiesToActivate.fetch({clean: false})
-      })
-      .then(unselectAll)
-      .catch(toastError)
-      .finally(closeDialog)
+    _confirmCompaniesPosted.mutateAsync(selectedCompaniesSet.toArray()).finally(closeDialog)
   }
 
   return (
@@ -80,26 +71,24 @@ export const CompaniesToActivate = () => {
         header={
           <DatatableToolbar
             onClear={selectedCompaniesSet.clear}
-            open={!_companiesToActivate.fetching && selectedCompaniesSet.size > 0}
+            open={!_companiesToActivate.result.isFetching && selectedCompaniesSet.size > 0}
             actions={
               <>
                 <ScButton
-                  disabled={_companiesToActivate.fetching || selectedCompaniesSet.size === 0}
-                  loading={_companies.downloadActivationDocument.loading}
+                  disabled={_companiesToActivate.result.isFetching || selectedCompaniesSet.size === 0}
+                  loading={_downloadActivationDocument.isPending}
                   color="primary"
                   variant="outlined"
                   icon="file_download"
                   sx={{mr: 1}}
-                  onClick={() =>
-                    _companies.downloadActivationDocument.fetch({}, selectedCompaniesSet.toArray()).catch(toastError)
-                  }
+                  onClick={() => _downloadActivationDocument.mutate(selectedCompaniesSet.toArray())}
                 >
                   {m.downloadNotice}
                 </ScButton>
                 <ScDialog title={m.validateLetterSentTitle} content={m.validateLetterSentDesc} onConfirm={confirmCompaniesPosted}>
                   <ScButton
-                    disabled={_companiesToActivate.fetching || selectedCompaniesSet.size === 0}
-                    loading={_companies.confirmCompaniesPosted.loading}
+                    disabled={_companiesToActivate.result.isFetching || selectedCompaniesSet.size === 0}
+                    loading={_confirmCompaniesPosted.isPending}
                     sx={{mr: 1}}
                     color="error"
                     variant="contained"
@@ -114,14 +103,14 @@ export const CompaniesToActivate = () => {
             <Txt bold>{selectedCompaniesSet.size}</Txt>&nbsp;{m.selectedCompanies}
           </DatatableToolbar>
         }
-        loading={_companiesToActivate.fetching}
-        data={_companiesToActivate.list?.entities}
+        loading={_companiesToActivate.result.isFetching}
+        data={_companiesToActivate.result.data?.entities}
         paginate={{
           offset: _companiesToActivate.filters.offset,
           limit: _companiesToActivate.filters.limit,
           onPaginationChange: pagination => _companiesToActivate.updateFilters(prev => ({...prev, ...pagination})),
         }}
-        total={_companiesToActivate.list?.totalCount}
+        total={_companiesToActivate.result.data?.totalCount}
         getRenderRowKey={_ => _.company.id}
         showColumnsToggle={true}
         rowsPerPageOptions={[5, 10, 25, 100, 250]}
@@ -131,7 +120,7 @@ export const CompaniesToActivate = () => {
               <Checkbox
                 indeterminate={!allChecked && selectedCompaniesSet.size > 0}
                 checked={allChecked}
-                disabled={_companiesToActivate.fetching}
+                disabled={_companiesToActivate.result.isFetching}
                 onClick={selectAll}
               />
             ),

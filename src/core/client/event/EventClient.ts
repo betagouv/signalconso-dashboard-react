@@ -1,5 +1,5 @@
 import {ApiClientApi} from '../ApiClient'
-import {Id, ReportEvent, Event} from '../../model'
+import {Event, Id, ReportEvent} from '../../model'
 
 export class EventClient {
   constructor(private client: ApiClientApi) {}

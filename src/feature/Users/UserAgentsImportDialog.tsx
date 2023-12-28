@@ -2,13 +2,15 @@ import {useI18n} from '../../core/i18n'
 import React from 'react'
 import {Controller, useForm} from 'react-hook-form'
 import {RoleAgents} from '../../core/client/user/User'
-import {useUsersContext} from '../../core/context/UsersContext'
 import {useToast} from '../../core/toast'
 import {ScDialog} from '../../shared/ScDialog'
 import {ScOption} from '../../core/helper/ScOption'
 import {Alert, Txt} from '../../alexlibs/mui-extension'
 import {ToggleButton, ToggleButtonGroup} from '@mui/material'
 import {ScButton} from '../../shared/Button'
+import {useMutation} from '@tanstack/react-query'
+import {ApiError} from '../../core/client/ApiClient'
+import {useApiContext} from '../../core/context/ApiContext'
 
 export const UserAgentsImportDialog = () => {
   const {m} = useI18n()
@@ -18,10 +20,12 @@ export const UserAgentsImportDialog = () => {
     control,
     formState: {isValid},
   } = useForm<{role: RoleAgents; emailFiles: FileList}>({mode: 'onChange'})
-  const usersContext = useUsersContext()
+  const {api} = useApiContext()
   const {toastSuccess} = useToast()
 
-  const _invite = usersContext.importAgents
+  const _invite = useMutation<void, ApiError, {file: File; role: RoleAgents}, unknown>({
+    mutationFn: (params: {file: File; role: RoleAgents}) => api.secured.user.importAgents(params.file, params.role),
+  })
 
   return (
     <ScDialog
@@ -30,19 +34,19 @@ export const UserAgentsImportDialog = () => {
         handleSubmit(({role, emailFiles}) => {
           if (emailFiles && emailFiles[0]) {
             _invite
-              .fetch({}, emailFiles[0], role)
+              .mutateAsync({file: emailFiles[0], role})
               .then(() => toastSuccess(m.userInvitationsSent))
               .then(close)
           }
         })()
       }}
       confirmLabel="Importer"
-      loading={_invite?.loading}
+      loading={_invite.isPending}
       confirmDisabled={!isValid}
       title="Inviter des agents"
       content={
         <>
-          {ScOption.from(_invite?.error?.details?.id)
+          {ScOption.from(_invite.error?.details?.id)
             .map(errId => (
               <Alert dense type="error" deletable gutterBottom>
                 {m.apiErrorsCode[errId as keyof typeof m.apiErrorsCode]}

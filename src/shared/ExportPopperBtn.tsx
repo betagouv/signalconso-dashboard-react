@@ -1,23 +1,23 @@
 import React, {ReactElement, ReactNode, useEffect, useState} from 'react'
-import {Btn} from '../alexlibs/mui-extension'
+import {Btn, Txt} from '../alexlibs/mui-extension'
 import {Box, CircularProgress, Icon, Menu, MenuItem, Tooltip} from '@mui/material'
 import {useI18n} from '../core/i18n'
-import {useAsyncFileContext} from '../core/context/AsyncFileContext'
-import {Txt} from '../alexlibs/mui-extension'
-import {useReportedPhonesContext} from '../core/context/ReportedPhonesContext'
 import {useInterval} from '../alexlibs/react-hooks-lib'
-import {Fetch} from '../alexlibs/react-hooks-lib'
-import {useReportsContext} from '../core/context/ReportsContext'
-import {useUnregistredWebsiteWithCompanyContext} from '../core/context/UnregistredWebsitesContext'
 import {AsyncFile, AsyncFileKind, AsyncFileStatus} from '../core/client/async-file/AsyncFile'
 import {fnSwitch} from '../alexlibs/ts-utils'
+import {ReportedPhoneSearch} from '../core/client/reported-phone/ReportedPhone'
+import {HostReportCountSearch} from '../core/client/website/Website'
+import {ReportSearch} from '../core/client/report/ReportSearch'
+import {PaginatedFilters} from '../core/model'
+import {useMutation, useQuery} from '@tanstack/react-query'
+import {useApiContext} from '../core/context/ApiContext'
 
 interface Props {
   className?: string
   disabled?: boolean
   tooltipBtnNew?: string
   loading?: boolean
-  fetch: Fetch<() => Promise<any>>
+  fetch: () => Promise<any>
   files?: AsyncFile[]
   fileType: AsyncFileKind
   onNewExport: () => Promise<any>
@@ -60,13 +60,13 @@ export const ExportPopperBtn = ({
 
   useInterval(() => {
     if (anchorEl !== null) {
-      fetch({clean: false})
+      fetch()
     }
   }, 2000)
 
   useEffect(() => {
     if (anchorEl !== null) {
-      fetch({clean: true, force: true}).then(() => setInitialLoading(false))
+      fetch().then(() => setInitialLoading(false))
     }
   }, [anchorEl])
 
@@ -94,7 +94,7 @@ export const ExportPopperBtn = ({
                 size="small"
                 sx={{width: '100%'}}
                 icon="add"
-                onClick={() => onNewExport().then(() => fetch({clean: false}))}
+                onClick={() => onNewExport().then(fetch)}
               >
                 {m.exportInXLS}
               </Btn>
@@ -168,55 +168,59 @@ export const ExportPopperBtn = ({
   )
 }
 
-interface ExportReportProps {
+interface ExportReportProps<S> {
   className?: string
   children: ReactElement<any>
   disabled?: boolean
   onClick?: (event: any) => void
   tooltipBtnNew?: string
+  filters: S
 }
 
-export const ExportPhonesPopper = (props: ExportReportProps) => {
-  const _asyncFile = useAsyncFileContext()
-  const _reportPhone = useReportedPhonesContext()
+export const ExportPhonesPopper = (props: ExportReportProps<ReportedPhoneSearch>) => {
+  const {api} = useApiContext()
+  const _asyncFile = useQuery({queryKey: ['asyncFiles_fetch'], queryFn: api.secured.asyncFiles.fetch, enabled: false})
+  const _extract = useMutation({mutationFn: () => api.secured.reportedPhone.extract(props.filters)})
   return (
     <ExportPopperBtn
       {...props}
-      loading={_asyncFile.loading}
+      loading={_asyncFile.isPending}
       fileType={AsyncFileKind.ReportedPhones}
-      onNewExport={_reportPhone.extract.fetch}
-      fetch={_asyncFile.fetch}
-      files={_asyncFile.entity}
+      onNewExport={_extract.mutateAsync}
+      fetch={() => _asyncFile.refetch()}
+      files={_asyncFile.data}
     />
   )
 }
 
-export const ExportReportsPopper = (props: ExportReportProps) => {
-  const _asyncFile = useAsyncFileContext()
-  const _reports = useReportsContext()
+export const ExportReportsPopper = (props: ExportReportProps<ReportSearch & PaginatedFilters>) => {
+  const {api} = useApiContext()
+  const _asyncFile = useQuery({queryKey: ['asyncFiles_fetch'], queryFn: api.secured.asyncFiles.fetch, enabled: false})
+  const _extract = useMutation({mutationFn: () => api.secured.reports.extract(props.filters)})
   return (
     <ExportPopperBtn
       {...props}
-      loading={_asyncFile.loading}
+      loading={_asyncFile.isPending}
       fileType={AsyncFileKind.Reports}
-      onNewExport={_reports.extract}
-      fetch={_asyncFile.fetch}
-      files={_asyncFile.entity}
+      onNewExport={_extract.mutateAsync}
+      fetch={() => _asyncFile.refetch()}
+      files={_asyncFile.data}
     />
   )
 }
 
-export const ExportUnknownWebsitesPopper = (props: ExportReportProps) => {
-  const _asyncFile = useAsyncFileContext()
-  const _extract = useUnregistredWebsiteWithCompanyContext()
+export const ExportUnknownWebsitesPopper = (props: ExportReportProps<HostReportCountSearch>) => {
+  const {api} = useApiContext()
+  const _asyncFile = useQuery({queryKey: ['asyncFiles_fetch'], queryFn: api.secured.asyncFiles.fetch, enabled: false})
+  const _extract = useMutation({mutationFn: () => api.secured.website.extractUnregistered(props.filters)})
   return (
     <ExportPopperBtn
       {...props}
-      loading={_asyncFile.loading}
+      loading={_asyncFile.isPending}
       fileType={AsyncFileKind.ReportedWebsites}
-      onNewExport={_extract.extractUnregistered.fetch}
-      fetch={_asyncFile.fetch}
-      files={_asyncFile.entity}
+      onNewExport={_extract.mutateAsync}
+      fetch={() => _asyncFile.refetch()}
+      files={_asyncFile.data}
     />
   )
 }

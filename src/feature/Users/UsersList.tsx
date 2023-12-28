@@ -1,13 +1,9 @@
 import {Icon, InputBase, Tooltip} from '@mui/material'
-import React, {useCallback, useEffect} from 'react'
-import {Txt} from '../../alexlibs/mui-extension'
-import {useUsersContext} from '../../core/context/UsersContext'
+import React, {useCallback} from 'react'
+import {IconBtn, Txt} from '../../alexlibs/mui-extension'
 import {useI18n} from '../../core/i18n'
 import {Datatable, DatatableColumnProps} from '../../shared/Datatable/Datatable'
 import {Panel, PanelHead} from '../../shared/Panel'
-
-import {ScOption} from 'core/helper/ScOption'
-import {IconBtn} from '../../alexlibs/mui-extension'
 import {isUserActive, RoleAgents, roleAgents, User} from '../../core/client/user/User'
 import {useToast} from '../../core/toast'
 import {ScDialog} from '../../shared/ScDialog'
@@ -20,6 +16,14 @@ import {UserAdminInvitationDialog} from './UserAdminInvitationDialog'
 import {UserAgentsImportDialog} from './UserAgentsImportDialog'
 import {NavLink} from 'react-router-dom'
 import {siteMap} from '../../core/siteMap'
+import {
+  SearchAdminQueryKeys,
+  SearchAgentQueryKeys,
+  useSearchAdminQuery,
+  useSearchAgentQuery,
+} from '../../core/queryhooks/userQueryHooks'
+import {useMutation, useQueryClient} from '@tanstack/react-query'
+import {useApiContext} from '../../core/context/ApiContext'
 
 export const AdminUsersList = () => <UsersList adminView />
 export const AgentUsersList = () => <UsersList />
@@ -30,18 +34,26 @@ interface Props {
 
 const UsersList = ({adminView}: Props) => {
   const {m, formatDate} = useI18n()
-  const usersContext = useUsersContext()
-  const _users = adminView ? usersContext.searchAdmin : usersContext.searchAgent
-  const _validateEmail = usersContext.forceValidateEmail
-  const {toastError, toastSuccess} = useToast()
-
-  useEffect(() => {
-    _users.fetch()
-  }, [])
-
-  useEffect(() => {
-    ScOption.from(_users.error).map(toastError)
-  }, [_users.error])
+  const {api} = useApiContext()
+  const queryClient = useQueryClient()
+  const {toastSuccess} = useToast()
+  const _admins = useSearchAdminQuery(!!adminView)
+  const _agents = useSearchAgentQuery(!adminView)
+  const _users = adminView ? _admins : _agents
+  const invalidate = () => {
+    if (adminView) {
+      return queryClient.invalidateQueries({queryKey: SearchAdminQueryKeys})
+    } else {
+      return queryClient.invalidateQueries({queryKey: SearchAgentQueryKeys})
+    }
+  }
+  const _validateEmail = useMutation({
+    mutationFn: api.secured.user.forceValidateEmail,
+    onSuccess: () => {
+      toastSuccess(m.userValidationDone)
+      return invalidate()
+    },
+  })
 
   const extraColumnsForDgccrf: DatatableColumnProps<User>[] = [
     {
@@ -64,13 +76,7 @@ const UsersList = ({adminView}: Props) => {
       render: _ => (
         <ScDialog
           title={m.activateUser(_.email)}
-          onConfirm={(event, close) =>
-            _validateEmail
-              .fetch({}, _.email)
-              .then(_ => _users.fetch())
-              .then(_ => close())
-              .then(_ => toastSuccess(m.userValidationDone))
-          }
+          onConfirm={(event, close) => _validateEmail.mutateAsync(_.email).then(_ => close())}
           maxWidth="xs"
         >
           {isUserActive(_) ? (
@@ -132,7 +138,7 @@ const UsersList = ({adminView}: Props) => {
     },
     {
       id: 'delete',
-      render: _ => <UserDeleteButton userId={_.id} onDelete={_users.fetch} />,
+      render: _ => <UserDeleteButton userId={_.id} onDelete={invalidate} />,
     },
   ]
 
@@ -194,17 +200,17 @@ const UsersList = ({adminView}: Props) => {
               />
             </>
           }
-          loading={_users.fetching}
-          total={_users.list?.totalCount}
+          loading={_users.result.isFetching}
+          total={_users.result.data?.totalCount}
           paginate={{
             limit: _users.filters.limit,
             offset: _users.filters.offset,
             onPaginationChange: pagination => _users.updateFilters(prev => ({...prev, ...pagination})),
           }}
           showColumnsToggle
-          rowsPerPageOptions={[5, 10, 25, 100, ...(_users.list ? [_users.list.totalCount] : [])]}
+          rowsPerPageOptions={[5, 10, 25, 100, ...(_users.result.data ? [_users.result.data.totalCount] : [])]}
           getRenderRowKey={_ => _.email}
-          data={_users.list?.entities}
+          data={_users.result.data?.entities}
           columns={columns}
         />
       </Panel>

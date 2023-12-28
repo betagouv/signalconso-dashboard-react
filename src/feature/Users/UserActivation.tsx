@@ -1,11 +1,11 @@
 import {Box, Checkbox, FormControl, FormControlLabel, FormHelperText, TextField} from '@mui/material'
 import {validatePasswordComplexity} from 'core/helper/passwordComplexity'
-import {useEffect, useMemo} from 'react'
+import {useMemo} from 'react'
 import {Controller, useForm} from 'react-hook-form'
 import {useHistory, useLocation, useParams} from 'react-router'
 import {PasswordRequirementsDesc} from 'shared/PasswordRequirementsDesc'
-import {Alert, Txt, makeSx} from '../../alexlibs/mui-extension'
-import {useAsync, useFetcher} from '../../alexlibs/react-hooks-lib'
+import {Alert, makeSx, Txt} from '../../alexlibs/mui-extension'
+import {useAsync} from '../../alexlibs/react-hooks-lib'
 import {TokenInfo} from '../../core/client/authenticate/Authenticate'
 import {UserToActivate} from '../../core/client/user/User'
 import {QueryString} from '../../core/helper/useQueryString'
@@ -17,6 +17,7 @@ import {ScButton} from '../../shared/Button'
 import {Page, PageTitle} from '../../shared/Page'
 import {Panel, PanelBody} from '../../shared/Panel'
 import {ScInputPassword} from '../../shared/ScInputPassword'
+import {useQuery} from '@tanstack/react-query'
 
 interface UserActivationForm extends UserToActivate {
   repeatPassword: string
@@ -40,7 +41,6 @@ interface Props {
 export const UserActivation = ({onActivateUser, onFetchTokenInfo}: Props) => {
   const {m} = useI18n()
   const _activate = useAsync(onActivateUser)
-  const _tokenInfo = useFetcher(onFetchTokenInfo)
   const {toastSuccess, toastError} = useToast()
 
   const {search} = useLocation()
@@ -61,14 +61,12 @@ export const UserActivation = ({onActivateUser, onFetchTokenInfo}: Props) => {
 
   const urlToken = useMemo(() => QueryString.parse(search.replace(/^\?/, '')).token as string, [])
 
-  useEffect(() => {
-    _tokenInfo.fetch({}, urlToken, siret)
-  }, [])
+  const _tokenInfo = useQuery({queryKey: [''], queryFn: () => onFetchTokenInfo(urlToken, siret)})
 
   const onSubmit = (form: UserActivationForm) => {
-    if (!_tokenInfo.entity) return
+    if (!_tokenInfo.data) return
     _activate
-      .call({...form, email: _tokenInfo.entity.emailedTo}, urlToken, siret)
+      .call({...form, email: _tokenInfo.data.emailedTo}, urlToken, siret)
       .then(_ => {
         Matomo.trackEvent(EventCategories.account, AccountEventActions.registerUser, ActionResultNames.success)
         toastSuccess(m.accountActivated)
@@ -84,7 +82,7 @@ export const UserActivation = ({onActivateUser, onFetchTokenInfo}: Props) => {
     <Page size="s">
       <PageTitle>{m.finishCreatingMyAccount}</PageTitle>
 
-      <Panel loading={_tokenInfo.loading}>
+      <Panel loading={_tokenInfo.isLoading}>
         {_tokenInfo.error ? (
           <Alert type="error" sx={sx.hint}>
             <Txt size="big" block bold gutterBottom>
@@ -93,7 +91,7 @@ export const UserActivation = ({onActivateUser, onFetchTokenInfo}: Props) => {
             <div dangerouslySetInnerHTML={{__html: m.cannotActivateAccountAlertInfo}} />
           </Alert>
         ) : (
-          _tokenInfo.entity && (
+          _tokenInfo.data && (
             <form onSubmit={handleSubmit(onSubmit)}>
               <PanelBody>
                 <TextField
@@ -103,7 +101,7 @@ export const UserActivation = ({onActivateUser, onFetchTokenInfo}: Props) => {
                   helperText={errors.email?.message ?? ' '}
                   disabled={true}
                   label={m.email}
-                  value={_tokenInfo.entity.emailedTo}
+                  value={_tokenInfo.data.emailedTo}
                 />
                 <TextField
                   fullWidth

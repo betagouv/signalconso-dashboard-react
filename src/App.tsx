@@ -1,5 +1,5 @@
 import {CircularProgress, CssBaseline, StyledEngineProvider, ThemeProvider} from '@mui/material'
-import {QueryClient, QueryClientProvider} from '@tanstack/react-query'
+import {MutationCache, QueryCache, QueryClient, QueryClientProvider} from '@tanstack/react-query'
 import {ApiProvider} from 'core/context/ApiContext'
 import {RegisterForm} from 'feature/Login/RegisterForm'
 import {LoginForm} from 'feature/Login/LoginForm'
@@ -13,28 +13,12 @@ import {apiPublicSdk, makeSecuredSdk} from './core/ApiSdkInstance'
 import {Layout} from './core/Layout'
 import {ScHeader} from './core/ScHeader/ScHeader'
 import {ScSidebar} from './core/ScSidebar/ScSidebar'
-import {AccessesProvider} from './core/context/AccessesContext'
-import {AsyncFileProvider} from './core/context/AsyncFileContext'
-import {BlockedReportNotificationProvider} from './core/context/BlockedReportNotificationProviderContext'
-import {CompaniesProvider} from './core/context/CompaniesContext'
-import {ConstantProvider} from './core/context/ConstantContext'
-import {ConsumerEmailValidationProvider} from './core/context/EmailValidationContext'
-import {EventProvider} from './core/context/EventContext'
 import {LoginProvider, useLogin} from './core/context/LoginContext'
-import {ReportProvider} from './core/context/ReportContext'
-import {ReportedPhonesProvider} from './core/context/ReportedPhonesContext'
-import {ReportedWebsitesProvider} from './core/context/ReportedWebsitesContext'
-import {ReportsProvider} from './core/context/ReportsContext'
-import {SubscriptionsProvider} from './core/context/SubscriptionsContext'
-import {UnregistredWebsitesProvider} from './core/context/UnregistredWebsitesContext'
-import {UsersProvider} from './core/context/UsersContext'
-import {WebsiteInvestigationProvider} from './core/context/WebsiteInvestigationContext'
 import {I18nProvider} from './core/i18n'
 import {Matomo} from './core/plugins/Matomo'
 import {siteMap} from './core/siteMap'
 import {muiTheme} from './core/theme'
 import {AddCompanyForm} from './feature/AddCompany/AddCompanyForm'
-import {TestTools} from './feature/AdminTools/TestTools'
 import {Companies} from './feature/Companies/Companies'
 import {CompaniesPro} from './feature/CompaniesPro/CompaniesPro'
 import {JoinNewsletter} from './feature/JoinNewsletter/JoinNewsletter'
@@ -58,8 +42,9 @@ import {Login} from './shared/Login'
 import {Provide} from './shared/Provide'
 import './style.css'
 import {CenteredContent} from './shared/CenteredContent'
-import {AdminTools} from './feature/AdminTools/AdminTools'
 import {Tools} from './feature/AdminTools/Tools'
+import {useToast} from './core/toast'
+import {ApiError} from './core/client/ApiClient'
 
 const Router: typeof HashRouter = config.useHashRouter ? HashRouter : BrowserRouter
 
@@ -150,30 +135,40 @@ const AppLogin = () => {
 const AppLogged = () => {
   const {apiSdk, connectedUser, logout} = useLogin()
   const history = useHistory()
-  const queryClient = new QueryClient()
+  const {toastError} = useToast()
+
+  const MAX_RETRIES = 3
+  const HTTP_STATUS_TO_NOT_RETRY: (string | number)[] = [400, 401, 403, 404]
+  const queryClient = new QueryClient({
+    defaultOptions: {
+      queries: {
+        retry: (failureCount, error) => {
+          if (failureCount > MAX_RETRIES) {
+            return false
+          }
+
+          return !(error instanceof ApiError && HTTP_STATUS_TO_NOT_RETRY.includes(error.details.code))
+        },
+      },
+    },
+    queryCache: new QueryCache({
+      onError: (error, query) => {
+        if (query.queryKey.includes('reports_getReviewOnReportResponse')) return
+        toastError(error)
+      },
+    }),
+    mutationCache: new MutationCache({
+      onError: (error, _variables, _context, mutation) => {
+        if (mutation.options.onError) return
+        toastError(error)
+      },
+    }),
+  })
   useEffect(() => history.listen(_ => Matomo.trackPage(`/${connectedUser.role.toLocaleLowerCase()}${_.pathname}`)), [history])
 
   return (
     <Provide
-      providers={[
-        _ => <QueryClientProvider client={queryClient} children={_} />,
-        _ => <ApiProvider api={apiSdk} children={_} />,
-        _ => <ReportsProvider api={apiSdk} children={_} />,
-        _ => <ReportProvider api={apiSdk} children={_} />,
-        _ => <ConstantProvider api={apiSdk} children={_} />,
-        _ => <ReportedPhonesProvider api={apiSdk} children={_} />,
-        _ => <AsyncFileProvider api={apiSdk} children={_} />,
-        _ => <CompaniesProvider api={apiSdk} children={_} />,
-        _ => <UsersProvider api={apiSdk} children={_} />,
-        _ => <ConsumerEmailValidationProvider api={apiSdk} children={_} />,
-        _ => <ReportedWebsitesProvider api={apiSdk} children={_} />,
-        _ => <WebsiteInvestigationProvider api={apiSdk} children={_} />,
-        _ => <UnregistredWebsitesProvider api={apiSdk} children={_} />,
-        _ => <SubscriptionsProvider api={apiSdk} children={_} />,
-        _ => <AccessesProvider api={apiSdk} children={_} />,
-        _ => <BlockedReportNotificationProvider api={apiSdk} children={_} />,
-        _ => <EventProvider api={apiSdk} children={_} />,
-      ]}
+      providers={[_ => <QueryClientProvider client={queryClient} children={_} />, _ => <ApiProvider api={apiSdk} children={_} />]}
     >
       <Switch>
         <Route path={siteMap.logged.tools} component={Tools} />

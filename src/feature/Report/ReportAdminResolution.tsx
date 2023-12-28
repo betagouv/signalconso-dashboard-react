@@ -2,14 +2,15 @@ import React, {ReactElement, useState} from 'react'
 import {Alert} from '../../alexlibs/mui-extension'
 import {useI18n} from '../../core/i18n'
 import {ScInput} from '../../shared/ScInput'
-import {useFetcher} from '../../alexlibs/react-hooks-lib'
 import {useLogin} from '../../core/context/LoginContext'
 import {useToast} from '../../core/toast'
 import {ScDialog} from '../../shared/ScDialog'
-import {Report, ReportAdminActionType} from '../../core/client/report/Report'
+import {Report, ReportAdminActionType, ReportDeletionReason} from '../../core/client/report/Report'
 import {ScRadioGroup} from '../../shared/RadioGroup'
 import {Enum} from '../../alexlibs/ts-utils'
 import {ScRadioGroupItem} from '../../shared/RadioGroupItem'
+import {useMutation} from '@tanstack/react-query'
+import {Id} from '../../core/model'
 
 interface Props {
   report: Report
@@ -21,31 +22,29 @@ interface Props {
 export const ReportAdminResolution = ({label, report, children, onAdd}: Props) => {
   const {m} = useI18n()
   const {apiSdk} = useLogin()
-  const _removeReport = useFetcher(apiSdk.secured.reports.remove)
+  const _removeReport = useMutation({
+    mutationFn: (params: {id: Id; reportDeletionReason: ReportDeletionReason}) =>
+      apiSdk.secured.reports.remove(params.id, params.reportDeletionReason),
+    onSuccess: () => {
+      setComment('')
+      onAdd()
+      toastSuccess(m.actionDone)
+      window.history.back()
+    },
+  })
   const [comment, setComment] = useState('')
   const [deletionType, setDeletionType] = useState<ReportAdminActionType | undefined>(undefined)
   const {toastSuccess} = useToast()
 
   const performAdminAction = (reportAdminActionType: ReportAdminActionType) => {
-    return _removeReport.fetch({}, report.id, {reportAdminActionType, comment})
+    return _removeReport.mutateAsync({id: report.id, reportDeletionReason: {reportAdminActionType, comment}})
   }
 
   return (
     <ScDialog
       title={label}
-      loading={_removeReport.loading}
-      onConfirm={(event, close) =>
-        deletionType &&
-        performAdminAction(deletionType)
-          .then(() => {
-            setComment('')
-            onAdd()
-            toastSuccess(m.actionDone)
-            close()
-          })
-          .then(() => window.history.back())
-          .finally(close)
-      }
+      loading={_removeReport.isPending}
+      onConfirm={(event, close) => deletionType && performAdminAction(deletionType).finally(close)}
       confirmLabel={m.validate}
       confirmDisabled={deletionType === undefined || comment === ''}
       content={

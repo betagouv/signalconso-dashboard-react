@@ -2,16 +2,15 @@ import {TextField} from '@mui/material'
 import {useForm} from 'react-hook-form'
 import {useHistory} from 'react-router'
 import {Alert, Btn, Txt} from '../../alexlibs/mui-extension'
-import {useAccessesContext} from '../../core/context/AccessesContext'
 import {useLogin} from '../../core/context/LoginContext'
 import {regexp} from '../../core/helper/regexp'
 import {useI18n} from '../../core/i18n'
 import {AccessEventActions, ActionResultNames, EventCategories, Matomo} from '../../core/plugins/Matomo'
 import {siteMap} from '../../core/siteMap'
 import {useToast} from '../../core/toast'
-import {HelpContactInfo} from '../../shared/HelpContactInfo'
 import {ScInputPassword} from '../../shared/ScInputPassword'
 import {AlertContactSupport} from 'feature/Login/loggedOutComponents'
+import {useMutation} from '@tanstack/react-query'
 
 interface Form {
   siret: string
@@ -20,8 +19,18 @@ interface Form {
 
 export const AddCompanyForm = () => {
   const {m} = useI18n()
-  const {connectedUser} = useLogin()
-  const _acceptToken = useAccessesContext().acceptToken
+  const {connectedUser, apiSdk} = useLogin()
+  const _acceptToken = useMutation({
+    mutationFn: (params: {siret: string; token: string}) => apiSdk.secured.accesses.acceptToken(params.siret, params.token),
+    onSuccess: () => {
+      toastSuccess(m.companyRegistered)
+      history.push(siteMap.logged.companiesPro)
+      Matomo.trackEvent(EventCategories.companyAccess, AccessEventActions.addCompanyToAccount, ActionResultNames.success)
+    },
+    onError: () => {
+      Matomo.trackEvent(EventCategories.companyAccess, AccessEventActions.addCompanyToAccount, ActionResultNames.fail)
+    },
+  })
   const {toastSuccess} = useToast()
   const history = useHistory()
 
@@ -32,16 +41,7 @@ export const AddCompanyForm = () => {
   } = useForm<Form>({mode: 'onSubmit'})
 
   const acceptToken = (form: Form) => {
-    _acceptToken
-      .call(form.siret, form.code)
-      .then(() => {
-        toastSuccess(m.companyRegistered)
-        history.push(siteMap.logged.companiesPro)
-        Matomo.trackEvent(EventCategories.companyAccess, AccessEventActions.addCompanyToAccount, ActionResultNames.success)
-      })
-      .catch(() => {
-        Matomo.trackEvent(EventCategories.companyAccess, AccessEventActions.addCompanyToAccount, ActionResultNames.fail)
-      })
+    _acceptToken.mutate({siret: form.siret, token: form.code})
   }
 
   return (
@@ -88,7 +88,7 @@ export const AddCompanyForm = () => {
           })}
         />
         <div className="flex flex-col">
-          <Btn loading={_acceptToken.loading} type="submit" size="large" color="primary" variant="contained">
+          <Btn loading={_acceptToken.isPending} type="submit" size="large" color="primary" variant="contained">
             {m.addCompany}
           </Btn>
         </div>

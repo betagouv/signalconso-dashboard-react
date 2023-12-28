@@ -4,8 +4,6 @@ import {CompanySearchResult} from '../../core/client/company/Company'
 import {Country} from '../../core/client/constant/Country'
 import {useI18n} from '../../core/i18n'
 import {useToast} from '../../core/toast'
-import {useReportContext} from '../../core/context/ReportContext'
-import {useEffectFn} from '../../alexlibs/react-hooks-lib'
 import {ScDialog} from '../../shared/ScDialog'
 import {Txt} from '../../alexlibs/mui-extension'
 import {ScRadioGroup} from '../../shared/RadioGroup'
@@ -14,6 +12,10 @@ import {Enum, fnSwitch} from '../../alexlibs/ts-utils'
 import {SelectCompany} from '../../shared/SelectCompany/SelectCompany'
 import {SelectCountry} from '../../shared/SelectCountry'
 import {ScButton} from '../../shared/Button'
+import {useMutation, useQueryClient} from '@tanstack/react-query'
+import {GetReportQueryKeys} from '../../core/queryhooks/reportQueryHooks'
+import {useApiContext} from '../../core/context/ApiContext'
+import {ReportSearchResult} from '../../core/client/report/Report'
 
 interface Props extends Omit<BoxProps, 'onChange'> {
   children: ReactElement<any>
@@ -30,17 +32,31 @@ export enum AssociationType {
 
 export const SelectReportAssociation = ({children, onChange, reportId, currentSiret, currentCountry, ...props}: Props) => {
   const {m} = useI18n()
-  const {toastError, toastInfo, toastSuccess} = useToast()
+  const {api} = useApiContext()
+  const {toastInfo, toastSuccess} = useToast()
+  const queryClient = useQueryClient()
   const [selectedAssociation, setSelectedAssociation] = useState<AssociationType>(
     currentCountry ? AssociationType.COUNTRY : AssociationType.COMPANY,
   )
-  const _updateCompany = useReportContext().updateCompany
-  const _updateCountry = useReportContext().updateCountry
+  const _updateCompany = useMutation({
+    mutationFn: (params: {reportId: string; company: CompanySearchResult}) =>
+      api.secured.reports.updateReportCompany(params.reportId, params.company),
+    onSuccess: report =>
+      queryClient.setQueryData(GetReportQueryKeys(reportId), (prev: ReportSearchResult) => {
+        return {report, files: prev?.files ?? []}
+      }),
+  })
+  const _updateCountry = useMutation({
+    mutationFn: (params: {reportId: string; country: Country}) =>
+      api.secured.reports.updateReportCountry(params.reportId, params.country),
+    onSuccess: report =>
+      queryClient.setQueryData(GetReportQueryKeys(reportId), (prev: ReportSearchResult) => {
+        return {report, files: prev?.files ?? []}
+      }),
+  })
+
   const [company, setCompany] = useState<CompanySearchResult | undefined>()
   const [country, setCountry] = useState<Country | undefined>(currentCountry)
-
-  useEffectFn(_updateCompany.error, toastError)
-  useEffectFn(_updateCountry.error, toastError)
 
   const updateCompany = async (close: () => void) => {
     if (company) {
@@ -48,10 +64,10 @@ export const SelectReportAssociation = ({children, onChange, reportId, currentSi
         toastInfo(m.alreadySelectedCompany(company.name))
       } else {
         _updateCompany
-          .fetch({}, reportId, company)
+          .mutateAsync({reportId, company})
           .then(_ => onChange && onChange())
           .then(_ => toastSuccess(m.reportCompanyEdited))
-          .then(_ => close())
+          .finally(close)
       }
     }
   }
@@ -61,10 +77,11 @@ export const SelectReportAssociation = ({children, onChange, reportId, currentSi
       if (country === currentCountry) {
         toastInfo(m.alreadySelectedCountry(country?.name))
       } else {
-        await _updateCountry.fetch({}, reportId, country)
-        toastSuccess(m.reportCompanyEdited)
-        close()
-        onChange && onChange()
+        _updateCountry
+          .mutateAsync({reportId, country})
+          .then(_ => onChange && onChange())
+          .then(_ => toastSuccess(m.reportCompanyEdited))
+          .finally(close)
       }
     }
   }
@@ -115,12 +132,12 @@ export const SelectReportAssociation = ({children, onChange, reportId, currentSi
           {selectedAssociation &&
             fnSwitch(selectedAssociation, {
               [AssociationType.COMPANY]: () => (
-                <ScButton loading={_updateCompany.loading} disabled={!company} onClick={() => updateCompany(close)}>
+                <ScButton loading={_updateCompany.isPending} disabled={!company} onClick={() => updateCompany(close)}>
                   {m.confirm}
                 </ScButton>
               ),
               [AssociationType.COUNTRY]: () => (
-                <ScButton loading={_updateCountry.loading} disabled={!country} onClick={() => updateCountry(close)}>
+                <ScButton loading={_updateCountry.isPending} disabled={!country} onClick={() => updateCountry(close)}>
                   {m.confirm}
                 </ScButton>
               ),

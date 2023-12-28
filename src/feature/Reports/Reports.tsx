@@ -1,4 +1,3 @@
-import {useReportsContext} from '../../core/context/ReportsContext'
 import {useI18n} from '../../core/i18n'
 import {Page, PageTitle} from '../../shared/Page'
 
@@ -13,10 +12,8 @@ import {useSetState} from '../../alexlibs/react-hooks-lib'
 import {Enum} from '../../alexlibs/ts-utils'
 import {config} from '../../conf/config'
 import {EntityIcon} from '../../core/EntityIcon'
-import {Report, ReportStatus, ReportTag, ReportingDateLabel} from '../../core/client/report/Report'
-import {useConstantContext} from '../../core/context/ConstantContext'
+import {Report, ReportingDateLabel, ReportStatus, ReportTag} from '../../core/client/report/Report'
 import {useLogin} from '../../core/context/LoginContext'
-import {useReportContext} from '../../core/context/ReportContext'
 import {cleanObject, getHostFromUrl, textOverflowMiddleCropping} from '../../core/helper'
 import compose from '../../core/helper/compose'
 import {
@@ -29,7 +26,6 @@ import {
 import {Id, ReportResponse, ReportResponseTypes, ReportSearch, ResponseEvaluation} from '../../core/model'
 import {siteMap} from '../../core/siteMap'
 import {styleUtils, sxUtils} from '../../core/theme'
-import {useToast} from '../../core/toast'
 import {ScButton} from '../../shared/Button'
 import {ConsumerReviewLabel} from '../../shared/ConsumerReviewLabel'
 import {Datatable} from '../../shared/Datatable/Datatable'
@@ -52,6 +48,9 @@ import {SelectTags} from '../../shared/SelectTags/SelectTags'
 import {SelectTagsMenuValues} from '../../shared/SelectTags/SelectTagsMenu'
 import {TrueFalseNull} from '../../shared/TrueFalseNull'
 import {PanelBody} from 'alexlibs/mui-extension/Panel/PanelBody'
+import {useMutation} from '@tanstack/react-query'
+import {useReportSearchQuery} from '../../core/queryhooks/reportQueryHooks'
+import {useCategoriesQuery} from '../../core/queryhooks/constantQueryHooks'
 
 const TrueLabel = () => {
   const {m} = useI18n()
@@ -102,12 +101,12 @@ interface ReportSearchQs {
 
 export const Reports = () => {
   const {m, formatDate} = useI18n()
-  const _report = useReportContext()
-  const _reports = useReportsContext()
+  const {connectedUser, apiSdk} = useLogin()
+
+  const downloadReports = useMutation({mutationFn: apiSdk.secured.reports.download})
+
   const selectReport = useSetState<Id>()
-  const {connectedUser} = useLogin()
   const [expanded, setExpanded] = React.useState(false)
-  const {toastError} = useToast()
   const queryString = useQueryString<Partial<ReportSearch>, Partial<ReportSearchQs>>({
     toQueryString: mapDatesToQueryString,
     fromQueryString: compose(
@@ -125,17 +124,11 @@ export const Reports = () => {
     ),
   })
 
-  useEffect(() => {
-    _reports.updateFilters({..._reports.initialFilters, ...queryString.get()})
-  }, [])
+  const _reports = useReportSearchQuery({offset: 0, limit: 10, ...queryString.get()})
 
   useEffect(() => {
     queryString.update(cleanObject(_reports.filters))
   }, [_reports.filters])
-
-  useEffect(() => {
-    ScOption.from(_reports.error).map(toastError)
-  }, [_reports.list, _reports.error])
 
   const getReportingDate = (report: Report) =>
     report.details.filter(_ => _.label.indexOf(ReportingDateLabel) !== -1).map(_ => _.value)
@@ -153,11 +146,7 @@ export const Reports = () => {
     tags[tag] = 'excluded'
   })
 
-  const _category = useConstantContext().categories
-
-  useEffect(() => {
-    _category.fetch({force: false})
-  }, [])
+  const _category = useCategoriesQuery()
 
   const [proResponseFilter, setProResponseFilter] = useState<ReportResponseTypes[]>([])
 
@@ -353,7 +342,7 @@ export const Reports = () => {
                   onChange={e => _reports.updateFilters(prev => ({...prev, category: e.target.value}))}
                 >
                   <MenuItem value="">&nbsp;</MenuItem>
-                  {_category?.entity?.map(category => (
+                  {_category?.data?.map(category => (
                     <MenuItem key={category} value={category}>
                       {m.ReportCategoryDesc[category]}
                     </MenuItem>
@@ -650,12 +639,13 @@ export const Reports = () => {
               </Badge>
             )}
             <ExportReportsPopper
-              disabled={ScOption.from(_reports?.list?.totalCount)
+              disabled={ScOption.from(_reports?.result.data?.totalCount)
                 .map(_ => _ > config.reportsLimitForExport)
                 .getOrElse(false)}
-              tooltipBtnNew={ScOption.from(_reports?.list?.totalCount)
+              tooltipBtnNew={ScOption.from(_reports?.result.data?.totalCount)
                 .map(_ => (_ > config.reportsLimitForExport ? m.cannotExportMoreReports(config.reportsLimitForExport) : ''))
                 .getOrElse('')}
+              filters={_reports.filters}
             >
               <Btn variant="outlined" color="primary" icon="get_app">
                 {m.exportInXLS}
@@ -675,11 +665,11 @@ export const Reports = () => {
                 onClear={selectReport.clear}
                 actions={
                   <ScButton
-                    loading={_report.download.loading}
+                    loading={downloadReports.isPending}
                     variant="contained"
                     icon="file_download"
                     onClick={() => {
-                      _report.download.fetch({}, selectReport.toArray())
+                      downloadReports.mutate(selectReport.toArray())
                     }}
                     sx={{
                       marginLeft: 'auto',
@@ -693,15 +683,15 @@ export const Reports = () => {
               </DatatableToolbar>
             </>
           }
-          loading={_reports.fetching}
+          loading={_reports.result.isFetching}
           paginate={{
             offset: _reports.filters.offset,
             limit: _reports.filters.limit,
             onPaginationChange: pagination => _reports.updateFilters(prev => ({...prev, ...pagination})),
           }}
           getRenderRowKey={_ => _.report.id}
-          data={_reports.list?.entities}
-          total={_reports.list?.totalCount}
+          data={_reports.result.data?.entities}
+          total={_reports.result.data?.totalCount}
           showColumnsToggle={true}
           plainTextColumnsToggle={true}
           initialHiddenColumns={
@@ -711,17 +701,17 @@ export const Reports = () => {
             {
               id: 'checkbox',
               head: (() => {
-                const allChecked = selectReport.size === _reports.list?.entities.length
+                const allChecked = selectReport.size === _reports.result.data?.entities.length
                 return (
                   <Checkbox
-                    disabled={_reports.fetching}
+                    disabled={_reports.result.isFetching}
                     indeterminate={selectReport.size > 0 && !allChecked}
                     checked={allChecked}
                     onChange={() => {
                       if (allChecked) {
                         selectReport.clear()
                       } else {
-                        selectReport.add(_reports.list!.entities!.map(_ => _.report.id))
+                        selectReport.add(_reports.result.data!.entities!.map(_ => _.report.id))
                       }
                     }}
                   />

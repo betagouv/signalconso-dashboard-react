@@ -5,13 +5,14 @@ import {useI18n} from '../../core/i18n'
 import {useToast} from '../../core/toast'
 import {ScButton} from '../../shared/Button'
 import {ScInput} from '../../shared/ScInput'
-
-import {useFetcher} from 'alexlibs/react-hooks-lib'
 import {useApiContext} from 'core/context/ApiContext'
 import {ScOption} from 'core/helper/ScOption'
 import {ScDialog} from '../../shared/ScDialog'
+import {useMutation, useQueryClient} from '@tanstack/react-query'
+import {ListConsumerBlacklistQueryKeys} from '../../core/queryhooks/consumerBlacklistQueryHooks'
+import {ApiError} from '../../core/client/ApiClient'
 
-export const ConsumerBlacklistAddDialog = ({onAdd}: {onAdd: () => unknown}) => {
+export const ConsumerBlacklistAddDialog = () => {
   const {m} = useI18n()
   const {
     register,
@@ -19,7 +20,15 @@ export const ConsumerBlacklistAddDialog = ({onAdd}: {onAdd: () => unknown}) => {
     formState: {errors, isValid},
   } = useForm<{email: string; comments: string}>({mode: 'onChange'})
   const {api} = useApiContext()
-  const _addToBlacklist = useFetcher(api.secured.consumerBlacklist.add)
+  const queryClient = useQueryClient()
+  const _addToBlacklist = useMutation({
+    mutationFn: (params: {email: string; comments: string}) => api.secured.consumerBlacklist.add(params.email, params.comments),
+    onSuccess: () => {
+      toastSuccess(m.added)
+      return queryClient.invalidateQueries({queryKey: ListConsumerBlacklistQueryKeys})
+    },
+  })
+
   const {toastSuccess} = useToast()
 
   const buttonText = m.add_email_to_blacklist
@@ -34,26 +43,23 @@ export const ConsumerBlacklistAddDialog = ({onAdd}: {onAdd: () => unknown}) => {
       maxWidth="xs"
       onConfirm={(event, close) => {
         handleSubmit(({email, comments}) => {
-          _addToBlacklist
-            .fetch({}, email, comments)
-            .then(() => toastSuccess(m.added))
-            .then(close)
-            .then(() => onAdd())
+          _addToBlacklist.mutateAsync({email, comments}).then(close)
         })()
       }}
       confirmLabel={m.add}
-      loading={_addToBlacklist.loading}
+      loading={_addToBlacklist.isPending}
       confirmDisabled={!isValid}
       title={dialogTitle}
       content={
         <>
-          {ScOption.from(_addToBlacklist.error?.details?.id)
-            .map(errId => (
-              <Alert dense type="error" deletable gutterBottom>
-                {m.apiErrorsCode[errId as keyof typeof m.apiErrorsCode]}
-              </Alert>
-            ))
-            .toUndefined()}
+          {_addToBlacklist.error instanceof ApiError &&
+            ScOption.from(_addToBlacklist.error.details?.id)
+              .map(errId => (
+                <Alert dense type="error" deletable gutterBottom>
+                  {m.apiErrorsCode[errId as keyof typeof m.apiErrorsCode]}
+                </Alert>
+              ))
+              .toUndefined()}
           <Txt color="hint" block gutterBottom>
             {dialogDesc}
           </Txt>

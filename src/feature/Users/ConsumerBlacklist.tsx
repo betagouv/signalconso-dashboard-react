@@ -1,29 +1,24 @@
 import {Box, Icon, Tooltip} from '@mui/material'
 import {useApiContext} from 'core/context/ApiContext'
-import {useEffect} from 'react'
 import {IconBtn, Txt} from '../../alexlibs/mui-extension'
-import {useEffectFn} from '../../alexlibs/react-hooks-lib'
-import {useFetcher} from '../../alexlibs/react-hooks-lib/useFetcher/UseFetcher'
 import {useI18n} from '../../core/i18n'
-import {useToast} from '../../core/toast'
 import {Datatable} from '../../shared/Datatable/Datatable'
 import {Panel, PanelHead} from '../../shared/Panel'
 import {ConsumerBlacklistAddDialog} from './ConsumerBlacklistAddDialog'
+import {ListConsumerBlacklistQueryKeys, useListConsumerBlacklistQuery} from '../../core/queryhooks/consumerBlacklistQueryHooks'
+import {useMutation, useQueryClient} from '@tanstack/react-query'
 
 export const ConsumerBlacklist = () => {
   const {m} = useI18n()
   const {api} = useApiContext()
-  const _blackListedEmails = useFetcher(api.secured.consumerBlacklist.list)
-  const _delete = useFetcher(api.secured.consumerBlacklist.delete)
+  const queryClient = useQueryClient()
+  const _blackListedEmails = useListConsumerBlacklistQuery()
+  const _delete = useMutation({
+    mutationFn: api.secured.consumerBlacklist.delete,
+    onSuccess: () => queryClient.invalidateQueries({queryKey: ListConsumerBlacklistQueryKeys}),
+  })
 
-  const {toastError} = useToast()
   const {formatDate} = useI18n()
-
-  useEffect(() => {
-    _blackListedEmails.fetch()
-  }, [])
-
-  useEffectFn(_blackListedEmails.error, toastError)
 
   return (
     <Panel>
@@ -37,13 +32,13 @@ export const ConsumerBlacklist = () => {
         </Txt>
       </Box>
       <PanelHead sx={{pb: 2}} bottomDivider={true}>
-        <ConsumerBlacklistAddDialog onAdd={_blackListedEmails.fetch} />
+        <ConsumerBlacklistAddDialog />
       </PanelHead>
       <Datatable
-        loading={_blackListedEmails.loading}
-        total={_blackListedEmails.entity?.length}
+        loading={_blackListedEmails.isLoading}
+        total={_blackListedEmails.data?.length}
         getRenderRowKey={_ => _.email}
-        data={_blackListedEmails.entity}
+        data={_blackListedEmails.data}
         columns={[
           {
             id: 'email',
@@ -67,15 +62,7 @@ export const ConsumerBlacklist = () => {
               <>
                 <Box sx={{display: 'flex', justifyContent: 'flex-end'}}>
                   <Tooltip title={m.unblockConsumer} placement="left">
-                    <IconBtn
-                      color={'primary'}
-                      onClick={() =>
-                        _delete
-                          .fetch({}, _.id)
-                          .catch(toastError)
-                          .then(() => _blackListedEmails.fetch())
-                      }
-                    >
+                    <IconBtn color={'primary'} onClick={() => _delete.mutate(_.id)}>
                       <Icon>cancel</Icon>
                     </IconBtn>
                   </Tooltip>

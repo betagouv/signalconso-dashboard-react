@@ -1,26 +1,19 @@
 import * as React from 'react'
-import {useEffect} from 'react'
-import {useFetcher, useMemoFn} from '../../alexlibs/react-hooks-lib'
+import {useEffectFn, useMemoFn} from '../../alexlibs/react-hooks-lib'
 import {Txt} from '../../alexlibs/mui-extension'
 import {useParams} from 'react-router'
 import {Page, PageTitle} from 'shared/Page'
-import {useCompaniesContext} from 'core/context/CompaniesContext'
 import {Panel, PanelBody, PanelHead} from 'shared/Panel'
 import {HorizontalBarChart} from 'shared/Chart/HorizontalBarChart'
 import {reportStatusColor, reportStatusProColor} from 'shared/ReportStatus'
 import {useI18n} from 'core/i18n'
 import {Box, Grid, Icon, List, ListItem, Tooltip} from '@mui/material'
-import {useEventContext} from 'core/context/EventContext'
-import {useEffectFn} from '../../alexlibs/react-hooks-lib'
 import {useLogin} from 'core/context/LoginContext'
 import {Widget} from 'shared/Widget/Widget'
 import {siteMap} from 'core/siteMap'
-import {useToast} from 'core/toast'
 import {WidgetValue} from 'shared/Widget/WidgetValue'
 import {WidgetLoading} from 'shared/Widget/WidgetLoading'
-import {useReportsContext} from 'core/context/ReportsContext'
 import {ReportsShortList} from './ReportsShortList'
-import {useCompanyStats} from './useCompanyStats'
 import {StatusDistribution} from './stats/StatusDistribution'
 import {ReviewDistribution} from './stats/ReviewDistribution'
 import {CompanyInfo} from './stats/CompanyInfo'
@@ -30,54 +23,54 @@ import {ReportStatus, ReportStatusPro} from '../../core/client/report/Report'
 import {Id} from '../../core/model'
 import {ScOption} from 'core/helper/ScOption'
 import {ReportWordDistribution} from './stats/ReportWordDistribution'
+import {useReportSearchQuery} from '../../core/queryhooks/reportQueryHooks'
+import {useGetCompanyEventsQuery} from '../../core/queryhooks/eventQueryHooks'
+import {
+  useCompanyAccessCountQuery,
+  useGetCompanyByIdQuery,
+  useGetHostsQuery,
+  useGetResponseRateQuery,
+} from '../../core/queryhooks/companyQueryHooks'
+import {
+  useGetCompanyRefundBlackMailQuery,
+  useGetCompanyThreatQuery,
+  useGetProStatusQuery,
+  useGetResponseDelayQuery,
+  useGetStatusQuery,
+  useGetTagsQuery,
+} from '../../core/queryhooks/statsQueryHooks'
 
 export const CompanyComponent = () => {
   const {id} = useParams<{id: Id}>()
-  const {apiSdk, connectedUser} = useLogin()
+  const {connectedUser} = useLogin()
   const {m} = useI18n()
-  const {toastError} = useToast()
-  const _company = useCompaniesContext()
-  const _stats = useCompanyStats(id)
-  const _event = useEventContext()
-  const _accesses = useFetcher((siret: string) => apiSdk.secured.companyAccess.count(siret))
-  const _report = useReportsContext()
-  const _cloudWord = useFetcher((companyId: Id) => apiSdk.secured.reports.getCloudWord(companyId))
-  const company = _company.byId.entity
+  const _companyById = useGetCompanyByIdQuery(id)
+  const _hosts = useGetHostsQuery(id, {enabled: !connectedUser.isPro})
+  const _responseRate = useGetResponseRateQuery(id)
+  const companyEvents = useGetCompanyEventsQuery(_companyById.data?.siret!, {enabled: !!_companyById.data?.siret})
 
-  useEffect(() => {
-    _company.byId.fetch({}, id)
-    if (!connectedUser.isPro) {
-      _company.hosts.fetch({}, id)
-    }
-    _company.responseRate.fetch({}, id)
-    _stats.tags.fetch()
-    _stats.getCompanyThreat.fetch({})
-    _stats.getCompanyRefundBlackMail.fetch({})
-    _cloudWord.fetch({}, id)
-    connectedUser.isPro ? _stats.statusPro.fetch() : _stats.status.fetch()
-    _stats.responseDelay.fetch()
-  }, [id])
+  const company = _companyById.data
 
-  useEffectFn(_company.byId.error, toastError)
-  useEffectFn(_cloudWord.error, toastError)
-  useEffectFn(_company.hosts.error, toastError)
-  useEffectFn(_stats.reportCount.error, toastError)
-  useEffectFn(_stats.tags.error, toastError)
-  useEffectFn(_stats.status.error, toastError)
-  useEffectFn(_stats.statusPro.error, toastError)
-  useEffectFn(_stats.responseDelay.error, toastError)
+  const _accesses = useCompanyAccessCountQuery(company?.siret!, {enabled: !!company})
+  const _reports = useReportSearchQuery({hasCompany: true, offset: 0, limit: 5}, false)
 
-  useEffectFn(_company.byId.entity, _ => {
-    _event.companyEvents.fetch({}, _.siret)
-    _accesses.fetch({}, _.siret)
-    _report.updateFilters({hasCompany: true, siretSirenList: [_.siret], offset: 0, limit: 5})
+  const _tags = useGetTagsQuery(id)
+  const _getCompanyThreat = useGetCompanyThreatQuery(id)
+  const _getCompanyRefundBlackMail = useGetCompanyRefundBlackMailQuery(id)
+  const _getProStatus = useGetProStatusQuery(id, {enabled: connectedUser.isPro})
+  const _getStatus = useGetStatusQuery(id, {enabled: !connectedUser.isPro})
+  const _responseDelay = useGetResponseDelayQuery(id)
+
+  useEffectFn(company, _ => {
+    _reports.updateFilters({hasCompany: true, siretSirenList: [_.siret], offset: 0, limit: 5})
+    _reports.enable()
   })
 
-  const postActivationDocEvents = useMemoFn(_event.companyEvents.entity, events =>
+  const postActivationDocEvents = useMemoFn(companyEvents.data, events =>
     events.map(_ => _.data).filter(_ => _.action === EventActionValues.PostAccountActivationDoc),
   )
 
-  const tagsDistribution = useMemoFn(_stats.tags.entity, _ =>
+  const tagsDistribution = useMemoFn(_tags.data, _ =>
     Object.entries(_).map(([label, count]) => ({
       label,
       value: count,
@@ -85,7 +78,7 @@ export const CompanyComponent = () => {
   )
 
   return (
-    <Page loading={_company.byId.loading}>
+    <Page loading={_companyById.isLoading}>
       <PageTitle>
         <Box>
           {company?.name}
@@ -100,25 +93,25 @@ export const CompanyComponent = () => {
         </Box>
       </PageTitle>
 
-      {_company.byId.entity && company && (
+      {company && (
         <>
           <Grid container spacing={2}>
             <Grid item xs={4}>
               <Widget title={m.responseRate}>
-                <WidgetValue>{_company.responseRate.entity}%</WidgetValue>
+                <WidgetValue>{_responseRate.data}%</WidgetValue>
               </Widget>
             </Grid>
             <Grid item xs={4}>
               <Widget title={m.avgResponseTime}>
-                {_stats.responseDelay.loading ? (
+                {_responseDelay.isLoading ? (
                   <WidgetLoading />
                 ) : (
                   <WidgetValue>
                     <Box component="span">
-                      {_stats.responseDelay.entity ? _stats.responseDelay.entity.toDays : '∞'}&nbsp;
+                      {_responseDelay.data ? _responseDelay.data.toDays : '∞'}&nbsp;
                       <Txt size="big">{m.days}</Txt>
                       &nbsp;
-                      <Tooltip title={_stats.responseDelay.entity ? m.avgResponseTimeDesc : m.avgResponseTimeDescNoData}>
+                      <Tooltip title={_responseDelay.data ? m.avgResponseTimeDesc : m.avgResponseTimeDescNoData}>
                         <Icon sx={{color: t => t.palette.text.disabled}} fontSize="medium">
                           help
                         </Icon>
@@ -129,9 +122,9 @@ export const CompanyComponent = () => {
               </Widget>
             </Grid>
             <Grid item xs={4}>
-              <Widget title={m.proTheatToConsumer} loading={_stats.getCompanyThreat.loading}>
+              <Widget title={m.proTheatToConsumer} loading={_getCompanyThreat.isLoading}>
                 <WidgetValue>
-                  {_stats.getCompanyThreat.entity && _stats.getCompanyThreat.entity.value}
+                  {_getCompanyThreat.data && _getCompanyThreat.data.value}
                   &nbsp;
                   <Tooltip title={m.proTheatToConsumerDesc}>
                     <Icon sx={{color: t => t.palette.text.disabled}} fontSize="medium">
@@ -142,9 +135,9 @@ export const CompanyComponent = () => {
               </Widget>
             </Grid>
             <Grid item xs={4}>
-              <Widget title={m.proRefundBlackMail} loading={_stats.getCompanyRefundBlackMail.loading}>
+              <Widget title={m.proRefundBlackMail} loading={_getCompanyRefundBlackMail.isLoading}>
                 <WidgetValue>
-                  {_stats.getCompanyRefundBlackMail.entity && _stats.getCompanyRefundBlackMail.entity.value}
+                  {_getCompanyRefundBlackMail.data && _getCompanyRefundBlackMail.data.value}
                   &nbsp;
                   <Tooltip title={m.proRefundBlackMailDesc}>
                     <Icon sx={{color: t => t.palette.text.disabled}} fontSize="medium">
@@ -155,15 +148,19 @@ export const CompanyComponent = () => {
               </Widget>
             </Grid>
             <Grid item xs={4}>
-              <Widget title={m.activationDocReturned} loading={_event.companyEvents.loading}>
+              <Widget title={m.activationDocReturned} loading={companyEvents.isLoading}>
                 {ScOption.from(postActivationDocEvents)
                   .map(_ => <WidgetValue>{_.length}</WidgetValue>)
                   .getOrElse(<WidgetLoading />)}
               </Widget>
             </Grid>
             <Grid item xs={4}>
-              <Widget title={m.accountsActivated} loading={_accesses.loading} to={siteMap.logged.companyAccesses(company.siret)}>
-                <WidgetValue>{_accesses.entity}</WidgetValue>
+              <Widget
+                title={m.accountsActivated}
+                loading={_accesses.isLoading}
+                to={siteMap.logged.companyAccesses(company.siret)}
+              >
+                <WidgetValue>{_accesses.data}</WidgetValue>
               </Widget>
             </Grid>
           </Grid>
@@ -173,16 +170,16 @@ export const CompanyComponent = () => {
             <Grid item sm={12} md={7}>
               {connectedUser.isPro ? (
                 <StatusDistribution<ReportStatusPro>
-                  values={_stats.statusPro.entity}
-                  loading={_stats.statusPro.loading}
+                  values={_getProStatus.data}
+                  loading={_getProStatus.isLoading}
                   statusDesc={(s: ReportStatusPro) => m.reportStatusDescPro[s]}
                   statusShortLabel={(s: ReportStatusPro) => m.reportStatusShortPro[s]}
                   statusColor={(s: ReportStatusPro) => reportStatusProColor[s]}
                 />
               ) : (
                 <StatusDistribution<ReportStatus>
-                  loading={_stats.status.loading}
-                  values={_stats.status.entity}
+                  loading={_getStatus.isLoading}
+                  values={_getStatus.data}
                   statusDesc={(s: ReportStatus) => m.reportStatusDesc[s]}
                   statusShortLabel={(s: ReportStatus) => m.reportStatusShort[s]}
                   statusColor={(s: ReportStatus) => reportStatusColor[s]}
@@ -194,9 +191,9 @@ export const CompanyComponent = () => {
                   <HorizontalBarChart data={tagsDistribution} grid />
                 </PanelBody>
               </Panel>
-              <Panel loading={_report.fetching}>
+              <Panel loading={_reports.result.isFetching}>
                 <PanelHead>{m.lastReports}</PanelHead>
-                {_report.list && <ReportsShortList reports={_report.list} />}
+                {_reports.result.data && <ReportsShortList reports={_reports.result.data} />}
               </Panel>
             </Grid>
             <Grid item sm={12} md={5}>
@@ -204,11 +201,11 @@ export const CompanyComponent = () => {
               <ReviewDistribution companyId={id} />
               <ReportWordDistribution companyId={id} />
               {connectedUser.isNotPro && (
-                <Panel loading={_company.hosts.loading}>
+                <Panel loading={_hosts.isLoading}>
                   <PanelHead>{m.websites}</PanelHead>
                   <Box sx={{maxHeight: 260, overflow: 'auto'}}>
                     <List dense>
-                      {_company.hosts.entity?.map((host, i) => (
+                      {_hosts.data?.map((host, i) => (
                         <ListItem key={i}>{host}</ListItem>
                       ))}
                     </List>

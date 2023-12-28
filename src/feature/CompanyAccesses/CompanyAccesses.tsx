@@ -3,16 +3,14 @@ import {Page, PageTitle} from '../../shared/Page'
 import {useI18n} from '../../core/i18n'
 import {useParams} from 'react-router'
 import {Datatable} from '../../shared/Datatable/Datatable'
-import {Button, Icon, Tooltip} from '@mui/material'
+import {Icon, Tooltip} from '@mui/material'
 import {Panel} from '../../shared/Panel'
-import {Btn, Txt} from '../../alexlibs/mui-extension'
-import {IconBtn} from '../../alexlibs/mui-extension'
+import {IconBtn, Txt} from '../../alexlibs/mui-extension'
 import {useLogin} from '../../core/context/LoginContext'
 import {useCompanyAccess} from './useCompaniesAccess'
 import {CompanyAccessCreateBtn} from './CompanyAccessCreateBtn'
 import {useToast} from '../../core/toast'
 import {SaveUndeliveredDocBtn} from './SaveUndeliveredDocBtn'
-import {useCompaniesContext} from '../../core/context/CompaniesContext'
 import {Enum} from '../../alexlibs/ts-utils'
 import {ScDialog} from '../../shared/ScDialog'
 import {ScButton} from '../../shared/Button'
@@ -25,8 +23,9 @@ import {CompanyAccessLevel} from '../../core/client/company-access/CompanyAccess
 import {Id} from '../../core/model'
 import {ScOption} from 'core/helper/ScOption'
 import {UserDeleteButton} from 'feature/Users/UserDeleteButton'
-import {Link, NavLink} from 'react-router-dom'
-import {BubbleChartOutlined} from '@mui/icons-material'
+import {NavLink} from 'react-router-dom'
+import {useMutation} from '@tanstack/react-query'
+import {useApiContext} from '../../core/context/ApiContext'
 
 interface Accesses {
   name?: string
@@ -41,10 +40,14 @@ interface Accesses {
 
 export const CompanyAccesses = () => {
   const {siret} = useParams<{siret: string}>()
+  const {api} = useApiContext()
 
   const _crudAccess = useCompanyAccess(useLogin().apiSdk, siret).crudAccess
   const _crudToken = useCompanyAccess(useLogin().apiSdk, siret).crudToken
-  const _company = useCompaniesContext()
+  const saveUndeliveredDocument = useMutation({
+    mutationFn: (params: {siret: string; returnedDate: Date}) =>
+      api.secured.company.saveUndeliveredDocument(params.siret, params.returnedDate),
+  })
 
   const {m} = useI18n()
   const {connectedUser} = useLogin()
@@ -102,9 +105,9 @@ export const CompanyAccesses = () => {
             <>
               {_crudAccess.list?.length === 0 && (
                 <SaveUndeliveredDocBtn
-                  loading={_company.saveUndeliveredDocument.loading}
+                  loading={saveUndeliveredDocument.isPending}
                   onChange={async date => {
-                    if (date) return _company.saveUndeliveredDocument.fetch({}, siret, date)
+                    if (date) return saveUndeliveredDocument.mutate({siret, returnedDate: date})
                     else throw new Error("Can't save with an empty date")
                   }}
                   sx={{mr: 1}}

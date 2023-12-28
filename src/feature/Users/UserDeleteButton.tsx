@@ -1,11 +1,11 @@
 import {Tooltip} from '@mui/material'
-import {useEffect} from 'react'
 import {Alert, Btn, Txt} from '../../alexlibs/mui-extension'
-import {useUsersContext} from '../../core/context/UsersContext'
 import {useI18n} from '../../core/i18n'
 
 import {useToast} from '../../core/toast'
 import {ScDialog} from '../../shared/ScDialog'
+import {useMutation} from '@tanstack/react-query'
+import {useApiContext} from '../../core/context/ApiContext'
 
 interface Props {
   userId: string
@@ -15,15 +15,11 @@ interface Props {
 
 export const UserDeleteButton = ({userId, compact, onDelete = () => {}}: Props) => {
   const {m} = useI18n()
-  const _softDelete = useUsersContext().softDelete
-  const {toastError, toastSuccess} = useToast()
-  const err = _softDelete.error
-
-  useEffect(() => {
-    if (err) {
-      toastError(err)
-    }
-  }, [err, toastError])
+  const {api} = useApiContext()
+  const _softDelete = useMutation({
+    mutationFn: api.secured.user.softDelete,
+  })
+  const {toastSuccess} = useToast()
 
   const dialogContent = (
     <>
@@ -41,7 +37,7 @@ export const UserDeleteButton = ({userId, compact, onDelete = () => {}}: Props) 
       content={dialogContent}
       onConfirm={(event, close) => {
         _softDelete
-          .fetch({}, userId)
+          .mutateAsync(userId)
           .then(_ => close())
           .then(_ => toastSuccess(m.delete_user_done))
           .then(_ => onDelete())
@@ -49,7 +45,7 @@ export const UserDeleteButton = ({userId, compact, onDelete = () => {}}: Props) 
       confirmLabel={m.delete_user}
     >
       <Tooltip title={m.delete_user}>
-        <Btn loading={_softDelete.loading} sx={{color: t => t.palette.error.main}} icon="delete">
+        <Btn loading={_softDelete.isPending} sx={{color: t => t.palette.error.main}} icon="delete">
           {compact ? null : m.delete}
         </Btn>
       </Tooltip>

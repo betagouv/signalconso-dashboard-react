@@ -1,22 +1,25 @@
 import {useI18n} from '../../../core/i18n'
 
 import React from 'react'
-import {Button, Icon} from '@mui/material'
-import {useFetcher} from '../../../alexlibs/react-hooks-lib'
-import {useLogin} from '../../../core/context/LoginContext'
 import {FileOrigin} from '../../../core/client/file/UploadedFile'
-import {useReportContext} from '../../../core/context/ReportContext'
 import {Link} from 'react-router-dom'
 import {Txt} from 'alexlibs/mui-extension/Txt'
 import {Report} from '../../../core/client/report/Report'
+import {useMutation} from '@tanstack/react-query'
+import {useApiContext} from '../../../core/context/ApiContext'
 
 export function ReportFileDeleteButton({report, fileOrigin}: {report: Report; fileOrigin?: FileOrigin}) {
   const {m} = useI18n()
-  const reportContext = useReportContext()
+  const {api} = useApiContext()
 
-  const download = async (event: any) => {
+  const downloadReport = useMutation({
+    mutationFn: (params: {report: Report; fileOrigin?: FileOrigin}) =>
+      api.secured.reports.downloadAll(params.report, params.fileOrigin),
+  })
+
+  const download = (event: any) => {
     event.preventDefault() // Prevent default link behavior
-    await reportContext.downloadAll.fetch({}, report, fileOrigin)
+    downloadReport.mutate({report, fileOrigin})
   }
 
   return (
