@@ -2,7 +2,7 @@ import {Box, Icon, Menu, MenuItem} from '@mui/material'
 import logoGouvMobile from './gouv-mobile.svg'
 import logoDgccrf from './logo-dgccrf.png'
 import {config} from '../../conf/config'
-import logoSignalConso from './signalconso.svg'
+import logoSignalConso from './logo-signalconso.png'
 import {Btn, IconBtn} from '../../alexlibs/mui-extension'
 import React from 'react'
 import {useI18n} from '../i18n'
@@ -67,7 +67,7 @@ export const ScHeader = () => {
           src={logoSignalConso}
           alt={m.altLogoSignalConso}
           sx={{
-            height: 40,
+            height: 50,
             mr: 1,
           }}
         />
