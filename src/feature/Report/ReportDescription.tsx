@@ -47,7 +47,9 @@ export const ReportDescription = ({report, files, children}: Props) => {
           <Txt bold block size="big" gutterBottom>
             {m.attachedFiles}
           </Txt>
-          {files && files.length > 0 && <ReportFileDeleteButton report={report} fileOrigin={FileOrigin.Consumer} />}
+          {files && files.filter(_ => _.origin === FileOrigin.Consumer).length > 0 && (
+            <ReportFileDeleteButton report={report} fileOrigin={FileOrigin.Consumer} />
+          )}
         </div>
         <ReportFiles
           hideAddBtn={!connectedUser.isAdmin}
