@@ -66,7 +66,7 @@ export const useGetProStatusQuery = (id: Id, options?: UseQueryOpts<ReportStatus
   })
 }
 
-export const useGetResponseDelayQuery = (id: Id, options?: UseQueryOpts<Duration | undefined, string[]>) => {
+export const useGetResponseDelayQuery = (id: Id, options?: UseQueryOpts<Duration | null, string[]>) => {
   const {api} = useApiContext()
   return useQuery({
     queryKey: ['stats_GetResponseDelay'],
