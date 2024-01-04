@@ -86,7 +86,7 @@ export const ReportFile = ({file, onRemove}: ReportFileProps) => {
               <Modal
                 PaperProps={{style: {overflow: 'visible', maxHeight: '800px'}}}
                 maxWidth="md"
-                cancelLabel="close"
+                cancelLabel={m.close}
                 content={_ => <Box component="img" src={fileUrl} alt={file.filename} />}
               >
                 <div className="flex items-center justify-center bg-cover h-full w-full">
