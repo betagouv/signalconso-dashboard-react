@@ -204,7 +204,7 @@ export const fr = {
     startedAt: 'Démarré le',
     startedBy: 'Démarré le',
     receivedAt: 'Reçu le',
-    expireOn: 'Expire le',
+    expireOn: 'À répondre avant le',
     warnExpireOn: (date: String) => `Expire le ${date}`,
     pin: `Épingler`,
     endedAt: 'Terminé le',

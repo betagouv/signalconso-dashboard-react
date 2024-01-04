@@ -372,8 +372,36 @@ export const ReportsPro = () => {
                       ]
                     : [
                         {
+                          id: 'createDate',
+                          head: m.receivedAt,
+                          sx: _ =>
+                            _.report.status === ReportStatus.TraitementEnCours
+                              ? {fontWeight: t => t.typography.fontWeightBold}
+                              : undefined,
+                          render: _ => formatDate(_.report.creationDate),
+                        },
+                        {
+                          id: 'expirationDate',
+                          head: m.expireOn,
+                          render: _ =>
+                            expiresSoon(_.report.expirationDate) && !Report.isClosed(_.report.status) ? (
+                              <Label style={{color: 'white', background: 'darkred'}}>
+                                {m.warnExpireOn(formatDate(_.report.expirationDate))}
+                              </Label>
+                            ) : hasExpired(_.report.expirationDate) ? (
+                              <Label style={{color: '#777', background: 'white'}}>{formatDate(_.report.expirationDate)}</Label>
+                            ) : (
+                              <Label style={{color: 'black', background: 'white'}}>{formatDate(_.report.expirationDate)}</Label>
+                            ),
+                        },
+                        {
+                          id: 'status',
+                          head: m.status,
+                          render: _ => <ReportStatusProLabel dense status={Report.getStatusProByStatus(_.report.status)} />,
+                        },
+                        {
                           id: 'companyPostalCode',
-                          head: m.postalCodeShort,
+                          head: m.postalCode,
                           sx: _ =>
                             _.report.status === ReportStatus.TraitementEnCours
                               ? {fontWeight: t => t.typography.fontWeightBold}
@@ -389,38 +417,7 @@ export const ReportsPro = () => {
                               : undefined,
                           render: _ => _.report.companySiret,
                         },
-                        {
-                          id: 'createDate',
-                          head: m.receivedAt,
-                          sx: _ =>
-                            _.report.status === ReportStatus.TraitementEnCours
-                              ? {fontWeight: t => t.typography.fontWeightBold}
-                              : undefined,
-                          render: _ => formatDate(_.report.creationDate),
-                        },
-                        {
-                          id: 'expirationDate',
-                          head: m.expireOn,
-                          render: _ =>
-                            expiresSoon(_.report.expirationDate) && !Report.isClosed(_.report.status) ? (
-                              <Label dense style={{color: 'white', background: 'darkred'}}>
-                                {m.warnExpireOn(formatDate(_.report.expirationDate))}
-                              </Label>
-                            ) : hasExpired(_.report.expirationDate) ? (
-                              <Label dense style={{color: 'darkgray', background: 'white'}}>
-                                {formatDate(_.report.expirationDate)}
-                              </Label>
-                            ) : (
-                              <Label dense style={{color: 'black', background: 'white'}}>
-                                {formatDate(_.report.expirationDate)}
-                              </Label>
-                            ),
-                        },
-                        {
-                          id: 'status',
-                          head: m.status,
-                          render: _ => <ReportStatusProLabel dense status={Report.getStatusProByStatus(_.report.status)} />,
-                        },
+
                         {
                           id: 'consumer',
                           head: m.consumer,
