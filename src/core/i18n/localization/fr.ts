@@ -200,7 +200,7 @@ export const fr = {
     add_email_to_blacklist: 'Ajouter un email à la liste noire',
     activate_all: 'Tout Activer',
     block_all: 'Tout Bloquer',
-    parameters: 'Paramètres',
+    parameters: 'Paramètres uti',
     startedAt: 'Démarré le',
     startedBy: 'Démarré le',
     receivedAt: 'Reçu le',
@@ -342,7 +342,7 @@ export const fr = {
     </ul>
   `,
     proUser: 'Comptes Professionnels',
-    statsLandingPage: 'Statistiques Signal Conso',
+    statsLandingPage: 'Statistiques de SignalConso',
     statsCountBySubCategoriesTab: 'Signalements par sous catégories',
     statsCountBySubCategories: 'Nombre de signalements par sous catégories (signalements en français)',
     statsCountBySubCategoriesForeign: 'Nombre de signalements par sous catégories (signalements étrangers)',

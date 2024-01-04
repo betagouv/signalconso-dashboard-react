@@ -16,7 +16,7 @@ export const Companies = () => {
 
   return (
     <Page>
-      <PageTitle>{m.company}</PageTitle>
+      <PageTitle>{m.menu_companies}</PageTitle>
       {connectedUser.isAdmin && (
         <PageTabs>
           <PageTab to={siteMap.logged.companies_registered} label={m.companiesActivated} />
