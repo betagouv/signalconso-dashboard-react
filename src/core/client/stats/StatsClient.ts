@@ -127,10 +127,10 @@ export class StatsClient {
       .then(_ => (_.value ? duration(_.value, 'hour') : undefined))
   }
 
-  readonly getResponseDelay = (companyId: Id): Promise<Duration | undefined> => {
+  readonly getResponseDelay = (companyId: Id): Promise<Duration | null> => {
     return this.client
       .get<{value: number | undefined}>(`/stats/reports/delay/responsed`, {qs: {companyId}})
-      .then(_ => (_.value ? duration(_.value, 'hour') : undefined))
+      .then(_ => (_.value ? duration(_.value, 'hour') : null))
   }
 }
 
