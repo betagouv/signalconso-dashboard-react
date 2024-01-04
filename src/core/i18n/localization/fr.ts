@@ -6,6 +6,7 @@ import {CompanyAccessLevel} from '../../client/company-access/CompanyAccess'
 import {IdentificationStatus, InvestigationStatus} from '../../client/website/Website'
 import {ReportResponseTypes, ResponseEvaluation} from '../../client/event/Event'
 import {Category} from '../../client/constant/Category'
+import {DownloadType} from '../../../feature/Report/ReportDownloadAction'
 
 const invalidDate = '-'
 
@@ -607,6 +608,15 @@ export const fr = {
     codeNaf: 'Code NAF',
     cannotCreateCompanyMissingInfo: `Impossible de créer l'entreprise. Son nom ou son adresse ne sont pas renseignés.`,
     editAddress: `Modifier l'adresse`,
+    reportDownloadTypeDescription: {
+      [DownloadType.ReportOnly]: 'Téléchargement de la fiche de signalement uniquement.',
+      [DownloadType.ReportWithAttachment]: 'Téléchargement de la fiche de signalement et des pièces jointes associées.',
+    },
+    reportDownload: 'Que voulez-vous télécharger ?',
+    reportDownloadTypeTitle: {
+      [DownloadType.ReportOnly]: 'Signalement uniquement',
+      [DownloadType.ReportWithAttachment]: 'Signalement et pièces jointes',
+    },
     companyAccessLevelDescription: {
       [CompanyAccessLevel.admin]: 'Peut  consulter, répondre aux signalements et inviter/supprimer des nouveaux utilisateurs.',
       [CompanyAccessLevel.member]: 'Peut consulter et répondre aux signalements.',

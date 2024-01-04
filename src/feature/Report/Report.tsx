@@ -26,6 +26,7 @@ import {ReportReOpening} from './ReportReOpening'
 import {useMutation} from '@tanstack/react-query'
 import {useGetReportQuery, useGetReviewOnReportResponseQuery} from '../../core/queryhooks/reportQueryHooks'
 import {useGetCompanyEventsQuery, useGetReportEventsQuery} from '../../core/queryhooks/eventQueryHooks'
+import {ReportDownloadAction} from './ReportDownloadAction'
 
 const CONSO: EventType = 'CONSO'
 
@@ -96,14 +97,22 @@ export const ReportComponent = () => {
                 </ReportAdminResolution>
               )}
 
-              <Btn
-                color="primary"
-                icon="download"
-                loading={downloadReport.isPending}
-                onClick={() => downloadReport.mutate(report.id)}
-              >
-                {m.download}
-              </Btn>
+              {_getReport.data?.files && _getReport.data?.files.length > 0 ? (
+                <ReportDownloadAction report={report} files={_getReport.data?.files}>
+                  <Btn color="primary" icon="download">
+                    {m.download}
+                  </Btn>
+                </ReportDownloadAction>
+              ) : (
+                <Btn
+                  color="primary"
+                  icon="download"
+                  loading={downloadReport.isPending}
+                  onClick={() => downloadReport.mutate(report.id)}
+                >
+                  {m.download}
+                </Btn>
+              )}
 
               <ReportPostAction
                 actionType={EventActionValues.Comment}

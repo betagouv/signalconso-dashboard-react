@@ -88,15 +88,18 @@ export const cleanReportFilter = (filter: ReportSearch): ReportSearch => {
 export class ReportsClient {
   constructor(private client: ApiClientApi) {}
 
-  readonly downloadAll = async (report: Report, origin?: FileOrigin) => {
-    const baseQuery = `/reports/files?reportId=${report.id}`
+  private reportName = (report: Report) => {
     const day = String(report.creationDate.getDate()).padStart(2, '0')
     const month = String(report.creationDate.getMonth() + 1).padStart(2, '0') // Months are 0-indexed
     const year = report.creationDate.getFullYear()
+    return `${day}-${month}-${year}`
+  }
 
+  readonly downloadAll = async (report: Report, origin?: FileOrigin) => {
+    const baseQuery = `/reports/files?reportId=${report.id}`
     return this.client
       .getBlob<any>(origin ? `${baseQuery}&origin=${origin}` : baseQuery)
-      .then(blob => directDownloadBlob(`${day}-${month}-${year}-PJ`, 'application/zip')(blob))
+      .then(blob => directDownloadBlob(`${this.reportName(report)}-PJ`, 'application/zip')(blob))
   }
 
   readonly extract = (filters: ReportSearch & PaginatedFilters) => {
@@ -125,6 +128,12 @@ export class ReportsClient {
     return this.client
       .getBlob<any>(`/reports/download`, {qs: {ids}})
       .then(directDownloadBlob('Signalement.pdf', 'application/pdf'))
+  }
+
+  readonly downloadZip = (report: Report) => {
+    return this.client
+      .getBlob<any>(`/reports/download-with-attachments/${report.id}`)
+      .then(blob => directDownloadBlob(`${this.reportName(report)}`, 'application/zip')(blob))
   }
 
   readonly remove = (id: Id, reportDeletionReason: ReportDeletionReason) => {
