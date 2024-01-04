@@ -250,6 +250,7 @@ export const Datatable = <T extends any = any>({
               <TablePagination
                 rowsPerPageOptions={rowsPerPageOptions}
                 component="div"
+                labelRowsPerPage="Nombre d'éléments à afficher"
                 count={total ?? 0}
                 rowsPerPage={limit}
                 page={Math.round(offset / limit)}
