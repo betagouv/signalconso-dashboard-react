@@ -47,7 +47,7 @@ export const ReportDescription = ({report, files, children}: Props) => {
           <Txt bold block size="big" gutterBottom>
             {m.attachedFiles}
           </Txt>
-          {files && files.filter(_ => _.origin === FileOrigin.Consumer).length > 0 && (
+          {files && files.filter(_ => _.origin === FileOrigin.Consumer).length > 1 && (
             <ReportFileDeleteButton report={report} fileOrigin={FileOrigin.Consumer} />
           )}
         </div>

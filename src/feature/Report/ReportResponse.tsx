@@ -107,7 +107,7 @@ export const ReportResponseComponent = ({canEditFile, response, consumerReportRe
         <Txt gutterBottom bold size="big" block>
           {m.attachedFiles}
         </Txt>
-        {files && files.filter(_ => _.origin === FileOrigin.Professional).length > 0 && (
+        {files && files.filter(_ => _.origin === FileOrigin.Professional).length > 1 && (
           <ReportFileDeleteButton report={report} fileOrigin={FileOrigin.Professional} />
         )}
       </div>
