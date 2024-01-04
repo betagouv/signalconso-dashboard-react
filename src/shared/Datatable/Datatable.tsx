@@ -34,7 +34,7 @@ export interface DatatableProps<T> {
   showColumnsToggle?: boolean
   plainTextColumnsToggle?: boolean
   renderEmptyState?: ReactNode
-  rowsPerPageOptions?: number[]
+  rowsPerPageExtraOptions?: number[]
   paginate?: {
     minRowsBeforeDisplay?: number
     offset: number
@@ -83,7 +83,7 @@ export const Datatable = <T extends any = any>({
   header,
   showColumnsToggle,
   renderEmptyState,
-  rowsPerPageOptions = [5, 10, 25, 100],
+  rowsPerPageExtraOptions = [],
   sort,
   onClickRows,
   paginate,
@@ -246,7 +246,7 @@ export const Datatable = <T extends any = any>({
             const offset = safeParseInt(paginate.offset, 0)
             return (
               <TablePagination
-                rowsPerPageOptions={rowsPerPageOptions}
+                rowsPerPageOptions={[10, 25, 100, ...rowsPerPageExtraOptions]}
                 component="div"
                 labelRowsPerPage="Nombre d'éléments à afficher"
                 count={total ?? 0}
