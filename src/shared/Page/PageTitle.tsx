@@ -1,26 +1,15 @@
-import * as React from 'react'
-import {ReactNode} from 'react'
-import {Typography, TypographyProps} from '@mui/material'
+import { ReactNode } from 'react'
 
-interface Props extends TypographyProps {
+interface Props {
+  children: ReactNode
   action?: ReactNode
 }
 
-export const PageTitle = ({action, children, sx, ...props}: Props) => {
+export const PageTitle = ({action, children}: Props) => {
   return (
-    <Typography
-      variant="h5"
-      sx={{
-        mt: 1,
-        mb: 3,
-        display: 'flex',
-        alignItems: 'center',
-        ...sx,
-      }}
-      {...props}
-    >
-      {children}
-      {action && <div style={{marginLeft: 'auto'}}>{action}</div>}
-    </Typography>
+    <div className="flex justify-between mb-4">
+      <h1 className="text-4xl font-bold">{children}</h1>
+      {action && <div>{action}</div>}
+    </div>
   )
 }
