@@ -33,7 +33,6 @@ export interface DatatableProps<T> {
   initialHiddenColumns?: string[]
   showColumnsToggle?: boolean
   plainTextColumnsToggle?: boolean
-  showColumnsToggleBtnTooltip?: string
   renderEmptyState?: ReactNode
   rowsPerPageOptions?: number[]
   paginate?: {
@@ -83,7 +82,6 @@ export const Datatable = <T extends any = any>({
   actions,
   header,
   showColumnsToggle,
-  showColumnsToggleBtnTooltip,
   renderEmptyState,
   rowsPerPageOptions = [5, 10, 25, 100],
   sort,
@@ -139,7 +137,7 @@ export const Datatable = <T extends any = any>({
                 hiddenColumns={hiddenColumns}
                 plainTextButton={plainTextColumnsToggle}
                 onChange={_ => setHiddenColumns(_)}
-                title={showColumnsToggleBtnTooltip ?? m.toggleDatatableColumns}
+                title={m.toggleDatatableColumns}
               />
             )}
           </Box>
