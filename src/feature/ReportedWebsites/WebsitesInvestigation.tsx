@@ -10,7 +10,6 @@ import {StatusChip} from './StatusChip'
 import {WebsitesFilters} from './WebsitesFilters'
 import {SelectWebsiteAssociation} from './SelectWebsiteIdentification/SelectWebsiteAssociation'
 import {AutocompleteDialog} from '../../shared/AutocompleteDialog'
-import {useEffectFn, useMap} from '../../alexlibs/react-hooks-lib'
 import {WebsiteTools} from './WebsiteTools'
 import {sxUtils} from '../../core/theme'
 import {useLogin} from '../../core/context/LoginContext'
@@ -33,7 +32,10 @@ export const WebsitesInvestigation = () => {
 
   const _websiteWithCompany = useWebsiteWithCompanySearchQuery()
   const _investigationStatus = useListInvestigationStatusQuery()
-  const _createOrUpdate = useMutation({mutationFn: apiSdk.secured.website.createOrUpdateInvestigation})
+  const _createOrUpdate = useMutation({
+    mutationFn: apiSdk.secured.website.createOrUpdateInvestigation,
+    onSuccess: () => queryClient.invalidateQueries({queryKey: WebsiteWithCompanySearchKeys}),
+  })
   const _updateStatus = useMutation({
     mutationFn: (params: {id: Id; identificationStatus: IdentificationStatus}) =>
       apiSdk.secured.website.updateStatus(params.id, params.identificationStatus),
@@ -47,13 +49,6 @@ export const WebsitesInvestigation = () => {
     },
   })
   const {toastInfo, toastSuccess} = useToast()
-
-  const websitesIndex = useMap<Id, WebsiteWithCompany>()
-
-  useEffectFn(_websiteWithCompany.result.data, w => {
-    websitesIndex.clear()
-    w.entities.map(_ => websitesIndex.set(_.id, _))
-  })
 
   const handleUpdateKind = (website: WebsiteWithCompany, identificationStatus: IdentificationStatus) => {
     _updateStatus.mutate({id: website.id, identificationStatus})
@@ -133,7 +128,7 @@ export const WebsitesInvestigation = () => {
           onPaginationChange: pagination => _websiteWithCompany.updateFilters(prev => ({...prev, ...pagination})),
         }}
         getRenderRowKey={_ => _.id}
-        data={websitesIndex.values()}
+        data={_websiteWithCompany.result.data?.entities}
         showColumnsToggle={true}
         columns={[
           {
@@ -191,7 +186,6 @@ export const WebsitesInvestigation = () => {
                     toastInfo(m.alreadySelectedValue(investigationStatus))
                   } else {
                     _createOrUpdate.mutate({..._, investigationStatus})
-                    websitesIndex.set(_.id, {..._, lastUpdated: new Date(Date.now()), investigationStatus})
                   }
                 }}
               >
