@@ -43,6 +43,8 @@ export interface CompaniesToImport {
   siren?: string
   sirets: string[]
   emails: string[]
+  onlyHeadOffice: boolean
+  level: AccessLevel
 }
 
 export interface CompanyUpdate {
