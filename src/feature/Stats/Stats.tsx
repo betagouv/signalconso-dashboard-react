@@ -8,6 +8,7 @@ import {ProStats} from './ProStats'
 import {ReportStats} from './ReportStats'
 import {ArborescenceWithCounts} from './ArborescenceWithCounts'
 import {useLogin} from '../../core/context/LoginContext'
+import {config} from 'conf/config'
 
 export const Stats = () => {
   const {path} = useRouteMatch()
@@ -16,6 +17,13 @@ export const Stats = () => {
   return (
     <Page>
       <PageTitle>{m.statsLandingPage}</PageTitle>
+      <p className="mb-4">
+        D'autres statistiques sont accessibles{' '}
+        <a href={`${config.appBaseUrl}/fr/stats`} target="blank">
+          directement sur le site de SignalConso
+        </a>
+        .
+      </p>
       {connectedUser.isDGAL ? (
         <PageTabs>
           <PageTab to={siteMap.logged.proStats} label={m.statsPro} />

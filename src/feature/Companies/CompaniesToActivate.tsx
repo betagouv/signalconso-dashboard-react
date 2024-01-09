@@ -113,7 +113,7 @@ export const CompaniesToActivate = () => {
         total={_companiesToActivate.result.data?.totalCount}
         getRenderRowKey={_ => _.company.id}
         showColumnsToggle={true}
-        rowsPerPageOptions={[5, 10, 25, 100, 250]}
+        rowsPerPageExtraOptions={[250]}
         columns={[
           {
             head: (

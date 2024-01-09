@@ -51,7 +51,6 @@ export const UserAuthAttempts = () => {
           onPaginationChange: pagination => authAttempts.updateFilters(prev => ({...prev, ...pagination})),
         }}
         showColumnsToggle
-        rowsPerPageOptions={[5, 10, 25, 100]}
         getRenderRowKey={_ => _.timestamp}
         data={authAttempts.result.data?.entities}
         columns={[

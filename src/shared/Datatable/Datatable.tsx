@@ -33,9 +33,8 @@ export interface DatatableProps<T> {
   initialHiddenColumns?: string[]
   showColumnsToggle?: boolean
   plainTextColumnsToggle?: boolean
-  showColumnsToggleBtnTooltip?: string
   renderEmptyState?: ReactNode
-  rowsPerPageOptions?: number[]
+  rowsPerPageExtraOptions?: number[]
   paginate?: {
     minRowsBeforeDisplay?: number
     offset: number
@@ -83,9 +82,8 @@ export const Datatable = <T extends any = any>({
   actions,
   header,
   showColumnsToggle,
-  showColumnsToggleBtnTooltip,
   renderEmptyState,
-  rowsPerPageOptions = [5, 10, 25, 100],
+  rowsPerPageExtraOptions = [],
   sort,
   onClickRows,
   paginate,
@@ -139,7 +137,7 @@ export const Datatable = <T extends any = any>({
                 hiddenColumns={hiddenColumns}
                 plainTextButton={plainTextColumnsToggle}
                 onChange={_ => setHiddenColumns(_)}
-                title={showColumnsToggleBtnTooltip ?? m.toggleDatatableColumns}
+                title={m.toggleDatatableColumns}
               />
             )}
           </Box>
@@ -248,8 +246,9 @@ export const Datatable = <T extends any = any>({
             const offset = safeParseInt(paginate.offset, 0)
             return (
               <TablePagination
-                rowsPerPageOptions={rowsPerPageOptions}
+                rowsPerPageOptions={[10, 25, 100, ...rowsPerPageExtraOptions]}
                 component="div"
+                labelRowsPerPage="Nombre d'éléments à afficher"
                 count={total ?? 0}
                 rowsPerPage={limit}
                 page={Math.round(offset / limit)}

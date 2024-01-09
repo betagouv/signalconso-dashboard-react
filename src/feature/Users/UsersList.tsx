@@ -208,7 +208,7 @@ const UsersList = ({adminView}: Props) => {
             onPaginationChange: pagination => _users.updateFilters(prev => ({...prev, ...pagination})),
           }}
           showColumnsToggle
-          rowsPerPageOptions={[5, 10, 25, 100, ...(_users.result.data ? [_users.result.data.totalCount] : [])]}
+          rowsPerPageExtraOptions={_users.result.data ? [_users.result.data.totalCount] : undefined}
           getRenderRowKey={_ => _.email}
           data={_users.result.data?.entities}
           columns={columns}
