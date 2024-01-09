@@ -223,7 +223,7 @@ export const ReportsPro = () => {
                         },
                       ]
                 }
-                renderEmptyState={<ReportsProEmptyState {...{_reports}} />}
+                renderEmptyState={<ReportsProEmptyState {...{_reports, hasFilters}} />}
               />
             </Panel>
           </>
@@ -292,7 +292,7 @@ function ReportsProMobileSingleColumn({reportSearchResult}: ReportProColumnProps
   )
 }
 
-function ReportsProEmptyState({_reports}: {_reports: ReportsProResult}) {
+function ReportsProEmptyState({_reports, hasFilters}: {_reports: ReportsProResult; hasFilters: boolean}) {
   const {m} = useI18n()
   return (
     <Fender
@@ -301,11 +301,13 @@ function ReportsProEmptyState({_reports}: {_reports: ReportsProResult}) {
       description={
         <>
           <Txt color="hint" size="big" block gutterBottom>
-            {m.noReportsDesc}
+            {hasFilters ? m.noReportsWithFiltersDesc : m.noReportsFound}
           </Txt>
-          <ScButton icon="clear" onClick={_reports.clearFilters} variant="contained" color="primary">
-            {m.removeAllFilters}
-          </ScButton>
+          {hasFilters && (
+            <ScButton icon="clear" onClick={_reports.clearFilters} variant="contained" color="primary">
+              {m.removeAllFilters}
+            </ScButton>
+          )}
         </>
       }
     />
