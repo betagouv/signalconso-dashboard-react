@@ -200,7 +200,7 @@ export const fr = {
     add_email_to_blacklist: 'Ajouter un email à la liste noire',
     activate_all: 'Tout Activer',
     block_all: 'Tout Bloquer',
-    parameters: 'Paramètres uti',
+    parameters: 'Paramètres',
     startedAt: 'Démarré le',
     startedBy: 'Démarré le',
     receivedAt: 'Reçu le',
