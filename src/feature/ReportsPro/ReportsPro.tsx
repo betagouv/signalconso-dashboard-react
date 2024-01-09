@@ -1,59 +1,48 @@
+import {Badge, Box, Grid, Icon, MenuItem} from '@mui/material'
 import React, {useEffect, useMemo} from 'react'
+import {Alert, Btn, Fender, Txt, makeSx} from '../../alexlibs/mui-extension'
+import {useI18n} from '../../core/i18n'
+import {Datatable, DatatableProps} from '../../shared/Datatable/Datatable'
 import {Page, PageTitle} from '../../shared/Page'
 import {Panel, PanelBody} from '../../shared/Panel'
-import {Datatable, DatatableProps} from '../../shared/Datatable/Datatable'
-import {useI18n} from '../../core/i18n'
-import {Badge, Box, Grid, Icon, MenuItem} from '@mui/material'
 import {ReportStatusLabel, ReportStatusProLabel} from '../../shared/ReportStatus'
-import {useLayoutContext} from '../../core/Layout/LayoutContext'
-import {Alert, Btn, Fender, makeSx, Txt} from '../../alexlibs/mui-extension'
 
-import {combineSx, styleUtils, sxUtils} from '../../core/theme'
-import {SelectDepartments} from '../../shared/SelectDepartments/SelectDepartments'
-import {ScSelect} from '../../shared/Select/Select'
+import {ScOption} from 'core/helper/ScOption'
+import {CompanyWithAccessLevel, Paginate, PaginatedFilters} from 'core/model'
+import {UseQueryPaginateResult} from 'core/queryhooks/UseQueryPaginate'
 import {useHistory} from 'react-router'
-import {siteMap} from '../../core/siteMap'
+import {DebouncedInput} from 'shared/DebouncedInput'
+import {Enum} from '../../alexlibs/ts-utils'
+import {config} from '../../conf/config'
 import {EntityIcon} from '../../core/EntityIcon'
-import {ScButton} from '../../shared/Button'
+import {Report, ReportSearchResult, ReportStatus, ReportStatusPro, ReportType} from '../../core/client/report/Report'
+import {ReportSearch} from '../../core/client/report/ReportSearch'
+import {cleanObject, openInNew} from '../../core/helper'
+import compose from '../../core/helper/compose'
 import {
   mapArrayFromQuerystring,
   mapDateFromQueryString,
   mapDatesToQueryString,
   useQueryString,
 } from '../../core/helper/useQueryString'
-import {config} from '../../conf/config'
-import {ExportReportsPopper} from '../../shared/ExportPopperBtn'
-import {PeriodPicker} from '../../shared/PeriodPicker'
-import {SelectCompaniesByPro} from '../../shared/SelectCompaniesByPro/SelectCompaniesByPro'
-import compose from '../../core/helper/compose'
-import {DebouncedInput} from 'shared/DebouncedInput'
-import {Enum} from '../../alexlibs/ts-utils'
-import {cleanObject, openInNew} from '../../core/helper'
-import {Report, ReportSearchResult, ReportStatus, ReportStatusPro, ReportType} from '../../core/client/report/Report'
-import {ReportSearch} from '../../core/client/report/ReportSearch'
-import {ScOption} from 'core/helper/ScOption'
-import {Label} from '../../shared/Label'
-import {ScInput} from '../../shared/ScInput'
 import {useGetAccessibleByProQuery} from '../../core/queryhooks/companyQueryHooks'
 import {useReportSearchQuery} from '../../core/queryhooks/reportQueryHooks'
-import {UseQueryPaginateResult} from 'core/queryhooks/UseQueryPaginate'
-import {CompanyWithAccessLevel, Paginate, PaginatedFilters} from 'core/model'
+import {siteMap} from '../../core/siteMap'
+import {combineSx, styleUtils, sxUtils} from '../../core/theme'
+import {ScButton} from '../../shared/Button'
+import {ExportReportsPopper} from '../../shared/ExportPopperBtn'
+import {Label} from '../../shared/Label'
+import {PeriodPicker} from '../../shared/PeriodPicker'
+import {ScInput} from '../../shared/ScInput'
+import {ScSelect} from '../../shared/Select/Select'
+import {SelectCompaniesByPro} from '../../shared/SelectCompaniesByPro/SelectCompaniesByPro'
+import {SelectDepartments} from '../../shared/SelectDepartments/SelectDepartments'
 
 type ReportsProResult = UseQueryPaginateResult<ReportSearch & PaginatedFilters, Paginate<ReportSearchResult>, unknown>
 
 type ReportProColumnProps = {reportSearchResult: ReportSearchResult}
 
 const css = makeSx({
-  card: {
-    fontSize: t => styleUtils(t).fontSize.normal,
-    display: 'flex',
-    alignItems: 'center',
-    py: 1,
-    px: 2,
-  },
-  card_content: {
-    flex: 1,
-  },
   iconDash: {
     my: 0,
     mx: 1,
@@ -110,7 +99,6 @@ export const ReportsPro = () => {
   })
   const _reports = useReportSearchQuery({offset: 0, limit: 10, ...queryString.get()})
   const _accessibleByPro = useGetAccessibleByProQuery()
-  const {isMobileWidth} = useLayoutContext()
   const history = useHistory()
   const {formatDate, m} = useI18n()
 
@@ -155,74 +143,13 @@ export const ReportsPro = () => {
                 loading={_accessibleByPro.isLoading}
                 total={_reports.result.data?.totalCount}
                 onClickRows={onClickRows}
-                columns={
-                  isMobileWidth
-                    ? [
-                        {
-                          id: 'all',
-                          head: '',
-                          render: _ => <ReportsProMobileSingleColumn reportSearchResult={_} />,
-                        },
-                      ]
-                    : [
-                        {
-                          id: 'createDate',
-                          head: m.receivedAt,
-                          sx: _ =>
-                            _.report.status === ReportStatus.TraitementEnCours
-                              ? {fontWeight: t => t.typography.fontWeightBold}
-                              : undefined,
-                          render: _ => formatDate(_.report.creationDate),
-                        },
-                        {
-                          id: 'expirationDate',
-                          head: m.expireOn,
-                          render: _ => <ReportProDesktopExpirationColumn reportSearchResult={_} />,
-                        },
-                        {
-                          id: 'status',
-                          head: m.status,
-                          render: _ => <ReportStatusProLabel dense status={Report.getStatusProByStatus(_.report.status)} />,
-                        },
-                        {
-                          id: 'companyPostalCode',
-                          head: m.postalCode,
-                          sx: _ =>
-                            _.report.status === ReportStatus.TraitementEnCours
-                              ? {fontWeight: t => t.typography.fontWeightBold}
-                              : undefined,
-                          render: _ => _.report.companyAddress.postalCode,
-                        },
-                        {
-                          id: 'siret',
-                          head: m.siret,
-                          sx: _ =>
-                            _.report.status === ReportStatus.TraitementEnCours
-                              ? {fontWeight: t => t.typography.fontWeightBold}
-                              : undefined,
-                          render: _ => _.report.companySiret,
-                        },
-
-                        {
-                          id: 'consumer',
-                          head: m.consumer,
-                          sx: _ =>
-                            _.report.status === ReportStatus.TraitementEnCours
-                              ? {fontWeight: t => t.typography.fontWeightBold}
-                              : undefined,
-                          render: _ => <ReportProDesktopConsumerColumn reportSearchResult={_} />,
-                        },
-                        {
-                          id: 'file',
-                          head: m.files,
-                          sx: _ => ({
-                            minWidth: 44,
-                            maxWidth: 100,
-                          }),
-                          render: _ => <ReportsProDesktopFileColumn reportSearchResult={_} />,
-                        },
-                      ]
-                }
+                columns={[
+                  {
+                    id: 'all',
+                    head: '',
+                    render: _ => <ReportsProMobileSingleColumn reportSearchResult={_} />,
+                  },
+                ]}
                 renderEmptyState={<ReportsProEmptyState {...{_reports, hasFilters}} />}
               />
             </Panel>
@@ -266,29 +193,25 @@ function ReportsProDesktopFileColumn({reportSearchResult}: ReportProColumnProps)
 function ReportsProMobileSingleColumn({reportSearchResult}: ReportProColumnProps) {
   const {m, formatDate} = useI18n()
   return (
-    <Box sx={css.card}>
-      <Box sx={css.card_content}>
-        <Box sx={css.card_head}>
-          <Txt bold size="big">
-            {reportSearchResult.report.companySiret}
-          </Txt>
-          <Icon sx={combineSx(css.iconDash, sxUtils.inlineIcon)}>remove</Icon>
-          <Txt color="disabled">
-            <Icon sx={sxUtils.inlineIcon}>location_on</Icon>
+    <div className="flex items-center p-2 ">
+      <div className="grow">
+        <div className="space-x-2">
+          <span className="text-lg text-black font-bold">{reportSearchResult.report.companySiret}</span>
+          <span>—</span>
+          <span className="">
+            <i className="ri-map-pin-2-fill text-gray-400" />
             {reportSearchResult.report.companyAddress.postalCode}
-          </Txt>
-        </Box>
-        <Txt block color="hint">
-          {m.thisDate(formatDate(reportSearchResult.report.creationDate))}
-        </Txt>
-        <Txt block color="hint">
+          </span>
+        </div>
+        <span className="block">{m.thisDate(formatDate(reportSearchResult.report.creationDate))}</span>
+        <span className="block">
           {reportSearchResult.report.contactAgreement
             ? m.byHim(reportSearchResult.report.firstName + ' ' + reportSearchResult.report.lastName)
             : m.anonymousReport}
-        </Txt>
-      </Box>
+        </span>
+      </div>
       <ReportStatusLabel dense status={reportSearchResult.report.status} />
-    </Box>
+    </div>
   )
 }
 
