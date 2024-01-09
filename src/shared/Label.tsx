@@ -4,16 +4,11 @@ import {Paper, PaperProps, Theme, useTheme} from '@mui/material'
 import {alpha} from '@mui/material/styles'
 import {styleUtils} from '../core/theme'
 
-export type LabelColor = 'error' | 'warning' | 'info' | 'success' | 'disable'
-
 export interface LabelProps extends PaperProps {
-  type?: LabelColor
-  className?: string
   children: ReactNode
   fullWidth?: boolean
   dense?: boolean
   inSelectOptions?: boolean
-  elevation?: number
 }
 
 const colorize = (color: string): CSSProperties => ({
@@ -39,23 +34,21 @@ const colors = (t: Theme) => ({
   },
 })
 
-export const Label = ({type, children, sx, fullWidth, dense, elevation = 0, inSelectOptions, ...props}: LabelProps) => {
+export const Label = ({children, sx, fullWidth, dense, inSelectOptions, ...props}: LabelProps) => {
   const t = useTheme()
   return (
     <Paper
-      elevation={elevation}
+      elevation={0}
       sx={{
         whiteSpace: 'nowrap',
         borderRadius: 40,
         py: 1 / 1.5,
         px: 2,
-        letterSpacing: '1px',
         display: 'inline-flex',
         minHeight: 24,
         alignItems: 'center',
         transition: t => t.transitions.create('all'),
         ...colorize(t.palette.text.disabled),
-        ...(type && colors(t)[type]),
         // ...elevation > 0 && {
         //   border: 'none'
         // },

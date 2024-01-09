@@ -204,7 +204,7 @@ export const fr = {
     startedAt: 'Démarré le',
     startedBy: 'Démarré le',
     receivedAt: 'Reçu le',
-    expireOn: 'Expire le',
+    expireOn: 'À répondre avant le',
     warnExpireOn: (date: String) => `Expire le ${date}`,
     pin: `Épingler`,
     endedAt: 'Terminé le',
@@ -342,7 +342,7 @@ export const fr = {
     </ul>
   `,
     proUser: 'Comptes Professionnels',
-    statsLandingPage: 'Statistiques Signal Conso',
+    statsLandingPage: 'Statistiques de SignalConso',
     statsCountBySubCategoriesTab: 'Signalements par sous catégories',
     statsCountBySubCategories: 'Nombre de signalements par sous catégories (signalements en français)',
     statsCountBySubCategoriesForeign: 'Nombre de signalements par sous catégories (signalements étrangers)',

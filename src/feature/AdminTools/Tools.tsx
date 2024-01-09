@@ -13,7 +13,7 @@ export const Tools = () => {
 
   return (
     <Page>
-      <PageTitle>Outils</PageTitle>
+      <PageTitle>Outils techniques</PageTitle>
       {connectedUser.isAdmin && (
         <PageTabs>
           <PageTab to={siteMap.logged.testTools} label="Outils de tests" />
