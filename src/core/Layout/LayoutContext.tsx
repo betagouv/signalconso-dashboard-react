@@ -9,7 +9,8 @@ export interface LayoutProviderProps {
   showSidebarButton?: boolean
 }
 
-const mobileBreakpoint = 760
+// "Mobile width" is equivalent to Tailwinds's sm and lower
+const mobileBreakpoint = 768
 
 export interface UseLayoutContextProps {
   sidebarOpen: boolean
