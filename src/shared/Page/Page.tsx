@@ -17,7 +17,7 @@ export interface PageProps extends MxPageProps {
   loading?: boolean
 }
 
-export const Page = ({loading, size, sx, ...props}: PageProps) => {
+export const Page = ({loading, size = 'm', sx, ...props}: PageProps) => {
   return (
     <>
       {loading && (
@@ -39,7 +39,7 @@ export const Page = ({loading, size, sx, ...props}: PageProps) => {
           pt: 3,
           ...sx,
         }}
-        width={pageWidth[size ?? 'm']}
+        width={pageWidth[size]}
         {...props}
       />
     </>
