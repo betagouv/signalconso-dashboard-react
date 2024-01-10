@@ -1,6 +1,6 @@
 import {Box} from '@mui/material'
 import {ReactElement, ReactNode} from 'react'
-import {LayoutProvider, useLayoutContext} from './LayoutContext'
+import {LayoutContextProvider, useLayoutContext} from './LayoutContext'
 import {layoutConfig} from './index'
 
 export interface LayoutProps {
@@ -11,11 +11,11 @@ export interface LayoutProps {
 
 export const Layout = ({sidebar, header, children}: LayoutProps) => {
   return (
-    <LayoutProvider showSidebarButton={!!sidebar}>
+    <LayoutContextProvider hasSidebar={!!sidebar}>
       <LayoutUsingContext sidebar={sidebar} header={header}>
         {children}
       </LayoutUsingContext>
-    </LayoutProvider>
+    </LayoutContextProvider>
   )
 }
 
@@ -29,11 +29,11 @@ const LayoutUsingContext = ({sidebar, header, children}: Pick<LayoutProps, 'side
         component="main"
         sx={{
           transition: t => t.transitions.create('all'),
-          paddingLeft: (sidebar && sidebarTakesSpaceInLayout ? layoutConfig.sidebarWidth : 0) + 'px',
           overflow: 'hidden',
           position: 'relative',
           display: 'flex',
           flexDirection: 'column',
+          ...(sidebarTakesSpaceInLayout ? {paddingLeft: `${layoutConfig.sidebarWidth}px`} : null),
         }}
       >
         {children}

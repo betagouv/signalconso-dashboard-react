@@ -1,13 +1,7 @@
-import * as React from 'react'
 import {createContext, Dispatch, ReactNode, SetStateAction, useContext, useEffect, useState} from 'react'
 import {usePersistentState} from '../../alexlibs/react-persistent-state'
 
 const LayoutContext = createContext<UseLayoutContextProps>({} as UseLayoutContextProps)
-
-export interface LayoutProviderProps {
-  children: ReactNode
-  showSidebarButton?: boolean
-}
 
 // "Mobile width" is equivalent to Tailwinds's sm and lower
 const mobileBreakpoint = 768
@@ -19,17 +13,17 @@ export interface UseLayoutContextProps {
   setSidebarPinned: Dispatch<SetStateAction<boolean>>
   isMobileWidth: boolean
   showSidebarButton?: boolean
-  // should the main container leave space on the left for the sidebar ?
+  // do we need to reserve space on the left for the sidebar ?
   sidebarTakesSpaceInLayout: boolean
 }
 
-export const LayoutProvider = ({showSidebarButton, children}: LayoutProviderProps) => {
-  const [pageWidth, setPageWidth] = useState(getWidth())
+export const LayoutContextProvider = ({hasSidebar, children}: {children: ReactNode; hasSidebar: boolean}) => {
+  const [pageWidth, setPageWidth] = useState(getWindowWidth())
   const [sidebarOpen, setSidebarOpen] = usePersistentState(true, 'sidebarOpen')
   const [sidebarPinned, setSidebarPinned] = usePersistentState(true, 'sidebarPinned')
 
   useEffect(() => {
-    window.addEventListener('resize', () => setPageWidth(getWidth()))
+    window.addEventListener('resize', () => setPageWidth(getWindowWidth()))
   }, [])
 
   const isMobileWidth = pageWidth < mobileBreakpoint
@@ -41,8 +35,8 @@ export const LayoutProvider = ({showSidebarButton, children}: LayoutProviderProp
         sidebarPinned,
         setSidebarPinned,
         isMobileWidth,
-        showSidebarButton,
-        sidebarTakesSpaceInLayout: sidebarOpen && sidebarPinned && !isMobileWidth,
+        showSidebarButton: hasSidebar,
+        sidebarTakesSpaceInLayout: hasSidebar && sidebarOpen && sidebarPinned && !isMobileWidth,
       }}
     >
       {children}
@@ -50,7 +44,7 @@ export const LayoutProvider = ({showSidebarButton, children}: LayoutProviderProp
   )
 }
 
-function getWidth(): number {
+function getWindowWidth(): number {
   return window.outerWidth
 }
 

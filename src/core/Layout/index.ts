@@ -5,4 +5,4 @@ export const layoutConfig = {
 }
 
 export {Layout} from './Layout'
-export {LayoutProvider} from './LayoutContext'
+export {LayoutContextProvider as LayoutProvider} from './LayoutContext'
