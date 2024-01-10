@@ -15,7 +15,7 @@ export const Settings = () => {
   const {connectedUser} = useLogin()
 
   return (
-    <Page size="s">
+    <Page maxWidth="l">
       <PageTitle>{m.menu_settings}</PageTitle>
       <Panel>
         <SettingRow

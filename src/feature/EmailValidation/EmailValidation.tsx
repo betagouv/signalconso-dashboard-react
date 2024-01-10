@@ -57,7 +57,7 @@ export const EmailValidation = ({onValidateEmail, onSaveUser}: Props) => {
 
   return (
     <CenteredContent>
-      <Page size="s">
+      <Page maxWidth="s">
         <Fender type={fenderProps.type} title={fenderProps.title}>
           <Txt block gutterBottom color="hint" size="big" sx={{mt: 2}}>
             {fenderProps.description}

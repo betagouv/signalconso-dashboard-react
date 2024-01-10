@@ -135,7 +135,7 @@ export const ReportsPro = () => {
   }, [_reports.filters])
 
   return (
-    <Page size="xl" loading={_accessibleByPro.isLoading}>
+    <Page loading={_accessibleByPro.isLoading}>
       <PageTitle
         action={
           <Btn

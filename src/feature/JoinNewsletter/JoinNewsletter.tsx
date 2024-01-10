@@ -7,7 +7,7 @@ export const JoinNewsletter = () => {
     Matomo.trackEvent(EventCategories.ProEventActions, newsletter.reportsClik, 'Bouton ABONNEZ-VOUS')
   }
   return (
-    <Page>
+    <Page maxWidth="m">
       <PageTitle>Restez informé de l’actualité de la consommation et de la concurrence.</PageTitle>
       <p>
         La newsletter mensuelle "Concurrence et consommation" de la DGCCRF, riche en informations clés, est une source essentielle
