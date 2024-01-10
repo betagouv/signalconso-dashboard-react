@@ -10,6 +10,9 @@ export interface PageProps {
 
 const maxWidthsOrdered = ['s', 'm', 'l', 'xl'] as const
 
+// Component to hold the main content
+// Fixed width (varying on each breakpoint), leaving room for the side bar if needed
+// and centered
 export const Page = ({loading, maxWidth = 'xl', children}: PageProps) => {
   const {sidebarTakesSpaceInLayout} = useLayoutContext()
   const maxWidthIndex = maxWidthsOrdered.indexOf(maxWidth)
