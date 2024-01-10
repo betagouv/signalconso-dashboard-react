@@ -1,23 +1,20 @@
-import * as React from 'react'
-import {ReactElement, ReactNode} from 'react'
-import {LayoutProvider, useLayoutContext} from './LayoutContext'
 import {Box} from '@mui/material'
-import {layoutConfig} from './index'
+import {ReactElement, ReactNode} from 'react'
 import {defaultSpacing} from '../theme'
+import {LayoutProvider, useLayoutContext} from './LayoutContext'
+import {layoutConfig} from './index'
 
 export const sidebarWith = 220
 
 export interface LayoutProps {
   sidebar?: ReactElement<any>
   header?: ReactElement<any>
-  title?: string
   children?: ReactNode
-  mobileBreakpoint?: number
 }
 
-export const Layout = ({sidebar, header, title, mobileBreakpoint, children}: LayoutProps) => {
+export const Layout = ({sidebar, header, children}: LayoutProps) => {
   return (
-    <LayoutProvider title={title} mobileBreakpoint={mobileBreakpoint} showSidebarButton={!!sidebar}>
+    <LayoutProvider showSidebarButton={!!sidebar}>
       <LayoutUsingContext sidebar={sidebar} header={header}>
         {children}
       </LayoutUsingContext>
