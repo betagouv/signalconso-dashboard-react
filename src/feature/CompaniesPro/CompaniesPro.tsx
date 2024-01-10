@@ -69,7 +69,7 @@ export const CompaniesPro = () => {
   const companies = _companiesAccessibleByPro.data
 
   return (
-    <Page size="l">
+    <Page size="xl">
       <PageTitle
         action={
           <NavLink to={siteMap.loggedout.register}>

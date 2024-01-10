@@ -8,8 +8,8 @@ export const sidebarWith = 220
 
 export interface LayoutProps {
   sidebar?: ReactElement<any>
-  header?: ReactElement<any>
-  children?: ReactNode
+  header: ReactElement<any>
+  children: ReactNode
 }
 
 export const Layout = ({sidebar, header, children}: LayoutProps) => {
@@ -23,7 +23,7 @@ export const Layout = ({sidebar, header, children}: LayoutProps) => {
 }
 
 const LayoutUsingContext = ({sidebar, header, children}: Pick<LayoutProps, 'sidebar' | 'header' | 'children'>) => {
-  const {sidebarOpen, sidebarPinned, isMobileWidth} = useLayoutContext()
+  const {sidebarTakesSpaceInLayout} = useLayoutContext()
   return (
     <>
       {header}
@@ -32,8 +32,7 @@ const LayoutUsingContext = ({sidebar, header, children}: Pick<LayoutProps, 'side
         component="main"
         sx={{
           transition: t => t.transitions.create('all'),
-          paddingLeft:
-            (sidebar && sidebarOpen && sidebarPinned && !isMobileWidth ? layoutConfig.sidebarWith + defaultSpacing : 0) + 'px',
+          paddingLeft: (sidebar && sidebarTakesSpaceInLayout ? layoutConfig.sidebarWith : 0) + 'px',
           overflow: 'hidden',
           position: 'relative',
           display: 'flex',

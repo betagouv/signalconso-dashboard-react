@@ -19,6 +19,8 @@ export interface UseLayoutContextProps {
   setSidebarPinned: Dispatch<SetStateAction<boolean>>
   isMobileWidth: boolean
   showSidebarButton?: boolean
+  // should the main container leave space on the left for the sidebar ?
+  sidebarTakesSpaceInLayout: boolean
 }
 
 export const LayoutProvider = ({showSidebarButton, children}: LayoutProviderProps) => {
@@ -30,6 +32,7 @@ export const LayoutProvider = ({showSidebarButton, children}: LayoutProviderProp
     window.addEventListener('resize', () => setPageWidth(getWidth()))
   }, [])
 
+  const isMobileWidth = pageWidth < mobileBreakpoint
   return (
     <LayoutContext.Provider
       value={{
@@ -37,8 +40,9 @@ export const LayoutProvider = ({showSidebarButton, children}: LayoutProviderProp
         setSidebarOpen,
         sidebarPinned,
         setSidebarPinned,
-        isMobileWidth: pageWidth < mobileBreakpoint,
+        isMobileWidth,
         showSidebarButton,
+        sidebarTakesSpaceInLayout: sidebarOpen && sidebarPinned && !isMobileWidth,
       }}
     >
       {children}
