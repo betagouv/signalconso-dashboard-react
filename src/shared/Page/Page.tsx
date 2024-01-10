@@ -12,7 +12,6 @@ export const pageWidth = {
 }
 
 export interface PageProps extends MxPageProps {
-  large?: boolean
   size?: 'xl' | 'l' | 's' | 'm'
   children: ReactNode
   loading?: boolean
