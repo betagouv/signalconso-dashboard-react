@@ -24,11 +24,11 @@ export const Page = ({loading, maxWidth = 'xl', children}: PageProps) => {
         ...(maxWidthIndex > 2 ? ['2xl:w-[1536px]'] : []),
       ]
     : [
-        // same, minus 220px to leave room for the sidebar
-        'md:w-[528px]',
-        ...(maxWidthIndex > 0 ? ['lg:w-[804px]'] : []),
-        ...(maxWidthIndex > 1 ? ['xl:w-[1060px]'] : []),
-        ...(maxWidthIndex > 2 ? ['2xl:w-[1316px]'] : []),
+        // same, minus 240px to leave room for the sidebar
+        'md:w-[508px]',
+        ...(maxWidthIndex > 0 ? ['lg:w-[784px]'] : []),
+        ...(maxWidthIndex > 1 ? ['xl:w-[1040px]'] : []),
+        ...(maxWidthIndex > 2 ? ['2xl:w-[1296px]'] : []),
       ]
   const sizesClass = sizes.join(' ')
   return (
