@@ -1,8 +1,6 @@
-import * as React from 'react'
+import {LinearProgress} from '@mui/material'
 import {ReactNode} from 'react'
 import MxPage from '../../alexlibs/mui-extension/MxPage'
-import {LinearProgress} from '@mui/material'
-import {PageProps as MxPageProps} from '../../alexlibs/mui-extension'
 
 export const pageWidth = {
   xl: 1400,
@@ -11,13 +9,13 @@ export const pageWidth = {
   s: 680,
 }
 
-export interface PageProps extends MxPageProps {
+export interface PageProps {
   size?: 'xl' | 'l' | 's' | 'm'
-  children: ReactNode
   loading?: boolean
+  children: ReactNode
 }
 
-export const Page = ({loading, size = 'm', sx, ...props}: PageProps) => {
+export const Page = ({loading, size = 'm', ...props}: PageProps) => {
   return (
     <>
       {loading && (
@@ -37,7 +35,6 @@ export const Page = ({loading, size = 'm', sx, ...props}: PageProps) => {
         sx={{
           p: 2,
           pt: 3,
-          ...sx,
         }}
         width={pageWidth[size]}
         {...props}
