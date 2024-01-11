@@ -5,7 +5,7 @@ import {NavLink} from 'react-router-dom'
 import {Btn, Fender, Txt} from '../../alexlibs/mui-extension'
 import {useI18n} from '../../core/i18n'
 import {groupBy, uniqBy} from '../../core/lodashNamedExport'
-import {AccessLevel, BlockedReportNotification, Id} from '../../core/model'
+import {AccessLevel, BlockedReportNotification, CompanyWithAccessLevel, Id} from '../../core/model'
 import {siteMap} from '../../core/siteMap'
 import {sxUtils} from '../../core/theme'
 import {AddressComponent} from '../../shared/Address'
@@ -19,9 +19,10 @@ import {
   ListReportBlockedNotificationsQueryKeys,
   useListReportBlockedNotificationsQuery,
 } from '../../core/queryhooks/reportBlockedNotificationQueryHooks'
-import {useMutation, useQueryClient} from '@tanstack/react-query'
+import {UseMutationResult, useMutation, useQueryClient} from '@tanstack/react-query'
 import {useApiContext} from '../../core/context/ApiContext'
 import {useGetAccessibleByProQuery} from '../../core/queryhooks/companyQueryHooks'
+import type {Dictionary} from 'lodash'
 
 export const CompaniesPro = () => {
   const {m} = useI18n()
@@ -121,55 +122,16 @@ export const CompaniesPro = () => {
           getRenderRowKey={_ => _.id}
           columns={[
             {
-              id: '',
+              id: 'all',
               render: _ => (
-                <div>
-                  <NavLink to={siteMap.logged.company(_.id)} className="text-lg text-scbluefrance">
-                    {_.name}
-                  </NavLink>
-                  <div className="text-gray-500">
-                    <AddressComponent address={_.address} />
-                  </div>
-                  <div className="text-gray-500">SIRET {_.siret}</div>
-                </div>
-              ),
-            },
-            {
-              id: 'actions',
-              sx: _ => sxUtils.tdActions,
-              render: _ => (
-                <div className="pt-6 space-y-2">
-                  <div className="flex items-center justify-end gap-2">
-                    {_.level === AccessLevel.ADMIN && (
-                      <Btn href={'#' + siteMap.logged.companyAccesses(_.siret)} variant="outlined" size="small" icon="group">
-                        {m.handleAccesses}
-                      </Btn>
-                    )}
-                    <Btn href={'#' + siteMap.logged.company(_.id)} variant="outlined" size="small" icon="query_stats">
-                      {m.myStats}
-                    </Btn>
-                    <Btn
-                      href={'#' + siteMap.logged.reports({hasCompany: true, siretSirenList: [_.siret]})}
-                      variant="contained"
-                      icon="assignment_late"
-                      size="small"
-                    >
-                      {m.see_reports}
-                    </Btn>
-                  </div>
-                  <FormControlLabel
-                    control={
-                      <Switch
-                        disabled={!blockedNotificationIndex}
-                        checked={!blockedNotificationIndex?.[_.id]}
-                        onChange={e => {
-                          e.target.checked ? _remove.mutate([_.id]) : setCurrentlyDisablingNotificationsForCompanies(_.id)
-                        }}
-                      />
-                    }
-                    label={<span className="text-sm">Notifications par email</span>}
-                  />
-                </div>
+                <CompaniesProRow
+                  {...{
+                    _,
+                    _remove,
+                    blockedNotificationIndex,
+                    setCurrentlyDisablingNotificationsForCompanies,
+                  }}
+                />
               ),
             },
           ]}
@@ -199,5 +161,64 @@ export const CompaniesPro = () => {
         }}
       />
     </Page>
+  )
+}
+
+function CompaniesProRow({
+  _,
+  _remove,
+  setCurrentlyDisablingNotificationsForCompanies,
+  blockedNotificationIndex,
+}: {
+  _: CompanyWithAccessLevel
+  _remove: UseMutationResult<void, Error, string[], unknown>
+  setCurrentlyDisablingNotificationsForCompanies: React.Dispatch<React.SetStateAction<string | string[] | undefined>>
+  blockedNotificationIndex: Dictionary<BlockedReportNotification[]> | undefined
+}) {
+  const {m} = useI18n()
+  return (
+    <div className="lg:grid lg:grid-cols-2 py-2 lg:py-0">
+      <div className="">
+        <NavLink to={siteMap.logged.company(_.id)} className="text-lg text-scbluefrance">
+          {_.name}
+        </NavLink>
+        <div className="text-gray-500">
+          <AddressComponent address={_.address} />
+        </div>
+        <div className="text-gray-500">SIRET {_.siret}</div>
+      </div>
+      <div className="flex flex-col items-end justify-between pb-2">
+        <FormControlLabel
+          control={
+            <Switch
+              disabled={!blockedNotificationIndex}
+              checked={!blockedNotificationIndex?.[_.id]}
+              onChange={e => {
+                e.target.checked ? _remove.mutate([_.id]) : setCurrentlyDisablingNotificationsForCompanies(_.id)
+              }}
+            />
+          }
+          label={<span className="text-sm">Notifications par email</span>}
+        />
+        <div className="flex  justify-end gap-2">
+          {_.level === AccessLevel.ADMIN && (
+            <Btn href={'#' + siteMap.logged.companyAccesses(_.siret)} variant="outlined" size="small" icon="group">
+              {m.handleAccesses}
+            </Btn>
+          )}
+          <Btn href={'#' + siteMap.logged.company(_.id)} variant="outlined" size="small" icon="query_stats">
+            {m.myStats}
+          </Btn>
+          <Btn
+            href={'#' + siteMap.logged.reports({hasCompany: true, siretSirenList: [_.siret]})}
+            variant="contained"
+            icon="assignment_late"
+            size="small"
+          >
+            {m.see_reports}
+          </Btn>
+        </div>
+      </div>
+    </div>
   )
 }
