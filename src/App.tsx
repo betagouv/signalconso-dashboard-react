@@ -15,7 +15,7 @@ import {ScHeader} from './core/ScHeader/ScHeader'
 import {ScSidebar} from './core/ScSidebar/ScSidebar'
 import {LoginProvider, useLogin} from './core/context/LoginContext'
 import {I18nProvider} from './core/i18n'
-import {Matomo} from './core/plugins/Matomo'
+import {EventCategories, Matomo, SidebarEventActions} from './core/plugins/Matomo'
 import {siteMap} from './core/siteMap'
 import {muiTheme} from './core/theme'
 import {AddCompanyForm} from './feature/AddCompany/AddCompanyForm'
@@ -45,6 +45,7 @@ import {CenteredContent} from './shared/CenteredContent'
 import {Tools} from './feature/AdminTools/Tools'
 import {useToast} from './core/toast'
 import {ApiError} from './core/client/ApiClient'
+import {useLayoutContext} from 'core/Layout/LayoutContext'
 
 const Router: typeof HashRouter = config.useHashRouter ? HashRouter : BrowserRouter
 
@@ -136,6 +137,7 @@ const AppLogged = () => {
   const {apiSdk, connectedUser, logout} = useLogin()
   const history = useHistory()
   const {toastError} = useToast()
+  const {sidebarPinned} = useLayoutContext()
 
   const MAX_RETRIES = 3
   const HTTP_STATUS_TO_NOT_RETRY: (string | number)[] = [400, 401, 403, 404]
@@ -164,7 +166,19 @@ const AppLogged = () => {
       },
     }),
   })
-  useEffect(() => history.listen(_ => Matomo.trackPage(`/${connectedUser.role.toLocaleLowerCase()}${_.pathname}`)), [history])
+  useEffect(
+    () =>
+      history.listen(_ => {
+        Matomo.trackPage(`/${connectedUser.role.toLocaleLowerCase()}${_.pathname}`)
+        // Temporarily track sidebar usage
+        // to see if we can remove the option of having it non-pinned
+        Matomo.trackEvent(
+          EventCategories.sidebar,
+          sidebarPinned ? SidebarEventActions.pageViewSidebarPinned : SidebarEventActions.pageViewSidebarNotPinned,
+        )
+      }),
+    [history, sidebarPinned],
+  )
 
   return (
     <Provide
