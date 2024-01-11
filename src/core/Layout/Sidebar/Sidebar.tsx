@@ -64,7 +64,7 @@ export const Sidebar = ({children, sx, ...props}: BoxProps) => {
     >
       <Box
         sx={{
-          width: layoutConfig.sidebarWith,
+          width: layoutConfig.sidebarWidth,
           height: '100%',
           transition: t => t.transitions.create('width'),
           overflowY: 'auto',

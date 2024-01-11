@@ -235,7 +235,7 @@ export const Reports = () => {
   }, [])
 
   return (
-    <Page size="xl">
+    <Page>
       <PageTitle>{m.reports_pageTitle}</PageTitle>
       <Panel elevation={3}>
         <PanelBody>

@@ -25,7 +25,7 @@ export const Subscriptions = () => {
   })
 
   return (
-    <Page size="s">
+    <Page>
       <PageTitle>{m.menu_subscriptions}</PageTitle>
 
       <Alert id="subscriptions-info" type="info" deletable sx={{mb: 2}}>

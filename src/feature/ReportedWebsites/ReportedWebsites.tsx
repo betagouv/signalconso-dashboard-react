@@ -14,7 +14,7 @@ export const ReportedWebsites = () => {
   const {connectedUser} = useLogin()
 
   return (
-    <Page size="xl">
+    <Page>
       {connectedUser.isAdmin ? (
         <PageTitle>{m.reportedWebsites}</PageTitle>
       ) : (

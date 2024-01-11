@@ -1,35 +1,32 @@
-import * as React from 'react'
 import {createContext, Dispatch, ReactNode, SetStateAction, useContext, useEffect, useState} from 'react'
 import {usePersistentState} from '../../alexlibs/react-persistent-state'
 
 const LayoutContext = createContext<UseLayoutContextProps>({} as UseLayoutContextProps)
 
-export interface LayoutProviderProps {
-  children: ReactNode
-  mobileBreakpoint?: number
-  title?: string
-  showSidebarButton?: boolean
-}
+// "Mobile width" is equivalent to Tailwinds's sm and lower
+const mobileBreakpoint = 768
 
 export interface UseLayoutContextProps {
   sidebarOpen: boolean
   setSidebarOpen: Dispatch<SetStateAction<boolean>>
   sidebarPinned: boolean
   setSidebarPinned: Dispatch<SetStateAction<boolean>>
-  title?: string
   isMobileWidth: boolean
   showSidebarButton?: boolean
+  // do we need to reserve space on the left for the sidebar ?
+  sidebarTakesSpaceInLayout: boolean
 }
 
-export const LayoutProvider = ({title, showSidebarButton, mobileBreakpoint = 760, children}: LayoutProviderProps) => {
-  const [pageWidth, setPageWidth] = useState(getWidth())
+export const LayoutContextProvider = ({hasSidebar, children}: {children: ReactNode; hasSidebar: boolean}) => {
+  const [pageWidth, setPageWidth] = useState(getWindowWidth())
   const [sidebarOpen, setSidebarOpen] = usePersistentState(true, 'sidebarOpen')
   const [sidebarPinned, setSidebarPinned] = usePersistentState(true, 'sidebarPinned')
 
   useEffect(() => {
-    window.addEventListener('resize', () => setPageWidth(getWidth()))
+    window.addEventListener('resize', () => setPageWidth(getWindowWidth()))
   }, [])
 
+  const isMobileWidth = pageWidth < mobileBreakpoint
   return (
     <LayoutContext.Provider
       value={{
@@ -37,9 +34,9 @@ export const LayoutProvider = ({title, showSidebarButton, mobileBreakpoint = 760
         setSidebarOpen,
         sidebarPinned,
         setSidebarPinned,
-        title,
-        isMobileWidth: pageWidth < mobileBreakpoint,
-        showSidebarButton,
+        isMobileWidth,
+        showSidebarButton: hasSidebar,
+        sidebarTakesSpaceInLayout: hasSidebar && sidebarOpen && sidebarPinned && !isMobileWidth,
       }}
     >
       {children}
@@ -47,7 +44,7 @@ export const LayoutProvider = ({title, showSidebarButton, mobileBreakpoint = 760
   )
 }
 
-function getWidth(): number {
+function getWindowWidth(): number {
   return window.outerWidth
 }
 

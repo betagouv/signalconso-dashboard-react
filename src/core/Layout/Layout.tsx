@@ -1,32 +1,26 @@
-import * as React from 'react'
-import {ReactElement, ReactNode} from 'react'
-import {LayoutProvider, useLayoutContext} from './LayoutContext'
 import {Box} from '@mui/material'
+import {ReactElement, ReactNode} from 'react'
+import {LayoutContextProvider, useLayoutContext} from './LayoutContext'
 import {layoutConfig} from './index'
-import {defaultSpacing} from '../theme'
-
-export const sidebarWith = 220
 
 export interface LayoutProps {
   sidebar?: ReactElement<any>
-  header?: ReactElement<any>
-  title?: string
-  children?: ReactNode
-  mobileBreakpoint?: number
+  header: ReactElement<any>
+  children: ReactNode
 }
 
-export const Layout = ({sidebar, header, title, mobileBreakpoint, children}: LayoutProps) => {
+export const Layout = ({sidebar, header, children}: LayoutProps) => {
   return (
-    <LayoutProvider title={title} mobileBreakpoint={mobileBreakpoint} showSidebarButton={!!sidebar}>
+    <LayoutContextProvider hasSidebar={!!sidebar}>
       <LayoutUsingContext sidebar={sidebar} header={header}>
         {children}
       </LayoutUsingContext>
-    </LayoutProvider>
+    </LayoutContextProvider>
   )
 }
 
 const LayoutUsingContext = ({sidebar, header, children}: Pick<LayoutProps, 'sidebar' | 'header' | 'children'>) => {
-  const {sidebarOpen, sidebarPinned, isMobileWidth} = useLayoutContext()
+  const {sidebarTakesSpaceInLayout} = useLayoutContext()
   return (
     <>
       {header}
@@ -35,12 +29,11 @@ const LayoutUsingContext = ({sidebar, header, children}: Pick<LayoutProps, 'side
         component="main"
         sx={{
           transition: t => t.transitions.create('all'),
-          paddingLeft:
-            (sidebar && sidebarOpen && sidebarPinned && !isMobileWidth ? layoutConfig.sidebarWith + defaultSpacing : 0) + 'px',
           overflow: 'hidden',
           position: 'relative',
           display: 'flex',
           flexDirection: 'column',
+          ...(sidebarTakesSpaceInLayout ? {paddingLeft: `${layoutConfig.sidebarWidth}px`} : null),
         }}
       >
         {children}
