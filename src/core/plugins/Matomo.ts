@@ -45,53 +45,23 @@ export class Matomo {
 
 type AnalyticAction =
   | AuthenticationEventActions
-  | ReportEventActions
-  | DgccrfEventActions
-  | CompanySearchEventActions
-  | ContractualDisputeActions
   | AccountEventActions
   | AccessEventActions
-  | ConsumerShareReviewEventActions
   | StatisticsActions
   | newsletter
   | SidebarEventActions
 
 export enum EventCategories {
-  report = 'Signalement',
-  consumerReview = 'Avis consommateur',
   auth = 'Authentification',
   account = 'Compte utilisateur',
   companyAccess = "Accès de l'entreprise",
-  dgccrf = 'DGCCRF',
   statistics = 'Statistiques',
   ProEventActions = 'Newsletter',
   sidebar = 'sidebar',
 }
 
-export enum DgccrfEventActions {
-  reportsSearch = 'Recherche de signalements',
-}
 export enum newsletter {
   reportsClik = 'ClickNewsletterSubscribeButton',
-}
-
-export enum ReportEventActions {
-  information = "Consultation du détail d'un message d'information",
-}
-
-export enum CompanySearchEventActions {
-  search = 'Recherche',
-  select = 'Sélection dans la liste de résultats',
-}
-
-export enum ContractualDisputeActions {
-  consult = 'Consultation',
-}
-
-export enum ConsumerShareReviewEventActions {
-  twitter = 'Partage sur Twitter',
-  facebook = 'Partage sur Facebook',
-  servicePublicPlus = 'Partage sur Service-public.fr',
 }
 
 export enum AuthenticationEventActions {
