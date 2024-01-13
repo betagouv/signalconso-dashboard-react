@@ -103,6 +103,8 @@ export const fr = {
       [InvestigationStatus.SignalConsoIdentificationFailed]: 'Echec identification Admin',
       [InvestigationStatus.Processing]: 'Identification en cours',
     },
+    websiteInvestigationClosedCompanyAssociationDesc:
+      "Plusieurs sites internet associés à des entreprises fermées ont été détectés. Désormais, ces associations ne seront plus proposées aux utilisateurs. Ils devront identifier eux-mêmes l'entreprise correspondante lorsqu'ils signalent ces sites.",
     hide: 'Masquer',
     filter: 'Filtrer',
     yes: 'Oui',

@@ -56,6 +56,7 @@ export interface ApiHostWithReportCount {
 
 export interface WebsiteWithCompanySearch extends PaginatedFilters {
   host?: string
+  isOpen: boolean | null
   identificationStatus?: IdentificationStatus[]
   investigationStatus?: InvestigationStatus[]
   start?: Date

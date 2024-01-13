@@ -1,4 +1,4 @@
-import {Box, BoxProps, Tooltip} from '@mui/material'
+import {Box, BoxProps, Icon, Tooltip} from '@mui/material'
 import {Txt} from '../../../alexlibs/mui-extension'
 import React from 'react'
 import {useI18n} from '../../../core/i18n'
@@ -21,20 +21,35 @@ export const ChipCompany = ({company, ...props}: Props) => {
         }}
         label={
           <Box sx={{mx: 0.5}}>
-            <Txt
-              block
-              truncate
-              bold
-              sx={{
-                marginBottom: -0.5,
-                maxWidth: 200,
-              }}
-            >
-              {company.name}
-            </Txt>
-            <Txt color="hint" fontSize="small">
-              {company.siret}
-            </Txt>
+            <div className="flex flex-grow">
+              <Txt
+                block
+                truncate
+                bold
+                sx={{
+                  marginBottom: -0.5,
+                  maxWidth: 200,
+                }}
+              >
+                {company.name}
+              </Txt>
+              {!company.isOpen && (
+                <Txt
+                  block
+                  truncate
+                  bold
+                  sx={{
+                    marginBottom: -0.5,
+                    marginLeft: 0.5,
+                    maxWidth: 200,
+                    color: 'red',
+                  }}
+                >
+                  (FERMÉ)
+                </Txt>
+              )}
+            </div>
+            <Txt fontSize="small">{company.siret}</Txt>
           </Box>
         }
       />
