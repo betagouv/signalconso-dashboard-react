@@ -19,6 +19,17 @@ export const useWebsiteWithCompanySearchQuery = () => {
     limit: 10,
     offset: 0,
     identificationStatus: [IdentificationStatus.NotIdentified],
+    isOpen: null,
+  })
+}
+
+export const useWebsiteWithClosedCompanyQuery = () => {
+  const {api} = useApiContext()
+  return useQueryPaginate(WebsiteWithCompanySearchKeys, api.secured.website.list, {
+    limit: 10,
+    offset: 0,
+    identificationStatus: [IdentificationStatus.Identified],
+    isOpen: false,
   })
 }
 

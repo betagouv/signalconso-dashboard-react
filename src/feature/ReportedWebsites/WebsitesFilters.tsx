@@ -10,6 +10,7 @@ import {Enum} from '../../alexlibs/ts-utils'
 import {Label} from '../../shared/Label'
 import {Btn} from '../../alexlibs/mui-extension'
 import {IdentificationStatus, InvestigationStatus, WebsiteWithCompanySearch} from '../../core/client/website/Website'
+import {TrueFalseNull} from '../../shared/TrueFalseNull'
 
 export interface WebsitesFiltersProps {
   updateFilters: (_: WebsiteWithCompanySearch) => void
@@ -24,6 +25,11 @@ export const WebsitesFilters = ({filters, updateFilters, children, ...props}: We
   const [open, setOpen] = useState<boolean>(false)
   const close = () => {
     setOpen(false)
+  }
+
+  const TrueLabel = () => {
+    const {m} = useI18n()
+    return <>{m.yes}</>
   }
 
   const confirm = (e: any) => {
@@ -106,6 +112,23 @@ export const WebsitesFilters = ({filters, updateFilters, children, ...props}: We
                     </ScMenuItem>
                   ))}
                 </ScMultiSelect>
+              )}
+            />
+          </DialogInputRow>
+
+          <DialogInputRow icon="check_circle" label={'Établissement ouvert'}>
+            <Controller
+              defaultValue={null}
+              name="isOpen"
+              control={control}
+              render={({field}) => (
+                <TrueFalseNull
+                  {...field}
+                  label={{
+                    true: <TrueLabel />,
+                  }}
+                  sx={{flexBasis: '100%', mt: 1}}
+                />
               )}
             />
           </DialogInputRow>
