@@ -98,7 +98,7 @@ export const CompanyAccesses = () => {
   }
 
   return (
-    <Page size="m">
+    <Page maxWidth="m">
       <PageTitle
         action={
           !connectedUser.isDGCCRF && (

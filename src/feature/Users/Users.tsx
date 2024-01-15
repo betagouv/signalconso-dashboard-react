@@ -14,7 +14,7 @@ export const Users = () => {
   const {path} = useRouteMatch()
 
   return (
-    <Page size="l">
+    <Page>
       <PageTitle>{m.menu_users}</PageTitle>
       <PageTabs>
         <PageTab to={siteMap.logged.users_agent} label={m.agentUsers} />

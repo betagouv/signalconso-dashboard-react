@@ -16,7 +16,7 @@ const sx = makeSx({
 
 export const ModeEmploiDGCCRF = () => {
   return (
-    <Page size="s">
+    <Page>
       <Panel>
         <PanelBody>
           <Typography variant="h4" gutterBottom>
