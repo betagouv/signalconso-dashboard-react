@@ -18,9 +18,13 @@ export const Stats = () => {
     <Page>
       <PageTitle>{m.statsLandingPage}</PageTitle>
       <p className="mb-4">
-        D'autres statistiques sont accessibles{' '}
+        D'autres statistiques sont accessibles directement sur le{' '}
         <a href={`${config.appBaseUrl}/fr/stats`} target="blank">
-          directement sur le site de SignalConso
+          site de SignalConso
+        </a>{' '}
+        et sur{' '}
+        <a href={`https://data.economie.gouv.fr/pages/signalconso/`} target="blank">
+          DataEconomie
         </a>
         .
       </p>
