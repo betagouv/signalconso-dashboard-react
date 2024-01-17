@@ -43,13 +43,7 @@ export class Matomo {
   }
 }
 
-type AnalyticAction =
-  | AuthenticationEventActions
-  | AccountEventActions
-  | AccessEventActions
-  | StatisticsActions
-  | newsletter
-  | SidebarEventActions
+type AnalyticAction = AuthenticationEventActions | AccountEventActions | AccessEventActions | StatisticsActions | newsletter
 
 export enum EventCategories {
   auth = 'Authentification',
@@ -57,7 +51,6 @@ export enum EventCategories {
   companyAccess = "Accès de l'entreprise",
   statistics = 'Statistiques',
   ProEventActions = 'Newsletter',
-  sidebar = 'sidebar',
 }
 
 export enum newsletter {
@@ -72,11 +65,6 @@ export enum AuthenticationEventActions {
   forgotPasswordFail = 'Mot de passe oublié - erreur technique',
   resetPasswordSuccess = 'Réinitialistation du mot de passe',
   resetPasswordFail = 'Réinitialistation du mot de passe - erreur technique',
-}
-
-export enum SidebarEventActions {
-  pageViewSidebarPinned = 'Pageview avec la sidebar épinglé',
-  pageViewSidebarNotPinned = 'Pageview avec la sidebar non-épinglé',
 }
 
 export enum AccountEventActions {
