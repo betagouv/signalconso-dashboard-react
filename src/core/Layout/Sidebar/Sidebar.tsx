@@ -27,7 +27,7 @@ const stickSidebarToHeader = () => {
 }
 
 export const Sidebar = ({children, sx, ...props}: BoxProps) => {
-  const {isMobileWidth, sidebarOpen, setSidebarOpen, sidebarPinned, setSidebarPinned} = useLayoutContext()
+  const {isMobileWidth, sidebarOpen, setSidebarOpen} = useLayoutContext()
   const {m} = useI18n()
 
   useEffect(() => {
@@ -35,13 +35,13 @@ export const Sidebar = ({children, sx, ...props}: BoxProps) => {
     sidebar = null
     stickSidebarToHeader()
     setSidebarOpen(_ => !isMobileWidth)
-  }, [isMobileWidth, sidebarPinned])
+  }, [isMobileWidth])
 
   useEffect(() => {
     window.addEventListener('scroll', stickSidebarToHeader)
   }, [])
 
-  const isTemporary = isMobileWidth || !sidebarPinned
+  const isTemporary = isMobileWidth
 
   return (
     <SwipeableDrawer
@@ -78,14 +78,6 @@ export const Sidebar = ({children, sx, ...props}: BoxProps) => {
       >
         <SidebarHeader hidden={!isTemporary} />
         <SidebarBody>{children}</SidebarBody>
-        {!isMobileWidth && (
-          <SidebarFooter>
-            <SidebarItem onClick={stopPropagation(() => setSidebarPinned(_ => !_))} icon="push_pin" sx={{mr: 0, pr: 0}}>
-              {m.pin}
-              <Switch color="primary" sx={{ml: 'auto'}} checked={sidebarPinned} onChange={() => setSidebarPinned(_ => !_)} />
-            </SidebarItem>
-          </SidebarFooter>
-        )}
       </Box>
     </SwipeableDrawer>
   )

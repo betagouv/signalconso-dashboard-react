@@ -9,8 +9,6 @@ const mobileBreakpoint = 768
 export interface UseLayoutContextProps {
   sidebarOpen: boolean
   setSidebarOpen: Dispatch<SetStateAction<boolean>>
-  sidebarPinned: boolean
-  setSidebarPinned: Dispatch<SetStateAction<boolean>>
   isMobileWidth: boolean
   showSidebarButton?: boolean
   // do we need to reserve space on the left for the sidebar ?
@@ -20,7 +18,6 @@ export interface UseLayoutContextProps {
 export const LayoutContextProvider = ({hasSidebar, children}: {children: ReactNode; hasSidebar: boolean}) => {
   const [pageWidth, setPageWidth] = useState(getWindowWidth())
   const [sidebarOpen, setSidebarOpen] = usePersistentState(true, 'sidebarOpen')
-  const [sidebarPinned, setSidebarPinned] = usePersistentState(true, 'sidebarPinned')
 
   useEffect(() => {
     window.addEventListener('resize', () => setPageWidth(getWindowWidth()))
@@ -32,11 +29,9 @@ export const LayoutContextProvider = ({hasSidebar, children}: {children: ReactNo
       value={{
         sidebarOpen,
         setSidebarOpen,
-        sidebarPinned,
-        setSidebarPinned,
         isMobileWidth,
         showSidebarButton: hasSidebar,
-        sidebarTakesSpaceInLayout: hasSidebar && sidebarOpen && sidebarPinned && !isMobileWidth,
+        sidebarTakesSpaceInLayout: hasSidebar && sidebarOpen && !isMobileWidth,
       }}
     >
       {children}

@@ -1,8 +1,8 @@
 import {CircularProgress, CssBaseline, StyledEngineProvider, ThemeProvider} from '@mui/material'
 import {MutationCache, QueryCache, QueryClient, QueryClientProvider} from '@tanstack/react-query'
 import {ApiProvider} from 'core/context/ApiContext'
-import {RegisterForm} from 'feature/Login/RegisterForm'
 import {LoginForm} from 'feature/Login/LoginForm'
+import {RegisterForm} from 'feature/Login/RegisterForm'
 import {WelcomePage} from 'feature/Login/WelcomePage'
 import {useEffect} from 'react'
 import {useHistory, useParams} from 'react-router'
@@ -13,18 +13,21 @@ import {apiPublicSdk, makeSecuredSdk} from './core/ApiSdkInstance'
 import {Layout} from './core/Layout'
 import {ScHeader} from './core/ScHeader/ScHeader'
 import {ScSidebar} from './core/ScSidebar/ScSidebar'
+import {ApiError} from './core/client/ApiClient'
 import {LoginProvider, useLogin} from './core/context/LoginContext'
 import {I18nProvider} from './core/i18n'
-import {EventCategories, Matomo, SidebarEventActions} from './core/plugins/Matomo'
+import {Matomo} from './core/plugins/Matomo'
 import {siteMap} from './core/siteMap'
 import {muiTheme} from './core/theme'
+import {useToast} from './core/toast'
 import {AddCompanyForm} from './feature/AddCompany/AddCompanyForm'
+import {Tools} from './feature/AdminTools/Tools'
 import {Companies} from './feature/Companies/Companies'
 import {CompaniesPro} from './feature/CompaniesPro/CompaniesPro'
-import {JoinNewsletter} from './feature/JoinNewsletter/JoinNewsletter'
 import {CompanyComponent} from './feature/Company/Company'
 import {CompanyAccesses} from './feature/CompanyAccesses/CompanyAccesses'
 import {EmailValidation} from './feature/EmailValidation/EmailValidation'
+import {JoinNewsletter} from './feature/JoinNewsletter/JoinNewsletter'
 import {ModeEmploiDGCCRF} from './feature/ModeEmploiDGCCRF/ModeEmploiDGCCRF'
 import {ReportComponent} from './feature/Report/Report'
 import {ReportPro} from './feature/Report/ReportPro'
@@ -38,14 +41,10 @@ import {Stats} from './feature/Stats/Stats'
 import {Subscriptions} from './feature/Subscriptions/Subscriptions'
 import {UserActivation} from './feature/Users/UserActivation'
 import {Users} from './feature/Users/Users'
+import {CenteredContent} from './shared/CenteredContent'
 import {Login} from './shared/Login'
 import {Provide} from './shared/Provide'
 import './style.css'
-import {CenteredContent} from './shared/CenteredContent'
-import {Tools} from './feature/AdminTools/Tools'
-import {useToast} from './core/toast'
-import {ApiError} from './core/client/ApiClient'
-import {useLayoutContext} from 'core/Layout/LayoutContext'
 
 const Router: typeof HashRouter = config.useHashRouter ? HashRouter : BrowserRouter
 
@@ -137,7 +136,6 @@ const AppLogged = () => {
   const {apiSdk, connectedUser, logout} = useLogin()
   const history = useHistory()
   const {toastError} = useToast()
-  const {sidebarPinned} = useLayoutContext()
 
   const MAX_RETRIES = 3
   const HTTP_STATUS_TO_NOT_RETRY: (string | number)[] = [400, 401, 403, 404]
@@ -170,14 +168,8 @@ const AppLogged = () => {
     () =>
       history.listen(_ => {
         Matomo.trackPage(`/${connectedUser.role.toLocaleLowerCase()}${_.pathname}`)
-        // Temporarily track sidebar usage
-        // to see if we can remove the option of having it non-pinned
-        Matomo.trackEvent(
-          EventCategories.sidebar,
-          sidebarPinned ? SidebarEventActions.pageViewSidebarPinned : SidebarEventActions.pageViewSidebarNotPinned,
-        )
       }),
-    [history, sidebarPinned],
+    [history],
   )
 
   return (
