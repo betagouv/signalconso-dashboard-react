@@ -84,7 +84,7 @@ export const ReportFile = ({file, onRemove}: ReportFileProps) => {
               className="matomo_ignore"
             >
               <Modal
-                PaperProps={{style: {overflow: 'visible', maxHeight: '800px'}}}
+                PaperProps={{style: {overflow: 'visible', maxHeight: '90vh'}}}
                 maxWidth="md"
                 cancelLabel={m.close}
                 content={_ => <Box component="img" src={fileUrl} alt={file.filename} />}
