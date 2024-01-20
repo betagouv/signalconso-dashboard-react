@@ -76,4 +76,8 @@ export class UserClient {
   readonly softDelete = (id: Id) => {
     return this.client.delete<void>(`/account/${id}`)
   }
+
+  readonly sendEmailUpdateValidation = (email: string) => {
+    return this.client.post<void>(`/api/account/send-email-update-validation`, {body: {email}})
+  }
 }
