@@ -312,6 +312,12 @@ export const fr = {
     editEmail: "Modification de l'email",
     editPasswordDesc: 'Changez votre mot de passe.',
     editEmailDesc: 'Changez votre email.',
+    emailAddressUpdated: 'Votre adresse email a bien été changé !',
+    emailAddressUpdatedToast: 'Adresse email modifiée avec succès !',
+    updateEmailSentTo: "Email de changement d'adresse email envoyé à :",
+    updateEmailAlert1: 'Votre email ne sera pas modifié immédiatement',
+    updateEmailAlert2:
+      'Vous recevrez un email à votre nouvelle adresse pour la confirmer. Cliquez sur le lien dans cet email pour valider et modifier votre adresse.',
     reportNeedsAnswerBefore: 'A répondre avant le',
     reportProMustAnswerBefore: 'Le pro doit répondre avant le',
     reportProHadToAnswerBefore: 'Le pro devait répondre avant le',

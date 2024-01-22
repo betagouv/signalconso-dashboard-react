@@ -5,8 +5,10 @@ import {useLogin} from '../../core/context/LoginContext'
 import {useToast} from '../../core/toast'
 import {CircularProgress} from '@mui/material'
 import {Alert} from '../../alexlibs/mui-extension'
+import {useI18n} from '../../core/i18n'
 
 export const UpdateEmail = () => {
+  const {m} = useI18n()
   const {token} = useParams<{token: string}>()
   const {apiSdk, setConnectedUser} = useLogin()
   const {toastSuccess} = useToast()
@@ -15,7 +17,7 @@ export const UpdateEmail = () => {
     mutationFn: apiSdk.secured.user.updateEmail,
     onSuccess: user => {
       setConnectedUser(user)
-      toastSuccess('Adresse email modifiée avec succès !')
+      toastSuccess(m.emailAddressUpdatedToast)
     },
   })
 
@@ -33,7 +35,7 @@ export const UpdateEmail = () => {
     </div>
   ) : (
     <div className="mx-4 mt-10">
-      <Alert type="success">Votre adresse email a bien été changé !</Alert>
+      <Alert type="success">{m.emailAddressUpdated}</Alert>
     </div>
   )
 }

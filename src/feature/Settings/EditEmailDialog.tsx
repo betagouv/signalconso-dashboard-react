@@ -54,7 +54,7 @@ export const EditEmailDialog = ({children}: Props) => {
       onConfirm={(event, close) => {
         handleSubmit((form: Form) => {
           _sendEmailUpdateValidation.mutateAsync(form.email).then(() => {
-            toastSuccess(`Email de changement d'adresse email envoyé à : ${form.email}`)
+            toastSuccess(`${m.updateEmailSentTo} ${form.email}`)
             close()
           })
         })()
@@ -64,11 +64,10 @@ export const EditEmailDialog = ({children}: Props) => {
           <Alert dense type="info" sx={{mb: 2}}>
             <>
               <u>
-                <b>Votre email ne sera pas modifié immédiatement</b>
+                <b>{m.updateEmailAlert1}</b>
               </u>
               <br />
-              Vous recevrez un email à votre nouvelle adresse pour la confirmer. Cliquez sur le lien dans cet email pour valider
-              et modifier votre adresse.
+              {m.updateEmailAlert2}
             </>
           </Alert>
           <ScInput
