@@ -1,6 +1,6 @@
 import {isUserActive, RoleAgents, User, UserEdit, UserPending, UserRaw, UserSearch} from './User'
 import {ApiClientApi} from '../ApiClient'
-import {Id, Paginate} from '../../model'
+import {Id, Paginate, UserWithPermission} from '../../model'
 import {paginateData} from '../../helper'
 
 export class UserClient {
@@ -78,6 +78,10 @@ export class UserClient {
   }
 
   readonly sendEmailUpdateValidation = (email: string) => {
-    return this.client.post<void>(`/api/account/send-email-update-validation`, {body: {email}})
+    return this.client.post<void>(`/account/send-email-update-validation`, {body: {email}})
+  }
+
+  readonly updateEmail = (token: string) => {
+    return this.client.put<UserWithPermission>(`/account/update-email/${token}`)
   }
 }
