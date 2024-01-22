@@ -62,6 +62,7 @@ const _ScMultiSelect = <T extends E[], E extends string>(
         onChange={e => onChange?.(e.target.value as T)}
         inputRef={ref}
         multiple={true}
+        label={label}
         labelId={id + '-label'}
         id={id}
       >
