@@ -8,6 +8,7 @@ interface LoginProviderProps {
   apiSdk: SignalConsoApiSdk
   connectedUser: UserWithPermission
   onLogout: () => void
+  setConnectedUser: (_: UserWithPermission) => void
   children: ReactNode
 }
 
@@ -18,12 +19,22 @@ interface UseLoginProps {
   apiSdk: SignalConsoApiSdk
 }
 
-export const LoginProvider = ({apiSdk, connectedUser: _connectedUser, onLogout, children}: LoginProviderProps) => {
+export const LoginProvider = ({
+  apiSdk,
+  connectedUser: _connectedUser,
+  setConnectedUser: _setConnectedUser,
+  onLogout,
+  children,
+}: LoginProviderProps) => {
   const [connectedUser, setConnectedUser] = useState<UserWithPermission>(_connectedUser)
 
   useEffect(() => {
     setConnectedUser(_connectedUser)
   }, [_connectedUser])
+
+  useEffect(() => {
+    _setConnectedUser(connectedUser)
+  }, [connectedUser])
 
   return (
     <LoginContext.Provider

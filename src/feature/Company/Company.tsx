@@ -55,8 +55,8 @@ export const CompanyComponent = () => {
   const _reports = useReportSearchQuery({hasCompany: true, offset: 0, limit: 5}, false)
 
   const _tags = useGetTagsQuery(id)
-  const _getCompanyThreat = useGetCompanyThreatQuery(id)
-  const _getCompanyRefundBlackMail = useGetCompanyRefundBlackMailQuery(id)
+  const _getCompanyThreat = useGetCompanyThreatQuery(id, {enabled: !connectedUser.isPro})
+  const _getCompanyRefundBlackMail = useGetCompanyRefundBlackMailQuery(id, {enabled: !connectedUser.isPro})
   const _getProStatus = useGetProStatusQuery(id, {enabled: connectedUser.isPro})
   const _getStatus = useGetStatusQuery(id, {enabled: !connectedUser.isPro})
   const _responseDelay = useGetResponseDelayQuery(id)
@@ -121,32 +121,36 @@ export const CompanyComponent = () => {
                 )}
               </Widget>
             </Grid>
-            <Grid item xs={4}>
-              <Widget title={m.proTheatToConsumer} loading={_getCompanyThreat.isLoading}>
-                <WidgetValue>
-                  {_getCompanyThreat.data && _getCompanyThreat.data.value}
-                  &nbsp;
-                  <Tooltip title={m.proTheatToConsumerDesc}>
-                    <Icon sx={{color: t => t.palette.text.disabled}} fontSize="medium">
-                      help
-                    </Icon>
-                  </Tooltip>
-                </WidgetValue>
-              </Widget>
-            </Grid>
-            <Grid item xs={4}>
-              <Widget title={m.proRefundBlackMail} loading={_getCompanyRefundBlackMail.isLoading}>
-                <WidgetValue>
-                  {_getCompanyRefundBlackMail.data && _getCompanyRefundBlackMail.data.value}
-                  &nbsp;
-                  <Tooltip title={m.proRefundBlackMailDesc}>
-                    <Icon sx={{color: t => t.palette.text.disabled}} fontSize="medium">
-                      help
-                    </Icon>
-                  </Tooltip>
-                </WidgetValue>
-              </Widget>
-            </Grid>
+            {!connectedUser.isPro && (
+              <Grid item xs={4}>
+                <Widget title={m.proTheatToConsumer} loading={_getCompanyThreat.isLoading}>
+                  <WidgetValue>
+                    {_getCompanyThreat.data && _getCompanyThreat.data.value}
+                    &nbsp;
+                    <Tooltip title={m.proTheatToConsumerDesc}>
+                      <Icon sx={{color: t => t.palette.text.disabled}} fontSize="medium">
+                        help
+                      </Icon>
+                    </Tooltip>
+                  </WidgetValue>
+                </Widget>
+              </Grid>
+            )}
+            {!connectedUser.isPro && (
+              <Grid item xs={4}>
+                <Widget title={m.proRefundBlackMail} loading={_getCompanyRefundBlackMail.isLoading}>
+                  <WidgetValue>
+                    {_getCompanyRefundBlackMail.data && _getCompanyRefundBlackMail.data.value}
+                    &nbsp;
+                    <Tooltip title={m.proRefundBlackMailDesc}>
+                      <Icon sx={{color: t => t.palette.text.disabled}} fontSize="medium">
+                        help
+                      </Icon>
+                    </Tooltip>
+                  </WidgetValue>
+                </Widget>
+              </Grid>
+            )}
             <Grid item xs={4}>
               <Widget title={m.activationDocReturned} loading={companyEvents.isLoading}>
                 {ScOption.from(postActivationDocEvents)

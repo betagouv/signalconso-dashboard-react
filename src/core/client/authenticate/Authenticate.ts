@@ -19,35 +19,17 @@ export enum Roles {
   ToActivate = 'ToActivate',
 }
 
-export const roleUrlParam = (_: UserWithPermission): string => {
-  switch (_.role) {
-    case Roles.Admin:
-      return 'admin'
-    case Roles.DGCCRF:
-      return 'dgccrf'
-    case Roles.Pro:
-      return 'pro'
-    default:
-      return ''
-  }
-}
-
 export enum TokenKind {
   companyInit = 'COMPANY_INIT',
   companyJoin = 'COMPANY_JOIN',
   dgccrfAccount = 'DGCCRF_ACCOUNT',
+  dgalAccount = 'DGAL_ACCOUNT',
 }
 
 export interface TokenInfo {
   token: string
   kind: TokenKind
   emailedTo: string
-}
-
-export interface DGCCRFUserActivationToken extends TokenInfo {}
-
-export interface CompanyUserActivationToken extends TokenInfo {
-  companySiret?: string
 }
 
 export enum Permissions {
