@@ -51,6 +51,7 @@ import {PanelBody} from 'alexlibs/mui-extension/Panel/PanelBody'
 import {useMutation} from '@tanstack/react-query'
 import {useReportSearchQuery} from '../../core/queryhooks/reportQueryHooks'
 import {useCategoriesQuery} from '../../core/queryhooks/constantQueryHooks'
+import Typography from '@mui/material/Typography'
 
 const TrueLabel = () => {
   const {m} = useI18n()
@@ -703,23 +704,24 @@ export const Reports = () => {
               head: (() => {
                 const allChecked = selectReport.size === _reports.result.data?.entities.length
                 return (
-                  <Checkbox
-                    disabled={_reports.result.isFetching}
-                    indeterminate={selectReport.size > 0 && !allChecked}
-                    checked={allChecked}
-                    onChange={() => {
+                  <div
+                    style={{cursor: 'pointer'}}
+                    onClick={() => {
                       if (allChecked) {
                         selectReport.clear()
                       } else {
                         selectReport.add(_reports.result.data!.entities!.map(_ => _.report.id))
                       }
                     }}
-                  />
+                  >
+                    <Typography variant="subtitle1">{allChecked ? 'Désélectionner tout' : 'Tout sélectionner'}</Typography>
+                  </div>
                 )
               })(),
               style: {width: 0},
               render: _ => <Checkbox checked={selectReport.has(_.report.id)} onChange={() => selectReport.toggle(_.report.id)} />,
             },
+
             {
               id: 'companyPostalCode',
               head: m.postalCodeShort,
