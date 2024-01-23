@@ -9,6 +9,7 @@ import {ScButton} from '../../shared/Button'
 import {EditPasswordDialog} from './EditPasswordDialog'
 import {useLogin} from '../../core/context/LoginContext'
 import {EditProfileDialog} from './EditProfileDialog'
+import {EditEmailDialog} from './EditEmailDialog'
 
 export const Settings = () => {
   const {m} = useI18n()
@@ -39,6 +40,13 @@ export const Settings = () => {
               {m.edit}
             </ScButton>
           </EditPasswordDialog>
+        </SettingRow>
+        <SettingRow icon="email" title={m.email} description={m.editEmailDesc}>
+          <EditEmailDialog>
+            <ScButton icon="edit" color="primary">
+              {m.edit}
+            </ScButton>
+          </EditEmailDialog>
         </SettingRow>
         {connectedUser.isPro && (
           <SettingRow icon="notifications" title={m.notifications} description={m.notificationSettings}>
