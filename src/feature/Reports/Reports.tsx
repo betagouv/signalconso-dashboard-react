@@ -704,18 +704,18 @@ export const Reports = () => {
               head: (() => {
                 const allChecked = selectReport.size === _reports.result.data?.entities.length
                 return (
-                  <div
-                    style={{cursor: 'pointer'}}
-                    onClick={() => {
+                  <Checkbox
+                    disabled={_reports.result.isFetching}
+                    indeterminate={selectReport.size > 0 && !allChecked}
+                    checked={allChecked}
+                    onChange={() => {
                       if (allChecked) {
                         selectReport.clear()
                       } else {
                         selectReport.add(_reports.result.data!.entities!.map(_ => _.report.id))
                       }
                     }}
-                  >
-                    <Typography variant="subtitle1">{allChecked ? 'Désélectionner tout' : 'Tout sélectionner'}</Typography>
-                  </div>
+                  />
                 )
               })(),
               style: {width: 0},

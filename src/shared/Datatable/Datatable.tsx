@@ -11,7 +11,7 @@ import {
   TableSortLabel,
   Theme,
 } from '@mui/material'
-import React, {CSSProperties, ReactNode, useMemo} from 'react'
+import React, {CSSProperties, ReactNode, useMemo, useEffect} from 'react'
 import {DatatableColumnToggle} from './DatatableColumnsToggle'
 import {useI18n} from '../../core/i18n'
 import {Fender} from '../../alexlibs/mui-extension'
@@ -92,7 +92,7 @@ export const Datatable = <T extends any = any>({
   const {m} = useI18n()
   const displayableColumns = useMemo(() => columns.filter(_ => !_.hidden), [columns])
   const toggleableColumnsName = useMemo(
-    () => displayableColumns.filter(_ => !_.alwaysVisible && _.head && _.head !== ''),
+    () => displayableColumns.filter(_ => !_.alwaysVisible && _.head && _.head !== '' && _.id !== 'checkbox'), // <==
     [displayableColumns],
   )
   const [hiddenColumns, setHiddenColumns] = usePersistentState<string[]>(initialHiddenColumns ?? [], id)
