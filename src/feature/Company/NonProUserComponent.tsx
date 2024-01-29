@@ -1,14 +1,12 @@
 import * as React from 'react'
 import {useEffectFn, useMemoFn} from '../../alexlibs/react-hooks-lib'
 import {Txt} from '../../alexlibs/mui-extension'
-import {useParams} from 'react-router'
 import {Page, PageTitle} from 'shared/Page'
 import {Panel, PanelBody, PanelHead} from 'shared/Panel'
 import {HorizontalBarChart} from 'shared/Chart/HorizontalBarChart'
 import {reportStatusColor} from 'shared/ReportStatus'
 import {useI18n} from 'core/i18n'
 import {Box, Grid, Icon, List, ListItem, Tooltip} from '@mui/material'
-import {useLogin} from 'core/context/LoginContext'
 import {Widget} from 'shared/Widget/Widget'
 import {siteMap} from 'core/siteMap'
 import {WidgetValue} from 'shared/Widget/WidgetValue'
@@ -20,7 +18,7 @@ import {CompanyInfo} from './stats/CompanyInfo'
 import {CompanyChartPanel} from './CompanyChartPanel'
 import {EventActionValues} from '../../core/client/event/Event'
 import {ReportStatus} from '../../core/client/report/Report'
-import {Id} from '../../core/model'
+import {Id, UserWithPermission} from '../../core/model'
 import {ScOption} from 'core/helper/ScOption'
 import {ReportWordDistribution} from './stats/ReportWordDistribution'
 import {useReportSearchQuery} from '../../core/queryhooks/reportQueryHooks'
@@ -34,22 +32,27 @@ import {
 import {
   useGetCompanyRefundBlackMailQuery,
   useGetCompanyThreatQuery,
-  useGetProStatusQuery,
   useGetResponseDelayQuery,
   useGetStatusQuery,
   useGetTagsQuery,
 } from '../../core/queryhooks/statsQueryHooks'
 
-export const NonProUserComponent = () => {
-  const {id} = useParams<{id: Id}>()
-  const {connectedUser} = useLogin()
+export type ExtendedUser = UserWithPermission & {
+  isPro: boolean
+}
+
+type NonProUserComponentProps = {
+  id: Id
+  connectedUser: ExtendedUser
+  company: any
+}
+
+export const NonProUserComponent: React.FC<NonProUserComponentProps> = ({id, connectedUser, company}) => {
   const {m} = useI18n()
   const _companyById = useGetCompanyByIdQuery(id)
   const _hosts = useGetHostsQuery(id, {enabled: !connectedUser.isPro})
   const _responseRate = useGetResponseRateQuery(id)
   const companyEvents = useGetCompanyEventsQuery(_companyById.data?.siret!, {enabled: !!_companyById.data?.siret})
-
-  const company = _companyById.data
 
   const _accesses = useCompanyAccessCountQuery(company?.siret!, {enabled: !!company})
   const _reports = useReportSearchQuery({hasCompany: true, offset: 0, limit: 5}, false)

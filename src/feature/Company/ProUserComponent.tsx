@@ -1,13 +1,11 @@
-import {useEffectFn, useMemoFn} from '../../alexlibs/react-hooks-lib'
+import {useMemoFn} from '../../alexlibs/react-hooks-lib'
 import {Txt} from '../../alexlibs/mui-extension'
-import {useParams} from 'react-router'
 import {Page, PageTitle} from 'shared/Page'
 import {Panel, PanelBody, PanelHead} from 'shared/Panel'
 import {HorizontalBarChart} from 'shared/Chart/HorizontalBarChart'
 import {reportStatusProColor} from 'shared/ReportStatus'
 import {useI18n} from 'core/i18n'
 import {Box, Grid, Icon, Tooltip} from '@mui/material'
-import {useLogin} from 'core/context/LoginContext'
 import {Widget} from 'shared/Widget/Widget'
 import {siteMap} from 'core/siteMap'
 import {WidgetValue} from 'shared/Widget/WidgetValue'
@@ -19,7 +17,7 @@ import {CompanyInfo} from './stats/CompanyInfo'
 import {CompanyChartPanel} from './CompanyChartPanel'
 import {EventActionValues} from '../../core/client/event/Event'
 import {ReportStatusPro} from '../../core/client/report/Report'
-import {Id} from '../../core/model'
+import {Id, UserWithPermission} from '../../core/model'
 import {ScOption} from 'core/helper/ScOption'
 import {ReportWordDistribution} from './stats/ReportWordDistribution'
 import {useReportSearchQuery} from '../../core/queryhooks/reportQueryHooks'
@@ -31,15 +29,21 @@ import {
 } from '../../core/queryhooks/companyQueryHooks'
 import {useGetProStatusQuery, useGetResponseDelayQuery, useGetTagsQuery} from '../../core/queryhooks/statsQueryHooks'
 
-export const ProUserComponent = () => {
-  const {id} = useParams<{id: Id}>()
-  const {connectedUser} = useLogin()
+export type ExtendedUser = UserWithPermission & {
+  isPro: boolean
+}
+
+type ProUserComponentProps = {
+  id: Id
+  connectedUser: ExtendedUser
+  company: any
+}
+
+export const ProUserComponent: React.FC<ProUserComponentProps> = ({id, connectedUser, company}) => {
   const {m} = useI18n()
   const _companyById = useGetCompanyByIdQuery(id)
   const _responseRate = useGetResponseRateQuery(id)
   const companyEvents = useGetCompanyEventsQuery(_companyById.data?.siret!, {enabled: !!_companyById.data?.siret})
-
-  const company = _companyById.data
 
   const _accesses = useCompanyAccessCountQuery(company?.siret!, {enabled: !!company})
   const _reports = useReportSearchQuery({hasCompany: true, offset: 0, limit: 5}, false)
@@ -47,11 +51,6 @@ export const ProUserComponent = () => {
   const _tags = useGetTagsQuery(id)
   const _getProStatus = useGetProStatusQuery(id, {enabled: connectedUser.isPro})
   const _responseDelay = useGetResponseDelayQuery(id)
-
-  useEffectFn(company, _ => {
-    _reports.updateFilters({hasCompany: true, siretSirenList: [_.siret], offset: 0, limit: 5})
-    _reports.enable()
-  })
 
   const postActivationDocEvents = useMemoFn(companyEvents.data, events =>
     events.map(_ => _.data).filter(_ => _.action === EventActionValues.PostAccountActivationDoc),
