@@ -20,12 +20,13 @@ import {PeriodPicker} from '../../shared/PeriodPicker'
 import {SiretExtraction} from './SiretExtraction'
 import {
   useListInvestigationStatusQuery,
-  useWebsiteWithCompanySearchQuery,
   useWebsiteWithClosedCompanyQuery,
+  useWebsiteWithCompanySearchQuery,
   WebsiteWithCompanySearchKeys,
 } from '../../core/queryhooks/websiteQueryHooks'
 import {useMutation, useQueryClient} from '@tanstack/react-query'
 import {useEffectFn} from '../../alexlibs/react-hooks-lib'
+import {AddSiret} from './AddSiret'
 
 export const WebsitesInvestigation = () => {
   const {m, formatDate} = useI18n()
@@ -152,6 +153,13 @@ export const WebsitesInvestigation = () => {
                   </IconBtn>
                 </Tooltip>
               </WebsitesFilters>
+              {connectedUser.isAdmin && (
+                <AddSiret>
+                  <IconBtn color="primary">
+                    <Icon>add</Icon>
+                  </IconBtn>
+                </AddSiret>
+              )}
             </>
           }
           loading={_websiteWithCompany.result.isFetching}
