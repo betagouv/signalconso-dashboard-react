@@ -11,6 +11,8 @@ import {
   IdentificationStatus,
   Paginate,
   InvestigationStatus,
+  WebsiteCreation,
+  Website,
 } from '../../model'
 import {ApiSdkLogger} from '../../helper/Logger'
 import {dateToApiDate, paginateData} from '../../helper'
@@ -107,5 +109,9 @@ export class WebsiteClient {
 
   readonly search = () => {
     return this.client.get<any>(`/websites/search`)
+  }
+
+  readonly create = (websiteCreation: WebsiteCreation) => {
+    return this.client.post<Website>(`/websites`, {body: websiteCreation})
   }
 }

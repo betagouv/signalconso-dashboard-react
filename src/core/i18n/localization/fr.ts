@@ -883,6 +883,8 @@ export const fr = {
     websiteEdited: 'Site web identifié.',
     reportCompanyEdited: 'Signalement associé à une entreprise ou un pays',
     websiteDeleted: 'Site web supprimé.',
+    websiteCreated: 'Site web associé.',
+    createWebsite: 'Associer un site web',
     alreadySelectedCompany: (name?: string) => `L'entreprise ${name ?? ''} est déjà sélectionnée`,
     alreadySelectedCountry: (name?: string) => `Le pays ${name ?? ''} est déjà sélectionnée`,
     alreadySelectedValue: (name?: string) => `La valeur ${name ?? ''} est déjà sélectionnée`,
