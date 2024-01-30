@@ -18,7 +18,7 @@ import {CompanyInfo} from './stats/CompanyInfo'
 import {CompanyChartPanel} from './CompanyChartPanel'
 import {EventActionValues} from '../../core/client/event/Event'
 import {ReportStatus} from '../../core/client/report/Report'
-import {Id, UserWithPermission} from '../../core/model'
+import {CompanyWithReportsCount, Id, UserWithPermission} from '../../core/model'
 import {ScOption} from 'core/helper/ScOption'
 import {ReportWordDistribution} from './stats/ReportWordDistribution'
 import {useReportSearchQuery} from '../../core/queryhooks/reportQueryHooks'
@@ -44,7 +44,7 @@ export type ExtendedUser = UserWithPermission & {
 type NonProUserComponentProps = {
   id: Id
   connectedUser: ExtendedUser
-  company: any
+  company?: CompanyWithReportsCount
 }
 
 export const NonProUserComponent: React.FC<NonProUserComponentProps> = ({id, connectedUser, company}) => {
