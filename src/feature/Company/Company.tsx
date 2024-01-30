@@ -15,12 +15,12 @@ export const CompanyComponent = () => {
   const company = _companyById.data
 
   return (
-    <Page loading={_companyById.isLoading}>
+    <>
       {connectedUser.isPro ? (
         <ProUserComponent id={id} connectedUser={connectedUser} company={company} />
       ) : (
         <NonProUserComponent id={id} connectedUser={connectedUser} company={company} />
       )}
-    </Page>
+    </>
   )
 }
