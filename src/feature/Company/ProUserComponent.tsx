@@ -1,4 +1,4 @@
-import {useMemoFn} from '../../alexlibs/react-hooks-lib'
+import {useMemoFn, useEffectFn} from '../../alexlibs/react-hooks-lib'
 import {Txt} from '../../alexlibs/mui-extension'
 import {Page, PageTitle} from 'shared/Page'
 import {Panel, PanelBody, PanelHead} from 'shared/Panel'
@@ -51,6 +51,11 @@ export const ProUserComponent: React.FC<ProUserComponentProps> = ({id, connected
   const _tags = useGetTagsQuery(id)
   const _getProStatus = useGetProStatusQuery(id, {enabled: connectedUser.isPro})
   const _responseDelay = useGetResponseDelayQuery(id)
+
+  useEffectFn(company, _ => {
+    _reports.updateFilters({hasCompany: true, siretSirenList: [_.siret], offset: 0, limit: 5})
+    _reports.enable()
+  })
 
   const postActivationDocEvents = useMemoFn(companyEvents.data, events =>
     events.map(_ => _.data).filter(_ => _.action === EventActionValues.PostAccountActivationDoc),
