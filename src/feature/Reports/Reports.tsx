@@ -1,20 +1,15 @@
 import {useI18n} from '../../core/i18n'
 import {Page, PageTitle} from '../../shared/Page'
 
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
-import {Badge, Box, Checkbox, Chip, Collapse, Grid, Icon, MenuItem, Tooltip} from '@mui/material'
-import {styled} from '@mui/material/styles'
-import {ScOption} from 'core/helper/ScOption'
-import React, {useCallback, useEffect, useMemo, useState} from 'react'
+import {Badge, Box, Checkbox, Chip, Collapse, Icon, Tooltip} from '@mui/material'
+import React, {useEffect} from 'react'
 import {NavLink} from 'react-router-dom'
-import {Btn, Fender, IconBtn, Txt} from '../../alexlibs/mui-extension'
+import {Fender, IconBtn, Txt} from '../../alexlibs/mui-extension'
 import {useSetState} from '../../alexlibs/react-hooks-lib'
-import {Enum} from '../../alexlibs/ts-utils'
-import {config} from '../../conf/config'
 import {EntityIcon} from '../../core/EntityIcon'
-import {Report, ReportingDateLabel, ReportStatus, ReportTag} from '../../core/client/report/Report'
+import {Report, ReportingDateLabel, ReportTag} from '../../core/client/report/Report'
 import {useLogin} from '../../core/context/LoginContext'
-import {cleanObject, getHostFromUrl, textOverflowMiddleCropping} from '../../core/helper'
+import {cleanObject, textOverflowMiddleCropping} from '../../core/helper'
 import compose from '../../core/helper/compose'
 import {
   mapArrayFromQuerystring,
@@ -23,60 +18,25 @@ import {
   mapDatesToQueryString,
   useQueryString,
 } from '../../core/helper/useQueryString'
-import {Id, ReportResponse, ReportResponseTypes, ReportSearch, ResponseEvaluation} from '../../core/model'
+import {Id, ReportSearch, ResponseEvaluation} from '../../core/model'
 import {siteMap} from '../../core/siteMap'
 import {styleUtils, sxUtils} from '../../core/theme'
 import {ScButton} from '../../shared/Button'
 import {ConsumerReviewLabel} from '../../shared/ConsumerReviewLabel'
 import {Datatable} from '../../shared/Datatable/Datatable'
-import {DatatableToolbar} from '../../shared/Datatable/DatatableToolbar'
-import {DebouncedInput} from '../../shared/DebouncedInput'
-import {ExportReportsPopper} from '../../shared/ExportPopperBtn'
-import {ScInput} from '../../shared/ScInput'
-import {ScMenuItem} from '../../shared/ScMenuItem'
 import {Panel} from '../../shared/Panel'
-import {PeriodPicker} from '../../shared/PeriodPicker'
-import {ProResponseLabel} from '../../shared/ProResponseLabel'
 import {ReportDetailValues} from '../../shared/ReportDetailValues'
 import {ReportStatusLabel} from '../../shared/ReportStatus'
-import {ScMultiSelect} from '../../shared/Select/MultiSelect'
-import {ScSelect} from '../../shared/Select/Select'
-import {SelectActivityCode} from '../../shared/SelectActivityCode'
-import {SelectCountries} from '../../shared/SelectCountries/SelectCountries'
-import {SelectDepartments} from '../../shared/SelectDepartments/SelectDepartments'
-import {SelectTags} from '../../shared/SelectTags/SelectTags'
 import {SelectTagsMenuValues} from '../../shared/SelectTags/SelectTagsMenu'
-import {TrueFalseNull} from '../../shared/TrueFalseNull'
 import {PanelBody} from 'alexlibs/mui-extension/Panel/PanelBody'
 import {useMutation} from '@tanstack/react-query'
 import {useReportSearchQuery} from '../../core/queryhooks/reportQueryHooks'
-import {useCategoriesQuery} from '../../core/queryhooks/constantQueryHooks'
 import SearchFilters from './ReportsFilter'
 import AdvancedReportsFilter from './AdvancedReportsFilter'
 import AdvancedSearchBar from './AdvancedSearchBar'
-
-const TrueLabel = () => {
-  const {m} = useI18n()
-  return (
-    <>
-      {m.yes}{' '}
-      <Icon fontSize="inherit" sx={{mr: '-4px'}}>
-        arrow_drop_down
-      </Icon>
-    </>
-  )
-}
-
-const ExpandMore = styled((props: {expand: boolean}) => {
-  const {expand, ...other} = props
-  return <ExpandMoreIcon {...other} />
-})(({theme, expand}) => ({
-  transform: !expand ? 'rotate(0deg)' : 'rotate(180deg)',
-  marginLeft: 'auto',
-  transition: theme.transitions.create('transform', {
-    duration: theme.transitions.duration.shortest,
-  }),
-}))
+import CompanyNameDetails from './CompanyNameDetails'
+import DatatableToolbarComponent from './DatatableToolbarComponent'
+import ReportResponseDetails from './ReportResponseDetails'
 
 interface ReportSearchQs {
   readonly departments?: string[] | string
@@ -105,9 +65,7 @@ interface ReportSearchQs {
 export const Reports = () => {
   const {m, formatDate} = useI18n()
   const {connectedUser, apiSdk} = useLogin()
-
   const downloadReports = useMutation({mutationFn: apiSdk.secured.reports.download})
-
   const selectReport = useSetState<Id>()
   const [expanded, setExpanded] = React.useState(false)
   const queryString = useQueryString<Partial<ReportSearch>, Partial<ReportSearchQs>>({
@@ -136,11 +94,6 @@ export const Reports = () => {
   const getReportingDate = (report: Report) =>
     report.details.filter(_ => _.label.indexOf(ReportingDateLabel) !== -1).map(_ => _.value)
 
-  const filtersCount = useMemo(() => {
-    const {offset, limit, ...filters} = _reports.filters
-    return Object.keys(cleanObject(filters)).length
-  }, [_reports.filters])
-
   const tags: SelectTagsMenuValues = {}
   _reports.filters.withTags?.forEach(tag => {
     tags[tag] = 'included'
@@ -148,138 +101,22 @@ export const Reports = () => {
   _reports.filters.withoutTags?.forEach(tag => {
     tags[tag] = 'excluded'
   })
-
-  const _category = useCategoriesQuery()
-
-  const [proResponseFilter, setProResponseFilter] = useState<ReportResponseTypes[]>([])
-
-  const proResponseToStatus = {
-    [ReportResponseTypes.Accepted]: ReportStatus.PromesseAction,
-    [ReportResponseTypes.NotConcerned]: ReportStatus.MalAttribue,
-    [ReportResponseTypes.Rejected]: ReportStatus.Infonde,
-  }
-
-  const onChangeStatus = (status: ReportStatus[]) => {
-    const responses = status.flatMap(reportStatus => {
-      switch (reportStatus) {
-        case ReportStatus.PromesseAction:
-          return [ReportResponseTypes.Accepted]
-        case ReportStatus.MalAttribue:
-          return [ReportResponseTypes.NotConcerned]
-        case ReportStatus.Infonde:
-          return [ReportResponseTypes.Rejected]
-        default:
-          return []
-      }
-    })
-    setProResponseFilter(responses)
-    _reports.updateFilters(prev => ({...prev, status}))
-  }
-
-  const onChangeProResponseFilter = (responses: ReportResponseTypes[]) => {
-    setProResponseFilter(responses)
-    const status = responses.length === 0 ? Report.respondedStatus : responses.map(_ => proResponseToStatus[_])
-    _reports.updateFilters(prev => ({...prev, status}))
-  }
-
-  const hasProResponse =
-    _reports.filters.status?.length === 0
-      ? null
-      : _reports.filters.status?.every(status => Report.respondedStatus.includes(status))
-      ? true
-      : _reports.filters.status?.every(status => Report.notRespondedStatus.includes(status))
-      ? false
-      : null
-  const onChangeHasProResponse = (b: boolean | null) => {
-    if (b) _reports.updateFilters(prev => ({...prev, status: Report.respondedStatus}))
-    else if (b === false) _reports.updateFilters(prev => ({...prev, status: Report.notRespondedStatus}))
-    else _reports.updateFilters(prev => ({...prev, status: undefined}))
-  }
-
-  function invertIfDefined(bool: boolean | null) {
-    return bool === null ? null : !bool
-  }
-
-  const css = {
-    trueFalseNullBox: {
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'space-between',
-      mt: 1,
-    },
-    trueFalseNullLabel: {
-      color: 'rgba(0, 0, 0, 0.6)',
-      ml: 1,
-    },
-  }
-
-  // TRELLO-1728 The object _reports change all the time.
-  // If we put it in dependencies, it causes problems with the debounce,
-  // and the search input "stutters" when typing fast
-  const onDetailsChange = useCallback((details: string) => {
-    _reports.updateFilters(prev => ({...prev, details}))
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
-  const onSiretSirenChange = useCallback((siretSirenList: string[]) => {
-    _reports.updateFilters(prev => ({...prev, siretSirenList}))
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
-  const onEmailChange = useCallback((email: string) => {
-    _reports.updateFilters(prev => ({...prev, email}))
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
-  const onWebsiteURLChange = useCallback((websiteURL: string) => {
-    _reports.updateFilters(prev => ({...prev, websiteURL}))
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
-  const onPhoneChange = useCallback((phone: string) => {
-    _reports.updateFilters(prev => ({...prev, phone}))
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
-
   return (
     <Page>
       <PageTitle>{m.reports_pageTitle}</PageTitle>
       <Panel elevation={3}>
         <PanelBody>
           <SearchFilters />
-
           <Collapse in={expanded} timeout="auto" unmountOnExit>
             <AdvancedReportsFilter />
           </Collapse>
         </PanelBody>
-
         <AdvancedSearchBar />
       </Panel>
-
       <Panel sx={{overflow: 'visible'}}>
         <Datatable
           id="reports"
-          header={
-            <>
-              <DatatableToolbar
-                open={selectReport.size > 0}
-                onClear={selectReport.clear}
-                actions={
-                  <ScButton
-                    loading={downloadReports.isPending}
-                    variant="contained"
-                    icon="file_download"
-                    onClick={() => {
-                      downloadReports.mutate(selectReport.toArray())
-                    }}
-                    sx={{
-                      marginLeft: 'auto',
-                    }}
-                  >
-                    {m.download}
-                  </ScButton>
-                }
-              >
-                <span dangerouslySetInnerHTML={{__html: m.nSelected(selectReport.size)}} />
-              </DatatableToolbar>
-            </>
-          }
+          header={<DatatableToolbarComponent selectReport={selectReport} downloadReports={downloadReports} m={m} />}
           loading={_reports.result.isFetching}
           paginate={{
             offset: _reports.filters.offset,
@@ -340,44 +177,12 @@ export const Reports = () => {
                 maxWidth: 170,
               }),
               render: _ => (
-                <>
-                  <Box component="span" sx={{marginBottom: '-1px'}}>
-                    {_.report.companyId && !connectedUser.isDGAL ? (
-                      <>
-                        <NavLink to={siteMap.logged.company(_.report.companyId)}>
-                          <Txt link>{_.report.companyName}</Txt>
-                        </NavLink>
-                        {_.report.companyBrand && (
-                          <>
-                            <br />
-                            <Txt
-                              component="span"
-                              sx={{
-                                fontSize: t => styleUtils(t).fontSize.small,
-                                fontStyle: 'italic',
-                                color: t => t.palette.text.primary,
-                              }}
-                            >
-                              {_.report.companyBrand}
-                            </Txt>
-                          </>
-                        )}
-                      </>
-                    ) : (
-                      <span>{_.report.companyName}</span>
-                    )}
-                  </Box>
-                  <br />
-                  <Box
-                    component="span"
-                    sx={{
-                      fontSize: t => styleUtils(t).fontSize.small,
-                      color: t => t.palette.text.disabled,
-                    }}
-                  >
-                    {_.report.websiteURL ? getHostFromUrl(_.report.websiteURL) : _.report.phone ?? ''}
-                  </Box>
-                </>
+                <CompanyNameDetails
+                  companyId={_.report.companyId}
+                  isDGAL={connectedUser.isDGAL}
+                  companyName={_.report.companyName}
+                  companyBrand={_.report.companyBrand}
+                />
               ),
             },
             {
@@ -503,43 +308,7 @@ export const Reports = () => {
             {
               id: 'proResponse',
               head: m.proResponse,
-              render: _ => (
-                <>
-                  {ScOption.from(_.professionalResponse?.details as ReportResponse)
-                    .map(r => (
-                      <Tooltip
-                        title={
-                          <>
-                            <Box sx={{fontWeight: t => t.typography.fontWeightBold, fontSize: 'larger', mb: 1}}>
-                              {m.reportResponse[r.responseType]}
-                            </Box>
-                            <Box
-                              sx={{
-                                display: '-webkit-box',
-                                WebkitLineClamp: 20,
-                                WebkitBoxOrient: 'vertical',
-                                overflow: 'hidden',
-                              }}
-                            >
-                              {r.consumerDetails}
-                            </Box>
-                            {r.dgccrfDetails && r.dgccrfDetails !== '' && (
-                              <>
-                                <Box sx={{fontWeight: t => t.typography.fontWeightBold, fontSize: 'larger', mt: 4, mb: 1}}>
-                                  {m.reportDgccrfDetails}
-                                </Box>
-                                <Box>{r.dgccrfDetails}</Box>
-                              </>
-                            )}
-                          </>
-                        }
-                      >
-                        <ProResponseLabel proResponse={r.responseType} />
-                      </Tooltip>
-                    ))
-                    .getOrElse('')}
-                </>
-              ),
+              render: _ => <ReportResponseDetails details={_.professionalResponse?.details} />,
             },
             {
               id: 'avisConso',
