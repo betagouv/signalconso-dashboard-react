@@ -1,28 +1,15 @@
 import {useI18n} from '../../core/i18n'
-
 import {Box, Grid, Icon} from '@mui/material'
-import React, {useCallback, useEffect} from 'react'
 import {Enum} from '../../alexlibs/ts-utils'
-import {ReportStatus, ReportTag} from '../../core/client/report/Report'
-import {useLogin} from '../../core/context/LoginContext'
-import {cleanObject} from '../../core/helper'
-import compose from '../../core/helper/compose'
-import {
-  mapArrayFromQuerystring,
-  mapBooleanFromQueryString,
-  mapDateFromQueryString,
-  mapDatesToQueryString,
-  useQueryString,
-} from '../../core/helper/useQueryString'
-import {ReportResponseTypes, ReportSearch, ResponseEvaluation} from '../../core/model'
+import {ReportSearchResult} from '../../core/client/report/Report'
+import {Paginate, PaginatedFilters, ReportSearch} from '../../core/model'
 import {DebouncedInput} from '../../shared/DebouncedInput'
 import {ScInput} from '../../shared/ScInput'
 import {PeriodPicker} from '../../shared/PeriodPicker'
 import {SelectDepartments} from '../../shared/SelectDepartments/SelectDepartments'
 import {SelectTags} from '../../shared/SelectTags/SelectTags'
-import {SelectTagsMenuValues} from '../../shared/SelectTags/SelectTagsMenu'
 import {TrueFalseNull} from '../../shared/TrueFalseNull'
-import {useReportSearchQuery} from '../../core/queryhooks/reportQueryHooks'
+import {UseQueryPaginateResult} from 'core/queryhooks/UseQueryPaginate'
 
 const TrueLabel = () => {
   const {m} = useI18n()
@@ -36,99 +23,27 @@ const TrueLabel = () => {
   )
 }
 
-interface ReportSearchQs {
-  readonly departments?: string[] | string
-  readonly tags?: ReportTag[] | ReportTag
-  readonly companyCountries?: string[] | string
-  readonly siretSirenList?: string[] | string
-  readonly activityCodes?: string[] | string
-  start?: string
-  end?: string
-  email?: string
-  websiteURL?: string
-  phone?: string
-  category?: string
-  status?: string[]
-  details?: string
-  hasWebsite?: boolean
-  hasPhone?: boolean
-  hasCompany?: boolean
-  hasForeignCountry?: boolean
-  hasEvaluation?: boolean
-  evaluation?: ResponseEvaluation[]
-  offset: number
-  limit: number
+type ReportsGridProps = {
+  _reports: UseQueryPaginateResult<ReportSearch & PaginatedFilters, Paginate<ReportSearchResult>, unknown>
+  onDetailsChange: (details: string) => void
+  onSiretSirenChange: (siretSirenList: string[]) => void
+  onEmailChange: (email: string) => void
+  connectedUser: {isAdmin: boolean}
+  m: any
+  tags: any
+  css: any
 }
-const ReportsFilter = () => {
-  const {m} = useI18n()
-  const {connectedUser} = useLogin()
 
-  const queryString = useQueryString<Partial<ReportSearch>, Partial<ReportSearchQs>>({
-    toQueryString: mapDatesToQueryString,
-    fromQueryString: compose(
-      mapDateFromQueryString,
-      mapArrayFromQuerystring([
-        'status',
-        'departments',
-        'tags',
-        'companyCountries',
-        'siretSirenList',
-        'activityCodes',
-        'evaluation',
-      ]),
-      mapBooleanFromQueryString(['hasCompany', 'hasForeignCountry', 'hasPhone', 'hasWebsite', 'hasEvaluation']),
-    ),
-  })
-
-  const _reports = useReportSearchQuery({offset: 0, limit: 10, ...queryString.get()})
-
-  useEffect(() => {
-    queryString.update(cleanObject(_reports.filters))
-  }, [_reports.filters])
-
-  const tags: SelectTagsMenuValues = {}
-  _reports.filters.withTags?.forEach(tag => {
-    tags[tag] = 'included'
-  })
-  _reports.filters.withoutTags?.forEach(tag => {
-    tags[tag] = 'excluded'
-  })
-
-  const proResponseToStatus = {
-    [ReportResponseTypes.Accepted]: ReportStatus.PromesseAction,
-    [ReportResponseTypes.NotConcerned]: ReportStatus.MalAttribue,
-    [ReportResponseTypes.Rejected]: ReportStatus.Infonde,
-  }
-
-  const css = {
-    trueFalseNullBox: {
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'space-between',
-      mt: 1,
-    },
-    trueFalseNullLabel: {
-      color: 'rgba(0, 0, 0, 0.6)',
-      ml: 1,
-    },
-  }
-
-  // TRELLO-1728 The object _reports change all the time.
-  // If we put it in dependencies, it causes problems with the debounce,
-  // and the search input "stutters" when typing fast
-  const onDetailsChange = useCallback((details: string) => {
-    _reports.updateFilters(prev => ({...prev, details}))
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
-  const onSiretSirenChange = useCallback((siretSirenList: string[]) => {
-    _reports.updateFilters(prev => ({...prev, siretSirenList}))
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
-  const onEmailChange = useCallback((email: string) => {
-    _reports.updateFilters(prev => ({...prev, email}))
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
-
+const ReportsFilter: React.FC<ReportsGridProps> = ({
+  _reports,
+  onDetailsChange,
+  onSiretSirenChange,
+  onEmailChange,
+  connectedUser,
+  m,
+  tags,
+  css,
+}) => {
   return (
     <Grid container spacing={1}>
       <Grid item sm={6} xs={12}>

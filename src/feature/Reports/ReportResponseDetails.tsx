@@ -1,9 +1,9 @@
 import React from 'react'
 import {Box, Tooltip} from '@mui/material'
-import {ProResponseLabel} from '../../shared/ProResponseLabel' // Assurez-vous que le chemin est correct
-import {useI18n} from '../../core/i18n' // Assurez-vous que le chemin est correct
-import {ReportResponse} from '../../core/model' // Assurez-vous que le chemin est correct
-import {ScOption} from 'core/helper/ScOption' // Assurez-vous que le chemin est correct
+import {ProResponseLabel} from '../../shared/ProResponseLabel'
+import {useI18n} from '../../core/i18n'
+import {ReportResponse} from '../../core/model'
+import {ScOption} from 'core/helper/ScOption'
 
 type ReportResponseDetailsProps = {
   details: ReportResponse | {description: string} | null | undefined
@@ -12,7 +12,7 @@ type ReportResponseDetailsProps = {
 const ReportResponseDetails: React.FC<ReportResponseDetailsProps> = ({details}) => {
   const {m} = useI18n()
   if (details && 'description' in details) {
-    return <div>{details.description}</div> // Remplacez par votre logique de rendu appropriée
+    return <div>{details.description}</div>
   }
 
   return ScOption.from(details)
@@ -48,7 +48,7 @@ const ReportResponseDetails: React.FC<ReportResponseDetailsProps> = ({details}) 
         <ProResponseLabel proResponse={r.responseType} />
       </Tooltip>
     ))
-    .getOrElse(<></>) // Retourne un élément vide si `details` est null ou undefined
+    .getOrElse(<></>)
 }
 
 export default ReportResponseDetails

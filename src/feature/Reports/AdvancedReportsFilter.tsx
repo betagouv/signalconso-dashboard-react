@@ -1,23 +1,10 @@
 import {useI18n} from '../../core/i18n'
 
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import {Box, Grid, Icon, MenuItem} from '@mui/material'
-import {styled} from '@mui/material/styles'
 import React, {useCallback, useEffect, useMemo, useState} from 'react'
-import {useSetState} from '../../alexlibs/react-hooks-lib'
 import {Enum} from '../../alexlibs/ts-utils'
-import {Report, ReportingDateLabel, ReportStatus, ReportTag} from '../../core/client/report/Report'
-import {useLogin} from '../../core/context/LoginContext'
-import {cleanObject} from '../../core/helper'
-import compose from '../../core/helper/compose'
-import {
-  mapArrayFromQuerystring,
-  mapBooleanFromQueryString,
-  mapDateFromQueryString,
-  mapDatesToQueryString,
-  useQueryString,
-} from '../../core/helper/useQueryString'
-import {Id, ReportResponseTypes, ReportSearch, ResponseEvaluation} from '../../core/model'
+import {ReportStatus, ReportTag} from '../../core/client/report/Report'
+import {ReportResponseTypes, ResponseEvaluation} from '../../core/model'
 import {ConsumerReviewLabel} from '../../shared/ConsumerReviewLabel'
 import {DebouncedInput} from '../../shared/DebouncedInput'
 import {ScInput} from '../../shared/ScInput'
@@ -28,9 +15,7 @@ import {ScMultiSelect} from '../../shared/Select/MultiSelect'
 import {ScSelect} from '../../shared/Select/Select'
 import {SelectActivityCode} from '../../shared/SelectActivityCode'
 import {SelectCountries} from '../../shared/SelectCountries/SelectCountries'
-import {SelectTagsMenuValues} from '../../shared/SelectTags/SelectTagsMenu'
 import {TrueFalseNull} from '../../shared/TrueFalseNull'
-import {useMutation} from '@tanstack/react-query'
 import {useReportSearchQuery} from '../../core/queryhooks/reportQueryHooks'
 import {useCategoriesQuery} from '../../core/queryhooks/constantQueryHooks'
 
@@ -46,145 +31,48 @@ const TrueLabel = () => {
   )
 }
 
-interface ReportSearchQs {
-  readonly departments?: string[] | string
-  readonly tags?: ReportTag[] | ReportTag
-  readonly companyCountries?: string[] | string
-  readonly siretSirenList?: string[] | string
-  readonly activityCodes?: string[] | string
-  start?: string
-  end?: string
-  email?: string
-  websiteURL?: string
-  phone?: string
-  category?: string
-  status?: string[]
-  details?: string
-  hasWebsite?: boolean
-  hasPhone?: boolean
-  hasCompany?: boolean
-  hasForeignCountry?: boolean
-  hasEvaluation?: boolean
-  evaluation?: ResponseEvaluation[]
-  offset: number
-  limit: number
+type AdvancedFiltersGridProps = {
+  _reports: ReturnType<typeof useReportSearchQuery>
+  onChangeStatus: (status: ReportStatus[]) => void
+  onEmailChange: (email: string) => void
+  onWebsiteURLChange: (websiteURL: string) => void
+  onPhoneChange: (phone: string) => void
+  onChangeHasProResponse: (b: boolean | null) => void
+  _category: ReturnType<typeof useCategoriesQuery>
+  m: any
+  css: any
+  proResponseFilter: ReportResponseTypes[]
+  hasProResponse: boolean | null
+  setProResponseFilter: React.Dispatch<React.SetStateAction<ReportResponseTypes[]>>
+  onChangeProResponseFilter: (responses: ReportResponseTypes[]) => void
+  connectedUser: {
+    isDGCCRF: boolean
+  }
+  proResponseToStatus: {
+    ACCEPTED: ReportStatus
+    NOT_CONCERNED: ReportStatus
+    REJECTED: ReportStatus
+  }
 }
 
-const AdvancedReportsFilter = () => {
-  const {m} = useI18n()
-  const {connectedUser} = useLogin()
-
-  const queryString = useQueryString<Partial<ReportSearch>, Partial<ReportSearchQs>>({
-    toQueryString: mapDatesToQueryString,
-    fromQueryString: compose(
-      mapDateFromQueryString,
-      mapArrayFromQuerystring([
-        'status',
-        'departments',
-        'tags',
-        'companyCountries',
-        'siretSirenList',
-        'activityCodes',
-        'evaluation',
-      ]),
-      mapBooleanFromQueryString(['hasCompany', 'hasForeignCountry', 'hasPhone', 'hasWebsite', 'hasEvaluation']),
-    ),
-  })
-
-  const _reports = useReportSearchQuery({offset: 0, limit: 10, ...queryString.get()})
-
-  useEffect(() => {
-    queryString.update(cleanObject(_reports.filters))
-  }, [_reports.filters])
-
-  const tags: SelectTagsMenuValues = {}
-  _reports.filters.withTags?.forEach(tag => {
-    tags[tag] = 'included'
-  })
-  _reports.filters.withoutTags?.forEach(tag => {
-    tags[tag] = 'excluded'
-  })
-
-  const _category = useCategoriesQuery()
-
-  const [proResponseFilter, setProResponseFilter] = useState<ReportResponseTypes[]>([])
-
-  const proResponseToStatus = {
-    [ReportResponseTypes.Accepted]: ReportStatus.PromesseAction,
-    [ReportResponseTypes.NotConcerned]: ReportStatus.MalAttribue,
-    [ReportResponseTypes.Rejected]: ReportStatus.Infonde,
-  }
-
-  const onChangeStatus = (status: ReportStatus[]) => {
-    const responses = status.flatMap(reportStatus => {
-      switch (reportStatus) {
-        case ReportStatus.PromesseAction:
-          return [ReportResponseTypes.Accepted]
-        case ReportStatus.MalAttribue:
-          return [ReportResponseTypes.NotConcerned]
-        case ReportStatus.Infonde:
-          return [ReportResponseTypes.Rejected]
-        default:
-          return []
-      }
-    })
-    setProResponseFilter(responses)
-    _reports.updateFilters(prev => ({...prev, status}))
-  }
-
-  const onChangeProResponseFilter = (responses: ReportResponseTypes[]) => {
-    setProResponseFilter(responses)
-    const status = responses.length === 0 ? Report.respondedStatus : responses.map(_ => proResponseToStatus[_])
-    _reports.updateFilters(prev => ({...prev, status}))
-  }
-
-  const hasProResponse =
-    _reports.filters.status?.length === 0
-      ? null
-      : _reports.filters.status?.every(status => Report.respondedStatus.includes(status))
-      ? true
-      : _reports.filters.status?.every(status => Report.notRespondedStatus.includes(status))
-      ? false
-      : null
-  const onChangeHasProResponse = (b: boolean | null) => {
-    if (b) _reports.updateFilters(prev => ({...prev, status: Report.respondedStatus}))
-    else if (b === false) _reports.updateFilters(prev => ({...prev, status: Report.notRespondedStatus}))
-    else _reports.updateFilters(prev => ({...prev, status: undefined}))
-  }
-
+export const AdvancedReportsFilter: React.FC<AdvancedFiltersGridProps> = ({
+  _reports,
+  onChangeStatus,
+  onEmailChange,
+  onWebsiteURLChange,
+  onPhoneChange,
+  onChangeHasProResponse,
+  _category,
+  m,
+  connectedUser,
+  css,
+  hasProResponse,
+  proResponseFilter,
+  onChangeProResponseFilter,
+}) => {
   function invertIfDefined(bool: boolean | null) {
     return bool === null ? null : !bool
   }
-
-  const css = {
-    trueFalseNullBox: {
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'space-between',
-      mt: 1,
-    },
-    trueFalseNullLabel: {
-      color: 'rgba(0, 0, 0, 0.6)',
-      ml: 1,
-    },
-  }
-
-  // TRELLO-1728 The object _reports change all the time.
-  // If we put it in dependencies, it causes problems with the debounce,
-  // and the search input "stutters" when typing fast
-  const onEmailChange = useCallback((email: string) => {
-    _reports.updateFilters(prev => ({...prev, email}))
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
-  const onWebsiteURLChange = useCallback((websiteURL: string) => {
-    _reports.updateFilters(prev => ({...prev, websiteURL}))
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
-  const onPhoneChange = useCallback((phone: string) => {
-    _reports.updateFilters(prev => ({...prev, phone}))
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
-
   return (
     <Grid container spacing={1} sx={{mt: 0}}>
       <Grid item xs={12} md={6}>
