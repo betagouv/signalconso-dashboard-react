@@ -1,20 +1,16 @@
 import {useI18n} from '../../core/i18n'
 import {Page, PageTitle} from '../../shared/Page'
 
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
-import {Badge, Box, Checkbox, Chip, Collapse, Grid, Icon, MenuItem, Tooltip} from '@mui/material'
-import {styled} from '@mui/material/styles'
-import {ScOption} from 'core/helper/ScOption'
+import {Badge, Box, Checkbox, Chip, Collapse, Icon, Tooltip} from '@mui/material'
 import React, {useCallback, useEffect, useMemo, useState} from 'react'
 import {NavLink} from 'react-router-dom'
-import {Btn, Fender, IconBtn, Txt} from '../../alexlibs/mui-extension'
+import {Fender, IconBtn, Txt} from '../../alexlibs/mui-extension'
 import {useSetState} from '../../alexlibs/react-hooks-lib'
-import {Enum} from '../../alexlibs/ts-utils'
 import {config} from '../../conf/config'
 import {EntityIcon} from '../../core/EntityIcon'
 import {Report, ReportingDateLabel, ReportStatus, ReportTag} from '../../core/client/report/Report'
 import {useLogin} from '../../core/context/LoginContext'
-import {cleanObject, getHostFromUrl, textOverflowMiddleCropping} from '../../core/helper'
+import {cleanObject, textOverflowMiddleCropping} from '../../core/helper'
 import compose from '../../core/helper/compose'
 import {
   mapArrayFromQuerystring,
@@ -23,30 +19,16 @@ import {
   mapDatesToQueryString,
   useQueryString,
 } from '../../core/helper/useQueryString'
-import {Id, ReportResponse, ReportResponseTypes, ReportSearch, ResponseEvaluation} from '../../core/model'
+import {Id, ReportResponseTypes, ReportSearch, ResponseEvaluation} from '../../core/model'
 import {siteMap} from '../../core/siteMap'
 import {styleUtils, sxUtils} from '../../core/theme'
 import {ScButton} from '../../shared/Button'
 import {ConsumerReviewLabel} from '../../shared/ConsumerReviewLabel'
 import {Datatable} from '../../shared/Datatable/Datatable'
-import {DatatableToolbar} from '../../shared/Datatable/DatatableToolbar'
-import {DebouncedInput} from '../../shared/DebouncedInput'
-import {ExportReportsPopper} from '../../shared/ExportPopperBtn'
-import {ScInput} from '../../shared/ScInput'
-import {ScMenuItem} from '../../shared/ScMenuItem'
 import {Panel} from '../../shared/Panel'
-import {PeriodPicker} from '../../shared/PeriodPicker'
-import {ProResponseLabel} from '../../shared/ProResponseLabel'
 import {ReportDetailValues} from '../../shared/ReportDetailValues'
 import {ReportStatusLabel} from '../../shared/ReportStatus'
-import {ScMultiSelect} from '../../shared/Select/MultiSelect'
-import {ScSelect} from '../../shared/Select/Select'
-import {SelectActivityCode} from '../../shared/SelectActivityCode'
-import {SelectCountries} from '../../shared/SelectCountries/SelectCountries'
-import {SelectDepartments} from '../../shared/SelectDepartments/SelectDepartments'
-import {SelectTags} from '../../shared/SelectTags/SelectTags'
 import {SelectTagsMenuValues} from '../../shared/SelectTags/SelectTagsMenu'
-import {TrueFalseNull} from '../../shared/TrueFalseNull'
 import {PanelBody} from 'alexlibs/mui-extension/Panel/PanelBody'
 import {useMutation} from '@tanstack/react-query'
 import {useReportSearchQuery} from '../../core/queryhooks/reportQueryHooks'
@@ -58,28 +40,18 @@ import DatatableToolbarComponent from './DatatableToolbarComponent'
 import CompanyNameDetails from './CompanyNameDetails'
 import ReportResponseDetails from './ReportResponseDetails'
 
-const TrueLabel = () => {
-  const {m} = useI18n()
-  return (
-    <>
-      {m.yes}{' '}
-      <Icon fontSize="inherit" sx={{mr: '-4px'}}>
-        arrow_drop_down
-      </Icon>
-    </>
-  )
+export const reportsCss = {
+  trueFalseNullBox: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    mt: 1,
+  },
+  trueFalseNullLabel: {
+    color: 'rgba(0, 0, 0, 0.6)',
+    ml: 1,
+  },
 }
-
-const ExpandMore = styled((props: {expand: boolean}) => {
-  const {expand, ...other} = props
-  return <ExpandMoreIcon {...other} />
-})(({theme, expand}) => ({
-  transform: !expand ? 'rotate(0deg)' : 'rotate(180deg)',
-  marginLeft: 'auto',
-  transition: theme.transitions.create('transform', {
-    duration: theme.transitions.duration.shortest,
-  }),
-}))
 
 interface ReportSearchQs {
   readonly departments?: string[] | string
@@ -199,23 +171,6 @@ export const Reports = () => {
     else _reports.updateFilters(prev => ({...prev, status: undefined}))
   }
 
-  function invertIfDefined(bool: boolean | null) {
-    return bool === null ? null : !bool
-  }
-
-  const css = {
-    trueFalseNullBox: {
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'space-between',
-      mt: 1,
-    },
-    trueFalseNullLabel: {
-      color: 'rgba(0, 0, 0, 0.6)',
-      ml: 1,
-    },
-  }
-
   // TRELLO-1728 The object _reports change all the time.
   // If we put it in dependencies, it causes problems with the debounce,
   // and the search input "stutters" when typing fast
@@ -251,9 +206,7 @@ export const Reports = () => {
             onSiretSirenChange={onSiretSirenChange}
             onEmailChange={onEmailChange}
             connectedUser={connectedUser}
-            m={m}
             tags={tags}
-            css={css}
           />
           <Collapse in={expanded} timeout="auto" unmountOnExit>
             <AdvancedReportsFilter
@@ -264,9 +217,7 @@ export const Reports = () => {
               onPhoneChange={onPhoneChange}
               onChangeHasProResponse={onChangeHasProResponse}
               _category={_category}
-              m={m}
               connectedUser={connectedUser}
-              css={css}
               hasProResponse={hasProResponse}
               proResponseFilter={proResponseFilter}
               setProResponseFilter={setProResponseFilter}
@@ -281,7 +232,6 @@ export const Reports = () => {
           setExpanded={setExpanded}
           filtersCount={filtersCount}
           clearFilters={_reports.clearFilters}
-          m={m}
           config={config}
         />
       </Panel>

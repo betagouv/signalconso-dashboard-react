@@ -1,9 +1,7 @@
 import {useI18n} from '../../core/i18n'
-
 import {Box, Grid, Icon, MenuItem} from '@mui/material'
-import React, {useCallback, useEffect, useMemo, useState} from 'react'
 import {Enum} from '../../alexlibs/ts-utils'
-import {ReportStatus, ReportTag} from '../../core/client/report/Report'
+import {ReportStatus} from '../../core/client/report/Report'
 import {ReportResponseTypes, ResponseEvaluation} from '../../core/model'
 import {ConsumerReviewLabel} from '../../shared/ConsumerReviewLabel'
 import {DebouncedInput} from '../../shared/DebouncedInput'
@@ -18,6 +16,7 @@ import {SelectCountries} from '../../shared/SelectCountries/SelectCountries'
 import {TrueFalseNull} from '../../shared/TrueFalseNull'
 import {useReportSearchQuery} from '../../core/queryhooks/reportQueryHooks'
 import {useCategoriesQuery} from '../../core/queryhooks/constantQueryHooks'
+import {reportsCss} from './Reports'
 
 const TrueLabel = () => {
   const {m} = useI18n()
@@ -39,8 +38,6 @@ type AdvancedFiltersGridProps = {
   onPhoneChange: (phone: string) => void
   onChangeHasProResponse: (b: boolean | null) => void
   _category: ReturnType<typeof useCategoriesQuery>
-  m: any
-  css: any
   proResponseFilter: ReportResponseTypes[]
   hasProResponse: boolean | null
   setProResponseFilter: React.Dispatch<React.SetStateAction<ReportResponseTypes[]>>
@@ -54,6 +51,9 @@ type AdvancedFiltersGridProps = {
     REJECTED: ReportStatus
   }
 }
+function invertIfDefined(bool: boolean | null) {
+  return bool === null ? null : !bool
+}
 
 export const AdvancedReportsFilter: React.FC<AdvancedFiltersGridProps> = ({
   _reports,
@@ -63,16 +63,14 @@ export const AdvancedReportsFilter: React.FC<AdvancedFiltersGridProps> = ({
   onPhoneChange,
   onChangeHasProResponse,
   _category,
-  m,
+
   connectedUser,
-  css,
   hasProResponse,
   proResponseFilter,
   onChangeProResponseFilter,
 }) => {
-  function invertIfDefined(bool: boolean | null) {
-    return bool === null ? null : !bool
-  }
+  const {m} = useI18n()
+
   return (
     <Grid container spacing={1} sx={{mt: 0}}>
       <Grid item xs={12} md={6}>
@@ -131,8 +129,8 @@ export const AdvancedReportsFilter: React.FC<AdvancedFiltersGridProps> = ({
       )}
       <Grid item xs={12} md={6}>
         <Box>
-          <Box sx={css.trueFalseNullBox}>
-            <Box sx={css.trueFalseNullLabel}>{m.website}</Box>
+          <Box sx={reportsCss.trueFalseNullBox}>
+            <Box sx={reportsCss.trueFalseNullLabel}>{m.website}</Box>
             <TrueFalseNull
               label={{
                 true: <TrueLabel />,
@@ -156,8 +154,8 @@ export const AdvancedReportsFilter: React.FC<AdvancedFiltersGridProps> = ({
       </Grid>
       <Grid item xs={12} md={6}>
         <Box>
-          <Box sx={css.trueFalseNullBox}>
-            <Box sx={css.trueFalseNullLabel}>{m.phone}</Box>
+          <Box sx={reportsCss.trueFalseNullBox}>
+            <Box sx={reportsCss.trueFalseNullLabel}>{m.phone}</Box>
             <TrueFalseNull
               label={{
                 true: <TrueLabel />,
@@ -181,8 +179,8 @@ export const AdvancedReportsFilter: React.FC<AdvancedFiltersGridProps> = ({
       </Grid>
       <Grid item xs={12} md={6}>
         <Box>
-          <Box sx={css.trueFalseNullBox}>
-            <Box sx={css.trueFalseNullLabel}>{m.foreignCountry}</Box>
+          <Box sx={reportsCss.trueFalseNullBox}>
+            <Box sx={reportsCss.trueFalseNullLabel}>{m.foreignCountry}</Box>
             <TrueFalseNull
               label={{
                 true: <TrueLabel />,
@@ -213,8 +211,8 @@ export const AdvancedReportsFilter: React.FC<AdvancedFiltersGridProps> = ({
         </Box>
       </Grid>
       <Grid item xs={12} md={6}>
-        <Box sx={css.trueFalseNullBox}>
-          <Box sx={css.trueFalseNullLabel}>{m.consoAnonyme}</Box>
+        <Box sx={reportsCss.trueFalseNullBox}>
+          <Box sx={reportsCss.trueFalseNullLabel}>{m.consoAnonyme}</Box>
           <TrueFalseNull
             value={invertIfDefined(_reports.filters.contactAgreement ?? null)}
             onChange={contactAgreement =>
@@ -228,8 +226,8 @@ export const AdvancedReportsFilter: React.FC<AdvancedFiltersGridProps> = ({
         </Box>
       </Grid>
       <Grid item xs={12} md={6}>
-        <Box sx={css.trueFalseNullBox}>
-          <Box sx={css.trueFalseNullLabel}>{m.hasAttachement}</Box>
+        <Box sx={reportsCss.trueFalseNullBox}>
+          <Box sx={reportsCss.trueFalseNullLabel}>{m.hasAttachement}</Box>
           <TrueFalseNull
             value={_reports.filters.hasAttachment ?? null}
             onChange={hasAttachment =>
@@ -244,8 +242,8 @@ export const AdvancedReportsFilter: React.FC<AdvancedFiltersGridProps> = ({
       </Grid>
       <Grid item xs={12} md={6}>
         <Box>
-          <Box sx={css.trueFalseNullBox}>
-            <Box sx={css.trueFalseNullLabel}>{m.consumerReviews}</Box>
+          <Box sx={reportsCss.trueFalseNullBox}>
+            <Box sx={reportsCss.trueFalseNullLabel}>{m.consumerReviews}</Box>
             <TrueFalseNull
               label={{
                 true: <TrueLabel />,
@@ -280,8 +278,8 @@ export const AdvancedReportsFilter: React.FC<AdvancedFiltersGridProps> = ({
       </Grid>
       <Grid item xs={12} md={6}>
         <Box>
-          <Box sx={css.trueFalseNullBox}>
-            <Box sx={css.trueFalseNullLabel}>{m.proResponse}</Box>
+          <Box sx={reportsCss.trueFalseNullBox}>
+            <Box sx={reportsCss.trueFalseNullLabel}>{m.proResponse}</Box>
             <TrueFalseNull
               label={{
                 true: <TrueLabel />,
@@ -311,8 +309,8 @@ export const AdvancedReportsFilter: React.FC<AdvancedFiltersGridProps> = ({
       </Grid>
       <Grid item xs={12} md={6}>
         <Box>
-          <Box sx={css.trueFalseNullBox}>
-            <Box sx={css.trueFalseNullLabel}>{m.foreignReport}</Box>
+          <Box sx={reportsCss.trueFalseNullBox}>
+            <Box sx={reportsCss.trueFalseNullLabel}>{m.foreignReport}</Box>
             <TrueFalseNull
               sx={{flexBasis: '50%'}}
               value={_reports.filters.isForeign ?? null}
@@ -328,8 +326,8 @@ export const AdvancedReportsFilter: React.FC<AdvancedFiltersGridProps> = ({
       </Grid>
       <Grid item xs={12} md={6}>
         <Box>
-          <Box sx={css.trueFalseNullBox}>
-            <Box sx={css.trueFalseNullLabel}>Code-barres</Box>
+          <Box sx={reportsCss.trueFalseNullBox}>
+            <Box sx={reportsCss.trueFalseNullLabel}>Code-barres</Box>
             <TrueFalseNull
               sx={{flexBasis: '50%'}}
               value={_reports.filters.hasBarcode ?? null}

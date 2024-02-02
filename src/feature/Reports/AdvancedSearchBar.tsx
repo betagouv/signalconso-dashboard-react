@@ -2,12 +2,12 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import {Badge, Box} from '@mui/material'
 import {styled} from '@mui/material/styles'
 import {ScOption} from 'core/helper/ScOption'
-import React, {useCallback, useEffect, useMemo, useState} from 'react'
 import {Btn} from '../../alexlibs/mui-extension'
 import {config} from '../../conf/config'
 import {ScButton} from '../../shared/Button'
 import {ExportReportsPopper} from '../../shared/ExportPopperBtn'
 import {useReportSearchQuery} from '../../core/queryhooks/reportQueryHooks'
+import {useI18n} from 'core/i18n'
 
 const ExpandMore = styled((props: {expand: boolean}) => {
   const {expand, ...other} = props
@@ -26,7 +26,7 @@ type AdvancedSearchControlsProps = {
   setExpanded: React.Dispatch<React.SetStateAction<boolean>>
   filtersCount: number
   clearFilters: () => void
-  m: any
+
   config: typeof config
 }
 
@@ -36,9 +36,10 @@ const AdvancedSearchBar: React.FC<AdvancedSearchControlsProps> = ({
   setExpanded,
   filtersCount,
   clearFilters,
-  m,
+
   config,
 }) => {
+  const {m} = useI18n()
   return (
     <Box
       sx={{

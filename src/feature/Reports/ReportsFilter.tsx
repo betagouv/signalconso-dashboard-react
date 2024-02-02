@@ -10,6 +10,8 @@ import {SelectDepartments} from '../../shared/SelectDepartments/SelectDepartment
 import {SelectTags} from '../../shared/SelectTags/SelectTags'
 import {TrueFalseNull} from '../../shared/TrueFalseNull'
 import {UseQueryPaginateResult} from 'core/queryhooks/UseQueryPaginate'
+import {SelectTagsMenuValues} from 'shared/SelectTags/SelectTagsMenu'
+import {reportsCss} from './Reports'
 
 const TrueLabel = () => {
   const {m} = useI18n()
@@ -29,9 +31,8 @@ type ReportsGridProps = {
   onSiretSirenChange: (siretSirenList: string[]) => void
   onEmailChange: (email: string) => void
   connectedUser: {isAdmin: boolean}
-  m: any
-  tags: any
-  css: any
+
+  tags: SelectTagsMenuValues
 }
 
 const ReportsFilter: React.FC<ReportsGridProps> = ({
@@ -40,10 +41,10 @@ const ReportsFilter: React.FC<ReportsGridProps> = ({
   onSiretSirenChange,
   onEmailChange,
   connectedUser,
-  m,
+
   tags,
-  css,
 }) => {
+  const {m} = useI18n()
   return (
     <Grid container spacing={1}>
       <Grid item sm={6} xs={12}>
@@ -86,8 +87,8 @@ const ReportsFilter: React.FC<ReportsGridProps> = ({
       </Grid>
       <Grid item xs={12} md={6}>
         <Box>
-          <Box sx={css.trueFalseNullBox}>
-            <Box sx={css.trueFalseNullLabel}>{m.siretOrSirenFound}</Box>
+          <Box sx={reportsCss.trueFalseNullBox}>
+            <Box sx={reportsCss.trueFalseNullLabel}>{m.siretOrSirenFound}</Box>
             <TrueFalseNull
               label={{
                 true: <TrueLabel />,
