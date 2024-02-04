@@ -124,7 +124,8 @@ export interface Report {
 }
 
 export interface Influencer {
-  socialNetwork: string
+  socialNetwork?: string
+  otherSocialNetwork?: string
   name: string
 }
 
