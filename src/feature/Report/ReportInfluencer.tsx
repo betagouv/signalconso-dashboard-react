@@ -16,7 +16,7 @@ interface Props {
   influencer: Influencer
 }
 export const ReportInfluencer = ({influencer}: Props) => {
-  const socialNetworkIcon = (socialNetwork: string) => {
+  const socialNetworkIcon = (socialNetwork?: string) => {
     switch (socialNetwork) {
       case 'YouTube':
         return youtubeLogo
@@ -57,7 +57,8 @@ export const ReportInfluencer = ({influencer}: Props) => {
             width: 24,
           }}
         />
-        <Txt sx={{ml: 1}}>{influencer.socialNetwork}</Txt>
+        {influencer.socialNetwork && <Txt sx={{ml: 1}}>{influencer.socialNetwork}</Txt>}
+        {influencer.otherSocialNetwork && <Txt sx={{ml: 1}}>{influencer.otherSocialNetwork}</Txt>}
       </Box>
       <Box
         sx={{
