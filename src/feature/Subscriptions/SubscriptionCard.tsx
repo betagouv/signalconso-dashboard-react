@@ -19,10 +19,11 @@ import {Enum} from '../../alexlibs/ts-utils'
 import {Subscription, SubscriptionCreate} from '../../core/client/subscription/Subscription'
 import {ReportSearch} from '../../core/client/report/ReportSearch'
 import {Category} from '../../core/client/constant/Category'
-import {useCategoriesQuery} from '../../core/queryhooks/constantQueryHooks'
+import {useCategoriesByStatusQuery} from '../../core/queryhooks/constantQueryHooks'
 import {useApiContext} from '../../core/context/ApiContext'
 import {useMutation, useQueryClient} from '@tanstack/react-query'
 import {ListSubscriptionsQueryKeys} from '../../core/queryhooks/subscriptionQueryHooks'
+import {SubscriptionInformation} from './SubscriptionInformation'
 
 interface Props {
   subscription: Subscription
@@ -44,7 +45,13 @@ export const SubscriptionCard = ({subscription, className, style}: Props) => {
   const countriesAnchor = useAnchoredMenu()
   const categoryAnchor = useAnchoredMenu()
   const tagsAnchor = useAnchoredMenu()
-  const _category = useCategoriesQuery()
+  const _categories = useCategoriesByStatusQuery()
+  const _activeCategories = _categories.data?.active
+  const _outdatedCategories = [
+    ...(_categories.data?.inactive ?? []),
+    ...(_categories.data?.closed ?? []),
+    ...(_categories.data?.legacy ?? []),
+  ]
   const {api} = useApiContext()
   const queryClient = useQueryClient()
   const _updateSubscription = useMutation({
@@ -84,6 +91,8 @@ export const SubscriptionCard = ({subscription, className, style}: Props) => {
     }
   }
 
+  const allCategoriesSelected = subscription.categories.length === 0
+
   return (
     <Collapse in={isMounted} timeout={duration.standard * 1.5}>
       <Panel className={className} style={style}>
@@ -121,6 +130,8 @@ export const SubscriptionCard = ({subscription, className, style}: Props) => {
           {m.subscription}
         </PanelHead>
 
+        <SubscriptionInformation outdatedCategories={_outdatedCategories} subscription={subscription} />
+
         <SubscriptionCardRow icon="flag" label={m.foreignCountry} onClick={countriesAnchor.open}>
           <ScChipContainer>
             {subscription.countries.map(_ => (
@@ -152,15 +163,17 @@ export const SubscriptionCard = ({subscription, className, style}: Props) => {
         />
         <SubscriptionCardRow icon="dashboard" label={m.categories} onClick={categoryAnchor.open}>
           <ScChipContainer>
-            {subscription.categories.map(_ => (
-              <ScChip key={_} label={_} />
-            ))}
+            {allCategoriesSelected ? (
+              <ScChip variant="outlined" color="primary" key="all" label="N'importe quelle catégorie" />
+            ) : (
+              subscription.categories.map(_ => <ScChip key={_} label={_} />)
+            )}
           </ScChipContainer>
         </SubscriptionCardRow>
-        {_category.data && (
+        {_activeCategories && (
           <SelectMenu
             multiple
-            options={_category.data}
+            options={_activeCategories}
             renderValue={(option: Category) => m.ReportCategoryDesc[option]}
             initialValue={subscription.categories}
             onClose={categoryAnchor.close}
@@ -204,6 +217,7 @@ export const SubscriptionCard = ({subscription, className, style}: Props) => {
           </ScChipContainer>
         </SubscriptionCardRow>
         <SelectTagsMenu
+          onlyActive={true}
           onClose={tagsAnchor.close}
           value={tags}
           onChange={value => _updateSubscription.mutate(fromReportTagValues(value))}

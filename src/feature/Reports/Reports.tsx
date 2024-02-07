@@ -32,7 +32,7 @@ import {SelectTagsMenuValues} from '../../shared/SelectTags/SelectTagsMenu'
 import {PanelBody} from 'alexlibs/mui-extension/Panel/PanelBody'
 import {useMutation} from '@tanstack/react-query'
 import {useReportSearchQuery} from '../../core/queryhooks/reportQueryHooks'
-import {useCategoriesQuery} from '../../core/queryhooks/constantQueryHooks'
+import {useCategoriesByStatusQuery} from '../../core/queryhooks/constantQueryHooks'
 import ReportsFilter from './ReportsFilter'
 import AdvancedReportsFilter from './AdvancedReportsFilter'
 import AdvancedSearchBar from './AdvancedSearchBar'
@@ -124,7 +124,15 @@ export const Reports = () => {
     tags[tag] = 'excluded'
   })
 
-  const _category = useCategoriesQuery()
+  const _categoriesByStatus = useCategoriesByStatusQuery()
+
+  const _categories = connectedUser.isAdmin
+    ? [
+        ...(_categoriesByStatus.data?.active ?? []),
+        ...(_categoriesByStatus.data?.inactive ?? []),
+        ...(_categoriesByStatus.data?.closed ?? []),
+      ]
+    : [...(_categoriesByStatus.data?.active ?? []), ...(_categoriesByStatus.data?.inactive ?? [])]
 
   const [proResponseFilter, setProResponseFilter] = useState<ReportResponseTypes[]>([])
 
@@ -216,7 +224,7 @@ export const Reports = () => {
               onWebsiteURLChange={onWebsiteURLChange}
               onPhoneChange={onPhoneChange}
               onChangeHasProResponse={onChangeHasProResponse}
-              _category={_category}
+              _category={_categories}
               connectedUser={connectedUser}
               hasProResponse={hasProResponse}
               proResponseFilter={proResponseFilter}

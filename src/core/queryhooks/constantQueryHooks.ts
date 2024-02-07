@@ -2,11 +2,11 @@ import {UseQueryOpts} from './types'
 import {useApiContext} from '../context/ApiContext'
 import {useQuery} from '@tanstack/react-query'
 import {Country, Region} from '../client/constant/Country'
-import {Category} from '../client/constant/Category'
+import {CategoriesByStatus, Category} from '../client/constant/Category'
 
 const RegionsQueryKeys = ['constant_getRegions']
 const CountriesQueryKeys = ['constant_getCountries']
-const CategoriesQueryKeys = ['constant_getCategories']
+const CategoriesByStatusQueryKeys = ['constant_getCategoriesByStatus']
 export const useRegionsQuery = (options?: UseQueryOpts<Region[], string[]>) => {
   const {api} = useApiContext()
   return useQuery({queryKey: RegionsQueryKeys, queryFn: api.public.constant.getRegions, ...options})
@@ -17,7 +17,7 @@ export const useCountriesQuery = (options?: UseQueryOpts<Country[], string[]>) =
   return useQuery({queryKey: CountriesQueryKeys, queryFn: api.public.constant.getCountries, ...options})
 }
 
-export const useCategoriesQuery = (options?: UseQueryOpts<Category[], string[]>) => {
+export const useCategoriesByStatusQuery = (options?: UseQueryOpts<CategoriesByStatus, string[]>) => {
   const {api} = useApiContext()
-  return useQuery({queryKey: CategoriesQueryKeys, queryFn: api.public.constant.getCategories, ...options})
+  return useQuery({queryKey: CategoriesByStatusQueryKeys, queryFn: api.public.constant.getCategoriesByStatus, ...options})
 }
