@@ -255,6 +255,7 @@ export const Reports = () => {
           }
           columns={[
             {
+              alwaysVisible: true,
               id: 'checkbox',
               head: (() => {
                 const allChecked = selectReport.size === _reports.result.data?.entities.length
@@ -276,6 +277,7 @@ export const Reports = () => {
               style: {width: 0},
               render: _ => <Checkbox checked={selectReport.has(_.report.id)} onChange={() => selectReport.toggle(_.report.id)} />,
             },
+
             {
               id: 'companyPostalCode',
               head: m.postalCodeShort,
