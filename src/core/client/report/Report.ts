@@ -91,6 +91,8 @@ export enum ReportTag {
   Resiliation = 'Resiliation',
 }
 
+export const OutdatedTags = [ReportTag.Bloctel]
+
 export interface Report {
   id: string
   gender?: Gender

@@ -3,7 +3,7 @@ import {Enum} from '../../alexlibs/ts-utils'
 import {useI18n} from '../../core/i18n'
 import {Txt} from '../../alexlibs/mui-extension'
 import {useEffect, useMemo, useState} from 'react'
-import {ReportTag} from '../../core/client/report/Report'
+import {OutdatedTags, ReportTag} from '../../core/client/report/Report'
 
 export type SelectTagsMenuValue = 'included' | 'excluded' | undefined
 
@@ -15,6 +15,7 @@ interface ScSelectTagsMenuProps {
   open: boolean
   value?: SelectTagsMenuValues
   anchorEl: HTMLElement | null
+  onlyActive: boolean
 }
 
 const TagButton = ({
@@ -51,12 +52,14 @@ const TagButton = ({
   )
 }
 
-export const SelectTagsMenu = ({onClose, onChange, open, value, anchorEl}: ScSelectTagsMenuProps) => {
+export const SelectTagsMenu = ({onClose, onChange, open, value, anchorEl, onlyActive}: ScSelectTagsMenuProps) => {
   const {m} = useI18n()
 
   const tags = useMemo(() => {
     const reponseConsoTag = ReportTag.ReponseConso
-    const tagsWithoutReponseConso = (Enum.keys(ReportTag) as ReportTag[]).filter(_ => _ !== reponseConsoTag)
+    const tagsWithoutReponseConso = onlyActive
+      ? (Enum.keys(ReportTag) as ReportTag[]).filter(_ => _ !== reponseConsoTag && !OutdatedTags.includes(_))
+      : (Enum.keys(ReportTag) as ReportTag[]).filter(_ => _ !== reponseConsoTag)
     return [reponseConsoTag, ...tagsWithoutReponseConso]
   }, [])
   const [innerValue, setInnerValue] = useState<SelectTagsMenuValues | undefined>()
