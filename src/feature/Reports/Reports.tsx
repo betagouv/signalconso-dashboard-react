@@ -43,7 +43,6 @@ import DatatableToolbarComponent from './DatatableToolbarComponent'
 import CompanyNameDetails from './CompanyNameDetails'
 import ReportResponseDetails from './ReportResponseDetails'
 
-
 export const reportsCss = {
   trueFalseNullBox: {
     display: 'flex',
