@@ -33,9 +33,6 @@ import {PanelBody} from 'alexlibs/mui-extension/Panel/PanelBody'
 import {useMutation} from '@tanstack/react-query'
 import {useReportSearchQuery} from '../../core/queryhooks/reportQueryHooks'
 import {useCategoriesQuery} from '../../core/queryhooks/constantQueryHooks'
-
-import Typography from '@mui/material/Typography'
-
 import ReportsFilter from './ReportsFilter'
 import AdvancedReportsFilter from './AdvancedReportsFilter'
 import AdvancedSearchBar from './AdvancedSearchBar'

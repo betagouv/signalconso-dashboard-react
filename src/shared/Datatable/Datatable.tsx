@@ -92,7 +92,7 @@ export const Datatable = <T extends any = any>({
   const {m} = useI18n()
   const displayableColumns = useMemo(() => columns.filter(_ => !_.hidden), [columns])
   const toggleableColumnsName = useMemo(
-    () => displayableColumns.filter(_ => !_.alwaysVisible && _.head && _.head !== ''), // <==
+    () => displayableColumns.filter(_ => !_.alwaysVisible && _.head && _.head !== ''),
     [displayableColumns],
   )
   const [hiddenColumns, setHiddenColumns] = usePersistentState<string[]>(initialHiddenColumns ?? [], id)
