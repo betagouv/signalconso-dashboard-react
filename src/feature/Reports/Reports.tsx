@@ -224,7 +224,7 @@ export const Reports = () => {
               onWebsiteURLChange={onWebsiteURLChange}
               onPhoneChange={onPhoneChange}
               onChangeHasProResponse={onChangeHasProResponse}
-              _category={_categories}
+              _categories={_categories}
               connectedUser={connectedUser}
               hasProResponse={hasProResponse}
               proResponseFilter={proResponseFilter}

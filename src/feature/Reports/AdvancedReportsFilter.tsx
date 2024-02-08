@@ -15,8 +15,8 @@ import {SelectActivityCode} from '../../shared/SelectActivityCode'
 import {SelectCountries} from '../../shared/SelectCountries/SelectCountries'
 import {TrueFalseNull} from '../../shared/TrueFalseNull'
 import {useReportSearchQuery} from '../../core/queryhooks/reportQueryHooks'
-import {useCategoriesQuery} from '../../core/queryhooks/constantQueryHooks'
 import {reportsCss} from './Reports'
+import {Category} from '../../core/client/constant/Category'
 
 const TrueLabel = () => {
   const {m} = useI18n()
@@ -37,7 +37,7 @@ type AdvancedFiltersGridProps = {
   onWebsiteURLChange: (websiteURL: string) => void
   onPhoneChange: (phone: string) => void
   onChangeHasProResponse: (b: boolean | null) => void
-  _category: ReturnType<typeof useCategoriesQuery>
+  _categories: Category[]
   proResponseFilter: ReportResponseTypes[]
   hasProResponse: boolean | null
   setProResponseFilter: React.Dispatch<React.SetStateAction<ReportResponseTypes[]>>
@@ -62,8 +62,7 @@ export const AdvancedReportsFilter: React.FC<AdvancedFiltersGridProps> = ({
   onWebsiteURLChange,
   onPhoneChange,
   onChangeHasProResponse,
-  _category,
-
+  _categories,
   connectedUser,
   hasProResponse,
   proResponseFilter,
@@ -95,7 +94,7 @@ export const AdvancedReportsFilter: React.FC<AdvancedFiltersGridProps> = ({
           onChange={e => _reports.updateFilters(prev => ({...prev, category: e.target.value}))}
         >
           <MenuItem value="">&nbsp;</MenuItem>
-          {_category?.data?.map(category => (
+          {_categories?.map(category => (
             <MenuItem key={category} value={category}>
               {m.ReportCategoryDesc[category]}
             </MenuItem>
