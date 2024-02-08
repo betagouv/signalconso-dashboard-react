@@ -2,11 +2,10 @@ import React, {CSSProperties, useEffect, useMemo, useState} from 'react'
 import {useI18n} from '../../core/i18n'
 import {Panel, PanelHead} from '../../shared/Panel'
 import {ScSelect} from '../../shared/Select/Select'
-import {Chip, Collapse, duration, Icon} from '@mui/material'
+import {Chip, Collapse, duration, Icon, Stack} from '@mui/material'
 import {SubscriptionCardRow} from './SubscriptionCardRow'
 import {SelectCompanyDialog} from '../../shared/SelectCompany/SelectCompanyDialog'
 import {ScChip} from '../../shared/ScChip'
-import {ScChipContainer} from '../../shared/ScChipContainer'
 import {useToast} from '../../core/toast'
 import {SelectDepartmentsMenu} from '../../shared/SelectDepartments/SelectDepartmentsMenu'
 import {SelectCountriesMenu} from '../../shared/SelectCountries/SelectCountriesMenu'
@@ -133,11 +132,11 @@ export const SubscriptionCard = ({subscription, className, style}: Props) => {
         <SubscriptionInformation outdatedCategories={_outdatedCategories} subscription={subscription} />
 
         <SubscriptionCardRow icon="flag" label={m.foreignCountry} onClick={countriesAnchor.open}>
-          <ScChipContainer>
+          <Stack direction="row" gap={1} flexWrap="wrap">
             {subscription.countries.map(_ => (
               <ScChip key={_.code} label={_.name} />
             ))}
-          </ScChipContainer>
+          </Stack>
         </SubscriptionCardRow>
         <SelectCountriesMenu
           open={!!countriesAnchor.element}
@@ -148,11 +147,11 @@ export const SubscriptionCard = ({subscription, className, style}: Props) => {
         />
 
         <SubscriptionCardRow icon="location_on" label={m.departments} onClick={departmentAnchor.open}>
-          <ScChipContainer>
+          <Stack direction="row" gap={1} flexWrap="wrap">
             {subscription.departments.map(_ => (
               <ScChip key={_.code} label={_.code + ' - ' + _.label} />
             ))}
-          </ScChipContainer>
+          </Stack>
         </SubscriptionCardRow>
         <SelectDepartmentsMenu
           open={!!departmentAnchor.element}
@@ -162,13 +161,13 @@ export const SubscriptionCard = ({subscription, className, style}: Props) => {
           onChange={departments => _updateSubscription.mutate({departments})}
         />
         <SubscriptionCardRow icon="dashboard" label={m.categories} onClick={categoryAnchor.open}>
-          <ScChipContainer>
+          <Stack direction="row" gap={1} flexWrap="wrap">
             {allCategoriesSelected ? (
-              <ScChip variant="outlined" color="primary" key="all" label="N'importe quelle catégorie" />
+              <ScChip variant="outlined" color="default" key="all" label={<i>N'importe quelle catégorie</i>} />
             ) : (
               subscription.categories.map(_ => <ScChip key={_} label={_} />)
             )}
-          </ScChipContainer>
+          </Stack>
         </SubscriptionCardRow>
         {_activeCategories && (
           <SelectMenu
@@ -184,7 +183,7 @@ export const SubscriptionCard = ({subscription, className, style}: Props) => {
         )}
 
         <SubscriptionCardRow icon="business" label={m.siret}>
-          <ScChipContainer>
+          <Stack direction="row" gap={1} flexWrap="wrap">
             {subscription.sirets.map(siret => (
               <ScChip
                 key={siret}
@@ -203,18 +202,18 @@ export const SubscriptionCard = ({subscription, className, style}: Props) => {
             >
               <ScChip label={<Icon>add</Icon>} />
             </SelectCompanyDialog>
-          </ScChipContainer>
+          </Stack>
         </SubscriptionCardRow>
 
         <SubscriptionCardRow icon="label" label={m.tags} onClick={tagsAnchor.open}>
-          <ScChipContainer>
+          <Stack direction="row" gap={1} flexWrap="wrap">
             {subscription?.withTags.map(_ => (
               <Chip key={_} color="success" icon={<Icon>add</Icon>} label={_} />
             ))}
             {subscription?.withoutTags.map(_ => (
               <Chip key={_} color="error" icon={<Icon>remove</Icon>} label={_} />
             ))}
-          </ScChipContainer>
+          </Stack>
         </SubscriptionCardRow>
         <SelectTagsMenu
           onlyActive={true}
