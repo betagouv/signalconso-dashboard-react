@@ -1,20 +1,16 @@
 import {useI18n} from '../../core/i18n'
 import {Page, PageTitle} from '../../shared/Page'
 
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
-import {Badge, Box, Checkbox, Chip, Collapse, Grid, Icon, MenuItem, Tooltip} from '@mui/material'
-import {styled} from '@mui/material/styles'
-import {ScOption} from 'core/helper/ScOption'
+import {Badge, Box, Checkbox, Chip, Collapse, Icon, Tooltip} from '@mui/material'
 import React, {useCallback, useEffect, useMemo, useState} from 'react'
 import {NavLink} from 'react-router-dom'
-import {Btn, Fender, IconBtn, Txt} from '../../alexlibs/mui-extension'
+import {Fender, IconBtn, Txt} from '../../alexlibs/mui-extension'
 import {useSetState} from '../../alexlibs/react-hooks-lib'
-import {Enum} from '../../alexlibs/ts-utils'
 import {config} from '../../conf/config'
 import {EntityIcon} from '../../core/EntityIcon'
 import {Report, ReportingDateLabel, ReportStatus, ReportTag} from '../../core/client/report/Report'
 import {useLogin} from '../../core/context/LoginContext'
-import {cleanObject, getHostFromUrl, textOverflowMiddleCropping} from '../../core/helper'
+import {cleanObject, textOverflowMiddleCropping} from '../../core/helper'
 import compose from '../../core/helper/compose'
 import {
   mapArrayFromQuerystring,
@@ -23,58 +19,43 @@ import {
   mapDatesToQueryString,
   useQueryString,
 } from '../../core/helper/useQueryString'
-import {Id, ReportResponse, ReportResponseTypes, ReportSearch, ResponseEvaluation} from '../../core/model'
+import {Id, ReportResponseTypes, ReportSearch, ResponseEvaluation} from '../../core/model'
 import {siteMap} from '../../core/siteMap'
 import {styleUtils, sxUtils} from '../../core/theme'
 import {ScButton} from '../../shared/Button'
 import {ConsumerReviewLabel} from '../../shared/ConsumerReviewLabel'
 import {Datatable} from '../../shared/Datatable/Datatable'
-import {DatatableToolbar} from '../../shared/Datatable/DatatableToolbar'
-import {DebouncedInput} from '../../shared/DebouncedInput'
-import {ExportReportsPopper} from '../../shared/ExportPopperBtn'
-import {ScInput} from '../../shared/ScInput'
-import {ScMenuItem} from '../../shared/ScMenuItem'
 import {Panel} from '../../shared/Panel'
-import {PeriodPicker} from '../../shared/PeriodPicker'
-import {ProResponseLabel} from '../../shared/ProResponseLabel'
 import {ReportDetailValues} from '../../shared/ReportDetailValues'
 import {ReportStatusLabel} from '../../shared/ReportStatus'
-import {ScMultiSelect} from '../../shared/Select/MultiSelect'
-import {ScSelect} from '../../shared/Select/Select'
-import {SelectActivityCode} from '../../shared/SelectActivityCode'
-import {SelectCountries} from '../../shared/SelectCountries/SelectCountries'
-import {SelectDepartments} from '../../shared/SelectDepartments/SelectDepartments'
-import {SelectTags} from '../../shared/SelectTags/SelectTags'
 import {SelectTagsMenuValues} from '../../shared/SelectTags/SelectTagsMenu'
-import {TrueFalseNull} from '../../shared/TrueFalseNull'
 import {PanelBody} from 'alexlibs/mui-extension/Panel/PanelBody'
 import {useMutation} from '@tanstack/react-query'
 import {useReportSearchQuery} from '../../core/queryhooks/reportQueryHooks'
 import {useCategoriesQuery} from '../../core/queryhooks/constantQueryHooks'
+
 import Typography from '@mui/material/Typography'
 
-const TrueLabel = () => {
-  const {m} = useI18n()
-  return (
-    <>
-      {m.yes}{' '}
-      <Icon fontSize="inherit" sx={{mr: '-4px'}}>
-        arrow_drop_down
-      </Icon>
-    </>
-  )
-}
+import ReportsFilter from './ReportsFilter'
+import AdvancedReportsFilter from './AdvancedReportsFilter'
+import AdvancedSearchBar from './AdvancedSearchBar'
+import DatatableToolbarComponent from './DatatableToolbarComponent'
+import CompanyNameDetails from './CompanyNameDetails'
+import ReportResponseDetails from './ReportResponseDetails'
 
-const ExpandMore = styled((props: {expand: boolean}) => {
-  const {expand, ...other} = props
-  return <ExpandMoreIcon {...other} />
-})(({theme, expand}) => ({
-  transform: !expand ? 'rotate(0deg)' : 'rotate(180deg)',
-  marginLeft: 'auto',
-  transition: theme.transitions.create('transform', {
-    duration: theme.transitions.duration.shortest,
-  }),
-}))
+
+export const reportsCss = {
+  trueFalseNullBox: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    mt: 1,
+  },
+  trueFalseNullLabel: {
+    color: 'rgba(0, 0, 0, 0.6)',
+    ml: 1,
+  },
+}
 
 interface ReportSearchQs {
   readonly departments?: string[] | string
@@ -194,23 +175,6 @@ export const Reports = () => {
     else _reports.updateFilters(prev => ({...prev, status: undefined}))
   }
 
-  function invertIfDefined(bool: boolean | null) {
-    return bool === null ? null : !bool
-  }
-
-  const css = {
-    trueFalseNullBox: {
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'space-between',
-      mt: 1,
-    },
-    trueFalseNullLabel: {
-      color: 'rgba(0, 0, 0, 0.6)',
-      ml: 1,
-    },
-  }
-
   // TRELLO-1728 The object _reports change all the time.
   // If we put it in dependencies, it causes problems with the debounce,
   // and the search input "stutters" when typing fast
@@ -240,450 +204,45 @@ export const Reports = () => {
       <PageTitle>{m.reports_pageTitle}</PageTitle>
       <Panel elevation={3}>
         <PanelBody>
-          <Grid container spacing={1}>
-            <Grid item sm={6} xs={12}>
-              <SelectDepartments
-                label={m.departments}
-                value={_reports.filters.departments}
-                onChange={departments => _reports.updateFilters(prev => ({...prev, departments}))}
-                sx={{mr: 1}}
-                fullWidth
-              />
-            </Grid>
-            <Grid item xs={12} md={6}>
-              <DebouncedInput<[Date | undefined, Date | undefined]>
-                value={[_reports.filters.start, _reports.filters.end]}
-                onChange={([start, end]) => {
-                  _reports.updateFilters(prev => ({...prev, start, end}))
-                }}
-              >
-                {(value, onChange) => <PeriodPicker value={value} onChange={onChange} sx={{mr: 1}} fullWidth />}
-              </DebouncedInput>
-            </Grid>
-            <Grid item xs={12} md={6}>
-              <DebouncedInput value={_reports.filters.details ?? ''} onChange={onDetailsChange}>
-                {(value, onChange) => (
-                  <ScInput label={m.keywords} fullWidth value={value} onChange={e => onChange(e.target.value)} />
-                )}
-              </DebouncedInput>
-            </Grid>
-            <Grid item xs={12} md={6}>
-              <SelectTags
-                label={m.tags}
-                fullWidth
-                value={tags}
-                onChange={e =>
-                  _reports.updateFilters(prev => ({
-                    ...prev,
-                    withTags: Enum.keys(e).filter(tag => e[tag] === 'included'),
-                    withoutTags: Enum.keys(e).filter(tag => e[tag] === 'excluded'),
-                  }))
-                }
-              />
-            </Grid>
-            <Grid item xs={12} md={6}>
-              <Box>
-                <Box sx={css.trueFalseNullBox}>
-                  <Box sx={css.trueFalseNullLabel}>{m.siretOrSirenFound}</Box>
-                  <TrueFalseNull
-                    label={{
-                      true: <TrueLabel />,
-                    }}
-                    sx={{flexBasis: '50%'}}
-                    value={_reports.filters.hasCompany ?? null}
-                    onChange={hasCompany =>
-                      _reports.updateFilters(prev => ({
-                        ...prev,
-                        hasCompany: hasCompany ?? undefined,
-                      }))
-                    }
-                  />
-                </Box>
-                {_reports.filters.hasCompany === true && (
-                  <DebouncedInput value={_reports.filters.siretSirenList ?? []} onChange={onSiretSirenChange}>
-                    {(value, onChange) => (
-                      <ScInput label={m.siretOrSiren} fullWidth value={value} onChange={e => onChange([e.target.value])} />
-                    )}
-                  </DebouncedInput>
-                )}
-              </Box>
-            </Grid>
-            {connectedUser.isAdmin && (
-              <Grid item xs={12} md={6}>
-                <DebouncedInput value={_reports.filters.email ?? ''} onChange={onEmailChange}>
-                  {(value, onChange) => (
-                    <ScInput label={m.emailConsumer} fullWidth value={value} onChange={e => onChange(e.target.value)} />
-                  )}
-                </DebouncedInput>
-              </Grid>
-            )}
-          </Grid>
-
+          <ReportsFilter
+            _reports={_reports}
+            onDetailsChange={onDetailsChange}
+            onSiretSirenChange={onSiretSirenChange}
+            onEmailChange={onEmailChange}
+            connectedUser={connectedUser}
+            tags={tags}
+          />
           <Collapse in={expanded} timeout="auto" unmountOnExit>
-            <Grid container spacing={1} sx={{mt: 0}}>
-              <Grid item xs={12} md={6}>
-                <SelectActivityCode
-                  label={m.codeNaf}
-                  value={_reports.filters.activityCodes ?? []}
-                  fullWidth
-                  onChange={(e, value) =>
-                    _reports.updateFilters(prev => ({
-                      ...prev,
-                      activityCodes: value,
-                    }))
-                  }
-                />
-              </Grid>
-              <Grid item xs={12} md={6}>
-                <ScSelect
-                  small
-                  label={m.categories}
-                  fullWidth
-                  value={_reports.filters.category ?? ''}
-                  onChange={e => _reports.updateFilters(prev => ({...prev, category: e.target.value}))}
-                >
-                  <MenuItem value="">&nbsp;</MenuItem>
-                  {_category?.data?.map(category => (
-                    <MenuItem key={category} value={category}>
-                      {m.ReportCategoryDesc[category]}
-                    </MenuItem>
-                  ))}
-                </ScSelect>
-              </Grid>
-              <Grid item xs={12} md={6}>
-                <ScMultiSelect
-                  label={m.status}
-                  value={_reports.filters.status ?? []}
-                  onChange={onChangeStatus}
-                  fullWidth
-                  withSelectAll
-                  renderValue={status => `(${status.length}) ${status.map(_ => m.reportStatusShort[_]).join(',')}`}
-                >
-                  {Enum.values(ReportStatus).map(status => (
-                    <ScMenuItem withCheckbox key={status} value={status}>
-                      <ReportStatusLabel inSelectOptions dense fullWidth status={status} />
-                    </ScMenuItem>
-                  ))}
-                </ScMultiSelect>
-              </Grid>
-              {connectedUser.isDGCCRF && (
-                <Grid item xs={12} md={6}>
-                  <DebouncedInput value={_reports.filters.email ?? ''} onChange={onEmailChange}>
-                    {(value, onChange) => (
-                      <ScInput label={m.emailConsumer} fullWidth value={value} onChange={e => onChange(e.target.value)} />
-                    )}
-                  </DebouncedInput>
-                </Grid>
-              )}
-              <Grid item xs={12} md={6}>
-                <Box>
-                  <Box sx={css.trueFalseNullBox}>
-                    <Box sx={css.trueFalseNullLabel}>{m.website}</Box>
-                    <TrueFalseNull
-                      label={{
-                        true: <TrueLabel />,
-                      }}
-                      sx={{flexBasis: '50%'}}
-                      value={_reports.filters.hasWebsite ?? null}
-                      onChange={hasWebsite =>
-                        _reports.updateFilters(prev => ({
-                          ...prev,
-                          hasWebsite: hasWebsite ?? undefined,
-                        }))
-                      }
-                    />
-                  </Box>
-                  {_reports.filters.hasWebsite === true && (
-                    <DebouncedInput value={_reports.filters.websiteURL ?? ''} onChange={onWebsiteURLChange}>
-                      {(value, onChange) => (
-                        <ScInput label={m.url} fullWidth value={value} onChange={e => onChange(e.target.value)} />
-                      )}
-                    </DebouncedInput>
-                  )}
-                </Box>
-              </Grid>
-              <Grid item xs={12} md={6}>
-                <Box>
-                  <Box sx={css.trueFalseNullBox}>
-                    <Box sx={css.trueFalseNullLabel}>{m.phone}</Box>
-                    <TrueFalseNull
-                      label={{
-                        true: <TrueLabel />,
-                      }}
-                      sx={{flexBasis: '50%'}}
-                      value={_reports.filters.hasPhone ?? null}
-                      onChange={hasPhone =>
-                        _reports.updateFilters(prev => ({
-                          ...prev,
-                          hasPhone: hasPhone ?? undefined,
-                        }))
-                      }
-                    />
-                  </Box>
-                  {_reports.filters.hasPhone === true && (
-                    <DebouncedInput value={_reports.filters.phone ?? ''} onChange={onPhoneChange}>
-                      {(value, onChange) => (
-                        <ScInput label={m.phone} fullWidth value={value} onChange={e => onChange(e.target.value)} />
-                      )}
-                    </DebouncedInput>
-                  )}
-                </Box>
-              </Grid>
-              <Grid item xs={12} md={6}>
-                <Box>
-                  <Box sx={css.trueFalseNullBox}>
-                    <Box sx={css.trueFalseNullLabel}>{m.foreignCountry}</Box>
-                    <TrueFalseNull
-                      label={{
-                        true: <TrueLabel />,
-                      }}
-                      sx={{flexBasis: '50%'}}
-                      value={_reports.filters.hasForeignCountry ?? null}
-                      onChange={hasForeignCountry =>
-                        _reports.updateFilters(prev => ({
-                          ...prev,
-                          hasForeignCountry: hasForeignCountry ?? undefined,
-                        }))
-                      }
-                    />
-                  </Box>
-                  {_reports.filters.hasForeignCountry === true && (
-                    <SelectCountries
-                      label={m.foreignCountry}
-                      fullWidth
-                      value={_reports.filters.companyCountries}
-                      onChange={companyCountries =>
-                        _reports.updateFilters(prev => ({
-                          ...prev,
-                          companyCountries,
-                        }))
-                      }
-                    />
-                  )}
-                </Box>
-              </Grid>
-              <Grid item xs={12} md={6}>
-                <Box sx={css.trueFalseNullBox}>
-                  <Box sx={css.trueFalseNullLabel}>{m.consoAnonyme}</Box>
-                  <TrueFalseNull
-                    value={invertIfDefined(_reports.filters.contactAgreement ?? null)}
-                    onChange={contactAgreement =>
-                      _reports.updateFilters(prev => ({
-                        ...prev,
-                        contactAgreement: invertIfDefined(contactAgreement) ?? undefined,
-                      }))
-                    }
-                    sx={{flexBasis: '50%'}}
-                  />
-                </Box>
-              </Grid>
-              <Grid item xs={12} md={6}>
-                <Box sx={css.trueFalseNullBox}>
-                  <Box sx={css.trueFalseNullLabel}>{m.hasAttachement}</Box>
-                  <TrueFalseNull
-                    value={_reports.filters.hasAttachment ?? null}
-                    onChange={hasAttachment =>
-                      _reports.updateFilters(prev => ({
-                        ...prev,
-                        hasAttachment: hasAttachment ?? undefined,
-                      }))
-                    }
-                    sx={{flexBasis: '50%'}}
-                  />
-                </Box>
-              </Grid>
-              <Grid item xs={12} md={6}>
-                <Box>
-                  <Box sx={css.trueFalseNullBox}>
-                    <Box sx={css.trueFalseNullLabel}>{m.consumerReviews}</Box>
-                    <TrueFalseNull
-                      label={{
-                        true: <TrueLabel />,
-                      }}
-                      sx={{flexBasis: '50%'}}
-                      value={_reports.filters.hasEvaluation ?? null}
-                      onChange={hasEvaluation =>
-                        _reports.updateFilters(prev => ({
-                          ...prev,
-                          hasEvaluation: hasEvaluation ?? undefined,
-                        }))
-                      }
-                    />
-                  </Box>
-                  {_reports.filters.hasEvaluation === true && (
-                    <ScMultiSelect
-                      label={m.consumerReviews}
-                      value={_reports.filters.evaluation ?? []}
-                      onChange={evaluation => _reports.updateFilters(prev => ({...prev, evaluation}))}
-                      fullWidth
-                      withSelectAll
-                      renderValue={evaluation =>
-                        `(${evaluation.length}) ${evaluation.map(_ => m.responseEvaluationShort[_]).join(',')}`
-                      }
-                    >
-                      {Enum.values(ResponseEvaluation).map(evaluation => (
-                        <ScMenuItem withCheckbox key={evaluation} value={evaluation}>
-                          <ConsumerReviewLabel evaluation={evaluation} displayLabel />
-                        </ScMenuItem>
-                      ))}
-                    </ScMultiSelect>
-                  )}
-                </Box>
-              </Grid>
-              <Grid item xs={12} md={6}>
-                <Box>
-                  <Box sx={css.trueFalseNullBox}>
-                    <Box sx={css.trueFalseNullLabel}>{m.proResponse}</Box>
-                    <TrueFalseNull
-                      label={{
-                        true: <TrueLabel />,
-                      }}
-                      sx={{flexBasis: '50%'}}
-                      value={hasProResponse}
-                      onChange={onChangeHasProResponse}
-                    />
-                  </Box>
-                  {hasProResponse === true && (
-                    <ScMultiSelect
-                      label={m.proResponse}
-                      value={proResponseFilter}
-                      onChange={onChangeProResponseFilter}
-                      fullWidth
-                      withSelectAll
-                      renderValue={proResponse =>
-                        `(${proResponse.length}) ${proResponse.map(_ => m.reportResponseShort[_]).join(',')}`
-                      }
-                    >
-                      {Enum.values(ReportResponseTypes).map(proResponse => (
-                        <ScMenuItem withCheckbox key={proResponse} value={proResponse}>
-                          <ProResponseLabel proResponse={proResponse} />
-                        </ScMenuItem>
-                      ))}
-                    </ScMultiSelect>
-                  )}
-                </Box>
-              </Grid>
-              <Grid item xs={12} md={6}>
-                <Box>
-                  <Box sx={css.trueFalseNullBox}>
-                    <Box sx={css.trueFalseNullLabel}>{m.foreignReport}</Box>
-                    <TrueFalseNull
-                      sx={{flexBasis: '50%'}}
-                      value={_reports.filters.isForeign ?? null}
-                      onChange={isForeign =>
-                        _reports.updateFilters(prev => ({
-                          ...prev,
-                          isForeign: isForeign ?? undefined,
-                        }))
-                      }
-                    />
-                  </Box>
-                </Box>
-              </Grid>
-              <Grid item xs={12} md={6}>
-                <Box>
-                  <Box sx={css.trueFalseNullBox}>
-                    <Box sx={css.trueFalseNullLabel}>Code-barres</Box>
-                    <TrueFalseNull
-                      sx={{flexBasis: '50%'}}
-                      value={_reports.filters.hasBarcode ?? null}
-                      onChange={hasBarcode =>
-                        _reports.updateFilters(prev => ({
-                          ...prev,
-                          hasBarcode: hasBarcode ?? undefined,
-                        }))
-                      }
-                    />
-                  </Box>
-                </Box>
-              </Grid>
-            </Grid>
+            <AdvancedReportsFilter
+              _reports={_reports}
+              onChangeStatus={onChangeStatus}
+              onEmailChange={onEmailChange}
+              onWebsiteURLChange={onWebsiteURLChange}
+              onPhoneChange={onPhoneChange}
+              onChangeHasProResponse={onChangeHasProResponse}
+              _category={_category}
+              connectedUser={connectedUser}
+              hasProResponse={hasProResponse}
+              proResponseFilter={proResponseFilter}
+              setProResponseFilter={setProResponseFilter}
+              onChangeProResponseFilter={onChangeProResponseFilter}
+              proResponseToStatus={proResponseToStatus}
+            />
           </Collapse>
         </PanelBody>
-        <Box
-          sx={{
-            flexWrap: 'wrap',
-            whiteSpace: 'nowrap',
-            mt: 2,
-            mr: 3,
-            ml: 3,
-            mb: 1,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-          }}
-        >
-          <ScButton onClick={_ => setExpanded(prev => !prev)}>
-            <span style={{display: 'flex', alignItems: 'center'}}>
-              <span>Recherche avancée&nbsp;</span>
-              <ExpandMore expand={expanded} />
-            </span>
-          </ScButton>
-          <Box
-            sx={{
-              flexWrap: 'wrap',
-              whiteSpace: 'nowrap',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'flex-end',
-              '& > *': {
-                mb: 1,
-                ml: 1,
-              },
-            }}
-          >
-            {filtersCount !== 0 && (
-              <Badge color="error" badgeContent={filtersCount} hidden={filtersCount === 0}>
-                <ScButton icon="clear" onClick={_reports.clearFilters} variant="outlined" color="primary">
-                  {m.removeAllFilters}
-                </ScButton>
-              </Badge>
-            )}
-            <ExportReportsPopper
-              disabled={ScOption.from(_reports?.result.data?.totalCount)
-                .map(_ => _ > config.reportsLimitForExport)
-                .getOrElse(false)}
-              tooltipBtnNew={ScOption.from(_reports?.result.data?.totalCount)
-                .map(_ => (_ > config.reportsLimitForExport ? m.cannotExportMoreReports(config.reportsLimitForExport) : ''))
-                .getOrElse('')}
-              filters={_reports.filters}
-            >
-              <Btn variant="outlined" color="primary" icon="get_app">
-                {m.exportInXLS}
-              </Btn>
-            </ExportReportsPopper>
-          </Box>
-        </Box>
+        <AdvancedSearchBar
+          expanded={expanded}
+          _reports={_reports}
+          setExpanded={setExpanded}
+          filtersCount={filtersCount}
+          clearFilters={_reports.clearFilters}
+          config={config}
+        />
       </Panel>
-
       <Panel sx={{overflow: 'visible'}}>
         <Datatable
           id="reports"
-          header={
-            <>
-              <DatatableToolbar
-                open={selectReport.size > 0}
-                onClear={selectReport.clear}
-                actions={
-                  <ScButton
-                    loading={downloadReports.isPending}
-                    variant="contained"
-                    icon="file_download"
-                    onClick={() => {
-                      downloadReports.mutate(selectReport.toArray())
-                    }}
-                    sx={{
-                      marginLeft: 'auto',
-                    }}
-                  >
-                    {m.download}
-                  </ScButton>
-                }
-              >
-                <span dangerouslySetInnerHTML={{__html: m.nSelected(selectReport.size)}} />
-              </DatatableToolbar>
-            </>
-          }
+          header={<DatatableToolbarComponent selectReport={selectReport} downloadReports={downloadReports} m={m} />}
           loading={_reports.result.isFetching}
           paginate={{
             offset: _reports.filters.offset,
@@ -746,44 +305,12 @@ export const Reports = () => {
                 maxWidth: 170,
               }),
               render: _ => (
-                <>
-                  <Box component="span" sx={{marginBottom: '-1px'}}>
-                    {_.report.companyId && !connectedUser.isDGAL ? (
-                      <>
-                        <NavLink to={siteMap.logged.company(_.report.companyId)}>
-                          <Txt link>{_.report.companyName}</Txt>
-                        </NavLink>
-                        {_.report.companyBrand && (
-                          <>
-                            <br />
-                            <Txt
-                              component="span"
-                              sx={{
-                                fontSize: t => styleUtils(t).fontSize.small,
-                                fontStyle: 'italic',
-                                color: t => t.palette.text.primary,
-                              }}
-                            >
-                              {_.report.companyBrand}
-                            </Txt>
-                          </>
-                        )}
-                      </>
-                    ) : (
-                      <span>{_.report.companyName}</span>
-                    )}
-                  </Box>
-                  <br />
-                  <Box
-                    component="span"
-                    sx={{
-                      fontSize: t => styleUtils(t).fontSize.small,
-                      color: t => t.palette.text.disabled,
-                    }}
-                  >
-                    {_.report.websiteURL ? getHostFromUrl(_.report.websiteURL) : _.report.phone ?? ''}
-                  </Box>
-                </>
+                <CompanyNameDetails
+                  companyId={_.report.companyId}
+                  isDGAL={connectedUser.isDGAL}
+                  companyName={_.report.companyName}
+                  companyBrand={_.report.companyBrand}
+                />
               ),
             },
             {
@@ -909,43 +436,7 @@ export const Reports = () => {
             {
               id: 'proResponse',
               head: m.proResponse,
-              render: _ => (
-                <>
-                  {ScOption.from(_.professionalResponse?.details as ReportResponse)
-                    .map(r => (
-                      <Tooltip
-                        title={
-                          <>
-                            <Box sx={{fontWeight: t => t.typography.fontWeightBold, fontSize: 'larger', mb: 1}}>
-                              {m.reportResponse[r.responseType]}
-                            </Box>
-                            <Box
-                              sx={{
-                                display: '-webkit-box',
-                                WebkitLineClamp: 20,
-                                WebkitBoxOrient: 'vertical',
-                                overflow: 'hidden',
-                              }}
-                            >
-                              {r.consumerDetails}
-                            </Box>
-                            {r.dgccrfDetails && r.dgccrfDetails !== '' && (
-                              <>
-                                <Box sx={{fontWeight: t => t.typography.fontWeightBold, fontSize: 'larger', mt: 4, mb: 1}}>
-                                  {m.reportDgccrfDetails}
-                                </Box>
-                                <Box>{r.dgccrfDetails}</Box>
-                              </>
-                            )}
-                          </>
-                        }
-                      >
-                        <ProResponseLabel proResponse={r.responseType} />
-                      </Tooltip>
-                    ))
-                    .getOrElse('')}
-                </>
-              ),
+              render: _ => <ReportResponseDetails details={_.professionalResponse?.details} />,
             },
             {
               id: 'avisConso',

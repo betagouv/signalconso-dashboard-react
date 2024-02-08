@@ -31,6 +31,7 @@ export const siteMap = {
     users_blacklist: `/users/blacklist`,
     users_agent: `/users/agent`,
     users_admin: `/users/admin`,
+    updateEmail: (token: string) => `/parametres/update-email/${token}`,
     settings: `/parametres`,
     modeEmploiDGCCRF: `/mode-emploi-dgccrf`,
     stats: `/stats`,

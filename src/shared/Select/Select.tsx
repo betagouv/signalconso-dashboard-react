@@ -16,7 +16,7 @@ const _ScSelect = <T,>({id: argId, label, className, small, fullWidth, style, ..
       <InputLabel sx={_ => ({backgroundColor: 'white'})} htmlFor={id} id={id + '-label'}>
         {label}
       </InputLabel>
-      <Select {...selectProps} inputRef={ref} labelId={id + '-label'} id={id} />
+      <Select {...selectProps} inputRef={ref} label={label} labelId={id + '-label'} id={id} />
     </FormControl>
   )
 }

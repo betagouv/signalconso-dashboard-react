@@ -45,6 +45,7 @@ import {CenteredContent} from './shared/CenteredContent'
 import {Login} from './shared/Login'
 import {Provide} from './shared/Provide'
 import './style.css'
+import {UpdateEmail} from './feature/Settings/UpdateEmail'
 
 const Router: typeof HashRouter = config.useHashRouter ? HashRouter : BrowserRouter
 
@@ -104,7 +105,12 @@ const AppLogin = () => {
                 <Route path={siteMap.loggedout.consumerReview()} component={RedirectToWebsite} />
                 <Route path="/">
                   {authResponse ? (
-                    <LoginProvider connectedUser={authResponse} onLogout={logout} apiSdk={makeSecuredSdk()}>
+                    <LoginProvider
+                      connectedUser={authResponse}
+                      setConnectedUser={setUser}
+                      onLogout={logout}
+                      apiSdk={makeSecuredSdk()}
+                    >
                       <AppLogged />
                     </LoginProvider>
                   ) : isFetchingUser ? (
@@ -189,6 +195,7 @@ const AppLogged = () => {
         <Route path={siteMap.logged.subscriptions} component={Subscriptions} />
         <Route path={siteMap.logged.companiesPro} component={CompaniesPro} />
         <Route path={siteMap.logged.joinInformation} component={JoinNewsletter} />
+        <Route path={siteMap.logged.updateEmail(':token')} component={UpdateEmail} />
         <Route path={siteMap.logged.settings} component={Settings} />
         <Route path={siteMap.logged.modeEmploiDGCCRF} component={connectedUser.isPro ? ReportsPro : ModeEmploiDGCCRF} />
         <Route path={siteMap.logged.stats} component={Stats} />
