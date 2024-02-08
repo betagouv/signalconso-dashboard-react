@@ -700,6 +700,7 @@ export const Reports = () => {
           }
           columns={[
             {
+              alwaysVisible: true,
               id: 'checkbox',
               head: (() => {
                 const allChecked = selectReport.size === _reports.result.data?.entities.length
