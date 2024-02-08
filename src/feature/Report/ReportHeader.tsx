@@ -104,7 +104,7 @@ export const ReportHeader = ({report, children, elevated, isUserPro = false}: Pr
               )}
             </Box>
             {!hideSiret && <Box sx={{color: t => t.palette.text.disabled}}>{report.companyName}</Box>}
-            <Box sx={{color: t => t.palette.text.disabled}}>ID {report.id}</Box>
+            {/* <Box sx={{color: t => t.palette.text.disabled}}>ID {report.id}</Box> */}
             <ExpirationDate {...{report, isUserPro}} />
           </div>
           <ReportStatusLabel style={{marginLeft: 'auto'}} status={report.status} />
@@ -112,10 +112,10 @@ export const ReportHeader = ({report, children, elevated, isUserPro = false}: Pr
 
         <ExpiresSoonWarning {...{report, isUserPro}} />
 
-        <Alert id="report-info" dense type="info" deletable persistentDelete sx={{mb: 2}}>
+        {/* <Alert id="report-info" dense type="info" deletable persistentDelete sx={{mb: 2}}>
           {m.reportCategoriesAreSelectByConsumer}
-        </Alert>
-        <ReportCategories categories={[m.ReportCategoryDesc[report.category], ...report.subcategories]} />
+        </Alert> */}
+        {/* <ReportCategories categories={[m.ReportCategoryDesc[report.category], ...report.subcategories]} /> */}
       </PanelBody>
       {(!hideTags || children) && (
         <PanelFoot sx={css.actions} border>

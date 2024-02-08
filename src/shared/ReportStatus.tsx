@@ -24,9 +24,9 @@ export const reportStatusColor = {
 }
 
 export const reportStatusProColor = {
-  [ReportStatusPro.ARepondre]: '#e67e00',
-  [ReportStatusPro.NonConsulte]: '#8B0000',
-  [ReportStatusPro.Cloture]: '#3582A3FF',
+  [ReportStatusPro.ARepondre]: '#d64d00',
+  [ReportStatusPro.NonConsulte]: '#7b7b7b',
+  [ReportStatusPro.Cloture]: '#27a658',
 }
 
 const statusInvisibleToPro = [ReportStatus.NA, ReportStatus.LanceurAlerte]

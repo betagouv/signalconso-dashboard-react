@@ -140,12 +140,12 @@ export const ProUserComponent: React.FC<ProUserComponentProps> = ({id, connected
                 statusShortLabel={(s: ReportStatusPro) => m.reportStatusShortPro[s]}
                 statusColor={(s: ReportStatusPro) => reportStatusProColor[s]}
               />
-              <Panel>
+              {/* <Panel>
                 <PanelHead>{m.tags}</PanelHead>
                 <PanelBody>
                   <HorizontalBarChart data={tagsDistribution} grid />
                 </PanelBody>
-              </Panel>
+              </Panel> */}
               <Panel loading={_reports.result.isFetching}>
                 <PanelHead>{m.lastReports}</PanelHead>
                 {_reports.result.data && <ReportsShortList reports={_reports.result.data} />}
@@ -154,7 +154,7 @@ export const ProUserComponent: React.FC<ProUserComponentProps> = ({id, connected
             <Grid item sm={12} md={5}>
               <CompanyInfo company={company} />
               <ReviewDistribution companyId={id} />
-              <ReportWordDistribution companyId={id} />
+              {/* <ReportWordDistribution companyId={id} /> */}
             </Grid>
           </Grid>
         </>
