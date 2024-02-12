@@ -36,6 +36,7 @@ import {Label} from '../../shared/Label'
 import {ScInput} from '../../shared/ScInput'
 import {useGetAccessibleByProQuery} from '../../core/queryhooks/companyQueryHooks'
 import {useReportSearchQuery} from '../../core/queryhooks/reportQueryHooks'
+import { useListReportBlockedNotificationsQuery } from 'core/queryhooks/reportBlockedNotificationQueryHooks'
 
 const css = makeSx({
   card: {
@@ -105,6 +106,7 @@ export const ReportsPro = () => {
 
   const _reports = useReportSearchQuery({offset: 0, limit: 10, ...queryString.get()})
   const _accessibleByPro = useGetAccessibleByProQuery()
+  const _blockedNotifications = useListReportBlockedNotificationsQuery()
 
   const {isMobileWidth} = useLayoutContext()
   const history = useHistory()
@@ -317,7 +319,15 @@ export const ReportsPro = () => {
                 </PanelBody>
               </Panel>
             )}
-
+        {
+          _blockedNotifications.data && _blockedNotifications.data.length > 0 && (
+          <Alert id="report-info" dense type="info" deletable sx={{mb: 2}}>
+                {_blockedNotifications.data.length === 1
+                  ? "Pensez à activer les notifications dans l'onglet « Mes entreprises » afin d'être alerté par e-mail de tout nouvel enregistrement de signalement."
+                  : `${_blockedNotifications.data.length} de vos entreprises n'ont pas les notifications actives. Activez-les dans 'Mes entreprises' pour être alerté immédiatement de tout nouveau signalement enregistré.`}
+            </Alert>
+          )
+        }
             <Panel>
               <Datatable<ReportSearchResult>
                 id="reportspro"
