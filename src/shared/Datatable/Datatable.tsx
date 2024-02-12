@@ -11,7 +11,7 @@ import {
   TableSortLabel,
   Theme,
 } from '@mui/material'
-import React, {CSSProperties, ReactNode, useMemo} from 'react'
+import React, {CSSProperties, ReactNode, useMemo, useEffect} from 'react'
 import {DatatableColumnToggle} from './DatatableColumnsToggle'
 import {useI18n} from '../../core/i18n'
 import {Fender} from '../../alexlibs/mui-extension'

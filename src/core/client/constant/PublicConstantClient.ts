@@ -2,7 +2,7 @@ import {rawRegions} from './regions'
 import {rawDepartments} from './departments'
 import {Country, Department, Region} from './Country'
 import {ApiClientApi} from '../ApiClient'
-import {Category} from './Category'
+import {CategoriesByStatus, Category} from './Category'
 
 export class PublicConstantClient {
   constructor(private client: ApiClientApi) {}
@@ -37,5 +37,5 @@ export class PublicConstantClient {
   }
 
   readonly getCountries = () => this.client.get<Country[]>(`/constants/countries`)
-  readonly getCategories = () => this.client.get<Category[]>(`/constants/categories`)
+  readonly getCategoriesByStatus = () => this.client.get<CategoriesByStatus>(`/constants/categoriesByStatus`)
 }
