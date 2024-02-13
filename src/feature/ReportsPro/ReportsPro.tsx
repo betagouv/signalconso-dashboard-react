@@ -320,12 +320,13 @@ export const ReportsPro = () => {
               </Panel>
             )}
             {_blockedNotifications.data && _blockedNotifications.data.length > 0 && (
-              <Alert id="report-info" dense type="info" deletable sx={{mb: 2}}>
+              <Alert type="info">
                 {_blockedNotifications.data.length === 1
-                  ? "Pensez à activer les notifications dans l'onglet « Mes entreprises » afin d'être alerté par e-mail de tout nouvel enregistrement de signalement."
-                  : `${_blockedNotifications.data.length} de vos entreprises n'ont pas les notifications actives. Activez-les dans 'Mes entreprises' pour être alerté immédiatement de tout nouveau signalement enregistré.`}
+                  ? m.activateNotificationsAlertSingle
+                  : m.activateNotificationsAlertMultiple.replace('{{count}}', _blockedNotifications.data.length.toString())}
               </Alert>
             )}
+
             <Panel>
               <Datatable<ReportSearchResult>
                 id="reportspro"
