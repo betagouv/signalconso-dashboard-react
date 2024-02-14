@@ -116,7 +116,7 @@ export const fr = {
     activateNotificationsAlertSingle:
       "Pensez à activer les notifications dans l'onglet « Mes entreprises » afin d'être alerté par e-mail de tout nouveau signalement.",
     activateNotificationsAlertMultiple: (count: number) => `
-      {{count}} de vos entreprises n'ont pas les notifications actives. Activez-les dans 'Mes entreprises' pour être alerté immédiatement de tout nouveau signalement.`,
+    ${count} de vos entreprises n'ont pas les notifications actives. Activez-les dans 'Mes entreprises' pour être alerté immédiatement de tout nouveau signalement.`,
     search: 'Rechercher',
     edit: 'Modifier',
     next: 'Suivant',
