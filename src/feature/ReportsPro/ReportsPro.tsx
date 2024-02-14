@@ -323,7 +323,7 @@ export const ReportsPro = () => {
               <Alert type="info">
                 {_blockedNotifications.data.length === 1
                   ? m.activateNotificationsAlertSingle
-                  : m.activateNotificationsAlertMultiple.replace('{{count}}', _blockedNotifications.data.length.toString())}
+                  : m.activateNotificationsAlertMultiple(_blockedNotifications.data.length)}
               </Alert>
             )}
 
