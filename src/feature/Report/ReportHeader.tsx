@@ -9,6 +9,7 @@ import {styleUtils} from '../../core/theme'
 import {useI18n} from '../../core/i18n'
 import {makeSx} from '../../alexlibs/mui-extension'
 import {Report} from '../../core/client/report/Report'
+import {ReportCategories} from './ReportCategories'
 
 const css = makeSx({
   root: {
@@ -108,6 +109,7 @@ export const ReportHeader = ({report, children, elevated, isUserPro = false}: Pr
         </Box>
 
         <ExpiresSoonWarning {...{report, isUserPro}} />
+        {!isUserPro && <ReportCategories categories={[m.ReportCategoryDesc[report.category], ...report.subcategories]} />}
       </PanelBody>
       {(!hideTags || children) && (
         <PanelFoot sx={css.actions} border>
