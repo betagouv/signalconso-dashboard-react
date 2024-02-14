@@ -96,6 +96,7 @@ export const fr = {
       [ReportTag.ProduitAlimentaire]: 'Produit alimentaire',
       [ReportTag.CompagnieAerienne]: 'Compagnie aérienne',
       [ReportTag.Resiliation]: 'Résiliation',
+      [ReportTag.OpenFoodFacts]: 'OpenFoodFacts',
       NA: 'Aucun tag',
     },
     IdentificationStatusDesc: {
