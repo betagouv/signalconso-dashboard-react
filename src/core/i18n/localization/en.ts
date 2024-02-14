@@ -59,5 +59,9 @@ export const en = {
     logout: 'Logout',
     atLeast8Characters: 'At least 8 characters',
     invalidEmail: 'Invalid email',
+    activateNotificationsAlertSingle:
+      "Remember to activate notifications in the 'My Companies' tab to be alerted by email of any new report.",
+    activateNotificationsAlertMultiple: (count: number) =>
+      `${count} of your companies do not have notifications activated. Activate them in 'My Companies' to be immediately alerted of any new report.`,
   },
 }

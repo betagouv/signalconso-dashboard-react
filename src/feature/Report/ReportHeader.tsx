@@ -1,7 +1,6 @@
 import {Panel, PanelBody} from '../../shared/Panel'
 import {isStatusFinal, isStatusInvisibleToPro, ReportStatusLabel} from '../../shared/ReportStatus'
 import {Alert} from '../../alexlibs/mui-extension'
-import {ReportCategories} from './ReportCategories'
 import {Box, Icon} from '@mui/material'
 import {PanelFoot} from '../../shared/Panel/PanelFoot'
 import {ScChip} from '../../shared/ScChip'
@@ -10,7 +9,6 @@ import {styleUtils} from '../../core/theme'
 import {useI18n} from '../../core/i18n'
 import {makeSx} from '../../alexlibs/mui-extension'
 import {Report} from '../../core/client/report/Report'
-import {WithInlineIcon} from 'shared/WithInlineIcon'
 
 const css = makeSx({
   root: {
@@ -104,18 +102,12 @@ export const ReportHeader = ({report, children, elevated, isUserPro = false}: Pr
               )}
             </Box>
             {!hideSiret && <Box sx={{color: t => t.palette.text.disabled}}>{report.companyName}</Box>}
-            <Box sx={{color: t => t.palette.text.disabled}}>ID {report.id}</Box>
             <ExpirationDate {...{report, isUserPro}} />
           </div>
           <ReportStatusLabel style={{marginLeft: 'auto'}} status={report.status} />
         </Box>
 
         <ExpiresSoonWarning {...{report, isUserPro}} />
-
-        <Alert id="report-info" dense type="info" deletable persistentDelete sx={{mb: 2}}>
-          {m.reportCategoriesAreSelectByConsumer}
-        </Alert>
-        <ReportCategories categories={[m.ReportCategoryDesc[report.category], ...report.subcategories]} />
       </PanelBody>
       {(!hideTags || children) && (
         <PanelFoot sx={css.actions} border>

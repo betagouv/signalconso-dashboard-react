@@ -36,6 +36,7 @@ import {Label} from '../../shared/Label'
 import {ScInput} from '../../shared/ScInput'
 import {useGetAccessibleByProQuery} from '../../core/queryhooks/companyQueryHooks'
 import {useReportSearchQuery} from '../../core/queryhooks/reportQueryHooks'
+import {useListReportBlockedNotificationsQuery} from 'core/queryhooks/reportBlockedNotificationQueryHooks'
 
 const css = makeSx({
   card: {
@@ -105,6 +106,7 @@ export const ReportsPro = () => {
 
   const _reports = useReportSearchQuery({offset: 0, limit: 10, ...queryString.get()})
   const _accessibleByPro = useGetAccessibleByProQuery()
+  const _blockedNotifications = useListReportBlockedNotificationsQuery()
 
   const {isMobileWidth} = useLayoutContext()
   const history = useHistory()
@@ -316,6 +318,13 @@ export const ReportsPro = () => {
                   </Box>
                 </PanelBody>
               </Panel>
+            )}
+            {_blockedNotifications.data && _blockedNotifications.data.length > 0 && (
+              <Alert type="info">
+                {_blockedNotifications.data.length === 1
+                  ? m.activateNotificationsAlertSingle
+                  : m.activateNotificationsAlertMultiple(_blockedNotifications.data.length)}
+              </Alert>
             )}
 
             <Panel>
