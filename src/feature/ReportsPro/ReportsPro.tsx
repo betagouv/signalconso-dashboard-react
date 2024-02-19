@@ -3,7 +3,7 @@ import {Page, PageTitle} from '../../shared/Page'
 import {Panel, PanelBody} from '../../shared/Panel'
 import {Datatable} from '../../shared/Datatable/Datatable'
 import {useI18n} from '../../core/i18n'
-import {Badge, Box, Grid, Icon, MenuItem} from '@mui/material'
+import {Badge, Box, Button, Grid, Icon, MenuItem} from '@mui/material'
 import {ReportStatusLabel, ReportStatusProLabel} from '../../shared/ReportStatus'
 import {useLayoutContext} from '../../core/Layout/LayoutContext'
 import {Alert, Btn, Fender, makeSx, Txt} from '../../alexlibs/mui-extension'
@@ -474,6 +474,10 @@ export const ReportsPro = () => {
           </>
         ))
         .toUndefined()}
+      <Btn variant="outlined" {...({target: '_blank'} as any)} href="https://tally.so/r/woMGGe">
+        {m.Feedback}
+        <Icon sx={{ml: 1, color: t => t.palette.text.disabled}}>open_in_new</Icon>
+      </Btn>
     </Page>
   )
 }

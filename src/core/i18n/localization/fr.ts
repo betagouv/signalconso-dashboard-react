@@ -123,6 +123,7 @@ export const fr = {
     activateNotificationsAlertMultiple: (count: number) => `
     ${count} de vos entreprises n'ont pas les notifications actives. Activez-les dans 'Mes entreprises' pour être alerté immédiatement de tout nouveau signalement.`,
     search: 'Rechercher',
+    Feedback: 'Donnez votre avis',
     edit: 'Modifier',
     next: 'Suivant',
     nextStep: 'Next step',
