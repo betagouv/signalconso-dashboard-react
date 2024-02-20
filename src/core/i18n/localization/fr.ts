@@ -96,6 +96,7 @@ export const fr = {
       [ReportTag.ProduitAlimentaire]: 'Produit alimentaire',
       [ReportTag.CompagnieAerienne]: 'Compagnie aérienne',
       [ReportTag.Resiliation]: 'Résiliation',
+      [ReportTag.OpenFoodFacts]: 'OpenFoodFacts',
       NA: 'Aucun tag',
     },
     IdentificationStatusDesc: {
@@ -117,7 +118,12 @@ export const fr = {
     negative: "Nombre d'utilisateurs insatisfaits de la réponse donnée par l'entreprise",
     neutral: "Nombre d'utilisateurs partiellement satisfait de la réponse donnée par l'entreprise",
     searchByNameOrReference: 'Nom, prénom ou numéro de référence',
+    activateNotificationsAlertSingle:
+      "Pensez à activer les notifications dans l'onglet « Mes entreprises » afin d'être alerté par e-mail de tout nouveau signalement.",
+    activateNotificationsAlertMultiple: (count: number) => `
+    ${count} de vos entreprises n'ont pas les notifications actives. Activez-les dans 'Mes entreprises' pour être alerté immédiatement de tout nouveau signalement.`,
     search: 'Rechercher',
+    Feedback: 'Donnez votre avis',
     edit: 'Modifier',
     next: 'Suivant',
     nextStep: 'Next step',

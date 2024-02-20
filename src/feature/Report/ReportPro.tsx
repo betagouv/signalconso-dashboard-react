@@ -50,7 +50,7 @@ export const ReportPro = () => {
   }
 
   return (
-    <Page maxWidth="s" loading={_getReport.isLoading}>
+    <Page maxWidth="xl" loading={_getReport.isLoading}>
       {ScOption.from(_getReport.data?.report)
         .map(report => (
           <>

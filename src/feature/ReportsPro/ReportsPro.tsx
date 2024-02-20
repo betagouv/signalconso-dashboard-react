@@ -3,7 +3,7 @@ import {Page, PageTitle} from '../../shared/Page'
 import {Panel, PanelBody} from '../../shared/Panel'
 import {Datatable} from '../../shared/Datatable/Datatable'
 import {useI18n} from '../../core/i18n'
-import {Badge, Box, Grid, Icon, MenuItem} from '@mui/material'
+import {Badge, Box, Button, Grid, Icon, MenuItem} from '@mui/material'
 import {ReportStatusLabel, ReportStatusProLabel} from '../../shared/ReportStatus'
 import {useLayoutContext} from '../../core/Layout/LayoutContext'
 import {Alert, Btn, Fender, makeSx, Txt} from '../../alexlibs/mui-extension'
@@ -36,6 +36,7 @@ import {Label} from '../../shared/Label'
 import {ScInput} from '../../shared/ScInput'
 import {useGetAccessibleByProQuery} from '../../core/queryhooks/companyQueryHooks'
 import {useReportSearchQuery} from '../../core/queryhooks/reportQueryHooks'
+import {useListReportBlockedNotificationsQuery} from 'core/queryhooks/reportBlockedNotificationQueryHooks'
 
 const css = makeSx({
   card: {
@@ -105,6 +106,7 @@ export const ReportsPro = () => {
 
   const _reports = useReportSearchQuery({offset: 0, limit: 10, ...queryString.get()})
   const _accessibleByPro = useGetAccessibleByProQuery()
+  const _blockedNotifications = useListReportBlockedNotificationsQuery()
 
   const {isMobileWidth} = useLayoutContext()
   const history = useHistory()
@@ -138,16 +140,22 @@ export const ReportsPro = () => {
     <Page loading={_accessibleByPro.isLoading}>
       <PageTitle
         action={
-          <Btn
-            variant="outlined"
-            color="primary"
-            icon="help"
-            {...({target: '_blank'} as any)}
-            href={config.appBaseUrl + '/comment-ca-marche'}
-          >
-            {m.help}
-            <Icon sx={{ml: 1, color: t => t.palette.text.disabled}}>open_in_new</Icon>
-          </Btn>
+          <div className="flex gap-2">
+            <Btn variant="outlined" {...({target: '_blank'} as any)} href="https://tally.so/r/woMGGe">
+              {m.Feedback}
+              <Icon sx={{ml: 1}}>feedback</Icon>
+            </Btn>
+            <Btn
+              variant="outlined"
+              // color="primary"
+              // icon="help"
+              {...({target: '_blank'} as any)}
+              href={config.appBaseUrl + '/centre-aide'}
+            >
+              {m.help}
+              <Icon sx={{ml: 1}}>help</Icon>
+            </Btn>
+          </div>
         }
       >
         {m.reports_pageTitle}
@@ -316,6 +324,13 @@ export const ReportsPro = () => {
                   </Box>
                 </PanelBody>
               </Panel>
+            )}
+            {_blockedNotifications.data && _blockedNotifications.data.length > 0 && (
+              <Alert type="info">
+                {_blockedNotifications.data.length === 1
+                  ? m.activateNotificationsAlertSingle
+                  : m.activateNotificationsAlertMultiple(_blockedNotifications.data.length)}
+              </Alert>
             )}
 
             <Panel>
