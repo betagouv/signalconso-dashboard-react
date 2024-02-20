@@ -24,9 +24,7 @@ export function ReportFileDeleteButton({report, fileOrigin}: {report: Report; fi
 
   return (
     <Link to={'_blank'} className="flex mt-1 ml-1" onClick={download}>
-      <Txt bold block size="small" gutterBottom>
-        ({m.downloadAll})
-      </Txt>
+      <span className="text-sm">({m.downloadAll})</span>
     </Link>
   )
 }

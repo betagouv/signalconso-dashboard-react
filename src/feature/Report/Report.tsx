@@ -1,32 +1,33 @@
-import React, {useMemo, useState} from 'react'
-import {Page} from '../../shared/Page'
-import {useParams} from 'react-router'
-import {useI18n} from '../../core/i18n'
-import {Panel} from '../../shared/Panel'
 import {Box, Grid, Tab, Tabs, Tooltip} from '@mui/material'
-import {ReportEvents} from './Event/ReportEvents'
-import {ReportResponseComponent} from './ReportResponse'
-import {ReportHeader} from './ReportHeader'
+import {useMutation} from '@tanstack/react-query'
+import React, {useMemo, useState} from 'react'
+import {useParams} from 'react-router'
+import {Divider} from 'shared/Divider'
+import {WithInlineIcon} from 'shared/WithInlineIcon'
 import {Btn} from '../../alexlibs/mui-extension'
-import {ReportPostAction} from './ReportPostAction'
-import {useLogin} from '../../core/context/LoginContext'
-import {ReportConsumer} from './ReportConsumer/ReportConsumer'
-import {ReportCompany} from './ReportCompany/ReportCompany'
-import {ReportDescription} from './ReportDescription'
 import {map} from '../../alexlibs/ts-utils'
 import {EventActionValues, EventType, ReportEvent} from '../../core/client/event/Event'
 import {FileOrigin} from '../../core/client/file/UploadedFile'
 import {Report, ReportStatus} from '../../core/client/report/Report'
+import {useLogin} from '../../core/context/LoginContext'
+import {useI18n} from '../../core/i18n'
 import {Id} from '../../core/model'
+import {useGetCompanyEventsQuery, useGetReportEventsQuery} from '../../core/queryhooks/eventQueryHooks'
+import {useGetReportQuery, useGetReviewOnReportResponseQuery} from '../../core/queryhooks/reportQueryHooks'
 import {ScButton} from '../../shared/Button'
-import {WithInlineIcon} from 'shared/WithInlineIcon'
+import {Page} from '../../shared/Page'
+import {Panel} from '../../shared/Panel'
+import {ReportEvents} from './Event/ReportEvents'
 import {ReportAdminResolution} from './ReportAdminResolution'
 import {ReportBarcodeProduct} from './ReportBarcodeProduct'
-import {ReportReOpening} from './ReportReOpening'
-import {useMutation} from '@tanstack/react-query'
-import {useGetReportQuery, useGetReviewOnReportResponseQuery} from '../../core/queryhooks/reportQueryHooks'
-import {useGetCompanyEventsQuery, useGetReportEventsQuery} from '../../core/queryhooks/eventQueryHooks'
+import {ReportCompany} from './ReportCompany/ReportCompany'
+import {ReportConsumer} from './ReportConsumer/ReportConsumer'
+import {ReportDetails, ReportFilesFull} from './ReportDescription'
 import {ReportDownloadAction} from './ReportDownloadAction'
+import {ReportHeader} from './ReportHeader'
+import {ReportPostAction} from './ReportPostAction'
+import {ReportReOpening} from './ReportReOpening'
+import {ReportResponseComponent} from './ReportResponse'
 
 const CONSO: EventType = 'CONSO'
 
@@ -176,8 +177,11 @@ export const ReportComponent = () => {
             <ReportBarcodeProduct barcodeProductId={_getReport.data.report.barcodeProductId} />
           )}
 
-          <ReportDescription report={report} files={_getReport.data?.files} />
-
+          <div className="border border-solid border-gray-300 rounded p-4 mb-4">
+            <ReportDetails {...{report}} />
+            <Divider margin />
+            <ReportFilesFull files={_getReport.data?.files} {...{report}} />
+          </div>
           <Panel loading={_getReportEvents.isLoading}>
             <>
               <Tabs

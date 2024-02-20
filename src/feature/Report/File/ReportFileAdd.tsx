@@ -13,8 +13,8 @@ import {Id} from '../../../core/model'
 const css = makeSx({
   root: {
     border: t => '1px solid ' + t.palette.divider,
-    m: 1,
-    borderRadius: reportFileConfig.cardBorderRadius,
+    my: 1,
+    borderRadius: '0',
     height: reportFileConfig.cardSize,
     width: reportFileConfig.cardSize,
     color: t => t.palette.text.disabled,
