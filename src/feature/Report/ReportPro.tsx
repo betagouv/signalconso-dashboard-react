@@ -3,7 +3,7 @@ import {useQueryClient} from '@tanstack/react-query'
 import {ReportReferenceNumber} from 'feature/Report/ReportReferenceNumber'
 import {useMemo, useRef} from 'react'
 import {useParams} from 'react-router'
-import {EventActionValues} from '../../core/client/event/Event'
+import {EventActionValues, ReportEvent, ResponseConsumerReview} from '../../core/client/event/Event'
 import {FileOrigin, UploadedFile} from '../../core/client/file/UploadedFile'
 import {Report} from '../../core/client/report/Report'
 import {capitalize} from '../../core/helper'
@@ -57,35 +57,7 @@ function ReportProLoaded({report, files}: {report: Report; files: UploadedFile[]
   return (
     <>
       <ReportBlock {...{scrollToResponse, report, isClosed, hasToRespond}} files={files} />
-      {hasResponse && (
-        <Panel>
-          <PanelHead
-            action={
-              response && (
-                <Box
-                  sx={{
-                    color: t => t.palette.text.disabled,
-                    fontSize: t => styleUtils(t).fontSize.normal,
-                    fontWeight: 'normal',
-                    display: 'inline',
-                  }}
-                >
-                  {formatDateTime(response.data.creationDate)}
-                </Box>
-              )
-            }
-          >
-            {m.proAnswerYourAnswer}
-          </PanelHead>
-          <ReportResponseComponent
-            canEditFile={false}
-            response={response?.data}
-            consumerReportReview={_getReviewOnReportResponse.data}
-            report={report}
-            files={files.filter(_ => _.origin === FileOrigin.Professional)}
-          />
-        </Panel>
-      )}
+      {hasResponse && <ResponseBlock {...{report, response, files}} responseConsumerReview={_getReviewOnReportResponse.data} />}
       {hasToRespond && (
         <ReportResponseForm
           ref={responseFormRef}
@@ -142,6 +114,48 @@ function ReportBlock({
         <HorizontalLine />
         <Consumer {...{report}} />
       </div>
+    </div>
+  )
+}
+
+function ResponseBlock({
+  response,
+  report,
+  files,
+  responseConsumerReview,
+}: {
+  response: ReportEvent
+  report: Report
+  files: UploadedFile[]
+  responseConsumerReview: ResponseConsumerReview | undefined
+}) {
+  const {m, formatDateTime} = useI18n()
+
+  return (
+    <div className="border border-gray-300 border-solid rounded shadow-lg mb-4">
+      <PanelHead
+        action={
+          <Box
+            sx={{
+              color: t => t.palette.text.disabled,
+              fontSize: t => styleUtils(t).fontSize.normal,
+              fontWeight: 'normal',
+              display: 'inline',
+            }}
+          >
+            {formatDateTime(response.data.creationDate)}
+          </Box>
+        }
+      >
+        {m.proAnswerYourAnswer}
+      </PanelHead>
+      <ReportResponseComponent
+        canEditFile={false}
+        response={response?.data}
+        consumerReportReview={responseConsumerReview}
+        report={report}
+        files={files.filter(_ => _.origin === FileOrigin.Professional)}
+      />
     </div>
   )
 }
