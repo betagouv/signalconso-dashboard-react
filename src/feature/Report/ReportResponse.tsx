@@ -73,7 +73,7 @@ export const ReportResponseComponent = ({canEditFile, response, consumerReportRe
   const {connectedUser} = useLogin()
 
   return (
-    <PanelBody>
+    <div>
       {ScOption.from(response?.details as ReportResponse)
         .map(details => (
           <div>
@@ -157,6 +157,6 @@ export const ReportResponseComponent = ({canEditFile, response, consumerReportRe
           </div>
         ))
         .getOrElse(<Box sx={{mt: 3}}>{m.noReviewFromConsumer}</Box>)}
-    </PanelBody>
+    </div>
   )
 }

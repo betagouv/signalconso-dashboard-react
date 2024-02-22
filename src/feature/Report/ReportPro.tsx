@@ -132,23 +132,9 @@ function ResponseBlock({
   const {m, formatDateTime} = useI18n()
 
   return (
-    <div className="border border-gray-300 border-solid rounded shadow-lg mb-4">
-      <PanelHead
-        action={
-          <Box
-            sx={{
-              color: t => t.palette.text.disabled,
-              fontSize: t => styleUtils(t).fontSize.normal,
-              fontWeight: 'normal',
-              display: 'inline',
-            }}
-          >
-            {formatDateTime(response.data.creationDate)}
-          </Box>
-        }
-      >
-        {m.proAnswerYourAnswer}
-      </PanelHead>
+    <div className="border border-gray-300 border-solid rounded shadow-lg mb-4 p-8">
+      <h1 className="font-bold text-3xl">Votre réponse</h1>
+      <p className="mb-4">Le {formatDateTime(response.data.creationDate)}</p>
       <ReportResponseComponent
         canEditFile={false}
         response={response?.data}

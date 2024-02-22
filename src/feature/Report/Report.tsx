@@ -198,13 +198,15 @@ export const ReportComponent = () => {
                 <Tab label={m.companyHistory} />
               </Tabs>
               <ReportTabPanel value={activeTab} index={0}>
-                <ReportResponseComponent
-                  canEditFile
-                  report={report}
-                  response={response?.data}
-                  consumerReportReview={_getReviewOnReportResponse.data}
-                  files={_getReport.data?.files.filter(_ => _.origin === FileOrigin.Professional)}
-                />
+                <div className="p-4">
+                  <ReportResponseComponent
+                    canEditFile
+                    report={report}
+                    response={response?.data}
+                    consumerReportReview={_getReviewOnReportResponse.data}
+                    files={_getReport.data?.files.filter(_ => _.origin === FileOrigin.Professional)}
+                  />
+                </div>
               </ReportTabPanel>
               <ReportTabPanel value={activeTab} index={1}>
                 <ReportEvents
