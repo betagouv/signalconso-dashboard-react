@@ -1,9 +1,8 @@
-import {Box} from '@mui/material'
 import {useQueryClient} from '@tanstack/react-query'
 import {ReportReferenceNumber} from 'feature/Report/ReportReferenceNumber'
-import {useMemo, useRef} from 'react'
+import {useRef} from 'react'
 import {useParams} from 'react-router'
-import {EventActionValues, ReportEvent, ResponseConsumerReview} from '../../core/client/event/Event'
+import {ReportProResponseEvent, ResponseConsumerReview} from '../../core/client/event/Event'
 import {FileOrigin, UploadedFile} from '../../core/client/file/UploadedFile'
 import {Report} from '../../core/client/report/Report'
 import {capitalize} from '../../core/helper'
@@ -11,7 +10,6 @@ import {useI18n} from '../../core/i18n'
 import {Id} from '../../core/model'
 import {GetReportEventsQueryKeys, useGetReportEventsQuery} from '../../core/queryhooks/eventQueryHooks'
 import {GetReportQueryKeys, useGetReportQuery, useGetReviewOnReportResponseQuery} from '../../core/queryhooks/reportQueryHooks'
-import {styleUtils} from '../../core/theme'
 import {ScButton} from '../../shared/Button'
 import {Page} from '../../shared/Page'
 import {Panel, PanelHead} from '../../shared/Panel'
@@ -34,14 +32,10 @@ export const ReportPro = () => {
 }
 
 function ReportProLoaded({report, files}: {report: Report; files: UploadedFile[]}) {
-  const {m, formatDateTime} = useI18n()
+  const {m} = useI18n()
   const queryClient = useQueryClient()
-  const reportEvents = useGetReportEventsQuery(report.id)
+  const {reportEvents, responseEvent} = useGetReportEventsQuery(report.id)
   const _getReviewOnReportResponse = useGetReviewOnReportResponseQuery(report.id)
-  const response = useMemo(
-    () => reportEvents.data?.find(_ => _.data.action === EventActionValues.ReportProResponse),
-    [reportEvents.data],
-  )
   const responseFormRef = useRef<any>(null)
 
   function scrollToResponse() {
@@ -50,14 +44,16 @@ function ReportProLoaded({report, files}: {report: Report; files: UploadedFile[]
     }
   }
 
-  const hasResponse = !!response
+  const hasResponse = !!responseEvent
   const isClosed = Report.isClosed(report.status)
   const hasToRespond = !hasResponse && !isClosed
 
   return (
     <>
       <ReportBlock {...{scrollToResponse, report, isClosed, hasToRespond}} files={files} />
-      {hasResponse && <ResponseBlock {...{report, response, files}} responseConsumerReview={_getReviewOnReportResponse.data} />}
+      {hasResponse && (
+        <ResponseBlock {...{report, responseEvent, files}} responseConsumerReview={_getReviewOnReportResponse.data} />
+      )}
       {hasToRespond && (
         <ReportResponseForm
           ref={responseFormRef}
@@ -72,10 +68,10 @@ function ReportProLoaded({report, files}: {report: Report; files: UploadedFile[]
           }}
         />
       )}
-      {reportEvents.data && (
+      {reportEvents && (
         <Panel>
           <PanelHead>{m.reportHistory}</PanelHead>
-          <ReportEvents events={[creationReportEvent(report), ...reportEvents.data]} />
+          <ReportEvents events={[creationReportEvent(report), ...reportEvents]} />
         </Panel>
       )}
     </>
@@ -119,25 +115,25 @@ function ReportBlock({
 }
 
 function ResponseBlock({
-  response,
+  responseEvent,
   report,
   files,
   responseConsumerReview,
 }: {
-  response: ReportEvent
+  responseEvent: ReportProResponseEvent
   report: Report
   files: UploadedFile[]
   responseConsumerReview: ResponseConsumerReview | undefined
 }) {
-  const {m, formatDateTime} = useI18n()
+  const {formatDateTime} = useI18n()
 
   return (
     <div className="border border-gray-300 border-solid rounded shadow-lg mb-4 p-8">
       <h1 className="font-bold text-3xl">Votre réponse</h1>
-      <p className="mb-4">Le {formatDateTime(response.data.creationDate)}</p>
+      <p className="mb-4">Le {formatDateTime(responseEvent.data.creationDate)}</p>
       <ReportResponseComponent
         canEditFile={false}
-        response={response?.data}
+        response={responseEvent.data}
         consumerReportReview={responseConsumerReview}
         report={report}
         files={files.filter(_ => _.origin === FileOrigin.Professional)}

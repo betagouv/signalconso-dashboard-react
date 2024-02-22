@@ -1,12 +1,9 @@
-import {PanelBody} from '../../shared/Panel'
-import React from 'react'
 import {useI18n} from '../../core/i18n'
 
 import {Box, BoxProps, Icon} from '@mui/material'
-import {styleUtils, sxUtils} from '../../core/theme'
-import {ReportFiles} from './File/ReportFiles'
+import {useMutation, useQueryClient} from '@tanstack/react-query'
+import {ScOption} from 'core/helper/ScOption'
 import {Txt} from '../../alexlibs/mui-extension'
-import {Divider} from '../../shared/Divider'
 import {
   Event,
   EventActionValues,
@@ -17,52 +14,29 @@ import {
   ResponseEvaluation,
 } from '../../core/client/event/Event'
 import {FileOrigin, UploadedFile} from '../../core/client/file/UploadedFile'
-import {Id, Report} from '../../core/model'
-import {fnSwitch} from '../../core/helper'
-import {useLogin} from '../../core/context/LoginContext'
-import {ScOption} from 'core/helper/ScOption'
-import {GetReportEventsQueryKeys} from '../../core/queryhooks/eventQueryHooks'
-import {useMutation, useQueryClient} from '@tanstack/react-query'
-import {ReportFileDeleteButton} from './File/ReportFileDownloadAllButton'
 import {useApiContext} from '../../core/context/ApiContext'
+import {useLogin} from '../../core/context/LoginContext'
+import {fnSwitch} from '../../core/helper'
+import {Id, Report} from '../../core/model'
+import {GetReportEventsQueryKeys} from '../../core/queryhooks/eventQueryHooks'
+import {styleUtils, sxUtils} from '../../core/theme'
+import {Divider} from '../../shared/Divider'
+import {ReportFileDeleteButton} from './File/ReportFileDownloadAllButton'
+import {ReportFiles} from './File/ReportFiles'
 
-interface Props {
+export function ReportResponseComponent({
+  canEditFile,
+  response,
+  consumerReportReview,
+  report,
+  files,
+}: {
   canEditFile?: boolean
   response?: Event
   consumerReportReview?: ResponseConsumerReview
   report: Report
   files?: UploadedFile[]
-}
-
-const Response = ({
-  icon,
-  children,
-  sx,
-  ...props
-}: {
-  icon: string
-} & BoxProps) => {
-  return (
-    <Box
-      {...props}
-      sx={{
-        fontSize: t => styleUtils(t).fontSize.big,
-        display: 'inline-flex',
-        alignItems: 'center',
-        mb: 1,
-        borderRadius: 40,
-        border: t => '1px solid ' + t.palette.divider,
-        py: 0.5,
-        px: 1,
-        ...sx,
-      }}
-    >
-      <Icon sx={{mr: 1, ...sxUtils.inlineIcon}}>{icon}</Icon>
-      {children}
-    </Box>
-  )
-}
-export const ReportResponseComponent = ({canEditFile, response, consumerReportReview, report, files}: Props) => {
+}) {
   const {m} = useI18n()
   const {api} = useApiContext()
   const queryClient = useQueryClient()
@@ -158,5 +132,34 @@ export const ReportResponseComponent = ({canEditFile, response, consumerReportRe
         ))
         .getOrElse(<Box sx={{mt: 3}}>{m.noReviewFromConsumer}</Box>)}
     </div>
+  )
+}
+
+function Response({
+  icon,
+  children,
+  sx,
+  ...props
+}: {
+  icon: string
+} & BoxProps) {
+  return (
+    <Box
+      {...props}
+      sx={{
+        fontSize: t => styleUtils(t).fontSize.big,
+        display: 'inline-flex',
+        alignItems: 'center',
+        mb: 1,
+        borderRadius: 40,
+        border: t => '1px solid ' + t.palette.divider,
+        py: 0.5,
+        px: 1,
+        ...sx,
+      }}
+    >
+      <Icon sx={{mr: 1, ...sxUtils.inlineIcon}}>{icon}</Icon>
+      {children}
+    </Box>
   )
 }
