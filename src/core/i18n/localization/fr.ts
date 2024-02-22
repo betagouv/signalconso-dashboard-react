@@ -21,12 +21,12 @@ const formatDate = (d?: Date): string => {
 
 const formatTime = (d?: Date): string => {
   if (!isDateValid(d)) return invalidDate
-  return d!.toLocaleTimeString()
+  return d!.toLocaleTimeString(navigator.language, {hour: '2-digit', minute: '2-digit'})
 }
 
 const formatDateTime = (d?: Date): string => {
   if (!isDateValid(d)) return invalidDate
-  return formatDate(d) + ' ' + formatTime(d)
+  return formatDate(d) + ' à ' + formatTime(d)
 }
 
 const dateFromNow = (d?: Date): string | undefined => {
@@ -47,7 +47,7 @@ export const fr = {
   formatDuration,
   formatLargeNumber,
   messages: {
-    influencerIdentifiedTitle: 'Influenceur ou influenceuse identifié(e)',
+    influencerIdentifiedTitle: 'Influenceur(se) identifié(e)',
     ReportCategoryDesc: {
       [Category.RetraitRappelSpecifique]: 'Retrait-Rappel spécifique',
       [Category.Coronavirus]: 'COVID-19 (coronavirus)',
@@ -235,6 +235,7 @@ export const fr = {
     password: 'Mot de passe',
     logout: 'Déconnexion',
     home: 'Accueil',
+    theConsumer: 'Le consommateur',
     consumer: 'Consommateur',
     company: 'Entreprise',
     association: 'Association',

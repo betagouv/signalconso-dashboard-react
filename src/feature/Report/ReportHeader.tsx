@@ -54,7 +54,7 @@ const ExpiresSoonWarning = ({report, isUserPro}: {report: Report; isUserPro: boo
   return null
 }
 
-const ExpirationDate = ({report, isUserPro}: {report: Report; isUserPro: boolean}) => {
+export const ExpirationDate = ({report, isUserPro}: {report: Report; isUserPro: boolean}) => {
   const {m, formatDate} = useI18n()
   const isFinal = isStatusFinal(report.status)
   const isInvisibleToPro = isStatusInvisibleToPro(report.status)
@@ -76,9 +76,9 @@ const ExpirationDate = ({report, isUserPro}: {report: Report; isUserPro: boolean
   const {text, grayedOut} = textAndColor
   const dateFormatted = formatDate(report.expirationDate)
   return (
-    <Box sx={{color: t => (grayedOut ? t.palette.text.disabled : t.palette.text.primary)}}>
+    <p className={grayedOut ? 'text-gray-500' : ''}>
       {text} {dateFormatted}
-    </Box>
+    </p>
   )
 }
 

@@ -24,7 +24,6 @@ import {Id} from '../../../core/model'
 
 interface Props extends PanelProps {
   report: Report
-  onCancel: () => void
   onConfirm?: (_: ReportResponse) => void
 }
 
@@ -42,7 +41,7 @@ const stepStyles = {
   },
 }
 
-export const ReportResponseForm = forwardRef(({report, onCancel, onConfirm, ...props}: Props, ref: any) => {
+export const ReportResponseForm = forwardRef(({report, onConfirm, ...props}: Props, ref: any) => {
   const {m} = useI18n()
   const {
     register,
@@ -74,9 +73,9 @@ export const ReportResponseForm = forwardRef(({report, onCancel, onConfirm, ...p
   }
 
   return (
-    <Panel elevation={5} ref={ref} {...props}>
-      <PanelHead>{m.answer}</PanelHead>
-      <PanelBody>
+    <Panel elevation={4} ref={ref} {...props}>
+      <div className="p-8">
+        <h2 className="font-bold text-xl">{m.answer}</h2>
         <Stepper activeStep={activeStep} alternativeLabel sx={stepStyles}>
           {steps.map(({label, optional}, index) => {
             return (
@@ -155,13 +154,10 @@ export const ReportResponseForm = forwardRef(({report, onCancel, onConfirm, ...p
             </ReportResponseFormItem>
           </>
         )}
-      </PanelBody>
+      </div>
       <PanelFoot spaceBetween={dgccrfStep} alignEnd={consumerStep}>
         {consumerStep ? (
           <>
-            <ScButton onClick={onCancel} color="primary">
-              {m.close}
-            </ScButton>
             <ScButton
               onClick={() => setActiveStep(1)}
               color="primary"
@@ -177,9 +173,6 @@ export const ReportResponseForm = forwardRef(({report, onCancel, onConfirm, ...p
               {m.previous}
             </ScButton>
             <Box sx={{pl: 2}}>
-              <ScButton onClick={onCancel} color="primary">
-                {m.close}
-              </ScButton>
               <ScButton loading={_postResponse.isPending} onClick={handleSubmit(submitForm)} color="primary" variant="contained">
                 {m.confirm}
               </ScButton>

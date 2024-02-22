@@ -1,5 +1,4 @@
 export * from './useAsync/UseAsync'
-export * from './useBoolean/UseBoolean'
 export * from './useCrudList/UseCrudList'
 export * from './useEffectFn/UseEffectFn'
 export * from './useFetcher/UseFetcher'

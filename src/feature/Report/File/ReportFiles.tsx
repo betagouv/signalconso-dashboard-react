@@ -1,12 +1,11 @@
 import {Box} from '@mui/material'
-import React, {useEffect, useMemo, useRef, useState} from 'react'
-import {ReportFileAdd} from './ReportFileAdd'
-import {ReportFile} from './ReportFile'
-import {useI18n} from '../../../core/i18n'
-import {Txt} from '../../../alexlibs/mui-extension'
+import {useEffect, useRef, useState} from 'react'
 import {FileOrigin, UploadedFile} from '../../../core/client/file/UploadedFile'
-import {Id} from '../../../core/model'
 import {useLogin} from '../../../core/context/LoginContext'
+import {useI18n} from '../../../core/i18n'
+import {Id} from '../../../core/model'
+import {ReportFile} from './ReportFile'
+import {ReportFileAdd} from './ReportFileAdd'
 
 export interface ReportFilesProps {
   files?: UploadedFile[]
@@ -54,16 +53,8 @@ export const ReportFiles = ({
   }
 
   return (
-    <>
-      <Box
-        ref={attachmentRef}
-        sx={{
-          display: 'flex',
-          flexWrap: 'wrap',
-          mt: 2,
-          mb: 2,
-        }}
-      >
+    <div className="mb-4">
+      <Box ref={attachmentRef} className="flex flex-wrap gap-2">
         {innerFiles
           ?.filter(_ => _.origin === fileOrigin)
           .map(_ => {
@@ -74,11 +65,7 @@ export const ReportFiles = ({
           })}
         {!hideAddBtn && <ReportFileAdd reportId={reportId} fileOrigin={fileOrigin} onUploaded={newFile} />}
       </Box>
-      {hideAddBtn && innerFiles?.length === 0 && (
-        <Txt block color="hint" sx={{my: 1}}>
-          {m.noAttachment}
-        </Txt>
-      )}
-    </>
+      {hideAddBtn && innerFiles?.length === 0 && <p className="">{m.noAttachment}</p>}
+    </div>
   )
 }

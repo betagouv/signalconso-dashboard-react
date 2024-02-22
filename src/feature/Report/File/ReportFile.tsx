@@ -18,14 +18,13 @@ export interface ReportFileProps {
 const css = makeSx({
   image: {
     display: 'inline-flex',
-    border: t => '1px solid ' + t.palette.divider,
-    borderRadius: reportFileConfig.cardBorderRadius,
+    border: t => '1px solid black',
+    borderRadius: '0 !important',
     height: reportFileConfig.cardSize,
     width: reportFileConfig.cardSize,
     color: t => t.palette.text.disabled,
     overflow: 'hidden',
     position: 'relative',
-    transition: t => t.transitions.create('all'),
     '&:hover': {
       boxShadow: t => t.shadows[4],
     },
@@ -75,7 +74,7 @@ export const ReportFile = ({file, onRemove}: ReportFileProps) => {
   return (
     <div className="flex justify-center items-center flex-col mr-2">
       {fileType === FileType.Image ? (
-        <div className="block relative p-2">
+        <div className="block relative py-2">
           <Tooltip title={file.filename} placement="top">
             <Button
               sx={css.image}

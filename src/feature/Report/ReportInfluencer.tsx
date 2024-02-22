@@ -1,16 +1,14 @@
+import {Icon} from '@mui/material'
 import {Influencer} from '../../core/client/report/Report'
-import {Box, Icon} from '@mui/material'
-import {Txt} from '../../alexlibs/mui-extension'
-import React from 'react'
-import youtubeLogo from './ReportCompany/youtube.svg'
 import facebookLogo from './ReportCompany/facebook.svg'
 import instagramLogo from './ReportCompany/instagram.svg'
-import tiktokLogo from './ReportCompany/tiktok.svg'
-import twitterLogo from './ReportCompany/twitter.svg'
 import linkedinLogo from './ReportCompany/linkedin.svg'
-import snapchatLogo from './ReportCompany/snapchat.svg'
-import twitchLogo from './ReportCompany/twitch.svg'
 import questionMarkLogo from './ReportCompany/questionmark.svg'
+import snapchatLogo from './ReportCompany/snapchat.svg'
+import tiktokLogo from './ReportCompany/tiktok.svg'
+import twitchLogo from './ReportCompany/twitch.svg'
+import twitterLogo from './ReportCompany/twitter.svg'
+import youtubeLogo from './ReportCompany/youtube.svg'
 
 interface Props {
   influencer: Influencer
@@ -38,38 +36,17 @@ export const ReportInfluencer = ({influencer}: Props) => {
         return questionMarkLogo
     }
   }
-
   return (
-    <>
-      <Box
-        sx={{
-          m: 1,
-          display: 'flex',
-          alignItems: 'center',
-        }}
-      >
-        <Box
-          component="img"
-          src={socialNetworkIcon(influencer.socialNetwork)}
-          alt={influencer.socialNetwork}
-          sx={{
-            height: 24,
-            width: 24,
-          }}
-        />
-        {influencer.socialNetwork && <Txt sx={{ml: 1}}>{influencer.socialNetwork}</Txt>}
-        {influencer.otherSocialNetwork && <Txt sx={{ml: 1}}>{influencer.otherSocialNetwork}</Txt>}
-      </Box>
-      <Box
-        sx={{
-          m: 1,
-          display: 'flex',
-          alignItems: 'center',
-        }}
-      >
+    <div className="flex gap-2">
+      <div className="flex items-center gap-2">
+        <img className="h-[20px] w-[20]px" src={socialNetworkIcon(influencer.socialNetwork)} alt={influencer.socialNetwork} />
+        {influencer.socialNetwork && <span>{influencer.socialNetwork}</span>}
+        {influencer.otherSocialNetwork && <span>{influencer.otherSocialNetwork}</span>}
+      </div>
+      <div className="flex items-center gap-1">
         <Icon>person</Icon>
-        <Txt sx={{ml: 1}}>{influencer.name}</Txt>
-      </Box>
-    </>
+        <span>{influencer.name}</span>
+      </div>
+    </div>
   )
 }
