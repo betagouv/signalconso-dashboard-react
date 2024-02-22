@@ -5,10 +5,9 @@ import {useMutation, useQueryClient} from '@tanstack/react-query'
 import {ScOption} from 'core/helper/ScOption'
 import {Txt} from '../../alexlibs/mui-extension'
 import {
-  Event,
   EventActionValues,
   ReportAction,
-  ReportResponse,
+  ReportProResponseEvent,
   ReportResponseTypes,
   ResponseConsumerReview,
   ResponseEvaluation,
@@ -32,7 +31,7 @@ export function ReportResponseComponent({
   files,
 }: {
   canEditFile?: boolean
-  response?: Event
+  response: ReportProResponseEvent['data']
   consumerReportReview?: ResponseConsumerReview
   report: Report
   files?: UploadedFile[]
@@ -48,7 +47,7 @@ export function ReportResponseComponent({
 
   return (
     <div>
-      {ScOption.from(response?.details as ReportResponse)
+      {ScOption.from(response.details)
         .map(details => (
           <div>
             {fnSwitch(details.responseType, {
@@ -64,7 +63,7 @@ export function ReportResponseComponent({
                 </Response>
               ),
             })}
-            <Box sx={{color: t => t.palette.text.disabled}}>{(response?.details as ReportResponse).consumerDetails}</Box>
+            <Box sx={{color: t => t.palette.text.disabled}}>{response.details.consumerDetails}</Box>
 
             {details.dgccrfDetails && details.dgccrfDetails !== '' && (
               <>
