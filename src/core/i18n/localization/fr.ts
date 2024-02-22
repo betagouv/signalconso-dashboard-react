@@ -485,7 +485,7 @@ export const fr = {
     altLogoGouv: `Logo Gouvernement - Ministère de l'Economie, des Finances et de la Relance`,
     altLogoDGCCRF: `Logo DGCCRF - Direction générale de la Concurrence, de la Consommation et de la Répression des fraudes`,
     noAttachment: 'Aucune pièce jointe.',
-    reportDgccrfDetails: 'Informations complémentaires pour la DGCCRF',
+    reportDgccrfDetails: 'Informations complémentaires pour la DGCCRF :',
     selectCountries_onlyEU: 'Pays européens (UE)',
     registerCompanyError: `Échec de l'activation`,
     activateUserError: `Échec de la création du compte`,
@@ -497,7 +497,6 @@ export const fr = {
     linkCountry: 'Associer un pays étranger au site internet',
     linkCompany: 'Associer une entreprise au site internet',
     proAnswerVisibleByDGCCRF: 'Votre réponse sera visible par le consommateur et la DGCCRF.',
-    proAnswerResponseType: 'Pouvez-vous préciser votre réponse ?',
     proAnswerYourAnswer: 'Votre réponse',
     text: 'Votre texte',
     onlyVisibleByDGCCRF: `Visibles uniquement par la <b>DGCCRF</b>. <span class='text-red-600 font-bold'>Elles ne seront jamais transmises au consommateur.</span>`,
@@ -523,7 +522,7 @@ export const fr = {
 
     dgccrfControlDone: 'Déclarer un contrôle',
     noAnswerFromPro: "Le professionnel n'a pas encore répondu au signalement.",
-    noReviewFromConsumer: "Pas d'avis de consommateur sur la réponse du professionnel.",
+    noReviewFromConsumer: "Le consommateur n'a pas encore donné son avis sur cette réponse.",
     noReviewDetailsFromConsumer: "Aucun commentaire sur l'évaluation.",
     companiesSearchPlaceholder: 'Rechercher par nom, SIREN, SIRET, identifiant...',
     companySearch: 'Rechercher une entreprise',
@@ -911,9 +910,9 @@ export const fr = {
       [ReportResponseTypes.NotConcerned]: 'Non concerné',
     },
     responseEvaluation: {
-      [ResponseEvaluation.Positive]: 'Avis positif du consommateur',
-      [ResponseEvaluation.Neutral]: 'Avis mitigé du consommateur',
-      [ResponseEvaluation.Negative]: 'Avis négatif du consommateur',
+      [ResponseEvaluation.Positive]: "J'en suis satisfait",
+      [ResponseEvaluation.Neutral]: 'Je reste neutre',
+      [ResponseEvaluation.Negative]: `J'en suis mécontent`,
     },
     responseEvaluationShort: {
       [ResponseEvaluation.Positive]: 'Positif',

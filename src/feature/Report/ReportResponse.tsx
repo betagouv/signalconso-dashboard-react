@@ -1,68 +1,38 @@
-import {PanelBody} from '../../shared/Panel'
-import React from 'react'
 import {useI18n} from '../../core/i18n'
 
-import {Box, BoxProps, Icon} from '@mui/material'
-import {styleUtils, sxUtils} from '../../core/theme'
-import {ReportFiles} from './File/ReportFiles'
-import {Txt} from '../../alexlibs/mui-extension'
-import {Divider} from '../../shared/Divider'
+import {Icon} from '@mui/material'
+import {useMutation, useQueryClient} from '@tanstack/react-query'
 import {
-  Event,
   EventActionValues,
   ReportAction,
+  ReportProResponseEvent,
   ReportResponse,
   ReportResponseTypes,
   ResponseConsumerReview,
   ResponseEvaluation,
 } from '../../core/client/event/Event'
 import {FileOrigin, UploadedFile} from '../../core/client/file/UploadedFile'
-import {Id, Report} from '../../core/model'
-import {fnSwitch} from '../../core/helper'
-import {useLogin} from '../../core/context/LoginContext'
-import {ScOption} from 'core/helper/ScOption'
-import {GetReportEventsQueryKeys} from '../../core/queryhooks/eventQueryHooks'
-import {useMutation, useQueryClient} from '@tanstack/react-query'
-import {ReportFileDeleteButton} from './File/ReportFileDownloadAllButton'
 import {useApiContext} from '../../core/context/ApiContext'
+import {useLogin} from '../../core/context/LoginContext'
+import {Id, Report} from '../../core/model'
+import {GetReportEventsQueryKeys} from '../../core/queryhooks/eventQueryHooks'
+import {Divider} from '../../shared/Divider'
+import {ReportFileDownloadAllButton} from './File/ReportFileDownloadAllButton'
+import {ReportFiles} from './File/ReportFiles'
 
-interface Props {
+export function ReportResponseComponent({
+  canEditFile,
+  response,
+  consumerReportReview,
+  report,
+  files,
+}: {
   canEditFile?: boolean
-  response?: Event
+  response: ReportProResponseEvent['data']
   consumerReportReview?: ResponseConsumerReview
   report: Report
   files?: UploadedFile[]
-}
-
-const Response = ({
-  icon,
-  children,
-  sx,
-  ...props
-}: {
-  icon: string
-} & BoxProps) => {
-  return (
-    <Box
-      {...props}
-      sx={{
-        fontSize: t => styleUtils(t).fontSize.big,
-        display: 'inline-flex',
-        alignItems: 'center',
-        mb: 1,
-        borderRadius: 40,
-        border: t => '1px solid ' + t.palette.divider,
-        py: 0.5,
-        px: 1,
-        ...sx,
-      }}
-    >
-      <Icon sx={{mr: 1, ...sxUtils.inlineIcon}}>{icon}</Icon>
-      {children}
-    </Box>
-  )
-}
-export const ReportResponseComponent = ({canEditFile, response, consumerReportReview, report, files}: Props) => {
+}) {
   const {m} = useI18n()
   const {api} = useApiContext()
   const queryClient = useQueryClient()
@@ -70,45 +40,15 @@ export const ReportResponseComponent = ({canEditFile, response, consumerReportRe
     mutationFn: (params: {id: Id; action: ReportAction}) => api.secured.reports.postAction(params.id, params.action),
     onSuccess: () => queryClient.invalidateQueries({queryKey: GetReportEventsQueryKeys(report.id)}),
   })
-  const {connectedUser} = useLogin()
 
+  const details = response.details
   return (
-    <PanelBody>
-      {ScOption.from(response?.details as ReportResponse)
-        .map(details => (
-          <div>
-            {fnSwitch(details.responseType, {
-              [ReportResponseTypes.Accepted]: _ => <Response icon="check_circle">{m.reportResponse[_]}</Response>,
-              [ReportResponseTypes.NotConcerned]: _ => (
-                <Response icon="hide_source" sx={{color: t => t.palette.info.main}}>
-                  {m.reportResponse[_]}
-                </Response>
-              ),
-              [ReportResponseTypes.Rejected]: _ => (
-                <Response icon="cancel" sx={{color: t => t.palette.error.main}}>
-                  {m.reportResponse[_]}
-                </Response>
-              ),
-            })}
-            <Box sx={{color: t => t.palette.text.disabled}}>{(response?.details as ReportResponse).consumerDetails}</Box>
-
-            {details.dgccrfDetails && details.dgccrfDetails !== '' && (
-              <>
-                <Txt sx={{mt: 2}} bold size="big" block>
-                  {m.reportDgccrfDetails}
-                </Txt>
-                <Box sx={{color: t => t.palette.text.disabled}}>{details.dgccrfDetails}</Box>
-              </>
-            )}
-          </div>
-        ))
-        .getOrElse(<div className="mt-2">{m.noAnswerFromPro}</div>)}
+    <div className="">
+      {details ? <ResponseDetails {...{details}} /> : <div className="mt-2">{m.noAnswerFromPro}</div>}
       <div className="flex flex-row mt-5 ">
-        <Txt gutterBottom bold size="big" block>
-          {m.attachedFiles}
-        </Txt>
+        <h2 className="font-bold">{m.attachedFiles}</h2>
         {files && files.filter(_ => _.origin === FileOrigin.Professional).length > 1 && (
-          <ReportFileDeleteButton report={report} fileOrigin={FileOrigin.Professional} />
+          <ReportFileDownloadAllButton report={report} fileOrigin={FileOrigin.Professional} />
         )}
       </div>
       <ReportFiles
@@ -128,35 +68,98 @@ export const ReportResponseComponent = ({canEditFile, response, consumerReportRe
         }}
       />
       <Divider margin />
-      {ScOption.from(consumerReportReview)
-        .map(review => (
-          <div>
-            {fnSwitch(review.evaluation, {
-              [ResponseEvaluation.Positive]: _ => (
-                <Response icon="check_circle" sx={{color: t => t.palette.success.light}}>
-                  {m.responseEvaluation[_]}
-                </Response>
-              ),
-              [ResponseEvaluation.Neutral]: _ => (
-                <Response icon="hide_source" sx={{color: t => t.palette.info.light}}>
-                  {m.responseEvaluation[_]}
-                </Response>
-              ),
-              [ResponseEvaluation.Negative]: _ => (
-                <Response icon="cancel" sx={{color: t => t.palette.error.light}}>
-                  {m.responseEvaluation[_]}
-                </Response>
-              ),
-            })}
-            {connectedUser.isNotPro && (
-              <Box sx={{color: t => t.palette.text.secondary}}>
-                {' '}
-                {review.details ? review.details : <div>{m.noReviewDetailsFromConsumer}</div>}
-              </Box>
-            )}
-          </div>
-        ))
-        .getOrElse(<Box sx={{mt: 3}}>{m.noReviewFromConsumer}</Box>)}
-    </PanelBody>
+      <>
+        {consumerReportReview ? (
+          <ConsumerReview review={consumerReportReview} />
+        ) : (
+          <div className="">{m.noReviewFromConsumer}</div>
+        )}
+      </>
+    </div>
+  )
+}
+
+function ResponseDetails({details}: {details: ReportResponse}) {
+  const {m} = useI18n()
+  return (
+    <div>
+      <ResponseType responseType={details.responseType} />
+      <p className="font-bold">Réponse communiquée au consommateur :</p>
+      <div className="pl-4">{details.consumerDetails}</div>
+
+      {details.dgccrfDetails && details.dgccrfDetails !== '' && (
+        <>
+          <p className="font-bold">{m.reportDgccrfDetails}</p>
+          <div className="pl-4">{details.dgccrfDetails}</div>
+        </>
+      )}
+    </div>
+  )
+}
+
+function ResponseType({responseType}: {responseType: ReportResponseTypes}) {
+  const {m} = useI18n()
+  const {icon, color, text} = (() => {
+    switch (responseType) {
+      case ReportResponseTypes.Accepted:
+        return {icon: 'done', color: 'bg-green-100', text: m.reportResponse.ACCEPTED}
+      case ReportResponseTypes.NotConcerned:
+        return {icon: 'domain_disabled', color: 'bg-blue-100', text: m.reportResponse.NOT_CONCERNED}
+      case ReportResponseTypes.Rejected:
+        return {icon: 'error_outline', color: 'bg-orange-100', text: m.reportResponse.REJECTED}
+    }
+  })()
+  return (
+    <p className={`flex items-center gap-1 w-fit p-2 ${color} mb-4 border-black border-solid border`}>
+      <Icon fontSize="small">{icon}</Icon>
+      {text}
+    </p>
+  )
+}
+
+function ConsumerReview({review}: {review: ResponseConsumerReview}) {
+  const {m} = useI18n()
+  const {connectedUser} = useLogin()
+
+  const {icon, classes, text} = (() => {
+    switch (review.evaluation) {
+      case ResponseEvaluation.Positive:
+        return {
+          icon: 'sentiment_satisfied_alt',
+          classes: 'bg-green-100 text-green-800 border-green-800',
+          text: m.responseEvaluation.Positive,
+        }
+      case ResponseEvaluation.Neutral:
+        return {
+          icon: 'sentiment_neutral',
+          classes: 'bg-gray-100 text-gray-800 border-gray-800',
+          text: m.responseEvaluation.Neutral,
+        }
+      case ResponseEvaluation.Negative:
+        return {
+          icon: 'sentiment_dissatisfied',
+          classes: 'bg-red-100 text-red-800 border-red-800',
+          text: m.responseEvaluation.Negative,
+        }
+    }
+  })()
+
+  return (
+    <div>
+      <h3 className="font-bold text-xl mb-2">Avis du consommateur sur cette réponse :</h3>
+      <p className={`inline-flex rounded-full items-center gap-1 w-fit p-2 ${classes} font-normal border border-solid`}>
+        <Icon fontSize="medium">{icon}</Icon>
+        {text}
+      </p>
+      {connectedUser.isNotPro && (
+        <>
+          {review.details ? (
+            <div className="pl-4">{review.details}</div>
+          ) : (
+            <div className="">{m.noReviewDetailsFromConsumer}</div>
+          )}
+        </>
+      )}
+    </div>
   )
 }
