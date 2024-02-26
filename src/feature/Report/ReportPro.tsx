@@ -18,7 +18,7 @@ import {creationReportEvent} from './Report'
 import {ReportDetails, ReportFilesFull} from './ReportDescription'
 import {ExpirationDate} from './ReportHeader'
 import {ReportInfluencer} from './ReportInfluencer'
-import {ReportResponseComponent} from './ReportResponse'
+import {ReportResponse} from './ReportResponse'
 import {ReportResponseForm} from './ReportResponseForm/ReportResponseForm'
 
 export const ReportPro = () => {
@@ -131,7 +131,7 @@ function ResponseBlock({
     <div className="border border-gray-300 border-solid rounded shadow-lg mb-4 p-8">
       <h1 className="font-bold text-3xl">Votre réponse</h1>
       <p className="mb-4">Le {formatDateTime(responseEvent.data.creationDate)}</p>
-      <ReportResponseComponent
+      <ReportResponse
         canEditFile={false}
         response={responseEvent.data}
         consumerReportReview={responseConsumerReview}

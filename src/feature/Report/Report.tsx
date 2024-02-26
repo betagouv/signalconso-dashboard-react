@@ -27,7 +27,7 @@ import {ReportDownloadAction} from './ReportDownloadAction'
 import {ReportHeader} from './ReportHeader'
 import {ReportPostAction} from './ReportPostAction'
 import {ReportReOpening} from './ReportReOpening'
-import {ReportResponseComponent} from './ReportResponse'
+import {ReportResponse} from './ReportResponse'
 
 const CONSO: EventType = 'CONSO'
 
@@ -200,7 +200,7 @@ export const ReportComponent = () => {
               <ReportTabPanel value={activeTab} index={0}>
                 <div className="p-4">
                   {responseEvent && (
-                    <ReportResponseComponent
+                    <ReportResponse
                       canEditFile
                       report={report}
                       response={responseEvent?.data}

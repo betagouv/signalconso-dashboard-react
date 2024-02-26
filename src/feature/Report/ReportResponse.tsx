@@ -23,7 +23,7 @@ import {Divider} from '../../shared/Divider'
 import {ReportFileDeleteButton} from './File/ReportFileDownloadAllButton'
 import {ReportFiles} from './File/ReportFiles'
 
-export function ReportResponseComponent({
+export function ReportResponse({
   canEditFile,
   response,
   consumerReportReview,
