@@ -22,7 +22,7 @@ export const ReportWordDistribution = ({companyId}: Props) => {
       ? Object.entries(_).map(([label, reportWordCount], index) => ({
           label: (
             <NavLink
-              to={siteMap.logged.reports({
+              to={siteMap.logged.reports.open({
                 description: reportWordCount.value,
                 companyIds: [companyId],
               })}

@@ -19,7 +19,12 @@ export const ScSidebar = ({connectedUser, logout}: {connectedUser: UserWithPermi
     }
   }
   return (
-    <Sidebar>
+    <Sidebar
+      sx={{
+        width: '250px',
+      }}
+    >
+      {' '}
       <Box
         sx={{
           pt: 1,
@@ -49,9 +54,11 @@ export const ScSidebar = ({connectedUser, logout}: {connectedUser: UserWithPermi
         </Btn>
       </Box>
       <SidebarHr margin />
-
-      <SidebarItem onClick={closeSidebar} to={path(siteMap.logged.reports())} icon={EntityIcon.report}>
+      <SidebarItem onClick={closeSidebar} to={path(siteMap.logged.reports.open())} icon={EntityIcon.report}>
         {m.menu_reports}
+      </SidebarItem>
+      <SidebarItem onClick={closeSidebar} to={path(siteMap.logged.reports.closed())} icon={EntityIcon.report}>
+        {m.menu_closed_report}
       </SidebarItem>
       {[Roles.Admin, Roles.DGCCRF].includes(connectedUser.role) && (
         <SidebarItem onClick={closeSidebar} to={path(siteMap.logged.companies)} icon={EntityIcon.company}>
@@ -104,7 +111,6 @@ export const ScSidebar = ({connectedUser, logout}: {connectedUser: UserWithPermi
       <SidebarItem onClick={closeSidebar} to={path(siteMap.logged.settings)} icon="settings">
         {m.menu_settings}
       </SidebarItem>
-
       {[Roles.Admin, Roles.DGCCRF, Roles.DGAL].includes(connectedUser.role) && (
         <SidebarItem onClick={closeSidebar} to={path(siteMap.logged.modeEmploiDGCCRF)} icon="help">
           {m.menu_modeEmploiDGCCRF}

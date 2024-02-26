@@ -35,6 +35,7 @@ import {ReportedPhones} from './feature/ReportedPhones/ReportedPhones'
 import {ReportedWebsites} from './feature/ReportedWebsites/ReportedWebsites'
 import {Reports} from './feature/Reports/Reports'
 import {ReportsPro} from './feature/ReportsPro/ReportsPro'
+import {ClosedReports} from './feature/ReportsPro/ClosedReports'
 import {ResetPassword} from './feature/ResetPassword/ResetPassword'
 import {Settings} from './feature/Settings/Settings'
 import {Stats} from './feature/Stats/Stats'
@@ -187,7 +188,14 @@ const AppLogged = () => {
         <Route path={siteMap.logged.reportedWebsites} component={ReportedWebsites} />
         <Route path={siteMap.logged.reportedPhone} component={ReportedPhones} />
         <Route path={siteMap.logged.report()} component={connectedUser.isPro ? ReportPro : ReportComponent} />
-        <Route path={siteMap.logged.reports()} component={connectedUser.isPro ? ReportsPro : Reports} />
+        <Route
+          path={siteMap.logged.reports.open()}
+          component={connectedUser.isPro ? () => <ReportsPro reportType="open" /> : Reports}
+        />
+        <Route
+          path={siteMap.logged.reports.closed()}
+          component={connectedUser.isPro ? () => <ReportsPro reportType="closed" /> : Reports}
+        />
         <Route path={siteMap.logged.users} component={Users} />
         <Route path={siteMap.logged.companies} component={Companies} />
         <Route path={siteMap.logged.companyAccesses()} component={CompanyAccesses} />
@@ -200,7 +208,7 @@ const AppLogged = () => {
         <Route path={siteMap.logged.modeEmploiDGCCRF} component={connectedUser.isPro ? ReportsPro : ModeEmploiDGCCRF} />
         <Route path={siteMap.logged.stats} component={Stats} />
         <Route path={siteMap.loggedout.register} component={AddCompanyForm} />
-        <Redirect from="/" to={siteMap.logged.reports()} />
+        <Redirect from="/" to={siteMap.logged.reports.open()} />
       </Switch>
     </Provide>
   )

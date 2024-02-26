@@ -95,7 +95,7 @@ export const StatsReportsByRegion = () => {
                   </TableCell>
                   <TableCell style={{textAlign: 'right'}}>
                     <NavLink
-                      to={siteMap.logged.reports({
+                      to={siteMap.logged.reports.open({
                         departments: [depNumber],
                         start: dates.current.start,
                         end: dates.current.end,

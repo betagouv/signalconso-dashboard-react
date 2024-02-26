@@ -118,7 +118,7 @@ export const ReportedPhones = () => {
               render: _ => (
                 <>
                   <NavLink
-                    to={siteMap.logged.reports({
+                    to={siteMap.logged.reports.open({
                       hasPhone: true,
                       phone: _.phone,
                       ...(_.siret ? {hasCompany: true, siretSirenList: [_.siret]} : {}),

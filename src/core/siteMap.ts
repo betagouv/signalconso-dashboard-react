@@ -12,9 +12,14 @@ export const siteMap = {
     reportedWebsites_unknown: `/moderation-url-entreprises/sites-internet/non-identifies`,
     websitesInvestigation: `/moderation-url-entreprises/enquete`,
     reportedPhone: `/suivi-des-telephones`,
-    reports: (_?: Partial<ReportSearch>) => `/suivi-des-signalements` + (_ ? toQueryString(mapDatesToQueryString(_)) : ``),
+    reports: {
+      open: (_?: Partial<ReportSearch>) => `/suivi-des-signalements/ouverts` + (_ ? toQueryString(mapDatesToQueryString(_)) : ``),
+      closed: (_?: Partial<ReportSearch>) =>
+        `/suivi-des-signalements/clotures` + (_ ? toQueryString(mapDatesToQueryString(_)) : ``),
+    },
     subscriptions: `/abonnements`,
     report: (id: Id = `:id`) => `/suivi-des-signalements/report/${id}`,
+    ClosedReports: (_?: Partial<ReportSearch>) => '/signalements-clotures' + (_ ? toQueryString(mapDatesToQueryString(_)) : ``),
     exports: `/mes-telechargements`,
     companies_toActivate: `/entreprises/a-activer`,
     companies_toFollowUp: `/entreprises/a-relancer`,

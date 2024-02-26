@@ -244,7 +244,7 @@ export const CompaniesRegistered = () => {
             sx: _ => ({textAlign: 'right'}),
             render: _ => (
               <NavLink
-                to={siteMap.logged.reports({
+                to={siteMap.logged.reports.open({
                   hasCompany: true,
                   siretSirenList: [_.siret],
                   departments: _companies.filters.departments,

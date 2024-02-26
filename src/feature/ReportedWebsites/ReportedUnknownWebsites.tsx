@@ -108,7 +108,7 @@ export const ReportedUnknownWebsites = () => {
             render: _ => (
               <>
                 <NavLink
-                  to={siteMap.logged.reports({
+                  to={siteMap.logged.reports.open({
                     hasWebsite: true,
                     websiteURL: _.host,
                     hasCompany: false,
