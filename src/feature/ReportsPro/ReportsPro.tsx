@@ -139,64 +139,6 @@ export const ReportsPro = ({reportType}: ReportsProProps) => {
     )
   }, [_reports.result.data?.entities, reportType])
 
-  // const columns = useMemo(() => {
-  //   const baseColumns = [
-  //     {
-  //       id: 'siret',
-  //       head: m.siret,
-  //       render: (_: ReportSearchResult) => _.report.companySiret,
-  //     },
-  //     {
-  //       id: 'consumer',
-  //       head: m.consumer,
-  //       render: (_: ReportSearchResult) =>
-  //         _.report.contactAgreement ? _.report.firstName + ' ' + _.report.lastName : m.anonymousReport,
-  //     },
-  //   ]
-
-  //   if (reportType === 'open') {
-  //     return [
-  //       ...baseColumns,
-  //       {
-  //         id: 'expirationDate',
-  //         head: m.expireOn,
-  //         render: (_: ReportSearchResult) => formatDate(_.report.expirationDate),
-  //       },
-  //       {
-  //         id: 'file',
-  //         head: m.files,
-  //         render: (_: ReportSearchResult) =>
-  //           _.files.length > 0 && (
-  //             <Badge badgeContent={_.files.length} color="primary">
-  //               <Icon>insert_drive_file</Icon>
-  //             </Badge>
-  //           ),
-  //       },
-  //     ]
-  //   } else {
-  //     // reportType === 'closed'
-  //     return [
-  //       ...baseColumns,
-  //       {
-  //         id: 'createDate',
-  //         head: m.receivedAt,
-  //         render: (_: ReportSearchResult) => formatDate(_.report.creationDate),
-  //       },
-  //       {
-  //         id: 'avisConso',
-  //         head: m.consumerReviews,
-  //         render: (_: ReportSearchResult) =>
-  //           _?.consumerReview && <ConsumerReviewLabel evaluation={_.consumerReview.evaluation} />,
-  //       },
-  //       {
-  //         id: 'proResponse',
-  //         head: m.proResponse,
-  //         render: (_: ReportSearchResult) => <ReportResponseDetails details={_.professionalResponse?.details} />,
-  //       },
-  //     ]
-  //   }
-  // }, [reportType])
-
   useEffect(() => {
     queryString.update(cleanObject(_reports.filters))
   }, [_reports.filters])
