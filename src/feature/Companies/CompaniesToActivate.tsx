@@ -186,7 +186,7 @@ export const CompaniesToActivate = () => {
             stickyEnd: true,
             render: _ => (
               <>
-                <Link target="_blank" to={siteMap.logged.reports.open({hasCompany: true, siretSirenList: [_.company.siret]})}>
+                <Link target="_blank" to={siteMap.logged.reports({hasCompany: true, siretSirenList: [_.company.siret]})}>
                   <Tooltip title={m.reports}>
                     <IconBtn color="primary">
                       <Icon>chevron_right</Icon>

@@ -79,7 +79,7 @@ export const CompanyChartPanel = ({companyId, company}: {company: CompanyWithRep
           </ButtonGroup>
         }
       >
-        <NavLink to={siteMap.logged.reports.open({companyIds})}>
+        <NavLink to={siteMap.logged.reports({companyIds})}>
           {company.count && formatLargeNumber(company.count)}
           &nbsp;
           {m.reports.toLocaleLowerCase()}

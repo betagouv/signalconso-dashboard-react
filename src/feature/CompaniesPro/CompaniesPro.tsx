@@ -209,7 +209,7 @@ function CompaniesProRow({
             {m.myStats}
           </Btn>
           <Btn
-            href={'#' + siteMap.logged.reports.open({hasCompany: true, siretSirenList: [_.siret]})}
+            href={'#' + siteMap.logged.reports({hasCompany: true, siretSirenList: [_.siret]})}
             variant="contained"
             icon="assignment_late"
             size="small"

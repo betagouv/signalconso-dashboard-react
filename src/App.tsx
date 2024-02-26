@@ -188,13 +188,14 @@ const AppLogged = () => {
         <Route path={siteMap.logged.reportedPhone} component={ReportedPhones} />
         <Route path={siteMap.logged.report()} component={connectedUser.isPro ? ReportPro : ReportComponent} />
         <Route
-          path={siteMap.logged.reports.open()}
-          component={connectedUser.isPro ? () => <ReportsPro reportType="open" /> : Reports}
+          path={siteMap.logged.reportsfiltred.open()}
+          component={connectedUser.isPro ? () => <ReportsPro reportType="open" /> : ReportsPro}
         />
         <Route
-          path={siteMap.logged.reports.closed()}
-          component={connectedUser.isPro ? () => <ReportsPro reportType="closed" /> : Reports}
+          path={siteMap.logged.reportsfiltred.closed()}
+          component={connectedUser.isPro ? () => <ReportsPro reportType="closed" /> : ReportsPro}
         />
+        <Route path={siteMap.logged.reports()} component={connectedUser.isPro ? ReportsPro : Reports} />
         <Route path={siteMap.logged.users} component={Users} />
         <Route path={siteMap.logged.companies} component={Companies} />
         <Route path={siteMap.logged.companyAccesses()} component={CompanyAccesses} />
@@ -207,7 +208,7 @@ const AppLogged = () => {
         <Route path={siteMap.logged.modeEmploiDGCCRF} component={connectedUser.isPro ? ReportsPro : ModeEmploiDGCCRF} />
         <Route path={siteMap.logged.stats} component={Stats} />
         <Route path={siteMap.loggedout.register} component={AddCompanyForm} />
-        <Redirect from="/" to={siteMap.logged.reports.open()} />
+        <Redirect from="/" to={siteMap.logged.reports()} />
       </Switch>
     </Provide>
   )

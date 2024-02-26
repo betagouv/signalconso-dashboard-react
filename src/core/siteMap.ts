@@ -12,7 +12,8 @@ export const siteMap = {
     reportedWebsites_unknown: `/moderation-url-entreprises/sites-internet/non-identifies`,
     websitesInvestigation: `/moderation-url-entreprises/enquete`,
     reportedPhone: `/suivi-des-telephones`,
-    reports: {
+    reports: (_?: Partial<ReportSearch>) => `/suivi-des-signalements` + (_ ? toQueryString(mapDatesToQueryString(_)) : ``),
+    reportsfiltred: {
       open: (_?: Partial<ReportSearch>) => `/suivi-des-signalements/ouverts` + (_ ? toQueryString(mapDatesToQueryString(_)) : ``),
       closed: (_?: Partial<ReportSearch>) =>
         `/suivi-des-signalements/clotures` + (_ ? toQueryString(mapDatesToQueryString(_)) : ``),
