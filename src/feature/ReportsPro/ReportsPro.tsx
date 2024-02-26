@@ -165,7 +165,7 @@ export const ReportsPro = ({reportType}: ReportsProProps) => {
           </div>
         }
       >
-        {reportType === 'open' ? m.reports_pageTitle : 'Rapports Clôturés'}
+        {reportType === 'open' ? m.reports_pageTitle : m.ClosedReports_pageTitle}
       </PageTitle>
 
       {isFirstVisit && (
