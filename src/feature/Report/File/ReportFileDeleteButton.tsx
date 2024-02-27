@@ -1,7 +1,6 @@
-import {useI18n} from '../../../core/i18n'
-import {IconBtn, Modal} from '../../../alexlibs/mui-extension'
-import React from 'react'
 import {Button, Icon} from '@mui/material'
+import {Modal} from '../../../alexlibs/mui-extension'
+import {useI18n} from '../../../core/i18n'
 
 export function ReportFileDeleteButton({filename, onConfirm}: {filename: string; onConfirm: () => void}) {
   const {m} = useI18n()

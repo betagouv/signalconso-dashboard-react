@@ -1,9 +1,8 @@
-import {Box} from '@mui/material'
 import {useQueryClient} from '@tanstack/react-query'
 import {ReportReferenceNumber} from 'feature/Report/ReportReferenceNumber'
-import {useMemo, useRef} from 'react'
+import {useRef} from 'react'
 import {useParams} from 'react-router'
-import {EventActionValues} from '../../core/client/event/Event'
+import {ReportProResponseEvent, ResponseConsumerReview} from '../../core/client/event/Event'
 import {FileOrigin, UploadedFile} from '../../core/client/file/UploadedFile'
 import {Report} from '../../core/client/report/Report'
 import {capitalize} from '../../core/helper'
@@ -11,7 +10,6 @@ import {useI18n} from '../../core/i18n'
 import {Id} from '../../core/model'
 import {GetReportEventsQueryKeys, useGetReportEventsQuery} from '../../core/queryhooks/eventQueryHooks'
 import {GetReportQueryKeys, useGetReportQuery, useGetReviewOnReportResponseQuery} from '../../core/queryhooks/reportQueryHooks'
-import {styleUtils} from '../../core/theme'
 import {ScButton} from '../../shared/Button'
 import {Page} from '../../shared/Page'
 import {Panel, PanelHead} from '../../shared/Panel'
@@ -34,15 +32,11 @@ export const ReportPro = () => {
 }
 
 function ReportProLoaded({report, files}: {report: Report; files: UploadedFile[]}) {
-  const {m, formatDateTime} = useI18n()
+  const {m} = useI18n()
   const queryClient = useQueryClient()
-  const reportEvents = useGetReportEventsQuery(report.id)
+  const {reportEvents, responseEvent} = useGetReportEventsQuery(report.id)
   const _getReviewOnReportResponse = useGetReviewOnReportResponseQuery(report.id)
-  const response = useMemo(
-    () => reportEvents.data?.find(_ => _.data.action === EventActionValues.ReportProResponse),
-    [reportEvents.data],
-  )
-  const responseFormRef = useRef<any>(null)
+  const responseFormRef = useRef<HTMLElement>(null)
 
   function scrollToResponse() {
     if (responseFormRef.current) {
@@ -50,7 +44,7 @@ function ReportProLoaded({report, files}: {report: Report; files: UploadedFile[]
     }
   }
 
-  const hasResponse = !!response
+  const hasResponse = !!responseEvent
   const isClosed = Report.isClosed(report.status)
   const hasToRespond = !hasResponse && !isClosed
 
@@ -58,33 +52,7 @@ function ReportProLoaded({report, files}: {report: Report; files: UploadedFile[]
     <>
       <ReportBlock {...{scrollToResponse, report, isClosed, hasToRespond}} files={files} />
       {hasResponse && (
-        <Panel>
-          <PanelHead
-            action={
-              response && (
-                <Box
-                  sx={{
-                    color: t => t.palette.text.disabled,
-                    fontSize: t => styleUtils(t).fontSize.normal,
-                    fontWeight: 'normal',
-                    display: 'inline',
-                  }}
-                >
-                  {formatDateTime(response.data.creationDate)}
-                </Box>
-              )
-            }
-          >
-            {m.proAnswerYourAnswer}
-          </PanelHead>
-          <ReportResponseComponent
-            canEditFile={false}
-            response={response?.data}
-            consumerReportReview={_getReviewOnReportResponse.data}
-            report={report}
-            files={files.filter(_ => _.origin === FileOrigin.Professional)}
-          />
-        </Panel>
+        <ResponseBlock {...{report, responseEvent, files}} responseConsumerReview={_getReviewOnReportResponse.data} />
       )}
       {hasToRespond && (
         <ReportResponseForm
@@ -95,16 +63,13 @@ function ReportProLoaded({report, files}: {report: Report; files: UploadedFile[]
               .invalidateQueries({queryKey: GetReportEventsQueryKeys(report.id)})
               .then(() => queryClient.invalidateQueries({queryKey: GetReportQueryKeys(report.id)}))
           }}
-          sx={{
-            transition: t => t.transitions.create('box-shadow'),
-          }}
         />
       )}
-      {reportEvents.data && (
-        <Panel>
-          <PanelHead>{m.reportHistory}</PanelHead>
-          <ReportEvents events={[creationReportEvent(report), ...reportEvents.data]} />
-        </Panel>
+      {reportEvents && (
+        <div className="p-8 border-solid border border-gray-300 rounded shadow-lg mb-4">
+          <h1 className="font-bold text-3xl mb-8">{m.reportHistory}</h1>
+          <ReportEvents events={[creationReportEvent(report), ...reportEvents]} />
+        </div>
       )}
     </>
   )
@@ -142,6 +107,34 @@ function ReportBlock({
         <HorizontalLine />
         <Consumer {...{report}} />
       </div>
+    </div>
+  )
+}
+
+function ResponseBlock({
+  responseEvent,
+  report,
+  files,
+  responseConsumerReview,
+}: {
+  responseEvent: ReportProResponseEvent
+  report: Report
+  files: UploadedFile[]
+  responseConsumerReview: ResponseConsumerReview | undefined
+}) {
+  const {formatDateTime} = useI18n()
+
+  return (
+    <div className="border border-gray-300 border-solid rounded shadow-lg mb-4 p-8">
+      <h1 className="font-bold text-3xl">Votre réponse</h1>
+      <p className="mb-4">Le {formatDateTime(responseEvent.data.creationDate)}</p>
+      <ReportResponseComponent
+        canEditFile={false}
+        response={responseEvent.data}
+        consumerReportReview={responseConsumerReview}
+        report={report}
+        files={files.filter(_ => _.origin === FileOrigin.Professional)}
+      />
     </div>
   )
 }

@@ -54,26 +54,32 @@ const css = makeSx({
 })
 
 export const ReportEventComponent = ({event}: ReportComponentEventProps) => {
-  const {m, formatDate, formatDateTime} = useI18n()
+  const {formatDate, formatTime} = useI18n()
 
   return (
-    <Box sx={css.root} key={event.data.id}>
-      <ReportEventIcon sx={css.icon} action={event.data.action} />
-      <Box sx={css.body}>
-        <Box sx={css.head}>
-          <Box sx={css.title}>{event.data.action}</Box>
-          <Box sx={css.date}>{formatDateTime(event.data.creationDate)}</Box>
-        </Box>
-
+    <div className="grid grid-cols-[auto,auto,1fr] text-base border-b-[1px] last:border-b-0 border-solid border-0 border-gray-300 gap-x-4">
+      <div className="p-2 flex items-center justify-center">
+        <p className=" font-bold">
+          {formatDate(event.data.creationDate)}{' '}
+          <span className=" font-normal text-gray-500">à {formatTime(event.data.creationDate)}</span>
+        </p>
+      </div>
+      <div className="flex items-center justify-center gap-2">
+        <ReportEventIcon action={event.data.action} />
+      </div>
+      <div className="flex flex-col p-2">
+        {event.data.action}
         {event.user && (
-          <div>
-            <Icon sx={combineSx(sxUtils.inlineIcon, {color: t => t.palette.text.secondary})}>person</Icon>
+          <div className="text-sm text-gray-500">
+            <Icon className="!text-sm">person</Icon>
             &nbsp;
-            {event.user.firstName} {event.user.lastName} {event.user.role}
+            <span className="">
+              {event.user.firstName} {event.user.lastName} {event.user.role}
+            </span>
           </div>
         )}
-        <Box sx={{color: t => t.palette.text.secondary}}>{(event.data.details as any)?.description}</Box>
-      </Box>
-    </Box>
+        <p className="text-sm text-gray-500">{(event.data.details as any)?.description}</p>
+      </div>
+    </div>
   )
 }
