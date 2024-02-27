@@ -103,7 +103,7 @@ export const ReportsPro = ({reportType = 'open'}: ReportsProProps) => {
   const {isMobileWidth} = useLayoutContext()
   const columns = ReportColumns({reportType, isMobileWidth, css})
   const history = useHistory()
-  const {formatDate, m} = useI18n()
+  const {m} = useI18n()
 
   const hasFilters = useMemo(() => {
     const {limit, offset, ...values} = _reports.filters
@@ -305,7 +305,7 @@ export const ReportsPro = ({reportType = 'open'}: ReportsProProps) => {
 
             <Panel>
               <Datatable<ReportSearchResult>
-                id={reportType === 'open' ? 'open-reports' : 'closed-reports'}
+                id={reportType === 'open' ? 'opened-reports' : 'closed-reports'}
                 paginate={{
                   minRowsBeforeDisplay: minRowsBeforeDisplayFilters,
                   offset: _reports.filters.offset,
