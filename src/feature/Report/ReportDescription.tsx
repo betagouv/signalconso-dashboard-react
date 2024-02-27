@@ -6,7 +6,7 @@ import {useLogin} from '../../core/context/LoginContext'
 import {useI18n} from '../../core/i18n'
 import {Id} from '../../core/model'
 import {GetReportQueryKeys} from '../../core/queryhooks/reportQueryHooks'
-import {ReportFileDeleteButton} from './File/ReportFileDownloadAllButton'
+import {ReportFileDownloadAllButton} from './File/ReportFileDownloadAllButton'
 import {ReportFiles} from './File/ReportFiles'
 
 export function ReportDetails({report}: {report: Report}) {
@@ -36,7 +36,7 @@ export function ReportFilesFull({files, report}: {files: UploadedFile[] | undefi
       <div className="flex flex-row items-baseline">
         <h2 className="font-bold">{m.attachedFiles}</h2>
         {files && files.filter(_ => _.origin === FileOrigin.Consumer).length > 1 && (
-          <ReportFileDeleteButton report={report} fileOrigin={FileOrigin.Consumer} />
+          <ReportFileDownloadAllButton report={report} fileOrigin={FileOrigin.Consumer} />
         )}
       </div>
       <ReportFiles

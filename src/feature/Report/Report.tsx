@@ -54,12 +54,12 @@ export const ReportComponent = () => {
   const _getCompanyEvents = useGetCompanyEventsQuery(_getReport.data?.report.companySiret!, {
     enabled: !!_getReport.data?.report.companySiret,
   })
-  const _getReportEvents = useGetReportEventsQuery(id)
-
-  const response = useMemo(
-    () => _getReportEvents.data?.find(_ => _.data.action === EventActionValues.ReportProResponse),
-    [_getReportEvents.data],
-  )
+  const {
+    reportEvents,
+    responseEvent,
+    refetch: refetchReportEvents,
+    isLoading: reportEventsIsLoading,
+  } = useGetReportEventsQuery(id)
 
   const downloadReport = useMutation({mutationFn: (id: Id) => apiSdk.secured.reports.download([id])})
   const generateConsumerNotificationAsPDF = useMutation({mutationFn: apiSdk.secured.reports.generateConsumerNotificationAsPDF})
@@ -89,7 +89,7 @@ export const ReportComponent = () => {
                 )}
 
               {connectedUser.isAdmin && report.status !== ReportStatus.PromesseAction && (
-                <ReportAdminResolution label={m.administratorAction} report={report} onAdd={() => _getReportEvents.refetch()}>
+                <ReportAdminResolution label={m.administratorAction} report={report} onAdd={() => refetchReportEvents()}>
                   <Tooltip title={m.administratorAction}>
                     <Btn color="primary" icon="add_comment">
                       {m.administratorAction}
@@ -119,7 +119,7 @@ export const ReportComponent = () => {
                 actionType={EventActionValues.Comment}
                 label={m.addDgccrfComment}
                 report={report}
-                onAdd={() => _getReportEvents.refetch()}
+                onAdd={refetchReportEvents}
               >
                 <Tooltip title={m.addDgccrfComment}>
                   <Btn color="primary" icon="add_comment">
@@ -133,7 +133,7 @@ export const ReportComponent = () => {
                   actionType={EventActionValues.Control}
                   label={m.markDgccrfControlDone}
                   report={report}
-                  onAdd={() => _getReportEvents.refetch()}
+                  onAdd={refetchReportEvents}
                 >
                   <Tooltip title={m.markDgccrfControlDone}>
                     <Btn color="primary" icon="add_comment">
@@ -182,7 +182,7 @@ export const ReportComponent = () => {
             <Divider margin />
             <ReportFilesFull files={_getReport.data?.files} {...{report}} />
           </div>
-          <Panel loading={_getReportEvents.isLoading}>
+          <Panel loading={reportEventsIsLoading}>
             <>
               <Tabs
                 sx={{
@@ -198,19 +198,21 @@ export const ReportComponent = () => {
                 <Tab label={m.companyHistory} />
               </Tabs>
               <ReportTabPanel value={activeTab} index={0}>
-                <ReportResponseComponent
-                  canEditFile
-                  report={report}
-                  response={response?.data}
-                  consumerReportReview={_getReviewOnReportResponse.data}
-                  files={_getReport.data?.files.filter(_ => _.origin === FileOrigin.Professional)}
-                />
+                <div className="p-4">
+                  {responseEvent && (
+                    <ReportResponseComponent
+                      canEditFile
+                      report={report}
+                      response={responseEvent?.data}
+                      consumerReportReview={_getReviewOnReportResponse.data}
+                      files={_getReport.data?.files.filter(_ => _.origin === FileOrigin.Professional)}
+                    />
+                  )}
+                </div>
               </ReportTabPanel>
               <ReportTabPanel value={activeTab} index={1}>
                 <ReportEvents
-                  events={
-                    _getReportEvents.isLoading ? undefined : [creationReportEvent(report), ...(_getReportEvents.data ?? [])]
-                  }
+                  events={reportEventsIsLoading ? undefined : [creationReportEvent(report), ...(reportEvents ?? [])]}
                 />
               </ReportTabPanel>
               <ReportTabPanel value={activeTab} index={2}>

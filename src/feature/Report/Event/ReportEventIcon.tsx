@@ -3,7 +3,7 @@ import {styleUtils} from '../../../core/theme'
 import {EventActionValues} from '../../../core/client/event/Event'
 import {fnSwitch} from '../../../alexlibs/ts-utils'
 
-export interface ReportEventIconProps extends IconProps {
+export interface ReportEventIconProps {
   action: EventActionValues
 }
 
@@ -48,11 +48,7 @@ export const getReportEventColor = (t: Theme) => (action: EventActionValues) =>
     _ => t.palette.text.disabled,
   )
 
-export const ReportEventIcon = ({action, ...props}: ReportEventIconProps) => {
+export const ReportEventIcon = ({action}: ReportEventIconProps) => {
   const theme = useTheme()
-  return (
-    <Icon {...props} style={{color: getReportEventColor(theme)(action)}}>
-      {getReportEventIcon(action)}
-    </Icon>
-  )
+  return <Icon style={{color: getReportEventColor(theme)(action)}}>{getReportEventIcon(action)}</Icon>
 }
