@@ -58,6 +58,11 @@ export enum EventActionValues {
   ConsumerAttachments = 'Ajout de pièces jointes fournies par le consommateur',
   ProfessionalAttachments = "Ajout de pièces jointes fournies par l'entreprise",
   Control = 'Contrôle effectué',
+  ConsumerThreatenByProReportDeletion = 'ConsumerThreatenByProReportDeletion',
+  RefundBlackMailReportDeletion = 'RefundBlackMailReportDeletion',
+  OtherReasonDeleteRequestReportDeletion = 'OtherReasonDeleteRequestReportDeletion',
+  SolvedContractualDisputeReportDeletion = 'SolvedContractualDisputeReportDeletion',
+  ReportReOpenedByAdmin = 'ReportReOpenedByAdmin',
 }
 
 export interface ReportResponse {
