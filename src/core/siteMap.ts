@@ -14,7 +14,7 @@ export const siteMap = {
     reportedPhone: `/suivi-des-telephones`,
     reports: (_?: Partial<ReportSearch>) => `/suivi-des-signalements` + (_ ? toQueryString(mapDatesToQueryString(_)) : ``),
     reportsfiltred: {
-      closed:`/suivi-des-signalements/clotures`,
+      closed: `/suivi-des-signalements-clotures`,
     },
     subscriptions: `/abonnements`,
     report: (id: Id = `:id`) => `/suivi-des-signalements/report/${id}`,

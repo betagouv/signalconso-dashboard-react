@@ -100,7 +100,6 @@ export const ReportColumns = ({reportType, isMobileWidth, css}: ReportTableColum
             render: (report: ReportSearchResult) =>
               report.consumerReview && <ConsumerReviewLabel evaluation={report.consumerReview.evaluation} />,
           },
-         
         ]
 
   return [...baseColumns, ...specificColumns]
