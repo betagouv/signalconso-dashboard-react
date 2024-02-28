@@ -1,33 +1,31 @@
-import {Page, PageTitle} from '../../shared/Page'
-import React from 'react'
-import {useI18n} from '../../core/i18n'
-import {SubscriptionCard} from './SubscriptionCard'
-import {Alert} from '../../alexlibs/mui-extension'
 import {Box, Icon, LinearProgress} from '@mui/material'
-import {Ripple} from '../../shared/Ripple'
-import {styleUtils} from '../../core/theme'
-import {Animate} from 'alexlibs/mui-extension/Animate'
-import {ListSubscriptionsQueryKeys, useListSubscriptionsQuery} from '../../core/queryhooks/subscriptionQueryHooks'
 import {useMutation, useQueryClient} from '@tanstack/react-query'
+import {Animate} from 'alexlibs/mui-extension/Animate'
+import {Alert} from '../../alexlibs/mui-extension'
 import {useApiContext} from '../../core/context/ApiContext'
-import {Subscription} from '../../core/client/subscription/Subscription'
+import {useI18n} from '../../core/i18n'
+import {ListSubscriptionsQueryKeys, useListSubscriptionsQuery} from '../../core/queryhooks/subscriptionQueryHooks'
+import {styleUtils} from '../../core/theme'
+import {Page, PageTitle} from '../../shared/Page'
+import {Ripple} from '../../shared/Ripple'
+import {SubscriptionCard} from './SubscriptionCard'
 
 export const Subscriptions = () => {
   const {m} = useI18n()
   const _subscriptions = useListSubscriptionsQuery()
   const {api} = useApiContext()
   const queryClient = useQueryClient()
+
   const _createSubscription = useMutation({
     mutationFn: () => api.secured.subscription.create(),
     onSuccess: data => {
-      queryClient.setQueryData(ListSubscriptionsQueryKeys, (prev: Subscription[]) => [data, ...prev])
+      queryClient.invalidateQueries({queryKey: ListSubscriptionsQueryKeys})
     },
   })
 
   return (
     <Page>
       <PageTitle>{m.menu_subscriptions}</PageTitle>
-
       <Alert id="subscriptions-info" type="info" deletable sx={{mb: 2}}>
         <div dangerouslySetInnerHTML={{__html: m.subscriptionsAlertInfo}} />
       </Alert>
