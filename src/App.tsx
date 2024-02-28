@@ -4,7 +4,7 @@ import {ApiProvider} from 'core/context/ApiContext'
 import {LoginForm} from 'feature/Login/LoginForm'
 import {RegisterForm} from 'feature/Login/RegisterForm'
 import {WelcomePage} from 'feature/Login/WelcomePage'
-import {useEffect} from 'react'
+import {useEffect, useMemo} from 'react'
 import {useHistory, useParams} from 'react-router'
 import {BrowserRouter, HashRouter, Redirect, Route, Switch} from 'react-router-dom'
 import {ToastProvider} from './alexlibs/mui-extension'
@@ -46,6 +46,7 @@ import {Login} from './shared/Login'
 import {Provide} from './shared/Provide'
 import './style.css'
 import {UpdateEmail} from './feature/Settings/UpdateEmail'
+import {queryClient, setQueryClientErrorHandler} from 'queryClient'
 
 const Router: typeof HashRouter = config.useHashRouter ? HashRouter : BrowserRouter
 
@@ -68,7 +69,11 @@ export const App = () => {
 
 const AppLogin = () => {
   const history = useHistory()
-  const queryClient = new QueryClient()
+  const {toastError} = useToast()
+
+  useEffect(() => {
+    setQueryClientErrorHandler(toastError)
+  }, [toastError])
 
   const onLogout = () => {
     apiPublicSdk.authenticate.logout().then(_ => history.push('/'))
@@ -139,37 +144,9 @@ const AppLogin = () => {
 }
 
 const AppLogged = () => {
-  const {apiSdk, connectedUser, logout} = useLogin()
+  const {apiSdk, connectedUser} = useLogin()
   const history = useHistory()
-  const {toastError} = useToast()
 
-  const MAX_RETRIES = 3
-  const HTTP_STATUS_TO_NOT_RETRY: (string | number)[] = [400, 401, 403, 404]
-  const queryClient = new QueryClient({
-    defaultOptions: {
-      queries: {
-        retry: (failureCount, error) => {
-          if (failureCount > MAX_RETRIES) {
-            return false
-          }
-
-          return !(error instanceof ApiError && HTTP_STATUS_TO_NOT_RETRY.includes(error.details.code))
-        },
-      },
-    },
-    queryCache: new QueryCache({
-      onError: (error, query) => {
-        if (query.queryKey.includes('reports_getReviewOnReportResponse')) return
-        toastError(error)
-      },
-    }),
-    mutationCache: new MutationCache({
-      onError: (error, _variables, _context, mutation) => {
-        if (mutation.options.onError) return
-        toastError(error)
-      },
-    }),
-  })
   useEffect(
     () =>
       history.listen(_ => {
@@ -179,9 +156,7 @@ const AppLogged = () => {
   )
 
   return (
-    <Provide
-      providers={[_ => <QueryClientProvider client={queryClient} children={_} />, _ => <ApiProvider api={apiSdk} children={_} />]}
-    >
+    <Provide providers={[_ => <ApiProvider api={apiSdk} children={_} />]}>
       <Switch>
         <Route path={siteMap.logged.tools} component={Tools} />
         <Route path={siteMap.logged.reportedWebsites} component={ReportedWebsites} />

@@ -1,10 +1,8 @@
-import {UseQueryOpts} from './types'
-import {useApiContext} from '../context/ApiContext'
 import {useQuery} from '@tanstack/react-query'
-import {Subscription} from '../client/subscription/Subscription'
+import {useApiContext} from '../context/ApiContext'
 
 export const ListSubscriptionsQueryKeys = ['subscription_list']
-export const useListSubscriptionsQuery = (options?: UseQueryOpts<Subscription[], string[]>) => {
+export const useListSubscriptionsQuery = () => {
   const {api} = useApiContext()
-  return useQuery({queryKey: ListSubscriptionsQueryKeys, queryFn: api.secured.subscription.list, ...options})
+  return useQuery({queryKey: ListSubscriptionsQueryKeys, queryFn: api.secured.subscription.list})
 }
