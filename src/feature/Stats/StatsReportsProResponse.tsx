@@ -1,9 +1,8 @@
-import {useTheme} from '@mui/material'
 import {AsyncLineChart, toPercentage} from 'shared/Chart/LineChartWrappers'
+import {CleanWidePanel} from 'shared/Panel/simplePanels'
 import {Txt} from '../../alexlibs/mui-extension'
 import {useLogin} from '../../core/context/LoginContext'
 import {useI18n} from '../../core/i18n'
-import {Panel, PanelBody, PanelHead} from '../../shared/Panel'
 
 export const StatsReportsProResponsePanel = () => {
   const {apiSdk: api} = useLogin()
@@ -37,12 +36,12 @@ export const StatsReportsProResponsePanel = () => {
     ]
   }
   return (
-    <Panel>
-      <PanelHead>{m.reportsProResponseType}</PanelHead>
-      <PanelBody>
+    <CleanWidePanel>
+      <h2 className="font-bold text-xl mb-2">{m.reportsProResponseType}</h2>
+      <div>
         <Txt color="hint" gutterBottom block dangerouslySetInnerHTML={{__html: m.reportsProResponseTypeDesc}} />
         <AsyncLineChart {...{loadCurves}} />
-      </PanelBody>
-    </Panel>
+      </div>
+    </CleanWidePanel>
   )
 }

@@ -6,6 +6,7 @@ import {useI18n} from '../../core/i18n'
 import {Panel, PanelBody, PanelHead} from '../../shared/Panel'
 import {CountByDate} from '../../core/client/stats/Stats'
 import {ReportTag} from '../../core/client/report/Report'
+import {CleanWidePanel} from 'shared/Panel/simplePanels'
 
 const computeCurveReportPhysique = ({
   all,
@@ -79,12 +80,12 @@ export const StatsReportsCurvePanel = () => {
     ]
   }
   return (
-    <Panel>
-      <PanelHead>{m.reportsDivision}</PanelHead>
-      <PanelBody>
+    <CleanWidePanel>
+      <div className="font-bold text-xl mb-2">{m.reportsDivision}</div>
+      <div>
         <Txt color="hint" gutterBottom block dangerouslySetInnerHTML={{__html: m.reportsDivisionDesc}} />
         <AsyncLineChart {...{loadCurves}} smallFontYAxis />
-      </PanelBody>
-    </Panel>
+      </div>
+    </CleanWidePanel>
   )
 }

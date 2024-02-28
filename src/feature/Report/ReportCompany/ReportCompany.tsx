@@ -13,6 +13,7 @@ import {ScButton} from '../../../shared/Button'
 import {ReportInfluencer} from '../ReportInfluencer'
 import {SelectReportAssociation} from '../SelectReportAssociation'
 import {useLogin} from '../../../core/context/LoginContext'
+import {CleanDiscreetPanel, CleanWidePanel} from 'shared/Panel/simplePanels'
 
 interface Props {
   report: Report
@@ -25,18 +26,8 @@ export const ReportCompany = ({report, canEdit}: Props) => {
 
   const {websiteURL, vendor, companyAddress, companyId, companyName, companyBrand, companySiret, phone, influencer} = report
   return (
-    <Panel stretch>
-      <PanelHead
-        action={
-          canEdit && (
-            <SelectReportAssociation reportId={report.id} currentSiret={companySiret} currentCountry={companyAddress.country}>
-              <ScButton icon="edit" color="primary">
-                {m.edit}
-              </ScButton>
-            </SelectReportAssociation>
-          )
-        }
-      >
+    <CleanDiscreetPanel>
+      <div className="flex items-center justify-between">
         <div className="">
           <WithInlineIcon icon="store">
             {m.company}{' '}
@@ -47,7 +38,14 @@ export const ReportCompany = ({report, canEdit}: Props) => {
             )}
           </WithInlineIcon>
         </div>
-      </PanelHead>
+        {canEdit && (
+          <SelectReportAssociation reportId={report.id} currentSiret={companySiret} currentCountry={companyAddress.country}>
+            <ScButton icon="edit" color="primary">
+              {m.edit}
+            </ScButton>
+          </SelectReportAssociation>
+        )}
+      </div>
       <PanelBody className="flex justify-between">
         <div>
           {companySiret && <div className="mb-1">{companySiret}</div>}
@@ -68,7 +66,7 @@ export const ReportCompany = ({report, canEdit}: Props) => {
           {influencer && <InfluencerBlock {...{influencer}} />}
         </div>
       </PanelBody>
-    </Panel>
+    </CleanDiscreetPanel>
   )
 }
 

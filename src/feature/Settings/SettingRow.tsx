@@ -12,14 +12,12 @@ interface Props {
 export const SettingRow = ({title, description, icon, children}: Props) => {
   return (
     <Box
+      className="border-b-[1px] border-solid border-0 border-gray-400 last:border-b-0"
       sx={{
         py: 1.5,
         px: 2,
         display: 'flex',
         alignItems: 'center',
-        '&:not(:last-of-type)': {
-          borderBottom: t => '1px solid ' + t.palette.divider,
-        },
       }}
     >
       <Icon

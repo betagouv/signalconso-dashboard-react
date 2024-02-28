@@ -28,6 +28,7 @@ import {ReportHeader} from './ReportHeader'
 import {ReportPostAction} from './ReportPostAction'
 import {ReportReOpening} from './ReportReOpening'
 import {ReportResponseComponent} from './ReportResponse'
+import {CleanDiscreetPanel} from 'shared/Panel/simplePanels'
 
 const CONSO: EventType = 'CONSO'
 
@@ -155,7 +156,7 @@ export const ReportComponent = () => {
             </Box>
           </ReportHeader>
           {!report.visibleToPro && (
-            <div className="bg-yellow-100  border border-gray-700 mx-2 p-4 mb-4">
+            <div className="bg-yellow-100  border border-gray-700 mx-4 p-4 mb-4">
               <h3 className="font-bold">
                 <WithInlineIcon icon="visibility_off">Signalement confidentiel</WithInlineIcon>
               </h3>
@@ -164,28 +165,25 @@ export const ReportComponent = () => {
               L'entreprise <span className="font-bold">ne sait même pas que ce signalement existe</span>. Ne pas lui divulguer.
             </div>
           )}
-          <Grid container spacing={2} alignItems="stretch">
-            <Grid item xs={12} sm={6}>
-              <ReportConsumer report={report} canEdit={connectedUser.isAdmin} />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <ReportCompany report={report} canEdit={connectedUser.isAdmin} />
-            </Grid>
-          </Grid>
+          <div className="grid lg:grid-cols-2 gap-4 ">
+            <ReportConsumer report={report} canEdit={connectedUser.isAdmin} />
+            <ReportCompany report={report} canEdit={connectedUser.isAdmin} />
+          </div>
 
           {_getReport.data?.report.barcodeProductId && (
             <ReportBarcodeProduct barcodeProductId={_getReport.data.report.barcodeProductId} />
           )}
 
-          <div className="border border-solid border-gray-300 rounded p-4 mb-4">
+          <CleanDiscreetPanel>
             <ReportDetails {...{report}} />
             <Divider margin />
             <ReportFilesFull files={_getReport.data?.files} {...{report}} />
-          </div>
-          <Panel loading={reportEventsIsLoading}>
+          </CleanDiscreetPanel>
+          <CleanDiscreetPanel loading={reportEventsIsLoading} noPaddingTop>
             <>
               <Tabs
                 sx={{
+                  paddingTop: 0,
                   borderBottom: t => '1px solid ' + t.palette.divider,
                 }}
                 value={activeTab}
@@ -219,7 +217,7 @@ export const ReportComponent = () => {
                 <ReportEvents events={_getCompanyEvents.isLoading ? undefined : _getCompanyEvents.data ?? []} />
               </ReportTabPanel>
             </>
-          </Panel>
+          </CleanDiscreetPanel>
         </>
       ))}
     </Page>

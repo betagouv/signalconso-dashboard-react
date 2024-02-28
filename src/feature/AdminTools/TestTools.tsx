@@ -1,11 +1,11 @@
 import {Box, Icon} from '@mui/material'
+import {useQuery} from '@tanstack/react-query'
+import {CleanWidePanel} from 'shared/Panel/simplePanels'
 import {Alert, IconBtn, Txt} from '../../alexlibs/mui-extension'
 import {useAsync, useEffectFn} from '../../alexlibs/react-hooks-lib'
 import {useLogin} from '../../core/context/LoginContext'
 import {useI18n} from '../../core/i18n'
 import {useToast} from '../../core/toast'
-import {Panel, PanelBody, PanelHead} from '../../shared/Panel'
-import {useQuery} from '@tanstack/react-query'
 
 export const TestTools = () => {
   const {m} = useI18n()
@@ -36,11 +36,11 @@ export const TestTools = () => {
   useEffectFn(_downloadTestPdf.error, toastError)
 
   return (
-    <div className="flex justify-center gap-4 mx-auto mt-10">
-      <div className="w-full max-w-lg">
-        <Panel loading={_emailCodes.isLoading}>
-          <PanelHead>{m.sendDummyEmail}</PanelHead>
-          <PanelBody>
+    <div className="flex flex-row items-start justify-center gap-4 mx-auto mt-10">
+      {!_emailCodes.isLoading && (
+        <CleanWidePanel>
+          <h2 className="font-bold mb-2 text-xl">{m.sendDummyEmail}</h2>
+          <div>
             <Alert type="info" gutterBottom>
               <div dangerouslySetInnerHTML={{__html: m.allMailsWillBeSendTo(connectedUser.email)}} />
             </Alert>
@@ -96,13 +96,13 @@ export const TestTools = () => {
                   ))}
                 </Box>
               ))}
-          </PanelBody>
-        </Panel>
-      </div>
-      <div className="w-full max-w-lg mx-auto">
-        <Panel loading={_pdfCodes.isLoading}>
-          <PanelHead>{m.downloadDummyPdfs}</PanelHead>
-          <PanelBody>
+          </div>
+        </CleanWidePanel>
+      )}
+      {!_pdfCodes.isLoading && (
+        <CleanWidePanel>
+          <h2 className="font-bold text-lg mb-2">{m.downloadDummyPdfs}</h2>
+          <div>
             {_pdfCodes.data && (
               <Box sx={{mt: 3, mb: 4}}>
                 {_pdfCodes.data.map(code => {
@@ -141,9 +141,9 @@ export const TestTools = () => {
                 })}
               </Box>
             )}
-          </PanelBody>
-        </Panel>
-      </div>
+          </div>
+        </CleanWidePanel>
+      )}
     </div>
   )
 }
