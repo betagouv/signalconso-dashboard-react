@@ -19,11 +19,7 @@ export const ScSidebar = ({connectedUser, logout}: {connectedUser: UserWithPermi
     }
   }
   return (
-    <Sidebar
-      sx={{
-        width: '250px',
-      }}
-    >
+    <Sidebar>
       {' '}
       <Box
         sx={{
@@ -60,12 +56,12 @@ export const ScSidebar = ({connectedUser, logout}: {connectedUser: UserWithPermi
         </SidebarItem>
       )}
       {[Roles.Pro].includes(connectedUser.role) && (
-        <SidebarItem onClick={closeSidebar} to={path(siteMap.logged.reportsfiltred.open())} icon={EntityIcon.report}>
+        <SidebarItem onClick={closeSidebar} to={path(siteMap.logged.reports())} icon={EntityIcon.report}>
           {m.menu_open_reports}
         </SidebarItem>
       )}
       {[Roles.Pro].includes(connectedUser.role) && (
-        <SidebarItem onClick={closeSidebar} to={path(siteMap.logged.reportsfiltred.closed())} icon={EntityIcon.report}>
+        <SidebarItem onClick={closeSidebar} to={path(siteMap.logged.reportsfiltred.closed)} icon={EntityIcon.report}>
           {m.menu_closed_report}
         </SidebarItem>
       )}

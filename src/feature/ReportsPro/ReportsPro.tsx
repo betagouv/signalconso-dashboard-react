@@ -90,7 +90,7 @@ interface ReportsProProps {
   reportType: 'open' | 'closed'
 }
 
-export const ReportsPro = ({reportType = 'open'}: ReportsProProps) => {
+export const ReportsPro = ({reportType}: ReportsProProps) => {
   const queryString = useQueryString<Partial<ReportSearch>, Partial<ReportFiltersQs>>({
     toQueryString: mapDatesToQueryString,
     fromQueryString: compose(mapDateFromQueryString, mapArrayFromQuerystring(['status', 'siretSirenList', 'departments'])),
@@ -103,7 +103,7 @@ export const ReportsPro = ({reportType = 'open'}: ReportsProProps) => {
   const {isMobileWidth} = useLayoutContext()
   const columns = ReportColumns({reportType, isMobileWidth, css})
   const history = useHistory()
-  const {m} = useI18n()
+  const {formatDate, m} = useI18n()
 
   const hasFilters = useMemo(() => {
     const {limit, offset, ...values} = _reports.filters

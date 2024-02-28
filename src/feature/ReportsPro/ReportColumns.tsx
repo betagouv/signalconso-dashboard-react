@@ -90,16 +90,17 @@ export const ReportColumns = ({reportType, isMobileWidth, css}: ReportTableColum
             render: (report: ReportSearchResult) => formatDate(report.report.creationDate),
           },
           {
+            id: 'proResponse',
+            head: 'Réponse Professionnelle',
+            render: (report: ReportSearchResult) => <ReportResponseDetails details={report.professionalResponse?.details} />,
+          },
+          {
             id: 'avisConso',
             head: 'Avis Consommateur',
             render: (report: ReportSearchResult) =>
               report.consumerReview && <ConsumerReviewLabel evaluation={report.consumerReview.evaluation} />,
           },
-          {
-            id: 'proResponse',
-            head: 'Réponse Professionnelle',
-            render: (report: ReportSearchResult) => <ReportResponseDetails details={report.professionalResponse?.details} />,
-          },
+         
         ]
 
   return [...baseColumns, ...specificColumns]

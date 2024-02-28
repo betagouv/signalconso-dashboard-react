@@ -186,16 +186,12 @@ const AppLogged = () => {
         <Route path={siteMap.logged.tools} component={Tools} />
         <Route path={siteMap.logged.reportedWebsites} component={ReportedWebsites} />
         <Route path={siteMap.logged.reportedPhone} component={ReportedPhones} />
+        <Route
+          path={siteMap.logged.reportsfiltred.closed}
+          component={ () => <ReportsPro reportType="closed" />}
+        />
         <Route path={siteMap.logged.report()} component={connectedUser.isPro ? ReportPro : ReportComponent} />
-        <Route
-          path={siteMap.logged.reportsfiltred.open()}
-          component={connectedUser.isPro ? () => <ReportsPro reportType="open" /> : ReportsPro}
-        />
-        <Route
-          path={siteMap.logged.reportsfiltred.closed()}
-          component={connectedUser.isPro ? () => <ReportsPro reportType="closed" /> : ReportsPro}
-        />
-        <Route path={siteMap.logged.reports()} component={connectedUser.isPro ? ReportsPro : Reports} />
+        <Route path={siteMap.logged.reports()} component={connectedUser.isPro ?() =>  <ReportsPro reportType="open"/> : Reports} />
         <Route path={siteMap.logged.users} component={Users} />
         <Route path={siteMap.logged.companies} component={Companies} />
         <Route path={siteMap.logged.companyAccesses()} component={CompanyAccesses} />
@@ -205,11 +201,11 @@ const AppLogged = () => {
         <Route path={siteMap.logged.joinInformation} component={JoinNewsletter} />
         <Route path={siteMap.logged.updateEmail(':token')} component={UpdateEmail} />
         <Route path={siteMap.logged.settings} component={Settings} />
-        <Route path={siteMap.logged.modeEmploiDGCCRF} component={connectedUser.isPro ? ReportsPro : ModeEmploiDGCCRF} />
+        <Route path={siteMap.logged.modeEmploiDGCCRF} component={connectedUser.isPro ? () => null : ModeEmploiDGCCRF} />
         <Route path={siteMap.logged.stats} component={Stats} />
         <Route path={siteMap.loggedout.register} component={AddCompanyForm} />
         <Redirect from="/" to={siteMap.logged.reports()} />
-      </Switch>
+      </Switch> 
     </Provide>
   )
 }
