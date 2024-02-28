@@ -12,7 +12,6 @@ import {GetReportEventsQueryKeys, useGetReportEventsQuery} from '../../core/quer
 import {GetReportQueryKeys, useGetReportQuery, useGetReviewOnReportResponseQuery} from '../../core/queryhooks/reportQueryHooks'
 import {ScButton} from '../../shared/Button'
 import {Page} from '../../shared/Page'
-import {Panel, PanelHead} from '../../shared/Panel'
 import {ReportEvents} from './Event/ReportEvents'
 import {creationReportEvent} from './Report'
 import {ReportDetails, ReportFilesFull} from './ReportDescription'
@@ -20,6 +19,7 @@ import {ExpirationDate} from './ReportHeader'
 import {ReportInfluencer} from './ReportInfluencer'
 import {ReportResponseComponent} from './ReportResponse'
 import {ReportResponseForm} from './ReportResponseForm/ReportResponseForm'
+import {CleanWidePanel} from 'shared/Panel/simplePanels'
 
 export const ReportPro = () => {
   const {id} = useParams<{id: Id}>()
@@ -49,7 +49,7 @@ function ReportProLoaded({report, files}: {report: Report; files: UploadedFile[]
   const hasToRespond = !hasResponse && !isClosed
 
   return (
-    <>
+    <div className="mt-8">
       <ReportBlock {...{scrollToResponse, report, isClosed, hasToRespond}} files={files} />
       {hasResponse && (
         <ResponseBlock {...{report, responseEvent, files}} responseConsumerReview={_getReviewOnReportResponse.data} />
@@ -66,12 +66,12 @@ function ReportProLoaded({report, files}: {report: Report; files: UploadedFile[]
         />
       )}
       {reportEvents && (
-        <div className="p-8 border-solid border border-gray-300 rounded shadow-lg mb-4">
+        <CleanWidePanel>
           <h1 className="font-bold text-3xl mb-8">{m.reportHistory}</h1>
           <ReportEvents events={[creationReportEvent(report), ...reportEvents]} />
-        </div>
+        </CleanWidePanel>
       )}
-    </>
+    </div>
   )
 }
 
@@ -91,7 +91,7 @@ function ReportBlock({
   const {m} = useI18n()
 
   return (
-    <div className="mt-8 p-8 border-solid border border-gray-300 rounded shadow-lg mb-4">
+    <CleanWidePanel>
       <Header {...{report, isClosed, scrollToResponse, hasToRespond}} />
       <div>
         {report.influencer && (
@@ -107,7 +107,7 @@ function ReportBlock({
         <HorizontalLine />
         <Consumer {...{report}} />
       </div>
-    </div>
+    </CleanWidePanel>
   )
 }
 
@@ -125,7 +125,7 @@ function ResponseBlock({
   const {formatDateTime} = useI18n()
 
   return (
-    <div className="border border-gray-300 border-solid rounded shadow-lg mb-4 p-8">
+    <CleanWidePanel>
       <h1 className="font-bold text-3xl">Votre réponse</h1>
       <p className="mb-4">Le {formatDateTime(responseEvent.data.creationDate)}</p>
       <ReportResponseComponent
@@ -135,7 +135,7 @@ function ResponseBlock({
         report={report}
         files={files.filter(_ => _.origin === FileOrigin.Professional)}
       />
-    </div>
+    </CleanWidePanel>
   )
 }
 

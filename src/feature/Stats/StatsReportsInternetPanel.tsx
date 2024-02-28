@@ -10,6 +10,7 @@ import {styleUtils} from '../../core/theme'
 import {PanelProps} from '../../shared/Panel/Panel'
 import {ReportTag} from '../../core/client/report/Report'
 import {ApiError} from '../../core/client/ApiClient'
+import {CleanWidePanel} from 'shared/Panel/simplePanels'
 
 interface AsyncPercent {
   loading: boolean
@@ -111,9 +112,12 @@ export const StatsReportsInternetPanel = () => {
   }, [dates])
 
   return (
-    <Panel loading={asyncPercent.loading || asyncPercentLastMonth.loading}>
-      <PanelHead action={<SelectMonth value={selectedMonth} onChange={setSelectedMonth} />}>{m.statsInternetsTitle}</PanelHead>
-      <PanelBody>
+    <CleanWidePanel loading={asyncPercent.loading || asyncPercentLastMonth.loading}>
+      <div className="flex justify-between items-center mb-2">
+        <h2 className="text-xl font-bold">{m.statsInternetsTitle}</h2>
+        <SelectMonth value={selectedMonth} onChange={setSelectedMonth} />
+      </div>
+      <div>
         {asyncPercent.value && asyncPercentLastMonth.value && (
           <div style={{display: 'flex', flexWrap: 'wrap', justifyContent: 'space-around', alignItems: 'center'}}>
             <StatsCard
@@ -152,8 +156,8 @@ export const StatsReportsInternetPanel = () => {
             </Box>
           </div>
         )}
-      </PanelBody>
-    </Panel>
+      </div>
+    </CleanWidePanel>
   )
 }
 

@@ -4,6 +4,7 @@ import {Alert, Txt} from '../../alexlibs/mui-extension'
 import {useLogin} from '../../core/context/LoginContext'
 import {useI18n} from '../../core/i18n'
 import {Panel, PanelBody, PanelHead} from '../../shared/Panel'
+import {CleanWidePanel} from 'shared/Panel/simplePanels'
 
 export const StatsReportsProProcessedPanel = () => {
   const {apiSdk: api} = useLogin()
@@ -28,15 +29,15 @@ export const StatsReportsProProcessedPanel = () => {
   }
 
   return (
-    <Panel>
-      <PanelHead>{m.reportsProProcessed}</PanelHead>
-      <PanelBody>
+    <CleanWidePanel>
+      <h2 className="font-bold text-xl mb-2">{m.reportsProProcessed}</h2>
+      <div>
         <Txt color="hint" gutterBottom block dangerouslySetInnerHTML={{__html: m.reportsProProcessedDesc}} />
         <AsyncLineChart {...{loadCurves}} />
         <Alert type="info" gutterTop>
           {m.reportsProProcessedInfo}
         </Alert>
-      </PanelBody>
-    </Panel>
+      </div>
+    </CleanWidePanel>
   )
 }

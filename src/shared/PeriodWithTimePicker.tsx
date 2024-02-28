@@ -37,6 +37,7 @@ export const PeriodWithTimePicker = ({
   return (
     <Box
       {...props}
+      className="gap-4"
       sx={{
         display: 'flex',
         alignItems: 'center',

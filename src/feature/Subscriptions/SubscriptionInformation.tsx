@@ -104,42 +104,42 @@ export const SubscriptionInformation = ({outdatedCategories, subscription}: Subs
 
   if (allInactiveCategories) {
     return (
-      <Alert severity="error" sx={{ml: 4, mr: 4}}>
+      <Alert severity="error">
         Cet abonnement ne s'applique que sur des catégories ne pouvant plus faire l'objet de signalements. Vous ne recevrez donc
         aucun email. Vous pouvez le supprimer ou le mettre à jour.
       </Alert>
     )
   } else if (someInactiveCategories.length > 0) {
     return (
-      <Alert severity="warning" sx={{ml: 4, mr: 4}}>
+      <Alert severity="warning">
         Cet abonnement est actif mais s'applique sur {someInactiveCategories.length} catégorie(s) ne pouvant plus faire l'objet de
         signalements ({someInactiveCategories.join(', ')}). Mettez le à jour pour supprimer ces catégories.
       </Alert>
     )
   } else if (allInactiveTags) {
     return (
-      <Alert severity="error" sx={{ml: 4, mr: 4}}>
+      <Alert severity="error">
         Cet abonnement ne s'applique que sur des tags ne pouvant plus faire l'objet de signalements. Vous ne recevrez donc aucun
         email. Vous pouvez le supprimer ou le mettre à jour.
       </Alert>
     )
   } else if (someInactiveTags.length > 0) {
     return (
-      <Alert severity="warning" sx={{ml: 4, mr: 4}}>
+      <Alert severity="warning">
         Cet abonnement est actif mais s'applique sur {someInactiveTags.length} tag(s) ne pouvant plus faire l'objet de
         signalements ({someInactiveTags.join(', ')}). Mettez le à jour pour supprimer ces tags.
       </Alert>
     )
   } else if (countryAndDepartementAtTheSameTime) {
     return (
-      <Alert severity="error" sx={{ml: 4, mr: 4}}>
+      <Alert severity="error">
         Un abonnement ne peut pas s'appliquer à la fois sur un département français et sur un pays étranger. Vous ne recevrez
         aucun email si vous le modifiez pas.
       </Alert>
     )
   } else {
     return (
-      <Alert severity="info" sx={{ml: 4, mr: 4}}>
+      <Alert severity="info">
         Vous recevrez un email <b>{frequency}</b> concernant tout nouveau signalement{all}
       </Alert>
     )

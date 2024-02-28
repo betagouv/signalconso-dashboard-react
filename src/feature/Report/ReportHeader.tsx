@@ -10,6 +10,7 @@ import {useI18n} from '../../core/i18n'
 import {makeSx} from '../../alexlibs/mui-extension'
 import {Report} from '../../core/client/report/Report'
 import {ReportCategories} from './ReportCategories'
+import {CleanDiscreetPanel, CleanWidePanel} from 'shared/Panel/simplePanels'
 
 const css = makeSx({
   root: {
@@ -82,37 +83,25 @@ export const ExpirationDate = ({report, isUserPro}: {report: Report; isUserPro: 
   )
 }
 
-export const ReportHeader = ({report, children, elevated, isUserPro = false}: Props) => {
+export const ReportHeader = ({report, children}: Props) => {
   const {m} = useI18n()
 
-  const hideSiret = !isUserPro
-  const hideTags = isUserPro
+  const hideTags = false
 
   return (
-    <Panel elevation={elevated ? 3 : 0} sx={css.root}>
-      <PanelBody>
-        <Box sx={css.pageTitle}>
-          <div>
-            <Box component="h1" sx={css.pageTitle_txt}>
-              {m.report_pageTitle}
-              {!hideSiret && (
-                <>
-                  &nbsp;
-                  {report.companySiret}
-                </>
-              )}
-            </Box>
-            {!hideSiret && <Box sx={{color: t => t.palette.text.disabled}}>{report.companyName}</Box>}
-            <ExpirationDate {...{report, isUserPro}} />
-          </div>
-          <ReportStatusLabel style={{marginLeft: 'auto'}} status={report.status} />
-        </Box>
+    <CleanDiscreetPanel>
+      <div className="flex items-center justify-between mb-2">
+        <div>
+          <h1 className="text-xl font-bold">{m.report_pageTitle}</h1>
+          <ExpirationDate {...{report}} isUserPro={false} />
+        </div>
+        <ReportStatusLabel style={{marginLeft: 'auto'}} status={report.status} />
+      </div>
 
-        <ExpiresSoonWarning {...{report, isUserPro}} />
-        {!isUserPro && <ReportCategories categories={[m.ReportCategoryDesc[report.category], ...report.subcategories]} />}
-      </PanelBody>
+      <ExpiresSoonWarning {...{report}} isUserPro={false} />
+      <ReportCategories categories={[m.ReportCategoryDesc[report.category], ...report.subcategories]} />
       {(!hideTags || children) && (
-        <PanelFoot sx={css.actions} border>
+        <div className="flex justify-between">
           {!hideTags && (
             <div style={{flex: 1}}>
               {report.tags.map(tag => [
@@ -130,8 +119,8 @@ export const ReportHeader = ({report, children, elevated, isUserPro = false}: Pr
             </div>
           )}
           {children}
-        </PanelFoot>
+        </div>
       )}
-    </Panel>
+    </CleanDiscreetPanel>
   )
 }

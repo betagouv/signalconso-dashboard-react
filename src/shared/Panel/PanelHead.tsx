@@ -1,6 +1,5 @@
-import * as React from 'react'
-import {ReactNode} from 'react'
 import {BoxProps, Divider, Icon} from '@mui/material'
+import {ReactNode} from 'react'
 import {PanelTitle} from './PanelTitle'
 
 interface Props extends BoxProps {
@@ -9,6 +8,7 @@ interface Props extends BoxProps {
   action?: ReactNode
   icon?: string
   bottomDivider?: boolean
+  noPadding?: boolean
 }
 
 export const PanelHead = ({icon, children, action, bottomDivider, sx, ...other}: Props) => {

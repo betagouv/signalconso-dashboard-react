@@ -20,6 +20,7 @@ import {Report} from '../../../core/client/report/Report'
 import {useApiContext} from '../../../core/context/ApiContext'
 import {Id} from '../../../core/model'
 import {useToast} from '../../../core/toast'
+import {CleanWidePanel} from 'shared/Panel/simplePanels'
 
 interface Props {
   report: Report
@@ -71,7 +72,7 @@ export const ReportResponseForm = forwardRef(({report, onConfirm, ...props}: Pro
   }
 
   return (
-    <div ref={ref} className="p-8 border-solid border border-gray-300 rounded shadow-lg mb-4">
+    <CleanWidePanel ref={ref}>
       <h1 className="font-bold text-3xl mb-8">Votre réponse</h1>
       <Stepper activeStep={activeStep} alternativeLabel sx={stepStyles}>
         {steps.map(({label}, index) => {
@@ -176,6 +177,6 @@ export const ReportResponseForm = forwardRef(({report, onConfirm, ...props}: Pro
           </>
         )}
       </PanelFoot>
-    </div>
+    </CleanWidePanel>
   )
 })

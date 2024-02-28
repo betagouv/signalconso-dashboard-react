@@ -3,6 +3,7 @@ import {Id} from '../../core/model'
 import {WithInlineIcon} from '../../shared/WithInlineIcon'
 import {Chip, Tooltip} from '@mui/material'
 import {useGetBarcodeQuery} from '../../core/queryhooks/barcodeQueryHooks'
+import {CleanDiscreetPanel, CleanWidePanel} from 'shared/Panel/simplePanels'
 
 interface ReportBarcodeProductProps {
   barcodeProductId: Id
@@ -28,14 +29,12 @@ export const ReportBarcodeProduct = ({barcodeProductId}: ReportBarcodeProductPro
   const {data} = useGetBarcodeQuery(barcodeProductId)
 
   return (
-    <Panel>
-      <PanelHead>
-        <div className="flex justify-between">
-          <WithInlineIcon icon="shopping_cart">Fiche produit</WithInlineIcon>
-          <Chip label={`Code-barres (GTIN) : ${data?.gtin}`} />
-        </div>
-      </PanelHead>
-      <PanelBody>
+    <CleanDiscreetPanel>
+      <div className="flex justify-between">
+        <WithInlineIcon icon="shopping_cart">Fiche produit</WithInlineIcon>
+        <Chip label={`Code-barres (GTIN) : ${data?.gtin}`} />
+      </div>
+      <div>
         <Row label="Nom du produit" value={data?.productName ?? 'N/A'} />
         <Row label="Marque" value={data?.brandName ?? 'N/A'} />
         <Row label="Conditionnement" value={data?.packaging ?? 'N/A'} />
@@ -52,7 +51,7 @@ export const ReportBarcodeProduct = ({barcodeProductId}: ReportBarcodeProductPro
             </a>
           )}
         </div>
-      </PanelBody>
-    </Panel>
+      </div>
+    </CleanDiscreetPanel>
   )
 }

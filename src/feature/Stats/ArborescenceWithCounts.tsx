@@ -1,17 +1,20 @@
-import React, {useEffect, useState} from 'react'
-import {Panel, PanelBody, PanelHead} from '../../shared/Panel'
-import {PeriodPicker} from '../../shared/PeriodPicker'
-import {DebouncedInput} from '../../shared/DebouncedInput'
-import {ReportNode} from '../../core/client/report/ReportNode'
 import {Badge, Box, Grid, Icon, useTheme} from '@mui/material'
-import {IconBtn, Txt} from '../../alexlibs/mui-extension'
-import {useI18n} from '../../core/i18n'
-import {ScButton} from '../../shared/Button'
-import {Page} from '../../shared/Page'
+import {UseQueryResult} from '@tanstack/react-query'
+import {ApiError} from 'core/client/ApiClient'
 import {parseInt} from 'lodash'
-import {SelectDepartments} from '../../shared/SelectDepartments/SelectDepartments'
+import {useEffect, useState} from 'react'
+import {CleanWidePanel} from 'shared/Panel/simplePanels'
+import {IconBtn, Txt} from '../../alexlibs/mui-extension'
+import {ReportNode, ReportNodes} from '../../core/client/report/ReportNode'
+import {useI18n} from '../../core/i18n'
 import {ActionResultNames, EventCategories, Matomo, StatisticsActions} from '../../core/plugins/Matomo'
 import {useGetCountBySubCategoriesQuery} from '../../core/queryhooks/reportQueryHooks'
+import {ScButton} from '../../shared/Button'
+import {DebouncedInput} from '../../shared/DebouncedInput'
+import {Page} from '../../shared/Page'
+import {PanelBody} from '../../shared/Panel'
+import {PeriodPicker} from '../../shared/PeriodPicker'
+import {SelectDepartments} from '../../shared/SelectDepartments/SelectDepartments'
 
 const compare = (a?: string[], b?: string[]): number => {
   if (!a || !b) return 0
@@ -28,8 +31,6 @@ export const ArborescenceWithCounts = () => {
   const begin = new Date()
   begin.setDate(begin.getDate() - 90)
 
-  const [openAll, setOpenAll] = useState(false)
-  const [openAllForeign, setOpenAllForeign] = useState(false)
   const [start, setStart] = useState<Date | undefined>(begin)
   const [end, setEnd] = useState<Date | undefined>(undefined)
   const [departments, setDepartments] = useState<string[] | undefined>(undefined)
@@ -52,9 +53,9 @@ export const ArborescenceWithCounts = () => {
 
   return (
     <Page>
-      <Panel>
-        <PanelHead>{m.dateFilters}</PanelHead>
-        <PanelBody>
+      <CleanWidePanel>
+        <h2 className="font-bold text-lg mb-2">{m.dateFilters}</h2>
+        <div>
           <Grid container spacing={1}>
             <Grid item sm={6} xs={12}>
               <DebouncedInput<[Date | undefined, Date | undefined]>
@@ -94,51 +95,37 @@ export const ArborescenceWithCounts = () => {
               </ScButton>
             </Badge>
           </Box>
-        </PanelBody>
-      </Panel>
-      <Panel loading={countBySubCategories.isLoading}>
-        <PanelHead>
-          <Box
-            sx={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-            }}
-          >
-            {m.statsCountBySubCategories}
-            <ScButton onClick={() => setOpenAll(!openAll)} variant="contained" color="primary">
-              {m.expandAll}
-            </ScButton>
-          </Box>
-        </PanelHead>
-        <PanelBody>
-          {countBySubCategories.data?.fr.sort(sortById).map(reportNode => (
-            <Node open={openAll} reportNode={reportNode} />
-          ))}
-        </PanelBody>
-      </Panel>
-      <Panel loading={countBySubCategories.isLoading}>
-        <PanelHead>
-          <Box
-            sx={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-            }}
-          >
-            {m.statsCountBySubCategoriesForeign}
-            <ScButton onClick={() => setOpenAllForeign(!openAllForeign)} variant="contained" color="primary">
-              {m.expandAll}
-            </ScButton>
-          </Box>
-        </PanelHead>
-        <PanelBody>
-          {countBySubCategories.data?.en.sort(sortById).map(reportNode => (
-            <Node open={openAllForeign} reportNode={reportNode} />
-          ))}
-        </PanelBody>
-      </Panel>
+        </div>
+      </CleanWidePanel>
+      <LangPanel {...{countBySubCategories}} lang="fr" />
+      <LangPanel {...{countBySubCategories}} lang="en" />
     </Page>
+  )
+}
+
+function LangPanel({
+  countBySubCategories,
+  lang: langKey,
+}: {
+  countBySubCategories: UseQueryResult<ReportNodes, ApiError>
+  lang: 'fr' | 'en'
+}) {
+  const [openAll, setOpenAll] = useState(false)
+  const {m} = useI18n()
+  return (
+    <CleanWidePanel loading={countBySubCategories.isLoading}>
+      <div className="flex justify-between items-center">
+        <h2 className="font-bold">{langKey === 'fr' ? m.statsCountBySubCategories : m.statsCountBySubCategoriesForeign}</h2>
+        <ScButton onClick={() => setOpenAll(!openAll)} variant="contained" color="primary">
+          {m.expandAll}
+        </ScButton>
+      </div>
+      <PanelBody>
+        {countBySubCategories.data?.[langKey].sort(sortById).map(reportNode => (
+          <Node open={openAll} reportNode={reportNode} />
+        ))}
+      </PanelBody>
+    </CleanWidePanel>
   )
 }
 

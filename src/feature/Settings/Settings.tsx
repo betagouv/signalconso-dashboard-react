@@ -1,15 +1,14 @@
-import {Page, PageTitle} from '../../shared/Page'
-import React from 'react'
-import {useI18n} from '../../core/i18n'
-import {Panel} from '../../shared/Panel'
-import {SettingRow} from './SettingRow'
 import {NavLink} from 'react-router-dom'
+import {CleanWidePanel} from 'shared/Panel/simplePanels'
+import {useLogin} from '../../core/context/LoginContext'
+import {useI18n} from '../../core/i18n'
 import {siteMap} from '../../core/siteMap'
 import {ScButton} from '../../shared/Button'
-import {EditPasswordDialog} from './EditPasswordDialog'
-import {useLogin} from '../../core/context/LoginContext'
-import {EditProfileDialog} from './EditProfileDialog'
+import {Page, PageTitle} from '../../shared/Page'
 import {EditEmailDialog} from './EditEmailDialog'
+import {EditPasswordDialog} from './EditPasswordDialog'
+import {EditProfileDialog} from './EditProfileDialog'
+import {SettingRow} from './SettingRow'
 
 export const Settings = () => {
   const {m} = useI18n()
@@ -18,7 +17,7 @@ export const Settings = () => {
   return (
     <Page maxWidth="l">
       <PageTitle>{m.menu_settings}</PageTitle>
-      <Panel>
+      <CleanWidePanel>
         <SettingRow
           icon="person"
           title={m.name}
@@ -57,7 +56,7 @@ export const Settings = () => {
             </NavLink>
           </SettingRow>
         )}
-      </Panel>
+      </CleanWidePanel>
     </Page>
   )
 }

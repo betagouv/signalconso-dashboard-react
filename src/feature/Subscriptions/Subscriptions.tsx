@@ -43,7 +43,7 @@ export const Subscriptions = () => {
               alignItems: 'center',
               justifyContent: 'center',
               p: 2,
-              border: t => `1px dashed ${t.palette.divider}`,
+              border: t => `1px dashed gray`,
               color: t => t.palette.primary.main,
               fontSize: t => styleUtils(t).fontSize.title,
               borderRadius: t => t.shape.borderRadius + 'px',

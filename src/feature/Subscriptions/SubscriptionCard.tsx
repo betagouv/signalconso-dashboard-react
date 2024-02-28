@@ -1,27 +1,27 @@
-import React, {CSSProperties, useEffect, useMemo, useState} from 'react'
-import {useI18n} from '../../core/i18n'
-import {Panel, PanelHead} from '../../shared/Panel'
-import {ScSelect} from '../../shared/Select/Select'
-import {Chip, Collapse, duration, Icon, Stack} from '@mui/material'
-import {SubscriptionCardRow} from './SubscriptionCardRow'
-import {SelectCompanyDialog} from '../../shared/SelectCompany/SelectCompanyDialog'
-import {ScChip} from '../../shared/ScChip'
-import {useToast} from '../../core/toast'
-import {SelectDepartmentsMenu} from '../../shared/SelectDepartments/SelectDepartmentsMenu'
-import {SelectCountriesMenu} from '../../shared/SelectCountries/SelectCountriesMenu'
-import {SelectMenu} from '../../shared/SelectMenu'
-import {IconBtn} from '../../alexlibs/mui-extension'
-import {ScDialog} from '../../shared/ScDialog'
-import {ScMenuItem} from '../MenuItem/MenuItem'
-import {SelectTagsMenu, SelectTagsMenuValues} from '../../shared/SelectTags/SelectTagsMenu'
-import {Enum} from '../../alexlibs/ts-utils'
-import {Subscription, SubscriptionCreate} from '../../core/client/subscription/Subscription'
-import {ReportSearch} from '../../core/client/report/ReportSearch'
-import {Category} from '../../core/client/constant/Category'
-import {useCategoriesByStatusQuery} from '../../core/queryhooks/constantQueryHooks'
-import {useApiContext} from '../../core/context/ApiContext'
+import {Chip, Collapse, Icon, Stack, duration} from '@mui/material'
 import {useMutation, useQueryClient} from '@tanstack/react-query'
+import React, {CSSProperties, useEffect, useMemo, useState} from 'react'
+import {CleanWidePanel} from 'shared/Panel/simplePanels'
+import {IconBtn} from '../../alexlibs/mui-extension'
+import {Enum} from '../../alexlibs/ts-utils'
+import {Category} from '../../core/client/constant/Category'
+import {ReportSearch} from '../../core/client/report/ReportSearch'
+import {Subscription, SubscriptionCreate} from '../../core/client/subscription/Subscription'
+import {useApiContext} from '../../core/context/ApiContext'
+import {useI18n} from '../../core/i18n'
+import {useCategoriesByStatusQuery} from '../../core/queryhooks/constantQueryHooks'
 import {ListSubscriptionsQueryKeys} from '../../core/queryhooks/subscriptionQueryHooks'
+import {useToast} from '../../core/toast'
+import {ScChip} from '../../shared/ScChip'
+import {ScDialog} from '../../shared/ScDialog'
+import {ScSelect} from '../../shared/Select/Select'
+import {SelectCompanyDialog} from '../../shared/SelectCompany/SelectCompanyDialog'
+import {SelectCountriesMenu} from '../../shared/SelectCountries/SelectCountriesMenu'
+import {SelectDepartmentsMenu} from '../../shared/SelectDepartments/SelectDepartmentsMenu'
+import {SelectMenu} from '../../shared/SelectMenu'
+import {SelectTagsMenu, SelectTagsMenuValues} from '../../shared/SelectTags/SelectTagsMenu'
+import {ScMenuItem} from '../MenuItem/MenuItem'
+import {SubscriptionCardRow} from './SubscriptionCardRow'
 import {SubscriptionInformation} from './SubscriptionInformation'
 
 interface Props {
@@ -94,42 +94,35 @@ export const SubscriptionCard = ({subscription, className, style}: Props) => {
 
   return (
     <Collapse in={isMounted} timeout={duration.standard * 1.5}>
-      <Panel className={className} style={style}>
-        <PanelHead
-          sx={{
-            display: 'flex',
-            alignItems: 'center',
-          }}
-          action={
-            <>
-              <ScSelect
-                sx={{mb: 0}}
-                value={subscription.frequency ?? 'P7D'}
-                onChange={(e: any) => _updateSubscription.mutate({frequency: e.target.value})}
-              >
-                <ScMenuItem value="P1D">{m.daily}</ScMenuItem>
-                <ScMenuItem value="P7D">{m.weekly}</ScMenuItem>
-              </ScSelect>
-              &nbsp;
-              <ScDialog
-                title={m.removeSubscription}
-                confirmLabel={m.delete}
-                onConfirm={(event, close) => {
-                  _deleteSubscription.mutate()
-                  close()
-                }}
-              >
-                <IconBtn color="primary" loading={_deleteSubscription.isPending}>
-                  <Icon>delete</Icon>
-                </IconBtn>
-              </ScDialog>
-            </>
-          }
-        >
-          {m.subscription}
-        </PanelHead>
-
-        <SubscriptionInformation outdatedCategories={_outdatedCategories} subscription={subscription} />
+      <CleanWidePanel>
+        <div className="flex items-center justify-between">
+          <span>{m.subscription}</span>
+          <div className="flex items-center">
+            <ScSelect
+              value={subscription.frequency ?? 'P7D'}
+              onChange={(e: any) => _updateSubscription.mutate({frequency: e.target.value})}
+            >
+              <ScMenuItem value="P1D">{m.daily}</ScMenuItem>
+              <ScMenuItem value="P7D">{m.weekly}</ScMenuItem>
+            </ScSelect>
+            &nbsp;
+            <ScDialog
+              title={m.removeSubscription}
+              confirmLabel={m.delete}
+              onConfirm={(event, close) => {
+                _deleteSubscription.mutate()
+                close()
+              }}
+            >
+              <IconBtn color="primary" loading={_deleteSubscription.isPending}>
+                <Icon>delete</Icon>
+              </IconBtn>
+            </ScDialog>
+          </div>
+        </div>
+        <div className="mb-2">
+          <SubscriptionInformation outdatedCategories={_outdatedCategories} subscription={subscription} />
+        </div>
 
         <SubscriptionCardRow icon="flag" label={m.foreignCountry} onClick={countriesAnchor.open}>
           <Stack direction="row" gap={1} flexWrap="wrap">
@@ -223,7 +216,7 @@ export const SubscriptionCard = ({subscription, className, style}: Props) => {
           open={!!tagsAnchor.element}
           anchorEl={tagsAnchor.element}
         />
-      </Panel>
+      </CleanWidePanel>
     </Collapse>
   )
 }

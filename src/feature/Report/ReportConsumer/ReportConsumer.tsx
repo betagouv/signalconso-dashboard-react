@@ -10,6 +10,7 @@ import {EditConsumerDialog} from './EditConsumerDialog'
 import {useMutation, useQueryClient} from '@tanstack/react-query'
 import {useApiContext} from '../../../core/context/ApiContext'
 import {GetReportQueryKeys} from '../../../core/queryhooks/reportQueryHooks'
+import {CleanDiscreetPanel, CleanWidePanel} from 'shared/Panel/simplePanels'
 
 interface Props {
   report: Report
@@ -32,24 +33,21 @@ export const ReportConsumer = ({report, canEdit}: Props) => {
   const {firstName, lastName, contactAgreement} = report
 
   return (
-    <Panel stretch>
-      <PanelHead
-        action={
-          canEdit && (
-            <EditConsumerDialog
-              report={report}
-              onChange={consumer => _updateReportConsumer.mutate({reportId: report.id, reportConsumerUpdate: consumer})}
-            >
-              <ScButton icon="edit" color="primary" loading={_updateReportConsumer.isPending}>
-                {m.edit}
-              </ScButton>
-            </EditConsumerDialog>
-          )
-        }
-      >
+    <CleanDiscreetPanel>
+      <div className="flex items-center justify-between">
         <WithInlineIcon icon="person">{m.consumer}</WithInlineIcon>
-      </PanelHead>
-      <PanelBody>
+        {canEdit && (
+          <EditConsumerDialog
+            report={report}
+            onChange={consumer => _updateReportConsumer.mutate({reportId: report.id, reportConsumerUpdate: consumer})}
+          >
+            <ScButton icon="edit" color="primary" loading={_updateReportConsumer.isPending}>
+              {m.edit}
+            </ScButton>
+          </EditConsumerDialog>
+        )}
+      </div>
+      <div>
         <div className={contactAgreement ? '' : 'bg-red-100 py-2 px-4 w-full'}>
           {contactAgreement || (
             <div className="font-bold text-sm text-red-600 mb-2">
@@ -67,7 +65,7 @@ export const ReportConsumer = ({report, canEdit}: Props) => {
           {report.consumerPhone && <div className="text-gray-500">{report.consumerPhone}</div>}
           <ReportReferenceNumber consumerReferenceNumber={report.consumerReferenceNumber} />
         </div>
-      </PanelBody>
-    </Panel>
+      </div>
+    </CleanDiscreetPanel>
   )
 }

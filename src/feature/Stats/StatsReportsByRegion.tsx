@@ -11,6 +11,7 @@ import {useGetDateForMonthAndPreviousOne} from './useGetDateForMonthAndPreviousO
 import {Txt} from '../../alexlibs/mui-extension'
 import {useRegionsQuery} from '../../core/queryhooks/constantQueryHooks'
 import {useGetCountByDepartmentsQuery} from '../../core/queryhooks/reportQueryHooks'
+import {CleanWidePanel} from 'shared/Panel/simplePanels'
 
 const CellNewPosition = ({sx, ...props}: BoxProps) => {
   return <Box {...props} component="span" sx={{fontWeight: t => t.typography.fontWeightBold, ...sx}} />
@@ -40,13 +41,14 @@ export const StatsReportsByRegion = () => {
   }, [_countByDepLastMonth.data])
 
   return (
-    <Panel loading={_countByDepCurrentMonth.isLoading || _countByDepLastMonth.isLoading}>
-      <PanelHead sx={{mb: 2}} action={<SelectMonth value={selectedMonth} onChange={setSelectedMonth} />}>
-        {m.reportsDistribution}
-      </PanelHead>
-      <PanelBody>
+    <CleanWidePanel loading={_countByDepCurrentMonth.isLoading || _countByDepLastMonth.isLoading}>
+      <div className="flex justify-between items-center">
+        <h2 className="text-xl font-bold ">{m.reportsDistribution}</h2>
+        <SelectMonth value={selectedMonth} onChange={setSelectedMonth} />
+      </div>
+      <div>
         <Txt color="hint" gutterBottom block dangerouslySetInnerHTML={{__html: m.reportsDistributionDesc}} />
-      </PanelBody>
+      </div>
       <Divider />
       <div style={{overflowX: 'auto', position: 'relative'}}>
         <Table size="small">
@@ -112,6 +114,6 @@ export const StatsReportsByRegion = () => {
           )}
         </Table>
       </div>
-    </Panel>
+    </CleanWidePanel>
   )
 }
