@@ -4,7 +4,7 @@ import {ReportEventIcon} from './ReportEventIcon'
 import {Box, Icon} from '@mui/material'
 import {combineSx, styleUtils, sxUtils} from '../../../core/theme'
 import {makeSx} from '../../../alexlibs/mui-extension'
-import {ReportEvent} from '../../../core/client/event/Event'
+import {EventActionValues, ReportEvent} from '../../../core/client/event/Event'
 
 export interface ReportComponentEventProps {
   event: ReportEvent
@@ -68,7 +68,7 @@ export const ReportEventComponent = ({event}: ReportComponentEventProps) => {
         <ReportEventIcon action={event.data.action} />
       </div>
       <div className="flex flex-col p-2">
-        {event.data.action}
+        {translateEventAction(event.data.action)}
         {event.user && (
           <div className="text-sm text-gray-500">
             <Icon className="!text-sm">person</Icon>
@@ -82,4 +82,21 @@ export const ReportEventComponent = ({event}: ReportComponentEventProps) => {
       </div>
     </div>
   )
+}
+
+function translateEventAction(action: EventActionValues) {
+  switch (action) {
+    case EventActionValues.ConsumerThreatenByProReportDeletion:
+      return "Suppression par un membre de l'équipe SignalConso (menaces venant du pro)"
+    case EventActionValues.RefundBlackMailReportDeletion:
+      return "Suppression par un membre de l'équipe SignalConso (chantage de la part du pro)"
+    case EventActionValues.OtherReasonDeleteRequestReportDeletion:
+      return "Suppression par un membre de l'équipe SignalConso (autre raison)"
+    case EventActionValues.SolvedContractualDisputeReportDeletion:
+      return "Suppression par un membre de l'équipe SignalConso (litige résolu)"
+    case EventActionValues.ReportReOpenedByAdmin:
+      return "Réouverture du signalement par un membre de l'équipe SignalConso"
+    default:
+      return action
+  }
 }
