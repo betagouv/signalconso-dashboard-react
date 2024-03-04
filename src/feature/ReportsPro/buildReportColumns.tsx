@@ -8,15 +8,20 @@ import {combineSx, sxUtils} from '../../core/theme'
 import {ConsumerReviewLabel} from 'shared/ConsumerReviewLabel'
 import ReportResponseDetails from 'feature/Reports/ReportResponseDetails'
 import {css} from './ReportsPro'
+import {fr} from 'core/i18n/localization/fr'
 
-interface ReportTableColumnsProps {
+interface ReportTableColumnsParams {
   reportType: 'open' | 'closed'
   isMobileWidth: boolean
   css: typeof css
+  i18nData: {
+    formatDate: (d?: Date | undefined) => string
+    m: typeof fr['messages']
+  }
 }
 
-export const ReportColumns = ({reportType, isMobileWidth, css}: ReportTableColumnsProps) => {
-  const {formatDate, m} = useI18n()
+export const buildReportColumns = ({reportType, isMobileWidth, css, i18nData}: ReportTableColumnsParams) => {
+  const {formatDate, m} = i18nData
 
   if (isMobileWidth) {
     return [

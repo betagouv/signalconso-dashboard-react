@@ -35,7 +35,7 @@ import {ScInput} from '../../shared/ScInput'
 import {useGetAccessibleByProQuery} from '../../core/queryhooks/companyQueryHooks'
 import {useReportSearchQuery} from '../../core/queryhooks/reportQueryHooks'
 import {useListReportBlockedNotificationsQuery} from 'core/queryhooks/reportBlockedNotificationQueryHooks'
-import {ReportColumns} from './ReportColumns'
+import {buildReportColumns} from './buildReportColumns'
 
 export const css = makeSx({
   card: {
@@ -101,9 +101,9 @@ export const ReportsPro = ({reportType}: ReportsProProps) => {
   const _blockedNotifications = useListReportBlockedNotificationsQuery()
 
   const {isMobileWidth} = useLayoutContext()
-  const columns = ReportColumns({reportType, isMobileWidth, css})
   const history = useHistory()
   const {formatDate, m} = useI18n()
+  const columns = buildReportColumns({reportType, isMobileWidth, css, i18nData: {formatDate, m}})
 
   const hasFilters = useMemo(() => {
     const {limit, offset, ...values} = _reports.filters
