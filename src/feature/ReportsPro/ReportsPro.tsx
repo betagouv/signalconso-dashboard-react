@@ -93,10 +93,20 @@ interface ReportsProProps {
 export const ReportsPro = ({reportType}: ReportsProProps) => {
   const queryString = useQueryString<Partial<ReportSearch>, Partial<ReportFiltersQs>>({
     toQueryString: mapDatesToQueryString,
-    fromQueryString: compose(mapDateFromQueryString, mapArrayFromQuerystring(['status', 'siretSirenList', 'departments'])),
+    fromQueryString: compose(mapDateFromQueryString, mapArrayFromQuerystring(['siretSirenList', 'departments'])),
   })
 
-  const _reports = useReportSearchQuery({offset: 0, limit: 10, ...queryString.get()})
+  const reportStatusPro =
+    reportType === 'closed' ? [ReportStatusPro.Cloture] : [ReportStatusPro.ARepondre, ReportStatusPro.NonConsulte]
+
+  const filtersAppliedToQuery = {
+    ...queryString.get(),
+    status: reportStatusPro.flatMap(Report.getStatusByStatusPro),
+    offset: 0,
+    limit: 10,
+  }
+
+  const _reports = useReportSearchQuery(filtersAppliedToQuery)
   const _accessibleByPro = useGetAccessibleByProQuery()
   const _blockedNotifications = useListReportBlockedNotificationsQuery()
 
@@ -131,11 +141,7 @@ export const ReportsPro = ({reportType}: ReportsProProps) => {
 
   const entities = _reports.result.data?.entities || []
 
-  const filteredReports = entities.filter(report =>
-    reportType === 'open'
-      ? Report.getStatusProByStatus(report.report.status) !== ReportStatusPro.Cloture
-      : Report.getStatusProByStatus(report.report.status) === ReportStatusPro.Cloture,
-  )
+  const filteredReports = entities
 
   useEffect(() => {
     queryString.update(cleanObject(_reports.filters))
