@@ -139,10 +139,6 @@ export const ReportsPro = ({reportType}: ReportsProProps) => {
     queryString.update(cleanObject(_reports.filters))
   }, [_reports.filters])
 
-  const entities = _reports.result.data?.entities || []
-
-  const filteredReports = entities
-
   useEffect(() => {
     queryString.update(cleanObject(_reports.filters))
   }, [_reports.filters])
@@ -318,9 +314,9 @@ export const ReportsPro = ({reportType}: ReportsProProps) => {
                   limit: _reports.filters.limit,
                   onPaginationChange: pagination => _reports.updateFilters(prev => ({...prev, ...pagination})),
                 }}
-                data={filteredReports}
+                data={_reports.result.data?.entities}
                 loading={_accessibleByPro.isLoading}
-                total={filteredReports?.length || 0}
+                total={_reports.result.data?.totalCount}
                 onClickRows={(_, e) => {
                   if (e.metaKey || e.ctrlKey) {
                     openInNew(siteMap.logged.report(_.report.id))
