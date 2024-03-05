@@ -90,6 +90,7 @@ export enum ReportTag {
   CompagnieAerienne = 'CompagnieAerienne',
   Resiliation = 'Resiliation',
   OpenFoodFacts = 'OpenFoodFacts',
+  TransitionEcologique = 'TransitionEcologique',
 }
 
 export const OutdatedTags = [ReportTag.Bloctel]
