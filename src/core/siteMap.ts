@@ -18,7 +18,6 @@ export const siteMap = {
     },
     subscriptions: `/abonnements`,
     report: (id: Id = `:id`) => `/suivi-des-signalements/report/${id}`,
-    ClosedReports: (_?: Partial<ReportSearch>) => '/signalements-clotures' + (_ ? toQueryString(mapDatesToQueryString(_)) : ``),
     exports: `/mes-telechargements`,
     companies_toActivate: `/entreprises/a-activer`,
     companies_toFollowUp: `/entreprises/a-relancer`,
