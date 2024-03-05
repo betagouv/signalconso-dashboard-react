@@ -3,12 +3,11 @@ import {Page, PageTitle} from '../../shared/Page'
 import {Panel, PanelBody} from '../../shared/Panel'
 import {Datatable} from '../../shared/Datatable/Datatable'
 import {useI18n} from '../../core/i18n'
-import {Badge, Box, Button, Grid, Icon, MenuItem} from '@mui/material'
-import {ReportStatusLabel, ReportStatusProLabel} from '../../shared/ReportStatus'
+import {Badge, Box, Grid, Icon, MenuItem, Tooltip} from '@mui/material'
 import {useLayoutContext} from '../../core/Layout/LayoutContext'
 import {Alert, Btn, Fender, makeSx, Txt} from '../../alexlibs/mui-extension'
 
-import {combineSx, styleUtils, sxUtils} from '../../core/theme'
+import {styleUtils} from '../../core/theme'
 import {SelectDepartments} from '../../shared/SelectDepartments/SelectDepartments'
 import {ScSelect} from '../../shared/Select/Select'
 import {useHistory} from 'react-router'
@@ -32,13 +31,13 @@ import {cleanObject, openInNew} from '../../core/helper'
 import {Report, ReportSearchResult, ReportStatus, ReportStatusPro, ReportType} from '../../core/client/report/Report'
 import {ReportSearch} from '../../core/client/report/ReportSearch'
 import {ScOption} from 'core/helper/ScOption'
-import {Label} from '../../shared/Label'
 import {ScInput} from '../../shared/ScInput'
 import {useGetAccessibleByProQuery} from '../../core/queryhooks/companyQueryHooks'
 import {useReportSearchQuery} from '../../core/queryhooks/reportQueryHooks'
 import {useListReportBlockedNotificationsQuery} from 'core/queryhooks/reportBlockedNotificationQueryHooks'
+import {buildReportColumns} from './buildReportColumns'
 
-const css = makeSx({
+export const css = makeSx({
   card: {
     fontSize: t => styleUtils(t).fontSize.normal,
     display: 'flex',
@@ -80,16 +79,6 @@ const css = makeSx({
 
 const minRowsBeforeDisplayFilters = 2
 
-function hasExpired(date: Date): Boolean {
-  return date.getTime() < Date.now()
-}
-
-function expiresSoon(date: Date): Boolean {
-  let now = new Date()
-  let nowPlus10Days = now.setDate(now.getDate() + 7)
-  return date.getTime() > Date.now() && date.getTime() < nowPlus10Days
-}
-
 interface ReportFiltersQs {
   readonly departments?: string[] | string
   readonly siretSirenList?: string[] | string
@@ -97,20 +86,34 @@ interface ReportFiltersQs {
   end?: string
   status?: string[]
 }
+interface ReportsProProps {
+  reportType: 'open' | 'closed'
+}
 
-export const ReportsPro = () => {
+export const ReportsPro = ({reportType}: ReportsProProps) => {
   const queryString = useQueryString<Partial<ReportSearch>, Partial<ReportFiltersQs>>({
     toQueryString: mapDatesToQueryString,
-    fromQueryString: compose(mapDateFromQueryString, mapArrayFromQuerystring(['status', 'siretSirenList', 'departments'])),
+    fromQueryString: compose(mapDateFromQueryString, mapArrayFromQuerystring(['siretSirenList', 'departments'])),
   })
 
-  const _reports = useReportSearchQuery({offset: 0, limit: 10, ...queryString.get()})
+  const reportStatusPro =
+    reportType === 'closed' ? [ReportStatusPro.Cloture] : [ReportStatusPro.ARepondre, ReportStatusPro.NonConsulte]
+
+  const filtersAppliedToQuery = {
+    ...queryString.get(),
+    status: reportStatusPro.flatMap(Report.getStatusByStatusPro),
+    offset: 0,
+    limit: 10,
+  }
+
+  const _reports = useReportSearchQuery(filtersAppliedToQuery)
   const _accessibleByPro = useGetAccessibleByProQuery()
   const _blockedNotifications = useListReportBlockedNotificationsQuery()
 
   const {isMobileWidth} = useLayoutContext()
   const history = useHistory()
   const {formatDate, m} = useI18n()
+  const columns = buildReportColumns({reportType, isMobileWidth, css, i18nData: {formatDate, m}})
 
   const hasFilters = useMemo(() => {
     const {limit, offset, ...values} = _reports.filters
@@ -130,6 +133,10 @@ export const ReportsPro = () => {
   const filtersCount = useMemo(() => {
     const {offset, limit, ...filters} = _reports.filters
     return Object.keys(cleanObject(filters)).length
+  }, [_reports.filters])
+
+  useEffect(() => {
+    queryString.update(cleanObject(_reports.filters))
   }, [_reports.filters])
 
   useEffect(() => {
@@ -158,7 +165,7 @@ export const ReportsPro = () => {
           </div>
         }
       >
-        {m.reports_pageTitle}
+        {reportType === 'open' ? m.OpenReports_pageTitle : m.ClosedReports_pageTitle}
       </PageTitle>
 
       {isFirstVisit && (
@@ -225,7 +232,7 @@ export const ReportsPro = () => {
                         )}
                       </DebouncedInput>
                     </Grid>
-                    <Grid item sm={4} xs={12}>
+                    <Grid item sm={6} xs={12}>
                       <DebouncedInput
                         value={_reports.filters.siretSirenList}
                         onChange={_ =>
@@ -247,48 +254,13 @@ export const ReportsPro = () => {
                         )}
                       </DebouncedInput>
                     </Grid>
-                    <Grid item sm={4} xs={12}>
+                    <Grid item sm={6} xs={12}>
                       <DebouncedInput
                         value={_reports.filters.departments}
                         onChange={departments => _reports.updateFilters(prev => ({...prev, departments}))}
                       >
                         {(value, onChange) => (
                           <SelectDepartments label={m.departments} value={value} onChange={onChange} sx={{mr: 1}} fullWidth />
-                        )}
-                      </DebouncedInput>
-                    </Grid>
-                    <Grid item sm={4} xs={12}>
-                      <DebouncedInput
-                        value={_reports.filters.status?.[0] ? Report.getStatusProByStatus(_reports.filters.status[0]) : ''}
-                        onChange={e => {
-                          const status = ScOption.from(e)
-                            .filter(_ => _ in ReportStatusPro)
-                            .map(_ => Report.getStatusByStatusPro(_ as ReportStatusPro))
-                            .toUndefined()
-                          _reports.updateFilters(prev => ({...prev, status}))
-                        }}
-                      >
-                        {(value, onChange) => (
-                          <ScSelect
-                            value={value}
-                            onChange={x => onChange(x.target.value)}
-                            id="select-status-pro"
-                            label={m.status}
-                            fullWidth
-                          >
-                            <MenuItem value="">&nbsp;</MenuItem>
-                            {Enum.values(ReportStatusPro).map(statusPro => (
-                              <MenuItem
-                                sx={{
-                                  p: 2,
-                                }}
-                                key={statusPro}
-                                value={statusPro}
-                              >
-                                <ReportStatusProLabel dense fullWidth inSelectOptions status={statusPro} />
-                              </MenuItem>
-                            ))}
-                          </ScSelect>
                         )}
                       </DebouncedInput>
                     </Grid>
@@ -335,7 +307,7 @@ export const ReportsPro = () => {
 
             <Panel>
               <Datatable<ReportSearchResult>
-                id="reportspro"
+                id={reportType === 'open' ? 'opened-reports' : 'closed-reports'}
                 paginate={{
                   minRowsBeforeDisplay: minRowsBeforeDisplayFilters,
                   offset: _reports.filters.offset,
@@ -352,113 +324,7 @@ export const ReportsPro = () => {
                     history.push(siteMap.logged.report(_.report.id))
                   }
                 }}
-                columns={
-                  isMobileWidth
-                    ? [
-                        {
-                          id: 'all',
-                          head: '',
-                          render: _ => (
-                            <Box sx={css.card}>
-                              <Box sx={css.card_content}>
-                                <Box sx={css.card_head}>
-                                  <Txt bold size="big">
-                                    {_.report.companySiret}
-                                  </Txt>
-                                  <Icon sx={combineSx(css.iconDash, sxUtils.inlineIcon)}>remove</Icon>
-                                  <Txt color="disabled">
-                                    <Icon sx={sxUtils.inlineIcon}>location_on</Icon>
-                                    {_.report.companyAddress.postalCode}
-                                  </Txt>
-                                </Box>
-                                <Txt block color="hint">
-                                  {m.thisDate(formatDate(_.report.creationDate))}
-                                </Txt>
-                                <Txt block color="hint">
-                                  {_.report.contactAgreement
-                                    ? m.byHim(_.report.firstName + ' ' + _.report.lastName)
-                                    : m.anonymousReport}
-                                </Txt>
-                              </Box>
-                              <ReportStatusLabel dense status={_.report.status} />
-                            </Box>
-                          ),
-                        },
-                      ]
-                    : [
-                        {
-                          id: 'createDate',
-                          head: m.receivedAt,
-                          sx: _ =>
-                            _.report.status === ReportStatus.TraitementEnCours
-                              ? {fontWeight: t => t.typography.fontWeightBold}
-                              : undefined,
-                          render: _ => formatDate(_.report.creationDate),
-                        },
-                        {
-                          id: 'expirationDate',
-                          head: m.expireOn,
-                          render: _ =>
-                            expiresSoon(_.report.expirationDate) && !Report.isClosed(_.report.status) ? (
-                              <Label style={{color: 'white', background: 'darkred'}}>
-                                {m.warnExpireOn(formatDate(_.report.expirationDate))}
-                              </Label>
-                            ) : hasExpired(_.report.expirationDate) ? (
-                              <Label style={{color: '#777', background: 'white'}}>{formatDate(_.report.expirationDate)}</Label>
-                            ) : (
-                              <Label style={{color: 'black', background: 'white'}}>{formatDate(_.report.expirationDate)}</Label>
-                            ),
-                        },
-                        {
-                          id: 'status',
-                          head: m.status,
-                          render: _ => <ReportStatusProLabel dense status={Report.getStatusProByStatus(_.report.status)} />,
-                        },
-                        {
-                          id: 'companyPostalCode',
-                          head: m.postalCode,
-                          sx: _ =>
-                            _.report.status === ReportStatus.TraitementEnCours
-                              ? {fontWeight: t => t.typography.fontWeightBold}
-                              : undefined,
-                          render: _ => _.report.companyAddress.postalCode,
-                        },
-                        {
-                          id: 'siret',
-                          head: m.siret,
-                          sx: _ =>
-                            _.report.status === ReportStatus.TraitementEnCours
-                              ? {fontWeight: t => t.typography.fontWeightBold}
-                              : undefined,
-                          render: _ => _.report.companySiret,
-                        },
-
-                        {
-                          id: 'consumer',
-                          head: m.consumer,
-                          sx: _ =>
-                            _.report.status === ReportStatus.TraitementEnCours
-                              ? {fontWeight: t => t.typography.fontWeightBold}
-                              : undefined,
-                          render: _ =>
-                            _.report.contactAgreement ? _.report.firstName + ' ' + _.report.lastName : m.anonymousReport,
-                        },
-                        {
-                          id: 'file',
-                          head: m.files,
-                          sx: _ => ({
-                            minWidth: 44,
-                            maxWidth: 100,
-                          }),
-                          render: _ =>
-                            _.files.length > 0 && (
-                              <Badge badgeContent={_.files.length} color="primary" invisible={_.files.length === 1}>
-                                <Icon sx={{color: t => t.palette.text.disabled}}>insert_drive_file</Icon>
-                              </Badge>
-                            ),
-                        },
-                      ]
-                }
+                columns={columns}
                 renderEmptyState={
                   <Fender
                     icon={EntityIcon.report}
