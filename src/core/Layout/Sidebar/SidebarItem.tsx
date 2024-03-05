@@ -44,7 +44,7 @@ export const SidebarItem = ({children, to, icon, className, active, large, sx, .
         minHeight: 36,
         color: t => t.palette.text.secondary,
         pr: 1,
-        pl: 2,
+        pl: 0.85,
         my: 1 / 2,
         mx: 1,
         borderRadius: 42,
