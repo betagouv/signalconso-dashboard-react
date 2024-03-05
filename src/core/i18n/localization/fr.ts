@@ -97,6 +97,7 @@ export const fr = {
       [ReportTag.CompagnieAerienne]: 'Compagnie aérienne',
       [ReportTag.Resiliation]: 'Résiliation',
       [ReportTag.OpenFoodFacts]: 'OpenFoodFacts',
+      [ReportTag.TransitionEcologique]: 'Transition écologique',
       NA: 'Aucun tag',
     },
     IdentificationStatusDesc: {
