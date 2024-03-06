@@ -110,6 +110,14 @@ export const ReportsPro = ({reportType}: ReportsProProps) => {
     limit: 10,
   }
 
+  const handleClearFilters = () => {
+    _reports.clearFilters()
+    _reports.updateFilters(prevFilters => ({
+      ...prevFilters,
+      ...obligatoryFilters,
+    }))
+  }
+
   const _reports = useReportSearchQuery(filtersAppliedToQuery)
   const _accessibleByPro = useGetAccessibleByProQuery()
   const _blockedNotifications = useListReportBlockedNotificationsQuery()
@@ -146,6 +154,12 @@ export const ReportsPro = ({reportType}: ReportsProProps) => {
   useEffect(() => {
     queryString.update(cleanObject(_reports.filters))
   }, [_reports.filters])
+
+  const resetFiltersButtonProps = {
+    icon: 'clear',
+    onClick: handleClearFilters,
+    color: 'primary',
+  } as const
 
   return (
     <Page loading={_accessibleByPro.isLoading}>
@@ -278,18 +292,7 @@ export const ReportsPro = ({reportType}: ReportsProProps) => {
                   </DebouncedInput>
                   <Box sx={css.actions}>
                     <Badge color="error" badgeContent={filtersCount} hidden={filtersCount === 0}>
-                      <ScButton
-                        icon="clear"
-                        onClick={() => {
-                          _reports.clearFilters()
-                          _reports.updateFilters(prevFilters => ({
-                            ...prevFilters,
-                            ...obligatoryFilters,
-                          }))
-                        }}
-                        variant="outlined"
-                        color="primary"
-                      >
+                      <ScButton {...resetFiltersButtonProps} variant="outlined">
                         {m.removeAllFilters}
                       </ScButton>
                     </Badge>
@@ -349,18 +352,7 @@ export const ReportsPro = ({reportType}: ReportsProProps) => {
                         <Txt color="hint" size="big" block gutterBottom>
                           {m.noReportsDesc}
                         </Txt>
-                        <ScButton
-                          icon="clear"
-                          onClick={() => {
-                            _reports.clearFilters()
-                            _reports.updateFilters(prevFilters => ({
-                              ...prevFilters,
-                              ...obligatoryFilters,
-                            }))
-                          }}
-                          variant="contained"
-                          color="primary"
-                        >
+                        <ScButton {...resetFiltersButtonProps} variant="contained">
                           {m.removeAllFilters}
                         </ScButton>
                       </>
