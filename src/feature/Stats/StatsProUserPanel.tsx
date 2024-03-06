@@ -8,7 +8,6 @@ import {useI18n} from '../../core/i18n'
 export const StatsProUserPanel = () => {
   const {apiSdk: api} = useLogin()
   const {m} = useI18n()
-  const theme = useTheme()
   const ticks = 12
   return (
     <CleanWidePanel>

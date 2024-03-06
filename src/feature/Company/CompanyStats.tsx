@@ -47,7 +47,7 @@ type NonProUserComponentProps = {
   company?: CompanyWithReportsCount
 }
 
-export const NonProUserComponent: React.FC<NonProUserComponentProps> = ({id, connectedUser, company}) => {
+export const CompanyStats: React.FC<NonProUserComponentProps> = ({id, connectedUser, company}) => {
   const {m} = useI18n()
   const _companyById = useGetCompanyByIdQuery(id)
   const _hosts = useGetHostsQuery(id, {enabled: !connectedUser.isPro})

@@ -1,33 +1,31 @@
-import {useMemoFn, useEffectFn} from '../../alexlibs/react-hooks-lib'
-import {Txt} from '../../alexlibs/mui-extension'
-import {Page, PageTitle} from 'shared/Page'
-import {Panel, PanelBody, PanelHead} from 'shared/Panel'
-import {HorizontalBarChart} from 'shared/Chart/HorizontalBarChart'
-import {reportStatusProColor} from 'shared/ReportStatus'
-import {useI18n} from 'core/i18n'
 import {Box, Grid, Icon, Tooltip} from '@mui/material'
-import {Widget} from 'shared/Widget/Widget'
+import {ScOption} from 'core/helper/ScOption'
+import {useI18n} from 'core/i18n'
 import {siteMap} from 'core/siteMap'
-import {WidgetValue} from 'shared/Widget/WidgetValue'
+import {Page, PageTitle} from 'shared/Page'
+import {Panel, PanelHead} from 'shared/Panel'
+import {reportStatusProColor} from 'shared/ReportStatus'
+import {Widget} from 'shared/Widget/Widget'
 import {WidgetLoading} from 'shared/Widget/WidgetLoading'
-import {ReportsShortList} from './ReportsShortList'
-import {StatusDistribution} from './stats/StatusDistribution'
-import {ReviewDistribution} from './stats/ReviewDistribution'
-import {CompanyInfo} from './stats/CompanyInfo'
-import {CompanyChartPanel} from './CompanyChartPanel'
+import {WidgetValue} from 'shared/Widget/WidgetValue'
+import {Txt} from '../../alexlibs/mui-extension'
+import {useEffectFn, useMemoFn} from '../../alexlibs/react-hooks-lib'
 import {EventActionValues} from '../../core/client/event/Event'
 import {ReportStatusPro} from '../../core/client/report/Report'
 import {CompanyWithReportsCount, Id, UserWithPermission} from '../../core/model'
-import {ScOption} from 'core/helper/ScOption'
-import {ReportWordDistribution} from './stats/ReportWordDistribution'
-import {useReportSearchQuery} from '../../core/queryhooks/reportQueryHooks'
-import {useGetCompanyEventsQuery} from '../../core/queryhooks/eventQueryHooks'
 import {
   useCompanyAccessCountQuery,
   useGetCompanyByIdQuery,
   useGetResponseRateQuery,
 } from '../../core/queryhooks/companyQueryHooks'
-import {useGetProStatusQuery, useGetResponseDelayQuery, useGetTagsQuery} from '../../core/queryhooks/statsQueryHooks'
+import {useGetCompanyEventsQuery} from '../../core/queryhooks/eventQueryHooks'
+import {useReportSearchQuery} from '../../core/queryhooks/reportQueryHooks'
+import {useGetProStatusQuery, useGetResponseDelayQuery} from '../../core/queryhooks/statsQueryHooks'
+import {CompanyChartPanel} from './CompanyChartPanel'
+import {ReportsShortList} from './ReportsShortList'
+import {CompanyInfo} from './stats/CompanyInfo'
+import {ReviewDistribution} from './stats/ReviewDistribution'
+import {StatusDistribution} from './stats/StatusDistribution'
 
 export type ExtendedUser = UserWithPermission & {
   isPro: boolean
@@ -39,7 +37,7 @@ type ProUserComponentProps = {
   company?: CompanyWithReportsCount
 }
 
-export const ProUserComponent: React.FC<ProUserComponentProps> = ({id, connectedUser, company}) => {
+export const CompanyStatsPro: React.FC<ProUserComponentProps> = ({id, connectedUser, company}) => {
   const {m} = useI18n()
   const _companyById = useGetCompanyByIdQuery(id)
   const _responseRate = useGetResponseRateQuery(id)

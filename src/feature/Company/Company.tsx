@@ -4,8 +4,8 @@ import {useLogin} from 'core/context/LoginContext'
 import {Id} from '../../core/model'
 import {useGetCompanyByIdQuery} from '../../core/queryhooks/companyQueryHooks'
 
-import {ProUserComponent} from './ProUserComponent'
-import {NonProUserComponent} from './NonProUserComponent'
+import {CompanyStatsPro} from './CompanyStatsPro'
+import {CompanyStats} from './CompanyStats'
 
 export const CompanyComponent = () => {
   const {id} = useParams<{id: Id}>()
@@ -17,9 +17,9 @@ export const CompanyComponent = () => {
   return (
     <>
       {connectedUser.isPro ? (
-        <ProUserComponent id={id} connectedUser={connectedUser} company={company} />
+        <CompanyStatsPro id={id} connectedUser={connectedUser} company={company} />
       ) : (
-        <NonProUserComponent id={id} connectedUser={connectedUser} company={company} />
+        <CompanyStats id={id} connectedUser={connectedUser} company={company} />
       )}
     </>
   )

@@ -65,7 +65,6 @@ export const ScLineChart = memo(({period, disableAnimation, hideLabelToggle, cur
     const res: any[] = []
     curves.forEach((curve, i) => {
       curve.curve.forEach((data, j) => {
-        console.log(curve)
         if (!res[j]) res[j] = {date: formatDate(m, data.date, period)} as any
         res[j][curve.key] = data.count
       })
