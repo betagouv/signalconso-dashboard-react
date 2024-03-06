@@ -1,7 +1,7 @@
 import {cleanReportFilter, reportFilter2QueryString} from 'core/client/report/ReportsClient'
 import {subDays} from 'date-fns'
 import {Duration, duration} from '../../../alexlibs/ts-utils'
-import {cleanObject, roundValue, toNumberOrDefault} from '../../helper'
+import {cleanObject, roundValue, sum, toNumberOrDefault} from '../../helper'
 import {
   CountByDate,
   CurveStatsParams,
@@ -58,8 +58,8 @@ export class StatsClient {
     return this.client.get<ReportStatusDistribution>(`/stats/reports/status`, {qs: {companyId}}).then(distribution => {
       const entries = Object.values(ReportStatusPro).map(statusPro => {
         const statusList = Report.getStatusByStatusPro(statusPro)
-        const sum = statusList.map(status => toNumberOrDefault(distribution[status], 0)).reduce(_ => _ + _)
-        return [statusPro, sum]
+        const count = sum(statusList.map(status => toNumberOrDefault(distribution[status], 0)))
+        return [statusPro, count]
       })
       return Object.fromEntries(entries)
     })

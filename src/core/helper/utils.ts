@@ -154,3 +154,7 @@ export const countryToFlag = (isoCode: string) => {
 export const null2Undefined = <A>(value: A | null): A | undefined => (value === null ? undefined : value)
 
 export const undefined2Null = <A>(value: A | undefined): A | null => (value === undefined ? null : value)
+
+export function sum(arr: number[]): number {
+  return arr.reduce((acc, current) => acc + current, 0)
+}
