@@ -48,7 +48,6 @@ export const ProUserComponent: React.FC<ProUserComponentProps> = ({id, connected
   const _accesses = useCompanyAccessCountQuery(company?.siret!, {enabled: !!company})
   const _reports = useReportSearchQuery({hasCompany: true, offset: 0, limit: 5}, false)
 
-  const _tags = useGetTagsQuery(id)
   const _getProStatus = useGetProStatusQuery(id, {enabled: connectedUser.isPro})
   const _responseDelay = useGetResponseDelayQuery(id)
 
