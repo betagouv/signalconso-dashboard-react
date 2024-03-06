@@ -99,9 +99,13 @@ export const ReportsPro = ({reportType}: ReportsProProps) => {
   const reportStatusPro =
     reportType === 'closed' ? [ReportStatusPro.Cloture] : [ReportStatusPro.ARepondre, ReportStatusPro.NonConsulte]
 
+  const obligatoryFilters = {
+    status: reportStatusPro.flatMap(Report.getStatusByStatusPro),
+  }
+
   const filtersAppliedToQuery = {
     ...queryString.get(),
-    status: reportStatusPro.flatMap(Report.getStatusByStatusPro),
+    ...obligatoryFilters,
     offset: 0,
     limit: 10,
   }
@@ -274,7 +278,18 @@ export const ReportsPro = ({reportType}: ReportsProProps) => {
                   </DebouncedInput>
                   <Box sx={css.actions}>
                     <Badge color="error" badgeContent={filtersCount} hidden={filtersCount === 0}>
-                      <ScButton icon="clear" onClick={_reports.clearFilters} variant="outlined" color="primary">
+                      <ScButton
+                        icon="clear"
+                        onClick={() => {
+                          _reports.clearFilters()
+                          _reports.updateFilters(prevFilters => ({
+                            ...prevFilters,
+                            ...obligatoryFilters,
+                          }))
+                        }}
+                        variant="outlined"
+                        color="primary"
+                      >
                         {m.removeAllFilters}
                       </ScButton>
                     </Badge>
@@ -334,7 +349,18 @@ export const ReportsPro = ({reportType}: ReportsProProps) => {
                         <Txt color="hint" size="big" block gutterBottom>
                           {m.noReportsDesc}
                         </Txt>
-                        <ScButton icon="clear" onClick={_reports.clearFilters} variant="contained" color="primary">
+                        <ScButton
+                          icon="clear"
+                          onClick={() => {
+                            _reports.clearFilters()
+                            _reports.updateFilters(prevFilters => ({
+                              ...prevFilters,
+                              ...obligatoryFilters,
+                            }))
+                          }}
+                          variant="contained"
+                          color="primary"
+                        >
                           {m.removeAllFilters}
                         </ScButton>
                       </>
