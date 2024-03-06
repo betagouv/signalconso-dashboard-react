@@ -79,7 +79,7 @@ export const buildReportColumns = ({reportType, isMobileWidth, css, i18nData}: R
       ? [
           {
             id: 'expirationDate',
-            head: "Date d'expiration",
+            head: 'À répondre avant le',
             render: (report: ReportSearchResult) => formatDate(report.report.expirationDate),
           },
           {

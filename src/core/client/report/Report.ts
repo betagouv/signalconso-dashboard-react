@@ -158,7 +158,6 @@ export enum ReportStatus {
 }
 
 export enum ReportStatusPro {
-  NonConsulte = 'NonConsulte',
   ARepondre = 'ARepondre',
   Cloture = 'Cloture',
 }
@@ -213,7 +212,7 @@ export class Report {
     [ReportStatus.LanceurAlerte]: () => {
       throw new Error(`Invalid status`)
     },
-    [ReportStatus.TraitementEnCours]: () => ReportStatusPro.NonConsulte,
+    [ReportStatus.TraitementEnCours]: () => ReportStatusPro.ARepondre,
     [ReportStatus.Transmis]: () => ReportStatusPro.ARepondre,
     [ReportStatus.PromesseAction]: () => ReportStatusPro.Cloture,
     [ReportStatus.Infonde]: () => ReportStatusPro.Cloture,

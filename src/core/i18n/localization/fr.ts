@@ -936,14 +936,12 @@ export const fr = {
       [ReportStatus.MalAttribue]: 'Mal attribué',
     },
     reportStatusShortPro: {
-      [ReportStatusPro.NonConsulte]: 'Non consulté',
       [ReportStatusPro.ARepondre]: 'À répondre',
       [ReportStatusPro.Cloture]: 'Clôturé',
     },
     reportStatusDescPro: {
-      [ReportStatusPro.NonConsulte]: 'Signalements non consultés malgré les relances',
-      [ReportStatusPro.ARepondre]: 'Signalements transmis',
-      [ReportStatusPro.Cloture]: "Signalements ayant fait l'objet d'une réponse ou dont le délais de réponse a expiré",
+      [ReportStatusPro.ARepondre]: `Signalements en attente d'une réponse`,
+      [ReportStatusPro.Cloture]: "Signalements ayant fait l'objet d'une réponse ou dont le délai de réponse a expiré",
     },
     reportStatusDesc: {
       [ReportStatus.NA]: `Il y a eu un signalement déposé par un consommateur. Mais, le consommateur n’a pas pu identifier la société. Cela peut être le cas pour les sites internet et des démarchages téléphoniques ou à domicile.`,
