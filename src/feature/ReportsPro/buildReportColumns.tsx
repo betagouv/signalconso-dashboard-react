@@ -62,6 +62,11 @@ export const buildReportColumns = ({reportType, isMobileWidth, css, i18nData}: R
       render: (report: ReportSearchResult) => report.report.companySiret,
     },
     {
+      id: 'createDate',
+      head: 'Date de création',
+      render: (report: ReportSearchResult) => formatDate(report.report.creationDate),
+    },
+    {
       id: 'consumer',
       head: 'Consommateur',
       render: (report: ReportSearchResult) =>
@@ -89,11 +94,6 @@ export const buildReportColumns = ({reportType, isMobileWidth, css, i18nData}: R
           },
         ]
       : [
-          {
-            id: 'createDate',
-            head: 'Date de création',
-            render: (report: ReportSearchResult) => formatDate(report.report.creationDate),
-          },
           {
             id: 'proResponse',
             head: 'Réponse Professionnelle',
