@@ -4,7 +4,7 @@ import {useRef} from 'react'
 import {useParams} from 'react-router'
 import {ReportProResponseEvent, ResponseConsumerReview} from '../../core/client/event/Event'
 import {FileOrigin, UploadedFile} from '../../core/client/file/UploadedFile'
-import {Report} from '../../core/client/report/Report'
+import {Report, ReportStatus, ReportStatusPro} from '../../core/client/report/Report'
 import {capitalize} from '../../core/helper'
 import {useI18n} from '../../core/i18n'
 import {Id} from '../../core/model'
@@ -20,6 +20,9 @@ import {ReportInfluencer} from './ReportInfluencer'
 import {ReportResponseComponent} from './ReportResponse'
 import {ReportResponseForm} from './ReportResponseForm/ReportResponseForm'
 import {CleanWidePanel} from 'shared/Panel/simplePanels'
+import {Icon} from '@mui/material'
+import {siteMap} from 'core/siteMap'
+import {Link} from 'react-router-dom'
 
 export const ReportPro = () => {
   const {id} = useParams<{id: Id}>()
@@ -50,6 +53,7 @@ function ReportProLoaded({report, files}: {report: Report; files: UploadedFile[]
 
   return (
     <div className="mt-8">
+      <LinkBackToList {...{report}} />
       <ReportBlock {...{scrollToResponse, report, isClosed, hasToRespond}} files={files} />
       {hasResponse && (
         <ResponseBlock {...{report, responseEvent, files}} responseConsumerReview={_getReviewOnReportResponse.data} />
@@ -72,6 +76,16 @@ function ReportProLoaded({report, files}: {report: Report; files: UploadedFile[]
         </CleanWidePanel>
       )}
     </div>
+  )
+}
+
+function LinkBackToList({report}: {report: Report}) {
+  const closed = Report.getStatusProByStatus(report.status) === ReportStatusPro.Cloture
+  const url = closed ? siteMap.logged.reportsfiltred.closed : siteMap.logged.reports()
+  return (
+    <Link to={url} className="flex items-center text-scbluefrance mb-2 no-underline hover:underline gap-2">
+      <Icon>arrow_back</Icon> Retour à la liste des signalements{closed ? ' clotûrés' : ''}
+    </Link>
   )
 }
 
