@@ -61,13 +61,6 @@ export const ProUserComponent: React.FC<ProUserComponentProps> = ({id, connected
     events.map(_ => _.data).filter(_ => _.action === EventActionValues.PostAccountActivationDoc),
   )
 
-  const tagsDistribution = useMemoFn(_tags.data, _ =>
-    Object.entries(_).map(([label, count]) => ({
-      label,
-      value: count,
-    })),
-  )
-
   return (
     <Page loading={_companyById.isLoading}>
       <PageTitle>

@@ -25,7 +25,6 @@ export const reportStatusColor = {
 
 export const reportStatusProColor = {
   [ReportStatusPro.ARepondre]: '#d64d00',
-  [ReportStatusPro.NonConsulte]: '#7b7b7b',
   [ReportStatusPro.Cloture]: '#27a658',
 }
 

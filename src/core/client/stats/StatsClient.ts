@@ -11,6 +11,7 @@ import {
   ReportResponseStatsParams,
   ReportSearch,
   ReportStatus,
+  ReportStatusPro,
   ReportStatusProDistribution,
 } from '../../model'
 import {ApiClientApi} from '../ApiClient'
@@ -54,19 +55,14 @@ export class StatsClient {
   }
 
   readonly getProStatus = (companyId: Id): Promise<ReportStatusProDistribution> => {
-    return this.client.get<ReportStatusDistribution>(`/stats/reports/status`, {qs: {companyId}}).then(
-      _ =>
-        <ReportStatusProDistribution>{
-          ARepondre: toNumberOrDefault(_.Transmis, 0),
-          NonConsulte: toNumberOrDefault(_.TraitementEnCours, 0),
-          Cloture:
-            toNumberOrDefault(_.PromesseAction, 0) +
-            toNumberOrDefault(_.Infonde, 0) +
-            toNumberOrDefault(_.NonConsulte, 0) +
-            toNumberOrDefault(_.ConsulteIgnore, 0) +
-            toNumberOrDefault(_.MalAttribue, 0),
-        },
-    )
+    return this.client.get<ReportStatusDistribution>(`/stats/reports/status`, {qs: {companyId}}).then(distribution => {
+      const entries = Object.values(ReportStatusPro).map(statusPro => {
+        const statusList = Report.getStatusByStatusPro(statusPro)
+        const sum = statusList.map(status => toNumberOrDefault(distribution[status], 0)).reduce(_ => _ + _)
+        return [statusPro, sum]
+      })
+      return Object.fromEntries(entries)
+    })
   }
 
   readonly getResponseReviews = (companyId: Id) => {

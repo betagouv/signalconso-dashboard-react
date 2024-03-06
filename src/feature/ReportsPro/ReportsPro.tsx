@@ -96,8 +96,7 @@ export const ReportsPro = ({reportType}: ReportsProProps) => {
     fromQueryString: compose(mapDateFromQueryString, mapArrayFromQuerystring(['siretSirenList', 'departments'])),
   })
 
-  const reportStatusPro =
-    reportType === 'closed' ? [ReportStatusPro.Cloture] : [ReportStatusPro.ARepondre, ReportStatusPro.NonConsulte]
+  const reportStatusPro = reportType === 'closed' ? [ReportStatusPro.Cloture] : [ReportStatusPro.ARepondre]
 
   const filtersAppliedToQuery = {
     ...queryString.get(),
