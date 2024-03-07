@@ -143,7 +143,7 @@ export const ReportsPro = ({reportType}: ReportsProProps) => {
 
   const filtersCount = useMemo(() => {
     const {offset, limit, ...filters} = _reports.filters
-    return Object.keys(cleanObject(filters)).length
+    return Object.keys(cleanObject(filters)).length - 1
   }, [_reports.filters])
 
   useEffect(() => {
@@ -290,11 +290,13 @@ export const ReportsPro = ({reportType}: ReportsProProps) => {
                     {(value, onChange) => <PeriodPicker fullWidth value={value} onChange={onChange} />}
                   </DebouncedInput>
                   <Box sx={css.actions}>
-                    <Badge color="error" badgeContent={filtersCount} hidden={filtersCount === 0}>
-                      <ScButton {...resetFiltersButtonProps} variant="outlined">
-                        {m.removeAllFilters}
-                      </ScButton>
-                    </Badge>
+                    {filtersCount > 0 && (
+                      <Badge color="error" badgeContent={filtersCount}>
+                        <ScButton {...resetFiltersButtonProps} variant="outlined">
+                          {m.removeAllFilters}
+                        </ScButton>
+                      </Badge>
+                    )}
                     <ExportReportsPopper
                       disabled={ScOption.from(_reports?.result.data?.totalCount)
                         .map(_ => _ > config.reportsLimitForExport)
