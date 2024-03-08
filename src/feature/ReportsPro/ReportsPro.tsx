@@ -143,7 +143,7 @@ export const ReportsPro = ({reportType}: ReportsProProps) => {
 
   const filtersCount = useMemo(() => {
     const {offset, limit, ...filters} = _reports.filters
-    return Object.keys(cleanObject(filters)).length - 1
+    return Object.keys(cleanObject(filters)).length - Object.keys(obligatoryFilters).length
   }, [_reports.filters])
 
   useEffect(() => {

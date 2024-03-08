@@ -313,7 +313,7 @@ export const Reports = () => {
                   companyId={_.report.companyId}
                   isDGAL={connectedUser.isDGAL}
                   companyName={_.report.companyName}
-                  companyBrand={_.report.websiteURL ? _.report.websiteURL : _.report.companyBrand}
+                  additionalLabel={_.report.websiteURL ? _.report.websiteURL : _.report.companyBrand}
                 />
               ),
             },
