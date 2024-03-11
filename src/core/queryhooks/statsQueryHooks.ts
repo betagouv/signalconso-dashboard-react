@@ -6,7 +6,9 @@ import {
   ReportAdminActionType,
   ReportResponseReviews,
   ReportStatusDistribution,
+  ReportStatusDistributionWithTotals,
   ReportStatusProDistribution,
+  ReportStatusProDistributionWithTotals,
   ReportTagsDistribution,
   SimpleStat,
 } from '../model'
@@ -48,20 +50,23 @@ export const useGetCompanyRefundBlackMailQuery = (id: Id, options?: UseQueryOpts
   })
 }
 
-export const useGetStatusQuery = (id: Id, options?: UseQueryOpts<ReportStatusDistribution, string[]>) => {
+export const useStatusDistributionQuery = (id: Id, options?: UseQueryOpts<ReportStatusDistributionWithTotals, string[]>) => {
   const {api} = useApiContext()
   return useQuery({
-    queryKey: ['stats_GetStatus'],
-    queryFn: () => api.secured.stats.getStatus(id),
+    queryKey: ['stats_StatusDistribution'],
+    queryFn: () => api.secured.stats.getStatusDistribution(id),
     ...options,
   })
 }
 
-export const useGetProStatusQuery = (id: Id, options?: UseQueryOpts<ReportStatusProDistribution, string[]>) => {
+export const useStatusDistributionProQuery = (
+  id: Id,
+  options?: UseQueryOpts<ReportStatusProDistributionWithTotals, string[]>,
+) => {
   const {api} = useApiContext()
   return useQuery({
-    queryKey: ['stats_GetProStatus'],
-    queryFn: () => api.secured.stats.getProStatus(id),
+    queryKey: ['stats_StatusDistributionPro'],
+    queryFn: () => api.secured.stats.getStatusDistributionPro(id),
     ...options,
   })
 }

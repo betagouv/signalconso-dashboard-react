@@ -9,13 +9,13 @@ import {ReportStatusPro} from '../../core/client/report/Report'
 import {CompanyWithReportsCount, Id, UserWithPermission} from '../../core/model'
 import {useGetCompanyByIdQuery} from '../../core/queryhooks/companyQueryHooks'
 import {useReportSearchQuery} from '../../core/queryhooks/reportQueryHooks'
-import {useGetProStatusQuery} from '../../core/queryhooks/statsQueryHooks'
 import {CompanyChartPanel} from './CompanyChartPanel'
 import {ReportsShortList} from './ReportsShortList'
 import {CompanyStatsNumberWidgets} from './companyStatsNumberWidgets'
 import {CompanyInfo} from './stats/CompanyInfo'
 import {ReviewDistribution} from './stats/ReviewDistribution'
 import {StatusDistribution} from './stats/StatusDistribution'
+import {useStatusDistributionProQuery} from 'core/queryhooks/statsQueryHooks'
 
 export type ExtendedUser = UserWithPermission & {
   isPro: boolean
@@ -33,7 +33,7 @@ export const CompanyStatsPro: React.FC<ProUserComponentProps> = ({id, connectedU
 
   const _reports = useReportSearchQuery({hasCompany: true, offset: 0, limit: 5}, false)
 
-  const _getProStatus = useGetProStatusQuery(id, {enabled: connectedUser.isPro})
+  const _statusDistribution = useStatusDistributionProQuery(id, {enabled: connectedUser.isPro})
 
   useEffectFn(company, _ => {
     _reports.updateFilters({hasCompany: true, siretSirenList: [_.siret], offset: 0, limit: 5})
@@ -59,12 +59,12 @@ export const CompanyStatsPro: React.FC<ProUserComponentProps> = ({id, connectedU
       {company && (
         <>
           <CompanyStatsNumberWidgets id={id} siret={company.siret} />
-          <CompanyChartPanel companyId={id} company={company} />
+          <CompanyChartPanel companyId={id} company={company} reportTotals={_statusDistribution.data?.totals} />
           <Grid container spacing={2}>
             <Grid item sm={12} md={7}>
               <StatusDistribution<ReportStatusPro>
-                values={_getProStatus.data}
-                loading={_getProStatus.isLoading}
+                values={_statusDistribution.data?.distribution}
+                loading={_statusDistribution.isLoading}
                 statusDesc={(s: ReportStatusPro) => m.reportStatusDescPro[s]}
                 statusShortLabel={(s: ReportStatusPro) => m.reportStatusShortPro[s]}
                 statusColor={(s: ReportStatusPro) => reportStatusProColor[s]}
