@@ -8,10 +8,10 @@ type CompanyNameDetailsProps = {
   companyId: string | undefined
   isDGAL: boolean
   companyName: string | undefined
-  companyBrand: string | undefined
+  additionalLabel: string | undefined
 }
 
-const CompanyNameDetails: React.FC<CompanyNameDetailsProps> = ({companyId, isDGAL, companyName, companyBrand}) => {
+const CompanyNameDetails: React.FC<CompanyNameDetailsProps> = ({companyId, isDGAL, companyName, additionalLabel}) => {
   return (
     <Box component="span" sx={{marginBottom: '-1px'}}>
       {companyId && !isDGAL ? (
@@ -19,7 +19,7 @@ const CompanyNameDetails: React.FC<CompanyNameDetailsProps> = ({companyId, isDGA
           <NavLink to={siteMap.logged.company(companyId)}>
             <Txt link>{companyName}</Txt>
           </NavLink>
-          {companyBrand && (
+          {additionalLabel && (
             <>
               <br />
               <Txt
@@ -30,7 +30,7 @@ const CompanyNameDetails: React.FC<CompanyNameDetailsProps> = ({companyId, isDGA
                   color: t => t.palette.text.primary,
                 }}
               >
-                {companyBrand}
+                {additionalLabel}
               </Txt>
             </>
           )}

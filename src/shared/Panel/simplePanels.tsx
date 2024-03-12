@@ -30,14 +30,21 @@ export function CleanDiscreetPanel({
   ref,
   loading,
   noPaddingTop,
+  fullHeight,
 }: {
   children: ReactNode
   ref?: React.RefObject<HTMLDivElement>
   loading?: boolean
   noPaddingTop?: boolean
+  fullHeight?: boolean
 }) {
   return (
-    <div className={`p-4 ${noPaddingTop ? 'pt-0' : ''} border-solid border border-gray-300 rounded shadow-md mb-4`} ref={ref}>
+    <div
+      className={`p-4 ${noPaddingTop ? 'pt-0' : ''} ${
+        fullHeight ? 'h-full' : ''
+      } border-solid border border-gray-300 rounded shadow-md `}
+      ref={ref}
+    >
       {loading ? (
         <div className="min-h-[100px]">
           <LinearProgress className="" />
