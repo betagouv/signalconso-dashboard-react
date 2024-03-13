@@ -15,7 +15,14 @@ import {
   ReportStatusProDistribution,
 } from '../../model'
 import {ApiClientApi} from '../ApiClient'
-import {ReportResponseReviews, ReportStatusDistribution, ReportTagsDistribution, SimpleStat} from './Stats'
+import {
+  ReportResponseReviews,
+  ReportStatusDistribution,
+  ReportStatusDistributionWithTotals,
+  ReportStatusProDistributionWithTotals,
+  ReportTagsDistribution,
+  SimpleStat,
+} from './Stats'
 
 // All of this could be greatly simplified, if we just fully compute the stats server-side
 // Like it's done with the 'PublicStat' on the website
@@ -50,19 +57,32 @@ export class StatsClient {
     return this.client.get<ReportTagsDistribution>(`/stats/reports/tags`, {qs: {companyId}})
   }
 
-  readonly getStatus = (companyId: Id) => {
-    return this.client.get<ReportStatusDistribution>(`/stats/reports/status`, {qs: {companyId}})
+  readonly getStatusDistribution = async (companyId: Id): Promise<ReportStatusDistributionWithTotals> => {
+    const distribution = await this.client.get<ReportStatusDistribution>(`/stats/reports/status`, {qs: {companyId}})
+    const total = sum(Object.values(distribution))
+    const totalWaitingResponse = sum(
+      Object.values(ReportStatus)
+        .filter(_ => Report.isWaitingForResponse(_))
+        .map(status => distribution[status] ?? 0),
+    )
+    return {
+      distribution,
+      totals: {total, totalWaitingResponse},
+    }
   }
 
-  readonly getProStatus = (companyId: Id): Promise<ReportStatusProDistribution> => {
-    return this.client.get<ReportStatusDistribution>(`/stats/reports/status`, {qs: {companyId}}).then(distribution => {
-      const entries = Object.values(ReportStatusPro).map(statusPro => {
-        const statusList = Report.getStatusByStatusPro(statusPro)
-        const count = sum(statusList.map(status => toNumberOrDefault(distribution[status], 0)))
-        return [statusPro, count]
-      })
-      return Object.fromEntries(entries)
+  readonly getStatusDistributionPro = async (companyId: Id): Promise<ReportStatusProDistributionWithTotals> => {
+    const {distribution, totals} = await this.getStatusDistribution(companyId)
+    const entries = Object.values(ReportStatusPro).map(statusPro => {
+      const statusList = Report.getStatusByStatusPro(statusPro)
+      const count = sum(statusList.map(status => toNumberOrDefault(distribution[status], 0)))
+      return [statusPro, count] as const
     })
+    const distributionPro = Object.fromEntries(entries) as ReportStatusProDistribution
+    return {
+      distribution: distributionPro,
+      totals,
+    }
   }
 
   readonly getResponseReviews = (companyId: Id) => {

@@ -7,14 +7,22 @@ import {NavLink} from 'react-router-dom'
 import {CurveDefinition, LineChartOrPlaceholder} from 'shared/Chart/LineChartWrappers'
 import {Panel, PanelBody, PanelHead} from 'shared/Panel'
 import {CompanyWithReportsCount} from '../../core/client/company/Company'
-import {Period} from '../../core/client/stats/Stats'
+import {NbReportsTotals, Period} from '../../core/client/stats/Stats'
 import {Id, ReportStatus} from '../../core/model'
 
 const periods: Period[] = ['Day', 'Week', 'Month']
 
 const ticks = 7
 
-export const CompanyChartPanel = ({companyId, company}: {company: CompanyWithReportsCount; companyId: Id}) => {
+export const CompanyChartPanel = ({
+  companyId,
+  company,
+  reportTotals,
+}: {
+  company: CompanyWithReportsCount
+  companyId: Id
+  reportTotals: NbReportsTotals | undefined
+}) => {
   const {apiSdk} = useLogin()
   const {m, formatLargeNumber} = useI18n()
   const [reportsCurvePeriod, setReportsCurvePeriod] = useState<Period>('Month')
@@ -79,18 +87,32 @@ export const CompanyChartPanel = ({companyId, company}: {company: CompanyWithRep
           </ButtonGroup>
         }
       >
-        <NavLink to={siteMap.logged.reports({companyIds})}>
-          {company.count && formatLargeNumber(company.count)}
-          &nbsp;
-          {m.reports.toLocaleLowerCase()}
-          <IconButton size={'small'} sx={{color: t => t.palette.text.secondary}}>
-            <Icon>open_in_new</Icon>
-          </IconButton>
-        </NavLink>
+        {reportTotals && <ReportsTotalWithLink {...{companyId, reportTotals}} />}
       </PanelHead>
       <PanelBody>
         <LineChartOrPlaceholder hideLabelToggle={true} {...{curves}} period={reportsCurvePeriod} />
       </PanelBody>
     </Panel>
+  )
+}
+
+function ReportsTotalWithLink({reportTotals, companyId}: {reportTotals: NbReportsTotals; companyId: Id}) {
+  const {connectedUser} = useLogin()
+  const {formatLargeNumber} = useI18n()
+
+  const firstPart = `${formatLargeNumber(reportTotals.total)} signalements`
+  const secondPart = `${formatLargeNumber(reportTotals.totalWaitingResponse)} en attente de réponse`
+  const url = siteMap.logged.reports({companyIds: [companyId]})
+  if (connectedUser.isPro) {
+    return (
+      <p className="font-normal">
+        {firstPart} (dont <NavLink to={url}>{secondPart}</NavLink>)
+      </p>
+    )
+  }
+  return (
+    <p className="font-normal">
+      <NavLink to={url}>{firstPart}</NavLink> (dont {secondPart})
+    </p>
   )
 }

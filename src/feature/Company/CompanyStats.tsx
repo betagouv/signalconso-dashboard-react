@@ -11,7 +11,7 @@ import {ReportStatus} from '../../core/client/report/Report'
 import {CompanyWithReportsCount, Id, UserWithPermission} from '../../core/model'
 import {useGetCompanyByIdQuery, useGetHostsQuery} from '../../core/queryhooks/companyQueryHooks'
 import {useReportSearchQuery} from '../../core/queryhooks/reportQueryHooks'
-import {useGetStatusQuery, useGetTagsQuery} from '../../core/queryhooks/statsQueryHooks'
+import {useGetTagsQuery, useStatusDistributionQuery} from '../../core/queryhooks/statsQueryHooks'
 import {CompanyChartPanel} from './CompanyChartPanel'
 import {ReportsShortList} from './ReportsShortList'
 import {CompanyInfo} from './stats/CompanyInfo'
@@ -36,7 +36,7 @@ export const CompanyStats: React.FC<NonProUserComponentProps> = ({id, connectedU
   const _hosts = useGetHostsQuery(id, {enabled: !connectedUser.isPro})
   const _reports = useReportSearchQuery({hasCompany: true, offset: 0, limit: 5}, false)
   const _tags = useGetTagsQuery(id)
-  const _getStatus = useGetStatusQuery(id, {enabled: !connectedUser.isPro})
+  const _statusDistribution = useStatusDistributionQuery(id, {enabled: !connectedUser.isPro})
 
   useEffectFn(company, _ => {
     _reports.updateFilters({hasCompany: true, siretSirenList: [_.siret], offset: 0, limit: 5})
@@ -70,13 +70,13 @@ export const CompanyStats: React.FC<NonProUserComponentProps> = ({id, connectedU
         <>
           <CompanyStatsNumberWidgets id={id} siret={company.siret} />
 
-          <CompanyChartPanel companyId={id} company={company} />
+          <CompanyChartPanel companyId={id} company={company} reportTotals={_statusDistribution.data?.totals} />
 
           <Grid container spacing={2}>
             <Grid item sm={12} md={7}>
               <StatusDistribution<ReportStatus>
-                loading={_getStatus.isLoading}
-                values={_getStatus.data}
+                loading={_statusDistribution.isLoading}
+                values={_statusDistribution.data?.distribution}
                 statusDesc={(s: ReportStatus) => m.reportStatusDesc[s]}
                 statusShortLabel={(s: ReportStatus) => m.reportStatusShort[s]}
                 statusColor={(s: ReportStatus) => reportStatusColor[s]}

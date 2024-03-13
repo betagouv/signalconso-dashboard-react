@@ -16,6 +16,18 @@ export interface CountByDate {
 
 export type ReportStatusDistribution = {[key in ReportStatus]: number}
 export type ReportStatusProDistribution = {[key in ReportStatusPro]: number}
+export type ReportStatusDistributionWithTotals = {
+  distribution: ReportStatusDistribution
+  totals: NbReportsTotals
+}
+export type ReportStatusProDistributionWithTotals = {
+  distribution: ReportStatusProDistribution
+  totals: NbReportsTotals
+}
+export type NbReportsTotals = {
+  total: number
+  totalWaitingResponse: number
+}
 
 export type ReportTagsDistribution = Index<number>
 

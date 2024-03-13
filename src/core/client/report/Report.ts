@@ -165,6 +165,8 @@ export enum ReportStatusPro {
 export type ReportConsumerUpdate = Pick<Report, 'firstName' | 'lastName' | 'email' | 'consumerReferenceNumber'>
 
 export class Report {
+  static readonly waitingResponseStatus = [ReportStatus.Transmis, ReportStatus.TraitementEnCours]
+
   static readonly closedStatus = [
     ReportStatus.PromesseAction,
     ReportStatus.Infonde,
@@ -205,38 +207,15 @@ export class Report {
     return Report.closedStatus.includes(status)
   }
 
-  private static readonly mapStatusPro: {[key in ReportStatus]: () => ReportStatusPro} = {
-    [ReportStatus.NA]: () => {
-      throw new Error(`Invalid status`)
-    },
-    [ReportStatus.LanceurAlerte]: () => {
-      throw new Error(`Invalid status`)
-    },
-    [ReportStatus.TraitementEnCours]: () => ReportStatusPro.ARepondre,
-    [ReportStatus.Transmis]: () => ReportStatusPro.ARepondre,
-    [ReportStatus.PromesseAction]: () => ReportStatusPro.Cloture,
-    [ReportStatus.Infonde]: () => ReportStatusPro.Cloture,
-    [ReportStatus.NonConsulte]: () => ReportStatusPro.Cloture,
-    [ReportStatus.ConsulteIgnore]: () => ReportStatusPro.Cloture,
-    [ReportStatus.MalAttribue]: () => ReportStatusPro.Cloture,
+  static readonly isWaitingForResponse = (status: ReportStatus) => {
+    return Report.waitingResponseStatus.includes(status)
   }
 
-  private static mapStatusProInverted: {[key in ReportStatusPro]: () => ReportStatus[]} = Object.entries(
-    Report.mapStatusPro,
-  ).reduce((acc, [status, statusProFn]) => {
-    try {
-      const statusPro = statusProFn()
-      const prevStatus = acc[statusPro] ? acc[statusPro]() : []
-      acc[statusPro] = () => [...prevStatus, status as ReportStatus]
-      return acc
-    } catch {
-      return acc
-    }
-  }, {} as {[key in ReportStatusPro]: () => ReportStatus[]})
+  static readonly getStatusProByStatus = (status: ReportStatus): ReportStatusPro =>
+    Report.isClosed(status) ? ReportStatusPro.Cloture : ReportStatusPro.ARepondre
 
-  static readonly getStatusProByStatus = (status: ReportStatus): ReportStatusPro => Report.mapStatusPro[status]()
-
-  static readonly getStatusByStatusPro = (status: ReportStatusPro): ReportStatus[] => Report.mapStatusProInverted[status]()
+  static readonly getStatusByStatusPro = (statusPro: ReportStatusPro): ReportStatus[] =>
+    Object.values(ReportStatus).filter(_ => Report.getStatusProByStatus(_) === statusPro)
 
   static readonly isGovernmentCompany = (_?: {activityCode?: string}): boolean => _?.activityCode?.startsWith('84.') ?? false
 }
