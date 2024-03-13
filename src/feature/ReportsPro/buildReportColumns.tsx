@@ -1,6 +1,6 @@
 import React from 'react'
 import {Badge, Box, Icon} from '@mui/material'
-import {ReportSearchResult} from '../../core/client/report/Report'
+import {ReportSearchResult, ReportStatus} from '../../core/client/report/Report'
 import {Txt} from '../../alexlibs/mui-extension'
 import {useI18n} from 'core/i18n'
 import {ReportStatusLabel} from 'shared/ReportStatus'
@@ -18,6 +18,13 @@ interface ReportTableColumnsParams {
     formatDate: (d?: Date | undefined) => string
     m: typeof fr['messages']
   }
+}
+
+const getBoldText = (report: ReportSearchResult, content: React.ReactNode) => {
+  if (report.report.status === ReportStatus.TraitementEnCours) {
+    return <p className="font-bold">{content}</p>
+  }
+  return <p>{content}</p>
 }
 
 export const buildReportColumns = ({reportType, isMobileWidth, css, i18nData}: ReportTableColumnsParams) => {
@@ -59,18 +66,18 @@ export const buildReportColumns = ({reportType, isMobileWidth, css, i18nData}: R
     {
       id: 'siret',
       head: 'SIRET',
-      render: (report: ReportSearchResult) => report.report.companySiret,
+      render: (report: ReportSearchResult) => getBoldText(report, report.report.companySiret),
     },
     {
       id: 'createDate',
       head: 'Date de création',
-      render: (report: ReportSearchResult) => formatDate(report.report.creationDate),
+      render: (report: ReportSearchResult) => getBoldText(report, formatDate(report.report.creationDate)),
     },
     {
       id: 'consumer',
       head: 'Consommateur',
       render: (report: ReportSearchResult) =>
-        report.report.contactAgreement ? `${report.report.firstName} ${report.report.lastName}` : 'Anonyme',
+        getBoldText(report, report.report.contactAgreement ? `${report.report.firstName} ${report.report.lastName}` : 'Anonyme'),
     },
   ]
 
@@ -80,8 +87,9 @@ export const buildReportColumns = ({reportType, isMobileWidth, css, i18nData}: R
           {
             id: 'expirationDate',
             head: 'À répondre avant le',
-            render: (report: ReportSearchResult) => formatDate(report.report.expirationDate),
+            render: (report: ReportSearchResult) => getBoldText(report, formatDate(report.report.expirationDate)),
           },
+
           {
             id: 'file',
             head: 'Fichiers',
