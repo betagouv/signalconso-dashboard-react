@@ -40,7 +40,7 @@ export function CleanDiscreetPanel({
 }) {
   return (
     <div
-      className={`p-4 ${noPaddingTop ? 'pt-0' : ''} ${
+      className={`p-4 mb-4 ${noPaddingTop ? 'pt-0' : ''} ${
         fullHeight ? 'h-full' : ''
       } border-solid border border-gray-300 rounded shadow-md `}
       ref={ref}
