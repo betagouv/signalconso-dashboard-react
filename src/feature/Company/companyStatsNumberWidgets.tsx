@@ -135,11 +135,9 @@ function NumberWidgetAccesses({siret}: {siret: string}) {
           <p className="text-3xl font-bold">{_accesses.data}</p>
           <p className="">
             {m.accountsActivated}{' '}
-            {_accesses.data > 0 && (
-              <span>
-                (<NavLink to={siteMap.logged.companyAccesses(siret)}>voir</NavLink>)
-              </span>
-            )}
+            <span>
+              <NavLink to={siteMap.logged.companyAccesses(siret)}>voir</NavLink>
+            </span>
           </p>
         </>
       )}
