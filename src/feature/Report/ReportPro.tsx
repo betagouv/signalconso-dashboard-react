@@ -1,10 +1,14 @@
+import {Button, Icon} from '@mui/material'
 import {useQueryClient} from '@tanstack/react-query'
+import {siteMap} from 'core/siteMap'
 import {ReportReferenceNumber} from 'feature/Report/ReportReferenceNumber'
 import {useRef} from 'react'
 import {useParams} from 'react-router'
+import {Link} from 'react-router-dom'
+import {CleanWidePanel} from 'shared/Panel/simplePanels'
 import {ReportProResponseEvent, ResponseConsumerReview} from '../../core/client/event/Event'
 import {FileOrigin, UploadedFile} from '../../core/client/file/UploadedFile'
-import {Report, ReportStatus, ReportStatusPro} from '../../core/client/report/Report'
+import {Report, ReportStatusPro} from '../../core/client/report/Report'
 import {capitalize} from '../../core/helper'
 import {useI18n} from '../../core/i18n'
 import {Id} from '../../core/model'
@@ -19,10 +23,6 @@ import {ExpirationDate} from './ReportHeader'
 import {ReportInfluencer} from './ReportInfluencer'
 import {ReportResponseComponent} from './ReportResponse'
 import {ReportResponseForm} from './ReportResponseForm/ReportResponseForm'
-import {CleanWidePanel} from 'shared/Panel/simplePanels'
-import {Icon} from '@mui/material'
-import {siteMap} from 'core/siteMap'
-import {Link} from 'react-router-dom'
 
 export const ReportPro = () => {
   const {id} = useParams<{id: Id}>()
@@ -168,20 +168,36 @@ function Header({
 
   return (
     <div className="text-left mb-8">
-      <div className="pb-4">
-        <h1 className="font-bold text-3xl ">
-          <span>Signalement</span>
-        </h1>
-        <p>
-          À propos de l'entreprise <span className="font-bold">{report.companyName}</span> (
-          <span className="text-sm italic">{report.companySiret}</span>)
-        </p>
-        <p className="font-bold text-base">
-          Le {formatDate(report.creationDate)}{' '}
-          <span className="text-base text-gray-500">à {formatTime(report.creationDate)}</span>
-        </p>
-        <p>{report.contactAgreement ? <span>Par {report.email}</span> : <span>Par un consommateur anonyme</span>}</p>
-        <ExpirationDate {...{report}} isUserPro={true} />
+      <div className="flex justify-between">
+        <div className="pb-4 ">
+          <h1 className="font-bold text-3xl ">
+            <span>Signalement</span>
+          </h1>
+          <p>
+            À propos de l'entreprise <span className="font-bold">{report.companyName}</span> (
+            <span className="text-sm italic">{report.companySiret}</span>)
+          </p>
+          <p className="font-bold text-base">
+            Le {formatDate(report.creationDate)}{' '}
+            <span className="text-base text-gray-500">à {formatTime(report.creationDate)}</span>
+          </p>
+          <p>{report.contactAgreement ? <span>Par {report.email}</span> : <span>Par un consommateur anonyme</span>}</p>
+          <ExpirationDate {...{report}} isUserPro={true} />
+        </div>
+        <div className="text-right space-y-2">
+          <p className="font-bold">Assigné à :</p>
+          <p className="flex items-center justify-end gap-2">
+            <Icon>account_box</Icon>
+            Jean Dupont{' '}
+          </p>
+          <div className="flex-col flex gap-2 justify-end">
+            <ScButton icon="back_hand" size="small" variant="outlined">
+              Me l'assigner
+            </ScButton>
+            {/* <Link to={'/'}>assigner à qqn d'autre</Link> */}
+            {/* <ScButton size="small">Assigner à quelqu'un d'autre</ScButton> */}
+          </div>
+        </div>
       </div>
       {isClosed && <div className="flex items-center justify-center bg-[#e3e3fd]  p-2">Signalement cloturé.</div>}
       {hasToRespond && (
