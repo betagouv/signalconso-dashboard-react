@@ -184,19 +184,20 @@ function Header({
           <p>{report.contactAgreement ? <span>Par {report.email}</span> : <span>Par un consommateur anonyme</span>}</p>
           <ExpirationDate {...{report}} isUserPro={true} />
         </div>
-        <div className="text-right space-y-2">
-          <p className="font-bold">Assigné à :</p>
-          <p className="flex items-center justify-end gap-2">
-            <Icon>account_box</Icon>
-            Jean Dupont{' '}
+        <div className="text-right space-y-1">
+          <span className="font-bold">Assigné à :</span>
+          <p className="flex gap-1">
+            <span>Jean Dupont</span>
+            <Icon className="">account_circle</Icon>
           </p>
-          <div className="flex-col flex gap-2 justify-end">
-            <ScButton icon="back_hand" size="small" variant="outlined">
-              Me l'assigner
-            </ScButton>
-            {/* <Link to={'/'}>assigner à qqn d'autre</Link> */}
-            {/* <ScButton size="small">Assigner à quelqu'un d'autre</ScButton> */}
-          </div>
+          {/* <div className="flex-col flex gap-1 justify-end"> */}
+          <ScButton icon="loop" size="small" variant="outlined" className="">
+            Changer
+          </ScButton>
+          <Link to={''} className="block text-scbluefrance text-sm">
+            Me l'assigner
+          </Link>
+          {/* </div> */}
         </div>
       </div>
       {isClosed && <div className="flex items-center justify-center bg-[#e3e3fd]  p-2">Signalement cloturé.</div>}
