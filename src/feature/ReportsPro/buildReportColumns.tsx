@@ -20,11 +20,11 @@ interface ReportTableColumnsParams {
   }
 }
 
-const getBoldText = (report: ReportSearchResult, content: React.ReactNode) => {
+const MaybeBold: React.FC<{report: ReportSearchResult; children: React.ReactNode}> = ({report, children}) => {
   if (report.report.status === ReportStatus.TraitementEnCours) {
-    return <p className="font-bold">{content}</p>
+    return <p className="font-bold">{children}</p>
   }
-  return <p>{content}</p>
+  return <p>{children}</p>
 }
 
 export const buildReportColumns = ({reportType, isMobileWidth, css, i18nData}: ReportTableColumnsParams) => {
@@ -66,18 +66,21 @@ export const buildReportColumns = ({reportType, isMobileWidth, css, i18nData}: R
     {
       id: 'siret',
       head: 'SIRET',
-      render: (report: ReportSearchResult) => getBoldText(report, report.report.companySiret),
+      render: (report: ReportSearchResult) => <MaybeBold report={report}>{report.report.companySiret}</MaybeBold>,
     },
     {
       id: 'createDate',
       head: 'Date de création',
-      render: (report: ReportSearchResult) => getBoldText(report, formatDate(report.report.creationDate)),
+      render: (report: ReportSearchResult) => <MaybeBold report={report}>{formatDate(report.report.creationDate)}</MaybeBold>,
     },
     {
       id: 'consumer',
       head: 'Consommateur',
-      render: (report: ReportSearchResult) =>
-        getBoldText(report, report.report.contactAgreement ? `${report.report.firstName} ${report.report.lastName}` : 'Anonyme'),
+      render: (report: ReportSearchResult) => (
+        <MaybeBold report={report}>
+          {report.report.contactAgreement ? `${report.report.firstName} ${report.report.lastName}` : 'Anonyme'}
+        </MaybeBold>
+      ),
     },
   ]
 
@@ -87,7 +90,9 @@ export const buildReportColumns = ({reportType, isMobileWidth, css, i18nData}: R
           {
             id: 'expirationDate',
             head: 'À répondre avant le',
-            render: (report: ReportSearchResult) => getBoldText(report, formatDate(report.report.expirationDate)),
+            render: (report: ReportSearchResult) => (
+              <MaybeBold report={report}>{formatDate(report.report.expirationDate)}</MaybeBold>
+            ),
           },
 
           {
