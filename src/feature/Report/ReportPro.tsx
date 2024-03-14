@@ -23,6 +23,8 @@ import {ExpirationDate} from './ReportHeader'
 import {ReportInfluencer} from './ReportInfluencer'
 import {ReportResponseComponent} from './ReportResponse'
 import {ReportResponseForm} from './ReportResponseForm/ReportResponseForm'
+import {ScDialog} from 'shared/ScDialog'
+import {ReportAssignement} from './ReportAssignement'
 
 export const ReportPro = () => {
   const {id} = useParams<{id: Id}>()
@@ -188,19 +190,7 @@ function Header({
           <p>{report.contactAgreement ? <span>Par {report.email}</span> : <span>Par un consommateur anonyme</span>}</p>
           <ExpirationDate {...{report}} isUserPro={true} />
         </div>
-        <div className="flex flex-col items-start sm:items-end gap-1">
-          <span className="font-bold">Assigné à :</span>
-          <p className="flex gap-1  items-center">
-            <p>Jean Dupont</p>
-            <Icon className="">account_circle</Icon>
-          </p>
-          <ScButton icon="loop" size="small" variant="outlined" className="">
-            Changer
-          </ScButton>
-          <Link to={''} className="block text-scbluefrance text-sm">
-            Me l'assigner
-          </Link>
-        </div>
+        <ReportAssignement />
       </div>
       {isClosed && <div className="flex items-center justify-center bg-[#e3e3fd]  p-2">Signalement cloturé.</div>}
       {hasToRespond && (
