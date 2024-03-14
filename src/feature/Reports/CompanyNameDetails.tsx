@@ -15,28 +15,26 @@ const CompanyNameDetails: React.FC<CompanyNameDetailsProps> = ({companyId, isDGA
   return (
     <Box component="span" sx={{marginBottom: '-1px'}}>
       {companyId && !isDGAL ? (
-        <>
-          <NavLink to={siteMap.logged.company(companyId)}>
-            <Txt link>{companyName}</Txt>
-          </NavLink>
-          {additionalLabel && (
-            <>
-              <br />
-              <Txt
-                component="span"
-                sx={{
-                  fontSize: t => styleUtils(t).fontSize.small,
-                  fontStyle: 'italic',
-                  color: t => t.palette.text.primary,
-                }}
-              >
-                {additionalLabel}
-              </Txt>
-            </>
-          )}
-        </>
+        <NavLink to={siteMap.logged.company(companyId)}>
+          <Txt link>{companyName}</Txt>
+        </NavLink>
       ) : (
         <span>{companyName}</span>
+      )}
+      {additionalLabel && (
+        <>
+          <br />
+          <Txt
+            component="span"
+            sx={{
+              fontSize: t => styleUtils(t).fontSize.small,
+              fontStyle: 'italic',
+              color: t => t.palette.text.primary,
+            }}
+          >
+            {additionalLabel}
+          </Txt>
+        </>
       )}
     </Box>
   )
