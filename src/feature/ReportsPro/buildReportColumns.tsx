@@ -74,6 +74,11 @@ export const buildReportColumns = ({reportType, isMobileWidth, css, i18nData}: R
       render: (report: ReportSearchResult) => <MaybeBold report={report}>{formatDate(report.report.creationDate)}</MaybeBold>,
     },
     {
+      id: 'assignee',
+      head: 'Assigné à',
+      render: (report: ReportSearchResult) => 'Jean Dupont',
+    },
+    {
       id: 'consumer',
       head: 'Consommateur',
       render: (report: ReportSearchResult) => (
