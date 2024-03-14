@@ -168,14 +168,18 @@ function Header({
 
   return (
     <div className="text-left mb-8">
-      <div className="flex justify-between">
-        <div className="pb-4 ">
+      <div className="flex justify-between flex-col gap-4 sm:gap-0 sm:flex-row ">
+        <div className="pb-4">
           <h1 className="font-bold text-3xl ">
             <span>Signalement</span>
           </h1>
-          <p>
-            À propos de l'entreprise <span className="font-bold">{report.companyName}</span> (
-            <span className="text-sm italic">{report.companySiret}</span>)
+          <p className="flex flex-col lg:flex-row lg:items-end gap-1">
+            <span>
+              À propos de l'entreprise <span className="font-bold">{report.companyName}</span>
+            </span>{' '}
+            <span>
+              (<span className="text-sm italic">{report.companySiret}</span>)
+            </span>
           </p>
           <p className="font-bold text-base">
             Le {formatDate(report.creationDate)}{' '}
@@ -184,20 +188,18 @@ function Header({
           <p>{report.contactAgreement ? <span>Par {report.email}</span> : <span>Par un consommateur anonyme</span>}</p>
           <ExpirationDate {...{report}} isUserPro={true} />
         </div>
-        <div className="text-right space-y-1">
+        <div className="flex flex-col items-start sm:items-end gap-1">
           <span className="font-bold">Assigné à :</span>
-          <p className="flex gap-1">
-            <span>Jean Dupont</span>
+          <p className="flex gap-1  items-center">
+            <p>Jean Dupont</p>
             <Icon className="">account_circle</Icon>
           </p>
-          {/* <div className="flex-col flex gap-1 justify-end"> */}
           <ScButton icon="loop" size="small" variant="outlined" className="">
             Changer
           </ScButton>
           <Link to={''} className="block text-scbluefrance text-sm">
             Me l'assigner
           </Link>
-          {/* </div> */}
         </div>
       </div>
       {isClosed && <div className="flex items-center justify-center bg-[#e3e3fd]  p-2">Signalement cloturé.</div>}
