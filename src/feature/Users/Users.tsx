@@ -25,7 +25,7 @@ export const Users = () => {
         <PageTab to={siteMap.logged.users.blacklist.value} label={m.blacklistedConsumers} />
       </PageTabs>
       <Routes>
-        <Route path="/" element={<Navigate replace to={siteMap.logged.users.agent.value} />} />
+        <Route path="/*" element={<Navigate replace to={siteMap.logged.users.agent.value} />} />
         <Route path={siteMap.logged.users.agent.value} element={<AgentUsersList />} />
         <Route path={siteMap.logged.users.auth_attempts.value()} element={<UserAuthAttempts />} />
         <Route path={siteMap.logged.users.agent_pending.value} element={<UsersListPending />} />

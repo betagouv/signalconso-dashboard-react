@@ -41,7 +41,13 @@ export const siteMap = {
     company: (id: Id) => `/bilan-entreprise/${id}`,
 
     users: {
-      value: '/users/*',
+      root: '/users',
+      value: function () {
+        return `${this.root}/*`
+      },
+      basePath: function () {
+        return `${this.root}/`
+      },
       auth_attempts: {
         value: (email?: string) => `auth-attempts` + (email ? toQueryString({email}) : ``),
       },
@@ -72,11 +78,27 @@ export const siteMap = {
     updateEmail: (token: string) => `/parametres/update-email/${token}`,
     settings: `/parametres`,
     modeEmploiDGCCRF: `/mode-emploi-dgccrf`,
-    stats: `/stats`,
-    proStats: `/stats/pro-stats`,
-    dgccrfStats: `/stats/dgccrf-stats`,
-    reportStats: `/stats/report-stats`,
-    countBySubCategories: `/stats/countBySubCategories`,
+
+    stats: {
+      value: '/stats/*',
+      pro: {
+        value: 'pro-stats',
+      },
+      dgccrf: {
+        value: 'dgccrf-stats',
+      },
+      report: {
+        value: 'report-stats',
+      },
+      countBySubCategories: {
+        value: 'countBySubCategories',
+      },
+    },
+    // stats: `/stats`,
+    // proStats: `/stats/pro-stats`,
+    // dgccrfStats: `/stats/dgccrf-stats`,
+    // reportStats: `/stats/report-stats`,
+    // countBySubCategories: `/stats/countBySubCategories`,
   },
   loggedout: {
     welcome: '/',

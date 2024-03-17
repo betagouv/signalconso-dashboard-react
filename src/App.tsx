@@ -191,7 +191,7 @@ const AppLogged = () => {
         <Route path={siteMap.logged.reportsfiltred.closed} element={<ReportsPro reportType="closed" />} />
         <Route path={siteMap.logged.report()} element={connectedUser.isPro ? <ReportPro /> : <ReportComponent />} />
         <Route path={siteMap.logged.reports()} element={connectedUser.isPro ? <ReportsPro reportType="open" /> : <Reports />} />
-        <Route path={siteMap.logged.users.value} element={<Users />} />
+        <Route path={siteMap.logged.users.value()} element={<Users />} />
         <Route path={siteMap.logged.companies.value} element={<Companies />} />
         <Route path={siteMap.logged.companyAccesses()} element={<CompanyAccesses />} />
         <Route path={siteMap.logged.company(':id')} element={<CompanyComponent />} />
@@ -205,7 +205,7 @@ const AppLogged = () => {
           path={siteMap.logged.modeEmploiDGCCRF}
           element={connectedUser.isPro ? <ReportsPro reportType="open" /> : <ModeEmploiDGCCRF />}
         />
-        <Route path={siteMap.logged.stats} element={<Stats />} />
+        <Route path={siteMap.logged.stats.value} element={<Stats />} />
         <Route path={siteMap.loggedout.register} element={<AddCompanyForm />} />
         <Route path="/" element={<Navigate replace to={siteMap.logged.reports()} />} />
       </Routes>

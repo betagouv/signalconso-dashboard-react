@@ -76,7 +76,7 @@ export const ScSidebar = ({connectedUser, logout}: {connectedUser: UserWithPermi
         </SidebarItem>
       )}
       {[Roles.Admin].includes(connectedUser.role) && (
-        <SidebarItem onClick={closeSidebar} to={path(siteMap.logged.users.value)} icon={EntityIcon.user}>
+        <SidebarItem onClick={closeSidebar} to={path(siteMap.logged.users.value())} icon={EntityIcon.user}>
           {m.menu_users}
         </SidebarItem>
       )}
@@ -86,7 +86,7 @@ export const ScSidebar = ({connectedUser, logout}: {connectedUser: UserWithPermi
         </SidebarItem>
       )}
       {[Roles.Admin, Roles.DGCCRF, Roles.DGAL].includes(connectedUser.role) && (
-        <SidebarItem onClick={closeSidebar} to={path(siteMap.logged.stats)} icon={EntityIcon.stats}>
+        <SidebarItem onClick={closeSidebar} to={path(siteMap.logged.stats.value)} icon={EntityIcon.stats}>
           {m.menu_stats}
         </SidebarItem>
       )}
