@@ -5,12 +5,33 @@ import {Id} from './model'
 
 export const siteMap = {
   logged: {
-    tools: '/tools',
-    testTools: `/tools/test`,
-    adminTools: `/tools/admin`,
-    reportedWebsites: `/moderation-url-entreprises`,
-    reportedWebsites_unknown: `/moderation-url-entreprises/sites-internet/non-identifies`,
-    websitesInvestigation: `/moderation-url-entreprises/enquete`,
+    tools: {
+      value: '/tools/*',
+      test: {
+        value: 'test',
+      },
+      admin: {
+        value: 'admin',
+      },
+    },
+
+    // tools: '/tools',
+    // testTools: `/tools/test`,
+    // adminTools: `/tools/admin`,
+
+    reportedWebsites: {
+      value: '/moderation-url-entreprises/*',
+      unknown: {
+        value: 'sites-internet/non-identifies',
+      },
+      investigation: {
+        value: 'enquete',
+      },
+    },
+    // reportedWebsites: `/moderation-url-entreprises`,
+    // reportedWebsites_unknown: `/moderation-url-entreprises/sites-internet/non-identifies`,
+    // websitesInvestigation: `/moderation-url-entreprises/enquete`,
+
     reportedPhone: `/suivi-des-telephones`,
     reports: (_?: Partial<ReportSearch>) => `/suivi-des-signalements` + (_ ? toQueryString(mapDatesToQueryString(_)) : ``),
     reportsfiltred: {

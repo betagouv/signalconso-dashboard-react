@@ -23,19 +23,19 @@ export const ReportedWebsites = () => {
 
       {connectedUser.isAdmin && (
         <PageTabs>
-          <PageTab to={siteMap.logged.websitesInvestigation} label={m.websitesInvestigation} />
-          <PageTab to={siteMap.logged.reportedWebsites_unknown} label={m.reportedUnknownWebsites} />
+          <PageTab to={siteMap.logged.reportedWebsites.investigation.value} label={m.websitesInvestigation} />
+          <PageTab to={siteMap.logged.reportedWebsites.unknown.value} label={m.reportedUnknownWebsites} />
         </PageTabs>
       )}
 
       <Routes>
         {connectedUser.isAdmin ? (
-          <Route path="/" element={<Navigate replace to={siteMap.logged.websitesInvestigation} />} />
+          <Route path="/*" element={<Navigate replace to={siteMap.logged.reportedWebsites.investigation.value} />} />
         ) : (
-          <Route path="/" element={<Navigate replace to={siteMap.logged.reportedWebsites_unknown} />} />
+          <Route path="/*" element={<Navigate replace to={siteMap.logged.reportedWebsites.unknown.value} />} />
         )}
-        <Route path={siteMap.logged.websitesInvestigation} element={<WebsitesInvestigation />} />
-        <Route path={siteMap.logged.reportedWebsites_unknown} element={<ReportedUnknownWebsites />} />
+        <Route path={siteMap.logged.reportedWebsites.investigation.value} element={<WebsitesInvestigation />} />
+        <Route path={siteMap.logged.reportedWebsites.unknown.value} element={<ReportedUnknownWebsites />} />
       </Routes>
     </Page>
   )

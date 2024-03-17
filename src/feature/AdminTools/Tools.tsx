@@ -16,19 +16,14 @@ export const Tools = () => {
       <PageTitle>Outils techniques</PageTitle>
       {connectedUser.isAdmin && (
         <PageTabs>
-          <PageTab to={siteMap.logged.testTools} label="Outils de tests" />
-          <PageTab to={siteMap.logged.adminTools} label="Outils d'administration" />
+          <PageTab to={siteMap.logged.tools.test.value} label="Outils de tests" />
+          <PageTab to={siteMap.logged.tools.admin.value} label="Outils d'administration" />
         </PageTabs>
       )}
       <Routes>
-        {/*<Redirect exact from={match.path} to={siteMap.logged.testTools} />*/}
-        <Navigate to={siteMap.logged.testTools} replace />
-        <Route path={siteMap.logged.testTools}>
-          <TestTools />
-        </Route>
-        <Route path={siteMap.logged.adminTools}>
-          <AdminTools />
-        </Route>
+        <Route path="/*" element={<Navigate replace to={siteMap.logged.tools.test.value} />} />
+        <Route path={siteMap.logged.tools.test.value} element={<TestTools />} />
+        <Route path={siteMap.logged.tools.admin.value} element={<AdminTools />} />
       </Routes>
     </Page>
   )

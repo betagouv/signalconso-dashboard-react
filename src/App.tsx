@@ -46,10 +46,6 @@ import './style.css'
 import {UpdateEmail} from './feature/Settings/UpdateEmail'
 import {queryClient, setQueryClientErrorHandler} from 'queryClient'
 import {ReportPro} from './feature/Report/ReportPro'
-import ProtectedRoute from './routes/ProtectedRoute'
-import {CompaniesRegistered} from './feature/Companies/CompaniesRegistered'
-import {CompaniesToActivate} from './feature/Companies/CompaniesToActivate'
-import {CompaniesToFollowUp} from './feature/Companies/CompaniesToFollowUp'
 
 const Router: typeof HashRouter = config.useHashRouter ? HashRouter : BrowserRouter
 
@@ -106,7 +102,7 @@ const AppLogin = () => {
             )
           } else if (authResponse) {
             return (
-              <LoginProvider connectedUser={authResponse!} setConnectedUser={setUser} onLogout={logout} apiSdk={makeSecuredSdk()}>
+              <LoginProvider connectedUser={authResponse} setConnectedUser={setUser} onLogout={logout} apiSdk={makeSecuredSdk()}>
                 <AppLogged />
               </LoginProvider>
             )
@@ -185,8 +181,8 @@ const AppLogged = () => {
   return (
     <Provide providers={[_ => <ApiProvider api={apiSdk} children={_} />]}>
       <Routes>
-        <Route path={siteMap.logged.tools} element={<Tools />} />
-        <Route path={siteMap.logged.reportedWebsites} element={<ReportedWebsites />} />
+        <Route path={siteMap.logged.tools.value} element={<Tools />} />
+        <Route path={siteMap.logged.reportedWebsites.value} element={<ReportedWebsites />} />
         <Route path={siteMap.logged.reportedPhone} element={<ReportedPhones />} />
         <Route path={siteMap.logged.reportsfiltred.closed} element={<ReportsPro reportType="closed" />} />
         <Route path={siteMap.logged.report()} element={connectedUser.isPro ? <ReportPro /> : <ReportComponent />} />
@@ -207,7 +203,7 @@ const AppLogged = () => {
         />
         <Route path={siteMap.logged.stats.value} element={<Stats />} />
         <Route path={siteMap.loggedout.register} element={<AddCompanyForm />} />
-        <Route path="/" element={<Navigate replace to={siteMap.logged.reports()} />} />
+        <Route path="/*" element={<Navigate replace to={siteMap.logged.reports()} />} />
       </Routes>
     </Provide>
   )
