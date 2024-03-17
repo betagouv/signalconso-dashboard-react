@@ -9,8 +9,13 @@ interface Props {
 
 export const PageTabs = ({children}: Props) => {
   const {pathname} = useLocation()
-  const index = useMemo(() => children.map(_ => _.props.to).indexOf(pathname), [pathname])
-  const [value, setValue] = useState(Math.max(0, index))
+  const defaultTabIndex = 0
+  const index = useMemo(() => {
+    const currentTabIndex = children.map(child => child.props.to).findIndex(path => pathname.includes(path))
+    return currentTabIndex !== -1 ? currentTabIndex : defaultTabIndex
+  }, [pathname])
+
+  const [value, setValue] = useState(Math.max(defaultTabIndex, index))
 
   const handleChange = (event: any, index: number) => {
     setValue(index)

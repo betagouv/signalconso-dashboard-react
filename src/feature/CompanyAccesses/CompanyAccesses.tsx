@@ -292,7 +292,7 @@ export const CompanyAccesses = () => {
                 <>
                   {connectedUser.isAdmin && _.userId && (
                     <Tooltip title={m.authAttemptsHistory}>
-                      <NavLink to={siteMap.logged.users_auth_attempts(_.email)}>
+                      <NavLink to={siteMap.logged.users.auth_attempts.value(_.email)}>
                         <IconBtn color="primary">
                           <Icon>history</Icon>
                         </IconBtn>

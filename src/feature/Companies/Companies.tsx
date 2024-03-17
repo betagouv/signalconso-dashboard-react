@@ -19,16 +19,16 @@ export const Companies = () => {
       <PageTitle>{m.menu_companies}</PageTitle>
       {connectedUser.isAdmin && (
         <PageTabs>
-          <PageTab to={siteMap.logged.companies_registered} label={m.companiesActivated} />
-          <PageTab to={siteMap.logged.companies_toActivate} label={m.companiesToActivate} />
-          <PageTab to={siteMap.logged.companies_toFollowUp} label={m.companiesToFollowUp} />
+          <PageTab to={siteMap.logged.companies.registered.value} label={m.companiesActivated} />
+          <PageTab to={siteMap.logged.companies.toActivate.value} label={m.companiesToActivate} />
+          <PageTab to={siteMap.logged.companies.toFollowUp.value} label={m.companiesToFollowUp} />
         </PageTabs>
       )}
       <Routes>
-        <Route path="/" element={<Navigate replace to={siteMap.logged.companies_registered} />} />
-        <Route path={siteMap.logged.companies_registered} element={<CompaniesRegistered />} />
-        <Route path={siteMap.logged.companies_toActivate} element={<CompaniesToActivate />} />
-        <Route path={siteMap.logged.companies_toFollowUp} element={<CompaniesToFollowUp />} />
+        <Route path="/*" element={<Navigate replace to={siteMap.logged.companies.registered.value} />} />
+        <Route path={siteMap.logged.companies.registered.value} element={<CompaniesRegistered />} />
+        <Route path={siteMap.logged.companies.toActivate.value} element={<CompaniesToActivate />} />
+        <Route path={siteMap.logged.companies.toFollowUp.value} element={<CompaniesToFollowUp />} />
       </Routes>
     </Page>
   )

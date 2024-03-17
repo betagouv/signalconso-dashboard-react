@@ -4,7 +4,7 @@ import {ApiProvider} from 'core/context/ApiContext'
 import {LoginForm} from 'feature/Login/LoginForm'
 import {RegisterForm} from 'feature/Login/RegisterForm'
 import {WelcomePage} from 'feature/Login/WelcomePage'
-import {ReactNode, useEffect} from 'react'
+import React, {ReactNode, useEffect} from 'react'
 import {Navigate, Routes, useLocation, useNavigate, useParams} from 'react-router'
 import {BrowserRouter, HashRouter, Route} from 'react-router-dom'
 import {ToastProvider} from './alexlibs/mui-extension'
@@ -47,6 +47,9 @@ import {UpdateEmail} from './feature/Settings/UpdateEmail'
 import {queryClient, setQueryClientErrorHandler} from 'queryClient'
 import {ReportPro} from './feature/Report/ReportPro'
 import ProtectedRoute from './routes/ProtectedRoute'
+import {CompaniesRegistered} from './feature/Companies/CompaniesRegistered'
+import {CompaniesToActivate} from './feature/Companies/CompaniesToActivate'
+import {CompaniesToFollowUp} from './feature/Companies/CompaniesToFollowUp'
 
 const Router: typeof HashRouter = config.useHashRouter ? HashRouter : BrowserRouter
 
@@ -95,10 +98,6 @@ const AppLogin = () => {
 
         // @ts-ignore
         const AuthGate = () => {
-          console.log('authResponse')
-          console.log(authResponse)
-          console.log('authResponse')
-
           if (isFetchingUser) {
             return (
               <CenteredContent>
@@ -106,14 +105,12 @@ const AppLogin = () => {
               </CenteredContent>
             )
           } else if (authResponse) {
-            console.log('ROUTED TO LOGGED ROUTES')
             return (
               <LoginProvider connectedUser={authResponse!} setConnectedUser={setUser} onLogout={logout} apiSdk={makeSecuredSdk()}>
                 <AppLogged />
               </LoginProvider>
             )
           } else {
-            console.log('ROUTED TO UNLOGGED ROUTES')
             return (
               <Routes>
                 <Route path={siteMap.loggedout.register} element={<RegisterForm {...{register}} />} />
@@ -194,8 +191,8 @@ const AppLogged = () => {
         <Route path={siteMap.logged.reportsfiltred.closed} element={<ReportsPro reportType="closed" />} />
         <Route path={siteMap.logged.report()} element={connectedUser.isPro ? <ReportPro /> : <ReportComponent />} />
         <Route path={siteMap.logged.reports()} element={connectedUser.isPro ? <ReportsPro reportType="open" /> : <Reports />} />
-        <Route path={siteMap.logged.users} element={<Users />} />
-        <Route path={siteMap.logged.companies} element={<Companies />} />
+        <Route path={siteMap.logged.users.value} element={<Users />} />
+        <Route path={siteMap.logged.companies.value} element={<Companies />} />
         <Route path={siteMap.logged.companyAccesses()} element={<CompanyAccesses />} />
         <Route path={siteMap.logged.company(':id')} element={<CompanyComponent />} />
         <Route path={siteMap.logged.subscriptions} element={<Subscriptions />} />
@@ -203,6 +200,7 @@ const AppLogged = () => {
         <Route path={siteMap.logged.joinInformation} element={<JoinNewsletter />} />
         <Route path={siteMap.logged.updateEmail(':token')} element={<UpdateEmail />} />
         <Route path={siteMap.logged.settings} element={<Settings />} />
+
         <Route
           path={siteMap.logged.modeEmploiDGCCRF}
           element={connectedUser.isPro ? <ReportsPro reportType="open" /> : <ModeEmploiDGCCRF />}

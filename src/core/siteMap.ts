@@ -19,21 +19,56 @@ export const siteMap = {
     subscriptions: `/abonnements`,
     report: (id: Id = `:id`) => `/suivi-des-signalements/report/${id}`,
     exports: `/mes-telechargements`,
-    companies_toActivate: `a-activer`,
-    companies_toFollowUp: `a-relancer`,
-    companies_registered: `les-plus-signalees`,
-    companies: `/entreprises/*`,
+    // companies_toActivate: `a-activer`,
+    // companies_toFollowUp: `a-relancer`,
+    // companies_registered: `les-plus-signalees`,
+    // companies: `/entreprises/*`,
+    companies: {
+      value: '/entreprises/*',
+      toActivate: {
+        value: `a-activer`,
+      },
+      toFollowUp: {
+        value: `a-relancer`,
+      },
+      registered: {
+        value: `les-plus-signalees`,
+      },
+    },
     companiesPro: `/mes-entreprises`,
     joinInformation: `/information`,
     companyAccesses: (siret: string = `:siret`) => `/entreprise/acces/${siret}`,
-    users: `/users`,
     company: (id: Id) => `/bilan-entreprise/${id}`,
-    users_agent_pending: `/users/pending`,
-    users_consumer_validation: `/users/consumers`,
-    users_auth_attempts: (email?: string) => `/users/auth-attempts` + (email ? toQueryString({email}) : ``),
-    users_blacklist: `/users/blacklist`,
-    users_agent: `/users/agent`,
-    users_admin: `/users/admin`,
+
+    users: {
+      value: '/users/*',
+      auth_attempts: {
+        value: (email?: string) => `auth-attempts` + (email ? toQueryString({email}) : ``),
+      },
+      agent_pending: {
+        value: `pending`,
+      },
+      consumer_validation: {
+        value: `consumers`,
+      },
+      blacklist: {
+        value: `blacklist`,
+      },
+      agent: {
+        value: `agent`,
+      },
+      admin: {
+        value: `admin`,
+      },
+    },
+    // users: `/users`,
+    // users_agent_pending: `/users/pending`,
+    // users_consumer_validation: `/users/consumers`,
+    // users_auth_attempts: (email?: string) => `/users/auth-attempts` + (email ? toQueryString({email}) : ``),
+    // users_blacklist: `/users/blacklist`,
+    // users_agent: `/users/agent`,
+    // users_admin: `/users/admin`,
+
     updateEmail: (token: string) => `/parametres/update-email/${token}`,
     settings: `/parametres`,
     modeEmploiDGCCRF: `/mode-emploi-dgccrf`,
