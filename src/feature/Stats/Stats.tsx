@@ -1,4 +1,4 @@
-import {Redirect, Route, Switch, useRouteMatch} from 'react-router-dom'
+import {Route, useResolvedPath} from 'react-router-dom'
 import {Page, PageTitle} from 'shared/Page'
 import {useI18n} from '../../core/i18n'
 import {siteMap} from '../../core/siteMap'
@@ -9,9 +9,10 @@ import {ReportStats} from './ReportStats'
 import {ArborescenceWithCounts} from './ArborescenceWithCounts'
 import {useLogin} from '../../core/context/LoginContext'
 import {config} from 'conf/config'
+import {Navigate, Routes} from 'react-router'
 
 export const Stats = () => {
-  const {path} = useRouteMatch()
+  // const path = useResolvedPath('').pathname
   const {m} = useI18n()
   const {connectedUser} = useLogin()
   return (
@@ -42,19 +43,19 @@ export const Stats = () => {
         </PageTabs>
       )}
       {connectedUser.isDGAL ? (
-        <Switch>
-          <Redirect exact from={path} to={siteMap.logged.proStats} />
-          <Route path={siteMap.logged.proStats} component={ProStats} />
-          <Route path={siteMap.logged.countBySubCategories} component={ArborescenceWithCounts} />
-        </Switch>
+        <Routes>
+          <Route path="/" element={<Navigate replace to={siteMap.logged.proStats} />} />
+          <Route path={siteMap.logged.proStats} element={<ProStats />} />
+          <Route path={siteMap.logged.countBySubCategories} element={<ArborescenceWithCounts />} />
+        </Routes>
       ) : (
-        <Switch>
-          <Redirect exact from={path} to={siteMap.logged.reportStats} />
-          <Route path={siteMap.logged.reportStats} component={ReportStats} />
-          <Route path={siteMap.logged.proStats} component={ProStats} />
-          <Route path={siteMap.logged.dgccrfStats} component={DgccrfStats} />
-          <Route path={siteMap.logged.countBySubCategories} component={ArborescenceWithCounts} />
-        </Switch>
+        <Routes>
+          <Route path="/" element={<Navigate replace to={siteMap.logged.reportStats} />} />
+          <Route path={siteMap.logged.reportStats} element={<ReportStats />} />
+          <Route path={siteMap.logged.proStats} element={<ProStats />} />
+          <Route path={siteMap.logged.dgccrfStats} element={<DgccrfStats />} />
+          <Route path={siteMap.logged.countBySubCategories} element={<ArborescenceWithCounts />} />
+        </Routes>
       )}
     </Page>
   )

@@ -1,7 +1,7 @@
 import {Tab, TabProps, Tabs} from '@mui/material'
 import * as React from 'react'
 import {ReactElement, useMemo, useState} from 'react'
-import {useHistory, useLocation} from 'react-router'
+import {useNavigate, useLocation} from 'react-router'
 
 interface Props {
   children: Array<ReactElement<PageTabProps>>
@@ -42,6 +42,6 @@ export interface PageTabProps extends TabProps {
 }
 
 export const PageTab = ({to, ...props}: PageTabProps) => {
-  const history = useHistory()
-  return <Tab {...props} onClick={() => history.push(to)} />
+  const history = useNavigate()
+  return <Tab {...props} onClick={() => history(to)} />
 }

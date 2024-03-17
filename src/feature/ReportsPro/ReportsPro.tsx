@@ -10,7 +10,7 @@ import {Alert, Btn, Fender, makeSx, Txt} from '../../alexlibs/mui-extension'
 import {styleUtils} from '../../core/theme'
 import {SelectDepartments} from '../../shared/SelectDepartments/SelectDepartments'
 import {ScSelect} from '../../shared/Select/Select'
-import {useHistory} from 'react-router'
+
 import {siteMap} from '../../core/siteMap'
 import {EntityIcon} from '../../core/EntityIcon'
 import {ScButton} from '../../shared/Button'
@@ -36,6 +36,7 @@ import {useGetAccessibleByProQuery} from '../../core/queryhooks/companyQueryHook
 import {useReportSearchQuery} from '../../core/queryhooks/reportQueryHooks'
 import {useListReportBlockedNotificationsQuery} from 'core/queryhooks/reportBlockedNotificationQueryHooks'
 import {buildReportColumns} from './buildReportColumns'
+import {useNavigate} from 'react-router'
 
 export const css = makeSx({
   card: {
@@ -122,7 +123,7 @@ export const ReportsPro = ({reportType}: ReportsProProps) => {
   const _blockedNotifications = useListReportBlockedNotificationsQuery()
 
   const {isMobileWidth} = useLayoutContext()
-  const history = useHistory()
+  const history = useNavigate()
   const {formatDate, m} = useI18n()
   const columns = buildReportColumns({reportType, isMobileWidth, css, i18nData: {formatDate, m}})
 
@@ -340,7 +341,7 @@ export const ReportsPro = ({reportType}: ReportsProProps) => {
                   if (e.metaKey || e.ctrlKey) {
                     openInNew(siteMap.logged.report(_.report.id))
                   } else {
-                    history.push(siteMap.logged.report(_.report.id))
+                    history(siteMap.logged.report(_.report.id))
                   }
                 }}
                 columns={columns}

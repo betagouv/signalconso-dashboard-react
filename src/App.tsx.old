@@ -46,7 +46,6 @@ import './style.css'
 import {UpdateEmail} from './feature/Settings/UpdateEmail'
 import {queryClient, setQueryClientErrorHandler} from 'queryClient'
 import {ReportPro} from './feature/Report/ReportPro'
-import ProtectedRoute from './routes/ProtectedRoute'
 
 const Router: typeof HashRouter = config.useHashRouter ? HashRouter : BrowserRouter
 
@@ -126,7 +125,7 @@ const AppLogin = () => {
 
         return (
           <Layout header={<ScHeader />} sidebar={authResponse && <ScSidebar connectedUser={authResponse} logout={logout} />}>
-            <QueryClientProvider client={queryClient}>
+            <Provide providers={[_ => <QueryClientProvider client={queryClient} children={_} />]}>
               <Routes>
                 <Route
                   path={siteMap.loggedout.emailValidation}
@@ -140,7 +139,6 @@ const AppLogin = () => {
                 <Route path={siteMap.loggedout.activateAdmin} element={userActivation} />
                 <Route path={siteMap.loggedout.activateAgent} element={userActivation} />
                 <Route path={siteMap.loggedout.consumerReview()} element={userActivation} />
-
                 <Route
                   path="*"
                   element={
@@ -168,7 +166,7 @@ const AppLogin = () => {
                   }
                 />
               </Routes>
-            </QueryClientProvider>
+            </Provide>
           </Layout>
         )
       }}
@@ -209,7 +207,7 @@ const AppLogged = () => {
         />
         <Route path={siteMap.logged.stats} element={<Stats />} />
         <Route path={siteMap.loggedout.register} element={<AddCompanyForm />} />
-        <Route path="/" element={<Navigate replace to={siteMap.logged.reports()} />} />
+        {/*<Route path="/" element={<Navigate replace to={siteMap.logged.reports()} />} />*/}
       </Routes>
     </Provide>
   )

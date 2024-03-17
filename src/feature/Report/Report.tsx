@@ -50,8 +50,8 @@ export const ReportComponent = () => {
   const {connectedUser, apiSdk} = useLogin()
   const [activeTab, setActiveTab] = useState(0)
 
-  const _getReport = useGetReportQuery(id)
-  const _getReviewOnReportResponse = useGetReviewOnReportResponseQuery(id, {enabled: !!_getReport.data?.report.id})
+  const _getReport = useGetReportQuery(id!)
+  const _getReviewOnReportResponse = useGetReviewOnReportResponseQuery(id!, {enabled: !!_getReport.data?.report.id && !!id})
   const _getCompanyEvents = useGetCompanyEventsQuery(_getReport.data?.report.companySiret!, {
     enabled: !!_getReport.data?.report.companySiret,
   })
@@ -60,7 +60,7 @@ export const ReportComponent = () => {
     responseEvent,
     refetch: refetchReportEvents,
     isLoading: reportEventsIsLoading,
-  } = useGetReportEventsQuery(id)
+  } = useGetReportEventsQuery(id!)
 
   const downloadReport = useMutation({mutationFn: (id: Id) => apiSdk.secured.reports.download([id])})
   const generateConsumerNotificationAsPDF = useMutation({mutationFn: apiSdk.secured.reports.generateConsumerNotificationAsPDF})

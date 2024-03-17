@@ -1,4 +1,4 @@
-import {Redirect, Route, Switch, useRouteMatch} from 'react-router-dom'
+import {Route} from 'react-router-dom'
 import {useI18n} from '../../core/i18n'
 import {siteMap} from '../../core/siteMap'
 import {Page, PageTitle} from '../../shared/Page'
@@ -8,10 +8,10 @@ import {ConsumerListPending} from './ConsumerListPending'
 import {AdminUsersList, AgentUsersList} from './UsersList'
 import {UsersListPending} from './UsersListPending'
 import {UserAuthAttempts} from './UserAuthAttempts'
+import {Navigate, Routes} from 'react-router'
 
 export const Users = () => {
-  const {m} = useI18n()
-  const {path} = useRouteMatch()
+  const {m} = useI18n() // Assuming this hook exists and provides translations
 
   return (
     <Page>
@@ -24,15 +24,15 @@ export const Users = () => {
         <PageTab to={siteMap.logged.users_auth_attempts()} label={m.authAttempts} />
         <PageTab to={siteMap.logged.users_blacklist} label={m.blacklistedConsumers} />
       </PageTabs>
-      <Switch>
-        <Redirect exact from={path} to={siteMap.logged.users_agent} />
-        <Route path={siteMap.logged.users_agent} component={AgentUsersList} />
-        <Route path={siteMap.logged.users_auth_attempts()} component={UserAuthAttempts} />
-        <Route path={siteMap.logged.users_agent_pending} component={UsersListPending} />
-        <Route path={siteMap.logged.users_admin} component={AdminUsersList} />
-        <Route path={siteMap.logged.users_consumer_validation} component={ConsumerListPending} />
-        <Route path={siteMap.logged.users_blacklist} component={ConsumerBlacklist} />
-      </Switch>
+      <Routes>
+        <Route path="/" element={<Navigate replace to={siteMap.logged.users_agent} />} />
+        <Route path={siteMap.logged.users_agent} element={<AgentUsersList />} />
+        <Route path={siteMap.logged.users_auth_attempts()} element={<UserAuthAttempts />} />
+        <Route path={siteMap.logged.users_agent_pending} element={<UsersListPending />} />
+        <Route path={siteMap.logged.users_admin} element={<AdminUsersList />} />
+        <Route path={siteMap.logged.users_consumer_validation} element={<ConsumerListPending />} />
+        <Route path={siteMap.logged.users_blacklist} element={<ConsumerBlacklist />} />
+      </Routes>
     </Page>
   )
 }

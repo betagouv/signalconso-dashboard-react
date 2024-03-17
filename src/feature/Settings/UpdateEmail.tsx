@@ -22,8 +22,8 @@ export const UpdateEmail = () => {
   })
 
   useEffect(() => {
-    _updateEmail.mutate(token)
-  }, [])
+    token && _updateEmail.mutate(token)
+  }, [token])
 
   return _updateEmail.isPending ? (
     <div className="h-screen flex items-center justify-center">

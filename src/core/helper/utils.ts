@@ -27,6 +27,7 @@ export const toNumberOrDefault = (value: any, defaultValue: number): number =>
   isNaN(value) || value == '' || value == null ? defaultValue : value
 
 export const cleanObject = <T extends {[key: string]: any}>(obj: T): Partial<T> => {
+  console.log('CLEAN !')
   const clone = {...obj}
   for (let k in clone) {
     const val = clone[k]
