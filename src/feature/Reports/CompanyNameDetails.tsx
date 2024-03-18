@@ -11,6 +11,10 @@ type CompanyNameDetailsProps = {
   additionalLabel: string | undefined
 }
 
+const removeProtocol = (url: string) => {
+  return url.replace(/^(http|https):\/\//, '')
+}
+
 const CompanyNameDetails: React.FC<CompanyNameDetailsProps> = ({companyId, isDGAL, companyName, additionalLabel}) => {
   return (
     <Box component="span" sx={{marginBottom: '-1px'}}>
@@ -32,7 +36,7 @@ const CompanyNameDetails: React.FC<CompanyNameDetailsProps> = ({companyId, isDGA
               color: t => t.palette.text.primary,
             }}
           >
-            {additionalLabel}
+            {removeProtocol(additionalLabel)}
           </Txt>
         </>
       )}
