@@ -72,11 +72,16 @@ export const CompaniesRegistered = () => {
     queryString.update(cleanObject(_companies.filters))
   }, [_companies.filters])
 
-  const copyAddress = (c: Company) => {
+  const copyAddress = async (c: Company) => {
     const a = c.address
     const address = `${c.name} - ${a.number} ${a.street} ${a.addressSupplement} ${a.postalCode} ${a.city} (${c.siret})`
-    ClipboardApi.copy(address.replaceAll('undefined', '').replaceAll(/[\s]{1,}/g, ' '))
-    toastSuccess(m.addressCopied)
+    const cleanedAddress = address.replaceAll('undefined', '').replaceAll(/[\s]{1,}/g, ' ')
+    try {
+      await navigator.clipboard.writeText(cleanedAddress)
+      toastSuccess('Adresse copiée')
+    } catch (err) {
+      console.error("Échec de la copie de l'adresse : ", err)
+    }
   }
 
   const data = useMemo(() => {
