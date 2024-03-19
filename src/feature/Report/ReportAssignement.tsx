@@ -1,12 +1,14 @@
 import {Icon, MenuItem} from '@mui/material'
+import {User} from 'core/model'
 import {Link} from 'react-router-dom'
 import {ScSelect} from 'shared/Select/Select'
 
-export function ReportAssignement() {
+export function ReportAssignement({assignedUser}: {assignedUser: User | undefined}) {
+  const fullName = assignedUser ? User.buildFullName(assignedUser) : 'John Jon'
   return (
     <div className="flex flex-col items-start sm:items-end gap-1">
-      <ScSelect size="small" value={'Blake Morris'} variant="outlined" onChange={x => {}} label={'Assigné à'} fullWidth>
-        {names.slice(0, 5).map(name => {
+      <ScSelect size="small" value={fullName} variant="outlined" onChange={x => {}} label={'Assigné à'} fullWidth>
+        {[...names.slice(0, 5), fullName].map(name => {
           return (
             <MenuItem value={name} key={name}>
               <div className="flex items-center gap-1">

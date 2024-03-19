@@ -144,8 +144,12 @@ export class ReportsClient {
     return this.client.post<void>(`reports/${id}/reopen`)
   }
 
-  readonly getById = (id: Id): Promise<ReportSearchResult> => {
-    return this.client.get(`/reports/${id}`).then(_ => ({files: _.files, report: ReportsClient.mapReport(_.report)}))
+  readonly getById = async (id: Id): Promise<ReportSearchResult> => {
+    const {report, ...rest} = await this.client.get(`/reports/${id}`)
+    return {
+      ...rest,
+      report: ReportsClient.mapReport(report),
+    }
   }
 
   readonly getReviewOnReportResponse = (reportId: Id) => {

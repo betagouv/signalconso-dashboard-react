@@ -14,6 +14,12 @@ export interface User {
   role: RoleAdminOrAgent
 }
 
+export class User {
+  static buildFullName(user: User) {
+    return `${user.firstName} ${user.lastName}`
+  }
+}
+
 export type UserRaw = Omit<User, 'lastEmailValidation'> & {
   lastEmailValidation: string
 }

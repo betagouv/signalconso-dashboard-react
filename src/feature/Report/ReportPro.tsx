@@ -1,4 +1,4 @@
-import {Button, Icon} from '@mui/material'
+import {Icon} from '@mui/material'
 import {useQueryClient} from '@tanstack/react-query'
 import {siteMap} from 'core/siteMap'
 import {ReportReferenceNumber} from 'feature/Report/ReportReferenceNumber'
@@ -8,7 +8,7 @@ import {Link} from 'react-router-dom'
 import {CleanWidePanel} from 'shared/Panel/simplePanels'
 import {ReportProResponseEvent, ResponseConsumerReview} from '../../core/client/event/Event'
 import {FileOrigin, UploadedFile} from '../../core/client/file/UploadedFile'
-import {Report, ReportStatusPro} from '../../core/client/report/Report'
+import {Report, ReportSearchResult, ReportStatusPro} from '../../core/client/report/Report'
 import {capitalize} from '../../core/helper'
 import {useI18n} from '../../core/i18n'
 import {Id} from '../../core/model'
@@ -18,27 +18,27 @@ import {ScButton} from '../../shared/Button'
 import {Page} from '../../shared/Page'
 import {ReportEvents} from './Event/ReportEvents'
 import {creationReportEvent} from './Report'
+import {ReportAssignement} from './ReportAssignement'
 import {ReportDetails, ReportFilesFull} from './ReportDescription'
 import {ExpirationDate} from './ReportHeader'
 import {ReportInfluencer} from './ReportInfluencer'
 import {ReportResponseComponent} from './ReportResponse'
 import {ReportResponseForm} from './ReportResponseForm/ReportResponseForm'
-import {ScDialog} from 'shared/ScDialog'
-import {ReportAssignement} from './ReportAssignement'
 
 export const ReportPro = () => {
   const {id} = useParams<{id: Id}>()
   const _getReport = useGetReportQuery(id!)
   return (
     <Page maxWidth="l" loading={_getReport.isLoading}>
-      {_getReport.data && <ReportProLoaded report={_getReport.data.report} files={_getReport.data.files} />}
+      {_getReport.data && <ReportProLoaded reportSearchResult={_getReport.data} />}
     </Page>
   )
 }
 
-function ReportProLoaded({report, files}: {report: Report; files: UploadedFile[]}) {
+function ReportProLoaded({reportSearchResult}: {reportSearchResult: ReportSearchResult}) {
   const {m} = useI18n()
   const queryClient = useQueryClient()
+  const {report, files} = reportSearchResult
   const {reportEvents, responseEvent} = useGetReportEventsQuery(report.id)
   const _getReviewOnReportResponse = useGetReviewOnReportResponseQuery(report.id)
   const responseFormRef = useRef<HTMLElement>(null)
@@ -56,7 +56,7 @@ function ReportProLoaded({report, files}: {report: Report; files: UploadedFile[]
   return (
     <div className="mt-8">
       <LinkBackToList {...{report}} />
-      <ReportBlock {...{scrollToResponse, report, isClosed, hasToRespond}} files={files} />
+      <ReportBlock {...{scrollToResponse, reportSearchResult, isClosed, hasToRespond}} />
       {hasResponse && (
         <ResponseBlock {...{report, responseEvent, files}} responseConsumerReview={_getReviewOnReportResponse.data} />
       )}
@@ -92,23 +92,21 @@ function LinkBackToList({report}: {report: Report}) {
 }
 
 function ReportBlock({
-  report,
-  files,
+  reportSearchResult,
   isClosed,
   hasToRespond,
   scrollToResponse,
 }: {
-  report: Report
-  files: UploadedFile[]
+  reportSearchResult: ReportSearchResult
   isClosed: boolean
   hasToRespond: boolean
   scrollToResponse: () => void
 }) {
   const {m} = useI18n()
-
+  const {report, files} = reportSearchResult
   return (
     <CleanWidePanel>
-      <Header {...{report, isClosed, scrollToResponse, hasToRespond}} />
+      <Header {...{reportSearchResult, isClosed, scrollToResponse, hasToRespond}} />
       <div>
         {report.influencer && (
           <>
@@ -156,18 +154,18 @@ function ResponseBlock({
 }
 
 function Header({
-  report,
+  reportSearchResult,
   scrollToResponse,
   isClosed,
   hasToRespond,
 }: {
-  report: Report
+  reportSearchResult: ReportSearchResult
   scrollToResponse: () => void
   isClosed: boolean
   hasToRespond: boolean
 }) {
   const {m, formatDate, formatTime} = useI18n()
-
+  const {report, assignedUser} = reportSearchResult
   return (
     <div className="text-left mb-8">
       <div className="flex justify-between flex-col gap-4 sm:gap-0 sm:flex-row ">
@@ -190,7 +188,7 @@ function Header({
           <p>{report.contactAgreement ? <span>Par {report.email}</span> : <span>Par un consommateur anonyme</span>}</p>
           <ExpirationDate {...{report}} isUserPro={true} />
         </div>
-        <ReportAssignement />
+        <ReportAssignement {...{assignedUser}} />
       </div>
       {isClosed && <div className="flex items-center justify-center bg-[#e3e3fd]  p-2">Signalement cloturé.</div>}
       {hasToRespond && (
