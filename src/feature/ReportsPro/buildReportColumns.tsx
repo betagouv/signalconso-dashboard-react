@@ -76,7 +76,8 @@ export const buildReportColumns = ({reportType, isMobileWidth, css, i18nData}: R
     {
       id: 'assignee',
       head: 'Assigné à',
-      render: (report: ReportSearchResult) => 'Jean Dupont',
+      render: (report: ReportSearchResult) =>
+        report.assignedUser ? `${report.assignedUser.firstName} ${report.assignedUser.lastName}` : null,
     },
     {
       id: 'consumer',
