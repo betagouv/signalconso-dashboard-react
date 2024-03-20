@@ -1,13 +1,16 @@
 import {Icon, MenuItem} from '@mui/material'
-import {useQuery} from '@tanstack/react-query'
-import {CompanyClient} from 'core/client'
-import {useApiContext} from 'core/context/ApiContext'
-import {CompanyAccess, Id, ReportSearchResult, User} from 'core/model'
+import {CompanyAccess, ReportSearchResult, User} from 'core/model'
 import {useCompanyAccessesQuery} from 'core/queryhooks/companyQueryHooks'
 import {Link} from 'react-router-dom'
 import {ScSelect} from 'shared/Select/Select'
 
-export function ReportAssignement({reportSearchResult, companySiret}: {reportSearchResult: ReportSearchResult; companySiret: string}) {
+export function ReportAssignement({
+  reportSearchResult,
+  companySiret,
+}: {
+  reportSearchResult: ReportSearchResult
+  companySiret: string
+}) {
   const assignedUser = reportSearchResult.assignedUser
   const fullName = assignedUser ? User.buildFullName(assignedUser) : 'John Jon'
   const _accesses = useCompanyAccessesQuery(companySiret)
@@ -20,7 +23,7 @@ export function ReportAssignement({reportSearchResult, companySiret}: {reportSea
 
   return (
     <div className="flex flex-col items-start sm:items-end gap-1">
-      <ScSelect size="small" value={assignedUser?.id} variant="outlined" onChange={x => {}} label={'Assigné à'} fullWidth>
+      <ScSelect size="small" value={assignedUser?.id} variant="outlined" onChange={x => {}} label={'Affecté à'} fullWidth>
         {options.map(option => {
           return (
             <MenuItem value={option.id} key={option.id}>
@@ -34,7 +37,7 @@ export function ReportAssignement({reportSearchResult, companySiret}: {reportSea
       </ScSelect>
 
       <Link to={''} className="block text-scbluefrance text-sm">
-        Me l'assigner
+        Me l'affecter
       </Link>
     </div>
   )
