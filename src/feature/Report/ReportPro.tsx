@@ -166,6 +166,7 @@ function Header({
 }) {
   const {m, formatDate, formatTime} = useI18n()
   const {report, assignedUser} = reportSearchResult
+  const companySiret = report.companySiret
   return (
     <div className="text-left mb-8">
       <div className="flex justify-between flex-col gap-4 sm:gap-0 sm:flex-row ">
@@ -188,7 +189,7 @@ function Header({
           <p>{report.contactAgreement ? <span>Par {report.email}</span> : <span>Par un consommateur anonyme</span>}</p>
           <ExpirationDate {...{report}} isUserPro={true} />
         </div>
-        <ReportAssignement {...{assignedUser}} />
+        {companySiret && <ReportAssignement {...{reportSearchResult, companySiret}} />}
       </div>
       {isClosed && <div className="flex items-center justify-center bg-[#e3e3fd]  p-2">Signalement cloturé.</div>}
       {hasToRespond && (

@@ -1,4 +1,4 @@
-import {Id, PaginatedFilters} from '../../model'
+import {CompanyAccess, Id, PaginatedFilters} from '../../model'
 import {subMonths} from 'date-fns'
 
 export const roleAgents = ['DGCCRF', 'DGAL'] as const
@@ -15,7 +15,7 @@ export interface User {
 }
 
 export class User {
-  static buildFullName(user: User) {
+  static buildFullName(user: User | CompanyAccess) {
     return `${user.firstName} ${user.lastName}`
   }
 }
