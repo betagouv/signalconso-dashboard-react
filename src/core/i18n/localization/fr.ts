@@ -580,6 +580,8 @@ export const fr = {
     linkNotValidAnymoreDesc: `Si vous avez déjà validé votre email, vous pouvez vous connecter à l'aide de votre adresse email et mot de passe.`,
     noReportsTitle: 'Aucun signalement',
     noReportsDesc: 'Aucun signalement ne correspond à votre recherche.',
+    noReportsAtAllTitle: `Aucun signalement`,
+    noReportsAtAll2Desc: `Vous avez répondu à tous vos signalements !`,
     lastNotice: 'Relancé le',
     validatingEmail: `Validation de l'adresse email...`,
     markNoticesSent: 'Marquer courriers envoyés',

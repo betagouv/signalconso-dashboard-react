@@ -345,20 +345,32 @@ export const ReportsPro = ({reportType}: ReportsProProps) => {
                 }}
                 columns={columns}
                 renderEmptyState={
-                  <Fender
-                    icon={EntityIcon.report}
-                    title={m.noReportsTitle}
-                    description={
-                      <>
+                  filtersCount === 0 ? (
+                    <Fender
+                      icon={EntityIcon.thumbUp}
+                      title={m.noReportsAtAllTitle}
+                      description={
                         <Txt color="hint" size="big" block gutterBottom>
-                          {m.noReportsDesc}
+                          {m.noReportsAtAll2Desc}
                         </Txt>
-                        <ScButton {...resetFiltersButtonProps} variant="contained">
-                          {m.removeAllFilters}
-                        </ScButton>
-                      </>
-                    }
-                  />
+                      }
+                    />
+                  ) : (
+                    <Fender
+                      icon={EntityIcon.report}
+                      title={m.noReportsTitle}
+                      description={
+                        <>
+                          <Txt color="hint" size="big" block gutterBottom>
+                            {m.noReportsDesc}
+                          </Txt>
+                          <ScButton {...resetFiltersButtonProps} variant="contained">
+                            {m.removeAllFilters}
+                          </ScButton>
+                        </>
+                      }
+                    />
+                  )
                 }
               />
             </Panel>
