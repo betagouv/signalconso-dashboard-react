@@ -345,13 +345,23 @@ export const ReportsPro = ({reportType}: ReportsProProps) => {
                 }}
                 columns={columns}
                 renderEmptyState={
-                  filtersCount === 0 ? (
+                  filtersCount === 0 && reportType === 'open' ? (
                     <Fender
                       icon={EntityIcon.thumbUp}
                       title={m.noReportsAtAllTitle}
                       description={
                         <Txt color="hint" size="big" block gutterBottom>
-                          {m.noReportsAtAll2Desc}
+                          {m.noReportsAtAllDesc}
+                        </Txt>
+                      }
+                    />
+                  ) : filtersCount === 0 && reportType === 'closed' ? (
+                    <Fender
+                      icon={'cancel'}
+                      title={m.noReportsAtCloseTitle}
+                      description={
+                        <Txt color="hint" size="big" block gutterBottom>
+                          {m.noReportsAtCloseDesc}
                         </Txt>
                       }
                     />
