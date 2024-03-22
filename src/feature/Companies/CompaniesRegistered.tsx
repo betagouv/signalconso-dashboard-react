@@ -15,7 +15,6 @@ import {AddressComponent} from '../../shared/Address'
 import {SelectCompanyDialog} from '../../shared/SelectCompany/SelectCompanyDialog'
 import {EditAddressDialog} from './EditAddressDialog'
 import {useLogin} from '../../core/context/LoginContext'
-import {ClipboardApi} from '../../alexlibs/ts-utils/browser/ClipboardApi'
 import {CompaniesRegisteredFilters} from './CompaniesRegisteredFilters'
 import {ScMenu} from '../../shared/Menu'
 import {Company, CompanySearch, CompanyUpdate, CompanyWithReportsCount} from '../../core/client/company/Company'
@@ -78,9 +77,10 @@ export const CompaniesRegistered = () => {
     const cleanedAddress = address.replaceAll('undefined', '').replaceAll(/[\s]{1,}/g, ' ')
     try {
       await navigator.clipboard.writeText(cleanedAddress)
-      toastSuccess('Adresse copiée')
+      toastSuccess(m.succesCopy)
     } catch (err) {
       console.error("Échec de la copie de l'adresse : ", err)
+      toastError({message: m.errorCopy})
     }
   }
 

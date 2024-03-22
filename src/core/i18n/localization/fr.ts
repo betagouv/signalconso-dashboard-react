@@ -569,6 +569,8 @@ export const fr = {
     thisDate: (_: string) => `Le ${_}`,
     byHim: (_: string) => `Par ${_}`,
     copyAddress: `Copier l'adresse`,
+    succesCopy: `Adresse copiée`,
+    errorCopy: `Échec de la copie`,
     youCanAddCommentForDGCCRF: `Vous pouvez, si vous le souhaitez, apporter une précision <b>à l'attention de la DGCCRF</b> qui ne sera pas transmise à l'entreprise`,
     youCanRateSignalConso: `Je recommande SignalConso :`,
     addressCopied: `Adresse copiée`,
