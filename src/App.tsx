@@ -92,31 +92,6 @@ const AppLogin = () => {
           />
         )
 
-        // @ts-ignore
-        const AuthGate = () => {
-          if (isFetchingUser) {
-            return (
-              <CenteredContent>
-                <CircularProgress />
-              </CenteredContent>
-            )
-          } else if (authResponse) {
-            return (
-              <LoginProvider connectedUser={authResponse} setConnectedUser={setUser} onLogout={logout} apiSdk={makeSecuredSdk()}>
-                <AppLogged />
-              </LoginProvider>
-            )
-          } else {
-            return (
-              <Routes>
-                <Route path={siteMap.loggedout.register} element={<RegisterForm {...{register}} />} />
-                <Route path={siteMap.loggedout.login} element={<LoginForm {...{login}} />} />
-                <Route path="/" element={<WelcomePage />} />
-              </Routes>
-            )
-          }
-        }
-
         return (
           <Layout header={<ScHeader />} sidebar={authResponse && <ScSidebar connectedUser={authResponse} logout={logout} />}>
             <QueryClientProvider client={queryClient}>
@@ -137,27 +112,26 @@ const AppLogin = () => {
                 <Route
                   path="*"
                   element={
-                    <AuthGate />
-                    // authResponse ? (
-                    //   <LoginProvider
-                    //     connectedUser={authResponse}
-                    //     setConnectedUser={setUser}
-                    //     onLogout={logout}
-                    //     apiSdk={makeSecuredSdk()}
-                    //   >
-                    //     <AppLogged />
-                    //   </LoginProvider>
-                    // ) : isFetchingUser ? (
-                    //   <CenteredContent>
-                    //     <CircularProgress />
-                    //   </CenteredContent>
-                    // ) : (
-                    //   <Routes>
-                    //     <Route path={siteMap.loggedout.register} element={<RegisterForm {...{register}} />} />
-                    //     <Route path={siteMap.loggedout.login} element={<LoginForm {...{login}} />} />
-                    //     <Route path="/" element={<WelcomePage />} />
-                    //   </Routes>
-                    // )
+                    authResponse ? (
+                      <LoginProvider
+                        connectedUser={authResponse}
+                        setConnectedUser={setUser}
+                        onLogout={logout}
+                        apiSdk={makeSecuredSdk()}
+                      >
+                        <AppLogged />
+                      </LoginProvider>
+                    ) : isFetchingUser ? (
+                      <CenteredContent>
+                        <CircularProgress />
+                      </CenteredContent>
+                    ) : (
+                      <Routes>
+                        <Route path={siteMap.loggedout.register} element={<RegisterForm {...{register}} />} />
+                        <Route path={siteMap.loggedout.login} element={<LoginForm {...{login}} />} />
+                        <Route path="/*" element={<WelcomePage />} />
+                      </Routes>
+                    )
                   }
                 />
               </Routes>
@@ -184,9 +158,20 @@ const AppLogged = () => {
         <Route path={siteMap.logged.tools.value} element={<Tools />} />
         <Route path={siteMap.logged.reportedWebsites.value} element={<ReportedWebsites />} />
         <Route path={siteMap.logged.reportedPhone} element={<ReportedPhones />} />
-        <Route path={siteMap.logged.reportsfiltred.closed} element={<ReportsPro reportType="closed" />} />
+        <Route
+          path={siteMap.logged.reportsfiltred.closed}
+          //Keep the key property unique to this route
+          //When using React Router v6 and you have multiple routes pointing to the same component (here siteMap.logged.reportsfiltred.closed and siteMap.logged.report()),
+          //by default, React Router does not re-render the component if it's already mounted and the route changes to another path that uses the same component.
+          //We have to add a key properties to distinguish the two calls and force re-render
+          element={<ReportsPro reportType="closed" key={siteMap.logged.reportsfiltred.closed} />}
+        />
         <Route path={siteMap.logged.report()} element={connectedUser.isPro ? <ReportPro /> : <ReportComponent />} />
-        <Route path={siteMap.logged.reports()} element={connectedUser.isPro ? <ReportsPro reportType="open" /> : <Reports />} />
+        <Route
+          path={siteMap.logged.reports()}
+          //Keep the key property unique to this route ( see comment above )
+          element={connectedUser.isPro ? <ReportsPro reportType="open" key={siteMap.logged.reports()} /> : <Reports />}
+        />
         <Route path={siteMap.logged.users.value()} element={<Users />} />
         <Route path={siteMap.logged.companies.value} element={<Companies />} />
         <Route path={siteMap.logged.companyAccesses()} element={<CompanyAccesses />} />
