@@ -61,11 +61,11 @@ export const App = () => {
         _ => <ToastProvider horizontal="right" children={_} />,
       ]}
     >
-      <AppLogin />
+      <AppRoutes />
     </Provide>
   )
 }
-const AppLogin = () => {
+const AppRoutes = () => {
   const navigate = useNavigate()
   const {toastError} = useToast()
 
@@ -119,7 +119,7 @@ const AppLogin = () => {
                         onLogout={logout}
                         apiSdk={makeSecuredSdk()}
                       >
-                        <AppLogged />
+                        <ProtectedRoutes />
                       </LoginProvider>
                     ) : isFetchingUser ? (
                       <CenteredContent>
@@ -143,9 +143,8 @@ const AppLogin = () => {
   )
 }
 
-const AppLogged = () => {
+const ProtectedRoutes = () => {
   const {apiSdk, connectedUser} = useLogin()
-  const history = useNavigate()
 
   const location = useLocation()
   useEffect(() => {
@@ -153,7 +152,7 @@ const AppLogged = () => {
   }, [location])
 
   return (
-    <Provide providers={[_ => <ApiProvider api={apiSdk} children={_} />]}>
+    <ApiProvider api={apiSdk}>
       <Routes>
         <Route path={siteMap.logged.tools.value} element={<Tools />} />
         <Route path={siteMap.logged.reportedWebsites.value} element={<ReportedWebsites />} />
@@ -190,12 +189,6 @@ const AppLogged = () => {
         <Route path={siteMap.loggedout.register} element={<AddCompanyForm />} />
         <Route path="/*" element={<Navigate replace to={siteMap.logged.reports()} />} />
       </Routes>
-    </Provide>
+    </ApiProvider>
   )
-}
-
-const RedirectToWebsite = () => {
-  const {reportId} = useParams<{reportId: string}>()
-  window.location.href = `${config.appBaseUrl}/avis/${reportId}`
-  return null
 }
