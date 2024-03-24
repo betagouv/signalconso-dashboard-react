@@ -12,7 +12,6 @@ import {config} from 'conf/config'
 import {Navigate, Routes} from 'react-router'
 
 export const Stats = () => {
-  // const path = useResolvedPath('').pathname
   const {m} = useI18n()
   const {connectedUser} = useLogin()
   return (
