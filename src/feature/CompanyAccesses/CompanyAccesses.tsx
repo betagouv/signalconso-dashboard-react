@@ -42,8 +42,8 @@ export const CompanyAccesses = () => {
   const {siret} = useParams<{siret: string}>()
   const {api} = useApiContext()
 
-  const _crudAccess = useCompanyAccess(useLogin().apiSdk, siret).crudAccess
-  const _crudToken = useCompanyAccess(useLogin().apiSdk, siret).crudToken
+  const _crudAccess = useCompanyAccess(useLogin().apiSdk, siret!).crudAccess
+  const _crudToken = useCompanyAccess(useLogin().apiSdk, siret!).crudToken
   const saveUndeliveredDocument = useMutation({
     mutationFn: (params: {siret: string; returnedDate: Date}) =>
       api.secured.company.saveUndeliveredDocument(params.siret, params.returnedDate),
@@ -107,7 +107,7 @@ export const CompanyAccesses = () => {
                 <SaveUndeliveredDocBtn
                   loading={saveUndeliveredDocument.isPending}
                   onChange={async date => {
-                    if (date) return saveUndeliveredDocument.mutate({siret, returnedDate: date})
+                    if (date && siret) return saveUndeliveredDocument.mutate({siret, returnedDate: date})
                     else throw new Error("Can't save with an empty date")
                   }}
                   sx={{mr: 1}}
@@ -292,7 +292,7 @@ export const CompanyAccesses = () => {
                 <>
                   {connectedUser.isAdmin && _.userId && (
                     <Tooltip title={m.authAttemptsHistory}>
-                      <NavLink to={siteMap.logged.users_auth_attempts(_.email)}>
+                      <NavLink to={siteMap.logged.users.auth_attempts.value(_.email)}>
                         <IconBtn color="primary">
                           <Icon>history</Icon>
                         </IconBtn>

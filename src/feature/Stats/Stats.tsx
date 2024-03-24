@@ -1,4 +1,4 @@
-import {Redirect, Route, Switch, useRouteMatch} from 'react-router-dom'
+import {Route, useResolvedPath} from 'react-router-dom'
 import {Page, PageTitle} from 'shared/Page'
 import {useI18n} from '../../core/i18n'
 import {siteMap} from '../../core/siteMap'
@@ -9,9 +9,9 @@ import {ReportStats} from './ReportStats'
 import {ArborescenceWithCounts} from './ArborescenceWithCounts'
 import {useLogin} from '../../core/context/LoginContext'
 import {config} from 'conf/config'
+import {Navigate, Routes} from 'react-router'
 
 export const Stats = () => {
-  const {path} = useRouteMatch()
   const {m} = useI18n()
   const {connectedUser} = useLogin()
   return (
@@ -30,31 +30,31 @@ export const Stats = () => {
       </p>
       {connectedUser.isDGAL ? (
         <PageTabs>
-          <PageTab to={siteMap.logged.proStats} label={m.statsPro} />
-          <PageTab to={siteMap.logged.countBySubCategories} label={m.statsCountBySubCategoriesTab} />
+          <PageTab to={siteMap.logged.stats.pro.value} label={m.statsPro} />
+          <PageTab to={siteMap.logged.stats.countBySubCategories.value} label={m.statsCountBySubCategoriesTab} />
         </PageTabs>
       ) : (
         <PageTabs>
-          <PageTab to={siteMap.logged.reportStats} label={m.statsReports} />
-          <PageTab to={siteMap.logged.proStats} label={m.statsPro} />
-          <PageTab to={siteMap.logged.dgccrfStats} label={m.statsDgccrf} />
-          <PageTab to={siteMap.logged.countBySubCategories} label={m.statsCountBySubCategoriesTab} />
+          <PageTab to={siteMap.logged.stats.report.value} label={m.statsReports} />
+          <PageTab to={siteMap.logged.stats.pro.value} label={m.statsPro} />
+          <PageTab to={siteMap.logged.stats.dgccrf.value} label={m.statsDgccrf} />
+          <PageTab to={siteMap.logged.stats.countBySubCategories.value} label={m.statsCountBySubCategoriesTab} />
         </PageTabs>
       )}
       {connectedUser.isDGAL ? (
-        <Switch>
-          <Redirect exact from={path} to={siteMap.logged.proStats} />
-          <Route path={siteMap.logged.proStats} component={ProStats} />
-          <Route path={siteMap.logged.countBySubCategories} component={ArborescenceWithCounts} />
-        </Switch>
+        <Routes>
+          <Route path="/*" element={<Navigate replace to={siteMap.logged.stats.pro.value} />} />
+          <Route path={siteMap.logged.stats.pro.value} element={<ProStats />} />
+          <Route path={siteMap.logged.stats.countBySubCategories.value} element={<ArborescenceWithCounts />} />
+        </Routes>
       ) : (
-        <Switch>
-          <Redirect exact from={path} to={siteMap.logged.reportStats} />
-          <Route path={siteMap.logged.reportStats} component={ReportStats} />
-          <Route path={siteMap.logged.proStats} component={ProStats} />
-          <Route path={siteMap.logged.dgccrfStats} component={DgccrfStats} />
-          <Route path={siteMap.logged.countBySubCategories} component={ArborescenceWithCounts} />
-        </Switch>
+        <Routes>
+          <Route path="/*" element={<Navigate replace to={siteMap.logged.stats.report.value} />} />
+          <Route path={siteMap.logged.stats.report.value} element={<ReportStats />} />
+          <Route path={siteMap.logged.stats.pro.value} element={<ProStats />} />
+          <Route path={siteMap.logged.stats.dgccrf.value} element={<DgccrfStats />} />
+          <Route path={siteMap.logged.stats.countBySubCategories.value} element={<ArborescenceWithCounts />} />
+        </Routes>
       )}
     </Page>
   )

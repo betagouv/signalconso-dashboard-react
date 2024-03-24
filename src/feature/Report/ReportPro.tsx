@@ -26,7 +26,7 @@ import {Link} from 'react-router-dom'
 
 export const ReportPro = () => {
   const {id} = useParams<{id: Id}>()
-  const _getReport = useGetReportQuery(id)
+  const _getReport = useGetReportQuery(id!)
   return (
     <Page maxWidth="l" loading={_getReport.isLoading}>
       {_getReport.data && <ReportProLoaded report={_getReport.data.report} files={_getReport.data.files} />}

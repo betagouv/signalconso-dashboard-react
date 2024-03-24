@@ -66,7 +66,7 @@ export const ScSidebar = ({connectedUser, logout}: {connectedUser: UserWithPermi
         </SidebarItem>
       )}
       {[Roles.Admin, Roles.DGCCRF].includes(connectedUser.role) && (
-        <SidebarItem onClick={closeSidebar} to={path(siteMap.logged.companies)} icon={EntityIcon.company}>
+        <SidebarItem onClick={closeSidebar} to={path(siteMap.logged.companies.value)} icon={EntityIcon.company}>
           {m.menu_companies}
         </SidebarItem>
       )}
@@ -76,7 +76,7 @@ export const ScSidebar = ({connectedUser, logout}: {connectedUser: UserWithPermi
         </SidebarItem>
       )}
       {[Roles.Admin].includes(connectedUser.role) && (
-        <SidebarItem onClick={closeSidebar} to={path(siteMap.logged.users)} icon={EntityIcon.user}>
+        <SidebarItem onClick={closeSidebar} to={path(siteMap.logged.users.value())} icon={EntityIcon.user}>
           {m.menu_users}
         </SidebarItem>
       )}
@@ -86,13 +86,13 @@ export const ScSidebar = ({connectedUser, logout}: {connectedUser: UserWithPermi
         </SidebarItem>
       )}
       {[Roles.Admin, Roles.DGCCRF, Roles.DGAL].includes(connectedUser.role) && (
-        <SidebarItem onClick={closeSidebar} to={path(siteMap.logged.stats)} icon={EntityIcon.stats}>
+        <SidebarItem onClick={closeSidebar} to={path(siteMap.logged.stats.value)} icon={EntityIcon.stats}>
           {m.menu_stats}
         </SidebarItem>
       )}
       <SidebarHr margin />
       {[Roles.Admin, Roles.DGCCRF].includes(connectedUser.role) && (
-        <SidebarItem onClick={closeSidebar} to={path(siteMap.logged.reportedWebsites)} icon={EntityIcon.website}>
+        <SidebarItem onClick={closeSidebar} to={path(siteMap.logged.reportedWebsites.value)} icon={EntityIcon.website}>
           {m.menu_websites}
         </SidebarItem>
       )}
@@ -103,7 +103,7 @@ export const ScSidebar = ({connectedUser, logout}: {connectedUser: UserWithPermi
       )}
       <SidebarHr margin />
       {[Roles.Admin].includes(connectedUser.role) && (
-        <SidebarItem onClick={closeSidebar} to={path(siteMap.logged.tools)} icon={EntityIcon.admin}>
+        <SidebarItem onClick={closeSidebar} to={path(siteMap.logged.tools.value)} icon={EntityIcon.admin}>
           {m.menu_admin_tools}
         </SidebarItem>
       )}

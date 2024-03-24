@@ -1,7 +1,7 @@
 import {validatePasswordComplexity} from 'core/helper/passwordComplexity'
 import {AlertContactSupport} from 'feature/Login/loggedOutComponents'
 import {useForm} from 'react-hook-form'
-import {useHistory, useParams} from 'react-router'
+import {useNavigate, useParams} from 'react-router'
 import {PasswordRequirementsDesc} from 'shared/PasswordRequirementsDesc'
 import {useAsync} from '../../alexlibs/react-hooks-lib'
 import {fnSwitch} from '../../alexlibs/ts-utils'
@@ -27,7 +27,7 @@ export const ResetPassword = ({onResetPassword}: Props) => {
   const {m} = useI18n()
   const {token} = useParams<{token: Id}>()
   const _resetPassword = useAsync(onResetPassword)
-  const history = useHistory()
+  const history = useNavigate()
   const {toastError, toastSuccess} = useToast()
   const {
     register,
@@ -38,11 +38,16 @@ export const ResetPassword = ({onResetPassword}: Props) => {
   } = useForm<Form>()
 
   const resetPassword = (form: Form) => {
+    if (typeof token === 'undefined') {
+      toastError({message: 'Token invalide'})
+      return
+    }
+
     _resetPassword
       .call(form.newPassword, token)
       .then(() => {
         toastSuccess(m.resetPasswordSuccess)
-        setTimeout(() => history.push(siteMap.loggedout.login), 400)
+        setTimeout(() => history(siteMap.loggedout.login), 400)
         Matomo.trackEvent(EventCategories.account, AuthenticationEventActions.resetPasswordSuccess)
       })
       .catch(err => {

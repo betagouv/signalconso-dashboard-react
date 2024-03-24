@@ -59,11 +59,12 @@ export const useCompanyToFollowUpSearchQuery = () => {
   )
 }
 
-export const useGetCompanyByIdQuery = (id: Id, options?: UseQueryOpts<CompanyWithReportsCount, string[]>) => {
+export const useGetCompanyByIdQuery = (id: Id | undefined, options?: UseQueryOpts<CompanyWithReportsCount, string[]>) => {
   const {api} = useApiContext()
   return useQuery({
-    queryKey: GetCompanyByIdQueryKeys(id),
-    queryFn: () => api.secured.company.byId(id).then(_ => _.entities[0]),
+    queryKey: GetCompanyByIdQueryKeys(id!),
+    queryFn: () => api.secured.company.byId(id!).then(_ => _.entities[0]),
+    enabled: !!id,
     ...options,
   })
 }

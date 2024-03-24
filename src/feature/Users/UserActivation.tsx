@@ -2,7 +2,7 @@ import {Box, Checkbox, FormControl, FormControlLabel, FormHelperText, TextField}
 import {validatePasswordComplexity} from 'core/helper/passwordComplexity'
 import {useMemo} from 'react'
 import {Controller, useForm} from 'react-hook-form'
-import {useHistory, useLocation, useParams} from 'react-router'
+import {useNavigate, useLocation, useParams} from 'react-router'
 import {PasswordRequirementsDesc} from 'shared/PasswordRequirementsDesc'
 import {Alert, makeSx, Txt} from '../../alexlibs/mui-extension'
 import {useAsync} from '../../alexlibs/react-hooks-lib'
@@ -44,7 +44,7 @@ export const UserActivation = ({onActivateUser, onFetchTokenInfo}: Props) => {
   const {toastSuccess, toastError} = useToast()
 
   const {search} = useLocation()
-  const history = useHistory()
+  const history = useNavigate()
 
   const {siret} = useParams<{siret: string}>()
 
@@ -70,7 +70,7 @@ export const UserActivation = ({onActivateUser, onFetchTokenInfo}: Props) => {
       .then(_ => {
         Matomo.trackEvent(EventCategories.account, AccountEventActions.registerUser, ActionResultNames.success)
         toastSuccess(m.accountActivated)
-        setTimeout(() => history.push(siteMap.loggedout.login), 400)
+        setTimeout(() => history(siteMap.loggedout.login), 400)
       })
       .catch(e => {
         Matomo.trackEvent(EventCategories.account, AccountEventActions.registerUser, ActionResultNames.fail)

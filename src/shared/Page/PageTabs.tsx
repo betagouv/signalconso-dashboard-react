@@ -1,7 +1,7 @@
 import {Tab, TabProps, Tabs} from '@mui/material'
 import * as React from 'react'
 import {ReactElement, useMemo, useState} from 'react'
-import {useHistory, useLocation} from 'react-router'
+import {useNavigate, useLocation} from 'react-router'
 
 interface Props {
   children: Array<ReactElement<PageTabProps>>
@@ -9,8 +9,13 @@ interface Props {
 
 export const PageTabs = ({children}: Props) => {
   const {pathname} = useLocation()
-  const index = useMemo(() => children.map(_ => _.props.to).indexOf(pathname), [pathname])
-  const [value, setValue] = useState(Math.max(0, index))
+  const defaultTabIndex = 0
+  const index = useMemo(() => {
+    const currentTabIndex = children.map(child => child.props.to).findIndex(path => pathname.includes(path))
+    return currentTabIndex !== -1 ? currentTabIndex : defaultTabIndex
+  }, [pathname])
+
+  const [value, setValue] = useState(Math.max(defaultTabIndex, index))
 
   const handleChange = (event: any, index: number) => {
     setValue(index)
@@ -42,6 +47,6 @@ export interface PageTabProps extends TabProps {
 }
 
 export const PageTab = ({to, ...props}: PageTabProps) => {
-  const history = useHistory()
-  return <Tab {...props} onClick={() => history.push(to)} />
+  const history = useNavigate()
+  return <Tab {...props} onClick={() => history(to)} />
 }
