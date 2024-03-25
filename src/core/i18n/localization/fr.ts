@@ -529,7 +529,7 @@ export const fr = {
     noAnswerFromPro: "Le professionnel n'a pas encore répondu au signalement.",
     noReviewFromConsumer: "Le consommateur n'a pas encore donné son avis sur cette réponse.",
     noReviewDetailsFromConsumer: "Aucun commentaire sur l'évaluation.",
-    companiesSearchPlaceholder: 'Rechercher par nom, SIREN, SIRET, identifiant...',
+    companiesSearchPlaceholder: 'Rechercher par nom, SIREN, SIRET...',
     companySearch: 'Rechercher une entreprise',
     emailValidation: `Validation de l'adresse email`,
     anonymousReport: 'Signalement anonyme',
