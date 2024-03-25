@@ -346,20 +346,42 @@ export const ReportsPro = ({reportType}: ReportsProProps) => {
                 }}
                 columns={columns}
                 renderEmptyState={
-                  <Fender
-                    icon={EntityIcon.report}
-                    title={m.noReportsTitle}
-                    description={
-                      <>
+                  filtersCount === 0 && reportType === 'open' ? (
+                    <Fender
+                      icon={EntityIcon.thumbUp}
+                      title={m.noReportsAtAllTitle}
+                      description={
                         <Txt color="hint" size="big" block gutterBottom>
-                          {m.noReportsDesc}
+                          {m.noReportsAtAllDesc}
                         </Txt>
-                        <ScButton {...resetFiltersButtonProps} variant="contained">
-                          {m.removeAllFilters}
-                        </ScButton>
-                      </>
-                    }
-                  />
+                      }
+                    />
+                  ) : filtersCount === 0 && reportType === 'closed' ? (
+                    <Fender
+                      icon={EntityIcon.cancel}
+                      title={m.noReportsAtCloseTitle}
+                      description={
+                        <Txt color="hint" size="big" block gutterBottom>
+                          {m.noReportsAtCloseDesc}
+                        </Txt>
+                      }
+                    />
+                  ) : (
+                    <Fender
+                      icon={EntityIcon.report}
+                      title={m.noReportsTitle}
+                      description={
+                        <>
+                          <Txt color="hint" size="big" block gutterBottom>
+                            {m.noReportsDesc}
+                          </Txt>
+                          <ScButton {...resetFiltersButtonProps} variant="contained">
+                            {m.removeAllFilters}
+                          </ScButton>
+                        </>
+                      }
+                    />
+                  )
                 }
               />
             </Panel>
