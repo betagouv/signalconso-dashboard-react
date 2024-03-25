@@ -357,7 +357,7 @@ export const ReportsPro = ({reportType}: ReportsProProps) => {
                     />
                   ) : filtersCount === 0 && reportType === 'closed' ? (
                     <Fender
-                      icon={'cancel'}
+                      icon={EntityIcon.cancel}
                       title={m.noReportsAtCloseTitle}
                       description={
                         <Txt color="hint" size="big" block gutterBottom>
