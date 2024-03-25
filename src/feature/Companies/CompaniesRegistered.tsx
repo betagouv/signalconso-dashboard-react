@@ -15,7 +15,6 @@ import {AddressComponent} from '../../shared/Address'
 import {SelectCompanyDialog} from '../../shared/SelectCompany/SelectCompanyDialog'
 import {EditAddressDialog} from './EditAddressDialog'
 import {useLogin} from '../../core/context/LoginContext'
-import {ClipboardApi} from '../../alexlibs/ts-utils/browser/ClipboardApi'
 import {CompaniesRegisteredFilters} from './CompaniesRegisteredFilters'
 import {ScMenu} from '../../shared/Menu'
 import {Company, CompanySearch, CompanyUpdate, CompanyWithReportsCount} from '../../core/client/company/Company'
@@ -72,11 +71,17 @@ export const CompaniesRegistered = () => {
     queryString.update(cleanObject(_companies.filters))
   }, [_companies.filters])
 
-  const copyAddress = (c: Company) => {
+  const copyAddress = async (c: Company) => {
     const a = c.address
     const address = `${c.name} - ${a.number} ${a.street} ${a.addressSupplement} ${a.postalCode} ${a.city} (${c.siret})`
-    ClipboardApi.copy(address.replaceAll('undefined', '').replaceAll(/[\s]{1,}/g, ' '))
-    toastSuccess(m.addressCopied)
+    const cleanedAddress = address.replaceAll('undefined', '').replaceAll(/[\s]{1,}/g, ' ')
+    try {
+      await navigator.clipboard.writeText(cleanedAddress)
+      toastSuccess(m.succesCopy)
+    } catch (err) {
+      console.error("Échec de la copie de l'adresse : ", err)
+      toastError({message: m.errorCopy})
+    }
   }
 
   const data = useMemo(() => {
