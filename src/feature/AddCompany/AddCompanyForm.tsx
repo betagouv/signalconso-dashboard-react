@@ -1,6 +1,6 @@
 import {TextField} from '@mui/material'
 import {useForm} from 'react-hook-form'
-import {useHistory} from 'react-router'
+import {useNavigate} from 'react-router'
 import {Alert, Btn, Txt} from '../../alexlibs/mui-extension'
 import {useLogin} from '../../core/context/LoginContext'
 import {regexp} from '../../core/helper/regexp'
@@ -24,7 +24,7 @@ export const AddCompanyForm = () => {
     mutationFn: (params: {siret: string; token: string}) => apiSdk.secured.accesses.acceptToken(params.siret, params.token),
     onSuccess: () => {
       toastSuccess(m.companyRegistered)
-      history.push(siteMap.logged.companiesPro)
+      history(siteMap.logged.companiesPro)
       Matomo.trackEvent(EventCategories.companyAccess, AccessEventActions.addCompanyToAccount, ActionResultNames.success)
     },
     onError: () => {
@@ -32,7 +32,7 @@ export const AddCompanyForm = () => {
     },
   })
   const {toastSuccess} = useToast()
-  const history = useHistory()
+  const history = useNavigate()
 
   const {
     register,

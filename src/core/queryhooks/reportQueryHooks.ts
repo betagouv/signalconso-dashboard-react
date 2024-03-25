@@ -17,7 +17,7 @@ const GetCloudWordQueryKeys = (companyId: Id) => ['reports_getCloudWord', compan
 
 export const useGetReportQuery = (id: string, options?: UseQueryOpts<ReportSearchResult, string[]>) => {
   const {api} = useApiContext()
-  return useQuery({queryKey: GetReportQueryKeys(id), queryFn: () => api.secured.reports.getById(id), ...options})
+  return useQuery({queryKey: GetReportQueryKeys(id), queryFn: () => api.secured.reports.getById(id), enabled: !!id, ...options})
 }
 
 export const useGetReviewOnReportResponseQuery = (id: string, options?: UseQueryOpts<ResponseConsumerReview, string[]>) => {

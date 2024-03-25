@@ -1,6 +1,7 @@
 import {regexp} from './regexp'
-import {useHistory} from 'react-router-dom'
+import {useNavigate} from 'react-router-dom'
 import {parse as _parse, stringify as _stringify} from 'qs'
+import {useLocation} from 'react-router'
 
 export interface ParsedUrlQueryInput {
   [key: string]:
@@ -35,15 +36,19 @@ export const useQueryString = <E, QS extends ParsedUrlQueryInput>({
   toQueryString: (_: E) => QS
   fromQueryString: (_: QS) => E
 }) => {
-  const history = useHistory()
+  const history = useNavigate()
+  const location = useLocation()
 
   const update = (t: E) => {
-    history.replace({search: QueryString.stringify(toQueryString(t))})
+    const newQueryString = QueryString.stringify(toQueryString(t))
+    const previousQueryString = location.search.replace(/^\?/, '')
+    const hasChanged = newQueryString !== previousQueryString
+    hasChanged && history(`?${newQueryString}`, {replace: true})
   }
 
   const get = (): E => {
     // arrayLimit raised from 20 to 200 otherwise the departments list may not be parsed correctly
-    return fromQueryString(QueryString.parse(history.location.search.replace(/^\?/, ''), {arrayLimit: 200}) as any)
+    return fromQueryString(QueryString.parse(location.search.replace(/^\?/, ''), {arrayLimit: 200}) as any)
   }
 
   return {update, get}
