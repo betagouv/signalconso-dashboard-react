@@ -9,7 +9,26 @@ import {GetReportQueryKeys} from 'core/queryhooks/reportQueryHooks'
 import {Link} from 'react-router-dom'
 import {ScSelect} from 'shared/Select/Select'
 
-type MutationVariables = {reportId: string; newAssignedUserId: string}
+type AssignMutationVariables = {reportId: string; newAssignedUserId: string}
+
+function useAssignMutation() {
+  const {api} = useApiContext()
+  const {toastSuccess, toastError} = useToast()
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: ({reportId, newAssignedUserId}: AssignMutationVariables) =>
+      api.secured.reports.updateReportAssignedUser(reportId, newAssignedUserId),
+    onSuccess: (assignedUser: User, {reportId}: AssignMutationVariables) => {
+      queryClient.setQueryData(GetReportQueryKeys(reportId), (prev: ReportSearchResult): ReportSearchResult => {
+        return {...prev, assignedUser: assignedUser}
+      })
+      toastSuccess('Le signalement a été réaffecté')
+    },
+    onError: () => {
+      toastError('Une erreur est survenue')
+    },
+  })
+}
 
 export function ReportAssignement({
   reportSearchResult,
@@ -18,25 +37,8 @@ export function ReportAssignement({
   reportSearchResult: ReportSearchResult
   companySiret: string
 }) {
-  const {api} = useApiContext()
   const {connectedUser} = useLogin()
-
-  const {toastSuccess, toastError} = useToast()
-  const queryClient = useQueryClient()
-  const _update = useMutation({
-    mutationFn: (mutationVariables: MutationVariables) =>
-      api.secured.reports.updateReportAssignedUser(mutationVariables.reportId, mutationVariables.newAssignedUserId),
-    onSuccess: (assignedUser, mutationVariables) => {
-      queryClient.setQueryData(GetReportQueryKeys(mutationVariables.reportId), (prev: ReportSearchResult): ReportSearchResult => {
-        const newOne = {...prev, assignedUser: assignedUser}
-        return newOne
-      })
-      toastSuccess('Le signalement a été réaffecté')
-    },
-    onError: () => {
-      toastError('Une erreur est survenue')
-    },
-  })
+  const _assign = useAssignMutation()
   const reportId = reportSearchResult.report.id
   const assignedUser = reportSearchResult.assignedUser
   const isAssignedToCurrentUser = assignedUser?.id === connectedUser.id
@@ -56,7 +58,7 @@ export function ReportAssignement({
         value={selectedId}
         variant="outlined"
         onChange={event => {
-          _update.mutate({reportId, newAssignedUserId: event.target.value})
+          _assign.mutate({reportId, newAssignedUserId: event.target.value})
         }}
         label={'Affecté à'}
         fullWidth
@@ -77,7 +79,7 @@ export function ReportAssignement({
           to={''}
           className="block text-scbluefrance text-sm"
           onClick={() => {
-            _update.mutate({reportId, newAssignedUserId: connectedUser.id})
+            _assign.mutate({reportId, newAssignedUserId: connectedUser.id})
           }}
         >
           Me l'affecter

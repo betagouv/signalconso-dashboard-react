@@ -165,7 +165,7 @@ function Header({
   hasToRespond: boolean
 }) {
   const {m, formatDate, formatTime} = useI18n()
-  const {report, assignedUser} = reportSearchResult
+  const {report} = reportSearchResult
   const companySiret = report.companySiret
   return (
     <div className="text-left mb-8">
