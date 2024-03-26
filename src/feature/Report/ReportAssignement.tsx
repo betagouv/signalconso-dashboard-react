@@ -23,9 +23,10 @@ export function ReportAssignement({
   const _update = useMutation({
     mutationFn: (mutationVariables: MutationVariables) =>
       api.secured.reports.updateReportAssignedUser(mutationVariables.reportId, mutationVariables.newAssignedUserId),
-    onSuccess: (updatedReportWithMetadata, mutationVariables) => {
+    onSuccess: (assignedUser, mutationVariables) => {
       queryClient.setQueryData(GetReportQueryKeys(mutationVariables.reportId), (prev: ReportSearchResult): ReportSearchResult => {
-        return {...prev, ...updatedReportWithMetadata}
+        const newOne = {...prev, assignedUser: assignedUser}
+        return newOne
       })
       toastSuccess('Le signalement a été réaffecté')
     },
@@ -43,15 +44,15 @@ export function ReportAssignement({
         ...(assignedUser ? [buildOptionFromUser(assignedUser)] : []),
       ]
 
+  const selectedId = assignedUser?.id || ''
   return (
     <div className="flex flex-col items-start sm:items-end gap-1">
       <ScSelect
         size="small"
-        value={assignedUser?.id || ''}
+        value={selectedId}
         variant="outlined"
         onChange={event => {
           const userId = event.target.value
-          console.log('@@@ selecting', userId)
           _update.mutate({reportId, newAssignedUserId: userId})
         }}
         label={'Affecté à'}

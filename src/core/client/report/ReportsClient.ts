@@ -1,12 +1,14 @@
+import {cleanObject, dateToApiDate, dateToApiTime, directDownloadBlob} from '../../helper'
+import {ApiSdkLogger} from '../../helper/Logger'
 import {
   Address,
   CompanySearchResult,
   Country,
   Event,
+  FileOrigin,
   Id,
   PaginatedData,
   PaginatedFilters,
-  paginateFilters2QueryString,
   Report,
   ReportAction,
   ReportConsumerUpdate,
@@ -15,14 +17,13 @@ import {
   ReportSearch,
   ReportSearchResult,
   ReportTag,
+  ReportWithMetadata,
   ReportWordCount,
   ResponseConsumerReview,
-  FileOrigin,
-  ReportWithMetadata,
+  User,
+  paginateFilters2QueryString,
 } from '../../model'
-import {ApiSdkLogger} from '../../helper/Logger'
 import {ApiClientApi} from '../ApiClient'
-import {cleanObject, dateToApiDate, dateToApiTime, directDownloadBlob} from '../../helper'
 import {ReportNodes} from './ReportNode'
 import {ReportNodeSearch} from './ReportNodeSearch'
 
@@ -207,9 +208,7 @@ export class ReportsClient {
   }
 
   readonly updateReportAssignedUser = (reportId: string, newAssignedUserId: string) => {
-    return this.client
-      .post<ReportWithMetadata>(`reports/${reportId}/assign/${newAssignedUserId}`)
-      .then(reportWithMetadata => ReportsClient.mapReportWithMetadata(reportWithMetadata))
+    return this.client.post<User>(`reports/${reportId}/assign/${newAssignedUserId}`)
   }
 
   readonly getCountByDepartments = ({start, end}: {start?: Date; end?: Date} = {}): Promise<[string, number][]> => {
