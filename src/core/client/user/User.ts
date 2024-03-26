@@ -1,5 +1,5 @@
-import {CompanyAccess, Id, PaginatedFilters} from '../../model'
 import {subMonths} from 'date-fns'
+import {CompanyAccess, PaginatedFilters} from '../../model'
 
 export const roleAgents = ['DGCCRF', 'DGAL'] as const
 export type RoleAgents = typeof roleAgents[number]
@@ -15,13 +15,19 @@ export interface User {
 }
 
 export class User {
-  static buildFullName(user: User | CompanyAccess) {
+  static buildFullName(user: User | CompanyAccess | MinimalUser) {
     return `${user.firstName} ${user.lastName}`
   }
 }
 
 export type UserRaw = Omit<User, 'lastEmailValidation'> & {
   lastEmailValidation: string
+}
+
+export type MinimalUser = {
+  id: string
+  firstName: string
+  lastName: string
 }
 
 export const isUserActive = (user: User) => user.lastEmailValidation.getTime() > subMonths(new Date(), 3).getTime()

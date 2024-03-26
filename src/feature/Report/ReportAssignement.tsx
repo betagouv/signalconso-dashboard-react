@@ -3,7 +3,7 @@ import {useMutation, useQueryClient} from '@tanstack/react-query'
 import {useToast} from 'alexlibs/mui-extension'
 import {useApiContext} from 'core/context/ApiContext'
 import {useLogin} from 'core/context/LoginContext'
-import {CompanyAccess, ReportSearchResult, User} from 'core/model'
+import {CompanyAccess, MinimalUser, ReportSearchResult, User} from 'core/model'
 import {useCompanyAccessesQuery} from 'core/queryhooks/companyQueryHooks'
 import {GetReportQueryKeys} from 'core/queryhooks/reportQueryHooks'
 import {Link} from 'react-router-dom'
@@ -89,7 +89,7 @@ export function ReportAssignement({
   )
 }
 
-function buildOptionFromUser(user: User) {
+function buildOptionFromUser(user: MinimalUser) {
   return {
     id: user.id,
     fullName: User.buildFullName(user),
