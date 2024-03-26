@@ -2,6 +2,7 @@ import {Icon, MenuItem} from '@mui/material'
 import {useMutation, useQueryClient} from '@tanstack/react-query'
 import {useToast} from 'alexlibs/mui-extension'
 import {useApiContext} from 'core/context/ApiContext'
+import {useLogin} from 'core/context/LoginContext'
 import {CompanyAccess, ReportSearchResult, User} from 'core/model'
 import {useCompanyAccessesQuery} from 'core/queryhooks/companyQueryHooks'
 import {GetReportQueryKeys} from 'core/queryhooks/reportQueryHooks'
@@ -18,6 +19,8 @@ export function ReportAssignement({
   companySiret: string
 }) {
   const {api} = useApiContext()
+  const {connectedUser} = useLogin()
+
   const {toastSuccess, toastError} = useToast()
   const queryClient = useQueryClient()
   const _update = useMutation({
@@ -52,8 +55,7 @@ export function ReportAssignement({
         value={selectedId}
         variant="outlined"
         onChange={event => {
-          const userId = event.target.value
-          _update.mutate({reportId, newAssignedUserId: userId})
+          _update.mutate({reportId, newAssignedUserId: event.target.value})
         }}
         label={'Affecté à'}
         fullWidth
@@ -70,7 +72,13 @@ export function ReportAssignement({
         })}
       </ScSelect>
 
-      <Link to={''} className="block text-scbluefrance text-sm">
+      <Link
+        to={''}
+        className="block text-scbluefrance text-sm"
+        onClick={() => {
+          _update.mutate({reportId, newAssignedUserId: connectedUser.id})
+        }}
+      >
         Me l'affecter
       </Link>
     </div>
