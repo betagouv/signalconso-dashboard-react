@@ -1,8 +1,14 @@
 import {Icon, MenuItem} from '@mui/material'
+import {useMutation, useQueryClient} from '@tanstack/react-query'
+import {useToast} from 'alexlibs/mui-extension'
+import {useApiContext} from 'core/context/ApiContext'
 import {CompanyAccess, ReportSearchResult, User} from 'core/model'
 import {useCompanyAccessesQuery} from 'core/queryhooks/companyQueryHooks'
+import {GetReportQueryKeys} from 'core/queryhooks/reportQueryHooks'
 import {Link} from 'react-router-dom'
 import {ScSelect} from 'shared/Select/Select'
+
+type MutationVariables = {reportId: string; newAssignedUserId: string}
 
 export function ReportAssignement({
   reportSearchResult,
@@ -11,8 +17,24 @@ export function ReportAssignement({
   reportSearchResult: ReportSearchResult
   companySiret: string
 }) {
+  const {api} = useApiContext()
+  const {toastSuccess, toastError} = useToast()
+  const queryClient = useQueryClient()
+  const _update = useMutation({
+    mutationFn: (mutationVariables: MutationVariables) =>
+      api.secured.reports.updateReportAssignedUser(mutationVariables.reportId, mutationVariables.newAssignedUserId),
+    onSuccess: (updatedReportWithMetadata, mutationVariables) => {
+      queryClient.setQueryData(GetReportQueryKeys(mutationVariables.reportId), (prev: ReportSearchResult): ReportSearchResult => {
+        return {...prev, ...updatedReportWithMetadata}
+      })
+      toastSuccess('Le signalement a été réaffecté')
+    },
+    onError: () => {
+      toastError('Une erreur est survenue')
+    },
+  })
+  const reportId = reportSearchResult.report.id
   const assignedUser = reportSearchResult.assignedUser
-  const fullName = assignedUser ? User.buildFullName(assignedUser) : 'John Jon'
   const _accesses = useCompanyAccessesQuery(companySiret)
   const options = _accesses.data
     ? _accesses.data.map(buildOptionFromAccess)
@@ -23,7 +45,18 @@ export function ReportAssignement({
 
   return (
     <div className="flex flex-col items-start sm:items-end gap-1">
-      <ScSelect size="small" value={assignedUser?.id} variant="outlined" onChange={x => {}} label={'Affecté à'} fullWidth>
+      <ScSelect
+        size="small"
+        value={assignedUser?.id || ''}
+        variant="outlined"
+        onChange={event => {
+          const userId = event.target.value
+          console.log('@@@ selecting', userId)
+          _update.mutate({reportId, newAssignedUserId: userId})
+        }}
+        label={'Affecté à'}
+        fullWidth
+      >
         {options.map(option => {
           return (
             <MenuItem value={option.id} key={option.id}>
@@ -56,47 +89,3 @@ function buildOptionFromAccess(access: CompanyAccess) {
     fullName: User.buildFullName(access),
   }
 }
-
-const names = [
-  'Jeremy Stephenson',
-  'Blake Morris',
-  'Michelle Miller',
-  'Chelsea Rogers',
-  'Curtis Summers',
-  'Jaime Duncan',
-  'Sabrina Mooney',
-  'Joseph Gonzales',
-  'Brian Mccormick',
-  'Phillip Stevens',
-  'Jacqueline Smith',
-  'Richard Rivera',
-  'Megan Lara',
-  'Mrs. Amanda Mitchell MD',
-  'Kevin Hampton',
-  'Teresa Martin',
-  'Kevin Horne',
-  'Michael Li',
-  'John Gross',
-  'David Perez',
-  'Taylor Young',
-  'Brandon Torres',
-  'Cynthia Porter',
-  'Amanda Daniel',
-  'Ashley Stephenson',
-  'Pamela Hughes',
-  'Joel Parker',
-  'Robert Zamora',
-  'Dr. Andrew Miller',
-  'Kathleen Parrish',
-  'John Caldwell',
-  'Amy Anderson',
-  'John Ware',
-  'Michele Foley',
-  'Jeffrey Harris',
-  'Carmen Mcbride',
-  'Jack Jones',
-  'Jessica Moody',
-  'Aaron Martin',
-  'Rachel Cruz',
-  'Whitney Reed',
-]

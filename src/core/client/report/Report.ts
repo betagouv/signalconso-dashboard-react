@@ -147,6 +147,11 @@ export interface ReportSearchResult {
   assignedUser?: User
 }
 
+export interface ReportWithMetadata {
+  report: Report
+  metadata?: ReportMetadata
+}
+
 type ReportMetadata = {
   reportId: Id
   isMobileApp: boolean

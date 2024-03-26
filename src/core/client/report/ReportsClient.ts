@@ -18,6 +18,7 @@ import {
   ReportWordCount,
   ResponseConsumerReview,
   FileOrigin,
+  ReportWithMetadata,
 } from '../../model'
 import {ApiSdkLogger} from '../../helper/Logger'
 import {ApiClientApi} from '../ApiClient'
@@ -205,6 +206,12 @@ export class ReportsClient {
       .then(report => ReportsClient.mapReport(report))
   }
 
+  readonly updateReportAssignedUser = (reportId: string, newAssignedUserId: string) => {
+    return this.client
+      .post<ReportWithMetadata>(`reports/${reportId}/assign/${newAssignedUserId}`)
+      .then(reportWithMetadata => ReportsClient.mapReportWithMetadata(reportWithMetadata))
+  }
+
   readonly getCountByDepartments = ({start, end}: {start?: Date; end?: Date} = {}): Promise<[string, number][]> => {
     return this.client.get(`/reports/count-by-departments`, {
       qs: {
@@ -228,6 +235,11 @@ export class ReportsClient {
     ...report,
     creationDate: new Date(report.creationDate),
     expirationDate: new Date(report.expirationDate),
+  })
+
+  static readonly mapReportWithMetadata = (reportWithMetadata: ReportWithMetadata): ReportWithMetadata => ({
+    ...reportWithMetadata,
+    report: this.mapReport(reportWithMetadata.report),
   })
 
   static readonly mapAddress = (address: {[key in keyof Address]: any | undefined}): Address => ({
