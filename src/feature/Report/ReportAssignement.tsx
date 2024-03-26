@@ -39,6 +39,7 @@ export function ReportAssignement({
   })
   const reportId = reportSearchResult.report.id
   const assignedUser = reportSearchResult.assignedUser
+  const isAssignedToCurrentUser = assignedUser?.id === connectedUser.id
   const _accesses = useCompanyAccessesQuery(companySiret)
   const options = _accesses.data
     ? _accesses.data.map(buildOptionFromAccess)
@@ -49,7 +50,7 @@ export function ReportAssignement({
 
   const selectedId = assignedUser?.id || ''
   return (
-    <div className="flex flex-col items-start sm:items-end gap-1">
+    <div className="flex flex-col items-start sm:items-end gap-1  min-w-[120px]">
       <ScSelect
         size="small"
         value={selectedId}
@@ -71,16 +72,17 @@ export function ReportAssignement({
           )
         })}
       </ScSelect>
-
-      <Link
-        to={''}
-        className="block text-scbluefrance text-sm"
-        onClick={() => {
-          _update.mutate({reportId, newAssignedUserId: connectedUser.id})
-        }}
-      >
-        Me l'affecter
-      </Link>
+      {!isAssignedToCurrentUser && (
+        <Link
+          to={''}
+          className="block text-scbluefrance text-sm"
+          onClick={() => {
+            _update.mutate({reportId, newAssignedUserId: connectedUser.id})
+          }}
+        >
+          Me l'affecter
+        </Link>
+      )}
     </div>
   )
 }
