@@ -2,11 +2,9 @@ import {Icon, MenuItem} from '@mui/material'
 import {useMutation, useQueryClient} from '@tanstack/react-query'
 import {useToast} from 'alexlibs/mui-extension'
 import {useApiContext} from 'core/context/ApiContext'
-import {useLogin} from 'core/context/LoginContext'
 import {CompanyAccess, MinimalUser, ReportSearchResult, User} from 'core/model'
 import {useCompanyAccessesQuery} from 'core/queryhooks/companyQueryHooks'
 import {GetReportQueryKeys} from 'core/queryhooks/reportQueryHooks'
-import {Link} from 'react-router-dom'
 import {ScSelect} from 'shared/Select/Select'
 
 type AssignMutationVariables = {reportId: string; newAssignedUserId: string}
@@ -37,11 +35,9 @@ export function ReportAssignement({
   reportSearchResult: ReportSearchResult
   companySiret: string
 }) {
-  const {connectedUser} = useLogin()
   const _assign = useAssignMutation()
   const reportId = reportSearchResult.report.id
   const assignedUser = reportSearchResult.assignedUser
-  const isAssignedToCurrentUser = assignedUser?.id === connectedUser.id
   const _accesses = useCompanyAccessesQuery(companySiret)
   const options = _accesses.data
     ? _accesses.data.map(buildOptionFromAccess)
@@ -52,7 +48,7 @@ export function ReportAssignement({
 
   const selectedId = assignedUser?.id || ''
   return (
-    <div className="flex flex-col items-start sm:items-end gap-1  min-w-[120px]">
+    <div className="flex flex-col items-start sm:items-end gap-1 min-w-[120px]">
       <ScSelect
         size="small"
         value={selectedId}
@@ -74,17 +70,6 @@ export function ReportAssignement({
           )
         })}
       </ScSelect>
-      {!isAssignedToCurrentUser && (
-        <Link
-          to={''}
-          className="block text-scbluefrance text-sm"
-          onClick={() => {
-            _assign.mutate({reportId, newAssignedUserId: connectedUser.id})
-          }}
-        >
-          Me l'affecter
-        </Link>
-      )}
     </div>
   )
 }
