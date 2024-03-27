@@ -1,28 +1,28 @@
-import {useI18n} from '../../core/i18n'
-import {Panel} from '../../shared/Panel'
-import {Datatable} from '../../shared/Datatable/Datatable'
-import {useCallback, useEffect, useMemo, useState} from 'react'
 import {Badge, Box, Icon, InputBase, ListItemIcon, ListItemText, MenuItem, Tooltip} from '@mui/material'
+import {useMutation, useQueryClient} from '@tanstack/react-query'
+import {useCallback, useEffect, useMemo, useState} from 'react'
 import {NavLink} from 'react-router-dom'
-import {siteMap} from '../../core/siteMap'
-import {ScButton} from '../../shared/Button'
-import {styleUtils, sxUtils} from '../../core/theme'
 import {Fender, IconBtn, Txt} from '../../alexlibs/mui-extension'
+import {Company, CompanySearch, CompanyUpdate, CompanyWithReportsCount} from '../../core/client/company/Company'
+import {useLogin} from '../../core/context/LoginContext'
+import {cleanObject} from '../../core/helper'
 import {mapArrayFromQuerystring, useQueryString} from '../../core/helper/useQueryString'
-import {DebouncedInput} from '../../shared/DebouncedInput'
+import {useI18n} from '../../core/i18n'
+import {Address, Id, Paginate, PaginatedSearch} from '../../core/model'
+import {ActivatedCompanySearchQueryKeys, useActivatedCompanySearchQuery} from '../../core/queryhooks/companyQueryHooks'
+import {siteMap} from '../../core/siteMap'
+import {styleUtils, sxUtils} from '../../core/theme'
 import {useToast} from '../../core/toast'
 import {AddressComponent} from '../../shared/Address'
-import {SelectCompanyDialog} from '../../shared/SelectCompany/SelectCompanyDialog'
-import {EditAddressDialog} from './EditAddressDialog'
-import {useLogin} from '../../core/context/LoginContext'
-import {CompaniesRegisteredFilters} from './CompaniesRegisteredFilters'
+import {ScButton} from '../../shared/Button'
+import {Datatable} from '../../shared/Datatable/Datatable'
+import {DebouncedInput} from '../../shared/DebouncedInput'
 import {ScMenu} from '../../shared/Menu'
-import {Company, CompanySearch, CompanyUpdate, CompanyWithReportsCount} from '../../core/client/company/Company'
-import {cleanObject} from '../../core/helper'
-import {Address, Id, Paginate, PaginatedSearch} from '../../core/model'
+import {SelectCompanyDialog} from '../../shared/SelectCompany/SelectCompanyDialog'
+import {CompaniesRegisteredFilters} from './CompaniesRegisteredFilters'
+import {EditAddressDialog} from './EditAddressDialog'
 import {MassImport} from './MassImport'
-import {ActivatedCompanySearchQueryKeys, useActivatedCompanySearchQuery} from '../../core/queryhooks/companyQueryHooks'
-import {useMutation, useQueryClient} from '@tanstack/react-query'
+import {ScInput} from 'shared/ScInput'
 
 export interface CompanySearchQs extends PaginatedSearch<any> {
   departments?: string[] | string
@@ -101,20 +101,22 @@ export const CompaniesRegistered = () => {
   }, [])
 
   return (
-    <Panel>
+    <>
       <Datatable
         id="companiesregistered"
-        header={
-          <DebouncedInput value={_companies.filters.identity ?? ''} onChange={onInputChange}>
-            {(value, onChange) => (
-              <InputBase
-                value={value}
-                placeholder={m.companiesSearchPlaceholder}
-                fullWidth
-                onChange={e => onChange(e.target.value)}
-              />
-            )}
-          </DebouncedInput>
+        headerMain={
+          <div className="mb-2 w-full">
+            <DebouncedInput value={_companies.filters.identity ?? ''} onChange={onInputChange}>
+              {(value, onChange) => (
+                <ScInput
+                  value={value}
+                  placeholder={m.companiesSearchPlaceholder}
+                  fullWidth
+                  onChange={e => onChange(e.target.value)}
+                />
+              )}
+            </DebouncedInput>
+          </div>
         }
         actions={
           <>
@@ -363,6 +365,6 @@ export const CompaniesRegistered = () => {
           </Fender>
         }
       />
-    </Panel>
+    </>
   )
 }

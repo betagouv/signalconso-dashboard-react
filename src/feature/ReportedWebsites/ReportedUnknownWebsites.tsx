@@ -14,6 +14,7 @@ import {PeriodPicker} from '../../shared/PeriodPicker'
 import {sxUtils} from '../../core/theme'
 import {ScOption} from 'core/helper/ScOption'
 import {useListUnregisteredWebsitesSearchQuery} from '../../core/queryhooks/websiteQueryHooks'
+import {ScInput} from 'shared/ScInput'
 
 export const ReportedUnknownWebsites = () => {
   const {m} = useI18n()
@@ -28,27 +29,19 @@ export const ReportedUnknownWebsites = () => {
   }, [])
 
   return (
-    <Panel>
-      <Box sx={{p: 2}}>
-        <Txt color="hint" italic>
-          {m.reportedUnknownWebsitesText}
-        </Txt>
-      </Box>
-      <Divider />
+    <>
       <Datatable
         id="reportedunknownwebsites"
-        header={
-          <>
+        superheader={
+          <Txt color="hint" italic>
+            {m.reportedUnknownWebsitesText}
+          </Txt>
+        }
+        headerMain={
+          <div className="flex gap-2 w-full">
             <DebouncedInput value={unregisteredWebsites.filters.q ?? ''} onChange={onQueryChange}>
               {(value, onChange) => (
-                <InputBase
-                  value={value}
-                  placeholder={m.searchByHost + '...'}
-                  fullWidth
-                  style={{minWidth: 120}}
-                  sx={{ml: 1}}
-                  onChange={e => onChange(e.target.value)}
-                />
+                <ScInput value={value} placeholder={m.searchByHost + '...'} fullWidth onChange={e => onChange(e.target.value)} />
               )}
             </DebouncedInput>
 
@@ -57,7 +50,7 @@ export const ReportedUnknownWebsites = () => {
               value={[unregisteredWebsites.filters.start, unregisteredWebsites.filters.end]}
               onChange={([start, end]) => unregisteredWebsites.updateFilters(prev => ({...prev, start, end}))}
             />
-          </>
+          </div>
         }
         actions={
           <>
@@ -82,6 +75,7 @@ export const ReportedUnknownWebsites = () => {
             </ExportUnknownWebsitesPopper>
           </>
         }
+        headerMarginBottom
         loading={unregisteredWebsites.result.isFetching}
         total={unregisteredWebsites.result.data?.totalCount}
         paginate={{
@@ -124,6 +118,6 @@ export const ReportedUnknownWebsites = () => {
           },
         ]}
       />
-    </Panel>
+    </>
   )
 }

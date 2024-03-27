@@ -1,27 +1,26 @@
 import {FormControlLabel, Switch} from '@mui/material'
+import {UseMutationResult, useMutation, useQueryClient} from '@tanstack/react-query'
 import {ScOption} from 'core/helper/ScOption'
+import type {Dictionary} from 'lodash'
 import {useMemo, useState} from 'react'
 import {NavLink} from 'react-router-dom'
+import {CleanDiscreetPanel, CleanWidePanel} from 'shared/Panel/simplePanels'
 import {Btn, Fender, Txt} from '../../alexlibs/mui-extension'
+import {useApiContext} from '../../core/context/ApiContext'
 import {useI18n} from '../../core/i18n'
 import {groupBy, uniqBy} from '../../core/lodashNamedExport'
 import {AccessLevel, BlockedReportNotification, CompanyWithAccessLevel, Id} from '../../core/model'
+import {useGetAccessibleByProQuery} from '../../core/queryhooks/companyQueryHooks'
+import {
+  ListReportBlockedNotificationsQueryKeys,
+  useListReportBlockedNotificationsQuery,
+} from '../../core/queryhooks/reportBlockedNotificationQueryHooks'
 import {siteMap} from '../../core/siteMap'
 import {AddressComponent} from '../../shared/Address'
 import {ScButton} from '../../shared/Button'
 import {Datatable} from '../../shared/Datatable/Datatable'
 import {Page, PageTitle} from '../../shared/Page'
-import {Panel, PanelBody} from '../../shared/Panel'
-import {PanelFoot} from '../../shared/Panel/PanelFoot'
 import {ConfirmDisableNotificationDialog} from './ConfirmDisableNotificationDialog'
-import {
-  ListReportBlockedNotificationsQueryKeys,
-  useListReportBlockedNotificationsQuery,
-} from '../../core/queryhooks/reportBlockedNotificationQueryHooks'
-import {UseMutationResult, useMutation, useQueryClient} from '@tanstack/react-query'
-import {useApiContext} from '../../core/context/ApiContext'
-import {useGetAccessibleByProQuery} from '../../core/queryhooks/companyQueryHooks'
-import type {Dictionary} from 'lodash'
 
 export const CompaniesPro = () => {
   const {m} = useI18n()
@@ -83,38 +82,44 @@ export const CompaniesPro = () => {
       </PageTitle>
 
       {companies && companies.length > 5 && (
-        <Panel>
-          <PanelBody>
-            <Txt block size="big" bold>
-              {m.notifications}
-            </Txt>
-            <Txt block color="hint">
-              {m.notificationAcceptForCompany}
-            </Txt>
-          </PanelBody>
-          <PanelFoot alignEnd>
-            <ScButton
-              disabled={allNotificationsAreBlocked}
-              color="primary"
-              icon="notifications_off"
-              onClick={() => setCurrentlyDisablingNotificationsForCompanies(companies.map(_ => _.id))}
-            >
-              {m.disableAll}
-            </ScButton>
-            <ScButton
-              disabled={_blockedNotifications.data?.length === 0}
-              color="primary"
-              icon="notifications_active"
-              sx={{mr: 1}}
-              onClick={() => _remove.mutate(companies.map(_ => _.id))}
-            >
-              {m.enableAll}
-            </ScButton>
-          </PanelFoot>
-        </Panel>
+        <div className="mb-8">
+          <CleanDiscreetPanel>
+            <div className="flex gap-2 justify-between flex-col xl:flex-row">
+              <p>
+                <Txt block size="big" bold>
+                  {m.notifications}
+                </Txt>
+                <Txt block color="hint">
+                  {m.notificationAcceptForCompany}
+                </Txt>
+              </p>
+              <div className="flex gap-2">
+                <ScButton
+                  disabled={allNotificationsAreBlocked}
+                  color="primary"
+                  variant="outlined"
+                  icon="notifications_off"
+                  onClick={() => setCurrentlyDisablingNotificationsForCompanies(companies.map(_ => _.id))}
+                >
+                  {m.disableAll}
+                </ScButton>
+                <ScButton
+                  disabled={_blockedNotifications.data?.length === 0}
+                  color="primary"
+                  variant="outlined"
+                  icon="notifications_active"
+                  sx={{mr: 1}}
+                  onClick={() => _remove.mutate(companies.map(_ => _.id))}
+                >
+                  {m.enableAll}
+                </ScButton>
+              </div>
+            </div>
+          </CleanDiscreetPanel>
+        </div>
       )}
 
-      <Panel>
+      <>
         <Datatable
           data={companies}
           loading={_companiesAccessibleByPro.isLoading || _blockedNotifications.isLoading}
@@ -150,7 +155,7 @@ export const CompaniesPro = () => {
             </Fender>
           }
         />
-      </Panel>
+      </>
       <ConfirmDisableNotificationDialog
         open={!!currentlyDisablingNotificationsForCompanies}
         onClose={() => setCurrentlyDisablingNotificationsForCompanies(undefined)}
@@ -176,7 +181,7 @@ function CompaniesProRow({
 }) {
   const {m} = useI18n()
   return (
-    <div className="lg:grid lg:grid-cols-2 py-2 lg:py-0">
+    <div className="lg:grid lg:grid-cols-2 py-2">
       <div className="">
         <NavLink to={siteMap.logged.company(_.id)} className="text-lg text-scbluefrance">
           {_.name}

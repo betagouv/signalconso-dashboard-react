@@ -7,6 +7,7 @@ import {Txt} from '../../alexlibs/mui-extension'
 import {DebouncedInput} from '../../shared/DebouncedInput'
 import {useLocation} from 'react-router'
 import {useSearchAuthAttemptsQuery} from '../../core/queryhooks/userQueryHooks'
+import {ScInput} from 'shared/ScInput'
 
 export const UserAuthAttempts = () => {
   const {m} = useI18n()
@@ -25,24 +26,19 @@ export const UserAuthAttempts = () => {
   }, [])
 
   return (
-    <Panel>
+    <>
       <Datatable
         id="userslist"
-        header={
+        headerMain={
           <>
             <DebouncedInput value={emailQueryParam || authAttempts.filters.login || ''} onChange={onEmailChange}>
               {(value, onChange) => (
-                <InputBase
-                  value={value}
-                  placeholder={m.searchByEmail + '...'}
-                  fullWidth
-                  sx={{ml: 1}}
-                  onChange={e => onChange(e.target.value)}
-                />
+                <ScInput value={value} placeholder={m.searchByEmail + '...'} fullWidth onChange={e => onChange(e.target.value)} />
               )}
             </DebouncedInput>
           </>
         }
+        headerMarginBottom
         loading={authAttempts.result.isFetching}
         total={authAttempts.result.data?.totalCount}
         paginate={{
@@ -81,6 +77,6 @@ export const UserAuthAttempts = () => {
           },
         ]}
       />
-    </Panel>
+    </>
   )
 }
