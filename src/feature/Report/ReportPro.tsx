@@ -24,6 +24,7 @@ import {ExpirationDate} from './ReportHeader'
 import {ReportInfluencer} from './ReportInfluencer'
 import {ReportResponseComponent} from './ReportResponse'
 import {ReportResponseForm} from './ReportResponseForm/ReportResponseForm'
+import {config} from 'conf/config'
 
 export const ReportPro = () => {
   const {id} = useParams<{id: Id}>()
@@ -189,7 +190,7 @@ function Header({
           <p>{report.contactAgreement ? <span>Par {report.email}</span> : <span>Par un consommateur anonyme</span>}</p>
           <ExpirationDate {...{report}} isUserPro={true} />
         </div>
-        {companySiret && <ReportAssignement {...{reportSearchResult, companySiret}} />}
+        {companySiret && config.showReportAssignement && <ReportAssignement {...{reportSearchResult, companySiret}} />}
       </div>
       {isClosed && <div className="flex items-center justify-center bg-[#e3e3fd]  p-2">Signalement cloturé.</div>}
       {hasToRespond && (
