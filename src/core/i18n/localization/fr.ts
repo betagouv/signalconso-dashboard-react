@@ -798,6 +798,10 @@ export const fr = {
           title: `Réouverture du signalement`,
           desc: `Email de ré-ouverture du signalement suite à la demande du pro`,
         },
+        report_assignement_to_other: {
+          title: `Affectation du signalement`,
+          desc: `Email envoyé quand un signalement a été affecté au pro par un de ses collègues. Il n'est pas envoyé s'il se l'est affecté lui-même`,
+        },
       },
       consumer: {
         report_transmitted: {
