@@ -29,6 +29,7 @@ export const config = {
   enableMatomo: process.env.REACT_APP_ENABLE_MATOMO === 'true',
   useHashRouter: true,
   infoBanner: process.env.REACT_APP_INFO_BANNER,
+  showReportAssignement: process.env.REACT_APP_SHOW_REPORT_ASSIGNEMENT === 'true', // temporary feature flag
   infoBannerSeverity: readSeverity(process.env.REACT_APP_INFO_BANNER_SEVERITY) ?? 'warning',
 }
 

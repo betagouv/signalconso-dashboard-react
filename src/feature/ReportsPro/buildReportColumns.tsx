@@ -9,6 +9,7 @@ import {ConsumerReviewLabel} from 'shared/ConsumerReviewLabel'
 import ReportResponseDetails from 'feature/Reports/ReportResponseDetails'
 import {css} from './ReportsPro'
 import {fr} from 'core/i18n/localization/fr'
+import {config} from 'conf/config'
 
 interface ReportTableColumnsParams {
   reportType: 'open' | 'closed'
@@ -73,6 +74,16 @@ export const buildReportColumns = ({reportType, isMobileWidth, css, i18nData}: R
       head: 'Date de création',
       render: (report: ReportSearchResult) => <MaybeBold report={report}>{formatDate(report.report.creationDate)}</MaybeBold>,
     },
+    ...(config.showReportAssignement
+      ? [
+          {
+            id: 'assignee',
+            head: 'Assigné à',
+            render: (report: ReportSearchResult) =>
+              report.assignedUser ? `${report.assignedUser.firstName} ${report.assignedUser.lastName}` : null,
+          },
+        ]
+      : []),
     {
       id: 'consumer',
       head: 'Consommateur',

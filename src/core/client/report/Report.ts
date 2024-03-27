@@ -1,4 +1,4 @@
-import {Address, Event, ResponseConsumerReview, UploadedFile} from '../../model'
+import {Address, Event, Id, MinimalUser, ResponseConsumerReview, UploadedFile, User} from '../../model'
 import {Category} from '../constant/Category'
 
 export const ReportingDateLabel = 'Date du constat'
@@ -140,9 +140,23 @@ export interface DetailInputValue {
 
 export interface ReportSearchResult {
   report: Report
+  metadata?: ReportMetadata
   files: UploadedFile[]
   professionalResponse?: Event
   consumerReview?: ResponseConsumerReview
+  assignedUser?: MinimalUser
+}
+
+export interface ReportWithMetadata {
+  report: Report
+  metadata?: ReportMetadata
+}
+
+type ReportMetadata = {
+  reportId: Id
+  isMobileApp: boolean
+  os?: 'Android' | 'Ios'
+  assignedUserId?: Id
 }
 
 export enum ReportStatus {

@@ -1,12 +1,14 @@
+import {cleanObject, dateToApiDate, dateToApiTime, directDownloadBlob} from '../../helper'
+import {ApiSdkLogger} from '../../helper/Logger'
 import {
   Address,
   CompanySearchResult,
   Country,
   Event,
+  FileOrigin,
   Id,
   PaginatedData,
   PaginatedFilters,
-  paginateFilters2QueryString,
   Report,
   ReportAction,
   ReportConsumerUpdate,
@@ -15,13 +17,13 @@ import {
   ReportSearch,
   ReportSearchResult,
   ReportTag,
+  ReportWithMetadata,
   ReportWordCount,
   ResponseConsumerReview,
-  FileOrigin,
+  User,
+  paginateFilters2QueryString,
 } from '../../model'
-import {ApiSdkLogger} from '../../helper/Logger'
 import {ApiClientApi} from '../ApiClient'
-import {cleanObject, dateToApiDate, dateToApiTime, directDownloadBlob} from '../../helper'
 import {ReportNodes} from './ReportNode'
 import {ReportNodeSearch} from './ReportNodeSearch'
 
@@ -144,8 +146,12 @@ export class ReportsClient {
     return this.client.post<void>(`reports/${id}/reopen`)
   }
 
-  readonly getById = (id: Id): Promise<ReportSearchResult> => {
-    return this.client.get(`/reports/${id}`).then(_ => ({files: _.files, report: ReportsClient.mapReport(_.report)}))
+  readonly getById = async (id: Id): Promise<ReportSearchResult> => {
+    const {report, ...rest} = await this.client.get(`/reports/${id}`)
+    return {
+      ...rest,
+      report: ReportsClient.mapReport(report),
+    }
   }
 
   readonly getReviewOnReportResponse = (reportId: Id) => {
@@ -201,6 +207,10 @@ export class ReportsClient {
       .then(report => ReportsClient.mapReport(report))
   }
 
+  readonly updateReportAssignedUser = (reportId: string, newAssignedUserId: string) => {
+    return this.client.post<User>(`reports/${reportId}/assign/${newAssignedUserId}`)
+  }
+
   readonly getCountByDepartments = ({start, end}: {start?: Date; end?: Date} = {}): Promise<[string, number][]> => {
     return this.client.get(`/reports/count-by-departments`, {
       qs: {
@@ -224,6 +234,11 @@ export class ReportsClient {
     ...report,
     creationDate: new Date(report.creationDate),
     expirationDate: new Date(report.expirationDate),
+  })
+
+  static readonly mapReportWithMetadata = (reportWithMetadata: ReportWithMetadata): ReportWithMetadata => ({
+    ...reportWithMetadata,
+    report: this.mapReport(reportWithMetadata.report),
   })
 
   static readonly mapAddress = (address: {[key in keyof Address]: any | undefined}): Address => ({
