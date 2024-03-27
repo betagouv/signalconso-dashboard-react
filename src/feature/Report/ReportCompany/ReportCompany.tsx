@@ -1,19 +1,19 @@
 import {AddressComponent} from '../../../shared/Address'
-import {Panel, PanelBody, PanelHead} from '../../../shared/Panel'
+import {PanelBody} from '../../../shared/Panel'
 
 import {Box, Icon, useTheme} from '@mui/material'
 import {NavLink} from 'react-router-dom'
+import {CleanDiscreetPanel} from 'shared/Panel/simplePanels'
 import {WithInlineIcon} from 'shared/WithInlineIcon'
 import {Txt} from '../../../alexlibs/mui-extension'
 import {Influencer, Report} from '../../../core/client/report/Report'
+import {useLogin} from '../../../core/context/LoginContext'
 import {useI18n} from '../../../core/i18n'
 import {siteMap} from '../../../core/siteMap'
 import {sxUtils} from '../../../core/theme'
 import {ScButton} from '../../../shared/Button'
 import {ReportInfluencer} from '../ReportInfluencer'
 import {SelectReportAssociation} from '../SelectReportAssociation'
-import {useLogin} from '../../../core/context/LoginContext'
-import {CleanDiscreetPanel, CleanWidePanel} from 'shared/Panel/simplePanels'
 
 interface Props {
   report: Report
@@ -56,11 +56,9 @@ export const ReportCompany = ({report, canEdit}: Props) => {
           </div>
           {vendor && <div>{vendor}</div>}
           {websiteURL && (
-            <Txt link block sx={{mt: 1}}>
-              <a href={websiteURL} target="_blank" rel="noreferrer">
-                {websiteURL}
-              </a>
-            </Txt>
+            <a href={websiteURL} target="_blank" rel="noreferrer" className="block text-scbluefrance break-all">
+              {websiteURL}
+            </a>
           )}
           {phone && <Phone {...{phone}} />}
           {influencer && <InfluencerBlock {...{influencer}} />}
