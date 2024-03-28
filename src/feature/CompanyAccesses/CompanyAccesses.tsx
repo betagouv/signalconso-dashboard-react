@@ -22,6 +22,8 @@ import {Page, PageTitle} from '../../shared/Page'
 import {ScRadioGroup} from '../../shared/RadioGroup'
 import {ScRadioGroupItem} from '../../shared/RadioGroupItem'
 import {ScDialog} from '../../shared/ScDialog'
+import {CompanyAccessCreateBtn} from './CompanyAccessCreateBtn'
+import {SaveUndeliveredDocBtn} from './SaveUndeliveredDocBtn'
 import {useCompanyAccess} from './useCompaniesAccess'
 
 interface Accesses {
@@ -269,7 +271,31 @@ export const CompanyAccesses = () => {
 
   return (
     <Page maxWidth="l">
-      <PageTitle action={!connectedUser.isDGCCRF && <></>}>{m.companyAccessesTitle}</PageTitle>
+      <PageTitle
+        action={
+          !connectedUser.isDGCCRF && (
+            <>
+              {_crudAccess.list?.length === 0 && (
+                <SaveUndeliveredDocBtn
+                  loading={saveUndeliveredDocument.isPending}
+                  onChange={async date => {
+                    if (date && siret) return saveUndeliveredDocument.mutate({siret, returnedDate: date})
+                    else throw new Error("Can't save with an empty date")
+                  }}
+                  sx={{mr: 1}}
+                />
+              )}
+              <CompanyAccessCreateBtn
+                loading={_crudToken.creating}
+                onCreate={inviteNewUser}
+                errorMessage={_crudToken.createError}
+              />
+            </>
+          )
+        }
+      >
+        {m.companyAccessesTitle}
+      </PageTitle>
       <>
         <Datatable
           id="companyaccesses"
