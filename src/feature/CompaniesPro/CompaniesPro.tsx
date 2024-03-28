@@ -206,11 +206,11 @@ function CompaniesProRow({
         />
         <div className="flex  justify-end gap-2">
           {_.level === AccessLevel.ADMIN && (
-            <Btn href={'#' + siteMap.logged.companyAccesses(_.siret)} variant="outlined" size="small" icon="group">
+            <Btn href={'#' + siteMap.logged.companyAccesses(_.siret)} variant="text" size="small" icon="group">
               {m.handleAccesses}
             </Btn>
           )}
-          <Btn href={'#' + siteMap.logged.company(_.id)} variant="outlined" size="small" icon="query_stats">
+          <Btn href={'#' + siteMap.logged.company(_.id)} variant="text" size="small" icon="query_stats">
             {m.myStats}
           </Btn>
           <Btn
