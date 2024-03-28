@@ -180,7 +180,7 @@ export const CompanyAccesses = () => {
     id: 'action',
     sx: _ => sxUtils.tdActions,
     render: _ => {
-      const {email, token} = _
+      const {email, token, tokenId, userId} = _
       return (
         <>
           {isAdmin && !_.name && email && (
@@ -210,38 +210,28 @@ export const CompanyAccesses = () => {
             </Tooltip>
           )}
 
-          {ScOption.from(_)
-            .filter(_ => _.editable === true)
-            .flatMap(_ => _.userId)
-            .map(userId => (
-              <ScDialog
-                title={m.deleteCompanyAccess(_.name!)}
-                onConfirm={() => _crudAccess.remove(userId)}
-                maxWidth="xs"
-                confirmLabel={m.delete_access}
-              >
-                <Tooltip title={m.delete_access}>
-                  <IconBtn color="error" loading={_crudAccess.removing(userId)}>
-                    <Icon>remove_circle</Icon>
-                  </IconBtn>
-                </Tooltip>
-              </ScDialog>
-            ))
-            .getOrElse(
-              ScOption.from(_.tokenId)
-                .map(tokenId => (
-                  <ScDialog
-                    title={m.deleteCompanyAccessToken(_.email)}
-                    onConfirm={() => _crudToken.remove(tokenId)}
-                    maxWidth="xs"
-                  >
-                    <IconBtn color="error" loading={_crudToken.removing(tokenId)}>
-                      <Icon>remove_circle</Icon>
-                    </IconBtn>
-                  </ScDialog>
-                ))
-                .getOrElse(<></>),
-            )}
+          {_.editable && userId ? (
+            <ScDialog
+              title={m.deleteCompanyAccess(_.name!)}
+              onConfirm={() => _crudAccess.remove(userId)}
+              maxWidth="xs"
+              confirmLabel={m.delete_access}
+            >
+              <Tooltip title={m.delete_access}>
+                <IconBtn color="error" loading={_crudAccess.removing(userId)}>
+                  <Icon>remove_circle</Icon>
+                </IconBtn>
+              </Tooltip>
+            </ScDialog>
+          ) : tokenId ? (
+            <ScDialog title={m.deleteCompanyAccessToken(_.email)} onConfirm={() => _crudToken.remove(tokenId)} maxWidth="xs">
+              <IconBtn color="error" loading={_crudToken.removing(tokenId)}>
+                <Icon>remove_circle</Icon>
+              </IconBtn>
+            </ScDialog>
+          ) : (
+            <></>
+          )}
         </>
       )
     },
