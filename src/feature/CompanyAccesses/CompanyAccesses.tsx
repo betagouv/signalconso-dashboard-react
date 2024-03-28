@@ -202,17 +202,13 @@ export const CompanyAccesses = () => {
             </ScDialog>
           )}
 
-          {isAdmin &&
-            !_.name &&
-            ScOption.from(_.token)
-              .map(token => (
-                <Tooltip title={m.copyInviteLink}>
-                  <IconBtn onClick={_ => copyActivationLink(token)}>
-                    <Icon>content_copy</Icon>
-                  </IconBtn>
-                </Tooltip>
-              ))
-              .getOrElse(<></>)}
+          {isAdmin && !_.name && token && (
+            <Tooltip title={m.copyInviteLink}>
+              <IconBtn onClick={_ => copyActivationLink(token)}>
+                <Icon>content_copy</Icon>
+              </IconBtn>
+            </Tooltip>
+          )}
 
           {ScOption.from(_)
             .filter(_ => _.editable === true)
