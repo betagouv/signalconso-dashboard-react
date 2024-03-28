@@ -1,42 +1,41 @@
-import React, {useEffect, useMemo} from 'react'
-import {Page, PageTitle} from '../../shared/Page'
-import {Panel, PanelBody} from '../../shared/Panel'
-import {Datatable} from '../../shared/Datatable/Datatable'
-import {useI18n} from '../../core/i18n'
-import {Badge, Box, Grid, Icon, MenuItem, Tooltip} from '@mui/material'
+import {Badge, Box, Grid, Icon, MenuItem} from '@mui/material'
+import {useEffect, useMemo} from 'react'
+import {Alert, Btn, Fender, Txt, makeSx} from '../../alexlibs/mui-extension'
 import {useLayoutContext} from '../../core/Layout/LayoutContext'
-import {Alert, Btn, Fender, makeSx, Txt} from '../../alexlibs/mui-extension'
+import {useI18n} from '../../core/i18n'
+import {Datatable} from '../../shared/Datatable/Datatable'
+import {Page, PageTitle} from '../../shared/Page'
 
 import {styleUtils} from '../../core/theme'
-import {SelectDepartments} from '../../shared/SelectDepartments/SelectDepartments'
 import {ScSelect} from '../../shared/Select/Select'
+import {SelectDepartments} from '../../shared/SelectDepartments/SelectDepartments'
 
-import {siteMap} from '../../core/siteMap'
+import {ScOption} from 'core/helper/ScOption'
+import {useListReportBlockedNotificationsQuery} from 'core/queryhooks/reportBlockedNotificationQueryHooks'
+import {useNavigate} from 'react-router'
+import {DebouncedInput} from 'shared/DebouncedInput'
+import {Enum} from '../../alexlibs/ts-utils'
+import {config} from '../../conf/config'
 import {EntityIcon} from '../../core/EntityIcon'
-import {ScButton} from '../../shared/Button'
+import {Report, ReportSearchResult, ReportStatus, ReportStatusPro, ReportType} from '../../core/client/report/Report'
+import {ReportSearch} from '../../core/client/report/ReportSearch'
+import {cleanObject, openInNew} from '../../core/helper'
+import compose from '../../core/helper/compose'
 import {
   mapArrayFromQuerystring,
   mapDateFromQueryString,
   mapDatesToQueryString,
   useQueryString,
 } from '../../core/helper/useQueryString'
-import {config} from '../../conf/config'
-import {ExportReportsPopper} from '../../shared/ExportPopperBtn'
-import {PeriodPicker} from '../../shared/PeriodPicker'
-import {SelectCompaniesByPro} from '../../shared/SelectCompaniesByPro/SelectCompaniesByPro'
-import compose from '../../core/helper/compose'
-import {DebouncedInput} from 'shared/DebouncedInput'
-import {Enum} from '../../alexlibs/ts-utils'
-import {cleanObject, openInNew} from '../../core/helper'
-import {Report, ReportSearchResult, ReportStatus, ReportStatusPro, ReportType} from '../../core/client/report/Report'
-import {ReportSearch} from '../../core/client/report/ReportSearch'
-import {ScOption} from 'core/helper/ScOption'
-import {ScInput} from '../../shared/ScInput'
 import {useGetAccessibleByProQuery} from '../../core/queryhooks/companyQueryHooks'
 import {useReportSearchQuery} from '../../core/queryhooks/reportQueryHooks'
-import {useListReportBlockedNotificationsQuery} from 'core/queryhooks/reportBlockedNotificationQueryHooks'
+import {siteMap} from '../../core/siteMap'
+import {ScButton} from '../../shared/Button'
+import {ExportReportsPopper} from '../../shared/ExportPopperBtn'
+import {PeriodPicker} from '../../shared/PeriodPicker'
+import {ScInput} from '../../shared/ScInput'
+import {SelectCompaniesByPro} from '../../shared/SelectCompaniesByPro/SelectCompaniesByPro'
 import {buildReportColumns} from './buildReportColumns'
-import {useNavigate} from 'react-router'
 
 export const css = makeSx({
   card: {
@@ -57,12 +56,6 @@ export const css = makeSx({
     display: 'flex',
     alignItems: 'center',
     mb: 1 / 2,
-  },
-  filters: {
-    mb: 3,
-  },
-  filtersBody: {
-    pb: t => `${t.spacing(1)} !important`,
   },
   actions: {
     flexWrap: 'wrap',
@@ -195,10 +188,10 @@ export const ReportsPro = ({reportType}: ReportsProProps) => {
         .map(companies => (
           <>
             {displayFilters && (
-              <Panel elevation={3} sx={css.filters}>
-                <PanelBody sx={css.filtersBody}>
-                  <Grid container spacing={1}>
-                    <Grid item sm={6} xs={12}>
+              <div className="mb-2">
+                <>
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-2">
+                    <div>
                       <DebouncedInput
                         value={_reports.filters.fullText ?? ''}
                         onChange={_ => _reports.updateFilters(prev => ({...prev, fullText: _}))}
@@ -210,12 +203,11 @@ export const ReportsPro = ({reportType}: ReportsProProps) => {
                             value={value}
                             onChange={e => onChange(e.target.value)}
                             fullWidth
-                            sx={{mr: 1}}
                           />
                         )}
                       </DebouncedInput>
-                    </Grid>
-                    <Grid item sm={6} xs={12}>
+                    </div>
+                    <div>
                       <DebouncedInput
                         value={
                           _reports.filters.hasWebsite === undefined
@@ -237,7 +229,6 @@ export const ReportsPro = ({reportType}: ReportsProProps) => {
                               onChange(x.target.value as ReportType)
                             }}
                             id="select-report-type-pro"
-                            sx={{mr: 1}}
                             label={m.reportType}
                             fullWidth
                           >
@@ -249,8 +240,8 @@ export const ReportsPro = ({reportType}: ReportsProProps) => {
                           </ScSelect>
                         )}
                       </DebouncedInput>
-                    </Grid>
-                    <Grid item sm={6} xs={12}>
+                    </div>
+                    <div>
                       <DebouncedInput
                         value={_reports.filters.siretSirenList}
                         onChange={_ =>
@@ -262,34 +253,30 @@ export const ReportsPro = ({reportType}: ReportsProProps) => {
                         }
                       >
                         {(value, onChange) => (
-                          <SelectCompaniesByPro
-                            values={value}
-                            onChange={onChange}
-                            fullWidth
-                            sx={{mr: 1}}
-                            accessibleCompanies={companies}
-                          />
+                          <SelectCompaniesByPro values={value} onChange={onChange} fullWidth accessibleCompanies={companies} />
                         )}
                       </DebouncedInput>
-                    </Grid>
-                    <Grid item sm={6} xs={12}>
+                    </div>
+                    <div>
                       <DebouncedInput
                         value={_reports.filters.departments}
                         onChange={departments => _reports.updateFilters(prev => ({...prev, departments}))}
                       >
                         {(value, onChange) => (
-                          <SelectDepartments label={m.departments} value={value} onChange={onChange} sx={{mr: 1}} fullWidth />
+                          <SelectDepartments label={m.departments} value={value} onChange={onChange} fullWidth />
                         )}
                       </DebouncedInput>
-                    </Grid>
-                  </Grid>
+                    </div>
+                    <div className="lg:col-span-2">
+                      <DebouncedInput<[Date | undefined, Date | undefined]>
+                        value={[_reports.filters.start, _reports.filters.end]}
+                        onChange={([start, end]) => _reports.updateFilters(prev => ({...prev, start, end}))}
+                      >
+                        {(value, onChange) => <PeriodPicker fullWidth value={value} onChange={onChange} />}
+                      </DebouncedInput>
+                    </div>
+                  </div>
 
-                  <DebouncedInput<[Date | undefined, Date | undefined]>
-                    value={[_reports.filters.start, _reports.filters.end]}
-                    onChange={([start, end]) => _reports.updateFilters(prev => ({...prev, start, end}))}
-                  >
-                    {(value, onChange) => <PeriodPicker fullWidth value={value} onChange={onChange} />}
-                  </DebouncedInput>
                   <Box sx={css.actions}>
                     {filtersCount > 0 && (
                       <Badge color="error" badgeContent={filtersCount}>
@@ -314,18 +301,18 @@ export const ReportsPro = ({reportType}: ReportsProProps) => {
                       </Btn>
                     </ExportReportsPopper>
                   </Box>
-                </PanelBody>
-              </Panel>
+                </>
+              </div>
             )}
             {_blockedNotifications.data && _blockedNotifications.data.length > 0 && (
-              <Alert type="info">
+              <Alert type="info" className="mb-4">
                 {_blockedNotifications.data.length === 1
                   ? m.activateNotificationsAlertSingle
                   : m.activateNotificationsAlertMultiple(_blockedNotifications.data.length)}
               </Alert>
             )}
 
-            <Panel>
+            <>
               <Datatable<ReportSearchResult>
                 id={reportType === 'open' ? 'opened-reports' : 'closed-reports'}
                 paginate={{
@@ -384,7 +371,7 @@ export const ReportsPro = ({reportType}: ReportsProProps) => {
                   )
                 }
               />
-            </Panel>
+            </>
           </>
         ))
         .toUndefined()}

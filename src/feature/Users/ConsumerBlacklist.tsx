@@ -1,12 +1,11 @@
 import {Box, Icon, Tooltip} from '@mui/material'
+import {useMutation, useQueryClient} from '@tanstack/react-query'
 import {useApiContext} from 'core/context/ApiContext'
 import {IconBtn, Txt} from '../../alexlibs/mui-extension'
 import {useI18n} from '../../core/i18n'
-import {Datatable} from '../../shared/Datatable/Datatable'
-import {Panel, PanelHead} from '../../shared/Panel'
-import {ConsumerBlacklistAddDialog} from './ConsumerBlacklistAddDialog'
 import {ListConsumerBlacklistQueryKeys, useListConsumerBlacklistQuery} from '../../core/queryhooks/consumerBlacklistQueryHooks'
-import {useMutation, useQueryClient} from '@tanstack/react-query'
+import {Datatable} from '../../shared/Datatable/Datatable'
+import {ConsumerBlacklistAddDialog} from './ConsumerBlacklistAddDialog'
 
 export const ConsumerBlacklist = () => {
   const {m} = useI18n()
@@ -21,20 +20,22 @@ export const ConsumerBlacklist = () => {
   const {formatDate} = useI18n()
 
   return (
-    <Panel>
-      <Box sx={{p: 2}}>
-        <Txt color="default">
-          Liste noire des consommateurs qui nous ont soumis des signalements inacceptables (injures, racisme, etc.).{' '}
-          <Txt color="hint" italic>
-            Ils ont l'impression de pouvoir toujours accéder au site et soumettre des signalements. En fait, leurs signalements ne
-            sont plus enregistrés.
-          </Txt>
-        </Txt>
-      </Box>
-      <PanelHead sx={{pb: 2}} bottomDivider={true}>
-        <ConsumerBlacklistAddDialog />
-      </PanelHead>
+    <>
       <Datatable
+        superheader={
+          <div className="">
+            <p className="mb-2">
+              Liste noire des consommateurs qui nous ont soumis des signalements inacceptables (injures, racisme, etc.).{' '}
+              <Txt color="hint" italic>
+                Ils ont l'impression de pouvoir toujours accéder au site et soumettre des signalements. En fait, leurs
+                signalements ne sont plus enregistrés.
+              </Txt>
+            </p>
+            <div className="">
+              <ConsumerBlacklistAddDialog />
+            </div>
+          </div>
+        }
         loading={_blackListedEmails.isLoading}
         total={_blackListedEmails.data?.length}
         getRenderRowKey={_ => _.email}
@@ -72,6 +73,6 @@ export const ConsumerBlacklist = () => {
           },
         ]}
       />
-    </Panel>
+    </>
   )
 }

@@ -24,6 +24,7 @@ import {
 } from '../../core/queryhooks/userQueryHooks'
 import {useMutation, useQueryClient} from '@tanstack/react-query'
 import {useApiContext} from '../../core/context/ApiContext'
+import {ScInput} from 'shared/ScInput'
 
 export const AdminUsersList = () => <UsersList adminView />
 export const AgentUsersList = () => <UsersList />
@@ -154,50 +155,52 @@ const UsersList = ({adminView}: Props) => {
 
   return (
     <>
-      <Panel elevation={3}>
-        <PanelHead sx={{pb: 2}} bottomDivider={true}>
+      <>
+        <div className="flex justify-end gap-2 mb-6">
           {adminView ? (
             <UserAdminInvitationDialog />
           ) : (
-            <div className="flex justify-between">
+            <>
               <UserAgentInvitationDialog />
               <UserAgentsImportDialog />
-            </div>
+            </>
           )}
-        </PanelHead>
+        </div>
         <Datatable
           id="userslist"
-          header={
+          headerMain={
             <>
               <DebouncedInput value={_users.filters.email ?? ''} onChange={onEmailChange}>
                 {(value, onChange) => (
-                  <InputBase
+                  <ScInput
                     value={value}
                     placeholder={m.searchByEmail + '...'}
                     fullWidth
-                    sx={{ml: 1}}
                     onChange={e => onChange(e.target.value)}
                   />
                 )}
               </DebouncedInput>
-
-              {!adminView && (
-                <SelectRoleAgent
-                  sx={{mr: 2}}
-                  value={parsedRole}
-                  onChange={_ => _users.updateFilters(prev => ({...prev, role: _}))}
+            </>
+          }
+          headerMarginBottom
+          actions={
+            <>
+              <>
+                {!adminView && (
+                  <SelectRoleAgent value={parsedRole} onChange={_ => _users.updateFilters(prev => ({...prev, role: _}))} />
+                )}
+              </>
+              <>
+                <TrueFalseUndefined
+                  value={_users.filters.active}
+                  onChange={_ => _users.updateFilters(prev => ({...prev, active: _}))}
+                  label={{
+                    true: m.active,
+                    false: m.inactive,
+                    undefined: m.all,
+                  }}
                 />
-              )}
-
-              <TrueFalseUndefined
-                value={_users.filters.active}
-                onChange={_ => _users.updateFilters(prev => ({...prev, active: _}))}
-                label={{
-                  true: m.active,
-                  false: m.inactive,
-                  undefined: m.all,
-                }}
-              />
+              </>
             </>
           }
           loading={_users.result.isFetching}
@@ -213,7 +216,7 @@ const UsersList = ({adminView}: Props) => {
           data={_users.result.data?.entities}
           columns={columns}
         />
-      </Panel>
+      </>
     </>
   )
 }

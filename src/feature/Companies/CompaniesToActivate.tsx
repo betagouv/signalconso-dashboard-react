@@ -18,6 +18,7 @@ import {Panel} from '../../shared/Panel'
 import {CompanyToActivateSearchQueryKeys, useCompanyToActivateSearchQuery} from '../../core/queryhooks/companyQueryHooks'
 import {useMutation, useQueryClient} from '@tanstack/react-query'
 import {useApiContext} from '../../core/context/ApiContext'
+import {CleanDiscreetPanel, CleanWidePanel} from 'shared/Panel/simplePanels'
 
 export const CompaniesToActivate = () => {
   const {m, formatDate} = useI18n()
@@ -57,18 +58,18 @@ export const CompaniesToActivate = () => {
   }
 
   return (
-    <Panel sx={{overflow: 'visible'}}>
-      <Box sx={{p: 2}}>
-        <Txt color="default">
-          {m.companiesToActivateDesc}{' '}
-          <Txt color="hint" italic>
-            {m.companiesToActivateDescDetail}
-          </Txt>
-        </Txt>
-      </Box>
+    <>
       <Datatable
         id="companiestoactivate"
-        header={
+        superheader={
+          <Txt color="default">
+            {m.companiesToActivateDesc}{' '}
+            <Txt color="hint" italic>
+              {m.companiesToActivateDescDetail}
+            </Txt>
+          </Txt>
+        }
+        headerMain={
           <DatatableToolbar
             onClear={selectedCompaniesSet.clear}
             open={!_companiesToActivate.result.isFetching && selectedCompaniesSet.size > 0}
@@ -199,6 +200,6 @@ export const CompaniesToActivate = () => {
         ]}
         renderEmptyState={<Fender title={m.noCompanyFound} icon={EntityIcon.company} />}
       />
-    </Panel>
+    </>
   )
 }

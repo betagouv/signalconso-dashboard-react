@@ -1,5 +1,4 @@
 import {
-  Box,
   LinearProgress,
   SxProps,
   Table,
@@ -11,19 +10,31 @@ import {
   TableSortLabel,
   Theme,
 } from '@mui/material'
-import React, {CSSProperties, ReactNode, useMemo, useEffect} from 'react'
-import {DatatableColumnToggle} from './DatatableColumnsToggle'
-import {useI18n} from '../../core/i18n'
+import React, {CSSProperties, ReactNode, useMemo} from 'react'
 import {Fender} from '../../alexlibs/mui-extension'
 import {usePersistentState} from '../../alexlibs/react-persistent-state'
+import {useI18n} from '../../core/i18n'
 import {combineSx, sxUtils} from '../../core/theme'
+import {DatatableColumnToggle} from './DatatableColumnsToggle'
 
 type OrderBy = 'asc' | 'desc'
 
 export interface DatatableProps<T> {
   id?: string
-  header?: ReactNode
+  // arbitrary content above the header, typically to provide some explications
+  superheader?: ReactNode
+  // the main part of the header, slightly on the left
+  // it can be anything but we typically put here some search inputs,
+  // or a DatatableToolbar (which is typically displayed only when we select some rows)
+  headerMain?: ReactNode
+  // some arbitrary buttons that appear directly to the right of the headerMain
   actions?: ReactNode
+  // an additional button (added to the actions) to control which columns are displayed or not
+  showColumnsToggle?: boolean
+  // make this button displayed with big text, instead of just an icon
+  plainTextColumnsToggle?: boolean
+  // adds a small bottom margin to the header
+  headerMarginBottom?: boolean
   loading?: boolean
   total?: number
   data?: T[]
@@ -31,8 +42,6 @@ export interface DatatableProps<T> {
   onClickRows?: (_: T, event: React.MouseEvent<HTMLTableRowElement>) => void
   columns: DatatableColumnProps<T>[]
   initialHiddenColumns?: string[]
-  showColumnsToggle?: boolean
-  plainTextColumnsToggle?: boolean
   renderEmptyState?: ReactNode
   rowsPerPageExtraOptions?: number[]
   paginate?: {
@@ -80,7 +89,9 @@ export const Datatable = <T extends any = any>({
   initialHiddenColumns,
   getRenderRowKey,
   actions,
-  header,
+  headerMain,
+  headerMarginBottom,
+  superheader,
   showColumnsToggle,
   renderEmptyState,
   rowsPerPageExtraOptions = [],
@@ -97,42 +108,19 @@ export const Datatable = <T extends any = any>({
   )
   const [hiddenColumns, setHiddenColumns] = usePersistentState<string[]>(initialHiddenColumns ?? [], id)
   const filteredColumns = useMemo(() => displayableColumns.filter(_ => !hiddenColumns.includes(_.id)), [columns, hiddenColumns])
-  const displayTableHeader = useMemo(() => !!displayableColumns.find(_ => _.head !== ''), [displayableColumns])
+  const displayTableHeader = useMemo(() => !!displayableColumns.find(_ => !!_.head), [displayableColumns])
 
   return (
-    <>
-      {(header || showColumnsToggle) && (
-        <Box
-          sx={{
-            position: 'relative',
-            display: 'flex',
-            flexWrap: 'wrap',
-            alignItems: 'center',
-            minHeight: 52,
-            borderBottom: t => `1px solid ${t.palette.divider}`,
-            pl: 1,
-            pr: 1,
-          }}
-        >
-          <Box
-            sx={{
-              display: 'flex',
-              alignItems: 'center',
-              flex: 1,
-            }}
-          >
-            {header}
-          </Box>
-          <Box
-            sx={{
-              ml: 1,
-              whiteSpace: 'nowrap',
-            }}
-          >
+    <div className="mb-4">
+      {superheader && <div className="py-4 px-2">{superheader}</div>}
+      {(headerMain || showColumnsToggle || actions) && (
+        <div className={`relative flex flex-wrap items-center min-h-[52px] gap-2 ${headerMarginBottom ? 'mb-2' : ''}`}>
+          <div className="flex items-center flex-grow">{headerMain}</div>
+          <div className="whitespace-nowrap flex gap-2">
             {actions}
             {showColumnsToggle && (
               <DatatableColumnToggle
-                style={{marginLeft: 'auto'}}
+                // style={{marginLeft: 'auto'}}
                 columns={toggleableColumnsName}
                 hiddenColumns={hiddenColumns}
                 plainTextButton={plainTextColumnsToggle}
@@ -140,10 +128,10 @@ export const Datatable = <T extends any = any>({
                 title={m.toggleDatatableColumns}
               />
             )}
-          </Box>
-        </Box>
+          </div>
+        </div>
       )}
-      <Box sx={{overflowX: 'auto', position: 'relative'}} id={id}>
+      <div className="overflow-auto relative border border-solid border-gray-300" id={id}>
         <Table
           sx={{
             borderCollapse: 'separate', // Sticky elements don't have any border otherwise
@@ -222,7 +210,7 @@ export const Datatable = <T extends any = any>({
                         ? combineSx(_.sx?.(item), sxUtils.truncate, sxStickyEnd)
                         : combineSx(_.sx?.(item), sxUtils.truncate)
                     }
-                    style={_.style}
+                    style={{..._.style}}
                     className={typeof _.className === 'function' ? _.className(item) : _.className}
                   >
                     {_.render(item)}
@@ -232,14 +220,14 @@ export const Datatable = <T extends any = any>({
             ))}
             {!loading && (!data || data?.length === 0) && (
               <TableRow>
-                <TableCell colSpan={filteredColumns.length} sx={{p: 2, textAlign: 'center'}}>
+                <TableCell colSpan={filteredColumns.length} sx={{p: 2, textAlign: 'center', borderBottom: 0}}>
                   {renderEmptyState ? renderEmptyState : <Fender title={m.noDataAtm} icon="highlight_off" />}
                 </TableCell>
               </TableRow>
             )}
           </TableBody>
         </Table>
-      </Box>
+      </div>
       {paginate && total && (!paginate.minRowsBeforeDisplay || total > paginate.minRowsBeforeDisplay)
         ? (() => {
             const limit = safeParseInt(paginate.limit, 10)
@@ -260,6 +248,6 @@ export const Datatable = <T extends any = any>({
             )
           })()
         : null}
-    </>
+    </div>
   )
 }

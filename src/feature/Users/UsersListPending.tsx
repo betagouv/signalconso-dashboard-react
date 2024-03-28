@@ -28,14 +28,11 @@ export const UsersListPending = () => {
   const _agentPending = useGetAgentPendingQuery(selectedRole.length === 1 ? selectedRole[0] : undefined)
 
   return (
-    <Panel>
+    <>
       <Datatable
         id="userslistpending"
-        header={
-          <Box sx={{display: 'flex', flexDirection: 'row-reverse', width: '100%'}}>
-            <SelectRoleAgent value={selectedRole} onChange={_ => setSelectedRole(_)} />
-          </Box>
-        }
+        actions={<SelectRoleAgent value={selectedRole} onChange={_ => setSelectedRole(_)} />}
+        headerMarginBottom
         loading={_agentPending.isLoading}
         total={_agentPending.data?.length}
         data={_agentPending.data}
@@ -98,6 +95,6 @@ export const UsersListPending = () => {
           },
         ]}
       />
-    </Panel>
+    </>
   )
 }
