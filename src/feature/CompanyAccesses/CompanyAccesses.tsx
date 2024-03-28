@@ -1,31 +1,28 @@
-import React, {useEffect, useMemo} from 'react'
-import {Page, PageTitle} from '../../shared/Page'
-import {useI18n} from '../../core/i18n'
-import {useParams} from 'react-router'
-import {Datatable, DatatableColumnProps} from '../../shared/Datatable/Datatable'
 import {Icon, Tooltip} from '@mui/material'
-import {Panel} from '../../shared/Panel'
-import {IconBtn, Txt} from '../../alexlibs/mui-extension'
-import {useLogin} from '../../core/context/LoginContext'
-import {useCompanyAccess} from './useCompaniesAccess'
-import {CompanyAccessCreateBtn} from './CompanyAccessCreateBtn'
-import {useToast} from '../../core/toast'
-import {SaveUndeliveredDocBtn} from './SaveUndeliveredDocBtn'
-import {Enum} from '../../alexlibs/ts-utils'
-import {ScDialog} from '../../shared/ScDialog'
-import {ScButton} from '../../shared/Button'
-import {ScRadioGroupItem} from '../../shared/RadioGroupItem'
-import {ScRadioGroup} from '../../shared/RadioGroup'
-import {siteMap} from '../../core/siteMap'
-import {sxUtils} from '../../core/theme'
-import {getAbsoluteLocalUrl, toQueryString} from '../../core/helper'
-import {CompanyAccessLevel} from '../../core/client/company-access/CompanyAccess'
-import {Id, User} from '../../core/model'
+import {useMutation} from '@tanstack/react-query'
 import {ScOption} from 'core/helper/ScOption'
 import {UserDeleteButton} from 'feature/Users/UserDeleteButton'
+import {useEffect, useMemo} from 'react'
+import {useParams} from 'react-router'
 import {NavLink} from 'react-router-dom'
-import {useMutation} from '@tanstack/react-query'
+import {IconBtn, Txt} from '../../alexlibs/mui-extension'
+import {Enum} from '../../alexlibs/ts-utils'
+import {CompanyAccessLevel} from '../../core/client/company-access/CompanyAccess'
 import {useApiContext} from '../../core/context/ApiContext'
+import {useLogin} from '../../core/context/LoginContext'
+import {getAbsoluteLocalUrl, toQueryString} from '../../core/helper'
+import {useI18n} from '../../core/i18n'
+import {Id, User} from '../../core/model'
+import {siteMap} from '../../core/siteMap'
+import {sxUtils} from '../../core/theme'
+import {useToast} from '../../core/toast'
+import {ScButton} from '../../shared/Button'
+import {Datatable, DatatableColumnProps} from '../../shared/Datatable/Datatable'
+import {Page, PageTitle} from '../../shared/Page'
+import {ScRadioGroup} from '../../shared/RadioGroup'
+import {ScRadioGroupItem} from '../../shared/RadioGroupItem'
+import {ScDialog} from '../../shared/ScDialog'
+import {useCompanyAccess} from './useCompaniesAccess'
 
 interface Accesses {
   name?: string
@@ -272,31 +269,7 @@ export const CompanyAccesses = () => {
 
   return (
     <Page maxWidth="l">
-      <PageTitle
-        action={
-          !connectedUser.isDGCCRF && (
-            <>
-              {_crudAccess.list?.length === 0 && (
-                <SaveUndeliveredDocBtn
-                  loading={saveUndeliveredDocument.isPending}
-                  onChange={async date => {
-                    if (date && siret) return saveUndeliveredDocument.mutate({siret, returnedDate: date})
-                    else throw new Error("Can't save with an empty date")
-                  }}
-                  sx={{mr: 1}}
-                />
-              )}
-              <CompanyAccessCreateBtn
-                loading={_crudToken.creating}
-                onCreate={inviteNewUser}
-                errorMessage={_crudToken.createError}
-              />
-            </>
-          )
-        }
-      >
-        {m.companyAccessesTitle}
-      </PageTitle>
+      <PageTitle action={!connectedUser.isDGCCRF && <></>}>{m.companyAccessesTitle}</PageTitle>
       <>
         <Datatable
           id="companyaccesses"
