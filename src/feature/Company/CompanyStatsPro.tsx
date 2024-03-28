@@ -1,13 +1,11 @@
-import {Box, Grid} from '@mui/material'
+import {Grid} from '@mui/material'
 import {useI18n} from 'core/i18n'
-import {Page, PageTitle} from 'shared/Page'
+import {useStatusDistributionProQuery} from 'core/queryhooks/statsQueryHooks'
 import {Panel, PanelHead} from 'shared/Panel'
 import {reportStatusProColor} from 'shared/ReportStatus'
-import {Txt} from '../../alexlibs/mui-extension'
 import {useEffectFn} from '../../alexlibs/react-hooks-lib'
 import {ReportStatusPro} from '../../core/client/report/Report'
-import {CompanyWithReportsCount, Id, UserWithPermission} from '../../core/model'
-import {useGetCompanyByIdQuery} from '../../core/queryhooks/companyQueryHooks'
+import {CompanyWithReportsCount, UserWithPermission} from '../../core/model'
 import {useReportSearchQuery} from '../../core/queryhooks/reportQueryHooks'
 import {CompanyChartPanel} from './CompanyChartPanel'
 import {ReportsShortList} from './ReportsShortList'
@@ -15,22 +13,14 @@ import {CompanyStatsNumberWidgets} from './companyStatsNumberWidgets'
 import {CompanyInfo} from './stats/CompanyInfo'
 import {ReviewDistribution} from './stats/ReviewDistribution'
 import {StatusDistribution} from './stats/StatusDistribution'
-import {useStatusDistributionProQuery} from 'core/queryhooks/statsQueryHooks'
 
 export type ExtendedUser = UserWithPermission & {
   isPro: boolean
 }
 
-type ProUserComponentProps = {
-  id: Id
-  connectedUser: ExtendedUser
-  company?: CompanyWithReportsCount
-}
-
-export const CompanyStatsPro: React.FC<ProUserComponentProps> = ({id, connectedUser, company}) => {
+export function CompanyStatsPro({connectedUser, company}: {connectedUser: ExtendedUser; company: CompanyWithReportsCount}) {
   const {m} = useI18n()
-  const _companyById = useGetCompanyByIdQuery(id)
-
+  const id = company.id
   const _reports = useReportSearchQuery({hasCompany: true, offset: 0, limit: 5}, false)
 
   const _statusDistribution = useStatusDistributionProQuery(id, {enabled: connectedUser.isPro})
@@ -41,21 +31,7 @@ export const CompanyStatsPro: React.FC<ProUserComponentProps> = ({id, connectedU
   })
 
   return (
-    <Page loading={_companyById.isLoading}>
-      <PageTitle>
-        <Box>
-          {company?.name}
-          {company?.brand && (
-            <Txt block size="small" fontStyle="italic">
-              {company.brand}
-            </Txt>
-          )}
-          <Txt block size="big" color="hint">
-            {company?.siret}
-          </Txt>
-        </Box>
-      </PageTitle>
-
+    <>
       {company && (
         <>
           <CompanyStatsNumberWidgets id={id} siret={company.siret} />
@@ -81,6 +57,6 @@ export const CompanyStatsPro: React.FC<ProUserComponentProps> = ({id, connectedU
           </Grid>
         </>
       )}
-    </Page>
+    </>
   )
 }

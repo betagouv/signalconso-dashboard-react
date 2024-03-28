@@ -19,7 +19,7 @@ const CompanyNameDetails: React.FC<CompanyNameDetailsProps> = ({companyId, isDGA
   return (
     <Box component="span" sx={{marginBottom: '-1px'}}>
       {companyId && !isDGAL ? (
-        <NavLink to={siteMap.logged.company(companyId)}>
+        <NavLink to={siteMap.logged.company(companyId).stats.valueAbsolute}>
           <Txt link>{companyName}</Txt>
         </NavLink>
       ) : (
