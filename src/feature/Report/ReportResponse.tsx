@@ -3,7 +3,10 @@ import {useI18n} from '../../core/i18n'
 import {Icon} from '@mui/material'
 import {useMutation, useQueryClient} from '@tanstack/react-query'
 import {
+  AcceptedDetails,
   EventActionValues,
+  NotConcernedDetails,
+  RejectedDetails,
   ReportAction,
   ReportProResponseEvent,
   ReportResponse,
@@ -83,7 +86,11 @@ function ResponseDetails({details}: {details: ReportResponse}) {
   const {m} = useI18n()
   return (
     <div>
-      <ResponseType responseType={details.responseType} />
+      <ResponseType
+        responseType={details.responseType}
+        responseDetails={details.responseDetails}
+        otherResponseDetails={details.otherResponseDetails}
+      />
       <p className="font-bold">Réponse communiquée au consommateur :</p>
       <div className="pl-4">{details.consumerDetails}</div>
 
@@ -97,7 +104,15 @@ function ResponseDetails({details}: {details: ReportResponse}) {
   )
 }
 
-function ResponseType({responseType}: {responseType: ReportResponseTypes}) {
+function ResponseType({
+  responseType,
+  responseDetails,
+  otherResponseDetails,
+}: {
+  responseType: ReportResponseTypes
+  responseDetails: AcceptedDetails | RejectedDetails | NotConcernedDetails
+  otherResponseDetails?: string
+}) {
   const {m} = useI18n()
   const {icon, color, text} = (() => {
     switch (responseType) {
@@ -109,11 +124,20 @@ function ResponseType({responseType}: {responseType: ReportResponseTypes}) {
         return {icon: 'error_outline', color: 'bg-orange-100', text: m.reportResponse.REJECTED}
     }
   })()
+
+  const responseDetailsText =
+    responseDetails === 'OTHER'
+      ? `${m.responseDetails[responseDetails]} : ${otherResponseDetails}`
+      : m.responseDetails[responseDetails]
+
   return (
-    <p className={`flex items-center gap-1 w-fit p-2 ${color} mb-4 border-black border-solid border`}>
-      <Icon fontSize="small">{icon}</Icon>
-      {text}
-    </p>
+    <div className={`${color} mb-4 border-black border-solid border w-fit p-2`}>
+      <p className={`flex items-center gap-1 font-bold`}>
+        <Icon fontSize="small">{icon}</Icon>
+        {text}
+      </p>
+      <p className={'pl-6 pt-2 italic'}>{responseDetailsText}</p>
+    </div>
   )
 }
 
