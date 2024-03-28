@@ -25,20 +25,10 @@ type AdvancedSearchControlsProps = {
   _reports: ReturnType<typeof useReportSearchQuery>
   setExpanded: React.Dispatch<React.SetStateAction<boolean>>
   filtersCount: number
-  clearFilters: () => void
-
   config: typeof config
 }
 
-const AdvancedSearchBar: React.FC<AdvancedSearchControlsProps> = ({
-  expanded,
-  _reports,
-  setExpanded,
-  filtersCount,
-  clearFilters,
-
-  config,
-}) => {
+const AdvancedSearchBar: React.FC<AdvancedSearchControlsProps> = ({expanded, _reports, setExpanded, filtersCount, config}) => {
   const {m} = useI18n()
   return (
     <Box
@@ -46,8 +36,6 @@ const AdvancedSearchBar: React.FC<AdvancedSearchControlsProps> = ({
         flexWrap: 'wrap',
         whiteSpace: 'nowrap',
         mt: 2,
-        mr: 3,
-        ml: 3,
         mb: 1,
         display: 'flex',
         alignItems: 'center',

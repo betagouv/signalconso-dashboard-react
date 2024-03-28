@@ -27,18 +27,19 @@ interface CleanDiscreetPanelProps {
   loading?: boolean
   noPaddingTop?: boolean
   fullHeight?: boolean
+  noShadow?: boolean
 }
 
 // An alternative, less visible, and less padding, for smaller, more often repeated usages
-export const CleanDiscreetPanel = forwardRef(function CleanDiscreetPanel(
-  {children, loading, noPaddingTop, fullHeight}: CleanDiscreetPanelProps,
+export const CleanDiscreetPanel = forwardRef(function (
+  {children, loading, noPaddingTop, fullHeight, noShadow}: CleanDiscreetPanelProps,
   ref: any,
 ) {
   return (
     <div
       className={`p-4 mb-4 ${noPaddingTop ? 'pt-0' : ''} ${
         fullHeight ? 'h-full' : ''
-      } border-solid border border-gray-300 rounded shadow-md `}
+      } border-solid border border-gray-300 rounded ${noShadow ? '' : 'shadow-md'} `}
       ref={ref}
     >
       {loading ? (

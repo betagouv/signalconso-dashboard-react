@@ -11,6 +11,7 @@ import {useConsumerEmailValidationSearchQuery} from '../../core/queryhooks/consu
 import {useMutation} from '@tanstack/react-query'
 import {useApiContext} from '../../core/context/ApiContext'
 import {ConsumerEmailValidation} from '../../core/client/consumer-email-validation/ConsumerEmailValidation'
+import {ScInput} from 'shared/ScInput'
 
 export const ConsumerListPending = () => {
   const {m, formatDate} = useI18n()
@@ -25,33 +26,30 @@ export const ConsumerListPending = () => {
   }, [])
 
   return (
-    <Panel>
+    <>
       <Datatable
         id="userslist"
-        header={
+        headerMain={
           <>
             <DebouncedInput value={_users.filters.email ?? ''} onChange={onEmailChange}>
               {(value, onChange) => (
-                <InputBase
-                  value={value}
-                  placeholder={m.searchByEmail + '...'}
-                  fullWidth
-                  sx={{ml: 1}}
-                  onChange={e => onChange(e.target.value)}
-                />
+                <ScInput value={value} placeholder={m.searchByEmail + '...'} fullWidth onChange={e => onChange(e.target.value)} />
               )}
             </DebouncedInput>
-            <TrueFalseUndefined
-              value={_users.filters.validated}
-              onChange={_ => _users.updateFilters(prev => ({...prev, validated: _}))}
-              label={{
-                true: m.identified,
-                false: m.notIdentified,
-                undefined: m.all,
-              }}
-            />
           </>
         }
+        actions={
+          <TrueFalseUndefined
+            value={_users.filters.validated}
+            onChange={_ => _users.updateFilters(prev => ({...prev, validated: _}))}
+            label={{
+              true: m.identified,
+              false: m.notIdentified,
+              undefined: m.all,
+            }}
+          />
+        }
+        headerMarginBottom
         loading={_users.result.isFetching}
         total={_users.result.data?.totalCount}
         paginate={{
@@ -91,7 +89,7 @@ export const ConsumerListPending = () => {
           },
         ]}
       />
-    </Panel>
+    </>
   )
 }
 

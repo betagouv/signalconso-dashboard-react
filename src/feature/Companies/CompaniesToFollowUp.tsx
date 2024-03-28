@@ -1,26 +1,25 @@
 import {Box, Checkbox, Icon, Tooltip} from '@mui/material'
+import {useMutation, useQueryClient} from '@tanstack/react-query'
 import {SyntheticEvent} from 'react'
 import {Link} from 'react-router-dom'
 import {Fender, IconBtn, Txt} from '../../alexlibs/mui-extension'
 import {useSetState} from '../../alexlibs/react-hooks-lib'
 import {usePersistentState} from '../../alexlibs/react-persistent-state'
 import {EntityIcon} from '../../core/EntityIcon'
+import {useApiContext} from '../../core/context/ApiContext'
 import {useI18n} from '../../core/i18n'
 import {Id} from '../../core/model'
+import {CompanyToFollowUpSearchQueryKeys, useCompanyToFollowUpSearchQuery} from '../../core/queryhooks/companyQueryHooks'
 import {siteMap} from '../../core/siteMap'
 import {styleUtils, sxUtils} from '../../core/theme'
 import {AddressComponent} from '../../shared/Address'
 import {ScButton} from '../../shared/Button'
-import {ScDialog} from '../../shared/ScDialog'
 import {Datatable} from '../../shared/Datatable/Datatable'
 import {DatatableToolbar} from '../../shared/Datatable/DatatableToolbar'
-import {Panel} from '../../shared/Panel'
-import {CompanyToFollowUpSearchQueryKeys, useCompanyToFollowUpSearchQuery} from '../../core/queryhooks/companyQueryHooks'
-import {useMutation, useQueryClient} from '@tanstack/react-query'
-import {useApiContext} from '../../core/context/ApiContext'
+import {ScDialog} from '../../shared/ScDialog'
 
 export const CompaniesToFollowUp = () => {
-  const {m, formatDate} = useI18n()
+  const {m} = useI18n()
   const {api} = useApiContext()
   const queryClient = useQueryClient()
   const _companiesToFollowUp = useCompanyToFollowUpSearchQuery()
@@ -57,20 +56,20 @@ export const CompaniesToFollowUp = () => {
   }
 
   return (
-    <Panel sx={{overflow: 'visible'}}>
-      <Box sx={{p: 2}}>
-        <Txt color="default">
-          {m.companiesToFollowUpDesc}
-          <p className="mt-2">
-            <Txt color="hint" italic>
-              {m.companiesToFollowUpDescDetail}
-            </Txt>
-          </p>
-        </Txt>
-      </Box>
+    <>
       <Datatable
         id="companiestoactivate"
-        header={
+        superheader={
+          <Txt color="default">
+            {m.companiesToFollowUpDesc}
+            <p className="mt-2">
+              <Txt color="hint" italic>
+                {m.companiesToFollowUpDescDetail}
+              </Txt>
+            </p>
+          </Txt>
+        }
+        headerMain={
           <DatatableToolbar
             onClear={selectedCompaniesSet.clear}
             open={!_companiesToFollowUp.result.isFetching && selectedCompaniesSet.size > 0}
@@ -200,6 +199,6 @@ export const CompaniesToFollowUp = () => {
         ]}
         renderEmptyState={<Fender title={m.noCompanyFound} icon={EntityIcon.company} />}
       />
-    </Panel>
+    </>
   )
 }

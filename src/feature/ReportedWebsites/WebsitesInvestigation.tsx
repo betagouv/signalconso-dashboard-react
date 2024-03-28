@@ -27,6 +27,7 @@ import {
 import {useMutation, useQueryClient} from '@tanstack/react-query'
 import {useEffectFn} from '../../alexlibs/react-hooks-lib'
 import {AddSiret} from './AddSiret'
+import {ScInput} from 'shared/ScInput'
 
 export const WebsitesInvestigation = () => {
   const {m, formatDate} = useI18n()
@@ -105,18 +106,17 @@ export const WebsitesInvestigation = () => {
           </Alert>
         )}
       </div>
-      <Panel>
+      <>
         <Datatable
           id="reportcompanieswebsites"
-          header={
-            <>
+          headerMain={
+            <div className="w-full flex gap-2">
               <DebouncedInput value={_websiteWithCompany.filters.host ?? ''} onChange={onHostChange}>
                 {(value, onChange) => (
-                  <InputBase
+                  <ScInput
                     value={value}
                     placeholder={m.searchByHost + '...'}
                     fullWidth
-                    sx={{ml: 1}}
                     onChange={e => onChange(e.target.value)}
                   />
                 )}
@@ -130,7 +130,7 @@ export const WebsitesInvestigation = () => {
               >
                 {(value, onChange) => <PeriodPicker value={value} onChange={onChange} sx={{mr: 1}} fullWidth />}
               </DebouncedInput>
-            </>
+            </div>
           }
           actions={
             <>
@@ -162,6 +162,7 @@ export const WebsitesInvestigation = () => {
               )}
             </>
           }
+          headerMarginBottom
           loading={_websiteWithCompany.result.isFetching}
           total={_websiteWithCompany.result.data?.totalCount}
           paginate={{
@@ -273,7 +274,7 @@ export const WebsitesInvestigation = () => {
             },
           ]}
         />
-      </Panel>
+      </>
     </>
   )
 }

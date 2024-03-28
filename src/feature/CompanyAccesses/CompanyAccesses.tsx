@@ -98,7 +98,7 @@ export const CompanyAccesses = () => {
   }
 
   return (
-    <Page maxWidth="m">
+    <Page maxWidth="l">
       <PageTitle
         action={
           !connectedUser.isDGCCRF && (
@@ -124,7 +124,7 @@ export const CompanyAccesses = () => {
       >
         {m.companyAccessesTitle}
       </PageTitle>
-      <Panel>
+      <>
         <Datatable
           id="companyaccesses"
           data={_crudAccess.list && _crudToken.list ? accesses : undefined}
@@ -304,7 +304,7 @@ export const CompanyAccesses = () => {
             },
           ]}
         />
-      </Panel>
+      </>
     </Page>
   )
 }

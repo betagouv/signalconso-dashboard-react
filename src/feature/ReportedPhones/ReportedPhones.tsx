@@ -29,12 +29,12 @@ export const ReportedPhones = () => {
   return (
     <Page>
       <PageTitle>{m.reportedPhoneTitle}</PageTitle>
-      <Panel>
+      <>
         <Datatable
           id="reportedphones"
           showColumnsToggle
-          header={
-            <>
+          headerMain={
+            <div className="flex w-full gap-2">
               <DebouncedInput value={_reportedPhone.filters.phone ?? ''} onChange={onPhoneChange}>
                 {(value, onChange) => (
                   <ScInput
@@ -42,7 +42,6 @@ export const ReportedPhones = () => {
                     value={value}
                     onChange={e => onChange(e.target.value)}
                     fullWidth
-                    sx={{mr: 1}}
                     label={m.phone}
                   />
                 )}
@@ -53,7 +52,7 @@ export const ReportedPhones = () => {
               >
                 {(value, onChange) => <PeriodPicker value={value} onChange={onChange} fullWidth />}
               </DebouncedInput>
-            </>
+            </div>
           }
           actions={
             <>
@@ -69,6 +68,7 @@ export const ReportedPhones = () => {
               </ExportPhonesPopper>
             </>
           }
+          headerMarginBottom
           sort={{
             sortBy: _reportedPhone.filters.sortBy!,
             orderBy: _reportedPhone.filters.orderBy!,
@@ -134,7 +134,7 @@ export const ReportedPhones = () => {
             },
           ]}
         />
-      </Panel>
+      </>
     </Page>
   )
 }
