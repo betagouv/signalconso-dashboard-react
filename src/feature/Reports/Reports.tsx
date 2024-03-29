@@ -490,6 +490,7 @@ export const Reports = () => {
                   <Icon sx={{color: t => t.palette.text.disabled}}>insert_drive_file</Icon>
                 </Badge>
               ),
+<<<<<<< Updated upstream
           },
           {
             id: 'actions',
@@ -521,6 +522,95 @@ export const Reports = () => {
           />
         }
       />
+=======
+            },
+            {
+              id: 'proResponse',
+              head: m.proResponse,
+              render: _ => <ReportResponseDetails details={_.professionalResponse?.event.details} />,
+            },
+            {
+              id: 'avisConso',
+              head: m.consumerReviews,
+              render: _ => (
+                <>
+                  {_.consumerReview && (
+                    <Tooltip
+                      title={
+                        <>
+                          <Box sx={{fontWeight: t => t.typography.fontWeightBold, fontSize: 'larger', mb: 1}}>
+                            {m.responseEvaluationShort[_.consumerReview.evaluation]}
+                          </Box>
+                          <Box
+                            sx={{
+                              display: '-webkit-box',
+                              WebkitLineClamp: 20,
+                              WebkitBoxOrient: 'vertical',
+                              overflow: 'hidden',
+                            }}
+                          >
+                            {_.consumerReview.details}
+                          </Box>
+                        </>
+                      }
+                    >
+                      <ConsumerReviewLabel evaluation={_.consumerReview.evaluation} center />
+                    </Tooltip>
+                  )}
+                </>
+              ),
+            },
+            {
+              id: 'dateAvisConso',
+              head: "Date de l'avis Conso",
+              render: _ => formatDate(_.consumerReview?.creationDate),
+            },
+            {
+              id: 'file',
+              head: m.files,
+              sx: _ => ({
+                minWidth: 44,
+                maxWidth: 100,
+              }),
+              render: _ =>
+                _.files.length > 0 && (
+                  <Badge badgeContent={_.files.length} color="primary" invisible={_.files.length === 1}>
+                    <Icon sx={{color: t => t.palette.text.disabled}}>insert_drive_file</Icon>
+                  </Badge>
+                ),
+            },
+            {
+              id: 'actions',
+              stickyEnd: true,
+              sx: _ => sxUtils.tdActions,
+              render: _ => (
+                <NavLink to={siteMap.logged.report(_.report.id)}>
+                  <IconBtn color="primary">
+                    <Icon>chevron_right</Icon>
+                  </IconBtn>
+                </NavLink>
+              ),
+            },
+          ]}
+          renderEmptyState={
+            <Fender
+              icon={EntityIcon.report}
+              title={m.noReportsTitle}
+              description={
+                <>
+                  <Txt color="hint" size="big" block gutterBottom>
+                    {m.noReportsDesc}
+                  </Txt>
+                  <ScButton icon="clear" onClick={_reports.clearFilters} variant="contained" color="primary">
+                    {m.removeAllFilters}
+                  </ScButton>
+                </>
+              }
+            />
+          }
+        />
+      </Panel>
+>>>>>>> Stashed changes
     </Page>
   )
 }

@@ -1,4 +1,8 @@
+<<<<<<< Updated upstream
 import {Address, Event, Id, MinimalUser, ResponseConsumerReview, UploadedFile, User} from '../../model'
+=======
+import {Address, Event, EventWithUser, ResponseConsumerReview, UploadedFile} from '../../model'
+>>>>>>> Stashed changes
 import {Category} from '../constant/Category'
 
 export const ReportingDateLabel = 'Date du constat'
@@ -142,7 +146,7 @@ export interface ReportSearchResult {
   report: Report
   metadata?: ReportMetadata
   files: UploadedFile[]
-  professionalResponse?: Event
+  professionalResponse?: EventWithUser
   consumerReview?: ResponseConsumerReview
   assignedUser?: MinimalUser
 }

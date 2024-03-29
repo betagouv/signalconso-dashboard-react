@@ -120,14 +120,28 @@ export const buildReportColumns = ({reportType, isMobileWidth, css, i18nData}: R
       : [
           {
             id: 'proResponse',
-            head: 'Réponse Professionnelle',
-            render: (report: ReportSearchResult) => <ReportResponseDetails details={report.professionalResponse?.details} />,
+            head: 'Réponse du professionnel',
+            render: (report: ReportSearchResult) => (
+              <ReportResponseDetails details={report.professionalResponse?.event.details} />
+            ),
           },
           {
             id: 'avisConso',
             head: 'Avis Consommateur',
             render: (report: ReportSearchResult) =>
               report.consumerReview && <ConsumerReviewLabel evaluation={report.consumerReview.evaluation} />,
+          },
+          {
+            id: 'answerer',
+            head: 'Répondant',
+            render: (report: ReportSearchResult) =>
+              report.professionalResponse &&
+              report.professionalResponse.user && (
+                <div>
+                  {' '}
+                  ${report.report.firstName} ${report.report.lastName}`
+                </div>
+              ),
           },
         ]
 

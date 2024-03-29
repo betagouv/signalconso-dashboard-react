@@ -13,6 +13,11 @@ export type ReportProResponseEvent = ReportEvent & {
   }
 }
 
+export interface EventWithUser {
+  event: Event
+  user: EventUser
+}
+
 export interface Event {
   id: Id
   reportId?: Id
