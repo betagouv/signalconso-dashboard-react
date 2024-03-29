@@ -3,7 +3,6 @@ import {Page, PageTitle} from '../../shared/Page'
 
 import {Badge, Box, Checkbox, Chip, Collapse, Icon, Tooltip} from '@mui/material'
 import {useMutation} from '@tanstack/react-query'
-import {PanelBody} from 'alexlibs/mui-extension/Panel/PanelBody'
 import React, {useCallback, useEffect, useMemo, useState} from 'react'
 import {NavLink} from 'react-router-dom'
 import {Fender, IconBtn, Txt} from '../../alexlibs/mui-extension'
@@ -439,7 +438,7 @@ export const Reports = () => {
           {
             id: 'proResponse',
             head: m.proResponse,
-            render: _ => <ReportResponseDetails details={_.professionalResponse?.details} />,
+            render: _ => <ReportResponseDetails details={_.professionalResponse?.event.details} />,
           },
           {
             id: 'avisConso',

@@ -20,7 +20,7 @@ import {siteMap} from '../../core/siteMap'
 import {sxUtils} from '../../core/theme'
 import {getAbsoluteLocalUrl, toQueryString} from '../../core/helper'
 import {CompanyAccessLevel} from '../../core/client/company-access/CompanyAccess'
-import {Id} from '../../core/model'
+import {Id, User} from '../../core/model'
 import {ScOption} from 'core/helper/ScOption'
 import {UserDeleteButton} from 'feature/Users/UserDeleteButton'
 import {NavLink} from 'react-router-dom'
@@ -63,7 +63,7 @@ export const CompanyAccesses = () => {
     return [
       ...(_crudAccess.list ?? []).map(_ => ({
         email: _.email,
-        name: _.firstName + ' ' + _.lastName,
+        name: User.buildFullName(_),
         level: _.level,
         userId: _.userId,
         editable: _.editable,
