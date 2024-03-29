@@ -11,6 +11,7 @@ import {useMutation, useQueryClient} from '@tanstack/react-query'
 import {useApiContext} from '../../../core/context/ApiContext'
 import {GetReportQueryKeys} from '../../../core/queryhooks/reportQueryHooks'
 import {CleanDiscreetPanel, CleanWidePanel} from 'shared/Panel/simplePanels'
+import {UserNameLabel} from '../../../shared/UserNameLabel'
 
 interface Props {
   report: Report
@@ -56,11 +57,7 @@ export const ReportConsumer = ({report, canEdit}: Props) => {
               Ne pas divulguer ces informations à l'entreprise.
             </div>
           )}
-
-          <div>
-            {firstName ? capitalize(firstName) : ''}&nbsp;
-            {lastName ? capitalize(lastName) : ''}
-          </div>
+          <UserNameLabel firstName={capitalize(firstName)} lastName={capitalize(lastName)} />
           <div className="text-gray-500">{report.email}</div>
           {report.consumerPhone && <div className="text-gray-500">{report.consumerPhone}</div>}
           <ReportReferenceNumber consumerReferenceNumber={report.consumerReferenceNumber} />

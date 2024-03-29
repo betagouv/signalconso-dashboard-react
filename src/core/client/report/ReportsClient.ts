@@ -236,16 +236,6 @@ export class ReportsClient {
     expirationDate: new Date(report.expirationDate),
   })
 
-  static readonly mapReportWithMetadata = (reportWithMetadata: ReportWithMetadata): ReportWithMetadata => ({
-    ...reportWithMetadata,
-    report: this.mapReport(reportWithMetadata.report),
-  })
-
-  static readonly mapAddress = (address: {[key in keyof Address]: any | undefined}): Address => ({
-    ...address,
-    country: address.country?.name,
-  })
-
   static readonly mapConsumerReview = (_: {[key in keyof ResponseConsumerReview]: any}): ResponseConsumerReview => {
     return {
       ..._,

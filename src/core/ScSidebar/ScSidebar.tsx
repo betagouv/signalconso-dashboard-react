@@ -8,6 +8,7 @@ import * as React from 'react'
 import {useI18n} from '../i18n'
 import {useLayoutContext} from '../Layout/LayoutContext'
 import {Roles, UserWithPermission} from '../client/authenticate/Authenticate'
+import {UserNameLabel} from '../../shared/UserNameLabel'
 
 export const ScSidebar = ({connectedUser, logout}: {connectedUser: UserWithPermission; logout: () => void}) => {
   const path = (page: string) => '' + page
@@ -30,7 +31,7 @@ export const ScSidebar = ({connectedUser, logout}: {connectedUser: UserWithPermi
       >
         <div className="cursor-default">
           <Txt block truncate bold>
-            {connectedUser.firstName} {connectedUser.lastName}
+            <UserNameLabel firstName={connectedUser.firstName} lastName={connectedUser.lastName} />
           </Txt>
           <Txt block truncate color="primary" fontSize="small">
             {connectedUser.email}
