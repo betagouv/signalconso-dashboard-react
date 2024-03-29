@@ -1,8 +1,4 @@
-<<<<<<< Updated upstream
-import {Address, Event, Id, MinimalUser, ResponseConsumerReview, UploadedFile, User} from '../../model'
-=======
-import {Address, Event, EventWithUser, ResponseConsumerReview, UploadedFile} from '../../model'
->>>>>>> Stashed changes
+import {Address, Event, EventWithUser, Id, MinimalUser, ResponseConsumerReview, UploadedFile} from '../../model'
 import {Category} from '../constant/Category'
 
 export const ReportingDateLabel = 'Date du constat'
@@ -14,14 +10,6 @@ export enum Gender {
   Female = 'Female',
 }
 
-export enum CompanyKinds {
-  SIRET = 'SIRET',
-  WEBSITE = 'WEBSITE',
-  PHONE = 'PHONE',
-  LOCATION = 'LOCATION',
-  INFLUENCEUR = 'INFLUENCEUR',
-}
-
 export enum DetailInputType {
   TEXT = 'TEXT',
   DATE_NOT_IN_FUTURE = 'DATE_NOT_IN_FUTURE',
@@ -30,32 +18,6 @@ export enum DetailInputType {
   RADIO = 'RADIO',
   CHECKBOX = 'CHECKBOX',
   TEXTAREA = 'TEXTAREA',
-}
-
-export interface DetailInput {
-  label: string
-  /** @deprecated */
-  rank?: number
-  type: DetailInputType
-  placeholder?: string
-  options?: string[]
-  defaultValue?: string
-  example?: string
-  optionnal?: boolean
-}
-
-export interface Information {
-  title?: string
-  content?: string
-  actions?: Action[]
-  subTitle?: string
-  outOfScope?: boolean
-}
-
-export interface Action {
-  question: string
-  example?: string
-  answer: string
 }
 
 export enum ReportType {

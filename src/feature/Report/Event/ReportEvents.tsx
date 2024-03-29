@@ -3,6 +3,7 @@ import {Fender} from '../../../alexlibs/mui-extension'
 import {EventActionValues, ReportEvent} from '../../../core/client/event/Event'
 import {useI18n} from '../../../core/i18n'
 import {ReportEventIcon} from './ReportEventIcon'
+import {UserNameLabel} from '../../../shared/UserNameLabel'
 
 interface Props {
   events?: ReportEvent[]
@@ -52,7 +53,7 @@ export const ReportEventComponent = ({event}: {event: ReportEvent}) => {
             <Icon className="!text-sm">person</Icon>
             &nbsp;
             <span className="">
-              {event.user.firstName} {event.user.lastName} {event.user.role}
+              <UserNameLabel lastName={event.user.lastName} firstName={event.user.firstName} /> {event.user.role}
             </span>
           </div>
         )}

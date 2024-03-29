@@ -9,6 +9,7 @@ import {EditEmailDialog} from './EditEmailDialog'
 import {EditPasswordDialog} from './EditPasswordDialog'
 import {EditProfileDialog} from './EditProfileDialog'
 import {SettingRow} from './SettingRow'
+import {UserNameLabel} from '../../shared/UserNameLabel'
 
 export const Settings = () => {
   const {m} = useI18n()
@@ -21,11 +22,7 @@ export const Settings = () => {
         <SettingRow
           icon="person"
           title={m.name}
-          description={
-            <>
-              {connectedUser.firstName} {connectedUser.lastName}
-            </>
-          }
+          description={<UserNameLabel firstName={connectedUser.firstName} lastName={connectedUser.lastName} />}
         >
           <EditProfileDialog>
             <ScButton icon="edit" color="primary">

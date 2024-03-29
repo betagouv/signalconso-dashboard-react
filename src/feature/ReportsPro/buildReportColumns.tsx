@@ -10,6 +10,7 @@ import ReportResponseDetails from 'feature/Reports/ReportResponseDetails'
 import {css} from './ReportsPro'
 import {fr} from 'core/i18n/localization/fr'
 import {config} from 'conf/config'
+import {UserNameLabel} from '../../shared/UserNameLabel'
 
 interface ReportTableColumnsParams {
   reportType: 'open' | 'closed'
@@ -79,8 +80,9 @@ export const buildReportColumns = ({reportType, isMobileWidth, css, i18nData}: R
           {
             id: 'assignee',
             head: 'Assigné à',
-            render: (report: ReportSearchResult) =>
-              report.assignedUser ? `${report.assignedUser.firstName} ${report.assignedUser.lastName}` : null,
+            render: (report: ReportSearchResult) => (
+              <UserNameLabel firstName={report.assignedUser?.firstName} lastName={report.assignedUser?.lastName} />
+            ),
           },
         ]
       : []),
@@ -89,7 +91,7 @@ export const buildReportColumns = ({reportType, isMobileWidth, css, i18nData}: R
       head: 'Consommateur',
       render: (report: ReportSearchResult) => (
         <MaybeBold report={report}>
-          {report.report.contactAgreement ? `${report.report.firstName} ${report.report.lastName}` : 'Anonyme'}
+          <UserNameLabel firstName={report.report.firstName} lastName={report.report.lastName} missingLabel="Anonyme" />
         </MaybeBold>
       ),
     },
@@ -137,10 +139,10 @@ export const buildReportColumns = ({reportType, isMobileWidth, css, i18nData}: R
             render: (report: ReportSearchResult) =>
               report.professionalResponse &&
               report.professionalResponse.user && (
-                <div>
-                  {' '}
-                  ${report.report.firstName} ${report.report.lastName}`
-                </div>
+                <UserNameLabel
+                  firstName={report.professionalResponse.user.firstName}
+                  lastName={report.professionalResponse.user.lastName}
+                />
               ),
           },
         ]
