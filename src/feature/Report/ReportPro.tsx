@@ -25,6 +25,7 @@ import {ReportInfluencer} from './ReportInfluencer'
 import {ReportResponseComponent} from './ReportResponse'
 import {ReportResponseForm} from './ReportResponseForm/ReportResponseForm'
 import {config} from 'conf/config'
+import {UserNameLabel} from '../../shared/UserNameLabel'
 
 export const ReportPro = () => {
   const {id} = useParams<{id: Id}>()
@@ -57,7 +58,7 @@ function ReportProLoaded({reportSearchResult}: {reportSearchResult: ReportSearch
   return (
     <div className="mt-8">
       <LinkBackToList {...{report}} />
-      <ReportBlock {...{scrollToResponse, reportSearchResult, isClosed, hasToRespond}} />
+      <ReportBlock {...{scrollToResponse, reportSearchResult, responseEvent, isClosed, hasToRespond}} />
       {hasResponse && (
         <ResponseBlock {...{report, responseEvent, files}} responseConsumerReview={_getReviewOnReportResponse.data} />
       )}
@@ -94,11 +95,13 @@ function LinkBackToList({report}: {report: Report}) {
 
 function ReportBlock({
   reportSearchResult,
+  responseEvent,
   isClosed,
   hasToRespond,
   scrollToResponse,
 }: {
   reportSearchResult: ReportSearchResult
+  responseEvent?: ReportProResponseEvent
   isClosed: boolean
   hasToRespond: boolean
   scrollToResponse: () => void
@@ -107,7 +110,7 @@ function ReportBlock({
   const {report, files} = reportSearchResult
   return (
     <CleanWidePanel>
-      <Header {...{reportSearchResult, isClosed, scrollToResponse, hasToRespond}} />
+      <Header {...{reportSearchResult, isClosed, scrollToResponse, hasToRespond, responseEvent}} />
       <div>
         {report.influencer && (
           <>
@@ -145,7 +148,7 @@ function ResponseBlock({
       <p className="mb-4">Le {formatDateTime(responseEvent.data.creationDate)}</p>
       <ReportResponseComponent
         canEditFile={false}
-        response={responseEvent.data}
+        response={responseEvent}
         consumerReportReview={responseConsumerReview}
         report={report}
         files={files.filter(_ => _.origin === FileOrigin.Professional)}
@@ -154,13 +157,33 @@ function ResponseBlock({
   )
 }
 
+function ReportClosedLabel({eventWithUser}: {eventWithUser?: ReportProResponseEvent}) {
+  return (
+    <div className="flex items-center justify-center bg-[#e3e3fd]  p-2">
+      {eventWithUser && eventWithUser.user ? (
+        <span>
+          Signalement cloturé par{' '}
+          <span className="font-bold">
+            <UserNameLabel firstName={eventWithUser.user.firstName} lastName={eventWithUser.user.lastName} />
+          </span>
+          .
+        </span>
+      ) : (
+        'Signalement cloturé.'
+      )}
+    </div>
+  )
+}
+
 function Header({
   reportSearchResult,
+  responseEvent,
   scrollToResponse,
   isClosed,
   hasToRespond,
 }: {
   reportSearchResult: ReportSearchResult
+  responseEvent?: ReportProResponseEvent
   scrollToResponse: () => void
   isClosed: boolean
   hasToRespond: boolean
@@ -192,7 +215,11 @@ function Header({
         </div>
         {companySiret && config.showReportAssignement && <ReportAssignement {...{reportSearchResult, companySiret}} />}
       </div>
-      {isClosed && <div className="flex items-center justify-center bg-[#e3e3fd]  p-2">Signalement cloturé.</div>}
+      {isClosed && (
+        <div className="flex items-center justify-center bg-[#e3e3fd]  p-2">
+          <ReportClosedLabel eventWithUser={responseEvent} />
+        </div>
+      )}
       {hasToRespond && (
         <div className="flex items-center justify-center mt-4">
           <ScButton onClick={scrollToResponse} color="primary" variant="contained" size="large" iconAfter="question_answer">
