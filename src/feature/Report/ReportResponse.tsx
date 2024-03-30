@@ -5,8 +5,12 @@ import {useMutation, useQueryClient} from '@tanstack/react-query'
 import {
   AcceptedDetails,
   EventActionValues,
+<<<<<<< Updated upstream
   NotConcernedDetails,
   RejectedDetails,
+=======
+  EventUser,
+>>>>>>> Stashed changes
   ReportAction,
   ReportProResponseEvent,
   ReportResponse,
@@ -22,6 +26,7 @@ import {GetReportEventsQueryKeys} from '../../core/queryhooks/eventQueryHooks'
 import {Divider} from '../../shared/Divider'
 import {ReportFileDownloadAllButton} from './File/ReportFileDownloadAllButton'
 import {ReportFiles} from './File/ReportFiles'
+import {UserNameLabel} from '../../shared/UserNameLabel'
 
 export function ReportResponseComponent({
   canEditFile,
@@ -31,7 +36,7 @@ export function ReportResponseComponent({
   files,
 }: {
   canEditFile?: boolean
-  response: ReportProResponseEvent['data']
+  response: ReportProResponseEvent
   consumerReportReview?: ResponseConsumerReview
   report: Report
   files?: UploadedFile[]
@@ -44,10 +49,11 @@ export function ReportResponseComponent({
     onSuccess: () => queryClient.invalidateQueries({queryKey: GetReportEventsQueryKeys(report.id)}),
   })
 
-  const details = response.details
+  const details = response.data.details
+  const user = response.user
   return (
     <div className="">
-      {details ? <ResponseDetails {...{details}} /> : <div className="mt-2">{m.noAnswerFromPro}</div>}
+      {details ? <ResponseDetails {...{details, user}} /> : <div className="mt-2">{m.noAnswerFromPro}</div>}
       <div className="flex flex-row mt-5 ">
         <h2 className="font-bold">{m.attachedFiles}</h2>
         {files && files.filter(_ => _.origin === FileOrigin.Professional).length > 1 && (
@@ -82,15 +88,24 @@ export function ReportResponseComponent({
   )
 }
 
-function ResponseDetails({details}: {details: ReportResponse}) {
+function ResponseDetails({details, user}: {details: ReportResponse; user?: EventUser}) {
   const {m} = useI18n()
+  console.log(user)
   return (
     <div>
+<<<<<<< Updated upstream
       <ResponseType
         responseType={details.responseType}
         responseDetails={details.responseDetails}
         otherResponseDetails={details.otherResponseDetails}
       />
+=======
+      <ResponseType responseType={details.responseType} />
+      <p className="font-bold">Répondant :</p>
+      <div className="pl-4 mb-4">
+        <UserNameLabel firstName={user?.firstName} lastName={user?.lastName} />
+      </div>
+>>>>>>> Stashed changes
       <p className="font-bold">Réponse communiquée au consommateur :</p>
       <div className="pl-4">{details.consumerDetails}</div>
 

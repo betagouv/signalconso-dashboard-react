@@ -200,7 +200,7 @@ export const ReportComponent = () => {
                     <ReportResponseComponent
                       canEditFile
                       report={report}
-                      response={responseEvent?.data}
+                      response={responseEvent}
                       consumerReportReview={_getReviewOnReportResponse.data}
                       files={_getReport.data?.files.filter(_ => _.origin === FileOrigin.Professional)}
                     />

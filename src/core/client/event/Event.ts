@@ -8,6 +8,7 @@ export interface ReportEvent {
 // a precise subtype
 export type ReportProResponseEvent = ReportEvent & {
   action: EventActionValues.ReportProResponse
+  user?: EventUser
   data: {
     details: ReportResponse
   }
