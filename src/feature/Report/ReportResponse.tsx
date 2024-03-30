@@ -5,12 +5,9 @@ import {useMutation, useQueryClient} from '@tanstack/react-query'
 import {
   AcceptedDetails,
   EventActionValues,
-<<<<<<< Updated upstream
   NotConcernedDetails,
   RejectedDetails,
-=======
   EventUser,
->>>>>>> Stashed changes
   ReportAction,
   ReportProResponseEvent,
   ReportResponse,
@@ -93,19 +90,16 @@ function ResponseDetails({details, user}: {details: ReportResponse; user?: Event
   console.log(user)
   return (
     <div>
-<<<<<<< Updated upstream
       <ResponseType
         responseType={details.responseType}
         responseDetails={details.responseDetails}
         otherResponseDetails={details.otherResponseDetails}
       />
-=======
-      <ResponseType responseType={details.responseType} />
       <p className="font-bold">Répondant :</p>
       <div className="pl-4 mb-4">
         <UserNameLabel firstName={user?.firstName} lastName={user?.lastName} />
       </div>
->>>>>>> Stashed changes
+
       <p className="font-bold">Réponse communiquée au consommateur :</p>
       <div className="pl-4">{details.consumerDetails}</div>
 
