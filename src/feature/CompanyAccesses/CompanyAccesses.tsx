@@ -1,20 +1,22 @@
 import {Icon, ListItemIcon, ListItemText, MenuItem, Tooltip} from '@mui/material'
 import {UserDeleteDialog} from 'feature/Users/userDelete'
-import {useEffect, useMemo} from 'react'
 import {NavLink} from 'react-router-dom'
 import {ScMenu} from 'shared/Menu'
 import {Enum} from '../../alexlibs/ts-utils'
 import {CompanyAccessLevel} from '../../core/client/company-access/CompanyAccess'
-import {useLogin} from '../../core/context/LoginContext'
-import {getAbsoluteLocalUrl, isDefined, toQueryString} from '../../core/helper'
+import React, {useEffect, useMemo} from 'react'
 import {useI18n} from '../../core/i18n'
+import {Datatable} from '../../shared/Datatable/Datatable'
+import {useLogin} from '../../core/context/LoginContext'
+import {isDefined, toQueryString} from '../../core/helper'
 import {CompanyWithReportsCount, Id, User} from '../../core/model'
 import {siteMap} from '../../core/siteMap'
 import {sxUtils} from '../../core/theme'
 import {useToast} from '../../core/toast'
 import {ScButton} from '../../shared/Button'
-import {Datatable, DatatableColumnProps} from '../../shared/Datatable/Datatable'
+import {DatatableColumnProps} from '../../shared/Datatable/Datatable'
 import {ScRadioGroup} from '../../shared/RadioGroup'
+
 import {ScRadioGroupItem} from '../../shared/RadioGroupItem'
 import {ScDialog} from '../../shared/ScDialog'
 import {CompanyAccessCreateBtn} from './CompanyAccessCreateBtn'
@@ -52,7 +54,7 @@ function CompanyAccessesLoaded({company}: {company: CompanyWithReportsCount}) {
   const {toastSuccess, toastError, toastErrorIfDefined} = useToast()
 
   const copyActivationLink = (token: string) => {
-    const patch = getAbsoluteLocalUrl(siteMap.loggedout.activatePro(siret) + toQueryString({token}))
+    const patch = siteMap.loggedout.activatePro(siret) + toQueryString({token})
     const activationLink = window.location.host + patch
     navigator.clipboard.writeText(activationLink).then(_ => toastSuccess(m.addressCopied))
   }
