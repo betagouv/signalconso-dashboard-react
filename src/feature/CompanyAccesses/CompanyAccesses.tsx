@@ -1,6 +1,5 @@
 import {Icon, Tooltip} from '@mui/material'
 import {useMutation} from '@tanstack/react-query'
-import {ScOption} from 'core/helper/ScOption'
 import {UserDeleteButton} from 'feature/Users/UserDeleteButton'
 import {useEffect, useMemo} from 'react'
 import {useParams} from 'react-router'
@@ -97,7 +96,10 @@ export const CompanyAccesses = () => {
         .then(() => window.location.reload())
     }
   }
+
   const isAdmin = connectedUser.isAdmin
+  const isPro = connectedUser.isPro
+  const isListEmpty = _crudAccess.list?.length !== 0
 
   const deleteButtonColumn: Column = {
     id: 'delete',
@@ -259,25 +261,24 @@ export const CompanyAccesses = () => {
     <Page maxWidth="l">
       <PageTitle
         action={
-          !connectedUser.isDGCCRF && (
-            <>
-              {_crudAccess.list?.length === 0 && (
-                <SaveUndeliveredDocBtn
-                  loading={saveUndeliveredDocument.isPending}
-                  onChange={async date => {
-                    if (date && siret) return saveUndeliveredDocument.mutate({siret, returnedDate: date})
-                    else throw new Error("Can't save with an empty date")
-                  }}
-                  sx={{mr: 1}}
-                />
-              )}
+          <div className="flex gap-2">
+            {isAdmin && isListEmpty && (
+              <SaveUndeliveredDocBtn
+                loading={saveUndeliveredDocument.isPending}
+                onChange={async date => {
+                  if (date && siret) return saveUndeliveredDocument.mutate({siret, returnedDate: date})
+                  else throw new Error("Can't save with an empty date")
+                }}
+              />
+            )}
+            {(isAdmin || isPro) && (
               <CompanyAccessCreateBtn
                 loading={_crudToken.creating}
                 onCreate={inviteNewUser}
                 errorMessage={_crudToken.createError}
               />
-            </>
-          )
+            )}
+          </div>
         }
       >
         {m.companyAccessesTitle}
