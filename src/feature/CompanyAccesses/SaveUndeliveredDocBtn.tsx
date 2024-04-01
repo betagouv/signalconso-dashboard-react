@@ -6,18 +6,29 @@ import {useToast} from '../../core/toast'
 import {ScButton} from '../../shared/Button'
 import {Datepicker} from '../../shared/Datepicker'
 import {ScDialog} from '../../shared/ScDialog'
+import {useMutation} from '@tanstack/react-query'
+import {useApiContext} from 'core/context/ApiContext'
 
 interface Props extends Omit<ButtonProps, 'onChange'> {
-  loading: boolean
-  onChange: (date: Date | undefined) => Promise<any>
+  siret: string
 }
 
-export const SaveUndeliveredDocBtn = ({loading, onChange, ...props}: Props) => {
+export const SaveUndeliveredDocBtn = ({siret, ...props}: Props) => {
   const {m} = useI18n()
+  const {api} = useApiContext()
   const {connectedUser} = useLogin()
   const {toastSuccess} = useToast()
   const [returnDate, setReturnDate] = useState<Date | undefined>(new Date())
+  const _saveUndeliveredDocument = useMutation({
+    mutationFn: (params: {siret: string; returnedDate: Date}) =>
+      api.secured.company.saveUndeliveredDocument(params.siret, params.returnedDate),
+  })
 
+  const loading = _saveUndeliveredDocument.isPending
+  const onChange = async (date: Date | undefined) => {
+    if (date) return _saveUndeliveredDocument.mutate({siret, returnedDate: date})
+    else throw new Error("Can't save with an empty date")
+  }
   if (!connectedUser.isAdmin) {
     return <></>
   }

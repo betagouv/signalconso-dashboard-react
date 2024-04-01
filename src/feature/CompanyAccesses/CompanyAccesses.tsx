@@ -1,5 +1,4 @@
 import {Icon, Tooltip} from '@mui/material'
-import {useMutation} from '@tanstack/react-query'
 import {UserDeleteButton} from 'feature/Users/UserDeleteButton'
 import {useEffect, useMemo} from 'react'
 import {useParams} from 'react-router'
@@ -7,7 +6,6 @@ import {NavLink} from 'react-router-dom'
 import {IconBtn, Txt} from '../../alexlibs/mui-extension'
 import {Enum} from '../../alexlibs/ts-utils'
 import {CompanyAccessLevel} from '../../core/client/company-access/CompanyAccess'
-import {useApiContext} from '../../core/context/ApiContext'
 import {useLogin} from '../../core/context/LoginContext'
 import {getAbsoluteLocalUrl, toQueryString} from '../../core/helper'
 import {useI18n} from '../../core/i18n'
@@ -40,14 +38,9 @@ type Column = DatatableColumnProps<Accesses>
 
 export const CompanyAccesses = () => {
   const {siret} = useParams<{siret: string}>()
-  const {api} = useApiContext()
 
   const _crudAccess = useCompanyAccess(useLogin().apiSdk, siret!).crudAccess
   const _crudToken = useCompanyAccess(useLogin().apiSdk, siret!).crudToken
-  const saveUndeliveredDocument = useMutation({
-    mutationFn: (params: {siret: string; returnedDate: Date}) =>
-      api.secured.company.saveUndeliveredDocument(params.siret, params.returnedDate),
-  })
 
   const {m} = useI18n()
   const {connectedUser} = useLogin()
@@ -262,15 +255,7 @@ export const CompanyAccesses = () => {
       <PageTitle
         action={
           <div className="flex gap-2">
-            {isAdmin && isListEmpty && (
-              <SaveUndeliveredDocBtn
-                loading={saveUndeliveredDocument.isPending}
-                onChange={async date => {
-                  if (date && siret) return saveUndeliveredDocument.mutate({siret, returnedDate: date})
-                  else throw new Error("Can't save with an empty date")
-                }}
-              />
-            )}
+            {isAdmin && isListEmpty && siret && <SaveUndeliveredDocBtn {...{siret}} />}
             {(isAdmin || isPro) && (
               <CompanyAccessCreateBtn
                 loading={_crudToken.creating}
