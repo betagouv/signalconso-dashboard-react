@@ -19,6 +19,9 @@ import {ReportWordDistribution} from './stats/ReportWordDistribution'
 import {ReviewDistribution} from './stats/ReviewDistribution'
 import {StatusDistribution} from './stats/StatusDistribution'
 
+import {useGetCompanyEventsQuery} from 'core/queryhooks/eventQueryHooks'
+import {ReportEvents} from 'feature/Report/Event/ReportEvents'
+import {CleanDiscreetPanel} from 'shared/Panel/simplePanels'
 import {CompanyStatsNumberWidgets} from './companyStatsNumberWidgets'
 export type ExtendedUser = UserWithPermission & {
   isPro: boolean
@@ -27,7 +30,7 @@ export type ExtendedUser = UserWithPermission & {
 type NonProUserComponentProps = {
   id: Id
   connectedUser: ExtendedUser
-  company?: CompanyWithReportsCount
+  company: CompanyWithReportsCount
 }
 
 export const CompanyStats: React.FC<NonProUserComponentProps> = ({id, connectedUser, company}) => {
@@ -42,6 +45,8 @@ export const CompanyStats: React.FC<NonProUserComponentProps> = ({id, connectedU
     _reports.updateFilters({hasCompany: true, siretSirenList: [_.siret], offset: 0, limit: 5})
     _reports.enable()
   })
+
+  const _companyEvents = useGetCompanyEventsQuery(company.siret)
 
   const tagsDistribution = useMemoFn(_tags.data, _ =>
     Object.entries(_).map(([label, count]) => ({
@@ -108,6 +113,10 @@ export const CompanyStats: React.FC<NonProUserComponentProps> = ({id, connectedU
               </Panel>
             </Grid>
           </Grid>
+          <CleanDiscreetPanel loading={_companyEvents.isLoading}>
+            <h2 className="font-bold text-xl mb-4">Historique de l'entreprise</h2>
+            <ReportEvents events={_companyEvents.data} />
+          </CleanDiscreetPanel>
         </>
       )}
     </Page>

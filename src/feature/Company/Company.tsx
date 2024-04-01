@@ -17,6 +17,7 @@ export const CompanyComponent = () => {
   return (
     <>
       {id &&
+        company &&
         (connectedUser.isPro ? (
           <CompanyStatsPro id={id} connectedUser={connectedUser} company={company} />
         ) : (
