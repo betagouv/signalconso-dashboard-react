@@ -3,10 +3,11 @@ import {ApiProvider} from 'core/context/ApiContext'
 import {LoginForm} from 'feature/Login/LoginForm'
 import {RegisterForm} from 'feature/Login/RegisterForm'
 import {WelcomePage} from 'feature/Login/WelcomePage'
-import React, {useEffect} from 'react'
+import {useEffect} from 'react'
 import {Navigate, Routes, useLocation} from 'react-router'
 import {Route} from 'react-router-dom'
 import {apiPublicSdk, makeSecuredSdk} from './core/ApiSdkInstance'
+import {UserWithPermission} from './core/client/authenticate/Authenticate'
 import {LoginProvider, useLogin} from './core/context/LoginContext'
 import {Matomo} from './core/plugins/Matomo'
 import {siteMap} from './core/siteMap'
@@ -14,18 +15,19 @@ import {AddCompanyForm} from './feature/AddCompany/AddCompanyForm'
 import {Tools} from './feature/AdminTools/Tools'
 import {Companies} from './feature/Companies/Companies'
 import {CompaniesPro} from './feature/CompaniesPro/CompaniesPro'
-import {CompanyComponent} from './feature/Company/Company'
-import {CompanyAccesses} from './feature/CompanyAccesses/CompanyAccesses'
+import {Company} from './feature/Company/Company'
 import {EmailValidation} from './feature/EmailValidation/EmailValidation'
 import {JoinNewsletter} from './feature/JoinNewsletter/JoinNewsletter'
 import {ModeEmploiDGCCRF} from './feature/ModeEmploiDGCCRF/ModeEmploiDGCCRF'
 import {ReportComponent} from './feature/Report/Report'
+import {ReportPro} from './feature/Report/ReportPro'
 import {ReportedPhones} from './feature/ReportedPhones/ReportedPhones'
 import {ReportedWebsites} from './feature/ReportedWebsites/ReportedWebsites'
 import {Reports} from './feature/Reports/Reports'
 import {ReportsPro} from './feature/ReportsPro/ReportsPro'
 import {ResetPassword} from './feature/ResetPassword/ResetPassword'
 import {Settings} from './feature/Settings/Settings'
+import {UpdateEmail} from './feature/Settings/UpdateEmail'
 import {Stats} from './feature/Stats/Stats'
 import {Subscriptions} from './feature/Subscriptions/Subscriptions'
 import {UserActivation} from './feature/Users/UserActivation'
@@ -33,9 +35,6 @@ import {Users} from './feature/Users/Users'
 import {CenteredContent} from './shared/CenteredContent'
 import {LoginActionProps} from './shared/Login'
 import './style.css'
-import {UpdateEmail} from './feature/Settings/UpdateEmail'
-import {ReportPro} from './feature/Report/ReportPro'
-import {UserWithPermission} from './core/client/authenticate/Authenticate'
 
 export interface LoginExposedProps {
   authResponse?: UserWithPermission
@@ -120,8 +119,7 @@ const ProtectedRoutes = () => {
         />
         <Route path={siteMap.logged.users.value()} element={<Users />} />
         <Route path={siteMap.logged.companies.value} element={<Companies />} />
-        <Route path={siteMap.logged.companyAccesses()} element={<CompanyAccesses />} />
-        <Route path={siteMap.logged.company(':id')} element={<CompanyComponent />} />
+        <Route path={siteMap.logged.company(':id').value} element={<Company />} />
         <Route path={siteMap.logged.subscriptions} element={<Subscriptions />} />
         <Route path={siteMap.logged.companiesPro} element={<CompaniesPro />} />
         <Route path={siteMap.logged.joinInformation} element={<JoinNewsletter />} />

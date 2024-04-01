@@ -25,7 +25,7 @@ export function CompanyStatsNumberWidgets({id, siret}: {id: Id; siret: string}) 
     <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-4">
       <NumberWidgetResponseRate {...{companyId}} />
       <NumberWidgetResponseDelay {...{companyId}} />
-      <NumberWidgetAccesses {...{siret}} />
+      <NumberWidgetAccesses {...{companyId, siret}} />
       {connectedUser.isNotPro && (
         <>
           <NumberWidgetDocsSent {...{siret}} />
@@ -139,7 +139,7 @@ function NumberWidgetReturnedDocs({siret}: {siret: string}) {
     </Widget>
   )
 }
-function NumberWidgetAccesses({siret}: {siret: string}) {
+function NumberWidgetAccesses({siret, companyId}: {siret: string; companyId: string}) {
   const _accesses = useCompanyAccessCountQuery(siret)
   const {m} = useI18n()
   return (
@@ -148,7 +148,7 @@ function NumberWidgetAccesses({siret}: {siret: string}) {
         <>
           <p className="text-3xl font-bold">{_accesses.data}</p>
           <p className="">
-            {m.accountsActivated} (<NavLink to={siteMap.logged.companyAccesses(siret)}>voir</NavLink>)
+            {m.accountsActivated} (<NavLink to={siteMap.logged.company(companyId).accesses.value}>voir</NavLink>)
           </p>
         </>
       )}

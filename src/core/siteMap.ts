@@ -45,11 +45,17 @@ export const siteMap = {
         value: `les-plus-signalees`,
       },
     },
+    company: (id: Id) => ({
+      value: `/entreprise/${id}/*`,
+      stats: {
+        value: `bilan`,
+      },
+      accesses: {
+        value: `accesses`,
+      },
+    }),
     companiesPro: `/mes-entreprises`,
     joinInformation: `/information`,
-    companyAccesses: (siret: string = `:siret`) => `/entreprise/acces/${siret}`,
-    company: (id: Id) => `/bilan-entreprise/${id}`,
-
     users: {
       root: '/users',
       value: function () {
