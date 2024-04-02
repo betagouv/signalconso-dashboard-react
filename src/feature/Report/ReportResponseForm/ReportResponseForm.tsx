@@ -12,7 +12,18 @@ import {ScInput} from '../../../shared/ScInput'
 import {ReportFiles} from '../File/ReportFiles'
 import {ReportResponseFormItem} from './ReportResponseFormItem'
 
-import {Box, Step, StepButton, Stepper} from '@mui/material'
+import {
+  Box,
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  Step,
+  StepButton,
+  Stepper,
+} from '@mui/material'
 import {useMutation} from '@tanstack/react-query'
 import {
   AcceptedDetails,
@@ -31,6 +42,7 @@ import {Id} from '../../../core/model'
 import {useToast} from '../../../core/toast'
 import {CleanWidePanel} from 'shared/Panel/simplePanels'
 import CharacterCounter from './CharacterCounter'
+import SuccessModal from './SuccessModal'
 
 interface Props {
   report: Report
@@ -77,11 +89,27 @@ export const ReportResponseForm = forwardRef(({report, onConfirm, ...props}: Pro
   const consumerStep = activeStep === 0
   const dgccrfStep = activeStep === 1
 
+  const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false)
+  const [submittedForm, setSubmittedForm] = useState<ReportResponse | null>(null)
+
   const submitForm = async (form: ReportResponse) => {
     await _postResponse.mutateAsync({id: report.id, response: form})
-    toastSuccess(m.proAnswerSent)
-    onConfirm?.(form)
-    reset()
+    console.log('avant', setIsSuccessModalOpen)
+    if (form.responseType === 'ACCEPTED') {
+      setSubmittedForm(form)
+      setIsSuccessModalOpen(true)
+    } else {
+      onConfirm?.(form)
+      reset()
+    }
+  }
+  const handleModalClose = () => {
+    if (submittedForm) {
+      onConfirm?.(submittedForm)
+      reset()
+      setSubmittedForm(null) // Réinitialise l'état de form après l'utilisation
+    }
+    setIsSuccessModalOpen(false)
   }
 
   const computeDetails = (responseType: ReportResponseTypes) => {
@@ -271,6 +299,8 @@ export const ReportResponseForm = forwardRef(({report, onConfirm, ...props}: Pro
           </>
         )}
       </PanelFoot>
+
+      <SuccessModal open={isSuccessModalOpen} onClose={handleModalClose} />
     </CleanWidePanel>
   )
 })
