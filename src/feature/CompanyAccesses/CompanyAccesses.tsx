@@ -21,6 +21,7 @@ import {ScDialog} from '../../shared/ScDialog'
 import {CompanyAccessCreateBtn} from './CompanyAccessCreateBtn'
 import {SaveUndeliveredDocBtn} from './SaveUndeliveredDocBtn'
 import {useCompanyAccess} from './useCompaniesAccess'
+import {Link} from 'react-router-dom'
 
 interface Accesses {
   name?: string
@@ -171,6 +172,20 @@ function CompanyAccessesLoaded({company}: {company: CompanyWithReportsCount}) {
     render: _ => {
       const {email, token, tokenId, userId} = _
 
+      const authAttemptsHistoryMenuItem =
+        isAdmin && _.userId ? (
+          <>
+            <NavLink to={`${siteMap.logged.users.root}/${siteMap.logged.users.auth_attempts.value(_.email)}`}>
+              <MenuItem>
+                <ListItemIcon>
+                  <Icon>manage_search</Icon>
+                </ListItemIcon>
+                <ListItemText>{m.authAttemptsHistory}</ListItemText>
+              </MenuItem>
+            </NavLink>
+          </>
+        ) : null
+
       const copyInviteMenuItem =
         isAdmin && !_.name && token ? (
           <MenuItem onClick={_ => copyActivationLink(token)}>
@@ -212,9 +227,11 @@ function CompanyAccessesLoaded({company}: {company: CompanyWithReportsCount}) {
           >
             <MenuItem>
               <ListItemIcon>
-                <Icon>clear</Icon>
+                <Icon color="warning">clear</Icon>
               </ListItemIcon>
-              <ListItemText>{m.delete_access}</ListItemText>
+              <ListItemText>
+                <span className="text-orange-600">{m.delete_access}</span>
+              </ListItemText>
             </MenuItem>
           </ScDialog>
         ) : tokenId ? (
@@ -246,27 +263,15 @@ function CompanyAccessesLoaded({company}: {company: CompanyWithReportsCount}) {
         </UserDeleteDialog>
       )
 
-      const menuItems = [copyInviteMenuItem, resendInviteMenuItem, removeMenuItem, deleteUserMenuItem].filter(isDefined)
+      const menuItems = [
+        authAttemptsHistoryMenuItem,
+        copyInviteMenuItem,
+        resendInviteMenuItem,
+        removeMenuItem,
+        deleteUserMenuItem,
+      ].filter(isDefined)
       return menuItems.length ? <ScMenu>{menuItems}</ScMenu> : null
     },
-  }
-
-  const authAttemptsHistoryColumn: Column = {
-    id: 'authAttemptsHistory',
-    sx: _ => ({ml: 0, pl: 0, mr: 0, pr: 0}),
-    render: _ => (
-      <>
-        {_.userId && (
-          <Tooltip title={m.authAttemptsHistory}>
-            <NavLink to={`${siteMap.logged.users.root}/${siteMap.logged.users.auth_attempts.value(_.email)}`}>
-              <IconBtn color="primary">
-                <Icon>history</Icon>
-              </IconBtn>
-            </NavLink>
-          </Tooltip>
-        )}
-      </>
-    ),
   }
 
   return (
@@ -290,7 +295,7 @@ function CompanyAccessesLoaded({company}: {company: CompanyWithReportsCount}) {
           data={_crudAccess.list && _crudToken.list ? accesses : undefined}
           loading={_crudAccess.fetching || _crudToken.fetching}
           getRenderRowKey={_ => _.email ?? _.tokenId!}
-          columns={[emailColumn, levelColumn, actionsColumn, ...(isAdmin ? [authAttemptsHistoryColumn] : [])]}
+          columns={[emailColumn, levelColumn, actionsColumn]}
         />
       </>
     </>
