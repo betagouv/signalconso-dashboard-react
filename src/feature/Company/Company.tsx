@@ -9,6 +9,7 @@ import {CompanyWithReportsCount, Id} from '../../core/model'
 import {useGetCompanyByIdQuery} from '../../core/queryhooks/companyQueryHooks'
 import {CompanyStats} from './CompanyStats'
 import {CompanyStatsPro} from './CompanyStatsPro'
+import {Txt} from 'alexlibs/mui-extension'
 
 export function Company() {
   const {id} = useParams<{id: Id}>()
@@ -20,7 +21,7 @@ function CompanyWithId({id}: {id: string}) {
   const company = _companyById.data
   return (
     <Page loading={_companyById.isLoading}>
-      <PageTitle>Entreprise</PageTitle>
+      {company && <Title {...{company}} />}
       <PageTabs>
         <PageTab to={siteMap.logged.company(id).stats.valueAbsolute} label={'Statistiques'} />
         <PageTab to={siteMap.logged.company(id).accesses.valueAbsolute} label={'Accès utilisateurs'} />
@@ -31,6 +32,24 @@ function CompanyWithId({id}: {id: string}) {
         <Route path={siteMap.logged.company(id).accesses.value} element={<CompanyAccesses {...{company}} />} />
       </Routes>
     </Page>
+  )
+}
+
+function Title({company}: {company: CompanyWithReportsCount}) {
+  return (
+    <PageTitle>
+      <div>
+        {company.name}
+        {company.brand && (
+          <Txt block size="small" fontStyle="italic">
+            {company.brand}
+          </Txt>
+        )}
+        <Txt block size="big" color="hint">
+          {company?.siret}
+        </Txt>
+      </div>
+    </PageTitle>
   )
 }
 

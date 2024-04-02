@@ -50,20 +50,6 @@ export function CompanyStats({connectedUser, company}: {connectedUser: ExtendedU
 
   return (
     <>
-      <PageTitle>
-        <Box>
-          {company?.name}
-          {company?.brand && (
-            <Txt block size="small" fontStyle="italic">
-              {company.brand}
-            </Txt>
-          )}
-          <Txt block size="big" color="hint">
-            {company?.siret}
-          </Txt>
-        </Box>
-      </PageTitle>
-
       {company && (
         <>
           <CompanyStatsNumberWidgets id={id} siret={company.siret} />

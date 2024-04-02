@@ -22,7 +22,7 @@ export function CompanyStatsNumberWidgets({id, siret}: {id: Id; siret: string}) 
   const {connectedUser} = useLogin()
   const companyId = id
   return (
-    <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-4">
+    <div className={`grid grid-cols-2 ${connectedUser.isNotPro ? 'sm:grid-cols-4' : 'sm:grid-cols-3'} gap-4 mb-4`}>
       <NumberWidgetResponseRate {...{companyId}} />
       <NumberWidgetResponseDelay {...{companyId}} />
       <NumberWidgetAccesses {...{companyId, siret}} />

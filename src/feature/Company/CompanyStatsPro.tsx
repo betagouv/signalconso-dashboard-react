@@ -1,10 +1,8 @@
-import {Box, Grid} from '@mui/material'
+import {Grid} from '@mui/material'
 import {useI18n} from 'core/i18n'
 import {useStatusDistributionProQuery} from 'core/queryhooks/statsQueryHooks'
-import {PageTitle} from 'shared/Page'
 import {Panel, PanelHead} from 'shared/Panel'
 import {reportStatusProColor} from 'shared/ReportStatus'
-import {Txt} from '../../alexlibs/mui-extension'
 import {useEffectFn} from '../../alexlibs/react-hooks-lib'
 import {ReportStatusPro} from '../../core/client/report/Report'
 import {CompanyWithReportsCount, UserWithPermission} from '../../core/model'
@@ -34,20 +32,6 @@ export function CompanyStatsPro({connectedUser, company}: {connectedUser: Extend
 
   return (
     <>
-      <PageTitle>
-        <Box>
-          {company?.name}
-          {company?.brand && (
-            <Txt block size="small" fontStyle="italic">
-              {company.brand}
-            </Txt>
-          )}
-          <Txt block size="big" color="hint">
-            {company?.siret}
-          </Txt>
-        </Box>
-      </PageTitle>
-
       {company && (
         <>
           <CompanyStatsNumberWidgets id={id} siret={company.siret} />
