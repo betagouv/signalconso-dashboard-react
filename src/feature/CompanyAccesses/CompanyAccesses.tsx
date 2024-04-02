@@ -105,33 +105,27 @@ function CompanyAccessesLoaded({company}: {company: CompanyWithReportsCount}) {
     render: _ => <>{_.userId && <UserDeleteButton userId={_.userId} compact onDelete={_crudAccess.fetch} />}</>,
   }
 
-  const statusColumn: Column = {
-    id: 'status',
-    head: '',
-    render: _ =>
-      _.name ? (
-        <Icon sx={{color: t => t.palette.success.light}}>check_circle</Icon>
-      ) : (
-        <Icon sx={{color: t => t.palette.warning.main}}>watch_later</Icon>
-      ),
-  }
-
   const emailColumn: Column = {
     id: 'email',
     head: m.email,
-    render: _ => (
-      <>
-        <div>
-          <Txt bold>{_.email}</Txt>
-          &nbsp;
-          {_.isHeadOffice && <Txt color="hint">({m.isHeadOffice})</Txt>}
-          {connectedUser.email === _.email && <Txt color="hint">({m.you})</Txt>}
-        </div>
-        <Txt size="small" color="hint">
-          {_.name}
-        </Txt>
-      </>
-    ),
+    render: _ => {
+      const pending = !_.name
+      const isCurrentUser = connectedUser.email === _.email
+      return (
+        <>
+          <div>
+            <span className={`font-bold ${pending ? 'text-gray-400' : ''}`}>{_.email}</span>
+            {isCurrentUser && <span className="text-gray-500"> ({m.you})</span>}
+            {_.isHeadOffice && <span className="text-gray-500"> (via le siège social)</span>}
+          </div>
+          {pending ? (
+            <span className="text-blue-600 font-bold uppercase">Invitation envoyée</span>
+          ) : (
+            <span className="text-gray-500">{_.name}</span>
+          )}
+        </>
+      )
+    },
   }
 
   const levelColumn: Column = {
@@ -278,7 +272,6 @@ function CompanyAccessesLoaded({company}: {company: CompanyWithReportsCount}) {
           getRenderRowKey={_ => _.email ?? _.tokenId!}
           columns={[
             ...(isAdmin ? [deleteButtonColumn] : []),
-            statusColumn,
             emailColumn,
             levelColumn,
             actionsColumn,
