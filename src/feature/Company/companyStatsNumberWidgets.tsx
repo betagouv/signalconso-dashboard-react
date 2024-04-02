@@ -148,7 +148,7 @@ function NumberWidgetAccesses({siret, companyId}: {siret: string; companyId: str
         <>
           <p className="text-3xl font-bold">{_accesses.data}</p>
           <p className="">
-            {m.accountsActivated} (<NavLink to={siteMap.logged.company(companyId).accesses.value}>voir</NavLink>)
+            {m.accountsActivated} (<NavLink to={siteMap.logged.company(companyId).accesses.valueAbsolute}>voir</NavLink>)
           </p>
         </>
       )}
