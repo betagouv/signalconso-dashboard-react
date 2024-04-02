@@ -1,8 +1,9 @@
 import {Icon, ListItemIcon, ListItemText, MenuItem, Tooltip} from '@mui/material'
-import {UserDeleteButton} from 'feature/Users/UserDeleteButton'
+import {UserDeleteDialog} from 'feature/Users/userDelete'
 import {useEffect, useMemo} from 'react'
 import {NavLink} from 'react-router-dom'
-import {IconBtn, Txt} from '../../alexlibs/mui-extension'
+import {ScMenu} from 'shared/Menu'
+import {IconBtn} from '../../alexlibs/mui-extension'
 import {Enum} from '../../alexlibs/ts-utils'
 import {CompanyAccessLevel} from '../../core/client/company-access/CompanyAccess'
 import {useLogin} from '../../core/context/LoginContext'
@@ -20,8 +21,6 @@ import {ScDialog} from '../../shared/ScDialog'
 import {CompanyAccessCreateBtn} from './CompanyAccessCreateBtn'
 import {SaveUndeliveredDocBtn} from './SaveUndeliveredDocBtn'
 import {useCompanyAccess} from './useCompaniesAccess'
-import {ScMenu} from 'shared/Menu'
-import {remove} from 'lodash'
 
 interface Accesses {
   name?: string
@@ -101,12 +100,6 @@ function CompanyAccessesLoaded({company}: {company: CompanyWithReportsCount}) {
   const isPro = connectedUser.isPro
   const isListEmpty = _crudAccess.list?.length !== 0
 
-  const deleteButtonColumn: Column = {
-    id: 'delete',
-    sx: _ => ({ml: 0, pl: 0, mr: 0, pr: 0}),
-    render: _ => <>{_.userId && <UserDeleteButton userId={_.userId} compact onDelete={_crudAccess.fetch} />}</>,
-  }
-
   const emailColumn: Column = {
     id: 'email',
     head: m.email,
@@ -178,7 +171,7 @@ function CompanyAccessesLoaded({company}: {company: CompanyWithReportsCount}) {
     render: _ => {
       const {email, token, tokenId, userId} = _
 
-      const copyInviteItem =
+      const copyInviteMenuItem =
         isAdmin && !_.name && token ? (
           <MenuItem onClick={_ => copyActivationLink(token)}>
             <ListItemIcon>
@@ -188,7 +181,7 @@ function CompanyAccessesLoaded({company}: {company: CompanyWithReportsCount}) {
           </MenuItem>
         ) : undefined
 
-      const resendInviteItem =
+      const resendInviteMenuItem =
         isAdmin && !_.name && email ? (
           <ScDialog
             title={m.resendCompanyAccessToken(email)}
@@ -209,7 +202,7 @@ function CompanyAccessesLoaded({company}: {company: CompanyWithReportsCount}) {
           </ScDialog>
         ) : undefined
 
-      const removeItem =
+      const removeMenuItem =
         _.editable && userId ? (
           <ScDialog
             title={m.deleteCompanyAccess(_.name!)}
@@ -240,7 +233,20 @@ function CompanyAccessesLoaded({company}: {company: CompanyWithReportsCount}) {
           </ScDialog>
         ) : undefined
 
-      const menuItems = [copyInviteItem, resendInviteItem, removeItem].filter(isDefined)
+      const deleteUserMenuItem = isAdmin && _.userId && (
+        <UserDeleteDialog userId={_.userId} onDelete={_crudAccess.fetch}>
+          <MenuItem>
+            <ListItemIcon>
+              <Icon color="error">delete</Icon>
+            </ListItemIcon>
+            <ListItemText>
+              <span className="text-red-600">{m.delete_user}</span>
+            </ListItemText>
+          </MenuItem>
+        </UserDeleteDialog>
+      )
+
+      const menuItems = [copyInviteMenuItem, resendInviteMenuItem, removeMenuItem, deleteUserMenuItem].filter(isDefined)
       return menuItems.length ? <ScMenu>{menuItems}</ScMenu> : null
     },
   }
@@ -284,13 +290,7 @@ function CompanyAccessesLoaded({company}: {company: CompanyWithReportsCount}) {
           data={_crudAccess.list && _crudToken.list ? accesses : undefined}
           loading={_crudAccess.fetching || _crudToken.fetching}
           getRenderRowKey={_ => _.email ?? _.tokenId!}
-          columns={[
-            ...(isAdmin ? [deleteButtonColumn] : []),
-            emailColumn,
-            levelColumn,
-            actionsColumn,
-            ...(isAdmin ? [authAttemptsHistoryColumn] : []),
-          ]}
+          columns={[emailColumn, levelColumn, actionsColumn, ...(isAdmin ? [authAttemptsHistoryColumn] : [])]}
         />
       </>
     </>
