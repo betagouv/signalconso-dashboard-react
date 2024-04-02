@@ -3,7 +3,11 @@ import {useI18n} from '../../core/i18n'
 import {Icon} from '@mui/material'
 import {useMutation, useQueryClient} from '@tanstack/react-query'
 import {
+  AcceptedDetails,
   EventActionValues,
+  NotConcernedDetails,
+  RejectedDetails,
+  EventUser,
   ReportAction,
   ReportProResponseEvent,
   ReportResponse,
@@ -19,6 +23,7 @@ import {GetReportEventsQueryKeys} from '../../core/queryhooks/eventQueryHooks'
 import {Divider} from '../../shared/Divider'
 import {ReportFileDownloadAllButton} from './File/ReportFileDownloadAllButton'
 import {ReportFiles} from './File/ReportFiles'
+import {UserNameLabel} from '../../shared/UserNameLabel'
 
 export function ReportResponseComponent({
   canEditFile,
@@ -28,7 +33,7 @@ export function ReportResponseComponent({
   files,
 }: {
   canEditFile?: boolean
-  response: ReportProResponseEvent['data']
+  response: ReportProResponseEvent
   consumerReportReview?: ResponseConsumerReview
   report: Report
   files?: UploadedFile[]
@@ -41,10 +46,11 @@ export function ReportResponseComponent({
     onSuccess: () => queryClient.invalidateQueries({queryKey: GetReportEventsQueryKeys(report.id)}),
   })
 
-  const details = response.details
+  const details = response.data.details
+  const user = response.user
   return (
     <div className="">
-      {details ? <ResponseDetails {...{details}} /> : <div className="mt-2">{m.noAnswerFromPro}</div>}
+      {details ? <ResponseDetails {...{details, user}} /> : <div className="mt-2">{m.noAnswerFromPro}</div>}
       <div className="flex flex-row mt-5 ">
         <h2 className="font-bold">{m.attachedFiles}</h2>
         {files && files.filter(_ => _.origin === FileOrigin.Professional).length > 1 && (
@@ -79,11 +85,21 @@ export function ReportResponseComponent({
   )
 }
 
-function ResponseDetails({details}: {details: ReportResponse}) {
+function ResponseDetails({details, user}: {details: ReportResponse; user?: EventUser}) {
   const {m} = useI18n()
+  console.log(user)
   return (
     <div>
-      <ResponseType responseType={details.responseType} />
+      <ResponseType
+        responseType={details.responseType}
+        responseDetails={details.responseDetails}
+        otherResponseDetails={details.otherResponseDetails}
+      />
+      <p className="font-bold">Répondant :</p>
+      <div className="pl-4 mb-4">
+        <UserNameLabel firstName={user?.firstName} lastName={user?.lastName} />
+      </div>
+
       <p className="font-bold">Réponse communiquée au consommateur :</p>
       <div className="pl-4">{details.consumerDetails}</div>
 
@@ -97,7 +113,15 @@ function ResponseDetails({details}: {details: ReportResponse}) {
   )
 }
 
-function ResponseType({responseType}: {responseType: ReportResponseTypes}) {
+function ResponseType({
+  responseType,
+  responseDetails,
+  otherResponseDetails,
+}: {
+  responseType: ReportResponseTypes
+  responseDetails: AcceptedDetails | RejectedDetails | NotConcernedDetails
+  otherResponseDetails?: string
+}) {
   const {m} = useI18n()
   const {icon, color, text} = (() => {
     switch (responseType) {
@@ -109,11 +133,20 @@ function ResponseType({responseType}: {responseType: ReportResponseTypes}) {
         return {icon: 'error_outline', color: 'bg-orange-100', text: m.reportResponse.REJECTED}
     }
   })()
+
+  const responseDetailsText =
+    responseDetails === 'OTHER'
+      ? `${m.responseDetails[responseDetails]} : ${otherResponseDetails}`
+      : m.responseDetails[responseDetails]
+
   return (
-    <p className={`flex items-center gap-1 w-fit p-2 ${color} mb-4 border-black border-solid border`}>
-      <Icon fontSize="small">{icon}</Icon>
-      {text}
-    </p>
+    <div className={`${color} mb-4 border-black border-solid border w-fit p-2`}>
+      <p className={`flex items-center gap-1 font-bold`}>
+        <Icon fontSize="small">{icon}</Icon>
+        {text}
+      </p>
+      <p className={'pl-6 pt-2 italic'}>{responseDetailsText}</p>
+    </div>
   )
 }
 

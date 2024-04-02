@@ -4,7 +4,7 @@ import {AssociationType} from 'feature/ReportedWebsites/SelectWebsiteIdentificat
 import {ReportAdminActionType, ReportStatus, ReportStatusPro, ReportTag, ReportType} from '../../client/report/Report'
 import {CompanyAccessLevel} from '../../client/company-access/CompanyAccess'
 import {IdentificationStatus, InvestigationStatus} from '../../client/website/Website'
-import {ReportResponseTypes, ResponseEvaluation} from '../../client/event/Event'
+import {ReportResponse, ReportResponseTypes, ResponseEvaluation} from '../../client/event/Event'
 import {Category} from '../../client/constant/Category'
 import {DownloadType} from '../../../feature/Report/ReportDownloadAction'
 
@@ -923,6 +923,23 @@ export const fr = {
       [ReportResponseTypes.Accepted]: 'Pris en compte',
       [ReportResponseTypes.Rejected]: 'Infondé',
       [ReportResponseTypes.NotConcerned]: 'Non concerné',
+    },
+    responseDetails: {
+      REFUND: 'Je vais procéder à un remboursement ou un avoir',
+      REPLACEMENT: 'Je vais procéder à une réparation ou au remplacement du produit défectueux',
+      DELIVERY: 'Je vais procéder à la livraison du bien ou du service',
+      DIRECTIONS_FOR_USE: 'Je souhaite apporter un conseil d’utilisation',
+      CONFORM: 'Je vais me conformer à la réglementation en vigueur',
+      ADAPT_PRACTICES: 'Je vais adapter mes pratiques',
+      LAWFUL: 'La pratique signalée est légale',
+      DID_NOT_HAPPEN: 'La pratique signalée n’a pas eu lieu',
+      WRONG_INTERPRETATION: 'Il s’agit d’une mauvaise interprétation des faits',
+      PARTNERSHIP: 'Il concerne un de nos partenaires commerciaux / vendeurs tiers',
+      SAME_GROUP_COMPANY: 'Il concerne une entreprise du même groupe',
+      HOMONYM: 'Il concerne une société homonyme',
+      UNKNOWN_COMPANY: 'Il concerne une société que je ne connais pas',
+      IDENTITY_FRAUD: 'Il s’agit d’une usurpation d’identité professionnelle',
+      OTHER: 'Autre',
     },
     responseEvaluation: {
       [ResponseEvaluation.Positive]: "J'en suis satisfait",

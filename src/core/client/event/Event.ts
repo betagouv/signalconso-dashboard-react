@@ -8,6 +8,7 @@ export interface ReportEvent {
 // a precise subtype
 export type ReportProResponseEvent = ReportEvent & {
   action: EventActionValues.ReportProResponse
+  user?: EventUser
   data: {
     details: ReportResponse
   }
@@ -70,8 +71,34 @@ export enum EventActionValues {
   ReportReOpenedByAdmin = 'ReportReOpenedByAdmin',
 }
 
+export const acceptedDetails = [
+  'REFUND',
+  'REPLACEMENT',
+  'DELIVERY',
+  'DIRECTIONS_FOR_USE',
+  'CONFORM',
+  'ADAPT_PRACTICES',
+  'OTHER',
+] as const
+export type AcceptedDetails = typeof acceptedDetails[number]
+
+export const rejectedDetails = ['LAWFUL', 'DID_NOT_HAPPEN', 'WRONG_INTERPRETATION', 'OTHER'] as const
+export type RejectedDetails = typeof acceptedDetails[number]
+
+export const notConcernedDetails = [
+  'PARTNERSHIP',
+  'SAME_GROUP_COMPANY',
+  'HOMONYM',
+  'UNKNOWN_COMPANY',
+  'IDENTITY_FRAUD',
+  'OTHER',
+] as const
+export type NotConcernedDetails = typeof acceptedDetails[number]
+
 export interface ReportResponse {
   responseType: ReportResponseTypes
+  responseDetails: AcceptedDetails | RejectedDetails | NotConcernedDetails
+  otherResponseDetails?: string
   consumerDetails: string
   dgccrfDetails: string
   fileIds?: string[]

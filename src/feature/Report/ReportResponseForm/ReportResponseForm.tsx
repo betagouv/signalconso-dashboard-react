@@ -14,7 +14,16 @@ import {ReportResponseFormItem} from './ReportResponseFormItem'
 
 import {Box, Step, StepButton, Stepper} from '@mui/material'
 import {useMutation} from '@tanstack/react-query'
-import {ReportResponse, ReportResponseTypes} from '../../../core/client/event/Event'
+import {
+  AcceptedDetails,
+  acceptedDetails,
+  NotConcernedDetails,
+  notConcernedDetails,
+  RejectedDetails,
+  rejectedDetails,
+  ReportResponse,
+  ReportResponseTypes,
+} from '../../../core/client/event/Event'
 import {FileOrigin} from '../../../core/client/file/UploadedFile'
 import {Report} from '../../../core/client/report/Report'
 import {useApiContext} from '../../../core/context/ApiContext'
@@ -48,6 +57,7 @@ export const ReportResponseForm = forwardRef(({report, onConfirm, ...props}: Pro
     reset,
     control,
     watch,
+    setValue,
     formState: {errors},
   } = useForm<ReportResponse>()
   const {api} = useApiContext()
@@ -60,6 +70,8 @@ export const ReportResponseForm = forwardRef(({report, onConfirm, ...props}: Pro
   const steps = [{label: m.responseToConsumer}, {label: m.responseToDGCCRF, optional: true}]
   const [activeStep, setActiveStep] = useState(0)
   const watchResponseType = watch('responseType')
+  const watchResponseDetails = watch('responseDetails')
+  const watchOtherResponseDetails = watch('otherResponseDetails')
   const watchConsumerDetails = watch('consumerDetails')
   const consumerStep = activeStep === 0
   const dgccrfStep = activeStep === 1
@@ -69,6 +81,28 @@ export const ReportResponseForm = forwardRef(({report, onConfirm, ...props}: Pro
     toastSuccess(m.proAnswerSent)
     onConfirm?.(form)
     reset()
+  }
+
+  const computeDetails = (responseType: ReportResponseTypes) => {
+    switch (responseType) {
+      case 'ACCEPTED':
+        return acceptedDetails.map(_ => _)
+      case 'REJECTED':
+        return rejectedDetails.map(_ => _)
+      default:
+        return notConcernedDetails.map(_ => _)
+    }
+  }
+
+  const computeDetailsTitle = (responseType: ReportResponseTypes) => {
+    switch (responseType) {
+      case 'ACCEPTED':
+        return 'Quelle action allez-vous mener ?'
+      case 'REJECTED':
+        return 'Pourquoi ce signalement est-il infondé ?'
+      default:
+        return 'Pourquoi ce signalement ne vous concerne pas ?'
+    }
   }
 
   return (
@@ -83,75 +117,117 @@ export const ReportResponseForm = forwardRef(({report, onConfirm, ...props}: Pro
           )
         })}
       </Stepper>
-      {consumerStep ? (
-        <>
-          <ReportResponseFormItem>
+
+      <div className={consumerStep ? 'visible' : 'hidden'}>
+        <ReportResponseFormItem title="Que souhaitez-vous faire ?">
+          <Controller
+            name="responseType"
+            rules={{required: {value: true, message: m.required}}}
+            control={control}
+            render={({field}) => (
+              <ScRadioGroup error={!!errors.responseType} dense sx={{mb: 8}} {...field}>
+                {Enum.values(ReportResponseTypes).map(responseType => (
+                  <ScRadioGroupItem value={responseType} key={responseType}>
+                    {m.reportResponseDesc[responseType]}
+                  </ScRadioGroupItem>
+                ))}
+              </ScRadioGroup>
+            )}
+          />
+        </ReportResponseFormItem>
+
+        {watchResponseType && (
+          <ReportResponseFormItem title={computeDetailsTitle(watchResponseType)}>
             <Controller
-              name="responseType"
+              name="responseDetails"
               rules={{required: {value: true, message: m.required}}}
               control={control}
               render={({field}) => (
-                <ScRadioGroup error={!!errors.responseType} dense sx={{mb: 2}} {...field}>
-                  {Enum.values(ReportResponseTypes).map(responseType => (
-                    <ScRadioGroupItem value={responseType} key={responseType}>
-                      {m.reportResponseDesc[responseType]}
+                <ScRadioGroup
+                  error={!!errors.responseDetails}
+                  dense
+                  sx={{mb: 2}}
+                  {...field}
+                  onChange={(event: any) => {
+                    setValue('otherResponseDetails', undefined)
+                    field.onChange(event)
+                  }}
+                >
+                  {computeDetails(watchResponseType).map(responseDetails => (
+                    <ScRadioGroupItem value={responseDetails} key={responseDetails}>
+                      {m.responseDetails[responseDetails]}
                     </ScRadioGroupItem>
                   ))}
                 </ScRadioGroup>
               )}
             />
           </ReportResponseFormItem>
-
-          <ReportResponseFormItem title={m.proAnswerYourAnswer} desc={m.proAnswerYourAnswerDesc}>
+        )}
+        {watchResponseDetails === 'OTHER' && (
+          <ReportResponseFormItem title="Pouvez-vous préciser ?">
             <ScInput
-              {...register('consumerDetails', {
+              {...register('otherResponseDetails', {
                 required: {value: true, message: m.required},
-                maxLength: {value: maxDetailsCharLength, message: m.textTooLarge(maxDetailsCharLength)},
+                maxLength: {value: 1000, message: m.textTooLarge(1000)},
               })}
-              helperText={errors.consumerDetails?.message}
-              error={!!errors.consumerDetails}
+              helperText={errors.otherResponseDetails?.message}
+              error={!!errors.otherResponseDetails}
               fullWidth
-              multiline
-              rows={5}
-              placeholder={m.text + '...'}
-              maxRows={8}
+              placeholder="Votre raison en quelques mots..."
             />
           </ReportResponseFormItem>
-          <Alert type="info" deletable persistentDelete gutterBottom>
-            {m.proAnswerVisibleByDGCCRF}
-          </Alert>
-        </>
-      ) : (
-        <>
-          <ReportResponseFormItem title={m.proAnswerYourDGCCRFAnswer} desc={m.proAnswerYourDGCCRFAnswerDesc}>
-            <ScInput
-              {...register('dgccrfDetails', {
-                maxLength: {value: maxDetailsCharLength, message: m.textTooLarge(maxDetailsCharLength)},
-              })}
-              helperText={errors.dgccrfDetails?.message}
-              error={!!errors.dgccrfDetails}
-              fullWidth
-              multiline
-              rows={5}
-              placeholder={m.text + '...'}
-              maxRows={8}
-            />
-          </ReportResponseFormItem>
-          <ReportResponseFormItem title={m.attachedFiles} desc={m.onlyVisibleByDGCCRF}>
-            <Controller
-              name="fileIds"
-              control={control}
-              render={({field}) => (
-                <ReportFiles
-                  reportId={report.id}
-                  fileOrigin={FileOrigin.Professional}
-                  onNewFile={file => field.onChange([...(field.value ?? []), file.id])}
-                />
-              )}
-            />
-          </ReportResponseFormItem>
-        </>
-      )}
+        )}
+
+        <ReportResponseFormItem title={m.proAnswerYourAnswer} desc={m.proAnswerYourAnswerDesc} sx={{mt: 8}}>
+          <ScInput
+            {...register('consumerDetails', {
+              required: {value: true, message: m.required},
+              maxLength: {value: maxDetailsCharLength, message: m.textTooLarge(maxDetailsCharLength)},
+            })}
+            helperText={errors.consumerDetails?.message}
+            error={!!errors.consumerDetails}
+            fullWidth
+            multiline
+            rows={5}
+            placeholder={m.text + '...'}
+            maxRows={8}
+          />
+        </ReportResponseFormItem>
+        <Alert type="info" deletable persistentDelete gutterBottom>
+          {m.proAnswerVisibleByDGCCRF}
+        </Alert>
+      </div>
+
+      <div className={dgccrfStep ? 'visible' : 'hidden'}>
+        <ReportResponseFormItem title={m.proAnswerYourDGCCRFAnswer} desc={m.proAnswerYourDGCCRFAnswerDesc}>
+          <ScInput
+            {...register('dgccrfDetails', {
+              maxLength: {value: maxDetailsCharLength, message: m.textTooLarge(maxDetailsCharLength)},
+            })}
+            helperText={errors.dgccrfDetails?.message}
+            error={!!errors.dgccrfDetails}
+            fullWidth
+            multiline
+            rows={5}
+            placeholder={m.text + '...'}
+            maxRows={8}
+          />
+        </ReportResponseFormItem>
+        <ReportResponseFormItem title={m.attachedFiles} desc={m.onlyVisibleByDGCCRF}>
+          <Controller
+            name="fileIds"
+            control={control}
+            render={({field}) => (
+              <ReportFiles
+                reportId={report.id}
+                fileOrigin={FileOrigin.Professional}
+                onNewFile={file => field.onChange([...(field.value ?? []), file.id])}
+              />
+            )}
+          />
+        </ReportResponseFormItem>
+      </div>
+
       <PanelFoot spaceBetween={dgccrfStep} alignEnd={consumerStep}>
         {consumerStep ? (
           <>
@@ -159,7 +235,12 @@ export const ReportResponseForm = forwardRef(({report, onConfirm, ...props}: Pro
               onClick={() => setActiveStep(1)}
               color="primary"
               variant="contained"
-              disabled={!watchResponseType || !watchConsumerDetails}
+              disabled={
+                !watchResponseType ||
+                !watchConsumerDetails ||
+                !watchResponseDetails ||
+                (watchResponseDetails === 'OTHER' && !watchOtherResponseDetails)
+              }
             >
               {m.next}
             </ScButton>
