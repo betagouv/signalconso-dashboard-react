@@ -49,9 +49,11 @@ export const siteMap = {
       value: `/entreprise/${id}/*`,
       stats: {
         value: `bilan`,
+        valueAbsolute: `/entreprise/${id}/bilan`,
       },
       accesses: {
         value: `accesses`,
+        valueAbsolute: `/entreprise/${id}/accesses`,
       },
     }),
     companiesPro: `/mes-entreprises`,

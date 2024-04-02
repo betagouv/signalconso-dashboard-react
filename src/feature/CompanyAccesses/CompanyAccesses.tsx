@@ -1,7 +1,6 @@
 import {Icon, Tooltip} from '@mui/material'
 import {UserDeleteButton} from 'feature/Users/UserDeleteButton'
 import {useEffect, useMemo} from 'react'
-import {useParams} from 'react-router'
 import {NavLink} from 'react-router-dom'
 import {IconBtn, Txt} from '../../alexlibs/mui-extension'
 import {Enum} from '../../alexlibs/ts-utils'
@@ -9,7 +8,7 @@ import {CompanyAccessLevel} from '../../core/client/company-access/CompanyAccess
 import {useLogin} from '../../core/context/LoginContext'
 import {getAbsoluteLocalUrl, toQueryString} from '../../core/helper'
 import {useI18n} from '../../core/i18n'
-import {Id, User} from '../../core/model'
+import {CompanyWithReportsCount, Id, User} from '../../core/model'
 import {siteMap} from '../../core/siteMap'
 import {sxUtils} from '../../core/theme'
 import {useToast} from '../../core/toast'
@@ -36,8 +35,15 @@ interface Accesses {
 
 type Column = DatatableColumnProps<Accesses>
 
-export const CompanyAccesses = () => {
-  const {siret} = useParams<{siret: string}>()
+export function CompanyAccesses({company}: {company: CompanyWithReportsCount | undefined}) {
+  if (!company) {
+    return null
+  }
+  return <CompanyAccessesLoaded company={company} />
+}
+
+function CompanyAccessesLoaded({company}: {company: CompanyWithReportsCount}) {
+  const siret = company.siret
 
   const _crudAccess = useCompanyAccess(useLogin().apiSdk, siret!).crudAccess
   const _crudToken = useCompanyAccess(useLogin().apiSdk, siret!).crudToken

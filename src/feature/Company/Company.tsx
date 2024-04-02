@@ -5,52 +5,44 @@ import {siteMap} from 'core/siteMap'
 import {CompanyAccesses} from 'feature/CompanyAccesses/CompanyAccesses'
 import {Page, PageTitle} from 'shared/Page'
 import {PageTab, PageTabs} from 'shared/Page/PageTabs'
-import {Id} from '../../core/model'
+import {CompanyWithReportsCount, Id} from '../../core/model'
 import {useGetCompanyByIdQuery} from '../../core/queryhooks/companyQueryHooks'
 import {CompanyStats} from './CompanyStats'
 import {CompanyStatsPro} from './CompanyStatsPro'
 
 export function Company() {
   const {id} = useParams<{id: Id}>()
+  return id ? <CompanyWithId {...{id}} /> : null
+}
 
+function CompanyWithId({id}: {id: string}) {
+  const _companyById = useGetCompanyByIdQuery(id)
+  const company = _companyById.data
   return (
-    <Page>
-      {id && (
-        <>
-          <PageTitle>Entreprise</PageTitle>
-
-          <PageTabs>
-            <PageTab to={siteMap.logged.company(id).stats.value} label={'Statistiques'} />
-            <PageTab to={siteMap.logged.company(id).accesses.value} label={'Accès utilisateurs'} />
-          </PageTabs>
-
-          <Routes>
-            <Route path="/*" element={<Navigate replace to={siteMap.logged.company(id).stats.value} />} />
-            <Route path={siteMap.logged.company(id).stats.value} element={<CompanyStatsComponent />} />
-            <Route path={siteMap.logged.company(id).stats.value} element={<CompanyAccesses />} />
-          </Routes>
-        </>
-      )}
+    <Page loading={_companyById.isLoading}>
+      <PageTitle>Entreprise</PageTitle>
+      <PageTabs>
+        <PageTab to={siteMap.logged.company(id).stats.valueAbsolute} label={'Statistiques'} />
+        <PageTab to={siteMap.logged.company(id).accesses.valueAbsolute} label={'Accès utilisateurs'} />
+      </PageTabs>
+      <Routes>
+        <Route path="/*" element={<Navigate replace to={siteMap.logged.company(id).stats.valueAbsolute} />} />
+        <Route path={siteMap.logged.company(id).stats.value} element={<CompanyStatsComponent {...{company}} />} />
+        <Route path={siteMap.logged.company(id).accesses.value} element={<CompanyAccesses {...{company}} />} />
+      </Routes>
     </Page>
   )
 }
 
-const CompanyStatsComponent = () => {
-  const {id} = useParams<{id: Id}>()
-
+const CompanyStatsComponent = ({company}: {company: CompanyWithReportsCount | undefined}) => {
   const {connectedUser} = useLogin()
-  const _companyById = useGetCompanyByIdQuery(id)
-
-  const company = _companyById.data
-
   return (
     <>
-      {id &&
-        company &&
+      {company &&
         (connectedUser.isPro ? (
-          <CompanyStatsPro id={id} connectedUser={connectedUser} company={company} />
+          <CompanyStatsPro {...{company, connectedUser}} />
         ) : (
-          <CompanyStats id={id} connectedUser={connectedUser} company={company} />
+          <CompanyStats {...{company, connectedUser}} />
         ))}
     </>
   )

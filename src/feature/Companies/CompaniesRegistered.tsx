@@ -187,9 +187,9 @@ export const CompaniesRegistered = () => {
                 }
               >
                 <span>
-                  <NavLink to={siteMap.logged.company(_.id).stats.value}>
+                  <NavLink to={siteMap.logged.company(_.id).stats.valueAbsolute}>
                     <Txt link sx={{marginBottom: '-1px'}}>
-                      {_.name} {siteMap.logged.company(_.id).stats.value} sss
+                      {_.name}
                     </Txt>
                   </NavLink>
                   {_.brand && (
@@ -301,14 +301,14 @@ export const CompaniesRegistered = () => {
             render: _ => (
               <>
                 <Badge color="error" badgeContent=" " variant="dot" overlap="circular">
-                  <NavLink to={siteMap.logged.company(_.id).stats.value}>
+                  <NavLink to={siteMap.logged.company(_.id).stats.valueAbsolute}>
                     <IconBtn color="primary">
                       <Icon>query_stats</Icon>
                     </IconBtn>
                   </NavLink>
                 </Badge>
                 <ScMenu>
-                  <NavLink to={siteMap.logged.company(_.id).accesses.value}>
+                  <NavLink to={siteMap.logged.company(_.id).accesses.valueAbsolute}>
                     <MenuItem>
                       <ListItemIcon>
                         <Icon>vpn_key</Icon>
