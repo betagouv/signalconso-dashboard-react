@@ -14,7 +14,6 @@ import {sxUtils} from '../../core/theme'
 import {useToast} from '../../core/toast'
 import {ScButton} from '../../shared/Button'
 import {Datatable, DatatableColumnProps} from '../../shared/Datatable/Datatable'
-import {Page, PageTitle} from '../../shared/Page'
 import {ScRadioGroup} from '../../shared/RadioGroup'
 import {ScRadioGroupItem} from '../../shared/RadioGroupItem'
 import {ScDialog} from '../../shared/ScDialog'
@@ -258,11 +257,18 @@ function CompanyAccessesLoaded({company}: {company: CompanyWithReportsCount}) {
 
   return (
     <>
-      <div className="justify-end mb-4 flex gap-2">
-        {isAdmin && isListEmpty && siret && <SaveUndeliveredDocBtn {...{siret}} />}
-        {(isAdmin || isPro) && (
-          <CompanyAccessCreateBtn loading={_crudToken.creating} onCreate={inviteNewUser} errorMessage={_crudToken.createError} />
-        )}
+      <div className="flex justify-between gap-2 sm:items-center mb-4 flex-col sm:flex-row">
+        <p>Les personnes suivantes peuvent consulter et répondre aux signalements de l'entreprise {company.name}.</p>
+        <div className="flex gap-2">
+          {isAdmin && isListEmpty && siret && <SaveUndeliveredDocBtn {...{siret}} />}
+          {(isAdmin || isPro) && (
+            <CompanyAccessCreateBtn
+              loading={_crudToken.creating}
+              onCreate={inviteNewUser}
+              errorMessage={_crudToken.createError}
+            />
+          )}
+        </div>
       </div>
       <>
         <Datatable
