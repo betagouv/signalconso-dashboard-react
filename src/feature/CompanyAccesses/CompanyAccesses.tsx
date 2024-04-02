@@ -114,7 +114,7 @@ function CompanyAccessesLoaded({company}: {company: CompanyWithReportsCount}) {
       return (
         <>
           <div>
-            <span className={`font-bold ${pending ? 'text-gray-400' : ''}`}>{_.email}</span>
+            <span className={`font-bold ${pending ? 'text-gray-500' : ''}`}>{_.email}</span>
             {isCurrentUser && <span className="text-gray-500"> ({m.you})</span>}
             {_.isHeadOffice && <span className="text-gray-500"> (via le siège social)</span>}
           </div>
@@ -253,7 +253,7 @@ function CompanyAccessesLoaded({company}: {company: CompanyWithReportsCount}) {
     <>
       <div className="flex justify-between gap-2 sm:items-center mb-4 flex-col sm:flex-row">
         <p>Les personnes suivantes peuvent consulter et répondre aux signalements de l'entreprise {company.name}.</p>
-        <div className="flex gap-2">
+        <div className="flex gap-2 shrink-0">
           {isAdmin && isListEmpty && siret && <SaveUndeliveredDocBtn {...{siret}} />}
           {(isAdmin || isPro) && (
             <CompanyAccessCreateBtn
