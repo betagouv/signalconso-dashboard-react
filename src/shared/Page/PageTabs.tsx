@@ -1,34 +1,27 @@
 import {Tab, TabProps, Tabs} from '@mui/material'
 import * as React from 'react'
-import {ReactElement, useMemo, useState} from 'react'
-import {useNavigate, useLocation} from 'react-router'
+import {ReactElement, useMemo} from 'react'
+import {useLocation, useNavigate} from 'react-router'
 
 interface Props {
-  children: Array<ReactElement<PageTabProps>>
+  children: Array<ReactElement<PageTabProps> | undefined>
 }
 
 export const PageTabs = ({children}: Props) => {
   const {pathname} = useLocation()
   const defaultTabIndex = 0
   const index = useMemo(() => {
-    const currentTabIndex = children.map(child => child.props.to).findIndex(path => pathname.includes(path))
+    const currentTabIndex = children.map(child => child?.props.to).findIndex(path => path && pathname.includes(path))
     return currentTabIndex !== -1 ? currentTabIndex : defaultTabIndex
-  }, [pathname])
-
-  const [value, setValue] = useState(Math.max(defaultTabIndex, index))
-
-  const handleChange = (event: any, index: number) => {
-    setValue(index)
-  }
+  }, [pathname, children])
 
   return (
     <Tabs
-      value={value}
+      value={index}
       indicatorColor="primary"
       textColor="primary"
       variant="scrollable"
       scrollButtons="auto"
-      onChange={handleChange}
       sx={{
         mb: 3,
         borderBottom: t => '1px solid ' + t.palette.divider,

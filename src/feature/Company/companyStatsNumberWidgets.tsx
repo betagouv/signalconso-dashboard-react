@@ -22,17 +22,18 @@ export function CompanyStatsNumberWidgets({id, siret}: {id: Id; siret: string}) 
   const {connectedUser} = useLogin()
   const companyId = id
   return (
-    <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 mb-4">
+    <div className={`grid grid-cols-2 ${connectedUser.isNotPro ? 'sm:grid-cols-4' : 'sm:grid-cols-3'} gap-4 mb-4`}>
       <NumberWidgetResponseRate {...{companyId}} />
       <NumberWidgetResponseDelay {...{companyId}} />
+      <NumberWidgetAccesses {...{companyId, siret}} />
       {connectedUser.isNotPro && (
         <>
+          <NumberWidgetDocsSent {...{siret}} />
+          <NumberWidgetReturnedDocs {...{siret}} />
           <NumberWidgetThreats {...{companyId}} />
           <NumberWidgetBlackmail {...{companyId}} />
         </>
       )}
-      <NumberWidgetReturnedDocs {...{siret}} />
-      <NumberWidgetAccesses {...{siret}} />
     </div>
   )
 }
@@ -108,24 +109,37 @@ function NumberWidgetBlackmail({companyId}: Props) {
     </Widget>
   )
 }
-function NumberWidgetReturnedDocs({siret}: {siret: string}) {
-  const companyEvents = useGetCompanyEventsQuery(siret)
-  const postActivationDocEvents = useMemoFn(companyEvents.data, events =>
-    events.map(_ => _.data).filter(_ => _.action === EventActionValues.PostAccountActivationDoc),
-  )
+function NumberWidgetDocsSent({siret}: {siret: string}) {
+  const _companyEvents = useGetCompanyEventsQuery(siret)
+  const count = _companyEvents.data?.filter(_ => _.data.action === EventActionValues.PostAccountActivationDoc).length
   const {m} = useI18n()
   return (
-    <Widget loading={companyEvents.isLoading}>
-      {postActivationDocEvents && (
+    <Widget loading={_companyEvents.isLoading}>
+      {count !== undefined && (
         <>
-          <p className="text-3xl font-bold">{postActivationDocEvents.length}</p>
+          <p className="text-3xl font-bold">{count}</p>
+          <p className="">courriers envoyés</p>
+        </>
+      )}
+    </Widget>
+  )
+}
+function NumberWidgetReturnedDocs({siret}: {siret: string}) {
+  const _companyEvents = useGetCompanyEventsQuery(siret)
+  const count = _companyEvents.data?.filter(_ => _.data.action === EventActionValues.ActivationDocReturned).length
+  const {m} = useI18n()
+  return (
+    <Widget loading={_companyEvents.isLoading}>
+      {count !== undefined && (
+        <>
+          <p className="text-3xl font-bold">{count}</p>
           <p className="">{m.activationDocReturned}</p>
         </>
       )}
     </Widget>
   )
 }
-function NumberWidgetAccesses({siret}: {siret: string}) {
+function NumberWidgetAccesses({siret, companyId}: {siret: string; companyId: string}) {
   const _accesses = useCompanyAccessCountQuery(siret)
   const {m} = useI18n()
   return (
@@ -134,7 +148,7 @@ function NumberWidgetAccesses({siret}: {siret: string}) {
         <>
           <p className="text-3xl font-bold">{_accesses.data}</p>
           <p className="">
-            {m.accountsActivated} (<NavLink to={siteMap.logged.companyAccesses(siret)}>voir</NavLink>)
+            {m.accountsActivated} (<NavLink to={siteMap.logged.company(companyId).accesses.valueAbsolute}>voir</NavLink>)
           </p>
         </>
       )}

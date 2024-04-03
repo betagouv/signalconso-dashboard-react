@@ -1,13 +1,12 @@
-import React from 'react'
-import {Page, PageTitle} from '../../shared/Page'
-import {useI18n} from '../../core/i18n'
+import {Navigate, Routes} from 'react-router'
 import {Route} from 'react-router-dom'
+import {useLogin} from '../../core/context/LoginContext'
+import {useI18n} from '../../core/i18n'
 import {siteMap} from '../../core/siteMap'
+import {Page, PageTitle} from '../../shared/Page'
 import {PageTab, PageTabs} from '../../shared/Page/PageTabs'
 import {ReportedUnknownWebsites} from './ReportedUnknownWebsites'
-import {useLogin} from '../../core/context/LoginContext'
 import {WebsitesInvestigation} from './WebsitesInvestigation'
-import {Navigate, Routes} from 'react-router'
 
 export const ReportedWebsites = () => {
   const {m} = useI18n() // Assuming this hook exists and provides translations

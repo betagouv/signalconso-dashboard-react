@@ -15,10 +15,6 @@ export const siteMap = {
       },
     },
 
-    // tools: '/tools',
-    // testTools: `/tools/test`,
-    // adminTools: `/tools/admin`,
-
     reportedWebsites: {
       value: '/moderation-url-entreprises/*',
       unknown: {
@@ -28,10 +24,6 @@ export const siteMap = {
         value: 'enquete',
       },
     },
-    // reportedWebsites: `/moderation-url-entreprises`,
-    // reportedWebsites_unknown: `/moderation-url-entreprises/sites-internet/non-identifies`,
-    // websitesInvestigation: `/moderation-url-entreprises/enquete`,
-
     reportedPhone: `/suivi-des-telephones`,
     reports: (_?: Partial<ReportSearch>) => `/suivi-des-signalements` + (_ ? toQueryString(mapDatesToQueryString(_)) : ``),
     reportsfiltred: {
@@ -40,10 +32,7 @@ export const siteMap = {
     subscriptions: `/abonnements`,
     report: (id: Id = `:id`) => `/suivi-des-signalements/report/${id}`,
     exports: `/mes-telechargements`,
-    // companies_toActivate: `a-activer`,
-    // companies_toFollowUp: `a-relancer`,
-    // companies_registered: `les-plus-signalees`,
-    // companies: `/entreprises/*`,
+
     companies: {
       value: '/entreprises/*',
       toActivate: {
@@ -56,11 +45,23 @@ export const siteMap = {
         value: `les-plus-signalees`,
       },
     },
+    company: (id: Id) => ({
+      value: `/entreprise/${id}/*`,
+      stats: {
+        value: `bilan`,
+        valueAbsolute: `/entreprise/${id}/bilan`,
+      },
+      accesses: {
+        value: `accesses`,
+        valueAbsolute: `/entreprise/${id}/accesses`,
+      },
+      history: {
+        value: `history`,
+        valueAbsolute: `/entreprise/${id}/history`,
+      },
+    }),
     companiesPro: `/mes-entreprises`,
     joinInformation: `/information`,
-    companyAccesses: (siret: string = `:siret`) => `/entreprise/acces/${siret}`,
-    company: (id: Id) => `/bilan-entreprise/${id}`,
-
     users: {
       root: '/users',
       value: function () {
@@ -88,13 +89,6 @@ export const siteMap = {
         value: `admin`,
       },
     },
-    // users: `/users`,
-    // users_agent_pending: `/users/pending`,
-    // users_consumer_validation: `/users/consumers`,
-    // users_auth_attempts: (email?: string) => `/users/auth-attempts` + (email ? toQueryString({email}) : ``),
-    // users_blacklist: `/users/blacklist`,
-    // users_agent: `/users/agent`,
-    // users_admin: `/users/admin`,
 
     updateEmail: (token: string) => `/parametres/update-email/${token}`,
     settings: `/parametres`,
@@ -115,11 +109,6 @@ export const siteMap = {
         value: 'countBySubCategories',
       },
     },
-    // stats: `/stats`,
-    // proStats: `/stats/pro-stats`,
-    // dgccrfStats: `/stats/dgccrf-stats`,
-    // reportStats: `/stats/report-stats`,
-    // countBySubCategories: `/stats/countBySubCategories`,
   },
   loggedout: {
     welcome: '/',

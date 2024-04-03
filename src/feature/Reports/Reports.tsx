@@ -321,7 +321,7 @@ export const Reports = () => {
             render: _ => (
               <>
                 {_.report.companyId && !connectedUser.isDGAL ? (
-                  <NavLink to={siteMap.logged.company(_.report.companyId)}>
+                  <NavLink to={siteMap.logged.company(_.report.companyId).stats.valueAbsolute}>
                     <Txt link sx={{marginBottom: '-1px'}}>
                       {_.report.companySiret}
                     </Txt>

@@ -1,15 +1,12 @@
 import {Box, Grid, List, ListItem} from '@mui/material'
 import {useI18n} from 'core/i18n'
-import * as React from 'react'
 import {HorizontalBarChart} from 'shared/Chart/HorizontalBarChart'
-import {Page, PageTitle} from 'shared/Page'
 import {Panel, PanelBody, PanelHead} from 'shared/Panel'
 import {reportStatusColor} from 'shared/ReportStatus'
-import {Txt} from '../../alexlibs/mui-extension'
 import {useEffectFn, useMemoFn} from '../../alexlibs/react-hooks-lib'
 import {ReportStatus} from '../../core/client/report/Report'
-import {CompanyWithReportsCount, Id, UserWithPermission} from '../../core/model'
-import {useGetCompanyByIdQuery, useGetHostsQuery} from '../../core/queryhooks/companyQueryHooks'
+import {CompanyWithReportsCount, UserWithPermission} from '../../core/model'
+import {useGetHostsQuery} from '../../core/queryhooks/companyQueryHooks'
 import {useReportSearchQuery} from '../../core/queryhooks/reportQueryHooks'
 import {useGetTagsQuery, useStatusDistributionQuery} from '../../core/queryhooks/statsQueryHooks'
 import {CompanyChartPanel} from './CompanyChartPanel'
@@ -24,15 +21,9 @@ export type ExtendedUser = UserWithPermission & {
   isPro: boolean
 }
 
-type NonProUserComponentProps = {
-  id: Id
-  connectedUser: ExtendedUser
-  company?: CompanyWithReportsCount
-}
-
-export const CompanyStats: React.FC<NonProUserComponentProps> = ({id, connectedUser, company}) => {
+export function CompanyStats({connectedUser, company}: {connectedUser: ExtendedUser; company: CompanyWithReportsCount}) {
   const {m} = useI18n()
-  const _companyById = useGetCompanyByIdQuery(id)
+  const id = company.id
   const _hosts = useGetHostsQuery(id, {enabled: !connectedUser.isPro})
   const _reports = useReportSearchQuery({hasCompany: true, offset: 0, limit: 5}, false)
   const _tags = useGetTagsQuery(id)
@@ -51,21 +42,7 @@ export const CompanyStats: React.FC<NonProUserComponentProps> = ({id, connectedU
   )
 
   return (
-    <Page loading={_companyById.isLoading}>
-      <PageTitle>
-        <Box>
-          {company?.name}
-          {company?.brand && (
-            <Txt block size="small" fontStyle="italic">
-              {company.brand}
-            </Txt>
-          )}
-          <Txt block size="big" color="hint">
-            {company?.siret}
-          </Txt>
-        </Box>
-      </PageTitle>
-
+    <>
       {company && (
         <>
           <CompanyStatsNumberWidgets id={id} siret={company.siret} />
@@ -110,6 +87,6 @@ export const CompanyStats: React.FC<NonProUserComponentProps> = ({id, connectedU
           </Grid>
         </>
       )}
-    </Page>
+    </>
   )
 }
