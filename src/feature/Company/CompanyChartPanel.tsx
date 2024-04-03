@@ -1,15 +1,14 @@
-import {alpha, Button, ButtonGroup, Icon, IconButton} from '@mui/material'
+import {alpha, Button, ButtonGroup} from '@mui/material'
 import {useLogin} from 'core/context/LoginContext'
 import {useI18n} from 'core/i18n'
 import {siteMap} from 'core/siteMap'
 import {useEffect, useState} from 'react'
 import {NavLink} from 'react-router-dom'
 import {CurveDefinition, LineChartOrPlaceholder} from 'shared/Chart/LineChartWrappers'
-import {Panel, PanelBody, PanelHead} from 'shared/Panel'
+import {CleanDiscreetPanel} from 'shared/Panel/simplePanels'
 import {CompanyWithReportsCount} from '../../core/client/company/Company'
 import {NbReportsTotals, Period} from '../../core/client/stats/Stats'
 import {Id, ReportStatus} from '../../core/model'
-import {CleanDiscreetPanel, CleanWidePanel} from 'shared/Panel/simplePanels'
 
 const periods: Period[] = ['Day', 'Week', 'Month']
 
