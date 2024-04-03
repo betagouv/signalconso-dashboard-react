@@ -19,6 +19,8 @@ import {StatusDistribution} from './stats/StatusDistribution'
 import {CompanyStatsNumberWidgets} from './companyStatsNumberWidgets'
 import {CleanDiscreetPanel} from 'shared/Panel/simplePanels'
 import {UseQueryPaginateResult} from 'core/queryhooks/UseQueryPaginate'
+import {UseQueryResult} from '@tanstack/react-query'
+import {ApiError} from 'core/client/ApiClient'
 export type ExtendedUser = UserWithPermission & {
   isPro: boolean
 }
@@ -67,16 +69,7 @@ export function CompanyStats({connectedUser, company}: {connectedUser: ExtendedU
               <CompanyInfo company={company} />
               <ReviewDistribution companyId={id} />
               <ReportWordDistribution companyId={id} />
-              <Panel loading={_hosts.isLoading}>
-                <PanelHead>{m.websites}</PanelHead>
-                <Box sx={{maxHeight: 260, overflow: 'auto'}}>
-                  <List dense>
-                    {_hosts.data?.map((host, i) => (
-                      <ListItem key={i}>{host}</ListItem>
-                    ))}
-                  </List>
-                </Box>
-              </Panel>
+              <WebsitesDistribution {...{_hosts}} />
             </Grid>
           </Grid>
         </>
@@ -114,6 +107,22 @@ function ReportsShortListPanel({
     <CleanDiscreetPanel loading={_reports.result.isFetching}>
       <h2 className="font-bold text-lg">{m.lastReports}</h2>
       {_reports.result.data && <ReportsShortList reports={_reports.result.data} />}
+    </CleanDiscreetPanel>
+  )
+}
+
+function WebsitesDistribution({_hosts}: {_hosts: UseQueryResult<string[], ApiError>}) {
+  const {m} = useI18n()
+  return (
+    <CleanDiscreetPanel loading={_hosts.isLoading}>
+      <h2 className="font-bold text-lg">{m.websites}</h2>
+      <div style={{maxHeight: 260, overflow: 'auto'}}>
+        <List dense>
+          {_hosts.data?.map((host, i) => (
+            <ListItem key={i}>{host}</ListItem>
+          ))}
+        </List>
+      </div>
     </CleanDiscreetPanel>
   )
 }

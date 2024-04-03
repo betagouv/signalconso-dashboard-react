@@ -8,6 +8,7 @@ import {ScOption} from 'core/helper/ScOption'
 import {siteMap} from '../../../core/siteMap'
 import {NavLink} from 'react-router-dom'
 import {useGetCloudWordQuery} from '../../../core/queryhooks/reportQueryHooks'
+import {CleanDiscreetPanel} from 'shared/Panel/simplePanels'
 
 interface Props {
   companyId: string
@@ -36,8 +37,8 @@ export const ReportWordDistribution = ({companyId}: Props) => {
   )
 
   return (
-    <Panel loading={_wordDistribution.isLoading}>
-      <PanelHead>
+    <CleanDiscreetPanel loading={_wordDistribution.isLoading}>
+      <h2 className="font-bold text-lg">
         <Tooltip title={m.helpCloudWord}>
           <Box sx={{display: 'flex'}}>
             {m.reportCloudWord}
@@ -46,10 +47,10 @@ export const ReportWordDistribution = ({companyId}: Props) => {
             </Icon>
           </Box>
         </Tooltip>
-      </PanelHead>
+      </h2>
       {ScOption.from(_wordDistribution.data)
         .map(_ => (
-          <PanelBody>
+          <>
             {reviewDistribution && reviewDistribution.length > 1 ? (
               <Box sx={{maxHeight: 260, overflow: 'auto'}}>
                 <List dense>
@@ -61,13 +62,13 @@ export const ReportWordDistribution = ({companyId}: Props) => {
             ) : (
               m.cannotGenerateCloudWord
             )}
-          </PanelBody>
+          </>
         ))
         .getOrElse(
-          <PanelBody>
+          <>
             <Skeleton height={66} width="100%" />
-          </PanelBody>,
+          </>,
         )}
-    </Panel>
+    </CleanDiscreetPanel>
   )
 }

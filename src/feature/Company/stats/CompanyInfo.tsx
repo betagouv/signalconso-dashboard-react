@@ -4,6 +4,7 @@ import {Company} from '../../../core/client/company/Company'
 import {useI18n} from '../../../core/i18n'
 import {AddressComponent} from '../../../shared/Address'
 import {Panel, PanelBody, PanelHead} from '../../../shared/Panel'
+import {CleanDiscreetPanel} from 'shared/Panel/simplePanels'
 
 interface Props {
   company: Company
@@ -18,9 +19,9 @@ export const CompanyInfo = ({company}: Props) => {
   })
 
   return (
-    <Panel loading={_activityCodes.isLoading}>
-      <PanelHead>{m.informations}</PanelHead>
-      <PanelBody>
+    <CleanDiscreetPanel loading={_activityCodes.isLoading}>
+      <h2 className="font-bold text-lg">{m.informations}</h2>
+      <>
         <List>
           <ListItem>
             <ListItemIcon>
@@ -48,7 +49,7 @@ export const CompanyInfo = ({company}: Props) => {
             )}
           </ListItem>
         </List>
-      </PanelBody>
-    </Panel>
+      </>
+    </CleanDiscreetPanel>
   )
 }
