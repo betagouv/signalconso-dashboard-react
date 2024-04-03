@@ -1,11 +1,11 @@
-import * as React from 'react'
-import {useI18n} from '../../../core/i18n'
-import {Enum} from '../../../alexlibs/ts-utils'
 import {Icon, Tooltip} from '@mui/material'
-import {Panel, PanelBody, PanelHead} from '../../../shared/Panel'
-import {HorizontalBarChart} from '../../../shared/Chart/HorizontalBarChart'
+import {CleanDiscreetPanel} from 'shared/Panel/simplePanels'
 import {useMemoFn} from '../../../alexlibs/react-hooks-lib'
+import {Enum} from '../../../alexlibs/ts-utils'
 import {ReportStatus, ReportStatusPro} from '../../../core/client/report/Report'
+import {useI18n} from '../../../core/i18n'
+import {HorizontalBarChart} from '../../../shared/Chart/HorizontalBarChart'
+import {PanelBody} from '../../../shared/Panel'
 
 interface Props<T extends ReportStatus | ReportStatusPro> {
   values: {[key in T]: number} | undefined
@@ -49,11 +49,11 @@ export const StatusDistribution = <T extends ReportStatus | ReportStatusPro>({
   )
 
   return (
-    <Panel loading={loading}>
-      <PanelHead>{m.status}</PanelHead>
+    <CleanDiscreetPanel loading={loading}>
+      <h2 className="font-bold text-lg">Répartition des signalements par status</h2>
       <PanelBody>
         <HorizontalBarChart data={statusDistribution} grid />
       </PanelBody>
-    </Panel>
+    </CleanDiscreetPanel>
   )
 }
