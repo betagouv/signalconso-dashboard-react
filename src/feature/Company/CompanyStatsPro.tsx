@@ -1,14 +1,13 @@
 import {Grid} from '@mui/material'
 import {useI18n} from 'core/i18n'
 import {useStatusDistributionProQuery} from 'core/queryhooks/statsQueryHooks'
-import {Panel, PanelHead} from 'shared/Panel'
 import {reportStatusProColor} from 'shared/ReportStatus'
 import {useEffectFn} from '../../alexlibs/react-hooks-lib'
 import {ReportStatusPro} from '../../core/client/report/Report'
 import {CompanyWithReportsCount, UserWithPermission} from '../../core/model'
 import {useReportSearchQuery} from '../../core/queryhooks/reportQueryHooks'
 import {CompanyChartPanel} from './CompanyChartPanel'
-import {ReportsShortList} from './ReportsShortList'
+import {ReportsShortListPanel} from './ReportsShortList'
 import {CompanyStatsNumberWidgets} from './companyStatsNumberWidgets'
 import {CompanyInfo} from './stats/CompanyInfo'
 import {ReviewDistribution} from './stats/ReviewDistribution'
@@ -45,10 +44,7 @@ export function CompanyStatsPro({connectedUser, company}: {connectedUser: Extend
                 statusShortLabel={(s: ReportStatusPro) => m.reportStatusShortPro[s]}
                 statusColor={(s: ReportStatusPro) => reportStatusProColor[s]}
               />
-              <Panel loading={_reports.result.isFetching}>
-                <PanelHead>{m.lastReports}</PanelHead>
-                {_reports.result.data && <ReportsShortList reports={_reports.result.data} />}
-              </Panel>
+              <ReportsShortListPanel {...{_reports}} />
             </Grid>
             <Grid item sm={12} md={5}>
               <CompanyInfo company={company} />
