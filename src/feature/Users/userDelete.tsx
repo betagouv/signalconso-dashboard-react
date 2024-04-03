@@ -2,10 +2,11 @@ import {Tooltip} from '@mui/material'
 import {Alert, Btn, Txt} from '../../alexlibs/mui-extension'
 import {useI18n} from '../../core/i18n'
 
+import {useMutation} from '@tanstack/react-query'
+import {ReactElement} from 'react'
+import {useApiContext} from '../../core/context/ApiContext'
 import {useToast} from '../../core/toast'
 import {ScDialog} from '../../shared/ScDialog'
-import {useMutation} from '@tanstack/react-query'
-import {useApiContext} from '../../core/context/ApiContext'
 
 interface Props {
   userId: string
@@ -13,7 +14,15 @@ interface Props {
   onDelete?: () => void
 }
 
-export const UserDeleteButton = ({userId, compact, onDelete = () => {}}: Props) => {
+export function UserDeleteDialog({
+  userId,
+  onDelete = () => {},
+  children,
+}: {
+  userId: string
+  onDelete?: () => void
+  children: ReactElement<any>
+}) {
   const {m} = useI18n()
   const {api} = useApiContext()
   const _softDelete = useMutation({
@@ -44,11 +53,20 @@ export const UserDeleteButton = ({userId, compact, onDelete = () => {}}: Props) 
       }}
       confirmLabel={m.delete_user}
     >
+      {children}
+    </ScDialog>
+  )
+}
+
+export const UserDeleteButton = ({userId, compact, onDelete}: Props) => {
+  const {m} = useI18n()
+  return (
+    <UserDeleteDialog {...{userId, onDelete}}>
       <Tooltip title={m.delete_user}>
-        <Btn loading={_softDelete.isPending} sx={{color: t => t.palette.error.main}} icon="delete">
+        <Btn sx={{color: t => t.palette.error.main}} icon="delete">
           {compact ? null : m.delete}
         </Btn>
       </Tooltip>
-    </ScDialog>
+    </UserDeleteDialog>
   )
 }

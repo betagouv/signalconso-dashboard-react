@@ -1,26 +1,76 @@
-import {useParams} from 'react-router'
+import {Navigate, Route, Routes, useParams} from 'react-router'
 
+import {Txt} from 'alexlibs/mui-extension'
 import {useLogin} from 'core/context/LoginContext'
-import {Id} from '../../core/model'
+import {siteMap} from 'core/siteMap'
+import {CompanyAccesses} from 'feature/CompanyAccesses/CompanyAccesses'
+import {Page, PageTitle} from 'shared/Page'
+import {PageTab, PageTabs} from 'shared/Page/PageTabs'
+import {CompanyWithReportsCount, Id} from '../../core/model'
 import {useGetCompanyByIdQuery} from '../../core/queryhooks/companyQueryHooks'
-import {CompanyStatsPro} from './CompanyStatsPro'
+import {CompanyHistory} from './CompanyHistory'
 import {CompanyStats} from './CompanyStats'
+import {CompanyStatsPro} from './CompanyStatsPro'
 
-export const CompanyComponent = () => {
+export function Company() {
   const {id} = useParams<{id: Id}>()
+  return id ? <CompanyWithId {...{id}} /> : null
+}
 
-  const {connectedUser} = useLogin()
+function CompanyWithId({id}: {id: string}) {
   const _companyById = useGetCompanyByIdQuery(id)
-
+  const {connectedUser} = useLogin()
   const company = _companyById.data
 
   return (
+    <Page loading={_companyById.isLoading}>
+      {company && <Title {...{company}} />}
+      <PageTabs>
+        <PageTab to={siteMap.logged.company(id).stats.valueAbsolute} label={'Statistiques'} />
+        <PageTab to={siteMap.logged.company(id).accesses.valueAbsolute} label={'Accès utilisateurs'} />
+        {connectedUser.isNotPro ? (
+          <PageTab to={siteMap.logged.company(id).history.valueAbsolute} label={`Historique de l'entreprise`} />
+        ) : undefined}
+      </PageTabs>
+      <Routes>
+        <Route path="/*" element={<Navigate replace to={siteMap.logged.company(id).stats.valueAbsolute} />} />
+        <Route path={siteMap.logged.company(id).stats.value} element={<CompanyStatsComponent {...{company}} />} />
+        <Route path={siteMap.logged.company(id).accesses.value} element={<CompanyAccesses {...{company}} />} />
+        {connectedUser.isNotPro ? (
+          <Route path={siteMap.logged.company(id).history.value} element={<CompanyHistory {...{company}} />} />
+        ) : undefined}
+      </Routes>
+    </Page>
+  )
+}
+
+function Title({company}: {company: CompanyWithReportsCount}) {
+  return (
+    <PageTitle>
+      <div>
+        {company.name}
+        {company.brand && (
+          <Txt block size="small" fontStyle="italic">
+            {company.brand}
+          </Txt>
+        )}
+        <Txt block size="big" color="hint">
+          {company?.siret}
+        </Txt>
+      </div>
+    </PageTitle>
+  )
+}
+
+const CompanyStatsComponent = ({company}: {company: CompanyWithReportsCount | undefined}) => {
+  const {connectedUser} = useLogin()
+  return (
     <>
-      {id &&
+      {company &&
         (connectedUser.isPro ? (
-          <CompanyStatsPro id={id} connectedUser={connectedUser} company={company} />
+          <CompanyStatsPro {...{company, connectedUser}} />
         ) : (
-          <CompanyStats id={id} connectedUser={connectedUser} company={company} />
+          <CompanyStats {...{company, connectedUser}} />
         ))}
     </>
   )

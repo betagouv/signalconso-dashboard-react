@@ -183,7 +183,7 @@ function CompaniesProRow({
   return (
     <div className="lg:grid lg:grid-cols-2 py-2">
       <div className="">
-        <NavLink to={siteMap.logged.company(_.id)} className="text-lg text-scbluefrance">
+        <NavLink to={siteMap.logged.company(_.id).stats.valueAbsolute} className="text-lg text-scbluefrance">
           {_.name}
         </NavLink>
         <div className="text-gray-500">
@@ -206,11 +206,11 @@ function CompaniesProRow({
         />
         <div className="flex  justify-end gap-2">
           {_.level === AccessLevel.ADMIN && (
-            <Btn href={'#' + siteMap.logged.companyAccesses(_.siret)} variant="text" size="small" icon="group">
+            <Btn href={'#' + siteMap.logged.company(_.id).accesses.valueAbsolute} variant="text" size="small" icon="group">
               {m.handleAccesses}
             </Btn>
           )}
-          <Btn href={'#' + siteMap.logged.company(_.id)} variant="text" size="small" icon="query_stats">
+          <Btn href={'#' + siteMap.logged.company(_.id).stats.valueAbsolute} variant="text" size="small" icon="query_stats">
             {m.myStats}
           </Btn>
           <Btn

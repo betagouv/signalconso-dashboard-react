@@ -32,7 +32,7 @@ export const ReportCompany = ({report, canEdit}: Props) => {
           <WithInlineIcon icon="store">
             {m.company}{' '}
             {companyId && !connectedUser.isDGAL && (
-              <NavLink to={siteMap.logged.company(companyId)}>
+              <NavLink to={siteMap.logged.company(companyId).stats.valueAbsolute}>
                 <span className="text-sm">(voir sa fiche)</span>
               </NavLink>
             )}
