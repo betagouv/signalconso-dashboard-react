@@ -4,8 +4,8 @@ import {HorizontalBarChart} from 'shared/Chart/HorizontalBarChart'
 import {Panel, PanelBody, PanelHead} from 'shared/Panel'
 import {reportStatusColor} from 'shared/ReportStatus'
 import {useEffectFn, useMemoFn} from '../../alexlibs/react-hooks-lib'
-import {ReportStatus} from '../../core/client/report/Report'
-import {CompanyWithReportsCount, UserWithPermission} from '../../core/model'
+import {ReportSearchResult, ReportStatus} from '../../core/client/report/Report'
+import {CompanyWithReportsCount, Paginate, PaginatedFilters, ReportSearch, UserWithPermission} from '../../core/model'
 import {useGetHostsQuery} from '../../core/queryhooks/companyQueryHooks'
 import {useReportSearchQuery} from '../../core/queryhooks/reportQueryHooks'
 import {useGetTagsQuery, useStatusDistributionQuery} from '../../core/queryhooks/statsQueryHooks'
@@ -17,6 +17,8 @@ import {ReviewDistribution} from './stats/ReviewDistribution'
 import {StatusDistribution} from './stats/StatusDistribution'
 
 import {CompanyStatsNumberWidgets} from './companyStatsNumberWidgets'
+import {CleanDiscreetPanel} from 'shared/Panel/simplePanels'
+import {UseQueryPaginateResult} from 'core/queryhooks/UseQueryPaginate'
 export type ExtendedUser = UserWithPermission & {
   isPro: boolean
 }
@@ -58,16 +60,8 @@ export function CompanyStats({connectedUser, company}: {connectedUser: ExtendedU
                 statusShortLabel={(s: ReportStatus) => m.reportStatusShort[s]}
                 statusColor={(s: ReportStatus) => reportStatusColor[s]}
               />
-              <Panel>
-                <PanelHead>{m.tags}</PanelHead>
-                <PanelBody>
-                  <HorizontalBarChart data={tagsDistribution} grid />
-                </PanelBody>
-              </Panel>
-              <Panel loading={_reports.result.isFetching}>
-                <PanelHead>{m.lastReports}</PanelHead>
-                {_reports.result.data && <ReportsShortList reports={_reports.result.data} />}
-              </Panel>
+              <TagsDistribution {...{tagsDistribution}} />
+              <ReportsShortListPanel {...{_reports}} />
             </Grid>
             <Grid item sm={12} md={5}>
               <CompanyInfo company={company} />
@@ -88,5 +82,38 @@ export function CompanyStats({connectedUser, company}: {connectedUser: ExtendedU
         </>
       )}
     </>
+  )
+}
+
+function TagsDistribution({
+  tagsDistribution,
+}: {
+  tagsDistribution:
+    | {
+        label: string
+        value: number
+      }[]
+    | undefined
+}) {
+  return (
+    <CleanDiscreetPanel>
+      <h2 className="font-bold text-lg">Répartition par tags</h2>
+      <HorizontalBarChart data={tagsDistribution} grid />
+    </CleanDiscreetPanel>
+  )
+}
+
+function ReportsShortListPanel({
+  _reports,
+}: {
+  _reports: UseQueryPaginateResult<ReportSearch & PaginatedFilters, Paginate<ReportSearchResult>, unknown>
+}) {
+  const {m} = useI18n()
+
+  return (
+    <CleanDiscreetPanel loading={_reports.result.isFetching}>
+      <h2 className="font-bold text-lg">{m.lastReports}</h2>
+      {_reports.result.data && <ReportsShortList reports={_reports.result.data} />}
+    </CleanDiscreetPanel>
   )
 }

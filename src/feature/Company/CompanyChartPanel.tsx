@@ -72,7 +72,7 @@ export const CompanyChartPanel = ({
 
   return (
     <CleanDiscreetPanel>
-      <div className="flex justify-between mb-2">
+      <div className="flex items-center justify-between mb-2">
         {reportTotals && <ReportsTotalWithLink {...{companyId, reportTotals}} />}
         <ButtonGroup color="primary">
           {periods.map(p => (
@@ -100,14 +100,14 @@ function ReportsTotalWithLink({reportTotals, companyId}: {reportTotals: NbReport
   const url = siteMap.logged.reports({companyIds: [companyId]})
   if (connectedUser.isPro) {
     return (
-      <p className="font-normal">
+      <h2 className="font-bold text-lg">
         {firstPart} (dont <NavLink to={url}>{secondPart}</NavLink>)
-      </p>
+      </h2>
     )
   }
   return (
-    <p className="font-normal">
+    <h2 className="font-bold text-lg">
       <NavLink to={url}>{firstPart}</NavLink> (dont {secondPart})
-    </p>
+    </h2>
   )
 }
