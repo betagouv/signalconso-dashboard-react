@@ -12,18 +12,7 @@ import {ScInput} from '../../../shared/ScInput'
 import {ReportFiles} from '../File/ReportFiles'
 import {ReportResponseFormItem} from './ReportResponseFormItem'
 
-import {
-  Box,
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
-  Step,
-  StepButton,
-  Stepper,
-} from '@mui/material'
+import {Box, Step, StepButton, Stepper} from '@mui/material'
 import {useMutation} from '@tanstack/react-query'
 import {
   AcceptedDetails,
@@ -39,7 +28,6 @@ import {FileOrigin} from '../../../core/client/file/UploadedFile'
 import {Report} from '../../../core/client/report/Report'
 import {useApiContext} from '../../../core/context/ApiContext'
 import {Id} from '../../../core/model'
-import {useToast} from '../../../core/toast'
 import {CleanWidePanel} from 'shared/Panel/simplePanels'
 import CharacterCounter from './CharacterCounter'
 import SuccessModal from './SuccessModal'
@@ -77,7 +65,6 @@ export const ReportResponseForm = forwardRef(({report, onConfirm, ...props}: Pro
   const _postResponse = useMutation({
     mutationFn: (params: {id: Id; response: ReportResponse}) => api.secured.reports.postResponse(params.id, params.response),
   })
-  const {toastSuccess} = useToast()
   const maxDetailsCharLength = 10000
 
   const steps = [{label: m.responseToConsumer}, {label: m.responseToDGCCRF, optional: true}]
@@ -89,7 +76,7 @@ export const ReportResponseForm = forwardRef(({report, onConfirm, ...props}: Pro
   const consumerStep = activeStep === 0
   const dgccrfStep = activeStep === 1
 
-  const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(true)
+  const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false)
   const [submittedForm, setSubmittedForm] = useState<ReportResponse | null>(null)
 
   const submitForm = async (form: ReportResponse) => {
