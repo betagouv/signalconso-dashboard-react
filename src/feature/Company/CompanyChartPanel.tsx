@@ -9,6 +9,7 @@ import {Panel, PanelBody, PanelHead} from 'shared/Panel'
 import {CompanyWithReportsCount} from '../../core/client/company/Company'
 import {NbReportsTotals, Period} from '../../core/client/stats/Stats'
 import {Id, ReportStatus} from '../../core/model'
+import {CleanDiscreetPanel, CleanWidePanel} from 'shared/Panel/simplePanels'
 
 const periods: Period[] = ['Day', 'Week', 'Month']
 
@@ -71,28 +72,23 @@ export const CompanyChartPanel = ({
   }
 
   return (
-    <Panel>
-      <PanelHead
-        action={
-          <ButtonGroup color="primary">
-            {periods.map(p => (
-              <Button
-                key={p}
-                sx={p === reportsCurvePeriod ? {background: t => alpha(t.palette.primary.main, 0.14)} : {}}
-                onClick={() => setReportsCurvePeriod(p)}
-              >
-                {periodToString(p)}
-              </Button>
-            ))}
-          </ButtonGroup>
-        }
-      >
+    <CleanDiscreetPanel>
+      <div className="flex justify-between mb-2">
         {reportTotals && <ReportsTotalWithLink {...{companyId, reportTotals}} />}
-      </PanelHead>
-      <PanelBody>
-        <LineChartOrPlaceholder hideLabelToggle={true} {...{curves}} period={reportsCurvePeriod} />
-      </PanelBody>
-    </Panel>
+        <ButtonGroup color="primary">
+          {periods.map(p => (
+            <Button
+              key={p}
+              sx={p === reportsCurvePeriod ? {background: t => alpha(t.palette.primary.main, 0.14)} : {}}
+              onClick={() => setReportsCurvePeriod(p)}
+            >
+              {periodToString(p)}
+            </Button>
+          ))}
+        </ButtonGroup>
+      </div>
+      <LineChartOrPlaceholder hideLabelToggle={true} {...{curves}} period={reportsCurvePeriod} />
+    </CleanDiscreetPanel>
   )
 }
 
