@@ -51,8 +51,8 @@ export function CompanyStats({connectedUser, company}: {connectedUser: ExtendedU
 
           <CompanyChartPanel companyId={id} company={company} reportTotals={_statusDistribution.data?.totals} />
 
-          <Grid container spacing={2}>
-            <Grid item sm={12} md={7}>
+          <div className="grid lg:grid-cols-2 gap-4">
+            <div>
               <StatusDistribution<ReportStatus>
                 loading={_statusDistribution.isLoading}
                 values={_statusDistribution.data?.distribution}
@@ -62,14 +62,14 @@ export function CompanyStats({connectedUser, company}: {connectedUser: ExtendedU
               />
               <TagsDistribution {...{tagsDistribution}} />
               <ReportsShortListPanel {...{_reports}} />
-            </Grid>
-            <Grid item sm={12} md={5}>
+            </div>
+            <div>
               <CompanyInfo company={company} />
               <ReviewDistribution companyId={id} />
               <ReportWordDistribution companyId={id} />
               <WebsitesDistribution {...{_hosts}} />
-            </Grid>
-          </Grid>
+            </div>
+          </div>
         </>
       )}
     </>

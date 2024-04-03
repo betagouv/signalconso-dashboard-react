@@ -35,8 +35,8 @@ export function CompanyStatsPro({connectedUser, company}: {connectedUser: Extend
         <>
           <CompanyStatsNumberWidgets id={id} siret={company.siret} />
           <CompanyChartPanel companyId={id} company={company} reportTotals={_statusDistribution.data?.totals} />
-          <Grid container spacing={2}>
-            <Grid item sm={12} md={7}>
+          <div className="grid lg:grid-cols-2 gap-4">
+            <div>
               <StatusDistribution<ReportStatusPro>
                 values={_statusDistribution.data?.distribution}
                 loading={_statusDistribution.isLoading}
@@ -45,12 +45,12 @@ export function CompanyStatsPro({connectedUser, company}: {connectedUser: Extend
                 statusColor={(s: ReportStatusPro) => reportStatusProColor[s]}
               />
               <ReportsShortListPanel {...{_reports}} />
-            </Grid>
-            <Grid item sm={12} md={5}>
+            </div>
+            <div>
               <CompanyInfo company={company} />
               <ReviewDistribution companyId={id} />
-            </Grid>
-          </Grid>
+            </div>
+          </div>
         </>
       )}
     </>
