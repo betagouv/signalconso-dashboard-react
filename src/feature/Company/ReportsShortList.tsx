@@ -10,7 +10,9 @@ import {ReportDetailValues} from '../../shared/ReportDetailValues'
 import {makeSx} from '../../alexlibs/mui-extension'
 import {styleUtils} from '../../core/theme'
 import {ReportSearchResult} from '../../core/client/report/Report'
-import {Paginate} from '../../core/model'
+import {Paginate, PaginatedFilters, ReportSearch} from '../../core/model'
+import {UseQueryPaginateResult} from 'core/queryhooks/UseQueryPaginate'
+import {CleanDiscreetPanel} from 'shared/Panel/simplePanels'
 
 interface Props {
   reports: Paginate<ReportSearchResult>
@@ -37,7 +39,7 @@ const css = makeSx({
   },
 })
 
-export const ReportsShortList = ({reports}: Props) => {
+const ReportsShortList = ({reports}: Props) => {
   const {m, formatDate} = useI18n()
   return (
     <div>
@@ -72,5 +74,20 @@ export const ReportsShortList = ({reports}: Props) => {
         </Box>
       ))}
     </div>
+  )
+}
+
+export function ReportsShortListPanel({
+  _reports,
+}: {
+  _reports: UseQueryPaginateResult<ReportSearch & PaginatedFilters, Paginate<ReportSearchResult>, unknown>
+}) {
+  const {m} = useI18n()
+
+  return (
+    <CleanDiscreetPanel loading={_reports.result.isFetching}>
+      <h2 className="font-bold text-lg">{m.lastReports}</h2>
+      {_reports.result.data && <ReportsShortList reports={_reports.result.data} />}
+    </CleanDiscreetPanel>
   )
 }

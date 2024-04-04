@@ -41,44 +41,12 @@ export const ScHeader = () => {
   }
   return (
     <Header>
-      <Box
-        component="img"
-        src={logoGouvMobile}
-        alt={m.altLogoGouv}
-        sx={{
-          height: 40,
-          mr: 2,
-        }}
-      />
-      {!isMobileWidth && (
-        <Box
-          component="img"
-          src={logoDgccrf}
-          alt={m.altLogoDGCCRF}
-          sx={{
-            height: 40,
-            mr: 2,
-          }}
-        />
-      )}
+      <img src={logoGouvMobile} alt={m.altLogoGouv} className="h-[40px] mr-4" />
+      {!isMobileWidth && <img src={logoDgccrf} alt={m.altLogoDGCCRF} className="h-[40px] mr-4" />}
       <a href={config.appBaseUrl}>
-        <Box
-          component="img"
-          src={logoSignalConso}
-          alt={m.altLogoSignalConso}
-          sx={{
-            height: 50,
-            mr: 1,
-          }}
-        />
+        <img src={logoSignalConso} alt={m.altLogoSignalConso} className="h-[50px] mr-2" />
       </a>
-      <div
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          marginLeft: 'auto',
-        }}
-      >
+      <div className="flex items-center ml-auto">
         {isMobileWidth ? (
           <>
             <IconBtn aria-haspopup="true" onClick={handleClick}>

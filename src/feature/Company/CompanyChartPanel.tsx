@@ -1,11 +1,11 @@
-import {alpha, Button, ButtonGroup, Icon, IconButton} from '@mui/material'
+import {alpha, Button, ButtonGroup} from '@mui/material'
 import {useLogin} from 'core/context/LoginContext'
 import {useI18n} from 'core/i18n'
 import {siteMap} from 'core/siteMap'
 import {useEffect, useState} from 'react'
 import {NavLink} from 'react-router-dom'
 import {CurveDefinition, LineChartOrPlaceholder} from 'shared/Chart/LineChartWrappers'
-import {Panel, PanelBody, PanelHead} from 'shared/Panel'
+import {CleanDiscreetPanel} from 'shared/Panel/simplePanels'
 import {CompanyWithReportsCount} from '../../core/client/company/Company'
 import {NbReportsTotals, Period} from '../../core/client/stats/Stats'
 import {Id, ReportStatus} from '../../core/model'
@@ -71,28 +71,23 @@ export const CompanyChartPanel = ({
   }
 
   return (
-    <Panel>
-      <PanelHead
-        action={
-          <ButtonGroup color="primary">
-            {periods.map(p => (
-              <Button
-                key={p}
-                sx={p === reportsCurvePeriod ? {background: t => alpha(t.palette.primary.main, 0.14)} : {}}
-                onClick={() => setReportsCurvePeriod(p)}
-              >
-                {periodToString(p)}
-              </Button>
-            ))}
-          </ButtonGroup>
-        }
-      >
+    <CleanDiscreetPanel>
+      <div className="flex items-center justify-between mb-2">
         {reportTotals && <ReportsTotalWithLink {...{companyId, reportTotals}} />}
-      </PanelHead>
-      <PanelBody>
-        <LineChartOrPlaceholder hideLabelToggle={true} {...{curves}} period={reportsCurvePeriod} />
-      </PanelBody>
-    </Panel>
+        <ButtonGroup color="primary">
+          {periods.map(p => (
+            <Button
+              key={p}
+              sx={p === reportsCurvePeriod ? {background: t => alpha(t.palette.primary.main, 0.14)} : {}}
+              onClick={() => setReportsCurvePeriod(p)}
+            >
+              {periodToString(p)}
+            </Button>
+          ))}
+        </ButtonGroup>
+      </div>
+      <LineChartOrPlaceholder hideLabelToggle={true} {...{curves}} period={reportsCurvePeriod} />
+    </CleanDiscreetPanel>
   )
 }
 
@@ -105,14 +100,14 @@ function ReportsTotalWithLink({reportTotals, companyId}: {reportTotals: NbReport
   const url = siteMap.logged.reports({companyIds: [companyId]})
   if (connectedUser.isPro) {
     return (
-      <p className="font-normal">
+      <h2 className="font-bold text-lg">
         {firstPart} (dont <NavLink to={url}>{secondPart}</NavLink>)
-      </p>
+      </h2>
     )
   }
   return (
-    <p className="font-normal">
+    <h2 className="font-bold text-lg">
       <NavLink to={url}>{firstPart}</NavLink> (dont {secondPart})
-    </p>
+    </h2>
   )
 }

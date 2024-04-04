@@ -1,7 +1,6 @@
-import {Box, Grid, List, ListItem} from '@mui/material'
+import {Grid, List, ListItem} from '@mui/material'
 import {useI18n} from 'core/i18n'
 import {HorizontalBarChart} from 'shared/Chart/HorizontalBarChart'
-import {Panel, PanelBody, PanelHead} from 'shared/Panel'
 import {reportStatusColor} from 'shared/ReportStatus'
 import {useEffectFn, useMemoFn} from '../../alexlibs/react-hooks-lib'
 import {ReportStatus} from '../../core/client/report/Report'
@@ -10,12 +9,15 @@ import {useGetHostsQuery} from '../../core/queryhooks/companyQueryHooks'
 import {useReportSearchQuery} from '../../core/queryhooks/reportQueryHooks'
 import {useGetTagsQuery, useStatusDistributionQuery} from '../../core/queryhooks/statsQueryHooks'
 import {CompanyChartPanel} from './CompanyChartPanel'
-import {ReportsShortList} from './ReportsShortList'
+import {ReportsShortListPanel} from './ReportsShortList'
 import {CompanyInfo} from './stats/CompanyInfo'
 import {ReportWordDistribution} from './stats/ReportWordDistribution'
 import {ReviewDistribution} from './stats/ReviewDistribution'
 import {StatusDistribution} from './stats/StatusDistribution'
 
+import {UseQueryResult} from '@tanstack/react-query'
+import {ApiError} from 'core/client/ApiClient'
+import {CleanDiscreetPanel} from 'shared/Panel/simplePanels'
 import {CompanyStatsNumberWidgets} from './companyStatsNumberWidgets'
 export type ExtendedUser = UserWithPermission & {
   isPro: boolean
@@ -49,8 +51,8 @@ export function CompanyStats({connectedUser, company}: {connectedUser: ExtendedU
 
           <CompanyChartPanel companyId={id} company={company} reportTotals={_statusDistribution.data?.totals} />
 
-          <Grid container spacing={2}>
-            <Grid item sm={12} md={7}>
+          <div className="grid lg:grid-cols-2 gap-4">
+            <div>
               <StatusDistribution<ReportStatus>
                 loading={_statusDistribution.isLoading}
                 values={_statusDistribution.data?.distribution}
@@ -58,35 +60,52 @@ export function CompanyStats({connectedUser, company}: {connectedUser: ExtendedU
                 statusShortLabel={(s: ReportStatus) => m.reportStatusShort[s]}
                 statusColor={(s: ReportStatus) => reportStatusColor[s]}
               />
-              <Panel>
-                <PanelHead>{m.tags}</PanelHead>
-                <PanelBody>
-                  <HorizontalBarChart data={tagsDistribution} grid />
-                </PanelBody>
-              </Panel>
-              <Panel loading={_reports.result.isFetching}>
-                <PanelHead>{m.lastReports}</PanelHead>
-                {_reports.result.data && <ReportsShortList reports={_reports.result.data} />}
-              </Panel>
-            </Grid>
-            <Grid item sm={12} md={5}>
+              <TagsDistribution {...{tagsDistribution}} />
+              <ReportsShortListPanel {...{_reports}} />
+            </div>
+            <div>
               <CompanyInfo company={company} />
               <ReviewDistribution companyId={id} />
               <ReportWordDistribution companyId={id} />
-              <Panel loading={_hosts.isLoading}>
-                <PanelHead>{m.websites}</PanelHead>
-                <Box sx={{maxHeight: 260, overflow: 'auto'}}>
-                  <List dense>
-                    {_hosts.data?.map((host, i) => (
-                      <ListItem key={i}>{host}</ListItem>
-                    ))}
-                  </List>
-                </Box>
-              </Panel>
-            </Grid>
-          </Grid>
+              <WebsitesDistribution {...{_hosts}} />
+            </div>
+          </div>
         </>
       )}
     </>
+  )
+}
+
+function TagsDistribution({
+  tagsDistribution,
+}: {
+  tagsDistribution:
+    | {
+        label: string
+        value: number
+      }[]
+    | undefined
+}) {
+  return (
+    <CleanDiscreetPanel>
+      <h2 className="font-bold text-lg">Répartition par tags</h2>
+      <HorizontalBarChart data={tagsDistribution} grid />
+    </CleanDiscreetPanel>
+  )
+}
+
+function WebsitesDistribution({_hosts}: {_hosts: UseQueryResult<string[], ApiError>}) {
+  const {m} = useI18n()
+  return (
+    <CleanDiscreetPanel loading={_hosts.isLoading}>
+      <h2 className="font-bold text-lg">{m.websites}</h2>
+      <div style={{maxHeight: 260, overflow: 'auto'}}>
+        <List dense>
+          {_hosts.data?.map((host, i) => (
+            <ListItem key={i}>{host}</ListItem>
+          ))}
+        </List>
+      </div>
+    </CleanDiscreetPanel>
   )
 }

@@ -8,6 +8,7 @@ import {Txt} from '../../../alexlibs/mui-extension'
 import {ReviewLabel} from './ReviewLabel'
 import {ScOption} from 'core/helper/ScOption'
 import {useGetResponseReviewsQuery} from '../../../core/queryhooks/statsQueryHooks'
+import {CleanDiscreetPanel} from 'shared/Panel/simplePanels'
 
 interface Props {
   companyId: string
@@ -52,22 +53,22 @@ export const ReviewDistribution = ({companyId}: Props) => {
   )
 
   return (
-    <Panel>
-      <PanelHead>{m.consumerReviews}</PanelHead>
+    <CleanDiscreetPanel>
+      <h2 className="font-bold text-lg">{m.consumerReviews}</h2>
       {ScOption.from(_responseReviews.data)
         .map(_ => (
-          <PanelBody>
+          <>
             <Txt color="hint" block sx={{mb: 3}}>
               {m.consumerReviewsDesc}
             </Txt>
             <HorizontalBarChart width={80} data={reviewDistribution} grid />
-          </PanelBody>
+          </>
         ))
         .getOrElse(
-          <PanelBody>
+          <>
             <Skeleton height={66} width="100%" />
-          </PanelBody>,
+          </>,
         )}
-    </Panel>
+    </CleanDiscreetPanel>
   )
 }
