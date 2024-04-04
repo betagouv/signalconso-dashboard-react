@@ -6,7 +6,7 @@ import {NavLink} from 'react-router-dom'
 import {CleanDiscreetPanel} from 'shared/Panel/simplePanels'
 import {WithInlineIcon} from 'shared/WithInlineIcon'
 import {Txt} from '../../../alexlibs/mui-extension'
-import {Influencer, Report} from '../../../core/client/report/Report'
+import {Influencer, Report, Train} from '../../../core/client/report/Report'
 import {useLogin} from '../../../core/context/LoginContext'
 import {useI18n} from '../../../core/i18n'
 import {siteMap} from '../../../core/siteMap'
@@ -24,7 +24,19 @@ export const ReportCompany = ({report, canEdit}: Props) => {
   const {connectedUser} = useLogin()
   const {m} = useI18n()
 
-  const {websiteURL, vendor, companyAddress, companyId, companyName, companyBrand, companySiret, phone, influencer} = report
+  const {
+    websiteURL,
+    vendor,
+    companyAddress,
+    companyId,
+    companyName,
+    companyBrand,
+    companySiret,
+    phone,
+    influencer,
+    train,
+    station,
+  } = report
   return (
     <CleanDiscreetPanel>
       <div className="flex items-center justify-between">
@@ -62,6 +74,8 @@ export const ReportCompany = ({report, canEdit}: Props) => {
           )}
           {phone && <Phone {...{phone}} />}
           {influencer && <InfluencerBlock {...{influencer}} />}
+          {train && <TrainBlock {...{train}} />}
+          {station && <StationBlock {...{station}} />}
         </div>
       </PanelBody>
     </CleanDiscreetPanel>
@@ -97,6 +111,47 @@ function InfluencerBlock({influencer}: {influencer: Influencer}) {
     <Box sx={{mt: theme.spacing(2)}}>
       <Txt sx={sxUtils.fontBig}>{m.influencerIdentifiedTitle}</Txt>
       <ReportInfluencer influencer={influencer} />
+    </Box>
+  )
+}
+
+function TrainBlock({train}: {train: Train}) {
+  const theme = useTheme()
+  const {m} = useI18n()
+  const trainLabel =
+    train.train === 'TER'
+      ? m.Ter[train.ter as unknown as keyof typeof m.Ter]
+      : train.train === 'TRAIN_DE_NUIT'
+      ? m.NightTrain[train.nightTrain as unknown as keyof typeof m.NightTrain]
+      : m.Train[train.train as unknown as keyof typeof m.Train]
+  return (
+    <Box sx={{mt: theme.spacing(4), display: 'inline-flex', alignItems: 'center'}}>
+      <Icon
+        sx={{
+          fontSize: 20,
+          mr: 0.5,
+        }}
+      >
+        train
+      </Icon>
+      Train concerné : {trainLabel}
+    </Box>
+  )
+}
+
+function StationBlock({station}: {station: string}) {
+  const theme = useTheme()
+  return (
+    <Box sx={{mt: theme.spacing(4), display: 'inline-flex', alignItems: 'center'}}>
+      <Icon
+        sx={{
+          fontSize: 20,
+          mr: 0.5,
+        }}
+      >
+        subway
+      </Icon>
+      Gare concernée : {station}
     </Box>
   )
 }
