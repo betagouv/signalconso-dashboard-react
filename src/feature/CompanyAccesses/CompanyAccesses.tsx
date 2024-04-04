@@ -99,7 +99,7 @@ function CompanyAccessesLoaded({company}: {company: CompanyWithReportsCount}) {
 
   const isAdmin = connectedUser.isAdmin
   const isPro = connectedUser.isPro
-  const isListEmpty = _crudAccess.list?.length !== 0
+  const isListEmpty = _crudAccess.list?.length === 0
 
   const emailColumn: Column = {
     id: 'email',
