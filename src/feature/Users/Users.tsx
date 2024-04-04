@@ -6,7 +6,7 @@ import {PageTab, PageTabs} from '../../shared/Page/PageTabs'
 import {ConsumerBlacklist} from './ConsumerBlacklist'
 import {ConsumerListPending} from './ConsumerListPending'
 import {AdminUsersList, AgentUsersList} from './UsersList'
-import {UsersListPending} from './UsersListPending'
+import {UsersAgentListPending} from './UsersAgentListPending'
 import {UserAuthAttempts} from './UserAuthAttempts'
 import {Navigate, Routes} from 'react-router'
 
@@ -28,7 +28,7 @@ export const Users = () => {
         <Route path="/*" element={<Navigate replace to={siteMap.logged.users.agent.value} />} />
         <Route path={siteMap.logged.users.agent.value} element={<AgentUsersList />} />
         <Route path={siteMap.logged.users.auth_attempts.value()} element={<UserAuthAttempts />} />
-        <Route path={siteMap.logged.users.agent_pending.value} element={<UsersListPending />} />
+        <Route path={siteMap.logged.users.agent_pending.value} element={<UsersAgentListPending />} />
         <Route path={siteMap.logged.users.admin.value} element={<AdminUsersList />} />
         <Route path={siteMap.logged.users.consumer_validation.value} element={<ConsumerListPending />} />
         <Route path={siteMap.logged.users.blacklist.value} element={<ConsumerBlacklist />} />

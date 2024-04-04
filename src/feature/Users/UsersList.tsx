@@ -1,30 +1,29 @@
-import {Icon, InputBase, Tooltip} from '@mui/material'
-import React, {useCallback} from 'react'
-import {IconBtn, Txt} from '../../alexlibs/mui-extension'
-import {useI18n} from '../../core/i18n'
-import {Datatable, DatatableColumnProps} from '../../shared/Datatable/Datatable'
-import {Panel, PanelHead} from '../../shared/Panel'
-import {isUserActive, RoleAgents, roleAgents, User} from '../../core/client/user/User'
-import {useToast} from '../../core/toast'
-import {ScDialog} from '../../shared/ScDialog'
-import {DebouncedInput} from '../../shared/DebouncedInput'
-import {TrueFalseUndefined} from '../../shared/TrueFalseUndefined'
-import {UserAgentInvitationDialog} from './UserAgentInvitationDialog'
-import {UserDeleteButton} from './userDelete'
-import {SelectRoleAgent} from '../../shared/SelectRoleAgent'
-import {UserAdminInvitationDialog} from './UserAdminInvitationDialog'
-import {UserAgentsImportDialog} from './UserAgentsImportDialog'
+import {Icon, Tooltip} from '@mui/material'
+import {useMutation, useQueryClient} from '@tanstack/react-query'
+import {useCallback} from 'react'
 import {NavLink} from 'react-router-dom'
-import {siteMap} from '../../core/siteMap'
+import {ScInput} from 'shared/ScInput'
+import {IconBtn, Txt} from '../../alexlibs/mui-extension'
+import {RoleAgents, User, isUserActive, roleAgents} from '../../core/client/user/User'
+import {useApiContext} from '../../core/context/ApiContext'
+import {useI18n} from '../../core/i18n'
 import {
   SearchAdminQueryKeys,
   SearchAgentQueryKeys,
   useSearchAdminQuery,
   useSearchAgentQuery,
 } from '../../core/queryhooks/userQueryHooks'
-import {useMutation, useQueryClient} from '@tanstack/react-query'
-import {useApiContext} from '../../core/context/ApiContext'
-import {ScInput} from 'shared/ScInput'
+import {siteMap} from '../../core/siteMap'
+import {useToast} from '../../core/toast'
+import {Datatable, DatatableColumnProps} from '../../shared/Datatable/Datatable'
+import {DebouncedInput} from '../../shared/DebouncedInput'
+import {ScDialog} from '../../shared/ScDialog'
+import {SelectRoleAgent} from '../../shared/SelectRoleAgent'
+import {TrueFalseUndefined} from '../../shared/TrueFalseUndefined'
+import {UserAdminInvitationDialog} from './UserAdminInvitationDialog'
+import {UserAgentInvitationDialog} from './UserAgentInvitationDialog'
+import {UserAgentsImportDialog} from './UserAgentsImportDialog'
+import {UserDeleteButton} from './userDelete'
 
 export const AdminUsersList = () => <UsersList adminView />
 export const AgentUsersList = () => <UsersList />
@@ -156,15 +155,33 @@ const UsersList = ({adminView}: Props) => {
   return (
     <>
       <>
-        <div className="flex justify-end gap-2 mb-6">
-          {adminView ? (
-            <UserAdminInvitationDialog />
-          ) : (
-            <>
-              <UserAgentInvitationDialog />
-              <UserAgentsImportDialog />
-            </>
-          )}
+        <div className="flex justify-between items-baseline gap-2 mb-6">
+          <div>
+            {adminView ? (
+              <>
+                <p>Cette page liste des utilisateurs "Admin".</p>
+                <p className="px-1 bg-orange-200 block italic text-orange-900">
+                  Attention ceux-ci ont tous les droits, ils peuvent potentiellement causer des dégâts, ce n'est pas pour
+                  n'importe qui !
+                </p>
+              </>
+            ) : (
+              <p>
+                Cette page liste les utilisateurs de type "agent".{' '}
+                <span className="italic text-gray-500">Ce sont les agents de la DGCCRF ou de la DGAL.</span>
+              </p>
+            )}
+          </div>
+          <div className="flex gap-2">
+            {adminView ? (
+              <UserAdminInvitationDialog />
+            ) : (
+              <>
+                <UserAgentInvitationDialog />
+                <UserAgentsImportDialog />
+              </>
+            )}
+          </div>
         </div>
         <Datatable
           id="userslist"

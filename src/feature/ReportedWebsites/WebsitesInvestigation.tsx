@@ -1,6 +1,18 @@
 import React, {useCallback, useMemo, useState} from 'react'
 import {useI18n} from '../../core/i18n'
-import {Badge, Icon, InputBase, Switch, Tooltip} from '@mui/material'
+import {
+  Accordion,
+  AccordionActions,
+  AccordionDetails,
+  AccordionSummary,
+  Badge,
+  Button,
+  Collapse,
+  Icon,
+  InputBase,
+  Switch,
+  Tooltip,
+} from '@mui/material'
 import {useToast} from '../../core/toast'
 import {Panel} from '../../shared/Panel'
 import {Datatable} from '../../shared/Datatable/Datatable'
@@ -94,21 +106,24 @@ export const WebsitesInvestigation = () => {
 
   return (
     <>
-      <div className="p-1 mb-2">
-        {assocationWithClosedCompaniesCount && (
-          <Alert dense type={'error'}>
-            {m.websiteInvestigationClosedCompanyAssociationDesc}
-            <div className="flex justify-end">
-              <Btn size="medium" onClick={_ => handleSeeClosedCompanyAssociation()}>
-                VOIR
-              </Btn>
-            </div>
-          </Alert>
-        )}
-      </div>
       <>
         <Datatable
           id="reportcompanieswebsites"
+          superheader={
+            <div className="flex flex-col gap-2">
+              <Explanation />
+              {assocationWithClosedCompaniesCount && (
+                <Alert dense type={'error'}>
+                  {m.websiteInvestigationClosedCompanyAssociationDesc}
+                  <div className="flex justify-end">
+                    <Btn size="medium" onClick={_ => handleSeeClosedCompanyAssociation()}>
+                      VOIR
+                    </Btn>
+                  </div>
+                </Alert>
+              )}
+            </div>
+          }
           headerMain={
             <div className="w-full flex gap-2">
               <DebouncedInput value={_websiteWithCompany.filters.host ?? ''} onChange={onHostChange}>
@@ -275,6 +290,42 @@ export const WebsitesInvestigation = () => {
           ]}
         />
       </>
+    </>
+  )
+}
+
+function Explanation() {
+  const [expanded, setExpanded] = useState(false)
+  return (
+    <>
+      <div className="hover:bg-gray-100 cursor-pointer" onClick={() => setExpanded(_ => !_)}>
+        Cette page permet de gérer les associations des sites web aux entreprises{' '}
+        {expanded || <span className="text-scbluefrance">({`cliquez pour plus d'explications`})</span>}
+      </div>
+      {expanded && (
+        <div className="my-2">
+          <Alert type="info" deletable>
+            <ul>
+              <li>
+                Cette page liste tous les sites qui ont été signalés. Ces sites ont pu être associés à une entreprise, un pays, ou
+                à rien du tout.
+              </li>
+              <li>Il y a une ligne par association (un site web peut donc apparaitre plusieurs fois).</li>
+              <li>
+                Ces associations sont celles suggérés par les consommateurs (ou éventuellement ajoutées directement par un admin).
+              </li>
+              <li>
+                Les admins peuvent marquer ces associations comme "identifiées", celles-ci seront ensuite utilisées pour proposer
+                aux consommateurs l'identité de l'entreprise lors des futurs signalements.
+              </li>
+              <li className="mt-4">
+                Attention, <span className="font-bold">il y a un filtre par défaut sur cette page</span>, on n'affiche que les
+                associations qui ne sont pas encore marquées comme "identifiées".
+              </li>
+            </ul>
+          </Alert>
+        </div>
+      )}
     </>
   )
 }

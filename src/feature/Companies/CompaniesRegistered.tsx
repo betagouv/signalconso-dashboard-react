@@ -104,6 +104,14 @@ export const CompaniesRegistered = () => {
     <>
       <Datatable
         id="companiesregistered"
+        superheader={
+          <>
+            <p>Cette page liste toutes les sociétés qui existent dans SignalConso</p>
+            <p className="text-gray-500 italic">
+              Elles ont eu au moins un signalement, ou ont été ajoutées manuellement par un admin.
+            </p>
+          </>
+        }
         headerMain={
           <div className="mb-2 w-full">
             <DebouncedInput value={_companies.filters.identity ?? ''} onChange={onInputChange}>

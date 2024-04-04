@@ -300,11 +300,9 @@ export const fr = {
     reportHistory: 'Historique du signalement',
     reportedWebsites: 'Suivi des sites internet',
     reportedCompaniesWebsites: 'Associations sites / entreprises',
-    websitesInvestigation: 'Suivi des sites internet',
+    websitesInvestigation: 'Identification des sites',
     showLabels: 'Afficher les valeurs :',
     reportedUnknownWebsites: 'Sites non identifiés',
-    reportedUnknownWebsitesText:
-      "Liste des sites internet pas encore associés à un numéro SIRET ou pas encore identifiés comme se situant à l'étranger.",
     reportedUnknownWebsitesDGCCRF: 'Suivi des sites internet non identifiés',
     companyHistory: "Historique de l'entreprise",
     reports_pageTitle: 'Suivi des signalements',
@@ -739,7 +737,7 @@ export const fr = {
   `,
     cannotActivateAccountAlertTitle: `Le lien sur lequel vous avez cliqué n'est plus valide.`,
     cannotActivateAccountAlertInfo: `
-    <p>Si vous avez déjà créé votre compte, vous pouvez vous <a href='/#/connexion'>connecter</a> à l'aide de votre adresse email et mot de passe.</p>
+    <p>Si vous avez déjà créé votre compte, vous pouvez vous <a href='/connexion'>connecter</a> à l'aide de votre adresse email et mot de passe.</p>
     Sinon, vous pouvez demander au gestionnaire de l'entreprise de vous envoyer une nouvelle invitation.
   `,
     testMails: {
@@ -1032,6 +1030,36 @@ export const fr = {
       'SC-0011': `L'entreprise n'existe pas.`,
       'SC-0012': `Le code d'activation est périmé.`,
       'SC-0013': `Le code d'activation est invalide.`,
+    },
+    Train: {
+      INOUI_INTERCITES: 'TGV Inoui et Intercités',
+      OUIGO: 'Ouigo Grande Vitesse et Ouigo Train Classique',
+      TER: 'TER',
+      TRANSILIEN: 'Transilien',
+      EUROSTAR: 'Eurostar',
+      TGV_LYRIA: 'TGV Lyria',
+      TGV_ITALIE: 'TGV Italie',
+      TRENITALIA: 'Trenitalia France',
+      RENFE: 'Renfe',
+      ICE: 'Ice',
+      TRAIN_DE_NUIT: 'Train de nuit',
+    },
+    Ter: {
+      AUVERGNE_RHONE_ALPES: 'TER AUVERGNE-RHÔNE-ALPES',
+      BOURGOGNE_FRANCHE_COMTE: 'TER BOURGOGNE-FRANCHE-COMTE',
+      BRETAGNE: 'TER BRETAGNE',
+      CENTRE_VAL_DE_LOIRE: 'TER CENTRE-VAL DE LOIRE',
+      GRAND_EST: 'TER GRAND EST',
+      HAUTS_DE_FRANCE: 'TER HAUTS-DE-FRANCE',
+      NOUVELLE_AQUITAINE: 'TER NOUVELLE AQUITAINE',
+      NORMANDIE: 'TER NORMANDIE',
+      OCCITANIE: 'TER OCCITANIE',
+      PAYS_DE_LA_LOIRE: 'TER PAYS DE LA LOIRE',
+      SUD_PACA: 'TER SUD PROVENCE-ALPES-CÔTE D’AZUR',
+    },
+    NightTrain: {
+      INTERCITE_DE_NUIT: 'Intercité de nuit',
+      NIGHTJET: 'Nightjet',
     },
   },
 }

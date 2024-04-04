@@ -3,3 +3,10 @@ Header add Strict-Transport-Security "max-age=63072000; includeSubDomains; prelo
 Header add X-Frame-Options "SAMEORIGIN"
 Header add X-XSS-Protection "1; mode=block"
 Header add X-Content-Type-Options "nosniff"
+
+# Serve index.html in order to have react router browser router working properly
+# See https://create-react-app.dev/docs/deployment/#serving-apps-with-client-side-routing for more information
+Options -MultiViews
+RewriteEngine On
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^ index.html [QSA,L]

@@ -1,25 +1,24 @@
-import React, {useState} from 'react'
-import {Panel} from '../../shared/Panel'
-import {Datatable} from '../../shared/Datatable/Datatable'
-import {useI18n} from '../../core/i18n'
+import {useState} from 'react'
 import {IconBtn, Txt} from '../../alexlibs/mui-extension'
+import {useI18n} from '../../core/i18n'
+import {Datatable} from '../../shared/Datatable/Datatable'
 
+import {Icon, Tooltip} from '@mui/material'
+import {ScOption} from 'core/helper/ScOption'
+import {RoleAgents, roleAgents} from '../../core/client/user/User'
+import {useLogin} from '../../core/context/LoginContext'
+import {useGetAgentPendingQuery} from '../../core/queryhooks/userQueryHooks'
+import {sxUtils} from '../../core/theme'
 import {useToast} from '../../core/toast'
 import {ScDialog} from '../../shared/ScDialog'
-import {Box, Icon, Tooltip} from '@mui/material'
-import {useLogin} from '../../core/context/LoginContext'
-import {sxUtils} from '../../core/theme'
-import {ScOption} from 'core/helper/ScOption'
-import {roleAgents, RoleAgents} from '../../core/client/user/User'
 import {SelectRoleAgent} from '../../shared/SelectRoleAgent'
-import {useGetAgentPendingQuery} from '../../core/queryhooks/userQueryHooks'
 
-export const UsersListPending = () => {
+export const UsersAgentListPending = () => {
   const {m, formatDate} = useI18n()
   const {connectedUser} = useLogin()
-  const {toastError, toastSuccess} = useToast()
+  const {toastSuccess} = useToast()
   const copyActivationLink = (token: string) => {
-    let activationLink = window.location.host + '/#/agent/rejoindre/?token=' + token
+    let activationLink = window.location.host + '/agent/rejoindre/?token=' + token
     navigator.clipboard.writeText(activationLink).then(_ => toastSuccess(m.addressCopied))
   }
 
@@ -31,6 +30,12 @@ export const UsersListPending = () => {
     <>
       <Datatable
         id="userslistpending"
+        superheader={
+          <p>
+            Cette page liste les agents à qui un mail d'invitation a été envoyé pour créer leur compte sur SignalConso, et qui ne
+            l'ont pas encore utilisé.
+          </p>
+        }
         actions={<SelectRoleAgent value={selectedRole} onChange={_ => setSelectedRole(_)} />}
         headerMarginBottom
         loading={_agentPending.isLoading}
@@ -61,17 +66,7 @@ export const UsersListPending = () => {
                 {connectedUser.isAdmin &&
                   ScOption.from(_.email)
                     .map(email => (
-                      <ScDialog
-                        title={m.resendCompanyAccessToken(_.email)}
-                        onConfirm={
-                          (event, close) => null
-                          // _invite
-                          //   .fetch({}, email)
-                          //   .then(_ => close())
-                          //   .then(_ => toastSuccess(m.userInvitationSent))
-                        }
-                        maxWidth="xs"
-                      >
+                      <ScDialog title={m.resendCompanyAccessToken(_.email)} onConfirm={(event, close) => null} maxWidth="xs">
                         <Tooltip title={m.resendInvite}>
                           <IconBtn>
                             <Icon>send</Icon>
