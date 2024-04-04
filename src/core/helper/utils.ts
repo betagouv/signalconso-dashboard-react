@@ -1,4 +1,3 @@
-import {config} from 'conf/config'
 import {SxProps, Theme} from '@mui/material'
 import format from 'date-fns/format'
 import {ScOption} from './ScOption'
@@ -24,7 +23,7 @@ export const isDefined = <T>(value: T | undefined | null | ''): value is T => !i
 export const emptyStringToUndefined = (value: string): string | undefined => (value.length === 0 ? undefined : value)
 
 export const toNumberOrDefault = (value: any, defaultValue: number): number =>
-  isNaN(value) || value == '' || value == null ? defaultValue : value
+  isNaN(value) || value === '' || value == null ? defaultValue : value
 
 export const cleanObject = <T extends {[key: string]: any}>(obj: T): Partial<T> => {
   const clone = {...obj}
@@ -133,12 +132,8 @@ export const stringToBoolean = (str?: string): boolean | undefined => {
   }
 }
 
-export const getAbsoluteLocalUrl = (path: string) => {
-  return (config.useHashRouter ? '/#' : '') + path
-}
-
 export const openInNew = (path: string) => {
-  window.open(getAbsoluteLocalUrl(path), '_blank')
+  window.open(path, '_blank')
 }
 
 export const sxIf = (condition: boolean | undefined, sx: SxProps<Theme>): SxProps<Theme> => {
