@@ -6,7 +6,7 @@ import {NavLink} from 'react-router-dom'
 import {CleanDiscreetPanel} from 'shared/Panel/simplePanels'
 import {WithInlineIcon} from 'shared/WithInlineIcon'
 import {Txt} from '../../../alexlibs/mui-extension'
-import {Influencer, Report} from '../../../core/client/report/Report'
+import {Influencer, Report, Train} from '../../../core/client/report/Report'
 import {useLogin} from '../../../core/context/LoginContext'
 import {useI18n} from '../../../core/i18n'
 import {siteMap} from '../../../core/siteMap'
@@ -14,6 +14,8 @@ import {sxUtils} from '../../../core/theme'
 import {ScButton} from '../../../shared/Button'
 import {ReportInfluencer} from '../ReportInfluencer'
 import {SelectReportAssociation} from '../SelectReportAssociation'
+import {ReportTrain} from '../ReportTrain'
+import {ReportStation} from '../ReportStation'
 
 interface Props {
   report: Report
@@ -24,7 +26,19 @@ export const ReportCompany = ({report, canEdit}: Props) => {
   const {connectedUser} = useLogin()
   const {m} = useI18n()
 
-  const {websiteURL, vendor, companyAddress, companyId, companyName, companyBrand, companySiret, phone, influencer} = report
+  const {
+    websiteURL,
+    vendor,
+    companyAddress,
+    companyId,
+    companyName,
+    companyBrand,
+    companySiret,
+    phone,
+    influencer,
+    train,
+    station,
+  } = report
   return (
     <CleanDiscreetPanel>
       <div className="flex items-center justify-between">
@@ -62,6 +76,8 @@ export const ReportCompany = ({report, canEdit}: Props) => {
           )}
           {phone && <Phone {...{phone}} />}
           {influencer && <InfluencerBlock {...{influencer}} />}
+          {train && <ReportTrain {...{train}} />}
+          {station && <ReportStation {...{station}} />}
         </div>
       </PanelBody>
     </CleanDiscreetPanel>

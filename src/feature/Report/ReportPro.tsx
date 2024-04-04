@@ -26,6 +26,8 @@ import {ReportResponseComponent} from './ReportResponse'
 import {ReportResponseForm} from './ReportResponseForm/ReportResponseForm'
 import {config} from 'conf/config'
 import {UserNameLabel} from '../../shared/UserNameLabel'
+import {ReportTrain} from './ReportTrain'
+import {ReportStation} from './ReportStation'
 
 export const ReportPro = () => {
   const {id} = useParams<{id: Id}>()
@@ -119,6 +121,10 @@ function ReportBlock({
             <HorizontalLine />
           </>
         )}
+        <div className="mb-4">
+          {report.train && <ReportTrain train={report.train} />}
+          {report.station && <ReportStation station={report.station} />}
+        </div>
         <ReportDetails {...{report}} />
         <HorizontalLine />
         <ReportFilesFull files={files} {...{report}} />

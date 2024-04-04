@@ -91,12 +91,20 @@ export interface Report {
   influencer?: Influencer
   visibleToPro?: boolean
   barcodeProductId?: string
+  train?: Train
+  station?: string
 }
 
 export interface Influencer {
   socialNetwork?: string
   otherSocialNetwork?: string
   name: string
+}
+
+export interface Train {
+  train: string
+  ter?: string
+  nightTrain?: string
 }
 
 export interface DetailInputValue {
