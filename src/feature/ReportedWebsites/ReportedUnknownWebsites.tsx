@@ -33,9 +33,13 @@ export const ReportedUnknownWebsites = () => {
       <Datatable
         id="reportedunknownwebsites"
         superheader={
-          <Txt color="hint" italic>
-            {m.reportedUnknownWebsitesText}
-          </Txt>
+          <p className="">
+            Liste des sites internet non-identifiés (les plus signalés en premier).{' '}
+            <span className="block text-gray-500 italic">
+              C'est la liste des sites internet pour lesquels au moins un utilisateur a fait un signalement sans pouvoir
+              identifier l'entreprise (ni le pays), et que les admins n'ont pas identifiés non plus.
+            </span>
+          </p>
         }
         headerMain={
           <div className="flex gap-2 w-full">

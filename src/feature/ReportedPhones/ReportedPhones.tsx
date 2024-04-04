@@ -33,6 +33,7 @@ export const ReportedPhones = () => {
         <Datatable
           id="reportedphones"
           showColumnsToggle
+          superheader={<p>Cette page liste les numéros de téléphone les plus signalés.</p>}
           headerMain={
             <div className="flex w-full gap-2">
               <DebouncedInput value={_reportedPhone.filters.phone ?? ''} onChange={onPhoneChange}>

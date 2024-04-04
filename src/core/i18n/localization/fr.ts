@@ -300,11 +300,9 @@ export const fr = {
     reportHistory: 'Historique du signalement',
     reportedWebsites: 'Suivi des sites internet',
     reportedCompaniesWebsites: 'Associations sites / entreprises',
-    websitesInvestigation: 'Suivi des sites internet',
+    websitesInvestigation: 'Identification des sites',
     showLabels: 'Afficher les valeurs :',
     reportedUnknownWebsites: 'Sites non identifiés',
-    reportedUnknownWebsitesText:
-      "Liste des sites internet pas encore associés à un numéro SIRET ou pas encore identifiés comme se situant à l'étranger.",
     reportedUnknownWebsitesDGCCRF: 'Suivi des sites internet non identifiés',
     companyHistory: "Historique de l'entreprise",
     reports_pageTitle: 'Suivi des signalements',
