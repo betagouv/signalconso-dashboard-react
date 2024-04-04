@@ -2,9 +2,8 @@ import {CssBaseline, StyledEngineProvider, ThemeProvider} from '@mui/material'
 import {QueryClientProvider} from '@tanstack/react-query'
 import React, {useEffect} from 'react'
 import {useNavigate} from 'react-router'
-import {BrowserRouter, HashRouter} from 'react-router-dom'
+import {BrowserRouter} from 'react-router-dom'
 import {ToastProvider} from './alexlibs/mui-extension'
-import {config} from './conf/config'
 import {apiPublicSdk} from './core/ApiSdkInstance'
 import {Layout} from './core/Layout'
 import {ScHeader} from './core/ScHeader/ScHeader'
@@ -17,8 +16,9 @@ import {Provide} from './shared/Provide'
 import './style.css'
 import {queryClient, setQueryClientErrorHandler} from 'queryClient'
 import {AppRoutes} from './AppRoutes'
+import {RedirectHashRouterToBrowserRouter} from './RedirectHashRouterToBrowserRouter'
 
-const Router: typeof HashRouter = config.useHashRouter ? HashRouter : BrowserRouter
+const Router: typeof BrowserRouter = BrowserRouter
 
 export const App = () => {
   return (
@@ -32,12 +32,13 @@ export const App = () => {
         _ => <ToastProvider horizontal="right" children={_} />,
       ]}
     >
-      <App_ />
+      <RedirectHashRouterToBrowserRouter />
+      <Application />
     </Provide>
   )
 }
 
-const App_ = () => {
+const Application = () => {
   const navigate = useNavigate()
   const {toastError} = useToast()
 

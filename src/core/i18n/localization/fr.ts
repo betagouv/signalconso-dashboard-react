@@ -737,7 +737,7 @@ export const fr = {
   `,
     cannotActivateAccountAlertTitle: `Le lien sur lequel vous avez cliqué n'est plus valide.`,
     cannotActivateAccountAlertInfo: `
-    <p>Si vous avez déjà créé votre compte, vous pouvez vous <a href='/#/connexion'>connecter</a> à l'aide de votre adresse email et mot de passe.</p>
+    <p>Si vous avez déjà créé votre compte, vous pouvez vous <a href='/connexion'>connecter</a> à l'aide de votre adresse email et mot de passe.</p>
     Sinon, vous pouvez demander au gestionnaire de l'entreprise de vous envoyer une nouvelle invitation.
   `,
     testMails: {
