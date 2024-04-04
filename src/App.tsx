@@ -32,7 +32,7 @@ export const App = () => {
         _ => <ToastProvider horizontal="right" children={_} />,
       ]}
     >
-      <RedirectHashRouterToBrowserRouter />
+      {/*<RedirectHashRouterToBrowserRouter />*/}
       <Application />
     </Provide>
   )

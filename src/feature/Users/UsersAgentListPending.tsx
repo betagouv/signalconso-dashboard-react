@@ -18,7 +18,7 @@ export const UsersAgentListPending = () => {
   const {connectedUser} = useLogin()
   const {toastSuccess} = useToast()
   const copyActivationLink = (token: string) => {
-    let activationLink = window.location.host + '/#/agent/rejoindre/?token=' + token
+    let activationLink = window.location.host + '/agent/rejoindre/?token=' + token
     navigator.clipboard.writeText(activationLink).then(_ => toastSuccess(m.addressCopied))
   }
 
@@ -66,17 +66,7 @@ export const UsersAgentListPending = () => {
                 {connectedUser.isAdmin &&
                   ScOption.from(_.email)
                     .map(email => (
-                      <ScDialog
-                        title={m.resendCompanyAccessToken(_.email)}
-                        onConfirm={
-                          (event, close) => null
-                          // _invite
-                          //   .fetch({}, email)
-                          //   .then(_ => close())
-                          //   .then(_ => toastSuccess(m.userInvitationSent))
-                        }
-                        maxWidth="xs"
-                      >
+                      <ScDialog title={m.resendCompanyAccessToken(_.email)} onConfirm={(event, close) => null} maxWidth="xs">
                         <Tooltip title={m.resendInvite}>
                           <IconBtn>
                             <Icon>send</Icon>
