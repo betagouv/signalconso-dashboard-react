@@ -81,7 +81,6 @@ export const ReportResponseForm = forwardRef(({report, onConfirm, ...props}: Pro
 
   const submitForm = async (form: ReportResponse) => {
     await _postResponse.mutateAsync({id: report.id, response: form})
-    console.log('avant', setIsSuccessModalOpen)
     if (form.responseType === 'ACCEPTED') {
       setSubmittedForm(form)
       setIsSuccessModalOpen(true)
