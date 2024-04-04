@@ -1,17 +1,16 @@
-import {Panel} from '../../shared/Panel'
-import {Datatable} from '../../shared/Datatable/Datatable'
-import {useI18n} from '../../core/i18n'
-import React, {useCallback} from 'react'
-import {Box, Icon, InputBase, Tooltip} from '@mui/material'
+import {Box, Icon, Tooltip} from '@mui/material'
+import {useMutation} from '@tanstack/react-query'
+import {useCallback} from 'react'
+import {ScInput} from 'shared/ScInput'
 import {IconBtn, Txt} from '../../alexlibs/mui-extension'
+import {ConsumerEmailValidation} from '../../core/client/consumer-email-validation/ConsumerEmailValidation'
+import {useApiContext} from '../../core/context/ApiContext'
+import {useI18n} from '../../core/i18n'
+import {useConsumerEmailValidationSearchQuery} from '../../core/queryhooks/consumerEmailValidationQueryHooks'
+import {sxUtils} from '../../core/theme'
+import {Datatable} from '../../shared/Datatable/Datatable'
 import {DebouncedInput} from '../../shared/DebouncedInput'
 import {TrueFalseUndefined} from '../../shared/TrueFalseUndefined'
-import {sxUtils} from '../../core/theme'
-import {useConsumerEmailValidationSearchQuery} from '../../core/queryhooks/consumerEmailValidationQueryHooks'
-import {useMutation} from '@tanstack/react-query'
-import {useApiContext} from '../../core/context/ApiContext'
-import {ConsumerEmailValidation} from '../../core/client/consumer-email-validation/ConsumerEmailValidation'
-import {ScInput} from 'shared/ScInput'
 
 export const ConsumerListPending = () => {
   const {m, formatDate} = useI18n()
@@ -29,6 +28,14 @@ export const ConsumerListPending = () => {
     <>
       <Datatable
         id="userslist"
+        superheader={
+          <>
+            <p>
+              Lors que les consommateurs soumettent un signalement, ils doivent entrer un code pour valider leur email. Cette page
+              liste les consommateurs qui sont en train d'essayer de valider leur email, ou qui ont réussi.
+            </p>
+          </>
+        }
         headerMain={
           <>
             <DebouncedInput value={_users.filters.email ?? ''} onChange={onEmailChange}>

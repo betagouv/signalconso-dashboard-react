@@ -1,13 +1,12 @@
-import {Panel} from '../../shared/Panel'
-import {Datatable} from '../../shared/Datatable/Datatable'
-import {useI18n} from '../../core/i18n'
-import React, {useCallback} from 'react'
-import {Icon, InputBase} from '@mui/material'
-import {Txt} from '../../alexlibs/mui-extension'
-import {DebouncedInput} from '../../shared/DebouncedInput'
+import {Icon} from '@mui/material'
+import {useCallback} from 'react'
 import {useLocation} from 'react-router'
-import {useSearchAuthAttemptsQuery} from '../../core/queryhooks/userQueryHooks'
 import {ScInput} from 'shared/ScInput'
+import {Txt} from '../../alexlibs/mui-extension'
+import {useI18n} from '../../core/i18n'
+import {useSearchAuthAttemptsQuery} from '../../core/queryhooks/userQueryHooks'
+import {Datatable} from '../../shared/Datatable/Datatable'
+import {DebouncedInput} from '../../shared/DebouncedInput'
 
 export const UserAuthAttempts = () => {
   const {m} = useI18n()
@@ -29,6 +28,18 @@ export const UserAuthAttempts = () => {
     <>
       <Datatable
         id="userslist"
+        superheader={
+          <>
+            <p>
+              Chaque fois que quelqu'un se connecte à l'Espace Pro avec un login/mot de passe, ou essaie de le faire, il apparait
+              dans cette page.
+            </p>
+            <p className="text-gray-500 italic">
+              Cette liste peut afficher des emails erronés, qui ne correspondent pas à un compte. Si l'utilisateur se trompe dans
+              l'orthographe de son email, cette tentative de connexion apparaitra dans la liste.
+            </p>
+          </>
+        }
         headerMain={
           <>
             <DebouncedInput value={emailQueryParam || authAttempts.filters.login || ''} onChange={onEmailChange}>
