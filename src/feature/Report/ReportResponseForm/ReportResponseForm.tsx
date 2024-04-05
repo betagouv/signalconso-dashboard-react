@@ -76,7 +76,7 @@ export const ReportResponseForm = forwardRef(({report, onConfirm, ...props}: Pro
   const consumerStep = activeStep === 0
   const dgccrfStep = activeStep === 1
 
-  const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false)
+  const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(true)
   const [submittedForm, setSubmittedForm] = useState<ReportResponse | null>(null)
 
   const submitForm = async (form: ReportResponse) => {
