@@ -2,9 +2,9 @@ import React from 'react'
 import {Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Button, Modal} from '@mui/material'
 import pics from './contact.png'
 import CheckCircleIcon from '@mui/icons-material/CheckCircle'
-import ConnectWithoutContactIcon from '@mui/icons-material/ConnectWithoutContact'
 import MarkEmailReadIcon from '@mui/icons-material/MarkEmailRead'
 import {ReportResponseTypes} from 'core/client/event/Event'
+import {useI18n} from 'core/i18n'
 
 interface SuccessModalProps {
   open: boolean
@@ -13,6 +13,7 @@ interface SuccessModalProps {
 }
 
 const SuccessModal: React.FC<SuccessModalProps> = ({open, onClose, responseType}) => {
+  const {m} = useI18n()
   const renderContentBasedOnResponseType = () => {
     switch (responseType) {
       case ReportResponseTypes.Accepted:
@@ -22,7 +23,7 @@ const SuccessModal: React.FC<SuccessModalProps> = ({open, onClose, responseType}
             <div className="flex justify-center">
               <CheckCircleIcon className="text-green-500" sx={{fontSize: '5rem'}} />
             </div>
-            <p className="text-xl font-bold mb-2">Vous venez de faire une promesse d’action et nous vous en félicitons !</p>
+            <p className="text-xl font-bold mb-2">{m.promisedAction}</p>
           </div>
         )
       case ReportResponseTypes.Rejected:
@@ -32,7 +33,7 @@ const SuccessModal: React.FC<SuccessModalProps> = ({open, onClose, responseType}
             <div className="flex justify-center">
               <MarkEmailReadIcon className="text-green-500" sx={{fontSize: '5rem'}} />
             </div>
-            <p className="text-xl font-bold mb-2">Vous avez estimé que ce signalement est infondé</p>
+            <p className="text-xl font-bold mb-2">{m.claimDeemedUnfounded}</p>
           </div>
         )
 
@@ -43,7 +44,7 @@ const SuccessModal: React.FC<SuccessModalProps> = ({open, onClose, responseType}
             <div className="flex justify-center">
               <MarkEmailReadIcon className="text-green-500" sx={{fontSize: '5rem'}} />
             </div>
-            <p className="text-xl font-bold mb-2">Vous avez estimé que ce signalement ne concerne pas votre établissement</p>
+            <p className="text-xl font-bold mb-2">{m.claimNotConcernedYourEstablishment}</p>
           </div>
         )
       default:
@@ -56,17 +57,13 @@ const SuccessModal: React.FC<SuccessModalProps> = ({open, onClose, responseType}
       <DialogContent>
         {renderContentBasedOnResponseType()}
         <DialogContentText>
-          <p>Nous avons envoyé votre réponse au consommateur. Elle est également visible par la DGCCRF.</p>
-          {responseType === 'ACCEPTED' ? (
-            <p>Le consommateur sera invité à donner son avis sur votre réponse et les actions mises en œuvre.</p>
-          ) : (
-            <p>Le consommateur sera invité à donner son avis sur votre réponse dès sa réception.</p>
-          )}
+          <p>{m.responseSentToConsumer}</p>
+          {responseType === 'ACCEPTED' ? <p>{m.consumerReviewInvitationForAccepted}</p> : <p>{m.consumerReviewInvitation}</p>}
         </DialogContentText>
       </DialogContent>
       <DialogActions>
         <Button onClick={onClose} color="primary">
-          Fermer
+          {m.close}
         </Button>
       </DialogActions>
     </Dialog>
