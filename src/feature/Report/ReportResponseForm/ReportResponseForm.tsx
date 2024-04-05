@@ -76,18 +76,13 @@ export const ReportResponseForm = forwardRef(({report, onConfirm, ...props}: Pro
   const consumerStep = activeStep === 0
   const dgccrfStep = activeStep === 1
 
-  const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(true)
+  const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false)
   const [submittedForm, setSubmittedForm] = useState<ReportResponse | null>(null)
 
   const submitForm = async (form: ReportResponse) => {
     await _postResponse.mutateAsync({id: report.id, response: form})
-    if (form.responseType === 'ACCEPTED') {
-      setSubmittedForm(form)
-      setIsSuccessModalOpen(true)
-    } else {
-      onConfirm?.(form)
-      reset()
-    }
+    setSubmittedForm(form)
+    setIsSuccessModalOpen(true)
   }
   const handleModalClose = () => {
     if (submittedForm) {
@@ -286,7 +281,7 @@ export const ReportResponseForm = forwardRef(({report, onConfirm, ...props}: Pro
         )}
       </PanelFoot>
 
-      <SuccessModal open={isSuccessModalOpen} onClose={handleModalClose} />
+      <SuccessModal open={isSuccessModalOpen} onClose={handleModalClose} responseType={submittedForm?.responseType} />
     </CleanWidePanel>
   )
 })
