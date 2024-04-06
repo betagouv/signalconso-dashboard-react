@@ -87,7 +87,6 @@ export function ReportResponseComponent({
 
 function ResponseDetails({details, user}: {details: ReportResponse; user?: EventUser}) {
   const {m} = useI18n()
-  console.log(user)
   return (
     <div>
       <ResponseType
