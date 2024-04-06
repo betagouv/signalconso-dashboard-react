@@ -8,6 +8,7 @@ export interface ConsumerEmailValidation {
   attempts: number
   lastAttempt?: Date
   lastValidationDate?: Date
+  isValid: Boolean
 }
 
 export interface ConsumerEmailValidationSearch extends PaginatedSearch {

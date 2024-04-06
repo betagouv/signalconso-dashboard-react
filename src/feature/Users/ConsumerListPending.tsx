@@ -109,7 +109,7 @@ const Action = (props: {consumerEmailValidation: ConsumerEmailValidation}) => {
   return (
     <>
       <Box sx={{display: 'flex', justifyContent: 'flex-end'}}>
-        {_.lastValidationDate !== undefined || _validate.isSuccess ? (
+        {_.isValid || _validate.isSuccess ? (
           <Tooltip title={formatDate(_.lastValidationDate ?? new Date())} placement="left">
             <span>
               <IconBtn disabled={true}>
