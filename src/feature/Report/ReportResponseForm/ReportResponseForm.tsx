@@ -4,7 +4,6 @@ import {Alert} from '../../../alexlibs/mui-extension'
 import {Enum} from '../../../alexlibs/ts-utils'
 import {useI18n} from '../../../core/i18n'
 import {ScButton} from '../../../shared/Button'
-import {Panel} from '../../../shared/Panel'
 import {PanelFoot} from '../../../shared/Panel/PanelFoot'
 import {ScRadioGroup} from '../../../shared/RadioGroup'
 import {ScRadioGroupItem} from '../../../shared/RadioGroupItem'
@@ -15,11 +14,8 @@ import {ReportResponseFormItem} from './ReportResponseFormItem'
 import {Box, Step, StepButton, Stepper} from '@mui/material'
 import {useMutation} from '@tanstack/react-query'
 import {
-  AcceptedDetails,
   acceptedDetails,
-  NotConcernedDetails,
   notConcernedDetails,
-  RejectedDetails,
   rejectedDetails,
   ReportResponse,
   ReportResponseTypes,
@@ -28,9 +24,9 @@ import {FileOrigin} from '../../../core/client/file/UploadedFile'
 import {Report} from '../../../core/client/report/Report'
 import {useApiContext} from '../../../core/context/ApiContext'
 import {Id} from '../../../core/model'
-import {useToast} from '../../../core/toast'
 import {CleanWidePanel} from 'shared/Panel/simplePanels'
 import CharacterCounter from './CharacterCounter'
+import SuccessModal from './SuccessModal'
 
 interface Props {
   report: Report
@@ -65,7 +61,6 @@ export const ReportResponseForm = forwardRef(({report, onConfirm, ...props}: Pro
   const _postResponse = useMutation({
     mutationFn: (params: {id: Id; response: ReportResponse}) => api.secured.reports.postResponse(params.id, params.response),
   })
-  const {toastSuccess} = useToast()
   const maxDetailsCharLength = 10000
 
   const steps = [{label: m.responseToConsumer}, {label: m.responseToDGCCRF, optional: true}]
@@ -77,11 +72,21 @@ export const ReportResponseForm = forwardRef(({report, onConfirm, ...props}: Pro
   const consumerStep = activeStep === 0
   const dgccrfStep = activeStep === 1
 
+  const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false)
+  const [submittedForm, setSubmittedForm] = useState<ReportResponse | null>(null)
+
   const submitForm = async (form: ReportResponse) => {
     await _postResponse.mutateAsync({id: report.id, response: form})
-    toastSuccess(m.proAnswerSent)
-    onConfirm?.(form)
-    reset()
+    setSubmittedForm(form)
+    setIsSuccessModalOpen(true)
+  }
+  const handleModalClose = () => {
+    if (submittedForm) {
+      onConfirm?.(submittedForm)
+      reset()
+      setSubmittedForm(null)
+    }
+    setIsSuccessModalOpen(false)
   }
 
   const computeDetails = (responseType: ReportResponseTypes) => {
@@ -271,6 +276,8 @@ export const ReportResponseForm = forwardRef(({report, onConfirm, ...props}: Pro
           </>
         )}
       </PanelFoot>
+
+      <SuccessModal open={isSuccessModalOpen} onClose={handleModalClose} responseType={submittedForm?.responseType} />
     </CleanWidePanel>
   )
 })
