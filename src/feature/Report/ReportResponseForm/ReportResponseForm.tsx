@@ -30,6 +30,7 @@ import {useApiContext} from '../../../core/context/ApiContext'
 import {Id} from '../../../core/model'
 import {useToast} from '../../../core/toast'
 import {CleanWidePanel} from 'shared/Panel/simplePanels'
+import CharacterCounter from './CharacterCounter'
 
 interface Props {
   report: Report
@@ -72,7 +73,7 @@ export const ReportResponseForm = forwardRef(({report, onConfirm, ...props}: Pro
   const watchResponseType = watch('responseType')
   const watchResponseDetails = watch('responseDetails')
   const watchOtherResponseDetails = watch('otherResponseDetails')
-  const watchConsumerDetails = watch('consumerDetails')
+  const watchConsumerDetails = watch('consumerDetails') && watch('consumerDetails')?.length <= maxDetailsCharLength
   const consumerStep = activeStep === 0
   const dgccrfStep = activeStep === 1
 
@@ -184,7 +185,13 @@ export const ReportResponseForm = forwardRef(({report, onConfirm, ...props}: Pro
               required: {value: true, message: m.required},
               maxLength: {value: maxDetailsCharLength, message: m.textTooLarge(maxDetailsCharLength)},
             })}
-            helperText={errors.consumerDetails?.message}
+            helperText={
+              errors.consumerDetails ? (
+                errors.consumerDetails?.message
+              ) : (
+                <CharacterCounter currentLength={watch('consumerDetails')?.length} maxLength={maxDetailsCharLength} />
+              )
+            }
             error={!!errors.consumerDetails}
             fullWidth
             multiline
@@ -204,7 +211,13 @@ export const ReportResponseForm = forwardRef(({report, onConfirm, ...props}: Pro
             {...register('dgccrfDetails', {
               maxLength: {value: maxDetailsCharLength, message: m.textTooLarge(maxDetailsCharLength)},
             })}
-            helperText={errors.dgccrfDetails?.message}
+            helperText={
+              errors.dgccrfDetails ? (
+                errors.dgccrfDetails?.message
+              ) : (
+                <CharacterCounter currentLength={watch('dgccrfDetails')?.length} maxLength={maxDetailsCharLength} />
+              )
+            }
             error={!!errors.dgccrfDetails}
             fullWidth
             multiline
