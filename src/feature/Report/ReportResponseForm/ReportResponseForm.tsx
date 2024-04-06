@@ -4,7 +4,6 @@ import {Alert} from '../../../alexlibs/mui-extension'
 import {Enum} from '../../../alexlibs/ts-utils'
 import {useI18n} from '../../../core/i18n'
 import {ScButton} from '../../../shared/Button'
-import {Panel} from '../../../shared/Panel'
 import {PanelFoot} from '../../../shared/Panel/PanelFoot'
 import {ScRadioGroup} from '../../../shared/RadioGroup'
 import {ScRadioGroupItem} from '../../../shared/RadioGroupItem'
@@ -15,11 +14,8 @@ import {ReportResponseFormItem} from './ReportResponseFormItem'
 import {Box, Step, StepButton, Stepper} from '@mui/material'
 import {useMutation} from '@tanstack/react-query'
 import {
-  AcceptedDetails,
   acceptedDetails,
-  NotConcernedDetails,
   notConcernedDetails,
-  RejectedDetails,
   rejectedDetails,
   ReportResponse,
   ReportResponseTypes,
