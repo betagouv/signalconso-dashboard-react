@@ -10,8 +10,8 @@ export const JoinNewsletter = () => {
     <Page maxWidth="m">
       <PageTitle>Restez informé de l’actualité de la consommation et de la concurrence.</PageTitle>
       <p>
-        La newsletter mensuelle "Concurrence et consommation" de la DGCCRF, riche en informations clés, est une source essentielle
-        pour ceux qui s'intéressent à la consommation, à la sécurité et à la concurrence.
+        La newsletter mensuelle "Concurrence et consommation" de la DGCCRF est riche en informations clés. C'est une source
+        essentielle pour ceux qui s'intéressent à la consommation, à la sécurité et à la concurrence.
       </p>
       <br />
       <p>
@@ -20,14 +20,14 @@ export const JoinNewsletter = () => {
       </p>
       <br />
       <p>
-        Abonnez-vous gratuitement pour rester informé des nouveautés législatives et réglementaires, et pour obtenir des
-        informations exclusives sur les événements organisés par la DGCCRF
+        Abonnez-vous gratuitement pour rester informé des nouveautés législatives et réglementaires et pour obtenir des
+        informations exclusives sur les événements organisés par la DGCCRF.
       </p>
       <br />
       <p>
-        Cette newsletter est conçue pour un public varié, allant des professionnels de la consommation et de la concurrence aux
-        juristes, chefs d'entreprise, ingénieurs qualité, journalistes, élus, étudiants et consommateurs, tous intéressés par les
-        domaines d'action de la DGCCRF.
+        Cette newsletter a été conçue pour un public varié, allant des professionnels de la consommation et de la concurrence aux
+        juristes, en passant par les chefs d'entreprise, ingénieurs qualité, journalistes, élus, étudiants et consommateurs,
+        intéressés par les domaines d'action de la DGCCRF.
       </p>
       <br />
       <Button
