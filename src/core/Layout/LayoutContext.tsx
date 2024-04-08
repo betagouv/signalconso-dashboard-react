@@ -40,7 +40,7 @@ export const LayoutContextProvider = ({hasSidebar, children}: {children: ReactNo
 }
 
 function getWindowWidth(): number {
-  return window.outerWidth
+  return window.innerWidth
 }
 
 export const useLayoutContext = (): UseLayoutContextProps => {
