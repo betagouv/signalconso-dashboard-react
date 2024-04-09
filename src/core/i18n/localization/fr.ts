@@ -753,6 +753,10 @@ export const fr = {
           title: `Réinitialiser le mot de passe`,
           desc: `Email envoyé lors de la demande de réinitialiser le mot de passe`,
         },
+        update_email_address: {
+          title: `Valider la nouvelle adresse email `,
+          desc: `Email envoyé lors de la demande de changement d'adresse email`,
+        },
       },
       dgccrf: {
         report_notif_dgccrf: {
