@@ -267,6 +267,13 @@ export const fr = {
     siretExample: 'ex : 12002503600035', // c'est le siret de la DGCCRF
     activationCode: `Code d'activation`,
     activationCodeDesc: `Code à 6 chiffres indiqué dans le courrier que vous avez reçu.`,
+    promisedAction: 'Vous venez de faire une promesse d’action et nous vous en félicitons !',
+    claimDeemedUnfounded: 'Vous avez estimé que ce signalement était infondé.',
+    claimNotConcernedYourEstablishment: 'Vous avez estimé que ce signalement ne concernait pas votre établissement.',
+    responseSentToConsumer: 'Nous avons envoyé votre réponse au consommateur. Elle est également visible par la DGCCRF.',
+    consumerReviewInvitationForAccepted:
+      'Le consommateur sera invité à donner son avis sur votre réponse et les actions mises en œuvre.',
+    consumerReviewInvitation: 'Le consommateur sera invité à donner son avis sur votre réponse dès sa réception.',
     activationCodeInvalid: `Le code doit comporter 6 chiffres.`,
     activationCodeExample: 'ex : 123456',
     emailDesc: `Adresse email de votre choix.`,
