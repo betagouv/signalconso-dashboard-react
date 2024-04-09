@@ -748,6 +748,12 @@ export const fr = {
     Sinon, vous pouvez demander au gestionnaire de l'entreprise de vous envoyer une nouvelle invitation.
   `,
     testMails: {
+      divers: {
+        reset_password: {
+          title: `Réinitialiser le mot de passe`,
+          desc: `Email envoyé lors de la demande de réinitialiser le mot de passe`,
+        },
+      },
       dgccrf: {
         report_notif_dgccrf: {
           title: `Abonnement`,
@@ -761,10 +767,7 @@ export const fr = {
           title: `Accéder à SignalConso`,
           desc: `Email envoyé lors de l'invitation d'un agent`,
         },
-        reset_password: {
-          title: `Réinitialiser le mot de passe`,
-          desc: `Email envoyé lors de la demande de réinitialiser du mot de passer`,
-        },
+
         validate_email: {
           title: `Valider l'email`,
           desc: `Email envoyé lorsque l'email de l'agent n'a pas été validé depuis un certain temps`,
