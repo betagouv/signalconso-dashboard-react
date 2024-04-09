@@ -66,6 +66,11 @@ export const TestTools = () => {
                         }}
                       >
                         {(() => {
+                          const emailCodeDisplay = (
+                            <Txt color="disabled" size="small" block>
+                              {emailCode}
+                            </Txt>
+                          )
                           try {
                             const {title, desc} = (m.testMails as any)[type][emailCode.split('.')[1]]
                             return (
@@ -74,14 +79,12 @@ export const TestTools = () => {
                                   {title}
                                 </Txt>
                                 <Txt color="hint" block dangerouslySetInnerHTML={{__html: desc}} />
-                                <Txt color="disabled" size="small" block>
-                                  {emailCode}
-                                </Txt>
+                                {emailCodeDisplay}
                               </>
                             )
                           } catch (e) {
                             console.error(`Missing translation for ${emailCode}`)
-                            return <></>
+                            return <>{emailCodeDisplay}</>
                           }
                         })()}
                       </Box>
