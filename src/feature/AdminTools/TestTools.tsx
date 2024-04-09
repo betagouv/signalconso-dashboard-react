@@ -20,6 +20,7 @@ export const TestTools = () => {
         .then(emailCodes => emailCodes.sort())
         .then(emailCodes => ({
           divers: emailCodes.filter(_ => _.startsWith('various.')),
+          admin: emailCodes.filter(_ => _.startsWith('admin.')),
           dgccrf: emailCodes.filter(_ => _.startsWith('dgccrf.')),
           pro: emailCodes.filter(_ => _.startsWith('pro.')),
           consumer: emailCodes.filter(_ => _.startsWith('consumer.')),

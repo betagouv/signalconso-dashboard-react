@@ -758,6 +758,16 @@ export const fr = {
           desc: `Email envoyé lors de la demande de changement d'adresse email`,
         },
       },
+      admin: {
+        access_link: {
+          title: `Invitation accès Administrateur`,
+          desc: `Email envoyé de l'invitation de quelqu'un pour qu'il puisse se créer un compte Admin sur SignalConso`,
+        },
+        probe_triggered: {
+          title: `Déclenchement d'une sonde`,
+          desc: `Email envoyé lorsque notre système de sondes automatiques détecte un bug potentiel`,
+        },
+      },
       dgccrf: {
         report_notif_dgccrf: {
           title: `Abonnement`,
