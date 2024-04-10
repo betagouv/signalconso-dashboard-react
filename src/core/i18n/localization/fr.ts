@@ -748,6 +748,26 @@ export const fr = {
     Sinon, vous pouvez demander au gestionnaire de l'entreprise de vous envoyer une nouvelle invitation.
   `,
     testMails: {
+      divers: {
+        reset_password: {
+          title: `Réinitialiser le mot de passe`,
+          desc: `Email envoyé lors de la demande de réinitialiser le mot de passe`,
+        },
+        update_email_address: {
+          title: `Valider la nouvelle adresse email `,
+          desc: `Email envoyé lors de la demande de changement d'adresse email`,
+        },
+      },
+      admin: {
+        access_link: {
+          title: `Invitation accès Administrateur`,
+          desc: `Email envoyé de l'invitation de quelqu'un pour qu'il puisse se créer un compte Admin sur SignalConso`,
+        },
+        probe_triggered: {
+          title: `Déclenchement d'une sonde`,
+          desc: `Email envoyé lorsque notre système de sondes automatiques détecte un bug potentiel`,
+        },
+      },
       dgccrf: {
         report_notif_dgccrf: {
           title: `Abonnement`,
@@ -761,10 +781,7 @@ export const fr = {
           title: `Accéder à SignalConso`,
           desc: `Email envoyé lors de l'invitation d'un agent`,
         },
-        reset_password: {
-          title: `Réinitialiser le mot de passe`,
-          desc: `Email envoyé lors de la demande de réinitialiser du mot de passer`,
-        },
+
         validate_email: {
           title: `Valider l'email`,
           desc: `Email envoyé lorsque l'email de l'agent n'a pas été validé depuis un certain temps`,
@@ -787,6 +804,10 @@ export const fr = {
           title: `Invitation à une entreprise pour utilisateur existant`,
           desc: `Email d'invitation à rejoindre une entreprise pour un utilisateur ayant déjà un compte sur SignalConso`,
         },
+        new_companies_accesses: {
+          title: `Invitation à une entreprise pour utilisateur existant`,
+          desc: `Email d'invitation à rejoindre une entreprise pour un utilisateur ayant déjà un compte sur SignalConso`,
+        },
         report_notification: {
           title: `Nouveau signalement`,
           desc: `Email envoyé au pro lors d'un nouveau signalement sur son entreprise`,
@@ -795,9 +816,17 @@ export const fr = {
           title: `Réponse à un signalement`,
           desc: `Email envoyé lorsque le pro a répondu à un signalement, peu importe le statut`,
         },
+        report_ack_pro_on_admin_completion: {
+          title: `Signalement résolu en dehors de SignalConso`,
+          desc: `Email envoyé lorsqu'un admin marque un signalement comme résolé en dehors de SignalConso (dans le menu "Action Administrateur")`,
+        },
         access_invitation: {
           title: `Invitation à une entreprise pour utilisateur sans compte`,
           desc: `Email d'invitation à rejoindre une entreprise pour un utilisateur n'ayant pas de compte sur SignalConso`,
+        },
+        access_invitation_multiple_companies: {
+          title: `Invitation à rejoindre plusieurs entreprises`,
+          desc: `Email envoyé lors de l'utilisation d'un import de masse (bouton "Importer" dans l'onglet des "Entreprises identifiées")`,
         },
         report_reopening_notification: {
           title: `Réouverture du signalement`,
@@ -806,6 +835,10 @@ export const fr = {
         report_assignement_to_other: {
           title: `Affectation du signalement`,
           desc: `Email envoyé quand un signalement a été affecté au pro par un de ses collègues. Il n'est pas envoyé s'il se l'est affecté lui-même`,
+        },
+        report_deletion_confirmation: {
+          title: `Signalement supprimé`,
+          desc: `Email envoyé lorsqu'un admin supprime le signalement (dans le menu "Action Administrateur", quelle que soit le motif choisi)`,
         },
       },
       consumer: {
