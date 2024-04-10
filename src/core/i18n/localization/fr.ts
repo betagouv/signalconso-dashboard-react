@@ -465,6 +465,7 @@ export const fr = {
     menu_reports: 'Signalements',
     menu_open_reports: 'Signalements à traiter',
     menu_closed_report: `Signalements clôturés`,
+    menu_promises_of_action_report: `Promesses d'action`,
     menu_companies: 'Entreprises',
     menu_my_companies: 'Mes entreprises',
     menu_admin_tools: `Outils`,

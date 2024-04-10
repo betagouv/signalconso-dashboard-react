@@ -33,6 +33,7 @@ import {Subscriptions} from './feature/Subscriptions/Subscriptions'
 import {UserActivation} from './feature/Users/UserActivation'
 import {Users} from './feature/Users/Users'
 import {CenteredContent} from './shared/CenteredContent'
+import {PromisesOfAction} from './feature/PromiseOfAction/PromisesOfAction'
 import './style.css'
 import {UserWithPermission} from 'core/model'
 
@@ -127,6 +128,7 @@ const ProtectedRoutes = () => {
           //We have to add a key properties to distinguish the two calls and force re-render
           element={<ReportsPro reportType="closed" key={siteMap.logged.reportsfiltred.closed} />}
         />
+        <Route path={siteMap.logged.reportsfiltred.promisesOfAction} element={<PromisesOfAction />} />
         <Route path={siteMap.logged.report()} element={connectedUser.isPro ? <ReportPro /> : <ReportComponent />} />
         <Route
           path={siteMap.logged.reports()}
