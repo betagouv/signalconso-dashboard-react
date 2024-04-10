@@ -850,6 +850,10 @@ export const fr = {
           title: `Réponse de l'entreprise`,
           desc: `Email envoyé au conso lorsque l'entreprise a répondu`,
         },
+        report_ack_pro_consumer_on_admin_completion: {
+          title: `Résolution en dehors de SignalConso`,
+          desc: `Email envoyé au conso lorsqu'un admin marque le signalement comme résolu en dehors de SignalConso (via le menu "Action administrateur")`,
+        },
         report_ack_case_dangerous_product: {
           title: `Signalement envoyé`,
           desc: `Signalement produit dangereux`,
