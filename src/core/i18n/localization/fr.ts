@@ -818,7 +818,7 @@ export const fr = {
         },
         report_ack_pro_on_admin_completion: {
           title: `Signalement résolu en dehors de SignalConso`,
-          desc: `Email envoyé lorsqu'un admin marque un signalement comme résolé en dehors de SignalConso`,
+          desc: `Email envoyé lorsqu'un admin marque un signalement comme résolé en dehors de SignalConso (dans le menu "Action Administrateur")`,
         },
         access_invitation: {
           title: `Invitation à une entreprise pour utilisateur sans compte`,
@@ -835,6 +835,10 @@ export const fr = {
         report_assignement_to_other: {
           title: `Affectation du signalement`,
           desc: `Email envoyé quand un signalement a été affecté au pro par un de ses collègues. Il n'est pas envoyé s'il se l'est affecté lui-même`,
+        },
+        report_deletion_confirmation: {
+          title: `Signalement supprimé`,
+          desc: `Email envoyé lorsqu'un admin supprime le signalement (dans le menu "Action Administrateur", quelle que soit le motif choisi)`,
         },
       },
       consumer: {
