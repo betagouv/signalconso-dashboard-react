@@ -804,6 +804,10 @@ export const fr = {
           title: `Invitation à une entreprise pour utilisateur existant`,
           desc: `Email d'invitation à rejoindre une entreprise pour un utilisateur ayant déjà un compte sur SignalConso`,
         },
+        new_companies_accesses: {
+          title: `Invitation à une entreprise pour utilisateur existant`,
+          desc: `Email d'invitation à rejoindre une entreprise pour un utilisateur ayant déjà un compte sur SignalConso`,
+        },
         report_notification: {
           title: `Nouveau signalement`,
           desc: `Email envoyé au pro lors d'un nouveau signalement sur son entreprise`,
@@ -811,6 +815,10 @@ export const fr = {
         report_ack_pro: {
           title: `Réponse à un signalement`,
           desc: `Email envoyé lorsque le pro a répondu à un signalement, peu importe le statut`,
+        },
+        report_ack_pro_on_admin_completion: {
+          title: `Signalement résolu en dehors de SignalConso`,
+          desc: `Email envoyé lorsqu'un admin marque un signalement comme résolé en dehors de SignalConso`,
         },
         access_invitation: {
           title: `Invitation à une entreprise pour utilisateur sans compte`,
