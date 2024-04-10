@@ -19,6 +19,8 @@ export const TestTools = () => {
         .getEmailCodes()
         .then(emailCodes => emailCodes.sort())
         .then(emailCodes => ({
+          divers: emailCodes.filter(_ => _.startsWith('various.')),
+          admin: emailCodes.filter(_ => _.startsWith('admin.')),
           dgccrf: emailCodes.filter(_ => _.startsWith('dgccrf.')),
           pro: emailCodes.filter(_ => _.startsWith('pro.')),
           consumer: emailCodes.filter(_ => _.startsWith('consumer.')),
@@ -64,6 +66,11 @@ export const TestTools = () => {
                         }}
                       >
                         {(() => {
+                          const emailCodeDisplay = (
+                            <Txt color="disabled" size="small" block>
+                              {emailCode}
+                            </Txt>
+                          )
                           try {
                             const {title, desc} = (m.testMails as any)[type][emailCode.split('.')[1]]
                             return (
@@ -72,14 +79,12 @@ export const TestTools = () => {
                                   {title}
                                 </Txt>
                                 <Txt color="hint" block dangerouslySetInnerHTML={{__html: desc}} />
-                                <Txt color="disabled" size="small" block>
-                                  {emailCode}
-                                </Txt>
+                                {emailCodeDisplay}
                               </>
                             )
                           } catch (e) {
                             console.error(`Missing translation for ${emailCode}`)
-                            return <></>
+                            return <>{emailCodeDisplay}</>
                           }
                         })()}
                       </Box>
