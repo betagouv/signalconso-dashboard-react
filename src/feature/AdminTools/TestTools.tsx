@@ -17,7 +17,7 @@ export const TestTools = () => {
     queryFn: () =>
       api.secured.admin
         .getEmailCodes()
-        .then(emailCodes => emailCodes.sort())
+        // .then(emailCodes => emailCodes.sort())
         .then(emailCodes => ({
           divers: emailCodes.filter(_ => _.startsWith('various.')),
           admin: emailCodes.filter(_ => _.startsWith('admin.')),
