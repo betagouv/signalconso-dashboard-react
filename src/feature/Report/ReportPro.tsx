@@ -16,6 +16,7 @@ import {GetReportEventsQueryKeys, useGetReportEventsQuery} from '../../core/quer
 import {GetReportQueryKeys, useGetReportQuery, useGetReviewOnReportResponseQuery} from '../../core/queryhooks/reportQueryHooks'
 import {ScButton} from '../../shared/Button'
 import {Page} from '../../shared/Page'
+import {UserNameLabel} from '../../shared/UserNameLabel'
 import {ReportEvents} from './Event/ReportEvents'
 import {creationReportEvent} from './Report'
 import {ReportAssignement} from './ReportAssignement'
@@ -24,10 +25,8 @@ import {ExpirationDate} from './ReportHeader'
 import {ReportInfluencer} from './ReportInfluencer'
 import {ReportResponseComponent} from './ReportResponse'
 import {ReportResponseForm} from './ReportResponseForm/ReportResponseForm'
-import {config} from 'conf/config'
-import {UserNameLabel} from '../../shared/UserNameLabel'
-import {ReportTrain} from './ReportTrain'
 import {ReportStation} from './ReportStation'
+import {ReportTrain} from './ReportTrain'
 
 export const ReportPro = () => {
   const {id} = useParams<{id: Id}>()
@@ -219,7 +218,7 @@ function Header({
           <p>{report.contactAgreement ? <span>Par {report.email}</span> : <span>Par un consommateur anonyme</span>}</p>
           <ExpirationDate {...{report}} isUserPro={true} />
         </div>
-        {companySiret && config.showReportAssignement && <ReportAssignement {...{reportSearchResult, companySiret}} />}
+        {companySiret && <ReportAssignement {...{reportSearchResult, companySiret}} />}
       </div>
       {isClosed && (
         <div className="flex items-center justify-center bg-[#e3e3fd]  p-2">

@@ -1,16 +1,14 @@
-import React from 'react'
 import {Badge, Box, Icon} from '@mui/material'
-import {ReportSearchResult, ReportStatus} from '../../core/client/report/Report'
-import {Txt} from '../../alexlibs/mui-extension'
-import {useI18n} from 'core/i18n'
-import {ReportStatusLabel} from 'shared/ReportStatus'
-import {combineSx, sxUtils} from '../../core/theme'
-import {ConsumerReviewLabel} from 'shared/ConsumerReviewLabel'
-import ReportResponseDetails from 'feature/Reports/ReportResponseDetails'
-import {css} from './ReportsPro'
 import {fr} from 'core/i18n/localization/fr'
-import {config} from 'conf/config'
+import ReportResponseDetails from 'feature/Reports/ReportResponseDetails'
+import React from 'react'
+import {ConsumerReviewLabel} from 'shared/ConsumerReviewLabel'
+import {ReportStatusLabel} from 'shared/ReportStatus'
+import {Txt} from '../../alexlibs/mui-extension'
+import {ReportSearchResult, ReportStatus} from '../../core/client/report/Report'
+import {combineSx, sxUtils} from '../../core/theme'
 import {UserNameLabel} from '../../shared/UserNameLabel'
+import {css} from './ReportsPro'
 
 interface ReportTableColumnsParams {
   reportType: 'open' | 'closed'
@@ -75,17 +73,13 @@ export const buildReportColumns = ({reportType, isMobileWidth, css, i18nData}: R
       head: 'Date de création',
       render: (report: ReportSearchResult) => <MaybeBold report={report}>{formatDate(report.report.creationDate)}</MaybeBold>,
     },
-    ...(config.showReportAssignement
-      ? [
-          {
-            id: 'assignee',
-            head: 'Assigné à',
-            render: (report: ReportSearchResult) => (
-              <UserNameLabel firstName={report.assignedUser?.firstName} lastName={report.assignedUser?.lastName} />
-            ),
-          },
-        ]
-      : []),
+    {
+      id: 'assignee',
+      head: 'Assigné à',
+      render: (report: ReportSearchResult) => (
+        <UserNameLabel firstName={report.assignedUser?.firstName} lastName={report.assignedUser?.lastName} />
+      ),
+    },
     {
       id: 'consumer',
       head: 'Consommateur',
