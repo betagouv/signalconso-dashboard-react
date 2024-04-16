@@ -46,17 +46,8 @@ const Application = () => {
     setQueryClientErrorHandler(toastError)
   }, [toastError])
 
-  const onLogout = () => {
-    apiPublicSdk.authenticate.logout().then(_ => navigate('/'))
-  }
-
   return (
-    <Login
-      onRegister={apiPublicSdk.authenticate.sendActivationLink}
-      onLogin={apiPublicSdk.authenticate.login}
-      onLogout={onLogout}
-      getUser={apiPublicSdk.authenticate.getUser}
-    >
+    <Login onLogout={() => navigate('/')}>
       {({connectedUser, login, logout, register, setConnectedUser, isFetchingUser}) => {
         return (
           <Layout header={<ScHeader />} sidebar={connectedUser && <ScSidebar connectedUser={connectedUser} logout={logout} />}>

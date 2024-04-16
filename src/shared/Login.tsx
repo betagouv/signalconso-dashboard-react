@@ -1,5 +1,6 @@
 import {ReactNode, useEffect, useState} from 'react'
 import {UserWithPermission} from '../core/client/authenticate/Authenticate'
+import {apiPublicSdk} from 'core/ApiSdkInstance'
 
 export interface LoginActionProps<F extends Function> {
   action: F
@@ -11,10 +12,7 @@ type LoginFunction = (login: string, password: string) => Promise<UserWithPermis
 type RegisterFunction = (siret: string, token: string, email: string) => Promise<void>
 
 interface Props {
-  onLogin: LoginFunction
-  onRegister: RegisterFunction
   onLogout: () => void
-  getUser: () => Promise<UserWithPermission>
   children: (params: {
     connectedUser?: UserWithPermission
     isFetchingUser: boolean
@@ -25,7 +23,7 @@ interface Props {
   }) => ReactNode
 }
 
-export const Login = ({onLogin, onRegister, onLogout, getUser, children}: Props) => {
+export const Login = ({onLogout, children}: Props) => {
   const [connectedUser, setConnectedUser] = useState<UserWithPermission | undefined>()
   const [isLogging, setIsLogging] = useState(false)
   const [isRegistering, setIsRegistering] = useState(false)
@@ -34,7 +32,8 @@ export const Login = ({onLogin, onRegister, onLogout, getUser, children}: Props)
   const [isFetchingUser, setIsFetchingUser] = useState(true)
 
   useEffect(() => {
-    getUser()
+    apiPublicSdk.authenticate
+      .getUser()
       .then(user => {
         setConnectedUser(user)
       })
@@ -49,7 +48,7 @@ export const Login = ({onLogin, onRegister, onLogout, getUser, children}: Props)
   const login: LoginFunction = async (...args) => {
     try {
       setIsLogging(true)
-      const auth = await onLogin(...args)
+      const auth = await apiPublicSdk.authenticate.login(...args)
       setConnectedUser(auth)
       return auth
     } catch (e: any) {
@@ -63,7 +62,7 @@ export const Login = ({onLogin, onRegister, onLogout, getUser, children}: Props)
   const register: RegisterFunction = async (...args) => {
     try {
       setIsRegistering(true)
-      return onRegister(...args)
+      return apiPublicSdk.authenticate.sendActivationLink(...args)
     } catch (e: any) {
       setRegisterError(e)
       throw e
@@ -73,7 +72,8 @@ export const Login = ({onLogin, onRegister, onLogout, getUser, children}: Props)
   }
 
   const logout = async () => {
-    await onLogout()
+    await apiPublicSdk.authenticate.logout()
+    onLogout()
     setConnectedUser(undefined)
   }
 
