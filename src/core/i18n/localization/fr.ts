@@ -805,8 +805,8 @@ export const fr = {
           desc: `Email d'invitation à rejoindre une entreprise pour un utilisateur ayant déjà un compte sur SignalConso`,
         },
         new_companies_accesses: {
-          title: `Invitation à une entreprise pour utilisateur existant`,
-          desc: `Email d'invitation à rejoindre une entreprise pour un utilisateur ayant déjà un compte sur SignalConso`,
+          title: `Invitation à plusieurs entreprises pour utilisateur existant`,
+          desc: `Email envoyé lors d'un import de masse (bouton "Importer" dans l'onglet des "Entreprises identifiées"), si l'utilisateur a déjà un compte`,
         },
         report_notification: {
           title: `Nouveau signalement`,
@@ -818,7 +818,7 @@ export const fr = {
         },
         report_ack_pro_on_admin_completion: {
           title: `Signalement résolu en dehors de SignalConso`,
-          desc: `Email envoyé lorsqu'un admin marque un signalement comme résolé en dehors de SignalConso (dans le menu "Action Administrateur")`,
+          desc: `Email envoyé lorsqu'un admin marque un signalement comme résolu en dehors de SignalConso (dans le menu "Action Administrateur")`,
         },
         access_invitation: {
           title: `Invitation à une entreprise pour utilisateur sans compte`,
@@ -836,12 +836,12 @@ export const fr = {
           title: `Affectation du signalement`,
           desc: `Email envoyé quand un signalement a été affecté au pro par un de ses collègues. Il n'est pas envoyé s'il se l'est affecté lui-même`,
         },
-        report_deletion_confirmation: {
-          title: `Signalement supprimé`,
-          desc: `Email envoyé lorsqu'un admin supprime le signalement (dans le menu "Action Administrateur", quelle que soit le motif choisi)`,
-        },
       },
       consumer: {
+        report_deletion_confirmation: {
+          title: `Signalement supprimé`,
+          desc: `Email envoyé lorsqu'un admin supprime le signalement (dans le menu "Action Administrateur", quel que soit le motif choisi)`,
+        },
         report_transmitted: {
           title: `Lecture par l'entreprise`,
           desc: `Email envoyé à la fin d'un signalement`,
@@ -865,6 +865,10 @@ export const fr = {
         report_closed_no_action: {
           title: `Pas de réponse`,
           desc: `Email envoyé lorsque le pro n'a pas répondu au conso après le délai de 60j.`,
+        },
+        report_closed_no_action_case_dispute: {
+          title: `Pas de réponse (litige)`,
+          desc: `Email envoyé lorsque le pro n'a pas répondu au conso après le délai de 60j (dans le cas d'un litige).`,
         },
         report_ack_case_abroad_default: {
           title: `Signalement envoyé`,
@@ -901,10 +905,6 @@ export const fr = {
         report_closed_no_reading_case_dispute: {
           title: `Signalement litige non lu`,
           desc: `Email envoyé si le pro n'a pas consulté le signalement de type <b>litige</b> dans un délai de 60j`,
-        },
-        report_closed_no_action_case_dispute: {
-          title: `Signalement lu mais sans réponse`,
-          desc: `Signalement <b>Litige</b>`,
         },
         report_ack_case_reponseconso: {
           title: `Signalement envoyé`,
