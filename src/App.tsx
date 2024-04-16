@@ -7,14 +7,13 @@ import {BrowserRouter} from 'react-router-dom'
 import {AppRoutes} from './AppRoutes'
 import {RedirectHashRouterToBrowserRouter} from './RedirectHashRouterToBrowserRouter'
 import {ToastProvider} from './alexlibs/mui-extension'
-import {apiPublicSdk} from './core/ApiSdkInstance'
 import {Layout} from './core/Layout'
 import {ScHeader} from './core/ScHeader/ScHeader'
 import {ScSidebar} from './core/ScSidebar/ScSidebar'
 import {I18nProvider} from './core/i18n'
 import {muiTheme} from './core/theme'
 import {useToast} from './core/toast'
-import {Login} from './shared/Login'
+import {useLoginManagement} from './core/useLoginManagement'
 import {Provide} from './shared/Provide'
 import './style.css'
 
@@ -46,24 +45,25 @@ const Application = () => {
     setQueryClientErrorHandler(toastError)
   }, [toastError])
 
+  function onLogout() {
+    navigate('/')
+  }
+  const {connectedUser, login, logout, register, setConnectedUser, isFetchingUser} = useLoginManagement({
+    onLogout,
+  })
+
   return (
-    <Login onLogout={() => navigate('/')}>
-      {({connectedUser, login, logout, register, setConnectedUser, isFetchingUser}) => {
-        return (
-          <Layout header={<ScHeader />} sidebar={connectedUser && <ScSidebar connectedUser={connectedUser} logout={logout} />}>
-            <QueryClientProvider client={queryClient}>
-              <AppRoutes
-                connectedUser={connectedUser}
-                setConnectedUser={setConnectedUser}
-                register={register}
-                isFetchingUser={isFetchingUser}
-                login={login}
-                logout={logout}
-              />
-            </QueryClientProvider>
-          </Layout>
-        )
-      }}
-    </Login>
+    <Layout header={<ScHeader />} sidebar={connectedUser && <ScSidebar connectedUser={connectedUser} logout={logout} />}>
+      <QueryClientProvider client={queryClient}>
+        <AppRoutes
+          connectedUser={connectedUser}
+          setConnectedUser={setConnectedUser}
+          register={register}
+          isFetchingUser={isFetchingUser}
+          login={login}
+          logout={logout}
+        />
+      </QueryClientProvider>
+    </Layout>
   )
 }

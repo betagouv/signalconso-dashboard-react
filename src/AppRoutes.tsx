@@ -33,7 +33,7 @@ import {Subscriptions} from './feature/Subscriptions/Subscriptions'
 import {UserActivation} from './feature/Users/UserActivation'
 import {Users} from './feature/Users/Users'
 import {CenteredContent} from './shared/CenteredContent'
-import {LoginActionProps} from './shared/Login'
+import {LoginActionProps} from './core/useLoginManagement'
 import './style.css'
 
 export interface LoginExposedProps {

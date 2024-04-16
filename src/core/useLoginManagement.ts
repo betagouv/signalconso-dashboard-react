@@ -1,6 +1,6 @@
-import {ReactNode, useEffect, useState} from 'react'
-import {UserWithPermission} from '../core/client/authenticate/Authenticate'
 import {apiPublicSdk} from 'core/ApiSdkInstance'
+import {useEffect, useState} from 'react'
+import {UserWithPermission} from './client/authenticate/Authenticate'
 
 export interface LoginActionProps<F extends Function> {
   action: F
@@ -11,19 +11,14 @@ export interface LoginActionProps<F extends Function> {
 type LoginFunction = (login: string, password: string) => Promise<UserWithPermission>
 type RegisterFunction = (siret: string, token: string, email: string) => Promise<void>
 
-interface Props {
-  onLogout: () => void
-  children: (params: {
-    connectedUser?: UserWithPermission
-    isFetchingUser: boolean
-    logout: () => void
-    login: LoginActionProps<LoginFunction>
-    register: LoginActionProps<RegisterFunction>
-    setConnectedUser: (_: UserWithPermission) => void
-  }) => ReactNode
-}
-
-export const Login = ({onLogout, children}: Props) => {
+export function useLoginManagement({onLogout}: {onLogout: () => void}): {
+  connectedUser?: UserWithPermission
+  isFetchingUser: boolean
+  logout: () => void
+  login: LoginActionProps<LoginFunction>
+  register: LoginActionProps<RegisterFunction>
+  setConnectedUser: (_: UserWithPermission) => void
+} {
   const [connectedUser, setConnectedUser] = useState<UserWithPermission | undefined>()
   const [isLogging, setIsLogging] = useState(false)
   const [isRegistering, setIsRegistering] = useState(false)
@@ -77,24 +72,20 @@ export const Login = ({onLogout, children}: Props) => {
     setConnectedUser(undefined)
   }
 
-  return (
-    <>
-      {children({
-        connectedUser,
-        isFetchingUser,
-        login: {
-          action: login,
-          loading: isLogging,
-          errorMsg: loginError,
-        },
-        logout,
-        register: {
-          action: register,
-          loading: isRegistering,
-          errorMsg: registerError,
-        },
-        setConnectedUser,
-      })}
-    </>
-  )
+  return {
+    connectedUser,
+    isFetchingUser,
+    login: {
+      action: login,
+      loading: isLogging,
+      errorMsg: loginError,
+    },
+    logout,
+    register: {
+      action: register,
+      loading: isRegistering,
+      errorMsg: registerError,
+    },
+    setConnectedUser,
+  }
 }
