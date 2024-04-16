@@ -53,16 +53,9 @@ const Application = () => {
   })
 
   return (
-    <Layout header={<ScHeader />} sidebar={connectedUser && <ScSidebar connectedUser={connectedUser} logout={logout} />}>
+    <Layout header={<ScHeader />} sidebar={connectedUser && <ScSidebar {...{connectedUser, logout}} />}>
       <QueryClientProvider client={queryClient}>
-        <AppRoutes
-          connectedUser={connectedUser}
-          setConnectedUser={setConnectedUser}
-          register={register}
-          isFetchingUser={isFetchingUser}
-          login={login}
-          logout={logout}
-        />
+        <AppRoutes {...{connectedUser, login, logout, register, setConnectedUser, isFetchingUser}} />
       </QueryClientProvider>
     </Layout>
   )
