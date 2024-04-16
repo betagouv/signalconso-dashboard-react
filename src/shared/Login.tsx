@@ -1,7 +1,5 @@
-import {useEffect, useState} from 'react'
+import {ReactNode, useEffect, useState} from 'react'
 import {UserWithPermission} from '../core/client/authenticate/Authenticate'
-
-export type Fn = (...args: any[]) => Promise<any>
 
 export interface LoginActionProps<F extends Function> {
   action: F
@@ -9,24 +7,25 @@ export interface LoginActionProps<F extends Function> {
   errorMsg?: string
 }
 
-export interface LoginExposedProps<L extends Fn, R extends Fn> {
-  connectedUser?: UserWithPermission
-  isFetchingUser: boolean
-  logout: () => void
-  login: LoginActionProps<L>
-  register: LoginActionProps<R>
-  setConnectedUser: (_: UserWithPermission) => void
-}
+type LoginFunction = (login: string, password: string) => Promise<UserWithPermission>
+type RegisterFunction = (siret: string, token: string, email: string) => Promise<void>
 
-interface Props<L extends Fn, R extends Fn> {
-  onLogin: L
-  onRegister: R
+interface Props {
+  onLogin: LoginFunction
+  onRegister: RegisterFunction
   onLogout: () => void
   getUser: () => Promise<UserWithPermission>
-  children: ({connectedUser, login, logout}: LoginExposedProps<L, R>) => any
+  children: (params: {
+    connectedUser?: UserWithPermission
+    isFetchingUser: boolean
+    logout: () => void
+    login: LoginActionProps<LoginFunction>
+    register: LoginActionProps<RegisterFunction>
+    setConnectedUser: (_: UserWithPermission) => void
+  }) => ReactNode
 }
 
-export const Login = <L extends Fn, R extends Fn>({onLogin, onRegister, onLogout, getUser, children}: Props<L, R>) => {
+export const Login = ({onLogin, onRegister, onLogout, getUser, children}: Props) => {
   const [connectedUser, setConnectedUser] = useState<UserWithPermission | undefined>()
   const [isLogging, setIsLogging] = useState(false)
   const [isRegistering, setIsRegistering] = useState(false)
@@ -35,7 +34,6 @@ export const Login = <L extends Fn, R extends Fn>({onLogin, onRegister, onLogout
   const [isFetchingUser, setIsFetchingUser] = useState(true)
 
   useEffect(() => {
-    console.log('@@@ calling getUser')
     getUser()
       .then(user => {
         setConnectedUser(user)
@@ -48,8 +46,7 @@ export const Login = <L extends Fn, R extends Fn>({onLogin, onRegister, onLogout
       })
   }, [])
 
-  // @ts-ignore
-  const login: L = async (...args: any[]) => {
+  const login: LoginFunction = async (...args) => {
     try {
       setIsLogging(true)
       const auth = await onLogin(...args)
@@ -63,8 +60,7 @@ export const Login = <L extends Fn, R extends Fn>({onLogin, onRegister, onLogout
     }
   }
 
-  // @ts-ignore
-  const register: R = async (...args: any[]) => {
+  const register: RegisterFunction = async (...args) => {
     try {
       setIsRegistering(true)
       return onRegister(...args)
@@ -81,20 +77,24 @@ export const Login = <L extends Fn, R extends Fn>({onLogin, onRegister, onLogout
     setConnectedUser(undefined)
   }
 
-  return children({
-    connectedUser,
-    isFetchingUser,
-    login: {
-      action: login,
-      loading: isLogging,
-      errorMsg: loginError,
-    },
-    logout,
-    register: {
-      action: register,
-      loading: isRegistering,
-      errorMsg: registerError,
-    },
-    setConnectedUser,
-  })
+  return (
+    <>
+      {children({
+        connectedUser,
+        isFetchingUser,
+        login: {
+          action: login,
+          loading: isLogging,
+          errorMsg: loginError,
+        },
+        logout,
+        register: {
+          action: register,
+          loading: isRegistering,
+          errorMsg: registerError,
+        },
+        setConnectedUser,
+      })}
+    </>
+  )
 }
