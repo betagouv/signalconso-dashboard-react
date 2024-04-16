@@ -8,4 +8,5 @@ export interface PromiseOfAction {
   expirationDate: Date
   engagement: AcceptedDetails
   otherEngagement?: string
+  resolutionDate?: Date
 }

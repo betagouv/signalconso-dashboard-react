@@ -47,10 +47,12 @@ export function ReportResponseComponent({
   })
 
   const details = response.data.details
+  const expirationDate = new Date(response.data.creationDate)
+  expirationDate.setDate(expirationDate.getDate() + 8)
   const user = response.user
   return (
     <div className="">
-      {details ? <ResponseDetails {...{details, user}} /> : <div className="mt-2">{m.noAnswerFromPro}</div>}
+      {details ? <ResponseDetails {...{details, expirationDate, user}} /> : <div className="mt-2">{m.noAnswerFromPro}</div>}
       <div className="flex flex-row mt-5 ">
         <h2 className="font-bold">{m.attachedFiles}</h2>
         {files && files.filter(_ => _.origin === FileOrigin.Professional).length > 1 && (
@@ -85,7 +87,7 @@ export function ReportResponseComponent({
   )
 }
 
-function ResponseDetails({details, user}: {details: ReportResponse; user?: EventUser}) {
+function ResponseDetails({details, expirationDate, user}: {details: ReportResponse; expirationDate?: Date; user?: EventUser}) {
   const {m} = useI18n()
   return (
     <div>
@@ -93,6 +95,7 @@ function ResponseDetails({details, user}: {details: ReportResponse; user?: Event
         responseType={details.responseType}
         responseDetails={details.responseDetails}
         otherResponseDetails={details.otherResponseDetails}
+        expirationDate={expirationDate}
       />
       <p className="font-bold">Répondant :</p>
       <div className="pl-4 mb-4">
@@ -116,12 +119,14 @@ function ResponseType({
   responseType,
   responseDetails,
   otherResponseDetails,
+  expirationDate,
 }: {
   responseType: ReportResponseTypes
   responseDetails: AcceptedDetails | RejectedDetails | NotConcernedDetails
   otherResponseDetails?: string
+  expirationDate?: Date
 }) {
-  const {m} = useI18n()
+  const {m, formatDate} = useI18n()
   const {icon, color, text} = (() => {
     switch (responseType) {
       case ReportResponseTypes.Accepted:
@@ -139,12 +144,19 @@ function ResponseType({
       : m.responseDetails[responseDetails]
 
   return (
-    <div className={`${color} mb-4 border-black border-solid border w-fit p-2`}>
-      <p className={`flex items-center gap-1 font-bold`}>
-        <Icon fontSize="small">{icon}</Icon>
-        {text}
-      </p>
-      <p className={'pl-6 pt-2 italic'}>{responseDetailsText}</p>
+    <div className="mb-4">
+      <div className={`${color} mb-2 border-black border-solid border w-fit p-2`}>
+        <p className={`flex items-center gap-1 font-bold`}>
+          <Icon fontSize="small">{icon}</Icon>
+          {text}
+        </p>
+        <p className={'pl-6 pt-2 italic'}>{responseDetailsText}</p>
+      </div>
+      {expirationDate && (
+        <p>
+          Nous demanderons son avis au consommateur le <strong>{formatDate(expirationDate)}</strong>
+        </p>
+      )}
     </div>
   )
 }
