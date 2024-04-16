@@ -10,12 +10,12 @@ export interface LoginActionProps<F extends Function> {
 }
 
 export interface LoginExposedProps<L extends Fn, R extends Fn> {
-  authResponse?: UserWithPermission
+  connectedUser?: UserWithPermission
+  isFetchingUser: boolean
   logout: () => void
   login: LoginActionProps<L>
   register: LoginActionProps<R>
-  setUser: (_: UserWithPermission) => void
-  isFetchingUser: boolean
+  setConnectedUser: (_: UserWithPermission) => void
 }
 
 interface Props<L extends Fn, R extends Fn> {
@@ -23,11 +23,11 @@ interface Props<L extends Fn, R extends Fn> {
   onRegister: R
   onLogout: () => void
   getUser: () => Promise<UserWithPermission>
-  children: ({authResponse, login, logout}: LoginExposedProps<L, R>) => any
+  children: ({connectedUser, login, logout}: LoginExposedProps<L, R>) => any
 }
 
 export const Login = <L extends Fn, R extends Fn>({onLogin, onRegister, onLogout, getUser, children}: Props<L, R>) => {
-  const [auth, setAuth] = useState<UserWithPermission | undefined>()
+  const [connectedUser, setConnectedUser] = useState<UserWithPermission | undefined>()
   const [isLogging, setIsLogging] = useState(false)
   const [isRegistering, setIsRegistering] = useState(false)
   const [loginError, setLoginError] = useState<string | undefined>()
@@ -35,9 +35,10 @@ export const Login = <L extends Fn, R extends Fn>({onLogin, onRegister, onLogout
   const [isFetchingUser, setIsFetchingUser] = useState(true)
 
   useEffect(() => {
+    console.log('@@@ calling getUser')
     getUser()
       .then(user => {
-        setAuth(user)
+        setConnectedUser(user)
       })
       .catch(e => {
         console.log('User is not logged in')
@@ -52,7 +53,7 @@ export const Login = <L extends Fn, R extends Fn>({onLogin, onRegister, onLogout
     try {
       setIsLogging(true)
       const auth = await onLogin(...args)
-      setAuth(auth)
+      setConnectedUser(auth)
       return auth
     } catch (e: any) {
       setLoginError(e)
@@ -60,10 +61,6 @@ export const Login = <L extends Fn, R extends Fn>({onLogin, onRegister, onLogout
     } finally {
       setIsLogging(false)
     }
-  }
-
-  const setUser = (user: UserWithPermission) => {
-    setAuth(user)
   }
 
   // @ts-ignore
@@ -81,11 +78,12 @@ export const Login = <L extends Fn, R extends Fn>({onLogin, onRegister, onLogout
 
   const logout = async () => {
     await onLogout()
-    setAuth(undefined)
+    setConnectedUser(undefined)
   }
 
   return children({
-    authResponse: auth,
+    connectedUser,
+    isFetchingUser,
     login: {
       action: login,
       loading: isLogging,
@@ -97,7 +95,6 @@ export const Login = <L extends Fn, R extends Fn>({onLogin, onRegister, onLogout
       loading: isRegistering,
       errorMsg: registerError,
     },
-    setUser,
-    isFetchingUser,
+    setConnectedUser,
   })
 }

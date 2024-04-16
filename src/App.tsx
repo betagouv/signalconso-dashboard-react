@@ -1,8 +1,11 @@
 import {CssBaseline, StyledEngineProvider, ThemeProvider} from '@mui/material'
 import {QueryClientProvider} from '@tanstack/react-query'
-import React, {useEffect} from 'react'
+import {queryClient, setQueryClientErrorHandler} from 'queryClient'
+import {useEffect} from 'react'
 import {useNavigate} from 'react-router'
 import {BrowserRouter} from 'react-router-dom'
+import {AppRoutes} from './AppRoutes'
+import {RedirectHashRouterToBrowserRouter} from './RedirectHashRouterToBrowserRouter'
 import {ToastProvider} from './alexlibs/mui-extension'
 import {apiPublicSdk} from './core/ApiSdkInstance'
 import {Layout} from './core/Layout'
@@ -14,9 +17,6 @@ import {useToast} from './core/toast'
 import {Login} from './shared/Login'
 import {Provide} from './shared/Provide'
 import './style.css'
-import {queryClient, setQueryClientErrorHandler} from 'queryClient'
-import {AppRoutes} from './AppRoutes'
-import {RedirectHashRouterToBrowserRouter} from './RedirectHashRouterToBrowserRouter'
 
 const Router: typeof BrowserRouter = BrowserRouter
 
@@ -57,13 +57,13 @@ const Application = () => {
       onLogout={onLogout}
       getUser={apiPublicSdk.authenticate.getUser}
     >
-      {({authResponse, login, logout, register, setUser, isFetchingUser}) => {
+      {({connectedUser, login, logout, register, setConnectedUser, isFetchingUser}) => {
         return (
-          <Layout header={<ScHeader />} sidebar={authResponse && <ScSidebar connectedUser={authResponse} logout={logout} />}>
+          <Layout header={<ScHeader />} sidebar={connectedUser && <ScSidebar connectedUser={connectedUser} logout={logout} />}>
             <QueryClientProvider client={queryClient}>
               <AppRoutes
-                authResponse={authResponse}
-                setUser={setUser}
+                connectedUser={connectedUser}
+                setConnectedUser={setConnectedUser}
                 register={register}
                 isFetchingUser={isFetchingUser}
                 login={login}

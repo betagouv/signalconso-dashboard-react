@@ -37,15 +37,15 @@ import {LoginActionProps} from './shared/Login'
 import './style.css'
 
 export interface LoginExposedProps {
-  authResponse?: UserWithPermission
+  connectedUser?: UserWithPermission
   logout: () => void
   login: LoginActionProps<(login: string, password: string) => Promise<UserWithPermission>>
   register: LoginActionProps<(siret: string, token: string, email: string) => Promise<void>>
-  setUser: (_: UserWithPermission) => void
+  setConnectedUser: (_: UserWithPermission) => void
   isFetchingUser: boolean
 }
 
-export const AppRoutes = ({authResponse, setUser, register, isFetchingUser, login, logout}: LoginExposedProps) => {
+export const AppRoutes = ({connectedUser, setConnectedUser, register, isFetchingUser, login, logout}: LoginExposedProps) => {
   const UserActivationComponent = () => (
     <UserActivation onActivateUser={apiPublicSdk.user.activateAccount} onFetchTokenInfo={apiPublicSdk.user.fetchTokenInfo} />
   )
@@ -54,7 +54,7 @@ export const AppRoutes = ({authResponse, setUser, register, isFetchingUser, logi
     <Routes>
       <Route
         path={siteMap.loggedout.emailValidation}
-        element={<EmailValidation onSaveUser={setUser} onValidateEmail={apiPublicSdk.authenticate.validateEmail} />}
+        element={<EmailValidation onSaveUser={setConnectedUser} onValidateEmail={apiPublicSdk.authenticate.validateEmail} />}
       />
       <Route
         path={siteMap.loggedout.resetPassword()}
@@ -68,8 +68,13 @@ export const AppRoutes = ({authResponse, setUser, register, isFetchingUser, logi
       <Route
         path="*"
         element={
-          authResponse ? (
-            <LoginProvider connectedUser={authResponse} setConnectedUser={setUser} onLogout={logout} apiSdk={makeSecuredSdk()}>
+          connectedUser ? (
+            <LoginProvider
+              connectedUser={connectedUser}
+              setConnectedUser={setConnectedUser}
+              onLogout={logout}
+              apiSdk={makeSecuredSdk()}
+            >
               <ProtectedRoutes />
             </LoginProvider>
           ) : isFetchingUser ? (
