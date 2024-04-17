@@ -77,7 +77,7 @@ export class ApiClient {
 
   readonly baseUrl: string
 
-  constructor({baseUrl, headers, requestInterceptor, mapData, mapError, withCredentials}: ApiClientParams) {
+  constructor({baseUrl, headers, requestInterceptor, withCredentials}: ApiClientParams) {
     const client = axios.create({
       baseURL: baseUrl,
       headers: {...headers},
@@ -97,27 +97,24 @@ export class ApiClient {
           withCredentials: options?.withCredentials || withCredentials,
           paramsSerializer: params => qs.stringify(params, {arrayFormat: 'repeat'}),
         })
-        .then(mapData ?? ((_: AxiosResponse) => _.data))
-        .catch(
-          mapError ??
-            ((_: any) => {
-              const request = {method, url, qs: options?.qs, body: options?.body}
-              if (_.response && _.response.data) {
-                const message = _.response.data.details ?? _.response.data.timeout ?? JSON.stringify(_.response.data)
-                throw new ApiError(message, {
-                  code: _.response.status,
-                  id: _.response.data.type,
-                  request,
-                  error: _,
-                })
-              }
-              throw new ApiError(`Something not caught went wrong`, {
-                code: _.response ? _.response.status : 'front-side',
-                error: _,
-                request,
-              })
-            }),
-        )
+        .then((_: AxiosResponse) => _.data)
+        .catch((_: any) => {
+          const request = {method, url, qs: options?.qs, body: options?.body}
+          if (_.response && _.response.data) {
+            const message = _.response.data.details ?? _.response.data.timeout ?? JSON.stringify(_.response.data)
+            throw new ApiError(message, {
+              code: _.response.status,
+              id: _.response.data.type,
+              request,
+              error: _,
+            })
+          }
+          throw new ApiError(`Something not caught went wrong`, {
+            code: _.response ? _.response.status : 'front-side',
+            error: _,
+            request,
+          })
+        })
     }
 
     /**
