@@ -48,14 +48,15 @@ const Application = () => {
   function onLogout() {
     navigate('/')
   }
-  const {connectedUser, login, logout, register, setConnectedUser, isFetchingUserOnStartup} = useLoginManagement({
+  const loginManagementResult = useLoginManagement({
     onLogout,
   })
+  const {connectedUser, logout} = loginManagementResult
 
   return (
     <Layout header={<ScHeader />} sidebar={connectedUser && <ScSidebar {...{connectedUser, logout}} />}>
       <QueryClientProvider client={queryClient}>
-        <AppRoutes {...{connectedUser, login, logout, register, setConnectedUser, isFetchingUserOnStartup}} />
+        <AppRoutes {...{loginManagementResult}} />
       </QueryClientProvider>
     </Layout>
   )

@@ -1,5 +1,6 @@
 import {CircularProgress} from '@mui/material'
 import {ApiProvider} from 'core/context/ApiContext'
+import {LoginManagementResult} from 'core/useLoginManagement'
 import {LoginForm} from 'feature/Login/LoginForm'
 import {RegisterForm} from 'feature/Login/RegisterForm'
 import {WelcomePage} from 'feature/Login/WelcomePage'
@@ -7,7 +8,6 @@ import {useEffect} from 'react'
 import {Navigate, Routes, useLocation} from 'react-router'
 import {Route} from 'react-router-dom'
 import {apiPublicSdk, makeSecuredSdk} from './core/ApiSdkInstance'
-import {UserWithPermission} from './core/client/authenticate/Authenticate'
 import {LoginProvider, useLogin} from './core/context/LoginContext'
 import {Matomo} from './core/plugins/Matomo'
 import {siteMap} from './core/siteMap'
@@ -33,26 +33,10 @@ import {Subscriptions} from './feature/Subscriptions/Subscriptions'
 import {UserActivation} from './feature/Users/UserActivation'
 import {Users} from './feature/Users/Users'
 import {CenteredContent} from './shared/CenteredContent'
-import {LoginActionProps} from './core/useLoginManagement'
 import './style.css'
 
-export interface LoginExposedProps {
-  connectedUser?: UserWithPermission
-  logout: () => void
-  login: LoginActionProps<(login: string, password: string) => Promise<UserWithPermission>>
-  register: LoginActionProps<(siret: string, token: string, email: string) => Promise<void>>
-  setConnectedUser: (_: UserWithPermission) => void
-  isFetchingUserOnStartup: boolean
-}
-
-export const AppRoutes = ({
-  connectedUser,
-  setConnectedUser,
-  register,
-  isFetchingUserOnStartup,
-  login,
-  logout,
-}: LoginExposedProps) => {
+export const AppRoutes = ({loginManagementResult}: {loginManagementResult: LoginManagementResult}) => {
+  const {connectedUser, setConnectedUser, register, isFetchingUserOnStartup, login, logout} = loginManagementResult
   const UserActivationComponent = () => (
     <UserActivation onActivateUser={apiPublicSdk.user.activateAccount} onFetchTokenInfo={apiPublicSdk.user.fetchTokenInfo} />
   )

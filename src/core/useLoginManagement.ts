@@ -2,23 +2,24 @@ import {apiPublicSdk} from 'core/ApiSdkInstance'
 import {useEffect, useState} from 'react'
 import {UserWithPermission} from './client/authenticate/Authenticate'
 
-export interface LoginActionProps<F extends Function> {
-  action: F
-  loading?: boolean
-  errorMsg?: string
-}
-
-type LoginFunction = (login: string, password: string) => Promise<UserWithPermission>
-type RegisterFunction = (siret: string, token: string, email: string) => Promise<void>
-
-export function useLoginManagement({onLogout}: {onLogout: () => void}): {
+export type LoginManagementResult = {
   connectedUser?: UserWithPermission
   isFetchingUserOnStartup: boolean
   logout: () => void
-  login: LoginActionProps<LoginFunction>
-  register: LoginActionProps<RegisterFunction>
+  login: {
+    action: (login: string, password: string) => Promise<UserWithPermission>
+    loading?: boolean
+    errorMsg?: string
+  }
+  register: {
+    action: (siret: string, token: string, email: string) => Promise<void>
+    loading?: boolean
+    errorMsg?: string
+  }
   setConnectedUser: (_: UserWithPermission) => void
-} {
+}
+
+export function useLoginManagement({onLogout}: {onLogout: () => void}): LoginManagementResult {
   const [connectedUser, setConnectedUser] = useState<UserWithPermission | undefined>()
   const [isLoggingIn, setIsLoggingIn] = useState(false)
   const [isRegistering, setIsRegistering] = useState(false)
