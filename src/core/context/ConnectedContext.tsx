@@ -5,7 +5,6 @@ import {Roles, UserWithPermission} from '../client/authenticate/Authenticate'
 type ConnectedContext = {
   connectedUser: UserWithPermission & {isDGCCRF: boolean; isDGAL: boolean; isPro: boolean; isNotPro: boolean; isAdmin: boolean}
   setConnectedUser: Dispatch<SetStateAction<UserWithPermission>>
-  logout: () => void
   apiSdk: SignalConsoApiSdk
 }
 
@@ -15,12 +14,10 @@ export const ConnectedContextProvider = ({
   apiSdk,
   connectedUser: _connectedUser,
   setConnectedUser: _setConnectedUser,
-  onLogout,
   children,
 }: {
   apiSdk: SignalConsoApiSdk
   connectedUser: UserWithPermission
-  onLogout: () => void
   setConnectedUser: (_: UserWithPermission) => void
   children: ReactNode
 }) => {
@@ -46,7 +43,7 @@ export const ConnectedContextProvider = ({
           isNotPro: connectedUser.role !== Roles.Pro,
           isAdmin: connectedUser.role === Roles.Admin,
         },
-        logout: onLogout,
+
         apiSdk,
       }}
     >

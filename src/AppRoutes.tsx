@@ -36,7 +36,7 @@ import {CenteredContent} from './shared/CenteredContent'
 import './style.css'
 
 export const AppRoutes = ({loginManagementResult}: {loginManagementResult: LoginManagementResult}) => {
-  const {connectedUser, setConnectedUser, register, isFetchingUserOnStartup, login, logout} = loginManagementResult
+  const {connectedUser, setConnectedUser, register, isFetchingUserOnStartup, login} = loginManagementResult
   const UserActivationComponent = () => (
     <UserActivation onActivateUser={apiPublicSdk.user.activateAccount} onFetchTokenInfo={apiPublicSdk.user.fetchTokenInfo} />
   )
@@ -60,12 +60,7 @@ export const AppRoutes = ({loginManagementResult}: {loginManagementResult: Login
         path="*"
         element={
           connectedUser ? (
-            <ConnectedContextProvider
-              connectedUser={connectedUser}
-              setConnectedUser={setConnectedUser}
-              onLogout={logout}
-              apiSdk={makeSecuredSdk()}
-            >
+            <ConnectedContextProvider connectedUser={connectedUser} setConnectedUser={setConnectedUser} apiSdk={makeSecuredSdk()}>
               <ProtectedRoutes />
             </ConnectedContextProvider>
           ) : isFetchingUserOnStartup ? (
