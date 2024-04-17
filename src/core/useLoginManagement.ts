@@ -27,17 +27,17 @@ export function useLoginManagement({onLogout}: {onLogout: () => void}): {
   const [isFetchingUser, setIsFetchingUser] = useState(true)
 
   useEffect(() => {
-    apiPublicSdk.authenticate
-      .getUser()
-      .then(user => {
+    async function fetchUser() {
+      try {
+        const user = await apiPublicSdk.authenticate.getUser()
         setConnectedUser(user)
-      })
-      .catch(e => {
+      } catch (e) {
         console.log('User is not logged in')
-      })
-      .finally(() => {
+      } finally {
         setIsFetchingUser(false)
-      })
+      }
+    }
+    fetchUser()
   }, [])
 
   const login: LoginFunction = async (...args) => {
