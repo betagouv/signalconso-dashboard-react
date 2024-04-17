@@ -13,10 +13,6 @@ export interface RequestOption {
 export interface ApiClientParams {
   readonly baseUrl: string
   readonly headers?: any
-  readonly requestInterceptor?: (options?: RequestOption) => Promise<RequestOption> | RequestOption
-  readonly proxy?: string
-  readonly mapData?: (_: any) => any
-  readonly mapError?: (_: any) => never
   readonly withCredentials?: boolean
 }
 
@@ -77,7 +73,7 @@ export class ApiClient {
 
   readonly baseUrl: string
 
-  constructor({baseUrl, headers, requestInterceptor, withCredentials}: ApiClientParams) {
+  constructor({baseUrl, headers, withCredentials}: ApiClientParams) {
     const client = axios.create({
       baseURL: baseUrl,
       headers: {...headers},
@@ -86,7 +82,7 @@ export class ApiClient {
     this.baseUrl = baseUrl
 
     this.request = async (method: Method, url: string, options?: RequestOption) => {
-      const builtOptions = await ApiClient.buildOptions(options, headers, requestInterceptor)
+      const builtOptions = await ApiClient.buildOptions(options, headers)
       return client
         .request({
           method,
@@ -121,7 +117,7 @@ export class ApiClient {
      * TODO(Alex) Didn't find any way to download pdf with axios so I did it using fetch(), but it should exist.
      */
     const requestUsingFetchApi = async (method: Method, url: string, options?: RequestOption) => {
-      const builtOptions = await ApiClient.buildOptions(options, headers, requestInterceptor)
+      const builtOptions = await ApiClient.buildOptions(options, headers)
       return fetch(baseUrl + url + (options?.qs ? `?${qs.stringify(options.qs, {arrayFormat: 'repeat'})}` : ''), {
         method,
         headers: builtOptions?.headers,
@@ -139,15 +135,10 @@ export class ApiClient {
     }
   }
 
-  private static readonly buildOptions = async (
-    options?: RequestOption,
-    headers?: any,
-    requestInterceptor: (_?: RequestOption) => RequestOption | Promise<RequestOption> = _ => _!,
-  ): Promise<RequestOption> => {
-    const interceptedOptions = await requestInterceptor(options)
+  private static readonly buildOptions = async (options?: RequestOption, headers?: any): Promise<RequestOption> => {
     return {
-      ...interceptedOptions,
-      headers: {...headers, ...interceptedOptions?.headers},
+      ...options,
+      headers: {...headers, ...options?.headers},
     }
   }
 
