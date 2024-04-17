@@ -13,51 +13,51 @@ type RegisterFunction = (siret: string, token: string, email: string) => Promise
 
 export function useLoginManagement({onLogout}: {onLogout: () => void}): {
   connectedUser?: UserWithPermission
-  isFetchingUser: boolean
+  isFetchingUserOnStartup: boolean
   logout: () => void
   login: LoginActionProps<LoginFunction>
   register: LoginActionProps<RegisterFunction>
   setConnectedUser: (_: UserWithPermission) => void
 } {
   const [connectedUser, setConnectedUser] = useState<UserWithPermission | undefined>()
-  const [isLogging, setIsLogging] = useState(false)
+  const [isLoggingIn, setIsLoggingIn] = useState(false)
   const [isRegistering, setIsRegistering] = useState(false)
   const [loginError, setLoginError] = useState<string | undefined>()
   const [registerError, setRegisterError] = useState<string | undefined>()
-  const [isFetchingUser, setIsFetchingUser] = useState(true)
+  const [isFetchingUserOnStartup, setIsFetchingUserOnStartup] = useState(true)
 
   useEffect(() => {
-    async function fetchUser() {
+    async function fetchUserOnStartup() {
       try {
         const user = await apiPublicSdk.authenticate.getUser()
         setConnectedUser(user)
       } catch (e) {
         console.log('User is not logged in')
       } finally {
-        setIsFetchingUser(false)
+        setIsFetchingUserOnStartup(false)
       }
     }
-    fetchUser()
+    fetchUserOnStartup()
   }, [])
 
-  const login: LoginFunction = async (...args) => {
+  async function login(login: string, password: string): Promise<UserWithPermission> {
     try {
-      setIsLogging(true)
-      const auth = await apiPublicSdk.authenticate.login(...args)
-      setConnectedUser(auth)
-      return auth
+      setIsLoggingIn(true)
+      const user = await apiPublicSdk.authenticate.login(login, password)
+      setConnectedUser(user)
+      return user
     } catch (e: any) {
       setLoginError(e)
       throw e
     } finally {
-      setIsLogging(false)
+      setIsLoggingIn(false)
     }
   }
 
-  const register: RegisterFunction = async (...args) => {
+  async function register(siret: string, token: string, email: string): Promise<void> {
     try {
       setIsRegistering(true)
-      return apiPublicSdk.authenticate.sendActivationLink(...args)
+      await apiPublicSdk.authenticate.sendActivationLink(siret, token, email)
     } catch (e: any) {
       setRegisterError(e)
       throw e
@@ -74,10 +74,10 @@ export function useLoginManagement({onLogout}: {onLogout: () => void}): {
 
   return {
     connectedUser,
-    isFetchingUser,
+    isFetchingUserOnStartup,
     login: {
       action: login,
-      loading: isLogging,
+      loading: isLoggingIn,
       errorMsg: loginError,
     },
     logout,

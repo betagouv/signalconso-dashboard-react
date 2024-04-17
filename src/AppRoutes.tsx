@@ -42,10 +42,17 @@ export interface LoginExposedProps {
   login: LoginActionProps<(login: string, password: string) => Promise<UserWithPermission>>
   register: LoginActionProps<(siret: string, token: string, email: string) => Promise<void>>
   setConnectedUser: (_: UserWithPermission) => void
-  isFetchingUser: boolean
+  isFetchingUserOnStartup: boolean
 }
 
-export const AppRoutes = ({connectedUser, setConnectedUser, register, isFetchingUser, login, logout}: LoginExposedProps) => {
+export const AppRoutes = ({
+  connectedUser,
+  setConnectedUser,
+  register,
+  isFetchingUserOnStartup,
+  login,
+  logout,
+}: LoginExposedProps) => {
   const UserActivationComponent = () => (
     <UserActivation onActivateUser={apiPublicSdk.user.activateAccount} onFetchTokenInfo={apiPublicSdk.user.fetchTokenInfo} />
   )
@@ -77,7 +84,7 @@ export const AppRoutes = ({connectedUser, setConnectedUser, register, isFetching
             >
               <ProtectedRoutes />
             </LoginProvider>
-          ) : isFetchingUser ? (
+          ) : isFetchingUserOnStartup ? (
             <CenteredContent>
               <CircularProgress />
             </CenteredContent>
