@@ -13,7 +13,7 @@ export class ApiClientMock implements ApiClientApi {
   private readonly mocks: {urlPattern: RegExp; returnValue: any}[] = []
   private readonly fetch: (method: Method, url: string, options?: RequestOption) => Promise<any>
 
-  constructor({baseUrl, headers}: ApiClientParams) {
+  constructor({headers}: ApiClientParams) {
     this.fetch = async <T>(method: Method, url: string, options?: RequestOption): Promise<T> => {
       // @ts-ignore bypass private method
       const builtOptions = await ApiClient.buildOptions(options, headers)
