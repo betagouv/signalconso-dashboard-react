@@ -72,8 +72,8 @@ export function useLoginManagement(): LoginManagementResult {
   }
 
   function handleDetectedLogout() {
-    navigate('/')
     setConnectedUser(undefined)
+    navigate('/')
   }
 
   const logout = async () => {
