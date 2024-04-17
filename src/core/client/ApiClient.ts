@@ -33,12 +33,6 @@ export type StatusCode = 'front-side' | 200 | 301 | 302 | 400 | 401 | 403 | 404 
 export interface ApiErrorDetails {
   code: StatusCode
   id?: string
-  request: {
-    method: Method
-    url: string
-    qs?: any
-    body?: any
-  }
   error?: Error
 }
 
@@ -83,20 +77,17 @@ export class ApiClient {
         })
         .then((_: AxiosResponse) => _.data)
         .catch((_: any) => {
-          const request = {method, url, qs: options?.qs, body: options?.body}
           if (_.response && _.response.data) {
             const message = _.response.data.details ?? _.response.data.timeout ?? JSON.stringify(_.response.data)
             throw new ApiError(message, {
               code: _.response.status,
               id: _.response.data.type,
-              request,
               error: _,
             })
           }
           throw new ApiError(`Something not caught went wrong`, {
             code: _.response ? _.response.status : 'front-side',
             error: _,
-            request,
           })
         })
     }
