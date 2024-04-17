@@ -10,7 +10,7 @@ import {map} from '../../alexlibs/ts-utils'
 import {EventActionValues, EventType, ReportEvent} from '../../core/client/event/Event'
 import {FileOrigin} from '../../core/client/file/UploadedFile'
 import {Report, ReportStatus} from '../../core/client/report/Report'
-import {useLogin} from '../../core/context/LoginContext'
+import {useConnectedContext} from '../../core/context/ConnectedContext'
 import {useI18n} from '../../core/i18n'
 import {Id} from '../../core/model'
 import {useGetCompanyEventsQuery, useGetReportEventsQuery} from '../../core/queryhooks/eventQueryHooks'
@@ -46,7 +46,7 @@ export const creationReportEvent = (report: Report): ReportEvent =>
 export const ReportComponent = () => {
   const {id} = useParams<{id: Id}>()
   const {m} = useI18n()
-  const {connectedUser, apiSdk} = useLogin()
+  const {connectedUser, apiSdk} = useConnectedContext()
   const [activeTab, setActiveTab] = useState(0)
 
   const _getReport = useGetReportQuery(id!)

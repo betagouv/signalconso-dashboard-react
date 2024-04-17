@@ -1,7 +1,7 @@
 import React, {ReactElement, useState} from 'react'
 import {Alert} from '../../alexlibs/mui-extension'
 import {useI18n} from '../../core/i18n'
-import {useLogin} from '../../core/context/LoginContext'
+import {useConnectedContext} from '../../core/context/ConnectedContext'
 import {ScDialog} from '../../shared/ScDialog'
 import {Report} from '../../core/client/report/Report'
 import {useMutation} from '@tanstack/react-query'
@@ -23,7 +23,7 @@ export enum DownloadType {
 
 export const ReportDownloadAction = ({report, files, children}: Props) => {
   const {m} = useI18n()
-  const {apiSdk} = useLogin()
+  const {apiSdk} = useConnectedContext()
 
   const _download = useMutation({
     mutationFn: (params: {id: Id; reportType: DownloadType}) => {

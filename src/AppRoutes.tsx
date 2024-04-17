@@ -8,7 +8,7 @@ import {useEffect} from 'react'
 import {Navigate, Routes, useLocation} from 'react-router'
 import {Route} from 'react-router-dom'
 import {apiPublicSdk, makeSecuredSdk} from './core/ApiSdkInstance'
-import {LoginProvider, useLogin} from './core/context/LoginContext'
+import {ConnectedContextProvider, useConnectedContext} from './core/context/ConnectedContext'
 import {Matomo} from './core/plugins/Matomo'
 import {siteMap} from './core/siteMap'
 import {AddCompanyForm} from './feature/AddCompany/AddCompanyForm'
@@ -60,14 +60,14 @@ export const AppRoutes = ({loginManagementResult}: {loginManagementResult: Login
         path="*"
         element={
           connectedUser ? (
-            <LoginProvider
+            <ConnectedContextProvider
               connectedUser={connectedUser}
               setConnectedUser={setConnectedUser}
               onLogout={logout}
               apiSdk={makeSecuredSdk()}
             >
               <ProtectedRoutes />
-            </LoginProvider>
+            </ConnectedContextProvider>
           ) : isFetchingUserOnStartup ? (
             <CenteredContent>
               <CircularProgress />
@@ -86,7 +86,7 @@ export const AppRoutes = ({loginManagementResult}: {loginManagementResult: Login
 }
 
 const ProtectedRoutes = () => {
-  const {apiSdk, connectedUser} = useLogin()
+  const {apiSdk, connectedUser} = useConnectedContext()
 
   const location = useLocation()
   useEffect(() => {

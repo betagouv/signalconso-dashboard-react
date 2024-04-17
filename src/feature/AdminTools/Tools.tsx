@@ -3,13 +3,13 @@ import {PageTab, PageTabs} from '../../shared/Page/PageTabs'
 import {siteMap} from '../../core/siteMap'
 import {Route} from 'react-router-dom'
 import React from 'react'
-import {useLogin} from '../../core/context/LoginContext'
+import {useConnectedContext} from '../../core/context/ConnectedContext'
 import {TestTools} from './TestTools'
 import {AdminTools} from './AdminTools'
 import {Navigate, Routes} from 'react-router'
 
 export const Tools = () => {
-  const {connectedUser} = useLogin()
+  const {connectedUser} = useConnectedContext()
 
   return (
     <Page>

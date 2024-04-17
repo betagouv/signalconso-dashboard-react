@@ -10,7 +10,7 @@ import {useSetState} from '../../alexlibs/react-hooks-lib'
 import {config} from '../../conf/config'
 import {EntityIcon} from '../../core/EntityIcon'
 import {Report, ReportStatus, ReportTag, ReportingDateLabel} from '../../core/client/report/Report'
-import {useLogin} from '../../core/context/LoginContext'
+import {useConnectedContext} from '../../core/context/ConnectedContext'
 import {cleanObject, textOverflowMiddleCropping} from '../../core/helper'
 import compose from '../../core/helper/compose'
 import {
@@ -79,7 +79,7 @@ interface ReportSearchQs {
 
 export const Reports = () => {
   const {m, formatDate} = useI18n()
-  const {connectedUser, apiSdk} = useLogin()
+  const {connectedUser, apiSdk} = useConnectedContext()
 
   const downloadReports = useMutation({mutationFn: apiSdk.secured.reports.download})
 

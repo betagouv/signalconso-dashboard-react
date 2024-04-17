@@ -2,7 +2,7 @@ import React, {ReactElement, useState} from 'react'
 import {Alert} from '../../alexlibs/mui-extension'
 import {useI18n} from '../../core/i18n'
 import {ScInput} from '../../shared/ScInput'
-import {useLogin} from '../../core/context/LoginContext'
+import {useConnectedContext} from '../../core/context/ConnectedContext'
 import {useToast} from '../../core/toast'
 import {ScDialog} from '../../shared/ScDialog'
 import {Report, ReportAdminActionType, ReportDeletionReason} from '../../core/client/report/Report'
@@ -21,7 +21,7 @@ interface Props {
 
 export const ReportAdminResolution = ({label, report, children, onAdd}: Props) => {
   const {m} = useI18n()
-  const {apiSdk} = useLogin()
+  const {apiSdk} = useConnectedContext()
   const _removeReport = useMutation({
     mutationFn: (params: {id: Id; reportDeletionReason: ReportDeletionReason}) =>
       apiSdk.secured.reports.remove(params.id, params.reportDeletionReason),

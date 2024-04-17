@@ -3,7 +3,7 @@ import React, {ReactElement} from 'react'
 import {useI18n} from '../../core/i18n'
 import {useForm} from 'react-hook-form'
 import {ScInput} from '../../shared/ScInput'
-import {useLogin} from '../../core/context/LoginContext'
+import {useConnectedContext} from '../../core/context/ConnectedContext'
 import {useMutation} from '@tanstack/react-query'
 import {useToast} from '../../core/toast'
 import {Alert} from '../../alexlibs/mui-extension'
@@ -19,7 +19,7 @@ interface Props {
 
 export const EditEmailDialog = ({children}: Props) => {
   const {m} = useI18n()
-  const {apiSdk, connectedUser} = useLogin()
+  const {apiSdk, connectedUser} = useConnectedContext()
   const _sendEmailUpdateValidation = useMutation({
     mutationFn: apiSdk.secured.user.sendEmailUpdateValidation,
   })

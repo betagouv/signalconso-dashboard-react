@@ -2,7 +2,7 @@ import {Panel, PanelBody, PanelHead} from '../../shared/Panel'
 import React, {useState} from 'react'
 import {ScButton} from '../../shared/Button'
 import {useAsync} from '../../alexlibs/react-hooks-lib'
-import {useLogin} from '../../core/context/LoginContext'
+import {useConnectedContext} from '../../core/context/ConnectedContext'
 import {MenuItem, Select} from '@mui/material'
 import {ResendEmailType} from '../../core/client/admin/ResendEmailType'
 import {PeriodWithTimePicker} from '../../shared/PeriodWithTimePicker'
@@ -10,7 +10,7 @@ import {Alert} from '../../alexlibs/mui-extension'
 import {CleanWidePanel} from 'shared/Panel/simplePanels'
 
 export const AdminTools = () => {
-  const {apiSdk: api} = useLogin()
+  const {apiSdk: api} = useConnectedContext()
 
   const [periodValue, setPeriodValue] = useState<[Date | undefined, Date | undefined]>([undefined, undefined])
   const [emailType, setEmailType] = useState<ResendEmailType>('NewReportAckToConsumer')

@@ -1,13 +1,13 @@
 import {Report, ReportStatus, ReportTag} from 'core/model'
 import {AsyncLineChart, toPercentage} from 'shared/Chart/LineChartWrappers'
 import {Alert, Txt} from '../../alexlibs/mui-extension'
-import {useLogin} from '../../core/context/LoginContext'
+import {useConnectedContext} from '../../core/context/ConnectedContext'
 import {useI18n} from '../../core/i18n'
 import {Panel, PanelBody, PanelHead} from '../../shared/Panel'
 import {CleanWidePanel} from 'shared/Panel/simplePanels'
 
 export const StatsReportsProProcessedPanel = () => {
-  const {apiSdk: api} = useLogin()
+  const {apiSdk: api} = useConnectedContext()
   const {m} = useI18n()
 
   const loadCurves = async () => {

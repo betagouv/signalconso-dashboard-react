@@ -3,13 +3,13 @@ import {useQuery} from '@tanstack/react-query'
 import {CleanWidePanel} from 'shared/Panel/simplePanels'
 import {Alert, IconBtn, Txt} from '../../alexlibs/mui-extension'
 import {useAsync, useEffectFn} from '../../alexlibs/react-hooks-lib'
-import {useLogin} from '../../core/context/LoginContext'
+import {useConnectedContext} from '../../core/context/ConnectedContext'
 import {useI18n} from '../../core/i18n'
 import {useToast} from '../../core/toast'
 
 export const TestTools = () => {
   const {m} = useI18n()
-  const {apiSdk: api, connectedUser} = useLogin()
+  const {apiSdk: api, connectedUser} = useConnectedContext()
   const {toastError} = useToast()
 
   const _emailCodes = useQuery({

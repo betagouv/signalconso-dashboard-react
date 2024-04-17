@@ -1,5 +1,5 @@
 import {alpha, Button, ButtonGroup} from '@mui/material'
-import {useLogin} from 'core/context/LoginContext'
+import {useConnectedContext} from 'core/context/ConnectedContext'
 import {useI18n} from 'core/i18n'
 import {siteMap} from 'core/siteMap'
 import {useEffect, useState} from 'react'
@@ -23,7 +23,7 @@ export const CompanyChartPanel = ({
   companyId: Id
   reportTotals: NbReportsTotals | undefined
 }) => {
-  const {apiSdk} = useLogin()
+  const {apiSdk} = useConnectedContext()
   const {m, formatLargeNumber} = useI18n()
   const [reportsCurvePeriod, setReportsCurvePeriod] = useState<Period>('Month')
   const companyIds = [companyId]
@@ -92,7 +92,7 @@ export const CompanyChartPanel = ({
 }
 
 function ReportsTotalWithLink({reportTotals, companyId}: {reportTotals: NbReportsTotals; companyId: Id}) {
-  const {connectedUser} = useLogin()
+  const {connectedUser} = useConnectedContext()
   const {formatLargeNumber} = useI18n()
 
   const firstPart = `${formatLargeNumber(reportTotals.total)} signalements`

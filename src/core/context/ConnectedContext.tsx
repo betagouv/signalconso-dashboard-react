@@ -2,30 +2,28 @@ import React, {Dispatch, ReactNode, SetStateAction, useContext, useEffect, useSt
 import {SignalConsoApiSdk} from '../ApiSdkInstance'
 import {Roles, UserWithPermission} from '../client/authenticate/Authenticate'
 
-const LoginContext = React.createContext({} as any)
-
-interface LoginProviderProps {
-  apiSdk: SignalConsoApiSdk
-  connectedUser: UserWithPermission
-  onLogout: () => void
-  setConnectedUser: (_: UserWithPermission) => void
-  children: ReactNode
-}
-
-interface UseLoginProps {
+type ConnectedContext = {
   connectedUser: UserWithPermission & {isDGCCRF: boolean; isDGAL: boolean; isPro: boolean; isNotPro: boolean; isAdmin: boolean}
   setConnectedUser: Dispatch<SetStateAction<UserWithPermission>>
   logout: () => void
   apiSdk: SignalConsoApiSdk
 }
 
-export const LoginProvider = ({
+const connectedContext = React.createContext<ConnectedContext>({} as ConnectedContext)
+
+export const ConnectedContextProvider = ({
   apiSdk,
   connectedUser: _connectedUser,
   setConnectedUser: _setConnectedUser,
   onLogout,
   children,
-}: LoginProviderProps) => {
+}: {
+  apiSdk: SignalConsoApiSdk
+  connectedUser: UserWithPermission
+  onLogout: () => void
+  setConnectedUser: (_: UserWithPermission) => void
+  children: ReactNode
+}) => {
   const [connectedUser, setConnectedUser] = useState<UserWithPermission>(_connectedUser)
 
   useEffect(() => {
@@ -37,7 +35,7 @@ export const LoginProvider = ({
   }, [connectedUser])
 
   return (
-    <LoginContext.Provider
+    <connectedContext.Provider
       value={{
         setConnectedUser,
         connectedUser: {
@@ -53,10 +51,10 @@ export const LoginProvider = ({
       }}
     >
       {children}
-    </LoginContext.Provider>
+    </connectedContext.Provider>
   )
 }
 
-export const useLogin = (): UseLoginProps => {
-  return useContext(LoginContext)
+export const useConnectedContext = (): ConnectedContext => {
+  return useContext(connectedContext)
 }

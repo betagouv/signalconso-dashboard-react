@@ -1,7 +1,7 @@
 import {Navigate, Route, Routes, useParams} from 'react-router'
 
 import {Txt} from 'alexlibs/mui-extension'
-import {useLogin} from 'core/context/LoginContext'
+import {useConnectedContext} from 'core/context/ConnectedContext'
 import {siteMap} from 'core/siteMap'
 import {CompanyAccesses} from 'feature/CompanyAccesses/CompanyAccesses'
 import {Page, PageTitle} from 'shared/Page'
@@ -19,7 +19,7 @@ export function Company() {
 
 function CompanyWithId({id}: {id: string}) {
   const _companyById = useGetCompanyByIdQuery(id)
-  const {connectedUser} = useLogin()
+  const {connectedUser} = useConnectedContext()
   const company = _companyById.data
 
   return (
@@ -63,7 +63,7 @@ function Title({company}: {company: CompanyWithReportsCount}) {
 }
 
 const CompanyStatsComponent = ({company}: {company: CompanyWithReportsCount | undefined}) => {
-  const {connectedUser} = useLogin()
+  const {connectedUser} = useConnectedContext()
   return (
     <>
       {company &&

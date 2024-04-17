@@ -1,6 +1,6 @@
 import {Box, Button, Icon, Tooltip} from '@mui/material'
 import {extensionToType, FileType, reportFileConfig} from './reportFileConfig'
-import {useLogin} from '../../../core/context/LoginContext'
+import {useConnectedContext} from '../../../core/context/ConnectedContext'
 import React, {useEffect} from 'react'
 import {makeSx, Modal} from '../../../alexlibs/mui-extension'
 import {useToast} from '../../../core/toast'
@@ -42,7 +42,7 @@ const css = makeSx({
 
 export const ReportFile = ({file, onRemove}: ReportFileProps) => {
   const fileType = extensionToType(file.filename)
-  const {apiSdk} = useLogin()
+  const {apiSdk} = useConnectedContext()
   const _remove = useMutation({
     mutationFn: apiSdk.secured.document.remove,
     onSuccess: () => onRemove?.(file),
