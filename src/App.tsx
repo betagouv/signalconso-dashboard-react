@@ -32,25 +32,28 @@ export const App = () => {
         _ => <ToastProvider horizontal="right" children={_} />,
       ]}
     >
-      <RedirectHashRouterToBrowserRouter />
-      <Application />
+      <AppInsideProviders />
     </Provide>
   )
 }
 
-const Application = () => {
-  const {toastError} = useToast()
+const AppInsideProviders = () => {
+  useQueryClientErrorHandlerSetup()
+  const loginManagementResult = useLoginManagement()
+  const {connectedUser, logout} = loginManagementResult
+  return (
+    <>
+      <RedirectHashRouterToBrowserRouter />
+      <Layout header={<ScHeader />} sidebar={connectedUser && <ScSidebar {...{connectedUser, logout}} />}>
+        <AppRoutes {...{loginManagementResult}} />
+      </Layout>
+    </>
+  )
+}
 
+function useQueryClientErrorHandlerSetup() {
+  const {toastError} = useToast()
   useEffect(() => {
     setQueryClientErrorHandler(toastError)
   }, [toastError])
-
-  const loginManagementResult = useLoginManagement()
-  const {connectedUser, logout} = loginManagementResult
-
-  return (
-    <Layout header={<ScHeader />} sidebar={connectedUser && <ScSidebar {...{connectedUser, logout}} />}>
-      <AppRoutes {...{loginManagementResult}} />
-    </Layout>
-  )
 }
