@@ -39,19 +39,13 @@ export const App = () => {
 }
 
 const Application = () => {
-  const navigate = useNavigate()
   const {toastError} = useToast()
 
   useEffect(() => {
     setQueryClientErrorHandler(toastError)
   }, [toastError])
 
-  function onLogout() {
-    navigate('/')
-  }
-  const loginManagementResult = useLoginManagement({
-    onLogout,
-  })
+  const loginManagementResult = useLoginManagement()
   const {connectedUser, logout} = loginManagementResult
 
   return (

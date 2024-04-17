@@ -1,6 +1,7 @@
 import {apiPublicSdk} from 'core/ApiSdkInstance'
 import {Dispatch, SetStateAction, useEffect, useState} from 'react'
 import {UserWithPermission} from './client/authenticate/Authenticate'
+import {useNavigate} from 'react-router'
 
 export type LoginManagementResult = {
   connectedUser?: UserWithPermission
@@ -19,7 +20,9 @@ export type LoginManagementResult = {
   setConnectedUser: Dispatch<SetStateAction<UserWithPermission | undefined>>
 }
 
-export function useLoginManagement({onLogout}: {onLogout: () => void}): LoginManagementResult {
+export function useLoginManagement(): LoginManagementResult {
+  const navigate = useNavigate()
+
   const [connectedUser, setConnectedUser] = useState<UserWithPermission | undefined>()
   const [isLoggingIn, setIsLoggingIn] = useState(false)
   const [isRegistering, setIsRegistering] = useState(false)
@@ -69,7 +72,7 @@ export function useLoginManagement({onLogout}: {onLogout: () => void}): LoginMan
 
   const logout = async () => {
     await apiPublicSdk.authenticate.logout()
-    onLogout()
+    navigate('/')
     setConnectedUser(undefined)
   }
 
