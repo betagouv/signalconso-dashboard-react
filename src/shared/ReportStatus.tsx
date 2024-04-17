@@ -1,6 +1,6 @@
 import {Label, LabelProps} from './Label'
 import {useI18n} from '../core/i18n'
-import {useLogin} from '../core/context/LoginContext'
+import {useConnectedContext} from '../core/context/ConnectedContext'
 import {Report, ReportStatus, ReportStatusPro} from '../core/client/report/Report'
 
 interface ReportStatusLabelProps extends Omit<LabelProps, 'children'> {
@@ -41,7 +41,7 @@ export const isStatusInvisibleToPro = (status: ReportStatus): Boolean => {
 }
 
 export const ReportStatusLabel = ({status, ...props}: ReportStatusLabelProps) => {
-  const {connectedUser} = useLogin()
+  const {connectedUser} = useConnectedContext()
   return connectedUser.isPro ? (
     <ReportStatusProLabel status={Report.getStatusProByStatus(status)} {...props} />
   ) : (

@@ -6,13 +6,13 @@ import {siteMap} from '../../core/siteMap'
 import {PageTab, PageTabs} from '../../shared/Page/PageTabs'
 import {CompaniesToActivate} from './CompaniesToActivate'
 import {CompaniesRegistered} from './CompaniesRegistered'
-import {useLogin} from '../../core/context/LoginContext'
+import {useConnectedContext} from '../../core/context/ConnectedContext'
 import {CompaniesToFollowUp} from './CompaniesToFollowUp'
 import {Navigate, Routes} from 'react-router'
 
 export const Companies = () => {
   const {m} = useI18n() // Assuming this hook exists and provides translations
-  const {connectedUser} = useLogin() // Assuming this hook provides user state
+  const {connectedUser} = useConnectedContext() // Assuming this hook provides user state
 
   return (
     <Page>

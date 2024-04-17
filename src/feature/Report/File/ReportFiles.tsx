@@ -1,7 +1,7 @@
 import {Box} from '@mui/material'
 import {useEffect, useRef, useState} from 'react'
 import {FileOrigin, UploadedFile} from '../../../core/client/file/UploadedFile'
-import {useLogin} from '../../../core/context/LoginContext'
+import {useConnectedContext} from '../../../core/context/ConnectedContext'
 import {useI18n} from '../../../core/i18n'
 import {Id} from '../../../core/model'
 import {ReportFile} from './ReportFile'
@@ -27,7 +27,7 @@ export const ReportFiles = ({
   const [innerFiles, setInnerFiles] = useState<UploadedFile[]>()
   const {m} = useI18n()
   const attachmentRef = useRef<any>()
-  const {connectedUser} = useLogin()
+  const {connectedUser} = useConnectedContext()
   useEffect(() => {
     setInnerFiles(files)
   }, [files])

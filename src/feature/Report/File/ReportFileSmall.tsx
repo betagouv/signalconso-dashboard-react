@@ -3,7 +3,7 @@ import {Icon, Tooltip} from '@mui/material'
 import React from 'react'
 import {extensionToType, FileType} from './reportFileConfig'
 import {ReportFileProps} from './ReportFile'
-import {useLogin} from '../../../core/context/LoginContext'
+import {useConnectedContext} from '../../../core/context/ConnectedContext'
 import {makeSx} from '../../../alexlibs/mui-extension'
 import {ScOption} from 'core/helper/ScOption'
 
@@ -21,7 +21,7 @@ const css = makeSx({
 
 export const ReportFileSmall = ({file}: ReportFileProps) => {
   const fileType = extensionToType(file.filename)
-  const {apiSdk} = useLogin()
+  const {apiSdk} = useConnectedContext()
   const fileUrl = ScOption.from(apiSdk.public.document.getLink(file))
     .map(_ => (config.isDev ? _.replace(config.apiBaseUrl, 'https://signal-api.conso.gouv.fr') : _))
     .toUndefined()

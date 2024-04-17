@@ -7,7 +7,7 @@ import {CompanyAccessLevel} from '../../core/client/company-access/CompanyAccess
 import React, {useEffect, useMemo} from 'react'
 import {useI18n} from '../../core/i18n'
 import {Datatable} from '../../shared/Datatable/Datatable'
-import {useLogin} from '../../core/context/LoginContext'
+import {useConnectedContext} from '../../core/context/ConnectedContext'
 import {isDefined, toQueryString} from '../../core/helper'
 import {CompanyWithReportsCount, Id, User} from '../../core/model'
 import {siteMap} from '../../core/siteMap'
@@ -46,11 +46,11 @@ export function CompanyAccesses({company}: {company: CompanyWithReportsCount | u
 function CompanyAccessesLoaded({company}: {company: CompanyWithReportsCount}) {
   const siret = company.siret
 
-  const _crudAccess = useCompanyAccess(useLogin().apiSdk, siret!).crudAccess
-  const _crudToken = useCompanyAccess(useLogin().apiSdk, siret!).crudToken
+  const _crudAccess = useCompanyAccess(useConnectedContext().apiSdk, siret!).crudAccess
+  const _crudToken = useCompanyAccess(useConnectedContext().apiSdk, siret!).crudToken
 
   const {m} = useI18n()
-  const {connectedUser} = useLogin()
+  const {connectedUser} = useConnectedContext()
   const {toastSuccess, toastError, toastErrorIfDefined} = useToast()
 
   const copyActivationLink = (token: string) => {

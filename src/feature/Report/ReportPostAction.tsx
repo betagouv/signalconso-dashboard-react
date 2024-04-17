@@ -2,7 +2,7 @@ import React, {ReactElement, useState} from 'react'
 import {Alert} from '../../alexlibs/mui-extension'
 import {useI18n} from '../../core/i18n'
 import {ScInput} from '../../shared/ScInput'
-import {useLogin} from '../../core/context/LoginContext'
+import {useConnectedContext} from '../../core/context/ConnectedContext'
 import {useToast} from '../../core/toast'
 import {ScDialog} from '../../shared/ScDialog'
 import {EventActionValues, ReportAction} from '../../core/client/event/Event'
@@ -21,7 +21,7 @@ interface Props {
 
 export const ReportPostAction = ({label, actionType, report, children, onAdd, required}: Props) => {
   const {m} = useI18n()
-  const {apiSdk} = useLogin()
+  const {apiSdk} = useConnectedContext()
   const _addComment = useMutation({
     mutationFn: (params: {id: Id; action: ReportAction}) => apiSdk.secured.reports.postAction(params.id, params.action),
     onSuccess: () => {

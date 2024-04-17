@@ -1,6 +1,6 @@
 import {Icon, LinearProgress, Tooltip} from '@mui/material'
 import {useMemoFn} from 'alexlibs/react-hooks-lib'
-import {useLogin} from 'core/context/LoginContext'
+import {useConnectedContext} from 'core/context/ConnectedContext'
 import {useI18n} from 'core/i18n'
 import {EventActionValues, Id} from 'core/model'
 import {useCompanyAccessCountQuery, useGetResponseRateQuery} from 'core/queryhooks/companyQueryHooks'
@@ -19,7 +19,7 @@ type Props = {
 }
 
 export function CompanyStatsNumberWidgets({id, siret}: {id: Id; siret: string}) {
-  const {connectedUser} = useLogin()
+  const {connectedUser} = useConnectedContext()
   const companyId = id
   return (
     <div className={`grid grid-cols-2 ${connectedUser.isNotPro ? 'sm:grid-cols-4' : 'sm:grid-cols-3'} gap-4 mb-4`}>

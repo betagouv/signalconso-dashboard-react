@@ -2,7 +2,7 @@ import {TextField} from '@mui/material'
 import {useForm} from 'react-hook-form'
 import {useNavigate} from 'react-router'
 import {Alert, Btn, Txt} from '../../alexlibs/mui-extension'
-import {useLogin} from '../../core/context/LoginContext'
+import {useConnectedContext} from '../../core/context/ConnectedContext'
 import {regexp} from '../../core/helper/regexp'
 import {useI18n} from '../../core/i18n'
 import {AccessEventActions, ActionResultNames, EventCategories, Matomo} from '../../core/plugins/Matomo'
@@ -19,7 +19,7 @@ interface Form {
 
 export const AddCompanyForm = () => {
   const {m} = useI18n()
-  const {connectedUser, apiSdk} = useLogin()
+  const {connectedUser, apiSdk} = useConnectedContext()
   const _acceptToken = useMutation({
     mutationFn: (params: {siret: string; token: string}) => apiSdk.secured.accesses.acceptToken(params.siret, params.token),
     onSuccess: () => {

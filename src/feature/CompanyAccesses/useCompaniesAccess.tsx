@@ -1,11 +1,11 @@
 import {useCrudList} from '../../alexlibs/react-hooks-lib'
-import {SignalConsoApiSdk} from '../../core/ApiSdkInstance'
+import {ConnectedApiSdk} from '../../core/ApiSdkInstance'
 import {CompanyAccess, CompanyAccessLevel} from '../../core/client/company-access/CompanyAccess'
 import {CompanyAccessToken} from '../../core/client/company-access-token/CompanyAccessToken'
 import {ApiError} from '../../core/client/ApiClient'
 import {Id} from '../../core/model'
 
-export const useCompanyAccess = (api: SignalConsoApiSdk, siret: string) => {
+export const useCompanyAccess = (api: ConnectedApiSdk, siret: string) => {
   const crudAccessR = () => api.secured.companyAccess.fetch(siret)
   const crudAccessU = (userId: string, level: CompanyAccessLevel) => api.secured.companyAccess.update(siret, userId, level)
   const crudAccessD = (userId: string) => api.secured.companyAccess.remove(siret, userId)

@@ -1,11 +1,11 @@
 import {AsyncLineChart, toPercentage} from 'shared/Chart/LineChartWrappers'
 import {CleanWidePanel} from 'shared/Panel/simplePanels'
 import {Txt} from '../../alexlibs/mui-extension'
-import {useLogin} from '../../core/context/LoginContext'
+import {useConnectedContext} from '../../core/context/ConnectedContext'
 import {useI18n} from '../../core/i18n'
 
 export const StatsReportsProResponsePanel = () => {
-  const {apiSdk: api} = useLogin()
+  const {apiSdk: api} = useConnectedContext()
   const {m} = useI18n()
   const loadCurves = async () => {
     const [allResponses, notConcerned, rejected, accepted] = await Promise.all([

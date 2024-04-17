@@ -17,7 +17,7 @@ import {
 } from '../../core/client/event/Event'
 import {FileOrigin, UploadedFile} from '../../core/client/file/UploadedFile'
 import {useApiContext} from '../../core/context/ApiContext'
-import {useLogin} from '../../core/context/LoginContext'
+import {useConnectedContext} from '../../core/context/ConnectedContext'
 import {Id, Report} from '../../core/model'
 import {GetReportEventsQueryKeys} from '../../core/queryhooks/eventQueryHooks'
 import {Divider} from '../../shared/Divider'
@@ -151,7 +151,7 @@ function ResponseType({
 
 function ConsumerReview({review}: {review: ResponseConsumerReview}) {
   const {m} = useI18n()
-  const {connectedUser} = useLogin()
+  const {connectedUser} = useConnectedContext()
 
   const {icon, classes, text} = (() => {
     switch (review.evaluation) {

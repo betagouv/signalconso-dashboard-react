@@ -1,4 +1,4 @@
-import {useLogin} from '../../core/context/LoginContext'
+import {useConnectedContext} from '../../core/context/ConnectedContext'
 import {useI18n} from '../../core/i18n'
 import {Panel, PanelBody, PanelHead} from '../../shared/Panel'
 import {Dispatch, SetStateAction, useEffect, useMemo, useState} from 'react'
@@ -24,7 +24,7 @@ interface AsyncPercent {
 }
 
 export const StatsReportsInternetPanel = () => {
-  const {apiSdk: api} = useLogin()
+  const {apiSdk: api} = useConnectedContext()
   const {m} = useI18n()
 
   const currentMonth = useMemo(() => new Date().getMonth(), [])
