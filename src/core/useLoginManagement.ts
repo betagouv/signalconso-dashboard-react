@@ -7,6 +7,7 @@ export type LoginManagementResult = {
   connectedUser?: UserWithPermission
   isFetchingUserOnStartup: boolean
   logout: () => void
+  handleDetectedLogout: () => void
   login: {
     action: (login: string, password: string) => Promise<UserWithPermission>
     loading?: boolean
@@ -70,10 +71,14 @@ export function useLoginManagement(): LoginManagementResult {
     }
   }
 
-  const logout = async () => {
-    await apiPublicSdk.authenticate.logout()
+  function handleDetectedLogout() {
     navigate('/')
     setConnectedUser(undefined)
+  }
+
+  const logout = async () => {
+    await apiPublicSdk.authenticate.logout()
+    handleDetectedLogout()
   }
 
   return {
@@ -85,6 +90,7 @@ export function useLoginManagement(): LoginManagementResult {
       errorMsg: loginError,
     },
     logout,
+    handleDetectedLogout,
     register: {
       action: register,
       loading: isRegistering,

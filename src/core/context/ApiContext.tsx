@@ -1,16 +1,16 @@
 import * as React from 'react'
 import {ReactNode, useContext} from 'react'
-import {SignalConsoApiSdk} from '../ApiSdkInstance'
+import {ConnectedApiSdk} from '../ApiSdkInstance'
 
 // Simple context to access the api client directly
 
 export interface ApiContextProps {
-  api: SignalConsoApiSdk
+  api: ConnectedApiSdk
 }
 
 interface Props {
   children: ReactNode
-  api: SignalConsoApiSdk
+  api: ConnectedApiSdk
 }
 
 const ApiContext = React.createContext<ApiContextProps>({} as ApiContextProps)

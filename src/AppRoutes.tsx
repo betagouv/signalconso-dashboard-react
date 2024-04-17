@@ -4,10 +4,10 @@ import {LoginManagementResult} from 'core/useLoginManagement'
 import {LoginForm} from 'feature/Login/LoginForm'
 import {RegisterForm} from 'feature/Login/RegisterForm'
 import {WelcomePage} from 'feature/Login/WelcomePage'
-import {useEffect} from 'react'
+import {useEffect, useMemo} from 'react'
 import {Navigate, Routes, useLocation} from 'react-router'
 import {Route} from 'react-router-dom'
-import {apiPublicSdk, makeSecuredSdk} from './core/ApiSdkInstance'
+import {apiPublicSdk, buildConnectedApiSdk} from './core/ApiSdkInstance'
 import {ConnectedContextProvider, useConnectedContext} from './core/context/ConnectedContext'
 import {Matomo} from './core/plugins/Matomo'
 import {siteMap} from './core/siteMap'
@@ -34,9 +34,10 @@ import {UserActivation} from './feature/Users/UserActivation'
 import {Users} from './feature/Users/Users'
 import {CenteredContent} from './shared/CenteredContent'
 import './style.css'
+import {UserWithPermission} from 'core/model'
 
 export const AppRoutes = ({loginManagementResult}: {loginManagementResult: LoginManagementResult}) => {
-  const {connectedUser, setConnectedUser, register, isFetchingUserOnStartup, login} = loginManagementResult
+  const {connectedUser, setConnectedUser, register, handleDetectedLogout, isFetchingUserOnStartup, login} = loginManagementResult
   const UserActivationComponent = () => (
     <UserActivation onActivateUser={apiPublicSdk.user.activateAccount} onFetchTokenInfo={apiPublicSdk.user.fetchTokenInfo} />
   )
@@ -60,9 +61,7 @@ export const AppRoutes = ({loginManagementResult}: {loginManagementResult: Login
         path="*"
         element={
           connectedUser ? (
-            <ConnectedContextProvider connectedUser={connectedUser} setConnectedUser={setConnectedUser} apiSdk={makeSecuredSdk()}>
-              <ProtectedRoutes />
-            </ConnectedContextProvider>
+            <ConnectedRoutesSetup {...{connectedUser, setConnectedUser, handleDetectedLogout}} />
           ) : isFetchingUserOnStartup ? (
             <CenteredContent>
               <CircularProgress />
@@ -77,6 +76,32 @@ export const AppRoutes = ({loginManagementResult}: {loginManagementResult: Login
         }
       />
     </Routes>
+  )
+}
+
+function ConnectedRoutesSetup({
+  connectedUser,
+  setConnectedUser,
+  handleDetectedLogout,
+}: {
+  connectedUser: UserWithPermission
+  setConnectedUser: LoginManagementResult['setConnectedUser']
+  handleDetectedLogout: LoginManagementResult['handleDetectedLogout']
+}) {
+  const apiSdk = useMemo(
+    () =>
+      buildConnectedApiSdk({
+        onDisconnected: () => {
+          console.warn('User seems logged out.')
+          handleDetectedLogout()
+        },
+      }),
+    [handleDetectedLogout],
+  )
+  return (
+    <ConnectedContextProvider {...{connectedUser, setConnectedUser, apiSdk}}>
+      <ProtectedRoutes />
+    </ConnectedContextProvider>
   )
 }
 

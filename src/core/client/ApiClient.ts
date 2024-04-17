@@ -14,6 +14,7 @@ export interface ApiClientParams {
   readonly baseUrl: string
   readonly headers?: any
   readonly withCredentials?: boolean
+  onDisconnected?: () => void
 }
 
 export interface ApiClientApi {
@@ -56,7 +57,7 @@ export class ApiClient {
 
   readonly baseUrl: string
 
-  constructor({baseUrl, headers, withCredentials}: ApiClientParams) {
+  constructor({baseUrl, headers, withCredentials, onDisconnected}: ApiClientParams) {
     const client = axios.create({
       baseURL: baseUrl,
       headers: {...headers},
@@ -108,6 +109,12 @@ export class ApiClient {
           throw new ApiError(`Something not caught went wrong`, {
             error: _,
           })
+        })
+        .catch((e: ApiError) => {
+          if (e.details.id === 'SC-AUTH') {
+            onDisconnected?.()
+          }
+          throw e
         })
     }
 
