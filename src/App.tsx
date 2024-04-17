@@ -23,6 +23,7 @@ export const App = () => {
   return (
     <Provide
       providers={[
+        _ => <QueryClientProvider client={queryClient} children={_} />,
         _ => <ThemeProvider theme={muiTheme()} children={_} />,
         _ => <StyledEngineProvider children={_} />,
         _ => <CssBaseline children={_} />,
@@ -55,9 +56,7 @@ const Application = () => {
 
   return (
     <Layout header={<ScHeader />} sidebar={connectedUser && <ScSidebar {...{connectedUser, logout}} />}>
-      <QueryClientProvider client={queryClient}>
-        <AppRoutes {...{loginManagementResult}} />
-      </QueryClientProvider>
+      <AppRoutes {...{loginManagementResult}} />
     </Layout>
   )
 }
