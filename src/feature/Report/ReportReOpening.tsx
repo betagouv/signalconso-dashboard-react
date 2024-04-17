@@ -1,7 +1,7 @@
 import React, {ReactElement} from 'react'
 import {Btn, Txt} from '../../alexlibs/mui-extension'
 import {useI18n} from '../../core/i18n'
-import {useLogin} from '../../core/context/LoginContext'
+import {useConnectedContext} from '../../core/context/ConnectedContext'
 import {useToast} from '../../core/toast'
 import {ScDialog} from '../../shared/ScDialog'
 import {Report} from '../../core/client/report/Report'
@@ -14,7 +14,7 @@ interface Props {
 
 export const ReportReOpening = ({report, children}: Props) => {
   const {m} = useI18n()
-  const {apiSdk} = useLogin()
+  const {apiSdk} = useConnectedContext()
   const _reOpenReport = useMutation({
     mutationFn: apiSdk.secured.reports.reOpen,
     onSuccess: () => {

@@ -4,7 +4,7 @@ import {useCallback, useEffect, useMemo, useState} from 'react'
 import {NavLink} from 'react-router-dom'
 import {Fender, IconBtn, Txt} from '../../alexlibs/mui-extension'
 import {Company, CompanySearch, CompanyUpdate, CompanyWithReportsCount} from '../../core/client/company/Company'
-import {useLogin} from '../../core/context/LoginContext'
+import {useConnectedContext} from '../../core/context/ConnectedContext'
 import {cleanObject} from '../../core/helper'
 import {mapArrayFromQuerystring, useQueryString} from '../../core/helper/useQueryString'
 import {useI18n} from '../../core/i18n'
@@ -37,7 +37,7 @@ export const CompaniesRegistered = () => {
   })
   const {m, formatLargeNumber} = useI18n()
   const queryClient = useQueryClient()
-  const {connectedUser, apiSdk} = useLogin()
+  const {connectedUser, apiSdk} = useConnectedContext()
   const _companies = useActivatedCompanySearchQuery({offset: 0, limit: 10, ...queryString.get()})
 
   const updateRegisteredCompanyAddress = (id: Id, address: Address) => {

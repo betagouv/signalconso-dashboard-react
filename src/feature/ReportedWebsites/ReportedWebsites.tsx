@@ -1,6 +1,6 @@
 import {Navigate, Routes} from 'react-router'
 import {Route} from 'react-router-dom'
-import {useLogin} from '../../core/context/LoginContext'
+import {useConnectedContext} from '../../core/context/ConnectedContext'
 import {useI18n} from '../../core/i18n'
 import {siteMap} from '../../core/siteMap'
 import {Page, PageTitle} from '../../shared/Page'
@@ -10,7 +10,7 @@ import {WebsitesInvestigation} from './WebsitesInvestigation'
 
 export const ReportedWebsites = () => {
   const {m} = useI18n() // Assuming this hook exists and provides translations
-  const {connectedUser} = useLogin() // Assuming this hook provides user state
+  const {connectedUser} = useConnectedContext() // Assuming this hook provides user state
 
   return (
     <Page>

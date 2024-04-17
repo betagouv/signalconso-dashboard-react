@@ -7,13 +7,13 @@ import {DgccrfStats} from './DgccrfStats'
 import {ProStats} from './ProStats'
 import {ReportStats} from './ReportStats'
 import {ArborescenceWithCounts} from './ArborescenceWithCounts'
-import {useLogin} from '../../core/context/LoginContext'
+import {useConnectedContext} from '../../core/context/ConnectedContext'
 import {config} from 'conf/config'
 import {Navigate, Routes} from 'react-router'
 
 export const Stats = () => {
   const {m} = useI18n()
-  const {connectedUser} = useLogin()
+  const {connectedUser} = useConnectedContext()
   return (
     <Page>
       <PageTitle>{m.statsLandingPage}</PageTitle>

@@ -6,7 +6,7 @@ import {Datatable} from '../../shared/Datatable/Datatable'
 import {Icon, Tooltip} from '@mui/material'
 import {ScOption} from 'core/helper/ScOption'
 import {RoleAgents, roleAgents} from '../../core/client/user/User'
-import {useLogin} from '../../core/context/LoginContext'
+import {useConnectedContext} from '../../core/context/ConnectedContext'
 import {useGetAgentPendingQuery} from '../../core/queryhooks/userQueryHooks'
 import {sxUtils} from '../../core/theme'
 import {useToast} from '../../core/toast'
@@ -15,7 +15,7 @@ import {SelectRoleAgent} from '../../shared/SelectRoleAgent'
 
 export const UsersAgentListPending = () => {
   const {m, formatDate} = useI18n()
-  const {connectedUser} = useLogin()
+  const {connectedUser} = useConnectedContext()
   const {toastSuccess} = useToast()
   const copyActivationLink = (token: string) => {
     let activationLink = window.location.host + '/agent/rejoindre/?token=' + token

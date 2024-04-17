@@ -1,6 +1,6 @@
 import {ButtonProps} from '@mui/material'
 import {useState} from 'react'
-import {useLogin} from '../../core/context/LoginContext'
+import {useConnectedContext} from '../../core/context/ConnectedContext'
 import {useI18n} from '../../core/i18n'
 import {useToast} from '../../core/toast'
 import {ScButton} from '../../shared/Button'
@@ -16,7 +16,7 @@ interface Props extends Omit<ButtonProps, 'onChange'> {
 export const SaveUndeliveredDocBtn = ({siret, ...props}: Props) => {
   const {m} = useI18n()
   const {api} = useApiContext()
-  const {connectedUser} = useLogin()
+  const {connectedUser} = useConnectedContext()
   const {toastSuccess} = useToast()
   const [returnDate, setReturnDate] = useState<Date | undefined>(new Date())
   const _saveUndeliveredDocument = useMutation({

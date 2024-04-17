@@ -7,7 +7,7 @@ import {CleanDiscreetPanel} from 'shared/Panel/simplePanels'
 import {WithInlineIcon} from 'shared/WithInlineIcon'
 import {Txt} from '../../../alexlibs/mui-extension'
 import {Influencer, Report, Train} from '../../../core/client/report/Report'
-import {useLogin} from '../../../core/context/LoginContext'
+import {useConnectedContext} from '../../../core/context/ConnectedContext'
 import {useI18n} from '../../../core/i18n'
 import {siteMap} from '../../../core/siteMap'
 import {sxUtils} from '../../../core/theme'
@@ -23,7 +23,7 @@ interface Props {
 }
 
 export const ReportCompany = ({report, canEdit}: Props) => {
-  const {connectedUser} = useLogin()
+  const {connectedUser} = useConnectedContext()
   const {m} = useI18n()
 
   const {

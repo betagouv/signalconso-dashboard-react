@@ -2,7 +2,7 @@ import {useMutation, useQueryClient} from '@tanstack/react-query'
 import {EventActionValues, ReportAction} from '../../core/client/event/Event'
 import {FileOrigin, UploadedFile} from '../../core/client/file/UploadedFile'
 import {Report} from '../../core/client/report/Report'
-import {useLogin} from '../../core/context/LoginContext'
+import {useConnectedContext} from '../../core/context/ConnectedContext'
 import {useI18n} from '../../core/i18n'
 import {Id} from '../../core/model'
 import {GetReportQueryKeys} from '../../core/queryhooks/reportQueryHooks'
@@ -24,7 +24,7 @@ export function ReportDetails({report}: {report: Report}) {
 
 export function ReportFilesFull({files, report}: {files: UploadedFile[] | undefined; report: Report}) {
   const {m} = useI18n()
-  const {connectedUser, apiSdk} = useLogin()
+  const {connectedUser, apiSdk} = useConnectedContext()
   const queryClient = useQueryClient()
 
   const postAction = useMutation({

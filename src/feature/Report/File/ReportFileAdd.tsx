@@ -5,7 +5,7 @@ import {useI18n} from '../../../core/i18n'
 import {styleUtils} from '../../../core/theme'
 import {config} from '../../../conf/config'
 import {useToast} from '../../../core/toast'
-import {useLogin} from '../../../core/context/LoginContext'
+import {useConnectedContext} from '../../../core/context/ConnectedContext'
 import {makeSx} from '../../../alexlibs/mui-extension'
 import {FileOrigin, UploadedFile} from '../../../core/client/file/UploadedFile'
 import {Id} from '../../../core/model'
@@ -48,7 +48,7 @@ interface Props {
 
 export const ReportFileAdd = ({reportId, onUploaded, fileOrigin}: Props) => {
   const {m} = useI18n()
-  const {apiSdk} = useLogin()
+  const {apiSdk} = useConnectedContext()
   const {toastError} = useToast()
 
   const [uploading, setUploading] = useState(false)

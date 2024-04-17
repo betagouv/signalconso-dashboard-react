@@ -1,7 +1,7 @@
 import {useTheme} from '@mui/material'
 import {AsyncLineChart} from 'shared/Chart/LineChartWrappers'
 import {Txt} from '../../alexlibs/mui-extension'
-import {useLogin} from '../../core/context/LoginContext'
+import {useConnectedContext} from '../../core/context/ConnectedContext'
 import {useI18n} from '../../core/i18n'
 import {Panel, PanelBody, PanelHead} from '../../shared/Panel'
 import {CountByDate} from '../../core/client/stats/Stats'
@@ -30,7 +30,7 @@ const computeCurveReportPhysique = ({
 }
 
 export const StatsReportsCurvePanel = () => {
-  const {apiSdk: api} = useLogin()
+  const {apiSdk: api} = useConnectedContext()
   const {m} = useI18n()
   const tickDuration = 'Month'
   const ticks = 12

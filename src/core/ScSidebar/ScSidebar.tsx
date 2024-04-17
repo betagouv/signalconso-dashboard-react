@@ -1,14 +1,12 @@
-import {Sidebar, SidebarHr, SidebarItem} from '../Layout/Sidebar'
-import {Box, Tooltip} from '@mui/material'
-import {Txt} from '../../alexlibs/mui-extension'
-import {Btn} from '../../alexlibs/mui-extension'
-import {siteMap} from '../siteMap'
-import {EntityIcon} from '../EntityIcon'
-import * as React from 'react'
-import {useI18n} from '../i18n'
-import {useLayoutContext} from '../Layout/LayoutContext'
-import {Roles, UserWithPermission} from '../client/authenticate/Authenticate'
+import {Box} from '@mui/material'
+import {Btn, Txt} from '../../alexlibs/mui-extension'
 import {UserNameLabel} from '../../shared/UserNameLabel'
+import {EntityIcon} from '../EntityIcon'
+import {useLayoutContext} from '../Layout/LayoutContext'
+import {Sidebar, SidebarHr, SidebarItem} from '../Layout/Sidebar'
+import {Roles, UserWithPermission} from '../client/authenticate/Authenticate'
+import {useI18n} from '../i18n'
+import {siteMap} from '../siteMap'
 
 export const ScSidebar = ({connectedUser, logout}: {connectedUser: UserWithPermission; logout: () => void}) => {
   const path = (page: string) => '' + page

@@ -6,7 +6,7 @@ import {useToast} from '../../core/toast'
 import {ScDialog} from '../../shared/ScDialog'
 import {AccountEventActions, EventCategories, Matomo} from '../../core/plugins/Matomo'
 import {useAsync} from '../../alexlibs/react-hooks-lib'
-import {useLogin} from '../../core/context/LoginContext'
+import {useConnectedContext} from '../../core/context/ConnectedContext'
 import {map} from '../../alexlibs/ts-utils'
 import {ScInput} from '../../shared/ScInput'
 import {ApiError} from '../../core/client/ApiClient'
@@ -22,7 +22,7 @@ interface Props {
 
 export const EditProfileDialog = ({children}: Props) => {
   const {m} = useI18n()
-  const {apiSdk, connectedUser, setConnectedUser} = useLogin()
+  const {apiSdk, connectedUser, setConnectedUser} = useConnectedContext()
   const _editUser = useAsync(apiSdk.secured.user.edit)
   const {toastSuccess} = useToast()
   const defaultFormValues: Form = {
@@ -63,7 +63,7 @@ export const EditProfileDialog = ({children}: Props) => {
               toastSuccess(m.saved)
               close()
               Matomo.trackEvent(EventCategories.account, AccountEventActions.changeNameSuccess)
-              setConnectedUser(_ => ({..._, ...form}))
+              setConnectedUser(previous => (previous ? {...previous, ...form} : undefined))
             })
             .catch(_ => {
               Matomo.trackEvent(EventCategories.account, AccountEventActions.changeNameFail)

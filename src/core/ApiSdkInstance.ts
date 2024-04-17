@@ -4,7 +4,7 @@ import {ApiClient} from './client/ApiClient'
 import {SignalConsoPublicSdk} from './client/SignalConsoPublicSdk'
 import {CompanyPublicSdk} from './client/CompanyPublicSdk'
 
-export type SignalConsoApiSdk = ReturnType<typeof makeSecuredSdk>
+export type ConnectedApiSdk = ReturnType<typeof buildConnectedApiSdk>
 
 const headers = {
   'Content-Type': 'application/json',
@@ -21,26 +21,30 @@ export const apiPublicSdk = new SignalConsoPublicSdk(
   }),
 )
 
-export const makeSecuredSdk = () => ({
-  public: apiPublicSdk,
-  companySdk: new CompanyPublicSdk(
-    new ApiClient({
-      baseUrl: companyBaseUrl,
-      headers,
-    }),
-  ),
-  publicConnected: new SignalConsoPublicSdk(
-    new ApiClient({
-      baseUrl,
-      headers,
-      withCredentials: true,
-    }),
-  ),
-  secured: new SignalConsoSecuredSdk(
-    new ApiClient({
-      baseUrl,
-      headers,
-      withCredentials: true,
-    }),
-  ),
-})
+export const buildConnectedApiSdk = ({onDisconnected}: {onDisconnected: () => void}) => {
+  return {
+    public: apiPublicSdk,
+    companySdk: new CompanyPublicSdk(
+      new ApiClient({
+        baseUrl: companyBaseUrl,
+        headers,
+      }),
+    ),
+    publicConnected: new SignalConsoPublicSdk(
+      new ApiClient({
+        baseUrl,
+        headers,
+        withCredentials: true,
+        onDisconnected,
+      }),
+    ),
+    secured: new SignalConsoSecuredSdk(
+      new ApiClient({
+        baseUrl,
+        headers,
+        withCredentials: true,
+        onDisconnected,
+      }),
+    ),
+  }
+}

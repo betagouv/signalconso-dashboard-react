@@ -24,7 +24,7 @@ import {SelectWebsiteAssociation} from './SelectWebsiteIdentification/SelectWebs
 import {AutocompleteDialog} from '../../shared/AutocompleteDialog'
 import {WebsiteTools} from './WebsiteTools'
 import {sxUtils} from '../../core/theme'
-import {useLogin} from '../../core/context/LoginContext'
+import {useConnectedContext} from '../../core/context/ConnectedContext'
 import {IdentificationStatus, InvestigationStatus, WebsiteWithCompany} from '../../core/client/website/Website'
 import {cleanObject} from '../../core/helper'
 import {Id} from '../../core/model'
@@ -43,7 +43,7 @@ import {ScInput} from 'shared/ScInput'
 
 export const WebsitesInvestigation = () => {
   const {m, formatDate} = useI18n()
-  const {connectedUser, apiSdk} = useLogin()
+  const {connectedUser, apiSdk} = useConnectedContext()
   const queryClient = useQueryClient()
 
   const _websiteWithCompany = useWebsiteWithCompanySearchQuery()

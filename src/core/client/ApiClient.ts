@@ -1,4 +1,4 @@
-import axios, {AxiosResponse, ResponseType} from 'axios'
+import axios, {AxiosResponse, ResponseType, isAxiosError} from 'axios'
 import * as qs from 'qs'
 
 export interface RequestOption {
@@ -13,11 +13,8 @@ export interface RequestOption {
 export interface ApiClientParams {
   readonly baseUrl: string
   readonly headers?: any
-  readonly requestInterceptor?: (options?: RequestOption) => Promise<RequestOption> | RequestOption
-  readonly proxy?: string
-  readonly mapData?: (_: any) => any
-  readonly mapError?: (_: any) => never
   readonly withCredentials?: boolean
+  onDisconnected?: () => void
 }
 
 export interface ApiClientApi {
@@ -34,15 +31,10 @@ export interface ApiClientApi {
 
 export type StatusCode = 'front-side' | 200 | 301 | 302 | 400 | 401 | 403 | 404 | 423 | 500 | 504
 
-export interface ApiErrorDetails {
-  code: StatusCode
+interface ApiErrorDetails {
+  // 300, 404, 500, etc.
+  code?: number | undefined
   id?: string
-  request: {
-    method: Method
-    url: string
-    qs?: any
-    body?: any
-  }
   error?: Error
 }
 
@@ -52,18 +44,6 @@ export class ApiError extends Error {
   constructor(public message: string, public details: ApiErrorDetails) {
     super(message)
   }
-}
-
-export interface ApiDetailedError {
-  code: StatusCode
-  message: Detail
-  error?: Error
-}
-
-export interface Detail {
-  type: string
-  title: string
-  details: string
 }
 
 export type Method = 'POST' | 'GET' | 'PUT' | 'DELETE' | 'PATCH' | 'HEAD'
@@ -77,7 +57,7 @@ export class ApiClient {
 
   readonly baseUrl: string
 
-  constructor({baseUrl, headers, requestInterceptor, mapData, mapError, withCredentials}: ApiClientParams) {
+  constructor({baseUrl, headers, withCredentials, onDisconnected}: ApiClientParams) {
     const client = axios.create({
       baseURL: baseUrl,
       headers: {...headers},
@@ -86,7 +66,7 @@ export class ApiClient {
     this.baseUrl = baseUrl
 
     this.request = async (method: Method, url: string, options?: RequestOption) => {
-      const builtOptions = await ApiClient.buildOptions(options, headers, requestInterceptor)
+      const builtOptions = await ApiClient.buildOptions(options, headers)
       return client
         .request({
           method,
@@ -97,34 +77,52 @@ export class ApiClient {
           withCredentials: options?.withCredentials || withCredentials,
           paramsSerializer: params => qs.stringify(params, {arrayFormat: 'repeat'}),
         })
-        .then(mapData ?? ((_: AxiosResponse) => _.data))
-        .catch(
-          mapError ??
-            ((_: any) => {
-              const request = {method, url, qs: options?.qs, body: options?.body}
-              if (_.response && _.response.data) {
-                const message = _.response.data.details ?? _.response.data.timeout ?? JSON.stringify(_.response.data)
-                throw new ApiError(message, {
-                  code: _.response.status,
-                  id: _.response.data.type,
-                  request,
+        .then((_: AxiosResponse) => _.data)
+        .catch((_: any) => {
+          if (_.response && _.response.data) {
+            // here we're reading the error structure often sent by the API
+            // but not always ! the api is inconsistent (plus we have multiple apis now...)
+            const message = _.response.data.details ?? _.response.data.timeout ?? JSON.stringify(_.response.data)
+            throw new ApiError(message, {
+              code: _.response.status,
+              id: _.response.data.type,
+              error: _,
+            })
+          } else if (isAxiosError(_)) {
+            if (_.code === 'ERR_NETWORK') {
+              throw new ApiError(`SignalConso est inaccessible, veuillez vérifier votre connexion.`, {
+                error: _,
+              })
+            } else {
+              // Fallback for a general HTTP error with a status code
+              const status = _.response?.status
+              if (status !== undefined) {
+                const statusText = _.response?.statusText
+                throw new ApiError(`Http error ${status} ${statusText}`, {
+                  code: status,
                   error: _,
                 })
               }
-              throw new ApiError(`Something not caught went wrong`, {
-                code: _.response ? _.response.status : 'front-side',
-                error: _,
-                request,
-              })
-            }),
-        )
+              // Then fallback to the very general error
+            }
+          }
+          throw new ApiError(`Something not caught went wrong`, {
+            error: _,
+          })
+        })
+        .catch((e: ApiError) => {
+          if (e.details.id === 'SC-AUTH') {
+            onDisconnected?.()
+          }
+          throw e
+        })
     }
 
     /**
      * TODO(Alex) Didn't find any way to download pdf with axios so I did it using fetch(), but it should exist.
      */
     const requestUsingFetchApi = async (method: Method, url: string, options?: RequestOption) => {
-      const builtOptions = await ApiClient.buildOptions(options, headers, requestInterceptor)
+      const builtOptions = await ApiClient.buildOptions(options, headers)
       return fetch(baseUrl + url + (options?.qs ? `?${qs.stringify(options.qs, {arrayFormat: 'repeat'})}` : ''), {
         method,
         headers: builtOptions?.headers,
@@ -142,15 +140,10 @@ export class ApiClient {
     }
   }
 
-  private static readonly buildOptions = async (
-    options?: RequestOption,
-    headers?: any,
-    requestInterceptor: (_?: RequestOption) => RequestOption | Promise<RequestOption> = _ => _!,
-  ): Promise<RequestOption> => {
-    const interceptedOptions = await requestInterceptor(options)
+  private static readonly buildOptions = async (options?: RequestOption, headers?: any): Promise<RequestOption> => {
     return {
-      ...interceptedOptions,
-      headers: {...headers, ...interceptedOptions?.headers},
+      ...options,
+      headers: {...headers, ...options?.headers},
     }
   }
 

@@ -1,6 +1,6 @@
 import {NavLink} from 'react-router-dom'
 import {CleanWidePanel} from 'shared/Panel/simplePanels'
-import {useLogin} from '../../core/context/LoginContext'
+import {useConnectedContext} from '../../core/context/ConnectedContext'
 import {useI18n} from '../../core/i18n'
 import {siteMap} from '../../core/siteMap'
 import {ScButton} from '../../shared/Button'
@@ -13,7 +13,7 @@ import {UserNameLabel} from '../../shared/UserNameLabel'
 
 export const Settings = () => {
   const {m} = useI18n()
-  const {connectedUser} = useLogin()
+  const {connectedUser} = useConnectedContext()
 
   return (
     <Page maxWidth="l">
