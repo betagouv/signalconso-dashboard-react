@@ -1,5 +1,5 @@
 import {apiPublicSdk} from 'core/ApiSdkInstance'
-import {useEffect, useState} from 'react'
+import {Dispatch, SetStateAction, useEffect, useState} from 'react'
 import {UserWithPermission} from './client/authenticate/Authenticate'
 
 export type LoginManagementResult = {
@@ -16,7 +16,7 @@ export type LoginManagementResult = {
     loading?: boolean
     errorMsg?: string
   }
-  setConnectedUser: (_: UserWithPermission) => void
+  setConnectedUser: Dispatch<SetStateAction<UserWithPermission | undefined>>
 }
 
 export function useLoginManagement({onLogout}: {onLogout: () => void}): LoginManagementResult {

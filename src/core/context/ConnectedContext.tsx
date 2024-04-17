@@ -1,10 +1,11 @@
-import React, {Dispatch, ReactNode, SetStateAction, useContext, useEffect, useState} from 'react'
-import {SignalConsoApiSdk} from '../ApiSdkInstance'
-import {Roles, UserWithPermission} from '../client/authenticate/Authenticate'
+import { LoginManagementResult } from 'core/useLoginManagement'
+import React, { ReactNode, useContext } from 'react'
+import { SignalConsoApiSdk } from '../ApiSdkInstance'
+import { Roles, UserWithPermission } from '../client/authenticate/Authenticate'
 
 type ConnectedContext = {
   connectedUser: UserWithPermission & {isDGCCRF: boolean; isDGAL: boolean; isPro: boolean; isNotPro: boolean; isAdmin: boolean}
-  setConnectedUser: Dispatch<SetStateAction<UserWithPermission>>
+  setConnectedUser: LoginManagementResult['setConnectedUser']
   apiSdk: SignalConsoApiSdk
 }
 
@@ -12,25 +13,15 @@ const connectedContext = React.createContext<ConnectedContext>({} as ConnectedCo
 
 export const ConnectedContextProvider = ({
   apiSdk,
-  connectedUser: _connectedUser,
-  setConnectedUser: _setConnectedUser,
+  connectedUser,
+  setConnectedUser,
   children,
 }: {
   apiSdk: SignalConsoApiSdk
   connectedUser: UserWithPermission
-  setConnectedUser: (_: UserWithPermission) => void
+  setConnectedUser: LoginManagementResult['setConnectedUser']
   children: ReactNode
 }) => {
-  const [connectedUser, setConnectedUser] = useState<UserWithPermission>(_connectedUser)
-
-  useEffect(() => {
-    setConnectedUser(_connectedUser)
-  }, [_connectedUser])
-
-  useEffect(() => {
-    _setConnectedUser(connectedUser)
-  }, [connectedUser])
-
   return (
     <connectedContext.Provider
       value={{
