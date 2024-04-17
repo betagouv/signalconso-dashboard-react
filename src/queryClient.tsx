@@ -16,8 +16,7 @@ function buildQueryClient() {
           if (failureCount > MAX_RETRIES) {
             return false
           }
-
-          return !(error instanceof ApiError && HTTP_STATUS_TO_NOT_RETRY.includes(error.details.code))
+          return !(error instanceof ApiError && error.details.code && HTTP_STATUS_TO_NOT_RETRY.includes(error.details.code))
         },
       },
     },

@@ -1,4 +1,4 @@
-import axios, {AxiosResponse, ResponseType} from 'axios'
+import axios, {AxiosResponse, ResponseType, isAxiosError} from 'axios'
 import * as qs from 'qs'
 
 export interface RequestOption {
@@ -30,8 +30,9 @@ export interface ApiClientApi {
 
 export type StatusCode = 'front-side' | 200 | 301 | 302 | 400 | 401 | 403 | 404 | 423 | 500 | 504
 
-export interface ApiErrorDetails {
-  code: StatusCode
+interface ApiErrorDetails {
+  // 300, 404, 500, etc.
+  code?: number | undefined
   id?: string
   error?: Error
 }
@@ -78,15 +79,33 @@ export class ApiClient {
         .then((_: AxiosResponse) => _.data)
         .catch((_: any) => {
           if (_.response && _.response.data) {
+            // here we're reading the error structure often sent by the API
+            // but not always ! the api is inconsistent (plus we have multiple apis now...)
             const message = _.response.data.details ?? _.response.data.timeout ?? JSON.stringify(_.response.data)
             throw new ApiError(message, {
               code: _.response.status,
               id: _.response.data.type,
               error: _,
             })
+          } else if (isAxiosError(_)) {
+            if (_.code === 'ERR_NETWORK') {
+              throw new ApiError(`SignalConso est inaccessible, veuillez vérifier votre connexion.`, {
+                error: _,
+              })
+            } else {
+              // Fallback for a general HTTP error with a status code
+              const status = _.response?.status
+              if (status !== undefined) {
+                const statusText = _.response?.statusText
+                throw new ApiError(`Http error ${status} ${statusText}`, {
+                  code: status,
+                  error: _,
+                })
+              }
+              // Then fallback to the very general error
+            }
           }
           throw new ApiError(`Something not caught went wrong`, {
-            code: _.response ? _.response.status : 'front-side',
             error: _,
           })
         })
