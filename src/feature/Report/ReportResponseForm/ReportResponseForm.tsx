@@ -131,7 +131,16 @@ export const ReportResponseForm = forwardRef(({report, onConfirm, ...props}: Pro
             rules={{required: {value: true, message: m.required}}}
             control={control}
             render={({field}) => (
-              <ScRadioGroup error={!!errors.responseType} dense sx={{mb: 8}} {...field}>
+              <ScRadioGroup
+                error={!!errors.responseType}
+                dense
+                sx={{mb: 8}}
+                {...field}
+                onChange={(event: any) => {
+                  setValue('responseDetails', '' as any)
+                  return field.onChange(event)
+                }}
+              >
                 {Enum.values(ReportResponseTypes).map(responseType => (
                   <ScRadioGroupItem value={responseType} key={responseType}>
                     {m.reportResponseDesc[responseType]}
@@ -156,7 +165,7 @@ export const ReportResponseForm = forwardRef(({report, onConfirm, ...props}: Pro
                   {...field}
                   onChange={(event: any) => {
                     setValue('otherResponseDetails', undefined)
-                    field.onChange(event)
+                    return field.onChange(event)
                   }}
                 >
                   {computeDetails(watchResponseType).map(responseDetails => (
