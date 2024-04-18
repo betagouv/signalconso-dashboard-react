@@ -6,12 +6,10 @@ export interface UseSetState<T> {
   toggleAll: (t: T[]) => void
   delete: (t: T) => boolean
   clear: () => void
-  values: () => Iterable<T>
   toArray: () => T[]
   size: number
   has: (t: T) => boolean
   reset: (values?: T[]) => void
-  get: () => Set<T>
 }
 
 export const useSetState = <T>(initialValue: T[] = []): UseSetState<T> => {
@@ -51,9 +49,7 @@ export const useSetState = <T>(initialValue: T[] = []): UseSetState<T> => {
   return {
     has: (t: T) => set.has(t),
     size: set.size,
-    get: () => new Set(toArray()),
     toArray,
-    values: () => set.values(),
     add,
     toggle,
     toggleAll,
