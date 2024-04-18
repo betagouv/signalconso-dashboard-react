@@ -4,7 +4,6 @@ import {SyntheticEvent} from 'react'
 import {Link} from 'react-router-dom'
 import {Fender, IconBtn, Txt} from '../../alexlibs/mui-extension'
 import {useSetState} from '../../alexlibs/react-hooks-lib'
-import {usePersistentState} from '../../alexlibs/react-persistent-state'
 import {EntityIcon} from '../../core/EntityIcon'
 import {useApiContext} from '../../core/context/ApiContext'
 import {useI18n} from '../../core/i18n'
@@ -29,12 +28,10 @@ export const CompaniesToActivate = () => {
   })
   const _downloadActivationDocument = useMutation({mutationFn: api.secured.company.downloadActivationDocument})
 
-  const [selectedCompanies, setSelectedCompanies] = usePersistentState<string[]>([], 'CompaniesToActivate')
-  const selectedCompaniesSet = useSetState(selectedCompanies)
+  const selectedCompaniesSet = useSetState<string>([])
 
   const toggleSelectedCompany = (companyId: Id) => {
     selectedCompaniesSet.has(companyId) ? selectedCompaniesSet.delete(companyId) : selectedCompaniesSet.add(companyId)
-    setSelectedCompanies(selectedCompaniesSet.toArray())
   }
 
   const allChecked = selectedCompaniesSet.size === (_companiesToActivate.result.data?.entities.length ?? 0)
@@ -43,12 +40,10 @@ export const CompaniesToActivate = () => {
     if (selectedCompaniesSet.size === 0 && !allChecked)
       selectedCompaniesSet.reset(_companiesToActivate.result.data?.entities.map(_ => _.company.id))
     else selectedCompaniesSet.clear()
-    setSelectedCompanies(selectedCompaniesSet.toArray())
   }
 
   const unselectAll = () => {
     selectedCompaniesSet.clear()
-    setSelectedCompanies(selectedCompaniesSet.toArray())
   }
 
   const confirmCompaniesPosted = (event: SyntheticEvent<any>, closeDialog: () => void) => {
