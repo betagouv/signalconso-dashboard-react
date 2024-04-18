@@ -1,7 +1,7 @@
-import {LocalStorageEntity} from '../utils/localStorageApi'
-import {generateId} from '../utils/hash'
-import {Dispatch, SetStateAction, useEffect, useMemo, useRef, useState} from 'react'
 import {throttle} from 'core/lodashNamedExport'
+import {Dispatch, SetStateAction, useEffect, useMemo, useRef, useState} from 'react'
+import {generateId} from '../utils/hash'
+import {LocalStorageEntity} from '../utils/localStorageApi'
 
 export function usePersistentState<S>(initialState: S | (() => S), key?: string): [S, Dispatch<SetStateAction<S>>, () => void] {
   const localStorage = useMemo(() => new LocalStorageEntity<S>(generateId(key)), [])

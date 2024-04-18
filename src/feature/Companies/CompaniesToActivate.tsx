@@ -1,24 +1,21 @@
 import {Box, Checkbox, Icon, Tooltip} from '@mui/material'
+import {useMutation, useQueryClient} from '@tanstack/react-query'
 import {SyntheticEvent} from 'react'
 import {Link} from 'react-router-dom'
 import {Fender, IconBtn, Txt} from '../../alexlibs/mui-extension'
 import {useSetState} from '../../alexlibs/react-hooks-lib'
-import {usePersistentState} from '../../alexlibs/react-persistent-state'
 import {EntityIcon} from '../../core/EntityIcon'
+import {useApiContext} from '../../core/context/ApiContext'
 import {useI18n} from '../../core/i18n'
 import {Id} from '../../core/model'
+import {CompanyToActivateSearchQueryKeys, useCompanyToActivateSearchQuery} from '../../core/queryhooks/companyQueryHooks'
 import {siteMap} from '../../core/siteMap'
 import {styleUtils, sxUtils} from '../../core/theme'
 import {AddressComponent} from '../../shared/Address'
 import {ScButton} from '../../shared/Button'
-import {ScDialog} from '../../shared/ScDialog'
 import {Datatable} from '../../shared/Datatable/Datatable'
 import {DatatableToolbar} from '../../shared/Datatable/DatatableToolbar'
-import {Panel} from '../../shared/Panel'
-import {CompanyToActivateSearchQueryKeys, useCompanyToActivateSearchQuery} from '../../core/queryhooks/companyQueryHooks'
-import {useMutation, useQueryClient} from '@tanstack/react-query'
-import {useApiContext} from '../../core/context/ApiContext'
-import {CleanDiscreetPanel, CleanWidePanel} from 'shared/Panel/simplePanels'
+import {ScDialog} from '../../shared/ScDialog'
 
 export const CompaniesToActivate = () => {
   const {m, formatDate} = useI18n()
@@ -31,12 +28,10 @@ export const CompaniesToActivate = () => {
   })
   const _downloadActivationDocument = useMutation({mutationFn: api.secured.company.downloadActivationDocument})
 
-  const [selectedCompanies, setSelectedCompanies] = usePersistentState<string[]>([], 'CompaniesToActivate')
-  const selectedCompaniesSet = useSetState(selectedCompanies)
+  const selectedCompaniesSet = useSetState<string>([])
 
   const toggleSelectedCompany = (companyId: Id) => {
     selectedCompaniesSet.has(companyId) ? selectedCompaniesSet.delete(companyId) : selectedCompaniesSet.add(companyId)
-    setSelectedCompanies(selectedCompaniesSet.toArray())
   }
 
   const allChecked = selectedCompaniesSet.size === (_companiesToActivate.result.data?.entities.length ?? 0)
@@ -45,12 +40,10 @@ export const CompaniesToActivate = () => {
     if (selectedCompaniesSet.size === 0 && !allChecked)
       selectedCompaniesSet.reset(_companiesToActivate.result.data?.entities.map(_ => _.company.id))
     else selectedCompaniesSet.clear()
-    setSelectedCompanies(selectedCompaniesSet.toArray())
   }
 
   const unselectAll = () => {
     selectedCompaniesSet.clear()
-    setSelectedCompanies(selectedCompaniesSet.toArray())
   }
 
   const confirmCompaniesPosted = (event: SyntheticEvent<any>, closeDialog: () => void) => {
