@@ -143,6 +143,8 @@ function ResponseType({
       ? `${m.responseDetails[responseDetails]} : ${otherResponseDetails}`
       : m.responseDetails[responseDetails]
 
+  const now = new Date()
+
   return (
     <div className="mb-4">
       <div className={`${color} mb-2 border-black border-solid border w-fit p-2`}>
@@ -152,9 +154,13 @@ function ResponseType({
         </p>
         <p className={'pl-6 pt-2 italic'}>{responseDetailsText}</p>
       </div>
-      {expirationDate && (
+      {expirationDate && expirationDate > now ? (
         <p>
           Nous demanderons son avis au consommateur le <strong>{formatDate(expirationDate)}</strong>
+        </p>
+      ) : (
+        <p>
+          Nous avons demandé son avis au consommateur le <strong>{formatDate(expirationDate)}</strong>
         </p>
       )}
     </div>

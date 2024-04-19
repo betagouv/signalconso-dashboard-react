@@ -3,7 +3,7 @@ import {Datatable} from '../../shared/Datatable/Datatable'
 import {Id} from '../../core/model'
 import {Box, Checkbox, Chip, Theme} from '@mui/material'
 import {openInNew, textOverflowMiddleCropping} from '../../core/helper'
-import {Txt, useToast} from '../../alexlibs/mui-extension'
+import {Txt} from '../../alexlibs/mui-extension'
 import React, {useEffect} from 'react'
 import {useI18n} from '../../core/i18n'
 import {siteMap} from '../../core/siteMap'
@@ -18,13 +18,11 @@ export const PromisesOfAction = () => {
   const {m, formatDate} = useI18n()
   const history = useNavigate()
 
-  const {toastSuccess} = useToast()
   const {api} = useApiContext()
   const queryClient = useQueryClient()
   const _check = useMutation({
     mutationFn: (params: {promiseId: Id}) => api.secured.promise.check(params.promiseId),
     onSuccess: () => {
-      toastSuccess('Promesse marquée comme terminée !')
       return queryClient.invalidateQueries({queryKey: ListPromisesOfActionQueryKeys})
     },
   })
@@ -92,15 +90,16 @@ export const PromisesOfAction = () => {
 
   return (
     <Page>
-      <PageTitle>Suivi des promesses d'action</PageTitle>
+      <PageTitle>Suivi de mes engagements</PageTitle>
       <Datatable<PromiseOfAction>
         superheader={
           <p className="">
-            Outil optionnel pour vous aider à gérer et suivre vos promesses d'action.
+            Outil optionnel pour vous aider à gérer et suivre vos engagements.
             <span className="block text-gray-500 italic">
-              La case à cocher permet de marquer une promesse comme "honorée/terminée". Les promesses terminées disparaissent le
-              lendemain de leur cloture. Vous pouvez clore et ré-ouvrir une promesse autant que vous le souhaitez tant qu'elle n'a
-              pas disparue.
+              La case à cocher permet de marquer un engagement comme "honoré/terminé". Les engagements terminés disparaissent le
+              lendemain de leur clôture. Vous pouvez clore et ré-ouvrir un engagement autant que vous le souhaitez tant qu'il n'a
+              pas disparu.
+              <br />
               <br />
               La date d'avis consommateur est indiquée en{' '}
               <Txt bold color="warning">
@@ -110,7 +109,7 @@ export const PromisesOfAction = () => {
               <Txt bold color="error">
                 rouge
               </Txt>{' '}
-              lorsque l'avis a été demandé. Si vous cliquez sur la promesse, cela ouvre le signalement correspondant.
+              lorsque l'avis a été demandé. Si vous cliquez sur la ligne de l'engagement, cela ouvre le signalement correspondant.
             </span>
           </p>
         }

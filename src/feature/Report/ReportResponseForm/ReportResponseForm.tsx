@@ -114,7 +114,7 @@ export const ReportResponseForm = forwardRef(({report, onConfirm, ...props}: Pro
   const computeDetailsDesc = (responseType: ReportResponseTypes) => {
     switch (responseType) {
       case 'ACCEPTED':
-        return "Nous demanderons son avis au consommateur concernant votre promesse d'action dans 8 jours"
+        return 'Nous demanderons son avis au consommateur concernant votre engagement dans 8 jours'
       default:
         return undefined
     }
