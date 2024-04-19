@@ -10,7 +10,12 @@ export class FileClient {
     const fileFormData: FormData = new FormData()
     fileFormData.append('reportFile', file, file.name)
     fileFormData.append('reportFileOrigin', origin)
-    return this.client.post<UploadedFile>(`reports/files`, {body: fileFormData})
+    // We need to put manually the header since axios 1.x https://github.com/axios/axios/issues/5556
+    // There are other ways but this is the quickest
+    return this.client.post<UploadedFile>(`reports/files`, {
+      body: fileFormData,
+      headers: {'Content-Type': 'multipart/form-data'},
+    })
   }
 
   readonly remove = (file: UploadedFile) => {
