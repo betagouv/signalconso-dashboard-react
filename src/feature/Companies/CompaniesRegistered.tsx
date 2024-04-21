@@ -1,4 +1,4 @@
-import {Badge, Box, Icon, InputBase, ListItemIcon, ListItemText, MenuItem, Tooltip} from '@mui/material'
+import {Badge, Box, Icon, ListItemIcon, ListItemText, MenuItem, Tooltip} from '@mui/material'
 import {useMutation, useQueryClient} from '@tanstack/react-query'
 import {useCallback, useEffect, useMemo, useState} from 'react'
 import {NavLink} from 'react-router-dom'
@@ -100,6 +100,24 @@ export const CompaniesRegistered = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
+  const computeTitle = (company: Company) => {
+    const firstLine = company.commercialName ? `${company.name} (${company.commercialName})` : company.name
+    const secondLine = company.establishmentCommercialName
+      ? `${company.brand} - ${company.establishmentCommercialName}`
+      : company.brand
+    if (secondLine) {
+      return (
+        <>
+          {firstLine}
+          <br />
+          {secondLine}
+        </>
+      )
+    } else {
+      return firstLine
+    }
+  }
+
   return (
     <>
       <Datatable
@@ -181,19 +199,7 @@ export const CompaniesRegistered = () => {
               maxWidth: 170,
             }),
             render: _ => (
-              <Tooltip
-                title={
-                  _.brand ? (
-                    <>
-                      {_.name}
-                      <br />
-                      {_.brand}
-                    </>
-                  ) : (
-                    _.name
-                  )
-                }
-              >
+              <Tooltip title={computeTitle(_)}>
                 <span>
                   <NavLink to={siteMap.logged.company(_.id).stats.valueAbsolute}>
                     <Txt link sx={{marginBottom: '-1px'}}>
@@ -336,7 +342,10 @@ export const CompaniesRegistered = () => {
                       onChangeError={_companyUpdateAddress.error?.message}
                       onChange={form => {
                         const {activationDocumentRequired = false, ...address} = form
-                        return _companyUpdateAddress.mutateAsync({id: _.id, update: {address, activationDocumentRequired}})
+                        return _companyUpdateAddress.mutateAsync({
+                          id: _.id,
+                          update: {address, activationDocumentRequired},
+                        })
                       }}
                     >
                       <MenuItem>

@@ -10,6 +10,8 @@ export interface Company {
   siret: string
   creationDate: Date
   name: string
+  commercialName?: string
+  establishmentCommercialName?: string
   brand?: string
   address: Address
   isHeadOffice: boolean
@@ -57,6 +59,7 @@ export interface CompanySearchResult {
   siret: string
   name?: string
   commercialName?: string
+  establishmentCommercialName?: string
   brand?: string
   isHeadOffice: boolean
   isOpen: boolean
