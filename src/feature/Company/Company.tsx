@@ -49,9 +49,19 @@ function Title({company}: {company: CompanyWithReportsCount}) {
     <PageTitle>
       <div>
         {company.name}
+        {company.commercialName && (
+          <Txt block size="small">
+            {company.commercialName}
+          </Txt>
+        )}
         {company.brand && (
           <Txt block size="small" fontStyle="italic">
             {company.brand}
+          </Txt>
+        )}
+        {company.establishmentCommercialName && (
+          <Txt block size="small" fontStyle="italic">
+            {company.establishmentCommercialName}
           </Txt>
         )}
         <Txt block size="big" color="hint">
