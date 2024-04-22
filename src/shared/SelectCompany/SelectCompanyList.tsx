@@ -32,7 +32,9 @@ export const SelectCompanyList = ({companies, onChange}: Props) => {
             <Txt truncate block bold>
               {company.name}
             </Txt>
+            {company.commercialName && <Txt block>{company.commercialName}</Txt>}
             {company.brand && <Txt block>{company.brand}</Txt>}
+            {company.establishmentCommercialName && <Txt block>{company.establishmentCommercialName}</Txt>}
             {company.isHeadOffice && (
               <Txt color="primary">
                 <Icon sx={sxUtils.inlineIcon}>business</Icon>

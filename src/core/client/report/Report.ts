@@ -69,6 +69,8 @@ export interface Report {
   tags: ReportTag[]
   companyId?: string
   companyName?: string
+  companyCommercialName?: string
+  companyEstablishmentCommercialName?: string
   companyBrand?: string
   companyAddress: Address
   companySiret?: string

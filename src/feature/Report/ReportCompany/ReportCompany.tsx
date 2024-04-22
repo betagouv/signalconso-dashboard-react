@@ -32,6 +32,8 @@ export const ReportCompany = ({report, canEdit}: Props) => {
     companyAddress,
     companyId,
     companyName,
+    companyCommercialName,
+    companyEstablishmentCommercialName,
     companyBrand,
     companySiret,
     phone,
@@ -65,6 +67,8 @@ export const ReportCompany = ({report, canEdit}: Props) => {
           {companySiret && <div className="mb-1">{companySiret}</div>}
           <div className="text-gray-500 text-sm">
             {companyName && <div className="font-bold">{companyName}</div>}
+            {companyCommercialName && <div>{companyCommercialName}</div>}
+            {companyEstablishmentCommercialName && <div className="italic">{companyEstablishmentCommercialName}</div>}
             {companyBrand && <div className="italic">{companyBrand}</div>}
             <AddressComponent address={companyAddress} />
           </div>
