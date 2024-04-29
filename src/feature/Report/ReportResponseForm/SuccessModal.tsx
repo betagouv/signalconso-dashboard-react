@@ -58,6 +58,7 @@ const SuccessModal: React.FC<SuccessModalProps> = ({open, onClose, responseType}
         {renderContentBasedOnResponseType()}
         <DialogContentText>
           <p>{m.responseSentToConsumer}</p>
+          <br />
           {responseType === 'ACCEPTED' ? <p>{m.consumerReviewInvitationForAccepted}</p> : <p>{m.consumerReviewInvitation}</p>}
         </DialogContentText>
       </DialogContent>

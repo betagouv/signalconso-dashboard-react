@@ -111,6 +111,15 @@ export const ReportResponseForm = forwardRef(({report, onConfirm, ...props}: Pro
     }
   }
 
+  const computeDetailsDesc = (responseType: ReportResponseTypes) => {
+    switch (responseType) {
+      case 'ACCEPTED':
+        return 'Nous demanderons son avis au consommateur concernant votre engagement dans 8 jours'
+      default:
+        return undefined
+    }
+  }
+
   return (
     <CleanWidePanel ref={ref}>
       <h1 className="font-bold text-3xl mb-8">Votre réponse</h1>
@@ -152,7 +161,7 @@ export const ReportResponseForm = forwardRef(({report, onConfirm, ...props}: Pro
         </ReportResponseFormItem>
 
         {watchResponseType && (
-          <ReportResponseFormItem title={computeDetailsTitle(watchResponseType)}>
+          <ReportResponseFormItem title={computeDetailsTitle(watchResponseType)} desc={computeDetailsDesc(watchResponseType)}>
             <Controller
               name="responseDetails"
               rules={{required: {value: true, message: m.required}}}

@@ -56,6 +56,7 @@ export interface DatatableProps<T> {
     orderBy?: OrderBy
     onSortChange: (_: {sortBy?: string; orderBy?: OrderBy}) => void
   }
+  rowSx?: (_: T) => SxProps<Theme> | undefined
 }
 
 export interface DatatableColumnProps<T> {
@@ -68,6 +69,7 @@ export interface DatatableColumnProps<T> {
   sx?: (_: T) => SxProps<Theme> | undefined
   style?: CSSProperties
   stickyEnd?: boolean
+  onClick?: (_: T, event: React.MouseEvent<HTMLTableCellElement>) => void
 }
 
 const safeParseInt = (maybeInt: any, defaultValue: number): number => (isNaN(maybeInt) ? defaultValue : parseInt(maybeInt))
@@ -99,6 +101,7 @@ export const Datatable = <T extends any = any>({
   onClickRows,
   paginate,
   plainTextColumnsToggle,
+  rowSx,
 }: DatatableProps<T>) => {
   const {m} = useI18n()
   const displayableColumns = useMemo(() => columns.filter(_ => !_.hidden), [columns])
@@ -195,6 +198,7 @@ export const Datatable = <T extends any = any>({
                 key={getRenderRowKey ? getRenderRowKey(item) : i}
                 onClick={e => onClickRows?.(item, e)}
                 sx={{
+                  ...rowSx?.(item),
                   ...(onClickRows && {
                     '&:hover': {
                       background: t => t.palette.action.hover,
@@ -205,6 +209,7 @@ export const Datatable = <T extends any = any>({
                 {filteredColumns.map((_, i) => (
                   <TableCell
                     key={i}
+                    onClick={e => _.onClick?.(item, e)}
                     sx={
                       _.stickyEnd
                         ? combineSx(_.sx?.(item), sxUtils.truncate, sxStickyEnd)

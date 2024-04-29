@@ -272,7 +272,7 @@ export const fr = {
     claimNotConcernedYourEstablishment: 'Vous avez estimé que ce signalement ne concernait pas votre établissement.',
     responseSentToConsumer: 'Nous avons envoyé votre réponse au consommateur. Elle est également visible par la DGCCRF.',
     consumerReviewInvitationForAccepted:
-      'Le consommateur sera invité à donner son avis sur votre réponse et les actions mises en œuvre.',
+      'Le consommateur sera invité à donner son avis sur votre réponse et les actions mises en œuvre dans un délai de 8 jours.',
     consumerReviewInvitation: 'Le consommateur sera invité à donner son avis sur votre réponse dès sa réception.',
     activationCodeInvalid: `Le code doit comporter 6 chiffres.`,
     activationCodeExample: 'ex : 123456',
@@ -465,6 +465,7 @@ export const fr = {
     menu_reports: 'Signalements',
     menu_open_reports: 'Signalements à traiter',
     menu_closed_report: `Signalements clôturés`,
+    menu_engagements_report: `Mes engagements`,
     menu_companies: 'Entreprises',
     menu_my_companies: 'Mes entreprises',
     menu_admin_tools: `Outils`,
