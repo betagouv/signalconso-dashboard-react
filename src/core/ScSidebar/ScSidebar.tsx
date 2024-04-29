@@ -65,8 +65,8 @@ export const ScSidebar = ({connectedUser, logout}: {connectedUser: UserWithPermi
         </SidebarItem>
       )}
       {[Roles.Pro].includes(connectedUser.role) && (
-        <SidebarItem onClick={closeSidebar} to={path(siteMap.logged.reportsfiltred.promisesOfAction)} icon={EntityIcon.checklist}>
-          {m.menu_promises_of_action_report}
+        <SidebarItem onClick={closeSidebar} to={path(siteMap.logged.reportsfiltred.engagements)} icon={EntityIcon.checklist}>
+          {m.menu_engagements_report}
         </SidebarItem>
       )}
       {[Roles.Admin, Roles.DGCCRF].includes(connectedUser.role) && (

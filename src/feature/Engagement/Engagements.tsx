@@ -8,42 +8,42 @@ import React, {useEffect} from 'react'
 import {useI18n} from '../../core/i18n'
 import {siteMap} from '../../core/siteMap'
 import {useNavigate} from 'react-router'
-import {ListPromisesOfActionQueryKeys, useListPromisesOfActionQuery} from '../../core/queryhooks/promiseQueryHooks'
-import {PromiseOfAction} from '../../core/client/promise/PromiseOfAction'
+import {ListEngagementsQueryKeys, useListEngagementsQuery} from '../../core/queryhooks/engagementQueryHooks'
+import {Engagement} from '../../core/client/engagement/Engagement'
 import {useApiContext} from '../../core/context/ApiContext'
 import {useMutation, useQueryClient} from '@tanstack/react-query'
 import {useSetState} from '../../alexlibs/react-hooks-lib'
 
-export const PromisesOfAction = () => {
+export const Engagements = () => {
   const {m, formatDate} = useI18n()
   const history = useNavigate()
 
   const {api} = useApiContext()
   const queryClient = useQueryClient()
   const _check = useMutation({
-    mutationFn: (params: {promiseId: Id}) => api.secured.promise.check(params.promiseId),
+    mutationFn: (params: {engagementId: Id}) => api.secured.engagement.check(params.engagementId),
     onSuccess: () => {
-      return queryClient.invalidateQueries({queryKey: ListPromisesOfActionQueryKeys})
+      return queryClient.invalidateQueries({queryKey: ListEngagementsQueryKeys})
     },
   })
 
   const _uncheck = useMutation({
-    mutationFn: (params: {promiseId: Id}) => api.secured.promise.uncheck(params.promiseId),
+    mutationFn: (params: {engagementId: Id}) => api.secured.engagement.uncheck(params.engagementId),
     onSuccess: () => {
-      return queryClient.invalidateQueries({queryKey: ListPromisesOfActionQueryKeys})
+      return queryClient.invalidateQueries({queryKey: ListEngagementsQueryKeys})
     },
   })
 
-  const _promises = useListPromisesOfActionQuery()
+  const _engagements = useListEngagementsQuery()
   const selectReport = useSetState<Id>()
 
   useEffect(() => {
-    if (_promises.data) {
-      selectReport.add(_promises.data.filter(promise => !!promise.resolutionDate).map(promise => promise.id))
+    if (_engagements.data) {
+      selectReport.add(_engagements.data.filter(engagement => !!engagement.resolutionDate).map(engagement => engagement.id))
     }
-  }, _promises.data)
+  }, _engagements.data)
 
-  const test = (_: PromiseOfAction, e: React.MouseEvent<HTMLTableCellElement>) => {
+  const test = (_: Engagement, e: React.MouseEvent<HTMLTableCellElement>) => {
     if (e.metaKey || e.ctrlKey) {
       openInNew(siteMap.logged.report(_.report.id))
     } else {
@@ -56,7 +56,7 @@ export const PromisesOfAction = () => {
   const nowPlusTwoDays = new Date(nowAsString)
   nowPlusTwoDays.setDate(nowPlusTwoDays.getDate() + 2)
 
-  const rowSx = (_: PromiseOfAction) => {
+  const rowSx = (_: Engagement) => {
     return {
       '&:hover': {
         background: (t: Theme) => (_.resolutionDate ? undefined : t.palette.action.hover),
@@ -76,13 +76,13 @@ export const PromisesOfAction = () => {
     }
   }
 
-  const select = (promiseOfAction: PromiseOfAction) => {
-    selectReport.toggle(promiseOfAction.id)
-    if (selectReport.has(promiseOfAction.id)) return _check.mutate({promiseId: promiseOfAction.id})
-    else return _uncheck.mutate({promiseId: promiseOfAction.id})
+  const select = (engagement: Engagement) => {
+    selectReport.toggle(engagement.id)
+    if (selectReport.has(engagement.id)) return _check.mutate({engagementId: engagement.id})
+    else return _uncheck.mutate({engagementId: engagement.id})
   }
 
-  const data = _promises.data?.sort((a, b) => {
+  const data = _engagements.data?.sort((a, b) => {
     if (a.resolutionDate && !b.resolutionDate) return 1
     else if (!a.resolutionDate && b.resolutionDate) return -1
     else return a.expirationDate.valueOf() - b.expirationDate.valueOf()
@@ -91,7 +91,7 @@ export const PromisesOfAction = () => {
   return (
     <Page>
       <PageTitle>Suivi de mes engagements</PageTitle>
-      <Datatable<PromiseOfAction>
+      <Datatable<Engagement>
         superheader={
           <p className="">
             Outil optionnel pour vous aider à gérer et suivre vos engagements.
@@ -113,10 +113,10 @@ export const PromisesOfAction = () => {
             </span>
           </p>
         }
-        loading={_promises.isLoading}
-        id="promises"
+        loading={_engagements.isLoading}
+        id="engagements"
         rowSx={rowSx}
-        total={_promises.data?.length ?? 0}
+        total={_engagements.data?.length ?? 0}
         data={data}
         columns={[
           {

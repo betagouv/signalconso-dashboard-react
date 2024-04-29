@@ -13,7 +13,7 @@ export const getReportEventIcon = (action: EventActionValues) =>
     {
       [EventActionValues.ReportReadingByPro]: 'notifications',
       [EventActionValues.ReportProResponse]: 'question_answer',
-      [EventActionValues.ReportProPromiseOfActionHonoured]: 'check',
+      [EventActionValues.ReportProEngagementHonoured]: 'check',
       [EventActionValues.ReportConsumerChange]: 'edit',
       [EventActionValues.ReportCompanyChange]: 'edit',
       [EventActionValues.Comment]: 'feedback',
@@ -36,7 +36,7 @@ export const getReportEventColor = (t: Theme) => (action: EventActionValues) =>
     {
       [EventActionValues.ReportReadingByPro]: styleUtils(t).color.info,
       [EventActionValues.ReportProResponse]: styleUtils(t).color.success,
-      [EventActionValues.ReportProPromiseOfActionHonoured]: styleUtils(t).color.success,
+      [EventActionValues.ReportProEngagementHonoured]: styleUtils(t).color.success,
       [EventActionValues.ReportConsumerChange]: styleUtils(t).color.info,
       [EventActionValues.ReportCompanyChange]: styleUtils(t).color.info,
       [EventActionValues.Comment]: styleUtils(t).color.info,

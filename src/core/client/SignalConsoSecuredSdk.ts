@@ -22,7 +22,7 @@ import {StatsClient} from './stats/StatsClient'
 import {SiretExtractorClient} from './siret-extractor/SiretExtractorClient'
 import {AuthAttemptClient} from './auth-attempts/AuthAttemptClient'
 import {BarcodeClient} from './barcode/BarcodeClient'
-import {PromiseOfActionClient} from './promise/PromiseOfActionClient'
+import {EngagementClient} from './engagement/EngagementClient'
 
 export class SignalConsoSecuredSdk {
   constructor(private client: ApiClientApi) {}
@@ -48,5 +48,5 @@ export class SignalConsoSecuredSdk {
   readonly reportBlockedNotification = new ReportBlockedNotificationClient(this.client)
   readonly siretExtractor = new SiretExtractorClient(this.client)
   readonly barcode = new BarcodeClient(this.client)
-  readonly promise = new PromiseOfActionClient(this.client)
+  readonly engagement = new EngagementClient(this.client)
 }
