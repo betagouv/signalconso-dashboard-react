@@ -23,6 +23,15 @@ export const useGetResponseReviewsQuery = (id: Id, options?: UseQueryOpts<Report
   })
 }
 
+export const useGetEngagementReviewsQuery = (id: Id, options?: UseQueryOpts<ReportResponseReviews, string[]>) => {
+  const {api} = useApiContext()
+  return useQuery({
+    queryKey: ['stats_getEngagementReviews'],
+    queryFn: () => api.secured.stats.getEngagementReviews(id),
+    ...options,
+  })
+}
+
 export const useGetTagsQuery = (id: Id, options?: UseQueryOpts<ReportTagsDistribution, string[]>) => {
   const {api} = useApiContext()
   return useQuery({

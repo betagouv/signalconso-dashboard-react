@@ -10,7 +10,7 @@ interface Props extends BoxProps {
   block?: boolean
   skeleton?: boolean | number | string
   size?: 'big' | 'title' | 'small'
-  color?: 'primary' | 'secondary' | 'disabled' | 'hint' | 'default' | 'error' | 'success'
+  color?: 'primary' | 'secondary' | 'disabled' | 'hint' | 'default' | 'error' | 'success' | 'warning'
   uppercase?: boolean
   truncate?: boolean
   noWrap?: boolean
@@ -74,6 +74,9 @@ export const Txt = forwardRef(
               },
               success: {
                 color: (t: any) => t.palette.success.main,
+              },
+              warning: {
+                color: (t: any) => t.palette.warning.main,
               },
               default: {
                 color: (t: any) => t.palette.text.primary,

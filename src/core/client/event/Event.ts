@@ -46,6 +46,7 @@ export enum EventActionValues {
   CompanyAddressChange = "Modification de l'adresse de l'entreprise",
   ReportReadingByPro = 'Première consultation du signalement par le professionnel',
   ReportProResponse = 'Réponse du professionnel au signalement',
+  ReportProEngagementHonoured = 'Engagement du professionnel marqué comme honoré',
   ReportReviewOnResponse = 'Avis du consommateur sur la réponse du professionnel',
   ReportClosedByNoReading = 'Signalement non consulté',
   ReportClosedByNoAction = 'Signalement consulté ignoré',

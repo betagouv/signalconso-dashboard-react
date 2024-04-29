@@ -19,6 +19,7 @@ import {UseQueryResult} from '@tanstack/react-query'
 import {ApiError} from 'core/client/ApiClient'
 import {CleanDiscreetPanel} from 'shared/Panel/simplePanels'
 import {CompanyStatsNumberWidgets} from './companyStatsNumberWidgets'
+import {EngagementReviewDistribution} from './stats/EngagementReviewDistribution'
 export type ExtendedUser = UserWithPermission & {
   isPro: boolean
 }
@@ -66,6 +67,7 @@ export function CompanyStats({connectedUser, company}: {connectedUser: ExtendedU
             <div>
               <CompanyInfo company={company} />
               <ReviewDistribution companyId={id} />
+              <EngagementReviewDistribution companyId={id} />
               <ReportWordDistribution companyId={id} />
               <WebsitesDistribution {...{_hosts}} />
             </div>
