@@ -1,24 +1,23 @@
 import * as React from 'react'
 import {useI18n} from '../../../core/i18n'
 import {Skeleton} from '@mui/material'
-import {Panel, PanelBody, PanelHead} from '../../../shared/Panel'
 import {HorizontalBarChart} from '../../../shared/Chart/HorizontalBarChart'
 import {useMemoFn} from '../../../alexlibs/react-hooks-lib'
 import {Txt} from '../../../alexlibs/mui-extension'
 import {ReviewLabel} from './ReviewLabel'
 import {ScOption} from 'core/helper/ScOption'
-import {useGetResponseReviewsQuery} from '../../../core/queryhooks/statsQueryHooks'
+import {useGetEngagementReviewsQuery} from '../../../core/queryhooks/statsQueryHooks'
 import {CleanDiscreetPanel} from 'shared/Panel/simplePanels'
 
 interface Props {
   companyId: string
 }
 
-export const ReviewDistribution = ({companyId}: Props) => {
+export const EngagementReviewDistribution = ({companyId}: Props) => {
   const {m} = useI18n()
-  const _responseReviews = useGetResponseReviewsQuery(companyId)
+  const _engagementReviews = useGetEngagementReviewsQuery(companyId)
 
-  const reviewDistribution = useMemoFn(_responseReviews.data, _ =>
+  const reviewDistribution = useMemoFn(_engagementReviews.data, _ =>
     _.positive > 0 || _.negative > 0 || _.neutral > 0
       ? [
           {
@@ -54,12 +53,12 @@ export const ReviewDistribution = ({companyId}: Props) => {
 
   return (
     <CleanDiscreetPanel>
-      <h2 className="font-bold text-lg">{m.consumerReviews}</h2>
-      {ScOption.from(_responseReviews.data)
+      <h2 className="font-bold text-lg">{m.engagementReviews}</h2>
+      {ScOption.from(_engagementReviews.data)
         .map(_ => (
           <>
             <Txt color="hint" block sx={{mb: 3}}>
-              {m.consumerReviewsDesc}
+              {m.engagementReviewsDesc}
             </Txt>
             <HorizontalBarChart width={80} data={reviewDistribution} grid />
           </>

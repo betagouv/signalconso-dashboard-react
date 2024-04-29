@@ -89,6 +89,10 @@ export class StatsClient {
     return this.client.get<ReportResponseReviews>(`/stats/reports/reviews`, {qs: {companyId}})
   }
 
+  readonly getEngagementReviews = (companyId: Id) => {
+    return this.client.get<ReportResponseReviews>(`/stats/reports/engagement-reviews`, {qs: {companyId}})
+  }
+
   readonly getReportedInactiveProAccountRate = (search?: CurveStatsParams) => {
     return this.client
       .get<CountByDate[]>(`/stats/pro-account-rate`, {qs: search})
