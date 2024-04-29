@@ -154,14 +154,18 @@ function ResponseType({
         </p>
         <p className={'pl-6 pt-2 italic'}>{responseDetailsText}</p>
       </div>
-      {expirationDate && expirationDate > now ? (
-        <p>
-          Nous demanderons son avis au consommateur le <strong>{formatDate(expirationDate)}</strong>
-        </p>
-      ) : (
-        <p>
-          Nous avons demandé son avis au consommateur le <strong>{formatDate(expirationDate)}</strong>
-        </p>
+      {responseType === 'ACCEPTED' && (
+        <>
+          {expirationDate && expirationDate > now ? (
+            <p>
+              Nous demanderons son avis au consommateur le <strong>{formatDate(expirationDate)}</strong>
+            </p>
+          ) : (
+            <p>
+              Nous avons demandé son avis au consommateur le <strong>{formatDate(expirationDate)}</strong>
+            </p>
+          )}
+        </>
       )}
     </div>
   )
