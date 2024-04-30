@@ -977,7 +977,8 @@ export const fr = {
       ME_CONFORMER_A_LA_REGLEMENTATION: 'Je vais me conformer à la réglementation en vigueur',
       ADAPTER_MES_PRATIQUES: 'Je vais adapter mes pratiques',
       TRANSMETTRE_AU_SERVICE_COMPETENT: 'Je vais transmettre la demande au service compétent',
-      DEMANDE_DE_PLUS_D_INFORMATIONS: 'Je vais demander davantage d’informations au consommateur afin de lui apporter une réponse',
+      DEMANDE_DE_PLUS_D_INFORMATIONS:
+        'Je vais demander davantage d’informations au consommateur afin de lui apporter une réponse',
       RESILIATION: 'Je vais procéder à la résiliation du contrat',
       PRATIQUE_LEGALE: 'La pratique signalée est légale',
       PRATIQUE_N_A_PAS_EU_LIEU: 'La pratique signalée n’a pas eu lieu',
