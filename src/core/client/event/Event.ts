@@ -73,26 +73,36 @@ export enum EventActionValues {
 }
 
 export const acceptedDetails = [
-  'REFUND',
-  'REPLACEMENT',
-  'DELIVERY',
-  'DIRECTIONS_FOR_USE',
-  'CONFORM',
-  'ADAPT_PRACTICES',
-  'OTHER',
+  'REMBOURSEMENT_OU_AVOIR',
+  'REPARATION_OU_REMPLACEMENT',
+  'LIVRAISON',
+  'CONSEIL_D_UTILISATION',
+  'ME_CONFORMER_A_LA_REGLEMENTATION',
+  'ADAPTER_MES_PRATIQUES',
+  'TRANSMETTRE_AU_SERVICE_COMPETENT',
+  'DEMANDE_DE_PLUS_D_INFORMATIONS',
+  'RESILIATION',
+  'AUTRE',
 ] as const
 export type AcceptedDetails = typeof acceptedDetails[number]
 
-export const rejectedDetails = ['LAWFUL', 'DID_NOT_HAPPEN', 'WRONG_INTERPRETATION', 'OTHER'] as const
+export const rejectedDetails = [
+  'PRATIQUE_LEGALE',
+  'PRATIQUE_N_A_PAS_EU_LIEU',
+  'MAUVAISE_INTERPRETATION',
+  'DEJA_REPONDU',
+  'TRAITEMENT_EN_COURS',
+  'AUTRE',
+] as const
 export type RejectedDetails = typeof acceptedDetails[number]
 
 export const notConcernedDetails = [
-  'PARTNERSHIP',
-  'SAME_GROUP_COMPANY',
-  'HOMONYM',
-  'UNKNOWN_COMPANY',
-  'IDENTITY_FRAUD',
-  'OTHER',
+  'PARTENAIRE_COMMERCIAL',
+  'ENTREPRISE_DU_MEME_GROUPE',
+  'HOMONYME',
+  'ENTREPRISE_INCONNUE',
+  'USURPATION',
+  'AUTRE',
 ] as const
 export type NotConcernedDetails = typeof acceptedDetails[number]
 

@@ -187,7 +187,7 @@ export const ReportResponseForm = forwardRef(({report, onConfirm, ...props}: Pro
             />
           </ReportResponseFormItem>
         )}
-        {watchResponseDetails === 'OTHER' && (
+        {watchResponseDetails === 'AUTRE' && (
           <ReportResponseFormItem title="Pouvez-vous préciser ?">
             <ScInput
               {...register('otherResponseDetails', {
@@ -275,7 +275,7 @@ export const ReportResponseForm = forwardRef(({report, onConfirm, ...props}: Pro
                 !watchResponseType ||
                 !watchConsumerDetails ||
                 !watchResponseDetails ||
-                (watchResponseDetails === 'OTHER' && !watchOtherResponseDetails)
+                (watchResponseDetails === 'AUTRE' && !watchOtherResponseDetails)
               }
             >
               {m.next}

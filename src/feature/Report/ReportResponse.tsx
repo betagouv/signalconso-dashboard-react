@@ -139,7 +139,7 @@ function ResponseType({
   })()
 
   const responseDetailsText =
-    responseDetails === 'OTHER'
+    responseDetails === 'AUTRE'
       ? `${m.responseDetails[responseDetails]} : ${otherResponseDetails}`
       : m.responseDetails[responseDetails]
 
