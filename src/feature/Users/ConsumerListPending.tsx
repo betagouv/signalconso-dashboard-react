@@ -1,9 +1,9 @@
 import {Box, Icon, Tooltip} from '@mui/material'
 import {useMutation} from '@tanstack/react-query'
-import {useCallback} from 'react'
+import {useCallback, useEffect, useState} from 'react'
 import {ScInput} from 'shared/ScInput'
 import {IconBtn, Txt} from '../../alexlibs/mui-extension'
-import {ConsumerEmailValidation} from '../../core/client/consumer-email-validation/ConsumerEmailValidation'
+import {ConsumerEmailValidation, EmailValidationStatus} from '../../core/client/consumer-email-validation/ConsumerEmailValidation'
 import {useApiContext} from '../../core/context/ApiContext'
 import {useI18n} from '../../core/i18n'
 import {useConsumerEmailValidationSearchQuery} from '../../core/queryhooks/consumerEmailValidationQueryHooks'
@@ -11,6 +11,7 @@ import {sxUtils} from '../../core/theme'
 import {Datatable} from '../../shared/Datatable/Datatable'
 import {DebouncedInput} from '../../shared/DebouncedInput'
 import {TrueFalseUndefined} from '../../shared/TrueFalseUndefined'
+import {Matomo} from '../../core/plugins/Matomo'
 
 export const ConsumerListPending = () => {
   const {m, formatDate} = useI18n()
@@ -101,34 +102,47 @@ export const ConsumerListPending = () => {
 }
 
 const Action = (props: {consumerEmailValidation: ConsumerEmailValidation}) => {
-  const {m, formatDate} = useI18n()
+  const {m} = useI18n()
   const {consumerEmailValidation: _} = props
   const {api} = useApiContext()
-  const _validate = useMutation({mutationFn: () => api.secured.consumerEmailValidation.validate(_.email)})
+
+  const _validate = useMutation({
+    mutationFn: () => api.secured.consumerEmailValidation.validate(_.email),
+    onSuccess: data => {
+      data.valid ? setStatus(EmailValidationStatus.Valid) : setStatus(_.validationStatus)
+    },
+  })
+
+  const [status, setStatus] = useState(_.validationStatus)
 
   return (
-    <>
-      <Box sx={{display: 'flex', justifyContent: 'flex-end'}}>
-        {_.isValid || _validate.isSuccess ? (
-          <Tooltip title={formatDate(_.lastValidationDate ?? new Date())} placement="left">
-            <span>
-              <IconBtn disabled={true}>
-                <Icon sx={{color: t => t.palette.success.light}}>check_circle</Icon>
-              </IconBtn>
-            </span>
-          </Tooltip>
-        ) : (
-          <Tooltip title={m.validate} placement="left">
+    <Box sx={{display: 'flex', justifyContent: 'flex-end'}}>
+      {!_validate.isError ? (
+        <Tooltip title={m.emailValidationStatusTooltipDesc[status]} placement="left">
+          <span>
             <IconBtn
-              color={_validate.isError ? 'error' : 'primary'}
+              disabled={status === EmailValidationStatus.Valid}
+              color={'primary'}
               loading={_validate.isPending}
               onClick={() => _validate.mutate()}
             >
-              <Icon>task_alt</Icon>
+              {status === EmailValidationStatus.Valid ? (
+                <Icon sx={{color: t => t.palette.success.light}}>check_circle</Icon>
+              ) : (
+                <Icon
+                  sx={{
+                    color: t => (status === EmailValidationStatus.Expired ? t.palette.warning.light : t.palette.primary.light),
+                  }}
+                >
+                  task_alt
+                </Icon>
+              )}
             </IconBtn>
-          </Tooltip>
-        )}
-      </Box>
-    </>
+          </span>
+        </Tooltip>
+      ) : (
+        <></>
+      )}
+    </Box>
   )
 }

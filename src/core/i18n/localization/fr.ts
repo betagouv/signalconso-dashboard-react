@@ -7,6 +7,7 @@ import {IdentificationStatus, InvestigationStatus} from '../../client/website/We
 import {ReportResponse, ReportResponseTypes, ResponseEvaluation} from '../../client/event/Event'
 import {Category} from '../../client/constant/Category'
 import {DownloadType} from '../../../feature/Report/ReportDownloadAction'
+import {EmailValidationStatus} from '../../client/consumer-email-validation/ConsumerEmailValidation'
 
 const invalidDate = '-'
 
@@ -991,6 +992,12 @@ export const fr = {
       ENTREPRISE_INCONNUE: 'Il concerne une société que je ne connais pas',
       USURPATION: 'Il s’agit d’une usurpation d’identité professionnelle',
       AUTRE: 'Autre',
+    },
+    emailValidationStatusTooltipDesc: {
+      [EmailValidationStatus.Expired]:
+        "Email expiré qui nécessite une revalidation. Cliquez sur l'icone pour valider à la place de l'utilisateur",
+      [EmailValidationStatus.Invalid]: "Email non validé. Cliquez sur l'icone pour valider à la place de l'utilisateur",
+      [EmailValidationStatus.Valid]: 'Email validé',
     },
     responseEvaluation: {
       [ResponseEvaluation.Positive]: "J'en suis satisfait",
