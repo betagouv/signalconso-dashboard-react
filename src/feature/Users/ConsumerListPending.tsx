@@ -51,8 +51,8 @@ export const ConsumerListPending = () => {
             value={_users.filters.validated}
             onChange={_ => _users.updateFilters(prev => ({...prev, validated: _}))}
             label={{
-              true: m.identified,
-              false: m.notIdentified,
+              true: m.validated,
+              false: m.invalid,
               undefined: m.all,
             }}
           />

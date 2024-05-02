@@ -180,6 +180,8 @@ export const fr = {
     kind: "Status d'identification",
     identified: 'Identifié',
     notIdentified: 'Non identifié',
+    validated: 'Validé',
+    invalid: 'Non validé',
     configuration: 'Configuration',
     general: 'General',
     name: 'Nom',
