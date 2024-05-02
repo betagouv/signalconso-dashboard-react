@@ -1,18 +1,15 @@
 import {Box, Icon} from '@mui/material'
-import {ReportStatusLabel} from '../../shared/ReportStatus'
-import * as React from 'react'
-import {useI18n} from '../../core/i18n'
-import {IconBtn} from '../../alexlibs/mui-extension'
-import {siteMap} from '../../core/siteMap'
-import {NavLink} from 'react-router-dom'
-import {Txt} from '../../alexlibs/mui-extension'
-import {ReportDetailValues} from '../../shared/ReportDetailValues'
-import {makeSx} from '../../alexlibs/mui-extension'
-import {styleUtils} from '../../core/theme'
-import {ReportSearchResult} from '../../core/client/report/Report'
-import {Paginate, PaginatedFilters, ReportSearch} from '../../core/model'
 import {UseQueryPaginateResult} from 'core/queryhooks/UseQueryPaginate'
+import {NavLink} from 'react-router-dom'
 import {CleanDiscreetPanel} from 'shared/Panel/simplePanels'
+import {IconBtn, Txt, makeSx} from '../../alexlibs/mui-extension'
+import {ReportSearchResult} from '../../core/client/report/Report'
+import {useI18n} from '../../core/i18n'
+import {Paginate, PaginatedFilters, ReportSearch} from '../../core/model'
+import {siteMap} from '../../core/siteMap'
+import {styleUtils} from '../../core/theme'
+import {ReportDetailValues} from '../../shared/ReportDetailValues'
+import {ReportStatusLabel} from '../../shared/ReportStatus'
 
 interface Props {
   reports: Paginate<ReportSearchResult>
@@ -47,9 +44,7 @@ const ReportsShortList = ({reports}: Props) => {
         <Box sx={css.report} key={_.report.id}>
           <Box sx={css.body}>
             <Box>
-              <Txt size="big" bold block truncate sx={{flex: 1, mb: 0.5}}>
-                {m.ReportCategoryDesc[_.report.category]}
-              </Txt>
+              <span className="italic">{m.ReportCategoryDesc[_.report.category]}</span>
               <Box sx={css.reportTag}>
                 <ReportStatusLabel status={_.report.status} dense sx={{mr: 1}} />
                 <Txt color="hint">{formatDate(_.report.creationDate)}</Txt>
