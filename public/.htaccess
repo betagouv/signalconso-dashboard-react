@@ -10,3 +10,10 @@ Options -MultiViews
 RewriteEngine On
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteRule ^ index.html [QSA,L]
+
+
+# Apply 30s cache headers to index.html specifically
+# To prevent browsers from caching it for too long
+<Files "index.html">
+Header set Cache-Control "max-age=30, must-revalidate"
+</Files>

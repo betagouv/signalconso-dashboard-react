@@ -8,7 +8,13 @@ export interface ConsumerEmailValidation {
   attempts: number
   lastAttempt?: Date
   lastValidationDate?: Date
-  isValid: Boolean
+  validationStatus: EmailValidationStatus
+}
+
+export enum EmailValidationStatus {
+  Expired = 'Expired',
+  Valid = 'Valid',
+  Invalid = 'Invalid',
 }
 
 export interface ConsumerEmailValidationSearch extends PaginatedSearch {
