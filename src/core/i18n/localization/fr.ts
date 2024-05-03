@@ -844,6 +844,10 @@ export const fr = {
         },
       },
       consumer: {
+        report_pro_engagement_review: {
+          title: `Engagement de l'entreprise`,
+          desc: `Email envoyé au conso 8 jours après la promesse d'action du pro pour lui demander si il a bien tenu son engagement`,
+        },
         report_deletion_confirmation: {
           title: `Signalement supprimé`,
           desc: `Email envoyé lorsqu'un admin supprime le signalement (dans le menu "Action Administrateur", quel que soit le motif choisi)`,
