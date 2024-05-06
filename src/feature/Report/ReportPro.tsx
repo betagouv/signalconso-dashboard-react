@@ -8,7 +8,7 @@ import {Link} from 'react-router-dom'
 import {CleanWidePanel} from 'shared/Panel/simplePanels'
 import {ReportProResponseEvent, ResponseConsumerReview} from '../../core/client/event/Event'
 import {FileOrigin, UploadedFile} from '../../core/client/file/UploadedFile'
-import {Report, ReportSearchResult, ReportStatusPro} from '../../core/client/report/Report'
+import {Report, ReportSearchResult, ReportStatusPro, ReportTag} from '../../core/client/report/Report'
 import {capitalize} from '../../core/helper'
 import {useI18n} from '../../core/i18n'
 import {Id} from '../../core/model'
@@ -27,9 +27,7 @@ import {ReportResponseComponent} from './ReportResponse'
 import {ReportResponseForm} from './ReportResponseForm/ReportResponseForm'
 import {ReportStation} from './ReportStation'
 import {ReportTrain} from './ReportTrain'
-import {ReportCategories} from './ReportCategories'
-import {Alert} from 'alexlibs/mui-extension'
-import OpenInNewIcon from '@mui/icons-material/OpenInNew'
+import CategoryMessage from './CategoryMessage'
 
 export const ReportPro = () => {
   const {id} = useParams<{id: Id}>()
@@ -133,8 +131,7 @@ function ReportBlock({
         <ReportFilesFull files={files} {...{report}} />
         <HorizontalLine />
         <Consumer {...{report}} />
-        {/* <ReportCategories categories={categories} /> */}
-        {renderCategoryMessage(categories)}
+        <CategoryMessage report={report} />
       </div>
     </CleanWidePanel>
   )
@@ -266,86 +263,4 @@ function Consumer({report}: {report: Report}) {
 
 function HorizontalLine() {
   return <hr className="h-[1px] my-4 bg-gray-300 border-0 rounded" />
-}
-
-interface CategoryDetail {
-  tag: string[]
-  message: string
-  baseLinkText: string
-  link: string
-}
-
-const categoryMessages: CategoryDetail[] = [
-  {
-    tag: ['produit périmé'],
-    message:
-      'Ce signalement concerne un produit périmé. Pour connaître la réglementation applicable aux DLC et DDM, rendez-vous sur la ',
-    baseLinkText: 'fiche pratique de la DGCCRF "Date limite de consommation DLC et DDM" ',
-    link: 'https://www.economie.gouv.fr/dgccrf/Publications/Vie-pratique/Fiches-pratiques/Date-limite-de-consommation-DLC-et-DDM',
-  },
-  {
-    tag: ['commande internet'],
-    message:
-      'Ce signalement concerne une commande réalisée sur internet. Pour connaître la réglementation applicable au e-commerce, rendez-vous sur la ',
-    baseLinkText: 'fiche pratique de la DGCCRF "E commerce règles applicables au commerce électronique" ',
-    link: 'https://www.economie.gouv.fr/dgccrf/Publications/Vie-pratique/Fiches-pratiques/E-commerce-regles-applicables-au-commerce-electronique',
-  },
-  {
-    tag: ['problème de prix ou paiement'],
-    message:
-      'Ce signalement concerne l’impression des tickets de caisse. Pour connaître la réglementation applicable à ce sujet, rendez-vous sur la ',
-    baseLinkText: 'fiche pratique de la DGCCRF "Impression des tickets de caisse et autres à la demande des clients" ',
-    link: 'https://www.economie.gouv.fr/dgccrf/impression-des-tickets-de-caisse-et-autres-la-demande-des-clients',
-  },
-  {
-    tag: ['quantité non conforme'],
-    message:
-      'Ce signalement concerne un problème avec une quantité de produits achetée. Pour connaître la réglementation applicable à ce sujet, rendez-vous sur la ',
-    baseLinkText: 'fiche pratique de la DGCCRF "Contrôle des quantités vendues à destination des professionnels" ',
-    link: 'https://www.economie.gouv.fr/dgccrf/Publications/Vie-pratique/Fiches-pratiques/quantite-produits',
-  },
-  {
-    tag: ['démarchage téléphonique'],
-    message:
-      'Ce signalement concerne un démarchage à domicile. Pour connaître la réglementation applicable au démarchage abusif, rendez-vous sur la ',
-    baseLinkText: 'fiche pratique de la DGCCRF "Renforcement des mesures pour lutter contre le démarchage abusif" ',
-    link: 'https://www.economie.gouv.fr/dgccrf/Publications/Vie-pratique/Fiches-pratiques/renforcement-des-mesures-pour-lutter-contre-le-demarchage-abusif',
-  },
-  {
-    tag: ['Un problème qui concerne le magasin de façon générale', 'Prix', 'Prix des prestations'],
-    message:
-      'Ce signalement concerne l’affichage des prix. Pour connaître la réglementation applicable à ce sujet, rendez-vous sur la ',
-    baseLinkText: 'fiche pratique de la DGCCRF "Information sur les prix" ',
-    link: 'https://www.economie.gouv.fr/dgccrf/Publications/Vie-pratique/Fiches-pratiques/L-information-sur-les-prix',
-  },
-  {
-    tag: ['alimentation animale'],
-    message:
-      'Ce signalement concerne l’alimentation animale. Pour connaître la réglementation applicable à ce sujet, rendez-vous sur la ',
-    baseLinkText: 'fiche pratique de la DGCCRF "alimentation animale professionnels" ',
-    link: 'https://www.economie.gouv.fr/dgccrf/Publications/Vie-pratique/Fiches-pratiques/alimentation-animale-professionnels',
-  },
-]
-
-function renderCategoryMessage(categories: string[]): JSX.Element | null {
-  console.log('Received categories for messages:', categories)
-  for (const category of categories) {
-    const detail = categoryMessages.find(detail => detail.tag.includes(category))
-    if (detail) {
-      return (
-        <Alert type="info">
-          <p>
-            {detail.message}
-            <a href={detail.link} target="_blank" rel="noopener noreferrer">
-              {detail.baseLinkText}
-              <OpenInNewIcon style={{fontSize: '1rem'}} />
-            </a>
-            .
-          </p>
-        </Alert>
-      )
-    }
-  }
-
-  return null
 }

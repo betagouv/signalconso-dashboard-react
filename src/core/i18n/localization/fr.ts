@@ -98,6 +98,13 @@ export const fr = {
       [ReportTag.Resiliation]: 'Résiliation',
       [ReportTag.OpenFoodFacts]: 'OpenFoodFacts',
       [ReportTag.TransitionEcologique]: 'Transition écologique',
+      [ReportTag.ProduitPerime]: 'Produit périmé',
+      [ReportTag.CommandeEffectuee]: 'Commande effectuée',
+      [ReportTag.ImpressionTicket]: 'Impression ticket',
+      [ReportTag.QuantiteNonConforme]: 'Quantité non conforme',
+      [ReportTag.AppelCommercial]: 'Appel commercial',
+      [ReportTag.Prix]: 'Prix',
+      [ReportTag.AlimentationMaterielAnimaux]: 'Alimentation / Matériel pour animaux',
       NA: 'Aucun tag',
     },
     IdentificationStatusDesc: {
