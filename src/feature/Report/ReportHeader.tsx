@@ -112,7 +112,7 @@ export const ReportHeader = ({report, children}: Props) => {
                     </Icon>
                   }
                   key={tag}
-                  label={tag}
+                  label={m.reportTagDesc[tag]}
                 />,
                 ' ',
               ])}
