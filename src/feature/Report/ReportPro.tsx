@@ -8,7 +8,7 @@ import {Link} from 'react-router-dom'
 import {CleanWidePanel} from 'shared/Panel/simplePanels'
 import {ReportProResponseEvent, ResponseConsumerReview} from '../../core/client/event/Event'
 import {FileOrigin, UploadedFile} from '../../core/client/file/UploadedFile'
-import {Report, ReportSearchResult, ReportStatusPro} from '../../core/client/report/Report'
+import {Report, ReportSearchResult, ReportStatusPro, ReportTag} from '../../core/client/report/Report'
 import {capitalize} from '../../core/helper'
 import {useI18n} from '../../core/i18n'
 import {Id} from '../../core/model'
@@ -27,6 +27,7 @@ import {ReportResponseComponent} from './ReportResponse'
 import {ReportResponseForm} from './ReportResponseForm/ReportResponseForm'
 import {ReportStation} from './ReportStation'
 import {ReportTrain} from './ReportTrain'
+import CategoryMessage from './CategoryMessage'
 
 export const ReportPro = () => {
   const {id} = useParams<{id: Id}>()
@@ -109,6 +110,7 @@ function ReportBlock({
 }) {
   const {m} = useI18n()
   const {report, files} = reportSearchResult
+  const categories = [m.ReportCategoryDesc[report.category], ...report.subcategories]
   return (
     <CleanWidePanel>
       <Header {...{reportSearchResult, isClosed, scrollToResponse, hasToRespond, responseEvent}} />
@@ -129,6 +131,7 @@ function ReportBlock({
         <ReportFilesFull files={files} {...{report}} />
         <HorizontalLine />
         <Consumer {...{report}} />
+        <CategoryMessage report={report} />
       </div>
     </CleanWidePanel>
   )

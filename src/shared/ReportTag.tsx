@@ -25,6 +25,13 @@ export const reportTagColor = {
   [ReportTag.Resiliation]: '#a1a1a1',
   [ReportTag.OpenFoodFacts]: '#a1a1a1',
   [ReportTag.TransitionEcologique]: '#a1a1a1',
+  [ReportTag.ProduitPerime]: '#a1a1a1',
+  [ReportTag.CommandeEffectuee]: '#a1a1a1',
+  [ReportTag.ImpressionTicket]: '#a1a1a1',
+  [ReportTag.QuantiteNonConforme]: '#a1a1a1',
+  [ReportTag.AppelCommercial]: '#a1a1a1',
+  [ReportTag.Prix]: '#a1a1a1',
+  [ReportTag.AlimentationMaterielAnimaux]: '#a1a1a1',
 }
 
 export const ReportTagLabel = ({tag, style, ...props}: ReportTagProps) => {

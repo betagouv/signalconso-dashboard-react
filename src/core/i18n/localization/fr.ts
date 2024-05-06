@@ -99,6 +99,13 @@ export const fr = {
       [ReportTag.Resiliation]: 'Résiliation',
       [ReportTag.OpenFoodFacts]: 'OpenFoodFacts',
       [ReportTag.TransitionEcologique]: 'Transition écologique',
+      [ReportTag.ProduitPerime]: 'Produit périmé',
+      [ReportTag.CommandeEffectuee]: 'Commande effectuée',
+      [ReportTag.ImpressionTicket]: 'Impression ticket',
+      [ReportTag.QuantiteNonConforme]: 'Quantité non conforme',
+      [ReportTag.AppelCommercial]: 'Appel commercial',
+      [ReportTag.Prix]: 'Prix',
+      [ReportTag.AlimentationMaterielAnimaux]: 'Alimentation / Matériel pour animaux',
       NA: 'Aucun tag',
     },
     IdentificationStatusDesc: {
@@ -180,6 +187,8 @@ export const fr = {
     kind: "Status d'identification",
     identified: 'Identifié',
     notIdentified: 'Non identifié',
+    validated: 'Validé',
+    invalid: 'Non validé',
     configuration: 'Configuration',
     general: 'General',
     name: 'Nom',
@@ -842,6 +851,10 @@ export const fr = {
         },
       },
       consumer: {
+        report_pro_engagement_review: {
+          title: `Engagement de l'entreprise`,
+          desc: `Email envoyé au conso 8 jours après la promesse d'action du pro pour lui demander si il a bien tenu son engagement`,
+        },
         report_deletion_confirmation: {
           title: `Signalement supprimé`,
           desc: `Email envoyé lorsqu'un admin supprime le signalement (dans le menu "Action Administrateur", quel que soit le motif choisi)`,

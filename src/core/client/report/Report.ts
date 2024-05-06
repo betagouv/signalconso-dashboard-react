@@ -57,6 +57,14 @@ export enum ReportTag {
   Resiliation = 'Resiliation',
   OpenFoodFacts = 'OpenFoodFacts',
   TransitionEcologique = 'TransitionEcologique',
+  // new tag
+  ProduitPerime = 'ProduitPerime',
+  CommandeEffectuee = 'CommandeEffectuee',
+  ImpressionTicket = 'ImpressionTicket',
+  QuantiteNonConforme = 'QuantiteNonConforme',
+  AppelCommercial = 'AppelCommercial',
+  Prix = 'Prix',
+  AlimentationMaterielAnimaux = 'AlimentationMaterielAnimaux',
 }
 
 export const OutdatedTags = [ReportTag.Bloctel]

@@ -7,6 +7,9 @@ export const useToast = () => {
   const {toastError, ...toasts} = useMuiToast()
   const {m} = useI18n()
 
+  const askForRefreshMessage =
+    'Merci de rafraîchir la page, puis de réessayer. Si cela ne fonctionne toujours pas, réessayez plus tard ou contactez le support.'
+
   const getErrorMessage = (err: Partial<ApiError>) => {
     console.error(JSON.stringify(err.details))
     if (err.details?.id && (m.apiErrorsCode as Index<string>)[err.details.id]) {
@@ -18,7 +21,11 @@ export const useToast = () => {
     return m.anErrorOccurred
   }
 
-  const doToastError = (error: Partial<ApiError>) => toastError(getErrorMessage(error))
+  const doToastError = (error: Partial<ApiError>) => {
+    const baseErrorMessage = getErrorMessage(error)
+    const errorDetailsCode = error.details?.code === 400 ? `${baseErrorMessage} ${askForRefreshMessage}` : baseErrorMessage
+    toastError(errorDetailsCode)
+  }
 
   return {
     toastError: doToastError,

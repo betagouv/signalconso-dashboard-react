@@ -36,6 +36,7 @@ import {CenteredContent} from './shared/CenteredContent'
 import {Engagements} from './feature/Engagement/Engagements'
 import './style.css'
 import {UserWithPermission} from 'core/model'
+import {RefreshBanner} from './shared/RefreshBanner'
 
 export const AppRoutes = ({loginManagementResult}: {loginManagementResult: LoginManagementResult}) => {
   const {connectedUser, setConnectedUser, register, handleDetectedLogout, isFetchingUserOnStartup, login} = loginManagementResult
@@ -116,6 +117,7 @@ const ProtectedRoutes = () => {
 
   return (
     <ApiProvider api={apiSdk}>
+      <RefreshBanner />
       <Routes>
         <Route path={siteMap.logged.tools.value} element={<Tools />} />
         <Route path={siteMap.logged.reportedWebsites.value} element={<ReportedWebsites />} />
