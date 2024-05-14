@@ -98,6 +98,7 @@ export const WebsitesInvestigation = () => {
       ...{
         isOpen: false,
         identificationStatus: [IdentificationStatus.Identified],
+        investigationStatus: [InvestigationStatus.Processing, InvestigationStatus.NotProcessed],
       },
     }))
   }

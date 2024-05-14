@@ -955,6 +955,9 @@ export const fr = {
       accountActivationLastReminder: {
         title: `Courrier d'activation (dernière relance)`,
       },
+      accountFollowUp: {
+        title: `Courrier de relance pour inactivité`,
+      },
       report: {
         title: `Téléchargement du signalement`,
         desc: `Récapitulatif du signalement, à l'intention des agents de la DGCCRF. Correspond au bouton "Télécharger" sur la fiche du signalement.`,
