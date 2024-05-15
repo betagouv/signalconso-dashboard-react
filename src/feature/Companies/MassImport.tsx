@@ -40,7 +40,7 @@ export const MassImport = ({children}: MassImportProps) => {
 
   const confirm = (e: any) => {
     handleSubmit(_ => mutation.mutate(_))(e)
-      .then(() => toastSuccess('Import réussi'))
+      .then(() => toastSuccess('Opération réussie'))
       .then(() => close())
       .catch(e => toastError(e))
   }
@@ -53,7 +53,7 @@ export const MassImport = ({children}: MassImportProps) => {
         },
       })}
       <Dialog fullWidth open={open ?? false} onClose={close}>
-        <DialogTitle>Inviter manuellement des emails à des entreprises</DialogTitle>
+        <DialogTitle>Ouvrir manuellement l'accès à des entreprises</DialogTitle>
         <DialogContent>
           <>
             <p className="mb-2">
@@ -62,9 +62,10 @@ export const MassImport = ({children}: MassImportProps) => {
               fait une demande au support en ce sens, et que vous avez vérifié manuellement (KBIS) que c'était bien le
               propriétaire de ces entreprises.
             </p>
-            <p className="italic mb-4 text-gray-500">
-              Les destinataires recevront une invitation à créer leur compte sur SignalConso, ou s'ils avaient déjà un compte, ils
-              auront juste l'accès à ces nouvelles entreprises.
+            <p className="italic mb-2 text-gray-500">
+              Les entreprises seront créées dans SignalConso, si elles n'existaient pas. Les destinataires recevront une
+              invitation à créer leur compte sur SignalConso, ou s'ils avaient déjà un compte, ils auront juste l'accès à ces
+              nouvelles entreprises.
             </p>
           </>
           <DialogInputRow label="SIREN">
@@ -164,7 +165,7 @@ export const MassImport = ({children}: MassImportProps) => {
             {m.close}
           </Btn>
           <Btn loading={mutation.isPending} onClick={confirm} color="primary" variant="contained">
-            Importer
+            Envoyer
           </Btn>
         </DialogActions>
       </Dialog>
