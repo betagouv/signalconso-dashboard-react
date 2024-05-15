@@ -1,14 +1,14 @@
-import React, {ReactElement, useState} from 'react'
 import {Autocomplete, Checkbox, Dialog, DialogActions, DialogContent, DialogTitle, MenuItem, TextField} from '@mui/material'
-import {Btn} from '../../alexlibs/mui-extension'
-import {useI18n} from '../../core/i18n'
-import {DialogInputRow} from '../../shared/DialogInputRow'
-import {ScInput} from '../../shared/ScInput'
+import {useMutation} from '@tanstack/react-query'
+import React, {ReactElement, useState} from 'react'
 import {Controller, useForm} from 'react-hook-form'
+import {Btn} from '../../alexlibs/mui-extension'
 import {AccessLevel, CompaniesToImport} from '../../core/client/company/Company'
 import {useApiContext} from '../../core/context/ApiContext'
-import {useMutation} from '@tanstack/react-query'
+import {useI18n} from '../../core/i18n'
 import {useToast} from '../../core/toast'
+import {DialogInputRow} from '../../shared/DialogInputRow'
+import {ScInput} from '../../shared/ScInput'
 import {ScSelect} from '../../shared/Select/Select'
 
 export interface MassImportProps {
@@ -40,7 +40,7 @@ export const MassImport = ({children}: MassImportProps) => {
 
   const confirm = (e: any) => {
     handleSubmit(_ => mutation.mutate(_))(e)
-      .then(() => toastSuccess('Import réussi'))
+      .then(() => toastSuccess('Opération réussie'))
       .then(() => close())
       .catch(e => toastError(e))
   }
@@ -53,8 +53,21 @@ export const MassImport = ({children}: MassImportProps) => {
         },
       })}
       <Dialog fullWidth open={open ?? false} onClose={close}>
-        <DialogTitle>Importer</DialogTitle>
+        <DialogTitle>Ouvrir manuellement l'accès à des entreprises</DialogTitle>
         <DialogContent>
+          <>
+            <p className="mb-2">
+              Cet outil permet d'ouvrir l'accès à des entreprises à certaines personnes,{' '}
+              <span className="font-bold">en contournant ainsi l'invitation via courrier postal</span>. A utiliser lorsqu'un pro
+              fait une demande au support en ce sens, et que vous avez vérifié manuellement (KBIS) que c'était bien le
+              propriétaire de ces entreprises.
+            </p>
+            <p className="italic mb-2 text-gray-500">
+              Les entreprises seront créées dans SignalConso, si elles n'existaient pas. Les destinataires recevront une
+              invitation à créer leur compte sur SignalConso, ou s'ils avaient déjà un compte, ils auront juste l'accès à ces
+              nouvelles entreprises.
+            </p>
+          </>
           <DialogInputRow label="SIREN">
             <ScInput
               error={!!errors.siren}
@@ -152,7 +165,7 @@ export const MassImport = ({children}: MassImportProps) => {
             {m.close}
           </Btn>
           <Btn loading={mutation.isPending} onClick={confirm} color="primary" variant="contained">
-            Importer
+            Envoyer
           </Btn>
         </DialogActions>
       </Dialog>

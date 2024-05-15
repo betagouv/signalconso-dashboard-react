@@ -2,6 +2,7 @@ import {Badge, Box, Icon, ListItemIcon, ListItemText, MenuItem, Tooltip} from '@
 import {useMutation, useQueryClient} from '@tanstack/react-query'
 import {useCallback, useEffect, useMemo, useState} from 'react'
 import {NavLink} from 'react-router-dom'
+import {ScInput} from 'shared/ScInput'
 import {Fender, IconBtn, Txt} from '../../alexlibs/mui-extension'
 import {Company, CompanySearch, CompanyUpdate, CompanyWithReportsCount} from '../../core/client/company/Company'
 import {useConnectedContext} from '../../core/context/ConnectedContext'
@@ -22,7 +23,6 @@ import {SelectCompanyDialog} from '../../shared/SelectCompany/SelectCompanyDialo
 import {CompaniesRegisteredFilters} from './CompaniesRegisteredFilters'
 import {EditAddressDialog} from './EditAddressDialog'
 import {MassImport} from './MassImport'
-import {ScInput} from 'shared/ScInput'
 
 export interface CompanySearchQs extends PaginatedSearch<any> {
   departments?: string[] | string
@@ -123,12 +123,21 @@ export const CompaniesRegistered = () => {
       <Datatable
         id="companiesregistered"
         superheader={
-          <>
-            <p>Cette page liste toutes les sociétés qui existent dans SignalConso</p>
-            <p className="text-gray-500 italic">
-              Elles ont eu au moins un signalement, ou ont été ajoutées manuellement par un admin.
-            </p>
-          </>
+          <div className="flex gap-2 justify-between items-center">
+            <div>
+              <p>Cette page liste toutes les sociétés qui existent dans SignalConso</p>
+              <p className="text-gray-500 italic">
+                Elles ont eu au moins un signalement, ou ont été ajoutées manuellement par un admin.
+              </p>
+            </div>
+            {connectedUser.isAdmin && (
+              <MassImport>
+                <ScButton icon="meeting_room" variant="outlined" color="primary">
+                  Ouvrir des accès
+                </ScButton>
+              </MassImport>
+            )}
+          </div>
         }
         headerMain={
           <div className="mb-2 w-full">
@@ -163,15 +172,6 @@ export const CompaniesRegistered = () => {
                 <Icon>clear</Icon>
               </IconBtn>
             </Tooltip>
-            {connectedUser.isAdmin && (
-              <MassImport>
-                <Tooltip title="Importer">
-                  <IconBtn color="primary">
-                    <Icon>upload</Icon>
-                  </IconBtn>
-                </Tooltip>
-              </MassImport>
-            )}
           </>
         }
         sort={{
