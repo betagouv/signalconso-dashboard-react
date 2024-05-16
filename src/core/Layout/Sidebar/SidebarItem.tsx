@@ -1,20 +1,14 @@
-import * as React from 'react'
-import {ReactNode} from 'react'
-import {Box, BoxProps, Icon, Theme, useTheme} from '@mui/material'
+import {Box, BoxProps, Icon} from '@mui/material'
 import {alpha} from '@mui/material/styles'
-import {makeSx} from '../../../alexlibs/mui-extension'
+import {ReactNode} from 'react'
 import {NavLink} from 'react-router-dom'
+import {makeSx} from '../../../alexlibs/mui-extension'
 
 const css = makeSx({
   i: {
     textAlign: 'center',
     mr: 2,
   },
-})
-
-const styleActive = (t: Theme) => ({
-  color: t.palette.primary.main,
-  background: alpha(t.palette.primary.main, 0.16),
 })
 
 export interface SidebarItemProps extends BoxProps {
@@ -25,12 +19,10 @@ export interface SidebarItemProps extends BoxProps {
 }
 
 export const SidebarItem = ({children, to, icon, className, active, large, sx, ...props}: SidebarItemProps) => {
-  const theme = useTheme()
   const navLinkProps = to
     ? {
         component: NavLink,
         to,
-        activeStyle: styleActive(theme),
       }
     : {}
   return (
