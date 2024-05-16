@@ -1,10 +1,10 @@
 import {Box, Checkbox, Theme, useTheme} from '@mui/material'
+import {I18nContextProps} from 'core/i18n/I18n'
 import {memo, useMemo, useState} from 'react'
 import {CartesianGrid, LabelList, Legend, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis} from 'recharts'
+import {CountByDate, Period} from '../../core/client/stats/Stats'
 import {useI18n} from '../../core/i18n'
 import {styleUtils} from '../../core/theme'
-import {I18nContextProps} from 'core/i18n/I18n'
-import {CountByDate, Period} from '../../core/client/stats/Stats'
 
 export interface ScLineChartPropsBase {
   /**
@@ -82,14 +82,12 @@ export const ScLineChart = memo(({period, disableAnimation, hideLabelToggle, cur
         <Box sx={{display: 'flex', alignItems: 'center', justifyContent: 'flex-end'}}>
           {m.showLabels}
           {curves.map((c, i) => (
-            <>
-              <Checkbox
-                key={c.key}
-                checked={showCurves[i]}
-                onChange={e => setShowCurves(prev => prev.map((_, index) => (i === index ? e.currentTarget.checked : _)))}
-                sx={{'& svg': {fill: c.color ?? colors(theme)[i] ?? colors(theme)[0] + ' !important'}}}
-              />
-            </>
+            <Checkbox
+              key={c.key}
+              checked={showCurves[i]}
+              onChange={e => setShowCurves(prev => prev.map((_, index) => (i === index ? e.currentTarget.checked : _)))}
+              sx={{'& svg': {fill: c.color ?? colors(theme)[i] ?? colors(theme)[0] + ' !important'}}}
+            />
           ))}
         </Box>
       )}
