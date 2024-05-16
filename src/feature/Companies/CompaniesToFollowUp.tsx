@@ -55,14 +55,10 @@ export const CompaniesToFollowUp = () => {
       <Datatable
         id="companiestoactivate"
         superheader={
-          <Txt color="default">
+          <div>
             {m.companiesToFollowUpDesc}
-            <p className="mt-2">
-              <Txt color="hint" italic>
-                {m.companiesToFollowUpDescDetail}
-              </Txt>
-            </p>
-          </Txt>
+            <p className="mt-2 italic text-gray-500">{m.companiesToFollowUpDescDetail}</p>
+          </div>
         }
         headerMain={
           <DatatableToolbar

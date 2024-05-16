@@ -36,7 +36,6 @@ export const TestTools = () => {
 
   useEffectFn(_sendEmail.error, toastError)
   useEffectFn(_downloadTestPdf.error, toastError)
-
   return (
     <div className="flex flex-row items-start justify-center gap-4 mx-auto mt-10">
       {!_emailCodes.isLoading && (
@@ -53,6 +52,7 @@ export const TestTools = () => {
                   <p className="text-xl capitalize text-center text-black font-bold">{type}</p>
                   {emailCodes.map(emailCode => (
                     <Box
+                      key={emailCode}
                       sx={{
                         display: 'flex',
                         alignItems: 'center',
@@ -114,6 +114,7 @@ export const TestTools = () => {
                   const {title, desc} = ((m.testPdfs as any)[code] ?? {}) as {title?: string; desc?: string}
                   return (
                     <Box
+                      key={code}
                       sx={{
                         display: 'flex',
                         alignItems: 'center',

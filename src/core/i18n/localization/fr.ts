@@ -1,13 +1,13 @@
-import {config} from '../../../conf/config'
 import {formatDistance, formatDuration as formatDurationFns} from 'date-fns'
 import {AssociationType} from 'feature/ReportedWebsites/SelectWebsiteIdentification/SelectWebsiteAssociation'
-import {ReportAdminActionType, ReportStatus, ReportStatusPro, ReportTag, ReportType} from '../../client/report/Report'
-import {CompanyAccessLevel} from '../../client/company-access/CompanyAccess'
-import {IdentificationStatus, InvestigationStatus} from '../../client/website/Website'
-import {ReportResponse, ReportResponseTypes, ResponseEvaluation} from '../../client/event/Event'
-import {Category} from '../../client/constant/Category'
+import {config} from '../../../conf/config'
 import {DownloadType} from '../../../feature/Report/ReportDownloadAction'
+import {CompanyAccessLevel} from '../../client/company-access/CompanyAccess'
+import {Category} from '../../client/constant/Category'
 import {EmailValidationStatus} from '../../client/consumer-email-validation/ConsumerEmailValidation'
+import {ReportResponseTypes, ResponseEvaluation} from '../../client/event/Event'
+import {ReportAdminActionType, ReportStatus, ReportStatusPro, ReportTag, ReportType} from '../../client/report/Report'
+import {IdentificationStatus, InvestigationStatus} from '../../client/website/Website'
 
 const invalidDate = '-'
 
@@ -561,7 +561,7 @@ export const fr = {
     accountActivated: 'Compte activé',
     accountsActivated: `comptes activés`,
     companiesToActivate: "En attente d'activation",
-    companiesToFollowUp: 'Entreprise inactives',
+    companiesToFollowUp: 'Entreprises inactives',
     companiesToActivateDesc: "Cette page liste les entreprises auquel il faudrait envoyer un courrier d'activation.",
     companiesToFollowUpDesc:
       'Cette page liste les entreprises qui ne consultent plus leurs signalements sur une période de 3 mois, mais qui ont un compte enregistrant au moins une connexion.',

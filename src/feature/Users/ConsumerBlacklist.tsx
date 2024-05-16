@@ -26,10 +26,10 @@ export const ConsumerBlacklist = () => {
           <div className="">
             <p className="mb-2">
               Liste noire des consommateurs qui nous ont soumis des signalements inacceptables (injures, racisme, etc.).{' '}
-              <Txt color="hint" italic>
+              <span className="text-gray-500 italic">
                 Ils ont l'impression de pouvoir toujours accéder au site et soumettre des signalements. En fait, leurs
                 signalements ne sont plus enregistrés.
-              </Txt>
+              </span>
             </p>
             <div className="">
               <ConsumerBlacklistAddDialog />

@@ -1,9 +1,10 @@
-import {Subscription} from '../../core/client/subscription/Subscription'
-import {Category} from '../../core/client/constant/Category'
 import {Alert} from '@mui/material'
-import React from 'react'
-import {OutdatedTags} from '../../core/client/report/Report'
+import {isDefined} from 'core/helper'
+import {Fragment} from 'react'
 import {Txt} from '../../alexlibs/mui-extension'
+import {Category} from '../../core/client/constant/Category'
+import {OutdatedTags} from '../../core/client/report/Report'
+import {Subscription} from '../../core/client/subscription/Subscription'
 
 interface SubscriptionInformationProps {
   subscription: Subscription
@@ -100,7 +101,7 @@ export const SubscriptionInformation = ({outdatedCategories, subscription}: Subs
       </>
     )
 
-  const all = [category, country, departement, siret, withTags, withoutTags].filter(_ => _ !== null)
+  const all = [category, country, departement, siret, withTags, withoutTags].filter(isDefined)
 
   if (allInactiveCategories) {
     return (
@@ -140,7 +141,10 @@ export const SubscriptionInformation = ({outdatedCategories, subscription}: Subs
   } else {
     return (
       <Alert severity="info">
-        Vous recevrez un email <b>{frequency}</b> concernant tout nouveau signalement{all}
+        Vous recevrez un email <b>{frequency}</b> concernant tout nouveau signalement
+        {all.map((elem, idx) => (
+          <Fragment key={idx}>{elem}</Fragment>
+        ))}
       </Alert>
     )
   }

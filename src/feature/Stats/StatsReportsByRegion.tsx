@@ -1,17 +1,15 @@
-import * as React from 'react'
-import {useMemo, useState} from 'react'
-import {useI18n} from '../../core/i18n'
 import {Box, BoxProps, Divider, Icon, Table, TableBody, TableCell, TableHead, TableRow, Tooltip} from '@mui/material'
-import {Panel, PanelBody, PanelHead} from '../../shared/Panel'
-import {ScButton} from '../../shared/Button'
-import {siteMap} from '../../core/siteMap'
+import {useMemo, useState} from 'react'
 import {NavLink} from 'react-router-dom'
-import {SelectMonth} from '../../shared/SelectMonth'
-import {useGetDateForMonthAndPreviousOne} from './useGetDateForMonthAndPreviousOne'
+import {CleanWidePanel} from 'shared/Panel/simplePanels'
 import {Txt} from '../../alexlibs/mui-extension'
+import {useI18n} from '../../core/i18n'
 import {useRegionsQuery} from '../../core/queryhooks/constantQueryHooks'
 import {useGetCountByDepartmentsQuery} from '../../core/queryhooks/reportQueryHooks'
-import {CleanWidePanel} from 'shared/Panel/simplePanels'
+import {siteMap} from '../../core/siteMap'
+import {ScButton} from '../../shared/Button'
+import {SelectMonth} from '../../shared/SelectMonth'
+import {useGetDateForMonthAndPreviousOne} from './useGetDateForMonthAndPreviousOne'
 
 const CellNewPosition = ({sx, ...props}: BoxProps) => {
   return <Box {...props} component="span" sx={{fontWeight: t => t.typography.fontWeightBold, ...sx}} />
@@ -34,7 +32,7 @@ export const StatsReportsByRegion = () => {
   const _countByDepCurrentMonth = useGetCountByDepartmentsQuery({...dates.current})
   const _countByDepLastMonth = useGetCountByDepartmentsQuery({...dates.lastMonth})
 
-  const positionByDep: {[key: string]: number} | undefined = useMemo(() => {
+  const positionByDepLastMonth: {[key: string]: number} | undefined = useMemo(() => {
     if (_countByDepLastMonth.data) {
       return _countByDepLastMonth.data.reduce((acc, current, i) => ({...acc, [current[0]]: i}), {})
     }
@@ -65,7 +63,7 @@ export const StatsReportsByRegion = () => {
               <TableCell />
             </TableRow>
           </TableHead>
-          {_countByDepCurrentMonth.data && positionByDep && _regions.data && departmentsIndex && (
+          {_countByDepCurrentMonth.data && positionByDepLastMonth && _regions.data && departmentsIndex && (
             <TableBody>
               {_countByDepCurrentMonth.data.slice(0, 20).map(([depNumber, count], i) => (
                 <TableRow key={depNumber}>
@@ -85,14 +83,18 @@ export const StatsReportsByRegion = () => {
                   <TableCell>{formatLargeNumber(count)}</TableCell>
                   <TableCell>
                     {(() => {
-                      const oldPosition = positionByDep[depNumber]
-                      if (oldPosition === i) {
-                        return <CellNewPosition sx={{color: t => t.palette.text.disabled}}>=</CellNewPosition>
-                      } else if (oldPosition > i) {
-                        return <CellNewPosition sx={{color: t => t.palette.error.main}}>+{oldPosition - i}</CellNewPosition>
-                      } else {
-                        return <CellNewPosition sx={{color: t => t.palette.success.light}}>{oldPosition - i}</CellNewPosition>
+                      const currentPos = i
+                      const oldPos: number | undefined = positionByDepLastMonth[depNumber]
+                      if (oldPos === undefined) {
+                        return null
                       }
+                      if (oldPos === currentPos) {
+                        return <CellNewPosition sx={{color: t => t.palette.text.disabled}}>=</CellNewPosition>
+                      }
+                      if (oldPos > currentPos) {
+                        return <CellNewPosition sx={{color: t => t.palette.error.main}}>+{oldPos - currentPos}</CellNewPosition>
+                      }
+                      return <CellNewPosition sx={{color: t => t.palette.success.light}}>{oldPos - currentPos}</CellNewPosition>
                     })()}
                   </TableCell>
                   <TableCell style={{textAlign: 'right'}}>

@@ -1,7 +1,7 @@
 import {Skeleton} from '@mui/material'
-import {ScLineChart} from './ScLineChart'
 import {useEffect, useState} from 'react'
-import {CountByDate, Period} from '../../core/client/stats/Stats'
+import {CountByDate, Period} from '../../core/client/stats/statsTypes'
+import {ScLineChart} from './ScLineChart'
 
 export const toPercentage = (numerator: CountByDate[], denominator: CountByDate[]): CountByDate[] => {
   return numerator.map<CountByDate>((k, i) => ({

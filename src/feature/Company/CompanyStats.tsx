@@ -1,4 +1,4 @@
-import {Grid, List, ListItem} from '@mui/material'
+import {List, ListItem} from '@mui/material'
 import {useI18n} from 'core/i18n'
 import {HorizontalBarChart} from 'shared/Chart/HorizontalBarChart'
 import {reportStatusColor} from 'shared/ReportStatus'

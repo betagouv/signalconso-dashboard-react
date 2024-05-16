@@ -1,15 +1,15 @@
-import {Route, useResolvedPath} from 'react-router-dom'
+import {config} from 'conf/config'
+import {Navigate, Routes} from 'react-router'
+import {Route} from 'react-router-dom'
 import {Page, PageTitle} from 'shared/Page'
+import {useConnectedContext} from '../../core/context/ConnectedContext'
 import {useI18n} from '../../core/i18n'
 import {siteMap} from '../../core/siteMap'
 import {PageTab, PageTabs} from '../../shared/Page/PageTabs'
+import {ArborescenceWithCounts} from './ArborescenceWithCounts'
 import {DgccrfStats} from './DgccrfStats'
 import {ProStats} from './ProStats'
 import {ReportStats} from './ReportStats'
-import {ArborescenceWithCounts} from './ArborescenceWithCounts'
-import {useConnectedContext} from '../../core/context/ConnectedContext'
-import {config} from 'conf/config'
-import {Navigate, Routes} from 'react-router'
 
 export const Stats = () => {
   const {m} = useI18n()

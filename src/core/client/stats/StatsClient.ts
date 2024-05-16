@@ -22,7 +22,7 @@ import {
   ReportStatusProDistributionWithTotals,
   ReportTagsDistribution,
   SimpleStat,
-} from './Stats'
+} from './statsTypes'
 
 // All of this could be greatly simplified, if we just fully compute the stats server-side
 // Like it's done with the 'PublicStat' on the website
