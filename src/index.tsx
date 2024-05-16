@@ -1,12 +1,11 @@
-import './polyfills'
-import React from 'react'
-import ReactDOM from 'react-dom'
-import {App} from './App'
-import createGenerateClassName from '@mui/styles/createGenerateClassName'
 import StylesProvider from '@mui/styles/StylesProvider'
+import createGenerateClassName from '@mui/styles/createGenerateClassName'
+import {injectMatomoScript} from 'core/plugins/Matomo'
+import {createRoot} from 'react-dom/client'
+import {App} from './App'
 import {ErrorBundary} from './core/ErrorBundary'
 import {Sentry} from './core/plugins/Sentry'
-import {injectMatomoScript} from 'core/plugins/Matomo'
+import './polyfills'
 
 Sentry.init()
 injectMatomoScript()
@@ -18,11 +17,14 @@ const generateClassName = createGenerateClassName({
   disableGlobal: true,
 })
 
-ReactDOM.render(
+const container = document.getElementById('root')
+if (!container) {
+  throw new Error('Missing root')
+}
+createRoot(container).render(
   <StylesProvider generateClassName={generateClassName}>
     <ErrorBundary>
       <App />
     </ErrorBundary>
   </StylesProvider>,
-  document.getElementById('root'),
 )
