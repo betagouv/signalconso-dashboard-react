@@ -7,7 +7,7 @@ import {NavLink} from 'react-router-dom'
 import {CurveDefinition, LineChartOrPlaceholder} from 'shared/Chart/LineChartWrappers'
 import {CleanDiscreetPanel} from 'shared/Panel/simplePanels'
 import {CompanyWithReportsCount} from '../../core/client/company/Company'
-import {NbReportsTotals, Period} from '../../core/client/stats/Stats'
+import {NbReportsTotals, Period} from '../../core/client/stats/statsTypes'
 import {Id, ReportStatus} from '../../core/model'
 
 const periods: Period[] = ['Day', 'Week', 'Month']

@@ -2,7 +2,7 @@ import {Box, Checkbox, Theme, useTheme} from '@mui/material'
 import {I18nContextProps} from 'core/i18n/I18n'
 import {memo, useMemo, useState} from 'react'
 import {CartesianGrid, LabelList, Legend, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis} from 'recharts'
-import {CountByDate, Period} from '../../core/client/stats/Stats'
+import {CountByDate, Period} from '../../core/client/stats/statsTypes'
 import {useI18n} from '../../core/i18n'
 import {styleUtils} from '../../core/theme'
 

@@ -1,12 +1,10 @@
-import {useTheme} from '@mui/material'
 import {AsyncLineChart} from 'shared/Chart/LineChartWrappers'
+import {CleanWidePanel} from 'shared/Panel/simplePanels'
 import {Txt} from '../../alexlibs/mui-extension'
+import {ReportTag} from '../../core/client/report/Report'
+import {CountByDate} from '../../core/client/stats/statsTypes'
 import {useConnectedContext} from '../../core/context/ConnectedContext'
 import {useI18n} from '../../core/i18n'
-import {Panel, PanelBody, PanelHead} from '../../shared/Panel'
-import {CountByDate} from '../../core/client/stats/Stats'
-import {ReportTag} from '../../core/client/report/Report'
-import {CleanWidePanel} from 'shared/Panel/simplePanels'
 
 const computeCurveReportPhysique = ({
   all,
