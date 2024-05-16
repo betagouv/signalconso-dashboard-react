@@ -98,6 +98,7 @@ export function injectMatomoScript() {
     _paq.push(['setDomains', ['admin.signal.conso.gouv.fr']])
     _paq.push(['trackPageView'])
     _paq.push(['enableLinkTracking'])
+    _paq.push(['HeatmapSessionRecording::enable'])
     ;(function () {
       var u = 'https://stats.beta.gouv.fr/'
       _paq.push(['setTrackerUrl', u + 'matomo.php'])
