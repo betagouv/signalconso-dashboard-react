@@ -1,4 +1,6 @@
 import {ButtonProps} from '@mui/material'
+import {useMutation} from '@tanstack/react-query'
+import {useApiContext} from 'core/context/ApiContext'
 import {useState} from 'react'
 import {useConnectedContext} from '../../core/context/ConnectedContext'
 import {useI18n} from '../../core/i18n'
@@ -6,8 +8,11 @@ import {useToast} from '../../core/toast'
 import {ScButton} from '../../shared/Button'
 import {Datepicker} from '../../shared/Datepicker'
 import {ScDialog} from '../../shared/ScDialog'
-import {useMutation} from '@tanstack/react-query'
-import {useApiContext} from 'core/context/ApiContext'
+
+// TRELLO-2353
+// On arrête de compter et d'afficher les retours courriers
+// pour tester si la feature est vraiment utile
+export const HIDE_UNDELIVERED_DOC_FEATURE = true
 
 interface Props extends Omit<ButtonProps, 'onChange'> {
   siret: string
