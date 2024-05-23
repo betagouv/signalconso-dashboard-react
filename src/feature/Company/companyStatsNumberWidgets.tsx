@@ -1,5 +1,4 @@
 import {Icon, LinearProgress, Tooltip} from '@mui/material'
-import {useMemoFn} from 'alexlibs/react-hooks-lib'
 import {useConnectedContext} from 'core/context/ConnectedContext'
 import {useI18n} from 'core/i18n'
 import {EventActionValues, Id} from 'core/model'
@@ -11,6 +10,7 @@ import {
   useGetResponseDelayQuery,
 } from 'core/queryhooks/statsQueryHooks'
 import {siteMap} from 'core/siteMap'
+import {HIDE_UNDELIVERED_DOC_FEATURE} from 'feature/CompanyAccesses/SaveUndeliveredDocBtn'
 import {PropsWithChildren} from 'react'
 import {NavLink} from 'react-router-dom'
 
@@ -128,6 +128,9 @@ function NumberWidgetReturnedDocs({siret}: {siret: string}) {
   const _companyEvents = useGetCompanyEventsQuery(siret)
   const count = _companyEvents.data?.filter(_ => _.data.action === EventActionValues.ActivationDocReturned).length
   const {m} = useI18n()
+  if (HIDE_UNDELIVERED_DOC_FEATURE) {
+    return null
+  }
   return (
     <Widget loading={_companyEvents.isLoading}>
       {count !== undefined && (
