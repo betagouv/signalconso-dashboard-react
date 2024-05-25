@@ -35,9 +35,9 @@ const categoryMessages: CategoryDetail[] = [
   {
     tag: [ReportTag.QuantiteNonConforme],
     message:
-      'Ce signalement concerne un problème avec une quantité de produits achetée. Pour connaître la réglementation applicable à ce sujet, rendez-vous sur la ',
-    baseLinkText: 'fiche pratique de la DGCCRF "Contrôle des quantités vendues à destination des professionnels"',
-    link: 'https://www.economie.gouv.fr/dgccrf/Publications/Vie-pratique/Fiches-pratiques/quantite-produits',
+      'À compter du 1er juillet 2024, l’information des consommateurs sur la réduflation, ou l’augmentation des prix des produits dont la quantité a diminué, devient obligatoire. Pour en savoir plus, rendez-vous sur ',
+    baseLinkText: 'economie.gouv.fr',
+    link: 'https://www.economie.gouv.fr/actualites/reduflation-shrinkflation-nouvelles-obligations-information-consommateurs',
   },
   {
     tag: [ReportTag.AppelCommercial],
