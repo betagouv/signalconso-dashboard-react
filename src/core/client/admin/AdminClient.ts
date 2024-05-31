@@ -1,6 +1,7 @@
-import {dateToApiDate, dateToApiTime, directDownloadBlob} from 'core/helper'
+import {dateToApiTime, directDownloadBlob} from 'core/helper'
 import {ApiClientApi} from '../ApiClient'
 import {ResendEmailType} from './ResendEmailType'
+import {Id} from '../../model'
 
 export class AdminClient {
   constructor(private client: ApiClientApi) {}
@@ -26,6 +27,12 @@ export class AdminClient {
   readonly resendEmails = (start: Date, end: Date, emailType: ResendEmailType) => {
     return this.client.post<void>(`/admin/emails/resend`, {
       qs: {start: dateToApiTime(start), end: dateToApiTime(end), emailType: emailType},
+    })
+  }
+
+  readonly deleteReports = (reportsId: Id[]) => {
+    return this.client.delete<Id[]>(`/reports`, {
+      body: reportsId,
     })
   }
 }
