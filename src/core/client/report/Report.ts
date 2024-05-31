@@ -10,16 +10,6 @@ export enum Gender {
   Female = 'Female',
 }
 
-export enum DetailInputType {
-  TEXT = 'TEXT',
-  DATE_NOT_IN_FUTURE = 'DATE_NOT_IN_FUTURE',
-  DATE = 'DATE',
-  TIMESLOT = 'TIMESLOT',
-  RADIO = 'RADIO',
-  CHECKBOX = 'CHECKBOX',
-  TEXTAREA = 'TEXTAREA',
-}
-
 export enum ReportType {
   Shop = 'Shop',
   Internet = 'Internet',
