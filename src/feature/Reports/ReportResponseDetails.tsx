@@ -1,12 +1,12 @@
-import React from 'react'
 import {Box, Tooltip} from '@mui/material'
-import {ProResponseLabel} from '../../shared/ProResponseLabel'
-import {useI18n} from '../../core/i18n'
-import {ReportResponse} from '../../core/model'
 import {ScOption} from 'core/helper/ScOption'
+import {ExistingReportResponse} from 'core/model'
+import React from 'react'
+import {useI18n} from '../../core/i18n'
+import {ProResponseLabel} from '../../shared/ProResponseLabel'
 
 type ReportResponseDetailsProps = {
-  details: ReportResponse | {description: string} | null | undefined
+  details: ExistingReportResponse | {description: string} | null | undefined
 }
 
 const ReportResponseDetails: React.FC<ReportResponseDetailsProps> = ({details}) => {

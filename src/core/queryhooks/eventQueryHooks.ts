@@ -1,7 +1,7 @@
 import {useQuery} from '@tanstack/react-query'
 import {useApiContext} from '../context/ApiContext'
 import {UseQueryOpts} from './types'
-import {EventActionValues, ReportEvent, ReportResponse, ReportProResponseEvent} from '../client/event/Event'
+import {EventActionValues, ReportEvent, ReportProResponseEvent} from '../client/event/Event'
 import {useMemo} from 'react'
 
 export const GetCompanyEventsQueryKeys = (companySiret: string) => ['events_getBySiret', companySiret]

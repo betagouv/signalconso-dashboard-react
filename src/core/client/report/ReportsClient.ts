@@ -1,23 +1,21 @@
 import {cleanObject, dateToApiDate, dateToApiTime, directDownloadBlob} from '../../helper'
 import {ApiSdkLogger} from '../../helper/Logger'
 import {
-  Address,
   CompanySearchResult,
   Country,
   Event,
   FileOrigin,
   Id,
+  IncomingReportResponse,
   PaginatedData,
   PaginatedFilters,
   Report,
   ReportAction,
   ReportConsumerUpdate,
   ReportDeletionReason,
-  ReportResponse,
   ReportSearch,
   ReportSearchResult,
   ReportTag,
-  ReportWithMetadata,
   ReportWordCount,
   ResponseConsumerReview,
   User,
@@ -168,7 +166,7 @@ export class ReportsClient {
     return this.client.get<ReportWordCount[]>(`/reports/cloudword/${companyId}`)
   }
 
-  readonly postResponse = (id: Id, response: ReportResponse) => {
+  readonly postResponse = (id: Id, response: IncomingReportResponse) => {
     return this.client.post<Event>(`reports/${id}/response`, {body: {...response, fileIds: response.fileIds ?? []}})
   }
 

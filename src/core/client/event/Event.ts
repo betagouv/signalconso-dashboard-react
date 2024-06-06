@@ -10,7 +10,7 @@ export type ReportProResponseEvent = ReportEvent & {
   action: EventActionValues.ReportProResponse
   user?: EventUser
   data: {
-    details: ReportResponse
+    details: ExistingReportResponse
   }
 }
 
@@ -26,7 +26,7 @@ export interface Event {
   userId?: Id
   eventType: EventType
   action: EventActionValues
-  details: {description: string} | ReportResponse
+  details: {description: string} | ExistingReportResponse
 }
 
 export type EventType = 'PRO' | 'CONSO' | 'DGCCRF' | 'ADMIN' | 'SYSTEM'
@@ -82,7 +82,6 @@ export const acceptedDetails = [
   'TRANSMETTRE_AU_SERVICE_COMPETENT',
   'DEMANDE_DE_PLUS_D_INFORMATIONS',
   'RESILIATION',
-  'AUTRE',
 ] as const
 export type AcceptedDetails = typeof acceptedDetails[number]
 
@@ -92,9 +91,8 @@ export const rejectedDetails = [
   'MAUVAISE_INTERPRETATION',
   'DEJA_REPONDU',
   'TRAITEMENT_EN_COURS',
-  'AUTRE',
 ] as const
-export type RejectedDetails = typeof acceptedDetails[number]
+export type RejectedDetails = typeof rejectedDetails[number]
 
 export const notConcernedDetails = [
   'PARTENAIRE_COMMERCIAL',
@@ -102,17 +100,21 @@ export const notConcernedDetails = [
   'HOMONYME',
   'ENTREPRISE_INCONNUE',
   'USURPATION',
-  'AUTRE',
 ] as const
-export type NotConcernedDetails = typeof acceptedDetails[number]
+export type NotConcernedDetails = typeof notConcernedDetails[number]
 
-export interface ReportResponse {
+export interface IncomingReportResponse {
   responseType: ReportResponseTypes
   responseDetails: AcceptedDetails | RejectedDetails | NotConcernedDetails
-  otherResponseDetails?: string
   consumerDetails: string
   dgccrfDetails: string
   fileIds?: string[]
+}
+// An already created report response, coming from the DB
+// It may contains the legacy value 'AUTRE' that is not allowed anymore
+export type ExistingReportResponse = Omit<IncomingReportResponse, 'responseDetails'> & {
+  responseDetails: IncomingReportResponse['responseDetails'] | 'AUTRE'
+  otherResponseDetails?: string
 }
 
 export enum ReportResponseTypes {
