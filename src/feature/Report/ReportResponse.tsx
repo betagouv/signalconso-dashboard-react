@@ -3,14 +3,11 @@ import {useI18n} from '../../core/i18n'
 import {Icon} from '@mui/material'
 import {useMutation, useQueryClient} from '@tanstack/react-query'
 import {
-  AcceptedDetails,
   EventActionValues,
-  NotConcernedDetails,
-  RejectedDetails,
   EventUser,
+  ExistingReportResponse,
   ReportAction,
   ReportProResponseEvent,
-  ReportResponse,
   ReportResponseTypes,
   ResponseConsumerReview,
   ResponseEvaluation,
@@ -21,9 +18,9 @@ import {useConnectedContext} from '../../core/context/ConnectedContext'
 import {Id, Report} from '../../core/model'
 import {GetReportEventsQueryKeys} from '../../core/queryhooks/eventQueryHooks'
 import {Divider} from '../../shared/Divider'
+import {UserNameLabel} from '../../shared/UserNameLabel'
 import {ReportFileDownloadAllButton} from './File/ReportFileDownloadAllButton'
 import {ReportFiles} from './File/ReportFiles'
-import {UserNameLabel} from '../../shared/UserNameLabel'
 
 export function ReportResponseComponent({
   canEditFile,
@@ -87,7 +84,15 @@ export function ReportResponseComponent({
   )
 }
 
-function ResponseDetails({details, expirationDate, user}: {details: ReportResponse; expirationDate?: Date; user?: EventUser}) {
+function ResponseDetails({
+  details,
+  expirationDate,
+  user,
+}: {
+  details: ExistingReportResponse
+  expirationDate?: Date
+  user?: EventUser
+}) {
   const {m} = useI18n()
   return (
     <div>
@@ -122,7 +127,7 @@ function ResponseType({
   expirationDate,
 }: {
   responseType: ReportResponseTypes
-  responseDetails: AcceptedDetails | RejectedDetails | NotConcernedDetails
+  responseDetails: ExistingReportResponse['responseDetails']
   otherResponseDetails?: string
   expirationDate?: Date
 }) {

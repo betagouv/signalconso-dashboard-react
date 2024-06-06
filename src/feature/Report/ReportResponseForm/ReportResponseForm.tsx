@@ -13,24 +13,24 @@ import {ReportResponseFormItem} from './ReportResponseFormItem'
 
 import {Box, Step, StepButton, Stepper} from '@mui/material'
 import {useMutation} from '@tanstack/react-query'
+import {CleanWidePanel} from 'shared/Panel/simplePanels'
 import {
+  IncomingReportResponse,
+  ReportResponseTypes,
   acceptedDetails,
   notConcernedDetails,
   rejectedDetails,
-  ReportResponse,
-  ReportResponseTypes,
 } from '../../../core/client/event/Event'
 import {FileOrigin} from '../../../core/client/file/UploadedFile'
 import {Report} from '../../../core/client/report/Report'
 import {useApiContext} from '../../../core/context/ApiContext'
 import {Id} from '../../../core/model'
-import {CleanWidePanel} from 'shared/Panel/simplePanels'
 import CharacterCounter from './CharacterCounter'
 import SuccessModal from './SuccessModal'
 
 interface Props {
   report: Report
-  onConfirm?: (_: ReportResponse) => void
+  onConfirm?: (_: IncomingReportResponse) => void
   ref: React.RefObject<HTMLDivElement>
 }
 
@@ -56,10 +56,11 @@ export const ReportResponseForm = forwardRef(({report, onConfirm, ...props}: Pro
     watch,
     setValue,
     formState: {errors},
-  } = useForm<ReportResponse>()
+  } = useForm<IncomingReportResponse>()
   const {api} = useApiContext()
   const _postResponse = useMutation({
-    mutationFn: (params: {id: Id; response: ReportResponse}) => api.secured.reports.postResponse(params.id, params.response),
+    mutationFn: (params: {id: Id; response: IncomingReportResponse}) =>
+      api.secured.reports.postResponse(params.id, params.response),
   })
   const maxDetailsCharLength = 10000
 
@@ -67,15 +68,14 @@ export const ReportResponseForm = forwardRef(({report, onConfirm, ...props}: Pro
   const [activeStep, setActiveStep] = useState(0)
   const watchResponseType = watch('responseType')
   const watchResponseDetails = watch('responseDetails')
-  const watchOtherResponseDetails = watch('otherResponseDetails')
   const watchConsumerDetails = watch('consumerDetails') && watch('consumerDetails')?.length <= maxDetailsCharLength
   const consumerStep = activeStep === 0
   const dgccrfStep = activeStep === 1
 
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false)
-  const [submittedForm, setSubmittedForm] = useState<ReportResponse | null>(null)
+  const [submittedForm, setSubmittedForm] = useState<IncomingReportResponse | null>(null)
 
-  const submitForm = async (form: ReportResponse) => {
+  const submitForm = async (form: IncomingReportResponse) => {
     await _postResponse.mutateAsync({id: report.id, response: form})
     setSubmittedForm(form)
     setIsSuccessModalOpen(true)
@@ -167,16 +167,7 @@ export const ReportResponseForm = forwardRef(({report, onConfirm, ...props}: Pro
               rules={{required: {value: true, message: m.required}}}
               control={control}
               render={({field}) => (
-                <ScRadioGroup
-                  error={!!errors.responseDetails}
-                  dense
-                  sx={{mb: 2}}
-                  {...field}
-                  onChange={(event: any) => {
-                    setValue('otherResponseDetails', undefined)
-                    return field.onChange(event)
-                  }}
-                >
+                <ScRadioGroup error={!!errors.responseDetails} dense sx={{mb: 2}} {...field}>
                   {computeDetails(watchResponseType).map(responseDetails => (
                     <ScRadioGroupItem value={responseDetails} key={responseDetails}>
                       {m.responseDetails[responseDetails]}
@@ -184,20 +175,6 @@ export const ReportResponseForm = forwardRef(({report, onConfirm, ...props}: Pro
                   ))}
                 </ScRadioGroup>
               )}
-            />
-          </ReportResponseFormItem>
-        )}
-        {watchResponseDetails === 'AUTRE' && (
-          <ReportResponseFormItem title="Pouvez-vous préciser ?">
-            <ScInput
-              {...register('otherResponseDetails', {
-                required: {value: true, message: m.required},
-                maxLength: {value: 1000, message: m.textTooLarge(1000)},
-              })}
-              helperText={errors.otherResponseDetails?.message}
-              error={!!errors.otherResponseDetails}
-              fullWidth
-              placeholder="Votre raison en quelques mots..."
             />
           </ReportResponseFormItem>
         )}
@@ -271,12 +248,7 @@ export const ReportResponseForm = forwardRef(({report, onConfirm, ...props}: Pro
               onClick={() => setActiveStep(1)}
               color="primary"
               variant="contained"
-              disabled={
-                !watchResponseType ||
-                !watchConsumerDetails ||
-                !watchResponseDetails ||
-                (watchResponseDetails === 'AUTRE' && !watchOtherResponseDetails)
-              }
+              disabled={!watchResponseType || !watchConsumerDetails || !watchResponseDetails}
             >
               {m.next}
             </ScButton>
