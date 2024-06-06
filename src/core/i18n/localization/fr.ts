@@ -531,7 +531,7 @@ export const fr = {
   `,
     proAnswerSent: 'Votre réponse a été envoyée au consommateur. Elle sera aussi consultable par la DGCCRF.',
     reportResponseDesc: {
-      [ReportResponseTypes.Accepted]: 'Je prends en compte ce signalement',
+      [ReportResponseTypes.Accepted]: 'Je propose une solution',
       [ReportResponseTypes.Rejected]: "J'estime que ce signalement est infondé",
       [ReportResponseTypes.NotConcerned]: "J'estime que ce signalement ne concerne pas mon établissement",
     },
@@ -977,12 +977,12 @@ export const fr = {
     alreadySelectedValue: (name?: string) => `La valeur ${name ?? ''} est déjà sélectionnée`,
     nLines: (n: number) => `<b>${n}</b> lignes`,
     reportResponse: {
-      [ReportResponseTypes.Accepted]: 'Signalement pris en compte',
+      [ReportResponseTypes.Accepted]: 'Promesse de solution',
       [ReportResponseTypes.Rejected]: 'Signalement infondé',
       [ReportResponseTypes.NotConcerned]: 'Etablissement non concerné par le signalement',
     },
     reportResponseShort: {
-      [ReportResponseTypes.Accepted]: 'Pris en compte',
+      [ReportResponseTypes.Accepted]: 'Promesse de solution',
       [ReportResponseTypes.Rejected]: 'Infondé',
       [ReportResponseTypes.NotConcerned]: 'Non concerné',
     },
