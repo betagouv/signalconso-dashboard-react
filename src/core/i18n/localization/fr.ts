@@ -84,6 +84,7 @@ export const fr = {
       [ReportTag.LitigeContractuel]: 'Litige contractuel',
       [ReportTag.Hygiene]: 'Hygiène',
       [ReportTag.ProduitDangereux]: 'Produit dangereux',
+      [ReportTag.BauxPrecaire]: 'Baux Précaire',
       [ReportTag.DemarchageADomicile]: 'Démarchage à domicile',
       [ReportTag.DemarchageInternet]: 'Démarchage internet',
       [ReportTag.Ehpad]: 'Ehpad',
