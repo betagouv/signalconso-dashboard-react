@@ -10,6 +10,7 @@ export const reportTagColor = {
   [ReportTag.LitigeContractuel]: '#a1a1a1',
   [ReportTag.Hygiene]: '#a1a1a1',
   [ReportTag.ProduitDangereux]: '#d32f2f',
+  [ReportTag.BauxPrecaire]: '#d32f2f',
   [ReportTag.DemarchageADomicile]: '#a1a1a1',
   [ReportTag.DemarchageTelephonique]: '#a1a1a1',
   [ReportTag.DemarchageInternet]: '#a1a1a1',
