@@ -55,6 +55,7 @@ export enum ReportTag {
   AppelCommercial = 'AppelCommercial',
   Prix = 'Prix',
   AlimentationMaterielAnimaux = 'AlimentationMaterielAnimaux',
+  BauxPrecaire = 'BauxPrecaire',
 }
 
 export const OutdatedTags = [ReportTag.Bloctel]
