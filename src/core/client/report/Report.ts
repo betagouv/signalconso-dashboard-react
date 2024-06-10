@@ -191,6 +191,8 @@ export class Report {
     ReportStatus.NonConsulte,
     ReportStatus.ConsulteIgnore,
   ]
+  static readonly invisibleToProStatus = [ReportStatus.NA, ReportStatus.LanceurAlerte]
+  static readonly closedBySystemStatus = [ReportStatus.NonConsulte, ReportStatus.ConsulteIgnore]
 
   static readonly isClosed = (status: ReportStatus) => {
     return Report.closedStatus.includes(status)
@@ -204,7 +206,9 @@ export class Report {
     Report.isClosed(status) ? ReportStatusPro.Cloture : ReportStatusPro.ARepondre
 
   static readonly getStatusByStatusPro = (statusPro: ReportStatusPro): ReportStatus[] =>
-    Object.values(ReportStatus).filter(_ => Report.getStatusProByStatus(_) === statusPro)
+    Object.values(ReportStatus)
+      .filter(_ => !Report.invisibleToProStatus.includes(_))
+      .filter(_ => Report.getStatusProByStatus(_) === statusPro)
 
   static readonly isGovernmentCompany = (_?: {activityCode?: string}): boolean => _?.activityCode?.startsWith('84.') ?? false
 }
