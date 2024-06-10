@@ -107,6 +107,7 @@ export const fr = {
       [ReportTag.AppelCommercial]: 'Appel commercial',
       [ReportTag.Prix]: 'Prix',
       [ReportTag.AlimentationMaterielAnimaux]: 'Alimentation / Matériel pour animaux',
+      [ReportTag.Telecom]: 'Télécoms',
       NA: 'Aucun tag',
     },
     IdentificationStatusDesc: {
