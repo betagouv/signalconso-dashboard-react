@@ -91,7 +91,7 @@ export const DeleteSpamReportsAdminTool = () => {
           />
           {reportCount > 0 && <span>{reportCount} identifiant(s) de signalements trouvé(s)</span>}
           {errorMessage && <span className="text-red-600">{errorMessage}</span>}
-          <ScButton onClick={handleClick} color="primary">
+          <ScButton onClick={handleClick} color="primary" disabled={_deleteReports.loading} loading={_deleteReports.loading}>
             Supprimer
           </ScButton>
         </div>
