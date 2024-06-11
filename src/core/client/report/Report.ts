@@ -1,4 +1,4 @@
-import {Address, Event, EventWithUser, Id, MinimalUser, ResponseConsumerReview, UploadedFile} from '../../model'
+import {Address, EventWithUser, Id, MinimalUser, ResponseConsumerReview, UploadedFile} from '../../model'
 import {Category} from '../constant/Category'
 
 export const ReportingDateLabel = 'Date du constat'
@@ -47,7 +47,6 @@ export enum ReportTag {
   Resiliation = 'Resiliation',
   OpenFoodFacts = 'OpenFoodFacts',
   TransitionEcologique = 'TransitionEcologique',
-  // new tag
   ProduitPerime = 'ProduitPerime',
   CommandeEffectuee = 'CommandeEffectuee',
   ImpressionTicket = 'ImpressionTicket',
@@ -56,6 +55,7 @@ export enum ReportTag {
   Prix = 'Prix',
   AlimentationMaterielAnimaux = 'AlimentationMaterielAnimaux',
   BauxPrecaire = 'BauxPrecaire',
+  Telecom = 'Telecom',
 }
 
 export const OutdatedTags = [ReportTag.Bloctel]
