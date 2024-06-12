@@ -6,17 +6,18 @@ import {useRef} from 'react'
 import {useParams} from 'react-router'
 import {Link} from 'react-router-dom'
 import {CleanWidePanel} from 'shared/Panel/simplePanels'
-import {ReportProResponseEvent, ResponseConsumerReview} from '../../core/client/event/Event'
+import {ConsumerReviewPro, ReportProResponseEvent} from '../../core/client/event/Event'
 import {FileOrigin, UploadedFile} from '../../core/client/file/UploadedFile'
-import {Report, ReportSearchResult, ReportStatusPro, ReportTag} from '../../core/client/report/Report'
+import {Report, ReportSearchResult, ReportStatusPro} from '../../core/client/report/Report'
 import {capitalize} from '../../core/helper'
 import {useI18n} from '../../core/i18n'
 import {Id} from '../../core/model'
 import {GetReportEventsQueryKeys, useGetReportEventsQuery} from '../../core/queryhooks/eventQueryHooks'
-import {GetReportQueryKeys, useGetReportQuery, useGetReviewOnReportResponseQuery} from '../../core/queryhooks/reportQueryHooks'
+import {GetReportQueryKeys, useGetReportQuery, useGetReviewOnReportResponseQueryPro} from '../../core/queryhooks/reportQueryHooks'
 import {ScButton} from '../../shared/Button'
 import {Page} from '../../shared/Page'
 import {UserNameLabel} from '../../shared/UserNameLabel'
+import CategoryMessage from './CategoryMessage'
 import {ReportEvents} from './Event/ReportEvents'
 import {creationReportEvent} from './Report'
 import {ReportAssignement} from './ReportAssignement'
@@ -27,7 +28,6 @@ import {ReportResponseComponent} from './ReportResponse'
 import {ReportResponseForm} from './ReportResponseForm/ReportResponseForm'
 import {ReportStation} from './ReportStation'
 import {ReportTrain} from './ReportTrain'
-import CategoryMessage from './CategoryMessage'
 
 export const ReportPro = () => {
   const {id} = useParams<{id: Id}>()
@@ -44,7 +44,7 @@ function ReportProLoaded({reportSearchResult}: {reportSearchResult: ReportSearch
   const queryClient = useQueryClient()
   const {report, files} = reportSearchResult
   const {reportEvents, responseEvent} = useGetReportEventsQuery(report.id)
-  const _getReviewOnReportResponse = useGetReviewOnReportResponseQuery(report.id)
+  const _getReviewOnReportResponse = useGetReviewOnReportResponseQueryPro(report.id)
   const responseFormRef = useRef<HTMLElement>(null)
 
   function scrollToResponse() {
@@ -146,7 +146,7 @@ function ResponseBlock({
   responseEvent: ReportProResponseEvent
   report: Report
   files: UploadedFile[]
-  responseConsumerReview: ResponseConsumerReview | undefined
+  responseConsumerReview: ConsumerReviewPro | undefined
 }) {
   const {formatDateTime} = useI18n()
 

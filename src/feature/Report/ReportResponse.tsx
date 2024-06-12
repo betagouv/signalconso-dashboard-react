@@ -3,13 +3,13 @@ import {useI18n} from '../../core/i18n'
 import {Icon} from '@mui/material'
 import {useMutation, useQueryClient} from '@tanstack/react-query'
 import {
+  ConsumerReview,
   EventActionValues,
   EventUser,
   ExistingReportResponse,
   ReportAction,
   ReportProResponseEvent,
   ReportResponseTypes,
-  ResponseConsumerReview,
   ResponseEvaluation,
 } from '../../core/client/event/Event'
 import {FileOrigin, UploadedFile} from '../../core/client/file/UploadedFile'
@@ -31,7 +31,7 @@ export function ReportResponseComponent({
 }: {
   canEditFile?: boolean
   response: ReportProResponseEvent
-  consumerReportReview?: ResponseConsumerReview
+  consumerReportReview?: ConsumerReview
   report: Report
   files?: UploadedFile[]
 }) {
@@ -75,7 +75,7 @@ export function ReportResponseComponent({
       <Divider margin />
       <>
         {consumerReportReview ? (
-          <ConsumerReview review={consumerReportReview} />
+          <ConsumerReviewComponent review={consumerReportReview} />
         ) : (
           <div className="">{m.noReviewFromConsumer}</div>
         )}
@@ -176,7 +176,7 @@ function ResponseType({
   )
 }
 
-function ConsumerReview({review}: {review: ResponseConsumerReview}) {
+function ConsumerReviewComponent({review}: {review: ConsumerReview}) {
   const {m} = useI18n()
   const {connectedUser} = useConnectedContext()
 

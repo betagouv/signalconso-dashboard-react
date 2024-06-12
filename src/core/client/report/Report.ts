@@ -1,4 +1,4 @@
-import {Address, EventWithUser, Id, MinimalUser, ResponseConsumerReview, UploadedFile} from '../../model'
+import {Address, ConsumerReviewWithDate, EventWithUser, Id, MinimalUser, UploadedFile} from '../../model'
 import {Category} from '../constant/Category'
 
 export const ReportingDateLabel = 'Date du constat'
@@ -118,7 +118,7 @@ export interface ReportSearchResult {
   metadata?: ReportMetadata
   files: UploadedFile[]
   professionalResponse?: EventWithUser
-  consumerReview?: ResponseConsumerReview
+  consumerReview?: ConsumerReviewWithDate
   assignedUser?: MinimalUser
 }
 
