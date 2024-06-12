@@ -41,7 +41,11 @@ import {RefreshBanner} from './shared/RefreshBanner'
 export const AppRoutes = ({loginManagementResult}: {loginManagementResult: LoginManagementResult}) => {
   const {connectedUser, setConnectedUser, register, handleDetectedLogout, isFetchingUserOnStartup, login} = loginManagementResult
   const UserActivationComponent = () => (
-    <UserActivation onUserActivated={setConnectedUser} onActivateUser={apiPublicSdk.user.activateAccount} />
+    <UserActivation
+      onUserActivated={setConnectedUser}
+      onActivateUser={apiPublicSdk.user.activateAccount}
+      onFetchTokenInfo={apiPublicSdk.user.fetchTokenInfo}
+    />
   )
 
   return (

@@ -6,7 +6,7 @@ import {useLocation, useNavigate, useParams} from 'react-router'
 import {PasswordRequirementsDesc} from 'shared/PasswordRequirementsDesc'
 import {Alert, makeSx, Txt} from '../../alexlibs/mui-extension'
 import {useAsync} from '../../alexlibs/react-hooks-lib'
-import {UserWithPermission} from '../../core/client/authenticate/Authenticate'
+import {TokenInfo, UserWithPermission} from '../../core/client/authenticate/Authenticate'
 import {UserToActivate} from '../../core/client/user/User'
 import {QueryString} from '../../core/helper/useQueryString'
 import {useI18n} from '../../core/i18n'
@@ -17,7 +17,8 @@ import {ScButton} from '../../shared/Button'
 import {Page, PageTitle} from '../../shared/Page'
 import {Panel, PanelBody} from '../../shared/Panel'
 import {ScInputPassword} from '../../shared/ScInputPassword'
-import {useFetchTokenInfoQuery} from '../../core/queryhooks/userQueryHooks'
+import {useQuery} from '@tanstack/react-query'
+import {FetchTokenInfoQueryKeys} from '../../core/queryhooks/userQueryHooks'
 
 interface UserActivationForm extends UserToActivate {
   repeatPassword: string
@@ -36,9 +37,10 @@ const sx = makeSx({
 interface Props {
   onUserActivated: (_: UserWithPermission) => void
   onActivateUser: (user: UserToActivate, token: string, companySiret?: string) => Promise<UserWithPermission>
+  onFetchTokenInfo: (token: string, companySiret?: string) => Promise<TokenInfo>
 }
 
-export const UserActivation = ({onActivateUser, onUserActivated}: Props) => {
+export const UserActivation = ({onActivateUser, onUserActivated, onFetchTokenInfo}: Props) => {
   const {m} = useI18n()
   const _activate = useAsync(onActivateUser)
   const {toastSuccess, toastError} = useToast()
@@ -61,7 +63,10 @@ export const UserActivation = ({onActivateUser, onUserActivated}: Props) => {
 
   const urlToken = useMemo(() => QueryString.parse(search.replace(/^\?/, '')).token as string, [])
 
-  const _tokenInfo = useFetchTokenInfoQuery(urlToken, siret)
+  const _tokenInfo = useQuery({
+    queryKey: FetchTokenInfoQueryKeys(urlToken, siret),
+    queryFn: () => onFetchTokenInfo(urlToken, siret),
+  })
 
   const onSubmit = (form: UserActivationForm) => {
     if (!_tokenInfo.data) return
