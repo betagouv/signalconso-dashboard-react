@@ -1,17 +1,18 @@
 import {UserToActivate} from './User'
 import {ApiClientApi} from '../ApiClient'
-import {TokenInfo} from '../authenticate/Authenticate'
+import {TokenInfo, UserWithPermission} from '../authenticate/Authenticate'
 
 export class PublicUserClient {
   constructor(private client: ApiClientApi) {}
 
   readonly activateAccount = (user: UserToActivate, token: string, companySiret?: string) => {
-    return this.client.post<void>(`/account/activation`, {
+    return this.client.post<UserWithPermission>(`/account/activation`, {
       body: {
         draftUser: user,
         token: token,
         ...(companySiret ? {companySiret} : {}),
       },
+      withCredentials: true,
     })
   }
 

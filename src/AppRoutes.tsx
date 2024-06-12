@@ -41,7 +41,7 @@ import {RefreshBanner} from './shared/RefreshBanner'
 export const AppRoutes = ({loginManagementResult}: {loginManagementResult: LoginManagementResult}) => {
   const {connectedUser, setConnectedUser, register, handleDetectedLogout, isFetchingUserOnStartup, login} = loginManagementResult
   const UserActivationComponent = () => (
-    <UserActivation onActivateUser={apiPublicSdk.user.activateAccount} onFetchTokenInfo={apiPublicSdk.user.fetchTokenInfo} />
+    <UserActivation onUserActivated={setConnectedUser} onActivateUser={apiPublicSdk.user.activateAccount} />
   )
 
   return (
@@ -57,7 +57,6 @@ export const AppRoutes = ({loginManagementResult}: {loginManagementResult: Login
       <Route path={siteMap.loggedout.activatePro()} element={<UserActivationComponent />} />
       <Route path={siteMap.loggedout.activateAdmin} element={<UserActivationComponent />} />
       <Route path={siteMap.loggedout.activateAgent} element={<UserActivationComponent />} />
-      <Route path={siteMap.loggedout.consumerReview()} element={<UserActivationComponent />} />
 
       <Route
         path="*"

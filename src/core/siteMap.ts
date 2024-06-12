@@ -116,7 +116,6 @@ export const siteMap = {
     activatePro: (siret: string = `:siret`) => `/entreprise/rejoindre/${siret}`,
     activateAgent: `/agent/rejoindre`,
     activateAdmin: `/admin/rejoindre`,
-    consumerReview: (reportId: Id = `:reportId`) => `/suivi-des-signalements/${reportId}/avis`,
     register: `/activation`,
     login: `/connexion`,
     emailValidation: `/connexion/validation-email`,
