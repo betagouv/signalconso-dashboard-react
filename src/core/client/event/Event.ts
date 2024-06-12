@@ -129,10 +129,14 @@ export enum ResponseEvaluation {
   Positive = 'Positive',
 }
 
-export interface ResponseConsumerReview {
+export interface ConsumerReviewPro {
   evaluation: ResponseEvaluation
+}
+export type ConsumerReview = ConsumerReviewPro & {
   details?: string
-  creationDate?: Date
+}
+export type ConsumerReviewWithDate = ConsumerReview & {
+  creationDate: Date
 }
 
 export interface ReportWordCount {

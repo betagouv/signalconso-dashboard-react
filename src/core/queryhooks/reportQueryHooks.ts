@@ -1,15 +1,16 @@
 import {useQuery} from '@tanstack/react-query'
-import {useApiContext} from '../context/ApiContext'
+import {ConsumerReview, ConsumerReviewPro, ReportWordCount} from '../client/event/Event'
 import {ReportSearchResult} from '../client/report/Report'
-import {ReportWordCount, ResponseConsumerReview} from '../client/event/Event'
-import {UseQueryOpts} from './types'
-import {useQueryPaginate} from './UseQueryPaginate'
-import {Id, PaginatedFilters, ReportSearch} from '../model'
-import {ReportNodeSearch} from '../client/report/ReportNodeSearch'
 import {ReportNodes} from '../client/report/ReportNode'
+import {ReportNodeSearch} from '../client/report/ReportNodeSearch'
+import {useApiContext} from '../context/ApiContext'
+import {Id, PaginatedFilters, ReportSearch} from '../model'
+import {useQueryPaginate} from './UseQueryPaginate'
+import {UseQueryOpts} from './types'
 
 export const GetReportQueryKeys = (id: Id) => ['reports_getById', id]
 const GetReviewOnReportResponseQueryKeys = (id: string) => ['reports_getReviewOnReportResponse', id]
+const GetReviewOnReportResponseQueryKeysPro = (id: string) => ['reports_getReviewOnReportResponsePro', id]
 const ReportSearchQuery = ['reports_search']
 const GetCountBySubCategoriesQueryKeys = (filters: ReportNodeSearch) => ['reports_getCountBySubCategories', filters]
 const GetCountByDepartmentsQueryKeys = (filters: {start?: Date; end?: Date}) => ['reports_getCountByDepartments', filters]
@@ -20,11 +21,19 @@ export const useGetReportQuery = (id: string, options?: UseQueryOpts<ReportSearc
   return useQuery({queryKey: GetReportQueryKeys(id), queryFn: () => api.secured.reports.getById(id), enabled: !!id, ...options})
 }
 
-export const useGetReviewOnReportResponseQuery = (id: string, options?: UseQueryOpts<ResponseConsumerReview, string[]>) => {
+export const useGetReviewOnReportResponseQuery = (id: string, options?: UseQueryOpts<ConsumerReview, string[]>) => {
   const {api} = useApiContext()
   return useQuery({
     queryKey: GetReviewOnReportResponseQueryKeys(id),
     queryFn: () => api.secured.reports.getReviewOnReportResponse(id),
+    ...options,
+  })
+}
+export const useGetReviewOnReportResponseQueryPro = (id: string, options?: UseQueryOpts<ConsumerReviewPro, string[]>) => {
+  const {api} = useApiContext()
+  return useQuery({
+    queryKey: GetReviewOnReportResponseQueryKeysPro(id),
+    queryFn: () => api.secured.reports.getReviewOnReportResponsePro(id),
     ...options,
   })
 }

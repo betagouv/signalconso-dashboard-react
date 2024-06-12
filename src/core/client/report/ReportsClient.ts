@@ -2,6 +2,9 @@ import {cleanObject, dateToApiDate, dateToApiTime, directDownloadBlob} from '../
 import {ApiSdkLogger} from '../../helper/Logger'
 import {
   CompanySearchResult,
+  ConsumerReview,
+  ConsumerReviewPro,
+  ConsumerReviewWithDate,
   Country,
   Event,
   FileOrigin,
@@ -17,7 +20,6 @@ import {
   ReportSearchResult,
   ReportTag,
   ReportWordCount,
-  ResponseConsumerReview,
   User,
   paginateFilters2QueryString,
 } from '../../model'
@@ -153,7 +155,12 @@ export class ReportsClient {
   }
 
   readonly getReviewOnReportResponse = (reportId: Id) => {
-    return this.client.get<ResponseConsumerReview>(`/reports/${reportId}/response/review`).then(ReportsClient.mapConsumerReview)
+    return this.client.get<ConsumerReview>(`/reports/${reportId}/response/review`)
+  }
+
+  readonly getReviewOnReportResponsePro = (reportId: Id) => {
+    // same endpoint but the type changes
+    return this.client.get<ConsumerReviewPro>(`/reports/${reportId}/response/review`)
   }
 
   readonly generateConsumerNotificationAsPDF = (reportId: Id) => {
@@ -234,7 +241,7 @@ export class ReportsClient {
     expirationDate: new Date(report.expirationDate),
   })
 
-  static readonly mapConsumerReview = (_: {[key in keyof ResponseConsumerReview]: any}): ResponseConsumerReview => {
+  static readonly mapConsumerReview = (_: {[key in keyof ConsumerReviewWithDate]: any}): ConsumerReviewWithDate => {
     return {
       ..._,
       creationDate: new Date(_.creationDate),
