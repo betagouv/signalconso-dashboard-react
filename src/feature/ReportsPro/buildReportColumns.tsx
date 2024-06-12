@@ -2,8 +2,8 @@ import {Badge, Box, Icon} from '@mui/material'
 import {fr} from 'core/i18n/localization/fr'
 import ReportResponseDetails from 'feature/Reports/ReportResponseDetails'
 import React from 'react'
-import {ConsumerReviewLabel} from 'shared/ConsumerReviewLabel'
 import {ReportStatusLabel} from 'shared/ReportStatus'
+import {ConsumerReviewLabels} from 'shared/reviews/ConsumerReviewLabels'
 import {Txt} from '../../alexlibs/mui-extension'
 import {ReportSearchResult, ReportStatus} from '../../core/client/report/Report'
 import {combineSx, sxUtils} from '../../core/theme'
@@ -124,8 +124,7 @@ export const buildReportColumns = ({reportType, isMobileWidth, css, i18nData}: R
           {
             id: 'avisConso',
             head: 'Avis Consommateur',
-            render: (report: ReportSearchResult) =>
-              report.consumerReview && <ConsumerReviewLabel evaluation={report.consumerReview.evaluation} />,
+            render: (report: ReportSearchResult) => <ConsumerReviewLabels {...{report}} detailsTooltip={false} />,
           },
           {
             id: 'answerer',

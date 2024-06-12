@@ -1,13 +1,12 @@
-import * as React from 'react'
-import {useI18n} from '../../../core/i18n'
 import {Skeleton} from '@mui/material'
-import {HorizontalBarChart} from '../../../shared/Chart/HorizontalBarChart'
-import {useMemoFn} from '../../../alexlibs/react-hooks-lib'
-import {Txt} from '../../../alexlibs/mui-extension'
-import {ReviewLabel} from './ReviewLabel'
 import {ScOption} from 'core/helper/ScOption'
-import {useGetEngagementReviewsQuery} from '../../../core/queryhooks/statsQueryHooks'
 import {CleanDiscreetPanel} from 'shared/Panel/simplePanels'
+import {Txt} from '../../../alexlibs/mui-extension'
+import {useMemoFn} from '../../../alexlibs/react-hooks-lib'
+import {useI18n} from '../../../core/i18n'
+import {useGetEngagementReviewsQuery} from '../../../core/queryhooks/statsQueryHooks'
+import {HorizontalBarChart} from '../../../shared/Chart/HorizontalBarChart'
+import {ReviewLabel} from './ReviewLabel'
 
 interface Props {
   companyId: string
@@ -53,12 +52,12 @@ export const EngagementReviewDistribution = ({companyId}: Props) => {
 
   return (
     <CleanDiscreetPanel>
-      <h2 className="font-bold text-lg">{m.engagementReviews}</h2>
+      <h2 className="font-bold text-lg">Avis ultérieur des consommateurs</h2>
       {ScOption.from(_engagementReviews.data)
         .map(_ => (
           <>
             <Txt color="hint" block sx={{mb: 3}}>
-              {m.engagementReviewsDesc}
+              Avis des consommateurs sur la réalisation des engagements du professionnel.
             </Txt>
             <HorizontalBarChart width={80} data={reviewDistribution} grid />
           </>

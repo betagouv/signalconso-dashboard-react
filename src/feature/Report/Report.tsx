@@ -14,7 +14,11 @@ import {useConnectedContext} from '../../core/context/ConnectedContext'
 import {useI18n} from '../../core/i18n'
 import {Id} from '../../core/model'
 import {useGetCompanyEventsQuery, useGetReportEventsQuery} from '../../core/queryhooks/eventQueryHooks'
-import {useGetReportQuery, useGetReviewOnReportResponseQuery} from '../../core/queryhooks/reportQueryHooks'
+import {
+  useGetEngagementReviewQuery,
+  useGetReportQuery,
+  useGetReviewOnReportResponseQuery,
+} from '../../core/queryhooks/reportQueryHooks'
 import {ScButton} from '../../shared/Button'
 import {Page} from '../../shared/Page'
 import {ReportEvents} from './Event/ReportEvents'
@@ -50,7 +54,9 @@ export const ReportComponent = () => {
   const [activeTab, setActiveTab] = useState(0)
 
   const _getReport = useGetReportQuery(id!)
-  const _getReviewOnReportResponse = useGetReviewOnReportResponseQuery(id!, {enabled: !!_getReport.data?.report.id && !!id})
+  const enableReviewQueries = !!_getReport.data?.report.id && !!id
+  const _getReviewOnReportResponse = useGetReviewOnReportResponseQuery(id!, {enabled: enableReviewQueries})
+  const _getEngagementReview = useGetEngagementReviewQuery(id!, {enabled: enableReviewQueries})
   const _getCompanyEvents = useGetCompanyEventsQuery(_getReport.data?.report.companySiret!, {
     enabled: !!_getReport.data?.report.companySiret,
   })
@@ -202,6 +208,7 @@ export const ReportComponent = () => {
                       report={report}
                       response={responseEvent}
                       consumerReportReview={_getReviewOnReportResponse.data}
+                      engagementReview={_getEngagementReview.data}
                       files={_getReport.data?.files.filter(_ => _.origin === FileOrigin.Professional)}
                     />
                   )}
