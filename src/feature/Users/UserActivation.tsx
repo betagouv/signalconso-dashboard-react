@@ -2,11 +2,11 @@ import {Box, Checkbox, FormControl, FormControlLabel, FormHelperText, TextField}
 import {validatePasswordComplexity} from 'core/helper/passwordComplexity'
 import {useMemo} from 'react'
 import {Controller, useForm} from 'react-hook-form'
-import {useNavigate, useLocation, useParams} from 'react-router'
+import {useLocation, useNavigate, useParams} from 'react-router'
 import {PasswordRequirementsDesc} from 'shared/PasswordRequirementsDesc'
 import {Alert, makeSx, Txt} from '../../alexlibs/mui-extension'
 import {useAsync} from '../../alexlibs/react-hooks-lib'
-import {TokenInfo} from '../../core/client/authenticate/Authenticate'
+import {UserWithPermission} from '../../core/client/authenticate/Authenticate'
 import {UserToActivate} from '../../core/client/user/User'
 import {QueryString} from '../../core/helper/useQueryString'
 import {useI18n} from '../../core/i18n'
@@ -17,7 +17,7 @@ import {ScButton} from '../../shared/Button'
 import {Page, PageTitle} from '../../shared/Page'
 import {Panel, PanelBody} from '../../shared/Panel'
 import {ScInputPassword} from '../../shared/ScInputPassword'
-import {useQuery} from '@tanstack/react-query'
+import {useFetchTokenInfoQuery} from '../../core/queryhooks/userQueryHooks'
 
 interface UserActivationForm extends UserToActivate {
   repeatPassword: string
@@ -34,11 +34,11 @@ const sx = makeSx({
 })
 
 interface Props {
-  onActivateUser: (user: UserToActivate, token: string, companySiret?: string) => Promise<void>
-  onFetchTokenInfo: (token: string, companySiret?: string) => Promise<TokenInfo>
+  onUserActivated: (_: UserWithPermission) => void
+  onActivateUser: (user: UserToActivate, token: string, companySiret?: string) => Promise<UserWithPermission>
 }
 
-export const UserActivation = ({onActivateUser, onFetchTokenInfo}: Props) => {
+export const UserActivation = ({onActivateUser, onUserActivated}: Props) => {
   const {m} = useI18n()
   const _activate = useAsync(onActivateUser)
   const {toastSuccess, toastError} = useToast()
@@ -61,16 +61,17 @@ export const UserActivation = ({onActivateUser, onFetchTokenInfo}: Props) => {
 
   const urlToken = useMemo(() => QueryString.parse(search.replace(/^\?/, '')).token as string, [])
 
-  const _tokenInfo = useQuery({queryKey: [''], queryFn: () => onFetchTokenInfo(urlToken, siret)})
+  const _tokenInfo = useFetchTokenInfoQuery(urlToken, siret)
 
   const onSubmit = (form: UserActivationForm) => {
     if (!_tokenInfo.data) return
     _activate
       .call({...form, email: _tokenInfo.data.emailedTo}, urlToken, siret)
-      .then(_ => {
+      .then(user => {
         Matomo.trackEvent(EventCategories.account, AccountEventActions.registerUser, ActionResultNames.success)
         toastSuccess(m.accountActivated)
-        setTimeout(() => history(siteMap.loggedout.login), 400)
+        onUserActivated(user)
+        history(siteMap.logged.reports())
       })
       .catch(e => {
         Matomo.trackEvent(EventCategories.account, AccountEventActions.registerUser, ActionResultNames.fail)
