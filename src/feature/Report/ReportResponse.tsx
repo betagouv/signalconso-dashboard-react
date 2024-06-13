@@ -21,6 +21,8 @@ import {Divider} from '../../shared/Divider'
 import {UserNameLabel} from '../../shared/UserNameLabel'
 import {ReportFileDownloadAllButton} from './File/ReportFileDownloadAllButton'
 import {ReportFiles} from './File/ReportFiles'
+import {Engagements} from '../Engagement/Engagements'
+import {EngagementReminderPeriod} from '../../core/client/engagement/Engagement'
 
 export function ReportResponseComponent({
   canEditFile,
@@ -45,7 +47,7 @@ export function ReportResponseComponent({
 
   const details = response.data.details
   const expirationDate = new Date(response.data.creationDate)
-  expirationDate.setDate(expirationDate.getDate() + 8)
+  expirationDate.setDate(expirationDate.getDate() + EngagementReminderPeriod)
   const user = response.user
   return (
     <div className="">
