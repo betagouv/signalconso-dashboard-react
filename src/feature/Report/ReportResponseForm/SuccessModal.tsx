@@ -5,6 +5,7 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle'
 import MarkEmailReadIcon from '@mui/icons-material/MarkEmailRead'
 import {ReportResponseTypes} from 'core/client/event/Event'
 import {useI18n} from 'core/i18n'
+import {EngagementReminderPeriod} from '../../../core/client/engagement/Engagement'
 
 interface SuccessModalProps {
   open: boolean
@@ -59,7 +60,11 @@ const SuccessModal: React.FC<SuccessModalProps> = ({open, onClose, responseType}
         <DialogContentText>
           <p>{m.responseSentToConsumer}</p>
           <br />
-          {responseType === 'ACCEPTED' ? <p>{m.consumerReviewInvitationForAccepted}</p> : <p>{m.consumerReviewInvitation}</p>}
+          {responseType === 'ACCEPTED' ? (
+            <p>{m.consumerReviewInvitationForAccepted(EngagementReminderPeriod)}</p>
+          ) : (
+            <p>{m.consumerReviewInvitation}</p>
+          )}
         </DialogContentText>
       </DialogContent>
       <DialogActions>
