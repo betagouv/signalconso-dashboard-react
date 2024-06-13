@@ -283,8 +283,8 @@ export const fr = {
     claimDeemedUnfounded: 'Vous avez estimé que ce signalement était infondé.',
     claimNotConcernedYourEstablishment: 'Vous avez estimé que ce signalement ne concernait pas votre établissement.',
     responseSentToConsumer: 'Nous avons envoyé votre réponse au consommateur. Elle est également visible par la DGCCRF.',
-    consumerReviewInvitationForAccepted:
-      'Le consommateur sera invité à donner son avis sur votre réponse et les actions mises en œuvre dans un délai de 8 jours.',
+    consumerReviewInvitationForAccepted: (days: number) =>
+      `Le consommateur sera invité à donner son avis sur votre réponse et les actions mises en œuvre dans un délai de ${days} jours.`,
     consumerReviewInvitation: 'Le consommateur sera invité à donner son avis sur votre réponse dès sa réception.',
     activationCodeInvalid: `Le code doit comporter 6 chiffres.`,
     activationCodeExample: 'ex : 123456',
@@ -855,7 +855,7 @@ export const fr = {
       consumer: {
         report_pro_engagement_review: {
           title: `Engagement de l'entreprise`,
-          desc: `Email envoyé au conso 8 jours après la promesse d'action du pro pour lui demander si il a bien tenu son engagement`,
+          desc: `Email envoyé au conso plusieurs jours après la promesse d'action du pro pour lui demander si il a bien tenu son engagement`,
         },
         report_deletion_confirmation: {
           title: `Signalement supprimé`,

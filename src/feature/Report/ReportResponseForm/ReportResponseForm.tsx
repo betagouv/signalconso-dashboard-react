@@ -27,6 +27,7 @@ import {useApiContext} from '../../../core/context/ApiContext'
 import {Id} from '../../../core/model'
 import CharacterCounter from './CharacterCounter'
 import SuccessModal from './SuccessModal'
+import {EngagementReminderPeriod} from '../../../core/client/engagement/Engagement'
 
 interface Props {
   report: Report
@@ -114,7 +115,7 @@ export const ReportResponseForm = forwardRef(({report, onConfirm, ...props}: Pro
   const computeDetailsDesc = (responseType: ReportResponseTypes) => {
     switch (responseType) {
       case 'ACCEPTED':
-        return 'Nous demanderons son avis au consommateur concernant votre engagement dans 8 jours'
+        return `Nous demanderons son avis au consommateur concernant votre engagement dans ${EngagementReminderPeriod} jours`
       default:
         return undefined
     }

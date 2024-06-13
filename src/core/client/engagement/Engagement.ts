@@ -10,3 +10,5 @@ export interface Engagement {
   otherEngagement?: string
   resolutionDate?: Date
 }
+
+export const EngagementReminderPeriod = 21 as const
