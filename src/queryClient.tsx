@@ -22,7 +22,11 @@ function buildQueryClient() {
     },
     queryCache: new QueryCache({
       onError: (error, query) => {
-        if (query.queryKey.includes('reports_getReviewOnReportResponse')) return
+        if (
+          query.queryKey.includes('reports_getReviewOnReportResponse') ||
+          query.queryKey.includes('reports_getReviewOnReportResponsePro')
+        )
+          return
         errorHandler(error)
       },
     }),
