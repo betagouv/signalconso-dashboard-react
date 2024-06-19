@@ -1,14 +1,12 @@
-import * as React from 'react'
-import {useI18n} from '../../../core/i18n'
 import {Skeleton} from '@mui/material'
-import {Panel, PanelBody, PanelHead} from '../../../shared/Panel'
-import {HorizontalBarChart} from '../../../shared/Chart/HorizontalBarChart'
-import {useMemoFn} from '../../../alexlibs/react-hooks-lib'
-import {Txt} from '../../../alexlibs/mui-extension'
-import {ReviewLabel} from './ReviewLabel'
 import {ScOption} from 'core/helper/ScOption'
-import {useGetResponseReviewsQuery} from '../../../core/queryhooks/statsQueryHooks'
 import {CleanDiscreetPanel} from 'shared/Panel/simplePanels'
+import {Txt} from '../../../alexlibs/mui-extension'
+import {useMemoFn} from '../../../alexlibs/react-hooks-lib'
+import {useI18n} from '../../../core/i18n'
+import {useGetResponseReviewsQuery} from '../../../core/queryhooks/statsQueryHooks'
+import {HorizontalBarChart} from '../../../shared/Chart/HorizontalBarChart'
+import {ReviewLabel} from './ReviewLabel'
 
 interface Props {
   companyId: string
@@ -54,12 +52,12 @@ export const ReviewDistribution = ({companyId}: Props) => {
 
   return (
     <CleanDiscreetPanel>
-      <h2 className="font-bold text-lg">{m.consumerReviews}</h2>
+      <h2 className="font-bold text-lg">Avis initial des consommateurs</h2>
       {ScOption.from(_responseReviews.data)
         .map(_ => (
           <>
             <Txt color="hint" block sx={{mb: 3}}>
-              {m.consumerReviewsDesc}
+              Avis des consommateurs sur la réponse apportée par le professionnel.
             </Txt>
             <HorizontalBarChart width={80} data={reviewDistribution} grid />
           </>

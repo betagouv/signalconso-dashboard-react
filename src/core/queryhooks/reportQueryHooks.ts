@@ -1,5 +1,5 @@
 import {useQuery} from '@tanstack/react-query'
-import {ConsumerReview, ConsumerReviewPro, ReportWordCount} from '../client/event/Event'
+import {ConsumerReview, ReportWordCount} from '../client/event/Event'
 import {ReportSearchResult} from '../client/report/Report'
 import {ReportNodes} from '../client/report/ReportNode'
 import {ReportNodeSearch} from '../client/report/ReportNodeSearch'
@@ -10,7 +10,7 @@ import {UseQueryOpts} from './types'
 
 export const GetReportQueryKeys = (id: Id) => ['reports_getById', id]
 const GetReviewOnReportResponseQueryKeys = (id: string) => ['reports_getReviewOnReportResponse', id]
-const GetReviewOnReportResponseQueryKeysPro = (id: string) => ['reports_getReviewOnReportResponsePro', id]
+const GetEngagementReviewQueryKeys = (id: string) => ['reports_getEngagementReview', id]
 const ReportSearchQuery = ['reports_search']
 const GetCountBySubCategoriesQueryKeys = (filters: ReportNodeSearch) => ['reports_getCountBySubCategories', filters]
 const GetCountByDepartmentsQueryKeys = (filters: {start?: Date; end?: Date}) => ['reports_getCountByDepartments', filters]
@@ -29,11 +29,11 @@ export const useGetReviewOnReportResponseQuery = (id: string, options?: UseQuery
     ...options,
   })
 }
-export const useGetReviewOnReportResponseQueryPro = (id: string, options?: UseQueryOpts<ConsumerReviewPro, string[]>) => {
+export const useGetEngagementReviewQuery = (id: string, options?: UseQueryOpts<ConsumerReview, string[]>) => {
   const {api} = useApiContext()
   return useQuery({
-    queryKey: GetReviewOnReportResponseQueryKeysPro(id),
-    queryFn: () => api.secured.reports.getReviewOnReportResponsePro(id),
+    queryKey: GetEngagementReviewQueryKeys(id),
+    queryFn: () => api.secured.reports.getEngagementReview(id),
     ...options,
   })
 }

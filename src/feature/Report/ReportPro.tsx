@@ -6,14 +6,19 @@ import {useRef} from 'react'
 import {useParams} from 'react-router'
 import {Link} from 'react-router-dom'
 import {CleanWidePanel} from 'shared/Panel/simplePanels'
-import {ConsumerReviewPro, ReportProResponseEvent} from '../../core/client/event/Event'
+import {ConsumerReview, ReportProResponseEvent} from '../../core/client/event/Event'
 import {FileOrigin, UploadedFile} from '../../core/client/file/UploadedFile'
 import {Report, ReportSearchResult, ReportStatusPro} from '../../core/client/report/Report'
 import {capitalize} from '../../core/helper'
 import {useI18n} from '../../core/i18n'
 import {Id} from '../../core/model'
 import {GetReportEventsQueryKeys, useGetReportEventsQuery} from '../../core/queryhooks/eventQueryHooks'
-import {GetReportQueryKeys, useGetReportQuery, useGetReviewOnReportResponseQueryPro} from '../../core/queryhooks/reportQueryHooks'
+import {
+  GetReportQueryKeys,
+  useGetEngagementReviewQuery,
+  useGetReportQuery,
+  useGetReviewOnReportResponseQuery,
+} from '../../core/queryhooks/reportQueryHooks'
 import {ScButton} from '../../shared/Button'
 import {Page} from '../../shared/Page'
 import {UserNameLabel} from '../../shared/UserNameLabel'
@@ -44,7 +49,8 @@ function ReportProLoaded({reportSearchResult}: {reportSearchResult: ReportSearch
   const queryClient = useQueryClient()
   const {report, files} = reportSearchResult
   const {reportEvents, responseEvent} = useGetReportEventsQuery(report.id)
-  const _getReviewOnReportResponse = useGetReviewOnReportResponseQueryPro(report.id)
+  const _getReviewOnReportResponse = useGetReviewOnReportResponseQuery(report.id)
+  const _getEngagementReview = useGetEngagementReviewQuery(report.id)
   const responseFormRef = useRef<HTMLElement>(null)
 
   function scrollToResponse() {
@@ -62,7 +68,11 @@ function ReportProLoaded({reportSearchResult}: {reportSearchResult: ReportSearch
       <LinkBackToList {...{report}} />
       <ReportBlock {...{scrollToResponse, reportSearchResult, responseEvent, isClosed, hasToRespond}} />
       {hasResponse && (
-        <ResponseBlock {...{report, responseEvent, files}} responseConsumerReview={_getReviewOnReportResponse.data} />
+        <ResponseBlock
+          {...{report, responseEvent, files}}
+          responseConsumerReview={_getReviewOnReportResponse.data}
+          engagementReview={_getEngagementReview.data}
+        />
       )}
       {hasToRespond && (
         <ReportResponseForm
@@ -142,11 +152,13 @@ function ResponseBlock({
   report,
   files,
   responseConsumerReview,
+  engagementReview,
 }: {
   responseEvent: ReportProResponseEvent
   report: Report
   files: UploadedFile[]
-  responseConsumerReview: ConsumerReviewPro | undefined
+  responseConsumerReview: ConsumerReview | undefined
+  engagementReview: ConsumerReview | undefined
 }) {
   const {formatDateTime} = useI18n()
 
@@ -158,7 +170,7 @@ function ResponseBlock({
         canEditFile={false}
         response={responseEvent}
         consumerReportReview={responseConsumerReview}
-        report={report}
+        {...{engagementReview, report}}
         files={files.filter(_ => _.origin === FileOrigin.Professional)}
       />
     </CleanWidePanel>

@@ -1,22 +1,22 @@
-import {useI18n} from '../../core/i18n'
 import {Box, Grid, Icon, MenuItem} from '@mui/material'
 import {Enum} from '../../alexlibs/ts-utils'
+import {Category} from '../../core/client/constant/Category'
 import {ReportStatus} from '../../core/client/report/Report'
+import {useI18n} from '../../core/i18n'
 import {ReportResponseTypes, ResponseEvaluation} from '../../core/model'
-import {ConsumerReviewLabel} from '../../shared/ConsumerReviewLabel'
+import {useReportSearchQuery} from '../../core/queryhooks/reportQueryHooks'
 import {DebouncedInput} from '../../shared/DebouncedInput'
-import {ScInput} from '../../shared/ScInput'
-import {ScMenuItem} from '../../shared/ScMenuItem'
 import {ProResponseLabel} from '../../shared/ProResponseLabel'
 import {ReportStatusLabel} from '../../shared/ReportStatus'
+import {ScInput} from '../../shared/ScInput'
+import {ScMenuItem} from '../../shared/ScMenuItem'
 import {ScMultiSelect} from '../../shared/Select/MultiSelect'
 import {ScSelect} from '../../shared/Select/Select'
 import {SelectActivityCode} from '../../shared/SelectActivityCode'
 import {SelectCountries} from '../../shared/SelectCountries/SelectCountries'
 import {TrueFalseNull} from '../../shared/TrueFalseNull'
-import {useReportSearchQuery} from '../../core/queryhooks/reportQueryHooks'
+import {ConsumerReviewLabel} from '../../shared/reviews/ConsumerReviewLabel'
 import {reportsCss} from './Reports'
-import {Category} from '../../core/client/constant/Category'
 
 const TrueLabel = () => {
   const {m} = useI18n()
@@ -242,26 +242,62 @@ export const AdvancedReportsFilter: React.FC<AdvancedFiltersGridProps> = ({
       <Grid item xs={12} md={6}>
         <Box>
           <Box sx={reportsCss.trueFalseNullBox}>
-            <Box sx={reportsCss.trueFalseNullLabel}>{m.consumerReviews}</Box>
+            <Box sx={reportsCss.trueFalseNullLabel}>Avis conso initial sur la réponse</Box>
             <TrueFalseNull
               label={{
                 true: <TrueLabel />,
               }}
               sx={{flexBasis: '50%'}}
-              value={_reports.filters.hasEvaluation ?? null}
-              onChange={hasEvaluation =>
+              value={_reports.filters.hasResponseEvaluation ?? null}
+              onChange={hasResponseEvaluation =>
                 _reports.updateFilters(prev => ({
                   ...prev,
-                  hasEvaluation: hasEvaluation ?? undefined,
+                  hasResponseEvaluation: hasResponseEvaluation ?? undefined,
                 }))
               }
             />
           </Box>
-          {_reports.filters.hasEvaluation === true && (
+          {_reports.filters.hasResponseEvaluation === true && (
             <ScMultiSelect
-              label={m.consumerReviews}
-              value={_reports.filters.evaluation ?? []}
-              onChange={evaluation => _reports.updateFilters(prev => ({...prev, evaluation}))}
+              label="Avis"
+              value={_reports.filters.responseEvaluation ?? []}
+              onChange={evaluation => _reports.updateFilters(prev => ({...prev, responseEvaluation: evaluation}))}
+              fullWidth
+              withSelectAll
+              renderValue={evaluation => `(${evaluation.length}) ${evaluation.map(_ => m.responseEvaluationShort[_]).join(',')}`}
+            >
+              {Enum.values(ResponseEvaluation).map(evaluation => (
+                <ScMenuItem withCheckbox key={evaluation} value={evaluation}>
+                  <ConsumerReviewLabel evaluation={evaluation} displayLabel />
+                </ScMenuItem>
+              ))}
+            </ScMultiSelect>
+          )}
+        </Box>
+      </Grid>
+      <Grid item xs={12} md={6}>
+        <Box>
+          <Box sx={reportsCss.trueFalseNullBox}>
+            <Box sx={reportsCss.trueFalseNullLabel}>Avis conso ultérieur</Box>
+            <TrueFalseNull
+              label={{
+                true: <TrueLabel />,
+              }}
+              sx={{flexBasis: '50%'}}
+              value={_reports.filters.hasEngagementEvaluation ?? null}
+              onChange={hasEngagementEvaluation =>
+                _reports.updateFilters(prev => ({
+                  ...prev,
+                  hasEngagementEvaluation: hasEngagementEvaluation ?? undefined,
+                }))
+              }
+            />
+          </Box>
+          {_reports.filters.hasEngagementEvaluation === true && (
+            <ScMultiSelect
+              label="Avis"
+              value={_reports.filters.engagementEvaluation ?? []}
+              onChange={evaluation => _reports.updateFilters(prev => ({...prev, engagementEvaluation: evaluation}))}
               fullWidth
               withSelectAll
               renderValue={evaluation => `(${evaluation.length}) ${evaluation.map(_ => m.responseEvaluationShort[_]).join(',')}`}

@@ -5,6 +5,8 @@ import {Badge, Box, Checkbox, Chip, Collapse, Icon, Tooltip} from '@mui/material
 import {useMutation} from '@tanstack/react-query'
 import React, {useCallback, useEffect, useMemo, useState} from 'react'
 import {NavLink} from 'react-router-dom'
+import {CleanDiscreetPanel} from 'shared/Panel/simplePanels'
+import {ConsumerReviewLabels} from 'shared/reviews/ConsumerReviewLabels'
 import {Fender, IconBtn, Txt} from '../../alexlibs/mui-extension'
 import {useSetState} from '../../alexlibs/react-hooks-lib'
 import {config} from '../../conf/config'
@@ -26,9 +28,7 @@ import {useReportSearchQuery} from '../../core/queryhooks/reportQueryHooks'
 import {siteMap} from '../../core/siteMap'
 import {styleUtils, sxUtils} from '../../core/theme'
 import {ScButton} from '../../shared/Button'
-import {ConsumerReviewLabel} from '../../shared/ConsumerReviewLabel'
 import {Datatable} from '../../shared/Datatable/Datatable'
-import {Panel} from '../../shared/Panel'
 import {ReportDetailValues} from '../../shared/ReportDetailValues'
 import {ReportStatusLabel} from '../../shared/ReportStatus'
 import {SelectTagsMenuValues} from '../../shared/SelectTags/SelectTagsMenu'
@@ -38,7 +38,6 @@ import CompanyNameDetails from './CompanyNameDetails'
 import DatatableToolbarComponent from './DatatableToolbarComponent'
 import ReportResponseDetails from './ReportResponseDetails'
 import ReportsFilter from './ReportsFilter'
-import {CleanDiscreetPanel} from 'shared/Panel/simplePanels'
 
 export const reportsCss = {
   trueFalseNullBox: {
@@ -71,8 +70,10 @@ interface ReportSearchQs {
   hasPhone?: boolean
   hasCompany?: boolean
   hasForeignCountry?: boolean
-  hasEvaluation?: boolean
-  evaluation?: ResponseEvaluation[]
+  hasResponseEvaluation?: boolean
+  responseEvaluation?: ResponseEvaluation[]
+  hasEngagementEvaluation?: boolean
+  engagementEvaluation?: ResponseEvaluation[]
   offset: number
   limit: number
 }
@@ -98,7 +99,14 @@ export const Reports = () => {
         'activityCodes',
         'evaluation',
       ]),
-      mapBooleanFromQueryString(['hasCompany', 'hasForeignCountry', 'hasPhone', 'hasWebsite', 'hasEvaluation']),
+      mapBooleanFromQueryString([
+        'hasCompany',
+        'hasForeignCountry',
+        'hasPhone',
+        'hasWebsite',
+        'hasResponseEvaluation',
+        'hasEngagementEvaluation',
+      ]),
     ),
   })
 
@@ -443,33 +451,7 @@ export const Reports = () => {
           {
             id: 'avisConso',
             head: m.consumerReviews,
-            render: _ => (
-              <>
-                {_.consumerReview && (
-                  <Tooltip
-                    title={
-                      <>
-                        <Box sx={{fontWeight: t => t.typography.fontWeightBold, fontSize: 'larger', mb: 1}}>
-                          {m.responseEvaluationShort[_.consumerReview.evaluation]}
-                        </Box>
-                        <Box
-                          sx={{
-                            display: '-webkit-box',
-                            WebkitLineClamp: 20,
-                            WebkitBoxOrient: 'vertical',
-                            overflow: 'hidden',
-                          }}
-                        >
-                          {_.consumerReview.details}
-                        </Box>
-                      </>
-                    }
-                  >
-                    <ConsumerReviewLabel evaluation={_.consumerReview.evaluation} center />
-                  </Tooltip>
-                )}
-              </>
-            ),
+            render: _ => <ConsumerReviewLabels detailsTooltip report={_} />,
           },
           {
             id: 'dateAvisConso',
