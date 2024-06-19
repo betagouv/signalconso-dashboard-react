@@ -12,14 +12,13 @@ import {CompanyChartPanel} from './CompanyChartPanel'
 import {ReportsShortListPanel} from './ReportsShortList'
 import {CompanyInfo} from './stats/CompanyInfo'
 import {ReportWordDistribution} from './stats/ReportWordDistribution'
-import {ReviewDistribution} from './stats/ReviewDistribution'
 import {StatusDistribution} from './stats/StatusDistribution'
 
 import {UseQueryResult} from '@tanstack/react-query'
 import {ApiError} from 'core/client/ApiClient'
 import {CleanDiscreetPanel} from 'shared/Panel/simplePanels'
 import {CompanyStatsNumberWidgets} from './companyStatsNumberWidgets'
-import {EngagementReviewDistribution} from './stats/EngagementReviewDistribution'
+import {EngagementReviewsDistribution, ResponseReviewsDistribution} from './stats/ReviewDistribution'
 export type ExtendedUser = UserWithPermission & {
   isPro: boolean
 }
@@ -66,8 +65,8 @@ export function CompanyStats({connectedUser, company}: {connectedUser: ExtendedU
             </div>
             <div>
               <CompanyInfo company={company} />
-              <ReviewDistribution companyId={id} />
-              <EngagementReviewDistribution companyId={id} />
+              <ResponseReviewsDistribution companyId={id} />
+              <EngagementReviewsDistribution companyId={id} />
               <ReportWordDistribution companyId={id} />
               <WebsitesDistribution {...{_hosts}} />
             </div>
