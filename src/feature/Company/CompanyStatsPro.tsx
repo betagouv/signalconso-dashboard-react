@@ -1,4 +1,3 @@
-import {Grid} from '@mui/material'
 import {useI18n} from 'core/i18n'
 import {useStatusDistributionProQuery} from 'core/queryhooks/statsQueryHooks'
 import {reportStatusProColor} from 'shared/ReportStatus'
@@ -10,7 +9,7 @@ import {CompanyChartPanel} from './CompanyChartPanel'
 import {ReportsShortListPanel} from './ReportsShortList'
 import {CompanyStatsNumberWidgets} from './companyStatsNumberWidgets'
 import {CompanyInfo} from './stats/CompanyInfo'
-import {ReviewDistribution} from './stats/ReviewDistribution'
+import {EngagementReviewsDistribution, ResponseReviewsDistribution} from './stats/ReviewDistribution'
 import {StatusDistribution} from './stats/StatusDistribution'
 
 export type ExtendedUser = UserWithPermission & {
@@ -48,7 +47,8 @@ export function CompanyStatsPro({connectedUser, company}: {connectedUser: Extend
             </div>
             <div>
               <CompanyInfo company={company} />
-              <ReviewDistribution companyId={id} />
+              <ResponseReviewsDistribution companyId={id} />
+              <EngagementReviewsDistribution companyId={id} />
             </div>
           </div>
         </>

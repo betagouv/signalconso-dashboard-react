@@ -1,10 +1,13 @@
 import {Skeleton} from '@mui/material'
+import {UseQueryResult} from '@tanstack/react-query'
+import {ApiError} from 'core/client/ApiClient'
 import {ScOption} from 'core/helper/ScOption'
+import {ReportResponseReviews} from 'core/model'
+import {useGetEngagementReviewsQuery, useGetResponseReviewsQuery} from 'core/queryhooks/statsQueryHooks'
 import {CleanDiscreetPanel} from 'shared/Panel/simplePanels'
 import {Txt} from '../../../alexlibs/mui-extension'
 import {useMemoFn} from '../../../alexlibs/react-hooks-lib'
 import {useI18n} from '../../../core/i18n'
-import {useGetResponseReviewsQuery} from '../../../core/queryhooks/statsQueryHooks'
 import {HorizontalBarChart} from '../../../shared/Chart/HorizontalBarChart'
 import {ReviewLabel} from './ReviewLabel'
 
@@ -12,11 +15,40 @@ interface Props {
   companyId: string
 }
 
-export const ReviewDistribution = ({companyId}: Props) => {
-  const {m} = useI18n()
-  const _responseReviews = useGetResponseReviewsQuery(companyId)
+export function ResponseReviewsDistribution({companyId}: Props) {
+  const queryResult = useGetResponseReviewsQuery(companyId)
+  return (
+    <ReviewDistribution
+      {...{companyId, queryResult}}
+      title="Avis initial des consommateurs"
+      titleDesc="Avis des consommateurs sur la réponse apportée par le professionnel."
+    />
+  )
+}
 
-  const reviewDistribution = useMemoFn(_responseReviews.data, _ =>
+export function EngagementReviewsDistribution({companyId}: Props) {
+  const queryResult = useGetEngagementReviewsQuery(companyId)
+  return (
+    <ReviewDistribution
+      {...{companyId, queryResult}}
+      title="Avis ultérieur des consommateurs"
+      titleDesc="Avis des consommateurs sur la réalisation des engagements du professionnel."
+    />
+  )
+}
+
+function ReviewDistribution({
+  queryResult,
+  title,
+  titleDesc,
+}: {
+  queryResult: UseQueryResult<ReportResponseReviews, ApiError>
+  title: string
+  titleDesc: string
+}) {
+  const {m} = useI18n()
+
+  const reviewDistribution = useMemoFn(queryResult.data, _ =>
     _.positive > 0 || _.negative > 0 || _.neutral > 0
       ? [
           {
@@ -52,12 +84,12 @@ export const ReviewDistribution = ({companyId}: Props) => {
 
   return (
     <CleanDiscreetPanel>
-      <h2 className="font-bold text-lg">Avis initial des consommateurs</h2>
-      {ScOption.from(_responseReviews.data)
+      <h2 className="font-bold text-lg">{title}</h2>
+      {ScOption.from(queryResult.data)
         .map(_ => (
           <>
             <Txt color="hint" block sx={{mb: 3}}>
-              Avis des consommateurs sur la réponse apportée par le professionnel.
+              {titleDesc}
             </Txt>
             <HorizontalBarChart width={80} data={reviewDistribution} grid />
           </>
