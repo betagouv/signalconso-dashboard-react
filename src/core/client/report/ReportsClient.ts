@@ -1,4 +1,4 @@
-import {cleanObject, dateToApiDate, dateToApiTime, directDownloadBlob} from '../../helper'
+import {cleanObject, dateToApiDate, dateToApiTime, directDownloadBlob, wrap404AsNull} from '../../helper'
 import {ApiSdkLogger} from '../../helper/Logger'
 import {
   CompanySearchResult,
@@ -156,13 +156,17 @@ export class ReportsClient {
   }
 
   readonly getReviewOnReportResponse = async (reportId: Id) => {
-    const res = await this.client.get<ConsumerReview>(`/reports/${reportId}/response/review`)
-    return ReportsClient.mapConsumerReview(res)
+    return wrap404AsNull(async () => {
+      const res = await this.client.get<ConsumerReview>(`/reports/${reportId}/response/review`)
+      return ReportsClient.mapConsumerReview(res)
+    })
   }
 
   readonly getEngagementReview = async (reportId: Id) => {
-    const res = await this.client.get<ConsumerReview>(`/reports/${reportId}/engagement/review`)
-    return ReportsClient.mapConsumerReview(res)
+    return wrap404AsNull(async () => {
+      const res = await this.client.get<ConsumerReview>(`/reports/${reportId}/engagement/review`)
+      return ReportsClient.mapConsumerReview(res)
+    })
   }
 
   readonly generateConsumerNotificationAsPDF = (reportId: Id) => {

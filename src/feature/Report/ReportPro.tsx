@@ -157,8 +157,8 @@ function ResponseBlock({
   responseEvent: ReportProResponseEvent
   report: Report
   files: UploadedFile[]
-  responseConsumerReview: ConsumerReview | undefined
-  engagementReview: ConsumerReview | undefined
+  responseConsumerReview: ConsumerReview | null | undefined
+  engagementReview: ConsumerReview | null | undefined
 }) {
   const {formatDateTime} = useI18n()
 
