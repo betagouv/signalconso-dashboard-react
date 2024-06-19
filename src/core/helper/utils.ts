@@ -1,4 +1,5 @@
 import {SxProps, Theme} from '@mui/material'
+import {ApiError} from 'core/client/ApiClient'
 import format from 'date-fns/format'
 import {ScOption} from './ScOption'
 
@@ -152,4 +153,14 @@ export const undefined2Null = <A>(value: A | undefined): A | null => (value === 
 
 export function sum(arr: number[]): number {
   return arr.reduce((acc, current) => acc + current, 0)
+}
+
+export async function wrap404AsNull<A>(callback: () => Promise<A>): Promise<A | null> {
+  try {
+    return await callback()
+  } catch (e) {
+    if (e instanceof ApiError && e.details.code === 404) {
+      return null
+    } else throw e
+  }
 }

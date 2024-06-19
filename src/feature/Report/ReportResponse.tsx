@@ -34,8 +34,8 @@ export function ReportResponseComponent({
 }: {
   canEditFile?: boolean
   response: ReportProResponseEvent
-  consumerReportReview?: ConsumerReview
-  engagementReview?: ConsumerReview
+  consumerReportReview?: ConsumerReview | null
+  engagementReview?: ConsumerReview | null
   report: Report
   files?: UploadedFile[]
 }) {
