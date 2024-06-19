@@ -3,8 +3,6 @@ import {ApiSdkLogger} from '../../helper/Logger'
 import {
   CompanySearchResult,
   ConsumerReview,
-  ConsumerReviewPro,
-  ConsumerReviewWithDate,
   Country,
   Event,
   FileOrigin,
@@ -49,7 +47,8 @@ export interface ReportFilterQuerystring {
 
 export const reportFilter2QueryString = (report: ReportSearch): ReportFilterQuerystring => {
   try {
-    const {hasCompany, hasForeignCountry, hasWebsite, hasPhone, start, end, ...r} = report
+    const {hasCompany, hasForeignCountry, hasWebsite, hasPhone, start, end, hasResponseEvaluation, responseEvaluation, ...r} =
+      report
     const parseBoolean = (_: keyof Pick<ReportSearch, 'hasForeignCountry' | 'hasWebsite' | 'hasPhone' | 'hasCompany'>) =>
       report[_] !== undefined && {[_]: ('' + report[_]) as 'true' | 'false'}
     const parseDate = (_: keyof Pick<ReportSearch, 'start' | 'end'>) => (report[_] ? {[_]: dateToApiTime(report[_])} : {})
@@ -61,6 +60,8 @@ export const reportFilter2QueryString = (report: ReportSearch): ReportFilterQuer
       ...parseBoolean('hasForeignCountry'),
       ...parseDate('start'),
       ...parseDate('end'),
+      ...(hasResponseEvaluation !== undefined ? {hasEvaluation: hasResponseEvaluation} : null),
+      ...(responseEvaluation !== undefined ? {evaluation: responseEvaluation} : null),
     }
   } catch (e) {
     ApiSdkLogger.error('Caught error on "reportFilter2QueryString"', report, e)
@@ -81,8 +82,8 @@ export const cleanReportFilter = (filter: ReportSearch): ReportSearch => {
   if (!filter.hasPhone) {
     delete filter.phone
   }
-  if (!filter.hasEvaluation) {
-    delete filter.evaluation
+  if (!filter.hasResponseEvaluation) {
+    delete filter.responseEvaluation
   }
   return filter
 }
@@ -154,13 +155,14 @@ export class ReportsClient {
     }
   }
 
-  readonly getReviewOnReportResponse = (reportId: Id) => {
-    return this.client.get<ConsumerReview>(`/reports/${reportId}/response/review`)
+  readonly getReviewOnReportResponse = async (reportId: Id) => {
+    const res = await this.client.get<ConsumerReview>(`/reports/${reportId}/response/review`)
+    return ReportsClient.mapConsumerReview(res)
   }
 
-  readonly getReviewOnReportResponsePro = (reportId: Id) => {
-    // same endpoint but the type changes
-    return this.client.get<ConsumerReviewPro>(`/reports/${reportId}/response/review`)
+  readonly getEngagementReview = async (reportId: Id) => {
+    const res = await this.client.get<ConsumerReview>(`/reports/${reportId}/engagement/review`)
+    return ReportsClient.mapConsumerReview(res)
   }
 
   readonly generateConsumerNotificationAsPDF = (reportId: Id) => {
@@ -241,7 +243,7 @@ export class ReportsClient {
     expirationDate: new Date(report.expirationDate),
   })
 
-  static readonly mapConsumerReview = (_: {[key in keyof ConsumerReviewWithDate]: any}): ConsumerReviewWithDate => {
+  static readonly mapConsumerReview = (_: {[key in keyof ConsumerReview]: any}): ConsumerReview => {
     return {
       ..._,
       creationDate: new Date(_.creationDate),

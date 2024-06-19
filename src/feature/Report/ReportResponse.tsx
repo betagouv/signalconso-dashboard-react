@@ -2,6 +2,8 @@ import {useI18n} from '../../core/i18n'
 
 import {Icon} from '@mui/material'
 import {useMutation, useQueryClient} from '@tanstack/react-query'
+import {addDays} from 'date-fns'
+import {EngagementReminderPeriod} from '../../core/client/engagement/Engagement'
 import {
   ConsumerReview,
   EventActionValues,
@@ -21,19 +23,19 @@ import {Divider} from '../../shared/Divider'
 import {UserNameLabel} from '../../shared/UserNameLabel'
 import {ReportFileDownloadAllButton} from './File/ReportFileDownloadAllButton'
 import {ReportFiles} from './File/ReportFiles'
-import {Engagements} from '../Engagement/Engagements'
-import {EngagementReminderPeriod} from '../../core/client/engagement/Engagement'
 
 export function ReportResponseComponent({
   canEditFile,
   response,
   consumerReportReview,
+  engagementReview,
   report,
   files,
 }: {
   canEditFile?: boolean
   response: ReportProResponseEvent
   consumerReportReview?: ConsumerReview
+  engagementReview?: ConsumerReview
   report: Report
   files?: UploadedFile[]
 }) {
@@ -46,12 +48,16 @@ export function ReportResponseComponent({
   })
 
   const details = response.data.details
-  const expirationDate = new Date(response.data.creationDate)
-  expirationDate.setDate(expirationDate.getDate() + EngagementReminderPeriod)
+  const engagementExpirationDate = addDays(response.data.creationDate, EngagementReminderPeriod)
+  const hasEngagementReview = !!engagementReview
   const user = response.user
   return (
     <div className="">
-      {details ? <ResponseDetails {...{details, expirationDate, user}} /> : <div className="mt-2">{m.noAnswerFromPro}</div>}
+      {details ? (
+        <ResponseDetails {...{details, engagementExpirationDate, user, hasEngagementReview}} />
+      ) : (
+        <div className="mt-2">{m.noAnswerFromPro}</div>
+      )}
       <div className="flex flex-row mt-5 ">
         <h2 className="font-bold">{m.attachedFiles}</h2>
         {files && files.filter(_ => _.origin === FileOrigin.Professional).length > 1 && (
@@ -77,7 +83,18 @@ export function ReportResponseComponent({
       <Divider margin />
       <>
         {consumerReportReview ? (
-          <ConsumerReviewComponent review={consumerReportReview} />
+          <ConsumerReviewComponent review={consumerReportReview} title="Avis initial du consommateur sur cette réponse" />
+        ) : (
+          <div className="">{m.noReviewFromConsumer}</div>
+        )}
+      </>
+      <Divider margin />
+      <>
+        {engagementReview ? (
+          <ConsumerReviewComponent
+            review={engagementReview}
+            title={`Avis ultérieur du consommateur, sur la réalisation des engagements`}
+          />
         ) : (
           <div className="">{m.noReviewFromConsumer}</div>
         )}
@@ -88,12 +105,14 @@ export function ReportResponseComponent({
 
 function ResponseDetails({
   details,
-  expirationDate,
+  engagementExpirationDate,
   user,
+  hasEngagementReview,
 }: {
   details: ExistingReportResponse
-  expirationDate?: Date
+  engagementExpirationDate?: Date
   user?: EventUser
+  hasEngagementReview: boolean
 }) {
   const {m} = useI18n()
   return (
@@ -102,7 +121,7 @@ function ResponseDetails({
         responseType={details.responseType}
         responseDetails={details.responseDetails}
         otherResponseDetails={details.otherResponseDetails}
-        expirationDate={expirationDate}
+        {...{engagementExpirationDate, hasEngagementReview}}
       />
       <p className="font-bold">Répondant :</p>
       <div className="pl-4 mb-4">
@@ -126,12 +145,14 @@ function ResponseType({
   responseType,
   responseDetails,
   otherResponseDetails,
-  expirationDate,
+  engagementExpirationDate,
+  hasEngagementReview,
 }: {
   responseType: ReportResponseTypes
   responseDetails: ExistingReportResponse['responseDetails']
   otherResponseDetails?: string
-  expirationDate?: Date
+  engagementExpirationDate?: Date
+  hasEngagementReview: boolean
 }) {
   const {m, formatDate} = useI18n()
   const {icon, color, text} = (() => {
@@ -161,15 +182,15 @@ function ResponseType({
         </p>
         <p className={'pl-6 pt-2 italic'}>{responseDetailsText}</p>
       </div>
-      {responseType === 'ACCEPTED' && (
+      {responseType === 'ACCEPTED' && !hasEngagementReview && (
         <>
-          {expirationDate && expirationDate > now ? (
+          {engagementExpirationDate && engagementExpirationDate > now ? (
             <p>
-              Nous demanderons son avis au consommateur le <strong>{formatDate(expirationDate)}</strong>
+              Nous demanderons son avis au consommateur le <strong>{formatDate(engagementExpirationDate)}</strong>
             </p>
           ) : (
             <p>
-              Nous avons demandé son avis au consommateur le <strong>{formatDate(expirationDate)}</strong>
+              Nous avons demandé son avis au consommateur le <strong>{formatDate(engagementExpirationDate)}</strong>
             </p>
           )}
         </>
@@ -178,8 +199,8 @@ function ResponseType({
   )
 }
 
-function ConsumerReviewComponent({review}: {review: ConsumerReview}) {
-  const {m} = useI18n()
+function ConsumerReviewComponent({review, title}: {review: ConsumerReview; title: string}) {
+  const {m, formatDateTime} = useI18n()
   const {connectedUser} = useConnectedContext()
 
   const {icon, classes, text} = (() => {
@@ -207,19 +228,26 @@ function ConsumerReviewComponent({review}: {review: ConsumerReview}) {
 
   return (
     <div>
-      <h3 className="font-bold text-xl mb-2">Avis du consommateur sur cette réponse :</h3>
-      <p className={`inline-flex rounded-full items-center gap-1 w-fit p-2 ${classes} font-normal border border-solid`}>
-        <Icon fontSize="medium">{icon}</Icon>
-        {text}
-      </p>
+      <h3 className="font-bold text-xl mb-2">{title}</h3>
+
+      <div className="flex gap-2 items-center">
+        <p className={`inline-flex rounded-full items-center gap-1 w-fit p-2 ${classes} font-normal border border-solid`}>
+          <Icon fontSize="medium">{icon}</Icon>
+          {text}
+        </p>
+        <p className="text-gray-500"> le {formatDateTime(review.creationDate)}</p>
+      </div>
       {connectedUser.isNotPro && (
-        <>
+        <div className="mt-2 ml-2 p-4 bg-gray-100 w-fit">
           {review.details ? (
-            <div className="pl-4">{review.details}</div>
+            <>
+              <p className="font-bold">Précisions (visibles uniquement par la DGCCRF) :</p>
+              <div className="">{review.details}</div>
+            </>
           ) : (
-            <div className="">{m.noReviewDetailsFromConsumer}</div>
+            <div className="italic">{m.noReviewDetailsFromConsumer}</div>
           )}
-        </>
+        </div>
       )}
     </div>
   )
