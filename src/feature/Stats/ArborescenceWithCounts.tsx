@@ -15,6 +15,8 @@ import {Page} from '../../shared/Page'
 import {PanelBody} from '../../shared/Panel'
 import {PeriodPicker} from '../../shared/PeriodPicker'
 import {SelectDepartments} from '../../shared/SelectDepartments/SelectDepartments'
+import {siteMap} from '../../core/siteMap'
+import {NavLink} from 'react-router-dom'
 
 const compare = (a?: string[], b?: string[]): number => {
   if (!a || !b) return 0
@@ -122,14 +124,14 @@ function LangPanel({
       </div>
       <PanelBody>
         {countBySubCategories.data?.[langKey].sort(sortById).map(reportNode => (
-          <Node open={openAll} reportNode={reportNode} />
+          <Node open={openAll} reportNode={reportNode} path={[]} />
         ))}
       </PanelBody>
     </CleanWidePanel>
   )
 }
 
-const Node = ({reportNode, open}: {reportNode: ReportNode; open?: boolean}) => {
+const Node = ({reportNode, open, path}: {reportNode: ReportNode; open?: boolean; path: string[]}) => {
   const iconWidth = 40
   const iconMargin = 8
   const theme = useTheme()
@@ -137,6 +139,12 @@ const Node = ({reportNode, open}: {reportNode: ReportNode; open?: boolean}) => {
   useEffect(() => {
     setIsOpen(!!open)
   }, [open])
+
+  const fullPath = [...path, reportNode.name]
+  const url = siteMap.logged.reports({
+    category: fullPath[0],
+    details: fullPath.length > 0 ? fullPath.slice(1).join(',') : undefined,
+  })
 
   return (
     <Box sx={{display: 'flex', alignItems: 'flex-start', mb: 2}}>
@@ -167,7 +175,10 @@ const Node = ({reportNode, open}: {reportNode: ReportNode; open?: boolean}) => {
               <Txt color="hint">{reportNode.name}</Txt> <Txt color="hint">(Ancienne catégorie)</Txt>
             </Box>
           )}
-          <Txt color="primary"> Signalements : {reportNode.count}</Txt>
+          <Txt color="primary">
+            {' '}
+            Signalements : {reportNode.count} <NavLink to={url}>(voir)</NavLink>
+          </Txt>
           <Txt color="primary"> Réclamations : {reportNode.reclamations}</Txt>
           <Box>
             {reportNode.tags?.map(tag => (
@@ -208,7 +219,7 @@ const Node = ({reportNode, open}: {reportNode: ReportNode; open?: boolean}) => {
             }}
           >
             {reportNode.children.sort(sortById).map(reportNode => (
-              <Node open={open} reportNode={reportNode} />
+              <Node open={open} reportNode={reportNode} path={fullPath} />
             ))}
           </Box>
         )}
