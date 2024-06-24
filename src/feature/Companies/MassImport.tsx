@@ -1,4 +1,4 @@
-import {Autocomplete, Checkbox, Dialog, DialogActions, DialogContent, DialogTitle, MenuItem, TextField} from '@mui/material'
+import {Checkbox, Dialog, DialogActions, DialogContent, DialogTitle, MenuItem} from '@mui/material'
 import {useMutation} from '@tanstack/react-query'
 import React, {ReactElement, useState} from 'react'
 import {Controller, useForm} from 'react-hook-form'
@@ -15,6 +15,14 @@ export interface MassImportProps {
   children: ReactElement<any>
 }
 
+interface MassImportForm {
+  siren?: string
+  sirets: string
+  emails: string
+  onlyHeadOffice: boolean
+  level: AccessLevel
+}
+
 export const MassImport = ({children}: MassImportProps) => {
   const [open, setOpen] = useState<boolean>(false)
   const {m} = useI18n()
@@ -24,7 +32,7 @@ export const MassImport = ({children}: MassImportProps) => {
     handleSubmit,
     control,
     formState: {errors},
-  } = useForm<CompaniesToImport>({
+  } = useForm<MassImportForm>({
     defaultValues: {
       onlyHeadOffice: true,
       level: AccessLevel.ADMIN,
@@ -39,10 +47,18 @@ export const MassImport = ({children}: MassImportProps) => {
   }
 
   const confirm = (e: any) => {
-    handleSubmit(_ => mutation.mutate(_))(e)
-      .then(() => toastSuccess('Opération réussie'))
-      .then(() => close())
-      .catch(e => toastError(e))
+    handleSubmit(_ => {
+      const companiesToImport: CompaniesToImport = {
+        siren: _.siren,
+        sirets: _.sirets.split(','),
+        emails: _.emails.split(','),
+        onlyHeadOffice: _.onlyHeadOffice,
+        level: _.level,
+      }
+      mutation.mutate(companiesToImport)
+      toastSuccess('Opération réussie')
+      close()
+    })(e)
   }
 
   return (
@@ -89,62 +105,25 @@ export const MassImport = ({children}: MassImportProps) => {
             />
           </DialogInputRow>
           <DialogInputRow label="SIRETs">
-            <Controller
-              name="sirets"
-              defaultValue={[]}
-              rules={{
-                validate: value => !!value.every(_ => _.match(/^[0-9]{14}$/)) || 'SIRET invalide',
-              }}
-              control={control}
-              render={({field: {ref, onChange, ...field}}) => (
-                <Autocomplete
-                  onChange={(e, value) => onChange(value)}
-                  defaultValue={[]}
-                  clearIcon={false}
-                  options={[]}
-                  freeSolo
-                  size="small"
-                  multiple
-                  renderInput={params => (
-                    <TextField
-                      {...params}
-                      {...field}
-                      inputRef={ref}
-                      error={!!errors.sirets}
-                      helperText={errors.sirets?.message ?? ' '}
-                    />
-                  )}
-                />
-              )}
+            <ScInput
+              placeholder="Liste de sirets séparés par des virgules"
+              error={!!errors.sirets}
+              helperText={errors.sirets?.message ?? ' '}
+              fullWidth
+              {...register('sirets', {
+                validate: value => !!value.split(',').every(_ => _.match(/^[0-9]{14}$/)) || 'Un des SIRETs est invalide',
+              })}
             />
           </DialogInputRow>
           <DialogInputRow label="Emails">
-            <Controller
-              name="emails"
-              rules={{
-                required: 'requis',
-                validate: value => !!value.every(_ => _.match(/.+@.+\..+/)) || 'Email invalide',
-              }}
-              control={control}
-              render={({field: {ref, onChange, ...field}}) => (
-                <Autocomplete
-                  onChange={(e, value) => onChange(value)}
-                  clearIcon={false}
-                  options={[]}
-                  freeSolo
-                  size="small"
-                  multiple
-                  renderInput={params => (
-                    <TextField
-                      {...params}
-                      {...field}
-                      inputRef={ref}
-                      error={!!errors.emails}
-                      helperText={errors.emails?.message ?? ' '}
-                    />
-                  )}
-                />
-              )}
+            <ScInput
+              placeholder="Liste d'emails séparés par des virgules"
+              error={!!errors.emails}
+              helperText={errors.emails?.message ?? ' '}
+              fullWidth
+              {...register('emails', {
+                validate: value => !!value.split(',').every(_ => _.match(/.+@.+\..+/)) || 'Un des emails est invalide',
+              })}
             />
           </DialogInputRow>
           <DialogInputRow label="Droits d'accès">
