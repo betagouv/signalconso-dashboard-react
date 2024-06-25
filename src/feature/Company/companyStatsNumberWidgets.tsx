@@ -2,7 +2,11 @@ import {Icon, LinearProgress, Tooltip} from '@mui/material'
 import {useConnectedContext} from 'core/context/ConnectedContext'
 import {useI18n} from 'core/i18n'
 import {EventActionValues, Id} from 'core/model'
-import {useCompanyAccessCountQuery, useGetResponseRateQuery} from 'core/queryhooks/companyQueryHooks'
+import {
+  useCompanyAccessCountQuery,
+  useGetResponseRateQuery,
+  useIsAllowedToManageCompanyAccessesQuery,
+} from 'core/queryhooks/companyQueryHooks'
 import {useGetCompanyEventsQuery} from 'core/queryhooks/eventQueryHooks'
 import {
   useGetCompanyRefundBlackMailQuery,
@@ -144,14 +148,20 @@ function NumberWidgetReturnedDocs({siret}: {siret: string}) {
 }
 function NumberWidgetAccesses({siret, companyId}: {siret: string; companyId: string}) {
   const _accesses = useCompanyAccessCountQuery(siret)
+  const displayAccessesLink = useIsAllowedToManageCompanyAccessesQuery(companyId) ?? false
   const {m} = useI18n()
+  const link = (
+    <>
+      (<NavLink to={siteMap.logged.company(companyId).accesses.valueAbsolute}>voir</NavLink>)
+    </>
+  )
   return (
     <Widget loading={_accesses.isLoading}>
       {_accesses.data !== undefined && (
         <>
           <p className="text-3xl font-bold">{_accesses.data}</p>
           <p className="">
-            {m.accountsActivated} (<NavLink to={siteMap.logged.company(companyId).accesses.valueAbsolute}>voir</NavLink>)
+            {m.accountsActivated} {displayAccessesLink && link}
           </p>
         </>
       )}

@@ -1,11 +1,13 @@
 import {useQuery} from '@tanstack/react-query'
+import {useConnectedContext} from 'core/context/ConnectedContext'
 import {useApiContext} from '../context/ApiContext'
-import {UseQueryOpts} from './types'
-import {CompanySearch, CompanySearchResult, CompanyWithAccessLevel, CompanyWithReportsCount, Id, PaginatedFilters} from '../model'
-import {useQueryPaginate} from './UseQueryPaginate'
 import {paginateData} from '../helper'
+import {AccessLevel, CompanySearch, CompanySearchResult, CompanyWithReportsCount, Id, PaginatedFilters} from '../model'
+import {useQueryPaginate} from './UseQueryPaginate'
+import {UseQueryOpts} from './types'
 
 export const GetAccessibleByProQueryKeys = ['company_getAccessibleByPro']
+export const IsAllowedToManageCompanyAccessesQueryKeys = ['company_isAllowedToManageCompanyAccesses']
 export const ActivatedCompanySearchQueryKeys = ['company_search']
 export const CompanyToActivateSearchQueryKeys = ['company_fetchToActivate']
 export const CompanyToFollowUpSearchQueryKeys = ['company_fetchToFollowUp']
@@ -20,9 +22,34 @@ export const SearchByIdentityQueryKeys = (identity: string, openOnly: boolean) =
 export const CompanyAccessCountQueryKeys = (siret: string) => ['companyAccess_count', siret]
 export const CompanyAccessesFetchQueryKeys = (siret: string) => ['companyAccesses_fetch', siret]
 
-export const useGetAccessibleByProQuery = (options?: UseQueryOpts<CompanyWithAccessLevel[], string[]>) => {
+export const useGetAccessibleByProQuery = ({enabled = true}: {enabled?: boolean} = {}) => {
   const {api} = useApiContext()
-  return useQuery({queryKey: GetAccessibleByProQueryKeys, queryFn: api.secured.company.getAccessibleByPro, ...options})
+  return useQuery({queryKey: GetAccessibleByProQueryKeys, queryFn: api.secured.company.getAccessibleByPro, enabled})
+}
+
+export function useIsAllowedToManageCompanyAccessesQuery(companyId: string) {
+  const {connectedUser} = useConnectedContext()
+  const isPro = connectedUser.isPro
+  const _companiesAccessibleByPro = useGetAccessibleByProQuery({enabled: isPro})
+  if (isPro) {
+    const data = _companiesAccessibleByPro.data
+    if (data) {
+      return data.find(c => c.id === companyId)?.level === AccessLevel.ADMIN
+    }
+    return undefined
+  }
+  return true
+}
+
+export const useGetAccessLevelOfProQuery = (companyId: Id) => {
+  const {api} = useApiContext()
+  return useQuery({
+    queryKey: GetAccessibleByProQueryKeys,
+    queryFn: api.secured.company.getAccessibleByPro,
+    select: data => {
+      return data.find(company => company.id === companyId)?.level
+    },
+  })
 }
 
 export const useActivatedCompanySearchQuery = (filters: CompanySearch) => {
@@ -93,12 +120,11 @@ export const useSearchByIdentityQuery = (
   })
 }
 
-export const useCompanyAccessCountQuery = (siret: string, options?: UseQueryOpts<number, string[]>) => {
+export const useCompanyAccessCountQuery = (siret: string) => {
   const {api} = useApiContext()
   return useQuery({
     queryKey: CompanyAccessCountQueryKeys(siret),
     queryFn: () => api.secured.companyAccess.count(siret),
-    ...options,
   })
 }
 
