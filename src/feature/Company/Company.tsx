@@ -7,7 +7,7 @@ import {CompanyAccesses} from 'feature/CompanyAccesses/CompanyAccesses'
 import {Page, PageTitle} from 'shared/Page'
 import {PageTab, PageTabs} from 'shared/Page/PageTabs'
 import {CompanyWithReportsCount, Id} from '../../core/model'
-import {useGetCompanyByIdQuery} from '../../core/queryhooks/companyQueryHooks'
+import {useGetCompanyByIdQuery, useIsAllowedToManageCompanyAccessesQuery} from '../../core/queryhooks/companyQueryHooks'
 import {CompanyHistory} from './CompanyHistory'
 import {CompanyStats} from './CompanyStats'
 import {CompanyStatsPro} from './CompanyStatsPro'
@@ -20,6 +20,7 @@ export function Company() {
 function CompanyWithId({id}: {id: string}) {
   const _companyById = useGetCompanyByIdQuery(id)
   const {connectedUser} = useConnectedContext()
+  const withCompanyAccessesTab = useIsAllowedToManageCompanyAccessesQuery(id) ?? false
   const company = _companyById.data
 
   return (
@@ -27,7 +28,11 @@ function CompanyWithId({id}: {id: string}) {
       {company && <Title {...{company}} />}
       <PageTabs>
         <PageTab to={siteMap.logged.company(id).stats.valueAbsolute} label={'Statistiques'} />
-        <PageTab to={siteMap.logged.company(id).accesses.valueAbsolute} label={'Accès utilisateurs'} />
+        {withCompanyAccessesTab ? (
+          <PageTab to={siteMap.logged.company(id).accesses.valueAbsolute} label={'Accès utilisateurs'} />
+        ) : (
+          <></>
+        )}
         {connectedUser.isNotPro ? (
           <PageTab to={siteMap.logged.company(id).history.valueAbsolute} label={`Historique de l'entreprise`} />
         ) : undefined}
@@ -35,7 +40,9 @@ function CompanyWithId({id}: {id: string}) {
       <Routes>
         <Route path="/*" element={<Navigate replace to={siteMap.logged.company(id).stats.valueAbsolute} />} />
         <Route path={siteMap.logged.company(id).stats.value} element={<CompanyStatsComponent {...{company}} />} />
-        <Route path={siteMap.logged.company(id).accesses.value} element={<CompanyAccesses {...{company}} />} />
+        {withCompanyAccessesTab && (
+          <Route path={siteMap.logged.company(id).accesses.value} element={<CompanyAccesses {...{company}} />} />
+        )}
         {connectedUser.isNotPro ? (
           <Route path={siteMap.logged.company(id).history.value} element={<CompanyHistory {...{company}} />} />
         ) : undefined}

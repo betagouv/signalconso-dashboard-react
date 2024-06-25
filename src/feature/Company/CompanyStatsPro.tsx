@@ -20,7 +20,6 @@ export function CompanyStatsPro({connectedUser, company}: {connectedUser: Extend
   const {m} = useI18n()
   const id = company.id
   const _reports = useReportSearchQuery({hasCompany: true, offset: 0, limit: 5}, false)
-
   const _statusDistribution = useStatusDistributionProQuery(id, {enabled: connectedUser.isPro})
 
   useEffectFn(company, _ => {
