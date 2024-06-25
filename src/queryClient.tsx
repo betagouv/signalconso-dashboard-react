@@ -12,6 +12,7 @@ function buildQueryClient() {
   const queryClient = new QueryClient({
     defaultOptions: {
       queries: {
+        staleTime: 5000,
         retry: (failureCount, error) => {
           if (failureCount > MAX_RETRIES) {
             return false
