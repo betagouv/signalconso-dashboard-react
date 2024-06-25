@@ -6,7 +6,6 @@ import {App} from './App'
 import {ErrorBundary} from './core/ErrorBundary'
 import {Sentry} from './core/plugins/Sentry'
 import './polyfills'
-
 Sentry.init()
 injectMatomoScript()
 

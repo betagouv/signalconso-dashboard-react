@@ -1,5 +1,7 @@
 import {CssBaseline, StyledEngineProvider, ThemeProvider} from '@mui/material'
 import {QueryClientProvider} from '@tanstack/react-query'
+import {ReactQueryDevtools} from '@tanstack/react-query-devtools'
+import {config} from 'conf/config'
 import {queryClient, setQueryClientErrorHandler} from 'queryClient'
 import {useEffect} from 'react'
 import {BrowserRouter} from 'react-router-dom'
@@ -46,6 +48,7 @@ const AppInsideProviders = () => {
       <Layout header={<ScHeader />} sidebar={connectedUser && <ScSidebar {...{connectedUser, logout}} />}>
         <AppRoutes {...{loginManagementResult}} />
       </Layout>
+      {config.isDev && <ReactQueryDevtools />}
     </>
   )
 }

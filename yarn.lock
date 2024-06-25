@@ -2884,6 +2884,7 @@ __metadata:
     "@sentry/react": 7.11.0
     "@sentry/tracing": 7.11.0
     "@tanstack/react-query": ^5.13.4
+    "@tanstack/react-query-devtools": ^5.47.0
     "@testing-library/jest-dom": 5.16.5
     "@testing-library/react": 13.3.0
     "@testing-library/user-event": 14.4.3
@@ -3090,6 +3091,25 @@ __metadata:
   version: 5.13.4
   resolution: "@tanstack/query-core@npm:5.13.4"
   checksum: 9ebda1325d2774d766d0c07d3ded3f231fa785147bdf59372240d09c992b2636e5c6aa3660c1de348de395c0de5b1f8aadf28397e1134dbe2d56c38e37b7af1c
+  languageName: node
+  linkType: hard
+
+"@tanstack/query-devtools@npm:5.47.0":
+  version: 5.47.0
+  resolution: "@tanstack/query-devtools@npm:5.47.0"
+  checksum: afa1684f6baa3d6171231528e52a033f52a883c85363dfde65a29d04ce0911ad682c87142b713f4fbae24f30276339eb391c4782ff6c44aa84a519e3595f4b6d
+  languageName: node
+  linkType: hard
+
+"@tanstack/react-query-devtools@npm:^5.47.0":
+  version: 5.47.0
+  resolution: "@tanstack/react-query-devtools@npm:5.47.0"
+  dependencies:
+    "@tanstack/query-devtools": 5.47.0
+  peerDependencies:
+    "@tanstack/react-query": ^5.47.0
+    react: ^18 || ^19
+  checksum: cb4655524fed5e62563cf5a8f9d02df20d61e240b37b359d44cbeb678ebcd8aa023178c8615ccdc1967fef6fed6df3949932ad1e03fb86b7bd56ae2b2db97e93
   languageName: node
   linkType: hard
 
