@@ -436,7 +436,7 @@ export const fr = {
         <li>Nombre de signalements transmis aux professionnels (certains signalements ne sont pas transmis, faute de pouvoir identifier l'entreprise, ou parce qu'elle n'est pas française)</li>
         <li>Nombre de signalements auxquels les professsionnels ont répondu
     </ul>
-    Ces deux courbes sont affichées en pourcentage des signalements qu'on souhaite transmettre aux pros (on ne veut pas transmettre certains signalements relatifs aux produits dangereux, lanceurs d'alertes, ...)
+    Ces deux courbes sont affichées en pourcentage des signalements qu'on souhaite transmettre aux pros (on ne veut pas transmettre certains signalements relatifs aux produits dangereux, informateurs dans l'entreprise, ...)
     `,
     reportsProProcessedInfo: `Les chiffres des 2-3 derniers mois peuvent encore augmenter, au fur et à mesure que les professionnels traitent leurs signalements`,
     reportsProResponseType: 'Types de réponse - évolution',
@@ -1026,7 +1026,7 @@ export const fr = {
     },
     reportStatusShort: {
       [ReportStatus.NA]: 'Non transmis',
-      [ReportStatus.LanceurAlerte]: "Lanceur d'alerte",
+      [ReportStatus.InformateurInterne]: 'Informateur interne',
       [ReportStatus.TraitementEnCours]: 'Traitement en cours',
       [ReportStatus.NonConsulte]: 'Non consulté',
       [ReportStatus.Transmis]: 'Transmis',
@@ -1045,7 +1045,7 @@ export const fr = {
     },
     reportStatusDesc: {
       [ReportStatus.NA]: `Il y a eu un signalement déposé par un consommateur. Mais, le consommateur n’a pas pu identifier la société. Cela peut être le cas pour les sites internet et des démarchages téléphoniques ou à domicile.`,
-      [ReportStatus.LanceurAlerte]: `Le signalement n’est pas envoyé au professionnel. Cela correspond aux cas où le consommateur s’est signalé comme employé du professionnel.`,
+      [ReportStatus.InformateurInterne]: `Le signalement n’est pas envoyé au professionnel. Cela correspond aux cas où le consommateur s’est signalé comme employé du professionnel.`,
       [ReportStatus.TraitementEnCours]: `Statut intermédiaire indiquant que le signalement suit son cours et n'est pas clos. Cela correspond notamment à la période laissée au professionnel pour prendre connaissance du signalement ou y répondre.`,
       [ReportStatus.NonConsulte]: `Le professionnel n'a pas créé de compte pour lire le signalement malgré les relances.`,
       [ReportStatus.Transmis]: `Transmis`,
