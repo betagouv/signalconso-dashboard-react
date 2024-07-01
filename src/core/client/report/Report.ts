@@ -137,7 +137,7 @@ type ReportMetadata = {
 
 export enum ReportStatus {
   NA = 'NA',
-  LanceurAlerte = 'LanceurAlerte',
+  InformateurInterne = 'InformateurInterne',
   TraitementEnCours = 'TraitementEnCours',
   Transmis = 'Transmis',
   PromesseAction = 'PromesseAction',
@@ -186,13 +186,13 @@ export class Report {
   static readonly respondedStatus = [ReportStatus.PromesseAction, ReportStatus.Infonde, ReportStatus.MalAttribue]
   static readonly notRespondedStatus = [
     ReportStatus.NA,
-    ReportStatus.LanceurAlerte,
+    ReportStatus.InformateurInterne,
     ReportStatus.TraitementEnCours,
     ReportStatus.Transmis,
     ReportStatus.NonConsulte,
     ReportStatus.ConsulteIgnore,
   ]
-  static readonly invisibleToProStatus = [ReportStatus.NA, ReportStatus.LanceurAlerte]
+  static readonly invisibleToProStatus = [ReportStatus.NA, ReportStatus.InformateurInterne]
   static readonly closedBySystemStatus = [ReportStatus.NonConsulte, ReportStatus.ConsulteIgnore]
 
   static readonly isClosed = (status: ReportStatus) => {

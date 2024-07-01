@@ -13,7 +13,7 @@ interface ReportStatusProLabelProps extends Omit<LabelProps, 'children'> {
 
 export const reportStatusColor = {
   [ReportStatus.NA]: '#a1a1a1',
-  [ReportStatus.LanceurAlerte]: '#a1a1a1',
+  [ReportStatus.InformateurInterne]: '#a1a1a1',
   [ReportStatus.TraitementEnCours]: '#e67e00',
   [ReportStatus.Transmis]: '#e67e00',
   [ReportStatus.NonConsulte]: '#3582A3FF',
