@@ -108,6 +108,7 @@ export const fr = {
       [ReportTag.Prix]: 'Prix',
       [ReportTag.AlimentationMaterielAnimaux]: 'Alimentation / Matériel pour animaux',
       [ReportTag.Telecom]: 'Télécoms',
+      [ReportTag.Shrinkflation]: 'Shrinkflation',
       NA: 'Aucun tag',
     },
     IdentificationStatusDesc: {
@@ -1135,6 +1136,9 @@ export const fr = {
     NightTrain: {
       INTERCITE_DE_NUIT: 'Intercité de nuit',
       NIGHTJET: 'Nightjet',
+    },
+    specialLegislation: {
+      SHRINKFLATION: `Seuls les magasins dont la surface de vente est <strong>supérieure à 400 m²</strong> sont concernés par la règlementation relative à la réduflation (ou shrinkflation). Il est probable que cet établissement n’y soit pas soumis.`,
     },
   },
 }

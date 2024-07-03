@@ -33,6 +33,7 @@ import {ReportResponseComponent} from './ReportResponse'
 import {ReportResponseForm} from './ReportResponseForm/ReportResponseForm'
 import {ReportStation} from './ReportStation'
 import {ReportTrain} from './ReportTrain'
+import {Alert} from '../../alexlibs/mui-extension'
 
 export const ReportPro = () => {
   const {id} = useParams<{id: Id}>()
@@ -120,10 +121,13 @@ function ReportBlock({
 }) {
   const {m} = useI18n()
   const {report, files} = reportSearchResult
-  const categories = [m.ReportCategoryDesc[report.category], ...report.subcategories]
+  const specialLegislation = Report.appliedSpecialLegislation(report)
   return (
     <CleanWidePanel>
       <Header {...{reportSearchResult, isClosed, scrollToResponse, hasToRespond, responseEvent}} />
+      {specialLegislation && (
+        <Alert type="warning" dangerouslySetInnerHTML={{__html: m.specialLegislation[specialLegislation]}} />
+      )}
       <div>
         {report.influencer && (
           <>
