@@ -56,6 +56,7 @@ export enum ReportTag {
   AlimentationMaterielAnimaux = 'AlimentationMaterielAnimaux',
   BauxPrecaire = 'BauxPrecaire',
   Telecom = 'Telecom',
+  Shrinkflation = 'Shrinkflation',
 }
 
 export const OutdatedTags = [ReportTag.Bloctel]
@@ -73,6 +74,7 @@ export interface Report {
   companyBrand?: string
   companyAddress: Address
   companySiret?: string
+  activityCode?: string
   websiteURL?: string
   vendor?: string
   phone?: string
@@ -154,6 +156,10 @@ export enum ReportStatusPro {
 
 export type ReportConsumerUpdate = Pick<Report, 'firstName' | 'lastName' | 'email' | 'consumerReferenceNumber'>
 
+export enum SpecialLegislation {
+  SHRINKFLATION = 'SHRINKFLATION',
+}
+
 export class Report {
   static readonly waitingResponseStatus = [ReportStatus.Transmis, ReportStatus.TraitementEnCours]
 
@@ -212,4 +218,10 @@ export class Report {
       .filter(_ => Report.getStatusProByStatus(_) === statusPro)
 
   static readonly isGovernmentCompany = (_?: {activityCode?: string}): boolean => _?.activityCode?.startsWith('84.') ?? false
+
+  static readonly appliedSpecialLegislation = (report: Pick<Report, 'activityCode' | 'tags'>): SpecialLegislation | undefined => {
+    if (report.tags.includes(ReportTag.Shrinkflation) && report.activityCode === '47.11C') {
+      return SpecialLegislation.SHRINKFLATION
+    }
+  }
 }

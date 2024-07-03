@@ -5,8 +5,8 @@ import {Box, Icon, useTheme} from '@mui/material'
 import {NavLink} from 'react-router-dom'
 import {CleanDiscreetPanel} from 'shared/Panel/simplePanels'
 import {WithInlineIcon} from 'shared/WithInlineIcon'
-import {Txt} from '../../../alexlibs/mui-extension'
-import {Influencer, Report, Train} from '../../../core/client/report/Report'
+import {Alert, Txt} from '../../../alexlibs/mui-extension'
+import {Influencer, Report} from '../../../core/client/report/Report'
 import {useConnectedContext} from '../../../core/context/ConnectedContext'
 import {useI18n} from '../../../core/i18n'
 import {siteMap} from '../../../core/siteMap'
@@ -25,6 +25,7 @@ interface Props {
 export const ReportCompany = ({report, canEdit}: Props) => {
   const {connectedUser} = useConnectedContext()
   const {m} = useI18n()
+  const specialLegislation = Report.appliedSpecialLegislation(report)
 
   const {
     websiteURL,
@@ -62,7 +63,13 @@ export const ReportCompany = ({report, canEdit}: Props) => {
           </SelectReportAssociation>
         )}
       </div>
-      <PanelBody className="flex justify-between">
+      <div className={specialLegislation ? 'bg-yellow-100 py-2 px-4' : ''}>
+        {specialLegislation && (
+          <div
+            className="text-sm text-yellow-700 mb-4"
+            dangerouslySetInnerHTML={{__html: m.specialLegislation[specialLegislation]}}
+          />
+        )}
         <div>
           {companySiret && <div className="mb-1">{companySiret}</div>}
           <div className="text-gray-500 text-sm">
@@ -83,7 +90,7 @@ export const ReportCompany = ({report, canEdit}: Props) => {
           {train && <ReportTrain {...{train}} />}
           {station && <ReportStation {...{station}} />}
         </div>
-      </PanelBody>
+      </div>
     </CleanDiscreetPanel>
   )
 }
