@@ -121,7 +121,6 @@ function ReportBlock({
 }) {
   const {m} = useI18n()
   const {report, files} = reportSearchResult
-  const categories = [m.ReportCategoryDesc[report.category], ...report.subcategories]
   const specialLegislation = Report.appliedSpecialLegislation(report)
   return (
     <CleanWidePanel>
