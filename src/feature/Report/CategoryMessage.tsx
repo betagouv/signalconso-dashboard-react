@@ -33,11 +33,11 @@ const categoryMessages: CategoryDetail[] = [
     link: 'https://www.economie.gouv.fr/dgccrf/impression-des-tickets-de-caisse-et-autres-la-demande-des-clients',
   },
   {
-    tag: [ReportTag.QuantiteNonConforme],
+    tag: [ReportTag.Shrinkflation],
     message:
       'À compter du 1er juillet 2024, l’information des consommateurs sur la réduflation, ou l’augmentation des prix des produits dont la quantité a diminué, devient obligatoire. Pour en savoir plus, rendez-vous sur ',
     baseLinkText: 'economie.gouv.fr',
-    link: 'https://www.economie.gouv.fr/actualites/reduflation-shrinkflation-nouvelles-obligations-information-consommateurs',
+    link: 'https://www.economie.gouv.fr/dgccrf/faq-sur-la-mise-en-oeuvre-de-larrete-du-16-avril-2024-relatif-linformation-des-consommateurs',
   },
   {
     tag: [ReportTag.AppelCommercial],
