@@ -790,8 +790,8 @@ export const fr = {
           title: `Produit dangereux`,
           desc: `Email envoyé lors d'un nouveau signalement concernant un produit dangereux`,
         },
-        important_report_notification_notification: {
-          title: `Notification de signalement`,
+        priority_report_notification: {
+          title: `Notification de signalement 'prioritaire'`,
           desc: `Email envoyé lors d'un nouveau signalement validant certains critères (ex: Shrinkflation)`,
         },
         access_link: {
