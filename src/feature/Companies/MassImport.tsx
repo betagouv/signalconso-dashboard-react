@@ -31,6 +31,7 @@ export const MassImport = ({children}: MassImportProps) => {
     register,
     handleSubmit,
     control,
+    setError,
     formState: {errors},
   } = useForm<MassImportForm>({
     defaultValues: {
@@ -48,6 +49,17 @@ export const MassImport = ({children}: MassImportProps) => {
 
   const confirm = (e: any) => {
     handleSubmit(_ => {
+      if (!_.siren && !_.sirets) {
+        setError('sirets', {
+          type: 'manual',
+          message: 'Le siren ou au moins un siret doit être renseigné',
+        })
+        setError('siren', {
+          type: 'manual',
+          message: 'Le siren ou au moins un siret doit être renseigné',
+        })
+        return
+      }
       const companiesToImport: CompaniesToImport = {
         siren: _.siren,
         sirets: _.sirets.split(','),
@@ -111,7 +123,7 @@ export const MassImport = ({children}: MassImportProps) => {
               helperText={errors.sirets?.message ?? ' '}
               fullWidth
               {...register('sirets', {
-                validate: value => !!value.split(',').every(_ => _.match(/^[0-9]{14}$/)) || 'Un des SIRETs est invalide',
+                validate: value => !value || value.split(',').every(_ => _.match(/^[0-9]{14}$/)) || 'Un des SIRETs est invalide',
               })}
             />
           </DialogInputRow>
@@ -122,7 +134,7 @@ export const MassImport = ({children}: MassImportProps) => {
               helperText={errors.emails?.message ?? ' '}
               fullWidth
               {...register('emails', {
-                validate: value => !!value.split(',').every(_ => _.match(/.+@.+\..+/)) || 'Un des emails est invalide',
+                validate: value => value.split(',').every(_ => _.match(/.+@.+\..+/)) || 'Un des emails est invalide',
               })}
             />
           </DialogInputRow>
