@@ -99,6 +99,7 @@ export const fr = {
       [ReportTag.CompagnieAerienne]: 'Compagnie aérienne',
       [ReportTag.Resiliation]: 'Résiliation',
       [ReportTag.OpenFoodFacts]: 'OpenFoodFacts',
+      [ReportTag.RappelConso]: 'RappelConso',
       [ReportTag.TransitionEcologique]: 'Transition écologique',
       [ReportTag.ProduitPerime]: 'Produit périmé',
       [ReportTag.CommandeEffectuee]: 'Commande effectuée',

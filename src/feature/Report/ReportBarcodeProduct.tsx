@@ -1,12 +1,13 @@
 import {Panel, PanelBody, PanelHead} from '../../shared/Panel'
 import {Id} from '../../core/model'
 import {WithInlineIcon} from '../../shared/WithInlineIcon'
-import {Chip, Tooltip} from '@mui/material'
+import {Chip, Icon, Tooltip} from '@mui/material'
 import {useGetBarcodeQuery} from '../../core/queryhooks/barcodeQueryHooks'
 import {CleanDiscreetPanel, CleanWidePanel} from 'shared/Panel/simplePanels'
 
 interface ReportBarcodeProductProps {
   barcodeProductId: Id
+  rappelConsoId?: number
 }
 
 interface RowProps {
@@ -25,7 +26,7 @@ const Row = ({label, value}: RowProps) => {
   )
 }
 
-export const ReportBarcodeProduct = ({barcodeProductId}: ReportBarcodeProductProps) => {
+export const ReportBarcodeProduct = ({barcodeProductId, rappelConsoId}: ReportBarcodeProductProps) => {
   const {data} = useGetBarcodeQuery(barcodeProductId)
 
   return (
@@ -39,6 +40,17 @@ export const ReportBarcodeProduct = ({barcodeProductId}: ReportBarcodeProductPro
         <Row label="Marque" value={data?.brandName ?? 'N/A'} />
         <Row label="Conditionnement" value={data?.packaging ?? 'N/A'} />
         <Row label="Codes tracabilité" value={data?.emb_codes ?? 'N/A'} />
+        <div className="flex flex-row-reverse">
+          <div className="flex gap-2 text-lg bg-yellow-100 p-2">
+            <Icon>swap_horiz</Icon>
+            <span>
+              Produit rappelé{' '}
+              <a href={`https://rappel.conso.gouv.fr/fiche-rappel/${rappelConsoId}/Interne`} target="_blank">
+                (Voir sur RappelConso)
+              </a>
+            </span>
+          </div>
+        </div>
         <div className="mt-4 flex flex-row-reverse">
           {data?.existOnOpenFoodFacts && (
             <a className="text-lg" href={`https://fr.openfoodfacts.org/produit/${data.gtin}`} target="_blank">

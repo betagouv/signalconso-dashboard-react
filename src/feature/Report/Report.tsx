@@ -176,7 +176,10 @@ export const ReportComponent = () => {
           </div>
 
           {_getReport.data?.report.barcodeProductId && (
-            <ReportBarcodeProduct barcodeProductId={_getReport.data.report.barcodeProductId} />
+            <ReportBarcodeProduct
+              barcodeProductId={_getReport.data.report.barcodeProductId}
+              rappelConsoId={_getReport.data.report.rappelConsoId}
+            />
           )}
 
           <CleanDiscreetPanel>
