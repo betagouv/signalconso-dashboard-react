@@ -46,6 +46,7 @@ export enum ReportTag {
   CompagnieAerienne = 'CompagnieAerienne',
   Resiliation = 'Resiliation',
   OpenFoodFacts = 'OpenFoodFacts',
+  RappelConso = 'RappelConso',
   TransitionEcologique = 'TransitionEcologique',
   ProduitPerime = 'ProduitPerime',
   CommandeEffectuee = 'CommandeEffectuee',
@@ -96,6 +97,7 @@ export interface Report {
   barcodeProductId?: string
   train?: Train
   station?: string
+  rappelConsoId?: number
 }
 
 export interface Influencer {
