@@ -17,8 +17,4 @@ export class FileClient {
       headers: {'Content-Type': 'multipart/form-data'},
     })
   }
-
-  readonly remove = (file: UploadedFile) => {
-    return this.client.delete(`/reports/files/${file.id}/${encodeURI(file.filename)}`)
-  }
 }

@@ -35,7 +35,7 @@ export function ReportFilesFull({files, report}: {files: UploadedFile[] | undefi
     <>
       <div className="flex flex-row items-baseline">
         <h2 className="font-bold">{m.attachedFiles}</h2>
-        {files && files.filter(_ => _.origin === FileOrigin.Consumer).length > 1 && (
+        {files && files.filter(_ => _.origin === FileOrigin.Consumer && _.isScanned).length > 1 && (
           <ReportFileDownloadAllButton report={report} fileOrigin={FileOrigin.Consumer} />
         )}
       </div>
