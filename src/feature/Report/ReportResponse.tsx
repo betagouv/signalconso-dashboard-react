@@ -23,6 +23,7 @@ import {Divider} from '../../shared/Divider'
 import {UserNameLabel} from '../../shared/UserNameLabel'
 import {ReportFileDownloadAllButton} from './File/ReportFileDownloadAllButton'
 import {ReportFiles} from './File/ReportFiles'
+import {GetReportQueryKeys} from '../../core/queryhooks/reportQueryHooks'
 
 export function ReportResponseComponent({
   canEditFile,
@@ -44,7 +45,10 @@ export function ReportResponseComponent({
   const queryClient = useQueryClient()
   const _postAction = useMutation({
     mutationFn: (params: {id: Id; action: ReportAction}) => api.secured.reports.postAction(params.id, params.action),
-    onSuccess: () => queryClient.invalidateQueries({queryKey: GetReportEventsQueryKeys(report.id)}),
+    onSuccess: () =>
+      queryClient
+        .invalidateQueries({queryKey: GetReportEventsQueryKeys(report.id)})
+        .then(() => queryClient.invalidateQueries({queryKey: GetReportQueryKeys(report.id)})),
   })
 
   const details = response.data.details
@@ -60,7 +64,7 @@ export function ReportResponseComponent({
       )}
       <div className="flex flex-row mt-5 ">
         <h2 className="font-bold">{m.attachedFiles}</h2>
-        {files && files.filter(_ => _.origin === FileOrigin.Professional).length > 1 && (
+        {files && files.filter(_ => _.origin === FileOrigin.Professional && _.isScanned).length > 1 && (
           <ReportFileDownloadAllButton report={report} fileOrigin={FileOrigin.Professional} />
         )}
       </div>

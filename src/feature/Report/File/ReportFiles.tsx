@@ -6,6 +6,7 @@ import {useI18n} from '../../../core/i18n'
 import {Id} from '../../../core/model'
 import {ReportFile} from './ReportFile'
 import {ReportFileAdd} from './ReportFileAdd'
+import {useMutation} from '@tanstack/react-query'
 
 export interface ReportFilesProps {
   files?: UploadedFile[]
@@ -24,13 +25,43 @@ export const ReportFiles = ({
   onRemoveFile = () => void 0,
   onNewFile = () => void 0,
 }: ReportFilesProps) => {
+  const {apiSdk} = useConnectedContext()
+
+  const _refreshUnscannedFiles = useMutation({
+    mutationFn: apiSdk.secured.document.listFiles,
+    onSuccess: files => {
+      const scannedFiles = files.filter(_ => _.isScanned)
+      if (scannedFiles.length > 0) {
+        setInnerFiles(prev => {
+          // Filter out any files already in the list
+          const filteredFiles = prev ? prev.filter(existingFile => !scannedFiles.map(_ => _.id).includes(existingFile.id)) : []
+          // Return the updated list with new scannedFiles at the end
+          return [...filteredFiles, ...scannedFiles]
+        })
+      }
+    },
+  })
+
   const [innerFiles, setInnerFiles] = useState<UploadedFile[]>()
   const {m} = useI18n()
   const attachmentRef = useRef<any>()
   const {connectedUser} = useConnectedContext()
+
   useEffect(() => {
     setInnerFiles(files)
   }, [files])
+
+  useEffect(() => {
+    const unScannedFiles = innerFiles?.filter(_ => !_.isScanned)
+    const hasUnScannedFiles = unScannedFiles ? unScannedFiles.length > 0 : false
+
+    if (unScannedFiles && hasUnScannedFiles) {
+      const interval = setInterval(() => {
+        _refreshUnscannedFiles.mutate(unScannedFiles.map(_ => _.id))
+      }, 10000)
+      return () => clearInterval(interval)
+    }
+  }, [innerFiles])
 
   useEffect(() => {
     if (attachmentRef.current && window.location.href.includes('anchor=attachment')) {

@@ -9,6 +9,7 @@ import {UploadedFile} from '../../../core/client/file/UploadedFile'
 import {ScOption} from 'core/helper/ScOption'
 import {ReportFileDeleteButton} from './ReportFileDeleteButton'
 import {useMutation} from '@tanstack/react-query'
+import ReportFileUnavailable from './ReportFileUnavailable'
 
 export interface ReportFileProps {
   file: UploadedFile
@@ -62,7 +63,7 @@ export const ReportFile = ({file, onRemove}: ReportFileProps) => {
         <Icon fontSize="inherit" className="mr-0.5">
           download
         </Icon>
-        <span>{m.download.toLowerCase()}</span>
+        <span>{m.download}</span>
       </Button>
     )
   }
@@ -71,58 +72,86 @@ export const ReportFile = ({file, onRemove}: ReportFileProps) => {
     ScOption.from(_remove.error).map(toastError)
   }, [_remove.error])
 
+  const ReportFileImage = () => {
+    return (
+      <div className="block relative py-2">
+        <Button
+          sx={css.image}
+          // Matomo tracks all clicks on links
+          // But these filenames are potentially sensitive
+          className="matomo_ignore"
+          disabled={!file.isScanned}
+        >
+          <Modal
+            PaperProps={{style: {overflow: 'visible', maxHeight: '90vh'}}}
+            maxWidth="md"
+            cancelLabel={m.close}
+            content={_ => <Box component="img" src={fileUrl} alt={file.filename} />}
+          >
+            <div className="flex items-center justify-center bg-cover h-full w-full">
+              <div className={`absolute inset-0 bg-cover`} style={{backgroundImage: `url(${fileUrl})`}} />
+              <Icon className="m-100" sx={css.imgImage}>
+                image
+              </Icon>
+            </div>
+          </Modal>
+        </Button>
+      </div>
+    )
+  }
+
+  const ReportFileOther = () => {
+    return (
+      <a
+        target={'blank'}
+        href={fileUrl}
+        className="flex flex-col m-2"
+        onClick={e => {
+          if (!file.isScanned) {
+            e.preventDefault()
+          }
+        }}
+      >
+        <Box sx={css.image}>
+          <div className="flex items-center justify-center bg-cover h-full w-full">
+            {(() => {
+              switch (fileType) {
+                case FileType.PDF: {
+                  return <Icon sx={css.imgPdf}>picture_as_pdf</Icon>
+                }
+                case FileType.Doc: {
+                  return <Icon sx={css.imgDoc}>article</Icon>
+                }
+                default: {
+                  return <Icon>insert_drive_file</Icon>
+                }
+              }
+            })()}
+          </div>
+        </Box>
+      </a>
+    )
+  }
+
   return (
-    <div className="flex justify-center items-center flex-col mr-2">
-      {fileType === FileType.Image ? (
-        <div className="block relative py-2">
-          <Tooltip title={file.filename} placement="top">
-            <Button
-              sx={css.image}
-              // Matomo tracks all clicks on links
-              // But these filenames are potentially sensitive
-              className="matomo_ignore"
-            >
-              <Modal
-                PaperProps={{style: {overflow: 'visible', maxHeight: '90vh'}}}
-                maxWidth="md"
-                cancelLabel={m.close}
-                content={_ => <Box component="img" src={fileUrl} alt={file.filename} />}
-              >
-                <div className="flex items-center justify-center bg-cover h-full w-full">
-                  <div className={`absolute inset-0 bg-cover`} style={{backgroundImage: `url(${fileUrl})`}} />
-                  <Icon className="m-100" sx={css.imgImage}>
-                    image
-                  </Icon>
-                </div>
-              </Modal>
-            </Button>
-          </Tooltip>
-        </div>
-      ) : (
-        <Tooltip title={file.filename}>
-          <a target={'blank'} href={fileUrl} className="flex flex-col m-2">
-            <Box sx={css.image}>
-              <div className="flex items-center justify-center bg-cover h-full w-full">
-                {(() => {
-                  switch (fileType) {
-                    case FileType.PDF: {
-                      return <Icon sx={css.imgPdf}>picture_as_pdf</Icon>
-                    }
-                    case FileType.Doc: {
-                      return <Icon sx={css.imgDoc}>article</Icon>
-                    }
-                    default: {
-                      return <Icon>insert_drive_file</Icon>
-                    }
-                  }
-                })()}
-              </div>
-            </Box>
-          </a>
-        </Tooltip>
-      )}
-      <DownloadButton />
-      <RemoveButton />
-    </div>
+    <Tooltip title={file.filename} placement="top">
+      <div className="flex justify-center items-center flex-col mr-2">
+        {file.isScanned ? (
+          <>
+            {fileType === FileType.Image ? <ReportFileImage /> : <ReportFileOther />}
+            <DownloadButton />
+            <RemoveButton />
+          </>
+        ) : (
+          <div className="flex flex-col items-center">
+            <ReportFileUnavailable />
+            <div style={{visibility: 'hidden'}}>
+              <DownloadButton />
+              <RemoveButton />
+            </div>
+          </div>
+        )}
+      </div>
+    </Tooltip>
   )
 }
