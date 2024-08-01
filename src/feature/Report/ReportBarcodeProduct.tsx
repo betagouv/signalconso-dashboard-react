@@ -41,15 +41,17 @@ export const ReportBarcodeProduct = ({barcodeProductId, rappelConsoId}: ReportBa
         <Row label="Conditionnement" value={data?.packaging ?? 'N/A'} />
         <Row label="Codes tracabilité" value={data?.emb_codes ?? 'N/A'} />
         <div className="flex flex-row-reverse">
-          <div className="flex gap-2 text-lg bg-yellow-100 p-2">
-            <Icon>swap_horiz</Icon>
-            <span>
-              Produit rappelé{' '}
-              <a href={`https://rappel.conso.gouv.fr/fiche-rappel/${rappelConsoId}/Interne`} target="_blank">
-                (Voir sur RappelConso)
-              </a>
-            </span>
-          </div>
+          {rappelConsoId && (
+            <div className="flex gap-2 text-lg bg-yellow-100 p-2">
+              <Icon>swap_horiz</Icon>
+              <span>
+                Produit rappelé{' '}
+                <a href={`https://rappel.conso.gouv.fr/fiche-rappel/${rappelConsoId}/Interne`} target="_blank">
+                  (Voir sur RappelConso)
+                </a>
+              </span>
+            </div>
+          )}
         </div>
         <div className="mt-4 flex flex-row-reverse">
           {data?.existOnOpenFoodFacts && (
