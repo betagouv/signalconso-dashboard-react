@@ -360,6 +360,8 @@ export const fr = {
     reportConsumerWantToBeAnonymous: 'Le consommateur souhaite rester anonyme',
     reportConsumerReferenceNumber: 'Numéro de référence',
     reportConsumerReferenceNumberDesc: 'Numéro de billet, ou de réservation, de facture, de contrat, de client, etc.',
+    marketplaceVendorDesc: (marketplace: string) => `Le signalement concerne un vendeur sur la marketplace ${marketplace} `,
+    marketplaceVendorTitle: 'Vendeur marketplace',
     cannotExportMoreReports: (reportCount: number) => `Impossible d'exporter plus de ${reportCount} signalements.`,
     siret: 'SIRET',
     siretOrSiren: 'SIRET ou SIREN',

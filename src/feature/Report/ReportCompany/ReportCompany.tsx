@@ -1,7 +1,7 @@
 import {AddressComponent} from '../../../shared/Address'
 import {PanelBody} from '../../../shared/Panel'
 
-import {Box, Icon, useTheme} from '@mui/material'
+import {Box, Icon, Tooltip, useTheme} from '@mui/material'
 import {NavLink} from 'react-router-dom'
 import {CleanDiscreetPanel} from 'shared/Panel/simplePanels'
 import {WithInlineIcon} from 'shared/WithInlineIcon'
@@ -79,12 +79,12 @@ export const ReportCompany = ({report, canEdit}: Props) => {
             {companyBrand && <div className="italic">{companyBrand}</div>}
             <AddressComponent address={companyAddress} />
           </div>
-          {vendor && <div>{vendor}</div>}
           {websiteURL && (
             <a href={websiteURL} target="_blank" rel="noreferrer" className="block text-scbluefrance break-all">
               {websiteURL}
             </a>
           )}
+          {vendor && <MarketplaceBlock vendor={vendor} marketplace={companyName ?? ''} />}
           {phone && <Phone {...{phone}} />}
           {influencer && <InfluencerBlock {...{influencer}} />}
           {train && <ReportTrain {...{train}} />}
@@ -112,6 +112,25 @@ function Phone({phone}: {phone: string}) {
         phone
       </Icon>
       {phone}
+    </div>
+  )
+}
+
+function MarketplaceBlock({vendor, marketplace}: {vendor: string; marketplace: string}) {
+  const {m} = useI18n()
+  return (
+    <div>
+      <Tooltip arrow title={m.marketplaceVendorDesc(marketplace)}>
+        <span className="pointer">
+          <span>
+            <Txt sx={sxUtils.fontBig}>{m.marketplaceVendorTitle}</Txt>
+            <Icon fontSize="small" sx={{mb: -0.5, ml: 0.5}}>
+              help_outline
+            </Icon>
+          </span>
+        </span>
+      </Tooltip>
+      : {vendor}
     </div>
   )
 }
