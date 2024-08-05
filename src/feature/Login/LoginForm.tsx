@@ -11,6 +11,8 @@ import {AuthenticationEventActions, EventCategories, Matomo} from '../../core/pl
 import {ScButton} from '../../shared/Button'
 import {ScInputPassword} from '../../shared/ScInputPassword'
 import {ForgottenPasswordDialog} from './ForgottenPasswordDialog'
+import {useNavigate} from 'react-router'
+import {mapArrayFromQuerystring, useQueryString} from '../../core/helper/useQueryString'
 
 interface ActionProps<F extends (...args: any[]) => Promise<any>> {
   action: F
@@ -28,8 +30,20 @@ interface Form {
   apiError: string
 }
 
+interface RedirectProps {
+  redirecturl?: string
+}
+
 export const LoginForm = ({login}: Props) => {
   const {m} = useI18n()
+
+  const history = useNavigate()
+
+  const queryString = useQueryString<Partial<RedirectProps>, Partial<RedirectProps>>({
+    toQueryString: _ => _,
+    fromQueryString: mapArrayFromQuerystring(['redirecturl']),
+  })
+
   const {
     register,
     handleSubmit,
@@ -45,6 +59,11 @@ export const LoginForm = ({login}: Props) => {
       .then(user => {
         Matomo.trackEvent(EventCategories.auth, AuthenticationEventActions.success)
         Matomo.trackEvent(EventCategories.auth, AuthenticationEventActions.role, user.role)
+
+        const redirectUrl = queryString.get().redirecturl?.[0]
+        if (redirectUrl) {
+          history(redirectUrl, {replace: true})
+        }
       })
       .catch((err: ApiError) => {
         setError('apiError', {
