@@ -74,6 +74,7 @@ interface ReportSearchQs {
   responseEvaluation?: ResponseEvaluation[]
   hasEngagementEvaluation?: boolean
   engagementEvaluation?: ResponseEvaluation[]
+  subcategories?: string[]
   offset: number
   limit: number
 }
@@ -98,6 +99,7 @@ export const Reports = () => {
         'siretSirenList',
         'activityCodes',
         'evaluation',
+        'subcategories',
       ]),
       mapBooleanFromQueryString([
         'hasCompany',
@@ -210,6 +212,11 @@ export const Reports = () => {
     _reports.updateFilters(prev => ({...prev, phone}))
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+  const onSubcategoriesChange = useCallback((subcategories: string) => {
+    const test = subcategories.split(',')
+    _reports.updateFilters(prev => ({...prev, subcategories: test}))
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   return (
     <Page>
@@ -239,6 +246,7 @@ export const Reports = () => {
               setProResponseFilter={setProResponseFilter}
               onChangeProResponseFilter={onChangeProResponseFilter}
               proResponseToStatus={proResponseToStatus}
+              onSubcategoriesChange={onSubcategoriesChange}
             />
           </Collapse>
         </>

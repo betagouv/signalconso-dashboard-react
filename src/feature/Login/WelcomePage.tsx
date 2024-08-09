@@ -1,11 +1,21 @@
-import MxPage from 'alexlibs/mui-extension/MxPage'
 import {siteMap} from 'core/siteMap'
 import {Link} from 'react-router-dom'
 import {CenteredContent} from 'shared/CenteredContent'
 import {AlertNotForConso, EspaceProTitle} from './loggedOutComponents'
 import {Icon} from '@mui/material'
+import {useLocation} from 'react-router'
 
 export function WelcomePage() {
+  const location = useLocation()
+
+  const handleRedirectToLogin = () => {
+    const currentPath = location.pathname + location.search
+
+    return currentPath === '/'
+      ? siteMap.loggedout.login
+      : `${siteMap.loggedout.login}?redirecturl=${encodeURIComponent(currentPath)}`
+  }
+
   return (
     <CenteredContent>
       <EspaceProTitle />
@@ -18,7 +28,7 @@ export function WelcomePage() {
         <Tile
           title="J'ai déjà un compte"
           desc="Je me connecte pour consulter et répondre aux signalements"
-          href={siteMap.loggedout.login}
+          href={handleRedirectToLogin()}
         />
       </div>
       <AlertNotForConso />

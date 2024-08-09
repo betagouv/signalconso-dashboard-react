@@ -143,7 +143,7 @@ const Node = ({reportNode, open, path}: {reportNode: ReportNode; open?: boolean;
   const fullPath = [...path, reportNode.name]
   const url = siteMap.logged.reports({
     category: fullPath[0],
-    details: fullPath.length > 0 ? fullPath.slice(1).join(',') : undefined,
+    subcategories: fullPath.length > 0 ? fullPath.slice(1) : undefined,
   })
 
   return (
