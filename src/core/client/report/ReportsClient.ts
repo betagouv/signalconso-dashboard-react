@@ -32,6 +32,7 @@ export interface ReportFilterQuerystring {
   readonly companyCountries?: string[]
   readonly siretSirenList?: string[]
   readonly status?: string[]
+  readonly subcategories?: string[]
   start?: string
   end?: string
   email?: string
