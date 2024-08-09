@@ -50,6 +50,7 @@ type AdvancedFiltersGridProps = {
     NOT_CONCERNED: ReportStatus
     REJECTED: ReportStatus
   }
+  onSubcategoriesChange: (subcategories: string) => void
 }
 function invertIfDefined(bool: boolean | null) {
   return bool === null ? null : !bool
@@ -67,6 +68,7 @@ export const AdvancedReportsFilter: React.FC<AdvancedFiltersGridProps> = ({
   hasProResponse,
   proResponseFilter,
   onChangeProResponseFilter,
+  onSubcategoriesChange,
 }) => {
   const {m} = useI18n()
 
@@ -375,6 +377,13 @@ export const AdvancedReportsFilter: React.FC<AdvancedFiltersGridProps> = ({
             />
           </Box>
         </Box>
+      </Grid>
+      <Grid item xs={12} md={6}>
+        <DebouncedInput value={_reports.filters?.subcategories?.join(',') ?? ''} onChange={onSubcategoriesChange}>
+          {(value, onChange) => (
+            <ScInput label="Sous catégories" fullWidth value={value} onChange={e => onChange(e.target.value)} />
+          )}
+        </DebouncedInput>
       </Grid>
     </Grid>
   )
