@@ -97,10 +97,10 @@ export const ReportsPro = ({reportType}: ReportsProProps) => {
   }
 
   const filtersAppliedToQuery = {
-    ...queryString.get(),
-    ...obligatoryFilters,
     offset: 0,
     limit: 10,
+    ...queryString.get(),
+    ...obligatoryFilters,
   }
 
   const handleClearFilters = () => {
