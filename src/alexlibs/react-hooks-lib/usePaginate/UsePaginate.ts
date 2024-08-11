@@ -34,7 +34,7 @@ export interface UpdateFiltersParams {
   preserveOffset?: boolean
 }
 
-const defaultFilters: ISearch = {offset: 0, limit: 10}
+const defaultFilters: ISearch = {offset: 0, limit: 25}
 
 export const usePaginate = <T, S extends ISearch, E = any>(
   fetcher: (search: S) => Promise<Paginate<T>>,

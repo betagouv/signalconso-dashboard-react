@@ -17,7 +17,7 @@ export const useReportedPhonesSearchQuery = () => {
         .then(paginateData(limit, offset))
     },
     {
-      limit: 10,
+      limit: 25,
       offset: 0,
     },
   )
