@@ -16,7 +16,7 @@ export const useListInvestigationStatusQuery = (options?: UseQueryOpts<Investiga
 export const useWebsiteWithCompanySearchQuery = () => {
   const {api} = useApiContext()
   return useQueryPaginate(WebsiteWithCompanySearchKeys, api.secured.website.list, {
-    limit: 10,
+    limit: 25,
     offset: 0,
     identificationStatus: [IdentificationStatus.NotIdentified],
     isOpen: null,
@@ -26,7 +26,7 @@ export const useWebsiteWithCompanySearchQuery = () => {
 export const useWebsiteWithClosedCompanyQuery = () => {
   const {api} = useApiContext()
   return useQueryPaginate(WebsiteWithCompanySearchKeys, api.secured.website.list, {
-    limit: 10,
+    limit: 25,
     offset: 0,
     identificationStatus: [IdentificationStatus.Identified],
     isOpen: false,
@@ -36,7 +36,7 @@ export const useWebsiteWithClosedCompanyQuery = () => {
 export const useListUnregisteredWebsitesSearchQuery = () => {
   const {api} = useApiContext()
   return useQueryPaginate(ListUnregisteredWebsitesSearchQueryKeys, api.secured.website.listUnregistered, {
-    limit: 10,
+    limit: 25,
     offset: 0,
     q: '',
   })

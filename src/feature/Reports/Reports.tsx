@@ -112,7 +112,7 @@ export const Reports = () => {
     ),
   })
 
-  const _reports = useReportSearchQuery({offset: 0, limit: 10, ...queryString.get()})
+  const _reports = useReportSearchQuery({offset: 0, limit: 25, ...queryString.get()})
 
   useEffect(() => {
     queryString.update(cleanObject(_reports.filters))

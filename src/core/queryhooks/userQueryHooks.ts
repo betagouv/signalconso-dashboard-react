@@ -36,7 +36,7 @@ export const useSearchAgentQuery = (enabled: boolean) => {
     SearchAgentQueryKeys,
     api.secured.user.searchAdminOrAgent,
     {
-      limit: 10,
+      limit: 25,
       offset: 0,
       role: roleAgents.map(_ => _ as RoleAdminOrAgent),
     },

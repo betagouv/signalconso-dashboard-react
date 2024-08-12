@@ -38,7 +38,7 @@ export const CompaniesRegistered = () => {
   const {m, formatLargeNumber} = useI18n()
   const queryClient = useQueryClient()
   const {connectedUser, apiSdk} = useConnectedContext()
-  const _companies = useActivatedCompanySearchQuery({offset: 0, limit: 10, ...queryString.get()})
+  const _companies = useActivatedCompanySearchQuery({offset: 0, limit: 25, ...queryString.get()})
 
   const updateRegisteredCompanyAddress = (id: Id, address: Address) => {
     queryClient.setQueryData(ActivatedCompanySearchQueryKeys, (companies: Paginate<CompanyWithReportsCount>) => {

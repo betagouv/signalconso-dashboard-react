@@ -40,7 +40,7 @@ export const useGetEngagementReviewQuery = (id: string, options?: UseQueryOpts<C
 
 export const useReportSearchQuery = (initialFilters?: ReportSearch & PaginatedFilters, enabled?: boolean) => {
   const {api} = useApiContext()
-  const defaultFilters = {offset: 0, limit: 10}
+  const defaultFilters = {offset: 0, limit: 25}
   return useQueryPaginate(ReportSearchQuery, api.secured.reports.search, defaultFilters, initialFilters, enabled)
 }
 

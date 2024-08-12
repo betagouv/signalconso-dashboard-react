@@ -98,7 +98,7 @@ export const ReportsPro = ({reportType}: ReportsProProps) => {
 
   const filtersAppliedToQuery = {
     offset: 0,
-    limit: 10,
+    limit: 25,
     ...queryString.get(),
     ...obligatoryFilters,
   }
