@@ -175,12 +175,10 @@ export const ReportComponent = () => {
             <ReportCompany report={report} canEdit={connectedUser.isAdmin} />
           </div>
 
-          {_getReport.data?.report.barcodeProductId && (
-            <ReportBarcodeProduct
-              barcodeProductId={_getReport.data.report.barcodeProductId}
-              rappelConsoId={_getReport.data.report.rappelConsoId}
-            />
-          )}
+          <ReportBarcodeProduct
+            barcodeProductId={_getReport.data?.report.barcodeProductId}
+            rappelConsoId={_getReport.data?.report.rappelConsoId}
+          />
 
           <CleanDiscreetPanel>
             <ReportDetails {...{report}} />
