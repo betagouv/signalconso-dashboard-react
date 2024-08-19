@@ -9,4 +9,5 @@ export interface BarcodeProduct {
   packaging?: string
   existOnOpenFoodFacts: boolean
   existOnOpenBeautyFacts: boolean
+  existOnGS1: boolean
 }
