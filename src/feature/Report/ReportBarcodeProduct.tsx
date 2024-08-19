@@ -1,9 +1,8 @@
-import {Panel, PanelBody, PanelHead} from '../../shared/Panel'
 import {Id} from '../../core/model'
 import {WithInlineIcon} from '../../shared/WithInlineIcon'
 import {Chip, Icon, Tooltip} from '@mui/material'
 import {useGetBarcodeQuery} from '../../core/queryhooks/barcodeQueryHooks'
-import {CleanDiscreetPanel, CleanWidePanel} from 'shared/Panel/simplePanels'
+import {CleanDiscreetPanel} from 'shared/Panel/simplePanels'
 
 interface ReportBarcodeProductProps {
   barcodeProductId?: Id
@@ -29,11 +28,19 @@ const Row = ({label, value}: RowProps) => {
 export const ReportBarcodeProduct = ({barcodeProductId, rappelConsoId}: ReportBarcodeProductProps) => {
   const {data} = useGetBarcodeQuery(barcodeProductId!, {enabled: !!barcodeProductId})
 
+  const title = data?.existOnGS1 ? (
+    <span>Fiche produit</span>
+  ) : (
+    <span>
+      Fiche produit - <span className="bg-yellow-200 px-1">introuvable sur GS1</span>
+    </span>
+  )
+
   if (barcodeProductId) {
     return (
       <CleanDiscreetPanel>
         <div className="flex justify-between">
-          <WithInlineIcon icon="shopping_cart">Fiche produit</WithInlineIcon>
+          <WithInlineIcon icon="shopping_cart">{title}</WithInlineIcon>
           <Chip label={`Code-barres (GTIN) : ${data?.gtin}`} />
         </div>
         <div>
