@@ -23,6 +23,7 @@ import {SiretExtractorClient} from './siret-extractor/SiretExtractorClient'
 import {AuthAttemptClient} from './auth-attempts/AuthAttemptClient'
 import {BarcodeClient} from './barcode/BarcodeClient'
 import {EngagementClient} from './engagement/EngagementClient'
+import {IpBlacklistClient} from './ip-blacklist/IpBlacklistClient'
 
 export class SignalConsoSecuredSdk {
   constructor(private client: ApiClientApi) {}
@@ -37,6 +38,7 @@ export class SignalConsoSecuredSdk {
   readonly consumerEmailValidation = new ConsumerEmailValidationClient(this.client)
   readonly authAttemptClient = new AuthAttemptClient(this.client)
   readonly consumerBlacklist = new ConsumerBlacklistClient(this.client)
+  readonly ipBlacklist = new IpBlacklistClient(this.client)
   readonly stats = new StatsClient(this.client)
   readonly companyAccess = new CompanyAccessClient(this.client)
   readonly companyAccessToken = new CompanyAccessTokenClient(this.client)
