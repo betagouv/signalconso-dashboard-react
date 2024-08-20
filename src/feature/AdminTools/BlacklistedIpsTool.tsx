@@ -3,7 +3,6 @@ import React, {ReactElement} from 'react'
 import {ListIpBlacklistQueryKeys, useListIpBlacklistQuery} from '../../core/queryhooks/ipBlacklistQueryHooks'
 import {Datatable} from '../../shared/Datatable/Datatable'
 import {BlacklistedIp} from '../../core/client/ip-blacklist/BlacklistedIp'
-import {IconBtn} from '../../alexlibs/mui-extension'
 import {Box, Checkbox, Icon, Tooltip} from '@mui/material'
 import {useI18n} from '../../core/i18n'
 import {useMutation, useQueryClient} from '@tanstack/react-query'
@@ -12,6 +11,7 @@ import {useToast} from '../../core/toast'
 import {ScDialog} from '../../shared/ScDialog'
 import {Controller, useForm} from 'react-hook-form'
 import {ScInput} from '../../shared/ScInput'
+import {ScButton} from '../../shared/Button'
 
 export const BlacklistedIpsTool = () => {
   const {m} = useI18n()
@@ -33,11 +33,22 @@ export const BlacklistedIpsTool = () => {
     <CleanWidePanel>
       <h2 className="font-bold text-lg mb-2">Gestion des ip blacklistées</h2>
       <Datatable<BlacklistedIp>
+        superheader={
+          <>
+            <p>Une IP bannie sera systématiquement rejetée par l'API.</p>
+            <p>
+              Une IP critique (marquée par le symbole <Icon color="warning">warning</Icon>) entraine un log en warning spécial
+              pour pouvoir identifier facilement toute tentative d'accès. On marque une IP comme critique lorsque celle-ci est
+              identifiée comme malveillante.
+            </p>
+            <p className="mt-4">Un redémarrage de l'API est nécessaire pour prendre en compte toute modification de la liste.</p>
+          </>
+        }
         actions={
           <AddIp>
-            <IconBtn color="primary">
-              <Icon>add</Icon>
-            </IconBtn>
+            <ScButton color="primary" icon="add" variant="contained">
+              Ajouter une IP
+            </ScButton>
           </AddIp>
         }
         data={blacklist.data}
@@ -50,7 +61,13 @@ export const BlacklistedIpsTool = () => {
           {
             id: 'comment',
             head: 'Commentaire',
-            render: blacklistedId => blacklistedId.comment,
+            render: blacklistedId => (
+              <Tooltip title={blacklistedId.comment}>
+                <Box sx={{maxWidth: '500px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap'}}>
+                  {blacklistedId.comment}
+                </Box>
+              </Tooltip>
+            ),
           },
           {
             id: 'critical',
@@ -63,9 +80,15 @@ export const BlacklistedIpsTool = () => {
             render: _ => (
               <div className="flex justify-end">
                 <Tooltip title={m.delete}>
-                  <IconBtn loading={_remove.isPending} color="primary" onClick={() => _remove.mutateAsync(_.ip)}>
-                    <Icon>delete</Icon>
-                  </IconBtn>
+                  <ScButton
+                    loading={_remove.isPending}
+                    color="error"
+                    onClick={() => _remove.mutateAsync(_.ip)}
+                    icon="delete"
+                    variant="outlined"
+                  >
+                    Supprimer
+                  </ScButton>
                 </Tooltip>
               </div>
             ),
@@ -107,6 +130,12 @@ const AddIp = ({children}: AddIpProps) => {
     },
   })
 
+  const checkIpAddress = (ip: string): boolean => {
+    const ipv4Pattern = /^(\d{1,3}\.){3}\d{1,3}$/
+    const ipv6Pattern = /^([0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}$/
+    return ipv4Pattern.test(ip) || ipv6Pattern.test(ip)
+  }
+
   return (
     <ScDialog
       maxWidth="sm"
@@ -119,7 +148,7 @@ const AddIp = ({children}: AddIpProps) => {
             fullWidth
             placeholder="Adresse IP (v4 ou v6)"
             {...register('ip', {
-              required: {value: true, message: m.required},
+              validate: ip => checkIpAddress(ip) || 'Adresse IP invalide',
             })}
           />
           <ScInput
