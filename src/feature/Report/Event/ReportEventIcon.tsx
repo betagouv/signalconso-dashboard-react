@@ -23,6 +23,7 @@ export const getReportEventIcon = (action: EventActionValues) =>
       [EventActionValues.ReportReviewOnResponse]: 'rate_review',
       [EventActionValues.ReportClosedByNoAction]: 'do_disturb_on',
       [EventActionValues.Creation]: 'add_alert',
+      [EventActionValues.ReportAffectedToUser]: 'person_add',
     },
     _ => {
       const toLower = _.toLowerCase()

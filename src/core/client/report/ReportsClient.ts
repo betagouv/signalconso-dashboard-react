@@ -219,8 +219,11 @@ export class ReportsClient {
       .then(report => ReportsClient.mapReport(report))
   }
 
-  readonly updateReportAssignedUser = (reportId: string, newAssignedUserId: string) => {
-    return this.client.post<User>(`reports/${reportId}/assign/${newAssignedUserId}`)
+  readonly updateReportAssignedUser = (reportId: string, newAssignedUserId: string, c: string) => {
+    return this.client.post<User>(`reports/${reportId}/assign/${newAssignedUserId}`, {
+      body: {comment: c},
+      headers: {'Content-Type': 'application/json'},
+    })
   }
 
   readonly getCountByDepartments = ({start, end}: {start?: Date; end?: Date} = {}): Promise<[string, number][]> => {
