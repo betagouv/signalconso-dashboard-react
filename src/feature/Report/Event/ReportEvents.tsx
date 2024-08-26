@@ -58,6 +58,12 @@ export const ReportEventComponent = ({event}: {event: ReportEvent}) => {
           </div>
         )}
         <p className="text-sm text-gray-500">{(event.data.details as any)?.description}</p>
+        {(event.data.details as any)?.comment && (
+          <div className={'  mt-1  flex-row'}>
+            <span className="text-sm text-black">Commentaire :</span>
+            <p className="text-sm text-blue-600">{(event.data.details as any)?.comment}</p>
+          </div>
+        )}
       </td>
     </tr>
   )

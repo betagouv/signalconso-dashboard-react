@@ -26,7 +26,7 @@ export interface Event {
   userId?: Id
   eventType: EventType
   action: EventActionValues
-  details: {description: string} | ExistingReportResponse
+  details: {description: string} | ExistingReportResponse | {description: string; comment: string}
 }
 
 export type EventType = 'PRO' | 'CONSO' | 'DGCCRF' | 'ADMIN' | 'SYSTEM'
@@ -70,6 +70,7 @@ export enum EventActionValues {
   OtherReasonDeleteRequestReportDeletion = 'OtherReasonDeleteRequestReportDeletion',
   SolvedContractualDisputeReportDeletion = 'SolvedContractualDisputeReportDeletion',
   ReportReOpenedByAdmin = 'ReportReOpenedByAdmin',
+  ReportAffectedToUser = 'Signalement affecté à un utilisateur',
 }
 
 export const acceptedDetails = [
@@ -110,6 +111,7 @@ export interface IncomingReportResponse {
   dgccrfDetails: string
   fileIds?: string[]
 }
+
 // An already created report response, coming from the DB
 // It may contains the legacy value 'AUTRE' that is not allowed anymore
 export type ExistingReportResponse = Omit<IncomingReportResponse, 'responseDetails'> & {
