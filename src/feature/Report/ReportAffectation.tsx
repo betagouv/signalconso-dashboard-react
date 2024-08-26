@@ -65,7 +65,8 @@ export const ReportAffectation = ({reportSearchResult, companySiret, children}: 
         queryClient.setQueryData(GetReportQueryKeys(reportId), (prev: ReportSearchResult): ReportSearchResult => {
           return {...prev, assignedUser: assignedUser}
         })
-        toastSuccess('Le signalement a été réassigné')
+        setComment('')
+        toastSuccess('Le signalement a été réaffecté')
       },
       onError: () => {
         toastError({message: 'Une erreur est survenue'})
@@ -77,7 +78,7 @@ export const ReportAffectation = ({reportSearchResult, companySiret, children}: 
 
   return (
     <ScDialog
-      title={'Assignation du signalement'}
+      title={'Affectation du signalement'}
       loading={_assign.isPending}
       onConfirm={(event, close) => {
         user && _assign.mutate({reportId, newAssignedUserId: user})
@@ -100,7 +101,7 @@ export const ReportAffectation = ({reportSearchResult, companySiret, children}: 
               onChange={event => {
                 setUser(event.target.value)
               }}
-              label={'Assigné à'}
+              label={'Affecté à'}
               fullWidth
             >
               {options.map(option => {

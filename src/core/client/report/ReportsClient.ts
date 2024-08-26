@@ -219,9 +219,9 @@ export class ReportsClient {
       .then(report => ReportsClient.mapReport(report))
   }
 
-  readonly updateReportAssignedUser = (reportId: string, newAssignedUserId: string, c: string) => {
+  readonly updateReportAssignedUser = (reportId: string, newAssignedUserId: string, userComment: string) => {
     return this.client.post<User>(`reports/${reportId}/assign/${newAssignedUserId}`, {
-      body: {comment: c},
+      body: {comment: userComment},
       headers: {'Content-Type': 'application/json'},
     })
   }
