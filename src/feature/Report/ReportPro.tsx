@@ -203,7 +203,7 @@ function ReportClosedLabel({eventWithUser}: {eventWithUser?: ReportProResponseEv
 }
 
 const AssignedUserLabel = ({user, hasToRespond}: {user?: MinimalUser; hasToRespond: Boolean}) => {
-  return user ? <span>{buildOptionFromUser(user).fullName} </span> : <span>{hasToRespond ? 'Assigner' : 'Non assigné'}</span>
+  return user ? <span>{buildOptionFromUser(user).fullName} </span> : <span>{hasToRespond ? 'Affecter' : 'Non affecté'}</span>
 }
 
 function Header({
@@ -252,7 +252,7 @@ function Header({
                 {...{reportSearchResult, companySiret}}
                 children={
                   <div className=" flex flex-col ">
-                    {assignedUser && <span className={'font-bold ml-1 mb-2'}>Assigné à :</span>}
+                    {assignedUser && <span className={'font-bold ml-1 mb-2'}>Affecté à :</span>}
                     <Tooltip title={"Modifier l'affectation de l'utilisateur au signalement"}>
                       <div className="flex">
                         <Btn variant={'outlined'} className=" flex flex-row border p-2 items-center">
