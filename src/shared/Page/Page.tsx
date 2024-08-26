@@ -1,6 +1,7 @@
 import {LinearProgress} from '@mui/material'
 import {useLayoutContext} from 'core/Layout/LayoutContext'
 import {ReactNode} from 'react'
+import {InfoBanner} from '../InfoBanner'
 
 export interface PageProps {
   maxWidth?: 'xl' | 'l' | 's' | 'm'
@@ -48,7 +49,10 @@ export const Page = ({loading, maxWidth = 'xl', children}: PageProps) => {
           />
         </div>
       )}
-      <div className={'p-2 pt-4 mx-auto ' + sizesClass}>{children}</div>
+      <div className={'p-2 pt-4 mx-auto ' + sizesClass}>
+        <InfoBanner />
+        {children}
+      </div>
     </>
   )
 }

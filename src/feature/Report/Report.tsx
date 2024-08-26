@@ -3,7 +3,7 @@ import {useMutation} from '@tanstack/react-query'
 import React, {useState} from 'react'
 import {useParams} from 'react-router'
 import {Divider} from 'shared/Divider'
-import {CleanDiscreetPanel} from 'shared/Panel/simplePanels'
+import {CleanDiscreetPanel, CleanWidePanel} from 'shared/Panel/simplePanels'
 import {WithInlineIcon} from 'shared/WithInlineIcon'
 import {Btn} from '../../alexlibs/mui-extension'
 import {map} from '../../alexlibs/ts-utils'
@@ -244,6 +244,7 @@ const ReportTabPanel = (props: ReportTabPanelProps) => {
     <div
       role="tabpanel"
       hidden={value !== index}
+      className={'overflow-auto'}
       id={`scrollable-auto-tabpanel-${index}`}
       aria-labelledby={`scrollable-auto-tab-${index}`}
       {...other}

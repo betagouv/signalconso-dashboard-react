@@ -13,6 +13,7 @@ import {ScInputPassword} from '../../shared/ScInputPassword'
 import {ForgottenPasswordDialog} from './ForgottenPasswordDialog'
 import {useNavigate} from 'react-router'
 import {mapArrayFromQuerystring, useQueryString} from '../../core/helper/useQueryString'
+import {InfoBanner} from '../../shared/InfoBanner'
 
 interface ActionProps<F extends (...args: any[]) => Promise<any>> {
   action: F
@@ -76,6 +77,7 @@ export const LoginForm = ({login}: Props) => {
 
   return (
     <CenteredContent>
+      <InfoBanner />
       <EspaceProTitle subPageTitle={m.login} />
       <div className="w-full max-w-xl">
         <form className="flex flex-col mb-8" onSubmit={handleSubmit(onLogin)} action="#">

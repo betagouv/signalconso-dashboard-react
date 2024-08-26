@@ -4,7 +4,7 @@ import {ScOption} from 'core/helper/ScOption'
 import type {Dictionary} from 'lodash'
 import {useMemo, useState} from 'react'
 import {NavLink} from 'react-router-dom'
-import {CleanDiscreetPanel, CleanWidePanel} from 'shared/Panel/simplePanels'
+import {CleanDiscreetPanel} from 'shared/Panel/simplePanels'
 import {Btn, Fender, Txt} from '../../alexlibs/mui-extension'
 import {useApiContext} from '../../core/context/ApiContext'
 import {useI18n} from '../../core/i18n'
@@ -21,6 +21,8 @@ import {ScButton} from '../../shared/Button'
 import {Datatable} from '../../shared/Datatable/Datatable'
 import {Page, PageTitle} from '../../shared/Page'
 import {ConfirmDisableNotificationDialog} from './ConfirmDisableNotificationDialog'
+import {DebouncedInput} from '../../shared/DebouncedInput'
+import {ScInput} from '../../shared/ScInput'
 
 export const CompaniesPro = () => {
   const {m} = useI18n()
@@ -66,6 +68,24 @@ export const CompaniesPro = () => {
   }, [_companiesAccessibleByPro.data, blockedNotificationIndex])
 
   const companies = _companiesAccessibleByPro.data
+
+  const minRowsBeforeDisplayFiltersAndPagination = 10
+
+  const [search, setSearch] = useState('')
+  const [offset, setOffset] = useState(0)
+  const [limit, setLimit] = useState(10)
+
+  const filteredCompanies = !search
+    ? companies?.slice(offset, offset + limit)
+    : companies
+        ?.filter(company => {
+          const data =
+            `${company.siret} ${company.name} ${company.brand} ${company.commercialName} ${company.establishmentCommercialName} ${company.address.postalCode}`.toLowerCase()
+          return data.match(search.toLowerCase())
+        })
+        ?.slice(offset, offset + limit)
+
+  const displayFilters = companies?.length && companies?.length > minRowsBeforeDisplayFiltersAndPagination
 
   return (
     <Page>
@@ -120,10 +140,41 @@ export const CompaniesPro = () => {
       )}
 
       <>
+        {displayFilters && (
+          <div className="mb-2">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-2">
+              <DebouncedInput value={search} onChange={setSearch}>
+                {(value, onChange) => (
+                  <ScInput
+                    label={m.search}
+                    placeholder="Nom, SIRET, SIREN ou Code postal"
+                    value={value}
+                    onChange={e => onChange(e.target.value)}
+                    fullWidth
+                  />
+                )}
+              </DebouncedInput>
+            </div>
+          </div>
+        )}
         <Datatable
-          data={companies}
+          data={filteredCompanies}
           loading={_companiesAccessibleByPro.isLoading || _blockedNotifications.isLoading}
           getRenderRowKey={_ => _.id}
+          paginate={{
+            minRowsBeforeDisplay: minRowsBeforeDisplayFiltersAndPagination,
+            offset: offset,
+            limit: limit,
+            onPaginationChange: pagination => {
+              if (pagination.offset !== undefined) {
+                setOffset(pagination.offset)
+              }
+              if (pagination.limit !== undefined) {
+                setLimit(pagination.limit)
+              }
+            },
+          }}
+          total={companies?.length}
           columns={[
             {
               id: 'all',
@@ -206,21 +257,22 @@ function CompaniesProRow({
         />
         <div className="flex  justify-end gap-2">
           {_.level === AccessLevel.ADMIN && (
-            <Btn href={'#' + siteMap.logged.company(_.id).accesses.valueAbsolute} variant="text" size="small" icon="group">
-              {m.handleAccesses}
-            </Btn>
+            <NavLink to={siteMap.logged.company(_.id).accesses.valueAbsolute}>
+              <Btn variant="text" size="small" icon="group">
+                {m.handleAccesses}
+              </Btn>
+            </NavLink>
           )}
-          <Btn href={'#' + siteMap.logged.company(_.id).stats.valueAbsolute} variant="text" size="small" icon="query_stats">
-            {m.myStats}
-          </Btn>
-          <Btn
-            href={'#' + siteMap.logged.reports({hasCompany: true, siretSirenList: [_.siret]})}
-            variant="contained"
-            icon="assignment_late"
-            size="small"
-          >
-            {m.see_reports}
-          </Btn>
+          <NavLink to={siteMap.logged.company(_.id).stats.valueAbsolute}>
+            <Btn variant="text" size="small" icon="query_stats">
+              {m.myStats}
+            </Btn>
+          </NavLink>
+          <NavLink to={siteMap.logged.reports({hasCompany: true, siretSirenList: [_.siret]})}>
+            <Btn variant="contained" icon="assignment_late" size="small">
+              {m.see_reports}
+            </Btn>
+          </NavLink>
         </div>
       </div>
     </div>

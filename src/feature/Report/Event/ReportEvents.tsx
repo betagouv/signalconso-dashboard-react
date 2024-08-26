@@ -18,7 +18,7 @@ export const ReportEvents = ({events}: Props) => {
       ) : events.length === 0 ? (
         <div>{m.noDataAtm}</div>
       ) : (
-        <table>
+        <table className={'break-words w-full table-fixed'}>
           <tbody>
             {events
               .sort((a, b) => a.data.creationDate.getTime() - b.data.creationDate.getTime())
@@ -37,16 +37,16 @@ export const ReportEventComponent = ({event}: {event: ReportEvent}) => {
 
   return (
     <tr className="text-base border-b-[1px] last:border-b-0 border-solid border-0 border-gray-300">
-      <td className="p-2">
+      <td className="p-2 w-[6.5rem]">
         <p className="font-bold">
           {formatDate(event.data.creationDate)}{' '}
           <span className=" font-normal text-gray-500">à {formatTime(event.data.creationDate)}</span>
         </p>
       </td>
-      <td className="p-2">
+      <td className="p-2  w-10">
         <ReportEventIcon action={event.data.action} />
       </td>
-      <td className="p-2">
+      <td className="p-2 ">
         {translateEventAction(event.data.action)}
         {event.user && (
           <div className="text-sm text-gray-500">

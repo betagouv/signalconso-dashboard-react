@@ -4,6 +4,7 @@ import {CenteredContent} from 'shared/CenteredContent'
 import {AlertNotForConso, EspaceProTitle} from './loggedOutComponents'
 import {Icon} from '@mui/material'
 import {useLocation} from 'react-router'
+import {InfoBanner} from '../../shared/InfoBanner'
 
 export function WelcomePage() {
   const location = useLocation()
@@ -18,6 +19,7 @@ export function WelcomePage() {
 
   return (
     <CenteredContent>
+      <InfoBanner />
       <EspaceProTitle />
       <div className="flex gap-6 justify-center mb-8 px-2">
         <Tile
