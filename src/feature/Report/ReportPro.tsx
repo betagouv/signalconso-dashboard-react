@@ -1,17 +1,17 @@
-import {Icon} from '@mui/material'
+import {FormControl, Icon, InputLabel, Select, Tooltip} from '@mui/material'
 import {useQueryClient} from '@tanstack/react-query'
 import {siteMap} from 'core/siteMap'
 import {ReportReferenceNumber} from 'feature/Report/ReportReferenceNumber'
-import {useRef} from 'react'
+import React, {useRef} from 'react'
 import {useParams} from 'react-router'
 import {Link} from 'react-router-dom'
 import {CleanWidePanel} from 'shared/Panel/simplePanels'
-import {ConsumerReview, ReportProResponseEvent} from '../../core/client/event/Event'
+import {ConsumerReview, EventActionValues, ReportProResponseEvent} from '../../core/client/event/Event'
 import {FileOrigin, UploadedFile} from '../../core/client/file/UploadedFile'
 import {Report, ReportSearchResult, ReportStatusPro} from '../../core/client/report/Report'
 import {capitalize} from '../../core/helper'
 import {useI18n} from '../../core/i18n'
-import {Id} from '../../core/model'
+import {Id, MinimalUser} from '../../core/model'
 import {GetReportEventsQueryKeys, useGetReportEventsQuery} from '../../core/queryhooks/eventQueryHooks'
 import {
   GetReportQueryKeys,
@@ -25,7 +25,6 @@ import {UserNameLabel} from '../../shared/UserNameLabel'
 import CategoryMessage from './CategoryMessage'
 import {ReportEvents} from './Event/ReportEvents'
 import {creationReportEvent} from './Report'
-import {ReportAssignement} from './ReportAssignement'
 import {ReportDetails, ReportFilesFull} from './ReportDescription'
 import {ExpirationDate} from './ReportHeader'
 import {ReportInfluencer} from './ReportInfluencer'
@@ -33,7 +32,11 @@ import {ReportResponseComponent} from './ReportResponse'
 import {ReportResponseForm} from './ReportResponseForm/ReportResponseForm'
 import {ReportStation} from './ReportStation'
 import {ReportTrain} from './ReportTrain'
-import {Alert} from '../../alexlibs/mui-extension'
+import {Alert, Btn} from '../../alexlibs/mui-extension'
+import {ReportPostAction} from './ReportPostAction'
+import {buildOptionFromUser, ReportAffectation} from './ReportAffectation'
+import {ScSelect} from '../../shared/Select/Select'
+import {ScInput} from '../../shared/ScInput'
 
 export const ReportPro = () => {
   const {id} = useParams<{id: Id}>()
@@ -199,6 +202,10 @@ function ReportClosedLabel({eventWithUser}: {eventWithUser?: ReportProResponseEv
   )
 }
 
+const AssignedUserLabel = ({user, hasToRespond}: {user?: MinimalUser; hasToRespond: Boolean}) => {
+  return user ? <span>{buildOptionFromUser(user).fullName} </span> : <span>{hasToRespond ? 'Affecter' : 'Non affecté'}</span>
+}
+
 function Header({
   reportSearchResult,
   responseEvent,
@@ -214,6 +221,7 @@ function Header({
 }) {
   const {m, formatDate, formatTime} = useI18n()
   const {report} = reportSearchResult
+  const assignedUser = reportSearchResult.assignedUser
   const companySiret = report.companySiret
   return (
     <div className="text-left mb-8">
@@ -237,8 +245,36 @@ function Header({
           <p>{report.contactAgreement ? <span>Par {report.email}</span> : <span>Par un consommateur anonyme</span>}</p>
           <ExpirationDate {...{report}} isUserPro={true} />
         </div>
-        {companySiret && <ReportAssignement {...{reportSearchResult, companySiret}} />}
+        {companySiret && (
+          <div>
+            {hasToRespond ? (
+              <ReportAffectation
+                {...{reportSearchResult, companySiret}}
+                children={
+                  <div className=" flex flex-col ">
+                    {assignedUser && <span className={'font-bold ml-1 mb-2'}>Affecté à :</span>}
+                    <Tooltip title={"Modifier l'affectation de l'utilisateur au signalement"}>
+                      <div className="flex">
+                        <Btn variant={'outlined'} className=" flex flex-row border p-2 items-center">
+                          <AssignedUserLabel user={assignedUser} hasToRespond={hasToRespond} />
+                          <Icon fontSize={'small'} sx={{fontPalette: 'primary', ml: 1}}>
+                            edit
+                          </Icon>
+                        </Btn>
+                      </div>
+                    </Tooltip>
+                  </div>
+                }
+              />
+            ) : (
+              <div className="flex items-center gap-1">
+                <Icon className="">account_circle</Icon> <AssignedUserLabel user={assignedUser} hasToRespond={hasToRespond} />
+              </div>
+            )}
+          </div>
+        )}
       </div>
+
       {isClosed && (
         <div className="flex items-center justify-center bg-[#e3e3fd]  p-2">
           <ReportClosedLabel eventWithUser={responseEvent} />
