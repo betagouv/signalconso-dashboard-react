@@ -257,21 +257,22 @@ function CompaniesProRow({
         />
         <div className="flex  justify-end gap-2">
           {_.level === AccessLevel.ADMIN && (
-            <Btn href={'#' + siteMap.logged.company(_.id).accesses.valueAbsolute} variant="text" size="small" icon="group">
-              {m.handleAccesses}
-            </Btn>
+            <NavLink to={siteMap.logged.company(_.id).accesses.valueAbsolute}>
+              <Btn variant="text" size="small" icon="group">
+                {m.handleAccesses}
+              </Btn>
+            </NavLink>
           )}
-          <Btn href={'#' + siteMap.logged.company(_.id).stats.valueAbsolute} variant="text" size="small" icon="query_stats">
-            {m.myStats}
-          </Btn>
-          <Btn
-            href={'#' + siteMap.logged.reports({hasCompany: true, siretSirenList: [_.siret]})}
-            variant="contained"
-            icon="assignment_late"
-            size="small"
-          >
-            {m.see_reports}
-          </Btn>
+          <NavLink to={siteMap.logged.company(_.id).stats.valueAbsolute}>
+            <Btn variant="text" size="small" icon="query_stats">
+              {m.myStats}
+            </Btn>
+          </NavLink>
+          <NavLink to={siteMap.logged.reports({hasCompany: true, siretSirenList: [_.siret]})}>
+            <Btn variant="contained" icon="assignment_late" size="small">
+              {m.see_reports}
+            </Btn>
+          </NavLink>
         </div>
       </div>
     </div>
