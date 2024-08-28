@@ -1,23 +1,26 @@
-import React, {useRef, useState} from 'react'
-import {Box, Button, CircularProgress, Icon, Tooltip} from '@mui/material'
-import {reportFileConfig} from './reportFileConfig'
-import {useI18n} from '../../../core/i18n'
-import {styleUtils} from '../../../core/theme'
-import {config} from '../../../conf/config'
-import {useToast} from '../../../core/toast'
-import {useConnectedContext} from '../../../core/context/ConnectedContext'
-import {makeSx} from '../../../alexlibs/mui-extension'
-import {FileOrigin, UploadedFile} from '../../../core/client/file/UploadedFile'
-import {Id} from '../../../core/model'
+import React, { useRef, useState } from 'react'
+import { Box, Button, CircularProgress, Icon, Tooltip } from '@mui/material'
+import { reportFileConfig } from './reportFileConfig'
+import { useI18n } from '../../../core/i18n'
+import { styleUtils } from '../../../core/theme'
+import { config } from '../../../conf/config'
+import { useToast } from '../../../core/toast'
+import { useConnectedContext } from '../../../core/context/ConnectedContext'
+import { makeSx } from '../../../alexlibs/mui-extension'
+import {
+  FileOrigin,
+  UploadedFile,
+} from '../../../core/client/file/UploadedFile'
+import { Id } from '../../../core/model'
 
 const css = makeSx({
   root: {
-    border: t => '1px solid ' + t.palette.divider,
+    border: (t) => '1px solid ' + t.palette.divider,
     my: 1,
     borderRadius: '0',
     height: reportFileConfig.cardSize,
     width: reportFileConfig.cardSize,
-    color: t => t.palette.text.disabled,
+    color: (t) => t.palette.text.disabled,
     overflow: 'hidden',
     display: 'inline-flex',
     alignItems: 'center',
@@ -33,7 +36,7 @@ const css = makeSx({
     fontSize: 32,
   },
   label: {
-    fontSize: t => styleUtils(t).fontSize.small,
+    fontSize: (t) => styleUtils(t).fontSize.small,
     textTransform: 'initial',
     fontWeight: 'normal',
     lineHeight: 1.4,
@@ -46,13 +49,15 @@ interface Props {
   onUploaded: (f: UploadedFile) => void
 }
 
-export const ReportFileAdd = ({reportId, onUploaded, fileOrigin}: Props) => {
-  const {m} = useI18n()
-  const {apiSdk} = useConnectedContext()
-  const {toastError} = useToast()
+export const ReportFileAdd = ({ reportId, onUploaded, fileOrigin }: Props) => {
+  const { m } = useI18n()
+  const { apiSdk } = useConnectedContext()
+  const { toastError } = useToast()
 
   const [uploading, setUploading] = useState(false)
-  const [errorMessage, setErrorMessage] = useState<string | undefined>(undefined)
+  const [errorMessage, setErrorMessage] = useState<string | undefined>(
+    undefined,
+  )
   const fileInputEl = useRef<HTMLInputElement>(null)
 
   const openFileSelection = () => {
@@ -63,7 +68,7 @@ export const ReportFileAdd = ({reportId, onUploaded, fileOrigin}: Props) => {
     if (files && files[0]) {
       const file: File = files[0]
       if (file.size > config.upload_maxSizeMb * 1024 * 1024) {
-        toastError({message: m.invalidSize(config.upload_maxSizeMb)})
+        toastError({ message: m.invalidSize(config.upload_maxSizeMb) })
         setErrorMessage(m.invalidSize(config.upload_maxSizeMb))
         return
       }
@@ -91,7 +96,12 @@ export const ReportFileAdd = ({reportId, onUploaded, fileOrigin}: Props) => {
           <Box sx={css.body}>
             <Icon sx={css.icon}>add</Icon>
           </Box>
-          <input style={{display: 'none'}} type="file" ref={fileInputEl} onChange={e => handleChange(e.target.files)} />
+          <input
+            style={{ display: 'none' }}
+            type="file"
+            ref={fileInputEl}
+            onChange={(e) => handleChange(e.target.files)}
+          />
         </Button>
       </Tooltip>
     )

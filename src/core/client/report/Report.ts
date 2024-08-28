@@ -1,11 +1,18 @@
-import {Address, ConsumerReview, EventWithUser, Id, MinimalUser, UploadedFile} from '../../model'
-import {Category} from '../constant/Category'
+import {
+  Address,
+  ConsumerReview,
+  EventWithUser,
+  Id,
+  MinimalUser,
+  UploadedFile,
+} from '../../model'
+import { Category } from '../constant/Category'
 
 export const ReportingDateLabel = 'Date du constat'
-export const ReportingTimeslotLabel = 'Heure du constat'
-export const DescriptionLabel = 'Description'
+const ReportingTimeslotLabel = 'Heure du constat'
+const DescriptionLabel = 'Description'
 
-export enum Gender {
+enum Gender {
   Male = 'Male',
   Female = 'Female',
 }
@@ -127,7 +134,7 @@ export interface ReportSearchResult {
   assignedUser?: MinimalUser
 }
 
-export interface ReportWithMetadata {
+interface ReportWithMetadata {
   report: Report
   metadata?: ReportMetadata
 }
@@ -156,14 +163,20 @@ export enum ReportStatusPro {
   Cloture = 'Cloture',
 }
 
-export type ReportConsumerUpdate = Pick<Report, 'firstName' | 'lastName' | 'email' | 'consumerReferenceNumber'>
+export type ReportConsumerUpdate = Pick<
+  Report,
+  'firstName' | 'lastName' | 'email' | 'consumerReferenceNumber'
+>
 
-export enum SpecialLegislation {
+enum SpecialLegislation {
   SHRINKFLATION = 'SHRINKFLATION',
 }
 
 export class Report {
-  static readonly waitingResponseStatus = [ReportStatus.Transmis, ReportStatus.TraitementEnCours]
+  static readonly waitingResponseStatus = [
+    ReportStatus.Transmis,
+    ReportStatus.TraitementEnCours,
+  ]
 
   static readonly closedStatus = [
     ReportStatus.PromesseAction,
@@ -191,7 +204,11 @@ export class Report {
     ReportStatus.ConsulteIgnore,
   ]
 
-  static readonly respondedStatus = [ReportStatus.PromesseAction, ReportStatus.Infonde, ReportStatus.MalAttribue]
+  static readonly respondedStatus = [
+    ReportStatus.PromesseAction,
+    ReportStatus.Infonde,
+    ReportStatus.MalAttribue,
+  ]
   static readonly notRespondedStatus = [
     ReportStatus.NA,
     ReportStatus.InformateurInterne,
@@ -200,8 +217,14 @@ export class Report {
     ReportStatus.NonConsulte,
     ReportStatus.ConsulteIgnore,
   ]
-  static readonly invisibleToProStatus = [ReportStatus.NA, ReportStatus.InformateurInterne]
-  static readonly closedBySystemStatus = [ReportStatus.NonConsulte, ReportStatus.ConsulteIgnore]
+  static readonly invisibleToProStatus = [
+    ReportStatus.NA,
+    ReportStatus.InformateurInterne,
+  ]
+  static readonly closedBySystemStatus = [
+    ReportStatus.NonConsulte,
+    ReportStatus.ConsulteIgnore,
+  ]
 
   static readonly isClosed = (status: ReportStatus) => {
     return Report.closedStatus.includes(status)
@@ -211,21 +234,34 @@ export class Report {
     return Report.waitingResponseStatus.includes(status)
   }
 
-  static readonly getStatusProByStatus = (status: ReportStatus): ReportStatusPro =>
-    Report.isClosed(status) ? ReportStatusPro.Cloture : ReportStatusPro.ARepondre
+  static readonly getStatusProByStatus = (
+    status: ReportStatus,
+  ): ReportStatusPro =>
+    Report.isClosed(status)
+      ? ReportStatusPro.Cloture
+      : ReportStatusPro.ARepondre
 
-  static readonly getStatusByStatusPro = (statusPro: ReportStatusPro): ReportStatus[] =>
+  static readonly getStatusByStatusPro = (
+    statusPro: ReportStatusPro,
+  ): ReportStatus[] =>
     Object.values(ReportStatus)
-      .filter(_ => !Report.invisibleToProStatus.includes(_))
-      .filter(_ => Report.getStatusProByStatus(_) === statusPro)
+      .filter((_) => !Report.invisibleToProStatus.includes(_))
+      .filter((_) => Report.getStatusProByStatus(_) === statusPro)
 
-  static readonly isGovernmentCompany = (_?: {activityCode?: string}): boolean => _?.activityCode?.startsWith('84.') ?? false
+  static readonly isGovernmentCompany = (_?: {
+    activityCode?: string
+  }): boolean => _?.activityCode?.startsWith('84.') ?? false
 
-  static readonly appliedSpecialLegislation = (report: Pick<Report, 'activityCode' | 'tags'>): SpecialLegislation | undefined => {
+  static readonly appliedSpecialLegislation = (
+    report: Pick<Report, 'activityCode' | 'tags'>,
+  ): SpecialLegislation | undefined => {
     // 47.11C supérettes moins de 400 m2
     // 47.11D supermarchés entre 400 et 2500
     // 47.11F hypermarchés égale ou > à 2500 m2
-    if (report.tags.includes(ReportTag.Shrinkflation) && report.activityCode === '47.11C') {
+    if (
+      report.tags.includes(ReportTag.Shrinkflation) &&
+      report.activityCode === '47.11C'
+    ) {
       return SpecialLegislation.SHRINKFLATION
     }
   }

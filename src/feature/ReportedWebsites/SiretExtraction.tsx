@@ -1,34 +1,45 @@
-import {useApiContext} from '../../core/context/ApiContext'
-import {useMutation, useQuery} from '@tanstack/react-query'
-import React, {useEffect} from 'react'
-import {ExtractionResult, SiretExtraction as ISiretExtraction} from '../../core/client/siret-extractor/SiretExtraction'
-import {Icon} from '@mui/material'
-import {Fender, IconBtn, Modal, Txt} from '../../alexlibs/mui-extension'
-import {useI18n} from '../../core/i18n'
-import {ScButton} from '../../shared/Button'
-import {Company, CompanySearchResult} from '../../core/client/company/Company'
-import {WebsiteUpdateCompany, WebsiteWithCompany} from '../../core/client/website/Website'
-import {useToast} from '../../core/toast'
-import {Id} from '../../core/model'
+import { useApiContext } from '../../core/context/ApiContext'
+import { useMutation, useQuery } from '@tanstack/react-query'
+import React, { useEffect } from 'react'
+import {
+  ExtractionResult,
+  SiretExtraction as ISiretExtraction,
+} from '../../core/client/siret-extractor/SiretExtraction'
+import { Icon } from '@mui/material'
+import { Fender, IconBtn, Modal, Txt } from '../../alexlibs/mui-extension'
+import { useI18n } from '../../core/i18n'
+import { ScButton } from '../../shared/Button'
+import { Company, CompanySearchResult } from '../../core/client/company/Company'
+import {
+  WebsiteUpdateCompany,
+  WebsiteWithCompany,
+} from '../../core/client/website/Website'
+import { useToast } from '../../core/toast'
+import { Id } from '../../core/model'
 
-export interface SiretExtractionProps {
+interface SiretExtractionProps {
   websiteWithCompany: WebsiteWithCompany
   remove: () => Promise<any>
   identify: () => Promise<any>
 }
 
-export const SiretExtraction = ({websiteWithCompany, remove, identify}: SiretExtractionProps) => {
-  const {api} = useApiContext()
-  const {m} = useI18n()
-  const {toastError, toastSuccess} = useToast()
+export const SiretExtraction = ({
+  websiteWithCompany,
+  remove,
+  identify,
+}: SiretExtractionProps) => {
+  const { api } = useApiContext()
+  const { m } = useI18n()
+  const { toastError, toastSuccess } = useToast()
 
   const _updateCompany = useMutation({
-    mutationFn: (params: {id: Id; website: WebsiteUpdateCompany}) => api.secured.website.updateCompany(params.id, params.website),
-    onSuccess: () => identify().then(_ => toastSuccess(m.websiteEdited)),
+    mutationFn: (params: { id: Id; website: WebsiteUpdateCompany }) =>
+      api.secured.website.updateCompany(params.id, params.website),
+    onSuccess: () => identify().then((_) => toastSuccess(m.websiteEdited)),
   })
 
   const website = websiteWithCompany.host
-  const {refetch, isLoading, isError, data, error} = useQuery({
+  const { refetch, isLoading, isError, data, error } = useQuery({
     queryKey: ['siretExtractor_extractSiret', website],
     queryFn: () => api.secured.siretExtractor.extractSiret(website),
     enabled: false,
@@ -36,7 +47,9 @@ export const SiretExtraction = ({websiteWithCompany, remove, identify}: SiretExt
 
   useEffect(() => {
     if (isError) {
-      toastError({message: "Une erreur est survenue dans le service d'extraction."})
+      toastError({
+        message: "Une erreur est survenue dans le service d'extraction.",
+      })
     }
   }, [isError, error])
 
@@ -55,12 +68,24 @@ export const SiretExtraction = ({websiteWithCompany, remove, identify}: SiretExt
     })
   }
 
-  const matchingAssociatedCompanyBlock = (extraction: ISiretExtraction, associatedCompany?: Company) => {
+  const matchingAssociatedCompanyBlock = (
+    extraction: ISiretExtraction,
+    associatedCompany?: Company,
+  ) => {
     if (associatedCompany) {
       if (associatedCompany.siret === extraction.sirene?.siret) {
-        return <h3 className="text-green-600 text-xl">Cette entreprise correspond à celle renseignée par le consommateur</h3>
+        return (
+          <h3 className="text-green-600 text-xl">
+            Cette entreprise correspond à celle renseignée par le consommateur
+          </h3>
+        )
       } else {
-        return <h3 className="text-red-600 text-xl">Cette entreprise ne correspond pas à celle renseignée par le consommateur</h3>
+        return (
+          <h3 className="text-red-600 text-xl">
+            Cette entreprise ne correspond pas à celle renseignée par le
+            consommateur
+          </h3>
+        )
       }
     } else {
       return null
@@ -78,12 +103,17 @@ export const SiretExtraction = ({websiteWithCompany, remove, identify}: SiretExt
         <div className="mb-4">
           <h3 className="text-green-600 text-xl">Infos Sirene</h3>
           <p>
-            Entreprise {isOpen} immatriculée sous le nom <span className="font-bold">{extraction.sirene.name}</span>
+            Entreprise {isOpen} immatriculée sous le nom{' '}
+            <span className="font-bold">{extraction.sirene.name}</span>
           </p>
         </div>
       )
     } else if (extraction.siren?.valid || extraction.siret?.valid) {
-      return <h3 className="mb-4 text-red-600 text-xl">Aucune info trouvée dans la base Sirene</h3>
+      return (
+        <h3 className="mb-4 text-red-600 text-xl">
+          Aucune info trouvée dans la base Sirene
+        </h3>
+      )
     } else {
       return null
     }
@@ -144,9 +174,13 @@ export const SiretExtraction = ({websiteWithCompany, remove, identify}: SiretExt
         {infosSireneBlock(extraction)}
         <h3 className="text-xl">Pages où le numéro a été trouvé</h3>
         <ul className="list-disc list-inside mb-4">
-          {extraction.links.slice(0, 3).map(link => (
+          {extraction.links.slice(0, 3).map((link) => (
             <li className="max-w-md truncate">
-              <a className="text-blue-600 underline hover:no-underline" href={link} target="_blank">
+              <a
+                className="text-blue-600 underline hover:no-underline"
+                href={link}
+                target="_blank"
+              >
                 {link}
               </a>
             </li>
@@ -155,7 +189,12 @@ export const SiretExtraction = ({websiteWithCompany, remove, identify}: SiretExt
         {matchingAssociatedCompanyBlock(extraction, websiteWithCompany.company)}
         <div className="flex flex-row-reverse">
           {extraction.sirene?.isOpen && (
-            <ScButton color="primary" onClick={() => associateAndIdentify(extraction.sirene!).then(_ => close())}>
+            <ScButton
+              color="primary"
+              onClick={() =>
+                associateAndIdentify(extraction.sirene!).then((_) => close())
+              }
+            >
               Associer & Identifier
             </ScButton>
           )}
@@ -167,7 +206,13 @@ export const SiretExtraction = ({websiteWithCompany, remove, identify}: SiretExt
   const displayResults = (result: ExtractionResult, close: () => void) => {
     if (result.status === 'success') {
       if (result.extractions?.length !== 0) {
-        return <>{result.extractions?.map(extraction => successBlock(extraction, close))}</>
+        return (
+          <>
+            {result.extractions?.map((extraction) =>
+              successBlock(extraction, close),
+            )}
+          </>
+        )
       } else {
         return (
           <Fender
@@ -176,8 +221,9 @@ export const SiretExtraction = ({websiteWithCompany, remove, identify}: SiretExt
             description={
               <>
                 <Txt color="hint" size="big" block gutterBottom>
-                  Le site web dispose peut-être d'une protection anti robot. Essayez une recherche manuelle sur le site pour
-                  essayer de le trouver.
+                  Le site web dispose peut-être d'une protection anti robot.
+                  Essayez une recherche manuelle sur le site pour essayer de le
+                  trouver.
                 </Txt>
               </>
             }
@@ -191,10 +237,13 @@ export const SiretExtraction = ({websiteWithCompany, remove, identify}: SiretExt
           title="Site web introuvable"
           description={
             <>
-              <Txt color="hint" size="big" block gutterBottom sx={{mb: 2}}>
+              <Txt color="hint" size="big" block gutterBottom sx={{ mb: 2 }}>
                 Impossible de se connecter au site : il n'existe pas ou plus.
               </Txt>
-              <ScButton variant="contained" onClick={() => remove().then(_ => close())}>
+              <ScButton
+                variant="contained"
+                onClick={() => remove().then((_) => close())}
+              >
                 Supprimer le site
               </ScButton>
             </>
@@ -208,8 +257,9 @@ export const SiretExtraction = ({websiteWithCompany, remove, identify}: SiretExt
           title="Site web protégé"
           description={
             <>
-              <Txt color="hint" size="big" block gutterBottom sx={{mb: 2}}>
-                Le site web possède une protection anti robot. Essayez une recherche manuelle sur le site.
+              <Txt color="hint" size="big" block gutterBottom sx={{ mb: 2 }}>
+                Le site web possède une protection anti robot. Essayez une
+                recherche manuelle sur le site.
               </Txt>
             </>
           }
@@ -223,7 +273,8 @@ export const SiretExtraction = ({websiteWithCompany, remove, identify}: SiretExt
           description={
             <>
               <Txt color="hint" size="big" block gutterBottom>
-                L'outil d'extraction a rencontré un problème, essayez une recherche manuelle sur le site.
+                L'outil d'extraction a rencontré un problème, essayez une
+                recherche manuelle sur le site.
               </Txt>
             </>
           }
@@ -236,12 +287,12 @@ export const SiretExtraction = ({websiteWithCompany, remove, identify}: SiretExt
     <Modal
       onOpen={() => refetch()}
       cancelLabel={m.close}
-      PaperProps={{style: {overflow: 'visible', maxHeight: '800px'}}}
+      PaperProps={{ style: { overflow: 'visible', maxHeight: '800px' } }}
       maxWidth="sm"
       fullWidth
       title={`Recherche du Siret sur ${website}`}
       loading={isLoading}
-      content={close => data && displayResults(data, close)}
+      content={(close) => data && displayResults(data, close)}
     >
       <IconBtn>
         <Icon>search</Icon>

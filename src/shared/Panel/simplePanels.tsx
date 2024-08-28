@@ -1,5 +1,5 @@
-import {LinearProgress} from '@mui/material'
-import {forwardRef, ReactNode} from 'react'
+import { LinearProgress } from '@mui/material'
+import { forwardRef, ReactNode } from 'react'
 
 interface CleanWidePanelProps {
   children: ReactNode
@@ -7,9 +7,15 @@ interface CleanWidePanelProps {
 }
 
 // Just a simple container, with a wide padding
-export const CleanWidePanel = forwardRef(function CleanWidePanel({children, loading}: CleanWidePanelProps, ref: any) {
+export const CleanWidePanel = forwardRef(function CleanWidePanel(
+  { children, loading }: CleanWidePanelProps,
+  ref: any,
+) {
   return (
-    <div className={`p-8 border-solid border border-gray-500 rounded shadow-md mb-4`} ref={ref}>
+    <div
+      className={`p-8 border-solid border border-gray-500 rounded shadow-md mb-4`}
+      ref={ref}
+    >
       {loading ? (
         <div className="min-h-[100px]">
           <LinearProgress className="" />
@@ -32,7 +38,13 @@ interface CleanDiscreetPanelProps {
 
 // An alternative, less visible, and less padding, for smaller, more often repeated usages
 export const CleanDiscreetPanel = forwardRef(function (
-  {children, loading, noPaddingTop, fullHeight, noShadow}: CleanDiscreetPanelProps,
+  {
+    children,
+    loading,
+    noPaddingTop,
+    fullHeight,
+    noShadow,
+  }: CleanDiscreetPanelProps,
   ref: any,
 ) {
   return (

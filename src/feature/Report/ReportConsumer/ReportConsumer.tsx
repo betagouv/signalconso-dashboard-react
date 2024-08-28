@@ -1,37 +1,50 @@
-import {ReportReferenceNumber} from 'feature/Report/ReportReferenceNumber'
+import { ReportReferenceNumber } from 'feature/Report/ReportReferenceNumber'
 
-import {WithInlineIcon} from 'shared/WithInlineIcon'
-import {Report, ReportConsumerUpdate, ReportSearchResult} from '../../../core/client/report/Report'
-import {capitalize} from '../../../core/helper'
-import {useI18n} from '../../../core/i18n'
-import {ScButton} from '../../../shared/Button'
-import {Panel, PanelBody, PanelHead} from '../../../shared/Panel'
-import {EditConsumerDialog} from './EditConsumerDialog'
-import {useMutation, useQueryClient} from '@tanstack/react-query'
-import {useApiContext} from '../../../core/context/ApiContext'
-import {GetReportQueryKeys} from '../../../core/queryhooks/reportQueryHooks'
-import {CleanDiscreetPanel, CleanWidePanel} from 'shared/Panel/simplePanels'
-import {UserNameLabel} from '../../../shared/UserNameLabel'
+import { WithInlineIcon } from 'shared/WithInlineIcon'
+import {
+  Report,
+  ReportConsumerUpdate,
+  ReportSearchResult,
+} from '../../../core/client/report/Report'
+import { capitalize } from '../../../core/helper'
+import { useI18n } from '../../../core/i18n'
+import { ScButton } from '../../../shared/Button'
+import { Panel, PanelBody, PanelHead } from '../../../shared/Panel'
+import { EditConsumerDialog } from './EditConsumerDialog'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { useApiContext } from '../../../core/context/ApiContext'
+import { GetReportQueryKeys } from '../../../core/queryhooks/reportQueryHooks'
+import { CleanDiscreetPanel, CleanWidePanel } from 'shared/Panel/simplePanels'
+import { UserNameLabel } from '../../../shared/UserNameLabel'
 
 interface Props {
   report: Report
   canEdit?: boolean
 }
 
-export const ReportConsumer = ({report, canEdit}: Props) => {
-  const {m} = useI18n()
-  const {api} = useApiContext()
+export const ReportConsumer = ({ report, canEdit }: Props) => {
+  const { m } = useI18n()
+  const { api } = useApiContext()
   const queryClient = useQueryClient()
   const _updateReportConsumer = useMutation({
-    mutationFn: (params: {reportId: string; reportConsumerUpdate: ReportConsumerUpdate}) =>
-      api.secured.reports.updateReportConsumer(params.reportId, params.reportConsumerUpdate),
-    onSuccess: report =>
-      queryClient.setQueryData(GetReportQueryKeys(report.id), (prev: ReportSearchResult) => {
-        return {report, files: prev?.files ?? []}
-      }),
+    mutationFn: (params: {
+      reportId: string
+      reportConsumerUpdate: ReportConsumerUpdate
+    }) =>
+      api.secured.reports.updateReportConsumer(
+        params.reportId,
+        params.reportConsumerUpdate,
+      ),
+    onSuccess: (report) =>
+      queryClient.setQueryData(
+        GetReportQueryKeys(report.id),
+        (prev: ReportSearchResult) => {
+          return { report, files: prev?.files ?? [] }
+        },
+      ),
   })
 
-  const {firstName, lastName, contactAgreement} = report
+  const { firstName, lastName, contactAgreement } = report
 
   return (
     <CleanDiscreetPanel>
@@ -40,9 +53,18 @@ export const ReportConsumer = ({report, canEdit}: Props) => {
         {canEdit && (
           <EditConsumerDialog
             report={report}
-            onChange={consumer => _updateReportConsumer.mutate({reportId: report.id, reportConsumerUpdate: consumer})}
+            onChange={(consumer) =>
+              _updateReportConsumer.mutate({
+                reportId: report.id,
+                reportConsumerUpdate: consumer,
+              })
+            }
           >
-            <ScButton icon="edit" color="primary" loading={_updateReportConsumer.isPending}>
+            <ScButton
+              icon="edit"
+              color="primary"
+              loading={_updateReportConsumer.isPending}
+            >
               {m.edit}
             </ScButton>
           </EditConsumerDialog>
@@ -57,10 +79,17 @@ export const ReportConsumer = ({report, canEdit}: Props) => {
               Ne pas divulguer ces informations à l'entreprise.
             </div>
           )}
-          <UserNameLabel firstName={capitalize(firstName)} lastName={capitalize(lastName)} />
+          <UserNameLabel
+            firstName={capitalize(firstName)}
+            lastName={capitalize(lastName)}
+          />
           <div className="text-gray-500">{report.email}</div>
-          {report.consumerPhone && <div className="text-gray-500">{report.consumerPhone}</div>}
-          <ReportReferenceNumber consumerReferenceNumber={report.consumerReferenceNumber} />
+          {report.consumerPhone && (
+            <div className="text-gray-500">{report.consumerPhone}</div>
+          )}
+          <ReportReferenceNumber
+            consumerReferenceNumber={report.consumerReferenceNumber}
+          />
         </div>
       </div>
     </CleanDiscreetPanel>

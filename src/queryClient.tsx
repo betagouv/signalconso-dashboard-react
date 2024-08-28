@@ -1,8 +1,11 @@
-import {MutationCache, QueryCache, QueryClient} from '@tanstack/react-query'
-import {ApiError} from 'core/client/ApiClient'
+import { MutationCache, QueryCache, QueryClient } from '@tanstack/react-query'
+import { ApiError } from 'core/client/ApiClient'
 
 function initialErrorHandler(e: Error) {
-  console.error('Error caught by initial error handler of queryClient, this should not happen', e)
+  console.error(
+    'Error caught by initial error handler of queryClient, this should not happen',
+    e,
+  )
 }
 
 function buildQueryClient() {
@@ -17,7 +20,11 @@ function buildQueryClient() {
           if (failureCount > MAX_RETRIES) {
             return false
           }
-          return !(error instanceof ApiError && error.details.code && HTTP_STATUS_TO_NOT_RETRY.includes(error.details.code))
+          return !(
+            error instanceof ApiError &&
+            error.details.code &&
+            HTTP_STATUS_TO_NOT_RETRY.includes(error.details.code)
+          )
         },
       },
     },
@@ -41,4 +48,4 @@ function buildQueryClient() {
   }
 }
 
-export const {queryClient, setQueryClientErrorHandler} = buildQueryClient()
+export const { queryClient, setQueryClientErrorHandler } = buildQueryClient()

@@ -1,6 +1,6 @@
-import {ApiClientApi} from '../ApiClient'
-import {BarcodeProduct} from './BarcodeProduct'
-import {Id} from '../../model'
+import { ApiClientApi } from '../ApiClient'
+import { BarcodeProduct } from './BarcodeProduct'
+import { Id } from '../../model'
 
 export class BarcodeClient {
   constructor(private client: ApiClientApi) {}

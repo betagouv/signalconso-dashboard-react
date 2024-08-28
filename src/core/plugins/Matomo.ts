@@ -1,6 +1,6 @@
-import {config} from 'conf/config'
+import { config } from 'conf/config'
 
-export const MATOMO_ENABLED = config.enableMatomo
+const MATOMO_ENABLED = config.enableMatomo
 
 declare const _paq: any
 
@@ -17,7 +17,12 @@ export class Matomo {
     return true
   }
 
-  static readonly trackEvent = (category: EventCategories, action: AnalyticAction, name?: any, value?: any) => {
+  static readonly trackEvent = (
+    category: EventCategories,
+    action: AnalyticAction,
+    name?: any,
+    value?: any,
+  ) => {
     Matomo.push(['trackEvent', category, action, name, value])
   }
 
@@ -43,7 +48,12 @@ export class Matomo {
   }
 }
 
-type AnalyticAction = AuthenticationEventActions | AccountEventActions | AccessEventActions | StatisticsActions | newsletter
+type AnalyticAction =
+  | AuthenticationEventActions
+  | AccountEventActions
+  | AccessEventActions
+  | StatisticsActions
+  | newsletter
 
 export enum EventCategories {
   auth = 'Authentification',

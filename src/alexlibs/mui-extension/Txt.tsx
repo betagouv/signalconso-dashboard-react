@@ -1,6 +1,6 @@
-import {Box, BoxProps, Skeleton} from '@mui/material'
+import { Box, BoxProps, Skeleton } from '@mui/material'
 import * as React from 'react'
-import {forwardRef} from 'react'
+import { forwardRef } from 'react'
 
 interface Props extends BoxProps {
   bold?: boolean
@@ -10,7 +10,15 @@ interface Props extends BoxProps {
   block?: boolean
   skeleton?: boolean | number | string
   size?: 'big' | 'title' | 'small'
-  color?: 'primary' | 'secondary' | 'disabled' | 'hint' | 'default' | 'error' | 'success' | 'warning'
+  color?:
+    | 'primary'
+    | 'secondary'
+    | 'disabled'
+    | 'hint'
+    | 'default'
+    | 'error'
+    | 'success'
+    | 'warning'
   uppercase?: boolean
   truncate?: boolean
   noWrap?: boolean
@@ -86,7 +94,7 @@ export const Txt = forwardRef(
             display: 'block',
           }),
           ...(bold && {
-            fontWeight: t => t.typography.fontWeightMedium,
+            fontWeight: (t) => t.typography.fontWeightMedium,
           }),
           ...(italic && {
             fontStyle: 'italic',
@@ -117,7 +125,10 @@ export const Txt = forwardRef(
         ref={ref}
       >
         {skeleton ? (
-          <Skeleton sx={{display: 'inline-block'}} width={isNaN(skeleton as any) ? '80%' : (skeleton as number)} />
+          <Skeleton
+            sx={{ display: 'inline-block' }}
+            width={isNaN(skeleton as any) ? '80%' : (skeleton as number)}
+          />
         ) : (
           children
         )}

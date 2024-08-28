@@ -1,17 +1,27 @@
-import {Checkbox, Dialog, DialogActions, DialogContent, DialogTitle, MenuItem} from '@mui/material'
-import {useMutation} from '@tanstack/react-query'
-import React, {ReactElement, useState} from 'react'
-import {Controller, useForm} from 'react-hook-form'
-import {Btn} from '../../alexlibs/mui-extension'
-import {AccessLevel, CompaniesToImport} from '../../core/client/company/Company'
-import {useApiContext} from '../../core/context/ApiContext'
-import {useI18n} from '../../core/i18n'
-import {useToast} from '../../core/toast'
-import {DialogInputRow} from '../../shared/DialogInputRow'
-import {ScInput} from '../../shared/ScInput'
-import {ScSelect} from '../../shared/Select/Select'
+import {
+  Checkbox,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  MenuItem,
+} from '@mui/material'
+import { useMutation } from '@tanstack/react-query'
+import React, { ReactElement, useState } from 'react'
+import { Controller, useForm } from 'react-hook-form'
+import { Btn } from '../../alexlibs/mui-extension'
+import {
+  AccessLevel,
+  CompaniesToImport,
+} from '../../core/client/company/Company'
+import { useApiContext } from '../../core/context/ApiContext'
+import { useI18n } from '../../core/i18n'
+import { useToast } from '../../core/toast'
+import { DialogInputRow } from '../../shared/DialogInputRow'
+import { ScInput } from '../../shared/ScInput'
+import { ScSelect } from '../../shared/Select/Select'
 
-export interface MassImportProps {
+interface MassImportProps {
   children: ReactElement<any>
 }
 
@@ -23,32 +33,34 @@ interface MassImportForm {
   level: AccessLevel
 }
 
-export const MassImport = ({children}: MassImportProps) => {
+export const MassImport = ({ children }: MassImportProps) => {
   const [open, setOpen] = useState<boolean>(false)
-  const {m} = useI18n()
-  const {toastError, toastSuccess} = useToast()
+  const { m } = useI18n()
+  const { toastError, toastSuccess } = useToast()
   const {
     register,
     handleSubmit,
     control,
     setError,
-    formState: {errors},
+    formState: { errors },
   } = useForm<MassImportForm>({
     defaultValues: {
       onlyHeadOffice: true,
       level: AccessLevel.ADMIN,
     },
   })
-  const {api} = useApiContext()
+  const { api } = useApiContext()
 
-  const mutation = useMutation({mutationFn: api.secured.company.importCompanies})
+  const mutation = useMutation({
+    mutationFn: api.secured.company.importCompanies,
+  })
 
   const close = () => {
     setOpen(false)
   }
 
   const confirm = (e: any) => {
-    handleSubmit(_ => {
+    handleSubmit((_) => {
       if (!_.siren && !_.sirets) {
         setError('sirets', {
           type: 'manual',
@@ -85,15 +97,20 @@ export const MassImport = ({children}: MassImportProps) => {
         <DialogContent>
           <>
             <p className="mb-2">
-              Cet outil permet d'ouvrir l'accès à des entreprises à certaines personnes,{' '}
-              <span className="font-bold">en contournant ainsi l'invitation via courrier postal</span>. A utiliser lorsqu'un pro
-              fait une demande au support en ce sens, et que vous avez vérifié manuellement (KBIS) que c'était bien le
+              Cet outil permet d'ouvrir l'accès à des entreprises à certaines
+              personnes,{' '}
+              <span className="font-bold">
+                en contournant ainsi l'invitation via courrier postal
+              </span>
+              . A utiliser lorsqu'un pro fait une demande au support en ce sens,
+              et que vous avez vérifié manuellement (KBIS) que c'était bien le
               propriétaire de ces entreprises.
             </p>
             <p className="italic mb-2 text-gray-500">
-              Les entreprises seront créées dans SignalConso, si elles n'existaient pas. Les destinataires recevront une
-              invitation à créer leur compte sur SignalConso, ou s'ils avaient déjà un compte, ils auront juste l'accès à ces
-              nouvelles entreprises.
+              Les entreprises seront créées dans SignalConso, si elles
+              n'existaient pas. Les destinataires recevront une invitation à
+              créer leur compte sur SignalConso, ou s'ils avaient déjà un
+              compte, ils auront juste l'accès à ces nouvelles entreprises.
             </p>
           </>
           <DialogInputRow label="SIREN">
@@ -113,7 +130,9 @@ export const MassImport = ({children}: MassImportProps) => {
             <Controller
               name="onlyHeadOffice"
               control={control}
-              render={({field: {ref, ...field}}) => <Checkbox checked={field.value} onChange={field.onChange} />}
+              render={({ field: { ref, ...field } }) => (
+                <Checkbox checked={field.value} onChange={field.onChange} />
+              )}
             />
           </DialogInputRow>
           <DialogInputRow label="SIRETs">
@@ -123,7 +142,10 @@ export const MassImport = ({children}: MassImportProps) => {
               helperText={errors.sirets?.message ?? ' '}
               fullWidth
               {...register('sirets', {
-                validate: value => !value || value.split(',').every(_ => _.match(/^[0-9]{14}$/)) || 'Un des SIRETs est invalide',
+                validate: (value) =>
+                  !value ||
+                  value.split(',').every((_) => _.match(/^[0-9]{14}$/)) ||
+                  'Un des SIRETs est invalide',
               })}
             />
           </DialogInputRow>
@@ -134,7 +156,9 @@ export const MassImport = ({children}: MassImportProps) => {
               helperText={errors.emails?.message ?? ' '}
               fullWidth
               {...register('emails', {
-                validate: value => value.split(',').every(_ => _.match(/.+@.+\..+/)) || 'Un des emails est invalide',
+                validate: (value) =>
+                  value.split(',').every((_) => _.match(/.+@.+\..+/)) ||
+                  'Un des emails est invalide',
               })}
             />
           </DialogInputRow>
@@ -142,8 +166,12 @@ export const MassImport = ({children}: MassImportProps) => {
             <Controller
               name="level"
               control={control}
-              render={({field: {ref, ...field}}) => (
-                <ScSelect value={field.value} onChange={field.onChange} fullWidth>
+              render={({ field: { ref, ...field } }) => (
+                <ScSelect
+                  value={field.value}
+                  onChange={field.onChange}
+                  fullWidth
+                >
                   <MenuItem value={AccessLevel.ADMIN}>Administration</MenuItem>
                   <MenuItem value={AccessLevel.MEMBER}>Lecture seule</MenuItem>
                 </ScSelect>
@@ -155,7 +183,12 @@ export const MassImport = ({children}: MassImportProps) => {
           <Btn onClick={close} color="primary">
             {m.close}
           </Btn>
-          <Btn loading={mutation.isPending} onClick={confirm} color="primary" variant="contained">
+          <Btn
+            loading={mutation.isPending}
+            onClick={confirm}
+            color="primary"
+            variant="contained"
+          >
             Envoyer
           </Btn>
         </DialogActions>

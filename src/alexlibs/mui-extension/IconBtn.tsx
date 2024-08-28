@@ -1,18 +1,28 @@
-import * as React from 'react'
-import {forwardRef, ReactNode} from 'react'
-import {CircularProgress, Icon, IconButton, IconButtonProps} from '@mui/material'
+import {
+  CircularProgress,
+  Icon,
+  IconButton,
+  IconButtonProps,
+} from '@mui/material'
+import { forwardRef, ReactNode } from 'react'
 
-export interface IconBtnProps extends IconButtonProps {
+interface IconBtnProps extends IconButtonProps {
   loading?: boolean
   icon?: string
   children: ReactNode
   tooltip?: string
 }
 
-export const IconBtn = forwardRef(({icon, loading, children, disabled, ...props}: IconBtnProps, ref: any) => {
-  return (
-    <IconButton {...props} disabled={disabled || loading} ref={ref}>
-      {loading ? <CircularProgress size={24} /> : <>{icon ? <Icon>{icon}</Icon> : children}</>}
-    </IconButton>
-  )
-})
+export const IconBtn = forwardRef(
+  ({ icon, loading, children, disabled, ...props }: IconBtnProps, ref: any) => {
+    return (
+      <IconButton {...props} disabled={disabled || loading} ref={ref}>
+        {loading ? (
+          <CircularProgress size={24} />
+        ) : (
+          <>{icon ? <Icon>{icon}</Icon> : children}</>
+        )}
+      </IconButton>
+    )
+  },
+)

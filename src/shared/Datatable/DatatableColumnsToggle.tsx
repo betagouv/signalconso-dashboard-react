@@ -1,20 +1,36 @@
-import {Badge, Checkbox, Icon, IconButtonProps, Menu, MenuItem, Tooltip} from '@mui/material'
+import {
+  Badge,
+  Checkbox,
+  Icon,
+  IconButtonProps,
+  Menu,
+  MenuItem,
+  Tooltip,
+} from '@mui/material'
 import React from 'react'
-import {IconBtn} from '../../alexlibs/mui-extension'
-import {DatatableColumnProps} from './Datatable'
-import {ScButton} from '../Button'
+import { IconBtn } from '../../alexlibs/mui-extension'
+import { DatatableColumnProps } from './Datatable'
+import { ScButton } from '../Button'
 
 interface Props extends Omit<IconButtonProps, 'onChange'> {
   // Hack because there is no way to make TS understand that the key of an object can
   // only be a string ({[key: string]: string} does not work...)
-  columns: (Omit<DatatableColumnProps<any>, 'id'> & {id: string})[]
+  columns: (Omit<DatatableColumnProps<any>, 'id'> & { id: string })[]
   hiddenColumns: string[]
   onChange: (_: string[]) => void
   title?: string
   plainTextButton?: boolean
 }
 
-export const DatatableColumnToggle = ({className, title, columns, hiddenColumns, onChange, plainTextButton, ...props}: Props) => {
+export const DatatableColumnToggle = ({
+  className,
+  title,
+  columns,
+  hiddenColumns,
+  onChange,
+  plainTextButton,
+  ...props
+}: Props) => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -27,7 +43,11 @@ export const DatatableColumnToggle = ({className, title, columns, hiddenColumns,
         {plainTextButton && title ? (
           <Badge
             color="error"
-            badgeContent={columns.length === hiddenColumns.length ? '!' : columns.length - hiddenColumns.length}
+            badgeContent={
+              columns.length === hiddenColumns.length
+                ? '!'
+                : columns.length - hiddenColumns.length
+            }
             invisible={hiddenColumns.length === 0}
           >
             <ScButton onClick={handleClick} variant="outlined" color="primary">
@@ -38,22 +58,43 @@ export const DatatableColumnToggle = ({className, title, columns, hiddenColumns,
           <IconBtn {...props} color="primary" onClick={handleClick}>
             <Badge
               color="error"
-              badgeContent={columns.length === hiddenColumns.length ? '!' : columns.length - hiddenColumns.length}
+              badgeContent={
+                columns.length === hiddenColumns.length
+                  ? '!'
+                  : columns.length - hiddenColumns.length
+              }
               invisible={hiddenColumns.length === 0}
             >
-              <Icon color={columns.length === hiddenColumns.length ? 'error' : undefined}>table_chart</Icon>
+              <Icon
+                color={
+                  columns.length === hiddenColumns.length ? 'error' : undefined
+                }
+              >
+                table_chart
+              </Icon>
             </Badge>
           </IconBtn>
         )}
       </Tooltip>
-      <Menu anchorEl={anchorEl} keepMounted open={!!anchorEl} onClose={() => setAnchorEl(null)}>
-        {columns.map(col => {
+      <Menu
+        anchorEl={anchorEl}
+        keepMounted
+        open={!!anchorEl}
+        onClose={() => setAnchorEl(null)}
+      >
+        {columns.map((col) => {
           const checked = !hiddenColumns.includes(col.id)
           return (
             <MenuItem
               dense
               key={col.id}
-              onClick={() => onChange(checked ? [...hiddenColumns, col.id] : hiddenColumns.filter(_ => _ !== col.id))}
+              onClick={() =>
+                onChange(
+                  checked
+                    ? [...hiddenColumns, col.id]
+                    : hiddenColumns.filter((_) => _ !== col.id),
+                )
+              }
             >
               <Checkbox
                 sx={{

@@ -1,20 +1,24 @@
-import {Panel, PanelBody} from '../../shared/Panel'
-import {isStatusFinal, isStatusInvisibleToPro, ReportStatusLabel} from '../../shared/ReportStatus'
-import {Alert} from '../../alexlibs/mui-extension'
-import {Box, Icon} from '@mui/material'
-import {PanelFoot} from '../../shared/Panel/PanelFoot'
-import {ScChip} from '../../shared/ScChip'
-import React, {ReactNode} from 'react'
-import {styleUtils} from '../../core/theme'
-import {useI18n} from '../../core/i18n'
-import {makeSx} from '../../alexlibs/mui-extension'
-import {Report} from '../../core/client/report/Report'
-import {ReportCategories} from './ReportCategories'
-import {CleanDiscreetPanel, CleanWidePanel} from 'shared/Panel/simplePanels'
+import { Panel, PanelBody } from '../../shared/Panel'
+import {
+  isStatusFinal,
+  isStatusInvisibleToPro,
+  ReportStatusLabel,
+} from '../../shared/ReportStatus'
+import { Alert } from '../../alexlibs/mui-extension'
+import { Box, Icon } from '@mui/material'
+import { PanelFoot } from '../../shared/Panel/PanelFoot'
+import { ScChip } from '../../shared/ScChip'
+import React, { ReactNode } from 'react'
+import { styleUtils } from '../../core/theme'
+import { useI18n } from '../../core/i18n'
+import { makeSx } from '../../alexlibs/mui-extension'
+import { Report } from '../../core/client/report/Report'
+import { ReportCategories } from './ReportCategories'
+import { CleanDiscreetPanel, CleanWidePanel } from 'shared/Panel/simplePanels'
 
 const css = makeSx({
   root: {
-    transition: t => t.transitions.create('box-shadow'),
+    transition: (t) => t.transitions.create('box-shadow'),
   },
   pageTitle: {
     display: 'flex',
@@ -25,7 +29,7 @@ const css = makeSx({
   },
   pageTitle_txt: {
     margin: 0,
-    fontSize: t => styleUtils(t).fontSize.bigTitle,
+    fontSize: (t) => styleUtils(t).fontSize.bigTitle,
   },
   actions: {
     flexWrap: 'wrap',
@@ -40,14 +44,22 @@ interface Props {
   isUserPro?: boolean
 }
 
-const ExpiresSoonWarning = ({report, isUserPro}: {report: Report; isUserPro: boolean}) => {
-  const {m} = useI18n()
+const ExpiresSoonWarning = ({
+  report,
+  isUserPro,
+}: {
+  report: Report
+  isUserPro: boolean
+}) => {
+  const { m } = useI18n()
   const expectResponse = isUserPro && !isStatusFinal(report.status)
   const sevenDaysInMilliseconds = 7 * 24 * 60 * 60 * 1000
-  const expiresSoon = Math.abs(report.expirationDate.getTime() - new Date().getTime()) < sevenDaysInMilliseconds
+  const expiresSoon =
+    Math.abs(report.expirationDate.getTime() - new Date().getTime()) <
+    sevenDaysInMilliseconds
   if (expectResponse && expiresSoon) {
     return (
-      <Alert type="warning" sx={{mb: 2}}>
+      <Alert type="warning" sx={{ mb: 2 }}>
         {m.reportLimitedTimeToAnswer}
       </Alert>
     )
@@ -55,8 +67,14 @@ const ExpiresSoonWarning = ({report, isUserPro}: {report: Report; isUserPro: boo
   return null
 }
 
-export const ExpirationDate = ({report, isUserPro}: {report: Report; isUserPro: boolean}) => {
-  const {m, formatDate} = useI18n()
+export const ExpirationDate = ({
+  report,
+  isUserPro,
+}: {
+  report: Report
+  isUserPro: boolean
+}) => {
+  const { m, formatDate } = useI18n()
   const isFinal = isStatusFinal(report.status)
   const isInvisibleToPro = isStatusInvisibleToPro(report.status)
   function getTextAndColor() {
@@ -65,16 +83,16 @@ export const ExpirationDate = ({report, isUserPro}: {report: Report; isUserPro: 
       if (isFinal) {
         return null
       }
-      return {text: m.reportNeedsAnswerBefore}
+      return { text: m.reportNeedsAnswerBefore }
     }
     if (isFinal) {
-      return {text: m.reportProHadToAnswerBefore, grayedOut: true}
+      return { text: m.reportProHadToAnswerBefore, grayedOut: true }
     }
-    return {text: m.reportProMustAnswerBefore}
+    return { text: m.reportProMustAnswerBefore }
   }
   const textAndColor = getTextAndColor()
   if (!textAndColor) return null
-  const {text, grayedOut} = textAndColor
+  const { text, grayedOut } = textAndColor
   const dateFormatted = formatDate(report.expirationDate)
   return (
     <p className={grayedOut ? 'text-gray-500' : ''}>
@@ -83,8 +101,8 @@ export const ExpirationDate = ({report, isUserPro}: {report: Report; isUserPro: 
   )
 }
 
-export const ReportHeader = ({report, children}: Props) => {
-  const {m} = useI18n()
+export const ReportHeader = ({ report, children }: Props) => {
+  const { m } = useI18n()
 
   const hideTags = false
 
@@ -93,21 +111,32 @@ export const ReportHeader = ({report, children}: Props) => {
       <div className="flex items-center justify-between mb-2">
         <div>
           <h1 className="text-xl font-bold">{m.report_pageTitle}</h1>
-          <ExpirationDate {...{report}} isUserPro={false} />
+          <ExpirationDate {...{ report }} isUserPro={false} />
         </div>
-        <ReportStatusLabel style={{marginLeft: 'auto'}} status={report.status} />
+        <ReportStatusLabel
+          style={{ marginLeft: 'auto' }}
+          status={report.status}
+        />
       </div>
 
-      <ExpiresSoonWarning {...{report}} isUserPro={false} />
-      <ReportCategories categories={[m.ReportCategoryDesc[report.category], ...report.subcategories]} />
+      <ExpiresSoonWarning {...{ report }} isUserPro={false} />
+      <ReportCategories
+        categories={[
+          m.ReportCategoryDesc[report.category],
+          ...report.subcategories,
+        ]}
+      />
       {(!hideTags || children) && (
         <div className="flex justify-between">
           {!hideTags && (
-            <div style={{flex: 1}}>
-              {report.tags.map(tag => [
+            <div style={{ flex: 1 }}>
+              {report.tags.map((tag) => [
                 <ScChip
                   icon={
-                    <Icon style={{fontSize: 20}} sx={{color: t => t.palette.text.disabled}}>
+                    <Icon
+                      style={{ fontSize: 20 }}
+                      sx={{ color: (t) => t.palette.text.disabled }}
+                    >
                       sell
                     </Icon>
                   }

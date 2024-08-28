@@ -1,15 +1,23 @@
-import {Icon, TextField} from '@mui/material'
-import {AlertContactSupport, EspaceProTitle} from 'feature/Login/loggedOutComponents'
-import {useState} from 'react'
-import {useForm} from 'react-hook-form'
-import {CenteredContent} from 'shared/CenteredContent'
-import {Alert, Txt} from '../../alexlibs/mui-extension'
-import {ApiError} from '../../core/client/ApiClient'
-import {regexp} from '../../core/helper/regexp'
-import {useI18n} from '../../core/i18n'
-import {AccessEventActions, ActionResultNames, EventCategories, Matomo} from '../../core/plugins/Matomo'
-import {ScButton} from '../../shared/Button'
-import {InfoBanner} from '../../shared/InfoBanner'
+import { Icon, TextField } from '@mui/material'
+import {
+  AlertContactSupport,
+  EspaceProTitle,
+} from 'feature/Login/loggedOutComponents'
+import { useState } from 'react'
+import { useForm } from 'react-hook-form'
+import { CenteredContent } from 'shared/CenteredContent'
+import { Alert, Txt } from '../../alexlibs/mui-extension'
+import { ApiError } from '../../core/client/ApiClient'
+import { regexp } from '../../core/helper/regexp'
+import { useI18n } from '../../core/i18n'
+import {
+  AccessEventActions,
+  ActionResultNames,
+  EventCategories,
+  Matomo,
+} from '../../core/plugins/Matomo'
+import { ScButton } from '../../shared/Button'
+import { InfoBanner } from '../../shared/InfoBanner'
 
 interface ActionProps<F extends (...args: any[]) => Promise<any>> {
   action: F
@@ -25,26 +33,32 @@ interface Form {
 }
 
 interface Props {
-  register: ActionProps<(siret: string, code: string, email: string) => Promise<any>>
+  register: ActionProps<
+    (siret: string, code: string, email: string) => Promise<any>
+  >
 }
 
-export const RegisterForm = ({register: registerAction}: Props) => {
-  const {m} = useI18n()
+export const RegisterForm = ({ register: registerAction }: Props) => {
+  const { m } = useI18n()
   const [done, setDone] = useState(false)
   const {
     register,
     handleSubmit,
     setError,
     clearErrors,
-    formState: {errors},
-  } = useForm<Form>({mode: 'onChange'})
+    formState: { errors },
+  } = useForm<Form>({ mode: 'onChange' })
 
   const activateAccount = (form: Form) => {
     clearErrors('apiError')
     registerAction
       .action(form.siret, form.code, form.email)
       .then(() => {
-        Matomo.trackEvent(EventCategories.account, AccessEventActions.activateCompanyCode, ActionResultNames.success)
+        Matomo.trackEvent(
+          EventCategories.account,
+          AccessEventActions.activateCompanyCode,
+          ActionResultNames.success,
+        )
         setDone(true)
       })
       .catch((err: ApiError) => {
@@ -52,7 +66,11 @@ export const RegisterForm = ({register: registerAction}: Props) => {
           type: err.details.id,
           message: err.message,
         })
-        Matomo.trackEvent(EventCategories.companyAccess, AccessEventActions.activateCompanyCode, ActionResultNames.fail)
+        Matomo.trackEvent(
+          EventCategories.companyAccess,
+          AccessEventActions.activateCompanyCode,
+          ActionResultNames.fail,
+        )
       })
   }
 
@@ -72,10 +90,15 @@ export const RegisterForm = ({register: registerAction}: Props) => {
             <Txt block bold size="big">
               {m.accountAlmostReady}
             </Txt>
-            <Txt dangerouslySetInnerHTML={{__html: m.companyRegisteredEmailSent}} />
+            <Txt
+              dangerouslySetInnerHTML={{ __html: m.companyRegisteredEmailSent }}
+            />
           </Alert>
         ) : (
-          <form onSubmit={handleSubmit(activateAccount)} className="flex flex-col gap-4">
+          <form
+            onSubmit={handleSubmit(activateAccount)}
+            className="flex flex-col gap-4"
+          >
             {errors.apiError && (
               <Alert type="error" className="mb-4">
                 <Txt size="big" block bold>
@@ -91,8 +114,11 @@ export const RegisterForm = ({register: registerAction}: Props) => {
               helperText={errors.siret?.message ?? m.siretOfYourCompanyDesc}
               label={m.siretOfYourCompany}
               {...register('siret', {
-                required: {value: true, message: m.required},
-                pattern: {value: regexp.siret, message: m.siretOfYourCompanyInvalid},
+                required: { value: true, message: m.required },
+                pattern: {
+                  value: regexp.siret,
+                  message: m.siretOfYourCompanyInvalid,
+                },
               })}
             />
             <TextField
@@ -102,8 +128,11 @@ export const RegisterForm = ({register: registerAction}: Props) => {
               helperText={errors.code?.message ?? m.activationCodeDesc}
               label={m.activationCode}
               {...register('code', {
-                required: {value: true, message: m.required},
-                pattern: {value: regexp.activationCode, message: m.activationCodeInvalid},
+                required: { value: true, message: m.required },
+                pattern: {
+                  value: regexp.activationCode,
+                  message: m.activationCodeInvalid,
+                },
               })}
             />
             <div className="flex flex-col gap-2 mb-4">
@@ -113,8 +142,8 @@ export const RegisterForm = ({register: registerAction}: Props) => {
                 helperText={errors.email?.message ?? m.emailDesc}
                 label={m.yourEmail}
                 {...register('email', {
-                  required: {value: true, message: m.required},
-                  pattern: {value: regexp.email, message: m.invalidEmail},
+                  required: { value: true, message: m.required },
+                  pattern: { value: regexp.email, message: m.invalidEmail },
                 })}
               />
               <div className="flex flex-col gap-2 text-gray-500 mx-3">
@@ -122,8 +151,11 @@ export const RegisterForm = ({register: registerAction}: Props) => {
                   <InfoIcon /> {m.willReceiveVerificationEmail}
                 </p>
                 <p className="">
-                  <InfoIcon /> <span className="font-bold text-gray-600">{m.willUseThisEmailToCommunicate}</span>.{' '}
-                  {m.newReportsWillBeSentThere}
+                  <InfoIcon />{' '}
+                  <span className="font-bold text-gray-600">
+                    {m.willUseThisEmailToCommunicate}
+                  </span>
+                  . {m.newReportsWillBeSentThere}
                 </p>
                 <p className="">
                   <InfoIcon /> {m.willUseItToConnect}
@@ -134,7 +166,7 @@ export const RegisterForm = ({register: registerAction}: Props) => {
             <div className="flex flex-xcol gap-4 justify-center mb-4">
               <ScButton
                 loading={registerAction.loading}
-                onClick={_ => clearErrors('apiError')}
+                onClick={(_) => clearErrors('apiError')}
                 type="submit"
                 color="primary"
                 variant="contained"

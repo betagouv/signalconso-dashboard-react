@@ -1,14 +1,14 @@
-import React, {ReactElement, useState} from 'react'
-import {Alert} from '../../alexlibs/mui-extension'
-import {useI18n} from '../../core/i18n'
-import {useConnectedContext} from '../../core/context/ConnectedContext'
-import {ScDialog} from '../../shared/ScDialog'
-import {Report} from '../../core/client/report/Report'
-import {useMutation} from '@tanstack/react-query'
-import {Id, UploadedFile} from '../../core/model'
-import {ScRadioGroup} from '../../shared/RadioGroup'
-import {Enum} from '../../alexlibs/ts-utils'
-import {ScRadioGroupItem} from '../../shared/RadioGroupItem'
+import React, { ReactElement, useState } from 'react'
+import { Alert } from '../../alexlibs/mui-extension'
+import { useI18n } from '../../core/i18n'
+import { useConnectedContext } from '../../core/context/ConnectedContext'
+import { ScDialog } from '../../shared/ScDialog'
+import { Report } from '../../core/client/report/Report'
+import { useMutation } from '@tanstack/react-query'
+import { Id, UploadedFile } from '../../core/model'
+import { ScRadioGroup } from '../../shared/RadioGroup'
+import { Enum } from '../../alexlibs/ts-utils'
+import { ScRadioGroupItem } from '../../shared/RadioGroupItem'
 
 interface Props {
   report: Report
@@ -21,12 +21,12 @@ export enum DownloadType {
   ReportOnly = 'ReportOnly',
 }
 
-export const ReportDownloadAction = ({report, files, children}: Props) => {
-  const {m} = useI18n()
-  const {apiSdk} = useConnectedContext()
+export const ReportDownloadAction = ({ report, files, children }: Props) => {
+  const { m } = useI18n()
+  const { apiSdk } = useConnectedContext()
 
   const _download = useMutation({
-    mutationFn: (params: {id: Id; reportType: DownloadType}) => {
+    mutationFn: (params: { id: Id; reportType: DownloadType }) => {
       return params.reportType === DownloadType.ReportWithAttachment
         ? apiSdk.secured.reports.downloadZip(report)
         : apiSdk.secured.reports.download([params.id])
@@ -35,9 +35,8 @@ export const ReportDownloadAction = ({report, files, children}: Props) => {
       setDownloadReportWithAttachments(DownloadType.ReportWithAttachment)
     },
   })
-  const [downloadReportWithAttachments, setDownloadReportWithAttachments] = useState<DownloadType>(
-    DownloadType.ReportWithAttachment,
-  )
+  const [downloadReportWithAttachments, setDownloadReportWithAttachments] =
+    useState<DownloadType>(DownloadType.ReportWithAttachment)
 
   return (
     <ScDialog
@@ -47,7 +46,9 @@ export const ReportDownloadAction = ({report, files, children}: Props) => {
         _download
           .mutateAsync({
             id: report.id,
-            reportType: downloadReportWithAttachments ?? DownloadType.ReportWithAttachment,
+            reportType:
+              downloadReportWithAttachments ??
+              DownloadType.ReportWithAttachment,
           })
           .finally(close)
       }
@@ -57,14 +58,16 @@ export const ReportDownloadAction = ({report, files, children}: Props) => {
           {_download.error && <Alert type="error">{m.anErrorOccurred}</Alert>}
           <ScRadioGroup
             value={DownloadType.ReportWithAttachment}
-            onChange={choice => {
+            onChange={(choice) => {
               setDownloadReportWithAttachments(choice)
             }}
           >
-            {Enum.keys(DownloadType).map(downloadType => (
+            {Enum.keys(DownloadType).map((downloadType) => (
               <ScRadioGroupItem
                 title={m.reportDownloadTypeTitle[DownloadType[downloadType]]}
-                description={m.reportDownloadTypeDescription[DownloadType[downloadType]]}
+                description={
+                  m.reportDownloadTypeDescription[DownloadType[downloadType]]
+                }
                 value={downloadType}
                 key={downloadType}
               />

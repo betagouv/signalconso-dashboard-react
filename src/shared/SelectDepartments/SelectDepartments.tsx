@@ -1,10 +1,11 @@
 import * as React from 'react'
-import {forwardRef, useEffect} from 'react'
-import {Icon, InputAdornment, TextField, TextFieldProps} from '@mui/material'
-import {useSetState, UseSetState} from '../../alexlibs/react-hooks-lib'
-import {SelectDepartmentsMenu} from './SelectDepartmentsMenu'
+import { forwardRef, useEffect } from 'react'
+import { Icon, InputAdornment, TextField, TextFieldProps } from '@mui/material'
+import { useSetState, UseSetState } from '../../alexlibs/react-hooks-lib'
+import { SelectDepartmentsMenu } from './SelectDepartmentsMenu'
 
-export interface SelectDepartmentsProps extends Omit<TextFieldProps, 'value' | 'onChange'> {
+interface SelectDepartmentsProps
+  extends Omit<TextFieldProps, 'value' | 'onChange'> {
   placeholder?: string
   selectAllLabel?: string
   value?: string[]
@@ -16,7 +17,18 @@ export interface SelectDepartmentsProps extends Omit<TextFieldProps, 'value' | '
 }
 
 export const SelectDepartments = forwardRef(
-  ({value, readonly, onChange, selectAllLabel, label, disabled, ...props}: SelectDepartmentsProps, ref: any) => {
+  (
+    {
+      value,
+      readonly,
+      onChange,
+      selectAllLabel,
+      label,
+      disabled,
+      ...props
+    }: SelectDepartmentsProps,
+    ref: any,
+  ) => {
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
     let $input: HTMLElement | undefined = undefined
     const indexValues: UseSetState<string> = useSetState<string>()
@@ -54,7 +66,7 @@ export const SelectDepartments = forwardRef(
                 <Icon
                   sx={{
                     height: 20,
-                    color: t => t.palette.text.secondary,
+                    color: (t) => t.palette.text.secondary,
                     verticalAlign: 'top',
                   }}
                 >

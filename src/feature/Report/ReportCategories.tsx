@@ -1,11 +1,11 @@
-import {Box, Icon} from '@mui/material'
+import { Box, Icon } from '@mui/material'
 import React from 'react'
 
-export interface ReportCategoriesProps {
+interface ReportCategoriesProps {
   categories: any[]
 }
 
-export const ReportCategories = ({categories}: ReportCategoriesProps) => {
+export const ReportCategories = ({ categories }: ReportCategoriesProps) => {
   return (
     <Box className="flex flex-wrap gap-1 mb-4">
       {categories.map((category, i) => (
@@ -20,7 +20,11 @@ export const ReportCategories = ({categories}: ReportCategoriesProps) => {
               chevron_right
             </Icon>
           )}
-          <span className={`py-1 px-2 rounded-lg italic border border-solid border-gray-500`}>{category}</span>
+          <span
+            className={`py-1 px-2 rounded-lg italic border border-solid border-gray-500`}
+          >
+            {category}
+          </span>
         </Box>
       ))}
     </Box>

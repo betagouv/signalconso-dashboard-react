@@ -1,7 +1,10 @@
-import {duration} from '../duration/Duration'
+import { duration } from '../duration/Duration'
 
-export class Progress {
-  constructor(public totalLines: number, public t0 = new Date().getTime()) {}
+class Progress {
+  constructor(
+    public totalLines: number,
+    public t0 = new Date().getTime(),
+  ) {}
 
   private previoustN: number = this.t0
   private previousLines: number = 0
@@ -14,7 +17,12 @@ export class Progress {
       remainingTime: remainingTimeAvg,
       linesPerSecond: linesPerSecondAvg,
     } = this.getMetrics(0, lines, this.t0, tN)
-    const {remainingTime, linesPerSecond} = this.getMetrics(this.previousLines, lines, this.previoustN, tN)
+    const { remainingTime, linesPerSecond } = this.getMetrics(
+      this.previousLines,
+      lines,
+      this.previoustN,
+      tN,
+    )
     this.previoustN = tN
     this.previousLines = lines
     return {
@@ -27,11 +35,21 @@ export class Progress {
     }
   }
 
-  private readonly getMetrics = (t0Lines: number, t1Lines: number, t0: number, t1: number) => {
+  private readonly getMetrics = (
+    t0Lines: number,
+    t1Lines: number,
+    t0: number,
+    t1: number,
+  ) => {
     const linesDone = t1Lines - t0Lines
     const elapsedTime = t1 - t0
     const linesPerSecond = linesDone / duration(elapsedTime).toSeconds
-    const remainingTime = (this.totalLines - t1Lines) / (linesDone / elapsedTime)
-    return {elapsedTime: duration(elapsedTime), remainingTime: duration(remainingTime), linesPerSecond}
+    const remainingTime =
+      (this.totalLines - t1Lines) / (linesDone / elapsedTime)
+    return {
+      elapsedTime: duration(elapsedTime),
+      remainingTime: duration(remainingTime),
+      linesPerSecond,
+    }
   }
 }

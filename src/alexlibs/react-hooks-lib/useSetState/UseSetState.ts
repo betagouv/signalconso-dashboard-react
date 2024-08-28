@@ -1,4 +1,4 @@
-import {useState} from 'react'
+import { useState } from 'react'
 
 export interface UseSetState<T> {
   add: (t: T | T[]) => void
@@ -37,7 +37,7 @@ export const useSetState = <T>(initialValue: T[] = []): UseSetState<T> => {
   }
 
   const toggleAll = (t: T[]): void => {
-    t.map(t.every(_ => set.has(_)) ? remove : add)
+    t.map(t.every((_) => set.has(_)) ? remove : add)
   }
 
   const clear = () => setSet(new Set())

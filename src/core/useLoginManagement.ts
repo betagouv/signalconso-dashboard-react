@@ -1,7 +1,7 @@
-import {apiPublicSdk} from 'core/ApiSdkInstance'
-import {Dispatch, SetStateAction, useEffect, useState} from 'react'
-import {UserWithPermission} from './client/authenticate/Authenticate'
-import {useNavigate} from 'react-router'
+import { apiPublicSdk } from 'core/ApiSdkInstance'
+import { Dispatch, SetStateAction, useEffect, useState } from 'react'
+import { UserWithPermission } from './client/authenticate/Authenticate'
+import { useNavigate } from 'react-router'
 
 export type LoginManagementResult = {
   connectedUser?: UserWithPermission
@@ -24,7 +24,9 @@ export type LoginManagementResult = {
 export function useLoginManagement(): LoginManagementResult {
   const navigate = useNavigate()
 
-  const [connectedUser, setConnectedUser] = useState<UserWithPermission | undefined>()
+  const [connectedUser, setConnectedUser] = useState<
+    UserWithPermission | undefined
+  >()
   const [isLoggingIn, setIsLoggingIn] = useState(false)
   const [isRegistering, setIsRegistering] = useState(false)
   const [loginError, setLoginError] = useState<string | undefined>()
@@ -45,7 +47,10 @@ export function useLoginManagement(): LoginManagementResult {
     fetchUserOnStartup()
   }, [])
 
-  async function login(login: string, password: string): Promise<UserWithPermission> {
+  async function login(
+    login: string,
+    password: string,
+  ): Promise<UserWithPermission> {
     try {
       setIsLoggingIn(true)
       const user = await apiPublicSdk.authenticate.login(login, password)
@@ -59,7 +64,11 @@ export function useLoginManagement(): LoginManagementResult {
     }
   }
 
-  async function register(siret: string, token: string, email: string): Promise<void> {
+  async function register(
+    siret: string,
+    token: string,
+    email: string,
+  ): Promise<void> {
     try {
       setIsRegistering(true)
       await apiPublicSdk.authenticate.sendActivationLink(siret, token, email)

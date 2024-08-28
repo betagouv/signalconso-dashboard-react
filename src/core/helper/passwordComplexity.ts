@@ -5,7 +5,7 @@ function normalizeAccents(s: string) {
 
 function containsSpecialChars(s: string) {
   const list = `'-!"#$%&()*,./:;?@[]^_\`{|}~+<=>`
-  return list.split('').some(_ => s.includes(_))
+  return list.split('').some((_) => s.includes(_))
 }
 
 export function validatePasswordComplexity(str: string) {

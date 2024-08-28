@@ -1,6 +1,6 @@
 import * as _Sentry from '@sentry/react'
-import {config} from '../../conf/config'
-import {Integrations} from '@sentry/tracing'
+import { config } from '../../conf/config'
+import { Integrations } from '@sentry/tracing'
 
 export class Sentry {
   static readonly init = () => {

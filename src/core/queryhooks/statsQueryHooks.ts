@@ -1,6 +1,6 @@
-import {UseQueryOpts} from './types'
-import {useApiContext} from '../context/ApiContext'
-import {useQuery} from '@tanstack/react-query'
+import { UseQueryOpts } from './types'
+import { useApiContext } from '../context/ApiContext'
+import { useQuery } from '@tanstack/react-query'
 import {
   Id,
   ReportAdminActionType,
@@ -12,10 +12,13 @@ import {
   ReportTagsDistribution,
   SimpleStat,
 } from '../model'
-import {Duration} from '../../alexlibs/ts-utils'
+import { Duration } from '../../alexlibs/ts-utils'
 
-export const useGetResponseReviewsQuery = (id: Id, options?: UseQueryOpts<ReportResponseReviews, string[]>) => {
-  const {api} = useApiContext()
+export const useGetResponseReviewsQuery = (
+  id: Id,
+  options?: UseQueryOpts<ReportResponseReviews, string[]>,
+) => {
+  const { api } = useApiContext()
   return useQuery({
     queryKey: ['stats_getResponseReviews'],
     queryFn: () => api.secured.stats.getResponseReviews(id),
@@ -23,8 +26,11 @@ export const useGetResponseReviewsQuery = (id: Id, options?: UseQueryOpts<Report
   })
 }
 
-export const useGetEngagementReviewsQuery = (id: Id, options?: UseQueryOpts<ReportResponseReviews, string[]>) => {
-  const {api} = useApiContext()
+export const useGetEngagementReviewsQuery = (
+  id: Id,
+  options?: UseQueryOpts<ReportResponseReviews, string[]>,
+) => {
+  const { api } = useApiContext()
   return useQuery({
     queryKey: ['stats_getEngagementReviews'],
     queryFn: () => api.secured.stats.getEngagementReviews(id),
@@ -32,8 +38,11 @@ export const useGetEngagementReviewsQuery = (id: Id, options?: UseQueryOpts<Repo
   })
 }
 
-export const useGetTagsQuery = (id: Id, options?: UseQueryOpts<ReportTagsDistribution, string[]>) => {
-  const {api} = useApiContext()
+export const useGetTagsQuery = (
+  id: Id,
+  options?: UseQueryOpts<ReportTagsDistribution, string[]>,
+) => {
+  const { api } = useApiContext()
   return useQuery({
     queryKey: ['stats_GetTags'],
     queryFn: () => api.secured.stats.getTags(id),
@@ -41,26 +50,43 @@ export const useGetTagsQuery = (id: Id, options?: UseQueryOpts<ReportTagsDistrib
   })
 }
 
-export const useGetCompanyThreatQuery = (id: Id, options?: UseQueryOpts<SimpleStat, string[]>) => {
-  const {api} = useApiContext()
+export const useGetCompanyThreatQuery = (
+  id: Id,
+  options?: UseQueryOpts<SimpleStat, string[]>,
+) => {
+  const { api } = useApiContext()
   return useQuery({
     queryKey: ['stats_GetCompanyThreat'],
-    queryFn: () => api.secured.stats.getAdminActionCount(id, ReportAdminActionType.ConsumerThreatenByPro),
+    queryFn: () =>
+      api.secured.stats.getAdminActionCount(
+        id,
+        ReportAdminActionType.ConsumerThreatenByPro,
+      ),
     ...options,
   })
 }
 
-export const useGetCompanyRefundBlackMailQuery = (id: Id, options?: UseQueryOpts<SimpleStat, string[]>) => {
-  const {api} = useApiContext()
+export const useGetCompanyRefundBlackMailQuery = (
+  id: Id,
+  options?: UseQueryOpts<SimpleStat, string[]>,
+) => {
+  const { api } = useApiContext()
   return useQuery({
     queryKey: ['stats_GetCompanyRefundBlackMail'],
-    queryFn: () => api.secured.stats.getAdminActionCount(id, ReportAdminActionType.RefundBlackMail),
+    queryFn: () =>
+      api.secured.stats.getAdminActionCount(
+        id,
+        ReportAdminActionType.RefundBlackMail,
+      ),
     ...options,
   })
 }
 
-export const useStatusDistributionQuery = (id: Id, options?: UseQueryOpts<ReportStatusDistributionWithTotals, string[]>) => {
-  const {api} = useApiContext()
+export const useStatusDistributionQuery = (
+  id: Id,
+  options?: UseQueryOpts<ReportStatusDistributionWithTotals, string[]>,
+) => {
+  const { api } = useApiContext()
   return useQuery({
     queryKey: ['stats_StatusDistribution'],
     queryFn: () => api.secured.stats.getStatusDistribution(id),
@@ -72,7 +98,7 @@ export const useStatusDistributionProQuery = (
   id: Id,
   options?: UseQueryOpts<ReportStatusProDistributionWithTotals, string[]>,
 ) => {
-  const {api} = useApiContext()
+  const { api } = useApiContext()
   return useQuery({
     queryKey: ['stats_StatusDistributionPro'],
     queryFn: () => api.secured.stats.getStatusDistributionPro(id),
@@ -80,8 +106,11 @@ export const useStatusDistributionProQuery = (
   })
 }
 
-export const useGetResponseDelayQuery = (id: Id, options?: UseQueryOpts<Duration | null, string[]>) => {
-  const {api} = useApiContext()
+export const useGetResponseDelayQuery = (
+  id: Id,
+  options?: UseQueryOpts<Duration | null, string[]>,
+) => {
+  const { api } = useApiContext()
   return useQuery({
     queryKey: ['stats_GetResponseDelay'],
     queryFn: () => api.secured.stats.getResponseDelay(id),

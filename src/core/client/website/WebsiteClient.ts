@@ -1,24 +1,24 @@
+import { dateToApiDate, paginateData } from '../../helper'
+import { ApiSdkLogger } from '../../helper/Logger'
 import {
   ApiHostWithReportCount,
+  Country,
   HostReportCountSearch,
   Id,
+  IdentificationStatus,
+  InvestigationStatus,
+  Paginate,
   PaginatedData,
+  Website,
+  WebsiteCreation,
+  WebsiteInvestigation,
   WebsiteUpdateCompany,
   WebsiteWithCompany,
   WebsiteWithCompanySearch,
-  Country,
-  WebsiteInvestigation,
-  IdentificationStatus,
-  Paginate,
-  InvestigationStatus,
-  WebsiteCreation,
-  Website,
 } from '../../model'
-import {ApiSdkLogger} from '../../helper/Logger'
-import {dateToApiDate, paginateData} from '../../helper'
-import {ApiClientApi} from '../ApiClient'
+import { ApiClientApi } from '../ApiClient'
 
-export interface HostReportCountQueryString {
+interface HostReportCountQueryString {
   q?: string
   start?: string
   end?: string
@@ -26,11 +26,14 @@ export interface HostReportCountQueryString {
   limit?: string
 }
 
-const hostReportFilter2QueryString = (hostReport: HostReportCountSearch): HostReportCountQueryString => {
+const hostReportFilter2QueryString = (
+  hostReport: HostReportCountSearch,
+): HostReportCountQueryString => {
   try {
-    const {q, start, end, offset, limit, ...r} = hostReport
-    const parseDate = (_: keyof Pick<HostReportCountSearch, 'start' | 'end'>) =>
-      hostReport[_] ? {[_]: dateToApiDate(hostReport[_])} : {}
+    const { q, start, end, offset, limit, ...r } = hostReport
+    const parseDate = (
+      _: keyof Pick<HostReportCountSearch, 'start' | 'end'>,
+    ) => (hostReport[_] ? { [_]: dateToApiDate(hostReport[_]) } : {})
 
     return {
       ...r,
@@ -41,15 +44,18 @@ const hostReportFilter2QueryString = (hostReport: HostReportCountSearch): HostRe
       limit: limit !== undefined ? limit + '' : undefined,
     }
   } catch (e) {
-    ApiSdkLogger.error('Caught error on "hostReportFilter2QueryString"', hostReport, e)
+    ApiSdkLogger.error(
+      'Caught error on "hostReportFilter2QueryString"',
+      hostReport,
+      e,
+    )
     return {}
   }
 }
 
-const cleanFilter = (filter: WebsiteWithCompanySearch): WebsiteWithCompanySearch => {
-  if (filter.identificationStatus === []) {
-    delete filter.identificationStatus
-  }
+const cleanFilter = (
+  filter: WebsiteWithCompanySearch,
+): WebsiteWithCompanySearch => {
   if (filter.host === '') {
     delete filter.host
   }
@@ -61,10 +67,14 @@ export class WebsiteClient {
 
   readonly list = (filters: WebsiteWithCompanySearch) => {
     return this.client
-      .get<PaginatedData<WebsiteWithCompany>>(`/websites`, {qs: cleanFilter(filters)})
-      .then(paginated => Object.assign({}, paginated, {entities: paginated.entities}))
-      .then(result => {
-        result.entities = result.entities.map(_ => {
+      .get<PaginatedData<WebsiteWithCompany>>(`/websites`, {
+        qs: cleanFilter(filters),
+      })
+      .then((paginated) =>
+        Object.assign({}, paginated, { entities: paginated.entities }),
+      )
+      .then((result) => {
+        result.entities = result.entities.map((_) => {
           _.creationDate = new Date(_.creationDate)
           _.lastUpdated = _.lastUpdated ? new Date(_.lastUpdated) : undefined
           return _
@@ -74,33 +84,60 @@ export class WebsiteClient {
   }
 
   readonly listInvestigationStatus = () => {
-    return this.client.get<InvestigationStatus[]>(`resources/investigation-status`)
+    return this.client.get<InvestigationStatus[]>(
+      `resources/investigation-status`,
+    )
   }
 
-  readonly createOrUpdateInvestigation = (websiteInvestigation: WebsiteInvestigation): Promise<WebsiteInvestigation> => {
-    return this.client.post<WebsiteInvestigation>(`/website-investigations`, {body: websiteInvestigation})
+  readonly createOrUpdateInvestigation = (
+    websiteInvestigation: WebsiteInvestigation,
+  ): Promise<WebsiteInvestigation> => {
+    return this.client.post<WebsiteInvestigation>(`/website-investigations`, {
+      body: websiteInvestigation,
+    })
   }
 
-  readonly listUnregistered = (filters: HostReportCountSearch): Promise<Paginate<ApiHostWithReportCount>> => {
+  readonly listUnregistered = (
+    filters: HostReportCountSearch,
+  ): Promise<Paginate<ApiHostWithReportCount>> => {
     return this.client
-      .get<ApiHostWithReportCount[]>(`/websites/unregistered`, {qs: hostReportFilter2QueryString(filters)})
+      .get<
+        ApiHostWithReportCount[]
+      >(`/websites/unregistered`, { qs: hostReportFilter2QueryString(filters) })
       .then(paginateData(filters.limit, filters.offset))
   }
 
   readonly extractUnregistered = (filters: HostReportCountSearch) => {
-    return this.client.get<void>(`/websites/unregistered/extract`, {qs: hostReportFilter2QueryString(filters)})
+    return this.client.get<void>(`/websites/unregistered/extract`, {
+      qs: hostReportFilter2QueryString(filters),
+    })
   }
 
-  readonly updateStatus = (id: Id, identificationStatus: IdentificationStatus): Promise<WebsiteWithCompany> => {
-    return this.client.put<WebsiteWithCompany>(`/websites/${id}`, {qs: {identificationStatus: identificationStatus}})
+  readonly updateStatus = (
+    id: Id,
+    identificationStatus: IdentificationStatus,
+  ): Promise<WebsiteWithCompany> => {
+    return this.client.put<WebsiteWithCompany>(`/websites/${id}`, {
+      qs: { identificationStatus: identificationStatus },
+    })
   }
 
-  readonly updateCompany = (id: Id, website: WebsiteUpdateCompany): Promise<WebsiteWithCompany> => {
-    return this.client.put<WebsiteWithCompany>(`/websites/${id}/company`, {body: website})
+  readonly updateCompany = (
+    id: Id,
+    website: WebsiteUpdateCompany,
+  ): Promise<WebsiteWithCompany> => {
+    return this.client.put<WebsiteWithCompany>(`/websites/${id}/company`, {
+      body: website,
+    })
   }
 
-  readonly updateCountry = (id: Id, country: Country): Promise<WebsiteWithCompany> => {
-    return this.client.put<WebsiteWithCompany>(`/websites/${id}/country`, {qs: {companyCountry: country.code}})
+  readonly updateCountry = (
+    id: Id,
+    country: Country,
+  ): Promise<WebsiteWithCompany> => {
+    return this.client.put<WebsiteWithCompany>(`/websites/${id}/country`, {
+      qs: { companyCountry: country.code },
+    })
   }
 
   readonly remove = (id: Id): Promise<void> => {
@@ -112,6 +149,6 @@ export class WebsiteClient {
   }
 
   readonly create = (websiteCreation: WebsiteCreation) => {
-    return this.client.post<Website>(`/websites`, {body: websiteCreation})
+    return this.client.post<Website>(`/websites`, { body: websiteCreation })
   }
 }

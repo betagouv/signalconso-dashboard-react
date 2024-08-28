@@ -1,4 +1,4 @@
-import React, {ReactElement, ReactNode} from 'react'
+import React, { ReactElement, ReactNode } from 'react'
 
 /** To avoid indented tree hell */
 export const Provide = ({
@@ -8,5 +8,12 @@ export const Provide = ({
   children: React.ReactNode
   providers: ((children: ReactNode) => ReactElement)[]
 }) => {
-  return <>{providers.reduceRight((componentTree, component) => component(componentTree), children)}</>
+  return (
+    <>
+      {providers.reduceRight(
+        (componentTree, component) => component(componentTree),
+        children,
+      )}
+    </>
+  )
 }

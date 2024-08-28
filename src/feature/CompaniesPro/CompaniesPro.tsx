@@ -1,68 +1,88 @@
-import {FormControlLabel, Switch} from '@mui/material'
-import {UseMutationResult, useMutation, useQueryClient} from '@tanstack/react-query'
-import {ScOption} from 'core/helper/ScOption'
-import type {Dictionary} from 'lodash'
-import {useMemo, useState} from 'react'
-import {NavLink} from 'react-router-dom'
-import {CleanDiscreetPanel} from 'shared/Panel/simplePanels'
-import {Btn, Fender, Txt} from '../../alexlibs/mui-extension'
-import {useApiContext} from '../../core/context/ApiContext'
-import {useI18n} from '../../core/i18n'
-import {groupBy, uniqBy} from '../../core/lodashNamedExport'
-import {AccessLevel, BlockedReportNotification, CompanyWithAccessLevel, Id} from '../../core/model'
-import {useGetAccessibleByProQuery} from '../../core/queryhooks/companyQueryHooks'
+import { FormControlLabel, Switch } from '@mui/material'
+import {
+  UseMutationResult,
+  useMutation,
+  useQueryClient,
+} from '@tanstack/react-query'
+import { ScOption } from 'core/helper/ScOption'
+import type { Dictionary } from 'lodash'
+import { useMemo, useState } from 'react'
+import { NavLink } from 'react-router-dom'
+import { CleanDiscreetPanel } from 'shared/Panel/simplePanels'
+import { Btn, Fender, Txt } from '../../alexlibs/mui-extension'
+import { useApiContext } from '../../core/context/ApiContext'
+import { useI18n } from '../../core/i18n'
+import { groupBy, uniqBy } from '../../core/lodashNamedExport'
+import {
+  AccessLevel,
+  BlockedReportNotification,
+  CompanyWithAccessLevel,
+  Id,
+} from '../../core/model'
+import { useGetAccessibleByProQuery } from '../../core/queryhooks/companyQueryHooks'
 import {
   ListReportBlockedNotificationsQueryKeys,
   useListReportBlockedNotificationsQuery,
 } from '../../core/queryhooks/reportBlockedNotificationQueryHooks'
-import {siteMap} from '../../core/siteMap'
-import {AddressComponent} from '../../shared/Address'
-import {ScButton} from '../../shared/Button'
-import {Datatable} from '../../shared/Datatable/Datatable'
-import {Page, PageTitle} from '../../shared/Page'
-import {ConfirmDisableNotificationDialog} from './ConfirmDisableNotificationDialog'
-import {DebouncedInput} from '../../shared/DebouncedInput'
-import {ScInput} from '../../shared/ScInput'
+import { siteMap } from '../../core/siteMap'
+import { AddressComponent } from '../../shared/Address'
+import { ScButton } from '../../shared/Button'
+import { Datatable } from '../../shared/Datatable/Datatable'
+import { Page, PageTitle } from '../../shared/Page'
+import { ConfirmDisableNotificationDialog } from './ConfirmDisableNotificationDialog'
+import { DebouncedInput } from '../../shared/DebouncedInput'
+import { ScInput } from '../../shared/ScInput'
 
 export const CompaniesPro = () => {
-  const {m} = useI18n()
-  const {api} = useApiContext()
+  const { m } = useI18n()
+  const { api } = useApiContext()
   const queryClient = useQueryClient()
   const _companiesAccessibleByPro = useGetAccessibleByProQuery()
   const _blockedNotifications = useListReportBlockedNotificationsQuery()
   const _create = useMutation({
     mutationFn: (companyIds: Id[]) => {
-      const newBlocked: BlockedReportNotification[] = companyIds.map(companyId => ({
-        companyId,
-        dateCreation: new Date(),
-      }))
-      queryClient.setQueryData(ListReportBlockedNotificationsQueryKeys, (prev: BlockedReportNotification[]) =>
-        uniqBy([...(prev ?? []), ...newBlocked], _ => _.companyId),
+      const newBlocked: BlockedReportNotification[] = companyIds.map(
+        (companyId) => ({
+          companyId,
+          dateCreation: new Date(),
+        }),
+      )
+      queryClient.setQueryData(
+        ListReportBlockedNotificationsQueryKeys,
+        (prev: BlockedReportNotification[]) =>
+          uniqBy([...(prev ?? []), ...newBlocked], (_) => _.companyId),
       )
       return api.secured.reportBlockedNotification.create(companyIds)
     },
   })
   const _remove = useMutation({
     mutationFn: (companyIds: Id[]) => {
-      queryClient.setQueryData(ListReportBlockedNotificationsQueryKeys, (currentCompanyIds: BlockedReportNotification[]) =>
-        currentCompanyIds?.filter(_ => !companyIds.includes(_.companyId)),
+      queryClient.setQueryData(
+        ListReportBlockedNotificationsQueryKeys,
+        (currentCompanyIds: BlockedReportNotification[]) =>
+          currentCompanyIds?.filter((_) => !companyIds.includes(_.companyId)),
       )
       return api.secured.reportBlockedNotification.delete(companyIds)
     },
   })
-  const [currentlyDisablingNotificationsForCompanies, setCurrentlyDisablingNotificationsForCompanies] = useState<
-    Id | Id[] | undefined
-  >()
+  const [
+    currentlyDisablingNotificationsForCompanies,
+    setCurrentlyDisablingNotificationsForCompanies,
+  ] = useState<Id | Id[] | undefined>()
 
   const blockedNotificationIndex = useMemo(() => {
     return ScOption.from(_blockedNotifications.data)
-      .map(blockedNotification => groupBy(blockedNotification, _ => _.companyId))
+      .map((blockedNotification) =>
+        groupBy(blockedNotification, (_) => _.companyId),
+      )
       .getOrElse(undefined)
   }, [_blockedNotifications.data])
 
   const allNotificationsAreBlocked = useMemo(() => {
     if (_companiesAccessibleByPro.data && blockedNotificationIndex) {
-      return _companiesAccessibleByPro.data?.every(_ => blockedNotificationIndex[_.id])
+      return _companiesAccessibleByPro.data?.every(
+        (_) => blockedNotificationIndex[_.id],
+      )
     }
     return false
   }, [_companiesAccessibleByPro.data, blockedNotificationIndex])
@@ -78,14 +98,16 @@ export const CompaniesPro = () => {
   const filteredCompanies = !search
     ? companies?.slice(offset, offset + limit)
     : companies
-        ?.filter(company => {
+        ?.filter((company) => {
           const data =
             `${company.siret} ${company.name} ${company.brand} ${company.commercialName} ${company.establishmentCommercialName} ${company.address.postalCode}`.toLowerCase()
           return data.match(search.toLowerCase())
         })
         ?.slice(offset, offset + limit)
 
-  const displayFilters = companies?.length && companies?.length > minRowsBeforeDisplayFiltersAndPagination
+  const displayFilters =
+    companies?.length &&
+    companies?.length > minRowsBeforeDisplayFiltersAndPagination
 
   return (
     <Page>
@@ -119,7 +141,11 @@ export const CompaniesPro = () => {
                   color="primary"
                   variant="outlined"
                   icon="notifications_off"
-                  onClick={() => setCurrentlyDisablingNotificationsForCompanies(companies.map(_ => _.id))}
+                  onClick={() =>
+                    setCurrentlyDisablingNotificationsForCompanies(
+                      companies.map((_) => _.id),
+                    )
+                  }
                 >
                   {m.disableAll}
                 </ScButton>
@@ -128,8 +154,8 @@ export const CompaniesPro = () => {
                   color="primary"
                   variant="outlined"
                   icon="notifications_active"
-                  sx={{mr: 1}}
-                  onClick={() => _remove.mutate(companies.map(_ => _.id))}
+                  sx={{ mr: 1 }}
+                  onClick={() => _remove.mutate(companies.map((_) => _.id))}
                 >
                   {m.enableAll}
                 </ScButton>
@@ -149,7 +175,7 @@ export const CompaniesPro = () => {
                     label={m.search}
                     placeholder="Nom, SIRET, SIREN ou Code postal"
                     value={value}
-                    onChange={e => onChange(e.target.value)}
+                    onChange={(e) => onChange(e.target.value)}
                     fullWidth
                   />
                 )}
@@ -159,13 +185,16 @@ export const CompaniesPro = () => {
         )}
         <Datatable
           data={filteredCompanies}
-          loading={_companiesAccessibleByPro.isLoading || _blockedNotifications.isLoading}
-          getRenderRowKey={_ => _.id}
+          loading={
+            _companiesAccessibleByPro.isLoading ||
+            _blockedNotifications.isLoading
+          }
+          getRenderRowKey={(_) => _.id}
           paginate={{
             minRowsBeforeDisplay: minRowsBeforeDisplayFiltersAndPagination,
             offset: offset,
             limit: limit,
-            onPaginationChange: pagination => {
+            onPaginationChange: (pagination) => {
               if (pagination.offset !== undefined) {
                 setOffset(pagination.offset)
               }
@@ -178,7 +207,7 @@ export const CompaniesPro = () => {
           columns={[
             {
               id: 'all',
-              render: _ => (
+              render: (_) => (
                 <CompaniesProRow
                   {...{
                     _,
@@ -200,7 +229,12 @@ export const CompaniesPro = () => {
                 mb: 2,
               }}
             >
-              <ScButton variant="contained" color="primary" icon="add" sx={{mt: 1}}>
+              <ScButton
+                variant="contained"
+                color="primary"
+                icon="add"
+                sx={{ mt: 1 }}
+              >
                 {m.registerACompany}
               </ScButton>
             </Fender>
@@ -209,9 +243,13 @@ export const CompaniesPro = () => {
       </>
       <ConfirmDisableNotificationDialog
         open={!!currentlyDisablingNotificationsForCompanies}
-        onClose={() => setCurrentlyDisablingNotificationsForCompanies(undefined)}
+        onClose={() =>
+          setCurrentlyDisablingNotificationsForCompanies(undefined)
+        }
         onConfirm={() => {
-          _create.mutate([currentlyDisablingNotificationsForCompanies!].flatMap(_ => _))
+          _create.mutate(
+            [currentlyDisablingNotificationsForCompanies!].flatMap((_) => _),
+          )
           setCurrentlyDisablingNotificationsForCompanies(undefined)
         }}
       />
@@ -227,14 +265,19 @@ function CompaniesProRow({
 }: {
   _: CompanyWithAccessLevel
   _remove: UseMutationResult<void, Error, string[], unknown>
-  setCurrentlyDisablingNotificationsForCompanies: React.Dispatch<React.SetStateAction<string | string[] | undefined>>
+  setCurrentlyDisablingNotificationsForCompanies: React.Dispatch<
+    React.SetStateAction<string | string[] | undefined>
+  >
   blockedNotificationIndex: Dictionary<BlockedReportNotification[]> | undefined
 }) {
-  const {m} = useI18n()
+  const { m } = useI18n()
   return (
     <div className="lg:grid lg:grid-cols-2 py-2">
       <div className="">
-        <NavLink to={siteMap.logged.company(_.id).stats.valueAbsolute} className="text-lg text-scbluefrance">
+        <NavLink
+          to={siteMap.logged.company(_.id).stats.valueAbsolute}
+          className="text-lg text-scbluefrance"
+        >
           {_.name}
         </NavLink>
         <div className="text-gray-500">
@@ -248,8 +291,10 @@ function CompaniesProRow({
             <Switch
               disabled={!blockedNotificationIndex}
               checked={!blockedNotificationIndex?.[_.id]}
-              onChange={e => {
-                e.target.checked ? _remove.mutate([_.id]) : setCurrentlyDisablingNotificationsForCompanies(_.id)
+              onChange={(e) => {
+                e.target.checked
+                  ? _remove.mutate([_.id])
+                  : setCurrentlyDisablingNotificationsForCompanies(_.id)
               }}
             />
           }
@@ -268,7 +313,12 @@ function CompaniesProRow({
               {m.myStats}
             </Btn>
           </NavLink>
-          <NavLink to={siteMap.logged.reports({hasCompany: true, siretSirenList: [_.siret]})}>
+          <NavLink
+            to={siteMap.logged.reports({
+              hasCompany: true,
+              siretSirenList: [_.siret],
+            })}
+          >
             <Btn variant="contained" icon="assignment_late" size="small">
               {m.see_reports}
             </Btn>

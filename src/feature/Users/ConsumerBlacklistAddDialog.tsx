@@ -1,35 +1,38 @@
-import {useForm} from 'react-hook-form'
-import {Alert, Txt} from '../../alexlibs/mui-extension'
-import {regexp} from '../../core/helper/regexp'
-import {useI18n} from '../../core/i18n'
-import {useToast} from '../../core/toast'
-import {ScButton} from '../../shared/Button'
-import {ScInput} from '../../shared/ScInput'
-import {useApiContext} from 'core/context/ApiContext'
-import {ScOption} from 'core/helper/ScOption'
-import {ScDialog} from '../../shared/ScDialog'
-import {useMutation, useQueryClient} from '@tanstack/react-query'
-import {ListConsumerBlacklistQueryKeys} from '../../core/queryhooks/consumerBlacklistQueryHooks'
-import {ApiError} from '../../core/client/ApiClient'
+import { useForm } from 'react-hook-form'
+import { Alert, Txt } from '../../alexlibs/mui-extension'
+import { regexp } from '../../core/helper/regexp'
+import { useI18n } from '../../core/i18n'
+import { useToast } from '../../core/toast'
+import { ScButton } from '../../shared/Button'
+import { ScInput } from '../../shared/ScInput'
+import { useApiContext } from 'core/context/ApiContext'
+import { ScOption } from 'core/helper/ScOption'
+import { ScDialog } from '../../shared/ScDialog'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { ListConsumerBlacklistQueryKeys } from '../../core/queryhooks/consumerBlacklistQueryHooks'
+import { ApiError } from '../../core/client/ApiClient'
 
 export const ConsumerBlacklistAddDialog = () => {
-  const {m} = useI18n()
+  const { m } = useI18n()
   const {
     register,
     handleSubmit,
-    formState: {errors, isValid},
-  } = useForm<{email: string; comments: string}>({mode: 'onChange'})
-  const {api} = useApiContext()
+    formState: { errors, isValid },
+  } = useForm<{ email: string; comments: string }>({ mode: 'onChange' })
+  const { api } = useApiContext()
   const queryClient = useQueryClient()
   const _addToBlacklist = useMutation({
-    mutationFn: (params: {email: string; comments: string}) => api.secured.consumerBlacklist.add(params.email, params.comments),
+    mutationFn: (params: { email: string; comments: string }) =>
+      api.secured.consumerBlacklist.add(params.email, params.comments),
     onSuccess: () => {
       toastSuccess(m.added)
-      return queryClient.invalidateQueries({queryKey: ListConsumerBlacklistQueryKeys})
+      return queryClient.invalidateQueries({
+        queryKey: ListConsumerBlacklistQueryKeys,
+      })
     },
   })
 
-  const {toastSuccess} = useToast()
+  const { toastSuccess } = useToast()
 
   const buttonText = m.add_email_to_blacklist
   const dialogTitle = m.add_email_to_blacklist
@@ -42,8 +45,8 @@ export const ConsumerBlacklistAddDialog = () => {
     <ScDialog
       maxWidth="xs"
       onConfirm={(event, close) => {
-        handleSubmit(({email, comments}) => {
-          _addToBlacklist.mutateAsync({email, comments}).then(close)
+        handleSubmit(({ email, comments }) => {
+          _addToBlacklist.mutateAsync({ email, comments }).then(close)
         })()
       }}
       confirmLabel={m.add}
@@ -54,7 +57,7 @@ export const ConsumerBlacklistAddDialog = () => {
         <>
           {_addToBlacklist.error instanceof ApiError &&
             ScOption.from(_addToBlacklist.error.details?.id)
-              .map(errId => (
+              .map((errId) => (
                 <Alert dense type="error" deletable gutterBottom>
                   {m.apiErrorsCode[errId as keyof typeof m.apiErrorsCode]}
                 </Alert>
@@ -63,7 +66,7 @@ export const ConsumerBlacklistAddDialog = () => {
           <Txt color="hint" block gutterBottom>
             {dialogDesc}
           </Txt>
-          <Alert type="warning" sx={{mb: 2}} dense>
+          <Alert type="warning" sx={{ mb: 2 }} dense>
             <Txt bold>{dialogDescAlert}</Txt>
           </Alert>
           <ScInput
@@ -81,7 +84,8 @@ export const ConsumerBlacklistAddDialog = () => {
             })}
           />
           <Txt color="hint" block gutterTop>
-            Inscrivez un petit commentaire pour se rappeler pourquoi il est indésirable :
+            Inscrivez un petit commentaire pour se rappeler pourquoi il est
+            indésirable :
           </Txt>
           <ScInput
             fullWidth
@@ -91,13 +95,17 @@ export const ConsumerBlacklistAddDialog = () => {
             helperText={errors.comments?.message}
             {...register('comments', {
               required: m.required,
-              maxLength: {value: 50, message: m.textTooLarge(50)},
+              maxLength: { value: 50, message: m.textTooLarge(50) },
             })}
           />
         </>
       }
     >
-      <ScButton icon="sentiment_very_dissatisfied" variant="contained" color="primary">
+      <ScButton
+        icon="sentiment_very_dissatisfied"
+        variant="contained"
+        color="primary"
+      >
         {buttonText}
       </ScButton>
     </ScDialog>

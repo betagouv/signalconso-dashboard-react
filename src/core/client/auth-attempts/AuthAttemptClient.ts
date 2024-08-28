@@ -1,7 +1,7 @@
-import {Id, Paginate, PaginatedFilters, User} from '../../model'
-import {cleanObject, paginateData} from '../../helper'
-import {ApiClientApi} from '../ApiClient'
-import {AuthAttempt} from './AuthAttempt'
+import { Id, Paginate, PaginatedFilters, User } from '../../model'
+import { cleanObject, paginateData } from '../../helper'
+import { ApiClientApi } from '../ApiClient'
+import { AuthAttempt } from './AuthAttempt'
 
 export interface AuthAttemptsSearch extends PaginatedFilters {
   login?: string
@@ -10,11 +10,15 @@ export interface AuthAttemptsSearch extends PaginatedFilters {
 export class AuthAttemptClient {
   constructor(private client: ApiClientApi) {}
 
-  readonly fetch = ({limit, offset, login}: AuthAttemptsSearch): Promise<Paginate<AuthAttempt>> => {
+  readonly fetch = ({
+    limit,
+    offset,
+    login,
+  }: AuthAttemptsSearch): Promise<Paginate<AuthAttempt>> => {
     return this.client
       .get<AuthAttempt[]>('/auth-attempts', {
-        qs: cleanObject({login}),
+        qs: cleanObject({ login }),
       })
-      .then(res => paginateData<AuthAttempt>(limit, offset)(res))
+      .then((res) => paginateData<AuthAttempt>(limit, offset)(res))
   }
 }

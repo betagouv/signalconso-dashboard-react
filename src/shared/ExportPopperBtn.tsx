@@ -1,16 +1,27 @@
-import React, {ReactElement, ReactNode, useEffect, useState} from 'react'
-import {Btn, Txt} from '../alexlibs/mui-extension'
-import {Box, CircularProgress, Icon, Menu, MenuItem, Tooltip} from '@mui/material'
-import {useI18n} from '../core/i18n'
-import {useInterval} from '../alexlibs/react-hooks-lib'
-import {AsyncFile, AsyncFileKind, AsyncFileStatus} from '../core/client/async-file/AsyncFile'
-import {fnSwitch} from '../alexlibs/ts-utils'
-import {ReportedPhoneSearch} from '../core/client/reported-phone/ReportedPhone'
-import {HostReportCountSearch} from '../core/client/website/Website'
-import {ReportSearch} from '../core/client/report/ReportSearch'
-import {PaginatedFilters} from '../core/model'
-import {useMutation, useQuery} from '@tanstack/react-query'
-import {useApiContext} from '../core/context/ApiContext'
+import React, { ReactElement, ReactNode, useEffect, useState } from 'react'
+import { Btn, Txt } from '../alexlibs/mui-extension'
+import {
+  Box,
+  CircularProgress,
+  Icon,
+  Menu,
+  MenuItem,
+  Tooltip,
+} from '@mui/material'
+import { useI18n } from '../core/i18n'
+import { useInterval } from '../alexlibs/react-hooks-lib'
+import {
+  AsyncFile,
+  AsyncFileKind,
+  AsyncFileStatus,
+} from '../core/client/async-file/AsyncFile'
+import { fnSwitch } from '../alexlibs/ts-utils'
+import { ReportedPhoneSearch } from '../core/client/reported-phone/ReportedPhone'
+import { HostReportCountSearch } from '../core/client/website/Website'
+import { ReportSearch } from '../core/client/report/ReportSearch'
+import { PaginatedFilters } from '../core/model'
+import { useMutation, useQuery } from '@tanstack/react-query'
+import { useApiContext } from '../core/context/ApiContext'
 
 interface Props {
   className?: string
@@ -25,16 +36,24 @@ interface Props {
   onClick?: (event: any) => void
 }
 
-export const FileItem = ({icon, children, onClick}: {onClick?: () => void; icon: ReactNode; children: ReactNode}) => {
+const FileItem = ({
+  icon,
+  children,
+  onClick,
+}: {
+  onClick?: () => void
+  icon: ReactNode
+  children: ReactNode
+}) => {
   return (
-    <Box sx={{display: 'flex'}} onClick={onClick}>
+    <Box sx={{ display: 'flex' }} onClick={onClick}>
       {icon}
-      <Box sx={{ml: 1, minWidth: 200}}>{children}</Box>
+      <Box sx={{ ml: 1, minWidth: 200 }}>{children}</Box>
     </Box>
   )
 }
 
-export const ExportPopperBtn = ({
+const ExportPopperBtn = ({
   children,
   tooltipBtnNew,
   loading,
@@ -46,7 +65,7 @@ export const ExportPopperBtn = ({
   disabled,
   onNewExport,
 }: Props) => {
-  const {m, formatDateTime} = useI18n()
+  const { m, formatDateTime } = useI18n()
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
   const [initialLoading, setInitialLoading] = useState(true)
 
@@ -83,8 +102,13 @@ export const ExportPopperBtn = ({
           })}
         </span>
       </Tooltip>
-      <Menu keepMounted open={!!anchorEl} onClose={handleClose} anchorEl={anchorEl}>
-        <Box sx={{pt: 0, pr: 2, pb: 0.5, pl: 2}}>
+      <Menu
+        keepMounted
+        open={!!anchorEl}
+        onClose={handleClose}
+        anchorEl={anchorEl}
+      >
+        <Box sx={{ pt: 0, pr: 2, pb: 0.5, pl: 2 }}>
           <Tooltip title={tooltipBtnNew ?? ''}>
             <span>
               <Btn
@@ -92,7 +116,7 @@ export const ExportPopperBtn = ({
                 color="primary"
                 variant="outlined"
                 size="small"
-                sx={{width: '100%'}}
+                sx={{ width: '100%' }}
                 icon="add"
                 onClick={() => onNewExport().then(fetch)}
               >
@@ -118,29 +142,33 @@ export const ExportPopperBtn = ({
             sx={{
               textAlign: 'center',
               m: 1,
-              color: t => t.palette.text.disabled,
+              color: (t) => t.palette.text.disabled,
             }}
           >
             {m.noExport}
           </Box>
         )}
         {files
-          ?.filter(_ => _.kind === fileType)
-          .map(file => (
+          ?.filter((_) => _.kind === fileType)
+          .map((file) => (
             <MenuItem
               sx={{
                 '&:not(:last-of-type)': {
-                  borderBottom: t => '1px solid ' + t.palette.divider,
+                  borderBottom: (t) => '1px solid ' + t.palette.divider,
                 },
               }}
               dense
               key={file.id}
             >
               {fnSwitch(file.status, {
-                [AsyncFileStatus.Successed]: _ => (
+                [AsyncFileStatus.Successed]: (_) => (
                   <FileItem
                     onClick={() => window.open(file.url, '_blank')}
-                    icon={<Icon sx={{color: t => t.palette.success.light}}>file_download_done</Icon>}
+                    icon={
+                      <Icon sx={{ color: (t) => t.palette.success.light }}>
+                        file_download_done
+                      </Icon>
+                    }
                   >
                     <Txt bold block>
                       {file.filename.match(/.*?-(\w+.?\.xlsx)/)?.[1]}
@@ -148,14 +176,20 @@ export const ExportPopperBtn = ({
                     <Txt color="hint">{formatDateTime(file.creationDate)}</Txt>
                   </FileItem>
                 ),
-                [AsyncFileStatus.Loading]: _ => (
+                [AsyncFileStatus.Loading]: (_) => (
                   <FileItem icon={<CircularProgress size={24} />}>
                     <Txt skeleton="100%" block />
                     <Txt color="hint">{formatDateTime(file.creationDate)}</Txt>
                   </FileItem>
                 ),
-                [AsyncFileStatus.Failed]: _ => (
-                  <FileItem icon={<Icon sx={{color: t => t.palette.error.main}}>error_outline</Icon>}>
+                [AsyncFileStatus.Failed]: (_) => (
+                  <FileItem
+                    icon={
+                      <Icon sx={{ color: (t) => t.palette.error.main }}>
+                        error_outline
+                      </Icon>
+                    }
+                  >
                     <div>{m.error}</div>
                     <Txt color="hint">{formatDateTime(file.creationDate)}</Txt>
                   </FileItem>
@@ -177,10 +211,18 @@ interface ExportReportProps<S> {
   filters: S
 }
 
-export const ExportPhonesPopper = (props: ExportReportProps<ReportedPhoneSearch>) => {
-  const {api} = useApiContext()
-  const _asyncFile = useQuery({queryKey: ['asyncFiles_fetch'], queryFn: api.secured.asyncFiles.fetch, enabled: false})
-  const _extract = useMutation({mutationFn: () => api.secured.reportedPhone.extract(props.filters)})
+export const ExportPhonesPopper = (
+  props: ExportReportProps<ReportedPhoneSearch>,
+) => {
+  const { api } = useApiContext()
+  const _asyncFile = useQuery({
+    queryKey: ['asyncFiles_fetch'],
+    queryFn: api.secured.asyncFiles.fetch,
+    enabled: false,
+  })
+  const _extract = useMutation({
+    mutationFn: () => api.secured.reportedPhone.extract(props.filters),
+  })
   return (
     <ExportPopperBtn
       {...props}
@@ -193,10 +235,18 @@ export const ExportPhonesPopper = (props: ExportReportProps<ReportedPhoneSearch>
   )
 }
 
-export const ExportReportsPopper = (props: ExportReportProps<ReportSearch & PaginatedFilters>) => {
-  const {api} = useApiContext()
-  const _asyncFile = useQuery({queryKey: ['asyncFiles_fetch'], queryFn: api.secured.asyncFiles.fetch, enabled: false})
-  const _extract = useMutation({mutationFn: () => api.secured.reports.extract(props.filters)})
+export const ExportReportsPopper = (
+  props: ExportReportProps<ReportSearch & PaginatedFilters>,
+) => {
+  const { api } = useApiContext()
+  const _asyncFile = useQuery({
+    queryKey: ['asyncFiles_fetch'],
+    queryFn: api.secured.asyncFiles.fetch,
+    enabled: false,
+  })
+  const _extract = useMutation({
+    mutationFn: () => api.secured.reports.extract(props.filters),
+  })
   return (
     <ExportPopperBtn
       {...props}
@@ -209,10 +259,18 @@ export const ExportReportsPopper = (props: ExportReportProps<ReportSearch & Pagi
   )
 }
 
-export const ExportUnknownWebsitesPopper = (props: ExportReportProps<HostReportCountSearch>) => {
-  const {api} = useApiContext()
-  const _asyncFile = useQuery({queryKey: ['asyncFiles_fetch'], queryFn: api.secured.asyncFiles.fetch, enabled: false})
-  const _extract = useMutation({mutationFn: () => api.secured.website.extractUnregistered(props.filters)})
+export const ExportUnknownWebsitesPopper = (
+  props: ExportReportProps<HostReportCountSearch>,
+) => {
+  const { api } = useApiContext()
+  const _asyncFile = useQuery({
+    queryKey: ['asyncFiles_fetch'],
+    queryFn: api.secured.asyncFiles.fetch,
+    enabled: false,
+  })
+  const _extract = useMutation({
+    mutationFn: () => api.secured.website.extractUnregistered(props.filters),
+  })
   return (
     <ExportPopperBtn
       {...props}

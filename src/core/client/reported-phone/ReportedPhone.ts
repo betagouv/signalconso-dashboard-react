@@ -1,4 +1,4 @@
-import {PaginatedSearch} from '../../model'
+import { PaginatedSearch } from '../../model'
 
 export interface ReportedPhone {
   phone: string
@@ -14,4 +14,6 @@ export interface ReportedPhoneFilters {
   end?: Date
 }
 
-export interface ReportedPhoneSearch extends PaginatedSearch<ReportedPhone>, ReportedPhoneFilters {}
+export interface ReportedPhoneSearch
+  extends PaginatedSearch<ReportedPhone>,
+    ReportedPhoneFilters {}

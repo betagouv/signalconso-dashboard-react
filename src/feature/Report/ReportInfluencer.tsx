@@ -1,5 +1,5 @@
-import {Icon} from '@mui/material'
-import {Influencer} from '../../core/client/report/Report'
+import { Icon } from '@mui/material'
+import { Influencer } from '../../core/client/report/Report'
 import facebookLogo from './ReportCompany/facebook.svg'
 import instagramLogo from './ReportCompany/instagram.svg'
 import linkedinLogo from './ReportCompany/linkedin.svg'
@@ -13,7 +13,7 @@ import youtubeLogo from './ReportCompany/youtube.svg'
 interface Props {
   influencer: Influencer
 }
-export const ReportInfluencer = ({influencer}: Props) => {
+export const ReportInfluencer = ({ influencer }: Props) => {
   const socialNetworkIcon = (socialNetwork?: string) => {
     switch (socialNetwork) {
       case 'YouTube':
@@ -39,9 +39,15 @@ export const ReportInfluencer = ({influencer}: Props) => {
   return (
     <div className="flex gap-2">
       <div className="flex items-center gap-2">
-        <img className="h-[20px] w-[20]px" src={socialNetworkIcon(influencer.socialNetwork)} alt={influencer.socialNetwork} />
+        <img
+          className="h-[20px] w-[20]px"
+          src={socialNetworkIcon(influencer.socialNetwork)}
+          alt={influencer.socialNetwork}
+        />
         {influencer.socialNetwork && <span>{influencer.socialNetwork}</span>}
-        {influencer.otherSocialNetwork && <span>{influencer.otherSocialNetwork}</span>}
+        {influencer.otherSocialNetwork && (
+          <span>{influencer.otherSocialNetwork}</span>
+        )}
       </div>
       <div className="flex items-center gap-1">
         <Icon>person</Icon>

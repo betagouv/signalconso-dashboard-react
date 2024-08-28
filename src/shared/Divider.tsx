@@ -1,6 +1,10 @@
-import {Divider as MuiDivider, DividerProps} from '@mui/material'
+import { Divider as MuiDivider, DividerProps } from '@mui/material'
 
-export const Divider = ({margin, sx, ...props}: DividerProps & {margin?: boolean}) => {
+export const Divider = ({
+  margin,
+  sx,
+  ...props
+}: DividerProps & { margin?: boolean }) => {
   return (
     <MuiDivider
       {...props}

@@ -1,16 +1,19 @@
-import {Icon} from '@mui/material'
-import {Fender} from '../../../alexlibs/mui-extension'
-import {EventActionValues, ReportEvent} from '../../../core/client/event/Event'
-import {useI18n} from '../../../core/i18n'
-import {ReportEventIcon} from './ReportEventIcon'
-import {UserNameLabel} from '../../../shared/UserNameLabel'
+import { Icon } from '@mui/material'
+import { Fender } from '../../../alexlibs/mui-extension'
+import {
+  EventActionValues,
+  ReportEvent,
+} from '../../../core/client/event/Event'
+import { useI18n } from '../../../core/i18n'
+import { ReportEventIcon } from './ReportEventIcon'
+import { UserNameLabel } from '../../../shared/UserNameLabel'
 
 interface Props {
   events?: ReportEvent[]
 }
 
-export const ReportEvents = ({events}: Props) => {
-  const {m} = useI18n()
+export const ReportEvents = ({ events }: Props) => {
+  const { m } = useI18n()
   return (
     <div>
       {!events ? (
@@ -21,8 +24,11 @@ export const ReportEvents = ({events}: Props) => {
         <table className={'break-words w-full table-fixed'}>
           <tbody>
             {events
-              .sort((a, b) => a.data.creationDate.getTime() - b.data.creationDate.getTime())
-              .map(event => (
+              .sort(
+                (a, b) =>
+                  a.data.creationDate.getTime() - b.data.creationDate.getTime(),
+              )
+              .map((event) => (
                 <ReportEventComponent key={event.data.id} event={event} />
               ))}
           </tbody>
@@ -32,15 +38,17 @@ export const ReportEvents = ({events}: Props) => {
   )
 }
 
-export const ReportEventComponent = ({event}: {event: ReportEvent}) => {
-  const {formatDate, formatTime} = useI18n()
+const ReportEventComponent = ({ event }: { event: ReportEvent }) => {
+  const { formatDate, formatTime } = useI18n()
 
   return (
     <tr className="text-base border-b-[1px] last:border-b-0 border-solid border-0 border-gray-300">
       <td className="p-2 w-[6.5rem]">
         <p className="font-bold">
           {formatDate(event.data.creationDate)}{' '}
-          <span className=" font-normal text-gray-500">à {formatTime(event.data.creationDate)}</span>
+          <span className=" font-normal text-gray-500">
+            à {formatTime(event.data.creationDate)}
+          </span>
         </p>
       </td>
       <td className="p-2  w-10">
@@ -53,15 +61,23 @@ export const ReportEventComponent = ({event}: {event: ReportEvent}) => {
             <Icon className="!text-sm">person</Icon>
             &nbsp;
             <span className="">
-              <UserNameLabel lastName={event.user.lastName} firstName={event.user.firstName} /> {event.user.role}
+              <UserNameLabel
+                lastName={event.user.lastName}
+                firstName={event.user.firstName}
+              />{' '}
+              {event.user.role}
             </span>
           </div>
         )}
-        <p className="text-sm text-gray-500">{(event.data.details as any)?.description}</p>
+        <p className="text-sm text-gray-500">
+          {(event.data.details as any)?.description}
+        </p>
         {(event.data.details as any)?.comment && (
           <div className={'  mt-1  flex-row'}>
             <span className="text-sm text-black">Commentaire :</span>
-            <p className="text-sm text-blue-600">{(event.data.details as any)?.comment}</p>
+            <p className="text-sm text-blue-600">
+              {(event.data.details as any)?.comment}
+            </p>
           </div>
         )}
       </td>

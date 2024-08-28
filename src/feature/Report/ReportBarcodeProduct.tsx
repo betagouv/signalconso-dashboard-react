@@ -1,8 +1,8 @@
-import {Id} from '../../core/model'
-import {WithInlineIcon} from '../../shared/WithInlineIcon'
-import {Chip, Icon, Tooltip} from '@mui/material'
-import {useGetBarcodeQuery} from '../../core/queryhooks/barcodeQueryHooks'
-import {CleanDiscreetPanel} from 'shared/Panel/simplePanels'
+import { Id } from '../../core/model'
+import { WithInlineIcon } from '../../shared/WithInlineIcon'
+import { Chip, Icon, Tooltip } from '@mui/material'
+import { useGetBarcodeQuery } from '../../core/queryhooks/barcodeQueryHooks'
+import { CleanDiscreetPanel } from 'shared/Panel/simplePanels'
 
 interface ReportBarcodeProductProps {
   barcodeProductId?: Id
@@ -14,7 +14,7 @@ interface RowProps {
   value: string
 }
 
-const Row = ({label, value}: RowProps) => {
+const Row = ({ label, value }: RowProps) => {
   return (
     <div className="flex w-full">
       <span className="min-w-[20%] font-bold">{label} :</span>
@@ -25,14 +25,20 @@ const Row = ({label, value}: RowProps) => {
   )
 }
 
-export const ReportBarcodeProduct = ({barcodeProductId, rappelConsoId}: ReportBarcodeProductProps) => {
-  const {data} = useGetBarcodeQuery(barcodeProductId!, {enabled: !!barcodeProductId})
+export const ReportBarcodeProduct = ({
+  barcodeProductId,
+  rappelConsoId,
+}: ReportBarcodeProductProps) => {
+  const { data } = useGetBarcodeQuery(barcodeProductId!, {
+    enabled: !!barcodeProductId,
+  })
 
   const title = data?.existOnGS1 ? (
     <span>Fiche produit</span>
   ) : (
     <span>
-      Fiche produit - <span className="bg-yellow-200 px-1">introuvable sur GS1</span>
+      Fiche produit -{' '}
+      <span className="bg-yellow-200 px-1">introuvable sur GS1</span>
     </span>
   )
 
@@ -53,7 +59,10 @@ export const ReportBarcodeProduct = ({barcodeProductId, rappelConsoId}: ReportBa
               <Icon>swap_horiz</Icon>
               <span>
                 Produit rappelé{' '}
-                <a href={`https://rappel.conso.gouv.fr/fiche-rappel/${rappelConsoId}/Interne`} target="_blank">
+                <a
+                  href={`https://rappel.conso.gouv.fr/fiche-rappel/${rappelConsoId}/Interne`}
+                  target="_blank"
+                >
                   (Voir sur RappelConso)
                 </a>
               </span>
@@ -61,12 +70,20 @@ export const ReportBarcodeProduct = ({barcodeProductId, rappelConsoId}: ReportBa
           )}
           <div className="mt-2 p-2">
             {data?.existOnOpenFoodFacts && (
-              <a className="text-lg" href={`https://fr.openfoodfacts.org/produit/${data.gtin}`} target="_blank">
+              <a
+                className="text-lg"
+                href={`https://fr.openfoodfacts.org/produit/${data.gtin}`}
+                target="_blank"
+              >
                 Voir sur Open food facts
               </a>
             )}
             {data?.existOnOpenBeautyFacts && (
-              <a className="text-lg" href={`https://fr.openbeautyfacts.org/produit/${data.gtin}`} target="_blank">
+              <a
+                className="text-lg"
+                href={`https://fr.openbeautyfacts.org/produit/${data.gtin}`}
+                target="_blank"
+              >
                 Voir sur Open beauty facts
               </a>
             )}
@@ -81,7 +98,10 @@ export const ReportBarcodeProduct = ({barcodeProductId, rappelConsoId}: ReportBa
           <Icon>swap_horiz</Icon>
           <span>
             Produit rappelé{' '}
-            <a href={`https://rappel.conso.gouv.fr/fiche-rappel/${rappelConsoId}/Interne`} target="_blank">
+            <a
+              href={`https://rappel.conso.gouv.fr/fiche-rappel/${rappelConsoId}/Interne`}
+              target="_blank"
+            >
               (Voir sur RappelConso)
             </a>
           </span>

@@ -1,4 +1,4 @@
-import {Id} from '../../model'
+import { Id } from '../../model'
 
 export interface ReportEvent {
   data: Event
@@ -26,7 +26,10 @@ export interface Event {
   userId?: Id
   eventType: EventType
   action: EventActionValues
-  details: {description: string} | ExistingReportResponse | {description: string; comment: string}
+  details:
+    | { description: string }
+    | ExistingReportResponse
+    | { description: string; comment: string }
 }
 
 export type EventType = 'PRO' | 'CONSO' | 'DGCCRF' | 'ADMIN' | 'SYSTEM'
@@ -84,7 +87,7 @@ export const acceptedDetails = [
   'DEMANDE_DE_PLUS_D_INFORMATIONS',
   'RESILIATION',
 ] as const
-export type AcceptedDetails = typeof acceptedDetails[number]
+export type AcceptedDetails = (typeof acceptedDetails)[number]
 
 export const rejectedDetails = [
   'PRATIQUE_LEGALE',
@@ -93,7 +96,7 @@ export const rejectedDetails = [
   'DEJA_REPONDU',
   'TRAITEMENT_EN_COURS',
 ] as const
-export type RejectedDetails = typeof rejectedDetails[number]
+type RejectedDetails = (typeof rejectedDetails)[number]
 
 export const notConcernedDetails = [
   'PARTENAIRE_COMMERCIAL',
@@ -102,7 +105,7 @@ export const notConcernedDetails = [
   'ENTREPRISE_INCONNUE',
   'USURPATION',
 ] as const
-export type NotConcernedDetails = typeof notConcernedDetails[number]
+type NotConcernedDetails = (typeof notConcernedDetails)[number]
 
 export interface IncomingReportResponse {
   responseType: ReportResponseTypes
@@ -114,7 +117,10 @@ export interface IncomingReportResponse {
 
 // An already created report response, coming from the DB
 // It may contains the legacy value 'AUTRE' that is not allowed anymore
-export type ExistingReportResponse = Omit<IncomingReportResponse, 'responseDetails'> & {
+export type ExistingReportResponse = Omit<
+  IncomingReportResponse,
+  'responseDetails'
+> & {
   responseDetails: IncomingReportResponse['responseDetails'] | 'AUTRE'
   otherResponseDetails?: string
 }

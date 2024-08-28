@@ -1,19 +1,29 @@
-import {TextField} from '@mui/material'
-import {AlertContactSupport, EspaceProTitle} from 'feature/Login/loggedOutComponents'
-import {useForm} from 'react-hook-form'
-import {CenteredContent} from 'shared/CenteredContent'
-import {Alert, Txt} from '../../alexlibs/mui-extension'
-import {ApiError} from '../../core/client/ApiClient'
-import {SignalConsoPublicSdk} from '../../core/client/SignalConsoPublicSdk'
-import {regexp} from '../../core/helper/regexp'
-import {useI18n} from '../../core/i18n'
-import {AuthenticationEventActions, EventCategories, Matomo} from '../../core/plugins/Matomo'
-import {ScButton} from '../../shared/Button'
-import {ScInputPassword} from '../../shared/ScInputPassword'
-import {ForgottenPasswordDialog} from './ForgottenPasswordDialog'
-import {useNavigate} from 'react-router'
-import {mapArrayFromQuerystring, useQueryString} from '../../core/helper/useQueryString'
-import {InfoBanner} from '../../shared/InfoBanner'
+import { TextField } from '@mui/material'
+import {
+  AlertContactSupport,
+  EspaceProTitle,
+} from 'feature/Login/loggedOutComponents'
+import { useForm } from 'react-hook-form'
+import { CenteredContent } from 'shared/CenteredContent'
+import { Alert, Txt } from '../../alexlibs/mui-extension'
+import { ApiError } from '../../core/client/ApiClient'
+import { SignalConsoPublicSdk } from '../../core/client/SignalConsoPublicSdk'
+import { regexp } from '../../core/helper/regexp'
+import { useI18n } from '../../core/i18n'
+import {
+  AuthenticationEventActions,
+  EventCategories,
+  Matomo,
+} from '../../core/plugins/Matomo'
+import { ScButton } from '../../shared/Button'
+import { ScInputPassword } from '../../shared/ScInputPassword'
+import { ForgottenPasswordDialog } from './ForgottenPasswordDialog'
+import { useNavigate } from 'react-router'
+import {
+  mapArrayFromQuerystring,
+  useQueryString,
+} from '../../core/helper/useQueryString'
+import { InfoBanner } from '../../shared/InfoBanner'
 
 interface ActionProps<F extends (...args: any[]) => Promise<any>> {
   action: F
@@ -35,13 +45,16 @@ interface RedirectProps {
   redirecturl?: string
 }
 
-export const LoginForm = ({login}: Props) => {
-  const {m} = useI18n()
+export const LoginForm = ({ login }: Props) => {
+  const { m } = useI18n()
 
   const history = useNavigate()
 
-  const queryString = useQueryString<Partial<RedirectProps>, Partial<RedirectProps>>({
-    toQueryString: _ => _,
+  const queryString = useQueryString<
+    Partial<RedirectProps>,
+    Partial<RedirectProps>
+  >({
+    toQueryString: (_) => _,
     fromQueryString: mapArrayFromQuerystring(['redirecturl']),
   })
 
@@ -51,19 +64,26 @@ export const LoginForm = ({login}: Props) => {
     watch,
     setError,
     clearErrors,
-    formState: {errors},
-  } = useForm<Form>({mode: 'onSubmit'})
+    formState: { errors },
+  } = useForm<Form>({ mode: 'onSubmit' })
 
   const onLogin = async (form: Form) => {
     login
       .action(form.email, form.password)
-      .then(user => {
-        Matomo.trackEvent(EventCategories.auth, AuthenticationEventActions.success)
-        Matomo.trackEvent(EventCategories.auth, AuthenticationEventActions.role, user.role)
+      .then((user) => {
+        Matomo.trackEvent(
+          EventCategories.auth,
+          AuthenticationEventActions.success,
+        )
+        Matomo.trackEvent(
+          EventCategories.auth,
+          AuthenticationEventActions.role,
+          user.role,
+        )
 
         const redirectUrl = queryString.get().redirecturl?.[0]
         if (redirectUrl) {
-          history(redirectUrl, {replace: true})
+          history(redirectUrl, { replace: true })
         }
       })
       .catch((err: ApiError) => {
@@ -80,9 +100,13 @@ export const LoginForm = ({login}: Props) => {
       <InfoBanner />
       <EspaceProTitle subPageTitle={m.login} />
       <div className="w-full max-w-xl">
-        <form className="flex flex-col mb-8" onSubmit={handleSubmit(onLogin)} action="#">
+        <form
+          className="flex flex-col mb-8"
+          onSubmit={handleSubmit(onLogin)}
+          action="#"
+        >
           {errors.apiError && (
-            <Alert type="error" sx={{mb: 2}}>
+            <Alert type="error" sx={{ mb: 2 }}>
               <Txt size="big" block bold>
                 {m.somethingWentWrong}
               </Txt>
@@ -97,8 +121,8 @@ export const LoginForm = ({login}: Props) => {
             helperText={errors.email?.message ?? ' '}
             label={m.yourEmail}
             {...register('email', {
-              required: {value: true, message: m.required},
-              pattern: {value: regexp.email, message: m.invalidEmail},
+              required: { value: true, message: m.required },
+              pattern: { value: regexp.email, message: m.invalidEmail },
             })}
           />
           <ScInputPassword
@@ -107,7 +131,7 @@ export const LoginForm = ({login}: Props) => {
             error={!!errors.password}
             helperText={errors.password?.message ?? ' '}
             {...register('password', {
-              required: {value: true, message: m.required},
+              required: { value: true, message: m.required },
             })}
           />
           <div className="flex gap-4 items-center justify-center">
@@ -119,7 +143,7 @@ export const LoginForm = ({login}: Props) => {
             <ScButton
               loading={login.loading}
               type="submit"
-              onClick={_ => clearErrors('apiError')}
+              onClick={(_) => clearErrors('apiError')}
               variant="contained"
               color="primary"
               size="large"

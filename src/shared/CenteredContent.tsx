@@ -1,11 +1,11 @@
-import {layoutConfig} from 'core/Layout'
-import {ReactNode} from 'react'
+import { layoutConfig } from 'core/Layout'
+import { ReactNode } from 'react'
 
 interface Props {
   children: ReactNode
 }
 
-export function CenteredContent({children}: Props) {
+export function CenteredContent({ children }: Props) {
   return (
     <div
       className="flex flex-col items-center justify-center my-4 mx-2"

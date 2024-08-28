@@ -1,14 +1,14 @@
 import * as React from 'react'
-import {useEffect} from 'react'
-import {Box, BoxProps, SwipeableDrawer, Switch} from '@mui/material'
-import {useLayoutContext} from '../LayoutContext'
-import {layoutConfig} from '../index'
-import {useI18n} from '../../i18n'
-import {SidebarFooter} from './SidebarFooter'
-import {SidebarItem} from './SidebarItem'
-import {SidebarBody} from './SidebarBody'
-import {SidebarHeader} from './SidebarHeader'
-import {stopPropagation} from '../../helper'
+import { useEffect } from 'react'
+import { Box, BoxProps, SwipeableDrawer, Switch } from '@mui/material'
+import { useLayoutContext } from '../LayoutContext'
+import { layoutConfig } from '../index'
+import { useI18n } from '../../i18n'
+import { SidebarFooter } from './SidebarFooter'
+import { SidebarItem } from './SidebarItem'
+import { SidebarBody } from './SidebarBody'
+import { SidebarHeader } from './SidebarHeader'
+import { stopPropagation } from '../../helper'
 
 const sidebarId = 'signalconso-sidebar-id'
 
@@ -22,19 +22,20 @@ const stickSidebarToHeader = () => {
     sidebar = document.getElementById(sidebarId)
   }
   if (sidebar) {
-    sidebar.style.top = Math.max(layoutConfig.headerHeight - window.scrollY, 0) + 'px'
+    sidebar.style.top =
+      Math.max(layoutConfig.headerHeight - window.scrollY, 0) + 'px'
   }
 }
 
-export const Sidebar = ({children, sx, ...props}: BoxProps) => {
-  const {isMobileWidth, sidebarOpen, setSidebarOpen} = useLayoutContext()
-  const {m} = useI18n()
+export const Sidebar = ({ children, sx, ...props }: BoxProps) => {
+  const { isMobileWidth, sidebarOpen, setSidebarOpen } = useLayoutContext()
+  const { m } = useI18n()
 
   useEffect(() => {
     // Element has been re-created by SwipeableDrawer, thus variable point to nothing.
     sidebar = null
     stickSidebarToHeader()
-    setSidebarOpen(_ => !isMobileWidth)
+    setSidebarOpen((_) => !isMobileWidth)
   }, [isMobileWidth])
 
   useEffect(() => {
@@ -66,9 +67,9 @@ export const Sidebar = ({children, sx, ...props}: BoxProps) => {
         sx={{
           width: layoutConfig.sidebarWidth,
           height: '100%',
-          transition: t => t.transitions.create('width'),
+          transition: (t) => t.transitions.create('width'),
           overflowY: 'auto',
-          background: t => t.palette.background.default,
+          background: (t) => t.palette.background.default,
           display: 'flex',
           flexDirection: 'column',
           borderRadius: 0,

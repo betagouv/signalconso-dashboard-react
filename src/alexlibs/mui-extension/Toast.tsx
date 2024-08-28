@@ -1,7 +1,15 @@
 import * as React from 'react'
-import {ReactNode, useContext, useState} from 'react'
-import {Box, CircularProgress, Icon, IconButton, Snackbar, SnackbarCloseReason, SnackbarProps} from '@mui/material'
-import {colorInfo, colorSuccess, colorWarning} from './color'
+import { ReactNode, useContext, useState } from 'react'
+import {
+  Box,
+  CircularProgress,
+  Icon,
+  IconButton,
+  Snackbar,
+  SnackbarCloseReason,
+  SnackbarProps,
+} from '@mui/material'
+import { colorInfo, colorSuccess, colorWarning } from './color'
 
 const noop = (_: string) => {}
 
@@ -13,9 +21,16 @@ const ToastContext = React.createContext<WithToast>({
   toastLoading: noop,
 })
 
-type ToastType = 'error' | 'loading' | 'warning' | 'success' | 'info' | undefined
+type ToastType =
+  | 'error'
+  | 'loading'
+  | 'warning'
+  | 'success'
+  | 'info'
+  | undefined
 
-export interface ToastOptions extends Pick<SnackbarProps, 'autoHideDuration' | 'action'> {
+interface ToastOptions
+  extends Pick<SnackbarProps, 'autoHideDuration' | 'action'> {
   onClose?: (event: any) => void
   keepOpenOnClickAway?: boolean
 }
@@ -28,35 +43,40 @@ export interface WithToast {
   toastLoading: (m: string, options?: ToastOptions) => void
 }
 
-export interface ToastProviderProps {
+interface ToastProviderProps {
   children: ReactNode
   vertical?: 'top' | 'bottom'
   horizontal?: 'left' | 'center' | 'right'
 }
 
-export const ToastProvider = ({children, vertical = 'bottom', horizontal = 'left'}: ToastProviderProps) => {
+export const ToastProvider = ({
+  children,
+  vertical = 'bottom',
+  horizontal = 'left',
+}: ToastProviderProps) => {
   const [type, setType] = useState<ToastType | undefined>(undefined)
   const [message, setMessage] = useState<string | undefined>(undefined)
   const [open, setOpen] = useState(false)
   const [options, setOptions] = useState<ToastOptions | undefined>()
 
-  const pop = (type: ToastType) => (message: string, options?: ToastOptions) => {
-    setOpen(true)
-    setType(type)
-    setMessage(message)
-    setOptions(options)
-  }
+  const pop =
+    (type: ToastType) => (message: string, options?: ToastOptions) => {
+      setOpen(true)
+      setType(type)
+      setMessage(message)
+      setOptions(options)
+    }
 
   const renderIcon = (type: ToastType) => {
     switch (type!) {
       case 'error':
-        return <Icon sx={{color: t => t.palette.error.main}}>error</Icon>
+        return <Icon sx={{ color: (t) => t.palette.error.main }}>error</Icon>
       case 'success':
-        return <Icon sx={{color: colorSuccess}}>check_circle</Icon>
+        return <Icon sx={{ color: colorSuccess }}>check_circle</Icon>
       case 'warning':
-        return <Icon sx={{color: colorWarning}}>warning</Icon>
+        return <Icon sx={{ color: colorWarning }}>warning</Icon>
       case 'info':
-        return <Icon sx={{color: colorInfo}}>info</Icon>
+        return <Icon sx={{ color: colorInfo }}>info</Icon>
       case 'loading':
         return <CircularProgress size={24} thickness={5} />
       default:
@@ -84,14 +104,20 @@ export const ToastProvider = ({children, vertical = 'bottom', horizontal = 'left
     >
       {children}
       <Snackbar
-        anchorOrigin={{vertical, horizontal}}
+        anchorOrigin={{ vertical, horizontal }}
         open={open}
-        autoHideDuration={options?.autoHideDuration === undefined ? (type === 'error' ? null : 6000) : options.autoHideDuration}
+        autoHideDuration={
+          options?.autoHideDuration === undefined
+            ? type === 'error'
+              ? null
+              : 6000
+            : options.autoHideDuration
+        }
         onClose={handleClose}
         message={
-          <div style={{display: 'flex', alignItems: 'center'}}>
+          <div style={{ display: 'flex', alignItems: 'center' }}>
             {renderIcon(type)}
-            <Box component="span" sx={{ml: 2}}>
+            <Box component="span" sx={{ ml: 2 }}>
               {message}
             </Box>
           </div>
@@ -99,7 +125,12 @@ export const ToastProvider = ({children, vertical = 'bottom', horizontal = 'left
         action={
           <>
             {options?.action}
-            <IconButton onClick={handleClose} color="inherit" size="large" sx={options?.action ? {ml: 1} : {}}>
+            <IconButton
+              onClick={handleClose}
+              color="inherit"
+              size="large"
+              sx={options?.action ? { ml: 1 } : {}}
+            >
               <Icon>close</Icon>
             </IconButton>
           </>
@@ -111,5 +142,8 @@ export const ToastProvider = ({children, vertical = 'bottom', horizontal = 'left
 
 export const useToast = () => useContext(ToastContext)
 
-export const withToast = (Component: any) => (props: any) =>
-  <ToastContext.Consumer>{(other: WithToast) => <Component {...props} {...other} />}</ToastContext.Consumer>
+export const withToast = (Component: any) => (props: any) => (
+  <ToastContext.Consumer>
+    {(other: WithToast) => <Component {...props} {...other} />}
+  </ToastContext.Consumer>
+)

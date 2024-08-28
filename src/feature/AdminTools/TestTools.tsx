@@ -1,16 +1,16 @@
-import {Box, Icon} from '@mui/material'
-import {useQuery} from '@tanstack/react-query'
-import {CleanWidePanel} from 'shared/Panel/simplePanels'
-import {Alert, IconBtn, Txt} from '../../alexlibs/mui-extension'
-import {useAsync, useEffectFn} from '../../alexlibs/react-hooks-lib'
-import {useConnectedContext} from '../../core/context/ConnectedContext'
-import {useI18n} from '../../core/i18n'
-import {useToast} from '../../core/toast'
+import { Box, Icon } from '@mui/material'
+import { useQuery } from '@tanstack/react-query'
+import { CleanWidePanel } from 'shared/Panel/simplePanels'
+import { Alert, IconBtn, Txt } from '../../alexlibs/mui-extension'
+import { useAsync, useEffectFn } from '../../alexlibs/react-hooks-lib'
+import { useConnectedContext } from '../../core/context/ConnectedContext'
+import { useI18n } from '../../core/i18n'
+import { useToast } from '../../core/toast'
 
 export const TestTools = () => {
-  const {m} = useI18n()
-  const {apiSdk: api, connectedUser} = useConnectedContext()
-  const {toastError} = useToast()
+  const { m } = useI18n()
+  const { apiSdk: api, connectedUser } = useConnectedContext()
+  const { toastError } = useToast()
 
   const _emailCodes = useQuery({
     queryKey: ['admin_getEmailCodes'],
@@ -18,12 +18,12 @@ export const TestTools = () => {
       api.secured.admin
         .getEmailCodes()
         // .then(emailCodes => emailCodes.sort())
-        .then(emailCodes => ({
-          divers: emailCodes.filter(_ => _.startsWith('various.')),
-          admin: emailCodes.filter(_ => _.startsWith('admin.')),
-          dgccrf: emailCodes.filter(_ => _.startsWith('dgccrf.')),
-          pro: emailCodes.filter(_ => _.startsWith('pro.')),
-          consumer: emailCodes.filter(_ => _.startsWith('consumer.')),
+        .then((emailCodes) => ({
+          divers: emailCodes.filter((_) => _.startsWith('various.')),
+          admin: emailCodes.filter((_) => _.startsWith('admin.')),
+          dgccrf: emailCodes.filter((_) => _.startsWith('dgccrf.')),
+          pro: emailCodes.filter((_) => _.startsWith('pro.')),
+          consumer: emailCodes.filter((_) => _.startsWith('consumer.')),
         })),
   })
   const _pdfCodes = useQuery({
@@ -43,21 +43,27 @@ export const TestTools = () => {
           <h2 className="font-bold mb-2 text-xl">{m.sendDummyEmail}</h2>
           <div>
             <Alert type="info" gutterBottom>
-              <div dangerouslySetInnerHTML={{__html: m.allMailsWillBeSendTo(connectedUser.email)}} />
+              <div
+                dangerouslySetInnerHTML={{
+                  __html: m.allMailsWillBeSendTo(connectedUser.email),
+                }}
+              />
             </Alert>
 
             {_emailCodes.data &&
               Object.entries(_emailCodes.data).map(([type, emailCodes]) => (
-                <Box key={type} sx={{mt: 3, mb: 4}}>
-                  <p className="text-xl capitalize text-center text-black font-bold">{type}</p>
-                  {emailCodes.map(emailCode => (
+                <Box key={type} sx={{ mt: 3, mb: 4 }}>
+                  <p className="text-xl capitalize text-center text-black font-bold">
+                    {type}
+                  </p>
+                  {emailCodes.map((emailCode) => (
                     <Box
                       key={emailCode}
                       sx={{
                         display: 'flex',
                         alignItems: 'center',
                         py: 1.5,
-                        borderBottom: t => `1px solid ${t.palette.divider}`,
+                        borderBottom: (t) => `1px solid ${t.palette.divider}`,
                       }}
                     >
                       <Box
@@ -72,18 +78,26 @@ export const TestTools = () => {
                             </Txt>
                           )
                           try {
-                            const {title, desc} = (m.testMails as any)[type][emailCode.split('.')[1]]
+                            const { title, desc } = (m.testMails as any)[type][
+                              emailCode.split('.')[1]
+                            ]
                             return (
                               <>
                                 <Txt bold block>
                                   {title}
                                 </Txt>
-                                <Txt color="hint" block dangerouslySetInnerHTML={{__html: desc}} />
+                                <Txt
+                                  color="hint"
+                                  block
+                                  dangerouslySetInnerHTML={{ __html: desc }}
+                                />
                                 {emailCodeDisplay}
                               </>
                             )
                           } catch (e) {
-                            console.error(`Missing translation for ${emailCode}`)
+                            console.error(
+                              `Missing translation for ${emailCode}`,
+                            )
                             return <>{emailCodeDisplay}</>
                           }
                         })()}
@@ -92,7 +106,9 @@ export const TestTools = () => {
                         <IconBtn
                           color="primary"
                           loading={_sendEmail.loading}
-                          onClick={() => _sendEmail.call(emailCode, connectedUser.email)}
+                          onClick={() =>
+                            _sendEmail.call(emailCode, connectedUser.email)
+                          }
                         >
                           <Icon>send</Icon>
                         </IconBtn>
@@ -109,9 +125,12 @@ export const TestTools = () => {
           <h2 className="font-bold text-lg mb-2">{m.downloadDummyPdfs}</h2>
           <div>
             {_pdfCodes.data && (
-              <Box sx={{mt: 3, mb: 4}}>
-                {_pdfCodes.data.map(code => {
-                  const {title, desc} = ((m.testPdfs as any)[code] ?? {}) as {title?: string; desc?: string}
+              <Box sx={{ mt: 3, mb: 4 }}>
+                {_pdfCodes.data.map((code) => {
+                  const { title, desc } = ((m.testPdfs as any)[code] ?? {}) as {
+                    title?: string
+                    desc?: string
+                  }
                   return (
                     <Box
                       key={code}
@@ -119,7 +138,7 @@ export const TestTools = () => {
                         display: 'flex',
                         alignItems: 'center',
                         py: 1.5,
-                        borderBottom: t => `1px solid ${t.palette.divider}`,
+                        borderBottom: (t) => `1px solid ${t.palette.divider}`,
                       }}
                     >
                       <Box
@@ -132,13 +151,23 @@ export const TestTools = () => {
                             {title}
                           </Txt>
                         )}
-                        {desc && <Txt color="hint" block dangerouslySetInnerHTML={{__html: desc}} />}
+                        {desc && (
+                          <Txt
+                            color="hint"
+                            block
+                            dangerouslySetInnerHTML={{ __html: desc }}
+                          />
+                        )}
                         <Txt color="disabled" size="small" block>
                           {code}
                         </Txt>
                       </Box>
                       <Box>
-                        <IconBtn color="primary" loading={_downloadTestPdf.loading} onClick={() => _downloadTestPdf.call(code)}>
+                        <IconBtn
+                          color="primary"
+                          loading={_downloadTestPdf.loading}
+                          onClick={() => _downloadTestPdf.call(code)}
+                        >
                           <Icon>download</Icon>
                         </IconBtn>
                       </Box>

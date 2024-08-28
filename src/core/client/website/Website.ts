@@ -1,7 +1,7 @@
-import {CompanyCreation, Entity, Id, PaginatedFilters} from '../../model'
-import {Company} from '../company/Company'
-import {Address} from '../../model'
-import {Country} from '../constant/Country'
+import { CompanyCreation, Entity, Id, PaginatedFilters } from '../../model'
+import { Company } from '../company/Company'
+import { Address } from '../../model'
+import { Country } from '../constant/Country'
 
 export enum IdentificationStatus {
   Identified = 'Identified',

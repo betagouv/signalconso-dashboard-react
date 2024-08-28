@@ -2,7 +2,7 @@ type Entries<T> = {
   [K in keyof T]: [K, T[K]]
 }[keyof T][]
 
-type _Enum = {[key: string]: any}
+type _Enum = { [key: string]: any }
 
 export class Enum {
   static readonly entries = <T extends _Enum>(t: T): Entries<T> => {
@@ -17,7 +17,10 @@ export class Enum {
     return Object.values(t)
   }
 
-  static readonly getKeyByValue = <T extends _Enum>(t: T, value: string /*T[keyof T]*/): keyof T | undefined => {
+  static readonly getKeyByValue = <T extends _Enum>(
+    t: T,
+    value: string /*T[keyof T]*/,
+  ): keyof T | undefined => {
     return Enum.entries(t).find(([k, v]) => v === value)?.[0]
   }
 }

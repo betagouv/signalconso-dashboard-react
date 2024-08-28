@@ -1,46 +1,54 @@
-import {Icon, LinearProgress, Tooltip} from '@mui/material'
-import {useConnectedContext} from 'core/context/ConnectedContext'
-import {useI18n} from 'core/i18n'
-import {EventActionValues, Id} from 'core/model'
+import { Icon, LinearProgress, Tooltip } from '@mui/material'
+import { useConnectedContext } from 'core/context/ConnectedContext'
+import { useI18n } from 'core/i18n'
+import { EventActionValues, Id } from 'core/model'
 import {
   useCompanyAccessCountQuery,
   useGetResponseRateQuery,
   useIsAllowedToManageCompanyAccessesQuery,
 } from 'core/queryhooks/companyQueryHooks'
-import {useGetCompanyEventsQuery} from 'core/queryhooks/eventQueryHooks'
+import { useGetCompanyEventsQuery } from 'core/queryhooks/eventQueryHooks'
 import {
   useGetCompanyRefundBlackMailQuery,
   useGetCompanyThreatQuery,
   useGetResponseDelayQuery,
 } from 'core/queryhooks/statsQueryHooks'
-import {siteMap} from 'core/siteMap'
-import {PropsWithChildren} from 'react'
-import {NavLink} from 'react-router-dom'
+import { siteMap } from 'core/siteMap'
+import { PropsWithChildren } from 'react'
+import { NavLink } from 'react-router-dom'
 
 type Props = {
   companyId: Id
 }
 
-export function CompanyStatsNumberWidgets({id, siret}: {id: Id; siret: string}) {
-  const {connectedUser} = useConnectedContext()
+export function CompanyStatsNumberWidgets({
+  id,
+  siret,
+}: {
+  id: Id
+  siret: string
+}) {
+  const { connectedUser } = useConnectedContext()
   const companyId = id
   return (
-    <div className={`grid grid-cols-2 ${connectedUser.isNotPro ? 'sm:grid-cols-4' : 'sm:grid-cols-3'} gap-4 mb-4`}>
-      <NumberWidgetResponseRate {...{companyId}} />
-      <NumberWidgetResponseDelay {...{companyId}} />
-      <NumberWidgetAccesses {...{companyId, siret}} />
+    <div
+      className={`grid grid-cols-2 ${connectedUser.isNotPro ? 'sm:grid-cols-4' : 'sm:grid-cols-3'} gap-4 mb-4`}
+    >
+      <NumberWidgetResponseRate {...{ companyId }} />
+      <NumberWidgetResponseDelay {...{ companyId }} />
+      <NumberWidgetAccesses {...{ companyId, siret }} />
       {connectedUser.isNotPro && (
         <>
-          <NumberWidgetDocsSent {...{siret}} />
-          <NumberWidgetThreats {...{companyId}} />
-          <NumberWidgetBlackmail {...{companyId}} />
+          <NumberWidgetDocsSent {...{ siret }} />
+          <NumberWidgetThreats {...{ companyId }} />
+          <NumberWidgetBlackmail {...{ companyId }} />
         </>
       )}
     </div>
   )
 }
 
-function NumberWidgetResponseRate({companyId}: Props) {
+function NumberWidgetResponseRate({ companyId }: Props) {
   const _responseRate = useGetResponseRateQuery(companyId)
   return (
     <Widget>
@@ -50,9 +58,9 @@ function NumberWidgetResponseRate({companyId}: Props) {
   )
 }
 
-function NumberWidgetResponseDelay({companyId}: Props) {
+function NumberWidgetResponseDelay({ companyId }: Props) {
   const _responseDelay = useGetResponseDelayQuery(companyId)
-  const {m} = useI18n()
+  const { m } = useI18n()
   return (
     <Widget loading={_responseDelay.isLoading}>
       {!_responseDelay.isLoading &&
@@ -69,9 +77,9 @@ function NumberWidgetResponseDelay({companyId}: Props) {
     </Widget>
   )
 }
-function NumberWidgetThreats({companyId}: Props) {
+function NumberWidgetThreats({ companyId }: Props) {
   const _getCompanyThreat = useGetCompanyThreatQuery(companyId)
-  const {m} = useI18n()
+  const { m } = useI18n()
   return (
     <Widget loading={_getCompanyThreat.isLoading}>
       {_getCompanyThreat.data && (
@@ -80,7 +88,10 @@ function NumberWidgetThreats({companyId}: Props) {
           <p className="flex items-center gap-2">
             {m.proTheatToConsumer}{' '}
             <Tooltip title={m.proTheatToConsumerDesc}>
-              <Icon sx={{color: t => t.palette.text.disabled}} fontSize="medium">
+              <Icon
+                sx={{ color: (t) => t.palette.text.disabled }}
+                fontSize="medium"
+              >
                 help
               </Icon>
             </Tooltip>
@@ -90,18 +101,24 @@ function NumberWidgetThreats({companyId}: Props) {
     </Widget>
   )
 }
-function NumberWidgetBlackmail({companyId}: Props) {
-  const _getCompanyRefundBlackMail = useGetCompanyRefundBlackMailQuery(companyId)
-  const {m} = useI18n()
+function NumberWidgetBlackmail({ companyId }: Props) {
+  const _getCompanyRefundBlackMail =
+    useGetCompanyRefundBlackMailQuery(companyId)
+  const { m } = useI18n()
   return (
     <Widget loading={_getCompanyRefundBlackMail.isLoading}>
       {_getCompanyRefundBlackMail.data && (
         <>
-          <p className="text-3xl font-bold ">{_getCompanyRefundBlackMail.data.value}</p>
+          <p className="text-3xl font-bold ">
+            {_getCompanyRefundBlackMail.data.value}
+          </p>
           <p className="flex items-center gap-2">
             {m.proRefundBlackMail}{' '}
             <Tooltip title={m.proRefundBlackMailDesc}>
-              <Icon sx={{color: t => t.palette.text.disabled}} fontSize="medium">
+              <Icon
+                sx={{ color: (t) => t.palette.text.disabled }}
+                fontSize="medium"
+              >
                 help
               </Icon>
             </Tooltip>
@@ -111,10 +128,12 @@ function NumberWidgetBlackmail({companyId}: Props) {
     </Widget>
   )
 }
-function NumberWidgetDocsSent({siret}: {siret: string}) {
+function NumberWidgetDocsSent({ siret }: { siret: string }) {
   const _companyEvents = useGetCompanyEventsQuery(siret)
-  const count = _companyEvents.data?.filter(_ => _.data.action === EventActionValues.PostAccountActivationDoc).length
-  const {m} = useI18n()
+  const count = _companyEvents.data?.filter(
+    (_) => _.data.action === EventActionValues.PostAccountActivationDoc,
+  ).length
+  const { m } = useI18n()
   return (
     <Widget loading={_companyEvents.isLoading}>
       {count !== undefined && (
@@ -126,13 +145,24 @@ function NumberWidgetDocsSent({siret}: {siret: string}) {
     </Widget>
   )
 }
-function NumberWidgetAccesses({siret, companyId}: {siret: string; companyId: string}) {
+function NumberWidgetAccesses({
+  siret,
+  companyId,
+}: {
+  siret: string
+  companyId: string
+}) {
   const _accesses = useCompanyAccessCountQuery(siret)
-  const displayAccessesLink = useIsAllowedToManageCompanyAccessesQuery(companyId) ?? false
-  const {m} = useI18n()
+  const displayAccessesLink =
+    useIsAllowedToManageCompanyAccessesQuery(companyId) ?? false
+  const { m } = useI18n()
   const link = (
     <>
-      (<NavLink to={siteMap.logged.company(companyId).accesses.valueAbsolute}>voir</NavLink>)
+      (
+      <NavLink to={siteMap.logged.company(companyId).accesses.valueAbsolute}>
+        voir
+      </NavLink>
+      )
     </>
   )
   return (

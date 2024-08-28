@@ -1,5 +1,5 @@
-import {Box, BoxProps, Icon, Tooltip} from '@mui/material'
-import {Emoticon} from '../../../shared/Emoticon'
+import { Box, BoxProps, Icon, Tooltip } from '@mui/material'
+import { Emoticon } from '../../../shared/Emoticon'
 import * as React from 'react'
 
 interface Props extends BoxProps {
@@ -7,10 +7,10 @@ interface Props extends BoxProps {
   children: React.ReactNode
 }
 
-export const ReviewLabel = ({tooltip, children, ...props}: Props) => {
+export const ReviewLabel = ({ tooltip, children, ...props }: Props) => {
   return (
-    <Box sx={{display: 'flex', alignItems: 'center'}}>
-      <Emoticon sx={{fontSize: 30}} {...props}>
+    <Box sx={{ display: 'flex', alignItems: 'center' }}>
+      <Emoticon sx={{ fontSize: 30 }} {...props}>
         {children}
       </Emoticon>
       <Tooltip title={tooltip}>
@@ -18,7 +18,7 @@ export const ReviewLabel = ({tooltip, children, ...props}: Props) => {
           fontSize="small"
           sx={{
             verticalAlign: 'middle',
-            color: t => t.palette.text.disabled,
+            color: (t) => t.palette.text.disabled,
             ml: 1,
           }}
         >

@@ -1,14 +1,14 @@
 import React from 'react'
-import {useI18n} from '../core/i18n'
+import { useI18n } from '../core/i18n'
 
-import {Autocomplete, Box} from '@mui/material'
-import {ScInput} from './ScInput'
-import {combineSx} from '../core/theme'
-import {makeSx} from '../alexlibs/mui-extension'
-import {Country} from '../core/client/constant/Country'
-import {countryToFlag} from '../core/helper'
-import {ScOption} from 'core/helper/ScOption'
-import {useCountriesQuery} from '../core/queryhooks/constantQueryHooks'
+import { Autocomplete, Box } from '@mui/material'
+import { ScInput } from './ScInput'
+import { combineSx } from '../core/theme'
+import { makeSx } from '../alexlibs/mui-extension'
+import { Country } from '../core/client/constant/Country'
+import { countryToFlag } from '../core/helper'
+import { ScOption } from 'core/helper/ScOption'
+import { useCountriesQuery } from '../core/queryhooks/constantQueryHooks'
 
 interface Props {
   country?: Country
@@ -23,12 +23,12 @@ const css = makeSx({
     p: 0,
     pr: 1,
     cursor: 'pointer',
-    color: t => t.palette.text.secondary,
+    color: (t) => t.palette.text.secondary,
     '&:hover': {
-      background: t => t.palette.action.hover,
+      background: (t) => t.palette.action.hover,
     },
     '&:active, &:focus': {
-      background: t => t.palette.action.focus,
+      background: (t) => t.palette.action.focus,
     },
   },
   flag: {
@@ -41,8 +41,8 @@ const css = makeSx({
   },
 })
 
-export const SelectCountry = ({onChange, country}: Props) => {
-  const {m} = useI18n()
+export const SelectCountry = ({ onChange, country }: Props) => {
+  const { m } = useI18n()
   const _countries = useCountriesQuery()
 
   return (
@@ -61,16 +61,18 @@ export const SelectCountry = ({onChange, country}: Props) => {
           newCountry && onChange(newCountry)
         }}
         options={_countries.data ?? []}
-        getOptionLabel={option => option.name}
+        getOptionLabel={(option) => option.name}
         renderOption={(props, option) => (
-          <Box component="li" key={option.code + Math.random()} sx={css.menuItem} {...props}>
+          <Box component="li" sx={css.menuItem} {...props}>
             <Box component="span" sx={combineSx(css.flag, css.iconWidth)}>
               {countryToFlag(option.code)}
             </Box>
             <span>{option.name}</span>
           </Box>
         )}
-        renderInput={params => <ScInput {...params} label={m.foreignCountry} />}
+        renderInput={(params) => (
+          <ScInput {...params} label={m.foreignCountry} />
+        )}
       />
     </>
   )

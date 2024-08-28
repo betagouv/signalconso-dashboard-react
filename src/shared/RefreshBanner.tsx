@@ -1,4 +1,4 @@
-import {useEffect, useState} from 'react'
+import { useEffect, useState } from 'react'
 import Modal from '@mui/material/Modal'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
@@ -25,7 +25,8 @@ export const RefreshBanner = () => {
       return false
     }
 
-    const timeSinceLastRefresh = currentTime - (isNaN(lastRefreshTime) ? currentTime : lastRefreshTime)
+    const timeSinceLastRefresh =
+      currentTime - (isNaN(lastRefreshTime) ? currentTime : lastRefreshTime)
     const twentyFourHours = 86400000
 
     if (timeSinceLastRefresh >= twentyFourHours) {
@@ -53,16 +54,23 @@ export const RefreshBanner = () => {
   }
 
   return (
-    <Modal open={open} aria-labelledby="modal-title" aria-describedby="modal-description">
+    <Modal
+      open={open}
+      aria-labelledby="modal-title"
+      aria-describedby="modal-description"
+    >
       <Box sx={modalStyle}>
         <div id="modal-title" className="text-xl font-semibold mb-4">
           Mise à jour du site disponible
         </div>
         <div id="modal-description" className="mt-4 space-y-2 leading-relaxed">
-          <p>Rechargez la page pour bénéficier de la dernière version du site.</p>
+          <p>
+            Rechargez la page pour bénéficier de la dernière version du site.
+          </p>
           <p>
             <strong>
-              Si vous avez des modifications en cours, cliquez sur "Fermer", terminez-les puis rafraîchissez la page.
+              Si vous avez des modifications en cours, cliquez sur "Fermer",
+              terminez-les puis rafraîchissez la page.
             </strong>
           </p>
         </div>

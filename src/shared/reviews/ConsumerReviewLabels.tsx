@@ -1,13 +1,23 @@
-import {Box, Tooltip} from '@mui/material'
-import {useI18n} from 'core/i18n'
-import {ConsumerReview} from 'core/model'
-import {ConsumerReviewLabel} from 'shared/reviews/ConsumerReviewLabel'
-import {ReportSearchResult} from '../../core/client/report/Report'
+import { Box, Tooltip } from '@mui/material'
+import { useI18n } from 'core/i18n'
+import { ConsumerReview } from 'core/model'
+import { ConsumerReviewLabel } from 'shared/reviews/ConsumerReviewLabel'
+import { ReportSearchResult } from '../../core/client/report/Report'
 
-export function ConsumerReviewLabels({report, detailsTooltip}: {report: ReportSearchResult; detailsTooltip: boolean}) {
-  const {consumerReview, engagementReview} = report
-  const label1 = consumerReview ? <LabelWithTooltip withTooltip={detailsTooltip} review={consumerReview} /> : null
-  const label2 = engagementReview ? <LabelWithTooltip withTooltip={detailsTooltip} review={engagementReview} /> : null
+export function ConsumerReviewLabels({
+  report,
+  detailsTooltip,
+}: {
+  report: ReportSearchResult
+  detailsTooltip: boolean
+}) {
+  const { consumerReview, engagementReview } = report
+  const label1 = consumerReview ? (
+    <LabelWithTooltip withTooltip={detailsTooltip} review={consumerReview} />
+  ) : null
+  const label2 = engagementReview ? (
+    <LabelWithTooltip withTooltip={detailsTooltip} review={engagementReview} />
+  ) : null
   if (label1 && label2) {
     return (
       <div className="flex items-center gap-1">
@@ -18,8 +28,14 @@ export function ConsumerReviewLabels({report, detailsTooltip}: {report: ReportSe
   return label1 ?? label2 ?? null
 }
 
-function LabelWithTooltip({withTooltip, review}: {withTooltip: boolean; review: ConsumerReview}) {
-  const {m} = useI18n()
+function LabelWithTooltip({
+  withTooltip,
+  review,
+}: {
+  withTooltip: boolean
+  review: ConsumerReview
+}) {
+  const { m } = useI18n()
   const label = <ConsumerReviewLabel evaluation={review.evaluation} />
 
   if (withTooltip) {
@@ -27,7 +43,13 @@ function LabelWithTooltip({withTooltip, review}: {withTooltip: boolean; review: 
       <Tooltip
         title={
           <>
-            <Box sx={{fontWeight: t => t.typography.fontWeightBold, fontSize: 'larger', mb: 1}}>
+            <Box
+              sx={{
+                fontWeight: (t) => t.typography.fontWeightBold,
+                fontSize: 'larger',
+                mb: 1,
+              }}
+            >
               {m.responseEvaluationShort[review.evaluation]}
             </Box>
             <Box

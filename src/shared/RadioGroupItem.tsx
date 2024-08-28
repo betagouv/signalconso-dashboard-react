@@ -1,6 +1,6 @@
-import {alpha, Box, BoxProps, Checkbox, Radio} from '@mui/material'
-import React, {ReactNode} from 'react'
-import {Txt} from '../alexlibs/mui-extension'
+import { alpha, Box, BoxProps, Checkbox, Radio } from '@mui/material'
+import React, { ReactNode } from 'react'
+import { Txt } from '../alexlibs/mui-extension'
 
 const defaultMuiRadioPadding = 9
 
@@ -42,7 +42,7 @@ export const ScRadioGroupItem = <T,>({
         minHeight,
         display: 'flex',
         alignItems: 'flex-start',
-        border: t => '1px solid ' + t.palette.divider,
+        border: (t) => '1px solid ' + t.palette.divider,
         paddingRight: '2px',
         paddingBottom: '2px',
         transition: 'all .2s ease-in-out',
@@ -51,13 +51,13 @@ export const ScRadioGroupItem = <T,>({
           ? {
               borderRightColor: 'transparent',
               '&:last-of-type': {
-                borderRight: t => '1px solid ' + t.palette.divider,
-                borderBottomRightRadius: t => t.shape.borderRadius,
-                borderTopRightRadius: t => t.shape.borderRadius,
+                borderRight: (t) => '1px solid ' + t.palette.divider,
+                borderBottomRightRadius: (t) => t.shape.borderRadius,
+                borderTopRightRadius: (t) => t.shape.borderRadius,
               },
               '&:first-of-type': {
-                borderBottomLeftRadius: t => t.shape.borderRadius,
-                borderTopLeftRadius: t => t.shape.borderRadius,
+                borderBottomLeftRadius: (t) => t.shape.borderRadius,
+                borderTopLeftRadius: (t) => t.shape.borderRadius,
               },
               '&:not(:first-of-type)': {
                 marginLeft: '-1px',
@@ -66,13 +66,13 @@ export const ScRadioGroupItem = <T,>({
           : {
               borderBottomColor: 'transparent',
               '&:last-of-type': {
-                borderBottom: t => '1px solid ' + t.palette.divider,
-                borderBottomRightRadius: t => t.shape.borderRadius,
-                borderBottomLeftRadius: t => t.shape.borderRadius,
+                borderBottom: (t) => '1px solid ' + t.palette.divider,
+                borderBottomRightRadius: (t) => t.shape.borderRadius,
+                borderBottomLeftRadius: (t) => t.shape.borderRadius,
               },
               '&:first-of-type': {
-                borderTopRightRadius: t => t.shape.borderRadius,
-                borderTopLeftRadius: t => t.shape.borderRadius,
+                borderTopRightRadius: (t) => t.shape.borderRadius,
+                borderTopLeftRadius: (t) => t.shape.borderRadius,
               },
               '&:not(:first-of-type)': {
                 marginTop: '-2px',
@@ -80,20 +80,20 @@ export const ScRadioGroupItem = <T,>({
             }),
         '&:hover': {
           zIndex: 1,
-          border: t => `1px solid ${t.palette.primary.main}`,
+          border: (t) => `1px solid ${t.palette.primary.main}`,
           background: 'rgba(0,0,0,.04)',
         },
         ...(selected && {
           zIndex: 1,
-          border: t => `1px solid ${t.palette.primary.main} !important`,
-          background: t => alpha(t.palette.primary.main, 0.1),
-          boxShadow: t => `inset 0 0 0 1px ${t.palette.primary.main}`,
+          border: (t) => `1px solid ${t.palette.primary.main} !important`,
+          background: (t) => alpha(t.palette.primary.main, 0.1),
+          boxShadow: (t) => `inset 0 0 0 1px ${t.palette.primary.main}`,
         }),
         ...(error && {
           '&$rootSelected': {
-            borderColor: t => t.palette.error.main + ' !important',
+            borderColor: (t) => t.palette.error.main + ' !important',
           },
-          boxShadow: t => `inset 0 0 0 1px ${t.palette.error.main}`,
+          boxShadow: (t) => `inset 0 0 0 1px ${t.palette.error.main}`,
         }),
         ...sx,
       }}

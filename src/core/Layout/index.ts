@@ -4,5 +4,5 @@ export const layoutConfig = {
   headerPx: 2,
 }
 
-export {Layout} from './Layout'
-export {LayoutContextProvider as LayoutProvider} from './LayoutContext'
+export { Layout } from './Layout'
+export { LayoutContextProvider as LayoutProvider } from './LayoutContext'

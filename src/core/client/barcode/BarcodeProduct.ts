@@ -1,4 +1,4 @@
-import {Id} from '../../model'
+import { Id } from '../../model'
 
 export interface BarcodeProduct {
   id: Id

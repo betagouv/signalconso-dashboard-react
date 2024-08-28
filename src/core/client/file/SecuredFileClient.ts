@@ -1,6 +1,6 @@
-import {UploadedFile} from './UploadedFile'
-import {ApiClientApi} from '../ApiClient'
-import {Id} from '../../model'
+import { UploadedFile } from './UploadedFile'
+import { ApiClientApi } from '../ApiClient'
+import { Id } from '../../model'
 
 export class SecuredFileClient {
   constructor(private client: ApiClientApi) {}
@@ -10,6 +10,8 @@ export class SecuredFileClient {
   }
 
   readonly listFiles = (fileIds: Id[]) => {
-    return this.client.post<UploadedFile[]>(`/reports/files/list`, {body: fileIds})
+    return this.client.post<UploadedFile[]>(`/reports/files/list`, {
+      body: fileIds,
+    })
   }
 }
