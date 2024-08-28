@@ -1,32 +1,22 @@
 import { useI18n } from '../../core/i18n'
 import { Page, PageTitle } from '../../shared/Page'
 
-import {
-  Badge,
-  Box,
-  Checkbox,
-  Chip,
-  Collapse,
-  Icon,
-  Tooltip,
-} from '@mui/material'
-import { useMutation } from '@tanstack/react-query'
-import React, { useCallback, useEffect, useMemo, useState } from 'react'
-import { NavLink } from 'react-router-dom'
+import { Collapse } from '@mui/material'
+import { I18nContextProps } from 'core/i18n/I18n'
+import { UseQueryPaginateResult } from 'core/queryhooks/UseQueryPaginate'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { CleanDiscreetPanel } from 'shared/Panel/simplePanels'
 import { ConsumerReviewLabels } from 'shared/reviews/ConsumerReviewLabels'
-import { Fender, IconBtn, Txt } from '../../alexlibs/mui-extension'
-import { useSetState } from '../../alexlibs/react-hooks-lib'
-import { config } from '../../conf/config'
-import { EntityIcon } from '../../core/EntityIcon'
+import { UseSetState, useSetState } from '../../alexlibs/react-hooks-lib'
 import {
   Report,
+  ReportSearchResult,
   ReportStatus,
   ReportTag,
   ReportingDateLabel,
 } from '../../core/client/report/Report'
 import { useConnectedContext } from '../../core/context/ConnectedContext'
-import { cleanObject, textOverflowMiddleCropping } from '../../core/helper'
+import { cleanObject } from '../../core/helper'
 import compose from '../../core/helper/compose'
 import {
   mapArrayFromQuerystring,
@@ -37,38 +27,40 @@ import {
 } from '../../core/helper/useQueryString'
 import {
   Id,
+  Paginate,
+  PaginatedFilters,
   ReportResponseTypes,
   ReportSearch,
   ResponseEvaluation,
 } from '../../core/model'
 import { useCategoriesByStatusQuery } from '../../core/queryhooks/constantQueryHooks'
 import { useReportSearchQuery } from '../../core/queryhooks/reportQueryHooks'
-import { siteMap } from '../../core/siteMap'
 import { styleUtils, sxUtils } from '../../core/theme'
-import { ScButton } from '../../shared/Button'
-import { Datatable } from '../../shared/Datatable/Datatable'
+import {
+  Datatable,
+  DatatableColumnProps,
+} from '../../shared/Datatable/Datatable'
 import { ReportDetailValues } from '../../shared/ReportDetailValues'
 import { ReportStatusLabel } from '../../shared/ReportStatus'
 import { SelectTagsMenuValues } from '../../shared/SelectTags/SelectTagsMenu'
-import AdvancedReportsFilter from './AdvancedReportsFilter'
+import { AdvancedReportsFilter } from './AdvancedReportsFilter'
 import AdvancedSearchBar from './AdvancedSearchBar'
-import CompanyNameDetails from './CompanyNameDetails'
-import DatatableToolbarComponent from './DatatableToolbarComponent'
+import { DatatableToolbarComponent } from './DatatableToolbarComponent'
 import ReportResponseDetails from './ReportResponseDetails'
 import ReportsFilter from './ReportsFilter'
-
-export const reportsCss = {
-  trueFalseNullBox: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    mt: 1,
-  },
-  trueFalseNullLabel: {
-    color: 'rgba(0, 0, 0, 0.6)',
-    ml: 1,
-  },
-}
+import {
+  ActionsColumn,
+  CategoryColumn,
+  CheckboxColumn,
+  CheckboxColumnHead,
+  CompanyNameColumn,
+  EmailColumn,
+  EmptyState,
+  FilesColumn,
+  PostalCodeColumn,
+  SiretColumn,
+  TagsColumn,
+} from './reportsColumns'
 
 interface ReportSearchQs {
   readonly departments?: string[] | string
@@ -97,20 +89,8 @@ interface ReportSearchQs {
   limit: number
 }
 
-export const Reports = () => {
-  const { m, formatDate } = useI18n()
-  const { connectedUser, apiSdk } = useConnectedContext()
-
-  const downloadReports = useMutation({
-    mutationFn: apiSdk.secured.reports.download,
-  })
-
-  const selectReport = useSetState<Id>()
-  const [expanded, setExpanded] = React.useState(false)
-  const queryString = useQueryString<
-    Partial<ReportSearch>,
-    Partial<ReportSearchQs>
-  >({
+function useReportsQueryString() {
+  return useQueryString<Partial<ReportSearch>, Partial<ReportSearchQs>>({
     toQueryString: mapDatesToQueryString,
     fromQueryString: compose(
       mapDateFromQueryString,
@@ -134,6 +114,16 @@ export const Reports = () => {
       ]),
     ),
   })
+}
+
+export const Reports = () => {
+  const i18n = useI18n()
+  const { m } = i18n
+  const { connectedUser } = useConnectedContext()
+
+  const selectReport = useSetState<Id>()
+  const [expanded, setExpanded] = useState(false)
+  const queryString = useReportsQueryString()
 
   const _reports = useReportSearchQuery({
     offset: 0,
@@ -144,11 +134,6 @@ export const Reports = () => {
   useEffect(() => {
     queryString.update(cleanObject(_reports.filters))
   }, [_reports.filters])
-
-  const getReportingDate = (report: Report) =>
-    report.details
-      .filter((_) => _.label.indexOf(ReportingDateLabel) !== -1)
-      .map((_) => _.value)
 
   const filtersCount = useMemo(() => {
     const { offset, limit, ...filters } = _reports.filters
@@ -164,7 +149,6 @@ export const Reports = () => {
   })
 
   const _categoriesByStatus = useCategoriesByStatusQuery()
-
   const _categories = connectedUser.isAdmin
     ? [
         ...(_categoriesByStatus.data?.active ?? []),
@@ -267,6 +251,7 @@ export const Reports = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
+  const columns = buildColumns({ _reports, selectReport, i18n })
   return (
     <Page>
       <PageTitle>{m.reports_pageTitle}</PageTitle>
@@ -304,18 +289,11 @@ export const Reports = () => {
           _reports={_reports}
           setExpanded={setExpanded}
           filtersCount={filtersCount}
-          config={config}
         />
       </CleanDiscreetPanel>
       <Datatable
         id="reports"
-        headerMain={
-          <DatatableToolbarComponent
-            selectReport={selectReport}
-            downloadReports={downloadReports}
-            m={m}
-          />
-        }
+        headerMain={<DatatableToolbarComponent {...{ selectReport }} />}
         loading={_reports.result.isFetching}
         paginate={{
           offset: _reports.filters.offset,
@@ -340,278 +318,150 @@ export const Reports = () => {
               ]
             : []
         }
-        columns={[
-          {
-            alwaysVisible: true,
-            id: 'checkbox',
-            head: (() => {
-              const allChecked =
-                selectReport.size === _reports.result.data?.entities.length
-              return (
-                <Checkbox
-                  disabled={_reports.result.isFetching}
-                  indeterminate={selectReport.size > 0 && !allChecked}
-                  checked={allChecked}
-                  onChange={() => {
-                    if (allChecked) {
-                      selectReport.clear()
-                    } else {
-                      selectReport.add(
-                        _reports.result.data!.entities!.map((_) => _.report.id),
-                      )
-                    }
-                  }}
-                />
-              )
-            })(),
-            style: { width: 0 },
-            render: (_) => (
-              <Checkbox
-                checked={selectReport.has(_.report.id)}
-                onChange={() => selectReport.toggle(_.report.id)}
-              />
-            ),
-          },
-
-          {
-            id: 'companyPostalCode',
-            head: m.postalCodeShort,
-            sx: (_) => ({
-              maxWidth: 76,
-            }),
-            render: (_) => (
-              <>
-                <span>{_.report.companyAddress.postalCode?.slice(0, 2)}</span>
-                <Box
-                  component="span"
-                  sx={{ color: (t) => t.palette.text.disabled }}
-                >
-                  {_.report.companyAddress.postalCode?.substr(2, 5)}
-                </Box>
-              </>
-            ),
-          },
-          {
-            id: 'companyName',
-            head: m.company,
-            sx: (_) => ({
-              lineHeight: 1.4,
-              maxWidth: 170,
-            }),
-            render: (_) => (
-              <CompanyNameDetails
-                companyId={_.report.companyId}
-                isDGAL={connectedUser.isDGAL}
-                companyName={_.report.companyName}
-                additionalLabel={
-                  _.report.websiteURL
-                    ? _.report.websiteURL
-                    : _.report.companyBrand
-                }
-              />
-            ),
-          },
-          {
-            id: 'companySiret',
-            head: m.siret,
-            render: (_) => (
-              <>
-                {_.report.companyId && !connectedUser.isDGAL ? (
-                  <NavLink
-                    to={
-                      siteMap.logged.company(_.report.companyId).stats
-                        .valueAbsolute
-                    }
-                  >
-                    <Txt link sx={{ marginBottom: '-1px' }}>
-                      {_.report.companySiret}
-                    </Txt>
-                  </NavLink>
-                ) : (
-                  <span>{_.report.companySiret}</span>
-                )}
-              </>
-            ),
-          },
-          {
-            id: 'companyCountry',
-            head: m.country,
-            render: (_) => _.report.companyAddress.country?.name,
-          },
-          {
-            id: 'category',
-            head: m.problem,
-            sx: (_) => ({
-              maxWidth: 200,
-            }),
-            render: (_) => (
-              <Tooltip
-                title={
-                  <>
-                    <b>{m.ReportCategoryDesc[_.report.category]}</b>
-                    <Box component="ul" sx={{ m: 0, p: 2 }}>
-                      {_.report.subcategories.map((s, i) => (
-                        <li key={i}>{s}</li>
-                      ))}
-                    </Box>
-                  </>
-                }
-              >
-                <span>{m.ReportCategoryDesc[_.report.category]}</span>
-              </Tooltip>
-            ),
-          },
-          {
-            id: 'creationDate',
-            head: m.creation,
-            render: (_) => formatDate(_.report.creationDate),
-          },
-          {
-            id: 'reportDate',
-            head: 'Date constat',
-            render: (_) => getReportingDate(_.report),
-          },
-          {
-            id: 'details',
-            head: m.details,
-            sx: (_) => ({
-              fontSize: (t) => styleUtils(t).fontSize.small,
-              color: (t) => t.palette.text.secondary,
-              maxWidth: 200,
-              minWidth: 200,
-              lineHeight: 1.4,
-              whiteSpace: 'initial',
-            }),
-            render: (_) => (
-              <ReportDetailValues input={_.report.details} lines={2} />
-            ),
-          },
-          {
-            id: 'tags',
-            head: m.tags,
-            render: (_) =>
-              _.report.tags.map((tag) => (
-                <Chip
-                  key={tag}
-                  size="small"
-                  variant="outlined"
-                  label={m.reportTagDesc[tag]}
-                  sx={{
-                    fontWeight: (t) => t.typography.fontWeightBold,
-                    color: (t) => t.palette.text.secondary,
-                  }}
-                  style={{ marginRight: 2 }}
-                />
-              )),
-          },
-          {
-            id: 'status',
-            head: m.status,
-            render: (_) => <ReportStatusLabel dense status={_.report.status} />,
-          },
-          {
-            id: 'email',
-            head: m.consumer,
-            sx: (_) => ({
-              maxWidth: 160,
-            }),
-            render: (_) => (
-              <span>
-                <Box
-                  component="span"
-                  sx={{
-                    ...(_.report.contactAgreement
-                      ? {
-                          color: (t) => t.palette.success.light,
-                        }
-                      : {
-                          color: (t) => t.palette.error.main,
-                        }),
-                  }}
-                >
-                  {textOverflowMiddleCropping(_.report.email ?? '', 25)}
-                </Box>
-                <br />
-                <Txt color="hint" size="small">
-                  {_.report.consumerPhone ?? ''}
-                </Txt>
-              </span>
-            ),
-          },
-          {
-            id: 'proResponse',
-            head: m.proResponse,
-            render: (_) => (
-              <ReportResponseDetails
-                details={_.professionalResponse?.event.details}
-              />
-            ),
-          },
-          {
-            id: 'avisConso',
-            head: m.consumerReviews,
-            render: (_) => <ConsumerReviewLabels detailsTooltip report={_} />,
-          },
-          {
-            id: 'dateAvisConso',
-            head: "Date de l'avis Conso",
-            render: (_) => formatDate(_.consumerReview?.creationDate),
-          },
-          {
-            id: 'file',
-            head: m.files,
-            sx: (_) => ({
-              minWidth: 44,
-              maxWidth: 100,
-            }),
-            render: (_) =>
-              _.files.length > 0 && (
-                <Badge
-                  badgeContent={_.files.length}
-                  color="primary"
-                  invisible={_.files.length === 1}
-                >
-                  <Icon sx={{ color: (t) => t.palette.text.disabled }}>
-                    insert_drive_file
-                  </Icon>
-                </Badge>
-              ),
-          },
-          {
-            id: 'actions',
-            stickyEnd: true,
-            sx: (_) => sxUtils.tdActions,
-            render: (_) => (
-              <NavLink to={siteMap.logged.report(_.report.id)}>
-                <IconBtn color="primary">
-                  <Icon>chevron_right</Icon>
-                </IconBtn>
-              </NavLink>
-            ),
-          },
-        ]}
-        renderEmptyState={
-          <Fender
-            icon={EntityIcon.report}
-            title={m.noReportsTitle}
-            description={
-              <>
-                <Txt color="hint" size="big" block gutterBottom>
-                  {m.noReportsDesc}
-                </Txt>
-                <ScButton
-                  icon="clear"
-                  onClick={_reports.clearFilters}
-                  variant="contained"
-                  color="primary"
-                >
-                  {m.removeAllFilters}
-                </ScButton>
-              </>
-            }
-          />
-        }
+        columns={columns}
+        renderEmptyState={<EmptyState onClearFilters={_reports.clearFilters} />}
       />
     </Page>
   )
 }
+
+function buildColumns({
+  _reports,
+  selectReport,
+  i18n,
+}: {
+  _reports: UseQueryPaginateResult<
+    ReportSearch & PaginatedFilters,
+    Paginate<ReportSearchResult>,
+    unknown
+  >
+  selectReport: UseSetState<string>
+  i18n: I18nContextProps
+}): DatatableColumnProps<ReportSearchResult>[] {
+  const { m, formatDate } = i18n
+  return [
+    {
+      alwaysVisible: true,
+      id: 'checkbox',
+      head: (() => <CheckboxColumnHead {...{ _reports, selectReport }} />)(),
+      style: { width: 0 },
+      render: (r) => <CheckboxColumn {...{ r, selectReport }} />,
+    },
+
+    {
+      id: 'companyPostalCode',
+      head: m.postalCodeShort,
+      sx: (_) => ({
+        maxWidth: 76,
+      }),
+      render: (r) => <PostalCodeColumn {...{ r }} />,
+    },
+    {
+      id: 'companyName',
+      head: m.company,
+      sx: (_) => ({
+        lineHeight: 1.4,
+        maxWidth: 170,
+      }),
+      render: (r) => <CompanyNameColumn {...{ r }} />,
+    },
+    {
+      id: 'companySiret',
+      head: m.siret,
+      render: (r) => <SiretColumn {...{ r }} />,
+    },
+    {
+      id: 'companyCountry',
+      head: m.country,
+      render: (_) => _.report.companyAddress.country?.name,
+    },
+    {
+      id: 'category',
+      head: m.problem,
+      sx: (_) => ({
+        maxWidth: 200,
+      }),
+      render: (r) => <CategoryColumn {...{ r }} />,
+    },
+    {
+      id: 'creationDate',
+      head: m.creation,
+      render: (_) => formatDate(_.report.creationDate),
+    },
+    {
+      id: 'reportDate',
+      head: 'Date constat',
+      render: (_) => getReportingDate(_.report),
+    },
+    {
+      id: 'details',
+      head: m.details,
+      sx: (_) => ({
+        fontSize: (t) => styleUtils(t).fontSize.small,
+        color: (t) => t.palette.text.secondary,
+        maxWidth: 200,
+        minWidth: 200,
+        lineHeight: 1.4,
+        whiteSpace: 'initial',
+      }),
+      render: (_) => <ReportDetailValues input={_.report.details} lines={2} />,
+    },
+    {
+      id: 'tags',
+      head: m.tags,
+      render: (r) => <TagsColumn {...{ r }} />,
+    },
+    {
+      id: 'status',
+      head: m.status,
+      render: (_) => <ReportStatusLabel dense status={_.report.status} />,
+    },
+    {
+      id: 'email',
+      head: m.consumer,
+      sx: (_) => ({
+        maxWidth: 160,
+      }),
+      render: (r) => <EmailColumn {...{ r }} />,
+    },
+    {
+      id: 'proResponse',
+      head: m.proResponse,
+      render: (_) => (
+        <ReportResponseDetails
+          details={_.professionalResponse?.event.details}
+        />
+      ),
+    },
+    {
+      id: 'avisConso',
+      head: m.consumerReviews,
+      render: (_) => <ConsumerReviewLabels detailsTooltip report={_} />,
+    },
+    {
+      id: 'dateAvisConso',
+      head: "Date de l'avis Conso",
+      render: (_) => formatDate(_.consumerReview?.creationDate),
+    },
+    {
+      id: 'file',
+      head: m.files,
+      sx: (_) => ({
+        minWidth: 44,
+        maxWidth: 100,
+      }),
+      render: (r) => <FilesColumn {...{ r }} />,
+    },
+    {
+      id: 'actions',
+      stickyEnd: true,
+      sx: (_) => sxUtils.tdActions,
+      render: (r) => <ActionsColumn {...{ r }} />,
+    },
+  ]
+}
+
+const getReportingDate = (report: Report) =>
+  report.details
+    .filter((_) => _.label.indexOf(ReportingDateLabel) !== -1)
+    .map((_) => _.value)

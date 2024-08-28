@@ -16,19 +16,6 @@ import { SelectActivityCode } from '../../shared/SelectActivityCode'
 import { SelectCountries } from '../../shared/SelectCountries/SelectCountries'
 import { TrueFalseNull } from '../../shared/TrueFalseNull'
 import { ConsumerReviewLabel } from '../../shared/reviews/ConsumerReviewLabel'
-import { reportsCss } from './Reports'
-
-const TrueLabel = () => {
-  const { m } = useI18n()
-  return (
-    <>
-      {m.yes}{' '}
-      <Icon fontSize="inherit" sx={{ mr: '-4px' }}>
-        arrow_drop_down
-      </Icon>
-    </>
-  )
-}
 
 type AdvancedFiltersGridProps = {
   _reports: ReturnType<typeof useReportSearchQuery>
@@ -58,7 +45,7 @@ function invertIfDefined(bool: boolean | null) {
   return bool === null ? null : !bool
 }
 
-const AdvancedReportsFilter: React.FC<AdvancedFiltersGridProps> = ({
+export const AdvancedReportsFilter: React.FC<AdvancedFiltersGridProps> = ({
   _reports,
   onChangeStatus,
   onEmailChange,
@@ -152,22 +139,17 @@ const AdvancedReportsFilter: React.FC<AdvancedFiltersGridProps> = ({
       )}
       <Grid item xs={12} md={6}>
         <Box>
-          <Box sx={reportsCss.trueFalseNullBox}>
-            <Box sx={reportsCss.trueFalseNullLabel}>{m.website}</Box>
-            <TrueFalseNull
-              label={{
-                true: <TrueLabel />,
-              }}
-              sx={{ flexBasis: '50%' }}
-              value={_reports.filters.hasWebsite ?? null}
-              onChange={(hasWebsite) =>
-                _reports.updateFilters((prev) => ({
-                  ...prev,
-                  hasWebsite: hasWebsite ?? undefined,
-                }))
-              }
-            />
-          </Box>
+          <TrueFalseNullRow
+            label={m.website}
+            value={_reports.filters.hasWebsite ?? null}
+            onChange={(hasWebsite) =>
+              _reports.updateFilters((prev) => ({
+                ...prev,
+                hasWebsite: hasWebsite ?? undefined,
+              }))
+            }
+            dropdownArrow
+          />
           {_reports.filters.hasWebsite === true && (
             <DebouncedInput
               value={_reports.filters.websiteURL ?? ''}
@@ -187,22 +169,17 @@ const AdvancedReportsFilter: React.FC<AdvancedFiltersGridProps> = ({
       </Grid>
       <Grid item xs={12} md={6}>
         <Box>
-          <Box sx={reportsCss.trueFalseNullBox}>
-            <Box sx={reportsCss.trueFalseNullLabel}>{m.phone}</Box>
-            <TrueFalseNull
-              label={{
-                true: <TrueLabel />,
-              }}
-              sx={{ flexBasis: '50%' }}
-              value={_reports.filters.hasPhone ?? null}
-              onChange={(hasPhone) =>
-                _reports.updateFilters((prev) => ({
-                  ...prev,
-                  hasPhone: hasPhone ?? undefined,
-                }))
-              }
-            />
-          </Box>
+          <TrueFalseNullRow
+            label={m.phone}
+            value={_reports.filters.hasPhone ?? null}
+            onChange={(hasPhone) =>
+              _reports.updateFilters((prev) => ({
+                ...prev,
+                hasPhone: hasPhone ?? undefined,
+              }))
+            }
+            dropdownArrow
+          />
           {_reports.filters.hasPhone === true && (
             <DebouncedInput
               value={_reports.filters.phone ?? ''}
@@ -222,22 +199,17 @@ const AdvancedReportsFilter: React.FC<AdvancedFiltersGridProps> = ({
       </Grid>
       <Grid item xs={12} md={6}>
         <Box>
-          <Box sx={reportsCss.trueFalseNullBox}>
-            <Box sx={reportsCss.trueFalseNullLabel}>{m.foreignCountry}</Box>
-            <TrueFalseNull
-              label={{
-                true: <TrueLabel />,
-              }}
-              sx={{ flexBasis: '50%' }}
-              value={_reports.filters.hasForeignCountry ?? null}
-              onChange={(hasForeignCountry) =>
-                _reports.updateFilters((prev) => ({
-                  ...prev,
-                  hasForeignCountry: hasForeignCountry ?? undefined,
-                }))
-              }
-            />
-          </Box>
+          <TrueFalseNullRow
+            label={m.foreignCountry}
+            value={_reports.filters.hasForeignCountry ?? null}
+            onChange={(hasForeignCountry) =>
+              _reports.updateFilters((prev) => ({
+                ...prev,
+                hasForeignCountry: hasForeignCountry ?? undefined,
+              }))
+            }
+            dropdownArrow
+          />
           {_reports.filters.hasForeignCountry === true && (
             <SelectCountries
               label={m.foreignCountry}
@@ -254,56 +226,42 @@ const AdvancedReportsFilter: React.FC<AdvancedFiltersGridProps> = ({
         </Box>
       </Grid>
       <Grid item xs={12} md={6}>
-        <Box sx={reportsCss.trueFalseNullBox}>
-          <Box sx={reportsCss.trueFalseNullLabel}>{m.consoAnonyme}</Box>
-          <TrueFalseNull
-            value={invertIfDefined(_reports.filters.contactAgreement ?? null)}
-            onChange={(contactAgreement) =>
-              _reports.updateFilters((prev) => ({
-                ...prev,
-                contactAgreement:
-                  invertIfDefined(contactAgreement) ?? undefined,
-              }))
-            }
-            sx={{ flexBasis: '50%' }}
-          />
-        </Box>
+        <TrueFalseNullRow
+          label={m.consoAnonyme}
+          value={invertIfDefined(_reports.filters.contactAgreement ?? null)}
+          onChange={(contactAgreement) =>
+            _reports.updateFilters((prev) => ({
+              ...prev,
+              contactAgreement: invertIfDefined(contactAgreement) ?? undefined,
+            }))
+          }
+        />
       </Grid>
       <Grid item xs={12} md={6}>
-        <Box sx={reportsCss.trueFalseNullBox}>
-          <Box sx={reportsCss.trueFalseNullLabel}>{m.hasAttachement}</Box>
-          <TrueFalseNull
-            value={_reports.filters.hasAttachment ?? null}
-            onChange={(hasAttachment) =>
-              _reports.updateFilters((prev) => ({
-                ...prev,
-                hasAttachment: hasAttachment ?? undefined,
-              }))
-            }
-            sx={{ flexBasis: '50%' }}
-          />
-        </Box>
+        <TrueFalseNullRow
+          label={m.hasAttachement}
+          value={_reports.filters.hasAttachment ?? null}
+          onChange={(hasAttachment) =>
+            _reports.updateFilters((prev) => ({
+              ...prev,
+              hasAttachment: hasAttachment ?? undefined,
+            }))
+          }
+        />
       </Grid>
       <Grid item xs={12} md={6}>
         <Box>
-          <Box sx={reportsCss.trueFalseNullBox}>
-            <Box sx={reportsCss.trueFalseNullLabel}>
-              Avis conso initial sur la réponse
-            </Box>
-            <TrueFalseNull
-              label={{
-                true: <TrueLabel />,
-              }}
-              sx={{ flexBasis: '50%' }}
-              value={_reports.filters.hasResponseEvaluation ?? null}
-              onChange={(hasResponseEvaluation) =>
-                _reports.updateFilters((prev) => ({
-                  ...prev,
-                  hasResponseEvaluation: hasResponseEvaluation ?? undefined,
-                }))
-              }
-            />
-          </Box>
+          <TrueFalseNullRow
+            label={'Avis conso initial sur la réponse'}
+            value={_reports.filters.hasResponseEvaluation ?? null}
+            onChange={(hasResponseEvaluation) =>
+              _reports.updateFilters((prev) => ({
+                ...prev,
+                hasResponseEvaluation: hasResponseEvaluation ?? undefined,
+              }))
+            }
+            dropdownArrow
+          />
           {_reports.filters.hasResponseEvaluation === true && (
             <ScMultiSelect
               label="Avis"
@@ -331,22 +289,17 @@ const AdvancedReportsFilter: React.FC<AdvancedFiltersGridProps> = ({
       </Grid>
       <Grid item xs={12} md={6}>
         <Box>
-          <Box sx={reportsCss.trueFalseNullBox}>
-            <Box sx={reportsCss.trueFalseNullLabel}>Avis conso ultérieur</Box>
-            <TrueFalseNull
-              label={{
-                true: <TrueLabel />,
-              }}
-              sx={{ flexBasis: '50%' }}
-              value={_reports.filters.hasEngagementEvaluation ?? null}
-              onChange={(hasEngagementEvaluation) =>
-                _reports.updateFilters((prev) => ({
-                  ...prev,
-                  hasEngagementEvaluation: hasEngagementEvaluation ?? undefined,
-                }))
-              }
-            />
-          </Box>
+          <TrueFalseNullRow
+            label={'Avis conso ultérieur'}
+            value={_reports.filters.hasEngagementEvaluation ?? null}
+            onChange={(hasEngagementEvaluation) =>
+              _reports.updateFilters((prev) => ({
+                ...prev,
+                hasEngagementEvaluation: hasEngagementEvaluation ?? undefined,
+              }))
+            }
+            dropdownArrow
+          />
           {_reports.filters.hasEngagementEvaluation === true && (
             <ScMultiSelect
               label="Avis"
@@ -374,17 +327,12 @@ const AdvancedReportsFilter: React.FC<AdvancedFiltersGridProps> = ({
       </Grid>
       <Grid item xs={12} md={6}>
         <Box>
-          <Box sx={reportsCss.trueFalseNullBox}>
-            <Box sx={reportsCss.trueFalseNullLabel}>{m.proResponse}</Box>
-            <TrueFalseNull
-              label={{
-                true: <TrueLabel />,
-              }}
-              sx={{ flexBasis: '50%' }}
-              value={hasProResponse}
-              onChange={onChangeHasProResponse}
-            />
-          </Box>
+          <TrueFalseNullRow
+            label={m.proResponse}
+            value={hasProResponse}
+            onChange={onChangeHasProResponse}
+            dropdownArrow
+          />
           {hasProResponse === true && (
             <ScMultiSelect
               label={m.proResponse}
@@ -407,36 +355,30 @@ const AdvancedReportsFilter: React.FC<AdvancedFiltersGridProps> = ({
       </Grid>
       <Grid item xs={12} md={6}>
         <Box>
-          <Box sx={reportsCss.trueFalseNullBox}>
-            <Box sx={reportsCss.trueFalseNullLabel}>{m.foreignReport}</Box>
-            <TrueFalseNull
-              sx={{ flexBasis: '50%' }}
-              value={_reports.filters.isForeign ?? null}
-              onChange={(isForeign) =>
-                _reports.updateFilters((prev) => ({
-                  ...prev,
-                  isForeign: isForeign ?? undefined,
-                }))
-              }
-            />
-          </Box>
+          <TrueFalseNullRow
+            label={m.foreignReport}
+            value={_reports.filters.isForeign ?? null}
+            onChange={(isForeign) =>
+              _reports.updateFilters((prev) => ({
+                ...prev,
+                isForeign: isForeign ?? undefined,
+              }))
+            }
+          />
         </Box>
       </Grid>
       <Grid item xs={12} md={6}>
         <Box>
-          <Box sx={reportsCss.trueFalseNullBox}>
-            <Box sx={reportsCss.trueFalseNullLabel}>Code-barres</Box>
-            <TrueFalseNull
-              sx={{ flexBasis: '50%' }}
-              value={_reports.filters.hasBarcode ?? null}
-              onChange={(hasBarcode) =>
-                _reports.updateFilters((prev) => ({
-                  ...prev,
-                  hasBarcode: hasBarcode ?? undefined,
-                }))
-              }
-            />
-          </Box>
+          <TrueFalseNullRow
+            label={'Code-barres'}
+            value={_reports.filters.hasBarcode ?? null}
+            onChange={(hasBarcode) =>
+              _reports.updateFilters((prev) => ({
+                ...prev,
+                hasBarcode: hasBarcode ?? undefined,
+              }))
+            }
+          />
         </Box>
       </Grid>
       <Grid item xs={12} md={6}>
@@ -458,4 +400,47 @@ const AdvancedReportsFilter: React.FC<AdvancedFiltersGridProps> = ({
   )
 }
 
-export default AdvancedReportsFilter
+export function TrueFalseNullRow({
+  label,
+  value,
+  onChange,
+  dropdownArrow = false,
+}: {
+  label: string
+  value: boolean | null
+  onChange: (v: boolean | null) => void
+  dropdownArrow?: boolean
+}) {
+  const { m } = useI18n()
+  return (
+    <Box
+      sx={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        mt: 1,
+      }}
+    >
+      <Box sx={{ color: 'rgba(0, 0, 0, 0.6)', ml: 1 }}>{label}</Box>
+      <TrueFalseNull
+        label={
+          dropdownArrow
+            ? {
+                true: (
+                  <>
+                    {m.yes}{' '}
+                    <Icon fontSize="inherit" sx={{ mr: '-4px' }}>
+                      arrow_drop_down
+                    </Icon>
+                  </>
+                ),
+              }
+            : {}
+        }
+        sx={{ flexBasis: '50%' }}
+        value={value}
+        onChange={onChange}
+      />
+    </Box>
+  )
+}
