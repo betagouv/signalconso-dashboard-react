@@ -393,7 +393,7 @@ export const Reports = () => {
           },
           {
             id: 'companyName',
-            head: m.company,
+            head: m.company + 'E#E#E#',
             sx: (_) => ({
               lineHeight: 1.4,
               maxWidth: 170,

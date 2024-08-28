@@ -34,7 +34,6 @@ const CompanyNameDetails: React.FC<CompanyNameDetailsProps> = ({
         <>
           <br />
           <Txt
-            component="span"
             sx={{
               fontSize: (t) => styleUtils(t).fontSize.small,
               fontStyle: 'italic',
