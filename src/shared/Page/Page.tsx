@@ -3,7 +3,7 @@ import {useLayoutContext} from 'core/Layout/LayoutContext'
 import {ReactNode} from 'react'
 import {InfoBanner} from '../InfoBanner'
 
-export interface PageProps {
+interface PageProps {
   maxWidth?: 'xl' | 'l' | 's' | 'm'
   loading?: boolean
   children: ReactNode

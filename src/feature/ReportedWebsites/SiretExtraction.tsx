@@ -11,7 +11,7 @@ import {WebsiteUpdateCompany, WebsiteWithCompany} from '../../core/client/websit
 import {useToast} from '../../core/toast'
 import {Id} from '../../core/model'
 
-export interface SiretExtractionProps {
+interface SiretExtractionProps {
   websiteWithCompany: WebsiteWithCompany
   remove: () => Promise<any>
   identify: () => Promise<any>

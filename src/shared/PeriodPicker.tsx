@@ -3,7 +3,7 @@ import {addDays, subDays} from 'date-fns'
 import {useI18n} from '../core/i18n'
 import {Datepicker} from './Datepicker'
 
-export interface DatepickerProps extends Omit<BoxProps, 'onChange'> {
+interface DatepickerProps extends Omit<BoxProps, 'onChange'> {
   value?: [Date | undefined, Date | undefined]
   onChange: (_: [Date | undefined, Date | undefined]) => void
   label?: [string, string]

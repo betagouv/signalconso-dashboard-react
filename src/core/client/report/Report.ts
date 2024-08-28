@@ -2,10 +2,10 @@ import {Address, ConsumerReview, EventWithUser, Id, MinimalUser, UploadedFile} f
 import {Category} from '../constant/Category'
 
 export const ReportingDateLabel = 'Date du constat'
-export const ReportingTimeslotLabel = 'Heure du constat'
-export const DescriptionLabel = 'Description'
+const ReportingTimeslotLabel = 'Heure du constat'
+const DescriptionLabel = 'Description'
 
-export enum Gender {
+enum Gender {
   Male = 'Male',
   Female = 'Female',
 }
@@ -127,7 +127,7 @@ export interface ReportSearchResult {
   assignedUser?: MinimalUser
 }
 
-export interface ReportWithMetadata {
+interface ReportWithMetadata {
   report: Report
   metadata?: ReportMetadata
 }
@@ -158,7 +158,7 @@ export enum ReportStatusPro {
 
 export type ReportConsumerUpdate = Pick<Report, 'firstName' | 'lastName' | 'email' | 'consumerReferenceNumber'>
 
-export enum SpecialLegislation {
+enum SpecialLegislation {
   SHRINKFLATION = 'SHRINKFLATION',
 }
 

@@ -4,9 +4,9 @@ import {UseQueryOpts} from './types'
 import {IdentificationStatus, InvestigationStatus} from '../model'
 import {useQueryPaginate} from './UseQueryPaginate'
 
-export const ListInvestigationStatusKeys = ['website_listInvestigationStatus']
+const ListInvestigationStatusKeys = ['website_listInvestigationStatus']
 export const WebsiteWithCompanySearchKeys = ['website_list']
-export const ListUnregisteredWebsitesSearchQueryKeys = ['website_listUnregistered']
+const ListUnregisteredWebsitesSearchQueryKeys = ['website_listUnregistered']
 
 export const useListInvestigationStatusQuery = (options?: UseQueryOpts<InvestigationStatus[], string[]>) => {
   const {api} = useApiContext()

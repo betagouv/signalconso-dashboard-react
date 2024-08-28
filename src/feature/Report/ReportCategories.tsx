@@ -1,7 +1,7 @@
 import {Box, Icon} from '@mui/material'
 import React from 'react'
 
-export interface ReportCategoriesProps {
+interface ReportCategoriesProps {
   categories: any[]
 }
 

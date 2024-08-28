@@ -1,13 +1,13 @@
 import {Box} from '@mui/material'
 import React, {ReactNode} from 'react'
 
-export interface DialogInputRowProps {
+interface DialogInputRowProps {
   icon?: string
   label: string | ReactNode
   children: ReactNode
 }
 
-export interface DialogInputRowExtraProps {
+interface DialogInputRowExtraProps {
   children: ReactNode
 }
 
@@ -60,7 +60,7 @@ export const DialogInputRow = ({icon, label, children}: DialogInputRowProps) => 
   )
 }
 
-export const DialogInputRowExtra = ({children}: DialogInputRowExtraProps) => {
+const DialogInputRowExtra = ({children}: DialogInputRowExtraProps) => {
   return (
     <Box
       sx={{

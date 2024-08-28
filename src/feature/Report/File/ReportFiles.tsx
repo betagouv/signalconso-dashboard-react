@@ -8,7 +8,7 @@ import {ReportFile} from './ReportFile'
 import {ReportFileAdd} from './ReportFileAdd'
 import {useMutation} from '@tanstack/react-query'
 
-export interface ReportFilesProps {
+interface ReportFilesProps {
   files?: UploadedFile[]
   onNewFile?: (f: UploadedFile) => void
   onRemoveFile?: (f: UploadedFile) => void

@@ -25,7 +25,7 @@ interface Props extends Omit<BoxProps, 'onChange'> {
   onChange?: () => void
 }
 
-export enum AssociationType {
+enum AssociationType {
   COMPANY = 'COMPANY',
   COUNTRY = 'COUNTRY',
 }

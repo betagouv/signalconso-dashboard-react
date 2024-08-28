@@ -5,17 +5,17 @@ import {ScOption} from './ScOption'
 
 export type Index<T> = {[key: string]: T}
 
-export type Shape<T extends object> = {[key in keyof T]: any}
+type Shape<T extends object> = {[key in keyof T]: any}
 
 export const dateToApiDate = (date?: Date): string | undefined => (date ? format(date, 'yyyy-MM-dd') : undefined)
 
 export const dateToApiTime = (date?: Date): string | undefined => (date ? date.toISOString() : undefined)
 
-export const getHostFromUrl = (url?: string) => {
+const getHostFromUrl = (url?: string) => {
   return url?.replace('http://', '').replace('https://', '').replace('www.', '').split(/[/?#]/)[0]
 }
 
-export const isNotDefined = (value: any): value is undefined | null | '' => {
+const isNotDefined = (value: any): value is undefined | null | '' => {
   return [undefined, null, ''].includes(value)
 }
 
@@ -61,7 +61,7 @@ export const directDownloadBlob =
     link.click()
   }
 
-export const isJsonValid = (json: string): boolean => {
+const isJsonValid = (json: string): boolean => {
   try {
     JSON.parse(json)
     return true
@@ -74,7 +74,7 @@ export const textOverflowMiddleCropping = (text: string, limit: number) => {
   return text.length > limit ? `${text.slice(0, limit / 2)}...${text.slice(text.length - limit / 2, text.length)}` : text
 }
 
-export const fromQueryString = <T = object>(qs: string): {[key in keyof T]: string | number} => {
+const fromQueryString = <T = object>(qs: string): {[key in keyof T]: string | number} => {
   const decoded = decodeURI(qs.replace(/^\?/, '')).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g, '":"')
   const json: Index<string> = JSON.parse(`{${decoded}}`)
   return Object.entries(json).reduce(
@@ -124,9 +124,9 @@ export const fnSwitch: FnSwitch = (value, cases, defaultCase?) => {
   return (typeof res === 'function' ? res(value) : res) ?? (defaultCase as any)!(value)
 }
 
-export const siretToSiren = (siret: string) => siret.slice(0, 9)
+const siretToSiren = (siret: string) => siret.slice(0, 9)
 
-export const stringToBoolean = (str?: string): boolean | undefined => {
+const stringToBoolean = (str?: string): boolean | undefined => {
   if (str) {
     if (str === 'true') return true
     else if (str === 'false') return false
@@ -137,7 +137,7 @@ export const openInNew = (path: string) => {
   window.open(path, '_blank')
 }
 
-export const sxIf = (condition: boolean | undefined, sx: SxProps<Theme>): SxProps<Theme> => {
+const sxIf = (condition: boolean | undefined, sx: SxProps<Theme>): SxProps<Theme> => {
   return condition ? sx : {}
 }
 
@@ -163,4 +163,15 @@ export async function wrap404AsNull<A>(callback: () => Promise<A>): Promise<A | 
       return null
     } else throw e
   }
+}
+
+// mapFor(n, callback)
+// is equivalent to
+// [...new Array(n)].map((_, i) => callback(i))
+export const mapFor = <T>(n: number, callback: (i: number) => T): T[] => {
+  const result: T[] = new Array(n)
+  for (let i = 0; i < n; i++) {
+    result[i] = callback(i)
+  }
+  return result
 }

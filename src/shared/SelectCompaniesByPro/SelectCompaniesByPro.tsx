@@ -7,7 +7,7 @@ import {useI18n} from '../../core/i18n'
 import {CompanyWithAccessLevel} from '../../core/client/company/Company'
 import {ScOption} from 'core/helper/ScOption'
 
-export interface SelectDepartmentsProps extends Omit<TextFieldProps, 'onChange'> {
+interface SelectDepartmentsProps extends Omit<TextFieldProps, 'onChange'> {
   accessibleCompanies: CompanyWithAccessLevel[]
   placeholder?: string
   label?: string

@@ -93,7 +93,7 @@ export const rejectedDetails = [
   'DEJA_REPONDU',
   'TRAITEMENT_EN_COURS',
 ] as const
-export type RejectedDetails = typeof rejectedDetails[number]
+type RejectedDetails = typeof rejectedDetails[number]
 
 export const notConcernedDetails = [
   'PARTENAIRE_COMMERCIAL',
@@ -102,7 +102,7 @@ export const notConcernedDetails = [
   'ENTREPRISE_INCONNUE',
   'USURPATION',
 ] as const
-export type NotConcernedDetails = typeof notConcernedDetails[number]
+type NotConcernedDetails = typeof notConcernedDetails[number]
 
 export interface IncomingReportResponse {
   responseType: ReportResponseTypes

@@ -1,6 +1,6 @@
 import {duration} from '../duration/Duration'
 
-export class Progress {
+class Progress {
   constructor(public totalLines: number, public t0 = new Date().getTime()) {}
 
   private previoustN: number = this.t0

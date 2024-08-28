@@ -6,7 +6,7 @@ const LayoutContext = createContext<UseLayoutContextProps>({} as UseLayoutContex
 // "Mobile width" is equivalent to Tailwinds's sm and lower
 const mobileBreakpoint = 768
 
-export interface UseLayoutContextProps {
+interface UseLayoutContextProps {
   sidebarOpen: boolean
   setSidebarOpen: Dispatch<SetStateAction<boolean>>
   isMobileWidth: boolean

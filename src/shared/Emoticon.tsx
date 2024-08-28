@@ -2,7 +2,7 @@ import * as React from 'react'
 
 import {Box, BoxProps} from '@mui/material'
 
-export interface EmoticonProps extends BoxProps {
+interface EmoticonProps extends BoxProps {
   children: React.ReactNode
 }
 

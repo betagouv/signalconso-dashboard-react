@@ -11,7 +11,7 @@ import {DialogInputRow} from '../../shared/DialogInputRow'
 import {ScInput} from '../../shared/ScInput'
 import {ScSelect} from '../../shared/Select/Select'
 
-export interface MassImportProps {
+interface MassImportProps {
   children: ReactElement<any>
 }
 

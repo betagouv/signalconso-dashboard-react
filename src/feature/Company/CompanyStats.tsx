@@ -19,7 +19,7 @@ import {ApiError} from 'core/client/ApiClient'
 import {CleanDiscreetPanel} from 'shared/Panel/simplePanels'
 import {CompanyStatsNumberWidgets} from './companyStatsNumberWidgets'
 import {EngagementReviewsDistribution, ResponseReviewsDistribution} from './stats/ReviewDistribution'
-export type ExtendedUser = UserWithPermission & {
+type ExtendedUser = UserWithPermission & {
   isPro: boolean
 }
 

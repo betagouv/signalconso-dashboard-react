@@ -1,7 +1,7 @@
 import axios, {AxiosResponse, ResponseType, isAxiosError} from 'axios'
 import * as qs from 'qs'
 
-export interface RequestOption {
+interface RequestOption {
   readonly qs?: any
   readonly headers?: any
   readonly body?: any
@@ -10,7 +10,7 @@ export interface RequestOption {
   readonly withCredentials?: boolean
 }
 
-export interface ApiClientParams {
+interface ApiClientParams {
   readonly baseUrl: string
   readonly headers?: any
   readonly withCredentials?: boolean
@@ -29,7 +29,7 @@ export interface ApiClientApi {
   readonly patch: <T = any>(uri: string, options?: RequestOption) => Promise<T>
 }
 
-export type StatusCode = 'front-side' | 200 | 301 | 302 | 400 | 401 | 403 | 404 | 423 | 500 | 504
+type StatusCode = 'front-side' | 200 | 301 | 302 | 400 | 401 | 403 | 404 | 423 | 500 | 504
 
 interface ApiErrorDetails {
   // 300, 404, 500, etc.
@@ -46,7 +46,7 @@ export class ApiError extends Error {
   }
 }
 
-export type Method = 'POST' | 'GET' | 'PUT' | 'DELETE' | 'PATCH' | 'HEAD'
+type Method = 'POST' | 'GET' | 'PUT' | 'DELETE' | 'PATCH' | 'HEAD'
 
 export class ApiClient {
   private readonly request: (method: Method, url: string, options?: RequestOption) => Promise<any>

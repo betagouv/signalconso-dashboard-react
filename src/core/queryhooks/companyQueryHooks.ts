@@ -6,21 +6,21 @@ import {AccessLevel, CompanySearch, CompanySearchResult, CompanyWithReportsCount
 import {useQueryPaginate} from './UseQueryPaginate'
 import {UseQueryOpts} from './types'
 
-export const GetAccessibleByProQueryKeys = ['company_getAccessibleByPro']
-export const IsAllowedToManageCompanyAccessesQueryKeys = ['company_isAllowedToManageCompanyAccesses']
+const GetAccessibleByProQueryKeys = ['company_getAccessibleByPro']
+const IsAllowedToManageCompanyAccessesQueryKeys = ['company_isAllowedToManageCompanyAccesses']
 export const ActivatedCompanySearchQueryKeys = ['company_search']
 export const CompanyToActivateSearchQueryKeys = ['company_fetchToActivate']
 export const CompanyToFollowUpSearchQueryKeys = ['company_fetchToFollowUp']
-export const GetCompanyByIdQueryKeys = (id: Id) => ['company_byId', id]
-export const GetHostsQueryKeys = (id: Id) => ['company_getHosts', id]
-export const GetResponseRateQueryKeys = (id: Id) => ['company_getResponseRate', id]
-export const SearchByIdentityQueryKeys = (identity: string, openOnly: boolean) => [
+const GetCompanyByIdQueryKeys = (id: Id) => ['company_byId', id]
+const GetHostsQueryKeys = (id: Id) => ['company_getHosts', id]
+const GetResponseRateQueryKeys = (id: Id) => ['company_getResponseRate', id]
+const SearchByIdentityQueryKeys = (identity: string, openOnly: boolean) => [
   'company_searchCompaniesByIdentity',
   identity,
   `${openOnly}`,
 ]
-export const CompanyAccessCountQueryKeys = (siret: string) => ['companyAccess_count', siret]
-export const CompanyAccessesFetchQueryKeys = (siret: string) => ['companyAccesses_fetch', siret]
+const CompanyAccessCountQueryKeys = (siret: string) => ['companyAccess_count', siret]
+const CompanyAccessesFetchQueryKeys = (siret: string) => ['companyAccesses_fetch', siret]
 
 export const useGetAccessibleByProQuery = ({enabled = true}: {enabled?: boolean} = {}) => {
   const {api} = useApiContext()
@@ -41,7 +41,7 @@ export function useIsAllowedToManageCompanyAccessesQuery(companyId: string) {
   return true
 }
 
-export const useGetAccessLevelOfProQuery = (companyId: Id) => {
+const useGetAccessLevelOfProQuery = (companyId: Id) => {
   const {api} = useApiContext()
   return useQuery({
     queryKey: GetAccessibleByProQueryKeys,

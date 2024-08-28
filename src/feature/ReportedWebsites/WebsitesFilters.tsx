@@ -12,7 +12,7 @@ import {Btn} from '../../alexlibs/mui-extension'
 import {IdentificationStatus, InvestigationStatus, WebsiteWithCompanySearch} from '../../core/client/website/Website'
 import {TrueFalseNull} from '../../shared/TrueFalseNull'
 
-export interface WebsitesFiltersProps {
+interface WebsitesFiltersProps {
   updateFilters: (_: WebsiteWithCompanySearch) => void
   filters: WebsiteWithCompanySearch
   children: ReactElement<any>

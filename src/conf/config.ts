@@ -32,6 +32,6 @@ export const config = {
   infoBannerSeverity: readSeverity(process.env.REACT_APP_INFO_BANNER_SEVERITY) ?? 'warning',
 }
 
-export type Config = typeof config
+type Config = typeof config
 
 console.log(config)

@@ -7,16 +7,16 @@ import {Paginate} from '../../../core/model'
 //   totalSize: number
 // }
 
-export type OrderBy = 'desc' | 'asc'
+type OrderBy = 'desc' | 'asc'
 
-export interface ISearch<T = any> {
+interface ISearch<T = any> {
   limit: number
   offset: number
   orderBy?: OrderBy
   sortBy?: keyof T
 }
 
-export interface UsePaginate<T, S, E = any> {
+interface UsePaginate<T, S, E = any> {
   list?: Paginate<T>
   error?: E
   fetching: boolean
@@ -29,14 +29,14 @@ export interface UsePaginate<T, S, E = any> {
   initialFilters: S
 }
 
-export interface UpdateFiltersParams {
+interface UpdateFiltersParams {
   noRefetch?: boolean
   preserveOffset?: boolean
 }
 
 const defaultFilters: ISearch = {offset: 0, limit: 25}
 
-export const usePaginate = <T, S extends ISearch, E = any>(
+const usePaginate = <T, S extends ISearch, E = any>(
   fetcher: (search: S) => Promise<Paginate<T>>,
   initialFilters: S,
   mapError: (_: any) => E = _ => _,

@@ -32,7 +32,7 @@ export const PageTabs = ({children}: Props) => {
   )
 }
 
-export interface PageTabProps extends TabProps {
+interface PageTabProps extends TabProps {
   to: string
   label?: string
   icon?: string | React.ReactElement

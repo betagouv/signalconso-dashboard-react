@@ -5,7 +5,7 @@ export interface Paginate<T> {
   totalCount: number
 }
 
-export interface PaginateFiltersQueryString {
+interface PaginateFiltersQueryString {
   offset?: string
   limit?: string
 }

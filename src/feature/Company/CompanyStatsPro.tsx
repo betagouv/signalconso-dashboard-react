@@ -12,7 +12,7 @@ import {CompanyInfo} from './stats/CompanyInfo'
 import {EngagementReviewsDistribution, ResponseReviewsDistribution} from './stats/ReviewDistribution'
 import {StatusDistribution} from './stats/StatusDistribution'
 
-export type ExtendedUser = UserWithPermission & {
+type ExtendedUser = UserWithPermission & {
   isPro: boolean
 }
 

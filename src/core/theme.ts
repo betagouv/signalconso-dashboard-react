@@ -51,7 +51,7 @@ export const styleUtils = (t: Theme) => ({
   } as any,
 })
 
-export const defaultSpacing = 8
+const defaultSpacing = 8
 
 export const muiTheme = (): Theme => {
   const baseTheme = createTheme({

@@ -7,7 +7,7 @@ export type Fetch<T extends Func<Promise<FetcherResult<T>>>> = (
   ..._: Parameters<T>
 ) => ReturnType<T>
 
-export interface FetchParams {
+interface FetchParams {
   force?: boolean
   clean?: boolean
 }
@@ -16,7 +16,7 @@ type ThenArg<T> = T extends PromiseLike<infer U> ? U : T
 
 type FetcherResult<T extends Func> = ThenArg<ReturnType<T>>
 
-export type UseFetcher<F extends Func<Promise<FetcherResult<F>>>, E = any> = {
+type UseFetcher<F extends Func<Promise<FetcherResult<F>>>, E = any> = {
   entity?: FetcherResult<F>
   loading: boolean
   error?: E

@@ -1,6 +1,6 @@
 import {Checkbox, MenuItem, MenuItemProps} from '@mui/material'
 
-export interface ScMenuItemProps<T> extends Omit<MenuItemProps, 'value'> {
+interface ScMenuItemProps<T> extends Omit<MenuItemProps, 'value'> {
   withCheckbox?: boolean
   checked?: boolean
   value: T

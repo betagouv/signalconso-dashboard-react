@@ -2,7 +2,7 @@ import {InputProps as StandardInputProps, TextField, TextFieldProps} from '@mui/
 import {zonedTimeToUtc} from 'date-fns-tz'
 import React, {useEffect, useState} from 'react'
 
-export interface DatepickerProps extends Omit<TextFieldProps, 'onChange'> {
+interface DatepickerProps extends Omit<TextFieldProps, 'onChange'> {
   value?: Date
   onChange: (_: Date | undefined) => void
   label?: string

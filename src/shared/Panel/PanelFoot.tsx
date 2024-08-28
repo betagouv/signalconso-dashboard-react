@@ -1,7 +1,7 @@
 import * as React from 'react'
 import {CardActions, CardActionsProps} from '@mui/material'
 
-export interface PanelFootProps extends CardActionsProps {
+interface PanelFootProps extends CardActionsProps {
   alignEnd?: boolean
   spaceBetween?: boolean
   border?: boolean

@@ -1,4 +1,4 @@
-export const regexpPattern = {
+const regexpPattern = {
   email: "^[a-zA-Z0-9_!#$'%&’*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z0-9-]+$",
   emailDGCCRF: `^[^@]+@[a-zA-Z0-9_\\-.]*\\.gouv\\.fr$`,
   emailDGAL: `^[^@]+@[a-zA-Z0-9_\\-.]*\\.gouv\\.fr$`,

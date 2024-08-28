@@ -6,7 +6,7 @@ import {CountByDate, Period} from '../../core/client/stats/statsTypes'
 import {useI18n} from '../../core/i18n'
 import {styleUtils} from '../../core/theme'
 
-export interface ScLineChartPropsBase {
+interface ScLineChartPropsBase {
   /**
    * This props may be needed because sometimes label are not showing because of animation.
    * https://github.com/recharts/recharts/issues/1135

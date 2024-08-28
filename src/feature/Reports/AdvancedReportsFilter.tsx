@@ -56,7 +56,7 @@ function invertIfDefined(bool: boolean | null) {
   return bool === null ? null : !bool
 }
 
-export const AdvancedReportsFilter: React.FC<AdvancedFiltersGridProps> = ({
+const AdvancedReportsFilter: React.FC<AdvancedFiltersGridProps> = ({
   _reports,
   onChangeStatus,
   onEmailChange,

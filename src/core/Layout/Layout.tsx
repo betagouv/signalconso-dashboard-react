@@ -3,7 +3,7 @@ import {ReactElement, ReactNode} from 'react'
 import {LayoutContextProvider, useLayoutContext} from './LayoutContext'
 import {layoutConfig} from './index'
 
-export interface LayoutProps {
+interface LayoutProps {
   sidebar?: ReactElement<any>
   header: ReactElement<any>
   children: ReactNode

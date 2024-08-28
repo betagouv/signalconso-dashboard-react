@@ -1,7 +1,7 @@
 import * as React from 'react'
 import {Box, BoxProps} from '@mui/material'
 
-export interface SidebarHrProps extends Omit<BoxProps, 'margin'> {
+interface SidebarHrProps extends Omit<BoxProps, 'margin'> {
   margin?: boolean
 }
 

@@ -3,7 +3,7 @@ import React from 'react'
 import {roleAgents, RoleAgents} from '../core/client/user/User'
 import {SxProps} from '@mui/system'
 
-export interface SelectRoleAgentPros extends Omit<BoxProps, 'onChange'> {
+interface SelectRoleAgentPros extends Omit<BoxProps, 'onChange'> {
   value: RoleAgents[]
   onChange: (_: RoleAgents[]) => void
 }

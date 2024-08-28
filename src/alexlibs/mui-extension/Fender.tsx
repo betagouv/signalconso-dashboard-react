@@ -1,11 +1,10 @@
-import * as React from 'react'
-import {ReactNode} from 'react'
 import {Box, BoxProps, CircularProgress, Icon} from '@mui/material'
+import {ReactNode} from 'react'
 import {colorError, colorSuccess, colorWarning} from './color'
 
 type State = 'loading' | 'error' | 'empty' | 'success' | 'warning'
 
-export interface FenderProps extends Omit<BoxProps, 'title'> {
+interface FenderProps extends Omit<BoxProps, 'title'> {
   type?: State
   icon?: string
   iconSize?: number

@@ -11,7 +11,7 @@ const css = makeSx({
   },
 })
 
-export interface SidebarItemProps extends BoxProps {
+interface SidebarItemProps extends BoxProps {
   icon?: string | ReactNode
   large?: boolean
   active?: boolean

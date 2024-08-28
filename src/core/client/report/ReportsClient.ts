@@ -25,7 +25,7 @@ import {ApiClientApi} from '../ApiClient'
 import {ReportNodes} from './ReportNode'
 import {ReportNodeSearch} from './ReportNodeSearch'
 
-export interface ReportFilterQuerystring {
+interface ReportFilterQuerystring {
   readonly departments?: string[]
   readonly withTags?: ReportTag[]
   readonly withoutTags?: ReportTag[]

@@ -1,7 +1,7 @@
 import {useApiContext} from '../context/ApiContext'
 import {useQueryPaginate} from './UseQueryPaginate'
 
-export const ConsumerEmailValidationSearchQueryKeys = ['consumerEmailValidation_search']
+const ConsumerEmailValidationSearchQueryKeys = ['consumerEmailValidation_search']
 
 export const useConsumerEmailValidationSearchQuery = () => {
   const {api} = useApiContext()

@@ -4,7 +4,7 @@ import {UseQueryOpts} from './types'
 import {EventActionValues, ReportEvent, ReportProResponseEvent} from '../client/event/Event'
 import {useMemo} from 'react'
 
-export const GetCompanyEventsQueryKeys = (companySiret: string) => ['events_getBySiret', companySiret]
+const GetCompanyEventsQueryKeys = (companySiret: string) => ['events_getBySiret', companySiret]
 export const GetReportEventsQueryKeys = (id: string) => ['events_getByReportId', id]
 
 export const useGetCompanyEventsQuery = (companySiret: string, options?: UseQueryOpts<ReportEvent[], string[]>) => {

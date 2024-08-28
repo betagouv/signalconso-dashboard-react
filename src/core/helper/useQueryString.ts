@@ -3,7 +3,7 @@ import {useNavigate} from 'react-router-dom'
 import {parse as _parse, stringify as _stringify} from 'qs'
 import {useLocation} from 'react-router'
 
-export interface ParsedUrlQueryInput {
+interface ParsedUrlQueryInput {
   [key: string]:
     | string
     | number

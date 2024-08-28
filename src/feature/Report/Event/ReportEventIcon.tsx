@@ -3,11 +3,11 @@ import {styleUtils} from '../../../core/theme'
 import {EventActionValues} from '../../../core/client/event/Event'
 import {fnSwitch} from '../../../alexlibs/ts-utils'
 
-export interface ReportEventIconProps {
+interface ReportEventIconProps {
   action: EventActionValues
 }
 
-export const getReportEventIcon = (action: EventActionValues) =>
+const getReportEventIcon = (action: EventActionValues) =>
   fnSwitch(
     action,
     {
@@ -31,7 +31,7 @@ export const getReportEventIcon = (action: EventActionValues) =>
     },
   )
 
-export const getReportEventColor = (t: Theme) => (action: EventActionValues) =>
+const getReportEventColor = (t: Theme) => (action: EventActionValues) =>
   fnSwitch(
     action,
     {

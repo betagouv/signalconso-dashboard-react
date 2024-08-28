@@ -4,9 +4,9 @@ import type {QueryKey} from '@tanstack/query-core'
 import {Paginate} from '../model'
 import type {UseQueryResult} from '@tanstack/react-query/src/types'
 
-export type OrderBy = 'desc' | 'asc'
+type OrderBy = 'desc' | 'asc'
 
-export interface ISearch<T = any> {
+interface ISearch<T = any> {
   limit: number
   offset: number
   orderBy?: OrderBy
@@ -24,7 +24,7 @@ export interface UseQueryPaginateResult<S, T, E> {
   pageNumber: number
 }
 
-export interface UpdateFiltersParams {
+interface UpdateFiltersParams {
   preserveOffset?: boolean
 }
 

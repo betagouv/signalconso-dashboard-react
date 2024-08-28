@@ -11,7 +11,7 @@ import {ReportFileDeleteButton} from './ReportFileDeleteButton'
 import {useMutation} from '@tanstack/react-query'
 import ReportFileUnavailable from './ReportFileUnavailable'
 
-export interface ReportFileProps {
+interface ReportFileProps {
   file: UploadedFile
   onRemove?: (file: UploadedFile) => void
 }

@@ -46,7 +46,7 @@ export const ReportStatusLabel = ({status, ...props}: ReportStatusLabelProps) =>
 
 const borderRadius = '10px'
 
-export const ReportStatusAdminLabel = ({status, style, ...props}: ReportStatusLabelProps) => {
+const ReportStatusAdminLabel = ({status, style, ...props}: ReportStatusLabelProps) => {
   const {m} = useI18n()
   return (
     <Label {...props} style={{color: 'white', background: reportStatusColor[status], borderRadius, ...style}}>
@@ -55,7 +55,7 @@ export const ReportStatusAdminLabel = ({status, style, ...props}: ReportStatusLa
   )
 }
 
-export const ReportStatusProLabel = ({status, style, ...props}: ReportStatusProLabelProps) => {
+const ReportStatusProLabel = ({status, style, ...props}: ReportStatusProLabelProps) => {
   const {m} = useI18n()
   return (
     <Label {...props} style={{color: 'white', background: reportStatusProColor[status], borderRadius, ...style}}>

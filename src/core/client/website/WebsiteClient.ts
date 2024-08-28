@@ -18,7 +18,7 @@ import {ApiSdkLogger} from '../../helper/Logger'
 import {dateToApiDate, paginateData} from '../../helper'
 import {ApiClientApi} from '../ApiClient'
 
-export interface HostReportCountQueryString {
+interface HostReportCountQueryString {
   q?: string
   start?: string
   end?: string

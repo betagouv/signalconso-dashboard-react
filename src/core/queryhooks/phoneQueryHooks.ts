@@ -3,7 +3,7 @@ import {useQueryPaginate} from './UseQueryPaginate'
 import {paginateData, sortData} from '../helper'
 import {ReportedPhoneSearch} from '../client/reported-phone/ReportedPhone'
 
-export const ReportedPhonesSearchQueryKeys = ['reportedPhone_list']
+const ReportedPhonesSearchQueryKeys = ['reportedPhone_list']
 
 export const useReportedPhonesSearchQuery = () => {
   const {api} = useApiContext()

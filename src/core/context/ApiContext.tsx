@@ -4,7 +4,7 @@ import {ConnectedApiSdk} from '../ApiSdkInstance'
 
 // Simple context to access the api client directly
 
-export interface ApiContextProps {
+interface ApiContextProps {
   api: ConnectedApiSdk
 }
 

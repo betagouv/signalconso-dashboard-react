@@ -5,7 +5,7 @@ import {Txt} from '../../alexlibs/mui-extension'
 import {useEffect, useMemo, useState} from 'react'
 import {OutdatedTags, ReportTag} from '../../core/client/report/Report'
 
-export type SelectTagsMenuValue = 'included' | 'excluded' | undefined
+type SelectTagsMenuValue = 'included' | 'excluded' | undefined
 
 export type SelectTagsMenuValues = Partial<{[key in ReportTag]: SelectTagsMenuValue}>
 

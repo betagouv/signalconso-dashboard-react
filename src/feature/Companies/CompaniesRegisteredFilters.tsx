@@ -10,7 +10,7 @@ import {DialogInputRow} from '../../shared/DialogInputRow'
 import {CompanySearch} from '../../core/client/company/Company'
 import {cleanObject} from '../../core/helper'
 
-export interface CompaniesRegisteredFiltersProps {
+interface CompaniesRegisteredFiltersProps {
   updateFilters: (_: Partial<CompanySearch>) => void
   children: ReactElement<any>
   filters: CompanySearch

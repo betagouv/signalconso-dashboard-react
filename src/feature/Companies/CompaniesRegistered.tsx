@@ -24,7 +24,7 @@ import {CompaniesRegisteredFilters} from './CompaniesRegisteredFilters'
 import {EditAddressDialog} from './EditAddressDialog'
 import {MassImport} from './MassImport'
 
-export interface CompanySearchQs extends PaginatedSearch<any> {
+interface CompanySearchQs extends PaginatedSearch<any> {
   departments?: string[] | string
   activityCodes?: string[] | string
   identity?: string

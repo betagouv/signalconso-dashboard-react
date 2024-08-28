@@ -32,7 +32,7 @@ export const ReportEvents = ({events}: Props) => {
   )
 }
 
-export const ReportEventComponent = ({event}: {event: ReportEvent}) => {
+const ReportEventComponent = ({event}: {event: ReportEvent}) => {
   const {formatDate, formatTime} = useI18n()
 
   return (

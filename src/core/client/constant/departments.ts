@@ -1,4 +1,4 @@
-import {mapFor} from '../../../alexlibs/ts-utils'
+import {mapFor} from 'core/helper'
 
 export const rawDepartments = [
   {

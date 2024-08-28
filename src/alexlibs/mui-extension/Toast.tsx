@@ -15,7 +15,7 @@ const ToastContext = React.createContext<WithToast>({
 
 type ToastType = 'error' | 'loading' | 'warning' | 'success' | 'info' | undefined
 
-export interface ToastOptions extends Pick<SnackbarProps, 'autoHideDuration' | 'action'> {
+interface ToastOptions extends Pick<SnackbarProps, 'autoHideDuration' | 'action'> {
   onClose?: (event: any) => void
   keepOpenOnClickAway?: boolean
 }
@@ -28,7 +28,7 @@ export interface WithToast {
   toastLoading: (m: string, options?: ToastOptions) => void
 }
 
-export interface ToastProviderProps {
+interface ToastProviderProps {
   children: ReactNode
   vertical?: 'top' | 'bottom'
   horizontal?: 'left' | 'center' | 'right'

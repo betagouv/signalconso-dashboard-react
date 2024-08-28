@@ -26,6 +26,6 @@ describe('validate password complexity', () => {
   })
 
   test('uppercase or lowercase with accents should be counted', () => {
-    expect(validatePasswordComplexity('Éñ123456789-//-')).toBeUndefined
+    expect(validatePasswordComplexity('Éñ123456789-//-')).toBeUndefined()
   })
 })

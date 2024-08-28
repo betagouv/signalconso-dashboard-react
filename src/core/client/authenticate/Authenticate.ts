@@ -19,7 +19,7 @@ export enum Roles {
   ToActivate = 'ToActivate',
 }
 
-export enum TokenKind {
+enum TokenKind {
   companyInit = 'COMPANY_INIT',
   companyJoin = 'COMPANY_JOIN',
   dgccrfAccount = 'DGCCRF_ACCOUNT',
@@ -32,7 +32,7 @@ export interface TokenInfo {
   emailedTo: string
 }
 
-export enum Permissions {
+enum Permissions {
   listReports = 'listReports',
   updateReport = 'updateReport',
   deleteReport = 'deleteReport',

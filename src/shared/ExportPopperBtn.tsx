@@ -25,7 +25,7 @@ interface Props {
   onClick?: (event: any) => void
 }
 
-export const FileItem = ({icon, children, onClick}: {onClick?: () => void; icon: ReactNode; children: ReactNode}) => {
+const FileItem = ({icon, children, onClick}: {onClick?: () => void; icon: ReactNode; children: ReactNode}) => {
   return (
     <Box sx={{display: 'flex'}} onClick={onClick}>
       {icon}
@@ -34,7 +34,7 @@ export const FileItem = ({icon, children, onClick}: {onClick?: () => void; icon:
   )
 }
 
-export const ExportPopperBtn = ({
+const ExportPopperBtn = ({
   children,
   tooltipBtnNew,
   loading,

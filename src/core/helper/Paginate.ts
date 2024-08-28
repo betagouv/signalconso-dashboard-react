@@ -9,7 +9,7 @@ export const paginateData =
     }
   }
 
-export const sortPaginatedData =
+const sortPaginatedData =
   <T>(sortBy: keyof T, orderBy: OrderBy) =>
   (p: Paginate<T>): Paginate<T> => {
     return {

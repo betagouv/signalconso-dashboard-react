@@ -5,7 +5,7 @@ import {SelectTagsMenu, SelectTagsMenuValues} from './SelectTagsMenu'
 import {Enum} from '../../alexlibs/ts-utils'
 import {useMemoFn} from '../../alexlibs/react-hooks-lib'
 
-export interface SelectDepartmentsProps {
+interface SelectDepartmentsProps {
   value?: SelectTagsMenuValues
   onChange?: (_: SelectTagsMenuValues) => void
   placeholder?: string

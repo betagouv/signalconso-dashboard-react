@@ -1,6 +1,6 @@
 import {useState} from 'react'
 
-export interface UseMap<K, V> {
+interface UseMap<K, V> {
   set: (k: K, v: V) => void
   has: (k: K) => boolean
   values: () => V[]

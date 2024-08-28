@@ -4,7 +4,7 @@ import {Icon, InputAdornment, TextField, TextFieldProps} from '@mui/material'
 import {useSetState, UseSetState} from '../../alexlibs/react-hooks-lib'
 import {SelectDepartmentsMenu} from './SelectDepartmentsMenu'
 
-export interface SelectDepartmentsProps extends Omit<TextFieldProps, 'value' | 'onChange'> {
+interface SelectDepartmentsProps extends Omit<TextFieldProps, 'value' | 'onChange'> {
   placeholder?: string
   selectAllLabel?: string
   value?: string[]

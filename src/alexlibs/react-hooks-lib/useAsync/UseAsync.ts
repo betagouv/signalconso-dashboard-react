@@ -1,7 +1,7 @@
 import {useState} from 'react'
 import {Func} from '../useFetcher/UseFetcher'
 
-export type UseAsync<F extends Func<Promise<any>>, E = any> = {
+type UseAsync<F extends Func<Promise<any>>, E = any> = {
   loading: boolean
   error?: E
   call: F

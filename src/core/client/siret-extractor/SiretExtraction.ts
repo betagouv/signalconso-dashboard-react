@@ -1,11 +1,11 @@
 import {CompanySearchResult} from '../company/Company'
 
-export interface Siret {
+interface Siret {
   siret: string
   valid: boolean
 }
 
-export interface Siren {
+interface Siren {
   siren: string
   valid: boolean
 }

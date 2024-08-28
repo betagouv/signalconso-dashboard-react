@@ -1,7 +1,6 @@
 export * from './IconBtn'
 export * from './Btn'
 export * from './Modal'
-export * from './MxPage'
 export * from './Alert'
 export * from './Toast'
 export * from './Fender'

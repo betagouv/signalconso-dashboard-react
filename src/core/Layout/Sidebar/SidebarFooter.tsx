@@ -1,7 +1,7 @@
 import * as React from 'react'
 import {Box, BoxProps} from '@mui/material'
 
-export interface SidebarFooterProps extends BoxProps {}
+interface SidebarFooterProps extends BoxProps {}
 
 export const SidebarFooter = ({children, sx, ...props}: SidebarFooterProps) => {
   return (
