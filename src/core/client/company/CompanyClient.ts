@@ -1,3 +1,5 @@
+import {format} from 'date-fns'
+import {directDownloadBlob} from '../../helper'
 import {
   CompaniesToImport,
   Company,
@@ -8,12 +10,9 @@ import {
   CompanyUpdate,
   CompanyWithAccessLevel,
   CompanyWithReportsCount,
-  Event,
   Id,
   Paginate,
 } from '../../model'
-import {format} from 'date-fns'
-import {dateToApiDate, directDownloadBlob} from '../../helper'
 import {ApiClientApi} from '../ApiClient'
 
 export class CompanyClient {
@@ -39,12 +38,6 @@ export class CompanyClient {
 
   readonly getResponseRate = (id: Id) => {
     return this.client.get<number>(`/companies/${id}/response-rate`)
-  }
-
-  readonly saveUndeliveredDocument = (siret: string, returnedDate: Date) => {
-    return this.client.post<Event>(`/companies/${siret}/undelivered-document`, {
-      body: {returnedDate: dateToApiDate(returnedDate)},
-    })
   }
 
   readonly create = (company: CompanyCreation) => {
