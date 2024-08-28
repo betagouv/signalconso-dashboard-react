@@ -1,5 +1,5 @@
-import {ApiClientApi} from '../ApiClient'
-import {BlacklistedIp} from './BlacklistedIp'
+import { ApiClientApi } from '../ApiClient'
+import { BlacklistedIp } from './BlacklistedIp'
 
 export class IpBlacklistClient {
   constructor(private client: ApiClientApi) {}
@@ -9,7 +9,9 @@ export class IpBlacklistClient {
   }
 
   readonly add = (ip: string, comment: string, critical: boolean) => {
-    return this.client.post<void>(`/blacklisted-ips`, {body: {ip, comment, critical}})
+    return this.client.post<void>(`/blacklisted-ips`, {
+      body: { ip, comment, critical },
+    })
   }
 
   readonly delete = (id: string) => {

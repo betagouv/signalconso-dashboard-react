@@ -1,15 +1,23 @@
-import {LoginManagementResult} from 'core/useLoginManagement'
-import React, {ReactNode, useContext} from 'react'
-import {ConnectedApiSdk} from '../ApiSdkInstance'
-import {Roles, UserWithPermission} from '../client/authenticate/Authenticate'
+import { LoginManagementResult } from 'core/useLoginManagement'
+import React, { ReactNode, useContext } from 'react'
+import { ConnectedApiSdk } from '../ApiSdkInstance'
+import { Roles, UserWithPermission } from '../client/authenticate/Authenticate'
 
 type ConnectedContext = {
-  connectedUser: UserWithPermission & {isDGCCRF: boolean; isDGAL: boolean; isPro: boolean; isNotPro: boolean; isAdmin: boolean}
+  connectedUser: UserWithPermission & {
+    isDGCCRF: boolean
+    isDGAL: boolean
+    isPro: boolean
+    isNotPro: boolean
+    isAdmin: boolean
+  }
   setConnectedUser: LoginManagementResult['setConnectedUser']
   apiSdk: ConnectedApiSdk
 }
 
-const connectedContext = React.createContext<ConnectedContext>({} as ConnectedContext)
+const connectedContext = React.createContext<ConnectedContext>(
+  {} as ConnectedContext,
+)
 
 export const ConnectedContextProvider = ({
   apiSdk,

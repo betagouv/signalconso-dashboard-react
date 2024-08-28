@@ -1,7 +1,14 @@
 interface FnSwitch {
-  <T extends string | number, R = any>(value: T, cases: {[key in T]: ((_: T) => R) | R}): R
+  <T extends string | number, R = any>(
+    value: T,
+    cases: { [key in T]: ((_: T) => R) | R },
+  ): R
 
-  <T extends string | number, R = any>(value: T, cases: Partial<{[key in T]: ((_: T) => R) | R}>, defaultCase: (_: T) => R): R
+  <T extends string | number, R = any>(
+    value: T,
+    cases: Partial<{ [key in T]: ((_: T) => R) | R }>,
+    defaultCase: (_: T) => R,
+  ): R
 }
 
 export const fnSwitch: FnSwitch = (value, cases, defaultCase?) => {
@@ -12,5 +19,8 @@ export const fnSwitch: FnSwitch = (value, cases, defaultCase?) => {
       and defaultCase parameter is not provided.
     `)
   }
-  return (typeof res === 'function' ? res(value) : res) ?? (defaultCase as any)!(value)
+  return (
+    (typeof res === 'function' ? res(value) : res) ??
+    (defaultCase as any)!(value)
+  )
 }

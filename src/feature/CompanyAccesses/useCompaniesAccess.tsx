@@ -1,14 +1,19 @@
-import {useCrudList} from '../../alexlibs/react-hooks-lib'
-import {ConnectedApiSdk} from '../../core/ApiSdkInstance'
-import {CompanyAccess, CompanyAccessLevel} from '../../core/client/company-access/CompanyAccess'
-import {CompanyAccessToken} from '../../core/client/company-access-token/CompanyAccessToken'
-import {ApiError} from '../../core/client/ApiClient'
-import {Id} from '../../core/model'
+import { useCrudList } from '../../alexlibs/react-hooks-lib'
+import { ConnectedApiSdk } from '../../core/ApiSdkInstance'
+import {
+  CompanyAccess,
+  CompanyAccessLevel,
+} from '../../core/client/company-access/CompanyAccess'
+import { CompanyAccessToken } from '../../core/client/company-access-token/CompanyAccessToken'
+import { ApiError } from '../../core/client/ApiClient'
+import { Id } from '../../core/model'
 
 export const useCompanyAccess = (api: ConnectedApiSdk, siret: string) => {
   const crudAccessR = () => api.secured.companyAccess.fetch(siret)
-  const crudAccessU = (userId: string, level: CompanyAccessLevel) => api.secured.companyAccess.update(siret, userId, level)
-  const crudAccessD = (userId: string) => api.secured.companyAccess.remove(siret, userId)
+  const crudAccessU = (userId: string, level: CompanyAccessLevel) =>
+    api.secured.companyAccess.update(siret, userId, level)
+  const crudAccessD = (userId: string) =>
+    api.secured.companyAccess.remove(siret, userId)
   const crudAccess = useCrudList<
     CompanyAccess,
     'userId',
@@ -24,9 +29,11 @@ export const useCompanyAccess = (api: ConnectedApiSdk, siret: string) => {
     d: crudAccessD,
   })
 
-  const crudTokenC = (email: string, level: CompanyAccessLevel) => api.secured.companyAccessToken.create(siret, email, level)
+  const crudTokenC = (email: string, level: CompanyAccessLevel) =>
+    api.secured.companyAccessToken.create(siret, email, level)
   const crudTokenR = () => api.secured.companyAccessToken.fetch(siret)
-  const crudTokenD = (id: Id) => api.secured.companyAccessToken.remove(siret, id)
+  const crudTokenD = (id: Id) =>
+    api.secured.companyAccessToken.remove(siret, id)
 
   const crudToken = useCrudList<
     CompanyAccessToken,
@@ -42,5 +49,5 @@ export const useCompanyAccess = (api: ConnectedApiSdk, siret: string) => {
     d: crudTokenD,
   })
 
-  return {crudAccess, crudToken}
+  return { crudAccess, crudToken }
 }

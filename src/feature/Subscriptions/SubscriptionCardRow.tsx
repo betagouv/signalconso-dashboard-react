@@ -1,6 +1,6 @@
-import {Box, Divider, Icon} from '@mui/material'
-import {ReactNode} from 'react'
-import {Txt} from '../../alexlibs/mui-extension'
+import { Box, Divider, Icon } from '@mui/material'
+import { ReactNode } from 'react'
+import { Txt } from '../../alexlibs/mui-extension'
 
 interface SubscriptionCardRowProps {
   icon: string
@@ -9,7 +9,12 @@ interface SubscriptionCardRowProps {
   onClick?: any
 }
 
-export const SubscriptionCardRow = ({icon, label, children, onClick}: SubscriptionCardRowProps) => {
+export const SubscriptionCardRow = ({
+  icon,
+  label,
+  children,
+  onClick,
+}: SubscriptionCardRowProps) => {
   return (
     <>
       <Box
@@ -19,27 +24,29 @@ export const SubscriptionCardRow = ({icon, label, children, onClick}: Subscripti
           px: 0,
           display: 'flex',
           alignItems: 'center',
-          transition: t => t.transitions.create('background'),
+          transition: (t) => t.transitions.create('background'),
           '&:hover': {
-            background: t => t.palette.action.hover,
+            background: (t) => t.palette.action.hover,
           },
         }}
         onClick={onClick}
       >
         <Icon
           sx={{
-            color: t => t.palette.text.secondary,
+            color: (t) => t.palette.text.secondary,
             my: 0.5,
             mr: 2,
           }}
         >
           {icon}
         </Icon>
-        <Box sx={{minWidth: 115}}>
+        <Box sx={{ minWidth: 115 }}>
           <Txt color="hint">{label}</Txt>
         </Box>
-        <Box sx={{flex: 1}}>{children}</Box>
-        <Icon sx={{color: t => t.palette.text.disabled}}>chevron_right</Icon>
+        <Box sx={{ flex: 1 }}>{children}</Box>
+        <Icon sx={{ color: (t) => t.palette.text.disabled }}>
+          chevron_right
+        </Icon>
       </Box>
       <Divider
         sx={{

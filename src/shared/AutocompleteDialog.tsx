@@ -1,9 +1,9 @@
-import React, {ReactElement} from 'react'
-import {useI18n} from '../core/i18n'
-import {Autocomplete} from '@mui/material'
-import {ScDialog} from './ScDialog'
-import {ScInput} from './ScInput'
-import {useEffectFn} from '../alexlibs/react-hooks-lib'
+import React, { ReactElement } from 'react'
+import { useI18n } from '../core/i18n'
+import { Autocomplete } from '@mui/material'
+import { ScDialog } from './ScDialog'
+import { ScInput } from './ScInput'
+import { useEffectFn } from '../alexlibs/react-hooks-lib'
 
 interface Props<T> {
   value?: T
@@ -26,17 +26,19 @@ export const AutocompleteDialog = <T extends unknown>({
   onChange,
   options,
 }: Props<T>) => {
-  const {m} = useI18n()
-  const [innerValue, setInnerValue] = React.useState<T | undefined>(defaultValue)
+  const { m } = useI18n()
+  const [innerValue, setInnerValue] = React.useState<T | undefined>(
+    defaultValue,
+  )
 
   useEffectFn(value, setInnerValue)
 
   return (
     <ScDialog
-      PaperProps={{style: {position: 'static'}}}
+      PaperProps={{ style: { position: 'static' } }}
       maxWidth="xs"
       title={title}
-      content={_ => (
+      content={(_) => (
         <>
           <Autocomplete
             multiple={false}
@@ -52,7 +54,9 @@ export const AutocompleteDialog = <T extends unknown>({
             }}
             options={options ?? []}
             getOptionLabel={getOptionLabel}
-            renderInput={params => <ScInput autoFocus {...params} label={inputLabel} />}
+            renderInput={(params) => (
+              <ScInput autoFocus {...params} label={inputLabel} />
+            )}
           />
         </>
       )}

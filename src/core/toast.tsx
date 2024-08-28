@@ -1,11 +1,11 @@
-import {useToast as useMuiToast} from '../alexlibs/mui-extension'
-import {useI18n} from './i18n'
-import {ApiError} from './client/ApiClient'
-import {Index} from './helper'
+import { useToast as useMuiToast } from '../alexlibs/mui-extension'
+import { useI18n } from './i18n'
+import { ApiError } from './client/ApiClient'
+import { Index } from './helper'
 
 export const useToast = () => {
-  const {toastError, ...toasts} = useMuiToast()
-  const {m} = useI18n()
+  const { toastError, ...toasts } = useMuiToast()
+  const { m } = useI18n()
 
   const askForRefreshMessage =
     'Merci de rafraîchir la page, puis de réessayer. Si cela ne fonctionne toujours pas, réessayez plus tard ou contactez le support.'
@@ -23,7 +23,10 @@ export const useToast = () => {
 
   const doToastError = (error: Partial<ApiError>) => {
     const baseErrorMessage = getErrorMessage(error)
-    const errorDetailsCode = error.details?.code === 400 ? `${baseErrorMessage} ${askForRefreshMessage}` : baseErrorMessage
+    const errorDetailsCode =
+      error.details?.code === 400
+        ? `${baseErrorMessage} ${askForRefreshMessage}`
+        : baseErrorMessage
     toastError(errorDetailsCode)
   }
 

@@ -1,10 +1,11 @@
-import {FileOrigin, UploadedFile} from './UploadedFile'
-import {ApiClientApi} from '../ApiClient'
+import { FileOrigin, UploadedFile } from './UploadedFile'
+import { ApiClientApi } from '../ApiClient'
 
 export class FileClient {
   constructor(private client: ApiClientApi) {}
 
-  readonly getLink = (file: UploadedFile) => `${this.client.baseUrl}/reports/files/${file.id}/${encodeURI(file.filename)}`
+  readonly getLink = (file: UploadedFile) =>
+    `${this.client.baseUrl}/reports/files/${file.id}/${encodeURI(file.filename)}`
 
   readonly upload = (file: File, origin: FileOrigin) => {
     const fileFormData: FormData = new FormData()
@@ -14,7 +15,7 @@ export class FileClient {
     // There are other ways but this is the quickest
     return this.client.post<UploadedFile>(`reports/files`, {
       body: fileFormData,
-      headers: {'Content-Type': 'multipart/form-data'},
+      headers: { 'Content-Type': 'multipart/form-data' },
     })
   }
 }

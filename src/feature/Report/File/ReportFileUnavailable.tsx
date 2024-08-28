@@ -1,12 +1,12 @@
 import React from 'react'
-import {Box, Icon} from '@mui/material'
-import {makeSx} from '../../../alexlibs/mui-extension'
-import {styleUtils} from '../../../core/theme'
-import {reportFileConfig} from './reportFileConfig'
+import { Box, Icon } from '@mui/material'
+import { makeSx } from '../../../alexlibs/mui-extension'
+import { styleUtils } from '../../../core/theme'
+import { reportFileConfig } from './reportFileConfig'
 
 const css = makeSx({
   root: {
-    border: t => '1px solid ' + t.palette.text.disabled,
+    border: (t) => '1px solid ' + t.palette.text.disabled,
     my: 1,
     borderRadius: '0',
     height: reportFileConfig.cardSize,
@@ -18,7 +18,7 @@ const css = makeSx({
     textAlign: 'center', // Center text horizontally and vertically,
     position: 'relative',
     '&:hover': {
-      boxShadow: t => t.shadows[4],
+      boxShadow: (t) => t.shadows[4],
     },
   },
   body: {
@@ -29,10 +29,10 @@ const css = makeSx({
   },
   icon: {
     fontSize: 32,
-    color: t => t.palette.text.disabled,
+    color: (t) => t.palette.text.disabled,
   },
   label: {
-    fontSize: t => styleUtils(t).fontSize.normal,
+    fontSize: (t) => styleUtils(t).fontSize.normal,
     textTransform: 'initial',
     fontWeight: 'normal',
     lineHeight: 1.4,

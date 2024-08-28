@@ -1,20 +1,20 @@
-import React, {ReactElement} from 'react'
-import {Btn, Txt} from '../../alexlibs/mui-extension'
-import {useI18n} from '../../core/i18n'
-import {useConnectedContext} from '../../core/context/ConnectedContext'
-import {useToast} from '../../core/toast'
-import {ScDialog} from '../../shared/ScDialog'
-import {Report} from '../../core/client/report/Report'
-import {useMutation} from '@tanstack/react-query'
+import React, { ReactElement } from 'react'
+import { Btn, Txt } from '../../alexlibs/mui-extension'
+import { useI18n } from '../../core/i18n'
+import { useConnectedContext } from '../../core/context/ConnectedContext'
+import { useToast } from '../../core/toast'
+import { ScDialog } from '../../shared/ScDialog'
+import { Report } from '../../core/client/report/Report'
+import { useMutation } from '@tanstack/react-query'
 
 interface Props {
   report: Report
   children: ReactElement<any>
 }
 
-export const ReportReOpening = ({report, children}: Props) => {
-  const {m} = useI18n()
-  const {apiSdk} = useConnectedContext()
+export const ReportReOpening = ({ report, children }: Props) => {
+  const { m } = useI18n()
+  const { apiSdk } = useConnectedContext()
   const _reOpenReport = useMutation({
     mutationFn: apiSdk.secured.reports.reOpen,
     onSuccess: () => {
@@ -22,7 +22,7 @@ export const ReportReOpening = ({report, children}: Props) => {
       toastSuccess('Signalement ré-ouvert avec succès.')
     },
   })
-  const {toastSuccess} = useToast()
+  const { toastSuccess } = useToast()
 
   return (
     <ScDialog
@@ -30,12 +30,15 @@ export const ReportReOpening = ({report, children}: Props) => {
       content={
         <>
           <Txt className={'mt-3'} color="hint" block size="small" italic>
-            Le professionnel sera informé par email de la réouverture de son signalement et disposera de 3 jours pour y répondre.
-            Passé ce délai, le signalement sera clôturé automatiquement.
+            Le professionnel sera informé par email de la réouverture de son
+            signalement et disposera de 3 jours pour y répondre. Passé ce délai,
+            le signalement sera clôturé automatiquement.
           </Txt>
         </>
       }
-      onConfirm={(event, close) => _reOpenReport.mutateAsync(report.id).finally(close)}
+      onConfirm={(event, close) =>
+        _reOpenReport.mutateAsync(report.id).finally(close)
+      }
     >
       <Btn loading={_reOpenReport.isPending} icon="replay">
         {m.reOpen}

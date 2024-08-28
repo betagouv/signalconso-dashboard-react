@@ -1,5 +1,5 @@
-import {ScButton} from '../../shared/Button'
-import {DatatableToolbar} from '../../shared/Datatable/DatatableToolbar'
+import { ScButton } from '../../shared/Button'
+import { DatatableToolbar } from '../../shared/Datatable/DatatableToolbar'
 
 type SelectReportType = {
   size: number
@@ -23,7 +23,11 @@ type DatatableToolbarComponentProps = {
   m: MType
 }
 
-const DatatableToolbarComponent: React.FC<DatatableToolbarComponentProps> = ({selectReport, downloadReports, m}) => {
+const DatatableToolbarComponent: React.FC<DatatableToolbarComponentProps> = ({
+  selectReport,
+  downloadReports,
+  m,
+}) => {
   return (
     <DatatableToolbar
       open={selectReport.size > 0}
@@ -42,7 +46,9 @@ const DatatableToolbarComponent: React.FC<DatatableToolbarComponentProps> = ({se
         </ScButton>
       }
     >
-      <span dangerouslySetInnerHTML={{__html: m.nSelected(selectReport.size)}} />
+      <span
+        dangerouslySetInnerHTML={{ __html: m.nSelected(selectReport.size) }}
+      />
     </DatatableToolbar>
   )
 }

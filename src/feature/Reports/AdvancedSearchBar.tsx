@@ -1,18 +1,18 @@
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
-import {Badge, Box} from '@mui/material'
-import {styled} from '@mui/material/styles'
-import {ScOption} from 'core/helper/ScOption'
-import {Btn} from '../../alexlibs/mui-extension'
-import {config} from '../../conf/config'
-import {ScButton} from '../../shared/Button'
-import {ExportReportsPopper} from '../../shared/ExportPopperBtn'
-import {useReportSearchQuery} from '../../core/queryhooks/reportQueryHooks'
-import {useI18n} from 'core/i18n'
+import { Badge, Box } from '@mui/material'
+import { styled } from '@mui/material/styles'
+import { ScOption } from 'core/helper/ScOption'
+import { Btn } from '../../alexlibs/mui-extension'
+import { config } from '../../conf/config'
+import { ScButton } from '../../shared/Button'
+import { ExportReportsPopper } from '../../shared/ExportPopperBtn'
+import { useReportSearchQuery } from '../../core/queryhooks/reportQueryHooks'
+import { useI18n } from 'core/i18n'
 
-const ExpandMore = styled((props: {expand: boolean}) => {
-  const {expand, ...other} = props
+const ExpandMore = styled((props: { expand: boolean }) => {
+  const { expand, ...other } = props
   return <ExpandMoreIcon {...other} />
-})(({theme, expand}) => ({
+})(({ theme, expand }) => ({
   transform: !expand ? 'rotate(0deg)' : 'rotate(180deg)',
   marginLeft: 'auto',
   transition: theme.transitions.create('transform', {
@@ -28,8 +28,14 @@ type AdvancedSearchControlsProps = {
   config: typeof config
 }
 
-const AdvancedSearchBar: React.FC<AdvancedSearchControlsProps> = ({expanded, _reports, setExpanded, filtersCount, config}) => {
-  const {m} = useI18n()
+const AdvancedSearchBar: React.FC<AdvancedSearchControlsProps> = ({
+  expanded,
+  _reports,
+  setExpanded,
+  filtersCount,
+  config,
+}) => {
+  const { m } = useI18n()
   return (
     <Box
       sx={{
@@ -42,8 +48,8 @@ const AdvancedSearchBar: React.FC<AdvancedSearchControlsProps> = ({expanded, _re
         justifyContent: 'space-between',
       }}
     >
-      <ScButton onClick={_ => setExpanded(prev => !prev)}>
-        <span style={{display: 'flex', alignItems: 'center'}}>
+      <ScButton onClick={(_) => setExpanded((prev) => !prev)}>
+        <span style={{ display: 'flex', alignItems: 'center' }}>
           <span>Recherche avancée&nbsp;</span>
           <ExpandMore expand={expanded} />
         </span>
@@ -62,18 +68,31 @@ const AdvancedSearchBar: React.FC<AdvancedSearchControlsProps> = ({expanded, _re
         }}
       >
         {filtersCount !== 0 && (
-          <Badge color="error" badgeContent={filtersCount} hidden={filtersCount === 0}>
-            <ScButton icon="clear" onClick={_reports.clearFilters} variant="outlined" color="primary">
+          <Badge
+            color="error"
+            badgeContent={filtersCount}
+            hidden={filtersCount === 0}
+          >
+            <ScButton
+              icon="clear"
+              onClick={_reports.clearFilters}
+              variant="outlined"
+              color="primary"
+            >
               {m.removeAllFilters}
             </ScButton>
           </Badge>
         )}
         <ExportReportsPopper
           disabled={ScOption.from(_reports?.result.data?.totalCount)
-            .map(_ => _ > config.reportsLimitForExport)
+            .map((_) => _ > config.reportsLimitForExport)
             .getOrElse(false)}
           tooltipBtnNew={ScOption.from(_reports?.result.data?.totalCount)
-            .map(_ => (_ > config.reportsLimitForExport ? m.cannotExportMoreReports(config.reportsLimitForExport) : ''))
+            .map((_) =>
+              _ > config.reportsLimitForExport
+                ? m.cannotExportMoreReports(config.reportsLimitForExport)
+                : '',
+            )
             .getOrElse('')}
           filters={_reports.filters}
         >

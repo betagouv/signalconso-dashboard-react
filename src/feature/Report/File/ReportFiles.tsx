@@ -1,12 +1,15 @@
-import {Box} from '@mui/material'
-import {useEffect, useRef, useState} from 'react'
-import {FileOrigin, UploadedFile} from '../../../core/client/file/UploadedFile'
-import {useConnectedContext} from '../../../core/context/ConnectedContext'
-import {useI18n} from '../../../core/i18n'
-import {Id} from '../../../core/model'
-import {ReportFile} from './ReportFile'
-import {ReportFileAdd} from './ReportFileAdd'
-import {useMutation} from '@tanstack/react-query'
+import { Box } from '@mui/material'
+import { useEffect, useRef, useState } from 'react'
+import {
+  FileOrigin,
+  UploadedFile,
+} from '../../../core/client/file/UploadedFile'
+import { useConnectedContext } from '../../../core/context/ConnectedContext'
+import { useI18n } from '../../../core/i18n'
+import { Id } from '../../../core/model'
+import { ReportFile } from './ReportFile'
+import { ReportFileAdd } from './ReportFileAdd'
+import { useMutation } from '@tanstack/react-query'
 
 interface ReportFilesProps {
   files?: UploadedFile[]
@@ -25,16 +28,21 @@ export const ReportFiles = ({
   onRemoveFile = () => void 0,
   onNewFile = () => void 0,
 }: ReportFilesProps) => {
-  const {apiSdk} = useConnectedContext()
+  const { apiSdk } = useConnectedContext()
 
   const _refreshUnscannedFiles = useMutation({
     mutationFn: apiSdk.secured.document.listFiles,
-    onSuccess: files => {
-      const scannedFiles = files.filter(_ => _.isScanned)
+    onSuccess: (files) => {
+      const scannedFiles = files.filter((_) => _.isScanned)
       if (scannedFiles.length > 0) {
-        setInnerFiles(prev => {
+        setInnerFiles((prev) => {
           // Filter out any files already in the list
-          const filteredFiles = prev ? prev.filter(existingFile => !scannedFiles.map(_ => _.id).includes(existingFile.id)) : []
+          const filteredFiles = prev
+            ? prev.filter(
+                (existingFile) =>
+                  !scannedFiles.map((_) => _.id).includes(existingFile.id),
+              )
+            : []
           // Return the updated list with new scannedFiles at the end
           return [...filteredFiles, ...scannedFiles]
         })
@@ -43,28 +51,31 @@ export const ReportFiles = ({
   })
 
   const [innerFiles, setInnerFiles] = useState<UploadedFile[]>()
-  const {m} = useI18n()
+  const { m } = useI18n()
   const attachmentRef = useRef<any>()
-  const {connectedUser} = useConnectedContext()
+  const { connectedUser } = useConnectedContext()
 
   useEffect(() => {
     setInnerFiles(files)
   }, [files])
 
   useEffect(() => {
-    const unScannedFiles = innerFiles?.filter(_ => !_.isScanned)
+    const unScannedFiles = innerFiles?.filter((_) => !_.isScanned)
     const hasUnScannedFiles = unScannedFiles ? unScannedFiles.length > 0 : false
 
     if (unScannedFiles && hasUnScannedFiles) {
       const interval = setInterval(() => {
-        _refreshUnscannedFiles.mutate(unScannedFiles.map(_ => _.id))
+        _refreshUnscannedFiles.mutate(unScannedFiles.map((_) => _.id))
       }, 10000)
       return () => clearInterval(interval)
     }
   }, [innerFiles])
 
   useEffect(() => {
-    if (attachmentRef.current && window.location.href.includes('anchor=attachment')) {
+    if (
+      attachmentRef.current &&
+      window.location.href.includes('anchor=attachment')
+    ) {
       attachmentRef.current.scrollIntoView({
         behavior: 'smooth',
         block: 'start',
@@ -75,28 +86,45 @@ export const ReportFiles = ({
 
   const newFile = (f: UploadedFile) => {
     onNewFile(f)
-    setInnerFiles(prev => [f, ...(prev ?? [])])
+    setInnerFiles((prev) => [f, ...(prev ?? [])])
   }
 
   const removeFile = (f: UploadedFile) => {
     onRemoveFile(f)
-    setInnerFiles(prev => prev?.filter(_ => _.id !== f.id))
+    setInnerFiles((prev) => prev?.filter((_) => _.id !== f.id))
   }
 
   return (
     <div className="mb-4">
       <Box ref={attachmentRef} className="flex flex-wrap gap-2">
         {innerFiles
-          ?.filter(_ => _.origin === fileOrigin)
-          .map(_ => {
+          ?.filter((_) => _.origin === fileOrigin)
+          .map((_) => {
             // Pro is the only user who can remove file. Pro can only remove its own file
             // In order to prevent Admin / Agent from removing pro / consumer file
-            const canRemove = !hideAddBtn && fileOrigin === FileOrigin.Professional && connectedUser.isPro
-            return <ReportFile key={_.id} file={_} onRemove={canRemove ? removeFile : undefined} />
+            const canRemove =
+              !hideAddBtn &&
+              fileOrigin === FileOrigin.Professional &&
+              connectedUser.isPro
+            return (
+              <ReportFile
+                key={_.id}
+                file={_}
+                onRemove={canRemove ? removeFile : undefined}
+              />
+            )
           })}
-        {!hideAddBtn && <ReportFileAdd reportId={reportId} fileOrigin={fileOrigin} onUploaded={newFile} />}
+        {!hideAddBtn && (
+          <ReportFileAdd
+            reportId={reportId}
+            fileOrigin={fileOrigin}
+            onUploaded={newFile}
+          />
+        )}
       </Box>
-      {hideAddBtn && innerFiles?.length === 0 && <p className="">{m.noAttachment}</p>}
+      {hideAddBtn && innerFiles?.length === 0 && (
+        <p className="">{m.noAttachment}</p>
+      )}
     </div>
   )
 }

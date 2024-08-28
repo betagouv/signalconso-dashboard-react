@@ -1,11 +1,11 @@
-import {ScInput} from '../../shared/ScInput'
-import React, {ReactElement} from 'react'
-import {ScDialog} from '../../shared/ScDialog'
-import {useI18n} from '../../core/i18n'
-import {Controller, useForm} from 'react-hook-form'
-import {Checkbox, FormControlLabel} from '@mui/material'
-import {Alert} from '../../alexlibs/mui-extension'
-import {Address} from '../../core/model'
+import { ScInput } from '../../shared/ScInput'
+import React, { ReactElement } from 'react'
+import { ScDialog } from '../../shared/ScDialog'
+import { useI18n } from '../../core/i18n'
+import { Controller, useForm } from 'react-hook-form'
+import { Checkbox, FormControlLabel } from '@mui/material'
+import { Alert } from '../../alexlibs/mui-extension'
+import { Address } from '../../core/model'
 
 interface EditAddressDialogProps {
   children: ReactElement<any>
@@ -23,16 +23,21 @@ interface Form {
   activationDocumentRequired?: boolean
 }
 
-export const EditAddressDialog = ({address, children, onChange, onChangeError}: EditAddressDialogProps) => {
-  const {m} = useI18n()
+export const EditAddressDialog = ({
+  address,
+  children,
+  onChange,
+  onChangeError,
+}: EditAddressDialogProps) => {
+  const { m } = useI18n()
 
   const {
     register,
     handleSubmit,
     getValues,
     control,
-    formState: {errors, isValid},
-  } = useForm<Form>({mode: 'onChange'})
+    formState: { errors, isValid },
+  } = useForm<Form>({ mode: 'onChange' })
 
   return (
     <ScDialog
@@ -43,18 +48,18 @@ export const EditAddressDialog = ({address, children, onChange, onChangeError}: 
         onChange(getValues())
         close()
       }}
-      content={close => (
+      content={(close) => (
         <>
           {onChangeError && <Alert type="error">{onChangeError}</Alert>}
-          <div style={{display: 'flex'}}>
+          <div style={{ display: 'flex' }}>
             <ScInput
               defaultValue={address.number}
               error={!!errors.number}
               helperText={errors.number?.message ?? ' '}
-              sx={{mr: 1, maxWidth: 80}}
+              sx={{ mr: 1, maxWidth: 80 }}
               placeholder={m.numberShort}
               {...register('number', {
-                required: {value: true, message: m.required},
+                required: { value: true, message: m.required },
               })}
             />
             <ScInput
@@ -64,7 +69,7 @@ export const EditAddressDialog = ({address, children, onChange, onChangeError}: 
               fullWidth
               placeholder={m.street}
               {...register('street', {
-                required: {value: true, message: m.required},
+                required: { value: true, message: m.required },
               })}
             />
           </div>
@@ -76,16 +81,16 @@ export const EditAddressDialog = ({address, children, onChange, onChangeError}: 
             placeholder={m.addressSupplement}
             {...register('addressSupplement')}
           />
-          <div style={{display: 'flex'}}>
+          <div style={{ display: 'flex' }}>
             <ScInput
               defaultValue={address.postalCode}
               error={!!errors.postalCode}
               helperText={errors.postalCode?.message ?? ' '}
-              sx={{mr: 1, maxWidth: 100}}
+              sx={{ mr: 1, maxWidth: 100 }}
               fullWidth
               placeholder={m.postalCode}
               {...register('postalCode', {
-                required: {value: true, message: m.required},
+                required: { value: true, message: m.required },
               })}
             />
             <ScInput
@@ -95,15 +100,18 @@ export const EditAddressDialog = ({address, children, onChange, onChangeError}: 
               fullWidth
               placeholder={m.city}
               {...register('city', {
-                required: {value: true, message: m.required},
+                required: { value: true, message: m.required },
               })}
             />
           </div>
           <Controller
             name="activationDocumentRequired"
             control={control}
-            render={({field}) => (
-              <FormControlLabel control={<Checkbox {...field} checked={field.value} />} label={m.activationDocumentRequired} />
+            render={({ field }) => (
+              <FormControlLabel
+                control={<Checkbox {...field} checked={field.value} />}
+                label={m.activationDocumentRequired}
+              />
             )}
           />
         </>

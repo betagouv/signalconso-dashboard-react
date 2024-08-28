@@ -1,7 +1,7 @@
-import {Icon, IconProps, Theme, useTheme} from '@mui/material'
-import {styleUtils} from '../../../core/theme'
-import {EventActionValues} from '../../../core/client/event/Event'
-import {fnSwitch} from '../../../alexlibs/ts-utils'
+import { Icon, IconProps, Theme, useTheme } from '@mui/material'
+import { styleUtils } from '../../../core/theme'
+import { EventActionValues } from '../../../core/client/event/Event'
+import { fnSwitch } from '../../../alexlibs/ts-utils'
 
 interface ReportEventIconProps {
   action: EventActionValues
@@ -25,9 +25,13 @@ const getReportEventIcon = (action: EventActionValues) =>
       [EventActionValues.Creation]: 'add_alert',
       [EventActionValues.ReportAffectedToUser]: 'person_add',
     },
-    _ => {
+    (_) => {
       const toLower = _.toLowerCase()
-      return toLower.indexOf('email') > -1 ? 'email' : toLower.indexOf('courrier') ? 'send' : 'notifications'
+      return toLower.indexOf('email') > -1
+        ? 'email'
+        : toLower.indexOf('courrier')
+          ? 'send'
+          : 'notifications'
     },
   )
 
@@ -37,7 +41,8 @@ const getReportEventColor = (t: Theme) => (action: EventActionValues) =>
     {
       [EventActionValues.ReportReadingByPro]: styleUtils(t).color.info,
       [EventActionValues.ReportProResponse]: styleUtils(t).color.success,
-      [EventActionValues.ReportProEngagementHonoured]: styleUtils(t).color.success,
+      [EventActionValues.ReportProEngagementHonoured]:
+        styleUtils(t).color.success,
       [EventActionValues.ReportConsumerChange]: styleUtils(t).color.info,
       [EventActionValues.ReportCompanyChange]: styleUtils(t).color.info,
       [EventActionValues.Comment]: styleUtils(t).color.info,
@@ -48,10 +53,14 @@ const getReportEventColor = (t: Theme) => (action: EventActionValues) =>
       [EventActionValues.ReportClosedByNoAction]: styleUtils(t).color.error,
       [EventActionValues.Creation]: styleUtils(t).color.info,
     },
-    _ => t.palette.text.disabled,
+    (_) => t.palette.text.disabled,
   )
 
-export const ReportEventIcon = ({action}: ReportEventIconProps) => {
+export const ReportEventIcon = ({ action }: ReportEventIconProps) => {
   const theme = useTheme()
-  return <Icon style={{color: getReportEventColor(theme)(action)}}>{getReportEventIcon(action)}</Icon>
+  return (
+    <Icon style={{ color: getReportEventColor(theme)(action) }}>
+      {getReportEventIcon(action)}
+    </Icon>
+  )
 }

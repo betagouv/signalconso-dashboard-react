@@ -1,6 +1,6 @@
 import * as React from 'react'
-import {ReactNode, useContext, useMemo} from 'react'
-import {fr} from './localization/fr'
+import { ReactNode, useContext, useMemo } from 'react'
+import { fr } from './localization/fr'
 
 const I18nContext = React.createContext({})
 
@@ -31,11 +31,13 @@ export const useI18n = (): I18nContextProps => {
 }
 
 const withI18n = (Component: any) => (props: any) => (
-  <I18nContext.Consumer>{(other: any) => <Component {...props} {...other} />}</I18nContext.Consumer>
+  <I18nContext.Consumer>
+    {(other: any) => <Component {...props} {...other} />}
+  </I18nContext.Consumer>
 )
 
-export const I18nProvider = ({children, lang = AppLangs.fr}: Props) => {
-  const {messages: m, ...others}: typeof fr = useMemo(() => {
+export const I18nProvider = ({ children, lang = AppLangs.fr }: Props) => {
+  const { messages: m, ...others }: typeof fr = useMemo(() => {
     switch (lang) {
       case AppLangs.fr:
         return fr

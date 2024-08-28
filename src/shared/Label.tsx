@@ -1,8 +1,8 @@
 import * as React from 'react'
-import {CSSProperties, ReactNode} from 'react'
-import {Paper, PaperProps, Theme, useTheme} from '@mui/material'
-import {alpha} from '@mui/material/styles'
-import {styleUtils} from '../core/theme'
+import { CSSProperties, ReactNode } from 'react'
+import { Paper, PaperProps, Theme, useTheme } from '@mui/material'
+import { alpha } from '@mui/material/styles'
+import { styleUtils } from '../core/theme'
 
 export interface LabelProps extends PaperProps {
   children: ReactNode
@@ -34,7 +34,14 @@ const colors = (t: Theme) => ({
   },
 })
 
-export const Label = ({children, sx, fullWidth, dense, inSelectOptions, ...props}: LabelProps) => {
+export const Label = ({
+  children,
+  sx,
+  fullWidth,
+  dense,
+  inSelectOptions,
+  ...props
+}: LabelProps) => {
   const t = useTheme()
   return (
     <Paper
@@ -47,7 +54,7 @@ export const Label = ({children, sx, fullWidth, dense, inSelectOptions, ...props
         display: 'inline-flex',
         minHeight: 24,
         alignItems: 'center',
-        transition: t => t.transitions.create('all'),
+        transition: (t) => t.transitions.create('all'),
         ...colorize(t.palette.text.disabled),
         // ...elevation > 0 && {
         //   border: 'none'
@@ -57,7 +64,7 @@ export const Label = ({children, sx, fullWidth, dense, inSelectOptions, ...props
         }),
         ...(dense && {
           fontWeight: '500' as any,
-          fontSize: t => styleUtils(t).fontSize.small,
+          fontSize: (t) => styleUtils(t).fontSize.small,
           py: 0,
           px: 1,
         }),

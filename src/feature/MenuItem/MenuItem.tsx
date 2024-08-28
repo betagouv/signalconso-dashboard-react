@@ -1,4 +1,4 @@
-import {Checkbox, MenuItem, MenuItemProps} from '@mui/material'
+import { Checkbox, MenuItem, MenuItemProps } from '@mui/material'
 
 interface ScMenuItemProps<T> extends Omit<MenuItemProps, 'value'> {
   withCheckbox?: boolean
@@ -6,7 +6,13 @@ interface ScMenuItemProps<T> extends Omit<MenuItemProps, 'value'> {
   value: T
 }
 
-export const ScMenuItem = <T,>({withCheckbox, checked, children, value, ...other}: ScMenuItemProps<T>) => {
+export const ScMenuItem = <T,>({
+  withCheckbox,
+  checked,
+  children,
+  value,
+  ...other
+}: ScMenuItemProps<T>) => {
   return (
     <MenuItem {...other}>
       {withCheckbox && <Checkbox size="small" checked={checked} />}

@@ -1,4 +1,4 @@
-import {CompanySearchResult} from '../company/Company'
+import { CompanySearchResult } from '../company/Company'
 
 interface Siret {
   siret: string

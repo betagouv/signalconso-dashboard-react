@@ -1,4 +1,4 @@
-import {SxProps} from '@mui/system'
-import {Theme} from '@mui/material'
+import { SxProps } from '@mui/system'
+import { Theme } from '@mui/material'
 
-export const makeSx = <T>(_: {[key in keyof T]: SxProps<Theme>}) => _
+export const makeSx = <T>(_: { [key in keyof T]: SxProps<Theme> }) => _

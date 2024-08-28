@@ -1,4 +1,4 @@
-import {Id, PaginatedSearch, ValidationRejectReason} from '../../model'
+import { Id, PaginatedSearch, ValidationRejectReason } from '../../model'
 
 export interface ConsumerEmailValidation {
   id: Id

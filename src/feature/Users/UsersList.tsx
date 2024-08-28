@@ -1,29 +1,37 @@
-import {Icon, Tooltip} from '@mui/material'
-import {useMutation, useQueryClient} from '@tanstack/react-query'
-import {useCallback} from 'react'
-import {NavLink} from 'react-router-dom'
-import {ScInput} from 'shared/ScInput'
-import {IconBtn, Txt} from '../../alexlibs/mui-extension'
-import {RoleAgents, User, isUserActive, roleAgents} from '../../core/client/user/User'
-import {useApiContext} from '../../core/context/ApiContext'
-import {useI18n} from '../../core/i18n'
+import { Icon, Tooltip } from '@mui/material'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { useCallback } from 'react'
+import { NavLink } from 'react-router-dom'
+import { ScInput } from 'shared/ScInput'
+import { IconBtn, Txt } from '../../alexlibs/mui-extension'
+import {
+  RoleAgents,
+  User,
+  isUserActive,
+  roleAgents,
+} from '../../core/client/user/User'
+import { useApiContext } from '../../core/context/ApiContext'
+import { useI18n } from '../../core/i18n'
 import {
   SearchAdminQueryKeys,
   SearchAgentQueryKeys,
   useSearchAdminQuery,
   useSearchAgentQuery,
 } from '../../core/queryhooks/userQueryHooks'
-import {siteMap} from '../../core/siteMap'
-import {useToast} from '../../core/toast'
-import {Datatable, DatatableColumnProps} from '../../shared/Datatable/Datatable'
-import {DebouncedInput} from '../../shared/DebouncedInput'
-import {ScDialog} from '../../shared/ScDialog'
-import {SelectRoleAgent} from '../../shared/SelectRoleAgent'
-import {TrueFalseUndefined} from '../../shared/TrueFalseUndefined'
-import {UserAdminInvitationDialog} from './UserAdminInvitationDialog'
-import {UserAgentInvitationDialog} from './UserAgentInvitationDialog'
-import {UserAgentsImportDialog} from './UserAgentsImportDialog'
-import {UserDeleteButton} from './userDelete'
+import { siteMap } from '../../core/siteMap'
+import { useToast } from '../../core/toast'
+import {
+  Datatable,
+  DatatableColumnProps,
+} from '../../shared/Datatable/Datatable'
+import { DebouncedInput } from '../../shared/DebouncedInput'
+import { ScDialog } from '../../shared/ScDialog'
+import { SelectRoleAgent } from '../../shared/SelectRoleAgent'
+import { TrueFalseUndefined } from '../../shared/TrueFalseUndefined'
+import { UserAdminInvitationDialog } from './UserAdminInvitationDialog'
+import { UserAgentInvitationDialog } from './UserAgentInvitationDialog'
+import { UserAgentsImportDialog } from './UserAgentsImportDialog'
+import { UserDeleteButton } from './userDelete'
 
 export const AdminUsersList = () => <UsersList adminView />
 export const AgentUsersList = () => <UsersList />
@@ -32,19 +40,19 @@ interface Props {
   adminView?: boolean
 }
 
-const UsersList = ({adminView}: Props) => {
-  const {m, formatDate} = useI18n()
-  const {api} = useApiContext()
+const UsersList = ({ adminView }: Props) => {
+  const { m, formatDate } = useI18n()
+  const { api } = useApiContext()
   const queryClient = useQueryClient()
-  const {toastSuccess} = useToast()
+  const { toastSuccess } = useToast()
   const _admins = useSearchAdminQuery(!!adminView)
   const _agents = useSearchAgentQuery(!adminView)
   const _users = adminView ? _admins : _agents
   const invalidate = () => {
     if (adminView) {
-      return queryClient.invalidateQueries({queryKey: SearchAdminQueryKeys})
+      return queryClient.invalidateQueries({ queryKey: SearchAdminQueryKeys })
     } else {
-      return queryClient.invalidateQueries({queryKey: SearchAgentQueryKeys})
+      return queryClient.invalidateQueries({ queryKey: SearchAgentQueryKeys })
     }
   }
   const _validateEmail = useMutation({
@@ -59,12 +67,12 @@ const UsersList = ({adminView}: Props) => {
     {
       head: 'Type',
       id: 'type',
-      render: _ => _.role,
+      render: (_) => _.role,
     },
     {
       head: m.lastValidationDate,
       id: 'lastValidation',
-      render: _ => formatDate(_.lastEmailValidation),
+      render: (_) => formatDate(_.lastEmailValidation),
     },
     {
       head: (
@@ -73,16 +81,20 @@ const UsersList = ({adminView}: Props) => {
         </Tooltip>
       ),
       id: 'active',
-      render: _ => (
+      render: (_) => (
         <ScDialog
           title={m.activateUser(_.email)}
-          onConfirm={(event, close) => _validateEmail.mutateAsync(_.email).then(_ => close())}
+          onConfirm={(event, close) =>
+            _validateEmail.mutateAsync(_.email).then((_) => close())
+          }
           maxWidth="xs"
         >
           {isUserActive(_) ? (
             <Tooltip title={m.extendValidation}>
               <IconBtn>
-                <Icon sx={{color: t => t.palette.success.light}}>check_circle</Icon>
+                <Icon sx={{ color: (t) => t.palette.success.light }}>
+                  check_circle
+                </Icon>
               </IconBtn>
             </Tooltip>
           ) : (
@@ -101,9 +113,11 @@ const UsersList = ({adminView}: Props) => {
     {
       id: '',
       head: m.email,
-      render: _ => (
+      render: (_) => (
         <Txt bold>
-          <Icon sx={{mb: -0.5, mr: 1, color: t => t.palette.primary.main}}>{adminView ? 'local_police' : 'badge'}</Icon>
+          <Icon sx={{ mb: -0.5, mr: 1, color: (t) => t.palette.primary.main }}>
+            {adminView ? 'local_police' : 'badge'}
+          </Icon>
           {_.email}
         </Txt>
       ),
@@ -111,22 +125,27 @@ const UsersList = ({adminView}: Props) => {
     {
       head: m.firstName,
       id: 'firstName',
-      render: _ => _.firstName,
+      render: (_) => _.firstName,
     },
     {
       head: m.lastName,
       id: 'lastName',
-      render: _ => _.lastName,
+      render: (_) => _.lastName,
     },
     ...(adminView ? [] : extraColumnsForDgccrf),
     {
       id: 'authAttemptsHistory',
-      sx: _ => ({ml: 0, pl: 0, mr: 0, pr: 0}),
-      render: _ => (
+      sx: (_) => ({ ml: 0, pl: 0, mr: 0, pr: 0 }),
+      render: (_) => (
         <>
           {!adminView && _.id && (
             <Tooltip title={m.authAttemptsHistory}>
-              <NavLink to={siteMap.logged.users.basePath() + siteMap.logged.users.auth_attempts.value(_.email)}>
+              <NavLink
+                to={
+                  siteMap.logged.users.basePath() +
+                  siteMap.logged.users.auth_attempts.value(_.email)
+                }
+              >
                 <IconBtn color="primary">
                   <Icon>history</Icon>
                 </IconBtn>
@@ -138,12 +157,12 @@ const UsersList = ({adminView}: Props) => {
     },
     {
       id: 'delete',
-      render: _ => <UserDeleteButton userId={_.id} onDelete={invalidate} />,
+      render: (_) => <UserDeleteButton userId={_.id} onDelete={invalidate} />,
     },
   ]
 
   const onEmailChange = useCallback((email: string) => {
-    _users.updateFilters(prev => ({...prev, email}))
+    _users.updateFilters((prev) => ({ ...prev, email }))
     // TRELLO-1391 The object _users change all the time.
     // If we put it in dependencies, it causes problems with the debounce,
     // and the search input "stutters" when typing fast
@@ -161,14 +180,17 @@ const UsersList = ({adminView}: Props) => {
               <>
                 <p>Cette page liste des utilisateurs "Admin".</p>
                 <p className="px-1 bg-orange-200 block italic text-orange-900">
-                  Attention ceux-ci ont tous les droits, ils peuvent potentiellement causer des dégâts, ce n'est pas pour
-                  n'importe qui !
+                  Attention ceux-ci ont tous les droits, ils peuvent
+                  potentiellement causer des dégâts, ce n'est pas pour n'importe
+                  qui !
                 </p>
               </>
             ) : (
               <p>
                 Cette page liste les utilisateurs de type "agent".{' '}
-                <span className="italic text-gray-500">Ce sont les agents de la DGCCRF ou de la DGAL.</span>
+                <span className="italic text-gray-500">
+                  Ce sont les agents de la DGCCRF ou de la DGAL.
+                </span>
               </p>
             )}
           </div>
@@ -187,13 +209,16 @@ const UsersList = ({adminView}: Props) => {
           id="userslist"
           headerMain={
             <>
-              <DebouncedInput value={_users.filters.email ?? ''} onChange={onEmailChange}>
+              <DebouncedInput
+                value={_users.filters.email ?? ''}
+                onChange={onEmailChange}
+              >
                 {(value, onChange) => (
                   <ScInput
                     value={value}
                     placeholder={m.searchByEmail + '...'}
                     fullWidth
-                    onChange={e => onChange(e.target.value)}
+                    onChange={(e) => onChange(e.target.value)}
                   />
                 )}
               </DebouncedInput>
@@ -204,13 +229,20 @@ const UsersList = ({adminView}: Props) => {
             <>
               <>
                 {!adminView && (
-                  <SelectRoleAgent value={parsedRole} onChange={_ => _users.updateFilters(prev => ({...prev, role: _}))} />
+                  <SelectRoleAgent
+                    value={parsedRole}
+                    onChange={(_) =>
+                      _users.updateFilters((prev) => ({ ...prev, role: _ }))
+                    }
+                  />
                 )}
               </>
               <>
                 <TrueFalseUndefined
                   value={_users.filters.active}
-                  onChange={_ => _users.updateFilters(prev => ({...prev, active: _}))}
+                  onChange={(_) =>
+                    _users.updateFilters((prev) => ({ ...prev, active: _ }))
+                  }
                   label={{
                     true: m.active,
                     false: m.inactive,
@@ -225,11 +257,14 @@ const UsersList = ({adminView}: Props) => {
           paginate={{
             limit: _users.filters.limit,
             offset: _users.filters.offset,
-            onPaginationChange: pagination => _users.updateFilters(prev => ({...prev, ...pagination})),
+            onPaginationChange: (pagination) =>
+              _users.updateFilters((prev) => ({ ...prev, ...pagination })),
           }}
           showColumnsToggle
-          rowsPerPageExtraOptions={_users.result.data ? [_users.result.data.totalCount] : undefined}
-          getRenderRowKey={_ => _.email}
+          rowsPerPageExtraOptions={
+            _users.result.data ? [_users.result.data.totalCount] : undefined
+          }
+          getRenderRowKey={(_) => _.email}
           data={_users.result.data?.entities}
           columns={columns}
         />

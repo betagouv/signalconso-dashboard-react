@@ -1,11 +1,11 @@
 import * as React from 'react'
-import {useEffect, useState} from 'react'
-import {Icon, InputAdornment, TextField, TextFieldProps} from '@mui/material'
-import {SelectCompaniesByProMenu} from './SelectCompaniesByProMenu'
-import {useI18n} from '../../core/i18n'
+import { useEffect, useState } from 'react'
+import { Icon, InputAdornment, TextField, TextFieldProps } from '@mui/material'
+import { SelectCompaniesByProMenu } from './SelectCompaniesByProMenu'
+import { useI18n } from '../../core/i18n'
 
-import {CompanyWithAccessLevel} from '../../core/client/company/Company'
-import {ScOption} from 'core/helper/ScOption'
+import { CompanyWithAccessLevel } from '../../core/client/company/Company'
+import { ScOption } from 'core/helper/ScOption'
 
 interface SelectDepartmentsProps extends Omit<TextFieldProps, 'onChange'> {
   accessibleCompanies: CompanyWithAccessLevel[]
@@ -29,7 +29,7 @@ export const SelectCompaniesByPro = ({
 }: SelectDepartmentsProps) => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
   let $input: HTMLElement | undefined = undefined
-  const {m} = useI18n()
+  const { m } = useI18n()
   const [innerValues, setInnerValues] = useState<string[]>()
 
   useEffect(() => {
@@ -54,8 +54,8 @@ export const SelectCompaniesByPro = ({
         label={label ?? m.siret}
         onClick={open}
         value={ScOption.from(innerValues)
-          .filter(_ => _.length > 0)
-          .map(_ => `(${_.length}) ${_.join(', ')}`)
+          .filter((_) => _.length > 0)
+          .map((_) => `(${_.length}) ${_.join(', ')}`)
           .getOrElse('')}
         disabled={readonly}
         inputRef={(n: any) => ($input = n ?? undefined)}
@@ -66,7 +66,7 @@ export const SelectCompaniesByPro = ({
               <Icon
                 sx={{
                   height: 20,
-                  color: t => t.palette.text.secondary,
+                  color: (t) => t.palette.text.secondary,
                   verticalAlign: 'top',
                 }}
               >
@@ -81,7 +81,7 @@ export const SelectCompaniesByPro = ({
         anchorEl={anchorEl}
         open={!!anchorEl}
         onClose={close}
-        onChange={_ => {
+        onChange={(_) => {
           onChange(_)
           setInnerValues(_)
         }}

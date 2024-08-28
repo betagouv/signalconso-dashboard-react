@@ -1,5 +1,5 @@
-import {CompanyAccessLevel} from '../company-access/CompanyAccess'
-import {Id} from '../../model'
+import { CompanyAccessLevel } from '../company-access/CompanyAccess'
+import { Id } from '../../model'
 
 export interface CompanyAccessToken {
   id: Id

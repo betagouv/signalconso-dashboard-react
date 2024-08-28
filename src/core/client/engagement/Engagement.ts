@@ -1,6 +1,6 @@
-import {Id} from '../../model'
-import {AcceptedDetails} from '../event/Event'
-import {Report} from '../report/Report'
+import { Id } from '../../model'
+import { AcceptedDetails } from '../event/Event'
+import { Report } from '../report/Report'
 
 export interface Engagement {
   id: Id

@@ -1,8 +1,14 @@
 import * as React from 'react'
-import {CSSProperties, ReactNode, useState} from 'react'
-import {Box, BoxProps, darken, Icon, IconButton} from '@mui/material'
-import {usePersistentState} from '../react-persistent-state'
-import {colorBlueFrance, colorError, colorInfo, colorSuccess, colorWarning} from './color'
+import { CSSProperties, ReactNode, useState } from 'react'
+import { Box, BoxProps, darken, Icon, IconButton } from '@mui/material'
+import { usePersistentState } from '../react-persistent-state'
+import {
+  colorBlueFrance,
+  colorError,
+  colorInfo,
+  colorSuccess,
+  colorWarning,
+} from './color'
 
 const height = (dense?: boolean) => (dense ? 44 : 52)
 
@@ -34,7 +40,8 @@ export const Alert = ({
   dangerouslySetInnerHTML,
   ...props
 }: AlertProps) => {
-  const [isPersistentVisible, setPersistentIsVisible] = usePersistentState<boolean>(true, props.id || 'alert')
+  const [isPersistentVisible, setPersistentIsVisible] =
+    usePersistentState<boolean>(true, props.id || 'alert')
   const [isVisible, setIsVisible] = useState<boolean>(true)
 
   const getIconFromType = () => {
@@ -62,7 +69,7 @@ export const Alert = ({
         //   paddingLeft: t.spacing(3),
         //   paddingRight: t.spacing(3),
         // },
-        transition: t => t.transitions.create('all'),
+        transition: (t) => t.transitions.create('all'),
         // @ts-ignore
         minHeight: height(props.dense),
         display: 'flex',
@@ -90,7 +97,9 @@ export const Alert = ({
             color: darken(colorWarning, 0.1),
           },
         }[type],
-        ...((hidden || !isVisible || (persistentDelete && !isPersistentVisible)) && {
+        ...((hidden ||
+          !isVisible ||
+          (persistentDelete && !isPersistentVisible)) && {
           minHeight: '0 !important',
           height: '0 !important',
           opacity: '0 !important',

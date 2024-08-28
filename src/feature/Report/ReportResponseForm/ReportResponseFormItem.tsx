@@ -1,8 +1,8 @@
-import {Txt} from '../../../alexlibs/mui-extension'
+import { Txt } from '../../../alexlibs/mui-extension'
 import React from 'react'
-import {Box} from '@mui/material'
-import {SxProps} from '@mui/system'
-import {Theme} from '@mui/material/styles'
+import { Box } from '@mui/material'
+import { SxProps } from '@mui/system'
+import { Theme } from '@mui/material/styles'
 
 interface ReportAnswerProItemProps {
   title?: string
@@ -11,9 +11,14 @@ interface ReportAnswerProItemProps {
   sx?: SxProps<Theme>
 }
 
-export const ReportResponseFormItem = ({children, title, desc, sx}: ReportAnswerProItemProps) => {
+export const ReportResponseFormItem = ({
+  children,
+  title,
+  desc,
+  sx,
+}: ReportAnswerProItemProps) => {
   return (
-    <Box sx={{...sx, mb: 2}}>
+    <Box sx={{ ...sx, mb: 2 }}>
       {title && (
         <Txt block size="big" bold>
           {title}
@@ -21,10 +26,10 @@ export const ReportResponseFormItem = ({children, title, desc, sx}: ReportAnswer
       )}
       {desc && (
         <Txt color="hint">
-          <span dangerouslySetInnerHTML={{__html: desc}} />
+          <span dangerouslySetInnerHTML={{ __html: desc }} />
         </Txt>
       )}
-      <Box sx={{mt: 0.5}}>{children}</Box>
+      <Box sx={{ mt: 0.5 }}>{children}</Box>
     </Box>
   )
 }

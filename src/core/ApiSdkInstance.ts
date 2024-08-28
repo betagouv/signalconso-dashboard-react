@@ -1,8 +1,8 @@
-import {config} from '../conf/config'
-import {SignalConsoSecuredSdk} from './client/SignalConsoSecuredSdk'
-import {ApiClient} from './client/ApiClient'
-import {SignalConsoPublicSdk} from './client/SignalConsoPublicSdk'
-import {CompanyPublicSdk} from './client/CompanyPublicSdk'
+import { config } from '../conf/config'
+import { SignalConsoSecuredSdk } from './client/SignalConsoSecuredSdk'
+import { ApiClient } from './client/ApiClient'
+import { SignalConsoPublicSdk } from './client/SignalConsoPublicSdk'
+import { CompanyPublicSdk } from './client/CompanyPublicSdk'
 
 export type ConnectedApiSdk = ReturnType<typeof buildConnectedApiSdk>
 
@@ -21,7 +21,11 @@ export const apiPublicSdk = new SignalConsoPublicSdk(
   }),
 )
 
-export const buildConnectedApiSdk = ({onDisconnected}: {onDisconnected: () => void}) => {
+export const buildConnectedApiSdk = ({
+  onDisconnected,
+}: {
+  onDisconnected: () => void
+}) => {
   return {
     public: apiPublicSdk,
     companySdk: new CompanyPublicSdk(

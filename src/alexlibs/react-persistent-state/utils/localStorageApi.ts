@@ -17,7 +17,8 @@ const storage = {
 
   save: (key: string, value: any): void => {
     try {
-      const serializedState = typeof value === 'object' ? JSON.stringify(value) : value
+      const serializedState =
+        typeof value === 'object' ? JSON.stringify(value) : value
       localStorage.setItem(key, serializedState)
     } catch (err) {
       console.error(err)

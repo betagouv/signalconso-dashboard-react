@@ -1,20 +1,20 @@
-import {Icon} from '@mui/material'
-import {Alert} from 'alexlibs/mui-extension'
-import {config} from 'conf/config'
-import {useI18n} from 'core/i18n'
-import {siteMap} from 'core/siteMap'
-import {Link} from 'react-router-dom'
+import { Icon } from '@mui/material'
+import { Alert } from 'alexlibs/mui-extension'
+import { config } from 'conf/config'
+import { useI18n } from 'core/i18n'
+import { siteMap } from 'core/siteMap'
+import { Link } from 'react-router-dom'
 
 export function AlertNotForConso() {
   return (
     <Alert type="info" className="max-w-lg mx-auto">
       <p className="mb-2">
-        Cette page permet aux <span className="font-bold">professionnels</span> de consulter et de répondre aux signalements des
-        consommateurs.
+        Cette page permet aux <span className="font-bold">professionnels</span>{' '}
+        de consulter et de répondre aux signalements des consommateurs.
       </p>
       <p className="mb-2">
-        Vous êtes un <span className="font-bold">consommateur</span> et vous souhaitez faire un signalement&nbsp;? Rendez-vous
-        plutôt sur{' '}
+        Vous êtes un <span className="font-bold">consommateur</span> et vous
+        souhaitez faire un signalement&nbsp;? Rendez-vous plutôt sur{' '}
         <a href={config.appBaseUrl} className="underline">
           la page d'accueil de SignalConso.
         </a>
@@ -23,7 +23,7 @@ export function AlertNotForConso() {
   )
 }
 
-export function EspaceProTitle({subPageTitle}: {subPageTitle?: string}) {
+export function EspaceProTitle({ subPageTitle }: { subPageTitle?: string }) {
   return (
     <h1 className="text-3xl mb-8 text-center">
       {subPageTitle && (
@@ -31,17 +31,18 @@ export function EspaceProTitle({subPageTitle}: {subPageTitle?: string}) {
           <Icon className="align-top !text-3xl">arrow_back</Icon>
         </Link>
       )}
-      <span>SignalConso</span> <span className="font-bold text-scbluefrance">Espace Pro</span>
+      <span>SignalConso</span>{' '}
+      <span className="font-bold text-scbluefrance">Espace Pro</span>
       {subPageTitle && <span className=""> - {subPageTitle}</span>}
     </h1>
   )
 }
 
 export function AlertContactSupport() {
-  const {m} = useI18n()
+  const { m } = useI18n()
   return (
     <Alert type="info" className="max-w-md mx-auto">
-      <p dangerouslySetInnerHTML={{__html: m.loginIssueTip}} />
+      <p dangerouslySetInnerHTML={{ __html: m.loginIssueTip }} />
     </Alert>
   )
 }

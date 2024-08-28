@@ -1,7 +1,11 @@
-import {Label, LabelProps} from './Label'
-import {useI18n} from '../core/i18n'
-import {useConnectedContext} from '../core/context/ConnectedContext'
-import {Report, ReportStatus, ReportStatusPro} from '../core/client/report/Report'
+import { Label, LabelProps } from './Label'
+import { useI18n } from '../core/i18n'
+import { useConnectedContext } from '../core/context/ConnectedContext'
+import {
+  Report,
+  ReportStatus,
+  ReportStatusPro,
+} from '../core/client/report/Report'
 
 interface ReportStatusLabelProps extends Omit<LabelProps, 'children'> {
   status: ReportStatus
@@ -35,10 +39,16 @@ export const isStatusInvisibleToPro = (status: ReportStatus): Boolean => {
   return Report.invisibleToProStatus.includes(status)
 }
 
-export const ReportStatusLabel = ({status, ...props}: ReportStatusLabelProps) => {
-  const {connectedUser} = useConnectedContext()
+export const ReportStatusLabel = ({
+  status,
+  ...props
+}: ReportStatusLabelProps) => {
+  const { connectedUser } = useConnectedContext()
   return connectedUser.isPro ? (
-    <ReportStatusProLabel status={Report.getStatusProByStatus(status)} {...props} />
+    <ReportStatusProLabel
+      status={Report.getStatusProByStatus(status)}
+      {...props}
+    />
   ) : (
     <ReportStatusAdminLabel status={status} {...props} />
   )
@@ -46,19 +56,43 @@ export const ReportStatusLabel = ({status, ...props}: ReportStatusLabelProps) =>
 
 const borderRadius = '10px'
 
-const ReportStatusAdminLabel = ({status, style, ...props}: ReportStatusLabelProps) => {
-  const {m} = useI18n()
+const ReportStatusAdminLabel = ({
+  status,
+  style,
+  ...props
+}: ReportStatusLabelProps) => {
+  const { m } = useI18n()
   return (
-    <Label {...props} style={{color: 'white', background: reportStatusColor[status], borderRadius, ...style}}>
+    <Label
+      {...props}
+      style={{
+        color: 'white',
+        background: reportStatusColor[status],
+        borderRadius,
+        ...style,
+      }}
+    >
       {m.reportStatusShort[status]}
     </Label>
   )
 }
 
-const ReportStatusProLabel = ({status, style, ...props}: ReportStatusProLabelProps) => {
-  const {m} = useI18n()
+const ReportStatusProLabel = ({
+  status,
+  style,
+  ...props
+}: ReportStatusProLabelProps) => {
+  const { m } = useI18n()
   return (
-    <Label {...props} style={{color: 'white', background: reportStatusProColor[status], borderRadius, ...style}}>
+    <Label
+      {...props}
+      style={{
+        color: 'white',
+        background: reportStatusProColor[status],
+        borderRadius,
+        ...style,
+      }}
+    >
       {m.reportStatusShortPro[status]}
     </Label>
   )

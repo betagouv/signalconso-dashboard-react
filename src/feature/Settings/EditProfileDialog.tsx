@@ -1,15 +1,19 @@
-import React, {ReactElement} from 'react'
-import {useI18n} from '../../core/i18n'
-import {Controller, useForm} from 'react-hook-form'
-import {Alert} from '../../alexlibs/mui-extension'
-import {useToast} from '../../core/toast'
-import {ScDialog} from '../../shared/ScDialog'
-import {AccountEventActions, EventCategories, Matomo} from '../../core/plugins/Matomo'
-import {useAsync} from '../../alexlibs/react-hooks-lib'
-import {useConnectedContext} from '../../core/context/ConnectedContext'
-import {map} from '../../alexlibs/ts-utils'
-import {ScInput} from '../../shared/ScInput'
-import {ApiError} from '../../core/client/ApiClient'
+import React, { ReactElement } from 'react'
+import { useI18n } from '../../core/i18n'
+import { Controller, useForm } from 'react-hook-form'
+import { Alert } from '../../alexlibs/mui-extension'
+import { useToast } from '../../core/toast'
+import { ScDialog } from '../../shared/ScDialog'
+import {
+  AccountEventActions,
+  EventCategories,
+  Matomo,
+} from '../../core/plugins/Matomo'
+import { useAsync } from '../../alexlibs/react-hooks-lib'
+import { useConnectedContext } from '../../core/context/ConnectedContext'
+import { map } from '../../alexlibs/ts-utils'
+import { ScInput } from '../../shared/ScInput'
+import { ApiError } from '../../core/client/ApiClient'
 
 interface Form {
   firstName: string
@@ -20,11 +24,11 @@ interface Props {
   children: ReactElement<any>
 }
 
-export const EditProfileDialog = ({children}: Props) => {
-  const {m} = useI18n()
-  const {apiSdk, connectedUser, setConnectedUser} = useConnectedContext()
+export const EditProfileDialog = ({ children }: Props) => {
+  const { m } = useI18n()
+  const { apiSdk, connectedUser, setConnectedUser } = useConnectedContext()
   const _editUser = useAsync(apiSdk.secured.user.edit)
-  const {toastSuccess} = useToast()
+  const { toastSuccess } = useToast()
   const defaultFormValues: Form = {
     firstName: connectedUser.firstName,
     lastName: connectedUser.lastName,
@@ -35,7 +39,7 @@ export const EditProfileDialog = ({children}: Props) => {
     control,
     reset,
     watch,
-    formState: {errors, isValid},
+    formState: { errors, isValid },
   } = useForm<Form>({
     mode: 'onChange',
     defaultValues: defaultFormValues,
@@ -43,7 +47,9 @@ export const EditProfileDialog = ({children}: Props) => {
 
   watch('firstName')
   watch('lastName')
-  const hasUserChanged = getValues().firstName !== connectedUser.firstName || getValues().lastName !== connectedUser.lastName
+  const hasUserChanged =
+    getValues().firstName !== connectedUser.firstName ||
+    getValues().lastName !== connectedUser.lastName
 
   return (
     <ScDialog
@@ -62,11 +68,19 @@ export const EditProfileDialog = ({children}: Props) => {
             .then(() => {
               toastSuccess(m.saved)
               close()
-              Matomo.trackEvent(EventCategories.account, AccountEventActions.changeNameSuccess)
-              setConnectedUser(previous => (previous ? {...previous, ...form} : undefined))
+              Matomo.trackEvent(
+                EventCategories.account,
+                AccountEventActions.changeNameSuccess,
+              )
+              setConnectedUser((previous) =>
+                previous ? { ...previous, ...form } : undefined,
+              )
             })
-            .catch(_ => {
-              Matomo.trackEvent(EventCategories.account, AccountEventActions.changeNameFail)
+            .catch((_) => {
+              Matomo.trackEvent(
+                EventCategories.account,
+                AccountEventActions.changeNameFail,
+              )
             })
         })()
       }}
@@ -80,7 +94,7 @@ export const EditProfileDialog = ({children}: Props) => {
           <Controller
             name="firstName"
             control={control}
-            render={({field}) => (
+            render={({ field }) => (
               <ScInput
                 {...field}
                 autoComplete="false"
@@ -94,7 +108,7 @@ export const EditProfileDialog = ({children}: Props) => {
           <Controller
             name="lastName"
             control={control}
-            render={({field}) => (
+            render={({ field }) => (
               <ScInput
                 {...field}
                 autoComplete="false"

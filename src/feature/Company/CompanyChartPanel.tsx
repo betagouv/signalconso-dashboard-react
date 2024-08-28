@@ -1,14 +1,17 @@
-import {alpha, Button, ButtonGroup} from '@mui/material'
-import {useConnectedContext} from 'core/context/ConnectedContext'
-import {useI18n} from 'core/i18n'
-import {siteMap} from 'core/siteMap'
-import {useEffect, useState} from 'react'
-import {NavLink} from 'react-router-dom'
-import {CurveDefinition, LineChartOrPlaceholder} from 'shared/Chart/LineChartWrappers'
-import {CleanDiscreetPanel} from 'shared/Panel/simplePanels'
-import {CompanyWithReportsCount} from '../../core/client/company/Company'
-import {NbReportsTotals, Period} from '../../core/client/stats/statsTypes'
-import {Id, ReportStatus} from '../../core/model'
+import { alpha, Button, ButtonGroup } from '@mui/material'
+import { useConnectedContext } from 'core/context/ConnectedContext'
+import { useI18n } from 'core/i18n'
+import { siteMap } from 'core/siteMap'
+import { useEffect, useState } from 'react'
+import { NavLink } from 'react-router-dom'
+import {
+  CurveDefinition,
+  LineChartOrPlaceholder,
+} from 'shared/Chart/LineChartWrappers'
+import { CleanDiscreetPanel } from 'shared/Panel/simplePanels'
+import { CompanyWithReportsCount } from '../../core/client/company/Company'
+import { NbReportsTotals, Period } from '../../core/client/stats/statsTypes'
+import { Id, ReportStatus } from '../../core/model'
 
 const periods: Period[] = ['Day', 'Week', 'Month']
 
@@ -23,8 +26,8 @@ export const CompanyChartPanel = ({
   companyId: Id
   reportTotals: NbReportsTotals | undefined
 }) => {
-  const {apiSdk} = useConnectedContext()
-  const {m, formatLargeNumber} = useI18n()
+  const { apiSdk } = useConnectedContext()
+  const { m, formatLargeNumber } = useI18n()
   const [reportsCurvePeriod, setReportsCurvePeriod] = useState<Period>('Month')
   const companyIds = [companyId]
   const [curves, setCurves] = useState<CurveDefinition[] | undefined>()
@@ -40,7 +43,11 @@ export const CompanyChartPanel = ({
         }),
         apiSdk.secured.stats.getReportCountCurve({
           companyIds,
-          status: [ReportStatus.PromesseAction, ReportStatus.Infonde, ReportStatus.MalAttribue],
+          status: [
+            ReportStatus.PromesseAction,
+            ReportStatus.Infonde,
+            ReportStatus.MalAttribue,
+          ],
           ticks,
           tickDuration: reportsCurvePeriod,
         }),
@@ -73,12 +80,18 @@ export const CompanyChartPanel = ({
   return (
     <CleanDiscreetPanel>
       <div className="flex items-center justify-between mb-2">
-        {reportTotals && <ReportsTotalWithLink {...{companyId, reportTotals}} />}
+        {reportTotals && (
+          <ReportsTotalWithLink {...{ companyId, reportTotals }} />
+        )}
         <ButtonGroup color="primary">
-          {periods.map(p => (
+          {periods.map((p) => (
             <Button
               key={p}
-              sx={p === reportsCurvePeriod ? {background: t => alpha(t.palette.primary.main, 0.14)} : {}}
+              sx={
+                p === reportsCurvePeriod
+                  ? { background: (t) => alpha(t.palette.primary.main, 0.14) }
+                  : {}
+              }
               onClick={() => setReportsCurvePeriod(p)}
             >
               {periodToString(p)}
@@ -86,18 +99,28 @@ export const CompanyChartPanel = ({
           ))}
         </ButtonGroup>
       </div>
-      <LineChartOrPlaceholder hideLabelToggle={true} {...{curves}} period={reportsCurvePeriod} />
+      <LineChartOrPlaceholder
+        hideLabelToggle={true}
+        {...{ curves }}
+        period={reportsCurvePeriod}
+      />
     </CleanDiscreetPanel>
   )
 }
 
-function ReportsTotalWithLink({reportTotals, companyId}: {reportTotals: NbReportsTotals; companyId: Id}) {
-  const {connectedUser} = useConnectedContext()
-  const {formatLargeNumber} = useI18n()
+function ReportsTotalWithLink({
+  reportTotals,
+  companyId,
+}: {
+  reportTotals: NbReportsTotals
+  companyId: Id
+}) {
+  const { connectedUser } = useConnectedContext()
+  const { formatLargeNumber } = useI18n()
 
   const firstPart = `${formatLargeNumber(reportTotals.total)} signalements`
   const secondPart = `${formatLargeNumber(reportTotals.totalWaitingResponse)} en attente de réponse`
-  const url = siteMap.logged.reports({companyIds: [companyId]})
+  const url = siteMap.logged.reports({ companyIds: [companyId] })
   if (connectedUser.isPro) {
     return (
       <h2 className="font-bold text-lg">

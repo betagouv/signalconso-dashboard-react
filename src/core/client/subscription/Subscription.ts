@@ -1,6 +1,6 @@
-import {Country, Department} from '../constant/Country'
-import {ReportTag} from '../report/Report'
-import {Category} from '../constant/Category'
+import { Country, Department } from '../constant/Country'
+import { ReportTag } from '../report/Report'
+import { Category } from '../constant/Category'
 
 type SubscriptionFrequency = 'P7D' | 'P1D'
 

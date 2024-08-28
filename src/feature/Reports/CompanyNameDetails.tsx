@@ -1,8 +1,8 @@
-import {Box} from '@mui/material'
-import {NavLink} from 'react-router-dom'
-import {Txt} from '../../alexlibs/mui-extension'
-import {siteMap} from '../../core/siteMap'
-import {styleUtils} from '../../core/theme'
+import { Box } from '@mui/material'
+import { NavLink } from 'react-router-dom'
+import { Txt } from '../../alexlibs/mui-extension'
+import { siteMap } from '../../core/siteMap'
+import { styleUtils } from '../../core/theme'
 
 type CompanyNameDetailsProps = {
   companyId: string | undefined
@@ -15,9 +15,14 @@ const removeProtocol = (url: string) => {
   return url.replace(/^(http|https):\/\//, '')
 }
 
-const CompanyNameDetails: React.FC<CompanyNameDetailsProps> = ({companyId, isDGAL, companyName, additionalLabel}) => {
+const CompanyNameDetails: React.FC<CompanyNameDetailsProps> = ({
+  companyId,
+  isDGAL,
+  companyName,
+  additionalLabel,
+}) => {
   return (
-    <Box component="span" sx={{marginBottom: '-1px'}}>
+    <Box component="span" sx={{ marginBottom: '-1px' }}>
       {companyId && !isDGAL ? (
         <NavLink to={siteMap.logged.company(companyId).stats.valueAbsolute}>
           <Txt link>{companyName}</Txt>
@@ -31,9 +36,9 @@ const CompanyNameDetails: React.FC<CompanyNameDetailsProps> = ({companyId, isDGA
           <Txt
             component="span"
             sx={{
-              fontSize: t => styleUtils(t).fontSize.small,
+              fontSize: (t) => styleUtils(t).fontSize.small,
               fontStyle: 'italic',
-              color: t => t.palette.text.primary,
+              color: (t) => t.palette.text.primary,
             }}
           >
             {removeProtocol(additionalLabel)}

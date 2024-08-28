@@ -1,8 +1,8 @@
-import {Box, BoxProps} from '@mui/material'
-import {addDays, subDays} from 'date-fns'
-import {useI18n} from '../core/i18n'
-import {Datepicker} from './Datepicker'
-import {Datetimepicker} from './DatetimePicker'
+import { Box, BoxProps } from '@mui/material'
+import { addDays, subDays } from 'date-fns'
+import { useI18n } from '../core/i18n'
+import { Datepicker } from './Datepicker'
+import { Datetimepicker } from './DatetimePicker'
 
 interface DatepickerProps extends Omit<BoxProps, 'onChange'> {
   value?: [Date | undefined, Date | undefined]
@@ -11,7 +11,8 @@ interface DatepickerProps extends Omit<BoxProps, 'onChange'> {
   fullWidth?: boolean
 }
 
-const datesAreInterverted = (start: Date, end: Date) => start.getTime() > end.getTime()
+const datesAreInterverted = (start: Date, end: Date) =>
+  start.getTime() > end.getTime()
 
 export const PeriodWithTimePicker = ({
   value = [undefined, undefined],
@@ -22,15 +23,21 @@ export const PeriodWithTimePicker = ({
   ...props
 }: DatepickerProps) => {
   const [start, end] = value ?? [undefined, undefined]
-  const {m} = useI18n()
+  const { m } = useI18n()
 
   const handleStartChange = (newStart?: Date) => {
-    const newEnd = newStart && end && datesAreInterverted(newStart, end) ? addDays(newStart, 1) : end
+    const newEnd =
+      newStart && end && datesAreInterverted(newStart, end)
+        ? addDays(newStart, 1)
+        : end
     onChange([newStart, newEnd])
   }
 
   const handleEndChange = (newEnd?: Date) => {
-    const newStart = start && newEnd && datesAreInterverted(start, newEnd) ? subDays(newEnd, 1) : start
+    const newStart =
+      start && newEnd && datesAreInterverted(start, newEnd)
+        ? subDays(newEnd, 1)
+        : start
     onChange([newStart, newEnd])
   }
 
@@ -41,7 +48,7 @@ export const PeriodWithTimePicker = ({
       sx={{
         display: 'flex',
         alignItems: 'center',
-        ...(fullWidth && {width: '100%'}),
+        ...(fullWidth && { width: '100%' }),
         ...sx,
       }}
     >
@@ -50,10 +57,10 @@ export const PeriodWithTimePicker = ({
         fullWidth={fullWidth}
         value={start}
         onChange={handleStartChange}
-        sx={{marginRight: '-1px'}}
+        sx={{ marginRight: '-1px' }}
         InputProps={{
-          inputProps: {min: '1000-01-01', step: 1},
-          sx: _ => ({
+          inputProps: { min: '1000-01-01', step: 1 },
+          sx: (_) => ({
             borderBottomRightRadius: 0,
             borderTopRightRadius: 0,
           }),
@@ -67,8 +74,8 @@ export const PeriodWithTimePicker = ({
         value={end}
         onChange={handleEndChange}
         InputProps={{
-          inputProps: {min: '1000-01-01', step: 1},
-          sx: _ => ({
+          inputProps: { min: '1000-01-01', step: 1 },
+          sx: (_) => ({
             borderBottomLeftRadius: 0,
             borderTopLeftRadius: 0,
           }),

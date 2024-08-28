@@ -1,18 +1,23 @@
-import {createTheme, SxProps, Theme} from '@mui/material'
-import {ThemeOptions} from '@mui/material/styles/createTheme'
-import {colorBlueFrance} from 'alexlibs/mui-extension/color'
-import {makeSx} from '../alexlibs/mui-extension'
+import { createTheme, SxProps, Theme } from '@mui/material'
+import { ThemeOptions } from '@mui/material/styles/createTheme'
+import { colorBlueFrance } from 'alexlibs/mui-extension/color'
+import { makeSx } from '../alexlibs/mui-extension'
 
-export const combineSx = (...sxs: (SxProps<Theme> | undefined | false)[]): SxProps<Theme> => {
-  return sxs.reduce((res, sx) => (sx !== undefined && sx !== false ? {...res, ...sx} : res), {} as any)
+export const combineSx = (
+  ...sxs: (SxProps<Theme> | undefined | false)[]
+): SxProps<Theme> => {
+  return sxs.reduce(
+    (res, sx) => (sx !== undefined && sx !== false ? { ...res, ...sx } : res),
+    {} as any,
+  )
 }
 
 export const sxUtils = makeSx({
   fontBig: {
-    fontSize: t => t.typography.fontSize * 1.15,
+    fontSize: (t) => t.typography.fontSize * 1.15,
   },
   fontNormal: {
-    fontSize: t => t.typography.fontSize,
+    fontSize: (t) => t.typography.fontSize,
   },
   tdActions: {
     textAlign: 'right',

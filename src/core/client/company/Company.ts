@@ -1,4 +1,4 @@
-import {Id, PaginatedFilters, Address} from '../../model'
+import { Id, PaginatedFilters, Address } from '../../model'
 
 export interface CompanyWithReportsCount extends Company {
   count: number

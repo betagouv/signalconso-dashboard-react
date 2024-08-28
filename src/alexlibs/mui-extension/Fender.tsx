@@ -1,6 +1,6 @@
-import {Box, BoxProps, CircularProgress, Icon} from '@mui/material'
-import {ReactNode} from 'react'
-import {colorError, colorSuccess, colorWarning} from './color'
+import { Box, BoxProps, CircularProgress, Icon } from '@mui/material'
+import { ReactNode } from 'react'
+import { colorError, colorSuccess, colorWarning } from './color'
 
 type State = 'loading' | 'error' | 'empty' | 'success' | 'warning'
 
@@ -12,7 +12,16 @@ interface FenderProps extends Omit<BoxProps, 'title'> {
   description?: ReactNode
 }
 
-export const Fender = ({children, icon, iconSize = 100, type = 'empty', title, description, sx, ...props}: FenderProps) => {
+export const Fender = ({
+  children,
+  icon,
+  iconSize = 100,
+  type = 'empty',
+  title,
+  description,
+  sx,
+  ...props
+}: FenderProps) => {
   const getIcon = () => {
     if (icon) return renderIcon(icon)
     switch (type) {
@@ -29,13 +38,15 @@ export const Fender = ({children, icon, iconSize = 100, type = 'empty', title, d
     }
   }
 
-  const renderIcon = (name: string) => <Icon sx={{fontSize: `${iconSize}px !important`}}>{name}</Icon>
+  const renderIcon = (name: string) => (
+    <Icon sx={{ fontSize: `${iconSize}px !important` }}>{name}</Icon>
+  )
 
   return (
     <Box
       {...props}
       sx={{
-        transition: t => t.transitions.create('all'),
+        transition: (t) => t.transitions.create('all'),
         display: 'flex',
         textAlign: 'center',
         alignItems: 'center',
@@ -68,8 +79,8 @@ export const Fender = ({children, icon, iconSize = 100, type = 'empty', title, d
         >
           {getIcon()}
         </Box>
-        <Box sx={{mt: 1}}>
-          {title && <Box sx={{fontSize: 24}}>{title}</Box>}
+        <Box sx={{ mt: 1 }}>
+          {title && <Box sx={{ fontSize: 24 }}>{title}</Box>}
           {description && <Box>{description}</Box>}
           {children}
         </Box>

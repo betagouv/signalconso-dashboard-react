@@ -1,7 +1,7 @@
-import {useI18n} from 'core/i18n'
+import { useI18n } from 'core/i18n'
 
 export function PasswordRequirementsDesc() {
-  const {m} = useI18n()
+  const { m } = useI18n()
   return (
     <div className="text-gray-500 mb-4">
       {m.passwordShouldBeLongAnd}

@@ -1,7 +1,17 @@
-import {createContext, Dispatch, ReactNode, SetStateAction, useContext, useEffect, useState} from 'react'
-import {usePersistentState} from '../../alexlibs/react-persistent-state'
+import {
+  createContext,
+  Dispatch,
+  ReactNode,
+  SetStateAction,
+  useContext,
+  useEffect,
+  useState,
+} from 'react'
+import { usePersistentState } from '../../alexlibs/react-persistent-state'
 
-const LayoutContext = createContext<UseLayoutContextProps>({} as UseLayoutContextProps)
+const LayoutContext = createContext<UseLayoutContextProps>(
+  {} as UseLayoutContextProps,
+)
 
 // "Mobile width" is equivalent to Tailwinds's sm and lower
 const mobileBreakpoint = 768
@@ -15,7 +25,13 @@ interface UseLayoutContextProps {
   sidebarTakesSpaceInLayout: boolean
 }
 
-export const LayoutContextProvider = ({hasSidebar, children}: {children: ReactNode; hasSidebar: boolean}) => {
+export const LayoutContextProvider = ({
+  hasSidebar,
+  children,
+}: {
+  children: ReactNode
+  hasSidebar: boolean
+}) => {
   const [pageWidth, setPageWidth] = useState(getWindowWidth())
   const [sidebarOpen, setSidebarOpen] = usePersistentState(true, 'sidebarOpen')
 

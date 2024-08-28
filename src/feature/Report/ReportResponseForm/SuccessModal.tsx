@@ -1,11 +1,19 @@
 import React from 'react'
-import {Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Button, Modal} from '@mui/material'
+import {
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  Button,
+  Modal,
+} from '@mui/material'
 import pics from './contact.png'
 import CheckCircleIcon from '@mui/icons-material/CheckCircle'
 import MarkEmailReadIcon from '@mui/icons-material/MarkEmailRead'
-import {ReportResponseTypes} from 'core/client/event/Event'
-import {useI18n} from 'core/i18n'
-import {EngagementReminderPeriod} from '../../../core/client/engagement/Engagement'
+import { ReportResponseTypes } from 'core/client/event/Event'
+import { useI18n } from 'core/i18n'
+import { EngagementReminderPeriod } from '../../../core/client/engagement/Engagement'
 
 interface SuccessModalProps {
   open: boolean
@@ -13,8 +21,12 @@ interface SuccessModalProps {
   responseType?: ReportResponseTypes
 }
 
-const SuccessModal: React.FC<SuccessModalProps> = ({open, onClose, responseType}) => {
-  const {m} = useI18n()
+const SuccessModal: React.FC<SuccessModalProps> = ({
+  open,
+  onClose,
+  responseType,
+}) => {
+  const { m } = useI18n()
   const renderContentBasedOnResponseType = () => {
     switch (responseType) {
       case ReportResponseTypes.Accepted:
@@ -22,7 +34,10 @@ const SuccessModal: React.FC<SuccessModalProps> = ({open, onClose, responseType}
           <div>
             <img src={pics} alt="Accepted" className="w-1/2 mx-auto" />
             <div className="flex justify-center">
-              <CheckCircleIcon className="text-green-500" sx={{fontSize: '5rem'}} />
+              <CheckCircleIcon
+                className="text-green-500"
+                sx={{ fontSize: '5rem' }}
+              />
             </div>
             <p className="text-xl font-bold mb-2">{m.promisedAction}</p>
           </div>
@@ -32,7 +47,10 @@ const SuccessModal: React.FC<SuccessModalProps> = ({open, onClose, responseType}
           <div>
             <img src={pics} alt="Rejected" className="w-1/2 mx-auto" />
             <div className="flex justify-center">
-              <MarkEmailReadIcon className="text-green-500" sx={{fontSize: '5rem'}} />
+              <MarkEmailReadIcon
+                className="text-green-500"
+                sx={{ fontSize: '5rem' }}
+              />
             </div>
             <p className="text-xl font-bold mb-2">{m.claimDeemedUnfounded}</p>
           </div>
@@ -43,9 +61,14 @@ const SuccessModal: React.FC<SuccessModalProps> = ({open, onClose, responseType}
           <div>
             <img src={pics} alt="NotConcerned" className="w-1/2 mx-auto" />
             <div className="flex justify-center">
-              <MarkEmailReadIcon className="text-green-500" sx={{fontSize: '5rem'}} />
+              <MarkEmailReadIcon
+                className="text-green-500"
+                sx={{ fontSize: '5rem' }}
+              />
             </div>
-            <p className="text-xl font-bold mb-2">{m.claimNotConcernedYourEstablishment}</p>
+            <p className="text-xl font-bold mb-2">
+              {m.claimNotConcernedYourEstablishment}
+            </p>
           </div>
         )
       default:
@@ -61,7 +84,9 @@ const SuccessModal: React.FC<SuccessModalProps> = ({open, onClose, responseType}
           <p>{m.responseSentToConsumer}</p>
           <br />
           {responseType === 'ACCEPTED' ? (
-            <p>{m.consumerReviewInvitationForAccepted(EngagementReminderPeriod)}</p>
+            <p>
+              {m.consumerReviewInvitationForAccepted(EngagementReminderPeriod)}
+            </p>
           ) : (
             <p>{m.consumerReviewInvitation}</p>
           )}

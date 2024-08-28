@@ -1,12 +1,12 @@
-import {alpha, Box, BoxProps, Icon} from '@mui/material'
-import {IconBtn} from '../../../alexlibs/mui-extension'
-import {layoutConfig} from '../index'
-import {useLayoutContext} from '../LayoutContext'
+import { alpha, Box, BoxProps, Icon } from '@mui/material'
+import { IconBtn } from '../../../alexlibs/mui-extension'
+import { layoutConfig } from '../index'
+import { useLayoutContext } from '../LayoutContext'
 
 interface Props extends BoxProps {}
 
-export const Header = ({children}: Props) => {
-  const {sidebarOpen, showSidebarButton, setSidebarOpen} = useLayoutContext()
+export const Header = ({ children }: Props) => {
+  const { sidebarOpen, showSidebarButton, setSidebarOpen } = useLayoutContext()
 
   return (
     <Box
@@ -17,8 +17,8 @@ export const Header = ({children}: Props) => {
         py: 0.5,
         display: 'flex',
         alignItems: 'center',
-        background: t => t.palette.background.paper,
-        borderBottom: t => '1px solid ' + t.palette.divider,
+        background: (t) => t.palette.background.paper,
+        borderBottom: (t) => '1px solid ' + t.palette.divider,
       }}
     >
       <div className="flex items-center w-full">
@@ -26,14 +26,15 @@ export const Header = ({children}: Props) => {
           <IconBtn
             sx={{
               mr: 1,
-              border: t => `2px solid ${t.palette.primary.main}`,
-              background: t => (sidebarOpen ? 'none' : alpha(t.palette.primary.main, 0.1)),
-              color: t => t.palette.primary.main,
+              border: (t) => `2px solid ${t.palette.primary.main}`,
+              background: (t) =>
+                sidebarOpen ? 'none' : alpha(t.palette.primary.main, 0.1),
+              color: (t) => t.palette.primary.main,
               '&:hover': {
-                background: t => alpha(t.palette.primary.main, 0.1),
+                background: (t) => alpha(t.palette.primary.main, 0.1),
               },
             }}
-            onClick={() => setSidebarOpen(_ => !_)}
+            onClick={() => setSidebarOpen((_) => !_)}
           >
             <Icon>menu</Icon>
           </IconBtn>

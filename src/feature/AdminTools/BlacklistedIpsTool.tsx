@@ -1,23 +1,26 @@
-import {CleanWidePanel} from '../../shared/Panel/simplePanels'
-import React, {ReactElement} from 'react'
-import {ListIpBlacklistQueryKeys, useListIpBlacklistQuery} from '../../core/queryhooks/ipBlacklistQueryHooks'
-import {Datatable} from '../../shared/Datatable/Datatable'
-import {BlacklistedIp} from '../../core/client/ip-blacklist/BlacklistedIp'
-import {Box, Checkbox, Icon, Tooltip} from '@mui/material'
-import {useI18n} from '../../core/i18n'
-import {useMutation, useQueryClient} from '@tanstack/react-query'
-import {useConnectedContext} from '../../core/context/ConnectedContext'
-import {useToast} from '../../core/toast'
-import {ScDialog} from '../../shared/ScDialog'
-import {Controller, useForm} from 'react-hook-form'
-import {ScInput} from '../../shared/ScInput'
-import {ScButton} from '../../shared/Button'
+import { CleanWidePanel } from '../../shared/Panel/simplePanels'
+import React, { ReactElement } from 'react'
+import {
+  ListIpBlacklistQueryKeys,
+  useListIpBlacklistQuery,
+} from '../../core/queryhooks/ipBlacklistQueryHooks'
+import { Datatable } from '../../shared/Datatable/Datatable'
+import { BlacklistedIp } from '../../core/client/ip-blacklist/BlacklistedIp'
+import { Box, Checkbox, Icon, Tooltip } from '@mui/material'
+import { useI18n } from '../../core/i18n'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { useConnectedContext } from '../../core/context/ConnectedContext'
+import { useToast } from '../../core/toast'
+import { ScDialog } from '../../shared/ScDialog'
+import { Controller, useForm } from 'react-hook-form'
+import { ScInput } from '../../shared/ScInput'
+import { ScButton } from '../../shared/Button'
 
 export const BlacklistedIpsTool = () => {
-  const {m} = useI18n()
-  const {apiSdk} = useConnectedContext()
+  const { m } = useI18n()
+  const { apiSdk } = useConnectedContext()
   const queryClient = useQueryClient()
-  const {toastSuccess} = useToast()
+  const { toastSuccess } = useToast()
 
   const blacklist = useListIpBlacklistQuery()
 
@@ -25,7 +28,9 @@ export const BlacklistedIpsTool = () => {
     mutationFn: apiSdk.secured.ipBlacklist.delete,
     onSuccess: () => {
       toastSuccess('IP supprimée')
-      return queryClient.invalidateQueries({queryKey: ListIpBlacklistQueryKeys})
+      return queryClient.invalidateQueries({
+        queryKey: ListIpBlacklistQueryKeys,
+      })
     },
   })
 
@@ -37,11 +42,16 @@ export const BlacklistedIpsTool = () => {
           <>
             <p>Une IP bannie sera systématiquement rejetée par l'API.</p>
             <p>
-              Une IP critique (marquée par le symbole <Icon color="warning">warning</Icon>) entraine un log en warning spécial
-              pour pouvoir identifier facilement toute tentative d'accès. On marque une IP comme critique lorsque celle-ci est
+              Une IP critique (marquée par le symbole{' '}
+              <Icon color="warning">warning</Icon>) entraine un log en warning
+              spécial pour pouvoir identifier facilement toute tentative
+              d'accès. On marque une IP comme critique lorsque celle-ci est
               identifiée comme malveillante.
             </p>
-            <p className="mt-4">Un redémarrage de l'API est nécessaire pour prendre en compte toute modification de la liste.</p>
+            <p className="mt-4">
+              Un redémarrage de l'API est nécessaire pour prendre en compte
+              toute modification de la liste.
+            </p>
           </>
         }
         actions={
@@ -56,14 +66,21 @@ export const BlacklistedIpsTool = () => {
           {
             id: 'ip',
             head: 'IP',
-            render: blacklistedId => blacklistedId.ip,
+            render: (blacklistedId) => blacklistedId.ip,
           },
           {
             id: 'comment',
             head: 'Commentaire',
-            render: blacklistedId => (
+            render: (blacklistedId) => (
               <Tooltip title={blacklistedId.comment}>
-                <Box sx={{maxWidth: '500px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap'}}>
+                <Box
+                  sx={{
+                    maxWidth: '500px',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                    whiteSpace: 'nowrap',
+                  }}
+                >
                   {blacklistedId.comment}
                 </Box>
               </Tooltip>
@@ -72,12 +89,13 @@ export const BlacklistedIpsTool = () => {
           {
             id: 'critical',
             head: 'Criticité',
-            render: blacklistedId => blacklistedId.critical && <Icon color="warning">warning</Icon>,
+            render: (blacklistedId) =>
+              blacklistedId.critical && <Icon color="warning">warning</Icon>,
           },
           {
             id: 'action',
             stickyEnd: true,
-            render: _ => (
+            render: (_) => (
               <div className="flex justify-end">
                 <Tooltip title={m.delete}>
                   <ScButton
@@ -109,24 +127,33 @@ interface AddIpForm {
   critical: boolean
 }
 
-const AddIp = ({children}: AddIpProps) => {
-  const {apiSdk} = useConnectedContext()
+const AddIp = ({ children }: AddIpProps) => {
+  const { apiSdk } = useConnectedContext()
   const queryClient = useQueryClient()
-  const {toastSuccess} = useToast()
-  const {m} = useI18n()
+  const { toastSuccess } = useToast()
+  const { m } = useI18n()
   const {
     register,
     control,
     handleSubmit,
-    formState: {errors},
+    formState: { errors },
   } = useForm<AddIpForm>()
 
   const _add = useMutation({
-    mutationFn: ({ip, comment, critical}: {ip: string; comment: string; critical: boolean}) =>
-      apiSdk.secured.ipBlacklist.add(ip, comment, critical),
+    mutationFn: ({
+      ip,
+      comment,
+      critical,
+    }: {
+      ip: string
+      comment: string
+      critical: boolean
+    }) => apiSdk.secured.ipBlacklist.add(ip, comment, critical),
     onSuccess: () => {
       toastSuccess('IP ajoutée')
-      return queryClient.invalidateQueries({queryKey: ListIpBlacklistQueryKeys})
+      return queryClient.invalidateQueries({
+        queryKey: ListIpBlacklistQueryKeys,
+      })
     },
   })
 
@@ -140,7 +167,7 @@ const AddIp = ({children}: AddIpProps) => {
     <ScDialog
       maxWidth="sm"
       title="Bannir une IP"
-      content={close => (
+      content={(close) => (
         <>
           <ScInput
             error={!!errors.ip}
@@ -148,7 +175,7 @@ const AddIp = ({children}: AddIpProps) => {
             fullWidth
             placeholder="Adresse IP (v4 ou v6)"
             {...register('ip', {
-              validate: ip => checkIpAddress(ip) || 'Adresse IP invalide',
+              validate: (ip) => checkIpAddress(ip) || 'Adresse IP invalide',
             })}
           />
           <ScInput
@@ -157,7 +184,7 @@ const AddIp = ({children}: AddIpProps) => {
             fullWidth
             placeholder="Commentaire"
             {...register('comment', {
-              required: {value: true, message: m.required},
+              required: { value: true, message: m.required },
             })}
           />
           <Box
@@ -166,19 +193,21 @@ const AddIp = ({children}: AddIpProps) => {
               alignItems: 'center',
             }}
           >
-            <Box sx={{color: t => t.palette.text.secondary}}>Critique</Box>
+            <Box sx={{ color: (t) => t.palette.text.secondary }}>Critique</Box>
             <Controller
               name="critical"
               control={control}
-              render={({field: {ref, ...field}}) => <Checkbox checked={field.value} onChange={field.onChange} />}
+              render={({ field: { ref, ...field } }) => (
+                <Checkbox checked={field.value} onChange={field.onChange} />
+              )}
             />
           </Box>
         </>
       )}
       onConfirm={(e, close) => {
         handleSubmit((form: AddIpForm) => {
-          const {ip, comment, critical}: AddIpForm = form
-          _add.mutate({ip, comment, critical: critical ?? false})
+          const { ip, comment, critical }: AddIpForm = form
+          _add.mutate({ ip, comment, critical: critical ?? false })
           close()
         })(e)
       }}

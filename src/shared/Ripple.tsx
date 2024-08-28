@@ -1,11 +1,11 @@
-import {ReactElement, useRef} from 'react'
+import { ReactElement, useRef } from 'react'
 import TouchRipple from '@mui/material/ButtonBase/TouchRipple'
 
 interface Props {
   children: ReactElement<any>
 }
 
-export const Ripple = ({children}: Props) => {
+export const Ripple = ({ children }: Props) => {
   const rippleRef = useRef<any>(null)
 
   const onRippleStart = (e: any) => {
@@ -17,7 +17,12 @@ export const Ripple = ({children}: Props) => {
   }
 
   return (
-    <div onMouseDown={onRippleStart} onMouseLeave={onRippleStop} onMouseUp={onRippleStop} style={{position: 'relative'}}>
+    <div
+      onMouseDown={onRippleStart}
+      onMouseLeave={onRippleStop}
+      onMouseUp={onRippleStop}
+      style={{ position: 'relative' }}
+    >
       {children}
       <TouchRipple ref={rippleRef} center={false} />
     </div>

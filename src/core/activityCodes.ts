@@ -1,4 +1,4 @@
-export const activityCodes: {[key: string]: string} = {
+export const activityCodes: { [key: string]: string } = {
   '10': 'Industries alimentaires',
   '11': 'Fabrication de boissons',
   '12': 'Cultures permanentes',

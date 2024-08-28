@@ -1,6 +1,10 @@
-import {InputProps as StandardInputProps, TextField, TextFieldProps} from '@mui/material'
-import {zonedTimeToUtc} from 'date-fns-tz'
-import React, {useEffect, useState} from 'react'
+import {
+  InputProps as StandardInputProps,
+  TextField,
+  TextFieldProps,
+} from '@mui/material'
+import { zonedTimeToUtc } from 'date-fns-tz'
+import React, { useEffect, useState } from 'react'
 
 interface DatepickerProps extends Omit<TextFieldProps, 'onChange'> {
   value?: Date
@@ -14,7 +18,15 @@ interface DatepickerProps extends Omit<TextFieldProps, 'onChange'> {
     | 'endOfDay'
 }
 
-export const Datepicker = ({value, onChange, label, fullWidth, InputProps, timeOfDay, ...props}: DatepickerProps) => {
+export const Datepicker = ({
+  value,
+  onChange,
+  label,
+  fullWidth,
+  InputProps,
+  timeOfDay,
+  ...props
+}: DatepickerProps) => {
   const onChangeDate = (e: React.ChangeEvent<HTMLInputElement>) => {
     setIsIsValidDate(e.target.value === '' || e.target.checkValidity())
     if (e.target.checkValidity()) {
@@ -61,7 +73,7 @@ export const Datepicker = ({value, onChange, label, fullWidth, InputProps, timeO
       value={displayedDate}
       onChange={onChangeDate}
       fullWidth={fullWidth}
-      InputLabelProps={{shrink: true}}
+      InputLabelProps={{ shrink: true }}
       error={!isValidDate}
     />
   )

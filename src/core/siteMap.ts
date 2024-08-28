@@ -1,8 +1,8 @@
-import {mapDatesToQueryString} from './helper/useQueryString'
-import {toQueryString} from './helper'
-import {ReportSearch} from './client/report/ReportSearch'
-import {Id} from './model'
-import {stringify} from 'qs'
+import { mapDatesToQueryString } from './helper/useQueryString'
+import { toQueryString } from './helper'
+import { ReportSearch } from './client/report/ReportSearch'
+import { Id } from './model'
+import { stringify } from 'qs'
 
 export const siteMap = {
   logged: {
@@ -26,7 +26,9 @@ export const siteMap = {
       },
     },
     reportedPhone: `/suivi-des-telephones`,
-    reports: (_?: Partial<ReportSearch>) => `/suivi-des-signalements` + (_ ? `?${stringify(mapDatesToQueryString(_))}` : ``),
+    reports: (_?: Partial<ReportSearch>) =>
+      `/suivi-des-signalements` +
+      (_ ? `?${stringify(mapDatesToQueryString(_))}` : ``),
     reportsfiltred: {
       closed: `/suivi-des-signalements-clotures`,
       engagements: `/engagements`,
@@ -73,7 +75,8 @@ export const siteMap = {
         return `${this.root}/`
       },
       auth_attempts: {
-        value: (email?: string) => `auth-attempts` + (email ? toQueryString({email}) : ``),
+        value: (email?: string) =>
+          `auth-attempts` + (email ? toQueryString({ email }) : ``),
       },
       agent_pending: {
         value: `pending`,
@@ -120,6 +123,7 @@ export const siteMap = {
     register: `/activation`,
     login: `/connexion`,
     emailValidation: `/connexion/validation-email`,
-    resetPassword: (token: Id = `:token`) => `/connexion/nouveau-mot-de-passe/${token}`,
+    resetPassword: (token: Id = `:token`) =>
+      `/connexion/nouveau-mot-de-passe/${token}`,
   },
 }

@@ -1,17 +1,19 @@
-import {Tab, TabProps, Tabs} from '@mui/material'
+import { Tab, TabProps, Tabs } from '@mui/material'
 import * as React from 'react'
-import {ReactElement, useMemo} from 'react'
-import {useLocation, useNavigate} from 'react-router'
+import { ReactElement, useMemo } from 'react'
+import { useLocation, useNavigate } from 'react-router'
 
 interface Props {
   children: Array<ReactElement<PageTabProps> | undefined>
 }
 
-export const PageTabs = ({children}: Props) => {
-  const {pathname} = useLocation()
+export const PageTabs = ({ children }: Props) => {
+  const { pathname } = useLocation()
   const defaultTabIndex = 0
   const index = useMemo(() => {
-    const currentTabIndex = children.map(child => child?.props.to).findIndex(path => path && pathname.includes(path))
+    const currentTabIndex = children
+      .map((child) => child?.props.to)
+      .findIndex((path) => path && pathname.includes(path))
     return currentTabIndex !== -1 ? currentTabIndex : defaultTabIndex
   }, [pathname, children])
 
@@ -24,7 +26,7 @@ export const PageTabs = ({children}: Props) => {
       scrollButtons="auto"
       sx={{
         mb: 3,
-        borderBottom: t => '1px solid ' + t.palette.divider,
+        borderBottom: (t) => '1px solid ' + t.palette.divider,
       }}
     >
       {children}
@@ -39,7 +41,7 @@ interface PageTabProps extends TabProps {
   disabled?: boolean
 }
 
-export const PageTab = ({to, ...props}: PageTabProps) => {
+export const PageTab = ({ to, ...props }: PageTabProps) => {
   const history = useNavigate()
   return <Tab {...props} onClick={() => history(to)} />
 }

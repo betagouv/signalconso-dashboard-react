@@ -1,12 +1,12 @@
-import {AsyncLineChart, toPercentage} from 'shared/Chart/LineChartWrappers'
-import {CleanWidePanel} from 'shared/Panel/simplePanels'
-import {Txt} from '../../alexlibs/mui-extension'
-import {useConnectedContext} from '../../core/context/ConnectedContext'
-import {useI18n} from '../../core/i18n'
+import { AsyncLineChart, toPercentage } from 'shared/Chart/LineChartWrappers'
+import { CleanWidePanel } from 'shared/Panel/simplePanels'
+import { Txt } from '../../alexlibs/mui-extension'
+import { useConnectedContext } from '../../core/context/ConnectedContext'
+import { useI18n } from '../../core/i18n'
 
 export const StatsReportsProResponsePanel = () => {
-  const {apiSdk: api} = useConnectedContext()
-  const {m} = useI18n()
+  const { apiSdk: api } = useConnectedContext()
+  const { m } = useI18n()
   const loadCurves = async () => {
     const [allResponses, notConcerned, rejected, accepted] = await Promise.all([
       api.secured.stats.getProReportResponseStat(),
@@ -39,8 +39,13 @@ export const StatsReportsProResponsePanel = () => {
     <CleanWidePanel>
       <h2 className="font-bold text-xl mb-2">{m.reportsProResponseType}</h2>
       <div>
-        <Txt color="hint" gutterBottom block dangerouslySetInnerHTML={{__html: m.reportsProResponseTypeDesc}} />
-        <AsyncLineChart {...{loadCurves}} />
+        <Txt
+          color="hint"
+          gutterBottom
+          block
+          dangerouslySetInnerHTML={{ __html: m.reportsProResponseTypeDesc }}
+        />
+        <AsyncLineChart {...{ loadCurves }} />
       </div>
     </CleanWidePanel>
   )

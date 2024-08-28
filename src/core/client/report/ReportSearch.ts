@@ -1,5 +1,5 @@
-import {Id, ResponseEvaluation} from '../../model'
-import {ReportStatus, ReportTag} from './Report'
+import { Id, ResponseEvaluation } from '../../model'
+import { ReportStatus, ReportTag } from './Report'
 
 export interface ReportSearch {
   departments?: string[]

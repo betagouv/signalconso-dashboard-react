@@ -1,19 +1,32 @@
-import {useI18n} from '../../core/i18n'
-import {Page, PageTitle} from '../../shared/Page'
+import { useI18n } from '../../core/i18n'
+import { Page, PageTitle } from '../../shared/Page'
 
-import {Badge, Box, Checkbox, Chip, Collapse, Icon, Tooltip} from '@mui/material'
-import {useMutation} from '@tanstack/react-query'
-import React, {useCallback, useEffect, useMemo, useState} from 'react'
-import {NavLink} from 'react-router-dom'
-import {CleanDiscreetPanel} from 'shared/Panel/simplePanels'
-import {ConsumerReviewLabels} from 'shared/reviews/ConsumerReviewLabels'
-import {Fender, IconBtn, Txt} from '../../alexlibs/mui-extension'
-import {useSetState} from '../../alexlibs/react-hooks-lib'
-import {config} from '../../conf/config'
-import {EntityIcon} from '../../core/EntityIcon'
-import {Report, ReportStatus, ReportTag, ReportingDateLabel} from '../../core/client/report/Report'
-import {useConnectedContext} from '../../core/context/ConnectedContext'
-import {cleanObject, textOverflowMiddleCropping} from '../../core/helper'
+import {
+  Badge,
+  Box,
+  Checkbox,
+  Chip,
+  Collapse,
+  Icon,
+  Tooltip,
+} from '@mui/material'
+import { useMutation } from '@tanstack/react-query'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import { NavLink } from 'react-router-dom'
+import { CleanDiscreetPanel } from 'shared/Panel/simplePanels'
+import { ConsumerReviewLabels } from 'shared/reviews/ConsumerReviewLabels'
+import { Fender, IconBtn, Txt } from '../../alexlibs/mui-extension'
+import { useSetState } from '../../alexlibs/react-hooks-lib'
+import { config } from '../../conf/config'
+import { EntityIcon } from '../../core/EntityIcon'
+import {
+  Report,
+  ReportStatus,
+  ReportTag,
+  ReportingDateLabel,
+} from '../../core/client/report/Report'
+import { useConnectedContext } from '../../core/context/ConnectedContext'
+import { cleanObject, textOverflowMiddleCropping } from '../../core/helper'
 import compose from '../../core/helper/compose'
 import {
   mapArrayFromQuerystring,
@@ -22,16 +35,21 @@ import {
   mapDatesToQueryString,
   useQueryString,
 } from '../../core/helper/useQueryString'
-import {Id, ReportResponseTypes, ReportSearch, ResponseEvaluation} from '../../core/model'
-import {useCategoriesByStatusQuery} from '../../core/queryhooks/constantQueryHooks'
-import {useReportSearchQuery} from '../../core/queryhooks/reportQueryHooks'
-import {siteMap} from '../../core/siteMap'
-import {styleUtils, sxUtils} from '../../core/theme'
-import {ScButton} from '../../shared/Button'
-import {Datatable} from '../../shared/Datatable/Datatable'
-import {ReportDetailValues} from '../../shared/ReportDetailValues'
-import {ReportStatusLabel} from '../../shared/ReportStatus'
-import {SelectTagsMenuValues} from '../../shared/SelectTags/SelectTagsMenu'
+import {
+  Id,
+  ReportResponseTypes,
+  ReportSearch,
+  ResponseEvaluation,
+} from '../../core/model'
+import { useCategoriesByStatusQuery } from '../../core/queryhooks/constantQueryHooks'
+import { useReportSearchQuery } from '../../core/queryhooks/reportQueryHooks'
+import { siteMap } from '../../core/siteMap'
+import { styleUtils, sxUtils } from '../../core/theme'
+import { ScButton } from '../../shared/Button'
+import { Datatable } from '../../shared/Datatable/Datatable'
+import { ReportDetailValues } from '../../shared/ReportDetailValues'
+import { ReportStatusLabel } from '../../shared/ReportStatus'
+import { SelectTagsMenuValues } from '../../shared/SelectTags/SelectTagsMenu'
 import AdvancedReportsFilter from './AdvancedReportsFilter'
 import AdvancedSearchBar from './AdvancedSearchBar'
 import CompanyNameDetails from './CompanyNameDetails'
@@ -80,14 +98,19 @@ interface ReportSearchQs {
 }
 
 export const Reports = () => {
-  const {m, formatDate} = useI18n()
-  const {connectedUser, apiSdk} = useConnectedContext()
+  const { m, formatDate } = useI18n()
+  const { connectedUser, apiSdk } = useConnectedContext()
 
-  const downloadReports = useMutation({mutationFn: apiSdk.secured.reports.download})
+  const downloadReports = useMutation({
+    mutationFn: apiSdk.secured.reports.download,
+  })
 
   const selectReport = useSetState<Id>()
   const [expanded, setExpanded] = React.useState(false)
-  const queryString = useQueryString<Partial<ReportSearch>, Partial<ReportSearchQs>>({
+  const queryString = useQueryString<
+    Partial<ReportSearch>,
+    Partial<ReportSearchQs>
+  >({
     toQueryString: mapDatesToQueryString,
     fromQueryString: compose(
       mapDateFromQueryString,
@@ -112,25 +135,31 @@ export const Reports = () => {
     ),
   })
 
-  const _reports = useReportSearchQuery({offset: 0, limit: 25, ...queryString.get()})
+  const _reports = useReportSearchQuery({
+    offset: 0,
+    limit: 25,
+    ...queryString.get(),
+  })
 
   useEffect(() => {
     queryString.update(cleanObject(_reports.filters))
   }, [_reports.filters])
 
   const getReportingDate = (report: Report) =>
-    report.details.filter(_ => _.label.indexOf(ReportingDateLabel) !== -1).map(_ => _.value)
+    report.details
+      .filter((_) => _.label.indexOf(ReportingDateLabel) !== -1)
+      .map((_) => _.value)
 
   const filtersCount = useMemo(() => {
-    const {offset, limit, ...filters} = _reports.filters
+    const { offset, limit, ...filters } = _reports.filters
     return Object.keys(cleanObject(filters)).length
   }, [_reports.filters])
 
   const tags: SelectTagsMenuValues = {}
-  _reports.filters.withTags?.forEach(tag => {
+  _reports.filters.withTags?.forEach((tag) => {
     tags[tag] = 'included'
   })
-  _reports.filters.withoutTags?.forEach(tag => {
+  _reports.filters.withoutTags?.forEach((tag) => {
     tags[tag] = 'excluded'
   })
 
@@ -142,9 +171,14 @@ export const Reports = () => {
         ...(_categoriesByStatus.data?.inactive ?? []),
         ...(_categoriesByStatus.data?.closed ?? []),
       ]
-    : [...(_categoriesByStatus.data?.active ?? []), ...(_categoriesByStatus.data?.inactive ?? [])]
+    : [
+        ...(_categoriesByStatus.data?.active ?? []),
+        ...(_categoriesByStatus.data?.inactive ?? []),
+      ]
 
-  const [proResponseFilter, setProResponseFilter] = useState<ReportResponseTypes[]>([])
+  const [proResponseFilter, setProResponseFilter] = useState<
+    ReportResponseTypes[]
+  >([])
 
   const proResponseToStatus = {
     [ReportResponseTypes.Accepted]: ReportStatus.PromesseAction,
@@ -153,7 +187,7 @@ export const Reports = () => {
   }
 
   const onChangeStatus = (status: ReportStatus[]) => {
-    const responses = status.flatMap(reportStatus => {
+    const responses = status.flatMap((reportStatus) => {
       switch (reportStatus) {
         case ReportStatus.PromesseAction:
           return [ReportResponseTypes.Accepted]
@@ -166,55 +200,70 @@ export const Reports = () => {
       }
     })
     setProResponseFilter(responses)
-    _reports.updateFilters(prev => ({...prev, status}))
+    _reports.updateFilters((prev) => ({ ...prev, status }))
   }
 
   const onChangeProResponseFilter = (responses: ReportResponseTypes[]) => {
     setProResponseFilter(responses)
-    const status = responses.length === 0 ? Report.respondedStatus : responses.map(_ => proResponseToStatus[_])
-    _reports.updateFilters(prev => ({...prev, status}))
+    const status =
+      responses.length === 0
+        ? Report.respondedStatus
+        : responses.map((_) => proResponseToStatus[_])
+    _reports.updateFilters((prev) => ({ ...prev, status }))
   }
 
   const hasProResponse =
     _reports.filters.status?.length === 0
       ? null
-      : _reports.filters.status?.every(status => Report.respondedStatus.includes(status))
+      : _reports.filters.status?.every((status) =>
+            Report.respondedStatus.includes(status),
+          )
         ? true
-        : _reports.filters.status?.every(status => Report.notRespondedStatus.includes(status))
+        : _reports.filters.status?.every((status) =>
+              Report.notRespondedStatus.includes(status),
+            )
           ? false
           : null
   const onChangeHasProResponse = (b: boolean | null) => {
-    if (b) _reports.updateFilters(prev => ({...prev, status: Report.respondedStatus}))
-    else if (b === false) _reports.updateFilters(prev => ({...prev, status: Report.notRespondedStatus}))
-    else _reports.updateFilters(prev => ({...prev, status: undefined}))
+    if (b)
+      _reports.updateFilters((prev) => ({
+        ...prev,
+        status: Report.respondedStatus,
+      }))
+    else if (b === false)
+      _reports.updateFilters((prev) => ({
+        ...prev,
+        status: Report.notRespondedStatus,
+      }))
+    else _reports.updateFilters((prev) => ({ ...prev, status: undefined }))
   }
 
   // TRELLO-1728 The object _reports change all the time.
   // If we put it in dependencies, it causes problems with the debounce,
   // and the search input "stutters" when typing fast
   const onDetailsChange = useCallback((details: string) => {
-    _reports.updateFilters(prev => ({...prev, details}))
+    _reports.updateFilters((prev) => ({ ...prev, details }))
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
   const onSiretSirenChange = useCallback((siretSirenList: string[]) => {
-    _reports.updateFilters(prev => ({...prev, siretSirenList}))
+    _reports.updateFilters((prev) => ({ ...prev, siretSirenList }))
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
   const onEmailChange = useCallback((email: string) => {
-    _reports.updateFilters(prev => ({...prev, email}))
+    _reports.updateFilters((prev) => ({ ...prev, email }))
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
   const onWebsiteURLChange = useCallback((websiteURL: string) => {
-    _reports.updateFilters(prev => ({...prev, websiteURL}))
+    _reports.updateFilters((prev) => ({ ...prev, websiteURL }))
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
   const onPhoneChange = useCallback((phone: string) => {
-    _reports.updateFilters(prev => ({...prev, phone}))
+    _reports.updateFilters((prev) => ({ ...prev, phone }))
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
   const onSubcategoriesChange = useCallback((subcategories: string) => {
     const test = subcategories.split(',')
-    _reports.updateFilters(prev => ({...prev, subcategories: test}))
+    _reports.updateFilters((prev) => ({ ...prev, subcategories: test }))
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
@@ -260,27 +309,44 @@ export const Reports = () => {
       </CleanDiscreetPanel>
       <Datatable
         id="reports"
-        headerMain={<DatatableToolbarComponent selectReport={selectReport} downloadReports={downloadReports} m={m} />}
+        headerMain={
+          <DatatableToolbarComponent
+            selectReport={selectReport}
+            downloadReports={downloadReports}
+            m={m}
+          />
+        }
         loading={_reports.result.isFetching}
         paginate={{
           offset: _reports.filters.offset,
           limit: _reports.filters.limit,
-          onPaginationChange: pagination => _reports.updateFilters(prev => ({...prev, ...pagination})),
+          onPaginationChange: (pagination) =>
+            _reports.updateFilters((prev) => ({ ...prev, ...pagination })),
         }}
-        getRenderRowKey={_ => _.report.id}
+        getRenderRowKey={(_) => _.report.id}
         data={_reports.result.data?.entities}
         total={_reports.result.data?.totalCount}
         showColumnsToggle={true}
         plainTextColumnsToggle={true}
         initialHiddenColumns={
-          connectedUser.isDGCCRF ? ['companyPostalCode', 'companySiret', 'companyCountry', 'reportDate', 'status', 'file'] : []
+          connectedUser.isDGCCRF
+            ? [
+                'companyPostalCode',
+                'companySiret',
+                'companyCountry',
+                'reportDate',
+                'status',
+                'file',
+              ]
+            : []
         }
         columns={[
           {
             alwaysVisible: true,
             id: 'checkbox',
             head: (() => {
-              const allChecked = selectReport.size === _reports.result.data?.entities.length
+              const allChecked =
+                selectReport.size === _reports.result.data?.entities.length
               return (
                 <Checkbox
                   disabled={_reports.result.isFetching}
@@ -290,26 +356,36 @@ export const Reports = () => {
                     if (allChecked) {
                       selectReport.clear()
                     } else {
-                      selectReport.add(_reports.result.data!.entities!.map(_ => _.report.id))
+                      selectReport.add(
+                        _reports.result.data!.entities!.map((_) => _.report.id),
+                      )
                     }
                   }}
                 />
               )
             })(),
-            style: {width: 0},
-            render: _ => <Checkbox checked={selectReport.has(_.report.id)} onChange={() => selectReport.toggle(_.report.id)} />,
+            style: { width: 0 },
+            render: (_) => (
+              <Checkbox
+                checked={selectReport.has(_.report.id)}
+                onChange={() => selectReport.toggle(_.report.id)}
+              />
+            ),
           },
 
           {
             id: 'companyPostalCode',
             head: m.postalCodeShort,
-            sx: _ => ({
+            sx: (_) => ({
               maxWidth: 76,
             }),
-            render: _ => (
+            render: (_) => (
               <>
                 <span>{_.report.companyAddress.postalCode?.slice(0, 2)}</span>
-                <Box component="span" sx={{color: t => t.palette.text.disabled}}>
+                <Box
+                  component="span"
+                  sx={{ color: (t) => t.palette.text.disabled }}
+                >
                   {_.report.companyAddress.postalCode?.substr(2, 5)}
                 </Box>
               </>
@@ -318,27 +394,36 @@ export const Reports = () => {
           {
             id: 'companyName',
             head: m.company,
-            sx: _ => ({
+            sx: (_) => ({
               lineHeight: 1.4,
               maxWidth: 170,
             }),
-            render: _ => (
+            render: (_) => (
               <CompanyNameDetails
                 companyId={_.report.companyId}
                 isDGAL={connectedUser.isDGAL}
                 companyName={_.report.companyName}
-                additionalLabel={_.report.websiteURL ? _.report.websiteURL : _.report.companyBrand}
+                additionalLabel={
+                  _.report.websiteURL
+                    ? _.report.websiteURL
+                    : _.report.companyBrand
+                }
               />
             ),
           },
           {
             id: 'companySiret',
             head: m.siret,
-            render: _ => (
+            render: (_) => (
               <>
                 {_.report.companyId && !connectedUser.isDGAL ? (
-                  <NavLink to={siteMap.logged.company(_.report.companyId).stats.valueAbsolute}>
-                    <Txt link sx={{marginBottom: '-1px'}}>
+                  <NavLink
+                    to={
+                      siteMap.logged.company(_.report.companyId).stats
+                        .valueAbsolute
+                    }
+                  >
+                    <Txt link sx={{ marginBottom: '-1px' }}>
                       {_.report.companySiret}
                     </Txt>
                   </NavLink>
@@ -351,20 +436,20 @@ export const Reports = () => {
           {
             id: 'companyCountry',
             head: m.country,
-            render: _ => _.report.companyAddress.country?.name,
+            render: (_) => _.report.companyAddress.country?.name,
           },
           {
             id: 'category',
             head: m.problem,
-            sx: _ => ({
+            sx: (_) => ({
               maxWidth: 200,
             }),
-            render: _ => (
+            render: (_) => (
               <Tooltip
                 title={
                   <>
                     <b>{m.ReportCategoryDesc[_.report.category]}</b>
-                    <Box component="ul" sx={{m: 0, p: 2}}>
+                    <Box component="ul" sx={{ m: 0, p: 2 }}>
                       {_.report.subcategories.map((s, i) => (
                         <li key={i}>{s}</li>
                       ))}
@@ -379,66 +464,68 @@ export const Reports = () => {
           {
             id: 'creationDate',
             head: m.creation,
-            render: _ => formatDate(_.report.creationDate),
+            render: (_) => formatDate(_.report.creationDate),
           },
           {
             id: 'reportDate',
             head: 'Date constat',
-            render: _ => getReportingDate(_.report),
+            render: (_) => getReportingDate(_.report),
           },
           {
             id: 'details',
             head: m.details,
-            sx: _ => ({
-              fontSize: t => styleUtils(t).fontSize.small,
-              color: t => t.palette.text.secondary,
+            sx: (_) => ({
+              fontSize: (t) => styleUtils(t).fontSize.small,
+              color: (t) => t.palette.text.secondary,
               maxWidth: 200,
               minWidth: 200,
               lineHeight: 1.4,
               whiteSpace: 'initial',
             }),
-            render: _ => <ReportDetailValues input={_.report.details} lines={2} />,
+            render: (_) => (
+              <ReportDetailValues input={_.report.details} lines={2} />
+            ),
           },
           {
             id: 'tags',
             head: m.tags,
-            render: _ =>
-              _.report.tags.map(tag => (
+            render: (_) =>
+              _.report.tags.map((tag) => (
                 <Chip
                   key={tag}
                   size="small"
                   variant="outlined"
                   label={m.reportTagDesc[tag]}
                   sx={{
-                    fontWeight: t => t.typography.fontWeightBold,
-                    color: t => t.palette.text.secondary,
+                    fontWeight: (t) => t.typography.fontWeightBold,
+                    color: (t) => t.palette.text.secondary,
                   }}
-                  style={{marginRight: 2}}
+                  style={{ marginRight: 2 }}
                 />
               )),
           },
           {
             id: 'status',
             head: m.status,
-            render: _ => <ReportStatusLabel dense status={_.report.status} />,
+            render: (_) => <ReportStatusLabel dense status={_.report.status} />,
           },
           {
             id: 'email',
             head: m.consumer,
-            sx: _ => ({
+            sx: (_) => ({
               maxWidth: 160,
             }),
-            render: _ => (
+            render: (_) => (
               <span>
                 <Box
                   component="span"
                   sx={{
                     ...(_.report.contactAgreement
                       ? {
-                          color: t => t.palette.success.light,
+                          color: (t) => t.palette.success.light,
                         }
                       : {
-                          color: t => t.palette.error.main,
+                          color: (t) => t.palette.error.main,
                         }),
                   }}
                 >
@@ -454,37 +541,47 @@ export const Reports = () => {
           {
             id: 'proResponse',
             head: m.proResponse,
-            render: _ => <ReportResponseDetails details={_.professionalResponse?.event.details} />,
+            render: (_) => (
+              <ReportResponseDetails
+                details={_.professionalResponse?.event.details}
+              />
+            ),
           },
           {
             id: 'avisConso',
             head: m.consumerReviews,
-            render: _ => <ConsumerReviewLabels detailsTooltip report={_} />,
+            render: (_) => <ConsumerReviewLabels detailsTooltip report={_} />,
           },
           {
             id: 'dateAvisConso',
             head: "Date de l'avis Conso",
-            render: _ => formatDate(_.consumerReview?.creationDate),
+            render: (_) => formatDate(_.consumerReview?.creationDate),
           },
           {
             id: 'file',
             head: m.files,
-            sx: _ => ({
+            sx: (_) => ({
               minWidth: 44,
               maxWidth: 100,
             }),
-            render: _ =>
+            render: (_) =>
               _.files.length > 0 && (
-                <Badge badgeContent={_.files.length} color="primary" invisible={_.files.length === 1}>
-                  <Icon sx={{color: t => t.palette.text.disabled}}>insert_drive_file</Icon>
+                <Badge
+                  badgeContent={_.files.length}
+                  color="primary"
+                  invisible={_.files.length === 1}
+                >
+                  <Icon sx={{ color: (t) => t.palette.text.disabled }}>
+                    insert_drive_file
+                  </Icon>
                 </Badge>
               ),
           },
           {
             id: 'actions',
             stickyEnd: true,
-            sx: _ => sxUtils.tdActions,
-            render: _ => (
+            sx: (_) => sxUtils.tdActions,
+            render: (_) => (
               <NavLink to={siteMap.logged.report(_.report.id)}>
                 <IconBtn color="primary">
                   <Icon>chevron_right</Icon>
@@ -502,7 +599,12 @@ export const Reports = () => {
                 <Txt color="hint" size="big" block gutterBottom>
                   {m.noReportsDesc}
                 </Txt>
-                <ScButton icon="clear" onClick={_reports.clearFilters} variant="contained" color="primary">
+                <ScButton
+                  icon="clear"
+                  onClick={_reports.clearFilters}
+                  variant="contained"
+                  color="primary"
+                >
                   {m.removeAllFilters}
                 </ScButton>
               </>

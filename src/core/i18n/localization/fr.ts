@@ -1,13 +1,25 @@
-import {formatDistance, formatDuration as formatDurationFns} from 'date-fns'
-import {AssociationType} from 'feature/ReportedWebsites/SelectWebsiteIdentification/SelectWebsiteAssociation'
-import {config} from '../../../conf/config'
-import {DownloadType} from '../../../feature/Report/ReportDownloadAction'
-import {CompanyAccessLevel} from '../../client/company-access/CompanyAccess'
-import {Category} from '../../client/constant/Category'
-import {EmailValidationStatus} from '../../client/consumer-email-validation/ConsumerEmailValidation'
-import {ReportResponseTypes, ResponseEvaluation} from '../../client/event/Event'
-import {ReportAdminActionType, ReportStatus, ReportStatusPro, ReportTag, ReportType} from '../../client/report/Report'
-import {IdentificationStatus, InvestigationStatus} from '../../client/website/Website'
+import { formatDistance, formatDuration as formatDurationFns } from 'date-fns'
+import { AssociationType } from 'feature/ReportedWebsites/SelectWebsiteIdentification/SelectWebsiteAssociation'
+import { config } from '../../../conf/config'
+import { DownloadType } from '../../../feature/Report/ReportDownloadAction'
+import { CompanyAccessLevel } from '../../client/company-access/CompanyAccess'
+import { Category } from '../../client/constant/Category'
+import { EmailValidationStatus } from '../../client/consumer-email-validation/ConsumerEmailValidation'
+import {
+  ReportResponseTypes,
+  ResponseEvaluation,
+} from '../../client/event/Event'
+import {
+  ReportAdminActionType,
+  ReportStatus,
+  ReportStatusPro,
+  ReportTag,
+  ReportType,
+} from '../../client/report/Report'
+import {
+  IdentificationStatus,
+  InvestigationStatus,
+} from '../../client/website/Website'
 
 const invalidDate = '-'
 
@@ -22,7 +34,10 @@ const formatDate = (d?: Date): string => {
 
 const formatTime = (d?: Date): string => {
   if (!isDateValid(d)) return invalidDate
-  return d!.toLocaleTimeString(navigator.language, {hour: '2-digit', minute: '2-digit'})
+  return d!.toLocaleTimeString(navigator.language, {
+    hour: '2-digit',
+    minute: '2-digit',
+  })
 }
 
 const formatDateTime = (d?: Date): string => {
@@ -31,7 +46,7 @@ const formatDateTime = (d?: Date): string => {
 }
 
 const dateFromNow = (d?: Date): string | undefined => {
-  return d ? formatDistance(d, new Date(), {addSuffix: true}) : undefined
+  return d ? formatDistance(d, new Date(), { addSuffix: true }) : undefined
 }
 
 const formatLargeNumber = (n?: number): string => {
@@ -54,13 +69,16 @@ export const fr = {
       [Category.Coronavirus]: 'COVID-19 (coronavirus)',
       [Category.CafeRestaurant]: 'Café / Restaurant',
       [Category.AchatMagasinLegacy]: 'Achat en Magasin - ANCIENNE CATEGORIE',
-      [Category.AchatMagasinInternet]: 'Achat (Magasin ou Internet) - ANCIENNE CATEGORIE',
+      [Category.AchatMagasinInternet]:
+        'Achat (Magasin ou Internet) - ANCIENNE CATEGORIE',
       [Category.AchatMagasin]: 'Achat en Magasin',
       [Category.AchatInternet]: 'Achat sur Internet',
       [Category.ServicesAuxParticuliers]: 'Services aux particuliers',
-      [Category.TelEauGazElec]: 'Téléphonie / Eau / Gaz / Electricité - ANCIENNE CATEGORIE',
+      [Category.TelEauGazElec]:
+        'Téléphonie / Eau / Gaz / Electricité - ANCIENNE CATEGORIE',
       [Category.EauGazElectricite]: 'Eau / Gaz / Electricité',
-      [Category.TelephonieFaiMedias]: "Téléphonie / Fournisseur d'accès internet / médias",
+      [Category.TelephonieFaiMedias]:
+        "Téléphonie / Fournisseur d'accès internet / médias",
       [Category.BanqueAssuranceMutuelle]: 'Banque / Assurance / Mutuelle',
       [Category.IntoxicationAlimentaire]: 'Intoxication alimentaire',
       [Category.ProduitsObjets]: 'Produits / Objets - ANCIENNE CATEGORIE',
@@ -107,7 +125,8 @@ export const fr = {
       [ReportTag.QuantiteNonConforme]: 'Quantité non conforme',
       [ReportTag.AppelCommercial]: 'Appel commercial',
       [ReportTag.Prix]: 'Prix',
-      [ReportTag.AlimentationMaterielAnimaux]: 'Alimentation / Matériel pour animaux',
+      [ReportTag.AlimentationMaterielAnimaux]:
+        'Alimentation / Matériel pour animaux',
       [ReportTag.Telecom]: 'Télécoms',
       [ReportTag.Shrinkflation]: 'Shrinkflation',
       NA: 'Aucun tag',
@@ -118,7 +137,8 @@ export const fr = {
     },
     InvestigationStatusDesc: {
       [InvestigationStatus.NotProcessed]: 'N/A',
-      [InvestigationStatus.SignalConsoIdentificationFailed]: 'Echec identification Admin',
+      [InvestigationStatus.SignalConsoIdentificationFailed]:
+        'Echec identification Admin',
       [InvestigationStatus.Processing]: 'Identification en cours',
     },
     websiteInvestigationClosedCompanyAssociationDesc:
@@ -127,9 +147,12 @@ export const fr = {
     filter: 'Filtrer',
     yes: 'Oui',
     no: 'Non',
-    positive: "Nombre d'utilisateurs satisfaits de la réponse donnée par l'entreprise",
-    negative: "Nombre d'utilisateurs insatisfaits de la réponse donnée par l'entreprise",
-    neutral: "Nombre d'utilisateurs partiellement satisfait de la réponse donnée par l'entreprise",
+    positive:
+      "Nombre d'utilisateurs satisfaits de la réponse donnée par l'entreprise",
+    negative:
+      "Nombre d'utilisateurs insatisfaits de la réponse donnée par l'entreprise",
+    neutral:
+      "Nombre d'utilisateurs partiellement satisfait de la réponse donnée par l'entreprise",
     searchByNameOrReference: 'Nom, prénom ou numéro de référence',
     activateNotificationsAlertSingle:
       "Pensez à activer les notifications dans l'onglet « Mes entreprises » afin d'être alerté par e-mail de tout nouveau signalement.",
@@ -182,7 +205,8 @@ export const fr = {
     anErrorOccurred: "Une erreur s'est produite.",
     minimize: 'Minimize',
     required: 'Requis',
-    textTooLarge: (maxCharSize: number) => `Le nombre de caractères est limité à ${maxCharSize}`,
+    textTooLarge: (maxCharSize: number) =>
+      `Le nombre de caractères est limité à ${maxCharSize}`,
     cancel: 'Annuler',
     help: 'Aide',
     created_at: 'Créé le',
@@ -206,8 +230,10 @@ export const fr = {
     clear: 'Clear',
     cron: 'Cron',
     removeAsk: 'Supprimer ? ',
-    cannotUpdateWebsiteStatus: 'La validation nécéssite que le site soit identifié par une entreprise ou un pays',
-    thisWillBeRemoved: (_: string) => `La pièce jointe <b>${_}</b> sera définitivement supprimée.`,
+    cannotUpdateWebsiteStatus:
+      'La validation nécéssite que le site soit identifié par une entreprise ou un pays',
+    thisWillBeRemoved: (_: string) =>
+      `La pièce jointe <b>${_}</b> sera définitivement supprimée.`,
     exportInXLS: 'Exporter en XLS',
     removeAllFilters: 'Supprimer les filtres',
     reOpenReportDesc: `Voulez-vous vraiment ré-ouvrir le signalement ?`,
@@ -216,7 +242,8 @@ export const fr = {
     downloadNotice: 'Télécharger le courrier',
     remainingTime: 'Temps restant',
     forgottenPassword: 'Mot de passe oublié ?',
-    forgottenPasswordDesc: 'Vous recevrez un email vous permettant de créer un nouveau mot de passe.',
+    forgottenPasswordDesc:
+      'Vous recevrez un email vous permettant de créer un nouveau mot de passe.',
     createNewPassword: 'Créer un nouveau mot de passe',
     speed: 'Speed',
     key: 'Key',
@@ -281,17 +308,22 @@ export const fr = {
     siretExample: 'ex : 12002503600035', // c'est le siret de la DGCCRF
     activationCode: `Code d'activation`,
     activationCodeDesc: `Code à 6 chiffres indiqué dans le courrier que vous avez reçu.`,
-    promisedAction: 'Vous venez de faire une promesse d’action et nous vous en félicitons !',
+    promisedAction:
+      'Vous venez de faire une promesse d’action et nous vous en félicitons !',
     claimDeemedUnfounded: 'Vous avez estimé que ce signalement était infondé.',
-    claimNotConcernedYourEstablishment: 'Vous avez estimé que ce signalement ne concernait pas votre établissement.',
-    responseSentToConsumer: 'Nous avons envoyé votre réponse au consommateur. Elle est également visible par la DGCCRF.',
+    claimNotConcernedYourEstablishment:
+      'Vous avez estimé que ce signalement ne concernait pas votre établissement.',
+    responseSentToConsumer:
+      'Nous avons envoyé votre réponse au consommateur. Elle est également visible par la DGCCRF.',
     consumerReviewInvitationForAccepted: (days: number) =>
       `Le consommateur sera invité à donner son avis sur votre réponse et les actions mises en œuvre dans un délai de ${days} jours.`,
-    consumerReviewInvitation: 'Le consommateur sera invité à donner son avis sur votre réponse dès sa réception.',
+    consumerReviewInvitation:
+      'Le consommateur sera invité à donner son avis sur votre réponse dès sa réception.',
     activationCodeInvalid: `Le code doit comporter 6 chiffres.`,
     activationCodeExample: 'ex : 123456',
     emailDesc: `Adresse email de votre choix.`,
-    willReceiveVerificationEmail: 'Vous allez recevoir un email de vérification à cette adresse.',
+    willReceiveVerificationEmail:
+      'Vous allez recevoir un email de vérification à cette adresse.',
     willUseThisEmailToCommunicate: `C'est via cette adresse email que SignalConso communiquera avec vous désormais`,
     newReportsWillBeSentThere: `S'il y a des nouveaux signalements concernant votre entreprise, ils vous seront notifiés à cette adresse.`,
     willUseItToConnect: `C'est avec cette adresse email que vous vous connecterez à l'Espace Pro pour consulter vos signalements.`,
@@ -331,7 +363,8 @@ export const fr = {
     ClosedReports_pageTitle: 'Suivi des signalements clôturés',
     notificationsAreDisabled: `Inclus les notifications concernant les signalements des entreprises.`,
     notificationSettings: `Emails reçus lors d'un nouveau signalement.`,
-    notificationAcceptForCompany: "Autoriser l'envoi d'emails concernant les signalements d'une entreprise.",
+    notificationAcceptForCompany:
+      "Autoriser l'envoi d'emails concernant les signalements d'une entreprise.",
     notificationDisableWarning: `Désactiver les notifications`,
     notificationDisableWarningDesc: `Attention, si vous désactivez les notifications, vous ne recevrez plus les nouveaux signalements par mail. Vous devrez vous connecter régulièrement sur votre espace pour consulter les nouveaux signalements.`,
     report_pageTitle: `Signalement`,
@@ -354,15 +387,21 @@ export const fr = {
     reportNeedsAnswerBefore: 'A répondre avant le',
     reportProMustAnswerBefore: 'Le pro doit répondre avant le',
     reportProHadToAnswerBefore: 'Le pro devait répondre avant le',
-    reportLimitedTimeToAnswer: "Vous n'avez plus beaucoup de temps pour répondre à ce signalement !",
-    reportCategoriesAreSelectByConsumer: 'Les catégories du signalement sont sélectionnées par le consommateur.',
-    reportNotTransmittable: "Ce signalement n'a pas été transmis et ne doit pas être transmis au professionnel.",
+    reportLimitedTimeToAnswer:
+      "Vous n'avez plus beaucoup de temps pour répondre à ce signalement !",
+    reportCategoriesAreSelectByConsumer:
+      'Les catégories du signalement sont sélectionnées par le consommateur.',
+    reportNotTransmittable:
+      "Ce signalement n'a pas été transmis et ne doit pas être transmis au professionnel.",
     reportConsumerWantToBeAnonymous: 'Le consommateur souhaite rester anonyme',
     reportConsumerReferenceNumber: 'Numéro de référence',
-    reportConsumerReferenceNumberDesc: 'Numéro de billet, ou de réservation, de facture, de contrat, de client, etc.',
-    marketplaceVendorDesc: (marketplace: string) => `Le signalement concerne un vendeur sur la marketplace ${marketplace} `,
+    reportConsumerReferenceNumberDesc:
+      'Numéro de billet, ou de réservation, de facture, de contrat, de client, etc.',
+    marketplaceVendorDesc: (marketplace: string) =>
+      `Le signalement concerne un vendeur sur la marketplace ${marketplace} `,
     marketplaceVendorTitle: 'Vendeur marketplace',
-    cannotExportMoreReports: (reportCount: number) => `Impossible d'exporter plus de ${reportCount} signalements.`,
+    cannotExportMoreReports: (reportCount: number) =>
+      `Impossible d'exporter plus de ${reportCount} signalements.`,
     siret: 'SIRET',
     siretOrSiren: 'SIRET ou SIREN',
     siretOrSirenFound: 'SIRET/SIREN identifié',
@@ -389,8 +428,10 @@ export const fr = {
     proUser: 'Comptes Professionnels',
     statsLandingPage: 'Statistiques de SignalConso',
     statsCountBySubCategoriesTab: 'Signalements par sous catégories',
-    statsCountBySubCategories: 'Nombre de signalements par sous catégories (signalements en français)',
-    statsCountBySubCategoriesForeign: 'Nombre de signalements par sous catégories (signalements étrangers)',
+    statsCountBySubCategories:
+      'Nombre de signalements par sous catégories (signalements en français)',
+    statsCountBySubCategoriesForeign:
+      'Nombre de signalements par sous catégories (signalements étrangers)',
     expandAll: 'Tout déplier',
     dateFilters: 'Filtrer par dates',
     statsPro: 'Professionnel',
@@ -449,7 +490,8 @@ export const fr = {
   `,
     reportsProTransmitted: '% Transmis',
     reportsProResponse: '% Réponses',
-    reportsProTransmittedCount: 'Nombre de signalements transmis aux professionnels',
+    reportsProTransmittedCount:
+      'Nombre de signalements transmis aux professionnels',
     reportsProInfonde: '% infondés',
     reportsProMalAttribue: '% mauvaises attributions',
     reportsProPromesseAction: `% promesses d'action`,
@@ -505,7 +547,8 @@ export const fr = {
     attachedFiles: 'Pièces jointes',
     reportsDistribution: `Répartition des signalements par départements`,
     reportsDistributionDesc: `Classement des signalements par départements (N/A correspond aux signalements dont les départements non renseignés).`,
-    invalidSize: (maxSize: number) => `La taille du fichier dépasse les ${maxSize} Mb`,
+    invalidSize: (maxSize: number) =>
+      `La taille du fichier dépasse les ${maxSize} Mb`,
     somethingWentWrong: `Une erreur s'est produite`,
     altLogoSignalConso: `Logo SignalConso / Retour à la page d'accueil`,
     toggleDatatableColumns: 'Afficher/Masquer des colonnes',
@@ -523,7 +566,8 @@ export const fr = {
     noAssociation: 'Non associé',
     linkCountry: 'Associer un pays étranger au site internet',
     linkCompany: 'Associer une entreprise au site internet',
-    proAnswerVisibleByDGCCRF: 'Votre réponse sera visible par le consommateur et la DGCCRF.',
+    proAnswerVisibleByDGCCRF:
+      'Votre réponse sera visible par le consommateur et la DGCCRF.',
     proAnswerYourAnswer: 'Votre réponse',
     text: 'Votre texte',
     onlyVisibleByDGCCRF: `Visibles uniquement par la <b>DGCCRF</b>. <span class='text-red-600 font-bold'>Elles ne seront jamais transmises au consommateur.</span>`,
@@ -535,11 +579,13 @@ export const fr = {
     proAnswerYourDGCCRFAnswerDesc: `
     Ces précisions sont à <b>l'attention de la DGCCRF</b>. Elles ne seront pas transmises au consommateur.
   `,
-    proAnswerSent: 'Votre réponse a été envoyée au consommateur. Elle sera aussi consultable par la DGCCRF.',
+    proAnswerSent:
+      'Votre réponse a été envoyée au consommateur. Elle sera aussi consultable par la DGCCRF.',
     reportResponseDesc: {
       [ReportResponseTypes.Accepted]: 'Je propose une solution',
       [ReportResponseTypes.Rejected]: "J'estime que ce signalement est infondé",
-      [ReportResponseTypes.NotConcerned]: "J'estime que ce signalement ne concerne pas mon établissement",
+      [ReportResponseTypes.NotConcerned]:
+        "J'estime que ce signalement ne concerne pas mon établissement",
     },
     selectAll: `Tout sélectionner`,
     advancedFilters: 'Filtres avancés',
@@ -549,8 +595,10 @@ export const fr = {
 
     dgccrfControlDone: 'Déclarer un contrôle',
     noAnswerFromPro: "Le professionnel n'a pas encore répondu au signalement.",
-    noReviewFromConsumer: "Le consommateur n'a pas encore donné son avis sur cette réponse.",
-    noReviewDetailsFromConsumer: "Le consommateur n'a pas laissé de commentaire pour la DGGCRF.",
+    noReviewFromConsumer:
+      "Le consommateur n'a pas encore donné son avis sur cette réponse.",
+    noReviewDetailsFromConsumer:
+      "Le consommateur n'a pas laissé de commentaire pour la DGGCRF.",
     companiesSearchPlaceholder: 'Rechercher par nom, SIREN, SIRET...',
     companySearch: 'Rechercher une entreprise',
     emailValidation: `Validation de l'adresse email`,
@@ -565,13 +613,16 @@ export const fr = {
     accountsActivated: `comptes activés`,
     companiesToActivate: "En attente d'activation",
     companiesToFollowUp: 'Entreprises inactives',
-    companiesToActivateDesc: "Cette page liste les entreprises auquel il faudrait envoyer un courrier d'activation.",
+    companiesToActivateDesc:
+      "Cette page liste les entreprises auquel il faudrait envoyer un courrier d'activation.",
     companiesToFollowUpDesc:
       'Cette page liste les entreprises qui ne consultent plus leurs signalements sur une période de 3 mois, mais qui ont un compte enregistrant au moins une connexion.',
     companiesToFollowUpDescDetail:
       "Il s'agit de relancer ces entreprises qui pourraient avoir perdu l'accès à leur compte (par exemple, un utilisateur qui quitterait l'entreprise, etc.). Une fois le courrier marqué comme envoyé, l'entreprise est considérée comme relancée et disparaîtra de cette liste. Si elle ignore toujours les signalements, elle pourrait réapparaître dans 3 mois.",
-    companiesToActivateDescDetail: "Il peut s'agir de leur premier courrier, ou d'un courrier de relance.",
-    activationFailed: "Erreur inattendue , impossible d'activer le compte. Merci de bien vouloir réessayer ultérieurement.",
+    companiesToActivateDescDetail:
+      "Il peut s'agir de leur premier courrier, ou d'un courrier de relance.",
+    activationFailed:
+      "Erreur inattendue , impossible d'activer le compte. Merci de bien vouloir réessayer ultérieurement.",
     companiesActivated: 'Entreprises identifiées',
     noCompanyFound: 'Aucune entreprise trouvée',
     isHeadOffice: 'Siège social',
@@ -638,22 +689,29 @@ export const fr = {
     disable: `Désactiver`,
     disableAll: `Tout désactiver`,
     add_email_to_blacklist_desc: 'Cet email sera ajouté à la liste.',
-    add_email_to_blacklist_desc_alert: 'Les signalements envoyés en utilisant cet email ne seront plus enregistrés.',
+    add_email_to_blacklist_desc_alert:
+      'Les signalements envoyés en utilisant cet email ne seront plus enregistrés.',
     users_invite_dialog_desc_agent:
       "Un courrier électronique sera envoyé à l'adresse e-mail saisie ci-dessus avec un lien sécurisé permettant de créer un compte DGCCRF / DGAL.",
     users_invite_dialog_desc_admin:
       "Un courrier électronique sera envoyé à l'adresse e-mail saisie ci-dessus avec un lien sécurisé permettant de créer un compte administrateur SignalConso.",
-    users_invite_dialog_alert_admin: "Cet utilisateur aura les droits ADMINISTRATEUR sur l'ensemble de SignalConso !",
+    users_invite_dialog_alert_admin:
+      "Cet utilisateur aura les droits ADMINISTRATEUR sur l'ensemble de SignalConso !",
     selectedCompanies: `entreprises sélectionnées`,
-    passwordShouldBeLongAnd: 'Le mot de passe doit faire au moins 12 caractères, et contenir au moins :',
+    passwordShouldBeLongAnd:
+      'Le mot de passe doit faire au moins 12 caractères, et contenir au moins :',
     anUppercaseLetter: 'une majuscule',
     aLowercaseLetter: 'une minuscule',
     aNumber: 'un chiffre',
     aSpecialChar: 'un caractère spécial (%, !, @, etc.)',
-    passwordNeedToContainLowercase: 'Le mot de passe doit contenir au moins une lettre minuscule',
-    passwordNeedToContainUppercase: 'Le mot de passe doit contenir au moins une lettre majuscule',
-    passwordNeedToContainNumber: 'Le mot de passe doit contenir au moins un chiffre',
-    passwordNeedToContainSpecialChar: 'Le mot de passe doit contenir un caractère spécial',
+    passwordNeedToContainLowercase:
+      'Le mot de passe doit contenir au moins une lettre minuscule',
+    passwordNeedToContainUppercase:
+      'Le mot de passe doit contenir au moins une lettre majuscule',
+    passwordNeedToContainNumber:
+      'Le mot de passe doit contenir au moins un chiffre',
+    passwordNeedToContainSpecialChar:
+      'Le mot de passe doit contenir un caractère spécial',
     passwordNeedToBeLong: '12 caractères minimum',
     oldPassword: 'Ancien mot de passe',
     companyCreated: 'Entreprise créée',
@@ -661,8 +719,10 @@ export const fr = {
     cannotCreateCompanyMissingInfo: `Impossible de créer l'entreprise. Son nom ou son adresse ne sont pas renseignés.`,
     editAddress: `Modifier l'adresse`,
     reportDownloadTypeDescription: {
-      [DownloadType.ReportOnly]: 'Téléchargement de la fiche de signalement uniquement.',
-      [DownloadType.ReportWithAttachment]: 'Téléchargement de la fiche de signalement et des pièces jointes associées.',
+      [DownloadType.ReportOnly]:
+        'Téléchargement de la fiche de signalement uniquement.',
+      [DownloadType.ReportWithAttachment]:
+        'Téléchargement de la fiche de signalement et des pièces jointes associées.',
     },
     reportDownload: 'Que voulez-vous télécharger ?',
     reportDownloadTypeTitle: {
@@ -670,8 +730,10 @@ export const fr = {
       [DownloadType.ReportWithAttachment]: 'Signalement et pièces jointes',
     },
     companyAccessLevelDescription: {
-      [CompanyAccessLevel.admin]: 'Peut  consulter, répondre aux signalements et inviter/supprimer des nouveaux utilisateurs.',
-      [CompanyAccessLevel.member]: 'Peut consulter et répondre aux signalements.',
+      [CompanyAccessLevel.admin]:
+        'Peut  consulter, répondre aux signalements et inviter/supprimer des nouveaux utilisateurs.',
+      [CompanyAccessLevel.member]:
+        'Peut consulter et répondre aux signalements.',
     },
     reportDeletionTypeDescription: {
       [ReportAdminActionType.ConsumerThreatenByPro]:
@@ -684,12 +746,16 @@ export const fr = {
         "Le consommateur nous informe que le litige a été réglé en dehors de la plateforme. Le signalement passera au statut 'Promesse d'action' puis le consommateur et le professionnel seront informés par email de la clôture du signalement.",
     },
     reportDeletionTypeName: {
-      [ReportAdminActionType.ConsumerThreatenByPro]: 'Suppression suite à la menace du pro',
-      [ReportAdminActionType.RefundBlackMail]: 'Supression suite au chantage du pro',
+      [ReportAdminActionType.ConsumerThreatenByPro]:
+        'Suppression suite à la menace du pro',
+      [ReportAdminActionType.RefundBlackMail]:
+        'Supression suite au chantage du pro',
       [ReportAdminActionType.OtherReasonDeleteRequest]: 'Autre suppression',
-      [ReportAdminActionType.SolvedContractualDispute]: 'Résolution du signalement hors SignalConso',
+      [ReportAdminActionType.SolvedContractualDispute]:
+        'Résolution du signalement hors SignalConso',
     },
-    invitationToProAlreadySent: (email: string) => `Une invitation a déjà été envoyée à l'adresse ${email}.`,
+    invitationToProAlreadySent: (email: string) =>
+      `Une invitation a déjà été envoyée à l'adresse ${email}.`,
     editedAddress: `Adresse modifiée`,
     failedToChangePassword: 'Impossible de modifier le mot de passe.',
     passwordAreIdentical: 'Les mots de passe sont identiques',
@@ -728,10 +794,14 @@ export const fr = {
     changesSaved: 'Modification enregistrée',
     selectAllDepartments: 'Tous les départements',
     positionComparedToLastMonth: `Position vs mois précédent`,
-    deleteCompanyAccess: (name: string) => `Supprimer l'accès à cette entreprise pour ${name} ?`,
-    deleteCompanyAccessToken: (email?: string) => `Annuler l'invitation  ${email ? 'à ' + email + ' ' : ''}?`,
-    resendCompanyAccessToken: (email?: string) => `Renvoyer l'invitation  ${email ? 'à ' + email + ' ' : ''}?`,
-    activateUser: (email?: string) => `Prolonger la validité du compte  ${email} ?`,
+    deleteCompanyAccess: (name: string) =>
+      `Supprimer l'accès à cette entreprise pour ${name} ?`,
+    deleteCompanyAccessToken: (email?: string) =>
+      `Annuler l'invitation  ${email ? 'à ' + email + ' ' : ''}?`,
+    resendCompanyAccessToken: (email?: string) =>
+      `Renvoyer l'invitation  ${email ? 'à ' + email + ' ' : ''}?`,
+    activateUser: (email?: string) =>
+      `Prolonger la validité du compte  ${email} ?`,
     resendInvite: `Renvoyer l'invitation`,
     copyInviteLink: `Copier le lien de l'invitation`,
     resetPasswordNotFound: `Le lien permettant de demander un nouveau mot de passe n'est pas valide, veuillez refaire une demande.`,
@@ -740,12 +810,18 @@ export const fr = {
     consent: ` Je reconnais avoir pris connaissance des  <a href='${config.appBaseUrl}/conditions-generales-utilisation'> conditions générales d'utilisation</a> de SignalConso.`,
     statsInternetsTitle: 'Signalements internet',
     statsInternets_all: 'des signalements sont des signalements Internet',
-    statsInternets_all_desc: 'le consommateur indique que le problème rencontré concerne une entreprise en ligne',
-    statsInternets_withCompany: 'pour lesquels les entreprises sont identifiées par les consommateurs',
-    statsInternets_withCountry: 'pour lesquels les entreprises ne sont pas identifiées mais de pays étrangers identifiés',
-    statsInternets_withCountry_desc: '(statut NA - le signalement n’est pas transmis au professionnel)',
-    statsInternets_withNothing: 'pour lesquels les entreprises et le pays ne sont pas identifiés',
-    statsInternets_withNothing_desc: '(statut NA - le signalement n’est pas transmis au professionnel)',
+    statsInternets_all_desc:
+      'le consommateur indique que le problème rencontré concerne une entreprise en ligne',
+    statsInternets_withCompany:
+      'pour lesquels les entreprises sont identifiées par les consommateurs',
+    statsInternets_withCountry:
+      'pour lesquels les entreprises ne sont pas identifiées mais de pays étrangers identifiés',
+    statsInternets_withCountry_desc:
+      '(statut NA - le signalement n’est pas transmis au professionnel)',
+    statsInternets_withNothing:
+      'pour lesquels les entreprises et le pays ne sont pas identifiés',
+    statsInternets_withNothing_desc:
+      '(statut NA - le signalement n’est pas transmis au professionnel)',
     sendDummyEmail: `Envoi d'emails de test`,
     downloadDummyPdfs: `Téléchargements de PDFs de test`,
     allMailsWillBeSendTo: (email: string) =>
@@ -979,14 +1055,18 @@ export const fr = {
     websiteDeleted: 'Site web supprimé.',
     websiteCreated: 'Site web associé.',
     createWebsite: 'Associer un site web',
-    alreadySelectedCompany: (name?: string) => `L'entreprise ${name ?? ''} est déjà sélectionnée`,
-    alreadySelectedCountry: (name?: string) => `Le pays ${name ?? ''} est déjà sélectionnée`,
-    alreadySelectedValue: (name?: string) => `La valeur ${name ?? ''} est déjà sélectionnée`,
+    alreadySelectedCompany: (name?: string) =>
+      `L'entreprise ${name ?? ''} est déjà sélectionnée`,
+    alreadySelectedCountry: (name?: string) =>
+      `Le pays ${name ?? ''} est déjà sélectionnée`,
+    alreadySelectedValue: (name?: string) =>
+      `La valeur ${name ?? ''} est déjà sélectionnée`,
     nLines: (n: number) => `<b>${n}</b> lignes`,
     reportResponse: {
       [ReportResponseTypes.Accepted]: 'Promesse de solution',
       [ReportResponseTypes.Rejected]: 'Signalement infondé',
-      [ReportResponseTypes.NotConcerned]: 'Etablissement non concerné par le signalement',
+      [ReportResponseTypes.NotConcerned]:
+        'Etablissement non concerné par le signalement',
     },
     reportResponseShort: {
       [ReportResponseTypes.Accepted]: 'Promesse de solution',
@@ -995,21 +1075,27 @@ export const fr = {
     },
     responseDetails: {
       REMBOURSEMENT_OU_AVOIR: 'Je vais procéder à un remboursement ou un avoir',
-      REPARATION_OU_REMPLACEMENT: 'Je vais procéder à une réparation ou au remplacement du produit défectueux',
+      REPARATION_OU_REMPLACEMENT:
+        'Je vais procéder à une réparation ou au remplacement du produit défectueux',
       LIVRAISON: 'Je vais procéder à la livraison du bien ou du service',
       CONSEIL_D_UTILISATION: 'Je souhaite apporter un conseil d’utilisation',
-      ME_CONFORMER_A_LA_REGLEMENTATION: 'Je vais me conformer à la réglementation en vigueur',
+      ME_CONFORMER_A_LA_REGLEMENTATION:
+        'Je vais me conformer à la réglementation en vigueur',
       ADAPTER_MES_PRATIQUES: 'Je vais adapter mes pratiques',
-      TRANSMETTRE_AU_SERVICE_COMPETENT: 'Je vais transmettre la demande au service compétent',
+      TRANSMETTRE_AU_SERVICE_COMPETENT:
+        'Je vais transmettre la demande au service compétent',
       DEMANDE_DE_PLUS_D_INFORMATIONS:
         'Je vais demander davantage d’informations au consommateur afin de lui apporter une réponse',
       RESILIATION: 'Je vais procéder à la résiliation du contrat',
       PRATIQUE_LEGALE: 'La pratique signalée est légale',
       PRATIQUE_N_A_PAS_EU_LIEU: 'La pratique signalée n’a pas eu lieu',
-      MAUVAISE_INTERPRETATION: 'Il s’agit d’une mauvaise interprétation des faits',
+      MAUVAISE_INTERPRETATION:
+        'Il s’agit d’une mauvaise interprétation des faits',
       DEJA_REPONDU: 'J’ai déjà répondu à ce consommateur sur la plateforme',
-      TRAITEMENT_EN_COURS: 'Le traitement de ce cas est déjà en cours auprès de notre service client',
-      PARTENAIRE_COMMERCIAL: 'Il concerne un de nos partenaires commerciaux / vendeurs tiers',
+      TRAITEMENT_EN_COURS:
+        'Le traitement de ce cas est déjà en cours auprès de notre service client',
+      PARTENAIRE_COMMERCIAL:
+        'Il concerne un de nos partenaires commerciaux / vendeurs tiers',
       ENTREPRISE_DU_MEME_GROUPE: 'Il concerne une entreprise du même groupe',
       HOMONYME: 'Il concerne une société homonyme',
       ENTREPRISE_INCONNUE: 'Il concerne une société que je ne connais pas',
@@ -1019,7 +1105,8 @@ export const fr = {
     emailValidationStatusTooltipDesc: {
       [EmailValidationStatus.Expired]:
         "Email expiré qui nécessite une revalidation. Cliquez sur l'icone pour valider à la place de l'utilisateur",
-      [EmailValidationStatus.Invalid]: "Email non validé. Cliquez sur l'icone pour valider à la place de l'utilisateur",
+      [EmailValidationStatus.Invalid]:
+        "Email non validé. Cliquez sur l'icone pour valider à la place de l'utilisateur",
       [EmailValidationStatus.Valid]: 'Email validé',
     },
     responseEvaluation: {
@@ -1049,7 +1136,8 @@ export const fr = {
     },
     reportStatusDescPro: {
       [ReportStatusPro.ARepondre]: `Signalements en attente d'une réponse`,
-      [ReportStatusPro.Cloture]: "Signalements ayant fait l'objet d'une réponse ou dont le délai de réponse a expiré",
+      [ReportStatusPro.Cloture]:
+        "Signalements ayant fait l'objet d'une réponse ou dont le délai de réponse a expiré",
     },
     reportStatusDesc: {
       [ReportStatus.NA]: `Il y a eu un signalement déposé par un consommateur. Mais, le consommateur n’a pas pu identifier la société. Cela peut être le cas pour les sites internet et des démarchages téléphoniques ou à domicile.`,

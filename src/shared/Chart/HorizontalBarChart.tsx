@@ -1,11 +1,11 @@
-import {alpha, Box, Theme, Tooltip} from '@mui/material'
+import { alpha, Box, Theme, Tooltip } from '@mui/material'
 import withStyles from '@mui/styles/withStyles'
-import {mapFor} from 'core/helper'
-import {ReactNode, useMemo, useState} from 'react'
-import {makeSx, Txt} from '../../alexlibs/mui-extension'
-import {useTimeout} from '../../alexlibs/react-hooks-lib'
-import {useI18n} from '../../core/i18n'
-import {styleUtils} from '../../core/theme'
+import { mapFor } from 'core/helper'
+import { ReactNode, useMemo, useState } from 'react'
+import { makeSx, Txt } from '../../alexlibs/mui-extension'
+import { useTimeout } from '../../alexlibs/react-hooks-lib'
+import { useI18n } from '../../core/i18n'
+import { styleUtils } from '../../core/theme'
 
 export interface HorizontalBarChartData {
   label: ReactNode
@@ -35,13 +35,19 @@ const sx = makeSx({
   },
 })
 
-export const HorizontalBarChart = ({data, grid, width = 200}: Props) => {
-  const {m} = useI18n()
-  const maxValue = useMemo(() => data && Math.max(...data.map(_ => _.value)), [data])
-  const sumValue = useMemo(() => data && data.reduce((sum, _) => _.value + sum, 0), [data])
+export const HorizontalBarChart = ({ data, grid, width = 200 }: Props) => {
+  const { m } = useI18n()
+  const maxValue = useMemo(
+    () => data && Math.max(...data.map((_) => _.value)),
+    [data],
+  )
+  const sumValue = useMemo(
+    () => data && data.reduce((sum, _) => _.value + sum, 0),
+    [data],
+  )
   const [appeared, setAppeared] = useState<boolean>(false)
   const gridAxis = 4
-  const {formatLargeNumber} = useI18n()
+  const { formatLargeNumber } = useI18n()
   useTimeout(() => setAppeared(true), 0)
 
   return (
@@ -56,7 +62,7 @@ export const HorizontalBarChart = ({data, grid, width = 200}: Props) => {
           const percentOfAll = (item.value / sumValue) * 100
           return (
             <Box key={i} sx={sx.item}>
-              <Box sx={sx.label} style={{width: width, minWidth: width}}>
+              <Box sx={sx.label} style={{ width: width, minWidth: width }}>
                 {item.label}
               </Box>
               <LightTooltip
@@ -65,7 +71,7 @@ export const HorizontalBarChart = ({data, grid, width = 200}: Props) => {
                     <Txt size="big" block bold>
                       {item.label}
                     </Txt>
-                    <div style={{textAlign: 'right'}}>
+                    <div style={{ textAlign: 'right' }}>
                       <Txt size="title" color="primary" block>
                         {formatLargeNumber(item.value)}
                       </Txt>
@@ -81,28 +87,36 @@ export const HorizontalBarChart = ({data, grid, width = 200}: Props) => {
                     py: 0.25,
                     px: 0,
                     flex: 1,
-                    transition: t => t.transitions.create('background'),
+                    transition: (t) => t.transitions.create('background'),
                     '&:hover': {
-                      background: t => alpha(t.palette.primary.main, 0.1),
+                      background: (t) => alpha(t.palette.primary.main, 0.1),
                     },
                   }}
                 >
                   <Box
                     sx={{
-                      fontSize: t => styleUtils(t).fontSize.small,
-                      fontWeight: t => t.typography.fontWeightBold,
-                      transition: t => t.transitions.create('width', {duration: 1000}),
+                      fontSize: (t) => styleUtils(t).fontSize.small,
+                      fontWeight: (t) => t.typography.fontWeightBold,
+                      transition: (t) =>
+                        t.transitions.create('width', { duration: 1000 }),
                       width: 0,
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'flex-end',
                       minHeight: 24,
-                      borderBottom: t => `4px solid ${t.palette.primary.main}`,
-                      color: t => t.palette.primary.main,
+                      borderBottom: (t) =>
+                        `4px solid ${t.palette.primary.main}`,
+                      color: (t) => t.palette.primary.main,
                     }}
-                    style={{width: appeared ? `calc(${percentOfMax * 0.9}%)` : 0, color: item.color, borderColor: item.color}}
+                    style={{
+                      width: appeared ? `calc(${percentOfMax * 0.9}%)` : 0,
+                      color: item.color,
+                      borderColor: item.color,
+                    }}
                   >
-                    {percentOfMax > 5 && <div>{formatLargeNumber(item.value)}</div>}
+                    {percentOfMax > 5 && (
+                      <div>{formatLargeNumber(item.value)}</div>
+                    )}
                   </Box>
                 </Box>
               </LightTooltip>
@@ -114,15 +128,15 @@ export const HorizontalBarChart = ({data, grid, width = 200}: Props) => {
       )}
       {grid && data && data.length > 0 && (
         <Box sx={sx.item}>
-          <Box sx={sx.label} style={{width: width, minWidth: width}} />
-          <div style={{position: 'relative', width: '100%'}}>
-            {mapFor(gridAxis + 1, i => (
+          <Box sx={sx.label} style={{ width: width, minWidth: width }} />
+          <div style={{ position: 'relative', width: '100%' }}>
+            {mapFor(gridAxis + 1, (i) => (
               <Box
                 key={i}
                 sx={{
                   width: '1px',
                   height: 1000,
-                  background: t => t.palette.divider,
+                  background: (t) => t.palette.divider,
                   position: 'absolute',
                   bottom: 0,
                   right: 0,

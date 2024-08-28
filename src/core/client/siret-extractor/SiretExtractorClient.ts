@@ -1,5 +1,5 @@
-import {ApiClientApi} from '../ApiClient'
-import {ExtractionResult} from './SiretExtraction'
+import { ApiClientApi } from '../ApiClient'
+import { ExtractionResult } from './SiretExtraction'
 
 export class SiretExtractorClient {
   constructor(private client: ApiClientApi) {}

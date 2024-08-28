@@ -1,10 +1,10 @@
-import {siteMap} from 'core/siteMap'
-import {Link} from 'react-router-dom'
-import {CenteredContent} from 'shared/CenteredContent'
-import {AlertNotForConso, EspaceProTitle} from './loggedOutComponents'
-import {Icon} from '@mui/material'
-import {useLocation} from 'react-router'
-import {InfoBanner} from '../../shared/InfoBanner'
+import { siteMap } from 'core/siteMap'
+import { Link } from 'react-router-dom'
+import { CenteredContent } from 'shared/CenteredContent'
+import { AlertNotForConso, EspaceProTitle } from './loggedOutComponents'
+import { Icon } from '@mui/material'
+import { useLocation } from 'react-router'
+import { InfoBanner } from '../../shared/InfoBanner'
 
 export function WelcomePage() {
   const location = useLocation()
@@ -38,7 +38,15 @@ export function WelcomePage() {
   )
 }
 
-function Tile({title, desc, href}: {title: string; desc: string; href: string}) {
+function Tile({
+  title,
+  desc,
+  href,
+}: {
+  title: string
+  desc: string
+  href: string
+}) {
   return (
     <Link
       to={href}
@@ -46,7 +54,9 @@ function Tile({title, desc, href}: {title: string; desc: string; href: string}) 
     >
       <h2 className="text-scbluefrance font-bold mb-2 text-lg">{title}</h2>
       <p className="mb-12">{desc}</p>
-      <Icon className="absolute right-6 bottom-6 text-scbluefrance !text-2xl">arrow_forward</Icon>
+      <Icon className="absolute right-6 bottom-6 text-scbluefrance !text-2xl">
+        arrow_forward
+      </Icon>
     </Link>
   )
 }

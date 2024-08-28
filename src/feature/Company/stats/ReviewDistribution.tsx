@@ -1,36 +1,39 @@
-import {Skeleton} from '@mui/material'
-import {UseQueryResult} from '@tanstack/react-query'
-import {ApiError} from 'core/client/ApiClient'
-import {ScOption} from 'core/helper/ScOption'
-import {ReportResponseReviews} from 'core/model'
-import {useGetEngagementReviewsQuery, useGetResponseReviewsQuery} from 'core/queryhooks/statsQueryHooks'
-import {CleanDiscreetPanel} from 'shared/Panel/simplePanels'
-import {Txt} from '../../../alexlibs/mui-extension'
-import {useMemoFn} from '../../../alexlibs/react-hooks-lib'
-import {useI18n} from '../../../core/i18n'
-import {HorizontalBarChart} from '../../../shared/Chart/HorizontalBarChart'
-import {ReviewLabel} from './ReviewLabel'
+import { Skeleton } from '@mui/material'
+import { UseQueryResult } from '@tanstack/react-query'
+import { ApiError } from 'core/client/ApiClient'
+import { ScOption } from 'core/helper/ScOption'
+import { ReportResponseReviews } from 'core/model'
+import {
+  useGetEngagementReviewsQuery,
+  useGetResponseReviewsQuery,
+} from 'core/queryhooks/statsQueryHooks'
+import { CleanDiscreetPanel } from 'shared/Panel/simplePanels'
+import { Txt } from '../../../alexlibs/mui-extension'
+import { useMemoFn } from '../../../alexlibs/react-hooks-lib'
+import { useI18n } from '../../../core/i18n'
+import { HorizontalBarChart } from '../../../shared/Chart/HorizontalBarChart'
+import { ReviewLabel } from './ReviewLabel'
 
 interface Props {
   companyId: string
 }
 
-export function ResponseReviewsDistribution({companyId}: Props) {
+export function ResponseReviewsDistribution({ companyId }: Props) {
   const queryResult = useGetResponseReviewsQuery(companyId)
   return (
     <ReviewDistribution
-      {...{companyId, queryResult}}
+      {...{ companyId, queryResult }}
       title="Avis initial des consommateurs"
       titleDesc="Avis des consommateurs sur la réponse apportée par le professionnel."
     />
   )
 }
 
-export function EngagementReviewsDistribution({companyId}: Props) {
+export function EngagementReviewsDistribution({ companyId }: Props) {
   const queryResult = useGetEngagementReviewsQuery(companyId)
   return (
     <ReviewDistribution
-      {...{companyId, queryResult}}
+      {...{ companyId, queryResult }}
       title="Avis ultérieur des consommateurs"
       titleDesc="Avis des consommateurs sur la réalisation des engagements du professionnel."
     />
@@ -46,9 +49,9 @@ function ReviewDistribution({
   title: string
   titleDesc: string
 }) {
-  const {m} = useI18n()
+  const { m } = useI18n()
 
-  const reviewDistribution = useMemoFn(queryResult.data, _ =>
+  const reviewDistribution = useMemoFn(queryResult.data, (_) =>
     _.positive > 0 || _.negative > 0 || _.neutral > 0
       ? [
           {
@@ -86,9 +89,9 @@ function ReviewDistribution({
     <CleanDiscreetPanel>
       <h2 className="font-bold text-lg">{title}</h2>
       {ScOption.from(queryResult.data)
-        .map(_ => (
+        .map((_) => (
           <>
-            <Txt color="hint" block sx={{mb: 3}}>
+            <Txt color="hint" block sx={{ mb: 3 }}>
               {titleDesc}
             </Txt>
             <HorizontalBarChart width={80} data={reviewDistribution} grid />

@@ -1,16 +1,16 @@
-import {Navigate, Routes} from 'react-router'
-import {Route} from 'react-router-dom'
-import {useConnectedContext} from '../../core/context/ConnectedContext'
-import {useI18n} from '../../core/i18n'
-import {siteMap} from '../../core/siteMap'
-import {Page, PageTitle} from '../../shared/Page'
-import {PageTab, PageTabs} from '../../shared/Page/PageTabs'
-import {ReportedUnknownWebsites} from './ReportedUnknownWebsites'
-import {WebsitesInvestigation} from './WebsitesInvestigation'
+import { Navigate, Routes } from 'react-router'
+import { Route } from 'react-router-dom'
+import { useConnectedContext } from '../../core/context/ConnectedContext'
+import { useI18n } from '../../core/i18n'
+import { siteMap } from '../../core/siteMap'
+import { Page, PageTitle } from '../../shared/Page'
+import { PageTab, PageTabs } from '../../shared/Page/PageTabs'
+import { ReportedUnknownWebsites } from './ReportedUnknownWebsites'
+import { WebsitesInvestigation } from './WebsitesInvestigation'
 
 export const ReportedWebsites = () => {
-  const {m} = useI18n() // Assuming this hook exists and provides translations
-  const {connectedUser} = useConnectedContext() // Assuming this hook provides user state
+  const { m } = useI18n() // Assuming this hook exists and provides translations
+  const { connectedUser } = useConnectedContext() // Assuming this hook provides user state
 
   return (
     <Page>
@@ -22,19 +22,47 @@ export const ReportedWebsites = () => {
 
       {connectedUser.isAdmin && (
         <PageTabs>
-          <PageTab to={siteMap.logged.reportedWebsites.investigation.value} label={m.websitesInvestigation} />
-          <PageTab to={siteMap.logged.reportedWebsites.unknown.value} label={m.reportedUnknownWebsites} />
+          <PageTab
+            to={siteMap.logged.reportedWebsites.investigation.value}
+            label={m.websitesInvestigation}
+          />
+          <PageTab
+            to={siteMap.logged.reportedWebsites.unknown.value}
+            label={m.reportedUnknownWebsites}
+          />
         </PageTabs>
       )}
 
       <Routes>
         {connectedUser.isAdmin ? (
-          <Route path="/*" element={<Navigate replace to={siteMap.logged.reportedWebsites.investigation.value} />} />
+          <Route
+            path="/*"
+            element={
+              <Navigate
+                replace
+                to={siteMap.logged.reportedWebsites.investigation.value}
+              />
+            }
+          />
         ) : (
-          <Route path="/*" element={<Navigate replace to={siteMap.logged.reportedWebsites.unknown.value} />} />
+          <Route
+            path="/*"
+            element={
+              <Navigate
+                replace
+                to={siteMap.logged.reportedWebsites.unknown.value}
+              />
+            }
+          />
         )}
-        <Route path={siteMap.logged.reportedWebsites.investigation.value} element={<WebsitesInvestigation />} />
-        <Route path={siteMap.logged.reportedWebsites.unknown.value} element={<ReportedUnknownWebsites />} />
+        <Route
+          path={siteMap.logged.reportedWebsites.investigation.value}
+          element={<WebsitesInvestigation />}
+        />
+        <Route
+          path={siteMap.logged.reportedWebsites.unknown.value}
+          element={<ReportedUnknownWebsites />}
+        />
       </Routes>
     </Page>
   )

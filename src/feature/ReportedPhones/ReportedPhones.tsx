@@ -1,25 +1,25 @@
-import React, {useCallback} from 'react'
-import {Page, PageTitle} from '../../shared/Page'
-import {useI18n} from '../../core/i18n'
-import {Panel} from '../../shared/Panel'
-import {Datatable} from '../../shared/Datatable/Datatable'
-import {NavLink} from 'react-router-dom'
-import {siteMap} from '../../core/siteMap'
-import {Btn, IconBtn, Txt} from '../../alexlibs/mui-extension'
-import {ScInput} from '../../shared/ScInput'
-import {ExportPhonesPopper} from '../../shared/ExportPopperBtn'
-import {Icon, Tooltip} from '@mui/material'
-import {PeriodPicker} from '../../shared/PeriodPicker'
-import {DebouncedInput} from '../../shared/DebouncedInput'
-import {sxUtils} from '../../core/theme'
-import {useReportedPhonesSearchQuery} from '../../core/queryhooks/phoneQueryHooks'
+import React, { useCallback } from 'react'
+import { Page, PageTitle } from '../../shared/Page'
+import { useI18n } from '../../core/i18n'
+import { Panel } from '../../shared/Panel'
+import { Datatable } from '../../shared/Datatable/Datatable'
+import { NavLink } from 'react-router-dom'
+import { siteMap } from '../../core/siteMap'
+import { Btn, IconBtn, Txt } from '../../alexlibs/mui-extension'
+import { ScInput } from '../../shared/ScInput'
+import { ExportPhonesPopper } from '../../shared/ExportPopperBtn'
+import { Icon, Tooltip } from '@mui/material'
+import { PeriodPicker } from '../../shared/PeriodPicker'
+import { DebouncedInput } from '../../shared/DebouncedInput'
+import { sxUtils } from '../../core/theme'
+import { useReportedPhonesSearchQuery } from '../../core/queryhooks/phoneQueryHooks'
 
 export const ReportedPhones = () => {
   const _reportedPhone = useReportedPhonesSearchQuery()
-  const {m} = useI18n()
+  const { m } = useI18n()
 
   const onPhoneChange = useCallback((phone: string) => {
-    _reportedPhone.updateFilters(prev => ({...prev, phone}))
+    _reportedPhone.updateFilters((prev) => ({ ...prev, phone }))
     // TRELLO-1391 The object _reportedPhone changes all the time.
     // If we put it in dependencies, it causes problems with the debounce,
     // and the search input "stutters" when typing fast
@@ -33,25 +33,41 @@ export const ReportedPhones = () => {
         <Datatable
           id="reportedphones"
           showColumnsToggle
-          superheader={<p>Cette page liste les numéros de téléphone les plus signalés.</p>}
+          superheader={
+            <p>Cette page liste les numéros de téléphone les plus signalés.</p>
+          }
           headerMain={
             <div className="flex w-full gap-2">
-              <DebouncedInput value={_reportedPhone.filters.phone ?? ''} onChange={onPhoneChange}>
+              <DebouncedInput
+                value={_reportedPhone.filters.phone ?? ''}
+                onChange={onPhoneChange}
+              >
                 {(value, onChange) => (
                   <ScInput
-                    style={{minWidth: 120}}
+                    style={{ minWidth: 120 }}
                     value={value}
-                    onChange={e => onChange(e.target.value)}
+                    onChange={(e) => onChange(e.target.value)}
                     fullWidth
                     label={m.phone}
                   />
                 )}
               </DebouncedInput>
               <DebouncedInput<[Date | undefined, Date | undefined]>
-                value={[_reportedPhone.filters.start, _reportedPhone.filters.end]}
-                onChange={([start, end]) => _reportedPhone.updateFilters(prev => ({...prev, start, end}))}
+                value={[
+                  _reportedPhone.filters.start,
+                  _reportedPhone.filters.end,
+                ]}
+                onChange={([start, end]) =>
+                  _reportedPhone.updateFilters((prev) => ({
+                    ...prev,
+                    start,
+                    end,
+                  }))
+                }
               >
-                {(value, onChange) => <PeriodPicker value={value} onChange={onChange} fullWidth />}
+                {(value, onChange) => (
+                  <PeriodPicker value={value} onChange={onChange} fullWidth />
+                )}
               </DebouncedInput>
             </div>
           }
@@ -73,10 +89,15 @@ export const ReportedPhones = () => {
           sort={{
             sortBy: _reportedPhone.filters.sortBy!,
             orderBy: _reportedPhone.filters.orderBy!,
-            onSortChange: (sort: any) => _reportedPhone.updateFilters(prev => ({...prev, ...sort})),
+            onSortChange: (sort: any) =>
+              _reportedPhone.updateFilters((prev) => ({ ...prev, ...sort })),
           }}
           paginate={{
-            onPaginationChange: pagination => _reportedPhone.updateFilters(prev => ({...prev, ...pagination})),
+            onPaginationChange: (pagination) =>
+              _reportedPhone.updateFilters((prev) => ({
+                ...prev,
+                ...pagination,
+              })),
             offset: _reportedPhone.filters.offset,
             limit: _reportedPhone.filters.limit,
           }}
@@ -87,20 +108,20 @@ export const ReportedPhones = () => {
             {
               id: 'phone',
               head: m.phone,
-              render: _ => _.phone,
+              render: (_) => _.phone,
             },
             {
               id: 'category',
               head: m.category,
-              render: _ => _.category,
+              render: (_) => _.category,
             },
             {
               id: 'siret',
               head: m.siret,
-              sx: _ => ({
+              sx: (_) => ({
                 maxWidth: 200,
               }),
-              render: _ => (
+              render: (_) => (
                 <>
                   <Txt bold>{_.siret}</Txt>
                   <br />
@@ -111,19 +132,21 @@ export const ReportedPhones = () => {
             {
               id: 'count',
               head: m.reportsCount,
-              render: _ => _.count,
+              render: (_) => _.count,
             },
             {
               id: 'actions',
-              sx: _ => sxUtils.tdActions,
-              render: _ => (
+              sx: (_) => sxUtils.tdActions,
+              render: (_) => (
                 <>
                   <NavLink
                     to={siteMap.logged.reports({
                       hasPhone: true,
                       phone: _.phone,
-                      ...(_.siret ? {hasCompany: true, siretSirenList: [_.siret]} : {}),
-                      ...(_.category ? {category: _.category} : {}),
+                      ...(_.siret
+                        ? { hasCompany: true, siretSirenList: [_.siret] }
+                        : {}),
+                      ...(_.category ? { category: _.category } : {}),
                     })}
                   >
                     <Btn size="small" color="primary" variant="outlined">

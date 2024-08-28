@@ -1,16 +1,25 @@
-import React, {ReactElement, useEffect, useState} from 'react'
-import {useLayoutContext} from '../../core/Layout/LayoutContext'
-import {Dialog, DialogActions, DialogContent, DialogTitle} from '@mui/material'
-import {useI18n} from '../../core/i18n'
-import {ScMenuItem} from '../MenuItem/MenuItem'
-import {DialogInputRow} from '../../shared/DialogInputRow'
-import {Controller, useForm} from 'react-hook-form'
-import {ScMultiSelect} from '../../shared/Select/MultiSelect'
-import {Enum} from '../../alexlibs/ts-utils'
-import {Label} from '../../shared/Label'
-import {Btn} from '../../alexlibs/mui-extension'
-import {IdentificationStatus, InvestigationStatus, WebsiteWithCompanySearch} from '../../core/client/website/Website'
-import {TrueFalseNull} from '../../shared/TrueFalseNull'
+import React, { ReactElement, useEffect, useState } from 'react'
+import { useLayoutContext } from '../../core/Layout/LayoutContext'
+import {
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+} from '@mui/material'
+import { useI18n } from '../../core/i18n'
+import { ScMenuItem } from '../MenuItem/MenuItem'
+import { DialogInputRow } from '../../shared/DialogInputRow'
+import { Controller, useForm } from 'react-hook-form'
+import { ScMultiSelect } from '../../shared/Select/MultiSelect'
+import { Enum } from '../../alexlibs/ts-utils'
+import { Label } from '../../shared/Label'
+import { Btn } from '../../alexlibs/mui-extension'
+import {
+  IdentificationStatus,
+  InvestigationStatus,
+  WebsiteWithCompanySearch,
+} from '../../core/client/website/Website'
+import { TrueFalseNull } from '../../shared/TrueFalseNull'
 
 interface WebsitesFiltersProps {
   updateFilters: (_: WebsiteWithCompanySearch) => void
@@ -20,15 +29,20 @@ interface WebsitesFiltersProps {
 
 interface Form extends WebsiteWithCompanySearch {}
 
-export const WebsitesFilters = ({filters, updateFilters, children, ...props}: WebsitesFiltersProps) => {
-  const {m} = useI18n()
+export const WebsitesFilters = ({
+  filters,
+  updateFilters,
+  children,
+  ...props
+}: WebsitesFiltersProps) => {
+  const { m } = useI18n()
   const [open, setOpen] = useState<boolean>(false)
   const close = () => {
     setOpen(false)
   }
 
   const TrueLabel = () => {
-    const {m} = useI18n()
+    const { m } = useI18n()
     return <>{m.yes}</>
   }
 
@@ -45,7 +59,7 @@ export const WebsitesFilters = ({filters, updateFilters, children, ...props}: We
     handleSubmit,
     control,
     reset,
-    formState: {errors},
+    formState: { errors },
   } = useForm<Form>()
 
   const layout = useLayoutContext()
@@ -57,7 +71,13 @@ export const WebsitesFilters = ({filters, updateFilters, children, ...props}: We
           setOpen(true)
         },
       })}
-      <Dialog maxWidth={'sm'} fullWidth fullScreen={layout.isMobileWidth} open={open ?? false} onClose={close}>
+      <Dialog
+        maxWidth={'sm'}
+        fullWidth
+        fullScreen={layout.isMobileWidth}
+        open={open ?? false}
+        onClose={close}
+      >
         <DialogTitle>{m.search}</DialogTitle>
         <DialogContent>
           <DialogInputRow icon="check_circle" label={m.investigation}>
@@ -65,24 +85,30 @@ export const WebsitesFilters = ({filters, updateFilters, children, ...props}: We
               defaultValue={filters.investigationStatus ?? []}
               name="investigationStatus"
               control={control}
-              render={({field}) => (
+              render={({ field }) => (
                 <ScMultiSelect
                   {...field}
                   fullWidth
                   withSelectAll
-                  renderValue={investigationStatus =>
+                  renderValue={(investigationStatus) =>
                     `(${investigationStatus.length}) ${investigationStatus
-                      .map(status => m.InvestigationStatusDesc[status])
+                      .map((status) => m.InvestigationStatusDesc[status])
                       .join(',')}`
                   }
                 >
-                  {Enum.values(InvestigationStatus).map(investigationStatus => (
-                    <ScMenuItem withCheckbox key={investigationStatus} value={investigationStatus}>
-                      <Label dense {...props}>
-                        {m.InvestigationStatusDesc[investigationStatus]}
-                      </Label>
-                    </ScMenuItem>
-                  ))}
+                  {Enum.values(InvestigationStatus).map(
+                    (investigationStatus) => (
+                      <ScMenuItem
+                        withCheckbox
+                        key={investigationStatus}
+                        value={investigationStatus}
+                      >
+                        <Label dense {...props}>
+                          {m.InvestigationStatusDesc[investigationStatus]}
+                        </Label>
+                      </ScMenuItem>
+                    ),
+                  )}
                 </ScMultiSelect>
               )}
             />
@@ -93,18 +119,18 @@ export const WebsitesFilters = ({filters, updateFilters, children, ...props}: We
               defaultValue={filters.identificationStatus ?? []}
               name="identificationStatus"
               control={control}
-              render={({field}) => (
+              render={({ field }) => (
                 <ScMultiSelect
                   {...field}
                   fullWidth
                   withSelectAll
-                  renderValue={identificationStatus =>
+                  renderValue={(identificationStatus) =>
                     `(${identificationStatus.length}) ${identificationStatus
-                      .map(status => m.IdentificationStatusDesc[status])
+                      .map((status) => m.IdentificationStatusDesc[status])
                       .join(',')}`
                   }
                 >
-                  {Enum.values(IdentificationStatus).map(kind => (
+                  {Enum.values(IdentificationStatus).map((kind) => (
                     <ScMenuItem withCheckbox key={kind} value={kind}>
                       <Label dense {...props}>
                         {m.IdentificationStatusDesc[kind]}
@@ -121,13 +147,13 @@ export const WebsitesFilters = ({filters, updateFilters, children, ...props}: We
               defaultValue={null}
               name="isOpen"
               control={control}
-              render={({field}) => (
+              render={({ field }) => (
                 <TrueFalseNull
                   {...field}
                   label={{
                     true: <TrueLabel />,
                   }}
-                  sx={{flexBasis: '100%', mt: 1}}
+                  sx={{ flexBasis: '100%', mt: 1 }}
                 />
               )}
             />

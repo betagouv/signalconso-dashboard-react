@@ -1,4 +1,4 @@
-import {Id} from '../../model'
+import { Id } from '../../model'
 
 export interface ReportEvent {
   data: Event
@@ -26,7 +26,10 @@ export interface Event {
   userId?: Id
   eventType: EventType
   action: EventActionValues
-  details: {description: string} | ExistingReportResponse | {description: string; comment: string}
+  details:
+    | { description: string }
+    | ExistingReportResponse
+    | { description: string; comment: string }
 }
 
 export type EventType = 'PRO' | 'CONSO' | 'DGCCRF' | 'ADMIN' | 'SYSTEM'
@@ -114,7 +117,10 @@ export interface IncomingReportResponse {
 
 // An already created report response, coming from the DB
 // It may contains the legacy value 'AUTRE' that is not allowed anymore
-export type ExistingReportResponse = Omit<IncomingReportResponse, 'responseDetails'> & {
+export type ExistingReportResponse = Omit<
+  IncomingReportResponse,
+  'responseDetails'
+> & {
   responseDetails: IncomingReportResponse['responseDetails'] | 'AUTRE'
   otherResponseDetails?: string
 }

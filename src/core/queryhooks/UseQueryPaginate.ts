@@ -1,8 +1,8 @@
-import {SetStateAction, useCallback, useState} from 'react'
-import {useQuery} from '@tanstack/react-query'
-import type {QueryKey} from '@tanstack/query-core'
-import {Paginate} from '../model'
-import type {UseQueryResult} from '@tanstack/react-query/src/types'
+import { SetStateAction, useCallback, useState } from 'react'
+import { useQuery } from '@tanstack/react-query'
+import type { QueryKey } from '@tanstack/query-core'
+import { Paginate } from '../model'
+import type { UseQueryResult } from '@tanstack/react-query/src/types'
 
 type OrderBy = 'desc' | 'asc'
 
@@ -28,32 +28,54 @@ interface UpdateFiltersParams {
   preserveOffset?: boolean
 }
 
-export const useQueryPaginate = <S extends ISearch, T = unknown, TQueryKey extends QueryKey = QueryKey>(
+export const useQueryPaginate = <
+  S extends ISearch,
+  T = unknown,
+  TQueryKey extends QueryKey = QueryKey,
+>(
   queryKey: TQueryKey,
   queryFn: (search: S) => Promise<Paginate<T>>,
   defaultFilters: S,
   initialFilters?: S,
   initiallyEnabled?: boolean,
 ): UseQueryPaginateResult<S, Paginate<T>, unknown> => {
-  const [filters, setFilters] = useState<S>({...defaultFilters, ...initialFilters})
+  const [filters, setFilters] = useState<S>({
+    ...defaultFilters,
+    ...initialFilters,
+  })
   const [enabled, setEnabled] = useState<boolean>(initiallyEnabled ?? true)
 
-  const updateFilters = useCallback((update: SetStateAction<S>, {preserveOffset}: UpdateFiltersParams = {}) => {
-    setFilters(mutableFilters => {
-      const previous = {...mutableFilters}
-      const updatedFilters = typeof update === 'function' ? update(mutableFilters) : update
-      if (!preserveOffset && previous.offset === updatedFilters.offset && previous.limit === updatedFilters.limit) {
-        updatedFilters.offset = 0
-      }
-      return updatedFilters
-    })
-  }, [])
+  const updateFilters = useCallback(
+    (
+      update: SetStateAction<S>,
+      { preserveOffset }: UpdateFiltersParams = {},
+    ) => {
+      setFilters((mutableFilters) => {
+        const previous = { ...mutableFilters }
+        const updatedFilters =
+          typeof update === 'function' ? update(mutableFilters) : update
+        if (
+          !preserveOffset &&
+          previous.offset === updatedFilters.offset &&
+          previous.limit === updatedFilters.limit
+        ) {
+          updatedFilters.offset = 0
+        }
+        return updatedFilters
+      })
+    },
+    [],
+  )
 
   const clearFilters = useCallback(() => updateFilters(defaultFilters), [])
 
   const enable = useCallback(() => setEnabled(true), [])
 
-  const result = useQuery({queryKey: [...queryKey, filters], queryFn: () => queryFn(filters), enabled})
+  const result = useQuery({
+    queryKey: [...queryKey, filters],
+    queryFn: () => queryFn(filters),
+    enabled,
+  })
 
   return {
     result,

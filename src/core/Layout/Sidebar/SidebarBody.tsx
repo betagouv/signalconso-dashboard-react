@@ -1,9 +1,9 @@
 import * as React from 'react'
-import {Box, BoxProps} from '@mui/material'
+import { Box, BoxProps } from '@mui/material'
 
 interface SidebarBodyProps extends BoxProps {}
 
-export const SidebarBody = ({children, sx, ...props}: SidebarBodyProps) => {
+export const SidebarBody = ({ children, sx, ...props }: SidebarBodyProps) => {
   return (
     <Box
       sx={{

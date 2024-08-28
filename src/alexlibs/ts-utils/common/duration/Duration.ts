@@ -37,13 +37,18 @@ const parseTimeUnit = (str?: TimeUnit): ((_: number) => number) => {
     case 'day':
       return DAY
     default:
-      return _ => _
+      return (_) => _
   }
 }
 
-export const duration: DurationConstructor = (value: number, unit?: TimeUnit) => {
+export const duration: DurationConstructor = (
+  value: number,
+  unit?: TimeUnit,
+) => {
   if (isNaN(value)) {
-    throw new Error(`[ts-utils/Duration] value '${value}' is not a valid number.`)
+    throw new Error(
+      `[ts-utils/Duration] value '${value}' is not a valid number.`,
+    )
   }
   const toMs = parseTimeUnit(unit)(value)
   return {
@@ -54,7 +59,8 @@ export const duration: DurationConstructor = (value: number, unit?: TimeUnit) =>
     toDays: toDays(toMs),
     valueOf: (): number => toMs,
     toString: (): string => {
-      const print = (value: number, suffix: string) => (value > 0 ? `${value} ${suffix} ` : '')
+      const print = (value: number, suffix: string) =>
+        value > 0 ? `${value} ${suffix} ` : ''
       const output = (
         '' +
         `${print(toDays(toMs), 'Days')}` +

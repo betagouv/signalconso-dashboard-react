@@ -1,8 +1,8 @@
-import {Txt} from '../alexlibs/mui-extension'
+import { Txt } from '../alexlibs/mui-extension'
 import * as React from 'react'
-import {Box, BoxProps, Tooltip} from '@mui/material'
-import {useMemoFn} from '../alexlibs/react-hooks-lib'
-import {DetailInputValue} from '../core/client/report/Report'
+import { Box, BoxProps, Tooltip } from '@mui/material'
+import { useMemoFn } from '../alexlibs/react-hooks-lib'
+import { DetailInputValue } from '../core/client/report/Report'
 
 interface Props extends BoxProps {
   input: DetailInputValue[]
@@ -10,8 +10,17 @@ interface Props extends BoxProps {
   hideTooltip?: boolean
 }
 
-export const ReportDetailValues = ({input, lines = 2, hideTooltip, sx, ...props}: Props) => {
-  const description = useMemoFn(input, _ => _.find(_ => _.label === 'Description :')?.value)
+export const ReportDetailValues = ({
+  input,
+  lines = 2,
+  hideTooltip,
+  sx,
+  ...props
+}: Props) => {
+  const description = useMemoFn(
+    input,
+    (_) => _.find((_) => _.label === 'Description :')?.value,
+  )
 
   return (
     <Tooltip
@@ -20,11 +29,17 @@ export const ReportDetailValues = ({input, lines = 2, hideTooltip, sx, ...props}
         <div key={i}>
           <Box
             component="span"
-            dangerouslySetInnerHTML={{__html: detail.label}}
-            sx={{fontWeight: t => t.typography.fontWeightBold, fontSize: '16'}}
+            dangerouslySetInnerHTML={{ __html: detail.label }}
+            sx={{
+              fontWeight: (t) => t.typography.fontWeightBold,
+              fontSize: '16',
+            }}
           />
           &nbsp;
-          <Box component="span" dangerouslySetInnerHTML={{__html: detail.value}} />
+          <Box
+            component="span"
+            dangerouslySetInnerHTML={{ __html: detail.value }}
+          />
         </div>
       ))}
     >
@@ -41,7 +56,8 @@ export const ReportDetailValues = ({input, lines = 2, hideTooltip, sx, ...props}
         {description ||
           input.map((_, i) => (
             <span key={i}>
-              <Txt bold>{_.label}</Txt> <span dangerouslySetInnerHTML={{__html: _.value}} />
+              <Txt bold>{_.label}</Txt>{' '}
+              <span dangerouslySetInnerHTML={{ __html: _.value }} />
               <br />
             </span>
           ))}

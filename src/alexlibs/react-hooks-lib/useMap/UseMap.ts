@@ -1,4 +1,4 @@
-import {useState} from 'react'
+import { useState } from 'react'
 
 interface UseMap<K, V> {
   set: (k: K, v: V) => void
@@ -11,7 +11,9 @@ interface UseMap<K, V> {
   get: (k: K) => V | undefined
 }
 
-export const useMap = <K, V>(initialValue: Map<K, V> = new Map()): UseMap<K, V> => {
+export const useMap = <K, V>(
+  initialValue: Map<K, V> = new Map(),
+): UseMap<K, V> => {
   const [map, setMap] = useState<Map<K, V>>(initialValue)
 
   return {

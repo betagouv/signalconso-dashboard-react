@@ -1,21 +1,21 @@
-import {useParams} from 'react-router'
-import {useEffect} from 'react'
-import {useMutation} from '@tanstack/react-query'
-import {useConnectedContext} from '../../core/context/ConnectedContext'
-import {useToast} from '../../core/toast'
-import {CircularProgress} from '@mui/material'
-import {Alert} from '../../alexlibs/mui-extension'
-import {useI18n} from '../../core/i18n'
+import { useParams } from 'react-router'
+import { useEffect } from 'react'
+import { useMutation } from '@tanstack/react-query'
+import { useConnectedContext } from '../../core/context/ConnectedContext'
+import { useToast } from '../../core/toast'
+import { CircularProgress } from '@mui/material'
+import { Alert } from '../../alexlibs/mui-extension'
+import { useI18n } from '../../core/i18n'
 
 export const UpdateEmail = () => {
-  const {m} = useI18n()
-  const {token} = useParams<{token: string}>()
-  const {apiSdk, setConnectedUser} = useConnectedContext()
-  const {toastSuccess} = useToast()
+  const { m } = useI18n()
+  const { token } = useParams<{ token: string }>()
+  const { apiSdk, setConnectedUser } = useConnectedContext()
+  const { toastSuccess } = useToast()
 
   const _updateEmail = useMutation({
     mutationFn: apiSdk.secured.user.updateEmail,
-    onSuccess: user => {
+    onSuccess: (user) => {
       setConnectedUser(user)
       toastSuccess(m.emailAddressUpdatedToast)
     },

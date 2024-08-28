@@ -1,7 +1,7 @@
-import {Box} from '@mui/material'
-import {ReactElement, ReactNode} from 'react'
-import {LayoutContextProvider, useLayoutContext} from './LayoutContext'
-import {layoutConfig} from './index'
+import { Box } from '@mui/material'
+import { ReactElement, ReactNode } from 'react'
+import { LayoutContextProvider, useLayoutContext } from './LayoutContext'
+import { layoutConfig } from './index'
 
 interface LayoutProps {
   sidebar?: ReactElement<any>
@@ -9,7 +9,7 @@ interface LayoutProps {
   children: ReactNode
 }
 
-export const Layout = ({sidebar, header, children}: LayoutProps) => {
+export const Layout = ({ sidebar, header, children }: LayoutProps) => {
   return (
     <LayoutContextProvider hasSidebar={!!sidebar}>
       <LayoutUsingContext sidebar={sidebar} header={header}>
@@ -19,8 +19,12 @@ export const Layout = ({sidebar, header, children}: LayoutProps) => {
   )
 }
 
-const LayoutUsingContext = ({sidebar, header, children}: Pick<LayoutProps, 'sidebar' | 'header' | 'children'>) => {
-  const {sidebarTakesSpaceInLayout} = useLayoutContext()
+const LayoutUsingContext = ({
+  sidebar,
+  header,
+  children,
+}: Pick<LayoutProps, 'sidebar' | 'header' | 'children'>) => {
+  const { sidebarTakesSpaceInLayout } = useLayoutContext()
   return (
     <>
       {header}
@@ -28,12 +32,14 @@ const LayoutUsingContext = ({sidebar, header, children}: Pick<LayoutProps, 'side
       <Box
         component="main"
         sx={{
-          transition: t => t.transitions.create('all'),
+          transition: (t) => t.transitions.create('all'),
           overflow: 'hidden',
           position: 'relative',
           display: 'flex',
           flexDirection: 'column',
-          ...(sidebarTakesSpaceInLayout ? {paddingLeft: `${layoutConfig.sidebarWidth}px`} : null),
+          ...(sidebarTakesSpaceInLayout
+            ? { paddingLeft: `${layoutConfig.sidebarWidth}px` }
+            : null),
         }}
       >
         {children}

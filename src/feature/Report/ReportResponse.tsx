@@ -1,9 +1,9 @@
-import {useI18n} from '../../core/i18n'
+import { useI18n } from '../../core/i18n'
 
-import {Icon} from '@mui/material'
-import {useMutation, useQueryClient} from '@tanstack/react-query'
-import {addDays} from 'date-fns'
-import {EngagementReminderPeriod} from '../../core/client/engagement/Engagement'
+import { Icon } from '@mui/material'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { addDays } from 'date-fns'
+import { EngagementReminderPeriod } from '../../core/client/engagement/Engagement'
 import {
   ConsumerReview,
   EventActionValues,
@@ -14,16 +14,16 @@ import {
   ReportResponseTypes,
   ResponseEvaluation,
 } from '../../core/client/event/Event'
-import {FileOrigin, UploadedFile} from '../../core/client/file/UploadedFile'
-import {useApiContext} from '../../core/context/ApiContext'
-import {useConnectedContext} from '../../core/context/ConnectedContext'
-import {Id, Report} from '../../core/model'
-import {GetReportEventsQueryKeys} from '../../core/queryhooks/eventQueryHooks'
-import {Divider} from '../../shared/Divider'
-import {UserNameLabel} from '../../shared/UserNameLabel'
-import {ReportFileDownloadAllButton} from './File/ReportFileDownloadAllButton'
-import {ReportFiles} from './File/ReportFiles'
-import {GetReportQueryKeys} from '../../core/queryhooks/reportQueryHooks'
+import { FileOrigin, UploadedFile } from '../../core/client/file/UploadedFile'
+import { useApiContext } from '../../core/context/ApiContext'
+import { useConnectedContext } from '../../core/context/ConnectedContext'
+import { Id, Report } from '../../core/model'
+import { GetReportEventsQueryKeys } from '../../core/queryhooks/eventQueryHooks'
+import { Divider } from '../../shared/Divider'
+import { UserNameLabel } from '../../shared/UserNameLabel'
+import { ReportFileDownloadAllButton } from './File/ReportFileDownloadAllButton'
+import { ReportFiles } from './File/ReportFiles'
+import { GetReportQueryKeys } from '../../core/queryhooks/reportQueryHooks'
 
 export function ReportResponseComponent({
   canEditFile,
@@ -40,40 +40,56 @@ export function ReportResponseComponent({
   report: Report
   files?: UploadedFile[]
 }) {
-  const {m} = useI18n()
-  const {api} = useApiContext()
+  const { m } = useI18n()
+  const { api } = useApiContext()
   const queryClient = useQueryClient()
   const _postAction = useMutation({
-    mutationFn: (params: {id: Id; action: ReportAction}) => api.secured.reports.postAction(params.id, params.action),
+    mutationFn: (params: { id: Id; action: ReportAction }) =>
+      api.secured.reports.postAction(params.id, params.action),
     onSuccess: () =>
       queryClient
-        .invalidateQueries({queryKey: GetReportEventsQueryKeys(report.id)})
-        .then(() => queryClient.invalidateQueries({queryKey: GetReportQueryKeys(report.id)})),
+        .invalidateQueries({ queryKey: GetReportEventsQueryKeys(report.id) })
+        .then(() =>
+          queryClient.invalidateQueries({
+            queryKey: GetReportQueryKeys(report.id),
+          }),
+        ),
   })
 
   const details = response.data.details
-  const engagementExpirationDate = addDays(response.data.creationDate, EngagementReminderPeriod)
+  const engagementExpirationDate = addDays(
+    response.data.creationDate,
+    EngagementReminderPeriod,
+  )
   const hasEngagementReview = !!engagementReview
   const user = response.user
   return (
     <div className="">
       {details ? (
-        <ResponseDetails {...{details, engagementExpirationDate, user, hasEngagementReview}} />
+        <ResponseDetails
+          {...{ details, engagementExpirationDate, user, hasEngagementReview }}
+        />
       ) : (
         <div className="mt-2">{m.noAnswerFromPro}</div>
       )}
       <div className="flex flex-row mt-5 ">
         <h2 className="font-bold">{m.attachedFiles}</h2>
-        {files && files.filter(_ => _.origin === FileOrigin.Professional && _.isScanned).length > 1 && (
-          <ReportFileDownloadAllButton report={report} fileOrigin={FileOrigin.Professional} />
-        )}
+        {files &&
+          files.filter(
+            (_) => _.origin === FileOrigin.Professional && _.isScanned,
+          ).length > 1 && (
+            <ReportFileDownloadAllButton
+              report={report}
+              fileOrigin={FileOrigin.Professional}
+            />
+          )}
       </div>
       <ReportFiles
         hideAddBtn={!canEditFile}
         reportId={report.id}
         files={files}
         fileOrigin={FileOrigin.Professional}
-        onNewFile={file => {
+        onNewFile={(file) => {
           _postAction.mutate({
             id: report.id,
             action: {
@@ -87,7 +103,10 @@ export function ReportResponseComponent({
       <Divider margin />
       <>
         {consumerReportReview ? (
-          <ConsumerReviewComponent review={consumerReportReview} title="Avis initial du consommateur sur cette réponse" />
+          <ConsumerReviewComponent
+            review={consumerReportReview}
+            title="Avis initial du consommateur sur cette réponse"
+          />
         ) : (
           <div className="">{m.noReviewFromConsumer}</div>
         )}
@@ -118,14 +137,14 @@ function ResponseDetails({
   user?: EventUser
   hasEngagementReview: boolean
 }) {
-  const {m} = useI18n()
+  const { m } = useI18n()
   return (
     <div>
       <ResponseType
         responseType={details.responseType}
         responseDetails={details.responseDetails}
         otherResponseDetails={details.otherResponseDetails}
-        {...{engagementExpirationDate, hasEngagementReview}}
+        {...{ engagementExpirationDate, hasEngagementReview }}
       />
       <p className="font-bold">Répondant :</p>
       <div className="pl-4 mb-4">
@@ -158,15 +177,27 @@ function ResponseType({
   engagementExpirationDate?: Date
   hasEngagementReview: boolean
 }) {
-  const {m, formatDate} = useI18n()
-  const {icon, color, text} = (() => {
+  const { m, formatDate } = useI18n()
+  const { icon, color, text } = (() => {
     switch (responseType) {
       case ReportResponseTypes.Accepted:
-        return {icon: 'done', color: 'bg-green-100', text: m.reportResponse.ACCEPTED}
+        return {
+          icon: 'done',
+          color: 'bg-green-100',
+          text: m.reportResponse.ACCEPTED,
+        }
       case ReportResponseTypes.NotConcerned:
-        return {icon: 'domain_disabled', color: 'bg-blue-100', text: m.reportResponse.NOT_CONCERNED}
+        return {
+          icon: 'domain_disabled',
+          color: 'bg-blue-100',
+          text: m.reportResponse.NOT_CONCERNED,
+        }
       case ReportResponseTypes.Rejected:
-        return {icon: 'error_outline', color: 'bg-orange-100', text: m.reportResponse.REJECTED}
+        return {
+          icon: 'error_outline',
+          color: 'bg-orange-100',
+          text: m.reportResponse.REJECTED,
+        }
     }
   })()
 
@@ -179,7 +210,9 @@ function ResponseType({
 
   return (
     <div className="mb-4">
-      <div className={`${color} mb-2 border-black border-solid border w-fit p-2`}>
+      <div
+        className={`${color} mb-2 border-black border-solid border w-fit p-2`}
+      >
         <p className={`flex items-center gap-1 font-bold`}>
           <Icon fontSize="small">{icon}</Icon>
           {text}
@@ -190,11 +223,13 @@ function ResponseType({
         <>
           {engagementExpirationDate && engagementExpirationDate > now ? (
             <p>
-              Nous demanderons son avis au consommateur le <strong>{formatDate(engagementExpirationDate)}</strong>
+              Nous demanderons son avis au consommateur le{' '}
+              <strong>{formatDate(engagementExpirationDate)}</strong>
             </p>
           ) : (
             <p>
-              Nous avons demandé son avis au consommateur le <strong>{formatDate(engagementExpirationDate)}</strong>
+              Nous avons demandé son avis au consommateur le{' '}
+              <strong>{formatDate(engagementExpirationDate)}</strong>
             </p>
           )}
         </>
@@ -203,11 +238,17 @@ function ResponseType({
   )
 }
 
-function ConsumerReviewComponent({review, title}: {review: ConsumerReview; title: string}) {
-  const {m, formatDateTime} = useI18n()
-  const {connectedUser} = useConnectedContext()
+function ConsumerReviewComponent({
+  review,
+  title,
+}: {
+  review: ConsumerReview
+  title: string
+}) {
+  const { m, formatDateTime } = useI18n()
+  const { connectedUser } = useConnectedContext()
 
-  const {icon, classes, text} = (() => {
+  const { icon, classes, text } = (() => {
     switch (review.evaluation) {
       case ResponseEvaluation.Positive:
         return {
@@ -235,17 +276,24 @@ function ConsumerReviewComponent({review, title}: {review: ConsumerReview; title
       <h3 className="font-bold text-xl mb-2">{title}</h3>
 
       <div className="flex gap-2 items-center">
-        <p className={`inline-flex rounded-full items-center gap-1 w-fit p-2 ${classes} font-normal border border-solid`}>
+        <p
+          className={`inline-flex rounded-full items-center gap-1 w-fit p-2 ${classes} font-normal border border-solid`}
+        >
           <Icon fontSize="medium">{icon}</Icon>
           {text}
         </p>
-        <p className="text-gray-500"> le {formatDateTime(review.creationDate)}</p>
+        <p className="text-gray-500">
+          {' '}
+          le {formatDateTime(review.creationDate)}
+        </p>
       </div>
       {connectedUser.isNotPro && (
         <div className="mt-2 ml-2 p-4 bg-gray-100 w-fit">
           {review.details ? (
             <>
-              <p className="font-bold">Précisions (visibles uniquement par la DGCCRF) :</p>
+              <p className="font-bold">
+                Précisions (visibles uniquement par la DGCCRF) :
+              </p>
               <div className="">{review.details}</div>
             </>
           ) : (

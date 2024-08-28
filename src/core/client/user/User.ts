@@ -1,5 +1,5 @@
-import {subMonths} from 'date-fns'
-import {CompanyAccess, PaginatedFilters} from '../../model'
+import { subMonths } from 'date-fns'
+import { CompanyAccess, PaginatedFilters } from '../../model'
 
 export const roleAgents = ['DGCCRF', 'DGAL'] as const
 export type RoleAgents = (typeof roleAgents)[number]
@@ -30,7 +30,8 @@ export type MinimalUser = {
   lastName: string
 }
 
-export const isUserActive = (user: User) => user.lastEmailValidation.getTime() > subMonths(new Date(), 3).getTime()
+export const isUserActive = (user: User) =>
+  user.lastEmailValidation.getTime() > subMonths(new Date(), 3).getTime()
 
 export interface UserEdit {
   firstName?: string

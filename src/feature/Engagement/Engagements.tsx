@@ -1,36 +1,45 @@
-import {Page, PageTitle} from '../../shared/Page'
-import {Datatable} from '../../shared/Datatable/Datatable'
-import {Id} from '../../core/model'
-import {Box, Checkbox, Chip, Theme} from '@mui/material'
-import {openInNew, textOverflowMiddleCropping} from '../../core/helper'
-import {Txt} from '../../alexlibs/mui-extension'
-import React, {useEffect} from 'react'
-import {useI18n} from '../../core/i18n'
-import {siteMap} from '../../core/siteMap'
-import {useNavigate} from 'react-router'
-import {ListEngagementsQueryKeys, useListEngagementsQuery} from '../../core/queryhooks/engagementQueryHooks'
-import {Engagement} from '../../core/client/engagement/Engagement'
-import {useApiContext} from '../../core/context/ApiContext'
-import {useMutation, useQueryClient} from '@tanstack/react-query'
-import {useSetState} from '../../alexlibs/react-hooks-lib'
+import { Page, PageTitle } from '../../shared/Page'
+import { Datatable } from '../../shared/Datatable/Datatable'
+import { Id } from '../../core/model'
+import { Box, Checkbox, Chip, Theme } from '@mui/material'
+import { openInNew, textOverflowMiddleCropping } from '../../core/helper'
+import { Txt } from '../../alexlibs/mui-extension'
+import React, { useEffect } from 'react'
+import { useI18n } from '../../core/i18n'
+import { siteMap } from '../../core/siteMap'
+import { useNavigate } from 'react-router'
+import {
+  ListEngagementsQueryKeys,
+  useListEngagementsQuery,
+} from '../../core/queryhooks/engagementQueryHooks'
+import { Engagement } from '../../core/client/engagement/Engagement'
+import { useApiContext } from '../../core/context/ApiContext'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { useSetState } from '../../alexlibs/react-hooks-lib'
 
 export const Engagements = () => {
-  const {m, formatDate} = useI18n()
+  const { m, formatDate } = useI18n()
   const history = useNavigate()
 
-  const {api} = useApiContext()
+  const { api } = useApiContext()
   const queryClient = useQueryClient()
   const _check = useMutation({
-    mutationFn: (params: {engagementId: Id}) => api.secured.engagement.check(params.engagementId),
+    mutationFn: (params: { engagementId: Id }) =>
+      api.secured.engagement.check(params.engagementId),
     onSuccess: () => {
-      return queryClient.invalidateQueries({queryKey: ListEngagementsQueryKeys})
+      return queryClient.invalidateQueries({
+        queryKey: ListEngagementsQueryKeys,
+      })
     },
   })
 
   const _uncheck = useMutation({
-    mutationFn: (params: {engagementId: Id}) => api.secured.engagement.uncheck(params.engagementId),
+    mutationFn: (params: { engagementId: Id }) =>
+      api.secured.engagement.uncheck(params.engagementId),
     onSuccess: () => {
-      return queryClient.invalidateQueries({queryKey: ListEngagementsQueryKeys})
+      return queryClient.invalidateQueries({
+        queryKey: ListEngagementsQueryKeys,
+      })
     },
   })
 
@@ -39,7 +48,11 @@ export const Engagements = () => {
 
   useEffect(() => {
     if (_engagements.data) {
-      selectReport.add(_engagements.data.filter(engagement => !!engagement.resolutionDate).map(engagement => engagement.id))
+      selectReport.add(
+        _engagements.data
+          .filter((engagement) => !!engagement.resolutionDate)
+          .map((engagement) => engagement.id),
+      )
     }
   }, _engagements.data)
 
@@ -59,7 +72,8 @@ export const Engagements = () => {
   const rowSx = (_: Engagement) => {
     return {
       '&:hover': {
-        background: (t: Theme) => (_.resolutionDate ? undefined : t.palette.action.hover),
+        background: (t: Theme) =>
+          _.resolutionDate ? undefined : t.palette.action.hover,
       },
       fontStyle: _.expirationDate < now || _.resolutionDate ? 'italic' : '',
       background: _.resolutionDate
@@ -78,8 +92,9 @@ export const Engagements = () => {
 
   const select = (engagement: Engagement) => {
     selectReport.toggle(engagement.id)
-    if (selectReport.has(engagement.id)) return _check.mutate({engagementId: engagement.id})
-    else return _uncheck.mutate({engagementId: engagement.id})
+    if (selectReport.has(engagement.id))
+      return _check.mutate({ engagementId: engagement.id })
+    else return _uncheck.mutate({ engagementId: engagement.id })
   }
 
   const data = _engagements.data?.sort((a, b) => {
@@ -96,9 +111,11 @@ export const Engagements = () => {
           <p className="">
             Outil optionnel pour vous aider à gérer et suivre vos engagements.
             <span className="block text-gray-500 italic">
-              La case à cocher permet de marquer un engagement comme "honoré/terminé". Les engagements terminés disparaissent le
-              lendemain de leur clôture. Vous pouvez clore et ré-ouvrir un engagement autant que vous le souhaitez tant qu'il n'a
-              pas disparu.
+              La case à cocher permet de marquer un engagement comme
+              "honoré/terminé". Les engagements terminés disparaissent le
+              lendemain de leur clôture. Vous pouvez clore et ré-ouvrir un
+              engagement autant que vous le souhaitez tant qu'il n'a pas
+              disparu.
               <br />
               <br />
               La date d'avis consommateur est indiquée en{' '}
@@ -109,7 +126,8 @@ export const Engagements = () => {
               <Txt bold color="error">
                 rouge
               </Txt>{' '}
-              lorsque l'avis a été demandé. Si vous cliquez sur la ligne de l'engagement, cela ouvre le signalement correspondant.
+              lorsque l'avis a été demandé. Si vous cliquez sur la ligne de
+              l'engagement, cela ouvre le signalement correspondant.
             </span>
           </p>
         }
@@ -122,15 +140,22 @@ export const Engagements = () => {
           {
             id: 'checkbox',
             head: 'Terminer',
-            render: _ => <Checkbox checked={selectReport.has(_.id)} onChange={() => select(_)} />,
+            render: (_) => (
+              <Checkbox
+                checked={selectReport.has(_.id)}
+                onChange={() => select(_)}
+              />
+            ),
           },
           {
             id: 'consumer',
             head: 'Consommateur',
             onClick: test,
-            render: _ => (
+            render: (_) => (
               <span>
-                <Box component="span">{textOverflowMiddleCropping(_.report.email ?? '', 25)}</Box>
+                <Box component="span">
+                  {textOverflowMiddleCropping(_.report.email ?? '', 25)}
+                </Box>
                 <br />
                 <Txt color="hint" size="small">
                   {_.report.consumerPhone ?? ''}
@@ -142,9 +167,11 @@ export const Engagements = () => {
             id: 'engagement',
             head: 'Engagement',
             onClick: test,
-            render: _ => (
+            render: (_) => (
               <Txt truncate maxWidth="500px" block>
-                {_.otherEngagement ? _.otherEngagement : m.responseDetails[_.engagement]}
+                {_.otherEngagement
+                  ? _.otherEngagement
+                  : m.responseDetails[_.engagement]}
               </Txt>
             ),
           },
@@ -152,10 +179,23 @@ export const Engagements = () => {
             id: 'echeance',
             head: `Date d'avis consommateur`,
             onClick: test,
-            render: _ => {
-              if (_.expirationDate < now) return <Chip label={formatDate(_.expirationDate)} color="error" />
-              else if (_.expirationDate <= nowPlusTwoDays) return <Chip label={formatDate(_.expirationDate)} color="warning" />
-              else return <Chip label={formatDate(_.expirationDate)} color="primary" variant="outlined" />
+            render: (_) => {
+              if (_.expirationDate < now)
+                return (
+                  <Chip label={formatDate(_.expirationDate)} color="error" />
+                )
+              else if (_.expirationDate <= nowPlusTwoDays)
+                return (
+                  <Chip label={formatDate(_.expirationDate)} color="warning" />
+                )
+              else
+                return (
+                  <Chip
+                    label={formatDate(_.expirationDate)}
+                    color="primary"
+                    variant="outlined"
+                  />
+                )
             },
           },
         ]}
