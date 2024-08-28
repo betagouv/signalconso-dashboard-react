@@ -63,7 +63,7 @@ export const SelectCountry = ({onChange, country}: Props) => {
         options={_countries.data ?? []}
         getOptionLabel={option => option.name}
         renderOption={(props, option) => (
-          <Box component="li" key={option.code + Math.random()} sx={css.menuItem} {...props}>
+          <Box component="li" sx={css.menuItem} {...props}>
             <Box component="span" sx={combineSx(css.flag, css.iconWidth)}>
               {countryToFlag(option.code)}
             </Box>

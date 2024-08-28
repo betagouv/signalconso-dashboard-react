@@ -1,7 +1,7 @@
-import React, {CSSProperties, useMemo} from 'react'
 import {FormControl, InputLabel, Select, SelectProps} from '@mui/material'
+import React, {CSSProperties, useMemo} from 'react'
 
-interface ScSelectProps<T> extends SelectProps<T> {
+type ScSelectProps<T> = SelectProps<T> & {
   label?: string
   children?: React.ReactNode
   className?: string

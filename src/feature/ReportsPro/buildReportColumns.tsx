@@ -16,7 +16,7 @@ interface ReportTableColumnsParams {
   css: typeof css
   i18nData: {
     formatDate: (d?: Date | undefined) => string
-    m: typeof fr['messages']
+    m: (typeof fr)['messages']
   }
 }
 

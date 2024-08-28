@@ -1,21 +1,21 @@
+import {dateToApiDate, paginateData} from '../../helper'
+import {ApiSdkLogger} from '../../helper/Logger'
 import {
   ApiHostWithReportCount,
+  Country,
   HostReportCountSearch,
   Id,
+  IdentificationStatus,
+  InvestigationStatus,
+  Paginate,
   PaginatedData,
+  Website,
+  WebsiteCreation,
+  WebsiteInvestigation,
   WebsiteUpdateCompany,
   WebsiteWithCompany,
   WebsiteWithCompanySearch,
-  Country,
-  WebsiteInvestigation,
-  IdentificationStatus,
-  Paginate,
-  InvestigationStatus,
-  WebsiteCreation,
-  Website,
 } from '../../model'
-import {ApiSdkLogger} from '../../helper/Logger'
-import {dateToApiDate, paginateData} from '../../helper'
 import {ApiClientApi} from '../ApiClient'
 
 interface HostReportCountQueryString {
@@ -47,9 +47,6 @@ const hostReportFilter2QueryString = (hostReport: HostReportCountSearch): HostRe
 }
 
 const cleanFilter = (filter: WebsiteWithCompanySearch): WebsiteWithCompanySearch => {
-  if (filter.identificationStatus === []) {
-    delete filter.identificationStatus
-  }
   if (filter.host === '') {
     delete filter.host
   }

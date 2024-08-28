@@ -6,7 +6,7 @@ function readInt(str: string | undefined, defaultValue: number) {
 }
 
 const severities = ['info', 'warning', 'error', 'success'] as const
-type Severity = typeof severities[number]
+type Severity = (typeof severities)[number]
 function readSeverity(severity?: string): Severity | null {
   if (severity && severities.includes(severity as any)) {
     return severity as Severity

@@ -9,7 +9,7 @@ import {useQuery} from '@tanstack/react-query'
 interface Props
   extends Pick<
     AutocompleteProps<string, true, false, false>,
-    'value' | 'defaultValue' | 'className' | 'style' | 'placeholder' | 'onChange' | 'fullWidth'
+    'value' | 'defaultValue' | 'className' | 'style' | 'onChange' | 'fullWidth'
   > {
   label?: string
 }

@@ -2,7 +2,7 @@ import * as React from 'react'
 import {EventHandler, ReactElement, ReactNode, SyntheticEvent, useState} from 'react'
 import {Button, Dialog, DialogActions, DialogContent, DialogProps, DialogTitle, LinearProgress, PaperProps} from '@mui/material'
 
-export interface ModalProps extends Omit<DialogProps, 'children' | 'onClick' | 'open'> {
+export interface ModalProps extends Omit<DialogProps, 'children' | 'onClick' | 'open' | 'content'> {
   disabled?: boolean
   title?: string
   confirmLabel?: string

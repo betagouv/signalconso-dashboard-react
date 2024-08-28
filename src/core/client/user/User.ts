@@ -2,7 +2,7 @@ import {subMonths} from 'date-fns'
 import {CompanyAccess, PaginatedFilters} from '../../model'
 
 export const roleAgents = ['DGCCRF', 'DGAL'] as const
-export type RoleAgents = typeof roleAgents[number]
+export type RoleAgents = (typeof roleAgents)[number]
 export type RoleAdminOrAgent = 'Admin' | RoleAgents
 
 export interface User {

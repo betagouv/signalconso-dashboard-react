@@ -1,21 +1,12 @@
-import * as React from 'react'
-import {forwardRef, useEffect, useState} from 'react'
 import {Icon, IconButton, TextField} from '@mui/material'
 import {AutocompleteProps} from '@mui/material/Autocomplete'
-import {SelectCountriesMenu} from './SelectCountriesMenu'
+import * as React from 'react'
+import {forwardRef, useEffect, useState} from 'react'
 import {stopPropagation} from '../../core/helper'
+import {SelectCountriesMenu} from './SelectCountriesMenu'
 
 interface Props
-  extends Pick<
-    AutocompleteProps<string, true, false, false>,
-    | 'value'
-    | 'defaultValue'
-    | 'className'
-    // | 'ref'
-    | 'disabled'
-    | 'placeholder'
-    | 'fullWidth'
-  > {
+  extends Pick<AutocompleteProps<string, true, false, false>, 'value' | 'defaultValue' | 'className' | 'disabled' | 'fullWidth'> {
   label?: string
   onChange: (_: string[]) => void
 }
@@ -43,11 +34,6 @@ export const SelectCountries = forwardRef(({value, onChange, disabled, ...props}
     innerOnChange([])
   }
 
-  // // const handleInputChange = (event: any) => {
-  //   setInputValue(event.target.value)
-  //   if (inputValue !== '') open(event)
-  // }
-
   return (
     <>
       <TextField
@@ -60,13 +46,9 @@ export const SelectCountries = forwardRef(({value, onChange, disabled, ...props}
         maxRows={2}
         rows={2}
         value={innerValue.join(', ')}
-        // value={inputValue}
         InputProps={{
           disabled,
           style: {paddingRight: 4},
-          // startAdornment: indexValues.toArray().map(_ =>
-          //   <Chip size="small" label={_} style={{margin: 2}} onDelete={() => indexValues.delete(_)}/>
-          // ),
           endAdornment: (
             <>
               <IconButton
@@ -78,9 +60,6 @@ export const SelectCountries = forwardRef(({value, onChange, disabled, ...props}
               >
                 <Icon>clear</Icon>
               </IconButton>
-              {/*<IconButton size="small" onClick={open}>*/}
-              {/*  <Icon>arrow_drop_down</Icon>*/}
-              {/*</IconButton>*/}
             </>
           ),
         }}
