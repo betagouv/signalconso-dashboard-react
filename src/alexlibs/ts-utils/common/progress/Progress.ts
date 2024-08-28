@@ -1,7 +1,10 @@
 import {duration} from '../duration/Duration'
 
 class Progress {
-  constructor(public totalLines: number, public t0 = new Date().getTime()) {}
+  constructor(
+    public totalLines: number,
+    public t0 = new Date().getTime(),
+  ) {}
 
   private previoustN: number = this.t0
   private previousLines: number = 0

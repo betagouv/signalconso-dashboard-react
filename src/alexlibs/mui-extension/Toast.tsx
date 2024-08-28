@@ -111,5 +111,6 @@ export const ToastProvider = ({children, vertical = 'bottom', horizontal = 'left
 
 export const useToast = () => useContext(ToastContext)
 
-export const withToast = (Component: any) => (props: any) =>
+export const withToast = (Component: any) => (props: any) => (
   <ToastContext.Consumer>{(other: WithToast) => <Component {...props} {...other} />}</ToastContext.Consumer>
+)

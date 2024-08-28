@@ -200,12 +200,8 @@ export const SubscriptionCard = ({subscription, className, style}: Props) => {
 
         <SubscriptionCardRow icon="label" label={m.tags} onClick={tagsAnchor.open}>
           <Stack direction="row" gap={1} flexWrap="wrap">
-            {subscription?.withTags.map(_ => (
-              <Chip key={_} color="success" icon={<Icon>add</Icon>} label={_} />
-            ))}
-            {subscription?.withoutTags.map(_ => (
-              <Chip key={_} color="error" icon={<Icon>remove</Icon>} label={_} />
-            ))}
+            {subscription?.withTags.map(_ => <Chip key={_} color="success" icon={<Icon>add</Icon>} label={_} />)}
+            {subscription?.withoutTags.map(_ => <Chip key={_} color="error" icon={<Icon>remove</Icon>} label={_} />)}
           </Stack>
         </SubscriptionCardRow>
         <SelectTagsMenu

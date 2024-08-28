@@ -221,7 +221,7 @@ export const ReportComponent = () => {
                 />
               </ReportTabPanel>
               <ReportTabPanel value={activeTab} index={2}>
-                <ReportEvents events={_getCompanyEvents.isLoading ? undefined : _getCompanyEvents.data ?? []} />
+                <ReportEvents events={_getCompanyEvents.isLoading ? undefined : (_getCompanyEvents.data ?? [])} />
               </ReportTabPanel>
             </>
           </CleanDiscreetPanel>

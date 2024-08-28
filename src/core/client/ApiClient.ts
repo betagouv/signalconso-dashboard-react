@@ -41,7 +41,10 @@ interface ApiErrorDetails {
 export class ApiError extends Error {
   public name = 'ApiError'
 
-  constructor(public message: string, public details: ApiErrorDetails) {
+  constructor(
+    public message: string,
+    public details: ApiErrorDetails,
+  ) {
     super(message)
   }
 }

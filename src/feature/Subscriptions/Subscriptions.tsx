@@ -53,9 +53,7 @@ export const Subscriptions = () => {
           {m.add}
         </Box>
       </Ripple>
-      {_subscriptions.data?.map(subscription => (
-        <SubscriptionCard key={subscription.id} subscription={subscription} />
-      ))}
+      {_subscriptions.data?.map(subscription => <SubscriptionCard key={subscription.id} subscription={subscription} />)}
     </Page>
   )
 }

@@ -179,10 +179,10 @@ export const Reports = () => {
     _reports.filters.status?.length === 0
       ? null
       : _reports.filters.status?.every(status => Report.respondedStatus.includes(status))
-      ? true
-      : _reports.filters.status?.every(status => Report.notRespondedStatus.includes(status))
-      ? false
-      : null
+        ? true
+        : _reports.filters.status?.every(status => Report.notRespondedStatus.includes(status))
+          ? false
+          : null
   const onChangeHasProResponse = (b: boolean | null) => {
     if (b) _reports.updateFilters(prev => ({...prev, status: Report.respondedStatus}))
     else if (b === false) _reports.updateFilters(prev => ({...prev, status: Report.notRespondedStatus}))

@@ -123,9 +123,9 @@ function LangPanel({
         </ScButton>
       </div>
       <PanelBody>
-        {countBySubCategories.data?.[langKey].sort(sortById).map(reportNode => (
-          <Node open={openAll} reportNode={reportNode} path={[]} />
-        ))}
+        {countBySubCategories.data?.[langKey]
+          .sort(sortById)
+          .map(reportNode => <Node open={openAll} reportNode={reportNode} path={[]} />)}
       </PanelBody>
     </CleanWidePanel>
   )

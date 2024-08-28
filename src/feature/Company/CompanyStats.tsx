@@ -101,11 +101,7 @@ function WebsitesDistribution({_hosts}: {_hosts: UseQueryResult<string[], ApiErr
     <CleanDiscreetPanel loading={_hosts.isLoading}>
       <h2 className="font-bold text-lg">{m.websites}</h2>
       <div style={{maxHeight: 260, overflow: 'auto'}}>
-        <List dense>
-          {_hosts.data?.map((host, i) => (
-            <ListItem key={i}>{host}</ListItem>
-          ))}
-        </List>
+        <List dense>{_hosts.data?.map((host, i) => <ListItem key={i}>{host}</ListItem>)}</List>
       </div>
     </CleanDiscreetPanel>
   )

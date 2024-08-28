@@ -30,8 +30,9 @@ export const useI18n = (): I18nContextProps => {
   return useContext<I18nContextProps>(I18nContext as any)
 }
 
-const withI18n = (Component: any) => (props: any) =>
+const withI18n = (Component: any) => (props: any) => (
   <I18nContext.Consumer>{(other: any) => <Component {...props} {...other} />}</I18nContext.Consumer>
+)
 
 export const I18nProvider = ({children, lang = AppLangs.fr}: Props) => {
   const {messages: m, ...others}: typeof fr = useMemo(() => {
