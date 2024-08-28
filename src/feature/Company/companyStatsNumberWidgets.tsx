@@ -14,7 +14,6 @@ import {
   useGetResponseDelayQuery,
 } from 'core/queryhooks/statsQueryHooks'
 import {siteMap} from 'core/siteMap'
-import {HIDE_UNDELIVERED_DOC_FEATURE} from 'feature/CompanyAccesses/SaveUndeliveredDocBtn'
 import {PropsWithChildren} from 'react'
 import {NavLink} from 'react-router-dom'
 
@@ -33,7 +32,6 @@ export function CompanyStatsNumberWidgets({id, siret}: {id: Id; siret: string}) 
       {connectedUser.isNotPro && (
         <>
           <NumberWidgetDocsSent {...{siret}} />
-          <NumberWidgetReturnedDocs {...{siret}} />
           <NumberWidgetThreats {...{companyId}} />
           <NumberWidgetBlackmail {...{companyId}} />
         </>
@@ -123,24 +121,6 @@ function NumberWidgetDocsSent({siret}: {siret: string}) {
         <>
           <p className="text-3xl font-bold">{count}</p>
           <p className="">courriers envoyés</p>
-        </>
-      )}
-    </Widget>
-  )
-}
-function NumberWidgetReturnedDocs({siret}: {siret: string}) {
-  const _companyEvents = useGetCompanyEventsQuery(siret)
-  const count = _companyEvents.data?.filter(_ => _.data.action === EventActionValues.ActivationDocReturned).length
-  const {m} = useI18n()
-  if (HIDE_UNDELIVERED_DOC_FEATURE) {
-    return null
-  }
-  return (
-    <Widget loading={_companyEvents.isLoading}>
-      {count !== undefined && (
-        <>
-          <p className="text-3xl font-bold">{count}</p>
-          <p className="">{m.activationDocReturned}</p>
         </>
       )}
     </Widget>

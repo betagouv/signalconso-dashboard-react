@@ -19,7 +19,6 @@ import {ScRadioGroup} from '../../shared/RadioGroup'
 import {ScRadioGroupItem} from '../../shared/RadioGroupItem'
 import {ScDialog} from '../../shared/ScDialog'
 import {CompanyAccessCreateBtn} from './CompanyAccessCreateBtn'
-import {HIDE_UNDELIVERED_DOC_FEATURE, SaveUndeliveredDocBtn} from './SaveUndeliveredDocBtn'
 import {useCompanyAccess} from './useCompaniesAccess'
 
 interface Accesses {
@@ -279,7 +278,6 @@ function CompanyAccessesLoaded({company}: {company: CompanyWithReportsCount}) {
       <div className="flex justify-between gap-2 sm:items-center mb-4 flex-col sm:flex-row">
         <p>Les personnes suivantes peuvent consulter et répondre aux signalements de l'entreprise {company.name}.</p>
         <div className="flex gap-2 shrink-0">
-          {isAdmin && isListEmpty && siret && !HIDE_UNDELIVERED_DOC_FEATURE && <SaveUndeliveredDocBtn {...{siret}} />}
           {(isAdmin || isPro) && (
             <CompanyAccessCreateBtn
               loading={_crudToken.creating}
