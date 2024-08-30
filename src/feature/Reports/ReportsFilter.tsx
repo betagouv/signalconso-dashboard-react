@@ -1,17 +1,16 @@
-import { useI18n } from '../../core/i18n'
 import { Box, Grid, Icon } from '@mui/material'
-import { Enum } from '../../alexlibs/ts-utils'
-import { ReportSearchResult } from '../../core/client/report/Report'
-import { Paginate, PaginatedFilters, ReportSearch } from '../../core/model'
-import { DebouncedInput } from '../../shared/DebouncedInput'
-import { ScInput } from '../../shared/ScInput'
-import { PeriodPicker } from '../../shared/PeriodPicker'
-import { SelectDepartments } from '../../shared/SelectDepartments/SelectDepartments'
-import { SelectTags } from '../../shared/SelectTags/SelectTags'
-import { TrueFalseNull } from '../../shared/TrueFalseNull'
 import { UseQueryPaginateResult } from 'core/queryhooks/UseQueryPaginate'
 import { SelectTagsMenuValues } from 'shared/SelectTags/SelectTagsMenu'
-import { reportsCss } from './Reports'
+import { Enum } from '../../alexlibs/ts-utils'
+import { ReportSearchResult } from '../../core/client/report/Report'
+import { useI18n } from '../../core/i18n'
+import { Paginate, PaginatedFilters, ReportSearch } from '../../core/model'
+import { DebouncedInput } from '../../shared/DebouncedInput'
+import { PeriodPicker } from '../../shared/PeriodPicker'
+import { ScInput } from '../../shared/ScInput'
+import { SelectDepartments } from '../../shared/SelectDepartments/SelectDepartments'
+import { SelectTags } from '../../shared/SelectTags/SelectTags'
+import { TrueFalseNullRow } from './AdvancedReportsFilter'
 
 const TrueLabel = () => {
   const { m } = useI18n()
@@ -39,7 +38,7 @@ type ReportsGridProps = {
   tags: SelectTagsMenuValues
 }
 
-const ReportsFilter: React.FC<ReportsGridProps> = ({
+export const ReportsFilter: React.FC<ReportsGridProps> = ({
   _reports,
   onDetailsChange,
   onSiretSirenChange,
@@ -110,22 +109,17 @@ const ReportsFilter: React.FC<ReportsGridProps> = ({
       </Grid>
       <Grid item xs={12} md={6}>
         <Box>
-          <Box sx={reportsCss.trueFalseNullBox}>
-            <Box sx={reportsCss.trueFalseNullLabel}>{m.siretOrSirenFound}</Box>
-            <TrueFalseNull
-              label={{
-                true: <TrueLabel />,
-              }}
-              sx={{ flexBasis: '50%' }}
-              value={_reports.filters.hasCompany ?? null}
-              onChange={(hasCompany) =>
-                _reports.updateFilters((prev) => ({
-                  ...prev,
-                  hasCompany: hasCompany ?? undefined,
-                }))
-              }
-            />
-          </Box>
+          <TrueFalseNullRow
+            label={m.siretOrSirenFound}
+            value={_reports.filters.hasCompany ?? null}
+            onChange={(hasCompany) =>
+              _reports.updateFilters((prev) => ({
+                ...prev,
+                hasCompany: hasCompany ?? undefined,
+              }))
+            }
+            dropdownArrow
+          />
           {_reports.filters.hasCompany === true && (
             <DebouncedInput
               value={_reports.filters.siretSirenList ?? []}
@@ -163,5 +157,3 @@ const ReportsFilter: React.FC<ReportsGridProps> = ({
     </Grid>
   )
 }
-
-export default ReportsFilter

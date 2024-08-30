@@ -1,5 +1,5 @@
 import { Box, BoxProps, Icon } from '@mui/material'
-import React from 'react'
+import React, { Ref } from 'react'
 import { ResponseEvaluation } from '../../core/client/event/Event'
 import { fnSwitch } from '../../core/helper'
 import { useI18n } from '../../core/i18n'
@@ -13,7 +13,7 @@ interface ConsumerReviewLabelProps extends BoxProps {
 export const ConsumerReviewLabel = React.forwardRef(
   (
     { evaluation, displayLabel, center, ...other }: ConsumerReviewLabelProps,
-    ref: any,
+    ref: Ref<unknown>,
   ) => {
     const { m } = useI18n()
     const gap = '0.3rem'

@@ -1,14 +1,14 @@
-import { FormControl, Icon, InputLabel, Select, Tooltip } from '@mui/material'
+import { Icon, Tooltip } from '@mui/material'
 import { useQueryClient } from '@tanstack/react-query'
 import { siteMap } from 'core/siteMap'
 import { ReportReferenceNumber } from 'feature/Report/ReportReferenceNumber'
-import React, { useRef } from 'react'
+import { useRef } from 'react'
 import { useParams } from 'react-router'
 import { Link } from 'react-router-dom'
 import { CleanWidePanel } from 'shared/Panel/simplePanels'
+import { Alert, Btn } from '../../alexlibs/mui-extension'
 import {
   ConsumerReview,
-  EventActionValues,
   ReportProResponseEvent,
 } from '../../core/client/event/Event'
 import { FileOrigin, UploadedFile } from '../../core/client/file/UploadedFile'
@@ -33,9 +33,10 @@ import {
 import { ScButton } from '../../shared/Button'
 import { Page } from '../../shared/Page'
 import { UserNameLabel } from '../../shared/UserNameLabel'
-import CategoryMessage from './CategoryMessage'
+import { CategoryMessage } from './CategoryMessage'
 import { ReportEvents } from './Event/ReportEvents'
 import { creationReportEvent } from './Report'
+import { buildOptionFromUser, ReportAffectation } from './ReportAffectation'
 import { ReportDetails, ReportFilesFull } from './ReportDescription'
 import { ExpirationDate } from './ReportHeader'
 import { ReportInfluencer } from './ReportInfluencer'
@@ -43,11 +44,6 @@ import { ReportResponseComponent } from './ReportResponse'
 import { ReportResponseForm } from './ReportResponseForm/ReportResponseForm'
 import { ReportStation } from './ReportStation'
 import { ReportTrain } from './ReportTrain'
-import { Alert, Btn } from '../../alexlibs/mui-extension'
-import { ReportPostAction } from './ReportPostAction'
-import { buildOptionFromUser, ReportAffectation } from './ReportAffectation'
-import { ScSelect } from '../../shared/Select/Select'
-import { ScInput } from '../../shared/ScInput'
 
 export const ReportPro = () => {
   const { id } = useParams<{ id: Id }>()
@@ -74,7 +70,7 @@ function ReportProLoaded({
     report.id,
   )
   const _getEngagementReview = useGetEngagementReviewQuery(report.id)
-  const responseFormRef = useRef<HTMLElement>(null)
+  const responseFormRef = useRef<HTMLDivElement>(null)
 
   function scrollToResponse() {
     if (responseFormRef.current) {

@@ -1,4 +1,4 @@
-import { forwardRef, useState } from 'react'
+import { forwardRef, Ref, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { Alert } from '../../../alexlibs/mui-extension'
 import { Enum } from '../../../alexlibs/ts-utils'
@@ -14,20 +14,20 @@ import { ReportResponseFormItem } from './ReportResponseFormItem'
 import { Box, Step, StepButton, Stepper } from '@mui/material'
 import { useMutation } from '@tanstack/react-query'
 import { CleanWidePanel } from 'shared/Panel/simplePanels'
+import { EngagementReminderPeriod } from '../../../core/client/engagement/Engagement'
 import {
-  IncomingReportResponse,
-  ReportResponseTypes,
   acceptedDetails,
+  IncomingReportResponse,
   notConcernedDetails,
   rejectedDetails,
+  ReportResponseTypes,
 } from '../../../core/client/event/Event'
 import { FileOrigin } from '../../../core/client/file/UploadedFile'
 import { Report } from '../../../core/client/report/Report'
 import { useApiContext } from '../../../core/context/ApiContext'
 import { Id } from '../../../core/model'
-import CharacterCounter from './CharacterCounter'
-import SuccessModal from './SuccessModal'
-import { EngagementReminderPeriod } from '../../../core/client/engagement/Engagement'
+import { CharacterCounter } from './CharacterCounter'
+import { SuccessModal } from './SuccessModal'
 
 interface Props {
   report: Report
@@ -48,7 +48,7 @@ const stepStyles = {
 }
 
 export const ReportResponseForm = forwardRef(
-  ({ report, onConfirm, ...props }: Props, ref: any) => {
+  ({ report, onConfirm }: Props, ref: Ref<HTMLDivElement>) => {
     const { m } = useI18n()
     const {
       register,

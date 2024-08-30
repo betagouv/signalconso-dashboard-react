@@ -34,6 +34,7 @@ export const emptyStringToUndefined = (value: string): string | undefined =>
 export const toNumberOrDefault = (value: any, defaultValue: number): number =>
   isNaN(value) || value === '' || value == null ? defaultValue : value
 
+// remove undefined values and empty arrays
 export const cleanObject = <T extends { [key: string]: any }>(
   obj: T,
 ): Partial<T> => {

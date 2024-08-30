@@ -1,3 +1,6 @@
+import { useMutation } from '@tanstack/react-query'
+import { useConnectedContext } from 'core/context/ConnectedContext'
+import { useI18n } from 'core/i18n'
 import { ScButton } from '../../shared/Button'
 import { DatatableToolbar } from '../../shared/Datatable/DatatableToolbar'
 
@@ -7,27 +10,18 @@ type SelectReportType = {
   toArray: () => Array<any>
 }
 
-type DownloadReportsType = {
-  isPending: boolean
-  mutate: (items: Array<any>) => void
-}
-
-type MType = {
-  download: string
-  nSelected: (size: number) => string
-}
-
 type DatatableToolbarComponentProps = {
   selectReport: SelectReportType
-  downloadReports: DownloadReportsType
-  m: MType
 }
 
-const DatatableToolbarComponent: React.FC<DatatableToolbarComponentProps> = ({
-  selectReport,
-  downloadReports,
-  m,
-}) => {
+export const DatatableToolbarComponent: React.FC<
+  DatatableToolbarComponentProps
+> = ({ selectReport }) => {
+  const { apiSdk } = useConnectedContext()
+  const { m } = useI18n()
+  const downloadReports = useMutation({
+    mutationFn: apiSdk.secured.reports.download,
+  })
   return (
     <DatatableToolbar
       open={selectReport.size > 0}
@@ -52,5 +46,3 @@ const DatatableToolbarComponent: React.FC<DatatableToolbarComponentProps> = ({
     </DatatableToolbar>
   )
 }
-
-export default DatatableToolbarComponent

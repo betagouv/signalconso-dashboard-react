@@ -7,10 +7,10 @@ export interface Country {
 
 export interface Region {
   label: string
-  departments: Department[]
+  departments: GeoArea[]
 }
 
-export interface Department {
+export interface GeoArea {
   code: string
   label: string
 }

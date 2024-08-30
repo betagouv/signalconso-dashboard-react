@@ -5,7 +5,7 @@ interface CharacterCounterProps {
   maxLength: number
 }
 
-const CharacterCounter: React.FC<CharacterCounterProps> = ({
+export const CharacterCounter: React.FC<CharacterCounterProps> = ({
   currentLength = 0,
   maxLength,
 }) => {
@@ -19,5 +19,3 @@ const CharacterCounter: React.FC<CharacterCounterProps> = ({
     </span>
   )
 }
-
-export default CharacterCounter

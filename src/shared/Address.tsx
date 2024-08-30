@@ -1,27 +1,29 @@
-import React, { forwardRef } from 'react'
+import { forwardRef, Ref } from 'react'
 import { Address } from '../core/model'
 
 interface Props {
   address: Address
 }
 
-export const AddressComponent = forwardRef(({ address }: Props, ref: any) => {
-  return (
-    <span ref={ref}>
-      {address.number}&nbsp;
-      {address.street}&nbsp;
-      {address.addressSupplement}
-      {(address.number || address.street || address.addressSupplement) && (
-        <br />
-      )}
-      {address.postalCode}&nbsp;
-      {address.city}
-      {address.country && (
-        <>
+export const AddressComponent = forwardRef(
+  ({ address }: Props, ref: Ref<HTMLSpanElement>) => {
+    return (
+      <span ref={ref}>
+        {address.number}&nbsp;
+        {address.street}&nbsp;
+        {address.addressSupplement}
+        {(address.number || address.street || address.addressSupplement) && (
           <br />
-          {address.country.name}
-        </>
-      )}
-    </span>
-  )
-})
+        )}
+        {address.postalCode}&nbsp;
+        {address.city}
+        {address.country && (
+          <>
+            <br />
+            {address.country.name}
+          </>
+        )}
+      </span>
+    )
+  },
+)

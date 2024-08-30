@@ -15,7 +15,7 @@ interface Props
 }
 
 export const SelectCountries = forwardRef(
-  ({ value, onChange, disabled, ...props }: Props, ref: any) => {
+  ({ value, onChange, disabled, ...props }: Props, ref: React.Ref<unknown>) => {
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
     const [innerValue, setInnerValue] = useState<string[]>([])
 

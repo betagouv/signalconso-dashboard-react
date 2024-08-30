@@ -1,6 +1,6 @@
+import { Card, CardProps, LinearProgress } from '@mui/material'
 import * as React from 'react'
 import { forwardRef } from 'react'
-import { Card, CardProps, LinearProgress } from '@mui/material'
 
 export interface PanelProps extends CardProps {
   loading?: boolean
@@ -11,7 +11,7 @@ export interface PanelProps extends CardProps {
 export const Panel = forwardRef(
   (
     { elevation = 0, loading, children, stretch, sx, ...other }: PanelProps,
-    ref: any,
+    ref: React.Ref<HTMLDivElement>,
   ) => {
     return (
       <Card

@@ -1,11 +1,11 @@
 import { Icon, InputAdornment, TextField } from '@mui/material'
-import { forwardRef, useState } from 'react'
+import { forwardRef, Ref, useState } from 'react'
 import { ScInputProps } from './ScInput'
 
 interface ScInputPasswordProps extends Omit<ScInputProps, 'type'> {}
 
 export const ScInputPassword = forwardRef(
-  (props: ScInputPasswordProps, ref: any) => {
+  (props: ScInputPasswordProps, ref: Ref<HTMLDivElement>) => {
     const [passwordVisible, setPasswordVisible] = useState<boolean>(false)
     return (
       <TextField

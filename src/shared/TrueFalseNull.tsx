@@ -1,7 +1,7 @@
 import { BoxProps, Theme, ToggleButton, ToggleButtonGroup } from '@mui/material'
-import React, { forwardRef, ReactNode, useMemo } from 'react'
-import { useI18n } from '../core/i18n'
 import { SxProps } from '@mui/system'
+import { forwardRef, ReactNode, Ref, useMemo } from 'react'
+import { useI18n } from '../core/i18n'
 
 export interface TrueFalseNullProps extends Omit<BoxProps, 'onChange'> {
   gutter?: boolean
@@ -27,7 +27,7 @@ const buttonStyle: SxProps<Theme> = {
 export const TrueFalseNull = forwardRef(
   (
     { gutter, value, onChange, label, sx, ...props }: TrueFalseNullProps,
-    ref: any,
+    ref: Ref<unknown>,
   ) => {
     const { m } = useI18n()
     const parsedValue = useMemo(() => {

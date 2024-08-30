@@ -1,7 +1,7 @@
-import * as React from 'react'
-import { forwardRef } from 'react'
 import { Box, Button, CircularProgress, Icon } from '@mui/material'
 import { ButtonProps } from '@mui/material/Button'
+import * as React from 'react'
+import { forwardRef } from 'react'
 import { makeSx } from './common'
 
 const sx = makeSx({
@@ -22,7 +22,7 @@ export interface BtnProps extends ButtonProps {
 export const Btn = forwardRef(
   (
     { loading, children, disabled, icon, iconAfter, ...props }: BtnProps,
-    ref: any,
+    ref: React.Ref<HTMLButtonElement>,
   ) => {
     return (
       <Button {...props} disabled={disabled || loading} ref={ref}>

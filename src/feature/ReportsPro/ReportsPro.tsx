@@ -1,4 +1,4 @@
-import { Badge, Box, Grid, Icon, MenuItem } from '@mui/material'
+import { Badge, Box, Icon, MenuItem } from '@mui/material'
 import { useEffect, useMemo } from 'react'
 import { Alert, Btn, Fender, Txt, makeSx } from '../../alexlibs/mui-extension'
 import { useLayoutContext } from '../../core/Layout/LayoutContext'
@@ -26,7 +26,7 @@ import {
 } from '../../core/client/report/Report'
 import { ReportSearch } from '../../core/client/report/ReportSearch'
 import { cleanObject, openInNew } from '../../core/helper'
-import compose from '../../core/helper/compose'
+import { compose } from '../../core/helper/compose'
 import {
   mapArrayFromQuerystring,
   mapDateFromQueryString,

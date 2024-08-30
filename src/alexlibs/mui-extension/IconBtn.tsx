@@ -4,7 +4,7 @@ import {
   IconButton,
   IconButtonProps,
 } from '@mui/material'
-import { forwardRef, ReactNode } from 'react'
+import { forwardRef, ReactNode, Ref } from 'react'
 
 interface IconBtnProps extends IconButtonProps {
   loading?: boolean
@@ -14,7 +14,10 @@ interface IconBtnProps extends IconButtonProps {
 }
 
 export const IconBtn = forwardRef(
-  ({ icon, loading, children, disabled, ...props }: IconBtnProps, ref: any) => {
+  (
+    { icon, loading, children, disabled, ...props }: IconBtnProps,
+    ref: Ref<HTMLButtonElement>,
+  ) => {
     return (
       <IconButton {...props} disabled={disabled || loading} ref={ref}>
         {loading ? (

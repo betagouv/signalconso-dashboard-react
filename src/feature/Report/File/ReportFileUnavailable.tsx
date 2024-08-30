@@ -40,7 +40,7 @@ const css = makeSx({
   },
 })
 
-const ReportFileUnavailable = () => {
+export const ReportFileUnavailable = () => {
   return (
     <Box sx={css.root}>
       <Box sx={css.body}>
@@ -50,5 +50,3 @@ const ReportFileUnavailable = () => {
     </Box>
   )
 }
-
-export default ReportFileUnavailable
