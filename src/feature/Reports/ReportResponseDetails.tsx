@@ -9,7 +9,7 @@ type ReportResponseDetailsProps = {
   details: ExistingReportResponse | { description: string } | null | undefined
 }
 
-const ReportResponseDetails: React.FC<ReportResponseDetailsProps> = ({
+export const ReportResponseDetails: React.FC<ReportResponseDetailsProps> = ({
   details,
 }) => {
   const { m } = useI18n()
@@ -66,4 +66,3 @@ const ReportResponseDetails: React.FC<ReportResponseDetailsProps> = ({
     .getOrElse(<></>)
 }
 
-export default ReportResponseDetails

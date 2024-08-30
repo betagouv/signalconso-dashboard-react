@@ -15,7 +15,7 @@ const removeProtocol = (url: string) => {
   return url.replace(/^(http|https):\/\//, '')
 }
 
-const CompanyNameDetails: React.FC<CompanyNameDetailsProps> = ({
+export const CompanyNameDetails: React.FC<CompanyNameDetailsProps> = ({
   companyId,
   isDGAL,
   companyName,
@@ -48,4 +48,3 @@ const CompanyNameDetails: React.FC<CompanyNameDetailsProps> = ({
   )
 }
 
-export default CompanyNameDetails

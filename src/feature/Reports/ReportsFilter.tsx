@@ -38,7 +38,7 @@ type ReportsGridProps = {
   tags: SelectTagsMenuValues
 }
 
-const ReportsFilter: React.FC<ReportsGridProps> = ({
+export const ReportsFilter: React.FC<ReportsGridProps> = ({
   _reports,
   onDetailsChange,
   onSiretSirenChange,
@@ -158,4 +158,3 @@ const ReportsFilter: React.FC<ReportsGridProps> = ({
   )
 }
 
-export default ReportsFilter

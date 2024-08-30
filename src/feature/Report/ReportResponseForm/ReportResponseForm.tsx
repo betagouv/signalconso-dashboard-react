@@ -14,6 +14,7 @@ import { ReportResponseFormItem } from './ReportResponseFormItem'
 import { Box, Step, StepButton, Stepper } from '@mui/material'
 import { useMutation } from '@tanstack/react-query'
 import { CleanWidePanel } from 'shared/Panel/simplePanels'
+import { EngagementReminderPeriod } from '../../../core/client/engagement/Engagement'
 import {
   IncomingReportResponse,
   ReportResponseTypes,
@@ -25,9 +26,8 @@ import { FileOrigin } from '../../../core/client/file/UploadedFile'
 import { Report } from '../../../core/client/report/Report'
 import { useApiContext } from '../../../core/context/ApiContext'
 import { Id } from '../../../core/model'
-import CharacterCounter from './CharacterCounter'
-import SuccessModal from './SuccessModal'
-import { EngagementReminderPeriod } from '../../../core/client/engagement/Engagement'
+import { CharacterCounter } from './CharacterCounter'
+import { SuccessModal } from './SuccessModal'
 
 interface Props {
   report: Report

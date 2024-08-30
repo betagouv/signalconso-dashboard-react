@@ -17,7 +17,7 @@ import {
 } from '../../core/client/report/Report'
 import { useConnectedContext } from '../../core/context/ConnectedContext'
 import { cleanObject } from '../../core/helper'
-import compose from '../../core/helper/compose'
+import { compose } from '../../core/helper/compose'
 import {
   mapArrayFromQuerystring,
   mapBooleanFromQueryString,
@@ -44,10 +44,10 @@ import { ReportDetailValues } from '../../shared/ReportDetailValues'
 import { ReportStatusLabel } from '../../shared/ReportStatus'
 import { SelectTagsMenuValues } from '../../shared/SelectTags/SelectTagsMenu'
 import { AdvancedReportsFilter } from './AdvancedReportsFilter'
-import AdvancedSearchBar from './AdvancedSearchBar'
+import { AdvancedSearchBar } from './AdvancedSearchBar'
 import { DatatableToolbarComponent } from './DatatableToolbarComponent'
-import ReportResponseDetails from './ReportResponseDetails'
-import ReportsFilter from './ReportsFilter'
+import { ReportResponseDetails } from './ReportResponseDetails'
+import { ReportsFilter } from './ReportsFilter'
 import {
   ActionsColumn,
   CategoryColumn,

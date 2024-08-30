@@ -67,7 +67,7 @@ const categoryMessages: CategoryDetail[] = [
   },
 ]
 
-const CategoryMessage: React.FC<{ report: Report }> = ({ report }) => {
+export const CategoryMessage: React.FC<{ report: Report }> = ({ report }) => {
   const detail = categoryMessages.find((cm) =>
     report.tags.some((tag) => cm.tag.includes(tag)),
   )
@@ -91,4 +91,3 @@ const CategoryMessage: React.FC<{ report: Report }> = ({ report }) => {
   )
 }
 
-export default CategoryMessage

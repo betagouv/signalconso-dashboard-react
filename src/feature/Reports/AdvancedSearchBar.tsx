@@ -27,7 +27,7 @@ type AdvancedSearchControlsProps = {
   filtersCount: number
 }
 
-const AdvancedSearchBar: React.FC<AdvancedSearchControlsProps> = ({
+export const AdvancedSearchBar: React.FC<AdvancedSearchControlsProps> = ({
   expanded,
   _reports,
   setExpanded,
@@ -102,4 +102,3 @@ const AdvancedSearchBar: React.FC<AdvancedSearchControlsProps> = ({
     </Box>
   )
 }
-export default AdvancedSearchBar

@@ -16,7 +16,7 @@ import { EntityIcon } from '../../core/EntityIcon'
 import { textOverflowMiddleCropping } from '../../core/helper'
 import { siteMap } from '../../core/siteMap'
 import { ScButton } from '../../shared/Button'
-import CompanyNameDetails from './CompanyNameDetails'
+import { CompanyNameDetails } from './CompanyNameDetails'
 
 type ColumnProps = { r: ReportSearchResult }
 

@@ -21,7 +21,7 @@ interface SuccessModalProps {
   responseType?: ReportResponseTypes
 }
 
-const SuccessModal: React.FC<SuccessModalProps> = ({
+export const SuccessModal: React.FC<SuccessModalProps> = ({
   open,
   onClose,
   responseType,
@@ -101,4 +101,3 @@ const SuccessModal: React.FC<SuccessModalProps> = ({
   )
 }
 
-export default SuccessModal
