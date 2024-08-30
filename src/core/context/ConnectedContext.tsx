@@ -3,7 +3,7 @@ import React, { ReactNode, useContext } from 'react'
 import { ConnectedApiSdk } from '../ApiSdkInstance'
 import { Roles, UserWithPermission } from '../client/authenticate/Authenticate'
 
-type ConnectedContext = {
+export type ConnectedContext = {
   connectedUser: UserWithPermission & {
     isDGCCRF: boolean
     isDGAL: boolean
