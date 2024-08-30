@@ -65,4 +65,3 @@ export const ReportResponseDetails: React.FC<ReportResponseDetailsProps> = ({
     ))
     .getOrElse(<></>)
 }
-

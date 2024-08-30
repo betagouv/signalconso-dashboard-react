@@ -100,4 +100,3 @@ export const SuccessModal: React.FC<SuccessModalProps> = ({
     </Dialog>
   )
 }
-

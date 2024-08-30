@@ -1,6 +1,6 @@
+import { Icon, InputAdornment, TextField, TextFieldProps } from '@mui/material'
 import * as React from 'react'
 import { forwardRef, useEffect } from 'react'
-import { Icon, InputAdornment, TextField, TextFieldProps } from '@mui/material'
 import { useSetState, UseSetState } from '../../alexlibs/react-hooks-lib'
 import { SelectDepartmentsMenu } from './SelectDepartmentsMenu'
 
@@ -27,7 +27,7 @@ export const SelectDepartments = forwardRef(
       disabled,
       ...props
     }: SelectDepartmentsProps,
-    ref: any,
+    ref: React.Ref<HTMLDivElement>,
   ) => {
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
     let $input: HTMLElement | undefined = undefined

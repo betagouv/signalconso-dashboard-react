@@ -1,5 +1,5 @@
 import { FormControl, InputLabel, Select, SelectProps } from '@mui/material'
-import React, { CSSProperties, useMemo } from 'react'
+import React, { CSSProperties, Ref, useMemo } from 'react'
 
 type ScSelectProps<T> = SelectProps<T> & {
   label?: string
@@ -19,7 +19,7 @@ const _ScSelect = <T,>(
     style,
     ...selectProps
   }: ScSelectProps<T>,
-  ref: any,
+  ref: Ref<unknown>,
 ) => {
   const id: string = useMemo(
     () => argId ?? 'sc-select-' + Math.floor(Math.random() * 10000),

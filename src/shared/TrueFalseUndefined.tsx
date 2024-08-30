@@ -1,4 +1,4 @@
-import { forwardRef } from 'react'
+import { forwardRef, Ref } from 'react'
 import { TrueFalseNull, TrueFalseNullProps } from './TrueFalseNull'
 import { null2Undefined, undefined2Null } from '../core/helper'
 
@@ -10,7 +10,7 @@ interface Props extends Omit<TrueFalseNullProps, 'value' | 'onChange'> {
 // TrueFalseNull uses null as the empty value, as needed by react-form
 // TrueFalseUndefined wraps it so we can use undefined instead
 export const TrueFalseUndefined = forwardRef(
-  ({ value, onChange, ...props }: Props, ref: any) => {
+  ({ value, onChange, ...props }: Props, ref: Ref<unknown>) => {
     return (
       <TrueFalseNull
         value={undefined2Null(value)}

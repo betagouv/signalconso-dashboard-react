@@ -1,8 +1,8 @@
-import React, { ReactElement, ReactNode, useEffect, useState } from 'react'
-import { ScRadioGroupItemProps } from './RadioGroupItem'
 import { Box, FormHelperText } from '@mui/material'
-import { SxProps } from '@mui/system'
 import { Theme } from '@mui/material/styles'
+import { SxProps } from '@mui/system'
+import React, { ReactElement, ReactNode, Ref, useEffect, useState } from 'react'
+import { ScRadioGroupItemProps } from './RadioGroupItem'
 
 interface BaseProps<T> {
   dense?: boolean
@@ -53,7 +53,7 @@ const _ScRadioGroup = <T,>(
     sx,
     ...props
   }: Props<T>,
-  ref: any,
+  ref: Ref<unknown>,
 ) => {
   const [innerValue, setInnerValue] = useState<T | T[]>()
 

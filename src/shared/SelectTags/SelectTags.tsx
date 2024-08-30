@@ -1,9 +1,9 @@
+import { Icon, InputAdornment, TextField } from '@mui/material'
 import * as React from 'react'
 import { CSSProperties, forwardRef, useEffect } from 'react'
-import { Icon, InputAdornment, TextField } from '@mui/material'
-import { SelectTagsMenu, SelectTagsMenuValues } from './SelectTagsMenu'
-import { Enum } from '../../alexlibs/ts-utils'
 import { useMemoFn } from '../../alexlibs/react-hooks-lib'
+import { Enum } from '../../alexlibs/ts-utils'
+import { SelectTagsMenu, SelectTagsMenuValues } from './SelectTagsMenu'
 
 interface SelectDepartmentsProps {
   value?: SelectTagsMenuValues
@@ -29,7 +29,7 @@ export const SelectTags = forwardRef(
       disabled,
       ...props
     }: SelectDepartmentsProps,
-    ref: any,
+    ref: React.Ref<HTMLDivElement>,
   ) => {
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
     let $input: HTMLElement | undefined = undefined

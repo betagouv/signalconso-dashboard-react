@@ -1,4 +1,3 @@
-import React, { CSSProperties, ReactElement, useMemo } from 'react'
 import {
   Checkbox,
   FormControl,
@@ -7,9 +6,10 @@ import {
   Select,
   SelectProps,
 } from '@mui/material'
-import { ScMenuItemProps } from '../ScMenuItem'
-import { useI18n } from '../../core/i18n'
+import React, { CSSProperties, ReactElement, Ref, useMemo } from 'react'
 import { stopPropagation } from '../../core/helper'
+import { useI18n } from '../../core/i18n'
+import { ScMenuItemProps } from '../ScMenuItem'
 
 interface ScMultiSelectProps<T extends E[], E extends string>
   extends Omit<SelectProps<T>, 'multiple' | 'onChange'> {
@@ -35,7 +35,7 @@ const _ScMultiSelect = <T extends E[], E extends string>(
     onChange,
     ...selectProps
   }: ScMultiSelectProps<T, E>,
-  ref: any,
+  ref: Ref<unknown>,
 ) => {
   const id: string = useMemo(
     () => argId ?? 'sc-multi-select-' + Math.floor(Math.random() * 10000),

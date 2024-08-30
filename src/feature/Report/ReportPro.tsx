@@ -70,7 +70,7 @@ function ReportProLoaded({
     report.id,
   )
   const _getEngagementReview = useGetEngagementReviewQuery(report.id)
-  const responseFormRef = useRef<HTMLElement>(null)
+  const responseFormRef = useRef<HTMLDivElement>(null)
 
   function scrollToResponse() {
     if (responseFormRef.current) {

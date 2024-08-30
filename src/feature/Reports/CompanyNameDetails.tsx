@@ -47,4 +47,3 @@ export const CompanyNameDetails: React.FC<CompanyNameDetailsProps> = ({
     </Box>
   )
 }
-

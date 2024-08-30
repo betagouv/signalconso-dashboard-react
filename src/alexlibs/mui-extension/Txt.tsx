@@ -1,6 +1,5 @@
 import { Box, BoxProps, Skeleton } from '@mui/material'
-import * as React from 'react'
-import { forwardRef } from 'react'
+import { forwardRef, Ref } from 'react'
 
 interface Props extends BoxProps {
   bold?: boolean
@@ -44,7 +43,7 @@ export const Txt = forwardRef(
       sx,
       ...otherProps
     }: Props,
-    ref: any,
+    ref: Ref<unknown>,
   ) => {
     return (
       <Box

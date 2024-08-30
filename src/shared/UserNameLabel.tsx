@@ -1,4 +1,4 @@
-import React, { forwardRef } from 'react'
+import { forwardRef, Ref } from 'react'
 
 interface Props {
   firstName?: string
@@ -7,7 +7,7 @@ interface Props {
 }
 
 export const UserNameLabel = forwardRef(
-  ({ firstName, lastName, missingLabel }: Props, ref: any) => {
+  ({ firstName, lastName, missingLabel }: Props, ref: Ref<HTMLSpanElement>) => {
     return (
       <span ref={ref}>
         {firstName || lastName

@@ -157,4 +157,3 @@ export const ReportsFilter: React.FC<ReportsGridProps> = ({
     </Grid>
   )
 }
-

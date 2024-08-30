@@ -1,15 +1,15 @@
 import { Box, BoxProps } from '@mui/material'
+import React, { Ref } from 'react'
 import { ReportResponseTypes } from '../core/client/event/Event'
-import React from 'react'
-import { useI18n } from '../core/i18n'
 import { fnSwitch } from '../core/helper'
+import { useI18n } from '../core/i18n'
 
 interface ProResponseLabelProps extends BoxProps {
   proResponse: ReportResponseTypes
 }
 
 export const ProResponseLabel = React.forwardRef(
-  ({ proResponse, ...other }: ProResponseLabelProps, ref: any) => {
+  ({ proResponse, ...other }: ProResponseLabelProps, ref: Ref<unknown>) => {
     const { m } = useI18n()
     return (
       <>

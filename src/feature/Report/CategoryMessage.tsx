@@ -90,4 +90,3 @@ export const CategoryMessage: React.FC<{ report: Report }> = ({ report }) => {
     </Alert>
   )
 }
-
