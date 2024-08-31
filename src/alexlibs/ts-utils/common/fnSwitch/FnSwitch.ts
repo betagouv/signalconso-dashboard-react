@@ -16,8 +16,8 @@ export const fnSwitch: FnSwitch = (value, cases, defaultCase?) => {
   if (!res && !defaultCase) {
     throw new Error(`
       [fnSwtich] ${value} does not match any of theses cases ${Object.keys(
-      cases,
-    ).join(', ')}
+        cases,
+      ).join(', ')}
       and defaultCase parameter is not provided.
     `)
   }

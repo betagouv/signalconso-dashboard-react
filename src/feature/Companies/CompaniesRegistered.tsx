@@ -350,12 +350,12 @@ export const CompaniesRegistered = () => {
                         color: (t) => t.palette.success.light,
                       }
                     : _.responseRate === 0
-                    ? {
-                        color: (t) => t.palette.error.light,
-                      }
-                    : {
-                        color: (t) => t.palette.warning.light,
-                      }),
+                      ? {
+                          color: (t) => t.palette.error.light,
+                        }
+                      : {
+                          color: (t) => t.palette.warning.light,
+                        }),
                 }}
               >
                 {_.responseRate} %

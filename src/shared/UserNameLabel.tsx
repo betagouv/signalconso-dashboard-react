@@ -12,7 +12,7 @@ export const UserNameLabel = forwardRef(
       <span ref={ref}>
         {firstName || lastName
           ? `${firstName} ${lastName}`
-          : missingLabel ?? null}
+          : (missingLabel ?? null)}
       </span>
     )
   },

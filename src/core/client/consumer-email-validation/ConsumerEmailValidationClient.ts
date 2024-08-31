@@ -20,10 +20,9 @@ export class ConsumerEmailValidationClient {
     search: ConsumerEmailValidationSearch,
   ): Promise<Paginate<ConsumerEmailValidation>> => {
     return this.client
-      .get<Paginate<{ [key in keyof ConsumerEmailValidation]: any }>>(
-        '/email-validation/search',
-        { qs: cleanObject(search) },
-      )
+      .get<
+        Paginate<{ [key in keyof ConsumerEmailValidation]: any }>
+      >('/email-validation/search', { qs: cleanObject(search) })
       .then((res) => ({
         ...res,
         entities: res.entities.map((_) => ({

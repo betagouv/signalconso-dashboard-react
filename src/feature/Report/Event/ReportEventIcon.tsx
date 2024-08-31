@@ -30,8 +30,8 @@ const getReportEventIcon = (action: EventActionValues) =>
       return toLower.indexOf('email') > -1
         ? 'email'
         : toLower.indexOf('courrier')
-        ? 'send'
-        : 'notifications'
+          ? 'send'
+          : 'notifications'
     },
   )
 

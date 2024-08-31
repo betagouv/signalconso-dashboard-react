@@ -142,9 +142,8 @@ export const ToastProvider = ({
 
 export const useToast = () => useContext(ToastContext)
 
-export const withToast = (Component: any) => (props: any) =>
-  (
-    <ToastContext.Consumer>
-      {(other: WithToast) => <Component {...props} {...other} />}
-    </ToastContext.Consumer>
-  )
+export const withToast = (Component: any) => (props: any) => (
+  <ToastContext.Consumer>
+    {(other: WithToast) => <Component {...props} {...other} />}
+  </ToastContext.Consumer>
+)

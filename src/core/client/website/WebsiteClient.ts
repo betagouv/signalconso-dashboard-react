@@ -31,8 +31,9 @@ const hostReportFilter2QueryString = (
 ): HostReportCountQueryString => {
   try {
     const { q, start, end, offset, limit, ...r } = hostReport
-    const parseDate = (_: keyof Pick<HostReportCountSearch, 'start' | 'end'>) =>
-      hostReport[_] ? { [_]: dateToApiDate(hostReport[_]) } : {}
+    const parseDate = (
+      _: keyof Pick<HostReportCountSearch, 'start' | 'end'>,
+    ) => (hostReport[_] ? { [_]: dateToApiDate(hostReport[_]) } : {})
 
     return {
       ...r,
