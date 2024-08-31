@@ -20,6 +20,7 @@ import {
   IdentificationStatus,
   InvestigationStatus,
 } from '../../client/website/Website'
+import { AsyncFileKind } from '../../client/async-file/AsyncFile'
 
 const invalidDate = '-'
 
@@ -234,7 +235,13 @@ export const fr = {
       'La validation nécéssite que le site soit identifié par une entreprise ou un pays',
     thisWillBeRemoved: (_: string) =>
       `La pièce jointe <b>${_}</b> sera définitivement supprimée.`,
-    exportInXLS: 'Exporter en XLS',
+    exportInXLS: 'Exporter au format Excel',
+    newExportInXLS: 'Générer un nouvel export',
+    AsyncFileDesc: {
+      [AsyncFileKind.ReportedPhones]: 'numéros de téléphone signalés',
+      [AsyncFileKind.Reports]: 'signalements',
+      [AsyncFileKind.ReportedWebsites]: 'sites internet signalés',
+    },
     removeAllFilters: 'Supprimer les filtres',
     reOpenReportDesc: `Voulez-vous vraiment ré-ouvrir le signalement ?`,
     download: 'Télécharger',

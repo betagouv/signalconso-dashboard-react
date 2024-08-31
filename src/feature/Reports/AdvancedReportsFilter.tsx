@@ -105,7 +105,9 @@ export const AdvancedReportsFilter: React.FC<AdvancedFiltersGridProps> = ({
           fullWidth
           withSelectAll
           renderValue={(status) =>
-            `(${status.length}) ${status.map((_) => m.reportStatusShort[_]).join(',')}`
+            `(${status.length}) ${status
+              .map((_) => m.reportStatusShort[_])
+              .join(',')}`
           }
         >
           {Enum.values(ReportStatus).map((status) => (
@@ -275,7 +277,9 @@ export const AdvancedReportsFilter: React.FC<AdvancedFiltersGridProps> = ({
               fullWidth
               withSelectAll
               renderValue={(evaluation) =>
-                `(${evaluation.length}) ${evaluation.map((_) => m.responseEvaluationShort[_]).join(',')}`
+                `(${evaluation.length}) ${evaluation
+                  .map((_) => m.responseEvaluationShort[_])
+                  .join(',')}`
               }
             >
               {Enum.values(ResponseEvaluation).map((evaluation) => (
@@ -313,7 +317,9 @@ export const AdvancedReportsFilter: React.FC<AdvancedFiltersGridProps> = ({
               fullWidth
               withSelectAll
               renderValue={(evaluation) =>
-                `(${evaluation.length}) ${evaluation.map((_) => m.responseEvaluationShort[_]).join(',')}`
+                `(${evaluation.length}) ${evaluation
+                  .map((_) => m.responseEvaluationShort[_])
+                  .join(',')}`
               }
             >
               {Enum.values(ResponseEvaluation).map((evaluation) => (
@@ -341,7 +347,9 @@ export const AdvancedReportsFilter: React.FC<AdvancedFiltersGridProps> = ({
               fullWidth
               withSelectAll
               renderValue={(proResponse) =>
-                `(${proResponse.length}) ${proResponse.map((_) => m.reportResponseShort[_]).join(',')}`
+                `(${proResponse.length}) ${proResponse
+                  .map((_) => m.reportResponseShort[_])
+                  .join(',')}`
               }
             >
               {Enum.values(ReportResponseTypes).map((proResponse) => (

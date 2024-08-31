@@ -217,7 +217,9 @@ function CompanyAccessesLoaded({
         isAdmin && _.userId ? (
           <>
             <NavLink
-              to={`${siteMap.logged.users.root}/${siteMap.logged.users.auth_attempts.value(_.email)}`}
+              to={`${
+                siteMap.logged.users.root
+              }/${siteMap.logged.users.auth_attempts.value(_.email)}`}
             >
               <MenuItem>
                 <ListItemIcon>

@@ -119,7 +119,9 @@ function ReportsTotalWithLink({
   const { formatLargeNumber } = useI18n()
 
   const firstPart = `${formatLargeNumber(reportTotals.total)} signalements`
-  const secondPart = `${formatLargeNumber(reportTotals.totalWaitingResponse)} en attente de réponse`
+  const secondPart = `${formatLargeNumber(
+    reportTotals.totalWaitingResponse,
+  )} en attente de réponse`
   const url = siteMap.logged.reports({ companyIds: [companyId] })
   if (connectedUser.isPro) {
     return (

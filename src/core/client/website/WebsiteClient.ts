@@ -101,9 +101,9 @@ export class WebsiteClient {
     filters: HostReportCountSearch,
   ): Promise<Paginate<ApiHostWithReportCount>> => {
     return this.client
-      .get<
-        ApiHostWithReportCount[]
-      >(`/websites/unregistered`, { qs: hostReportFilter2QueryString(filters) })
+      .get<ApiHostWithReportCount[]>(`/websites/unregistered`, {
+        qs: hostReportFilter2QueryString(filters),
+      })
       .then(paginateData(filters.limit, filters.offset))
   }
 
