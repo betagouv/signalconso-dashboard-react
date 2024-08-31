@@ -268,7 +268,7 @@ export const ReportComponent = () => {
                   events={
                     _getCompanyEvents.isLoading
                       ? undefined
-                      : (_getCompanyEvents.data ?? [])
+                      : _getCompanyEvents.data ?? []
                   }
                 />
               </ReportTabPanel>

@@ -24,15 +24,15 @@ type ParsedQueryString<T> = {
   [K in keyof T]: T[K] extends Date
     ? ParsedDate
     : T[K] extends Date | undefined
-      ? ParsedDate | undefined
-      : T[K]
+    ? ParsedDate | undefined
+    : T[K]
 }
 type MappedQueryString<T> = {
   [K in keyof T]: T[K] extends ParsedDate
     ? Date
     : T[K] extends ParsedDate | undefined
-      ? Date | undefined
-      : T[K]
+    ? Date | undefined
+    : T[K]
 }
 
 type ParsedDate =

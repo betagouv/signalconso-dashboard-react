@@ -132,7 +132,9 @@ function WebsitesDistribution({
       <h2 className="font-bold text-lg">{m.websites}</h2>
       <div style={{ maxHeight: 260, overflow: 'auto' }}>
         <List dense>
-          {_hosts.data?.map((host, i) => <ListItem key={i}>{host}</ListItem>)}
+          {_hosts.data?.map((host, i) => (
+            <ListItem key={i}>{host}</ListItem>
+          ))}
         </List>
       </div>
     </CleanDiscreetPanel>

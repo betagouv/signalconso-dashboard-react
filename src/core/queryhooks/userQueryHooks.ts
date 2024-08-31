@@ -16,10 +16,7 @@ export const SearchAdminQueryKeys = ['user_searchAdmin']
 export const SearchAgentQueryKeys = ['user_searchAgent']
 const SearchAuthAttemptsQueryKeys = ['authAttemptClient_fetch']
 const GetConnectedUserQueryKeys = ['user_fetchConnectedUser']
-export const FetchTokenInfoQueryKeys = (
-  token: string,
-  companySiret?: string,
-) =>
+export const FetchTokenInfoQueryKeys = (token: string, companySiret?: string) =>
   companySiret
     ? ['user_fetchTokenInfo', token, companySiret]
     : ['user_fetchTokenInfo', token]

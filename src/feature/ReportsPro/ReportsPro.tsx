@@ -256,8 +256,8 @@ export const ReportsPro = ({ reportType }: ReportsProProps) => {
                           _reports.filters.hasWebsite === undefined
                             ? ReportType.Both
                             : _reports.filters.hasWebsite
-                              ? ReportType.Internet
-                              : ReportType.Shop
+                            ? ReportType.Internet
+                            : ReportType.Shop
                         }
                         onChange={(e) => {
                           const hasWebsite =

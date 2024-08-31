@@ -51,7 +51,9 @@ export const CleanDiscreetPanel = forwardRef(function (
     <div
       className={`p-4 mb-4 ${noPaddingTop ? 'pt-0' : ''} ${
         fullHeight ? 'h-full' : ''
-      } border-solid border border-gray-300 rounded ${noShadow ? '' : 'shadow-md'} `}
+      } border-solid border border-gray-300 rounded ${
+        noShadow ? '' : 'shadow-md'
+      } `}
       ref={ref}
     >
       {loading ? (

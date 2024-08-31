@@ -9,8 +9,8 @@ export function ReportTrain({ train }: { train: Train }) {
     train.train === 'TER'
       ? m.Ter[train.ter as unknown as keyof typeof m.Ter]
       : train.train === 'TRAIN_DE_NUIT'
-        ? m.NightTrain[train.nightTrain as unknown as keyof typeof m.NightTrain]
-        : m.Train[train.train as unknown as keyof typeof m.Train]
+      ? m.NightTrain[train.nightTrain as unknown as keyof typeof m.NightTrain]
+      : m.Train[train.train as unknown as keyof typeof m.Train]
   return (
     <Box
       sx={{

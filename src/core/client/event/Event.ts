@@ -87,7 +87,7 @@ export const acceptedDetails = [
   'DEMANDE_DE_PLUS_D_INFORMATIONS',
   'RESILIATION',
 ] as const
-export type AcceptedDetails = (typeof acceptedDetails)[number]
+export type AcceptedDetails = typeof acceptedDetails[number]
 
 export const rejectedDetails = [
   'PRATIQUE_LEGALE',
@@ -96,7 +96,7 @@ export const rejectedDetails = [
   'DEJA_REPONDU',
   'TRAITEMENT_EN_COURS',
 ] as const
-type RejectedDetails = (typeof rejectedDetails)[number]
+type RejectedDetails = typeof rejectedDetails[number]
 
 export const notConcernedDetails = [
   'PARTENAIRE_COMMERCIAL',
@@ -105,7 +105,7 @@ export const notConcernedDetails = [
   'ENTREPRISE_INCONNUE',
   'USURPATION',
 ] as const
-type NotConcernedDetails = (typeof notConcernedDetails)[number]
+type NotConcernedDetails = typeof notConcernedDetails[number]
 
 export interface IncomingReportResponse {
   responseType: ReportResponseTypes

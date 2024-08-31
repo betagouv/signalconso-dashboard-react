@@ -31,9 +31,8 @@ const hostReportFilter2QueryString = (
 ): HostReportCountQueryString => {
   try {
     const { q, start, end, offset, limit, ...r } = hostReport
-    const parseDate = (
-      _: keyof Pick<HostReportCountSearch, 'start' | 'end'>,
-    ) => (hostReport[_] ? { [_]: dateToApiDate(hostReport[_]) } : {})
+    const parseDate = (_: keyof Pick<HostReportCountSearch, 'start' | 'end'>) =>
+      hostReport[_] ? { [_]: dateToApiDate(hostReport[_]) } : {}
 
     return {
       ...r,
@@ -101,9 +100,9 @@ export class WebsiteClient {
     filters: HostReportCountSearch,
   ): Promise<Paginate<ApiHostWithReportCount>> => {
     return this.client
-      .get<
-        ApiHostWithReportCount[]
-      >(`/websites/unregistered`, { qs: hostReportFilter2QueryString(filters) })
+      .get<ApiHostWithReportCount[]>(`/websites/unregistered`, {
+        qs: hostReportFilter2QueryString(filters),
+      })
       .then(paginateData(filters.limit, filters.offset))
   }
 
