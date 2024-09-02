@@ -5,7 +5,7 @@ import { addHours } from 'date-fns'
 export class AsyncFileClient {
   constructor(private client: ApiClientApi) {}
 
-  private static readonly fileGenerationTimeoutHours = 24
+  private static readonly fileGenerationTimeoutHours = 1
 
   readonly fetch = () => {
     return this.client.get<AsyncFile[]>(`/async-files`).then((result) =>

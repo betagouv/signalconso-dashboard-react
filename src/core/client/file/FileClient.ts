@@ -5,7 +5,9 @@ export class FileClient {
   constructor(private client: ApiClientApi) {}
 
   readonly getLink = (file: UploadedFile) =>
-    `${this.client.baseUrl}/reports/files/${file.id}/${encodeURI(file.filename)}`
+    `${this.client.baseUrl}/reports/files/${file.id}/${encodeURI(
+      file.filename,
+    )}`
 
   readonly upload = (file: File, origin: FileOrigin) => {
     const fileFormData: FormData = new FormData()

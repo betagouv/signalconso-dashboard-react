@@ -86,7 +86,10 @@ const isJsonValid = (json: string): boolean => {
 
 export const textOverflowMiddleCropping = (text: string, limit: number) => {
   return text.length > limit
-    ? `${text.slice(0, limit / 2)}...${text.slice(text.length - limit / 2, text.length)}`
+    ? `${text.slice(0, limit / 2)}...${text.slice(
+        text.length - limit / 2,
+        text.length,
+      )}`
     : text
 }
 
@@ -147,9 +150,11 @@ export const fnSwitch: FnSwitch = (value, cases, defaultCase?) => {
   const res = cases[value]
   if (!res && !defaultCase) {
     throw new Error(
-      `[fnSwitch] ${String(value)} does not match any of theses cases ${Object.keys(
-        cases,
-      ).join(', ')} defaultCase parameter is not provided.`,
+      `[fnSwitch] ${String(
+        value,
+      )} does not match any of theses cases ${Object.keys(cases).join(
+        ', ',
+      )} defaultCase parameter is not provided.`,
     )
   }
   return (

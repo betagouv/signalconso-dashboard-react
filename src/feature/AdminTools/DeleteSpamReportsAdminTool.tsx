@@ -27,7 +27,9 @@ export const DeleteSpamReportsAdminTool = () => {
     } else {
       setReportCount(0)
       setErrorMessage(
-        `Les IDs de signalements suivants sont invalides: ${invalidUUIDs.join(', ')}`,
+        `Les IDs de signalements suivants sont invalides: ${invalidUUIDs.join(
+          ', ',
+        )}`,
       )
     }
   }

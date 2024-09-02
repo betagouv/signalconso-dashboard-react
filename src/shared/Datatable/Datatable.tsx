@@ -134,7 +134,9 @@ export const Datatable = <T extends any = any>({
       {superheader && <div className="py-4 px-2">{superheader}</div>}
       {(headerMain || showColumnsToggle || actions) && (
         <div
-          className={`relative flex flex-wrap items-center min-h-[52px] gap-2 ${headerMarginBottom ? 'mb-2' : ''}`}
+          className={`relative flex flex-wrap items-center min-h-[52px] gap-2 ${
+            headerMarginBottom ? 'mb-2' : ''
+          }`}
         >
           <div className="flex items-center flex-grow">{headerMain}</div>
           <div className="whitespace-nowrap flex gap-2">

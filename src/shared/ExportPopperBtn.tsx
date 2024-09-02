@@ -1,5 +1,5 @@
 import React, { ReactElement, ReactNode, useEffect, useState } from 'react'
-import { Btn, Txt } from '../alexlibs/mui-extension'
+import { Alert, Btn, Txt } from '../alexlibs/mui-extension'
 import {
   Box,
   CircularProgress,
@@ -89,6 +89,15 @@ const ExportPopperBtn = ({
     }
   }, [anchorEl])
 
+  const ExportLabel = ({ file }: { file: AsyncFile }) => {
+    return (
+      <Txt bold block>
+        Export de {m.AsyncFileDesc[file.kind]} du{' '}
+        {formatDateTime(file.creationDate)}
+      </Txt>
+    )
+  }
+
   return (
     <>
       <Tooltip title={m.exportInXLS}>
@@ -108,19 +117,31 @@ const ExportPopperBtn = ({
         onClose={handleClose}
         anchorEl={anchorEl}
       >
-        <Box sx={{ pt: 0, pr: 2, pb: 0.5, pl: 2 }}>
+        <div className={'mt-2 mr-2 mb-4 ml-2 w-[500px]'}>
+          <p className={'ml-3 mb-2'}>
+            Vous pouvez exporter les signalements de la liste ci-dessous dans un
+            tableur Excel en cliquant sur "GÉNÉRER UN NOUVEL EXPORT"
+          </p>
+          <Alert id="action-info" dense type="info" className={'mt-2'}>
+            <p>
+              L'export est limité à 30 000 entrées. Pour importer plus
+              d'éléments, réduisez le nombre de signalements en utilisant les
+              filtres.
+            </p>
+          </Alert>
+        </div>
+        <Box sx={{ pt: 0, pr: 2, pb: 2, pl: 2 }}>
           <Tooltip title={tooltipBtnNew ?? ''}>
             <span>
               <Btn
                 disabled={disabled}
                 color="primary"
-                variant="outlined"
-                size="small"
+                variant="contained"
                 sx={{ width: '100%' }}
-                icon="add"
+                icon="post_add"
                 onClick={() => onNewExport().then(fetch)}
               >
-                {m.exportInXLS}
+                <span className={'mt-1'}>{m.newExportInXLS}</span>
               </Btn>
             </span>
           </Tooltip>
@@ -170,16 +191,14 @@ const ExportPopperBtn = ({
                       </Icon>
                     }
                   >
-                    <Txt bold block>
-                      {file.filename.match(/.*?-(\w+.?\.xlsx)/)?.[1]}
-                    </Txt>
-                    <Txt color="hint">{formatDateTime(file.creationDate)}</Txt>
+                    <ExportLabel file={file} />
+                    <Txt color="hint">Cliquez pour télécharger</Txt>
                   </FileItem>
                 ),
                 [AsyncFileStatus.Loading]: (_) => (
-                  <FileItem icon={<CircularProgress size={24} />}>
-                    <Txt skeleton="100%" block />
-                    <Txt color="hint">{formatDateTime(file.creationDate)}</Txt>
+                  <FileItem icon={<CircularProgress size={20} />}>
+                    <ExportLabel file={file} />
+                    <Txt color="hint">Chargement, veuillez patienter...</Txt>
                   </FileItem>
                 ),
                 [AsyncFileStatus.Failed]: (_) => (
@@ -190,8 +209,11 @@ const ExportPopperBtn = ({
                       </Icon>
                     }
                   >
-                    <div>{m.error}</div>
-                    <Txt color="hint">{formatDateTime(file.creationDate)}</Txt>
+                    <ExportLabel file={file} />
+                    <Txt color="hint">
+                      Erreur lors de l'export, veuillez générer un nouvel
+                      export.
+                    </Txt>
                   </FileItem>
                 ),
               })}

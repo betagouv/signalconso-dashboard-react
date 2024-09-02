@@ -14,7 +14,9 @@ export function WelcomePage() {
 
     return currentPath === '/'
       ? siteMap.loggedout.login
-      : `${siteMap.loggedout.login}?redirecturl=${encodeURIComponent(currentPath)}`
+      : `${siteMap.loggedout.login}?redirecturl=${encodeURIComponent(
+          currentPath,
+        )}`
   }
 
   return (

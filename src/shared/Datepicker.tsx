@@ -33,7 +33,9 @@ export const Datepicker = ({
       const newValue = e.target.value
       // it is either an empty string or yyyy-mm-dd
       if (newValue.length) {
-        const dateAndTime = `${newValue}T${timeOfDay === 'startOfDay' ? '00:00:00.000' : '23:59:59.999'}`
+        const dateAndTime = `${newValue}T${
+          timeOfDay === 'startOfDay' ? '00:00:00.000' : '23:59:59.999'
+        }`
         const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone
         const utcDate = zonedTimeToUtc(dateAndTime, userTimeZone)
         onChange(utcDate)
