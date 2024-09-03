@@ -169,7 +169,7 @@ const UsersList = ({ adminView }: Props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  const parsedRole = (_users.filters.role ?? roleAgents) as RoleAgents[]
+  const parsedRole: RoleAgents[] = (_users.filters.role ?? roleAgents.map(_ => _))
 
   return (
     <>

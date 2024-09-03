@@ -47,7 +47,7 @@ export interface UserPending {
 }
 
 export interface UserSearch extends PaginatedFilters {
-  role?: RoleAdminOrAgent[]
+  role?: RoleAgents[]
   email?: string
   active?: boolean
 }
