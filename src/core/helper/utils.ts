@@ -196,3 +196,8 @@ export function objectEntriesUnsafe<T extends object>(obj: T) {
 export function objectKeysUnsafe<T extends object>(obj: T) {
   return objectEntriesUnsafe(obj).map(([k]) => k)
 }
+
+export function map<A, B>(item: A | undefined, fn: (a: A) => B) {
+  if (item === undefined) return undefined
+  return fn(item)
+}

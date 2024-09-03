@@ -1,19 +1,19 @@
-import React, { ReactElement } from 'react'
-import { useI18n } from '../../core/i18n'
+import { map } from 'core/helper'
+import { ReactElement } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { Alert } from '../../alexlibs/mui-extension'
-import { useToast } from '../../core/toast'
-import { ScDialog } from '../../shared/ScDialog'
+import { useAsync } from '../../alexlibs/react-hooks-lib'
+import { ApiError } from '../../core/client/ApiClient'
+import { useConnectedContext } from '../../core/context/ConnectedContext'
+import { useI18n } from '../../core/i18n'
 import {
   AccountEventActions,
   EventCategories,
   Matomo,
 } from '../../core/plugins/Matomo'
-import { useAsync } from '../../alexlibs/react-hooks-lib'
-import { useConnectedContext } from '../../core/context/ConnectedContext'
-import { map } from '../../alexlibs/ts-utils'
+import { useToast } from '../../core/toast'
+import { ScDialog } from '../../shared/ScDialog'
 import { ScInput } from '../../shared/ScInput'
-import { ApiError } from '../../core/client/ApiClient'
 
 interface Form {
   firstName: string
