@@ -9,11 +9,11 @@ import { AdminUsersList, AgentUsersList } from './UsersList'
 import { UsersAgentListPending } from './UsersAgentListPending'
 import { UserAuthAttempts } from './UserAuthAttempts'
 import { Navigate, Routes } from 'react-router'
-import {useConnectedContext} from "../../core/context/ConnectedContext";
+import { useConnectedContext } from '../../core/context/ConnectedContext'
 
 export const Users = () => {
   const { m } = useI18n() // Assuming this hook exists and provides translations
-  const {connectedUser} = useConnectedContext() // Assuming this hook provides user state
+  const { connectedUser } = useConnectedContext() // Assuming this hook provides user state
 
   return (
     <Page>
@@ -22,30 +22,42 @@ export const Users = () => {
         <PageTabs>
           <PageTab to={siteMap.logged.users.agent.value} label={m.agentUsers} />
           <PageTab
-          to={siteMap.logged.users.agent_pending.value}
-          label={m.agentUsersPending}
-        />
+            to={siteMap.logged.users.agent_pending.value}
+            label={m.agentUsersPending}
+          />
           <PageTab to={siteMap.logged.users.admin.value} label={m.adminUsers} />
           <PageTab
-          to={siteMap.logged.users.consumer_validation.value}
-          label={m.consumersPending}
-        />
+            to={siteMap.logged.users.consumer_validation.value}
+            label={m.consumersPending}
+          />
           <PageTab
-          to={siteMap.logged.users.auth_attempts.value()}
-          label={m.authAttempts}
-        />
+            to={siteMap.logged.users.auth_attempts.value()}
+            label={m.authAttempts}
+          />
           <PageTab
-          to={siteMap.logged.users.blacklist.value}
-          label={m.blacklistedConsumers}
-        />
+            to={siteMap.logged.users.blacklist.value}
+            label={m.blacklistedConsumers}
+          />
         </PageTabs>
       ) : (
         <PageTabs>
           <PageTab to={siteMap.logged.users.agent.value} label={m.agentUsers} />
-          <PageTab to={siteMap.logged.users.agent_pending.value} label={m.agentUsersPending} />
-          <PageTab to={siteMap.logged.users.consumer_validation.value} label={m.consumersPending} />
-          <PageTab to={siteMap.logged.users.auth_attempts.value()} label={m.authAttempts} />
-          <PageTab to={siteMap.logged.users.blacklist.value} label={m.blacklistedConsumers} />
+          <PageTab
+            to={siteMap.logged.users.agent_pending.value}
+            label={m.agentUsersPending}
+          />
+          <PageTab
+            to={siteMap.logged.users.consumer_validation.value}
+            label={m.consumersPending}
+          />
+          <PageTab
+            to={siteMap.logged.users.auth_attempts.value()}
+            label={m.authAttempts}
+          />
+          <PageTab
+            to={siteMap.logged.users.blacklist.value}
+            label={m.blacklistedConsumers}
+          />
         </PageTabs>
       )}
       <Routes>

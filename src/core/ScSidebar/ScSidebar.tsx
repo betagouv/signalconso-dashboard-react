@@ -58,7 +58,13 @@ export const ScSidebar = ({
         </Btn>
       </Box>
       <SidebarHr margin />
-      {[Roles.SuperAdmin, Roles.Admin, Roles.ReadOnlyAdmin, Roles.DGCCRF, Roles.DGAL].includes(connectedUser.role) && (
+      {[
+        Roles.SuperAdmin,
+        Roles.Admin,
+        Roles.ReadOnlyAdmin,
+        Roles.DGCCRF,
+        Roles.DGAL,
+      ].includes(connectedUser.role) && (
         <SidebarItem
           onClick={closeSidebar}
           to={path(siteMap.logged.reports())}
@@ -94,7 +100,12 @@ export const ScSidebar = ({
           {m.menu_engagements_report}
         </SidebarItem>
       )}
-      {[Roles.SuperAdmin, Roles.Admin, Roles.ReadOnlyAdmin, Roles.DGCCRF].includes(connectedUser.role) && (
+      {[
+        Roles.SuperAdmin,
+        Roles.Admin,
+        Roles.ReadOnlyAdmin,
+        Roles.DGCCRF,
+      ].includes(connectedUser.role) && (
         <SidebarItem
           onClick={closeSidebar}
           to={path(siteMap.logged.companies.value)}
@@ -121,7 +132,13 @@ export const ScSidebar = ({
           {m.menu_users}
         </SidebarItem>
       )}
-      {[Roles.SuperAdmin, Roles.Admin, Roles.ReadOnlyAdmin, Roles.DGCCRF, Roles.DGAL].includes(connectedUser.role) && (
+      {[
+        Roles.SuperAdmin,
+        Roles.Admin,
+        Roles.ReadOnlyAdmin,
+        Roles.DGCCRF,
+        Roles.DGAL,
+      ].includes(connectedUser.role) && (
         <SidebarItem
           onClick={closeSidebar}
           to={path(siteMap.logged.subscriptions)}
@@ -130,7 +147,13 @@ export const ScSidebar = ({
           {m.menu_subscriptions}
         </SidebarItem>
       )}
-      {[Roles.SuperAdmin, Roles.Admin, Roles.ReadOnlyAdmin, Roles.DGCCRF, Roles.DGAL].includes(connectedUser.role) && (
+      {[
+        Roles.SuperAdmin,
+        Roles.Admin,
+        Roles.ReadOnlyAdmin,
+        Roles.DGCCRF,
+        Roles.DGAL,
+      ].includes(connectedUser.role) && (
         <SidebarItem
           onClick={closeSidebar}
           to={path(siteMap.logged.stats.value)}
@@ -140,7 +163,12 @@ export const ScSidebar = ({
         </SidebarItem>
       )}
       <SidebarHr margin />
-      {[Roles.SuperAdmin, Roles.Admin, Roles.ReadOnlyAdmin, Roles.DGCCRF].includes(connectedUser.role) && (
+      {[
+        Roles.SuperAdmin,
+        Roles.Admin,
+        Roles.ReadOnlyAdmin,
+        Roles.DGCCRF,
+      ].includes(connectedUser.role) && (
         <SidebarItem
           onClick={closeSidebar}
           to={path(siteMap.logged.reportedWebsites.value)}
@@ -149,7 +177,12 @@ export const ScSidebar = ({
           {m.menu_websites}
         </SidebarItem>
       )}
-      {[Roles.SuperAdmin, Roles.Admin, Roles.ReadOnlyAdmin, Roles.DGCCRF].includes(connectedUser.role) && (
+      {[
+        Roles.SuperAdmin,
+        Roles.Admin,
+        Roles.ReadOnlyAdmin,
+        Roles.DGCCRF,
+      ].includes(connectedUser.role) && (
         <SidebarItem
           onClick={closeSidebar}
           to={path(siteMap.logged.reportedPhone)}
@@ -185,7 +218,13 @@ export const ScSidebar = ({
       >
         {m.menu_settings}
       </SidebarItem>
-      {[Roles.SuperAdmin, Roles.Admin, Roles.ReadOnlyAdmin, Roles.DGCCRF, Roles.DGAL].includes(connectedUser.role) && (
+      {[
+        Roles.SuperAdmin,
+        Roles.Admin,
+        Roles.ReadOnlyAdmin,
+        Roles.DGCCRF,
+        Roles.DGAL,
+      ].includes(connectedUser.role) && (
         <SidebarItem
           onClick={closeSidebar}
           to={path(siteMap.logged.modeEmploiDGCCRF)}

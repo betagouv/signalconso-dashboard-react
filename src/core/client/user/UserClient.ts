@@ -1,4 +1,7 @@
-import {isUserActive, RoleAdminOrAgent, RoleAgents,
+import {
+  isUserActive,
+  RoleAdminOrAgent,
+  RoleAgents,
   User,
   UserEdit,
   UserPending,
@@ -19,9 +22,7 @@ export class UserClient {
   readonly searchAdmin = async (
     filters: UserSearch,
   ): Promise<Paginate<User>> => {
-    const rawUsers = await this.client.get<UserRaw[]>(
-      `/account/admin/users`,
-    )
+    const rawUsers = await this.client.get<UserRaw[]>(`/account/admin/users`)
     const users: User[] = rawUsers
       .map(({ lastEmailValidation, ...rest }) => {
         return {
@@ -43,26 +44,33 @@ export class UserClient {
     return paginateData<User>(filters.limit, filters.offset)(users)
   }
 
-  readonly searchAgent = async (filters: UserSearch): Promise<Paginate<User>> => {
+  readonly searchAgent = async (
+    filters: UserSearch,
+  ): Promise<Paginate<User>> => {
     const rawUsers = await this.client.get<UserRaw[]>(`/account/agent/users`)
     const users: User[] = rawUsers
-      .map(({lastEmailValidation, ...rest}) => {
+      .map(({ lastEmailValidation, ...rest }) => {
         return {
           lastEmailValidation: new Date(lastEmailValidation),
           ...rest,
         }
       })
-      .filter(_ => {
-        return !filters.email || _.email.toLowerCase().includes(filters.email.toLowerCase())
+      .filter((_) => {
+        return (
+          !filters.email ||
+          _.email.toLowerCase().includes(filters.email.toLowerCase())
+        )
       })
-      .filter(_ => {
-        return filters.active === undefined || isUserActive(_) === filters.active
+      .filter((_) => {
+        return (
+          filters.active === undefined || isUserActive(_) === filters.active
+        )
       })
       .filter((_) => {
         return (
           !filters.role ||
           filters.role.length === 0 ||
-          filters.role.map(_ => _ as RoleAdminOrAgent).includes(_.role)
+          filters.role.map((_) => _ as RoleAdminOrAgent).includes(_.role)
         )
       })
     return paginateData<User>(filters.limit, filters.offset)(users)

@@ -41,7 +41,10 @@ export const ConnectedContextProvider = ({
           isDGAL: connectedUser.role === Roles.DGAL,
           isPro: connectedUser.role === Roles.Pro,
           isNotPro: connectedUser.role !== Roles.Pro,
-          isAdmin: connectedUser.role === Roles.SuperAdmin || connectedUser.role === Roles.Admin || connectedUser.role === Roles.ReadOnlyAdmin,
+          isAdmin:
+            connectedUser.role === Roles.SuperAdmin ||
+            connectedUser.role === Roles.Admin ||
+            connectedUser.role === Roles.ReadOnlyAdmin,
           isSuperAdmin: connectedUser.role === Roles.SuperAdmin,
         },
 
