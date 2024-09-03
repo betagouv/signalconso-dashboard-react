@@ -1,5 +1,3 @@
-import * as React from 'react'
-import { ReactNode, useContext, useState } from 'react'
 import {
   Box,
   CircularProgress,
@@ -9,6 +7,8 @@ import {
   SnackbarCloseReason,
   SnackbarProps,
 } from '@mui/material'
+import * as React from 'react'
+import { ReactNode, useContext, useState } from 'react'
 import { colorInfo, colorSuccess, colorWarning } from './color'
 
 const noop = (_: string) => {}
@@ -31,7 +31,6 @@ type ToastType =
 
 interface ToastOptions
   extends Pick<SnackbarProps, 'autoHideDuration' | 'action'> {
-  onClose?: (event: any) => void
   keepOpenOnClickAway?: boolean
 }
 
@@ -84,12 +83,11 @@ export const ToastProvider = ({
     }
   }
 
-  const handleClose = (event: any, reason?: SnackbarCloseReason) => {
+  const handleClose = (event: unknown, reason?: SnackbarCloseReason) => {
     if (reason === 'clickaway' && options?.keepOpenOnClickAway) {
     } else {
       setOpen(false)
     }
-    options?.onClose?.(event)
   }
 
   return (
