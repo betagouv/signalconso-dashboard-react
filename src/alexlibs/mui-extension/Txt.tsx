@@ -14,7 +14,6 @@ interface Props extends BoxProps {
     | 'secondary'
     | 'disabled'
     | 'hint'
-    | 'default'
     | 'error'
     | 'success'
     | 'warning'
@@ -84,9 +83,6 @@ export const Txt = forwardRef(
               },
               warning: {
                 color: (t: any) => t.palette.warning.main,
-              },
-              default: {
-                color: (t: any) => t.palette.text.primary,
               },
             }[color]),
           ...(block && {
