@@ -1,7 +1,7 @@
 import { apiPublicSdk } from 'core/ApiSdkInstance'
 import { Dispatch, SetStateAction, useEffect, useState } from 'react'
-import { UserWithPermission } from './client/authenticate/Authenticate'
 import { useNavigate } from 'react-router'
+import { UserWithPermission } from './client/authenticate/Authenticate'
 
 export type LoginManagementResult = {
   connectedUser?: UserWithPermission
@@ -11,12 +11,12 @@ export type LoginManagementResult = {
   login: {
     action: (login: string, password: string) => Promise<UserWithPermission>
     loading?: boolean
-    errorMsg?: string
+    errorMsg?: unknown
   }
   register: {
     action: (siret: string, token: string, email: string) => Promise<void>
     loading?: boolean
-    errorMsg?: string
+    errorMsg?: unknown
   }
   setConnectedUser: Dispatch<SetStateAction<UserWithPermission | undefined>>
 }
@@ -29,8 +29,8 @@ export function useLoginManagement(): LoginManagementResult {
   >()
   const [isLoggingIn, setIsLoggingIn] = useState(false)
   const [isRegistering, setIsRegistering] = useState(false)
-  const [loginError, setLoginError] = useState<string | undefined>()
-  const [registerError, setRegisterError] = useState<string | undefined>()
+  const [loginError, setLoginError] = useState<unknown | undefined>()
+  const [registerError, setRegisterError] = useState<unknown | undefined>()
   const [isFetchingUserOnStartup, setIsFetchingUserOnStartup] = useState(true)
 
   useEffect(() => {
@@ -56,7 +56,7 @@ export function useLoginManagement(): LoginManagementResult {
       const user = await apiPublicSdk.authenticate.login(login, password)
       setConnectedUser(user)
       return user
-    } catch (e: any) {
+    } catch (e: unknown) {
       setLoginError(e)
       throw e
     } finally {
@@ -72,7 +72,7 @@ export function useLoginManagement(): LoginManagementResult {
     try {
       setIsRegistering(true)
       await apiPublicSdk.authenticate.sendActivationLink(siret, token, email)
-    } catch (e: any) {
+    } catch (e: unknown) {
       setRegisterError(e)
       throw e
     } finally {
