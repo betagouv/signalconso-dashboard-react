@@ -2,7 +2,6 @@ import { Icon, InputAdornment, TextField } from '@mui/material'
 import * as React from 'react'
 import { CSSProperties, forwardRef, useEffect } from 'react'
 import { useMemoFn } from '../../alexlibs/react-hooks-lib'
-import { Enum } from '../../alexlibs/ts-utils'
 import { SelectTagsMenu, SelectTagsMenuValues } from './SelectTagsMenu'
 
 interface SelectDepartmentsProps {
@@ -47,8 +46,8 @@ export const SelectTags = forwardRef(
     }
 
     const displayedValue = useMemoFn(value, (v) => {
-      const included = Enum.values(v).filter((_) => _ === 'included').length
-      const excluded = Enum.values(v).filter((_) => _ === 'excluded').length
+      const included = Object.values(v).filter((_) => _ === 'included').length
+      const excluded = Object.values(v).filter((_) => _ === 'excluded').length
       return (
         (included > 0 ? `+ (${included})  ` : ``) +
         (excluded > 0 ? ` - (${excluded})` : ``)

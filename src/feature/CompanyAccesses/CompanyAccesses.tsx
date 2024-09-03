@@ -9,10 +9,9 @@ import { UserDeleteDialog } from 'feature/Users/userDelete'
 import { useEffect, useMemo } from 'react'
 import { NavLink } from 'react-router-dom'
 import { ScMenu } from 'shared/Menu'
-import { Enum } from '../../alexlibs/ts-utils'
 import { CompanyAccessLevel } from '../../core/client/company-access/CompanyAccess'
 import { useConnectedContext } from '../../core/context/ConnectedContext'
-import { isDefined, toQueryString } from '../../core/helper'
+import { isDefined, objectKeysUnsafe, toQueryString } from '../../core/helper'
 import { useI18n } from '../../core/i18n'
 import { CompanyWithReportsCount, Id, User } from '../../core/model'
 import { siteMap } from '../../core/siteMap'
@@ -178,7 +177,7 @@ function CompanyAccessesLoaded({
               close()
             }}
           >
-            {Enum.keys(CompanyAccessLevel).map((level) => (
+            {objectKeysUnsafe(CompanyAccessLevel).map((level) => (
               <ScRadioGroupItem
                 title={CompanyAccessLevel[level]}
                 description={

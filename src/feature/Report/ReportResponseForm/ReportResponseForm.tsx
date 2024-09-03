@@ -1,7 +1,6 @@
 import { forwardRef, Ref, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { Alert } from '../../../alexlibs/mui-extension'
-import { Enum } from '../../../alexlibs/ts-utils'
 import { useI18n } from '../../../core/i18n'
 import { ScButton } from '../../../shared/Button'
 import { PanelFoot } from '../../../shared/Panel/PanelFoot'
@@ -160,7 +159,7 @@ export const ReportResponseForm = forwardRef(
                     return field.onChange(event)
                   }}
                 >
-                  {Enum.values(ReportResponseTypes).map((responseType) => (
+                  {Object.values(ReportResponseTypes).map((responseType) => (
                     <ScRadioGroupItem value={responseType} key={responseType}>
                       {m.reportResponseDesc[responseType]}
                     </ScRadioGroupItem>

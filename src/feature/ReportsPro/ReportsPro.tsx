@@ -14,7 +14,6 @@ import { ScOption } from 'core/helper/ScOption'
 import { useListReportBlockedNotificationsQuery } from 'core/queryhooks/reportBlockedNotificationQueryHooks'
 import { useNavigate } from 'react-router'
 import { DebouncedInput } from 'shared/DebouncedInput'
-import { Enum } from '../../alexlibs/ts-utils'
 import { config } from '../../conf/config'
 import { EntityIcon } from '../../core/EntityIcon'
 import {
@@ -281,7 +280,7 @@ export const ReportsPro = ({ reportType }: ReportsProProps) => {
                             label={m.reportType}
                             fullWidth
                           >
-                            {Enum.values(ReportType).map((type) => (
+                            {Object.values(ReportType).map((type) => (
                               <MenuItem key={type} value={type}>
                                 {m.ReportTypeDesc[type]}
                               </MenuItem>

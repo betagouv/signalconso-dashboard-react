@@ -1,5 +1,4 @@
 import { Box, Grid, Icon, MenuItem } from '@mui/material'
-import { Enum } from '../../alexlibs/ts-utils'
 import { Category } from '../../core/client/constant/Category'
 import { ReportStatus } from '../../core/client/report/Report'
 import { useI18n } from '../../core/i18n'
@@ -110,7 +109,7 @@ export const AdvancedReportsFilter: React.FC<AdvancedFiltersGridProps> = ({
               .join(',')}`
           }
         >
-          {Enum.values(ReportStatus).map((status) => (
+          {Object.values(ReportStatus).map((status) => (
             <ScMenuItem withCheckbox key={status} value={status}>
               <ReportStatusLabel
                 inSelectOptions
@@ -282,7 +281,7 @@ export const AdvancedReportsFilter: React.FC<AdvancedFiltersGridProps> = ({
                   .join(',')}`
               }
             >
-              {Enum.values(ResponseEvaluation).map((evaluation) => (
+              {Object.values(ResponseEvaluation).map((evaluation) => (
                 <ScMenuItem withCheckbox key={evaluation} value={evaluation}>
                   <ConsumerReviewLabel evaluation={evaluation} displayLabel />
                 </ScMenuItem>
@@ -322,7 +321,7 @@ export const AdvancedReportsFilter: React.FC<AdvancedFiltersGridProps> = ({
                   .join(',')}`
               }
             >
-              {Enum.values(ResponseEvaluation).map((evaluation) => (
+              {Object.values(ResponseEvaluation).map((evaluation) => (
                 <ScMenuItem withCheckbox key={evaluation} value={evaluation}>
                   <ConsumerReviewLabel evaluation={evaluation} displayLabel />
                 </ScMenuItem>
@@ -352,7 +351,7 @@ export const AdvancedReportsFilter: React.FC<AdvancedFiltersGridProps> = ({
                   .join(',')}`
               }
             >
-              {Enum.values(ReportResponseTypes).map((proResponse) => (
+              {Object.values(ReportResponseTypes).map((proResponse) => (
                 <ScMenuItem withCheckbox key={proResponse} value={proResponse}>
                   <ProResponseLabel proResponse={proResponse} />
                 </ScMenuItem>

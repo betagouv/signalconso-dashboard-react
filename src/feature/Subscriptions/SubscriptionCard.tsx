@@ -3,7 +3,6 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 import React, { CSSProperties, useEffect, useMemo, useState } from 'react'
 import { CleanWidePanel } from 'shared/Panel/simplePanels'
 import { IconBtn } from '../../alexlibs/mui-extension'
-import { Enum } from '../../alexlibs/ts-utils'
 import { Category } from '../../core/client/constant/Category'
 import { ReportSearch } from '../../core/client/report/ReportSearch'
 import {
@@ -29,6 +28,7 @@ import {
 import { ScMenuItem } from '../MenuItem/MenuItem'
 import { SubscriptionCardRow } from './SubscriptionCardRow'
 import { SubscriptionInformation } from './SubscriptionInformation'
+import { objectKeysUnsafe } from 'core/helper'
 
 interface Props {
   subscription: Subscription
@@ -98,8 +98,12 @@ export const SubscriptionCard = ({ subscription, className, style }: Props) => {
     tags: SelectTagsMenuValues,
   ): Pick<ReportSearch, 'withTags' | 'withoutTags'> => {
     return {
-      withTags: Enum.keys(tags).filter((tag) => tags[tag] === 'included'),
-      withoutTags: Enum.keys(tags).filter((tag) => tags[tag] === 'excluded'),
+      withTags: objectKeysUnsafe(tags).filter(
+        (tag) => tags[tag] === 'included',
+      ),
+      withoutTags: objectKeysUnsafe(tags).filter(
+        (tag) => tags[tag] === 'excluded',
+      ),
     }
   }
 

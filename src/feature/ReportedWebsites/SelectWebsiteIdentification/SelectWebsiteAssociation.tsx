@@ -1,24 +1,25 @@
-import React, { useState } from 'react'
-import { useI18n } from '../../../core/i18n'
-import { ScDialog } from '../../../shared/ScDialog'
-import { SelectCountry } from '../../../shared/SelectCountry'
-import { useToast } from '../../../core/toast'
-import { ChipCountry } from './ChipCountry'
-import { ChipCompany } from './ChipCompany'
 import { BoxProps } from '@mui/material'
-import { ChipNoAssociation } from './ChipNoAssociation'
+import { useMutation } from '@tanstack/react-query'
+import { useState } from 'react'
+import { Txt } from '../../../alexlibs/mui-extension'
+import { fnSwitch } from '../../../alexlibs/ts-utils'
+import { Company } from '../../../core/client/company/Company'
+import { Country } from '../../../core/client/constant/Country'
+import { WebsiteUpdateCompany } from '../../../core/client/website/Website'
+import { useApiContext } from '../../../core/context/ApiContext'
+import { useI18n } from '../../../core/i18n'
+import { Id } from '../../../core/model'
+import { useToast } from '../../../core/toast'
+import { ScButton } from '../../../shared/Button'
 import { ScRadioGroup } from '../../../shared/RadioGroup'
 import { ScRadioGroupItem } from '../../../shared/RadioGroupItem'
-import { Enum, fnSwitch } from '../../../alexlibs/ts-utils'
-import { Txt } from '../../../alexlibs/mui-extension'
-import { ScButton } from '../../../shared/Button'
+import { ScDialog } from '../../../shared/ScDialog'
 import { SelectCompany } from '../../../shared/SelectCompany/SelectCompany'
-import { Company } from '../../../core/client/company/Company'
-import { WebsiteUpdateCompany } from '../../../core/client/website/Website'
-import { Country } from '../../../core/client/constant/Country'
-import { Id } from '../../../core/model'
-import { useMutation } from '@tanstack/react-query'
-import { useApiContext } from '../../../core/context/ApiContext'
+import { SelectCountry } from '../../../shared/SelectCountry'
+import { ChipCompany } from './ChipCompany'
+import { ChipCountry } from './ChipCountry'
+import { ChipNoAssociation } from './ChipNoAssociation'
+import { objectKeysUnsafe } from 'core/helper'
 
 interface Website {
   id: Id
@@ -125,7 +126,7 @@ export const SelectWebsiteAssociation = ({
             value={selectedAssociation}
             onChange={setSelectedAssociation}
           >
-            {Enum.keys(AssociationType).map((_) => (
+            {objectKeysUnsafe(AssociationType).map((_) => (
               <ScRadioGroupItem key={_} value={_} title={m.attachToType[_]} />
             ))}
           </ScRadioGroup>

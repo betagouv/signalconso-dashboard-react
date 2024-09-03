@@ -1,16 +1,14 @@
-import { ScButton } from '../../shared/Button'
-import { Alert } from '../../alexlibs/mui-extension'
-import React from 'react'
-import { useI18n } from '../../core/i18n'
+import { objectKeysUnsafe } from 'core/helper'
 import { Controller, useForm } from 'react-hook-form'
-import { ScInput } from '../../shared/ScInput'
+import { Alert, Txt } from '../../alexlibs/mui-extension'
+import { CompanyAccessLevel } from '../../core/client/company-access/CompanyAccess'
 import { regexp } from '../../core/helper/regexp'
-import { Enum } from '../../alexlibs/ts-utils'
-import { ScDialog } from '../../shared/ScDialog'
+import { useI18n } from '../../core/i18n'
+import { ScButton } from '../../shared/Button'
 import { ScRadioGroup } from '../../shared/RadioGroup'
 import { ScRadioGroupItem } from '../../shared/RadioGroupItem'
-import { Txt } from '../../alexlibs/mui-extension'
-import { CompanyAccessLevel } from '../../core/client/company-access/CompanyAccess'
+import { ScDialog } from '../../shared/ScDialog'
+import { ScInput } from '../../shared/ScInput'
 
 interface Props {
   errorMessage?: string
@@ -75,7 +73,7 @@ export const CompanyAccessCreateBtn = ({
             control={control}
             render={({ field }) => (
               <ScRadioGroup error={!!errors.level} {...field}>
-                {Enum.keys(CompanyAccessLevel).map((level) => (
+                {objectKeysUnsafe(CompanyAccessLevel).map((level) => (
                   <ScRadioGroupItem
                     title={CompanyAccessLevel[level]}
                     description={

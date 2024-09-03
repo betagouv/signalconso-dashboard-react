@@ -8,11 +8,11 @@ import {
   SxProps,
   Theme,
 } from '@mui/material'
-import { Enum } from '../../alexlibs/ts-utils'
-import { useI18n } from '../../core/i18n'
-import { Txt } from '../../alexlibs/mui-extension'
 import { useEffect, useMemo, useState } from 'react'
+import { Txt } from '../../alexlibs/mui-extension'
 import { OutdatedTags, ReportTag } from '../../core/client/report/Report'
+import { useI18n } from '../../core/i18n'
+import { objectKeysUnsafe } from 'core/helper'
 
 type SelectTagsMenuValue = 'included' | 'excluded' | undefined
 
@@ -77,10 +77,10 @@ export const SelectTagsMenu = ({
   const tags = useMemo(() => {
     const reponseConsoTag = ReportTag.ReponseConso
     const tagsWithoutReponseConso = onlyActive
-      ? (Enum.keys(ReportTag) as ReportTag[]).filter(
+      ? (objectKeysUnsafe(ReportTag) as ReportTag[]).filter(
           (_) => _ !== reponseConsoTag && !OutdatedTags.includes(_),
         )
-      : (Enum.keys(ReportTag) as ReportTag[]).filter(
+      : (objectKeysUnsafe(ReportTag) as ReportTag[]).filter(
           (_) => _ !== reponseConsoTag,
         )
     return [reponseConsoTag, ...tagsWithoutReponseConso]

@@ -1,20 +1,20 @@
-import React, { ReactElement, useState } from 'react'
+import { useMutation } from '@tanstack/react-query'
+import { objectKeysUnsafe } from 'core/helper'
+import { ReactElement, useState } from 'react'
 import { Alert } from '../../alexlibs/mui-extension'
-import { useI18n } from '../../core/i18n'
-import { ScInput } from '../../shared/ScInput'
-import { useConnectedContext } from '../../core/context/ConnectedContext'
-import { useToast } from '../../core/toast'
-import { ScDialog } from '../../shared/ScDialog'
 import {
   Report,
   ReportAdminActionType,
   ReportDeletionReason,
 } from '../../core/client/report/Report'
-import { ScRadioGroup } from '../../shared/RadioGroup'
-import { Enum } from '../../alexlibs/ts-utils'
-import { ScRadioGroupItem } from '../../shared/RadioGroupItem'
-import { useMutation } from '@tanstack/react-query'
+import { useConnectedContext } from '../../core/context/ConnectedContext'
+import { useI18n } from '../../core/i18n'
 import { Id } from '../../core/model'
+import { useToast } from '../../core/toast'
+import { ScRadioGroup } from '../../shared/RadioGroup'
+import { ScRadioGroupItem } from '../../shared/RadioGroupItem'
+import { ScDialog } from '../../shared/ScDialog'
+import { ScInput } from '../../shared/ScInput'
 
 interface Props {
   report: Report
@@ -85,22 +85,24 @@ export const ReportAdminResolution = ({
               setDeletionType(reportDeletionType)
             }}
           >
-            {Enum.keys(ReportAdminActionType).map((reportDeletionType) => (
-              <ScRadioGroupItem
-                title={
-                  m.reportDeletionTypeName[
-                    ReportAdminActionType[reportDeletionType]
-                  ]
-                }
-                description={
-                  m.reportDeletionTypeDescription[
-                    ReportAdminActionType[reportDeletionType]
-                  ]
-                }
-                value={reportDeletionType}
-                key={reportDeletionType}
-              />
-            ))}
+            {objectKeysUnsafe(ReportAdminActionType).map(
+              (reportDeletionType) => (
+                <ScRadioGroupItem
+                  title={
+                    m.reportDeletionTypeName[
+                      ReportAdminActionType[reportDeletionType]
+                    ]
+                  }
+                  description={
+                    m.reportDeletionTypeDescription[
+                      ReportAdminActionType[reportDeletionType]
+                    ]
+                  }
+                  value={reportDeletionType}
+                  key={reportDeletionType}
+                />
+              ),
+            )}
           </ScRadioGroup>
           <b className={'mt-10 mb-10'}>Commentaire (Obligatoire) :</b>
           <ScInput

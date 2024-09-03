@@ -184,3 +184,15 @@ export const mapFor = <T>(n: number, callback: (i: number) => T): T[] => {
   }
   return result
 }
+
+type Entries<T> = {
+  [K in keyof T]: [K, T[K]]
+}[keyof T][]
+
+// see https://stackoverflow.com/questions/60141960/typescript-key-value-relation-preserving-object-entries-type
+export function objectEntriesUnsafe<T extends object>(obj: T) {
+  return Object.entries(obj) as Entries<T>
+}
+export function objectKeysUnsafe<T extends object>(obj: T) {
+  return objectEntriesUnsafe(obj).map(([k]) => k)
+}
