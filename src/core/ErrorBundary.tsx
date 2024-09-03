@@ -1,14 +1,15 @@
 import { Component, ReactNode } from 'react'
-import { withToast, WithToast } from '../alexlibs/mui-extension'
+import { ToastContext, useToastContext } from '../alexlibs/mui-extension'
 
-interface Props extends WithToast {
+type Props = {
+  toast: ToastContext
   children: ReactNode
 }
 
-class Cp extends Component<Props> {
+class Bundary extends Component<Props> {
   componentDidCatch(error: Error | null, info: object) {
     const message = error ? error.message : JSON.stringify(info)
-    this.props.toastError(message)
+    this.props.toast.toastError(message)
   }
 
   render() {
@@ -16,4 +17,7 @@ class Cp extends Component<Props> {
   }
 }
 
-export const ErrorBundary = withToast(Cp)
+export const ErrorBundary = (props: { children: ReactNode }) => {
+  const toast = useToastContext()
+  return <Bundary {...props} {...{ toast }} />
+}
