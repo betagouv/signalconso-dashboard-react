@@ -1,25 +1,14 @@
-import { SxProps, Theme } from '@mui/material'
 import { ApiError } from 'core/client/ApiClient'
 import format from 'date-fns/format'
 import { ScOption } from './ScOption'
 
 export type Index<T> = { [key: string]: T }
 
-type Shape<T extends object> = { [key in keyof T]: any }
-
 export const dateToApiDate = (date?: Date): string | undefined =>
   date ? format(date, 'yyyy-MM-dd') : undefined
 
 export const dateToApiTime = (date?: Date): string | undefined =>
   date ? date.toISOString() : undefined
-
-const getHostFromUrl = (url?: string) => {
-  return url
-    ?.replace('http://', '')
-    .replace('https://', '')
-    .replace('www.', '')
-    .split(/[/?#]/)[0]
-}
 
 const isNotDefined = (value: any): value is undefined | null | '' => {
   return [undefined, null, ''].includes(value)
@@ -75,15 +64,6 @@ export const directDownloadBlob =
     link.click()
   }
 
-const isJsonValid = (json: string): boolean => {
-  try {
-    JSON.parse(json)
-    return true
-  } catch (e) {
-    return false
-  }
-}
-
 export const textOverflowMiddleCropping = (text: string, limit: number) => {
   return text.length > limit
     ? `${text.slice(0, limit / 2)}...${text.slice(
@@ -91,20 +71,6 @@ export const textOverflowMiddleCropping = (text: string, limit: number) => {
         text.length,
       )}`
     : text
-}
-
-const fromQueryString = <T = object>(
-  qs: string,
-): { [key in keyof T]: string | number } => {
-  const decoded = decodeURI(qs.replace(/^\?/, ''))
-    .replace(/"/g, '\\"')
-    .replace(/&/g, '","')
-    .replace(/=/g, '":"')
-  const json: Index<string> = JSON.parse(`{${decoded}}`)
-  return Object.entries(json).reduce(
-    (acc, [key, value]) => ({ ...acc, [key]: Number(value) ?? value }),
-    {} as { [key in keyof T]: string | number },
-  )
 }
 
 export const stopPropagation =
@@ -174,13 +140,6 @@ const stringToBoolean = (str?: string): boolean | undefined => {
 
 export const openInNew = (path: string) => {
   window.open(path, '_blank')
-}
-
-const sxIf = (
-  condition: boolean | undefined,
-  sx: SxProps<Theme>,
-): SxProps<Theme> => {
-  return condition ? sx : {}
 }
 
 export const countryToFlag = (isoCode: string) => {
