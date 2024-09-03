@@ -34,7 +34,7 @@ interface ToastOptions
   keepOpenOnClickAway?: boolean
 }
 
-export interface ToastContext {
+interface ToastContext {
   toastError: (m: string, options?: ToastOptions) => void
   toastSuccess: (m: string, options?: ToastOptions) => void
   toastWarning: (m: string, options?: ToastOptions) => void

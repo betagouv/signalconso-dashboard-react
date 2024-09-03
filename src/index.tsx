@@ -3,7 +3,6 @@ import createGenerateClassName from '@mui/styles/createGenerateClassName'
 import { injectMatomoScript } from 'core/plugins/Matomo'
 import { createRoot } from 'react-dom/client'
 import { App } from './App'
-import { ErrorBundary } from './core/ErrorBundary'
 import { Sentry } from './core/plugins/Sentry'
 import './polyfills'
 Sentry.init()
@@ -22,8 +21,6 @@ if (!container) {
 }
 createRoot(container).render(
   <StylesProvider generateClassName={generateClassName}>
-    <ErrorBundary>
-      <App />
-    </ErrorBundary>
+    <App />
   </StylesProvider>,
 )
