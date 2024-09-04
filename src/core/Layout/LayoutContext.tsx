@@ -33,7 +33,10 @@ export const LayoutContextProvider = ({
   hasSidebar: boolean
 }) => {
   const [pageWidth, setPageWidth] = useState(getWindowWidth())
-  const [sidebarOpen, setSidebarOpen] = usePersistentState(true, 'sidebarOpen')
+  const [sidebarOpen, setSidebarOpen] = usePersistentState<boolean>(
+    true,
+    'sidebarOpen',
+  )
 
   useEffect(() => {
     window.addEventListener('resize', () => setPageWidth(getWindowWidth()))
