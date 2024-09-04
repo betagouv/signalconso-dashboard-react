@@ -1,12 +1,12 @@
 import { config } from '../conf/config'
-import { SignalConsoSecuredSdk } from './client/SignalConsoSecuredSdk'
-import { ApiClient } from './client/ApiClient'
-import { SignalConsoPublicSdk } from './client/SignalConsoPublicSdk'
+import { ApiClient, ApiClientHeaders } from './client/ApiClient'
 import { CompanyPublicSdk } from './client/CompanyPublicSdk'
+import { SignalConsoPublicSdk } from './client/SignalConsoPublicSdk'
+import { SignalConsoSecuredSdk } from './client/SignalConsoSecuredSdk'
 
 export type ConnectedApiSdk = ReturnType<typeof buildConnectedApiSdk>
 
-const headers = {
+const headers: ApiClientHeaders = {
   'Content-Type': 'application/json',
   Accept: 'application/json',
 }
