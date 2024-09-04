@@ -1,7 +1,7 @@
 import { Icon, Tooltip } from '@mui/material'
+import { objectEntriesUnsafe } from 'core/helper'
 import { CleanDiscreetPanel } from 'shared/Panel/simplePanels'
 import { useMemoFn } from '../../../alexlibs/react-hooks-lib'
-import { Enum } from '../../../alexlibs/ts-utils'
 import {
   ReportStatus,
   ReportStatusPro,
@@ -28,7 +28,7 @@ export const StatusDistribution = <T extends ReportStatus | ReportStatusPro>({
   const { m } = useI18n()
 
   const statusDistribution = useMemoFn(values, (_) =>
-    Enum.entries(_).map(([status, count]) => ({
+    objectEntriesUnsafe(_).map(([status, count]) => ({
       label: (
         <span>
           {statusShortLabel(status)}

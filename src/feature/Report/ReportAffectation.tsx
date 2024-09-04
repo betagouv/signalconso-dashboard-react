@@ -1,26 +1,16 @@
-import React, { ReactElement, useState } from 'react'
-import { Alert } from '../../alexlibs/mui-extension'
+import { Icon, MenuItem } from '@mui/material'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { ReactElement, useState } from 'react'
+import { ReportSearchResult } from '../../core/client/report/Report'
+import { useApiContext } from '../../core/context/ApiContext'
 import { useI18n } from '../../core/i18n'
-import { ScInput } from '../../shared/ScInput'
-import { useConnectedContext } from '../../core/context/ConnectedContext'
+import { CompanyAccess, MinimalUser, User } from '../../core/model'
+import { useCompanyAccessesQuery } from '../../core/queryhooks/companyQueryHooks'
+import { GetReportQueryKeys } from '../../core/queryhooks/reportQueryHooks'
 import { useToast } from '../../core/toast'
 import { ScDialog } from '../../shared/ScDialog'
-import {
-  Report,
-  ReportAdminActionType,
-  ReportDeletionReason,
-  ReportSearchResult,
-} from '../../core/client/report/Report'
-import { ScRadioGroup } from '../../shared/RadioGroup'
-import { Enum } from '../../alexlibs/ts-utils'
-import { ScRadioGroupItem } from '../../shared/RadioGroupItem'
-import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { CompanyAccess, Id, MinimalUser, User } from '../../core/model'
+import { ScInput } from '../../shared/ScInput'
 import { ScSelect } from '../../shared/Select/Select'
-import { Icon, MenuItem } from '@mui/material'
-import { useApiContext } from '../../core/context/ApiContext'
-import { GetReportQueryKeys } from '../../core/queryhooks/reportQueryHooks'
-import { useCompanyAccessesQuery } from '../../core/queryhooks/companyQueryHooks'
 
 interface Props {
   reportSearchResult: ReportSearchResult

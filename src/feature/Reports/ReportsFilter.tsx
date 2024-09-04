@@ -1,7 +1,6 @@
 import { Box, Grid, Icon } from '@mui/material'
 import { UseQueryPaginateResult } from 'core/queryhooks/UseQueryPaginate'
 import { SelectTagsMenuValues } from 'shared/SelectTags/SelectTagsMenu'
-import { Enum } from '../../alexlibs/ts-utils'
 import { ReportSearchResult } from '../../core/client/report/Report'
 import { useI18n } from '../../core/i18n'
 import { Paginate, PaginatedFilters, ReportSearch } from '../../core/model'
@@ -11,6 +10,7 @@ import { ScInput } from '../../shared/ScInput'
 import { SelectDepartments } from '../../shared/SelectDepartments/SelectDepartments'
 import { SelectTags } from '../../shared/SelectTags/SelectTags'
 import { TrueFalseNullRow } from './AdvancedReportsFilter'
+import { objectKeysUnsafe } from 'core/helper'
 
 const TrueLabel = () => {
   const { m } = useI18n()
@@ -101,8 +101,12 @@ export const ReportsFilter: React.FC<ReportsGridProps> = ({
           onChange={(e) =>
             _reports.updateFilters((prev) => ({
               ...prev,
-              withTags: Enum.keys(e).filter((tag) => e[tag] === 'included'),
-              withoutTags: Enum.keys(e).filter((tag) => e[tag] === 'excluded'),
+              withTags: objectKeysUnsafe(e).filter(
+                (tag) => e[tag] === 'included',
+              ),
+              withoutTags: objectKeysUnsafe(e).filter(
+                (tag) => e[tag] === 'excluded',
+              ),
             }))
           }
         />

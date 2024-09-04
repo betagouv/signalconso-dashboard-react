@@ -1,10 +1,14 @@
 import axios, { AxiosResponse, ResponseType, isAxiosError } from 'axios'
 import * as qs from 'qs'
 
+export type ApiClientHeaders = {
+  'Content-Type'?: 'multipart/form-data' | 'application/json'
+  Accept?: 'application/json'
+}
 interface RequestOption {
-  readonly qs?: any
-  readonly headers?: any
-  readonly body?: any
+  readonly qs?: unknown
+  readonly headers?: ApiClientHeaders
+  readonly body?: unknown
   readonly timeout?: number
   readonly responseType?: ResponseType
   readonly withCredentials?: boolean
@@ -12,7 +16,7 @@ interface RequestOption {
 
 interface ApiClientParams {
   readonly baseUrl: string
-  readonly headers?: any
+  readonly headers?: ApiClientHeaders
   readonly withCredentials?: boolean
   onDisconnected?: () => void
 }
@@ -34,19 +38,6 @@ export interface ApiClientApi {
   readonly put: <T = any>(uri: string, options?: RequestOption) => Promise<T>
   readonly patch: <T = any>(uri: string, options?: RequestOption) => Promise<T>
 }
-
-type StatusCode =
-  | 'front-side'
-  | 200
-  | 301
-  | 302
-  | 400
-  | 401
-  | 403
-  | 404
-  | 423
-  | 500
-  | 504
 
 interface ApiErrorDetails {
   // 300, 404, 500, etc.
@@ -196,7 +187,7 @@ export class ApiClient {
 
   private static readonly buildOptions = async (
     options?: RequestOption,
-    headers?: any,
+    headers?: ApiClientHeaders,
   ): Promise<RequestOption> => {
     return {
       ...options,

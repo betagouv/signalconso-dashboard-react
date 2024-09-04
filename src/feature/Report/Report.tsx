@@ -6,7 +6,6 @@ import { Divider } from 'shared/Divider'
 import { CleanDiscreetPanel, CleanWidePanel } from 'shared/Panel/simplePanels'
 import { WithInlineIcon } from 'shared/WithInlineIcon'
 import { Btn } from '../../alexlibs/mui-extension'
-import { map } from '../../alexlibs/ts-utils'
 import {
   EventActionValues,
   EventType,
@@ -39,6 +38,7 @@ import { ReportHeader } from './ReportHeader'
 import { ReportPostAction } from './ReportPostAction'
 import { ReportReOpening } from './ReportReOpening'
 import { ReportResponseComponent } from './ReportResponse'
+import { map } from 'core/helper'
 
 const CONSO: EventType = 'CONSO'
 

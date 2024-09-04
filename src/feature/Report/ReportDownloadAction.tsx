@@ -1,14 +1,14 @@
-import React, { ReactElement, useState } from 'react'
-import { Alert } from '../../alexlibs/mui-extension'
-import { useI18n } from '../../core/i18n'
-import { useConnectedContext } from '../../core/context/ConnectedContext'
-import { ScDialog } from '../../shared/ScDialog'
-import { Report } from '../../core/client/report/Report'
 import { useMutation } from '@tanstack/react-query'
+import { ReactElement, useState } from 'react'
+import { Alert } from '../../alexlibs/mui-extension'
+import { Report } from '../../core/client/report/Report'
+import { useConnectedContext } from '../../core/context/ConnectedContext'
+import { useI18n } from '../../core/i18n'
 import { Id, UploadedFile } from '../../core/model'
 import { ScRadioGroup } from '../../shared/RadioGroup'
-import { Enum } from '../../alexlibs/ts-utils'
 import { ScRadioGroupItem } from '../../shared/RadioGroupItem'
+import { ScDialog } from '../../shared/ScDialog'
+import { objectKeysUnsafe } from 'core/helper'
 
 interface Props {
   report: Report
@@ -62,7 +62,7 @@ export const ReportDownloadAction = ({ report, files, children }: Props) => {
               setDownloadReportWithAttachments(choice)
             }}
           >
-            {Enum.keys(DownloadType).map((downloadType) => (
+            {objectKeysUnsafe(DownloadType).map((downloadType) => (
               <ScRadioGroupItem
                 title={m.reportDownloadTypeTitle[DownloadType[downloadType]]}
                 description={

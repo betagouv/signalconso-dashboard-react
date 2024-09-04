@@ -1,21 +1,22 @@
-import React, { ReactElement, useState } from 'react'
 import { BoxProps } from '@mui/material'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { ReactElement, useState } from 'react'
+import { Txt } from '../../alexlibs/mui-extension'
+import { fnSwitch } from '../../alexlibs/ts-utils'
 import { CompanySearchResult } from '../../core/client/company/Company'
 import { Country } from '../../core/client/constant/Country'
+import { ReportSearchResult } from '../../core/client/report/Report'
+import { useApiContext } from '../../core/context/ApiContext'
 import { useI18n } from '../../core/i18n'
+import { GetReportQueryKeys } from '../../core/queryhooks/reportQueryHooks'
 import { useToast } from '../../core/toast'
-import { ScDialog } from '../../shared/ScDialog'
-import { Txt } from '../../alexlibs/mui-extension'
+import { ScButton } from '../../shared/Button'
 import { ScRadioGroup } from '../../shared/RadioGroup'
 import { ScRadioGroupItem } from '../../shared/RadioGroupItem'
-import { Enum, fnSwitch } from '../../alexlibs/ts-utils'
+import { ScDialog } from '../../shared/ScDialog'
 import { SelectCompany } from '../../shared/SelectCompany/SelectCompany'
 import { SelectCountry } from '../../shared/SelectCountry'
-import { ScButton } from '../../shared/Button'
-import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { GetReportQueryKeys } from '../../core/queryhooks/reportQueryHooks'
-import { useApiContext } from '../../core/context/ApiContext'
-import { ReportSearchResult } from '../../core/client/report/Report'
+import { objectKeysUnsafe } from 'core/helper'
 
 interface Props extends Omit<BoxProps, 'onChange'> {
   children: ReactElement<any>
@@ -117,7 +118,7 @@ export const SelectReportAssociation = ({
             value={selectedAssociation}
             onChange={setSelectedAssociation}
           >
-            {Enum.keys(AssociationType).map((_) => (
+            {objectKeysUnsafe(AssociationType).map((_) => (
               <ScRadioGroupItem key={_} value={_} title={m.attachToType[_]} />
             ))}
           </ScRadioGroup>

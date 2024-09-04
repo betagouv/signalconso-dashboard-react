@@ -1,5 +1,6 @@
 import { Box, BoxProps, Skeleton } from '@mui/material'
 import { forwardRef, Ref } from 'react'
+import { colorBlueFrance, colorsMui } from './color'
 
 interface Props extends BoxProps {
   bold?: boolean
@@ -9,15 +10,7 @@ interface Props extends BoxProps {
   block?: boolean
   skeleton?: boolean | number | string
   size?: 'big' | 'title' | 'small'
-  color?:
-    | 'primary'
-    | 'secondary'
-    | 'disabled'
-    | 'hint'
-    | 'default'
-    | 'error'
-    | 'success'
-    | 'warning'
+  color?: 'primary' | 'disabled' | 'hint' | 'error' | 'success' | 'warning'
   uppercase?: boolean
   truncate?: boolean
   noWrap?: boolean
@@ -65,28 +58,22 @@ export const Txt = forwardRef(
           ...(color &&
             {
               primary: {
-                color: (t: any) => t.palette.primary.main,
-              },
-              secondary: {
-                color: (t: any) => t.palette.secondary.main,
+                color: colorBlueFrance,
               },
               disabled: {
-                color: (t: any) => t.palette.text.disabled,
+                color: colorsMui.textDisabled,
               },
               hint: {
-                color: (t: any) => t.palette.text.secondary,
+                color: colorsMui.textSecondary,
               },
               error: {
-                color: (t: any) => t.palette.error.main,
+                color: colorsMui.errorMain,
               },
               success: {
-                color: (t: any) => t.palette.success.main,
+                color: colorsMui.successMain,
               },
               warning: {
-                color: (t: any) => t.palette.warning.main,
-              },
-              default: {
-                color: (t: any) => t.palette.text.primary,
+                color: colorsMui.warningMain,
               },
             }[color]),
           ...(block && {
@@ -105,7 +92,7 @@ export const Txt = forwardRef(
             mb: 1,
           }),
           ...(link && {
-            color: (t: any) => t.palette.primary.main,
+            color: colorBlueFrance,
           }),
           ...(uppercase && {
             textTransform: 'uppercase' as any,

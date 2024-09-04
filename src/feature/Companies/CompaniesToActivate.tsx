@@ -74,12 +74,12 @@ export const CompaniesToActivate = () => {
       <Datatable
         id="companiestoactivate"
         superheader={
-          <Txt color="default">
+          <p>
             {m.companiesToActivateDesc}{' '}
-            <Txt color="hint" italic>
+            <span className="text-gray-500 italic">
               {m.companiesToActivateDescDetail}
-            </Txt>
-          </Txt>
+            </span>
+          </p>
         }
         headerMain={
           <DatatableToolbar

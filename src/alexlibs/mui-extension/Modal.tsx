@@ -1,11 +1,3 @@
-import * as React from 'react'
-import {
-  EventHandler,
-  ReactElement,
-  ReactNode,
-  SyntheticEvent,
-  useState,
-} from 'react'
 import {
   Button,
   Dialog,
@@ -16,6 +8,8 @@ import {
   LinearProgress,
   PaperProps,
 } from '@mui/material'
+import * as React from 'react'
+import { ReactElement, ReactNode, SyntheticEvent, useState } from 'react'
 
 export interface ModalProps
   extends Omit<DialogProps, 'children' | 'onClick' | 'open' | 'content'> {
@@ -29,13 +23,10 @@ export interface ModalProps
   onClose?: () => void
   onConfirm?: (event: SyntheticEvent<any>, close: () => void) => void
   confirmDisabled?: boolean
-  onClick?: EventHandler<SyntheticEvent<any>>
   PaperProps?: Partial<PaperProps>
   loading?: boolean
   overrideActions?: (_: () => void) => ReactNode
 }
-
-const enterKeyCode = 13
 
 export const Modal = ({
   children,
@@ -44,7 +35,6 @@ export const Modal = ({
   confirmLabel,
   cancelLabel,
   onConfirm,
-  onClick,
   onOpen,
   onClose,
   confirmDisabled,
@@ -69,18 +59,11 @@ export const Modal = ({
     if (onConfirm) onConfirm(event, close)
   }
 
-  const handleKeypress = (e: any) => {
-    if (e.keyCode === enterKeyCode) {
-      confirm(e)
-    }
-  }
-
   return (
     <>
       {React.cloneElement(children, {
-        onClick: (event: any) => {
+        onClick: (event: Event) => {
           if (children.props.onClick) children.props.onClick(event)
-          if (onClick) onClick(event)
           open()
         },
       })}

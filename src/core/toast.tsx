@@ -1,7 +1,7 @@
-import { useToast as useMuiToast } from '../alexlibs/mui-extension'
-import { useI18n } from './i18n'
+import { useToastContext as useMuiToast } from '../alexlibs/mui-extension'
 import { ApiError } from './client/ApiClient'
 import { Index } from './helper'
+import { useI18n } from './i18n'
 
 export const useToast = () => {
   const { toastError, ...toasts } = useMuiToast()

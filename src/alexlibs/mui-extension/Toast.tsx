@@ -1,5 +1,3 @@
-import * as React from 'react'
-import { ReactNode, useContext, useState } from 'react'
 import {
   Box,
   CircularProgress,
@@ -9,11 +7,13 @@ import {
   SnackbarCloseReason,
   SnackbarProps,
 } from '@mui/material'
+import * as React from 'react'
+import { ReactNode, useContext, useState } from 'react'
 import { colorInfo, colorSuccess, colorWarning } from './color'
 
 const noop = (_: string) => {}
 
-const ToastContext = React.createContext<WithToast>({
+const toastContext = React.createContext<ToastContext>({
   toastError: noop,
   toastSuccess: noop,
   toastWarning: noop,
@@ -31,11 +31,10 @@ type ToastType =
 
 interface ToastOptions
   extends Pick<SnackbarProps, 'autoHideDuration' | 'action'> {
-  onClose?: (event: any) => void
   keepOpenOnClickAway?: boolean
 }
 
-export interface WithToast {
+interface ToastContext {
   toastError: (m: string, options?: ToastOptions) => void
   toastSuccess: (m: string, options?: ToastOptions) => void
   toastWarning: (m: string, options?: ToastOptions) => void
@@ -84,16 +83,15 @@ export const ToastProvider = ({
     }
   }
 
-  const handleClose = (event: any, reason?: SnackbarCloseReason) => {
+  const handleClose = (event: unknown, reason?: SnackbarCloseReason) => {
     if (reason === 'clickaway' && options?.keepOpenOnClickAway) {
     } else {
       setOpen(false)
     }
-    options?.onClose?.(event)
   }
 
   return (
-    <ToastContext.Provider
+    <toastContext.Provider
       value={{
         toastError: pop('error'),
         toastSuccess: pop('success'),
@@ -136,14 +134,8 @@ export const ToastProvider = ({
           </>
         }
       />
-    </ToastContext.Provider>
+    </toastContext.Provider>
   )
 }
 
-export const useToast = () => useContext(ToastContext)
-
-export const withToast = (Component: any) => (props: any) => (
-  <ToastContext.Consumer>
-    {(other: WithToast) => <Component {...props} {...other} />}
-  </ToastContext.Consumer>
-)
+export const useToastContext = () => useContext(toastContext)

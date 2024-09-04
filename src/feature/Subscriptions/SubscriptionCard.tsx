@@ -1,9 +1,15 @@
 import { Chip, Collapse, Icon, Stack, duration } from '@mui/material'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import React, { CSSProperties, useEffect, useMemo, useState } from 'react'
+import { objectKeysUnsafe } from 'core/helper'
+import React, {
+  CSSProperties,
+  ReactEventHandler,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react'
 import { CleanWidePanel } from 'shared/Panel/simplePanels'
 import { IconBtn } from '../../alexlibs/mui-extension'
-import { Enum } from '../../alexlibs/ts-utils'
 import { Category } from '../../core/client/constant/Category'
 import { ReportSearch } from '../../core/client/report/ReportSearch'
 import {
@@ -38,7 +44,8 @@ interface Props {
 
 const useAnchoredMenu = () => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
-  const open = (event: any) => setAnchorEl(event.currentTarget)
+  const open: ReactEventHandler<HTMLElement> = (event) =>
+    setAnchorEl(event.currentTarget)
   const close = () => setAnchorEl(null)
   return { open, close, element: anchorEl }
 }
@@ -98,8 +105,12 @@ export const SubscriptionCard = ({ subscription, className, style }: Props) => {
     tags: SelectTagsMenuValues,
   ): Pick<ReportSearch, 'withTags' | 'withoutTags'> => {
     return {
-      withTags: Enum.keys(tags).filter((tag) => tags[tag] === 'included'),
-      withoutTags: Enum.keys(tags).filter((tag) => tags[tag] === 'excluded'),
+      withTags: objectKeysUnsafe(tags).filter(
+        (tag) => tags[tag] === 'included',
+      ),
+      withoutTags: objectKeysUnsafe(tags).filter(
+        (tag) => tags[tag] === 'excluded',
+      ),
     }
   }
 

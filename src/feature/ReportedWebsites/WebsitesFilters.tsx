@@ -1,25 +1,24 @@
-import React, { ReactElement, useEffect, useState } from 'react'
-import { useLayoutContext } from '../../core/Layout/LayoutContext'
 import {
   Dialog,
   DialogActions,
   DialogContent,
   DialogTitle,
 } from '@mui/material'
-import { useI18n } from '../../core/i18n'
-import { ScMenuItem } from '../MenuItem/MenuItem'
-import { DialogInputRow } from '../../shared/DialogInputRow'
+import React, { ReactElement, useEffect, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
-import { ScMultiSelect } from '../../shared/Select/MultiSelect'
-import { Enum } from '../../alexlibs/ts-utils'
-import { Label } from '../../shared/Label'
 import { Btn } from '../../alexlibs/mui-extension'
 import {
   IdentificationStatus,
   InvestigationStatus,
   WebsiteWithCompanySearch,
 } from '../../core/client/website/Website'
+import { useI18n } from '../../core/i18n'
+import { useLayoutContext } from '../../core/Layout/LayoutContext'
+import { DialogInputRow } from '../../shared/DialogInputRow'
+import { Label } from '../../shared/Label'
+import { ScMultiSelect } from '../../shared/Select/MultiSelect'
 import { TrueFalseNull } from '../../shared/TrueFalseNull'
+import { ScMenuItem } from '../MenuItem/MenuItem'
 
 interface WebsitesFiltersProps {
   updateFilters: (_: WebsiteWithCompanySearch) => void
@@ -96,7 +95,7 @@ export const WebsitesFilters = ({
                       .join(',')}`
                   }
                 >
-                  {Enum.values(InvestigationStatus).map(
+                  {Object.values(InvestigationStatus).map(
                     (investigationStatus) => (
                       <ScMenuItem
                         withCheckbox
@@ -130,7 +129,7 @@ export const WebsitesFilters = ({
                       .join(',')}`
                   }
                 >
-                  {Enum.values(IdentificationStatus).map((kind) => (
+                  {Object.values(IdentificationStatus).map((kind) => (
                     <ScMenuItem withCheckbox key={kind} value={kind}>
                       <Label dense {...props}>
                         {m.IdentificationStatusDesc[kind]}

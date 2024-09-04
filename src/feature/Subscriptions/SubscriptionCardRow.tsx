@@ -1,12 +1,12 @@
 import { Box, Divider, Icon } from '@mui/material'
-import { ReactNode } from 'react'
+import { ReactEventHandler, ReactNode } from 'react'
 import { Txt } from '../../alexlibs/mui-extension'
 
 interface SubscriptionCardRowProps {
   icon: string
   label: string
   children: ReactNode
-  onClick?: any
+  onClick?: ReactEventHandler<HTMLElement>
 }
 
 export const SubscriptionCardRow = ({

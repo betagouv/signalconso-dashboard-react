@@ -1,7 +1,10 @@
 import { useEffect, useRef } from 'react'
 
-export const useInterval = (callback: (...args: any[]) => void, ms: number) => {
-  const savedCallback = useRef<(...args: any[]) => void>()
+export const useInterval = <F extends (...args: unknown[]) => void>(
+  callback: F,
+  ms: number,
+) => {
+  const savedCallback = useRef<F>()
 
   useEffect(() => {
     savedCallback.current = callback
