@@ -130,35 +130,11 @@ function CompanyAccessesLoaded({
 
   const isAdmin = connectedUser.isAdmin
   const isPro = connectedUser.isPro
-  const isListEmpty = _crudAccess.list?.length === 0
 
   const emailColumn: Column = {
     id: 'email',
     head: m.email,
-    render: (_) => {
-      const pending = !_.name
-      const isCurrentUser = connectedUser.email === _.email
-      return (
-        <>
-          <div>
-            <span className={`font-bold ${pending ? 'text-gray-500' : ''}`}>
-              {_.email}
-            </span>
-            {isCurrentUser && <span className="text-gray-500"> ({m.you})</span>}
-            {_.isHeadOffice && (
-              <span className="text-gray-500"> (via le siège social)</span>
-            )}
-          </div>
-          {pending ? (
-            <span className="text-blue-600 font-bold uppercase">
-              Invitation envoyée
-            </span>
-          ) : (
-            <span className="text-gray-500">{_.name}</span>
-          )}
-        </>
-      )
-    },
+    render: (accesses) => <EmailColumn accesses={accesses} />,
   }
 
   const levelColumn: Column = {
@@ -345,6 +321,33 @@ function CompanyAccessesLoaded({
           columns={[emailColumn, levelColumn, actionsColumn]}
         />
       </>
+    </>
+  )
+}
+
+function EmailColumn({ accesses: _ }: { accesses: Accesses }) {
+  const { m } = useI18n()
+  const { connectedUser } = useConnectedContext()
+  const pending = !_.name
+  const isCurrentUser = connectedUser.email === _.email
+  return (
+    <>
+      <div>
+        <span className={`font-bold ${pending ? 'text-gray-500' : ''}`}>
+          {_.email}
+        </span>
+        {isCurrentUser && <span className="text-gray-500"> ({m.you})</span>}
+        {_.isHeadOffice && (
+          <span className="text-gray-500"> (via le siège social)</span>
+        )}
+      </div>
+      {pending ? (
+        <span className="text-blue-600 font-bold uppercase">
+          Invitation envoyée
+        </span>
+      ) : (
+        <span className="text-gray-500">{_.name}</span>
+      )}
     </>
   )
 }
