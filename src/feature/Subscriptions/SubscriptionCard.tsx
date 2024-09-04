@@ -1,6 +1,13 @@
 import { Chip, Collapse, Icon, Stack, duration } from '@mui/material'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import React, { CSSProperties, useEffect, useMemo, useState } from 'react'
+import { objectKeysUnsafe } from 'core/helper'
+import React, {
+  CSSProperties,
+  ReactEventHandler,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react'
 import { CleanWidePanel } from 'shared/Panel/simplePanels'
 import { IconBtn } from '../../alexlibs/mui-extension'
 import { Category } from '../../core/client/constant/Category'
@@ -28,7 +35,6 @@ import {
 import { ScMenuItem } from '../MenuItem/MenuItem'
 import { SubscriptionCardRow } from './SubscriptionCardRow'
 import { SubscriptionInformation } from './SubscriptionInformation'
-import { objectKeysUnsafe } from 'core/helper'
 
 interface Props {
   subscription: Subscription
@@ -38,7 +44,8 @@ interface Props {
 
 const useAnchoredMenu = () => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
-  const open = (event: any) => setAnchorEl(event.currentTarget)
+  const open: ReactEventHandler<HTMLElement> = (event) =>
+    setAnchorEl(event.currentTarget)
   const close = () => setAnchorEl(null)
   return { open, close, element: anchorEl }
 }
