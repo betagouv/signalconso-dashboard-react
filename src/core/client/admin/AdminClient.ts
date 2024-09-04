@@ -10,7 +10,7 @@ export class AdminClient {
     return this.client.get<string[]>(`/admin/test-email`)
   }
 
-  readonly sendTestEmail = (templateRef: string, to: string) => {
+  readonly sendTestEmail = ({ templateRef, to }: SendTestEmailParams) => {
     return this.client.post<void>(`/admin/test-email`, {
       qs: { templateRef, to },
     })
@@ -49,4 +49,8 @@ export type ResendEmailsParams = {
   start: Date
   end: Date
   emailType: ResendEmailType
+}
+export type SendTestEmailParams = {
+  templateRef: string
+  to: string
 }

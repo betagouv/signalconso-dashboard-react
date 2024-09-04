@@ -1,8 +1,9 @@
 import { Box, Icon } from '@mui/material'
-import { useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
+import { SendTestEmailParams } from 'core/client/admin/AdminClient'
 import { CleanWidePanel } from 'shared/Panel/simplePanels'
 import { Alert, IconBtn, Txt } from '../../alexlibs/mui-extension'
-import { useAsync, useEffectFn } from '../../alexlibs/react-hooks-lib'
+import { useEffectFn } from '../../alexlibs/react-hooks-lib'
 import { useConnectedContext } from '../../core/context/ConnectedContext'
 import { useI18n } from '../../core/i18n'
 import { useToast } from '../../core/toast'
@@ -31,11 +32,17 @@ export const TestTools = () => {
     queryFn: api.secured.admin.getPdfCodes,
   })
 
-  const _sendEmail = useAsync(api.secured.admin.sendTestEmail)
-  const _downloadTestPdf = useAsync(api.secured.admin.downloadTestPdf)
+  const _sendEmail = useMutation({
+    mutationFn: (params: SendTestEmailParams) =>
+      api.secured.admin.sendTestEmail(params),
+    onError: toastError
 
-  useEffectFn(_sendEmail.error, toastError)
-  useEffectFn(_downloadTestPdf.error, toastError)
+  })
+  const _downloadTestPdf = useMutation({
+    mutationFn: (params: string) => api.secured.admin.downloadTestPdf(params),
+    onError: toastError
+  })
+
   return (
     <div className="flex flex-row items-start justify-center gap-4 mx-auto mt-10">
       {!_emailCodes.isLoading && (
@@ -105,9 +112,12 @@ export const TestTools = () => {
                       <Box>
                         <IconBtn
                           color="primary"
-                          loading={_sendEmail.loading}
+                          loading={_sendEmail.isPending}
                           onClick={() =>
-                            _sendEmail.call(emailCode, connectedUser.email)
+                            _sendEmail.mutate({
+                              templateRef: emailCode,
+                              to: connectedUser.email,
+                            })
                           }
                         >
                           <Icon>send</Icon>
@@ -165,8 +175,8 @@ export const TestTools = () => {
                       <Box>
                         <IconBtn
                           color="primary"
-                          loading={_downloadTestPdf.loading}
-                          onClick={() => _downloadTestPdf.call(code)}
+                          loading={_downloadTestPdf.isPending}
+                          onClick={() => _downloadTestPdf.mutate(code)}
                         >
                           <Icon>download</Icon>
                         </IconBtn>
