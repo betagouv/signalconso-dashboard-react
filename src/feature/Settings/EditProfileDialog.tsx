@@ -1,9 +1,7 @@
-import { map } from 'core/helper'
+import { useMutation } from '@tanstack/react-query'
 import { ReactElement } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { Alert } from '../../alexlibs/mui-extension'
-import { useAsync } from '../../alexlibs/react-hooks-lib'
-import { ApiError } from '../../core/client/ApiClient'
 import { useConnectedContext } from '../../core/context/ConnectedContext'
 import { useI18n } from '../../core/i18n'
 import {
@@ -27,7 +25,10 @@ interface Props {
 export const EditProfileDialog = ({ children }: Props) => {
   const { m } = useI18n()
   const { apiSdk, connectedUser, setConnectedUser } = useConnectedContext()
-  const _editUser = useAsync(apiSdk.secured.user.edit)
+  const _editUser = useMutation({
+    mutationFn: apiSdk.secured.user.edit,
+  })
+
   const { toastSuccess } = useToast()
   const defaultFormValues: Form = {
     firstName: connectedUser.firstName,
@@ -60,11 +61,11 @@ export const EditProfileDialog = ({ children }: Props) => {
       }}
       confirmLabel={m.edit}
       confirmDisabled={!isValid || !hasUserChanged}
-      loading={_editUser.loading}
-      onConfirm={(event, close) => {
+      loading={_editUser.isPending}
+      onConfirm={(e, close) => {
         handleSubmit((form: Form) => {
           _editUser
-            .call(form)
+            .mutateAsync(form)
             .then(() => {
               toastSuccess(m.saved)
               close()
@@ -86,11 +87,11 @@ export const EditProfileDialog = ({ children }: Props) => {
       }}
       content={
         <>
-          {map(_editUser.error, (error: ApiError) => (
+          {_editUser.error && (
             <Alert dense type="error" deletable gutterBottom>
-              {error.message ?? m.anErrorOccurred}
+              {_editUser.error.message ?? m.anErrorOccurred}
             </Alert>
-          ))}
+          )}
           <Controller
             name="firstName"
             control={control}

@@ -3,7 +3,6 @@ import { useMutation, useQuery } from '@tanstack/react-query'
 import { SendTestEmailParams } from 'core/client/admin/AdminClient'
 import { CleanWidePanel } from 'shared/Panel/simplePanels'
 import { Alert, IconBtn, Txt } from '../../alexlibs/mui-extension'
-import { useEffectFn } from '../../alexlibs/react-hooks-lib'
 import { useConnectedContext } from '../../core/context/ConnectedContext'
 import { useI18n } from '../../core/i18n'
 import { useToast } from '../../core/toast'
@@ -35,12 +34,11 @@ export const TestTools = () => {
   const _sendEmail = useMutation({
     mutationFn: (params: SendTestEmailParams) =>
       api.secured.admin.sendTestEmail(params),
-    onError: toastError
-
+    onError: toastError,
   })
   const _downloadTestPdf = useMutation({
     mutationFn: (params: string) => api.secured.admin.downloadTestPdf(params),
-    onError: toastError
+    onError: toastError,
   })
 
   return (
