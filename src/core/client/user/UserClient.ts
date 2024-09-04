@@ -1,6 +1,7 @@
 import {
   isUserActive,
   RoleAdminOrAgent,
+  RoleAdmins,
   RoleAgents,
   User,
   UserEdit,
@@ -106,8 +107,8 @@ export class UserClient {
     })
   }
 
-  readonly inviteAdmin = (email: string) => {
-    return this.client.post<void>(`/account/admin/invitation`, {
+  readonly inviteAdmin = (email: string, role: RoleAdmins) => {
+    return this.client.post<void>(`/account/admin/invitation?role=${role}`, {
       body: { email },
     })
   }

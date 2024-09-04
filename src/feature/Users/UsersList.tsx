@@ -65,11 +65,6 @@ const UsersList = ({ adminView }: Props) => {
 
   const extraColumnsForDgccrf: DatatableColumnProps<User>[] = [
     {
-      head: 'Type',
-      id: 'type',
-      render: (_) => _.role,
-    },
-    {
       head: m.lastValidationDate,
       id: 'lastValidation',
       render: (_) => formatDate(_.lastEmailValidation),
@@ -131,6 +126,11 @@ const UsersList = ({ adminView }: Props) => {
       head: m.lastName,
       id: 'lastName',
       render: (_) => _.lastName,
+    },
+    {
+      head: 'Type',
+      id: 'type',
+      render: (_) => _.role,
     },
     ...(adminView ? [] : extraColumnsForDgccrf),
     {

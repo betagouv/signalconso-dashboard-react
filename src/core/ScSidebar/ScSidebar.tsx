@@ -123,7 +123,9 @@ export const ScSidebar = ({
           {m.menu_my_companies}
         </SidebarItem>
       )}
-      {[Roles.Admin].includes(connectedUser.role) && (
+      {[Roles.SuperAdmin, Roles.Admin, Roles.ReadOnlyAdmin].includes(
+        connectedUser.role,
+      ) && (
         <SidebarItem
           onClick={closeSidebar}
           to={path(siteMap.logged.users.value())}
