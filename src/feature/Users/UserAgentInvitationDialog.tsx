@@ -97,6 +97,7 @@ export const UserAgentInvitationDialog = () => {
               <ToggleButtonGroup
                 color="primary"
                 fullWidth
+                exclusive
                 value={field.value}
                 onChange={field.onChange}
               >
