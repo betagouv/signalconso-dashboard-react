@@ -1,12 +1,13 @@
-import React, { useState } from 'react'
-import { ScButton } from '../../shared/Button'
-import { useAsync } from '../../alexlibs/react-hooks-lib'
-import { useConnectedContext } from '../../core/context/ConnectedContext'
 import { MenuItem, Select } from '@mui/material'
-import { ResendEmailType } from '../../core/client/admin/ResendEmailType'
-import { PeriodWithTimePicker } from '../../shared/PeriodWithTimePicker'
-import { Alert } from '../../alexlibs/mui-extension'
+import { useMutation } from '@tanstack/react-query'
+import { ResendEmailsParams } from 'core/client/admin/AdminClient'
+import { useState } from 'react'
 import { CleanWidePanel } from 'shared/Panel/simplePanels'
+import { Alert } from '../../alexlibs/mui-extension'
+import { ResendEmailType } from '../../core/client/admin/ResendEmailType'
+import { useConnectedContext } from '../../core/context/ConnectedContext'
+import { ScButton } from '../../shared/Button'
+import { PeriodWithTimePicker } from '../../shared/PeriodWithTimePicker'
 
 export const ResendEmailsAdminTool = () => {
   const { apiSdk: api } = useConnectedContext()
@@ -18,11 +19,18 @@ export const ResendEmailsAdminTool = () => {
     'NewReportAckToConsumer',
   )
 
-  const _resendEmails = useAsync(api.secured.admin.resendEmails)
+  const _resendEmails = useMutation({
+    mutationFn: (params: ResendEmailsParams) =>
+      api.secured.admin.resendEmails(params),
+  })
 
   const handleClick = () => {
     if (periodValue[0] && periodValue[1]) {
-      return _resendEmails.call(periodValue[0], periodValue[1], emailType)
+      return _resendEmails.mutateAsync({
+        start: periodValue[0],
+        end: periodValue[1],
+        emailType,
+      })
     }
     return Promise.resolve()
   }

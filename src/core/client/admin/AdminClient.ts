@@ -1,7 +1,7 @@
 import { dateToApiTime, directDownloadBlob } from 'core/helper'
+import { Id } from '../../model'
 import { ApiClientApi } from '../ApiClient'
 import { ResendEmailType } from './ResendEmailType'
-import { Id } from '../../model'
 
 export class AdminClient {
   constructor(private client: ApiClientApi) {}
@@ -28,16 +28,12 @@ export class AdminClient {
       )
   }
 
-  readonly resendEmails = (
-    start: Date,
-    end: Date,
-    emailType: ResendEmailType,
-  ) => {
+  readonly resendEmails = ({ start, end, emailType }: ResendEmailsParams) => {
     return this.client.post<void>(`/admin/emails/resend`, {
       qs: {
         start: dateToApiTime(start),
         end: dateToApiTime(end),
-        emailType: emailType,
+        emailType,
       },
     })
   }
@@ -47,4 +43,10 @@ export class AdminClient {
       body: reportsId,
     })
   }
+}
+
+export type ResendEmailsParams = {
+  start: Date
+  end: Date
+  emailType: ResendEmailType
 }
