@@ -232,7 +232,7 @@ export const ReportResponseForm = forwardRef(
               maxRows={8}
             />
           </ReportResponseFormItem>
-          <Alert type="info" deletable persistentDelete gutterBottom>
+          <Alert type="info" gutterBottom>
             {m.proAnswerVisibleByDGCCRF}
           </Alert>
         </div>
