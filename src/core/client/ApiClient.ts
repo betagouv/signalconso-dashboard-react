@@ -187,7 +187,7 @@ export class ApiClient {
 
   private static readonly buildOptions = async (
     options?: RequestOption,
-    headers?: any,
+    headers?: ApiClientHeaders,
   ): Promise<RequestOption> => {
     return {
       ...options,

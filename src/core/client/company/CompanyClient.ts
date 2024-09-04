@@ -22,7 +22,7 @@ export class CompanyClient {
     search: CompanySearch,
   ): Promise<Paginate<CompanyWithReportsCount>> => {
     return this.client
-      .get<Paginate<CompanyWithReportsCount>>(`/companies`, { qs: search })
+      .get<Paginate<CompanyRawFromApi>>(`/companies`, { qs: search })
       .then((res) => ({
         ...res,
         entities: res.entities.map(CompanyClient.mapCompany),
@@ -31,7 +31,7 @@ export class CompanyClient {
 
   readonly byId = (id: Id): Promise<Paginate<CompanyWithReportsCount>> => {
     return this.client
-      .get<Paginate<CompanyWithReportsCount>>(`/companies/${id}`)
+      .get<Paginate<CompanyRawFromApi>>(`/companies/${id}`)
       .then((res) => ({
         ...res,
         entities: res.entities.map(CompanyClient.mapCompany),
@@ -117,10 +117,16 @@ export class CompanyClient {
     })
   }
 
-  private static readonly mapCompany = (company: {
-    [key in keyof CompanyWithReportsCount]: any
-  }): CompanyWithReportsCount => ({
-    ...company,
-    creationDate: new Date(company.creationDate),
-  })
+  private static readonly mapCompany = (
+    company: CompanyRawFromApi,
+  ): CompanyWithReportsCount => {
+    return {
+      ...company,
+      creationDate: new Date(company.creationDate),
+    }
+  }
+}
+
+type CompanyRawFromApi = Omit<CompanyWithReportsCount, 'creationDate'> & {
+  creationDate: string
 }
