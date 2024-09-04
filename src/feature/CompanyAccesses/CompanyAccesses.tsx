@@ -6,7 +6,6 @@ import {
   Tooltip,
 } from '@mui/material'
 import { UserDeleteDialog } from 'feature/Users/userDelete'
-import { useEffect, useMemo } from 'react'
 import { NavLink } from 'react-router-dom'
 import { ScMenu } from 'shared/Menu'
 import { CompanyAccessLevel } from '../../core/client/company-access/CompanyAccess'
@@ -24,10 +23,10 @@ import {
 } from '../../shared/Datatable/Datatable'
 import { ScRadioGroup } from '../../shared/RadioGroup'
 
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { ScRadioGroupItem } from '../../shared/RadioGroupItem'
 import { ScDialog } from '../../shared/ScDialog'
 import { CompanyAccessCreateBtn } from './CompanyAccessCreateBtn'
-import { useCompanyAccess } from './useCompaniesAccess'
 
 interface Accesses {
   name?: string
@@ -59,72 +58,75 @@ function CompanyAccessesLoaded({
   company: CompanyWithReportsCount
 }) {
   const siret = company.siret
+  const api = useConnectedContext().apiSdk
+  const queryClient = useQueryClient()
+  const { toastSuccess, toastError } = useToast()
 
-  const _crudAccess = useCompanyAccess(
-    useConnectedContext().apiSdk,
-    siret!,
-  ).crudAccess
-  const _crudToken = useCompanyAccess(
-    useConnectedContext().apiSdk,
-    siret!,
-  ).crudToken
+  const accessesQueryKey = ['getCompanyAccesses', siret]
+  const tokensQueryKey = ['getCompanyAccessTokens', siret]
+  const _accesses = useQuery({
+    queryKey: accessesQueryKey,
+    queryFn: () => api.secured.companyAccess.fetch(siret),
+  })
+  const _tokens = useQuery({
+    queryKey: tokensQueryKey,
+    queryFn: () => api.secured.companyAccessToken.fetch(siret),
+  })
+  function invalidateQueries() {
+    queryClient.invalidateQueries({
+      queryKey: accessesQueryKey,
+    })
+    queryClient.invalidateQueries({
+      queryKey: tokensQueryKey,
+    })
+  }
+
+  const _sendInvitation = useMutation({
+    mutationFn: (params: {
+      siret: string
+      level: CompanyAccessLevel
+      email: string
+    }) =>
+      api.secured.companyAccessToken.create(
+        params.siret,
+        params.email,
+        params.level,
+      ),
+    onSuccess: () => {
+      toastSuccess(m.userInvitationSent)
+      invalidateQueries()
+    },
+    onError: toastError,
+  })
 
   const { m } = useI18n()
   const { connectedUser } = useConnectedContext()
-  const { toastSuccess, toastError, toastErrorIfDefined } = useToast()
 
-  const copyActivationLink = (token: string) => {
-    const patch =
-      siteMap.loggedout.activatePro(siret) + toQueryString({ token })
-    const activationLink = window.location.host + patch
-    navigator.clipboard
-      .writeText(activationLink)
-      .then((_) => toastSuccess(m.addressCopied))
-  }
+  const data: Accesses[] = [
+    ...(_accesses.data ?? []).map((_) => ({
+      email: _.email,
+      name: User.buildFullName(_),
+      level: _.level,
+      userId: _.userId,
+      editable: _.editable,
+      isHeadOffice: _.isHeadOffice,
+    })),
+    ...(_tokens.data ?? []).map((_) => ({
+      email: _.emailedTo,
+      level: _.level,
+      tokenId: _.id,
+      token: _.token,
+    })),
+  ]
 
-  const accesses: Accesses[] = useMemo(() => {
-    return [
-      ...(_crudAccess.list ?? []).map((_) => ({
-        email: _.email,
-        name: User.buildFullName(_),
-        level: _.level,
-        userId: _.userId,
-        editable: _.editable,
-        isHeadOffice: _.isHeadOffice,
-      })),
-      ...(_crudToken.list ?? []).map((_) => ({
-        email: _.emailedTo,
-        level: _.level,
-        tokenId: _.id,
-        token: _.token,
-      })),
-    ]
-  }, [_crudAccess.list, _crudToken.list])
-
-  useEffect(() => {
-    _crudAccess.fetch()
-    _crudToken.fetch()
-  }, [])
-
-  useEffect(() => {
-    toastErrorIfDefined(_crudToken.fetchError)
-  }, [_crudToken.list, _crudToken.fetchError])
-
-  useEffect(() => {
-    toastErrorIfDefined(_crudAccess.fetchError)
-  }, [_crudAccess.list, _crudAccess.fetchError])
-
-  const inviteNewUser = async (
+  async function inviteNewUser(
     email: string,
     level: CompanyAccessLevel,
-  ): Promise<any> => {
-    if (accesses?.find((_) => _.email === email)) {
+  ): Promise<void> {
+    if (data.find((_) => _.email === email)) {
       toastError({ message: m.invitationToProAlreadySent(email) })
     } else {
-      await _crudToken
-        .create({}, email, level)
-        .then(() => toastSuccess(m.userInvitationSent))
-        .then(() => window.location.reload())
+      await _sendInvitation.mutateAsync({ email, level, siret })
     }
   }
 
@@ -141,15 +143,7 @@ function CompanyAccessesLoaded({
     id: 'level',
     head: m.companyAccessLevel,
     render: (accesses) => (
-      <LevelColumn
-        accesses={accesses}
-        isUpdating={_crudAccess.updating(accesses.userId ?? '')}
-        onLevelChange={(level) => {
-          if (accesses.userId) {
-            _crudAccess.update(accesses.userId, level)
-          }
-        }}
-      />
+      <LevelColumn {...{ siret, accesses, invalidateQueries }} />
     ),
   }
 
@@ -158,18 +152,14 @@ function CompanyAccessesLoaded({
     sx: (_) => sxUtils.tdActions,
     render: (accesses) => (
       <ActionsColumn
-        accesses={accesses}
-        copyActivationLink={copyActivationLink}
+        {...{ accesses, siret, invalidateQueries }}
         onResendCompanyAccessToken={(email: string) => {
-          return _crudToken.create(
-            { preventInsert: true },
+          return _sendInvitation.mutateAsync({
             email,
-            accesses.level,
-          )
+            level: accesses.level,
+            siret,
+          })
         }}
-        onDeleteAccess={(userId) => _crudAccess.remove(userId)}
-        onDeleteToken={(tokenId) => _crudToken.remove(tokenId)}
-        onDeleteUser={() => _crudAccess.fetch}
       />
     ),
   }
@@ -184,9 +174,8 @@ function CompanyAccessesLoaded({
         <div className="flex gap-2 shrink-0">
           {(isAdmin || isPro) && (
             <CompanyAccessCreateBtn
-              loading={_crudToken.creating}
+              loading={_sendInvitation.isPending}
               onCreate={inviteNewUser}
-              errorMessage={_crudToken.createError}
             />
           )}
         </div>
@@ -194,8 +183,8 @@ function CompanyAccessesLoaded({
       <>
         <Datatable
           id="companyaccesses"
-          data={_crudAccess.list && _crudToken.list ? accesses : undefined}
-          loading={_crudAccess.fetching || _crudToken.fetching}
+          data={data}
+          loading={_accesses.isLoading || _tokens.isLoading}
           getRenderRowKey={(_) => _.email ?? _.tokenId!}
           columns={[emailColumn, levelColumn, actionsColumn]}
         />
@@ -233,14 +222,32 @@ function EmailColumn({ accesses: _ }: { accesses: Accesses }) {
 
 function LevelColumn({
   accesses: _,
-  onLevelChange,
-  isUpdating,
+  siret,
+  invalidateQueries,
 }: {
   accesses: Accesses
-  onLevelChange: (level: CompanyAccessLevel) => void
-  isUpdating: boolean
+  siret: string
+  invalidateQueries: () => void
 }) {
   const { m } = useI18n()
+  const api = useConnectedContext().apiSdk
+  const { toastError } = useToast()
+  const _updateAccessLevel = useMutation({
+    mutationFn: (params: {
+      siret: string
+      level: CompanyAccessLevel
+      userId: string
+    }) =>
+      api.secured.companyAccess.update(
+        params.siret,
+        params.userId,
+        params.level,
+      ),
+    onSuccess: () => {
+      invalidateQueries()
+    },
+    onError: toastError,
+  })
   return (
     <ScDialog
       maxWidth="xs"
@@ -249,7 +256,9 @@ function LevelColumn({
         <ScRadioGroup
           value={_.level}
           onChange={(level) => {
-            onLevelChange(level)
+            if (_.userId) {
+              _updateAccessLevel.mutateAsync({ siret, level, userId: _.userId })
+            }
             close()
           }}
         >
@@ -269,7 +278,7 @@ function LevelColumn({
       <Tooltip title={m.editAccess}>
         <ScButton
           sx={{ textTransform: 'capitalize' }}
-          loading={isUpdating}
+          loading={_updateAccessLevel.isPending}
           color="primary"
           icon="manage_accounts"
           variant="outlined"
@@ -284,24 +293,43 @@ function LevelColumn({
 
 function ActionsColumn({
   accesses: _,
-  copyActivationLink,
+  siret,
+  invalidateQueries,
   onResendCompanyAccessToken,
-  onDeleteAccess,
-  onDeleteToken,
-  onDeleteUser,
 }: {
   accesses: Accesses
-  copyActivationLink: (token: string) => void
+  siret: string
+  invalidateQueries: () => void
   onResendCompanyAccessToken: (email: string) => Promise<unknown>
-  onDeleteAccess: (userId: string) => unknown
-  onDeleteToken: (tokenId: string) => unknown
-  onDeleteUser: () => unknown
 }) {
-  const { connectedUser } = useConnectedContext()
+  const { connectedUser, apiSdk: api } = useConnectedContext()
   const { m } = useI18n()
-  const { toastSuccess } = useToast()
+  const { toastSuccess, toastError } = useToast()
   const { email, token, tokenId, userId } = _
   const isAdmin = connectedUser.isAdmin
+
+  const _removeAccess = useMutation({
+    mutationFn: (params: { siret: string; userId: string }) =>
+      api.secured.companyAccess.remove(params.siret, params.userId),
+    onSuccess: invalidateQueries,
+    onError: toastError,
+  })
+
+  const _removeToken = useMutation({
+    mutationFn: (params: { siret: string; tokenId: string }) =>
+      api.secured.companyAccessToken.remove(params.siret, params.tokenId),
+    onSuccess: invalidateQueries,
+    onError: toastError,
+  })
+
+  function copyActivationLink(token: string) {
+    const patch =
+      siteMap.loggedout.activatePro(siret) + toQueryString({ token })
+    const activationLink = window.location.host + patch
+    navigator.clipboard
+      .writeText(activationLink)
+      .then((_) => toastSuccess(m.addressCopied))
+  }
 
   const authAttemptsHistoryMenuItem =
     isAdmin && _.userId ? (
@@ -336,9 +364,7 @@ function ActionsColumn({
       <ScDialog
         title={m.resendCompanyAccessToken(email)}
         onConfirm={(event, close) =>
-          onResendCompanyAccessToken(email)
-            .then((_) => close())
-            .then((_) => toastSuccess(m.userInvitationSent))
+          onResendCompanyAccessToken(email).then((_) => close())
         }
         maxWidth="xs"
       >
@@ -355,7 +381,7 @@ function ActionsColumn({
     _.editable && userId ? (
       <ScDialog
         title={m.deleteCompanyAccess(_.name!)}
-        onConfirm={() => onDeleteAccess(userId)}
+        onConfirm={() => _removeAccess.mutate({ siret, userId })}
         maxWidth="xs"
         confirmLabel={m.delete_access}
       >
@@ -371,7 +397,7 @@ function ActionsColumn({
     ) : tokenId ? (
       <ScDialog
         title={m.deleteCompanyAccessToken(_.email)}
-        onConfirm={() => onDeleteToken(tokenId)}
+        onConfirm={() => _removeToken.mutate({ siret, tokenId })}
         maxWidth="xs"
         confirmLabel="Annuler l'invitation"
       >
@@ -386,7 +412,7 @@ function ActionsColumn({
 
   const deleteUserMenuItem =
     isAdmin && _.userId ? (
-      <UserDeleteDialog userId={_.userId} onDelete={onDeleteUser}>
+      <UserDeleteDialog userId={_.userId} onDelete={invalidateQueries}>
         <MenuItem>
           <ListItemIcon>
             <Icon color="error">delete</Icon>

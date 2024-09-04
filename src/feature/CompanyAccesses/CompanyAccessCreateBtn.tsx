@@ -1,6 +1,6 @@
 import { objectKeysUnsafe } from 'core/helper'
 import { Controller, useForm } from 'react-hook-form'
-import { Alert, Txt } from '../../alexlibs/mui-extension'
+import { Txt } from '../../alexlibs/mui-extension'
 import { CompanyAccessLevel } from '../../core/client/company-access/CompanyAccess'
 import { regexp } from '../../core/helper/regexp'
 import { useI18n } from '../../core/i18n'
@@ -11,7 +11,6 @@ import { ScDialog } from '../../shared/ScDialog'
 import { ScInput } from '../../shared/ScInput'
 
 interface Props {
-  errorMessage?: string
   loading: boolean
   onCreate: (email: string, level: CompanyAccessLevel) => Promise<any>
 }
@@ -21,11 +20,7 @@ interface Form {
   level: CompanyAccessLevel
 }
 
-export const CompanyAccessCreateBtn = ({
-  errorMessage,
-  loading,
-  onCreate,
-}: Props) => {
+export const CompanyAccessCreateBtn = ({ loading, onCreate }: Props) => {
   const { m } = useI18n()
   const {
     register,
@@ -48,11 +43,6 @@ export const CompanyAccessCreateBtn = ({
       }}
       content={
         <>
-          {errorMessage && (
-            <Alert dense type="error" deletable gutterBottom>
-              {m.anErrorOccurred}
-            </Alert>
-          )}
           <ScInput
             error={!!errors.email}
             helperText={errors.email?.message ?? ' '}
