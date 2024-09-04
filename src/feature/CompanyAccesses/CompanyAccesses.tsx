@@ -156,114 +156,22 @@ function CompanyAccessesLoaded({
   const actionsColumn: Column = {
     id: 'action',
     sx: (_) => sxUtils.tdActions,
-    render: (_) => {
-      const { email, token, tokenId, userId } = _
-
-      const authAttemptsHistoryMenuItem =
-        isAdmin && _.userId ? (
-          <>
-            <NavLink
-              to={`${
-                siteMap.logged.users.root
-              }/${siteMap.logged.users.auth_attempts.value(_.email)}`}
-            >
-              <MenuItem>
-                <ListItemIcon>
-                  <Icon>manage_search</Icon>
-                </ListItemIcon>
-                <ListItemText>{m.authAttemptsHistory}</ListItemText>
-              </MenuItem>
-            </NavLink>
-          </>
-        ) : undefined
-
-      const copyInviteMenuItem =
-        isAdmin && !_.name && token ? (
-          <MenuItem onClick={(_) => copyActivationLink(token)}>
-            <ListItemIcon>
-              <Icon>content_copy</Icon>
-            </ListItemIcon>
-            <ListItemText>{m.copyInviteLink}</ListItemText>
-          </MenuItem>
-        ) : undefined
-
-      const resendInviteMenuItem =
-        isAdmin && !_.name && email ? (
-          <ScDialog
-            title={m.resendCompanyAccessToken(email)}
-            onConfirm={(event, close) =>
-              _crudToken
-                .create({ preventInsert: true }, email, _.level)
-                .then((_) => close())
-                .then((_) => toastSuccess(m.userInvitationSent))
-            }
-            maxWidth="xs"
-          >
-            <MenuItem>
-              <ListItemIcon>
-                <Icon>send</Icon>
-              </ListItemIcon>
-              <ListItemText>{m.resendInvite}</ListItemText>
-            </MenuItem>
-          </ScDialog>
-        ) : undefined
-
-      const removeMenuItem =
-        _.editable && userId ? (
-          <ScDialog
-            title={m.deleteCompanyAccess(_.name!)}
-            onConfirm={() => _crudAccess.remove(userId)}
-            maxWidth="xs"
-            confirmLabel={m.delete_access}
-          >
-            <MenuItem>
-              <ListItemIcon>
-                <Icon color="warning">clear</Icon>
-              </ListItemIcon>
-              <ListItemText>
-                <span className="text-orange-600">{m.delete_access}</span>
-              </ListItemText>
-            </MenuItem>
-          </ScDialog>
-        ) : tokenId ? (
-          <ScDialog
-            title={m.deleteCompanyAccessToken(_.email)}
-            onConfirm={() => _crudToken.remove(tokenId)}
-            maxWidth="xs"
-            confirmLabel="Annuler l'invitation"
-          >
-            <MenuItem>
-              <ListItemIcon>
-                <Icon>clear</Icon>
-              </ListItemIcon>
-              <ListItemText>Annuler l'invitation</ListItemText>
-            </MenuItem>
-          </ScDialog>
-        ) : undefined
-
-      const deleteUserMenuItem =
-        isAdmin && _.userId ? (
-          <UserDeleteDialog userId={_.userId} onDelete={_crudAccess.fetch}>
-            <MenuItem>
-              <ListItemIcon>
-                <Icon color="error">delete</Icon>
-              </ListItemIcon>
-              <ListItemText>
-                <span className="text-red-600">{m.delete_user}</span>
-              </ListItemText>
-            </MenuItem>
-          </UserDeleteDialog>
-        ) : undefined
-
-      const menuItems = [
-        authAttemptsHistoryMenuItem,
-        copyInviteMenuItem,
-        resendInviteMenuItem,
-        removeMenuItem,
-        deleteUserMenuItem,
-      ].filter(isDefined)
-      return menuItems.length ? <ScMenu>{menuItems}</ScMenu> : null
-    },
+    render: (accesses) => (
+      <ActionsColumn
+        accesses={accesses}
+        copyActivationLink={copyActivationLink}
+        onResendCompanyAccessToken={(email: string) => {
+          return _crudToken.create(
+            { preventInsert: true },
+            email,
+            accesses.level,
+          )
+        }}
+        onDeleteAccess={(userId) => _crudAccess.remove(userId)}
+        onDeleteToken={(tokenId) => _crudToken.remove(tokenId)}
+        onDeleteUser={() => _crudAccess.fetch}
+      />
+    ),
   }
 
   return (
@@ -372,4 +280,130 @@ function LevelColumn({
       </Tooltip>
     </ScDialog>
   )
+}
+
+function ActionsColumn({
+  accesses: _,
+  copyActivationLink,
+  onResendCompanyAccessToken,
+  onDeleteAccess,
+  onDeleteToken,
+  onDeleteUser,
+}: {
+  accesses: Accesses
+  copyActivationLink: (token: string) => void
+  onResendCompanyAccessToken: (email: string) => Promise<unknown>
+  onDeleteAccess: (userId: string) => unknown
+  onDeleteToken: (tokenId: string) => unknown
+  onDeleteUser: () => unknown
+}) {
+  const { connectedUser } = useConnectedContext()
+  const { m } = useI18n()
+  const { toastSuccess } = useToast()
+  const { email, token, tokenId, userId } = _
+  const isAdmin = connectedUser.isAdmin
+
+  const authAttemptsHistoryMenuItem =
+    isAdmin && _.userId ? (
+      <>
+        <NavLink
+          to={`${
+            siteMap.logged.users.root
+          }/${siteMap.logged.users.auth_attempts.value(_.email)}`}
+        >
+          <MenuItem>
+            <ListItemIcon>
+              <Icon>manage_search</Icon>
+            </ListItemIcon>
+            <ListItemText>{m.authAttemptsHistory}</ListItemText>
+          </MenuItem>
+        </NavLink>
+      </>
+    ) : undefined
+
+  const copyInviteMenuItem =
+    isAdmin && !_.name && token ? (
+      <MenuItem onClick={(_) => copyActivationLink(token)}>
+        <ListItemIcon>
+          <Icon>content_copy</Icon>
+        </ListItemIcon>
+        <ListItemText>{m.copyInviteLink}</ListItemText>
+      </MenuItem>
+    ) : undefined
+
+  const resendInviteMenuItem =
+    isAdmin && !_.name && email ? (
+      <ScDialog
+        title={m.resendCompanyAccessToken(email)}
+        onConfirm={(event, close) =>
+          onResendCompanyAccessToken(email)
+            .then((_) => close())
+            .then((_) => toastSuccess(m.userInvitationSent))
+        }
+        maxWidth="xs"
+      >
+        <MenuItem>
+          <ListItemIcon>
+            <Icon>send</Icon>
+          </ListItemIcon>
+          <ListItemText>{m.resendInvite}</ListItemText>
+        </MenuItem>
+      </ScDialog>
+    ) : undefined
+
+  const removeMenuItem =
+    _.editable && userId ? (
+      <ScDialog
+        title={m.deleteCompanyAccess(_.name!)}
+        onConfirm={() => onDeleteAccess(userId)}
+        maxWidth="xs"
+        confirmLabel={m.delete_access}
+      >
+        <MenuItem>
+          <ListItemIcon>
+            <Icon color="warning">clear</Icon>
+          </ListItemIcon>
+          <ListItemText>
+            <span className="text-orange-600">{m.delete_access}</span>
+          </ListItemText>
+        </MenuItem>
+      </ScDialog>
+    ) : tokenId ? (
+      <ScDialog
+        title={m.deleteCompanyAccessToken(_.email)}
+        onConfirm={() => onDeleteToken(tokenId)}
+        maxWidth="xs"
+        confirmLabel="Annuler l'invitation"
+      >
+        <MenuItem>
+          <ListItemIcon>
+            <Icon>clear</Icon>
+          </ListItemIcon>
+          <ListItemText>Annuler l'invitation</ListItemText>
+        </MenuItem>
+      </ScDialog>
+    ) : undefined
+
+  const deleteUserMenuItem =
+    isAdmin && _.userId ? (
+      <UserDeleteDialog userId={_.userId} onDelete={onDeleteUser}>
+        <MenuItem>
+          <ListItemIcon>
+            <Icon color="error">delete</Icon>
+          </ListItemIcon>
+          <ListItemText>
+            <span className="text-red-600">{m.delete_user}</span>
+          </ListItemText>
+        </MenuItem>
+      </UserDeleteDialog>
+    ) : undefined
+
+  const menuItems = [
+    authAttemptsHistoryMenuItem,
+    copyInviteMenuItem,
+    resendInviteMenuItem,
+    removeMenuItem,
+    deleteUserMenuItem,
+  ].filter(isDefined)
+  return menuItems.length ? <ScMenu>{menuItems}</ScMenu> : null
 }
