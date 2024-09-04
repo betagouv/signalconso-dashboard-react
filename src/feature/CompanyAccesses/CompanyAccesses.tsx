@@ -140,45 +140,16 @@ function CompanyAccessesLoaded({
   const levelColumn: Column = {
     id: 'level',
     head: m.companyAccessLevel,
-    render: (_) => (
-      <ScDialog
-        maxWidth="xs"
-        title={m.editAccess}
-        content={(close) => (
-          <ScRadioGroup
-            value={_.level}
-            onChange={(level) => {
-              if (_.userId)
-                _crudAccess.update(_.userId, level as CompanyAccessLevel)
-              close()
-            }}
-          >
-            {objectKeysUnsafe(CompanyAccessLevel).map((level) => (
-              <ScRadioGroupItem
-                title={CompanyAccessLevel[level]}
-                description={
-                  m.companyAccessLevelDescription[CompanyAccessLevel[level]]
-                }
-                value={level}
-                key={level}
-              />
-            ))}
-          </ScRadioGroup>
-        )}
-      >
-        <Tooltip title={m.editAccess}>
-          <ScButton
-            sx={{ textTransform: 'capitalize' }}
-            loading={_crudAccess.updating(_.userId ?? '')}
-            color="primary"
-            icon="manage_accounts"
-            variant="outlined"
-            disabled={!_.userId || !_.editable}
-          >
-            {(CompanyAccessLevel as any)[_.level]}
-          </ScButton>
-        </Tooltip>
-      </ScDialog>
+    render: (accesses) => (
+      <LevelColumn
+        accesses={accesses}
+        isUpdating={_crudAccess.updating(accesses.userId ?? '')}
+        onLevelChange={(level) => {
+          if (accesses.userId) {
+            _crudAccess.update(accesses.userId, level)
+          }
+        }}
+      />
     ),
   }
 
@@ -349,5 +320,56 @@ function EmailColumn({ accesses: _ }: { accesses: Accesses }) {
         <span className="text-gray-500">{_.name}</span>
       )}
     </>
+  )
+}
+
+function LevelColumn({
+  accesses: _,
+  onLevelChange,
+  isUpdating,
+}: {
+  accesses: Accesses
+  onLevelChange: (level: CompanyAccessLevel) => void
+  isUpdating: boolean
+}) {
+  const { m } = useI18n()
+  return (
+    <ScDialog
+      maxWidth="xs"
+      title={m.editAccess}
+      content={(close) => (
+        <ScRadioGroup
+          value={_.level}
+          onChange={(level) => {
+            onLevelChange(level)
+            close()
+          }}
+        >
+          {objectKeysUnsafe(CompanyAccessLevel).map((level) => (
+            <ScRadioGroupItem
+              title={CompanyAccessLevel[level]}
+              description={
+                m.companyAccessLevelDescription[CompanyAccessLevel[level]]
+              }
+              value={level}
+              key={level}
+            />
+          ))}
+        </ScRadioGroup>
+      )}
+    >
+      <Tooltip title={m.editAccess}>
+        <ScButton
+          sx={{ textTransform: 'capitalize' }}
+          loading={isUpdating}
+          color="primary"
+          icon="manage_accounts"
+          variant="outlined"
+          disabled={!_.userId || !_.editable}
+        >
+          {(CompanyAccessLevel as any)[_.level]}
+        </ScButton>
+      </Tooltip>
+    </ScDialog>
   )
 }
