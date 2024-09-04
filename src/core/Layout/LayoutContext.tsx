@@ -7,7 +7,6 @@ import {
   useEffect,
   useState,
 } from 'react'
-import { usePersistentState } from '../../alexlibs/react-persistent-state'
 
 const LayoutContext = createContext<UseLayoutContextProps>(
   {} as UseLayoutContextProps,
@@ -33,10 +32,7 @@ export const LayoutContextProvider = ({
   hasSidebar: boolean
 }) => {
   const [pageWidth, setPageWidth] = useState(getWindowWidth())
-  const [sidebarOpen, setSidebarOpen] = usePersistentState<boolean>(
-    true,
-    'sidebarOpen',
-  )
+  const [sidebarOpen, setSidebarOpen] = useState<boolean>(true)
 
   useEffect(() => {
     window.addEventListener('resize', () => setPageWidth(getWindowWidth()))
