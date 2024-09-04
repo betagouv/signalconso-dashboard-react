@@ -6,13 +6,13 @@ import {
   FormHelperText,
   TextField,
 } from '@mui/material'
+import { useMutation, useQuery } from '@tanstack/react-query'
 import { validatePasswordComplexity } from 'core/helper/passwordComplexity'
 import { useMemo } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { useLocation, useNavigate, useParams } from 'react-router'
 import { PasswordRequirementsDesc } from 'shared/PasswordRequirementsDesc'
 import { Alert, makeSx, Txt } from '../../alexlibs/mui-extension'
-import { useAsync } from '../../alexlibs/react-hooks-lib'
 import {
   TokenInfo,
   UserWithPermission,
@@ -26,14 +26,13 @@ import {
   EventCategories,
   Matomo,
 } from '../../core/plugins/Matomo'
+import { FetchTokenInfoQueryKeys } from '../../core/queryhooks/userQueryHooks'
 import { siteMap } from '../../core/siteMap'
 import { useToast } from '../../core/toast'
 import { ScButton } from '../../shared/Button'
 import { Page, PageTitle } from '../../shared/Page'
 import { Panel, PanelBody } from '../../shared/Panel'
 import { ScInputPassword } from '../../shared/ScInputPassword'
-import { useQuery } from '@tanstack/react-query'
-import { FetchTokenInfoQueryKeys } from '../../core/queryhooks/userQueryHooks'
 
 interface UserActivationForm extends UserToActivate {
   repeatPassword: string
@@ -65,7 +64,13 @@ export const UserActivation = ({
   onFetchTokenInfo,
 }: Props) => {
   const { m } = useI18n()
-  const _activate = useAsync(onActivateUser)
+  const _activate = useMutation({
+    mutationFn: (params: {
+      user: UserToActivate
+      token: string
+      companySiret?: string
+    }) => onActivateUser(params.user, params.token, params.companySiret),
+  })
   const { toastSuccess, toastError } = useToast()
 
   const { search } = useLocation()
@@ -97,7 +102,11 @@ export const UserActivation = ({
   const onSubmit = (form: UserActivationForm) => {
     if (!_tokenInfo.data) return
     _activate
-      .call({ ...form, email: _tokenInfo.data.emailedTo }, urlToken, siret)
+      .mutateAsync({
+        user: { ...form, email: _tokenInfo.data.emailedTo },
+        token: urlToken,
+        companySiret: siret,
+      })
       .then((user) => {
         Matomo.trackEvent(
           EventCategories.account,
@@ -229,7 +238,7 @@ export const UserActivation = ({
               </PanelBody>
               <div className="flex justify-center mb-4">
                 <ScButton
-                  loading={_activate.loading}
+                  loading={_activate.isPending}
                   type="submit"
                   color="primary"
                   size="large"

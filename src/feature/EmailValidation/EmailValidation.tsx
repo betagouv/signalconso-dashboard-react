@@ -1,17 +1,16 @@
-import { Page } from '../../shared/Page'
-import { useI18n } from '../../core/i18n'
-import { useLocation } from 'react-router'
-import { useAsync } from '../../alexlibs/react-hooks-lib'
+import { useMutation } from '@tanstack/react-query'
 import { useEffect, useMemo } from 'react'
-import { Fender } from '../../alexlibs/mui-extension'
-import { ScButton } from '../../shared/Button'
+import { useLocation } from 'react-router'
 import { NavLink } from 'react-router-dom'
-import { siteMap } from '../../core/siteMap'
-import { CenteredContent } from '../../shared/CenteredContent'
-import { Txt } from '../../alexlibs/mui-extension'
-import { QueryString } from '../../core/helper/useQueryString'
+import { Fender, Txt } from '../../alexlibs/mui-extension'
 import { UserWithPermission } from '../../core/client/authenticate/Authenticate'
+import { QueryString } from '../../core/helper/useQueryString'
+import { useI18n } from '../../core/i18n'
 import { Id } from '../../core/model'
+import { siteMap } from '../../core/siteMap'
+import { ScButton } from '../../shared/Button'
+import { CenteredContent } from '../../shared/CenteredContent'
+import { Page } from '../../shared/Page'
 
 interface Props {
   onValidateEmail: (token: Id) => Promise<UserWithPermission>
@@ -26,16 +25,16 @@ interface FenderProps {
 
 export const EmailValidation = ({ onValidateEmail, onSaveUser }: Props) => {
   const { m } = useI18n()
-  const _validateEmail = useAsync(onValidateEmail)
+  const _validateEmail = useMutation({ mutationFn: onValidateEmail })
   const { search } = useLocation()
 
   useEffect(() => {
     const token = QueryString.parse(search.replace(/^\?/, '')).token as string
-    _validateEmail.call(token).then(onSaveUser)
+    _validateEmail.mutateAsync(token).then(onSaveUser)
   }, [])
 
   const fenderProps = useMemo((): FenderProps => {
-    if (_validateEmail.loading) {
+    if (_validateEmail.isPending) {
       return {
         type: 'loading',
         title: m.validatingEmail,
@@ -53,7 +52,7 @@ export const EmailValidation = ({ onValidateEmail, onSaveUser }: Props) => {
       title: m.emailValidated,
       description: m.emailValidatedDesc,
     }
-  }, [_validateEmail.loading, _validateEmail.error])
+  }, [_validateEmail.isPending, _validateEmail.error])
 
   return (
     <CenteredContent>

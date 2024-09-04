@@ -1,9 +1,9 @@
+import { useMutation } from '@tanstack/react-query'
 import { validatePasswordComplexity } from 'core/helper/passwordComplexity'
 import { AlertContactSupport } from 'feature/Login/loggedOutComponents'
 import { useForm } from 'react-hook-form'
 import { useNavigate, useParams } from 'react-router'
 import { PasswordRequirementsDesc } from 'shared/PasswordRequirementsDesc'
-import { useAsync } from '../../alexlibs/react-hooks-lib'
 import { fnSwitch } from '../../alexlibs/ts-utils'
 import { useI18n } from '../../core/i18n'
 import { Id } from '../../core/model'
@@ -24,13 +24,16 @@ interface Form {
 }
 
 interface Props {
-  onResetPassword: (password: string, token: Id) => Promise<any>
+  onResetPassword: (password: string, token: Id) => Promise<unknown>
 }
 
 export const ResetPassword = ({ onResetPassword }: Props) => {
   const { m } = useI18n()
   const { token } = useParams<{ token: Id }>()
-  const _resetPassword = useAsync(onResetPassword)
+  const _resetPassword = useMutation({
+    mutationFn: (params: { password: string; token: string }) =>
+      onResetPassword(params.password, params.token),
+  })
   const history = useNavigate()
   const { toastError, toastSuccess } = useToast()
   const {
@@ -48,7 +51,7 @@ export const ResetPassword = ({ onResetPassword }: Props) => {
     }
 
     _resetPassword
-      .call(form.newPassword, token)
+      .mutateAsync({ password: form.newPassword, token })
       .then(() => {
         toastSuccess(m.resetPasswordSuccess)
         setTimeout(() => history(siteMap.loggedout.login), 400)

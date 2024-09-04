@@ -1,18 +1,22 @@
+import { useMutation } from '@tanstack/react-query'
 import React, { useState } from 'react'
-import { ScButton } from '../../shared/Button'
-import { useAsync } from '../../alexlibs/react-hooks-lib'
-import { useConnectedContext } from '../../core/context/ConnectedContext'
-import { Alert } from '../../alexlibs/mui-extension'
 import { CleanWidePanel } from 'shared/Panel/simplePanels'
-import { ScInput } from '../../shared/ScInput'
+import { Alert } from '../../alexlibs/mui-extension'
+import { useConnectedContext } from '../../core/context/ConnectedContext'
 import { useToast } from '../../core/toast'
+import { ScButton } from '../../shared/Button'
+import { ScInput } from '../../shared/ScInput'
 
 export const DeleteSpamReportsAdminTool = () => {
   const { apiSdk: api } = useConnectedContext()
 
   const { toastSuccess, toastError } = useToast()
 
-  const _deleteReports = useAsync(api.secured.admin.deleteReports)
+  const _deleteReports = useMutation({
+    mutationFn: (ids: string[]) => {
+      return api.secured.admin.deleteReports(ids)
+    },
+  })
   const [reports, setReports] = useState<string>('')
   const [reportCount, setReportCount] = useState<number>(0)
   const [errorMessage, setErrorMessage] = useState<string>('')
@@ -39,18 +43,13 @@ export const DeleteSpamReportsAdminTool = () => {
     updateStateBasedOnValidation(validUUIDs, invalidUUIDs)
     if (invalidUUIDs.length === 0) {
       try {
-        return await _deleteReports
-          .call(validUUIDs)
-          .then((r) =>
-            toastSuccess(`Nombre de signalements traités : ${r.length}`),
-          )
+        const res = await _deleteReports.mutateAsync(validUUIDs)
+        toastSuccess(`Nombre de signalements traités : ${res.length}`)
       } catch (error) {
         // @ts-ignore
         toastError(error)
       }
     }
-
-    return Promise.resolve()
   }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -115,8 +114,8 @@ export const DeleteSpamReportsAdminTool = () => {
           <ScButton
             onClick={handleClick}
             color="primary"
-            disabled={_deleteReports.loading}
-            loading={_deleteReports.loading}
+            disabled={_deleteReports.isPending}
+            loading={_deleteReports.isPending}
           >
             Supprimer
           </ScButton>
