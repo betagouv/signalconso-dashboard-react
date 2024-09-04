@@ -27,7 +27,6 @@ interface Read<E, F extends Func<Promise<any>>, ERR = any> {
   list?: E[]
   fetching: boolean
   fetch: Fetch<F>
-  clearCache: () => void
   fetchError?: ERR
 }
 
@@ -181,7 +180,6 @@ export const useCrudList: UseCrudList = <
     loading: fetching,
     fetch,
     setEntity: set,
-    clearCache,
     error: fetchError,
   } = useFetcher<ReadAction<E[]>>(r!)
 
@@ -259,7 +257,6 @@ export const useCrudList: UseCrudList = <
     fetching,
     fetch,
     fetchError,
-    clearCache,
     ...(c && {
       createError,
       creating,
