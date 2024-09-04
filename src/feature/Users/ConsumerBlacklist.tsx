@@ -28,6 +28,7 @@ export const ConsumerBlacklist = () => {
   return (
     <>
       <Datatable
+        id="consumerblacklist"
         superheader={
           <div className="">
             <p className="mb-2">
