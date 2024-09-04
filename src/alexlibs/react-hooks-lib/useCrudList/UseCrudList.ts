@@ -1,5 +1,5 @@
-import { Fetch, Func, useFetcher, useMap, useSetState } from '..'
 import { useState } from 'react'
+import { Fetch, Func, useFetcher, useMap, useSetState } from '..'
 
 type ReadAction<E> = (...args: any[]) => Promise<E>
 type CreateAction<E> = (...args: any[]) => Promise<E>
@@ -23,11 +23,10 @@ interface Create<E, F extends Func, ERR> {
   createError?: ERR
 }
 
-interface Read<E, PK extends keyof E, F extends Func<Promise<any>>, ERR = any> {
+interface Read<E, F extends Func<Promise<any>>, ERR = any> {
   list?: E[]
   fetching: boolean
   fetch: Fetch<F>
-  find: (pk: E[PK]) => E | undefined
   clearCache: () => void
   fetchError?: ERR
 }
@@ -49,41 +48,39 @@ type CrudListR<
   PK extends keyof E,
   CRUD extends CrudParams<E, PK>,
   ERR = any,
-> = Read<E, PK, CRUD['r'], ERR>
+> = Read<E, CRUD['r'], ERR>
 type CrudListCR<
   E,
   PK extends keyof E,
   CRUD extends CrudParams<E, PK>,
   ERR = any,
-> = Create<E, Exclude<CRUD['c'], undefined>, ERR> & Read<E, PK, CRUD['r'], ERR>
+> = Create<E, Exclude<CRUD['c'], undefined>, ERR> & Read<E, CRUD['r'], ERR>
 type CrudListRU<
   E,
   PK extends keyof E,
   CRUD extends CrudParams<E, PK>,
   ERR = any,
-> = Read<E, PK, CRUD['r'], ERR> &
-  Update<E, PK, Exclude<CRUD['u'], undefined>, ERR>
+> = Read<E, CRUD['r'], ERR> & Update<E, PK, Exclude<CRUD['u'], undefined>, ERR>
 type CrudListCRU<
   E,
   PK extends keyof E,
   CRUD extends CrudParams<E, PK>,
   ERR = any,
 > = Create<E, Exclude<CRUD['c'], undefined>, ERR> &
-  Read<E, PK, CRUD['r'], ERR> &
+  Read<E, CRUD['r'], ERR> &
   Update<E, PK, Exclude<CRUD['u'], undefined>, ERR>
 type CrudListRD<
   E,
   PK extends keyof E,
   CRUD extends CrudParams<E, PK>,
   ERR = any,
-> = Read<E, PK, CRUD['r'], ERR> &
-  Delete<E, PK, Exclude<CRUD['d'], undefined>, ERR>
+> = Read<E, CRUD['r'], ERR> & Delete<E, PK, Exclude<CRUD['d'], undefined>, ERR>
 type CrudListRUD<
   E,
   PK extends keyof E,
   CRUD extends CrudParams<E, PK>,
   ERR = any,
-> = Read<E, PK, CRUD['r'], ERR> &
+> = Read<E, CRUD['r'], ERR> &
   Update<E, PK, Exclude<CRUD['u'], undefined>, ERR> &
   Delete<E, PK, Exclude<CRUD['d'], undefined>, ERR>
 type CrudListCRD<
@@ -92,7 +89,7 @@ type CrudListCRD<
   CRUD extends CrudParams<E, PK>,
   ERR = any,
 > = Create<E, Exclude<CRUD['c'], undefined>, ERR> &
-  Read<E, PK, CRUD['r'], ERR> &
+  Read<E, CRUD['r'], ERR> &
   Delete<E, PK, Exclude<CRUD['d'], undefined>, ERR>
 type CrudListCRUD<
   E,
@@ -100,7 +97,7 @@ type CrudListCRUD<
   CRUD extends CrudParams<E, PK>,
   ERR = any,
 > = Create<E, Exclude<CRUD['c'], undefined>, ERR> &
-  Read<E, PK, CRUD['r'], ERR> &
+  Read<E, CRUD['r'], ERR> &
   Delete<E, PK, Exclude<CRUD['d'], undefined>, ERR> &
   Update<E, PK, Exclude<CRUD['u'], undefined>, ERR>
 
@@ -250,12 +247,6 @@ export const useCrudList: UseCrudList = <
     }
   }
 
-  const find = (primaryKey: E[PK]): E | undefined => {
-    if (list) {
-      return list.find((t) => t[pk] === primaryKey)
-    }
-  }
-
   const removing = (primaryKey: E[PK]): boolean => removingList.has(primaryKey)
   const updating = (primaryKey: E[PK]): boolean => updatingList.has(primaryKey)
   const removeError = (primaryKey: E[PK]): ERR | undefined =>
@@ -269,7 +260,6 @@ export const useCrudList: UseCrudList = <
     fetch,
     fetchError,
     clearCache,
-    find,
     ...(c && {
       createError,
       creating,
