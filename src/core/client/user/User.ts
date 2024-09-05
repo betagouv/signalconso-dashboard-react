@@ -3,6 +3,8 @@ import { CompanyAccess, PaginatedFilters } from '../../model'
 
 export const roleAgents = ['DGCCRF', 'DGAL'] as const
 export type RoleAgents = (typeof roleAgents)[number]
+export const roleAdmins = ['SuperAdmin', 'Admin', 'ReadOnlyAdmin'] as const
+export type RoleAdmins = (typeof roleAdmins)[number]
 export type RoleAdminOrAgent = 'Admin' | RoleAgents
 
 export interface User {
@@ -47,7 +49,7 @@ export interface UserPending {
 }
 
 export interface UserSearch extends PaginatedFilters {
-  role?: RoleAdminOrAgent[]
+  role?: RoleAgents[]
   email?: string
   active?: boolean
 }

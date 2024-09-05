@@ -65,11 +65,6 @@ const UsersList = ({ adminView }: Props) => {
 
   const extraColumnsForDgccrf: DatatableColumnProps<User>[] = [
     {
-      head: 'Type',
-      id: 'type',
-      render: (_) => _.role,
-    },
-    {
       head: m.lastValidationDate,
       id: 'lastValidation',
       render: (_) => formatDate(_.lastEmailValidation),
@@ -132,6 +127,11 @@ const UsersList = ({ adminView }: Props) => {
       id: 'lastName',
       render: (_) => _.lastName,
     },
+    {
+      head: 'Type',
+      id: 'type',
+      render: (_) => _.role,
+    },
     ...(adminView ? [] : extraColumnsForDgccrf),
     {
       id: 'authAttemptsHistory',
@@ -169,7 +169,8 @@ const UsersList = ({ adminView }: Props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  const parsedRole = (_users.filters.role ?? roleAgents) as RoleAgents[]
+  const parsedRole: RoleAgents[] =
+    _users.filters.role ?? roleAgents.map((_) => _)
 
   return (
     <>

@@ -1,5 +1,7 @@
 import {
   isUserActive,
+  RoleAdminOrAgent,
+  RoleAdmins,
   RoleAgents,
   User,
   UserEdit,
@@ -18,12 +20,35 @@ export class UserClient {
     return this.client.get<User>(`/account`)
   }
 
-  readonly searchAdminOrAgent = async (
+  readonly searchAdmin = async (
     filters: UserSearch,
   ): Promise<Paginate<User>> => {
-    const rawUsers = await this.client.get<UserRaw[]>(
-      `/account/admin-or-agent/users`,
-    )
+    const rawUsers = await this.client.get<UserRaw[]>(`/account/admin/users`)
+    const users: User[] = rawUsers
+      .map(({ lastEmailValidation, ...rest }) => {
+        return {
+          lastEmailValidation: new Date(lastEmailValidation),
+          ...rest,
+        }
+      })
+      .filter((_) => {
+        return (
+          !filters.email ||
+          _.email.toLowerCase().includes(filters.email.toLowerCase())
+        )
+      })
+      .filter((_) => {
+        return (
+          filters.active === undefined || isUserActive(_) === filters.active
+        )
+      })
+    return paginateData<User>(filters.limit, filters.offset)(users)
+  }
+
+  readonly searchAgent = async (
+    filters: UserSearch,
+  ): Promise<Paginate<User>> => {
+    const rawUsers = await this.client.get<UserRaw[]>(`/account/agent/users`)
     const users: User[] = rawUsers
       .map(({ lastEmailValidation, ...rest }) => {
         return {
@@ -46,7 +71,7 @@ export class UserClient {
         return (
           !filters.role ||
           filters.role.length === 0 ||
-          filters.role.includes(_.role)
+          filters.role.map((_) => _ as RoleAdminOrAgent).includes(_.role)
         )
       })
     return paginateData<User>(filters.limit, filters.offset)(users)
@@ -82,8 +107,8 @@ export class UserClient {
     })
   }
 
-  readonly inviteAdmin = (email: string) => {
-    return this.client.post<void>(`/account/admin/invitation`, {
+  readonly inviteAdmin = (email: string, role: RoleAdmins) => {
+    return this.client.post<void>(`/account/admin/invitation?role=${role}`, {
       body: { email },
     })
   }

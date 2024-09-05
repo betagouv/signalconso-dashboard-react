@@ -30,11 +30,10 @@ export const useSearchAdminQuery = (enabled: boolean) => {
   const { api } = useApiContext()
   return useQueryPaginate(
     SearchAdminQueryKeys,
-    api.secured.user.searchAdminOrAgent,
+    api.secured.user.searchAdmin,
     {
       limit: 50,
       offset: 0,
-      role: ['Admin'],
     },
     undefined,
     enabled,
@@ -45,11 +44,11 @@ export const useSearchAgentQuery = (enabled: boolean) => {
   const { api } = useApiContext()
   return useQueryPaginate(
     SearchAgentQueryKeys,
-    api.secured.user.searchAdminOrAgent,
+    api.secured.user.searchAgent,
     {
       limit: 25,
       offset: 0,
-      role: roleAgents.map((_) => _ as RoleAdminOrAgent),
+      role: roleAgents.map((_) => _),
     },
     undefined,
     enabled,
