@@ -1,8 +1,8 @@
 import { Icon, Tooltip } from '@mui/material'
-import { useQueryClient } from '@tanstack/react-query'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { siteMap } from 'core/siteMap'
 import { ReportReferenceNumber } from 'feature/Report/ReportReferenceNumber'
-import { useRef } from 'react'
+import React, { useRef } from 'react'
 import { useParams } from 'react-router'
 import { Link } from 'react-router-dom'
 import { CleanWidePanel } from 'shared/Panel/simplePanels'
@@ -44,6 +44,7 @@ import { ReportResponseComponent } from './ReportResponse'
 import { ReportResponseForm } from './ReportResponseForm/ReportResponseForm'
 import { ReportStation } from './ReportStation'
 import { ReportTrain } from './ReportTrain'
+import { useConnectedContext } from '../../core/context/ConnectedContext'
 
 export const ReportPro = () => {
   const { id } = useParams<{ id: Id }>()
@@ -64,6 +65,7 @@ function ReportProLoaded({
 }) {
   const { m } = useI18n()
   const queryClient = useQueryClient()
+  const { apiSdk } = useConnectedContext()
   const { report, files } = reportSearchResult
   const { reportEvents, responseEvent } = useGetReportEventsQuery(report.id)
   const _getReviewOnReportResponse = useGetReviewOnReportResponseQuery(
@@ -82,13 +84,32 @@ function ReportProLoaded({
     }
   }
 
+  const downloadReport = useMutation({
+    mutationFn: (id: Id) => apiSdk.secured.reports.download([id]),
+  })
+
+  const download = (event: any) => {
+    event.preventDefault() // Prevent default link behavior
+    downloadReport.mutate(report.id)
+  }
+
   const hasResponse = !!responseEvent
   const isClosed = Report.isClosed(report.status)
   const hasToRespond = !hasResponse && !isClosed
 
   return (
     <div className="mt-8">
-      <LinkBackToList {...{ report }} />
+      <div className={'flex justify-between items-center'}>
+        <LinkBackToList {...{ report }} />
+        <Link
+          to={'_blank'}
+          onClick={download}
+          className="flex items-center text-scbluefrance mb-2 no-underline hover:underline gap-2"
+        >
+          <Icon>download</Icon>Télécharger au format PDF
+        </Link>
+      </div>
+
       <ReportBlock
         {...{
           scrollToResponse,

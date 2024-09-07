@@ -479,7 +479,7 @@ export const fr = {
     reportsCountInfluenceurs: 'Nombre de signalements influenceurs',
     responsesCount: 'Nombre de réponses',
     emailConsumer: 'Email conso.',
-    nSelected: (n: number) => `<b>${n}</b> sélectionnés`,
+    nSelected: (n: number) => `<b>${n}</b> éléments sélectionnés`,
     consoAnonyme: 'Conso. anonyme',
     hasAttachement: `Pièces jointes`,
     reportsProProcessed: 'Traitement des signalements par les professionnels',

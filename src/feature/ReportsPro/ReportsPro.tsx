@@ -41,6 +41,9 @@ import { PeriodPicker } from '../../shared/PeriodPicker'
 import { ScInput } from '../../shared/ScInput'
 import { SelectCompaniesByPro } from '../../shared/SelectCompaniesByPro/SelectCompaniesByPro'
 import { buildReportColumns } from './buildReportColumns'
+import { useSetState } from '../../alexlibs/react-hooks-lib'
+import { Id } from '../../core/model'
+import { DatatableToolbarComponent } from '../Reports/DatatableToolbarComponent'
 
 export const css = makeSx({
   card: {
@@ -85,6 +88,7 @@ interface ReportFiltersQs {
   end?: string
   status?: string[]
 }
+
 interface ReportsProProps {
   reportType: 'open' | 'closed'
 }
@@ -128,11 +132,13 @@ export const ReportsPro = ({ reportType }: ReportsProProps) => {
   const _reports = useReportSearchQuery(filtersAppliedToQuery)
   const _accessibleByPro = useGetAccessibleByProQuery()
   const _blockedNotifications = useListReportBlockedNotificationsQuery()
-
+  const selectReport = useSetState<Id>()
   const { isMobileWidth } = useLayoutContext()
   const history = useNavigate()
   const { formatDate, m } = useI18n()
   const columns = buildReportColumns({
+    _reports,
+    selectReport,
     reportType,
     isMobileWidth,
     css,
@@ -380,10 +386,29 @@ export const ReportsPro = ({ reportType }: ReportsProProps) => {
                         .getOrElse('')}
                       filters={_reports.filters}
                     >
-                      <Btn variant="outlined" color="primary" icon="get_app">
+                      <Btn
+                        variant="outlined"
+                        color="primary"
+                        iconAfter="get_app"
+                      >
                         {m.exportInXLS}
                       </Btn>
                     </ExportReportsPopper>
+                    <Btn
+                      variant="outlined"
+                      color="primary"
+                      iconAfter="get_app"
+                      disabled={selectReport.size != 0}
+                      onClick={(_) =>
+                        selectReport.add(
+                          _reports.result.data!.entities!.map(
+                            (_) => _.report.id,
+                          ),
+                        )
+                      }
+                    >
+                      Exporter au format PDF
+                    </Btn>
                   </Box>
                 </>
               </div>
@@ -412,16 +437,10 @@ export const ReportsPro = ({ reportType }: ReportsProProps) => {
                       ...pagination,
                     })),
                 }}
+                headerMain={<DatatableToolbarComponent {...{ selectReport }} />}
                 data={_reports.result.data?.entities}
                 loading={_accessibleByPro.isLoading}
                 total={_reports.result.data?.totalCount}
-                onClickRows={(_, e) => {
-                  if (e.metaKey || e.ctrlKey) {
-                    openInNew(siteMap.logged.report(_.report.id))
-                  } else {
-                    history(siteMap.logged.report(_.report.id))
-                  }
-                }}
                 columns={columns}
                 renderEmptyState={
                   filtersCount === 0 && reportType === 'open' ? (
