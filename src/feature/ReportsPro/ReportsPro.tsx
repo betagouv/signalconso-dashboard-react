@@ -437,6 +437,18 @@ export const ReportsPro = ({ reportType }: ReportsProProps) => {
                       ...pagination,
                     })),
                 }}
+                onClickRows={(_, e) => {
+                  const htmlElement = e.target as HTMLElement
+                  //Don't redirect to report when user is checking download report checkbox
+                  //Check for specific checkbox id
+                  if (htmlElement.id !== `download-checkbox-${_.report.id}`) {
+                    if (e.metaKey || e.ctrlKey) {
+                      openInNew(siteMap.logged.report(_.report.id))
+                    } else {
+                      history(siteMap.logged.report(_.report.id))
+                    }
+                  }
+                }}
                 headerMain={<DatatableToolbarComponent {...{ selectReport }} />}
                 data={_reports.result.data?.entities}
                 loading={_accessibleByPro.isLoading}

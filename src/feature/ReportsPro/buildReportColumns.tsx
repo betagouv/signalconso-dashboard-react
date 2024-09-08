@@ -4,27 +4,19 @@ import { ReportResponseDetails } from 'feature/Reports/ReportResponseDetails'
 import React from 'react'
 import { ReportStatusLabel } from 'shared/ReportStatus'
 import { ConsumerReviewLabels } from 'shared/reviews/ConsumerReviewLabels'
-import { Btn, IconBtn, Txt } from '../../alexlibs/mui-extension'
+import { Txt } from '../../alexlibs/mui-extension'
 import {
-  Report,
   ReportSearchResult,
   ReportStatus,
 } from '../../core/client/report/Report'
 import { combineSx, sxUtils } from '../../core/theme'
 import { UserNameLabel } from '../../shared/UserNameLabel'
 import { css } from './ReportsPro'
-import {
-  ActionsColumn,
-  CheckboxColumn,
-  CheckboxColumnHead,
-} from '../Reports/reportsColumns'
+import { CheckboxColumn, CheckboxColumnHead } from '../Reports/reportsColumns'
 import { UseQueryPaginateResult } from '../../core/queryhooks/UseQueryPaginate'
 import { ReportSearch } from '../../core/client/report/ReportSearch'
 import { Paginate, PaginatedFilters } from '../../core/model'
 import { UseSetState } from '../../alexlibs/react-hooks-lib'
-import { NavLink, useNavigate } from 'react-router-dom'
-import { siteMap } from '../../core/siteMap'
-import { openInNew } from '../../core/helper'
 
 interface ReportTableColumnsParams {
   _reports: UseQueryPaginateResult<
@@ -101,11 +93,15 @@ export const buildReportColumns = ({
   const baseColumns = [
     {
       alwaysVisible: true,
-      id: 'checkbox',
+      id: 'download-checkbox',
       head: (() => <CheckboxColumnHead {...{ _reports, selectReport }} />)(),
       style: { width: 0 },
       render: (r: ReportSearchResult) => (
-        <CheckboxColumn {...{ r, selectReport }} />
+        <CheckboxColumn
+          //Important do not remove, used to check if the click on table should redirect to report or not
+          id={`download-checkbox-${r.report.id}`}
+          {...{ r, selectReport }}
+        />
       ),
     },
     {
@@ -204,37 +200,5 @@ export const buildReportColumns = ({
           },
         ]
 
-  function ActionsComponent({ report }: { report: ReportSearchResult }) {
-    const history = useNavigate()
-    return (
-      <Btn
-        variant={
-          Report.isClosed(report.report.status) ? 'outlined' : 'contained'
-        }
-        size={'small'}
-        onClick={(e) => {
-          if (e.metaKey || e.ctrlKey) {
-            openInNew(siteMap.logged.report(report.report.id))
-          } else {
-            history(siteMap.logged.report(report.report.id))
-          }
-        }}
-      >
-        {Report.isClosed(report.report.status) ? 'Voir' : 'Répondre'}
-      </Btn>
-    )
-  }
-
-  const actionColumns = [
-    {
-      id: 'actions',
-      stickyEnd: true,
-      sx: (_: any) => sxUtils.tdActions,
-      render: (r: ReportSearchResult) => (
-        <ActionsComponent report={r}></ActionsComponent>
-      ),
-    },
-  ]
-
-  return [...baseColumns, ...specificColumns, ...actionColumns]
+  return [...baseColumns, ...specificColumns]
 }

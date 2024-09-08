@@ -53,9 +53,11 @@ export function CheckboxColumnHead({
 export function CheckboxColumn({
   r,
   selectReport,
-}: ColumnProps & { selectReport: UseSetState<string> }) {
+  id,
+}: ColumnProps & { selectReport: UseSetState<string>; id?: string }) {
   return (
     <Checkbox
+      id={id ?? `download-checkbox-${r.report.id}`}
       checked={selectReport.has(r.report.id)}
       onChange={() => selectReport.toggle(r.report.id)}
     />
