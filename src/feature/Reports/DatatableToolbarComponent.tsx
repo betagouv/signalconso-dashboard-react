@@ -36,7 +36,7 @@ export const DatatableToolbarComponent: React.FC<
             marginLeft: 'auto',
           }}
         >
-          {m.download}
+          Télécharger les éléments sélectionnés
         </ScButton>
       }
     >

@@ -12,8 +12,19 @@ import {
 import { combineSx, sxUtils } from '../../core/theme'
 import { UserNameLabel } from '../../shared/UserNameLabel'
 import { css } from './ReportsPro'
+import { CheckboxColumn, CheckboxColumnHead } from '../Reports/reportsColumns'
+import { UseQueryPaginateResult } from '../../core/queryhooks/UseQueryPaginate'
+import { ReportSearch } from '../../core/client/report/ReportSearch'
+import { Paginate, PaginatedFilters } from '../../core/model'
+import { UseSetState } from '../../alexlibs/react-hooks-lib'
 
 interface ReportTableColumnsParams {
+  _reports: UseQueryPaginateResult<
+    ReportSearch & PaginatedFilters,
+    Paginate<ReportSearchResult>,
+    unknown
+  >
+  selectReport: UseSetState<string>
   reportType: 'open' | 'closed'
   isMobileWidth: boolean
   css: typeof css
@@ -34,6 +45,8 @@ const MaybeBold: React.FC<{
 }
 
 export const buildReportColumns = ({
+  _reports,
+  selectReport,
   reportType,
   isMobileWidth,
   css,
@@ -78,6 +91,19 @@ export const buildReportColumns = ({
   }
 
   const baseColumns = [
+    {
+      alwaysVisible: true,
+      id: 'download-checkbox',
+      head: (() => <CheckboxColumnHead {...{ _reports, selectReport }} />)(),
+      style: { width: 0 },
+      render: (r: ReportSearchResult) => (
+        <CheckboxColumn
+          //Important do not remove, used to check if the click on table should redirect to report or not
+          id={`download-checkbox-${r.report.id}`}
+          {...{ r, selectReport }}
+        />
+      ),
+    },
     {
       id: 'siret',
       head: 'SIRET',
