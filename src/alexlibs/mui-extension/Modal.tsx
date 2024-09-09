@@ -93,6 +93,7 @@ export const Modal = ({
               {onConfirm && (
                 <Button
                   color="primary"
+                  variant={'contained'}
                   onClick={confirm}
                   disabled={confirmDisabled}
                 >
