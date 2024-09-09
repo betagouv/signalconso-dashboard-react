@@ -1,15 +1,15 @@
 import { apiPublicSdk } from 'core/ApiSdkInstance'
 import { Dispatch, SetStateAction, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router'
-import { UserWithPermission } from './client/authenticate/Authenticate'
+import { User } from './client/user/User'
 
 export type LoginManagementResult = {
-  connectedUser?: UserWithPermission
+  connectedUser?: User
   isFetchingUserOnStartup: boolean
   logout: () => void
   handleDetectedLogout: () => void
   login: {
-    action: (login: string, password: string) => Promise<UserWithPermission>
+    action: (login: string, password: string) => Promise<User>
     loading?: boolean
     errorMsg?: unknown
   }
@@ -18,15 +18,13 @@ export type LoginManagementResult = {
     loading?: boolean
     errorMsg?: unknown
   }
-  setConnectedUser: Dispatch<SetStateAction<UserWithPermission | undefined>>
+  setConnectedUser: Dispatch<SetStateAction<User | undefined>>
 }
 
 export function useLoginManagement(): LoginManagementResult {
   const navigate = useNavigate()
 
-  const [connectedUser, setConnectedUser] = useState<
-    UserWithPermission | undefined
-  >()
+  const [connectedUser, setConnectedUser] = useState<User | undefined>()
   const [isLoggingIn, setIsLoggingIn] = useState(false)
   const [isRegistering, setIsRegistering] = useState(false)
   const [loginError, setLoginError] = useState<unknown | undefined>()
@@ -47,10 +45,7 @@ export function useLoginManagement(): LoginManagementResult {
     fetchUserOnStartup()
   }, [])
 
-  async function login(
-    login: string,
-    password: string,
-  ): Promise<UserWithPermission> {
+  async function login(login: string, password: string): Promise<User> {
     try {
       setIsLoggingIn(true)
       const user = await apiPublicSdk.authenticate.login(login, password)

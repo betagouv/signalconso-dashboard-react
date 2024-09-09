@@ -4,7 +4,7 @@ import { HorizontalBarChart } from 'shared/Chart/HorizontalBarChart'
 import { reportStatusColor } from 'shared/ReportStatus'
 import { useEffectFn, useMemoFn } from '../../alexlibs/react-hooks-lib'
 import { ReportStatus } from '../../core/client/report/Report'
-import { CompanyWithReportsCount, UserWithPermission } from '../../core/model'
+import { CompanyWithReportsCount, User } from '../../core/model'
 import { useGetHostsQuery } from '../../core/queryhooks/companyQueryHooks'
 import { useReportSearchQuery } from '../../core/queryhooks/reportQueryHooks'
 import {
@@ -25,7 +25,7 @@ import {
   EngagementReviewsDistribution,
   ResponseReviewsDistribution,
 } from './stats/ReviewDistribution'
-type ExtendedUser = UserWithPermission & {
+type ExtendedUser = User & {
   isPro: boolean
 }
 

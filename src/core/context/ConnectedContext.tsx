@@ -1,10 +1,10 @@
 import { LoginManagementResult } from 'core/useLoginManagement'
 import React, { ReactNode, useContext } from 'react'
 import { ConnectedApiSdk } from '../ApiSdkInstance'
-import { Roles, UserWithPermission } from '../client/authenticate/Authenticate'
+import { User } from '../client/user/User'
 
 export type ConnectedContext = {
-  connectedUser: UserWithPermission & {
+  connectedUser: User & {
     isDGCCRF: boolean
     isDGAL: boolean
     isPro: boolean
@@ -27,7 +27,7 @@ export const ConnectedContextProvider = ({
   children,
 }: {
   apiSdk: ConnectedApiSdk
-  connectedUser: UserWithPermission
+  connectedUser: User
   setConnectedUser: LoginManagementResult['setConnectedUser']
   children: ReactNode
 }) => {
@@ -37,15 +37,15 @@ export const ConnectedContextProvider = ({
         setConnectedUser,
         connectedUser: {
           ...connectedUser,
-          isDGCCRF: connectedUser.role === Roles.DGCCRF,
-          isDGAL: connectedUser.role === Roles.DGAL,
-          isPro: connectedUser.role === Roles.Pro,
-          isNotPro: connectedUser.role !== Roles.Pro,
+          isDGCCRF: connectedUser.role === 'DGCCRF',
+          isDGAL: connectedUser.role === 'DGAL',
+          isPro: connectedUser.role === 'Professionnel',
+          isNotPro: connectedUser.role !== 'Professionnel',
           isAdmin:
-            connectedUser.role === Roles.SuperAdmin ||
-            connectedUser.role === Roles.Admin ||
-            connectedUser.role === Roles.ReadOnlyAdmin,
-          isSuperAdmin: connectedUser.role === Roles.SuperAdmin,
+            connectedUser.role === 'SuperAdmin' ||
+            connectedUser.role === 'Admin' ||
+            connectedUser.role === 'ReadOnlyAdmin',
+          isSuperAdmin: connectedUser.role === 'SuperAdmin',
         },
 
         apiSdk,

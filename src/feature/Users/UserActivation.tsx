@@ -13,11 +13,8 @@ import { Controller, useForm } from 'react-hook-form'
 import { useLocation, useNavigate, useParams } from 'react-router'
 import { PasswordRequirementsDesc } from 'shared/PasswordRequirementsDesc'
 import { Alert, makeSx, Txt } from '../../alexlibs/mui-extension'
-import {
-  TokenInfo,
-  UserWithPermission,
-} from '../../core/client/authenticate/Authenticate'
-import { UserToActivate } from '../../core/client/user/User'
+import { TokenInfo } from '../../core/client/authenticate/Authenticate'
+import { User, UserToActivate } from '../../core/client/user/User'
 import { QueryString } from '../../core/helper/useQueryString'
 import { useI18n } from '../../core/i18n'
 import {
@@ -49,12 +46,12 @@ const sx = makeSx({
 })
 
 interface Props {
-  onUserActivated: (_: UserWithPermission) => void
+  onUserActivated: (_: User) => void
   onActivateUser: (
     user: UserToActivate,
     token: string,
     companySiret?: string,
-  ) => Promise<UserWithPermission>
+  ) => Promise<User>
   onFetchTokenInfo: (token: string, companySiret?: string) => Promise<TokenInfo>
 }
 

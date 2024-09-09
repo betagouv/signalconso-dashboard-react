@@ -3,7 +3,7 @@ import { useStatusDistributionProQuery } from 'core/queryhooks/statsQueryHooks'
 import { reportStatusProColor } from 'shared/ReportStatus'
 import { useEffectFn } from '../../alexlibs/react-hooks-lib'
 import { ReportStatusPro } from '../../core/client/report/Report'
-import { CompanyWithReportsCount, UserWithPermission } from '../../core/model'
+import { CompanyWithReportsCount, User } from '../../core/model'
 import { useReportSearchQuery } from '../../core/queryhooks/reportQueryHooks'
 import { CompanyChartPanel } from './CompanyChartPanel'
 import { ReportsShortListPanel } from './ReportsShortList'
@@ -15,7 +15,7 @@ import {
 } from './stats/ReviewDistribution'
 import { StatusDistribution } from './stats/StatusDistribution'
 
-type ExtendedUser = UserWithPermission & {
+type ExtendedUser = User & {
   isPro: boolean
 }
 

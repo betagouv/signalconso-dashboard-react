@@ -5,7 +5,8 @@ export const roleAgents = ['DGCCRF', 'DGAL'] as const
 export type RoleAgents = (typeof roleAgents)[number]
 export const roleAdmins = ['SuperAdmin', 'Admin', 'ReadOnlyAdmin'] as const
 export type RoleAdmins = (typeof roleAdmins)[number]
-export type RoleAdminOrAgent = 'Admin' | RoleAgents
+export type RoleAdminOrAgent = RoleAdmins | RoleAgents
+export type Role = RoleAdminOrAgent | 'Professionnel'
 
 export interface User {
   id: string
@@ -13,7 +14,7 @@ export interface User {
   firstName: string
   lastName: string
   lastEmailValidation: Date
-  role: RoleAdminOrAgent
+  role: Role
 }
 
 export class User {

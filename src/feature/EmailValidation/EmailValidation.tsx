@@ -3,18 +3,17 @@ import { useEffect, useMemo } from 'react'
 import { useLocation } from 'react-router'
 import { NavLink } from 'react-router-dom'
 import { Fender, Txt } from '../../alexlibs/mui-extension'
-import { UserWithPermission } from '../../core/client/authenticate/Authenticate'
 import { QueryString } from '../../core/helper/useQueryString'
 import { useI18n } from '../../core/i18n'
-import { Id } from '../../core/model'
+import { Id, User } from '../../core/model'
 import { siteMap } from '../../core/siteMap'
 import { ScButton } from '../../shared/Button'
 import { CenteredContent } from '../../shared/CenteredContent'
 import { Page } from '../../shared/Page'
 
 interface Props {
-  onValidateEmail: (token: Id) => Promise<UserWithPermission>
-  onSaveUser: (_: UserWithPermission) => void
+  onValidateEmail: (token: Id) => Promise<User>
+  onSaveUser: (_: User) => void
 }
 
 interface FenderProps {
