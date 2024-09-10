@@ -1,6 +1,6 @@
 import {
   isUserActive,
-  RoleAdminOrAgent,
+  Role,
   RoleAdmins,
   RoleAgents,
   User,
@@ -10,15 +10,11 @@ import {
   UserSearch,
 } from './User'
 import { ApiClientApi } from '../ApiClient'
-import { Id, Paginate, UserWithPermission } from '../../model'
+import { Id, Paginate } from '../../model'
 import { paginateData } from '../../helper'
 
 export class UserClient {
   constructor(private client: ApiClientApi) {}
-
-  readonly fetchConnectedUser = () => {
-    return this.client.get<User>(`/account`)
-  }
 
   readonly searchAdmin = async (
     filters: UserSearch,
@@ -71,7 +67,7 @@ export class UserClient {
         return (
           !filters.role ||
           filters.role.length === 0 ||
-          filters.role.map((_) => _ as RoleAdminOrAgent).includes(_.role)
+          filters.role.map((_) => _ as Role).includes(_.role)
         )
       })
     return paginateData<User>(filters.limit, filters.offset)(users)
@@ -138,6 +134,6 @@ export class UserClient {
   }
 
   readonly updateEmail = (token: string) => {
-    return this.client.put<UserWithPermission>(`/account/update-email/${token}`)
+    return this.client.put<User>(`/account/update-email/${token}`)
   }
 }

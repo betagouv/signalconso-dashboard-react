@@ -1,4 +1,4 @@
-import { Id, Paginate, PaginatedFilters, User } from '../../model'
+import { Paginate, PaginatedFilters } from '../../model'
 import { cleanObject, paginateData } from '../../helper'
 import { ApiClientApi } from '../ApiClient'
 import { AuthAttempt } from './AuthAttempt'

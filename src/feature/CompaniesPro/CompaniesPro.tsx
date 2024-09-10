@@ -89,11 +89,11 @@ export const CompaniesPro = () => {
 
   const companies = _companiesAccessibleByPro.data
 
-  const minRowsBeforeDisplayFiltersAndPagination = 10
+  const minRowsBeforeDisplayFiltersAndPagination = 25
 
   const [search, setSearch] = useState('')
   const [offset, setOffset] = useState(0)
-  const [limit, setLimit] = useState(10)
+  const [limit, setLimit] = useState(25)
 
   const filteredCompanies = !search
     ? companies?.slice(offset, offset + limit)
