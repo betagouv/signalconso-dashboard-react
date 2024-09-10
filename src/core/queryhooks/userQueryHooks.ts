@@ -1,21 +1,13 @@
 import { useApiContext } from '../context/ApiContext'
 import { useQueryPaginate } from './UseQueryPaginate'
-import {
-  RoleAdminOrAgent,
-  RoleAgents,
-  roleAgents,
-  User,
-  UserPending,
-} from '../client/user/User'
+import { RoleAgents, roleAgents, UserPending } from '../client/user/User'
 import { UseQueryOpts } from './types'
 import { useQuery } from '@tanstack/react-query'
-import { TokenInfo } from '../client/authenticate/Authenticate'
 import { AuthAttemptsSearch } from '../client/auth-attempts/AuthAttemptClient'
 
 export const SearchAdminQueryKeys = ['user_searchAdmin']
 export const SearchAgentQueryKeys = ['user_searchAgent']
 const SearchAuthAttemptsQueryKeys = ['authAttemptClient_fetch']
-const GetConnectedUserQueryKeys = ['user_fetchConnectedUser']
 export const FetchTokenInfoQueryKeys = (
   token: string,
   companySiret?: string,
@@ -67,28 +59,6 @@ export const useSearchAuthAttemptsQuery = (filters: AuthAttemptsSearch) => {
     defaultFilters,
     filters,
   )
-}
-
-const useGetConnectedUserQuery = (options?: UseQueryOpts<User, string[]>) => {
-  const { api } = useApiContext()
-  return useQuery({
-    queryKey: GetConnectedUserQueryKeys,
-    queryFn: api.secured.user.fetchConnectedUser,
-    ...options,
-  })
-}
-
-const useFetchTokenInfoQuery = (
-  token: string,
-  companySiret?: string,
-  options?: UseQueryOpts<TokenInfo, string[]>,
-) => {
-  const { api } = useApiContext()
-  return useQuery({
-    queryKey: FetchTokenInfoQueryKeys(token, companySiret),
-    queryFn: () => api.public.user.fetchTokenInfo(token, companySiret),
-    ...options,
-  })
 }
 
 export const useGetAgentPendingQuery = (

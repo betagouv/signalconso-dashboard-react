@@ -1,23 +1,5 @@
 export type ValidationRejectReason = 'TOO_MANY_ATTEMPTS' | 'INVALID_CODE'
 
-export interface UserWithPermission {
-  id: string
-  email: string
-  firstName: string
-  lastName: string
-  role: Roles
-}
-
-export enum Roles {
-  SuperAdmin = 'SuperAdmin',
-  Admin = 'Admin',
-  ReadOnlyAdmin = 'ReadOnlyAdmin',
-  DGCCRF = 'DGCCRF',
-  DGAL = 'DGAL',
-  Pro = 'Professionnel',
-  ToActivate = 'ToActivate',
-}
-
 enum TokenKind {
   companyInit = 'COMPANY_INIT',
   companyJoin = 'COMPANY_JOIN',

@@ -38,7 +38,7 @@ import { Users } from './feature/Users/Users'
 import { CenteredContent } from './shared/CenteredContent'
 import { Engagements } from './feature/Engagement/Engagements'
 import './style.css'
-import { UserWithPermission } from 'core/model'
+import { User } from 'core/model'
 import { RefreshBanner } from './shared/RefreshBanner'
 
 export const AppRoutes = ({
@@ -129,7 +129,7 @@ function ConnectedRoutesSetup({
   setConnectedUser,
   handleDetectedLogout,
 }: {
-  connectedUser: UserWithPermission
+  connectedUser: User
   setConnectedUser: LoginManagementResult['setConnectedUser']
   handleDetectedLogout: LoginManagementResult['handleDetectedLogout']
 }) {
