@@ -221,7 +221,12 @@ export const ReportsPro = ({ reportType }: ReportsProProps) => {
       </PageTitle>
 
       {isFirstVisit && (
-        <Alert type="success" deletable persistentDelete sx={{ mb: 2 }}>
+        <Alert
+          type="success"
+          deletable
+          persistentDeleteId="yourAccountIsActivated"
+          sx={{ mb: 2 }}
+        >
           <span
             dangerouslySetInnerHTML={{ __html: m.yourAccountIsActivated }}
           />

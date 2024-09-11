@@ -20,7 +20,7 @@ import { DatatableColumnToggle } from './DatatableColumnsToggle'
 type OrderBy = 'asc' | 'desc'
 
 interface DatatableProps<T> {
-  id?: string
+  id: string
   // arbitrary content above the header, typically to provide some explications
   superheader?: ReactNode
   // the main part of the header, slightly on the left
