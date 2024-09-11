@@ -1,20 +1,20 @@
-import { CleanWidePanel } from '../../shared/Panel/simplePanels'
-import React, { ReactElement } from 'react'
+import { Box, Checkbox, Icon, Tooltip } from '@mui/material'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { ReactElement } from 'react'
+import { Controller, useForm } from 'react-hook-form'
+import { BlacklistedIp } from '../../core/client/ip-blacklist/BlacklistedIp'
+import { useConnectedContext } from '../../core/context/ConnectedContext'
+import { useI18n } from '../../core/i18n'
 import {
   ListIpBlacklistQueryKeys,
   useListIpBlacklistQuery,
 } from '../../core/queryhooks/ipBlacklistQueryHooks'
-import { Datatable } from '../../shared/Datatable/Datatable'
-import { BlacklistedIp } from '../../core/client/ip-blacklist/BlacklistedIp'
-import { Box, Checkbox, Icon, Tooltip } from '@mui/material'
-import { useI18n } from '../../core/i18n'
-import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { useConnectedContext } from '../../core/context/ConnectedContext'
 import { useToast } from '../../core/toast'
-import { ScDialog } from '../../shared/ScDialog'
-import { Controller, useForm } from 'react-hook-form'
-import { ScInput } from '../../shared/ScInput'
 import { ScButton } from '../../shared/Button'
+import { Datatable } from '../../shared/Datatable/Datatable'
+import { CleanWidePanel } from '../../shared/Panel/simplePanels'
+import { ScDialog } from '../../shared/ScDialog'
+import { ScInput } from '../../shared/ScInput'
 
 export const BlacklistedIpsTool = () => {
   const { m } = useI18n()
@@ -38,6 +38,7 @@ export const BlacklistedIpsTool = () => {
     <CleanWidePanel>
       <h2 className="font-bold text-lg mb-2">Gestion des ip blacklistées</h2>
       <Datatable<BlacklistedIp>
+        id="blacklistedips"
         superheader={
           <>
             <p>Une IP bannie sera systématiquement rejetée par l'API.</p>

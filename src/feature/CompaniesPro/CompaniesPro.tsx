@@ -28,10 +28,10 @@ import { siteMap } from '../../core/siteMap'
 import { AddressComponent } from '../../shared/Address'
 import { ScButton } from '../../shared/Button'
 import { Datatable } from '../../shared/Datatable/Datatable'
-import { Page, PageTitle } from '../../shared/Page'
-import { ConfirmDisableNotificationDialog } from './ConfirmDisableNotificationDialog'
 import { DebouncedInput } from '../../shared/DebouncedInput'
+import { Page, PageTitle } from '../../shared/Page'
 import { ScInput } from '../../shared/ScInput'
+import { ConfirmDisableNotificationDialog } from './ConfirmDisableNotificationDialog'
 
 export const CompaniesPro = () => {
   const { m } = useI18n()
@@ -184,6 +184,7 @@ export const CompaniesPro = () => {
           </div>
         )}
         <Datatable
+          id="companiespro"
           data={filteredCompanies}
           loading={
             _companiesAccessibleByPro.isLoading ||

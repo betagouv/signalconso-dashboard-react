@@ -1,4 +1,3 @@
-export * from './useCrudList/UseCrudList'
 export * from './useEffectFn/UseEffectFn'
 export * from './useFetcher/UseFetcher'
 export * from './useInterval/UseInterval'

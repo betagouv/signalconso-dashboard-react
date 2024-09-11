@@ -1,6 +1,6 @@
-import { CompanyAccess, CompanyAccessLevel } from './CompanyAccess'
-import { ApiClientApi } from '../ApiClient'
 import { Id } from '../../model'
+import { ApiClientApi } from '../ApiClient'
+import { CompanyAccess, CompanyAccessLevel } from './CompanyAccess'
 
 export class CompanyAccessClient {
   constructor(private client: ApiClientApi) {}
