@@ -14,14 +14,10 @@ export function ReportDetails({ report }: { report: Report }) {
     <div className="flex flex-col gap-2">
       {report.details.map((detail, i) => (
         <div key={i}>
-          <p
-            className="font-bold text-base"
-            dangerouslySetInnerHTML={{ __html: detail.label.replace(/:$/, '') }}
-          />
-          <p
-            className="pl-4"
-            dangerouslySetInnerHTML={{ __html: `${detail.value}` }}
-          />
+          <p className="font-bold text-base">
+            {detail.label.replace(/:$/, '')}
+          </p>
+          <p className="pl-4">{detail.value}</p>
         </div>
       ))}
     </div>
