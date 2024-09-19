@@ -10,9 +10,20 @@ export class AuthenticateClient {
       withCredentials: true,
     })
   }
-  readonly logout = () => {
-    return this.client.post<void>(`/logout`, { withCredentials: true })
+
+  readonly logAs = (userEmail: string) => {
+    return this.client.post<User>(`/log-as`, {
+      body: { email: userEmail },
+      withCredentials: true,
+    })
   }
+
+  readonly logout = () => {
+    return this.client.post<User | undefined>(`/logout`, {
+      withCredentials: true,
+    })
+  }
+
   readonly getUser = () => {
     return this.client.get<User>(`/current-user`, {
       withCredentials: true,

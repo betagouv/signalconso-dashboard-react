@@ -75,14 +75,14 @@ export function useLoginManagement(): LoginManagementResult {
     }
   }
 
-  function handleDetectedLogout() {
-    setConnectedUser(undefined)
+  function handleDetectedLogout(user?: User) {
+    setConnectedUser(user)
     navigate('/')
   }
 
   const logout = async () => {
-    await apiPublicSdk.authenticate.logout()
-    handleDetectedLogout()
+    const user = await apiPublicSdk.authenticate.logout()
+    handleDetectedLogout(user)
   }
 
   return {
