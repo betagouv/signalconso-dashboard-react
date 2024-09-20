@@ -157,6 +157,7 @@ const ProtectedRoutes = () => {
   useEffect(() => {
     Matomo.trackPage(
       `/${connectedUser.role.toLocaleLowerCase()}${location.pathname}`,
+      connectedUser,
     )
   }, [location])
 

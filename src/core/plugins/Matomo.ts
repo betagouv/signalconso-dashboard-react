@@ -1,4 +1,5 @@
 import { config } from 'conf/config'
+import { User } from '../client/user/User'
 
 const MATOMO_ENABLED = config.enableMatomo
 
@@ -22,12 +23,15 @@ export class Matomo {
     action: AnalyticAction,
     name?: any,
     value?: any,
+    user?: User,
   ) => {
-    Matomo.push(['trackEvent', category, action, name, value])
+    if (!user?.impersonator) {
+      Matomo.push(['trackEvent', category, action, name, value])
+    }
   }
 
-  static readonly trackPage = (path: string) => {
-    if (!Matomo.isAlreadyFired(path)) {
+  static readonly trackPage = (path: string, user: User) => {
+    if (!user.impersonator && !Matomo.isAlreadyFired(path)) {
       Matomo.push(['setCustomUrl', config.appBaseUrl + path])
       Matomo.push(['trackPageView'])
     }

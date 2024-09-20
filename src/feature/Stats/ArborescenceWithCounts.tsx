@@ -22,6 +22,7 @@ import { PeriodPicker } from '../../shared/PeriodPicker'
 import { SelectDepartments } from '../../shared/SelectDepartments/SelectDepartments'
 import { siteMap } from '../../core/siteMap'
 import { NavLink } from 'react-router-dom'
+import { useConnectedContext } from '../../core/context/ConnectedContext'
 
 const compare = (a?: string[], b?: string[]): number => {
   if (!a || !b) return 0
@@ -34,6 +35,7 @@ const sortById = (reportNode1: ReportNode, reportNode2: ReportNode) =>
 
 export const ArborescenceWithCounts = () => {
   const { m } = useI18n()
+  const { connectedUser } = useConnectedContext()
 
   const begin = new Date()
   begin.setDate(begin.getDate() - 90)
@@ -56,6 +58,7 @@ export const ArborescenceWithCounts = () => {
         EventCategories.statistics,
         StatisticsActions.reportCountsBySubcategories,
         ActionResultNames.success,
+        connectedUser,
       )
     }
   }, [countBySubCategories.data])

@@ -15,6 +15,7 @@ export interface User {
   lastName: string
   lastEmailValidation: Date
   role: Role
+  impersonator?: string
 }
 
 export class User {
