@@ -19,11 +19,11 @@ import { useApiContext } from '../../core/context/ApiContext'
 import { useConnectedContext } from '../../core/context/ConnectedContext'
 import { Id, Report } from '../../core/model'
 import { GetReportEventsQueryKeys } from '../../core/queryhooks/eventQueryHooks'
+import { GetReportQueryKeys } from '../../core/queryhooks/reportQueryHooks'
 import { Divider } from '../../shared/Divider'
 import { UserNameLabel } from '../../shared/UserNameLabel'
 import { ReportFileDownloadAllButton } from './File/ReportFileDownloadAllButton'
 import { ReportFiles } from './File/ReportFiles'
-import { GetReportQueryKeys } from '../../core/queryhooks/reportQueryHooks'
 
 export function ReportResponseComponent({
   canEditFile,
@@ -61,6 +61,7 @@ export function ReportResponseComponent({
     response.data.creationDate,
     EngagementReminderPeriod,
   )
+
   const hasEngagementReview = !!engagementReview
   const user = response.user
   return (
@@ -108,7 +109,9 @@ export function ReportResponseComponent({
             title="Avis initial du consommateur sur cette réponse"
           />
         ) : (
-          <div className="">{m.noReviewFromConsumer}</div>
+          <div>
+            Le consommateur n'a pas encore donné son avis sur cette réponse.
+          </div>
         )}
       </>
       <Divider margin />
@@ -119,7 +122,10 @@ export function ReportResponseComponent({
             title={`Avis ultérieur du consommateur, sur la réalisation des engagements`}
           />
         ) : (
-          <div className="">{m.noReviewFromConsumer}</div>
+          <div>
+            Le consommateur n'a pas encore donné son avis sur la réalisation des
+            engagements.
+          </div>
         )}
       </>
     </div>

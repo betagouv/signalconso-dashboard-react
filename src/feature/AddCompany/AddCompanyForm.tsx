@@ -35,6 +35,7 @@ export const AddCompanyForm = () => {
         EventCategories.companyAccess,
         AccessEventActions.addCompanyToAccount,
         ActionResultNames.success,
+        connectedUser,
       )
     },
     onError: () => {
@@ -42,6 +43,7 @@ export const AddCompanyForm = () => {
         EventCategories.companyAccess,
         AccessEventActions.addCompanyToAccount,
         ActionResultNames.fail,
+        connectedUser,
       )
     },
   })
