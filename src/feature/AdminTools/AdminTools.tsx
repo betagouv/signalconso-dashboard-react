@@ -7,10 +7,10 @@ import { LogAs } from './LogAs'
 export const AdminTools = () => {
   return (
     <>
+      <LogAs />
       <ResendEmailsAdminTool />
       <DeleteSpamReportsAdminTool />
       <BlacklistedIpsTool />
-      <LogAs />
     </>
   )
 }
