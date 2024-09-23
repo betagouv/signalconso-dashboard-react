@@ -100,12 +100,13 @@ export const ReportFiles = ({
         {innerFiles
           ?.filter((_) => _.origin === fileOrigin)
           .map((_) => {
-            // Pro is the only user who can remove file. Pro can only remove its own file
-            // In order to prevent Admin / Agent from removing pro / consumer file
+            // Admins & Pro are the only users who can remove file. Pro can only remove its own file
+            // In order to prevent Agent from removing pro / consumer file
             const canRemove =
-              !hideAddBtn &&
-              fileOrigin === FileOrigin.Professional &&
-              connectedUser.isPro
+              connectedUser.isAdmin ||
+              (!hideAddBtn &&
+                fileOrigin === FileOrigin.Professional &&
+                connectedUser.isPro)
             return (
               <ReportFile
                 key={_.id}
