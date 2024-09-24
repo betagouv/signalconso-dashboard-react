@@ -1,8 +1,8 @@
-import { Id } from '../../core/model'
-import { WithInlineIcon } from '../../shared/WithInlineIcon'
 import { Chip, Icon, Tooltip } from '@mui/material'
-import { useGetBarcodeQuery } from '../../core/queryhooks/barcodeQueryHooks'
 import { CleanDiscreetPanel } from 'shared/Panel/simplePanels'
+import { Id } from '../../core/model'
+import { useGetBarcodeQuery } from '../../core/queryhooks/barcodeQueryHooks'
+import { WithInlineIcon } from '../../shared/WithInlineIcon'
 
 interface ReportBarcodeProductProps {
   barcodeProductId?: Id
@@ -61,6 +61,7 @@ export const ReportBarcodeProduct = ({
                 Produit rappelé{' '}
                 <a
                   href={`https://rappel.conso.gouv.fr/fiche-rappel/${rappelConsoId}/Interne`}
+                  rel="noreferrer"
                   target="_blank"
                 >
                   (Voir sur RappelConso)
@@ -74,6 +75,7 @@ export const ReportBarcodeProduct = ({
                 className="text-lg"
                 href={`https://fr.openfoodfacts.org/produit/${data.gtin}`}
                 target="_blank"
+                rel="noreferrer"
               >
                 Voir sur Open food facts
               </a>
@@ -83,6 +85,7 @@ export const ReportBarcodeProduct = ({
                 className="text-lg"
                 href={`https://fr.openbeautyfacts.org/produit/${data.gtin}`}
                 target="_blank"
+                rel="noreferrer"
               >
                 Voir sur Open beauty facts
               </a>
@@ -101,6 +104,7 @@ export const ReportBarcodeProduct = ({
             <a
               href={`https://rappel.conso.gouv.fr/fiche-rappel/${rappelConsoId}/Interne`}
               target="_blank"
+              rel="noreferrer"
             >
               (Voir sur RappelConso)
             </a>

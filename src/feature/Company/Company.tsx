@@ -4,7 +4,6 @@ import { Txt } from 'alexlibs/mui-extension'
 import { useConnectedContext } from 'core/context/ConnectedContext'
 import { siteMap } from 'core/siteMap'
 import { CompanyAccesses } from 'feature/CompanyAccesses/CompanyAccesses'
-import { Link } from 'react-router-dom'
 import { Page, PageTitle } from 'shared/Page'
 import { PageTab, PageTabs } from 'shared/Page/PageTabs'
 import { Alert } from '../../alexlibs/mui-extension'
@@ -142,12 +141,13 @@ function AnnuaireDesEntreprisesBanner() {
     return (
       <Alert type="info">
         Connectez-vous sur{' '}
-        <Link
-          to={'https://annuaire-entreprises.data.gouv.fr/lp/agent-public'}
+        <a
+          href={'https://annuaire-entreprises.data.gouv.fr/lp/agent-public'}
           target="_blank"
+          rel="noreferrer"
         >
           l'Annuaire des Entreprises
-        </Link>{' '}
+        </a>{' '}
         pour accédez aux informations protégées des entreprises (non
         diffusibles, statuts, actes, bilans financiers).
       </Alert>

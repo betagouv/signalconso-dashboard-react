@@ -1,21 +1,21 @@
-import { useApiContext } from '../../core/context/ApiContext'
+import { Icon } from '@mui/material'
 import { useMutation, useQuery } from '@tanstack/react-query'
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
+import { Fender, IconBtn, Modal, Txt } from '../../alexlibs/mui-extension'
+import { Company, CompanySearchResult } from '../../core/client/company/Company'
 import {
   ExtractionResult,
   SiretExtraction as ISiretExtraction,
 } from '../../core/client/siret-extractor/SiretExtraction'
-import { Icon } from '@mui/material'
-import { Fender, IconBtn, Modal, Txt } from '../../alexlibs/mui-extension'
-import { useI18n } from '../../core/i18n'
-import { ScButton } from '../../shared/Button'
-import { Company, CompanySearchResult } from '../../core/client/company/Company'
 import {
   WebsiteUpdateCompany,
   WebsiteWithCompany,
 } from '../../core/client/website/Website'
-import { useToast } from '../../core/toast'
+import { useApiContext } from '../../core/context/ApiContext'
+import { useI18n } from '../../core/i18n'
 import { Id } from '../../core/model'
+import { useToast } from '../../core/toast'
+import { ScButton } from '../../shared/Button'
 
 interface SiretExtractionProps {
   websiteWithCompany: WebsiteWithCompany
@@ -180,6 +180,7 @@ export const SiretExtraction = ({
                 className="text-blue-600 underline hover:no-underline"
                 href={link}
                 target="_blank"
+                rel="noreferrer"
               >
                 {link}
               </a>
