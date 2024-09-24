@@ -61,7 +61,7 @@ export const EmailValidation = ({ onValidateEmail, onSaveUser }: Props) => {
             {fenderProps.description}
           </Txt>
 
-          {fenderProps.type !== 'loading' && (
+          {fenderProps.type !== 'loading' && fenderProps.type !== 'success' && (
             <NavLink to={siteMap.loggedout.login}>
               <ScButton
                 sx={{ mt: 1 }}

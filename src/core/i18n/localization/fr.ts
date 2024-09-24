@@ -2,6 +2,7 @@ import { formatDistance, formatDuration as formatDurationFns } from 'date-fns'
 import { AssociationType } from 'feature/ReportedWebsites/SelectWebsiteIdentification/SelectWebsiteAssociation'
 import { config } from '../../../conf/config'
 import { DownloadType } from '../../../feature/Report/ReportDownloadAction'
+import { AsyncFileKind } from '../../client/async-file/AsyncFile'
 import { CompanyAccessLevel } from '../../client/company-access/CompanyAccess'
 import { Category } from '../../client/constant/Category'
 import { EmailValidationStatus } from '../../client/consumer-email-validation/ConsumerEmailValidation'
@@ -20,7 +21,6 @@ import {
   IdentificationStatus,
   InvestigationStatus,
 } from '../../client/website/Website'
-import { AsyncFileKind } from '../../client/async-file/AsyncFile'
 
 const invalidDate = '-'
 
@@ -669,7 +669,7 @@ export const fr = {
     validatingEmail: `Validation de l'adresse email...`,
     markNoticesSent: 'Marquer courriers envoyés',
     emailValidated: `Votre email est validé.`,
-    emailValidatedDesc: `Vous pouvez vous connecter à l'aide de votre adresse email et mot de passe.`,
+    emailValidatedDesc: `Vous pouvez utiliser SignalConso.`,
     validateLetterSentTitle: "Valider l'envoi des courriers",
     sendNewPostal: `Envoyer un nouveau courrier`,
     loginForbidden: `Compte bloqué (trop de tentatives, veuillez réessayer dans 30 minutes)`,
