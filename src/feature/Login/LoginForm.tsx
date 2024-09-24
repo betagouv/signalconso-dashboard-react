@@ -99,7 +99,7 @@ export const LoginForm = ({ login }: Props) => {
       <EspaceProTitle subPageTitle={m.login} />
       <div className="w-full max-w-xl">
         {needEmailRevalidationApiError ? (
-          <Alert type="error" sx={{ mb: 2 }}>
+          <div className="mt-4 mb-14 max-w-lg mx-auto">
             <p className="mb-2">
               Votre adresse email <strong>{watch('email')}</strong> a besoin
               d'être revalidée.
@@ -109,7 +109,7 @@ export const LoginForm = ({ login }: Props) => {
               contient pour revalider votre adresse et vous connecter à
               SignalConso.
             </p>
-          </Alert>
+          </div>
         ) : (
           <form
             className="flex flex-col mb-8"
