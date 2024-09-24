@@ -41,6 +41,13 @@ export const ReportEvents = ({ events }: Props) => {
 const ReportEventComponent = ({ event }: { event: ReportEvent }) => {
   const { formatDate, formatTime } = useI18n()
 
+  console.log(
+    '---------',
+    event.data.action,
+    EventActionValues.UserAccessCreated,
+    event.data.action === EventActionValues.UserAccessCreated,
+  )
+
   return (
     <tr className="text-base border-b-[1px] last:border-b-0 border-solid border-0 border-gray-300">
       <td className="p-2 w-[6.5rem]">
@@ -68,6 +75,17 @@ const ReportEventComponent = ({ event }: { event: ReportEvent }) => {
               {event.user.role}
             </span>
           </div>
+        )}
+        {event.data.action === EventActionValues.UserAccessCreated && (
+          <p className="text-sm text-gray-500">
+            Utilisateur concerné : {(event.data.details as any)?.email} (
+            {(event.data.details as any)?.level})
+          </p>
+        )}
+        {event.data.action === EventActionValues.UserAccessRemoved && (
+          <p className="text-sm text-gray-500">
+            Utilisateur impacté : {(event.data.details as any)?.email}
+          </p>
         )}
         <p className="text-sm text-gray-500">
           {(event.data.details as any)?.description}
