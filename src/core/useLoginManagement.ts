@@ -11,6 +11,7 @@ export type LoginManagementResult = {
   login: {
     action: (login: string, password: string) => Promise<User>
     loading?: boolean
+    // this is not used, in the LoginForm we do our own error handling
     errorMsg?: unknown
   }
   register: {
