@@ -2,18 +2,18 @@ import { CssBaseline, StyledEngineProvider, ThemeProvider } from '@mui/material'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { config } from 'conf/config'
+import { ToastProvider } from 'core/context/toastContext'
 import { queryClient, setQueryClientErrorHandler } from 'queryClient'
 import { useEffect } from 'react'
 import { BrowserRouter } from 'react-router-dom'
 import { AppRoutes } from './AppRoutes'
 import { RedirectHashRouterToBrowserRouter } from './RedirectHashRouterToBrowserRouter'
-import { ToastProvider } from './alexlibs/mui-extension'
 import { Layout } from './core/Layout'
 import { ScHeader } from './core/ScHeader/ScHeader'
 import { ScSidebar } from './core/ScSidebar/ScSidebar'
+import { useToast } from './core/context/toastContext'
 import { I18nProvider } from './core/i18n'
 import { muiTheme } from './core/theme'
-import { useToast } from './core/toast'
 import { useLoginManagement } from './core/useLoginManagement'
 import { Provide } from './shared/Provide'
 import './style.css'
@@ -30,7 +30,7 @@ export const App = () => {
         (_) => <CssBaseline children={_} />,
         (_) => <Router children={_} />,
         (_) => <I18nProvider children={_} />,
-        (_) => <ToastProvider horizontal="right" children={_} />,
+        (_) => <ToastProvider children={_} />,
       ]}
     >
       <AppInsideProviders />

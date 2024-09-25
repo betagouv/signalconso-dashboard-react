@@ -1,10 +1,10 @@
-import { useParams } from 'react-router'
-import { useEffect } from 'react'
-import { useMutation } from '@tanstack/react-query'
-import { useConnectedContext } from '../../core/context/ConnectedContext'
-import { useToast } from '../../core/toast'
 import { CircularProgress } from '@mui/material'
+import { useMutation } from '@tanstack/react-query'
+import { useEffect } from 'react'
+import { useParams } from 'react-router'
 import { Alert } from '../../alexlibs/mui-extension'
+import { useConnectedContext } from '../../core/context/ConnectedContext'
+import { useToast } from '../../core/context/toastContext'
 import { useI18n } from '../../core/i18n'
 
 export const UpdateEmail = () => {

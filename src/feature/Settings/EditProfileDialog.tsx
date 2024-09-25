@@ -3,13 +3,13 @@ import { ReactElement } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { Alert } from '../../alexlibs/mui-extension'
 import { useConnectedContext } from '../../core/context/ConnectedContext'
+import { useToast } from '../../core/context/toastContext'
 import { useI18n } from '../../core/i18n'
 import {
   AccountEventActions,
   EventCategories,
   Matomo,
 } from '../../core/plugins/Matomo'
-import { useToast } from '../../core/toast'
 import { ScDialog } from '../../shared/ScDialog'
 import { ScInput } from '../../shared/ScInput'
 

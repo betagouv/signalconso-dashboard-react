@@ -1,16 +1,16 @@
-import { useForm } from 'react-hook-form'
-import { Alert, Txt } from '../../alexlibs/mui-extension'
-import { regexp } from '../../core/helper/regexp'
-import { useI18n } from '../../core/i18n'
-import { useToast } from '../../core/toast'
-import { ScButton } from '../../shared/Button'
-import { ScInput } from '../../shared/ScInput'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useApiContext } from 'core/context/ApiContext'
 import { ScOption } from 'core/helper/ScOption'
-import { ScDialog } from '../../shared/ScDialog'
-import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { ListConsumerBlacklistQueryKeys } from '../../core/queryhooks/consumerBlacklistQueryHooks'
+import { useForm } from 'react-hook-form'
+import { Alert, Txt } from '../../alexlibs/mui-extension'
 import { ApiError } from '../../core/client/ApiClient'
+import { apiErrorsCode, useToast } from '../../core/context/toastContext'
+import { regexp } from '../../core/helper/regexp'
+import { useI18n } from '../../core/i18n'
+import { ListConsumerBlacklistQueryKeys } from '../../core/queryhooks/consumerBlacklistQueryHooks'
+import { ScButton } from '../../shared/Button'
+import { ScDialog } from '../../shared/ScDialog'
+import { ScInput } from '../../shared/ScInput'
 
 export const ConsumerBlacklistAddDialog = () => {
   const { m } = useI18n()
@@ -59,7 +59,7 @@ export const ConsumerBlacklistAddDialog = () => {
             ScOption.from(_addToBlacklist.error.details?.id)
               .map((errId) => (
                 <Alert dense type="error" deletable gutterBottom>
-                  {m.apiErrorsCode[errId as keyof typeof m.apiErrorsCode]}
+                  {apiErrorsCode[errId as keyof typeof apiErrorsCode]}
                 </Alert>
               ))
               .toUndefined()}

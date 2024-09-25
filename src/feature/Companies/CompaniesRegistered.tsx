@@ -19,6 +19,7 @@ import {
   CompanyWithReportsCount,
 } from '../../core/client/company/Company'
 import { useConnectedContext } from '../../core/context/ConnectedContext'
+import { useToast } from '../../core/context/toastContext'
 import { cleanObject } from '../../core/helper'
 import {
   mapArrayFromQuerystring,
@@ -32,7 +33,6 @@ import {
 } from '../../core/queryhooks/companyQueryHooks'
 import { siteMap } from '../../core/siteMap'
 import { styleUtils, sxUtils } from '../../core/theme'
-import { useToast } from '../../core/toast'
 import { AddressComponent } from '../../shared/Address'
 import { ScButton } from '../../shared/Button'
 import { Datatable } from '../../shared/Datatable/Datatable'

@@ -1,49 +1,36 @@
-import React, { useCallback, useMemo, useState } from 'react'
-import { useI18n } from '../../core/i18n'
-import {
-  Accordion,
-  AccordionActions,
-  AccordionDetails,
-  AccordionSummary,
-  Badge,
-  Button,
-  Collapse,
-  Icon,
-  InputBase,
-  Switch,
-  Tooltip,
-} from '@mui/material'
-import { useToast } from '../../core/toast'
-import { Panel } from '../../shared/Panel'
-import { Datatable } from '../../shared/Datatable/Datatable'
-import { DebouncedInput } from '../../shared/DebouncedInput'
+import { Badge, Icon, Switch, Tooltip } from '@mui/material'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { useCallback, useMemo, useState } from 'react'
+import { ScInput } from 'shared/ScInput'
 import { Alert, Btn, IconBtn, Txt } from '../../alexlibs/mui-extension'
-import { StatusChip } from './StatusChip'
-import { WebsitesFilters } from './WebsitesFilters'
-import { SelectWebsiteAssociation } from './SelectWebsiteIdentification/SelectWebsiteAssociation'
-import { AutocompleteDialog } from '../../shared/AutocompleteDialog'
-import { WebsiteTools } from './WebsiteTools'
-import { sxUtils } from '../../core/theme'
-import { useConnectedContext } from '../../core/context/ConnectedContext'
+import { useEffectFn } from '../../alexlibs/react-hooks-lib'
 import {
   IdentificationStatus,
   InvestigationStatus,
   WebsiteWithCompany,
 } from '../../core/client/website/Website'
+import { useConnectedContext } from '../../core/context/ConnectedContext'
+import { useToast } from '../../core/context/toastContext'
 import { cleanObject } from '../../core/helper'
+import { useI18n } from '../../core/i18n'
 import { Id } from '../../core/model'
-import { PeriodPicker } from '../../shared/PeriodPicker'
-import { SiretExtraction } from './SiretExtraction'
 import {
   useListInvestigationStatusQuery,
   useWebsiteWithClosedCompanyQuery,
   useWebsiteWithCompanySearchQuery,
   WebsiteWithCompanySearchKeys,
 } from '../../core/queryhooks/websiteQueryHooks'
-import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { useEffectFn } from '../../alexlibs/react-hooks-lib'
+import { sxUtils } from '../../core/theme'
+import { AutocompleteDialog } from '../../shared/AutocompleteDialog'
+import { Datatable } from '../../shared/Datatable/Datatable'
+import { DebouncedInput } from '../../shared/DebouncedInput'
+import { PeriodPicker } from '../../shared/PeriodPicker'
 import { AddSiret } from './AddSiret'
-import { ScInput } from 'shared/ScInput'
+import { SelectWebsiteAssociation } from './SelectWebsiteIdentification/SelectWebsiteAssociation'
+import { SiretExtraction } from './SiretExtraction'
+import { StatusChip } from './StatusChip'
+import { WebsitesFilters } from './WebsitesFilters'
+import { WebsiteTools } from './WebsiteTools'
 
 export const WebsitesInvestigation = () => {
   const { m, formatDate } = useI18n()

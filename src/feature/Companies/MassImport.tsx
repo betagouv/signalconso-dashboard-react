@@ -15,8 +15,8 @@ import {
   CompaniesToImport,
 } from '../../core/client/company/Company'
 import { useApiContext } from '../../core/context/ApiContext'
+import { useToast } from '../../core/context/toastContext'
 import { useI18n } from '../../core/i18n'
-import { useToast } from '../../core/toast'
 import { DialogInputRow } from '../../shared/DialogInputRow'
 import { ScInput } from '../../shared/ScInput'
 import { ScSelect } from '../../shared/Select/Select'

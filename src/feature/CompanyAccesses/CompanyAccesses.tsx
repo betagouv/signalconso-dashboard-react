@@ -10,12 +10,12 @@ import { NavLink } from 'react-router-dom'
 import { ScMenu } from 'shared/Menu'
 import { CompanyAccessLevel } from '../../core/client/company-access/CompanyAccess'
 import { useConnectedContext } from '../../core/context/ConnectedContext'
+import { useToast } from '../../core/context/toastContext'
 import { isDefined, objectKeysUnsafe, toQueryString } from '../../core/helper'
 import { useI18n } from '../../core/i18n'
 import { CompanyWithReportsCount, Id, User } from '../../core/model'
 import { siteMap } from '../../core/siteMap'
 import { sxUtils } from '../../core/theme'
-import { useToast } from '../../core/toast'
 import { ScButton } from '../../shared/Button'
 import {
   Datatable,

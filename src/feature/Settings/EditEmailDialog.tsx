@@ -1,13 +1,13 @@
-import { ScDialog } from '../../shared/ScDialog'
-import React, { ReactElement } from 'react'
-import { useI18n } from '../../core/i18n'
-import { useForm } from 'react-hook-form'
-import { ScInput } from '../../shared/ScInput'
-import { useConnectedContext } from '../../core/context/ConnectedContext'
 import { useMutation } from '@tanstack/react-query'
-import { useToast } from '../../core/toast'
+import { ReactElement } from 'react'
+import { useForm } from 'react-hook-form'
 import { Alert } from '../../alexlibs/mui-extension'
+import { useConnectedContext } from '../../core/context/ConnectedContext'
+import { useToast } from '../../core/context/toastContext'
 import { regexp } from '../../core/helper/regexp'
+import { useI18n } from '../../core/i18n'
+import { ScDialog } from '../../shared/ScDialog'
+import { ScInput } from '../../shared/ScInput'
 
 interface Form {
   email: string

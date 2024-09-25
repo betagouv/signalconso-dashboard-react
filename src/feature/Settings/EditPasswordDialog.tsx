@@ -1,10 +1,14 @@
-import { ReactElement } from 'react'
-import { useForm } from 'react-hook-form'
-import { Alert } from '../../alexlibs/mui-extension'
-import { useI18n } from '../../core/i18n'
-import { useToast } from '../../core/toast'
+import { useMutation } from '@tanstack/react-query'
 import { ScOption } from 'core/helper/ScOption'
 import { validatePasswordComplexity } from 'core/helper/passwordComplexity'
+import { ReactElement } from 'react'
+import { useForm } from 'react-hook-form'
+import { PasswordRequirementsDesc } from 'shared/PasswordRequirementsDesc'
+import { Alert } from '../../alexlibs/mui-extension'
+import { ApiError } from '../../core/client/ApiClient'
+import { useApiContext } from '../../core/context/ApiContext'
+import { useToast } from '../../core/context/toastContext'
+import { useI18n } from '../../core/i18n'
 import {
   AccountEventActions,
   EventCategories,
@@ -12,10 +16,6 @@ import {
 } from '../../core/plugins/Matomo'
 import { ScDialog } from '../../shared/ScDialog'
 import { ScInputPassword } from '../../shared/ScInputPassword'
-import { PasswordRequirementsDesc } from 'shared/PasswordRequirementsDesc'
-import { useMutation } from '@tanstack/react-query'
-import { useApiContext } from '../../core/context/ApiContext'
-import { ApiError } from '../../core/client/ApiClient'
 
 interface Form {
   oldPassword: string

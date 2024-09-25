@@ -1,19 +1,18 @@
 import { Controller, useForm } from 'react-hook-form'
 import { Alert, Txt } from '../../alexlibs/mui-extension'
+import { apiErrorsCode, useToast } from '../../core/context/toastContext'
 import { regexp } from '../../core/helper/regexp'
 import { useI18n } from '../../core/i18n'
-import { useToast } from '../../core/toast'
 import { ScButton } from '../../shared/Button'
 import { ScInput } from '../../shared/ScInput'
 
-import { ScOption } from 'core/helper/ScOption'
-import { ScDialog } from '../../shared/ScDialog'
-import { RoleAgents } from 'core/model'
 import { ToggleButton, ToggleButtonGroup } from '@mui/material'
-import React from 'react'
 import { useMutation } from '@tanstack/react-query'
+import { ScOption } from 'core/helper/ScOption'
+import { RoleAgents } from 'core/model'
 import { ApiError } from '../../core/client/ApiClient'
 import { useApiContext } from '../../core/context/ApiContext'
+import { ScDialog } from '../../shared/ScDialog'
 
 export const UserAgentInvitationDialog = () => {
   const { m } = useI18n()
@@ -80,7 +79,7 @@ export const UserAgentInvitationDialog = () => {
           {ScOption.from(_invite.error?.details?.id)
             .map((errId) => (
               <Alert dense type="error" deletable gutterBottom>
-                {m.apiErrorsCode[errId as keyof typeof m.apiErrorsCode]}
+                {apiErrorsCode[errId as keyof typeof apiErrorsCode]}
               </Alert>
             ))
             .toUndefined()}
