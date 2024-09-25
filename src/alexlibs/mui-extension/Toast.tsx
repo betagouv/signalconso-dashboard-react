@@ -2,6 +2,8 @@ import {
   Button,
   CircularProgress,
   Icon,
+  Slide,
+  SlideProps,
   Snackbar,
   SnackbarCloseReason,
   SnackbarProps,
@@ -98,6 +100,7 @@ export const ToastProvider = ({ children }: ToastProviderProps) => {
             color: 'white',
           },
         }}
+        TransitionComponent={TransitionLeft}
         message={
           <div className="flex items-center font-bold gap-2 text-lg">
             {renderIcon(type)}
@@ -122,3 +125,7 @@ export const ToastProvider = ({ children }: ToastProviderProps) => {
 }
 
 export const useToastContext = () => useContext(toastContext)
+
+function TransitionLeft(props: SlideProps) {
+  return <Slide {...props} direction="down" />
+}
