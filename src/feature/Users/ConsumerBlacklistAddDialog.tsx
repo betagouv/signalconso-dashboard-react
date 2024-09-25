@@ -4,7 +4,7 @@ import { ScOption } from 'core/helper/ScOption'
 import { useForm } from 'react-hook-form'
 import { Alert, Txt } from '../../alexlibs/mui-extension'
 import { ApiError } from '../../core/client/ApiClient'
-import { useToast } from '../../core/context/toastContext'
+import { apiErrorsCode, useToast } from '../../core/context/toastContext'
 import { regexp } from '../../core/helper/regexp'
 import { useI18n } from '../../core/i18n'
 import { ListConsumerBlacklistQueryKeys } from '../../core/queryhooks/consumerBlacklistQueryHooks'
@@ -59,7 +59,7 @@ export const ConsumerBlacklistAddDialog = () => {
             ScOption.from(_addToBlacklist.error.details?.id)
               .map((errId) => (
                 <Alert dense type="error" deletable gutterBottom>
-                  {m.apiErrorsCode[errId as keyof typeof m.apiErrorsCode]}
+                  {apiErrorsCode[errId as keyof typeof apiErrorsCode]}
                 </Alert>
               ))
               .toUndefined()}

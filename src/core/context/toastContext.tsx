@@ -6,7 +6,6 @@ import {
 } from 'alexlibs/mui-extension/color'
 import { ApiError } from 'core/client/ApiClient'
 import { Index } from 'core/helper'
-import { I18nContextProps, useI18n } from 'core/i18n/I18n'
 import { noop } from 'lodash'
 import * as React from 'react'
 import { ReactNode, useContext, useState } from 'react'
@@ -29,7 +28,6 @@ export const ToastProvider = ({ children }: { children: ReactNode }) => {
   const [type, setType] = useState<ToastType>('error')
   const [message, setMessage] = useState<string | undefined>(undefined)
   const [open, setOpen] = useState(false)
-  const { m } = useI18n()
 
   function buildToastFunction(type: ToastType) {
     return function (message: string) {
@@ -46,7 +44,7 @@ export const ToastProvider = ({ children }: { children: ReactNode }) => {
 
   const contextValue: ToastContext = {
     toastError: (err) => {
-      const message = buildMessageFromApiError(err, m)
+      const message = buildMessageFromApiError(err)
       buildToastFunction('error')(message)
     },
     toastSuccess: buildToastFunction('success'),
@@ -114,22 +112,19 @@ function renderIcon(type: ToastType) {
   }
 }
 
-function buildMessageFromApiError(
-  error: Partial<ApiError>,
-  m: I18nContextProps['m'],
-) {
+function buildMessageFromApiError(error: Partial<ApiError>) {
   const askForRefreshMessage =
     'Merci de rafraîchir la page, puis de réessayer. Si cela ne fonctionne toujours pas, réessayez plus tard ou contactez le support.'
 
   const getErrorMessage = (err: Partial<ApiError>) => {
     console.error(JSON.stringify(err.details))
-    if (err.details?.id && (m.apiErrorsCode as Index<string>)[err.details.id]) {
-      return (m.apiErrorsCode as any)[err.details.id]
+    if (err.details?.id && (apiErrorsCode as Index<string>)[err.details.id]) {
+      return (apiErrorsCode as any)[err.details.id]
     }
     if (err.message && err.message !== '') {
       return err.message
     }
-    return m.anErrorOccurred
+    return "Une erreur s'est produite."
   }
 
   const baseErrorMessage = getErrorMessage(error)
@@ -137,3 +132,19 @@ function buildMessageFromApiError(
     ? `${baseErrorMessage} ${askForRefreshMessage}`
     : baseErrorMessage
 }
+
+export const apiErrorsCode = {
+  'SC-0001': `Une erreur s'est produite`,
+  'SC-0002': `L'utilisateur DGCCRF n'existe pas.`,
+  'SC-0003': `Le professionnel n'existe pas.`,
+  'SC-0004': `L'entreprise n'existe pas.`,
+  'SC-0005': `Le site web n'existe pas.`,
+  'SC-0006': `L'entreprise est déjà associée à un site.`,
+  'SC-0007': `URL invalide.`,
+  'SC-0008': `Email invalide pour ce type d'utilisateur.`,
+  'SC-0009': `L'utilisateur existe déjà.`,
+  'SC-0010': `L'entreprise a déjà été activée.`,
+  'SC-0011': `L'entreprise n'existe pas.`,
+  'SC-0012': `Le code d'activation est périmé.`,
+  'SC-0013': `Le code d'activation est invalide.`,
+} as const

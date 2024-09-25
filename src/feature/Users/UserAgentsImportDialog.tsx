@@ -5,7 +5,7 @@ import { Alert, Txt } from '../../alexlibs/mui-extension'
 import { ApiError } from '../../core/client/ApiClient'
 import { RoleAgents } from '../../core/client/user/User'
 import { useApiContext } from '../../core/context/ApiContext'
-import { useToast } from '../../core/context/toastContext'
+import { apiErrorsCode, useToast } from '../../core/context/toastContext'
 import { ScOption } from '../../core/helper/ScOption'
 import { useI18n } from '../../core/i18n'
 import { ScButton } from '../../shared/Button'
@@ -54,7 +54,7 @@ export const UserAgentsImportDialog = () => {
           {ScOption.from(_invite.error?.details?.id)
             .map((errId) => (
               <Alert dense type="error" deletable gutterBottom>
-                {m.apiErrorsCode[errId as keyof typeof m.apiErrorsCode]}
+                {apiErrorsCode[errId as keyof typeof apiErrorsCode]}
               </Alert>
             ))
             .toUndefined()}

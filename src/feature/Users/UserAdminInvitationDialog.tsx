@@ -1,6 +1,6 @@
 import { Controller, useForm } from 'react-hook-form'
 import { Alert, Txt } from '../../alexlibs/mui-extension'
-import { useToast } from '../../core/context/toastContext'
+import { apiErrorsCode, useToast } from '../../core/context/toastContext'
 import { regexp } from '../../core/helper/regexp'
 import { useI18n } from '../../core/i18n'
 import { ScButton } from '../../shared/Button'
@@ -60,7 +60,7 @@ export const UserAdminInvitationDialog = () => {
           {ScOption.from(_invite.error?.details?.id)
             .map((errId) => (
               <Alert dense type="error" deletable gutterBottom>
-                {m.apiErrorsCode[errId as keyof typeof m.apiErrorsCode]}
+                {apiErrorsCode[errId as keyof typeof apiErrorsCode]}
               </Alert>
             ))
             .toUndefined()}
