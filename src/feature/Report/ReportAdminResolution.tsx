@@ -8,9 +8,9 @@ import {
   ReportDeletionReason,
 } from '../../core/client/report/Report'
 import { useConnectedContext } from '../../core/context/ConnectedContext'
+import { useToast } from '../../core/context/toastContext'
 import { useI18n } from '../../core/i18n'
 import { Id } from '../../core/model'
-import { useToast } from '../../core/toast'
 import { ScRadioGroup } from '../../shared/RadioGroup'
 import { ScRadioGroupItem } from '../../shared/RadioGroupItem'
 import { ScDialog } from '../../shared/ScDialog'

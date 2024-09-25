@@ -5,6 +5,7 @@ import { useForm } from 'react-hook-form'
 import { useNavigate, useParams } from 'react-router'
 import { PasswordRequirementsDesc } from 'shared/PasswordRequirementsDesc'
 import { fnSwitch } from '../../alexlibs/ts-utils'
+import { useToast } from '../../core/context/toastContext'
 import { useI18n } from '../../core/i18n'
 import { Id } from '../../core/model'
 import {
@@ -13,7 +14,6 @@ import {
   Matomo,
 } from '../../core/plugins/Matomo'
 import { siteMap } from '../../core/siteMap'
-import { useToast } from '../../core/toast'
 import { ScButton } from '../../shared/Button'
 import { CenteredContent } from '../../shared/CenteredContent'
 import { ScInputPassword } from '../../shared/ScInputPassword'

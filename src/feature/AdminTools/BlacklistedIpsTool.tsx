@@ -4,12 +4,12 @@ import { ReactElement } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { BlacklistedIp } from '../../core/client/ip-blacklist/BlacklistedIp'
 import { useConnectedContext } from '../../core/context/ConnectedContext'
+import { useToast } from '../../core/context/toastContext'
 import { useI18n } from '../../core/i18n'
 import {
   ListIpBlacklistQueryKeys,
   useListIpBlacklistQuery,
 } from '../../core/queryhooks/ipBlacklistQueryHooks'
-import { useToast } from '../../core/toast'
 import { ScButton } from '../../shared/Button'
 import { Datatable } from '../../shared/Datatable/Datatable'
 import { CleanWidePanel } from '../../shared/Panel/simplePanels'

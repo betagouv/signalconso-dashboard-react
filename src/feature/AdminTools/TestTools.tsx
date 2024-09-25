@@ -4,8 +4,8 @@ import { SendTestEmailParams } from 'core/client/admin/AdminClient'
 import { CleanWidePanel } from 'shared/Panel/simplePanels'
 import { Alert, IconBtn, Txt } from '../../alexlibs/mui-extension'
 import { useConnectedContext } from '../../core/context/ConnectedContext'
+import { useToast } from '../../core/context/toastContext'
 import { useI18n } from '../../core/i18n'
-import { useToast } from '../../core/toast'
 
 export const TestTools = () => {
   const { m } = useI18n()

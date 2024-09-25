@@ -201,3 +201,5 @@ export function map<A, B>(item: A | undefined, fn: (a: A) => B) {
   if (item === undefined) return undefined
   return fn(item)
 }
+
+export const noop = (...args: unknown[]) => {}
