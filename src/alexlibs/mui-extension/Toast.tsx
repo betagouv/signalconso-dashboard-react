@@ -1,16 +1,14 @@
 import {
-  Box,
+  Button,
   CircularProgress,
   Icon,
-  IconButton,
   Snackbar,
   SnackbarCloseReason,
   SnackbarProps,
 } from '@mui/material'
 import * as React from 'react'
 import { ReactNode, useContext, useState } from 'react'
-import { colorInfo, colorSuccess, colorWarning } from './color'
-
+import { colorError, colorInfo, colorSuccess, colorWarning } from './color'
 const noop = (_: string) => {}
 
 const toastContext = React.createContext<ToastContext>({
@@ -29,10 +27,7 @@ type ToastType =
   | 'info'
   | undefined
 
-interface ToastOptions
-  extends Pick<SnackbarProps, 'autoHideDuration' | 'action'> {
-  keepOpenOnClickAway?: boolean
-}
+type ToastOptions = Pick<SnackbarProps, 'autoHideDuration' | 'action'>
 
 interface ToastContext {
   toastError: (m: string, options?: ToastOptions) => void
@@ -44,32 +39,23 @@ interface ToastContext {
 
 interface ToastProviderProps {
   children: ReactNode
-  vertical?: 'top' | 'bottom'
-  horizontal?: 'left' | 'center' | 'right'
 }
 
-export const ToastProvider = ({
-  children,
-  vertical = 'bottom',
-  horizontal = 'left',
-}: ToastProviderProps) => {
+export const ToastProvider = ({ children }: ToastProviderProps) => {
   const [type, setType] = useState<ToastType | undefined>(undefined)
   const [message, setMessage] = useState<string | undefined>(undefined)
   const [open, setOpen] = useState(false)
-  const [options, setOptions] = useState<ToastOptions | undefined>()
 
-  const pop =
-    (type: ToastType) => (message: string, options?: ToastOptions) => {
-      setOpen(true)
-      setType(type)
-      setMessage(message)
-      setOptions(options)
-    }
+  const pop = (type: ToastType) => (message: string) => {
+    setOpen(true)
+    setType(type)
+    setMessage(message)
+  }
 
   const renderIcon = (type: ToastType) => {
     switch (type!) {
       case 'error':
-        return <Icon sx={{ color: (t) => t.palette.error.main }}>error</Icon>
+        return <Icon sx={{ color: colorError }}>error</Icon>
       case 'success':
         return <Icon sx={{ color: colorSuccess }}>check_circle</Icon>
       case 'warning':
@@ -84,7 +70,7 @@ export const ToastProvider = ({
   }
 
   const handleClose = (event: unknown, reason?: SnackbarCloseReason) => {
-    if (reason === 'clickaway' && options?.keepOpenOnClickAway) {
+    if (reason === 'clickaway') {
     } else {
       setOpen(false)
     }
@@ -102,35 +88,32 @@ export const ToastProvider = ({
     >
       {children}
       <Snackbar
-        anchorOrigin={{ vertical, horizontal }}
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
         open={open}
-        autoHideDuration={
-          options?.autoHideDuration === undefined
-            ? type === 'error'
-              ? null
-              : 6000
-            : options.autoHideDuration
-        }
+        autoHideDuration={type === 'error' ? null : 6000}
         onClose={handleClose}
+        sx={{
+          '& .MuiSnackbarContent-root': {
+            background: 'black',
+            color: 'white',
+          },
+        }}
         message={
-          <div style={{ display: 'flex', alignItems: 'center' }}>
+          <div className="flex items-center font-bold gap-2 text-lg">
             {renderIcon(type)}
-            <Box component="span" sx={{ ml: 2 }}>
-              {message}
-            </Box>
+            <span>{message}</span>
           </div>
         }
         action={
           <>
-            {options?.action}
-            <IconButton
+            <Button
               onClick={handleClose}
+              size="small"
               color="inherit"
-              size="large"
-              sx={options?.action ? { ml: 1 } : {}}
+              endIcon={<Icon>close</Icon>}
             >
-              <Icon>close</Icon>
-            </IconButton>
+              Fermer
+            </Button>
           </>
         }
       />

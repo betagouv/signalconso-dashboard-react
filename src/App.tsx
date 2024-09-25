@@ -30,7 +30,7 @@ export const App = () => {
         (_) => <CssBaseline children={_} />,
         (_) => <Router children={_} />,
         (_) => <I18nProvider children={_} />,
-        (_) => <ToastProvider horizontal="right" children={_} />,
+        (_) => <ToastProvider children={_} />,
       ]}
     >
       <AppInsideProviders />
