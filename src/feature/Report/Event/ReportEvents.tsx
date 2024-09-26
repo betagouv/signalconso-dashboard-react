@@ -69,6 +69,17 @@ const ReportEventComponent = ({ event }: { event: ReportEvent }) => {
             </span>
           </div>
         )}
+        {event.data.action === EventActionValues.UserAccessCreated && (
+          <p className="text-sm text-gray-500">
+            Utilisateur concerné : {(event.data.details as any)?.email} (
+            {(event.data.details as any)?.level})
+          </p>
+        )}
+        {event.data.action === EventActionValues.UserAccessRemoved && (
+          <p className="text-sm text-gray-500">
+            Utilisateur impacté : {(event.data.details as any)?.email}
+          </p>
+        )}
         <p className="text-sm text-gray-500">
           {(event.data.details as any)?.description}
         </p>
