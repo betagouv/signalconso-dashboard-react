@@ -41,13 +41,6 @@ export const ReportEvents = ({ events }: Props) => {
 const ReportEventComponent = ({ event }: { event: ReportEvent }) => {
   const { formatDate, formatTime } = useI18n()
 
-  console.log(
-    '---------',
-    event.data.action,
-    EventActionValues.UserAccessCreated,
-    event.data.action === EventActionValues.UserAccessCreated,
-  )
-
   return (
     <tr className="text-base border-b-[1px] last:border-b-0 border-solid border-0 border-gray-300">
       <td className="p-2 w-[6.5rem]">
