@@ -74,6 +74,8 @@ export enum EventActionValues {
   SolvedContractualDisputeReportDeletion = 'SolvedContractualDisputeReportDeletion',
   ReportReOpenedByAdmin = 'ReportReOpenedByAdmin',
   ReportAffectedToUser = 'Signalement affecté à un utilisateur',
+  UserAccessCreated = 'UserAccessCreated',
+  UserAccessRemoved = 'UserAccessRemoved',
 }
 
 export const acceptedDetails = [
