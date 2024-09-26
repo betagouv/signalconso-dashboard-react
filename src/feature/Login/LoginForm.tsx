@@ -25,19 +25,8 @@ import { ScButton } from '../../shared/Button'
 import { InfoBanner } from '../../shared/InfoBanner'
 import { ScInputPassword } from '../../shared/ScInputPassword'
 import { ForgottenPasswordDialog } from './ForgottenPasswordDialog'
-<<<<<<< Updated upstream
-=======
-import { useNavigate } from 'react-router'
-import {
-  mapArrayFromQuerystring,
-  useQueryString,
-} from '../../core/helper/useQueryString'
-import { InfoBanner } from '../../shared/InfoBanner'
-import { CleanWidePanel } from '../../shared/Panel/simplePanels'
 import PredefinedUsersPanel from './PredefinedUsersPanel'
 import { config } from '../../conf/config'
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
->>>>>>> Stashed changes
 
 interface ActionProps<F extends (...args: any[]) => Promise<any>> {
   action: F
