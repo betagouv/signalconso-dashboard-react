@@ -46,7 +46,7 @@ const AppInsideProviders = () => {
     <>
       <RedirectHashRouterToBrowserRouter />
       <Layout
-        header={<ScHeader connectedUser={connectedUser} />}
+        header={<ScHeader />}
         sidebar={connectedUser && <ScSidebar {...{ connectedUser, logout }} />}
       >
         <AppRoutes {...{ loginManagementResult }} />

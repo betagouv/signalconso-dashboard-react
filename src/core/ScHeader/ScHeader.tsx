@@ -1,4 +1,4 @@
-import { Box, Icon, Menu, MenuItem } from '@mui/material'
+import { Icon, Menu, MenuItem } from '@mui/material'
 import logoGouvMobile from './gouv-mobile.svg'
 import logoDgccrf from './logo-dgccrf.png'
 import { config } from '../../conf/config'
@@ -9,7 +9,6 @@ import { useI18n } from '../i18n'
 import { useLayoutContext } from '../Layout/LayoutContext'
 import { styleUtils } from '../theme'
 import { Header } from '../Layout/Header/Header'
-import { User } from '../client/user/User'
 
 const HeaderItem = ({ children, href }: { children: any; href: string }) => {
   return (
@@ -28,7 +27,7 @@ const HeaderItem = ({ children, href }: { children: any; href: string }) => {
   )
 }
 
-export const ScHeader = ({ connectedUser }: { connectedUser?: User }) => {
+export const ScHeader = () => {
   const { isMobileWidth } = useLayoutContext()
   const { m } = useI18n()
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
@@ -53,11 +52,6 @@ export const ScHeader = ({ connectedUser }: { connectedUser?: User }) => {
           className="h-[50px] mr-2"
         />
       </a>
-      {connectedUser && connectedUser.impersonator && (
-        <div className="flex ml-2 px-2 py-1 bg-yellow-200">
-          <Icon>theater_comedy</Icon> Connecté en tant que pro
-        </div>
-      )}
       <div className="flex items-center ml-auto">
         {isMobileWidth ? (
           <>
