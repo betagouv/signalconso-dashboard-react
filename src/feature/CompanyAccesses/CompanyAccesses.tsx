@@ -27,6 +27,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { ScRadioGroupItem } from '../../shared/RadioGroupItem'
 import { ScDialog } from '../../shared/ScDialog'
 import { CompanyAccessCreateBtn } from './CompanyAccessCreateBtn'
+import { useNavigate } from 'react-router'
 
 interface Accesses {
   name?: string
@@ -302,11 +303,21 @@ function ActionsColumn({
   invalidateQueries: () => void
   onResendCompanyAccessToken: (email: string) => Promise<unknown>
 }) {
-  const { connectedUser, apiSdk: api } = useConnectedContext()
+  const { setConnectedUser, connectedUser, apiSdk: api } = useConnectedContext()
   const { m } = useI18n()
   const { toastSuccess, toastError } = useToast()
   const { email, token, tokenId, userId } = _
   const isAdmin = connectedUser.isAdmin
+  const isSuperAdmin = connectedUser.isSuperAdmin
+  const navigate = useNavigate()
+
+  const _logAs = useMutation({
+    mutationFn: (email: string) => api.public.authenticate.logAs(email),
+    onSuccess: (user) => {
+      setConnectedUser(user)
+      navigate('/')
+    },
+  })
 
   const _removeAccess = useMutation({
     mutationFn: (params: { siret: string; userId: string }) =>
@@ -346,6 +357,18 @@ function ActionsColumn({
             <ListItemText>{m.authAttemptsHistory}</ListItemText>
           </MenuItem>
         </NavLink>
+      </>
+    ) : undefined
+
+  const impersonateMenuItem =
+    isSuperAdmin && email ? (
+      <>
+        <MenuItem onClick={() => _logAs.mutate(email)}>
+          <ListItemIcon>
+            <Icon>theater_comedy</Icon>
+          </ListItemIcon>
+          <ListItemText>Se connecter en tant que</ListItemText>
+        </MenuItem>
       </>
     ) : undefined
 
@@ -428,6 +451,7 @@ function ActionsColumn({
     authAttemptsHistoryMenuItem,
     copyInviteMenuItem,
     resendInviteMenuItem,
+    impersonateMenuItem,
     removeMenuItem,
     deleteUserMenuItem,
   ].filter(isDefined)
