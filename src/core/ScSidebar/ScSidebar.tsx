@@ -1,4 +1,4 @@
-import { Box } from '@mui/material'
+import { Box, Icon } from '@mui/material'
 import { Btn, Txt } from '../../alexlibs/mui-extension'
 import { UserNameLabel } from '../../shared/UserNameLabel'
 import { EntityIcon } from '../EntityIcon'
@@ -25,7 +25,6 @@ export const ScSidebar = ({
   }
   return (
     <Sidebar>
-      {' '}
       <Box
         sx={{
           pt: 1,
@@ -34,6 +33,13 @@ export const ScSidebar = ({
         }}
       >
         <div className="cursor-default">
+          {connectedUser && connectedUser.impersonator && (
+            <div className="flex flex-col bg-yellow-200 items-center">
+              <Icon fontSize="large">theater_comedy</Icon>
+              <p className="text-sm font-bold">{connectedUser.impersonator}</p>
+              <p className="text-sm italic">connecté en tant que</p>
+            </div>
+          )}
           <Txt block truncate bold>
             <UserNameLabel
               firstName={connectedUser.firstName}
