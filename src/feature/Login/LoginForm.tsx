@@ -168,7 +168,9 @@ export const LoginForm = ({ login }: Props) => {
         )}
         <AlertContactSupport />
         <br />
-        {config.isDev && <PredefinedUsersPanel onLogin={onLogin} />}
+        {config.showPredefinedUsers && (
+          <PredefinedUsersPanel onLogin={onLogin} />
+        )}
       </div>
     </CenteredContent>
   )

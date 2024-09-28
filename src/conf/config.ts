@@ -34,6 +34,7 @@ export const config = {
   sentry_traceRate: readInt(process.env.REACT_APP_SENTRY_TRACE_RATE, 0.5),
   enableMatomo: process.env.REACT_APP_ENABLE_MATOMO === 'true',
   infoBanner: process.env.REACT_APP_INFO_BANNER,
+  showPredefinedUsers: process.env.REACT_APP_SHOW_PREDEFINED_USERS === 'true',
   showReportAssignement: true,
   infoBannerSeverity:
     readSeverity(process.env.REACT_APP_INFO_BANNER_SEVERITY) ?? 'warning',
