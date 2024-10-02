@@ -159,12 +159,11 @@ export const TestTools = () => {
                             {title}
                           </Txt>
                         )}
+
                         {desc && (
-                          <Txt
-                            color="hint"
-                            block
-                            dangerouslySetInnerHTML={{ __html: desc }}
-                          />
+                          <Txt color="hint" block>
+                            {desc}
+                          </Txt>
                         )}
                         <Txt color="disabled" size="small" block>
                           {code}

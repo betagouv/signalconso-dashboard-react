@@ -25,6 +25,8 @@ import { ScButton } from '../../shared/Button'
 import { InfoBanner } from '../../shared/InfoBanner'
 import { ScInputPassword } from '../../shared/ScInputPassword'
 import { ForgottenPasswordDialog } from './ForgottenPasswordDialog'
+import PredefinedUsersPanel from './PredefinedUsersPanel'
+import { config } from '../../conf/config'
 
 interface ActionProps<F extends (...args: any[]) => Promise<any>> {
   action: F
@@ -36,7 +38,7 @@ interface Props {
   login: ActionProps<SignalConsoPublicSdk['authenticate']['login']>
 }
 
-interface Form {
+export interface Form {
   email: string
   password: string
   apiError: string
@@ -68,7 +70,7 @@ export const LoginForm = ({ login }: Props) => {
   const [apiError, setApiError] = useState<ApiError | undefined>()
   const needEmailRevalidationApiError = apiError?.details.id === 'SC-0013'
 
-  const onLogin = async (form: Form) => {
+  const onLogin: (form: Form) => Promise<void> = async (form: Form) => {
     login
       .action(form.email, form.password)
       .then((user) => {
@@ -165,6 +167,10 @@ export const LoginForm = ({ login }: Props) => {
           </form>
         )}
         <AlertContactSupport />
+        <br />
+        {config.showPredefinedUsers && (
+          <PredefinedUsersPanel onLogin={onLogin} />
+        )}
       </div>
     </CenteredContent>
   )

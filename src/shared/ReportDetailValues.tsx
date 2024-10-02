@@ -1,6 +1,5 @@
-import { Txt } from '../alexlibs/mui-extension'
-import * as React from 'react'
 import { Box, BoxProps, Tooltip } from '@mui/material'
+import { Txt } from '../alexlibs/mui-extension'
 import { useMemoFn } from '../alexlibs/react-hooks-lib'
 import { DetailInputValue } from '../core/client/report/Report'
 
@@ -29,17 +28,15 @@ export const ReportDetailValues = ({
         <div key={i}>
           <Box
             component="span"
-            dangerouslySetInnerHTML={{ __html: detail.label }}
             sx={{
               fontWeight: (t) => t.typography.fontWeightBold,
               fontSize: '16',
             }}
-          />
+          >
+            {detail.label}
+          </Box>
           &nbsp;
-          <Box
-            component="span"
-            dangerouslySetInnerHTML={{ __html: detail.value }}
-          />
+          <Box component="span">{detail.value}</Box>
         </div>
       ))}
     >
