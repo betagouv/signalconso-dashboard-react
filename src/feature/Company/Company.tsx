@@ -148,7 +148,7 @@ function AnnuaireDesEntreprisesBanner() {
         >
           l'Annuaire des Entreprises
         </a>{' '}
-        pour accédez aux informations protégées des entreprises (non
+        pour accéder aux informations protégées des entreprises (non
         diffusibles, statuts, actes, bilans financiers).
       </Alert>
     )
