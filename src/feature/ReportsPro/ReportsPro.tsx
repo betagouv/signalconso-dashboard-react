@@ -196,14 +196,6 @@ export const ReportsPro = ({ reportType }: ReportsProProps) => {
           <div className="flex gap-2">
             <Btn
               variant="outlined"
-              {...({ target: '_blank' } as any)}
-              href="https://tally.so/r/woMGGe"
-            >
-              {m.Feedback}
-              <Icon sx={{ ml: 1 }}>feedback</Icon>
-            </Btn>
-            <Btn
-              variant="outlined"
               // color="primary"
               // icon="help"
               {...({ target: '_blank' } as any)}
