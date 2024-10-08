@@ -21,6 +21,7 @@ import { UseQueryResult } from '@tanstack/react-query'
 import { ApiError } from 'core/client/ApiClient'
 import { CleanDiscreetPanel } from 'shared/Panel/simplePanels'
 import { CompanyStatsNumberWidgets } from './companyStatsNumberWidgets'
+import { AcceptedDistribution } from './stats/AcceptedDistribution'
 import {
   EngagementReviewsDistribution,
   ResponseReviewsDistribution,
@@ -70,13 +71,11 @@ export function CompanyStats({
       {company && (
         <>
           <CompanyStatsNumberWidgets id={id} siret={company.siret} />
-
           <CompanyChartPanel
             companyId={id}
             company={company}
             reportTotals={_statusDistribution.data?.totals}
           />
-
           <div className="grid lg:grid-cols-2 gap-4">
             <div>
               <StatusDistribution<ReportStatus>
@@ -86,6 +85,7 @@ export function CompanyStats({
                 statusShortLabel={(s: ReportStatus) => m.reportStatusShort[s]}
                 statusColor={(s: ReportStatus) => reportStatusColor[s]}
               />
+              <AcceptedDistribution companyId={id} />
               <TagsDistribution {...{ tagsDistribution }} />
               <ReportsShortListPanel {...{ _reports }} />
             </div>

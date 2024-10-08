@@ -19,6 +19,7 @@ import {
 } from '../../model'
 import { ApiClientApi } from '../ApiClient'
 import {
+  ReportAcceptedDistribution,
   ReportResponseReviews,
   ReportStatusDistribution,
   ReportStatusDistributionWithTotals,
@@ -104,6 +105,13 @@ export class StatsClient {
       distribution: distributionPro,
       totals,
     }
+  }
+
+  readonly getAcceptedDistribution = async (companyId: string) => {
+    return this.client.get<ReportAcceptedDistribution>(
+      `/stats/reports/accepted`,
+      { qs: { companyId } },
+    )
   }
 
   readonly getResponseReviews = (companyId: Id) => {

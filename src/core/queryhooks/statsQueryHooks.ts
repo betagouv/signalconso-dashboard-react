@@ -1,18 +1,16 @@
-import { UseQueryOpts } from './types'
-import { useApiContext } from '../context/ApiContext'
 import { useQuery } from '@tanstack/react-query'
+import { Duration } from '../../alexlibs/ts-utils'
+import { useApiContext } from '../context/ApiContext'
 import {
   Id,
   ReportAdminActionType,
   ReportResponseReviews,
-  ReportStatusDistribution,
   ReportStatusDistributionWithTotals,
-  ReportStatusProDistribution,
   ReportStatusProDistributionWithTotals,
   ReportTagsDistribution,
   SimpleStat,
 } from '../model'
-import { Duration } from '../../alexlibs/ts-utils'
+import { UseQueryOpts } from './types'
 
 export const useGetResponseReviewsQuery = (
   id: Id,
@@ -103,6 +101,14 @@ export const useStatusDistributionProQuery = (
     queryKey: ['stats_StatusDistributionPro'],
     queryFn: () => api.secured.stats.getStatusDistributionPro(id),
     ...options,
+  })
+}
+
+export const useAcceptedDistributionQuery = (id: Id) => {
+  const { api } = useApiContext()
+  return useQuery({
+    queryKey: ['stats_AcceptedDistribution'],
+    queryFn: () => api.secured.stats.getAcceptedDistribution(id),
   })
 }
 
