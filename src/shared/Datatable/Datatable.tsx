@@ -232,6 +232,7 @@ export const Datatable = <T extends any = any>({
                     '&:hover': {
                       background: (t) => t.palette.action.hover,
                     },
+                    cursor: 'pointer',
                   }),
                 }}
               >
