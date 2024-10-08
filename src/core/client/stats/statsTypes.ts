@@ -1,5 +1,6 @@
-import { ReportStatus, ReportStatusPro } from '../report/Report'
+import { AcceptedDetails } from 'core/model'
 import { Index } from '../../helper'
+import { ReportStatus, ReportStatusPro } from '../report/Report'
 
 export interface SimpleStat {
   value: string | number
@@ -16,6 +17,7 @@ export interface CountByDate {
 
 export type ReportStatusDistribution = { [key in ReportStatus]: number }
 export type ReportStatusProDistribution = { [key in ReportStatusPro]: number }
+export type ReportAcceptedDistribution = { [key in AcceptedDetails]: number }
 export type ReportStatusDistributionWithTotals = {
   distribution: ReportStatusDistribution
   totals: NbReportsTotals
