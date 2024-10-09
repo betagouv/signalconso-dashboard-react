@@ -1,4 +1,4 @@
-import { Icon, Tooltip } from '@mui/material'
+import { Icon, Tooltip, useMediaQuery } from '@mui/material'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { siteMap } from 'core/siteMap'
 import { ReportReferenceNumber } from 'feature/Report/ReportReferenceNumber'
@@ -317,6 +317,8 @@ function Header({
   hasToRespond: boolean
 }) {
   const { m, formatDate, formatTime } = useI18n()
+  const isXs = !useMediaQuery('(min-width:640px)')
+
   const { report } = reportSearchResult
   const assignedUser = reportSearchResult.assignedUser
   const companySiret = report.companySiret
@@ -370,6 +372,7 @@ function Header({
                         <Btn
                           variant={'outlined'}
                           className=" flex flex-row border p-2 items-center"
+                          {...(isXs ? { fullWidth: true } : undefined)}
                         >
                           <AssignedUserLabel
                             user={assignedUser}
@@ -411,8 +414,9 @@ function Header({
             onClick={scrollToResponse}
             color="primary"
             variant="contained"
-            size="large"
             iconAfter="question_answer"
+            size="large"
+            {...(isXs ? { fullWidth: true } : undefined)}
           >
             {m.answer}
           </ScButton>
