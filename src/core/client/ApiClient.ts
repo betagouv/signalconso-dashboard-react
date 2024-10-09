@@ -143,10 +143,7 @@ export class ApiClient {
         })
         .catch((e: ApiError) => {
           const scErrorCode = e.details.id
-          if (
-            scErrorCode &&
-            (scErrorCode === 'SC-AUTH' || scErrorCode === 'SC-AUTH-BROKEN')
-          ) {
+          if (scErrorCode && scErrorCode === 'SC-AUTH-BROKEN') {
             onDisconnected?.()
           }
           throw e
