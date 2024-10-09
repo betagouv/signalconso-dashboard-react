@@ -747,8 +747,8 @@ export const fr = {
         'Le consommateur est victime de menaces de la part du professionnel et souhaite supprimer son signalement par crainte de représailles. Le signalement ne sera plus visible sur la plateforme.',
       [ReportAdminActionType.RefundBlackMail]:
         "Le consommateur demande la suppression du signalement en raison d'un chantage de la part du professionnel pour la résolution de son litige. Le signalement ne sera plus visible sur la plateforme.",
-      [ReportAdminActionType.OtherReasonDeleteRequest]:
-        'Le consommateur exprime le souhait de retirer son signalement de notre plateforme sans donner de raisons particulières. Le signalement ne sera plus visible sur la plateforme.',
+      [ReportAdminActionType.RGPDDeleteRequest]:
+        'Le consommateur exprime le souhait de retirer son signalement de notre plateforme sans donner de raisons particulières ou en invoquant le RGPD. Le signalement sera visible mais vidé de toutes les données personnelles.',
       [ReportAdminActionType.SolvedContractualDispute]:
         "Le consommateur nous informe que le litige a été réglé en dehors de la plateforme. Le signalement passera au statut 'Promesse d'action' puis le consommateur et le professionnel seront informés par email de la clôture du signalement.",
     },
@@ -757,7 +757,8 @@ export const fr = {
         'Suppression suite à la menace du pro',
       [ReportAdminActionType.RefundBlackMail]:
         'Supression suite au chantage du pro',
-      [ReportAdminActionType.OtherReasonDeleteRequest]: 'Autre suppression',
+      [ReportAdminActionType.RGPDDeleteRequest]:
+        'Suppression pour demande RGPD',
       [ReportAdminActionType.SolvedContractualDispute]:
         'Résolution du signalement hors SignalConso',
     },
@@ -1136,6 +1137,7 @@ export const fr = {
       [ReportStatus.Infonde]: 'Infondé',
       [ReportStatus.ConsulteIgnore]: 'Consulté ignoré',
       [ReportStatus.MalAttribue]: 'Mal attribué',
+      [ReportStatus.SuppressionRGPD]: 'Suppression RGPD',
     },
     reportStatusShortPro: {
       [ReportStatusPro.ARepondre]: 'À répondre',
@@ -1156,6 +1158,7 @@ export const fr = {
       [ReportStatus.Infonde]: `Le professionnel a déclaré le signalement comme infondé selon lui.`,
       [ReportStatus.ConsulteIgnore]: `Le professionnel a lu le signalement, mais il n'a pas répondu malgré les relances.`,
       [ReportStatus.MalAttribue]: `Le consommateur n'a pas sélectionné le bon établissement. Il est important de rappeler que ce sont les consommateurs qui identifient le professionnel, avec un taux d’erreur d’environ 5% en pratique.`,
+      [ReportStatus.SuppressionRGPD]: `Le consommateur a demandé explicitement à supprimer ses données personnelles`,
     },
     month_: {
       1: 'Janvier',

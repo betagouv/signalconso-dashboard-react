@@ -32,7 +32,7 @@ export enum ReportAdminActionType {
   SolvedContractualDispute = 'SolvedContractualDispute',
   ConsumerThreatenByPro = 'ConsumerThreatenByPro',
   RefundBlackMail = 'RefundBlackMail',
-  OtherReasonDeleteRequest = 'OtherReasonDeleteRequest',
+  RGPDDeleteRequest = 'RGPDDeleteRequest',
 }
 
 export enum ReportTag {
@@ -156,6 +156,7 @@ export enum ReportStatus {
   NonConsulte = 'NonConsulte',
   ConsulteIgnore = 'ConsulteIgnore',
   MalAttribue = 'MalAttribue',
+  SuppressionRGPD = 'SuppressionRGPD',
 }
 
 export enum ReportStatusPro {
@@ -184,6 +185,7 @@ export class Report {
     ReportStatus.NonConsulte,
     ReportStatus.ConsulteIgnore,
     ReportStatus.MalAttribue,
+    ReportStatus.SuppressionRGPD,
   ]
 
   static readonly transmittedStatus = [

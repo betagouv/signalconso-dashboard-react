@@ -114,7 +114,7 @@ export const ReportComponent = () => {
                 )}
 
               {connectedUser.isAdmin &&
-                report.status !== ReportStatus.PromesseAction && (
+                report.status !== ReportStatus.SuppressionRGPD && (
                   <ReportAdminResolution
                     label={m.administratorAction}
                     report={report}

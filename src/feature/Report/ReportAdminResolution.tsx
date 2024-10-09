@@ -6,6 +6,7 @@ import {
   Report,
   ReportAdminActionType,
   ReportDeletionReason,
+  ReportStatus,
 } from '../../core/client/report/Report'
 import { useConnectedContext } from '../../core/context/ConnectedContext'
 import { useToast } from '../../core/context/toastContext'
@@ -56,6 +57,13 @@ export const ReportAdminResolution = ({
     })
   }
 
+  const keys =
+    report.status === ReportStatus.PromesseAction
+      ? objectKeysUnsafe(ReportAdminActionType).filter(
+          (_) => _ !== ReportAdminActionType.SolvedContractualDispute,
+        )
+      : objectKeysUnsafe(ReportAdminActionType)
+
   return (
     <ScDialog
       title={label}
@@ -85,24 +93,22 @@ export const ReportAdminResolution = ({
               setDeletionType(reportDeletionType)
             }}
           >
-            {objectKeysUnsafe(ReportAdminActionType).map(
-              (reportDeletionType) => (
-                <ScRadioGroupItem
-                  title={
-                    m.reportDeletionTypeName[
-                      ReportAdminActionType[reportDeletionType]
-                    ]
-                  }
-                  description={
-                    m.reportDeletionTypeDescription[
-                      ReportAdminActionType[reportDeletionType]
-                    ]
-                  }
-                  value={reportDeletionType}
-                  key={reportDeletionType}
-                />
-              ),
-            )}
+            {keys.map((reportDeletionType) => (
+              <ScRadioGroupItem
+                title={
+                  m.reportDeletionTypeName[
+                    ReportAdminActionType[reportDeletionType]
+                  ]
+                }
+                description={
+                  m.reportDeletionTypeDescription[
+                    ReportAdminActionType[reportDeletionType]
+                  ]
+                }
+                value={reportDeletionType}
+                key={reportDeletionType}
+              />
+            ))}
           </ScRadioGroup>
           <b className={'mt-10 mb-10'}>Commentaire (Obligatoire) :</b>
           <ScInput
