@@ -17,7 +17,7 @@ export function ReportDetails({ report }: { report: Report }) {
           <p className="font-bold text-base">
             {detail.label.replace(/:$/, '')}
           </p>
-          <p className="pl-4">{detail.value}</p>
+          <p className="pl-4 whitespace-pre-line">{detail.value}</p>
         </div>
       ))}
     </div>
