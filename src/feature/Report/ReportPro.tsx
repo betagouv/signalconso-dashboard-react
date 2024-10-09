@@ -2,7 +2,7 @@ import { Icon, Tooltip } from '@mui/material'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { siteMap } from 'core/siteMap'
 import { ReportReferenceNumber } from 'feature/Report/ReportReferenceNumber'
-import React, { useRef } from 'react'
+import { useRef } from 'react'
 import { useParams } from 'react-router'
 import { Link } from 'react-router-dom'
 import { CleanWidePanel } from 'shared/Panel/simplePanels'
@@ -17,6 +17,7 @@ import {
   ReportSearchResult,
   ReportStatusPro,
 } from '../../core/client/report/Report'
+import { useConnectedContext } from '../../core/context/ConnectedContext'
 import { capitalize } from '../../core/helper'
 import { useI18n } from '../../core/i18n'
 import { Id, MinimalUser } from '../../core/model'
@@ -44,7 +45,6 @@ import { ReportResponseComponent } from './ReportResponse'
 import { ReportResponseForm } from './ReportResponseForm/ReportResponseForm'
 import { ReportStation } from './ReportStation'
 import { ReportTrain } from './ReportTrain'
-import { useConnectedContext } from '../../core/context/ConnectedContext'
 
 export const ReportPro = () => {
   const { id } = useParams<{ id: Id }>()
@@ -327,7 +327,7 @@ function Header({
           <h1 className="font-bold text-3xl ">
             <span>Signalement</span>
           </h1>
-          <p className="flex flex-col lg:flex-row lg:items-end gap-1">
+          <p className="flex flex-col lg:flex-row lg:items-end gap-1 ">
             <span>
               À propos de l'entreprise{' '}
               <span className="font-bold">{report.companyName}</span>
@@ -344,7 +344,7 @@ function Header({
           </p>
           <p>
             {report.contactAgreement ? (
-              <span>Par {report.email}</span>
+              <span className="break-words">Par {report.email}</span>
             ) : (
               <span>Par un consommateur anonyme</span>
             )}
