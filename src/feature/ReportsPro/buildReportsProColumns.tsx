@@ -54,8 +54,23 @@ export const buildReportsProColumns = ({
 }: ReportTableColumnsParams) => {
   const { formatDate, m } = i18nData
 
+  const includeCheckboxColumn = selectReport.size > 0
+  const checkboxColumn = {
+    alwaysVisible: true,
+    id: 'download-checkbox',
+    head: (() => <CheckboxColumnHead {...{ _reports, selectReport }} />)(),
+    style: { width: 0 },
+    render: (r: ReportSearchResult) => (
+      <CheckboxColumn
+        //Important do not remove, used to check if the click on table should redirect to report or not
+        id={`download-checkbox-${r.report.id}`}
+        {...{ r, selectReport }}
+      />
+    ),
+  }
   if (isMobileWidth) {
     return [
+      ...(includeCheckboxColumn ? [checkboxColumn] : []),
       {
         id: 'all',
         head: '',
@@ -91,19 +106,7 @@ export const buildReportsProColumns = ({
   }
 
   const baseColumns = [
-    {
-      alwaysVisible: true,
-      id: 'download-checkbox',
-      head: (() => <CheckboxColumnHead {...{ _reports, selectReport }} />)(),
-      style: { width: 0 },
-      render: (r: ReportSearchResult) => (
-        <CheckboxColumn
-          //Important do not remove, used to check if the click on table should redirect to report or not
-          id={`download-checkbox-${r.report.id}`}
-          {...{ r, selectReport }}
-        />
-      ),
-    },
+    ...(includeCheckboxColumn ? [checkboxColumn] : []),
     {
       id: 'siret',
       head: 'SIRET',
