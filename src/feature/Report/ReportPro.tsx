@@ -15,6 +15,7 @@ import { FileOrigin, UploadedFile } from '../../core/client/file/UploadedFile'
 import {
   Report,
   ReportSearchResult,
+  ReportStatus,
   ReportStatusPro,
 } from '../../core/client/report/Report'
 import { useConnectedContext } from '../../core/context/ConnectedContext'
@@ -95,6 +96,7 @@ function ReportProLoaded({
 
   const hasResponse = !!responseEvent
   const isClosed = Report.isClosed(report.status)
+  const isDeleted = report.status === ReportStatus.SuppressionRGPD
   const hasToRespond = !hasResponse && !isClosed
 
   return (
@@ -116,6 +118,8 @@ function ReportProLoaded({
           reportSearchResult,
           responseEvent,
           isClosed,
+          isDeleted,
+          hasResponse,
           hasToRespond,
         }}
       />
@@ -176,12 +180,16 @@ function ReportBlock({
   reportSearchResult,
   responseEvent,
   isClosed,
+  isDeleted,
+  hasResponse,
   hasToRespond,
   scrollToResponse,
 }: {
   reportSearchResult: ReportSearchResult
   responseEvent?: ReportProResponseEvent
   isClosed: boolean
+  isDeleted: boolean
+  hasResponse: boolean
   hasToRespond: boolean
   scrollToResponse: () => void
 }) {
@@ -194,6 +202,8 @@ function ReportBlock({
         {...{
           reportSearchResult,
           isClosed,
+          isDeleted,
+          hasResponse,
           scrollToResponse,
           hasToRespond,
           responseEvent,
@@ -308,12 +318,16 @@ function Header({
   responseEvent,
   scrollToResponse,
   isClosed,
+  isDeleted,
+  hasResponse,
   hasToRespond,
 }: {
   reportSearchResult: ReportSearchResult
   responseEvent?: ReportProResponseEvent
   scrollToResponse: () => void
   isClosed: boolean
+  isDeleted: boolean
+  hasResponse: boolean
   hasToRespond: boolean
 }) {
   const { m, formatDate, formatTime } = useI18n()
@@ -403,6 +417,21 @@ function Header({
         )}
       </div>
 
+      {isDeleted && (
+        <div className="text-xl italic bg-yellow-100 mb-8 mt-4 text-center">
+          <span>
+            Les données personnelles du consommateur à l'origine de ce
+            signalement ont été supprimées conformément aux exigences du RGPD.
+          </span>
+          {!hasResponse && (
+            <span>
+              {' '}
+              Par conséquent, ce signalement ne nécessite plus d'action ou de
+              traitement supplémentaire.
+            </span>
+          )}
+        </div>
+      )}
       {isClosed && (
         <div className="flex items-center justify-center bg-[#e3e3fd]  p-2">
           <ReportClosedLabel eventWithUser={responseEvent} />
