@@ -1,5 +1,6 @@
-import { Badge, Box, Icon } from '@mui/material'
+import { Badge, Box, Button, Icon } from '@mui/material'
 import { fr } from 'core/i18n/localization/fr'
+import { siteMap } from 'core/siteMap'
 import { ReportResponseDetails } from 'feature/Reports/ReportResponseDetails'
 import React from 'react'
 import { ReportStatusLabel } from 'shared/ReportStatus'
@@ -13,7 +14,7 @@ import {
 import { ReportSearch } from '../../core/client/report/ReportSearch'
 import { Paginate, PaginatedFilters } from '../../core/model'
 import { UseQueryPaginateResult } from '../../core/queryhooks/UseQueryPaginate'
-import { combineSx, sxUtils } from '../../core/theme'
+import { combineSx, styleUtils, sxUtils } from '../../core/theme'
 import { UserNameLabel } from '../../shared/UserNameLabel'
 import { CheckboxColumn, CheckboxColumnHead } from '../Reports/reportsColumns'
 import { css } from './ReportsPro'
@@ -54,6 +55,7 @@ export const buildReportsProColumns = ({
 }: ReportTableColumnsParams) => {
   const { formatDate, m } = i18nData
 
+  const emptyCell = <span className="text-gray-500">—</span>
   const includeCheckboxColumn = selectReport.size > 0
   const checkboxColumn = {
     alwaysVisible: true,
@@ -75,31 +77,42 @@ export const buildReportsProColumns = ({
         id: 'all',
         head: '',
         render: (_: ReportSearchResult) => (
-          <Box sx={css.card}>
-            <Box sx={css.card_content}>
-              <Box sx={css.card_head}>
-                <Txt bold size="big">
-                  {_.report.companySiret}
+          <div className="py-2 flex flex-col gap-2">
+            <div className="flex justify-between">
+              <ReportStatusLabel dense status={_.report.status} />
+              <SeeReportButton report={_} />
+            </div>
+            <Box
+              sx={{
+                fontSize: (t) => styleUtils(t).fontSize.normal,
+                display: 'flex',
+                alignItems: 'center',
+              }}
+            >
+              <Box>
+                <Box sx={css.card_head}>
+                  <Txt bold size="big">
+                    {_.report.companySiret}
+                  </Txt>
+                  <Icon sx={combineSx(css.iconDash, sxUtils.inlineIcon)}>
+                    remove
+                  </Icon>
+                  <Txt color="disabled">
+                    <Icon sx={sxUtils.inlineIcon}>location_on</Icon>
+                    {_.report.companyAddress.postalCode}
+                  </Txt>
+                </Box>
+                <Txt block color="hint">
+                  {m.thisDate(formatDate(_.report.creationDate))}
                 </Txt>
-                <Icon sx={combineSx(css.iconDash, sxUtils.inlineIcon)}>
-                  remove
-                </Icon>
-                <Txt color="disabled">
-                  <Icon sx={sxUtils.inlineIcon}>location_on</Icon>
-                  {_.report.companyAddress.postalCode}
+                <Txt block color="hint">
+                  {_.report.contactAgreement
+                    ? m.byHim(_.report.firstName + ' ' + _.report.lastName)
+                    : m.anonymousReport}
                 </Txt>
               </Box>
-              <Txt block color="hint">
-                {m.thisDate(formatDate(_.report.creationDate))}
-              </Txt>
-              <Txt block color="hint">
-                {_.report.contactAgreement
-                  ? m.byHim(_.report.firstName + ' ' + _.report.lastName)
-                  : m.anonymousReport}
-              </Txt>
             </Box>
-            <ReportStatusLabel dense status={_.report.status} />
-          </Box>
+          </div>
         ),
       },
     ]
@@ -126,12 +139,15 @@ export const buildReportsProColumns = ({
     {
       id: 'assignee',
       head: 'Affecté à',
-      render: (report: ReportSearchResult) => (
-        <UserNameLabel
-          firstName={report.assignedUser?.firstName}
-          lastName={report.assignedUser?.lastName}
-        />
-      ),
+      render: (report: ReportSearchResult) =>
+        report.assignedUser ? (
+          <UserNameLabel
+            firstName={report.assignedUser.firstName}
+            lastName={report.assignedUser.lastName}
+          />
+        ) : (
+          emptyCell
+        ),
     },
     {
       id: 'consumer',
@@ -160,15 +176,16 @@ export const buildReportsProColumns = ({
               </MaybeBold>
             ),
           },
-
           {
             id: 'file',
             head: 'Fichiers',
             render: (report: ReportSearchResult) =>
-              report.files.length > 0 && (
+              report.files.length > 0 ? (
                 <Badge badgeContent={report.files.length} color="primary">
                   <Icon>insert_drive_file</Icon>
                 </Badge>
+              ) : (
+                emptyCell
               ),
           },
         ]
@@ -203,5 +220,27 @@ export const buildReportsProColumns = ({
           },
         ]
 
-  return [...baseColumns, ...specificColumns]
+  const finalColumns = [
+    {
+      id: 'see',
+      render: (report: ReportSearchResult) => (
+        <SeeReportButton {...{ report }} />
+      ),
+    },
+  ]
+
+  return [...baseColumns, ...specificColumns, ...finalColumns]
+}
+
+function SeeReportButton({ report }: { report: ReportSearchResult }) {
+  return (
+    <Button
+      variant="text"
+      className="!normal-case"
+      endIcon={<Icon>visibility</Icon>}
+      href={siteMap.logged.report(report.report.id)}
+    >
+      Voir
+    </Button>
+  )
 }
