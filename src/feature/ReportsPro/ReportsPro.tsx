@@ -14,6 +14,7 @@ import { ScOption } from 'core/helper/ScOption'
 import { useListReportBlockedNotificationsQuery } from 'core/queryhooks/reportBlockedNotificationQueryHooks'
 import { useNavigate } from 'react-router'
 import { DebouncedInput } from 'shared/DebouncedInput'
+import { useSetState } from '../../alexlibs/react-hooks-lib'
 import { config } from '../../conf/config'
 import { EntityIcon } from '../../core/EntityIcon'
 import {
@@ -32,6 +33,7 @@ import {
   mapDatesToQueryString,
   useQueryString,
 } from '../../core/helper/useQueryString'
+import { Id } from '../../core/model'
 import { useGetAccessibleByProQuery } from '../../core/queryhooks/companyQueryHooks'
 import { useReportSearchQuery } from '../../core/queryhooks/reportQueryHooks'
 import { siteMap } from '../../core/siteMap'
@@ -40,10 +42,8 @@ import { ExportReportsPopper } from '../../shared/ExportPopperBtn'
 import { PeriodPicker } from '../../shared/PeriodPicker'
 import { ScInput } from '../../shared/ScInput'
 import { SelectCompaniesByPro } from '../../shared/SelectCompaniesByPro/SelectCompaniesByPro'
-import { buildReportColumns } from './buildReportColumns'
-import { useSetState } from '../../alexlibs/react-hooks-lib'
-import { Id } from '../../core/model'
 import { DatatableToolbarComponent } from '../Reports/DatatableToolbarComponent'
+import { buildReportsProColumns } from './buildReportsProColumns'
 
 export const css = makeSx({
   card: {
@@ -136,7 +136,7 @@ export const ReportsPro = ({ reportType }: ReportsProProps) => {
   const { isMobileWidth } = useLayoutContext()
   const history = useNavigate()
   const { formatDate, m } = useI18n()
-  const columns = buildReportColumns({
+  const columns = buildReportsProColumns({
     _reports,
     selectReport,
     reportType,

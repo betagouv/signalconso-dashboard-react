@@ -5,18 +5,18 @@ import React from 'react'
 import { ReportStatusLabel } from 'shared/ReportStatus'
 import { ConsumerReviewLabels } from 'shared/reviews/ConsumerReviewLabels'
 import { Txt } from '../../alexlibs/mui-extension'
+import { UseSetState } from '../../alexlibs/react-hooks-lib'
 import {
   ReportSearchResult,
   ReportStatus,
 } from '../../core/client/report/Report'
-import { combineSx, sxUtils } from '../../core/theme'
-import { UserNameLabel } from '../../shared/UserNameLabel'
-import { css } from './ReportsPro'
-import { CheckboxColumn, CheckboxColumnHead } from '../Reports/reportsColumns'
-import { UseQueryPaginateResult } from '../../core/queryhooks/UseQueryPaginate'
 import { ReportSearch } from '../../core/client/report/ReportSearch'
 import { Paginate, PaginatedFilters } from '../../core/model'
-import { UseSetState } from '../../alexlibs/react-hooks-lib'
+import { UseQueryPaginateResult } from '../../core/queryhooks/UseQueryPaginate'
+import { combineSx, sxUtils } from '../../core/theme'
+import { UserNameLabel } from '../../shared/UserNameLabel'
+import { CheckboxColumn, CheckboxColumnHead } from '../Reports/reportsColumns'
+import { css } from './ReportsPro'
 
 interface ReportTableColumnsParams {
   _reports: UseQueryPaginateResult<
@@ -44,7 +44,7 @@ const MaybeBold: React.FC<{
   return <p>{children}</p>
 }
 
-export const buildReportColumns = ({
+export const buildReportsProColumns = ({
   _reports,
   selectReport,
   reportType,
@@ -54,8 +54,23 @@ export const buildReportColumns = ({
 }: ReportTableColumnsParams) => {
   const { formatDate, m } = i18nData
 
+  const includeCheckboxColumn = selectReport.size > 0
+  const checkboxColumn = {
+    alwaysVisible: true,
+    id: 'download-checkbox',
+    head: (() => <CheckboxColumnHead {...{ _reports, selectReport }} />)(),
+    style: { width: 0 },
+    render: (r: ReportSearchResult) => (
+      <CheckboxColumn
+        //Important do not remove, used to check if the click on table should redirect to report or not
+        id={`download-checkbox-${r.report.id}`}
+        {...{ r, selectReport }}
+      />
+    ),
+  }
   if (isMobileWidth) {
     return [
+      ...(includeCheckboxColumn ? [checkboxColumn] : []),
       {
         id: 'all',
         head: '',
@@ -91,19 +106,7 @@ export const buildReportColumns = ({
   }
 
   const baseColumns = [
-    {
-      alwaysVisible: true,
-      id: 'download-checkbox',
-      head: (() => <CheckboxColumnHead {...{ _reports, selectReport }} />)(),
-      style: { width: 0 },
-      render: (r: ReportSearchResult) => (
-        <CheckboxColumn
-          //Important do not remove, used to check if the click on table should redirect to report or not
-          id={`download-checkbox-${r.report.id}`}
-          {...{ r, selectReport }}
-        />
-      ),
-    },
+    ...(includeCheckboxColumn ? [checkboxColumn] : []),
     {
       id: 'siret',
       head: 'SIRET',

@@ -25,6 +25,7 @@ export const reportStatusColor = {
   [ReportStatus.PromesseAction]: '#4caf50',
   [ReportStatus.Infonde]: '#4caf50',
   [ReportStatus.ConsulteIgnore]: '#8B0000',
+  [ReportStatus.SuppressionRGPD]: '#a1a1a1',
 }
 
 export const reportStatusProColor = {
