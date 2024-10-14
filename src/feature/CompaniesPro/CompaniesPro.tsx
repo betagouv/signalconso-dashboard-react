@@ -1,4 +1,4 @@
-import { FormControlLabel, Switch } from '@mui/material'
+import { FormControlLabel, Icon, Switch } from '@mui/material'
 import {
   UseMutationResult,
   useMutation,
@@ -281,6 +281,14 @@ function CompaniesProRow({
         >
           {_.name}
         </NavLink>
+        {_.isHeadOffice ? (
+          <div className="font-bold">
+            <Icon fontSize="small" className="mb-[-4px]">
+              business
+            </Icon>{' '}
+            Siège social
+          </div>
+        ) : null}
         <div className="text-gray-500">
           <AddressComponent address={_.address} />
         </div>

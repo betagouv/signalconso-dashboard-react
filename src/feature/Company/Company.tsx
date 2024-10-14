@@ -1,5 +1,6 @@
 import { Navigate, Route, Routes, useParams } from 'react-router'
 
+import { Icon } from '@mui/material'
 import { Txt } from 'alexlibs/mui-extension'
 import { useConnectedContext } from 'core/context/ConnectedContext'
 import { siteMap } from 'core/siteMap'
@@ -107,6 +108,14 @@ function Title({ company }: { company: CompanyWithReportsCount }) {
             <Txt block size="big" color="hint">
               {company?.siret}
             </Txt>
+            {company.isHeadOffice && (
+              <div className="font-normal text-sm">
+                <Icon fontSize="small" className="mb-[-4px]">
+                  business
+                </Icon>{' '}
+                Siège social
+              </div>
+            )}
           </div>
         </PageTitle>
       </div>
