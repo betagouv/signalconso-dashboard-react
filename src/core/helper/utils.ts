@@ -129,7 +129,7 @@ export const fnSwitch: FnSwitch = (value, cases, defaultCase?) => {
   )
 }
 
-const siretToSiren = (siret: string) => siret.slice(0, 9)
+export const siretToSiren = (siret: string) => siret.slice(0, 9)
 
 const stringToBoolean = (str?: string): boolean | undefined => {
   if (str) {

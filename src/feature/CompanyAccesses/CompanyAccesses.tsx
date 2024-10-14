@@ -11,7 +11,12 @@ import { ScMenu } from 'shared/Menu'
 import { CompanyAccessLevel } from '../../core/client/company-access/CompanyAccess'
 import { useConnectedContext } from '../../core/context/ConnectedContext'
 import { useToast } from '../../core/context/toastContext'
-import { isDefined, objectKeysUnsafe, toQueryString } from '../../core/helper'
+import {
+  isDefined,
+  objectKeysUnsafe,
+  siretToSiren,
+  toQueryString,
+} from '../../core/helper'
 import { useI18n } from '../../core/i18n'
 import { CompanyWithReportsCount, Id, User } from '../../core/model'
 import { siteMap } from '../../core/siteMap'
@@ -24,10 +29,10 @@ import {
 import { ScRadioGroup } from '../../shared/RadioGroup'
 
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { useNavigate } from 'react-router'
 import { ScRadioGroupItem } from '../../shared/RadioGroupItem'
 import { ScDialog } from '../../shared/ScDialog'
 import { CompanyAccessCreateBtn } from './CompanyAccessCreateBtn'
-import { useNavigate } from 'react-router'
 
 interface Accesses {
   name?: string
@@ -167,11 +172,23 @@ function CompanyAccessesLoaded({
 
   return (
     <>
-      <div className="flex justify-between gap-2 sm:items-center mb-4 flex-col sm:flex-row">
-        <p>
-          Les personnes suivantes peuvent consulter et répondre aux signalements
-          de l'entreprise {company.name}.
-        </p>
+      <div className="flex justify-between gap-2 sm:gap-6 sm:items-start mb-4 flex-col sm:flex-row">
+        <div className="flex flex-col gap-2">
+          <p>
+            Les personnes suivantes peuvent consulter et répondre aux
+            signalements de l'établissement {company.siret}.
+          </p>
+
+          {company.isHeadOffice && (
+            <p className="">
+              Comme c'est un <strong>siège social</strong>, ils auront aussi
+              accès aux signalements de tous les établissements qui y sont
+              rattachés (i.e. dont le SIRET commence par{' '}
+              {siretToSiren(company.siret)}).
+            </p>
+          )}
+        </div>
+
         <div className="flex gap-2 shrink-0">
           {(isAdmin || isPro) && (
             <CompanyAccessCreateBtn
