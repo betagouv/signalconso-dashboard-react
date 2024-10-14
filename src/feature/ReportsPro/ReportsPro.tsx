@@ -6,7 +6,6 @@ import { useI18n } from '../../core/i18n'
 import { Datatable } from '../../shared/Datatable/Datatable'
 import { Page, PageTitle } from '../../shared/Page'
 
-import { styleUtils } from '../../core/theme'
 import { ScSelect } from '../../shared/Select/Select'
 import { SelectDepartments } from '../../shared/SelectDepartments/SelectDepartments'
 
@@ -46,16 +45,6 @@ import { DatatableToolbarComponent } from '../Reports/DatatableToolbarComponent'
 import { buildReportsProColumns } from './buildReportsProColumns'
 
 export const css = makeSx({
-  card: {
-    fontSize: (t) => styleUtils(t).fontSize.normal,
-    display: 'flex',
-    alignItems: 'center',
-    py: 1,
-    px: 2,
-  },
-  card_content: {
-    flex: 1,
-  },
   iconDash: {
     my: 0,
     mx: 1,
