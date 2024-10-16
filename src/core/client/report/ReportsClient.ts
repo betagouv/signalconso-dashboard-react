@@ -191,7 +191,7 @@ export class ReportsClient {
   }
 
   readonly getById = async (id: Id): Promise<ReportSearchResult> => {
-    const { report, ...rest } = await this.client.get(`/reports/${id}`)
+    const { report, ...rest } = await this.client.get<any>(`/reports/${id}`)
     return {
       ...rest,
       report: ReportsClient.mapReport(report),
@@ -274,7 +274,7 @@ export class ReportsClient {
     reportConsumerUpdate: ReportConsumerUpdate,
   ) => {
     return this.client
-      .post(`reports/${reportId}/consumer`, {
+      .post<any>(`reports/${reportId}/consumer`, {
         body: reportConsumerUpdate,
       })
       .then((report) => ReportsClient.mapReport(report))
