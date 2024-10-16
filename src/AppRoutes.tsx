@@ -54,11 +54,7 @@ export const AppRoutes = ({
     login,
   } = loginManagementResult
   const UserActivationComponent = () => (
-    <UserActivation
-      onUserActivated={setConnectedUser}
-      onActivateUser={apiPublicSdk.user.activateAccount}
-      onFetchTokenInfo={apiPublicSdk.user.fetchTokenInfo}
-    />
+    <UserActivation onUserActivated={setConnectedUser} />
   )
 
   return (

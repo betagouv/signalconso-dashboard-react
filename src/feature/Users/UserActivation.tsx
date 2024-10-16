@@ -7,13 +7,13 @@ import {
   TextField,
 } from '@mui/material'
 import { useMutation, useQuery } from '@tanstack/react-query'
+import { apiPublicSdk } from 'core/ApiSdkInstance'
 import { validatePasswordComplexity } from 'core/helper/passwordComplexity'
 import { useMemo } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { useLocation, useNavigate, useParams } from 'react-router'
 import { PasswordRequirementsDesc } from 'shared/PasswordRequirementsDesc'
 import { Alert, makeSx, Txt } from '../../alexlibs/mui-extension'
-import { TokenInfo } from '../../core/client/authenticate/Authenticate'
 import { User, UserToActivate } from '../../core/client/user/User'
 import { useToast } from '../../core/context/toastContext'
 import { QueryString } from '../../core/helper/useQueryString'
@@ -47,34 +47,26 @@ const sx = makeSx({
 
 interface Props {
   onUserActivated: (_: User) => void
-  onActivateUser: (
-    user: UserToActivate,
-    token: string,
-    companySiret?: string,
-  ) => Promise<User>
-  onFetchTokenInfo: (token: string, companySiret?: string) => Promise<TokenInfo>
 }
 
-export const UserActivation = ({
-  onActivateUser,
-  onUserActivated,
-  onFetchTokenInfo,
-}: Props) => {
+export const UserActivation = ({ onUserActivated }: Props) => {
   const { m } = useI18n()
   const _activate = useMutation({
     mutationFn: (params: {
       user: UserToActivate
       token: string
       companySiret?: string
-    }) => onActivateUser(params.user, params.token, params.companySiret),
+    }) =>
+      apiPublicSdk.user.activateAccount(
+        params.user,
+        params.token,
+        params.companySiret,
+      ),
   })
   const { toastSuccess, toastError } = useToast()
-
   const { search } = useLocation()
   const history = useNavigate()
-
   const { siret } = useParams<{ siret: string }>()
-
   const {
     register,
     control,
@@ -85,15 +77,13 @@ export const UserActivation = ({
     mode: 'onChange',
     defaultValues: { email: ' ' },
   })
-
   const urlToken = useMemo(
     () => QueryString.parse(search.replace(/^\?/, '')).token as string,
     [],
   )
-
   const _tokenInfo = useQuery({
     queryKey: FetchTokenInfoQueryKeys(urlToken, siret),
-    queryFn: () => onFetchTokenInfo(urlToken, siret),
+    queryFn: () => apiPublicSdk.user.fetchTokenInfo(urlToken, siret),
   })
 
   const onSubmit = (form: UserActivationForm) => {
