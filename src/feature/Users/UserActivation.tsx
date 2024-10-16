@@ -117,7 +117,6 @@ export const UserActivation = ({ onUserActivated }: Props) => {
   return (
     <Page maxWidth="s">
       <PageTitle>{m.finishCreatingMyAccount}</PageTitle>
-
       <Panel loading={_tokenInfo.isLoading}>
         {_tokenInfo.error ? (
           <Alert type="error" sx={sx.hint}>
