@@ -20,7 +20,6 @@ export interface I18nContextProps {
   availableLangs: AppLang[]
   formatLargeNumber: (typeof fr)['formatLargeNumber']
   formatDate: (typeof fr)['formatDate']
-  dateFromNow: (typeof fr)['dateFromNow']
   formatTime: (typeof fr)['formatTime']
   formatDateTime: (typeof fr)['formatDateTime']
 }

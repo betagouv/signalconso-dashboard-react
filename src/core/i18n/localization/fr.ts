@@ -1,4 +1,3 @@
-import { formatDistance } from 'date-fns'
 import { AssociationType } from 'feature/ReportedWebsites/SelectWebsiteIdentification/SelectWebsiteAssociation'
 import { config } from '../../../conf/config'
 import { DownloadType } from '../../../feature/Report/ReportDownloadAction'
@@ -46,10 +45,6 @@ const formatDateTime = (d?: Date): string => {
   return formatDate(d) + ' à ' + formatTime(d)
 }
 
-const dateFromNow = (d?: Date): string | undefined => {
-  return d ? formatDistance(d, new Date(), { addSuffix: true }) : undefined
-}
-
 const formatLargeNumber = (n?: number): string => {
   return n !== undefined && n !== null ? n.toLocaleString('fr-FR') : '-'
 }
@@ -58,7 +53,6 @@ export const fr = {
   formatDate,
   formatTime,
   formatDateTime,
-  dateFromNow,
   formatLargeNumber,
   messages: {
     influencerIdentifiedTitle: 'Influenceur(se) identifié(e)',
