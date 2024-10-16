@@ -14,13 +14,6 @@ interface RequestOption {
   readonly withCredentials?: boolean
 }
 
-interface ApiClientParams {
-  readonly baseUrl: string
-  readonly headers?: ApiClientHeaders
-  readonly withCredentials?: boolean
-  onDisconnected?: () => void
-}
-
 interface ApiErrorDetails {
   // 300, 404, 500, etc.
   code?: number | undefined
@@ -59,7 +52,12 @@ export class ApiClient {
     headers,
     withCredentials,
     onDisconnected,
-  }: ApiClientParams) {
+  }: {
+    baseUrl: string
+    headers?: ApiClientHeaders
+    withCredentials?: boolean
+    onDisconnected?: () => void
+  }) {
     this.baseUrl = baseUrl
 
     const client = axios.create({
