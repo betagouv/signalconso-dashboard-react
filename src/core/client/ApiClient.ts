@@ -26,14 +26,8 @@ export interface ApiClientApi {
   readonly get: <T = any>(uri: string, options?: RequestOption) => Promise<T>
   readonly head: <T = any>(uri: string, options?: RequestOption) => Promise<T>
   readonly post: <T = any>(uri: string, options?: RequestOption) => Promise<T>
-  readonly postGetPdf: <T = any>(
-    uri: string,
-    options?: RequestOption,
-  ) => Promise<Blob>
-  readonly getBlob: <T = any>(
-    uri: string,
-    options?: RequestOption,
-  ) => Promise<Blob>
+  readonly postGetPdf: (uri: string, options?: RequestOption) => Promise<Blob>
+  readonly getBlob: (uri: string, options?: RequestOption) => Promise<Blob>
   readonly delete: <T = any>(uri: string, options?: RequestOption) => Promise<T>
   readonly put: <T = any>(uri: string, options?: RequestOption) => Promise<T>
   readonly patch: <T = any>(uri: string, options?: RequestOption) => Promise<T>
