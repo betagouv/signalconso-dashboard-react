@@ -1,11 +1,15 @@
 import { Id, Subscription, SubscriptionCreate } from '../../model'
 import { ApiClient } from '../ApiClient'
-import { PublicConstantClient } from '../constant/PublicConstantClient'
+import { SignalConsoPublicSdk } from '../SignalConsoPublicSdk'
 
 const fromApi =
   (client: ApiClient) =>
-  async (api: any): Promise<Subscription> => {
-    const getDepartmentByCode = new PublicConstantClient(client)
+  async (
+    // badly named : I think this is supposed to be the subscription object raw from the api
+    api: any,
+  ): Promise<Subscription> => {
+    // completely silly : we instantiate the whole Sdk class, just to get something that is actually hardcoded underneath
+    const getDepartmentByCode = new SignalConsoPublicSdk(client).constant
       .getDepartmentByCode
     const departments = await Promise.all(
       (api.departments || []).map(getDepartmentByCode),
