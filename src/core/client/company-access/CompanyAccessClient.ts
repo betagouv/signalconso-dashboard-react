@@ -1,9 +1,9 @@
 import { Id } from '../../model'
-import { ApiClientApi } from '../ApiClient'
+import { ApiClient } from '../ApiClient'
 import { CompanyAccess, CompanyAccessLevel } from './CompanyAccess'
 
 export class CompanyAccessClient {
-  constructor(private client: ApiClientApi) {}
+  constructor(private client: ApiClient) {}
 
   readonly fetch = (siret: string) => {
     return this.client.get<CompanyAccess[]>(`/accesses/${siret}`)

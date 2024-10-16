@@ -1,9 +1,9 @@
 import { Id, Subscription, SubscriptionCreate } from '../../model'
+import { ApiClient } from '../ApiClient'
 import { PublicConstantClient } from '../constant/PublicConstantClient'
-import { ApiClientApi } from '../ApiClient'
 
 const fromApi =
-  (client: ApiClientApi) =>
+  (client: ApiClient) =>
   async (api: any): Promise<Subscription> => {
     const getDepartmentByCode = new PublicConstantClient(client)
       .getDepartmentByCode
@@ -23,7 +23,7 @@ const fromApi =
 const toApi = (subscription: Partial<SubscriptionCreate>): any => subscription
 
 export class SubscriptionClient {
-  constructor(private client: ApiClientApi) {}
+  constructor(private client: ApiClient) {}
 
   readonly list = (): Promise<Subscription[]> => {
     return this.client

@@ -1,8 +1,8 @@
+import { ApiClient } from '../ApiClient'
 import { CompanySearchResult } from './Company'
-import { ApiClientApi } from '../ApiClient'
 
 export class PublicCompanyClient {
-  constructor(private client: ApiClientApi) {}
+  constructor(private client: ApiClient) {}
 
   readonly searchCompaniesByIdentity = (
     identity: string,

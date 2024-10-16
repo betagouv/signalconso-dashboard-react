@@ -1,9 +1,9 @@
-import { User, UserToActivate } from './User'
-import { ApiClientApi } from '../ApiClient'
+import { ApiClient } from '../ApiClient'
 import { TokenInfo } from '../authenticate/Authenticate'
+import { User, UserToActivate } from './User'
 
 export class PublicUserClient {
-  constructor(private client: ApiClientApi) {}
+  constructor(private client: ApiClient) {}
 
   readonly activateAccount = (
     user: UserToActivate,

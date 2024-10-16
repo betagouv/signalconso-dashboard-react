@@ -1,5 +1,5 @@
-import { ApiClientApi } from '../ApiClient'
+import { ApiClient } from '../ApiClient'
 
 export class ConstantClient {
-  constructor(private client: ApiClientApi) {}
+  constructor(private client: ApiClient) {}
 }

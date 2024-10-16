@@ -1,14 +1,14 @@
+import { cleanObject } from '../../helper'
+import { Paginate } from '../../model'
+import { ApiClient } from '../ApiClient'
 import {
   ConsumerEmailResult,
   ConsumerEmailValidation,
   ConsumerEmailValidationSearch,
 } from './ConsumerEmailValidation'
-import { Paginate } from '../../model'
-import { cleanObject } from '../../helper'
-import { ApiClientApi } from '../ApiClient'
 
 export class ConsumerEmailValidationClient {
-  constructor(private client: ApiClientApi) {}
+  constructor(private client: ApiClient) {}
 
   readonly validate = (email: string) => {
     return this.client.post<ConsumerEmailResult>('/email-validation/validate', {
