@@ -6,7 +6,7 @@ import {
   formatLargeNumber,
   formatTime,
 } from './format'
-import { fr } from './localization/fr'
+import { fr } from './fr'
 
 const I18nContext = React.createContext<I18nContextShape>({} as any)
 

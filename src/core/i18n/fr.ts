@@ -1,25 +1,22 @@
 import { AssociationType } from 'feature/ReportedWebsites/SelectWebsiteIdentification/SelectWebsiteAssociation'
-import { config } from '../../../conf/config'
-import { DownloadType } from '../../../feature/Report/ReportDownloadAction'
-import { AsyncFileKind } from '../../client/async-file/AsyncFile'
-import { CompanyAccessLevel } from '../../client/company-access/CompanyAccess'
-import { Category } from '../../client/constant/Category'
-import { EmailValidationStatus } from '../../client/consumer-email-validation/ConsumerEmailValidation'
-import {
-  ReportResponseTypes,
-  ResponseEvaluation,
-} from '../../client/event/Event'
+import { config } from '../../conf/config'
+import { DownloadType } from '../../feature/Report/ReportDownloadAction'
+import { AsyncFileKind } from '../client/async-file/AsyncFile'
+import { CompanyAccessLevel } from '../client/company-access/CompanyAccess'
+import { Category } from '../client/constant/Category'
+import { EmailValidationStatus } from '../client/consumer-email-validation/ConsumerEmailValidation'
+import { ReportResponseTypes, ResponseEvaluation } from '../client/event/Event'
 import {
   ReportAdminActionType,
   ReportStatus,
   ReportStatusPro,
   ReportTag,
   ReportType,
-} from '../../client/report/Report'
+} from '../client/report/Report'
 import {
   IdentificationStatus,
   InvestigationStatus,
-} from '../../client/website/Website'
+} from '../client/website/Website'
 
 export const fr = {
   messages: {

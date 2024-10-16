@@ -1,5 +1,5 @@
 import { Badge, Box, Button, Icon } from '@mui/material'
-import { fr } from 'core/i18n/localization/fr'
+import { fr } from 'core/i18n/fr'
 import { siteMap } from 'core/siteMap'
 import { ReportResponseDetails } from 'feature/Reports/ReportResponseDetails'
 import React from 'react'
