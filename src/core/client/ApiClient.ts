@@ -24,13 +24,11 @@ interface ApiClientParams {
 export interface ApiClientApi {
   readonly baseUrl: string
   readonly get: <T>(uri: string, options?: RequestOption) => Promise<T>
-  readonly head: <T>(uri: string, options?: RequestOption) => Promise<T>
   readonly post: <T>(uri: string, options?: RequestOption) => Promise<T>
   readonly postGetPdf: (uri: string, options?: RequestOption) => Promise<Blob>
   readonly getBlob: (uri: string, options?: RequestOption) => Promise<Blob>
   readonly delete: <T>(uri: string, options?: RequestOption) => Promise<T>
   readonly put: <T>(uri: string, options?: RequestOption) => Promise<T>
-  readonly patch: <T>(uri: string, options?: RequestOption) => Promise<T>
 }
 
 interface ApiErrorDetails {
@@ -190,45 +188,38 @@ export class ApiClient {
     }
   }
 
-  readonly get = <T = any>(
+  readonly get = <T>(
     uri: string,
     options?: RequestOption,
   ): Promise<T> => {
     return this.request('GET', uri, options)
   }
 
-  readonly head = <T = any>(
+  readonly head = <T>(
     uri: string,
     options?: RequestOption,
   ): Promise<T> => {
     return this.request('HEAD', uri, options)
   }
 
-  readonly post = <T = any>(
+  readonly post = <T>(
     uri: string,
     options?: RequestOption,
   ): Promise<T> => {
     return this.request('POST', uri, options)
   }
 
-  readonly delete = <T = any>(
+  readonly delete = <T>(
     uri: string,
     options?: RequestOption,
   ): Promise<T> => {
     return this.request('DELETE', uri, options)
   }
 
-  readonly put = <T = any>(
+  readonly put = <T>(
     uri: string,
     options?: RequestOption,
   ): Promise<T> => {
     return this.request('PUT', uri, options)
-  }
-
-  readonly patch = <T = any>(
-    uri: string,
-    options?: RequestOption,
-  ): Promise<T> => {
-    return this.request('PATCH', uri, options)
   }
 }
