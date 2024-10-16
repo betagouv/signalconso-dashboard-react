@@ -9,7 +9,7 @@ import { useI18n } from '../../core/i18n'
 
 export const TestTools = () => {
   const { m } = useI18n()
-  const { apiSdk: api, connectedUser } = useConnectedContext()
+  const { api: api, connectedUser } = useConnectedContext()
   const { toastError } = useToast()
 
   const _emailCodes = useQuery({

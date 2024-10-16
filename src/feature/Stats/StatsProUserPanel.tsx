@@ -1,4 +1,3 @@
-import { useTheme } from '@mui/material'
 import { SimplifiedAsyncLineChart } from 'shared/Chart/LineChartWrappers'
 import { CleanWidePanel } from 'shared/Panel/simplePanels'
 import { Txt } from '../../alexlibs/mui-extension'
@@ -6,7 +5,7 @@ import { useConnectedContext } from '../../core/context/ConnectedContext'
 import { useI18n } from '../../core/i18n'
 
 export const StatsProUserPanel = () => {
-  const { apiSdk: api } = useConnectedContext()
+  const { api: api } = useConnectedContext()
   const { m } = useI18n()
   const ticks = 12
   return (

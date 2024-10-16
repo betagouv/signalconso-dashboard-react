@@ -10,7 +10,7 @@ import { ScButton } from '../../shared/Button'
 import { PeriodWithTimePicker } from '../../shared/PeriodWithTimePicker'
 
 export const ResendEmailsAdminTool = () => {
-  const { apiSdk: api } = useConnectedContext()
+  const { api: api } = useConnectedContext()
 
   const [periodValue, setPeriodValue] = useState<
     [Date | undefined, Date | undefined]

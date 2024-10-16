@@ -34,7 +34,7 @@ import { WebsiteTools } from './WebsiteTools'
 
 export const WebsitesInvestigation = () => {
   const { m, formatDate } = useI18n()
-  const { connectedUser, apiSdk } = useConnectedContext()
+  const { connectedUser, api: apiSdk } = useConnectedContext()
   const queryClient = useQueryClient()
 
   const _websiteWithCompany = useWebsiteWithCompanySearchQuery()

@@ -1,5 +1,5 @@
 import { CircularProgress } from '@mui/material'
-import { ApiProvider } from 'core/context/ApiContext'
+import { User } from 'core/model'
 import { LoginManagementResult } from 'core/useLoginManagement'
 import { LoginForm } from 'feature/Login/LoginForm'
 import { RegisterForm } from 'feature/Login/RegisterForm'
@@ -20,6 +20,7 @@ import { Companies } from './feature/Companies/Companies'
 import { CompaniesPro } from './feature/CompaniesPro/CompaniesPro'
 import { Company } from './feature/Company/Company'
 import { EmailValidation } from './feature/EmailValidation/EmailValidation'
+import { Engagements } from './feature/Engagement/Engagements'
 import { JoinNewsletter } from './feature/JoinNewsletter/JoinNewsletter'
 import { ModeEmploiDGCCRF } from './feature/ModeEmploiDGCCRF/ModeEmploiDGCCRF'
 import { ReportComponent } from './feature/Report/Report'
@@ -36,10 +37,8 @@ import { Subscriptions } from './feature/Subscriptions/Subscriptions'
 import { UserActivation } from './feature/Users/UserActivation'
 import { Users } from './feature/Users/Users'
 import { CenteredContent } from './shared/CenteredContent'
-import { Engagements } from './feature/Engagement/Engagements'
-import './style.css'
-import { User } from 'core/model'
 import { RefreshBanner } from './shared/RefreshBanner'
+import './style.css'
 
 export const AppRoutes = ({
   loginManagementResult,
@@ -144,14 +143,16 @@ function ConnectedRoutesSetup({
     [handleDetectedLogout],
   )
   return (
-    <ConnectedContextProvider {...{ connectedUser, setConnectedUser, apiSdk }}>
+    <ConnectedContextProvider
+      {...{ connectedUser, setConnectedUser, api: apiSdk }}
+    >
       <ProtectedRoutes />
     </ConnectedContextProvider>
   )
 }
 
 const ProtectedRoutes = () => {
-  const { apiSdk, connectedUser } = useConnectedContext()
+  const { connectedUser } = useConnectedContext()
 
   const location = useLocation()
   useEffect(() => {
@@ -162,7 +163,7 @@ const ProtectedRoutes = () => {
   }, [location])
 
   return (
-    <ApiProvider api={apiSdk}>
+    <>
       <RefreshBanner />
       <Routes>
         <Route path={siteMap.logged.tools.value} element={<Tools />} />
@@ -244,6 +245,6 @@ const ProtectedRoutes = () => {
           element={<Navigate replace to={siteMap.logged.reports()} />}
         />
       </Routes>
-    </ApiProvider>
+    </>
   )
 }

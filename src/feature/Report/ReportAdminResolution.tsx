@@ -31,7 +31,7 @@ export const ReportAdminResolution = ({
   onAdd,
 }: Props) => {
   const { m } = useI18n()
-  const { apiSdk } = useConnectedContext()
+  const { api: apiSdk } = useConnectedContext()
   const _removeReport = useMutation({
     mutationFn: (params: {
       id: Id

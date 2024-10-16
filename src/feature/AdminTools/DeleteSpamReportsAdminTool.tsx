@@ -8,7 +8,7 @@ import { ScButton } from '../../shared/Button'
 import { ScInput } from '../../shared/ScInput'
 
 export const DeleteSpamReportsAdminTool = () => {
-  const { apiSdk: api } = useConnectedContext()
+  const { api: api } = useConnectedContext()
 
   const { toastSuccess, toastError } = useToast()
 
