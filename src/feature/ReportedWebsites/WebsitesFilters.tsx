@@ -12,8 +12,8 @@ import {
   InvestigationStatus,
   WebsiteWithCompanySearch,
 } from '../../core/client/website/Website'
+import { useLayoutContext } from '../../core/context/LayoutContext'
 import { useI18n } from '../../core/i18n'
-import { useLayoutContext } from '../../core/Layout/LayoutContext'
 import { DialogInputRow } from '../../shared/DialogInputRow'
 import { Label } from '../../shared/Label'
 import { ScMultiSelect } from '../../shared/Select/MultiSelect'

@@ -1,8 +1,7 @@
-import * as React from 'react'
 import { Box, BoxProps, Icon } from '@mui/material'
-import { layoutConfig } from '../index'
 import { IconBtn } from '../../../alexlibs/mui-extension'
-import { useLayoutContext } from '../LayoutContext'
+import { useLayoutContext } from '../../context/LayoutContext'
+import { layoutConfig } from '../index'
 
 interface SidebarHeaderProps extends BoxProps {
   hidden?: boolean

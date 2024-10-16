@@ -1,14 +1,14 @@
 import { Icon, Menu, MenuItem } from '@mui/material'
+import React from 'react'
+import { Btn, IconBtn } from '../../alexlibs/mui-extension'
+import { config } from '../../conf/config'
+import { useLayoutContext } from '../context/LayoutContext'
+import { useI18n } from '../i18n'
+import { Header } from '../Layout/Header/Header'
+import { styleUtils } from '../theme'
 import logoGouvMobile from './gouv-mobile.svg'
 import logoDgccrf from './logo-dgccrf.png'
-import { config } from '../../conf/config'
 import logoSignalConso from './logo-signalconso.png'
-import { Btn, IconBtn } from '../../alexlibs/mui-extension'
-import React from 'react'
-import { useI18n } from '../i18n'
-import { useLayoutContext } from '../Layout/LayoutContext'
-import { styleUtils } from '../theme'
-import { Header } from '../Layout/Header/Header'
 
 const HeaderItem = ({ children, href }: { children: any; href: string }) => {
   return (

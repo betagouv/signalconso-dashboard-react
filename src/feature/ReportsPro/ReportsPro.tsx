@@ -1,7 +1,7 @@
 import { Badge, Box, Icon, MenuItem } from '@mui/material'
 import { useEffect, useMemo } from 'react'
 import { Alert, Btn, Fender, Txt, makeSx } from '../../alexlibs/mui-extension'
-import { useLayoutContext } from '../../core/Layout/LayoutContext'
+import { useLayoutContext } from '../../core/context/LayoutContext'
 import { useI18n } from '../../core/i18n'
 import { Datatable } from '../../shared/Datatable/Datatable'
 import { Page, PageTitle } from '../../shared/Page'
