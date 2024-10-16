@@ -34,14 +34,6 @@ export const buildConnectedApiSdk = ({
         headers,
       }),
     ),
-    publicConnected: new SignalConsoPublicSdk(
-      new ApiClient({
-        baseUrl,
-        headers,
-        withCredentials: true,
-        onDisconnected,
-      }),
-    ),
     secured: new SignalConsoSecuredSdk(
       new ApiClient({
         baseUrl,
