@@ -1,3 +1,4 @@
+import { apiHeaders, mainApiBaseUrl } from 'core/apiSdkInstances'
 import {
   CompanyAccessClient,
   CompanyClient,
@@ -25,34 +26,66 @@ import { IpBlacklistClient } from './ip-blacklist/IpBlacklistClient'
 import { SiretExtractorClient } from './siret-extractor/SiretExtractorClient'
 import { StatsClient } from './stats/StatsClient'
 
-export class SignalConsoSecuredSdk {
-  constructor(private client: ApiClient) {}
+export class SecuredApiSdk {
+  private client: ApiClient
+  admin: AdminClient
+  accesses: AccessesClient
+  website: WebsiteClient
+  reportedPhone: ReportedPhoneClient
+  constant: ConstantClient
+  subscription: SubscriptionClient
+  company: CompanyClient
+  consumerEmailValidation: ConsumerEmailValidationClient
+  authAttemptClient: AuthAttemptClient
+  consumerBlacklist: ConsumerBlacklistClient
+  ipBlacklist: IpBlacklistClient
+  stats: StatsClient
+  companyAccess: CompanyAccessClient
+  companyAccessToken: CompanyAccessTokenClient
+  reports: ReportsClient
+  events: EventClient
+  asyncFiles: AsyncFileClient
+  user: UserClient
+  document: SecuredFileClient
+  reportBlockedNotification: ReportBlockedNotificationClient
+  siretExtractor: SiretExtractorClient
+  barcode: BarcodeClient
+  engagement: EngagementClient
 
-  readonly admin = new AdminClient(this.client)
-  readonly accesses = new AccessesClient(this.client)
-  readonly website = new WebsiteClient(this.client)
-  readonly reportedPhone = new ReportedPhoneClient(this.client)
-  readonly constant = new ConstantClient(this.client)
-  readonly subscription = new SubscriptionClient(this.client)
-  readonly company = new CompanyClient(this.client)
-  readonly consumerEmailValidation = new ConsumerEmailValidationClient(
-    this.client,
-  )
-  readonly authAttemptClient = new AuthAttemptClient(this.client)
-  readonly consumerBlacklist = new ConsumerBlacklistClient(this.client)
-  readonly ipBlacklist = new IpBlacklistClient(this.client)
-  readonly stats = new StatsClient(this.client)
-  readonly companyAccess = new CompanyAccessClient(this.client)
-  readonly companyAccessToken = new CompanyAccessTokenClient(this.client)
-  readonly reports = new ReportsClient(this.client)
-  readonly events = new EventClient(this.client)
-  readonly asyncFiles = new AsyncFileClient(this.client)
-  readonly user = new UserClient(this.client)
-  readonly document = new SecuredFileClient(this.client)
-  readonly reportBlockedNotification = new ReportBlockedNotificationClient(
-    this.client,
-  )
-  readonly siretExtractor = new SiretExtractorClient(this.client)
-  readonly barcode = new BarcodeClient(this.client)
-  readonly engagement = new EngagementClient(this.client)
+  constructor({ onDisconnected }: { onDisconnected: () => void }) {
+    this.client = new ApiClient({
+      baseUrl: mainApiBaseUrl,
+      headers: apiHeaders,
+      withCredentials: true,
+      onDisconnected,
+    })
+
+    this.admin = new AdminClient(this.client)
+    this.accesses = new AccessesClient(this.client)
+    this.website = new WebsiteClient(this.client)
+    this.reportedPhone = new ReportedPhoneClient(this.client)
+    this.constant = new ConstantClient(this.client)
+    this.subscription = new SubscriptionClient(this.client)
+    this.company = new CompanyClient(this.client)
+    this.consumerEmailValidation = new ConsumerEmailValidationClient(
+      this.client,
+    )
+    this.authAttemptClient = new AuthAttemptClient(this.client)
+    this.consumerBlacklist = new ConsumerBlacklistClient(this.client)
+    this.ipBlacklist = new IpBlacklistClient(this.client)
+    this.stats = new StatsClient(this.client)
+    this.companyAccess = new CompanyAccessClient(this.client)
+    this.companyAccessToken = new CompanyAccessTokenClient(this.client)
+    this.reports = new ReportsClient(this.client)
+    this.events = new EventClient(this.client)
+    this.asyncFiles = new AsyncFileClient(this.client)
+    this.user = new UserClient(this.client)
+    this.document = new SecuredFileClient(this.client)
+    this.reportBlockedNotification = new ReportBlockedNotificationClient(
+      this.client,
+    )
+    this.siretExtractor = new SiretExtractorClient(this.client)
+    this.barcode = new BarcodeClient(this.client)
+    this.engagement = new EngagementClient(this.client)
+  }
 }

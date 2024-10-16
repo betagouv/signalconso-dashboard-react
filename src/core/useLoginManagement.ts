@@ -1,4 +1,4 @@
-import { apiPublicSdk } from 'core/apiSdkInstances'
+import { publicApiSdk } from 'core/apiSdkInstances'
 import { Dispatch, SetStateAction, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router'
 import { User } from './client/user/User'
@@ -35,7 +35,7 @@ export function useLoginManagement(): LoginManagementResult {
   useEffect(() => {
     async function fetchUserOnStartup() {
       try {
-        const user = await apiPublicSdk.authenticate.getUser()
+        const user = await publicApiSdk.authenticate.getUser()
         setConnectedUser(user)
       } catch (e) {
         console.log('User is not logged in')
@@ -49,7 +49,7 @@ export function useLoginManagement(): LoginManagementResult {
   async function login(login: string, password: string): Promise<User> {
     try {
       setIsLoggingIn(true)
-      const user = await apiPublicSdk.authenticate.login(login, password)
+      const user = await publicApiSdk.authenticate.login(login, password)
       setConnectedUser(user)
       return user
     } catch (e: unknown) {
@@ -67,7 +67,7 @@ export function useLoginManagement(): LoginManagementResult {
   ): Promise<void> {
     try {
       setIsRegistering(true)
-      await apiPublicSdk.authenticate.sendActivationLink(siret, token, email)
+      await publicApiSdk.authenticate.sendActivationLink(siret, token, email)
     } catch (e: unknown) {
       setRegisterError(e)
       throw e
@@ -83,7 +83,7 @@ export function useLoginManagement(): LoginManagementResult {
   }
 
   const logout = async () => {
-    const user = await apiPublicSdk.authenticate.logout()
+    const user = await publicApiSdk.authenticate.logout()
     handleDetectedLogout(user)
   }
 

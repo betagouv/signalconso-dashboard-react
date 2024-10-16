@@ -1,5 +1,5 @@
 import { useMutation } from '@tanstack/react-query'
-import { apiPublicSdk } from 'core/apiSdkInstances'
+import { publicApiSdk } from 'core/apiSdkInstances'
 import { validatePasswordComplexity } from 'core/helper/passwordComplexity'
 import { AlertContactSupport } from 'feature/Login/loggedOutComponents'
 import { useForm } from 'react-hook-form'
@@ -29,7 +29,7 @@ export const ResetPassword = () => {
   const { token } = useParams<{ token: Id }>()
   const _resetPassword = useMutation({
     mutationFn: (params: { password: string; token: string }) =>
-      apiPublicSdk.authenticate.resetPassword(params.password, params.token),
+      publicApiSdk.authenticate.resetPassword(params.password, params.token),
   })
   const history = useNavigate()
   const { toastError, toastSuccess } = useToast()
