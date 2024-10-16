@@ -1,6 +1,5 @@
 export * from './company-access/CompanyAccessClient'
 export * from './company/CompanyClient'
-export * from './constant/ConstantClient'
 export * from './consumer-email-validation/ConsumerEmailValidationClient'
 export * from './event/EventClient'
 export * from './report/ReportsClient'
