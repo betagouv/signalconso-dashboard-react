@@ -21,39 +21,7 @@ import {
   InvestigationStatus,
 } from '../../client/website/Website'
 
-const invalidDate = '-'
-
-const isDateValid = (d?: Date | any): boolean => {
-  return !!d && d instanceof Date && !isNaN(d.getTime())
-}
-
-const formatDate = (d?: Date): string => {
-  if (!isDateValid(d)) return invalidDate
-  return d!.toLocaleDateString()
-}
-
-const formatTime = (d?: Date): string => {
-  if (!isDateValid(d)) return invalidDate
-  return d!.toLocaleTimeString(navigator.language, {
-    hour: '2-digit',
-    minute: '2-digit',
-  })
-}
-
-const formatDateTime = (d?: Date): string => {
-  if (!isDateValid(d)) return invalidDate
-  return formatDate(d) + ' à ' + formatTime(d)
-}
-
-const formatLargeNumber = (n?: number): string => {
-  return n !== undefined && n !== null ? n.toLocaleString('fr-FR') : '-'
-}
-
 export const fr = {
-  formatDate,
-  formatTime,
-  formatDateTime,
-  formatLargeNumber,
   messages: {
     influencerIdentifiedTitle: 'Influenceur(se) identifié(e)',
     ReportCategoryDesc: {
