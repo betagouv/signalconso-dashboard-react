@@ -128,7 +128,7 @@ export class ReportsClient {
   readonly downloadAll = async (report: Report, origin?: FileOrigin) => {
     const baseQuery = `/reports/files?reportId=${report.id}`
     return this.client
-      .getBlob<any>(origin ? `${baseQuery}&origin=${origin}` : baseQuery)
+      .getBlob(origin ? `${baseQuery}&origin=${origin}` : baseQuery)
       .then((blob) =>
         directDownloadBlob(
           `${this.reportName(report)}-PJ`,
@@ -165,13 +165,13 @@ export class ReportsClient {
   readonly download = (ids: Id[]) => {
     // TODO Type it and maybe improve it
     return this.client
-      .getBlob<any>(`/reports/download`, { qs: { ids } })
+      .getBlob(`/reports/download`, { qs: { ids } })
       .then(directDownloadBlob('Signalement.pdf', 'application/pdf'))
   }
 
   readonly downloadZip = (report: Report) => {
     return this.client
-      .getBlob<any>(`/reports/download-with-attachments/${report.id}`)
+      .getBlob(`/reports/download-with-attachments/${report.id}`)
       .then((blob) =>
         directDownloadBlob(
           `${this.reportName(report)}`,
@@ -218,7 +218,7 @@ export class ReportsClient {
 
   readonly generateConsumerNotificationAsPDF = (reportId: Id) => {
     return this.client
-      .getBlob<any>(`/reports/${reportId}/consumer-email-pdf`)
+      .getBlob(`/reports/${reportId}/consumer-email-pdf`)
       .then(
         directDownloadBlob(
           'accuse-reception-consommateur.pdf',
