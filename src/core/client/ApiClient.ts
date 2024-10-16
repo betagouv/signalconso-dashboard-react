@@ -37,7 +37,7 @@ export class ApiError extends Error {
   }
 }
 
-type Method = 'POST' | 'GET' | 'PUT' | 'DELETE' | 'PATCH' | 'HEAD'
+type Method = 'POST' | 'GET' | 'PUT' | 'DELETE'
 
 export class ApiClient {
   readonly baseUrl: string
@@ -162,10 +162,6 @@ export class ApiClient {
 
   get<T>(uri: string, options?: RequestOptions): Promise<T> {
     return this.doAxiosRequest('GET', uri, options)
-  }
-
-  head<T>(uri: string, options?: RequestOptions): Promise<T> {
-    return this.doAxiosRequest('HEAD', uri, options)
   }
 
   post<T>(uri: string, options?: RequestOptions): Promise<T> {
