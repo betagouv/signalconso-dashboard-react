@@ -2,7 +2,6 @@ import { apiHeaders, mainApiBaseUrl } from 'core/apiSdkInstances'
 import {
   CompanyAccessClient,
   CompanyClient,
-  ConstantClient,
   EventClient,
   ReportedPhoneClient,
   ReportsClient,
@@ -32,7 +31,6 @@ export class SecuredApiSdk {
   accesses: AccessesClient
   website: WebsiteClient
   reportedPhone: ReportedPhoneClient
-  constant: ConstantClient
   subscription: SubscriptionClient
   company: CompanyClient
   consumerEmailValidation: ConsumerEmailValidationClient
@@ -64,7 +62,6 @@ export class SecuredApiSdk {
     this.accesses = new AccessesClient(this.client)
     this.website = new WebsiteClient(this.client)
     this.reportedPhone = new ReportedPhoneClient(this.client)
-    this.constant = new ConstantClient(this.client)
     this.subscription = new SubscriptionClient(this.client)
     this.company = new CompanyClient(this.client)
     this.consumerEmailValidation = new ConsumerEmailValidationClient(
