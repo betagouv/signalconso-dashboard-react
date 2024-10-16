@@ -1,5 +1,5 @@
 import { useMutation } from '@tanstack/react-query'
-import { apiPublicSdk } from 'core/ApiSdkInstance'
+import { apiPublicSdk } from 'core/apiSdkInstances'
 import { validatePasswordComplexity } from 'core/helper/passwordComplexity'
 import { AlertContactSupport } from 'feature/Login/loggedOutComponents'
 import { useForm } from 'react-hook-form'

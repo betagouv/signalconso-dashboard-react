@@ -7,7 +7,7 @@ import {
   TextField,
 } from '@mui/material'
 import { useMutation, useQuery } from '@tanstack/react-query'
-import { apiPublicSdk } from 'core/ApiSdkInstance'
+import { apiPublicSdk } from 'core/apiSdkInstances'
 import { validatePasswordComplexity } from 'core/helper/passwordComplexity'
 import { useMemo } from 'react'
 import { Controller, useForm } from 'react-hook-form'

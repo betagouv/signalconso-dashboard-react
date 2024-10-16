@@ -7,7 +7,7 @@ import { WelcomePage } from 'feature/Login/WelcomePage'
 import { useEffect, useMemo } from 'react'
 import { Navigate, Routes, useLocation } from 'react-router'
 import { Route } from 'react-router-dom'
-import { buildConnectedApiSdk } from './core/ApiSdkInstance'
+import { buildConnectedApiSdk } from './core/apiSdkInstances'
 import {
   ConnectedContextProvider,
   useConnectedContext,
