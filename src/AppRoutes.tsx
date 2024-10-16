@@ -7,7 +7,7 @@ import { WelcomePage } from 'feature/Login/WelcomePage'
 import { useEffect, useMemo } from 'react'
 import { Navigate, Routes, useLocation } from 'react-router'
 import { Route } from 'react-router-dom'
-import { apiPublicSdk, buildConnectedApiSdk } from './core/ApiSdkInstance'
+import { buildConnectedApiSdk } from './core/ApiSdkInstance'
 import {
   ConnectedContextProvider,
   useConnectedContext,
@@ -61,20 +61,11 @@ export const AppRoutes = ({
     <Routes>
       <Route
         path={siteMap.loggedout.emailValidation}
-        element={
-          <EmailValidation
-            onSaveUser={setConnectedUser}
-            onValidateEmail={apiPublicSdk.authenticate.validateEmail}
-          />
-        }
+        element={<EmailValidation onSaveUser={setConnectedUser} />}
       />
       <Route
         path={siteMap.loggedout.resetPassword()}
-        element={
-          <ResetPassword
-            onResetPassword={apiPublicSdk.authenticate.resetPassword}
-          />
-        }
+        element={<ResetPassword />}
       />
       <Route
         path={siteMap.loggedout.activatePro()}
