@@ -1,16 +1,15 @@
 import { Id, Subscription, SubscriptionCreate } from '../../model'
 import { ApiClient } from '../ApiClient'
-import { SignalConsoPublicSdk } from '../SignalConsoPublicSdk'
+import { PublicApiSdk } from '../PublicApiSdk'
 
 const fromApi =
-  (client: ApiClient) =>
+  () =>
   async (
     // badly named : I think this is supposed to be the subscription object raw from the api
     api: any,
   ): Promise<Subscription> => {
     // completely silly : we instantiate the whole Sdk class, just to get something that is actually hardcoded underneath
-    const getDepartmentByCode = new SignalConsoPublicSdk(client).constant
-      .getDepartmentByCode
+    const getDepartmentByCode = new PublicApiSdk().constant.getDepartmentByCode
     const departments = await Promise.all(
       (api.departments || []).map(getDepartmentByCode),
     )
@@ -32,13 +31,11 @@ export class SubscriptionClient {
   readonly list = (): Promise<Subscription[]> => {
     return this.client
       .get<Subscription[]>(`/subscriptions`)
-      .then((_) => Promise.all(_.map(fromApi(this.client))))
+      .then((_) => Promise.all(_.map(fromApi())))
   }
 
   readonly get = (id: Id) => {
-    return this.client
-      .get<Subscription>(`/subscriptions/${id}`)
-      .then(fromApi(this.client))
+    return this.client.get<Subscription>(`/subscriptions/${id}`).then(fromApi())
   }
 
   readonly create = (
@@ -54,13 +51,13 @@ export class SubscriptionClient {
   ) => {
     return this.client
       .post<Subscription>(`/subscriptions`, { body: toApi(body) })
-      .then(fromApi(this.client))
+      .then(fromApi())
   }
 
   readonly update = (id: Id, body: Partial<SubscriptionCreate>) => {
     return this.client
       .put<Subscription>(`/subscriptions/${id}`, { body: toApi(body) })
-      .then(fromApi(this.client))
+      .then(fromApi())
   }
 
   readonly remove = (id: Id) => {

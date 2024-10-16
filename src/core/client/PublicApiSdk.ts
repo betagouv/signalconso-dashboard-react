@@ -1,3 +1,4 @@
+import { apiHeaders, mainApiBaseUrl } from 'core/apiSdkInstances'
 import {
   Country,
   FileOrigin,
@@ -14,8 +15,11 @@ import { CategoriesByStatus } from './constant/Category'
 import { rawGeoAreas } from './constant/geoAreas'
 import { rawRegions } from './constant/regions'
 
-export class SignalConsoPublicSdk {
-  constructor(private apiClient: ApiClient) {}
+export class PublicApiSdk {
+  private apiClient = new ApiClient({
+    baseUrl: mainApiBaseUrl,
+    headers: apiHeaders,
+  })
 
   user = {
     activateAccount: (

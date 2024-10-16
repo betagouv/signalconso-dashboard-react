@@ -7,7 +7,7 @@ import { WelcomePage } from 'feature/Login/WelcomePage'
 import { useEffect, useMemo } from 'react'
 import { Navigate, Routes, useLocation } from 'react-router'
 import { Route } from 'react-router-dom'
-import { buildConnectedApiSdk } from './core/apiSdkInstances'
+import { buildConnectedApiSdks } from './core/apiSdkInstances'
 import {
   ConnectedContextProvider,
   useConnectedContext,
@@ -121,7 +121,7 @@ function ConnectedRoutesSetup({
 }) {
   const apiSdk = useMemo(
     () =>
-      buildConnectedApiSdk({
+      buildConnectedApiSdks({
         onDisconnected: handleDetectedLogout,
       }),
     [handleDetectedLogout],

@@ -1,5 +1,5 @@
 import { useMutation } from '@tanstack/react-query'
-import { apiPublicSdk } from 'core/apiSdkInstances'
+import { publicApiSdk } from 'core/apiSdkInstances'
 import { useEffect, useMemo } from 'react'
 import { useLocation } from 'react-router'
 import { NavLink } from 'react-router-dom'
@@ -25,7 +25,7 @@ interface FenderProps {
 export const EmailValidation = ({ onSaveUser }: Props) => {
   const { m } = useI18n()
   const _validateEmail = useMutation({
-    mutationFn: apiPublicSdk.authenticate.validateEmail,
+    mutationFn: publicApiSdk.authenticate.validateEmail,
   })
   const { search } = useLocation()
 

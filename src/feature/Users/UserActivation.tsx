@@ -7,7 +7,7 @@ import {
   TextField,
 } from '@mui/material'
 import { useMutation, useQuery } from '@tanstack/react-query'
-import { apiPublicSdk } from 'core/apiSdkInstances'
+import { publicApiSdk } from 'core/apiSdkInstances'
 import { validatePasswordComplexity } from 'core/helper/passwordComplexity'
 import { useMemo } from 'react'
 import { Controller, useForm } from 'react-hook-form'
@@ -57,7 +57,7 @@ export const UserActivation = ({ onUserActivated }: Props) => {
       token: string
       companySiret?: string
     }) =>
-      apiPublicSdk.user.activateAccount(
+      publicApiSdk.user.activateAccount(
         params.user,
         params.token,
         params.companySiret,
@@ -83,7 +83,7 @@ export const UserActivation = ({ onUserActivated }: Props) => {
   )
   const _tokenInfo = useQuery({
     queryKey: FetchTokenInfoQueryKeys(urlToken, siret),
-    queryFn: () => apiPublicSdk.user.fetchTokenInfo(urlToken, siret),
+    queryFn: () => publicApiSdk.user.fetchTokenInfo(urlToken, siret),
   })
 
   const onSubmit = (form: UserActivationForm) => {
