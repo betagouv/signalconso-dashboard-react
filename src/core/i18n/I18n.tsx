@@ -19,7 +19,6 @@ export interface I18nContextProps {
   m: (typeof fr)['messages']
   availableLangs: AppLang[]
   formatLargeNumber: (typeof fr)['formatLargeNumber']
-  formatDuration: (typeof fr)['formatDuration']
   formatDate: (typeof fr)['formatDate']
   dateFromNow: (typeof fr)['dateFromNow']
   formatTime: (typeof fr)['formatTime']
