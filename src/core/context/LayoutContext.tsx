@@ -8,14 +8,14 @@ import {
   useState,
 } from 'react'
 
-const LayoutContext = createContext<UseLayoutContextProps>(
-  {} as UseLayoutContextProps,
+const LayoutContext = createContext<LayoutContextShape>(
+  {} as LayoutContextShape,
 )
 
 // "Mobile width" is equivalent to Tailwinds's sm and lower
 const mobileBreakpoint = 768
 
-interface UseLayoutContextProps {
+interface LayoutContextShape {
   sidebarOpen: boolean
   setSidebarOpen: Dispatch<SetStateAction<boolean>>
   isMobileWidth: boolean
@@ -58,6 +58,6 @@ function getWindowWidth(): number {
   return window.innerWidth
 }
 
-export const useLayoutContext = (): UseLayoutContextProps => {
-  return useContext<UseLayoutContextProps>(LayoutContext)
+export const useLayoutContext = (): LayoutContextShape => {
+  return useContext<LayoutContextShape>(LayoutContext)
 }
