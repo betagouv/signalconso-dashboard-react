@@ -1,8 +1,13 @@
+import { CompanySearchResult } from 'core/model'
 import { ApiClient } from './ApiClient'
-import { PublicCompanyClient } from './company/PublicCompanyClient'
 
 export class CompanyPublicSdk {
-  constructor(private client: ApiClient) {}
+  constructor(private apiClient: ApiClient) {}
 
-  readonly company = new PublicCompanyClient(this.client)
+  searchCompaniesByIdentity = (identity: string, openOnly: boolean) => {
+    return this.apiClient.get<CompanySearchResult[]>(
+      `/companies/search/${identity}?openOnly=${openOnly}`,
+      {},
+    )
+  }
 }
