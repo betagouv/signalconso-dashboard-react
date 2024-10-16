@@ -1,6 +1,6 @@
 import { LoginManagementResult } from 'core/useLoginManagement'
 import React, { ReactNode, useContext } from 'react'
-import { ConnectedApiSdk } from '../ApiSdkInstance'
+import { ConnectedApiSdk } from '../apiSdkInstances'
 import { User } from '../client/user/User'
 
 export type ConnectedContext = {

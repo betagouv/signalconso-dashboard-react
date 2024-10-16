@@ -1,6 +1,6 @@
 import { TextField } from '@mui/material'
 import { useMutation } from '@tanstack/react-query'
-import { apiPublicSdk } from 'core/ApiSdkInstance'
+import { apiPublicSdk } from 'core/apiSdkInstances'
 import { ReactElement, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { Alert, Txt } from '../../alexlibs/mui-extension'

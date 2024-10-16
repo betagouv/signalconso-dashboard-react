@@ -1,4 +1,4 @@
-import { apiPublicSdk } from 'core/ApiSdkInstance'
+import { apiPublicSdk } from 'core/apiSdkInstances'
 import { Dispatch, SetStateAction, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router'
 import { User } from './client/user/User'

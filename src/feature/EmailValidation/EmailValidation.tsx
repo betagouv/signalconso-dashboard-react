@@ -1,5 +1,5 @@
 import { useMutation } from '@tanstack/react-query'
-import { apiPublicSdk } from 'core/ApiSdkInstance'
+import { apiPublicSdk } from 'core/apiSdkInstances'
 import { useEffect, useMemo } from 'react'
 import { useLocation } from 'react-router'
 import { NavLink } from 'react-router-dom'
