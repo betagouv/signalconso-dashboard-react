@@ -14,8 +14,6 @@ import { CategoriesByStatus } from './constant/Category'
 import { rawGeoAreas } from './constant/geoAreas'
 import { rawRegions } from './constant/regions'
 
-// This file uses a weird getter pattern
-// Nothing to worry about, it's just a trick to organize the methods into "namespaces" within the same class
 export class SignalConsoPublicSdk {
   constructor(private apiClient: ApiClient) {}
 
@@ -58,20 +56,18 @@ export class SignalConsoPublicSdk {
     },
   }
 
-  public get constant() {
-    return {
-      getCountries: () => this.apiClient.get<Country[]>(`/constants/countries`),
-      getCategoriesByStatus: () =>
-        this.apiClient.get<CategoriesByStatus>(`/constants/categoriesByStatus`),
-      getRegions: () => {
-        // silly async call simulation, in case it case it gets moved to the API one day... (won't happen)
-        return Promise.resolve(regions)
-      },
-      getDepartmentByCode: (code: string) => {
-        // silly async call simulation, in case it case it gets moved to the API one day... (won't happen)
-        return Promise.resolve(geoAreas.find((_) => _.code === code))
-      },
-    }
+  constant = {
+    getCountries: () => this.apiClient.get<Country[]>(`/constants/countries`),
+    getCategoriesByStatus: () =>
+      this.apiClient.get<CategoriesByStatus>(`/constants/categoriesByStatus`),
+    getRegions: () => {
+      // silly async call simulation, in case it case it gets moved to the API one day... (won't happen)
+      return Promise.resolve(regions)
+    },
+    getDepartmentByCode: (code: string) => {
+      // silly async call simulation, in case it case it gets moved to the API one day... (won't happen)
+      return Promise.resolve(geoAreas.find((_) => _.code === code))
+    },
   }
 
   authenticate = {
@@ -131,25 +127,23 @@ export class SignalConsoPublicSdk {
     },
   }
 
-  public get document() {
-    return {
-      getLink: (file: UploadedFile) =>
-        `${this.apiClient.baseUrl}/reports/files/${file.id}/${encodeURI(
-          file.filename,
-        )}`,
+  document = {
+    getLink: (file: UploadedFile) =>
+      `${this.apiClient.baseUrl}/reports/files/${file.id}/${encodeURI(
+        file.filename,
+      )}`,
 
-      upload: (file: File, origin: FileOrigin) => {
-        const fileFormData: FormData = new FormData()
-        fileFormData.append('reportFile', file, file.name)
-        fileFormData.append('reportFileOrigin', origin)
-        // We need to put manually the header since axios 1.x https://github.com/axios/axios/issues/5556
-        // There are other ways but this is the quickest
-        return this.apiClient.post<UploadedFile>(`reports/files`, {
-          body: fileFormData,
-          headers: { 'Content-Type': 'multipart/form-data' },
-        })
-      },
-    }
+    upload: (file: File, origin: FileOrigin) => {
+      const fileFormData: FormData = new FormData()
+      fileFormData.append('reportFile', file, file.name)
+      fileFormData.append('reportFileOrigin', origin)
+      // We need to put manually the header since axios 1.x https://github.com/axios/axios/issues/5556
+      // There are other ways but this is the quickest
+      return this.apiClient.post<UploadedFile>(`reports/files`, {
+        body: fileFormData,
+        headers: { 'Content-Type': 'multipart/form-data' },
+      })
+    },
   }
 }
 

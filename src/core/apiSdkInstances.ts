@@ -28,7 +28,7 @@ export const buildConnectedApiSdk = ({
 }) => {
   return {
     public: apiPublicSdk,
-    companySdk: new CompanyPublicSdk(
+    companies: new CompanyPublicSdk(
       new ApiClient({
         baseUrl: companyBaseUrl,
         headers,
