@@ -1,5 +1,5 @@
 import { Box, Checkbox, Theme, useTheme } from '@mui/material'
-import { I18nContextShape } from 'core/i18n/I18n'
+import { I18nContextShape } from 'core/i18n/i18nContext'
 import { memo, useMemo, useState } from 'react'
 import {
   CartesianGrid,
