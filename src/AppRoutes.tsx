@@ -122,10 +122,7 @@ function ConnectedRoutesSetup({
   const apiSdk = useMemo(
     () =>
       buildConnectedApiSdk({
-        onDisconnected: () => {
-          console.warn('User seems logged out.')
-          handleDetectedLogout()
-        },
+        onDisconnected: handleDetectedLogout,
       }),
     [handleDetectedLogout],
   )
