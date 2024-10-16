@@ -10,7 +10,7 @@ import {
   ReportTagsDistribution,
   SimpleStat,
 } from '../model'
-import { UseQueryOpts } from './types'
+import { UseQueryOpts } from './UseQueryOpts'
 
 export const useGetResponseReviewsQuery = (
   id: Id,

@@ -5,8 +5,8 @@ import { ReportNodes } from '../client/report/ReportNode'
 import { ReportNodeSearch } from '../client/report/ReportNodeSearch'
 import { useApiContext } from '../context/ApiContext'
 import { Id, PaginatedFilters, ReportSearch } from '../model'
+import { UseQueryOpts } from './UseQueryOpts'
 import { useQueryPaginate } from './UseQueryPaginate'
-import { UseQueryOpts } from './types'
 
 export const GetReportQueryKeys = (id: Id) => ['reports_getById', id]
 const GetReviewOnReportResponseQueryKeys = (id: string) => [

@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 import { useApiContext } from '../context/ApiContext'
-import { UseQueryOpts } from './types'
 import { IdentificationStatus, InvestigationStatus } from '../model'
+import { UseQueryOpts } from './UseQueryOpts'
 import { useQueryPaginate } from './UseQueryPaginate'
 
 const ListInvestigationStatusKeys = ['website_listInvestigationStatus']

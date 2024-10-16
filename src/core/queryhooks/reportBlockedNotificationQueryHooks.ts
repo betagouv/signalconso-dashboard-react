@@ -1,7 +1,7 @@
-import { UseQueryOpts } from './types'
-import { useApiContext } from '../context/ApiContext'
 import { useQuery } from '@tanstack/react-query'
 import { BlockedReportNotification } from '../client/blocked-report-notifications/BlockedReportNotification'
+import { useApiContext } from '../context/ApiContext'
+import { UseQueryOpts } from './UseQueryOpts'
 
 export const ListReportBlockedNotificationsQueryKeys = [
   'reportBlockedNotification_fetch',
