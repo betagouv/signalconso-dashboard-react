@@ -1,5 +1,4 @@
 import { dateToApiDate } from '../../helper'
-import { ApiSdkLogger } from '../../helper/Logger'
 import {
   ApiHostWithReportCount,
   Country,
@@ -44,7 +43,7 @@ const hostReportFilter2QueryString = (
       limit: limit !== undefined ? limit + '' : undefined,
     }
   } catch (e) {
-    ApiSdkLogger.error(
+    console.error(
       'Caught error on "hostReportFilter2QueryString"',
       hostReport,
       e,

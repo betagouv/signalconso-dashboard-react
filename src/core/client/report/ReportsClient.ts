@@ -5,7 +5,6 @@ import {
   directDownloadBlob,
   wrap404AsNull,
 } from '../../helper'
-import { ApiSdkLogger } from '../../helper/Logger'
 import {
   CompanySearchResult,
   ConsumerReview,
@@ -92,7 +91,7 @@ export const reportFilter2QueryString = (
         : null),
     }
   } catch (e) {
-    ApiSdkLogger.error('Caught error on "reportFilter2QueryString"', report, e)
+    console.error('Caught error on "reportFilter2QueryString"', report, e)
     return {}
   }
 }
