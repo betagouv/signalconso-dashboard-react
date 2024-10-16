@@ -2,7 +2,7 @@ import { Box, BoxProps, SwipeableDrawer } from '@mui/material'
 import { useEffect } from 'react'
 import { useLayoutContext } from '../../context/LayoutContext'
 import { useI18n } from '../../i18n'
-import { layoutConfig } from '../index'
+import { layoutConfig } from '../layoutConfig'
 import { SidebarBody } from './SidebarBody'
 import { SidebarHeader } from './SidebarHeader'
 

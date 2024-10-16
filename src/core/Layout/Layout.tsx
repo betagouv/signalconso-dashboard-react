@@ -4,7 +4,7 @@ import {
   LayoutContextProvider,
   useLayoutContext,
 } from '../context/LayoutContext'
-import { layoutConfig } from './index'
+import { layoutConfig } from './layoutConfig'
 
 interface LayoutProps {
   sidebar?: ReactElement<any>

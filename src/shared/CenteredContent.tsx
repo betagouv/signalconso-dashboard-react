@@ -1,4 +1,4 @@
-import { layoutConfig } from 'core/Layout'
+import { layoutConfig } from 'core/Layout/layoutConfig'
 import { ReactNode } from 'react'
 
 interface Props {
