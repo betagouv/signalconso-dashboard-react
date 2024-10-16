@@ -1,11 +1,16 @@
-import axios, { AxiosResponse, ResponseType, isAxiosError } from 'axios'
+import axios, {
+  AxiosInstance,
+  AxiosResponse,
+  ResponseType,
+  isAxiosError,
+} from 'axios'
 import * as qs from 'qs'
 
 export type ApiClientHeaders = {
   'Content-Type'?: 'multipart/form-data' | 'application/json'
   Accept?: 'application/json'
 }
-interface RequestOption {
+interface RequestOptions {
   readonly qs?: unknown
   readonly headers?: ApiClientHeaders
   readonly body?: unknown
@@ -35,17 +40,11 @@ export class ApiError extends Error {
 type Method = 'POST' | 'GET' | 'PUT' | 'DELETE' | 'PATCH' | 'HEAD'
 
 export class ApiClient {
-  private readonly request: (
-    method: Method,
-    url: string,
-    options?: RequestOption,
-  ) => Promise<any>
-
-  readonly postGetPdf: (url: string, options?: RequestOption) => Promise<Blob>
-
-  readonly getBlob: (url: string, options?: RequestOption) => Promise<Blob>
-
   readonly baseUrl: string
+  private readonly headers?: ApiClientHeaders
+  private readonly withCredentials?: boolean
+  private readonly onDisconnected?: () => void
+  private readonly axosClient: AxiosInstance
 
   constructor({
     baseUrl,
@@ -59,140 +58,143 @@ export class ApiClient {
     onDisconnected?: () => void
   }) {
     this.baseUrl = baseUrl
-
-    const client = axios.create({
+    this.headers = headers
+    this.withCredentials = withCredentials
+    this.onDisconnected = onDisconnected
+    this.axosClient = axios.create({
       baseURL: baseUrl,
       headers: { ...headers },
     })
+  }
 
-    this.request = async (
-      method: Method,
-      url: string,
-      options?: RequestOption,
-    ) => {
-      const builtOptions = await ApiClient.buildOptions(options, headers)
-      return client
-        .request({
-          method,
-          url,
-          headers: builtOptions?.headers,
-          params: options?.qs,
-          data: options?.body,
-          withCredentials: options?.withCredentials || withCredentials,
-          paramsSerializer: (params) =>
-            qs.stringify(params, { arrayFormat: 'repeat' }),
-        })
-        .then((_: AxiosResponse) => _.data)
-        .catch((_: any) => {
-          if (_.response && _.response.data) {
-            // here we're reading the error structure often sent by the API
-            // but not always ! the api is inconsistent (plus we have multiple apis now...)
-            const message =
-              _.response.data.details ??
-              _.response.data.timeout ??
-              JSON.stringify(_.response.data)
-            throw new ApiError(message, {
-              code: _.response.status,
-              id: _.response.data.type,
-              error: _,
-            })
-          } else if (isAxiosError(_)) {
-            if (_.code === 'ERR_NETWORK') {
-              throw new ApiError(
-                `SignalConso est inaccessible, veuillez vérifier votre connexion.`,
-                {
-                  error: _,
-                },
-              )
-            } else {
-              // Fallback for a general HTTP error with a status code
-              const status = _.response?.status
-              if (status !== undefined) {
-                const statusText = _.response?.statusText
-                throw new ApiError(`Http error ${status} ${statusText}`, {
-                  code: status,
-                  error: _,
-                })
-              }
-              // Then fallback to the very general error
-            }
-          }
-          throw new ApiError(`Something not caught went wrong`, {
+  private doAxiosRequest(
+    method: Method,
+    url: string,
+    options?: RequestOptions,
+  ): Promise<any> {
+    const builtOptions = buildOptions(options, this.headers)
+    return this.axosClient
+      .request({
+        method,
+        url,
+        headers: builtOptions?.headers,
+        params: options?.qs,
+        data: options?.body,
+        withCredentials: options?.withCredentials || this.withCredentials,
+        paramsSerializer: (params) =>
+          qs.stringify(params, { arrayFormat: 'repeat' }),
+      })
+      .then((_: AxiosResponse) => _.data)
+      .catch((_: any) => {
+        if (_.response && _.response.data) {
+          // here we're reading the error structure often sent by the API
+          // but not always ! the api is inconsistent (plus we have multiple apis now...)
+          const message =
+            _.response.data.details ??
+            _.response.data.timeout ??
+            JSON.stringify(_.response.data)
+          throw new ApiError(message, {
+            code: _.response.status,
+            id: _.response.data.type,
             error: _,
           })
-        })
-        .catch((e: ApiError) => {
-          const scErrorCode = e.details.id
-          if (scErrorCode && scErrorCode === 'SC-AUTH-BROKEN') {
-            onDisconnected?.()
+        } else if (isAxiosError(_)) {
+          if (_.code === 'ERR_NETWORK') {
+            throw new ApiError(
+              `SignalConso est inaccessible, veuillez vérifier votre connexion.`,
+              {
+                error: _,
+              },
+            )
+          } else {
+            // Fallback for a general HTTP error with a status code
+            const status = _.response?.status
+            if (status !== undefined) {
+              const statusText = _.response?.statusText
+              throw new ApiError(`Http error ${status} ${statusText}`, {
+                code: status,
+                error: _,
+              })
+            }
+            // Then fallback to the very general error
           }
-          throw e
+        }
+        throw new ApiError(`Something not caught went wrong`, {
+          error: _,
         })
-    }
+      })
+      .catch((e: ApiError) => {
+        const scErrorCode = e.details.id
+        if (scErrorCode && scErrorCode === 'SC-AUTH-BROKEN') {
+          this.onDisconnected?.()
+        }
+        throw e
+      })
+  }
 
-    /**
-     * TODO(Alex) Didn't find any way to download pdf with axios so I did it using fetch(), but it should exist.
-     */
-    const requestUsingFetchApi = async (
-      method: Method,
-      url: string,
-      options?: RequestOption,
-    ) => {
-      const builtOptions = await ApiClient.buildOptions(options, headers)
-      return fetch(
-        baseUrl +
-          url +
-          (options?.qs
-            ? `?${qs.stringify(options.qs, { arrayFormat: 'repeat' })}`
-            : ''),
-        {
-          method,
-          headers: builtOptions?.headers,
-          body: builtOptions.body
-            ? JSON.stringify(builtOptions?.body)
+  // TODO(Alex) Didn't find any way to download pdf with axios so I did it using fetch(), but it should exist.
+  // note: this means that here we do not have the proper error handling ???
+  private async doRequestUsingFetch(
+    method: Method,
+    url: string,
+    options?: RequestOptions,
+  ) {
+    const builtOptions = buildOptions(options, this.headers)
+    return fetch(
+      this.baseUrl +
+        url +
+        (options?.qs
+          ? `?${qs.stringify(options.qs, { arrayFormat: 'repeat' })}`
+          : ''),
+      {
+        method,
+        headers: builtOptions?.headers,
+        body: builtOptions.body
+          ? JSON.stringify(builtOptions?.body)
+          : undefined,
+        credentials:
+          options?.withCredentials || this.withCredentials
+            ? 'include'
             : undefined,
-          credentials:
-            options?.withCredentials || withCredentials ? 'include' : undefined,
-        },
-      )
-    }
-
-    this.postGetPdf = async (url: string, options?: RequestOption) => {
-      return requestUsingFetchApi('POST', url, options).then((_) => _.blob())
-    }
-
-    this.getBlob = async (url: string, options?: RequestOption) => {
-      return requestUsingFetchApi('GET', url, options).then((_) => _.blob())
-    }
+      },
+    )
   }
 
-  private static readonly buildOptions = async (
-    options?: RequestOption,
-    headers?: ApiClientHeaders,
-  ): Promise<RequestOption> => {
-    return {
-      ...options,
-      headers: { ...headers, ...options?.headers },
-    }
+  get<T>(uri: string, options?: RequestOptions): Promise<T> {
+    return this.doAxiosRequest('GET', uri, options)
   }
 
-  readonly get = <T>(uri: string, options?: RequestOption): Promise<T> => {
-    return this.request('GET', uri, options)
+  head<T>(uri: string, options?: RequestOptions): Promise<T> {
+    return this.doAxiosRequest('HEAD', uri, options)
   }
 
-  readonly head = <T>(uri: string, options?: RequestOption): Promise<T> => {
-    return this.request('HEAD', uri, options)
+  post<T>(uri: string, options?: RequestOptions): Promise<T> {
+    return this.doAxiosRequest('POST', uri, options)
   }
 
-  readonly post = <T>(uri: string, options?: RequestOption): Promise<T> => {
-    return this.request('POST', uri, options)
+  delete<T>(uri: string, options?: RequestOptions): Promise<T> {
+    return this.doAxiosRequest('DELETE', uri, options)
   }
 
-  readonly delete = <T>(uri: string, options?: RequestOption): Promise<T> => {
-    return this.request('DELETE', uri, options)
+  put<T>(uri: string, options?: RequestOptions): Promise<T> {
+    return this.doAxiosRequest('PUT', uri, options)
   }
 
-  readonly put = <T>(uri: string, options?: RequestOption): Promise<T> => {
-    return this.request('PUT', uri, options)
+  postGetPdf(url: string, options?: RequestOptions) {
+    return this.doRequestUsingFetch('POST', url, options).then((_) => _.blob())
+  }
+
+  getBlob(url: string, options?: RequestOptions) {
+    return this.doRequestUsingFetch('GET', url, options).then((_) => _.blob())
+  }
+}
+
+function buildOptions(
+  options?: RequestOptions,
+  headers?: ApiClientHeaders,
+): RequestOptions {
+  return {
+    ...options,
+    headers: { ...headers, ...options?.headers },
   }
 }
