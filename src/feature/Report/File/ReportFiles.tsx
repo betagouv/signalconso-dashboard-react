@@ -1,4 +1,5 @@
 import { Box } from '@mui/material'
+import { useMutation } from '@tanstack/react-query'
 import { useEffect, useRef, useState } from 'react'
 import {
   FileOrigin,
@@ -9,7 +10,6 @@ import { useI18n } from '../../../core/i18n'
 import { Id } from '../../../core/model'
 import { ReportFile } from './ReportFile'
 import { ReportFileAdd } from './ReportFileAdd'
-import { useMutation } from '@tanstack/react-query'
 
 interface ReportFilesProps {
   files?: UploadedFile[]
@@ -28,7 +28,7 @@ export const ReportFiles = ({
   onRemoveFile = () => void 0,
   onNewFile = () => void 0,
 }: ReportFilesProps) => {
-  const { apiSdk } = useConnectedContext()
+  const { api: apiSdk } = useConnectedContext()
 
   const _refreshUnscannedFiles = useMutation({
     mutationFn: apiSdk.secured.document.listFiles,

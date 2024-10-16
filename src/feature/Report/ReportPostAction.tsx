@@ -28,7 +28,7 @@ export const ReportPostAction = ({
   required,
 }: Props) => {
   const { m } = useI18n()
-  const { apiSdk } = useConnectedContext()
+  const { api: apiSdk } = useConnectedContext()
   const _addComment = useMutation({
     mutationFn: (params: { id: Id; action: ReportAction }) =>
       apiSdk.secured.reports.postAction(params.id, params.action),

@@ -1,13 +1,12 @@
-import { CleanWidePanel } from '../../shared/Panel/simplePanels'
-import { ScInput } from '../../shared/ScInput'
-import React from 'react'
-import { ScButton } from '../../shared/Button'
-import { useConnectedContext } from '../../core/context/ConnectedContext'
 import { useMutation } from '@tanstack/react-query'
-import { useNavigate } from 'react-router'
 import { useForm } from 'react-hook-form'
+import { useNavigate } from 'react-router'
+import { useConnectedContext } from '../../core/context/ConnectedContext'
 import { regexp } from '../../core/helper/regexp'
 import { useI18n } from '../../core/i18n'
+import { ScButton } from '../../shared/Button'
+import { CleanWidePanel } from '../../shared/Panel/simplePanels'
+import { ScInput } from '../../shared/ScInput'
 
 interface LogAsForm {
   email: string
@@ -15,7 +14,7 @@ interface LogAsForm {
 
 export const LogAs = () => {
   const { m } = useI18n()
-  const { setConnectedUser, apiSdk: api } = useConnectedContext()
+  const { setConnectedUser, api: api } = useConnectedContext()
   const navigate = useNavigate()
 
   const _logAs = useMutation({

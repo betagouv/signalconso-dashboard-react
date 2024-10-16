@@ -10,7 +10,7 @@ import { useI18n } from '../../core/i18n'
 export const UpdateEmail = () => {
   const { m } = useI18n()
   const { token } = useParams<{ token: string }>()
-  const { apiSdk, setConnectedUser } = useConnectedContext()
+  const { api: apiSdk, setConnectedUser } = useConnectedContext()
   const { toastSuccess } = useToast()
 
   const _updateEmail = useMutation({

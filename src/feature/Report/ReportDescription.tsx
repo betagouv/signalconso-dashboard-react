@@ -32,7 +32,7 @@ export function ReportFilesFull({
   report: Report
 }) {
   const { m } = useI18n()
-  const { connectedUser, apiSdk } = useConnectedContext()
+  const { connectedUser, api: apiSdk } = useConnectedContext()
   const queryClient = useQueryClient()
 
   const postAction = useMutation({

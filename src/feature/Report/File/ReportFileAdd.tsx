@@ -51,7 +51,7 @@ interface Props {
 
 export const ReportFileAdd = ({ reportId, onUploaded, fileOrigin }: Props) => {
   const { m } = useI18n()
-  const { apiSdk } = useConnectedContext()
+  const { api: apiSdk } = useConnectedContext()
   const { toastError } = useToast()
 
   const [uploading, setUploading] = useState(false)

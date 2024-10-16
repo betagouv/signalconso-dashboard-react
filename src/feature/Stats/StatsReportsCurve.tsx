@@ -32,7 +32,7 @@ const computeCurveReportPhysique = ({
 }
 
 export const StatsReportsCurvePanel = () => {
-  const { apiSdk: api } = useConnectedContext()
+  const { api: api } = useConnectedContext()
   const { m } = useI18n()
   const tickDuration = 'Month'
   const ticks = 12

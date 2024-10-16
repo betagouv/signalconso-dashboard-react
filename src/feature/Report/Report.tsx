@@ -1,9 +1,10 @@
 import { Box, Tab, Tabs, Tooltip } from '@mui/material'
 import { useMutation } from '@tanstack/react-query'
+import { map } from 'core/helper'
 import React, { useState } from 'react'
 import { useParams } from 'react-router'
 import { Divider } from 'shared/Divider'
-import { CleanDiscreetPanel, CleanWidePanel } from 'shared/Panel/simplePanels'
+import { CleanDiscreetPanel } from 'shared/Panel/simplePanels'
 import { WithInlineIcon } from 'shared/WithInlineIcon'
 import { Btn } from '../../alexlibs/mui-extension'
 import {
@@ -38,7 +39,6 @@ import { ReportHeader } from './ReportHeader'
 import { ReportPostAction } from './ReportPostAction'
 import { ReportReOpening } from './ReportReOpening'
 import { ReportResponseComponent } from './ReportResponse'
-import { map } from 'core/helper'
 
 const CONSO: EventType = 'CONSO'
 
@@ -57,7 +57,7 @@ export const creationReportEvent = (report: Report): ReportEvent =>
 export const ReportComponent = () => {
   const { id } = useParams<{ id: Id }>()
   const { m } = useI18n()
-  const { connectedUser, apiSdk } = useConnectedContext()
+  const { connectedUser, api: apiSdk } = useConnectedContext()
   const [activeTab, setActiveTab] = useState(0)
 
   const _getReport = useGetReportQuery(id!)

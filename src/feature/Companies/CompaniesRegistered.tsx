@@ -59,7 +59,7 @@ export const CompaniesRegistered = () => {
   })
   const { m, formatLargeNumber } = useI18n()
   const queryClient = useQueryClient()
-  const { connectedUser, apiSdk } = useConnectedContext()
+  const { connectedUser, api: apiSdk } = useConnectedContext()
   const _companies = useActivatedCompanySearchQuery({
     offset: 0,
     limit: 25,

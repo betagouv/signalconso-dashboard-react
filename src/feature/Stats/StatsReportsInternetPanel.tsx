@@ -1,16 +1,16 @@
+import { Box } from '@mui/material'
+import { Dispatch, SetStateAction, useEffect, useMemo, useState } from 'react'
+import { CleanWidePanel } from 'shared/Panel/simplePanels'
+import { Txt } from '../../alexlibs/mui-extension'
+import { ApiError } from '../../core/client/ApiClient'
+import { ReportTag } from '../../core/client/report/Report'
 import { useConnectedContext } from '../../core/context/ConnectedContext'
 import { useI18n } from '../../core/i18n'
-import { Panel, PanelBody, PanelHead } from '../../shared/Panel'
-import { Dispatch, SetStateAction, useEffect, useMemo, useState } from 'react'
-import { Txt } from '../../alexlibs/mui-extension'
+import { styleUtils } from '../../core/theme'
+import { Panel, PanelBody } from '../../shared/Panel'
+import { PanelProps } from '../../shared/Panel/Panel'
 import { SelectMonth } from '../../shared/SelectMonth'
 import { useGetDateForMonthAndPreviousOne } from './useGetDateForMonthAndPreviousOne'
-import { Box } from '@mui/material'
-import { styleUtils } from '../../core/theme'
-import { PanelProps } from '../../shared/Panel/Panel'
-import { ReportTag } from '../../core/client/report/Report'
-import { ApiError } from '../../core/client/ApiClient'
-import { CleanWidePanel } from 'shared/Panel/simplePanels'
 
 interface AsyncPercent {
   loading: boolean
@@ -24,7 +24,7 @@ interface AsyncPercent {
 }
 
 export const StatsReportsInternetPanel = () => {
-  const { apiSdk: api } = useConnectedContext()
+  const { api: api } = useConnectedContext()
   const { m } = useI18n()
 
   const currentMonth = useMemo(() => new Date().getMonth(), [])

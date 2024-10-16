@@ -24,7 +24,7 @@ interface Form {
 
 export const AddCompanyForm = () => {
   const { m } = useI18n()
-  const { connectedUser, apiSdk } = useConnectedContext()
+  const { connectedUser, api: apiSdk } = useConnectedContext()
   const _acceptToken = useMutation({
     mutationFn: (params: { siret: string; token: string }) =>
       apiSdk.secured.accesses.acceptToken(params.siret, params.token),

@@ -64,7 +64,7 @@ function CompanyAccessesLoaded({
   company: CompanyWithReportsCount
 }) {
   const siret = company.siret
-  const api = useConnectedContext().apiSdk
+  const api = useConnectedContext().api
   const queryClient = useQueryClient()
   const { toastSuccess, toastError } = useToast()
 
@@ -248,7 +248,7 @@ function LevelColumn({
   invalidateQueries: () => void
 }) {
   const { m } = useI18n()
-  const api = useConnectedContext().apiSdk
+  const api = useConnectedContext().api
   const { toastError } = useToast()
   const _updateAccessLevel = useMutation({
     mutationFn: (params: {
@@ -320,7 +320,7 @@ function ActionsColumn({
   invalidateQueries: () => void
   onResendCompanyAccessToken: (email: string) => Promise<unknown>
 }) {
-  const { setConnectedUser, connectedUser, apiSdk: api } = useConnectedContext()
+  const { setConnectedUser, connectedUser, api: api } = useConnectedContext()
   const { m } = useI18n()
   const { toastSuccess, toastError } = useToast()
   const { email, token, tokenId, userId } = _

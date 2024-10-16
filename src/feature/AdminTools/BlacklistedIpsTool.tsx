@@ -18,7 +18,7 @@ import { ScInput } from '../../shared/ScInput'
 
 export const BlacklistedIpsTool = () => {
   const { m } = useI18n()
-  const { apiSdk } = useConnectedContext()
+  const { api: apiSdk } = useConnectedContext()
   const queryClient = useQueryClient()
   const { toastSuccess } = useToast()
 
@@ -129,7 +129,7 @@ interface AddIpForm {
 }
 
 const AddIp = ({ children }: AddIpProps) => {
-  const { apiSdk } = useConnectedContext()
+  const { api: apiSdk } = useConnectedContext()
   const queryClient = useQueryClient()
   const { toastSuccess } = useToast()
   const { m } = useI18n()

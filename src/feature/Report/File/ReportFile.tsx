@@ -43,7 +43,7 @@ const css = makeSx({
 
 export const ReportFile = ({ file, onRemove }: ReportFileProps) => {
   const fileType = extensionToType(file.filename)
-  const { apiSdk } = useConnectedContext()
+  const { api: apiSdk } = useConnectedContext()
   const _remove = useMutation({
     mutationFn: apiSdk.secured.document.remove,
     onSuccess: () => onRemove?.(file),

@@ -66,7 +66,7 @@ function ReportProLoaded({
 }) {
   const { m } = useI18n()
   const queryClient = useQueryClient()
-  const { apiSdk } = useConnectedContext()
+  const { api: apiSdk } = useConnectedContext()
   const { report, files } = reportSearchResult
   const { reportEvents, responseEvent } = useGetReportEventsQuery(report.id)
   const _getReviewOnReportResponse = useGetReviewOnReportResponseQuery(
