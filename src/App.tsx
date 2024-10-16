@@ -9,8 +9,6 @@ import { BrowserRouter } from 'react-router-dom'
 import { AppRoutes } from './AppRoutes'
 import { RedirectHashRouterToBrowserRouter } from './RedirectHashRouterToBrowserRouter'
 import { Layout } from './core/Layout/Layout'
-import { ScHeader } from './core/ScHeader/ScHeader'
-import { ScSidebar } from './core/ScSidebar/ScSidebar'
 import { useToast } from './core/context/toastContext'
 import { I18nProvider } from './core/i18n'
 import { muiTheme } from './core/theme'
@@ -41,14 +39,10 @@ export const App = () => {
 const AppInsideProviders = () => {
   useQueryClientErrorHandlerSetup()
   const loginManagementResult = useLoginManagement()
-  const { connectedUser, logout } = loginManagementResult
   return (
     <>
       <RedirectHashRouterToBrowserRouter />
-      <Layout
-        header={<ScHeader />}
-        sidebar={connectedUser && <ScSidebar {...{ connectedUser, logout }} />}
-      >
+      <Layout {...{ loginManagementResult }}>
         <AppRoutes {...{ loginManagementResult }} />
       </Layout>
       {config.isDev && <ReactQueryDevtools />}

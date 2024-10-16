@@ -1,5 +1,8 @@
 import { Box } from '@mui/material'
-import { ReactElement, ReactNode } from 'react'
+import { ScHeader } from 'core/ScHeader/ScHeader'
+import { ScSidebar } from 'core/ScSidebar/ScSidebar'
+import { LoginManagementResult } from 'core/useLoginManagement'
+import { ReactNode } from 'react'
 import {
   LayoutContextProvider,
   useLayoutContext,
@@ -7,30 +10,35 @@ import {
 import { layoutConfig } from './layoutConfig'
 
 interface LayoutProps {
-  sidebar?: ReactElement<any>
-  header: ReactElement<any>
+  loginManagementResult: LoginManagementResult
   children: ReactNode
 }
 
-export const Layout = ({ sidebar, header, children }: LayoutProps) => {
+export const Layout = ({ children, loginManagementResult }: LayoutProps) => {
+  const sidebar = loginManagementResult.connectedUser ? (
+    <ScSidebar
+      connectedUser={loginManagementResult.connectedUser}
+      logout={loginManagementResult.logout}
+    />
+  ) : null
   return (
     <LayoutContextProvider hasSidebar={!!sidebar}>
-      <LayoutUsingContext sidebar={sidebar} header={header}>
-        {children}
-      </LayoutUsingContext>
+      <LayoutUsingContext {...{ sidebar, children }} />
     </LayoutContextProvider>
   )
 }
 
-const LayoutUsingContext = ({
+function LayoutUsingContext({
   sidebar,
-  header,
   children,
-}: Pick<LayoutProps, 'sidebar' | 'header' | 'children'>) => {
+}: {
+  sidebar?: ReactNode
+  children: ReactNode
+}) {
   const { sidebarTakesSpaceInLayout } = useLayoutContext()
   return (
     <>
-      {header}
+      <ScHeader />
       {sidebar}
       <Box
         component="main"
