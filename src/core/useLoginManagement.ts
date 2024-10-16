@@ -77,6 +77,7 @@ export function useLoginManagement(): LoginManagementResult {
   }
 
   function handleDetectedLogout(user?: User) {
+    console.warn('User seems logged out.')
     setConnectedUser(user)
     navigate('/')
   }
