@@ -2,11 +2,11 @@ import { Box, Icon } from '@mui/material'
 import { Btn, Txt } from '../../alexlibs/mui-extension'
 import { UserNameLabel } from '../../shared/UserNameLabel'
 import { EntityIcon } from '../EntityIcon'
-import { useLayoutContext } from '../Layout/LayoutContext'
 import { Sidebar, SidebarHr, SidebarItem } from '../Layout/Sidebar'
+import { Role, roleAdmins, roleAgents, User } from '../client/user/User'
+import { useLayoutContext } from '../context/LayoutContext'
 import { useI18n } from '../i18n'
 import { siteMap } from '../siteMap'
-import { Role, roleAdmins, roleAgents, User } from '../client/user/User'
 
 export const ScSidebar = ({
   connectedUser,

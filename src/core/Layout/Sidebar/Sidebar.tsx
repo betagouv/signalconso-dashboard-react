@@ -1,14 +1,10 @@
-import * as React from 'react'
+import { Box, BoxProps, SwipeableDrawer } from '@mui/material'
 import { useEffect } from 'react'
-import { Box, BoxProps, SwipeableDrawer, Switch } from '@mui/material'
-import { useLayoutContext } from '../LayoutContext'
-import { layoutConfig } from '../index'
+import { useLayoutContext } from '../../context/LayoutContext'
 import { useI18n } from '../../i18n'
-import { SidebarFooter } from './SidebarFooter'
-import { SidebarItem } from './SidebarItem'
+import { layoutConfig } from '../index'
 import { SidebarBody } from './SidebarBody'
 import { SidebarHeader } from './SidebarHeader'
-import { stopPropagation } from '../../helper'
 
 const sidebarId = 'signalconso-sidebar-id'
 

@@ -1,6 +1,9 @@
 import { Box } from '@mui/material'
 import { ReactElement, ReactNode } from 'react'
-import { LayoutContextProvider, useLayoutContext } from './LayoutContext'
+import {
+  LayoutContextProvider,
+  useLayoutContext,
+} from '../context/LayoutContext'
 import { layoutConfig } from './index'
 
 interface LayoutProps {
