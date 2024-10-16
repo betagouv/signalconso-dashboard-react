@@ -1,9 +1,9 @@
-import { BlockedReportNotification } from './BlockedReportNotification'
-import { ApiClientApi } from '../ApiClient'
 import { Id } from '../../model'
+import { ApiClient } from '../ApiClient'
+import { BlockedReportNotification } from './BlockedReportNotification'
 
 export class ReportBlockedNotificationClient {
-  constructor(private client: ApiClientApi) {}
+  constructor(private client: ApiClient) {}
 
   readonly fetch = () => {
     return this.client

@@ -26,7 +26,7 @@ import {
   User,
   paginateFilters2QueryString,
 } from '../../model'
-import { ApiClientApi } from '../ApiClient'
+import { ApiClient } from '../ApiClient'
 import { ReportNodes } from './ReportNode'
 import { ReportNodeSearch } from './ReportNodeSearch'
 
@@ -116,7 +116,7 @@ export const cleanReportFilter = (filter: ReportSearch): ReportSearch => {
 }
 
 export class ReportsClient {
-  constructor(private client: ApiClientApi) {}
+  constructor(private client: ApiClient) {}
 
   private reportName = (report: Report) => {
     const day = String(report.creationDate.getDate()).padStart(2, '0')

@@ -1,11 +1,11 @@
-import { ApiClientApi } from '../ApiClient'
+import { ApiClient } from '../ApiClient'
 import { CategoriesByStatus } from './Category'
 import { Country, GeoArea, Region } from './Country'
 import { rawGeoAreas } from './geoAreas'
 import { rawRegions } from './regions'
 
 export class PublicConstantClient {
-  constructor(private client: ApiClientApi) {}
+  constructor(private client: ApiClient) {}
 
   private readonly regions: Region[] = rawRegions
     .map((region) => ({

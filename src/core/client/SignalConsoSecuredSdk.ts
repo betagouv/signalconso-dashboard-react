@@ -11,22 +11,22 @@ import {
 } from '.'
 import { AccessesClient } from './accesses/AccessesClient'
 import { AdminClient } from './admin/AdminClient'
-import { ApiClientApi } from './ApiClient'
+import { ApiClient } from './ApiClient'
 import { AsyncFileClient } from './async-file/AsyncFileClient'
+import { AuthAttemptClient } from './auth-attempts/AuthAttemptClient'
+import { BarcodeClient } from './barcode/BarcodeClient'
 import { ReportBlockedNotificationClient } from './blocked-report-notifications/ReportBlockedNotificationClient'
 import { CompanyAccessTokenClient } from './company-access-token/CompanyAccessTokenClient'
 import { ConsumerBlacklistClient } from './consumer-blacklist/ConsumerBlacklistClient'
 import { ConsumerEmailValidationClient } from './consumer-email-validation/ConsumerEmailValidationClient'
-import { SecuredFileClient } from './file/SecuredFileClient'
-import { StatsClient } from './stats/StatsClient'
-import { SiretExtractorClient } from './siret-extractor/SiretExtractorClient'
-import { AuthAttemptClient } from './auth-attempts/AuthAttemptClient'
-import { BarcodeClient } from './barcode/BarcodeClient'
 import { EngagementClient } from './engagement/EngagementClient'
+import { SecuredFileClient } from './file/SecuredFileClient'
 import { IpBlacklistClient } from './ip-blacklist/IpBlacklistClient'
+import { SiretExtractorClient } from './siret-extractor/SiretExtractorClient'
+import { StatsClient } from './stats/StatsClient'
 
 export class SignalConsoSecuredSdk {
-  constructor(private client: ApiClientApi) {}
+  constructor(private client: ApiClient) {}
 
   readonly admin = new AdminClient(this.client)
   readonly accesses = new AccessesClient(this.client)

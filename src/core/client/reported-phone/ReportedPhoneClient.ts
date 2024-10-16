@@ -1,9 +1,9 @@
-import { ReportedPhone, ReportedPhoneFilters } from '../../model'
 import format from 'date-fns/format'
-import { ApiClientApi } from '../ApiClient'
+import { ReportedPhone, ReportedPhoneFilters } from '../../model'
+import { ApiClient } from '../ApiClient'
 
 export class ReportedPhoneClient {
-  constructor(private client: ApiClientApi) {}
+  constructor(private client: ApiClient) {}
 
   readonly list = (filters: ReportedPhoneFilters) => {
     return this.client.get<ReportedPhone[]>(`/reported-phones`, {

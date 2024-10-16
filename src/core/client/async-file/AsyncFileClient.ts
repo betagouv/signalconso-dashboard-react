@@ -1,9 +1,9 @@
-import { ApiClientApi } from '../ApiClient'
-import { AsyncFile, AsyncFileStatus } from './AsyncFile'
 import { addHours } from 'date-fns'
+import { ApiClient } from '../ApiClient'
+import { AsyncFile, AsyncFileStatus } from './AsyncFile'
 
 export class AsyncFileClient {
-  constructor(private client: ApiClientApi) {}
+  constructor(private client: ApiClient) {}
 
   private static readonly fileGenerationTimeoutHours = 1
 

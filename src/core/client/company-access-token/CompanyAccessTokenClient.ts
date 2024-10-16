@@ -1,10 +1,10 @@
-import { CompanyAccessToken } from './CompanyAccessToken'
-import { CompanyAccessLevel } from '../company-access/CompanyAccess'
-import { ApiClientApi } from '../ApiClient'
 import { Id } from '../../model'
+import { ApiClient } from '../ApiClient'
+import { CompanyAccessLevel } from '../company-access/CompanyAccess'
+import { CompanyAccessToken } from './CompanyAccessToken'
 
 export class CompanyAccessTokenClient {
-  constructor(private client: ApiClientApi) {}
+  constructor(private client: ApiClient) {}
 
   readonly fetch = (siret: string) => {
     return this.client.get<CompanyAccessToken[]>(`/accesses/${siret}/pending`)

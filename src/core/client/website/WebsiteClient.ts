@@ -15,7 +15,7 @@ import {
   WebsiteWithCompany,
   WebsiteWithCompanySearch,
 } from '../../model'
-import { ApiClientApi } from '../ApiClient'
+import { ApiClient } from '../ApiClient'
 
 interface HostReportCountQueryString {
   q?: string
@@ -62,7 +62,7 @@ const cleanFilter = (
 }
 
 export class WebsiteClient {
-  constructor(private client: ApiClientApi) {}
+  constructor(private client: ApiClient) {}
 
   readonly list = (filters: WebsiteWithCompanySearch) => {
     return this.client

@@ -1,3 +1,6 @@
+import { paginateData } from '../../helper'
+import { Id, Paginate } from '../../model'
+import { ApiClient } from '../ApiClient'
 import {
   isUserActive,
   Role,
@@ -9,12 +12,9 @@ import {
   UserRaw,
   UserSearch,
 } from './User'
-import { ApiClientApi } from '../ApiClient'
-import { Id, Paginate } from '../../model'
-import { paginateData } from '../../helper'
 
 export class UserClient {
-  constructor(private client: ApiClientApi) {}
+  constructor(private client: ApiClient) {}
 
   readonly searchAdmin = async (
     filters: UserSearch,

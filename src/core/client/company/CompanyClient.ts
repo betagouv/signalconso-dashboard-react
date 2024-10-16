@@ -13,10 +13,10 @@ import {
   Id,
   Paginate,
 } from '../../model'
-import { ApiClientApi } from '../ApiClient'
+import { ApiClient } from '../ApiClient'
 
 export class CompanyClient {
-  constructor(private client: ApiClientApi) {}
+  constructor(private client: ApiClient) {}
 
   readonly search = (
     search: CompanySearch,

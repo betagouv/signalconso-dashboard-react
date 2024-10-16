@@ -1,9 +1,9 @@
-import { ApiClientApi } from '../ApiClient'
-import { Engagement } from './Engagement'
 import { Id } from '../../model'
+import { ApiClient } from '../ApiClient'
+import { Engagement } from './Engagement'
 
 export class EngagementClient {
-  constructor(private client: ApiClientApi) {}
+  constructor(private client: ApiClient) {}
 
   readonly list = () => {
     return this.client

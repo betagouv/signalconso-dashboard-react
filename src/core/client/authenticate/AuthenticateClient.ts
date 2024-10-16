@@ -1,8 +1,8 @@
-import { ApiClientApi } from '../ApiClient'
 import { Id, User } from '../../model'
+import { ApiClient } from '../ApiClient'
 
 export class AuthenticateClient {
-  constructor(private client: ApiClientApi) {}
+  constructor(private client: ApiClient) {}
 
   readonly login = (login: string, password: string) => {
     return this.client.post<User>(`/authenticate`, {

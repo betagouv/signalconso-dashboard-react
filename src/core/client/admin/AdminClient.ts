@@ -1,10 +1,10 @@
 import { dateToApiTime, directDownloadBlob } from 'core/helper'
 import { Id } from '../../model'
-import { ApiClientApi } from '../ApiClient'
+import { ApiClient } from '../ApiClient'
 import { ResendEmailType } from './ResendEmailType'
 
 export class AdminClient {
-  constructor(private client: ApiClientApi) {}
+  constructor(private client: ApiClient) {}
 
   readonly getEmailCodes = () => {
     return this.client.get<string[]>(`/admin/test-email`)

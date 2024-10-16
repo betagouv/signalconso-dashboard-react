@@ -1,8 +1,8 @@
-import { ApiClientApi } from '../ApiClient'
+import { ApiClient } from '../ApiClient'
 import { BlacklistedIp } from './BlacklistedIp'
 
 export class IpBlacklistClient {
-  constructor(private client: ApiClientApi) {}
+  constructor(private client: ApiClient) {}
 
   readonly list = async (): Promise<BlacklistedIp[]> => {
     return this.client.get<BlacklistedIp[]>('/blacklisted-ips')
