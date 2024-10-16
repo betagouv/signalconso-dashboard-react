@@ -10,8 +10,8 @@ import {
   Id,
   PaginatedFilters,
 } from '../model'
+import { UseQueryOpts } from './UseQueryOpts'
 import { useQueryPaginate } from './UseQueryPaginate'
-import { UseQueryOpts } from './types'
 
 const GetAccessibleByProQueryKeys = ['company_getAccessibleByPro']
 const IsAllowedToManageCompanyAccessesQueryKeys = [

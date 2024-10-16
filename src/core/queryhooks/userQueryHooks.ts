@@ -1,9 +1,9 @@
-import { useApiContext } from '../context/ApiContext'
-import { useQueryPaginate } from './UseQueryPaginate'
-import { RoleAgents, roleAgents, UserPending } from '../client/user/User'
-import { UseQueryOpts } from './types'
 import { useQuery } from '@tanstack/react-query'
 import { AuthAttemptsSearch } from '../client/auth-attempts/AuthAttemptClient'
+import { RoleAgents, roleAgents, UserPending } from '../client/user/User'
+import { useApiContext } from '../context/ApiContext'
+import { UseQueryOpts } from './UseQueryOpts'
+import { useQueryPaginate } from './UseQueryPaginate'
 
 export const SearchAdminQueryKeys = ['user_searchAdmin']
 export const SearchAgentQueryKeys = ['user_searchAgent']
