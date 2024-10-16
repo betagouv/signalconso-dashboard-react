@@ -9,15 +9,6 @@ export const paginateData =
     }
   }
 
-const sortPaginatedData =
-  <T>(sortBy: keyof T, orderBy: OrderBy) =>
-  (p: Paginate<T>): Paginate<T> => {
-    return {
-      entities: sortData(p.entities, sortBy, orderBy),
-      totalCount: p.totalCount,
-    }
-  }
-
 export const sortData = <T>(
   data: T[],
   sortBy: keyof T,
