@@ -1,4 +1,3 @@
-import { Box } from '@mui/material'
 import { ScHeader } from 'core/ScHeader/ScHeader'
 import { ScSidebar } from 'core/ScSidebar/ScSidebar'
 import { LoginManagementResult } from 'core/useLoginManagement'
@@ -40,21 +39,16 @@ function LayoutUsingContext({
     <>
       <ScHeader />
       {sidebar}
-      <Box
-        component="main"
-        sx={{
-          transition: (t) => t.transitions.create('all'),
-          overflow: 'hidden',
-          position: 'relative',
-          display: 'flex',
-          flexDirection: 'column',
+      <main
+        className="overflow-hidden relative flex flex-col"
+        style={{
           ...(sidebarTakesSpaceInLayout
             ? { paddingLeft: `${layoutConfig.sidebarWidth}px` }
             : null),
         }}
       >
         {children}
-      </Box>
+      </main>
     </>
   )
 }
