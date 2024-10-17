@@ -1,3 +1,4 @@
+import { useQuery } from '@tanstack/react-query'
 import { publicApiSdk } from 'core/apiSdkInstances'
 import { Dispatch, SetStateAction, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router'
@@ -25,26 +26,24 @@ export type LoginManagementResult = {
 export function useLoginManagement(): LoginManagementResult {
   const navigate = useNavigate()
 
+  const _userOnStartup = useQuery({
+    queryKey: ['getUser'],
+    queryFn: publicApiSdk.authenticate.getUser,
+  })
+  const isFetchingUserOnStartup = _userOnStartup.isLoading
+  const userOnStartup = _userOnStartup.data
   const [connectedUser, setConnectedUser] = useState<User | undefined>()
+
+  useEffect(() => {
+    if (userOnStartup) {
+      setConnectedUser(userOnStartup)
+    }
+  }, [userOnStartup])
+
   const [isLoggingIn, setIsLoggingIn] = useState(false)
   const [isRegistering, setIsRegistering] = useState(false)
   const [loginError, setLoginError] = useState<unknown | undefined>()
   const [registerError, setRegisterError] = useState<unknown | undefined>()
-  const [isFetchingUserOnStartup, setIsFetchingUserOnStartup] = useState(true)
-
-  useEffect(() => {
-    async function fetchUserOnStartup() {
-      try {
-        const user = await publicApiSdk.authenticate.getUser()
-        setConnectedUser(user)
-      } catch (e) {
-        console.log('User is not logged in')
-      } finally {
-        setIsFetchingUserOnStartup(false)
-      }
-    }
-    fetchUserOnStartup()
-  }, [])
 
   async function login(login: string, password: string): Promise<User> {
     try {

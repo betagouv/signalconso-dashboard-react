@@ -30,6 +30,11 @@ export class ApiError extends Error {
   ) {
     super(message)
   }
+
+  isBrokenAuthError() {
+    const scErrorCode = this.details.id
+    return scErrorCode && scErrorCode === 'SC-AUTH-BROKEN'
+  }
 }
 
 type Method = 'POST' | 'GET' | 'PUT' | 'DELETE'
@@ -191,8 +196,7 @@ function handleDisconnectedApiErrorAndRethrow(
   onDisconnected: (() => void) | undefined,
 ) {
   return (err: ApiError) => {
-    const scErrorCode = err.details.id
-    if (scErrorCode && scErrorCode === 'SC-AUTH-BROKEN') {
+    if (err.isBrokenAuthError()) {
       onDisconnected?.()
     }
     throw err
