@@ -32,13 +32,18 @@ export const LayoutContextProvider = ({
   hasSidebar: boolean
 }) => {
   const [pageWidth, setPageWidth] = useState(getWindowWidth())
-  const [sidebarOpen, setSidebarOpen] = useState<boolean>(true)
-
+  const isMobileWidth = pageWidth < mobileBreakpoint
+  const [sidebarOpen, setSidebarOpen] = useState<boolean>(!isMobileWidth)
+  useEffect(() => {
+    if (!hasSidebar) {
+      // if you log-out then re-login, it should start closed again
+      setSidebarOpen(!isMobileWidth)
+    }
+  }, [hasSidebar, isMobileWidth])
   useEffect(() => {
     window.addEventListener('resize', () => setPageWidth(getWindowWidth()))
   }, [])
 
-  const isMobileWidth = pageWidth < mobileBreakpoint
   return (
     <LayoutContext.Provider
       value={{

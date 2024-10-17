@@ -1,7 +1,6 @@
 import { Box, BoxProps, SwipeableDrawer } from '@mui/material'
 import { useEffect } from 'react'
 import { useLayoutContext } from '../../context/LayoutContext'
-import { useI18n } from '../../i18n'
 import { layoutConfig } from '../layoutConfig'
 import { SidebarBody } from './SidebarBody'
 import { SidebarHeader } from './SidebarHeader'
@@ -25,7 +24,6 @@ const stickSidebarToHeader = () => {
 
 export const Sidebar = ({ children, sx, ...props }: BoxProps) => {
   const { isMobileWidth, sidebarOpen, setSidebarOpen } = useLayoutContext()
-  const { m } = useI18n()
 
   useEffect(() => {
     // Element has been re-created by SwipeableDrawer, thus variable point to nothing.
