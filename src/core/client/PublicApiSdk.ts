@@ -10,7 +10,7 @@ import {
   User,
   UserToActivate,
 } from 'core/model'
-import { ApiClient } from './ApiClient'
+import { ApiClient, ApiError } from './ApiClient'
 import { CategoriesByStatus } from './constant/Category'
 import { rawGeoAreas } from './constant/geoAreas'
 import { rawRegions } from './constant/regions'
@@ -95,10 +95,18 @@ export class PublicApiSdk {
       })
     },
 
-    getUser: () => {
-      return this.apiClient.get<User>(`/current-user`, {
-        withCredentials: true,
-      })
+    getUser: async (): Promise<User | null> => {
+      try {
+        const user = await this.apiClient.get<User>(`/current-user`, {
+          withCredentials: true,
+        })
+        return user ?? null
+      } catch (e) {
+        if (e instanceof ApiError && e.isBrokenAuthError()) {
+          return null
+        }
+        throw e
+      }
     },
 
     forgotPassword: (login: string): Promise<void> => {
