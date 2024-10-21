@@ -1,7 +1,7 @@
 import { siteMap } from 'core/siteMap'
 import { Link } from 'react-router-dom'
 import { CenteredContent } from 'shared/CenteredContent'
-import { AlertNotForConso, EspaceProTitle } from './loggedOutComponents'
+import { AlertNotForConso, DashboardTitle } from './loggedOutComponents'
 import { Icon } from '@mui/material'
 import { useLocation } from 'react-router'
 import { InfoBanner } from '../../shared/InfoBanner'
@@ -22,7 +22,7 @@ export function WelcomePage() {
   return (
     <CenteredContent>
       <InfoBanner />
-      <EspaceProTitle />
+      <DashboardTitle title={'Espace Pro'} />
       <div className="flex gap-6 justify-center mb-8 px-2">
         <Tile
           title="J'ai reçu un courrier de SignalConso à propos de mon entreprise"
@@ -30,7 +30,7 @@ export function WelcomePage() {
           href={siteMap.loggedout.register}
         />
         <Tile
-          title="J'ai déjà un compte"
+          title="J'ai déjà un compte pour mon entreprise"
           desc="Je me connecte pour consulter et répondre aux signalements"
           href={handleRedirectToLogin()}
         />

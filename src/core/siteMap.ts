@@ -122,6 +122,9 @@ export const siteMap = {
     activateAdmin: `/admin/rejoindre`,
     register: `/activation`,
     login: `/connexion`,
+    loginAgent: `/connexion/agents`,
+    proconnect_login_callback: `/api/authenticate/proconnect/callback`,
+    proconnect_logout_callback: `/api/logout/proconnect/callback`,
     emailValidation: `/connexion/validation-email`,
     resetPassword: (token: Id = `:token`) =>
       `/connexion/nouveau-mot-de-passe/${token}`,

@@ -6,13 +6,15 @@ import { useI18n } from '../../core/i18n'
 import { ScButton } from '../../shared/Button'
 import { ScInput } from '../../shared/ScInput'
 
-import { ToggleButton, ToggleButtonGroup } from '@mui/material'
+import { MenuItem, ToggleButton, ToggleButtonGroup } from '@mui/material'
 import { useMutation } from '@tanstack/react-query'
 import { ScOption } from 'core/helper/ScOption'
-import { RoleAgents } from 'core/model'
+import { AuthProvider, RoleAgents } from 'core/model'
 import { ApiError } from '../../core/client/ApiClient'
 import { useApiContext } from '../../core/context/ApiContext'
 import { ScDialog } from '../../shared/ScDialog'
+import { ScSelect } from '../../shared/Select/Select'
+import React from 'react'
 
 export const UserAgentInvitationDialog = () => {
   const { m } = useI18n()
@@ -22,7 +24,9 @@ export const UserAgentInvitationDialog = () => {
     watch,
     control,
     formState: { errors, isValid },
-  } = useForm<{ role: RoleAgents; email: string }>({ mode: 'onChange' })
+  } = useForm<{ role: RoleAgents; email: string; authProvider: AuthProvider }>({
+    mode: 'onChange',
+  })
   const { toastSuccess } = useToast()
   const { api } = useApiContext()
   const _role = watch('role')
@@ -39,11 +43,19 @@ export const UserAgentInvitationDialog = () => {
   const _invite = useMutation<
     void,
     ApiError,
-    { email: string; role: RoleAgents },
+    { email: string; role: RoleAgents; authProvider?: AuthProvider },
     unknown
   >({
-    mutationFn: (params: { email: string; role: RoleAgents }) =>
-      api.secured.user.inviteAgent(params.email, params.role),
+    mutationFn: (params: {
+      email: string
+      role: RoleAgents
+      authProvider?: AuthProvider
+    }) =>
+      api.secured.user.inviteAgent(
+        params.email,
+        params.role,
+        params.authProvider,
+      ),
   })
   const emailRegexp = selectFromRole(
     _role,
@@ -63,9 +75,9 @@ export const UserAgentInvitationDialog = () => {
     <ScDialog
       maxWidth="xs"
       onConfirm={(event, close) => {
-        handleSubmit(({ role, email }) => {
+        handleSubmit(({ role, email, authProvider }) => {
           _invite
-            .mutateAsync({ email, role })
+            .mutateAsync({ email, role, authProvider })
             .then(() => toastSuccess(m.userInvitationSent))
             .then(close)
         })()
@@ -136,6 +148,27 @@ export const UserAgentInvitationDialog = () => {
               },
             })}
           />
+          {_role === 'DGCCRF' && (
+            <Controller
+              name="authProvider"
+              control={control}
+              render={({ field: { ref, ...field } }) => (
+                <ScSelect
+                  value={field.value}
+                  onChange={field.onChange}
+                  label={"Fournisseur d'authentification"}
+                  fullWidth
+                >
+                  <MenuItem value={AuthProvider.SignalConso}>
+                    Signal Conso
+                  </MenuItem>
+                  <MenuItem value={AuthProvider.ProConnect}>
+                    Pro Connect
+                  </MenuItem>
+                </ScSelect>
+              )}
+            />
+          )}
         </>
       }
     >

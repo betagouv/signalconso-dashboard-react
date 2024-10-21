@@ -5,10 +5,11 @@ import { NavLink } from 'react-router-dom'
 import { ScInput } from 'shared/ScInput'
 import { IconBtn, Txt } from '../../alexlibs/mui-extension'
 import {
-  RoleAgents,
-  User,
+  AuthProvider,
   isUserActive,
   roleAgents,
+  RoleAgents,
+  User,
 } from '../../core/client/user/User'
 import { useApiContext } from '../../core/context/ApiContext'
 import { useI18n } from '../../core/i18n'
@@ -76,31 +77,38 @@ const UsersList = ({ adminView }: Props) => {
         </Tooltip>
       ),
       id: 'active',
-      render: (_) => (
-        <ScDialog
-          title={m.activateUser(_.email)}
-          onConfirm={(event, close) =>
-            _validateEmail.mutateAsync(_.email).then((_) => close())
-          }
-          maxWidth="xs"
-        >
-          {isUserActive(_) ? (
-            <Tooltip title={m.extendValidation}>
-              <IconBtn>
-                <Icon sx={{ color: (t) => t.palette.success.light }}>
-                  check_circle
-                </Icon>
-              </IconBtn>
-            </Tooltip>
-          ) : (
-            <Tooltip title={m.validate}>
-              <IconBtn>
-                <Icon>task_alt</Icon>
-              </IconBtn>
-            </Tooltip>
-          )}
-        </ScDialog>
-      ),
+      render: (_) =>
+        _.authProvider === AuthProvider.SignalConso ? (
+          <ScDialog
+            title={m.activateUser(_.email)}
+            onConfirm={(event, close) =>
+              _validateEmail.mutateAsync(_.email).then((_) => close())
+            }
+            maxWidth="xs"
+          >
+            {isUserActive(_) ? (
+              <Tooltip title={m.extendValidation}>
+                <IconBtn>
+                  <Icon sx={{ color: (t) => t.palette.success.light }}>
+                    check_circle
+                  </Icon>
+                </IconBtn>
+              </Tooltip>
+            ) : (
+              <Tooltip title={m.validate}>
+                <IconBtn>
+                  <Icon>task_alt</Icon>
+                </IconBtn>
+              </Tooltip>
+            )}
+          </ScDialog>
+        ) : (
+          <Tooltip title={m.active}>
+            <Icon sx={{ color: (t) => t.palette.success.light }}>
+              check_circle
+            </Icon>
+          </Tooltip>
+        ),
     },
   ]
 
@@ -130,7 +138,7 @@ const UsersList = ({ adminView }: Props) => {
     {
       head: 'Type',
       id: 'type',
-      render: (_) => _.role,
+      render: (_) => `${_.role} (${_.authProvider})`,
     },
     ...(adminView ? [] : extraColumnsForDgccrf),
     {

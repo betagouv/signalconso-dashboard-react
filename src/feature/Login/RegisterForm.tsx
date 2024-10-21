@@ -1,7 +1,7 @@
 import { Icon, TextField } from '@mui/material'
 import {
   AlertContactSupport,
-  EspaceProTitle,
+  DashboardTitle,
 } from 'feature/Login/loggedOutComponents'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
@@ -82,7 +82,7 @@ export const RegisterForm = ({ register: registerAction }: Props) => {
   return (
     <CenteredContent>
       <InfoBanner />
-      <EspaceProTitle subPageTitle={m.accountCreation} />
+      <DashboardTitle subPageTitle={m.accountCreation} title={'Espace Pro'} />
 
       <div className="w-full max-w-xl px-2">
         {done ? (

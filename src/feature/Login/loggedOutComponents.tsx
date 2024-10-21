@@ -19,20 +19,34 @@ export function AlertNotForConso() {
           la page d'accueil de SignalConso.
         </a>
       </p>
+
+      <p className="mb-2">
+        Vous êtes un <span className="font-bold">agent</span>, rendez-vous sur{' '}
+        <a href={siteMap.loggedout.loginAgent} className="underline">
+          l'espace agent
+        </a>{' '}
+        pour vous connecter
+      </p>
     </Alert>
   )
 }
 
-export function EspaceProTitle({ subPageTitle }: { subPageTitle?: string }) {
+export function DashboardTitle({
+  subPageTitle,
+  title,
+}: {
+  subPageTitle?: string
+  title?: string
+}) {
   return (
-    <h1 className="text-3xl mb-8 text-center">
+    <h1 className="text-3xl mt-4 mb-8 text-center">
       {subPageTitle && (
         <Link to={siteMap.loggedout.welcome} className="no-underline mr-4">
           <Icon className="align-top !text-3xl">arrow_back</Icon>
         </Link>
       )}
       <span>SignalConso</span>{' '}
-      <span className="font-bold text-scbluefrance">Espace Pro</span>
+      <span className="font-bold text-scbluefrance">{title}</span>
       {subPageTitle && <span className=""> - {subPageTitle}</span>}
     </h1>
   )

@@ -1,12 +1,8 @@
 import { TextField } from '@mui/material'
-import {
-  AlertContactSupport,
-  EspaceProTitle,
-} from 'feature/Login/loggedOutComponents'
+import { AlertContactSupport } from 'feature/Login/loggedOutComponents'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router'
-import { CenteredContent } from 'shared/CenteredContent'
 import { Alert, Txt } from '../../alexlibs/mui-extension'
 import { config } from '../../conf/config'
 import { ApiError } from '../../core/client/ApiClient'
@@ -23,10 +19,10 @@ import {
   Matomo,
 } from '../../core/plugins/Matomo'
 import { ScButton } from '../../shared/Button'
-import { InfoBanner } from '../../shared/InfoBanner'
 import { ScInputPassword } from '../../shared/ScInputPassword'
 import { ForgottenPasswordDialog } from './ForgottenPasswordDialog'
 import PredefinedUsersPanel from './PredefinedUsersPanel'
+import { siteMap } from '../../core/siteMap'
 
 interface ActionProps<F extends (...args: any[]) => Promise<any>> {
   action: F
@@ -96,82 +92,86 @@ export const LoginForm = ({ login }: Props) => {
   }
 
   return (
-    <CenteredContent>
-      <InfoBanner />
-      <EspaceProTitle subPageTitle={m.login} />
-      <div className="w-full max-w-xl">
-        {needEmailRevalidationApiError ? (
-          <div className="mt-4 mb-14 max-w-lg mx-auto">
-            <p className="mb-2">
-              Votre adresse email <strong>{watch('email')}</strong> a besoin
-              d'être revalidée.
-            </p>
-            <p>
-              Nous vous avons envoyé un email, cliquez sur le lien qu'il
-              contient pour revalider votre adresse et vous connecter à
-              SignalConso.
-            </p>
-          </div>
-        ) : (
-          <form
-            className="flex flex-col mb-8"
-            onSubmit={handleSubmit(onLogin)}
-            action="#"
-          >
-            {apiError && (
-              <Alert type="error" sx={{ mb: 2 }}>
-                <Txt size="big" block bold>
-                  {m.somethingWentWrong}
-                </Txt>
-                <Txt>{apiError.message}</Txt>
-              </Alert>
-            )}
-            <TextField
-              autoComplete="username"
-              type="email"
-              variant="filled"
-              error={!!errors.email}
-              helperText={errors.email?.message ?? ' '}
-              label={m.yourEmail}
-              {...register('email', {
-                required: { value: true, message: m.required },
-                pattern: { value: regexp.email, message: m.invalidEmail },
-              })}
-            />
-            <ScInputPassword
-              autoComplete="current-password"
-              label={m.password}
-              error={!!errors.password}
-              helperText={errors.password?.message ?? ' '}
-              {...register('password', {
-                required: { value: true, message: m.required },
-              })}
-            />
-            <div className="flex gap-4 items-center justify-center">
-              <ForgottenPasswordDialog value={watch('email')}>
-                <ScButton color="primary" size="large" variant="text">
-                  {m.forgottenPassword}
-                </ScButton>
-              </ForgottenPasswordDialog>
-              <ScButton
-                loading={login.loading}
-                type="submit"
-                onClick={(_) => clearErrors('apiError')}
-                variant="contained"
-                color="primary"
-                size="large"
-              >
-                {m.imLoggingIn}
+    <div className="w-full max-w-xl">
+      {needEmailRevalidationApiError ? (
+        <div className="mt-4 mb-14 max-w-lg mx-auto">
+          <p className="mb-2">
+            Votre adresse email <strong>{watch('email')}</strong> a besoin
+            d'être revalidée.
+          </p>
+          <p>
+            Nous vous avons envoyé un email, cliquez sur le lien qu'il contient
+            pour revalider votre adresse et vous connecter à SignalConso.
+          </p>
+        </div>
+      ) : (
+        <form
+          className="flex flex-col mb-8"
+          onSubmit={handleSubmit(onLogin)}
+          action="#"
+        >
+          {apiError && (
+            <Alert type="error" sx={{ mb: 2 }}>
+              <Txt size="big" block bold>
+                {m.somethingWentWrong}
+              </Txt>
+              <Txt>{apiError.message}</Txt>
+              {watch('email').toLocaleLowerCase().endsWith('.gouv.fr') && (
+                <p className={'mt-2 font-bold'}>
+                  Essayez de vous connecter via le{' '}
+                  <a href={siteMap.loggedout.loginAgent} className="underline">
+                    Pro Connect
+                  </a>{' '}
+                  si vous avez reçu un e-mail d’invitation mentionnant
+                  ProConnect, ou si vous utilisez Pro Connect pour vous
+                  connecter à Signal Conso.
+                </p>
+              )}
+            </Alert>
+          )}
+          <TextField
+            autoComplete="username"
+            type="email"
+            variant="filled"
+            error={!!errors.email}
+            helperText={errors.email?.message ?? ' '}
+            label={m.yourEmail}
+            {...register('email', {
+              required: { value: true, message: m.required },
+              pattern: { value: regexp.email, message: m.invalidEmail },
+            })}
+          />
+          <ScInputPassword
+            autoComplete="current-password"
+            label={m.password}
+            error={!!errors.password}
+            helperText={errors.password?.message ?? ' '}
+            {...register('password', {
+              required: { value: true, message: m.required },
+            })}
+          />
+          <div className="flex gap-4 items-center justify-center">
+            <ForgottenPasswordDialog value={watch('email')}>
+              <ScButton color="primary" size="large" variant="text">
+                {m.forgottenPassword}
               </ScButton>
-            </div>
-          </form>
-        )}
-        <AlertContactSupport />
-        <br />
-        {config.showPredefinedUsers && (
-          <PredefinedUsersPanel onLogin={onLogin} />
-        )}
-      </div>
-    </CenteredContent>
+            </ForgottenPasswordDialog>
+            <ScButton
+              loading={login.loading}
+              type="submit"
+              onClick={(_) => clearErrors('apiError')}
+              variant="contained"
+              color="primary"
+              size="large"
+            >
+              {m.imLoggingIn}
+            </ScButton>
+          </div>
+        </form>
+      )}
+      <AlertContactSupport />
+      <br />
+      {config.showPredefinedUsers && <PredefinedUsersPanel onLogin={onLogin} />}
+    </div>
   )
 }

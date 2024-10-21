@@ -2,6 +2,7 @@ import { paginateData } from '../../helper'
 import { Id, Paginate } from '../../model'
 import { ApiClient } from '../ApiClient'
 import {
+  AuthProvider,
   isUserActive,
   Role,
   RoleAdmins,
@@ -97,9 +98,13 @@ export class UserClient {
     })
   }
 
-  readonly inviteAgent = (email: string, role: RoleAgents) => {
+  readonly inviteAgent = (
+    email: string,
+    role: RoleAgents,
+    authProvider?: AuthProvider,
+  ) => {
     return this.client.post<void>(`/account/agent/invitation?role=${role}`, {
-      body: { email },
+      body: { email, authProvider },
     })
   }
 
