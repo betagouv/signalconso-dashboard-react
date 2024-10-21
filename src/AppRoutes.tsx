@@ -40,6 +40,7 @@ import { Engagements } from './feature/Engagement/Engagements'
 import './style.css'
 import { User } from 'core/model'
 import { RefreshBanner } from './shared/RefreshBanner'
+import ProConnectCallback from './feature/Login/ProConnectCallback'
 
 export const AppRoutes = ({
   loginManagementResult,
@@ -114,6 +115,10 @@ export const AppRoutes = ({
               <Route
                 path={siteMap.loggedout.login}
                 element={<LoginForm {...{ login }} />}
+              />
+              <Route
+                path={siteMap.loggedout.proconnect_login_callback}
+                element={<ProConnectCallback />}
               />
               <Route path="/*" element={<WelcomePage />} />
             </Routes>

@@ -1,4 +1,4 @@
-import { TextField } from '@mui/material'
+import { Button, TextField } from '@mui/material'
 import {
   AlertContactSupport,
   EspaceProTitle,
@@ -27,6 +27,7 @@ import { ScInputPassword } from '../../shared/ScInputPassword'
 import { ForgottenPasswordDialog } from './ForgottenPasswordDialog'
 import PredefinedUsersPanel from './PredefinedUsersPanel'
 import { config } from '../../conf/config'
+import { v4 as uuidv4 } from 'uuid'
 
 interface ActionProps<F extends (...args: any[]) => Promise<any>> {
   action: F
@@ -52,6 +53,8 @@ export const LoginForm = ({ login }: Props) => {
   const { m } = useI18n()
 
   const history = useNavigate()
+  const persistedState = uuidv4()
+  sessionStorage.setItem('oauth2_state', persistedState)
 
   const queryString = useQueryString<
     Partial<RedirectProps>,
@@ -98,6 +101,11 @@ export const LoginForm = ({ login }: Props) => {
   return (
     <CenteredContent>
       <InfoBanner />
+      <Button
+        href={`https://fca.integ01.dev-agentconnect.fr/api/v2/authorize?client_id=af850112-caae-4190-884f-aa40dbe199ee&response_type=code&scope=openid&redirect_uri=http%3A%2F%2Flocalhost%3A9000%2Fapi%2Fauthenticate%2Fproconnect%2Fcallback&acr_values=eidas1&state=${persistedState}&nonce=abc987`}
+      >
+        AgenConnect
+      </Button>
       <EspaceProTitle subPageTitle={m.login} />
       <div className="w-full max-w-xl">
         {needEmailRevalidationApiError ? (

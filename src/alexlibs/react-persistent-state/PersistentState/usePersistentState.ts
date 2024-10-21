@@ -2,7 +2,7 @@ import { Dispatch, SetStateAction, useEffect, useState } from 'react'
 
 // We could store anything that is JSON-stringifiable
 // but we narrow to the actual use cases we have so far
-type Storable = boolean | string[]
+type Storable = boolean | string[] | string
 
 export function usePersistentState<S extends Storable>(
   initialState: S,

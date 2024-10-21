@@ -46,6 +46,7 @@
     "@sentry/tracing": "7.119.0",
     "@tanstack/react-query": "^5.52.2",
     "@tanstack/react-query-devtools": "^5.52.2",
+    "@types/uuid": "^9.0.8",
     "axios": "1.7.5",
     "core-js": "3.38.1",
     "date-fns": "2.30.0",
