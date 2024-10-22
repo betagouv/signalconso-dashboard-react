@@ -1,4 +1,4 @@
-import { dateToApiDate, paginateData } from '../../helper'
+import { dateToApiDate } from '../../helper'
 import { ApiSdkLogger } from '../../helper/Logger'
 import {
   ApiHostWithReportCount,
@@ -100,11 +100,12 @@ export class WebsiteClient {
   readonly listUnregistered = (
     filters: HostReportCountSearch,
   ): Promise<Paginate<ApiHostWithReportCount>> => {
-    return this.client
-      .get<ApiHostWithReportCount[]>(`/websites/unregistered`, {
+    return this.client.get<PaginatedData<ApiHostWithReportCount>>(
+      `/websites/unregistered`,
+      {
         qs: hostReportFilter2QueryString(filters),
-      })
-      .then(paginateData(filters.limit, filters.offset))
+      },
+    )
   }
 
   readonly extractUnregistered = (filters: HostReportCountSearch) => {

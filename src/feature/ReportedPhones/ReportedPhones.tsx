@@ -86,12 +86,6 @@ export const ReportedPhones = () => {
             </>
           }
           headerMarginBottom
-          sort={{
-            sortBy: _reportedPhone.filters.sortBy!,
-            orderBy: _reportedPhone.filters.orderBy!,
-            onSortChange: (sort: any) =>
-              _reportedPhone.updateFilters((prev) => ({ ...prev, ...sort })),
-          }}
           paginate={{
             onPaginationChange: (pagination) =>
               _reportedPhone.updateFilters((prev) => ({
