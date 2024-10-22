@@ -51,10 +51,12 @@ export const AppRoutes = ({
     connectedUser,
     setConnectedUser,
     register,
+    loginProConnect,
     handleDetectedLogout,
     isFetchingUserOnStartup,
     login,
   } = loginManagementResult
+
   const UserActivationComponent = () => (
     <UserActivation
       onUserActivated={setConnectedUser}
@@ -109,16 +111,16 @@ export const AppRoutes = ({
           ) : (
             <Routes>
               <Route
+                path={siteMap.loggedout.proconnect_login_callback}
+                element={<ProConnectCallback {...{ loginProConnect }} />}
+              />
+              <Route
                 path={siteMap.loggedout.register}
                 element={<RegisterForm {...{ register }} />}
               />
               <Route
                 path={siteMap.loggedout.login}
                 element={<LoginForm {...{ login }} />}
-              />
-              <Route
-                path={siteMap.loggedout.proconnect_login_callback}
-                element={<ProConnectCallback />}
               />
               <Route path="/*" element={<WelcomePage />} />
             </Routes>

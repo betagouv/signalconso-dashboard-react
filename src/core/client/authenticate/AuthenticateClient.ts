@@ -30,6 +30,13 @@ export class AuthenticateClient {
     })
   }
 
+  readonly loginProConnect = (code: string, state: string) => {
+    return this.client.get<User>(`authenticate/proconnect`, {
+      qs: { code, state },
+      withCredentials: true,
+    })
+  }
+
   readonly forgotPassword = (login: string): Promise<void> => {
     return this.client.post<void>(`/authenticate/password/forgot`, {
       body: { login },

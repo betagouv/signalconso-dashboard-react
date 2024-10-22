@@ -1,7 +1,23 @@
 import React, { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useLoginManagement } from '../../core/useLoginManagement'
+import { ApiError } from '../../core/client/ApiClient'
 
-const ProConnectCallback = () => {
+interface ActionProps<F extends (...args: any[]) => Promise<any>> {
+  action: F
+  loading?: boolean
+  error?: ApiError
+}
+
+interface Props {
+  loginProConnect: ActionProps<
+    (authorizationCode: string, state: string) => Promise<any>
+  >
+}
+
+export const ProConnectCallback = ({
+  loginProConnect: loginProConnect,
+}: Props) => {
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -9,22 +25,10 @@ const ProConnectCallback = () => {
     const authorizationCode = urlParams.get('code')
     const state = urlParams.get('state')
 
-    if (authorizationCode) {
-      // Send the code and state to the backend for token exchange
-      fetch(
-        `http://localhost:9009/api/authenticate/proconnect?code=${authorizationCode}&state=${state}`,
-        {
-          method: 'GET',
-        },
-      )
-        // .then((response) => response.json())
-        .then((data) => {
-          // Handle successful token exchange (e.g., store tokens, redirect)
-          navigate('/') // Redirect to a logged-in page
-        })
-        .catch((err) => {
-          console.error('Error exchanging code:', err)
-        })
+    if (authorizationCode && state) {
+      loginProConnect
+        .action(authorizationCode, state)
+        .then((_) => navigate('/suivi-des-signalements?offset=0&limit=25'))
     }
   }, [navigate])
 

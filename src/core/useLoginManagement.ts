@@ -14,6 +14,12 @@ export type LoginManagementResult = {
     // this is not used, in the LoginForm we do our own error handling
     errorMsg?: unknown
   }
+  loginProConnect: {
+    action: (authorizationCode: string, state: string) => Promise<User>
+    loading?: boolean
+    // this is not used, in the LoginForm we do our own error handling
+    errorMsg?: unknown
+  }
   register: {
     action: (siret: string, token: string, email: string) => Promise<void>
     loading?: boolean
@@ -32,6 +38,26 @@ export function useLoginManagement(): LoginManagementResult {
   const [registerError, setRegisterError] = useState<unknown | undefined>()
   const [isFetchingUserOnStartup, setIsFetchingUserOnStartup] = useState(true)
 
+  async function loginProConnect(
+    authorizationCode: string,
+    state: string,
+  ): Promise<User> {
+    try {
+      setIsLoggingIn(true)
+      const user = await apiPublicSdk.authenticate.loginProConnect(
+        authorizationCode,
+        state,
+      )
+      setConnectedUser(user)
+      return user
+    } catch (e: unknown) {
+      setLoginError(e)
+      throw e
+    } finally {
+      setIsLoggingIn(false)
+    }
+  }
+
   useEffect(() => {
     async function fetchUserOnStartup() {
       try {
@@ -43,6 +69,7 @@ export function useLoginManagement(): LoginManagementResult {
         setIsFetchingUserOnStartup(false)
       }
     }
+
     fetchUserOnStartup()
   }, [])
 
@@ -91,6 +118,11 @@ export function useLoginManagement(): LoginManagementResult {
     isFetchingUserOnStartup,
     login: {
       action: login,
+      loading: isLoggingIn,
+      errorMsg: loginError,
+    },
+    loginProConnect: {
+      action: loginProConnect,
       loading: isLoggingIn,
       errorMsg: loginError,
     },
