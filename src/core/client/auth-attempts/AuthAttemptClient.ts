@@ -1,5 +1,5 @@
-import { Paginate, PaginatedFilters } from '../../model'
-import { cleanObject, paginateData } from '../../helper'
+import { Paginate, PaginatedData, PaginatedFilters } from '../../model'
+import { cleanObject } from '../../helper'
 import { ApiClientApi } from '../ApiClient'
 import { AuthAttempt } from './AuthAttempt'
 
@@ -15,10 +15,8 @@ export class AuthAttemptClient {
     offset,
     login,
   }: AuthAttemptsSearch): Promise<Paginate<AuthAttempt>> => {
-    return this.client
-      .get<AuthAttempt[]>('/auth-attempts', {
-        qs: cleanObject({ login }),
-      })
-      .then((res) => paginateData<AuthAttempt>(limit, offset)(res))
+    return this.client.get<PaginatedData<AuthAttempt>>('/auth-attempts', {
+      qs: cleanObject({ login, limit, offset }),
+    })
   }
 }

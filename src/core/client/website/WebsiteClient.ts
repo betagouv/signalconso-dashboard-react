@@ -1,4 +1,4 @@
-import { dateToApiDate, paginateData } from '../../helper'
+import { dateToApiDate } from '../../helper'
 import { ApiSdkLogger } from '../../helper/Logger'
 import {
   ApiHostWithReportCount,

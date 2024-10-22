@@ -7,8 +7,8 @@ import { StatsReportsInternetPanel } from './StatsReportsInternetPanel'
 export const ReportStats = () => {
   return (
     <Page>
-      <StatsReportsCurvePanel />
-      <StatsReportsByRegion />
+      {/*<StatsReportsCurvePanel />*/}
+      {/*<StatsReportsByRegion />*/}
       <StatsReportsInternetPanel />
     </Page>
   )
