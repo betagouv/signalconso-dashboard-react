@@ -102,7 +102,7 @@ export const LoginForm = ({ login }: Props) => {
     <CenteredContent>
       <InfoBanner />
       <Button
-        href={`https://fca.integ01.dev-agentconnect.fr/api/v2/authorize?client_id=af850112-caae-4190-884f-aa40dbe199ee&response_type=code&scope=openid&redirect_uri=http%3A%2F%2Flocalhost%3A9000%2Fapi%2Fauthenticate%2Fproconnect%2Fcallback&acr_values=eidas1&state=${persistedState}&nonce=abc987`}
+        href={`https://fca.integ01.dev-agentconnect.fr/api/v2/authorize?client_id=af850112-caae-4190-884f-aa40dbe199ee&response_type=code&scope=openid+custom+email+profile+given_name+usual_name&redirect_uri=http%3A%2F%2Flocalhost%3A9000%2Fapi%2Fauthenticate%2Fproconnect%2Fcallback&acr_values=eidas1&state=${persistedState}&nonce=abc987`}
       >
         AgenConnect
       </Button>

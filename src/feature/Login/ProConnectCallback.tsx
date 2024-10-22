@@ -9,17 +9,12 @@ const ProConnectCallback = () => {
     const authorizationCode = urlParams.get('code')
     const state = urlParams.get('state')
 
-    console.log(authorizationCode)
-    console.log(state)
-
     if (authorizationCode) {
       // Send the code and state to the backend for token exchange
       fetch(
         `http://localhost:9009/api/authenticate/proconnect?code=${authorizationCode}&state=${state}`,
         {
           method: 'GET',
-          // headers: { 'Content-Type': 'application/json' },
-          // body: JSON.stringify({ code: authorizationCode, state }),
         },
       )
         // .then((response) => response.json())
