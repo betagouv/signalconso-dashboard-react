@@ -558,8 +558,6 @@ export const fr = {
 
     dgccrfControlDone: 'Déclarer un contrôle',
     noAnswerFromPro: "Le professionnel n'a pas encore répondu au signalement.",
-    noReviewFromConsumer:
-      "Le consommateur n'a pas encore donné son avis sur cette réponse.",
     noReviewDetailsFromConsumer:
       "Le consommateur n'a pas laissé de commentaire pour la DGGCRF.",
     companiesSearchPlaceholder: 'Rechercher par nom, SIREN, SIRET...',

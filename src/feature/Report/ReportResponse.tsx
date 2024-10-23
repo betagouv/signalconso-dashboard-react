@@ -17,7 +17,7 @@ import {
 import { FileOrigin, UploadedFile } from '../../core/client/file/UploadedFile'
 import { useApiContext } from '../../core/context/ApiContext'
 import { useConnectedContext } from '../../core/context/ConnectedContext'
-import { Id, Report } from '../../core/model'
+import { Id, Report, ReportStatus } from '../../core/model'
 import { GetReportEventsQueryKeys } from '../../core/queryhooks/eventQueryHooks'
 import { GetReportQueryKeys } from '../../core/queryhooks/reportQueryHooks'
 import { Divider } from '../../shared/Divider'
@@ -61,8 +61,9 @@ export function ReportResponseComponent({
     response.data.creationDate,
     EngagementReminderPeriod,
   )
-
+  const hasEngagement = report.status === ReportStatus.PromesseAction
   const hasEngagementReview = !!engagementReview
+
   const user = response.user
   return (
     <div className="">
@@ -114,20 +115,24 @@ export function ReportResponseComponent({
           </div>
         )}
       </>
-      <Divider margin />
-      <>
-        {engagementReview ? (
-          <ConsumerReviewComponent
-            review={engagementReview}
-            title={`Avis ultérieur du consommateur, sur la réalisation des engagements`}
-          />
-        ) : (
-          <div>
-            Le consommateur n'a pas encore donné son avis sur la réalisation des
-            engagements.
-          </div>
-        )}
-      </>
+      {hasEngagement ? (
+        <>
+          <Divider margin />
+          <>
+            {engagementReview ? (
+              <ConsumerReviewComponent
+                review={engagementReview}
+                title={`Avis ultérieur du consommateur, sur la réalisation des engagements`}
+              />
+            ) : (
+              <div>
+                Le consommateur n'a pas encore donné son avis sur la réalisation
+                des engagements.
+              </div>
+            )}
+          </>
+        </>
+      ) : null}
     </div>
   )
 }
