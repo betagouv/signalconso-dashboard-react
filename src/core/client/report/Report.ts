@@ -134,7 +134,6 @@ export interface ReportSearchResult {
   assignedUser?: MinimalUser
 }
 
-
 type ReportMetadata = {
   reportId: Id
   isMobileApp: boolean
