@@ -30,6 +30,13 @@ export class AuthenticateClient {
     })
   }
 
+  readonly startProConnect = (state: string) => {
+    return this.client.get<void>(`/authenticate/proconnect/start`, {
+      qs: { state },
+      withCredentials: true,
+    })
+  }
+
   readonly loginProConnect = (code: string, state: string) => {
     return this.client.get<User>(`authenticate/proconnect`, {
       qs: { code, state },

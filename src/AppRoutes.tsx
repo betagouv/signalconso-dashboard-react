@@ -52,6 +52,7 @@ export const AppRoutes = ({
     setConnectedUser,
     register,
     loginProConnect,
+    startProConnect,
     handleDetectedLogout,
     isFetchingUserOnStartup,
     login,
@@ -120,7 +121,7 @@ export const AppRoutes = ({
               />
               <Route
                 path={siteMap.loggedout.login}
-                element={<LoginForm {...{ login }} />}
+                element={<LoginForm {...{ login, startProConnect }} />}
               />
               <Route path="/*" element={<WelcomePage />} />
             </Routes>

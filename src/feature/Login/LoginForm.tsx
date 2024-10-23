@@ -37,6 +37,9 @@ interface ActionProps<F extends (...args: any[]) => Promise<any>> {
 
 interface Props {
   login: ActionProps<SignalConsoPublicSdk['authenticate']['login']>
+  startProConnect: ActionProps<
+    SignalConsoPublicSdk['authenticate']['startProConnect']
+  >
 }
 
 export interface Form {
@@ -49,12 +52,10 @@ interface RedirectProps {
   redirecturl?: string
 }
 
-export const LoginForm = ({ login }: Props) => {
+export const LoginForm = ({ login, startProConnect }: Props) => {
   const { m } = useI18n()
 
   const history = useNavigate()
-  const persistedState = uuidv4()
-  sessionStorage.setItem('oauth2_state', persistedState)
 
   const queryString = useQueryString<
     Partial<RedirectProps>,
@@ -98,14 +99,21 @@ export const LoginForm = ({ login }: Props) => {
       })
   }
 
+  const onProConnectLogin: () => Promise<void> = async () => {
+    const persistedState = uuidv4()
+    sessionStorage.setItem('oauth2_state', persistedState)
+    startProConnect
+      .action(persistedState)
+      .then(
+        (_) =>
+          (window.location.href = `https://fca.integ01.dev-agentconnect.fr/api/v2/authorize?client_id=af850112-caae-4190-884f-aa40dbe199ee&response_type=code&scope=openid+custom+email+profile+given_name+usual_name&redirect_uri=http%3A%2F%2Flocalhost%3A9000%2Fapi%2Fauthenticate%2Fproconnect%2Fcallback&acr_values=eidas1&state=${persistedState}&nonce=abc987`),
+      )
+  }
+
   return (
     <CenteredContent>
       <InfoBanner />
-      <Button
-        href={`https://fca.integ01.dev-agentconnect.fr/api/v2/authorize?client_id=af850112-caae-4190-884f-aa40dbe199ee&response_type=code&scope=openid+custom+email+profile+given_name+usual_name&redirect_uri=http%3A%2F%2Flocalhost%3A9000%2Fapi%2Fauthenticate%2Fproconnect%2Fcallback&acr_values=eidas1&state=${persistedState}&nonce=abc987`}
-      >
-        AgenConnect
-      </Button>
+      <Button onClick={(_) => onProConnectLogin()}>AgenConnect</Button>
       <EspaceProTitle subPageTitle={m.login} />
       <div className="w-full max-w-xl">
         {needEmailRevalidationApiError ? (
