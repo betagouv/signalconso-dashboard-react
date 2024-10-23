@@ -7,6 +7,7 @@ import {
   DialogTitle,
   Button,
   Modal,
+  Icon,
 } from '@mui/material'
 import pics from './contact.png'
 import CheckCircleIcon from '@mui/icons-material/CheckCircle'
@@ -14,6 +15,7 @@ import MarkEmailReadIcon from '@mui/icons-material/MarkEmailRead'
 import { ReportResponseTypes } from 'core/client/event/Event'
 import { useI18n } from 'core/i18n'
 import { EngagementReminderPeriod } from '../../../core/client/engagement/Engagement'
+import { Btn } from '../../../alexlibs/mui-extension'
 
 interface SuccessModalProps {
   open: boolean
@@ -90,6 +92,22 @@ export const SuccessModal: React.FC<SuccessModalProps> = ({
           ) : (
             <p>{m.consumerReviewInvitation}</p>
           )}
+          <div className="mt-8 flex flex-col items-center">
+            <p className="mb-2">
+              Aidez nous à améliorer SignalConso en notant votre satisfaction !
+            </p>
+            <div>
+              <Btn
+                variant="outlined"
+                data-tally-open="3llOOk"
+                data-tally-emoji-text="👋"
+                data-tally-emoji-animation="wave"
+              >
+                {m.Feedback}
+                <Icon sx={{ ml: 1 }}>feedback</Icon>
+              </Btn>
+            </div>
+          </div>
         </DialogContentText>
       </DialogContent>
       <DialogActions>

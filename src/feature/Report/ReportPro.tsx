@@ -2,7 +2,7 @@ import { Icon, Tooltip, useMediaQuery } from '@mui/material'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { siteMap } from 'core/siteMap'
 import { ReportReferenceNumber } from 'feature/Report/ReportReferenceNumber'
-import { useRef } from 'react'
+import { useEffect, useRef } from 'react'
 import { useParams } from 'react-router'
 import { Link } from 'react-router-dom'
 import { CleanWidePanel } from 'shared/Panel/simplePanels'
@@ -48,6 +48,42 @@ import { ReportStation } from './ReportStation'
 import { ReportTrain } from './ReportTrain'
 
 export const ReportPro = () => {
+  // https://tally.so/help/developer-resources#85b0ab91621742cdb600183f9c261fae
+  useEffect(() => {
+    const widgetScriptSrc = 'https://tally.so/widgets/embed.js'
+
+    const load = () => {
+      // Load Tally embeds
+      if (typeof (window as any).Tally !== 'undefined') {
+        ;(window as any).Tally.loadEmbeds()
+        return
+      }
+
+      // Fallback if window.Tally is not available
+      document
+        .querySelectorAll('iframe[data-tally-src]:not([src])')
+        .forEach((iframeEl: any) => {
+          iframeEl.src = iframeEl.dataset.tallySrc
+        })
+    }
+
+    // If Tally is already loaded, load the embeds
+    if (typeof (window as any).Tally !== 'undefined') {
+      load()
+      return
+    }
+
+    // If the Tally widget script is not loaded yet, load it
+    if (document.querySelector(`script[src="${widgetScriptSrc}"]`) === null) {
+      const script = document.createElement('script')
+      script.src = widgetScriptSrc
+      script.onload = load
+      script.onerror = load
+      document.body.appendChild(script)
+      return
+    }
+  }, [])
+
   const { id } = useParams<{ id: Id }>()
   const _getReport = useGetReportQuery(id!)
   return (
