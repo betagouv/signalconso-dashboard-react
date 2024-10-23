@@ -134,10 +134,6 @@ export interface ReportSearchResult {
   assignedUser?: MinimalUser
 }
 
-interface ReportWithMetadata {
-  report: Report
-  metadata?: ReportMetadata
-}
 
 type ReportMetadata = {
   reportId: Id
