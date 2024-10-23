@@ -1,11 +1,11 @@
-import { ApiClientApi } from '../ApiClient'
+import { ApiClient } from '../ApiClient'
 import {
   ConsumerBlacklistedEmail,
   ConsumerBlacklistedEmailRawFromApi,
 } from './ConsumerBlacklistedEmail'
 
 export class ConsumerBlacklistClient {
-  constructor(private client: ApiClientApi) {}
+  constructor(private client: ApiClient) {}
 
   readonly list = async (): Promise<ConsumerBlacklistedEmail[]> => {
     const res = await this.client.get<ConsumerBlacklistedEmailRawFromApi[]>(

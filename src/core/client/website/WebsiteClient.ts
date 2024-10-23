@@ -1,5 +1,4 @@
 import { dateToApiDate } from '../../helper'
-import { ApiSdkLogger } from '../../helper/Logger'
 import {
   ApiHostWithReportCount,
   Country,
@@ -16,7 +15,7 @@ import {
   WebsiteWithCompany,
   WebsiteWithCompanySearch,
 } from '../../model'
-import { ApiClientApi } from '../ApiClient'
+import { ApiClient } from '../ApiClient'
 
 interface HostReportCountQueryString {
   q?: string
@@ -44,7 +43,7 @@ const hostReportFilter2QueryString = (
       limit: limit !== undefined ? limit + '' : undefined,
     }
   } catch (e) {
-    ApiSdkLogger.error(
+    console.error(
       'Caught error on "hostReportFilter2QueryString"',
       hostReport,
       e,
@@ -63,7 +62,7 @@ const cleanFilter = (
 }
 
 export class WebsiteClient {
-  constructor(private client: ApiClientApi) {}
+  constructor(private client: ApiClient) {}
 
   readonly list = (filters: WebsiteWithCompanySearch) => {
     return this.client

@@ -1,7 +1,7 @@
-import { UseQueryOpts } from './types'
-import { useApiContext } from '../context/ApiContext'
 import { useQuery } from '@tanstack/react-query'
 import { Engagement } from '../client/engagement/Engagement'
+import { useApiContext } from '../context/ApiContext'
+import { UseQueryOpts } from './UseQueryOpts'
 
 export const ListEngagementsQueryKeys = ['engagement_list']
 

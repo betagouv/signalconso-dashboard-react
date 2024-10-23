@@ -5,7 +5,6 @@ import {
   directDownloadBlob,
   wrap404AsNull,
 } from '../../helper'
-import { ApiSdkLogger } from '../../helper/Logger'
 import {
   CompanySearchResult,
   ConsumerReview,
@@ -27,7 +26,7 @@ import {
   User,
   paginateFilters2QueryString,
 } from '../../model'
-import { ApiClientApi } from '../ApiClient'
+import { ApiClient } from '../ApiClient'
 import { ReportNodes } from './ReportNode'
 import { ReportNodeSearch } from './ReportNodeSearch'
 
@@ -92,7 +91,7 @@ export const reportFilter2QueryString = (
         : null),
     }
   } catch (e) {
-    ApiSdkLogger.error('Caught error on "reportFilter2QueryString"', report, e)
+    console.error('Caught error on "reportFilter2QueryString"', report, e)
     return {}
   }
 }
@@ -117,7 +116,7 @@ export const cleanReportFilter = (filter: ReportSearch): ReportSearch => {
 }
 
 export class ReportsClient {
-  constructor(private client: ApiClientApi) {}
+  constructor(private client: ApiClient) {}
 
   private reportName = (report: Report) => {
     const day = String(report.creationDate.getDate()).padStart(2, '0')
@@ -129,7 +128,7 @@ export class ReportsClient {
   readonly downloadAll = async (report: Report, origin?: FileOrigin) => {
     const baseQuery = `/reports/files?reportId=${report.id}`
     return this.client
-      .getBlob<any>(origin ? `${baseQuery}&origin=${origin}` : baseQuery)
+      .getBlob(origin ? `${baseQuery}&origin=${origin}` : baseQuery)
       .then((blob) =>
         directDownloadBlob(
           `${this.reportName(report)}-PJ`,
@@ -166,13 +165,13 @@ export class ReportsClient {
   readonly download = (ids: Id[]) => {
     // TODO Type it and maybe improve it
     return this.client
-      .getBlob<any>(`/reports/download`, { qs: { ids } })
+      .getBlob(`/reports/download`, { qs: { ids } })
       .then(directDownloadBlob('Signalement.pdf', 'application/pdf'))
   }
 
   readonly downloadZip = (report: Report) => {
     return this.client
-      .getBlob<any>(`/reports/download-with-attachments/${report.id}`)
+      .getBlob(`/reports/download-with-attachments/${report.id}`)
       .then((blob) =>
         directDownloadBlob(
           `${this.reportName(report)}`,
@@ -192,7 +191,7 @@ export class ReportsClient {
   }
 
   readonly getById = async (id: Id): Promise<ReportSearchResult> => {
-    const { report, ...rest } = await this.client.get(`/reports/${id}`)
+    const { report, ...rest } = await this.client.get<any>(`/reports/${id}`)
     return {
       ...rest,
       report: ReportsClient.mapReport(report),
@@ -219,7 +218,7 @@ export class ReportsClient {
 
   readonly generateConsumerNotificationAsPDF = (reportId: Id) => {
     return this.client
-      .getBlob<any>(`/reports/${reportId}/consumer-email-pdf`)
+      .getBlob(`/reports/${reportId}/consumer-email-pdf`)
       .then(
         directDownloadBlob(
           'accuse-reception-consommateur.pdf',
@@ -275,7 +274,7 @@ export class ReportsClient {
     reportConsumerUpdate: ReportConsumerUpdate,
   ) => {
     return this.client
-      .post(`reports/${reportId}/consumer`, {
+      .post<any>(`reports/${reportId}/consumer`, {
         body: reportConsumerUpdate,
       })
       .then((report) => ReportsClient.mapReport(report))

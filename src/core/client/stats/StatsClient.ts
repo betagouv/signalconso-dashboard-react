@@ -17,7 +17,7 @@ import {
   ReportStatusPro,
   ReportStatusProDistribution,
 } from '../../model'
-import { ApiClientApi } from '../ApiClient'
+import { ApiClient } from '../ApiClient'
 import {
   ReportAcceptedDistribution,
   ReportResponseReviews,
@@ -32,7 +32,7 @@ import {
 // Like it's done with the 'PublicStat' on the website
 
 export class StatsClient {
-  constructor(private client: ApiClientApi) {}
+  constructor(private client: ApiClient) {}
 
   readonly percentage = new StatsPercentageClient(this)
 

@@ -1,5 +1,5 @@
 import { Box, Checkbox, Theme, useTheme } from '@mui/material'
-import { I18nContextProps } from 'core/i18n/I18n'
+import { I18nContextShape } from 'core/i18n/i18nContext'
 import { memo, useMemo, useState } from 'react'
 import {
   CartesianGrid,
@@ -57,7 +57,7 @@ function getWeek(date: Date): [number, number] {
 }
 
 const formatDate = (
-  m: I18nContextProps['m'],
+  m: I18nContextShape['m'],
   date: Date,
   period?: Period,
 ): string => {

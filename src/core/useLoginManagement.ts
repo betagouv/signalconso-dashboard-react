@@ -1,4 +1,5 @@
-import { apiPublicSdk } from 'core/ApiSdkInstance'
+import { useMutation, useQuery } from '@tanstack/react-query'
+import { publicApiSdk } from 'core/apiSdkInstances'
 import { Dispatch, SetStateAction, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router'
 import { User } from './client/user/User'
@@ -24,41 +25,34 @@ export type LoginManagementResult = {
 
 export function useLoginManagement(): LoginManagementResult {
   const navigate = useNavigate()
-
   const [connectedUser, setConnectedUser] = useState<User | undefined>()
-  const [isLoggingIn, setIsLoggingIn] = useState(false)
-  const [isRegistering, setIsRegistering] = useState(false)
-  const [loginError, setLoginError] = useState<unknown | undefined>()
-  const [registerError, setRegisterError] = useState<unknown | undefined>()
-  const [isFetchingUserOnStartup, setIsFetchingUserOnStartup] = useState(true)
 
+  const _userOnStartup = useQuery({
+    queryKey: ['getUser'],
+    queryFn: publicApiSdk.authenticate.getUser,
+  })
+  const isFetchingUserOnStartup = _userOnStartup.isLoading
+  const userOnStartup = _userOnStartup.data
   useEffect(() => {
-    async function fetchUserOnStartup() {
-      try {
-        const user = await apiPublicSdk.authenticate.getUser()
-        setConnectedUser(user)
-      } catch (e) {
-        console.log('User is not logged in')
-      } finally {
-        setIsFetchingUserOnStartup(false)
-      }
+    if (userOnStartup) {
+      setConnectedUser(userOnStartup)
     }
-    fetchUserOnStartup()
-  }, [])
+  }, [userOnStartup])
 
-  async function login(login: string, password: string): Promise<User> {
-    try {
-      setIsLoggingIn(true)
-      const user = await apiPublicSdk.authenticate.login(login, password)
+  const _login = useMutation({
+    mutationFn: ({ login, password }: { login: string; password: string }) =>
+      publicApiSdk.authenticate.login(login, password),
+    onSuccess: (user) => {
       setConnectedUser(user)
-      return user
-    } catch (e: unknown) {
-      setLoginError(e)
-      throw e
-    } finally {
-      setIsLoggingIn(false)
-    }
-  }
+    },
+    // we don't want to trigger the default toast of errors
+    onError: () => {},
+  })
+  const isLoggingIn = _login.isPending
+  const loginError = _login.error
+
+  const [isRegistering, setIsRegistering] = useState(false)
+  const [registerError, setRegisterError] = useState<unknown | undefined>()
 
   async function register(
     siret: string,
@@ -67,7 +61,7 @@ export function useLoginManagement(): LoginManagementResult {
   ): Promise<void> {
     try {
       setIsRegistering(true)
-      await apiPublicSdk.authenticate.sendActivationLink(siret, token, email)
+      await publicApiSdk.authenticate.sendActivationLink(siret, token, email)
     } catch (e: unknown) {
       setRegisterError(e)
       throw e
@@ -77,12 +71,13 @@ export function useLoginManagement(): LoginManagementResult {
   }
 
   function handleDetectedLogout(user?: User) {
+    console.warn('User seems logged out.')
     setConnectedUser(user)
     navigate('/')
   }
 
   const logout = async () => {
-    const user = await apiPublicSdk.authenticate.logout()
+    const user = await publicApiSdk.authenticate.logout()
     handleDetectedLogout(user)
   }
 
@@ -90,7 +85,9 @@ export function useLoginManagement(): LoginManagementResult {
     connectedUser,
     isFetchingUserOnStartup,
     login: {
-      action: login,
+      action: (login: string, password: string) => {
+        return _login.mutateAsync({ login, password })
+      },
       loading: isLoggingIn,
       errorMsg: loginError,
     },

@@ -2,7 +2,7 @@ import { useI18n } from '../../core/i18n'
 import { Page, PageTitle } from '../../shared/Page'
 
 import { Collapse } from '@mui/material'
-import { I18nContextProps } from 'core/i18n/I18n'
+import { I18nContextShape } from 'core/i18n/i18nContext'
 import { UseQueryPaginateResult } from 'core/queryhooks/UseQueryPaginate'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { CleanDiscreetPanel } from 'shared/Panel/simplePanels'
@@ -336,7 +336,7 @@ function buildColumns({
     unknown
   >
   selectReport: UseSetState<string>
-  i18n: I18nContextProps
+  i18n: I18nContextShape
 }): DatatableColumnProps<ReportSearchResult>[] {
   const { m, formatDate } = i18n
   return [

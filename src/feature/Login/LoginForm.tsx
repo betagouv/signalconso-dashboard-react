@@ -8,8 +8,9 @@ import { useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router'
 import { CenteredContent } from 'shared/CenteredContent'
 import { Alert, Txt } from '../../alexlibs/mui-extension'
+import { config } from '../../conf/config'
 import { ApiError } from '../../core/client/ApiClient'
-import { SignalConsoPublicSdk } from '../../core/client/SignalConsoPublicSdk'
+import { PublicApiSdk } from '../../core/client/PublicApiSdk'
 import { regexp } from '../../core/helper/regexp'
 import {
   mapArrayFromQuerystring,
@@ -26,7 +27,6 @@ import { InfoBanner } from '../../shared/InfoBanner'
 import { ScInputPassword } from '../../shared/ScInputPassword'
 import { ForgottenPasswordDialog } from './ForgottenPasswordDialog'
 import PredefinedUsersPanel from './PredefinedUsersPanel'
-import { config } from '../../conf/config'
 
 interface ActionProps<F extends (...args: any[]) => Promise<any>> {
   action: F
@@ -35,7 +35,7 @@ interface ActionProps<F extends (...args: any[]) => Promise<any>> {
 }
 
 interface Props {
-  login: ActionProps<SignalConsoPublicSdk['authenticate']['login']>
+  login: ActionProps<PublicApiSdk['authenticate']['login']>
 }
 
 export interface Form {

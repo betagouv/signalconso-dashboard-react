@@ -26,7 +26,7 @@ export const CompanyChartPanel = ({
   companyId: Id
   reportTotals: NbReportsTotals | undefined
 }) => {
-  const { apiSdk } = useConnectedContext()
+  const { api: apiSdk } = useConnectedContext()
   const { m, formatLargeNumber } = useI18n()
   const [reportsCurvePeriod, setReportsCurvePeriod] = useState<Period>('Month')
   const companyIds = [companyId]

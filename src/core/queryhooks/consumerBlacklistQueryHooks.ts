@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
-import { useApiContext } from '../context/ApiContext'
-import { UseQueryOpts } from './types'
 import { ConsumerBlacklistedEmail } from '../client/consumer-blacklist/ConsumerBlacklistedEmail'
+import { useApiContext } from '../context/ApiContext'
+import { UseQueryOpts } from './UseQueryOpts'
 
 export const ListConsumerBlacklistQueryKeys = ['consumerBlacklist_list']
 

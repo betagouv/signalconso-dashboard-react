@@ -24,7 +24,7 @@ interface Props {
 
 export const EditProfileDialog = ({ children }: Props) => {
   const { m } = useI18n()
-  const { apiSdk, connectedUser, setConnectedUser } = useConnectedContext()
+  const { api: apiSdk, connectedUser, setConnectedUser } = useConnectedContext()
   const _editUser = useMutation({
     mutationFn: apiSdk.secured.user.edit,
   })

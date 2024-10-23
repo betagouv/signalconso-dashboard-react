@@ -1,68 +1,24 @@
-import { formatDistance, formatDuration as formatDurationFns } from 'date-fns'
 import { AssociationType } from 'feature/ReportedWebsites/SelectWebsiteIdentification/SelectWebsiteAssociation'
-import { config } from '../../../conf/config'
-import { DownloadType } from '../../../feature/Report/ReportDownloadAction'
-import { AsyncFileKind } from '../../client/async-file/AsyncFile'
-import { CompanyAccessLevel } from '../../client/company-access/CompanyAccess'
-import { Category } from '../../client/constant/Category'
-import { EmailValidationStatus } from '../../client/consumer-email-validation/ConsumerEmailValidation'
-import {
-  ReportResponseTypes,
-  ResponseEvaluation,
-} from '../../client/event/Event'
+import { config } from '../../conf/config'
+import { DownloadType } from '../../feature/Report/ReportDownloadAction'
+import { AsyncFileKind } from '../client/async-file/AsyncFile'
+import { CompanyAccessLevel } from '../client/company-access/CompanyAccess'
+import { Category } from '../client/constant/Category'
+import { EmailValidationStatus } from '../client/consumer-email-validation/ConsumerEmailValidation'
+import { ReportResponseTypes, ResponseEvaluation } from '../client/event/Event'
 import {
   ReportAdminActionType,
   ReportStatus,
   ReportStatusPro,
   ReportTag,
   ReportType,
-} from '../../client/report/Report'
+} from '../client/report/Report'
 import {
   IdentificationStatus,
   InvestigationStatus,
-} from '../../client/website/Website'
-
-const invalidDate = '-'
-
-const isDateValid = (d?: Date | any): boolean => {
-  return !!d && d instanceof Date && !isNaN(d.getTime())
-}
-
-const formatDate = (d?: Date): string => {
-  if (!isDateValid(d)) return invalidDate
-  return d!.toLocaleDateString()
-}
-
-const formatTime = (d?: Date): string => {
-  if (!isDateValid(d)) return invalidDate
-  return d!.toLocaleTimeString(navigator.language, {
-    hour: '2-digit',
-    minute: '2-digit',
-  })
-}
-
-const formatDateTime = (d?: Date): string => {
-  if (!isDateValid(d)) return invalidDate
-  return formatDate(d) + ' à ' + formatTime(d)
-}
-
-const dateFromNow = (d?: Date): string | undefined => {
-  return d ? formatDistance(d, new Date(), { addSuffix: true }) : undefined
-}
-
-const formatLargeNumber = (n?: number): string => {
-  return n !== undefined && n !== null ? n.toLocaleString('fr-FR') : '-'
-}
-
-const formatDuration = formatDurationFns
+} from '../client/website/Website'
 
 export const fr = {
-  formatDate,
-  formatTime,
-  formatDateTime,
-  dateFromNow,
-  formatDuration,
-  formatLargeNumber,
   messages: {
     influencerIdentifiedTitle: 'Influenceur(se) identifié(e)',
     ReportCategoryDesc: {

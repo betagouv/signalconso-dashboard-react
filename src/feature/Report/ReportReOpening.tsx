@@ -14,7 +14,7 @@ interface Props {
 
 export const ReportReOpening = ({ report, children }: Props) => {
   const { m } = useI18n()
-  const { apiSdk } = useConnectedContext()
+  const { api: apiSdk } = useConnectedContext()
   const _reOpenReport = useMutation({
     mutationFn: apiSdk.secured.reports.reOpen,
     onSuccess: () => {

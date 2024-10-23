@@ -1,8 +1,8 @@
 import { Event, Id, ReportEvent } from '../../model'
-import { ApiClientApi } from '../ApiClient'
+import { ApiClient } from '../ApiClient'
 
 export class EventClient {
-  constructor(private client: ApiClientApi) {}
+  constructor(private client: ApiClient) {}
 
   readonly getByReportId = (reportId: Id) => {
     return this.client

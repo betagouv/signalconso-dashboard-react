@@ -1,6 +1,6 @@
-import { Paginate, PaginatedData, PaginatedFilters } from '../../model'
 import { cleanObject } from '../../helper'
-import { ApiClientApi } from '../ApiClient'
+import { Paginate, PaginatedData, PaginatedFilters } from '../../model'
+import { ApiClient } from '../ApiClient'
 import { AuthAttempt } from './AuthAttempt'
 
 export interface AuthAttemptsSearch extends PaginatedFilters {
@@ -8,7 +8,7 @@ export interface AuthAttemptsSearch extends PaginatedFilters {
 }
 
 export class AuthAttemptClient {
-  constructor(private client: ApiClientApi) {}
+  constructor(private client: ApiClient) {}
 
   readonly fetch = ({
     limit,

@@ -5,7 +5,7 @@ import { useConnectedContext } from '../../core/context/ConnectedContext'
 import { useI18n } from '../../core/i18n'
 
 export const StatsDgccrfSubscriptionsPanel = () => {
-  const { apiSdk: api } = useConnectedContext()
+  const { api: api } = useConnectedContext()
   const { m } = useI18n()
   const ticks = 12
   return (

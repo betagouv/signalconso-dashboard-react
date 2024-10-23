@@ -1,14 +1,14 @@
+import format from 'date-fns/format'
 import {
   PaginatedData,
   PaginatedFilters,
   ReportedPhone,
   ReportedPhoneFilters,
 } from '../../model'
-import format from 'date-fns/format'
-import { ApiClientApi } from '../ApiClient'
+import { ApiClient } from '../ApiClient'
 
 export class ReportedPhoneClient {
-  constructor(private client: ApiClientApi) {}
+  constructor(private client: ApiClient) {}
 
   readonly list = (filters: ReportedPhoneFilters & PaginatedFilters) => {
     return this.client.get<PaginatedData<ReportedPhone>>(`/reported-phones`, {

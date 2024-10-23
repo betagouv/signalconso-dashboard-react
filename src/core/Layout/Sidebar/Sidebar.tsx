@@ -1,14 +1,9 @@
-import * as React from 'react'
+import { Box, BoxProps, SwipeableDrawer } from '@mui/material'
 import { useEffect } from 'react'
-import { Box, BoxProps, SwipeableDrawer, Switch } from '@mui/material'
-import { useLayoutContext } from '../LayoutContext'
-import { layoutConfig } from '../index'
-import { useI18n } from '../../i18n'
-import { SidebarFooter } from './SidebarFooter'
-import { SidebarItem } from './SidebarItem'
+import { useLayoutContext } from '../../context/LayoutContext'
+import { layoutConfig } from '../layoutConfig'
 import { SidebarBody } from './SidebarBody'
 import { SidebarHeader } from './SidebarHeader'
-import { stopPropagation } from '../../helper'
 
 const sidebarId = 'signalconso-sidebar-id'
 
@@ -29,7 +24,6 @@ const stickSidebarToHeader = () => {
 
 export const Sidebar = ({ children, sx, ...props }: BoxProps) => {
   const { isMobileWidth, sidebarOpen, setSidebarOpen } = useLayoutContext()
-  const { m } = useI18n()
 
   useEffect(() => {
     // Element has been re-created by SwipeableDrawer, thus variable point to nothing.

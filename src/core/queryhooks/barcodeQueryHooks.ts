@@ -1,8 +1,8 @@
 import { useQuery } from '@tanstack/react-query'
-import { useApiContext } from '../context/ApiContext'
-import { UseQueryOpts } from './types'
-import { Id } from '../model'
 import { BarcodeProduct } from '../client/barcode/BarcodeProduct'
+import { useApiContext } from '../context/ApiContext'
+import { Id } from '../model'
+import { UseQueryOpts } from './UseQueryOpts'
 
 const GetBarcodeQueryKeys = (barcodeProductId: Id) => [
   'barcode_get',

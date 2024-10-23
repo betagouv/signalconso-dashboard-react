@@ -1,18 +1,18 @@
 import { useMutation } from '@tanstack/react-query'
+import { publicApiSdk } from 'core/apiSdkInstances'
 import { useEffect, useMemo } from 'react'
 import { useLocation } from 'react-router'
 import { NavLink } from 'react-router-dom'
 import { Fender, Txt } from '../../alexlibs/mui-extension'
 import { QueryString } from '../../core/helper/useQueryString'
 import { useI18n } from '../../core/i18n'
-import { Id, User } from '../../core/model'
+import { User } from '../../core/model'
 import { siteMap } from '../../core/siteMap'
 import { ScButton } from '../../shared/Button'
 import { CenteredContent } from '../../shared/CenteredContent'
 import { Page } from '../../shared/Page'
 
 interface Props {
-  onValidateEmail: (token: Id) => Promise<User>
   onSaveUser: (_: User) => void
 }
 
@@ -22,9 +22,11 @@ interface FenderProps {
   description?: string
 }
 
-export const EmailValidation = ({ onValidateEmail, onSaveUser }: Props) => {
+export const EmailValidation = ({ onSaveUser }: Props) => {
   const { m } = useI18n()
-  const _validateEmail = useMutation({ mutationFn: onValidateEmail })
+  const _validateEmail = useMutation({
+    mutationFn: publicApiSdk.authenticate.validateEmail,
+  })
   const { search } = useLocation()
 
   useEffect(() => {

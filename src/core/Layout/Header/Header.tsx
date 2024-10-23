@@ -1,7 +1,7 @@
 import { alpha, Box, BoxProps, Icon } from '@mui/material'
 import { IconBtn } from '../../../alexlibs/mui-extension'
-import { layoutConfig } from '../index'
-import { useLayoutContext } from '../LayoutContext'
+import { useLayoutContext } from '../../context/LayoutContext'
+import { layoutConfig } from '../layoutConfig'
 
 interface Props extends BoxProps {}
 

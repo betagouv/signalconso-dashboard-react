@@ -8,14 +8,14 @@ import {
   useState,
 } from 'react'
 
-const LayoutContext = createContext<UseLayoutContextProps>(
-  {} as UseLayoutContextProps,
+const LayoutContext = createContext<LayoutContextShape>(
+  {} as LayoutContextShape,
 )
 
 // "Mobile width" is equivalent to Tailwinds's sm and lower
 const mobileBreakpoint = 768
 
-interface UseLayoutContextProps {
+interface LayoutContextShape {
   sidebarOpen: boolean
   setSidebarOpen: Dispatch<SetStateAction<boolean>>
   isMobileWidth: boolean
@@ -32,13 +32,18 @@ export const LayoutContextProvider = ({
   hasSidebar: boolean
 }) => {
   const [pageWidth, setPageWidth] = useState(getWindowWidth())
-  const [sidebarOpen, setSidebarOpen] = useState<boolean>(true)
-
+  const isMobileWidth = pageWidth < mobileBreakpoint
+  const [sidebarOpen, setSidebarOpen] = useState<boolean>(!isMobileWidth)
+  useEffect(() => {
+    if (!hasSidebar) {
+      // if you log-out then re-login, it should start closed again
+      setSidebarOpen(!isMobileWidth)
+    }
+  }, [hasSidebar, isMobileWidth])
   useEffect(() => {
     window.addEventListener('resize', () => setPageWidth(getWindowWidth()))
   }, [])
 
-  const isMobileWidth = pageWidth < mobileBreakpoint
   return (
     <LayoutContext.Provider
       value={{
@@ -58,6 +63,6 @@ function getWindowWidth(): number {
   return window.innerWidth
 }
 
-export const useLayoutContext = (): UseLayoutContextProps => {
-  return useContext<UseLayoutContextProps>(LayoutContext)
+export const useLayoutContext = (): LayoutContextShape => {
+  return useContext<LayoutContextShape>(LayoutContext)
 }

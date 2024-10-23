@@ -17,7 +17,7 @@ type DatatableToolbarComponentProps = {
 export const DatatableToolbarComponent: React.FC<
   DatatableToolbarComponentProps
 > = ({ selectReport }) => {
-  const { apiSdk } = useConnectedContext()
+  const { api: apiSdk } = useConnectedContext()
   const { m } = useI18n()
   const downloadReports = useMutation({
     mutationFn: apiSdk.secured.reports.download,

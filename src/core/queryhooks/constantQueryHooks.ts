@@ -1,8 +1,8 @@
-import { UseQueryOpts } from './types'
-import { useApiContext } from '../context/ApiContext'
 import { useQuery } from '@tanstack/react-query'
+import { CategoriesByStatus } from '../client/constant/Category'
 import { Country, Region } from '../client/constant/Country'
-import { CategoriesByStatus, Category } from '../client/constant/Category'
+import { useApiContext } from '../context/ApiContext'
+import { UseQueryOpts } from './UseQueryOpts'
 
 const RegionsQueryKeys = ['constant_getRegions']
 const CountriesQueryKeys = ['constant_getCountries']

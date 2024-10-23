@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
-import { useApiContext } from '../context/ApiContext'
-import { UseQueryOpts } from './types'
 import { BlacklistedIp } from '../client/ip-blacklist/BlacklistedIp'
+import { useApiContext } from '../context/ApiContext'
+import { UseQueryOpts } from './UseQueryOpts'
 
 export const ListIpBlacklistQueryKeys = ['ipBlacklist_list']
 

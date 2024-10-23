@@ -19,7 +19,7 @@ interface Props {
 
 export const EditEmailDialog = ({ children }: Props) => {
   const { m } = useI18n()
-  const { apiSdk, connectedUser } = useConnectedContext()
+  const { api: apiSdk, connectedUser } = useConnectedContext()
   const _sendEmailUpdateValidation = useMutation({
     mutationFn: apiSdk.secured.user.sendEmailUpdateValidation,
   })

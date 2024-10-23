@@ -1,6 +1,6 @@
 import { LoginManagementResult } from 'core/useLoginManagement'
 import React, { ReactNode, useContext } from 'react'
-import { ConnectedApiSdk } from '../ApiSdkInstance'
+import { ConnectedApiSdk } from '../apiSdkInstances'
 import { User } from '../client/user/User'
 
 export type ConnectedContext = {
@@ -13,7 +13,7 @@ export type ConnectedContext = {
     isSuperAdmin: boolean
   }
   setConnectedUser: LoginManagementResult['setConnectedUser']
-  apiSdk: ConnectedApiSdk
+  api: ConnectedApiSdk
 }
 
 const connectedContext = React.createContext<ConnectedContext>(
@@ -21,12 +21,12 @@ const connectedContext = React.createContext<ConnectedContext>(
 )
 
 export const ConnectedContextProvider = ({
-  apiSdk,
+  api,
   connectedUser,
   setConnectedUser,
   children,
 }: {
-  apiSdk: ConnectedApiSdk
+  api: ConnectedApiSdk
   connectedUser: User
   setConnectedUser: LoginManagementResult['setConnectedUser']
   children: ReactNode
@@ -48,7 +48,7 @@ export const ConnectedContextProvider = ({
           isSuperAdmin: connectedUser.role === 'SuperAdmin',
         },
 
-        apiSdk,
+        api,
       }}
     >
       {children}

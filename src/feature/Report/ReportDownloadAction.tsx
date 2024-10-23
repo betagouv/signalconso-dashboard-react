@@ -1,4 +1,5 @@
 import { useMutation } from '@tanstack/react-query'
+import { objectKeysUnsafe } from 'core/helper'
 import { ReactElement, useState } from 'react'
 import { Alert } from '../../alexlibs/mui-extension'
 import { Report } from '../../core/client/report/Report'
@@ -8,7 +9,6 @@ import { Id, UploadedFile } from '../../core/model'
 import { ScRadioGroup } from '../../shared/RadioGroup'
 import { ScRadioGroupItem } from '../../shared/RadioGroupItem'
 import { ScDialog } from '../../shared/ScDialog'
-import { objectKeysUnsafe } from 'core/helper'
 
 interface Props {
   report: Report
@@ -23,7 +23,7 @@ export enum DownloadType {
 
 export const ReportDownloadAction = ({ report, files, children }: Props) => {
   const { m } = useI18n()
-  const { apiSdk } = useConnectedContext()
+  const { api: apiSdk } = useConnectedContext()
 
   const _download = useMutation({
     mutationFn: (params: { id: Id; reportType: DownloadType }) => {

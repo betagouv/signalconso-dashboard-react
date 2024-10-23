@@ -10,8 +10,8 @@ import {
   Id,
   PaginatedFilters,
 } from '../model'
+import { UseQueryOpts } from './UseQueryOpts'
 import { useQueryPaginate } from './UseQueryPaginate'
-import { UseQueryOpts } from './types'
 
 const GetAccessibleByProQueryKeys = ['company_getAccessibleByPro']
 const IsAllowedToManageCompanyAccessesQueryKeys = [
@@ -166,8 +166,7 @@ export const useSearchByIdentityQuery = (
   const { api } = useApiContext()
   return useQuery({
     queryKey: SearchByIdentityQueryKeys(identity, openOnly),
-    queryFn: () =>
-      api.companySdk.company.searchCompaniesByIdentity(identity, openOnly),
+    queryFn: () => api.companies.searchCompaniesByIdentity(identity, openOnly),
     ...options,
   })
 }
