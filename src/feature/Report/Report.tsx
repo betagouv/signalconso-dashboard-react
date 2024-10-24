@@ -90,192 +90,195 @@ export const ReportComponent = () => {
 
   return (
     <Page loading={_getReport.isLoading}>
-      {map(_getReport.data?.report, (report) => (
-        <>
-          <ReportHeader elevated report={report}>
-            <Box
-              sx={{
-                whiteSpace: 'nowrap',
-                display: 'flex',
-                flexDirection: 'row-reverse',
-                flexWrap: 'wrap',
-              }}
-            >
-              {connectedUser.isAdmin &&
-                (report.status === ReportStatus.NonConsulte ||
-                  report.status === ReportStatus.ConsulteIgnore) && (
-                  <ReportReOpening report={report}>
-                    <Tooltip title={m.reportReopening}>
-                      <Btn color="primary" icon="replay">
-                        {m.reportReopening}
-                      </Btn>
-                    </Tooltip>
-                  </ReportReOpening>
-                )}
+      {map(_getReport.data, (reportSearchResult) => {
+        const report = reportSearchResult.report
+        return (
+          <>
+            <ReportHeader elevated report={reportSearchResult}>
+              <Box
+                sx={{
+                  whiteSpace: 'nowrap',
+                  display: 'flex',
+                  flexDirection: 'row-reverse',
+                  flexWrap: 'wrap',
+                }}
+              >
+                {connectedUser.isAdmin &&
+                  (report.status === ReportStatus.NonConsulte ||
+                    report.status === ReportStatus.ConsulteIgnore) && (
+                    <ReportReOpening report={report}>
+                      <Tooltip title={m.reportReopening}>
+                        <Btn color="primary" icon="replay">
+                          {m.reportReopening}
+                        </Btn>
+                      </Tooltip>
+                    </ReportReOpening>
+                  )}
 
-              {connectedUser.isAdmin &&
-                report.status !== ReportStatus.SuppressionRGPD && (
-                  <ReportAdminResolution
-                    label={m.administratorAction}
+                {connectedUser.isAdmin &&
+                  report.status !== ReportStatus.SuppressionRGPD && (
+                    <ReportAdminResolution
+                      label={m.administratorAction}
+                      report={report}
+                      onAdd={() => refetchReportEvents()}
+                    >
+                      <Tooltip title={m.administratorAction}>
+                        <Btn color="primary" icon="add_comment">
+                          {m.administratorAction}
+                        </Btn>
+                      </Tooltip>
+                    </ReportAdminResolution>
+                  )}
+
+                {_getReport.data?.files && _getReport.data?.files.length > 0 ? (
+                  <ReportDownloadAction
                     report={report}
-                    onAdd={() => refetchReportEvents()}
+                    files={_getReport.data?.files}
                   >
-                    <Tooltip title={m.administratorAction}>
-                      <Btn color="primary" icon="add_comment">
-                        {m.administratorAction}
-                      </Btn>
-                    </Tooltip>
-                  </ReportAdminResolution>
-                )}
-
-              {_getReport.data?.files && _getReport.data?.files.length > 0 ? (
-                <ReportDownloadAction
-                  report={report}
-                  files={_getReport.data?.files}
-                >
-                  <Btn color="primary" icon="download">
+                    <Btn color="primary" icon="download">
+                      {m.download}
+                    </Btn>
+                  </ReportDownloadAction>
+                ) : (
+                  <Btn
+                    color="primary"
+                    icon="download"
+                    loading={downloadReport.isPending}
+                    onClick={() => downloadReport.mutate(report.id)}
+                  >
                     {m.download}
                   </Btn>
-                </ReportDownloadAction>
-              ) : (
-                <Btn
-                  color="primary"
-                  icon="download"
-                  loading={downloadReport.isPending}
-                  onClick={() => downloadReport.mutate(report.id)}
-                >
-                  {m.download}
-                </Btn>
-              )}
+                )}
 
-              <ReportPostAction
-                actionType={EventActionValues.Comment}
-                label={m.addDgccrfComment}
-                report={report}
-                onAdd={refetchReportEvents}
-              >
-                <Tooltip title={m.addDgccrfComment}>
-                  <Btn color="primary" icon="add_comment">
-                    {m.comment}
-                  </Btn>
-                </Tooltip>
-              </ReportPostAction>
-
-              {(connectedUser.isDGCCRF || connectedUser.isDGAL) && (
                 <ReportPostAction
-                  actionType={EventActionValues.Control}
-                  label={m.markDgccrfControlDone}
+                  actionType={EventActionValues.Comment}
+                  label={m.addDgccrfComment}
                   report={report}
                   onAdd={refetchReportEvents}
                 >
-                  <Tooltip title={m.markDgccrfControlDone}>
+                  <Tooltip title={m.addDgccrfComment}>
                     <Btn color="primary" icon="add_comment">
-                      {m.dgccrfControlDone}
+                      {m.comment}
                     </Btn>
                   </Tooltip>
                 </ReportPostAction>
-              )}
 
-              {connectedUser.isAdmin && (
-                <ScButton
-                  loading={generateConsumerNotificationAsPDF.isPending}
-                  icon="download"
-                  onClick={() =>
-                    generateConsumerNotificationAsPDF.mutate(report.id)
-                  }
-                >
-                  Accusé reception
-                </ScButton>
-              )}
-            </Box>
-          </ReportHeader>
-          {!report.visibleToPro && (
-            <div className="bg-yellow-100  border border-gray-700 mx-4 p-4 mb-4">
-              <h3 className="font-bold">
-                <WithInlineIcon icon="visibility_off">
-                  Signalement confidentiel
-                </WithInlineIcon>
-              </h3>
-              Ce signalement n'a pas été transmis à l'entreprise.
-              <br />
-              L'entreprise{' '}
-              <span className="font-bold">
-                ne sait même pas que ce signalement existe
-              </span>
-              . Ne pas lui divulguer.
+                {(connectedUser.isDGCCRF || connectedUser.isDGAL) && (
+                  <ReportPostAction
+                    actionType={EventActionValues.Control}
+                    label={m.markDgccrfControlDone}
+                    report={report}
+                    onAdd={refetchReportEvents}
+                  >
+                    <Tooltip title={m.markDgccrfControlDone}>
+                      <Btn color="primary" icon="add_comment">
+                        {m.dgccrfControlDone}
+                      </Btn>
+                    </Tooltip>
+                  </ReportPostAction>
+                )}
+
+                {connectedUser.isAdmin && (
+                  <ScButton
+                    loading={generateConsumerNotificationAsPDF.isPending}
+                    icon="download"
+                    onClick={() =>
+                      generateConsumerNotificationAsPDF.mutate(report.id)
+                    }
+                  >
+                    Accusé reception
+                  </ScButton>
+                )}
+              </Box>
+            </ReportHeader>
+            {!report.visibleToPro && (
+              <div className="bg-yellow-100  border border-gray-700 mx-4 p-4 mb-4">
+                <h3 className="font-bold">
+                  <WithInlineIcon icon="visibility_off">
+                    Signalement confidentiel
+                  </WithInlineIcon>
+                </h3>
+                Ce signalement n'a pas été transmis à l'entreprise.
+                <br />
+                L'entreprise{' '}
+                <span className="font-bold">
+                  ne sait même pas que ce signalement existe
+                </span>
+                . Ne pas lui divulguer.
+              </div>
+            )}
+            <div className="grid lg:grid-cols-2 gap-4 ">
+              <ReportConsumer report={report} canEdit={connectedUser.isAdmin} />
+              <ReportCompany report={report} canEdit={connectedUser.isAdmin} />
             </div>
-          )}
-          <div className="grid lg:grid-cols-2 gap-4 ">
-            <ReportConsumer report={report} canEdit={connectedUser.isAdmin} />
-            <ReportCompany report={report} canEdit={connectedUser.isAdmin} />
-          </div>
 
-          <ReportBarcodeProduct
-            barcodeProductId={_getReport.data?.report.barcodeProductId}
-            rappelConsoId={_getReport.data?.report.rappelConsoId}
-          />
+            <ReportBarcodeProduct
+              barcodeProductId={_getReport.data?.report.barcodeProductId}
+              rappelConsoId={_getReport.data?.report.rappelConsoId}
+            />
 
-          <CleanDiscreetPanel>
-            <ReportDetails {...{ report }} />
-            <Divider margin />
-            <ReportFilesFull files={_getReport.data?.files} {...{ report }} />
-          </CleanDiscreetPanel>
-          <CleanDiscreetPanel loading={reportEventsIsLoading} noPaddingTop>
-            <>
-              <Tabs
-                sx={{
-                  paddingTop: 0,
-                  borderBottom: (t) => '1px solid ' + t.palette.divider,
-                }}
-                value={activeTab}
-                onChange={(event: React.ChangeEvent<{}>, newValue: number) =>
-                  setActiveTab(newValue)
-                }
-                indicatorColor="primary"
-                textColor="primary"
-              >
-                <Tab label={m.proResponse} />
-                <Tab label={m.reportHistory} />
-                <Tab label={m.companyHistory} />
-              </Tabs>
-              <ReportTabPanel value={activeTab} index={0}>
-                <div className="p-4">
-                  {responseEvent && (
-                    <ReportResponseComponent
-                      canEditFile
-                      report={report}
-                      response={responseEvent}
-                      consumerReportReview={_getReviewOnReportResponse.data}
-                      engagementReview={_getEngagementReview.data}
-                      files={_getReport.data?.files.filter(
-                        (_) => _.origin === FileOrigin.Professional,
-                      )}
-                    />
-                  )}
-                </div>
-              </ReportTabPanel>
-              <ReportTabPanel value={activeTab} index={1}>
-                <ReportEvents
-                  events={
-                    reportEventsIsLoading
-                      ? undefined
-                      : [creationReportEvent(report), ...(reportEvents ?? [])]
+            <CleanDiscreetPanel>
+              <ReportDetails {...{ report }} />
+              <Divider margin />
+              <ReportFilesFull files={_getReport.data?.files} {...{ report }} />
+            </CleanDiscreetPanel>
+            <CleanDiscreetPanel loading={reportEventsIsLoading} noPaddingTop>
+              <>
+                <Tabs
+                  sx={{
+                    paddingTop: 0,
+                    borderBottom: (t) => '1px solid ' + t.palette.divider,
+                  }}
+                  value={activeTab}
+                  onChange={(event: React.ChangeEvent<{}>, newValue: number) =>
+                    setActiveTab(newValue)
                   }
-                />
-              </ReportTabPanel>
-              <ReportTabPanel value={activeTab} index={2}>
-                <ReportEvents
-                  events={
-                    _getCompanyEvents.isLoading
-                      ? undefined
-                      : (_getCompanyEvents.data ?? [])
-                  }
-                />
-              </ReportTabPanel>
-            </>
-          </CleanDiscreetPanel>
-        </>
-      ))}
+                  indicatorColor="primary"
+                  textColor="primary"
+                >
+                  <Tab label={m.proResponse} />
+                  <Tab label={m.reportHistory} />
+                  <Tab label={m.companyHistory} />
+                </Tabs>
+                <ReportTabPanel value={activeTab} index={0}>
+                  <div className="p-4">
+                    {responseEvent && (
+                      <ReportResponseComponent
+                        canEditFile
+                        report={report}
+                        response={responseEvent}
+                        consumerReportReview={_getReviewOnReportResponse.data}
+                        engagementReview={_getEngagementReview.data}
+                        files={_getReport.data?.files.filter(
+                          (_) => _.origin === FileOrigin.Professional,
+                        )}
+                      />
+                    )}
+                  </div>
+                </ReportTabPanel>
+                <ReportTabPanel value={activeTab} index={1}>
+                  <ReportEvents
+                    events={
+                      reportEventsIsLoading
+                        ? undefined
+                        : [creationReportEvent(report), ...(reportEvents ?? [])]
+                    }
+                  />
+                </ReportTabPanel>
+                <ReportTabPanel value={activeTab} index={2}>
+                  <ReportEvents
+                    events={
+                      _getCompanyEvents.isLoading
+                        ? undefined
+                        : (_getCompanyEvents.data ?? [])
+                    }
+                  />
+                </ReportTabPanel>
+              </>
+            </CleanDiscreetPanel>
+          </>
+        )
+      })}
     </Page>
   )
 }

@@ -127,6 +127,7 @@ export interface DetailInputValue {
 export interface ReportSearchResult {
   report: Report
   metadata?: ReportMetadata
+  isBookmarked: boolean
   files: UploadedFile[]
   professionalResponse?: EventWithUser
   consumerReview?: ConsumerReview

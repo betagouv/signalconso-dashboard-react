@@ -17,7 +17,7 @@ const GetEngagementReviewQueryKeys = (id: string) => [
   'reports_getEngagementReview',
   id,
 ]
-const ReportSearchQuery = ['reports_search']
+export const ReportSearchQueryKeyStart = ['reports_search']
 const GetCountBySubCategoriesQueryKeys = (filters: ReportNodeSearch) => [
   'reports_getCountBySubCategories',
   filters,
@@ -74,7 +74,7 @@ export const useReportSearchQuery = (
   const { api } = useApiContext()
   const defaultFilters = { offset: 0, limit: 25 }
   return useQueryPaginate(
-    ReportSearchQuery,
+    ReportSearchQueryKeyStart,
     api.secured.reports.search,
     defaultFilters,
     initialFilters,
