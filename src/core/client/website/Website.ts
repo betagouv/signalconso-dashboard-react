@@ -31,6 +31,7 @@ export interface Website extends Entity {
   investigationStatus?: InvestigationStatus
   attribution?: string
   lastUpdated?: Date
+  isMarketplace: boolean
 }
 
 export interface WebsiteUpdateCompany {

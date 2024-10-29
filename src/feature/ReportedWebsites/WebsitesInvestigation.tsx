@@ -115,6 +115,12 @@ export const WebsitesInvestigation = () => {
 
   const onRemove = (id: string) => _remove.mutateAsync(id)
 
+  const rowSx = (_: WebsiteWithCompany) => {
+    return {
+      ...(_.isMarketplace ? { pointerEvents: 'none', opacity: 0.5 } : {}),
+    }
+  }
+
   return (
     <>
       <>
@@ -233,6 +239,7 @@ export const WebsitesInvestigation = () => {
           }}
           getRenderRowKey={(_) => _.id}
           data={_websiteWithCompany.result.data?.entities}
+          rowSx={rowSx}
           showColumnsToggle={true}
           columns={[
             {
