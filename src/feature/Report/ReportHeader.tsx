@@ -1,20 +1,18 @@
-import { Panel, PanelBody } from '../../shared/Panel'
+import { Icon } from '@mui/material'
+import { ReactNode } from 'react'
+import { CleanDiscreetPanel } from 'shared/Panel/simplePanels'
+import { Alert, makeSx } from '../../alexlibs/mui-extension'
+import { Report, ReportSearchResult } from '../../core/client/report/Report'
+import { useI18n } from '../../core/i18n'
+import { styleUtils } from '../../core/theme'
 import {
   isStatusFinal,
   isStatusInvisibleToPro,
   ReportStatusLabel,
 } from '../../shared/ReportStatus'
-import { Alert } from '../../alexlibs/mui-extension'
-import { Box, Icon } from '@mui/material'
-import { PanelFoot } from '../../shared/Panel/PanelFoot'
 import { ScChip } from '../../shared/ScChip'
-import React, { ReactNode } from 'react'
-import { styleUtils } from '../../core/theme'
-import { useI18n } from '../../core/i18n'
-import { makeSx } from '../../alexlibs/mui-extension'
-import { Report } from '../../core/client/report/Report'
 import { ReportCategories } from './ReportCategories'
-import { CleanDiscreetPanel, CleanWidePanel } from 'shared/Panel/simplePanels'
+import { BookmarkButton } from './bookmarks'
 
 const css = makeSx({
   root: {
@@ -38,7 +36,7 @@ const css = makeSx({
 })
 
 interface Props {
-  report: Report
+  report: ReportSearchResult
   elevated?: boolean
   children?: ReactNode
   isUserPro?: boolean
@@ -101,16 +99,23 @@ export const ExpirationDate = ({
   )
 }
 
-export const ReportHeader = ({ report, children }: Props) => {
+export const ReportHeader = ({
+  report: reportSearchResult,
+  children,
+}: Props) => {
   const { m } = useI18n()
 
+  const { report, isBookmarked } = reportSearchResult
   const hideTags = false
 
   return (
     <CleanDiscreetPanel>
-      <div className="flex items-center justify-between mb-2">
+      <div className="flex items-start justify-between mb-2">
         <div>
-          <h1 className="text-xl font-bold">{m.report_pageTitle}</h1>
+          <h1 className="text-xl font-bold">
+            {m.report_pageTitle}{' '}
+            <BookmarkButton isBookmarked={isBookmarked} reportId={report.id} />
+          </h1>
           <ExpirationDate {...{ report }} isUserPro={false} />
         </div>
         <ReportStatusLabel

@@ -320,6 +320,24 @@ export class ReportsClient {
     })
   }
 
+  readonly setBookmarked = ({
+    reportId,
+    bookmarked,
+  }: {
+    reportId: string
+    bookmarked: boolean
+  }): Promise<unknown> => {
+    if (bookmarked) {
+      return this.client.post(`/reports/${reportId}/bookmark`)
+    } else {
+      return this.client.delete(`/reports/${reportId}/bookmark`)
+    }
+  }
+
+  readonly countBookmarks = (): Promise<number> => {
+    return this.client.get<number>(`/reports/bookmarks/count`)
+  }
+
   static readonly mapReport = (report: {
     [key in keyof Report]: any
   }): Report => ({
