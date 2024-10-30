@@ -32,4 +32,5 @@ export interface ReportSearch {
   fullText?: String
   isForeign?: boolean
   hasBarcode?: boolean
+  isBookmarked?: boolean
 }

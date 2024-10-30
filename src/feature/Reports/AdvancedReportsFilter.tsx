@@ -403,6 +403,20 @@ export const AdvancedReportsFilter: React.FC<AdvancedFiltersGridProps> = ({
           )}
         </DebouncedInput>
       </Grid>
+      <Grid item xs={12} md={6}>
+        <Box>
+          <TrueFalseNullRow
+            label={'Dans les marque-pages'}
+            value={_reports.filters.isBookmarked ?? null}
+            onChange={(isBookmarked) =>
+              _reports.updateFilters((prev) => ({
+                ...prev,
+                isBookmarked: isBookmarked ?? undefined,
+              }))
+            }
+          />
+        </Box>
+      </Grid>
     </Grid>
   )
 }

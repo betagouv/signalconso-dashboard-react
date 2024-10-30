@@ -1,9 +1,16 @@
 import { useI18n } from '../../core/i18n'
 import { Page, PageTitle } from '../../shared/Page'
 
-import { Collapse } from '@mui/material'
+import { Collapse, Grow } from '@mui/material'
+import { useQuery } from '@tanstack/react-query'
+import { useApiContext } from 'core/context/ApiContext'
 import { I18nContextShape } from 'core/i18n/i18nContext'
 import { UseQueryPaginateResult } from 'core/queryhooks/UseQueryPaginate'
+import {
+  BookmarkButton,
+  BookmarksCountQueryKey,
+  BookmarksIcon,
+} from 'feature/Report/bookmarks'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { CleanDiscreetPanel } from 'shared/Panel/simplePanels'
 import { ConsumerReviewLabels } from 'shared/reviews/ConsumerReviewLabels'
@@ -85,6 +92,7 @@ interface ReportSearchQs {
   hasEngagementEvaluation?: boolean
   engagementEvaluation?: ResponseEvaluation[]
   subcategories?: string[]
+  isBookmarked?: boolean
   offset: number
   limit: number
 }
@@ -111,6 +119,7 @@ function useReportsQueryString() {
         'hasWebsite',
         'hasResponseEvaluation',
         'hasEngagementEvaluation',
+        'isBookmarked',
       ]),
     ),
   })
@@ -120,6 +129,7 @@ export const Reports = () => {
   const i18n = useI18n()
   const { m } = i18n
   const { connectedUser } = useConnectedContext()
+  const { api } = useApiContext()
 
   const selectReport = useSetState<Id>()
   const [expanded, setExpanded] = useState(false)
@@ -251,10 +261,41 @@ export const Reports = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
+  const _bookmarksCount = useQuery({
+    queryKey: BookmarksCountQueryKey,
+    queryFn: api.secured.reports.countBookmarks,
+  })
+
   const columns = buildColumns({ _reports, selectReport, i18n })
   return (
     <Page>
-      <PageTitle>{m.reports_pageTitle}</PageTitle>
+      <div className="flex gap-2 justify-between items-baseline">
+        <PageTitle>{m.reports_pageTitle}</PageTitle>
+
+        {_bookmarksCount.data !== undefined && _bookmarksCount.data > 0 && (
+          <Grow in>
+            <span>
+              <BookmarksIcon /> Marque-pages :{' '}
+              <button
+                className="font-bold text-scbluefrance underline"
+                onClick={() => {
+                  _reports.updateFilters((prev) => {
+                    return {
+                      // ...prev,
+                      isBookmarked: true,
+                      offset: prev.offset,
+                      limit: prev.limit,
+                    }
+                  })
+                }}
+              >
+                {_bookmarksCount.data} signalement
+                {_bookmarksCount.data > 1 ? 's' : ''}{' '}
+              </button>
+            </span>
+          </Grow>
+        )}
+      </div>
       <CleanDiscreetPanel noShadow>
         <>
           <ReportsFilter
@@ -347,7 +388,18 @@ function buildColumns({
       style: { width: 0 },
       render: (r) => <CheckboxColumn {...{ r, selectReport }} />,
     },
-
+    {
+      id: 'bookmark',
+      head: <>Marque-pages</>,
+      render: (r) => {
+        return (
+          <BookmarkButton
+            isBookmarked={r.isBookmarked}
+            reportId={r.report.id}
+          />
+        )
+      },
+    },
     {
       id: 'companyPostalCode',
       head: m.postalCodeShort,
