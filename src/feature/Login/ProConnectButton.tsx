@@ -2,9 +2,9 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { v4 as uuidv4 } from 'uuid'
 import { config } from '../../conf/config'
-import { SignalConsoPublicSdk } from '../../core/client/SignalConsoPublicSdk'
 import { ApiError } from '../../core/client/ApiClient'
 import { ScButton } from '../../shared/Button'
+import { PublicApiSdk } from '../../core/client/PublicApiSdk'
 
 interface ActionProps<F extends (...args: any[]) => Promise<any>> {
   action: F
@@ -13,9 +13,7 @@ interface ActionProps<F extends (...args: any[]) => Promise<any>> {
 }
 
 interface Props {
-  startProConnect: ActionProps<
-    SignalConsoPublicSdk['authenticate']['startProConnect']
-  >
+  startProConnect: ActionProps<PublicApiSdk['authenticate']['startProConnect']>
 }
 
 const ProConnectButton = ({ startProConnect }: Props) => {

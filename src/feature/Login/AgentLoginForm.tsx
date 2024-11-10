@@ -2,12 +2,12 @@ import { Box, Chip } from '@mui/material'
 import { DashboardTitle } from 'feature/Login/loggedOutComponents'
 import { CenteredContent } from 'shared/CenteredContent'
 import { ApiError } from '../../core/client/ApiClient'
-import { SignalConsoPublicSdk } from '../../core/client/SignalConsoPublicSdk'
 import { InfoBanner } from '../../shared/InfoBanner'
 import { Divider } from '../../shared/Divider'
 import ProConnectButton from './ProConnectButton'
 import { LoginForm } from './LoginForm'
 import React from 'react'
+import { PublicApiSdk } from '../../core/client/PublicApiSdk'
 
 interface ActionProps<F extends (...args: any[]) => Promise<any>> {
   action: F
@@ -16,10 +16,8 @@ interface ActionProps<F extends (...args: any[]) => Promise<any>> {
 }
 
 interface Props {
-  login: ActionProps<SignalConsoPublicSdk['authenticate']['login']>
-  startProConnect: ActionProps<
-    SignalConsoPublicSdk['authenticate']['startProConnect']
-  >
+  login: ActionProps<PublicApiSdk['authenticate']['login']>
+  startProConnect: ActionProps<PublicApiSdk['authenticate']['startProConnect']>
 }
 
 export interface Form {

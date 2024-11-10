@@ -1,10 +1,10 @@
 import { DashboardTitle } from 'feature/Login/loggedOutComponents'
 import { CenteredContent } from 'shared/CenteredContent'
 import { ApiError } from '../../core/client/ApiClient'
-import { SignalConsoPublicSdk } from '../../core/client/SignalConsoPublicSdk'
 import { useI18n } from '../../core/i18n'
 import { InfoBanner } from '../../shared/InfoBanner'
 import { LoginForm } from './LoginForm'
+import { PublicApiSdk } from '../../core/client/PublicApiSdk'
 
 interface ActionProps<F extends (...args: any[]) => Promise<any>> {
   action: F
@@ -13,7 +13,7 @@ interface ActionProps<F extends (...args: any[]) => Promise<any>> {
 }
 
 interface Props {
-  login: ActionProps<SignalConsoPublicSdk['authenticate']['login']>
+  login: ActionProps<PublicApiSdk['authenticate']['login']>
 }
 
 export interface Form {
