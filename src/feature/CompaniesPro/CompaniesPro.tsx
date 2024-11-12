@@ -49,8 +49,9 @@ export const CompaniesPro = () => {
       )
       queryClient.setQueryData(
         ListReportBlockedNotificationsQueryKeys,
-        (prev: BlockedReportNotification[]) =>
-          uniqBy([...(prev ?? []), ...newBlocked], (_) => _.companyId),
+        (prev: BlockedReportNotification[]) => {
+          return uniqBy([...(prev ?? []), ...newBlocked], (_) => _.companyId)
+        },
       )
       return api.secured.reportBlockedNotification.create(companyIds)
     },
