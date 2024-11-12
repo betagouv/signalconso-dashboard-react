@@ -4,6 +4,7 @@ import {
   EventWithUser,
   Id,
   MinimalUser,
+  ReportProResponseEvent,
   UploadedFile,
 } from '../../model'
 import { Category } from '../constant/Category'
@@ -169,6 +170,19 @@ enum SpecialLegislation {
   SHRINKFLATION = 'SHRINKFLATION',
 }
 
+export type ReportClosedReason =
+  | {
+      kind: 'suppression_rgpd'
+    }
+  | {
+      kind: 'no_response'
+      expirationDate: Date
+    }
+  | {
+      kind: 'response'
+      responseEvent: ReportProResponseEvent | undefined
+    }
+
 export class Report {
   static readonly waitingResponseStatus = [
     ReportStatus.Transmis,
@@ -226,6 +240,24 @@ export class Report {
 
   static readonly isClosed = (status: ReportStatus) => {
     return Report.closedStatus.includes(status)
+  }
+
+  static readonly getClosedReason = (
+    report: Report,
+    responseEvent: ReportProResponseEvent | undefined,
+  ): ReportClosedReason | undefined => {
+    if (Report.isClosed(report.status)) {
+      switch (report.status) {
+        case ReportStatus.SuppressionRGPD:
+          return { kind: 'suppression_rgpd' }
+        case ReportStatus.ConsulteIgnore:
+        case ReportStatus.NonConsulte:
+          return { kind: 'no_response', expirationDate: report.expirationDate }
+        default:
+          return { kind: 'response', responseEvent }
+      }
+    }
+    return undefined
   }
 
   static readonly isWaitingForResponse = (status: ReportStatus) => {

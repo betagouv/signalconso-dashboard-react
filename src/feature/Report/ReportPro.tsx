@@ -1,5 +1,6 @@
 import { Icon, Tooltip, useMediaQuery } from '@mui/material'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { formatDate } from 'core/i18n/format'
 import { siteMap } from 'core/siteMap'
 import { ReportReferenceNumber } from 'feature/Report/ReportReferenceNumber'
 import { useEffect, useRef } from 'react'
@@ -14,8 +15,8 @@ import {
 import { FileOrigin, UploadedFile } from '../../core/client/file/UploadedFile'
 import {
   Report,
+  ReportClosedReason,
   ReportSearchResult,
-  ReportStatus,
   ReportStatusPro,
 } from '../../core/client/report/Report'
 import { useConnectedContext } from '../../core/context/ConnectedContext'
@@ -131,8 +132,8 @@ function ReportProLoaded({
   }
 
   const hasResponse = !!responseEvent
-  const isClosed = Report.isClosed(report.status)
-  const isDeleted = report.status === ReportStatus.SuppressionRGPD
+  const closedReason = Report.getClosedReason(report, responseEvent)
+  const isClosed = !!closedReason
   const hasToRespond = !hasResponse && !isClosed
 
   return (
@@ -153,9 +154,7 @@ function ReportProLoaded({
           scrollToResponse,
           reportSearchResult,
           responseEvent,
-          isClosed,
-          isDeleted,
-          hasResponse,
+          closedReason,
           hasToRespond,
         }}
       />
@@ -214,18 +213,12 @@ function LinkBackToList({ report }: { report: Report }) {
 
 function ReportBlock({
   reportSearchResult,
-  responseEvent,
-  isClosed,
-  isDeleted,
-  hasResponse,
+  closedReason,
   hasToRespond,
   scrollToResponse,
 }: {
   reportSearchResult: ReportSearchResult
-  responseEvent?: ReportProResponseEvent
-  isClosed: boolean
-  isDeleted: boolean
-  hasResponse: boolean
+  closedReason: ReportClosedReason | undefined
   hasToRespond: boolean
   scrollToResponse: () => void
 }) {
@@ -237,12 +230,9 @@ function ReportBlock({
       <Header
         {...{
           reportSearchResult,
-          isClosed,
-          isDeleted,
-          hasResponse,
+          closedReason,
           scrollToResponse,
           hasToRespond,
-          responseEvent,
         }}
       />
       {specialLegislation && (
@@ -311,26 +301,50 @@ function ResponseBlock({
 }
 
 function ReportClosedLabel({
-  eventWithUser,
+  closedReason,
 }: {
-  eventWithUser?: ReportProResponseEvent
+  closedReason: ReportClosedReason
 }) {
   return (
     <div className="flex items-center justify-center bg-[#e3e3fd]  p-2">
-      {eventWithUser && eventWithUser.user ? (
-        <span>
-          Signalement cloturé par{' '}
-          <span className="font-bold">
-            <UserNameLabel
-              firstName={eventWithUser.user.firstName}
-              lastName={eventWithUser.user.lastName}
-            />
-          </span>
-          .
-        </span>
-      ) : (
-        'Signalement cloturé.'
-      )}
+      {(() => {
+        switch (closedReason.kind) {
+          case 'suppression_rgpd':
+            return (
+              <div className="flex flex-col gap-2">
+                <p className="text-center font-bold">Signalement cloturé. </p>
+                <p className=" text-sm">
+                  Les données personnelles du consommateur à l'origine de ce
+                  signalement ont été supprimées conformément aux exigences du
+                  RGPD. Ce signalement est donc{' '}
+                  <b>
+                    vidé, clôturé, et aucune action n'est attendue de votre part
+                  </b>
+                  .
+                </p>
+              </div>
+            )
+          case 'no_response':
+            return `Signalement cloturé : vous deviez répondre avant le ${formatDate(closedReason.expirationDate)}.`
+          case 'response':
+            const user = closedReason.responseEvent?.user
+            if (user) {
+              return (
+                <span>
+                  Signalement cloturé par{' '}
+                  <span className="font-bold">
+                    <UserNameLabel
+                      firstName={user.firstName}
+                      lastName={user.lastName}
+                    />
+                  </span>
+                  .
+                </span>
+              )
+            }
+            return 'Signalement cloturé.'
+        }
+      })()}
     </div>
   )
 }
@@ -351,19 +365,13 @@ const AssignedUserLabel = ({
 
 function Header({
   reportSearchResult,
-  responseEvent,
   scrollToResponse,
-  isClosed,
-  isDeleted,
-  hasResponse,
+  closedReason,
   hasToRespond,
 }: {
   reportSearchResult: ReportSearchResult
-  responseEvent?: ReportProResponseEvent
   scrollToResponse: () => void
-  isClosed: boolean
-  isDeleted: boolean
-  hasResponse: boolean
+  closedReason: ReportClosedReason | undefined
   hasToRespond: boolean
 }) {
   const { m, formatDate, formatTime } = useI18n()
@@ -452,25 +460,9 @@ function Header({
           </div>
         )}
       </div>
-
-      {isDeleted && (
-        <div className="text-xl italic bg-yellow-100 mb-8 mt-4 text-center">
-          <span>
-            Les données personnelles du consommateur à l'origine de ce
-            signalement ont été supprimées conformément aux exigences du RGPD.
-          </span>
-          {!hasResponse && (
-            <span>
-              {' '}
-              Par conséquent, ce signalement ne nécessite plus d'action ou de
-              traitement supplémentaire.
-            </span>
-          )}
-        </div>
-      )}
-      {isClosed && (
+      {closedReason && (
         <div className="flex items-center justify-center bg-[#e3e3fd]  p-2">
-          <ReportClosedLabel eventWithUser={responseEvent} />
+          <ReportClosedLabel closedReason={closedReason} />
         </div>
       )}
       {hasToRespond && (
