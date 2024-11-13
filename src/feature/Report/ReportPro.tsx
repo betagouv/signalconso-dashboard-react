@@ -409,6 +409,11 @@ function Header({
                 Concernant le vendeur <b>{report.vendor}</b>
               </p>
             )}
+            {report.phone && (
+              <p>
+                Concernant le numéro de téléphone <b>{report.phone}</b>
+              </p>
+            )}
           </div>
           <p className="font-bold text-base">
             Le {formatDate(report.creationDate)}{' '}
