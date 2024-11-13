@@ -1,11 +1,11 @@
 import { AddressComponent } from '../../../shared/Address'
-import { PanelBody } from '../../../shared/Panel'
 
 import { Box, Icon, Tooltip, useTheme } from '@mui/material'
 import { NavLink } from 'react-router-dom'
 import { CleanDiscreetPanel } from 'shared/Panel/simplePanels'
+import { ReportWebsiteUrlLink } from 'shared/tinyComponents'
 import { WithInlineIcon } from 'shared/WithInlineIcon'
-import { Alert, Txt } from '../../../alexlibs/mui-extension'
+import { Txt } from '../../../alexlibs/mui-extension'
 import { Influencer, Report } from '../../../core/client/report/Report'
 import { useConnectedContext } from '../../../core/context/ConnectedContext'
 import { useI18n } from '../../../core/i18n'
@@ -13,9 +13,9 @@ import { siteMap } from '../../../core/siteMap'
 import { sxUtils } from '../../../core/theme'
 import { ScButton } from '../../../shared/Button'
 import { ReportInfluencer } from '../ReportInfluencer'
-import { SelectReportAssociation } from '../SelectReportAssociation'
-import { ReportTrain } from '../ReportTrain'
 import { ReportStation } from '../ReportStation'
+import { ReportTrain } from '../ReportTrain'
+import { SelectReportAssociation } from '../SelectReportAssociation'
 
 interface Props {
   report: Report
@@ -90,14 +90,7 @@ export const ReportCompany = ({ report, canEdit }: Props) => {
             <AddressComponent address={companyAddress} />
           </div>
           {websiteURL && (
-            <a
-              href={websiteURL}
-              target="_blank"
-              rel="noreferrer"
-              className="block text-scbluefrance break-all"
-            >
-              {websiteURL}
-            </a>
+            <ReportWebsiteUrlLink {...{ websiteURL }} className="block" />
           )}
           {vendor && (
             <MarketplaceBlock vendor={vendor} marketplace={companyName ?? ''} />

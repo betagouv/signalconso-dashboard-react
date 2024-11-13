@@ -7,6 +7,7 @@ import { useEffect, useRef } from 'react'
 import { useParams } from 'react-router'
 import { Link } from 'react-router-dom'
 import { CleanWidePanel } from 'shared/Panel/simplePanels'
+import { ReportWebsiteUrlLink } from 'shared/tinyComponents'
 import { Alert, Btn } from '../../alexlibs/mui-extension'
 import {
   ConsumerReview,
@@ -396,6 +397,24 @@ function Header({
               (<span className="text-sm italic">{report.companySiret}</span>)
             </span>
           </p>
+          <div className="ml-4">
+            {report.websiteURL && (
+              <p>
+                Concernant le site{' '}
+                <ReportWebsiteUrlLink websiteURL={report.websiteURL} />
+              </p>
+            )}
+            {report.vendor && (
+              <p>
+                Concernant le vendeur <b>{report.vendor}</b>
+              </p>
+            )}
+            {report.phone && (
+              <p>
+                Concernant le numéro de téléphone <b>{report.phone}</b>
+              </p>
+            )}
+          </div>
           <p className="font-bold text-base">
             Le {formatDate(report.creationDate)}{' '}
             <span className="text-base text-gray-500">
