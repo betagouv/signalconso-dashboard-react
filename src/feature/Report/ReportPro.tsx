@@ -397,12 +397,19 @@ function Header({
               (<span className="text-sm italic">{report.companySiret}</span>)
             </span>
           </p>
-          {report.websiteURL && (
-            <p>
-              À propos du site{' '}
-              <ReportWebsiteUrlLink websiteURL={report.websiteURL} />
-            </p>
-          )}
+          <div className="ml-4">
+            {report.websiteURL && (
+              <p>
+                Concernant le site{' '}
+                <ReportWebsiteUrlLink websiteURL={report.websiteURL} />
+              </p>
+            )}
+            {report.vendor && (
+              <p>
+                Concernant le vendeur <b>{report.vendor}</b>
+              </p>
+            )}
+          </div>
           <p className="font-bold text-base">
             Le {formatDate(report.creationDate)}{' '}
             <span className="text-base text-gray-500">
