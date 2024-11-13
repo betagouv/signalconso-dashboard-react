@@ -96,7 +96,7 @@ export const ReportPro = () => {
   )
 }
 
-function ReportProLoaded({
+export function ReportProLoaded({
   reportSearchResult,
 }: {
   reportSearchResult: ReportSearchResult

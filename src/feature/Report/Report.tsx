@@ -1,5 +1,6 @@
 import { Box, Tab, Tabs, Tooltip } from '@mui/material'
-import { useMutation } from '@tanstack/react-query'
+import { useMutation, UseQueryResult } from '@tanstack/react-query'
+import { ApiError } from 'core/client/ApiClient'
 import { map } from 'core/helper'
 import React, { useState } from 'react'
 import { useParams } from 'react-router'
@@ -13,7 +14,11 @@ import {
   ReportEvent,
 } from '../../core/client/event/Event'
 import { FileOrigin } from '../../core/client/file/UploadedFile'
-import { Report, ReportStatus } from '../../core/client/report/Report'
+import {
+  Report,
+  ReportSearchResult,
+  ReportStatus,
+} from '../../core/client/report/Report'
 import { useConnectedContext } from '../../core/context/ConnectedContext'
 import { useI18n } from '../../core/i18n'
 import { Id } from '../../core/model'
@@ -39,6 +44,7 @@ import { ReportHeader } from './ReportHeader'
 import { ReportPostAction } from './ReportPostAction'
 import { ReportReOpening } from './ReportReOpening'
 import { ReportResponseComponent } from './ReportResponse'
+import { ReportViewAsPro } from './ReportViewAsPro'
 
 const CONSO: EventType = 'CONSO'
 
@@ -56,11 +62,39 @@ export const creationReportEvent = (report: Report): ReportEvent =>
 
 export const ReportComponent = () => {
   const { id } = useParams<{ id: Id }>()
+  const [viewAsPro, setViewAsPro] = useState(false)
+  const _getReport = useGetReportQuery(id!)
+
+  if (viewAsPro) {
+    return _getReport.data ? (
+      <ReportViewAsPro
+        reportSearchResult={_getReport.data}
+        onBackToStandardView={() => setViewAsPro(false)}
+      />
+    ) : null
+  }
+  return (
+    <ReportViewStandard
+      {...{ _getReport }}
+      id={id!}
+      onViewAsPro={() => setViewAsPro(true)}
+    />
+  )
+}
+
+const ReportViewStandard = ({
+  id,
+  _getReport,
+  onViewAsPro,
+}: {
+  id: string
+  _getReport: UseQueryResult<ReportSearchResult, ApiError>
+  onViewAsPro: () => void
+}) => {
   const { m } = useI18n()
   const { connectedUser, api: apiSdk } = useConnectedContext()
   const [activeTab, setActiveTab] = useState(0)
 
-  const _getReport = useGetReportQuery(id!)
   const enableReviewQueries = !!_getReport.data?.report.id && !!id
   const _getReviewOnReportResponse = useGetReviewOnReportResponseQuery(id!, {
     enabled: enableReviewQueries,
@@ -94,6 +128,16 @@ export const ReportComponent = () => {
         const report = reportSearchResult.report
         return (
           <>
+            {connectedUser.isAdmin ? (
+              <div className="flex justify-end mb-1">
+                <button
+                  onClick={onViewAsPro}
+                  className="underline text-sm text-scbluefrance"
+                >
+                  Voir ce que voit le pro
+                </button>
+              </div>
+            ) : null}
             <ReportHeader elevated report={reportSearchResult}>
               <Box
                 sx={{
