@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { Form } from './LoginForm'
+import { Form } from './ProLoginForm'
 import { ScButton } from '../../shared/Button'
 
 // Define the component props with the typed onLogin function

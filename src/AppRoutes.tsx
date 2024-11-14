@@ -1,7 +1,7 @@
 import { CircularProgress } from '@mui/material'
 import { User } from 'core/model'
 import { LoginManagementResult } from 'core/useLoginManagement'
-import { LoginForm } from 'feature/Login/LoginForm'
+import { ProLoginForm } from 'feature/Login/ProLoginForm'
 import { RegisterForm } from 'feature/Login/RegisterForm'
 import { WelcomePage } from 'feature/Login/WelcomePage'
 import { useEffect, useMemo } from 'react'
@@ -39,6 +39,9 @@ import { Users } from './feature/Users/Users'
 import { CenteredContent } from './shared/CenteredContent'
 import { RefreshBanner } from './shared/RefreshBanner'
 import './style.css'
+import ProConnectCallback from './feature/Login/ProConnectCallback'
+import ProConnectLogoutCallback from './feature/Login/ProConnectLogoutCallback'
+import { AgentLoginForm } from './feature/Login/AgentLoginForm'
 
 export const AppRoutes = ({
   loginManagementResult,
@@ -49,10 +52,13 @@ export const AppRoutes = ({
     connectedUser,
     setConnectedUser,
     register,
+    loginProConnect,
+    startProConnect,
     handleDetectedLogout,
     isFetchingUserOnStartup,
     login,
   } = loginManagementResult
+
   const UserActivationComponent = () => (
     <UserActivation onUserActivated={setConnectedUser} />
   )
@@ -94,12 +100,25 @@ export const AppRoutes = ({
           ) : (
             <Routes>
               <Route
+                path={siteMap.loggedout.proconnect_login_callback}
+                element={<ProConnectCallback {...{ loginProConnect }} />}
+              />
+              <Route
+                path={siteMap.loggedout.proconnect_logout_callback}
+                element={<ProConnectLogoutCallback />}
+              />
+              <Route
                 path={siteMap.loggedout.register}
                 element={<RegisterForm {...{ register }} />}
               />
               <Route
                 path={siteMap.loggedout.login}
-                element={<LoginForm {...{ login }} />}
+                element={<ProLoginForm {...{ login }} />}
+              />
+
+              <Route
+                path={siteMap.loggedout.loginAgent}
+                element={<AgentLoginForm {...{ login, startProConnect }} />}
               />
               <Route path="/*" element={<WelcomePage />} />
             </Routes>

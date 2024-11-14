@@ -3,6 +3,7 @@ import { publicApiSdk } from 'core/apiSdkInstances'
 import { Dispatch, SetStateAction, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router'
 import { User } from './client/user/User'
+import { private_createTypography } from '@mui/material'
 
 export type LoginManagementResult = {
   connectedUser?: User
@@ -13,6 +14,16 @@ export type LoginManagementResult = {
     action: (login: string, password: string) => Promise<User>
     loading?: boolean
     // this is not used, in the LoginForm we do our own error handling
+    errorMsg?: unknown
+  }
+  loginProConnect: {
+    action: (authorizationCode: string, state: string) => Promise<User>
+    loading?: boolean
+    errorMsg?: unknown
+  }
+  startProConnect: {
+    action: (state: string, nonce: string) => Promise<void>
+    loading?: boolean
     errorMsg?: unknown
   }
   register: {
@@ -26,6 +37,36 @@ export type LoginManagementResult = {
 export function useLoginManagement(): LoginManagementResult {
   const navigate = useNavigate()
   const [connectedUser, setConnectedUser] = useState<User | undefined>()
+  const [isRegistering, setIsRegistering] = useState(false)
+  const [registerError, setRegisterError] = useState<unknown | undefined>()
+
+  const _loginProConnect = useMutation({
+    mutationFn: ({
+      authorizationCode,
+      state,
+    }: {
+      authorizationCode: string
+      state: string
+    }) => publicApiSdk.authenticate.loginProConnect(authorizationCode, state),
+    onSuccess: (user) => {
+      setConnectedUser(user)
+    },
+    // we don't want to trigger the default toast of errors
+    onError: () => {},
+  })
+
+  const isProConnectLoggingIn = _loginProConnect.isPending
+  const proConnectloginError = _loginProConnect.error
+
+  const _startProConnect = useMutation({
+    mutationFn: ({ state, nonce }: { state: string; nonce: string }) =>
+      publicApiSdk.authenticate.startProConnect(state, nonce),
+    // we don't want to trigger the default toast of errors
+    onError: () => {},
+  })
+
+  const isStartingProConnect = _startProConnect.isPending
+  const isStartingProConnectError = _startProConnect.error
 
   const _userOnStartup = useQuery({
     queryKey: ['getUser'],
@@ -48,11 +89,9 @@ export function useLoginManagement(): LoginManagementResult {
     // we don't want to trigger the default toast of errors
     onError: () => {},
   })
+
   const isLoggingIn = _login.isPending
   const loginError = _login.error
-
-  const [isRegistering, setIsRegistering] = useState(false)
-  const [registerError, setRegisterError] = useState<unknown | undefined>()
 
   async function register(
     siret: string,
@@ -77,8 +116,15 @@ export function useLoginManagement(): LoginManagementResult {
   }
 
   const logout = async () => {
-    const user = await publicApiSdk.authenticate.logout()
-    handleDetectedLogout(user)
+    if (connectedUser && connectedUser.authProvider === 'ProConnect') {
+      publicApiSdk.authenticate
+        .logoutProConnect()
+        //Need to use window.location.href to force browser to not check CORS
+        .then((_) => (window.location.href = _ as string))
+    } else {
+      const user = await publicApiSdk.authenticate.logout()
+      handleDetectedLogout(user)
+    }
   }
 
   return {
@@ -90,6 +136,20 @@ export function useLoginManagement(): LoginManagementResult {
       },
       loading: isLoggingIn,
       errorMsg: loginError,
+    },
+    loginProConnect: {
+      action: (authorizationCode: string, state: string) => {
+        return _loginProConnect.mutateAsync({ authorizationCode, state })
+      },
+      loading: isProConnectLoggingIn,
+      errorMsg: proConnectloginError,
+    },
+    startProConnect: {
+      action: (state: string, nonce: string) => {
+        return _startProConnect.mutateAsync({ state, nonce })
+      },
+      loading: isStartingProConnect,
+      errorMsg: isStartingProConnectError,
     },
     logout,
     handleDetectedLogout,
