@@ -9,6 +9,9 @@ import { styleUtils } from '../theme'
 import logoGouvMobile from './gouv-mobile.svg'
 import logoDgccrf from './logo-dgccrf.png'
 import logoSignalConso from './logo-signalconso.png'
+import { siteMap } from '../siteMap'
+import { useLocation } from 'react-router'
+import * as path from 'node:path'
 
 const HeaderItem = ({ children, href }: { children: any; href: string }) => {
   return (
@@ -31,11 +34,10 @@ export const ScHeader = () => {
   const { isMobileWidth } = useLayoutContext()
   const { m } = useI18n()
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
-
+  const { pathname } = useLocation()
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget)
   }
-
   const handleClose = () => {
     setAnchorEl(null)
   }
@@ -72,11 +74,32 @@ export const ScHeader = () => {
               <a href={config.appBaseUrl + '/centre-aide'}>
                 <MenuItem>{m.helpCenter}</MenuItem>
               </a>
+              <a href={config.appBaseUrl + '/comment-ca-marche'}>
+                <MenuItem>{m.howItWorks}</MenuItem>
+              </a>
+              <a href={siteMap.loggedout.login}>
+                <MenuItem>{m.proLogin}</MenuItem>
+              </a>
+              <a href={siteMap.loggedout.loginAgent}>
+                <MenuItem>{m.agentLogin}</MenuItem>
+              </a>
             </Menu>
           </>
         ) : (
           <nav>
             <HeaderItem href={config.appBaseUrl}>{m.home}</HeaderItem>
+            {pathname.includes(siteMap.loggedout.loginAgent) &&
+              config.enableProConnect && (
+                <HeaderItem href={siteMap.loggedout.login}>
+                  {m.proLogin}
+                </HeaderItem>
+              )}
+            {(pathname === siteMap.loggedout.login || pathname === '/') &&
+              config.enableProConnect && (
+                <HeaderItem href={siteMap.loggedout.loginAgent}>
+                  {m.agentLogin}
+                </HeaderItem>
+              )}
             <HeaderItem href={config.appBaseUrl + '/comment-ca-marche'}>
               {m.howItWorks}
             </HeaderItem>

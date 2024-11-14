@@ -8,6 +8,11 @@ export type RoleAdmins = (typeof roleAdmins)[number]
 export type RoleAdminOrAgent = RoleAdmins | RoleAgents
 export type Role = RoleAdminOrAgent | 'Professionnel'
 
+export enum AuthProvider {
+  SignalConso = 'SignalConso',
+  ProConnect = 'ProConnect',
+}
+
 export interface User {
   id: string
   email: string
@@ -16,6 +21,7 @@ export interface User {
   lastEmailValidation: Date
   role: Role
   impersonator?: string
+  authProvider: AuthProvider
 }
 
 export class User {
