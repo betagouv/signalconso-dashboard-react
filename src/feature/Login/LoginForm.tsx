@@ -116,17 +116,21 @@ export const LoginForm = ({ login }: Props) => {
                 {m.somethingWentWrong}
               </Txt>
               <Txt>{apiError.message}</Txt>
-              {watch('email').toLocaleLowerCase().endsWith('.gouv.fr') && (
-                <p className={'mt-2 font-bold'}>
-                  Essayez de vous connecter via le{' '}
-                  <a href={siteMap.loggedout.loginAgent} className="underline">
-                    Pro Connect
-                  </a>{' '}
-                  si vous avez reçu un e-mail d’invitation mentionnant
-                  ProConnect, ou si vous utilisez Pro Connect pour vous
-                  connecter à Signal Conso.
-                </p>
-              )}
+              {watch('email').toLocaleLowerCase().endsWith('.gouv.fr') &&
+                config.enableProConnect && (
+                  <p className={'mt-2 font-bold'}>
+                    Essayez de vous connecter via le{' '}
+                    <a
+                      href={siteMap.loggedout.loginAgent}
+                      className="underline"
+                    >
+                      Pro Connect
+                    </a>{' '}
+                    si vous avez reçu un e-mail d’invitation mentionnant
+                    ProConnect, ou si vous utilisez Pro Connect pour vous
+                    connecter à Signal Conso.
+                  </p>
+                )}
             </Alert>
           )}
           <TextField

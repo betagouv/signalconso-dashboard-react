@@ -17,6 +17,7 @@ function readSeverity(severity?: string): Severity | null {
 export const config = {
   proConnectServer: process.env.REACT_APP_PRO_CONNECT_URL,
   proConnectClientId: process.env.REACT_APP_PRO_CONNECT_CLIENT_ID,
+  enableProConnect: process.env.REACT_APP_ENABLE_PRO_CONNECT === 'false',
   isDev: process.env.REACT_APP_NODE_ENV === 'development',
   apiBaseUrl: noTrailingSlash(
     process.env.REACT_APP_API_BASE_URL ?? 'http://localhost:9000',

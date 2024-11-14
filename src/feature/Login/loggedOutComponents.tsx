@@ -19,14 +19,15 @@ export function AlertNotForConso() {
           la page d'accueil de SignalConso.
         </a>
       </p>
-
-      <p className="mb-2">
-        Vous êtes un <span className="font-bold">agent</span>, rendez-vous sur{' '}
-        <a href={siteMap.loggedout.loginAgent} className="underline">
-          l'espace agent
-        </a>{' '}
-        pour vous connecter
-      </p>
+      {config.enableProConnect && (
+        <p className="mb-2">
+          Vous êtes un <span className="font-bold">agent</span>, rendez-vous sur{' '}
+          <a href={siteMap.loggedout.loginAgent} className="underline">
+            l'espace agent
+          </a>{' '}
+          pour vous connecter
+        </p>
+      )}
     </Alert>
   )
 }

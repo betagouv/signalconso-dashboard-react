@@ -88,16 +88,18 @@ export const ScHeader = () => {
         ) : (
           <nav>
             <HeaderItem href={config.appBaseUrl}>{m.home}</HeaderItem>
-            {pathname.includes(siteMap.loggedout.loginAgent) && (
-              <HeaderItem href={siteMap.loggedout.login}>
-                {m.proLogin}
-              </HeaderItem>
-            )}
-            {(pathname === siteMap.loggedout.login || pathname === '/') && (
-              <HeaderItem href={siteMap.loggedout.loginAgent}>
-                {m.agentLogin}
-              </HeaderItem>
-            )}
+            {pathname.includes(siteMap.loggedout.loginAgent) &&
+              config.enableProConnect && (
+                <HeaderItem href={siteMap.loggedout.login}>
+                  {m.proLogin}
+                </HeaderItem>
+              )}
+            {(pathname === siteMap.loggedout.login || pathname === '/') &&
+              config.enableProConnect && (
+                <HeaderItem href={siteMap.loggedout.loginAgent}>
+                  {m.agentLogin}
+                </HeaderItem>
+              )}
             <HeaderItem href={config.appBaseUrl + '/comment-ca-marche'}>
               {m.howItWorks}
             </HeaderItem>
