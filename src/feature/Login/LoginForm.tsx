@@ -119,7 +119,7 @@ export const LoginForm = ({ login }: Props) => {
               {watch('email').toLocaleLowerCase().endsWith('.gouv.fr') &&
                 config.enableProConnect && (
                   <p className={'mt-2 font-bold'}>
-                    Essayez de vous connecter via le{' '}
+                    Essayez de vous connecter via le bouton{' '}
                     <a
                       href={siteMap.loggedout.loginAgent}
                       className="underline"

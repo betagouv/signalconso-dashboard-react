@@ -45,8 +45,8 @@ export const AgentLoginForm = ({ login, startProConnect }: Props) => {
             </h1>
             <p className={'mt-4 mb-6 text-lg'}>
               J'ai été invité à rejoindre SignalConso et j'ai créé mon compte
-              avec mot de passe/ je me suis déjà connecté à Signal Conso mes
-              identifiants.
+              avec un mot de passe ou je me suis déjà connecté à Signal Conso
+              avec mes identifiants.
             </p>
             <LoginForm login={login} />
           </Box>
