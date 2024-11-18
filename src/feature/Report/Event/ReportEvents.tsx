@@ -105,7 +105,7 @@ function translateEventAction(action: EventActionValues) {
     case EventActionValues.OtherReasonDeleteRequestReportDeletion:
       return "Suppression par un membre de l'équipe SignalConso (autre raison)"
     case EventActionValues.SolvedContractualDisputeReportDeletion:
-      return "Suppression par un membre de l'équipe SignalConso (litige résolu)"
+      return "Résolution par un membre de l'équipe SignalConso (litige résolu)"
     case EventActionValues.ReportReOpenedByAdmin:
       return "Réouverture du signalement par un membre de l'équipe SignalConso"
     default:
