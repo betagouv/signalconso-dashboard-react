@@ -44,6 +44,7 @@ import { buildOptionFromUser, ReportAffectation } from './ReportAffectation'
 import { ReportDetails, ReportFilesFull } from './ReportDescription'
 import { ExpirationDate } from './ReportHeader'
 import { ReportInfluencer } from './ReportInfluencer'
+import { ReportProduct } from './ReportProduct'
 import { ReportResponseComponent } from './ReportResponse'
 import { ReportResponseForm } from './ReportResponseForm/ReportResponseForm'
 import { ReportStation } from './ReportStation'
@@ -244,7 +245,18 @@ function ReportBlock({
           }}
         />
       )}
+
       <div>
+        {report.barcodeProductId || report.rappelConsoId ? (
+          <>
+            <ReportProduct
+              barcodeProductId={report.barcodeProductId}
+              rappelConsoId={report.rappelConsoId}
+              variant="pro"
+            />
+            <HorizontalLine />
+          </>
+        ) : null}
         {report.influencer && (
           <>
             <h2 className="text-base font-bold">
