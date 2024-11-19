@@ -203,3 +203,9 @@ export function map<A, B>(item: A | undefined, fn: (a: A) => B) {
 }
 
 export const noop = (...args: unknown[]) => {}
+
+export function timeoutPromise(duration: number): Promise<void> {
+  return new Promise((resolve) => {
+    setTimeout(resolve, duration)
+  })
+}
