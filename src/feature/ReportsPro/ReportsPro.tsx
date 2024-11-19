@@ -437,7 +437,9 @@ export const ReportsPro = ({ reportType }: ReportsProProps) => {
                 }}
                 headerMain={<DatatableToolbarComponent {...{ selectReport }} />}
                 data={_reports.result.data?.entities}
-                loading={_accessibleByPro.isLoading}
+                loading={
+                  _accessibleByPro.isLoading || _reports.result.isFetching
+                }
                 total={_reports.result.data?.totalCount}
                 columns={columns}
                 renderEmptyState={
