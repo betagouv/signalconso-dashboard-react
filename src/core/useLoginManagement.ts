@@ -1,9 +1,8 @@
-import { useMutation, useQuery } from '@tanstack/react-query'
+import { QueryClient, useMutation, useQuery } from '@tanstack/react-query'
 import { publicApiSdk } from 'core/apiSdkInstances'
 import { Dispatch, SetStateAction, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router'
 import { User } from './client/user/User'
-import { private_createTypography } from '@mui/material'
 
 export type LoginManagementResult = {
   connectedUser?: User
@@ -34,7 +33,9 @@ export type LoginManagementResult = {
   setConnectedUser: Dispatch<SetStateAction<User | undefined>>
 }
 
-export function useLoginManagement(): LoginManagementResult {
+export function useLoginManagement(
+  queryClient: QueryClient,
+): LoginManagementResult {
   const navigate = useNavigate()
   const [connectedUser, setConnectedUser] = useState<User | undefined>()
   const [isRegistering, setIsRegistering] = useState(false)
@@ -113,6 +114,7 @@ export function useLoginManagement(): LoginManagementResult {
     console.warn('User seems logged out.')
     setConnectedUser(user)
     navigate('/')
+    queryClient.resetQueries()
   }
 
   const logout = async () => {

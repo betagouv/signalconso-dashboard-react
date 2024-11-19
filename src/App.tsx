@@ -1,5 +1,5 @@
 import { CssBaseline, StyledEngineProvider, ThemeProvider } from '@mui/material'
-import { QueryClientProvider } from '@tanstack/react-query'
+import { QueryClientProvider, useQueryClient } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { config } from 'conf/config'
 import { ToastProvider } from 'core/context/toastContext'
@@ -37,8 +37,9 @@ export const App = () => {
 }
 
 const AppInsideProviders = () => {
+  const queryClient = useQueryClient()
   useQueryClientErrorHandlerSetup()
-  const loginManagementResult = useLoginManagement()
+  const loginManagementResult = useLoginManagement(queryClient)
   return (
     <>
       <RedirectHashRouterToBrowserRouter />
