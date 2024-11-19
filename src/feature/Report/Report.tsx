@@ -35,13 +35,13 @@ import { ScButton } from '../../shared/Button'
 import { Page } from '../../shared/Page'
 import { ReportEvents } from './Event/ReportEvents'
 import { ReportAdminResolution } from './ReportAdminResolution'
-import { ReportBarcodeProduct } from './ReportBarcodeProduct'
 import { ReportCompany } from './ReportCompany/ReportCompany'
 import { ReportConsumer } from './ReportConsumer/ReportConsumer'
 import { ReportDetails, ReportFilesFull } from './ReportDescription'
 import { ReportDownloadAction } from './ReportDownloadAction'
 import { ReportHeader } from './ReportHeader'
 import { ReportPostAction } from './ReportPostAction'
+import { ReportProduct } from './ReportProduct'
 import { ReportReOpening } from './ReportReOpening'
 import { ReportResponseComponent } from './ReportResponse'
 import { ReportViewAsPro } from './ReportViewAsPro'
@@ -256,9 +256,10 @@ const ReportViewStandard = ({
               <ReportCompany report={report} canEdit={connectedUser.isAdmin} />
             </div>
 
-            <ReportBarcodeProduct
+            <ReportProduct
               barcodeProductId={_getReport.data?.report.barcodeProductId}
               rappelConsoId={_getReport.data?.report.rappelConsoId}
+              variant="agent_or_admin"
             />
 
             <CleanDiscreetPanel>
