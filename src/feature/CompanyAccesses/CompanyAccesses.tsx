@@ -5,10 +5,15 @@ import {
   MenuItem,
   Tooltip,
 } from '@mui/material'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { UserDeleteDialog } from 'feature/Users/userDelete'
+import { useNavigate } from 'react-router'
 import { NavLink } from 'react-router-dom'
 import { ScMenu } from 'shared/Menu'
-import { CompanyAccessLevel } from '../../core/client/company-access/CompanyAccess'
+import {
+  CompanyAccess,
+  CompanyAccessLevel,
+} from '../../core/client/company-access/CompanyAccess'
 import { useConnectedContext } from '../../core/context/ConnectedContext'
 import { useToast } from '../../core/context/toastContext'
 import {
@@ -18,7 +23,12 @@ import {
   toQueryString,
 } from '../../core/helper'
 import { useI18n } from '../../core/i18n'
-import { CompanyWithReportsCount, Id, User } from '../../core/model'
+import {
+  CompanyAccessToken,
+  CompanyWithReportsCount,
+  Id,
+  User,
+} from '../../core/model'
 import { siteMap } from '../../core/siteMap'
 import { sxUtils } from '../../core/theme'
 import { ScButton } from '../../shared/Button'
@@ -27,25 +37,28 @@ import {
   DatatableColumnProps,
 } from '../../shared/Datatable/Datatable'
 import { ScRadioGroup } from '../../shared/RadioGroup'
-
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import { useNavigate } from 'react-router'
 import { ScRadioGroupItem } from '../../shared/RadioGroupItem'
 import { ScDialog } from '../../shared/ScDialog'
 import { CompanyAccessCreateBtn } from './CompanyAccessCreateBtn'
 
-interface Accesses {
-  name?: string
-  userId?: Id
-  email?: string
-  level: CompanyAccessLevel
-  tokenId?: Id
-  token?: string
-  editable?: Boolean
-  isHeadOffice?: Boolean
-}
+type RowData =
+  | {
+      kind: 'actual_access'
+      email: string
+      name: string
+      userId: Id
+      level: CompanyAccessLevel
+      editable: boolean
+      isHeadOffice: Boolean
+    }
+  | ({
+      kind: 'invitation'
+      level: CompanyAccessLevel
+      tokenId: Id
+      token?: string // the api returns it only if current user is admin
+    } & ({ subkind: 'by_email'; email: string } | { subkind: 'by_post' }))
 
-type Column = DatatableColumnProps<Accesses>
+type Column = DatatableColumnProps<RowData>
 
 export function CompanyAccesses({
   company,
@@ -108,28 +121,13 @@ function CompanyAccessesLoaded({
   const { m } = useI18n()
   const { connectedUser } = useConnectedContext()
 
-  const data: Accesses[] = [
-    ...(_accesses.data ?? []).map((_) => ({
-      email: _.email,
-      name: User.buildFullName(_),
-      level: _.level,
-      userId: _.userId,
-      editable: _.editable,
-      isHeadOffice: _.isHeadOffice,
-    })),
-    ...(_tokens.data ?? []).map((_) => ({
-      email: _.emailedTo,
-      level: _.level,
-      tokenId: _.id,
-      token: _.token,
-    })),
-  ]
+  const data: RowData[] = mergeData(_accesses.data, _tokens.data)
 
   async function inviteNewUser(
     email: string,
     level: CompanyAccessLevel,
   ): Promise<void> {
-    if (data.find((_) => _.email === email)) {
+    if (emailExistsInData(email, data)) {
       toastError({ message: m.invitationToProAlreadySent(email) })
     } else {
       await _sendInvitation.mutateAsync({ email, level, siret })
@@ -149,7 +147,7 @@ function CompanyAccessesLoaded({
     id: 'level',
     head: m.companyAccessLevel,
     render: (accesses) => (
-      <LevelColumn {...{ siret, accesses, invalidateQueries }} />
+      <LevelColumn {...{ siret, rowData: accesses, invalidateQueries }} />
     ),
   }
 
@@ -158,7 +156,7 @@ function CompanyAccessesLoaded({
     sx: (_) => sxUtils.tdActions,
     render: (accesses) => (
       <ActionsColumn
-        {...{ accesses, siret, invalidateQueries }}
+        {...{ rowData: accesses, siret, invalidateQueries }}
         onResendCompanyAccessToken={(email: string) => {
           return _sendInvitation.mutateAsync({
             email,
@@ -203,7 +201,7 @@ function CompanyAccessesLoaded({
           id="companyaccesses"
           data={data}
           loading={_accesses.isLoading || _tokens.isLoading}
-          getRenderRowKey={(_) => _.email ?? _.tokenId!}
+          getRenderRowKey={getRowKey}
           columns={[emailColumn, levelColumn, actionsColumn]}
         />
       </>
@@ -211,26 +209,36 @@ function CompanyAccessesLoaded({
   )
 }
 
-function EmailColumn({ accesses: _ }: { accesses: Accesses }) {
+function EmailColumn({ accesses: _ }: { accesses: RowData }) {
   const { m } = useI18n()
   const { connectedUser } = useConnectedContext()
-  const pending = !_.name
-  const isCurrentUser = connectedUser.email === _.email
+  const isInvitation = _.kind === 'invitation'
+  const email = getEmail(_)
+  const isCurrentUser = connectedUser.email === email
+  const isHeadOffice = _.kind === 'actual_access' && _.isHeadOffice
   return (
     <>
       <div>
-        <span className={`font-bold ${pending ? 'text-gray-500' : ''}`}>
-          {_.email}
-        </span>
+        {}
+        {email && (
+          <span className={`font-bold ${isInvitation ? 'text-gray-500' : ''}`}>
+            {email}
+          </span>
+        )}
         {isCurrentUser && <span className="text-gray-500"> ({m.you})</span>}
-        {_.isHeadOffice && (
+        {isHeadOffice && (
           <span className="text-gray-500"> (via le siège social)</span>
         )}
       </div>
-      {pending ? (
-        <span className="text-blue-600 font-bold uppercase">
-          Invitation envoyée
-        </span>
+      {isInvitation ? (
+        _.subkind === 'by_post' ? (
+          <span className="flex items-center gap-1 text-blue-600 font-bold">
+            Invitation envoyée par courrier
+            <Icon>email_outlined</Icon>
+          </span>
+        ) : (
+          <span className="text-blue-600 font-bold">Invitation envoyée</span>
+        )
       ) : (
         <span className="text-gray-500">{_.name}</span>
       )}
@@ -239,11 +247,36 @@ function EmailColumn({ accesses: _ }: { accesses: Accesses }) {
 }
 
 function LevelColumn({
-  accesses: _,
+  rowData,
   siret,
   invalidateQueries,
 }: {
-  accesses: Accesses
+  rowData: RowData
+  siret: string
+  invalidateQueries: () => void
+}) {
+  if (rowData.kind === 'actual_access' && rowData.editable) {
+    return <LevelColumnEditable {...{ rowData, siret, invalidateQueries }} />
+  }
+  return (
+    <ScButton
+      sx={{ textTransform: 'capitalize' }}
+      color="primary"
+      icon="manage_accounts"
+      variant="outlined"
+      disabled
+    >
+      {rowData.level}
+    </ScButton>
+  )
+}
+
+function LevelColumnEditable({
+  rowData,
+  siret,
+  invalidateQueries,
+}: {
+  rowData: RowData & { kind: 'actual_access' }
   siret: string
   invalidateQueries: () => void
 }) {
@@ -272,11 +305,13 @@ function LevelColumn({
       title={m.editAccess}
       content={(close) => (
         <ScRadioGroup
-          value={_.level}
+          value={rowData.level}
           onChange={(level) => {
-            if (_.userId) {
-              _updateAccessLevel.mutateAsync({ siret, level, userId: _.userId })
-            }
+            _updateAccessLevel.mutateAsync({
+              siret,
+              level,
+              userId: rowData.userId,
+            })
             close()
           }}
         >
@@ -300,9 +335,9 @@ function LevelColumn({
           color="primary"
           icon="manage_accounts"
           variant="outlined"
-          disabled={!_.userId || !_.editable}
+          disabled={!rowData.userId || !rowData.editable}
         >
-          {(CompanyAccessLevel as any)[_.level]}
+          {(CompanyAccessLevel as any)[rowData.level]}
         </ScButton>
       </Tooltip>
     </ScDialog>
@@ -310,20 +345,20 @@ function LevelColumn({
 }
 
 function ActionsColumn({
-  accesses: _,
+  rowData: _,
   siret,
   invalidateQueries,
   onResendCompanyAccessToken,
 }: {
-  accesses: Accesses
+  rowData: RowData
   siret: string
   invalidateQueries: () => void
   onResendCompanyAccessToken: (email: string) => Promise<unknown>
 }) {
-  const { setConnectedUser, connectedUser, api: api } = useConnectedContext()
+  const { setConnectedUser, connectedUser, api } = useConnectedContext()
   const { m } = useI18n()
   const { toastSuccess, toastError } = useToast()
-  const { email, token, tokenId, userId } = _
+  const email = getEmail(_)
   const isAdmin = connectedUser.isAdmin
   const isSuperAdmin = connectedUser.isSuperAdmin
   const navigate = useNavigate()
@@ -360,7 +395,7 @@ function ActionsColumn({
   }
 
   const authAttemptsHistoryMenuItem =
-    isAdmin && _.userId ? (
+    isAdmin && _.kind === 'actual_access' && _.userId ? (
       <>
         <NavLink
           to={`${
@@ -390,8 +425,17 @@ function ActionsColumn({
     ) : undefined
 
   const copyInviteMenuItem =
-    isAdmin && !_.name && token ? (
-      <MenuItem onClick={(_) => copyActivationLink(token)}>
+    isAdmin &&
+    _.kind === 'invitation' &&
+    _.subkind === 'by_email' &&
+    _.token ? (
+      <MenuItem
+        onClick={() => {
+          if (_.token) {
+            copyActivationLink(_.token)
+          }
+        }}
+      >
         <ListItemIcon>
           <Icon>content_copy</Icon>
         </ListItemIcon>
@@ -400,11 +444,11 @@ function ActionsColumn({
     ) : undefined
 
   const resendInviteMenuItem =
-    isAdmin && !_.name && email ? (
+    isAdmin && _.kind === 'invitation' && _.subkind === 'by_email' ? (
       <ScDialog
         title={m.resendCompanyAccessToken(email)}
         onConfirm={(event, close) =>
-          onResendCompanyAccessToken(email).then((_) => close())
+          onResendCompanyAccessToken(_.email).then((_) => close())
         }
         maxWidth="xs"
       >
@@ -418,10 +462,10 @@ function ActionsColumn({
     ) : undefined
 
   const removeMenuItem =
-    _.editable && userId ? (
+    _.kind === 'actual_access' && _.editable ? (
       <ScDialog
         title={m.deleteCompanyAccess(_.name!)}
-        onConfirm={() => _removeAccess.mutate({ siret, userId })}
+        onConfirm={() => _removeAccess.mutate({ siret, userId: _.userId })}
         maxWidth="xs"
         confirmLabel={m.delete_access}
       >
@@ -434,10 +478,10 @@ function ActionsColumn({
           </ListItemText>
         </MenuItem>
       </ScDialog>
-    ) : tokenId ? (
+    ) : _.kind === 'invitation' ? (
       <ScDialog
-        title={m.deleteCompanyAccessToken(_.email)}
-        onConfirm={() => _removeToken.mutate({ siret, tokenId })}
+        title={m.deleteCompanyAccessToken(getEmail(_))}
+        onConfirm={() => _removeToken.mutate({ siret, tokenId: _.tokenId })}
         maxWidth="xs"
         confirmLabel="Annuler l'invitation"
       >
@@ -451,7 +495,7 @@ function ActionsColumn({
     ) : undefined
 
   const deleteUserMenuItem =
-    isAdmin && _.userId ? (
+    isAdmin && _.kind === 'actual_access' ? (
       <UserDeleteDialog userId={_.userId} onDelete={invalidateQueries}>
         <MenuItem>
           <ListItemIcon>
@@ -473,4 +517,46 @@ function ActionsColumn({
     deleteUserMenuItem,
   ].filter(isDefined)
   return menuItems.length ? <ScMenu>{menuItems}</ScMenu> : null
+}
+
+function mergeData(
+  companyAccesses: CompanyAccess[] | undefined,
+  companyAccessesTokens: CompanyAccessToken[] | undefined,
+): RowData[] {
+  return [
+    ...(companyAccesses ?? []).map((_) => ({
+      kind: 'actual_access' as const,
+      email: _.email,
+      name: User.buildFullName(_),
+      level: _.level,
+      userId: _.userId,
+      editable: _.editable,
+      isHeadOffice: _.isHeadOffice,
+    })),
+    ...(companyAccessesTokens ?? []).map((_) => ({
+      kind: 'invitation' as const,
+      level: _.level,
+      tokenId: _.id,
+      token: _.token,
+      ...(_.emailedTo
+        ? { subkind: 'by_email' as const, email: _.emailedTo }
+        : { subkind: 'by_post' as const }),
+    })),
+  ]
+}
+
+function emailExistsInData(email: string, data: RowData[]) {
+  return data.find((_) => getEmail(_) === email)
+}
+
+function getEmail(_: RowData) {
+  return _.kind === 'actual_access'
+    ? _.email
+    : _.kind === 'invitation' && _.subkind === 'by_email'
+      ? _.email
+      : undefined
+}
+
+function getRowKey(_: RowData) {
+  return _.kind === 'actual_access' ? _.userId : _.tokenId
 }
