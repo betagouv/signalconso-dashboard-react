@@ -231,9 +231,14 @@ function EmailColumn({ accesses: _ }: { accesses: RowData }) {
         )}
       </div>
       {isInvitation ? (
-        <span className="text-blue-600 font-bold uppercase">
-          Invitation envoyée
-        </span>
+        _.subkind === 'by_post' ? (
+          <span className="flex items-center gap-1 text-blue-600 font-bold">
+            Invitation envoyée par courrier
+            <Icon>email_outlined</Icon>
+          </span>
+        ) : (
+          <span className="text-blue-600 font-bold">Invitation envoyée</span>
+        )
       ) : (
         <span className="text-gray-500">{_.name}</span>
       )}
