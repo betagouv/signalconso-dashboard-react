@@ -257,7 +257,7 @@ export const Datatable = <T extends any = any>({
                 ))}
               </TableRow>
             ))}
-            {!loading && (!data || data?.length === 0) && (
+            {!loading && data?.length === 0 && (
               <TableRow>
                 <TableCell
                   colSpan={filteredColumns.length}
