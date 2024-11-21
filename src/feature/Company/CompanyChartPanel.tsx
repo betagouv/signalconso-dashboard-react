@@ -127,21 +127,6 @@ export const CompanyChartPanel = ({
               </MenuItem>
             ))}
           </ScSelect>
-          {/*<ButtonGroup color="primary" style={{ height: '41px' }}>*/}
-          {/*  {periods.map((p) => (*/}
-          {/*    <Button*/}
-          {/*      key={p}*/}
-          {/*      sx={*/}
-          {/*        p === reportsCurvePeriod*/}
-          {/*          ? { background: (t) => alpha(t.palette.primary.main, 0.14) }*/}
-          {/*          : {}*/}
-          {/*      }*/}
-          {/*      onClick={() => setReportsCurvePeriod(p)}*/}
-          {/*    >*/}
-          {/*      {periodToString(p)}*/}
-          {/*    </Button>*/}
-          {/*  ))}*/}
-          {/*</ButtonGroup>*/}
         </div>
       </div>
       <LineChartOrPlaceholder
