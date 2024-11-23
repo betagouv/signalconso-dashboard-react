@@ -1,7 +1,6 @@
-import * as React from 'react'
-import {ReactNode} from 'react'
-import {BoxProps, Divider, Icon} from '@mui/material'
-import {PanelTitle} from './PanelTitle'
+import { BoxProps, Divider, Icon } from '@mui/material'
+import { ReactNode } from 'react'
+import { PanelTitle } from './PanelTitle'
 
 interface Props extends BoxProps {
   className?: string
@@ -9,9 +8,17 @@ interface Props extends BoxProps {
   action?: ReactNode
   icon?: string
   bottomDivider?: boolean
+  noPadding?: boolean
 }
 
-export const PanelHead = ({icon, children, action, bottomDivider, sx, ...other}: Props) => {
+export const PanelHead = ({
+  icon,
+  children,
+  action,
+  bottomDivider,
+  sx,
+  ...other
+}: Props) => {
   return (
     <>
       <PanelTitle
@@ -25,8 +32,12 @@ export const PanelHead = ({icon, children, action, bottomDivider, sx, ...other}:
           ...sx,
         }}
       >
-        {icon && <Icon sx={{color: t => t.palette.text.disabled, mr: 1}}>{icon}</Icon>}
-        <div style={{flex: 1}}>{children}</div>
+        {icon && (
+          <Icon sx={{ color: (t) => t.palette.text.disabled, mr: 1 }}>
+            {icon}
+          </Icon>
+        )}
+        <div style={{ flex: 1 }}>{children}</div>
         {action}
       </PanelTitle>
       {bottomDivider && <Divider />}

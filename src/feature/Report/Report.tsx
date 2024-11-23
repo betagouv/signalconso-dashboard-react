@@ -1,33 +1,50 @@
-import React, {useEffect, useMemo, useState} from 'react'
-import {Page} from '../../shared/Page'
-import {useParams} from 'react-router'
-import {useI18n} from '../../core/i18n'
-import {Panel} from '../../shared/Panel'
-import {useReportContext} from '../../core/context/ReportContext'
-import {Box, Grid, Tab, Tabs, Tooltip} from '@mui/material'
-import {useToast} from '../../core/toast'
-import {ReportEvents} from './Event/ReportEvents'
-import {ReportResponseComponent} from './ReportResponse'
-import {ReportHeader} from './ReportHeader'
-import {Btn, Txt} from '../../alexlibs/mui-extension'
-import {ReportPostAction} from './ReportPostAction'
-import {useLogin} from '../../core/context/LoginContext'
-import {ReportConsumer} from './ReportConsumer/ReportConsumer'
-import {ReportCompany} from './ReportCompany/ReportCompany'
-import {ReportDescription} from './ReportDescription'
-import {useEventContext} from '../../core/context/EventContext'
-import {useEffectFn} from '../../alexlibs/react-hooks-lib'
-import {map} from '../../alexlibs/ts-utils'
-import {ScDialog} from '../../shared/ScDialog'
-import {EventActionValues, EventType, ReportEvent} from '../../core/client/event/Event'
-import {FileOrigin} from '../../core/client/file/UploadedFile'
-import {Report, ReportStatus} from '../../core/client/report/Report'
-import {Id} from '../../core/model'
-import {ScButton} from '../../shared/Button'
-import {WithInlineIcon} from 'shared/WithInlineIcon'
-import {ReportAdminResolution} from './ReportAdminResolution'
-import {ReportBarcodeProduct} from './ReportBarcodeProduct'
-import {ReportReOpening} from './ReportReOpening'
+import { Box, Tab, Tabs, Tooltip } from '@mui/material'
+import { useMutation, UseQueryResult } from '@tanstack/react-query'
+import { ApiError } from 'core/client/ApiClient'
+import { map } from 'core/helper'
+import React, { useState } from 'react'
+import { useParams } from 'react-router'
+import { Divider } from 'shared/Divider'
+import { CleanDiscreetPanel } from 'shared/Panel/simplePanels'
+import { WithInlineIcon } from 'shared/WithInlineIcon'
+import { Btn } from '../../alexlibs/mui-extension'
+import {
+  EventActionValues,
+  EventType,
+  ReportEvent,
+} from '../../core/client/event/Event'
+import { FileOrigin } from '../../core/client/file/UploadedFile'
+import {
+  Report,
+  ReportSearchResult,
+  ReportStatus,
+} from '../../core/client/report/Report'
+import { useConnectedContext } from '../../core/context/ConnectedContext'
+import { useI18n } from '../../core/i18n'
+import { Id } from '../../core/model'
+import {
+  useGetCompanyEventsQuery,
+  useGetReportEventsQuery,
+} from '../../core/queryhooks/eventQueryHooks'
+import {
+  useGetEngagementReviewQuery,
+  useGetReportQuery,
+  useGetReviewOnReportResponseQuery,
+} from '../../core/queryhooks/reportQueryHooks'
+import { ScButton } from '../../shared/Button'
+import { Page } from '../../shared/Page'
+import { ReportEvents } from './Event/ReportEvents'
+import { ReportAdminResolution } from './ReportAdminResolution'
+import { ReportCompany } from './ReportCompany/ReportCompany'
+import { ReportConsumer } from './ReportConsumer/ReportConsumer'
+import { ReportDetails, ReportFilesFull } from './ReportDescription'
+import { ReportDownloadAction } from './ReportDownloadAction'
+import { ReportHeader } from './ReportHeader'
+import { ReportPostAction } from './ReportPostAction'
+import { ReportProduct } from './ReportProduct'
+import { ReportReOpening } from './ReportReOpening'
+import { ReportResponseComponent } from './ReportResponse'
+import { ReportViewAsPro } from './ReportViewAsPro'
 
 const CONSO: EventType = 'CONSO'
 
@@ -44,179 +61,269 @@ export const creationReportEvent = (report: Report): ReportEvent =>
   })
 
 export const ReportComponent = () => {
-  const {id} = useParams<{id: Id}>()
-  const {m} = useI18n()
-  const _report = useReportContext()
-  const _event = useEventContext()
-  const {connectedUser} = useLogin()
-  const {toastError} = useToast()
-  const [activeTab, setActiveTab] = useState(0)
-  const response = useMemo(
-    () => _event.reportEvents.entity?.find(_ => _.data.action === EventActionValues.ReportProResponse),
-    [_event.reportEvents],
+  const { id } = useParams<{ id: Id }>()
+  const [viewAsPro, setViewAsPro] = useState(false)
+  const _getReport = useGetReportQuery(id!)
+
+  if (viewAsPro) {
+    return _getReport.data ? (
+      <ReportViewAsPro
+        reportSearchResult={_getReport.data}
+        onBackToStandardView={() => setViewAsPro(false)}
+      />
+    ) : null
+  }
+  return (
+    <ReportViewStandard
+      {...{ _getReport }}
+      id={id!}
+      onViewAsPro={() => setViewAsPro(true)}
+    />
   )
+}
 
-  useEffect(() => {
-    _report.get.clearCache()
-    _report.get.fetch({}, id).then(({report}) => {
-      _report.getReviewOnReportResponse.fetch({}, report.id)
-      if (report.companySiret) _event.companyEvents.fetch({}, report.companySiret)
-    })
-    _event.reportEvents.fetch({}, id)
-  }, [])
+const ReportViewStandard = ({
+  id,
+  _getReport,
+  onViewAsPro,
+}: {
+  id: string
+  _getReport: UseQueryResult<ReportSearchResult, ApiError>
+  onViewAsPro: () => void
+}) => {
+  const { m } = useI18n()
+  const { connectedUser, api: apiSdk } = useConnectedContext()
+  const [activeTab, setActiveTab] = useState(0)
 
-  useEffectFn(_report.get.error, toastError)
-  useEffectFn(_report.remove.error, toastError)
-  useEffectFn(_report.updateCompany.error, toastError)
-  useEffectFn(_event.companyEvents.error, toastError)
-  useEffectFn(_event.reportEvents.error, toastError)
+  const enableReviewQueries = !!_getReport.data?.report.id && !!id
+  const _getReviewOnReportResponse = useGetReviewOnReportResponseQuery(id!, {
+    enabled: enableReviewQueries,
+  })
+  const _getEngagementReview = useGetEngagementReviewQuery(id!, {
+    enabled: enableReviewQueries,
+  })
+  const _getCompanyEvents = useGetCompanyEventsQuery(
+    _getReport.data?.report.companySiret!,
+    {
+      enabled: !!_getReport.data?.report.companySiret,
+    },
+  )
+  const {
+    reportEvents,
+    responseEvent,
+    refetch: refetchReportEvents,
+    isLoading: reportEventsIsLoading,
+  } = useGetReportEventsQuery(id!)
 
-  const downloadReport = (reportId: Id) => _report.download.fetch({}, [reportId])
+  const downloadReport = useMutation({
+    mutationFn: (id: Id) => apiSdk.secured.reports.download([id]),
+  })
+  const generateConsumerNotificationAsPDF = useMutation({
+    mutationFn: apiSdk.secured.reports.generateConsumerNotificationAsPDF,
+  })
 
   return (
-    <Page loading={_report.get.loading}>
-      {map(_report.get.entity?.report, report => (
-        <>
-          <ReportHeader elevated report={report}>
-            <Box
-              sx={{
-                whiteSpace: 'nowrap',
-                display: 'flex',
-                flexDirection: 'row-reverse',
-                flexWrap: 'wrap',
-              }}
-            >
-              {connectedUser.isAdmin &&
-                (report.status === ReportStatus.NonConsulte || report.status === ReportStatus.ConsulteIgnore) && (
-                  <ReportReOpening report={report}>
-                    <Tooltip title={m.reportReopening}>
-                      <Btn color="primary" icon="replay">
-                        {m.reportReopening}
-                      </Btn>
-                    </Tooltip>
-                  </ReportReOpening>
+    <Page loading={_getReport.isLoading}>
+      {map(_getReport.data, (reportSearchResult) => {
+        const report = reportSearchResult.report
+        return (
+          <>
+            {connectedUser.isAdmin ? (
+              <div className="flex justify-end mb-1">
+                <button
+                  onClick={onViewAsPro}
+                  className="underline text-sm text-scbluefrance"
+                >
+                  Voir ce que voit le pro
+                </button>
+              </div>
+            ) : null}
+            <ReportHeader elevated report={reportSearchResult}>
+              <Box
+                sx={{
+                  whiteSpace: 'nowrap',
+                  display: 'flex',
+                  flexDirection: 'row-reverse',
+                  flexWrap: 'wrap',
+                }}
+              >
+                {connectedUser.isAdmin &&
+                  (report.status === ReportStatus.NonConsulte ||
+                    report.status === ReportStatus.ConsulteIgnore) && (
+                    <ReportReOpening report={report}>
+                      <Tooltip title={m.reportReopening}>
+                        <Btn color="primary" icon="replay">
+                          {m.reportReopening}
+                        </Btn>
+                      </Tooltip>
+                    </ReportReOpening>
+                  )}
+
+                {connectedUser.isAdmin &&
+                  report.status !== ReportStatus.SuppressionRGPD && (
+                    <ReportAdminResolution
+                      label={m.administratorAction}
+                      report={report}
+                      onAdd={() => refetchReportEvents()}
+                    >
+                      <Tooltip title={m.administratorAction}>
+                        <Btn color="primary" icon="add_comment">
+                          {m.administratorAction}
+                        </Btn>
+                      </Tooltip>
+                    </ReportAdminResolution>
+                  )}
+
+                {_getReport.data?.files && _getReport.data?.files.length > 0 ? (
+                  <ReportDownloadAction
+                    report={report}
+                    files={_getReport.data?.files}
+                  >
+                    <Btn color="primary" icon="download">
+                      {m.download}
+                    </Btn>
+                  </ReportDownloadAction>
+                ) : (
+                  <Btn
+                    color="primary"
+                    icon="download"
+                    loading={downloadReport.isPending}
+                    onClick={() => downloadReport.mutate(report.id)}
+                  >
+                    {m.download}
+                  </Btn>
                 )}
 
-              {connectedUser.isAdmin && report.status !== ReportStatus.PromesseAction && (
-                <ReportAdminResolution
-                  label={m.administratorAction}
-                  report={report}
-                  onAdd={() => _event.reportEvents.fetch({force: true, clean: false}, id)}
-                >
-                  <Tooltip title={m.administratorAction}>
-                    <Btn color="primary" icon="add_comment">
-                      {m.administratorAction}
-                    </Btn>
-                  </Tooltip>
-                </ReportAdminResolution>
-              )}
-
-              <Btn color="primary" icon="download" loading={_report.download.loading} onClick={() => downloadReport(report.id)}>
-                {m.download}
-              </Btn>
-
-              <ReportPostAction
-                actionType={EventActionValues.Comment}
-                label={m.addDgccrfComment}
-                report={report}
-                onAdd={() => _event.reportEvents.fetch({force: true, clean: false}, id)}
-              >
-                <Tooltip title={m.addDgccrfComment}>
-                  <Btn color="primary" icon="add_comment">
-                    {m.comment}
-                  </Btn>
-                </Tooltip>
-              </ReportPostAction>
-
-              {(connectedUser.isDGCCRF || connectedUser.isDGAL) && (
                 <ReportPostAction
-                  actionType={EventActionValues.Control}
-                  label={m.markDgccrfControlDone}
+                  actionType={EventActionValues.Comment}
+                  label={m.addDgccrfComment}
                   report={report}
-                  onAdd={() => _event.reportEvents.fetch({force: true, clean: false}, id)}
+                  onAdd={refetchReportEvents}
                 >
-                  <Tooltip title={m.markDgccrfControlDone}>
+                  <Tooltip title={m.addDgccrfComment}>
                     <Btn color="primary" icon="add_comment">
-                      {m.dgccrfControlDone}
+                      {m.comment}
                     </Btn>
                   </Tooltip>
                 </ReportPostAction>
-              )}
 
-              {connectedUser.isAdmin && (
-                <ScButton
-                  loading={_report.generateConsumerNotificationAsPDF.loading}
-                  icon="download"
-                  onClick={() => _report.generateConsumerNotificationAsPDF.fetch({}, report.id)}
-                >
-                  Accusé reception
-                </ScButton>
-              )}
-            </Box>
-          </ReportHeader>
-          {!report.visibleToPro && (
-            <div className="bg-yellow-100  border border-gray-700 mx-2 p-4 mb-4">
-              <h3 className="font-bold">
-                <WithInlineIcon icon="visibility_off">Signalement confidentiel</WithInlineIcon>
-              </h3>
-              Ce signalement n'a pas été transmis à l'entreprise.
-              <br />
-              L'entreprise <span className="font-bold">ne sait même pas que ce signalement existe</span>. Ne pas lui divulguer.
-            </div>
-          )}
-          <Grid container spacing={2} alignItems="stretch">
-            <Grid item xs={12} sm={6}>
+                {(connectedUser.isDGCCRF || connectedUser.isDGAL) && (
+                  <ReportPostAction
+                    actionType={EventActionValues.Control}
+                    label={m.markDgccrfControlDone}
+                    report={report}
+                    onAdd={refetchReportEvents}
+                  >
+                    <Tooltip title={m.markDgccrfControlDone}>
+                      <Btn color="primary" icon="add_comment">
+                        {m.dgccrfControlDone}
+                      </Btn>
+                    </Tooltip>
+                  </ReportPostAction>
+                )}
+
+                {connectedUser.isAdmin && (
+                  <ScButton
+                    loading={generateConsumerNotificationAsPDF.isPending}
+                    icon="download"
+                    onClick={() =>
+                      generateConsumerNotificationAsPDF.mutate(report.id)
+                    }
+                  >
+                    Accusé reception
+                  </ScButton>
+                )}
+              </Box>
+            </ReportHeader>
+            {!report.visibleToPro && (
+              <div className="bg-yellow-100  border border-gray-700 mx-4 p-4 mb-4">
+                <h3 className="font-bold">
+                  <WithInlineIcon icon="visibility_off">
+                    Signalement confidentiel
+                  </WithInlineIcon>
+                </h3>
+                Ce signalement n'a pas été transmis à l'entreprise.
+                <br />
+                L'entreprise{' '}
+                <span className="font-bold">
+                  ne sait même pas que ce signalement existe
+                </span>
+                . Ne pas lui divulguer.
+              </div>
+            )}
+            <div className="grid lg:grid-cols-2 gap-4 ">
               <ReportConsumer report={report} canEdit={connectedUser.isAdmin} />
-            </Grid>
-            <Grid item xs={12} sm={6}>
               <ReportCompany report={report} canEdit={connectedUser.isAdmin} />
-            </Grid>
-          </Grid>
+            </div>
 
-          {_report.get.entity?.report.barcodeProductId && (
-            <ReportBarcodeProduct barcodeProductId={_report.get.entity.report.barcodeProductId} />
-          )}
+            <ReportProduct
+              barcodeProductId={_getReport.data?.report.barcodeProductId}
+              rappelConsoId={_getReport.data?.report.rappelConsoId}
+              variant="agent_or_admin"
+            />
 
-          <ReportDescription report={report} files={_report.get.entity?.files} />
-
-          <Panel loading={_event.reportEvents.loading}>
-            <>
-              <Tabs
-                sx={{
-                  borderBottom: t => '1px solid ' + t.palette.divider,
-                }}
-                value={activeTab}
-                onChange={(event: React.ChangeEvent<{}>, newValue: number) => setActiveTab(newValue)}
-                indicatorColor="primary"
-                textColor="primary"
-              >
-                <Tab label={m.proResponse} />
-                <Tab label={m.reportHistory} />
-                <Tab label={m.companyHistory} />
-              </Tabs>
-              <ReportTabPanel value={activeTab} index={0}>
-                <ReportResponseComponent
-                  canEditFile
-                  reportId={report.id}
-                  response={response?.data}
-                  consumerReportReview={_report.getReviewOnReportResponse.entity}
-                  files={_report.get.entity?.files.filter(_ => _.origin === FileOrigin.Professional)}
-                />
-              </ReportTabPanel>
-              <ReportTabPanel value={activeTab} index={1}>
-                <ReportEvents
-                  events={
-                    _event.reportEvents.loading ? undefined : [creationReportEvent(report), ...(_event.reportEvents.entity ?? [])]
+            <CleanDiscreetPanel>
+              <ReportDetails {...{ report }} />
+              <Divider margin />
+              <ReportFilesFull files={_getReport.data?.files} {...{ report }} />
+            </CleanDiscreetPanel>
+            <CleanDiscreetPanel loading={reportEventsIsLoading} noPaddingTop>
+              <>
+                <Tabs
+                  sx={{
+                    paddingTop: 0,
+                    borderBottom: (t) => '1px solid ' + t.palette.divider,
+                  }}
+                  value={activeTab}
+                  onChange={(event: React.ChangeEvent<{}>, newValue: number) =>
+                    setActiveTab(newValue)
                   }
-                />
-              </ReportTabPanel>
-              <ReportTabPanel value={activeTab} index={2}>
-                <ReportEvents events={_event.companyEvents.loading ? undefined : _event.companyEvents.entity ?? []} />
-              </ReportTabPanel>
-            </>
-          </Panel>
-        </>
-      ))}
+                  indicatorColor="primary"
+                  textColor="primary"
+                >
+                  <Tab label={m.proResponse} />
+                  <Tab label={m.reportHistory} />
+                  <Tab label={m.companyHistory} />
+                </Tabs>
+                <ReportTabPanel value={activeTab} index={0}>
+                  <div className="p-4">
+                    {responseEvent && (
+                      <ReportResponseComponent
+                        canEditFile
+                        report={report}
+                        response={responseEvent}
+                        consumerReportReview={_getReviewOnReportResponse.data}
+                        engagementReview={_getEngagementReview.data}
+                        files={_getReport.data?.files.filter(
+                          (_) => _.origin === FileOrigin.Professional,
+                        )}
+                      />
+                    )}
+                  </div>
+                </ReportTabPanel>
+                <ReportTabPanel value={activeTab} index={1}>
+                  <ReportEvents
+                    events={
+                      reportEventsIsLoading
+                        ? undefined
+                        : [creationReportEvent(report), ...(reportEvents ?? [])]
+                    }
+                  />
+                </ReportTabPanel>
+                <ReportTabPanel value={activeTab} index={2}>
+                  <ReportEvents
+                    events={
+                      _getCompanyEvents.isLoading
+                        ? undefined
+                        : (_getCompanyEvents.data ?? [])
+                    }
+                  />
+                </ReportTabPanel>
+              </>
+            </CleanDiscreetPanel>
+          </>
+        )
+      })}
     </Page>
   )
 }
@@ -228,12 +335,13 @@ interface ReportTabPanelProps {
 }
 
 const ReportTabPanel = (props: ReportTabPanelProps) => {
-  const {children, value, index, ...other} = props
+  const { children, value, index, ...other } = props
 
   return (
     <div
       role="tabpanel"
       hidden={value !== index}
+      className={'overflow-auto'}
       id={`scrollable-auto-tabpanel-${index}`}
       aria-labelledby={`scrollable-auto-tab-${index}`}
       {...other}

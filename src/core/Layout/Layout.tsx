@@ -1,50 +1,54 @@
-import * as React from 'react'
-import {ReactElement, ReactNode} from 'react'
-import {LayoutProvider, useLayoutContext} from './LayoutContext'
-import {Box} from '@mui/material'
-import {layoutConfig} from './index'
-import {defaultSpacing} from '../theme'
+import { ScHeader } from 'core/ScHeader/ScHeader'
+import { ScSidebar } from 'core/ScSidebar/ScSidebar'
+import { LoginManagementResult } from 'core/useLoginManagement'
+import { ReactNode } from 'react'
+import {
+  LayoutContextProvider,
+  useLayoutContext,
+} from '../context/LayoutContext'
+import { layoutConfig } from './layoutConfig'
 
-export const sidebarWith = 220
-
-export interface LayoutProps {
-  sidebar?: ReactElement<any>
-  header?: ReactElement<any>
-  title?: string
-  children?: ReactNode
-  mobileBreakpoint?: number
+interface LayoutProps {
+  loginManagementResult: LoginManagementResult
+  children: ReactNode
 }
 
-export const Layout = ({sidebar, header, title, mobileBreakpoint, children}: LayoutProps) => {
+export const Layout = ({ children, loginManagementResult }: LayoutProps) => {
+  const sidebar = loginManagementResult.connectedUser ? (
+    <ScSidebar
+      connectedUser={loginManagementResult.connectedUser}
+      logout={loginManagementResult.logout}
+    />
+  ) : null
   return (
-    <LayoutProvider title={title} mobileBreakpoint={mobileBreakpoint} showSidebarButton={!!sidebar}>
-      <LayoutUsingContext sidebar={sidebar} header={header}>
-        {children}
-      </LayoutUsingContext>
-    </LayoutProvider>
+    <LayoutContextProvider hasSidebar={!!sidebar}>
+      <LayoutUsingContext {...{ sidebar, children }} />
+    </LayoutContextProvider>
   )
 }
 
-const LayoutUsingContext = ({sidebar, header, children}: Pick<LayoutProps, 'sidebar' | 'header' | 'children'>) => {
-  const {sidebarOpen, sidebarPinned, isMobileWidth} = useLayoutContext()
+function LayoutUsingContext({
+  sidebar,
+  children,
+}: {
+  sidebar?: ReactNode
+  children: ReactNode
+}) {
+  const { sidebarTakesSpaceInLayout } = useLayoutContext()
   return (
     <>
-      {header}
+      <ScHeader />
       {sidebar}
-      <Box
-        component="main"
-        sx={{
-          transition: t => t.transitions.create('all'),
-          paddingLeft:
-            (sidebar && sidebarOpen && sidebarPinned && !isMobileWidth ? layoutConfig.sidebarWith + defaultSpacing : 0) + 'px',
-          overflow: 'hidden',
-          position: 'relative',
-          display: 'flex',
-          flexDirection: 'column',
+      <main
+        className="overflow-hidden relative flex flex-col"
+        style={{
+          ...(sidebarTakesSpaceInLayout
+            ? { paddingLeft: `${layoutConfig.sidebarWidth}px` }
+            : null),
         }}
       >
         {children}
-      </Box>
+      </main>
     </>
   )
 }

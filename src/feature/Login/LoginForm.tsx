@@ -1,16 +1,28 @@
-import {TextField} from '@mui/material'
-import {AlertContactSupport, EspaceProTitle} from 'feature/Login/loggedOutComponents'
-import {useForm} from 'react-hook-form'
-import {CenteredContent} from 'shared/CenteredContent'
-import {Alert, Txt} from '../../alexlibs/mui-extension'
-import {ApiError} from '../../core/client/ApiClient'
-import {SignalConsoPublicSdk} from '../../core/client/SignalConsoPublicSdk'
-import {regexp} from '../../core/helper/regexp'
-import {useI18n} from '../../core/i18n'
-import {AuthenticationEventActions, EventCategories, Matomo} from '../../core/plugins/Matomo'
-import {ScButton} from '../../shared/Button'
-import {ScInputPassword} from '../../shared/ScInputPassword'
-import {ForgottenPasswordDialog} from './ForgottenPasswordDialog'
+import { TextField } from '@mui/material'
+import { AlertContactSupport } from 'feature/Login/loggedOutComponents'
+import { useState } from 'react'
+import { useForm } from 'react-hook-form'
+import { useNavigate } from 'react-router'
+import { Alert, Txt } from '../../alexlibs/mui-extension'
+import { config } from '../../conf/config'
+import { ApiError } from '../../core/client/ApiClient'
+import { PublicApiSdk } from '../../core/client/PublicApiSdk'
+import { regexp } from '../../core/helper/regexp'
+import {
+  mapArrayFromQuerystring,
+  useQueryString,
+} from '../../core/helper/useQueryString'
+import { useI18n } from '../../core/i18n'
+import {
+  AuthenticationEventActions,
+  EventCategories,
+  Matomo,
+} from '../../core/plugins/Matomo'
+import { ScButton } from '../../shared/Button'
+import { ScInputPassword } from '../../shared/ScInputPassword'
+import { ForgottenPasswordDialog } from './ForgottenPasswordDialog'
+import PredefinedUsersPanel from './PredefinedUsersPanel'
+import { siteMap } from '../../core/siteMap'
 
 interface ActionProps<F extends (...args: any[]) => Promise<any>> {
   action: F
@@ -19,53 +31,106 @@ interface ActionProps<F extends (...args: any[]) => Promise<any>> {
 }
 
 interface Props {
-  login: ActionProps<SignalConsoPublicSdk['authenticate']['login']>
+  login: ActionProps<PublicApiSdk['authenticate']['login']>
 }
 
-interface Form {
+export interface Form {
   email: string
   password: string
   apiError: string
 }
 
-export const LoginForm = ({login}: Props) => {
-  const {m} = useI18n()
+interface RedirectProps {
+  redirecturl?: string
+}
+
+export const LoginForm = ({ login }: Props) => {
+  const { m } = useI18n()
+
+  const history = useNavigate()
+
+  const queryString = useQueryString<
+    Partial<RedirectProps>,
+    Partial<RedirectProps>
+  >({
+    toQueryString: (_) => _,
+    fromQueryString: mapArrayFromQuerystring(['redirecturl']),
+  })
   const {
     register,
     handleSubmit,
     watch,
-    setError,
     clearErrors,
-    formState: {errors},
-  } = useForm<Form>({mode: 'onSubmit'})
+    formState: { errors },
+  } = useForm<Form>({ mode: 'onSubmit' })
+  const [apiError, setApiError] = useState<ApiError | undefined>()
+  const needEmailRevalidationApiError = apiError?.details.id === 'SC-0013'
 
-  const onLogin = async (form: Form) => {
+  const onLogin: (form: Form) => Promise<void> = async (form: Form) => {
     login
       .action(form.email, form.password)
-      .then(user => {
-        Matomo.trackEvent(EventCategories.auth, AuthenticationEventActions.success, user.id)
-        Matomo.trackEvent(EventCategories.auth, AuthenticationEventActions.role, user.role)
+      .then((user) => {
+        Matomo.trackEvent(
+          EventCategories.auth,
+          AuthenticationEventActions.success,
+        )
+        Matomo.trackEvent(
+          EventCategories.auth,
+          AuthenticationEventActions.role,
+          user.role,
+        )
+
+        const redirectUrl = queryString.get().redirecturl?.[0]
+        if (redirectUrl) {
+          history(redirectUrl, { replace: true })
+        }
       })
       .catch((err: ApiError) => {
-        setError('apiError', {
-          type: err.details.id,
-          message: err.message,
-        })
+        setApiError(err)
         Matomo.trackEvent(EventCategories.auth, AuthenticationEventActions.fail)
       })
   }
 
   return (
-    <CenteredContent>
-      <EspaceProTitle subPageTitle={m.login} />
-      <div className="w-full max-w-xl">
-        <form className="flex flex-col mb-8" onSubmit={handleSubmit(onLogin)} action="#">
-          {errors.apiError && (
-            <Alert type="error" sx={{mb: 2}}>
+    <div className="w-full max-w-xl">
+      {needEmailRevalidationApiError ? (
+        <div className="mt-4 mb-14 max-w-lg mx-auto">
+          <p className="mb-2">
+            Votre adresse email <strong>{watch('email')}</strong> a besoin
+            d'être revalidée.
+          </p>
+          <p>
+            Nous vous avons envoyé un email, cliquez sur le lien qu'il contient
+            pour revalider votre adresse et vous connecter à SignalConso.
+          </p>
+        </div>
+      ) : (
+        <form
+          className="flex flex-col mb-8"
+          onSubmit={handleSubmit(onLogin)}
+          action="#"
+        >
+          {apiError && (
+            <Alert type="error" sx={{ mb: 2 }}>
               <Txt size="big" block bold>
                 {m.somethingWentWrong}
               </Txt>
-              <Txt>{errors.apiError.message}</Txt>
+              <Txt>{apiError.message}</Txt>
+              {watch('email').toLocaleLowerCase().endsWith('.gouv.fr') &&
+                config.enableProConnect && (
+                  <p className={'mt-2 font-bold'}>
+                    Essayez de vous connecter via le bouton{' '}
+                    <a
+                      href={siteMap.loggedout.loginAgent}
+                      className="underline"
+                    >
+                      Pro Connect
+                    </a>{' '}
+                    si vous avez reçu un e-mail d’invitation mentionnant
+                    ProConnect, ou si vous utilisez Pro Connect pour vous
+                    connecter à Signal Conso.
+                  </p>
+                )}
             </Alert>
           )}
           <TextField
@@ -76,8 +141,8 @@ export const LoginForm = ({login}: Props) => {
             helperText={errors.email?.message ?? ' '}
             label={m.yourEmail}
             {...register('email', {
-              required: {value: true, message: m.required},
-              pattern: {value: regexp.email, message: m.invalidEmail},
+              required: { value: true, message: m.required },
+              pattern: { value: regexp.email, message: m.invalidEmail },
             })}
           />
           <ScInputPassword
@@ -86,7 +151,7 @@ export const LoginForm = ({login}: Props) => {
             error={!!errors.password}
             helperText={errors.password?.message ?? ' '}
             {...register('password', {
-              required: {value: true, message: m.required},
+              required: { value: true, message: m.required },
             })}
           />
           <div className="flex gap-4 items-center justify-center">
@@ -98,7 +163,7 @@ export const LoginForm = ({login}: Props) => {
             <ScButton
               loading={login.loading}
               type="submit"
-              onClick={_ => clearErrors('apiError')}
+              onClick={(_) => clearErrors('apiError')}
               variant="contained"
               color="primary"
               size="large"
@@ -107,8 +172,10 @@ export const LoginForm = ({login}: Props) => {
             </ScButton>
           </div>
         </form>
-        <AlertContactSupport />
-      </div>
-    </CenteredContent>
+      )}
+      <AlertContactSupport />
+      <br />
+      {config.showPredefinedUsers && <PredefinedUsersPanel onLogin={onLogin} />}
+    </div>
   )
 }

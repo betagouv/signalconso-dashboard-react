@@ -1,7 +1,7 @@
-import {Entity, Id, PaginatedFilters} from '../../model'
-import {Company} from '../company/Company'
-import {Address} from '../../model'
-import {Country} from '../constant/Country'
+import { CompanyCreation, Entity, Id, PaginatedFilters } from '../../model'
+import { Company } from '../company/Company'
+import { Address } from '../../model'
+import { Country } from '../constant/Country'
 
 export enum IdentificationStatus {
   Identified = 'Identified',
@@ -31,6 +31,7 @@ export interface Website extends Entity {
   investigationStatus?: InvestigationStatus
   attribution?: string
   lastUpdated?: Date
+  isMarketplace: boolean
 }
 
 export interface WebsiteUpdateCompany {
@@ -56,6 +57,7 @@ export interface ApiHostWithReportCount {
 
 export interface WebsiteWithCompanySearch extends PaginatedFilters {
   host?: string
+  isOpen: boolean | null
   identificationStatus?: IdentificationStatus[]
   investigationStatus?: InvestigationStatus[]
   start?: Date
@@ -66,4 +68,9 @@ export interface HostReportCountSearch extends PaginatedFilters {
   q?: string
   start?: Date
   end?: Date
+}
+
+export interface WebsiteCreation {
+  host: string
+  company: CompanyCreation
 }

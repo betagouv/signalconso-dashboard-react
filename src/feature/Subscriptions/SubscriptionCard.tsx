@@ -1,169 +1,249 @@
-import React, {CSSProperties, SyntheticEvent, useEffect, useMemo, useState} from 'react'
-import {useI18n} from '../../core/i18n'
-import {Panel, PanelHead} from '../../shared/Panel'
-import {ScSelect} from '../../shared/Select/Select'
-import {Chip, Collapse, duration, Icon} from '@mui/material'
-import {SubscriptionCardRow} from './SubscriptionCardRow'
-import {SelectCompanyDialog} from '../../shared/SelectCompany/SelectCompanyDialog'
-import {ScChip} from '../../shared/ScChip'
-import {ScChipContainer} from '../../shared/ScChipContainer'
-import {useToast} from '../../core/toast'
-import {SelectDepartmentsMenu} from '../../shared/SelectDepartments/SelectDepartmentsMenu'
-import {SelectCountriesMenu} from '../../shared/SelectCountries/SelectCountriesMenu'
-import {SelectMenu} from '../../shared/SelectMenu'
-import {IconBtn} from '../../alexlibs/mui-extension'
-import {ScDialog} from '../../shared/ScDialog'
-import {ScMenuItem} from '../MenuItem/MenuItem'
-import {SelectTagsMenu, SelectTagsMenuValues} from '../../shared/SelectTags/SelectTagsMenu'
-import {Enum} from '../../alexlibs/ts-utils'
-import {Subscription, SubscriptionCreate} from '../../core/client/subscription/Subscription'
-import {ReportSearch} from '../../core/client/report/ReportSearch'
-import {useConstantContext} from '../../core/context/ConstantContext'
-import {Category} from '../../core/client/constant/Category'
+import { Chip, Collapse, Icon, Stack, duration } from '@mui/material'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { objectKeysUnsafe } from 'core/helper'
+import React, {
+  CSSProperties,
+  ReactEventHandler,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react'
+import { CleanWidePanel } from 'shared/Panel/simplePanels'
+import { IconBtn } from '../../alexlibs/mui-extension'
+import { Category } from '../../core/client/constant/Category'
+import { ReportSearch } from '../../core/client/report/ReportSearch'
+import {
+  Subscription,
+  SubscriptionCreate,
+} from '../../core/client/subscription/Subscription'
+import { useApiContext } from '../../core/context/ApiContext'
+import { useToast } from '../../core/context/toastContext'
+import { useI18n } from '../../core/i18n'
+import { useCategoriesByStatusQuery } from '../../core/queryhooks/constantQueryHooks'
+import { ListSubscriptionsQueryKeys } from '../../core/queryhooks/subscriptionQueryHooks'
+import { ScChip } from '../../shared/ScChip'
+import { ScDialog } from '../../shared/ScDialog'
+import { ScSelect } from '../../shared/Select/Select'
+import { SelectCompanyDialog } from '../../shared/SelectCompany/SelectCompanyDialog'
+import { SelectCountriesMenu } from '../../shared/SelectCountries/SelectCountriesMenu'
+import { SelectDepartmentsMenu } from '../../shared/SelectDepartments/SelectDepartmentsMenu'
+import { SelectMenu } from '../../shared/SelectMenu'
+import {
+  SelectTagsMenu,
+  SelectTagsMenuValues,
+} from '../../shared/SelectTags/SelectTagsMenu'
+import { ScMenuItem } from '../MenuItem/MenuItem'
+import { SubscriptionCardRow } from './SubscriptionCardRow'
+import { SubscriptionInformation } from './SubscriptionInformation'
 
 interface Props {
   subscription: Subscription
-  onUpdate: (_: Partial<SubscriptionCreate>) => Promise<Subscription>
-  onDelete: (event: SyntheticEvent<any>) => void
-  removing: boolean
-  loading?: boolean
   className?: string
   style?: CSSProperties
 }
 
 const useAnchoredMenu = () => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
-  const open = (event: any) => setAnchorEl(event.currentTarget)
+  const open: ReactEventHandler<HTMLElement> = (event) =>
+    setAnchorEl(event.currentTarget)
   const close = () => setAnchorEl(null)
-  return {open, close, element: anchorEl}
+  return { open, close, element: anchorEl }
 }
 
-export const SubscriptionCard = ({subscription, onUpdate, onDelete, removing, loading, className, style}: Props) => {
-  const {m} = useI18n()
-  const {toastInfo} = useToast()
+export const SubscriptionCard = ({ subscription, className, style }: Props) => {
+  const { m } = useI18n()
+  const { toastInfo } = useToast()
   const departmentAnchor = useAnchoredMenu()
   const countriesAnchor = useAnchoredMenu()
   const categoryAnchor = useAnchoredMenu()
   const tagsAnchor = useAnchoredMenu()
-  const _category = useConstantContext().categories
+  const _categories = useCategoriesByStatusQuery()
+  const _activeCategories = _categories.data?.active
+  const _outdatedCategories = [
+    ...(_categories.data?.inactive ?? []),
+    ...(_categories.data?.closed ?? []),
+    ...(_categories.data?.legacy ?? []),
+  ]
+  const { api } = useApiContext()
+  const queryClient = useQueryClient()
+  const _updateSubscription = useMutation({
+    mutationFn: (body: Partial<SubscriptionCreate>) =>
+      api.secured.subscription.update(subscription.id, body),
+    onSuccess: (data) =>
+      queryClient.setQueryData(
+        ListSubscriptionsQueryKeys,
+        (prev: Subscription[]) => {
+          const index = prev.findIndex((sub) => sub.id === data.id)
+          return Object.assign([], prev, { [index]: data }) // replace the subscription
+        },
+      ),
+  })
+  const _deleteSubscription = useMutation({
+    mutationFn: () => api.secured.subscription.remove(subscription.id),
+    onSuccess: () =>
+      queryClient.invalidateQueries({ queryKey: ListSubscriptionsQueryKeys }),
+  })
+
   const [isMounted, setIsMounted] = useState(false)
 
   useEffect(() => {
-    _category.fetch({force: false})
     setIsMounted(true)
   }, [])
 
   const tags: SelectTagsMenuValues = useMemo(() => {
     const tags: SelectTagsMenuValues = {}
-    subscription.withTags?.forEach(tag => {
+    subscription.withTags?.forEach((tag) => {
       tags[tag] = 'included'
     })
-    subscription.withoutTags?.forEach(tag => {
+    subscription.withoutTags?.forEach((tag) => {
       tags[tag] = 'excluded'
     })
     return tags
   }, [subscription.withTags, subscription.withoutTags])
 
-  const fromReportTagValues = (tags: SelectTagsMenuValues): Pick<ReportSearch, 'withTags' | 'withoutTags'> => {
-    const res = {
-      withTags: Enum.keys(tags).filter(tag => tags[tag] === 'included'),
-      withoutTags: Enum.keys(tags).filter(tag => tags[tag] === 'excluded'),
+  const fromReportTagValues = (
+    tags: SelectTagsMenuValues,
+  ): Pick<ReportSearch, 'withTags' | 'withoutTags'> => {
+    return {
+      withTags: objectKeysUnsafe(tags).filter(
+        (tag) => tags[tag] === 'included',
+      ),
+      withoutTags: objectKeysUnsafe(tags).filter(
+        (tag) => tags[tag] === 'excluded',
+      ),
     }
-    return res
   }
+
+  const allCategoriesSelected = subscription.categories.length === 0
 
   return (
     <Collapse in={isMounted} timeout={duration.standard * 1.5}>
-      <Panel loading={loading} className={className} style={style}>
-        <PanelHead
-          sx={{
-            display: 'flex',
-            alignItems: 'center',
-          }}
-          action={
-            <>
-              <ScSelect
-                sx={{mb: 0}}
-                value={subscription.frequency ?? 'P7D'}
-                onChange={(e: any) => onUpdate({frequency: e.target.value})}
-              >
-                <ScMenuItem value="P1D">{m.daily}</ScMenuItem>
-                <ScMenuItem value="P7D">{m.weekly}</ScMenuItem>
-              </ScSelect>
-              &nbsp;
-              <ScDialog title={m.removeSubscription} confirmLabel={m.delete} onConfirm={onDelete}>
-                <IconBtn color="primary" loading={removing}>
-                  <Icon>delete</Icon>
-                </IconBtn>
-              </ScDialog>
-            </>
-          }
-        >
-          {m.subscription}
-        </PanelHead>
+      <CleanWidePanel>
+        <div className="flex items-center justify-between">
+          <span>{m.subscription}</span>
+          <div className="flex items-center">
+            <ScSelect
+              value={subscription.frequency ?? 'P7D'}
+              onChange={(e: any) =>
+                _updateSubscription.mutate({ frequency: e.target.value })
+              }
+            >
+              <ScMenuItem value="P1D">{m.daily}</ScMenuItem>
+              <ScMenuItem value="P7D">{m.weekly}</ScMenuItem>
+            </ScSelect>
+            &nbsp;
+            <ScDialog
+              title={m.removeSubscription}
+              confirmLabel={m.delete}
+              onConfirm={(event, close) => {
+                _deleteSubscription.mutate()
+                close()
+              }}
+            >
+              <IconBtn color="primary" loading={_deleteSubscription.isPending}>
+                <Icon>delete</Icon>
+              </IconBtn>
+            </ScDialog>
+          </div>
+        </div>
+        <div className="mb-2">
+          <SubscriptionInformation
+            outdatedCategories={_outdatedCategories}
+            subscription={subscription}
+          />
+        </div>
 
-        <SubscriptionCardRow icon="flag" label={m.foreignCountry} onClick={countriesAnchor.open}>
-          <ScChipContainer>
-            {subscription.countries.map(_ => (
+        <SubscriptionCardRow
+          icon="flag"
+          label={m.foreignCountry}
+          onClick={countriesAnchor.open}
+        >
+          <Stack direction="row" gap={1} flexWrap="wrap">
+            {subscription.countries.map((_) => (
               <ScChip key={_.code} label={_.name} />
             ))}
-          </ScChipContainer>
+          </Stack>
         </SubscriptionCardRow>
         <SelectCountriesMenu
           open={!!countriesAnchor.element}
-          onChange={countries => onUpdate({countries})}
-          initialValues={subscription.countries.map(_ => _.code)}
+          onChange={(countries) => _updateSubscription.mutate({ countries })}
+          initialValues={subscription.countries.map((_) => _.code)}
           anchorEl={countriesAnchor.element}
           onClose={countriesAnchor.close}
         />
 
-        <SubscriptionCardRow icon="location_on" label={m.departments} onClick={departmentAnchor.open}>
-          <ScChipContainer>
-            {subscription.departments.map(_ => (
+        <SubscriptionCardRow
+          icon="location_on"
+          label={m.departments}
+          onClick={departmentAnchor.open}
+        >
+          <Stack direction="row" gap={1} flexWrap="wrap">
+            {subscription.departments.map((_) => (
               <ScChip key={_.code} label={_.code + ' - ' + _.label} />
             ))}
-          </ScChipContainer>
+          </Stack>
         </SubscriptionCardRow>
         <SelectDepartmentsMenu
           open={!!departmentAnchor.element}
           anchorEl={departmentAnchor.element}
-          initialValues={subscription.departments.map(_ => _.code)}
+          initialValues={subscription.departments.map((_) => _.code)}
           onClose={departmentAnchor.close}
-          onChange={departments => onUpdate({departments})}
+          onChange={(departments) =>
+            _updateSubscription.mutate({ departments })
+          }
         />
-        <SubscriptionCardRow icon="dashboard" label={m.categories} onClick={categoryAnchor.open}>
-          <ScChipContainer>
-            {subscription.categories.map(_ => (
-              <ScChip key={_} label={_} />
-            ))}
-          </ScChipContainer>
+        <SubscriptionCardRow
+          icon="dashboard"
+          label={m.categories}
+          onClick={categoryAnchor.open}
+        >
+          <Stack direction="row" gap={1} flexWrap="wrap">
+            {allCategoriesSelected ? (
+              <ScChip
+                variant="outlined"
+                color="default"
+                key="all"
+                label={<i>N'importe quelle catégorie</i>}
+              />
+            ) : (
+              subscription.categories.map((_) => <ScChip key={_} label={_} />)
+            )}
+          </Stack>
         </SubscriptionCardRow>
-        {_category.entity && (
+        {_activeCategories && (
           <SelectMenu
             multiple
-            options={_category.entity}
+            options={_activeCategories}
             renderValue={(option: Category) => m.ReportCategoryDesc[option]}
             initialValue={subscription.categories}
             onClose={categoryAnchor.close}
             open={!!categoryAnchor.element}
             anchorEl={categoryAnchor.element}
-            onChange={categories => onUpdate({categories})}
+            onChange={(categories) =>
+              _updateSubscription.mutate({ categories })
+            }
           />
         )}
 
         <SubscriptionCardRow icon="business" label={m.siret}>
-          <ScChipContainer>
-            {subscription.sirets.map(siret => (
+          <Stack direction="row" gap={1} flexWrap="wrap">
+            {subscription.sirets.map((siret) => (
               <ScChip
                 key={siret}
                 label={siret}
-                onDelete={() => onUpdate({sirets: subscription.sirets.filter(_ => _ !== siret)})}
+                onDelete={() =>
+                  _updateSubscription.mutate({
+                    sirets: subscription.sirets.filter((_) => _ !== siret),
+                  })
+                }
               />
             ))}
             <SelectCompanyDialog
-              onChange={company => {
-                if (!subscription.sirets.find(_ => _ === company.siret)) {
-                  onUpdate({sirets: [...subscription.sirets, company.siret]})
+              onChange={(company) => {
+                if (!subscription.sirets.find((_) => _ === company.siret)) {
+                  _updateSubscription.mutate({
+                    sirets: [...subscription.sirets, company.siret],
+                  })
                 } else {
                   toastInfo(m.alreadySelectedCompany(company.name))
                 }
@@ -171,27 +251,39 @@ export const SubscriptionCard = ({subscription, onUpdate, onDelete, removing, lo
             >
               <ScChip label={<Icon>add</Icon>} />
             </SelectCompanyDialog>
-          </ScChipContainer>
+          </Stack>
         </SubscriptionCardRow>
 
-        <SubscriptionCardRow icon="label" label={m.tags} onClick={tagsAnchor.open}>
-          <ScChipContainer>
-            {subscription?.withTags.map(_ => (
+        <SubscriptionCardRow
+          icon="label"
+          label={m.tags}
+          onClick={tagsAnchor.open}
+        >
+          <Stack direction="row" gap={1} flexWrap="wrap">
+            {subscription?.withTags.map((_) => (
               <Chip key={_} color="success" icon={<Icon>add</Icon>} label={_} />
             ))}
-            {subscription?.withoutTags.map(_ => (
-              <Chip key={_} color="error" icon={<Icon>remove</Icon>} label={_} />
+            {subscription?.withoutTags.map((_) => (
+              <Chip
+                key={_}
+                color="error"
+                icon={<Icon>remove</Icon>}
+                label={_}
+              />
             ))}
-          </ScChipContainer>
+          </Stack>
         </SubscriptionCardRow>
         <SelectTagsMenu
+          onlyActive={true}
           onClose={tagsAnchor.close}
           value={tags}
-          onChange={value => onUpdate(fromReportTagValues(value))}
+          onChange={(value) =>
+            _updateSubscription.mutate(fromReportTagValues(value))
+          }
           open={!!tagsAnchor.element}
           anchorEl={tagsAnchor.element}
         />
-      </Panel>
+      </CleanWidePanel>
     </Collapse>
   )
 }

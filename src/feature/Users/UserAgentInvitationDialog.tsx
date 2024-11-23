@@ -1,29 +1,34 @@
-import {Controller, useForm} from 'react-hook-form'
-import {Alert, Txt} from '../../alexlibs/mui-extension'
-import {useUsersContext} from '../../core/context/UsersContext'
-import {regexp} from '../../core/helper/regexp'
-import {useI18n} from '../../core/i18n'
-import {useToast} from '../../core/toast'
-import {ScButton} from '../../shared/Button'
-import {ScInput} from '../../shared/ScInput'
+import { Controller, useForm } from 'react-hook-form'
+import { Alert, Txt } from '../../alexlibs/mui-extension'
+import { apiErrorsCode, useToast } from '../../core/context/toastContext'
+import { regexp } from '../../core/helper/regexp'
+import { useI18n } from '../../core/i18n'
+import { ScButton } from '../../shared/Button'
+import { ScInput } from '../../shared/ScInput'
 
-import {ScOption} from 'core/helper/ScOption'
-import {ScDialog} from '../../shared/ScDialog'
-import {RoleAgents} from 'core/model'
-import {ToggleButton, ToggleButtonGroup} from '@mui/material'
+import { MenuItem, ToggleButton, ToggleButtonGroup } from '@mui/material'
+import { useMutation } from '@tanstack/react-query'
+import { ScOption } from 'core/helper/ScOption'
+import { AuthProvider, RoleAgents } from 'core/model'
+import { ApiError } from '../../core/client/ApiClient'
+import { useApiContext } from '../../core/context/ApiContext'
+import { ScDialog } from '../../shared/ScDialog'
+import { ScSelect } from '../../shared/Select/Select'
 import React from 'react'
 
 export const UserAgentInvitationDialog = () => {
-  const {m} = useI18n()
+  const { m } = useI18n()
   const {
     register,
     handleSubmit,
     watch,
     control,
-    formState: {errors, isValid},
-  } = useForm<{role: RoleAgents; email: string}>({mode: 'onChange'})
-  const usersContext = useUsersContext()
-  const {toastSuccess} = useToast()
+    formState: { errors, isValid },
+  } = useForm<{ role: RoleAgents; email: string; authProvider: AuthProvider }>({
+    mode: 'onChange',
+  })
+  const { toastSuccess } = useToast()
+  const { api } = useApiContext()
   const _role = watch('role')
 
   const selectFromRole = <T,>(role: RoleAgents, dgccrf: T, dgal: T) => {
@@ -35,9 +40,33 @@ export const UserAgentInvitationDialog = () => {
     }
   }
 
-  const _invite = usersContext.inviteAgent
-  const emailRegexp = selectFromRole(_role, regexp.emailDGCCRF, regexp.emailDGAL)
-  const emailValidationMessage = selectFromRole(_role, m.emailDGCCRFValidation, m.emailDGALValidation)
+  const _invite = useMutation<
+    void,
+    ApiError,
+    { email: string; role: RoleAgents; authProvider?: AuthProvider },
+    unknown
+  >({
+    mutationFn: (params: {
+      email: string
+      role: RoleAgents
+      authProvider?: AuthProvider
+    }) =>
+      api.secured.user.inviteAgent(
+        params.email,
+        params.role,
+        params.authProvider,
+      ),
+  })
+  const emailRegexp = selectFromRole(
+    _role,
+    regexp.emailDGCCRF,
+    regexp.emailDGAL,
+  )
+  const emailValidationMessage = selectFromRole(
+    _role,
+    m.emailDGCCRFValidation,
+    m.emailDGALValidation,
+  )
   const buttonLabel = m.invite_agent
   const dialogTitle = m.users_invite_dialog_title_agent
   const dialogDesc = m.users_invite_dialog_desc_agent
@@ -46,23 +75,23 @@ export const UserAgentInvitationDialog = () => {
     <ScDialog
       maxWidth="xs"
       onConfirm={(event, close) => {
-        handleSubmit(({role, email}) => {
+        handleSubmit(({ role, email, authProvider }) => {
           _invite
-            .fetch({}, email, role)
+            .mutateAsync({ email, role, authProvider })
             .then(() => toastSuccess(m.userInvitationSent))
             .then(close)
         })()
       }}
       confirmLabel={m.invite}
-      loading={_invite.loading}
+      loading={_invite.isPending}
       confirmDisabled={!isValid}
       title={dialogTitle}
       content={
         <>
           {ScOption.from(_invite.error?.details?.id)
-            .map(errId => (
+            .map((errId) => (
               <Alert dense type="error" deletable gutterBottom>
-                {m.apiErrorsCode[errId as keyof typeof m.apiErrorsCode]}
+                {apiErrorsCode[errId as keyof typeof apiErrorsCode]}
               </Alert>
             ))
             .toUndefined()}
@@ -75,14 +104,25 @@ export const UserAgentInvitationDialog = () => {
             rules={{
               required: m.required,
             }}
-            render={({field}) => (
-              <ToggleButtonGroup color="primary" fullWidth value={field.value} onChange={field.onChange}>
+            render={({ field }) => (
+              <ToggleButtonGroup
+                color="primary"
+                fullWidth
+                exclusive
+                value={field.value}
+                onChange={field.onChange}
+              >
                 <ToggleButton value="DGCCRF">DGCCRF</ToggleButton>
                 <ToggleButton value="DGAL">DGAL</ToggleButton>
               </ToggleButtonGroup>
             )}
           />
-          <Alert id="agent-invitation-select" dense type="warning" sx={{mb: 2}}>
+          <Alert
+            id="agent-invitation-select"
+            dense
+            type="warning"
+            sx={{ mb: 2 }}
+          >
             <>
               Vérifiez bien le type d'agent sélectionné,{' '}
               <u>
@@ -108,6 +148,27 @@ export const UserAgentInvitationDialog = () => {
               },
             })}
           />
+          {_role === 'DGCCRF' && (
+            <Controller
+              name="authProvider"
+              control={control}
+              render={({ field: { ref, ...field } }) => (
+                <ScSelect
+                  value={field.value}
+                  onChange={field.onChange}
+                  label={"Fournisseur d'authentification"}
+                  fullWidth
+                >
+                  <MenuItem value={AuthProvider.SignalConso}>
+                    Signal Conso
+                  </MenuItem>
+                  <MenuItem value={AuthProvider.ProConnect}>
+                    Pro Connect
+                  </MenuItem>
+                </ScSelect>
+              )}
+            />
+          )}
         </>
       }
     >

@@ -1,7 +1,7 @@
-import React, {CSSProperties, useMemo} from 'react'
-import {FormControl, InputLabel, Select, SelectProps} from '@mui/material'
+import { FormControl, InputLabel, Select, SelectProps } from '@mui/material'
+import React, { CSSProperties, Ref, useMemo } from 'react'
 
-interface ScSelectProps<T> extends SelectProps<T> {
+type ScSelectProps<T> = SelectProps<T> & {
   label?: string
   children?: React.ReactNode
   className?: string
@@ -9,14 +9,45 @@ interface ScSelectProps<T> extends SelectProps<T> {
   small?: boolean
 }
 
-const _ScSelect = <T,>({id: argId, label, className, small, fullWidth, style, ...selectProps}: ScSelectProps<T>, ref: any) => {
-  const id: string = useMemo(() => argId ?? 'sc-select-' + Math.floor(Math.random() * 10000), [argId])
+const _ScSelect = <T,>(
+  {
+    id: argId,
+    label,
+    className,
+    small,
+    fullWidth,
+    style,
+    ...selectProps
+  }: ScSelectProps<T>,
+  ref: Ref<unknown>,
+) => {
+  const id: string = useMemo(
+    () => argId ?? 'sc-select-' + Math.floor(Math.random() * 10000),
+    [argId],
+  )
   return (
-    <FormControl fullWidth={fullWidth} size="small" margin="dense" variant="outlined" className={className} style={style}>
-      <InputLabel sx={_ => ({backgroundColor: 'white'})} htmlFor={id} id={id + '-label'}>
+    <FormControl
+      fullWidth={fullWidth}
+      size="small"
+      margin="dense"
+      variant="outlined"
+      className={className}
+      style={style}
+    >
+      <InputLabel
+        sx={(_) => ({ backgroundColor: 'white' })}
+        htmlFor={id}
+        id={id + '-label'}
+      >
         {label}
       </InputLabel>
-      <Select {...selectProps} inputRef={ref} labelId={id + '-label'} id={id} />
+      <Select
+        {...selectProps}
+        inputRef={ref}
+        label={label}
+        labelId={id + '-label'}
+        id={id}
+      />
     </FormControl>
   )
 }
@@ -25,5 +56,5 @@ const _ScSelect = <T,>({id: argId, label, className, small, fullWidth, style, ..
  * Workaround because forwardRef break the generic type of ScSelect.
  */
 export const ScSelect = React.forwardRef(_ScSelect) as <T>(
-  props: ScSelectProps<T> & {ref?: React.ForwardedRef<any>},
+  props: ScSelectProps<T> & { ref?: React.ForwardedRef<any> },
 ) => ReturnType<typeof _ScSelect>

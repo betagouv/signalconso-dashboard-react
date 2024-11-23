@@ -1,15 +1,18 @@
-import {ReactElement, useEffect} from 'react'
-import {useForm} from 'react-hook-form'
-import {Alert, Txt} from '../../alexlibs/mui-extension'
-import {regexp} from '../../core/helper/regexp'
-import {useI18n} from '../../core/i18n'
-import {AuthenticationEventActions, EventCategories, Matomo} from '../../core/plugins/Matomo'
-import {useToast} from '../../core/toast'
-import {ScDialog} from '../../shared/ScDialog'
-import {ScInput} from '../../shared/ScInput'
-import {useMutation} from '@tanstack/react-query'
-import {apiPublicSdk} from 'core/ApiSdkInstance'
-import {TextField} from '@mui/material'
+import { TextField } from '@mui/material'
+import { useMutation } from '@tanstack/react-query'
+import { publicApiSdk } from 'core/apiSdkInstances'
+import { ReactElement, useEffect } from 'react'
+import { useForm } from 'react-hook-form'
+import { Alert, Txt } from '../../alexlibs/mui-extension'
+import { useToast } from '../../core/context/toastContext'
+import { regexp } from '../../core/helper/regexp'
+import { useI18n } from '../../core/i18n'
+import {
+  AuthenticationEventActions,
+  EventCategories,
+  Matomo,
+} from '../../core/plugins/Matomo'
+import { ScDialog } from '../../shared/ScDialog'
 
 interface Props {
   children: ReactElement<any>
@@ -20,18 +23,20 @@ interface Form {
   emailForgotten: string
 }
 
-export const ForgottenPasswordDialog = ({value, children}: Props) => {
-  const {m} = useI18n()
-  const {toastSuccess} = useToast()
+export const ForgottenPasswordDialog = ({ value, children }: Props) => {
+  const { m } = useI18n()
+  const { toastSuccess } = useToast()
   const _forgotPassword = useMutation({
-    mutationFn: apiPublicSdk.authenticate.forgotPassword,
+    mutationFn: publicApiSdk.authenticate.forgotPassword,
+    onSuccess: () => toastSuccess(m.emailSentToYou),
   })
   const {
     register,
     getValues,
     setValue,
+    watch,
     handleSubmit,
-    formState: {errors, isValid},
+    formState: { errors, isValid },
   } = useForm<Form>()
 
   useEffect(() => {
@@ -43,17 +48,22 @@ export const ForgottenPasswordDialog = ({value, children}: Props) => {
       .mutateAsync(form.emailForgotten)
       .then(() => {
         close()
-        toastSuccess(m.emailSentToYou)
-        Matomo.trackEvent(EventCategories.auth, AuthenticationEventActions.forgotPasswordSuccess, form.emailForgotten)
+        Matomo.trackEvent(
+          EventCategories.auth,
+          AuthenticationEventActions.forgotPasswordSuccess,
+        )
       })
       .catch(() => {
-        Matomo.trackEvent(EventCategories.auth, AuthenticationEventActions.forgotPasswordFail, form.emailForgotten)
+        Matomo.trackEvent(
+          EventCategories.auth,
+          AuthenticationEventActions.forgotPasswordFail,
+        )
       })
   }
 
   return (
     <ScDialog
-      loading={_forgotPassword.isLoading}
+      loading={_forgotPassword.isPending}
       title={m.forgottenPassword}
       confirmLabel={m.createNewPassword}
       maxWidth="xs"
@@ -68,6 +78,14 @@ export const ForgottenPasswordDialog = ({value, children}: Props) => {
           <Txt color="hint" block gutterBottom>
             {m.forgottenPasswordDesc}
           </Txt>
+          {watch('emailForgotten')
+            ?.toLocaleLowerCase()
+            .endsWith('.gouv.fr') && (
+            <Alert type="warning" gutterBottom>
+              Réservé aux utilisateurs qui n'utilisent pas ProConnect pour se
+              connecter à SignalConso.
+            </Alert>
+          )}
           <TextField
             fullWidth
             autoFocus
@@ -78,8 +96,8 @@ export const ForgottenPasswordDialog = ({value, children}: Props) => {
             error={!!errors.emailForgotten}
             helperText={errors.emailForgotten?.message}
             {...register('emailForgotten', {
-              required: {value: true, message: m.required},
-              pattern: {value: regexp.email, message: m.invalidEmail},
+              required: { value: true, message: m.required },
+              pattern: { value: regexp.email, message: m.invalidEmail },
             })}
           />
         </>

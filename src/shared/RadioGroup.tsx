@@ -1,8 +1,8 @@
-import React, {ReactElement, ReactNode, useEffect, useState} from 'react'
-import {ScRadioGroupItemProps} from './RadioGroupItem'
-import {Box, FormHelperText} from '@mui/material'
-import {SxProps} from '@mui/system'
-import {Theme} from '@mui/material/styles'
+import { Box, FormHelperText } from '@mui/material'
+import { Theme } from '@mui/material/styles'
+import { SxProps } from '@mui/system'
+import React, { ReactElement, ReactNode, Ref, useEffect, useState } from 'react'
+import { ScRadioGroupItemProps } from './RadioGroupItem'
 
 interface BaseProps<T> {
   dense?: boolean
@@ -31,13 +31,29 @@ interface MultipleProps<T> extends BaseProps<T> {
 
 type Props<T> = SingleProps<T> | MultipleProps<T>
 
-const isMultiple = <T,>(multiple: boolean | undefined, t: T | T[]): t is T[] => {
+const isMultiple = <T,>(
+  multiple: boolean | undefined,
+  t: T | T[],
+): t is T[] => {
   return !!multiple
 }
 
 const _ScRadioGroup = <T,>(
-  {inline, disabled, error, children, dense, value, onChange, multiple, helperText, defaultValue, sx, ...props}: Props<T>,
-  ref: any,
+  {
+    inline,
+    disabled,
+    error,
+    children,
+    dense,
+    value,
+    onChange,
+    multiple,
+    helperText,
+    defaultValue,
+    sx,
+    ...props
+  }: Props<T>,
+  ref: Ref<unknown>,
 ) => {
   const [innerValue, setInnerValue] = useState<T | T[]>()
 
@@ -81,11 +97,11 @@ const _ScRadioGroup = <T,>(
               if (child.props.onClick) child.props.onClick(event)
               if (!disabled) {
                 const value = child.props.value
-                setInnerValue(currentValue => {
+                setInnerValue((currentValue) => {
                   const newValue = (() => {
                     if (isMultiple(multiple, currentValue)) {
                       if (currentValue.includes(value)) {
-                        return currentValue.filter(_ => _ !== value)
+                        return currentValue.filter((_) => _ !== value)
                       } else {
                         return [...currentValue, value]
                       }
@@ -100,7 +116,7 @@ const _ScRadioGroup = <T,>(
           }),
       )}
       {helperText && (
-        <FormHelperText error={error} sx={{marginLeft: '14px'}}>
+        <FormHelperText error={error} sx={{ marginLeft: '14px' }}>
           {helperText}
         </FormHelperText>
       )}
@@ -112,5 +128,5 @@ const _ScRadioGroup = <T,>(
  * Workaround because forwardRef break the generic type of ScSelect.
  */
 export const ScRadioGroup = React.forwardRef(_ScRadioGroup as any) as <T>(
-  props: Props<T> & {ref?: React.ForwardedRef<any>},
+  props: Props<T> & { ref?: React.ForwardedRef<any> },
 ) => ReturnType<typeof _ScRadioGroup>

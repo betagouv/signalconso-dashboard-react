@@ -1,57 +1,21 @@
-import {Address, Event, ResponseConsumerReview, UploadedFile} from '../../model'
-import {Category} from '../constant/Category'
+import {
+  Address,
+  ConsumerReview,
+  EventWithUser,
+  Id,
+  MinimalUser,
+  ReportProResponseEvent,
+  UploadedFile,
+} from '../../model'
+import { Category } from '../constant/Category'
 
 export const ReportingDateLabel = 'Date du constat'
-export const ReportingTimeslotLabel = 'Heure du constat'
-export const DescriptionLabel = 'Description'
+const ReportingTimeslotLabel = 'Heure du constat'
+const DescriptionLabel = 'Description'
 
-export enum Gender {
+enum Gender {
   Male = 'Male',
   Female = 'Female',
-}
-
-export enum CompanyKinds {
-  SIRET = 'SIRET',
-  WEBSITE = 'WEBSITE',
-  PHONE = 'PHONE',
-  LOCATION = 'LOCATION',
-  INFLUENCEUR = 'INFLUENCEUR',
-}
-
-export enum DetailInputType {
-  TEXT = 'TEXT',
-  DATE_NOT_IN_FUTURE = 'DATE_NOT_IN_FUTURE',
-  DATE = 'DATE',
-  TIMESLOT = 'TIMESLOT',
-  RADIO = 'RADIO',
-  CHECKBOX = 'CHECKBOX',
-  TEXTAREA = 'TEXTAREA',
-}
-
-export interface DetailInput {
-  label: string
-  /** @deprecated */
-  rank?: number
-  type: DetailInputType
-  placeholder?: string
-  options?: string[]
-  defaultValue?: string
-  example?: string
-  optionnal?: boolean
-}
-
-export interface Information {
-  title?: string
-  content?: string
-  actions?: Action[]
-  subTitle?: string
-  outOfScope?: boolean
-}
-
-export interface Action {
-  question: string
-  example?: string
-  answer: string
 }
 
 export enum ReportType {
@@ -69,7 +33,7 @@ export enum ReportAdminActionType {
   SolvedContractualDispute = 'SolvedContractualDispute',
   ConsumerThreatenByPro = 'ConsumerThreatenByPro',
   RefundBlackMail = 'RefundBlackMail',
-  OtherReasonDeleteRequest = 'OtherReasonDeleteRequest',
+  RGPDDeleteRequest = 'RGPDDeleteRequest',
 }
 
 export enum ReportTag {
@@ -89,7 +53,22 @@ export enum ReportTag {
   ProduitAlimentaire = 'ProduitAlimentaire',
   CompagnieAerienne = 'CompagnieAerienne',
   Resiliation = 'Resiliation',
+  OpenFoodFacts = 'OpenFoodFacts',
+  RappelConso = 'RappelConso',
+  TransitionEcologique = 'TransitionEcologique',
+  ProduitPerime = 'ProduitPerime',
+  CommandeEffectuee = 'CommandeEffectuee',
+  ImpressionTicket = 'ImpressionTicket',
+  QuantiteNonConforme = 'QuantiteNonConforme',
+  AppelCommercial = 'AppelCommercial',
+  Prix = 'Prix',
+  AlimentationMaterielAnimaux = 'AlimentationMaterielAnimaux',
+  BauxPrecaire = 'BauxPrecaire',
+  Telecom = 'Telecom',
+  Shrinkflation = 'Shrinkflation',
 }
+
+export const OutdatedTags = [ReportTag.Bloctel]
 
 export interface Report {
   id: string
@@ -99,9 +78,12 @@ export interface Report {
   tags: ReportTag[]
   companyId?: string
   companyName?: string
+  companyCommercialName?: string
+  companyEstablishmentCommercialName?: string
   companyBrand?: string
   companyAddress: Address
   companySiret?: string
+  activityCode?: string
   websiteURL?: string
   vendor?: string
   phone?: string
@@ -121,11 +103,21 @@ export interface Report {
   influencer?: Influencer
   visibleToPro?: boolean
   barcodeProductId?: string
+  train?: Train
+  station?: string
+  rappelConsoId?: number
 }
 
 export interface Influencer {
-  socialNetwork: string
+  socialNetwork?: string
+  otherSocialNetwork?: string
   name: string
+}
+
+export interface Train {
+  train: string
+  ter?: string
+  nightTrain?: string
 }
 
 export interface DetailInputValue {
@@ -135,14 +127,25 @@ export interface DetailInputValue {
 
 export interface ReportSearchResult {
   report: Report
+  metadata?: ReportMetadata
+  isBookmarked: boolean
   files: UploadedFile[]
-  professionalResponse?: Event
-  consumerReview?: ResponseConsumerReview
+  professionalResponse?: EventWithUser
+  consumerReview?: ConsumerReview
+  engagementReview?: ConsumerReview
+  assignedUser?: MinimalUser
+}
+
+type ReportMetadata = {
+  reportId: Id
+  isMobileApp: boolean
+  os?: 'Android' | 'Ios'
+  assignedUserId?: Id
 }
 
 export enum ReportStatus {
   NA = 'NA',
-  LanceurAlerte = 'LanceurAlerte',
+  InformateurInterne = 'InformateurInterne',
   TraitementEnCours = 'TraitementEnCours',
   Transmis = 'Transmis',
   PromesseAction = 'PromesseAction',
@@ -150,23 +153,49 @@ export enum ReportStatus {
   NonConsulte = 'NonConsulte',
   ConsulteIgnore = 'ConsulteIgnore',
   MalAttribue = 'MalAttribue',
+  SuppressionRGPD = 'SuppressionRGPD',
 }
 
 export enum ReportStatusPro {
-  NonConsulte = 'NonConsulte',
   ARepondre = 'ARepondre',
   Cloture = 'Cloture',
 }
 
-export type ReportConsumerUpdate = Pick<Report, 'firstName' | 'lastName' | 'email' | 'consumerReferenceNumber'>
+export type ReportConsumerUpdate = Pick<
+  Report,
+  'firstName' | 'lastName' | 'email' | 'consumerReferenceNumber'
+>
+
+enum SpecialLegislation {
+  SHRINKFLATION = 'SHRINKFLATION',
+}
+
+export type ReportClosedReason =
+  | {
+      kind: 'suppression_rgpd'
+    }
+  | {
+      kind: 'no_response'
+      expirationDate: Date
+    }
+  | {
+      kind: 'response'
+      responseEvent: ReportProResponseEvent | undefined
+    }
 
 export class Report {
+  static readonly waitingResponseStatus = [
+    ReportStatus.Transmis,
+    ReportStatus.TraitementEnCours,
+  ]
+
   static readonly closedStatus = [
     ReportStatus.PromesseAction,
     ReportStatus.Infonde,
     ReportStatus.NonConsulte,
     ReportStatus.ConsulteIgnore,
     ReportStatus.MalAttribue,
+    ReportStatus.SuppressionRGPD,
   ]
 
   static readonly transmittedStatus = [
@@ -187,12 +216,24 @@ export class Report {
     ReportStatus.ConsulteIgnore,
   ]
 
-  static readonly respondedStatus = [ReportStatus.PromesseAction, ReportStatus.Infonde, ReportStatus.MalAttribue]
+  static readonly respondedStatus = [
+    ReportStatus.PromesseAction,
+    ReportStatus.Infonde,
+    ReportStatus.MalAttribue,
+  ]
   static readonly notRespondedStatus = [
     ReportStatus.NA,
-    ReportStatus.LanceurAlerte,
+    ReportStatus.InformateurInterne,
     ReportStatus.TraitementEnCours,
     ReportStatus.Transmis,
+    ReportStatus.NonConsulte,
+    ReportStatus.ConsulteIgnore,
+  ]
+  static readonly invisibleToProStatus = [
+    ReportStatus.NA,
+    ReportStatus.InformateurInterne,
+  ]
+  static readonly closedBySystemStatus = [
     ReportStatus.NonConsulte,
     ReportStatus.ConsulteIgnore,
   ]
@@ -201,38 +242,57 @@ export class Report {
     return Report.closedStatus.includes(status)
   }
 
-  private static readonly mapStatusPro: {[key in ReportStatus]: () => ReportStatusPro} = {
-    [ReportStatus.NA]: () => {
-      throw new Error(`Invalid status`)
-    },
-    [ReportStatus.LanceurAlerte]: () => {
-      throw new Error(`Invalid status`)
-    },
-    [ReportStatus.TraitementEnCours]: () => ReportStatusPro.NonConsulte,
-    [ReportStatus.Transmis]: () => ReportStatusPro.ARepondre,
-    [ReportStatus.PromesseAction]: () => ReportStatusPro.Cloture,
-    [ReportStatus.Infonde]: () => ReportStatusPro.Cloture,
-    [ReportStatus.NonConsulte]: () => ReportStatusPro.Cloture,
-    [ReportStatus.ConsulteIgnore]: () => ReportStatusPro.Cloture,
-    [ReportStatus.MalAttribue]: () => ReportStatusPro.Cloture,
+  static readonly getClosedReason = (
+    report: Report,
+    responseEvent: ReportProResponseEvent | undefined,
+  ): ReportClosedReason | undefined => {
+    if (Report.isClosed(report.status)) {
+      switch (report.status) {
+        case ReportStatus.SuppressionRGPD:
+          return { kind: 'suppression_rgpd' }
+        case ReportStatus.ConsulteIgnore:
+        case ReportStatus.NonConsulte:
+          return { kind: 'no_response', expirationDate: report.expirationDate }
+        default:
+          return { kind: 'response', responseEvent }
+      }
+    }
+    return undefined
   }
 
-  private static mapStatusProInverted: {[key in ReportStatusPro]: () => ReportStatus[]} = Object.entries(
-    Report.mapStatusPro,
-  ).reduce((acc, [status, statusProFn]) => {
-    try {
-      const statusPro = statusProFn()
-      const prevStatus = acc[statusPro] ? acc[statusPro]() : []
-      acc[statusPro] = () => [...prevStatus, status as ReportStatus]
-      return acc
-    } catch {
-      return acc
+  static readonly isWaitingForResponse = (status: ReportStatus) => {
+    return Report.waitingResponseStatus.includes(status)
+  }
+
+  static readonly getStatusProByStatus = (
+    status: ReportStatus,
+  ): ReportStatusPro =>
+    Report.isClosed(status)
+      ? ReportStatusPro.Cloture
+      : ReportStatusPro.ARepondre
+
+  static readonly getStatusByStatusPro = (
+    statusPro: ReportStatusPro,
+  ): ReportStatus[] =>
+    Object.values(ReportStatus)
+      .filter((_) => !Report.invisibleToProStatus.includes(_))
+      .filter((_) => Report.getStatusProByStatus(_) === statusPro)
+
+  static readonly isGovernmentCompany = (_?: {
+    activityCode?: string
+  }): boolean => _?.activityCode?.startsWith('84.') ?? false
+
+  static readonly appliedSpecialLegislation = (
+    report: Pick<Report, 'activityCode' | 'tags'>,
+  ): SpecialLegislation | undefined => {
+    // 47.11C supérettes moins de 400 m2
+    // 47.11D supermarchés entre 400 et 2500
+    // 47.11F hypermarchés égale ou > à 2500 m2
+    if (
+      report.tags.includes(ReportTag.Shrinkflation) &&
+      report.activityCode === '47.11C'
+    ) {
+      return SpecialLegislation.SHRINKFLATION
     }
-  }, {} as {[key in ReportStatusPro]: () => ReportStatus[]})
-
-  static readonly getStatusProByStatus = (status: ReportStatus): ReportStatusPro => Report.mapStatusPro[status]()
-
-  static readonly getStatusByStatusPro = (status: ReportStatusPro): ReportStatus[] => Report.mapStatusProInverted[status]()
-
-  static readonly isGovernmentCompany = (_?: {activityCode?: string}): boolean => _?.activityCode?.startsWith('84.') ?? false
+  }
 }

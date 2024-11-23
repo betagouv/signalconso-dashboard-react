@@ -1,12 +1,12 @@
-import {Country, Department} from '../constant/Country'
-import {ReportTag} from '../report/Report'
-import {Category} from '../constant/Category'
+import { Category } from '../constant/Category'
+import { Country, GeoArea } from '../constant/Country'
+import { ReportTag } from '../report/Report'
 
-export type SubscriptionFrequency = 'P7D' | 'P1D'
+type SubscriptionFrequency = 'P7D' | 'P1D'
 
 export interface Subscription {
   id: string
-  departments: Department[]
+  departments: GeoArea[]
   categories: Category[]
   sirets: string[]
   frequency: SubscriptionFrequency

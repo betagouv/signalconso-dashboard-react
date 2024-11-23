@@ -1,11 +1,10 @@
-import {useTheme} from '@mui/material'
-import {AsyncLineChart} from 'shared/Chart/LineChartWrappers'
-import {Txt} from '../../alexlibs/mui-extension'
-import {useLogin} from '../../core/context/LoginContext'
-import {useI18n} from '../../core/i18n'
-import {Panel, PanelBody, PanelHead} from '../../shared/Panel'
-import {CountByDate} from '../../core/client/stats/Stats'
-import {ReportTag} from '../../core/client/report/Report'
+import { AsyncLineChart } from 'shared/Chart/LineChartWrappers'
+import { CleanWidePanel } from 'shared/Panel/simplePanels'
+import { Txt } from '../../alexlibs/mui-extension'
+import { ReportTag } from '../../core/client/report/Report'
+import { CountByDate } from '../../core/client/stats/statsTypes'
+import { useConnectedContext } from '../../core/context/ConnectedContext'
+import { useI18n } from '../../core/i18n'
 
 const computeCurveReportPhysique = ({
   all,
@@ -22,20 +21,28 @@ const computeCurveReportPhysique = ({
   for (let i = 0; i < all.length; i++) {
     res[i] = {
       date: all[i].date,
-      count: all[i].count - internet[i]?.count - demarchages[i]?.count - influenceurs[i]?.count,
+      count:
+        all[i].count -
+        internet[i]?.count -
+        demarchages[i]?.count -
+        influenceurs[i]?.count,
     }
   }
   return res
 }
 
 export const StatsReportsCurvePanel = () => {
-  const {apiSdk: api} = useLogin()
-  const {m} = useI18n()
+  const { api: api } = useConnectedContext()
+  const { m } = useI18n()
   const tickDuration = 'Month'
   const ticks = 12
   const loadCurves = async () => {
     const [all, internet, demarchages, influenceurs] = await Promise.all([
-      api.secured.stats.getReportCountCurve({ticks, tickDuration, withoutTags: [ReportTag.Bloctel]}),
+      api.secured.stats.getReportCountCurve({
+        ticks,
+        tickDuration,
+        withoutTags: [ReportTag.Bloctel],
+      }),
       api.secured.stats.getReportCountCurve({
         ticks,
         tickDuration,
@@ -45,7 +52,11 @@ export const StatsReportsCurvePanel = () => {
       api.secured.stats.getReportCountCurve({
         ticks,
         tickDuration,
-        withTags: [ReportTag.DemarchageADomicile, ReportTag.DemarchageTelephonique, ReportTag.DemarchageInternet],
+        withTags: [
+          ReportTag.DemarchageADomicile,
+          ReportTag.DemarchageTelephonique,
+          ReportTag.DemarchageInternet,
+        ],
         withoutTags: [ReportTag.Bloctel],
       }),
       api.secured.stats.getReportCountCurve({
@@ -74,17 +85,27 @@ export const StatsReportsCurvePanel = () => {
       },
       {
         label: m.reportsCountPhysique,
-        data: computeCurveReportPhysique({all, internet, demarchages, influenceurs}),
+        data: computeCurveReportPhysique({
+          all,
+          internet,
+          demarchages,
+          influenceurs,
+        }),
       },
     ]
   }
   return (
-    <Panel>
-      <PanelHead>{m.reportsDivision}</PanelHead>
-      <PanelBody>
-        <Txt color="hint" gutterBottom block dangerouslySetInnerHTML={{__html: m.reportsDivisionDesc}} />
-        <AsyncLineChart {...{loadCurves}} smallFontYAxis />
-      </PanelBody>
-    </Panel>
+    <CleanWidePanel>
+      <div className="font-bold text-xl mb-2">{m.reportsDivision}</div>
+      <div>
+        <Txt
+          color="hint"
+          gutterBottom
+          block
+          dangerouslySetInnerHTML={{ __html: m.reportsDivisionDesc }}
+        />
+        <AsyncLineChart {...{ loadCurves }} smallFontYAxis />
+      </div>
+    </CleanWidePanel>
   )
 }

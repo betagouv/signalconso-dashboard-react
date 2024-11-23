@@ -1,23 +1,34 @@
-import React, {ReactElement, ReactNode, useEffect, useState} from 'react'
-import {Btn} from '../alexlibs/mui-extension'
-import {Box, CircularProgress, Icon, Menu, MenuItem, Tooltip} from '@mui/material'
-import {useI18n} from '../core/i18n'
-import {useAsyncFileContext} from '../core/context/AsyncFileContext'
-import {Txt} from '../alexlibs/mui-extension'
-import {useReportedPhonesContext} from '../core/context/ReportedPhonesContext'
-import {useInterval} from '../alexlibs/react-hooks-lib'
-import {Fetch} from '../alexlibs/react-hooks-lib'
-import {useReportsContext} from '../core/context/ReportsContext'
-import {useUnregistredWebsiteWithCompanyContext} from '../core/context/UnregistredWebsitesContext'
-import {AsyncFile, AsyncFileKind, AsyncFileStatus} from '../core/client/async-file/AsyncFile'
-import {fnSwitch} from '../alexlibs/ts-utils'
+import React, { ReactElement, ReactNode, useEffect, useState } from 'react'
+import { Alert, Btn, Txt } from '../alexlibs/mui-extension'
+import {
+  Box,
+  CircularProgress,
+  Icon,
+  Menu,
+  MenuItem,
+  Tooltip,
+} from '@mui/material'
+import { useI18n } from '../core/i18n'
+import { useInterval } from '../alexlibs/react-hooks-lib'
+import {
+  AsyncFile,
+  AsyncFileKind,
+  AsyncFileStatus,
+} from '../core/client/async-file/AsyncFile'
+import { fnSwitch } from '../alexlibs/ts-utils'
+import { ReportedPhoneSearch } from '../core/client/reported-phone/ReportedPhone'
+import { HostReportCountSearch } from '../core/client/website/Website'
+import { ReportSearch } from '../core/client/report/ReportSearch'
+import { PaginatedFilters } from '../core/model'
+import { useMutation, useQuery } from '@tanstack/react-query'
+import { useApiContext } from '../core/context/ApiContext'
 
 interface Props {
   className?: string
   disabled?: boolean
   tooltipBtnNew?: string
   loading?: boolean
-  fetch: Fetch<() => Promise<any>>
+  fetch: () => Promise<any>
   files?: AsyncFile[]
   fileType: AsyncFileKind
   onNewExport: () => Promise<any>
@@ -25,16 +36,24 @@ interface Props {
   onClick?: (event: any) => void
 }
 
-export const FileItem = ({icon, children, onClick}: {onClick?: () => void; icon: ReactNode; children: ReactNode}) => {
+const FileItem = ({
+  icon,
+  children,
+  onClick,
+}: {
+  onClick?: () => void
+  icon: ReactNode
+  children: ReactNode
+}) => {
   return (
-    <Box sx={{display: 'flex'}} onClick={onClick}>
+    <Box sx={{ display: 'flex' }} onClick={onClick}>
       {icon}
-      <Box sx={{ml: 1, minWidth: 200}}>{children}</Box>
+      <Box sx={{ ml: 1, minWidth: 200 }}>{children}</Box>
     </Box>
   )
 }
 
-export const ExportPopperBtn = ({
+const ExportPopperBtn = ({
   children,
   tooltipBtnNew,
   loading,
@@ -46,7 +65,7 @@ export const ExportPopperBtn = ({
   disabled,
   onNewExport,
 }: Props) => {
-  const {m, formatDateTime} = useI18n()
+  const { m, formatDateTime } = useI18n()
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
   const [initialLoading, setInitialLoading] = useState(true)
 
@@ -60,15 +79,24 @@ export const ExportPopperBtn = ({
 
   useInterval(() => {
     if (anchorEl !== null) {
-      fetch({clean: false})
+      fetch()
     }
   }, 2000)
 
   useEffect(() => {
     if (anchorEl !== null) {
-      fetch({clean: true, force: true}).then(() => setInitialLoading(false))
+      fetch().then(() => setInitialLoading(false))
     }
   }, [anchorEl])
+
+  const ExportLabel = ({ file }: { file: AsyncFile }) => {
+    return (
+      <Txt bold block>
+        Export de {m.AsyncFileDesc[file.kind]} du{' '}
+        {formatDateTime(file.creationDate)}
+      </Txt>
+    )
+  }
 
   return (
     <>
@@ -83,20 +111,37 @@ export const ExportPopperBtn = ({
           })}
         </span>
       </Tooltip>
-      <Menu keepMounted open={!!anchorEl} onClose={handleClose} anchorEl={anchorEl}>
-        <Box sx={{pt: 0, pr: 2, pb: 0.5, pl: 2}}>
+      <Menu
+        keepMounted
+        open={!!anchorEl}
+        onClose={handleClose}
+        anchorEl={anchorEl}
+      >
+        <div className={'mt-2 mr-2 mb-4 ml-2 w-[500px]'}>
+          <p className={'ml-3 mb-2'}>
+            Vous pouvez exporter les signalements de la liste ci-dessous dans un
+            tableur Excel en cliquant sur "GÉNÉRER UN NOUVEL EXPORT"
+          </p>
+          <Alert id="action-info" dense type="info" className={'mt-2'}>
+            <p>
+              L'export est limité à 30 000 entrées. Pour importer plus
+              d'éléments, réduisez le nombre de signalements en utilisant les
+              filtres.
+            </p>
+          </Alert>
+        </div>
+        <Box sx={{ pt: 0, pr: 2, pb: 2, pl: 2 }}>
           <Tooltip title={tooltipBtnNew ?? ''}>
             <span>
               <Btn
                 disabled={disabled}
                 color="primary"
-                variant="outlined"
-                size="small"
-                sx={{width: '100%'}}
-                icon="add"
-                onClick={() => onNewExport().then(() => fetch({clean: false}))}
+                variant="contained"
+                sx={{ width: '100%' }}
+                icon="post_add"
+                onClick={() => onNewExport().then(fetch)}
               >
-                {m.exportInXLS}
+                <span className={'mt-1'}>{m.newExportInXLS}</span>
               </Btn>
             </span>
           </Tooltip>
@@ -118,46 +163,57 @@ export const ExportPopperBtn = ({
             sx={{
               textAlign: 'center',
               m: 1,
-              color: t => t.palette.text.disabled,
+              color: (t) => t.palette.text.disabled,
             }}
           >
             {m.noExport}
           </Box>
         )}
         {files
-          ?.filter(_ => _.kind === fileType)
-          .map(file => (
+          ?.filter((_) => _.kind === fileType)
+          .map((file) => (
             <MenuItem
               sx={{
                 '&:not(:last-of-type)': {
-                  borderBottom: t => '1px solid ' + t.palette.divider,
+                  borderBottom: (t) => '1px solid ' + t.palette.divider,
                 },
               }}
               dense
               key={file.id}
             >
               {fnSwitch(file.status, {
-                [AsyncFileStatus.Successed]: _ => (
+                [AsyncFileStatus.Successed]: (_) => (
                   <FileItem
                     onClick={() => window.open(file.url, '_blank')}
-                    icon={<Icon sx={{color: t => t.palette.success.light}}>file_download_done</Icon>}
+                    icon={
+                      <Icon sx={{ color: (t) => t.palette.success.light }}>
+                        file_download_done
+                      </Icon>
+                    }
                   >
-                    <Txt bold block>
-                      {file.filename.match(/.*?-(\w+.?\.xlsx)/)?.[1]}
+                    <ExportLabel file={file} />
+                    <Txt color="hint">Cliquez pour télécharger</Txt>
+                  </FileItem>
+                ),
+                [AsyncFileStatus.Loading]: (_) => (
+                  <FileItem icon={<CircularProgress size={20} />}>
+                    <ExportLabel file={file} />
+                    <Txt color="hint">Chargement, veuillez patienter...</Txt>
+                  </FileItem>
+                ),
+                [AsyncFileStatus.Failed]: (_) => (
+                  <FileItem
+                    icon={
+                      <Icon sx={{ color: (t) => t.palette.error.main }}>
+                        error_outline
+                      </Icon>
+                    }
+                  >
+                    <ExportLabel file={file} />
+                    <Txt color="hint">
+                      Erreur lors de l'export, veuillez générer un nouvel
+                      export.
                     </Txt>
-                    <Txt color="hint">{formatDateTime(file.creationDate)}</Txt>
-                  </FileItem>
-                ),
-                [AsyncFileStatus.Loading]: _ => (
-                  <FileItem icon={<CircularProgress size={24} />}>
-                    <Txt skeleton="100%" block />
-                    <Txt color="hint">{formatDateTime(file.creationDate)}</Txt>
-                  </FileItem>
-                ),
-                [AsyncFileStatus.Failed]: _ => (
-                  <FileItem icon={<Icon sx={{color: t => t.palette.error.main}}>error_outline</Icon>}>
-                    <div>{m.error}</div>
-                    <Txt color="hint">{formatDateTime(file.creationDate)}</Txt>
                   </FileItem>
                 ),
               })}
@@ -168,55 +224,83 @@ export const ExportPopperBtn = ({
   )
 }
 
-interface ExportReportProps {
+interface ExportReportProps<S> {
   className?: string
   children: ReactElement<any>
   disabled?: boolean
   onClick?: (event: any) => void
   tooltipBtnNew?: string
+  filters: S
 }
 
-export const ExportPhonesPopper = (props: ExportReportProps) => {
-  const _asyncFile = useAsyncFileContext()
-  const _reportPhone = useReportedPhonesContext()
+export const ExportPhonesPopper = (
+  props: ExportReportProps<ReportedPhoneSearch>,
+) => {
+  const { api } = useApiContext()
+  const _asyncFile = useQuery({
+    queryKey: ['asyncFiles_fetch'],
+    queryFn: api.secured.asyncFiles.fetch,
+    enabled: false,
+  })
+  const _extract = useMutation({
+    mutationFn: () => api.secured.reportedPhone.extract(props.filters),
+  })
   return (
     <ExportPopperBtn
       {...props}
-      loading={_asyncFile.loading}
+      loading={_asyncFile.isPending}
       fileType={AsyncFileKind.ReportedPhones}
-      onNewExport={_reportPhone.extract.fetch}
-      fetch={_asyncFile.fetch}
-      files={_asyncFile.entity}
+      onNewExport={_extract.mutateAsync}
+      fetch={() => _asyncFile.refetch()}
+      files={_asyncFile.data}
     />
   )
 }
 
-export const ExportReportsPopper = (props: ExportReportProps) => {
-  const _asyncFile = useAsyncFileContext()
-  const _reports = useReportsContext()
+export const ExportReportsPopper = (
+  props: ExportReportProps<ReportSearch & PaginatedFilters>,
+) => {
+  const { api } = useApiContext()
+  const _asyncFile = useQuery({
+    queryKey: ['asyncFiles_fetch'],
+    queryFn: api.secured.asyncFiles.fetch,
+    enabled: false,
+  })
+  const _extract = useMutation({
+    mutationFn: () => api.secured.reports.extract(props.filters),
+  })
   return (
     <ExportPopperBtn
       {...props}
-      loading={_asyncFile.loading}
+      loading={_asyncFile.isPending}
       fileType={AsyncFileKind.Reports}
-      onNewExport={_reports.extract}
-      fetch={_asyncFile.fetch}
-      files={_asyncFile.entity}
+      onNewExport={_extract.mutateAsync}
+      fetch={() => _asyncFile.refetch()}
+      files={_asyncFile.data}
     />
   )
 }
 
-export const ExportUnknownWebsitesPopper = (props: ExportReportProps) => {
-  const _asyncFile = useAsyncFileContext()
-  const _extract = useUnregistredWebsiteWithCompanyContext()
+export const ExportUnknownWebsitesPopper = (
+  props: ExportReportProps<HostReportCountSearch>,
+) => {
+  const { api } = useApiContext()
+  const _asyncFile = useQuery({
+    queryKey: ['asyncFiles_fetch'],
+    queryFn: api.secured.asyncFiles.fetch,
+    enabled: false,
+  })
+  const _extract = useMutation({
+    mutationFn: () => api.secured.website.extractUnregistered(props.filters),
+  })
   return (
     <ExportPopperBtn
       {...props}
-      loading={_asyncFile.loading}
+      loading={_asyncFile.isPending}
       fileType={AsyncFileKind.ReportedWebsites}
-      onNewExport={_extract.extractUnregistered.fetch}
-      fetch={_asyncFile.fetch}
-      files={_asyncFile.entity}
+      onNewExport={_extract.mutateAsync}
+      fetch={() => _asyncFile.refetch()}
+      files={_asyncFile.data}
     />
   )
 }

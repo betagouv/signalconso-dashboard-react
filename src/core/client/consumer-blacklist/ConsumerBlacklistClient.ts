@@ -1,19 +1,26 @@
-import {ApiClientApi} from '../ApiClient'
-import {ConsumerBlacklistedEmail, ConsumerBlacklistedEmailRawFromApi} from './ConsumerBlacklistedEmail'
+import { ApiClient } from '../ApiClient'
+import {
+  ConsumerBlacklistedEmail,
+  ConsumerBlacklistedEmailRawFromApi,
+} from './ConsumerBlacklistedEmail'
 
 export class ConsumerBlacklistClient {
-  constructor(private client: ApiClientApi) {}
+  constructor(private client: ApiClient) {}
 
   readonly list = async (): Promise<ConsumerBlacklistedEmail[]> => {
-    const res = await this.client.get<ConsumerBlacklistedEmailRawFromApi[]>('/blacklisted-emails')
-    return res.map(_ => ({
+    const res = await this.client.get<ConsumerBlacklistedEmailRawFromApi[]>(
+      '/blacklisted-emails',
+    )
+    return res.map((_) => ({
       ..._,
       creationDate: new Date(_.creationDate),
     }))
   }
 
   readonly add = (email: string, comments: string) => {
-    return this.client.post<void>(`/blacklisted-emails`, {body: {email, comments}})
+    return this.client.post<void>(`/blacklisted-emails`, {
+      body: { email, comments },
+    })
   }
 
   readonly delete = (id: string) => {

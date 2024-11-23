@@ -1,15 +1,17 @@
-import React, {ReactElement} from 'react'
-import {useI18n} from '../../core/i18n'
-import {Controller, useForm} from 'react-hook-form'
-import {Alert} from '../../alexlibs/mui-extension'
-import {useToast} from '../../core/toast'
-import {ScDialog} from '../../shared/ScDialog'
-import {AccountEventActions, EventCategories, Matomo} from '../../core/plugins/Matomo'
-import {useAsync} from '../../alexlibs/react-hooks-lib'
-import {useLogin} from '../../core/context/LoginContext'
-import {map} from '../../alexlibs/ts-utils'
-import {ScInput} from '../../shared/ScInput'
-import {ApiError} from '../../core/client/ApiClient'
+import { useMutation } from '@tanstack/react-query'
+import { ReactElement } from 'react'
+import { Controller, useForm } from 'react-hook-form'
+import { Alert } from '../../alexlibs/mui-extension'
+import { useConnectedContext } from '../../core/context/ConnectedContext'
+import { useToast } from '../../core/context/toastContext'
+import { useI18n } from '../../core/i18n'
+import {
+  AccountEventActions,
+  EventCategories,
+  Matomo,
+} from '../../core/plugins/Matomo'
+import { ScDialog } from '../../shared/ScDialog'
+import { ScInput } from '../../shared/ScInput'
 
 interface Form {
   firstName: string
@@ -20,11 +22,14 @@ interface Props {
   children: ReactElement<any>
 }
 
-export const EditProfileDialog = ({children}: Props) => {
-  const {m} = useI18n()
-  const {apiSdk, connectedUser, setConnectedUser} = useLogin()
-  const _editUser = useAsync(apiSdk.secured.user.edit)
-  const {toastSuccess} = useToast()
+export const EditProfileDialog = ({ children }: Props) => {
+  const { m } = useI18n()
+  const { api: apiSdk, connectedUser, setConnectedUser } = useConnectedContext()
+  const _editUser = useMutation({
+    mutationFn: apiSdk.secured.user.edit,
+  })
+
+  const { toastSuccess } = useToast()
   const defaultFormValues: Form = {
     firstName: connectedUser.firstName,
     lastName: connectedUser.lastName,
@@ -35,7 +40,7 @@ export const EditProfileDialog = ({children}: Props) => {
     control,
     reset,
     watch,
-    formState: {errors, isValid},
+    formState: { errors, isValid },
   } = useForm<Form>({
     mode: 'onChange',
     defaultValues: defaultFormValues,
@@ -43,7 +48,9 @@ export const EditProfileDialog = ({children}: Props) => {
 
   watch('firstName')
   watch('lastName')
-  const hasUserChanged = getValues().firstName !== connectedUser.firstName || getValues().lastName !== connectedUser.lastName
+  const hasUserChanged =
+    getValues().firstName !== connectedUser.firstName ||
+    getValues().lastName !== connectedUser.lastName
 
   return (
     <ScDialog
@@ -54,33 +61,41 @@ export const EditProfileDialog = ({children}: Props) => {
       }}
       confirmLabel={m.edit}
       confirmDisabled={!isValid || !hasUserChanged}
-      loading={_editUser.loading}
-      onConfirm={(event, close) => {
+      loading={_editUser.isPending}
+      onConfirm={(e, close) => {
         handleSubmit((form: Form) => {
           _editUser
-            .call(form)
+            .mutateAsync(form)
             .then(() => {
               toastSuccess(m.saved)
               close()
-              Matomo.trackEvent(EventCategories.account, AccountEventActions.changeNameSuccess)
-              setConnectedUser(_ => ({..._, ...form}))
+              Matomo.trackEvent(
+                EventCategories.account,
+                AccountEventActions.changeNameSuccess,
+              )
+              setConnectedUser((previous) =>
+                previous ? { ...previous, ...form } : undefined,
+              )
             })
-            .catch(_ => {
-              Matomo.trackEvent(EventCategories.account, AccountEventActions.changeNameFail)
+            .catch((_) => {
+              Matomo.trackEvent(
+                EventCategories.account,
+                AccountEventActions.changeNameFail,
+              )
             })
         })()
       }}
       content={
         <>
-          {map(_editUser.error, (error: ApiError) => (
+          {_editUser.error && (
             <Alert dense type="error" deletable gutterBottom>
-              {error.message ?? m.anErrorOccurred}
+              {_editUser.error.message ?? m.anErrorOccurred}
             </Alert>
-          ))}
+          )}
           <Controller
             name="firstName"
             control={control}
-            render={({field}) => (
+            render={({ field }) => (
               <ScInput
                 {...field}
                 autoComplete="false"
@@ -94,7 +109,7 @@ export const EditProfileDialog = ({children}: Props) => {
           <Controller
             name="lastName"
             control={control}
-            render={({field}) => (
+            render={({ field }) => (
               <ScInput
                 {...field}
                 autoComplete="false"

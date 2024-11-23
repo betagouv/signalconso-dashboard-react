@@ -1,7 +1,8 @@
-import {Btn} from '../alexlibs/mui-extension'
-import {BtnProps} from '../alexlibs/mui-extension'
-import {forwardRef} from 'react'
+import { forwardRef, Ref } from 'react'
+import { Btn, BtnProps } from '../alexlibs/mui-extension'
 
-export const ScButton = forwardRef((props: BtnProps, ref: any) => {
-  return <Btn {...props} ref={ref} />
-})
+export const ScButton = forwardRef(
+  (props: BtnProps, ref: Ref<HTMLButtonElement>) => {
+    return <Btn {...props} ref={ref} />
+  },
+)

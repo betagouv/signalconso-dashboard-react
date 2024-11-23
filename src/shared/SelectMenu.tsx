@@ -1,7 +1,7 @@
-import {Checkbox, Menu, MenuItem} from '@mui/material'
-import React, {useEffect, useState} from 'react'
-import {useI18n} from '../core/i18n'
-import {makeSx} from '../alexlibs/mui-extension'
+import { Checkbox, Menu, MenuItem } from '@mui/material'
+import React, { useEffect, useState } from 'react'
+import { useI18n } from '../core/i18n'
+import { makeSx } from '../alexlibs/mui-extension'
 
 interface Props<T> {
   options: T[]
@@ -31,14 +31,15 @@ export const SelectMenu = <T,>({
   onClose,
   initialValue,
   renderValue,
-  toString = _ => _ + '',
+  toString = (_) => _ + '',
 }: Props<T>) => {
   const [innerValue, setInnerValue] = useState<T[]>([])
-  const {m} = useI18n()
+  const { m } = useI18n()
   const emptyOptions: T[] = []
   const allSelected = options.length === innerValue.length
 
-  const someValuesSelected = innerValue.length > 1 && innerValue.length < options.length
+  const someValuesSelected =
+    innerValue.length > 1 && innerValue.length < options.length
 
   useEffect(() => {
     setInnerValue(initialValue)
@@ -53,7 +54,7 @@ export const SelectMenu = <T,>({
           dense
           key="all"
           value="all"
-          onClick={e => {
+          onClick={(e) => {
             if (allSelected || (!allSelected && someValuesSelected)) {
               onChange(emptyOptions)
               setInnerValue(emptyOptions)
@@ -63,7 +64,10 @@ export const SelectMenu = <T,>({
             }
           }}
         >
-          <Checkbox indeterminate={!allSelected && someValuesSelected} checked={allSelected} />
+          <Checkbox
+            indeterminate={!allSelected && someValuesSelected}
+            checked={allSelected}
+          />
           {m.selectAll}
         </MenuItem>
       )}
@@ -75,8 +79,8 @@ export const SelectMenu = <T,>({
           dense
           onClick={() => {
             if (multiple) {
-              const newValue = !!innerValue.find(_ => _ === option)
-                ? innerValue.filter(_ => _ !== option)
+              const newValue = !!innerValue.find((_) => _ === option)
+                ? innerValue.filter((_) => _ !== option)
                 : [...innerValue, option]
               onChange(newValue)
               setInnerValue(newValue)

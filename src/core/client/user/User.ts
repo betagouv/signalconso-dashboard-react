@@ -1,9 +1,17 @@
-import {Id, PaginatedFilters} from '../../model'
-import {subMonths} from 'date-fns'
+import { subMonths } from 'date-fns'
+import { CompanyAccess, PaginatedFilters } from '../../model'
 
 export const roleAgents = ['DGCCRF', 'DGAL'] as const
-export type RoleAgents = typeof roleAgents[number]
-export type RoleAdminOrAgent = 'Admin' | RoleAgents
+export type RoleAgents = (typeof roleAgents)[number]
+export const roleAdmins = ['SuperAdmin', 'Admin', 'ReadOnlyAdmin'] as const
+export type RoleAdmins = (typeof roleAdmins)[number]
+export type RoleAdminOrAgent = RoleAdmins | RoleAgents
+export type Role = RoleAdminOrAgent | 'Professionnel'
+
+export enum AuthProvider {
+  SignalConso = 'SignalConso',
+  ProConnect = 'ProConnect',
+}
 
 export interface User {
   id: string
@@ -11,14 +19,29 @@ export interface User {
   firstName: string
   lastName: string
   lastEmailValidation: Date
-  role: RoleAdminOrAgent
+  role: Role
+  impersonator?: string
+  authProvider: AuthProvider
+}
+
+export class User {
+  static buildFullName(user: User | CompanyAccess | MinimalUser) {
+    return `${user.firstName} ${user.lastName}`
+  }
 }
 
 export type UserRaw = Omit<User, 'lastEmailValidation'> & {
   lastEmailValidation: string
 }
 
-export const isUserActive = (user: User) => user.lastEmailValidation.getTime() > subMonths(new Date(), 3).getTime()
+export type MinimalUser = {
+  id: string
+  firstName: string
+  lastName: string
+}
+
+export const isUserActive = (user: User) =>
+  user.lastEmailValidation.getTime() > subMonths(new Date(), 3).getTime()
 
 export interface UserEdit {
   firstName?: string
@@ -34,7 +57,7 @@ export interface UserPending {
 }
 
 export interface UserSearch extends PaginatedFilters {
-  role?: RoleAdminOrAgent[]
+  role?: RoleAgents[]
   email?: string
   active?: boolean
 }

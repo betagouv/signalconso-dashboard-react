@@ -1,30 +1,42 @@
-import {Page, PageTitle} from '../../shared/Page'
-import {PageTab, PageTabs} from '../../shared/Page/PageTabs'
-import {siteMap} from '../../core/siteMap'
-import {Redirect, Route, Switch, useRouteMatch} from 'react-router-dom'
+import { Page, PageTitle } from '../../shared/Page'
+import { PageTab, PageTabs } from '../../shared/Page/PageTabs'
+import { siteMap } from '../../core/siteMap'
+import { Route } from 'react-router-dom'
 import React from 'react'
-import {useLogin} from '../../core/context/LoginContext'
-import {TestTools} from './TestTools'
-import {AdminTools} from './AdminTools'
+import { useConnectedContext } from '../../core/context/ConnectedContext'
+import { TestTools } from './TestTools'
+import { AdminTools } from './AdminTools'
+import { Navigate, Routes } from 'react-router'
 
 export const Tools = () => {
-  const {connectedUser} = useLogin()
-  const {path} = useRouteMatch()
+  const { connectedUser } = useConnectedContext()
 
   return (
     <Page>
-      <PageTitle>Outils</PageTitle>
+      <PageTitle>Outils techniques</PageTitle>
       {connectedUser.isAdmin && (
         <PageTabs>
-          <PageTab to={siteMap.logged.testTools} label="Outils de tests" />
-          <PageTab to={siteMap.logged.adminTools} label="Outils d'administration" />
+          <PageTab
+            to={siteMap.logged.tools.test.value}
+            label="Outils de tests"
+          />
+          <PageTab
+            to={siteMap.logged.tools.admin.value}
+            label="Outils d'administration"
+          />
         </PageTabs>
       )}
-      <Switch>
-        <Redirect exact from={path} to={siteMap.logged.testTools} />
-        <Route path={siteMap.logged.testTools} component={TestTools} />
-        <Route path={siteMap.logged.adminTools} component={AdminTools} />
-      </Switch>
+      <Routes>
+        <Route
+          path="/*"
+          element={<Navigate replace to={siteMap.logged.tools.test.value} />}
+        />
+        <Route path={siteMap.logged.tools.test.value} element={<TestTools />} />
+        <Route
+          path={siteMap.logged.tools.admin.value}
+          element={<AdminTools />}
+        />
+      </Routes>
     </Page>
   )
 }

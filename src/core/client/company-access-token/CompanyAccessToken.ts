@@ -1,5 +1,5 @@
-import {CompanyAccessLevel} from '../company-access/CompanyAccess'
-import {Id} from '../../model'
+import { Id } from '../../model'
+import { CompanyAccessLevel } from '../company-access/CompanyAccess'
 
 export interface CompanyAccessToken {
   id: Id
@@ -7,4 +7,8 @@ export interface CompanyAccessToken {
   emailedTo?: string
   expirationDate: Date
   token?: string
+}
+
+export function getCompanyAccessTokenKind(token: CompanyAccessToken) {
+  return token.emailedTo ? 'email' : 'postal'
 }

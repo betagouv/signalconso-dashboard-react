@@ -1,4 +1,4 @@
-import React, {useEffect, useRef} from 'react'
+import React, { useEffect, useRef } from 'react'
 
 /**
  * Use setTimeout with Hooks in a declarative way.
@@ -6,7 +6,10 @@ import React, {useEffect, useRef} from 'react'
  * @see https://stackoverflow.com/a/59274757/3723993
  * @see https://overreacted.io/making-setinterval-declarative-with-react-hooks/
  */
-export const useTimeout = (callback: React.EffectCallback, delay: number | null): React.MutableRefObject<number | null> => {
+export const useTimeout = (
+  callback: React.EffectCallback,
+  delay: number | null,
+): React.MutableRefObject<number | null> => {
   const timeoutRef = useRef<number | null>(null)
   const callbackRef = useRef(callback)
 

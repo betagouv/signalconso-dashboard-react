@@ -1,106 +1,125 @@
-import {Box, Checkbox, Icon, Tooltip} from '@mui/material'
-import {SyntheticEvent, useEffect} from 'react'
-import {Link} from 'react-router-dom'
-import {Fender, IconBtn, Txt} from '../../alexlibs/mui-extension'
-import {useSetState} from '../../alexlibs/react-hooks-lib'
-import {usePersistentState} from '../../alexlibs/react-persistent-state'
-import {EntityIcon} from '../../core/EntityIcon'
-import {useCompaniesContext} from '../../core/context/CompaniesContext'
-import {useI18n} from '../../core/i18n'
-import {Id} from '../../core/model'
-import {siteMap} from '../../core/siteMap'
-import {styleUtils, sxUtils} from '../../core/theme'
-import {useToast} from '../../core/toast'
-import {AddressComponent} from '../../shared/Address'
-import {ScButton} from '../../shared/Button'
-import {ScDialog} from '../../shared/ScDialog'
-import {Datatable} from '../../shared/Datatable/Datatable'
-import {DatatableToolbar} from '../../shared/Datatable/DatatableToolbar'
-import {Panel} from '../../shared/Panel'
+import { Box, Checkbox, Icon, Tooltip } from '@mui/material'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { SyntheticEvent } from 'react'
+import { Link } from 'react-router-dom'
+import { Fender, IconBtn, Txt } from '../../alexlibs/mui-extension'
+import { useSetState } from '../../alexlibs/react-hooks-lib'
+import { EntityIcon } from '../../core/EntityIcon'
+import { useApiContext } from '../../core/context/ApiContext'
+import { useI18n } from '../../core/i18n'
+import { Id } from '../../core/model'
+import {
+  CompanyToActivateSearchQueryKeys,
+  useCompanyToActivateSearchQuery,
+} from '../../core/queryhooks/companyQueryHooks'
+import { siteMap } from '../../core/siteMap'
+import { styleUtils, sxUtils } from '../../core/theme'
+import { AddressComponent } from '../../shared/Address'
+import { ScButton } from '../../shared/Button'
+import { Datatable } from '../../shared/Datatable/Datatable'
+import { DatatableToolbar } from '../../shared/Datatable/DatatableToolbar'
+import { ScDialog } from '../../shared/ScDialog'
 
 export const CompaniesToActivate = () => {
-  const {m, formatDate} = useI18n()
-  const _companies = useCompaniesContext()
-  const _companiesToActivate = _companies.toActivate
+  const { m, formatDate } = useI18n()
+  const { api } = useApiContext()
+  const queryClient = useQueryClient()
+  const _companiesToActivate = useCompanyToActivateSearchQuery()
+  const _confirmCompaniesPosted = useMutation({
+    mutationFn: api.secured.company.confirmCompaniesPosted,
+    onSuccess: () =>
+      queryClient
+        .invalidateQueries({ queryKey: CompanyToActivateSearchQueryKeys })
+        .then(unselectAll),
+  })
+  const _downloadActivationDocument = useMutation({
+    mutationFn: api.secured.company.downloadActivationDocument,
+  })
 
-  const [selectedCompanies, setSelectedCompanies] = usePersistentState<string[]>([], 'CompaniesToActivate')
-  const selectedCompaniesSet = useSetState(selectedCompanies)
-  const {toastError, toastErrorIfDefined} = useToast()
-
-  useEffect(() => {
-    _companiesToActivate.fetch()
-  }, [])
-
-  useEffect(() => {
-    toastErrorIfDefined(_companiesToActivate.error)
-  }, [_companiesToActivate.error])
+  const selectedCompaniesSet = useSetState<string>([])
 
   const toggleSelectedCompany = (companyId: Id) => {
-    selectedCompaniesSet.has(companyId) ? selectedCompaniesSet.delete(companyId) : selectedCompaniesSet.add(companyId)
-    setSelectedCompanies(selectedCompaniesSet.toArray())
+    selectedCompaniesSet.has(companyId)
+      ? selectedCompaniesSet.delete(companyId)
+      : selectedCompaniesSet.add(companyId)
   }
 
-  const allChecked = selectedCompaniesSet.size === (_companiesToActivate.list?.entities.length ?? 0)
+  const allChecked =
+    selectedCompaniesSet.size ===
+    (_companiesToActivate.result.data?.entities.length ?? 0)
 
   const selectAll = () => {
     if (selectedCompaniesSet.size === 0 && !allChecked)
-      selectedCompaniesSet.reset(_companiesToActivate.list?.entities.map(_ => _.company.id))
+      selectedCompaniesSet.reset(
+        _companiesToActivate.result.data?.entities.map((_) => _.company.id),
+      )
     else selectedCompaniesSet.clear()
-    setSelectedCompanies(selectedCompaniesSet.toArray())
   }
 
   const unselectAll = () => {
     selectedCompaniesSet.clear()
-    setSelectedCompanies(selectedCompaniesSet.toArray())
   }
 
-  const confirmCompaniesPosted = (event: SyntheticEvent<any>, closeDialog: () => void) => {
-    _companies.confirmCompaniesPosted
-      .fetch({}, selectedCompaniesSet.toArray())
-      .then(() => {
-        _companiesToActivate.fetch({clean: false})
-      })
-      .then(unselectAll)
-      .catch(toastError)
+  const confirmCompaniesPosted = (
+    event: SyntheticEvent<any>,
+    closeDialog: () => void,
+  ) => {
+    _confirmCompaniesPosted
+      .mutateAsync(selectedCompaniesSet.toArray())
       .finally(closeDialog)
   }
 
   return (
-    <Panel sx={{overflow: 'visible'}}>
-      <Box sx={{p: 2}}>
-        <Txt color="default">
-          {m.companiesToActivateDesc}{' '}
-          <Txt color="hint" italic>
-            {m.companiesToActivateDescDetail}
-          </Txt>
-        </Txt>
-      </Box>
+    <>
       <Datatable
         id="companiestoactivate"
-        header={
+        superheader={
+          <p>
+            {m.companiesToActivateDesc}{' '}
+            <span className="text-gray-500 italic">
+              {m.companiesToActivateDescDetail}
+            </span>
+          </p>
+        }
+        headerMain={
           <DatatableToolbar
             onClear={selectedCompaniesSet.clear}
-            open={!_companiesToActivate.fetching && selectedCompaniesSet.size > 0}
+            open={
+              !_companiesToActivate.result.isFetching &&
+              selectedCompaniesSet.size > 0
+            }
             actions={
               <>
                 <ScButton
-                  disabled={_companiesToActivate.fetching || selectedCompaniesSet.size === 0}
-                  loading={_companies.downloadActivationDocument.loading}
+                  disabled={
+                    _companiesToActivate.result.isFetching ||
+                    selectedCompaniesSet.size === 0
+                  }
+                  loading={_downloadActivationDocument.isPending}
                   color="primary"
                   variant="outlined"
                   icon="file_download"
-                  sx={{mr: 1}}
+                  sx={{ mr: 1 }}
                   onClick={() =>
-                    _companies.downloadActivationDocument.fetch({}, selectedCompaniesSet.toArray()).catch(toastError)
+                    _downloadActivationDocument.mutate(
+                      selectedCompaniesSet.toArray(),
+                    )
                   }
                 >
                   {m.downloadNotice}
                 </ScButton>
-                <ScDialog title={m.validateLetterSentTitle} content={m.validateLetterSentDesc} onConfirm={confirmCompaniesPosted}>
+                <ScDialog
+                  title={m.validateLetterSentTitle}
+                  content={m.validateLetterSentDesc}
+                  onConfirm={confirmCompaniesPosted}
+                >
                   <ScButton
-                    disabled={_companiesToActivate.fetching || selectedCompaniesSet.size === 0}
-                    loading={_companies.confirmCompaniesPosted.loading}
-                    sx={{mr: 1}}
+                    disabled={
+                      _companiesToActivate.result.isFetching ||
+                      selectedCompaniesSet.size === 0
+                    }
+                    loading={_confirmCompaniesPosted.isPending}
+                    sx={{ mr: 1 }}
                     color="error"
                     variant="contained"
                     icon="check_circle"
@@ -111,51 +130,71 @@ export const CompaniesToActivate = () => {
               </>
             }
           >
-            <Txt bold>{selectedCompaniesSet.size}</Txt>&nbsp;{m.selectedCompanies}
+            <Txt bold>{selectedCompaniesSet.size}</Txt>&nbsp;
+            {m.selectedCompanies}
           </DatatableToolbar>
         }
-        loading={_companiesToActivate.fetching}
-        data={_companiesToActivate.list?.entities}
+        loading={_companiesToActivate.result.isFetching}
+        data={_companiesToActivate.result.data?.entities}
         paginate={{
           offset: _companiesToActivate.filters.offset,
           limit: _companiesToActivate.filters.limit,
-          onPaginationChange: pagination => _companiesToActivate.updateFilters(prev => ({...prev, ...pagination})),
+          onPaginationChange: (pagination) =>
+            _companiesToActivate.updateFilters((prev) => ({
+              ...prev,
+              ...pagination,
+            })),
         }}
-        total={_companiesToActivate.list?.totalCount}
-        getRenderRowKey={_ => _.company.id}
+        total={_companiesToActivate.result.data?.totalCount}
+        getRenderRowKey={(_) => _.company.id}
         showColumnsToggle={true}
-        rowsPerPageOptions={[5, 10, 25, 100, 250]}
+        rowsPerPageExtraOptions={[250]}
         columns={[
           {
             head: (
               <Checkbox
                 indeterminate={!allChecked && selectedCompaniesSet.size > 0}
                 checked={allChecked}
-                disabled={_companiesToActivate.fetching}
+                disabled={_companiesToActivate.result.isFetching}
                 onClick={selectAll}
               />
             ),
             alwaysVisible: true,
             id: 'select',
-            render: _ => (
-              <Checkbox checked={selectedCompaniesSet.has(_.company.id)} onClick={() => toggleSelectedCompany(_.company.id)} />
+            render: (_) => (
+              <Checkbox
+                checked={selectedCompaniesSet.has(_.company.id)}
+                onClick={() => toggleSelectedCompany(_.company.id)}
+              />
             ),
           },
           {
             id: 'siret',
             head: m.name,
-            sx: _ => ({
+            sx: (_) => ({
               lineHeight: 1.4,
               maxWidth: 390,
             }),
-            render: _ => (
+            render: (_) => (
               <Tooltip title={_.company.name}>
                 <span>
-                  <Box component="span" sx={{marginBottom: '-1px', fontWeight: t => t.typography.fontWeightBold}}>
+                  <Box
+                    component="span"
+                    sx={{
+                      marginBottom: '-1px',
+                      fontWeight: (t) => t.typography.fontWeightBold,
+                    }}
+                  >
                     {_.company.name}
                   </Box>
                   <br />
-                  <Box component="span" sx={{fontSize: t => styleUtils(t).fontSize.small, color: t => t.palette.text.disabled}}>
+                  <Box
+                    component="span"
+                    sx={{
+                      fontSize: (t) => styleUtils(t).fontSize.small,
+                      color: (t) => t.palette.text.disabled,
+                    }}
+                  >
                     {_.company.siret}
                   </Box>
                 </span>
@@ -165,15 +204,15 @@ export const CompaniesToActivate = () => {
           {
             head: m.address,
             id: 'address',
-            sx: _ => ({
+            sx: (_) => ({
               pt: 0.5,
               pb: 0.5,
-              fontSize: t => styleUtils(t).fontSize.small,
-              color: t => t.palette.text.secondary,
+              fontSize: (t) => styleUtils(t).fontSize.small,
+              color: (t) => t.palette.text.secondary,
               maxWidth: 300,
               ...sxUtils.truncate,
             }),
-            render: _ => (
+            render: (_) => (
               <Tooltip title={<AddressComponent address={_.company.address} />}>
                 <span>
                   <AddressComponent address={_.company.address} />
@@ -184,20 +223,26 @@ export const CompaniesToActivate = () => {
           {
             head: m.created_at,
             id: 'tokenCreation',
-            render: _ => <>{formatDate(_.tokenCreation)}</>,
+            render: (_) => <>{formatDate(_.tokenCreation)}</>,
           },
           {
             head: m.lastNotice,
             id: 'lastNotice',
-            render: _ => <>{formatDate(_.lastNotice)}</>,
+            render: (_) => <>{formatDate(_.lastNotice)}</>,
           },
           {
             id: 'actions',
-            sx: _ => sxUtils.tdActions,
+            sx: (_) => sxUtils.tdActions,
             stickyEnd: true,
-            render: _ => (
+            render: (_) => (
               <>
-                <Link target="_blank" to={siteMap.logged.reports({hasCompany: true, siretSirenList: [_.company.siret]})}>
+                <Link
+                  target="_blank"
+                  to={siteMap.logged.reports({
+                    hasCompany: true,
+                    siretSirenList: [_.company.siret],
+                  })}
+                >
                   <Tooltip title={m.reports}>
                     <IconBtn color="primary">
                       <Icon>chevron_right</Icon>
@@ -208,8 +253,10 @@ export const CompaniesToActivate = () => {
             ),
           },
         ]}
-        renderEmptyState={<Fender title={m.noCompanyFound} icon={EntityIcon.company} />}
+        renderEmptyState={
+          <Fender title={m.noCompanyFound} icon={EntityIcon.company} />
+        }
       />
-    </Panel>
+    </>
   )
 }

@@ -1,4 +1,4 @@
-import {Id} from '../../model'
+import { Id } from '../../model'
 
 export interface BarcodeProduct {
   id: Id
@@ -9,4 +9,5 @@ export interface BarcodeProduct {
   packaging?: string
   existOnOpenFoodFacts: boolean
   existOnOpenBeautyFacts: boolean
+  existOnGS1: boolean
 }

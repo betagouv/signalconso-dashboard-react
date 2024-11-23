@@ -1,57 +1,63 @@
-import {CenteredContent} from '../../shared/CenteredContent'
-import {Page} from '../../shared/Page'
-import {useForm} from 'react-hook-form'
-import {Panel, PanelBody, PanelHead} from '../../shared/Panel'
-import {ScInputPassword} from '../../shared/ScInputPassword'
-import React from 'react'
-import {useI18n} from '../../core/i18n'
-import {PanelFoot} from '../../shared/Panel/PanelFoot'
-import {ScButton} from '../../shared/Button'
-import {useHistory, useParams} from 'react-router'
-import {useAsync} from '../../alexlibs/react-hooks-lib'
-import {HelpContactInfo} from '../../shared/HelpContactInfo'
-import {AuthenticationEventActions, EventCategories, Matomo} from '../../core/plugins/Matomo'
-import {useToast} from '../../core/toast'
-import {siteMap} from '../../core/siteMap'
-import {layoutConfig} from '../../core/Layout'
-import {Id} from '../../core/model'
-import {fnSwitch} from '../../alexlibs/ts-utils'
-import {AlertContactSupport} from 'feature/Login/loggedOutComponents'
-import {PasswordRequirementsDesc} from 'shared/PasswordRequirementsDesc'
-import {validatePasswordComplexity} from 'core/helper/passwordComplexity'
+import { useMutation } from '@tanstack/react-query'
+import { publicApiSdk } from 'core/apiSdkInstances'
+import { validatePasswordComplexity } from 'core/helper/passwordComplexity'
+import { AlertContactSupport } from 'feature/Login/loggedOutComponents'
+import { useForm } from 'react-hook-form'
+import { useNavigate, useParams } from 'react-router'
+import { PasswordRequirementsDesc } from 'shared/PasswordRequirementsDesc'
+import { fnSwitch } from '../../alexlibs/ts-utils'
+import { useToast } from '../../core/context/toastContext'
+import { useI18n } from '../../core/i18n'
+import { Id } from '../../core/model'
+import {
+  AuthenticationEventActions,
+  EventCategories,
+  Matomo,
+} from '../../core/plugins/Matomo'
+import { siteMap } from '../../core/siteMap'
+import { ScButton } from '../../shared/Button'
+import { CenteredContent } from '../../shared/CenteredContent'
+import { ScInputPassword } from '../../shared/ScInputPassword'
 
 interface Form {
   newPassword: string
   newPasswordConfirmation: string
 }
 
-interface Props {
-  onResetPassword: (password: string, token: Id) => Promise<any>
-}
-
-export const ResetPassword = ({onResetPassword}: Props) => {
-  const {m} = useI18n()
-  const {token} = useParams<{token: Id}>()
-  const _resetPassword = useAsync(onResetPassword)
-  const history = useHistory()
-  const {toastError, toastSuccess} = useToast()
+export const ResetPassword = () => {
+  const { m } = useI18n()
+  const { token } = useParams<{ token: Id }>()
+  const _resetPassword = useMutation({
+    mutationFn: (params: { password: string; token: string }) =>
+      publicApiSdk.authenticate.resetPassword(params.password, params.token),
+  })
+  const history = useNavigate()
+  const { toastError, toastSuccess } = useToast()
   const {
     register,
     handleSubmit,
     getValues,
     reset,
-    formState: {errors, isValid},
+    formState: { errors },
   } = useForm<Form>()
 
   const resetPassword = (form: Form) => {
+    if (typeof token === 'undefined') {
+      toastError({ message: 'Token invalide' })
+      return
+    }
+
     _resetPassword
-      .call(form.newPassword, token)
+      .mutateAsync({ password: form.newPassword, token })
       .then(() => {
         toastSuccess(m.resetPasswordSuccess)
-        setTimeout(() => history.push(siteMap.loggedout.login), 400)
-        Matomo.trackEvent(EventCategories.account, AuthenticationEventActions.resetPasswordSuccess)
+        setTimeout(() => history(siteMap.loggedout.login), 400)
+        Matomo.trackEvent(
+          EventCategories.account,
+          AuthenticationEventActions.resetPasswordSuccess,
+        )
       })
-      .catch(err => {
+      .catch((err) => {
         const errorMessage = fnSwitch(
           err.code,
           {
@@ -59,9 +65,12 @@ export const ResetPassword = ({onResetPassword}: Props) => {
           },
           () => undefined,
         )
-        toastError({message: errorMessage})
+        toastError({ message: errorMessage })
         reset()
-        Matomo.trackEvent(EventCategories.account, AuthenticationEventActions.resetPasswordFail)
+        Matomo.trackEvent(
+          EventCategories.account,
+          AuthenticationEventActions.resetPasswordFail,
+        )
       })
   }
 
@@ -77,7 +86,7 @@ export const ResetPassword = ({onResetPassword}: Props) => {
             fullWidth
             label={m.newPassword}
             {...register('newPassword', {
-              required: {value: true, message: m.required},
+              required: { value: true, message: m.required },
               validate: (value: string) => {
                 const complexityMessage = validatePasswordComplexity(value)
                 if (complexityMessage) {
@@ -92,12 +101,18 @@ export const ResetPassword = ({onResetPassword}: Props) => {
             fullWidth
             label={m.newPasswordConfirmation}
             {...register('newPasswordConfirmation', {
-              required: {value: true, message: m.required},
-              validate: value => value === getValues().newPassword || m.passwordDoesntMatch,
+              required: { value: true, message: m.required },
+              validate: (value) =>
+                value === getValues().newPassword || m.passwordDoesntMatch,
             })}
           />
           <div className="flex justify-center mb-4">
-            <ScButton variant="contained" color="primary" type="submit" size="large">
+            <ScButton
+              variant="contained"
+              color="primary"
+              type="submit"
+              size="large"
+            >
               {m.validate}
             </ScButton>
           </div>

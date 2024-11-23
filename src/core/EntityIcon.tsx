@@ -8,4 +8,8 @@ export class EntityIcon {
   static readonly user = 'person'
   static readonly subscription = 'subscriptions'
   static readonly export = 'file_download'
+  static readonly thumbUp = 'thumb_up'
+  static readonly cancel = 'cancel'
+  static readonly check_circle = 'check_circle'
+  static readonly checklist = 'checklist'
 }

@@ -1,8 +1,13 @@
-import * as React from 'react'
-import {CSSProperties, ReactNode, useState} from 'react'
-import {Box, BoxProps, darken, Icon, IconButton} from '@mui/material'
-import {usePersistentState} from '../react-persistent-state'
-import {colorBlueFrance, colorError, colorInfo, colorSuccess, colorWarning} from './color'
+import { Box, BoxProps, darken, Icon, IconButton } from '@mui/material'
+import { CSSProperties, ReactNode, useState } from 'react'
+import { usePersistentState } from '../react-persistent-state'
+import {
+  colorBlueFrance,
+  colorError,
+  colorInfo,
+  colorSuccess,
+  colorWarning,
+} from './color'
 
 const height = (dense?: boolean) => (dense ? 44 : 52)
 
@@ -10,23 +15,38 @@ interface AlertProps extends BoxProps {
   style?: CSSProperties
   type: 'info' | 'error' | 'warning' | 'success'
   icon?: string
-  hidden?: boolean
   deletable?: boolean
-  persistentDelete?: boolean
+  // if an id is set, the deletion is persisted in local storage
+  // the id is used to choose the local storage key
+  persistentDeleteId?: string
   action?: ReactNode
   dense?: boolean
   gutterTop?: boolean
   gutterBottom?: boolean
 }
 
+function useIsVisible(
+  persistentDeleteId: string | undefined,
+): [boolean, (_: boolean) => void] {
+  const regularState = useState<boolean>(true)
+  const persistedState = usePersistentState<boolean>(
+    true,
+    persistentDeleteId ?? '',
+  )
+  if (!persistentDeleteId) {
+    return regularState
+  }
+  const [persistedIsVisible, persistedSetIsVisible] = persistedState
+  return [persistedIsVisible, persistedSetIsVisible]
+}
+
 export const Alert = ({
   type,
   dense,
-  hidden,
   icon,
   action,
   deletable,
-  persistentDelete,
+  persistentDeleteId,
   sx,
   gutterTop,
   gutterBottom,
@@ -34,8 +54,7 @@ export const Alert = ({
   dangerouslySetInnerHTML,
   ...props
 }: AlertProps) => {
-  const [isPersistentVisible, setPersistentIsVisible] = usePersistentState<boolean>(true, props.id || 'alert')
-  const [isVisible, setIsVisible] = useState<boolean>(true)
+  const [isVisible, setIsVisible] = useIsVisible(persistentDeleteId)
 
   const getIconFromType = () => {
     switch (type) {
@@ -62,7 +81,7 @@ export const Alert = ({
         //   paddingLeft: t.spacing(3),
         //   paddingRight: t.spacing(3),
         // },
-        transition: t => t.transitions.create('all'),
+        transition: (t) => t.transitions.create('all'),
         // @ts-ignore
         minHeight: height(props.dense),
         display: 'flex',
@@ -90,7 +109,7 @@ export const Alert = ({
             color: darken(colorWarning, 0.1),
           },
         }[type],
-        ...((hidden || !isVisible || (persistentDelete && !isPersistentVisible)) && {
+        ...(!isVisible && {
           minHeight: '0 !important',
           height: '0 !important',
           opacity: '0 !important',
@@ -141,7 +160,6 @@ export const Alert = ({
               <IconButton
                 onClick={() => {
                   setIsVisible(false)
-                  if (persistentDelete) setPersistentIsVisible(false)
                 }}
                 size="large"
               >

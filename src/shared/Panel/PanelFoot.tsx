@@ -1,13 +1,20 @@
 import * as React from 'react'
-import {CardActions, CardActionsProps} from '@mui/material'
+import { CardActions, CardActionsProps } from '@mui/material'
 
-export interface PanelFootProps extends CardActionsProps {
+interface PanelFootProps extends CardActionsProps {
   alignEnd?: boolean
   spaceBetween?: boolean
   border?: boolean
 }
 
-export const PanelFoot = ({children, alignEnd, spaceBetween, border, sx, ...props}: PanelFootProps) => {
+export const PanelFoot = ({
+  children,
+  alignEnd,
+  spaceBetween,
+  border,
+  sx,
+  ...props
+}: PanelFootProps) => {
   return (
     <CardActions
       sx={{
@@ -26,7 +33,7 @@ export const PanelFoot = ({children, alignEnd, spaceBetween, border, sx, ...prop
         }),
         ...(border && {
           pt: 1,
-          borderTop: t => '1px solid ' + t.palette.divider,
+          borderTop: (t) => '1px solid ' + t.palette.divider,
         }),
         ...sx,
       }}

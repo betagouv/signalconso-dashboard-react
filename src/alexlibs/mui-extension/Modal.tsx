@@ -1,8 +1,18 @@
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogProps,
+  DialogTitle,
+  LinearProgress,
+  PaperProps,
+} from '@mui/material'
 import * as React from 'react'
-import {EventHandler, ReactElement, ReactNode, SyntheticEvent, useState} from 'react'
-import {Button, Dialog, DialogActions, DialogContent, DialogProps, DialogTitle, LinearProgress, PaperProps} from '@mui/material'
+import { ReactElement, ReactNode, SyntheticEvent, useState } from 'react'
 
-export interface ModalProps extends Omit<DialogProps, 'children' | 'onClick' | 'open'> {
+export interface ModalProps
+  extends Omit<DialogProps, 'children' | 'onClick' | 'open' | 'content'> {
   disabled?: boolean
   title?: string
   confirmLabel?: string
@@ -13,13 +23,10 @@ export interface ModalProps extends Omit<DialogProps, 'children' | 'onClick' | '
   onClose?: () => void
   onConfirm?: (event: SyntheticEvent<any>, close: () => void) => void
   confirmDisabled?: boolean
-  onClick?: EventHandler<SyntheticEvent<any>>
   PaperProps?: Partial<PaperProps>
   loading?: boolean
   overrideActions?: (_: () => void) => ReactNode
 }
-
-const enterKeyCode = 13
 
 export const Modal = ({
   children,
@@ -28,7 +35,6 @@ export const Modal = ({
   confirmLabel,
   cancelLabel,
   onConfirm,
-  onClick,
   onOpen,
   onClose,
   confirmDisabled,
@@ -53,18 +59,11 @@ export const Modal = ({
     if (onConfirm) onConfirm(event, close)
   }
 
-  const handleKeypress = (e: any) => {
-    if (e.keyCode === enterKeyCode) {
-      confirm(e)
-    }
-  }
-
   return (
     <>
       {React.cloneElement(children, {
-        onClick: (event: any) => {
+        onClick: (event: Event) => {
           if (children.props.onClick) children.props.onClick(event)
-          if (onClick) onClick(event)
           open()
         },
       })}
@@ -80,7 +79,9 @@ export const Modal = ({
           />
         )}
         <DialogTitle>{title}</DialogTitle>
-        <DialogContent>{typeof content === 'function' ? content(close) : content}</DialogContent>
+        <DialogContent>
+          {typeof content === 'function' ? content(close) : content}
+        </DialogContent>
         <DialogActions>
           {overrideActions ? (
             overrideActions(close)
@@ -90,7 +91,12 @@ export const Modal = ({
                 {cancelLabel || 'Cancel'}
               </Button>
               {onConfirm && (
-                <Button color="primary" onClick={confirm} disabled={confirmDisabled}>
+                <Button
+                  color="primary"
+                  variant={'contained'}
+                  onClick={confirm}
+                  disabled={confirmDisabled}
+                >
                   {confirmLabel || 'Confirm'}
                 </Button>
               )}

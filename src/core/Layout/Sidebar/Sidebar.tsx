@@ -1,14 +1,9 @@
-import * as React from 'react'
-import {useEffect} from 'react'
-import {Box, BoxProps, SwipeableDrawer, Switch} from '@mui/material'
-import {useLayoutContext} from '../LayoutContext'
-import {layoutConfig} from '../index'
-import {useI18n} from '../../i18n'
-import {SidebarFooter} from './SidebarFooter'
-import {SidebarItem} from './SidebarItem'
-import {SidebarBody} from './SidebarBody'
-import {SidebarHeader} from './SidebarHeader'
-import {stopPropagation} from '../../helper'
+import { Box, BoxProps, SwipeableDrawer } from '@mui/material'
+import { useEffect } from 'react'
+import { useLayoutContext } from '../../context/LayoutContext'
+import { layoutConfig } from '../layoutConfig'
+import { SidebarBody } from './SidebarBody'
+import { SidebarHeader } from './SidebarHeader'
 
 const sidebarId = 'signalconso-sidebar-id'
 
@@ -22,26 +17,26 @@ const stickSidebarToHeader = () => {
     sidebar = document.getElementById(sidebarId)
   }
   if (sidebar) {
-    sidebar.style.top = Math.max(layoutConfig.headerHeight - window.scrollY, 0) + 'px'
+    sidebar.style.top =
+      Math.max(layoutConfig.headerHeight - window.scrollY, 0) + 'px'
   }
 }
 
-export const Sidebar = ({children, sx, ...props}: BoxProps) => {
-  const {isMobileWidth, sidebarOpen, setSidebarOpen, sidebarPinned, setSidebarPinned} = useLayoutContext()
-  const {m} = useI18n()
+export const Sidebar = ({ children, sx, ...props }: BoxProps) => {
+  const { isMobileWidth, sidebarOpen, setSidebarOpen } = useLayoutContext()
 
   useEffect(() => {
     // Element has been re-created by SwipeableDrawer, thus variable point to nothing.
     sidebar = null
     stickSidebarToHeader()
-    setSidebarOpen(_ => !isMobileWidth)
-  }, [isMobileWidth, sidebarPinned])
+    setSidebarOpen((_) => !isMobileWidth)
+  }, [isMobileWidth])
 
   useEffect(() => {
     window.addEventListener('scroll', stickSidebarToHeader)
   }, [])
 
-  const isTemporary = isMobileWidth || !sidebarPinned
+  const isTemporary = isMobileWidth
 
   return (
     <SwipeableDrawer
@@ -64,11 +59,11 @@ export const Sidebar = ({children, sx, ...props}: BoxProps) => {
     >
       <Box
         sx={{
-          width: layoutConfig.sidebarWith,
+          width: layoutConfig.sidebarWidth,
           height: '100%',
-          transition: t => t.transitions.create('width'),
+          transition: (t) => t.transitions.create('width'),
           overflowY: 'auto',
-          background: t => t.palette.background.default,
+          background: (t) => t.palette.background.default,
           display: 'flex',
           flexDirection: 'column',
           borderRadius: 0,
@@ -78,14 +73,6 @@ export const Sidebar = ({children, sx, ...props}: BoxProps) => {
       >
         <SidebarHeader hidden={!isTemporary} />
         <SidebarBody>{children}</SidebarBody>
-        {!isMobileWidth && (
-          <SidebarFooter>
-            <SidebarItem onClick={stopPropagation(() => setSidebarPinned(_ => !_))} icon="push_pin" sx={{mr: 0, pr: 0}}>
-              {m.pin}
-              <Switch color="primary" sx={{ml: 'auto'}} checked={sidebarPinned} onChange={() => setSidebarPinned(_ => !_)} />
-            </SidebarItem>
-          </SidebarFooter>
-        )}
       </Box>
     </SwipeableDrawer>
   )

@@ -1,11 +1,10 @@
+import { Icon, InputAdornment, TextField } from '@mui/material'
 import * as React from 'react'
-import {CSSProperties, forwardRef, useEffect} from 'react'
-import {Icon, InputAdornment, TextField} from '@mui/material'
-import {SelectTagsMenu, SelectTagsMenuValues} from './SelectTagsMenu'
-import {Enum} from '../../alexlibs/ts-utils'
-import {useMemoFn} from '../../alexlibs/react-hooks-lib'
+import { CSSProperties, forwardRef, useEffect } from 'react'
+import { useMemoFn } from '../../alexlibs/react-hooks-lib'
+import { SelectTagsMenu, SelectTagsMenuValues } from './SelectTagsMenu'
 
-export interface SelectDepartmentsProps {
+interface SelectDepartmentsProps {
   value?: SelectTagsMenuValues
   onChange?: (_: SelectTagsMenuValues) => void
   placeholder?: string
@@ -19,7 +18,18 @@ export interface SelectDepartmentsProps {
 }
 
 export const SelectTags = forwardRef(
-  ({value, readonly, onChange, selectAllLabel, label, disabled, ...props}: SelectDepartmentsProps, ref: any) => {
+  (
+    {
+      value,
+      readonly,
+      onChange,
+      selectAllLabel,
+      label,
+      disabled,
+      ...props
+    }: SelectDepartmentsProps,
+    ref: React.Ref<HTMLDivElement>,
+  ) => {
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
     let $input: HTMLElement | undefined = undefined
 
@@ -35,10 +45,13 @@ export const SelectTags = forwardRef(
       setAnchorEl(null)
     }
 
-    const displayedValue = useMemoFn(value, v => {
-      const included = Enum.values(v).filter(_ => _ === 'included').length
-      const excluded = Enum.values(v).filter(_ => _ === 'excluded').length
-      return (included > 0 ? `+ (${included})  ` : ``) + (excluded > 0 ? ` - (${excluded})` : ``)
+    const displayedValue = useMemoFn(value, (v) => {
+      const included = Object.values(v).filter((_) => _ === 'included').length
+      const excluded = Object.values(v).filter((_) => _ === 'excluded').length
+      return (
+        (included > 0 ? `+ (${included})  ` : ``) +
+        (excluded > 0 ? ` - (${excluded})` : ``)
+      )
     })
 
     return (
@@ -62,7 +75,7 @@ export const SelectTags = forwardRef(
                 <Icon
                   sx={{
                     height: 20,
-                    color: t => t.palette.text.secondary,
+                    color: (t) => t.palette.text.secondary,
                     verticalAlign: 'top',
                   }}
                 >
@@ -73,10 +86,11 @@ export const SelectTags = forwardRef(
           }}
         />
         <SelectTagsMenu
+          onlyActive={false}
           anchorEl={anchorEl}
           open={!!anchorEl}
           onClose={close}
-          onChange={x => {
+          onChange={(x) => {
             onChange?.(x)
           }}
           value={value}

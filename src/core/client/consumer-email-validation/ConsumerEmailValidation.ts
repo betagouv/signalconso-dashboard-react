@@ -1,4 +1,4 @@
-import {Id, PaginatedSearch, ValidationRejectReason} from '../../model'
+import { Id, PaginatedSearch, ValidationRejectReason } from '../../model'
 
 export interface ConsumerEmailValidation {
   id: Id
@@ -8,6 +8,13 @@ export interface ConsumerEmailValidation {
   attempts: number
   lastAttempt?: Date
   lastValidationDate?: Date
+  validationStatus: EmailValidationStatus
+}
+
+export enum EmailValidationStatus {
+  Expired = 'Expired',
+  Valid = 'Valid',
+  Invalid = 'Invalid',
 }
 
 export interface ConsumerEmailValidationSearch extends PaginatedSearch {

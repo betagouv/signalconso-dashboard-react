@@ -1,47 +1,69 @@
-import React from 'react'
-import {Page, PageTitle} from '../../shared/Page'
-import {useI18n} from '../../core/i18n'
-import {Redirect, Route, Switch, useRouteMatch} from 'react-router-dom'
-import {siteMap} from '../../core/siteMap'
-import {PageTab, PageTabs} from '../../shared/Page/PageTabs'
-import {ReportedUnknownWebsites} from './ReportedUnknownWebsites'
-import {useLogin} from '../../core/context/LoginContext'
-import {WebsitesInvestigation} from './WebsitesInvestigation'
-import {config} from '../../conf/config'
+import { Navigate, Routes } from 'react-router'
+import { Route } from 'react-router-dom'
+import { useConnectedContext } from '../../core/context/ConnectedContext'
+import { useI18n } from '../../core/i18n'
+import { siteMap } from '../../core/siteMap'
+import { Page, PageTitle } from '../../shared/Page'
+import { PageTab, PageTabs } from '../../shared/Page/PageTabs'
+import { ReportedUnknownWebsites } from './ReportedUnknownWebsites'
+import { WebsitesInvestigation } from './WebsitesInvestigation'
 
 export const ReportedWebsites = () => {
-  const {m} = useI18n()
-  const {path} = useRouteMatch()
-  const {connectedUser} = useLogin()
-
-  const displayDropShipping: boolean = config.enable_feature_dropshipping === 1 || connectedUser.isAdmin
+  const { m } = useI18n() // Assuming this hook exists and provides translations
+  const { connectedUser } = useConnectedContext() // Assuming this hook provides user state
 
   return (
-    <Page size="xl">
-      {displayDropShipping ? (
+    <Page>
+      {connectedUser.isAdmin ? (
         <PageTitle>{m.reportedWebsites}</PageTitle>
       ) : (
         <PageTitle>{m.reportedUnknownWebsitesDGCCRF}</PageTitle>
       )}
 
-      {displayDropShipping ? (
+      {connectedUser.isAdmin && (
         <PageTabs>
-          <PageTab to={siteMap.logged.websitesInvestigation} label={m.websitesInvestigation} />
-          <PageTab to={siteMap.logged.reportedWebsites_unknown} label={m.reportedUnknownWebsites} />
+          <PageTab
+            to={siteMap.logged.reportedWebsites.investigation.value}
+            label={m.websitesInvestigation}
+          />
+          <PageTab
+            to={siteMap.logged.reportedWebsites.unknown.value}
+            label={m.reportedUnknownWebsites}
+          />
         </PageTabs>
-      ) : (
-        <></>
       )}
 
-      <Switch>
-        {displayDropShipping ? (
-          <Redirect exact from={path} to={siteMap.logged.websitesInvestigation} />
+      <Routes>
+        {connectedUser.isAdmin ? (
+          <Route
+            path="/*"
+            element={
+              <Navigate
+                replace
+                to={siteMap.logged.reportedWebsites.investigation.value}
+              />
+            }
+          />
         ) : (
-          <Redirect exact from={path} to={siteMap.logged.reportedWebsites_unknown} />
+          <Route
+            path="/*"
+            element={
+              <Navigate
+                replace
+                to={siteMap.logged.reportedWebsites.unknown.value}
+              />
+            }
+          />
         )}
-        <Route path={siteMap.logged.websitesInvestigation} component={WebsitesInvestigation} />
-        <Route path={siteMap.logged.reportedWebsites_unknown} component={ReportedUnknownWebsites} />
-      </Switch>
+        <Route
+          path={siteMap.logged.reportedWebsites.investigation.value}
+          element={<WebsitesInvestigation />}
+        />
+        <Route
+          path={siteMap.logged.reportedWebsites.unknown.value}
+          element={<ReportedUnknownWebsites />}
+        />
+      </Routes>
     </Page>
   )
 }

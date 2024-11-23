@@ -1,5 +1,5 @@
-import {useEffect, useMemo, useState} from 'react'
-import {debounce} from '../core/lodashNamedExport'
+import { useEffect, useMemo, useState } from 'react'
+import { debounce } from '../core/lodashNamedExport'
 
 interface DebouncedInputProps<V> {
   value?: V
@@ -9,7 +9,11 @@ interface DebouncedInputProps<V> {
 
 const debounceTime = 450
 
-export const DebouncedInput = <V>({value, onChange, children}: DebouncedInputProps<V>) => {
+export const DebouncedInput = <V>({
+  value,
+  onChange,
+  children,
+}: DebouncedInputProps<V>) => {
   const [innerValue, setInnerValue] = useState<V | undefined>(value)
 
   const debouncedOnChange = useMemo(() => {

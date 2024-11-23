@@ -1,4 +1,7 @@
-import {config} from 'conf/config'
+import { config } from 'conf/config'
+import { User } from '../client/user/User'
+
+const MATOMO_ENABLED = config.enableMatomo
 
 declare const _paq: any
 
@@ -15,21 +18,28 @@ export class Matomo {
     return true
   }
 
-  static readonly trackEvent = (category: EventCategories, action: AnalyticAction, name?: any, value?: any) => {
-    Matomo.push(['trackEvent', category, action, name, value])
+  static readonly trackEvent = (
+    category: EventCategories,
+    action: AnalyticAction,
+    name?: any,
+    value?: any,
+    user?: User,
+  ) => {
+    if (!user?.impersonator) {
+      Matomo.push(['trackEvent', category, action, name, value])
+    }
   }
 
-  static readonly trackPage = (path: string) => {
-    if (!Matomo.isAlreadyFired(path)) {
+  static readonly trackPage = (path: string, user: User) => {
+    if (!user.impersonator && !Matomo.isAlreadyFired(path)) {
       Matomo.push(['setCustomUrl', config.appBaseUrl + path])
       Matomo.push(['trackPageView'])
     }
   }
 
   private static readonly push = (args: any[]) => {
-    if (config.isDev) {
-      console.info('[Matomo]', args)
-    } else {
+    console.info('[Matomo]', ...args)
+    if (MATOMO_ENABLED) {
       try {
         _paq.push(args)
       } catch (e) {
@@ -44,46 +54,21 @@ export class Matomo {
 
 type AnalyticAction =
   | AuthenticationEventActions
-  | ReportEventActions
-  | DgccrfEventActions
-  | CompanySearchEventActions
-  | ContractualDisputeActions
   | AccountEventActions
   | AccessEventActions
-  | ConsumerShareReviewEventActions
   | StatisticsActions
+  | newsletter
 
 export enum EventCategories {
-  report = 'Signalement',
-  consumerReview = 'Avis consommateur',
   auth = 'Authentification',
   account = 'Compte utilisateur',
   companyAccess = "Accès de l'entreprise",
-  dgccrf = 'DGCCRF',
   statistics = 'Statistiques',
+  ProEventActions = 'Newsletter',
 }
 
-export enum DgccrfEventActions {
-  reportsSearch = 'Recherche de signalements',
-}
-
-export enum ReportEventActions {
-  information = "Consultation du détail d'un message d'information",
-}
-
-export enum CompanySearchEventActions {
-  search = 'Recherche',
-  select = 'Sélection dans la liste de résultats',
-}
-
-export enum ContractualDisputeActions {
-  consult = 'Consultation',
-}
-
-export enum ConsumerShareReviewEventActions {
-  twitter = 'Partage sur Twitter',
-  facebook = 'Partage sur Facebook',
-  servicePublicPlus = 'Partage sur Service-public.fr',
+export enum newsletter {
+  reportsClik = 'ClickNewsletterSubscribeButton',
 }
 
 export enum AuthenticationEventActions {
@@ -116,4 +101,30 @@ export enum StatisticsActions {
 export enum ActionResultNames {
   success = 'Succès',
   fail = 'Echec',
+}
+
+export function injectMatomoScript() {
+  if (MATOMO_ENABLED) {
+    var _paq = ((window as any)._paq = (window as any)._paq || [])
+    /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
+    _paq.push(['setDocumentTitle', document.domain + '/' + document.title])
+    _paq.push(['setCookieDomain', 'admin.signal.conso.gouv.fr'])
+    _paq.push(['setDomains', ['admin.signal.conso.gouv.fr']])
+    _paq.push(['trackPageView'])
+    _paq.push(['enableLinkTracking'])
+    _paq.push(['HeatmapSessionRecording::enable'])
+    ;(function () {
+      var u = 'https://stats.beta.gouv.fr/'
+      _paq.push(['setTrackerUrl', u + 'matomo.php'])
+      _paq.push(['setSiteId', '62'])
+      var d = document,
+        g = d.createElement('script'),
+        s = d.getElementsByTagName('script')[0]
+      g.async = true
+      g.src = u + 'matomo.js'
+      s.parentNode?.insertBefore(g, s)
+    })()
+  } else {
+    console.log('[Matomo] Injection of Matomo script disabled')
+  }
 }

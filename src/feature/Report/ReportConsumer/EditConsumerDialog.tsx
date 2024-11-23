@@ -1,11 +1,14 @@
-import {ReactElement} from 'react'
-import {useForm} from 'react-hook-form'
-import {Report, ReportConsumerUpdate} from '../../../core/client/report/Report'
-import {regexp} from '../../../core/helper/regexp'
-import {emptyStringToUndefined} from '../../../core/helper/utils'
-import {useI18n} from '../../../core/i18n'
-import {ScDialog} from '../../../shared/ScDialog'
-import {ScInput} from '../../../shared/ScInput'
+import { ReactElement } from 'react'
+import { useForm } from 'react-hook-form'
+import {
+  Report,
+  ReportConsumerUpdate,
+} from '../../../core/client/report/Report'
+import { regexp } from '../../../core/helper/regexp'
+import { emptyStringToUndefined } from '../../../core/helper/utils'
+import { useI18n } from '../../../core/i18n'
+import { ScDialog } from '../../../shared/ScDialog'
+import { ScInput } from '../../../shared/ScInput'
 
 interface Props {
   report: Report
@@ -19,24 +22,38 @@ type FormData = Omit<ReportConsumerUpdate, 'consumerReferenceNumber'> & {
 }
 
 function buildFormData(report: Report): FormData {
-  const {firstName, lastName, email, consumerReferenceNumber} = report
-  return {firstName, lastName, email, consumerReferenceNumber: consumerReferenceNumber ?? ''}
+  const { firstName, lastName, email, consumerReferenceNumber } = report
+  return {
+    firstName,
+    lastName,
+    email,
+    consumerReferenceNumber: consumerReferenceNumber ?? '',
+  }
 }
 
-function translateFormData({consumerReferenceNumber, ...rest}: FormData): ReportConsumerUpdate {
-  return {consumerReferenceNumber: emptyStringToUndefined(consumerReferenceNumber), ...rest}
+function translateFormData({
+  consumerReferenceNumber,
+  ...rest
+}: FormData): ReportConsumerUpdate {
+  return {
+    consumerReferenceNumber: emptyStringToUndefined(consumerReferenceNumber),
+    ...rest,
+  }
 }
 
-export const EditConsumerDialog = ({report, onChange, children}: Props) => {
-  const {m} = useI18n()
+export const EditConsumerDialog = ({ report, onChange, children }: Props) => {
+  const { m } = useI18n()
   const {
     register,
     getValues,
-    formState: {errors},
-  } = useForm<FormData>({mode: 'onChange', defaultValues: buildFormData(report)})
+    formState: { errors },
+  } = useForm<FormData>({
+    mode: 'onChange',
+    defaultValues: buildFormData(report),
+  })
   return (
     <ScDialog
-      PaperProps={{sx: {overflow: 'visible'}}}
+      PaperProps={{ sx: { overflow: 'visible' } }}
       title={m.editConsumer}
       maxWidth="xs"
       confirmLabel={m.edit}
@@ -53,7 +70,7 @@ export const EditConsumerDialog = ({report, onChange, children}: Props) => {
             error={!!errors.firstName}
             helperText={errors.firstName?.message ?? ' '}
             {...register('firstName', {
-              required: {value: true, message: m.required},
+              required: { value: true, message: m.required },
             })}
           />
 
@@ -63,7 +80,7 @@ export const EditConsumerDialog = ({report, onChange, children}: Props) => {
             error={!!errors.lastName}
             helperText={errors.lastName?.message ?? ' '}
             {...register('lastName', {
-              required: {value: true, message: m.required},
+              required: { value: true, message: m.required },
             })}
           />
 
@@ -73,8 +90,8 @@ export const EditConsumerDialog = ({report, onChange, children}: Props) => {
             error={!!errors.email}
             helperText={errors.email?.message ?? ' '}
             {...register('email', {
-              pattern: {value: regexp.email, message: m.invalidEmail},
-              required: {value: true, message: m.required},
+              pattern: { value: regexp.email, message: m.invalidEmail },
+              required: { value: true, message: m.required },
             })}
           />
 

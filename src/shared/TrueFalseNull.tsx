@@ -1,7 +1,7 @@
-import {BoxProps, Theme, ToggleButton, ToggleButtonGroup} from '@mui/material'
-import React, {forwardRef, ReactNode, useMemo} from 'react'
-import {useI18n} from '../core/i18n'
-import {SxProps} from '@mui/system'
+import { BoxProps, Theme, ToggleButton, ToggleButtonGroup } from '@mui/material'
+import { SxProps } from '@mui/system'
+import { forwardRef, ReactNode, Ref, useMemo } from 'react'
+import { useI18n } from '../core/i18n'
 
 export interface TrueFalseNullProps extends Omit<BoxProps, 'onChange'> {
   gutter?: boolean
@@ -24,47 +24,53 @@ const buttonStyle: SxProps<Theme> = {
   width: '100%',
 }
 
-export const TrueFalseNull = forwardRef(({gutter, value, onChange, label, sx, ...props}: TrueFalseNullProps, ref: any) => {
-  const {m} = useI18n()
-  const parsedValue = useMemo(() => {
-    if ([true, 'true'].includes(value as any)) return 'true'
-    if ([false, 'false'].includes(value as any)) return 'false'
-    return ''
-  }, [value])
+export const TrueFalseNull = forwardRef(
+  (
+    { gutter, value, onChange, label, sx, ...props }: TrueFalseNullProps,
+    ref: Ref<unknown>,
+  ) => {
+    const { m } = useI18n()
+    const parsedValue = useMemo(() => {
+      if ([true, 'true'].includes(value as any)) return 'true'
+      if ([false, 'false'].includes(value as any)) return 'false'
+      return ''
+    }, [value])
 
-  return (
-    <ToggleButtonGroup
-      {...props}
-      exclusive
-      sx={{
-        ...(gutter
-          ? {
-              mt: 1,
-              mb: 0.5,
-              display: 'block',
-            }
-          : {}),
-        ...sx,
-      }}
-      size="small"
-      color="primary"
-      ref={ref}
-      style={{flexDirection: 'row'}}
-      value={parsedValue}
-      onChange={(e, value: string | null) => {
-        const valueAsBoolean: boolean | null = value === 'true' ? true : value === 'false' ? false : null
-        onChange(valueAsBoolean)
-      }}
-    >
-      <ToggleButton sx={buttonStyle} value="true">
-        {label?.true ?? m.yes}
-      </ToggleButton>
-      <ToggleButton sx={buttonStyle} value="false">
-        {label?.false ?? m.no}
-      </ToggleButton>
-      <ToggleButton sx={buttonStyle} value="">
-        {label?.undefined ?? m.indifferent}
-      </ToggleButton>
-    </ToggleButtonGroup>
-  )
-})
+    return (
+      <ToggleButtonGroup
+        {...props}
+        exclusive
+        sx={{
+          ...(gutter
+            ? {
+                mt: 1,
+                mb: 0.5,
+                display: 'block',
+              }
+            : {}),
+          ...sx,
+        }}
+        size="small"
+        color="primary"
+        ref={ref}
+        style={{ flexDirection: 'row' }}
+        value={parsedValue}
+        onChange={(e, value: string | null) => {
+          const valueAsBoolean: boolean | null =
+            value === 'true' ? true : value === 'false' ? false : null
+          onChange(valueAsBoolean)
+        }}
+      >
+        <ToggleButton sx={buttonStyle} value="true">
+          {label?.true ?? m.yes}
+        </ToggleButton>
+        <ToggleButton sx={buttonStyle} value="false">
+          {label?.false ?? m.no}
+        </ToggleButton>
+        <ToggleButton sx={buttonStyle} value="">
+          {label?.undefined ?? m.indifferent}
+        </ToggleButton>
+      </ToggleButtonGroup>
+    )
+  },
+)

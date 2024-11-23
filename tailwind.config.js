@@ -6,6 +6,7 @@ module.exports = {
       colors: {
         scbluefrance: '#000091',
         scdarkblue: '#1e2b50',
+        sclightpurple: '#e3e3fd',
       },
     },
   },

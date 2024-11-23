@@ -1,65 +1,77 @@
-import {Panel, PanelBody} from '../../shared/Panel'
-import {Box} from '@mui/material'
-import {Txt} from '../../alexlibs/mui-extension'
-import {ReportFiles} from './File/ReportFiles'
-import React, {ReactNode} from 'react'
-import {useReportContext} from '../../core/context/ReportContext'
-import {useLogin} from '../../core/context/LoginContext'
-import {useI18n} from '../../core/i18n'
-import {Divider} from '../../shared/Divider'
-import {EventActionValues} from '../../core/client/event/Event'
-import {FileOrigin, UploadedFile} from '../../core/client/file/UploadedFile'
-import {Report} from '../../core/client/report/Report'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { EventActionValues, ReportAction } from '../../core/client/event/Event'
+import { FileOrigin, UploadedFile } from '../../core/client/file/UploadedFile'
+import { Report } from '../../core/client/report/Report'
+import { useConnectedContext } from '../../core/context/ConnectedContext'
+import { useI18n } from '../../core/i18n'
+import { Id } from '../../core/model'
+import { GetReportQueryKeys } from '../../core/queryhooks/reportQueryHooks'
+import { ReportFileDownloadAllButton } from './File/ReportFileDownloadAllButton'
+import { ReportFiles } from './File/ReportFiles'
 
-interface Props {
-  files?: UploadedFile[]
-  report: Report
-  children?: ReactNode
+export function ReportDetails({ report }: { report: Report }) {
+  return (
+    <div className="flex flex-col gap-2">
+      {report.details.map((detail, i) => (
+        <div key={i}>
+          <p className="font-bold text-base">
+            {detail.label.replace(/:$/, '')}
+          </p>
+          <p className="pl-4 whitespace-pre-line">{detail.value}</p>
+        </div>
+      ))}
+    </div>
+  )
 }
 
-export const ReportDescription = ({report, files, children}: Props) => {
-  const _report = useReportContext()
-  const {connectedUser} = useLogin()
-  const {m} = useI18n()
+export function ReportFilesFull({
+  files,
+  report,
+}: {
+  files: UploadedFile[] | undefined
+  report: Report
+}) {
+  const { m } = useI18n()
+  const { connectedUser, api: apiSdk } = useConnectedContext()
+  const queryClient = useQueryClient()
 
+  const postAction = useMutation({
+    mutationFn: (params: { id: Id; action: ReportAction }) =>
+      apiSdk.secured.reports.postAction(params.id, params.action),
+    onSuccess: () =>
+      queryClient.invalidateQueries({
+        queryKey: GetReportQueryKeys(report.id),
+      }),
+  })
   return (
-    <Panel>
-      <PanelBody>
-        {report.details.map((detail, i) => (
-          <Box key={i} sx={{mb: 1}}>
-            <Box
-              sx={{fontWeight: t => t.typography.fontWeightBold}}
-              dangerouslySetInnerHTML={{__html: detail.label.replace(/:$/, '')}}
+    <>
+      <div className="flex flex-row items-baseline">
+        <h2 className="font-bold">{m.attachedFiles}</h2>
+        {files &&
+          files.filter((_) => _.origin === FileOrigin.Consumer && _.isScanned)
+            .length > 1 && (
+            <ReportFileDownloadAllButton
+              report={report}
+              fileOrigin={FileOrigin.Consumer}
             />
-            <Box sx={{color: t => t.palette.text.secondary}} dangerouslySetInnerHTML={{__html: detail.value}} />
-          </Box>
-        ))}
-        <Divider margin />
-        <Txt bold block gutterBottom>
-          {m.attachedFiles}
-        </Txt>
-        <ReportFiles
-          hideAddBtn={!connectedUser.isAdmin}
-          files={files?.filter(_ => _.origin === FileOrigin.Consumer)}
-          reportId={report.id}
-          fileOrigin={FileOrigin.Consumer}
-          onNewFile={file => {
-            _report.postAction
-              .fetch({}, report.id, {
-                details: '',
-                fileIds: [file.id],
-                actionType: EventActionValues.ConsumerAttachments,
-              })
-              .then(() => _report.get.fetch({force: true, clean: false}, report.id))
-          }}
-        />
-        {children && (
-          <>
-            <Divider margin />
-            {children}
-          </>
-        )}
-      </PanelBody>
-    </Panel>
+          )}
+      </div>
+      <ReportFiles
+        hideAddBtn={!connectedUser.isAdmin}
+        files={files?.filter((_) => _.origin === FileOrigin.Consumer)}
+        reportId={report.id}
+        fileOrigin={FileOrigin.Consumer}
+        onNewFile={(file) => {
+          postAction.mutate({
+            id: report.id,
+            action: {
+              details: '',
+              fileIds: [file.id],
+              actionType: EventActionValues.ConsumerAttachments,
+            },
+          })
+        }}
+      />
+    </>
   )
 }

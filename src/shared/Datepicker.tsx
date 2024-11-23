@@ -1,8 +1,12 @@
-import {InputProps as StandardInputProps, TextField, TextFieldProps} from '@mui/material'
-import {zonedTimeToUtc} from 'date-fns-tz'
-import React, {useEffect, useState} from 'react'
+import {
+  InputProps as StandardInputProps,
+  TextField,
+  TextFieldProps,
+} from '@mui/material'
+import { zonedTimeToUtc } from 'date-fns-tz'
+import React, { useEffect, useState } from 'react'
 
-export interface DatepickerProps extends Omit<TextFieldProps, 'onChange'> {
+interface DatepickerProps extends Omit<TextFieldProps, 'onChange'> {
   value?: Date
   onChange: (_: Date | undefined) => void
   label?: string
@@ -14,14 +18,24 @@ export interface DatepickerProps extends Omit<TextFieldProps, 'onChange'> {
     | 'endOfDay'
 }
 
-export const Datepicker = ({value, onChange, label, fullWidth, InputProps, timeOfDay, ...props}: DatepickerProps) => {
+export const Datepicker = ({
+  value,
+  onChange,
+  label,
+  fullWidth,
+  InputProps,
+  timeOfDay,
+  ...props
+}: DatepickerProps) => {
   const onChangeDate = (e: React.ChangeEvent<HTMLInputElement>) => {
     setIsIsValidDate(e.target.value === '' || e.target.checkValidity())
     if (e.target.checkValidity()) {
       const newValue = e.target.value
       // it is either an empty string or yyyy-mm-dd
       if (newValue.length) {
-        const dateAndTime = `${newValue}T${timeOfDay === 'startOfDay' ? '00:00:00.000' : '23:59:59.999'}`
+        const dateAndTime = `${newValue}T${
+          timeOfDay === 'startOfDay' ? '00:00:00.000' : '23:59:59.999'
+        }`
         const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone
         const utcDate = zonedTimeToUtc(dateAndTime, userTimeZone)
         onChange(utcDate)
@@ -61,7 +75,7 @@ export const Datepicker = ({value, onChange, label, fullWidth, InputProps, timeO
       value={displayedDate}
       onChange={onChangeDate}
       fullWidth={fullWidth}
-      InputLabelProps={{shrink: true}}
+      InputLabelProps={{ shrink: true }}
       error={!isValidDate}
     />
   )

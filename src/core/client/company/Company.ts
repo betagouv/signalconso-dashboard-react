@@ -1,4 +1,4 @@
-import {Id, PaginatedFilters, Address} from '../../model'
+import { Id, PaginatedFilters, Address } from '../../model'
 
 export interface CompanyWithReportsCount extends Company {
   count: number
@@ -10,6 +10,8 @@ export interface Company {
   siret: string
   creationDate: Date
   name: string
+  commercialName?: string
+  establishmentCommercialName?: string
   brand?: string
   address: Address
   isHeadOffice: boolean
@@ -43,6 +45,8 @@ export interface CompaniesToImport {
   siren?: string
   sirets: string[]
   emails: string[]
+  onlyHeadOffice: boolean
+  level: AccessLevel
 }
 
 export interface CompanyUpdate {
@@ -55,6 +59,7 @@ export interface CompanySearchResult {
   siret: string
   name?: string
   commercialName?: string
+  establishmentCommercialName?: string
   brand?: string
   isHeadOffice: boolean
   isOpen: boolean

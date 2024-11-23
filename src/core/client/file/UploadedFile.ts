@@ -8,4 +8,5 @@ export interface UploadedFile {
   filename: string
   loading: boolean
   origin: FileOrigin
+  isScanned: boolean
 }
