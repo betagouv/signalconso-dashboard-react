@@ -1,61 +1,31 @@
-import {Box, Icon} from '@mui/material'
+import { Box, Icon } from '@mui/material'
 import React from 'react'
 
-const ReportCategory = ({children}: {children: any}) => {
-  return (
-    <Box
-      sx={{
-        display: 'inline-flex',
-        alignItems: 'center',
-        pb: 0.5,
-        border: t => '1px solid ' + t.palette.divider,
-        borderRadius: 40,
-        py: 0.5,
-        px: 1,
-      }}
-    >
-      <Icon
-        sx={{
-          fontSize: 20,
-          // color: t.palette.divider,
-          color: t => t.palette.primary.main,
-          mr: 0.5,
-        }}
-      >
-        check_circle
-      </Icon>
-      {children}
-    </Box>
-  )
-}
-
-export interface ReportCategoriesProps {
+interface ReportCategoriesProps {
   categories: any[]
 }
 
-export const ReportCategories = ({categories}: ReportCategoriesProps) => {
+export const ReportCategories = ({ categories }: ReportCategoriesProps) => {
   return (
-    <Box
-      sx={{
-        display: 'flex',
-        alignItems: 'center',
-        flexWrap: 'wrap',
-      }}
-    >
+    <Box className="flex flex-wrap gap-1 mb-4">
       {categories.map((category, i) => (
-        <React.Fragment key={i}>
-          <ReportCategory>{category}</ReportCategory>
-          {i < categories.length - 1 && (
+        <Box key={i} className="inline-flex items-center">
+          {i !== 0 && (
             <Icon
               sx={{
-                color: t => t.palette.divider,
-                display: 'inline',
+                fontSize: 20,
+                mr: 0.5,
               }}
             >
               chevron_right
             </Icon>
           )}
-        </React.Fragment>
+          <span
+            className={`py-1 px-2 rounded-lg italic border border-solid border-gray-500`}
+          >
+            {category}
+          </span>
+        </Box>
       ))}
     </Box>
   )

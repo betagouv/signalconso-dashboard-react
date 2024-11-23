@@ -5,7 +5,7 @@ export interface Paginate<T> {
   totalCount: number
 }
 
-export interface PaginateFiltersQueryString {
+interface PaginateFiltersQueryString {
   offset?: string
   limit?: string
 }
@@ -27,12 +27,16 @@ export interface PaginatedFilters {
   limit: number
 }
 
-export interface PaginatedSearch<T extends object = any> extends PaginatedFilters {
+export interface PaginatedSearch<T extends object = any>
+  extends PaginatedFilters {
   sortBy?: Extract<keyof T, string>
   orderBy?: 'asc' | 'desc'
 }
 
-export const paginateFilters2QueryString = ({offset, limit}: PaginatedFilters): PaginateFiltersQueryString => {
+export const paginateFilters2QueryString = ({
+  offset,
+  limit,
+}: PaginatedFilters): PaginateFiltersQueryString => {
   return {
     offset: offset !== undefined ? offset + '' : undefined,
     limit: limit !== undefined ? limit + '' : undefined,

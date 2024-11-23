@@ -1,31 +1,43 @@
 import {
-  Address,
+  cleanObject,
+  dateToApiDate,
+  dateToApiTime,
+  directDownloadBlob,
+  wrap404AsNull,
+} from '../../helper'
+import {
   CompanySearchResult,
+  ConsumerReview,
+  Country,
+  Event,
+  FileOrigin,
   Id,
+  IncomingReportResponse,
   PaginatedData,
   PaginatedFilters,
-  paginateFilters2QueryString,
   Report,
   ReportAction,
-  ReportResponse,
+  ReportConsumerUpdate,
+  ReportDeletionReason,
   ReportSearch,
   ReportSearchResult,
   ReportTag,
   ReportWordCount,
-  ResponseConsumerReview,
-  ReportConsumerUpdate,
+  User,
+  paginateFilters2QueryString,
 } from '../../model'
-import {ApiSdkLogger} from '../../helper/Logger'
-import {ApiClientApi} from '../ApiClient'
-import {cleanObject, dateToApiDate, dateToApiTime, directDownloadBlob} from '../../helper'
+import { ApiClient } from '../ApiClient'
+import { ReportNodes } from './ReportNode'
+import { ReportNodeSearch } from './ReportNodeSearch'
 
-export interface ReportFilterQuerystring {
+interface ReportFilterQuerystring {
   readonly departments?: string[]
   readonly withTags?: ReportTag[]
   readonly withoutTags?: ReportTag[]
   readonly companyCountries?: string[]
   readonly siretSirenList?: string[]
   readonly status?: string[]
+  readonly subcategories?: string[]
   start?: string
   end?: string
   email?: string
@@ -39,12 +51,30 @@ export interface ReportFilterQuerystring {
   hasCompany?: 'true' | 'false'
 }
 
-export const reportFilter2QueryString = (report: ReportSearch): ReportFilterQuerystring => {
+export const reportFilter2QueryString = (
+  report: ReportSearch,
+): ReportFilterQuerystring => {
   try {
-    const {hasCompany, hasForeignCountry, hasWebsite, hasPhone, start, end, ...r} = report
-    const parseBoolean = (_: keyof Pick<ReportSearch, 'hasForeignCountry' | 'hasWebsite' | 'hasPhone' | 'hasCompany'>) =>
-      report[_] !== undefined && {[_]: ('' + report[_]) as 'true' | 'false'}
-    const parseDate = (_: keyof Pick<ReportSearch, 'start' | 'end'>) => (report[_] ? {[_]: dateToApiTime(report[_])} : {})
+    const {
+      hasCompany,
+      hasForeignCountry,
+      hasWebsite,
+      hasPhone,
+      start,
+      end,
+      hasResponseEvaluation,
+      responseEvaluation,
+      ...r
+    } = report
+    const parseBoolean = (
+      _: keyof Pick<
+        ReportSearch,
+        'hasForeignCountry' | 'hasWebsite' | 'hasPhone' | 'hasCompany'
+      >,
+    ) =>
+      report[_] !== undefined && { [_]: ('' + report[_]) as 'true' | 'false' }
+    const parseDate = (_: keyof Pick<ReportSearch, 'start' | 'end'>) =>
+      report[_] ? { [_]: dateToApiTime(report[_]) } : {}
     return {
       ...r,
       ...parseBoolean('hasCompany'),
@@ -53,31 +83,59 @@ export const reportFilter2QueryString = (report: ReportSearch): ReportFilterQuer
       ...parseBoolean('hasForeignCountry'),
       ...parseDate('start'),
       ...parseDate('end'),
+      ...(hasResponseEvaluation !== undefined
+        ? { hasEvaluation: hasResponseEvaluation }
+        : null),
+      ...(responseEvaluation !== undefined
+        ? { evaluation: responseEvaluation }
+        : null),
     }
   } catch (e) {
-    ApiSdkLogger.error('Caught error on "reportFilter2QueryString"', report, e)
+    console.error('Caught error on "reportFilter2QueryString"', report, e)
     return {}
   }
 }
 
 export const cleanReportFilter = (filter: ReportSearch): ReportSearch => {
-  if (filter.hasCompany === false) {
+  if (!filter.hasCompany) {
     delete filter.siretSirenList
   }
-  if (filter.hasForeignCountry === false) {
+  if (!filter.hasForeignCountry) {
     delete filter.companyCountries
   }
-  if (filter.hasWebsite === false) {
+  if (!filter.hasWebsite) {
     delete filter.websiteURL
   }
-  if (filter.hasPhone === false) {
+  if (!filter.hasPhone) {
     delete filter.phone
+  }
+  if (!filter.hasResponseEvaluation) {
+    delete filter.responseEvaluation
   }
   return filter
 }
 
 export class ReportsClient {
-  constructor(private client: ApiClientApi) {}
+  constructor(private client: ApiClient) {}
+
+  private reportName = (report: Report) => {
+    const day = String(report.creationDate.getDate()).padStart(2, '0')
+    const month = String(report.creationDate.getMonth() + 1).padStart(2, '0') // Months are 0-indexed
+    const year = report.creationDate.getFullYear()
+    return `${day}-${month}-${year}`
+  }
+
+  readonly downloadAll = async (report: Report, origin?: FileOrigin) => {
+    const baseQuery = `/reports/files?reportId=${report.id}`
+    return this.client
+      .getBlob(origin ? `${baseQuery}&origin=${origin}` : baseQuery)
+      .then((blob) =>
+        directDownloadBlob(
+          `${this.reportName(report)}-PJ`,
+          'application/zip',
+        )(blob),
+      )
+  }
 
   readonly extract = (filters: ReportSearch & PaginatedFilters) => {
     return this.client.post<void>(`reports/extract`, {
@@ -91,65 +149,155 @@ export class ReportsClient {
 
   readonly search = (filters: ReportSearch & PaginatedFilters) => {
     const qs = cleanObject(reportFilter2QueryString(cleanReportFilter(filters)))
-    return this.client.get<PaginatedData<ReportSearchResult>>(`/reports`, {qs}).then(result => {
-      result.entities.forEach(entity => {
-        entity.report = ReportsClient.mapReport(entity.report)
+    return this.client
+      .get<PaginatedData<ReportSearchResult>>(`/reports`, { qs })
+      .then((result) => {
+        result.entities.forEach((entity) => {
+          entity.report = ReportsClient.mapReport(entity.report)
+          entity.consumerReview =
+            entity.consumerReview &&
+            ReportsClient.mapConsumerReview(entity.consumerReview)
+        })
+        return result
       })
-      return result
-    })
   }
 
   readonly download = (ids: Id[]) => {
     // TODO Type it and maybe improve it
-    return this.client.getPdf<any>(`/reports/download`, {qs: {ids}}).then(directDownloadBlob('Signalement.pdf'))
+    return this.client
+      .getBlob(`/reports/download`, { qs: { ids } })
+      .then(directDownloadBlob('Signalement.pdf', 'application/pdf'))
   }
 
-  readonly remove = (id: Id) => {
-    return this.client.delete<void>(`reports/${id}`)
+  readonly downloadZip = (report: Report) => {
+    return this.client
+      .getBlob(`/reports/download-with-attachments/${report.id}`)
+      .then((blob) =>
+        directDownloadBlob(
+          `${this.reportName(report)}`,
+          'application/zip',
+        )(blob),
+      )
   }
 
-  readonly getById = (id: Id): Promise<ReportSearchResult> => {
-    return this.client.get(`/reports/${id}`).then(_ => ({files: _.files, report: ReportsClient.mapReport(_.report)}))
+  readonly remove = (id: Id, reportDeletionReason: ReportDeletionReason) => {
+    return this.client.delete<void>(`reports/${id}`, {
+      body: { ...reportDeletionReason },
+    })
   }
 
-  readonly getReviewOnReportResponse = (reportId: Id) => {
-    return this.client.get<ResponseConsumerReview>(`/reports/${reportId}/response/review`)
+  readonly reOpen = (id: Id) => {
+    return this.client.post<void>(`reports/${id}/reopen`)
+  }
+
+  readonly getById = async (id: Id): Promise<ReportSearchResult> => {
+    const { report, ...rest } = await this.client.get<any>(`/reports/${id}`)
+    return {
+      ...rest,
+      report: ReportsClient.mapReport(report),
+    }
+  }
+
+  readonly getReviewOnReportResponse = async (reportId: Id) => {
+    return wrap404AsNull(async () => {
+      const res = await this.client.get<ConsumerReview>(
+        `/reports/${reportId}/response/review`,
+      )
+      return ReportsClient.mapConsumerReview(res)
+    })
+  }
+
+  readonly getEngagementReview = async (reportId: Id) => {
+    return wrap404AsNull(async () => {
+      const res = await this.client.get<ConsumerReview>(
+        `/reports/${reportId}/engagement/review`,
+      )
+      return ReportsClient.mapConsumerReview(res)
+    })
+  }
+
+  readonly generateConsumerNotificationAsPDF = (reportId: Id) => {
+    return this.client
+      .getBlob(`/reports/${reportId}/consumer-email-pdf`)
+      .then(
+        directDownloadBlob(
+          'accuse-reception-consommateur.pdf',
+          'application/pdf',
+        ),
+      )
   }
 
   readonly getCloudWord = (companyId: Id) => {
     return this.client.get<ReportWordCount[]>(`/reports/cloudword/${companyId}`)
   }
 
-  readonly postResponse = (id: Id, response: ReportResponse) => {
-    return this.client.post<Event>(`reports/${id}/response`, {body: {...response, fileIds: response.fileIds ?? []}})
+  readonly postResponse = (id: Id, response: IncomingReportResponse) => {
+    return this.client.post<Event>(`reports/${id}/response`, {
+      body: { ...response, fileIds: response.fileIds ?? [] },
+    })
   }
 
   readonly postAction = (id: Id, action: ReportAction) => {
     // const mappedAction: any = {...action, actionType: {value: action.actionType}}
-    return this.client.post<Event>(`reports/${id}/action`, {body: action})
+    return this.client.post<Event>(`reports/${id}/action`, { body: action })
   }
 
-  readonly updateReportCompany = (reportId: string, company: CompanySearchResult) => {
-    return this.client.post<Report>(`/reports/${reportId}/company`, {
-      body: {
-        name: company.name,
-        address: company.address,
-        siret: company.siret,
-        activityCode: company.activityCode,
-        isHeadOffice: company.isHeadOffice,
-        isOpen: company.isOpen,
-        isPublic: company.isPublic,
+  readonly updateReportCompany = (
+    reportId: string,
+    company: CompanySearchResult,
+  ) => {
+    return this.client
+      .post<Report>(`/reports/${reportId}/company`, {
+        body: {
+          name: company.name,
+          address: company.address,
+          siret: company.siret,
+          activityCode: company.activityCode,
+          isHeadOffice: company.isHeadOffice,
+          isOpen: company.isOpen,
+          isPublic: company.isPublic,
+        },
+      })
+      .then((report) => ReportsClient.mapReport(report))
+  }
+
+  readonly updateReportCountry = (reportId: string, country: Country) => {
+    return this.client
+      .put<Report>(`/reports/${reportId}/country`, {
+        qs: { countryCode: country.code },
+      })
+      .then((report) => ReportsClient.mapReport(report))
+  }
+
+  readonly updateReportConsumer = (
+    reportId: string,
+    reportConsumerUpdate: ReportConsumerUpdate,
+  ) => {
+    return this.client
+      .post<any>(`reports/${reportId}/consumer`, {
+        body: reportConsumerUpdate,
+      })
+      .then((report) => ReportsClient.mapReport(report))
+  }
+
+  readonly updateReportAssignedUser = (
+    reportId: string,
+    newAssignedUserId: string,
+    userComment: string,
+  ) => {
+    return this.client.post<User>(
+      `reports/${reportId}/assign/${newAssignedUserId}`,
+      {
+        body: { comment: userComment },
+        headers: { 'Content-Type': 'application/json' },
       },
-    })
+    )
   }
 
-  readonly updateReportConsumer = (reportId: string, reportConsumerUpdate: ReportConsumerUpdate) => {
-    return this.client.post(`reports/${reportId}/consumer`, {
-      body: reportConsumerUpdate,
-    })
-  }
-
-  readonly getCountByDepartments = ({start, end}: {start?: Date; end?: Date} = {}): Promise<[string, number][]> => {
+  readonly getCountByDepartments = ({
+    start,
+    end,
+  }: { start?: Date; end?: Date } = {}): Promise<[string, number][]> => {
     return this.client.get(`/reports/count-by-departments`, {
       qs: {
         start: dateToApiDate(start),
@@ -158,15 +306,52 @@ export class ReportsClient {
     })
   }
 
-  static readonly mapReport = (report: {[key in keyof Report]: any}): Report => ({
+  readonly getCountBySubCategories = ({
+    start,
+    end,
+    departments,
+  }: ReportNodeSearch = {}): Promise<ReportNodes> => {
+    return this.client.get(`/reports/count-by-subcategories`, {
+      qs: {
+        start: dateToApiDate(start),
+        end: dateToApiDate(end),
+        departments: departments,
+      },
+    })
+  }
+
+  readonly setBookmarked = ({
+    reportId,
+    bookmarked,
+  }: {
+    reportId: string
+    bookmarked: boolean
+  }): Promise<unknown> => {
+    if (bookmarked) {
+      return this.client.post(`/reports/${reportId}/bookmark`)
+    } else {
+      return this.client.delete(`/reports/${reportId}/bookmark`)
+    }
+  }
+
+  readonly countBookmarks = (): Promise<number> => {
+    return this.client.get<number>(`/reports/bookmarks/count`)
+  }
+
+  static readonly mapReport = (report: {
+    [key in keyof Report]: any
+  }): Report => ({
     ...report,
-    companyAddress: ReportsClient.mapAddress(report.companyAddress),
     creationDate: new Date(report.creationDate),
     expirationDate: new Date(report.expirationDate),
   })
 
-  static readonly mapAddress = (address: {[key in keyof Address]: any | undefined}): Address => ({
-    ...address,
-    country: address.country?.name,
-  })
+  static readonly mapConsumerReview = (_: {
+    [key in keyof ConsumerReview]: any
+  }): ConsumerReview => {
+    return {
+      ..._,
+      creationDate: new Date(_.creationDate),
+    }
+  }
 }

@@ -1,15 +1,21 @@
-import React, {ReactElement} from 'react'
-import {useI18n} from '../../core/i18n'
-import {Txt} from '../../alexlibs/mui-extension'
-import {useForm} from 'react-hook-form'
-import {useUsersContext} from '../../core/context/UsersContext'
-import {Alert} from '../../alexlibs/mui-extension'
-import {useToast} from '../../core/toast'
-
-import {ScDialog} from '../../shared/Confirm/ScDialog'
-import {ScInputPassword} from '../../shared/InputPassword/InputPassword'
-import {AccountEventActions, EventCategories, Matomo} from '../../core/plugins/Matomo'
-import {ScOption} from 'core/helper/ScOption'
+import { useMutation } from '@tanstack/react-query'
+import { ScOption } from 'core/helper/ScOption'
+import { validatePasswordComplexity } from 'core/helper/passwordComplexity'
+import { ReactElement } from 'react'
+import { useForm } from 'react-hook-form'
+import { PasswordRequirementsDesc } from 'shared/PasswordRequirementsDesc'
+import { Alert } from '../../alexlibs/mui-extension'
+import { ApiError } from '../../core/client/ApiClient'
+import { useApiContext } from '../../core/context/ApiContext'
+import { useToast } from '../../core/context/toastContext'
+import { useI18n } from '../../core/i18n'
+import {
+  AccountEventActions,
+  EventCategories,
+  Matomo,
+} from '../../core/plugins/Matomo'
+import { ScDialog } from '../../shared/ScDialog'
+import { ScInputPassword } from '../../shared/ScInputPassword'
 
 interface Form {
   oldPassword: string
@@ -21,16 +27,33 @@ interface Props {
   children: ReactElement<any>
 }
 
-export const EditPasswordDialog = ({children}: Props) => {
-  const {m} = useI18n()
-  const _changePassword = useUsersContext().changePassword
+export const EditPasswordDialog = ({ children }: Props) => {
+  const { m } = useI18n()
+  const { api } = useApiContext()
+  const _changePassword = useMutation({
+    mutationFn: (params: { oldPassword: string; newPassword: string }) =>
+      api.secured.user.changePassword(params.oldPassword, params.newPassword),
+    onSuccess: () => {
+      toastSuccess(m.passwordEdited)
+      Matomo.trackEvent(
+        EventCategories.account,
+        AccountEventActions.changePasswordSuccess,
+      )
+    },
+    onError: (error: ApiError) => {
+      Matomo.trackEvent(
+        EventCategories.account,
+        AccountEventActions.changePasswordFail,
+      )
+    },
+  })
   const {
     register,
     handleSubmit,
     getValues,
-    formState: {errors, isValid},
-  } = useForm<Form>({mode: 'onChange'})
-  const {toastSuccess} = useToast()
+    formState: { errors, isValid },
+  } = useForm<Form>({ mode: 'onChange' })
+  const { toastSuccess } = useToast()
 
   return (
     <ScDialog
@@ -38,33 +61,29 @@ export const EditPasswordDialog = ({children}: Props) => {
       maxWidth="xs"
       confirmLabel={m.edit}
       confirmDisabled={!isValid}
-      loading={_changePassword.loading}
+      loading={_changePassword.isPending}
       onConfirm={(event, close) => {
         handleSubmit((form: Form) => {
           _changePassword
-            .fetch({}, form.oldPassword, form.newPassword)
-            .then(() => {
-              toastSuccess(m.passwordEdited)
-              close()
-              Matomo.trackEvent(EventCategories.account, AccountEventActions.changePasswordSuccess)
+            .mutateAsync({
+              oldPassword: form.oldPassword,
+              newPassword: form.newPassword,
             })
-            .catch(_ => {
-              Matomo.trackEvent(EventCategories.account, AccountEventActions.changePasswordFail)
-            })
+            .then(close)
         })()
       }}
       content={
         <>
           {ScOption.from(_changePassword.error)
-            .map(error => (
+            .map((error) => (
               <Alert dense type="error" deletable gutterBottom>
-                {error.details?.code === 401 ? m.invalidPassword : m.failedToChangePassword}
+                {error.details?.code === 401
+                  ? m.invalidPassword
+                  : m.failedToChangePassword}
               </Alert>
             ))
             .toUndefined()}
-          <Txt color="hint" block gutterBottom>
-            {m.editPasswordDialogDesc}
-          </Txt>
+
           <ScInputPassword
             inputProps={{
               autocomplete: 'false',
@@ -75,19 +94,26 @@ export const EditPasswordDialog = ({children}: Props) => {
             fullWidth
             label={m.oldPassword}
             {...register('oldPassword', {
-              required: {value: true, message: m.required},
-              minLength: {value: 8, message: m.passwordNotLongEnough},
+              required: { value: true, message: m.required },
             })}
           />
+          <PasswordRequirementsDesc />
           <ScInputPassword
             error={!!errors.newPassword}
             helperText={errors.newPassword?.message ?? ' '}
             fullWidth
             label={m.newPassword}
             {...register('newPassword', {
-              required: {value: true, message: m.required},
-              minLength: {value: 8, message: m.passwordNotLongEnough},
-              validate: value => value !== getValues().oldPassword || m.passwordAreIdentical,
+              required: { value: true, message: m.required },
+              validate: (value: string) => {
+                if (value === getValues().oldPassword) {
+                  return m.passwordAreIdentical
+                }
+                const complexityMessage = validatePasswordComplexity(value)
+                if (complexityMessage) {
+                  return m[complexityMessage]
+                }
+              },
             })}
           />
           <ScInputPassword
@@ -96,9 +122,9 @@ export const EditPasswordDialog = ({children}: Props) => {
             fullWidth
             label={m.newPasswordConfirmation}
             {...register('newPasswordConfirmation', {
-              required: {value: true, message: m.required},
-              minLength: {value: 8, message: m.passwordNotLongEnough},
-              validate: value => value === getValues().newPassword || m.passwordDoesntMatch,
+              required: { value: true, message: m.required },
+              validate: (value) =>
+                value === getValues().newPassword || m.passwordDoesntMatch,
             })}
           />
         </>

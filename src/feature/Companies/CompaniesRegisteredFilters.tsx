@@ -1,25 +1,34 @@
-import {Dialog, DialogActions, DialogContent, DialogTitle} from '@mui/material'
-import {SelectDepartments} from '../../shared/SelectDepartments/SelectDepartments'
-import {SelectActivityCode} from '../../shared/SelectActivityCode/SelectActivityCode'
-import React, {ReactElement, useEffect, useState} from 'react'
-import {useI18n} from '../../core/i18n'
-import {Controller, useForm} from 'react-hook-form'
-import {Btn} from '../../alexlibs/mui-extension'
-import {ScInput} from '../../shared/Input/ScInput'
-import {DialogInputRow} from '../../shared/DialogInputRow/DialogInputRow'
-import {CompanySearch} from '../../core/client/company/Company'
-import {cleanObject} from '../../core/helper'
+import {
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+} from '@mui/material'
+import { SelectDepartments } from '../../shared/SelectDepartments/SelectDepartments'
+import { SelectActivityCode } from '../../shared/SelectActivityCode'
+import React, { ReactElement, useEffect, useState } from 'react'
+import { useI18n } from '../../core/i18n'
+import { Controller, useForm } from 'react-hook-form'
+import { Btn } from '../../alexlibs/mui-extension'
+import { ScInput } from '../../shared/ScInput'
+import { DialogInputRow } from '../../shared/DialogInputRow'
+import { CompanySearch } from '../../core/client/company/Company'
+import { cleanObject } from '../../core/helper'
 
-export interface CompaniesRegisteredFiltersProps {
+interface CompaniesRegisteredFiltersProps {
   updateFilters: (_: Partial<CompanySearch>) => void
   children: ReactElement<any>
   filters: CompanySearch
 }
 
-export const CompaniesRegisteredFilters = ({updateFilters, children, filters}: CompaniesRegisteredFiltersProps) => {
+export const CompaniesRegisteredFilters = ({
+  updateFilters,
+  children,
+  filters,
+}: CompaniesRegisteredFiltersProps) => {
   const [open, setOpen] = useState<boolean>(false)
-  const {m} = useI18n()
-  const {register, handleSubmit, control, reset} = useForm<CompanySearch>()
+  const { m } = useI18n()
+  const { register, handleSubmit, control, reset } = useForm<CompanySearch>()
 
   const close = () => {
     setOpen(false)
@@ -27,7 +36,7 @@ export const CompaniesRegisteredFilters = ({updateFilters, children, filters}: C
 
   const confirm = (e: any) => {
     close()
-    handleSubmit(_ => updateFilters(cleanObject(_)))(e)
+    handleSubmit((_) => updateFilters(cleanObject(_)))(e)
   }
 
   useEffect(() => {
@@ -49,7 +58,9 @@ export const CompaniesRegisteredFilters = ({updateFilters, children, filters}: C
               name="departments"
               defaultValue={filters.departments}
               control={control}
-              render={({field}) => <SelectDepartments {...field} fullWidth sx={{mr: 1}} />}
+              render={({ field }) => (
+                <SelectDepartments {...field} fullWidth sx={{ mr: 1 }} />
+              )}
             />
           </DialogInputRow>
           <DialogInputRow label={m.codeNaf}>
@@ -57,11 +68,21 @@ export const CompaniesRegisteredFilters = ({updateFilters, children, filters}: C
               name="activityCodes"
               defaultValue={filters.activityCodes}
               control={control}
-              render={({field}) => <SelectActivityCode fullWidth value={field.value} onChange={(a, b) => field.onChange(b)} />}
+              render={({ field }) => (
+                <SelectActivityCode
+                  fullWidth
+                  value={field.value}
+                  onChange={(a, b) => field.onChange(b)}
+                />
+              )}
             />
           </DialogInputRow>
           <DialogInputRow label={m.email}>
-            <ScInput fullWidth {...register('emailsWithAccess')} defaultValue={filters.emailsWithAccess ?? ''} />
+            <ScInput
+              fullWidth
+              {...register('emailsWithAccess')}
+              defaultValue={filters.emailsWithAccess ?? ''}
+            />
           </DialogInputRow>
         </DialogContent>
         <DialogActions>

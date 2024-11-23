@@ -1,8 +1,9 @@
-import {regexp} from './regexp'
-import {useHistory} from 'react-router-dom'
-import {parse as _parse, stringify as _stringify} from 'qs'
+import { regexp } from './regexp'
+import { useNavigate } from 'react-router-dom'
+import { parse as _parse, stringify as _stringify } from 'qs'
+import { useLocation } from 'react-router'
 
-export interface ParsedUrlQueryInput {
+interface ParsedUrlQueryInput {
   [key: string]:
     | string
     | number
@@ -20,13 +21,22 @@ export class QueryString {
 }
 
 type ParsedQueryString<T> = {
-  [K in keyof T]: T[K] extends Date ? ParsedDate : T[K] extends Date | undefined ? ParsedDate | undefined : T[K]
+  [K in keyof T]: T[K] extends Date
+    ? ParsedDate
+    : T[K] extends Date | undefined
+      ? ParsedDate | undefined
+      : T[K]
 }
 type MappedQueryString<T> = {
-  [K in keyof T]: T[K] extends ParsedDate ? Date : T[K] extends ParsedDate | undefined ? Date | undefined : T[K]
+  [K in keyof T]: T[K] extends ParsedDate
+    ? Date
+    : T[K] extends ParsedDate | undefined
+      ? Date | undefined
+      : T[K]
 }
 
-type ParsedDate = `${number}${number}${number}${number}-${number}${number}-${number}${number}`
+type ParsedDate =
+  `${number}${number}${number}${number}-${number}${number}-${number}${number}`
 
 export const useQueryString = <E, QS extends ParsedUrlQueryInput>({
   toQueryString,
@@ -35,40 +45,54 @@ export const useQueryString = <E, QS extends ParsedUrlQueryInput>({
   toQueryString: (_: E) => QS
   fromQueryString: (_: QS) => E
 }) => {
-  const history = useHistory()
+  const history = useNavigate()
+  const location = useLocation()
 
   const update = (t: E) => {
-    history.replace({search: QueryString.stringify(toQueryString(t))})
+    const newQueryString = QueryString.stringify(toQueryString(t))
+    const previousQueryString = location.search.replace(/^\?/, '')
+    const hasChanged = newQueryString !== previousQueryString
+    hasChanged && history(`?${newQueryString}`, { replace: true })
   }
 
   const get = (): E => {
-    return fromQueryString(QueryString.parse(history.location.search.replace(/^\?/, '')) as any)
+    // arrayLimit raised from 20 to 200 otherwise the departments list may not be parsed correctly
+    return fromQueryString(
+      QueryString.parse(location.search.replace(/^\?/, ''), {
+        arrayLimit: 200,
+      }) as any,
+    )
   }
 
-  return {update, get}
+  return { update, get }
 }
 
-const parseArray = (_?: string | string[]): string[] | undefined => (_ ? [_].flatMap(_ => _) : undefined)
+const parseArray = (_?: string | string[]): string[] | undefined =>
+  _ ? [_].flatMap((_) => _) : undefined
 
 export const mapArrayFromQuerystring =
-  <QS extends {[key: string]: any}>(arrayProperties: (keyof QS)[]) =>
-  (obj: QS): {[key in keyof QS]: any} => {
-    arrayProperties.forEach(property => {
+  <QS extends { [key: string]: any }>(arrayProperties: (keyof QS)[]) =>
+  (obj: QS): { [key in keyof QS]: any } => {
+    arrayProperties.forEach((property) => {
       obj[property] = parseArray(obj[property] as any) as any
     })
     return obj as any
   }
 
 export const mapBooleanFromQueryString =
-  <QS extends {[key: string]: any}>(properties: (keyof QS)[]) =>
-  (obj: QS): {[key in keyof QS]: any} => {
-    properties.forEach(property => {
-      obj[property] = {true: true, false: false}[obj[property] as unknown as string] as any
+  <QS extends { [key: string]: any }>(properties: (keyof QS)[]) =>
+  (obj: QS): { [key in keyof QS]: any } => {
+    properties.forEach((property) => {
+      obj[property] = { true: true, false: false }[
+        obj[property] as unknown as string
+      ] as any
     })
     return obj as any
   }
 
-export const mapDatesToQueryString = <T extends object>(_: T): Readonly<ParsedQueryString<T>> => {
+export const mapDatesToQueryString = <T extends object>(
+  _: T,
+): Readonly<ParsedQueryString<T>> => {
   return Object.entries(_).reduce(
     (acc, [key, value]) => ({
       ...acc,

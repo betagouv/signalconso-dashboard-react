@@ -1,7 +1,7 @@
-import {Entity, Id, PaginatedFilters} from '../../model'
-import {Company} from '../company/Company'
-import {Address} from '../../model'
-import {Country} from '../constant/Country'
+import { CompanyCreation, Entity, Id, PaginatedFilters } from '../../model'
+import { Company } from '../company/Company'
+import { Address } from '../../model'
+import { Country } from '../constant/Country'
 
 export enum IdentificationStatus {
   Identified = 'Identified',
@@ -12,21 +12,9 @@ export enum InvestigationStatus {
   NotProcessed = 'NotProcessed',
   SignalConsoIdentificationFailed = 'SignalConsoIdentificationFailed',
   Processing = 'Processing',
-  UnderInvestigation = 'UnderInvestigation',
-  InvestigationDone = 'InvestigationDone',
-}
-
-export enum Practice {
-  DropShipping = 'DropShipping',
-}
-
-export interface DepartmentDivision {
-  code: string
-  name: string
 }
 
 export interface WebsiteInvestigation {
-  practice?: Practice
   investigationStatus?: InvestigationStatus
   identificationStatus?: IdentificationStatus
   attribution?: string
@@ -40,10 +28,10 @@ export interface Website extends Entity {
   host: string
   companyId: Id
   identificationStatus: IdentificationStatus
-  practice?: Practice
   investigationStatus?: InvestigationStatus
   attribution?: string
   lastUpdated?: Date
+  isMarketplace: boolean
 }
 
 export interface WebsiteUpdateCompany {
@@ -69,10 +57,9 @@ export interface ApiHostWithReportCount {
 
 export interface WebsiteWithCompanySearch extends PaginatedFilters {
   host?: string
+  isOpen: boolean | null
   identificationStatus?: IdentificationStatus[]
-  practice?: Practice[]
   investigationStatus?: InvestigationStatus[]
-  attribution?: string[]
   start?: Date
   end?: Date
 }
@@ -81,4 +68,9 @@ export interface HostReportCountSearch extends PaginatedFilters {
   q?: string
   start?: Date
   end?: Date
+}
+
+export interface WebsiteCreation {
+  host: string
+  company: CompanyCreation
 }

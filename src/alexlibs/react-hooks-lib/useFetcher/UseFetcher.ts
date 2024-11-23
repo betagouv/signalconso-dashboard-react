@@ -1,13 +1,13 @@
-import {Dispatch, SetStateAction, useRef, useState} from 'react'
+import { Dispatch, SetStateAction, useRef, useState } from 'react'
 
 export type Func<R = any> = (...args: any[]) => R
 
 export type Fetch<T extends Func<Promise<FetcherResult<T>>>> = (
-  p?: {force?: boolean; clean?: boolean},
+  p?: { force?: boolean; clean?: boolean },
   ..._: Parameters<T>
 ) => ReturnType<T>
 
-export interface FetchParams {
+interface FetchParams {
   force?: boolean
   clean?: boolean
 }
@@ -16,7 +16,7 @@ type ThenArg<T> = T extends PromiseLike<infer U> ? U : T
 
 type FetcherResult<T extends Func> = ThenArg<ReturnType<T>>
 
-export type UseFetcher<F extends Func<Promise<FetcherResult<F>>>, E = any> = {
+type UseFetcher<F extends Func<Promise<FetcherResult<F>>>, E = any> = {
   entity?: FetcherResult<F>
   loading: boolean
   error?: E
@@ -31,14 +31,19 @@ export type UseFetcher<F extends Func<Promise<FetcherResult<F>>>, E = any> = {
 export const useFetcher = <F extends Func<Promise<any>>, E = any>(
   fetcher: F,
   initialValue?: FetcherResult<F>,
-  mapError: (_: any) => E = _ => _,
+  mapError: (_: any) => E = (_) => _,
 ): UseFetcher<F, E> => {
-  const [entity, setEntity] = useState<FetcherResult<F> | undefined>(initialValue)
+  const [entity, setEntity] = useState<FetcherResult<F> | undefined>(
+    initialValue,
+  )
   const [error, setError] = useState<E | undefined>()
   const [loading, setLoading] = useState<boolean>(false)
   const fetch$ = useRef<Promise<FetcherResult<F>>>()
 
-  const fetch = ({force = true, clean = true}: FetchParams = {}, ...args: any[]): Promise<FetcherResult<F>> => {
+  const fetch = (
+    { force = true, clean = true }: FetchParams = {},
+    ...args: any[]
+  ): Promise<FetcherResult<F>> => {
     if (!force) {
       if (fetch$.current) {
         return fetch$.current!
@@ -59,7 +64,7 @@ export const useFetcher = <F extends Func<Promise<any>>, E = any>(
         setEntity(x)
         fetch$.current = undefined
       })
-      .catch(e => {
+      .catch((e) => {
         setLoading(false)
         fetch$.current = undefined
         setError(mapError(e))

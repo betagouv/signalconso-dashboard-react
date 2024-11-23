@@ -1,10 +1,12 @@
-export const regexpPattern = {
-  email: "^[a-zA-Z0-9_!#$'%&’*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$",
+const regexpPattern = {
+  email: "^[a-zA-Z0-9_!#$'%&’*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z0-9-]+$",
   emailDGCCRF: `^[^@]+@[a-zA-Z0-9_\\-.]*\\.gouv\\.fr$`,
-  emailAdmin: '(^[^@]+\\.betagouv(\\+[^@]+)?@gmail\\.com$)|(^[^@]+@beta\\.gouv\\.fr$)|(^[^@]+@dgccrf\\.finances\\.gouv\\.fr$)',
+  emailDGAL: `^[^@]+@[a-zA-Z0-9_\\-.]*\\.gouv\\.fr$`,
+  emailAdmin:
+    '(^[^@]+\\.betagouv(\\+[^@]+)?@gmail\\.com$)|(^[^@]+@beta\\.gouv\\.fr$)|(^[^@]+@dgccrf\\.finances\\.gouv\\.fr$)',
   siren: '[0-9]{9}',
-  siret: '[0-9]{14}',
-  activationCode: '[0-9]{6}',
+  siret: '^[0-9]{14}$',
+  activationCode: '^[0-9]{6}$',
   // https://stackoverflow.com/questions/12756159/regex-and-iso8601-formatted-datetime
   // Accepts formats :
   // YYYY-MM-DDThh:mm:ss
@@ -14,6 +16,9 @@ export const regexpPattern = {
 }
 
 export const regexp = Object.entries(regexpPattern).reduce(
-  (acc, [key, value]) => ({...acc, [key]: typeof value === 'string' ? new RegExp(value) : value}),
-  {} as {[key in keyof typeof regexpPattern]: RegExp},
+  (acc, [key, value]) => ({
+    ...acc,
+    [key]: typeof value === 'string' ? new RegExp(value) : value,
+  }),
+  {} as { [key in keyof typeof regexpPattern]: RegExp },
 )

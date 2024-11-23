@@ -1,96 +1,164 @@
-import {Panel, PanelBody, PanelHead} from '../../../shared/Panel'
-import {AddressComponent} from '../../../shared/Address/Address'
+import { AddressComponent } from '../../../shared/Address'
 
-import {Txt} from '../../../alexlibs/mui-extension'
-import {Box, Icon, IconButton, useTheme} from '@mui/material'
-import {SelectCompanyDialog} from '../../../shared/SelectCompany/SelectCompanyDialog'
-import {ScButton} from '../../../shared/Button/Button'
-import React from 'react'
-import {useReportContext} from '../../../core/context/ReportContext'
-import {useI18n} from '../../../core/i18n'
-import {siteMap} from '../../../core/siteMap'
-import {NavLink} from 'react-router-dom'
-import {styleUtils, sxUtils} from '../../../core/theme'
-import {Report} from '../../../core/client/report/Report'
-import {ScOption} from 'core/helper/ScOption'
+import { Box, Icon, Tooltip, useTheme } from '@mui/material'
+import { NavLink } from 'react-router-dom'
+import { CleanDiscreetPanel } from 'shared/Panel/simplePanels'
+import { ReportWebsiteUrlLink } from 'shared/tinyComponents'
+import { WithInlineIcon } from 'shared/WithInlineIcon'
+import { Txt } from '../../../alexlibs/mui-extension'
+import { Influencer, Report } from '../../../core/client/report/Report'
+import { useConnectedContext } from '../../../core/context/ConnectedContext'
+import { useI18n } from '../../../core/i18n'
+import { siteMap } from '../../../core/siteMap'
+import { sxUtils } from '../../../core/theme'
+import { ScButton } from '../../../shared/Button'
+import { ReportInfluencer } from '../ReportInfluencer'
+import { ReportStation } from '../ReportStation'
+import { ReportTrain } from '../ReportTrain'
+import { SelectReportAssociation } from '../SelectReportAssociation'
 
 interface Props {
   report: Report
   canEdit?: boolean
 }
 
-export const ReportCompany = ({report, canEdit}: Props) => {
-  const _report = useReportContext()
-  const {m} = useI18n()
-  const theme = useTheme()
+export const ReportCompany = ({ report, canEdit }: Props) => {
+  const { connectedUser } = useConnectedContext()
+  const { m } = useI18n()
+  const specialLegislation = Report.appliedSpecialLegislation(report)
+
+  const {
+    websiteURL,
+    vendor,
+    companyAddress,
+    companyId,
+    companyName,
+    companyCommercialName,
+    companyEstablishmentCommercialName,
+    companyBrand,
+    companySiret,
+    phone,
+    influencer,
+    train,
+    station,
+  } = report
   return (
-    <Panel stretch>
-      <PanelHead
-        action={
-          canEdit && (
-            <SelectCompanyDialog
-              siret={report.companySiret}
-              onChange={company => {
-                _report.updateCompany.fetch({}, report.id, company)
-              }}
-            >
-              <ScButton icon="edit" color="primary" loading={_report.updateCompany.loading}>
-                {m.edit}
-              </ScButton>
-            </SelectCompanyDialog>
-          )
-        }
-      >
-        {report.companyId ? (
-          <NavLink to={siteMap.logged.company(report.companyId)}>
-            {m.company}
-            <IconButton size="small" sx={{ml: 1}}>
-              <Icon>open_in_new</Icon>
-            </IconButton>
-          </NavLink>
-        ) : (
-          <> {m.company} </>
+    <CleanDiscreetPanel>
+      <div className="flex items-center justify-between">
+        <div className="">
+          <WithInlineIcon icon="store">
+            {m.company}{' '}
+            {companyId && !connectedUser.isDGAL && (
+              <NavLink
+                to={siteMap.logged.company(companyId).stats.valueAbsolute}
+              >
+                <span className="text-sm">(voir sa fiche)</span>
+              </NavLink>
+            )}
+          </WithInlineIcon>
+        </div>
+        {canEdit && (
+          <SelectReportAssociation
+            reportId={report.id}
+            currentSiret={companySiret}
+            currentCountry={companyAddress.country}
+          >
+            <ScButton icon="edit" color="primary">
+              {m.edit}
+            </ScButton>
+          </SelectReportAssociation>
         )}
-      </PanelHead>
-      <PanelBody
+      </div>
+      <div className={specialLegislation ? 'bg-yellow-100 py-2 px-4' : ''}>
+        {specialLegislation && (
+          <div
+            className="text-sm text-yellow-700 mb-4"
+            dangerouslySetInnerHTML={{
+              __html: m.specialLegislation[specialLegislation],
+            }}
+          />
+        )}
+        <div>
+          {companySiret && <div className="mb-1">{companySiret}</div>}
+          <div className="text-gray-500 text-sm">
+            {companyName && <div className="font-bold">{companyName}</div>}
+            {companyCommercialName && <div>{companyCommercialName}</div>}
+            {companyEstablishmentCommercialName && (
+              <div className="italic">{companyEstablishmentCommercialName}</div>
+            )}
+            {companyBrand && <div className="italic">{companyBrand}</div>}
+            <AddressComponent address={companyAddress} />
+          </div>
+          {websiteURL && (
+            <ReportWebsiteUrlLink {...{ websiteURL }} className="block" />
+          )}
+          {vendor && (
+            <MarketplaceBlock vendor={vendor} marketplace={companyName ?? ''} />
+          )}
+          {phone && <Phone {...{ phone }} />}
+          {influencer && <InfluencerBlock {...{ influencer }} />}
+          {train && <ReportTrain {...{ train }} />}
+          {station && <ReportStation {...{ station }} />}
+        </div>
+      </div>
+    </CleanDiscreetPanel>
+  )
+}
+
+function Phone({ phone }: { phone: string }) {
+  return (
+    <div
+      style={{
+        display: 'inline-flex',
+        alignItems: 'center',
+      }}
+    >
+      <Icon
         sx={{
-          display: 'flex',
-          justifyContent: 'space-between',
+          fontSize: 20,
+          mr: 0.5,
         }}
       >
-        <div>
-          <Box sx={sxUtils.fontBig} style={{marginBottom: theme.spacing(1 / 2)}}>
-            {report.companySiret}
-          </Box>
-          <Box
-            sx={{
-              color: t => t.palette.text.secondary,
-              fontSize: t => styleUtils(t).fontSize.small,
-            }}
-          >
-            <Box sx={{fontWeight: t => t.typography.fontWeightBold}}>{report.companyName}</Box>
-            <AddressComponent address={report.companyAddress} />
-          </Box>
-          <div>{report.vendor}</div>
-          {ScOption.from(report.websiteURL)
-            .map(_ => (
-              <Txt link block sx={{mt: 1}}>
-                <a href={_} target="_blank">
-                  {_}
-                </a>
-              </Txt>
-            ))
-            .toUndefined()}
-        </div>
-        <Icon
-          sx={{
-            fontSize: 64,
-            color: t => t.palette.divider,
-          }}
-        >
-          store
-        </Icon>
-      </PanelBody>
-    </Panel>
+        phone
+      </Icon>
+      {phone}
+    </div>
+  )
+}
+
+function MarketplaceBlock({
+  vendor,
+  marketplace,
+}: {
+  vendor: string
+  marketplace: string
+}) {
+  const { m } = useI18n()
+  return (
+    <div>
+      <Tooltip arrow title={m.marketplaceVendorDesc(marketplace)}>
+        <span className="pointer">
+          <span>
+            <Txt sx={sxUtils.fontBig}>{m.marketplaceVendorTitle}</Txt>
+            <Icon fontSize="small" sx={{ mb: -0.5, ml: 0.5 }}>
+              help_outline
+            </Icon>
+          </span>
+        </span>
+      </Tooltip>
+      : {vendor}
+    </div>
+  )
+}
+
+function InfluencerBlock({ influencer }: { influencer: Influencer }) {
+  const theme = useTheme()
+  const { m } = useI18n()
+
+  return (
+    <Box sx={{ mt: theme.spacing(2) }}>
+      <Txt sx={sxUtils.fontBig}>{m.influencerIdentifiedTitle}</Txt>
+      <ReportInfluencer influencer={influencer} />
+    </Box>
   )
 }

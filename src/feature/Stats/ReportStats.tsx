@@ -1,9 +1,8 @@
-import {Page} from '../../shared/Layout'
-import * as React from 'react'
+import { Page } from '../../shared/Page'
 
-import {StatsReportsByRegion} from './StatsReportsByRegion'
-import {StatsReportsCurvePanel} from './StatsReportsCurve'
-import {StatsReportsInternetPanel} from './StatsReportsInternetPanel'
+import { StatsReportsByRegion } from './StatsReportsByRegion'
+import { StatsReportsCurvePanel } from './StatsReportsCurve'
+import { StatsReportsInternetPanel } from './StatsReportsInternetPanel'
 
 export const ReportStats = () => {
   return (

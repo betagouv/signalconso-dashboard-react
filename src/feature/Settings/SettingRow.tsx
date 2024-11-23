@@ -1,6 +1,6 @@
-import React, {ReactNode} from 'react'
-import {Box, Icon} from '@mui/material'
-import {Txt} from '../../alexlibs/mui-extension'
+import React, { ReactNode } from 'react'
+import { Box, Icon } from '@mui/material'
+import { Txt } from '../../alexlibs/mui-extension'
 
 interface Props {
   icon?: string
@@ -9,28 +9,26 @@ interface Props {
   description?: ReactNode
 }
 
-export const SettingRow = ({title, description, icon, children}: Props) => {
+export const SettingRow = ({ title, description, icon, children }: Props) => {
   return (
     <Box
+      className="border-b-[1px] border-solid border-0 border-gray-400 last:border-b-0"
       sx={{
         py: 1.5,
         px: 2,
         display: 'flex',
         alignItems: 'center',
-        '&:not(:last-of-type)': {
-          borderBottom: t => '1px solid ' + t.palette.divider,
-        },
       }}
     >
       <Icon
         sx={{
-          color: t => t.palette.text.secondary,
+          color: (t) => t.palette.text.secondary,
           mr: 2,
         }}
       >
         {icon}
       </Icon>
-      <Box sx={{flex: 1}}>
+      <Box sx={{ flex: 1 }}>
         <Txt block size="big">
           {title}
         </Txt>

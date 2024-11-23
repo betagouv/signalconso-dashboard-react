@@ -1,10 +1,10 @@
-import {CompanyAccessToken} from './CompanyAccessToken'
-import {CompanyAccessLevel} from '../company-access/CompanyAccess'
-import {ApiClientApi} from '../ApiClient'
-import {Id} from '../../model'
+import { Id } from '../../model'
+import { ApiClient } from '../ApiClient'
+import { CompanyAccessLevel } from '../company-access/CompanyAccess'
+import { CompanyAccessToken } from './CompanyAccessToken'
 
 export class CompanyAccessTokenClient {
-  constructor(private client: ApiClientApi) {}
+  constructor(private client: ApiClient) {}
 
   readonly fetch = (siret: string) => {
     return this.client.get<CompanyAccessToken[]>(`/accesses/${siret}/pending`)
@@ -14,10 +14,14 @@ export class CompanyAccessTokenClient {
     return this.client.delete<void>(`/accesses/${siret}/token/${tokenId}`)
   }
 
-  readonly create = (siret: string, email: string, level: CompanyAccessLevel): Promise<CompanyAccessToken> => {
+  readonly create = (
+    siret: string,
+    email: string,
+    level: CompanyAccessLevel,
+  ): Promise<CompanyAccessToken> => {
     return (
       this.client
-        .post<void>(`/accesses/${siret}/invitation`, {body: {email, level}})
+        .post<void>(`/accesses/${siret}/invitation`, { body: { email, level } })
         // Hack because the API don't return anything and create a CompanyAccessToken or a CompanyAccess
         .then(() => {
           const response: CompanyAccessToken = {

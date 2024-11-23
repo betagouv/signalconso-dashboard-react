@@ -1,5 +1,4 @@
 import {
-  Box,
   LinearProgress,
   SxProps,
   Table,
@@ -11,41 +10,53 @@ import {
   TableSortLabel,
   Theme,
 } from '@mui/material'
-import React, {CSSProperties, ReactNode, useMemo} from 'react'
-import {DatatableColumnToggle} from './DatatableColumnsToggle'
-import {useI18n} from '../../core/i18n'
-import {Fender} from '../../alexlibs/mui-extension'
-import {usePersistentState} from '../../alexlibs/react-persistent-state'
-import {combineSx, sxUtils} from '../../core/theme'
+import React, { CSSProperties, ReactNode, useMemo } from 'react'
+import { Fender } from '../../alexlibs/mui-extension'
+import { usePersistentState } from '../../alexlibs/react-persistent-state'
+import { useI18n } from '../../core/i18n'
+import { combineSx, sxUtils } from '../../core/theme'
+import { DatatableColumnToggle } from './DatatableColumnsToggle'
 
 type OrderBy = 'asc' | 'desc'
 
-export interface DatatableProps<T> {
-  id?: string
-  header?: ReactNode
+interface DatatableProps<T> {
+  id: string
+  // arbitrary content above the header, typically to provide some explications
+  superheader?: ReactNode
+  // the main part of the header, slightly on the left
+  // it can be anything but we typically put here some search inputs,
+  // or a DatatableToolbar (which is typically displayed only when we select some rows)
+  headerMain?: ReactNode
+  // some arbitrary buttons that appear directly to the right of the headerMain
   actions?: ReactNode
+  // an additional button (added to the actions) to control which columns are displayed or not
+  showColumnsToggle?: boolean
+  // make this button displayed with big text, instead of just an icon
+  plainTextColumnsToggle?: boolean
+  // adds a small bottom margin to the header
+  headerMarginBottom?: boolean
   loading?: boolean
   total?: number
   data?: T[]
   getRenderRowKey?: (_: T) => string
   onClickRows?: (_: T, event: React.MouseEvent<HTMLTableRowElement>) => void
   columns: DatatableColumnProps<T>[]
-  showColumnsToggle?: boolean
-  showColumnsToggleBtnTooltip?: string
+  initialHiddenColumns?: string[]
   renderEmptyState?: ReactNode
-  rowsPerPageOptions?: number[]
+  rowsPerPageExtraOptions?: number[]
   paginate?: {
     minRowsBeforeDisplay?: number
     offset: number
     limit: number
-    onPaginationChange: (_: {offset?: number; limit?: number}) => void
+    onPaginationChange: (_: { offset?: number; limit?: number }) => void
   }
   sort?: {
     sortableColumns?: string[]
     sortBy?: string
     orderBy?: OrderBy
-    onSortChange: (_: {sortBy?: string; orderBy?: OrderBy}) => void
+    onSortChange: (_: { sortBy?: string; orderBy?: OrderBy }) => void
   }
+  rowSx?: (_: T) => SxProps<Theme> | undefined
 }
 
 export interface DatatableColumnProps<T> {
@@ -58,15 +69,18 @@ export interface DatatableColumnProps<T> {
   sx?: (_: T) => SxProps<Theme> | undefined
   style?: CSSProperties
   stickyEnd?: boolean
+  onClick?: (_: T, event: React.MouseEvent<HTMLTableCellElement>) => void
 }
 
-const safeParseInt = (maybeInt: any, defaultValue: number): number => (isNaN(maybeInt) ? defaultValue : parseInt(maybeInt))
+const safeParseInt = (maybeInt: any, defaultValue: number): number =>
+  isNaN(maybeInt) ? defaultValue : parseInt(maybeInt)
 
 const sxStickyEnd: SxProps<Theme> = {
   paddingTop: '1px',
   position: 'sticky',
   right: 0,
-  background: t => t.palette.background.paper,
+  zIndex: 1, // Otherwise, badges are visible over the sticky element
+  background: (t) => t.palette.background.paper,
 }
 
 export const Datatable = <T extends any = any>({
@@ -75,73 +89,78 @@ export const Datatable = <T extends any = any>({
   total,
   data,
   columns,
+  initialHiddenColumns,
   getRenderRowKey,
   actions,
-  header,
+  headerMain,
+  headerMarginBottom,
+  superheader,
   showColumnsToggle,
-  showColumnsToggleBtnTooltip,
   renderEmptyState,
-  rowsPerPageOptions = [5, 10, 25, 100],
+  rowsPerPageExtraOptions = [],
   sort,
   onClickRows,
   paginate,
+  plainTextColumnsToggle,
+  rowSx,
 }: DatatableProps<T>) => {
-  const {m} = useI18n()
-  const displayableColumns = useMemo(() => columns.filter(_ => !_.hidden), [columns])
+  const { m } = useI18n()
+  const displayableColumns = useMemo(
+    () => columns.filter((_) => !_.hidden),
+    [columns],
+  )
   const toggleableColumnsName = useMemo(
-    () => displayableColumns.filter(_ => !_.alwaysVisible && _.head && _.head !== ''),
+    () =>
+      displayableColumns.filter(
+        (_) => !_.alwaysVisible && _.head && _.head !== '',
+      ),
     [displayableColumns],
   )
-  const [hiddenColumns, setHiddenColumns] = usePersistentState<string[]>([], id)
-  const filteredColumns = useMemo(() => displayableColumns.filter(_ => !hiddenColumns.includes(_.id)), [columns, hiddenColumns])
-  const displayTableHeader = useMemo(() => !!displayableColumns.find(_ => _.head !== ''), [displayableColumns])
+  const [hiddenColumns, setHiddenColumns] = usePersistentState<string[]>(
+    initialHiddenColumns ?? [],
+    id,
+  )
+  const filteredColumns = useMemo(
+    () => displayableColumns.filter((_) => !hiddenColumns.includes(_.id)),
+    [columns, hiddenColumns],
+  )
+  const displayTableHeader = useMemo(
+    () => !!displayableColumns.find((_) => !!_.head),
+    [displayableColumns],
+  )
 
   return (
-    <>
-      {(header || showColumnsToggle) && (
-        <Box
-          sx={{
-            position: 'relative',
-            display: 'flex',
-            flexWrap: 'wrap',
-            alignItems: 'center',
-            minHeight: 52,
-            borderBottom: t => `1px solid ${t.palette.divider}`,
-            pl: 1,
-            pr: 1,
-          }}
+    <div className="mb-4">
+      {superheader && <div className="py-4 px-2">{superheader}</div>}
+      {(headerMain || showColumnsToggle || actions) && (
+        <div
+          className={`relative flex flex-wrap items-center min-h-[52px] gap-2 ${
+            headerMarginBottom ? 'mb-2' : ''
+          }`}
         >
-          <Box
-            sx={{
-              display: 'flex',
-              alignItems: 'center',
-              flex: 1,
-            }}
-          >
-            {header}
-          </Box>
-          <Box
-            sx={{
-              ml: 1,
-              whiteSpace: 'nowrap',
-            }}
-          >
+          <div className="flex items-center flex-grow">{headerMain}</div>
+          <div className="whitespace-nowrap flex gap-2">
             {actions}
             {showColumnsToggle && (
               <DatatableColumnToggle
-                style={{marginLeft: 'auto'}}
+                // style={{marginLeft: 'auto'}}
                 columns={toggleableColumnsName}
                 hiddenColumns={hiddenColumns}
-                onChange={_ => setHiddenColumns(_)}
-                title={showColumnsToggleBtnTooltip ?? m.toggleDatatableColumns}
+                plainTextButton={plainTextColumnsToggle}
+                onChange={(_) => setHiddenColumns(_)}
+                title={m.toggleDatatableColumns}
               />
             )}
-          </Box>
-        </Box>
+          </div>
+        </div>
       )}
-      <Box sx={{overflowX: 'auto', position: 'relative'}} id={id}>
+      <div
+        className="overflow-auto relative border border-solid border-gray-300"
+        id={id}
+      >
         <Table
           sx={{
+            borderCollapse: 'separate', // Sticky elements don't have any border otherwise
             minWidth: '100%',
             tableLayout: 'fixed',
             width: 'auto', // Override width: 100% from Material-UI that breaks sticky columns
@@ -154,20 +173,26 @@ export const Datatable = <T extends any = any>({
                   <TableCell
                     key={i}
                     sx={{
-                      color: t => t.palette.text.secondary,
+                      color: (t) => t.palette.text.secondary,
                       ...(_.stickyEnd && sxStickyEnd),
                     }}
                   >
                     {sort && (sort.sortableColumns?.includes(_.id) ?? true) ? (
                       <TableSortLabel
-                        sx={{color: t => t.palette.primary.main}}
+                        sx={{ color: (t) => t.palette.primary.main }}
                         active={sort.sortBy === _.id}
                         direction={sort.sortBy === _.id ? sort.orderBy : 'asc'}
                         onClick={() => {
                           if (sort.sortBy === _.id && sort.orderBy === 'desc') {
-                            sort.onSortChange({sortBy: undefined, orderBy: undefined})
+                            sort.onSortChange({
+                              sortBy: undefined,
+                              orderBy: undefined,
+                            })
                           } else {
-                            sort.onSortChange({sortBy: _.id, orderBy: sort.orderBy === 'asc' ? 'desc' : 'asc'})
+                            sort.onSortChange({
+                              sortBy: _.id,
+                              orderBy: sort.orderBy === 'asc' ? 'desc' : 'asc',
+                            })
                           }
                         }}
                       >
@@ -200,69 +225,81 @@ export const Datatable = <T extends any = any>({
             {data?.map((item, i) => (
               <TableRow
                 key={getRenderRowKey ? getRenderRowKey(item) : i}
-                onClick={e => onClickRows?.(item, e)}
+                onClick={(e) => onClickRows?.(item, e)}
                 sx={{
+                  ...rowSx?.(item),
                   ...(onClickRows && {
                     '&:hover': {
-                      background: t => t.palette.action.hover,
+                      background: (t) => t.palette.action.hover,
                     },
+                    cursor: 'pointer',
                   }),
                 }}
               >
                 {filteredColumns.map((_, i) => (
                   <TableCell
                     key={i}
-                    sx={combineSx(_.sx?.(item), sxUtils.truncate, sxStickyEnd)}
-                    style={_.style}
-                    className={typeof _.className === 'function' ? _.className(item) : _.className}
+                    onClick={(e) => _.onClick?.(item, e)}
+                    sx={
+                      _.stickyEnd
+                        ? combineSx(_.sx?.(item), sxUtils.truncate, sxStickyEnd)
+                        : combineSx(_.sx?.(item), sxUtils.truncate)
+                    }
+                    style={{ ..._.style }}
+                    className={
+                      typeof _.className === 'function'
+                        ? _.className(item)
+                        : _.className
+                    }
                   >
                     {_.render(item)}
                   </TableCell>
                 ))}
               </TableRow>
             ))}
-            {!loading && (!data || data?.length === 0) && (
+            {!loading && data?.length === 0 && (
               <TableRow>
-                <TableCell colSpan={filteredColumns.length} sx={{p: 2, textAlign: 'center'}}>
-                  {renderEmptyState ? renderEmptyState : <Fender title={m.noDataAtm} icon="highlight_off" />}
+                <TableCell
+                  colSpan={filteredColumns.length}
+                  sx={{ p: 2, textAlign: 'center', borderBottom: 0 }}
+                >
+                  {renderEmptyState ? (
+                    renderEmptyState
+                  ) : (
+                    <Fender title={m.noDataAtm} icon="highlight_off" />
+                  )}
                 </TableCell>
               </TableRow>
             )}
           </TableBody>
         </Table>
-      </Box>
-      {paginate && total && (!paginate.minRowsBeforeDisplay || total > paginate.minRowsBeforeDisplay)
+      </div>
+      {paginate &&
+      total &&
+      (!paginate.minRowsBeforeDisplay || total > paginate.minRowsBeforeDisplay)
         ? (() => {
             const limit = safeParseInt(paginate.limit, 10)
             const offset = safeParseInt(paginate.offset, 0)
             return (
               <TablePagination
-                rowsPerPageOptions={rowsPerPageOptions}
+                rowsPerPageOptions={[10, 25, 100, ...rowsPerPageExtraOptions]}
                 component="div"
+                labelRowsPerPage="Nombre d'éléments à afficher"
                 count={total ?? 0}
                 rowsPerPage={limit}
-                page={offset / limit}
-                onPageChange={(event: unknown, newPage: number) => paginate.onPaginationChange({offset: newPage * limit})}
-                onRowsPerPageChange={(event: React.ChangeEvent<HTMLInputElement>) =>
-                  paginate.onPaginationChange({limit: +event.target.value})
+                page={Math.round(offset / limit)}
+                onPageChange={(event: unknown, newPage: number) =>
+                  paginate.onPaginationChange({ offset: newPage * limit })
+                }
+                onRowsPerPageChange={(
+                  event: React.ChangeEvent<HTMLInputElement>,
+                ) =>
+                  paginate.onPaginationChange({ limit: +event.target.value })
                 }
               />
             )
           })()
-        : data && (
-            <Box
-              sx={{
-                py: 0,
-                px: 2,
-                minHeight: 52,
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'flex-end',
-              }}
-            >
-              <span dangerouslySetInnerHTML={{__html: m.nLines(data.length)}} />
-            </Box>
-          )}
-    </>
+        : null}
+    </div>
   )
 }

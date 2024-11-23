@@ -1,14 +1,17 @@
-import * as React from 'react'
-import {useI18n} from '../../../core/i18n'
-import {Enum} from '../../../alexlibs/ts-utils'
-import {Icon, Tooltip} from '@mui/material'
-import {Panel, PanelBody, PanelHead} from '../../../shared/Panel'
-import {HorizontalBarChart} from '../../../shared/HorizontalBarChart/HorizontalBarChart'
-import {useMemoFn} from '../../../alexlibs/react-hooks-lib'
-import {ReportStatus, ReportStatusPro} from '../../../core/client/report/Report'
+import { Icon, Tooltip } from '@mui/material'
+import { objectEntriesUnsafe } from 'core/helper'
+import { CleanDiscreetPanel } from 'shared/Panel/simplePanels'
+import { useMemoFn } from '../../../alexlibs/react-hooks-lib'
+import {
+  ReportStatus,
+  ReportStatusPro,
+} from '../../../core/client/report/Report'
+import { useI18n } from '../../../core/i18n'
+import { HorizontalBarChart } from '../../../shared/Chart/HorizontalBarChart'
+import { PanelBody } from '../../../shared/Panel'
 
 interface Props<T extends ReportStatus | ReportStatusPro> {
-  values: {[key in T]: number} | undefined
+  values: { [key in T]: number } | undefined
   loading?: boolean
   statusDesc: (status: T) => string
   statusShortLabel: (status: T) => string
@@ -22,10 +25,10 @@ export const StatusDistribution = <T extends ReportStatus | ReportStatusPro>({
   statusShortLabel,
   statusColor,
 }: Props<T>) => {
-  const {m} = useI18n()
+  const { m } = useI18n()
 
-  const statusDistribution = useMemoFn(values, _ =>
-    Enum.entries(_).map(([status, count]) => ({
+  const statusDistribution = useMemoFn(values, (_) =>
+    objectEntriesUnsafe(_).map(([status, count]) => ({
       label: (
         <span>
           {statusShortLabel(status)}
@@ -34,7 +37,7 @@ export const StatusDistribution = <T extends ReportStatus | ReportStatusPro>({
               fontSize="small"
               sx={{
                 verticalAlign: 'middle',
-                color: t => t.palette.text.disabled,
+                color: (t) => t.palette.text.disabled,
                 ml: 1,
               }}
             >
@@ -49,11 +52,13 @@ export const StatusDistribution = <T extends ReportStatus | ReportStatusPro>({
   )
 
   return (
-    <Panel loading={loading}>
-      <PanelHead>{m.status}</PanelHead>
+    <CleanDiscreetPanel loading={loading}>
+      <h2 className="font-bold text-lg">
+        Répartition des signalements par status
+      </h2>
       <PanelBody>
         <HorizontalBarChart data={statusDistribution} grid />
       </PanelBody>
-    </Panel>
+    </CleanDiscreetPanel>
   )
 }

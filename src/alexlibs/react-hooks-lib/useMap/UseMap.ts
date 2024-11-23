@@ -1,6 +1,6 @@
-import {useState} from 'react'
+import { useState } from 'react'
 
-export interface UseMap<K, V> {
+interface UseMap<K, V> {
   set: (k: K, v: V) => void
   has: (k: K) => boolean
   values: () => V[]
@@ -11,7 +11,9 @@ export interface UseMap<K, V> {
   get: (k: K) => V | undefined
 }
 
-export const useMap = <K, V>(initialValue: Map<K, V> = new Map()): UseMap<K, V> => {
+export const useMap = <K, V>(
+  initialValue: Map<K, V> = new Map(),
+): UseMap<K, V> => {
   const [map, setMap] = useState<Map<K, V>>(initialValue)
 
   return {

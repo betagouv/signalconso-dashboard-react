@@ -1,108 +1,214 @@
-import {useI18n} from '../../core/i18n'
-import {Panel} from '../../shared/Panel'
-import {Datatable} from '../../shared/Datatable/Datatable'
-import {useCallback, useEffect, useMemo, useState} from 'react'
-import {useCompaniesContext} from '../../core/context/CompaniesContext'
-import {Badge, Box, Icon, InputBase, ListItemIcon, ListItemText, MenuItem, Tooltip} from '@mui/material'
-import {NavLink} from 'react-router-dom'
-import {siteMap} from '../../core/siteMap'
-import {ScButton} from '../../shared/Button/Button'
-import {styleUtils, sxUtils} from '../../core/theme'
-import {Fender, IconBtn} from '../../alexlibs/mui-extension'
-import {mapArrayFromQuerystring, useQueryString} from '../../core/helper/useQueryString'
-import {DebouncedInput} from '../../shared/DebouncedInput/DebouncedInput'
-import {useToast} from '../../core/toast'
-import {AddressComponent} from '../../shared/Address/Address'
-import {SelectCompanyDialog} from '../../shared/SelectCompany/SelectCompanyDialog'
-import {EditAddressDialog} from './EditAddressDialog'
-import {useLogin} from '../../core/context/LoginContext'
-import {ClipboardApi} from '../../alexlibs/ts-utils/browser/clipboard/ClipboardApi'
-import {CompaniesRegisteredFilters} from './CompaniesRegisteredFilters'
-import {ScMenu} from '../../shared/Menu/Menu'
-import {Txt} from '../../alexlibs/mui-extension'
-import {Company, CompanySearch} from '../../core/client/company/Company'
-import {cleanObject} from '../../core/helper'
-import {PaginatedSearch} from '../../core/model'
-import {ScOption} from 'core/helper/ScOption'
+import {
+  Badge,
+  Box,
+  Icon,
+  ListItemIcon,
+  ListItemText,
+  MenuItem,
+  Tooltip,
+} from '@mui/material'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { useCallback, useEffect, useMemo, useState } from 'react'
+import { NavLink } from 'react-router-dom'
+import { ScInput } from 'shared/ScInput'
+import { Fender, IconBtn, Txt } from '../../alexlibs/mui-extension'
+import {
+  Company,
+  CompanySearch,
+  CompanyUpdate,
+  CompanyWithReportsCount,
+} from '../../core/client/company/Company'
+import { useConnectedContext } from '../../core/context/ConnectedContext'
+import { useToast } from '../../core/context/toastContext'
+import { cleanObject } from '../../core/helper'
+import {
+  mapArrayFromQuerystring,
+  useQueryString,
+} from '../../core/helper/useQueryString'
+import { useI18n } from '../../core/i18n'
+import { Address, Id, Paginate, PaginatedSearch } from '../../core/model'
+import {
+  ActivatedCompanySearchQueryKeys,
+  useActivatedCompanySearchQuery,
+} from '../../core/queryhooks/companyQueryHooks'
+import { siteMap } from '../../core/siteMap'
+import { styleUtils, sxUtils } from '../../core/theme'
+import { AddressComponent } from '../../shared/Address'
+import { ScButton } from '../../shared/Button'
+import { Datatable } from '../../shared/Datatable/Datatable'
+import { DebouncedInput } from '../../shared/DebouncedInput'
+import { ScMenu } from '../../shared/Menu'
+import { SelectCompanyDialog } from '../../shared/SelectCompany/SelectCompanyDialog'
+import { CompaniesRegisteredFilters } from './CompaniesRegisteredFilters'
+import { EditAddressDialog } from './EditAddressDialog'
+import { MassImport } from './MassImport'
 
-export interface CompanySearchQs extends PaginatedSearch<any> {
+interface CompanySearchQs extends PaginatedSearch<any> {
   departments?: string[] | string
   activityCodes?: string[] | string
   identity?: string
 }
 
 export const CompaniesRegistered = () => {
-  const {m, formatLargeNumber} = useI18n()
-  const _companies = useCompaniesContext().activated
-  const _companyUpdateAddress = useCompaniesContext().updateAddress
-  const _companyCreate = useCompaniesContext().create
-  const {toastError, toastErrorIfDefined, toastSuccess} = useToast()
-  const {connectedUser} = useLogin()
-  const [sortByResponseRate, setSortByResponseRate] = useState<'asc' | 'desc' | undefined>()
-
-  const queryString = useQueryString<Partial<CompanySearch>, Partial<CompanySearchQs>>({
-    toQueryString: _ => _,
+  const queryString = useQueryString<
+    Partial<CompanySearch>,
+    Partial<CompanySearchQs>
+  >({
+    toQueryString: (_) => _,
     fromQueryString: mapArrayFromQuerystring(['activityCodes', 'departments']),
   })
+  const { m, formatLargeNumber } = useI18n()
+  const queryClient = useQueryClient()
+  const { connectedUser, api: apiSdk } = useConnectedContext()
+  const _companies = useActivatedCompanySearchQuery({
+    offset: 0,
+    limit: 25,
+    ...queryString.get(),
+  })
 
-  useEffect(() => {
-    _companies.updateFilters({..._companies.initialFilters, ...queryString.get()})
-  }, [])
+  const updateRegisteredCompanyAddress = (id: Id, address: Address) => {
+    queryClient.setQueryData(
+      ActivatedCompanySearchQueryKeys,
+      (companies: Paginate<CompanyWithReportsCount>) => {
+        if (!companies) return companies
+        const company = companies?.entities.find((company) => company.id === id)
+        if (company) {
+          company.address = address
+          return { ...companies }
+        }
+        return companies
+      },
+    )
+  }
+
+  const _companyUpdateAddress = useMutation({
+    mutationFn: (params: { id: Id; update: CompanyUpdate }) =>
+      apiSdk.secured.company
+        .updateAddress(params.id, params.update)
+        .then((_) => {
+          updateRegisteredCompanyAddress(params.id, params.update.address)
+          return _
+        }),
+    onSuccess: () => toastSuccess(m.editedAddress),
+  })
+  const _companyCreate = useMutation({
+    mutationFn: apiSdk.secured.company.create,
+    onSuccess: () => toastSuccess(m.companyCreated),
+  })
+  const { toastError, toastSuccess } = useToast()
+  const [sortByResponseRate, setSortByResponseRate] = useState<
+    'asc' | 'desc' | undefined
+  >()
 
   useEffect(() => {
     queryString.update(cleanObject(_companies.filters))
   }, [_companies.filters])
 
-  useEffect(() => {
-    toastErrorIfDefined(_companies.error)
-    toastErrorIfDefined(_companyCreate.error)
-  }, [_companies.error, _companyCreate.error])
-
-  const copyAddress = (c: Company) => {
+  const copyAddress = async (c: Company) => {
     const a = c.address
     const address = `${c.name} - ${a.number} ${a.street} ${a.addressSupplement} ${a.postalCode} ${a.city} (${c.siret})`
-    ClipboardApi.copy(address.replaceAll('undefined', '').replaceAll(/[\s]{1,}/g, ' '))
-    toastSuccess(m.addressCopied)
+    const cleanedAddress = address
+      .replaceAll('undefined', '')
+      .replaceAll(/[\s]{1,}/g, ' ')
+    try {
+      await navigator.clipboard.writeText(cleanedAddress)
+      toastSuccess(m.succesCopy)
+    } catch (err) {
+      console.error("Échec de la copie de l'adresse : ", err)
+      toastError({ message: m.errorCopy })
+    }
   }
 
   const data = useMemo(() => {
-    if (sortByResponseRate && _companies.list)
-      return [..._companies.list.entities].sort(
-        (a, b) => (a.responseRate - b.responseRate) * (sortByResponseRate === 'desc' ? -1 : 1),
+    if (sortByResponseRate && _companies.result.data)
+      return [..._companies.result.data.entities].sort(
+        (a, b) =>
+          (a.responseRate - b.responseRate) *
+          (sortByResponseRate === 'desc' ? -1 : 1),
       )
-    return _companies.list?.entities
-  }, [_companies.list?.entities, sortByResponseRate])
+    return _companies.result.data?.entities
+  }, [_companies.result.data?.entities, sortByResponseRate])
 
   const onInputChange = useCallback((value: string) => {
-    _companies.updateFilters(prev => ({...prev, identity: value}))
+    _companies.updateFilters((prev) => ({ ...prev, identity: value }))
     // TRELLO-1391 The object _companies change all the time.
     // If we put it in dependencies, it causes problems with the debounce,
     // and the search input "stutters" when typing fast
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
+  const computeTitle = (company: Company) => {
+    const firstLine = company.commercialName
+      ? `${company.name} (${company.commercialName})`
+      : company.name
+    const secondLine = company.establishmentCommercialName
+      ? `${company.brand} - ${company.establishmentCommercialName}`
+      : company.brand
+    if (secondLine) {
+      return (
+        <>
+          {firstLine}
+          <br />
+          {secondLine}
+        </>
+      )
+    } else {
+      return firstLine
+    }
+  }
+
   return (
-    <Panel>
+    <>
       <Datatable
         id="companiesregistered"
-        header={
-          <DebouncedInput value={_companies.filters.identity ?? ''} onChange={onInputChange}>
-            {(value, onChange) => (
-              <InputBase
-                value={value}
-                placeholder={m.companiesSearchPlaceholder}
-                fullWidth
-                onChange={e => onChange(e.target.value)}
-              />
+        superheader={
+          <div className="flex gap-2 justify-between items-center">
+            <div>
+              <p>
+                Cette page liste toutes les sociétés qui existent dans
+                SignalConso
+              </p>
+              <p className="text-gray-500 italic">
+                Elles ont eu au moins un signalement, ou ont été ajoutées
+                manuellement par un admin.
+              </p>
+            </div>
+            {connectedUser.isAdmin && (
+              <MassImport>
+                <ScButton
+                  icon="meeting_room"
+                  variant="outlined"
+                  color="primary"
+                >
+                  Ouvrir des accès
+                </ScButton>
+              </MassImport>
             )}
-          </DebouncedInput>
+          </div>
+        }
+        headerMain={
+          <div className="mb-2 w-full">
+            <DebouncedInput
+              value={_companies.filters.identity ?? ''}
+              onChange={onInputChange}
+            >
+              {(value, onChange) => (
+                <ScInput
+                  value={value}
+                  placeholder={m.companiesSearchPlaceholder}
+                  fullWidth
+                  onChange={(e) => onChange(e.target.value)}
+                />
+              )}
+            </DebouncedInput>
+          </div>
         }
         actions={
           <>
             <CompaniesRegisteredFilters
               filters={_companies.filters}
-              updateFilters={_ => {
-                _companies.updateFilters(prev => ({...prev, ..._}))
+              updateFilters={(_) => {
+                _companies.updateFilters((prev) => ({ ...prev, ..._ }))
               }}
             >
               <Tooltip title={m.advancedFilters}>
@@ -122,40 +228,61 @@ export const CompaniesRegistered = () => {
           sortableColumns: ['responseRate'],
           sortBy: sortByResponseRate ? 'responseRate' : undefined,
           orderBy: sortByResponseRate,
-          onSortChange: _ => setSortByResponseRate(_.sortBy === 'responseRate' ? _.orderBy : undefined),
+          onSortChange: (_) =>
+            setSortByResponseRate(
+              _.sortBy === 'responseRate' ? _.orderBy : undefined,
+            ),
         }}
-        loading={_companies.fetching}
+        loading={_companies.result.isFetching}
         data={data}
         paginate={{
           offset: _companies.filters.offset,
           limit: _companies.filters.limit,
-          onPaginationChange: pagination => _companies.updateFilters(prev => ({...prev, ...pagination})),
+          onPaginationChange: (pagination) =>
+            _companies.updateFilters((prev) => ({ ...prev, ...pagination })),
         }}
-        total={_companies.list?.totalCount}
-        getRenderRowKey={_ => _.id}
+        total={_companies.result.data?.totalCount}
+        getRenderRowKey={(_) => _.id}
         showColumnsToggle={true}
         columns={[
           {
             head: m.name,
             id: 'siret',
-            sx: _ => ({
+            sx: (_) => ({
               lineHeight: 1.4,
               maxWidth: 170,
             }),
-            render: _ => (
-              <Tooltip title={_.name}>
+            render: (_) => (
+              <Tooltip title={computeTitle(_)}>
                 <span>
-                  <NavLink to={siteMap.logged.company(_.id)}>
-                    <Txt link sx={{fontWeight: 'bold', marginBottom: '-1px'}}>
+                  <NavLink
+                    to={siteMap.logged.company(_.id).stats.valueAbsolute}
+                  >
+                    <Txt link sx={{ marginBottom: '-1px' }}>
                       {_.name}
                     </Txt>
                   </NavLink>
+                  {_.brand && (
+                    <>
+                      <br />
+                      <Box
+                        component="span"
+                        sx={{
+                          fontSize: (t) => styleUtils(t).fontSize.small,
+                          fontStyle: 'italic',
+                          color: (t) => t.palette.text.primary,
+                        }}
+                      >
+                        {_.brand}
+                      </Box>
+                    </>
+                  )}
                   <br />
                   <Box
                     component="span"
                     sx={{
-                      fontSize: t => styleUtils(t).fontSize.small,
-                      color: t => t.palette.text.disabled,
+                      fontSize: (t) => styleUtils(t).fontSize.small,
+                      color: (t) => t.palette.text.disabled,
                     }}
                   >
                     {_.siret}
@@ -167,8 +294,8 @@ export const CompaniesRegistered = () => {
           {
             head: m.address,
             id: 'address',
-            sx: _ => ({maxWidth: 260, ...sxUtils.truncate}),
-            render: _ => (
+            sx: (_) => ({ maxWidth: 260, ...sxUtils.truncate }),
+            render: (_) => (
               <Tooltip title={<AddressComponent address={_.address} />}>
                 <span>
                   <AddressComponent address={_.address} />
@@ -179,10 +306,13 @@ export const CompaniesRegistered = () => {
           {
             head: m.postalCodeShort,
             id: 'postalCode',
-            render: _ => (
+            render: (_) => (
               <>
                 <span>{_.address.postalCode?.slice(0, 2)}</span>
-                <Box component="span" sx={{color: t => t.palette.text.disabled}}>
+                <Box
+                  component="span"
+                  sx={{ color: (t) => t.palette.text.disabled }}
+                >
                   {_.address.postalCode?.slice(2, 5)}
                 </Box>
               </>
@@ -191,33 +321,41 @@ export const CompaniesRegistered = () => {
           {
             head: m.reports,
             id: 'count',
-            sx: _ => ({textAlign: 'right'}),
-            render: _ => (
-              <NavLink to={siteMap.logged.reports({siretSirenList: [_.siret], departments: _companies.filters.departments})}>
-                <ScButton color="primary">{formatLargeNumber(_.count)}</ScButton>
+            sx: (_) => ({ textAlign: 'right' }),
+            render: (_) => (
+              <NavLink
+                to={siteMap.logged.reports({
+                  hasCompany: true,
+                  siretSirenList: [_.siret],
+                  departments: _companies.filters.departments,
+                })}
+              >
+                <ScButton color="primary">
+                  {formatLargeNumber(_.count)}
+                </ScButton>
               </NavLink>
             ),
           },
           {
             head: m.responseRate,
             id: 'responseRate',
-            sx: _ => ({textAlign: 'right'}),
-            render: _ => (
+            sx: (_) => ({ textAlign: 'right' }),
+            render: (_) => (
               <Box
                 component="span"
                 sx={{
-                  fontWeight: t => t.typography.fontWeightBold,
+                  fontWeight: (t) => t.typography.fontWeightBold,
                   ...(_.responseRate > 50
                     ? {
-                        color: t => t.palette.success.light,
+                        color: (t) => t.palette.success.light,
                       }
                     : _.responseRate === 0
-                    ? {
-                        color: t => t.palette.error.light,
-                      }
-                    : {
-                        color: t => t.palette.warning.light,
-                      }),
+                      ? {
+                          color: (t) => t.palette.error.light,
+                        }
+                      : {
+                          color: (t) => t.palette.warning.light,
+                        }),
                 }}
               >
                 {_.responseRate} %
@@ -227,25 +365,34 @@ export const CompaniesRegistered = () => {
           {
             head: m.activityCode,
             id: 'activityCode',
-            sx: _ => ({textAlign: 'right'}),
-            render: _ => <span>{_?.activityCode}</span>,
+            sx: (_) => ({ textAlign: 'right' }),
+            render: (_) => <span>{_?.activityCode}</span>,
           },
           {
             head: '',
             id: 'actions',
             stickyEnd: true,
-            sx: _ => sxUtils.tdActions,
-            render: _ => (
+            sx: (_) => sxUtils.tdActions,
+            render: (_) => (
               <>
-                <Badge color="error" badgeContent=" " variant="dot" overlap="circular">
-                  <NavLink to={siteMap.logged.company(_.id)}>
+                <Badge
+                  color="error"
+                  badgeContent=" "
+                  variant="dot"
+                  overlap="circular"
+                >
+                  <NavLink
+                    to={siteMap.logged.company(_.id).stats.valueAbsolute}
+                  >
                     <IconBtn color="primary">
                       <Icon>query_stats</Icon>
                     </IconBtn>
                   </NavLink>
                 </Badge>
                 <ScMenu>
-                  <NavLink to={siteMap.logged.companyAccesses(_.siret)}>
+                  <NavLink
+                    to={siteMap.logged.company(_.id).accesses.valueAbsolute}
+                  >
                     <MenuItem>
                       <ListItemIcon>
                         <Icon>vpn_key</Icon>
@@ -263,11 +410,15 @@ export const CompaniesRegistered = () => {
                     <EditAddressDialog
                       address={_.address}
                       onChangeError={_companyUpdateAddress.error?.message}
-                      onChange={form => {
-                        const {activationDocumentRequired = false, ...address} = form
-                        return _companyUpdateAddress
-                          .fetch({}, _.id, {address, activationDocumentRequired})
-                          .then(() => toastSuccess(m.editedAddress))
+                      onChange={(form) => {
+                        const {
+                          activationDocumentRequired = false,
+                          ...address
+                        } = form
+                        return _companyUpdateAddress.mutateAsync({
+                          id: _.id,
+                          update: { address, activationDocumentRequired },
+                        })
                       }}
                     >
                       <MenuItem>
@@ -284,21 +435,44 @@ export const CompaniesRegistered = () => {
           },
         ]}
         renderEmptyState={
-          <Fender title={m.noCompanyFound} icon="store" sx={{margin: 'auto', mt: 1, mb: 2}}>
+          <Fender
+            title={m.noCompanyFound}
+            icon="store"
+            sx={{ margin: 'auto', mt: 1, mb: 2 }}
+          >
             {connectedUser.isAdmin && (
               <SelectCompanyDialog
-                onChange={company => {
-                  const {siret, name, address, activityCode, isOpen, isHeadOffice, isPublic} = company
+                onChange={(company) => {
+                  const {
+                    siret,
+                    name,
+                    address,
+                    activityCode,
+                    isOpen,
+                    isHeadOffice,
+                    isPublic,
+                  } = company
                   if (name && address && siret) {
-                    _companyCreate
-                      .fetch({}, {siret, name, address, activityCode, isOpen, isHeadOffice, isPublic})
-                      .then(() => toastSuccess(m.companyCreated))
+                    _companyCreate.mutateAsync({
+                      siret,
+                      name,
+                      address,
+                      activityCode,
+                      isOpen,
+                      isHeadOffice,
+                      isPublic,
+                    })
                   } else {
-                    toastError({message: m.cannotCreateCompanyMissingInfo})
+                    toastError({ message: m.cannotCreateCompanyMissingInfo })
                   }
                 }}
               >
-                <ScButton variant="contained" color="primary" icon="add" sx={{mt: 1}}>
+                <ScButton
+                  variant="contained"
+                  color="primary"
+                  icon="add"
+                  sx={{ mt: 1 }}
+                >
                   {m.registerACompany}
                 </ScButton>
               </SelectCompanyDialog>
@@ -306,6 +480,6 @@ export const CompaniesRegistered = () => {
           </Fender>
         }
       />
-    </Panel>
+    </>
   )
 }

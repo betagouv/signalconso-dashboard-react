@@ -1,5 +1,4 @@
-import {Id, PaginatedFilters} from '../../model'
-import {Address} from '../../model/Address'
+import { Id, PaginatedFilters, Address } from '../../model'
 
 export interface CompanyWithReportsCount extends Company {
   count: number
@@ -11,6 +10,9 @@ export interface Company {
   siret: string
   creationDate: Date
   name: string
+  commercialName?: string
+  establishmentCommercialName?: string
+  brand?: string
   address: Address
   isHeadOffice: boolean
   isOpen: boolean
@@ -24,6 +26,11 @@ export interface CompanyToActivate {
   tokenCreation: Date
 }
 
+export interface CompanyToFollowUp {
+  company: Company
+  ignoredReportCount: number
+}
+
 export interface CompanyCreation {
   siret: string
   name: string
@@ -32,6 +39,14 @@ export interface CompanyCreation {
   isOpen: boolean
   isPublic: boolean
   activityCode?: string
+}
+
+export interface CompaniesToImport {
+  siren?: string
+  sirets: string[]
+  emails: string[]
+  onlyHeadOffice: boolean
+  level: AccessLevel
 }
 
 export interface CompanyUpdate {
@@ -43,6 +58,8 @@ export interface CompanyUpdate {
 export interface CompanySearchResult {
   siret: string
   name?: string
+  commercialName?: string
+  establishmentCommercialName?: string
   brand?: string
   isHeadOffice: boolean
   isOpen: boolean

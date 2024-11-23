@@ -1,4 +1,4 @@
-import {useState} from 'react'
+import { useState } from 'react'
 
 export interface UseSetState<T> {
   add: (t: T | T[]) => void
@@ -6,12 +6,10 @@ export interface UseSetState<T> {
   toggleAll: (t: T[]) => void
   delete: (t: T) => boolean
   clear: () => void
-  values: () => Iterable<T>
   toArray: () => T[]
   size: number
   has: (t: T) => boolean
   reset: (values?: T[]) => void
-  get: () => Set<T>
 }
 
 export const useSetState = <T>(initialValue: T[] = []): UseSetState<T> => {
@@ -39,7 +37,7 @@ export const useSetState = <T>(initialValue: T[] = []): UseSetState<T> => {
   }
 
   const toggleAll = (t: T[]): void => {
-    t.map(t.every(_ => set.has(_)) ? remove : add)
+    t.map(t.every((_) => set.has(_)) ? remove : add)
   }
 
   const clear = () => setSet(new Set())
@@ -51,9 +49,7 @@ export const useSetState = <T>(initialValue: T[] = []): UseSetState<T> => {
   return {
     has: (t: T) => set.has(t),
     size: set.size,
-    get: () => new Set(toArray()),
     toArray,
-    values: () => set.values(),
     add,
     toggle,
     toggleAll,

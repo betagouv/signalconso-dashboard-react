@@ -1,12 +1,19 @@
-import {Box, BoxProps, ListItemIcon, ListItemText, MenuItem, Tooltip} from '@mui/material'
+import {
+  Box,
+  BoxProps,
+  ListItemIcon,
+  ListItemText,
+  MenuItem,
+  Tooltip,
+} from '@mui/material'
 import React from 'react'
-import {ScMenu} from '../../shared/Menu/Menu'
+import { ScMenu } from '../../shared/Menu'
 import antidropIcon from './img/antidrop.png'
 import whoisIcon from './img/whois.png'
 import internetArchiveIcon from './img/internetArchive.svg'
 import scamdocIcon from './img/scamdoc.png'
-import {useI18n} from '../../core/i18n'
-import {WebsiteWithCompany} from '../../core/client/website/Website'
+import { useI18n } from '../../core/i18n'
+import { WebsiteWithCompany } from '../../core/client/website/Website'
 
 interface WebsiteActionsProps extends BoxProps {
   website: WebsiteWithCompany
@@ -35,13 +42,16 @@ const websiteAnalyzeTool = [
   },
 ]
 
-export const WebsiteTools = ({website}: WebsiteActionsProps) => {
-  const {m} = useI18n()
+export const WebsiteTools = ({ website }: WebsiteActionsProps) => {
+  const { m } = useI18n()
   return (
     <Tooltip title={m.identicationTools}>
       <ScMenu icon="travel_explore">
-        {websiteAnalyzeTool.map(tool => (
-          <MenuItem key={tool.label} onClick={() => window.open(tool.url(website.host), '_blank')}>
+        {websiteAnalyzeTool.map((tool) => (
+          <MenuItem
+            key={tool.label}
+            onClick={() => window.open(tool.url(website.host), '_blank')}
+          >
             <ListItemIcon>
               <Box
                 component="img"

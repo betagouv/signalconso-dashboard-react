@@ -1,11 +1,17 @@
-import {ApiClientApi} from './ApiClient'
-import {AuthenticateClient, FileClient, PublicConstantClient} from '.'
-import {PublicCompanyClient} from './company/PublicCompanyClient'
-import {PublicUserClient} from './user/PublicUserClient'
-import {PublicReportClient} from './report/PublicReportClient'
+import { apiHeaders, companiesApiBaseUrl } from 'core/apiSdkInstances'
+import { CompanySearchResult } from 'core/model'
+import { ApiClient } from './ApiClient'
 
-export class CompanyPublicSdk {
-  constructor(private client: ApiClientApi) {}
+export class CompaniesApiSdk {
+  private apiClient = new ApiClient({
+    baseUrl: companiesApiBaseUrl,
+    headers: apiHeaders,
+  })
 
-  readonly company = new PublicCompanyClient(this.client)
+  searchCompaniesByIdentity = (identity: string, openOnly: boolean) => {
+    return this.apiClient.get<CompanySearchResult[]>(
+      `/companies/search/${identity}?openOnly=${openOnly}`,
+      {},
+    )
+  }
 }

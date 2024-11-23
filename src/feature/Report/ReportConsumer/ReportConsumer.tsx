@@ -1,78 +1,97 @@
-import {Box, Icon, Tooltip, useTheme} from '@mui/material'
-import {Txt} from 'alexlibs/mui-extension'
-import {ScOption} from 'core/helper/ScOption'
-import {ReportReferenceNumber} from 'feature/Report/ReportReferenceNumber'
+import { ReportReferenceNumber } from 'feature/Report/ReportReferenceNumber'
 
-import {Report} from '../../../core/client/report/Report'
-import {useReportContext} from '../../../core/context/ReportContext'
-import {capitalize} from '../../../core/helper'
-import {useI18n} from '../../../core/i18n'
-import {styleUtils, sxUtils} from '../../../core/theme'
-import {ScButton} from '../../../shared/Button/Button'
-import {Panel, PanelBody, PanelHead} from '../../../shared/Panel'
-import {EditConsumerDialog} from './EditConsumerDialog'
+import { WithInlineIcon } from 'shared/WithInlineIcon'
+import {
+  Report,
+  ReportConsumerUpdate,
+  ReportSearchResult,
+} from '../../../core/client/report/Report'
+import { capitalize } from '../../../core/helper'
+import { useI18n } from '../../../core/i18n'
+import { ScButton } from '../../../shared/Button'
+import { Panel, PanelBody, PanelHead } from '../../../shared/Panel'
+import { EditConsumerDialog } from './EditConsumerDialog'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { useApiContext } from '../../../core/context/ApiContext'
+import { GetReportQueryKeys } from '../../../core/queryhooks/reportQueryHooks'
+import { CleanDiscreetPanel, CleanWidePanel } from 'shared/Panel/simplePanels'
+import { UserNameLabel } from '../../../shared/UserNameLabel'
 
 interface Props {
   report: Report
   canEdit?: boolean
 }
 
-export const ReportConsumer = ({report, canEdit}: Props) => {
-  const _report = useReportContext()
-  const {m} = useI18n()
-  const theme = useTheme()
+export const ReportConsumer = ({ report, canEdit }: Props) => {
+  const { m } = useI18n()
+  const { api } = useApiContext()
+  const queryClient = useQueryClient()
+  const _updateReportConsumer = useMutation({
+    mutationFn: (params: {
+      reportId: string
+      reportConsumerUpdate: ReportConsumerUpdate
+    }) =>
+      api.secured.reports.updateReportConsumer(
+        params.reportId,
+        params.reportConsumerUpdate,
+      ),
+    onSuccess: (report) =>
+      queryClient.setQueryData(
+        GetReportQueryKeys(report.id),
+        (prev: ReportSearchResult) => {
+          return { report, files: prev?.files ?? [] }
+        },
+      ),
+  })
+
+  const { firstName, lastName, contactAgreement } = report
 
   return (
-    <Panel stretch>
-      <PanelHead
-        action={
-          canEdit && (
-            <EditConsumerDialog report={report} onChange={consumer => _report.updateConsumer.fetch({}, report.id, consumer)}>
-              <ScButton icon="edit" color="primary" loading={_report.updateConsumer.loading}>
-                {m.edit}
-              </ScButton>
-            </EditConsumerDialog>
-          )
-        }
-      >
-        {m.consumer}
-      </PanelHead>
-      <PanelBody
-        sx={{
-          display: 'flex',
-          justifyContent: 'space-between',
-        }}
-      >
-        <div>
-          <Box sx={{fontSize: t => styleUtils(t).fontSize.big}}>
-            {ScOption.from(report.firstName)
-              .map(_ => capitalize(_))
-              .getOrElse('')}
-            &nbsp;
-            {ScOption.from(report.lastName)
-              .map(_ => _.toLocaleUpperCase())
-              .getOrElse('')}
-          </Box>
-          <Box sx={{color: t => t.palette.text.secondary}}>{report.email}</Box>
-          {report.consumerPhone && <Box sx={{color: t => t.palette.text.secondary}}>{report.consumerPhone}</Box>}
-          <ReportReferenceNumber consumerReferenceNumber={report.consumerReferenceNumber} />
-          {!report.contactAgreement && (
-            <Box sx={{color: t => t.palette.error.main}} style={{marginTop: theme.spacing(0.5)}}>
-              <Icon sx={sxUtils.inlineIcon}>warning</Icon>
-              &nbsp;
-              {m.reportConsumerWantToBeAnonymous}
-            </Box>
+    <CleanDiscreetPanel>
+      <div className="flex items-center justify-between">
+        <WithInlineIcon icon="person">{m.consumer}</WithInlineIcon>
+        {canEdit && (
+          <EditConsumerDialog
+            report={report}
+            onChange={(consumer) =>
+              _updateReportConsumer.mutate({
+                reportId: report.id,
+                reportConsumerUpdate: consumer,
+              })
+            }
+          >
+            <ScButton
+              icon="edit"
+              color="primary"
+              loading={_updateReportConsumer.isPending}
+            >
+              {m.edit}
+            </ScButton>
+          </EditConsumerDialog>
+        )}
+      </div>
+      <div>
+        <div className={contactAgreement ? '' : 'bg-red-100 py-2 px-4 w-full'}>
+          {contactAgreement || (
+            <div className="font-bold text-sm text-red-600 mb-2">
+              {m.reportConsumerWantToBeAnonymous}.
+              <br />
+              Ne pas divulguer ces informations à l'entreprise.
+            </div>
           )}
+          <UserNameLabel
+            firstName={capitalize(firstName)}
+            lastName={capitalize(lastName)}
+          />
+          <div className="text-gray-500">{report.email}</div>
+          {report.consumerPhone && (
+            <div className="text-gray-500">{report.consumerPhone}</div>
+          )}
+          <ReportReferenceNumber
+            consumerReferenceNumber={report.consumerReferenceNumber}
+          />
         </div>
-        <Icon
-          sx={{
-            fontSize: 64,
-            color: t => t.palette.divider,
-          }}
-        >
-          person
-        </Icon>
-      </PanelBody>
-    </Panel>
+      </div>
+    </CleanDiscreetPanel>
   )
 }

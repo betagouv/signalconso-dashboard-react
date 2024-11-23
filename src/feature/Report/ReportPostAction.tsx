@@ -1,13 +1,14 @@
-import React, {ReactElement, useState} from 'react'
-import {Alert} from '../../alexlibs/mui-extension'
-import {useI18n} from '../../core/i18n'
-import {ScInput} from '../../shared/Input/ScInput'
-import {useFetcher} from '../../alexlibs/react-hooks-lib'
-import {useLogin} from '../../core/context/LoginContext'
-import {useToast} from '../../core/toast'
-import {ScDialog} from '../../shared/Confirm/ScDialog'
-import {EventActionValues} from '../../core/client/event/Event'
-import {Report} from '../../core/client/report/Report'
+import { useMutation } from '@tanstack/react-query'
+import { ReactElement, useState } from 'react'
+import { Alert } from '../../alexlibs/mui-extension'
+import { EventActionValues, ReportAction } from '../../core/client/event/Event'
+import { Report } from '../../core/client/report/Report'
+import { useConnectedContext } from '../../core/context/ConnectedContext'
+import { useToast } from '../../core/context/toastContext'
+import { useI18n } from '../../core/i18n'
+import { Id } from '../../core/model'
+import { ScDialog } from '../../shared/ScDialog'
+import { ScInput } from '../../shared/ScInput'
 
 interface Props {
   report: Report
@@ -18,28 +19,39 @@ interface Props {
   actionType: EventActionValues
 }
 
-export const ReportPostAction = ({label, actionType, report, children, onAdd, required}: Props) => {
-  const {m} = useI18n()
-  const {apiSdk} = useLogin()
-  const _addComment = useFetcher(apiSdk.secured.reports.postAction)
+export const ReportPostAction = ({
+  label,
+  actionType,
+  report,
+  children,
+  onAdd,
+  required,
+}: Props) => {
+  const { m } = useI18n()
+  const { api: apiSdk } = useConnectedContext()
+  const _addComment = useMutation({
+    mutationFn: (params: { id: Id; action: ReportAction }) =>
+      apiSdk.secured.reports.postAction(params.id, params.action),
+    onSuccess: () => {
+      setComment('')
+      onAdd()
+      toastSuccess(m.commentAdded)
+    },
+  })
   const [comment, setComment] = useState('')
-  const {toastSuccess} = useToast()
-
-  const addComment = () => {
-    return _addComment.fetch({}, report.id, {actionType, details: comment, fileIds: []})
-  }
+  const { toastSuccess } = useToast()
 
   return (
     <ScDialog
       title={label}
-      loading={_addComment.loading}
+      loading={_addComment.isPending}
       onConfirm={(event, close) =>
-        addComment().then(() => {
-          setComment('')
-          onAdd()
-          toastSuccess(m.commentAdded)
-          close()
-        })
+        _addComment
+          .mutateAsync({
+            id: report.id,
+            action: { actionType, details: comment, fileIds: [] },
+          })
+          .finally(close)
       }
       confirmLabel={m.add}
       confirmDisabled={required && comment === ''}
@@ -49,7 +61,7 @@ export const ReportPostAction = ({label, actionType, report, children, onAdd, re
           <ScInput
             required={required}
             value={comment}
-            onChange={e => setComment(e.target.value)}
+            onChange={(e) => setComment(e.target.value)}
             multiline
             fullWidth
             rows={3}

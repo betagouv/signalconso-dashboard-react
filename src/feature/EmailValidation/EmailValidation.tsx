@@ -1,22 +1,19 @@
-import {Page} from '../../shared/Layout'
-import {useI18n} from '../../core/i18n'
-import {useLocation} from 'react-router'
-import {useAsync} from '../../alexlibs/react-hooks-lib'
-import {useEffect, useMemo} from 'react'
-import {Fender} from '../../alexlibs/mui-extension'
-import {ScButton} from '../../shared/Button/Button'
-import {NavLink} from 'react-router-dom'
-import {siteMap} from '../../core/siteMap'
-import {CenteredContent} from '../../shared/CenteredContent/CenteredContent'
-import {Txt} from '../../alexlibs/mui-extension'
-import {QueryString} from '../../core/helper/useQueryString'
-import {layoutConfig} from '../../core/Layout'
-import {AuthUser} from '../../core/client/authenticate/Authenticate'
-import {Id} from '../../core/model'
+import { useMutation } from '@tanstack/react-query'
+import { publicApiSdk } from 'core/apiSdkInstances'
+import { useEffect, useMemo } from 'react'
+import { useLocation } from 'react-router'
+import { NavLink } from 'react-router-dom'
+import { Fender, Txt } from '../../alexlibs/mui-extension'
+import { QueryString } from '../../core/helper/useQueryString'
+import { useI18n } from '../../core/i18n'
+import { User } from '../../core/model'
+import { siteMap } from '../../core/siteMap'
+import { ScButton } from '../../shared/Button'
+import { CenteredContent } from '../../shared/CenteredContent'
+import { Page } from '../../shared/Page'
 
 interface Props {
-  onValidateEmail: (token: Id) => Promise<AuthUser>
-  onSaveToken: (_: AuthUser) => void
+  onSaveUser: (_: User) => void
 }
 
 interface FenderProps {
@@ -25,18 +22,20 @@ interface FenderProps {
   description?: string
 }
 
-export const EmailValidation = ({onValidateEmail, onSaveToken}: Props) => {
-  const {m} = useI18n()
-  const _validateEmail = useAsync(onValidateEmail)
-  const {search} = useLocation()
+export const EmailValidation = ({ onSaveUser }: Props) => {
+  const { m } = useI18n()
+  const _validateEmail = useMutation({
+    mutationFn: publicApiSdk.authenticate.validateEmail,
+  })
+  const { search } = useLocation()
 
   useEffect(() => {
     const token = QueryString.parse(search.replace(/^\?/, '')).token as string
-    _validateEmail.call(token).then(onSaveToken)
+    _validateEmail.mutateAsync(token).then(onSaveUser)
   }, [])
 
   const fenderProps = useMemo((): FenderProps => {
-    if (_validateEmail.loading) {
+    if (_validateEmail.isPending) {
       return {
         type: 'loading',
         title: m.validatingEmail,
@@ -54,19 +53,24 @@ export const EmailValidation = ({onValidateEmail, onSaveToken}: Props) => {
       title: m.emailValidated,
       description: m.emailValidatedDesc,
     }
-  }, [_validateEmail.loading, _validateEmail.error])
+  }, [_validateEmail.isPending, _validateEmail.error])
 
   return (
-    <CenteredContent offset={layoutConfig.headerHeight}>
-      <Page size="s">
+    <CenteredContent>
+      <Page maxWidth="s">
         <Fender type={fenderProps.type} title={fenderProps.title}>
-          <Txt block gutterBottom color="hint" size="big" sx={{mt: 2}}>
+          <Txt block gutterBottom color="hint" size="big" sx={{ mt: 2 }}>
             {fenderProps.description}
           </Txt>
 
-          {fenderProps.type !== 'loading' && (
+          {fenderProps.type !== 'loading' && fenderProps.type !== 'success' && (
             <NavLink to={siteMap.loggedout.login}>
-              <ScButton sx={{mt: 1}} icon="login" variant="contained" color="primary">
+              <ScButton
+                sx={{ mt: 1 }}
+                icon="login"
+                variant="contained"
+                color="primary"
+              >
                 {m.login}
               </ScButton>
             </NavLink>

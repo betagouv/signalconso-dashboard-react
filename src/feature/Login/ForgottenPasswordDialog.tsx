@@ -1,20 +1,20 @@
-import {Alert} from '../../alexlibs/mui-extension'
-import {Txt} from '../../alexlibs/mui-extension'
-import {ScInput} from '../../shared/Input/ScInput'
-import {regexp} from '../../core/helper/regexp'
-import * as React from 'react'
-import {ReactElement, useEffect} from 'react'
-import {useForm} from 'react-hook-form'
-import {useI18n} from '../../core/i18n'
-import {useToast} from '../../core/toast'
-import {ScDialog} from '../../shared/Confirm/ScDialog'
-import {AuthenticationEventActions, EventCategories, Matomo} from '../../core/plugins/Matomo'
-import {ApiError} from '../../core/client/ApiClient'
+import { TextField } from '@mui/material'
+import { useMutation } from '@tanstack/react-query'
+import { publicApiSdk } from 'core/apiSdkInstances'
+import { ReactElement, useEffect } from 'react'
+import { useForm } from 'react-hook-form'
+import { Alert, Txt } from '../../alexlibs/mui-extension'
+import { useToast } from '../../core/context/toastContext'
+import { regexp } from '../../core/helper/regexp'
+import { useI18n } from '../../core/i18n'
+import {
+  AuthenticationEventActions,
+  EventCategories,
+  Matomo,
+} from '../../core/plugins/Matomo'
+import { ScDialog } from '../../shared/ScDialog'
 
 interface Props {
-  onSubmit: (email: string) => Promise<any>
-  loading?: boolean
-  error?: ApiError
   children: ReactElement<any>
   value?: string
 }
@@ -23,15 +23,20 @@ interface Form {
   emailForgotten: string
 }
 
-export const ForgottenPasswordDialog = ({value, onSubmit, loading, error, children}: Props) => {
-  const {m} = useI18n()
-  const {toastSuccess} = useToast()
+export const ForgottenPasswordDialog = ({ value, children }: Props) => {
+  const { m } = useI18n()
+  const { toastSuccess } = useToast()
+  const _forgotPassword = useMutation({
+    mutationFn: publicApiSdk.authenticate.forgotPassword,
+    onSuccess: () => toastSuccess(m.emailSentToYou),
+  })
   const {
     register,
     getValues,
     setValue,
+    watch,
     handleSubmit,
-    formState: {errors, isValid},
+    formState: { errors, isValid },
   } = useForm<Form>()
 
   useEffect(() => {
@@ -39,27 +44,33 @@ export const ForgottenPasswordDialog = ({value, onSubmit, loading, error, childr
   }, [value])
 
   const submit = (form: Form, close: () => void) => {
-    onSubmit(form.emailForgotten)
+    _forgotPassword
+      .mutateAsync(form.emailForgotten)
       .then(() => {
         close()
-        toastSuccess(m.emailSentToYou)
-        Matomo.trackEvent(EventCategories.auth, AuthenticationEventActions.forgotPasswordSuccess, form.emailForgotten)
+        Matomo.trackEvent(
+          EventCategories.auth,
+          AuthenticationEventActions.forgotPasswordSuccess,
+        )
       })
       .catch(() => {
-        Matomo.trackEvent(EventCategories.auth, AuthenticationEventActions.forgotPasswordFail, form.emailForgotten)
+        Matomo.trackEvent(
+          EventCategories.auth,
+          AuthenticationEventActions.forgotPasswordFail,
+        )
       })
   }
 
   return (
     <ScDialog
-      loading={loading}
+      loading={_forgotPassword.isPending}
       title={m.forgottenPassword}
       confirmLabel={m.createNewPassword}
       maxWidth="xs"
       onConfirm={(e, close) => handleSubmit(() => submit(getValues(), close))()}
       content={
         <>
-          {error !== undefined && (
+          {_forgotPassword.isError && (
             <Alert type="error" gutterBottom deletable>
               {m.anErrorOccurred}
             </Alert>
@@ -67,16 +78,26 @@ export const ForgottenPasswordDialog = ({value, onSubmit, loading, error, childr
           <Txt color="hint" block gutterBottom>
             {m.forgottenPasswordDesc}
           </Txt>
-          <ScInput
+          {watch('emailForgotten')
+            ?.toLocaleLowerCase()
+            .endsWith('.gouv.fr') && (
+            <Alert type="warning" gutterBottom>
+              Réservé aux utilisateurs qui n'utilisent pas ProConnect pour se
+              connecter à SignalConso.
+            </Alert>
+          )}
+          <TextField
             fullWidth
             autoFocus
+            variant="filled"
             type="email"
-            label={m.email}
+            label={m.yourEmail}
+            size="small"
             error={!!errors.emailForgotten}
             helperText={errors.emailForgotten?.message}
             {...register('emailForgotten', {
-              required: {value: true, message: m.required},
-              pattern: {value: regexp.email, message: m.invalidEmail},
+              required: { value: true, message: m.required },
+              pattern: { value: regexp.email, message: m.invalidEmail },
             })}
           />
         </>

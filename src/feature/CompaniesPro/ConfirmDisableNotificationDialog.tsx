@@ -1,7 +1,12 @@
-import {Dialog, DialogActions, DialogContent, DialogTitle} from '@mui/material'
-import {ScButton} from '../../shared/Button/Button'
-import {useI18n} from '../../core/i18n'
-import {Txt} from '../../alexlibs/mui-extension'
+import {
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+} from '@mui/material'
+import { ScButton } from '../../shared/Button'
+import { useI18n } from '../../core/i18n'
+import { Txt } from '../../alexlibs/mui-extension'
 
 interface Props {
   open: boolean
@@ -9,8 +14,12 @@ interface Props {
   onClose: () => void
 }
 
-export const ConfirmDisableNotificationDialog = ({open, onClose, onConfirm}: Props) => {
-  const {m} = useI18n()
+export const ConfirmDisableNotificationDialog = ({
+  open,
+  onClose,
+  onConfirm,
+}: Props) => {
+  const { m } = useI18n()
   return (
     <Dialog maxWidth="xs" open={open}>
       <DialogTitle>{m.notificationDisableWarning}</DialogTitle>

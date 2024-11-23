@@ -1,9 +1,9 @@
-import {CompanyAccess, CompanyAccessLevel} from './CompanyAccess'
-import {ApiClientApi} from '../ApiClient'
-import {Id} from '../../model'
+import { Id } from '../../model'
+import { ApiClient } from '../ApiClient'
+import { CompanyAccess, CompanyAccessLevel } from './CompanyAccess'
 
 export class CompanyAccessClient {
-  constructor(private client: ApiClientApi) {}
+  constructor(private client: ApiClient) {}
 
   readonly fetch = (siret: string) => {
     return this.client.get<CompanyAccess[]>(`/accesses/${siret}`)
@@ -13,8 +13,14 @@ export class CompanyAccessClient {
     return this.client.get<number>(`/accesses/${siret}/count`)
   }
 
-  readonly update = (siret: string, userId: string, level: CompanyAccessLevel) => {
-    return this.client.put<CompanyAccess>(`/accesses/${siret}/${userId}`, {body: {level}}).then(_ => ({..._, level: level}))
+  readonly update = (
+    siret: string,
+    userId: string,
+    level: CompanyAccessLevel,
+  ) => {
+    return this.client
+      .put<CompanyAccess>(`/accesses/${siret}/${userId}`, { body: { level } })
+      .then((_) => ({ ..._, level: level }))
   }
 
   readonly remove = (siret: string, userId: Id) => {
