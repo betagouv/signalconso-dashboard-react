@@ -1,4 +1,4 @@
-import { alpha, Button, ButtonGroup } from '@mui/material'
+import { alpha, Button, ButtonGroup, MenuItem } from '@mui/material'
 import { useConnectedContext } from 'core/context/ConnectedContext'
 import { useI18n } from 'core/i18n'
 import { siteMap } from 'core/siteMap'
@@ -10,12 +10,16 @@ import {
 } from 'shared/Chart/LineChartWrappers'
 import { CleanDiscreetPanel } from 'shared/Panel/simplePanels'
 import { CompanyWithReportsCount } from '../../core/client/company/Company'
-import { NbReportsTotals, Period } from '../../core/client/stats/statsTypes'
+import {
+  NbReportsTotals,
+  Period,
+  Ticks,
+} from '../../core/client/stats/statsTypes'
 import { Id, ReportStatus } from '../../core/model'
+import { ScSelect } from '../../shared/Select/Select'
 
 const periods: Period[] = ['Day', 'Week', 'Month']
-
-const ticks = 7
+const ticks: Ticks[] = [3, 6, 12, 24]
 
 export const CompanyChartPanel = ({
   companyId,
@@ -29,6 +33,7 @@ export const CompanyChartPanel = ({
   const { api: apiSdk } = useConnectedContext()
   const { m, formatLargeNumber } = useI18n()
   const [reportsCurvePeriod, setReportsCurvePeriod] = useState<Period>('Month')
+  const [reportsTick, setReportsTick] = useState<Ticks>(6)
   const companyIds = [companyId]
   const [curves, setCurves] = useState<CurveDefinition[] | undefined>()
 
@@ -38,7 +43,7 @@ export const CompanyChartPanel = ({
       const [reports, responses] = await Promise.all([
         apiSdk.secured.stats.getReportCountCurve({
           companyIds,
-          ticks,
+          ticks: reportsTick,
           tickDuration: reportsCurvePeriod,
         }),
         apiSdk.secured.stats.getReportCountCurve({
@@ -48,7 +53,7 @@ export const CompanyChartPanel = ({
             ReportStatus.Infonde,
             ReportStatus.MalAttribue,
           ],
-          ticks,
+          ticks: reportsTick,
           tickDuration: reportsCurvePeriod,
         }),
       ])
@@ -63,8 +68,9 @@ export const CompanyChartPanel = ({
         },
       ])
     }
+
     inner()
-  }, [reportsCurvePeriod])
+  }, [reportsCurvePeriod, reportsTick])
 
   const periodToString = (period: Period): string => {
     switch (period) {
@@ -77,27 +83,51 @@ export const CompanyChartPanel = ({
     }
   }
 
+  const tickToString = (tick: Ticks): string => {
+    switch (tick) {
+      case 3:
+        return m.tick3
+      case 6:
+        return m.tick6
+      case 12:
+        return m.tick12
+      case 24:
+        return m.tick24
+    }
+  }
+
   return (
     <CleanDiscreetPanel>
       <div className="flex items-center justify-between mb-2">
         {reportTotals && (
           <ReportsTotalWithLink {...{ companyId, reportTotals }} />
         )}
-        <ButtonGroup color="primary">
-          {periods.map((p) => (
-            <Button
-              key={p}
-              sx={
-                p === reportsCurvePeriod
-                  ? { background: (t) => alpha(t.palette.primary.main, 0.14) }
-                  : {}
-              }
-              onClick={() => setReportsCurvePeriod(p)}
-            >
-              {periodToString(p)}
-            </Button>
-          ))}
-        </ButtonGroup>
+        <div className={'flex flex-row items-center gap-1'}>
+          <ScSelect
+            label={'Période'}
+            value={reportsTick}
+            onChange={(x) => setReportsTick(x.target.value as Ticks)}
+            style={{ margin: 0 }}
+          >
+            {ticks.map((t) => (
+              <MenuItem key={t} value={t}>
+                {tickToString(t)}
+              </MenuItem>
+            ))}
+          </ScSelect>
+          <ScSelect
+            label={'Intervalle'}
+            value={reportsCurvePeriod}
+            onChange={(x) => setReportsCurvePeriod(x.target.value as Period)}
+            style={{ margin: 0 }}
+          >
+            {periods.map((t) => (
+              <MenuItem key={t} value={t}>
+                {periodToString(t)}
+              </MenuItem>
+            ))}
+          </ScSelect>
+        </div>
       </div>
       <LineChartOrPlaceholder
         hideLabelToggle={true}

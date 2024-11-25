@@ -81,7 +81,7 @@ export enum EventActionValues {
 export const acceptedDetails = [
   'REMBOURSEMENT_OU_AVOIR',
   'REPARATION_OU_REMPLACEMENT',
-  'LIVRAISON',
+  // 'LIVRAISON',
   'CONSEIL_D_UTILISATION',
   'ME_CONFORMER_A_LA_REGLEMENTATION',
   'ADAPTER_MES_PRATIQUES',

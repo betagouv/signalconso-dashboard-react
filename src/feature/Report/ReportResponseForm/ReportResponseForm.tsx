@@ -31,7 +31,6 @@ import { SuccessModal } from './SuccessModal'
 interface Props {
   report: Report
   onConfirm?: (_: IncomingReportResponse) => void
-  ref: React.RefObject<HTMLDivElement>
 }
 
 const stepStyles = {
