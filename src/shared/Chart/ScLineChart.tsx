@@ -15,6 +15,7 @@ import {
 import { CountByDate, Period } from '../../core/client/stats/statsTypes'
 import { useI18n } from '../../core/i18n'
 import { styleUtils } from '../../core/theme'
+import format from 'date-fns/format'
 
 interface ScLineChartPropsBase {
   /**
@@ -63,7 +64,7 @@ const formatDate = (
 ): string => {
   switch (period) {
     case 'Day':
-      return `${(m.dayShort_ as any)[date.getDay() + 1]} ${date.getDate()}`
+      return format(date, 'yyyy-MM-dd')
     case 'Week':
       const [y, w] = getWeek(date)
       return `S${w} ${y}`

@@ -7,7 +7,7 @@ export interface SimpleStat {
 }
 
 export type Period = 'Day' | 'Week' | 'Month'
-export type Ticks = 3 | 6 | 12 | 24
+export type MonthTicks = 1 | 6 | 12 | 24
 
 type ReportResponseType = 'ACCEPTED' | 'REJECTED' | 'NOT_CONCERNED'
 

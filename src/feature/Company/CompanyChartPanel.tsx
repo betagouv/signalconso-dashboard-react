@@ -13,13 +13,13 @@ import { CompanyWithReportsCount } from '../../core/client/company/Company'
 import {
   NbReportsTotals,
   Period,
-  Ticks,
+  MonthTicks,
 } from '../../core/client/stats/statsTypes'
 import { Id, ReportStatus } from '../../core/model'
 import { ScSelect } from '../../shared/Select/Select'
 
 const periods: Period[] = ['Day', 'Week', 'Month']
-const ticks: Ticks[] = [3, 6, 12, 24]
+const ticks: MonthTicks[] = [1, 6, 12, 24]
 
 export const CompanyChartPanel = ({
   companyId,
@@ -33,7 +33,7 @@ export const CompanyChartPanel = ({
   const { api: apiSdk } = useConnectedContext()
   const { m, formatLargeNumber } = useI18n()
   const [reportsCurvePeriod, setReportsCurvePeriod] = useState<Period>('Month')
-  const [reportsTick, setReportsTick] = useState<Ticks>(6)
+  const [reportsTick, setReportsTick] = useState<MonthTicks>(6)
   const companyIds = [companyId]
   const [curves, setCurves] = useState<CurveDefinition[] | undefined>()
 
@@ -43,7 +43,7 @@ export const CompanyChartPanel = ({
       const [reports, responses] = await Promise.all([
         apiSdk.secured.stats.getReportCountCurve({
           companyIds,
-          ticks: reportsTick,
+          ticks: computeTicks(),
           tickDuration: reportsCurvePeriod,
         }),
         apiSdk.secured.stats.getReportCountCurve({
@@ -53,7 +53,7 @@ export const CompanyChartPanel = ({
             ReportStatus.Infonde,
             ReportStatus.MalAttribue,
           ],
-          ticks: reportsTick,
+          ticks: computeTicks(),
           tickDuration: reportsCurvePeriod,
         }),
       ])
@@ -72,6 +72,28 @@ export const CompanyChartPanel = ({
     inner()
   }, [reportsCurvePeriod, reportsTick])
 
+  const computeTicks = () => {
+    const today = new Date()
+    const xMonthsAgo = new Date()
+    xMonthsAgo.setMonth(today.getMonth() - reportsTick)
+    const diffInMilliseconds = today.getTime() - xMonthsAgo.getTime()
+
+    switch (reportsCurvePeriod) {
+      case 'Day':
+        const diffInDays = Math.floor(
+          diffInMilliseconds / (24 * 60 * 60 * 1000),
+        )
+        return diffInDays
+      case 'Week':
+        const diffInWeeks = Math.floor(
+          diffInMilliseconds / (7 * 24 * 60 * 60 * 1000),
+        )
+        return diffInWeeks
+      case 'Month':
+        return reportsTick
+    }
+  }
+
   const periodToString = (period: Period): string => {
     switch (period) {
       case 'Day':
@@ -83,10 +105,10 @@ export const CompanyChartPanel = ({
     }
   }
 
-  const tickToString = (tick: Ticks): string => {
+  const tickToString = (tick: MonthTicks): string => {
     switch (tick) {
-      case 3:
-        return m.tick3
+      case 1:
+        return m.tick1
       case 6:
         return m.tick6
       case 12:
@@ -106,7 +128,16 @@ export const CompanyChartPanel = ({
           <ScSelect
             label={'Période'}
             value={reportsTick}
-            onChange={(x) => setReportsTick(x.target.value as Ticks)}
+            onChange={(x) => {
+              const selected = x.target.value as MonthTicks
+              //reset interval filter depending on period
+              if (selected !== 1) {
+                setReportsCurvePeriod('Month')
+              } else {
+                setReportsCurvePeriod('Week')
+              }
+              return setReportsTick(selected)
+            }}
             style={{ margin: 0 }}
           >
             {ticks.map((t) => (
@@ -118,14 +149,23 @@ export const CompanyChartPanel = ({
           <ScSelect
             label={'Intervalle'}
             value={reportsCurvePeriod}
-            onChange={(x) => setReportsCurvePeriod(x.target.value as Period)}
+            onChange={(x) => {
+              return setReportsCurvePeriod(x.target.value as Period)
+            }}
             style={{ margin: 0 }}
           >
-            {periods.map((t) => (
-              <MenuItem key={t} value={t}>
-                {periodToString(t)}
-              </MenuItem>
-            ))}
+            {periods
+              //Do not allow to see Day when period is too large and month when the period is 1 month
+              .filter(
+                (_) =>
+                  (reportsTick === 1 && _ !== 'Month') ||
+                  (reportsTick !== 1 && _ !== 'Day'),
+              )
+              .map((t) => (
+                <MenuItem key={t} value={t}>
+                  {periodToString(t)}
+                </MenuItem>
+              ))}
           </ScSelect>
         </div>
       </div>
