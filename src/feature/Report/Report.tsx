@@ -1,5 +1,10 @@
 import { Box, Tab, Tabs, Tooltip } from '@mui/material'
-import { useMutation, UseQueryResult } from '@tanstack/react-query'
+import {
+  useMutation,
+  useQuery,
+  useQueryClient,
+  UseQueryResult,
+} from '@tanstack/react-query'
 import { ApiError } from 'core/client/ApiClient'
 import { map } from 'core/helper'
 import React, { useState } from 'react'
@@ -45,6 +50,9 @@ import { ReportProduct } from './ReportProduct'
 import { ReportReOpening } from './ReportReOpening'
 import { ReportResponseComponent } from './ReportResponse'
 import { ReportViewAsPro } from './ReportViewAsPro'
+import { useApiContext } from '../../core/context/ApiContext'
+import { SearchAdminQueryKeys } from '../../core/queryhooks/userQueryHooks'
+import { ReportAlbert } from './ReportAlbert'
 
 const CONSO: EventType = 'CONSO'
 
@@ -261,6 +269,8 @@ const ReportViewStandard = ({
               rappelConsoId={_getReport.data?.report.rappelConsoId}
               variant="agent_or_admin"
             />
+
+            {connectedUser.isSuperAdmin && <ReportAlbert id={id} />}
 
             <CleanDiscreetPanel>
               <ReportDetails {...{ report }} />
