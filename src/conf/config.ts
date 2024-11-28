@@ -28,6 +28,9 @@ export const config = {
   appBaseUrl: noTrailingSlash(
     process.env.REACT_APP_APP_BASE_URL ?? 'http://localhost:3001',
   ),
+  dashboardBaseUrl: noTrailingSlash(
+    process.env.REACT_APP_DASHBOARD_BASE_URL ?? 'http://localhost:3000',
+  ),
   basePath: process.env.REACT_APP_BASE_PATH ?? '/',
   reportsLimitForExport: 30000,
   upload_allowedExtensions: ['jpg', 'jpeg', 'pdf', 'png', 'gif', 'docx'],

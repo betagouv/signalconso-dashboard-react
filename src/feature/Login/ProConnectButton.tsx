@@ -23,7 +23,7 @@ const ProConnectButton = ({ startProConnect }: Props) => {
     const nonce = uuidv4()
 
     sessionStorage.setItem('oauth2_state', persistedState)
-    const redirectUri = `${config.appBaseUrl}${siteMap.loggedout.proconnect_login_callback}`
+    const redirectUri = `${config.dashboardBaseUrl}${siteMap.loggedout.proconnect_login_callback}`
     const encodedRedirectUri = encodeURI(redirectUri)
     const scopes = 'openid+custom+email+profile+given_name+usual_name+idp_id'
     startProConnect
