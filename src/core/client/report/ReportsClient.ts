@@ -51,6 +51,18 @@ interface ReportFilterQuerystring {
   hasCompany?: 'true' | 'false'
 }
 
+export interface Albert {
+  reportId: Id
+  category?: string
+  confidenceScore?: string
+  // injuryDegree?: string
+  // incomprehensionDegree?: string
+  explanation?: string
+  summary?: string
+  raw: string
+  codeConso?: string
+}
+
 export const reportFilter2QueryString = (
   report: ReportSearch,
 ): ReportFilterQuerystring => {
@@ -235,6 +247,14 @@ export class ReportsClient {
     return this.client.post<Event>(`reports/${id}/response`, {
       body: { ...response, fileIds: response.fileIds ?? [] },
     })
+  }
+
+  readonly classifyAndSummarize = (id: Id) => {
+    return this.client.post<void>(`/albert/classification/${id}`)
+  }
+
+  readonly getAlbertClassification = (id: Id) => {
+    return this.client.get<Albert>(`/albert/classification/${id}`)
   }
 
   readonly postAction = (id: Id, action: ReportAction) => {
