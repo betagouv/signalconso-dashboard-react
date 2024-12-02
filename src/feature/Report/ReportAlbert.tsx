@@ -44,19 +44,37 @@ export const ReportAlbert = ({ id }: { id: Id }) => {
     }
   }
 
+  const CodeConsoCategory = () => {
+    if (_getAlbert.data?.codeConsoCategory === 'Oui') {
+      return (
+        <div className="text-green-600 text-xl">
+          Ce signalement relève du code de la consommation
+        </div>
+      )
+    } else {
+      return (
+        <div className="text-red-600 text-xl">
+          Ce signalement ne relève pas du code de la consommation
+        </div>
+      )
+    }
+  }
+
   return (
     <CleanDiscreetPanel>
       {_getAlbert.data && (
         <>
-          <div className="flex items-start justify-between mb-2">
+          <div className="flex items-start justify-between">
             <div className="text-xl">
               Classification par Albert : <Category />
             </div>
             <div>Indice de confiance : {_getAlbert.data.confidenceScore}</div>
           </div>
           <div className="text-sm italic">{_getAlbert.data?.explanation}</div>
-          <div className="mt-4 mb-2">{_getAlbert.data.summary}</div>
-          <div className="mt-4 mb-2">{_getAlbert.data.codeConso}</div>
+          <h2 className="text-xl mt-8">Résumé :</h2>
+          <div className="mb-8">{_getAlbert.data.summary}</div>
+          <CodeConsoCategory />
+          <div className="mb-2">{_getAlbert.data.codeConso}</div>
         </>
       )}
       <div className="flex flex-row-reverse">
