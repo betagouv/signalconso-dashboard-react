@@ -55,11 +55,10 @@ export interface Albert {
   reportId: Id
   category?: string
   confidenceScore?: string
-  // injuryDegree?: string
-  // incomprehensionDegree?: string
   explanation?: string
   summary?: string
   raw: string
+  codeConsoCategory?: string
   codeConso?: string
 }
 
