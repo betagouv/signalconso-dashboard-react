@@ -435,6 +435,17 @@ export const ReportsPro = ({ reportType }: ReportsProProps) => {
                     }
                   }
                 }}
+                sort={{
+                  sortableColumns: ['siret', 'creationDate'],
+                  sortBy: _reports.filters?.sortBy,
+                  orderBy: _reports.filters?.orderBy,
+                  onSortChange: ({ sortBy, orderBy }) =>
+                    _reports.updateFilters((prev) => ({
+                      ...prev,
+                      sortBy: sortBy as any,
+                      orderBy: orderBy,
+                    })),
+                }}
                 headerMain={<DatatableToolbarComponent {...{ selectReport }} />}
                 data={_reports.result.data?.entities}
                 loading={

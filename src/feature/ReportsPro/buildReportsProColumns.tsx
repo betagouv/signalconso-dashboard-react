@@ -128,7 +128,7 @@ export const buildReportsProColumns = ({
       ),
     },
     {
-      id: 'createDate',
+      id: 'creationDate',
       head: 'Date de création',
       render: (report: ReportSearchResult) => (
         <MaybeBold report={report}>

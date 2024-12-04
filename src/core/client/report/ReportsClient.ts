@@ -25,6 +25,7 @@ import {
   ReportWordCount,
   User,
   paginateFilters2QueryString,
+  PaginatedSearch,
 } from '../../model'
 import { ApiClient } from '../ApiClient'
 import { ReportNodes } from './ReportNode'
@@ -158,7 +159,7 @@ export class ReportsClient {
     })
   }
 
-  readonly search = (filters: ReportSearch & PaginatedFilters) => {
+  readonly search = (filters: ReportSearch & PaginatedSearch<Report>) => {
     const qs = cleanObject(reportFilter2QueryString(cleanReportFilter(filters)))
     return this.client
       .get<PaginatedData<ReportSearchResult>>(`/reports`, { qs })
