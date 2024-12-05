@@ -1,8 +1,9 @@
-import { Id, PaginatedFilters, Address } from '../../model'
+import { Address, Id, PaginatedFilters } from '../../model'
 
 export interface CompanyWithReportsCount extends Company {
   count: number
   responseRate: number
+  albertActivityLabel?: string
 }
 
 export interface Company {

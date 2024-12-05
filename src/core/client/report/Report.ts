@@ -136,6 +136,15 @@ export interface ReportSearchResult {
   assignedUser?: MinimalUser
 }
 
+export type ReportExtra = {
+  report: Report
+  metadata?: ReportMetadata
+  isBookmarked: boolean
+  assignedUser?: MinimalUser
+  files: UploadedFile[]
+  companyAlbertActivityLabel?: string
+}
+
 type ReportMetadata = {
   reportId: Id
   isMobileApp: boolean

@@ -17,6 +17,7 @@ import { FileOrigin, UploadedFile } from '../../core/client/file/UploadedFile'
 import {
   Report,
   ReportClosedReason,
+  ReportExtra,
   ReportSearchResult,
   ReportStatusPro,
 } from '../../core/client/report/Report'
@@ -40,7 +41,7 @@ import { UserNameLabel } from '../../shared/UserNameLabel'
 import { CategoryMessage } from './CategoryMessage'
 import { ReportEvents } from './Event/ReportEvents'
 import { creationReportEvent } from './Report'
-import { buildOptionFromUser, ReportAffectation } from './ReportAffectation'
+import { ReportAffectation, buildOptionFromUser } from './ReportAffectation'
 import { ReportDetails, ReportFilesFull } from './ReportDescription'
 import { ExpirationDate } from './ReportHeader'
 import { ReportInfluencer } from './ReportInfluencer'
@@ -91,22 +92,16 @@ export const ReportPro = () => {
   const _getReport = useGetReportQuery(id!)
   return (
     <Page maxWidth="l" loading={_getReport.isLoading}>
-      {_getReport.data && (
-        <ReportProLoaded reportSearchResult={_getReport.data} />
-      )}
+      {_getReport.data && <ReportProLoaded reportExtra={_getReport.data} />}
     </Page>
   )
 }
 
-export function ReportProLoaded({
-  reportSearchResult,
-}: {
-  reportSearchResult: ReportSearchResult
-}) {
+export function ReportProLoaded({ reportExtra }: { reportExtra: ReportExtra }) {
   const { m } = useI18n()
   const queryClient = useQueryClient()
   const { api: apiSdk } = useConnectedContext()
-  const { report, files } = reportSearchResult
+  const { report, files } = reportExtra
   const { reportEvents, responseEvent } = useGetReportEventsQuery(report.id)
   const _getReviewOnReportResponse = useGetReviewOnReportResponseQuery(
     report.id,
@@ -154,7 +149,7 @@ export function ReportProLoaded({
       <ReportBlock
         {...{
           scrollToResponse,
-          reportSearchResult,
+          reportSearchResult: reportExtra,
           responseEvent,
           closedReason,
           hasToRespond,

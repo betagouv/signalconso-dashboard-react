@@ -1,11 +1,5 @@
 import { Box, Tab, Tabs, Tooltip } from '@mui/material'
-import {
-  useMutation,
-  useQuery,
-  useQueryClient,
-  UseQueryResult,
-} from '@tanstack/react-query'
-import { ApiError } from 'core/client/ApiClient'
+import { UseQueryResult, useMutation } from '@tanstack/react-query'
 import { map } from 'core/helper'
 import React, { useState } from 'react'
 import { useParams } from 'react-router'
@@ -21,7 +15,7 @@ import {
 import { FileOrigin } from '../../core/client/file/UploadedFile'
 import {
   Report,
-  ReportSearchResult,
+  ReportExtra,
   ReportStatus,
 } from '../../core/client/report/Report'
 import { useConnectedContext } from '../../core/context/ConnectedContext'
@@ -40,6 +34,7 @@ import { ScButton } from '../../shared/Button'
 import { Page } from '../../shared/Page'
 import { ReportEvents } from './Event/ReportEvents'
 import { ReportAdminResolution } from './ReportAdminResolution'
+import { ReportAlbert } from './ReportAlbert'
 import { ReportCompany } from './ReportCompany/ReportCompany'
 import { ReportConsumer } from './ReportConsumer/ReportConsumer'
 import { ReportDetails, ReportFilesFull } from './ReportDescription'
@@ -50,9 +45,6 @@ import { ReportProduct } from './ReportProduct'
 import { ReportReOpening } from './ReportReOpening'
 import { ReportResponseComponent } from './ReportResponse'
 import { ReportViewAsPro } from './ReportViewAsPro'
-import { useApiContext } from '../../core/context/ApiContext'
-import { SearchAdminQueryKeys } from '../../core/queryhooks/userQueryHooks'
-import { ReportAlbert } from './ReportAlbert'
 
 const CONSO: EventType = 'CONSO'
 
@@ -96,7 +88,7 @@ const ReportViewStandard = ({
   onViewAsPro,
 }: {
   id: string
-  _getReport: UseQueryResult<ReportSearchResult, ApiError>
+  _getReport: UseQueryResult<ReportExtra>
   onViewAsPro: () => void
 }) => {
   const { m } = useI18n()
@@ -132,8 +124,8 @@ const ReportViewStandard = ({
 
   return (
     <Page loading={_getReport.isLoading}>
-      {map(_getReport.data, (reportSearchResult) => {
-        const report = reportSearchResult.report
+      {map(_getReport.data, (reportExtra) => {
+        const report = reportExtra.report
         return (
           <>
             {connectedUser.isAdmin ? (
@@ -146,7 +138,7 @@ const ReportViewStandard = ({
                 </button>
               </div>
             ) : null}
-            <ReportHeader elevated report={reportSearchResult}>
+            <ReportHeader elevated report={reportExtra}>
               <Box
                 sx={{
                   whiteSpace: 'nowrap',
@@ -261,7 +253,10 @@ const ReportViewStandard = ({
             )}
             <div className="grid lg:grid-cols-2 gap-4 ">
               <ReportConsumer report={report} canEdit={connectedUser.isAdmin} />
-              <ReportCompany report={report} canEdit={connectedUser.isAdmin} />
+              <ReportCompany
+                reportExtra={reportExtra}
+                canEdit={connectedUser.isAdmin}
+              />
             </div>
 
             <ReportProduct
