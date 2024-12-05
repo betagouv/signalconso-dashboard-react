@@ -34,7 +34,9 @@ export function AlbertActivityLabel({
           content={(_) => (
             <>
               <p>Ce texte :</p>
-              <AlbertActivityLabel>{children}</AlbertActivityLabel>
+              <AlbertActivityLabel withExplainButton={false}>
+                {children}
+              </AlbertActivityLabel>
               <p className="mb-2">
                 a été produit par <b>une intelligence artificielle</b>.
               </p>
