@@ -10,6 +10,7 @@ import {
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { NavLink } from 'react-router-dom'
+import { AlbertActivityLabel } from 'shared/AlbertActivityLabel'
 import { ScInput } from 'shared/ScInput'
 import { Fender, IconBtn, Txt } from '../../alexlibs/mui-extension'
 import {
@@ -254,7 +255,7 @@ export const CompaniesRegistered = () => {
             }),
             render: (_) => (
               <Tooltip title={computeTitle(_)}>
-                <span>
+                <div className="flex flex-col">
                   <NavLink
                     to={siteMap.logged.company(_.id).stats.valueAbsolute}
                   >
@@ -262,22 +263,23 @@ export const CompaniesRegistered = () => {
                       {_.name}
                     </Txt>
                   </NavLink>
-                  {_.brand && (
-                    <>
-                      <br />
-                      <Box
-                        component="span"
-                        sx={{
-                          fontSize: (t) => styleUtils(t).fontSize.small,
-                          fontStyle: 'italic',
-                          color: (t) => t.palette.text.primary,
-                        }}
-                      >
-                        {_.brand}
-                      </Box>
-                    </>
+                  {_.albertActivityLabel && (
+                    <AlbertActivityLabel smaller withExplainButton={false}>
+                      {_.albertActivityLabel}
+                    </AlbertActivityLabel>
                   )}
-                  <br />
+                  {_.brand && (
+                    <Box
+                      component="span"
+                      sx={{
+                        fontSize: (t) => styleUtils(t).fontSize.small,
+                        fontStyle: 'italic',
+                        color: (t) => t.palette.text.primary,
+                      }}
+                    >
+                      {_.brand}
+                    </Box>
+                  )}
                   <Box
                     component="span"
                     sx={{
@@ -287,7 +289,7 @@ export const CompaniesRegistered = () => {
                   >
                     {_.siret}
                   </Box>
-                </span>
+                </div>
               </Tooltip>
             ),
           },

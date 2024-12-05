@@ -15,17 +15,18 @@ import {
   IncomingReportResponse,
   PaginatedData,
   PaginatedFilters,
+  PaginatedSearch,
   Report,
   ReportAction,
   ReportConsumerUpdate,
   ReportDeletionReason,
+  ReportExtra,
   ReportSearch,
   ReportSearchResult,
   ReportTag,
   ReportWordCount,
   User,
   paginateFilters2QueryString,
-  PaginatedSearch,
 } from '../../model'
 import { ApiClient } from '../ApiClient'
 import { ReportNodes } from './ReportNode'
@@ -202,7 +203,7 @@ export class ReportsClient {
     return this.client.post<void>(`reports/${id}/reopen`)
   }
 
-  readonly getById = async (id: Id): Promise<ReportSearchResult> => {
+  readonly getById = async (id: Id): Promise<ReportExtra> => {
     const { report, ...rest } = await this.client.get<any>(`/reports/${id}`)
     return {
       ...rest,

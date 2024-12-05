@@ -1,10 +1,9 @@
-import { useQuery } from '@tanstack/react-query'
+import { UseQueryResult, useQuery } from '@tanstack/react-query'
 import { ConsumerReview, ReportWordCount } from '../client/event/Event'
-import { ReportSearchResult } from '../client/report/Report'
 import { ReportNodes } from '../client/report/ReportNode'
 import { ReportNodeSearch } from '../client/report/ReportNodeSearch'
 import { useApiContext } from '../context/ApiContext'
-import { Id, PaginatedFilters, ReportSearch } from '../model'
+import { Id, PaginatedFilters, ReportExtra, ReportSearch } from '../model'
 import { UseQueryOpts } from './UseQueryOpts'
 import { useQueryPaginate } from './UseQueryPaginate'
 
@@ -31,16 +30,12 @@ const GetCloudWordQueryKeys = (companyId: Id) => [
   companyId,
 ]
 
-export const useGetReportQuery = (
-  id: string,
-  options?: UseQueryOpts<ReportSearchResult, string[]>,
-) => {
+export const useGetReportQuery = (id: string): UseQueryResult<ReportExtra> => {
   const { api } = useApiContext()
   return useQuery({
     queryKey: GetReportQueryKeys(id),
     queryFn: () => api.secured.reports.getById(id),
     enabled: !!id,
-    ...options,
   })
 }
 

@@ -5,6 +5,7 @@ import { Txt } from 'alexlibs/mui-extension'
 import { useConnectedContext } from 'core/context/ConnectedContext'
 import { siteMap } from 'core/siteMap'
 import { CompanyAccesses } from 'feature/CompanyAccesses/CompanyAccesses'
+import { AlbertActivityLabel } from 'shared/AlbertActivityLabel'
 import { Page, PageTitle } from 'shared/Page'
 import { PageTab, PageTabs } from 'shared/Page/PageTabs'
 import { Alert } from '../../alexlibs/mui-extension'
@@ -90,6 +91,11 @@ function Title({ company }: { company: CompanyWithReportsCount }) {
         <PageTitle>
           <div>
             {company.name}
+            {company.albertActivityLabel && (
+              <AlbertActivityLabel>
+                {company.albertActivityLabel}
+              </AlbertActivityLabel>
+            )}
             {company.commercialName && (
               <Txt block size="small">
                 {company.commercialName}

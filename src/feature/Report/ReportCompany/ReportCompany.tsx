@@ -2,11 +2,16 @@ import { AddressComponent } from '../../../shared/Address'
 
 import { Box, Icon, Tooltip, useTheme } from '@mui/material'
 import { NavLink } from 'react-router-dom'
+import { AlbertActivityLabel } from 'shared/AlbertActivityLabel'
 import { CleanDiscreetPanel } from 'shared/Panel/simplePanels'
-import { ReportWebsiteUrlLink } from 'shared/tinyComponents'
 import { WithInlineIcon } from 'shared/WithInlineIcon'
+import { ReportWebsiteUrlLink } from 'shared/tinyComponents'
 import { Txt } from '../../../alexlibs/mui-extension'
-import { Influencer, Report } from '../../../core/client/report/Report'
+import {
+  Influencer,
+  Report,
+  ReportExtra,
+} from '../../../core/client/report/Report'
 import { useConnectedContext } from '../../../core/context/ConnectedContext'
 import { useI18n } from '../../../core/i18n'
 import { siteMap } from '../../../core/siteMap'
@@ -17,16 +22,16 @@ import { ReportStation } from '../ReportStation'
 import { ReportTrain } from '../ReportTrain'
 import { SelectReportAssociation } from '../SelectReportAssociation'
 
-interface Props {
-  report: Report
+export const ReportCompany = ({
+  reportExtra: r,
+  canEdit,
+}: {
+  reportExtra: ReportExtra
   canEdit?: boolean
-}
-
-export const ReportCompany = ({ report, canEdit }: Props) => {
+}) => {
   const { connectedUser } = useConnectedContext()
   const { m } = useI18n()
-  const specialLegislation = Report.appliedSpecialLegislation(report)
-
+  const specialLegislation = Report.appliedSpecialLegislation(r.report)
   const {
     websiteURL,
     vendor,
@@ -41,7 +46,9 @@ export const ReportCompany = ({ report, canEdit }: Props) => {
     influencer,
     train,
     station,
-  } = report
+    id,
+  } = r.report
+  const { companyAlbertActivityLabel } = r
   return (
     <CleanDiscreetPanel>
       <div className="flex items-center justify-between">
@@ -59,7 +66,7 @@ export const ReportCompany = ({ report, canEdit }: Props) => {
         </div>
         {canEdit && (
           <SelectReportAssociation
-            reportId={report.id}
+            reportId={id}
             currentSiret={companySiret}
             currentCountry={companyAddress.country}
           >
@@ -79,9 +86,15 @@ export const ReportCompany = ({ report, canEdit }: Props) => {
           />
         )}
         <div>
+          {companyAlbertActivityLabel && (
+            <AlbertActivityLabel>
+              {companyAlbertActivityLabel}
+            </AlbertActivityLabel>
+          )}
           {companySiret && <div className="mb-1">{companySiret}</div>}
           <div className="text-gray-500 text-sm">
             {companyName && <div className="font-bold">{companyName}</div>}
+
             {companyCommercialName && <div>{companyCommercialName}</div>}
             {companyEstablishmentCommercialName && (
               <div className="italic">{companyEstablishmentCommercialName}</div>

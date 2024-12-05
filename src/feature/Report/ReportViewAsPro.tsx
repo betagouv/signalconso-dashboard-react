@@ -37,7 +37,7 @@ export function ReportViewAsPro({
           </div>
         </div>
       </div>
-      <ReportProLoaded reportSearchResult={reportSearchResult} />
+      <ReportProLoaded reportExtra={reportSearchResult} />
     </Page>
   )
 }
