@@ -16,10 +16,6 @@ export function AlbertActivityLabel({
     // The API doesn't return the field, but we still check here just in case
     return null
   }
-  if (!connectedUser.isAdmin) {
-    // Temporary, because I haven't implemented the "À propos" page
-    return null
-  }
   return (
     <div
       className={`font-normal bg-desert-200 w-fit flex gap-2 items-center ${smaller ? `text-sm` : `p-1 text-base`}`}
