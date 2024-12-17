@@ -45,7 +45,7 @@ export const ReportAlbert = ({ id }: { id: Id }) => {
   }
 
   const CodeConsoCategory = () => {
-    if (_getAlbert.data?.codeConsoCategory === 'Oui') {
+    if (_getAlbert.data?.codeConso?.startsWith('Oui')) {
       return (
         <div className="text-green-600 text-xl">
           Ce signalement relève du code de la consommation
@@ -74,7 +74,7 @@ export const ReportAlbert = ({ id }: { id: Id }) => {
           <h2 className="text-xl mt-8">Résumé :</h2>
           <div className="mb-8">{_getAlbert.data.summary}</div>
           <CodeConsoCategory />
-          <div className="mb-2">{_getAlbert.data.codeConso}</div>
+          <div className="mb-2">{_getAlbert.data.codeConsoCategory}</div>
         </>
       )}
       <div className="flex flex-row-reverse">
