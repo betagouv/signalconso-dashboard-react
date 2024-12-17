@@ -1,6 +1,7 @@
 import { Id } from '../../model'
 import { ApiClient } from '../ApiClient'
 import { CompanyAccess, CompanyAccessLevel } from './CompanyAccess'
+import { VisibleUser } from './VisibleUser'
 
 export class CompanyAccessClient {
   constructor(private client: ApiClient) {}
@@ -25,5 +26,17 @@ export class CompanyAccessClient {
 
   readonly remove = (siret: string, userId: Id) => {
     return this.client.delete<void>(`/accesses/${siret}/${userId}`)
+  }
+
+  readonly visibleUsersToPro = () => {
+    return this.client.get<VisibleUser[]>(`/accesses/visible-users`)
+  }
+
+  readonly inviteProToCompanies = (email: string) => {
+    return this.client.post<string>(`/accesses/visible-users/${email}`)
+  }
+
+  readonly revokeProFromCompanies = (userId: Id) => {
+    return this.client.delete<string>(`/accesses/visible-users/${userId}`)
   }
 }

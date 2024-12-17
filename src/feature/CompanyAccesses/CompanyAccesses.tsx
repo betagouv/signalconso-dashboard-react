@@ -360,7 +360,6 @@ function ActionsColumn({
   const { toastSuccess, toastError } = useToast()
   const email = getEmail(_)
   const isAdmin = connectedUser.isAdmin
-  const isSuperAdmin = connectedUser.isSuperAdmin
   const navigate = useNavigate()
 
   const _logAs = useMutation({
@@ -413,7 +412,7 @@ function ActionsColumn({
     ) : undefined
 
   const impersonateMenuItem =
-    isSuperAdmin && email ? (
+    isAdmin && email ? (
       <>
         <MenuItem onClick={() => _logAs.mutate(email)}>
           <ListItemIcon>
