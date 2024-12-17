@@ -65,6 +65,7 @@ export const siteMap = {
       },
     }),
     companiesPro: `/mes-entreprises`,
+    usersPro: `/mes-utilisateurs`,
     joinInformation: `/information`,
     users: {
       root: '/users',

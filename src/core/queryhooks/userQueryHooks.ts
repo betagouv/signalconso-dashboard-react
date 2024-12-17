@@ -4,7 +4,9 @@ import { RoleAgents, roleAgents, UserPending } from '../client/user/User'
 import { useApiContext } from '../context/ApiContext'
 import { UseQueryOpts } from './UseQueryOpts'
 import { useQueryPaginate } from './UseQueryPaginate'
+import { VisibleUser } from '../client/company-access/VisibleUser'
 
+export const FetchVisibleUsersToProKeys = ['user_fetchVisibleUsersToPro']
 export const SearchAdminQueryKeys = ['user_searchAdmin']
 export const SearchAgentQueryKeys = ['user_searchAgent']
 const SearchAuthAttemptsQueryKeys = ['authAttemptClient_fetch']
@@ -69,6 +71,17 @@ export const useGetAgentPendingQuery = (
   return useQuery({
     queryKey: GetAgentPendingQueryKeys(role),
     queryFn: () => api.secured.user.fetchPendingAgent(role),
+    ...options,
+  })
+}
+
+export const useFetchVisibleUsersToProQuery = (
+  options?: UseQueryOpts<VisibleUser[], string[]>,
+) => {
+  const { api } = useApiContext()
+  return useQuery({
+    queryKey: FetchVisibleUsersToProKeys,
+    queryFn: () => api.secured.companyAccess.visibleUsersToPro(),
     ...options,
   })
 }

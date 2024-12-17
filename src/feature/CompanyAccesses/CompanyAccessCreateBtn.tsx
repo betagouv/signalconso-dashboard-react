@@ -13,6 +13,7 @@ import { ScInput } from '../../shared/ScInput'
 interface Props {
   loading: boolean
   onCreate: (email: string, level: CompanyAccessLevel) => Promise<any>
+  title?: string
 }
 
 interface Form {
@@ -20,7 +21,7 @@ interface Form {
   level: CompanyAccessLevel
 }
 
-export const CompanyAccessCreateBtn = ({ loading, onCreate }: Props) => {
+export const CompanyAccessCreateBtn = ({ loading, onCreate, title }: Props) => {
   const { m } = useI18n()
   const {
     register,
@@ -85,7 +86,7 @@ export const CompanyAccessCreateBtn = ({ loading, onCreate }: Props) => {
         color="primary"
         variant="contained"
       >
-        {m.invite}
+        {title ?? m.invite}
       </ScButton>
     </ScDialog>
   )

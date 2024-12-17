@@ -42,6 +42,7 @@ import './style.css'
 import ProConnectCallback from './feature/Login/ProConnectCallback'
 import ProConnectLogoutCallback from './feature/Login/ProConnectLogoutCallback'
 import { AgentLoginForm } from './feature/Login/AgentLoginForm'
+import { UsersPro } from './feature/Users/UsersPro'
 
 export const AppRoutes = ({
   loginManagementResult,
@@ -221,6 +222,7 @@ const ProtectedRoutes = () => {
           element={<Subscriptions />}
         />
         <Route path={siteMap.logged.companiesPro} element={<CompaniesPro />} />
+        <Route path={siteMap.logged.usersPro} element={<UsersPro />} />
         <Route
           path={siteMap.logged.joinInformation}
           element={<JoinNewsletter />}

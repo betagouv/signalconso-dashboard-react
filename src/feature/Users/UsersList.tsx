@@ -182,102 +182,100 @@ const UsersList = ({ adminView }: Props) => {
 
   return (
     <>
-      <>
-        <div className="flex justify-between items-baseline gap-2 mb-6">
-          <div>
-            {adminView ? (
-              <>
-                <p>Cette page liste des utilisateurs "Admin".</p>
-                <p className="px-1 bg-orange-200 block italic text-orange-900">
-                  Attention ceux-ci ont tous les droits, ils peuvent
-                  potentiellement causer des dégâts, ce n'est pas pour n'importe
-                  qui !
-                </p>
-              </>
-            ) : (
-              <p>
-                Cette page liste les utilisateurs de type "agent".{' '}
-                <span className="italic text-gray-500">
-                  Ce sont les agents de la DGCCRF ou de la DGAL.
-                </span>
+      <div className="flex justify-between items-baseline gap-2 mb-6">
+        <div>
+          {adminView ? (
+            <>
+              <p>Cette page liste des utilisateurs "Admin".</p>
+              <p className="px-1 bg-orange-200 block italic text-orange-900">
+                Attention ceux-ci ont tous les droits, ils peuvent
+                potentiellement causer des dégâts, ce n'est pas pour n'importe
+                qui !
               </p>
-            )}
-          </div>
-          <div className="flex gap-2">
-            {adminView ? (
-              <UserAdminInvitationDialog />
-            ) : (
-              <>
-                <UserAgentInvitationDialog />
-                <UserAgentsImportDialog />
-              </>
-            )}
-          </div>
+            </>
+          ) : (
+            <p>
+              Cette page liste les utilisateurs de type "agent".{' '}
+              <span className="italic text-gray-500">
+                Ce sont les agents de la DGCCRF ou de la DGAL.
+              </span>
+            </p>
+          )}
         </div>
-        <Datatable
-          id="userslist"
-          headerMain={
+        <div className="flex gap-2">
+          {adminView ? (
+            <UserAdminInvitationDialog />
+          ) : (
             <>
-              <DebouncedInput
-                value={_users.filters.email ?? ''}
-                onChange={onEmailChange}
-              >
-                {(value, onChange) => (
-                  <ScInput
-                    value={value}
-                    placeholder={m.searchByEmail + '...'}
-                    fullWidth
-                    onChange={(e) => onChange(e.target.value)}
-                  />
-                )}
-              </DebouncedInput>
+              <UserAgentInvitationDialog />
+              <UserAgentsImportDialog />
             </>
-          }
-          headerMarginBottom
-          actions={
-            <>
-              <>
-                {!adminView && (
-                  <SelectRoleAgent
-                    value={parsedRole}
-                    onChange={(_) =>
-                      _users.updateFilters((prev) => ({ ...prev, role: _ }))
-                    }
-                  />
-                )}
-              </>
-              <>
-                <TrueFalseUndefined
-                  value={_users.filters.active}
-                  onChange={(_) =>
-                    _users.updateFilters((prev) => ({ ...prev, active: _ }))
-                  }
-                  label={{
-                    true: m.active,
-                    false: m.inactive,
-                    undefined: m.all,
-                  }}
+          )}
+        </div>
+      </div>
+      <Datatable
+        id="userslist"
+        headerMain={
+          <>
+            <DebouncedInput
+              value={_users.filters.email ?? ''}
+              onChange={onEmailChange}
+            >
+              {(value, onChange) => (
+                <ScInput
+                  value={value}
+                  placeholder={m.searchByEmail + '...'}
+                  fullWidth
+                  onChange={(e) => onChange(e.target.value)}
                 />
-              </>
+              )}
+            </DebouncedInput>
+          </>
+        }
+        headerMarginBottom
+        actions={
+          <>
+            <>
+              {!adminView && (
+                <SelectRoleAgent
+                  value={parsedRole}
+                  onChange={(_) =>
+                    _users.updateFilters((prev) => ({ ...prev, role: _ }))
+                  }
+                />
+              )}
             </>
-          }
-          loading={_users.result.isFetching}
-          total={_users.result.data?.totalCount}
-          paginate={{
-            limit: _users.filters.limit,
-            offset: _users.filters.offset,
-            onPaginationChange: (pagination) =>
-              _users.updateFilters((prev) => ({ ...prev, ...pagination })),
-          }}
-          showColumnsToggle
-          rowsPerPageExtraOptions={
-            _users.result.data ? [_users.result.data.totalCount] : undefined
-          }
-          getRenderRowKey={(_) => _.email}
-          data={_users.result.data?.entities}
-          columns={columns}
-        />
-      </>
+            <>
+              <TrueFalseUndefined
+                value={_users.filters.active}
+                onChange={(_) =>
+                  _users.updateFilters((prev) => ({ ...prev, active: _ }))
+                }
+                label={{
+                  true: m.active,
+                  false: m.inactive,
+                  undefined: m.all,
+                }}
+              />
+            </>
+          </>
+        }
+        loading={_users.result.isFetching}
+        total={_users.result.data?.totalCount}
+        paginate={{
+          limit: _users.filters.limit,
+          offset: _users.filters.offset,
+          onPaginationChange: (pagination) =>
+            _users.updateFilters((prev) => ({ ...prev, ...pagination })),
+        }}
+        showColumnsToggle
+        rowsPerPageExtraOptions={
+          _users.result.data ? [_users.result.data.totalCount] : undefined
+        }
+        getRenderRowKey={(_) => _.email}
+        data={_users.result.data?.entities}
+        columns={columns}
+      />
     </>
   )
 }
