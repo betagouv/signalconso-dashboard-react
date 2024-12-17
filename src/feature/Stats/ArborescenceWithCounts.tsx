@@ -218,7 +218,7 @@ const Node = ({
           </IconBtn>
         )}
       </Box>
-      <Box>
+      <Box sx={{ width: '100%' }}>
         <Box
           sx={{
             minHeight: 42,
@@ -228,13 +228,17 @@ const Node = ({
           }}
         >
           {reportNode.id ? (
-            <Box>
-              <Txt>{reportNode.name}</Txt>{' '}
+            <Box maxWidth="80%">
+              <Txt truncate block>
+                {reportNode.name}
+              </Txt>{' '}
               <Txt color="hint">{reportNode.id}</Txt>
             </Box>
           ) : (
-            <Box>
-              <Txt color="hint">{reportNode.name}</Txt>{' '}
+            <Box maxWidth="80%">
+              <Txt truncate block color="hint">
+                {reportNode.name}
+              </Txt>{' '}
               <Txt color="hint">(Ancienne catégorie)</Txt>
             </Box>
           )}
