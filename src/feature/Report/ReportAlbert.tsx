@@ -45,21 +45,27 @@ export const ReportAlbert = ({ id }: { id: Id }) => {
   }
 
   const CodeConsoCategory = () => {
-    if (_getAlbert.data?.codeConsoCategory?.startsWith('Oui')) {
+    if (_getAlbert.data?.codeConsoCategory === 'Oui') {
       return (
         <div className="text-green-600 text-xl">
           Ce signalement relève du code de la consommation
         </div>
       )
-    } else if (_getAlbert.data?.codeConsoCategory?.startsWith('None')) {
+    } else if (_getAlbert.data?.codeConsoCategory === 'Non') {
       return (
         <div className="text-red-600 text-xl">
           Ce signalement ne relève pas du code de la consommation
         </div>
       )
     } else {
+      const color = _getAlbert.data?.codeConsoCategory?.startsWith('Oui')
+        ? 'text-green-600'
+        : _getAlbert.data?.codeConsoCategory?.startsWith('Non')
+          ? 'text-red-600'
+          : 'text-yellow-600'
+
       return (
-        <div className="text-yellow-600 text-xl">
+        <div className={`${color} text-xl`}>
           {_getAlbert.data?.codeConsoCategory}
         </div>
       )
