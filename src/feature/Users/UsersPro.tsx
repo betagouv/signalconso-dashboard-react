@@ -62,40 +62,48 @@ export const UsersPro = () => {
   return (
     <Page>
       <PageTitle>Utilisateurs</PageTitle>
-      <div className="flex justify-between gap-2 items-end mb-2">
-        <div>
-          <p className="mb-2">
-            Cette page liste tous les utilisateurs ayant accès aux
-            établissements dont vous êtes <strong>Administrateur.</strong>
-          </p>
-          <p>Vous pouvez : </p>
-          <ul className="list-disc list-inside mb-4">
-            <li>
-              Inviter un nouvel un utilisateur en cliquant sur "{addTo}".
-              L'utilisateur aura accès à toutes vos entreprises.
-            </li>
-            <li>Révoquer les accès d'un utilisateur.</li>
-            <li>
-              Mettre à niveau un utilisateur, c'est à dire lui donner exactement
-              les mêmes accès que vous.
-            </li>
-          </ul>
-          <p>
-            Pour gérer finement les accès, établissement par établissement,
-            utilisez la page{' '}
-            <NavLink to={siteMap.logged.companiesPro}>Entreprises</NavLink>
-          </p>
-        </div>
-        <div>
-          <CompanyAccessCreateBtn
-            title={addTo}
-            loading={_invite.isPending}
-            onCreate={(email) => _invite.mutateAsync(email)}
-          />
-        </div>
+      <div className="mb-4">
+        <p className="mb-2 font-bold">
+          Cette page vous permet de gérer rapidement l'accès d'un utilisateur à
+          l'ensemble des entreprises dont vous êtes administrateurs.
+        </p>
+        <p>Vous pouvez : </p>
+        <ul className="list-disc list-inside mb-2">
+          <li>
+            Ajouter un utilisateur à toutes vos entreprises en cliquant sur
+            "Ajouter à toutes mes entreprises".
+          </li>
+          <li className="italic">
+            Supprimer un utilisateur de tous les comptes auxquels il a
+            actuellement accès en cliquant sur « Retirer ».
+          </li>
+          <li>
+            Donner à un utilisateur ayant déjà accès à certaines entreprises,
+            les accès à toutes les entreprises en cliquant sur « mettre à niveau
+            ».
+          </li>
+        </ul>
+        <p className="mb-2">
+          Pour gérer finement les accès, établissement par établissement,
+          utilisez la page{' '}
+          <NavLink to={siteMap.logged.companiesPro}>Entreprises</NavLink>
+        </p>
+        <p className="italic">
+          ⚠️ Attention : ces actions sont globales et affectent toutes les
+          entreprises en une seule opération. Vérifiez bien avant de confirmer.
+        </p>
       </div>
       <Datatable
         id="pro-users"
+        superheader={
+          <div className="flex flex-row-reverse">
+            <CompanyAccessCreateBtn
+              title={addTo}
+              loading={_invite.isPending}
+              onCreate={(email) => _invite.mutateAsync(email)}
+            />
+          </div>
+        }
         data={users}
         columns={[
           {
