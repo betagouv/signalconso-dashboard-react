@@ -1,7 +1,7 @@
 import { Datatable } from '../../shared/Datatable/Datatable'
 import { useI18n } from '../../core/i18n'
 import { useConnectedContext } from '../../core/context/ConnectedContext'
-import { Txt } from '../../alexlibs/mui-extension'
+import { Alert, Txt } from '../../alexlibs/mui-extension'
 import { Chip, Icon } from '@mui/material'
 import { ScButton } from '../../shared/Button'
 import { Page, PageTitle } from '../../shared/Page'
@@ -25,7 +25,9 @@ export const UsersPro = () => {
   const { connectedUser, api } = useConnectedContext()
   const queryClient = useQueryClient()
   const { toastError, toastSuccess } = useToast()
-  const addTo = 'Ajouter à mes entreprises'
+  const addTo = 'Inviter sur toutes mes entreprises'
+  const removeTxt = 'Retirer'
+  const upgradeTxt = 'Accès total'
 
   const _visibleUsers = useFetchVisibleUsersToProQuery()
   const users = _visibleUsers.data?.filter(
@@ -70,17 +72,16 @@ export const UsersPro = () => {
         <p>Vous pouvez : </p>
         <ul className="list-disc list-inside mb-2">
           <li>
-            Ajouter un utilisateur à toutes vos entreprises en cliquant sur
-            "Ajouter à toutes mes entreprises".
+            Ajouter un utilisateur à toutes vos entreprises en cliquant sur «{' '}
+            {addTo} ».
           </li>
-          <li className="italic">
+          <li>
             Supprimer un utilisateur de tous les comptes auxquels il a
-            actuellement accès en cliquant sur « Retirer ».
+            actuellement accès en cliquant sur « {removeTxt} ».
           </li>
           <li>
             Donner à un utilisateur ayant déjà accès à certaines entreprises,
-            les accès à toutes les entreprises en cliquant sur « mettre à niveau
-            ».
+            les accès à toutes les entreprises en cliquant sur « {upgradeTxt} ».
           </li>
         </ul>
         <p className="mb-2">
@@ -88,10 +89,10 @@ export const UsersPro = () => {
           utilisez la page{' '}
           <NavLink to={siteMap.logged.companiesPro}>Entreprises</NavLink>
         </p>
-        <p className="italic">
-          ⚠️ Attention : ces actions sont globales et affectent toutes les
+        <Alert type="warning">
+          Attention : ces actions sont globales et affectent toutes les
           entreprises en une seule opération. Vérifiez bien avant de confirmer.
-        </p>
+        </Alert>
       </div>
       <Datatable
         id="pro-users"
@@ -140,9 +141,10 @@ export const UsersPro = () => {
             render: (_) =>
               _.count !== me?.count ? (
                 <UpgradeBtn
-                  email={_.user.email}
-                  upgrade={_invite.mutate}
+                  user={_.user}
+                  upgrade={_invite.mutateAsync}
                   loading={_invite.isPending}
+                  title={upgradeTxt}
                 />
               ) : null,
           },
@@ -153,6 +155,7 @@ export const UsersPro = () => {
                 user={_.user}
                 revoke={_revoke.mutateAsync}
                 loading={_revoke.isPending}
+                title={removeTxt}
               />
             ),
           },
@@ -183,24 +186,43 @@ const CompanyCount = ({ user, me }: { user: VisibleUser; me: VisibleUser }) => {
 }
 
 const UpgradeBtn = ({
-  email,
+  user,
   upgrade,
   loading,
+  title,
 }: {
-  email: string
-  upgrade: (email: string) => void
+  user: User
+  upgrade: (email: string) => Promise<any>
   loading: boolean
+  title: string
 }) => {
   return (
-    <ScButton
-      icon="keyboard_double_arrow_up"
-      color="primary"
-      variant="outlined"
-      loading={loading}
-      onClick={() => upgrade(email)}
+    <ScDialog
+      title={`Donner accès à mes entreprises à ${user.firstName} ${user.lastName} ?`}
+      onConfirm={(event, close) => upgrade(user.email).then(close)}
+      maxWidth="sm"
+      confirmLabel="Donner l'accès total"
+      content={
+        <>
+          <p>
+            Cette action donnera l'accès de cet utilisateur à toutes vos
+            entreprises dont vous êtes administrateur.
+          </p>
+          <p className="font-bold">
+            Il sera tout comme vous administrateur de ces entreprises.
+          </p>
+        </>
+      }
     >
-      Mettre à niveau
-    </ScButton>
+      <ScButton
+        icon="keyboard_double_arrow_up"
+        color="primary"
+        variant="outlined"
+        loading={loading}
+      >
+        {title}
+      </ScButton>
+    </ScDialog>
   )
 }
 
@@ -208,17 +230,19 @@ const RevokeAccessBtn = ({
   user,
   revoke,
   loading,
+  title,
 }: {
   user: User
   revoke: (userId: Id) => Promise<any>
   loading: boolean
+  title: string
 }) => {
   return (
     <ScDialog
-      title={`Révoquer l'accès de ${user.firstName} ${user.lastName} ?`}
+      title={`Retirer l'accès de ${user.firstName} ${user.lastName} ?`}
       onConfirm={(event, close) => revoke(user.id).then(close)}
       maxWidth="sm"
-      confirmLabel="Révoquer"
+      confirmLabel="Retirer"
       content={
         <>
           <p>
@@ -232,8 +256,8 @@ const RevokeAccessBtn = ({
         </>
       }
     >
-      <ScButton icon="delete" color="warning" loading={loading}>
-        Révoquer
+      <ScButton icon="clear" color="warning" loading={loading}>
+        {title}
       </ScButton>
     </ScDialog>
   )
