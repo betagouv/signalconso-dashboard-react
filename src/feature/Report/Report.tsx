@@ -45,6 +45,7 @@ import { ReportProduct } from './ReportProduct'
 import { ReportReOpening } from './ReportReOpening'
 import { ReportResponseComponent } from './ReportResponse'
 import { ReportViewAsPro } from './ReportViewAsPro'
+import { isStatusFinal } from '../../shared/ReportStatus'
 
 const CONSO: EventType = 'CONSO'
 
@@ -255,7 +256,7 @@ const ReportViewStandard = ({
               <ReportConsumer report={report} canEdit={connectedUser.isAdmin} />
               <ReportCompany
                 reportExtra={reportExtra}
-                canEdit={connectedUser.isAdmin}
+                canEdit={connectedUser.isAdmin && !isStatusFinal(report.status)}
               />
             </div>
 

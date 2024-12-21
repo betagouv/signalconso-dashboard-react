@@ -33,7 +33,7 @@ export const reportStatusProColor = {
   [ReportStatusPro.Cloture]: '#27a658',
 }
 
-export const isStatusFinal = (status: ReportStatus): Boolean => {
+export const isStatusFinal = (status: ReportStatus) => {
   return Report.closedStatus.includes(status)
 }
 export const isStatusInvisibleToPro = (status: ReportStatus): Boolean => {
