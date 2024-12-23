@@ -1,14 +1,12 @@
-import * as React from 'react'
-import { useI18n } from '../../../core/i18n'
 import { Box, Icon, List, ListItem, Skeleton, Tooltip } from '@mui/material'
-import { Panel, PanelBody, PanelHead } from '../../../shared/Panel'
-import { HorizontalBarChartData } from '../../../shared/Chart/HorizontalBarChart'
-import { useMemoFn } from '../../../alexlibs/react-hooks-lib'
 import { ScOption } from 'core/helper/ScOption'
-import { siteMap } from '../../../core/siteMap'
 import { NavLink } from 'react-router-dom'
+import { CleanInvisiblePanel } from 'shared/Panel/simplePanels'
+import { useMemoFn } from '../../../alexlibs/react-hooks-lib'
+import { useI18n } from '../../../core/i18n'
 import { useGetCloudWordQuery } from '../../../core/queryhooks/reportQueryHooks'
-import { CleanDiscreetPanel } from 'shared/Panel/simplePanels'
+import { siteMap } from '../../../core/siteMap'
+import { HorizontalBarChartData } from '../../../shared/Chart/HorizontalBarChart'
 
 interface Props {
   companyId: string
@@ -39,16 +37,13 @@ export const ReportWordDistribution = ({ companyId }: Props) => {
   )
 
   return (
-    <CleanDiscreetPanel loading={_wordDistribution.isLoading}>
-      <h2 className="font-bold text-lg">
+    <CleanInvisiblePanel loading={_wordDistribution.isLoading}>
+      <h2 className="font-bold text-2xl">
         <Tooltip title={m.helpCloudWord}>
-          <Box sx={{ display: 'flex' }}>
+          <Box>
             {m.reportCloudWord}
-            <Icon
-              sx={{ color: (t) => t.palette.text.disabled, marginLeft: '5px' }}
-              fontSize="medium"
-            >
-              help
+            <Icon fontSize="small" className="ml-1 mb-[-3px]">
+              help_outline
             </Icon>
           </Box>
         </Tooltip>
@@ -74,6 +69,6 @@ export const ReportWordDistribution = ({ companyId }: Props) => {
             <Skeleton height={66} width="100%" />
           </>,
         )}
-    </CleanDiscreetPanel>
+    </CleanInvisiblePanel>
   )
 }

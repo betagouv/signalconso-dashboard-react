@@ -1,5 +1,6 @@
 import { Box, Checkbox, Theme, useTheme } from '@mui/material'
 import { I18nContextShape } from 'core/i18n/i18nContext'
+import format from 'date-fns/format'
 import { memo, useMemo, useState } from 'react'
 import {
   CartesianGrid,
@@ -15,7 +16,6 @@ import {
 import { CountByDate, Period } from '../../core/client/stats/statsTypes'
 import { useI18n } from '../../core/i18n'
 import { styleUtils } from '../../core/theme'
-import format from 'date-fns/format'
 
 interface ScLineChartPropsBase {
   /**
@@ -140,7 +140,7 @@ export const ScLineChart = memo(
             ))}
           </Box>
         )}
-        <div style={{ height }}>
+        <div style={{ height }} className="">
           <ResponsiveContainer width="100%" height="100%">
             <LineChart data={mappedData} margin={margin}>
               <CartesianGrid strokeDasharray="3 3" />

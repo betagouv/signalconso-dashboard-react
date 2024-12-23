@@ -16,6 +16,7 @@ import {
 import { siteMap } from 'core/siteMap'
 import { PropsWithChildren } from 'react'
 import { NavLink } from 'react-router-dom'
+import { CleanInvisiblePanel } from 'shared/Panel/simplePanels'
 
 type Props = {
   companyId: Id
@@ -31,22 +32,24 @@ export function CompanyStatsNumberWidgets({
   const { connectedUser } = useConnectedContext()
   const companyId = id
   return (
-    <div
-      className={`grid grid-cols-2 ${
-        connectedUser.isNotPro ? 'sm:grid-cols-4' : 'sm:grid-cols-3'
-      } gap-4 mb-4`}
-    >
-      <NumberWidgetResponseRate {...{ companyId }} />
-      <NumberWidgetResponseDelay {...{ companyId }} />
-      <NumberWidgetAccesses {...{ companyId, siret }} />
-      {connectedUser.isNotPro && (
-        <>
-          <NumberWidgetDocsSent {...{ siret }} />
-          <NumberWidgetThreats {...{ companyId }} />
-          <NumberWidgetBlackmail {...{ companyId }} />
-        </>
-      )}
-    </div>
+    <CleanInvisiblePanel>
+      <div className={`${connectedUser.isNotPro ? 'grid lg:grid-cols-2' : ''}`}>
+        <div
+          className={`${connectedUser.isNotPro ? '' : 'grid lg:grid-cols-3'}`}
+        >
+          <NumberWidgetResponseRate {...{ companyId }} />
+          <NumberWidgetResponseDelay {...{ companyId }} />
+          <NumberWidgetAccesses {...{ companyId, siret }} />
+        </div>
+        {connectedUser.isNotPro && (
+          <div>
+            <NumberWidgetDocsSent {...{ siret }} />
+            <NumberWidgetThreats {...{ companyId }} />
+            <NumberWidgetBlackmail {...{ companyId }} />
+          </div>
+        )}
+      </div>
+    </CleanInvisiblePanel>
   )
 }
 
@@ -54,8 +57,10 @@ function NumberWidgetResponseRate({ companyId }: Props) {
   const _responseRate = useGetResponseRateQuery(companyId)
   return (
     <Widget>
-      <p className="text-3xl font-bold">{_responseRate.data}%</p>
-      <p>de signalements répondus</p>
+      <p>
+        <span className="text-lg font-bold">{_responseRate.data}%</span>
+        <span className="text-base"> de signalements répondus</span>
+      </p>
     </Widget>
   )
 }
@@ -67,12 +72,12 @@ function NumberWidgetResponseDelay({ companyId }: Props) {
     <Widget loading={_responseDelay.isLoading}>
       {!_responseDelay.isLoading &&
         (_responseDelay.data ? (
-          <>
-            <p className="text-3xl font-bold">
+          <p>
+            <span className="text-lg font-bold">
               {_responseDelay.data ? _responseDelay.data.toDays : '∞'} {m.days}
-            </p>
-            <p>en moyenne pour répondre</p>
-          </>
+            </span>{' '}
+            en moyenne pour répondre
+          </p>
         ) : (
           <p>{m.avgResponseTimeDescNoData}</p>
         ))}
@@ -85,20 +90,19 @@ function NumberWidgetThreats({ companyId }: Props) {
   return (
     <Widget loading={_getCompanyThreat.isLoading}>
       {_getCompanyThreat.data && (
-        <>
-          <p className="text-3xl font-bold">{_getCompanyThreat.data.value}</p>
-          <p className="flex items-center gap-2">
-            {m.proTheatToConsumer}{' '}
+        <p>
+          <span className="text-lg font-bold">
+            {_getCompanyThreat.data.value}
+          </span>{' '}
+          {m.proTheatToConsumer}{' '}
+          <span>
             <Tooltip title={m.proTheatToConsumerDesc}>
-              <Icon
-                sx={{ color: (t) => t.palette.text.disabled }}
-                fontSize="medium"
-              >
-                help
+              <Icon fontSize="small" className="mb-[-3px] text-gray-500">
+                help_outline
               </Icon>
             </Tooltip>
-          </p>
-        </>
+          </span>
+        </p>
       )}
     </Widget>
   )
@@ -110,22 +114,17 @@ function NumberWidgetBlackmail({ companyId }: Props) {
   return (
     <Widget loading={_getCompanyRefundBlackMail.isLoading}>
       {_getCompanyRefundBlackMail.data && (
-        <>
-          <p className="text-3xl font-bold ">
+        <p>
+          <span className="text-lg font-bold ">
             {_getCompanyRefundBlackMail.data.value}
-          </p>
-          <p className="flex items-center gap-2">
-            {m.proRefundBlackMail}{' '}
-            <Tooltip title={m.proRefundBlackMailDesc}>
-              <Icon
-                sx={{ color: (t) => t.palette.text.disabled }}
-                fontSize="medium"
-              >
-                help
-              </Icon>
-            </Tooltip>
-          </p>
-        </>
+          </span>{' '}
+          {m.proRefundBlackMail}{' '}
+          <Tooltip title={m.proRefundBlackMailDesc}>
+            <Icon fontSize="small" className="mb-[-3px] text-gray-500">
+              help_outline
+            </Icon>
+          </Tooltip>
+        </p>
       )}
     </Widget>
   )
@@ -135,14 +134,13 @@ function NumberWidgetDocsSent({ siret }: { siret: string }) {
   const count = _companyEvents.data?.filter(
     (_) => _.data.action === EventActionValues.PostAccountActivationDoc,
   ).length
-  const { m } = useI18n()
   return (
     <Widget loading={_companyEvents.isLoading}>
       {count !== undefined && (
-        <>
-          <p className="text-3xl font-bold">{count}</p>
-          <p className="">courriers envoyés</p>
-        </>
+        <p>
+          <span className="text-lg font-bold">{count}</span>{' '}
+          <span className="">courriers envoyés</span>
+        </p>
       )}
     </Widget>
   )
@@ -170,12 +168,12 @@ function NumberWidgetAccesses({
   return (
     <Widget loading={_accesses.isLoading}>
       {_accesses.data !== undefined && (
-        <>
-          <p className="text-3xl font-bold">{_accesses.data}</p>
-          <p className="">
+        <p>
+          <span className="text-lg font-bold">{_accesses.data}</span>{' '}
+          <span className="">
             {m.accountsActivated} {displayAccessesLink && link}
-          </p>
-        </>
+          </span>
+        </p>
       )}
     </Widget>
   )
@@ -188,9 +186,9 @@ function Widget({
   loading?: boolean
 }) {
   return (
-    <div className="p-4 flex flex-col border-solid border border-gray-300 rounded shadow-md">
+    <div className="">
       {loading ? (
-        <div className="min-h-[100px]">
+        <div className="min-h-[30px]">
           <LinearProgress />
         </div>
       ) : (

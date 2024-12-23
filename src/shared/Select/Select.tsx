@@ -34,11 +34,7 @@ const _ScSelect = <T,>(
       className={className}
       style={style}
     >
-      <InputLabel
-        sx={(_) => ({ backgroundColor: 'white' })}
-        htmlFor={id}
-        id={id + '-label'}
-      >
+      <InputLabel htmlFor={id} id={id + '-label'}>
         {label}
       </InputLabel>
       <Select

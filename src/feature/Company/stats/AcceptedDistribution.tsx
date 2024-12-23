@@ -1,16 +1,13 @@
 import { Icon, Tooltip } from '@mui/material'
 import { objectEntriesUnsafe } from 'core/helper'
 import { useAcceptedDistributionQuery } from 'core/queryhooks/statsQueryHooks'
-import { CleanDiscreetPanel } from 'shared/Panel/simplePanels'
+import { CleanInvisiblePanel } from 'shared/Panel/simplePanels'
 import { useMemoFn } from '../../../alexlibs/react-hooks-lib'
+import { acceptedDetails } from '../../../core/client/event/Event'
+import { ReportAcceptedDistribution } from '../../../core/client/stats/statsTypes'
 import { useI18n } from '../../../core/i18n'
 import { HorizontalBarChart } from '../../../shared/Chart/HorizontalBarChart'
 import { PanelBody } from '../../../shared/Panel'
-import {
-  AcceptedDetails,
-  acceptedDetails,
-} from '../../../core/client/event/Event'
-import { ReportAcceptedDistribution } from '../../../core/client/stats/statsTypes'
 
 export const AcceptedDistribution = ({ companyId }: { companyId: string }) => {
   const { m } = useI18n()
@@ -35,13 +32,13 @@ export const AcceptedDistribution = ({ companyId }: { companyId: string }) => {
           <Tooltip title={m.responseDetails[acceptedDetailsLabel]}>
             <Icon
               fontSize="small"
+              className="text-gray-500"
               sx={{
                 verticalAlign: 'middle',
-                color: (t) => t.palette.text.disabled,
                 ml: 1,
               }}
             >
-              help
+              help_outline
             </Icon>
           </Tooltip>
         </span>
@@ -51,8 +48,8 @@ export const AcceptedDistribution = ({ companyId }: { companyId: string }) => {
   )
 
   return (
-    <CleanDiscreetPanel loading={_query.isLoading}>
-      <h2 className="font-bold text-lg">
+    <CleanInvisiblePanel loading={_query.isLoading}>
+      <h2 className="font-bold text-2xl">
         Types de promesse d'action faites par le professionnel
       </h2>
       <p className="text-gray-500">
@@ -67,6 +64,6 @@ export const AcceptedDistribution = ({ companyId }: { companyId: string }) => {
       <PanelBody>
         <HorizontalBarChart data={distribution} grid />
       </PanelBody>
-    </CleanDiscreetPanel>
+    </CleanInvisiblePanel>
   )
 }

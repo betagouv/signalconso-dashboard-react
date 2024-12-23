@@ -124,7 +124,7 @@ export const HorizontalBarChart = ({ data, grid, width = 200 }: Props) => {
           )
         })
       ) : (
-        <Box sx={sx.label}> {m.noDataAtm} </Box>
+        <p>{m.noDataAtm} </p>
       )}
       {grid && data && data.length > 0 && (
         <Box sx={sx.item}>

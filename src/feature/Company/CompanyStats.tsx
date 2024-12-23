@@ -19,7 +19,7 @@ import { StatusDistribution } from './stats/StatusDistribution'
 
 import { UseQueryResult } from '@tanstack/react-query'
 import { ApiError } from 'core/client/ApiClient'
-import { CleanDiscreetPanel } from 'shared/Panel/simplePanels'
+import { CleanInvisiblePanel } from 'shared/Panel/simplePanels'
 import { CompanyStatsNumberWidgets } from './companyStatsNumberWidgets'
 import { AcceptedDistribution } from './stats/AcceptedDistribution'
 import {
@@ -76,7 +76,7 @@ export function CompanyStats({
             company={company}
             reportTotals={_statusDistribution.data?.totals}
           />
-          <div className="grid lg:grid-cols-2 gap-4">
+          <div className="grid lg:grid-cols-2 gap-20">
             <div>
               <StatusDistribution<ReportStatus>
                 loading={_statusDistribution.isLoading}
@@ -114,10 +114,10 @@ function TagsDistribution({
     | undefined
 }) {
   return (
-    <CleanDiscreetPanel>
-      <h2 className="font-bold text-lg">Répartition par tags</h2>
+    <CleanInvisiblePanel>
+      <h2 className="font-bold text-2xl">Répartition par tags</h2>
       <HorizontalBarChart data={tagsDistribution} grid />
-    </CleanDiscreetPanel>
+    </CleanInvisiblePanel>
   )
 }
 
@@ -128,13 +128,13 @@ function WebsitesDistribution({
 }) {
   const { m } = useI18n()
   return (
-    <CleanDiscreetPanel loading={_hosts.isLoading}>
-      <h2 className="font-bold text-lg">{m.websites}</h2>
+    <CleanInvisiblePanel loading={_hosts.isLoading}>
+      <h2 className="font-bold text-2xl">{m.websites}</h2>
       <div style={{ maxHeight: 260, overflow: 'auto' }}>
         <List dense>
           {_hosts.data?.map((host, i) => <ListItem key={i}>{host}</ListItem>)}
         </List>
       </div>
-    </CleanDiscreetPanel>
+    </CleanInvisiblePanel>
   )
 }

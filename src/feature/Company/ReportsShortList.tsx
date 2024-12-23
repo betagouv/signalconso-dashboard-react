@@ -1,7 +1,7 @@
 import { Box, Icon } from '@mui/material'
 import { UseQueryPaginateResult } from 'core/queryhooks/UseQueryPaginate'
 import { NavLink } from 'react-router-dom'
-import { CleanDiscreetPanel } from 'shared/Panel/simplePanels'
+import { CleanInvisiblePanel } from 'shared/Panel/simplePanels'
 import { IconBtn, Txt, makeSx } from '../../alexlibs/mui-extension'
 import { ReportSearchResult } from '../../core/client/report/Report'
 import { useI18n } from '../../core/i18n'
@@ -20,7 +20,7 @@ const css = makeSx({
     display: 'flex',
     alignItems: 'center',
     pb: 2,
-    m: 2,
+    my: 2,
     '&:not(:last-of-type)': {
       borderBottom: (t) => `1px solid ${t.palette.divider}`,
     },
@@ -94,11 +94,11 @@ export function ReportsShortListPanel({
   const { m } = useI18n()
 
   return (
-    <CleanDiscreetPanel loading={_reports.result.isFetching}>
-      <h2 className="font-bold text-lg">{m.lastReports}</h2>
+    <CleanInvisiblePanel loading={_reports.result.isFetching}>
+      <h2 className="font-bold text-2xl">{m.lastReports}</h2>
       {_reports.result.data && (
         <ReportsShortList reports={_reports.result.data} />
       )}
-    </CleanDiscreetPanel>
+    </CleanInvisiblePanel>
   )
 }
