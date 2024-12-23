@@ -12,7 +12,6 @@ import {
   useStatusDistributionQuery,
 } from '../../core/queryhooks/statsQueryHooks'
 import { CompanyChartPanel } from './CompanyChartPanel'
-import { ReportsShortListPanel } from './ReportsShortList'
 import { CompanyInfo } from './stats/CompanyInfo'
 import { ReportWordDistribution } from './stats/ReportWordDistribution'
 import { StatusDistribution } from './stats/StatusDistribution'
@@ -20,6 +19,7 @@ import { StatusDistribution } from './stats/StatusDistribution'
 import { UseQueryResult } from '@tanstack/react-query'
 import { ApiError } from 'core/client/ApiClient'
 import { CleanInvisiblePanel } from 'shared/Panel/simplePanels'
+import { AlbertCompanyProblems } from 'shared/albert/AlbertCompanyProblems'
 import { CompanyStatsNumberWidgets } from './companyStatsNumberWidgets'
 import { AcceptedDistribution } from './stats/AcceptedDistribution'
 import {
@@ -71,13 +71,15 @@ export function CompanyStats({
       {company && (
         <>
           <CompanyStatsNumberWidgets id={id} siret={company.siret} />
-          <CompanyChartPanel
-            companyId={id}
-            company={company}
-            reportTotals={_statusDistribution.data?.totals}
-          />
+
           <div className="grid lg:grid-cols-2 gap-20">
             <div>
+              <AlbertCompanyProblems companyId={id} />
+              <CompanyChartPanel
+                companyId={id}
+                company={company}
+                reportTotals={_statusDistribution.data?.totals}
+              />
               <StatusDistribution<ReportStatus>
                 loading={_statusDistribution.isLoading}
                 values={_statusDistribution.data?.distribution}
@@ -87,7 +89,6 @@ export function CompanyStats({
               />
               <AcceptedDistribution companyId={id} />
               <TagsDistribution {...{ tagsDistribution }} />
-              <ReportsShortListPanel {...{ _reports }} />
             </div>
             <div>
               <CompanyInfo company={company} />
@@ -95,6 +96,7 @@ export function CompanyStats({
               <EngagementReviewsDistribution companyId={id} />
               <ReportWordDistribution companyId={id} />
               <WebsitesDistribution {...{ _hosts }} />
+              {/* <ReportsShortListPanel {...{ _reports }} /> */}
             </div>
           </div>
         </>

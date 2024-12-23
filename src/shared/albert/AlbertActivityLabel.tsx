@@ -1,6 +1,6 @@
 import { Icon } from '@mui/material'
 import { useConnectedContext } from 'core/context/ConnectedContext'
-import { ScDialog } from './ScDialog'
+import { ScDialog } from '../ScDialog'
 
 export function AlbertActivityLabel({
   children,

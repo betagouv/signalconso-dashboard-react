@@ -6,7 +6,6 @@ import { ReportStatusPro } from '../../core/client/report/Report'
 import { CompanyWithReportsCount, User } from '../../core/model'
 import { useReportSearchQuery } from '../../core/queryhooks/reportQueryHooks'
 import { CompanyChartPanel } from './CompanyChartPanel'
-import { ReportsShortListPanel } from './ReportsShortList'
 import { CompanyStatsNumberWidgets } from './companyStatsNumberWidgets'
 import { CompanyInfo } from './stats/CompanyInfo'
 import {
@@ -51,13 +50,14 @@ export function CompanyStatsPro({
       {company && (
         <>
           <CompanyStatsNumberWidgets id={id} siret={company.siret} />
-          <CompanyChartPanel
-            companyId={id}
-            company={company}
-            reportTotals={_statusDistribution.data?.totals}
-          />
+
           <div className="grid lg:grid-cols-2 gap-4">
             <div>
+              <CompanyChartPanel
+                companyId={id}
+                company={company}
+                reportTotals={_statusDistribution.data?.totals}
+              />
               <StatusDistribution<ReportStatusPro>
                 values={_statusDistribution.data?.distribution}
                 loading={_statusDistribution.isLoading}
@@ -67,7 +67,7 @@ export function CompanyStatsPro({
                 }
                 statusColor={(s: ReportStatusPro) => reportStatusProColor[s]}
               />
-              <ReportsShortListPanel {...{ _reports }} />
+              {/* <ReportsShortListPanel {...{ _reports }} /> */}
             </div>
             <div>
               <CompanyInfo company={company} />

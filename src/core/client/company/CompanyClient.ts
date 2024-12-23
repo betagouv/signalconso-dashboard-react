@@ -14,6 +14,7 @@ import {
   Paginate,
 } from '../../model'
 import { ApiClient } from '../ApiClient'
+import { AlbertProblemsResult } from '../albert/AlbertProblemsResult'
 
 export class CompanyClient {
   constructor(private client: ApiClient) {}
@@ -115,6 +116,12 @@ export class CompanyClient {
     return this.client.post<void>(`/companies/follow-up-posted`, {
       body: { companyIds: ids },
     })
+  }
+
+  readonly getProblemsSeenByAlbert = async (id: string) => {
+    return this.client.get<AlbertProblemsResult | null>(
+      `/companies/${id}/albert-problems`,
+    )
   }
 
   private static readonly mapCompany = (

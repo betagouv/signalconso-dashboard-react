@@ -1,6 +1,6 @@
 import { Icon } from '@mui/material'
 import { Txt } from 'alexlibs/mui-extension'
-import { AlbertActivityLabel } from 'shared/AlbertActivityLabel'
+import { AlbertActivityLabel } from 'shared/albert/AlbertActivityLabel'
 import { PageTitle } from 'shared/Page'
 import { CompanyWithReportsCount } from '../../core/model'
 import { AnnuaireDesEntreprisesBanner } from './AnnuaireDesEntreprisesBanner'
