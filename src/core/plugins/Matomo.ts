@@ -6,8 +6,6 @@ const MATOMO_ENABLED = config.enableMatomo
 declare const _paq: any
 
 export class Matomo {
-  constructor() {}
-
   private static previousTrackedPage?: string
 
   private static isAlreadyFired = (path: string) => {
@@ -58,6 +56,7 @@ type AnalyticAction =
   | AccessEventActions
   | StatisticsActions
   | NewsletterActions
+  | OutilsIaActions
 
 export enum EventCategories {
   Authentification = 'Authentification',
@@ -65,10 +64,7 @@ export enum EventCategories {
   AccesDeLEntreprise = "Accès de l'entreprise",
   Statistiques = 'Statistiques',
   Newsletter = 'Newsletter',
-}
-
-export enum NewsletterActions {
-  reportsClik = 'ClickNewsletterSubscribeButton',
+  OutilsIa = 'Outils IA',
 }
 
 export enum AuthenticationEventActions {
@@ -96,6 +92,14 @@ export enum AccessEventActions {
 
 export enum StatisticsActions {
   reportCountsBySubcategories = 'Consultation de la page du nombre de signalements par sous catégories',
+}
+
+export enum OutilsIaActions {
+  analyseProblemesEntreprise = `Lancement de l'analyse IA des problèmes d'une entreprise`,
+}
+
+export enum NewsletterActions {
+  reportsClik = 'ClickNewsletterSubscribeButton',
 }
 
 export enum ActionResultNames {
