@@ -1,4 +1,3 @@
-import { List, ListItem } from '@mui/material'
 import { useI18n } from 'core/i18n'
 import { HorizontalBarChart } from 'shared/Chart/HorizontalBarChart'
 import { reportStatusColor } from 'shared/ReportStatus'
@@ -16,6 +15,7 @@ import { CompanyInfo } from './stats/CompanyInfo'
 import { ReportWordDistribution } from './stats/ReportWordDistribution'
 import { StatusDistribution } from './stats/StatusDistribution'
 
+import { Icon } from '@mui/material'
 import { UseQueryResult } from '@tanstack/react-query'
 import { ApiError } from 'core/client/ApiClient'
 import { CleanInvisiblePanel } from 'shared/Panel/simplePanels'
@@ -131,12 +131,15 @@ function WebsitesDistribution({
   const { m } = useI18n()
   return (
     <CleanInvisiblePanel loading={_hosts.isLoading}>
-      <h2 className="font-bold text-2xl">{m.websites}</h2>
-      <div style={{ maxHeight: 260, overflow: 'auto' }}>
-        <List dense>
-          {_hosts.data?.map((host, i) => <ListItem key={i}>{host}</ListItem>)}
-        </List>
-      </div>
+      <h2 className="font-bold text-2xl mb-2">{m.websites}</h2>
+      <ul className="grid grid-cols-2">
+        {_hosts.data?.map((host, i) => (
+          <li key={i} className="flex gap-1 items-center">
+            <Icon fontSize="small">public</Icon>
+            {host}
+          </li>
+        ))}
+      </ul>
     </CleanInvisiblePanel>
   )
 }
