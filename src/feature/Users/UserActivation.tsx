@@ -96,7 +96,7 @@ export const UserActivation = ({ onUserActivated }: Props) => {
       })
       .then((user) => {
         Matomo.trackEvent(
-          EventCategories.account,
+          EventCategories.CompteUtilisateur,
           AccountEventActions.registerUser,
           ActionResultNames.success,
         )
@@ -106,7 +106,7 @@ export const UserActivation = ({ onUserActivated }: Props) => {
       })
       .catch((e) => {
         Matomo.trackEvent(
-          EventCategories.account,
+          EventCategories.CompteUtilisateur,
           AccountEventActions.registerUser,
           ActionResultNames.fail,
         )

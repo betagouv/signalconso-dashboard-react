@@ -32,7 +32,7 @@ export const AddCompanyForm = () => {
       toastSuccess(m.companyRegistered)
       history(siteMap.logged.companiesPro)
       Matomo.trackEvent(
-        EventCategories.companyAccess,
+        EventCategories.AccesDeLEntreprise,
         AccessEventActions.addCompanyToAccount,
         ActionResultNames.success,
         connectedUser,
@@ -40,7 +40,7 @@ export const AddCompanyForm = () => {
     },
     onError: () => {
       Matomo.trackEvent(
-        EventCategories.companyAccess,
+        EventCategories.AccesDeLEntreprise,
         AccessEventActions.addCompanyToAccount,
         ActionResultNames.fail,
         connectedUser,

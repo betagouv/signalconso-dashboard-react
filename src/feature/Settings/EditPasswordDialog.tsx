@@ -36,13 +36,13 @@ export const EditPasswordDialog = ({ children }: Props) => {
     onSuccess: () => {
       toastSuccess(m.passwordEdited)
       Matomo.trackEvent(
-        EventCategories.account,
+        EventCategories.CompteUtilisateur,
         AccountEventActions.changePasswordSuccess,
       )
     },
     onError: (error: ApiError) => {
       Matomo.trackEvent(
-        EventCategories.account,
+        EventCategories.CompteUtilisateur,
         AccountEventActions.changePasswordFail,
       )
     },

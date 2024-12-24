@@ -70,7 +70,7 @@ export const EditProfileDialog = ({ children }: Props) => {
               toastSuccess(m.saved)
               close()
               Matomo.trackEvent(
-                EventCategories.account,
+                EventCategories.CompteUtilisateur,
                 AccountEventActions.changeNameSuccess,
               )
               setConnectedUser((previous) =>
@@ -79,7 +79,7 @@ export const EditProfileDialog = ({ children }: Props) => {
             })
             .catch((_) => {
               Matomo.trackEvent(
-                EventCategories.account,
+                EventCategories.CompteUtilisateur,
                 AccountEventActions.changeNameFail,
               )
             })

@@ -18,11 +18,11 @@ import {
   EventCategories,
   Matomo,
 } from '../../core/plugins/Matomo'
+import { siteMap } from '../../core/siteMap'
 import { ScButton } from '../../shared/Button'
 import { ScInputPassword } from '../../shared/ScInputPassword'
 import { ForgottenPasswordDialog } from './ForgottenPasswordDialog'
 import PredefinedUsersPanel from './PredefinedUsersPanel'
-import { siteMap } from '../../core/siteMap'
 
 interface ActionProps<F extends (...args: any[]) => Promise<any>> {
   action: F
@@ -71,11 +71,11 @@ export const LoginForm = ({ login }: Props) => {
       .action(form.email, form.password)
       .then((user) => {
         Matomo.trackEvent(
-          EventCategories.auth,
+          EventCategories.Authentification,
           AuthenticationEventActions.success,
         )
         Matomo.trackEvent(
-          EventCategories.auth,
+          EventCategories.Authentification,
           AuthenticationEventActions.role,
           user.role,
         )
@@ -87,7 +87,10 @@ export const LoginForm = ({ login }: Props) => {
       })
       .catch((err: ApiError) => {
         setApiError(err)
-        Matomo.trackEvent(EventCategories.auth, AuthenticationEventActions.fail)
+        Matomo.trackEvent(
+          EventCategories.Authentification,
+          AuthenticationEventActions.fail,
+        )
       })
   }
 

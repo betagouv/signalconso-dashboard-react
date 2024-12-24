@@ -57,17 +57,17 @@ type AnalyticAction =
   | AccountEventActions
   | AccessEventActions
   | StatisticsActions
-  | newsletter
+  | NewsletterActions
 
 export enum EventCategories {
-  auth = 'Authentification',
-  account = 'Compte utilisateur',
-  companyAccess = "Accès de l'entreprise",
-  statistics = 'Statistiques',
-  ProEventActions = 'Newsletter',
+  Authentification = 'Authentification',
+  CompteUtilisateur = 'Compte utilisateur',
+  AccesDeLEntreprise = "Accès de l'entreprise",
+  Statistiques = 'Statistiques',
+  Newsletter = 'Newsletter',
 }
 
-export enum newsletter {
+export enum NewsletterActions {
   reportsClik = 'ClickNewsletterSubscribeButton',
 }
 

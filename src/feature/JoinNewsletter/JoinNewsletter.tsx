@@ -1,12 +1,12 @@
 import { Button } from '@mui/material'
-import { Matomo, EventCategories, newsletter } from 'core/plugins/Matomo'
+import { EventCategories, Matomo, NewsletterActions } from 'core/plugins/Matomo'
 import { Page, PageTitle } from 'shared/Page'
 
 export const JoinNewsletter = () => {
   const handleSubscribeClick = () => {
     Matomo.trackEvent(
-      EventCategories.ProEventActions,
-      newsletter.reportsClik,
+      EventCategories.Newsletter,
+      NewsletterActions.reportsClik,
       'Bouton ABONNEZ-VOUS',
     )
   }

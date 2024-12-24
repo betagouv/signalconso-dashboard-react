@@ -55,7 +55,7 @@ export const RegisterForm = ({ register: registerAction }: Props) => {
       .action(form.siret, form.code, form.email)
       .then(() => {
         Matomo.trackEvent(
-          EventCategories.account,
+          EventCategories.CompteUtilisateur,
           AccessEventActions.activateCompanyCode,
           ActionResultNames.success,
         )
@@ -67,7 +67,7 @@ export const RegisterForm = ({ register: registerAction }: Props) => {
           message: err.message,
         })
         Matomo.trackEvent(
-          EventCategories.companyAccess,
+          EventCategories.AccesDeLEntreprise,
           AccessEventActions.activateCompanyCode,
           ActionResultNames.fail,
         )
