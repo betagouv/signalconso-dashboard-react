@@ -1,5 +1,5 @@
 import { config } from 'conf/config'
-import { User } from '../client/user/User'
+import { isKindOfAdmin, User } from '../client/user/User'
 
 const MATOMO_ENABLED = config.enableMatomo
 
@@ -25,13 +25,13 @@ export class Matomo {
     value?: any,
     user?: User,
   ) => {
-    if (!user?.impersonator) {
+    if (enabledForUser(user)) {
       Matomo.push(['trackEvent', category, action, name, value])
     }
   }
 
   static readonly trackPage = (path: string, user: User) => {
-    if (!user.impersonator && !Matomo.isAlreadyFired(path)) {
+    if (enabledForUser(user) && !Matomo.isAlreadyFired(path)) {
       Matomo.push(['setCustomUrl', config.appBaseUrl + path])
       Matomo.push(['trackPageView'])
     }
@@ -127,4 +127,8 @@ export function injectMatomoScript() {
   } else {
     console.log('[Matomo] Injection of Matomo script disabled')
   }
+}
+
+function enabledForUser(user: User | undefined) {
+  return !user || !(user.impersonator || isKindOfAdmin(user))
 }
