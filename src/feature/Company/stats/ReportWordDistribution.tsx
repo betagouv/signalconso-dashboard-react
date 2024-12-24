@@ -1,4 +1,4 @@
-import { Box, Icon, List, ListItem, Skeleton, Tooltip } from '@mui/material'
+import { Box, Icon, Skeleton, Tooltip } from '@mui/material'
 import { ScOption } from 'core/helper/ScOption'
 import { NavLink } from 'react-router-dom'
 import { CleanInvisiblePanel } from 'shared/Panel/simplePanels'
@@ -28,7 +28,7 @@ export const ReportWordDistribution = ({ companyId }: Props) => {
                   companyIds: [companyId],
                 })}
               >
-                {index + 1} - {reportWordCount.value}
+                {reportWordCount.value}
               </NavLink>
             ),
             value: reportWordCount.count,
@@ -38,7 +38,7 @@ export const ReportWordDistribution = ({ companyId }: Props) => {
 
   return (
     <CleanInvisiblePanel loading={_wordDistribution.isLoading}>
-      <h2 className="font-bold text-2xl">
+      <h2 className="font-bold text-2xl mb-2">
         <Tooltip title={m.helpCloudWord}>
           <Box>
             {m.reportCloudWord}
@@ -52,13 +52,13 @@ export const ReportWordDistribution = ({ companyId }: Props) => {
         .map((_) => (
           <>
             {reviewDistribution && reviewDistribution.length > 1 ? (
-              <Box sx={{ maxHeight: 260, overflow: 'auto' }}>
-                <List dense>
-                  {reviewDistribution.map((host, i) => (
-                    <ListItem key={i}>{host.label}</ListItem>
-                  ))}
-                </List>
-              </Box>
+              <ul className="flex flex-wrap gap-2">
+                {reviewDistribution.map((host, i) => (
+                  <li key={i} className="italic">
+                    {host.label}
+                  </li>
+                ))}
+              </ul>
             ) : (
               m.cannotGenerateCloudWord
             )}
