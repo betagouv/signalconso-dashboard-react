@@ -22,7 +22,7 @@ export const CompanyInfo = ({ company }: Props) => {
   return (
     <CleanInvisiblePanel loading={_activityCodes.isLoading}>
       <h2 className="font-bold text-2xl mb-2">{m.informations}</h2>
-      <ul>
+      <ul className="grid grid-cols-[auto_auto_1fr] gap-2">
         <Item icon="location_on" label="Adresse">
           <AddressComponent address={company.address} />
         </Item>
@@ -49,7 +49,7 @@ function Item({
   label: string
 }) {
   return (
-    <li className="flex gap-2 items-start">
+    <li className="contents">
       <Icon fontSize="small" className="block mt-[3px]">
         {icon}
       </Icon>
