@@ -1,14 +1,12 @@
 import { Icon, Tooltip } from '@mui/material'
 import { objectEntriesUnsafe } from 'core/helper'
-import { CleanDiscreetPanel } from 'shared/Panel/simplePanels'
+import { CleanInvisiblePanel } from 'shared/Panel/simplePanels'
 import { useMemoFn } from '../../../alexlibs/react-hooks-lib'
 import {
   ReportStatus,
   ReportStatusPro,
 } from '../../../core/client/report/Report'
-import { useI18n } from '../../../core/i18n'
 import { HorizontalBarChart } from '../../../shared/Chart/HorizontalBarChart'
-import { PanelBody } from '../../../shared/Panel'
 
 interface Props<T extends ReportStatus | ReportStatusPro> {
   values: { [key in T]: number } | undefined
@@ -25,8 +23,6 @@ export const StatusDistribution = <T extends ReportStatus | ReportStatusPro>({
   statusShortLabel,
   statusColor,
 }: Props<T>) => {
-  const { m } = useI18n()
-
   const statusDistribution = useMemoFn(values, (_) =>
     objectEntriesUnsafe(_).map(([status, count]) => ({
       label: (
@@ -35,13 +31,13 @@ export const StatusDistribution = <T extends ReportStatus | ReportStatusPro>({
           <Tooltip title={statusDesc(status)}>
             <Icon
               fontSize="small"
+              className="text-gray-500"
               sx={{
                 verticalAlign: 'middle',
-                color: (t) => t.palette.text.disabled,
                 ml: 1,
               }}
             >
-              help
+              help_outline
             </Icon>
           </Tooltip>
         </span>
@@ -52,13 +48,11 @@ export const StatusDistribution = <T extends ReportStatus | ReportStatusPro>({
   )
 
   return (
-    <CleanDiscreetPanel loading={loading}>
-      <h2 className="font-bold text-lg">
+    <CleanInvisiblePanel loading={loading}>
+      <h2 className="font-bold text-2xl">
         Répartition des signalements par status
       </h2>
-      <PanelBody>
-        <HorizontalBarChart data={statusDistribution} grid />
-      </PanelBody>
-    </CleanDiscreetPanel>
+      <HorizontalBarChart data={statusDistribution} grid />
+    </CleanInvisiblePanel>
   )
 }

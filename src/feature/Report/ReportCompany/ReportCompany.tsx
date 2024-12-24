@@ -2,9 +2,9 @@ import { AddressComponent } from '../../../shared/Address'
 
 import { Box, Icon, Tooltip, useTheme } from '@mui/material'
 import { NavLink } from 'react-router-dom'
-import { AlbertActivityLabel } from 'shared/AlbertActivityLabel'
 import { CleanDiscreetPanel } from 'shared/Panel/simplePanels'
 import { WithInlineIcon } from 'shared/WithInlineIcon'
+import { AlbertActivityLabel } from 'shared/albert/AlbertActivityLabel'
 import { ReportWebsiteUrlLink } from 'shared/tinyComponents'
 import { Txt } from '../../../alexlibs/mui-extension'
 import {

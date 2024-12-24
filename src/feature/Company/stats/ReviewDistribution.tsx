@@ -7,7 +7,7 @@ import {
   useGetEngagementReviewsQuery,
   useGetResponseReviewsQuery,
 } from 'core/queryhooks/statsQueryHooks'
-import { CleanDiscreetPanel } from 'shared/Panel/simplePanels'
+import { CleanInvisiblePanel } from 'shared/Panel/simplePanels'
 import { Txt } from '../../../alexlibs/mui-extension'
 import { useMemoFn } from '../../../alexlibs/react-hooks-lib'
 import { useI18n } from '../../../core/i18n'
@@ -86,12 +86,12 @@ function ReviewDistribution({
   )
 
   return (
-    <CleanDiscreetPanel>
-      <h2 className="font-bold text-lg">{title}</h2>
+    <CleanInvisiblePanel>
+      <h2 className="font-bold text-2xl">{title}</h2>
       {ScOption.from(queryResult.data)
         .map((_) => (
           <>
-            <Txt color="hint" block sx={{ mb: 3 }}>
+            <Txt color="hint" block className="mb-2">
               {titleDesc}
             </Txt>
             <HorizontalBarChart width={80} data={reviewDistribution} grid />
@@ -102,6 +102,6 @@ function ReviewDistribution({
             <Skeleton height={66} width="100%" />
           </>,
         )}
-    </CleanDiscreetPanel>
+    </CleanInvisiblePanel>
   )
 }

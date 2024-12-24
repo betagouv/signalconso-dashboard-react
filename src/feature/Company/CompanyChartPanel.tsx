@@ -1,4 +1,4 @@
-import { alpha, Button, ButtonGroup, MenuItem } from '@mui/material'
+import { MenuItem } from '@mui/material'
 import { useConnectedContext } from 'core/context/ConnectedContext'
 import { useI18n } from 'core/i18n'
 import { siteMap } from 'core/siteMap'
@@ -8,15 +8,15 @@ import {
   CurveDefinition,
   LineChartOrPlaceholder,
 } from 'shared/Chart/LineChartWrappers'
-import { CleanDiscreetPanel } from 'shared/Panel/simplePanels'
+import { CleanInvisiblePanel } from 'shared/Panel/simplePanels'
+import { ScSelect } from 'shared/Select/Select'
 import { CompanyWithReportsCount } from '../../core/client/company/Company'
 import {
+  MonthTicks,
   NbReportsTotals,
   Period,
-  MonthTicks,
 } from '../../core/client/stats/statsTypes'
 import { Id, ReportStatus } from '../../core/model'
-import { ScSelect } from '../../shared/Select/Select'
 
 const periods: Period[] = ['Day', 'Week', 'Month']
 const ticks: MonthTicks[] = [1, 6, 12, 24]
@@ -119,12 +119,14 @@ export const CompanyChartPanel = ({
   }
 
   return (
-    <CleanDiscreetPanel>
+    <CleanInvisiblePanel>
       <div className="flex items-center justify-between mb-2">
         {reportTotals && (
           <ReportsTotalWithLink {...{ companyId, reportTotals }} />
         )}
-        <div className={'flex flex-row items-center gap-1'}>
+      </div>
+      <div className="flex flex-col gap-2 border border-solid border-gray-400 p-2 pr-4 pt-4">
+        <div className={'flex flex-row justify-end gap-2'}>
           <ScSelect
             label={'Période'}
             value={reportsTick}
@@ -168,13 +170,13 @@ export const CompanyChartPanel = ({
               ))}
           </ScSelect>
         </div>
+        <LineChartOrPlaceholder
+          hideLabelToggle={true}
+          {...{ curves }}
+          period={reportsCurvePeriod}
+        />
       </div>
-      <LineChartOrPlaceholder
-        hideLabelToggle={true}
-        {...{ curves }}
-        period={reportsCurvePeriod}
-      />
-    </CleanDiscreetPanel>
+    </CleanInvisiblePanel>
   )
 }
 
@@ -195,14 +197,23 @@ function ReportsTotalWithLink({
   const url = siteMap.logged.reports({ companyIds: [companyId] })
   if (connectedUser.isPro) {
     return (
-      <h2 className="font-bold text-lg">
-        {firstPart} (dont <NavLink to={url}>{secondPart}</NavLink>)
+      <h2 className="text-2xl">
+        <span className="font-bold">{firstPart}</span>{' '}
+        <span className="text-base">
+          dont{' '}
+          <NavLink to={url} className="font-bold">
+            {secondPart}
+          </NavLink>
+        </span>
       </h2>
     )
   }
   return (
-    <h2 className="font-bold text-lg">
-      <NavLink to={url}>{firstPart}</NavLink> (dont {secondPart})
+    <h2 className="text-2xl">
+      <span className="font-bold">
+        <NavLink to={url}>{firstPart}</NavLink>
+      </span>{' '}
+      <span className="text-base">dont {secondPart}</span>
     </h2>
   )
 }

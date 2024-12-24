@@ -66,3 +66,29 @@ export const CleanDiscreetPanel = forwardRef(function (
     </div>
   )
 })
+
+export const CleanInvisiblePanel = forwardRef(function (
+  {
+    children,
+    loading,
+    fullHeight,
+  }: {
+    children: ReactNode
+    ref?: React.RefObject<HTMLDivElement>
+    loading?: boolean
+    fullHeight?: boolean
+  },
+  ref: Ref<HTMLDivElement>,
+) {
+  return (
+    <div className={`mb-8 ${fullHeight ? 'h-full' : ''}`} ref={ref}>
+      {loading ? (
+        <div className="min-h-[100px]">
+          <LinearProgress className="" />
+        </div>
+      ) : (
+        children
+      )}
+    </div>
+  )
+})

@@ -10,8 +10,8 @@ import {
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { NavLink } from 'react-router-dom'
-import { AlbertActivityLabel } from 'shared/AlbertActivityLabel'
 import { ScInput } from 'shared/ScInput'
+import { AlbertActivityLabel } from 'shared/albert/AlbertActivityLabel'
 import { Fender, IconBtn, Txt } from '../../alexlibs/mui-extension'
 import {
   Company,

@@ -7,11 +7,10 @@ import {
   ListItemText,
 } from '@mui/material'
 import { useQuery } from '@tanstack/react-query'
+import { CleanInvisiblePanel } from 'shared/Panel/simplePanels'
 import { Company } from '../../../core/client/company/Company'
 import { useI18n } from '../../../core/i18n'
 import { AddressComponent } from '../../../shared/Address'
-import { Panel, PanelBody, PanelHead } from '../../../shared/Panel'
-import { CleanDiscreetPanel } from 'shared/Panel/simplePanels'
 
 interface Props {
   company: Company
@@ -27,10 +26,10 @@ export const CompanyInfo = ({ company }: Props) => {
   })
 
   return (
-    <CleanDiscreetPanel loading={_activityCodes.isLoading}>
-      <h2 className="font-bold text-lg">{m.informations}</h2>
+    <CleanInvisiblePanel loading={_activityCodes.isLoading}>
+      <h2 className="font-bold text-2xl">{m.informations}</h2>
       <>
-        <List>
+        <List dense>
           <ListItem>
             <ListItemIcon>
               <Icon>location_on</Icon>
@@ -68,6 +67,6 @@ export const CompanyInfo = ({ company }: Props) => {
           </ListItem>
         </List>
       </>
-    </CleanDiscreetPanel>
+    </CleanInvisiblePanel>
   )
 }
