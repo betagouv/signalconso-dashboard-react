@@ -1,7 +1,7 @@
 import { Skeleton } from '@mui/material'
 import { useEffect, useState } from 'react'
 import { CountByDate, Period } from '../../core/client/stats/statsTypes'
-import { ScLineChart } from './ScLineChart'
+import { ScChart, ScChartKind } from './ScChart'
 
 export const toPercentage = (
   numerator: CountByDate[],
@@ -19,13 +19,15 @@ export const toPercentage = (
 export interface CurveDefinition {
   label: string
   data: CountByDate[]
+  color?: string
 }
 
-interface LineChartOrPlaceholderProps {
+interface ChartOrPlaceholderProps {
   period?: Period
   curves?: CurveDefinition[]
   hideLabelToggle?: boolean
   smallFontYAxis?: boolean
+  chartKind?: ScChartKind
 }
 
 // Displays the data, or a loading placeholder if the data is undefined
@@ -33,17 +35,17 @@ interface LineChartOrPlaceholderProps {
 export const LineChartOrPlaceholder = ({
   curves,
   ...rest
-}: LineChartOrPlaceholderProps) => {
+}: ChartOrPlaceholderProps) => {
   const height = 300
   return curves ? (
-    <ScLineChart
+    <ScChart
       {...{ height }}
       disableAnimation={true}
-      curves={curves.map(({ label, data }, idx) => {
+      curves={curves.map(({ data, ...rest }, idx) => {
         return {
           key: idx.toString(),
-          label,
           curve: data,
+          ...rest,
         }
       })}
       {...rest}

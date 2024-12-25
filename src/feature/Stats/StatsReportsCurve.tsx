@@ -1,4 +1,4 @@
-import { AsyncLineChart } from 'shared/Chart/LineChartWrappers'
+import { AsyncLineChart } from 'shared/Chart/chartWrappers'
 import { CleanWidePanel } from 'shared/Panel/simplePanels'
 import { Txt } from '../../alexlibs/mui-extension'
 import { ReportTag } from '../../core/client/report/Report'

@@ -3,6 +3,8 @@ import { I18nContextShape } from 'core/i18n/i18nContext'
 import format from 'date-fns/format'
 import { memo, useMemo, useState } from 'react'
 import {
+  Bar,
+  BarChart,
   CartesianGrid,
   LabelList,
   Legend,
@@ -17,7 +19,7 @@ import { CountByDate, Period } from '../../core/client/stats/statsTypes'
 import { useI18n } from '../../core/i18n'
 import { styleUtils } from '../../core/theme'
 
-interface ScLineChartPropsBase {
+interface ScChartPropsBase {
   /**
    * This props may be needed because sometimes label are not showing because of animation.
    * https://github.com/recharts/recharts/issues/1135
@@ -28,7 +30,7 @@ interface ScLineChartPropsBase {
   smallFontYAxis?: boolean
 }
 
-interface Props extends ScLineChartPropsBase {
+interface Props extends ScChartPropsBase {
   period?: Period
   curves: {
     label: string
@@ -36,7 +38,9 @@ interface Props extends ScLineChartPropsBase {
     curve: CountByDate[]
     color?: string
   }[]
+  chartKind?: ScChartKind
 }
+export type ScChartKind = 'linechart' | 'stackedbarchart'
 
 // INSPIRED FROM https://stackoverflow.com/questions/6117814/get-week-of-year-in-javascript-like-in-php
 function getWeek(date: Date): [number, number] {
@@ -76,7 +80,7 @@ const formatDate = (
 
 const colors = (t: Theme) => [t.palette.primary.main, '#e48c00', 'red', 'green']
 
-export const ScLineChart = memo(
+export const ScChart = memo(
   ({
     period,
     disableAnimation,
@@ -84,6 +88,7 @@ export const ScLineChart = memo(
     curves,
     height = 300,
     smallFontYAxis,
+    chartKind = 'linechart',
   }: Props) => {
     const theme = useTheme()
     const [showCurves, setShowCurves] = useState<boolean[]>(
@@ -105,6 +110,9 @@ export const ScLineChart = memo(
 
     // the labels may go a little bit outside the graph
     const margin = hideLabelToggle ? undefined : { top: 20, right: 20 }
+
+    const ChartComponent =
+      chartKind === 'stackedbarchart' ? BarChart : LineChart
 
     return (
       <>
@@ -142,35 +150,38 @@ export const ScLineChart = memo(
         )}
         <div style={{ height }} className="">
           <ResponsiveContainer width="100%" height="100%">
-            <LineChart data={mappedData} margin={margin}>
+            <ChartComponent data={mappedData} margin={margin}>
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis dataKey="date" />
               <YAxis {...(smallFontYAxis && { fontSize: '0.85em' })} />
               <Tooltip />
               <Legend />
-              {curves.map((_, i) => (
-                <Line
-                  isAnimationActive={!disableAnimation}
-                  key={_.key}
-                  name={_.label}
-                  type="monotone"
-                  dataKey={_.key}
-                  stroke={_.color ?? colors(theme)[i] ?? colors(theme)[0]}
-                  strokeWidth={2}
-                >
-                  {showCurves[i] && (
+              {curves.map((_, i) => {
+                const color = _.color ?? colors(theme)[i] ?? colors(theme)[0]
+                const props = {
+                  isAnimationActive: disableAnimation,
+                  key: _.key,
+                  name: _.label,
+                  type: 'monotone',
+                  dataKey: _.key,
+                  children: showCurves[i] && (
                     <LabelList
                       dataKey={_.key}
                       position="top"
                       style={{
-                        fill: _.color ?? colors(theme)[i] ?? colors(theme)[0],
+                        fill: color,
                         fontSize: styleUtils(theme).fontSize.small,
                       }}
                     />
-                  )}
-                </Line>
-              ))}
-            </LineChart>
+                  ),
+                } as const
+                return chartKind === 'stackedbarchart' ? (
+                  <Bar {...props} fill={color} stackId="a" />
+                ) : (
+                  <Line {...props} stroke={color} strokeWidth={2} />
+                )
+              })}
+            </ChartComponent>
           </ResponsiveContainer>
         </div>
       </>

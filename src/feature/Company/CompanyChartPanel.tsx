@@ -7,7 +7,7 @@ import { NavLink } from 'react-router-dom'
 import {
   CurveDefinition,
   LineChartOrPlaceholder,
-} from 'shared/Chart/LineChartWrappers'
+} from 'shared/Chart/chartWrappers'
 import { CleanInvisiblePanel } from 'shared/Panel/simplePanels'
 import { ScSelect } from 'shared/Select/Select'
 import { CompanyWithReportsCount } from '../../core/client/company/Company'
@@ -57,14 +57,22 @@ export const CompanyChartPanel = ({
           tickDuration: reportsCurvePeriod,
         }),
       ])
+      const reportsWithoutResponse = reports.map(({ date, count }) => {
+        const nbResponses =
+          responses.find((_) => _.date.getTime() === date.getTime())?.count ?? 0
+        const nbReportsWithoutResponses = count - nbResponses
+        return { date, count: nbReportsWithoutResponses }
+      })
       setCurves([
         {
-          label: m.reportsCount,
-          data: reports,
+          label: 'Signalements répondus',
+          data: responses,
+          color: '#00a',
         },
         {
-          label: m.responsesCount,
-          data: responses,
+          label: 'Signalements en attente de réponse',
+          data: reportsWithoutResponse,
+          color: '#d00',
         },
       ])
     }
@@ -174,6 +182,7 @@ export const CompanyChartPanel = ({
           hideLabelToggle={true}
           {...{ curves }}
           period={reportsCurvePeriod}
+          chartKind="stackedbarchart"
         />
       </div>
     </CleanInvisiblePanel>
