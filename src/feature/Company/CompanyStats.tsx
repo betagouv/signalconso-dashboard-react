@@ -14,10 +14,6 @@ import { CompanyInfo } from './stats/CompanyInfo'
 import { ReportWordDistribution } from './stats/ReportWordDistribution'
 import { StatusDistribution } from './stats/StatusDistribution'
 
-import { Icon } from '@mui/material'
-import { UseQueryResult } from '@tanstack/react-query'
-import { ApiError } from 'core/client/ApiClient'
-import { CleanInvisiblePanel } from 'shared/Panel/simplePanels'
 import { AlbertCompanyProblems } from 'shared/albert/AlbertCompanyProblems'
 import { CompanyStatsNumberWidgets } from './companyStatsNumberWidgets'
 import { AcceptedDistribution } from './stats/AcceptedDistribution'
@@ -25,6 +21,8 @@ import {
   EngagementReviewsDistribution,
   ResponseReviewsDistribution,
 } from './stats/ReviewDistribution'
+import { TagsDistribution } from './stats/TagsDistribution'
+import { WebsitesDistribution } from './stats/WebsitesDistribution'
 type ExtendedUser = User & {
   isPro: boolean
 }
@@ -101,73 +99,5 @@ export function CompanyStats({
         </>
       )}
     </>
-  )
-}
-
-function TagsDistribution({
-  tagsDistribution,
-}: {
-  tagsDistribution:
-    | {
-        label: string
-        value: number
-      }[]
-    | undefined
-}) {
-  const data = tagsDistribution?.sort((a, b) => b.value - a.value)
-  const allValues = data?.map((_) => _.value)
-  const max = allValues && allValues.length ? Math.max(...allValues) : 1
-  return (
-    <CleanInvisiblePanel>
-      <h2 className="font-bold text-2xl mb-2">Répartition par tags</h2>
-      <div className="flex flex-wrap gap-x-4 gap-y-2 items-baseline">
-        {data &&
-          data.map((entry) => {
-            const fontSizePercentage = Math.max(
-              50 + 100 * (entry.value / max),
-              80,
-            )
-            return (
-              <div
-                className="bg-gray-200 px-2"
-                style={{
-                  fontSize: `${fontSizePercentage}%`,
-                }}
-              >
-                {entry.label}{' '}
-                <span
-                  className="text-gray-500"
-                  style={{
-                    fontSize: `0.8em`,
-                  }}
-                >
-                  ({entry.value})
-                </span>
-              </div>
-            )
-          })}
-      </div>
-    </CleanInvisiblePanel>
-  )
-}
-
-function WebsitesDistribution({
-  _hosts,
-}: {
-  _hosts: UseQueryResult<string[], ApiError>
-}) {
-  const { m } = useI18n()
-  return (
-    <CleanInvisiblePanel loading={_hosts.isLoading}>
-      <h2 className="font-bold text-2xl mb-2">{m.websites}</h2>
-      <ul className="grid grid-cols-2">
-        {_hosts.data?.map((host, i) => (
-          <li key={i} className="flex gap-1 items-center">
-            <Icon fontSize="small">public</Icon>
-            {host}
-          </li>
-        ))}
-      </ul>
-    </CleanInvisiblePanel>
   )
 }
