@@ -18,30 +18,32 @@ export function TagsDistribution({
       <h2 className="font-bold text-2xl mb-2">Répartition par tags</h2>
       <div className="flex flex-wrap gap-x-4 gap-y-2 items-baseline">
         {data &&
-          data.map((entry) => {
-            const fontSizePercentage = Math.max(
-              50 + 100 * (entry.value / max),
-              80,
-            )
-            return (
-              <div
-                className="bg-gray-200 px-2"
-                style={{
-                  fontSize: `${fontSizePercentage}%`,
-                }}
-              >
-                {entry.label}{' '}
-                <span
-                  className="text-gray-500"
-                  style={{
-                    fontSize: `0.8em`,
-                  }}
-                >
-                  ({entry.value})
-                </span>
-              </div>
-            )
-          })}
+          (data.length === 0
+            ? 'Pas de données'
+            : data.map((entry) => {
+                const fontSizePercentage = Math.max(
+                  50 + 100 * (entry.value / max),
+                  80,
+                )
+                return (
+                  <div
+                    className="bg-gray-200 px-2"
+                    style={{
+                      fontSize: `${fontSizePercentage}%`,
+                    }}
+                  >
+                    {entry.label}{' '}
+                    <span
+                      className="text-gray-500"
+                      style={{
+                        fontSize: `0.8em`,
+                      }}
+                    >
+                      ({entry.value})
+                    </span>
+                  </div>
+                )
+              }))}
       </div>
     </CleanInvisiblePanel>
   )

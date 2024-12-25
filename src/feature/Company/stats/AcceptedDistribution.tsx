@@ -7,7 +7,6 @@ import { acceptedDetails } from '../../../core/client/event/Event'
 import { ReportAcceptedDistribution } from '../../../core/client/stats/statsTypes'
 import { useI18n } from '../../../core/i18n'
 import { HorizontalBarChart } from '../../../shared/Chart/HorizontalBarChart'
-import { PanelBody } from '../../../shared/Panel'
 
 export const AcceptedDistribution = ({ companyId }: { companyId: string }) => {
   const { m } = useI18n()
@@ -52,7 +51,7 @@ export const AcceptedDistribution = ({ companyId }: { companyId: string }) => {
       <h2 className="font-bold text-2xl">
         Types de promesse d'action faites par le professionnel
       </h2>
-      <p className="text-gray-500">
+      <p className="text-gray-500 mb-2">
         Lorsque le pro accepte un signalement comme étant fondé, il doit choisir
         l'action qu'il promet de faire pour résoudre la situation, parmi
         plusieurs options possibles (par exemple "
@@ -61,9 +60,9 @@ export const AcceptedDistribution = ({ companyId }: { companyId: string }) => {
         </span>
         ")
       </p>
-      <PanelBody>
+      <>
         <HorizontalBarChart data={distribution} grid />
-      </PanelBody>
+      </>
     </CleanInvisiblePanel>
   )
 }

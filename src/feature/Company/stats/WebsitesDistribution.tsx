@@ -11,17 +11,23 @@ export function WebsitesDistribution({
   _hosts: UseQueryResult<string[], ApiError>
 }) {
   const { m } = useI18n()
+  const hosts = _hosts.data
   return (
     <CleanInvisiblePanel loading={_hosts.isLoading}>
       <h2 className="font-bold text-2xl mb-2">{m.websites}</h2>
-      <ul className="grid grid-cols-2">
-        {_hosts.data?.map((host, i) => (
-          <li key={i} className="flex gap-1 items-center">
-            <Icon fontSize="small">public</Icon>
-            {host}
-          </li>
+      {hosts &&
+        (hosts.length === 0 ? (
+          'Pas de données'
+        ) : (
+          <ul className="grid grid-cols-2">
+            {hosts.map((host, i) => (
+              <li key={i} className="flex gap-1 items-center">
+                <Icon fontSize="small">public</Icon>
+                {host}
+              </li>
+            ))}
+          </ul>
         ))}
-      </ul>
     </CleanInvisiblePanel>
   )
 }

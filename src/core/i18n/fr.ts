@@ -616,7 +616,7 @@ export const fr = {
     governmentCompany: 'Administration publique',
     closedCompany: 'Établissement fermé (non sélectionnable)',
     registerACompany: 'Enregistrer une entreprise',
-    noDataAtm: 'Aucune donnée',
+    noDataAtm: 'Pas de données',
     linkNotValidAnymore: `Le lien sur lequel vous avez cliqué n'est plus valide.`,
     linkNotValidAnymoreDesc: `Si vous avez déjà validé votre email, vous pouvez vous connecter à l'aide de votre adresse email et mot de passe.`,
     noReportsTitle: 'Aucun signalement',
