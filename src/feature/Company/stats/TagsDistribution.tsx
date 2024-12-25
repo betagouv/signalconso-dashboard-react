@@ -1,3 +1,4 @@
+import { Icon } from '@mui/material'
 import { CleanInvisiblePanel } from 'shared/Panel/simplePanels'
 
 export function TagsDistribution({
@@ -15,7 +16,7 @@ export function TagsDistribution({
   const max = allValues && allValues.length ? Math.max(...allValues) : 1
   return (
     <CleanInvisiblePanel>
-      <h2 className="font-bold text-2xl mb-2">Répartition par tags</h2>
+      <h2 className="font-bold text-2xl mb-2">Fréquence des tags</h2>
       <div className="flex flex-wrap gap-x-4 gap-y-2 items-baseline">
         {data &&
           (data.length === 0
@@ -27,19 +28,31 @@ export function TagsDistribution({
                 )
                 return (
                   <div
-                    className="bg-gray-200 px-2"
-                    style={{
-                      fontSize: `${fontSizePercentage}%`,
-                    }}
+                    className="px-2 py-1 rounded-full border border-solid border-gray-300
+                    flex items-center gap-1"
                   >
-                    {entry.label}{' '}
-                    <span
-                      className="text-gray-500"
+                    <Icon
                       style={{
-                        fontSize: `0.8em`,
+                        fontSize: `${fontSizePercentage}%`,
+                      }}
+                      className="text-gray-500"
+                    >
+                      sell
+                    </Icon>
+                    <span
+                      style={{
+                        fontSize: `${fontSizePercentage}%`,
                       }}
                     >
-                      ({entry.value})
+                      {entry.label}{' '}
+                      <span
+                        className="text-gray-500"
+                        style={{
+                          fontSize: `0.8em`,
+                        }}
+                      >
+                        ({entry.value})
+                      </span>
                     </span>
                   </div>
                 )
