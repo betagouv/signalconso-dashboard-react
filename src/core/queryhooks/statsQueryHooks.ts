@@ -18,7 +18,7 @@ export const useGetResponseReviewsQuery = (
 ) => {
   const { api } = useApiContext()
   return useQuery({
-    queryKey: ['stats_getResponseReviews'],
+    queryKey: ['stats_getResponseReviews', id],
     queryFn: () => api.secured.stats.getResponseReviews(id),
     ...options,
   })
@@ -30,7 +30,7 @@ export const useGetEngagementReviewsQuery = (
 ) => {
   const { api } = useApiContext()
   return useQuery({
-    queryKey: ['stats_getEngagementReviews'],
+    queryKey: ['stats_getEngagementReviews', id],
     queryFn: () => api.secured.stats.getEngagementReviews(id),
     ...options,
   })
@@ -42,7 +42,7 @@ export const useGetTagsQuery = (
 ) => {
   const { api } = useApiContext()
   return useQuery({
-    queryKey: ['stats_GetTags'],
+    queryKey: ['stats_GetTags', id],
     queryFn: () => api.secured.stats.getTags(id),
     ...options,
   })
@@ -54,7 +54,7 @@ export const useGetCompanyThreatQuery = (
 ) => {
   const { api } = useApiContext()
   return useQuery({
-    queryKey: ['stats_GetCompanyThreat'],
+    queryKey: ['stats_GetCompanyThreat', id],
     queryFn: () =>
       api.secured.stats.getAdminActionCount(
         id,
@@ -70,7 +70,7 @@ export const useGetCompanyRefundBlackMailQuery = (
 ) => {
   const { api } = useApiContext()
   return useQuery({
-    queryKey: ['stats_GetCompanyRefundBlackMail'],
+    queryKey: ['stats_GetCompanyRefundBlackMail', id],
     queryFn: () =>
       api.secured.stats.getAdminActionCount(
         id,
@@ -86,7 +86,7 @@ export const useStatusDistributionQuery = (
 ) => {
   const { api } = useApiContext()
   return useQuery({
-    queryKey: ['stats_StatusDistribution'],
+    queryKey: ['stats_StatusDistribution', id],
     queryFn: () => api.secured.stats.getStatusDistribution(id),
     ...options,
   })
@@ -98,7 +98,7 @@ export const useStatusDistributionProQuery = (
 ) => {
   const { api } = useApiContext()
   return useQuery({
-    queryKey: ['stats_StatusDistributionPro'],
+    queryKey: ['stats_StatusDistributionPro', id],
     queryFn: () => api.secured.stats.getStatusDistributionPro(id),
     ...options,
   })
@@ -107,7 +107,7 @@ export const useStatusDistributionProQuery = (
 export const useAcceptedDistributionQuery = (id: Id) => {
   const { api } = useApiContext()
   return useQuery({
-    queryKey: ['stats_AcceptedDistribution'],
+    queryKey: ['stats_AcceptedDistribution', id],
     queryFn: () => api.secured.stats.getAcceptedDistribution(id),
   })
 }
@@ -118,7 +118,7 @@ export const useGetResponseDelayQuery = (
 ) => {
   const { api } = useApiContext()
   return useQuery({
-    queryKey: ['stats_GetResponseDelay'],
+    queryKey: ['stats_GetResponseDelay', id],
     queryFn: () => api.secured.stats.getResponseDelay(id),
     ...options,
   })
