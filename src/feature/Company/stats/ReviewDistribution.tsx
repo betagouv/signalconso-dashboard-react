@@ -50,17 +50,17 @@ function ReviewDistribution({
     _.positive > 0 || _.negative > 0 || _.neutral > 0
       ? [
           {
-            label: 'Satisfait',
+            name: 'Satisfait',
             value: _.positive,
             color: chartColors.darkgreen,
           },
           {
-            label: 'Neutre',
+            name: 'Neutre',
             value: _.neutral,
             color: chartColors.darkgray,
           },
           {
-            label: 'Insatisfait',
+            name: 'Insatisfait',
             value: _.negative,
             color: chartColors.darkred,
           },

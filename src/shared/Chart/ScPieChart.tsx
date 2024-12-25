@@ -6,35 +6,36 @@ export function ScPieChart({
 }: {
   data:
     | {
-        label: string
+        name: string
         value: number
         color: string
       }[]
     | undefined
 }) {
-  const dataRenamed = data?.map(({ label, ...rest }) => ({
-    name: label,
-    ...rest,
-  }))
+  const applyHeight = !data || data.length > 0
   return (
-    <div className="h-[200px]">
-      {dataRenamed ? (
-        <ResponsiveContainer width="100%" height="100%">
-          <PieChart margin={{ top: 15 }}>
-            <Pie
-              dataKey="value"
-              data={dataRenamed}
-              fill="red"
-              label
-              innerRadius={45}
-            >
-              {dataRenamed?.map((entry, index) => (
-                <Cell key={entry.name + index} fill={entry.color} />
-              ))}
-            </Pie>
-            <Legend wrapperStyle={{ paddingTop: '5px' }} />
-          </PieChart>
-        </ResponsiveContainer>
+    <div className={applyHeight ? 'h-[200px]' : ''}>
+      {data ? (
+        data.length === 0 ? (
+          'Pas de données'
+        ) : (
+          <ResponsiveContainer width="100%" height="100%">
+            <PieChart margin={{ top: 15 }}>
+              <Pie
+                dataKey="value"
+                data={data}
+                fill="red"
+                label
+                innerRadius={45}
+              >
+                {data?.map((entry, index) => (
+                  <Cell key={entry.name + index} fill={entry.color} />
+                ))}
+              </Pie>
+              <Legend wrapperStyle={{ paddingTop: '5px' }} />
+            </PieChart>
+          </ResponsiveContainer>
+        )
       ) : (
         <Skeleton
           variant="rectangular"
