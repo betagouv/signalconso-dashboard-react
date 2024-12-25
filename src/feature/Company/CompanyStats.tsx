@@ -93,7 +93,6 @@ export function CompanyStats({
               <EngagementReviewsDistribution companyId={id} />
               <ReportWordDistribution companyId={id} />
               <WebsitesDistribution {...{ _hosts }} />
-              {/* <ReportsShortListPanel {...{ _reports }} /> */}
             </div>
           </div>
         </>
