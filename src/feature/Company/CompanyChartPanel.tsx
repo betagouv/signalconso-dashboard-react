@@ -20,7 +20,8 @@ import {
 import { Id, ReportStatus } from '../../core/model'
 
 const periods: Period[] = ['Day', 'Week', 'Month']
-const ticks: MonthTicks[] = [1, 6, 12, 24]
+const defaultTick = 12
+const ticks: MonthTicks[] = [1, 6, defaultTick, 24]
 
 export const CompanyChartPanel = ({
   companyId,
@@ -34,7 +35,7 @@ export const CompanyChartPanel = ({
   const { api: apiSdk } = useConnectedContext()
   const { m, formatLargeNumber } = useI18n()
   const [reportsCurvePeriod, setReportsCurvePeriod] = useState<Period>('Month')
-  const [reportsTick, setReportsTick] = useState<MonthTicks>(6)
+  const [reportsTick, setReportsTick] = useState<MonthTicks>(defaultTick)
   const companyIds = [companyId]
   const [curves, setCurves] = useState<CurveDefinition[] | undefined>()
 
