@@ -57,7 +57,7 @@ function ReviewDistribution({
           {
             label: 'Neutre',
             value: _.neutral,
-            color: chartColors.orangegold,
+            color: chartColors.darkgray,
           },
           {
             label: 'Insatisfait',

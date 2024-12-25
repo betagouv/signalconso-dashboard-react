@@ -3,4 +3,5 @@ export const chartColors = {
   darkblue: '#00a',
   darkgreen: '#080',
   orangegold: '#c80',
+  darkgray: '#777',
 }
