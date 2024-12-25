@@ -8,6 +8,7 @@ import {
   CurveDefinition,
   LineChartOrPlaceholder,
 } from 'shared/Chart/chartWrappers'
+import { chartColors } from 'shared/Chart/chartsColors'
 import { CleanInvisiblePanel } from 'shared/Panel/simplePanels'
 import { ScSelect } from 'shared/Select/Select'
 import { CompanyWithReportsCount } from '../../core/client/company/Company'
@@ -67,12 +68,12 @@ export const CompanyChartPanel = ({
         {
           label: 'Signalements répondus',
           data: responses,
-          color: '#00a',
+          color: chartColors.darkblue,
         },
         {
           label: 'Signalements en attente de réponse',
           data: reportsWithoutResponse,
-          color: '#d00',
+          color: chartColors.darkred,
         },
       ])
     }

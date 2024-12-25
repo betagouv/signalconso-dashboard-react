@@ -1,18 +1,15 @@
-import { Skeleton } from '@mui/material'
 import { UseQueryResult } from '@tanstack/react-query'
 import { ApiError } from 'core/client/ApiClient'
-import { ScOption } from 'core/helper/ScOption'
 import { ReportResponseReviews } from 'core/model'
 import {
   useGetEngagementReviewsQuery,
   useGetResponseReviewsQuery,
 } from 'core/queryhooks/statsQueryHooks'
+import { ScPieChart } from 'shared/Chart/ScPieChart'
+import { chartColors } from 'shared/Chart/chartsColors'
 import { CleanInvisiblePanel } from 'shared/Panel/simplePanels'
 import { Txt } from '../../../alexlibs/mui-extension'
 import { useMemoFn } from '../../../alexlibs/react-hooks-lib'
-import { useI18n } from '../../../core/i18n'
-import { HorizontalBarChart } from '../../../shared/Chart/HorizontalBarChart'
-import { ReviewLabel } from './ReviewLabel'
 
 interface Props {
   companyId: string
@@ -49,59 +46,34 @@ function ReviewDistribution({
   title: string
   titleDesc: string
 }) {
-  const { m } = useI18n()
-
-  const reviewDistribution = useMemoFn(queryResult.data, (_) =>
+  const data = useMemoFn(queryResult.data, (_) =>
     _.positive > 0 || _.negative > 0 || _.neutral > 0
       ? [
           {
-            label: (
-              <ReviewLabel tooltip={m.positive} aria-label="happy">
-                😀
-              </ReviewLabel>
-            ),
+            label: 'Satisfait',
             value: _.positive,
-            color: '#4caf50',
+            color: chartColors.darkgreen,
           },
           {
-            label: (
-              <ReviewLabel tooltip={m.neutral} aria-label="neutral">
-                😐
-              </ReviewLabel>
-            ),
+            label: 'Neutre',
             value: _.neutral,
-            color: '#f57c00',
+            color: chartColors.orangegold,
           },
           {
-            label: (
-              <ReviewLabel tooltip={m.negative} aria-label="sad">
-                🙁
-              </ReviewLabel>
-            ),
+            label: 'Insatisfait',
             value: _.negative,
-            color: '#d32f2f',
+            color: chartColors.darkred,
           },
         ]
       : [],
   )
-
   return (
     <CleanInvisiblePanel>
       <h2 className="font-bold text-2xl">{title}</h2>
-      {ScOption.from(queryResult.data)
-        .map((_) => (
-          <>
-            <Txt color="hint" block className="mb-2">
-              {titleDesc}
-            </Txt>
-            <HorizontalBarChart width={80} data={reviewDistribution} grid />
-          </>
-        ))
-        .getOrElse(
-          <>
-            <Skeleton height={66} width="100%" />
-          </>,
-        )}
+      <Txt color="hint" block className="mb-2">
+        {titleDesc}
+      </Txt>
+      <ScPieChart data={data} />
     </CleanInvisiblePanel>
   )
 }
