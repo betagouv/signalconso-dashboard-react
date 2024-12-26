@@ -1,4 +1,4 @@
-import { AsyncLineChart, toPercentage } from 'shared/Chart/LineChartWrappers'
+import { AsyncLineChart, toPercentage } from 'shared/Chart/chartWrappers'
 import { CleanWidePanel } from 'shared/Panel/simplePanels'
 import { Alert, Txt } from '../../alexlibs/mui-extension'
 import { useConnectedContext } from '../../core/context/ConnectedContext'

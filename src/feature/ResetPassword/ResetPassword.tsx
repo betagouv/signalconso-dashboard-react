@@ -53,7 +53,7 @@ export const ResetPassword = () => {
         toastSuccess(m.resetPasswordSuccess)
         setTimeout(() => history(siteMap.loggedout.login), 400)
         Matomo.trackEvent(
-          EventCategories.account,
+          EventCategories.CompteUtilisateur,
           AuthenticationEventActions.resetPasswordSuccess,
         )
       })
@@ -68,7 +68,7 @@ export const ResetPassword = () => {
         toastError({ message: errorMessage })
         reset()
         Matomo.trackEvent(
-          EventCategories.account,
+          EventCategories.CompteUtilisateur,
           AuthenticationEventActions.resetPasswordFail,
         )
       })

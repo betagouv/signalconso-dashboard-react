@@ -1,13 +1,11 @@
 import { config } from 'conf/config'
-import { User } from '../client/user/User'
+import { isKindOfAdmin, User } from '../client/user/User'
 
 const MATOMO_ENABLED = config.enableMatomo
 
 declare const _paq: any
 
 export class Matomo {
-  constructor() {}
-
   private static previousTrackedPage?: string
 
   private static isAlreadyFired = (path: string) => {
@@ -25,13 +23,13 @@ export class Matomo {
     value?: any,
     user?: User,
   ) => {
-    if (!user?.impersonator) {
+    if (enabledForUser(user)) {
       Matomo.push(['trackEvent', category, action, name, value])
     }
   }
 
   static readonly trackPage = (path: string, user: User) => {
-    if (!user.impersonator && !Matomo.isAlreadyFired(path)) {
+    if (enabledForUser(user) && !Matomo.isAlreadyFired(path)) {
       Matomo.push(['setCustomUrl', config.appBaseUrl + path])
       Matomo.push(['trackPageView'])
     }
@@ -57,18 +55,16 @@ type AnalyticAction =
   | AccountEventActions
   | AccessEventActions
   | StatisticsActions
-  | newsletter
+  | NewsletterActions
+  | OutilsIaActions
 
 export enum EventCategories {
-  auth = 'Authentification',
-  account = 'Compte utilisateur',
-  companyAccess = "Accès de l'entreprise",
-  statistics = 'Statistiques',
-  ProEventActions = 'Newsletter',
-}
-
-export enum newsletter {
-  reportsClik = 'ClickNewsletterSubscribeButton',
+  Authentification = 'Authentification',
+  CompteUtilisateur = 'Compte utilisateur',
+  AccesDeLEntreprise = "Accès de l'entreprise",
+  Statistiques = 'Statistiques',
+  Newsletter = 'Newsletter',
+  OutilsIa = 'Outils IA',
 }
 
 export enum AuthenticationEventActions {
@@ -96,6 +92,14 @@ export enum AccessEventActions {
 
 export enum StatisticsActions {
   reportCountsBySubcategories = 'Consultation de la page du nombre de signalements par sous catégories',
+}
+
+export enum OutilsIaActions {
+  analyseProblemesEntreprise = `Lancement de l'analyse IA des problèmes d'une entreprise`,
+}
+
+export enum NewsletterActions {
+  reportsClik = 'ClickNewsletterSubscribeButton',
 }
 
 export enum ActionResultNames {
@@ -127,4 +131,8 @@ export function injectMatomoScript() {
   } else {
     console.log('[Matomo] Injection of Matomo script disabled')
   }
+}
+
+function enabledForUser(user: User | undefined) {
+  return !user || !(user.impersonator || isKindOfAdmin(user))
 }

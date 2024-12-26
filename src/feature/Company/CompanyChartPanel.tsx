@@ -7,7 +7,8 @@ import { NavLink } from 'react-router-dom'
 import {
   CurveDefinition,
   LineChartOrPlaceholder,
-} from 'shared/Chart/LineChartWrappers'
+} from 'shared/Chart/chartWrappers'
+import { chartColors } from 'shared/Chart/chartsColors'
 import { CleanInvisiblePanel } from 'shared/Panel/simplePanels'
 import { ScSelect } from 'shared/Select/Select'
 import { CompanyWithReportsCount } from '../../core/client/company/Company'
@@ -19,7 +20,8 @@ import {
 import { Id, ReportStatus } from '../../core/model'
 
 const periods: Period[] = ['Day', 'Week', 'Month']
-const ticks: MonthTicks[] = [1, 6, 12, 24]
+const defaultTick = 12
+const ticks: MonthTicks[] = [1, 6, defaultTick, 24]
 
 export const CompanyChartPanel = ({
   companyId,
@@ -33,7 +35,7 @@ export const CompanyChartPanel = ({
   const { api: apiSdk } = useConnectedContext()
   const { m, formatLargeNumber } = useI18n()
   const [reportsCurvePeriod, setReportsCurvePeriod] = useState<Period>('Month')
-  const [reportsTick, setReportsTick] = useState<MonthTicks>(6)
+  const [reportsTick, setReportsTick] = useState<MonthTicks>(defaultTick)
   const companyIds = [companyId]
   const [curves, setCurves] = useState<CurveDefinition[] | undefined>()
 
@@ -57,14 +59,22 @@ export const CompanyChartPanel = ({
           tickDuration: reportsCurvePeriod,
         }),
       ])
+      const reportsWithoutResponse = reports.map(({ date, count }) => {
+        const nbResponses =
+          responses.find((_) => _.date.getTime() === date.getTime())?.count ?? 0
+        const nbReportsWithoutResponses = count - nbResponses
+        return { date, count: nbReportsWithoutResponses }
+      })
       setCurves([
         {
-          label: m.reportsCount,
-          data: reports,
+          label: 'Signalements répondus',
+          data: responses,
+          color: chartColors.darkblue,
         },
         {
-          label: m.responsesCount,
-          data: responses,
+          label: 'Signalements en attente de réponse',
+          data: reportsWithoutResponse,
+          color: chartColors.darkred,
         },
       ])
     }
@@ -174,6 +184,7 @@ export const CompanyChartPanel = ({
           hideLabelToggle={true}
           {...{ curves }}
           period={reportsCurvePeriod}
+          chartKind="stackedbarchart"
         />
       </div>
     </CleanInvisiblePanel>

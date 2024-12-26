@@ -1,4 +1,4 @@
-import { SimplifiedAsyncLineChart } from 'shared/Chart/LineChartWrappers'
+import { SimplifiedAsyncLineChart } from 'shared/Chart/chartWrappers'
 import { CleanWidePanel } from 'shared/Panel/simplePanels'
 import { Txt } from '../../alexlibs/mui-extension'
 import { useConnectedContext } from '../../core/context/ConnectedContext'

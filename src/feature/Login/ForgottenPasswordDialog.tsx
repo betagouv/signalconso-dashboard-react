@@ -49,13 +49,13 @@ export const ForgottenPasswordDialog = ({ value, children }: Props) => {
       .then(() => {
         close()
         Matomo.trackEvent(
-          EventCategories.auth,
+          EventCategories.Authentification,
           AuthenticationEventActions.forgotPasswordSuccess,
         )
       })
       .catch(() => {
         Matomo.trackEvent(
-          EventCategories.auth,
+          EventCategories.Authentification,
           AuthenticationEventActions.forgotPasswordFail,
         )
       })

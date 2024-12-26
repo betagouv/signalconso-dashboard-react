@@ -3,9 +3,11 @@ import { UseQueryResult } from '@tanstack/react-query'
 import { ApiError } from 'core/client/ApiClient'
 import { parseInt } from 'lodash'
 import { useEffect, useState } from 'react'
+import { NavLink } from 'react-router-dom'
 import { CleanWidePanel } from 'shared/Panel/simplePanels'
 import { IconBtn, Txt } from '../../alexlibs/mui-extension'
 import { ReportNode, ReportNodes } from '../../core/client/report/ReportNode'
+import { useConnectedContext } from '../../core/context/ConnectedContext'
 import { useI18n } from '../../core/i18n'
 import {
   ActionResultNames,
@@ -14,15 +16,13 @@ import {
   StatisticsActions,
 } from '../../core/plugins/Matomo'
 import { useGetCountBySubCategoriesQuery } from '../../core/queryhooks/reportQueryHooks'
+import { siteMap } from '../../core/siteMap'
 import { ScButton } from '../../shared/Button'
 import { DebouncedInput } from '../../shared/DebouncedInput'
 import { Page } from '../../shared/Page'
 import { PanelBody } from '../../shared/Panel'
 import { PeriodPicker } from '../../shared/PeriodPicker'
 import { SelectDepartments } from '../../shared/SelectDepartments/SelectDepartments'
-import { siteMap } from '../../core/siteMap'
-import { NavLink } from 'react-router-dom'
-import { useConnectedContext } from '../../core/context/ConnectedContext'
 
 const compare = (a?: string[], b?: string[]): number => {
   if (!a || !b) return 0
@@ -55,7 +55,7 @@ export const ArborescenceWithCounts = () => {
   useEffect(() => {
     if (countBySubCategories.data) {
       Matomo.trackEvent(
-        EventCategories.statistics,
+        EventCategories.Statistiques,
         StatisticsActions.reportCountsBySubcategories,
         ActionResultNames.success,
         connectedUser,

@@ -68,3 +68,7 @@ export interface UserToActivate {
   lastName: string
   password: string
 }
+
+export function isKindOfAdmin(user: User) {
+  return (roleAdmins as any as Role[]).includes(user.role)
+}

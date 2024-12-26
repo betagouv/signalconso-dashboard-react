@@ -1,12 +1,6 @@
-import {
-  Divider,
-  Icon,
-  List,
-  ListItem,
-  ListItemIcon,
-  ListItemText,
-} from '@mui/material'
+import { Icon } from '@mui/material'
 import { useQuery } from '@tanstack/react-query'
+import { ReactNode } from 'react'
 import { CleanInvisiblePanel } from 'shared/Panel/simplePanels'
 import { Company } from '../../../core/client/company/Company'
 import { useI18n } from '../../../core/i18n'
@@ -27,46 +21,40 @@ export const CompanyInfo = ({ company }: Props) => {
 
   return (
     <CleanInvisiblePanel loading={_activityCodes.isLoading}>
-      <h2 className="font-bold text-2xl">{m.informations}</h2>
-      <>
-        <List dense>
-          <ListItem>
-            <ListItemIcon>
-              <Icon>location_on</Icon>
-            </ListItemIcon>
-            <ListItemText
-              primary={m.address}
-              secondary={<AddressComponent address={company.address} />}
-            />
-          </ListItem>
-          <Divider variant="inset" component="li" />
-          <ListItem>
-            <ListItemIcon>
-              <Icon>event</Icon>
-            </ListItemIcon>
-            <ListItemText
-              primary={m.creationDate}
-              secondary={formatDate(company.creationDate)}
-            />
-          </ListItem>
-          <Divider variant="inset" component="li" />
-          <ListItem>
-            <ListItemIcon>
-              <Icon>label</Icon>
-            </ListItemIcon>
-            {_activityCodes.data && (
-              <ListItemText
-                primary={m.activityCode}
-                secondary={
-                  company.activityCode
-                    ? _activityCodes.data[company.activityCode]
-                    : ''
-                }
-              />
-            )}
-          </ListItem>
-        </List>
-      </>
+      <h2 className="font-bold text-2xl mb-2">{m.informations}</h2>
+      <ul className="grid grid-cols-[auto_auto_1fr] gap-2">
+        <Item icon="location_on" label="Adresse">
+          <AddressComponent address={company.address} />
+        </Item>
+        <Item icon="event" label={m.creationDate}>
+          <span>{formatDate(company.creationDate)}</span>
+        </Item>
+        {_activityCodes.data && company.activityCode && (
+          <Item icon="label_outline" label={m.activityCode}>
+            <span>{_activityCodes.data[company.activityCode]}</span>
+          </Item>
+        )}
+      </ul>
     </CleanInvisiblePanel>
+  )
+}
+
+function Item({
+  icon,
+  children,
+  label,
+}: {
+  icon: string
+  children: ReactNode
+  label: string
+}) {
+  return (
+    <li className="contents">
+      <Icon fontSize="small" className="block mt-[3px]">
+        {icon}
+      </Icon>
+      <p className="text-gray-500">{label} :</p>
+      <div>{children}</div>
+    </li>
   )
 }

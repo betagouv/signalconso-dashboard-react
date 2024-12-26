@@ -3,6 +3,7 @@ import { useQuery } from '@tanstack/react-query'
 import { AlbertProblemsResult } from 'core/client/albert/AlbertProblemsResult'
 import { useApiContext } from 'core/context/ApiContext'
 import { useConnectedContext } from 'core/context/ConnectedContext'
+import { EventCategories, Matomo, OutilsIaActions } from 'core/plugins/Matomo'
 import { CleanInvisiblePanel } from 'shared/Panel/simplePanels'
 
 export function AlbertCompanyProblems({ companyId }: { companyId: string }) {
@@ -32,7 +33,16 @@ export function AlbertCompanyProblems({ companyId }: { companyId: string }) {
               className="!mt-2"
               variant="outlined"
               size="small"
-              onClick={() => query.refetch()}
+              onClick={() => {
+                Matomo.trackEvent(
+                  EventCategories.OutilsIa,
+                  OutilsIaActions.analyseProblemesEntreprise,
+                  'click',
+                  companyId,
+                  connectedUser,
+                )
+                query.refetch()
+              }}
               startIcon={<Icon>bubble_chart</Icon>}
             >
               Lancer l'analyse

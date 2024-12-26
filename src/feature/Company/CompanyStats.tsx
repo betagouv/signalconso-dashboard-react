@@ -1,6 +1,4 @@
-import { List, ListItem } from '@mui/material'
 import { useI18n } from 'core/i18n'
-import { HorizontalBarChart } from 'shared/Chart/HorizontalBarChart'
 import { reportStatusColor } from 'shared/ReportStatus'
 import { useEffectFn, useMemoFn } from '../../alexlibs/react-hooks-lib'
 import { ReportStatus } from '../../core/client/report/Report'
@@ -16,9 +14,6 @@ import { CompanyInfo } from './stats/CompanyInfo'
 import { ReportWordDistribution } from './stats/ReportWordDistribution'
 import { StatusDistribution } from './stats/StatusDistribution'
 
-import { UseQueryResult } from '@tanstack/react-query'
-import { ApiError } from 'core/client/ApiClient'
-import { CleanInvisiblePanel } from 'shared/Panel/simplePanels'
 import { AlbertCompanyProblems } from 'shared/albert/AlbertCompanyProblems'
 import { CompanyStatsNumberWidgets } from './companyStatsNumberWidgets'
 import { AcceptedDistribution } from './stats/AcceptedDistribution'
@@ -26,6 +21,8 @@ import {
   EngagementReviewsDistribution,
   ResponseReviewsDistribution,
 } from './stats/ReviewDistribution'
+import { TagsDistribution } from './stats/TagsDistribution'
+import { WebsitesDistribution } from './stats/WebsitesDistribution'
 type ExtendedUser = User & {
   isPro: boolean
 }
@@ -96,47 +93,10 @@ export function CompanyStats({
               <EngagementReviewsDistribution companyId={id} />
               <ReportWordDistribution companyId={id} />
               <WebsitesDistribution {...{ _hosts }} />
-              {/* <ReportsShortListPanel {...{ _reports }} /> */}
             </div>
           </div>
         </>
       )}
     </>
-  )
-}
-
-function TagsDistribution({
-  tagsDistribution,
-}: {
-  tagsDistribution:
-    | {
-        label: string
-        value: number
-      }[]
-    | undefined
-}) {
-  return (
-    <CleanInvisiblePanel>
-      <h2 className="font-bold text-2xl">Répartition par tags</h2>
-      <HorizontalBarChart data={tagsDistribution} grid />
-    </CleanInvisiblePanel>
-  )
-}
-
-function WebsitesDistribution({
-  _hosts,
-}: {
-  _hosts: UseQueryResult<string[], ApiError>
-}) {
-  const { m } = useI18n()
-  return (
-    <CleanInvisiblePanel loading={_hosts.isLoading}>
-      <h2 className="font-bold text-2xl">{m.websites}</h2>
-      <div style={{ maxHeight: 260, overflow: 'auto' }}>
-        <List dense>
-          {_hosts.data?.map((host, i) => <ListItem key={i}>{host}</ListItem>)}
-        </List>
-      </div>
-    </CleanInvisiblePanel>
   )
 }

@@ -67,7 +67,6 @@ export function CompanyStatsPro({
                 }
                 statusColor={(s: ReportStatusPro) => reportStatusProColor[s]}
               />
-              {/* <ReportsShortListPanel {...{ _reports }} /> */}
             </div>
             <div>
               <CompanyInfo company={company} />
