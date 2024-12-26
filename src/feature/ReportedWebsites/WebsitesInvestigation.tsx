@@ -1,4 +1,4 @@
-import {Badge, Box, Icon, Switch, Tooltip} from '@mui/material'
+import { Badge, Box, Icon, Switch, Tooltip } from '@mui/material'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useCallback, useMemo, useState } from 'react'
 import { ScInput } from 'shared/ScInput'
@@ -31,7 +31,7 @@ import { SiretExtraction } from './SiretExtraction'
 import { StatusChip } from './StatusChip'
 import { WebsitesFilters } from './WebsitesFilters'
 import { WebsiteTools } from './WebsiteTools'
-import {ScButton} from "../../shared/Button";
+import { ScButton } from '../../shared/Button'
 
 export const WebsitesInvestigation = () => {
   const { m, formatDate } = useI18n()
@@ -78,14 +78,8 @@ export const WebsitesInvestigation = () => {
   }
 
   const _updateMarketplace = useMutation({
-    mutationFn: (params: {
-      id: Id
-      isMarketplace: boolean
-    }) =>
-      apiSdk.secured.website.updateMarketplace(
-        params.id,
-        params.isMarketplace,
-      ),
+    mutationFn: (params: { id: Id; isMarketplace: boolean }) =>
+      apiSdk.secured.website.updateMarketplace(params.id, params.isMarketplace),
     onSuccess: () =>
       queryClient.invalidateQueries({ queryKey: WebsiteWithCompanySearchKeys }),
   })
@@ -133,7 +127,7 @@ export const WebsitesInvestigation = () => {
     <>
       <>
         <div className="flex flex-col gap-2 mb-4">
-          <Explanation/>
+          <Explanation />
           {assocationWithClosedCompaniesCount && (
             <Alert dense type={'error'}>
               {m.websiteInvestigationClosedCompanyAssociationDesc}
@@ -162,14 +156,20 @@ export const WebsitesInvestigation = () => {
                   badgeContent={filtersCount}
                   hidden={filtersCount === 0}
                 >
-                  <ScButton color="primary" variant="outlined" onClick={_websiteWithCompany.clearFilters}>
+                  <ScButton
+                    color="primary"
+                    variant="outlined"
+                    onClick={_websiteWithCompany.clearFilters}
+                  >
                     {m.removeAllFilters}
                   </ScButton>
                 </Badge>
               </Tooltip>
               {connectedUser.isAdmin && (
                 <AddSiret>
-                  <ScButton color="primary" variant="outlined">{m.createWebsite}</ScButton>
+                  <ScButton color="primary" variant="outlined">
+                    {m.createWebsite}
+                  </ScButton>
                 </AddSiret>
               )}
             </>
@@ -193,14 +193,23 @@ export const WebsitesInvestigation = () => {
               id: 'host',
               head: m.website,
               render: (_) => (
-                <Box sx={{
-                  display: 'flex',
-                  alignItems: 'center',
-                }}>
-                  {_.isMarketplace ? <Icon>store_front</Icon> : null}
+                <Box
+                  sx={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                  }}
+                >
                   <Txt link>
                     <a href={'https://' + _.host}>{_.host}</a>
                   </Txt>
+                  {_.isMarketplace ? (
+                    <Box
+                      sx={{ display: 'flex', gap: 0.5, alignItems: 'center' }}
+                    >
+                      <Icon>store_front</Icon>
+                      <Txt italic>marketplace</Txt>
+                    </Box>
+                  ) : null}
                 </Box>
               ),
             },
@@ -257,7 +266,7 @@ export const WebsitesInvestigation = () => {
                     if (_.investigationStatus === investigationStatus) {
                       toastInfo(m.alreadySelectedValue(investigationStatus))
                     } else {
-                      _createOrUpdate.mutate({..._, investigationStatus})
+                      _createOrUpdate.mutate({ ..._, investigationStatus })
                     }
                   }}
                 >
@@ -295,12 +304,15 @@ export const WebsitesInvestigation = () => {
             {
               id: 'marketplace',
               stickyEnd: true,
-              head: "Marketplace",
+              head: 'Marketplace',
               render: (_) => (
                 <Switch
                   checked={_.isMarketplace}
                   onChange={(e) =>
-                    _updateMarketplace.mutate({id: _.id, isMarketplace: e.target.checked})
+                    _updateMarketplace.mutate({
+                      id: _.id,
+                      isMarketplace: e.target.checked,
+                    })
                   }
                 />
               ),
@@ -311,7 +323,7 @@ export const WebsitesInvestigation = () => {
               sx: (_) => sxUtils.tdActions,
               render: (_) => (
                 <>
-                  <WebsiteTools website={_}/>
+                  <WebsiteTools website={_} />
                   {connectedUser.isAdmin ? (
                     <Tooltip title={m.delete}>
                       <IconBtn
@@ -354,7 +366,7 @@ function Explanation() {
       {expanded && (
         <div className="my-2">
           <Alert type="info" deletable>
-          <ul>
+            <ul>
               <li>
                 Cette page liste tous les sites qui ont été signalés. Ces sites
                 ont pu être associés à une entreprise, un pays, ou à rien du
