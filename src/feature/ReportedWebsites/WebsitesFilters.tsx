@@ -1,8 +1,10 @@
 import {
+  Box,
   Dialog,
   DialogActions,
   DialogContent,
   DialogTitle,
+  Grid2,
 } from '@mui/material'
 import React, { ReactElement, useEffect, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
@@ -19,154 +21,156 @@ import { Label } from '../../shared/Label'
 import { ScMultiSelect } from '../../shared/Select/MultiSelect'
 import { TrueFalseNull } from '../../shared/TrueFalseNull'
 import { ScMenuItem } from '../MenuItem/MenuItem'
+import { Page } from '../../shared/Page'
+import { CleanDiscreetPanel } from '../../shared/Panel/simplePanels'
+import { TrueFalseNullRow } from '../Reports/AdvancedReportsFilter'
+import { DebouncedInput } from '../../shared/DebouncedInput'
+import { ScInput } from '../../shared/ScInput'
+import { PeriodPicker } from '../../shared/PeriodPicker'
+import { useReportSearchQuery } from '../../core/queryhooks/reportQueryHooks'
+import { useWebsiteWithCompanySearchQuery } from '../../core/queryhooks/websiteQueryHooks'
 
 interface WebsitesFiltersProps {
-  updateFilters: (_: WebsiteWithCompanySearch) => void
-  filters: WebsiteWithCompanySearch
-  children: ReactElement<any>
+  _websiteWithCompany: ReturnType<typeof useWebsiteWithCompanySearchQuery>
+  onHostChange: (host: string) => void
 }
 
 interface Form extends WebsiteWithCompanySearch {}
 
 export const WebsitesFilters = ({
-  filters,
-  updateFilters,
-  children,
+  _websiteWithCompany,
+  onHostChange,
   ...props
 }: WebsitesFiltersProps) => {
   const { m } = useI18n()
-  const [open, setOpen] = useState<boolean>(false)
-  const close = () => {
-    setOpen(false)
-  }
-
-  const TrueLabel = () => {
-    const { m } = useI18n()
-    return <>{m.yes}</>
-  }
-
-  const confirm = (e: any) => {
-    close()
-    handleSubmit(updateFilters)(e)
-  }
-
-  useEffect(() => {
-    reset(filters)
-  }, [filters])
-
-  const {
-    handleSubmit,
-    control,
-    reset,
-    formState: { errors },
-  } = useForm<Form>()
 
   const layout = useLayoutContext()
 
   return (
-    <>
-      {React.cloneElement(children, {
-        onClick: (event: any) => {
-          setOpen(true)
-        },
-      })}
-      <Dialog
-        maxWidth={'sm'}
-        fullWidth
-        fullScreen={layout.isMobileWidth}
-        open={open ?? false}
-        onClose={close}
-      >
-        <DialogTitle>{m.search}</DialogTitle>
-        <DialogContent>
-          <DialogInputRow icon="check_circle" label={m.investigation}>
-            <Controller
-              defaultValue={filters.investigationStatus ?? []}
-              name="investigationStatus"
-              control={control}
-              render={({ field }) => (
-                <ScMultiSelect
-                  {...field}
-                  fullWidth
-                  withSelectAll
-                  renderValue={(investigationStatus) =>
-                    `(${investigationStatus.length}) ${investigationStatus
-                      .map((status) => m.InvestigationStatusDesc[status])
-                      .join(',')}`
-                  }
-                >
-                  {Object.values(InvestigationStatus).map(
-                    (investigationStatus) => (
-                      <ScMenuItem
-                        withCheckbox
-                        key={investigationStatus}
-                        value={investigationStatus}
-                      >
-                        <Label dense {...props}>
-                          {m.InvestigationStatusDesc[investigationStatus]}
-                        </Label>
-                      </ScMenuItem>
-                    ),
-                  )}
-                </ScMultiSelect>
-              )}
-            />
-          </DialogInputRow>
-
-          <DialogInputRow icon="check_circle" label={m.kind}>
-            <Controller
-              defaultValue={filters.identificationStatus ?? []}
-              name="identificationStatus"
-              control={control}
-              render={({ field }) => (
-                <ScMultiSelect
-                  {...field}
-                  fullWidth
-                  withSelectAll
-                  renderValue={(identificationStatus) =>
-                    `(${identificationStatus.length}) ${identificationStatus
-                      .map((status) => m.IdentificationStatusDesc[status])
-                      .join(',')}`
-                  }
-                >
-                  {Object.values(IdentificationStatus).map((kind) => (
-                    <ScMenuItem withCheckbox key={kind} value={kind}>
-                      <Label dense {...props}>
-                        {m.IdentificationStatusDesc[kind]}
-                      </Label>
-                    </ScMenuItem>
-                  ))}
-                </ScMultiSelect>
-              )}
-            />
-          </DialogInputRow>
-
-          <DialogInputRow icon="check_circle" label={'Établissement ouvert'}>
-            <Controller
-              defaultValue={null}
-              name="isOpen"
-              control={control}
-              render={({ field }) => (
-                <TrueFalseNull
-                  {...field}
-                  label={{
-                    true: <TrueLabel />,
-                  }}
-                  sx={{ flexBasis: '100%', mt: 1 }}
-                />
-              )}
-            />
-          </DialogInputRow>
-        </DialogContent>
-        <DialogActions>
-          <Btn onClick={close} color="primary">
-            {m.close}
-          </Btn>
-          <Btn onClick={confirm} color="primary" variant="contained">
-            {m.search}
-          </Btn>
-        </DialogActions>
-      </Dialog>
-    </>
+    <CleanDiscreetPanel noShadow>
+      <Grid2 container spacing={1}>
+        <Grid2 size={{ sm: 6, xs: 12 }}>
+          <DebouncedInput
+            value={_websiteWithCompany.filters.host ?? ''}
+            onChange={onHostChange}
+          >
+            {(value, onChange) => (
+              <ScInput
+                value={value}
+                placeholder={m.searchByHost + '...'}
+                fullWidth
+                onChange={(e) => onChange(e.target.value)}
+              />
+            )}
+          </DebouncedInput>
+        </Grid2>
+        <Grid2 size={{ sm: 6, xs: 12 }}>
+          <DebouncedInput<[Date | undefined, Date | undefined]>
+            value={[
+              _websiteWithCompany.filters.start,
+              _websiteWithCompany.filters.end,
+            ]}
+            onChange={([start, end]) => {
+              _websiteWithCompany.updateFilters((prev) => ({
+                ...prev,
+                start,
+                end,
+              }))
+            }}
+          >
+            {(value, onChange) => (
+              <PeriodPicker
+                value={value}
+                onChange={onChange}
+                sx={{ mr: 1 }}
+                fullWidth
+              />
+            )}
+          </DebouncedInput>
+        </Grid2>
+        <Grid2 size={{ sm: 6, xs: 12 }}>
+          <ScMultiSelect
+            fullWidth
+            label={m.investigation}
+            withSelectAll
+            value={_websiteWithCompany.filters.investigationStatus ?? []}
+            onChange={(investigationStatus) =>
+              _websiteWithCompany.updateFilters((prev) => ({
+                ...prev,
+                investigationStatus: investigationStatus ?? null,
+              }))
+            }
+            renderValue={(investigationStatus) =>
+              `(${investigationStatus.length}) ${investigationStatus
+                .map((status) => m.InvestigationStatusDesc[status])
+                .join(',')}`
+            }
+          >
+            {Object.values(InvestigationStatus).map((investigationStatus) => (
+              <ScMenuItem
+                withCheckbox
+                key={investigationStatus}
+                value={investigationStatus}
+              >
+                <Label dense {...props}>
+                  {m.InvestigationStatusDesc[investigationStatus]}
+                </Label>
+              </ScMenuItem>
+            ))}
+          </ScMultiSelect>
+        </Grid2>
+        <Grid2 size={{ sm: 6, xs: 12 }}>
+          <ScMultiSelect
+            fullWidth
+            label={m.kind}
+            value={_websiteWithCompany.filters.identificationStatus ?? []}
+            withSelectAll
+            onChange={(identificationStatus) =>
+              _websiteWithCompany.updateFilters((prev) => ({
+                ...prev,
+                identificationStatus: identificationStatus ?? null,
+              }))
+            }
+            renderValue={(identificationStatus) =>
+              `(${identificationStatus.length}) ${identificationStatus
+                .map((status) => m.IdentificationStatusDesc[status])
+                .join(',')}`
+            }
+          >
+            {Object.values(IdentificationStatus).map((kind) => (
+              <ScMenuItem withCheckbox key={kind} value={kind}>
+                <Label dense {...props}>
+                  {m.IdentificationStatusDesc[kind]}
+                </Label>
+              </ScMenuItem>
+            ))}
+          </ScMultiSelect>
+        </Grid2>
+        <Grid2 size={{ sm: 6, xs: 12 }}>
+          <TrueFalseNullRow
+            label="Établissement ouvert"
+            value={_websiteWithCompany.filters.isOpen}
+            onChange={(open) =>
+              _websiteWithCompany.updateFilters((prev) => ({
+                ...prev,
+                isOpen: open ?? null,
+              }))
+            }
+          />
+        </Grid2>
+        <Grid2 size={{ sm: 6, xs: 12 }}>
+          <TrueFalseNullRow
+            label="Marketplace"
+            value={_websiteWithCompany.filters.isMarketplace}
+            onChange={(isMarketplace) =>
+              _websiteWithCompany.updateFilters((prev) => ({
+                ...prev,
+                isMarketplace: isMarketplace ?? null,
+              }))
+            }
+          />
+        </Grid2>
+      </Grid2>
+    </CleanDiscreetPanel>
   )
 }

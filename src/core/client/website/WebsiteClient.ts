@@ -151,4 +151,13 @@ export class WebsiteClient {
   readonly create = (websiteCreation: WebsiteCreation) => {
     return this.client.post<Website>(`/websites`, { body: websiteCreation })
   }
+
+  readonly updateMarketplace = (
+    id: Id,
+    isMarketPlace: boolean,
+  ): Promise<WebsiteWithCompany> => {
+    return this.client.put<WebsiteWithCompany>(`/websites/${id}`, {
+      qs: { isMarketPlace: isMarketPlace },
+    })
+  }
 }

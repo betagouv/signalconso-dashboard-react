@@ -62,6 +62,7 @@ export interface WebsiteWithCompanySearch extends PaginatedFilters {
   investigationStatus?: InvestigationStatus[]
   start?: Date
   end?: Date
+  isMarketplace: boolean | null
 }
 
 export interface HostReportCountSearch extends PaginatedFilters {

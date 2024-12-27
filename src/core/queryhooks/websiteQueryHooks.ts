@@ -29,6 +29,7 @@ export const useWebsiteWithCompanySearchQuery = () => {
       offset: 0,
       identificationStatus: [IdentificationStatus.NotIdentified],
       isOpen: null,
+      isMarketplace: null,
     },
   )
 }
@@ -43,6 +44,7 @@ export const useWebsiteWithClosedCompanyQuery = () => {
       offset: 0,
       identificationStatus: [IdentificationStatus.Identified],
       isOpen: false,
+      isMarketplace: null,
     },
   )
 }
