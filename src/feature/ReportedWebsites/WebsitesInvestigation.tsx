@@ -1,4 +1,4 @@
-import { Badge, Icon, Switch, Tooltip } from '@mui/material'
+import { Badge, Box, Icon, Switch, Tooltip } from '@mui/material'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useCallback, useMemo, useState } from 'react'
 import { ScInput } from 'shared/ScInput'
@@ -31,6 +31,7 @@ import { SiretExtraction } from './SiretExtraction'
 import { StatusChip } from './StatusChip'
 import { WebsitesFilters } from './WebsitesFilters'
 import { WebsiteTools } from './WebsiteTools'
+import { ScButton } from '../../shared/Button'
 
 export const WebsitesInvestigation = () => {
   const { m, formatDate } = useI18n()
@@ -76,6 +77,13 @@ export const WebsitesInvestigation = () => {
     _updateStatus.mutate({ id: website.id, identificationStatus })
   }
 
+  const _updateMarketplace = useMutation({
+    mutationFn: (params: { id: Id; isMarketplace: boolean }) =>
+      apiSdk.secured.website.updateMarketplace(params.id, params.isMarketplace),
+    onSuccess: () =>
+      queryClient.invalidateQueries({ queryKey: WebsiteWithCompanySearchKeys }),
+  })
+
   const filtersCount = useMemo(() => {
     const { offset, limit, ...filters } = _websiteWithCompany.filters
     return Object.keys(cleanObject(filters)).length
@@ -115,75 +123,31 @@ export const WebsitesInvestigation = () => {
 
   const onRemove = (id: string) => _remove.mutateAsync(id)
 
-  const rowSx = (_: WebsiteWithCompany) => {
-    return {
-      ...(_.isMarketplace ? { pointerEvents: 'none', opacity: 0.5 } : {}),
-    }
-  }
-
   return (
     <>
       <>
+        <div className="flex flex-col gap-2 mb-4">
+          <Explanation />
+          {assocationWithClosedCompaniesCount && (
+            <Alert dense type={'error'}>
+              {m.websiteInvestigationClosedCompanyAssociationDesc}
+              <div className="flex justify-end">
+                <Btn
+                  size="medium"
+                  onClick={(_) => handleSeeClosedCompanyAssociation()}
+                >
+                  VOIR
+                </Btn>
+              </div>
+            </Alert>
+          )}
+        </div>
+        <WebsitesFilters
+          _websiteWithCompany={_websiteWithCompany}
+          onHostChange={onHostChange}
+        />
         <Datatable
           id="reportcompanieswebsites"
-          superheader={
-            <div className="flex flex-col gap-2">
-              <Explanation />
-              {assocationWithClosedCompaniesCount && (
-                <Alert dense type={'error'}>
-                  {m.websiteInvestigationClosedCompanyAssociationDesc}
-                  <div className="flex justify-end">
-                    <Btn
-                      size="medium"
-                      onClick={(_) => handleSeeClosedCompanyAssociation()}
-                    >
-                      VOIR
-                    </Btn>
-                  </div>
-                </Alert>
-              )}
-            </div>
-          }
-          headerMain={
-            <div className="w-full flex gap-2">
-              <DebouncedInput
-                value={_websiteWithCompany.filters.host ?? ''}
-                onChange={onHostChange}
-              >
-                {(value, onChange) => (
-                  <ScInput
-                    value={value}
-                    placeholder={m.searchByHost + '...'}
-                    fullWidth
-                    onChange={(e) => onChange(e.target.value)}
-                  />
-                )}
-              </DebouncedInput>
-
-              <DebouncedInput<[Date | undefined, Date | undefined]>
-                value={[
-                  _websiteWithCompany.filters.start,
-                  _websiteWithCompany.filters.end,
-                ]}
-                onChange={([start, end]) => {
-                  _websiteWithCompany.updateFilters((prev) => ({
-                    ...prev,
-                    start,
-                    end,
-                  }))
-                }}
-              >
-                {(value, onChange) => (
-                  <PeriodPicker
-                    value={value}
-                    onChange={onChange}
-                    sx={{ mr: 1 }}
-                    fullWidth
-                  />
-                )}
-              </DebouncedInput>
-            </div>
-          }
           actions={
             <>
               <Tooltip title={m.removeAllFilters}>
@@ -191,41 +155,25 @@ export const WebsitesInvestigation = () => {
                   color="error"
                   badgeContent={filtersCount}
                   hidden={filtersCount === 0}
-                  overlap="circular"
                 >
-                  <IconBtn
+                  <ScButton
                     color="primary"
+                    variant="outlined"
                     onClick={_websiteWithCompany.clearFilters}
                   >
-                    <Icon>clear</Icon>
-                  </IconBtn>
+                    {m.removeAllFilters}
+                  </ScButton>
                 </Badge>
               </Tooltip>
-              <WebsitesFilters
-                filters={_websiteWithCompany.filters}
-                updateFilters={(_) => {
-                  _websiteWithCompany.updateFilters((prev) => ({
-                    ...prev,
-                    ..._,
-                  }))
-                }}
-              >
-                <Tooltip title={m.advancedFilters}>
-                  <IconBtn color="primary">
-                    <Icon>filter_list</Icon>
-                  </IconBtn>
-                </Tooltip>
-              </WebsitesFilters>
               {connectedUser.isAdmin && (
                 <AddSiret>
-                  <IconBtn color="primary">
-                    <Icon>add</Icon>
-                  </IconBtn>
+                  <ScButton color="primary" variant="outlined">
+                    {m.createWebsite}
+                  </ScButton>
                 </AddSiret>
               )}
             </>
           }
-          headerMarginBottom
           loading={_websiteWithCompany.result.isFetching}
           total={_websiteWithCompany.result.data?.totalCount}
           paginate={{
@@ -239,16 +187,30 @@ export const WebsitesInvestigation = () => {
           }}
           getRenderRowKey={(_) => _.id}
           data={_websiteWithCompany.result.data?.entities}
-          rowSx={rowSx}
           showColumnsToggle={true}
           columns={[
             {
               id: 'host',
               head: m.website,
               render: (_) => (
-                <Txt link>
-                  <a href={'https://' + _.host}>{_.host}</a>
-                </Txt>
+                <Box
+                  sx={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                  }}
+                >
+                  <Txt link>
+                    <a href={'https://' + _.host}>{_.host}</a>
+                  </Txt>
+                  {_.isMarketplace ? (
+                    <Box
+                      sx={{ display: 'flex', gap: 0.5, alignItems: 'center' }}
+                    >
+                      <Icon>store_front</Icon>
+                      <Txt italic>marketplace</Txt>
+                    </Box>
+                  ) : null}
+                </Box>
               ),
             },
             {
@@ -339,7 +301,22 @@ export const WebsitesInvestigation = () => {
                 />
               ),
             },
-
+            {
+              id: 'marketplace',
+              stickyEnd: true,
+              head: 'Marketplace',
+              render: (_) => (
+                <Switch
+                  checked={_.isMarketplace}
+                  onChange={(e) =>
+                    _updateMarketplace.mutate({
+                      id: _.id,
+                      isMarketplace: e.target.checked,
+                    })
+                  }
+                />
+              ),
+            },
             {
               id: 'action',
               stickyEnd: true,
