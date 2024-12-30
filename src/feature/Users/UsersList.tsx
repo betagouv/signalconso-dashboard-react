@@ -11,7 +11,6 @@ import {
   RoleAgents,
   User,
 } from '../../core/client/user/User'
-import { useApiContext } from '../../core/context/ApiContext'
 import { useI18n } from '../../core/i18n'
 import {
   SearchAdminQueryKeys,
@@ -33,6 +32,8 @@ import { UserAdminInvitationDialog } from './UserAdminInvitationDialog'
 import { UserAgentInvitationDialog } from './UserAgentInvitationDialog'
 import { UserAgentsImportDialog } from './UserAgentsImportDialog'
 import { UserDeleteButton } from './userDelete'
+import {useConnectedContext} from "../../core/context/ConnectedContext";
+import {useNavigate} from "react-router";
 
 export const AdminUsersList = () => <UsersList adminView />
 export const AgentUsersList = () => <UsersList />
@@ -43,7 +44,8 @@ interface Props {
 
 const UsersList = ({ adminView }: Props) => {
   const { m, formatDate } = useI18n()
-  const { api } = useApiContext()
+  const { setConnectedUser, api } = useConnectedContext()
+  const navigate = useNavigate()
   const queryClient = useQueryClient()
   const { toastSuccess } = useToast()
   const _admins = useSearchAdminQuery(!!adminView)
@@ -61,6 +63,14 @@ const UsersList = ({ adminView }: Props) => {
     onSuccess: () => {
       toastSuccess(m.userValidationDone)
       return invalidate()
+    },
+  })
+
+  const _logAs = useMutation({
+    mutationFn: (email: string) => api.public.authenticate.logAs(email),
+    onSuccess: (user) => {
+      setConnectedUser(user)
+      navigate('/')
     },
   })
 
@@ -158,6 +168,21 @@ const UsersList = ({ adminView }: Props) => {
                   <Icon>history</Icon>
                 </IconBtn>
               </NavLink>
+            </Tooltip>
+          )}
+        </>
+      ),
+    },
+    {
+      id: 'impersonator',
+      sx: (_) => ({ ml: 0, pl: 0, mr: 0, pr: 0 }),
+      render: (_) => (
+        <>
+          {!adminView && _.email && (
+            <Tooltip title="Se connecter en tant que">
+              <IconBtn color="primary" onClick={() => _logAs.mutate(_.email)}>
+                <Icon>theater_comedy</Icon>
+              </IconBtn>
             </Tooltip>
           )}
         </>
