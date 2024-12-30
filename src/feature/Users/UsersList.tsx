@@ -32,8 +32,8 @@ import { UserAdminInvitationDialog } from './UserAdminInvitationDialog'
 import { UserAgentInvitationDialog } from './UserAgentInvitationDialog'
 import { UserAgentsImportDialog } from './UserAgentsImportDialog'
 import { UserDeleteButton } from './userDelete'
-import {useConnectedContext} from "../../core/context/ConnectedContext";
-import {useNavigate} from "react-router";
+import { useConnectedContext } from '../../core/context/ConnectedContext'
+import { useNavigate } from 'react-router'
 
 export const AdminUsersList = () => <UsersList adminView />
 export const AgentUsersList = () => <UsersList />
