@@ -84,17 +84,17 @@ function DataDisplay({ result }: { result: AlbertProblemsResult }) {
           return (
             <li
               key={probleme}
-              className="flex gap-1 items-center"
+              className="flex gap-1 items-start"
               style={
                 arePercentagesMeaningful
                   ? { fontSize: pickFontSize(percentage) }
                   : {}
               }
             >
-              <Icon fontSize="small" className="text-black">
+              <Icon fontSize="small" className="text-black mt-[4px]">
                 arrow_right_alt
               </Icon>
-              <span className="flex gap-1 items-baseline">
+              <span className="">
                 {arePercentagesMeaningful && (
                   <span className="text-sm text-gray-500">
                     {percentage}% {idx === 0 ? 'des signalements' : ''}{' '}
