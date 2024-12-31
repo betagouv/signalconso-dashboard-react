@@ -28,6 +28,7 @@ export function TagsDistribution({
                 )
                 return (
                   <div
+                    key={entry.label}
                     className="px-2 py-1 rounded-full border border-solid border-gray-300
                     flex items-center gap-1"
                   >
