@@ -160,7 +160,7 @@ export const ScChart = memo(
                 const color = _.color ?? colors(theme)[i] ?? colors(theme)[0]
                 const props = {
                   isAnimationActive: disableAnimation,
-                  key: _.key,
+
                   name: _.label,
                   type: 'monotone',
                   dataKey: _.key,
@@ -175,10 +175,12 @@ export const ScChart = memo(
                     />
                   ),
                 } as const
+
+                const key = _.key
                 return chartKind === 'stackedbarchart' ? (
-                  <Bar {...props} fill={color} stackId="a" />
+                  <Bar {...props} key={key} fill={color} stackId="a" />
                 ) : (
-                  <Line {...props} stroke={color} strokeWidth={2} />
+                  <Line {...props} key={key} stroke={color} strokeWidth={2} />
                 )
               })}
             </ChartComponent>

@@ -4,10 +4,7 @@ import { useI18n } from 'core/i18n'
 import { siteMap } from 'core/siteMap'
 import { useEffect, useState } from 'react'
 import { NavLink } from 'react-router-dom'
-import {
-  CurveDefinition,
-  LineChartOrPlaceholder,
-} from 'shared/Chart/chartWrappers'
+import { ChartOrPlaceholder, CurveDefinition } from 'shared/Chart/chartWrappers'
 import { chartColors } from 'shared/Chart/chartsColors'
 import { CleanInvisiblePanel } from 'shared/Panel/simplePanels'
 import { ScSelect } from 'shared/Select/Select'
@@ -180,7 +177,7 @@ export const CompanyChartPanel = ({
               ))}
           </ScSelect>
         </div>
-        <LineChartOrPlaceholder
+        <ChartOrPlaceholder
           hideLabelToggle={true}
           {...{ curves }}
           period={reportsCurvePeriod}
