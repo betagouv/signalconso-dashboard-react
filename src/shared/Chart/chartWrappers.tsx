@@ -32,7 +32,7 @@ interface ChartOrPlaceholderProps {
 
 // Displays the data, or a loading placeholder if the data is undefined
 // For complex needs, when you need to fully control the loading of the data in the parent component
-export const LineChartOrPlaceholder = ({
+export const ChartOrPlaceholder = ({
   curves,
   ...rest
 }: ChartOrPlaceholderProps) => {
@@ -76,7 +76,7 @@ export const AsyncLineChart = ({
   useEffect(() => {
     loadCurves().then(setCurves)
   }, [])
-  return <LineChartOrPlaceholder curves={curves} {...rest} />
+  return <ChartOrPlaceholder curves={curves} {...rest} />
 }
 
 interface SimplifiedAsyncLineChartProps {
