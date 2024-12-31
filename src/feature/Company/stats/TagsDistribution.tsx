@@ -1,4 +1,5 @@
 import { Icon } from '@mui/material'
+import { sum } from 'core/helper'
 import { CleanInvisiblePanel } from 'shared/Panel/simplePanels'
 
 export function TagsDistribution({
@@ -13,7 +14,8 @@ export function TagsDistribution({
 }) {
   const data = tagsDistribution?.sort((a, b) => b.value - a.value)
   const allValues = data?.map((_) => _.value)
-  const max = allValues && allValues.length ? Math.max(...allValues) : 1
+  const sumOfAll = allValues && allValues.length ? sum(allValues) : 1
+  const maxValue = allValues && allValues.length ? Math.max(...allValues) : 1
   return (
     <CleanInvisiblePanel>
       <h2 className="font-bold text-2xl mb-2">Fréquence des tags</h2>
@@ -22,9 +24,18 @@ export function TagsDistribution({
           (data.length === 0
             ? 'Pas de données'
             : data.map((entry) => {
-                const fontSizePercentage = Math.max(
-                  50 + 100 * (entry.value / max),
-                  80,
+                const nb = entry.value
+                const ratioOfMax = nb / maxValue
+                const ratioOfTotal = nb / sumOfAll
+                // we use a mix of both ratios, it seems the more accurate to what we want
+                const ratioUsed = (0.5 + ratioOfMax) * (0.5 + ratioOfTotal)
+                // it's hard to find a formula that works well for small companies
+                const lotsOfData = sumOfAll > 50
+                const max = lotsOfData ? 200 : 105
+                const min = lotsOfData ? 70 : 95
+                const fontSizePercentage = Math.min(
+                  Math.max(100 * ratioUsed, min),
+                  max,
                 )
                 return (
                   <div
