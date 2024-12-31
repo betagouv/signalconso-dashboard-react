@@ -72,7 +72,7 @@ export const CompanyChartPanel = ({
           color: chartColors.darkblue,
         },
         {
-          label: 'Signalements en attente de réponse',
+          label: 'Signalements sans réponse',
           data: reportsWithoutResponse,
           color: chartColors.darkred,
         },
