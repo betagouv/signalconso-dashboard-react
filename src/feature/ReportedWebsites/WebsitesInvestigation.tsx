@@ -1,7 +1,6 @@
 import { Badge, Box, Icon, Switch, Tooltip } from '@mui/material'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useCallback, useMemo, useState } from 'react'
-import { ScInput } from 'shared/ScInput'
 import { Alert, Btn, IconBtn, Txt } from '../../alexlibs/mui-extension'
 import { useEffectFn } from '../../alexlibs/react-hooks-lib'
 import {
@@ -23,8 +22,6 @@ import {
 import { sxUtils } from '../../core/theme'
 import { AutocompleteDialog } from '../../shared/AutocompleteDialog'
 import { Datatable } from '../../shared/Datatable/Datatable'
-import { DebouncedInput } from '../../shared/DebouncedInput'
-import { PeriodPicker } from '../../shared/PeriodPicker'
 import { AddSiret } from './AddSiret'
 import { SelectWebsiteAssociation } from './SelectWebsiteIdentification/SelectWebsiteAssociation'
 import { SiretExtraction } from './SiretExtraction'
@@ -125,224 +122,218 @@ export const WebsitesInvestigation = () => {
 
   return (
     <>
-      <>
-        <div className="flex flex-col gap-2 mb-4">
-          <Explanation />
-          {assocationWithClosedCompaniesCount && (
-            <Alert dense type={'error'}>
-              {m.websiteInvestigationClosedCompanyAssociationDesc}
-              <div className="flex justify-end">
-                <Btn
-                  size="medium"
-                  onClick={(_) => handleSeeClosedCompanyAssociation()}
-                >
-                  VOIR
-                </Btn>
-              </div>
-            </Alert>
-          )}
-        </div>
-        <WebsitesFilters
-          _websiteWithCompany={_websiteWithCompany}
-          onHostChange={onHostChange}
-        />
-        <Datatable
-          id="reportcompanieswebsites"
-          actions={
-            <>
-              <Tooltip title={m.removeAllFilters}>
-                <Badge
-                  color="error"
-                  badgeContent={filtersCount}
-                  hidden={filtersCount === 0}
-                >
-                  <ScButton
-                    color="primary"
-                    variant="outlined"
-                    onClick={_websiteWithCompany.clearFilters}
-                  >
-                    {m.removeAllFilters}
-                  </ScButton>
-                </Badge>
-              </Tooltip>
-              {connectedUser.isAdmin && (
-                <AddSiret>
-                  <ScButton color="primary" variant="outlined">
-                    {m.createWebsite}
-                  </ScButton>
-                </AddSiret>
-              )}
-            </>
-          }
-          loading={_websiteWithCompany.result.isFetching}
-          total={_websiteWithCompany.result.data?.totalCount}
-          paginate={{
-            limit: _websiteWithCompany.filters.limit,
-            offset: _websiteWithCompany.filters.offset,
-            onPaginationChange: (pagination) =>
-              _websiteWithCompany.updateFilters((prev) => ({
-                ...prev,
-                ...pagination,
-              })),
-          }}
-          getRenderRowKey={(_) => _.id}
-          data={_websiteWithCompany.result.data?.entities}
-          showColumnsToggle={true}
-          columns={[
-            {
-              id: 'host',
-              head: m.website,
-              render: (_) => (
-                <Box
-                  sx={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                  }}
-                >
-                  <Txt link>
-                    <a href={'https://' + _.host}>{_.host}</a>
-                  </Txt>
-                  {_.isMarketplace ? (
-                    <Box
-                      sx={{ display: 'flex', gap: 0.5, alignItems: 'center' }}
+      <div className="flex flex-col gap-2 mb-4">
+        <Explanation />
+        {assocationWithClosedCompaniesCount && (
+          <Alert dense type={'error'}>
+            {m.websiteInvestigationClosedCompanyAssociationDesc}
+            <div className="flex justify-end">
+              <Btn
+                size="medium"
+                onClick={(_) => handleSeeClosedCompanyAssociation()}
+              >
+                VOIR
+              </Btn>
+            </div>
+          </Alert>
+        )}
+      </div>
+      <WebsitesFilters
+        _websiteWithCompany={_websiteWithCompany}
+        onHostChange={onHostChange}
+      />
+      <Datatable
+        id="reportcompanieswebsites"
+        actions={
+          <>
+            <Badge
+              color="error"
+              badgeContent={filtersCount}
+              hidden={filtersCount === 0}
+            >
+              <ScButton
+                color="primary"
+                variant="outlined"
+                onClick={_websiteWithCompany.clearFilters}
+              >
+                {m.removeAllFilters}
+              </ScButton>
+            </Badge>
+            {connectedUser.isAdmin && (
+              <AddSiret>
+                <ScButton color="primary" variant="outlined">
+                  {m.createWebsite}
+                </ScButton>
+              </AddSiret>
+            )}
+          </>
+        }
+        loading={_websiteWithCompany.result.isFetching}
+        total={_websiteWithCompany.result.data?.totalCount}
+        paginate={{
+          limit: _websiteWithCompany.filters.limit,
+          offset: _websiteWithCompany.filters.offset,
+          onPaginationChange: (pagination) =>
+            _websiteWithCompany.updateFilters((prev) => ({
+              ...prev,
+              ...pagination,
+            })),
+        }}
+        getRenderRowKey={(_) => _.id}
+        data={_websiteWithCompany.result.data?.entities}
+        showColumnsToggle={true}
+        columns={[
+          {
+            id: 'host',
+            head: m.website,
+            render: (_) => (
+              <Box
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                }}
+              >
+                <Txt link>
+                  <a href={'https://' + _.host}>{_.host}</a>
+                </Txt>
+                {_.isMarketplace ? (
+                  <Box sx={{ display: 'flex', gap: 0.5, alignItems: 'center' }}>
+                    <Icon>store_front</Icon>
+                    <Txt italic>marketplace</Txt>
+                  </Box>
+                ) : null}
+              </Box>
+            ),
+          },
+          {
+            head: m.reports,
+            id: 'reports',
+            render: (_) => _.count,
+          },
+          {
+            head: m.association,
+            id: 'association',
+            render: (_) => (
+              <SelectWebsiteAssociation
+                website={_}
+                onChange={() =>
+                  queryClient.invalidateQueries({
+                    queryKey: WebsiteWithCompanySearchKeys,
+                  })
+                }
+              />
+            ),
+          },
+          {
+            head: 'Recherche de Siret',
+            id: 'extraction',
+            render: (_) => (
+              <SiretExtraction
+                websiteWithCompany={_}
+                remove={() => onRemove(_.id)}
+                identify={() =>
+                  queryClient.invalidateQueries({
+                    queryKey: WebsiteWithCompanySearchKeys,
+                  })
+                }
+              />
+            ),
+          },
+          {
+            head: m.firstReportDate,
+            id: 'firstReportDate',
+            render: (_) => formatDate(_.creationDate),
+          },
+          {
+            head: m.investigation,
+            id: 'investigationStatus',
+            render: (_) => (
+              <AutocompleteDialog<InvestigationStatus>
+                value={_.investigationStatus}
+                title={m.investigation}
+                inputLabel={m.investigation}
+                getOptionLabel={(_) => m.InvestigationStatusDesc[_]}
+                options={_investigationStatus.data}
+                onChange={(investigationStatus) => {
+                  if (_.investigationStatus === investigationStatus) {
+                    toastInfo(m.alreadySelectedValue(investigationStatus))
+                  } else {
+                    _createOrUpdate.mutate({ ..._, investigationStatus })
+                  }
+                }}
+              >
+                <StatusChip
+                  tooltipTitle={m.investigation}
+                  value={
+                    _.investigationStatus
+                      ? m.InvestigationStatusDesc[_.investigationStatus]
+                      : m.noValue
+                  }
+                />
+              </AutocompleteDialog>
+            ),
+          },
+          {
+            id: 'status',
+            stickyEnd: true,
+            head: m.identified,
+            render: (_) => (
+              <Switch
+                checked={
+                  _.identificationStatus === IdentificationStatus.Identified
+                }
+                onChange={(e) =>
+                  handleUpdateKind(
+                    _,
+                    e.target.checked
+                      ? IdentificationStatus.Identified
+                      : IdentificationStatus.NotIdentified,
+                  )
+                }
+              />
+            ),
+          },
+          {
+            id: 'marketplace',
+            stickyEnd: true,
+            head: 'Marketplace',
+            render: (_) => (
+              <Switch
+                checked={_.isMarketplace}
+                onChange={(e) =>
+                  _updateMarketplace.mutate({
+                    id: _.id,
+                    isMarketplace: e.target.checked,
+                  })
+                }
+              />
+            ),
+          },
+          {
+            id: 'action',
+            stickyEnd: true,
+            sx: (_) => sxUtils.tdActions,
+            render: (_) => (
+              <>
+                <WebsiteTools website={_} />
+                {connectedUser.isAdmin ? (
+                  <Tooltip title={m.delete}>
+                    <IconBtn
+                      loading={_remove.isPending}
+                      color="primary"
+                      onClick={() => onRemove(_.id)}
                     >
-                      <Icon>store_front</Icon>
-                      <Txt italic>marketplace</Txt>
-                    </Box>
-                  ) : null}
-                </Box>
-              ),
-            },
-            {
-              head: m.reports,
-              id: 'reports',
-              render: (_) => _.count,
-            },
-            {
-              head: m.association,
-              id: 'association',
-              render: (_) => (
-                <SelectWebsiteAssociation
-                  website={_}
-                  onChange={() =>
-                    queryClient.invalidateQueries({
-                      queryKey: WebsiteWithCompanySearchKeys,
-                    })
-                  }
-                />
-              ),
-            },
-            {
-              head: 'Recherche de Siret',
-              id: 'extraction',
-              render: (_) => (
-                <SiretExtraction
-                  websiteWithCompany={_}
-                  remove={() => onRemove(_.id)}
-                  identify={() =>
-                    queryClient.invalidateQueries({
-                      queryKey: WebsiteWithCompanySearchKeys,
-                    })
-                  }
-                />
-              ),
-            },
-            {
-              head: m.firstReportDate,
-              id: 'firstReportDate',
-              render: (_) => formatDate(_.creationDate),
-            },
-            {
-              head: m.investigation,
-              id: 'investigationStatus',
-              render: (_) => (
-                <AutocompleteDialog<InvestigationStatus>
-                  value={_.investigationStatus}
-                  title={m.investigation}
-                  inputLabel={m.investigation}
-                  getOptionLabel={(_) => m.InvestigationStatusDesc[_]}
-                  options={_investigationStatus.data}
-                  onChange={(investigationStatus) => {
-                    if (_.investigationStatus === investigationStatus) {
-                      toastInfo(m.alreadySelectedValue(investigationStatus))
-                    } else {
-                      _createOrUpdate.mutate({ ..._, investigationStatus })
-                    }
-                  }}
-                >
-                  <StatusChip
-                    tooltipTitle={m.investigation}
-                    value={
-                      _.investigationStatus
-                        ? m.InvestigationStatusDesc[_.investigationStatus]
-                        : m.noValue
-                    }
-                  />
-                </AutocompleteDialog>
-              ),
-            },
-            {
-              id: 'status',
-              stickyEnd: true,
-              head: m.identified,
-              render: (_) => (
-                <Switch
-                  checked={
-                    _.identificationStatus === IdentificationStatus.Identified
-                  }
-                  onChange={(e) =>
-                    handleUpdateKind(
-                      _,
-                      e.target.checked
-                        ? IdentificationStatus.Identified
-                        : IdentificationStatus.NotIdentified,
-                    )
-                  }
-                />
-              ),
-            },
-            {
-              id: 'marketplace',
-              stickyEnd: true,
-              head: 'Marketplace',
-              render: (_) => (
-                <Switch
-                  checked={_.isMarketplace}
-                  onChange={(e) =>
-                    _updateMarketplace.mutate({
-                      id: _.id,
-                      isMarketplace: e.target.checked,
-                    })
-                  }
-                />
-              ),
-            },
-            {
-              id: 'action',
-              stickyEnd: true,
-              sx: (_) => sxUtils.tdActions,
-              render: (_) => (
-                <>
-                  <WebsiteTools website={_} />
-                  {connectedUser.isAdmin ? (
-                    <Tooltip title={m.delete}>
-                      <IconBtn
-                        loading={_remove.isPending}
-                        color="primary"
-                        onClick={() => onRemove(_.id)}
-                      >
-                        <Icon>delete</Icon>
-                      </IconBtn>
-                    </Tooltip>
-                  ) : (
-                    <></>
-                  )}
-                </>
-              ),
-            },
-          ]}
-        />
-      </>
+                      <Icon>delete</Icon>
+                    </IconBtn>
+                  </Tooltip>
+                ) : (
+                  <></>
+                )}
+              </>
+            ),
+          },
+        ]}
+      />
     </>
   )
 }
