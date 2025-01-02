@@ -15,7 +15,10 @@ import { ReportWordDistribution } from './stats/ReportWordDistribution'
 import { StatusDistribution } from './stats/StatusDistribution'
 
 import { AlbertCompanyProblems } from 'shared/albert/AlbertCompanyProblems'
-import { CompanyStatsNumberWidgets } from './companyStatsNumberWidgets'
+import {
+  CompanyConfidentialNumbers,
+  CompanyCoreNumbers,
+} from './companyNumberWidgets'
 import { AcceptedDistribution } from './stats/AcceptedDistribution'
 import {
   EngagementReviewsDistribution,
@@ -67,10 +70,9 @@ export function CompanyStats({
     <>
       {company && (
         <>
-          <CompanyStatsNumberWidgets id={id} siret={company.siret} />
-
           <div className="grid lg:grid-cols-2 gap-20">
             <div>
+              <CompanyCoreNumbers id={id} siret={company.siret} />
               <AlbertCompanyProblems companyId={id} />
               <CompanyChartPanel
                 companyId={id}
@@ -88,6 +90,7 @@ export function CompanyStats({
               <TagsDistribution {...{ tagsDistribution }} />
             </div>
             <div>
+              <CompanyConfidentialNumbers id={id} siret={company.siret} />
               <CompanyInfo company={company} />
               <ResponseReviewsDistribution companyId={id} />
               <EngagementReviewsDistribution companyId={id} />

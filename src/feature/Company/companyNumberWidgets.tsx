@@ -22,7 +22,18 @@ type Props = {
   companyId: Id
 }
 
-export function CompanyStatsNumberWidgets({
+export function CompanyCoreNumbers({ id, siret }: { id: Id; siret: string }) {
+  const companyId = id
+  return (
+    <CleanInvisiblePanel>
+      <NumberWidgetResponseRate {...{ companyId }} />
+      <NumberWidgetResponseDelay {...{ companyId }} />
+      <NumberWidgetAccesses {...{ companyId, siret }} />
+    </CleanInvisiblePanel>
+  )
+}
+
+export function CompanyConfidentialNumbers({
   id,
   siret,
 }: {
@@ -31,26 +42,16 @@ export function CompanyStatsNumberWidgets({
 }) {
   const { connectedUser } = useConnectedContext()
   const companyId = id
-  return (
-    <CleanInvisiblePanel>
-      <div className={`${connectedUser.isNotPro ? 'grid lg:grid-cols-2' : ''}`}>
-        <div
-          className={`${connectedUser.isNotPro ? '' : 'grid lg:grid-cols-3'}`}
-        >
-          <NumberWidgetResponseRate {...{ companyId }} />
-          <NumberWidgetResponseDelay {...{ companyId }} />
-          <NumberWidgetAccesses {...{ companyId, siret }} />
-        </div>
-        {connectedUser.isNotPro && (
-          <div>
-            <NumberWidgetDocsSent {...{ siret }} />
-            <NumberWidgetThreats {...{ companyId }} />
-            <NumberWidgetBlackmail {...{ companyId }} />
-          </div>
-        )}
-      </div>
-    </CleanInvisiblePanel>
-  )
+  if (connectedUser.isNotPro) {
+    return (
+      <CleanInvisiblePanel>
+        <NumberWidgetDocsSent {...{ siret }} />
+        <NumberWidgetThreats {...{ companyId }} />
+        <NumberWidgetBlackmail {...{ companyId }} />
+      </CleanInvisiblePanel>
+    )
+  }
+  return null
 }
 
 function NumberWidgetResponseRate({ companyId }: Props) {

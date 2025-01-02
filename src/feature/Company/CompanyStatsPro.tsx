@@ -6,7 +6,7 @@ import { ReportStatusPro } from '../../core/client/report/Report'
 import { CompanyWithReportsCount, User } from '../../core/model'
 import { useReportSearchQuery } from '../../core/queryhooks/reportQueryHooks'
 import { CompanyChartPanel } from './CompanyChartPanel'
-import { CompanyStatsNumberWidgets } from './companyStatsNumberWidgets'
+import { CompanyCoreNumbers } from './companyNumberWidgets'
 import { CompanyInfo } from './stats/CompanyInfo'
 import {
   EngagementReviewsDistribution,
@@ -49,10 +49,9 @@ export function CompanyStatsPro({
     <>
       {company && (
         <>
-          <CompanyStatsNumberWidgets id={id} siret={company.siret} />
-
-          <div className="grid lg:grid-cols-2 gap-4">
+          <div className="grid lg:grid-cols-2 gap-20">
             <div>
+              <CompanyCoreNumbers id={id} siret={company.siret} />
               <CompanyChartPanel
                 companyId={id}
                 company={company}
