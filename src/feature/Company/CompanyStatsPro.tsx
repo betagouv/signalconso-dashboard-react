@@ -5,14 +5,14 @@ import { useEffectFn } from '../../alexlibs/react-hooks-lib'
 import { ReportStatusPro } from '../../core/client/report/Report'
 import { CompanyWithReportsCount, User } from '../../core/model'
 import { useReportSearchQuery } from '../../core/queryhooks/reportQueryHooks'
-import { CompanyChartPanel } from './CompanyChartPanel'
-import { CompanyStatsNumberWidgets } from './companyStatsNumberWidgets'
+import { CompanyChartPanel } from './stats/CompanyChartPanel'
 import { CompanyInfo } from './stats/CompanyInfo'
 import {
   EngagementReviewsDistribution,
   ResponseReviewsDistribution,
 } from './stats/ReviewDistribution'
 import { StatusDistribution } from './stats/StatusDistribution'
+import { CompanyCoreNumbers } from './stats/companyNumberWidgets'
 
 type ExtendedUser = User & {
   isPro: boolean
@@ -49,10 +49,9 @@ export function CompanyStatsPro({
     <>
       {company && (
         <>
-          <CompanyStatsNumberWidgets id={id} siret={company.siret} />
-
-          <div className="grid lg:grid-cols-2 gap-4">
+          <div className="grid lg:grid-cols-2 gap-20">
             <div>
+              <CompanyCoreNumbers id={id} siret={company.siret} />
               <CompanyChartPanel
                 companyId={id}
                 company={company}

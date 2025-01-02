@@ -1,6 +1,7 @@
 import { MenuItem } from '@mui/material'
 import { useConnectedContext } from 'core/context/ConnectedContext'
 import { useI18n } from 'core/i18n'
+import { Id, ReportStatus } from 'core/model'
 import { siteMap } from 'core/siteMap'
 import { useEffect, useState } from 'react'
 import { NavLink } from 'react-router-dom'
@@ -8,13 +9,13 @@ import { ChartOrPlaceholder, CurveDefinition } from 'shared/Chart/chartWrappers'
 import { chartColors } from 'shared/Chart/chartsColors'
 import { CleanInvisiblePanel } from 'shared/Panel/simplePanels'
 import { ScSelect } from 'shared/Select/Select'
-import { CompanyWithReportsCount } from '../../core/client/company/Company'
+import { CompanyWithReportsCount } from '../../../core/client/company/Company'
 import {
   MonthTicks,
   NbReportsTotals,
   Period,
-} from '../../core/client/stats/statsTypes'
-import { Id, ReportStatus } from '../../core/model'
+} from '../../../core/client/stats/statsTypes'
+import { CompanyStatsPanelTitle } from './CompanyStatsPanelTitle'
 
 const periods: Period[] = ['Day', 'Week', 'Month']
 const defaultTick = 12
@@ -205,23 +206,23 @@ function ReportsTotalWithLink({
   const url = siteMap.logged.reports({ companyIds: [companyId] })
   if (connectedUser.isPro) {
     return (
-      <h2 className="text-2xl">
+      <CompanyStatsPanelTitle>
         <span className="font-bold">{firstPart}</span>{' '}
-        <span className="text-base">
+        <span className="text-base font-normal">
           dont{' '}
           <NavLink to={url} className="font-bold">
             {secondPart}
           </NavLink>
         </span>
-      </h2>
+      </CompanyStatsPanelTitle>
     )
   }
   return (
-    <h2 className="text-2xl">
+    <CompanyStatsPanelTitle>
       <span className="font-bold">
         <NavLink to={url}>{firstPart}</NavLink>
       </span>{' '}
-      <span className="text-base">dont {secondPart}</span>
-    </h2>
+      <span className="text-base font-normal">dont {secondPart}</span>
+    </CompanyStatsPanelTitle>
   )
 }

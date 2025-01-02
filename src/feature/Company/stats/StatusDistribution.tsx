@@ -7,6 +7,7 @@ import {
   ReportStatusPro,
 } from '../../../core/client/report/Report'
 import { HorizontalBarChart } from '../../../shared/Chart/HorizontalBarChart'
+import { CompanyStatsPanelTitle } from './CompanyStatsPanelTitle'
 
 interface Props<T extends ReportStatus | ReportStatusPro> {
   values: { [key in T]: number } | undefined
@@ -49,9 +50,9 @@ export const StatusDistribution = <T extends ReportStatus | ReportStatusPro>({
 
   return (
     <CleanInvisiblePanel loading={loading}>
-      <h2 className="font-bold text-2xl">
+      <CompanyStatsPanelTitle bottomMargin>
         Répartition des signalements par status
-      </h2>
+      </CompanyStatsPanelTitle>
       <HorizontalBarChart data={statusDistribution} grid />
     </CleanInvisiblePanel>
   )

@@ -9,13 +9,12 @@ import {
   useGetTagsQuery,
   useStatusDistributionQuery,
 } from '../../core/queryhooks/statsQueryHooks'
-import { CompanyChartPanel } from './CompanyChartPanel'
+import { CompanyChartPanel } from './stats/CompanyChartPanel'
 import { CompanyInfo } from './stats/CompanyInfo'
 import { ReportWordDistribution } from './stats/ReportWordDistribution'
 import { StatusDistribution } from './stats/StatusDistribution'
 
 import { AlbertCompanyProblems } from 'shared/albert/AlbertCompanyProblems'
-import { CompanyStatsNumberWidgets } from './companyStatsNumberWidgets'
 import { AcceptedDistribution } from './stats/AcceptedDistribution'
 import {
   EngagementReviewsDistribution,
@@ -23,6 +22,10 @@ import {
 } from './stats/ReviewDistribution'
 import { TagsDistribution } from './stats/TagsDistribution'
 import { WebsitesDistribution } from './stats/WebsitesDistribution'
+import {
+  CompanyConfidentialNumbers,
+  CompanyCoreNumbers,
+} from './stats/companyNumberWidgets'
 type ExtendedUser = User & {
   isPro: boolean
 }
@@ -67,10 +70,9 @@ export function CompanyStats({
     <>
       {company && (
         <>
-          <CompanyStatsNumberWidgets id={id} siret={company.siret} />
-
           <div className="grid lg:grid-cols-2 gap-20">
             <div>
+              <CompanyCoreNumbers id={id} siret={company.siret} />
               <AlbertCompanyProblems companyId={id} />
               <CompanyChartPanel
                 companyId={id}
@@ -88,6 +90,7 @@ export function CompanyStats({
               <TagsDistribution {...{ tagsDistribution }} />
             </div>
             <div>
+              <CompanyConfidentialNumbers id={id} siret={company.siret} />
               <CompanyInfo company={company} />
               <ResponseReviewsDistribution companyId={id} />
               <EngagementReviewsDistribution companyId={id} />

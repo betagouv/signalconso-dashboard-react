@@ -5,6 +5,7 @@ import { CleanInvisiblePanel } from 'shared/Panel/simplePanels'
 import { Company } from '../../../core/client/company/Company'
 import { useI18n } from '../../../core/i18n'
 import { AddressComponent } from '../../../shared/Address'
+import { CompanyStatsPanelTitle } from './CompanyStatsPanelTitle'
 
 interface Props {
   company: Company
@@ -21,7 +22,9 @@ export const CompanyInfo = ({ company }: Props) => {
 
   return (
     <CleanInvisiblePanel loading={_activityCodes.isLoading}>
-      <h2 className="font-bold text-2xl mb-2">{m.informations}</h2>
+      <CompanyStatsPanelTitle bottomMargin>
+        {m.informations}
+      </CompanyStatsPanelTitle>
       <ul className="grid grid-cols-[auto_auto_1fr] gap-2">
         <Item icon="location_on" label="Adresse">
           <AddressComponent address={company.address} />
@@ -31,7 +34,12 @@ export const CompanyInfo = ({ company }: Props) => {
         </Item>
         {_activityCodes.data && company.activityCode && (
           <Item icon="label_outline" label={m.activityCode}>
-            <span>{_activityCodes.data[company.activityCode]}</span>
+            <span>
+              <span className="font-bold">{company.activityCode}</span>{' '}
+              <span className="text-gray-500">
+                {_activityCodes.data[company.activityCode]}
+              </span>
+            </span>
           </Item>
         )}
       </ul>

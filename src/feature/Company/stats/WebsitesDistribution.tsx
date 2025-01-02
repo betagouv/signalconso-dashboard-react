@@ -4,6 +4,7 @@ import { Icon } from '@mui/material'
 import { UseQueryResult } from '@tanstack/react-query'
 import { ApiError } from 'core/client/ApiClient'
 import { CleanInvisiblePanel } from 'shared/Panel/simplePanels'
+import { CompanyStatsPanelTitle } from './CompanyStatsPanelTitle'
 
 export function WebsitesDistribution({
   _hosts,
@@ -14,7 +15,7 @@ export function WebsitesDistribution({
   const hosts = _hosts.data
   return (
     <CleanInvisiblePanel loading={_hosts.isLoading}>
-      <h2 className="font-bold text-2xl mb-2">{m.websites}</h2>
+      <CompanyStatsPanelTitle bottomMargin>{m.websites}</CompanyStatsPanelTitle>
       {hosts &&
         (hosts.length === 0 ? (
           'Pas de données'

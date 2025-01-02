@@ -1,3 +1,6 @@
+import TimeIcon from '@mui/icons-material/AccessTime'
+import ChatIcon from '@mui/icons-material/ChatBubbleOutline'
+import UsersIcon from '@mui/icons-material/PeopleAlt'
 import { Icon, LinearProgress, Tooltip } from '@mui/material'
 import { useConnectedContext } from 'core/context/ConnectedContext'
 import { useI18n } from 'core/i18n'
@@ -17,12 +20,22 @@ import { siteMap } from 'core/siteMap'
 import { PropsWithChildren } from 'react'
 import { NavLink } from 'react-router-dom'
 import { CleanInvisiblePanel } from 'shared/Panel/simplePanels'
-
 type Props = {
   companyId: Id
 }
 
-export function CompanyStatsNumberWidgets({
+export function CompanyCoreNumbers({ id, siret }: { id: Id; siret: string }) {
+  const companyId = id
+  return (
+    <CleanInvisiblePanel>
+      <NumberWidgetResponseRate {...{ companyId }} />
+      <NumberWidgetResponseDelay {...{ companyId }} />
+      <NumberWidgetAccesses {...{ companyId, siret }} />
+    </CleanInvisiblePanel>
+  )
+}
+
+export function CompanyConfidentialNumbers({
   id,
   siret,
 }: {
@@ -31,36 +44,29 @@ export function CompanyStatsNumberWidgets({
 }) {
   const { connectedUser } = useConnectedContext()
   const companyId = id
-  return (
-    <CleanInvisiblePanel>
-      <div className={`${connectedUser.isNotPro ? 'grid lg:grid-cols-2' : ''}`}>
-        <div
-          className={`${connectedUser.isNotPro ? '' : 'grid lg:grid-cols-3'}`}
-        >
-          <NumberWidgetResponseRate {...{ companyId }} />
-          <NumberWidgetResponseDelay {...{ companyId }} />
-          <NumberWidgetAccesses {...{ companyId, siret }} />
-        </div>
-        {connectedUser.isNotPro && (
-          <div>
-            <NumberWidgetDocsSent {...{ siret }} />
-            <NumberWidgetThreats {...{ companyId }} />
-            <NumberWidgetBlackmail {...{ companyId }} />
-          </div>
-        )}
-      </div>
-    </CleanInvisiblePanel>
-  )
+  if (connectedUser.isNotPro) {
+    return (
+      <CleanInvisiblePanel>
+        <NumberWidgetDocsSent {...{ siret }} />
+        <NumberWidgetThreats {...{ companyId }} />
+        <NumberWidgetBlackmail {...{ companyId }} />
+      </CleanInvisiblePanel>
+    )
+  }
+  return null
 }
 
 function NumberWidgetResponseRate({ companyId }: Props) {
   const _responseRate = useGetResponseRateQuery(companyId)
   return (
     <Widget>
-      <p>
-        <span className="text-lg font-bold">{_responseRate.data}%</span>
-        <span className="text-base"> de signalements répondus</span>
-      </p>
+      <div className="flex items-center gap-2">
+        <ChatIcon fontSize="small" />
+        <p>
+          <span className="text-lg font-bold">{_responseRate.data}%</span>
+          <span className="text-base"> de signalements répondus</span>
+        </p>
+      </div>
     </Widget>
   )
 }
@@ -70,17 +76,22 @@ function NumberWidgetResponseDelay({ companyId }: Props) {
   const { m } = useI18n()
   return (
     <Widget loading={_responseDelay.isLoading}>
-      {!_responseDelay.isLoading &&
-        (_responseDelay.data ? (
-          <p>
-            <span className="text-lg font-bold">
-              {_responseDelay.data ? _responseDelay.data.toDays : '∞'} {m.days}
-            </span>{' '}
-            en moyenne pour répondre
-          </p>
-        ) : (
-          <p>{m.avgResponseTimeDescNoData}</p>
-        ))}
+      {!_responseDelay.isLoading && (
+        <div className="flex gap-2 items-center">
+          <TimeIcon fontSize="small" />
+          {_responseDelay.data ? (
+            <p>
+              <span className="text-lg font-bold">
+                {_responseDelay.data ? _responseDelay.data.toDays : '∞'}{' '}
+                {m.days}
+              </span>{' '}
+              en moyenne pour répondre
+            </p>
+          ) : (
+            <p>{m.avgResponseTimeDescNoData}</p>
+          )}
+        </div>
+      )}
     </Widget>
   )
 }
@@ -156,24 +167,30 @@ function NumberWidgetAccesses({
   const displayAccessesLink =
     useIsAllowedToManageCompanyAccessesQuery(companyId) ?? false
   const { m } = useI18n()
-  const link = (
+
+  const linkContent = (
     <>
-      (
-      <NavLink to={siteMap.logged.company(companyId).accesses.valueAbsolute}>
-        voir
-      </NavLink>
-      )
+      <span className="text-lg font-bold">{_accesses.data}</span>{' '}
+      {m.accountsActivated}
     </>
   )
   return (
     <Widget loading={_accesses.isLoading}>
       {_accesses.data !== undefined && (
-        <p>
-          <span className="text-lg font-bold">{_accesses.data}</span>{' '}
-          <span className="">
-            {m.accountsActivated} {displayAccessesLink && link}
-          </span>
-        </p>
+        <div className="flex gap-2 items-center">
+          <UsersIcon fontSize="small" />
+          <p>
+            {displayAccessesLink ? (
+              <NavLink
+                to={siteMap.logged.company(companyId).accesses.valueAbsolute}
+              >
+                {linkContent}
+              </NavLink>
+            ) : (
+              linkContent
+            )}
+          </p>
+        </div>
       )}
     </Widget>
   )
