@@ -20,9 +20,14 @@ export function AlbertActivityLabel({
     <div
       className={`font-normal bg-desert-200 w-fit flex gap-2 items-center ${smaller ? `text-sm` : `p-1 text-base`}`}
     >
-      <span className="inline-flex items-center gap-1  font-serif  text-desert-700 italic">
-        <Icon fontSize={smaller ? 'small' : 'medium'}>bubble_chart</Icon>“
-        {children}”
+      <span className="inline-flex items-center gap-1   text-desert-700">
+        <Icon fontSize={smaller ? 'small' : 'medium'}>bubble_chart</Icon>
+        {smaller || (
+          <>
+            <b className="mr-2">IA</b>{' '}
+          </>
+        )}
+        <span className="font-serif  italic">“{children}”</span>
       </span>
       {withExplainButton && (
         <ScDialog
