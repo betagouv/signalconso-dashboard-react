@@ -12,7 +12,7 @@ interface Props {
 }
 
 export const CompanyInfo = ({ company }: Props) => {
-  const { m, formatDate } = useI18n()
+  const { m } = useI18n()
 
   const _activityCodes = useQuery({
     queryKey: ['asyncImportActivityCodes'],
@@ -28,9 +28,6 @@ export const CompanyInfo = ({ company }: Props) => {
       <ul className="grid grid-cols-[auto_auto_1fr] gap-2">
         <Item icon="location_on" label="Adresse">
           <AddressComponent address={company.address} />
-        </Item>
-        <Item icon="event" label={m.creationDate}>
-          <span>{formatDate(company.creationDate)}</span>
         </Item>
         {_activityCodes.data && company.activityCode && (
           <Item icon="label_outline" label={m.activityCode}>
