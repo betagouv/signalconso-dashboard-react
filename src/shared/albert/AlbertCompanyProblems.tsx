@@ -4,6 +4,7 @@ import { AlbertProblemsResult } from 'core/client/albert/AlbertProblemsResult'
 import { useApiContext } from 'core/context/ApiContext'
 import { useConnectedContext } from 'core/context/ConnectedContext'
 import { EventCategories, Matomo, OutilsIaActions } from 'core/plugins/Matomo'
+import { CompanyStatsPanelTitle } from 'feature/Company/stats/CompanyStatsPanelTitle'
 import { CleanInvisiblePanel } from 'shared/Panel/simplePanels'
 
 export function AlbertCompanyProblems({ companyId }: { companyId: string }) {
@@ -19,7 +20,7 @@ export function AlbertCompanyProblems({ companyId }: { companyId: string }) {
     return (
       <CleanInvisiblePanel>
         <div className="">
-          <h2 className="text-2xl font-bold">
+          <CompanyStatsPanelTitle>
             Problèmes fréquents
             <span className="font-bold text-base px-1 text-desert-700 bg-desert-200 ml-2">
               <Icon fontSize="small" className=" mb-[-5px] mr-1">
@@ -27,7 +28,7 @@ export function AlbertCompanyProblems({ companyId }: { companyId: string }) {
               </Icon>
               IA
             </span>
-          </h2>
+          </CompanyStatsPanelTitle>
           {!query.data && !query.isFetching && (
             <Button
               className="!mt-2"

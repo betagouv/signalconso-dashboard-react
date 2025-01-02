@@ -1,6 +1,7 @@
 import { Icon } from '@mui/material'
 import { sum } from 'core/helper'
 import { CleanInvisiblePanel } from 'shared/Panel/simplePanels'
+import { CompanyStatsPanelTitle } from './CompanyStatsPanelTitle'
 
 export function TagsDistribution({
   tagsDistribution,
@@ -18,7 +19,9 @@ export function TagsDistribution({
   const maxValue = allValues && allValues.length ? Math.max(...allValues) : 1
   return (
     <CleanInvisiblePanel>
-      <h2 className="font-bold text-2xl mb-2">Fréquence des tags</h2>
+      <CompanyStatsPanelTitle bottomMargin>
+        Fréquence des tags
+      </CompanyStatsPanelTitle>
       <div className="flex flex-wrap gap-x-4 gap-y-2 items-baseline">
         {data &&
           (data.length === 0

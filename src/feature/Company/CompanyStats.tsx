@@ -9,16 +9,12 @@ import {
   useGetTagsQuery,
   useStatusDistributionQuery,
 } from '../../core/queryhooks/statsQueryHooks'
-import { CompanyChartPanel } from './CompanyChartPanel'
+import { CompanyChartPanel } from './stats/CompanyChartPanel'
 import { CompanyInfo } from './stats/CompanyInfo'
 import { ReportWordDistribution } from './stats/ReportWordDistribution'
 import { StatusDistribution } from './stats/StatusDistribution'
 
 import { AlbertCompanyProblems } from 'shared/albert/AlbertCompanyProblems'
-import {
-  CompanyConfidentialNumbers,
-  CompanyCoreNumbers,
-} from './companyNumberWidgets'
 import { AcceptedDistribution } from './stats/AcceptedDistribution'
 import {
   EngagementReviewsDistribution,
@@ -26,6 +22,10 @@ import {
 } from './stats/ReviewDistribution'
 import { TagsDistribution } from './stats/TagsDistribution'
 import { WebsitesDistribution } from './stats/WebsitesDistribution'
+import {
+  CompanyConfidentialNumbers,
+  CompanyCoreNumbers,
+} from './stats/companyNumberWidgets'
 type ExtendedUser = User & {
   isPro: boolean
 }

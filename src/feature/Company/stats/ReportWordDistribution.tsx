@@ -7,6 +7,7 @@ import { useI18n } from '../../../core/i18n'
 import { useGetCloudWordQuery } from '../../../core/queryhooks/reportQueryHooks'
 import { siteMap } from '../../../core/siteMap'
 import { HorizontalBarChartData } from '../../../shared/Chart/HorizontalBarChart'
+import { CompanyStatsPanelTitle } from './CompanyStatsPanelTitle'
 
 interface Props {
   companyId: string
@@ -38,7 +39,7 @@ export const ReportWordDistribution = ({ companyId }: Props) => {
 
   return (
     <CleanInvisiblePanel loading={_wordDistribution.isLoading}>
-      <h2 className="font-bold text-2xl mb-2">
+      <CompanyStatsPanelTitle bottomMargin>
         <Tooltip title={m.helpCloudWord}>
           <Box>
             {m.reportCloudWord}
@@ -47,7 +48,7 @@ export const ReportWordDistribution = ({ companyId }: Props) => {
             </Icon>
           </Box>
         </Tooltip>
-      </h2>
+      </CompanyStatsPanelTitle>
       {ScOption.from(_wordDistribution.data)
         .map((_) => (
           <>

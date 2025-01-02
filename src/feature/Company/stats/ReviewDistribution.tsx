@@ -10,6 +10,7 @@ import { chartColors } from 'shared/Chart/chartsColors'
 import { CleanInvisiblePanel } from 'shared/Panel/simplePanels'
 import { Txt } from '../../../alexlibs/mui-extension'
 import { useMemoFn } from '../../../alexlibs/react-hooks-lib'
+import { CompanyStatsPanelTitle } from './CompanyStatsPanelTitle'
 
 interface Props {
   companyId: string
@@ -69,7 +70,7 @@ function ReviewDistribution({
   )
   return (
     <CleanInvisiblePanel>
-      <h2 className="font-bold text-2xl">{title}</h2>
+      <CompanyStatsPanelTitle>{title}</CompanyStatsPanelTitle>
       <Txt color="hint" block className="mb-2">
         {titleDesc}
       </Txt>
