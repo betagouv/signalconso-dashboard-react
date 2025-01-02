@@ -1,9 +1,9 @@
-import { Id } from '../../core/model'
-import { Btn } from '../../alexlibs/mui-extension'
-import { CleanDiscreetPanel } from '../../shared/Panel/simplePanels'
-import React from 'react'
-import { useApiContext } from '../../core/context/ApiContext'
+import { Icon } from '@mui/material'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { Btn } from '../../alexlibs/mui-extension'
+import { useApiContext } from '../../core/context/ApiContext'
+import { Id } from '../../core/model'
+import { CleanDiscreetPanel } from '../../shared/Panel/simplePanels'
 
 export const ReportAlbert = ({ id }: { id: Id }) => {
   const { api } = useApiContext()
@@ -72,6 +72,15 @@ export const ReportAlbert = ({ id }: { id: Id }) => {
     }
   }
 
+  const iaMarker = (
+    <span className="font-bold text-base px-1 text-desert-700 bg-desert-200">
+      <Icon fontSize="small" className=" mb-[-5px] mr-1">
+        bubble_chart
+      </Icon>
+      IA
+    </span>
+  )
+
   return (
     <CleanDiscreetPanel>
       {_getAlbert.data && (
@@ -80,7 +89,10 @@ export const ReportAlbert = ({ id }: { id: Id }) => {
             <div className="text-xl">
               Classification par Albert : <Category />
             </div>
-            <div>Indice de confiance : {_getAlbert.data.confidenceScore}</div>
+            <div className="flex gap-2">
+              <div>Indice de confiance : {_getAlbert.data.confidenceScore}</div>
+              {iaMarker}
+            </div>
           </div>
           <div className="text-sm italic">{_getAlbert.data?.explanation}</div>
           <h2 className="text-xl mt-8">Résumé :</h2>
@@ -89,10 +101,11 @@ export const ReportAlbert = ({ id }: { id: Id }) => {
           <div className="mb-2">{_getAlbert.data.codeConso}</div>
         </>
       )}
-      <div className="flex flex-row-reverse">
+      <div className="flex justify-end items-center">
         <Btn loading={_classify.isPending} onClick={() => _classify.mutate(id)}>
           Lancer Albert
         </Btn>
+        {!_getAlbert.data && iaMarker}
       </div>
     </CleanDiscreetPanel>
   )
