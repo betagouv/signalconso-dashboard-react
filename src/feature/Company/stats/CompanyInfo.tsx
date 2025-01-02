@@ -34,7 +34,12 @@ export const CompanyInfo = ({ company }: Props) => {
         </Item>
         {_activityCodes.data && company.activityCode && (
           <Item icon="label_outline" label={m.activityCode}>
-            <span>{_activityCodes.data[company.activityCode]}</span>
+            <span>
+              <span className="font-bold">{company.activityCode}</span>{' '}
+              <span className="text-gray-500">
+                {_activityCodes.data[company.activityCode]}
+              </span>
+            </span>
           </Item>
         )}
       </ul>
