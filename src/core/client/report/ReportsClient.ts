@@ -199,8 +199,10 @@ export class ReportsClient {
     })
   }
 
-  readonly reOpen = (id: Id) => {
-    return this.client.post<void>(`reports/${id}/reopen`)
+  readonly reOpen = (reportIds: Id[]) => {
+    return this.client.post<void>(`reports/reopen`, {
+      body: reportIds,
+    })
   }
 
   readonly getById = async (id: Id): Promise<ReportExtra> => {

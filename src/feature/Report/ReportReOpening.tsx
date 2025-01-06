@@ -6,20 +6,21 @@ import { useConnectedContext } from '../../core/context/ConnectedContext'
 import { useToast } from '../../core/context/toastContext'
 import { useI18n } from '../../core/i18n'
 import { ScDialog } from '../../shared/ScDialog'
+import { Id } from '../../core/model'
+import { Tooltip } from '@mui/material'
 
 interface Props {
-  report: Report
-  children: ReactElement<any>
+  reportIds: Id[]
 }
 
-export const ReportReOpening = ({ report, children }: Props) => {
+export const ReportReOpening = ({ reportIds }: Props) => {
   const { m } = useI18n()
   const { api: apiSdk } = useConnectedContext()
   const _reOpenReport = useMutation({
     mutationFn: apiSdk.secured.reports.reOpen,
     onSuccess: () => {
       window.location.reload()
-      toastSuccess('Signalement ré-ouvert avec succès.')
+      toastSuccess('Signalement(s) rouvert(s) avec succès.')
     },
   })
   const { toastSuccess } = useToast()
@@ -36,13 +37,15 @@ export const ReportReOpening = ({ report, children }: Props) => {
           </Txt>
         </>
       }
-      onConfirm={(event, close) =>
-        _reOpenReport.mutateAsync(report.id).finally(close)
+      onConfirm={(_, close) =>
+        _reOpenReport.mutateAsync(reportIds).finally(close)
       }
     >
-      <Btn loading={_reOpenReport.isPending} icon="replay">
-        {m.reOpen}
-      </Btn>
+      <Tooltip title={m.reportReopening}>
+        <Btn loading={_reOpenReport.isPending} icon="replay">
+          {m.reOpen}
+        </Btn>
+      </Tooltip>
     </ScDialog>
   )
 }

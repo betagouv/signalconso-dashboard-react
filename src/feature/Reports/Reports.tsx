@@ -334,7 +334,19 @@ export const Reports = () => {
       </CleanDiscreetPanel>
       <Datatable
         id="reports"
-        headerMain={<DatatableToolbarComponent {...{ selectReport }} />}
+        headerMain={
+          <DatatableToolbarComponent
+            {...{
+              selectReport,
+              canReOpen:
+                _reports.result.data?.entities.find(
+                  (_) =>
+                    selectReport.has(_.report.id) &&
+                    !Report.canReopenReport(_.report.status),
+                ) === undefined,
+            }}
+          />
+        }
         loading={_reports.result.isFetching}
         paginate={{
           offset: _reports.filters.offset,
