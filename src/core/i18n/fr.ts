@@ -1121,6 +1121,7 @@ export const fr = {
       [ReportStatus.MalAttribue]: 'Mal attribué',
       [ReportStatus.SuppressionRGPD]: 'Suppression RGPD',
     },
+    adminClosure: 'Résolution hors SignalConso',
     reportStatusShortPro: {
       [ReportStatusPro.ARepondre]: 'À répondre',
       [ReportStatusPro.Cloture]: 'Clôturé',

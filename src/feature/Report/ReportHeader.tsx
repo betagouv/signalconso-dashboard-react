@@ -40,6 +40,7 @@ interface Props {
   elevated?: boolean
   children?: ReactNode
   isUserPro?: boolean
+  isAdminClosure?: boolean
 }
 
 const ExpiresSoonWarning = ({
@@ -101,6 +102,7 @@ export const ExpirationDate = ({
 
 export const ReportHeader = ({
   report: reportSearchResult,
+  isAdminClosure,
   children,
 }: Props) => {
   const { m } = useI18n()
@@ -121,6 +123,7 @@ export const ReportHeader = ({
         <ReportStatusLabel
           style={{ marginLeft: 'auto' }}
           status={report.status}
+          isAdminClosure={isAdminClosure}
         />
       </div>
 
