@@ -19,8 +19,8 @@ export class Matomo {
   static readonly trackEvent = (
     category: EventCategories,
     action: AnalyticAction,
-    name?: any,
-    value?: any,
+    name?: AnalyticActionName,
+    value?: string,
     user?: User,
   ) => {
     if (enabledForUser(user)) {
@@ -102,9 +102,12 @@ export enum NewsletterActions {
   reportsClik = 'ClickNewsletterSubscribeButton',
 }
 
+type AnalyticActionName = ActionResultNames
+
 export enum ActionResultNames {
   success = 'Succès',
   fail = 'Echec',
+  click = 'click',
 }
 
 export function injectMatomoScript() {

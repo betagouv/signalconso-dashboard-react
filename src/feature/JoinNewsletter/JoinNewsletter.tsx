@@ -7,6 +7,7 @@ export const JoinNewsletter = () => {
     Matomo.trackEvent(
       EventCategories.Newsletter,
       NewsletterActions.reportsClik,
+      undefined,
       'Bouton ABONNEZ-VOUS',
     )
   }

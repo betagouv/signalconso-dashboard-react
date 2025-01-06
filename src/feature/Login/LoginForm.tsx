@@ -77,6 +77,7 @@ export const LoginForm = ({ login }: Props) => {
         Matomo.trackEvent(
           EventCategories.Authentification,
           AuthenticationEventActions.role,
+          undefined,
           user.role,
         )
 
