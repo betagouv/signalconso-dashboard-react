@@ -113,7 +113,7 @@ export const Engagements = () => {
             <span className="block text-gray-500 italic">
               La case à cocher permet de marquer un engagement comme
               "honoré/terminé". Les engagements terminés disparaissent le
-              lendemain de leur clôture. Vous pouvez clore et ré-ouvrir un
+              lendemain de leur clôture. Vous pouvez clore et rouvrir un
               engagement autant que vous le souhaitez tant qu'il n'a pas
               disparu.
               <br />

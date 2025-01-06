@@ -446,7 +446,11 @@ export const ReportsPro = ({ reportType }: ReportsProProps) => {
                       orderBy: orderBy,
                     })),
                 }}
-                headerMain={<DatatableToolbarComponent {...{ selectReport }} />}
+                headerMain={
+                  <DatatableToolbarComponent
+                    {...{ selectReport, canReOpen: false }}
+                  />
+                }
                 data={_reports.result.data?.entities}
                 loading={
                   _accessibleByPro.isLoading || _reports.result.isFetching
