@@ -116,6 +116,10 @@ const ReportViewStandard = ({
     isLoading: reportEventsIsLoading,
   } = useGetReportEventsQuery(id!)
 
+  const isAdminClosure = !!reportEvents?.find(
+    (e) => e.data.action === 'SolvedContractualDisputeReportDeletion',
+  )
+
   const downloadReport = useMutation({
     mutationFn: (id: Id) => apiSdk.secured.reports.download([id]),
   })
@@ -139,7 +143,11 @@ const ReportViewStandard = ({
                 </button>
               </div>
             ) : null}
-            <ReportHeader elevated report={reportExtra}>
+            <ReportHeader
+              elevated
+              report={reportExtra}
+              isAdminClosure={isAdminClosure}
+            >
               <Box
                 sx={{
                   whiteSpace: 'nowrap',

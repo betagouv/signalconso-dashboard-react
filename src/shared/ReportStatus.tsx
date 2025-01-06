@@ -9,6 +9,7 @@ import {
 
 interface ReportStatusLabelProps extends Omit<LabelProps, 'children'> {
   status: ReportStatus
+  isAdminClosure?: boolean
 }
 
 interface ReportStatusProLabelProps extends Omit<LabelProps, 'children'> {
@@ -42,6 +43,7 @@ export const isStatusInvisibleToPro = (status: ReportStatus): Boolean => {
 
 export const ReportStatusLabel = ({
   status,
+  isAdminClosure,
   ...props
 }: ReportStatusLabelProps) => {
   const { connectedUser } = useConnectedContext()
@@ -51,7 +53,11 @@ export const ReportStatusLabel = ({
       {...props}
     />
   ) : (
-    <ReportStatusAdminLabel status={status} {...props} />
+    <ReportStatusAdminLabel
+      status={status}
+      isAdminClosure={isAdminClosure}
+      {...props}
+    />
   )
 }
 
@@ -59,6 +65,7 @@ const borderRadius = '10px'
 
 const ReportStatusAdminLabel = ({
   status,
+  isAdminClosure,
   style,
   ...props
 }: ReportStatusLabelProps) => {
@@ -73,7 +80,7 @@ const ReportStatusAdminLabel = ({
         ...style,
       }}
     >
-      {m.reportStatusShort[status]}
+      {isAdminClosure ? m.adminClosure : m.reportStatusShort[status]}
     </Label>
   )
 }
