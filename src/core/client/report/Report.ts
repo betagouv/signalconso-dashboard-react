@@ -251,6 +251,10 @@ export class Report {
     return Report.closedStatus.includes(status)
   }
 
+  static readonly canReopenReport = (status: ReportStatus) =>
+    status === ReportStatus.NonConsulte ||
+    status === ReportStatus.ConsulteIgnore
+
   static readonly getClosedReason = (
     report: Report,
     responseEvent: ReportProResponseEvent | undefined,

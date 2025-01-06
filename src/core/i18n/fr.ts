@@ -133,7 +133,7 @@ export const fr = {
     back: 'Retour',
     nbAttempts: 'Tentatives',
     delete: 'Supprimer',
-    reOpen: 'Ré-ouvrir',
+    reOpen: 'Rouvrir',
     delete_user: "Supprimer l'utilisateur",
     delete_user_desc_main: 'Vous allez supprimer un compte utilisateur.',
     delete_user_desc_details: `L'utilisateur pourra éventuellement être réinvité avec le même email. Cela créera un nouveau compte vierge, sans lien avec
@@ -199,7 +199,7 @@ export const fr = {
       [AsyncFileKind.ReportedWebsites]: 'sites internet signalés',
     },
     removeAllFilters: 'Supprimer les filtres',
-    reOpenReportDesc: `Voulez-vous vraiment ré-ouvrir le signalement ?`,
+    reOpenReportDesc: `Voulez-vous vraiment rouvrir le/les signalement(s) ?`,
     download: 'Télécharger',
     downloadAll: 'Tout télécharger',
     downloadNotice: 'Télécharger le courrier',
@@ -894,7 +894,7 @@ export const fr = {
         },
         report_reopening_notification: {
           title: `Réouverture du signalement`,
-          desc: `Email de ré-ouverture du signalement suite à la demande du pro`,
+          desc: `Email de réouverture du signalement suite à la demande du pro`,
         },
         report_assignement_to_other: {
           title: `Affectation du signalement`,

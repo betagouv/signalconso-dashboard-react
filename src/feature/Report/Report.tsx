@@ -149,15 +149,8 @@ const ReportViewStandard = ({
                 }}
               >
                 {connectedUser.isAdmin &&
-                  (report.status === ReportStatus.NonConsulte ||
-                    report.status === ReportStatus.ConsulteIgnore) && (
-                    <ReportReOpening report={report}>
-                      <Tooltip title={m.reportReopening}>
-                        <Btn color="primary" icon="replay">
-                          {m.reportReopening}
-                        </Btn>
-                      </Tooltip>
-                    </ReportReOpening>
+                  Report.canReopenReport(report.status) && (
+                    <ReportReOpening reportIds={[report.id]} />
                   )}
 
                 {connectedUser.isAdmin &&

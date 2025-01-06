@@ -10,7 +10,6 @@ import {
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { NavLink } from 'react-router-dom'
-import { ScInput } from 'shared/ScInput'
 import { AlbertActivityLabel } from 'shared/albert/AlbertActivityLabel'
 import { Fender, IconBtn, Txt } from '../../alexlibs/mui-extension'
 import {
@@ -37,7 +36,6 @@ import { styleUtils, sxUtils } from '../../core/theme'
 import { AddressComponent } from '../../shared/Address'
 import { ScButton } from '../../shared/Button'
 import { Datatable } from '../../shared/Datatable/Datatable'
-import { DebouncedInput } from '../../shared/DebouncedInput'
 import { ScMenu } from '../../shared/Menu'
 import { SelectCompanyDialog } from '../../shared/SelectCompany/SelectCompanyDialog'
 import { CompaniesRegisteredFilters } from './CompaniesRegisteredFilters'
@@ -130,13 +128,22 @@ export const CompaniesRegistered = () => {
     return _companies.result.data?.entities
   }, [_companies.result.data?.entities, sortByResponseRate])
 
+  // TRELLO-1391 The object _companies change all the time.
+  // If we put it in dependencies, it causes problems with the debounce,
+  // and the search input "stutters" when typing fast
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const onInputChange = useCallback((value: string) => {
     _companies.updateFilters((prev) => ({ ...prev, identity: value }))
-    // TRELLO-1391 The object _companies change all the time.
-    // If we put it in dependencies, it causes problems with the debounce,
-    // and the search input "stutters" when typing fast
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+
+  const onEmailChange = useCallback((email: string) => {
+    _companies.updateFilters((prev) => ({ ...prev, emailsWithAccess: email }))
+  }, [])
+
+  const filtersCount = useMemo(() => {
+    const { offset, limit, ...filters } = _companies.filters
+    return Object.keys(cleanObject(filters)).length
+  }, [_companies.filters])
 
   const computeTitle = (company: Company) => {
     const firstLine = company.commercialName
@@ -160,20 +167,37 @@ export const CompaniesRegistered = () => {
 
   return (
     <>
+      <div className="mb-4">
+        <p>
+          Cette page liste toutes les sociétés qui existent dans SignalConso
+        </p>
+        <p className="text-gray-500 italic">
+          Elles ont eu au moins un signalement, ou ont été ajoutées manuellement
+          par un admin.
+        </p>
+      </div>
+      <CompaniesRegisteredFilters
+        _companies={_companies}
+        onSearchChange={onInputChange}
+        onEmailChange={onEmailChange}
+      />
       <Datatable
         id="companiesregistered"
-        superheader={
-          <div className="flex gap-2 justify-between items-center">
-            <div>
-              <p>
-                Cette page liste toutes les sociétés qui existent dans
-                SignalConso
-              </p>
-              <p className="text-gray-500 italic">
-                Elles ont eu au moins un signalement, ou ont été ajoutées
-                manuellement par un admin.
-              </p>
-            </div>
+        actions={
+          <>
+            <Badge
+              color="error"
+              badgeContent={filtersCount}
+              hidden={filtersCount === 0}
+            >
+              <ScButton
+                color="primary"
+                variant="outlined"
+                onClick={_companies.clearFilters}
+              >
+                {m.removeAllFilters}
+              </ScButton>
+            </Badge>
             {connectedUser.isAdmin && (
               <MassImport>
                 <ScButton
@@ -185,44 +209,6 @@ export const CompaniesRegistered = () => {
                 </ScButton>
               </MassImport>
             )}
-          </div>
-        }
-        headerMain={
-          <div className="mb-2 w-full">
-            <DebouncedInput
-              value={_companies.filters.identity ?? ''}
-              onChange={onInputChange}
-            >
-              {(value, onChange) => (
-                <ScInput
-                  value={value}
-                  placeholder={m.companiesSearchPlaceholder}
-                  fullWidth
-                  onChange={(e) => onChange(e.target.value)}
-                />
-              )}
-            </DebouncedInput>
-          </div>
-        }
-        actions={
-          <>
-            <CompaniesRegisteredFilters
-              filters={_companies.filters}
-              updateFilters={(_) => {
-                _companies.updateFilters((prev) => ({ ...prev, ..._ }))
-              }}
-            >
-              <Tooltip title={m.advancedFilters}>
-                <IconBtn color="primary">
-                  <Icon>filter_list</Icon>
-                </IconBtn>
-              </Tooltip>
-            </CompaniesRegisteredFilters>
-            <Tooltip title={m.removeAllFilters}>
-              <IconBtn color="primary" onClick={_companies.clearFilters}>
-                <Icon>clear</Icon>
-              </IconBtn>
-            </Tooltip>
           </>
         }
         sort={{

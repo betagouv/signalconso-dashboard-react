@@ -1,99 +1,84 @@
-import {
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-} from '@mui/material'
+import { Grid2 } from '@mui/material'
 import { SelectDepartments } from '../../shared/SelectDepartments/SelectDepartments'
 import { SelectActivityCode } from '../../shared/SelectActivityCode'
-import React, { ReactElement, useEffect, useState } from 'react'
+import React from 'react'
 import { useI18n } from '../../core/i18n'
-import { Controller, useForm } from 'react-hook-form'
-import { Btn } from '../../alexlibs/mui-extension'
 import { ScInput } from '../../shared/ScInput'
-import { DialogInputRow } from '../../shared/DialogInputRow'
-import { CompanySearch } from '../../core/client/company/Company'
-import { cleanObject } from '../../core/helper'
+import { useActivatedCompanySearchQuery } from '../../core/queryhooks/companyQueryHooks'
+import { CleanDiscreetPanel } from '../../shared/Panel/simplePanels'
+import { DebouncedInput } from '../../shared/DebouncedInput'
 
 interface CompaniesRegisteredFiltersProps {
-  updateFilters: (_: Partial<CompanySearch>) => void
-  children: ReactElement<any>
-  filters: CompanySearch
+  _companies: ReturnType<typeof useActivatedCompanySearchQuery>
+  onSearchChange: (search: string) => void
+  onEmailChange: (email: string) => void
 }
 
 export const CompaniesRegisteredFilters = ({
-  updateFilters,
-  children,
-  filters,
+  _companies,
+  onSearchChange,
+  onEmailChange,
 }: CompaniesRegisteredFiltersProps) => {
-  const [open, setOpen] = useState<boolean>(false)
   const { m } = useI18n()
-  const { register, handleSubmit, control, reset } = useForm<CompanySearch>()
-
-  const close = () => {
-    setOpen(false)
-  }
-
-  const confirm = (e: any) => {
-    close()
-    handleSubmit((_) => updateFilters(cleanObject(_)))(e)
-  }
-
-  useEffect(() => {
-    reset(filters)
-  }, [filters])
 
   return (
-    <>
-      {React.cloneElement(children, {
-        onClick: (event: any) => {
-          setOpen(true)
-        },
-      })}
-      <Dialog open={open ?? false} onClose={close}>
-        <DialogTitle>{m.search}</DialogTitle>
-        <DialogContent>
-          <DialogInputRow label={m.departments}>
-            <Controller
-              name="departments"
-              defaultValue={filters.departments}
-              control={control}
-              render={({ field }) => (
-                <SelectDepartments {...field} fullWidth sx={{ mr: 1 }} />
-              )}
-            />
-          </DialogInputRow>
-          <DialogInputRow label={m.codeNaf}>
-            <Controller
-              name="activityCodes"
-              defaultValue={filters.activityCodes}
-              control={control}
-              render={({ field }) => (
-                <SelectActivityCode
-                  fullWidth
-                  value={field.value}
-                  onChange={(a, b) => field.onChange(b)}
-                />
-              )}
-            />
-          </DialogInputRow>
-          <DialogInputRow label={m.email}>
-            <ScInput
-              fullWidth
-              {...register('emailsWithAccess')}
-              defaultValue={filters.emailsWithAccess ?? ''}
-            />
-          </DialogInputRow>
-        </DialogContent>
-        <DialogActions>
-          <Btn onClick={close} color="primary">
-            {m.close}
-          </Btn>
-          <Btn onClick={confirm} color="primary" variant="contained">
-            {m.search}
-          </Btn>
-        </DialogActions>
-      </Dialog>
-    </>
+    <CleanDiscreetPanel noShadow>
+      <Grid2 container spacing={1}>
+        <Grid2 size={{ sm: 6, xs: 12 }}>
+          <DebouncedInput
+            value={_companies.filters.identity ?? ''}
+            onChange={onSearchChange}
+          >
+            {(value, onChange) => (
+              <ScInput
+                value={value}
+                placeholder={m.companiesSearchPlaceholder}
+                fullWidth
+                onChange={(e) => onChange(e.target.value)}
+              />
+            )}
+          </DebouncedInput>
+        </Grid2>
+        <Grid2 size={{ sm: 6, xs: 12 }}>
+          <SelectDepartments
+            label={m.departments}
+            value={_companies.filters.departments ?? []}
+            onChange={(departments) =>
+              _companies.updateFilters((prev) => ({ ...prev, departments }))
+            }
+            fullWidth
+            sx={{ mr: 1 }}
+          />
+        </Grid2>
+        <Grid2 size={{ sm: 6, xs: 12 }}>
+          <SelectActivityCode
+            label={m.codeNaf}
+            fullWidth
+            value={_companies.filters.activityCodes ?? []}
+            onChange={(a, b) =>
+              _companies.updateFilters((prev) => ({
+                ...prev,
+                activityCodes: b,
+              }))
+            }
+          />
+        </Grid2>
+        <Grid2 size={{ sm: 6, xs: 12 }}>
+          <DebouncedInput
+            value={_companies.filters.emailsWithAccess ?? ''}
+            onChange={onEmailChange}
+          >
+            {(value, onChange) => (
+              <ScInput
+                fullWidth
+                label={m.email}
+                value={value}
+                onChange={(e) => onChange(e.target.value)}
+              />
+            )}
+          </DebouncedInput>
+        </Grid2>
+      </Grid2>
+    </CleanDiscreetPanel>
   )
 }
