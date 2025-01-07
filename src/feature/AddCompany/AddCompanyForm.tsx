@@ -35,7 +35,6 @@ export const AddCompanyForm = () => {
         EventCategories.AccesDeLEntreprise,
         AccessEventActions.addCompanyToAccount,
         ActionResultNames.success,
-        undefined,
         connectedUser,
       )
     },
@@ -44,7 +43,6 @@ export const AddCompanyForm = () => {
         EventCategories.AccesDeLEntreprise,
         AccessEventActions.addCompanyToAccount,
         ActionResultNames.fail,
-        undefined,
         connectedUser,
       )
     },

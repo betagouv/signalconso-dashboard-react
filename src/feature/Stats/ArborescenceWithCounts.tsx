@@ -58,7 +58,6 @@ export const ArborescenceWithCounts = () => {
         EventCategories.Statistiques,
         StatisticsActions.reportCountsBySubcategories,
         ActionResultNames.success,
-        undefined,
         connectedUser,
       )
     }
