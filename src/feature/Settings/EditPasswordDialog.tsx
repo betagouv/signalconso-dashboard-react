@@ -1,4 +1,5 @@
 import { useMutation } from '@tanstack/react-query'
+import { useConnectedContext } from 'core/context/ConnectedContext'
 import { ScOption } from 'core/helper/ScOption'
 import { validatePasswordComplexity } from 'core/helper/passwordComplexity'
 import { ReactElement } from 'react'
@@ -12,7 +13,7 @@ import { useI18n } from '../../core/i18n'
 import {
   AccountEventActions,
   EventCategories,
-  Matomo,
+  trackEvent,
 } from '../../core/plugins/Matomo'
 import { ScDialog } from '../../shared/ScDialog'
 import { ScInputPassword } from '../../shared/ScInputPassword'
@@ -30,18 +31,21 @@ interface Props {
 export const EditPasswordDialog = ({ children }: Props) => {
   const { m } = useI18n()
   const { api } = useApiContext()
+  const { connectedUser } = useConnectedContext()
   const _changePassword = useMutation({
     mutationFn: (params: { oldPassword: string; newPassword: string }) =>
       api.secured.user.changePassword(params.oldPassword, params.newPassword),
     onSuccess: () => {
       toastSuccess(m.passwordEdited)
-      Matomo.trackEvent(
+      trackEvent(
+        connectedUser,
         EventCategories.CompteUtilisateur,
         AccountEventActions.changePasswordSuccess,
       )
     },
     onError: (error: ApiError) => {
-      Matomo.trackEvent(
+      trackEvent(
+        connectedUser,
         EventCategories.CompteUtilisateur,
         AccountEventActions.changePasswordFail,
       )

@@ -16,7 +16,7 @@ import { useI18n } from '../../core/i18n'
 import {
   AuthenticationEventActions,
   EventCategories,
-  Matomo,
+  trackEventUnconnected,
 } from '../../core/plugins/Matomo'
 import { siteMap } from '../../core/siteMap'
 import { ScButton } from '../../shared/Button'
@@ -70,11 +70,11 @@ export const LoginForm = ({ login }: Props) => {
     login
       .action(form.email, form.password)
       .then((user) => {
-        Matomo.trackEvent(
+        trackEventUnconnected(
           EventCategories.Authentification,
           AuthenticationEventActions.success,
         )
-        Matomo.trackEvent(
+        trackEventUnconnected(
           EventCategories.Authentification,
           AuthenticationEventActions.role,
           user.role,
@@ -87,7 +87,7 @@ export const LoginForm = ({ login }: Props) => {
       })
       .catch((err: ApiError) => {
         setApiError(err)
-        Matomo.trackEvent(
+        trackEventUnconnected(
           EventCategories.Authentification,
           AuthenticationEventActions.fail,
         )

@@ -1,5 +1,6 @@
 import { CircularProgress } from '@mui/material'
 import { User } from 'core/model'
+import { trackPage } from 'core/plugins/Matomo'
 import { LoginManagementResult } from 'core/useLoginManagement'
 import { ProLoginForm } from 'feature/Login/ProLoginForm'
 import { RegisterForm } from 'feature/Login/RegisterForm'
@@ -12,7 +13,6 @@ import {
   ConnectedContextProvider,
   useConnectedContext,
 } from './core/context/ConnectedContext'
-import { Matomo } from './core/plugins/Matomo'
 import { siteMap } from './core/siteMap'
 import { AddCompanyForm } from './feature/AddCompany/AddCompanyForm'
 import { Tools } from './feature/AdminTools/Tools'
@@ -22,6 +22,9 @@ import { Company } from './feature/Company/Company'
 import { EmailValidation } from './feature/EmailValidation/EmailValidation'
 import { Engagements } from './feature/Engagement/Engagements'
 import { JoinNewsletter } from './feature/JoinNewsletter/JoinNewsletter'
+import { AgentLoginForm } from './feature/Login/AgentLoginForm'
+import ProConnectCallback from './feature/Login/ProConnectCallback'
+import ProConnectLogoutCallback from './feature/Login/ProConnectLogoutCallback'
 import { ModeEmploiDGCCRF } from './feature/ModeEmploiDGCCRF/ModeEmploiDGCCRF'
 import { ReportComponent } from './feature/Report/Report'
 import { ReportPro } from './feature/Report/ReportPro'
@@ -36,13 +39,10 @@ import { Stats } from './feature/Stats/Stats'
 import { Subscriptions } from './feature/Subscriptions/Subscriptions'
 import { UserActivation } from './feature/Users/UserActivation'
 import { Users } from './feature/Users/Users'
+import { UsersPro } from './feature/Users/UsersPro'
 import { CenteredContent } from './shared/CenteredContent'
 import { RefreshBanner } from './shared/RefreshBanner'
 import './style.css'
-import ProConnectCallback from './feature/Login/ProConnectCallback'
-import ProConnectLogoutCallback from './feature/Login/ProConnectLogoutCallback'
-import { AgentLoginForm } from './feature/Login/AgentLoginForm'
-import { UsersPro } from './feature/Users/UsersPro'
 
 export const AppRoutes = ({
   loginManagementResult,
@@ -160,7 +160,7 @@ const ProtectedRoutes = () => {
 
   const location = useLocation()
   useEffect(() => {
-    Matomo.trackPage(
+    trackPage(
       `/${connectedUser.role.toLocaleLowerCase()}${location.pathname}`,
       connectedUser,
     )

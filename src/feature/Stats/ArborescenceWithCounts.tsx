@@ -10,10 +10,10 @@ import { ReportNode, ReportNodes } from '../../core/client/report/ReportNode'
 import { useConnectedContext } from '../../core/context/ConnectedContext'
 import { useI18n } from '../../core/i18n'
 import {
-  ActionResultNames,
+  AnalyticActionName,
   EventCategories,
-  Matomo,
   StatisticsActions,
+  trackEvent,
 } from '../../core/plugins/Matomo'
 import { useGetCountBySubCategoriesQuery } from '../../core/queryhooks/reportQueryHooks'
 import { siteMap } from '../../core/siteMap'
@@ -54,11 +54,11 @@ export const ArborescenceWithCounts = () => {
 
   useEffect(() => {
     if (countBySubCategories.data) {
-      Matomo.trackEvent(
+      trackEvent(
+        connectedUser,
         EventCategories.Statistiques,
         StatisticsActions.reportCountsBySubcategories,
-        ActionResultNames.success,
-        connectedUser,
+        AnalyticActionName.success,
       )
     }
   }, [countBySubCategories.data])

@@ -12,9 +12,9 @@ import { regexp } from '../../core/helper/regexp'
 import { useI18n } from '../../core/i18n'
 import {
   AccessEventActions,
-  ActionResultNames,
+  AnalyticActionName,
   EventCategories,
-  Matomo,
+  trackEventUnconnected,
 } from '../../core/plugins/Matomo'
 import { ScButton } from '../../shared/Button'
 import { InfoBanner } from '../../shared/InfoBanner'
@@ -54,10 +54,10 @@ export const RegisterForm = ({ register: registerAction }: Props) => {
     registerAction
       .action(form.siret, form.code, form.email)
       .then(() => {
-        Matomo.trackEvent(
+        trackEventUnconnected(
           EventCategories.CompteUtilisateur,
           AccessEventActions.activateCompanyCode,
-          ActionResultNames.success,
+          AnalyticActionName.success,
         )
         setDone(true)
       })
@@ -66,10 +66,10 @@ export const RegisterForm = ({ register: registerAction }: Props) => {
           type: err.details.id,
           message: err.message,
         })
-        Matomo.trackEvent(
+        trackEventUnconnected(
           EventCategories.AccesDeLEntreprise,
           AccessEventActions.activateCompanyCode,
-          ActionResultNames.fail,
+          AnalyticActionName.fail,
         )
       })
   }

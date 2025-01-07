@@ -1,53 +1,70 @@
 import { config } from 'conf/config'
-import { isKindOfAdmin, User } from '../client/user/User'
+import { isKindOfAdmin, Role, User } from '../client/user/User'
 
 const MATOMO_ENABLED = config.enableMatomo
 
 declare const _paq: any
 
-export class Matomo {
-  private static previousTrackedPage?: string
+let previousTrackedPage: string | undefined = undefined
 
-  private static isAlreadyFired = (path: string) => {
-    if (path !== Matomo.previousTrackedPage) {
-      Matomo.previousTrackedPage = path
-      return false
-    }
-    return true
+function isAlreadyFired(path: string) {
+  if (path !== previousTrackedPage) {
+    previousTrackedPage = path
+    return false
   }
+  return true
+}
 
-  static readonly trackEvent = (
-    category: EventCategories,
-    action: AnalyticAction,
-    name?: any,
-    value?: any,
-    user?: User,
-  ) => {
-    if (enabledForUser(user)) {
-      Matomo.push(['trackEvent', category, action, name, value])
-    }
-  }
-
-  static readonly trackPage = (path: string, user: User) => {
-    if (enabledForUser(user) && !Matomo.isAlreadyFired(path)) {
-      Matomo.push(['setCustomUrl', config.appBaseUrl + path])
-      Matomo.push(['trackPageView'])
-    }
-  }
-
-  private static readonly push = (args: any[]) => {
-    console.info('[Matomo]', ...args)
-    if (MATOMO_ENABLED) {
-      try {
-        _paq.push(args)
-      } catch (e) {
-        console.error('[Matomo]', e)
-        if (!(e instanceof ReferenceError)) {
-          throw e
-        }
+function push(args: any[]) {
+  console.info('[Matomo]', ...args)
+  if (MATOMO_ENABLED) {
+    try {
+      _paq.push(args)
+    } catch (e) {
+      console.error('[Matomo]', e)
+      if (!(e instanceof ReferenceError)) {
+        throw e
       }
     }
   }
+}
+
+function doTrackEvent(
+  user: User | undefined,
+  category: EventCategories,
+  action: AnalyticAction,
+  name?: AnalyticActionNameFull,
+  value?: any,
+) {
+  if (enabledForUser(user)) {
+    push(['trackEvent', category, action, name, value])
+  }
+}
+
+export function trackPage(path: string, user: User) {
+  if (enabledForUser(user) && !isAlreadyFired(path)) {
+    push(['setCustomUrl', config.appBaseUrl + path])
+    push(['trackPageView'])
+  }
+}
+
+export function trackEvent(
+  user: User,
+  category: EventCategories,
+  action: AnalyticAction,
+  name?: AnalyticActionNameFull,
+  value?: string,
+) {
+  doTrackEvent(user, category, action, name, value)
+}
+
+export function trackEventUnconnected(
+  category: EventCategories,
+  action: AnalyticAction,
+  name?: AnalyticActionNameFull,
+  value?: string,
+) {
+  doTrackEvent(undefined, category, action, name, value)
 }
 
 type AnalyticAction =
@@ -102,9 +119,13 @@ export enum NewsletterActions {
   reportsClik = 'ClickNewsletterSubscribeButton',
 }
 
-export enum ActionResultNames {
+type AnalyticActionNameFull = AnalyticActionName | Role
+
+export enum AnalyticActionName {
   success = 'Succès',
   fail = 'Echec',
+  click = 'click',
+  boutonAbonnezVous = 'Bouton ABONNEZ-VOUS',
 }
 
 export function injectMatomoScript() {

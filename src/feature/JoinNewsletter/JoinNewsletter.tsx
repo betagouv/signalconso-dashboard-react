@@ -1,13 +1,21 @@
 import { Button } from '@mui/material'
-import { EventCategories, Matomo, NewsletterActions } from 'core/plugins/Matomo'
+import { useConnectedContext } from 'core/context/ConnectedContext'
+import {
+  AnalyticActionName,
+  EventCategories,
+  NewsletterActions,
+  trackEvent,
+} from 'core/plugins/Matomo'
 import { Page, PageTitle } from 'shared/Page'
 
 export const JoinNewsletter = () => {
+  const { connectedUser } = useConnectedContext()
   const handleSubscribeClick = () => {
-    Matomo.trackEvent(
+    trackEvent(
+      connectedUser,
       EventCategories.Newsletter,
       NewsletterActions.reportsClik,
-      'Bouton ABONNEZ-VOUS',
+      AnalyticActionName.boutonAbonnezVous,
     )
   }
   return (
