@@ -10,9 +10,9 @@ import { regexp } from '../../core/helper/regexp'
 import { useI18n } from '../../core/i18n'
 import {
   AccessEventActions,
-  ActionResultNames,
+  AnalyticActionName,
   EventCategories,
-  Matomo,
+  trackEvent,
 } from '../../core/plugins/Matomo'
 import { siteMap } from '../../core/siteMap'
 import { ScInputPassword } from '../../shared/ScInputPassword'
@@ -31,19 +31,19 @@ export const AddCompanyForm = () => {
     onSuccess: () => {
       toastSuccess(m.companyRegistered)
       history(siteMap.logged.companiesPro)
-      Matomo.trackEvent(
+      trackEvent(
+        connectedUser,
         EventCategories.AccesDeLEntreprise,
         AccessEventActions.addCompanyToAccount,
-        ActionResultNames.success,
-        connectedUser,
+        AnalyticActionName.success,
       )
     },
     onError: () => {
-      Matomo.trackEvent(
+      trackEvent(
+        connectedUser,
         EventCategories.AccesDeLEntreprise,
         AccessEventActions.addCompanyToAccount,
-        ActionResultNames.fail,
-        connectedUser,
+        AnalyticActionName.fail,
       )
     },
   })

@@ -12,7 +12,7 @@ import { Id } from '../../core/model'
 import {
   AuthenticationEventActions,
   EventCategories,
-  Matomo,
+  trackEventUnconnected,
 } from '../../core/plugins/Matomo'
 import { siteMap } from '../../core/siteMap'
 import { ScButton } from '../../shared/Button'
@@ -52,7 +52,7 @@ export const ResetPassword = () => {
       .then(() => {
         toastSuccess(m.resetPasswordSuccess)
         setTimeout(() => history(siteMap.loggedout.login), 400)
-        Matomo.trackEvent(
+        trackEventUnconnected(
           EventCategories.CompteUtilisateur,
           AuthenticationEventActions.resetPasswordSuccess,
         )
@@ -67,7 +67,7 @@ export const ResetPassword = () => {
         )
         toastError({ message: errorMessage })
         reset()
-        Matomo.trackEvent(
+        trackEventUnconnected(
           EventCategories.CompteUtilisateur,
           AuthenticationEventActions.resetPasswordFail,
         )

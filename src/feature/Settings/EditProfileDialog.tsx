@@ -8,7 +8,7 @@ import { useI18n } from '../../core/i18n'
 import {
   AccountEventActions,
   EventCategories,
-  Matomo,
+  trackEvent,
 } from '../../core/plugins/Matomo'
 import { ScDialog } from '../../shared/ScDialog'
 import { ScInput } from '../../shared/ScInput'
@@ -69,7 +69,8 @@ export const EditProfileDialog = ({ children }: Props) => {
             .then(() => {
               toastSuccess(m.saved)
               close()
-              Matomo.trackEvent(
+              trackEvent(
+                connectedUser,
                 EventCategories.CompteUtilisateur,
                 AccountEventActions.changeNameSuccess,
               )
@@ -78,7 +79,8 @@ export const EditProfileDialog = ({ children }: Props) => {
               )
             })
             .catch((_) => {
-              Matomo.trackEvent(
+              trackEvent(
+                connectedUser,
                 EventCategories.CompteUtilisateur,
                 AccountEventActions.changeNameFail,
               )

@@ -1,6 +1,6 @@
 import { Box, Icon, Tooltip } from '@mui/material'
 import { useMutation } from '@tanstack/react-query'
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useState } from 'react'
 import { ScInput } from 'shared/ScInput'
 import { IconBtn, Txt } from '../../alexlibs/mui-extension'
 import {
@@ -14,7 +14,6 @@ import { sxUtils } from '../../core/theme'
 import { Datatable } from '../../shared/Datatable/Datatable'
 import { DebouncedInput } from '../../shared/DebouncedInput'
 import { TrueFalseUndefined } from '../../shared/TrueFalseUndefined'
-import { Matomo } from '../../core/plugins/Matomo'
 
 export const ConsumerListPending = () => {
   const { m, formatDate } = useI18n()

@@ -10,7 +10,7 @@ import { useI18n } from '../../core/i18n'
 import {
   AuthenticationEventActions,
   EventCategories,
-  Matomo,
+  trackEventUnconnected,
 } from '../../core/plugins/Matomo'
 import { ScDialog } from '../../shared/ScDialog'
 
@@ -48,13 +48,13 @@ export const ForgottenPasswordDialog = ({ value, children }: Props) => {
       .mutateAsync(form.emailForgotten)
       .then(() => {
         close()
-        Matomo.trackEvent(
+        trackEventUnconnected(
           EventCategories.Authentification,
           AuthenticationEventActions.forgotPasswordSuccess,
         )
       })
       .catch(() => {
-        Matomo.trackEvent(
+        trackEventUnconnected(
           EventCategories.Authentification,
           AuthenticationEventActions.forgotPasswordFail,
         )

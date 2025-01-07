@@ -13,16 +13,16 @@ import { useMemo } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { useLocation, useNavigate, useParams } from 'react-router'
 import { PasswordRequirementsDesc } from 'shared/PasswordRequirementsDesc'
-import { Alert, makeSx, Txt } from '../../alexlibs/mui-extension'
+import { Alert, Txt, makeSx } from '../../alexlibs/mui-extension'
 import { User, UserToActivate } from '../../core/client/user/User'
 import { useToast } from '../../core/context/toastContext'
 import { QueryString } from '../../core/helper/useQueryString'
 import { useI18n } from '../../core/i18n'
 import {
   AccountEventActions,
-  ActionResultNames,
+  AnalyticActionName,
   EventCategories,
-  Matomo,
+  trackEventUnconnected,
 } from '../../core/plugins/Matomo'
 import { FetchTokenInfoQueryKeys } from '../../core/queryhooks/userQueryHooks'
 import { siteMap } from '../../core/siteMap'
@@ -95,20 +95,20 @@ export const UserActivation = ({ onUserActivated }: Props) => {
         companySiret: siret,
       })
       .then((user) => {
-        Matomo.trackEvent(
+        trackEventUnconnected(
           EventCategories.CompteUtilisateur,
           AccountEventActions.registerUser,
-          ActionResultNames.success,
+          AnalyticActionName.success,
         )
         toastSuccess(m.accountActivated)
         onUserActivated(user)
         history(siteMap.logged.reports())
       })
       .catch((e) => {
-        Matomo.trackEvent(
+        trackEventUnconnected(
           EventCategories.CompteUtilisateur,
           AccountEventActions.registerUser,
-          ActionResultNames.fail,
+          AnalyticActionName.fail,
         )
         toastError({ message: m.activationFailed })
       })

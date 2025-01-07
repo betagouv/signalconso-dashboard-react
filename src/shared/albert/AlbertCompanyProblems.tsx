@@ -3,7 +3,12 @@ import { useQuery } from '@tanstack/react-query'
 import { AlbertProblemsResult } from 'core/client/albert/AlbertProblemsResult'
 import { useApiContext } from 'core/context/ApiContext'
 import { useConnectedContext } from 'core/context/ConnectedContext'
-import { EventCategories, Matomo, OutilsIaActions } from 'core/plugins/Matomo'
+import {
+  AnalyticActionName,
+  EventCategories,
+  OutilsIaActions,
+  trackEvent,
+} from 'core/plugins/Matomo'
 import { CompanyStatsPanelTitle } from 'feature/Company/stats/CompanyStatsPanelTitle'
 import { CleanInvisiblePanel } from 'shared/Panel/simplePanels'
 
@@ -35,12 +40,12 @@ export function AlbertCompanyProblems({ companyId }: { companyId: string }) {
               variant="outlined"
               size="small"
               onClick={() => {
-                Matomo.trackEvent(
+                trackEvent(
+                  connectedUser,
                   EventCategories.OutilsIa,
                   OutilsIaActions.analyseProblemesEntreprise,
-                  'click',
+                  AnalyticActionName.click,
                   companyId,
-                  connectedUser,
                 )
                 query.refetch()
               }}
