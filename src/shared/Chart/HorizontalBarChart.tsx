@@ -16,7 +16,7 @@ interface Props {
 }
 
 export const HorizontalBarChart = ({ data }: Props) => {
-  const firstColumnWidth = 200
+  const firstColumnWidth = 220
   const { m } = useI18n()
   const maxValue = useMemo(
     () => data && Math.max(...data.map((_) => _.value)),
