@@ -27,7 +27,9 @@ export const CompanyInfo = ({ company }: Props) => {
       </CompanyStatsPanelTitle>
       <ul className="grid grid-cols-[auto_auto_1fr] gap-2">
         <Item icon="location_on" label="Adresse">
-          <AddressComponent address={company.address} />
+          <div className="text-sm">
+            <AddressComponent address={company.address} />
+          </div>
         </Item>
         {_activityCodes.data && company.activityCode && (
           <Item icon="label_outline" label={m.activityCode}>
