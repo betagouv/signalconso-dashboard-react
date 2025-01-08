@@ -379,15 +379,6 @@ export const fr = {
     lastAttempt: `Dernière tentative`,
     lastValidationDate: `Dernière validation`,
     reportsDivision: 'Répartition des signalements',
-    reportsDivisionDesc: `   
-    <div>Répartition des signalements :</div>
-    <ul>
-        <li>Nombre total de signalements toute catégorie.</li>
-        <li>Signalements de site internet.</li>
-        <li>Signalements liés à un démarchage à domicile ou téléphonique. </li>
-        <li>Signalement d'un magasin physique hors signalements de site internet et démarchage.</li>
-    </ul>
-  `,
     proUser: 'Comptes Professionnels',
     statsLandingPage: 'Statistiques de SignalConso',
     statsCountBySubCategoriesTab: 'Signalements par sous catégories',
@@ -421,12 +412,6 @@ export const fr = {
     dgccrfSubscriptionsCurve: `Nombre d'abonnements au cumul`,
     dgccrfControlsCurve: `Nombre d'entreprises contrôlées`,
     reportsOnFisrtProActivationAccount: `Adhésion de nouveaux professionnels`,
-    reportsProUserDesc: `   
-    <ul>
-        <li>Nombre de signalements transmis aux professionnels (certains signalements n'ont pas vocation à être transmis, par exemple ceux relatifs aux produit dangereux. D'autres ne peuvent être transmis, par exemple si l'entreprise n'a pu être identifiée)</li>
-        <li>Nombre d'entreprises ayant activé un compte utilisateur la première fois.</li>
-    </ul>
-  `,
     proFirstAccountActivation: `Nombre d'entreprises ayant activé un compte utilisateur la première fois`,
     reportsCount: 'Nombre de signalements',
     reportsCountInternet: 'Nombre de signalements internet',
@@ -439,13 +424,6 @@ export const fr = {
     consoAnonyme: 'Conso. anonyme',
     hasAttachement: `Pièces jointes`,
     reportsProProcessed: 'Traitement des signalements par les professionnels',
-    reportsProProcessedDesc: `
-    <ul>
-        <li>Nombre de signalements transmis aux professionnels (certains signalements ne sont pas transmis, faute de pouvoir identifier l'entreprise, ou parce qu'elle n'est pas française)</li>
-        <li>Nombre de signalements auxquels les professsionnels ont répondu
-    </ul>
-    Ces deux courbes sont affichées en pourcentage des signalements qu'on souhaite transmettre aux pros (on ne veut pas transmettre certains signalements relatifs aux produits dangereux, informateurs dans l'entreprise, ...)
-    `,
     reportsProProcessedInfo: `Les chiffres des 2-3 derniers mois peuvent encore augmenter, au fur et à mesure que les professionnels traitent leurs signalements`,
     reportsProResponseType: 'Types de réponse - évolution',
     reportsProResponseTypeDesc: `   

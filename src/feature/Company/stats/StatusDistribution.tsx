@@ -15,6 +15,7 @@ interface Props<T extends ReportStatus | ReportStatusPro> {
   statusDesc: (status: T) => string
   statusShortLabel: (status: T) => string
   statusColor: (status: T) => string
+  alwaysExpanded?: boolean
 }
 
 export const StatusDistribution = <T extends ReportStatus | ReportStatusPro>({
@@ -23,6 +24,7 @@ export const StatusDistribution = <T extends ReportStatus | ReportStatusPro>({
   statusDesc,
   statusShortLabel,
   statusColor,
+  alwaysExpanded,
 }: Props<T>) => {
   const statusDistribution = useMemoFn(values, (_) =>
     objectEntriesUnsafe(_).map(([status, count]) => ({
@@ -53,7 +55,10 @@ export const StatusDistribution = <T extends ReportStatus | ReportStatusPro>({
       <CompanyStatsPanelTitle bottomMargin>
         Répartition des signalements par status
       </CompanyStatsPanelTitle>
-      <HorizontalBarChart data={statusDistribution} grid />
+      <HorizontalBarChart
+        data={statusDistribution}
+        alwaysExpanded={alwaysExpanded}
+      />
     </CleanInvisiblePanel>
   )
 }

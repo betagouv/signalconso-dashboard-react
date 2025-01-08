@@ -20,9 +20,12 @@ export function WebsitesDistribution({
         (hosts.length === 0 ? (
           'Pas de données'
         ) : (
-          <ul className="grid grid-cols-2">
+          <ul className={`flex flex-wrap gap-x-2`}>
             {hosts.map((host, i) => (
-              <li key={i} className="flex gap-1 items-center">
+              <li
+                key={i}
+                className={`flex items-start gap-1 basis-[48%] lg:basis-full xl:basis-[48%] break-words`}
+              >
                 <Icon fontSize="small">public</Icon>
                 {host}
               </li>

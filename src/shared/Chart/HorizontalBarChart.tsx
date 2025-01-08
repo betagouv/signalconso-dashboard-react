@@ -1,8 +1,7 @@
-import { Theme, Tooltip } from '@mui/material'
+import { Icon, Theme, Tooltip } from '@mui/material'
 import withStyles from '@mui/styles/withStyles'
 import { mapFor } from 'core/helper'
 import { ReactNode, useMemo, useState } from 'react'
-import { useTimeout } from '../../alexlibs/react-hooks-lib'
 import { useI18n } from '../../core/i18n'
 
 export interface HorizontalBarChartData {
@@ -13,12 +12,12 @@ export interface HorizontalBarChartData {
 
 interface Props {
   data?: HorizontalBarChartData[]
-  grid?: boolean
+  alwaysExpanded?: boolean
 }
 
-export const HorizontalBarChart = ({ data, grid }: Props) => {
-  const firstColumnWidth = 200
-  const { m } = useI18n()
+export const HorizontalBarChart = ({ data, alwaysExpanded = false }: Props) => {
+  const [expanded, setExpanded] = useState<boolean>(alwaysExpanded)
+  const { m, formatLargeNumber } = useI18n()
   const maxValue = useMemo(
     () => data && Math.max(...data.map((_) => _.value)),
     [data],
@@ -27,15 +26,23 @@ export const HorizontalBarChart = ({ data, grid }: Props) => {
     () => data && data.reduce((sum, _) => _.value + sum, 0),
     [data],
   )
-  const [appeared, setAppeared] = useState<boolean>(false)
+  const firstColumnWidth = 220
   const nbGridColumns = 8
-  const { formatLargeNumber } = useI18n()
-  useTimeout(() => setAppeared(true), 0)
+
+  const filteredData = data?.filter((_) => maxValue && _.value / maxValue > 0.1)
+  const displayedData = expanded ? data : filteredData
+  const canToggleExpansion = !!(
+    filteredData &&
+    data &&
+    maxValue &&
+    !alwaysExpanded &&
+    filteredData.length !== data.length
+  )
 
   return (
     <div className="overflow-hidden">
-      {data && maxValue && sumValue ? (
-        data.map((item, i: number) => {
+      {displayedData && maxValue && sumValue ? (
+        displayedData.map((item, i: number) => {
           const percentOfMax = (item.value / maxValue) * 100
           const percentOfAll = (item.value / sumValue) * 100
           return (
@@ -65,7 +72,7 @@ export const HorizontalBarChart = ({ data, grid }: Props) => {
                   <div
                     className="text-xs font-bold flex items-center justify-end min-h-[24px] text-scbluefrance border-solid border-b-scbluefrance border-b-4"
                     style={{
-                      width: appeared ? `calc(${percentOfMax}%)` : 0,
+                      width: `calc(${percentOfMax}%)`,
                       ...(item.color
                         ? { color: item.color, borderColor: item.color }
                         : null),
@@ -85,7 +92,7 @@ export const HorizontalBarChart = ({ data, grid }: Props) => {
       ) : (
         <p>{m.noDataAtm} </p>
       )}
-      {grid && data && data.length > 0 && (
+      {displayedData && displayedData.length > 0 && (
         <div className="flex my-2">
           <div
             className="self-end "
@@ -102,6 +109,19 @@ export const HorizontalBarChart = ({ data, grid }: Props) => {
               />
             ))}
           </div>
+        </div>
+      )}
+      {displayedData && data && canToggleExpansion && (
+        <div className="flex justify-center">
+          <button
+            className="underline flex items-center"
+            onClick={() => {
+              setExpanded((x) => !x)
+            }}
+          >
+            <Icon>{expanded ? 'unfold_less' : 'unfold_more'}</Icon>
+            {expanded ? 'réduire' : 'afficher tout'}
+          </button>
         </div>
       )}
     </div>

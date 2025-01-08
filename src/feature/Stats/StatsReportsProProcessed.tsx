@@ -1,6 +1,6 @@
 import { AsyncLineChart, toPercentage } from 'shared/Chart/chartWrappers'
 import { CleanWidePanel } from 'shared/Panel/simplePanels'
-import { Alert, Txt } from '../../alexlibs/mui-extension'
+import { Alert } from '../../alexlibs/mui-extension'
 import { useConnectedContext } from '../../core/context/ConnectedContext'
 import { useI18n } from '../../core/i18n'
 
@@ -30,12 +30,25 @@ export const StatsReportsProProcessedPanel = () => {
     <CleanWidePanel>
       <h2 className="font-bold text-xl mb-2">{m.reportsProProcessed}</h2>
       <div>
-        <Txt
-          color="hint"
-          gutterBottom
-          block
-          dangerouslySetInnerHTML={{ __html: m.reportsProProcessedDesc }}
-        />
+        <div className="text-gray-500">
+          <ul className="list-disc list-inside">
+            <li>
+              Pourcentage des signalements transmis aux professionnels (certains
+              signalements ne sont pas transmis, faute de pouvoir identifier
+              l'entreprise, ou parce qu'elle n'est pas française)
+            </li>
+            <li>
+              Pourcentage des signalements auxquels les professionnels ont
+              répondu
+            </li>
+          </ul>
+          <p>
+            Ces deux pourcentages sont calculé par rapport aux signalements
+            qu'on souhaite transmettre aux pros (on ne veut pas transmettre
+            certains signalements relatifs à certaines catégories, remontés par
+            des informateurs internes, etc. ...)
+          </p>
+        </div>
         <AsyncLineChart {...{ loadCurves }} />
         <Alert type="info" gutterTop>
           {m.reportsProProcessedInfo}
