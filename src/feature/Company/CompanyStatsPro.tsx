@@ -65,6 +65,7 @@ export function CompanyStatsPro({
                   m.reportStatusShortPro[s]
                 }
                 statusColor={(s: ReportStatusPro) => reportStatusProColor[s]}
+                alwaysExpanded
               />
             </div>
             <div>
