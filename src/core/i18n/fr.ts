@@ -379,15 +379,6 @@ export const fr = {
     lastAttempt: `Dernière tentative`,
     lastValidationDate: `Dernière validation`,
     reportsDivision: 'Répartition des signalements',
-    reportsDivisionDesc: `   
-    <div>Répartition des signalements :</div>
-    <ul>
-        <li>Nombre total de signalements toute catégorie.</li>
-        <li>Signalements de site internet.</li>
-        <li>Signalements liés à un démarchage à domicile ou téléphonique. </li>
-        <li>Signalement d'un magasin physique hors signalements de site internet et démarchage.</li>
-    </ul>
-  `,
     proUser: 'Comptes Professionnels',
     statsLandingPage: 'Statistiques de SignalConso',
     statsCountBySubCategoriesTab: 'Signalements par sous catégories',

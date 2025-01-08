@@ -1,6 +1,5 @@
 import { AsyncLineChart } from 'shared/Chart/chartWrappers'
 import { CleanWidePanel } from 'shared/Panel/simplePanels'
-import { Txt } from '../../alexlibs/mui-extension'
 import { ReportTag } from '../../core/client/report/Report'
 import { CountByDate } from '../../core/client/stats/statsTypes'
 import { useConnectedContext } from '../../core/context/ConnectedContext'
@@ -98,12 +97,6 @@ export const StatsReportsCurvePanel = () => {
     <CleanWidePanel>
       <div className="font-bold text-xl mb-2">{m.reportsDivision}</div>
       <div>
-        <Txt
-          color="hint"
-          gutterBottom
-          block
-          dangerouslySetInnerHTML={{ __html: m.reportsDivisionDesc }}
-        />
         <AsyncLineChart {...{ loadCurves }} smallFontYAxis />
       </div>
     </CleanWidePanel>
