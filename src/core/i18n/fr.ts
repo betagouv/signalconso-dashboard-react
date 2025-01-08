@@ -412,12 +412,6 @@ export const fr = {
     dgccrfSubscriptionsCurve: `Nombre d'abonnements au cumul`,
     dgccrfControlsCurve: `Nombre d'entreprises contrôlées`,
     reportsOnFisrtProActivationAccount: `Adhésion de nouveaux professionnels`,
-    reportsProUserDesc: `   
-    <ul>
-        <li>Nombre de signalements transmis aux professionnels (certains signalements n'ont pas vocation à être transmis, par exemple ceux relatifs aux produit dangereux. D'autres ne peuvent être transmis, par exemple si l'entreprise n'a pu être identifiée)</li>
-        <li>Nombre d'entreprises ayant activé un compte utilisateur la première fois.</li>
-    </ul>
-  `,
     proFirstAccountActivation: `Nombre d'entreprises ayant activé un compte utilisateur la première fois`,
     reportsCount: 'Nombre de signalements',
     reportsCountInternet: 'Nombre de signalements internet',
