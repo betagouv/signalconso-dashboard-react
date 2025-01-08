@@ -62,7 +62,7 @@ export const AcceptedDistribution = ({ companyId }: { companyId: string }) => {
         ")
       </p>
       <>
-        <HorizontalBarChart data={distribution} grid />
+        <HorizontalBarChart data={distribution} />
       </>
     </CleanInvisiblePanel>
   )

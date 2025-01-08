@@ -13,10 +13,9 @@ export interface HorizontalBarChartData {
 
 interface Props {
   data?: HorizontalBarChartData[]
-  grid?: boolean
 }
 
-export const HorizontalBarChart = ({ data, grid }: Props) => {
+export const HorizontalBarChart = ({ data }: Props) => {
   const firstColumnWidth = 200
   const { m } = useI18n()
   const maxValue = useMemo(
@@ -85,7 +84,7 @@ export const HorizontalBarChart = ({ data, grid }: Props) => {
       ) : (
         <p>{m.noDataAtm} </p>
       )}
-      {grid && data && data.length > 0 && (
+      {data && data.length > 0 && (
         <div className="flex my-2">
           <div
             className="self-end "

@@ -53,7 +53,7 @@ export const StatusDistribution = <T extends ReportStatus | ReportStatusPro>({
       <CompanyStatsPanelTitle bottomMargin>
         Répartition des signalements par status
       </CompanyStatsPanelTitle>
-      <HorizontalBarChart data={statusDistribution} grid />
+      <HorizontalBarChart data={statusDistribution} />
     </CleanInvisiblePanel>
   )
 }
