@@ -1,8 +1,7 @@
 import { Theme, Tooltip } from '@mui/material'
 import withStyles from '@mui/styles/withStyles'
 import { mapFor } from 'core/helper'
-import { ReactNode, useMemo, useState } from 'react'
-import { useTimeout } from '../../alexlibs/react-hooks-lib'
+import { ReactNode, useMemo } from 'react'
 import { useI18n } from '../../core/i18n'
 
 export interface HorizontalBarChartData {
@@ -26,10 +25,8 @@ export const HorizontalBarChart = ({ data }: Props) => {
     () => data && data.reduce((sum, _) => _.value + sum, 0),
     [data],
   )
-  const [appeared, setAppeared] = useState<boolean>(false)
   const nbGridColumns = 8
   const { formatLargeNumber } = useI18n()
-  useTimeout(() => setAppeared(true), 0)
 
   return (
     <div className="overflow-hidden">
@@ -64,7 +61,7 @@ export const HorizontalBarChart = ({ data }: Props) => {
                   <div
                     className="text-xs font-bold flex items-center justify-end min-h-[24px] text-scbluefrance border-solid border-b-scbluefrance border-b-4"
                     style={{
-                      width: appeared ? `calc(${percentOfMax}%)` : 0,
+                      width: `calc(${percentOfMax}%)`,
                       ...(item.color
                         ? { color: item.color, borderColor: item.color }
                         : null),
