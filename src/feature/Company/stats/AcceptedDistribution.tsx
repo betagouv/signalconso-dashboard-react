@@ -53,13 +53,8 @@ export const AcceptedDistribution = ({ companyId }: { companyId: string }) => {
         Types de promesse d'action faites par le professionnel
       </CompanyStatsPanelTitle>
       <p className="text-gray-500 mb-2">
-        Lorsque le pro accepte un signalement comme étant fondé, il doit choisir
-        l'action qu'il promet de faire pour résoudre la situation, parmi
-        plusieurs options possibles (par exemple "
-        <span className="italic">
-          Je vais procéder à un remboursement ou un avoir
-        </span>
-        ")
+        Quand le pro reconnaît qu'un signalement est fondé, il doit choisir une
+        action parmi plusieurs options pour résoudre le problème.
       </p>
       <>
         <HorizontalBarChart data={distribution} />
