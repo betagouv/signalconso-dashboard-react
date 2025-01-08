@@ -88,3 +88,8 @@ export enum AccessLevel {
 export interface CompanyWithAccessLevel extends Company {
   level: AccessLevel
 }
+
+export type CompanyHosts = {
+  host: string
+  nbOccurences: number
+}[]

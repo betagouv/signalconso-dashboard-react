@@ -3,7 +3,6 @@ import { reportStatusColor } from 'shared/ReportStatus'
 import { useEffectFn, useMemoFn } from '../../alexlibs/react-hooks-lib'
 import { ReportStatus } from '../../core/client/report/Report'
 import { CompanyWithReportsCount, User } from '../../core/model'
-import { useGetHostsQuery } from '../../core/queryhooks/companyQueryHooks'
 import { useReportSearchQuery } from '../../core/queryhooks/reportQueryHooks'
 import {
   useGetTagsQuery,
@@ -39,7 +38,6 @@ export function CompanyStats({
 }) {
   const { m } = useI18n()
   const id = company.id
-  const _hosts = useGetHostsQuery(id, { enabled: !connectedUser.isPro })
   const _reports = useReportSearchQuery(
     { hasCompany: true, offset: 0, limit: 5 },
     false,
@@ -95,7 +93,7 @@ export function CompanyStats({
               <ResponseReviewsDistribution companyId={id} />
               <EngagementReviewsDistribution companyId={id} />
               <ReportWordDistribution companyId={id} />
-              <WebsitesDistribution {...{ _hosts }} />
+              <WebsitesDistribution companyId={id} />
             </div>
           </div>
         </>
