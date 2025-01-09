@@ -32,20 +32,24 @@ import {
 } from '../../core/queryhooks/reportQueryHooks'
 import { ScButton } from '../../shared/Button'
 import { Page } from '../../shared/Page'
+import { isStatusFinal } from '../../shared/ReportStatus'
 import { ReportEvents } from './Event/ReportEvents'
 import { ReportAdminResolution } from './ReportAdminResolution'
 import { ReportAlbert } from './ReportAlbert'
 import { ReportCompany } from './ReportCompany/ReportCompany'
 import { ReportConsumer } from './ReportConsumer/ReportConsumer'
 import { ReportDetails, ReportFilesFull } from './ReportDescription'
-import { ReportDownloadAction } from './ReportDownloadAction'
+import {
+  DownloadType,
+  ReportDownloadAction,
+  trackReportDownload,
+} from './ReportDownloadAction'
 import { ReportHeader } from './ReportHeader'
 import { ReportPostAction } from './ReportPostAction'
 import { ReportProduct } from './ReportProduct'
 import { ReportReOpening } from './ReportReOpening'
 import { ReportResponseComponent } from './ReportResponse'
 import { ReportViewAsPro } from './ReportViewAsPro'
-import { isStatusFinal } from '../../shared/ReportStatus'
 
 const CONSO: EventType = 'CONSO'
 
@@ -190,7 +194,13 @@ const ReportViewStandard = ({
                     color="primary"
                     icon="download"
                     loading={downloadReport.isPending}
-                    onClick={() => downloadReport.mutate(report.id)}
+                    onClick={() => {
+                      trackReportDownload(
+                        connectedUser,
+                        DownloadType.ReportOnly,
+                      )
+                      downloadReport.mutate(report.id)
+                    }}
                   >
                     {m.download}
                   </Btn>

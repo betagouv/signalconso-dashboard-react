@@ -1,13 +1,16 @@
 import { useMutation } from '@tanstack/react-query'
 import { useConnectedContext } from 'core/context/ConnectedContext'
 import { useI18n } from 'core/i18n'
-import { ScButton } from '../../shared/Button'
-import { DatatableToolbar } from '../../shared/Datatable/DatatableToolbar'
-import { Btn } from '../../alexlibs/mui-extension'
-import { ReportReOpening } from '../Report/ReportReOpening'
-import { Tooltip } from '@mui/material'
+import {
+  EventCategories,
+  ExportsActions,
+  trackEvent,
+} from 'core/plugins/Matomo'
 import React from 'react'
 import { Id } from '../../core/model'
+import { ScButton } from '../../shared/Button'
+import { DatatableToolbar } from '../../shared/Datatable/DatatableToolbar'
+import { ReportReOpening } from '../Report/ReportReOpening'
 
 type SelectReportType = {
   size: number
@@ -23,7 +26,7 @@ type DatatableToolbarComponentProps = {
 export const DatatableToolbarComponent: React.FC<
   DatatableToolbarComponentProps
 > = ({ selectReport, canReOpen }) => {
-  const { api: apiSdk } = useConnectedContext()
+  const { api: apiSdk, connectedUser: user } = useConnectedContext()
   const { m } = useI18n()
   const downloadReports = useMutation({
     mutationFn: apiSdk.secured.reports.download,
@@ -38,7 +41,14 @@ export const DatatableToolbarComponent: React.FC<
             loading={downloadReports.isPending}
             variant="contained"
             icon="file_download"
-            onClick={() => downloadReports.mutate(selectReport.toArray())}
+            onClick={() => {
+              trackEvent(
+                user,
+                EventCategories.Exports,
+                ExportsActions.exportReportsPdf,
+              )
+              downloadReports.mutate(selectReport.toArray())
+            }}
             sx={{
               marginLeft: 'auto',
             }}

@@ -1,5 +1,3 @@
-import React, { ReactElement, ReactNode, useEffect, useState } from 'react'
-import { Alert, Btn, Txt } from '../alexlibs/mui-extension'
 import {
   Box,
   CircularProgress,
@@ -8,20 +6,28 @@ import {
   MenuItem,
   Tooltip,
 } from '@mui/material'
-import { useI18n } from '../core/i18n'
+import { useMutation, useQuery } from '@tanstack/react-query'
+import { useConnectedContext } from 'core/context/ConnectedContext'
+import {
+  EventCategories,
+  ExportsActions,
+  trackEvent,
+} from 'core/plugins/Matomo'
+import React, { ReactElement, ReactNode, useEffect, useState } from 'react'
+import { Alert, Btn, Txt } from '../alexlibs/mui-extension'
 import { useInterval } from '../alexlibs/react-hooks-lib'
+import { fnSwitch } from '../alexlibs/ts-utils'
 import {
   AsyncFile,
   AsyncFileKind,
   AsyncFileStatus,
 } from '../core/client/async-file/AsyncFile'
-import { fnSwitch } from '../alexlibs/ts-utils'
+import { ReportSearch } from '../core/client/report/ReportSearch'
 import { ReportedPhoneSearch } from '../core/client/reported-phone/ReportedPhone'
 import { HostReportCountSearch } from '../core/client/website/Website'
-import { ReportSearch } from '../core/client/report/ReportSearch'
-import { PaginatedFilters } from '../core/model'
-import { useMutation, useQuery } from '@tanstack/react-query'
 import { useApiContext } from '../core/context/ApiContext'
+import { useI18n } from '../core/i18n'
+import { PaginatedFilters } from '../core/model'
 
 interface Props {
   className?: string
@@ -34,6 +40,7 @@ interface Props {
   onNewExport: () => Promise<any>
   children: ReactElement<any>
   onClick?: (event: any) => void
+  trackingEventAction: ExportsActions
 }
 
 const FileItem = ({
@@ -64,10 +71,12 @@ const ExportPopperBtn = ({
   fileType,
   disabled,
   onNewExport,
+  trackingEventAction,
 }: Props) => {
   const { m, formatDateTime } = useI18n()
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
   const [initialLoading, setInitialLoading] = useState(true)
+  const { connectedUser: user } = useConnectedContext()
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget)
@@ -139,7 +148,10 @@ const ExportPopperBtn = ({
                 variant="contained"
                 sx={{ width: '100%' }}
                 icon="post_add"
-                onClick={() => onNewExport().then(fetch)}
+                onClick={() => {
+                  trackEvent(user, EventCategories.Exports, trackingEventAction)
+                  onNewExport().then(fetch)
+                }}
               >
                 <span className={'mt-1'}>{m.newExportInXLS}</span>
               </Btn>
@@ -253,6 +265,7 @@ export const ExportPhonesPopper = (
       onNewExport={_extract.mutateAsync}
       fetch={() => _asyncFile.refetch()}
       files={_asyncFile.data}
+      trackingEventAction={ExportsActions.exportPhonesExcel}
     />
   )
 }
@@ -277,6 +290,7 @@ export const ExportReportsPopper = (
       onNewExport={_extract.mutateAsync}
       fetch={() => _asyncFile.refetch()}
       files={_asyncFile.data}
+      trackingEventAction={ExportsActions.exportReportsExcel}
     />
   )
 }
@@ -301,6 +315,7 @@ export const ExportUnknownWebsitesPopper = (
       onNewExport={_extract.mutateAsync}
       fetch={() => _asyncFile.refetch()}
       files={_asyncFile.data}
+      trackingEventAction={ExportsActions.exportUnknownWebsitesExcel}
     />
   )
 }
