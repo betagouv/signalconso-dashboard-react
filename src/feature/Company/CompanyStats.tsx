@@ -90,10 +90,10 @@ export function CompanyStats({
             <div>
               <CompanyConfidentialNumbers id={id} siret={company.siret} />
               <CompanyInfo company={company} />
+              <WebsitesDistribution companyId={id} />
+              <ReportWordDistribution companyId={id} />
               <ResponseReviewsDistribution companyId={id} />
               <EngagementReviewsDistribution companyId={id} />
-              <ReportWordDistribution companyId={id} />
-              <WebsitesDistribution companyId={id} />
             </div>
           </div>
         </>
