@@ -74,6 +74,7 @@ type AnalyticAction =
   | StatisticsActions
   | NewsletterActions
   | OutilsIaActions
+  | ExportsActions
 
 export enum EventCategories {
   Authentification = 'Authentification',
@@ -82,6 +83,7 @@ export enum EventCategories {
   Statistiques = 'Statistiques',
   Newsletter = 'Newsletter',
   OutilsIa = 'Outils IA',
+  Exports = 'Exports',
 }
 
 export enum AuthenticationEventActions {
@@ -113,6 +115,15 @@ export enum StatisticsActions {
 
 export enum OutilsIaActions {
   analyseProblemesEntreprise = `Lancement de l'analyse IA des problèmes d'une entreprise`,
+}
+
+export enum ExportsActions {
+  exportReportPdf = "Export d'un signalement format PDF",
+  exportReportZip = "Export d'un signalement format zip avec pièces jointes",
+  exportReportsPdf = 'Export de signalements format PDF combiné',
+  exportReportsExcel = 'Export de signalements format Excel',
+  exportUnknownWebsitesExcel = 'Export des sites webs non identifiés format Excel',
+  exportPhonesExcel = 'Export des téléphones signalés format Excel',
 }
 
 export enum NewsletterActions {

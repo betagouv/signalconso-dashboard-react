@@ -1,11 +1,16 @@
 import { useMutation } from '@tanstack/react-query'
 import { objectKeysUnsafe } from 'core/helper'
+import {
+  EventCategories,
+  ExportsActions,
+  trackEvent,
+} from 'core/plugins/Matomo'
 import { ReactElement, useState } from 'react'
 import { Alert } from '../../alexlibs/mui-extension'
 import { Report } from '../../core/client/report/Report'
 import { useConnectedContext } from '../../core/context/ConnectedContext'
 import { useI18n } from '../../core/i18n'
-import { Id, UploadedFile } from '../../core/model'
+import { Id, UploadedFile, User } from '../../core/model'
 import { ScRadioGroup } from '../../shared/RadioGroup'
 import { ScRadioGroupItem } from '../../shared/RadioGroupItem'
 import { ScDialog } from '../../shared/ScDialog'
@@ -21,9 +26,19 @@ export enum DownloadType {
   ReportOnly = 'ReportOnly',
 }
 
+export function trackReportDownload(user: User, downloadType: DownloadType) {
+  trackEvent(
+    user,
+    EventCategories.Exports,
+    downloadType === DownloadType.ReportWithAttachment
+      ? ExportsActions.exportReportZip
+      : ExportsActions.exportReportPdf,
+  )
+}
+
 export const ReportDownloadAction = ({ report, files, children }: Props) => {
   const { m } = useI18n()
-  const { api: apiSdk } = useConnectedContext()
+  const { api: apiSdk, connectedUser: user } = useConnectedContext()
 
   const _download = useMutation({
     mutationFn: (params: { id: Id; reportType: DownloadType }) => {
@@ -42,16 +57,17 @@ export const ReportDownloadAction = ({ report, files, children }: Props) => {
     <ScDialog
       title={m.reportDownload}
       loading={_download.isPending}
-      onConfirm={(event, close) =>
+      onConfirm={(event, close) => {
+        const downloadType =
+          downloadReportWithAttachments ?? DownloadType.ReportWithAttachment
+        trackReportDownload(user, downloadType)
         _download
           .mutateAsync({
             id: report.id,
-            reportType:
-              downloadReportWithAttachments ??
-              DownloadType.ReportWithAttachment,
+            reportType: downloadType,
           })
           .finally(close)
-      }
+      }}
       confirmLabel={m.validate}
       content={
         <>
