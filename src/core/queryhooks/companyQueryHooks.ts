@@ -134,15 +134,11 @@ export const useGetCompanyByIdQuery = (
   })
 }
 
-export const useGetHostsQuery = (
-  id: Id,
-  options?: UseQueryOpts<string[], string[]>,
-) => {
+export const useGetHostsQuery = (id: string) => {
   const { api } = useApiContext()
   return useQuery({
     queryKey: GetHostsQueryKeys(id),
     queryFn: () => api.secured.company.getHosts(id),
-    ...options,
   })
 }
 

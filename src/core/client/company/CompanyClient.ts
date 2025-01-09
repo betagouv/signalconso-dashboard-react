@@ -4,6 +4,7 @@ import {
   CompaniesToImport,
   Company,
   CompanyCreation,
+  CompanyHosts,
   CompanySearch,
   CompanyToActivate,
   CompanyToFollowUp,
@@ -79,8 +80,14 @@ export class CompanyClient {
       )
   }
 
-  readonly getHosts = (id: Id) => {
-    return this.client.get<string[]>(`/companies/hosts/${id}`)
+  readonly getHosts = async (id: Id): Promise<CompanyHosts> => {
+    const tuples = await this.client.get<[string, number][]>(
+      `/companies/hosts/${id}`,
+    )
+    return tuples.map(([host, nbOccurences]) => ({
+      host,
+      nbOccurences,
+    }))
   }
 
   readonly getAccessibleByPro = () => {
