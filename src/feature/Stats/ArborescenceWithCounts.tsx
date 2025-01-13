@@ -133,7 +133,7 @@ export const ArborescenceWithCounts = () => {
               onClick={() => _download.mutate('fr')}
               variant="outlined"
               color="primary"
-              sx={{mb: 1, ml: 1}}
+              sx={{ mb: 1, ml: 1 }}
             >
               {m.download} (FR)
             </ScButton>
@@ -142,7 +142,7 @@ export const ArborescenceWithCounts = () => {
               onClick={() => _download.mutate('en')}
               variant="outlined"
               color="primary"
-              sx={{mb: 1, ml: 1}}
+              sx={{ mb: 1, ml: 1 }}
             >
               {m.download} (EN)
             </ScButton>

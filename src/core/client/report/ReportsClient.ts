@@ -358,7 +358,12 @@ export class ReportsClient {
           departments: departments,
         },
       })
-      .then(directDownloadBlob(`signalements_par_souscategories_${new Date().toISOString()}.csv`, 'text/csv'))
+      .then(
+        directDownloadBlob(
+          `signalements_par_souscategories_${new Date().toISOString()}.csv`,
+          'text/csv',
+        ),
+      )
   }
 
   readonly setBookmarked = ({
