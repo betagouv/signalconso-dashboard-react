@@ -1,5 +1,5 @@
 import { Badge, Box, Grid, Icon, useTheme } from '@mui/material'
-import { UseQueryResult } from '@tanstack/react-query'
+import { useMutation, UseQueryResult } from '@tanstack/react-query'
 import { ApiError } from 'core/client/ApiClient'
 import { parseInt } from 'lodash'
 import { useEffect, useState } from 'react'
@@ -23,6 +23,7 @@ import { Page } from '../../shared/Page'
 import { PanelBody } from '../../shared/Panel'
 import { PeriodPicker } from '../../shared/PeriodPicker'
 import { SelectDepartments } from '../../shared/SelectDepartments/SelectDepartments'
+import { useApiContext } from '../../core/context/ApiContext'
 
 const compare = (a?: string[], b?: string[]): number => {
   if (!a || !b) return 0
@@ -50,6 +51,17 @@ export const ArborescenceWithCounts = () => {
     start,
     end,
     departments,
+  })
+
+  const { api } = useApiContext()
+  const _download = useMutation({
+    mutationFn: (lang: string) =>
+      api.secured.reports.downloadCountBySubCategories({
+        lang,
+        start,
+        end,
+        departments,
+      }),
   })
 
   useEffect(() => {
@@ -116,6 +128,24 @@ export const ArborescenceWithCounts = () => {
               },
             }}
           >
+            <ScButton
+              icon="download"
+              onClick={() => _download.mutate('fr')}
+              variant="outlined"
+              color="primary"
+              sx={{mb: 1, ml: 1}}
+            >
+              {m.download} (FR)
+            </ScButton>
+            <ScButton
+              icon="download"
+              onClick={() => _download.mutate('en')}
+              variant="outlined"
+              color="primary"
+              sx={{mb: 1, ml: 1}}
+            >
+              {m.download} (EN)
+            </ScButton>
             <Badge
               color="error"
               badgeContent={badgeCount}
@@ -133,8 +163,18 @@ export const ArborescenceWithCounts = () => {
           </Box>
         </div>
       </CleanWidePanel>
-      <LangPanel {...{ countBySubCategories }} lang="fr" />
-      <LangPanel {...{ countBySubCategories }} lang="en" />
+      <LangPanel
+        {...{ countBySubCategories }}
+        lang="fr"
+        start={start}
+        end={end}
+      />
+      <LangPanel
+        {...{ countBySubCategories }}
+        lang="en"
+        start={start}
+        end={end}
+      />
     </Page>
   )
 }
@@ -142,9 +182,13 @@ export const ArborescenceWithCounts = () => {
 function LangPanel({
   countBySubCategories,
   lang: langKey,
+  start,
+  end,
 }: {
   countBySubCategories: UseQueryResult<ReportNodes, ApiError>
   lang: 'fr' | 'en'
+  start: Date | undefined
+  end: Date | undefined
 }) {
   const [openAll, setOpenAll] = useState(false)
   const { m } = useI18n()
@@ -168,7 +212,13 @@ function LangPanel({
         {countBySubCategories.data?.[langKey]
           .sort(sortById)
           .map((reportNode) => (
-            <Node open={openAll} reportNode={reportNode} path={[]} />
+            <Node
+              open={openAll}
+              reportNode={reportNode}
+              path={[]}
+              start={start}
+              end={end}
+            />
           ))}
       </PanelBody>
     </CleanWidePanel>
@@ -179,10 +229,14 @@ const Node = ({
   reportNode,
   open,
   path,
+  start,
+  end,
 }: {
   reportNode: ReportNode
   open?: boolean
   path: string[]
+  start: Date | undefined
+  end: Date | undefined
 }) => {
   const iconWidth = 40
   const iconMargin = 8
@@ -196,6 +250,8 @@ const Node = ({
   const url = siteMap.logged.reports({
     category: fullPath[0],
     subcategories: fullPath.length > 0 ? fullPath.slice(1) : undefined,
+    start,
+    end,
   })
 
   return (
@@ -230,14 +286,14 @@ const Node = ({
           {reportNode.id ? (
             <Box maxWidth="80%">
               <Txt truncate block>
-                {reportNode.name}
+                {reportNode.label ?? reportNode.name}
               </Txt>{' '}
               <Txt color="hint">{reportNode.id}</Txt>
             </Box>
           ) : (
             <Box maxWidth="80%">
               <Txt truncate block color="hint">
-                {reportNode.name}
+                {reportNode.label ?? reportNode.name}
               </Txt>{' '}
               <Txt color="hint">(Ancienne catégorie)</Txt>
             </Box>
@@ -286,7 +342,13 @@ const Node = ({
             }}
           >
             {reportNode.children.sort(sortById).map((reportNode) => (
-              <Node open={open} reportNode={reportNode} path={fullPath} />
+              <Node
+                open={open}
+                reportNode={reportNode}
+                path={fullPath}
+                start={start}
+                end={end}
+              />
             ))}
           </Box>
         )}

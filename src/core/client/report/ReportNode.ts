@@ -1,5 +1,6 @@
 export interface ReportNode {
   name: string
+  label: string
   count: number
   reclamations: number
   id?: string

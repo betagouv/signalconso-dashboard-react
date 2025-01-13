@@ -16,6 +16,7 @@ import {
   PaginatedData,
   PaginatedFilters,
   PaginatedSearch,
+  paginateFilters2QueryString,
   Report,
   ReportAction,
   ReportConsumerUpdate,
@@ -26,7 +27,6 @@ import {
   ReportTag,
   ReportWordCount,
   User,
-  paginateFilters2QueryString,
 } from '../../model'
 import { ApiClient } from '../ApiClient'
 import { ReportNodes } from './ReportNode'
@@ -341,6 +341,24 @@ export class ReportsClient {
         departments: departments,
       },
     })
+  }
+
+  readonly downloadCountBySubCategories = ({
+    lang,
+    start,
+    end,
+    departments,
+  }: ReportNodeSearch & { lang: string }): Promise<void> => {
+    return this.client
+      .getBlob(`/reports/count-by-subcategories/download`, {
+        qs: {
+          lang,
+          start: dateToApiDate(start),
+          end: dateToApiDate(end),
+          departments: departments,
+        },
+      })
+      .then(directDownloadBlob(`signalements_par_souscategories_${new Date().toISOString()}.csv`, 'text/csv'))
   }
 
   readonly setBookmarked = ({
