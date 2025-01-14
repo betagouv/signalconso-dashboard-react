@@ -40,6 +40,7 @@ export const ArborescenceWithCounts = () => {
 
   const begin = new Date()
   begin.setDate(begin.getDate() - 90)
+  begin.setHours(0, 0, 0, 0)
 
   const [start, setStart] = useState<Date | undefined>(begin)
   const [end, setEnd] = useState<Date | undefined>(undefined)
