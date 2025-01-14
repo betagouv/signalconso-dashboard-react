@@ -286,7 +286,10 @@ const Node = ({
           {reportNode.id ? (
             <Box maxWidth="80%">
               <Txt truncate block>
-                {reportNode.label ?? reportNode.name}
+                {reportNode.label ?? reportNode.name}{' '}
+                {reportNode.overriddenCategory
+                  ? `(${reportNode.overriddenCategory})`
+                  : undefined}
               </Txt>{' '}
               <Txt color="hint">{reportNode.id}</Txt>
             </Box>
