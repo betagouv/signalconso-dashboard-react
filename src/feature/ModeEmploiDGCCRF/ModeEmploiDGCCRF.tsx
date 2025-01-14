@@ -1,9 +1,8 @@
-import { Page } from 'shared/Page'
-import { Panel, PanelBody } from '../../shared/Panel'
 import { Box, Divider, Typography } from '@mui/material'
-import { styleUtils } from '../../core/theme'
-import { makeSx } from '../../alexlibs/mui-extension'
+import { Page } from 'shared/Page'
 import { CleanWidePanel } from 'shared/Panel/simplePanels'
+import { makeSx } from '../../alexlibs/mui-extension'
+import { styleUtils } from '../../core/theme'
 
 const sx = makeSx({
   mark: {

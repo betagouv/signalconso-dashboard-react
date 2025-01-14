@@ -508,7 +508,7 @@ export const fr = {
     activateUserError: `Échec de la création du compte`,
     registerCompanyErrorDesc: `Avez-vous utilisé le bon SIRET ? Pour une même adresse physique, il est possible d'avoir plusieurs entités juridiques et donc plusieurs SIRET (exploitant, gestionnaire...).`,
     selectCountries_onlyTransfer: 'Pays avec accord',
-    reportedPhoneTitle: 'Suivi des téléphones',
+    reportedPhoneTitle: 'Téléphones signalés',
     noExport: 'Aucun export',
     noAssociation: 'Non associé',
     linkCountry: 'Associer un pays étranger au site internet',
