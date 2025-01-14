@@ -15,6 +15,7 @@ import { StatusDistribution } from './stats/StatusDistribution'
 
 import { AlbertCompanyProblems } from 'shared/albert/AlbertCompanyProblems'
 import { AcceptedDistribution } from './stats/AcceptedDistribution'
+import { PhonesDistribution } from './stats/PhonesDistribution'
 import {
   EngagementReviewsDistribution,
   ResponseReviewsDistribution,
@@ -91,6 +92,7 @@ export function CompanyStats({
               <CompanyConfidentialNumbers id={id} siret={company.siret} />
               <CompanyInfo company={company} />
               <WebsitesDistribution companyId={id} />
+              <PhonesDistribution companyId={id} />
               <ReportWordDistribution companyId={id} />
               <ResponseReviewsDistribution companyId={id} />
               <EngagementReviewsDistribution companyId={id} />

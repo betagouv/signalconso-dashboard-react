@@ -5,6 +5,7 @@ import {
   Company,
   CompanyCreation,
   CompanyHosts,
+  CompanyPhones,
   CompanySearch,
   CompanyToActivate,
   CompanyToFollowUp,
@@ -86,6 +87,16 @@ export class CompanyClient {
     )
     return tuples.map(([host, nbOccurences]) => ({
       host,
+      nbOccurences,
+    }))
+  }
+
+  readonly getPhones = async (id: Id): Promise<CompanyPhones> => {
+    const tuples = await this.client.get<[string, number][]>(
+      `/companies/phones/${id}`,
+    )
+    return tuples.map(([phone, nbOccurences]) => ({
+      phone,
       nbOccurences,
     }))
   }

@@ -93,3 +93,8 @@ export type CompanyHosts = {
   host: string
   nbOccurences: number
 }[]
+
+export type CompanyPhones = {
+  phone: string
+  nbOccurences: number
+}[]
