@@ -1,9 +1,8 @@
-import { Page } from 'shared/Page'
-import { Panel, PanelBody } from '../../shared/Panel'
-import { Box, Divider, Typography } from '@mui/material'
-import { styleUtils } from '../../core/theme'
+import { Box } from '@mui/material'
+import { ReactNode } from 'react'
+import { Page, PageTitle } from 'shared/Page'
 import { makeSx } from '../../alexlibs/mui-extension'
-import { CleanWidePanel } from 'shared/Panel/simplePanels'
+import { styleUtils } from '../../core/theme'
 
 const sx = makeSx({
   mark: {
@@ -15,17 +14,21 @@ const sx = makeSx({
   },
 })
 
+function SectionTitle({ children }: { children: ReactNode }) {
+  return <h2 className=" text-2xl text-scbluefrance mb-2  mt-4">{children}</h2>
+}
+
+function MinorTitle({ children }: { children: ReactNode }) {
+  return <h3 className="text-lg font-bold mb-2 mt-8 uppercase">{children}</h3>
+}
 export const ModeEmploiDGCCRF = () => {
   return (
     <Page>
-      <CleanWidePanel>
-        <Typography variant="h4" gutterBottom>
-          1. Base de données
-        </Typography>
+      <>
+        <PageTitle>Mode d'emploi</PageTitle>
+        <SectionTitle>Base de données</SectionTitle>
 
-        <Typography variant="h5" color="primary">
-          Comment est affichée la base de données ?
-        </Typography>
+        <MinorTitle>Comment est affichée la base de données ?</MinorTitle>
         <div>
           <p className="mt-4">
             Les signalements sont affichés sous forme de liste, par date de
@@ -37,11 +40,7 @@ export const ModeEmploiDGCCRF = () => {
           </p>
         </div>
 
-        <Divider sx={{ my: 2 }} />
-
-        <Typography variant="h5" color="primary">
-          Que signifie la colonne "Statut" ?
-        </Typography>
+        <MinorTitle>Que signifie la colonne "Statut" ?</MinorTitle>
         <div>
           <p>Il correspond au traitement du signalement à un instant T.</p>
 
@@ -102,11 +101,7 @@ export const ModeEmploiDGCCRF = () => {
           </ul>
         </div>
 
-        <Divider sx={{ my: 2 }} />
-
-        <Typography variant="h5" color="primary">
-          Comment fonctionne le système de relance ?
-        </Typography>
+        <MinorTitle>Comment fonctionne le système de relance ?</MinorTitle>
         <div>
           <p>Un système de relance automatique est mis en place.</p>
 
@@ -133,12 +128,10 @@ export const ModeEmploiDGCCRF = () => {
           </ul>
         </div>
 
-        <Divider sx={{ my: 2 }} />
-
-        <Typography variant="h5" color="primary">
+        <MinorTitle>
           Comment apporter des éléments à un signalement (courrier reçu,
           contrôle réalisé) ?
-        </Typography>
+        </MinorTitle>
         <div>
           <p>
             {' '}
@@ -165,9 +158,7 @@ export const ModeEmploiDGCCRF = () => {
           </ul>
         </div>
 
-        <Typography variant="h4" gutterBottom>
-          2. Filtres
-        </Typography>
+        <SectionTitle>Filtres</SectionTitle>
 
         <p>Il existe différents filtres :</p>
 
@@ -203,9 +194,7 @@ export const ModeEmploiDGCCRF = () => {
           contre elle distingue les accents (pour le moment).
         </p>
 
-        <Typography variant="h4" gutterBottom>
-          3. Export Excel
-        </Typography>
+        <SectionTitle>Export Excel</SectionTitle>
 
         <p>
           L’export génère un fichier Excel qui reprend les signalements suivant
@@ -233,9 +222,7 @@ export const ModeEmploiDGCCRF = () => {
           <li>Actions de la DGCCRF (commentaire, contrôle)</li>
         </ul>
 
-        <Typography variant="h4" gutterBottom>
-          4. Autres outils disponibles
-        </Typography>
+        <SectionTitle>Autres outils disponibles</SectionTitle>
 
         <p>Il existe deux outils disponibles pour le moment :</p>
 
@@ -249,7 +236,7 @@ export const ModeEmploiDGCCRF = () => {
             La fréquence est soit hebdomadaire (le lundi) soit quotidienne.
           </li>
         </ul>
-      </CleanWidePanel>
+      </>
     </Page>
   )
 }
