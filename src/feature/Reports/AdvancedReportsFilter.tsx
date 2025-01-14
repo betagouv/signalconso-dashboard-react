@@ -20,6 +20,7 @@ type AdvancedFiltersGridProps = {
   _reports: ReturnType<typeof useReportSearchQuery>
   onChangeStatus: (status: ReportStatus[]) => void
   onEmailChange: (email: string) => void
+  onConsumerPhoneChange: (consumerPhone: string) => void
   onWebsiteURLChange: (websiteURL: string) => void
   onPhoneChange: (phone: string) => void
   onChangeHasProResponse: (b: boolean | null) => void
@@ -48,6 +49,7 @@ export const AdvancedReportsFilter: React.FC<AdvancedFiltersGridProps> = ({
   _reports,
   onChangeStatus,
   onEmailChange,
+  onConsumerPhoneChange,
   onWebsiteURLChange,
   onPhoneChange,
   onChangeHasProResponse,
@@ -189,6 +191,36 @@ export const AdvancedReportsFilter: React.FC<AdvancedFiltersGridProps> = ({
               {(value, onChange) => (
                 <ScInput
                   label={m.phone}
+                  fullWidth
+                  value={value}
+                  onChange={(e) => onChange(e.target.value)}
+                />
+              )}
+            </DebouncedInput>
+          )}
+        </Box>
+      </Grid>
+      <Grid item xs={12} md={6}>
+        <Box>
+          <TrueFalseNullRow
+            label={'Téléphone du conso'}
+            value={_reports.filters.hasConsumerPhone ?? null}
+            onChange={(hasConsumerPhone) =>
+              _reports.updateFilters((prev) => ({
+                ...prev,
+                hasConsumerPhone: hasConsumerPhone ?? undefined,
+              }))
+            }
+            dropdownArrow
+          />
+          {_reports.filters.hasConsumerPhone === true && (
+            <DebouncedInput
+              value={_reports.filters.consumerPhone ?? ''}
+              onChange={onConsumerPhoneChange}
+            >
+              {(value, onChange) => (
+                <ScInput
+                  label={'Téléphone du conso'}
                   fullWidth
                   value={value}
                   onChange={(e) => onChange(e.target.value)}

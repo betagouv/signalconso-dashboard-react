@@ -78,6 +78,8 @@ interface ReportSearchQs {
   start?: string
   end?: string
   email?: string
+  consumerPhone?: string
+  hasConsumerPhone?: boolean
   websiteURL?: string
   phone?: string
   category?: string
@@ -113,6 +115,7 @@ function useReportsQueryString() {
         'subcategories',
       ]),
       mapBooleanFromQueryString([
+        'hasConsumerPhone',
         'hasCompany',
         'hasForeignCountry',
         'hasPhone',
@@ -247,6 +250,10 @@ export const Reports = () => {
     _reports.updateFilters((prev) => ({ ...prev, email }))
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+  const onConsumerPhoneChange = useCallback((consumerPhone: string) => {
+    _reports.updateFilters((prev) => ({ ...prev, consumerPhone }))
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
   const onWebsiteURLChange = useCallback((websiteURL: string) => {
     _reports.updateFilters((prev) => ({ ...prev, websiteURL }))
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -311,6 +318,7 @@ export const Reports = () => {
               _reports={_reports}
               onChangeStatus={onChangeStatus}
               onEmailChange={onEmailChange}
+              onConsumerPhoneChange={onConsumerPhoneChange}
               onWebsiteURLChange={onWebsiteURLChange}
               onPhoneChange={onPhoneChange}
               onChangeHasProResponse={onChangeHasProResponse}

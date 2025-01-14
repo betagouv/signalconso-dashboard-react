@@ -13,6 +13,8 @@ export interface ReportSearch {
   start?: Date
   end?: Date
   email?: string
+  consumerPhone?: string
+  hasConsumerPhone?: boolean
   websiteURL?: string
   phone?: string
   category?: string
