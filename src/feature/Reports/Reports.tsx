@@ -365,6 +365,7 @@ export const Reports = () => {
                 'companyPostalCode',
                 'companySiret',
                 'companyCountry',
+                'phone',
                 'reportDate',
                 'status',
                 'file',
@@ -400,6 +401,7 @@ function buildColumns({
       style: { width: 0 },
       render: (r) => <CheckboxColumn {...{ r, selectReport }} />,
     },
+
     {
       id: 'bookmark',
       head: <>Marque-pages</>,
@@ -438,6 +440,11 @@ function buildColumns({
       id: 'companyCountry',
       head: m.country,
       render: (_) => _.report.companyAddress.country?.name,
+    },
+    {
+      id: 'phone',
+      head: 'Téléphone appelant',
+      render: (r) => <div>{r.report.phone}</div>,
     },
     {
       id: 'category',
@@ -507,6 +514,7 @@ function buildColumns({
       head: "Date de l'avis Conso",
       render: (_) => formatDate(_.consumerReview?.creationDate),
     },
+
     {
       id: 'file',
       head: m.files,
