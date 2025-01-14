@@ -218,6 +218,7 @@ function LangPanel({
               path={[]}
               start={start}
               end={end}
+              foreign={langKey !== 'fr'}
             />
           ))}
       </PanelBody>
@@ -231,12 +232,14 @@ const Node = ({
   path,
   start,
   end,
+  foreign,
 }: {
   reportNode: ReportNode
   open?: boolean
   path: string[]
   start: Date | undefined
   end: Date | undefined
+  foreign: boolean
 }) => {
   const iconWidth = 40
   const iconMargin = 8
@@ -252,6 +255,7 @@ const Node = ({
     subcategories: fullPath.length > 0 ? fullPath.slice(1) : undefined,
     start,
     end,
+    isForeign: foreign,
   })
 
   return (
@@ -351,6 +355,7 @@ const Node = ({
                 path={fullPath}
                 start={start}
                 end={end}
+                foreign={foreign}
               />
             ))}
           </Box>
