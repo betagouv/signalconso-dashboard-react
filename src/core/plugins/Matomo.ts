@@ -75,6 +75,7 @@ type AnalyticAction =
   | NewsletterActions
   | OutilsIaActions
   | ExportsActions
+  | SignalementsActions
 
 export enum EventCategories {
   Authentification = 'Authentification',
@@ -84,6 +85,7 @@ export enum EventCategories {
   Newsletter = 'Newsletter',
   OutilsIa = 'Outils IA',
   Exports = 'Exports',
+  Signalements = 'Signalements',
 }
 
 export enum AuthenticationEventActions {
@@ -128,6 +130,9 @@ export enum ExportsActions {
 
 export enum NewsletterActions {
   reportsClik = 'ClickNewsletterSubscribeButton',
+}
+export enum SignalementsActions {
+  ajoutMarquePage = "Ajout d'un marque-page",
 }
 
 type AnalyticActionNameFull = AnalyticActionName | Role

@@ -22,6 +22,7 @@ export const CompanyToActivateSearchQueryKeys = ['company_fetchToActivate']
 export const CompanyToFollowUpSearchQueryKeys = ['company_fetchToFollowUp']
 const GetCompanyByIdQueryKeys = (id: Id) => ['company_byId', id]
 const GetHostsQueryKeys = (id: Id) => ['company_getHosts', id]
+const GetPhonesQueryKeys = (id: Id) => ['company_getPhones', id]
 const GetResponseRateQueryKeys = (id: Id) => ['company_getResponseRate', id]
 const SearchByIdentityQueryKeys = (identity: string, openOnly: boolean) => [
   'company_searchCompaniesByIdentity',
@@ -139,6 +140,14 @@ export const useGetHostsQuery = (id: string) => {
   return useQuery({
     queryKey: GetHostsQueryKeys(id),
     queryFn: () => api.secured.company.getHosts(id),
+  })
+}
+
+export const useGetPhonesQuery = (id: string) => {
+  const { api } = useApiContext()
+  return useQuery({
+    queryKey: GetPhonesQueryKeys(id),
+    queryFn: () => api.secured.company.getPhones(id),
   })
 }
 
