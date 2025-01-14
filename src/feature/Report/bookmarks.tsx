@@ -1,7 +1,13 @@
 import { Icon } from '@mui/material'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useApiContext } from 'core/context/ApiContext'
+import { useConnectedContext } from 'core/context/ConnectedContext'
 import { Paginate, ReportSearchResult } from 'core/model'
+import {
+  EventCategories,
+  SignalementsActions,
+  trackEvent,
+} from 'core/plugins/Matomo'
 import {
   GetReportQueryKeys,
   ReportSearchQueryKeyStart,
@@ -15,6 +21,7 @@ export function BookmarkButton({
   reportId: string
 }) {
   const { api } = useApiContext()
+  const { connectedUser } = useConnectedContext()
   const queryClient = useQueryClient()
   const _setBookmarked = useMutation({
     mutationFn: (bookmarked: boolean) => {
@@ -61,7 +68,16 @@ export function BookmarkButton({
     : `Ajouter aux marque-pages`
   return (
     <button
-      onClick={() => _setBookmarked.mutate(!isBookmarked)}
+      onClick={() => {
+        if (!isBookmarked) {
+          trackEvent(
+            connectedUser,
+            EventCategories.Signalements,
+            SignalementsActions.ajoutMarquePage,
+          )
+        }
+        _setBookmarked.mutate(!isBookmarked)
+      }}
       aria-label={label}
       title={label}
     >
