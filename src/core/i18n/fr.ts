@@ -484,7 +484,6 @@ export const fr = {
     myCompanies: 'Mes entreprises',
     returnDate: 'Date du retour courrier',
     proResponse: 'Réponse du professionnel',
-    foreignReport: 'Signalement étranger',
     searchByEmail: 'Rechercher par email',
     undeliveredDoc: 'Courrier retourné ?',
     undeliveredDocTitle: 'Indiquer un courrier retourné',
