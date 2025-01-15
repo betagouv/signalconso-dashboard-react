@@ -1,4 +1,4 @@
-import { dateToApiDate } from '../../helper'
+import { dateToApiTime } from '../../helper'
 import {
   ApiHostWithReportCount,
   Country,
@@ -32,7 +32,7 @@ const hostReportFilter2QueryString = (
     const { q, start, end, offset, limit, ...r } = hostReport
     const parseDate = (
       _: keyof Pick<HostReportCountSearch, 'start' | 'end'>,
-    ) => (hostReport[_] ? { [_]: dateToApiDate(hostReport[_]) } : {})
+    ) => (hostReport[_] ? { [_]: dateToApiTime(hostReport[_]) } : {})
 
     return {
       ...r,

@@ -1,6 +1,5 @@
 import {
   cleanObject,
-  dateToApiDate,
   dateToApiTime,
   directDownloadBlob,
   wrap404AsNull,
@@ -323,8 +322,8 @@ export class ReportsClient {
   }: { start?: Date; end?: Date } = {}): Promise<[string, number][]> => {
     return this.client.get(`/reports/count-by-departments`, {
       qs: {
-        start: dateToApiDate(start),
-        end: dateToApiDate(end),
+        start: dateToApiTime(start),
+        end: dateToApiTime(end),
       },
     })
   }
@@ -336,8 +335,8 @@ export class ReportsClient {
   }: ReportNodeSearch = {}): Promise<ReportNodes> => {
     return this.client.get(`/reports/count-by-subcategories`, {
       qs: {
-        start: dateToApiDate(start),
-        end: dateToApiDate(end),
+        start: dateToApiTime(start),
+        end: dateToApiTime(end),
         departments: departments,
       },
     })
@@ -353,8 +352,8 @@ export class ReportsClient {
       .getBlob(`/reports/count-by-subcategories/download`, {
         qs: {
           lang,
-          start: dateToApiDate(start),
-          end: dateToApiDate(end),
+          start: dateToApiTime(start),
+          end: dateToApiTime(end),
           departments: departments,
         },
       })
