@@ -24,6 +24,15 @@ import { PanelBody } from '../../shared/Panel'
 import { PeriodPicker } from '../../shared/PeriodPicker'
 import { SelectDepartments } from '../../shared/SelectDepartments/SelectDepartments'
 import { useApiContext } from '../../core/context/ApiContext'
+import {
+  mapArrayFromQuerystring,
+  mapDateFromQueryString,
+  mapDatesToQueryString,
+  useQueryString,
+} from '../../core/helper/useQueryString'
+import { compose } from '../../core/helper/compose'
+import { ReportNodeSearch } from '../../core/client/report/ReportNodeSearch'
+import { cleanObject } from '../../core/helper'
 
 const compare = (a?: string[], b?: string[]): number => {
   if (!a || !b) return 0
@@ -34,18 +43,43 @@ const compare = (a?: string[], b?: string[]): number => {
 const sortById = (reportNode1: ReportNode, reportNode2: ReportNode) =>
   compare(reportNode1.id?.split('.'), reportNode2.id?.split('.'))
 
+interface ReportNodeSearchQs {
+  readonly departments?: string[] | string
+  start?: string
+  end?: string
+}
+
+function useArboQueryString() {
+  return useQueryString<Partial<ReportNodeSearch>, Partial<ReportNodeSearchQs>>(
+    {
+      toQueryString: mapDatesToQueryString,
+      fromQueryString: compose(
+        mapDateFromQueryString,
+        mapArrayFromQuerystring(['departments']),
+      ),
+    },
+  )
+}
+
 export const ArborescenceWithCounts = () => {
   const { m } = useI18n()
   const { connectedUser } = useConnectedContext()
+  const queryString = useArboQueryString()
 
   const begin = new Date()
   begin.setDate(begin.getDate() - 90)
   begin.setHours(0, 0, 0, 0)
 
-  const [start, setStart] = useState<Date | undefined>(begin)
-  const [end, setEnd] = useState<Date | undefined>(undefined)
+  const {
+    start: startQs,
+    end: endQs,
+    departments: departmentsQs,
+  } = queryString.get()
+
+  const [start, setStart] = useState<Date | undefined>(startQs ?? begin)
+  const [end, setEnd] = useState<Date | undefined>(endQs)
   const [departments, setDepartments] = useState<string[] | undefined>(
-    undefined,
+    departmentsQs,
   )
 
   const countBySubCategories = useGetCountBySubCategoriesQuery({
@@ -53,6 +87,10 @@ export const ArborescenceWithCounts = () => {
     end,
     departments,
   })
+
+  useEffect(() => {
+    queryString.update(cleanObject({ start, end, departments }))
+  }, [start, end, departments])
 
   const { api } = useApiContext()
   const _download = useMutation({
