@@ -1,4 +1,5 @@
 import { Box, Grid, Icon } from '@mui/material'
+import { objectKeysUnsafe } from 'core/helper'
 import { UseQueryPaginateResult } from 'core/queryhooks/UseQueryPaginate'
 import { SelectTagsMenuValues } from 'shared/SelectTags/SelectTagsMenu'
 import { ReportSearchResult } from '../../core/client/report/Report'
@@ -10,7 +11,6 @@ import { ScInput } from '../../shared/ScInput'
 import { SelectDepartments } from '../../shared/SelectDepartments/SelectDepartments'
 import { SelectTags } from '../../shared/SelectTags/SelectTags'
 import { TrueFalseNullRow } from './AdvancedReportsFilter'
-import { objectKeysUnsafe } from 'core/helper'
 
 const TrueLabel = () => {
   const { m } = useI18n()
@@ -61,7 +61,7 @@ export const ReportsFilter: React.FC<ReportsGridProps> = ({
           fullWidth
         />
       </Grid>
-      <Grid item xs={12} md={6}>
+      <Grid item xs={12} lg={6}>
         <DebouncedInput<[Date | undefined, Date | undefined]>
           value={[_reports.filters.start, _reports.filters.end]}
           onChange={([start, end]) => {
@@ -78,7 +78,7 @@ export const ReportsFilter: React.FC<ReportsGridProps> = ({
           )}
         </DebouncedInput>
       </Grid>
-      <Grid item xs={12} md={6}>
+      <Grid item xs={12} lg={6}>
         <DebouncedInput
           value={_reports.filters.details ?? ''}
           onChange={onDetailsChange}
@@ -93,7 +93,7 @@ export const ReportsFilter: React.FC<ReportsGridProps> = ({
           )}
         </DebouncedInput>
       </Grid>
-      <Grid item xs={12} md={6}>
+      <Grid item xs={12} lg={6}>
         <SelectTags
           label={m.tags}
           fullWidth
@@ -111,7 +111,7 @@ export const ReportsFilter: React.FC<ReportsGridProps> = ({
           }
         />
       </Grid>
-      <Grid item xs={12} md={6}>
+      <Grid item xs={12} lg={6}>
         <Box>
           <TrueFalseNullRow
             label={m.siretOrSirenFound}
@@ -142,7 +142,7 @@ export const ReportsFilter: React.FC<ReportsGridProps> = ({
         </Box>
       </Grid>
       {connectedUser.isAdmin && (
-        <Grid item xs={12} md={6}>
+        <Grid item xs={12} lg={6}>
           <DebouncedInput
             value={_reports.filters.email ?? ''}
             onChange={onEmailChange}

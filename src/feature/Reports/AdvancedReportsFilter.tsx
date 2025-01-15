@@ -64,7 +64,7 @@ export const AdvancedReportsFilter: React.FC<AdvancedFiltersGridProps> = ({
 
   return (
     <Grid container spacing={1} sx={{ mt: 0 }}>
-      <Grid item xs={12} md={6}>
+      <Grid item xs={12} lg={6}>
         <SelectActivityCode
           label={m.codeNaf}
           value={_reports.filters.activityCodes ?? []}
@@ -77,7 +77,7 @@ export const AdvancedReportsFilter: React.FC<AdvancedFiltersGridProps> = ({
           }
         />
       </Grid>
-      <Grid item xs={12} md={6}>
+      <Grid item xs={12} lg={6}>
         <ScSelect
           small
           label={m.categories}
@@ -98,7 +98,7 @@ export const AdvancedReportsFilter: React.FC<AdvancedFiltersGridProps> = ({
           ))}
         </ScSelect>
       </Grid>
-      <Grid item xs={12} md={6}>
+      <Grid item xs={12} lg={6}>
         <ScMultiSelect
           label={m.status}
           value={_reports.filters.status ?? []}
@@ -124,7 +124,7 @@ export const AdvancedReportsFilter: React.FC<AdvancedFiltersGridProps> = ({
         </ScMultiSelect>
       </Grid>
       {connectedUser.isDGCCRF && (
-        <Grid item xs={12} md={6}>
+        <Grid item xs={12} lg={6}>
           <DebouncedInput
             value={_reports.filters.email ?? ''}
             onChange={onEmailChange}
@@ -140,9 +140,10 @@ export const AdvancedReportsFilter: React.FC<AdvancedFiltersGridProps> = ({
           </DebouncedInput>
         </Grid>
       )}
-      <Grid item xs={12} md={6}>
+      <Grid item xs={12} lg={6}>
         <Box>
           <TrueFalseNullRow
+            icon="public"
             label={m.website}
             value={_reports.filters.hasWebsite ?? null}
             onChange={(hasWebsite) =>
@@ -170,9 +171,10 @@ export const AdvancedReportsFilter: React.FC<AdvancedFiltersGridProps> = ({
           )}
         </Box>
       </Grid>
-      <Grid item xs={12} md={6}>
+      <Grid item xs={12} lg={6}>
         <Box>
           <TrueFalseNullRow
+            icon="phone"
             label={m.phone}
             value={_reports.filters.hasPhone ?? null}
             onChange={(hasPhone) =>
@@ -200,9 +202,10 @@ export const AdvancedReportsFilter: React.FC<AdvancedFiltersGridProps> = ({
           )}
         </Box>
       </Grid>
-      <Grid item xs={12} md={6}>
+      <Grid item xs={12} lg={6}>
         <Box>
           <TrueFalseNullRow
+            icon="phone"
             label={'Téléphone du conso'}
             value={_reports.filters.hasConsumerPhone ?? null}
             onChange={(hasConsumerPhone) =>
@@ -230,9 +233,10 @@ export const AdvancedReportsFilter: React.FC<AdvancedFiltersGridProps> = ({
           )}
         </Box>
       </Grid>
-      <Grid item xs={12} md={6}>
+      <Grid item xs={12} lg={6}>
         <Box>
           <TrueFalseNullRow
+            icon="language"
             label={m.foreignCountry}
             value={_reports.filters.hasForeignCountry ?? null}
             onChange={(hasForeignCountry) =>
@@ -258,8 +262,10 @@ export const AdvancedReportsFilter: React.FC<AdvancedFiltersGridProps> = ({
           )}
         </Box>
       </Grid>
-      <Grid item xs={12} md={6}>
+      <Grid item xs={12} lg={6}>
         <TrueFalseNullRow
+          icon="no_accounts"
+          iconClassName="text-red-600"
           label={m.consoAnonyme}
           value={invertIfDefined(_reports.filters.contactAgreement ?? null)}
           onChange={(contactAgreement) =>
@@ -270,8 +276,9 @@ export const AdvancedReportsFilter: React.FC<AdvancedFiltersGridProps> = ({
           }
         />
       </Grid>
-      <Grid item xs={12} md={6}>
+      <Grid item xs={12} lg={6}>
         <TrueFalseNullRow
+          icon="attach_file"
           label={m.hasAttachement}
           value={_reports.filters.hasAttachment ?? null}
           onChange={(hasAttachment) =>
@@ -282,9 +289,41 @@ export const AdvancedReportsFilter: React.FC<AdvancedFiltersGridProps> = ({
           }
         />
       </Grid>
-      <Grid item xs={12} md={6}>
+      <Grid item xs={12} lg={6}>
         <Box>
           <TrueFalseNullRow
+            icon="mark_chat_read"
+            label={m.proResponse}
+            value={hasProResponse}
+            onChange={onChangeHasProResponse}
+            dropdownArrow
+          />
+          {hasProResponse === true && (
+            <ScMultiSelect
+              label={m.proResponse}
+              value={proResponseFilter}
+              onChange={onChangeProResponseFilter}
+              fullWidth
+              withSelectAll
+              renderValue={(proResponse) =>
+                `(${proResponse.length}) ${proResponse
+                  .map((_) => m.reportResponseShort[_])
+                  .join(',')}`
+              }
+            >
+              {Object.values(ReportResponseTypes).map((proResponse) => (
+                <ScMenuItem withCheckbox key={proResponse} value={proResponse}>
+                  <ProResponseLabel proResponse={proResponse} />
+                </ScMenuItem>
+              ))}
+            </ScMultiSelect>
+          )}
+        </Box>
+      </Grid>
+      <Grid item xs={12} lg={6}>
+        <Box>
+          <TrueFalseNullRow
+            icon="thumb_up"
             label={'Avis conso initial sur la réponse'}
             value={_reports.filters.hasResponseEvaluation ?? null}
             onChange={(hasResponseEvaluation) =>
@@ -322,9 +361,10 @@ export const AdvancedReportsFilter: React.FC<AdvancedFiltersGridProps> = ({
           )}
         </Box>
       </Grid>
-      <Grid item xs={12} md={6}>
+      <Grid item xs={12} lg={6}>
         <Box>
           <TrueFalseNullRow
+            icon="thumb_up"
             label={'Avis conso ultérieur'}
             value={_reports.filters.hasEngagementEvaluation ?? null}
             onChange={(hasEngagementEvaluation) =>
@@ -362,40 +402,12 @@ export const AdvancedReportsFilter: React.FC<AdvancedFiltersGridProps> = ({
           )}
         </Box>
       </Grid>
-      <Grid item xs={12} md={6}>
+
+      <Grid item xs={12} lg={6}>
         <Box>
           <TrueFalseNullRow
-            label={m.proResponse}
-            value={hasProResponse}
-            onChange={onChangeHasProResponse}
-            dropdownArrow
-          />
-          {hasProResponse === true && (
-            <ScMultiSelect
-              label={m.proResponse}
-              value={proResponseFilter}
-              onChange={onChangeProResponseFilter}
-              fullWidth
-              withSelectAll
-              renderValue={(proResponse) =>
-                `(${proResponse.length}) ${proResponse
-                  .map((_) => m.reportResponseShort[_])
-                  .join(',')}`
-              }
-            >
-              {Object.values(ReportResponseTypes).map((proResponse) => (
-                <ScMenuItem withCheckbox key={proResponse} value={proResponse}>
-                  <ProResponseLabel proResponse={proResponse} />
-                </ScMenuItem>
-              ))}
-            </ScMultiSelect>
-          )}
-        </Box>
-      </Grid>
-      <Grid item xs={12} md={6}>
-        <Box>
-          <TrueFalseNullRow
-            label={m.foreignReport}
+            icon="language"
+            label="Version anglaise"
             value={_reports.filters.isForeign ?? null}
             onChange={(isForeign) =>
               _reports.updateFilters((prev) => ({
@@ -406,9 +418,10 @@ export const AdvancedReportsFilter: React.FC<AdvancedFiltersGridProps> = ({
           />
         </Box>
       </Grid>
-      <Grid item xs={12} md={6}>
+      <Grid item xs={12} lg={6}>
         <Box>
           <TrueFalseNullRow
+            icon="shopping_cart"
             label={'Code-barres'}
             value={_reports.filters.hasBarcode ?? null}
             onChange={(hasBarcode) =>
@@ -420,7 +433,7 @@ export const AdvancedReportsFilter: React.FC<AdvancedFiltersGridProps> = ({
           />
         </Box>
       </Grid>
-      <Grid item xs={12} md={6}>
+      <Grid item xs={12} lg={6}>
         <DebouncedInput
           value={_reports.filters?.subcategories?.join(',') ?? ''}
           onChange={onSubcategoriesChange}
@@ -435,9 +448,10 @@ export const AdvancedReportsFilter: React.FC<AdvancedFiltersGridProps> = ({
           )}
         </DebouncedInput>
       </Grid>
-      <Grid item xs={12} md={6}>
+      <Grid item xs={12} lg={6}>
         <Box>
           <TrueFalseNullRow
+            icon="bookmark"
             label={'Dans les marque-pages'}
             value={_reports.filters.isBookmarked ?? null}
             onChange={(isBookmarked) =>
@@ -458,11 +472,15 @@ export function TrueFalseNullRow({
   value,
   onChange,
   dropdownArrow = false,
+  icon,
+  iconClassName = '',
 }: {
   label: string
   value: boolean | null
   onChange: (v: boolean | null) => void
   dropdownArrow?: boolean
+  icon?: string
+  iconClassName?: string
 }) {
   const { m } = useI18n()
   return (
@@ -474,7 +492,16 @@ export function TrueFalseNullRow({
         mt: 1,
       }}
     >
-      <Box sx={{ color: 'rgba(0, 0, 0, 0.6)', ml: 1 }}>{label}</Box>
+      <div className="text-gray-500 ml-2 flex items-center gap-1">
+        {icon && (
+          <>
+            <Icon fontSize="small" className={iconClassName}>
+              {icon}
+            </Icon>
+          </>
+        )}
+        {label}
+      </div>
       <TrueFalseNull
         label={
           dropdownArrow
