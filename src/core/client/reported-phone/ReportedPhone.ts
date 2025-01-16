@@ -5,7 +5,6 @@ export interface ReportedPhone {
   count: number
   siret?: string
   companyName?: string
-  category?: string
 }
 
 export interface ReportedPhoneFilters {
