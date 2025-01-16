@@ -1,18 +1,17 @@
-import React, { useCallback } from 'react'
-import { Page, PageTitle } from '../../shared/Page'
-import { useI18n } from '../../core/i18n'
-import { Panel } from '../../shared/Panel'
-import { Datatable } from '../../shared/Datatable/Datatable'
-import { NavLink } from 'react-router-dom'
-import { siteMap } from '../../core/siteMap'
-import { Btn, IconBtn, Txt } from '../../alexlibs/mui-extension'
-import { ScInput } from '../../shared/ScInput'
-import { ExportPhonesPopper } from '../../shared/ExportPopperBtn'
 import { Icon, Tooltip } from '@mui/material'
-import { PeriodPicker } from '../../shared/PeriodPicker'
-import { DebouncedInput } from '../../shared/DebouncedInput'
-import { sxUtils } from '../../core/theme'
+import { useCallback } from 'react'
+import { NavLink } from 'react-router-dom'
+import { Btn, IconBtn, Txt } from '../../alexlibs/mui-extension'
+import { useI18n } from '../../core/i18n'
 import { useReportedPhonesSearchQuery } from '../../core/queryhooks/phoneQueryHooks'
+import { siteMap } from '../../core/siteMap'
+import { sxUtils } from '../../core/theme'
+import { Datatable } from '../../shared/Datatable/Datatable'
+import { DebouncedInput } from '../../shared/DebouncedInput'
+import { ExportPhonesPopper } from '../../shared/ExportPopperBtn'
+import { Page, PageTitle } from '../../shared/Page'
+import { PeriodPicker } from '../../shared/PeriodPicker'
+import { ScInput } from '../../shared/ScInput'
 
 export const ReportedPhones = () => {
   const _reportedPhone = useReportedPhonesSearchQuery()
@@ -105,11 +104,6 @@ export const ReportedPhones = () => {
               render: (_) => _.phone,
             },
             {
-              id: 'category',
-              head: m.category,
-              render: (_) => _.category,
-            },
-            {
               id: 'siret',
               head: m.siret,
               sx: (_) => ({
@@ -140,7 +134,6 @@ export const ReportedPhones = () => {
                       ...(_.siret
                         ? { hasCompany: true, siretSirenList: [_.siret] }
                         : {}),
-                      ...(_.category ? { category: _.category } : {}),
                     })}
                   >
                     <Btn size="small" color="primary" variant="outlined">
