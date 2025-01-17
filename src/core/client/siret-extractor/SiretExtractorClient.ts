@@ -4,10 +4,10 @@ import { ExtractionResult } from './SiretExtraction'
 export class SiretExtractorClient {
   constructor(private client: ApiClient) {}
 
-  readonly extractSiret = (webiste: string): Promise<ExtractionResult> => {
+  readonly extractSiret = (website: string): Promise<ExtractionResult> => {
     return this.client.post<ExtractionResult>(`/extract-siret`, {
       body: {
-        website: webiste,
+        website,
       },
     })
   }
