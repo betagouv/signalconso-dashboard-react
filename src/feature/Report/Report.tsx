@@ -277,7 +277,7 @@ const ReportViewStandard = ({
               variant="agent_or_admin"
             />
 
-            {connectedUser.isSuperAdmin && <ReportAlbert id={id} />}
+            {connectedUser.isNotPro && <ReportAlbert id={id} />}
 
             <CleanDiscreetPanel>
               <ReportDetails {...{ report }} />
