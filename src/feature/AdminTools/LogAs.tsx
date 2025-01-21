@@ -39,21 +39,20 @@ export const LogAs = () => {
   return (
     <CleanWidePanel>
       <h2 className="font-bold text-lg mb-2">Impersonification</h2>
-      <p>
+      <p className="mb-2">
         Fonctionnalité permettant de se connecter comme un autre utilisateur.
         Cela permet p. ex. d'investiguer un bug remonté par un pro.
       </p>
-      <p>
-        Pour le moment, cette fonctionnalité est réservée aux{' '}
-        <strong>SuperAdmin</strong> et ne permet que de se connecter en tant que{' '}
-        <strong>professionnel.</strong>
+      <p className="mb-2">
+        Cette fonctionnalité ne permet que de se connecter en tant que{' '}
+        <strong>professionnel</strong> ou <strong>agent.</strong>
       </p>
-      <p>
+      <p className="mb-2">
         Une fois connecté, les évènements Matomo sont désactivés, et les actions
         (p.ex. répondre à un signalement) sont interdites.
       </p>
       <form
-        className="flex items-start gap-4 mt-8"
+        className="flex gap-2 items-start"
         onSubmit={handleSubmit(onSubmit)}
       >
         <ScInput
@@ -63,7 +62,7 @@ export const LogAs = () => {
           })}
           fullWidth
           type="email"
-          label="Email du professionnel"
+          label="Email du pro ou de l'agent"
           error={!!errors.email}
           helperText={errors.email?.message ?? ' '}
         />

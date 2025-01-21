@@ -43,6 +43,10 @@ export class AdminClient {
       body: reportsId,
     })
   }
+
+  readonly regenSampleData = () => {
+    return this.client.post<void>(`/admin/regen-sample-data`)
+  }
 }
 
 export type ResendEmailsParams = {
