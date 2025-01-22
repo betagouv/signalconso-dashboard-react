@@ -19,6 +19,7 @@ export const config = {
   proConnectClientId: process.env.REACT_APP_PRO_CONNECT_CLIENT_ID,
   enableProConnect: process.env.REACT_APP_ENABLE_PRO_CONNECT === 'true',
   isDev: process.env.REACT_APP_NODE_ENV === 'development',
+  isDemo: process.env.REACT_APP_IS_DEMO === 'true',
   apiBaseUrl: noTrailingSlash(
     process.env.REACT_APP_API_BASE_URL ?? 'http://localhost:9000',
   ),
