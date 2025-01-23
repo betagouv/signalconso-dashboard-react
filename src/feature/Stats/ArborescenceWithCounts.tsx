@@ -19,7 +19,6 @@ import { useGetCountBySubCategoriesQuery } from '../../core/queryhooks/reportQue
 import { siteMap } from '../../core/siteMap'
 import { ScButton } from '../../shared/Button'
 import { DebouncedInput } from '../../shared/DebouncedInput'
-import { Page } from '../../shared/Page'
 import { PanelBody } from '../../shared/Panel'
 import { PeriodPicker } from '../../shared/PeriodPicker'
 import { SelectDepartments } from '../../shared/SelectDepartments/SelectDepartments'
@@ -123,7 +122,7 @@ export const ArborescenceWithCounts = () => {
   const badgeCount = start && end ? 2 : start || end ? 1 : 0
 
   return (
-    <Page>
+    <>
       <CleanWidePanel>
         <h2 className="font-bold text-lg mb-2">{m.dateFilters}</h2>
         <div>
@@ -214,7 +213,7 @@ export const ArborescenceWithCounts = () => {
         start={start}
         end={end}
       />
-    </Page>
+    </>
   )
 }
 
