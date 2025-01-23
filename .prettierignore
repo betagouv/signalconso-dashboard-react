@@ -26,4 +26,4 @@ yarn-error.log*
 .vscode
 
 
-.htaccess
+.htaccess/src/feature/Report/RowProps.java
