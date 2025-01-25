@@ -110,7 +110,7 @@ export const ReportAlbert = ({ id }: { id: Id }) => {
                 Cette analyse a été réalisée par une IA à partir du contenu du
                 signalement.&nbsp;
               </span>
-              {!connectedUser.isSuperAdmin && (
+              {connectedUser.isSuperAdmin && (
                 <div>
                   <DescriptionRow
                     label={getCodeConsoLabel()}
