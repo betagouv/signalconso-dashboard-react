@@ -10,7 +10,7 @@ export function WithInlineIcon({
   children: ReactNode
 }) {
   return (
-    <span className="inline-flex items-start flex-wrap gap-1">
+    <span className="inline-flex items-start flex-wrap gap-1 underline">
       <Icon>{icon}</Icon>
       {children}
     </span>
