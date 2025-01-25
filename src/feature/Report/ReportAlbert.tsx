@@ -63,15 +63,6 @@ export const ReportAlbert = ({ id }: { id: Id }) => {
     }
   }
 
-  const iaMarker = (
-    <span className="font-bold text-base px-1 text-desert-700 bg-desert-200 rounded-lg">
-      <Icon fontSize="small" className=" mb-[-5px] mr-1">
-        bubble_chart
-      </Icon>
-      IA
-    </span>
-  )
-
   useEffect(() => {
     initTally()
   }, [])
@@ -79,32 +70,47 @@ export const ReportAlbert = ({ id }: { id: Id }) => {
   return (
     <CleanDiscreetPanel>
       <div className={'flex flex-col gap-2'}>
-        <WithInlineIcon icon="bubble_chart">
-          Analyse du signalement
-        </WithInlineIcon>
-
-        <span className="font-light italic p-4">
-          Notre IA analyse les signalements pour en extraire un résumé et
-          évaluer leur pertinence. Cela vous permet de prioriser les
-          signalements importants et de gagner du temps.{' '}
-          <b>
-            Cette fonctionnalité est en phase d’expérimentation, vos retours
-            nous aideront à l’améliorer.
-          </b>
-        </span>
-
+        <div className={'flex flex-row gap-2'}>
+          <WithInlineIcon icon="bubble_chart">
+            Résumé du signalement
+          </WithInlineIcon>
+          <span className="font-bold text-base px-1 text-desert-700 bg-desert-200 rounded-lg">
+            IA / bêta
+          </span>
+        </div>
+        {!_getAlbert.data && (
+          <span className="font-light italic p-4">
+            Notre IA analyse les signalements pour en extraire un résumé. Cela
+            vous permet de prioriser les signalements importants et de gagner du
+            temps.{' '}
+            <b>
+              Cette fonctionnalité est en phase d’expérimentation, vos retours
+              nous aideront à l’améliorer.
+            </b>
+          </span>
+        )}
         {_getAlbert.data && (
           <>
             <div className="flex flex-col gap-3 my-4">
-              {_getAlbert.data?.category != 'Incompréhensible' && (
+              {_getAlbert.data?.category === 'Incompréhensible' ? (
                 <div>
-                  <span className="text-base px-1 text-white bg-orange-500 rounded-lg">
-                    Signalement incompréhensible
-                  </span>
+                  <DescriptionRow
+                    label={'Signalement incompréhensible'}
+                    value={
+                      'Le signalement est incohérent, illisible ou trop court pour être résumé.'
+                    }
+                  />
                 </div>
+              ) : (
+                <span className="flex flex-col w-full">
+                  {_getAlbert.data.summary}
+                </span>
               )}
-              <DescriptionRow label="Résumé" value={_getAlbert.data.summary} />
-              {connectedUser.isSuperAdmin && (
+              <span className="font-light text-sm italic">
+                Cette analyse a été réalisée par une IA à partir du contenu du
+                signalement.&nbsp;
+              </span>
+              {!connectedUser.isSuperAdmin && (
                 <div>
                   <DescriptionRow
                     label={getCodeConsoLabel()}
@@ -116,21 +122,23 @@ export const ReportAlbert = ({ id }: { id: Id }) => {
           </>
         )}
         {_getAlbert.data ? (
-          <Btn
-            variant="text"
-            data-tally-open="wo56xx"
-            data-tally-emoji-text="👋"
-            data-tally-emoji-animation="wave"
-          >
-            Donner Mon avis
-            <Icon sx={{ ml: 1 }}>feedback</Icon>
-          </Btn>
+          <div className="flex flex-col w-full">
+            <Btn
+              variant="text"
+              data-tally-open="wo56xx"
+              data-tally-emoji-text="👋"
+              data-tally-emoji-animation="wave"
+            >
+              Donner Mon avis
+              <Icon sx={{ ml: 1 }}>feedback</Icon>
+            </Btn>
+          </div>
         ) : (
           <Btn
             loading={_classify.isPending}
             onClick={() => _classify.mutate(id)}
           >
-            {iaMarker}&nbsp; Lancer Albert
+            Générer un résumé
           </Btn>
         )}
       </div>
