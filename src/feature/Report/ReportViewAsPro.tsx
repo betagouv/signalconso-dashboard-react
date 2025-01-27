@@ -12,22 +12,22 @@ export function ReportViewAsPro({
   return (
     <Page maxWidth="l">
       <div className="flex justify-center">
-        <div className="bg-yellow-200 p-2 text-sm max-w-xl">
+        <div className="bg-yellow-200 p-5  max-w-full">
           <p className="mb-2">
-            Ceci est la page du signalement tel que le voit le professionel, à
-            peu près.
+            Ceci est un aperçu de la page de signalement telle qu’elle apparaît
+            pour le professionnel.
           </p>
           <p className="mb-2">
-            Il y a peut-être quelques incohérences (car vous êtes quand même
-            connecté avec votre propre compte), mais grosso-modo cela donne une
-            idée de ce que voit le pro.
+            Bien qu’il puisse y avoir quelques incohérences (car vous êtes
+            actuellement connecté avec votre propre compte), cela donne une
+            bonne idée de ce que le professionnel voit.
           </p>
           <p>
-            Pour avoir une vue vraiment exacte, il faut trouver un utilisateur
-            de cet entreprise, et utiliser le menu "
+            Pour une vue parfaitement fidèle, il est nécessaire de trouver un
+            utilisateur lié à cette entreprise et d’utiliser l’option "
             <i>Se connecter en tant que</i>".
           </p>
-          <div className="flex justify-end">
+          <div className="flex justify-end mt-3">
             <button
               className="underline text-scbluefrance"
               onClick={onBackToStandardView}

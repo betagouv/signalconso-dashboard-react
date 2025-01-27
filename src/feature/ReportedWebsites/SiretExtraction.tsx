@@ -1,7 +1,6 @@
-import { Icon } from '@mui/material'
-import { useMutation, useQuery } from '@tanstack/react-query'
-import { useEffect } from 'react'
-import { Fender, IconBtn, Modal, Txt } from '../../alexlibs/mui-extension'
+import { useMutation } from '@tanstack/react-query'
+import { ReactElement } from 'react'
+import { Fender, Modal, Txt } from '../../alexlibs/mui-extension'
 import { Company, CompanySearchResult } from '../../core/client/company/Company'
 import {
   ExtractionResult,
@@ -19,14 +18,20 @@ import { ScButton } from '../../shared/Button'
 
 interface SiretExtractionProps {
   websiteWithCompany: WebsiteWithCompany
+  siretExtraction?: ExtractionResult
+  isLoading: boolean
   remove: () => Promise<any>
   identify: () => Promise<any>
+  children: ReactElement<any>
 }
 
 export const SiretExtraction = ({
   websiteWithCompany,
+  siretExtraction,
+  isLoading,
   remove,
   identify,
+  children,
 }: SiretExtractionProps) => {
   const { api } = useApiContext()
   const { m } = useI18n()
@@ -39,19 +44,6 @@ export const SiretExtraction = ({
   })
 
   const website = websiteWithCompany.host
-  const { refetch, isLoading, isError, data, error } = useQuery({
-    queryKey: ['siretExtractor_extractSiret', website],
-    queryFn: () => api.secured.siretExtractor.extractSiret(website),
-    enabled: false,
-  })
-
-  useEffect(() => {
-    if (isError) {
-      toastError({
-        message: "Une erreur est survenue dans le service d'extraction.",
-      })
-    }
-  }, [isError, error])
 
   const associateAndIdentify = (company: CompanySearchResult) => {
     return _updateCompany.mutateAsync({
@@ -286,18 +278,17 @@ export const SiretExtraction = ({
 
   return (
     <Modal
-      onOpen={() => refetch()}
       cancelLabel={m.close}
       PaperProps={{ style: { overflow: 'visible', maxHeight: '800px' } }}
       maxWidth="sm"
       fullWidth
       title={`Recherche du Siret sur ${website}`}
       loading={isLoading}
-      content={(close) => data && displayResults(data, close)}
+      content={(close) =>
+        siretExtraction && displayResults(siretExtraction, close)
+      }
     >
-      <IconBtn>
-        <Icon>search</Icon>
-      </IconBtn>
+      {children}
     </Modal>
   )
 }

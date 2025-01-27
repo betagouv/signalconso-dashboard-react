@@ -225,19 +225,36 @@ export const WebsitesInvestigation = () => {
             ),
           },
           {
-            head: 'Recherche de Siret',
+            head: 'Extraction de Siret',
             id: 'extraction',
-            render: (_) => (
-              <SiretExtraction
-                websiteWithCompany={_}
-                remove={() => onRemove(_.id)}
-                identify={() =>
-                  queryClient.invalidateQueries({
-                    queryKey: WebsiteWithCompanySearchKeys,
-                  })
-                }
-              />
-            ),
+            render: (_) =>
+              _.siretExtraction ? (
+                <SiretExtraction
+                  websiteWithCompany={_}
+                  siretExtraction={_.siretExtraction}
+                  isLoading={false}
+                  remove={() => onRemove(_.id)}
+                  identify={() =>
+                    queryClient.invalidateQueries({
+                      queryKey: WebsiteWithCompanySearchKeys,
+                    })
+                  }
+                >
+                  <IconBtn>
+                    <Icon
+                      color={
+                        _.siretExtraction?.extractions
+                          ? _.siretExtraction.extractions.length > 0
+                            ? 'success'
+                            : 'warning'
+                          : 'error'
+                      }
+                    >
+                      search
+                    </Icon>
+                  </IconBtn>
+                </SiretExtraction>
+              ) : undefined,
           },
           {
             head: m.firstReportDate,
@@ -315,7 +332,7 @@ export const WebsitesInvestigation = () => {
             sx: (_) => sxUtils.tdActions,
             render: (_) => (
               <>
-                <WebsiteTools website={_} />
+                <WebsiteTools website={_} onRemove={onRemove} />
                 {connectedUser.isAdmin ? (
                   <Tooltip title={m.delete}>
                     <IconBtn
