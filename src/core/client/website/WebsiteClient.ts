@@ -13,6 +13,7 @@ import {
   WebsiteInvestigation,
   WebsiteUpdateCompany,
   WebsiteWithCompany,
+  WebsiteWithCompanyAndCount,
   WebsiteWithCompanySearch,
 } from '../../model'
 import { ApiClient } from '../ApiClient'
@@ -66,7 +67,7 @@ export class WebsiteClient {
 
   readonly list = (filters: WebsiteWithCompanySearch) => {
     return this.client
-      .get<PaginatedData<WebsiteWithCompany>>(`/websites`, {
+      .get<PaginatedData<WebsiteWithCompanyAndCount>>(`/websites`, {
         qs: cleanFilter(filters),
       })
       .then((paginated) =>

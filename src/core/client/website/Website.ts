@@ -1,7 +1,13 @@
-import { CompanyCreation, Entity, Id, PaginatedFilters } from '../../model'
+import {
+  Address,
+  CompanyCreation,
+  Entity,
+  Id,
+  PaginatedFilters,
+} from '../../model'
 import { Company } from '../company/Company'
-import { Address } from '../../model'
 import { Country } from '../constant/Country'
+import { ExtractionResult } from '../siret-extractor/SiretExtraction'
 
 export enum IdentificationStatus {
   Identified = 'Identified',
@@ -47,7 +53,11 @@ export interface WebsiteUpdateCompany {
 export interface WebsiteWithCompany extends Website {
   company?: Company
   companyCountry?: Country
-  count?: 0
+}
+
+export interface WebsiteWithCompanyAndCount extends WebsiteWithCompany {
+  count: number
+  siretExtraction?: ExtractionResult
 }
 
 export interface ApiHostWithReportCount {
