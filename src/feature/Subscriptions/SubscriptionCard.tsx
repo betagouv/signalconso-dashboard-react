@@ -274,7 +274,6 @@ export const SubscriptionCard = ({ subscription, className, style }: Props) => {
           </Stack>
         </SubscriptionCardRow>
         <SelectTagsMenu
-          onlyActive={true}
           onClose={tagsAnchor.close}
           value={tags}
           onChange={(value) =>

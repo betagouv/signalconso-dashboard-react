@@ -1,7 +1,7 @@
+import OpenInNewIcon from '@mui/icons-material/OpenInNew'
+import { Alert } from 'alexlibs/mui-extension'
 import React from 'react'
 import { Report, ReportTag } from '../../core/client/report/Report'
-import { Alert } from 'alexlibs/mui-extension'
-import OpenInNewIcon from '@mui/icons-material/OpenInNew'
 
 interface CategoryDetail {
   tag: ReportTag[]
@@ -69,7 +69,7 @@ const categoryMessages: CategoryDetail[] = [
 
 export const CategoryMessage: React.FC<{ report: Report }> = ({ report }) => {
   const detail = categoryMessages.find((cm) =>
-    report.tags.some((tag) => cm.tag.includes(tag)),
+    Report.readTags(report).some((tag) => cm.tag.includes(tag)),
   )
 
   if (!detail) {

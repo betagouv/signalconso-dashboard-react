@@ -86,7 +86,6 @@ export const SelectTags = forwardRef(
           }}
         />
         <SelectTagsMenu
-          onlyActive={false}
           anchorEl={anchorEl}
           open={!!anchorEl}
           onClose={close}
