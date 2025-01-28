@@ -138,7 +138,7 @@ export const ReportHeader = ({
         <div className="flex justify-between">
           {!hideTags && (
             <div style={{ flex: 1 }}>
-              {report.tags.map((tag) => [
+              {Report.readTags(report).map((tag) => [
                 <ScChip
                   icon={
                     <Icon

@@ -3,7 +3,7 @@ import { isDefined } from 'core/helper'
 import { Fragment } from 'react'
 import { Txt } from '../../alexlibs/mui-extension'
 import { Category } from '../../core/client/constant/Category'
-import { OutdatedTags } from '../../core/client/report/Report'
+import { outdatedTags } from '../../core/client/report/Report'
 import { Subscription } from '../../core/client/subscription/Subscription'
 
 interface SubscriptionInformationProps {
@@ -25,9 +25,9 @@ export const SubscriptionInformation = ({
   )
   const allInactiveTags =
     subscription.withTags.length > 0 &&
-    subscription.withTags.every((tag) => OutdatedTags.includes(tag))
+    subscription.withTags.every((tag) => outdatedTags.includes(tag))
   const someInactiveTags = subscription.withTags.filter((tag) =>
-    OutdatedTags.includes(tag),
+    outdatedTags.includes(tag),
   )
   const countryAndDepartementAtTheSameTime =
     subscription.countries.length > 0 && subscription.departments.length > 0

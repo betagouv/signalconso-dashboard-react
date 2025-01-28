@@ -10,8 +10,6 @@ import {
 import { Category } from '../constant/Category'
 
 export const ReportingDateLabel = 'Date du constat'
-const ReportingTimeslotLabel = 'Heure du constat'
-const DescriptionLabel = 'Description'
 
 enum Gender {
   Male = 'Male',
@@ -68,7 +66,7 @@ export enum ReportTag {
   Shrinkflation = 'Shrinkflation',
 }
 
-export const OutdatedTags = [ReportTag.Bloctel]
+export const outdatedTags = [ReportTag.Bloctel]
 
 export interface Report {
   id: string
@@ -302,10 +300,14 @@ export class Report {
     // 47.11D supermarchés entre 400 et 2500
     // 47.11F hypermarchés égale ou > à 2500 m2
     if (
-      report.tags.includes(ReportTag.Shrinkflation) &&
+      Report.readTags(report).includes(ReportTag.Shrinkflation) &&
       report.activityCode === '47.11C'
     ) {
       return SpecialLegislation.SHRINKFLATION
     }
+  }
+
+  static readTags(r: Pick<Report, 'tags'>) {
+    return r.tags.filter((_) => !outdatedTags.includes(_))
   }
 }

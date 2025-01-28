@@ -1,7 +1,6 @@
-import { useI18n } from '../../core/i18n'
-
 import { Badge, Box, Checkbox, Chip, Icon, Tooltip } from '@mui/material'
 import { UseSetState } from 'alexlibs/react-hooks-lib'
+import { Report } from 'core/client/report/Report'
 import { useConnectedContext } from 'core/context/ConnectedContext'
 import {
   Paginate,
@@ -14,6 +13,7 @@ import { NavLink } from 'react-router-dom'
 import { Fender, IconBtn, Txt } from '../../alexlibs/mui-extension'
 import { EntityIcon } from '../../core/EntityIcon'
 import { textOverflowMiddleCropping } from '../../core/helper'
+import { useI18n } from '../../core/i18n'
 import { siteMap } from '../../core/siteMap'
 import { ScButton } from '../../shared/Button'
 import { CompanyNameDetails } from './CompanyNameDetails'
@@ -130,7 +130,7 @@ export function CategoryColumn({ r }: ColumnProps) {
 
 export function TagsColumn({ r }: ColumnProps) {
   const { m } = useI18n()
-  return r.report.tags.map((tag) => (
+  return Report.readTags(r.report).map((tag) => (
     <Chip
       key={tag}
       size="small"

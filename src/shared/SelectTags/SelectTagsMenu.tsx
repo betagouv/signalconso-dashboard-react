@@ -8,11 +8,11 @@ import {
   SxProps,
   Theme,
 } from '@mui/material'
-import { useEffect, useMemo, useState } from 'react'
-import { Txt } from '../../alexlibs/mui-extension'
-import { OutdatedTags, ReportTag } from '../../core/client/report/Report'
-import { useI18n } from '../../core/i18n'
 import { objectKeysUnsafe } from 'core/helper'
+import { useEffect, useState } from 'react'
+import { Txt } from '../../alexlibs/mui-extension'
+import { outdatedTags, ReportTag } from '../../core/client/report/Report'
+import { useI18n } from '../../core/i18n'
 
 type SelectTagsMenuValue = 'included' | 'excluded' | undefined
 
@@ -26,7 +26,6 @@ interface ScSelectTagsMenuProps {
   open: boolean
   value?: SelectTagsMenuValues
   anchorEl: HTMLElement | null
-  onlyActive: boolean
 }
 
 const TagButton = ({
@@ -64,27 +63,23 @@ const TagButton = ({
   )
 }
 
+function getSelectableTags() {
+  const reponseConsoTag = ReportTag.ReponseConso
+  const tagsWithoutReponseConso = (
+    objectKeysUnsafe(ReportTag) as ReportTag[]
+  ).filter((_) => _ !== reponseConsoTag && !outdatedTags.includes(_))
+  return [reponseConsoTag, ...tagsWithoutReponseConso]
+}
+
 export const SelectTagsMenu = ({
   onClose,
   onChange,
   open,
   value,
   anchorEl,
-  onlyActive,
 }: ScSelectTagsMenuProps) => {
   const { m } = useI18n()
 
-  const tags = useMemo(() => {
-    const reponseConsoTag = ReportTag.ReponseConso
-    const tagsWithoutReponseConso = onlyActive
-      ? (objectKeysUnsafe(ReportTag) as ReportTag[]).filter(
-          (_) => _ !== reponseConsoTag && !OutdatedTags.includes(_),
-        )
-      : (objectKeysUnsafe(ReportTag) as ReportTag[]).filter(
-          (_) => _ !== reponseConsoTag,
-        )
-    return [reponseConsoTag, ...tagsWithoutReponseConso]
-  }, [])
   const [innerValue, setInnerValue] = useState<
     SelectTagsMenuValues | undefined
   >()
@@ -117,7 +112,7 @@ export const SelectTagsMenu = ({
 
   return (
     <Menu anchorEl={anchorEl} open={open} onClose={onClose}>
-      {tags.map((tag) => (
+      {getSelectableTags().map((tag) => (
         <MenuItem key={tag}>
           <TagButton
             status={switchTagValue(tag, {
