@@ -138,9 +138,9 @@ export class ReportsClient {
   }
 
   readonly downloadAll = async (report: Report, origin?: FileOrigin) => {
-    const baseQuery = `/reports/files?reportId=${report.id}`
+    const baseQuery = `/reports/${report.id}/files`
     return this.client
-      .getBlob(origin ? `${baseQuery}&origin=${origin}` : baseQuery)
+      .getBlob(origin ? `${baseQuery}?origin=${origin}` : baseQuery)
       .then((blob) =>
         directDownloadBlob(
           `${this.reportName(report)}-PJ`,
@@ -333,7 +333,7 @@ export class ReportsClient {
     end,
     departments,
   }: ReportNodeSearch = {}): Promise<ReportNodes> => {
-    return this.client.get(`/reports/count-by-subcategories`, {
+    return this.client.get(`/stats/reports/count-by-subcategories`, {
       qs: {
         start: dateToApiTime(start),
         end: dateToApiTime(end),
@@ -349,7 +349,7 @@ export class ReportsClient {
     departments,
   }: ReportNodeSearch & { lang: string }): Promise<void> => {
     return this.client
-      .getBlob(`/reports/count-by-subcategories/download`, {
+      .getBlob(`/stats/reports/count-by-subcategories/download`, {
         qs: {
           lang,
           start: dateToApiTime(start),
