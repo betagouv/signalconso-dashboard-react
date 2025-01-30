@@ -1,4 +1,4 @@
-import { Box, Grid, Icon, MenuItem } from '@mui/material'
+import { Box, Icon, MenuItem } from '@mui/material'
 import { Category } from '../../core/client/constant/Category'
 import { ReportStatus } from '../../core/client/report/Report'
 import { useI18n } from '../../core/i18n'
@@ -63,8 +63,8 @@ export const AdvancedReportsFilter: React.FC<AdvancedFiltersGridProps> = ({
   const { m } = useI18n()
 
   return (
-    <Grid container spacing={1} sx={{ mt: 0 }}>
-      <Grid item xs={12} lg={6}>
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-2 mt-2">
+      <div>
         <SelectActivityCode
           label={m.codeNaf}
           value={_reports.filters.activityCodes ?? []}
@@ -76,8 +76,8 @@ export const AdvancedReportsFilter: React.FC<AdvancedFiltersGridProps> = ({
             }))
           }
         />
-      </Grid>
-      <Grid item xs={12} lg={6}>
+      </div>
+      <div>
         <ScSelect
           small
           label={m.categories}
@@ -97,8 +97,8 @@ export const AdvancedReportsFilter: React.FC<AdvancedFiltersGridProps> = ({
             </MenuItem>
           ))}
         </ScSelect>
-      </Grid>
-      <Grid item xs={12} lg={6}>
+      </div>
+      <div>
         <ScMultiSelect
           label={m.status}
           value={_reports.filters.status ?? []}
@@ -122,9 +122,9 @@ export const AdvancedReportsFilter: React.FC<AdvancedFiltersGridProps> = ({
             </ScMenuItem>
           ))}
         </ScMultiSelect>
-      </Grid>
+      </div>
       {connectedUser.isDGCCRF && (
-        <Grid item xs={12} lg={6}>
+        <div>
           <DebouncedInput
             value={_reports.filters.email ?? ''}
             onChange={onEmailChange}
@@ -138,9 +138,9 @@ export const AdvancedReportsFilter: React.FC<AdvancedFiltersGridProps> = ({
               />
             )}
           </DebouncedInput>
-        </Grid>
+        </div>
       )}
-      <Grid item xs={12} lg={6}>
+      <div>
         <Box>
           <TrueFalseNullRow
             icon="public"
@@ -170,8 +170,8 @@ export const AdvancedReportsFilter: React.FC<AdvancedFiltersGridProps> = ({
             </DebouncedInput>
           )}
         </Box>
-      </Grid>
-      <Grid item xs={12} lg={6}>
+      </div>
+      <div>
         <Box>
           <TrueFalseNullRow
             icon="phone"
@@ -201,8 +201,8 @@ export const AdvancedReportsFilter: React.FC<AdvancedFiltersGridProps> = ({
             </DebouncedInput>
           )}
         </Box>
-      </Grid>
-      <Grid item xs={12} lg={6}>
+      </div>
+      <div>
         <Box>
           <TrueFalseNullRow
             icon="phone"
@@ -232,8 +232,8 @@ export const AdvancedReportsFilter: React.FC<AdvancedFiltersGridProps> = ({
             </DebouncedInput>
           )}
         </Box>
-      </Grid>
-      <Grid item xs={12} lg={6}>
+      </div>
+      <div>
         <Box>
           <TrueFalseNullRow
             icon="language"
@@ -261,8 +261,8 @@ export const AdvancedReportsFilter: React.FC<AdvancedFiltersGridProps> = ({
             />
           )}
         </Box>
-      </Grid>
-      <Grid item xs={12} lg={6}>
+      </div>
+      <div>
         <TrueFalseNullRow
           icon="no_accounts"
           iconClassName="text-red-600"
@@ -275,8 +275,8 @@ export const AdvancedReportsFilter: React.FC<AdvancedFiltersGridProps> = ({
             }))
           }
         />
-      </Grid>
-      <Grid item xs={12} lg={6}>
+      </div>
+      <div>
         <TrueFalseNullRow
           icon="attach_file"
           label={m.hasAttachement}
@@ -288,8 +288,8 @@ export const AdvancedReportsFilter: React.FC<AdvancedFiltersGridProps> = ({
             }))
           }
         />
-      </Grid>
-      <Grid item xs={12} lg={6}>
+      </div>
+      <div>
         <Box>
           <TrueFalseNullRow
             icon="mark_chat_read"
@@ -319,8 +319,8 @@ export const AdvancedReportsFilter: React.FC<AdvancedFiltersGridProps> = ({
             </ScMultiSelect>
           )}
         </Box>
-      </Grid>
-      <Grid item xs={12} lg={6}>
+      </div>
+      <div>
         <Box>
           <TrueFalseNullRow
             icon="thumb_up"
@@ -360,8 +360,8 @@ export const AdvancedReportsFilter: React.FC<AdvancedFiltersGridProps> = ({
             </ScMultiSelect>
           )}
         </Box>
-      </Grid>
-      <Grid item xs={12} lg={6}>
+      </div>
+      <div>
         <Box>
           <TrueFalseNullRow
             icon="thumb_up"
@@ -401,9 +401,9 @@ export const AdvancedReportsFilter: React.FC<AdvancedFiltersGridProps> = ({
             </ScMultiSelect>
           )}
         </Box>
-      </Grid>
+      </div>
 
-      <Grid item xs={12} lg={6}>
+      <div>
         <Box>
           <TrueFalseNullRow
             icon="language"
@@ -417,8 +417,8 @@ export const AdvancedReportsFilter: React.FC<AdvancedFiltersGridProps> = ({
             }
           />
         </Box>
-      </Grid>
-      <Grid item xs={12} lg={6}>
+      </div>
+      <div>
         <Box>
           <TrueFalseNullRow
             icon="shopping_cart"
@@ -432,8 +432,8 @@ export const AdvancedReportsFilter: React.FC<AdvancedFiltersGridProps> = ({
             }
           />
         </Box>
-      </Grid>
-      <Grid item xs={12} lg={6}>
+      </div>
+      <div>
         <DebouncedInput
           value={_reports.filters?.subcategories?.join(',') ?? ''}
           onChange={onSubcategoriesChange}
@@ -447,8 +447,8 @@ export const AdvancedReportsFilter: React.FC<AdvancedFiltersGridProps> = ({
             />
           )}
         </DebouncedInput>
-      </Grid>
-      <Grid item xs={12} lg={6}>
+      </div>
+      <div>
         <Box>
           <TrueFalseNullRow
             icon="bookmark"
@@ -462,8 +462,8 @@ export const AdvancedReportsFilter: React.FC<AdvancedFiltersGridProps> = ({
             }
           />
         </Box>
-      </Grid>
-    </Grid>
+      </div>
+    </div>
   )
 }
 

@@ -1,4 +1,4 @@
-import { Badge, Box, Grid, Icon, useTheme } from '@mui/material'
+import { Badge, Box, Icon, useTheme } from '@mui/material'
 import { useMutation, UseQueryResult } from '@tanstack/react-query'
 import { ApiError } from 'core/client/ApiClient'
 import { parseInt } from 'lodash'
@@ -126,8 +126,8 @@ export const ArborescenceWithCounts = () => {
       <CleanWidePanel>
         <h2 className="font-bold text-lg mb-2">{m.dateFilters}</h2>
         <div>
-          <Grid container spacing={1}>
-            <Grid item sm={6} xs={12}>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-2">
+            <div>
               <DebouncedInput<[Date | undefined, Date | undefined]>
                 value={[start, end]}
                 onChange={([start, end]) => {
@@ -144,8 +144,8 @@ export const ArborescenceWithCounts = () => {
                   />
                 )}
               </DebouncedInput>
-            </Grid>
-            <Grid item sm={6} xs={12}>
+            </div>
+            <div>
               <SelectDepartments
                 label={m.departments}
                 value={departments}
@@ -153,8 +153,8 @@ export const ArborescenceWithCounts = () => {
                 sx={{ mr: 1 }}
                 fullWidth
               />
-            </Grid>
-          </Grid>
+            </div>
+          </div>
           <Box
             sx={{
               mt: 2,

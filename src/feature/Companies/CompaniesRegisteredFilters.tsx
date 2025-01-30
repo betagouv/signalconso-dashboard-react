@@ -1,4 +1,3 @@
-import { Grid2 } from '@mui/material'
 import { SelectDepartments } from '../../shared/SelectDepartments/SelectDepartments'
 import { SelectActivityCode } from '../../shared/SelectActivityCode'
 import React from 'react'
@@ -23,8 +22,8 @@ export const CompaniesRegisteredFilters = ({
 
   return (
     <CleanDiscreetPanel noShadow>
-      <Grid2 container spacing={1}>
-        <Grid2 size={{ sm: 6, xs: 12 }}>
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-2">
+        <div>
           <DebouncedInput
             value={_companies.filters.identity ?? ''}
             onChange={onSearchChange}
@@ -38,8 +37,8 @@ export const CompaniesRegisteredFilters = ({
               />
             )}
           </DebouncedInput>
-        </Grid2>
-        <Grid2 size={{ sm: 6, xs: 12 }}>
+        </div>
+        <div>
           <SelectDepartments
             label={m.departments}
             value={_companies.filters.departments ?? []}
@@ -49,8 +48,8 @@ export const CompaniesRegisteredFilters = ({
             fullWidth
             sx={{ mr: 1 }}
           />
-        </Grid2>
-        <Grid2 size={{ sm: 6, xs: 12 }}>
+        </div>
+        <div>
           <SelectActivityCode
             label={m.codeNaf}
             fullWidth
@@ -62,8 +61,8 @@ export const CompaniesRegisteredFilters = ({
               }))
             }
           />
-        </Grid2>
-        <Grid2 size={{ sm: 6, xs: 12 }}>
+        </div>
+        <div>
           <DebouncedInput
             value={_companies.filters.emailsWithAccess ?? ''}
             onChange={onEmailChange}
@@ -77,8 +76,8 @@ export const CompaniesRegisteredFilters = ({
               />
             )}
           </DebouncedInput>
-        </Grid2>
-      </Grid2>
+        </div>
+      </div>
     </CleanDiscreetPanel>
   )
 }

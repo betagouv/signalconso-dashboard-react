@@ -1,4 +1,4 @@
-import { Box, Grid, Icon } from '@mui/material'
+import { Box } from '@mui/material'
 import { objectKeysUnsafe } from 'core/helper'
 import { UseQueryPaginateResult } from 'core/queryhooks/UseQueryPaginate'
 import { SelectTagsMenuValues } from 'shared/SelectTags/SelectTagsMenu'
@@ -11,18 +11,6 @@ import { ScInput } from '../../shared/ScInput'
 import { SelectDepartments } from '../../shared/SelectDepartments/SelectDepartments'
 import { SelectTags } from '../../shared/SelectTags/SelectTags'
 import { TrueFalseNullRow } from './AdvancedReportsFilter'
-
-const TrueLabel = () => {
-  const { m } = useI18n()
-  return (
-    <>
-      {m.yes}{' '}
-      <Icon fontSize="inherit" sx={{ mr: '-4px' }}>
-        arrow_drop_down
-      </Icon>
-    </>
-  )
-}
 
 type ReportsGridProps = {
   _reports: UseQueryPaginateResult<
@@ -49,8 +37,8 @@ export const ReportsFilter: React.FC<ReportsGridProps> = ({
 }) => {
   const { m } = useI18n()
   return (
-    <Grid container spacing={1}>
-      <Grid item sm={6} xs={12}>
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-2">
+      <div>
         <SelectDepartments
           label={m.departments}
           value={_reports.filters.departments}
@@ -60,8 +48,8 @@ export const ReportsFilter: React.FC<ReportsGridProps> = ({
           sx={{ mr: 1 }}
           fullWidth
         />
-      </Grid>
-      <Grid item xs={12} lg={6}>
+      </div>
+      <div>
         <DebouncedInput<[Date | undefined, Date | undefined]>
           value={[_reports.filters.start, _reports.filters.end]}
           onChange={([start, end]) => {
@@ -77,8 +65,8 @@ export const ReportsFilter: React.FC<ReportsGridProps> = ({
             />
           )}
         </DebouncedInput>
-      </Grid>
-      <Grid item xs={12} lg={6}>
+      </div>
+      <div>
         <DebouncedInput
           value={_reports.filters.details ?? ''}
           onChange={onDetailsChange}
@@ -92,8 +80,8 @@ export const ReportsFilter: React.FC<ReportsGridProps> = ({
             />
           )}
         </DebouncedInput>
-      </Grid>
-      <Grid item xs={12} lg={6}>
+      </div>
+      <div>
         <SelectTags
           label={m.tags}
           fullWidth
@@ -110,8 +98,8 @@ export const ReportsFilter: React.FC<ReportsGridProps> = ({
             }))
           }
         />
-      </Grid>
-      <Grid item xs={12} lg={6}>
+      </div>
+      <div>
         <Box>
           <TrueFalseNullRow
             label={m.siretOrSirenFound}
@@ -140,9 +128,9 @@ export const ReportsFilter: React.FC<ReportsGridProps> = ({
             </DebouncedInput>
           )}
         </Box>
-      </Grid>
+      </div>
       {connectedUser.isAdmin && (
-        <Grid item xs={12} lg={6}>
+        <div>
           <DebouncedInput
             value={_reports.filters.email ?? ''}
             onChange={onEmailChange}
@@ -156,8 +144,8 @@ export const ReportsFilter: React.FC<ReportsGridProps> = ({
               />
             )}
           </DebouncedInput>
-        </Grid>
+        </div>
       )}
-    </Grid>
+    </div>
   )
 }

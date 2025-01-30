@@ -1,4 +1,3 @@
-import { Grid2 } from '@mui/material'
 import React from 'react'
 import {
   IdentificationStatus,
@@ -29,8 +28,8 @@ export const WebsitesFilters = ({
 
   return (
     <CleanDiscreetPanel noShadow>
-      <Grid2 container spacing={1}>
-        <Grid2 size={{ sm: 6, xs: 12 }}>
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-2">
+        <div>
           <DebouncedInput
             value={_websiteWithCompany.filters.host ?? ''}
             onChange={onHostChange}
@@ -44,8 +43,8 @@ export const WebsitesFilters = ({
               />
             )}
           </DebouncedInput>
-        </Grid2>
-        <Grid2 size={{ sm: 6, xs: 12 }}>
+        </div>
+        <div>
           <DebouncedInput<[Date | undefined, Date | undefined]>
             value={[
               _websiteWithCompany.filters.start,
@@ -68,8 +67,8 @@ export const WebsitesFilters = ({
               />
             )}
           </DebouncedInput>
-        </Grid2>
-        <Grid2 size={{ sm: 6, xs: 12 }}>
+        </div>
+        <div>
           <ScMultiSelect
             fullWidth
             label={m.investigation}
@@ -99,8 +98,8 @@ export const WebsitesFilters = ({
               </ScMenuItem>
             ))}
           </ScMultiSelect>
-        </Grid2>
-        <Grid2 size={{ sm: 6, xs: 12 }}>
+        </div>
+        <div>
           <ScMultiSelect
             fullWidth
             label={m.kind}
@@ -126,8 +125,8 @@ export const WebsitesFilters = ({
               </ScMenuItem>
             ))}
           </ScMultiSelect>
-        </Grid2>
-        <Grid2 size={{ sm: 6, xs: 12 }}>
+        </div>
+        <div>
           <TrueFalseNullRow
             label="Établissement ouvert"
             value={_websiteWithCompany.filters.isOpen}
@@ -138,8 +137,8 @@ export const WebsitesFilters = ({
               }))
             }
           />
-        </Grid2>
-        <Grid2 size={{ sm: 6, xs: 12 }}>
+        </div>
+        <div>
           <TrueFalseNullRow
             label="Marketplace"
             value={_websiteWithCompany.filters.isMarketplace}
@@ -150,8 +149,8 @@ export const WebsitesFilters = ({
               }))
             }
           />
-        </Grid2>
-      </Grid2>
+        </div>
+      </div>
     </CleanDiscreetPanel>
   )
 }
