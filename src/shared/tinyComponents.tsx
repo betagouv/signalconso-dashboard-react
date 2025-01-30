@@ -12,7 +12,7 @@ export function ReportWebsiteUrlLink({ websiteURL }: { websiteURL: string }) {
         }}
         value={websiteURL}
       />
-      <WebsiteTools website={websiteURL} />
+      {/*<WebsiteTools website={websiteURL} />*/}
     </div>
   )
 }

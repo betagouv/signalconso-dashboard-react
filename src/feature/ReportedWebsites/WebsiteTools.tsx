@@ -14,7 +14,7 @@ import webIcon from './img/web.webp'
 import internetArchiveIcon from './img/internetArchive.svg'
 import scamdocIcon from './img/scamdoc.png'
 import { useI18n } from '../../core/i18n'
-<<<<<<< Updated upstream
+
 import { WebsiteWithCompany } from '../../core/client/website/Website'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useApiContext } from '../../core/context/ApiContext'
@@ -25,11 +25,6 @@ import { SiretExtraction } from './SiretExtraction'
 interface WebsiteActionsProps extends BoxProps {
   website: WebsiteWithCompany
   onRemove: (id: string) => Promise<any>
-=======
-
-interface WebsiteActionsProps extends BoxProps {
-  website: string
->>>>>>> Stashed changes
 }
 
 const websiteAnalyzeTool = [
@@ -84,7 +79,7 @@ export const WebsiteTools = ({ website, onRemove }: WebsiteActionsProps) => {
         {websiteAnalyzeTool.map((tool) => (
           <MenuItem
             key={tool.label}
-            onClick={() => window.open(tool.url(website), '_blank')}
+            onClick={() => window.open(tool.url(website.host), '_blank')}
           >
             <ListItemIcon>
               <Box
