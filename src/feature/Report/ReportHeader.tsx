@@ -1,5 +1,5 @@
 import { Icon } from '@mui/material'
-import { ReactNode } from 'react'
+import React, { ReactNode } from 'react'
 import { CleanDiscreetPanel } from 'shared/Panel/simplePanels'
 import { Alert, makeSx } from '../../alexlibs/mui-extension'
 import { Report, ReportSearchResult } from '../../core/client/report/Report'
@@ -13,6 +13,8 @@ import {
 import { ScChip } from '../../shared/ScChip'
 import { ReportCategories } from './ReportCategories'
 import { BookmarkButton } from './bookmarks'
+import { NavLink } from 'react-router-dom'
+import { siteMap } from '../../core/siteMap'
 
 const css = makeSx({
   root: {
@@ -120,11 +122,13 @@ export const ReportHeader = ({
           </h1>
           <ExpirationDate {...{ report }} isUserPro={false} />
         </div>
-        <ReportStatusLabel
-          style={{ marginLeft: 'auto' }}
-          status={report.status}
-          isAdminClosure={isAdminClosure}
-        />
+        <NavLink to={siteMap.logged.reports({ status: [report.status] })}>
+          <ReportStatusLabel
+            style={{ marginLeft: 'auto' }}
+            status={report.status}
+            isAdminClosure={isAdminClosure}
+          />
+        </NavLink>
       </div>
 
       <ExpiresSoonWarning {...{ report }} isUserPro={false} />

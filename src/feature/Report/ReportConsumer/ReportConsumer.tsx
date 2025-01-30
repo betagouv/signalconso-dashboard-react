@@ -16,6 +16,9 @@ import { useApiContext } from '../../../core/context/ApiContext'
 import { GetReportQueryKeys } from '../../../core/queryhooks/reportQueryHooks'
 import { CleanDiscreetPanel, CleanWidePanel } from 'shared/Panel/simplePanels'
 import { UserNameLabel } from '../../../shared/UserNameLabel'
+import { Icon } from '@mui/material'
+import { NavLink } from 'react-router-dom'
+import { siteMap } from '../../../core/siteMap'
 
 interface Props {
   report: Report
@@ -83,9 +86,26 @@ export const ReportConsumer = ({ report, canEdit }: Props) => {
             firstName={capitalize(firstName)}
             lastName={capitalize(lastName)}
           />
-          <div className="text-gray-500">{report.email}</div>
+          <div className="text-gray-500">
+            <NavLink
+              to={siteMap.logged.reports({
+                email: report.email,
+              })}
+            >
+              {report.email}
+            </NavLink>
+          </div>
           {report.consumerPhone && (
-            <div className="text-gray-500">{report.consumerPhone}</div>
+            <div className="text-gray-500">
+              <NavLink
+                to={siteMap.logged.reports({
+                  consumerPhone: report.consumerPhone,
+                  hasConsumerPhone: true,
+                })}
+              >
+                {report.consumerPhone}
+              </NavLink>
+            </div>
           )}
           <ReportReferenceNumber
             consumerReferenceNumber={report.consumerReferenceNumber}

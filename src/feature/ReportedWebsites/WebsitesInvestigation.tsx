@@ -332,7 +332,11 @@ export const WebsitesInvestigation = () => {
             sx: (_) => sxUtils.tdActions,
             render: (_) => (
               <>
+<<<<<<< Updated upstream
                 <WebsiteTools website={_} onRemove={onRemove} />
+=======
+                <WebsiteTools website={_.host} />
+>>>>>>> Stashed changes
                 {connectedUser.isAdmin ? (
                   <Tooltip title={m.delete}>
                     <IconBtn

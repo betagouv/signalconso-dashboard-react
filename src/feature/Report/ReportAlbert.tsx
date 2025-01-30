@@ -69,29 +69,18 @@ export const ReportAlbert = ({ id }: { id: Id }) => {
 
   return (
     <CleanDiscreetPanel>
-      <div className={'flex flex-col gap-2'}>
-        <div className={'flex flex-row gap-2'}>
+      <div className={'flex flex-col'}>
+        <div className={'flex flex-row gap-2 mb-2'}>
           <WithInlineIcon icon="bubble_chart">
             Résumé du signalement
           </WithInlineIcon>
           <span className="font-bold text-base px-1 text-desert-700 bg-desert-200 rounded-lg">
-            IA / bêta
+            bêta
           </span>
         </div>
-        {!_getAlbert.data && (
-          <span className="font-light italic p-4">
-            Notre IA analyse les signalements pour en extraire un résumé. Cela
-            vous permet de prioriser les signalements importants et de gagner du
-            temps.{' '}
-            <b>
-              Cette fonctionnalité est en phase d’expérimentation, vos retours
-              nous aideront à l’améliorer.
-            </b>
-          </span>
-        )}
         {_getAlbert.data && (
           <>
-            <div className="flex flex-col gap-3 my-4">
+            <div className="flex flex-col mb-4">
               {_getAlbert.data?.category === 'Incompréhensible' ? (
                 <div>
                   <DescriptionRow
@@ -107,10 +96,10 @@ export const ReportAlbert = ({ id }: { id: Id }) => {
                 </span>
               )}
               <span className="font-light text-sm italic">
-                Cette analyse a été réalisée par une IA à partir du contenu du
+                Cette analyse a été réalisée par une IA à partir du texte du
                 signalement.&nbsp;
               </span>
-              {connectedUser.isSuperAdmin && (
+              {!connectedUser.isSuperAdmin && (
                 <div>
                   <DescriptionRow
                     label={getCodeConsoLabel()}
@@ -124,7 +113,7 @@ export const ReportAlbert = ({ id }: { id: Id }) => {
         {_getAlbert.data ? (
           <div className="flex flex-col w-full">
             <Btn
-              variant="text"
+              variant="outlined"
               data-tally-open="wo56xx"
               data-tally-emoji-text="👋"
               data-tally-emoji-animation="wave"
