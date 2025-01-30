@@ -320,7 +320,7 @@ export class ReportsClient {
     start,
     end,
   }: { start?: Date; end?: Date } = {}): Promise<[string, number][]> => {
-    return this.client.get(`/reports/count-by-departments`, {
+    return this.client.get(`/stats/reports/count-by-departments`, {
       qs: {
         start: dateToApiTime(start),
         end: dateToApiTime(end),
