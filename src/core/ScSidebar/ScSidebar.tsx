@@ -1,4 +1,4 @@
-import { Box, Icon } from '@mui/material'
+import { Icon } from '@mui/material'
 import { Btn, Txt } from '../../alexlibs/mui-extension'
 import { UserNameLabel } from '../../shared/UserNameLabel'
 import { EntityIcon } from '../EntityIcon'
@@ -31,13 +31,7 @@ export const ScSidebar = ({
   }
   return (
     <Sidebar>
-      <Box
-        sx={{
-          pt: 1,
-          pb: 0.5,
-          px: 2,
-        }}
-      >
+      <div className="pt-2 pb-1 px-4">
         <div className="cursor-default">
           {connectedUser && connectedUser.impersonator && (
             <div className="flex flex-col bg-yellow-200 items-center">
@@ -68,7 +62,7 @@ export const ScSidebar = ({
         >
           {m.logout}
         </Btn>
-      </Box>
+      </div>
       <SidebarHr margin />
       {([...roleAdmins, ...roleAgents] as Role[]).includes(
         connectedUser.role,

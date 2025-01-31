@@ -187,12 +187,7 @@ export const WebsitesInvestigation = () => {
             id: 'host',
             head: m.website,
             render: (_) => (
-              <Box
-                sx={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                }}
-              >
+              <div className="flex flex-col">
                 <Txt link>
                   <a href={'https://' + _.host}>{_.host}</a>
                 </Txt>
@@ -202,7 +197,7 @@ export const WebsitesInvestigation = () => {
                     <Txt italic>marketplace</Txt>
                   </Box>
                 ) : null}
-              </Box>
+              </div>
             ),
           },
           {

@@ -1,4 +1,4 @@
-import { Box, Grid, Icon, MenuItem } from '@mui/material'
+import { Icon, MenuItem } from '@mui/material'
 import { Category } from '../../core/client/constant/Category'
 import { ReportStatus } from '../../core/client/report/Report'
 import { useI18n } from '../../core/i18n'
@@ -63,8 +63,8 @@ export const AdvancedReportsFilter: React.FC<AdvancedFiltersGridProps> = ({
   const { m } = useI18n()
 
   return (
-    <Grid container spacing={1} sx={{ mt: 0 }}>
-      <Grid item xs={12} lg={6}>
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-2 mt-2">
+      <div>
         <SelectActivityCode
           label={m.codeNaf}
           value={_reports.filters.activityCodes ?? []}
@@ -76,8 +76,8 @@ export const AdvancedReportsFilter: React.FC<AdvancedFiltersGridProps> = ({
             }))
           }
         />
-      </Grid>
-      <Grid item xs={12} lg={6}>
+      </div>
+      <div>
         <ScSelect
           small
           label={m.categories}
@@ -97,8 +97,8 @@ export const AdvancedReportsFilter: React.FC<AdvancedFiltersGridProps> = ({
             </MenuItem>
           ))}
         </ScSelect>
-      </Grid>
-      <Grid item xs={12} lg={6}>
+      </div>
+      <div>
         <ScMultiSelect
           label={m.status}
           value={_reports.filters.status ?? []}
@@ -122,9 +122,9 @@ export const AdvancedReportsFilter: React.FC<AdvancedFiltersGridProps> = ({
             </ScMenuItem>
           ))}
         </ScMultiSelect>
-      </Grid>
+      </div>
       {connectedUser.isDGCCRF && (
-        <Grid item xs={12} lg={6}>
+        <div className="mt-1">
           <DebouncedInput
             value={_reports.filters.email ?? ''}
             onChange={onEmailChange}
@@ -138,131 +138,123 @@ export const AdvancedReportsFilter: React.FC<AdvancedFiltersGridProps> = ({
               />
             )}
           </DebouncedInput>
-        </Grid>
+        </div>
       )}
-      <Grid item xs={12} lg={6}>
-        <Box>
-          <TrueFalseNullRow
-            icon="public"
-            label={m.website}
-            value={_reports.filters.hasWebsite ?? null}
-            onChange={(hasWebsite) =>
-              _reports.updateFilters((prev) => ({
-                ...prev,
-                hasWebsite: hasWebsite ?? undefined,
-              }))
-            }
-            dropdownArrow
-          />
-          {_reports.filters.hasWebsite === true && (
-            <DebouncedInput
-              value={_reports.filters.websiteURL ?? ''}
-              onChange={onWebsiteURLChange}
-            >
-              {(value, onChange) => (
-                <ScInput
-                  label={m.url}
-                  fullWidth
-                  value={value}
-                  onChange={(e) => onChange(e.target.value)}
-                />
-              )}
-            </DebouncedInput>
-          )}
-        </Box>
-      </Grid>
-      <Grid item xs={12} lg={6}>
-        <Box>
-          <TrueFalseNullRow
-            icon="phone"
-            label={m.phone}
-            value={_reports.filters.hasPhone ?? null}
-            onChange={(hasPhone) =>
-              _reports.updateFilters((prev) => ({
-                ...prev,
-                hasPhone: hasPhone ?? undefined,
-              }))
-            }
-            dropdownArrow
-          />
-          {_reports.filters.hasPhone === true && (
-            <DebouncedInput
-              value={_reports.filters.phone ?? ''}
-              onChange={onPhoneChange}
-            >
-              {(value, onChange) => (
-                <ScInput
-                  label={m.phone}
-                  fullWidth
-                  value={value}
-                  onChange={(e) => onChange(e.target.value)}
-                />
-              )}
-            </DebouncedInput>
-          )}
-        </Box>
-      </Grid>
-      <Grid item xs={12} lg={6}>
-        <Box>
-          <TrueFalseNullRow
-            icon="phone"
-            label={'Téléphone du conso'}
-            value={_reports.filters.hasConsumerPhone ?? null}
-            onChange={(hasConsumerPhone) =>
-              _reports.updateFilters((prev) => ({
-                ...prev,
-                hasConsumerPhone: hasConsumerPhone ?? undefined,
-              }))
-            }
-            dropdownArrow
-          />
-          {_reports.filters.hasConsumerPhone === true && (
-            <DebouncedInput
-              value={_reports.filters.consumerPhone ?? ''}
-              onChange={onConsumerPhoneChange}
-            >
-              {(value, onChange) => (
-                <ScInput
-                  label={'Téléphone du conso'}
-                  fullWidth
-                  value={value}
-                  onChange={(e) => onChange(e.target.value)}
-                />
-              )}
-            </DebouncedInput>
-          )}
-        </Box>
-      </Grid>
-      <Grid item xs={12} lg={6}>
-        <Box>
-          <TrueFalseNullRow
-            icon="language"
+      <div className="mt-1">
+        <TrueFalseNullRow
+          icon="public"
+          label={m.website}
+          value={_reports.filters.hasWebsite ?? null}
+          onChange={(hasWebsite) =>
+            _reports.updateFilters((prev) => ({
+              ...prev,
+              hasWebsite: hasWebsite ?? undefined,
+            }))
+          }
+          dropdownArrow
+        />
+        {_reports.filters.hasWebsite === true && (
+          <DebouncedInput
+            value={_reports.filters.websiteURL ?? ''}
+            onChange={onWebsiteURLChange}
+          >
+            {(value, onChange) => (
+              <ScInput
+                label={m.url}
+                fullWidth
+                value={value}
+                onChange={(e) => onChange(e.target.value)}
+              />
+            )}
+          </DebouncedInput>
+        )}
+      </div>
+      <div className="mt-1">
+        <TrueFalseNullRow
+          icon="phone"
+          label={m.phone}
+          value={_reports.filters.hasPhone ?? null}
+          onChange={(hasPhone) =>
+            _reports.updateFilters((prev) => ({
+              ...prev,
+              hasPhone: hasPhone ?? undefined,
+            }))
+          }
+          dropdownArrow
+        />
+        {_reports.filters.hasPhone === true && (
+          <DebouncedInput
+            value={_reports.filters.phone ?? ''}
+            onChange={onPhoneChange}
+          >
+            {(value, onChange) => (
+              <ScInput
+                label={m.phone}
+                fullWidth
+                value={value}
+                onChange={(e) => onChange(e.target.value)}
+              />
+            )}
+          </DebouncedInput>
+        )}
+      </div>
+      <div className="mt-1">
+        <TrueFalseNullRow
+          icon="phone"
+          label={'Téléphone du conso'}
+          value={_reports.filters.hasConsumerPhone ?? null}
+          onChange={(hasConsumerPhone) =>
+            _reports.updateFilters((prev) => ({
+              ...prev,
+              hasConsumerPhone: hasConsumerPhone ?? undefined,
+            }))
+          }
+          dropdownArrow
+        />
+        {_reports.filters.hasConsumerPhone === true && (
+          <DebouncedInput
+            value={_reports.filters.consumerPhone ?? ''}
+            onChange={onConsumerPhoneChange}
+          >
+            {(value, onChange) => (
+              <ScInput
+                label={'Téléphone du conso'}
+                fullWidth
+                value={value}
+                onChange={(e) => onChange(e.target.value)}
+              />
+            )}
+          </DebouncedInput>
+        )}
+      </div>
+      <div className="mt-1">
+        <TrueFalseNullRow
+          icon="language"
+          label={m.foreignCountry}
+          value={_reports.filters.hasForeignCountry ?? null}
+          onChange={(hasForeignCountry) =>
+            _reports.updateFilters((prev) => ({
+              ...prev,
+              hasForeignCountry: hasForeignCountry ?? undefined,
+            }))
+          }
+          dropdownArrow
+        />
+        {_reports.filters.hasForeignCountry === true && (
+          <SelectCountries
             label={m.foreignCountry}
-            value={_reports.filters.hasForeignCountry ?? null}
-            onChange={(hasForeignCountry) =>
+            fullWidth
+            value={_reports.filters.companyCountries}
+            onChange={(companyCountries) =>
               _reports.updateFilters((prev) => ({
                 ...prev,
-                hasForeignCountry: hasForeignCountry ?? undefined,
+                companyCountries,
               }))
             }
-            dropdownArrow
           />
-          {_reports.filters.hasForeignCountry === true && (
-            <SelectCountries
-              label={m.foreignCountry}
-              fullWidth
-              value={_reports.filters.companyCountries}
-              onChange={(companyCountries) =>
-                _reports.updateFilters((prev) => ({
-                  ...prev,
-                  companyCountries,
-                }))
-              }
-            />
-          )}
-        </Box>
-      </Grid>
-      <Grid item xs={12} lg={6}>
+        )}
+      </div>
+      <div className="mt-1">
         <TrueFalseNullRow
           icon="no_accounts"
           iconClassName="text-red-600"
@@ -275,8 +267,8 @@ export const AdvancedReportsFilter: React.FC<AdvancedFiltersGridProps> = ({
             }))
           }
         />
-      </Grid>
-      <Grid item xs={12} lg={6}>
+      </div>
+      <div className="mt-1">
         <TrueFalseNullRow
           icon="attach_file"
           label={m.hasAttachement}
@@ -288,152 +280,142 @@ export const AdvancedReportsFilter: React.FC<AdvancedFiltersGridProps> = ({
             }))
           }
         />
-      </Grid>
-      <Grid item xs={12} lg={6}>
-        <Box>
-          <TrueFalseNullRow
-            icon="mark_chat_read"
+      </div>
+      <div className="mt-1">
+        <TrueFalseNullRow
+          icon="mark_chat_read"
+          label={m.proResponse}
+          value={hasProResponse}
+          onChange={onChangeHasProResponse}
+          dropdownArrow
+        />
+        {hasProResponse === true && (
+          <ScMultiSelect
             label={m.proResponse}
-            value={hasProResponse}
-            onChange={onChangeHasProResponse}
-            dropdownArrow
-          />
-          {hasProResponse === true && (
-            <ScMultiSelect
-              label={m.proResponse}
-              value={proResponseFilter}
-              onChange={onChangeProResponseFilter}
-              fullWidth
-              withSelectAll
-              renderValue={(proResponse) =>
-                `(${proResponse.length}) ${proResponse
-                  .map((_) => m.reportResponseShort[_])
-                  .join(',')}`
-              }
-            >
-              {Object.values(ReportResponseTypes).map((proResponse) => (
-                <ScMenuItem withCheckbox key={proResponse} value={proResponse}>
-                  <ProResponseLabel proResponse={proResponse} />
-                </ScMenuItem>
-              ))}
-            </ScMultiSelect>
-          )}
-        </Box>
-      </Grid>
-      <Grid item xs={12} lg={6}>
-        <Box>
-          <TrueFalseNullRow
-            icon="thumb_up"
-            label={'Avis conso initial sur la réponse'}
-            value={_reports.filters.hasResponseEvaluation ?? null}
-            onChange={(hasResponseEvaluation) =>
+            value={proResponseFilter}
+            onChange={onChangeProResponseFilter}
+            fullWidth
+            withSelectAll
+            renderValue={(proResponse) =>
+              `(${proResponse.length}) ${proResponse
+                .map((_) => m.reportResponseShort[_])
+                .join(',')}`
+            }
+          >
+            {Object.values(ReportResponseTypes).map((proResponse) => (
+              <ScMenuItem withCheckbox key={proResponse} value={proResponse}>
+                <ProResponseLabel proResponse={proResponse} />
+              </ScMenuItem>
+            ))}
+          </ScMultiSelect>
+        )}
+      </div>
+      <div className="mt-1">
+        <TrueFalseNullRow
+          icon="thumb_up"
+          label={'Avis conso initial sur la réponse'}
+          value={_reports.filters.hasResponseEvaluation ?? null}
+          onChange={(hasResponseEvaluation) =>
+            _reports.updateFilters((prev) => ({
+              ...prev,
+              hasResponseEvaluation: hasResponseEvaluation ?? undefined,
+            }))
+          }
+          dropdownArrow
+        />
+        {_reports.filters.hasResponseEvaluation === true && (
+          <ScMultiSelect
+            label="Avis"
+            value={_reports.filters.responseEvaluation ?? []}
+            onChange={(evaluation) =>
               _reports.updateFilters((prev) => ({
                 ...prev,
-                hasResponseEvaluation: hasResponseEvaluation ?? undefined,
+                responseEvaluation: evaluation,
               }))
             }
-            dropdownArrow
-          />
-          {_reports.filters.hasResponseEvaluation === true && (
-            <ScMultiSelect
-              label="Avis"
-              value={_reports.filters.responseEvaluation ?? []}
-              onChange={(evaluation) =>
-                _reports.updateFilters((prev) => ({
-                  ...prev,
-                  responseEvaluation: evaluation,
-                }))
-              }
-              fullWidth
-              withSelectAll
-              renderValue={(evaluation) =>
-                `(${evaluation.length}) ${evaluation
-                  .map((_) => m.responseEvaluationShort[_])
-                  .join(',')}`
-              }
-            >
-              {Object.values(ResponseEvaluation).map((evaluation) => (
-                <ScMenuItem withCheckbox key={evaluation} value={evaluation}>
-                  <ConsumerReviewLabel evaluation={evaluation} displayLabel />
-                </ScMenuItem>
-              ))}
-            </ScMultiSelect>
-          )}
-        </Box>
-      </Grid>
-      <Grid item xs={12} lg={6}>
-        <Box>
-          <TrueFalseNullRow
-            icon="thumb_up"
-            label={'Avis conso ultérieur'}
-            value={_reports.filters.hasEngagementEvaluation ?? null}
-            onChange={(hasEngagementEvaluation) =>
+            fullWidth
+            withSelectAll
+            renderValue={(evaluation) =>
+              `(${evaluation.length}) ${evaluation
+                .map((_) => m.responseEvaluationShort[_])
+                .join(',')}`
+            }
+          >
+            {Object.values(ResponseEvaluation).map((evaluation) => (
+              <ScMenuItem withCheckbox key={evaluation} value={evaluation}>
+                <ConsumerReviewLabel evaluation={evaluation} displayLabel />
+              </ScMenuItem>
+            ))}
+          </ScMultiSelect>
+        )}
+      </div>
+      <div className="mt-1">
+        <TrueFalseNullRow
+          icon="thumb_up"
+          label={'Avis conso ultérieur'}
+          value={_reports.filters.hasEngagementEvaluation ?? null}
+          onChange={(hasEngagementEvaluation) =>
+            _reports.updateFilters((prev) => ({
+              ...prev,
+              hasEngagementEvaluation: hasEngagementEvaluation ?? undefined,
+            }))
+          }
+          dropdownArrow
+        />
+        {_reports.filters.hasEngagementEvaluation === true && (
+          <ScMultiSelect
+            label="Avis"
+            value={_reports.filters.engagementEvaluation ?? []}
+            onChange={(evaluation) =>
               _reports.updateFilters((prev) => ({
                 ...prev,
-                hasEngagementEvaluation: hasEngagementEvaluation ?? undefined,
+                engagementEvaluation: evaluation,
               }))
             }
-            dropdownArrow
-          />
-          {_reports.filters.hasEngagementEvaluation === true && (
-            <ScMultiSelect
-              label="Avis"
-              value={_reports.filters.engagementEvaluation ?? []}
-              onChange={(evaluation) =>
-                _reports.updateFilters((prev) => ({
-                  ...prev,
-                  engagementEvaluation: evaluation,
-                }))
-              }
-              fullWidth
-              withSelectAll
-              renderValue={(evaluation) =>
-                `(${evaluation.length}) ${evaluation
-                  .map((_) => m.responseEvaluationShort[_])
-                  .join(',')}`
-              }
-            >
-              {Object.values(ResponseEvaluation).map((evaluation) => (
-                <ScMenuItem withCheckbox key={evaluation} value={evaluation}>
-                  <ConsumerReviewLabel evaluation={evaluation} displayLabel />
-                </ScMenuItem>
-              ))}
-            </ScMultiSelect>
-          )}
-        </Box>
-      </Grid>
+            fullWidth
+            withSelectAll
+            renderValue={(evaluation) =>
+              `(${evaluation.length}) ${evaluation
+                .map((_) => m.responseEvaluationShort[_])
+                .join(',')}`
+            }
+          >
+            {Object.values(ResponseEvaluation).map((evaluation) => (
+              <ScMenuItem withCheckbox key={evaluation} value={evaluation}>
+                <ConsumerReviewLabel evaluation={evaluation} displayLabel />
+              </ScMenuItem>
+            ))}
+          </ScMultiSelect>
+        )}
+      </div>
 
-      <Grid item xs={12} lg={6}>
-        <Box>
-          <TrueFalseNullRow
-            icon="language"
-            label="Version anglaise"
-            value={_reports.filters.isForeign ?? null}
-            onChange={(isForeign) =>
-              _reports.updateFilters((prev) => ({
-                ...prev,
-                isForeign: isForeign ?? undefined,
-              }))
-            }
-          />
-        </Box>
-      </Grid>
-      <Grid item xs={12} lg={6}>
-        <Box>
-          <TrueFalseNullRow
-            icon="shopping_cart"
-            label={'Code-barres'}
-            value={_reports.filters.hasBarcode ?? null}
-            onChange={(hasBarcode) =>
-              _reports.updateFilters((prev) => ({
-                ...prev,
-                hasBarcode: hasBarcode ?? undefined,
-              }))
-            }
-          />
-        </Box>
-      </Grid>
-      <Grid item xs={12} lg={6}>
+      <div className="mt-1">
+        <TrueFalseNullRow
+          icon="language"
+          label="Version anglaise"
+          value={_reports.filters.isForeign ?? null}
+          onChange={(isForeign) =>
+            _reports.updateFilters((prev) => ({
+              ...prev,
+              isForeign: isForeign ?? undefined,
+            }))
+          }
+        />
+      </div>
+      <div className="mt-1">
+        <TrueFalseNullRow
+          icon="shopping_cart"
+          label={'Code-barres'}
+          value={_reports.filters.hasBarcode ?? null}
+          onChange={(hasBarcode) =>
+            _reports.updateFilters((prev) => ({
+              ...prev,
+              hasBarcode: hasBarcode ?? undefined,
+            }))
+          }
+        />
+      </div>
+      <div>
         <DebouncedInput
           value={_reports.filters?.subcategories?.join(',') ?? ''}
           onChange={onSubcategoriesChange}
@@ -447,23 +429,21 @@ export const AdvancedReportsFilter: React.FC<AdvancedFiltersGridProps> = ({
             />
           )}
         </DebouncedInput>
-      </Grid>
-      <Grid item xs={12} lg={6}>
-        <Box>
-          <TrueFalseNullRow
-            icon="bookmark"
-            label={'Dans les marque-pages'}
-            value={_reports.filters.isBookmarked ?? null}
-            onChange={(isBookmarked) =>
-              _reports.updateFilters((prev) => ({
-                ...prev,
-                isBookmarked: isBookmarked ?? undefined,
-              }))
-            }
-          />
-        </Box>
-      </Grid>
-    </Grid>
+      </div>
+      <div className="mt-1">
+        <TrueFalseNullRow
+          icon="bookmark"
+          label={'Dans les marque-pages'}
+          value={_reports.filters.isBookmarked ?? null}
+          onChange={(isBookmarked) =>
+            _reports.updateFilters((prev) => ({
+              ...prev,
+              isBookmarked: isBookmarked ?? undefined,
+            }))
+          }
+        />
+      </div>
+    </div>
   )
 }
 
@@ -484,14 +464,7 @@ export function TrueFalseNullRow({
 }) {
   const { m } = useI18n()
   return (
-    <Box
-      sx={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        mt: 1,
-      }}
-    >
+    <div className="flex items-center justify-between mt-1">
       <div className="text-gray-500 ml-2 flex items-center gap-1">
         {icon && (
           <>
@@ -521,6 +494,6 @@ export function TrueFalseNullRow({
         value={value}
         onChange={onChange}
       />
-    </Box>
+    </div>
   )
 }

@@ -1,4 +1,4 @@
-import { Badge, Box, Grid, Icon, useTheme } from '@mui/material'
+import { Badge, Box, Icon, useTheme } from '@mui/material'
 import { useMutation, UseQueryResult } from '@tanstack/react-query'
 import { ApiError } from 'core/client/ApiClient'
 import { parseInt } from 'lodash'
@@ -126,8 +126,8 @@ export const ArborescenceWithCounts = () => {
       <CleanWidePanel>
         <h2 className="font-bold text-lg mb-2">{m.dateFilters}</h2>
         <div>
-          <Grid container spacing={1}>
-            <Grid item sm={6} xs={12}>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-2">
+            <div>
               <DebouncedInput<[Date | undefined, Date | undefined]>
                 value={[start, end]}
                 onChange={([start, end]) => {
@@ -144,8 +144,8 @@ export const ArborescenceWithCounts = () => {
                   />
                 )}
               </DebouncedInput>
-            </Grid>
-            <Grid item sm={6} xs={12}>
+            </div>
+            <div>
               <SelectDepartments
                 label={m.departments}
                 value={departments}
@@ -153,8 +153,8 @@ export const ArborescenceWithCounts = () => {
                 sx={{ mr: 1 }}
                 fullWidth
               />
-            </Grid>
-          </Grid>
+            </div>
+          </div>
           <Box
             sx={{
               mt: 2,
@@ -297,36 +297,20 @@ const Node = ({
   })
 
   return (
-    <Box sx={{ display: 'flex', alignItems: 'flex-start', mb: 2 }}>
-      <Box
-        sx={{
-          width: iconWidth,
-          marginRight: `${iconMargin}px`,
-        }}
-      >
-        {reportNode.children.length !== 0 ? (
-          <IconBtn color="primary" onClick={() => setIsOpen((_) => !_)}>
-            <Icon>
-              {isOpen ? 'keyboard_arrow_down' : 'keyboard_arrow_right'}
-            </Icon>
-          </IconBtn>
-        ) : (
-          <IconBtn disabled>
-            <Icon>remove</Icon>
-          </IconBtn>
-        )}
-      </Box>
-      <Box sx={{ width: '100%' }}>
-        <Box
-          sx={{
-            minHeight: 42,
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'center',
-          }}
-        >
+    <div className="flex items-start mb-2">
+      {reportNode.children.length !== 0 ? (
+        <IconBtn color="primary" onClick={() => setIsOpen((_) => !_)}>
+          <Icon>{isOpen ? 'keyboard_arrow_down' : 'keyboard_arrow_right'}</Icon>
+        </IconBtn>
+      ) : (
+        <IconBtn disabled>
+          <Icon>remove</Icon>
+        </IconBtn>
+      )}
+      <div className="w-full">
+        <div className="flex flex-col justify-center min-h-[42px]">
           {reportNode.id ? (
-            <Box maxWidth="80%">
+            <div className="max-w-[80%]">
               <Txt truncate block>
                 {reportNode.label ?? reportNode.name}{' '}
                 {reportNode.overriddenCategory
@@ -334,21 +318,21 @@ const Node = ({
                   : undefined}
               </Txt>{' '}
               <Txt color="hint">{reportNode.id}</Txt>
-            </Box>
+            </div>
           ) : (
-            <Box maxWidth="80%">
+            <div className="max-w-[80%]">
               <Txt truncate block color="hint">
                 {reportNode.label ?? reportNode.name}
               </Txt>{' '}
               <Txt color="hint">(Ancienne catégorie)</Txt>
-            </Box>
+            </div>
           )}
           <Txt color="primary">
             {' '}
             Signalements : {reportNode.count} <NavLink to={url}>(voir)</NavLink>
           </Txt>
           <Txt color="primary"> Réclamations : {reportNode.reclamations}</Txt>
-          <Box>
+          <div>
             {reportNode.tags?.map((tag) => (
               <Box
                 sx={{
@@ -368,8 +352,8 @@ const Node = ({
                 {tag}
               </Box>
             ))}
-          </Box>
-        </Box>
+          </div>
+        </div>
         {isOpen && reportNode.children.length !== 0 && (
           <Box
             sx={{
@@ -398,7 +382,7 @@ const Node = ({
             ))}
           </Box>
         )}
-      </Box>
-    </Box>
+      </div>
+    </div>
   )
 }
