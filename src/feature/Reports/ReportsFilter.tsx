@@ -1,4 +1,3 @@
-import { Box } from '@mui/material'
 import { objectKeysUnsafe } from 'core/helper'
 import { UseQueryPaginateResult } from 'core/queryhooks/UseQueryPaginate'
 import { SelectTagsMenuValues } from 'shared/SelectTags/SelectTagsMenu'
@@ -99,35 +98,33 @@ export const ReportsFilter: React.FC<ReportsGridProps> = ({
           }
         />
       </div>
-      <div>
-        <Box>
-          <TrueFalseNullRow
-            label={m.siretOrSirenFound}
-            value={_reports.filters.hasCompany ?? null}
-            onChange={(hasCompany) =>
-              _reports.updateFilters((prev) => ({
-                ...prev,
-                hasCompany: hasCompany ?? undefined,
-              }))
-            }
-            dropdownArrow
-          />
-          {_reports.filters.hasCompany === true && (
-            <DebouncedInput
-              value={_reports.filters.siretSirenList ?? []}
-              onChange={onSiretSirenChange}
-            >
-              {(value, onChange) => (
-                <ScInput
-                  label={m.siretOrSiren}
-                  fullWidth
-                  value={value}
-                  onChange={(e) => onChange([e.target.value])}
-                />
-              )}
-            </DebouncedInput>
-          )}
-        </Box>
+      <div className="mt-1">
+        <TrueFalseNullRow
+          label={m.siretOrSirenFound}
+          value={_reports.filters.hasCompany ?? null}
+          onChange={(hasCompany) =>
+            _reports.updateFilters((prev) => ({
+              ...prev,
+              hasCompany: hasCompany ?? undefined,
+            }))
+          }
+          dropdownArrow
+        />
+        {_reports.filters.hasCompany === true && (
+          <DebouncedInput
+            value={_reports.filters.siretSirenList ?? []}
+            onChange={onSiretSirenChange}
+          >
+            {(value, onChange) => (
+              <ScInput
+                label={m.siretOrSiren}
+                fullWidth
+                value={value}
+                onChange={(e) => onChange([e.target.value])}
+              />
+            )}
+          </DebouncedInput>
+        )}
       </div>
       {connectedUser.isAdmin && (
         <div>
