@@ -3,7 +3,13 @@ import { ConsumerReview, ReportWordCount } from '../client/event/Event'
 import { ReportNodes } from '../client/report/ReportNode'
 import { ReportNodeSearch } from '../client/report/ReportNodeSearch'
 import { useApiContext } from '../context/ApiContext'
-import { Id, PaginatedFilters, ReportExtra, ReportSearch } from '../model'
+import {
+  Id,
+  PaginatedSearch,
+  ReportExtra,
+  ReportSearch,
+  Report,
+} from '../model'
 import { UseQueryOpts } from './UseQueryOpts'
 import { useQueryPaginate } from './UseQueryPaginate'
 
@@ -63,11 +69,14 @@ export const useGetEngagementReviewQuery = (
 }
 
 export const useReportSearchQuery = (
-  initialFilters?: ReportSearch & PaginatedFilters,
+  initialFilters?: ReportSearch & PaginatedSearch<Report>,
   enabled?: boolean,
 ) => {
   const { api } = useApiContext()
-  const defaultFilters = { offset: 0, limit: 25 }
+  const defaultFilters: ReportSearch & PaginatedSearch<Report> = {
+    offset: 0,
+    limit: 25,
+  }
   return useQueryPaginate(
     ReportSearchQueryKeyStart,
     api.secured.reports.search,
