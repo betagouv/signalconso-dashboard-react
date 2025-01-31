@@ -1,17 +1,8 @@
 import { SetStateAction, useCallback, useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import type { QueryKey } from '@tanstack/query-core'
-import { Paginate } from '../model'
+import { Paginate, PaginatedFilters } from '../model'
 import type { UseQueryResult } from '@tanstack/react-query/src/types'
-
-type OrderBy = 'desc' | 'asc'
-
-interface ISearch<T = any> {
-  limit: number
-  offset: number
-  orderBy?: OrderBy
-  sortBy?: keyof T
-}
 
 export interface UseQueryPaginateResult<S, T, E> {
   result: UseQueryResult<T, E>
@@ -29,7 +20,7 @@ interface UpdateFiltersParams {
 }
 
 export const useQueryPaginate = <
-  S extends ISearch,
+  S extends PaginatedFilters,
   T = unknown,
   TQueryKey extends QueryKey = QueryKey,
 >(

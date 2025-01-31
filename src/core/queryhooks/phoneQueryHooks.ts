@@ -12,7 +12,10 @@ export const useReportedPhonesSearchQuery = (
   initialFilters?: ReportedPhoneFilters & PaginatedFilters,
 ) => {
   const { api } = useApiContext()
-  const defaultFilters = { offset: 0, limit: 25 }
+  const defaultFilters: ReportedPhoneFilters & PaginatedFilters = {
+    offset: 0,
+    limit: 25,
+  }
   return useQueryPaginate(
     ReportedPhonesSearchQueryKeys,
     api.secured.reportedPhone.list,

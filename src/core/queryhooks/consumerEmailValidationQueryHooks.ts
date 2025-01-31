@@ -1,5 +1,6 @@
 import { useApiContext } from '../context/ApiContext'
 import { useQueryPaginate } from './UseQueryPaginate'
+import { ConsumerEmailValidationSearch } from '../client/consumer-email-validation/ConsumerEmailValidation'
 
 const ConsumerEmailValidationSearchQueryKeys = [
   'consumerEmailValidation_search',
@@ -7,7 +8,7 @@ const ConsumerEmailValidationSearchQueryKeys = [
 
 export const useConsumerEmailValidationSearchQuery = () => {
   const { api } = useApiContext()
-  const defaultFilters = {
+  const defaultFilters: ConsumerEmailValidationSearch = {
     limit: 25,
     offset: 0,
   }
