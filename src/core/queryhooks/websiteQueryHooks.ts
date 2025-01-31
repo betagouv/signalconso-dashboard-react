@@ -1,6 +1,11 @@
 import { useQuery } from '@tanstack/react-query'
 import { useApiContext } from '../context/ApiContext'
-import { IdentificationStatus, InvestigationStatus } from '../model'
+import {
+  HostReportCountSearch,
+  IdentificationStatus,
+  InvestigationStatus,
+  WebsiteWithCompanySearch,
+} from '../model'
 import { UseQueryOpts } from './UseQueryOpts'
 import { useQueryPaginate } from './UseQueryPaginate'
 
@@ -21,16 +26,17 @@ export const useListInvestigationStatusQuery = (
 
 export const useWebsiteWithCompanySearchQuery = () => {
   const { api } = useApiContext()
+  const defaultFilters: WebsiteWithCompanySearch = {
+    limit: 25,
+    offset: 0,
+    identificationStatus: [IdentificationStatus.NotIdentified],
+    isOpen: null,
+    isMarketplace: null,
+  }
   return useQueryPaginate(
     WebsiteWithCompanySearchKeys,
     api.secured.website.list,
-    {
-      limit: 25,
-      offset: 0,
-      identificationStatus: [IdentificationStatus.NotIdentified],
-      isOpen: null,
-      isMarketplace: null,
-    },
+    defaultFilters,
   )
 }
 
@@ -51,13 +57,14 @@ export const useWebsiteWithClosedCompanyQuery = () => {
 
 export const useListUnregisteredWebsitesSearchQuery = () => {
   const { api } = useApiContext()
+  const defaultFilters: HostReportCountSearch = {
+    limit: 25,
+    offset: 0,
+    q: '',
+  }
   return useQueryPaginate(
     ListUnregisteredWebsitesSearchQueryKeys,
     api.secured.website.listUnregistered,
-    {
-      limit: 25,
-      offset: 0,
-      q: '',
-    },
+    defaultFilters,
   )
 }

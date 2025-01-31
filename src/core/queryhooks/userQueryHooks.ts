@@ -1,6 +1,11 @@
 import { useQuery } from '@tanstack/react-query'
 import { AuthAttemptsSearch } from '../client/auth-attempts/AuthAttemptClient'
-import { RoleAgents, roleAgents, UserPending } from '../client/user/User'
+import {
+  RoleAgents,
+  roleAgents,
+  UserPending,
+  UserSearch,
+} from '../client/user/User'
 import { useApiContext } from '../context/ApiContext'
 import { UseQueryOpts } from './UseQueryOpts'
 import { useQueryPaginate } from './UseQueryPaginate'
@@ -22,13 +27,14 @@ const GetAgentPendingQueryKeys = (role?: RoleAgents) =>
 
 export const useSearchAdminQuery = (enabled: boolean) => {
   const { api } = useApiContext()
+  const defaultFilters: UserSearch = {
+    limit: 50,
+    offset: 0,
+  }
   return useQueryPaginate(
     SearchAdminQueryKeys,
     api.secured.user.searchAdmin,
-    {
-      limit: 50,
-      offset: 0,
-    },
+    defaultFilters,
     undefined,
     enabled,
   )
@@ -36,14 +42,15 @@ export const useSearchAdminQuery = (enabled: boolean) => {
 
 export const useSearchAgentQuery = (enabled: boolean) => {
   const { api } = useApiContext()
+  const defaultFilters: UserSearch = {
+    limit: 25,
+    offset: 0,
+    role: roleAgents.map((_) => _),
+  }
   return useQueryPaginate(
     SearchAgentQueryKeys,
     api.secured.user.searchAgent,
-    {
-      limit: 25,
-      offset: 0,
-      role: roleAgents.map((_) => _),
-    },
+    defaultFilters,
     undefined,
     enabled,
   )

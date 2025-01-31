@@ -7,7 +7,6 @@ import { useI18n } from '../../core/i18n'
 import { CompanySearchResult } from '../../core/client/company/Company'
 import { Id } from '../../core/model'
 import { useSearchByIdentityQuery } from '../../core/queryhooks/companyQueryHooks'
-import { useQueryClient } from '@tanstack/react-query'
 
 export interface SelectCompanyProps {
   siret?: Id
@@ -21,7 +20,6 @@ export const SelectCompany = ({
   openOnly,
 }: SelectCompanyProps) => {
   const { m } = useI18n()
-  const queryClient = useQueryClient()
   const [inputValue, setInputValue] = useState<Id | undefined>(siret)
   const [inputSiret, setInputSiret] = useState<Id | undefined>(siret)
   const _company = useSearchByIdentityQuery(inputSiret!, openOnly ?? true, {

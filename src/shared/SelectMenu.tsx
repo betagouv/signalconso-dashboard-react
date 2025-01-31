@@ -12,7 +12,7 @@ interface Props<T> {
   onClose: () => void
   initialValue: T[]
   toString?: (t: T) => string
-  renderValue?: (value: T) => React.ReactNode
+  renderValue: (value: T) => React.ReactNode
 }
 
 const css = makeSx({
@@ -90,10 +90,8 @@ export const SelectMenu = <T,>({
             }
           }}
         >
-          <>
-            {multiple && <Checkbox checked={innerValue.indexOf(option) >= 0} />}
-            {renderValue ? renderValue(option) : option}
-          </>
+          {multiple && <Checkbox checked={innerValue.indexOf(option) >= 0} />}
+          {renderValue(option)}
         </MenuItem>
       ))}
     </Menu>
