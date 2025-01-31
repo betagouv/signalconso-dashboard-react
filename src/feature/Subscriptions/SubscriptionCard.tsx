@@ -1,4 +1,4 @@
-import { Chip, Collapse, Icon, Stack, duration } from '@mui/material'
+import { Chip, Collapse, duration, Icon } from '@mui/material'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { objectKeysUnsafe } from 'core/helper'
 import React, {
@@ -158,11 +158,11 @@ export const SubscriptionCard = ({ subscription, className, style }: Props) => {
           label={m.foreignCountry}
           onClick={countriesAnchor.open}
         >
-          <Stack direction="row" gap={1} flexWrap="wrap">
+          <div className="flex flex-row gap-1 flex-wrap">
             {subscription.countries.map((_) => (
               <ScChip key={_.code} label={_.name} />
             ))}
-          </Stack>
+          </div>
         </SubscriptionCardRow>
         <SelectCountriesMenu
           open={!!countriesAnchor.element}
@@ -177,11 +177,11 @@ export const SubscriptionCard = ({ subscription, className, style }: Props) => {
           label={m.departments}
           onClick={departmentAnchor.open}
         >
-          <Stack direction="row" gap={1} flexWrap="wrap">
+          <div className="flex flex-row gap-1 flex-wrap">
             {subscription.departments.map((_) => (
               <ScChip key={_.code} label={_.code + ' - ' + _.label} />
             ))}
-          </Stack>
+          </div>
         </SubscriptionCardRow>
         <SelectDepartmentsMenu
           open={!!departmentAnchor.element}
@@ -197,7 +197,7 @@ export const SubscriptionCard = ({ subscription, className, style }: Props) => {
           label={m.categories}
           onClick={categoryAnchor.open}
         >
-          <Stack direction="row" gap={1} flexWrap="wrap">
+          <div className="flex flex-row gap-1 flex-wrap">
             {allCategoriesSelected ? (
               <ScChip
                 variant="outlined"
@@ -208,7 +208,7 @@ export const SubscriptionCard = ({ subscription, className, style }: Props) => {
             ) : (
               subscription.categories.map((_) => <ScChip key={_} label={_} />)
             )}
-          </Stack>
+          </div>
         </SubscriptionCardRow>
         {_activeCategories && (
           <SelectMenu
@@ -226,7 +226,7 @@ export const SubscriptionCard = ({ subscription, className, style }: Props) => {
         )}
 
         <SubscriptionCardRow icon="business" label={m.siret}>
-          <Stack direction="row" gap={1} flexWrap="wrap">
+          <div className="flex flex-row gap-1 flex-wrap">
             {subscription.sirets.map((siret) => (
               <ScChip
                 key={siret}
@@ -249,9 +249,11 @@ export const SubscriptionCard = ({ subscription, className, style }: Props) => {
                 }
               }}
             >
-              <ScChip label={<Icon>add</Icon>} />
+              <ScChip
+                label={<Icon sx={{ verticalAlign: 'middle' }}>add</Icon>}
+              />
             </SelectCompanyDialog>
-          </Stack>
+          </div>
         </SubscriptionCardRow>
 
         <SubscriptionCardRow
@@ -259,7 +261,7 @@ export const SubscriptionCard = ({ subscription, className, style }: Props) => {
           label={m.tags}
           onClick={tagsAnchor.open}
         >
-          <Stack direction="row" gap={1} flexWrap="wrap">
+          <div className="flex flex-row gap-1 flex-wrap">
             {subscription?.withTags.map((_) => (
               <Chip key={_} color="success" icon={<Icon>add</Icon>} label={_} />
             ))}
@@ -271,7 +273,7 @@ export const SubscriptionCard = ({ subscription, className, style }: Props) => {
                 label={_}
               />
             ))}
-          </Stack>
+          </div>
         </SubscriptionCardRow>
         <SelectTagsMenu
           onClose={tagsAnchor.close}

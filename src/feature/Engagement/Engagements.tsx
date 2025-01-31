@@ -56,7 +56,10 @@ export const Engagements = () => {
     }
   }, _engagements.data)
 
-  const test = (_: Engagement, e: React.MouseEvent<HTMLTableCellElement>) => {
+  const goToReport = (
+    _: Engagement,
+    e: React.MouseEvent<HTMLTableCellElement>,
+  ) => {
     if (e.metaKey || e.ctrlKey) {
       openInNew(siteMap.logged.report(_.report.id))
     } else {
@@ -150,23 +153,23 @@ export const Engagements = () => {
           {
             id: 'consumer',
             head: 'Consommateur',
-            onClick: test,
+            onClick: goToReport,
             render: (_) => (
-              <span>
-                <Box component="span">
+              <>
+                <span>
                   {textOverflowMiddleCropping(_.report.email ?? '', 25)}
-                </Box>
+                </span>
                 <br />
                 <Txt color="hint" size="small">
                   {_.report.consumerPhone ?? ''}
                 </Txt>
-              </span>
+              </>
             ),
           },
           {
             id: 'engagement',
             head: 'Engagement',
-            onClick: test,
+            onClick: goToReport,
             render: (_) => (
               <Txt truncate maxWidth="500px" block>
                 {_.otherEngagement
@@ -178,7 +181,7 @@ export const Engagements = () => {
           {
             id: 'echeance',
             head: `Date d'avis consommateur`,
-            onClick: test,
+            onClick: goToReport,
             render: (_) => {
               if (_.expirationDate < now)
                 return (
