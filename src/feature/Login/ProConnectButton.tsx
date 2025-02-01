@@ -25,12 +25,12 @@ const ProConnectButton = ({ startProConnect }: Props) => {
     sessionStorage.setItem('oauth2_state', persistedState)
     const redirectUri = `${config.dashboardBaseUrl}${siteMap.loggedout.proconnect_login_callback}`
     const encodedRedirectUri = encodeURI(redirectUri)
-    const scopes = 'openid+custom+email+given_name+usual_name+idp_id'
+    const scopes = 'openid+email+given_name+usual_name+idp_id'
     startProConnect
       .action(persistedState, nonce)
       .then(
         (_) =>
-          (window.location.href = `${config.proConnectServer}/api/v2/authorize?client_id=${config.proConnectClientId}&response_type=code&scope=${scopes}&redirect_uri=${encodedRedirectUri} &state=${persistedState}&nonce=${nonce}`),
+          (window.location.href = `${config.proConnectServer}/api/v2/authorize?client_id=${config.proConnectClientId}&response_type=code&scope=${scopes}&redirect_uri=${encodedRedirectUri}&state=${persistedState}&nonce=${nonce}`),
       )
   }
 
