@@ -1,11 +1,12 @@
 import { Icon } from '@mui/material'
 import { useQuery } from '@tanstack/react-query'
-import { ReactNode } from 'react'
+import React, { ReactNode } from 'react'
 import { CleanInvisiblePanel } from 'shared/Panel/simplePanels'
 import { Company } from '../../../core/client/company/Company'
 import { useI18n } from '../../../core/i18n'
 import { AddressComponent } from '../../../shared/Address'
 import { CompanyStatsPanelTitle } from './CompanyStatsPanelTitle'
+import ReportSearchNavLink from '../../Report/ReportSearchNavLink'
 
 interface Props {
   company: Company
@@ -33,12 +34,19 @@ export const CompanyInfo = ({ company }: Props) => {
         </Item>
         {_activityCodes.data && company.activityCode && (
           <Item icon="label_outline" label={m.activityCode}>
-            <span>
-              <span className="font-bold">{company.activityCode}</span>{' '}
-              <span className="text-gray-500">
-                {_activityCodes.data[company.activityCode]}
-              </span>
-            </span>
+            <ReportSearchNavLink
+              reportSearch={{
+                activityCodes: [company.activityCode],
+              }}
+              value={
+                <span>
+                  <span className="font-bold">{company.activityCode}</span>{' '}
+                  <span className="text-gray-500">
+                    {_activityCodes.data[company.activityCode]}
+                  </span>
+                </span>
+              }
+            />
           </Item>
         )}
       </ul>

@@ -1,7 +1,7 @@
 import { AddressComponent } from '../../../shared/Address'
 
 import { Box, Icon, Tooltip, useTheme } from '@mui/material'
-import { NavLink } from 'react-router-dom'
+import { Link, NavLink } from 'react-router-dom'
 import { CleanDiscreetPanel } from 'shared/Panel/simplePanels'
 import { WithInlineIcon } from 'shared/WithInlineIcon'
 import { AlbertActivityLabel } from 'shared/albert/AlbertActivityLabel'
@@ -21,6 +21,8 @@ import { ReportInfluencer } from '../ReportInfluencer'
 import { ReportStation } from '../ReportStation'
 import { ReportTrain } from '../ReportTrain'
 import { SelectReportAssociation } from '../SelectReportAssociation'
+import React from 'react'
+import ReportSearchNavLink from '../ReportSearchNavLink'
 
 export const ReportCompany = ({
   reportExtra: r,
@@ -91,7 +93,27 @@ export const ReportCompany = ({
               {companyAlbertActivityLabel}
             </AlbertActivityLabel>
           )}
-          {companySiret && <div className="mb-1">{companySiret}</div>}
+          {companySiret && (
+            <div className={'flex flex-row gap-3'}>
+              <div className="mb-1">
+                <ReportSearchNavLink
+                  reportSearch={{
+                    siretSirenList: [companySiret],
+                    hasCompany: true,
+                  }}
+                  value={companySiret}
+                />
+              </div>
+              <Link
+                to={`https://annuaire-entreprises.data.gouv.fr/etablissement/${companySiret.trim()}}`}
+                target="_blank"
+                rel="noreferrer"
+              >
+                <span className="text-sm">(Annuaire des Entreprises)</span>
+              </Link>
+            </div>
+          )}
+
           <div className="text-gray-500 text-sm">
             {companyName && <div className="font-bold">{companyName}</div>}
 
@@ -102,9 +124,7 @@ export const ReportCompany = ({
             {companyBrand && <div className="italic">{companyBrand}</div>}
             <AddressComponent address={companyAddress} />
           </div>
-          {websiteURL && (
-            <ReportWebsiteUrlLink {...{ websiteURL }} className="block" />
-          )}
+          {websiteURL && <ReportWebsiteUrlLink {...{ websiteURL }} />}
           {vendor && (
             <MarketplaceBlock vendor={vendor} marketplace={companyName ?? ''} />
           )}
@@ -134,7 +154,13 @@ function Phone({ phone }: { phone: string }) {
       >
         phone
       </Icon>
-      {phone}
+      <ReportSearchNavLink
+        reportSearch={{
+          phone: phone,
+          hasPhone: true,
+        }}
+        value={phone}
+      />
     </div>
   )
 }

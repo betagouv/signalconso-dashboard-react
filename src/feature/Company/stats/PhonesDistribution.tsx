@@ -4,9 +4,10 @@ import { Icon } from '@mui/material'
 import { sum } from 'core/helper'
 import { CompanyPhones } from 'core/model'
 import { useGetPhonesQuery } from 'core/queryhooks/companyQueryHooks'
-import { useState } from 'react'
+import React, { useState } from 'react'
 import { CleanInvisiblePanel } from 'shared/Panel/simplePanels'
 import { CompanyStatsPanelTitle } from './CompanyStatsPanelTitle'
+import ReportSearchNavLink from '../../Report/ReportSearchNavLink'
 
 export function PhonesDistribution({ companyId }: { companyId: string }) {
   const _phones = useGetPhonesQuery(companyId)
@@ -50,7 +51,13 @@ function PhonesDisplay({ phones }: { phones: CompanyPhones }) {
           >
             <Icon fontSize="small">phone</Icon>
             <span>
-              {phone}{' '}
+              <ReportSearchNavLink
+                reportSearch={{
+                  phone: phone,
+                  hasPhone: true,
+                }}
+                value={phone}
+              />{' '}
               <span className="text-gray-500 text-sm">
                 ({nbOccurences}
                 {idx === 0 ? ' signalements' : ''})

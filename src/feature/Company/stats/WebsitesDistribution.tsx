@@ -4,9 +4,10 @@ import { Icon } from '@mui/material'
 import { sum } from 'core/helper'
 import { CompanyHosts } from 'core/model'
 import { useGetHostsQuery } from 'core/queryhooks/companyQueryHooks'
-import { useState } from 'react'
+import React, { useState } from 'react'
 import { CleanInvisiblePanel } from 'shared/Panel/simplePanels'
 import { CompanyStatsPanelTitle } from './CompanyStatsPanelTitle'
+import ReportSearchNavLink from '../../Report/ReportSearchNavLink'
 
 export function WebsitesDistribution({ companyId }: { companyId: string }) {
   const _hosts = useGetHostsQuery(companyId)
@@ -46,7 +47,13 @@ function HostsDisplay({ hosts }: { hosts: CompanyHosts }) {
           >
             <Icon fontSize="small">public</Icon>
             <span>
-              {host}{' '}
+              <ReportSearchNavLink
+                reportSearch={{
+                  websiteURL: host,
+                  hasWebsite: true,
+                }}
+                value={host}
+              />{' '}
               <span className="text-gray-500 text-sm">
                 ({nbOccurences}
                 {idx === 0 ? ' signalements' : ''})

@@ -11,10 +11,17 @@ import {
 } from 'core/plugins/Matomo'
 import { CompanyStatsPanelTitle } from 'feature/Company/stats/CompanyStatsPanelTitle'
 import { CleanInvisiblePanel } from 'shared/Panel/simplePanels'
+import React, { useEffect } from 'react'
+import BetaTag from '../BetaTag'
+import { initTally } from '../../core/plugins/Tally'
 
 export function AlbertCompanyProblems({ companyId }: { companyId: string }) {
   const { connectedUser } = useConnectedContext()
   const { api } = useApiContext()
+
+  useEffect(() => {
+    initTally()
+  }, [])
 
   const query = useQuery({
     queryKey: ['getProblemsSeenByAlbert', companyId],
@@ -24,16 +31,14 @@ export function AlbertCompanyProblems({ companyId }: { companyId: string }) {
   if (connectedUser.isNotPro) {
     return (
       <CleanInvisiblePanel>
-        <div className="">
+        <div>
           <CompanyStatsPanelTitle>
-            Problèmes fréquents
-            <span className="font-bold text-base px-1 text-desert-700 bg-desert-200 ml-2">
-              <Icon fontSize="small" className=" mb-[-5px] mr-1">
-                bubble_chart
-              </Icon>
-              IA
+            <span className={'inline-flex items-center gap-1 '}>
+              <span>Problèmes fréquents</span>
+              <BetaTag />
             </span>
           </CompanyStatsPanelTitle>
+
           {!query.data && !query.isFetching && (
             <Button
               className="!mt-2"
@@ -54,6 +59,7 @@ export function AlbertCompanyProblems({ companyId }: { companyId: string }) {
               Lancer l'analyse
             </Button>
           )}
+
           {query.isFetching && (
             <div className="py-2">
               <LinearProgress />
@@ -112,10 +118,23 @@ function DataDisplay({ result }: { result: AlbertProblemsResult }) {
           )
         })}
       </ul>
-      <p className="text-sm text-gray-500">
+      <p className="text-sm text-gray-500 mb-4">
         Analyse basée sur un sous-ensemble de {nbReportsUsed} signalements
         récents
       </p>
+      <div className={'flex justify-stretch '}>
+        <Button
+          variant="outlined"
+          className={'w-full'}
+          size={'small'}
+          data-tally-open="mJekQY"
+          data-tally-emoji-text="👋"
+          data-tally-emoji-animation="wave"
+          endIcon={<Icon>feedback</Icon>}
+        >
+          Donner Mon avis
+        </Button>
+      </div>
     </div>
   )
 }
