@@ -1,10 +1,10 @@
 import ReportSearchNavLink from '../feature/Report/ReportSearchNavLink'
 import React from 'react'
-import { WebsiteTools } from '../feature/ReportedWebsites/WebsiteTools'
+import { Link } from 'react-router-dom'
 
 export function ReportWebsiteUrlLink({ websiteURL }: { websiteURL: string }) {
   return (
-    <div className={'flex flex-row items-center '}>
+    <div className={'flex flex-row items-center gap-1 '}>
       <ReportSearchNavLink
         reportSearch={{
           websiteURL: websiteURL,
@@ -12,7 +12,9 @@ export function ReportWebsiteUrlLink({ websiteURL }: { websiteURL: string }) {
         }}
         value={websiteURL}
       />
-      {/*<WebsiteTools website={websiteURL} />*/}
+      <Link onClick={() => window.open(websiteURL, '_blank')} to={''}>
+        <span className="text-sm">(voir le site)</span>
+      </Link>
     </div>
   )
 }

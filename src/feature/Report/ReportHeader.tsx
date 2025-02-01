@@ -107,7 +107,7 @@ export const ReportHeader = ({
   isAdminClosure,
   children,
 }: Props) => {
-  const { m } = useI18n()
+  const { m, formatDateTime } = useI18n()
 
   const { report, isBookmarked } = reportSearchResult
   const hideTags = false
@@ -120,6 +120,7 @@ export const ReportHeader = ({
             {m.report_pageTitle}{' '}
             <BookmarkButton isBookmarked={isBookmarked} reportId={report.id} />
           </h1>
+          <span>Signalé le {formatDateTime(report.expirationDate)}</span>
           <ExpirationDate {...{ report }} isUserPro={false} />
         </div>
         <NavLink to={siteMap.logged.reports({ status: [report.status] })}>

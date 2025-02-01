@@ -14,6 +14,7 @@ import { config } from '../../conf/config'
 import { WithInlineIcon } from '../../shared/WithInlineIcon'
 import { initTally } from '../../core/plugins/Tally'
 import { styleUtils } from '../../core/theme'
+import BetaTag from '../../shared/BetaTag'
 
 export const ReportAlbert = ({ id }: { id: Id }) => {
   const { api } = useApiContext()
@@ -70,13 +71,11 @@ export const ReportAlbert = ({ id }: { id: Id }) => {
   return (
     <CleanDiscreetPanel>
       <div className={'flex flex-col'}>
-        <div className={'flex flex-row gap-2 mb-2'}>
+        <div className={'flex flex-row gap-2 mb-2 items-center'}>
           <WithInlineIcon icon="bubble_chart">
             Résumé du signalement
           </WithInlineIcon>
-          <span className="font-bold text-base px-1 text-desert-700 bg-desert-200 rounded-lg">
-            bêta
-          </span>
+          <BetaTag />
         </div>
         {_getAlbert.data && (
           <>
@@ -99,7 +98,7 @@ export const ReportAlbert = ({ id }: { id: Id }) => {
                 Cette analyse a été réalisée par une IA à partir du texte du
                 signalement.&nbsp;
               </span>
-              {!connectedUser.isSuperAdmin && (
+              {connectedUser.isSuperAdmin && (
                 <div>
                   <DescriptionRow
                     label={getCodeConsoLabel()}
@@ -114,6 +113,7 @@ export const ReportAlbert = ({ id }: { id: Id }) => {
           <div className="flex flex-col w-full">
             <Btn
               variant="outlined"
+              size={'small'}
               data-tally-open="wo56xx"
               data-tally-emoji-text="👋"
               data-tally-emoji-animation="wave"

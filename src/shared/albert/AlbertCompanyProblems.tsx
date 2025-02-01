@@ -11,11 +11,17 @@ import {
 } from 'core/plugins/Matomo'
 import { CompanyStatsPanelTitle } from 'feature/Company/stats/CompanyStatsPanelTitle'
 import { CleanInvisiblePanel } from 'shared/Panel/simplePanels'
-import React from 'react'
+import React, { useEffect } from 'react'
+import BetaTag from '../BetaTag'
+import { initTally } from '../../core/plugins/Tally'
 
 export function AlbertCompanyProblems({ companyId }: { companyId: string }) {
   const { connectedUser } = useConnectedContext()
   const { api } = useApiContext()
+
+  useEffect(() => {
+    initTally()
+  }, [])
 
   const query = useQuery({
     queryKey: ['getProblemsSeenByAlbert', companyId],
@@ -29,9 +35,7 @@ export function AlbertCompanyProblems({ companyId }: { companyId: string }) {
           <CompanyStatsPanelTitle>
             <span className={'inline-flex items-center gap-1 '}>
               <span>Problèmes fréquents</span>
-              <span className="font-bold text-sm px-1 text-white bg-emerald-700 ">
-                bêta
-              </span>
+              <BetaTag />
             </span>
           </CompanyStatsPanelTitle>
 
@@ -123,7 +127,7 @@ function DataDisplay({ result }: { result: AlbertProblemsResult }) {
           variant="outlined"
           className={'w-full'}
           size={'small'}
-          data-tally-open="wo56xx"
+          data-tally-open="mJekQY"
           data-tally-emoji-text="👋"
           data-tally-emoji-animation="wave"
           endIcon={<Icon>feedback</Icon>}
