@@ -12,9 +12,12 @@ import * as React from 'react'
 import { ReactElement, ReactNode, SyntheticEvent, useState } from 'react'
 
 export interface ModalProps
-  extends Omit<DialogProps, 'children' | 'onClick' | 'open' | 'content'> {
+  extends Omit<
+    DialogProps,
+    'children' | 'onClick' | 'open' | 'content' | 'title'
+  > {
   disabled?: boolean
-  title?: string
+  title?: ReactNode
   confirmLabel?: string
   cancelLabel?: string
   content?: ((content: () => void) => ReactNode) | ReactNode | string
