@@ -4,7 +4,7 @@ import { Route } from 'react-router-dom'
 import { Page, PageTitle } from 'shared/Page'
 import { useConnectedContext } from '../../core/context/ConnectedContext'
 import { useI18n } from '../../core/i18n'
-import { siteMap } from '../../core/siteMap'
+import { relativeToParent, siteMap } from '../../core/siteMap'
 import { PageTab, PageTabs } from '../../shared/Page/PageTabs'
 import { ArborescenceWithCounts } from './ArborescenceWithCounts'
 import { DgccrfStats } from './DgccrfStats'
@@ -33,25 +33,35 @@ export const Stats = () => {
       </p>
       {connectedUser.isDGAL ? (
         <PageTabs>
-          <PageTab to={siteMap.logged.stats.pro.value} label={m.statsPro} />
           <PageTab
-            to={siteMap.logged.stats.countBySubCategories.value}
+            to={relativeToParent(siteMap.logged.stats.pro.value)}
+            label={m.statsPro}
+          />
+          <PageTab
+            to={relativeToParent(
+              siteMap.logged.stats.countBySubCategories.value,
+            )}
             label={m.statsCountBySubCategoriesTab}
           />
         </PageTabs>
       ) : (
         <PageTabs>
           <PageTab
-            to={siteMap.logged.stats.report.value}
+            to={relativeToParent(siteMap.logged.stats.report.value)}
             label={m.statsReports}
           />
-          <PageTab to={siteMap.logged.stats.pro.value} label={m.statsPro} />
           <PageTab
-            to={siteMap.logged.stats.dgccrf.value}
+            to={relativeToParent(siteMap.logged.stats.pro.value)}
+            label={m.statsPro}
+          />
+          <PageTab
+            to={relativeToParent(siteMap.logged.stats.dgccrf.value)}
             label={m.statsDgccrf}
           />
           <PageTab
-            to={siteMap.logged.stats.countBySubCategories.value}
+            to={relativeToParent(
+              siteMap.logged.stats.countBySubCategories.value,
+            )}
             label={m.statsCountBySubCategoriesTab}
           />
         </PageTabs>
@@ -59,8 +69,13 @@ export const Stats = () => {
       {connectedUser.isDGAL ? (
         <Routes>
           <Route
-            path="/*"
-            element={<Navigate replace to={siteMap.logged.stats.pro.value} />}
+            path="*"
+            element={
+              <Navigate
+                replace
+                to={relativeToParent(siteMap.logged.stats.pro.value)}
+              />
+            }
           />
           <Route path={siteMap.logged.stats.pro.value} element={<ProStats />} />
           <Route
@@ -71,9 +86,12 @@ export const Stats = () => {
       ) : (
         <Routes>
           <Route
-            path="/*"
+            path="*"
             element={
-              <Navigate replace to={siteMap.logged.stats.report.value} />
+              <Navigate
+                replace
+                to={relativeToParent(siteMap.logged.stats.report.value)}
+              />
             }
           />
           <Route

@@ -398,7 +398,7 @@ function ActionsColumn({
       <>
         <NavLink
           to={`${
-            siteMap.logged.users.root
+            siteMap.logged.users.value
           }/${siteMap.logged.users.auth_attempts.value(_.email)}`}
         >
           <MenuItem>

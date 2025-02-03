@@ -5,7 +5,7 @@ import { LoginManagementResult } from 'core/useLoginManagement'
 import { ProLoginForm } from 'feature/Login/ProLoginForm'
 import { RegisterForm } from 'feature/Login/RegisterForm'
 import { WelcomePage } from 'feature/Login/WelcomePage'
-import { useEffect, useMemo } from 'react'
+import React, { useEffect, useMemo } from 'react'
 import { Navigate, Routes, useLocation } from 'react-router'
 import { Route } from 'react-router-dom'
 import { buildConnectedApiSdks } from './core/apiSdkInstances'
@@ -170,11 +170,12 @@ const ProtectedRoutes = () => {
     <>
       <RefreshBanner />
       <Routes>
-        <Route path={siteMap.logged.tools.value} element={<Tools />} />
-        <Route
-          path={siteMap.logged.reportedWebsites.value}
-          element={<ReportedWebsites />}
-        />
+        <Route path={siteMap.logged.tools.value}>
+          <Route path="*" element={<Tools />} />
+        </Route>
+        <Route path={siteMap.logged.reportedWebsites.value}>
+          <Route path="*" element={<ReportedWebsites />} />
+        </Route>
         <Route
           path={siteMap.logged.reportedPhone}
           element={<ReportedPhones />}
@@ -211,8 +212,12 @@ const ProtectedRoutes = () => {
             )
           }
         />
-        <Route path={siteMap.logged.users.value()} element={<Users />} />
-        <Route path={siteMap.logged.companies.value} element={<Companies />} />
+        <Route path={siteMap.logged.users.value}>
+          <Route path="*" element={<Users />} />
+        </Route>
+        <Route path={siteMap.logged.companies.value}>
+          <Route path="*" element={<Companies />} />
+        </Route>
         <Route
           path={siteMap.logged.company(':id').value}
           element={<Company />}
@@ -243,7 +248,9 @@ const ProtectedRoutes = () => {
             )
           }
         />
-        <Route path={siteMap.logged.stats.value} element={<Stats />} />
+        <Route path={siteMap.logged.stats.value}>
+          <Route path="*" element={<Stats />} />
+        </Route>
         <Route path={siteMap.loggedout.register} element={<AddCompanyForm />} />
         <Route
           path="/*"

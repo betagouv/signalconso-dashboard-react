@@ -26,7 +26,15 @@ export const App = () => {
         (_) => <ThemeProvider theme={muiTheme()} children={_} />,
         (_) => <StyledEngineProvider children={_} />,
         (_) => <CssBaseline children={_} />,
-        (_) => <Router children={_} />,
+        (_) => (
+          <Router
+            children={_}
+            future={{
+              v7_relativeSplatPath: true,
+              v7_startTransition: true,
+            }}
+          />
+        ),
         (_) => <I18nProvider children={_} />,
         (_) => <ToastProvider children={_} />,
       ]}

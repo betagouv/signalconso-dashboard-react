@@ -160,7 +160,8 @@ const UsersList = ({ adminView }: Props) => {
             <Tooltip title={m.authAttemptsHistory}>
               <NavLink
                 to={
-                  siteMap.logged.users.basePath() +
+                  siteMap.logged.users.value +
+                  '/' +
                   siteMap.logged.users.auth_attempts.value(_.email)
                 }
               >
