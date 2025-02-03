@@ -10,9 +10,11 @@ import React from 'react'
 import { ScMenu } from '../../shared/Menu'
 import antidropIcon from './img/antidrop.png'
 import whoisIcon from './img/whois.png'
+import webIcon from './img/web.webp'
 import internetArchiveIcon from './img/internetArchive.svg'
 import scamdocIcon from './img/scamdoc.png'
 import { useI18n } from '../../core/i18n'
+
 import { WebsiteWithCompany } from '../../core/client/website/Website'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useApiContext } from '../../core/context/ApiContext'
@@ -26,6 +28,11 @@ interface WebsiteActionsProps extends BoxProps {
 }
 
 const websiteAnalyzeTool = [
+  {
+    label: 'Consulter le site',
+    img: webIcon,
+    url: (website: string) => website,
+  },
   {
     label: 'Antidrop',
     img: antidropIcon,
