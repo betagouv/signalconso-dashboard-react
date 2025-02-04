@@ -1,6 +1,10 @@
 import { Id } from '../../model'
 import { ApiClient } from '../ApiClient'
-import { CompanyAccess, CompanyAccessLevel } from './CompanyAccess'
+import {
+  CompanyAccess,
+  CompanyAccessLevel,
+  CompanyAccessMostActive,
+} from './CompanyAccess'
 import { VisibleUser } from './VisibleUser'
 
 export class CompanyAccessClient {
@@ -38,5 +42,11 @@ export class CompanyAccessClient {
 
   readonly revokeProFromCompanies = (userId: Id) => {
     return this.client.delete<string>(`/accesses/visible-users/${userId}`)
+  }
+
+  readonly getMostActives = (siret: string) => {
+    return this.client.get<CompanyAccessMostActive[]>(
+      `/accesses/${siret}/most-active`,
+    )
   }
 }

@@ -12,3 +12,7 @@ export interface CompanyAccess {
   editable: boolean
   isHeadOffice: boolean
 }
+
+export type CompanyAccessMostActive = CompanyAccess & {
+  nbResponses: number
+}
