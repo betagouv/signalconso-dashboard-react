@@ -1,5 +1,5 @@
 import { Navigate, Routes } from 'react-router'
-import { Route } from 'react-router-dom'
+import { Route } from 'react-router'
 import { useConnectedContext } from '../../core/context/ConnectedContext'
 import { useI18n } from '../../core/i18n'
 import { relativeToParent, siteMap } from '../../core/siteMap'

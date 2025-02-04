@@ -1,7 +1,7 @@
 import { useI18n } from '../../../core/i18n'
 
 import { useMutation } from '@tanstack/react-query'
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router'
 import { FileOrigin } from '../../../core/client/file/UploadedFile'
 import { Report } from '../../../core/client/report/Report'
 import { useApiContext } from '../../../core/context/ApiContext'

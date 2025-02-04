@@ -7,7 +7,7 @@ import {
 import { ScOption } from 'core/helper/ScOption'
 import type { Dictionary } from 'lodash'
 import { useMemo, useState } from 'react'
-import { NavLink } from 'react-router-dom'
+import { NavLink } from 'react-router'
 import { CleanDiscreetPanel } from 'shared/Panel/simplePanels'
 import { Btn, Fender, Txt } from '../../alexlibs/mui-extension'
 import { useApiContext } from '../../core/context/ApiContext'

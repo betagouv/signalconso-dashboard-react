@@ -1,5 +1,5 @@
 import { siteMap } from 'core/siteMap'
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router'
 import { CenteredContent } from 'shared/CenteredContent'
 import { AlertNotForConso, DashboardTitle } from './loggedOutComponents'
 import { Icon } from '@mui/material'

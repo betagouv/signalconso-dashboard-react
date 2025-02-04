@@ -1,6 +1,6 @@
 import { config } from 'conf/config'
 import { Navigate, Routes } from 'react-router'
-import { Route } from 'react-router-dom'
+import { Route } from 'react-router'
 import { Page, PageTitle } from 'shared/Page'
 import { useConnectedContext } from '../../core/context/ConnectedContext'
 import { useI18n } from '../../core/i18n'

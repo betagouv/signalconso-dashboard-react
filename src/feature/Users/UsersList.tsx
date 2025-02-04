@@ -1,7 +1,7 @@
 import { Icon, Tooltip } from '@mui/material'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useCallback } from 'react'
-import { NavLink } from 'react-router-dom'
+import { NavLink } from 'react-router'
 import { ScInput } from 'shared/ScInput'
 import { IconBtn, Txt } from '../../alexlibs/mui-extension'
 import {

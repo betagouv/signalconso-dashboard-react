@@ -5,7 +5,7 @@ import { config } from 'conf/config'
 import { ToastProvider } from 'core/context/toastContext'
 import { queryClient, setQueryClientErrorHandler } from 'queryClient'
 import { useEffect } from 'react'
-import { BrowserRouter } from 'react-router-dom'
+import { BrowserRouter } from 'react-router'
 import { AppRoutes } from './AppRoutes'
 import { RedirectHashRouterToBrowserRouter } from './RedirectHashRouterToBrowserRouter'
 import { Layout } from './core/Layout/Layout'
@@ -26,15 +26,7 @@ export const App = () => {
         (_) => <ThemeProvider theme={muiTheme()} children={_} />,
         (_) => <StyledEngineProvider children={_} />,
         (_) => <CssBaseline children={_} />,
-        (_) => (
-          <Router
-            children={_}
-            future={{
-              v7_relativeSplatPath: true,
-              v7_startTransition: true,
-            }}
-          />
-        ),
+        (_) => <Router children={_} />,
         (_) => <I18nProvider children={_} />,
         (_) => <ToastProvider children={_} />,
       ]}

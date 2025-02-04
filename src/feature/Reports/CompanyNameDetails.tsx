@@ -1,5 +1,5 @@
 import { Box } from '@mui/material'
-import { NavLink } from 'react-router-dom'
+import { NavLink } from 'react-router'
 import { Txt } from '../../alexlibs/mui-extension'
 import { siteMap } from '../../core/siteMap'
 import { styleUtils } from '../../core/theme'

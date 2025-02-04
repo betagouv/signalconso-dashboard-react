@@ -11,7 +11,7 @@ import {
   Tooltip,
 } from '@mui/material'
 import { useMemo, useState } from 'react'
-import { NavLink } from 'react-router-dom'
+import { NavLink } from 'react-router'
 import { CleanWidePanel } from 'shared/Panel/simplePanels'
 import { Txt } from '../../alexlibs/mui-extension'
 import { useI18n } from '../../core/i18n'

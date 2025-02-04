@@ -1,7 +1,7 @@
 import { Page, PageTitle } from '../../shared/Page'
 import { PageTab, PageTabs } from '../../shared/Page/PageTabs'
 import { relativeToParent, siteMap } from '../../core/siteMap'
-import { Route } from 'react-router-dom'
+import { Route } from 'react-router'
 import React from 'react'
 import { useConnectedContext } from '../../core/context/ConnectedContext'
 import { TestTools } from './TestTools'

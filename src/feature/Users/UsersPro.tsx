@@ -18,7 +18,7 @@ import { Store } from '@mui/icons-material'
 import { StoreOutlined } from '@mui/icons-material'
 import { VisibleUser } from '../../core/client/company-access/VisibleUser'
 import { siteMap } from '../../core/siteMap'
-import { NavLink } from 'react-router-dom'
+import { NavLink } from 'react-router'
 
 export const UsersPro = () => {
   const { m } = useI18n()

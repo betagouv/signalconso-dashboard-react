@@ -13,7 +13,7 @@ import {
 import { ScChip } from '../../shared/ScChip'
 import { ReportCategories } from './ReportCategories'
 import { BookmarkButton } from './bookmarks'
-import { NavLink } from 'react-router-dom'
+import { NavLink } from 'react-router'
 import { siteMap } from '../../core/siteMap'
 
 const css = makeSx({

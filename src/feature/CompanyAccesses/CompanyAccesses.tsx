@@ -8,7 +8,7 @@ import {
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { UserDeleteDialog } from 'feature/Users/userDelete'
 import { useNavigate } from 'react-router'
-import { NavLink } from 'react-router-dom'
+import { NavLink } from 'react-router'
 import { ScMenu } from 'shared/Menu'
 import {
   CompanyAccess,

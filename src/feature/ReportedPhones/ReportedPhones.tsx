@@ -1,6 +1,6 @@
 import { Icon, Tooltip } from '@mui/material'
 import { useCallback } from 'react'
-import { NavLink } from 'react-router-dom'
+import { NavLink } from 'react-router'
 import { Btn, IconBtn, Txt } from '../../alexlibs/mui-extension'
 import { useI18n } from '../../core/i18n'
 import { useReportedPhonesSearchQuery } from '../../core/queryhooks/phoneQueryHooks'

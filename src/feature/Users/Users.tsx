@@ -1,4 +1,4 @@
-import { Route } from 'react-router-dom'
+import { Route } from 'react-router'
 import { useI18n } from '../../core/i18n'
 import { relativeToParent, siteMap } from '../../core/siteMap'
 import { Page, PageTitle } from '../../shared/Page'

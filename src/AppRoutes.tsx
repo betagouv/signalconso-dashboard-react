@@ -7,7 +7,7 @@ import { RegisterForm } from 'feature/Login/RegisterForm'
 import { WelcomePage } from 'feature/Login/WelcomePage'
 import React, { useEffect, useMemo } from 'react'
 import { Navigate, Routes, useLocation } from 'react-router'
-import { Route } from 'react-router-dom'
+import { Route } from 'react-router'
 import { buildConnectedApiSdks } from './core/apiSdkInstances'
 import {
   ConnectedContextProvider,
