@@ -168,12 +168,14 @@ export const CompaniesRegistered = () => {
   return (
     <>
       <div className="mb-4">
-        <p>
-          Cette page liste toutes les sociétés qui existent dans SignalConso
-        </p>
-        <p className="text-gray-500 italic">
+        <p className="">
+          Cette page liste toutes les sociétés qui existent dans SignalConso.{' '}
           Elles ont eu au moins un signalement, ou ont été ajoutées manuellement
           par un admin.
+        </p>
+        <p>
+          Les chiffres (nombre de signalements, taux de réponse) ne sont pas en
+          temps réel. Ils sont rafraichis toutes les heures.
         </p>
       </div>
       <CompaniesRegisteredFilters

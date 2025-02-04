@@ -18,11 +18,10 @@ import { siteMap } from '../../../core/siteMap'
 import { sxUtils } from '../../../core/theme'
 import { ScButton } from '../../../shared/Button'
 import { ReportInfluencer } from '../ReportInfluencer'
+import ReportSearchNavLink from '../ReportSearchNavLink'
 import { ReportStation } from '../ReportStation'
 import { ReportTrain } from '../ReportTrain'
 import { SelectReportAssociation } from '../SelectReportAssociation'
-import React from 'react'
-import ReportSearchNavLink from '../ReportSearchNavLink'
 
 export const ReportCompany = ({
   reportExtra: r,
@@ -89,7 +88,7 @@ export const ReportCompany = ({
         )}
         <div>
           {companyAlbertActivityLabel && (
-            <AlbertActivityLabel>
+            <AlbertActivityLabel smaller withExplainButton={true}>
               {companyAlbertActivityLabel}
             </AlbertActivityLabel>
           )}

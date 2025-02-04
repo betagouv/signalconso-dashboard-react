@@ -1,5 +1,7 @@
 import { Icon } from '@mui/material'
 import { useConnectedContext } from 'core/context/ConnectedContext'
+import BetaTag from 'shared/BetaTag'
+import { Divider } from 'shared/Divider'
 import { ScDialog } from '../ScDialog'
 
 export function AlbertActivityLabel({
@@ -18,20 +20,24 @@ export function AlbertActivityLabel({
   }
   return (
     <div
-      className={`font-normal bg-desert-200 w-fit flex gap-2 items-center ${smaller ? `text-sm` : `p-1 text-base`}`}
+      className={`font-normal flex gap-1 items-center ${smaller ? `text-sm` : `text-base`}`}
     >
-      <span className="inline-flex items-center gap-1   text-desert-700">
-        <Icon fontSize={smaller ? 'small' : 'medium'}>bubble_chart</Icon>
-        {smaller || (
-          <>
-            <b className="mr-2">IA</b>{' '}
-          </>
-        )}
-        <span className="font-serif  italic">“{children}”</span>
+      <span className="inline-flex items-center gap-1">
+        <Icon
+          fontSize={smaller ? 'small' : 'medium'}
+          className="text-desert-400"
+        >
+          label
+        </Icon>
+        <span className="text-desert-600">{children}</span>
       </span>
       {withExplainButton && (
         <ScDialog
-          title={`Contenu produit par de l'IA`}
+          title={
+            <span className="inline-flex items-center gap-1 strong">
+              Description approximative de l'entreprise <BetaTag />
+            </span>
+          }
           content={(_) => (
             <>
               <p>Ce texte :</p>
@@ -39,22 +45,30 @@ export function AlbertActivityLabel({
                 {children}
               </AlbertActivityLabel>
               <p className="mb-2">
-                a été produit par <b>une intelligence artificielle</b>.
+                est une description sommaire de l'activité de cette entreprise.
               </p>
               <p className="mb-2">
-                C'est une description sommaire de l'activité de cette
-                entreprise, d'après ce que notre IA a pu comprendre en regardant
-                ses derniers signalements.
+                Elle a été produite par une IA, en se basant{' '}
+                <b>
+                  sur ce que décrivent les consommateurs de l'entreprise dans
+                  les signalements récents
+                </b>
+                . C'est peut-être plus précis ou plus fiable que le code
+                d'activité.
               </p>
-              <p>
-                <b>L'IA fait des erreurs et des approximations.</b> Considérez
-                ce contenu comme un outil pratique mais pas 100% fiable.
+              <Divider margin />
+              <p className="text-sm">
+                Note : la formulation exacte peut varier suivant les
+                entreprises. Une entreprise peut être décrite{' '}
+                <i>"Site de vente en ligne"</i> par exemple, tandis qu'une autre
+                avec une activité similaire sera <i>"Site de e-commerce"</i>. Il
+                n'y a pas de catégories fixes sous-jacentes.
               </p>
             </>
           )}
         >
-          <button className="text-gray-500 text-sm underline">
-            (à propos)
+          <button className="text-gray-500 text-sm underline mb-[-0px]">
+            {smaller ? '(?)' : `d'après les signalements (?)`}
           </button>
         </ScDialog>
       )}
