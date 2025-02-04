@@ -32,45 +32,50 @@ export function AlbertActivityLabel({
         <span className="text-desert-600">{children}</span>
       </span>
       {withExplainButton && (
-        <ScDialog
-          title={
-            <span className="inline-flex items-center gap-1 strong">
-              Description approximative de l'entreprise <BetaTag />
-            </span>
-          }
-          content={(_) => (
-            <>
-              <p>Ce texte :</p>
-              <AlbertActivityLabel withExplainButton={false}>
-                {children}
-              </AlbertActivityLabel>
-              <p className="mb-2">
-                est une description sommaire de l'activité de cette entreprise.
-              </p>
-              <p className="mb-2">
-                Elle a été produite par une IA, en se basant{' '}
-                <b>
-                  sur ce que décrivent les consommateurs de l'entreprise dans
-                  les signalements récents
-                </b>
-                . C'est peut-être plus précis ou plus fiable que le code
-                d'activité.
-              </p>
-              <Divider margin />
-              <p className="text-sm">
-                Note : la formulation exacte peut varier suivant les
-                entreprises. Une entreprise peut être décrite{' '}
-                <i>"Site de vente en ligne"</i> par exemple, tandis qu'une autre
-                avec une activité similaire sera <i>"Site de e-commerce"</i>. Il
-                n'y a pas de catégories fixes sous-jacentes.
-              </p>
-            </>
-          )}
-        >
-          <button className="text-gray-500 text-sm underline mb-[-0px]">
-            {smaller ? '(?)' : `d'après les signalements (?)`}
-          </button>
-        </ScDialog>
+        <span className="text-gray-500 text-sm ">
+          {smaller || <span className="">d'après les signalements </span>}
+          <ScDialog
+            title={
+              <span className="inline-flex items-center gap-1 strong">
+                Description approximative de l'entreprise <BetaTag />
+              </span>
+            }
+            content={(_) => (
+              <>
+                <p>Ce texte :</p>
+                <AlbertActivityLabel withExplainButton={false}>
+                  {children}
+                </AlbertActivityLabel>
+                <p className="mb-2">
+                  est une description sommaire de l'activité de cette
+                  entreprise.
+                </p>
+                <p className="mb-2">
+                  Elle a été produite par une IA, en se basant{' '}
+                  <b>
+                    sur ce que décrivent les consommateurs de l'entreprise dans
+                    les signalements récents
+                  </b>
+                  . C'est peut-être plus précis ou plus fiable que le code
+                  d'activité.
+                </p>
+                <Divider margin />
+                <p className="text-sm">
+                  Note : la formulation exacte peut varier suivant les
+                  entreprises. Une entreprise peut être décrite{' '}
+                  <i>"Site de vente en ligne"</i> par exemple, tandis qu'une
+                  autre avec une activité similaire sera{' '}
+                  <i>"Site de e-commerce"</i>. Il n'y a pas de catégories fixes
+                  sous-jacentes.
+                </p>
+              </>
+            )}
+          >
+            <button className="underline">
+              ({smaller ? '?' : 'explication'})
+            </button>
+          </ScDialog>
+        </span>
       )}
     </div>
   )
