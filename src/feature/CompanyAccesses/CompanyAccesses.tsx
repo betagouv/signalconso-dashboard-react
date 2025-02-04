@@ -196,15 +196,13 @@ function CompanyAccessesLoaded({
           )}
         </div>
       </div>
-      <>
-        <Datatable
-          id="companyaccesses"
-          data={data}
-          loading={_accesses.isLoading || _tokens.isLoading}
-          getRenderRowKey={getRowKey}
-          columns={[emailColumn, levelColumn, actionsColumn]}
-        />
-      </>
+      <Datatable
+        id="companyaccesses"
+        data={data}
+        loading={_accesses.isLoading || _tokens.isLoading}
+        getRenderRowKey={getRowKey}
+        columns={[emailColumn, levelColumn, actionsColumn]}
+      />
     </>
   )
 }
@@ -397,32 +395,28 @@ function ActionsColumn({
 
   const authAttemptsHistoryMenuItem =
     isAdmin && _.kind === 'actual_access' && _.userId ? (
-      <>
-        <NavLink
-          to={`${
-            siteMap.logged.users.value
-          }/${siteMap.logged.users.auth_attempts.value(_.email)}`}
-        >
-          <MenuItem>
-            <ListItemIcon>
-              <Icon>manage_search</Icon>
-            </ListItemIcon>
-            <ListItemText>{m.authAttemptsHistory}</ListItemText>
-          </MenuItem>
-        </NavLink>
-      </>
+      <NavLink
+        to={`${
+          siteMap.logged.users.value
+        }/${siteMap.logged.users.auth_attempts.value(_.email)}`}
+      >
+        <MenuItem>
+          <ListItemIcon>
+            <Icon>manage_search</Icon>
+          </ListItemIcon>
+          <ListItemText>{m.authAttemptsHistory}</ListItemText>
+        </MenuItem>
+      </NavLink>
     ) : undefined
 
   const impersonateMenuItem =
     isAdmin && email ? (
-      <>
-        <MenuItem onClick={() => _logAs.mutate(email)}>
-          <ListItemIcon>
-            <Icon>theater_comedy</Icon>
-          </ListItemIcon>
-          <ListItemText>Se connecter en tant que</ListItemText>
-        </MenuItem>
-      </>
+      <MenuItem onClick={() => _logAs.mutate(email)}>
+        <ListItemIcon>
+          <Icon>theater_comedy</Icon>
+        </ListItemIcon>
+        <ListItemText>Se connecter en tant que</ListItemText>
+      </MenuItem>
     ) : undefined
 
   const copyInviteMenuItem =

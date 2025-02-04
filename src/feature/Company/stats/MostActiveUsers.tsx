@@ -3,7 +3,7 @@ import { useQuery } from '@tanstack/react-query'
 import { useApiContext } from 'core/context/ApiContext'
 import { map } from 'core/helper'
 import { siteMap } from 'core/siteMap'
-import { NavLink } from 'react-router-dom'
+import { NavLink } from 'react-router'
 import { CleanInvisiblePanel } from 'shared/Panel/simplePanels'
 import { CompanyStatsPanelTitle } from './CompanyStatsPanelTitle'
 

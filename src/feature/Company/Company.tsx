@@ -64,12 +64,10 @@ function CompanyWithId({ id }: { id: string }) {
           path={siteMap.logged.company(id).stats.value}
           element={<CompanyStatsVariantSwitch {...{ company }} />}
         />
-        {withCompanyAccessesTab && (
-          <Route
-            path={siteMap.logged.company(id).accesses.value}
-            element={<CompanyAccesses {...{ company }} />}
-          />
-        )}
+        <Route
+          path={siteMap.logged.company(id).accesses.value}
+          element={<CompanyAccesses {...{ company }} />}
+        />
         {connectedUser.isNotPro ? (
           <Route
             path={siteMap.logged.company(id).history.value}
