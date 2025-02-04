@@ -361,12 +361,14 @@ function ActionsColumn({
   const email = getEmail(_)
   const isAdmin = connectedUser.isAdmin
   const navigate = useNavigate()
+  const queryClient = useQueryClient()
 
   const _logAs = useMutation({
     mutationFn: (email: string) => api.public.authenticate.logAs(email),
     onSuccess: (user) => {
       setConnectedUser(user)
       navigate('/')
+      queryClient.resetQueries()
     },
   })
 

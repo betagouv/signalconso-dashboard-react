@@ -71,6 +71,7 @@ const UsersList = ({ adminView }: Props) => {
     onSuccess: (user) => {
       setConnectedUser(user)
       navigate('/')
+      queryClient.resetQueries()
     },
   })
 
