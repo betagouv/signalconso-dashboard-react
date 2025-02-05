@@ -128,14 +128,14 @@ export const CompaniesPro = () => {
         <div className="mb-8">
           <CleanDiscreetPanel>
             <div className="flex gap-2 justify-between flex-col xl:flex-row">
-              <p>
+              <div>
                 <Txt block size="big" bold>
                   {m.notifications}
                 </Txt>
                 <Txt block color="hint">
                   {m.notificationAcceptForCompany}
                 </Txt>
-              </p>
+              </div>
               <div className="flex gap-2">
                 <ScButton
                   disabled={allNotificationsAreBlocked}
