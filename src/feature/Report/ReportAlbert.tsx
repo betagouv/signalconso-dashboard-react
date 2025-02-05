@@ -1,19 +1,14 @@
-import { Icon, IconButton } from '@mui/material'
+import { Icon } from '@mui/material'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import { Alert, Btn, IconBtn } from '../../alexlibs/mui-extension'
+import { Btn } from '../../alexlibs/mui-extension'
 import { useApiContext } from '../../core/context/ApiContext'
 import { Id } from '../../core/model'
 import { CleanDiscreetPanel } from '../../shared/Panel/simplePanels'
 import { useConnectedContext } from '../../core/context/ConnectedContext'
-import { ScDialog } from '../../shared/ScDialog'
 import React, { useEffect } from 'react'
-import { Description } from '@mui/icons-material'
 import DescriptionRow from './DescriptionRow'
-import { stopPropagation } from '../../core/helper'
-import { config } from '../../conf/config'
 import { WithInlineIcon } from '../../shared/WithInlineIcon'
 import { initTally } from '../../core/plugins/Tally'
-import { styleUtils } from '../../core/theme'
 import BetaTag from '../../shared/BetaTag'
 
 export const ReportAlbert = ({ id }: { id: Id }) => {
@@ -100,10 +95,9 @@ export const ReportAlbert = ({ id }: { id: Id }) => {
               </span>
               {connectedUser.isSuperAdmin && (
                 <div>
-                  <DescriptionRow
-                    label={getCodeConsoLabel()}
-                    value={_getAlbert.data.codeConso}
-                  />
+                  <span className="min-w-[10%] font-bold">
+                    {getCodeConsoLabel()}
+                  </span>
                 </div>
               )}
             </div>
