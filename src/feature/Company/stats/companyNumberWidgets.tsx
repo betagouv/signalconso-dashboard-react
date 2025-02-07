@@ -18,7 +18,7 @@ import {
 } from 'core/queryhooks/statsQueryHooks'
 import { siteMap } from 'core/siteMap'
 import { PropsWithChildren } from 'react'
-import { NavLink } from 'react-router-dom'
+import { NavLink } from 'react-router'
 import { CleanInvisiblePanel } from 'shared/Panel/simplePanels'
 type Props = {
   companyId: Id

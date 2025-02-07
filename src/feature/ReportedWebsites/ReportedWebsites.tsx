@@ -1,8 +1,8 @@
 import { Navigate, Routes } from 'react-router'
-import { Route } from 'react-router-dom'
+import { Route } from 'react-router'
 import { useConnectedContext } from '../../core/context/ConnectedContext'
 import { useI18n } from '../../core/i18n'
-import { siteMap } from '../../core/siteMap'
+import { relativeToParent, siteMap } from '../../core/siteMap'
 import { Page, PageTitle } from '../../shared/Page'
 import { PageTab, PageTabs } from '../../shared/Page/PageTabs'
 import { ReportedUnknownWebsites } from './ReportedUnknownWebsites'
@@ -23,11 +23,13 @@ export const ReportedWebsites = () => {
       {connectedUser.isAdmin && (
         <PageTabs>
           <PageTab
-            to={siteMap.logged.reportedWebsites.investigation.value}
+            to={relativeToParent(
+              siteMap.logged.reportedWebsites.investigation.value,
+            )}
             label={m.websitesInvestigation}
           />
           <PageTab
-            to={siteMap.logged.reportedWebsites.unknown.value}
+            to={relativeToParent(siteMap.logged.reportedWebsites.unknown.value)}
             label={m.reportedUnknownWebsites}
           />
         </PageTabs>
@@ -36,21 +38,25 @@ export const ReportedWebsites = () => {
       <Routes>
         {connectedUser.isAdmin ? (
           <Route
-            path="/*"
+            path="*"
             element={
               <Navigate
                 replace
-                to={siteMap.logged.reportedWebsites.investigation.value}
+                to={relativeToParent(
+                  siteMap.logged.reportedWebsites.investigation.value,
+                )}
               />
             }
           />
         ) : (
           <Route
-            path="/*"
+            path="*"
             element={
               <Navigate
                 replace
-                to={siteMap.logged.reportedWebsites.unknown.value}
+                to={relativeToParent(
+                  siteMap.logged.reportedWebsites.unknown.value,
+                )}
               />
             }
           />

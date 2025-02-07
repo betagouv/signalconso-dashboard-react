@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router'
 import { ApiError } from '../../core/client/ApiClient'
 import { useToast } from '../../core/context/toastContext'
 

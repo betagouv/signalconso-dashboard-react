@@ -1,4 +1,4 @@
-import { useMutation } from '@tanstack/react-query'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router'
 import { useConnectedContext } from '../../core/context/ConnectedContext'
@@ -16,6 +16,7 @@ export const LogAs = () => {
   const { m } = useI18n()
   const { setConnectedUser, api: api } = useConnectedContext()
   const navigate = useNavigate()
+  const queryClient = useQueryClient()
 
   const _logAs = useMutation({
     mutationFn: (email: string) => api.public.authenticate.logAs(email),
@@ -25,6 +26,7 @@ export const LogAs = () => {
     const user = await _logAs.mutateAsync(form.email)
     setConnectedUser(user)
     navigate('/')
+    queryClient.resetQueries()
   }
 
   const {

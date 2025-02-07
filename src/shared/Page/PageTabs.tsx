@@ -7,13 +7,19 @@ interface Props {
   children: Array<ReactElement<PageTabProps> | undefined>
 }
 
+const removeRelativePath = (path: string) => {
+  const splittedPath = path.split('../')
+  if (splittedPath.length > 1) return splittedPath[1]
+  else return splittedPath[0]
+}
+
 export const PageTabs = ({ children }: Props) => {
   const { pathname } = useLocation()
   const defaultTabIndex = 0
   const index = useMemo(() => {
     const currentTabIndex = children
       .map((child) => child?.props.to)
-      .findIndex((path) => path && pathname.includes(path))
+      .findIndex((path) => path && pathname.includes(removeRelativePath(path)))
     return currentTabIndex !== -1 ? currentTabIndex : defaultTabIndex
   }, [pathname, children])
 
