@@ -1,5 +1,5 @@
 import { regexp } from './regexp'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router'
 import { parse as _parse, stringify as _stringify } from 'qs'
 import { useLocation } from 'react-router'
 

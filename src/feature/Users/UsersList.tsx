@@ -1,7 +1,7 @@
 import { Icon, Tooltip } from '@mui/material'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useCallback } from 'react'
-import { NavLink } from 'react-router-dom'
+import { NavLink } from 'react-router'
 import { ScInput } from 'shared/ScInput'
 import { IconBtn, Txt } from '../../alexlibs/mui-extension'
 import {
@@ -71,6 +71,7 @@ const UsersList = ({ adminView }: Props) => {
     onSuccess: (user) => {
       setConnectedUser(user)
       navigate('/')
+      queryClient.resetQueries()
     },
   })
 
@@ -160,7 +161,8 @@ const UsersList = ({ adminView }: Props) => {
             <Tooltip title={m.authAttemptsHistory}>
               <NavLink
                 to={
-                  siteMap.logged.users.basePath() +
+                  siteMap.logged.users.value +
+                  '/' +
                   siteMap.logged.users.auth_attempts.value(_.email)
                 }
               >

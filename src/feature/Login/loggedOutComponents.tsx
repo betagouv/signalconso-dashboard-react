@@ -3,7 +3,7 @@ import { Alert } from 'alexlibs/mui-extension'
 import { config } from 'conf/config'
 import { useI18n } from 'core/i18n'
 import { siteMap } from 'core/siteMap'
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router'
 
 export function AlertNotForConso() {
   return (

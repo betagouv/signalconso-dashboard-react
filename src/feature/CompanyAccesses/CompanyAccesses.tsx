@@ -8,7 +8,7 @@ import {
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { UserDeleteDialog } from 'feature/Users/userDelete'
 import { useNavigate } from 'react-router'
-import { NavLink } from 'react-router-dom'
+import { NavLink } from 'react-router'
 import { ScMenu } from 'shared/Menu'
 import {
   CompanyAccess,
@@ -196,15 +196,13 @@ function CompanyAccessesLoaded({
           )}
         </div>
       </div>
-      <>
-        <Datatable
-          id="companyaccesses"
-          data={data}
-          loading={_accesses.isLoading || _tokens.isLoading}
-          getRenderRowKey={getRowKey}
-          columns={[emailColumn, levelColumn, actionsColumn]}
-        />
-      </>
+      <Datatable
+        id="companyaccesses"
+        data={data}
+        loading={_accesses.isLoading || _tokens.isLoading}
+        getRenderRowKey={getRowKey}
+        columns={[emailColumn, levelColumn, actionsColumn]}
+      />
     </>
   )
 }
@@ -361,12 +359,14 @@ function ActionsColumn({
   const email = getEmail(_)
   const isAdmin = connectedUser.isAdmin
   const navigate = useNavigate()
+  const queryClient = useQueryClient()
 
   const _logAs = useMutation({
     mutationFn: (email: string) => api.public.authenticate.logAs(email),
     onSuccess: (user) => {
       setConnectedUser(user)
       navigate('/')
+      queryClient.resetQueries()
     },
   })
 
@@ -395,32 +395,28 @@ function ActionsColumn({
 
   const authAttemptsHistoryMenuItem =
     isAdmin && _.kind === 'actual_access' && _.userId ? (
-      <>
-        <NavLink
-          to={`${
-            siteMap.logged.users.root
-          }/${siteMap.logged.users.auth_attempts.value(_.email)}`}
-        >
-          <MenuItem>
-            <ListItemIcon>
-              <Icon>manage_search</Icon>
-            </ListItemIcon>
-            <ListItemText>{m.authAttemptsHistory}</ListItemText>
-          </MenuItem>
-        </NavLink>
-      </>
+      <NavLink
+        to={`${
+          siteMap.logged.users.value
+        }/${siteMap.logged.users.auth_attempts.value(_.email)}`}
+      >
+        <MenuItem>
+          <ListItemIcon>
+            <Icon>manage_search</Icon>
+          </ListItemIcon>
+          <ListItemText>{m.authAttemptsHistory}</ListItemText>
+        </MenuItem>
+      </NavLink>
     ) : undefined
 
   const impersonateMenuItem =
     isAdmin && email ? (
-      <>
-        <MenuItem onClick={() => _logAs.mutate(email)}>
-          <ListItemIcon>
-            <Icon>theater_comedy</Icon>
-          </ListItemIcon>
-          <ListItemText>Se connecter en tant que</ListItemText>
-        </MenuItem>
-      </>
+      <MenuItem onClick={() => _logAs.mutate(email)}>
+        <ListItemIcon>
+          <Icon>theater_comedy</Icon>
+        </ListItemIcon>
+        <ListItemText>Se connecter en tant que</ListItemText>
+      </MenuItem>
     ) : undefined
 
   const copyInviteMenuItem =

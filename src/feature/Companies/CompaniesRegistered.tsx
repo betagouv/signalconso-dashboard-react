@@ -9,7 +9,7 @@ import {
 } from '@mui/material'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useCallback, useEffect, useMemo, useState } from 'react'
-import { NavLink } from 'react-router-dom'
+import { NavLink } from 'react-router'
 import { AlbertActivityLabel } from 'shared/albert/AlbertActivityLabel'
 import { Fender, IconBtn, Txt } from '../../alexlibs/mui-extension'
 import {

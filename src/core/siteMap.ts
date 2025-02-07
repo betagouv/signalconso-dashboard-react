@@ -4,10 +4,14 @@ import { ReportSearch } from './client/report/ReportSearch'
 import { Id } from './model'
 import { stringify } from 'qs'
 
+export function relativeToParent(path: string): string {
+  return `../${path}`
+}
+
 export const siteMap = {
   logged: {
     tools: {
-      value: '/tools/*',
+      value: '/tools',
       test: {
         value: 'test',
       },
@@ -17,7 +21,7 @@ export const siteMap = {
     },
 
     reportedWebsites: {
-      value: '/moderation-url-entreprises/*',
+      value: '/moderation-url-entreprises',
       unknown: {
         value: 'sites-internet/non-identifies',
       },
@@ -38,7 +42,7 @@ export const siteMap = {
     exports: `/mes-telechargements`,
 
     companies: {
-      value: '/entreprises/*',
+      value: '/entreprises',
       toActivate: {
         value: `a-activer`,
       },
@@ -68,13 +72,7 @@ export const siteMap = {
     usersPro: `/mes-utilisateurs`,
     joinInformation: `/information`,
     users: {
-      root: '/users',
-      value: function () {
-        return `${this.root}/*`
-      },
-      basePath: function () {
-        return `${this.root}/`
-      },
+      value: '/users',
       auth_attempts: {
         value: (email?: string) =>
           `auth-attempts` + (email ? toQueryString({ email }) : ``),
@@ -101,7 +99,7 @@ export const siteMap = {
     modeEmploiDGCCRF: `/mode-emploi-dgccrf`,
 
     stats: {
-      value: '/stats/*',
+      value: '/stats',
       pro: {
         value: 'pro-stats',
       },

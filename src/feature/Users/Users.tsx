@@ -1,6 +1,6 @@
-import { Route } from 'react-router-dom'
+import { Route } from 'react-router'
 import { useI18n } from '../../core/i18n'
-import { siteMap } from '../../core/siteMap'
+import { relativeToParent, siteMap } from '../../core/siteMap'
 import { Page, PageTitle } from '../../shared/Page'
 import { PageTab, PageTabs } from '../../shared/Page/PageTabs'
 import { ConsumerBlacklist } from './ConsumerBlacklist'
@@ -20,50 +20,68 @@ export const Users = () => {
       <PageTitle>{m.menu_users}</PageTitle>
       {connectedUser.isSuperAdmin ? (
         <PageTabs>
-          <PageTab to={siteMap.logged.users.agent.value} label={m.agentUsers} />
           <PageTab
-            to={siteMap.logged.users.agent_pending.value}
+            to={relativeToParent(siteMap.logged.users.agent.value)}
+            label={m.agentUsers}
+          />
+          <PageTab
+            to={relativeToParent(siteMap.logged.users.agent_pending.value)}
             label={m.agentUsersPending}
           />
-          <PageTab to={siteMap.logged.users.admin.value} label={m.adminUsers} />
           <PageTab
-            to={siteMap.logged.users.consumer_validation.value}
+            to={relativeToParent(siteMap.logged.users.admin.value)}
+            label={m.adminUsers}
+          />
+          <PageTab
+            to={relativeToParent(
+              siteMap.logged.users.consumer_validation.value,
+            )}
             label={m.consumersPending}
           />
           <PageTab
-            to={siteMap.logged.users.auth_attempts.value()}
+            to={relativeToParent(siteMap.logged.users.auth_attempts.value())}
             label={m.authAttempts}
           />
           <PageTab
-            to={siteMap.logged.users.blacklist.value}
+            to={relativeToParent(siteMap.logged.users.blacklist.value)}
             label={m.blacklistedConsumers}
           />
         </PageTabs>
       ) : (
         <PageTabs>
-          <PageTab to={siteMap.logged.users.agent.value} label={m.agentUsers} />
           <PageTab
-            to={siteMap.logged.users.agent_pending.value}
+            to={relativeToParent(siteMap.logged.users.agent.value)}
+            label={m.agentUsers}
+          />
+          <PageTab
+            to={relativeToParent(siteMap.logged.users.agent_pending.value)}
             label={m.agentUsersPending}
           />
           <PageTab
-            to={siteMap.logged.users.consumer_validation.value}
+            to={relativeToParent(
+              siteMap.logged.users.consumer_validation.value,
+            )}
             label={m.consumersPending}
           />
           <PageTab
-            to={siteMap.logged.users.auth_attempts.value()}
+            to={relativeToParent(siteMap.logged.users.auth_attempts.value())}
             label={m.authAttempts}
           />
           <PageTab
-            to={siteMap.logged.users.blacklist.value}
+            to={relativeToParent(siteMap.logged.users.blacklist.value)}
             label={m.blacklistedConsumers}
           />
         </PageTabs>
       )}
       <Routes>
         <Route
-          path="/*"
-          element={<Navigate replace to={siteMap.logged.users.agent.value} />}
+          path="*"
+          element={
+            <Navigate
+              replace
+              to={relativeToParent(siteMap.logged.users.agent.value)}
+            />
+          }
         />
         <Route
           path={siteMap.logged.users.agent.value}

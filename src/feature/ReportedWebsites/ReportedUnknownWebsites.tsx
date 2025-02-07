@@ -5,7 +5,7 @@ import { Panel } from '../../shared/Panel'
 import { Datatable } from '../../shared/Datatable/Datatable'
 import { DebouncedInput } from '../../shared/DebouncedInput'
 
-import { NavLink } from 'react-router-dom'
+import { NavLink } from 'react-router'
 import { siteMap } from '../../core/siteMap'
 import { Btn, IconBtn, Txt } from '../../alexlibs/mui-extension'
 import { ExportUnknownWebsitesPopper } from '../../shared/ExportPopperBtn'

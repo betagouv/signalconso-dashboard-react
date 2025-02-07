@@ -1,7 +1,7 @@
 import { Page, PageTitle } from '../../shared/Page'
 import { PageTab, PageTabs } from '../../shared/Page/PageTabs'
-import { siteMap } from '../../core/siteMap'
-import { Route } from 'react-router-dom'
+import { relativeToParent, siteMap } from '../../core/siteMap'
+import { Route } from 'react-router'
 import React from 'react'
 import { useConnectedContext } from '../../core/context/ConnectedContext'
 import { TestTools } from './TestTools'
@@ -17,19 +17,24 @@ export const Tools = () => {
       {connectedUser.isAdmin && (
         <PageTabs>
           <PageTab
-            to={siteMap.logged.tools.test.value}
+            to={relativeToParent(siteMap.logged.tools.test.value)}
             label="Outils de tests"
           />
           <PageTab
-            to={siteMap.logged.tools.admin.value}
+            to={relativeToParent(siteMap.logged.tools.admin.value)}
             label="Outils d'administration"
           />
         </PageTabs>
       )}
       <Routes>
         <Route
-          path="/*"
-          element={<Navigate replace to={siteMap.logged.tools.test.value} />}
+          path="*"
+          element={
+            <Navigate
+              replace
+              to={relativeToParent(siteMap.logged.tools.test.value)}
+            />
+          }
         />
         <Route path={siteMap.logged.tools.test.value} element={<TestTools />} />
         <Route

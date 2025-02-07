@@ -9,7 +9,7 @@ import {
   ReportSearchResult,
 } from 'core/model'
 import { UseQueryPaginateResult } from 'core/queryhooks/UseQueryPaginate'
-import { NavLink } from 'react-router-dom'
+import { NavLink } from 'react-router'
 import { Fender, IconBtn, Txt } from '../../alexlibs/mui-extension'
 import { EntityIcon } from '../../core/EntityIcon'
 import { textOverflowMiddleCropping } from '../../core/helper'

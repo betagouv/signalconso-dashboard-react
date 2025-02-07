@@ -1,6 +1,6 @@
 import React, { ReactNode } from 'react'
 import { Tooltip } from '@mui/material'
-import { NavLink } from 'react-router-dom'
+import { NavLink } from 'react-router'
 import { siteMap } from '../../core/siteMap'
 import { ReportSearch } from '../../core/client/report/ReportSearch'
 import { useLocation, useNavigate } from 'react-router'

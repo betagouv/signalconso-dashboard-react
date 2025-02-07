@@ -7,7 +7,7 @@ import {
 import { ScOption } from 'core/helper/ScOption'
 import type { Dictionary } from 'lodash'
 import { useMemo, useState } from 'react'
-import { NavLink } from 'react-router-dom'
+import { NavLink } from 'react-router'
 import { CleanDiscreetPanel } from 'shared/Panel/simplePanels'
 import { Btn, Fender, Txt } from '../../alexlibs/mui-extension'
 import { useApiContext } from '../../core/context/ApiContext'
@@ -128,14 +128,14 @@ export const CompaniesPro = () => {
         <div className="mb-8">
           <CleanDiscreetPanel>
             <div className="flex gap-2 justify-between flex-col xl:flex-row">
-              <p>
+              <div>
                 <Txt block size="big" bold>
                   {m.notifications}
                 </Txt>
                 <Txt block color="hint">
                   {m.notificationAcceptForCompany}
                 </Txt>
-              </p>
+              </div>
               <div className="flex gap-2">
                 <ScButton
                   disabled={allNotificationsAreBlocked}

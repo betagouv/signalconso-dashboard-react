@@ -1,6 +1,6 @@
 import { Box, Icon, Skeleton, Tooltip } from '@mui/material'
 import { ScOption } from 'core/helper/ScOption'
-import { NavLink } from 'react-router-dom'
+import { NavLink } from 'react-router'
 import { CleanInvisiblePanel } from 'shared/Panel/simplePanels'
 import { useMemoFn } from '../../../alexlibs/react-hooks-lib'
 import { useI18n } from '../../../core/i18n'

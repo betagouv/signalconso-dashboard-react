@@ -17,7 +17,7 @@ import { GetReportQueryKeys } from '../../../core/queryhooks/reportQueryHooks'
 import { CleanDiscreetPanel, CleanWidePanel } from 'shared/Panel/simplePanels'
 import { UserNameLabel } from '../../../shared/UserNameLabel'
 import { Icon } from '@mui/material'
-import { NavLink } from 'react-router-dom'
+import { NavLink } from 'react-router'
 import { siteMap } from '../../../core/siteMap'
 
 interface Props {
