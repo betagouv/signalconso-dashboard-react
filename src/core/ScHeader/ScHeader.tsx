@@ -11,7 +11,6 @@ import logoDgccrf from './logo-dgccrf.png'
 import logoSignalConso from './logo-signalconso.png'
 import { siteMap } from '../siteMap'
 import { useLocation } from 'react-router'
-import * as path from 'node:path'
 
 const HeaderItem = ({ children, href }: { children: any; href: string }) => {
   return (

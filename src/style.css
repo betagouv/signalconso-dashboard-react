@@ -1,6 +1,25 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+
+@theme {
+  --color-scbluefrance: #000091;
+  --color-scdarkblue: #1e2b50;
+  --color-sclightpurple: #e3e3fd;
+  --color-sclightpurpledarker: #cacafb;
+  --color-scpurplepop: #6a6af4;
+
+  /* made with https://uicolors.app/create */
+  --color-desert-50: #faf6ec;
+  --color-desert-100: #f3e8ce;
+  --color-desert-200: #e9d09f;
+  --color-desert-300: #dbb069;
+  --color-desert-400: #d0943f;
+  --color-desert-500: #c07f32;
+  --color-desert-600: #a76329;
+  --color-desert-700: #854823;
+  --color-desert-800: #6f3c24;
+  --color-desert-900: #5f3324;
+  --color-desert-950: #371911;
+}
 
 .MuiFormHelperText-root {
   /* a bit bigger than the default */
