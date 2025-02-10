@@ -5,7 +5,7 @@
   "repository": "https://github.com/betagouv/signalconso-dashboard-react/pulls",
   "type": "module",
   "engines": {
-    "node": "16.15.1"
+    "node": "22.13.1"
   },
   "scripts": {
     "analyze": "source-map-explorer 'build/static/js/*.js'",
@@ -19,6 +19,12 @@
     "checkformat": "npx prettier --check .",
     "checktypes": "tsc --noEmit",
     "checkall": "yarn checktypes && yarn checkformat"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
   },
   "browserslist": {
     "production": [
@@ -78,6 +84,7 @@
     "typescript": "5.7.2",
     "typescript-eslint": "^8.22.0",
     "vite": "^6.1.0",
+    "vite-plugin-eslint": "^1.8.1",
     "vite-tsconfig-paths": "^5.1.4",
     "vitest": "^3.0.5"
   },
