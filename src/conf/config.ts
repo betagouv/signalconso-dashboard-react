@@ -41,7 +41,8 @@ export const config = {
   sentry_traceRate: readInt(import.meta.env.VITE_APP_SENTRY_TRACE_RATE, 0.5),
   enableMatomo: import.meta.env.VITE_APP_ENABLE_MATOMO === 'true',
   infoBanner: import.meta.env.VITE_APP_INFO_BANNER,
-  showPredefinedUsers: import.meta.env.VITE_APP_SHOW_PREDEFINED_USERS === 'true',
+  showPredefinedUsers:
+    import.meta.env.VITE_APP_SHOW_PREDEFINED_USERS === 'true',
   showReportAssignement: true,
   infoBannerSeverity:
     readSeverity(import.meta.env.VITE_APP_INFO_BANNER_SEVERITY) ?? 'warning',
