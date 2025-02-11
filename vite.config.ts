@@ -3,6 +3,7 @@ import react from '@vitejs/plugin-react'
 import viteTsconfigPaths from 'vite-tsconfig-paths'
 import tailwindcss from '@tailwindcss/vite'
 import eslint from 'vite-plugin-eslint'
+import browserslistToEsbuild from 'browserslist-to-esbuild'
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -17,5 +18,6 @@ export default defineConfig({
   build: {
     outDir: './build',
     emptyOutDir: true,
+    target: browserslistToEsbuild(),
   },
 })
