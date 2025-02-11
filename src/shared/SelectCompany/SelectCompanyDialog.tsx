@@ -30,8 +30,10 @@ export const SelectCompanyDialog = ({
       )}
       confirmDisabled={!selected}
       onConfirm={(e, close) => {
-        selected && onChange(selected)
-        close()
+        if (selected) {
+          onChange(selected)
+        }
+        return close()
       }}
       confirmLabel={m.validate}
     >

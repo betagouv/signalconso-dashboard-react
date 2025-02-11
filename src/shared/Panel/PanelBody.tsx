@@ -1,9 +1,9 @@
 import * as React from 'react'
 import { CardContent as MuiCardContent, CardContentProps } from '@mui/material'
 
-interface Props extends CardContentProps {}
+type PanelBodyProps = CardContentProps
 
-export const PanelBody = ({ sx, children, ...other }: Props) => {
+export const PanelBody = ({ sx, children, ...other }: PanelBodyProps) => {
   return (
     <MuiCardContent
       {...other}

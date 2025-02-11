@@ -22,7 +22,9 @@ export const UpdateEmail = () => {
   })
 
   useEffect(() => {
-    token && _updateEmail.mutate(token)
+    if (token) {
+      _updateEmail.mutate(token)
+    }
   }, [token])
 
   return _updateEmail.isPending ? (

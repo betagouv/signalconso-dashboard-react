@@ -16,7 +16,7 @@ interface Props<T> {
   options?: T[]
 }
 
-export const AutocompleteDialog = <T extends unknown>({
+export const AutocompleteDialog = <T,>({
   children,
   inputLabel,
   value,

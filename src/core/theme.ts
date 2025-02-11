@@ -1,4 +1,5 @@
-import { createTheme, SxProps, Theme } from '@mui/material'
+import { SxProps, Theme } from '@mui/material'
+import createTheme from '@mui/material/styles/createTheme'
 import { ThemeOptions } from '@mui/material/styles/createTheme'
 import { colorBlueFrance } from 'alexlibs/mui-extension/color'
 import { makeSx } from '../alexlibs/mui-extension'
@@ -77,9 +78,6 @@ export const muiTheme = (): Theme => {
         styleOverrides: {
           '*': {
             boxSizing: 'border-box',
-          },
-          a: {
-            textDecoration: 'underline',
           },
         },
       },

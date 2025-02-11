@@ -108,6 +108,7 @@ const ReportViewStandard = ({
     enabled: enableReviewQueries,
   })
   const _getCompanyEvents = useGetCompanyEventsQuery(
+    // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
     _getReport.data?.report.companySiret!,
     {
       enabled: !!_getReport.data?.report.companySiret,
@@ -292,9 +293,10 @@ const ReportViewStandard = ({
                     borderBottom: (t) => '1px solid ' + t.palette.divider,
                   }}
                   value={activeTab}
-                  onChange={(event: React.ChangeEvent<{}>, newValue: number) =>
-                    setActiveTab(newValue)
-                  }
+                  onChange={(
+                    event: React.ChangeEvent<object>,
+                    newValue: number,
+                  ) => setActiveTab(newValue)}
                   indicatorColor="primary"
                   textColor="primary"
                 >

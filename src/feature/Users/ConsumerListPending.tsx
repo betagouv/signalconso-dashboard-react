@@ -126,7 +126,7 @@ const Action = (props: {
   const _validate = useMutation({
     mutationFn: () => api.secured.consumerEmailValidation.validate(_.email),
     onSuccess: (data) => {
-      data.valid
+      return data.valid
         ? setStatus(EmailValidationStatus.Valid)
         : setStatus(_.validationStatus)
     },

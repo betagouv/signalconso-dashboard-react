@@ -302,7 +302,7 @@ function CompaniesProRow({
               disabled={!blockedNotificationIndex}
               checked={!blockedNotificationIndex?.[_.id]}
               onChange={(e) => {
-                e.target.checked
+                return e.target.checked
                   ? _remove.mutate([_.id])
                   : setCurrentlyDisablingNotificationsForCompanies(_.id)
               }}

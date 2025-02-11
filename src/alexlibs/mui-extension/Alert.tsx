@@ -82,13 +82,12 @@ export const Alert = ({
         //   paddingRight: t.spacing(3),
         // },
         transition: (t) => t.transitions.create('all'),
-        // @ts-ignore
+        // @ts-expect-error: Property 'dense' does not exist
         minHeight: height(props.dense),
         display: 'flex',
         alignItems: 'center',
         overflow: 'hidden',
         borderRadius: '4px',
-        // @ts-ignore
         paddingLeft: dense ? 1 : 2,
         paddingRight: dense ? 1 : 2,
         ...{

@@ -8,7 +8,6 @@ interface SelectDepartmentsProps {
   value?: SelectTagsMenuValues
   onChange?: (_: SelectTagsMenuValues) => void
   placeholder?: string
-  selectAllLabel?: string
   style?: CSSProperties
   readonly?: boolean
   className?: string
@@ -23,7 +22,6 @@ export const SelectTags = forwardRef(
       value,
       readonly,
       onChange,
-      selectAllLabel,
       label,
       disabled,
       ...props

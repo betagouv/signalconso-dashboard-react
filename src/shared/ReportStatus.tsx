@@ -41,7 +41,7 @@ export const reportStatusProColor = {
 export const isStatusFinal = (status: ReportStatus) => {
   return Report.closedStatus.includes(status)
 }
-export const isStatusInvisibleToPro = (status: ReportStatus): Boolean => {
+export const isStatusInvisibleToPro = (status: ReportStatus): boolean => {
   return Report.invisibleToProStatus.includes(status)
 }
 

@@ -1,9 +1,9 @@
 import { Box, BoxProps } from '@mui/material'
 import { styleUtils } from '../../core/theme'
 
-interface Props extends BoxProps {}
+type PanelTitleProps = BoxProps
 
-export const PanelTitle = ({ sx, ...props }: Props) => {
+export const PanelTitle = ({ sx, ...props }: PanelTitleProps) => {
   return (
     <Box
       component="h3"

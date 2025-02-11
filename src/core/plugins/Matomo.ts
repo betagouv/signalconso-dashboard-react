@@ -146,7 +146,7 @@ export enum AnalyticActionName {
 
 export function injectMatomoScript() {
   if (MATOMO_ENABLED) {
-    var _paq = ((window as any)._paq = (window as any)._paq || [])
+    const _paq = ((window as any)._paq = (window as any)._paq || [])
     /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
     _paq.push(['setDocumentTitle', document.domain + '/' + document.title])
     _paq.push(['setCookieDomain', 'admin.signal.conso.gouv.fr'])
@@ -155,10 +155,10 @@ export function injectMatomoScript() {
     _paq.push(['enableLinkTracking'])
     _paq.push(['HeatmapSessionRecording::enable'])
     ;(function () {
-      var u = 'https://stats.beta.gouv.fr/'
+      const u = 'https://stats.beta.gouv.fr/'
       _paq.push(['setTrackerUrl', u + 'matomo.php'])
       _paq.push(['setSiteId', '62'])
-      var d = document,
+      const d = document,
         g = d.createElement('script'),
         s = d.getElementsByTagName('script')[0]
       g.async = true

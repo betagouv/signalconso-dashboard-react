@@ -303,7 +303,7 @@ function ReportClosedLabel({
             )
           case 'no_response':
             return `Signalement cloturé : vous deviez répondre avant le ${formatDate(closedReason.expirationDate)}.`
-          case 'response':
+          case 'response': {
             const user = closedReason.responseEvent?.user
             if (user) {
               return (
@@ -320,6 +320,7 @@ function ReportClosedLabel({
               )
             }
             return 'Signalement cloturé.'
+          }
         }
       })()}
     </div>
@@ -331,7 +332,7 @@ const AssignedUserLabel = ({
   hasToRespond,
 }: {
   user?: MinimalUser
-  hasToRespond: Boolean
+  hasToRespond: boolean
 }) => {
   return user ? (
     <span>{buildOptionFromUser(user).fullName} </span>

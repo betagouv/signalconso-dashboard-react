@@ -46,7 +46,7 @@ export const DeleteSpamReportsAdminTool = () => {
         const res = await _deleteReports.mutateAsync(validUUIDs)
         toastSuccess(`Nombre de signalements traités : ${res.length}`)
       } catch (error) {
-        // @ts-ignore
+        // @ts-expect-error: Argument of type 'unknown' is not assignable to parameter of type 'Partial<ApiError>'
         toastError(error)
       }
     }

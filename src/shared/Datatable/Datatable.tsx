@@ -83,7 +83,7 @@ const sxStickyEnd: SxProps<Theme> = {
   background: (t) => t.palette.background.paper,
 }
 
-export const Datatable = <T extends any = any>({
+export const Datatable = <T,>({
   id,
   loading,
   total,

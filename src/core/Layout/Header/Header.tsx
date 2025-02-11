@@ -3,9 +3,9 @@ import { IconBtn } from '../../../alexlibs/mui-extension'
 import { useLayoutContext } from '../../context/LayoutContext'
 import { layoutConfig } from '../layoutConfig'
 
-interface Props extends BoxProps {}
+type HeaderProps = BoxProps
 
-export const Header = ({ children }: Props) => {
+export const Header = ({ children }: HeaderProps) => {
   const { sidebarOpen, showSidebarButton, setSidebarOpen } = useLayoutContext()
 
   return (
