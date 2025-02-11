@@ -1,9 +1,14 @@
 @import 'tailwindcss';
 
 @layer base {
+  /* To keep the same behaviour as tailwind v3 */
   button:not(:disabled),
   [role='button']:not(:disabled) {
     cursor: pointer;
+  }
+  /* Migrated from our MUI custom theme. It was conflicting with tailwind */
+  a {
+    text-decoration: underline;
   }
 }
 
