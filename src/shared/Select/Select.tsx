@@ -9,7 +9,7 @@ type ScSelectProps<T> = SelectProps<T> & {
   small?: boolean
 }
 
-const _ScSelect = <T,>(
+const InnerScSelect = <T,>(
   {
     id: argId,
     label,
@@ -51,6 +51,6 @@ const _ScSelect = <T,>(
 /**
  * Workaround because forwardRef break the generic type of ScSelect.
  */
-export const ScSelect = React.forwardRef(_ScSelect) as <T>(
+export const ScSelect = React.forwardRef(InnerScSelect) as <T>(
   props: ScSelectProps<T> & { ref?: React.ForwardedRef<any> },
-) => ReturnType<typeof _ScSelect>
+) => ReturnType<typeof InnerScSelect>

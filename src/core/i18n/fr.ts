@@ -222,7 +222,7 @@ export const fr = {
     startedBy: 'Démarré le',
     receivedAt: 'Reçu le',
     expireOn: 'À répondre avant le',
-    warnExpireOn: (date: String) => `Expire le ${date}`,
+    warnExpireOn: (date: string) => `Expire le ${date}`,
     pin: `Épingler`,
     endedAt: 'Terminé le',
     anonymous: 'Anonyme',

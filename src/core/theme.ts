@@ -78,9 +78,6 @@ export const muiTheme = (): Theme => {
           '*': {
             boxSizing: 'border-box',
           },
-          a: {
-            textDecoration: 'underline',
-          },
         },
       },
       MuiTableCell: {

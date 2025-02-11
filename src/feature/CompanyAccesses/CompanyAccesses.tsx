@@ -49,7 +49,7 @@ type RowData =
       userId: Id
       level: CompanyAccessLevel
       editable: boolean
-      isHeadOffice: Boolean
+      isHeadOffice: boolean
     }
   | ({
       kind: 'invitation'

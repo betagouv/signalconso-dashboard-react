@@ -7,8 +7,7 @@ import eslint from 'vite-plugin-eslint'
 // https://vite.dev/config/
 export default defineConfig({
   base: '/',
-  // plugins: [react(), viteTsconfigPaths(), tailwindcss(), eslint()],
-  plugins: [react(), viteTsconfigPaths(), tailwindcss()], // Remove this line to enable eslint
+  plugins: [react(), viteTsconfigPaths(), tailwindcss(), eslint()],
   server: {
     // this ensures that the browser opens upon server start
     open: true,

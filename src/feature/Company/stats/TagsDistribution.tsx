@@ -50,7 +50,7 @@ export function TagsDistribution({
                 )
                 return (
                   <ReportSearchNavLink
-                    className={'no-underline'}
+                    className="no-underline"
                     reportSearch={{
                       withTags: toReportTag(entry.label),
                     }}

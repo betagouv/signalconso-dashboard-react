@@ -31,7 +31,7 @@ export interface ReportSearch {
   responseEvaluation?: ResponseEvaluation[]
   hasEngagementEvaluation?: boolean
   engagementEvaluation?: ResponseEvaluation[]
-  fullText?: String
+  fullText?: string
   isForeign?: boolean
   hasBarcode?: boolean
   isBookmarked?: boolean

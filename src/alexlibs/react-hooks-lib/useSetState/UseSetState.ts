@@ -32,8 +32,8 @@ export const useSetState = <T>(initialValue: T[] = []): UseSetState<T> => {
     return returnValue
   }
 
-  const toggle = (t: T): void => {
-    set.has(t) ? remove(t) : add(t)
+  const toggle = (t: T): boolean | void => {
+    return set.has(t) ? remove(t) : add(t)
   }
 
   const toggleAll = (t: T[]): void => {

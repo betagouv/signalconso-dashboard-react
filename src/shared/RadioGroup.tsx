@@ -38,7 +38,7 @@ const isMultiple = <T,>(
   return !!multiple
 }
 
-const _ScRadioGroup = <T,>(
+const InnerScRadioGroup = <T,>(
   {
     inline,
     disabled,
@@ -127,6 +127,6 @@ const _ScRadioGroup = <T,>(
 /**
  * Workaround because forwardRef break the generic type of ScSelect.
  */
-export const ScRadioGroup = React.forwardRef(_ScRadioGroup as any) as <T>(
+export const ScRadioGroup = React.forwardRef(InnerScRadioGroup as any) as <T>(
   props: Props<T> & { ref?: React.ForwardedRef<any> },
-) => ReturnType<typeof _ScRadioGroup>
+) => ReturnType<typeof InnerScRadioGroup>

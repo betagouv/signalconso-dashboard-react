@@ -18,7 +18,7 @@ export const UsersAgentListPending = () => {
   const { connectedUser } = useConnectedContext()
   const { toastSuccess } = useToast()
   const copyActivationLink = (token: string) => {
-    let activationLink =
+    const activationLink =
       window.location.host + '/agent/rejoindre/?token=' + token
     navigator.clipboard
       .writeText(activationLink)

@@ -90,8 +90,10 @@ export const ReportAffectation = ({
       title={'Affectation du signalement'}
       loading={_assign.isPending}
       onConfirm={(event, close) => {
-        user && _assign.mutate({ reportId, newAssignedUserId: user })
-        close()
+        if (user) {
+          _assign.mutate({ reportId, newAssignedUserId: user })
+        }
+        return close()
       }}
       confirmLabel={m.validate}
       confirmDisabled={user === undefined || user === assignedUser?.id}

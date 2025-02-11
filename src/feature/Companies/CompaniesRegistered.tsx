@@ -131,7 +131,6 @@ export const CompaniesRegistered = () => {
   // TRELLO-1391 The object _companies change all the time.
   // If we put it in dependencies, it causes problems with the debounce,
   // and the search input "stutters" when typing fast
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   const onInputChange = useCallback((value: string) => {
     _companies.updateFilters((prev) => ({ ...prev, identity: value }))
   }, [])

@@ -88,15 +88,9 @@ export const CompanyChartPanel = ({
 
     switch (reportsCurvePeriod) {
       case 'Day':
-        const diffInDays = Math.floor(
-          diffInMilliseconds / (24 * 60 * 60 * 1000),
-        )
-        return diffInDays
+        return Math.floor(diffInMilliseconds / (24 * 60 * 60 * 1000))
       case 'Week':
-        const diffInWeeks = Math.floor(
-          diffInMilliseconds / (7 * 24 * 60 * 60 * 1000),
-        )
-        return diffInWeeks
+        return Math.floor(diffInMilliseconds / (7 * 24 * 60 * 60 * 1000))
       case 'Month':
         return reportsTick
     }

@@ -22,7 +22,7 @@ interface ScMultiSelectProps<T extends E[], E extends string>
   onChange?: (_: T) => void
 }
 
-const _ScMultiSelect = <T extends E[], E extends string>(
+const InnerScMultiSelect = <T extends E[], E extends string>(
   {
     id: argId,
     label,
@@ -119,9 +119,9 @@ const _ScMultiSelect = <T extends E[], E extends string>(
 /**
  * Workaround because forwardRef break the generic type of ScSelect.
  */
-export const ScMultiSelect = React.forwardRef(_ScMultiSelect) as <
+export const ScMultiSelect = React.forwardRef(InnerScMultiSelect) as <
   T extends E[],
   E extends string,
 >(
   props: ScMultiSelectProps<T, E> & { ref?: React.ForwardedRef<any> },
-) => ReturnType<typeof _ScMultiSelect>
+) => ReturnType<typeof InnerScMultiSelect>
