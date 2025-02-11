@@ -2276,7 +2276,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"browserslist-to-esbuild@npm:^2.1.1":
+"browserslist-to-esbuild@npm:2.1.1":
   version: 2.1.1
   resolution: "browserslist-to-esbuild@npm:2.1.1"
   dependencies:
@@ -2286,6 +2286,20 @@ __metadata:
   bin:
     browserslist-to-esbuild: cli/index.js
   checksum: 5e91b23ba5ac47412b7456bbb74ee11b35d1083163e9e8e001e48f3a975c65758a4559ab532812d8518877a1d8f68c5b649b88a08722b9543b38e633e6943f7d
+  languageName: node
+  linkType: hard
+
+"browserslist@npm:4.24.4":
+  version: 4.24.4
+  resolution: "browserslist@npm:4.24.4"
+  dependencies:
+    caniuse-lite: ^1.0.30001688
+    electron-to-chromium: ^1.5.73
+    node-releases: ^2.0.19
+    update-browserslist-db: ^1.1.1
+  bin:
+    browserslist: cli.js
+  checksum: 64074bf6cf0a9ae3094d753270e3eae9cf925149db45d646f0bc67bacc2e46d7ded64a4e835b95f5fdcf0350f63a83c3755b32f80831f643a47f0886deb8a065
   languageName: node
   linkType: hard
 
@@ -2360,6 +2374,13 @@ __metadata:
   version: 1.0.30001696
   resolution: "caniuse-lite@npm:1.0.30001696"
   checksum: 079be180f364b63fb85415fa3948d1e9646aa655f8678a827e9b533712e14d727c2983397603ce7107b995226f6590d96bf26ef2032e756ef6ee09898feee5f9
+  languageName: node
+  linkType: hard
+
+"caniuse-lite@npm:^1.0.30001688":
+  version: 1.0.30001699
+  resolution: "caniuse-lite@npm:1.0.30001699"
+  checksum: 697172065537b0f33c428fe8561f4cba6796428dc8e3e56f78eee28404edfcbea70d48bb109ab6c6536de6da90e331058a2cb8ef3a15c58b2226c96ee558bc07
   languageName: node
   linkType: hard
 
@@ -2783,6 +2804,13 @@ __metadata:
   version: 1.5.63
   resolution: "electron-to-chromium@npm:1.5.63"
   checksum: aa3d0a48753af052158ef3e46d65042b91f1934a4ab02732a0ce27429ba989dea7e4badbf991e58dff8acf5e64b967a964b61985c05ce45e03457c4f917a06f8
+  languageName: node
+  linkType: hard
+
+"electron-to-chromium@npm:^1.5.73":
+  version: 1.5.97
+  resolution: "electron-to-chromium@npm:1.5.97"
+  checksum: e41173d90ab1c6b8d4767d7c2533f41545c8a37fbf288197137189773d0b630e00b7c54d0361c2f3357833dd41bfa79a6328cb739b34066abb708eae3c90c0fc
   languageName: node
   linkType: hard
 
@@ -4349,6 +4377,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"node-releases@npm:^2.0.19":
+  version: 2.0.19
+  resolution: "node-releases@npm:2.0.19"
+  checksum: 917dbced519f48c6289a44830a0ca6dc944c3ee9243c468ebd8515a41c97c8b2c256edb7f3f750416bc37952cc9608684e6483c7b6c6f39f6bd8d86c52cfe658
+  languageName: node
+  linkType: hard
+
 "nopt@npm:^6.0.0":
   version: 6.0.0
   resolution: "nopt@npm:6.0.0"
@@ -5103,7 +5138,8 @@ __metadata:
     "@types/uuid": ^9.0.8
     "@vitejs/plugin-react": ^4.3.4
     axios: 1.7.8
-    browserslist-to-esbuild: ^2.1.1
+    browserslist: 4.24.4
+    browserslist-to-esbuild: 2.1.1
     core-js: 3.39.0
     date-fns: 2.30.0
     date-fns-tz: ^1.3.8
