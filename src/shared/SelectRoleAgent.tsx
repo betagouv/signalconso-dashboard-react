@@ -32,7 +32,7 @@ export const SelectRoleAgent = ({
       style={{ flexDirection: 'row' }}
       value={parsedValue}
       onChange={(e, value: string) => {
-        value === 'DGAL' || value === 'DGCCRF'
+        return value === 'DGAL' || value === 'DGCCRF'
           ? onChange([value])
           : onChange(roleAgents.map((_) => _))
       }}

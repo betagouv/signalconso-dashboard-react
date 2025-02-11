@@ -39,7 +39,7 @@ export const CompaniesToFollowUp = () => {
   const selectedCompaniesSet = useSetState<string>([])
 
   const toggleSelectedCompany = (companyId: Id) => {
-    selectedCompaniesSet.has(companyId)
+    return selectedCompaniesSet.has(companyId)
       ? selectedCompaniesSet.delete(companyId)
       : selectedCompaniesSet.add(companyId)
   }

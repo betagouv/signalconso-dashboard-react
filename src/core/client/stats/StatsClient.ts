@@ -339,7 +339,7 @@ class StatsCurveClient {
     curve: CountByDate[],
     baseCurve: CountByDate[],
   ): Promise<CountByDate[]> => {
-    let res: CountByDate[] = []
+    const res: CountByDate[] = []
     for (let i = 0; i < curve.length; i++) {
       if (curve[i].date.getTime() !== baseCurve[i].date.getTime()) {
         console.error(

@@ -1,4 +1,5 @@
 import { validatePasswordComplexity } from './passwordComplexity'
+import { describe, expect, test } from 'vitest'
 
 describe('validate password complexity', () => {
   test('complex password should pass', () => {

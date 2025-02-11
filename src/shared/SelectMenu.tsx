@@ -79,7 +79,7 @@ export const SelectMenu = <T,>({
           dense
           onClick={() => {
             if (multiple) {
-              const newValue = !!innerValue.find((_) => _ === option)
+              const newValue = innerValue.find((_) => _ === option)
                 ? innerValue.filter((_) => _ !== option)
                 : [...innerValue, option]
               onChange(newValue)

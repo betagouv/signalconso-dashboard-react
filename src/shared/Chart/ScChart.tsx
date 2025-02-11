@@ -69,9 +69,10 @@ const formatDate = (
   switch (period) {
     case 'Day':
       return format(date, 'yyyy-MM-dd')
-    case 'Week':
+    case 'Week': {
       const [y, w] = getWeek(date)
       return `S${w} ${y}`
+    }
     case 'Month':
     case undefined:
       return (m.monthShort_ as any)[date.getMonth() + 1]

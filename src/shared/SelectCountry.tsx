@@ -58,7 +58,9 @@ export const SelectCountry = ({ onChange, country }: Props) => {
         }}
         onChange={(event, newInputValue) => {
           const newCountry = ScOption.from(newInputValue).toUndefined()
-          newCountry && onChange(newCountry)
+          if (newCountry) {
+            return onChange(newCountry)
+          }
         }}
         options={_countries.data ?? []}
         getOptionLabel={(option) => option.name}

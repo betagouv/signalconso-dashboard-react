@@ -21,7 +21,7 @@ const ReportSearchNavLink: React.FC<ReportSearchLinkProps> = ({
   return (
     <Tooltip title="Rechercher sur la page des signalements">
       <NavLink
-        className={`${className}`}
+        className={className}
         key={location.key}
         to={siteMap.logged.reports(reportSearch)}
       >

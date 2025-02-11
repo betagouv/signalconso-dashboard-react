@@ -1,18 +1,20 @@
 {
-  "name": "@signalconso/dashboard-react",
-  "version": "0.1.0",
+  "name": "signalconso-dashboard-react",
+  "version": "1.0.0",
   "main": "build/",
   "repository": "https://github.com/betagouv/signalconso-dashboard-react/pulls",
+  "type": "module",
   "engines": {
-    "node": "16.15.1"
+    "node": "22.13.1"
   },
   "scripts": {
     "analyze": "source-map-explorer 'build/static/js/*.js'",
-    "dev": "react-scripts start",
-    "devdemo": "REACT_APP_API_BASE_URL=https://demo-signalement-api.cleverapps.io REACT_APP_COMPANY_API_BASE_URL=https://app-8d9df60d-88b2-4930-9f75-1068520ae39f.cleverapps.io react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test --transformIgnorePatterns \"node_modules/(?!@mui)/\"",
-    "eject": "react-scripts eject",
+    "dev": "vite",
+    "devdemo": "VITE_APP_API_BASE_URL=https://demo-signalement-api.cleverapps.io VITE_APP_COMPANY_API_BASE_URL=https://app-8d9df60d-88b2-4930-9f75-1068520ae39f.cleverapps.io vite",
+    "build": "tsc -b && vite build",
+    "preview": "vite preview",
+    "test": "vitest run",
+    "lint": "eslint .",
     "format": "npx prettier --write .",
     "checkformat": "npx prettier --check .",
     "checktypes": "tsc --noEmit",
@@ -20,8 +22,7 @@
   },
   "eslintConfig": {
     "extends": [
-      "react-app",
-      "react-app/jest"
+      "react-app"
     ]
   },
   "browserslist": {
@@ -46,8 +47,9 @@
     "@sentry/tracing": "7.120.0",
     "@tanstack/react-query": "^5.61.0",
     "@tanstack/react-query-devtools": "^5.61.0",
-    "@types/uuid": "^9.0.8",
     "axios": "1.7.8",
+    "browserslist": "4.24.4",
+    "browserslist-to-esbuild": "2.1.1",
     "core-js": "3.39.0",
     "date-fns": "2.30.0",
     "date-fns-tz": "^1.3.8",
@@ -58,12 +60,13 @@
     "react-dom": "18.3.1",
     "react-hook-form": "7.53.2",
     "react-router": "7.1.5",
-    "react-scripts": "5.0.1",
     "recharts": "2.13.3",
-    "tailwindcss": "^3.4.15"
+    "tailwindcss": "^4.0.5",
+    "uuid": "^11.0.5"
   },
   "devDependencies": {
-    "@types/jest": "29.5.14",
+    "@eslint/js": "^9.19.0",
+    "@tailwindcss/vite": "^4.0.5",
     "@types/lodash": "4.17.13",
     "@types/node": "22.5.1",
     "@types/qs": "6.9.17",
@@ -72,8 +75,19 @@
     "@types/react-router": "5.1.20",
     "@types/react-router-dom": "5.3.3",
     "@types/recharts": "1.8.29",
+    "@types/uuid": "^9.0.8",
+    "@vitejs/plugin-react": "^4.3.4",
+    "eslint": "^9.19.0",
+    "eslint-plugin-react-hooks": "^5.0.0",
+    "eslint-plugin-react-refresh": "^0.4.18",
+    "globals": "^15.14.0",
     "prettier": "3.4.2",
-    "typescript": "5.7.2"
+    "typescript": "5.7.2",
+    "typescript-eslint": "^8.22.0",
+    "vite": "^6.1.0",
+    "vite-plugin-eslint": "^1.8.1",
+    "vite-tsconfig-paths": "^5.1.4",
+    "vitest": "^3.0.5"
   },
   "packageManager": "yarn@3.2.1"
 }

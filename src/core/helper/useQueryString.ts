@@ -52,7 +52,9 @@ export const useQueryString = <E, QS extends ParsedUrlQueryInput>({
     const newQueryString = QueryString.stringify(toQueryString(t))
     const previousQueryString = location.search.replace(/^\?/, '')
     const hasChanged = newQueryString !== previousQueryString
-    hasChanged && history(`?${newQueryString}`, { replace: true })
+    if (hasChanged) {
+      return history(`?${newQueryString}`, { replace: true })
+    }
   }
 
   const get = (): E => {

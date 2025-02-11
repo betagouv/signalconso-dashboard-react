@@ -28,7 +28,7 @@ export const cleanObject = <T extends { [key: string]: any }>(
   obj: T,
 ): Partial<T> => {
   const clone = { ...obj }
-  for (let k in clone) {
+  for (const k in clone) {
     const val = clone[k]
     if (
       isNotDefined(val) ||

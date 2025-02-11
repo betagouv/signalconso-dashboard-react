@@ -15,36 +15,37 @@ function readSeverity(severity?: string): Severity | null {
 }
 
 export const config = {
-  proConnectServer: process.env.REACT_APP_PRO_CONNECT_URL,
-  proConnectClientId: process.env.REACT_APP_PRO_CONNECT_CLIENT_ID,
-  enableProConnect: process.env.REACT_APP_ENABLE_PRO_CONNECT === 'true',
-  isDev: process.env.REACT_APP_NODE_ENV === 'development',
-  isDemo: process.env.REACT_APP_IS_DEMO === 'true',
+  proConnectServer: import.meta.env.VITE_APP_PRO_CONNECT_URL,
+  proConnectClientId: import.meta.env.VITE_APP_PRO_CONNECT_CLIENT_ID,
+  enableProConnect: import.meta.env.VITE_APP_ENABLE_PRO_CONNECT === 'true',
+  isDev: import.meta.env.VITE_APP_NODE_ENV === 'development',
+  isDemo: import.meta.env.VITE_APP_IS_DEMO === 'true',
   apiBaseUrl: noTrailingSlash(
-    process.env.REACT_APP_API_BASE_URL ?? 'http://localhost:9000',
+    import.meta.env.VITE_APP_API_BASE_URL ?? 'http://localhost:9000',
   ),
   companyApiBaseUrl: noTrailingSlash(
-    process.env.REACT_APP_COMPANY_API_BASE_URL ?? 'http://localhost:9002',
+    import.meta.env.VITE_APP_COMPANY_API_BASE_URL ?? 'http://localhost:9002',
   ),
   appBaseUrl: noTrailingSlash(
-    process.env.REACT_APP_APP_BASE_URL ?? 'http://localhost:3001',
+    import.meta.env.VITE_APP_APP_BASE_URL ?? 'http://localhost:3001',
   ),
   dashboardBaseUrl: noTrailingSlash(
-    process.env.REACT_APP_DASHBOARD_BASE_URL ?? 'http://localhost:3000',
+    import.meta.env.VITE_APP_DASHBOARD_BASE_URL ?? 'http://localhost:3000',
   ),
-  basePath: process.env.REACT_APP_BASE_PATH ?? '/',
+  basePath: import.meta.env.VITE_APP_BASE_PATH ?? '/',
   reportsLimitForExport: 30000,
   upload_allowedExtensions: ['jpg', 'jpeg', 'pdf', 'png', 'gif', 'docx'],
-  upload_maxSizeMb: readInt(process.env.REACT_APP_UPLOAD_MAX_SIZE_MB, 5),
+  upload_maxSizeMb: readInt(import.meta.env.VITE_APP_UPLOAD_MAX_SIZE_MB, 5),
   contactEmail: 'support@signal.conso.gouv.fr',
-  sentry_dns: process.env.REACT_APP_SENTRY_DNS,
-  sentry_traceRate: readInt(process.env.REACT_APP_SENTRY_TRACE_RATE, 0.5),
-  enableMatomo: process.env.REACT_APP_ENABLE_MATOMO === 'true',
-  infoBanner: process.env.REACT_APP_INFO_BANNER,
-  showPredefinedUsers: process.env.REACT_APP_SHOW_PREDEFINED_USERS === 'true',
+  sentry_dns: import.meta.env.VITE_APP_SENTRY_DNS,
+  sentry_traceRate: readInt(import.meta.env.VITE_APP_SENTRY_TRACE_RATE, 0.5),
+  enableMatomo: import.meta.env.VITE_APP_ENABLE_MATOMO === 'true',
+  infoBanner: import.meta.env.VITE_APP_INFO_BANNER,
+  showPredefinedUsers:
+    import.meta.env.VITE_APP_SHOW_PREDEFINED_USERS === 'true',
   showReportAssignement: true,
   infoBannerSeverity:
-    readSeverity(process.env.REACT_APP_INFO_BANNER_SEVERITY) ?? 'warning',
+    readSeverity(import.meta.env.VITE_APP_INFO_BANNER_SEVERITY) ?? 'warning',
 }
 
 type Config = typeof config
