@@ -5,6 +5,13 @@ import { Datepicker } from './Datepicker'
 import { useI18n } from '../core/i18n'
 import dayjs from 'dayjs'
 import format from 'date-fns/format'
+import {
+  AnalyticActionName,
+  EventCategories,
+  FiltrageSignalementsActions,
+  trackEvent,
+} from '../core/plugins/Matomo'
+import { useConnectedContext } from '../core/context/ConnectedContext'
 
 interface QuickRange {
   label: string
@@ -45,6 +52,7 @@ export const PeriodPickerWithPredefinedRanges = ({
   label,
 }: PeriodPickerWithPredefinedRangesProps) => {
   const { m } = useI18n()
+  const { connectedUser } = useConnectedContext()
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null)
   const [selectedPredefinedPeriod, setSelectedPredefinedPeriod] = useState<
     string | undefined
@@ -68,12 +76,26 @@ export const PeriodPickerWithPredefinedRanges = ({
   }
 
   const handleQuickRange = (range: QuickRange) => {
+    trackEvent(
+      connectedUser,
+      EventCategories.Signalements,
+      FiltrageSignalementsActions.periodePredefinie,
+      AnalyticActionName.click,
+      range.label,
+    )
     setSelectedPredefinedPeriod(range.label)
     onChange(range.start, range.end)
     handleClosePopover()
   }
 
   const handleCustomDateChange = (newStartDate?: Date, newEndDate?: Date) => {
+    trackEvent(
+      connectedUser,
+      EventCategories.Signalements,
+      FiltrageSignalementsActions.datesPrecises,
+      AnalyticActionName.click,
+      `${newStartDate && format(newStartDate, 'yyyy-MM-dd')} - ${newEndDate && format(newEndDate, 'yyyy-MM-dd')}`,
+    )
     setSelectedPredefinedPeriod(undefined)
     onChange(newStartDate, newEndDate)
     handleClosePopover()
@@ -132,7 +154,18 @@ export const PeriodPickerWithPredefinedRanges = ({
           horizontal: 'center',
         }}
       >
-        <div className="p-4">
+        <div className="p-4 max-w-xl">
+          <div className="flex mb-2">
+            <span className="text-sm w-[50%] italic">
+              Sélectionnez une ou des dates puis cliquez sur APPLIQUER
+            </span>
+            <div className="flex">
+              <span className="text-sm mr-4">ou</span>
+              <span className="text-sm italic">
+                Cliquez sur une période prédéfinie
+              </span>
+            </div>
+          </div>
           <div className="flex gap-4">
             <div>
               <Datepicker
