@@ -10,7 +10,7 @@ import { ScInput } from '../../shared/ScInput'
 import { SelectDepartments } from '../../shared/SelectDepartments/SelectDepartments'
 import { SelectTags } from '../../shared/SelectTags/SelectTags'
 import { TrueFalseNullRow } from './AdvancedReportsFilter'
-import {SuperPeriodPicker} from "../../shared/SuperPeriodPicker";
+import { PeriodPickerWithPredefinedRanges } from '../../shared/PeriodPickerWithPredefinedRanges'
 
 type ReportsGridProps = {
   _reports: UseQueryPaginateResult<
@@ -50,10 +50,12 @@ export const ReportsFilter: React.FC<ReportsGridProps> = ({
         />
       </div>
       <div>
-        <SuperPeriodPicker
+        <PeriodPickerWithPredefinedRanges
           start={_reports.filters.start}
           end={_reports.filters.end}
-          onChange={(start, end) => _reports.updateFilters((prev) => ({ ...prev, start, end }))}
+          onChange={(start, end) =>
+            _reports.updateFilters((prev) => ({ ...prev, start, end }))
+          }
         />
       </div>
       <div>
