@@ -120,7 +120,7 @@ export const ReportHeader = ({
             {m.report_pageTitle}{' '}
             <BookmarkButton isBookmarked={isBookmarked} reportId={report.id} />
           </h1>
-          <span>Signalé le {formatDateTime(report.expirationDate)}</span>
+          <span>Signalé le {formatDateTime(report.creationDate)}</span>
           <ExpirationDate {...{ report }} isUserPro={false} />
         </div>
         <NavLink to={siteMap.logged.reports({ status: [report.status] })}>
