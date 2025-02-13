@@ -10,6 +10,7 @@ import { ScInput } from '../../shared/ScInput'
 import { SelectDepartments } from '../../shared/SelectDepartments/SelectDepartments'
 import { SelectTags } from '../../shared/SelectTags/SelectTags'
 import { TrueFalseNullRow } from './AdvancedReportsFilter'
+import { PeriodPickerWithPredefinedRanges } from '../../shared/PeriodPickerWithPredefinedRanges'
 
 type ReportsGridProps = {
   _reports: UseQueryPaginateResult<
@@ -49,21 +50,13 @@ export const ReportsFilter: React.FC<ReportsGridProps> = ({
         />
       </div>
       <div>
-        <DebouncedInput<[Date | undefined, Date | undefined]>
-          value={[_reports.filters.start, _reports.filters.end]}
-          onChange={([start, end]) => {
+        <PeriodPickerWithPredefinedRanges
+          start={_reports.filters.start}
+          end={_reports.filters.end}
+          onChange={(start, end) =>
             _reports.updateFilters((prev) => ({ ...prev, start, end }))
-          }}
-        >
-          {(value, onChange) => (
-            <PeriodPicker
-              value={value}
-              onChange={onChange}
-              sx={{ mr: 1 }}
-              fullWidth
-            />
-          )}
-        </DebouncedInput>
+          }
+        />
       </div>
       <div>
         <DebouncedInput
