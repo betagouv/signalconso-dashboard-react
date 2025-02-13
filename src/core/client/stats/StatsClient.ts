@@ -62,6 +62,15 @@ export class StatsClient {
       .then((res) => res.map((_) => ({ ..._, date: new Date(_.date) })))
   }
 
+  readonly getReportCountCurveForCompany = (
+    companyId: string,
+    search?: ReportSearch & CurveStatsParams,
+  ) => {
+    return this.client
+      .get<CountByDate[]>(`stats/reports/curve/${companyId}`, { qs: search })
+      .then((res) => res.map((_) => ({ ..._, date: new Date(_.date) })))
+  }
+
   readonly getTags = (companyId: Id) => {
     return this.client.get<ReportTagsDistribution>(`/stats/reports/tags`, {
       qs: { companyId },

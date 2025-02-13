@@ -31,23 +31,20 @@ export const CompanyChartPanel = ({
   reportTotals: NbReportsTotals | undefined
 }) => {
   const { api: apiSdk } = useConnectedContext()
-  const { m, formatLargeNumber } = useI18n()
+  const { m } = useI18n()
   const [reportsCurvePeriod, setReportsCurvePeriod] = useState<Period>('Month')
   const [reportsTick, setReportsTick] = useState<MonthTicks>(defaultTick)
-  const companyIds = [companyId]
   const [curves, setCurves] = useState<CurveDefinition[] | undefined>()
 
   useEffect(() => {
     async function inner() {
       setCurves(undefined)
       const [reports, responses] = await Promise.all([
-        apiSdk.secured.stats.getReportCountCurve({
-          companyIds,
+        apiSdk.secured.stats.getReportCountCurveForCompany(companyId, {
           ticks: computeTicks(),
           tickDuration: reportsCurvePeriod,
         }),
-        apiSdk.secured.stats.getReportCountCurve({
-          companyIds,
+        apiSdk.secured.stats.getReportCountCurveForCompany(companyId, {
           status: [
             ReportStatus.PromesseAction,
             ReportStatus.Infonde,
