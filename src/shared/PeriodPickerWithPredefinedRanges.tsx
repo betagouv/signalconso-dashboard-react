@@ -110,22 +110,27 @@ export const PeriodPickerWithPredefinedRanges = ({
     {
       label: 'Depuis le début de la semaine',
       start: dayjs().startOf('week').toDate(),
-      end: dayjs().endOf('week').toDate(),
+      end: undefined,
     },
     {
       label: 'Depuis le début du mois',
       start: dayjs().startOf('month').toDate(),
-      end: dayjs().endOf('month').toDate(),
+      end: undefined,
     },
     {
       label: 'Les 6 derniers mois',
       start: dayjs().subtract(6, 'month').toDate(),
-      end: dayjs().toDate(),
+      end: undefined,
     },
     {
       label: `L'année dernière (${dayjs().subtract(1, 'year').toDate().getFullYear()})`,
       start: dayjs().subtract(1, 'year').startOf('year').toDate(),
       end: dayjs().subtract(1, 'year').endOf('year').toDate(),
+    },
+    {
+      label: `Depuis toujours (réinitialiser)`,
+      start: undefined,
+      end: undefined,
     },
   ]
 
@@ -155,17 +160,6 @@ export const PeriodPickerWithPredefinedRanges = ({
         }}
       >
         <div className="p-4 max-w-xl">
-          <div className="flex mb-2">
-            <span className="text-sm w-[50%] italic">
-              Sélectionnez une ou des dates puis cliquez sur APPLIQUER
-            </span>
-            <div className="flex">
-              <span className="text-sm mr-4">ou</span>
-              <span className="text-sm italic">
-                Cliquez sur une période prédéfinie
-              </span>
-            </div>
-          </div>
           <div className="flex gap-4">
             <div>
               <Datepicker
@@ -198,7 +192,7 @@ export const PeriodPickerWithPredefinedRanges = ({
                 }}
                 timeOfDay="endOfDay"
               />
-              <div className="mt-8 flex justify-end gap-2">
+              <div className="mt-2 flex justify-between gap-2">
                 <ScButton onClick={handleClosePopover}>Annuler</ScButton>
                 <ScButton
                   variant="contained"
