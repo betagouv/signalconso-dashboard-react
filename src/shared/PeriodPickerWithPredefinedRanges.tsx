@@ -3,7 +3,6 @@ import { ScButton } from './Button'
 import { MenuItem, Popover } from '@mui/material'
 import { Datepicker } from './Datepicker'
 import { useI18n } from '../core/i18n'
-import dayjs from 'dayjs'
 import format from 'date-fns/format'
 import {
   AnalyticActionName,
@@ -12,6 +11,15 @@ import {
   trackEvent,
 } from '../core/plugins/Matomo'
 import { useConnectedContext } from '../core/context/ConnectedContext'
+import {
+  endOfYear,
+  startOfDay,
+  startOfMonth,
+  startOfWeek,
+  startOfYear,
+  subMonths,
+  subYears,
+} from 'date-fns'
 
 interface QuickRange {
   label: string
@@ -104,28 +112,28 @@ export const PeriodPickerWithPredefinedRanges = ({
   const quickRanges: QuickRange[] = [
     {
       label: "Aujourd'hui",
-      start: dayjs().startOf('day').toDate(),
-      end: dayjs().endOf('day').toDate(),
+      start: startOfDay(new Date()),
+      end: undefined,
     },
     {
       label: 'Depuis le début de la semaine',
-      start: dayjs().startOf('week').toDate(),
+      start: startOfWeek(new Date(), { weekStartsOn: 1 }),
       end: undefined,
     },
     {
       label: 'Depuis le début du mois',
-      start: dayjs().startOf('month').toDate(),
+      start: startOfMonth(new Date()),
       end: undefined,
     },
     {
       label: 'Les 6 derniers mois',
-      start: dayjs().subtract(6, 'month').toDate(),
+      start: startOfDay(subMonths(new Date(), 6)),
       end: undefined,
     },
     {
-      label: `L'année dernière (${dayjs().subtract(1, 'year').toDate().getFullYear()})`,
-      start: dayjs().subtract(1, 'year').startOf('year').toDate(),
-      end: dayjs().subtract(1, 'year').endOf('year').toDate(),
+      label: `L'année dernière (${subYears(new Date(), 1).getFullYear()})`,
+      start: startOfYear(subYears(new Date(), 1)),
+      end: endOfYear(subYears(new Date(), 1)),
     },
     {
       label: `Depuis toujours (réinitialiser)`,
