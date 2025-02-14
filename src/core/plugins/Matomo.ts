@@ -76,6 +76,7 @@ type AnalyticAction =
   | OutilsIaActions
   | ExportsActions
   | SignalementsActions
+  | FiltrageSignalementsActions
 
 export enum EventCategories {
   Authentification = 'Authentification',
@@ -133,6 +134,11 @@ export enum NewsletterActions {
 }
 export enum SignalementsActions {
   ajoutMarquePage = "Ajout d'un marque-page",
+}
+
+export enum FiltrageSignalementsActions {
+  periodePredefinie = 'Filtrage par période pré-définie',
+  datesPrecises = 'Filtrage par dates précises',
 }
 
 type AnalyticActionNameFull = AnalyticActionName | Role
