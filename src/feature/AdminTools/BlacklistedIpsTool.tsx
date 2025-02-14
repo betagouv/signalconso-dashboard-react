@@ -159,7 +159,9 @@ const AddIp = ({ children }: AddIpProps) => {
   })
 
   const checkIpAddress = (ip: string): boolean => {
-    const ipv4Pattern = /^(\d{1,3}\.){3}\d{1,3}$/
+    // IPv4 with or without subnet mask
+    const ipv4Pattern = /^(\d{1,3}\.){3}\d{1,3}(\/\d{1,2})?$/
+    // IPv6 without subnet mask (we could add it)
     const ipv6Pattern = /^([0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}$/
     return ipv4Pattern.test(ip) || ipv6Pattern.test(ip)
   }
