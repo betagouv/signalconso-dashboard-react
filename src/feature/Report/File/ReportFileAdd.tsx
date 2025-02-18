@@ -73,7 +73,7 @@ export const ReportFileAdd = ({ reportId, onUploaded, fileOrigin }: Props) => {
         return
       }
       setUploading(true)
-      apiSdk.public.document
+      apiSdk.public.attachements
         .upload(file, fileOrigin)
         .then(onUploaded)
         .catch(toastError)

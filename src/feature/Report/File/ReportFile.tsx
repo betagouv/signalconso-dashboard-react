@@ -2,17 +2,18 @@ import { Box, Button, Icon, Tooltip } from '@mui/material'
 import { useMutation } from '@tanstack/react-query'
 import { ScOption } from 'core/helper/ScOption'
 import { useEffect } from 'react'
-import { makeSx, Modal } from '../../../alexlibs/mui-extension'
+import { Modal, makeSx } from '../../../alexlibs/mui-extension'
 import { UploadedFile } from '../../../core/client/file/UploadedFile'
 import { useConnectedContext } from '../../../core/context/ConnectedContext'
 import { useToast } from '../../../core/context/toastContext'
 import { useI18n } from '../../../core/i18n'
-import { extensionToType, FileType, reportFileConfig } from './reportFileConfig'
 import { ReportFileDeleteButton } from './ReportFileDeleteButton'
 import { ReportFileUnavailable } from './ReportFileUnavailable'
+import { FileType, extensionToType, reportFileConfig } from './reportFileConfig'
 
 interface ReportFileProps {
   file: UploadedFile
+  isNotYetLinkedToReport: boolean
   onRemove?: (file: UploadedFile) => void
 }
 
@@ -41,19 +42,26 @@ const css = makeSx({
   },
 })
 
-export const ReportFile = ({ file, onRemove }: ReportFileProps) => {
+export const ReportFile = ({
+  file,
+  onRemove,
+  isNotYetLinkedToReport,
+}: ReportFileProps) => {
   const fileType = extensionToType(file.filename)
   const { api: apiSdk } = useConnectedContext()
   const _remove = useMutation({
-    mutationFn: apiSdk.secured.document.remove,
+    mutationFn: (file: UploadedFile) =>
+      isNotYetLinkedToReport
+        ? apiSdk.public.attachements.removeFileNotYetUsedInReport(file)
+        : apiSdk.secured.document.removeFileUsedInReport(file),
     onSuccess: () => onRemove?.(file),
   })
   const { toastError } = useToast()
   const { m } = useI18n()
 
-  const fileUrl = ScOption.from(
-    apiSdk.public.document.getLink(file),
-  ).toUndefined()
+  const fileUrl = isNotYetLinkedToReport
+    ? apiSdk.public.attachements.getUrlOfFileNotYetUsedInReport(file)
+    : apiSdk.secured.document.getUrlOfFileUsedInReport(file)
 
   const RemoveButton = () => {
     return onRemove ? (

@@ -280,6 +280,7 @@ export const ReportResponseForm = forwardRef(
                   onNewFile={(file) =>
                     field.onChange([...(field.value ?? []), file.id])
                   }
+                  filesAreNotYetLinkedToReport={true}
                 />
               )}
             />
