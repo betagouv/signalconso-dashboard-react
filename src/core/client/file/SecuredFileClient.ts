@@ -5,8 +5,15 @@ import { UploadedFile } from './UploadedFile'
 export class SecuredFileClient {
   constructor(private client: ApiClient) {}
 
-  readonly remove = (file: UploadedFile) => {
-    return this.client.delete(`/reports/files/${file.id}/${file.filename}`)
+  readonly getUrlOfFileUsedInReport = (file: UploadedFile) =>
+    `${this.client.baseUrl}/reports/files/used/${file.id}/${encodeURIComponent(
+      file.filename,
+    )}`
+
+  readonly removeFileUsedInReport = (file: UploadedFile) => {
+    return this.client.delete(
+      `/reports/files/used/${file.id}/${encodeURIComponent(file.filename)}`,
+    )
   }
 
   readonly listFiles = (fileIds: Id[]) => {

@@ -155,11 +155,17 @@ export class PublicApiSdk {
     },
   }
 
-  document = {
-    getLink: (file: UploadedFile) =>
-      `${this.apiClient.baseUrl}/reports/files/${file.id}/${encodeURI(
+  attachements = {
+    getUrlOfFileNotYetUsedInReport: (file: UploadedFile) =>
+      `${this.apiClient.baseUrl}/reports/files/temporary/${file.id}/${encodeURIComponent(
         file.filename,
       )}`,
+
+    removeFileNotYetUsedInReport: (file: UploadedFile) => {
+      return this.apiClient.delete<void>(
+        `/reports/files/temporary/${file.id}/${encodeURIComponent(file.filename)}`,
+      )
+    },
 
     upload: (file: File, origin: FileOrigin) => {
       const fileFormData: FormData = new FormData()

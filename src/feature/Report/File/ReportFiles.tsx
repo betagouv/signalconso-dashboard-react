@@ -18,6 +18,7 @@ interface ReportFilesProps {
   reportId: Id
   fileOrigin: FileOrigin
   hideAddBtn?: boolean
+  filesAreNotYetLinkedToReport?: boolean
 }
 
 export const ReportFiles = ({
@@ -27,6 +28,7 @@ export const ReportFiles = ({
   hideAddBtn,
   onRemoveFile = () => void 0,
   onNewFile = () => void 0,
+  filesAreNotYetLinkedToReport = false,
 }: ReportFilesProps) => {
   const { api: apiSdk } = useConnectedContext()
 
@@ -112,6 +114,7 @@ export const ReportFiles = ({
                 key={_.id}
                 file={_}
                 onRemove={canRemove ? removeFile : undefined}
+                isNotYetLinkedToReport={filesAreNotYetLinkedToReport}
               />
             )
           })}
