@@ -20,11 +20,11 @@ export function AnnuaireDesEntreprisesBanner({
           rel="noreferrer"
           variant="text"
           color="primary"
-          endIcon={<Launch />} // Assuming 'launch' is an icon you want to display after the button text
+          endIcon={<Launch />}
           onClick={(_) => _}
         >
           <img
-            src={logoGouvMobile} // Ensure this is an SVG or high-resolution image
+            src={logoGouvMobile}
             alt="voir sur annuaire des entreprise"
             className="h-[60px] image-rendering-auto"
           />
