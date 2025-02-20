@@ -74,9 +74,10 @@ export const EditProfileDialog = ({ children }: Props) => {
                 EventCategories.CompteUtilisateur,
                 AccountEventActions.changeNameSuccess,
               )
-              setConnectedUser((previous) =>
-                previous ? { ...previous, ...form } : undefined,
-              )
+              // TODO
+              // setConnectedUser((previous) =>
+              //   previous ? { ...previous, ...form } : undefined,
+              // )
             })
             .catch((_) => {
               trackEvent(

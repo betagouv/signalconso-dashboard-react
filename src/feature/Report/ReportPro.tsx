@@ -4,8 +4,6 @@ import { formatDate } from 'core/i18n/format'
 import { siteMap } from 'core/siteMap'
 import { ReportReferenceNumber } from 'feature/Report/ReportReferenceNumber'
 import { useEffect, useRef } from 'react'
-import { useParams } from 'react-router'
-import { Link } from 'react-router'
 import { CleanWidePanel } from 'shared/Panel/simplePanels'
 import { ReportWebsiteUrlLink } from 'shared/tinyComponents'
 import { Alert, Btn } from '../../alexlibs/mui-extension'
@@ -51,14 +49,14 @@ import { ReportResponseForm } from './ReportResponseForm/ReportResponseForm'
 import { ReportStation } from './ReportStation'
 import { ReportTrain } from './ReportTrain'
 import { initTally } from '../../core/plugins/Tally'
+import {Link} from "@tanstack/react-router";
 
-export const ReportPro = () => {
+export const ReportPro = ({reportId}: {reportId: Id}) => {
   useEffect(() => {
     initTally()
   }, [])
 
-  const { id } = useParams<{ id: Id }>()
-  const _getReport = useGetReportQuery(id!)
+  const _getReport = useGetReportQuery(reportId)
   return (
     <Page maxWidth="l" loading={_getReport.isLoading}>
       {_getReport.data && <ReportProLoaded reportExtra={_getReport.data} />}
@@ -106,13 +104,13 @@ export function ReportProLoaded({ reportExtra }: { reportExtra: ReportExtra }) {
     <div className="mt-8">
       <div className={'flex justify-between items-center'}>
         <LinkBackToList {...{ report }} />
-        <Link
-          to={'_blank'}
+        <a
+          target='_blank'
           onClick={download}
           className="flex items-center text-scbluefrance mb-2 no-underline hover:underline gap-2"
         >
           <Icon>download</Icon>Télécharger au format PDF
-        </Link>
+        </a>
       </div>
 
       <ReportBlock

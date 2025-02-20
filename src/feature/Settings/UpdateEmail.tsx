@@ -1,15 +1,14 @@
 import { CircularProgress } from '@mui/material'
 import { useMutation } from '@tanstack/react-query'
 import { useEffect } from 'react'
-import { useParams } from 'react-router'
 import { Alert } from '../../alexlibs/mui-extension'
 import { useConnectedContext } from '../../core/context/ConnectedContext'
 import { useToast } from '../../core/context/toastContext'
 import { useI18n } from '../../core/i18n'
 
-export const UpdateEmail = () => {
+export const UpdateEmail = ({token}: {token: string}) => {
   const { m } = useI18n()
-  const { token } = useParams<{ token: string }>()
+
   const { api: apiSdk, setConnectedUser } = useConnectedContext()
   const { toastSuccess } = useToast()
 

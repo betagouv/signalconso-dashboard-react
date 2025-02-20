@@ -18,7 +18,7 @@ import { Store } from '@mui/icons-material'
 import { StoreOutlined } from '@mui/icons-material'
 import { VisibleUser } from '../../core/client/company-access/VisibleUser'
 import { siteMap } from '../../core/siteMap'
-import { NavLink } from 'react-router'
+import {Link} from "@tanstack/react-router";
 
 export const UsersPro = () => {
   const { m } = useI18n()
@@ -87,7 +87,7 @@ export const UsersPro = () => {
         <p className="mb-2">
           Pour gérer finement les accès, établissement par établissement,
           utilisez la page{' '}
-          <NavLink to={siteMap.logged.companiesPro}>Entreprises</NavLink>
+          <Link to={siteMap.logged.companiesPro}>Entreprises</Link>
         </p>
         <Alert type="warning">
           Attention : ces actions sont globales et affectent toutes les

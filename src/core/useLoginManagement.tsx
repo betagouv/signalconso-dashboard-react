@@ -1,12 +1,11 @@
-import { QueryClient, useMutation, useQuery } from '@tanstack/react-query'
+import { QueryClient, useMutation } from '@tanstack/react-query'
 import { publicApiSdk } from 'core/apiSdkInstances'
-import { Dispatch, SetStateAction, useEffect, useState } from 'react'
-import { useNavigate } from 'react-router'
+import React, {Dispatch, SetStateAction, useContext, useEffect, useRef, useState} from 'react'
 import { User } from './client/user/User'
+import {router, router as appRouter} from "../App";
 
 export type LoginManagementResult = {
   connectedUser?: User
-  isFetchingUserOnStartup: boolean
   logout: () => void
   handleDetectedLogout: () => void
   login: {
@@ -30,16 +29,36 @@ export type LoginManagementResult = {
     loading?: boolean
     errorMsg?: unknown
   }
-  setConnectedUser: Dispatch<SetStateAction<User | undefined>>
+  setConnectedUser: (user: User | undefined) => void
+  isAuthenticated: () => boolean
 }
 
-export function useLoginManagement(
-  queryClient: QueryClient,
-): LoginManagementResult {
-  const navigate = useNavigate()
-  const [connectedUser, setConnectedUser] = useState<User | undefined>()
+export const LoginManagementContext = React.createContext<LoginManagementResult>(
+  {} as LoginManagementResult
+)
+
+export function LoginManagementProvider({ queryClient, router, userOnStartup, children }: { queryClient: QueryClient, router: typeof appRouter; userOnStartup ?: User; children: React.ReactNode }) {
+  const [connectedUser, setConnectedUser_] = useState<User | undefined>(userOnStartup)
+  const isAuthenticatedRef = useRef<boolean>(!!userOnStartup)
   const [isRegistering, setIsRegistering] = useState(false)
   const [registerError, setRegisterError] = useState<unknown | undefined>()
+
+  //const isAuthenticated = () => localStorage.getItem('isAuthenticated') === 'true'
+  const isAuthenticated = () => isAuthenticatedRef.current
+
+  const setConnectedUser = (user?: User) => {
+    setConnectedUser_(user)
+    isAuthenticatedRef.current = !!user
+    //localStorage.setItem('isAuthenticated', `${!!user}`)
+  }
+
+  // useEffect(() => {
+  //   localStorage.setItem('isAuthenticated', `${!!userOnStartup}`)
+  // });
+
+  // useEffect(() => {
+  //   router.invalidate()
+  // }, [router, connectedUser]);
 
   const _loginProConnect = useMutation({
     mutationFn: ({
@@ -68,18 +87,6 @@ export function useLoginManagement(
 
   const isStartingProConnect = _startProConnect.isPending
   const isStartingProConnectError = _startProConnect.error
-
-  const _userOnStartup = useQuery({
-    queryKey: ['getUser'],
-    queryFn: publicApiSdk.authenticate.getUser,
-  })
-  const isFetchingUserOnStartup = _userOnStartup.isLoading
-  const userOnStartup = _userOnStartup.data
-  useEffect(() => {
-    if (userOnStartup) {
-      setConnectedUser(userOnStartup)
-    }
-  }, [userOnStartup])
 
   const _login = useMutation({
     mutationFn: ({ login, password }: { login: string; password: string }) =>
@@ -113,8 +120,9 @@ export function useLoginManagement(
   function handleDetectedLogout(user?: User) {
     console.warn('User seems logged out.')
     setConnectedUser(user)
-    navigate('/')
-    queryClient.resetQueries()
+    router.invalidate()
+    router.navigate({to: '/'})
+    return queryClient.resetQueries()
   }
 
   const logout = async () => {
@@ -125,41 +133,48 @@ export function useLoginManagement(
         .then((_) => (window.location.href = _ as string))
     } else {
       const user = await publicApiSdk.authenticate.logout()
-      handleDetectedLogout(user)
+      return handleDetectedLogout(user)
     }
   }
 
-  return {
-    connectedUser,
-    isFetchingUserOnStartup,
-    login: {
-      action: (login: string, password: string) => {
-        return _login.mutateAsync({ login, password })
+  return (<LoginManagementContext.Provider value={
+    {
+      connectedUser,
+      login: {
+        action: (login: string, password: string) => {
+          return _login.mutateAsync({ login, password })
+        },
+        loading: isLoggingIn,
+        errorMsg: loginError,
       },
-      loading: isLoggingIn,
-      errorMsg: loginError,
-    },
-    loginProConnect: {
-      action: (authorizationCode: string, state: string) => {
-        return _loginProConnect.mutateAsync({ authorizationCode, state })
+      loginProConnect: {
+        action: (authorizationCode: string, state: string) => {
+          return _loginProConnect.mutateAsync({ authorizationCode, state })
+        },
+        loading: isProConnectLoggingIn,
+        errorMsg: proConnectloginError,
       },
-      loading: isProConnectLoggingIn,
-      errorMsg: proConnectloginError,
-    },
-    startProConnect: {
-      action: (state: string, nonce: string) => {
-        return _startProConnect.mutateAsync({ state, nonce })
+      startProConnect: {
+        action: (state: string, nonce: string) => {
+          return _startProConnect.mutateAsync({ state, nonce })
+        },
+        loading: isStartingProConnect,
+        errorMsg: isStartingProConnectError,
       },
-      loading: isStartingProConnect,
-      errorMsg: isStartingProConnectError,
-    },
-    logout,
-    handleDetectedLogout,
-    register: {
-      action: register,
-      loading: isRegistering,
-      errorMsg: registerError,
-    },
-    setConnectedUser,
-  }
+      logout,
+      handleDetectedLogout,
+      register: {
+        action: register,
+        loading: isRegistering,
+        errorMsg: registerError,
+      },
+      setConnectedUser,
+      isAuthenticated,
+    }
+  }>{children}</LoginManagementContext.Provider>)
+
+}
+
+export const useLoginManagement = (): LoginManagementResult => {
+  return useContext(LoginManagementContext)
 }

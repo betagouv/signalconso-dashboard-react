@@ -1,23 +1,12 @@
 import { siteMap } from 'core/siteMap'
-import { Link } from 'react-router'
 import { CenteredContent } from 'shared/CenteredContent'
 import { AlertNotForConso, DashboardTitle } from './loggedOutComponents'
 import { Icon } from '@mui/material'
-import { useLocation } from 'react-router'
 import { InfoBanner } from '../../shared/InfoBanner'
+import {Link, useLocation} from "@tanstack/react-router";
 
 export function WelcomePage() {
   const location = useLocation()
-
-  const handleRedirectToLogin = () => {
-    const currentPath = location.pathname + location.search
-
-    return currentPath === '/'
-      ? siteMap.loggedout.login
-      : `${siteMap.loggedout.login}?redirecturl=${encodeURIComponent(
-          currentPath,
-        )}`
-  }
 
   return (
     <CenteredContent>
@@ -32,7 +21,8 @@ export function WelcomePage() {
         <Tile
           title="J'ai déjà un compte pour mon entreprise"
           desc="Je me connecte pour consulter et répondre aux signalements"
-          href={handleRedirectToLogin()}
+          href={siteMap.loggedout.login}
+          search={location.search}
         />
       </div>
       <AlertNotForConso />
@@ -44,14 +34,17 @@ function Tile({
   title,
   desc,
   href,
+  search
 }: {
   title: string
   desc: string
   href: string
+  search?: any
 }) {
   return (
     <Link
       to={href}
+      search={search}
       className="block no-underline relative border border-b-4 border-b-scbluefrance border-gray-300 border-solid py-20 px-8 text-center max-w-sm"
     >
       <h2 className="text-scbluefrance font-bold mb-2 text-lg">{title}</h2>

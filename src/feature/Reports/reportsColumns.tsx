@@ -9,7 +9,7 @@ import {
   ReportSearchResult,
 } from 'core/model'
 import { UseQueryPaginateResult } from 'core/queryhooks/UseQueryPaginate'
-import { NavLink } from 'react-router'
+import {Link} from "@tanstack/react-router";
 import { Fender, IconBtn, Txt } from '../../alexlibs/mui-extension'
 import { EntityIcon } from '../../core/EntityIcon'
 import { textOverflowMiddleCropping } from '../../core/helper'
@@ -94,13 +94,13 @@ export function SiretColumn({ r }: ColumnProps) {
   return (
     <>
       {r.report.companyId && !connectedUser.isDGAL ? (
-        <NavLink
+        <Link
           to={siteMap.logged.company(r.report.companyId).stats.valueAbsolute}
         >
           <Txt link sx={{ marginBottom: '-1px' }}>
             {r.report.companySiret}
           </Txt>
-        </NavLink>
+        </Link>
       ) : (
         <span>{r.report.companySiret}</span>
       )}
@@ -188,11 +188,11 @@ export function FilesColumn({ r }: ColumnProps) {
 
 export function ActionsColumn({ r }: ColumnProps) {
   return (
-    <NavLink to={siteMap.logged.report(r.report.id)}>
+    <Link to={siteMap.logged.report(r.report.id)}>
       <IconBtn color="primary">
         <Icon>chevron_right</Icon>
       </IconBtn>
-    </NavLink>
+    </Link>
   )
 }
 

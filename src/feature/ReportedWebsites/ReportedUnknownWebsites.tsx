@@ -1,11 +1,9 @@
 import React, { useCallback } from 'react'
 import { useI18n } from '../../core/i18n'
 import { Box, Divider, Icon, InputBase, Tooltip } from '@mui/material'
-import { Panel } from '../../shared/Panel'
 import { Datatable } from '../../shared/Datatable/Datatable'
 import { DebouncedInput } from '../../shared/DebouncedInput'
 
-import { NavLink } from 'react-router'
 import { siteMap } from '../../core/siteMap'
 import { Btn, IconBtn, Txt } from '../../alexlibs/mui-extension'
 import { ExportUnknownWebsitesPopper } from '../../shared/ExportPopperBtn'
@@ -15,6 +13,7 @@ import { sxUtils } from '../../core/theme'
 import { ScOption } from 'core/helper/ScOption'
 import { useListUnregisteredWebsitesSearchQuery } from '../../core/queryhooks/websiteQueryHooks'
 import { ScInput } from 'shared/ScInput'
+import {Link} from "@tanstack/react-router";
 
 export const ReportedUnknownWebsites = () => {
   const { m } = useI18n()
@@ -140,7 +139,7 @@ export const ReportedUnknownWebsites = () => {
             sx: (_) => sxUtils.tdActions,
             render: (_) => (
               <>
-                <NavLink
+                <Link
                   to={siteMap.logged.reports({
                     hasWebsite: true,
                     websiteURL: _.host,
@@ -151,7 +150,7 @@ export const ReportedUnknownWebsites = () => {
                   <Btn size="small" color="primary" variant="outlined">
                     {m.see}
                   </Btn>
-                </NavLink>
+                </Link>
               </>
             ),
           },

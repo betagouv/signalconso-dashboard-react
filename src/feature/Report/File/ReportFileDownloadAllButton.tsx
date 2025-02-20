@@ -1,10 +1,10 @@
 import { useI18n } from '../../../core/i18n'
 
 import { useMutation } from '@tanstack/react-query'
-import { Link } from 'react-router'
 import { FileOrigin } from '../../../core/client/file/UploadedFile'
 import { Report } from '../../../core/client/report/Report'
 import { useApiContext } from '../../../core/context/ApiContext'
+import {Link} from "@tanstack/react-router";
 
 export function ReportFileDownloadAllButton({
   report,
@@ -27,8 +27,8 @@ export function ReportFileDownloadAllButton({
   }
 
   return (
-    <Link to={'_blank'} className="flex mt-1 ml-1" onClick={download}>
+    <a target='_blank' className="flex mt-1 ml-1" onClick={download}>
       <span className="text-sm">({m.downloadAll})</span>
-    </Link>
+    </a>
   )
 }

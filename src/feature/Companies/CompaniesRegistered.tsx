@@ -9,7 +9,6 @@ import {
 } from '@mui/material'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useCallback, useEffect, useMemo, useState } from 'react'
-import { NavLink } from 'react-router'
 import { AlbertActivityLabel } from 'shared/albert/AlbertActivityLabel'
 import { Fender, IconBtn, Txt } from '../../alexlibs/mui-extension'
 import {
@@ -41,6 +40,7 @@ import { SelectCompanyDialog } from '../../shared/SelectCompany/SelectCompanyDia
 import { CompaniesRegisteredFilters } from './CompaniesRegisteredFilters'
 import { EditAddressDialog } from './EditAddressDialog'
 import { MassImport } from './MassImport'
+import {Link} from "@tanstack/react-router";
 
 interface CompanySearchQs extends PaginatedSearch<any> {
   departments?: string[] | string
@@ -243,13 +243,13 @@ export const CompaniesRegistered = () => {
             render: (_) => (
               <Tooltip title={computeTitle(_)}>
                 <div className="flex flex-col">
-                  <NavLink
+                  <Link
                     to={siteMap.logged.company(_.id).stats.valueAbsolute}
                   >
                     <Txt link sx={{ marginBottom: '-1px' }}>
                       {_.name}
                     </Txt>
-                  </NavLink>
+                  </Link>
                   {_.albertActivityLabel && (
                     <AlbertActivityLabel smaller withExplainButton={false}>
                       {_.albertActivityLabel}
@@ -312,7 +312,7 @@ export const CompaniesRegistered = () => {
             id: 'count',
             sx: (_) => ({ textAlign: 'right' }),
             render: (_) => (
-              <NavLink
+              <Link
                 to={siteMap.logged.reports({
                   hasCompany: true,
                   siretSirenList: [_.siret],
@@ -322,7 +322,7 @@ export const CompaniesRegistered = () => {
                 <ScButton color="primary">
                   {formatLargeNumber(_.count)}
                 </ScButton>
-              </NavLink>
+              </Link>
             ),
           },
           {
@@ -370,16 +370,16 @@ export const CompaniesRegistered = () => {
                   variant="dot"
                   overlap="circular"
                 >
-                  <NavLink
+                  <Link
                     to={siteMap.logged.company(_.id).stats.valueAbsolute}
                   >
                     <IconBtn color="primary">
                       <Icon>query_stats</Icon>
                     </IconBtn>
-                  </NavLink>
+                  </Link>
                 </Badge>
                 <ScMenu>
-                  <NavLink
+                  <Link
                     to={siteMap.logged.company(_.id).accesses.valueAbsolute}
                   >
                     <MenuItem>
@@ -388,7 +388,7 @@ export const CompaniesRegistered = () => {
                       </ListItemIcon>
                       <ListItemText>{m.handleAccesses}</ListItemText>
                     </MenuItem>
-                  </NavLink>
+                  </Link>
                   <MenuItem onClick={() => copyAddress(_)}>
                     <ListItemIcon>
                       <Icon>content_copy</Icon>

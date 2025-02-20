@@ -3,7 +3,6 @@ import { useMutation, UseQueryResult } from '@tanstack/react-query'
 import { ApiError } from 'core/client/ApiClient'
 import { parseInt } from 'lodash'
 import { useEffect, useState } from 'react'
-import { NavLink } from 'react-router'
 import { CleanWidePanel } from 'shared/Panel/simplePanels'
 import { IconBtn, Txt } from '../../alexlibs/mui-extension'
 import { ReportNode, ReportNodes } from '../../core/client/report/ReportNode'
@@ -32,6 +31,7 @@ import {
 import { compose } from '../../core/helper/compose'
 import { ReportNodeSearch } from '../../core/client/report/ReportNodeSearch'
 import { cleanObject } from '../../core/helper'
+import {Link} from "@tanstack/react-router";
 
 const compare = (a?: string[], b?: string[]): number => {
   if (!a || !b) return 0
@@ -329,7 +329,7 @@ const Node = ({
           )}
           <Txt color="primary">
             {' '}
-            Signalements : {reportNode.count} <NavLink to={url}>(voir)</NavLink>
+            Signalements : {reportNode.count} <Link to={url}>(voir)</Link>
           </Txt>
           <Txt color="primary"> Réclamations : {reportNode.reclamations}</Txt>
           <div>

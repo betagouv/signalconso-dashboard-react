@@ -1,6 +1,5 @@
 import { Box, Icon, Skeleton, Tooltip } from '@mui/material'
 import { ScOption } from 'core/helper/ScOption'
-import { NavLink } from 'react-router'
 import { CleanInvisiblePanel } from 'shared/Panel/simplePanels'
 import { useMemoFn } from '../../../alexlibs/react-hooks-lib'
 import { useI18n } from '../../../core/i18n'
@@ -8,6 +7,7 @@ import { useGetCloudWordQuery } from '../../../core/queryhooks/reportQueryHooks'
 import { siteMap } from '../../../core/siteMap'
 import { HorizontalBarChartData } from '../../../shared/Chart/HorizontalBarChart'
 import { CompanyStatsPanelTitle } from './CompanyStatsPanelTitle'
+import {Link} from "@tanstack/react-router";
 
 interface Props {
   companyId: string
@@ -23,14 +23,14 @@ export const ReportWordDistribution = ({ companyId }: Props) => {
       _.length > 0
         ? Object.entries(_).map(([label, reportWordCount], index) => ({
             label: (
-              <NavLink
+              <Link
                 to={siteMap.logged.reports({
                   description: reportWordCount.value,
                   companyIds: [companyId],
                 })}
               >
                 {reportWordCount.value}
-              </NavLink>
+              </Link>
             ),
             value: reportWordCount.count,
           }))

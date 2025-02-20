@@ -7,7 +7,6 @@ import {
 import { ScOption } from 'core/helper/ScOption'
 import type { Dictionary } from 'lodash'
 import { useMemo, useState } from 'react'
-import { NavLink } from 'react-router'
 import { CleanDiscreetPanel } from 'shared/Panel/simplePanels'
 import { Btn, Fender, Txt } from '../../alexlibs/mui-extension'
 import { useApiContext } from '../../core/context/ApiContext'
@@ -32,6 +31,7 @@ import { DebouncedInput } from '../../shared/DebouncedInput'
 import { Page, PageTitle } from '../../shared/Page'
 import { ScInput } from '../../shared/ScInput'
 import { ConfirmDisableNotificationDialog } from './ConfirmDisableNotificationDialog'
+import {Link} from "@tanstack/react-router";
 
 export const CompaniesPro = () => {
   const { m } = useI18n()
@@ -114,11 +114,11 @@ export const CompaniesPro = () => {
     <Page>
       <PageTitle
         action={
-          <NavLink to={siteMap.loggedout.register}>
+          <Link to='/entreprise/activation'>
             <ScButton icon="add" color="primary" variant="outlined">
               {m.addACompany}
             </ScButton>
-          </NavLink>
+          </Link>
         }
       >
         {m.myCompanies}
@@ -276,12 +276,12 @@ function CompaniesProRow({
   return (
     <div className="lg:grid lg:grid-cols-2 py-2">
       <div className="">
-        <NavLink
+        <Link
           to={siteMap.logged.company(_.id).stats.valueAbsolute}
           className="text-lg text-scbluefrance"
         >
           {_.name}
-        </NavLink>
+        </Link>
         {_.isHeadOffice ? (
           <div className="font-bold">
             <Icon fontSize="small" className="mb-[-4px]">
@@ -312,18 +312,18 @@ function CompaniesProRow({
         />
         <div className="flex  justify-end gap-2">
           {_.level === AccessLevel.ADMIN && (
-            <NavLink to={siteMap.logged.company(_.id).accesses.valueAbsolute}>
+            <Link to={siteMap.logged.company(_.id).accesses.valueAbsolute}>
               <Btn variant="text" size="small" icon="group">
                 {m.handleAccesses}
               </Btn>
-            </NavLink>
+            </Link>
           )}
-          <NavLink to={siteMap.logged.company(_.id).stats.valueAbsolute}>
+          <Link to={siteMap.logged.company(_.id).stats.valueAbsolute}>
             <Btn variant="text" size="small" icon="query_stats">
               {m.myStats}
             </Btn>
-          </NavLink>
-          <NavLink
+          </Link>
+          <Link
             to={siteMap.logged.reports({
               hasCompany: true,
               siretSirenList: [_.siret],
@@ -332,7 +332,7 @@ function CompaniesProRow({
             <Btn variant="contained" icon="assignment_late" size="small">
               {m.see_reports}
             </Btn>
-          </NavLink>
+          </Link>
         </div>
       </div>
     </div>

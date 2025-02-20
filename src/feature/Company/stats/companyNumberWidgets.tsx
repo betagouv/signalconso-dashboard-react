@@ -18,8 +18,8 @@ import {
 } from 'core/queryhooks/statsQueryHooks'
 import { siteMap } from 'core/siteMap'
 import { PropsWithChildren } from 'react'
-import { NavLink } from 'react-router'
 import { CleanInvisiblePanel } from 'shared/Panel/simplePanels'
+import {Link} from "@tanstack/react-router";
 type Props = {
   companyId: Id
 }
@@ -181,11 +181,11 @@ function NumberWidgetAccesses({
           <UsersIcon fontSize="small" />
           <p>
             {displayAccessesLink ? (
-              <NavLink
+              <Link
                 to={siteMap.logged.company(companyId).accesses.valueAbsolute}
               >
                 {linkContent}
-              </NavLink>
+              </Link>
             ) : (
               linkContent
             )}

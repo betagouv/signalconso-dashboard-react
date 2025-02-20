@@ -1,7 +1,6 @@
 import { Icon, Tooltip } from '@mui/material'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useCallback } from 'react'
-import { NavLink } from 'react-router'
 import { ScInput } from 'shared/ScInput'
 import { IconBtn, Txt } from '../../alexlibs/mui-extension'
 import {
@@ -33,7 +32,7 @@ import { UserAgentInvitationDialog } from './UserAgentInvitationDialog'
 import { UserAgentsImportDialog } from './UserAgentsImportDialog'
 import { UserDeleteButton } from './userDelete'
 import { useConnectedContext } from '../../core/context/ConnectedContext'
-import { useNavigate } from 'react-router'
+import {Link, useNavigate} from "@tanstack/react-router";
 
 export const AdminUsersList = () => <UsersList adminView />
 export const AgentUsersList = () => <UsersList />
@@ -70,7 +69,7 @@ const UsersList = ({ adminView }: Props) => {
     mutationFn: (email: string) => api.public.authenticate.logAs(email),
     onSuccess: (user) => {
       setConnectedUser(user)
-      navigate('/')
+      navigate({to: '/'})
       queryClient.resetQueries()
     },
   })
@@ -159,17 +158,16 @@ const UsersList = ({ adminView }: Props) => {
         <>
           {!adminView && _.id && (
             <Tooltip title={m.authAttemptsHistory}>
-              <NavLink
-                to={
-                  siteMap.logged.users.value +
-                  '/' +
-                  siteMap.logged.users.auth_attempts.value(_.email)
-                }
+              <Link
+                to='/users/auth-attempts'
+                search={{
+                  email: _.email
+                }}
               >
                 <IconBtn color="primary">
                   <Icon>history</Icon>
                 </IconBtn>
-              </NavLink>
+              </Link>
             </Tooltip>
           )}
         </>

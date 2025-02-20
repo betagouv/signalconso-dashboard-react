@@ -2,7 +2,6 @@ import { TextField } from '@mui/material'
 import { AlertContactSupport } from 'feature/Login/loggedOutComponents'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { useNavigate } from 'react-router'
 import { Alert, Txt } from '../../alexlibs/mui-extension'
 import { config } from '../../conf/config'
 import { ApiError } from '../../core/client/ApiClient'
@@ -23,6 +22,11 @@ import { ScButton } from '../../shared/Button'
 import { ScInputPassword } from '../../shared/ScInputPassword'
 import { ForgottenPasswordDialog } from './ForgottenPasswordDialog'
 import PredefinedUsersPanel from './PredefinedUsersPanel'
+import {useLocation, useNavigate, useRouter, useSearch} from "@tanstack/react-router";
+
+async function sleep(ms: number) {
+  return new Promise((resolve) => setTimeout(resolve, ms))
+}
 
 interface ActionProps<F extends (...args: any[]) => Promise<any>> {
   action: F
@@ -48,14 +52,11 @@ export const LoginForm = ({ login }: Props) => {
   const { m } = useI18n()
 
   const history = useNavigate()
-
-  const queryString = useQueryString<
-    Partial<RedirectProps>,
-    Partial<RedirectProps>
-  >({
-    toQueryString: (_) => _,
-    fromQueryString: mapArrayFromQuerystring(['redirecturl']),
+  const search: any = useSearch({
+    strict: false,
   })
+  const redirect = search.redirect
+
   const {
     register,
     handleSubmit,
@@ -69,7 +70,7 @@ export const LoginForm = ({ login }: Props) => {
   const onLogin: (form: Form) => Promise<void> = async (form: Form) => {
     login
       .action(form.email, form.password)
-      .then((user) => {
+      .then(async (user) => {
         trackEventUnconnected(
           EventCategories.Authentification,
           AuthenticationEventActions.success,
@@ -80,9 +81,12 @@ export const LoginForm = ({ login }: Props) => {
           user.role,
         )
 
-        const redirectUrl = queryString.get().redirecturl?.[0]
-        if (redirectUrl) {
-          history(redirectUrl, { replace: true })
+        if (redirect) {
+          // await sleep(1)
+          return history({to: redirect})
+        } else {
+          // await sleep(1)
+          return history({to: '/suivi-des-signalements'})
         }
       })
       .catch((err: ApiError) => {

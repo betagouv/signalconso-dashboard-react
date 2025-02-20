@@ -1,10 +1,9 @@
 import React, { ReactNode } from 'react'
 import { Tooltip } from '@mui/material'
-import { NavLink } from 'react-router'
 import { siteMap } from '../../core/siteMap'
 import { ReportSearch } from '../../core/client/report/ReportSearch'
-import { useLocation, useNavigate } from 'react-router'
 import { Btn } from '../../alexlibs/mui-extension'
+import {useNavigate} from "@tanstack/react-router";
 
 interface ReportSearchLinkProps {
   reportSearch: Partial<ReportSearch>
@@ -18,7 +17,7 @@ const ReportSearchBtnLink: React.FC<ReportSearchLinkProps> = ({
   const navigate = useNavigate()
 
   const handleClick = () => {
-    navigate(siteMap.logged.reports(reportSearch))
+    navigate({to: siteMap.logged.reports(reportSearch)})
   }
 
   return (

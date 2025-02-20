@@ -3,9 +3,9 @@ import { useQuery } from '@tanstack/react-query'
 import { useApiContext } from 'core/context/ApiContext'
 import { map } from 'core/helper'
 import { siteMap } from 'core/siteMap'
-import { NavLink } from 'react-router'
 import { CleanInvisiblePanel } from 'shared/Panel/simplePanels'
 import { CompanyStatsPanelTitle } from './CompanyStatsPanelTitle'
+import {Link} from "@tanstack/react-router";
 
 export const MostActiveUsers = ({
   companyId,
@@ -50,12 +50,12 @@ export const MostActiveUsers = ({
                 )
               })}
             </ul>
-            <NavLink
+            <Link
               className={`self-center`}
               to={siteMap.logged.company(companyId).accesses.valueAbsolute}
             >
               Voir tous les utilisateurs
-            </NavLink>
+            </Link>
           </div>
         )
       })}

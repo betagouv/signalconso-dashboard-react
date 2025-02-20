@@ -11,7 +11,6 @@ import {
   Tooltip,
 } from '@mui/material'
 import { useMemo, useState } from 'react'
-import { NavLink } from 'react-router'
 import { CleanWidePanel } from 'shared/Panel/simplePanels'
 import { Txt } from '../../alexlibs/mui-extension'
 import { useI18n } from '../../core/i18n'
@@ -21,6 +20,7 @@ import { siteMap } from '../../core/siteMap'
 import { ScButton } from '../../shared/Button'
 import { SelectMonth } from '../../shared/SelectMonth'
 import { useGetDateForMonthAndPreviousOne } from './useGetDateForMonthAndPreviousOne'
+import {Link} from "@tanstack/react-router";
 
 const CellNewPosition = ({ sx, ...props }: BoxProps) => {
   return (
@@ -164,7 +164,7 @@ export const StatsReportsByRegion = () => {
                         })()}
                       </TableCell>
                       <TableCell style={{ textAlign: 'right' }}>
-                        <NavLink
+                        <Link
                           to={siteMap.logged.reports({
                             departments: [depNumber],
                             start: dates.current.start,
@@ -174,7 +174,7 @@ export const StatsReportsByRegion = () => {
                           <ScButton color="primary" size="small">
                             {m.see}
                           </ScButton>
-                        </NavLink>
+                        </Link>
                       </TableCell>
                     </TableRow>
                   ))}

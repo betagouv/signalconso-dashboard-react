@@ -3,12 +3,10 @@ import { publicApiSdk } from 'core/apiSdkInstances'
 import { validatePasswordComplexity } from 'core/helper/passwordComplexity'
 import { AlertContactSupport } from 'feature/Login/loggedOutComponents'
 import { useForm } from 'react-hook-form'
-import { useNavigate, useParams } from 'react-router'
 import { PasswordRequirementsDesc } from 'shared/PasswordRequirementsDesc'
 import { fnSwitch } from '../../alexlibs/ts-utils'
 import { useToast } from '../../core/context/toastContext'
 import { useI18n } from '../../core/i18n'
-import { Id } from '../../core/model'
 import {
   AuthenticationEventActions,
   EventCategories,
@@ -18,15 +16,15 @@ import { siteMap } from '../../core/siteMap'
 import { ScButton } from '../../shared/Button'
 import { CenteredContent } from '../../shared/CenteredContent'
 import { ScInputPassword } from '../../shared/ScInputPassword'
+import {useNavigate, useParams} from "@tanstack/react-router";
 
 interface Form {
   newPassword: string
   newPasswordConfirmation: string
 }
 
-export const ResetPassword = () => {
+export const ResetPassword = ({token}: {token: string}) => {
   const { m } = useI18n()
-  const { token } = useParams<{ token: Id }>()
   const _resetPassword = useMutation({
     mutationFn: (params: { password: string; token: string }) =>
       publicApiSdk.authenticate.resetPassword(params.password, params.token),
@@ -51,7 +49,7 @@ export const ResetPassword = () => {
       .mutateAsync({ password: form.newPassword, token })
       .then(() => {
         toastSuccess(m.resetPasswordSuccess)
-        setTimeout(() => history(siteMap.loggedout.login), 400)
+        setTimeout(() => history({to: siteMap.loggedout.login}), 400)
         trackEventUnconnected(
           EventCategories.CompteUtilisateur,
           AuthenticationEventActions.resetPasswordSuccess,

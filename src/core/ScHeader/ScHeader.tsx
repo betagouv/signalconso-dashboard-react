@@ -10,7 +10,7 @@ import logoGouvMobile from './gouv-mobile.svg'
 import logoDgccrf from './logo-dgccrf.png'
 import logoSignalConso from './logo-signalconso.png'
 import { siteMap } from '../siteMap'
-import { useLocation } from 'react-router'
+import {useLocation} from "@tanstack/react-router";
 
 const HeaderItem = ({ children, href }: { children: any; href: string }) => {
   return (

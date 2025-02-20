@@ -1,6 +1,6 @@
 import ReportSearchNavLink from '../feature/Report/ReportSearchNavLink'
 import React from 'react'
-import { Link } from 'react-router'
+import {Link} from "@tanstack/react-router";
 
 export function ReportWebsiteUrlLink({ websiteURL }: { websiteURL: string }) {
   return (

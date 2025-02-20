@@ -1,7 +1,6 @@
 import { AddressComponent } from '../../../shared/Address'
 
 import { Box, Icon, Tooltip, useTheme } from '@mui/material'
-import { Link, NavLink } from 'react-router'
 import { CleanDiscreetPanel } from 'shared/Panel/simplePanels'
 import { WithInlineIcon } from 'shared/WithInlineIcon'
 import { AlbertActivityLabel } from 'shared/albert/AlbertActivityLabel'
@@ -22,6 +21,7 @@ import ReportSearchNavLink from '../ReportSearchNavLink'
 import { ReportStation } from '../ReportStation'
 import { ReportTrain } from '../ReportTrain'
 import { SelectReportAssociation } from '../SelectReportAssociation'
+import {Link} from "@tanstack/react-router";
 
 export const ReportCompany = ({
   reportExtra: r,
@@ -57,11 +57,11 @@ export const ReportCompany = ({
           <WithInlineIcon icon="store">
             {m.company}{' '}
             {companyId && !connectedUser.isDGAL && (
-              <NavLink
+              <Link
                 to={siteMap.logged.company(companyId).stats.valueAbsolute}
               >
                 <span className="text-sm">(voir sa fiche)</span>
-              </NavLink>
+              </Link>
             )}
           </WithInlineIcon>
         </div>
@@ -103,13 +103,13 @@ export const ReportCompany = ({
                   value={companySiret}
                 />
               </div>
-              <Link
-                to={`https://annuaire-entreprises.data.gouv.fr/etablissement/${companySiret.trim()}}`}
+              <a
+                href={`https://annuaire-entreprises.data.gouv.fr/etablissement/${companySiret.trim()}}`}
                 target="_blank"
                 rel="noreferrer"
               >
                 <span className="text-sm">(Annuaire des Entreprises)</span>
-              </Link>
+              </a>
             </div>
           )}
 

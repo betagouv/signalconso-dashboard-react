@@ -9,16 +9,14 @@ import {
 import { capitalize } from '../../../core/helper'
 import { useI18n } from '../../../core/i18n'
 import { ScButton } from '../../../shared/Button'
-import { Panel, PanelBody, PanelHead } from '../../../shared/Panel'
 import { EditConsumerDialog } from './EditConsumerDialog'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useApiContext } from '../../../core/context/ApiContext'
 import { GetReportQueryKeys } from '../../../core/queryhooks/reportQueryHooks'
 import { CleanDiscreetPanel, CleanWidePanel } from 'shared/Panel/simplePanels'
 import { UserNameLabel } from '../../../shared/UserNameLabel'
-import { Icon } from '@mui/material'
-import { NavLink } from 'react-router'
 import { siteMap } from '../../../core/siteMap'
+import {Link} from "@tanstack/react-router";
 
 interface Props {
   report: Report
@@ -87,24 +85,24 @@ export const ReportConsumer = ({ report, canEdit }: Props) => {
             lastName={capitalize(lastName)}
           />
           <div className="text-gray-500">
-            <NavLink
+            <Link
               to={siteMap.logged.reports({
                 email: report.email,
               })}
             >
               {report.email}
-            </NavLink>
+            </Link>
           </div>
           {report.consumerPhone && (
             <div className="text-gray-500">
-              <NavLink
+              <Link
                 to={siteMap.logged.reports({
                   consumerPhone: report.consumerPhone,
                   hasConsumerPhone: true,
                 })}
               >
                 {report.consumerPhone}
-              </NavLink>
+              </Link>
             </div>
           )}
           <ReportReferenceNumber

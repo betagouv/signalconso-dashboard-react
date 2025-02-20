@@ -1,7 +1,6 @@
 import { regexp } from './regexp'
-import { useNavigate } from 'react-router'
 import { parse as _parse, stringify as _stringify } from 'qs'
-import { useLocation } from 'react-router'
+import {useLocation, useNavigate} from "@tanstack/react-router";
 
 interface ParsedUrlQueryInput {
   [key: string]:
@@ -50,17 +49,17 @@ export const useQueryString = <E, QS extends ParsedUrlQueryInput>({
 
   const update = (t: E) => {
     const newQueryString = QueryString.stringify(toQueryString(t))
-    const previousQueryString = location.search.replace(/^\?/, '')
+    const previousQueryString = location.searchStr.replace(/^\?/, '')
     const hasChanged = newQueryString !== previousQueryString
     if (hasChanged) {
-      return history(`?${newQueryString}`, { replace: true })
+      return history({to: `?${newQueryString}`, replace: true })
     }
   }
 
   const get = (): E => {
     // arrayLimit raised from 20 to 200 otherwise the departments list may not be parsed correctly
     return fromQueryString(
-      QueryString.parse(location.search.replace(/^\?/, ''), {
+      QueryString.parse(location.searchStr.replace(/^\?/, ''), {
         arrayLimit: 200,
       }) as any,
     )

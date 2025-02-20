@@ -5,7 +5,6 @@ import { EntityIcon } from '../EntityIcon'
 import { Sidebar, SidebarHr, SidebarItem } from '../Layout/Sidebar'
 import { useLayoutContext } from '../context/LayoutContext'
 import { useI18n } from '../i18n'
-import { siteMap } from '../siteMap'
 import {
   AuthProvider,
   Role,
@@ -21,7 +20,6 @@ export const ScSidebar = ({
   connectedUser: User
   logout: () => void
 }) => {
-  const tabPath = (page: string) => page + '/*'
   const { m } = useI18n()
   const { setSidebarOpen, isMobileWidth } = useLayoutContext()
   const closeSidebar = () => {
@@ -69,7 +67,7 @@ export const ScSidebar = ({
       ) && (
         <SidebarItem
           onClick={closeSidebar}
-          to={siteMap.logged.reports()}
+          to='/suivi-des-signalements'
           icon={EntityIcon.report}
         >
           {m.menu_reports}
@@ -78,7 +76,7 @@ export const ScSidebar = ({
       {(['Professionnel'] as Role[]).includes(connectedUser.role) && (
         <SidebarItem
           onClick={closeSidebar}
-          to={siteMap.logged.reports()}
+          to='/suivi-des-signalements'
           icon={EntityIcon.report}
         >
           {m.menu_open_reports}
@@ -87,7 +85,7 @@ export const ScSidebar = ({
       {(['Professionnel'] as Role[]).includes(connectedUser.role) && (
         <SidebarItem
           onClick={closeSidebar}
-          to={siteMap.logged.reportsfiltred.closed}
+          to='/suivi-des-signalements-clotures'
           icon={EntityIcon.report}
         >
           {m.menu_closed_report}
@@ -96,7 +94,7 @@ export const ScSidebar = ({
       {(['Professionnel'] as Role[]).includes(connectedUser.role) && (
         <SidebarItem
           onClick={closeSidebar}
-          to={siteMap.logged.reportsfiltred.engagements}
+          to='/engagements'
           icon={EntityIcon.checklist}
         >
           {m.menu_engagements_report}
@@ -105,7 +103,7 @@ export const ScSidebar = ({
       {([...roleAdmins, 'DGCCRF'] as Role[]).includes(connectedUser.role) && (
         <SidebarItem
           onClick={closeSidebar}
-          to={tabPath(siteMap.logged.companies.value)}
+          to='/entreprises'
           icon={EntityIcon.company}
         >
           {m.menu_companies}
@@ -114,7 +112,7 @@ export const ScSidebar = ({
       {(['Professionnel'] as Role[]).includes(connectedUser.role) && (
         <SidebarItem
           onClick={closeSidebar}
-          to={siteMap.logged.companiesPro}
+          to='/mes-entreprises'
           icon={EntityIcon.company}
         >
           {m.menu_my_companies}
@@ -123,7 +121,7 @@ export const ScSidebar = ({
       {(['Professionnel'] as Role[]).includes(connectedUser.role) && (
         <SidebarItem
           onClick={closeSidebar}
-          to={siteMap.logged.usersPro}
+          to='/mes-utilisateurs'
           icon={EntityIcon.user}
         >
           Utilisateurs
@@ -132,7 +130,7 @@ export const ScSidebar = ({
       {([...roleAdmins] as Role[]).includes(connectedUser.role) && (
         <SidebarItem
           onClick={closeSidebar}
-          to={tabPath(siteMap.logged.users.value)}
+          to='/users'
           icon={EntityIcon.user}
         >
           {m.menu_users}
@@ -143,7 +141,7 @@ export const ScSidebar = ({
       ) && (
         <SidebarItem
           onClick={closeSidebar}
-          to={siteMap.logged.subscriptions}
+          to='/abonnements'
           icon={EntityIcon.subscription}
         >
           {m.menu_subscriptions}
@@ -154,7 +152,7 @@ export const ScSidebar = ({
       ) && (
         <SidebarItem
           onClick={closeSidebar}
-          to={tabPath(siteMap.logged.stats.value)}
+          to='/stats'
           icon={EntityIcon.stats}
         >
           {m.menu_stats}
@@ -164,7 +162,7 @@ export const ScSidebar = ({
       {([...roleAdmins, 'DGCCRF'] as Role[]).includes(connectedUser.role) && (
         <SidebarItem
           onClick={closeSidebar}
-          to={tabPath(siteMap.logged.reportedWebsites.value)}
+          to='/moderation-url-entreprises'
           icon={EntityIcon.website}
         >
           {m.menu_websites}
@@ -173,7 +171,7 @@ export const ScSidebar = ({
       {([...roleAdmins, 'DGCCRF'] as Role[]).includes(connectedUser.role) && (
         <SidebarItem
           onClick={closeSidebar}
-          to={siteMap.logged.reportedPhone}
+          to='/suivi-des-telephones'
           icon={EntityIcon.phone}
         >
           {m.menu_phones}
@@ -183,7 +181,7 @@ export const ScSidebar = ({
       {(['SuperAdmin'] as Role[]).includes(connectedUser.role) && (
         <SidebarItem
           onClick={closeSidebar}
-          to={tabPath(siteMap.logged.tools.value)}
+          to='/tools'
           icon={EntityIcon.admin}
         >
           {m.menu_admin_tools}
@@ -193,7 +191,7 @@ export const ScSidebar = ({
       {(['Professionnel'] as Role[]).includes(connectedUser.role) && (
         <SidebarItem
           onClick={closeSidebar}
-          to={siteMap.logged.joinInformation}
+          to='/information'
           icon="info"
         >
           {m.menu_join_informations}
@@ -202,7 +200,7 @@ export const ScSidebar = ({
       {connectedUser.authProvider == AuthProvider.SignalConso && (
         <SidebarItem
           onClick={closeSidebar}
-          to={siteMap.logged.settings}
+          to='/parametres'
           icon="settings"
         >
           {m.menu_settings}
@@ -213,7 +211,7 @@ export const ScSidebar = ({
       ) && (
         <SidebarItem
           onClick={closeSidebar}
-          to={siteMap.logged.modeEmploiDGCCRF}
+          to='/mode-emploi-dgccrf'
           icon="help"
         >
           {m.menu_modeEmploiDGCCRF}

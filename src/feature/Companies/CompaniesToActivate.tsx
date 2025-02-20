@@ -1,7 +1,6 @@
 import { Box, Checkbox, Icon, Tooltip } from '@mui/material'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { SyntheticEvent } from 'react'
-import { Link } from 'react-router'
 import { Fender, IconBtn, Txt } from '../../alexlibs/mui-extension'
 import { useSetState } from '../../alexlibs/react-hooks-lib'
 import { EntityIcon } from '../../core/EntityIcon'
@@ -19,6 +18,7 @@ import { ScButton } from '../../shared/Button'
 import { Datatable } from '../../shared/Datatable/Datatable'
 import { DatatableToolbar } from '../../shared/Datatable/DatatableToolbar'
 import { ScDialog } from '../../shared/ScDialog'
+import {Link} from "@tanstack/react-router";
 
 export const CompaniesToActivate = () => {
   const { m, formatDate } = useI18n()

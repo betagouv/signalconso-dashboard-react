@@ -11,7 +11,6 @@ import { SelectDepartments } from '../../shared/SelectDepartments/SelectDepartme
 
 import { ScOption } from 'core/helper/ScOption'
 import { useListReportBlockedNotificationsQuery } from 'core/queryhooks/reportBlockedNotificationQueryHooks'
-import { useNavigate } from 'react-router'
 import { DebouncedInput } from 'shared/DebouncedInput'
 import { useSetState } from '../../alexlibs/react-hooks-lib'
 import { config } from '../../conf/config'
@@ -43,6 +42,7 @@ import { ScInput } from '../../shared/ScInput'
 import { SelectCompaniesByPro } from '../../shared/SelectCompaniesByPro/SelectCompaniesByPro'
 import { DatatableToolbarComponent } from '../Reports/DatatableToolbarComponent'
 import { buildReportsProColumns } from './buildReportsProColumns'
+import {useNavigate} from "@tanstack/react-router";
 
 export const css = makeSx({
   iconDash: {
@@ -431,7 +431,7 @@ export const ReportsPro = ({ reportType }: ReportsProProps) => {
                     if (e.metaKey || e.ctrlKey) {
                       openInNew(siteMap.logged.report(_.report.id))
                     } else {
-                      history(siteMap.logged.report(_.report.id))
+                      history({to: siteMap.logged.report(_.report.id)})
                     }
                   }
                 }}

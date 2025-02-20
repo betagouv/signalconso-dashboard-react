@@ -2,7 +2,6 @@ import { Box, Tab, Tabs, Tooltip } from '@mui/material'
 import { UseQueryResult, useMutation } from '@tanstack/react-query'
 import { map } from 'core/helper'
 import React, { useState } from 'react'
-import { useParams } from 'react-router'
 import { Divider } from 'shared/Divider'
 import { CleanDiscreetPanel } from 'shared/Panel/simplePanels'
 import { WithInlineIcon } from 'shared/WithInlineIcon'
@@ -65,10 +64,9 @@ export const creationReportEvent = (report: Report): ReportEvent =>
     },
   })
 
-export const ReportComponent = () => {
-  const { id } = useParams<{ id: Id }>()
+export const ReportComponent = ({reportId}: {reportId: Id}) => {
   const [viewAsPro, setViewAsPro] = useState(false)
-  const _getReport = useGetReportQuery(id!)
+  const _getReport = useGetReportQuery(reportId)
 
   if (viewAsPro) {
     return _getReport.data ? (
@@ -81,7 +79,7 @@ export const ReportComponent = () => {
   return (
     <ReportViewStandard
       {...{ _getReport }}
-      id={id!}
+      id={reportId}
       onViewAsPro={() => setViewAsPro(true)}
     />
   )
