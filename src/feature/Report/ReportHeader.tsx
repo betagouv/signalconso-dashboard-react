@@ -15,27 +15,7 @@ import { ReportCategories } from './ReportCategories'
 import { BookmarkButton } from './bookmarks'
 import { NavLink } from 'react-router'
 import { siteMap } from '../../core/siteMap'
-
-const css = makeSx({
-  root: {
-    transition: (t) => t.transitions.create('box-shadow'),
-  },
-  pageTitle: {
-    display: 'flex',
-    alignItems: 'flex-start',
-    flexWrap: 'wrap',
-    justifyContent: 'space-between',
-    mb: 2,
-  },
-  pageTitle_txt: {
-    margin: 0,
-    fontSize: (t) => styleUtils(t).fontSize.bigTitle,
-  },
-  actions: {
-    flexWrap: 'wrap',
-    whiteSpace: 'nowrap',
-  },
-})
+import ReportSearchNavLink from './ReportSearchNavLink'
 
 interface Props {
   report: ReportSearchResult
@@ -78,6 +58,7 @@ export const ExpirationDate = ({
   const { m, formatDate } = useI18n()
   const isFinal = isStatusFinal(report.status)
   const isInvisibleToPro = isStatusInvisibleToPro(report.status)
+
   function getTextAndColor() {
     if (isInvisibleToPro) return null
     if (isUserPro) {
@@ -91,6 +72,7 @@ export const ExpirationDate = ({
     }
     return { text: m.reportProMustAnswerBefore }
   }
+
   const textAndColor = getTextAndColor()
   if (!textAndColor) return null
   const { text, grayedOut } = textAndColor
@@ -144,17 +126,25 @@ export const ReportHeader = ({
           {!hideTags && (
             <div style={{ flex: 1 }}>
               {Report.readTags(report).map((tag) => [
-                <ScChip
-                  icon={
-                    <Icon
-                      style={{ fontSize: 20 }}
-                      sx={{ color: (t) => t.palette.text.disabled }}
-                    >
-                      sell
-                    </Icon>
+                <ReportSearchNavLink
+                  className={'no-underline'}
+                  reportSearch={{
+                    withTags: [tag],
+                  }}
+                  value={
+                    <ScChip
+                      icon={
+                        <Icon
+                          style={{ fontSize: 20 }}
+                          sx={{ color: (t) => t.palette.text.disabled }}
+                        >
+                          sell
+                        </Icon>
+                      }
+                      key={tag}
+                      label={m.reportTagDesc[tag]}
+                    />
                   }
-                  key={tag}
-                  label={m.reportTagDesc[tag]}
                 />,
                 ' ',
               ])}
