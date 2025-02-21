@@ -11,12 +11,11 @@ import { publicApiSdk } from 'core/apiSdkInstances'
 import { validatePasswordComplexity } from 'core/helper/passwordComplexity'
 import { useMemo } from 'react'
 import { Controller, useForm } from 'react-hook-form'
-import { useLocation, useNavigate, useParams } from 'react-router'
 import { PasswordRequirementsDesc } from 'shared/PasswordRequirementsDesc'
-import { Alert, Txt, makeSx } from '../../alexlibs/mui-extension'
+import { Alert, makeSx, Txt } from '../../alexlibs/mui-extension'
 import { User, UserToActivate } from '../../core/client/user/User'
 import { useToast } from '../../core/context/toastContext'
-import { QueryString } from '../../core/helper/useQueryString'
+import { parse } from 'qs'
 import { useI18n } from '../../core/i18n'
 import {
   AccountEventActions,
@@ -25,11 +24,11 @@ import {
   trackEventUnconnected,
 } from '../../core/plugins/Matomo'
 import { FetchTokenInfoQueryKeys } from '../../core/queryhooks/userQueryHooks'
-import { siteMap } from '../../core/siteMap'
 import { ScButton } from '../../shared/Button'
 import { Page, PageTitle } from '../../shared/Page'
 import { Panel, PanelBody } from '../../shared/Panel'
 import { ScInputPassword } from '../../shared/ScInputPassword'
+import { useLocation, useNavigate } from '@tanstack/react-router'
 
 interface UserActivationForm extends UserToActivate {
   repeatPassword: string
@@ -46,10 +45,11 @@ const sx = makeSx({
 })
 
 interface Props {
+  siret?: string
   onUserActivated: (_: User) => void
 }
 
-export const UserActivation = ({ onUserActivated }: Props) => {
+export const UserActivation = ({ siret, onUserActivated }: Props) => {
   const { m } = useI18n()
   const _activate = useMutation({
     mutationFn: (params: {
@@ -64,9 +64,8 @@ export const UserActivation = ({ onUserActivated }: Props) => {
       ),
   })
   const { toastSuccess, toastError } = useToast()
-  const { search } = useLocation()
+  const { searchStr } = useLocation()
   const history = useNavigate()
-  const { siret } = useParams<{ siret: string }>()
   const {
     register,
     control,
@@ -78,7 +77,7 @@ export const UserActivation = ({ onUserActivated }: Props) => {
     defaultValues: { email: ' ' },
   })
   const urlToken = useMemo(
-    () => QueryString.parse(search.replace(/^\?/, '')).token as string,
+    () => parse(searchStr.replace(/^\?/, '')).token as string,
     [],
   )
   const _tokenInfo = useQuery({
@@ -102,7 +101,7 @@ export const UserActivation = ({ onUserActivated }: Props) => {
         )
         toastSuccess(m.accountActivated)
         onUserActivated(user)
-        history(siteMap.logged.reports())
+        history({ to: '/suivi-des-signalements' })
       })
       .catch((e) => {
         trackEventUnconnected(

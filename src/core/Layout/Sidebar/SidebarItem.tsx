@@ -1,8 +1,8 @@
 import { Box, BoxProps, Icon } from '@mui/material'
 import { alpha } from '@mui/material/styles'
 import { ReactNode } from 'react'
-import { NavLink } from 'react-router'
 import { makeSx } from '../../../alexlibs/mui-extension'
+import { createLink, LinkComponent } from '@tanstack/react-router'
 
 const css = makeSx({
   i: {
@@ -11,16 +11,14 @@ const css = makeSx({
   },
 })
 
-interface SidebarItemProps extends BoxProps {
+interface SidebarItemProps extends BoxProps<'a'> {
   icon?: string | ReactNode
   large?: boolean
   active?: boolean
-  to?: string
 }
 
-export const SidebarItem = ({
+const BeforeLinkSidebarItem = ({
   children,
-  to,
   icon,
   className,
   active,
@@ -28,15 +26,9 @@ export const SidebarItem = ({
   sx,
   ...props
 }: SidebarItemProps) => {
-  const navLinkProps = to
-    ? {
-        component: NavLink,
-        to,
-      }
-    : {}
   return (
     <Box
-      {...navLinkProps}
+      component="a"
       sx={{
         transition: (t) => t.transitions.create('all'),
         display: 'flex',
@@ -56,7 +48,7 @@ export const SidebarItem = ({
           color: (t) => t.palette.primary.main,
           background: (t) => alpha(t.palette.primary.main, 0.16),
         }),
-        ...((to || props.onClick) && {
+        ...(props.onClick && {
           cursor: 'pointer',
           '&:hover': {
             background: 'rgba(0, 0, 0, .05)',
@@ -87,4 +79,12 @@ export const SidebarItem = ({
       </Box>
     </Box>
   )
+}
+
+const LinkSidebarItem = createLink(BeforeLinkSidebarItem)
+
+export const SidebarItem: LinkComponent<typeof BeforeLinkSidebarItem> = (
+  props,
+) => {
+  return <LinkSidebarItem preload={'intent'} {...props} />
 }

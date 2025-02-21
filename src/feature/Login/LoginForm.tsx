@@ -2,27 +2,22 @@ import { TextField } from '@mui/material'
 import { AlertContactSupport } from 'feature/Login/loggedOutComponents'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { useNavigate } from 'react-router'
 import { Alert, Txt } from '../../alexlibs/mui-extension'
 import { config } from '../../conf/config'
 import { ApiError } from '../../core/client/ApiClient'
 import { PublicApiSdk } from '../../core/client/PublicApiSdk'
 import { regexp } from '../../core/helper/regexp'
-import {
-  mapArrayFromQuerystring,
-  useQueryString,
-} from '../../core/helper/useQueryString'
 import { useI18n } from '../../core/i18n'
 import {
   AuthenticationEventActions,
   EventCategories,
   trackEventUnconnected,
 } from '../../core/plugins/Matomo'
-import { siteMap } from '../../core/siteMap'
 import { ScButton } from '../../shared/Button'
 import { ScInputPassword } from '../../shared/ScInputPassword'
 import { ForgottenPasswordDialog } from './ForgottenPasswordDialog'
 import PredefinedUsersPanel from './PredefinedUsersPanel'
+import { Link, useNavigate } from '@tanstack/react-router'
 
 interface ActionProps<F extends (...args: any[]) => Promise<any>> {
   action: F
@@ -32,6 +27,7 @@ interface ActionProps<F extends (...args: any[]) => Promise<any>> {
 
 interface Props {
   login: ActionProps<PublicApiSdk['authenticate']['login']>
+  redirect?: string
 }
 
 export interface Form {
@@ -40,22 +36,11 @@ export interface Form {
   apiError: string
 }
 
-interface RedirectProps {
-  redirecturl?: string
-}
-
-export const LoginForm = ({ login }: Props) => {
+export const LoginForm = ({ login, redirect }: Props) => {
   const { m } = useI18n()
 
   const history = useNavigate()
 
-  const queryString = useQueryString<
-    Partial<RedirectProps>,
-    Partial<RedirectProps>
-  >({
-    toQueryString: (_) => _,
-    fromQueryString: mapArrayFromQuerystring(['redirecturl']),
-  })
   const {
     register,
     handleSubmit,
@@ -69,7 +54,7 @@ export const LoginForm = ({ login }: Props) => {
   const onLogin: (form: Form) => Promise<void> = async (form: Form) => {
     login
       .action(form.email, form.password)
-      .then((user) => {
+      .then(async (user) => {
         trackEventUnconnected(
           EventCategories.Authentification,
           AuthenticationEventActions.success,
@@ -80,9 +65,10 @@ export const LoginForm = ({ login }: Props) => {
           user.role,
         )
 
-        const redirectUrl = queryString.get().redirecturl?.[0]
-        if (redirectUrl) {
-          history(redirectUrl, { replace: true })
+        if (redirect) {
+          return history({ to: redirect })
+        } else {
+          return history({ to: '/suivi-des-signalements' })
         }
       })
       .catch((err: ApiError) => {
@@ -123,12 +109,9 @@ export const LoginForm = ({ login }: Props) => {
                 config.enableProConnect && (
                   <p className={'mt-2 font-bold'}>
                     Essayez de vous connecter via le bouton{' '}
-                    <a
-                      href={siteMap.loggedout.loginAgent}
-                      className="underline"
-                    >
+                    <Link to="/connexion/agents" className="underline">
                       Pro Connect
-                    </a>{' '}
+                    </Link>{' '}
                     si vous avez reçu un e-mail d’invitation mentionnant
                     ProConnect, ou si vous utilisez Pro Connect pour vous
                     connecter à Signal Conso.

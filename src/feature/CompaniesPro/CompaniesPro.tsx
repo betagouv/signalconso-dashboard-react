@@ -1,13 +1,12 @@
 import { FormControlLabel, Icon, Switch } from '@mui/material'
 import {
-  UseMutationResult,
   useMutation,
+  UseMutationResult,
   useQueryClient,
 } from '@tanstack/react-query'
 import { ScOption } from 'core/helper/ScOption'
 import type { Dictionary } from 'lodash'
 import { useMemo, useState } from 'react'
-import { NavLink } from 'react-router'
 import { CleanDiscreetPanel } from 'shared/Panel/simplePanels'
 import { Btn, Fender, Txt } from '../../alexlibs/mui-extension'
 import { useApiContext } from '../../core/context/ApiContext'
@@ -24,7 +23,6 @@ import {
   ListReportBlockedNotificationsQueryKeys,
   useListReportBlockedNotificationsQuery,
 } from '../../core/queryhooks/reportBlockedNotificationQueryHooks'
-import { siteMap } from '../../core/siteMap'
 import { AddressComponent } from '../../shared/Address'
 import { ScButton } from '../../shared/Button'
 import { Datatable } from '../../shared/Datatable/Datatable'
@@ -32,6 +30,7 @@ import { DebouncedInput } from '../../shared/DebouncedInput'
 import { Page, PageTitle } from '../../shared/Page'
 import { ScInput } from '../../shared/ScInput'
 import { ConfirmDisableNotificationDialog } from './ConfirmDisableNotificationDialog'
+import { Link } from '@tanstack/react-router'
 
 export const CompaniesPro = () => {
   const { m } = useI18n()
@@ -114,11 +113,11 @@ export const CompaniesPro = () => {
     <Page>
       <PageTitle
         action={
-          <NavLink to={siteMap.loggedout.register}>
+          <Link to="/entreprise/activation">
             <ScButton icon="add" color="primary" variant="outlined">
               {m.addACompany}
             </ScButton>
-          </NavLink>
+          </Link>
         }
       >
         {m.myCompanies}
@@ -276,12 +275,13 @@ function CompaniesProRow({
   return (
     <div className="lg:grid lg:grid-cols-2 py-2">
       <div className="">
-        <NavLink
-          to={siteMap.logged.company(_.id).stats.valueAbsolute}
+        <Link
+          to="/entreprise/$companyId/bilan"
+          params={{ companyId: _.id }}
           className="text-lg text-scbluefrance"
         >
           {_.name}
-        </NavLink>
+        </Link>
         {_.isHeadOffice ? (
           <div className="font-bold">
             <Icon fontSize="small" className="mb-[-4px]">
@@ -312,27 +312,31 @@ function CompaniesProRow({
         />
         <div className="flex  justify-end gap-2">
           {_.level === AccessLevel.ADMIN && (
-            <NavLink to={siteMap.logged.company(_.id).accesses.valueAbsolute}>
+            <Link
+              to="/entreprise/$companyId/accesses"
+              params={{ companyId: _.id }}
+            >
               <Btn variant="text" size="small" icon="group">
                 {m.handleAccesses}
               </Btn>
-            </NavLink>
+            </Link>
           )}
-          <NavLink to={siteMap.logged.company(_.id).stats.valueAbsolute}>
+          <Link to="/entreprise/$companyId/bilan" params={{ companyId: _.id }}>
             <Btn variant="text" size="small" icon="query_stats">
               {m.myStats}
             </Btn>
-          </NavLink>
-          <NavLink
-            to={siteMap.logged.reports({
+          </Link>
+          <Link
+            to="/suivi-des-signalements"
+            search={{
               hasCompany: true,
               siretSirenList: [_.siret],
-            })}
+            }}
           >
             <Btn variant="contained" icon="assignment_late" size="small">
               {m.see_reports}
             </Btn>
-          </NavLink>
+          </Link>
         </div>
       </div>
     </div>

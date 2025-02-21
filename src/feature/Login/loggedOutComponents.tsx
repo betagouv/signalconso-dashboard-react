@@ -2,8 +2,7 @@ import { Icon } from '@mui/material'
 import { Alert } from 'alexlibs/mui-extension'
 import { config } from 'conf/config'
 import { useI18n } from 'core/i18n'
-import { siteMap } from 'core/siteMap'
-import { Link } from 'react-router'
+import { Link } from '@tanstack/react-router'
 
 export function AlertNotForConso() {
   return (
@@ -23,9 +22,9 @@ export function AlertNotForConso() {
         <p className="mb-2">
           Vous êtes un <span className="font-bold">agent</span> ? Rendez-vous
           sur{' '}
-          <a href={siteMap.loggedout.loginAgent} className="underline">
+          <Link to="/connexion/agents" className="underline">
             l'espace agent
-          </a>{' '}
+          </Link>{' '}
           pour vous connecter.
         </p>
       )}
@@ -43,7 +42,7 @@ export function DashboardTitle({
   return (
     <h1 className="text-3xl mt-4 mb-8 text-center">
       {subPageTitle && (
-        <Link to={siteMap.loggedout.welcome} className="no-underline mr-4">
+        <Link to="/" className="no-underline mr-4">
           <Icon className="align-top !text-3xl">arrow_back</Icon>
         </Link>
       )}

@@ -17,28 +17,18 @@ import { ConsumerReviewLabels } from 'shared/reviews/ConsumerReviewLabels'
 import { UseSetState, useSetState } from '../../alexlibs/react-hooks-lib'
 import {
   Report,
+  ReportingDateLabel,
   ReportSearchResult,
   ReportStatus,
-  ReportTag,
-  ReportingDateLabel,
 } from '../../core/client/report/Report'
 import { useConnectedContext } from '../../core/context/ConnectedContext'
 import { cleanObject } from '../../core/helper'
-import { compose } from '../../core/helper/compose'
-import {
-  mapArrayFromQuerystring,
-  mapBooleanFromQueryString,
-  mapDateFromQueryString,
-  mapDatesToQueryString,
-  useQueryString,
-} from '../../core/helper/useQueryString'
 import {
   Id,
   Paginate,
   PaginatedFilters,
   ReportResponseTypes,
   ReportSearch,
-  ResponseEvaluation,
 } from '../../core/model'
 import { useCategoriesByStatusQuery } from '../../core/queryhooks/constantQueryHooks'
 import { useReportSearchQuery } from '../../core/queryhooks/reportQueryHooks'
@@ -68,84 +58,30 @@ import {
   SiretColumn,
   TagsColumn,
 } from './reportsColumns'
+import { useNavigate } from '@tanstack/react-router'
 
-interface ReportSearchQs {
-  readonly departments?: string[] | string
-  readonly tags?: ReportTag[] | ReportTag
-  readonly companyCountries?: string[] | string
-  readonly siretSirenList?: string[] | string
-  readonly activityCodes?: string[] | string
-  start?: string
-  end?: string
-  email?: string
-  consumerPhone?: string
-  hasConsumerPhone?: boolean
-  websiteURL?: string
-  phone?: string
-  category?: string
-  status?: string[]
-  details?: string
-  hasWebsite?: boolean
-  hasPhone?: boolean
-  hasCompany?: boolean
-  hasForeignCountry?: boolean
-  hasResponseEvaluation?: boolean
-  responseEvaluation?: ResponseEvaluation[]
-  hasEngagementEvaluation?: boolean
-  engagementEvaluation?: ResponseEvaluation[]
-  subcategories?: string[]
-  isBookmarked?: boolean
-  offset: number
-  limit: number
-}
-
-function useReportsQueryString() {
-  return useQueryString<Partial<ReportSearch>, Partial<ReportSearchQs>>({
-    toQueryString: mapDatesToQueryString,
-    fromQueryString: compose(
-      mapDateFromQueryString,
-      mapArrayFromQuerystring([
-        'status',
-        'departments',
-        'tags',
-        'companyCountries',
-        'siretSirenList',
-        'activityCodes',
-        'evaluation',
-        'subcategories',
-      ]),
-      mapBooleanFromQueryString([
-        'hasConsumerPhone',
-        'hasCompany',
-        'hasForeignCountry',
-        'hasPhone',
-        'hasWebsite',
-        'hasResponseEvaluation',
-        'hasEngagementEvaluation',
-        'isBookmarked',
-      ]),
-    ),
-  })
-}
-
-export const Reports = () => {
+export const Reports = ({
+  search,
+}: {
+  search: ReportSearch & Partial<PaginatedFilters>
+}) => {
   const i18n = useI18n()
   const { m } = i18n
   const { connectedUser } = useConnectedContext()
   const { api } = useApiContext()
+  const navigate = useNavigate()
 
   const selectReport = useSetState<Id>()
   const [expanded, setExpanded] = useState(false)
-  const queryString = useReportsQueryString()
 
   const _reports = useReportSearchQuery({
     offset: 0,
     limit: 25,
-    ...queryString.get(),
+    ...search,
   })
 
   useEffect(() => {
-    queryString.update(cleanObject(_reports.filters))
+    navigate({ to: '.', search: _reports.filters, replace: true })
   }, [_reports.filters])
 
   const filtersCount = useMemo(() => {

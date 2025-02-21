@@ -18,15 +18,10 @@ interface ActionProps<F extends (...args: any[]) => Promise<any>> {
 interface Props {
   login: ActionProps<PublicApiSdk['authenticate']['login']>
   startProConnect: ActionProps<PublicApiSdk['authenticate']['startProConnect']>
+  redirect?: string
 }
 
-export interface Form {
-  email: string
-  password: string
-  apiError: string
-}
-
-export const AgentLoginForm = ({ login, startProConnect }: Props) => {
+export const AgentLoginForm = ({ login, startProConnect, redirect }: Props) => {
   return (
     <CenteredContent>
       <InfoBanner />
@@ -48,7 +43,7 @@ export const AgentLoginForm = ({ login, startProConnect }: Props) => {
               avec un mot de passe ou je me suis déjà connecté à Signal Conso
               avec mes identifiants.
             </p>
-            <LoginForm login={login} />
+            <LoginForm login={login} redirect={redirect} />
           </Box>
           <Divider
             orientation="vertical"

@@ -6,10 +6,6 @@ import {
   ReportStatus,
   ReportStatusPro,
 } from '../core/client/report/Report'
-import { NavLink } from 'react-router'
-import { siteMap } from '../core/siteMap'
-import ReportSearchNavLink from '../feature/Report/ReportSearchNavLink'
-import { Icon } from '@mui/material'
 
 interface ReportStatusLabelProps extends Omit<LabelProps, 'children'> {
   status: ReportStatus

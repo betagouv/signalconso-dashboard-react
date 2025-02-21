@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
-import { useNavigate } from 'react-router'
 import { ApiError } from '../../core/client/ApiClient'
 import { useToast } from '../../core/context/toastContext'
+import { useNavigate } from '@tanstack/react-router'
 
 interface ActionProps<F extends (...args: any[]) => Promise<any>> {
   action: F
@@ -28,10 +28,10 @@ export const ProConnectCallback = ({
     if (authorizationCode && state) {
       loginProConnect
         .action(authorizationCode, state)
-        .then((_) => navigate('/suivi-des-signalements?offset=0&limit=25'))
+        .then((_) => navigate({ to: '/suivi-des-signalements' }))
         .catch((e) => {
           toastError(e)
-          navigate('/')
+          navigate({ to: '/' })
         })
     }
   }, [navigate])

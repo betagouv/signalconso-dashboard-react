@@ -1,12 +1,12 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useForm } from 'react-hook-form'
-import { useNavigate } from 'react-router'
 import { useConnectedContext } from '../../core/context/ConnectedContext'
 import { regexp } from '../../core/helper/regexp'
 import { useI18n } from '../../core/i18n'
 import { ScButton } from '../../shared/Button'
 import { CleanWidePanel } from '../../shared/Panel/simplePanels'
 import { ScInput } from '../../shared/ScInput'
+import { useNavigate } from '@tanstack/react-router'
 
 interface LogAsForm {
   email: string
@@ -25,7 +25,7 @@ export const LogAs = () => {
   const onSubmit = async (form: LogAsForm) => {
     const user = await _logAs.mutateAsync(form.email)
     setConnectedUser(user)
-    navigate('/')
+    navigate({ to: '/' })
     queryClient.resetQueries()
   }
 

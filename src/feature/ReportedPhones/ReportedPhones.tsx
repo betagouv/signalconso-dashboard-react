@@ -1,10 +1,8 @@
 import { Icon, Tooltip } from '@mui/material'
 import { useCallback } from 'react'
-import { NavLink } from 'react-router'
 import { Btn, IconBtn, Txt } from '../../alexlibs/mui-extension'
 import { useI18n } from '../../core/i18n'
 import { useReportedPhonesSearchQuery } from '../../core/queryhooks/phoneQueryHooks'
-import { siteMap } from '../../core/siteMap'
 import { sxUtils } from '../../core/theme'
 import { Datatable } from '../../shared/Datatable/Datatable'
 import { DebouncedInput } from '../../shared/DebouncedInput'
@@ -12,6 +10,7 @@ import { ExportPhonesPopper } from '../../shared/ExportPopperBtn'
 import { Page, PageTitle } from '../../shared/Page'
 import { PeriodPicker } from '../../shared/PeriodPicker'
 import { ScInput } from '../../shared/ScInput'
+import { Link } from '@tanstack/react-router'
 
 export const ReportedPhones = () => {
   const _reportedPhone = useReportedPhonesSearchQuery()
@@ -127,19 +126,20 @@ export const ReportedPhones = () => {
               sx: (_) => sxUtils.tdActions,
               render: (_) => (
                 <>
-                  <NavLink
-                    to={siteMap.logged.reports({
+                  <Link
+                    to="/suivi-des-signalements"
+                    search={{
                       hasPhone: true,
                       phone: _.phone,
                       ...(_.siret
                         ? { hasCompany: true, siretSirenList: [_.siret] }
                         : {}),
-                    })}
+                    }}
                   >
                     <Btn size="small" color="primary" variant="outlined">
                       {m.see}
                     </Btn>
-                  </NavLink>
+                  </Link>
                 </>
               ),
             },

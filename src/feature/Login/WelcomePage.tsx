@@ -1,24 +1,40 @@
-import { siteMap } from 'core/siteMap'
-import { Link } from 'react-router'
 import { CenteredContent } from 'shared/CenteredContent'
 import { AlertNotForConso, DashboardTitle } from './loggedOutComponents'
 import { Icon } from '@mui/material'
-import { useLocation } from 'react-router'
 import { InfoBanner } from '../../shared/InfoBanner'
+import { createLink, LinkComponent } from '@tanstack/react-router'
+import React from 'react'
 
-export function WelcomePage() {
-  const location = useLocation()
+interface BasicTileProps extends React.AnchorHTMLAttributes<HTMLAnchorElement> {
+  title: string
+  desc: string
+}
 
-  const handleRedirectToLogin = () => {
-    const currentPath = location.pathname + location.search
+const BasicTileComponent = React.forwardRef<HTMLAnchorElement, BasicTileProps>(
+  ({ title, desc, ...props }, ref) => {
+    return (
+      <a
+        ref={ref}
+        {...props}
+        className="block no-underline relative border border-b-4 border-b-scbluefrance border-gray-300 border-solid py-20 px-8 text-center max-w-sm"
+      >
+        <h2 className="text-scbluefrance font-bold mb-2 text-lg">{title}</h2>
+        <p className="mb-12">{desc}</p>
+        <Icon className="absolute right-6 bottom-6 text-scbluefrance !text-2xl">
+          arrow_forward
+        </Icon>
+      </a>
+    )
+  },
+)
 
-    return currentPath === '/'
-      ? siteMap.loggedout.login
-      : `${siteMap.loggedout.login}?redirecturl=${encodeURIComponent(
-          currentPath,
-        )}`
-  }
+const CreatedTileComponent = createLink(BasicTileComponent)
 
+const Tile: LinkComponent<typeof BasicTileComponent> = (props) => {
+  return <CreatedTileComponent preload={'intent'} {...props} />
+}
+
+export function WelcomePage({ redirect }: { redirect?: string }) {
   return (
     <CenteredContent>
       <InfoBanner />
@@ -27,38 +43,16 @@ export function WelcomePage() {
         <Tile
           title="J'ai reçu un courrier de SignalConso à propos de mon entreprise"
           desc="Je crée mon compte"
-          href={siteMap.loggedout.register}
+          to="/activation"
         />
         <Tile
           title="J'ai déjà un compte pour mon entreprise"
           desc="Je me connecte pour consulter et répondre aux signalements"
-          href={handleRedirectToLogin()}
+          to="/connexion"
+          search={{ redirect }}
         />
       </div>
       <AlertNotForConso />
     </CenteredContent>
-  )
-}
-
-function Tile({
-  title,
-  desc,
-  href,
-}: {
-  title: string
-  desc: string
-  href: string
-}) {
-  return (
-    <Link
-      to={href}
-      className="block no-underline relative border border-b-4 border-b-scbluefrance border-gray-300 border-solid py-20 px-8 text-center max-w-sm"
-    >
-      <h2 className="text-scbluefrance font-bold mb-2 text-lg">{title}</h2>
-      <p className="mb-12">{desc}</p>
-      <Icon className="absolute right-6 bottom-6 text-scbluefrance !text-2xl">
-        arrow_forward
-      </Icon>
-    </Link>
   )
 }
