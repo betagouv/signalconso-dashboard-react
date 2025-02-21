@@ -1,9 +1,9 @@
-import {createFileRoute, Outlet} from '@tanstack/react-router'
-import {useI18n} from "../../core/i18n";
-import {useConnectedContext} from "../../core/context/ConnectedContext";
-import {Page, PageTitle} from "../../shared/Page";
-import {PageTab, PageTabs} from "../../shared/Page/PageTabs";
-import {config} from "../../conf/config";
+import { createFileRoute, Outlet } from '@tanstack/react-router'
+import { useI18n } from '../../core/i18n'
+import { useConnectedContext } from '../../core/context/ConnectedContext'
+import { Page, PageTitle } from '../../shared/Page'
+import { PageTab, PageTabs } from '../../shared/Page/PageTabs'
+import { config } from '../../conf/config'
 import { Route as reportStatsRoute } from './stats/report-stats'
 import { Route as dgccrfStatsRoute } from './stats/dgccrf-stats'
 import { Route as proStatsRoute } from './stats/pro-stats'
@@ -14,7 +14,7 @@ export const Route = createFileRoute('/_authenticated/stats')({
 })
 
 function Stats() {
-    const { m } = useI18n()
+  const { m } = useI18n()
   const { connectedUser } = useConnectedContext()
   return (
     <Page>
@@ -35,10 +35,7 @@ function Stats() {
       </p>
       {connectedUser.isDGAL ? (
         <PageTabs>
-          <PageTab
-            to={proStatsRoute.to}
-            label={m.statsPro}
-          />
+          <PageTab to={proStatsRoute.to} label={m.statsPro} />
           <PageTab
             to={countBySubCategoriesRoute.to}
             label={m.statsCountBySubCategoriesTab}
@@ -46,18 +43,9 @@ function Stats() {
         </PageTabs>
       ) : (
         <PageTabs>
-          <PageTab
-            to={reportStatsRoute.to}
-            label={m.statsReports}
-          />
-          <PageTab
-            to={proStatsRoute.to}
-            label={m.statsPro}
-          />
-          <PageTab
-            to={dgccrfStatsRoute.to}
-            label={m.statsDgccrf}
-          />
+          <PageTab to={reportStatsRoute.to} label={m.statsReports} />
+          <PageTab to={proStatsRoute.to} label={m.statsPro} />
+          <PageTab to={dgccrfStatsRoute.to} label={m.statsDgccrf} />
           <PageTab
             to={countBySubCategoriesRoute.to}
             label={m.statsCountBySubCategoriesTab}

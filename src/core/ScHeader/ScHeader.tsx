@@ -10,7 +10,7 @@ import logoGouvMobile from './gouv-mobile.svg'
 import logoDgccrf from './logo-dgccrf.png'
 import logoSignalConso from './logo-signalconso.png'
 import { siteMap } from '../siteMap'
-import {useLocation} from "@tanstack/react-router";
+import { Link, useLocation } from '@tanstack/react-router'
 
 const HeaderItem = ({ children, href }: { children: any; href: string }) => {
   return (
@@ -73,15 +73,12 @@ export const ScHeader = () => {
               <a href={config.appBaseUrl + '/centre-aide'}>
                 <MenuItem>{m.helpCenter}</MenuItem>
               </a>
-              <a href={config.appBaseUrl + '/comment-ca-marche'}>
-                <MenuItem>{m.howItWorks}</MenuItem>
-              </a>
-              <a href={siteMap.loggedout.login}>
+              <Link to="/connexion">
                 <MenuItem>{m.proLogin}</MenuItem>
-              </a>
-              <a href={siteMap.loggedout.loginAgent}>
+              </Link>
+              <Link to="/connexion/agents">
                 <MenuItem>{m.agentLogin}</MenuItem>
-              </a>
+              </Link>
             </Menu>
           </>
         ) : (

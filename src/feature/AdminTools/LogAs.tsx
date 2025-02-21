@@ -6,7 +6,7 @@ import { useI18n } from '../../core/i18n'
 import { ScButton } from '../../shared/Button'
 import { CleanWidePanel } from '../../shared/Panel/simplePanels'
 import { ScInput } from '../../shared/ScInput'
-import {useNavigate} from "@tanstack/react-router";
+import { useNavigate } from '@tanstack/react-router'
 
 interface LogAsForm {
   email: string
@@ -25,7 +25,7 @@ export const LogAs = () => {
   const onSubmit = async (form: LogAsForm) => {
     const user = await _logAs.mutateAsync(form.email)
     setConnectedUser(user)
-    navigate({to: '/'})
+    navigate({ to: '/' })
     queryClient.resetQueries()
   }
 

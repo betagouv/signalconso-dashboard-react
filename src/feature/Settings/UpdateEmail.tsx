@@ -6,7 +6,7 @@ import { useConnectedContext } from '../../core/context/ConnectedContext'
 import { useToast } from '../../core/context/toastContext'
 import { useI18n } from '../../core/i18n'
 
-export const UpdateEmail = ({token}: {token: string}) => {
+export const UpdateEmail = ({ token }: { token: string }) => {
   const { m } = useI18n()
 
   const { api: apiSdk, setConnectedUser } = useConnectedContext()

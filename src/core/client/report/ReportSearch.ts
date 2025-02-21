@@ -36,3 +36,14 @@ export interface ReportSearch {
   hasBarcode?: boolean
   isBookmarked?: boolean
 }
+
+export type ReportProSearch = Pick<
+  ReportSearch,
+  | 'departments'
+  | 'siretSirenList'
+  | 'start'
+  | 'end'
+  | 'status'
+  | 'hasWebsite'
+  | 'fullText'
+>

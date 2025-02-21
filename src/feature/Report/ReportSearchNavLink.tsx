@@ -1,8 +1,7 @@
 import React, { ReactNode } from 'react'
 import { Tooltip } from '@mui/material'
-import { siteMap } from '../../core/siteMap'
 import { ReportSearch } from '../../core/client/report/ReportSearch'
-import {Link} from "@tanstack/react-router";
+import { Link } from '@tanstack/react-router'
 
 interface ReportSearchLinkProps {
   reportSearch: Partial<ReportSearch>
@@ -15,12 +14,12 @@ const ReportSearchNavLink: React.FC<ReportSearchLinkProps> = ({
   value,
   className = '',
 }) => {
-
   return (
     <Tooltip title="Rechercher sur la page des signalements">
       <Link
         className={className}
-        to={siteMap.logged.reports(reportSearch)}
+        to="/suivi-des-signalements"
+        search={reportSearch}
       >
         {value}
       </Link>

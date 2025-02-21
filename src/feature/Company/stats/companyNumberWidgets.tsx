@@ -16,10 +16,9 @@ import {
   useGetCompanyThreatQuery,
   useGetResponseDelayQuery,
 } from 'core/queryhooks/statsQueryHooks'
-import { siteMap } from 'core/siteMap'
 import { PropsWithChildren } from 'react'
 import { CleanInvisiblePanel } from 'shared/Panel/simplePanels'
-import {Link} from "@tanstack/react-router";
+import { Link } from '@tanstack/react-router'
 type Props = {
   companyId: Id
 }
@@ -181,9 +180,7 @@ function NumberWidgetAccesses({
           <UsersIcon fontSize="small" />
           <p>
             {displayAccessesLink ? (
-              <Link
-                to={siteMap.logged.company(companyId).accesses.valueAbsolute}
-              >
+              <Link to="/entreprise/$companyId/accesses" params={{ companyId }}>
                 {linkContent}
               </Link>
             ) : (

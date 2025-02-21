@@ -6,13 +6,13 @@ import { useI18n } from '../../core/i18n'
 import { useSearchAuthAttemptsQuery } from '../../core/queryhooks/userQueryHooks'
 import { Datatable } from '../../shared/Datatable/Datatable'
 import { DebouncedInput } from '../../shared/DebouncedInput'
-import {useLocation} from "@tanstack/react-router";
 
-export const UserAuthAttempts = () => {
+export const UserAuthAttempts = ({
+  email: emailQueryParam,
+}: {
+  email: string | null
+}) => {
   const { m } = useI18n()
-  const location = useLocation()
-  const queryParams = new URLSearchParams(location.searchStr)
-  const emailQueryParam = queryParams.get('email')
   const { formatDateTime } = useI18n()
   const authAttempts = useSearchAuthAttemptsQuery({
     limit: 25,

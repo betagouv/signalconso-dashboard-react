@@ -49,9 +49,9 @@ import { ReportResponseForm } from './ReportResponseForm/ReportResponseForm'
 import { ReportStation } from './ReportStation'
 import { ReportTrain } from './ReportTrain'
 import { initTally } from '../../core/plugins/Tally'
-import {Link} from "@tanstack/react-router";
+import { Link } from '@tanstack/react-router'
 
-export const ReportPro = ({reportId}: {reportId: Id}) => {
+export const ReportPro = ({ reportId }: { reportId: Id }) => {
   useEffect(() => {
     initTally()
   }, [])
@@ -105,7 +105,7 @@ export function ReportProLoaded({ reportExtra }: { reportExtra: ReportExtra }) {
       <div className={'flex justify-between items-center'}>
         <LinkBackToList {...{ report }} />
         <a
-          target='_blank'
+          target="_blank"
           onClick={download}
           className="flex items-center text-scbluefrance mb-2 no-underline hover:underline gap-2"
         >

@@ -20,7 +20,7 @@ import { siteMap } from '../../core/siteMap'
 import { ScButton } from '../../shared/Button'
 import { SelectMonth } from '../../shared/SelectMonth'
 import { useGetDateForMonthAndPreviousOne } from './useGetDateForMonthAndPreviousOne'
-import {Link} from "@tanstack/react-router";
+import { Link } from '@tanstack/react-router'
 
 const CellNewPosition = ({ sx, ...props }: BoxProps) => {
   return (

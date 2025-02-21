@@ -15,7 +15,7 @@ import {
   Period,
 } from '../../../core/client/stats/statsTypes'
 import { CompanyStatsPanelTitle } from './CompanyStatsPanelTitle'
-import {Link} from "@tanstack/react-router";
+import { Link } from '@tanstack/react-router'
 
 const periods: Period[] = ['Day', 'Week', 'Month']
 const defaultTick = 12

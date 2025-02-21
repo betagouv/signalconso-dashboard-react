@@ -29,7 +29,7 @@ import { ScButton } from '../../shared/Button'
 import { Page, PageTitle } from '../../shared/Page'
 import { Panel, PanelBody } from '../../shared/Panel'
 import { ScInputPassword } from '../../shared/ScInputPassword'
-import {useLocation, useNavigate, useParams} from "@tanstack/react-router";
+import { useLocation, useNavigate, useParams } from '@tanstack/react-router'
 
 interface UserActivationForm extends UserToActivate {
   repeatPassword: string
@@ -102,7 +102,7 @@ export const UserActivation = ({ siret, onUserActivated }: Props) => {
         )
         toastSuccess(m.accountActivated)
         onUserActivated(user)
-        history({to: siteMap.logged.reports()})
+        history({ to: siteMap.logged.reports() })
       })
       .catch((e) => {
         trackEventUnconnected(

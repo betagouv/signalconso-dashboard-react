@@ -1,8 +1,8 @@
-import {createFileRoute, Outlet} from '@tanstack/react-router'
-import {useI18n} from "../../core/i18n";
-import {useConnectedContext} from "../../core/context/ConnectedContext";
-import {Page, PageTitle} from "../../shared/Page";
-import {PageTab, PageTabs} from "../../shared/Page/PageTabs";
+import { createFileRoute, Outlet } from '@tanstack/react-router'
+import { useI18n } from '../../core/i18n'
+import { useConnectedContext } from '../../core/context/ConnectedContext'
+import { Page, PageTitle } from '../../shared/Page'
+import { PageTab, PageTabs } from '../../shared/Page/PageTabs'
 import { Route as enqueteRoute } from './moderation-url-entreprises/enquete'
 import { Route as sitesNonIdentifiesRoute } from './moderation-url-entreprises/sites-internet.non-identifies'
 
@@ -13,7 +13,7 @@ export const Route = createFileRoute(
 })
 
 function ReportedWebsites() {
-    const { m } = useI18n() // Assuming this hook exists and provides translations
+  const { m } = useI18n() // Assuming this hook exists and provides translations
   const { connectedUser } = useConnectedContext() // Assuming this hook provides user state
 
   return (
@@ -26,10 +26,7 @@ function ReportedWebsites() {
 
       {connectedUser.isAdmin && (
         <PageTabs>
-          <PageTab
-            to={enqueteRoute.to}
-            label={m.websitesInvestigation}
-          />
+          <PageTab to={enqueteRoute.to} label={m.websitesInvestigation} />
           <PageTab
             to={sitesNonIdentifiesRoute.to}
             label={m.reportedUnknownWebsites}

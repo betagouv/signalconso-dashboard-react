@@ -1,9 +1,10 @@
 import { QueryClient, useMutation } from '@tanstack/react-query'
 import { publicApiSdk } from 'core/apiSdkInstances'
-import React, {Dispatch, SetStateAction, useContext, useEffect, useRef, useState} from 'react'
+import React, { useContext, useRef, useState } from 'react'
 import { User } from './client/user/User'
-import {router, router as appRouter} from "../App";
+import { router as appRouter } from '../App'
 
+type MaybeUser = User | undefined
 export type LoginManagementResult = {
   connectedUser?: User
   logout: () => void
@@ -29,36 +30,47 @@ export type LoginManagementResult = {
     loading?: boolean
     errorMsg?: unknown
   }
-  setConnectedUser: (user: User | undefined) => void
+  setConnectedUser: (
+    user: MaybeUser | ((previous: MaybeUser) => MaybeUser),
+  ) => void
   isAuthenticated: () => boolean
 }
 
-export const LoginManagementContext = React.createContext<LoginManagementResult>(
-  {} as LoginManagementResult
-)
+export const LoginManagementContext =
+  React.createContext<LoginManagementResult>({} as LoginManagementResult)
 
-export function LoginManagementProvider({ queryClient, router, userOnStartup, children }: { queryClient: QueryClient, router: typeof appRouter; userOnStartup ?: User; children: React.ReactNode }) {
-  const [connectedUser, setConnectedUser_] = useState<User | undefined>(userOnStartup)
+export function LoginManagementProvider({
+  queryClient,
+  router,
+  userOnStartup,
+  children,
+}: {
+  queryClient: QueryClient
+  router: typeof appRouter
+  userOnStartup?: User
+  children: React.ReactNode
+}) {
+  const [connectedUser, setConnectedUserInternal] =
+    useState<MaybeUser>(userOnStartup)
+  // useRef required to redirect correctly in beforeLoad functions.
+  // beforeLoad is triggered before any re-render thus, when calling setConnectedUser, connectedUser is not up to date
+  // before any re-render and thus beforeLoad is called with outdated parameters first.
   const isAuthenticatedRef = useRef<boolean>(!!userOnStartup)
   const [isRegistering, setIsRegistering] = useState(false)
   const [registerError, setRegisterError] = useState<unknown | undefined>()
 
-  //const isAuthenticated = () => localStorage.getItem('isAuthenticated') === 'true'
   const isAuthenticated = () => isAuthenticatedRef.current
 
-  const setConnectedUser = (user?: User) => {
-    setConnectedUser_(user)
-    isAuthenticatedRef.current = !!user
-    //localStorage.setItem('isAuthenticated', `${!!user}`)
+  const setConnectedUser = (
+    user: MaybeUser | ((previous: MaybeUser) => MaybeUser),
+  ) => {
+    setConnectedUserInternal(user)
+    if (typeof user === 'function') {
+      isAuthenticatedRef.current = !!user(connectedUser)
+    } else {
+      isAuthenticatedRef.current = !!user
+    }
   }
-
-  // useEffect(() => {
-  //   localStorage.setItem('isAuthenticated', `${!!userOnStartup}`)
-  // });
-
-  // useEffect(() => {
-  //   router.invalidate()
-  // }, [router, connectedUser]);
 
   const _loginProConnect = useMutation({
     mutationFn: ({
@@ -121,7 +133,7 @@ export function LoginManagementProvider({ queryClient, router, userOnStartup, ch
     console.warn('User seems logged out.')
     setConnectedUser(user)
     router.invalidate()
-    router.navigate({to: '/'})
+    router.navigate({ to: '/' })
     return queryClient.resetQueries()
   }
 
@@ -137,42 +149,45 @@ export function LoginManagementProvider({ queryClient, router, userOnStartup, ch
     }
   }
 
-  return (<LoginManagementContext.Provider value={
-    {
-      connectedUser,
-      login: {
-        action: (login: string, password: string) => {
-          return _login.mutateAsync({ login, password })
+  return (
+    <LoginManagementContext.Provider
+      value={{
+        connectedUser,
+        login: {
+          action: (login: string, password: string) => {
+            return _login.mutateAsync({ login, password })
+          },
+          loading: isLoggingIn,
+          errorMsg: loginError,
         },
-        loading: isLoggingIn,
-        errorMsg: loginError,
-      },
-      loginProConnect: {
-        action: (authorizationCode: string, state: string) => {
-          return _loginProConnect.mutateAsync({ authorizationCode, state })
+        loginProConnect: {
+          action: (authorizationCode: string, state: string) => {
+            return _loginProConnect.mutateAsync({ authorizationCode, state })
+          },
+          loading: isProConnectLoggingIn,
+          errorMsg: proConnectloginError,
         },
-        loading: isProConnectLoggingIn,
-        errorMsg: proConnectloginError,
-      },
-      startProConnect: {
-        action: (state: string, nonce: string) => {
-          return _startProConnect.mutateAsync({ state, nonce })
+        startProConnect: {
+          action: (state: string, nonce: string) => {
+            return _startProConnect.mutateAsync({ state, nonce })
+          },
+          loading: isStartingProConnect,
+          errorMsg: isStartingProConnectError,
         },
-        loading: isStartingProConnect,
-        errorMsg: isStartingProConnectError,
-      },
-      logout,
-      handleDetectedLogout,
-      register: {
-        action: register,
-        loading: isRegistering,
-        errorMsg: registerError,
-      },
-      setConnectedUser,
-      isAuthenticated,
-    }
-  }>{children}</LoginManagementContext.Provider>)
-
+        logout,
+        handleDetectedLogout,
+        register: {
+          action: register,
+          loading: isRegistering,
+          errorMsg: registerError,
+        },
+        setConnectedUser,
+        isAuthenticated,
+      }}
+    >
+      {children}
+    </LoginManagementContext.Provider>
+  )
 }
 
 export const useLoginManagement = (): LoginManagementResult => {

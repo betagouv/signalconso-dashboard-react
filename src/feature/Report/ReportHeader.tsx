@@ -14,7 +14,7 @@ import { ScChip } from '../../shared/ScChip'
 import { ReportCategories } from './ReportCategories'
 import { BookmarkButton } from './bookmarks'
 import { siteMap } from '../../core/siteMap'
-import {Link} from "@tanstack/react-router"
+import { Link } from '@tanstack/react-router'
 import ReportSearchNavLink from './ReportSearchNavLink'
 
 interface Props {

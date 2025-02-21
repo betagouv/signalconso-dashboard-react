@@ -1,12 +1,12 @@
 import { createFileRoute } from '@tanstack/react-router'
-import {useLoginManagement} from "../core/useLoginManagement";
-import {UserActivation} from "../feature/Users/UserActivation";
+import { useLoginManagement } from '../core/useLoginManagement'
+import { UserActivation } from '../feature/Users/UserActivation'
 
 export const Route = createFileRoute('/agent/rejoindre')({
   component: RouteComponent,
 })
 
 function RouteComponent() {
-  const {setConnectedUser} = useLoginManagement()
+  const { setConnectedUser } = useLoginManagement()
   return <UserActivation onUserActivated={setConnectedUser} />
 }

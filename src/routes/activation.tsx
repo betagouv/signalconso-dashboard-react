@@ -1,12 +1,12 @@
-import {createFileRoute, redirect} from '@tanstack/react-router'
-import {RegisterForm} from "../feature/Login/RegisterForm";
-import {useLoginManagement} from "../core/useLoginManagement";
+import { createFileRoute, redirect } from '@tanstack/react-router'
+import { RegisterForm } from '../feature/Login/RegisterForm'
+import { useLoginManagement } from '../core/useLoginManagement'
 
 export const Route = createFileRoute('/activation')({
-  beforeLoad: ({context}) => {
+  beforeLoad: ({ context }) => {
     if (context.loginManagementResult.isAuthenticated()) {
       throw redirect({
-        to: '/entreprise/activation'
+        to: '/entreprise/activation',
       })
     }
   },
@@ -14,6 +14,6 @@ export const Route = createFileRoute('/activation')({
 })
 
 function RouteComponent() {
-  const {register} = useLoginManagement()
+  const { register } = useLoginManagement()
   return <RegisterForm register={register} />
 }

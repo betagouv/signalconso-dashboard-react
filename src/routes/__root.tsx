@@ -1,8 +1,11 @@
-import {createRootRouteWithContext, Outlet} from "@tanstack/react-router";
-import {LoginManagementResult, useLoginManagement} from "../core/useLoginManagement";
-import {Layout} from "../core/Layout/Layout";
-import {QueryClient} from "@tanstack/react-query";
-import {RedirectHashRouterToBrowserRouter} from "../RedirectHashRouterToBrowserRouter";
+import { createRootRouteWithContext, Outlet } from '@tanstack/react-router'
+import {
+  LoginManagementResult,
+  useLoginManagement,
+} from '../core/useLoginManagement'
+import { Layout } from '../core/Layout/Layout'
+import { QueryClient } from '@tanstack/react-query'
+import { RedirectHashRouterToBrowserRouter } from '../RedirectHashRouterToBrowserRouter'
 
 interface RouterContext {
   queryClient: QueryClient

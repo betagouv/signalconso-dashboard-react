@@ -1,6 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router'
-import {CompanyAccesses} from "../../../../feature/CompanyAccesses/CompanyAccesses";
-import {useGetCompanyByIdQuery} from "../../../../core/queryhooks/companyQueryHooks";
+import { CompanyAccesses } from '../../../../feature/CompanyAccesses/CompanyAccesses'
+import { useGetCompanyByIdQuery } from '../../../../core/queryhooks/companyQueryHooks'
 
 export const Route = createFileRoute(
   '/_authenticated/entreprise/$companyId/accesses',
@@ -9,7 +9,7 @@ export const Route = createFileRoute(
 })
 
 function RouteComponent() {
-  const {companyId} = Route.useParams()
+  const { companyId } = Route.useParams()
   const _companyById = useGetCompanyByIdQuery(companyId)
   const company = _companyById.data
   return <CompanyAccesses {...{ company }} />

@@ -17,7 +17,6 @@ import {
   useSearchAdminQuery,
   useSearchAgentQuery,
 } from '../../core/queryhooks/userQueryHooks'
-import { siteMap } from '../../core/siteMap'
 import { useToast } from '../../core/context/toastContext'
 import {
   Datatable,
@@ -32,7 +31,7 @@ import { UserAgentInvitationDialog } from './UserAgentInvitationDialog'
 import { UserAgentsImportDialog } from './UserAgentsImportDialog'
 import { UserDeleteButton } from './userDelete'
 import { useConnectedContext } from '../../core/context/ConnectedContext'
-import {Link, useNavigate} from "@tanstack/react-router";
+import { Link, useNavigate } from '@tanstack/react-router'
 
 export const AdminUsersList = () => <UsersList adminView />
 export const AgentUsersList = () => <UsersList />
@@ -69,7 +68,7 @@ const UsersList = ({ adminView }: Props) => {
     mutationFn: (email: string) => api.public.authenticate.logAs(email),
     onSuccess: (user) => {
       setConnectedUser(user)
-      navigate({to: '/'})
+      navigate({ to: '/' })
       queryClient.resetQueries()
     },
   })
@@ -159,9 +158,9 @@ const UsersList = ({ adminView }: Props) => {
           {!adminView && _.id && (
             <Tooltip title={m.authAttemptsHistory}>
               <Link
-                to='/users/auth-attempts'
+                to="/users/auth-attempts"
                 search={{
-                  email: _.email
+                  email: _.email,
                 }}
               >
                 <IconBtn color="primary">

@@ -20,17 +20,12 @@ import {
 import { useConnectedContext } from '../../core/context/ConnectedContext'
 import { useToast } from '../../core/context/toastContext'
 import { cleanObject } from '../../core/helper'
-import {
-  mapArrayFromQuerystring,
-  useQueryString,
-} from '../../core/helper/useQueryString'
 import { useI18n } from '../../core/i18n'
-import { Address, Id, Paginate, PaginatedSearch } from '../../core/model'
+import { Address, Id, Paginate } from '../../core/model'
 import {
   ActivatedCompanySearchQueryKeys,
   useActivatedCompanySearchQuery,
 } from '../../core/queryhooks/companyQueryHooks'
-import { siteMap } from '../../core/siteMap'
 import { styleUtils, sxUtils } from '../../core/theme'
 import { AddressComponent } from '../../shared/Address'
 import { ScButton } from '../../shared/Button'
@@ -40,29 +35,15 @@ import { SelectCompanyDialog } from '../../shared/SelectCompany/SelectCompanyDia
 import { CompaniesRegisteredFilters } from './CompaniesRegisteredFilters'
 import { EditAddressDialog } from './EditAddressDialog'
 import { MassImport } from './MassImport'
-import {Link} from "@tanstack/react-router";
+import { Link, useNavigate } from '@tanstack/react-router'
 
-interface CompanySearchQs extends PaginatedSearch<any> {
-  departments?: string[] | string
-  activityCodes?: string[] | string
-  identity?: string
-}
-
-export const CompaniesRegistered = () => {
-  const queryString = useQueryString<
-    Partial<CompanySearch>,
-    Partial<CompanySearchQs>
-  >({
-    toQueryString: (_) => _,
-    fromQueryString: mapArrayFromQuerystring(['activityCodes', 'departments']),
-  })
+export const CompaniesRegistered = ({ search }: { search: CompanySearch }) => {
+  const navigate = useNavigate()
   const { m, formatLargeNumber } = useI18n()
   const queryClient = useQueryClient()
   const { connectedUser, api: apiSdk } = useConnectedContext()
   const _companies = useActivatedCompanySearchQuery({
-    offset: 0,
-    limit: 25,
-    ...queryString.get(),
+    ...search,
   })
 
   const updateRegisteredCompanyAddress = (id: Id, address: Address) => {
@@ -100,7 +81,7 @@ export const CompaniesRegistered = () => {
   >()
 
   useEffect(() => {
-    queryString.update(cleanObject(_companies.filters))
+    navigate({ to: '.', search: _companies.filters, replace: true })
   }, [_companies.filters])
 
   const copyAddress = async (c: Company) => {
@@ -195,6 +176,7 @@ export const CompaniesRegistered = () => {
                 color="primary"
                 variant="outlined"
                 onClick={_companies.clearFilters}
+                loading={_companies.result.isLoading}
               >
                 {m.removeAllFilters}
               </ScButton>
@@ -244,7 +226,8 @@ export const CompaniesRegistered = () => {
               <Tooltip title={computeTitle(_)}>
                 <div className="flex flex-col">
                   <Link
-                    to={siteMap.logged.company(_.id).stats.valueAbsolute}
+                    to="/entreprise/$companyId/bilan"
+                    params={{ companyId: _.id }}
                   >
                     <Txt link sx={{ marginBottom: '-1px' }}>
                       {_.name}
@@ -313,11 +296,12 @@ export const CompaniesRegistered = () => {
             sx: (_) => ({ textAlign: 'right' }),
             render: (_) => (
               <Link
-                to={siteMap.logged.reports({
+                to="/suivi-des-signalements"
+                search={{
                   hasCompany: true,
                   siretSirenList: [_.siret],
                   departments: _companies.filters.departments,
-                })}
+                }}
               >
                 <ScButton color="primary">
                   {formatLargeNumber(_.count)}
@@ -371,7 +355,8 @@ export const CompaniesRegistered = () => {
                   overlap="circular"
                 >
                   <Link
-                    to={siteMap.logged.company(_.id).stats.valueAbsolute}
+                    to="/entreprise/$companyId/bilan"
+                    params={{ companyId: _.id }}
                   >
                     <IconBtn color="primary">
                       <Icon>query_stats</Icon>
@@ -380,7 +365,8 @@ export const CompaniesRegistered = () => {
                 </Badge>
                 <ScMenu>
                   <Link
-                    to={siteMap.logged.company(_.id).accesses.valueAbsolute}
+                    to="/entreprise/$companyId/accesses"
+                    params={{ companyId: _.id }}
                   >
                     <MenuItem>
                       <ListItemIcon>

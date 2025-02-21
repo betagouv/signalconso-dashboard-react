@@ -12,18 +12,17 @@ import {
   EventCategories,
   trackEventUnconnected,
 } from '../../core/plugins/Matomo'
-import { siteMap } from '../../core/siteMap'
 import { ScButton } from '../../shared/Button'
 import { CenteredContent } from '../../shared/CenteredContent'
 import { ScInputPassword } from '../../shared/ScInputPassword'
-import {useNavigate, useParams} from "@tanstack/react-router";
+import { useNavigate } from '@tanstack/react-router'
 
 interface Form {
   newPassword: string
   newPasswordConfirmation: string
 }
 
-export const ResetPassword = ({token}: {token: string}) => {
+export const ResetPassword = ({ token }: { token: string }) => {
   const { m } = useI18n()
   const _resetPassword = useMutation({
     mutationFn: (params: { password: string; token: string }) =>
@@ -49,7 +48,7 @@ export const ResetPassword = ({token}: {token: string}) => {
       .mutateAsync({ password: form.newPassword, token })
       .then(() => {
         toastSuccess(m.resetPasswordSuccess)
-        setTimeout(() => history({to: siteMap.loggedout.login}), 400)
+        setTimeout(() => history({ to: '/connexion' }), 400) // TODO Pourquoi ce setTimeout ?
         trackEventUnconnected(
           EventCategories.CompteUtilisateur,
           AuthenticationEventActions.resetPasswordSuccess,

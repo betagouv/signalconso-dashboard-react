@@ -1,9 +1,9 @@
-import {createFileRoute, redirect} from '@tanstack/react-router'
+import { createFileRoute, redirect } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/_authenticated/$')({
-  beforeLoad: ({context}) => {
+  beforeLoad: ({ context }) => {
     throw redirect({
-      to: '/suivi-des-signalements'
+      to: '/suivi-des-signalements',
     })
   },
 })

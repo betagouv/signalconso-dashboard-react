@@ -16,7 +16,7 @@ import { GetReportQueryKeys } from '../../../core/queryhooks/reportQueryHooks'
 import { CleanDiscreetPanel, CleanWidePanel } from 'shared/Panel/simplePanels'
 import { UserNameLabel } from '../../../shared/UserNameLabel'
 import { siteMap } from '../../../core/siteMap'
-import {Link} from "@tanstack/react-router";
+import { Link } from '@tanstack/react-router'
 
 interface Props {
   report: Report

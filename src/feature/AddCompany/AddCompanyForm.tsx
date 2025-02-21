@@ -13,9 +13,8 @@ import {
   EventCategories,
   trackEvent,
 } from '../../core/plugins/Matomo'
-import { siteMap } from '../../core/siteMap'
 import { ScInputPassword } from '../../shared/ScInputPassword'
-import {useNavigate} from "@tanstack/react-router";
+import { useNavigate } from '@tanstack/react-router'
 
 interface Form {
   siret: string
@@ -30,7 +29,7 @@ export const AddCompanyForm = () => {
       apiSdk.secured.accesses.acceptToken(params.siret, params.token),
     onSuccess: () => {
       toastSuccess(m.companyRegistered)
-      history({to: siteMap.logged.companiesPro})
+      history({ to: '/mes-entreprises' })
       trackEvent(
         connectedUser,
         EventCategories.AccesDeLEntreprise,

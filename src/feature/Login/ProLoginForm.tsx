@@ -14,6 +14,7 @@ interface ActionProps<F extends (...args: any[]) => Promise<any>> {
 
 interface Props {
   login: ActionProps<PublicApiSdk['authenticate']['login']>
+  redirect?: string
 }
 
 export interface Form {
@@ -22,14 +23,14 @@ export interface Form {
   apiError: string
 }
 
-export const ProLoginForm = ({ login }: Props) => {
+export const ProLoginForm = ({ login, redirect }: Props) => {
   const { m } = useI18n()
 
   return (
     <CenteredContent>
       <InfoBanner />
       <DashboardTitle subPageTitle={m.login} title={'Espace Pro'} />
-      <LoginForm login={login} />
+      <LoginForm login={login} redirect={redirect} />
     </CenteredContent>
   )
 }

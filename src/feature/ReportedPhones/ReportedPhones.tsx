@@ -11,7 +11,7 @@ import { ExportPhonesPopper } from '../../shared/ExportPopperBtn'
 import { Page, PageTitle } from '../../shared/Page'
 import { PeriodPicker } from '../../shared/PeriodPicker'
 import { ScInput } from '../../shared/ScInput'
-import {Link} from "@tanstack/react-router";
+import { Link } from '@tanstack/react-router'
 
 export const ReportedPhones = () => {
   const _reportedPhone = useReportedPhonesSearchQuery()

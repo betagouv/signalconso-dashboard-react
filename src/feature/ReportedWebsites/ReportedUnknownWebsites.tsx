@@ -13,7 +13,7 @@ import { sxUtils } from '../../core/theme'
 import { ScOption } from 'core/helper/ScOption'
 import { useListUnregisteredWebsitesSearchQuery } from '../../core/queryhooks/websiteQueryHooks'
 import { ScInput } from 'shared/ScInput'
-import {Link} from "@tanstack/react-router";
+import { Link } from '@tanstack/react-router'
 
 export const ReportedUnknownWebsites = () => {
   const { m } = useI18n()

@@ -7,7 +7,7 @@ import { useGetCloudWordQuery } from '../../../core/queryhooks/reportQueryHooks'
 import { siteMap } from '../../../core/siteMap'
 import { HorizontalBarChartData } from '../../../shared/Chart/HorizontalBarChart'
 import { CompanyStatsPanelTitle } from './CompanyStatsPanelTitle'
-import {Link} from "@tanstack/react-router";
+import { Link } from '@tanstack/react-router'
 
 interface Props {
   companyId: string

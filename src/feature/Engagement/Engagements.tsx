@@ -15,7 +15,7 @@ import { Engagement } from '../../core/client/engagement/Engagement'
 import { useApiContext } from '../../core/context/ApiContext'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useSetState } from '../../alexlibs/react-hooks-lib'
-import {useNavigate} from "@tanstack/react-router";
+import { useNavigate } from '@tanstack/react-router'
 
 export const Engagements = () => {
   const { m, formatDate } = useI18n()
@@ -63,7 +63,7 @@ export const Engagements = () => {
     if (e.metaKey || e.ctrlKey) {
       openInNew(siteMap.logged.report(_.report.id))
     } else {
-      history({to: siteMap.logged.report(_.report.id)})
+      history({ to: siteMap.logged.report(_.report.id) })
     }
   }
 

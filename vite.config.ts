@@ -9,7 +9,13 @@ import { TanStackRouterVite } from '@tanstack/router-plugin/vite'
 // https://vite.dev/config/
 export default defineConfig({
   base: '/',
-  plugins: [TanStackRouterVite({ autoCodeSplitting: false }), react(), viteTsconfigPaths(), tailwindcss(), eslint()],
+  plugins: [
+    TanStackRouterVite({ autoCodeSplitting: false }),
+    react(),
+    viteTsconfigPaths(),
+    tailwindcss(),
+    eslint(),
+  ],
   server: {
     // this ensures that the browser opens upon server start
     open: true,

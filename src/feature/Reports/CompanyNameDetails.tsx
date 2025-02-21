@@ -1,8 +1,7 @@
 import { Box } from '@mui/material'
 import { Txt } from '../../alexlibs/mui-extension'
-import { siteMap } from '../../core/siteMap'
 import { styleUtils } from '../../core/theme'
-import {Link} from "@tanstack/react-router";
+import { Link } from '@tanstack/react-router'
 
 type CompanyNameDetailsProps = {
   companyId: string | undefined
@@ -24,7 +23,7 @@ export const CompanyNameDetails: React.FC<CompanyNameDetailsProps> = ({
   return (
     <Box component="span" sx={{ marginBottom: '-1px' }}>
       {companyId && !isDGAL ? (
-        <Link to={siteMap.logged.company(companyId).stats.valueAbsolute}>
+        <Link to="/entreprise/$companyId/bilan" params={{ companyId }}>
           <Txt link>{companyName}</Txt>
         </Link>
       ) : (

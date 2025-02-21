@@ -64,7 +64,7 @@ export const creationReportEvent = (report: Report): ReportEvent =>
     },
   })
 
-export const ReportComponent = ({reportId}: {reportId: Id}) => {
+export const ReportComponent = ({ reportId }: { reportId: Id }) => {
   const [viewAsPro, setViewAsPro] = useState(false)
   const _getReport = useGetReportQuery(reportId)
 

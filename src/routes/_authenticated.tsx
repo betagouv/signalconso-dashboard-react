@@ -1,10 +1,15 @@
-import {createFileRoute, Outlet, redirect, useLocation} from "@tanstack/react-router";
-import {ConnectedContextProvider} from "../core/context/ConnectedContext";
-import {useEffect, useMemo} from "react";
-import {buildConnectedApiSdks} from "../core/apiSdkInstances";
-import {trackPage} from "../core/plugins/Matomo";
-import {RefreshBanner} from "../shared/RefreshBanner";
-import {useLoginManagement} from "../core/useLoginManagement";
+import {
+  createFileRoute,
+  Outlet,
+  redirect,
+  useLocation,
+} from '@tanstack/react-router'
+import { ConnectedContextProvider } from '../core/context/ConnectedContext'
+import { useEffect, useMemo } from 'react'
+import { buildConnectedApiSdks } from '../core/apiSdkInstances'
+import { trackPage } from '../core/plugins/Matomo'
+import { RefreshBanner } from '../shared/RefreshBanner'
+import { useLoginManagement } from '../core/useLoginManagement'
 
 export const Route = createFileRoute('/_authenticated')({
   beforeLoad: ({ context, location }) => {
@@ -17,16 +22,13 @@ export const Route = createFileRoute('/_authenticated')({
       })
     }
   },
-  component: RouteComponent
+  component: RouteComponent,
 })
 
 function RouteComponent() {
-    const {
-    connectedUser,
-    setConnectedUser,
-    handleDetectedLogout,
-  } = useLoginManagement()
-    const apiSdk = useMemo(
+  const { connectedUser, setConnectedUser, handleDetectedLogout } =
+    useLoginManagement()
+  const apiSdk = useMemo(
     () =>
       buildConnectedApiSdks({
         onDisconnected: handleDetectedLogout,
@@ -34,7 +36,7 @@ function RouteComponent() {
     [handleDetectedLogout],
   )
 
-    const location = useLocation()
+  const location = useLocation()
   useEffect(() => {
     if (connectedUser) {
       trackPage(
@@ -44,10 +46,16 @@ function RouteComponent() {
     }
   }, [connectedUser, location])
 
-  return connectedUser && (
-    <ConnectedContextProvider connectedUser={connectedUser} setConnectedUser={setConnectedUser} api={apiSdk}>
-      <RefreshBanner />
-      <Outlet />
-    </ConnectedContextProvider>
+  return (
+    connectedUser && (
+      <ConnectedContextProvider
+        connectedUser={connectedUser}
+        setConnectedUser={setConnectedUser}
+        api={apiSdk}
+      >
+        <RefreshBanner />
+        <Outlet />
+      </ConnectedContextProvider>
+    )
   )
 }

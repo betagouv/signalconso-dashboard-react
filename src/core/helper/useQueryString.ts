@@ -1,6 +1,6 @@
 import { regexp } from './regexp'
 import { parse as _parse, stringify as _stringify } from 'qs'
-import {useLocation, useNavigate} from "@tanstack/react-router";
+import { useLocation, useNavigate } from '@tanstack/react-router'
 
 interface ParsedUrlQueryInput {
   [key: string]:
@@ -52,7 +52,7 @@ export const useQueryString = <E, QS extends ParsedUrlQueryInput>({
     const previousQueryString = location.searchStr.replace(/^\?/, '')
     const hasChanged = newQueryString !== previousQueryString
     if (hasChanged) {
-      return history({to: `?${newQueryString}`, replace: true })
+      return history({ to: `?${newQueryString}`, replace: true })
     }
   }
 

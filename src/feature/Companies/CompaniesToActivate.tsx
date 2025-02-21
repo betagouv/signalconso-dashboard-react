@@ -18,7 +18,7 @@ import { ScButton } from '../../shared/Button'
 import { Datatable } from '../../shared/Datatable/Datatable'
 import { DatatableToolbar } from '../../shared/Datatable/DatatableToolbar'
 import { ScDialog } from '../../shared/ScDialog'
-import {Link} from "@tanstack/react-router";
+import { Link } from '@tanstack/react-router'
 
 export const CompaniesToActivate = () => {
   const { m, formatDate } = useI18n()

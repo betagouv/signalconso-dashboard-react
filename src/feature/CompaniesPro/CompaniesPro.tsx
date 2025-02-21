@@ -1,7 +1,7 @@
 import { FormControlLabel, Icon, Switch } from '@mui/material'
 import {
-  UseMutationResult,
   useMutation,
+  UseMutationResult,
   useQueryClient,
 } from '@tanstack/react-query'
 import { ScOption } from 'core/helper/ScOption'
@@ -23,7 +23,6 @@ import {
   ListReportBlockedNotificationsQueryKeys,
   useListReportBlockedNotificationsQuery,
 } from '../../core/queryhooks/reportBlockedNotificationQueryHooks'
-import { siteMap } from '../../core/siteMap'
 import { AddressComponent } from '../../shared/Address'
 import { ScButton } from '../../shared/Button'
 import { Datatable } from '../../shared/Datatable/Datatable'
@@ -31,7 +30,7 @@ import { DebouncedInput } from '../../shared/DebouncedInput'
 import { Page, PageTitle } from '../../shared/Page'
 import { ScInput } from '../../shared/ScInput'
 import { ConfirmDisableNotificationDialog } from './ConfirmDisableNotificationDialog'
-import {Link} from "@tanstack/react-router";
+import { Link } from '@tanstack/react-router'
 
 export const CompaniesPro = () => {
   const { m } = useI18n()
@@ -114,7 +113,7 @@ export const CompaniesPro = () => {
     <Page>
       <PageTitle
         action={
-          <Link to='/entreprise/activation'>
+          <Link to="/entreprise/activation">
             <ScButton icon="add" color="primary" variant="outlined">
               {m.addACompany}
             </ScButton>
@@ -277,7 +276,8 @@ function CompaniesProRow({
     <div className="lg:grid lg:grid-cols-2 py-2">
       <div className="">
         <Link
-          to={siteMap.logged.company(_.id).stats.valueAbsolute}
+          to="/entreprise/$companyId/bilan"
+          params={{ companyId: _.id }}
           className="text-lg text-scbluefrance"
         >
           {_.name}
@@ -312,22 +312,26 @@ function CompaniesProRow({
         />
         <div className="flex  justify-end gap-2">
           {_.level === AccessLevel.ADMIN && (
-            <Link to={siteMap.logged.company(_.id).accesses.valueAbsolute}>
+            <Link
+              to="/entreprise/$companyId/accesses"
+              params={{ companyId: _.id }}
+            >
               <Btn variant="text" size="small" icon="group">
                 {m.handleAccesses}
               </Btn>
             </Link>
           )}
-          <Link to={siteMap.logged.company(_.id).stats.valueAbsolute}>
+          <Link to="/entreprise/$companyId/bilan" params={{ companyId: _.id }}>
             <Btn variant="text" size="small" icon="query_stats">
               {m.myStats}
             </Btn>
           </Link>
           <Link
-            to={siteMap.logged.reports({
+            to="/suivi-des-signalements"
+            search={{
               hasCompany: true,
               siretSirenList: [_.siret],
-            })}
+            }}
           >
             <Btn variant="contained" icon="assignment_late" size="small">
               {m.see_reports}

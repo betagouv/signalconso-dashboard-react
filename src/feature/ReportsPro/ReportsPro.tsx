@@ -1,14 +1,12 @@
 import { Badge, Box, Icon, MenuItem } from '@mui/material'
 import { useEffect, useMemo } from 'react'
-import { Alert, Btn, Fender, Txt, makeSx } from '../../alexlibs/mui-extension'
+import { Alert, Btn, Fender, makeSx, Txt } from '../../alexlibs/mui-extension'
 import { useLayoutContext } from '../../core/context/LayoutContext'
 import { useI18n } from '../../core/i18n'
 import { Datatable } from '../../shared/Datatable/Datatable'
 import { Page, PageTitle } from '../../shared/Page'
-
 import { ScSelect } from '../../shared/Select/Select'
 import { SelectDepartments } from '../../shared/SelectDepartments/SelectDepartments'
-
 import { ScOption } from 'core/helper/ScOption'
 import { useListReportBlockedNotificationsQuery } from 'core/queryhooks/reportBlockedNotificationQueryHooks'
 import { DebouncedInput } from 'shared/DebouncedInput'
@@ -22,16 +20,9 @@ import {
   ReportStatusPro,
   ReportType,
 } from '../../core/client/report/Report'
-import { ReportSearch } from '../../core/client/report/ReportSearch'
+import { ReportProSearch } from '../../core/client/report/ReportSearch'
 import { cleanObject, openInNew } from '../../core/helper'
-import { compose } from '../../core/helper/compose'
-import {
-  mapArrayFromQuerystring,
-  mapDateFromQueryString,
-  mapDatesToQueryString,
-  useQueryString,
-} from '../../core/helper/useQueryString'
-import { Id } from '../../core/model'
+import { Id, PaginatedFilters } from '../../core/model'
 import { useGetAccessibleByProQuery } from '../../core/queryhooks/companyQueryHooks'
 import { useReportSearchQuery } from '../../core/queryhooks/reportQueryHooks'
 import { siteMap } from '../../core/siteMap'
@@ -42,7 +33,7 @@ import { ScInput } from '../../shared/ScInput'
 import { SelectCompaniesByPro } from '../../shared/SelectCompaniesByPro/SelectCompaniesByPro'
 import { DatatableToolbarComponent } from '../Reports/DatatableToolbarComponent'
 import { buildReportsProColumns } from './buildReportsProColumns'
-import {useNavigate} from "@tanstack/react-router";
+import { useNavigate } from '@tanstack/react-router'
 
 export const css = makeSx({
   iconDash: {
@@ -70,30 +61,12 @@ export const css = makeSx({
 
 const minRowsBeforeDisplayFilters = 2
 
-interface ReportFiltersQs {
-  readonly departments?: string[] | string
-  readonly siretSirenList?: string[] | string
-  start?: string
-  end?: string
-  status?: string[]
-}
-
 interface ReportsProProps {
   reportType: 'open' | 'closed'
+  search: ReportProSearch & Partial<PaginatedFilters>
 }
 
-export const ReportsPro = ({ reportType }: ReportsProProps) => {
-  const queryString = useQueryString<
-    Partial<ReportSearch>,
-    Partial<ReportFiltersQs>
-  >({
-    toQueryString: mapDatesToQueryString,
-    fromQueryString: compose(
-      mapDateFromQueryString,
-      mapArrayFromQuerystring(['siretSirenList', 'departments']),
-    ),
-  })
-
+export const ReportsPro = ({ reportType, search }: ReportsProProps) => {
   const reportStatusPro =
     reportType === 'closed'
       ? [ReportStatusPro.Cloture]
@@ -106,7 +79,7 @@ export const ReportsPro = ({ reportType }: ReportsProProps) => {
   const filtersAppliedToQuery = {
     offset: 0,
     limit: 25,
-    ...queryString.get(),
+    ...search,
     ...obligatoryFilters,
   }
 
@@ -125,6 +98,7 @@ export const ReportsPro = ({ reportType }: ReportsProProps) => {
   const { isMobileWidth } = useLayoutContext()
   const history = useNavigate()
   const { formatDate, m } = useI18n()
+  const navigate = useNavigate()
   const columns = buildReportsProColumns({
     _reports,
     selectReport,
@@ -165,11 +139,7 @@ export const ReportsPro = ({ reportType }: ReportsProProps) => {
   }, [_reports.filters])
 
   useEffect(() => {
-    queryString.update(cleanObject(_reports.filters))
-  }, [_reports.filters])
-
-  useEffect(() => {
-    queryString.update(cleanObject(_reports.filters))
+    navigate({ to: '.', search: _reports.filters, replace: true })
   }, [_reports.filters])
 
   const resetFiltersButtonProps = {
@@ -431,7 +401,10 @@ export const ReportsPro = ({ reportType }: ReportsProProps) => {
                     if (e.metaKey || e.ctrlKey) {
                       openInNew(siteMap.logged.report(_.report.id))
                     } else {
-                      history({to: siteMap.logged.report(_.report.id)})
+                      history({
+                        to: '/suivi-des-signalements/report/$reportId',
+                        params: { reportId: _.report.id },
+                      })
                     }
                   }
                 }}

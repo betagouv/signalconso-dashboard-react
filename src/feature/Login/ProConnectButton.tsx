@@ -5,7 +5,7 @@ import { config } from '../../conf/config'
 import { ApiError } from '../../core/client/ApiClient'
 import { ScButton } from '../../shared/Button'
 import { PublicApiSdk } from '../../core/client/PublicApiSdk'
-import { siteMap } from '../../core/siteMap'
+import { Route as proConnectRoute } from '../../routes/authenticate.proconnect.callback'
 
 interface ActionProps<F extends (...args: any[]) => Promise<any>> {
   action: F
@@ -23,7 +23,7 @@ const ProConnectButton = ({ startProConnect }: Props) => {
     const nonce = uuidv4()
 
     sessionStorage.setItem('oauth2_state', persistedState)
-    const redirectUri = `${config.dashboardBaseUrl}${siteMap.loggedout.proconnect_login_callback}`
+    const redirectUri = `${config.dashboardBaseUrl}${proConnectRoute.fullPath}`
     const encodedRedirectUri = encodeURI(redirectUri)
     const scopes = 'openid+email+given_name+usual_name+idp_id'
     startProConnect

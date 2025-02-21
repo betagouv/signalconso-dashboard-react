@@ -9,12 +9,11 @@ import {
   ReportSearchResult,
 } from 'core/model'
 import { UseQueryPaginateResult } from 'core/queryhooks/UseQueryPaginate'
-import {Link} from "@tanstack/react-router";
+import { Link } from '@tanstack/react-router'
 import { Fender, IconBtn, Txt } from '../../alexlibs/mui-extension'
 import { EntityIcon } from '../../core/EntityIcon'
 import { textOverflowMiddleCropping } from '../../core/helper'
 import { useI18n } from '../../core/i18n'
-import { siteMap } from '../../core/siteMap'
 import { ScButton } from '../../shared/Button'
 import { CompanyNameDetails } from './CompanyNameDetails'
 
@@ -95,7 +94,8 @@ export function SiretColumn({ r }: ColumnProps) {
     <>
       {r.report.companyId && !connectedUser.isDGAL ? (
         <Link
-          to={siteMap.logged.company(r.report.companyId).stats.valueAbsolute}
+          to="/entreprise/$companyId/bilan"
+          params={{ companyId: r.report.companyId }}
         >
           <Txt link sx={{ marginBottom: '-1px' }}>
             {r.report.companySiret}
@@ -188,7 +188,10 @@ export function FilesColumn({ r }: ColumnProps) {
 
 export function ActionsColumn({ r }: ColumnProps) {
   return (
-    <Link to={siteMap.logged.report(r.report.id)}>
+    <Link
+      to="/suivi-des-signalements/report/$reportId"
+      params={{ reportId: r.report.id }}
+    >
       <IconBtn color="primary">
         <Icon>chevron_right</Icon>
       </IconBtn>

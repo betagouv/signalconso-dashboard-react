@@ -22,16 +22,8 @@ import { PanelBody } from '../../shared/Panel'
 import { PeriodPicker } from '../../shared/PeriodPicker'
 import { SelectDepartments } from '../../shared/SelectDepartments/SelectDepartments'
 import { useApiContext } from '../../core/context/ApiContext'
-import {
-  mapArrayFromQuerystring,
-  mapDateFromQueryString,
-  mapDatesToQueryString,
-  useQueryString,
-} from '../../core/helper/useQueryString'
-import { compose } from '../../core/helper/compose'
 import { ReportNodeSearch } from '../../core/client/report/ReportNodeSearch'
-import { cleanObject } from '../../core/helper'
-import {Link} from "@tanstack/react-router";
+import { Link, useNavigate } from '@tanstack/react-router'
 
 const compare = (a?: string[], b?: string[]): number => {
   if (!a || !b) return 0
@@ -42,43 +34,23 @@ const compare = (a?: string[], b?: string[]): number => {
 const sortById = (reportNode1: ReportNode, reportNode2: ReportNode) =>
   compare(reportNode1.id?.split('.'), reportNode2.id?.split('.'))
 
-interface ReportNodeSearchQs {
-  readonly departments?: string[] | string
-  start?: string
-  end?: string
-}
-
-function useArboQueryString() {
-  return useQueryString<Partial<ReportNodeSearch>, Partial<ReportNodeSearchQs>>(
-    {
-      toQueryString: mapDatesToQueryString,
-      fromQueryString: compose(
-        mapDateFromQueryString,
-        mapArrayFromQuerystring(['departments']),
-      ),
-    },
-  )
-}
-
-export const ArborescenceWithCounts = () => {
+export const ArborescenceWithCounts = ({
+  search,
+}: {
+  search: ReportNodeSearch
+}) => {
   const { m } = useI18n()
   const { connectedUser } = useConnectedContext()
-  const queryString = useArboQueryString()
+  const navigate = useNavigate()
 
   const begin = new Date()
   begin.setDate(begin.getDate() - 90)
   begin.setHours(0, 0, 0, 0)
 
-  const {
-    start: startQs,
-    end: endQs,
-    departments: departmentsQs,
-  } = queryString.get()
-
-  const [start, setStart] = useState<Date | undefined>(startQs ?? begin)
-  const [end, setEnd] = useState<Date | undefined>(endQs)
+  const [start, setStart] = useState<Date | undefined>(search.start ?? begin)
+  const [end, setEnd] = useState<Date | undefined>(search.end)
   const [departments, setDepartments] = useState<string[] | undefined>(
-    departmentsQs,
+    search.departments,
   )
 
   const countBySubCategories = useGetCountBySubCategoriesQuery({
@@ -88,7 +60,7 @@ export const ArborescenceWithCounts = () => {
   })
 
   useEffect(() => {
-    queryString.update(cleanObject({ start, end, departments }))
+    navigate({ to: '.', search: { start, end, departments }, replace: true })
   }, [start, end, departments])
 
   const { api } = useApiContext()
@@ -119,7 +91,10 @@ export const ArborescenceWithCounts = () => {
     setDepartments(undefined)
   }
 
-  const badgeCount = start && end ? 2 : start || end ? 1 : 0
+  const badgeCount = [start, end, departments].reduce(
+    (acc, filter) => acc + (filter ? 1 : 0),
+    0,
+  )
 
   return (
     <>
@@ -257,6 +232,7 @@ function LangPanel({
               start={start}
               end={end}
               foreign={langKey !== 'fr'}
+              key={reportNode.id}
             />
           ))}
       </PanelBody>
@@ -378,6 +354,7 @@ const Node = ({
                 start={start}
                 end={end}
                 foreign={foreign}
+                key={reportNode.id}
               />
             ))}
           </Box>
