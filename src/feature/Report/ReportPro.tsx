@@ -1,7 +1,6 @@
 import { Icon, Tooltip, useMediaQuery } from '@mui/material'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { formatDate } from 'core/i18n/format'
-import { siteMap } from 'core/siteMap'
 import { ReportReferenceNumber } from 'feature/Report/ReportReferenceNumber'
 import { useEffect, useRef } from 'react'
 import { CleanWidePanel } from 'shared/Panel/simplePanels'
@@ -39,7 +38,7 @@ import { UserNameLabel } from '../../shared/UserNameLabel'
 import { CategoryMessage } from './CategoryMessage'
 import { ReportEvents } from './Event/ReportEvents'
 import { creationReportEvent } from './Report'
-import { ReportAffectation, buildOptionFromUser } from './ReportAffectation'
+import { buildOptionFromUser, ReportAffectation } from './ReportAffectation'
 import { ReportDetails, ReportFilesFull } from './ReportDescription'
 import { ExpirationDate } from './ReportHeader'
 import { ReportInfluencer } from './ReportInfluencer'
@@ -162,8 +161,8 @@ function LinkBackToList({ report }: { report: Report }) {
   const closed =
     Report.getStatusProByStatus(report.status) === ReportStatusPro.Cloture
   const url = closed
-    ? siteMap.logged.reportsfiltred.closed
-    : siteMap.logged.reports()
+    ? '/suivi-des-signalements-clotures'
+    : '/suivi-des-signalements'
   return (
     <Link
       to={url}

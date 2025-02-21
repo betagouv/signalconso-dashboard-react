@@ -4,7 +4,6 @@ import { CleanInvisiblePanel } from 'shared/Panel/simplePanels'
 import { useMemoFn } from '../../../alexlibs/react-hooks-lib'
 import { useI18n } from '../../../core/i18n'
 import { useGetCloudWordQuery } from '../../../core/queryhooks/reportQueryHooks'
-import { siteMap } from '../../../core/siteMap'
 import { HorizontalBarChartData } from '../../../shared/Chart/HorizontalBarChart'
 import { CompanyStatsPanelTitle } from './CompanyStatsPanelTitle'
 import { Link } from '@tanstack/react-router'
@@ -24,10 +23,11 @@ export const ReportWordDistribution = ({ companyId }: Props) => {
         ? Object.entries(_).map(([label, reportWordCount], index) => ({
             label: (
               <Link
-                to={siteMap.logged.reports({
+                to="/suivi-des-signalements"
+                search={{
                   description: reportWordCount.value,
                   companyIds: [companyId],
-                })}
+                }}
               >
                 {reportWordCount.value}
               </Link>

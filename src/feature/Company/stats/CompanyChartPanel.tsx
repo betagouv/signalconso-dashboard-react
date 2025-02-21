@@ -2,7 +2,6 @@ import { MenuItem } from '@mui/material'
 import { useConnectedContext } from 'core/context/ConnectedContext'
 import { useI18n } from 'core/i18n'
 import { Id, ReportStatus } from 'core/model'
-import { siteMap } from 'core/siteMap'
 import { useEffect, useState } from 'react'
 import { ChartOrPlaceholder, CurveDefinition } from 'shared/Chart/chartWrappers'
 import { chartColors } from 'shared/Chart/chartsColors'
@@ -194,14 +193,15 @@ function ReportsTotalWithLink({
   const secondPart = `${formatLargeNumber(
     reportTotals.totalWaitingResponse,
   )} en attente de réponse`
-  const url = siteMap.logged.reports({ companyIds: [companyId] })
+  const url = '/suivi-des-signalements'
+  const search = { companyIds: [companyId] }
   if (connectedUser.isPro) {
     return (
       <CompanyStatsPanelTitle>
         <span className="font-bold">{firstPart}</span>{' '}
         <span className="text-base font-normal">
           dont{' '}
-          <Link to={url} className="font-bold">
+          <Link to={url} search={search} className="font-bold">
             {secondPart}
           </Link>
         </span>
@@ -211,7 +211,9 @@ function ReportsTotalWithLink({
   return (
     <CompanyStatsPanelTitle>
       <span className="font-bold">
-        <Link to={url}>{firstPart}</Link>
+        <Link to={url} search={search}>
+          {firstPart}
+        </Link>
       </span>{' '}
       <span className="text-base font-normal">dont {secondPart}</span>
     </CompanyStatsPanelTitle>

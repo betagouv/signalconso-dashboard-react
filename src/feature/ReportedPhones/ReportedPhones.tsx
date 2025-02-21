@@ -3,7 +3,6 @@ import { useCallback } from 'react'
 import { Btn, IconBtn, Txt } from '../../alexlibs/mui-extension'
 import { useI18n } from '../../core/i18n'
 import { useReportedPhonesSearchQuery } from '../../core/queryhooks/phoneQueryHooks'
-import { siteMap } from '../../core/siteMap'
 import { sxUtils } from '../../core/theme'
 import { Datatable } from '../../shared/Datatable/Datatable'
 import { DebouncedInput } from '../../shared/DebouncedInput'
@@ -128,13 +127,14 @@ export const ReportedPhones = () => {
               render: (_) => (
                 <>
                   <Link
-                    to={siteMap.logged.reports({
+                    to="/suivi-des-signalements"
+                    search={{
                       hasPhone: true,
                       phone: _.phone,
                       ...(_.siret
                         ? { hasCompany: true, siretSirenList: [_.siret] }
                         : {}),
-                    })}
+                    }}
                   >
                     <Btn size="small" color="primary" variant="outlined">
                       {m.see}

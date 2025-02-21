@@ -15,7 +15,6 @@ import {
   trackEvent,
 } from '../../core/plugins/Matomo'
 import { useGetCountBySubCategoriesQuery } from '../../core/queryhooks/reportQueryHooks'
-import { siteMap } from '../../core/siteMap'
 import { ScButton } from '../../shared/Button'
 import { DebouncedInput } from '../../shared/DebouncedInput'
 import { PanelBody } from '../../shared/Panel'
@@ -264,13 +263,14 @@ const Node = ({
   }, [open])
 
   const fullPath = [...path, reportNode.name]
-  const url = siteMap.logged.reports({
+  const url = '/suivi-des-signalements'
+  const search = {
     category: fullPath[0],
     subcategories: fullPath.length > 0 ? fullPath.slice(1) : undefined,
     start,
     end,
     isForeign: foreign,
-  })
+  }
 
   return (
     <div className="flex items-start mb-2">
@@ -305,7 +305,10 @@ const Node = ({
           )}
           <Txt color="primary">
             {' '}
-            Signalements : {reportNode.count} <Link to={url}>(voir)</Link>
+            Signalements : {reportNode.count}{' '}
+            <Link to={url} search={search}>
+              (voir)
+            </Link>
           </Txt>
           <Txt color="primary"> Réclamations : {reportNode.reclamations}</Txt>
           <div>

@@ -13,7 +13,6 @@ import {
 import { ScChip } from '../../shared/ScChip'
 import { ReportCategories } from './ReportCategories'
 import { BookmarkButton } from './bookmarks'
-import { siteMap } from '../../core/siteMap'
 import { Link } from '@tanstack/react-router'
 import ReportSearchNavLink from './ReportSearchNavLink'
 
@@ -105,7 +104,7 @@ export const ReportHeader = ({
           <span>Signalé le {formatDateTime(report.creationDate)}</span>
           <ExpirationDate {...{ report }} isUserPro={false} />
         </div>
-        <Link to={siteMap.logged.reports({ status: [report.status] })}>
+        <Link to="/suivi-des-signalements" search={{ status: [report.status] }}>
           <ReportStatusLabel
             style={{ marginLeft: 'auto' }}
             status={report.status}

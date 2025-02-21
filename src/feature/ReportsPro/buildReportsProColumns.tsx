@@ -1,6 +1,5 @@
 import { Badge, Box, Button, Icon } from '@mui/material'
 import { fr } from 'core/i18n/fr'
-import { siteMap } from 'core/siteMap'
 import { ReportResponseDetails } from 'feature/Reports/ReportResponseDetails'
 import React from 'react'
 import { ReportStatusLabel } from 'shared/ReportStatus'
@@ -238,7 +237,7 @@ function SeeReportButton({ report }: { report: ReportSearchResult }) {
       variant="text"
       className="!normal-case"
       endIcon={<Icon>visibility</Icon>}
-      href={siteMap.logged.report(report.report.id)}
+      href={`/suivi-des-signalements/report/${report.report.id}`}
     >
       Voir
     </Button>

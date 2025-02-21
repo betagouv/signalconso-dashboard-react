@@ -16,7 +16,6 @@ import { Txt } from '../../alexlibs/mui-extension'
 import { useI18n } from '../../core/i18n'
 import { useRegionsQuery } from '../../core/queryhooks/constantQueryHooks'
 import { useGetCountByDepartmentsQuery } from '../../core/queryhooks/reportQueryHooks'
-import { siteMap } from '../../core/siteMap'
 import { ScButton } from '../../shared/Button'
 import { SelectMonth } from '../../shared/SelectMonth'
 import { useGetDateForMonthAndPreviousOne } from './useGetDateForMonthAndPreviousOne'
@@ -165,11 +164,12 @@ export const StatsReportsByRegion = () => {
                       </TableCell>
                       <TableCell style={{ textAlign: 'right' }}>
                         <Link
-                          to={siteMap.logged.reports({
+                          to="/suivi-des-signalements"
+                          search={{
                             departments: [depNumber],
                             start: dates.current.start,
                             end: dates.current.end,
-                          })}
+                          }}
                         >
                           <ScButton color="primary" size="small">
                             {m.see}

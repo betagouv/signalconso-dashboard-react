@@ -11,7 +11,6 @@ import {
   CompanyToFollowUpSearchQueryKeys,
   useCompanyToFollowUpSearchQuery,
 } from '../../core/queryhooks/companyQueryHooks'
-import { siteMap } from '../../core/siteMap'
 import { styleUtils, sxUtils } from '../../core/theme'
 import { AddressComponent } from '../../shared/Address'
 import { ScButton } from '../../shared/Button'
@@ -233,10 +232,11 @@ export const CompaniesToFollowUp = () => {
               <>
                 <Link
                   target="_blank"
-                  to={siteMap.logged.reports({
+                  to="/suivi-des-signalements"
+                  search={{
                     hasCompany: true,
                     siretSirenList: [_.company.siret],
-                  })}
+                  }}
                 >
                   <Tooltip title={m.reports}>
                     <IconBtn color="primary">

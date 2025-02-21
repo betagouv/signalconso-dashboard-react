@@ -25,7 +25,6 @@ import { cleanObject, openInNew } from '../../core/helper'
 import { Id, PaginatedFilters } from '../../core/model'
 import { useGetAccessibleByProQuery } from '../../core/queryhooks/companyQueryHooks'
 import { useReportSearchQuery } from '../../core/queryhooks/reportQueryHooks'
-import { siteMap } from '../../core/siteMap'
 import { ScButton } from '../../shared/Button'
 import { ExportReportsPopper } from '../../shared/ExportPopperBtn'
 import { PeriodPicker } from '../../shared/PeriodPicker'
@@ -399,7 +398,7 @@ export const ReportsPro = ({ reportType, search }: ReportsProProps) => {
                   //Check for specific checkbox id
                   if (htmlElement.id !== `download-checkbox-${_.report.id}`) {
                     if (e.metaKey || e.ctrlKey) {
-                      openInNew(siteMap.logged.report(_.report.id))
+                      openInNew(`/suivi-des-signalements/report/${_.report.id}`)
                     } else {
                       history({
                         to: '/suivi-des-signalements/report/$reportId',

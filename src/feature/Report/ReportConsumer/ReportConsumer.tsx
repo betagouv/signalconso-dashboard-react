@@ -13,9 +13,8 @@ import { EditConsumerDialog } from './EditConsumerDialog'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useApiContext } from '../../../core/context/ApiContext'
 import { GetReportQueryKeys } from '../../../core/queryhooks/reportQueryHooks'
-import { CleanDiscreetPanel, CleanWidePanel } from 'shared/Panel/simplePanels'
+import { CleanDiscreetPanel } from 'shared/Panel/simplePanels'
 import { UserNameLabel } from '../../../shared/UserNameLabel'
-import { siteMap } from '../../../core/siteMap'
 import { Link } from '@tanstack/react-router'
 
 interface Props {
@@ -86,9 +85,10 @@ export const ReportConsumer = ({ report, canEdit }: Props) => {
           />
           <div className="text-gray-500">
             <Link
-              to={siteMap.logged.reports({
+              to="/suivi-des-signalements"
+              search={{
                 email: report.email,
-              })}
+              }}
             >
               {report.email}
             </Link>
@@ -96,10 +96,11 @@ export const ReportConsumer = ({ report, canEdit }: Props) => {
           {report.consumerPhone && (
             <div className="text-gray-500">
               <Link
-                to={siteMap.logged.reports({
+                to="/suivi-des-signalements"
+                search={{
                   consumerPhone: report.consumerPhone,
                   hasConsumerPhone: true,
-                })}
+                }}
               >
                 {report.consumerPhone}
               </Link>
