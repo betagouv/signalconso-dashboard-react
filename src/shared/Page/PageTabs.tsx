@@ -46,6 +46,7 @@ interface PageTabProps extends TabProps {
   disabled?: boolean
 }
 
+// TODO Make this component a tanstack router link to be typesafe
 export const PageTab = ({ to, ...props }: PageTabProps) => {
   const history = useNavigate()
   return <Tab {...props} onClick={() => history({ to })} />

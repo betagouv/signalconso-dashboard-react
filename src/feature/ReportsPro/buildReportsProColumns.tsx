@@ -237,6 +237,7 @@ function SeeReportButton({ report }: { report: ReportSearchResult }) {
       variant="text"
       className="!normal-case"
       endIcon={<Icon>visibility</Icon>}
+      // TODO Make this component a tanstack router link to be typesafe (see createLink / SidebarItem / Welcome page)
       href={`/suivi-des-signalements/report/${report.report.id}`}
     >
       Voir

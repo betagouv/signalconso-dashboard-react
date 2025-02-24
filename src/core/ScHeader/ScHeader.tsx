@@ -15,6 +15,7 @@ const HeaderItem = ({ children, href }: { children: any; href: string }) => {
   return (
     <Btn
       color="primary"
+      // TODO Make this component a tanstack router link to be typesafe (see createLink / SidebarItem / Welcome page)
       href={href}
       sx={{
         textTransform: 'initial',

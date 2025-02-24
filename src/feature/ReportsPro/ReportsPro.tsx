@@ -154,8 +154,6 @@ export const ReportsPro = ({ reportType, search }: ReportsProProps) => {
           <div className="flex gap-2">
             <Btn
               variant="outlined"
-              // color="primary"
-              // icon="help"
               {...({ target: '_blank' } as any)}
               href={config.appBaseUrl + '/centre-aide'}
             >

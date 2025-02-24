@@ -16,6 +16,7 @@ export const Route = createRootRouteWithContext<RouterContext>()({
   component: RouteComponent,
 })
 
+// TODO RedirectHashRouterToBrowserRouter used to redirect old routes, still necessary ?
 function RouteComponent() {
   const loginManagementResult = useLoginManagement()
   return (
