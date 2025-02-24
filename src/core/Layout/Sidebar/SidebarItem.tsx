@@ -11,13 +11,13 @@ const css = makeSx({
   },
 })
 
-interface SidebarItemProps extends BoxProps<'a'> {
+interface SidebarItemLinkComponentProps extends BoxProps<'a'> {
   icon?: string | ReactNode
   large?: boolean
   active?: boolean
 }
 
-const BeforeLinkSidebarItem = ({
+const SidebarItemLinkComponent = ({
   children,
   icon,
   className,
@@ -25,7 +25,7 @@ const BeforeLinkSidebarItem = ({
   large,
   sx,
   ...props
-}: SidebarItemProps) => {
+}: SidebarItemLinkComponentProps) => {
   return (
     <Box
       component="a"
@@ -81,10 +81,10 @@ const BeforeLinkSidebarItem = ({
   )
 }
 
-const LinkSidebarItem = createLink(BeforeLinkSidebarItem)
+const CreatedSidebarItemLinkComponent = createLink(SidebarItemLinkComponent)
 
-export const SidebarItem: LinkComponent<typeof BeforeLinkSidebarItem> = (
+export const SidebarItem: LinkComponent<typeof SidebarItemLinkComponent> = (
   props,
 ) => {
-  return <LinkSidebarItem preload={'intent'} {...props} />
+  return <CreatedSidebarItemLinkComponent preload={'intent'} {...props} />
 }

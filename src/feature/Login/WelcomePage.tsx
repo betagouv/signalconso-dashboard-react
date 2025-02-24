@@ -5,12 +5,13 @@ import { InfoBanner } from '../../shared/InfoBanner'
 import { createLink, LinkComponent } from '@tanstack/react-router'
 import React from 'react'
 
-interface BasicTileProps extends React.AnchorHTMLAttributes<HTMLAnchorElement> {
+interface TileComponentProps
+  extends React.AnchorHTMLAttributes<HTMLAnchorElement> {
   title: string
   desc: string
 }
 
-const BasicTileComponent = React.forwardRef<HTMLAnchorElement, BasicTileProps>(
+const TileComponent = React.forwardRef<HTMLAnchorElement, TileComponentProps>(
   ({ title, desc, ...props }, ref) => {
     return (
       <a
@@ -28,9 +29,9 @@ const BasicTileComponent = React.forwardRef<HTMLAnchorElement, BasicTileProps>(
   },
 )
 
-const CreatedTileComponent = createLink(BasicTileComponent)
+const CreatedTileComponent = createLink(TileComponent)
 
-const Tile: LinkComponent<typeof BasicTileComponent> = (props) => {
+const Tile: LinkComponent<typeof TileComponent> = (props) => {
   return <CreatedTileComponent preload={'intent'} {...props} />
 }
 

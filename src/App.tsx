@@ -35,8 +35,11 @@ export const router = createRouter({
     loginManagementResult: undefined!,
   },
   defaultPreload: 'intent',
+  // Since we're using React Query, we don't want loader calls to ever be stale
+  // This will ensure that the loader is always called when the route is preloaded or visited
   defaultPreloadStaleTime: 0,
-  // Legacy parsing. Because of potential bookmarks / links in emails, we can't use native JSON tanstack router parsing
+  // Legacy parsing / stringify
+  // Because of potential bookmarks / links in emails, we can't use native JSON tanstack router parsing
   stringifySearch: (record) => {
     const newQueryString = qs.stringify(record)
     return newQueryString ? `?${newQueryString}` : ''
