@@ -11,6 +11,8 @@ interface TileComponentProps
   desc: string
 }
 
+// Creating custom link (wrapper around our own component : SeeReportButton) to add typesafety to routing
+// https://tanstack.com/router/latest/docs/framework/react/guide/custom-link
 const TileComponent = React.forwardRef<HTMLAnchorElement, TileComponentProps>(
   ({ title, desc, ...props }, ref) => {
     return (

@@ -23,20 +23,53 @@ function Users() {
       <PageTitle>{m.menu_users}</PageTitle>
       {connectedUser.isSuperAdmin ? (
         <PageTabs>
-          <PageTab to={agentRoute.to} label={m.agentUsers} />
-          <PageTab to={pendingRoute.to} label={m.agentUsersPending} />
-          <PageTab to={adminRoute.to} label={m.adminUsers} />
-          <PageTab to={consumersRoute.to} label={m.consumersPending} />
-          <PageTab to={authAttemptsRoute.to} label={m.authAttempts} />
-          <PageTab to={blacklistRoute.to} label={m.blacklistedConsumers} />
+          <PageTab
+            navigateOptions={{ to: agentRoute.to }}
+            label={m.agentUsers}
+          />
+          <PageTab
+            navigateOptions={{ to: pendingRoute.to }}
+            label={m.agentUsersPending}
+          />
+          <PageTab
+            navigateOptions={{ to: adminRoute.to }}
+            label={m.adminUsers}
+          />
+          <PageTab
+            navigateOptions={{ to: consumersRoute.to }}
+            label={m.consumersPending}
+          />
+          <PageTab
+            navigateOptions={{ to: authAttemptsRoute.to }}
+            label={m.authAttempts}
+          />
+          <PageTab
+            navigateOptions={{ to: blacklistRoute.to }}
+            label={m.blacklistedConsumers}
+          />
         </PageTabs>
       ) : (
         <PageTabs>
-          <PageTab to={agentRoute.to} label={m.agentUsers} />
-          <PageTab to={pendingRoute.to} label={m.agentUsersPending} />
-          <PageTab to={consumersRoute.to} label={m.consumersPending} />
-          <PageTab to={authAttemptsRoute.to} label={m.authAttempts} />
-          <PageTab to={blacklistRoute.to} label={m.blacklistedConsumers} />
+          <PageTab
+            navigateOptions={{ to: agentRoute.to }}
+            label={m.agentUsers}
+          />
+          <PageTab
+            navigateOptions={{ to: pendingRoute.to }}
+            label={m.agentUsersPending}
+          />
+          <PageTab
+            navigateOptions={{ to: consumersRoute.to }}
+            label={m.consumersPending}
+          />
+          <PageTab
+            navigateOptions={{ to: authAttemptsRoute.to }}
+            label={m.authAttempts}
+          />
+          <PageTab
+            navigateOptions={{ to: blacklistRoute.to }}
+            label={m.blacklistedConsumers}
+          />
         </PageTabs>
       )}
       <Outlet />

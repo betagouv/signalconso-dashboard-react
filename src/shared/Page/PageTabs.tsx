@@ -1,7 +1,12 @@
 import { Tab, TabProps, Tabs } from '@mui/material'
 import * as React from 'react'
 import { ReactElement, useMemo } from 'react'
-import { useLocation, useNavigate, useRouter } from '@tanstack/react-router'
+import {
+  useLocation,
+  useNavigate,
+  useRouter,
+  ValidateNavigateOptions,
+} from '@tanstack/react-router'
 
 interface Props {
   children: Array<ReactElement<PageTabProps> | undefined>
@@ -13,14 +18,18 @@ export const PageTabs = ({ children }: Props) => {
   const defaultTabIndex = 0
   const index = useMemo(() => {
     const currentTabIndex = children
-      .map((child) => child?.props.to)
+      .map((child) => child?.props.navigateOptions)
       .findIndex(
-        (path) =>
-          path &&
-          pathname.includes(router.buildLocation({ to: path }).pathname),
+        (options) =>
+          options &&
+          pathname.includes(
+            router.buildLocation({ to: options.to, params: options.params })
+              .pathname,
+          ),
       )
     return currentTabIndex !== -1 ? currentTabIndex : defaultTabIndex
   }, [router, pathname, children])
+  console.log([router, pathname, children])
 
   return (
     <Tabs
@@ -39,15 +48,19 @@ export const PageTabs = ({ children }: Props) => {
   )
 }
 
-interface PageTabProps extends TabProps {
-  to: string
+interface PageTabProps<TOptions = unknown> extends TabProps {
   label?: string
   icon?: string | React.ReactElement
   disabled?: boolean
+  // routing typesafety
+  // https://tanstack.com/router/latest/docs/framework/react/guide/type-utilities
+  navigateOptions: ValidateNavigateOptions<TOptions>
 }
 
-// TODO Make this component a tanstack router link to be typesafe
-export const PageTab = ({ to, ...props }: PageTabProps) => {
-  const history = useNavigate()
-  return <Tab {...props} onClick={() => history({ to })} />
+export function PageTab<TOptions>({
+  navigateOptions,
+  ...props
+}: PageTabProps<TOptions>) {
+  const navigate = useNavigate()
+  return <Tab {...props} onClick={() => navigate(navigateOptions)} />
 }

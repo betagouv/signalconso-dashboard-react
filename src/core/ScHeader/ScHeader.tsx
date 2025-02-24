@@ -15,7 +15,6 @@ const HeaderItem = ({ children, href }: { children: any; href: string }) => {
   return (
     <Btn
       color="primary"
-      // TODO Make this component a tanstack router link to be typesafe (see createLink / SidebarItem / Welcome page)
       href={href}
       sx={{
         textTransform: 'initial',
@@ -73,12 +72,18 @@ export const ScHeader = () => {
               <a href={config.appBaseUrl + '/centre-aide'}>
                 <MenuItem>{m.helpCenter}</MenuItem>
               </a>
-              <Link to="/connexion">
-                <MenuItem>{m.proLogin}</MenuItem>
-              </Link>
-              <Link to="/connexion/agents">
-                <MenuItem>{m.agentLogin}</MenuItem>
-              </Link>
+              {pathname.includes('/connexion/agents') &&
+                config.enableProConnect && (
+                  <Link to="/connexion">
+                    <MenuItem>{m.proLogin}</MenuItem>
+                  </Link>
+                )}
+              {(pathname === '/connexion' || pathname === '/') &&
+                config.enableProConnect && (
+                  <Link to="/connexion/agents">
+                    <MenuItem>{m.agentLogin}</MenuItem>
+                  </Link>
+                )}
             </Menu>
           </>
         ) : (

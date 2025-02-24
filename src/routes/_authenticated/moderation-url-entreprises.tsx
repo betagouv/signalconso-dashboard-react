@@ -26,9 +26,12 @@ function ReportedWebsites() {
 
       {connectedUser.isAdmin && (
         <PageTabs>
-          <PageTab to={enqueteRoute.to} label={m.websitesInvestigation} />
           <PageTab
-            to={sitesNonIdentifiesRoute.to}
+            navigateOptions={{ to: enqueteRoute.to }}
+            label={m.websitesInvestigation}
+          />
+          <PageTab
+            navigateOptions={{ to: sitesNonIdentifiesRoute.to }}
             label={m.reportedUnknownWebsites}
           />
         </PageTabs>

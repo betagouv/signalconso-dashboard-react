@@ -17,6 +17,8 @@ interface SidebarItemLinkComponentProps extends BoxProps<'a'> {
   active?: boolean
 }
 
+// Creating custom link (wrapper around our own component : SeeReportButton) to add typesafety to routing
+// https://tanstack.com/router/latest/docs/framework/react/guide/custom-link
 const SidebarItemLinkComponent = ({
   children,
   icon,

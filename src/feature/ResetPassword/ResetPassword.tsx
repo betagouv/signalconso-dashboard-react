@@ -48,7 +48,7 @@ export const ResetPassword = ({ token }: { token: string }) => {
       .mutateAsync({ password: form.newPassword, token })
       .then(() => {
         toastSuccess(m.resetPasswordSuccess)
-        setTimeout(() => history({ to: '/connexion' }), 400) // TODO Pourquoi ce setTimeout ?
+        setTimeout(() => history({ to: '/connexion' }), 400) // TODO Why is there a setTimeout ?
         trackEventUnconnected(
           EventCategories.CompteUtilisateur,
           AuthenticationEventActions.resetPasswordSuccess,

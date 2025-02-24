@@ -10,7 +10,7 @@ import { DebouncedInput } from '../../shared/DebouncedInput'
 export const UserAuthAttempts = ({
   email: emailQueryParam,
 }: {
-  email: string | null
+  email?: string
 }) => {
   const { m } = useI18n()
   const { formatDateTime } = useI18n()

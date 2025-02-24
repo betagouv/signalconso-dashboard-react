@@ -35,19 +35,31 @@ function Stats() {
       </p>
       {connectedUser.isDGAL ? (
         <PageTabs>
-          <PageTab to={proStatsRoute.to} label={m.statsPro} />
           <PageTab
-            to={countBySubCategoriesRoute.to}
+            navigateOptions={{ to: proStatsRoute.to }}
+            label={m.statsPro}
+          />
+          <PageTab
+            navigateOptions={{ to: countBySubCategoriesRoute.to }}
             label={m.statsCountBySubCategoriesTab}
           />
         </PageTabs>
       ) : (
         <PageTabs>
-          <PageTab to={reportStatsRoute.to} label={m.statsReports} />
-          <PageTab to={proStatsRoute.to} label={m.statsPro} />
-          <PageTab to={dgccrfStatsRoute.to} label={m.statsDgccrf} />
           <PageTab
-            to={countBySubCategoriesRoute.to}
+            navigateOptions={{ to: reportStatsRoute.to }}
+            label={m.statsReports}
+          />
+          <PageTab
+            navigateOptions={{ to: proStatsRoute.to }}
+            label={m.statsPro}
+          />
+          <PageTab
+            navigateOptions={{ to: dgccrfStatsRoute.to }}
+            label={m.statsDgccrf}
+          />
+          <PageTab
+            navigateOptions={{ to: countBySubCategoriesRoute.to }}
             label={m.statsCountBySubCategoriesTab}
           />
         </PageTabs>
