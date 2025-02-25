@@ -7,8 +7,6 @@ import {
 } from '@mui/material'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { UserDeleteDialog } from 'feature/Users/userDelete'
-import { useNavigate } from 'react-router'
-import { NavLink } from 'react-router'
 import { ScMenu } from 'shared/Menu'
 import {
   CompanyAccess,
@@ -29,7 +27,6 @@ import {
   Id,
   User,
 } from '../../core/model'
-import { siteMap } from '../../core/siteMap'
 import { sxUtils } from '../../core/theme'
 import { ScButton } from '../../shared/Button'
 import {
@@ -40,6 +37,7 @@ import { ScRadioGroup } from '../../shared/RadioGroup'
 import { ScRadioGroupItem } from '../../shared/RadioGroupItem'
 import { ScDialog } from '../../shared/ScDialog'
 import { CompanyAccessCreateBtn } from './CompanyAccessCreateBtn'
+import { Link, useNavigate } from '@tanstack/react-router'
 
 type RowData =
   | {
@@ -365,7 +363,7 @@ function ActionsColumn({
     mutationFn: (email: string) => api.public.authenticate.logAs(email),
     onSuccess: (user) => {
       setConnectedUser(user)
-      navigate('/')
+      navigate({ to: '/' })
       queryClient.resetQueries()
     },
   })
@@ -385,8 +383,7 @@ function ActionsColumn({
   })
 
   function copyActivationLink(token: string) {
-    const patch =
-      siteMap.loggedout.activatePro(siret) + toQueryString({ token })
+    const patch = `/entreprise/rejoindre/${siret}${toQueryString({ token })}`
     const activationLink = window.location.host + patch
     navigator.clipboard
       .writeText(activationLink)
@@ -395,10 +392,12 @@ function ActionsColumn({
 
   const authAttemptsHistoryMenuItem =
     isAdmin && _.kind === 'actual_access' && _.userId ? (
-      <NavLink
-        to={`${
-          siteMap.logged.users.value
-        }/${siteMap.logged.users.auth_attempts.value(_.email)}`}
+      <Link
+        key="authAttemptsHistoryMenuItem"
+        to="/users/auth-attempts"
+        search={{
+          email: _.email,
+        }}
       >
         <MenuItem>
           <ListItemIcon>
@@ -406,12 +405,12 @@ function ActionsColumn({
           </ListItemIcon>
           <ListItemText>{m.authAttemptsHistory}</ListItemText>
         </MenuItem>
-      </NavLink>
+      </Link>
     ) : undefined
 
   const impersonateMenuItem =
     isAdmin && email ? (
-      <MenuItem onClick={() => _logAs.mutate(email)}>
+      <MenuItem key="impersonateMenuItem" onClick={() => _logAs.mutate(email)}>
         <ListItemIcon>
           <Icon>theater_comedy</Icon>
         </ListItemIcon>
@@ -425,6 +424,7 @@ function ActionsColumn({
     _.subkind === 'by_email' &&
     _.token ? (
       <MenuItem
+        key="copyInviteMenuItem"
         onClick={() => {
           if (_.token) {
             copyActivationLink(_.token)
@@ -441,6 +441,7 @@ function ActionsColumn({
   const resendInviteMenuItem =
     isAdmin && _.kind === 'invitation' && _.subkind === 'by_email' ? (
       <ScDialog
+        key="resendInviteMenuItem"
         title={m.resendCompanyAccessToken(email)}
         onConfirm={(event, close) =>
           onResendCompanyAccessToken(_.email).then((_) => close())
@@ -459,6 +460,7 @@ function ActionsColumn({
   const removeMenuItem =
     _.kind === 'actual_access' && _.editable ? (
       <ScDialog
+        key="removeMenuItem"
         title={m.deleteCompanyAccess(_.name!)}
         onConfirm={() => _removeAccess.mutate({ siret, userId: _.userId })}
         maxWidth="xs"
@@ -475,6 +477,7 @@ function ActionsColumn({
       </ScDialog>
     ) : _.kind === 'invitation' ? (
       <ScDialog
+        key="removeMenuItem"
         title={m.deleteCompanyAccessToken(getEmail(_))}
         onConfirm={() => _removeToken.mutate({ siret, tokenId: _.tokenId })}
         maxWidth="xs"
@@ -491,7 +494,11 @@ function ActionsColumn({
 
   const deleteUserMenuItem =
     isAdmin && _.kind === 'actual_access' ? (
-      <UserDeleteDialog userId={_.userId} onDelete={invalidateQueries}>
+      <UserDeleteDialog
+        key="deleteUserMenuItem"
+        userId={_.userId}
+        onDelete={invalidateQueries}
+      >
         <MenuItem>
           <ListItemIcon>
             <Icon color="error">delete</Icon>

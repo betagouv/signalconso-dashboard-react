@@ -1,8 +1,8 @@
 import { Box, BoxProps, Icon } from '@mui/material'
 import { alpha } from '@mui/material/styles'
 import { ReactNode } from 'react'
-import { NavLink } from 'react-router'
 import { makeSx } from '../../../alexlibs/mui-extension'
+import { createLink, LinkComponent } from '@tanstack/react-router'
 
 const css = makeSx({
   i: {
@@ -11,32 +11,26 @@ const css = makeSx({
   },
 })
 
-interface SidebarItemProps extends BoxProps {
+interface SidebarItemLinkComponentProps extends BoxProps<'a'> {
   icon?: string | ReactNode
   large?: boolean
   active?: boolean
-  to?: string
 }
 
-export const SidebarItem = ({
+// Creating custom link (wrapper around our own component : SeeReportButton) to add typesafety to routing
+// https://tanstack.com/router/latest/docs/framework/react/guide/custom-link
+const SidebarItemLinkComponent = ({
   children,
-  to,
   icon,
   className,
   active,
   large,
   sx,
   ...props
-}: SidebarItemProps) => {
-  const navLinkProps = to
-    ? {
-        component: NavLink,
-        to,
-      }
-    : {}
+}: SidebarItemLinkComponentProps) => {
   return (
     <Box
-      {...navLinkProps}
+      component="a"
       sx={{
         transition: (t) => t.transitions.create('all'),
         display: 'flex',
@@ -56,7 +50,7 @@ export const SidebarItem = ({
           color: (t) => t.palette.primary.main,
           background: (t) => alpha(t.palette.primary.main, 0.16),
         }),
-        ...((to || props.onClick) && {
+        ...(props.onClick && {
           cursor: 'pointer',
           '&:hover': {
             background: 'rgba(0, 0, 0, .05)',
@@ -87,4 +81,12 @@ export const SidebarItem = ({
       </Box>
     </Box>
   )
+}
+
+const CreatedSidebarItemLinkComponent = createLink(SidebarItemLinkComponent)
+
+export const SidebarItem: LinkComponent<typeof SidebarItemLinkComponent> = (
+  props,
+) => {
+  return <CreatedSidebarItemLinkComponent preload={'intent'} {...props} />
 }

@@ -2,7 +2,6 @@ import { TextField } from '@mui/material'
 import { useMutation } from '@tanstack/react-query'
 import { AlertContactSupport } from 'feature/Login/loggedOutComponents'
 import { useForm } from 'react-hook-form'
-import { useNavigate } from 'react-router'
 import { Alert, Btn, Txt } from '../../alexlibs/mui-extension'
 import { useConnectedContext } from '../../core/context/ConnectedContext'
 import { useToast } from '../../core/context/toastContext'
@@ -14,8 +13,8 @@ import {
   EventCategories,
   trackEvent,
 } from '../../core/plugins/Matomo'
-import { siteMap } from '../../core/siteMap'
 import { ScInputPassword } from '../../shared/ScInputPassword'
+import { useNavigate } from '@tanstack/react-router'
 
 interface Form {
   siret: string
@@ -30,7 +29,7 @@ export const AddCompanyForm = () => {
       apiSdk.secured.accesses.acceptToken(params.siret, params.token),
     onSuccess: () => {
       toastSuccess(m.companyRegistered)
-      history(siteMap.logged.companiesPro)
+      history({ to: '/mes-entreprises' })
       trackEvent(
         connectedUser,
         EventCategories.AccesDeLEntreprise,

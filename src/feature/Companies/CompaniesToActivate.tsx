@@ -1,7 +1,6 @@
 import { Box, Checkbox, Icon, Tooltip } from '@mui/material'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { SyntheticEvent } from 'react'
-import { Link } from 'react-router'
 import { Fender, IconBtn, Txt } from '../../alexlibs/mui-extension'
 import { useSetState } from '../../alexlibs/react-hooks-lib'
 import { EntityIcon } from '../../core/EntityIcon'
@@ -12,13 +11,13 @@ import {
   CompanyToActivateSearchQueryKeys,
   useCompanyToActivateSearchQuery,
 } from '../../core/queryhooks/companyQueryHooks'
-import { siteMap } from '../../core/siteMap'
 import { styleUtils, sxUtils } from '../../core/theme'
 import { AddressComponent } from '../../shared/Address'
 import { ScButton } from '../../shared/Button'
 import { Datatable } from '../../shared/Datatable/Datatable'
 import { DatatableToolbar } from '../../shared/Datatable/DatatableToolbar'
 import { ScDialog } from '../../shared/ScDialog'
+import { Link } from '@tanstack/react-router'
 
 export const CompaniesToActivate = () => {
   const { m, formatDate } = useI18n()
@@ -238,10 +237,11 @@ export const CompaniesToActivate = () => {
               <>
                 <Link
                   target="_blank"
-                  to={siteMap.logged.reports({
+                  to="/suivi-des-signalements"
+                  search={{
                     hasCompany: true,
                     siretSirenList: [_.company.siret],
-                  })}
+                  }}
                 >
                   <Tooltip title={m.reports}>
                     <IconBtn color="primary">

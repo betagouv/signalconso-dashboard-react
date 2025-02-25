@@ -1,27 +1,35 @@
 import { Tab, TabProps, Tabs } from '@mui/material'
 import * as React from 'react'
 import { ReactElement, useMemo } from 'react'
-import { useLocation, useNavigate } from 'react-router'
+import {
+  useLocation,
+  useNavigate,
+  useRouter,
+  ValidateNavigateOptions,
+} from '@tanstack/react-router'
 
 interface Props {
   children: Array<ReactElement<PageTabProps> | undefined>
 }
 
-const removeRelativePath = (path: string) => {
-  const splittedPath = path.split('../')
-  if (splittedPath.length > 1) return splittedPath[1]
-  else return splittedPath[0]
-}
-
 export const PageTabs = ({ children }: Props) => {
   const { pathname } = useLocation()
+  const router = useRouter()
   const defaultTabIndex = 0
   const index = useMemo(() => {
     const currentTabIndex = children
-      .map((child) => child?.props.to)
-      .findIndex((path) => path && pathname.includes(removeRelativePath(path)))
+      .map((child) => child?.props.navigateOptions)
+      .findIndex(
+        (options) =>
+          options &&
+          pathname.includes(
+            router.buildLocation({ to: options.to, params: options.params })
+              .pathname,
+          ),
+      )
     return currentTabIndex !== -1 ? currentTabIndex : defaultTabIndex
-  }, [pathname, children])
+  }, [router, pathname, children])
+  console.log([router, pathname, children])
 
   return (
     <Tabs
@@ -40,14 +48,19 @@ export const PageTabs = ({ children }: Props) => {
   )
 }
 
-interface PageTabProps extends TabProps {
-  to: string
+interface PageTabProps<TOptions = unknown> extends TabProps {
   label?: string
   icon?: string | React.ReactElement
   disabled?: boolean
+  // routing typesafety
+  // https://tanstack.com/router/latest/docs/framework/react/guide/type-utilities
+  navigateOptions: ValidateNavigateOptions<TOptions>
 }
 
-export const PageTab = ({ to, ...props }: PageTabProps) => {
-  const history = useNavigate()
-  return <Tab {...props} onClick={() => history(to)} />
+export function PageTab<TOptions>({
+  navigateOptions,
+  ...props
+}: PageTabProps<TOptions>) {
+  const navigate = useNavigate()
+  return <Tab {...props} onClick={() => navigate(navigateOptions)} />
 }

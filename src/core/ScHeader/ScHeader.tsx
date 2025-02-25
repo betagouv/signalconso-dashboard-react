@@ -9,8 +9,7 @@ import { styleUtils } from '../theme'
 import logoGouvMobile from './gouv-mobile.svg'
 import logoDgccrf from './logo-dgccrf.png'
 import logoSignalConso from './logo-signalconso.png'
-import { siteMap } from '../siteMap'
-import { useLocation } from 'react-router'
+import { Link, useLocation } from '@tanstack/react-router'
 
 const HeaderItem = ({ children, href }: { children: any; href: string }) => {
   return (
@@ -73,31 +72,30 @@ export const ScHeader = () => {
               <a href={config.appBaseUrl + '/centre-aide'}>
                 <MenuItem>{m.helpCenter}</MenuItem>
               </a>
-              <a href={config.appBaseUrl + '/comment-ca-marche'}>
-                <MenuItem>{m.howItWorks}</MenuItem>
-              </a>
-              <a href={siteMap.loggedout.login}>
-                <MenuItem>{m.proLogin}</MenuItem>
-              </a>
-              <a href={siteMap.loggedout.loginAgent}>
-                <MenuItem>{m.agentLogin}</MenuItem>
-              </a>
+              {pathname.includes('/connexion/agents') &&
+                config.enableProConnect && (
+                  <Link to="/connexion">
+                    <MenuItem>{m.proLogin}</MenuItem>
+                  </Link>
+                )}
+              {(pathname === '/connexion' || pathname === '/') &&
+                config.enableProConnect && (
+                  <Link to="/connexion/agents">
+                    <MenuItem>{m.agentLogin}</MenuItem>
+                  </Link>
+                )}
             </Menu>
           </>
         ) : (
           <nav>
             <HeaderItem href={config.appBaseUrl}>{m.home}</HeaderItem>
-            {pathname.includes(siteMap.loggedout.loginAgent) &&
+            {pathname.includes('/connexion/agents') &&
               config.enableProConnect && (
-                <HeaderItem href={siteMap.loggedout.login}>
-                  {m.proLogin}
-                </HeaderItem>
+                <HeaderItem href="/connexion">{m.proLogin}</HeaderItem>
               )}
-            {(pathname === siteMap.loggedout.login || pathname === '/') &&
+            {(pathname === '/connexion' || pathname === '/') &&
               config.enableProConnect && (
-                <HeaderItem href={siteMap.loggedout.loginAgent}>
-                  {m.agentLogin}
-                </HeaderItem>
+                <HeaderItem href="/connexion/agents">{m.agentLogin}</HeaderItem>
               )}
             <HeaderItem href={config.appBaseUrl + '/comment-ca-marche'}>
               {m.howItWorks}
