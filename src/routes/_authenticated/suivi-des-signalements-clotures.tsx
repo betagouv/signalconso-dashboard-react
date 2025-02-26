@@ -2,6 +2,7 @@ import { createFileRoute } from '@tanstack/react-router'
 import { ReportsPro } from '../../feature/ReportsPro/ReportsPro'
 import { ReportProSearch } from '../../core/client/report/ReportSearch'
 import { PaginatedFilters, ReportStatus } from '../../core/model'
+import { unknownToBoolean } from '../../core/helper'
 
 export const Route = createFileRoute(
   '/_authenticated/suivi-des-signalements-clotures',
@@ -15,7 +16,7 @@ export const Route = createFileRoute(
       status: (search.status as ReportStatus[]) || undefined,
       start: search.start ? new Date(search.start as string) : undefined,
       end: search.end ? new Date(search.end as string) : undefined,
-      hasWebsite: (search.hasWebsite as boolean) || undefined,
+      hasWebsite: unknownToBoolean(search.hasWebsite),
       fullText: (search.fullText as string) || undefined,
 
       offset: (search.offset as number) || 0,

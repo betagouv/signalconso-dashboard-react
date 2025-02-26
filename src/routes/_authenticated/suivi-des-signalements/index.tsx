@@ -10,6 +10,7 @@ import {
   ReportTag,
   ResponseEvaluation,
 } from '../../../core/model'
+import { unknownToBoolean } from '../../../core/helper'
 
 export const Route = createFileRoute('/_authenticated/suivi-des-signalements/')(
   {
@@ -29,31 +30,31 @@ export const Route = createFileRoute('/_authenticated/suivi-des-signalements/')(
         end: search.end ? new Date(search.end as string) : undefined,
         email: (search.email as string) || undefined,
         consumerPhone: (search.consumerPhone as string) || undefined,
-        hasConsumerPhone: (search.hasConsumerPhone as boolean) || undefined,
+        hasConsumerPhone: unknownToBoolean(search.hasConsumerPhone),
         websiteURL: (search.websiteURL as string) || undefined,
         phone: (search.phone as string) || undefined,
         category: (search.category as string) || undefined,
         subcategories: (search.subcategories as string[]) || undefined,
         details: (search.details as string) || undefined,
         description: (search.description as string) || undefined,
-        contactAgreement: (search.contactAgreement as boolean) || undefined,
-        hasPhone: (search.hasPhone as boolean) || undefined,
-        hasWebsite: (search.hasWebsite as boolean) || undefined,
-        hasForeignCountry: (search.hasForeignCountry as boolean) || undefined,
-        hasCompany: (search.hasCompany as boolean) || undefined,
-        hasAttachment: (search.hasAttachment as boolean) || undefined,
-        hasResponseEvaluation:
-          (search.hasResponseEvaluation as boolean) || undefined,
+        contactAgreement: unknownToBoolean(search.contactAgreement),
+        hasPhone: unknownToBoolean(search.hasPhone),
+        hasWebsite: unknownToBoolean(search.hasWebsite),
+        hasForeignCountry: unknownToBoolean(search.hasForeignCountry),
+        hasCompany: unknownToBoolean(search.hasCompany),
+        hasAttachment: unknownToBoolean(search.hasAttachment),
+        hasResponseEvaluation: unknownToBoolean(search.hasResponseEvaluation),
         responseEvaluation:
           (search.responseEvaluation as ResponseEvaluation[]) || undefined,
-        hasEngagementEvaluation:
-          (search.hasEngagementEvaluation as boolean) || undefined,
+        hasEngagementEvaluation: unknownToBoolean(
+          search.hasEngagementEvaluation,
+        ),
         engagementEvaluation:
           (search.engagementEvaluation as ResponseEvaluation[]) || undefined,
         fullText: (search.fullText as string) || undefined,
-        isForeign: (search.isForeign as boolean) || undefined,
-        hasBarcode: (search.hasBarcode as boolean) || undefined,
-        isBookmarked: (search.isBookmarked as boolean) || undefined,
+        isForeign: unknownToBoolean(search.isForeign),
+        hasBarcode: unknownToBoolean(search.hasBarcode),
+        isBookmarked: unknownToBoolean(search.isBookmarked),
 
         offset: (search.offset as number) || 0,
         limit: (search.limit as number) || 25,
