@@ -60,8 +60,6 @@ declare module '@tanstack/react-router' {
 }
 
 export const App = () => {
-  useQueryClientErrorHandlerSetup()
-
   const _userOnStartup = useQuery(
     {
       queryKey: ['getUser'],
@@ -107,6 +105,7 @@ export const App = () => {
 }
 
 export const AppRoutes = () => {
+  useQueryClientErrorHandlerSetup() // Must be called after ToastProvider has been defined
   const loginManagementResult = useLoginManagement()
 
   return <RouterProvider router={router} context={{ loginManagementResult }} />
