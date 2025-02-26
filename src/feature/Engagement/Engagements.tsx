@@ -1,13 +1,11 @@
 import { Page, PageTitle } from '../../shared/Page'
 import { Datatable } from '../../shared/Datatable/Datatable'
 import { Id } from '../../core/model'
-import { Box, Checkbox, Chip, Theme } from '@mui/material'
+import { Checkbox, Chip, Theme } from '@mui/material'
 import { openInNew, textOverflowMiddleCropping } from '../../core/helper'
 import { Txt } from '../../alexlibs/mui-extension'
 import React, { useEffect } from 'react'
 import { useI18n } from '../../core/i18n'
-import { siteMap } from '../../core/siteMap'
-import { useNavigate } from 'react-router'
 import {
   ListEngagementsQueryKeys,
   useListEngagementsQuery,
@@ -16,6 +14,7 @@ import { Engagement } from '../../core/client/engagement/Engagement'
 import { useApiContext } from '../../core/context/ApiContext'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useSetState } from '../../alexlibs/react-hooks-lib'
+import { useNavigate } from '@tanstack/react-router'
 
 export const Engagements = () => {
   const { m, formatDate } = useI18n()
@@ -61,9 +60,12 @@ export const Engagements = () => {
     e: React.MouseEvent<HTMLTableCellElement>,
   ) => {
     if (e.metaKey || e.ctrlKey) {
-      openInNew(siteMap.logged.report(_.report.id))
+      openInNew(`/suivi-des-signalements/report/${_.report.id}`)
     } else {
-      history(siteMap.logged.report(_.report.id))
+      history({
+        to: '/suivi-des-signalements/report/$reportId',
+        params: { reportId: _.report.id },
+      })
     }
   }
 

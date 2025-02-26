@@ -2,9 +2,7 @@ import { MenuItem } from '@mui/material'
 import { useConnectedContext } from 'core/context/ConnectedContext'
 import { useI18n } from 'core/i18n'
 import { Id, ReportStatus } from 'core/model'
-import { siteMap } from 'core/siteMap'
 import { useEffect, useState } from 'react'
-import { NavLink } from 'react-router'
 import { ChartOrPlaceholder, CurveDefinition } from 'shared/Chart/chartWrappers'
 import { chartColors } from 'shared/Chart/chartsColors'
 import { CleanInvisiblePanel } from 'shared/Panel/simplePanels'
@@ -16,6 +14,7 @@ import {
   Period,
 } from '../../../core/client/stats/statsTypes'
 import { CompanyStatsPanelTitle } from './CompanyStatsPanelTitle'
+import { Link } from '@tanstack/react-router'
 
 const periods: Period[] = ['Day', 'Week', 'Month']
 const defaultTick = 12
@@ -194,16 +193,17 @@ function ReportsTotalWithLink({
   const secondPart = `${formatLargeNumber(
     reportTotals.totalWaitingResponse,
   )} en attente de réponse`
-  const url = siteMap.logged.reports({ companyIds: [companyId] })
+  const url = '/suivi-des-signalements'
+  const search = { companyIds: [companyId] }
   if (connectedUser.isPro) {
     return (
       <CompanyStatsPanelTitle>
         <span className="font-bold">{firstPart}</span>{' '}
         <span className="text-base font-normal">
           dont{' '}
-          <NavLink to={url} className="font-bold">
+          <Link to={url} search={search} className="font-bold">
             {secondPart}
-          </NavLink>
+          </Link>
         </span>
       </CompanyStatsPanelTitle>
     )
@@ -211,7 +211,9 @@ function ReportsTotalWithLink({
   return (
     <CompanyStatsPanelTitle>
       <span className="font-bold">
-        <NavLink to={url}>{firstPart}</NavLink>
+        <Link to={url} search={search}>
+          {firstPart}
+        </Link>
       </span>{' '}
       <span className="text-base font-normal">dont {secondPart}</span>
     </CompanyStatsPanelTitle>

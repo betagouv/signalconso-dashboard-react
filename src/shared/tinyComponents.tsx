@@ -1,6 +1,5 @@
 import ReportSearchNavLink from '../feature/Report/ReportSearchNavLink'
 import React from 'react'
-import { Link } from 'react-router'
 
 export function ReportWebsiteUrlLink({ websiteURL }: { websiteURL: string }) {
   return (
@@ -12,9 +11,9 @@ export function ReportWebsiteUrlLink({ websiteURL }: { websiteURL: string }) {
         }}
         value={websiteURL}
       />
-      <Link onClick={() => window.open(websiteURL, '_blank')} to={''}>
+      <a target="_blank" href={websiteURL}>
         <span className="text-sm">(voir le site)</span>
-      </Link>
+      </a>
     </div>
   )
 }

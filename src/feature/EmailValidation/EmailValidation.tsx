@@ -1,19 +1,17 @@
 import { useMutation } from '@tanstack/react-query'
 import { publicApiSdk } from 'core/apiSdkInstances'
 import { useEffect, useMemo } from 'react'
-import { useLocation } from 'react-router'
-import { NavLink } from 'react-router'
 import { Fender, Txt } from '../../alexlibs/mui-extension'
-import { QueryString } from '../../core/helper/useQueryString'
 import { useI18n } from '../../core/i18n'
 import { User } from '../../core/model'
-import { siteMap } from '../../core/siteMap'
 import { ScButton } from '../../shared/Button'
 import { CenteredContent } from '../../shared/CenteredContent'
 import { Page } from '../../shared/Page'
+import { Link } from '@tanstack/react-router'
 
 interface Props {
   onSaveUser: (_: User) => void
+  token: string
 }
 
 interface FenderProps {
@@ -22,15 +20,13 @@ interface FenderProps {
   description?: string
 }
 
-export const EmailValidation = ({ onSaveUser }: Props) => {
+export const EmailValidation = ({ onSaveUser, token }: Props) => {
   const { m } = useI18n()
   const _validateEmail = useMutation({
     mutationFn: publicApiSdk.authenticate.validateEmail,
   })
-  const { search } = useLocation()
 
   useEffect(() => {
-    const token = QueryString.parse(search.replace(/^\?/, '')).token as string
     _validateEmail.mutateAsync(token).then(onSaveUser)
   }, [])
 
@@ -64,7 +60,7 @@ export const EmailValidation = ({ onSaveUser }: Props) => {
           </Txt>
 
           {fenderProps.type !== 'loading' && fenderProps.type !== 'success' && (
-            <NavLink to={siteMap.loggedout.login}>
+            <Link to="/connexion">
               <ScButton
                 sx={{ mt: 1 }}
                 icon="login"
@@ -73,7 +69,7 @@ export const EmailValidation = ({ onSaveUser }: Props) => {
               >
                 {m.login}
               </ScButton>
-            </NavLink>
+            </Link>
           )}
         </Fender>
       </Page>

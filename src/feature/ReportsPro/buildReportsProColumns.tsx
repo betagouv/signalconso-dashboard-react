@@ -1,6 +1,5 @@
 import { Badge, Box, Button, Icon } from '@mui/material'
 import { fr } from 'core/i18n/fr'
-import { siteMap } from 'core/siteMap'
 import { ReportResponseDetails } from 'feature/Reports/ReportResponseDetails'
 import React from 'react'
 import { ReportStatusLabel } from 'shared/ReportStatus'
@@ -18,6 +17,8 @@ import { combineSx, styleUtils, sxUtils } from '../../core/theme'
 import { UserNameLabel } from '../../shared/UserNameLabel'
 import { CheckboxColumn, CheckboxColumnHead } from '../Reports/reportsColumns'
 import { css } from './ReportsPro'
+import { ButtonProps } from '@mui/material/Button'
+import { createLink, LinkComponent } from '@tanstack/react-router'
 
 interface ReportTableColumnsParams {
   _reports: UseQueryPaginateResult<
@@ -232,15 +233,35 @@ export const buildReportsProColumns = ({
   return [...baseColumns, ...specificColumns, ...finalColumns]
 }
 
-function SeeReportButton({ report }: { report: ReportSearchResult }) {
+// Creating custom link (wrapper around our own component : SeeReportButton) to add typesafety to routing
+// https://tanstack.com/router/latest/docs/framework/react/guide/custom-link
+const MUILinkComponent = React.forwardRef<
+  HTMLAnchorElement,
+  Omit<ButtonProps, 'href'>
+>((props, ref) => {
   return (
     <Button
+      component="a"
+      ref={ref}
       variant="text"
       className="!normal-case"
       endIcon={<Icon>visibility</Icon>}
-      href={siteMap.logged.report(report.report.id)}
+      {...props}
     >
       Voir
     </Button>
+  )
+})
+const CreatedLinkComponent = createLink(MUILinkComponent)
+export const CustomLink: LinkComponent<typeof MUILinkComponent> = (props) => {
+  return <CreatedLinkComponent preload={'intent'} {...props} />
+}
+
+function SeeReportButton({ report }: { report: ReportSearchResult }) {
+  return (
+    <CustomLink
+      to="/suivi-des-signalements/report/$reportId"
+      params={{ reportId: report.report.id }}
+    />
   )
 }

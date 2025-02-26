@@ -131,10 +131,12 @@ export const fnSwitch: FnSwitch = (value, cases, defaultCase?) => {
 
 export const siretToSiren = (siret: string) => siret.slice(0, 9)
 
-const stringToBoolean = (str?: string): boolean | undefined => {
-  if (str) {
-    if (str === 'true') return true
-    else if (str === 'false') return false
+export const unknownToBoolean = (value?: unknown): boolean | undefined => {
+  if (typeof value === 'boolean') {
+    return value
+  } else if (typeof value === 'string') {
+    if (value === 'true') return true
+    else if (value === 'false') return false
   }
 }
 

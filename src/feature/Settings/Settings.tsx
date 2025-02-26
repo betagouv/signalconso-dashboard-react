@@ -1,8 +1,6 @@
-import { NavLink } from 'react-router'
 import { CleanWidePanel } from 'shared/Panel/simplePanels'
 import { useConnectedContext } from '../../core/context/ConnectedContext'
 import { useI18n } from '../../core/i18n'
-import { siteMap } from '../../core/siteMap'
 import { ScButton } from '../../shared/Button'
 import { Page, PageTitle } from '../../shared/Page'
 import { EditEmailDialog } from './EditEmailDialog'
@@ -10,6 +8,7 @@ import { EditPasswordDialog } from './EditPasswordDialog'
 import { EditProfileDialog } from './EditProfileDialog'
 import { SettingRow } from './SettingRow'
 import { UserNameLabel } from '../../shared/UserNameLabel'
+import { Link } from '@tanstack/react-router'
 
 export const Settings = () => {
   const { m } = useI18n()
@@ -59,11 +58,11 @@ export const Settings = () => {
             title={m.notifications}
             description={m.notificationSettings}
           >
-            <NavLink to={siteMap.logged.companiesPro}>
+            <Link to="/mes-entreprises">
               <ScButton icon="edit" color="primary">
                 {m.edit}
               </ScButton>
-            </NavLink>
+            </Link>
           </SettingRow>
         )}
       </CleanWidePanel>

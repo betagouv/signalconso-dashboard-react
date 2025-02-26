@@ -51,7 +51,7 @@ export function CompanyPageTitle({
         </PageTitle>
       </div>
       <div className="xl:max-w-lg">
-        <AnnuaireDesEntreprisesBanner />
+        <AnnuaireDesEntreprisesBanner companySiret={company.siret} />
       </div>
     </div>
   )
