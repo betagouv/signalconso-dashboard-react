@@ -40,12 +40,12 @@ export function AnnuaireDesEntreprisesBanner({
 
         <div className="flex flex-col justify-end mb-1 ">
           <ExternalLinkWithFavicon
-            text={'Annuaire des Entreprises'}
-            href={`https://annuaire-entreprises.data.gouv.fr/etablissement/${companySiret.trim()}}`}
+            text="Annuaire des Entreprises"
+            href={`https://annuaire-entreprises.data.gouv.fr/etablissement/${companySiret.trim()}`}
           />
           <ExternalLinkWithFavicon
-            text={'Pappers'}
-            href={`https://www.pappers.fr/recherche?q=${companySiret.trim()}}`}
+            text="Pappers"
+            href={`https://www.pappers.fr/recherche?q=${companySiret.trim()}`}
           />
         </div>
       </div>
