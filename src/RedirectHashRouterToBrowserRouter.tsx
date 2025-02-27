@@ -6,9 +6,9 @@ export const RedirectHashRouterToBrowserRouter = () => {
   const location = useLocation()
 
   useEffect(() => {
-    if (location.hash.startsWith('#/')) {
+    if (location.href.startsWith('/#/')) {
       // Navigate to the new path without the hash.
-      navigate({ to: location.hash.replace('#', '') })
+      navigate({ to: location.href.replace('/#', '') })
     }
   }, [location, navigate])
 
