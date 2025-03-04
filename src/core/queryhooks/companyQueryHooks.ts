@@ -78,9 +78,14 @@ const useGetAccessLevelOfProQuery = (companyId: Id) => {
 
 export const useActivatedCompanySearchQuery = (filters: CompanySearch) => {
   const { api } = useApiContext()
+  const defaultFilters: CompanySearch = {
+    offset: 0,
+    limit: 25,
+  }
   return useQueryPaginate(
     ActivatedCompanySearchQueryKeys,
     api.secured.company.search,
+    defaultFilters,
     filters,
   )
 }
