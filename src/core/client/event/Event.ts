@@ -76,6 +76,7 @@ export enum EventActionValues {
   ReportAffectedToUser = 'Signalement affecté à un utilisateur',
   UserAccessCreated = 'UserAccessCreated',
   UserAccessRemoved = 'UserAccessRemoved',
+  Reattribution = 'Réattribution du signalement',
 }
 
 export const acceptedDetails = [

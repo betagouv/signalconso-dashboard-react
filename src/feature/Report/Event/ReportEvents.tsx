@@ -91,6 +91,16 @@ const ReportEventComponent = ({ event }: { event: ReportEvent }) => {
             </p>
           </div>
         )}
+        {event.data.action === EventActionValues.Reattribution && (
+          <>
+            <p className="text-sm text-gray-500">
+              Signalement : {(event.data.details as any)?.newReportId}
+            </p>
+            <p className="text-sm text-gray-500">
+              Entreprise : {(event.data.details as any)?.newCompanyId}
+            </p>
+          </>
+        )}
       </td>
     </tr>
   )
