@@ -2,6 +2,11 @@ import { createFileRoute, redirect } from '@tanstack/react-router'
 import { RegisterForm } from '../feature/Login/RegisterForm'
 import { useLoginManagement } from '../core/useLoginManagement'
 
+interface ActivationSearch {
+  siret?: string
+  code?: string
+}
+
 export const Route = createFileRoute('/activation')({
   beforeLoad: ({ context }) => {
     if (context.loginManagementResult.isAuthenticated()) {
@@ -10,10 +15,17 @@ export const Route = createFileRoute('/activation')({
       })
     }
   },
+  validateSearch: (search: Record<string, unknown>): ActivationSearch => {
+    return {
+      siret: (search.siret as string) || undefined,
+      code: (search.code as string) || undefined,
+    }
+  },
   component: RouteComponent,
 })
 
 function RouteComponent() {
   const { register } = useLoginManagement()
-  return <RegisterForm register={register} />
+  const { siret, code } = Route.useSearch()
+  return <RegisterForm register={register} siret={siret} code={code} />
 }
