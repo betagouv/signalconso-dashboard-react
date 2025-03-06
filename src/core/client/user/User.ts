@@ -24,7 +24,7 @@ export interface User {
   authProvider: AuthProvider
 }
 
-export class User {
+export class UserUtils {
   static buildFullName(user: User | CompanyAccess | MinimalUser) {
     return `${user.firstName} ${user.lastName}`
   }

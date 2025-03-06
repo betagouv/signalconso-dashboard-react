@@ -1,10 +1,9 @@
-import { User } from 'core/model'
-
+import { UserUtils } from 'core/client/user/User'
 import { MinimalUser } from 'core/model'
 
 export function buildAffectationOptionFromUser(user: MinimalUser) {
   return {
     id: user.id,
-    fullName: User.buildFullName(user),
+    fullName: UserUtils.buildFullName(user),
   }
 }

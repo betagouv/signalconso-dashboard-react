@@ -2,6 +2,7 @@ import { Icon, MenuItem } from '@mui/material'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { ReactElement, useState } from 'react'
 import { ReportSearchResult } from '../../../core/client/report/Report'
+import { UserUtils } from '../../../core/client/user/User'
 import { useApiContext } from '../../../core/context/ApiContext'
 import { useToast } from '../../../core/context/toast/toastContext'
 import { useI18n } from '../../../core/i18n'
@@ -43,7 +44,7 @@ export const ReportAffectation = ({
   function buildOptionFromAccess(access: CompanyAccess) {
     return {
       id: access.userId,
-      fullName: User.buildFullName(access),
+      fullName: UserUtils.buildFullName(access),
     }
   }
 
