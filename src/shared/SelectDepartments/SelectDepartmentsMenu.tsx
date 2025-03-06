@@ -3,13 +3,13 @@ import * as React from 'react'
 import { useEffect, useMemo } from 'react'
 import { useSetState, UseSetState } from '../../alexlibs/react-hooks-lib'
 
-import { useI18n } from '../../core/i18n'
+import { ScOption } from 'core/helper/ScOption'
 import { makeSx } from '../../alexlibs/mui-extension'
-import { combineSx } from '../../core/theme'
 import { Region } from '../../core/client/constant/Country'
 import { stopPropagation } from '../../core/helper'
-import { ScOption } from 'core/helper/ScOption'
+import { useI18n } from '../../core/i18n'
 import { useRegionsQuery } from '../../core/queryhooks/constantQueryHooks'
+import { combineSx } from '../../core/theme'
 
 const withRegions =
   (WrappedComponent: React.ComponentType<SelectDepartmentsMenuProps>) =>
@@ -77,7 +77,7 @@ export const SelectDepartmentsMenu = withRegions(
     const openedRegions: UseSetState<string> = useSetState<string>()
     const allDepartments = useMemo(
       () => regions.flatMap((_) => _.departments).map((_) => _.code),
-      [],
+      [regions],
     )
     const allDepartmentsSelected = allDepartments.every((_) =>
       indexValues.has(_),
