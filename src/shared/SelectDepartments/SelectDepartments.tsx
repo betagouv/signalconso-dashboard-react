@@ -35,6 +35,7 @@ export const SelectDepartments = forwardRef(
 
     useEffect(() => {
       indexValues.reset(value)
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [value])
 
     const open = (event: any) => {

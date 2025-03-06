@@ -1,5 +1,5 @@
-import { useMemo } from 'react'
 import { endOfMonth, startOfMonth, subMonths, subYears } from 'date-fns'
+import { useMemo } from 'react'
 
 interface UseGetDateForMonthAndPreviousOneProps {
   current: { start: Date; end: Date }
@@ -26,5 +26,6 @@ export const useGetDateForMonthAndPreviousOne = (
         end: endOfMonth(subMonths(selectedDateHandlingYear, 1)),
       },
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedMonth])
 }

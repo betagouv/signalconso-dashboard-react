@@ -60,6 +60,7 @@ export const ArborescenceWithCounts = ({
 
   useEffect(() => {
     navigate({ to: '.', search: { start, end, departments }, replace: true })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [start, end, departments])
 
   const { api } = useApiContext()
@@ -82,6 +83,7 @@ export const ArborescenceWithCounts = ({
         AnalyticActionName.success,
       )
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [countBySubCategories.data])
 
   const resetFilters = () => {

@@ -74,6 +74,7 @@ export const CompanyChartPanel = ({
     }
 
     inner()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [reportsCurvePeriod, reportsTick])
 
   const computeTicks = () => {

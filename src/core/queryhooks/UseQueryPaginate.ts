@@ -1,8 +1,8 @@
-import { SetStateAction, useCallback, useState } from 'react'
-import { useQuery } from '@tanstack/react-query'
 import type { QueryKey } from '@tanstack/query-core'
-import { Paginate, PaginatedFilters } from '../model'
+import { useQuery } from '@tanstack/react-query'
 import type { UseQueryResult } from '@tanstack/react-query/src/types'
+import { SetStateAction, useCallback, useState } from 'react'
+import { Paginate, PaginatedFilters } from '../model'
 
 export interface UseQueryPaginateResult<S, T, E> {
   result: UseQueryResult<T, E>
@@ -58,7 +58,11 @@ export const useQueryPaginate = <
     [],
   )
 
-  const clearFilters = useCallback(() => updateFilters(defaultFilters), [])
+  const clearFilters = useCallback(
+    () => updateFilters(defaultFilters),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [],
+  )
 
   const enable = useCallback(() => setEnabled(true), [])
 

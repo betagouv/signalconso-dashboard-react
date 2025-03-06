@@ -78,6 +78,7 @@ export const UserActivation = ({ siret, onUserActivated }: Props) => {
   })
   const urlToken = useMemo(
     () => parse(searchStr.replace(/^\?/, '')).token as string,
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [],
   )
   const _tokenInfo = useQuery({

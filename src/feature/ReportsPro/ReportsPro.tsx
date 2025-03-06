@@ -108,6 +108,7 @@ export const ReportsPro = ({ reportType, search }: ReportsProProps) => {
       _reports.result.data?.entities.every(
         (_) => _.report.status === ReportStatus.TraitementEnCours,
       ),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [_reports.result.data],
   )
 
@@ -116,6 +117,7 @@ export const ReportsPro = ({ reportType, search }: ReportsProProps) => {
       (_reports.result.data &&
         _reports.result.data.totalCount > minRowsBeforeDisplayFilters) ||
       hasFilters,
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [_reports.result.data],
   )
 
@@ -125,10 +127,12 @@ export const ReportsPro = ({ reportType, search }: ReportsProProps) => {
       Object.keys(cleanObject(filters)).length -
       Object.keys(obligatoryFilters).length
     )
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [_reports.filters])
 
   useEffect(() => {
     navigate({ to: '.', search: _reports.filters, replace: true })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [_reports.filters])
 
   const resetFiltersButtonProps = {

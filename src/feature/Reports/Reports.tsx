@@ -82,6 +82,7 @@ export const Reports = ({
 
   useEffect(() => {
     navigate({ to: '.', search: _reports.filters, replace: true })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [_reports.filters])
 
   const filtersCount = useMemo(() => {

@@ -82,6 +82,7 @@ export const CompaniesRegistered = ({ search }: { search: CompanySearch }) => {
 
   useEffect(() => {
     navigate({ to: '.', search: _companies.filters, replace: true })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [_companies.filters])
 
   const copyAddress = async (c: Company) => {
@@ -107,6 +108,7 @@ export const CompaniesRegistered = ({ search }: { search: CompanySearch }) => {
           (sortByResponseRate === 'desc' ? -1 : 1),
       )
     return _companies.result.data?.entities
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [_companies.result.data?.entities, sortByResponseRate])
 
   // TRELLO-1391 The object _companies change all the time.
@@ -114,10 +116,12 @@ export const CompaniesRegistered = ({ search }: { search: CompanySearch }) => {
   // and the search input "stutters" when typing fast
   const onInputChange = useCallback((value: string) => {
     _companies.updateFilters((prev) => ({ ...prev, identity: value }))
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const onEmailChange = useCallback((email: string) => {
     _companies.updateFilters((prev) => ({ ...prev, emailsWithAccess: email }))
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const filtersCount = useMemo(() => {

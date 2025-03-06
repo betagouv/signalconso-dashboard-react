@@ -90,6 +90,7 @@ export const SelectDepartmentsMenu = withRegions(
 
     useEffect(() => {
       indexValues.reset(initialValues)
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [initialValues])
 
     const onSelectDepartments = (departments: string[]) => {

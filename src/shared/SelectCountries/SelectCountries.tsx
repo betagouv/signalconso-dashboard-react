@@ -21,6 +21,7 @@ export const SelectCountries = forwardRef(
 
     useEffect(() => {
       if (value) setInnerValue(Array.isArray(value) ? value : [value])
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     const open = (event: any) => {

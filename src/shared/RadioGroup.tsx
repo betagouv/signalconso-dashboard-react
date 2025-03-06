@@ -63,6 +63,7 @@ const InnerScRadioGroup = <T,>(
     } else if (multiple) {
       setInnerValue([])
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [value])
 
   return (

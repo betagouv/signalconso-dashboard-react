@@ -122,6 +122,7 @@ export const Datatable = <T,>({
   )
   const filteredColumns = useMemo(
     () => displayableColumns.filter((_) => !hiddenColumns.includes(_.id)),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [columns, hiddenColumns],
   )
   const displayTableHeader = useMemo(

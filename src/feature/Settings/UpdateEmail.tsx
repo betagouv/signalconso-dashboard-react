@@ -24,6 +24,7 @@ export const UpdateEmail = ({ token }: { token: string }) => {
     if (token) {
       _updateEmail.mutate(token)
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [token])
 
   return _updateEmail.isPending ? (

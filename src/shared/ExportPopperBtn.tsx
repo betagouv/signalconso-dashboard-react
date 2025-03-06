@@ -96,6 +96,7 @@ const ExportPopperBtn = ({
     if (anchorEl !== null) {
       fetch().then(() => setInitialLoading(false))
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [anchorEl])
 
   const ExportLabel = ({ file }: { file: AsyncFile }) => {

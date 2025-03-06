@@ -1,4 +1,5 @@
 import { useMutation } from '@tanstack/react-query'
+import { Link } from '@tanstack/react-router'
 import { publicApiSdk } from 'core/apiSdkInstances'
 import { useEffect, useMemo } from 'react'
 import { Fender, Txt } from '../../alexlibs/mui-extension'
@@ -7,7 +8,6 @@ import { User } from '../../core/model'
 import { ScButton } from '../../shared/Button'
 import { CenteredContent } from '../../shared/CenteredContent'
 import { Page } from '../../shared/Page'
-import { Link } from '@tanstack/react-router'
 
 interface Props {
   onSaveUser: (_: User) => void
@@ -28,6 +28,7 @@ export const EmailValidation = ({ onSaveUser, token }: Props) => {
 
   useEffect(() => {
     _validateEmail.mutateAsync(token).then(onSaveUser)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const fenderProps = useMemo((): FenderProps => {
@@ -49,6 +50,7 @@ export const EmailValidation = ({ onSaveUser, token }: Props) => {
       title: m.emailValidated,
       description: m.emailValidatedDesc,
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [_validateEmail.isPending, _validateEmail.error])
 
   return (

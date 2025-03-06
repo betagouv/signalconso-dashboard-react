@@ -1,20 +1,20 @@
-import { Page, PageTitle } from '../../shared/Page'
-import { Datatable } from '../../shared/Datatable/Datatable'
-import { Id } from '../../core/model'
 import { Checkbox, Chip, Theme } from '@mui/material'
-import { openInNew, textOverflowMiddleCropping } from '../../core/helper'
-import { Txt } from '../../alexlibs/mui-extension'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { useNavigate } from '@tanstack/react-router'
 import React, { useEffect } from 'react'
+import { Txt } from '../../alexlibs/mui-extension'
+import { useSetState } from '../../alexlibs/react-hooks-lib'
+import { Engagement } from '../../core/client/engagement/Engagement'
+import { useApiContext } from '../../core/context/ApiContext'
+import { openInNew, textOverflowMiddleCropping } from '../../core/helper'
 import { useI18n } from '../../core/i18n'
+import { Id } from '../../core/model'
 import {
   ListEngagementsQueryKeys,
   useListEngagementsQuery,
 } from '../../core/queryhooks/engagementQueryHooks'
-import { Engagement } from '../../core/client/engagement/Engagement'
-import { useApiContext } from '../../core/context/ApiContext'
-import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { useSetState } from '../../alexlibs/react-hooks-lib'
-import { useNavigate } from '@tanstack/react-router'
+import { Datatable } from '../../shared/Datatable/Datatable'
+import { Page, PageTitle } from '../../shared/Page'
 
 export const Engagements = () => {
   const { m, formatDate } = useI18n()
@@ -53,6 +53,7 @@ export const Engagements = () => {
           .map((engagement) => engagement.id),
       )
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, _engagements.data)
 
   const goToReport = (

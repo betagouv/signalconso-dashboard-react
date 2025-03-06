@@ -30,6 +30,7 @@ export const Sidebar = ({ children, sx, ...props }: BoxProps) => {
     sidebar = null
     stickSidebarToHeader()
     setSidebarOpen((_) => !isMobileWidth)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isMobileWidth])
 
   useEffect(() => {

@@ -2,14 +2,14 @@ import * as React from 'react'
 import { useEffect, useMemo } from 'react'
 
 import { alpha, Box, Checkbox, Menu } from '@mui/material'
-import { useI18n } from '../../core/i18n'
-import { useSetState, UseSetState } from '../../alexlibs/react-hooks-lib'
-import { makeSx } from '../../alexlibs/mui-extension'
-import { combineSx } from '../../core/theme'
-import { countryToFlag } from '../../core/helper'
-import { Country } from '../../core/client/constant/Country'
 import { ScOption } from 'core/helper/ScOption'
+import { makeSx } from '../../alexlibs/mui-extension'
+import { useSetState, UseSetState } from '../../alexlibs/react-hooks-lib'
+import { Country } from '../../core/client/constant/Country'
+import { countryToFlag } from '../../core/helper'
+import { useI18n } from '../../core/i18n'
 import { useCountriesQuery } from '../../core/queryhooks/constantQueryHooks'
+import { combineSx } from '../../core/theme'
 
 const withRegions =
   (WrappedComponent: React.ComponentType<Props>) =>
@@ -86,6 +86,7 @@ export const SelectCountriesMenu = withRegions(
 
     useEffect(() => {
       indexedValues.reset(initialValues)
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     const innerCountries = useMemo(() => {
@@ -111,6 +112,7 @@ export const SelectCountriesMenu = withRegions(
           countries: othersCountries,
         },
       ]
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [countries])
 
     return (

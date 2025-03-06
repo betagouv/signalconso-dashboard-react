@@ -107,6 +107,7 @@ export const ScChart = memo(
         res.push()
       })
       return res
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [curves])
 
     // the labels may go a little bit outside the graph

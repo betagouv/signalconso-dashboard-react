@@ -41,6 +41,7 @@ export const ForgottenPasswordDialog = ({ value, children }: Props) => {
 
   useEffect(() => {
     setValue('emailForgotten', value ?? '')
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [value])
 
   const submit = (form: Form, close: () => void) => {

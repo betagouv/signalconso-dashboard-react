@@ -1,14 +1,13 @@
 import { Box, Checkbox, Icon, Menu, MenuItem } from '@mui/material'
-import * as React from 'react'
 import { useEffect, useMemo } from 'react'
-import { useSetState, UseSetState } from '../../alexlibs/react-hooks-lib'
-import { useI18n } from '../../core/i18n'
 import { makeSx } from '../../alexlibs/mui-extension'
-import { combineSx, sxUtils } from '../../core/theme'
+import { useSetState, UseSetState } from '../../alexlibs/react-hooks-lib'
 import {
   Company,
   CompanyWithAccessLevel,
 } from '../../core/client/company/Company'
+import { useI18n } from '../../core/i18n'
+import { combineSx, sxUtils } from '../../core/theme'
 
 const css = makeSx({
   regionLabel: {
@@ -80,6 +79,7 @@ export const SelectCompaniesByProMenu = ({
 
   useEffect(() => {
     indexValues.reset(initialValues)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const onSelectAll = () => {

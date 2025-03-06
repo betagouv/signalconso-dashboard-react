@@ -125,6 +125,7 @@ export const StatsReportsInternetPanel = () => {
       dates.lastMonth.end,
       setAsyncPercentLastMonth,
     )
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dates])
 
   return (
