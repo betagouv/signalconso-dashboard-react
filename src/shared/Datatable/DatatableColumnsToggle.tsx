@@ -9,8 +9,8 @@ import {
 } from '@mui/material'
 import React from 'react'
 import { IconBtn } from '../../alexlibs/mui-extension'
-import { DatatableColumnProps } from './Datatable'
 import { ScButton } from '../Button'
+import { DatatableColumnProps } from './Datatable'
 
 interface Props extends Omit<IconButtonProps, 'onChange'> {
   // Hack because there is no way to make TS understand that the key of an object can

@@ -1,9 +1,9 @@
-import { AsyncLineChart, toPercentage } from 'shared/Chart/chartWrappers'
+import { toPercentage } from 'shared/Chart/chartUtils'
+import { AsyncLineChart } from 'shared/Chart/chartWrappers'
 import { CleanWidePanel } from 'shared/Panel/simplePanels'
 import { Txt } from '../../alexlibs/mui-extension'
-import { useConnectedContext } from '../../core/context/ConnectedContext'
+import { useConnectedContext } from '../../core/context/connected/connectedContext'
 import { useI18n } from '../../core/i18n'
-
 export const StatsReportsProResponsePanel = () => {
   const { api: api } = useConnectedContext()
   const { m } = useI18n()

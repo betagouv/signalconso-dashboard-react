@@ -17,7 +17,7 @@ import {
   SubscriptionCreate,
 } from '../../core/client/subscription/Subscription'
 import { useApiContext } from '../../core/context/ApiContext'
-import { useToast } from '../../core/context/toastContext'
+import { useToast } from '../../core/context/toast/toastContext'
 import { useI18n } from '../../core/i18n'
 import { useCategoriesByStatusQuery } from '../../core/queryhooks/constantQueryHooks'
 import { ListSubscriptionsQueryKeys } from '../../core/queryhooks/subscriptionQueryHooks'

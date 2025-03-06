@@ -1,5 +1,5 @@
 import { useMutation } from '@tanstack/react-query'
-import { useConnectedContext } from 'core/context/ConnectedContext'
+import { useConnectedContext } from 'core/context/connected/connectedContext'
 import { useI18n } from 'core/i18n'
 import {
   EventCategories,

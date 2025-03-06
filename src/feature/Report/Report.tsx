@@ -6,18 +6,14 @@ import { Divider } from 'shared/Divider'
 import { CleanDiscreetPanel } from 'shared/Panel/simplePanels'
 import { WithInlineIcon } from 'shared/WithInlineIcon'
 import { Btn } from '../../alexlibs/mui-extension'
-import {
-  EventActionValues,
-  EventType,
-  ReportEvent,
-} from '../../core/client/event/Event'
+import { EventActionValues } from '../../core/client/event/Event'
 import { FileOrigin } from '../../core/client/file/UploadedFile'
 import {
   Report,
   ReportExtra,
   ReportStatus,
 } from '../../core/client/report/Report'
-import { useConnectedContext } from '../../core/context/ConnectedContext'
+import { useConnectedContext } from '../../core/context/connected/connectedContext'
 import { useI18n } from '../../core/i18n'
 import { Id } from '../../core/model'
 import {
@@ -31,38 +27,22 @@ import {
 } from '../../core/queryhooks/reportQueryHooks'
 import { ScButton } from '../../shared/Button'
 import { Page } from '../../shared/Page'
-import { isStatusFinal } from '../../shared/ReportStatus'
+import { isStatusFinal } from '../../shared/reportStatusUtils'
 import { ReportEvents } from './Event/ReportEvents'
+import { creationReportEvent } from './Event/reportEventsUtils'
 import { ReportAdminResolution } from './ReportAdminResolution'
 import { ReportAlbert } from './ReportAlbert'
 import { ReportCompany } from './ReportCompany/ReportCompany'
 import { ReportConsumer } from './ReportConsumer/ReportConsumer'
 import { ReportDetails, ReportFilesFull } from './ReportDescription'
-import {
-  DownloadType,
-  ReportDownloadAction,
-  trackReportDownload,
-} from './ReportDownloadAction'
+import { ReportDownloadAction } from './reportDownload/ReportDownloadAction'
+import { trackReportDownload } from './reportDownload/reportDownloadUtils'
 import { ReportHeader } from './ReportHeader'
 import { ReportPostAction } from './ReportPostAction'
 import { ReportProduct } from './ReportProduct'
 import { ReportReOpening } from './ReportReOpening'
 import { ReportResponseComponent } from './ReportResponse'
 import { ReportViewAsPro } from './ReportViewAsPro'
-
-const CONSO: EventType = 'CONSO'
-
-export const creationReportEvent = (report: Report): ReportEvent =>
-  Object.freeze({
-    data: {
-      id: 'dummy',
-      details: {} as any,
-      reportId: report.id,
-      eventType: CONSO,
-      creationDate: report.creationDate,
-      action: EventActionValues.Creation,
-    },
-  })
 
 export const ReportComponent = ({ reportId }: { reportId: Id }) => {
   const [viewAsPro, setViewAsPro] = useState(false)
@@ -194,10 +174,7 @@ const ReportViewStandard = ({
                     icon="download"
                     loading={downloadReport.isPending}
                     onClick={() => {
-                      trackReportDownload(
-                        connectedUser,
-                        DownloadType.ReportOnly,
-                      )
+                      trackReportDownload(connectedUser, 'reportOnly')
                       downloadReport.mutate(report.id)
                     }}
                   >

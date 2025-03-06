@@ -1,10 +1,11 @@
 import { TextField } from '@mui/material'
 import { useMutation } from '@tanstack/react-query'
+import { useNavigate } from '@tanstack/react-router'
 import { AlertContactSupport } from 'feature/Login/loggedOutComponents'
 import { useForm } from 'react-hook-form'
 import { Alert, Btn, Txt } from '../../alexlibs/mui-extension'
-import { useConnectedContext } from '../../core/context/ConnectedContext'
-import { useToast } from '../../core/context/toastContext'
+import { useConnectedContext } from '../../core/context/connected/connectedContext'
+import { useToast } from '../../core/context/toast/toastContext'
 import { regexp } from '../../core/helper/regexp'
 import { useI18n } from '../../core/i18n'
 import {
@@ -14,7 +15,6 @@ import {
   trackEvent,
 } from '../../core/plugins/Matomo'
 import { ScInputPassword } from '../../shared/ScInputPassword'
-import { useNavigate } from '@tanstack/react-router'
 
 interface Form {
   siret: string

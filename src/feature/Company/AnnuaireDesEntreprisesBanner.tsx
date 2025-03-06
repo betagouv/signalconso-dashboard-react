@@ -1,5 +1,4 @@
-import { useConnectedContext } from 'core/context/ConnectedContext'
-import React from 'react'
+import { useConnectedContext } from 'core/context/connected/connectedContext'
 
 const ExternalLinkWithFavicon = ({
   href,

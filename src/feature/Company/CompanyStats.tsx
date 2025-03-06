@@ -1,5 +1,5 @@
 import { useI18n } from 'core/i18n'
-import { reportStatusColor } from 'shared/ReportStatus'
+import { reportStatusColor } from 'shared/reportStatusUtils'
 import { useEffectFn, useMemoFn } from '../../alexlibs/react-hooks-lib'
 import { ReportStatus } from '../../core/client/report/Report'
 import { CompanyWithReportsCount, User } from '../../core/model'

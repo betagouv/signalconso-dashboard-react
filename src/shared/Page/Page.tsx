@@ -1,5 +1,5 @@
 import { LinearProgress } from '@mui/material'
-import { useLayoutContext } from 'core/context/LayoutContext'
+import { useLayoutContext } from 'core/context/layoutContext/layoutContext'
 import { ReactNode } from 'react'
 import { InfoBanner } from '../InfoBanner'
 

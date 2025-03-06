@@ -1,4 +1,7 @@
+/* eslint-disable react-refresh/only-export-components */
 import { Badge, Box, Button, Icon } from '@mui/material'
+import { ButtonProps } from '@mui/material/Button'
+import { createLink, LinkComponent } from '@tanstack/react-router'
 import { fr } from 'core/i18n/fr'
 import { ReportResponseDetails } from 'feature/Reports/ReportResponseDetails'
 import React from 'react'
@@ -16,9 +19,6 @@ import { UseQueryPaginateResult } from '../../core/queryhooks/UseQueryPaginate'
 import { combineSx, styleUtils, sxUtils } from '../../core/theme'
 import { UserNameLabel } from '../../shared/UserNameLabel'
 import { CheckboxColumn, CheckboxColumnHead } from '../Reports/reportsColumns'
-import { css } from './ReportsPro'
-import { ButtonProps } from '@mui/material/Button'
-import { createLink, LinkComponent } from '@tanstack/react-router'
 
 interface ReportTableColumnsParams {
   _reports: UseQueryPaginateResult<
@@ -29,7 +29,6 @@ interface ReportTableColumnsParams {
   selectReport: UseSetState<string>
   reportType: 'open' | 'closed'
   isMobileWidth: boolean
-  css: typeof css
   i18nData: {
     formatDate: (d?: Date | undefined) => string
     m: (typeof fr)['messages']
@@ -51,7 +50,6 @@ export const buildReportsProColumns = ({
   selectReport,
   reportType,
   isMobileWidth,
-  css,
   i18nData,
 }: ReportTableColumnsParams) => {
   const { formatDate, m } = i18nData
@@ -91,11 +89,25 @@ export const buildReportsProColumns = ({
               }}
             >
               <Box>
-                <Box sx={css.card_head}>
+                <Box
+                  sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    mb: 1 / 2,
+                  }}
+                >
                   <Txt bold size="big">
                     {_.report.companySiret}
                   </Txt>
-                  <Icon sx={combineSx(css.iconDash, sxUtils.inlineIcon)}>
+                  <Icon
+                    sx={combineSx(
+                      {
+                        my: 0,
+                        mx: 1,
+                      },
+                      sxUtils.inlineIcon,
+                    )}
+                  >
                     remove
                   </Icon>
                   <Txt color="disabled">
@@ -252,8 +264,10 @@ const MUILinkComponent = React.forwardRef<
     </Button>
   )
 })
+
 const CreatedLinkComponent = createLink(MUILinkComponent)
-export const CustomLink: LinkComponent<typeof MUILinkComponent> = (props) => {
+
+const CustomLink: LinkComponent<typeof MUILinkComponent> = (props) => {
   return <CreatedLinkComponent preload={'intent'} {...props} />
 }
 

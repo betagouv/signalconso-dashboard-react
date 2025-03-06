@@ -1,15 +1,15 @@
 import { Icon, Menu, MenuItem } from '@mui/material'
+import { Link, useLocation } from '@tanstack/react-router'
 import React from 'react'
 import { Btn, IconBtn } from '../../alexlibs/mui-extension'
 import { config } from '../../conf/config'
-import { useLayoutContext } from '../context/LayoutContext'
+import { useLayoutContext } from '../context/layoutContext/layoutContext'
 import { useI18n } from '../i18n'
 import { Header } from '../Layout/Header/Header'
 import { styleUtils } from '../theme'
 import logoGouvMobile from './gouv-mobile.svg'
 import logoDgccrf from './logo-dgccrf.png'
 import logoSignalConso from './logo-signalconso.png'
-import { Link, useLocation } from '@tanstack/react-router'
 
 const HeaderItem = ({ children, href }: { children: any; href: string }) => {
   return (

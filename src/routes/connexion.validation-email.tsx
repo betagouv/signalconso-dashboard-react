@@ -1,6 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router'
+import { useLoginManagement } from '../core/context/loginManagement/loginManagementContext'
 import { EmailValidation } from '../feature/EmailValidation/EmailValidation'
-import { useLoginManagement } from '../core/useLoginManagement'
 
 type EmailValidationSearch = {
   token: string

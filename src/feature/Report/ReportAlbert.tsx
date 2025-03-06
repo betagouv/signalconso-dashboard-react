@@ -1,22 +1,21 @@
 import { Icon } from '@mui/material'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { useEffect } from 'react'
+import { CleanDiscreetPanel } from 'shared/Panel/simplePanels'
+import { WithInlineIcon } from 'shared/WithInlineIcon'
 import { Btn } from '../../alexlibs/mui-extension'
 import { useApiContext } from '../../core/context/ApiContext'
+import { useConnectedContext } from '../../core/context/connected/connectedContext'
 import { Id } from '../../core/model'
-import { CleanDiscreetPanel } from '../../shared/Panel/simplePanels'
-import { useConnectedContext } from '../../core/context/ConnectedContext'
-import React, { useEffect } from 'react'
-import DescriptionRow from './DescriptionRow'
-import { WithInlineIcon } from '../../shared/WithInlineIcon'
-import { initTally } from '../../core/plugins/Tally'
-import BetaTag from '../../shared/BetaTag'
 import {
-  AccessEventActions,
   AnalyticActionName,
   EventCategories,
   OutilsIaActions,
   trackEvent,
 } from '../../core/plugins/Matomo'
+import { initTally } from '../../core/plugins/Tally'
+import BetaTag from '../../shared/BetaTag'
+import DescriptionRow from './DescriptionRow'
 
 export const ReportAlbert = ({ id }: { id: Id }) => {
   const { api } = useApiContext()

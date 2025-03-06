@@ -1,4 +1,4 @@
-import { useConnectedContext } from './ConnectedContext'
+import { useConnectedContext } from './connected/connectedContext'
 
 // Legacy
 // Use useConnectedContext() directly

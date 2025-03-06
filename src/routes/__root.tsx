@@ -1,10 +1,10 @@
+import { QueryClient } from '@tanstack/react-query'
 import { createRootRouteWithContext, Outlet } from '@tanstack/react-router'
 import {
   LoginManagementResult,
   useLoginManagement,
-} from '../core/useLoginManagement'
+} from '../core/context/loginManagement/loginManagementContext'
 import { Layout } from '../core/Layout/Layout'
-import { QueryClient } from '@tanstack/react-query'
 import { RedirectHashRouterToBrowserRouter } from '../RedirectHashRouterToBrowserRouter'
 
 interface RouterContext {

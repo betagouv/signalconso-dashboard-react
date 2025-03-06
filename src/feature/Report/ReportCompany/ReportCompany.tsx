@@ -1,5 +1,5 @@
-import { AddressComponent } from '../../../shared/Address'
 import { Box, Icon, Tooltip, useTheme } from '@mui/material'
+import { Link } from '@tanstack/react-router'
 import { CleanDiscreetPanel } from 'shared/Panel/simplePanels'
 import { WithInlineIcon } from 'shared/WithInlineIcon'
 import { AlbertActivityLabel } from 'shared/albert/AlbertActivityLabel'
@@ -10,16 +10,16 @@ import {
   Report,
   ReportExtra,
 } from '../../../core/client/report/Report'
-import { useConnectedContext } from '../../../core/context/ConnectedContext'
+import { useConnectedContext } from '../../../core/context/connected/connectedContext'
 import { useI18n } from '../../../core/i18n'
 import { sxUtils } from '../../../core/theme'
+import { AddressComponent } from '../../../shared/Address'
 import { ScButton } from '../../../shared/Button'
 import { ReportInfluencer } from '../ReportInfluencer'
 import ReportSearchNavLink from '../ReportSearchNavLink'
 import { ReportStation } from '../ReportStation'
 import { ReportTrain } from '../ReportTrain'
 import { SelectReportAssociation } from '../SelectReportAssociation'
-import { Link } from '@tanstack/react-router'
 
 export const ReportCompany = ({
   reportExtra: r,

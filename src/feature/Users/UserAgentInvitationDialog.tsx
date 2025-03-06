@@ -1,6 +1,6 @@
 import { Controller, useForm } from 'react-hook-form'
 import { Alert, Txt } from '../../alexlibs/mui-extension'
-import { apiErrorsCode, useToast } from '../../core/context/toastContext'
+import { apiErrorsCode, useToast } from '../../core/context/toast/toastContext'
 import { regexp } from '../../core/helper/regexp'
 import { useI18n } from '../../core/i18n'
 import { ScButton } from '../../shared/Button'
@@ -14,7 +14,6 @@ import { ApiError } from '../../core/client/ApiClient'
 import { useApiContext } from '../../core/context/ApiContext'
 import { ScDialog } from '../../shared/ScDialog'
 import { ScSelect } from '../../shared/Select/Select'
-import React from 'react'
 
 export const UserAgentInvitationDialog = () => {
   const { m } = useI18n()

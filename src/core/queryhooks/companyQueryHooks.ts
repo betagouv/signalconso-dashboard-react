@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
-import { useConnectedContext } from 'core/context/ConnectedContext'
+import { useConnectedContext } from 'core/context/connected/connectedContext'
 import { useApiContext } from '../context/ApiContext'
 import { paginateData } from '../helper'
 import {

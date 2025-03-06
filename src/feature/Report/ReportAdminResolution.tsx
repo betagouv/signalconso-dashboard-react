@@ -8,8 +8,8 @@ import {
   ReportDeletionReason,
   ReportStatus,
 } from '../../core/client/report/Report'
-import { useConnectedContext } from '../../core/context/ConnectedContext'
-import { useToast } from '../../core/context/toastContext'
+import { useConnectedContext } from '../../core/context/connected/connectedContext'
+import { useToast } from '../../core/context/toast/toastContext'
 import { useI18n } from '../../core/i18n'
 import { Id } from '../../core/model'
 import { ScRadioGroup } from '../../shared/RadioGroup'

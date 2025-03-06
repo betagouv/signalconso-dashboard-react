@@ -3,14 +3,15 @@ import { Page, PageTitle } from '../../shared/Page'
 
 import { Collapse, Grow } from '@mui/material'
 import { useQuery } from '@tanstack/react-query'
+import { useNavigate } from '@tanstack/react-router'
 import { useApiContext } from 'core/context/ApiContext'
-import { I18nContextShape } from 'core/i18n/i18nContext'
+import { I18nContextShape } from 'core/context/i18n/i18nContext'
 import { UseQueryPaginateResult } from 'core/queryhooks/UseQueryPaginate'
+import { BookmarksCountQueryKey } from 'feature/Report/bookmarks/bookmarkUtils'
 import {
   BookmarkButton,
-  BookmarksCountQueryKey,
   BookmarksIcon,
-} from 'feature/Report/bookmarks'
+} from 'feature/Report/bookmarks/bookmarks'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { CleanDiscreetPanel } from 'shared/Panel/simplePanels'
 import { ConsumerReviewLabels } from 'shared/reviews/ConsumerReviewLabels'
@@ -21,7 +22,7 @@ import {
   ReportSearchResult,
   ReportStatus,
 } from '../../core/client/report/Report'
-import { useConnectedContext } from '../../core/context/ConnectedContext'
+import { useConnectedContext } from '../../core/context/connected/connectedContext'
 import { cleanObject } from '../../core/helper'
 import {
   Id,
@@ -58,7 +59,6 @@ import {
   SiretColumn,
   TagsColumn,
 } from './reportsColumns'
-import { useNavigate } from '@tanstack/react-router'
 
 export const Reports = ({
   search,

@@ -1,10 +1,11 @@
 import { MenuItem } from '@mui/material'
-import { useConnectedContext } from 'core/context/ConnectedContext'
+import { Link } from '@tanstack/react-router'
+import { useConnectedContext } from 'core/context/connected/connectedContext'
 import { useI18n } from 'core/i18n'
 import { Id, ReportStatus } from 'core/model'
 import { useEffect, useState } from 'react'
+import { chartColors } from 'shared/Chart/chartUtils'
 import { ChartOrPlaceholder, CurveDefinition } from 'shared/Chart/chartWrappers'
-import { chartColors } from 'shared/Chart/chartsColors'
 import { CleanInvisiblePanel } from 'shared/Panel/simplePanels'
 import { ScSelect } from 'shared/Select/Select'
 import { CompanyWithReportsCount } from '../../../core/client/company/Company'
@@ -14,7 +15,6 @@ import {
   Period,
 } from '../../../core/client/stats/statsTypes'
 import { CompanyStatsPanelTitle } from './CompanyStatsPanelTitle'
-import { Link } from '@tanstack/react-router'
 
 const periods: Period[] = ['Day', 'Week', 'Month']
 const defaultTick = 12

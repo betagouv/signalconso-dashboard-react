@@ -5,7 +5,7 @@ import { useState } from 'react'
 import { CleanWidePanel } from 'shared/Panel/simplePanels'
 import { Alert } from '../../alexlibs/mui-extension'
 import { ResendEmailType } from '../../core/client/admin/ResendEmailType'
-import { useConnectedContext } from '../../core/context/ConnectedContext'
+import { useConnectedContext } from '../../core/context/connected/connectedContext'
 import { ScButton } from '../../shared/Button'
 import { PeriodWithTimePicker } from '../../shared/PeriodWithTimePicker'
 

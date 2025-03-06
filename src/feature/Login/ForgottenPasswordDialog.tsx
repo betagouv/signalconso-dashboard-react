@@ -4,7 +4,7 @@ import { publicApiSdk } from 'core/apiSdkInstances'
 import { ReactElement, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { Alert, Txt } from '../../alexlibs/mui-extension'
-import { useToast } from '../../core/context/toastContext'
+import { useToast } from '../../core/context/toast/toastContext'
 import { regexp } from '../../core/helper/regexp'
 import { useI18n } from '../../core/i18n'
 import {

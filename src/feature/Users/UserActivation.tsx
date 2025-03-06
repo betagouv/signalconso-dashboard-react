@@ -7,15 +7,16 @@ import {
   TextField,
 } from '@mui/material'
 import { useMutation, useQuery } from '@tanstack/react-query'
+import { useLocation, useNavigate } from '@tanstack/react-router'
 import { publicApiSdk } from 'core/apiSdkInstances'
 import { validatePasswordComplexity } from 'core/helper/passwordComplexity'
+import { parse } from 'qs'
 import { useMemo } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { PasswordRequirementsDesc } from 'shared/PasswordRequirementsDesc'
 import { Alert, makeSx, Txt } from '../../alexlibs/mui-extension'
 import { User, UserToActivate } from '../../core/client/user/User'
-import { useToast } from '../../core/context/toastContext'
-import { parse } from 'qs'
+import { useToast } from '../../core/context/toast/toastContext'
 import { useI18n } from '../../core/i18n'
 import {
   AccountEventActions,
@@ -28,7 +29,6 @@ import { ScButton } from '../../shared/Button'
 import { Page, PageTitle } from '../../shared/Page'
 import { Panel, PanelBody } from '../../shared/Panel'
 import { ScInputPassword } from '../../shared/ScInputPassword'
-import { useLocation, useNavigate } from '@tanstack/react-router'
 
 interface UserActivationForm extends UserToActivate {
   repeatPassword: string

@@ -1,5 +1,5 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { useLoginManagement } from '../core/useLoginManagement'
+import { useLoginManagement } from '../core/context/loginManagement/loginManagementContext'
 import { UserActivation } from '../feature/Users/UserActivation'
 
 export const Route = createFileRoute('/agent/rejoindre')({

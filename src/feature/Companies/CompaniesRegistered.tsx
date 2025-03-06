@@ -8,6 +8,7 @@ import {
   Tooltip,
 } from '@mui/material'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { Link, useNavigate } from '@tanstack/react-router'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { AlbertActivityLabel } from 'shared/albert/AlbertActivityLabel'
 import { Fender, IconBtn, Txt } from '../../alexlibs/mui-extension'
@@ -17,8 +18,8 @@ import {
   CompanyUpdate,
   CompanyWithReportsCount,
 } from '../../core/client/company/Company'
-import { useConnectedContext } from '../../core/context/ConnectedContext'
-import { useToast } from '../../core/context/toastContext'
+import { useConnectedContext } from '../../core/context/connected/connectedContext'
+import { useToast } from '../../core/context/toast/toastContext'
 import { cleanObject } from '../../core/helper'
 import { useI18n } from '../../core/i18n'
 import { Address, Id, Paginate } from '../../core/model'
@@ -35,7 +36,6 @@ import { SelectCompanyDialog } from '../../shared/SelectCompany/SelectCompanyDia
 import { CompaniesRegisteredFilters } from './CompaniesRegisteredFilters'
 import { EditAddressDialog } from './EditAddressDialog'
 import { MassImport } from './MassImport'
-import { Link, useNavigate } from '@tanstack/react-router'
 
 export const CompaniesRegistered = ({ search }: { search: CompanySearch }) => {
   const navigate = useNavigate()

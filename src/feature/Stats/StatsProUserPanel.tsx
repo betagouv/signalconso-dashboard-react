@@ -1,6 +1,6 @@
 import { SimplifiedAsyncLineChart } from 'shared/Chart/chartWrappers'
 import { CleanWidePanel } from 'shared/Panel/simplePanels'
-import { useConnectedContext } from '../../core/context/ConnectedContext'
+import { useConnectedContext } from '../../core/context/connected/connectedContext'
 import { useI18n } from '../../core/i18n'
 
 export const StatsProUserPanel = () => {

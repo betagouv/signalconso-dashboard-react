@@ -7,7 +7,7 @@ import {
 import { forwardRef, ReactNode, Ref } from 'react'
 
 interface IconBtnProps extends IconButtonProps {
-  loading?: boolean
+  loading?: boolean | null | undefined
   icon?: string
   children: ReactNode
   tooltip?: string
@@ -19,7 +19,11 @@ export const IconBtn = forwardRef(
     ref: Ref<HTMLButtonElement>,
   ) => {
     return (
-      <IconButton {...props} disabled={disabled || loading} ref={ref}>
+      <IconButton
+        {...props}
+        disabled={(disabled || loading) ?? undefined}
+        ref={ref}
+      >
         {loading ? (
           <CircularProgress size={24} />
         ) : (

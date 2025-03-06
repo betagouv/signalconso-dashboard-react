@@ -1,14 +1,14 @@
+import { Link } from '@tanstack/react-router'
 import { CleanWidePanel } from 'shared/Panel/simplePanels'
-import { useConnectedContext } from '../../core/context/ConnectedContext'
+import { useConnectedContext } from '../../core/context/connected/connectedContext'
 import { useI18n } from '../../core/i18n'
 import { ScButton } from '../../shared/Button'
 import { Page, PageTitle } from '../../shared/Page'
+import { UserNameLabel } from '../../shared/UserNameLabel'
 import { EditEmailDialog } from './EditEmailDialog'
 import { EditPasswordDialog } from './EditPasswordDialog'
 import { EditProfileDialog } from './EditProfileDialog'
 import { SettingRow } from './SettingRow'
-import { UserNameLabel } from '../../shared/UserNameLabel'
-import { Link } from '@tanstack/react-router'
 
 export const Settings = () => {
   const { m } = useI18n()

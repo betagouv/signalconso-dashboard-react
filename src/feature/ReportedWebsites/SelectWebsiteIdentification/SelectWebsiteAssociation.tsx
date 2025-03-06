@@ -8,7 +8,7 @@ import { Company } from '../../../core/client/company/Company'
 import { Country } from '../../../core/client/constant/Country'
 import { WebsiteUpdateCompany } from '../../../core/client/website/Website'
 import { useApiContext } from '../../../core/context/ApiContext'
-import { useToast } from '../../../core/context/toastContext'
+import { useToast } from '../../../core/context/toast/toastContext'
 import { useI18n } from '../../../core/i18n'
 import { Id } from '../../../core/model'
 import { ScButton } from '../../../shared/Button'
@@ -20,6 +20,7 @@ import { SelectCountry } from '../../../shared/SelectCountry'
 import { ChipCompany } from './ChipCompany'
 import { ChipCountry } from './ChipCountry'
 import { ChipNoAssociation } from './ChipNoAssociation'
+import { AssociationType } from './websiteAssociationType'
 
 interface Website {
   id: Id
@@ -30,11 +31,6 @@ interface Website {
 interface Props extends Omit<BoxProps, 'onChange'> {
   website: Website
   onChange: () => void
-}
-
-export enum AssociationType {
-  COMPANY = 'COMPANY',
-  COUNTRY = 'COUNTRY',
 }
 
 export const SelectWebsiteAssociation = ({

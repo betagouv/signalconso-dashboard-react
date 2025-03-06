@@ -8,8 +8,8 @@ import {
   InvestigationStatus,
   WebsiteWithCompany,
 } from '../../core/client/website/Website'
-import { useConnectedContext } from '../../core/context/ConnectedContext'
-import { useToast } from '../../core/context/toastContext'
+import { useConnectedContext } from '../../core/context/connected/connectedContext'
+import { useToast } from '../../core/context/toast/toastContext'
 import { cleanObject } from '../../core/helper'
 import { useI18n } from '../../core/i18n'
 import { Id } from '../../core/model'
@@ -21,6 +21,7 @@ import {
 } from '../../core/queryhooks/websiteQueryHooks'
 import { sxUtils } from '../../core/theme'
 import { AutocompleteDialog } from '../../shared/AutocompleteDialog'
+import { ScButton } from '../../shared/Button'
 import { Datatable } from '../../shared/Datatable/Datatable'
 import { AddSiret } from './AddSiret'
 import { SelectWebsiteAssociation } from './SelectWebsiteIdentification/SelectWebsiteAssociation'
@@ -28,7 +29,6 @@ import { SiretExtraction } from './SiretExtraction'
 import { StatusChip } from './StatusChip'
 import { WebsitesFilters } from './WebsitesFilters'
 import { WebsiteTools } from './WebsiteTools'
-import { ScButton } from '../../shared/Button'
 
 export const WebsitesInvestigation = () => {
   const { m, formatDate } = useI18n()

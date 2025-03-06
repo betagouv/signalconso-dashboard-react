@@ -1,6 +1,6 @@
 import { useI18n } from 'core/i18n'
 import { useStatusDistributionProQuery } from 'core/queryhooks/statsQueryHooks'
-import { reportStatusProColor } from 'shared/ReportStatus'
+import { reportStatusProColor } from 'shared/reportStatusUtils'
 import { useEffectFn } from '../../alexlibs/react-hooks-lib'
 import { ReportStatusPro } from '../../core/client/report/Report'
 import { CompanyWithReportsCount, User } from '../../core/model'

@@ -1,13 +1,13 @@
 import { createFileRoute, Outlet } from '@tanstack/react-router'
+import { config } from '../../conf/config'
+import { useConnectedContext } from '../../core/context/connected/connectedContext'
 import { useI18n } from '../../core/i18n'
-import { useConnectedContext } from '../../core/context/ConnectedContext'
 import { Page, PageTitle } from '../../shared/Page'
 import { PageTab, PageTabs } from '../../shared/Page/PageTabs'
-import { config } from '../../conf/config'
-import { Route as reportStatsRoute } from './stats/report-stats'
+import { Route as countBySubCategoriesRoute } from './stats/countBySubCategories'
 import { Route as dgccrfStatsRoute } from './stats/dgccrf-stats'
 import { Route as proStatsRoute } from './stats/pro-stats'
-import { Route as countBySubCategoriesRoute } from './stats/countBySubCategories'
+import { Route as reportStatsRoute } from './stats/report-stats'
 
 export const Route = createFileRoute('/_authenticated/stats')({
   component: Stats,

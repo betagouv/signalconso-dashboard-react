@@ -3,8 +3,6 @@ import { Btn, Txt } from '../../alexlibs/mui-extension'
 import { UserNameLabel } from '../../shared/UserNameLabel'
 import { EntityIcon } from '../EntityIcon'
 import { Sidebar, SidebarHr, SidebarItem } from '../Layout/Sidebar'
-import { useLayoutContext } from '../context/LayoutContext'
-import { useI18n } from '../i18n'
 import {
   AuthProvider,
   Role,
@@ -12,6 +10,8 @@ import {
   roleAgents,
   User,
 } from '../client/user/User'
+import { useLayoutContext } from '../context/layoutContext/layoutContext'
+import { useI18n } from '../i18n'
 
 export const ScSidebar = ({
   connectedUser,

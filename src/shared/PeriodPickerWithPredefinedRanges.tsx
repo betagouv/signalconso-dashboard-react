@@ -1,16 +1,4 @@
-import { useEffect, useState } from 'react'
-import { ScButton } from './Button'
 import { MenuItem, Popover } from '@mui/material'
-import { Datepicker } from './Datepicker'
-import { useI18n } from '../core/i18n'
-import format from 'date-fns/format'
-import {
-  AnalyticActionName,
-  EventCategories,
-  FiltrageSignalementsActions,
-  trackEvent,
-} from '../core/plugins/Matomo'
-import { useConnectedContext } from '../core/context/ConnectedContext'
 import {
   endOfYear,
   startOfDay,
@@ -20,6 +8,18 @@ import {
   subMonths,
   subYears,
 } from 'date-fns'
+import format from 'date-fns/format'
+import { useEffect, useState } from 'react'
+import { useConnectedContext } from '../core/context/connected/connectedContext'
+import { useI18n } from '../core/i18n'
+import {
+  AnalyticActionName,
+  EventCategories,
+  FiltrageSignalementsActions,
+  trackEvent,
+} from '../core/plugins/Matomo'
+import { ScButton } from './Button'
+import { Datepicker } from './Datepicker'
 
 interface QuickRange {
   label: string

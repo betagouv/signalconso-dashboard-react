@@ -2,7 +2,7 @@ import { Button, Icon, LinearProgress } from '@mui/material'
 import { useQuery } from '@tanstack/react-query'
 import { AlbertProblemsResult } from 'core/client/albert/AlbertProblemsResult'
 import { useApiContext } from 'core/context/ApiContext'
-import { useConnectedContext } from 'core/context/ConnectedContext'
+import { useConnectedContext } from 'core/context/connected/connectedContext'
 import {
   AnalyticActionName,
   EventCategories,
@@ -10,10 +10,10 @@ import {
   trackEvent,
 } from 'core/plugins/Matomo'
 import { CompanyStatsPanelTitle } from 'feature/Company/stats/CompanyStatsPanelTitle'
+import { useEffect } from 'react'
 import { CleanInvisiblePanel } from 'shared/Panel/simplePanels'
-import React, { useEffect } from 'react'
-import BetaTag from '../BetaTag'
 import { initTally } from '../../core/plugins/Tally'
+import BetaTag from '../BetaTag'
 
 export function AlbertCompanyProblems({ companyId }: { companyId: string }) {
   const { connectedUser } = useConnectedContext()

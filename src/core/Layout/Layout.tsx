@@ -1,11 +1,9 @@
 import { ScHeader } from 'core/ScHeader/ScHeader'
 import { ScSidebar } from 'core/ScSidebar/ScSidebar'
-import { LoginManagementResult } from 'core/useLoginManagement'
+import { LayoutContextProvider } from 'core/context/layoutContext/LayoutContextProvider'
+import { LoginManagementResult } from 'core/context/loginManagement/loginManagementContext'
 import { ReactNode } from 'react'
-import {
-  LayoutContextProvider,
-  useLayoutContext,
-} from '../context/LayoutContext'
+import { useLayoutContext } from '../context/layoutContext/layoutContext'
 import { layoutConfig } from './layoutConfig'
 
 interface LayoutProps {

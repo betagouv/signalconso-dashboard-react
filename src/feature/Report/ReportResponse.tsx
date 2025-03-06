@@ -16,7 +16,7 @@ import {
 } from '../../core/client/event/Event'
 import { FileOrigin, UploadedFile } from '../../core/client/file/UploadedFile'
 import { useApiContext } from '../../core/context/ApiContext'
-import { useConnectedContext } from '../../core/context/ConnectedContext'
+import { useConnectedContext } from '../../core/context/connected/connectedContext'
 import { Id, Report, ReportStatus } from '../../core/model'
 import { GetReportEventsQueryKeys } from '../../core/queryhooks/eventQueryHooks'
 import { GetReportQueryKeys } from '../../core/queryhooks/reportQueryHooks'
