@@ -9,9 +9,9 @@ import { Btn } from '../../alexlibs/mui-extension'
 import { EventActionValues } from '../../core/client/event/Event'
 import { FileOrigin } from '../../core/client/file/UploadedFile'
 import {
-  Report,
   ReportExtra,
   ReportStatus,
+  ReportUtils,
 } from '../../core/client/report/Report'
 import { useConnectedContext } from '../../core/context/connected/connectedContext'
 import { useI18n } from '../../core/i18n'
@@ -140,7 +140,7 @@ const ReportViewStandard = ({
                 }}
               >
                 {connectedUser.isAdmin &&
-                  Report.canReopenReport(report.status) && (
+                  ReportUtils.canReopenReport(report.status) && (
                     <ReportReOpening reportIds={[report.id]} />
                   )}
 

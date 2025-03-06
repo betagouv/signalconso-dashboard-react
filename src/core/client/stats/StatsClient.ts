@@ -9,13 +9,13 @@ import {
   CountByDate,
   CurveStatsParams,
   Id,
-  Report,
   ReportAdminActionType,
   ReportResponseStatsParams,
   ReportSearch,
   ReportStatus,
   ReportStatusPro,
   ReportStatusProDistribution,
+  ReportUtils,
 } from '../../model'
 import { ApiClient } from '../ApiClient'
 import {
@@ -87,7 +87,7 @@ export class StatsClient {
     const total = sum(Object.values(distribution))
     const totalWaitingResponse = sum(
       Object.values(ReportStatus)
-        .filter((_) => Report.isWaitingForResponse(_))
+        .filter((_) => ReportUtils.isWaitingForResponse(_))
         .map((status) => distribution[status] ?? 0),
     )
     return {
@@ -101,7 +101,7 @@ export class StatsClient {
   ): Promise<ReportStatusProDistributionWithTotals> => {
     const { distribution, totals } = await this.getStatusDistribution(companyId)
     const entries = Object.values(ReportStatusPro).map((statusPro) => {
-      const statusList = Report.getStatusByStatusPro(statusPro)
+      const statusList = ReportUtils.getStatusByStatusPro(statusPro)
       const count = sum(
         statusList.map((status) => toNumberOrDefault(distribution[status], 0)),
       )
@@ -240,7 +240,7 @@ class StatsPercentageClient {
   readonly getReportForwardedToPro = (companyId?: Id): Promise<SimpleStat> => {
     return this.getPercentByStatus({
       companyId,
-      status: Report.transmittedStatus,
+      status: ReportUtils.transmittedStatus,
       start: this.statsAdminStartDate,
       end: subDays(
         new Date(),
@@ -252,8 +252,8 @@ class StatsPercentageClient {
   readonly getReportReadByPro = (companyId?: Id) => {
     return this.getPercentByStatus({
       companyId,
-      status: Report.readStatus,
-      baseStatus: Report.transmittedStatus,
+      status: ReportUtils.readStatus,
+      baseStatus: ReportUtils.transmittedStatus,
       start: this.statsAdminStartDate,
       end: subDays(
         new Date(),
@@ -265,8 +265,8 @@ class StatsPercentageClient {
   readonly getReportWithResponse = (companyId?: Id) => {
     return this.getPercentByStatus({
       companyId,
-      status: Report.respondedStatus,
-      baseStatus: Report.readStatus,
+      status: ReportUtils.respondedStatus,
+      baseStatus: ReportUtils.readStatus,
       start: this.statsAdminStartDate,
       end: subDays(
         new Date(),
@@ -376,7 +376,7 @@ class StatsCurveClient {
   ): Promise<CountByDate[]> => {
     return this.getReportPercentageCurve({
       ...params,
-      status: Report.transmittedStatus,
+      status: ReportUtils.transmittedStatus,
     })
   }
 
@@ -385,8 +385,8 @@ class StatsCurveClient {
   ) => {
     return this.getReportPercentageCurve({
       ...params,
-      status: Report.respondedStatus,
-      baseStatus: Report.readStatus,
+      status: ReportUtils.respondedStatus,
+      baseStatus: ReportUtils.readStatus,
     })
   }
 
@@ -395,8 +395,8 @@ class StatsCurveClient {
   ) => {
     return this.getReportPercentageCurve({
       ...params,
-      status: Report.readStatus,
-      baseStatus: Report.transmittedStatus,
+      status: ReportUtils.readStatus,
+      baseStatus: ReportUtils.transmittedStatus,
     })
   }
 }

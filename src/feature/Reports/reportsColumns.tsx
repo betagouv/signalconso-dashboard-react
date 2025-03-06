@@ -1,7 +1,7 @@
 import { Badge, Box, Checkbox, Chip, Icon, Tooltip } from '@mui/material'
 import { Link } from '@tanstack/react-router'
 import { UseSetState } from 'alexlibs/react-hooks-lib'
-import { Report } from 'core/client/report/Report'
+import { ReportUtils } from 'core/client/report/Report'
 import { useConnectedContext } from 'core/context/connected/connectedContext'
 import {
   Paginate,
@@ -130,7 +130,7 @@ export function CategoryColumn({ r }: ColumnProps) {
 
 export function TagsColumn({ r }: ColumnProps) {
   const { m } = useI18n()
-  return Report.readTags(r.report).map((tag) => (
+  return ReportUtils.readTags(r.report).map((tag) => (
     <Chip
       key={tag}
       size="small"

@@ -1,13 +1,12 @@
-import { ScRadioGroupItem } from '../RadioGroupItem'
-import { Txt } from '../../alexlibs/mui-extension'
 import { Icon } from '@mui/material'
-import { ScRadioGroup } from '../RadioGroup'
-import React from 'react'
-import { useI18n } from '../../core/i18n'
-import { AddressComponent } from '../Address'
-import { sxUtils } from '../../core/theme'
-import { Report } from '../../core/client/report/Report'
+import { ReportUtils } from 'core/client/report/Report'
+import { Txt } from '../../alexlibs/mui-extension'
 import { CompanySearchResult } from '../../core/client/company/Company'
+import { useI18n } from '../../core/i18n'
+import { sxUtils } from '../../core/theme'
+import { AddressComponent } from '../Address'
+import { ScRadioGroup } from '../RadioGroup'
+import { ScRadioGroupItem } from '../RadioGroupItem'
 
 interface Props {
   companies: CompanySearchResult[]
@@ -20,7 +19,7 @@ export const SelectCompanyList = ({ companies, onChange }: Props) => {
   return (
     <ScRadioGroup>
       {companies.map((company) => {
-        const isGovernment = Report.isGovernmentCompany(company)
+        const isGovernment = ReportUtils.isGovernmentCompany(company)
         return (
           <ScRadioGroupItem
             disabled={!company.isOpen}

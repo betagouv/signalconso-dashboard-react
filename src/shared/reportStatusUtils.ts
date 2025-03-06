@@ -1,6 +1,6 @@
-import { ReportStatusPro } from 'core/client/report/Report'
+import { ReportStatusPro, ReportUtils } from 'core/client/report/Report'
 
-import { Report, ReportStatus } from 'core/client/report/Report'
+import { ReportStatus } from 'core/client/report/Report'
 export const reportStatusColor = {
   [ReportStatus.NA]: '#a1a1a1',
   [ReportStatus.InformateurInterne]: '#a1a1a1',
@@ -20,8 +20,8 @@ export const reportStatusProColor = {
 }
 
 export const isStatusFinal = (status: ReportStatus) => {
-  return Report.closedStatus.includes(status)
+  return ReportUtils.closedStatus.includes(status)
 }
 export const isStatusInvisibleToPro = (status: ReportStatus): boolean => {
-  return Report.invisibleToProStatus.includes(status)
+  return ReportUtils.invisibleToProStatus.includes(status)
 }

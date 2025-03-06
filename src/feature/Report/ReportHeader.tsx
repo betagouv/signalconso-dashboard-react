@@ -3,7 +3,11 @@ import { Link } from '@tanstack/react-router'
 import { ReactNode } from 'react'
 import { CleanDiscreetPanel } from 'shared/Panel/simplePanels'
 import { Alert } from '../../alexlibs/mui-extension'
-import { Report, ReportSearchResult } from '../../core/client/report/Report'
+import {
+  Report,
+  ReportSearchResult,
+  ReportUtils,
+} from '../../core/client/report/Report'
 import { useI18n } from '../../core/i18n'
 import { ReportStatusLabel } from '../../shared/ReportStatus'
 import {
@@ -123,7 +127,7 @@ export const ReportHeader = ({
         <div className="flex justify-between">
           {!hideTags && (
             <div style={{ flex: 1 }}>
-              {Report.readTags(report).map((tag) => [
+              {ReportUtils.readTags(report).map((tag) => [
                 <ReportSearchNavLink
                   className={'no-underline'}
                   reportSearch={{

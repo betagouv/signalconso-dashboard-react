@@ -7,8 +7,8 @@ import { ReportWebsiteUrlLink } from 'shared/tinyComponents'
 import { Txt } from '../../../alexlibs/mui-extension'
 import {
   Influencer,
-  Report,
   ReportExtra,
+  ReportUtils,
 } from '../../../core/client/report/Report'
 import { useConnectedContext } from '../../../core/context/connected/connectedContext'
 import { useI18n } from '../../../core/i18n'
@@ -30,7 +30,7 @@ export const ReportCompany = ({
 }) => {
   const { connectedUser } = useConnectedContext()
   const { m } = useI18n()
-  const specialLegislation = Report.appliedSpecialLegislation(r.report)
+  const specialLegislation = ReportUtils.appliedSpecialLegislation(r.report)
   const {
     websiteURL,
     vendor,
