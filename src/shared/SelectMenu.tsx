@@ -1,7 +1,7 @@
 import { Checkbox, Menu, MenuItem } from '@mui/material'
 import React, { useEffect, useState } from 'react'
-import { useI18n } from '../core/i18n'
 import { makeSx } from '../alexlibs/mui-extension'
+import { useI18n } from '../core/i18n'
 
 interface Props<T> {
   options: T[]
@@ -43,7 +43,7 @@ export const SelectMenu = <T,>({
 
   useEffect(() => {
     setInnerValue(initialValue)
-  }, [])
+  }, [initialValue])
 
   return (
     <Menu open={open} anchorEl={anchorEl} onClose={onClose}>
