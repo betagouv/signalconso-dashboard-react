@@ -118,6 +118,7 @@ export enum StatisticsActions {
 
 export enum OutilsIaActions {
   analyseProblemesEntreprise = `Lancement de l'analyse IA des problèmes d'une entreprise`,
+  resumeSignalement = `Lancement d'un résumé de signalement par IA`,
 }
 
 export enum ExportsActions {

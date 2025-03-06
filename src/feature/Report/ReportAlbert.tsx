@@ -10,6 +10,13 @@ import DescriptionRow from './DescriptionRow'
 import { WithInlineIcon } from '../../shared/WithInlineIcon'
 import { initTally } from '../../core/plugins/Tally'
 import BetaTag from '../../shared/BetaTag'
+import {
+  AccessEventActions,
+  AnalyticActionName,
+  EventCategories,
+  OutilsIaActions,
+  trackEvent,
+} from '../../core/plugins/Matomo'
 
 export const ReportAlbert = ({ id }: { id: Id }) => {
   const { api } = useApiContext()
@@ -119,7 +126,15 @@ export const ReportAlbert = ({ id }: { id: Id }) => {
         ) : (
           <Btn
             loading={_classify.isPending}
-            onClick={() => _classify.mutate(id)}
+            onClick={() => {
+              trackEvent(
+                connectedUser,
+                EventCategories.OutilsIa,
+                OutilsIaActions.resumeSignalement,
+                AnalyticActionName.click,
+              )
+              _classify.mutate(id)
+            }}
           >
             Générer un résumé
           </Btn>
