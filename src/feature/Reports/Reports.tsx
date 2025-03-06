@@ -21,6 +21,7 @@ import {
   ReportingDateLabel,
   ReportSearchResult,
   ReportStatus,
+  ReportUtils,
 } from '../../core/client/report/Report'
 import { useConnectedContext } from '../../core/context/connected/connectedContext'
 import { cleanObject } from '../../core/helper'
@@ -82,6 +83,7 @@ export const Reports = ({
 
   useEffect(() => {
     navigate({ to: '.', search: _reports.filters, replace: true })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [_reports.filters])
 
   const filtersCount = useMemo(() => {
@@ -140,7 +142,7 @@ export const Reports = ({
     setProResponseFilter(responses)
     const status =
       responses.length === 0
-        ? Report.respondedStatus
+        ? ReportUtils.respondedStatus
         : responses.map((_) => proResponseToStatus[_])
     _reports.updateFilters((prev) => ({ ...prev, status }))
   }
@@ -149,11 +151,11 @@ export const Reports = ({
     _reports.filters.status?.length === 0
       ? null
       : _reports.filters.status?.every((status) =>
-            Report.respondedStatus.includes(status),
+            ReportUtils.respondedStatus.includes(status),
           )
         ? true
         : _reports.filters.status?.every((status) =>
-              Report.notRespondedStatus.includes(status),
+              ReportUtils.notRespondedStatus.includes(status),
             )
           ? false
           : null
@@ -161,12 +163,12 @@ export const Reports = ({
     if (b)
       _reports.updateFilters((prev) => ({
         ...prev,
-        status: Report.respondedStatus,
+        status: ReportUtils.respondedStatus,
       }))
     else if (b === false)
       _reports.updateFilters((prev) => ({
         ...prev,
-        status: Report.notRespondedStatus,
+        status: ReportUtils.notRespondedStatus,
       }))
     else _reports.updateFilters((prev) => ({ ...prev, status: undefined }))
   }
@@ -286,7 +288,7 @@ export const Reports = ({
                 _reports.result.data?.entities.find(
                   (_) =>
                     selectReport.has(_.report.id) &&
-                    !Report.canReopenReport(_.report.status),
+                    !ReportUtils.canReopenReport(_.report.status),
                 ) === undefined,
             }}
           />

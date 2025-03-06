@@ -190,7 +190,7 @@ export type ReportClosedReason =
       responseEvent: ReportProResponseEvent | undefined
     }
 
-export class Report {
+export class ReportUtils {
   static readonly waitingResponseStatus = [
     ReportStatus.Transmis,
     ReportStatus.TraitementEnCours,
@@ -240,13 +240,9 @@ export class Report {
     ReportStatus.NA,
     ReportStatus.InformateurInterne,
   ]
-  static readonly closedBySystemStatus = [
-    ReportStatus.NonConsulte,
-    ReportStatus.ConsulteIgnore,
-  ]
 
   static readonly isClosed = (status: ReportStatus) => {
-    return Report.closedStatus.includes(status)
+    return ReportUtils.closedStatus.includes(status)
   }
 
   static readonly canReopenReport = (status: ReportStatus) =>
@@ -257,7 +253,7 @@ export class Report {
     report: Report,
     responseEvent: ReportProResponseEvent | undefined,
   ): ReportClosedReason | undefined => {
-    if (Report.isClosed(report.status)) {
+    if (ReportUtils.isClosed(report.status)) {
       switch (report.status) {
         case ReportStatus.SuppressionRGPD:
           return { kind: 'suppression_rgpd' }
@@ -272,13 +268,13 @@ export class Report {
   }
 
   static readonly isWaitingForResponse = (status: ReportStatus) => {
-    return Report.waitingResponseStatus.includes(status)
+    return ReportUtils.waitingResponseStatus.includes(status)
   }
 
   static readonly getStatusProByStatus = (
     status: ReportStatus,
   ): ReportStatusPro =>
-    Report.isClosed(status)
+    ReportUtils.isClosed(status)
       ? ReportStatusPro.Cloture
       : ReportStatusPro.ARepondre
 
@@ -286,8 +282,8 @@ export class Report {
     statusPro: ReportStatusPro,
   ): ReportStatus[] =>
     Object.values(ReportStatus)
-      .filter((_) => !Report.invisibleToProStatus.includes(_))
-      .filter((_) => Report.getStatusProByStatus(_) === statusPro)
+      .filter((_) => !ReportUtils.invisibleToProStatus.includes(_))
+      .filter((_) => ReportUtils.getStatusProByStatus(_) === statusPro)
 
   static readonly isGovernmentCompany = (_?: {
     activityCode?: string
@@ -300,7 +296,7 @@ export class Report {
     // 47.11D supermarchés entre 400 et 2500
     // 47.11F hypermarchés égale ou > à 2500 m2
     if (
-      Report.readTags(report).includes(ReportTag.Shrinkflation) &&
+      ReportUtils.readTags(report).includes(ReportTag.Shrinkflation) &&
       report.activityCode === '47.11C'
     ) {
       return SpecialLegislation.SHRINKFLATION

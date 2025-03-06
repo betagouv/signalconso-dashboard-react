@@ -62,6 +62,7 @@ export const AsyncLineChart = ({
   const [curves, setCurves] = useState<CurveDefinition[] | undefined>(undefined)
   useEffect(() => {
     loadCurves().then(setCurves)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
   return <ChartOrPlaceholder curves={curves} {...rest} />
 }

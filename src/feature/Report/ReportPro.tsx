@@ -18,6 +18,7 @@ import {
   ReportExtra,
   ReportSearchResult,
   ReportStatusPro,
+  ReportUtils,
 } from '../../core/client/report/Report'
 import { useConnectedContext } from '../../core/context/connected/connectedContext'
 import { capitalize } from '../../core/helper'
@@ -50,6 +51,7 @@ import { ReportResponseComponent } from './ReportResponse'
 import { ReportResponseForm } from './ReportResponseForm/ReportResponseForm'
 import { ReportStation } from './ReportStation'
 import { ReportTrain } from './ReportTrain'
+
 export const ReportPro = ({ reportId }: { reportId: Id }) => {
   useEffect(() => {
     initTally()
@@ -95,7 +97,7 @@ export function ReportProLoaded({ reportExtra }: { reportExtra: ReportExtra }) {
   }
 
   const hasResponse = !!responseEvent
-  const closedReason = Report.getClosedReason(report, responseEvent)
+  const closedReason = ReportUtils.getClosedReason(report, responseEvent)
   const isClosed = !!closedReason
   const hasToRespond = !hasResponse && !isClosed
 
@@ -159,7 +161,7 @@ export function ReportProLoaded({ reportExtra }: { reportExtra: ReportExtra }) {
 
 function LinkBackToList({ report }: { report: Report }) {
   const closed =
-    Report.getStatusProByStatus(report.status) === ReportStatusPro.Cloture
+    ReportUtils.getStatusProByStatus(report.status) === ReportStatusPro.Cloture
   const url = closed
     ? '/suivi-des-signalements-clotures'
     : '/suivi-des-signalements'
@@ -187,7 +189,7 @@ function ReportBlock({
 }) {
   const { m } = useI18n()
   const { report, files } = reportSearchResult
-  const specialLegislation = Report.appliedSpecialLegislation(report)
+  const specialLegislation = ReportUtils.appliedSpecialLegislation(report)
   return (
     <CleanWidePanel>
       <Header

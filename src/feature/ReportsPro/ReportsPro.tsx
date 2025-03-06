@@ -9,11 +9,11 @@ import { useSetState } from '../../alexlibs/react-hooks-lib'
 import { config } from '../../conf/config'
 import { EntityIcon } from '../../core/EntityIcon'
 import {
-  Report,
   ReportSearchResult,
   ReportStatus,
   ReportStatusPro,
   ReportType,
+  ReportUtils,
 } from '../../core/client/report/Report'
 import { ReportProSearch } from '../../core/client/report/ReportSearch'
 import { useLayoutContext } from '../../core/context/layoutContext/layoutContext'
@@ -63,7 +63,7 @@ export const ReportsPro = ({ reportType, search }: ReportsProProps) => {
       : [ReportStatusPro.ARepondre]
 
   const obligatoryFilters = {
-    status: reportStatusPro.flatMap(Report.getStatusByStatusPro),
+    status: reportStatusPro.flatMap(ReportUtils.getStatusByStatusPro),
   }
 
   const filtersAppliedToQuery = {
@@ -108,6 +108,7 @@ export const ReportsPro = ({ reportType, search }: ReportsProProps) => {
       _reports.result.data?.entities.every(
         (_) => _.report.status === ReportStatus.TraitementEnCours,
       ),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [_reports.result.data],
   )
 
@@ -116,6 +117,7 @@ export const ReportsPro = ({ reportType, search }: ReportsProProps) => {
       (_reports.result.data &&
         _reports.result.data.totalCount > minRowsBeforeDisplayFilters) ||
       hasFilters,
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [_reports.result.data],
   )
 
@@ -125,10 +127,12 @@ export const ReportsPro = ({ reportType, search }: ReportsProProps) => {
       Object.keys(cleanObject(filters)).length -
       Object.keys(obligatoryFilters).length
     )
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [_reports.filters])
 
   useEffect(() => {
     navigate({ to: '.', search: _reports.filters, replace: true })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [_reports.filters])
 
   const resetFiltersButtonProps = {

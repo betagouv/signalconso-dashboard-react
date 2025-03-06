@@ -87,6 +87,7 @@ export const ReportFile = ({
 
   useEffect(() => {
     ScOption.from(_remove.error).map(toastError)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [_remove.error])
 
   const ReportFileImage = () => {

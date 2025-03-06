@@ -1,7 +1,7 @@
 import {
-  Report,
   ReportStatus,
   ReportStatusPro,
+  ReportUtils,
 } from '../core/client/report/Report'
 import { useConnectedContext } from '../core/context/connected/connectedContext'
 import { useI18n } from '../core/i18n'
@@ -25,7 +25,7 @@ export const ReportStatusLabel = ({
   const { connectedUser } = useConnectedContext()
   return connectedUser.isPro ? (
     <ReportStatusProLabel
-      status={Report.getStatusProByStatus(status)}
+      status={ReportUtils.getStatusProByStatus(status)}
       {...props}
     />
   ) : (

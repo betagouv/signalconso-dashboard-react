@@ -26,7 +26,7 @@ import {
   CompanyAccessToken,
   CompanyWithReportsCount,
   Id,
-  User,
+  UserUtils,
 } from '../../core/model'
 import { sxUtils } from '../../core/theme'
 import { ScButton } from '../../shared/Button'
@@ -529,7 +529,7 @@ function mergeData(
     ...(companyAccesses ?? []).map((_) => ({
       kind: 'actual_access' as const,
       email: _.email,
-      name: User.buildFullName(_),
+      name: UserUtils.buildFullName(_),
       level: _.level,
       userId: _.userId,
       editable: _.editable,

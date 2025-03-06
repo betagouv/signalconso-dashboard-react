@@ -34,6 +34,7 @@ export const ProConnectCallback = ({
           navigate({ to: '/' })
         })
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [navigate])
 
   return <div>Loading...</div>
