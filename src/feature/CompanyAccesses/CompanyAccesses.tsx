@@ -6,14 +6,15 @@ import {
   Tooltip,
 } from '@mui/material'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { Link, useNavigate } from '@tanstack/react-router'
 import { UserDeleteDialog } from 'feature/Users/userDelete'
 import { ScMenu } from 'shared/Menu'
 import {
   CompanyAccess,
   CompanyAccessLevel,
 } from '../../core/client/company-access/CompanyAccess'
-import { useConnectedContext } from '../../core/context/ConnectedContext'
-import { useToast } from '../../core/context/toastContext'
+import { useConnectedContext } from '../../core/context/connected/connectedContext'
+import { useToast } from '../../core/context/toast/toastContext'
 import {
   isDefined,
   objectKeysUnsafe,
@@ -37,7 +38,6 @@ import { ScRadioGroup } from '../../shared/RadioGroup'
 import { ScRadioGroupItem } from '../../shared/RadioGroupItem'
 import { ScDialog } from '../../shared/ScDialog'
 import { CompanyAccessCreateBtn } from './CompanyAccessCreateBtn'
-import { Link, useNavigate } from '@tanstack/react-router'
 
 type RowData =
   | {

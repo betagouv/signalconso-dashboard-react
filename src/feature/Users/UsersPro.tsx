@@ -1,23 +1,22 @@
-import { Datatable } from '../../shared/Datatable/Datatable'
-import { useI18n } from '../../core/i18n'
-import { useConnectedContext } from '../../core/context/ConnectedContext'
-import { Alert, Txt } from '../../alexlibs/mui-extension'
+import { Store, StoreOutlined } from '@mui/icons-material'
 import { Chip, Icon } from '@mui/material'
-import { ScButton } from '../../shared/Button'
-import { Page, PageTitle } from '../../shared/Page'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { Link } from '@tanstack/react-router'
+import { Alert, Txt } from '../../alexlibs/mui-extension'
+import { VisibleUser } from '../../core/client/company-access/VisibleUser'
+import { useConnectedContext } from '../../core/context/connected/connectedContext'
+import { useToast } from '../../core/context/toast/toastContext'
+import { useI18n } from '../../core/i18n'
+import { Id, User } from '../../core/model'
 import {
   FetchVisibleUsersToProKeys,
   useFetchVisibleUsersToProQuery,
 } from '../../core/queryhooks/userQueryHooks'
-import { CompanyAccessCreateBtn } from '../CompanyAccesses/CompanyAccessCreateBtn'
-import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { useToast } from '../../core/context/toastContext'
-import { Id, User } from '../../core/model'
+import { ScButton } from '../../shared/Button'
+import { Datatable } from '../../shared/Datatable/Datatable'
+import { Page, PageTitle } from '../../shared/Page'
 import { ScDialog } from '../../shared/ScDialog'
-import { Store } from '@mui/icons-material'
-import { StoreOutlined } from '@mui/icons-material'
-import { VisibleUser } from '../../core/client/company-access/VisibleUser'
-import { Link } from '@tanstack/react-router'
+import { CompanyAccessCreateBtn } from '../CompanyAccesses/CompanyAccessCreateBtn'
 
 export const UsersPro = () => {
   const { m } = useI18n()

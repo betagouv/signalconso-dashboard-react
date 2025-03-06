@@ -1,8 +1,8 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { useConnectedContext } from '../../../../core/context/ConnectedContext'
+import { useConnectedContext } from '../../../../core/context/connected/connectedContext'
 import { useGetCompanyByIdQuery } from '../../../../core/queryhooks/companyQueryHooks'
-import { CompanyStatsPro } from '../../../../feature/Company/CompanyStatsPro'
 import { CompanyStats } from '../../../../feature/Company/CompanyStats'
+import { CompanyStatsPro } from '../../../../feature/Company/CompanyStatsPro'
 
 export const Route = createFileRoute(
   '/_authenticated/entreprise/$companyId/bilan',

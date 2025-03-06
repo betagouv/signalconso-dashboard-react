@@ -4,12 +4,12 @@ import {
   redirect,
   useLocation,
 } from '@tanstack/react-router'
-import { ConnectedContextProvider } from '../core/context/ConnectedContext'
 import { useEffect, useMemo } from 'react'
 import { buildConnectedApiSdks } from '../core/apiSdkInstances'
+import { ConnectedContextProvider } from '../core/context/connected/ConnectedContextProvider'
+import { useLoginManagement } from '../core/context/loginManagement/loginManagementContext'
 import { trackPage } from '../core/plugins/Matomo'
 import { RefreshBanner } from '../shared/RefreshBanner'
-import { useLoginManagement } from '../core/useLoginManagement'
 
 export const Route = createFileRoute('/_authenticated')({
   beforeLoad: ({ context, location }) => {

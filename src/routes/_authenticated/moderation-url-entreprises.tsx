@@ -1,6 +1,6 @@
 import { createFileRoute, Outlet } from '@tanstack/react-router'
+import { useConnectedContext } from '../../core/context/connected/connectedContext'
 import { useI18n } from '../../core/i18n'
-import { useConnectedContext } from '../../core/context/ConnectedContext'
 import { Page, PageTitle } from '../../shared/Page'
 import { PageTab, PageTabs } from '../../shared/Page/PageTabs'
 import { Route as enqueteRoute } from './moderation-url-entreprises/enquete'

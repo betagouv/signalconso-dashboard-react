@@ -1,5 +1,5 @@
 import { Icon } from '@mui/material'
-import { useConnectedContext } from 'core/context/ConnectedContext'
+import { useConnectedContext } from 'core/context/connected/connectedContext'
 import BetaTag from 'shared/BetaTag'
 import { Divider } from 'shared/Divider'
 import { ScDialog } from '../ScDialog'

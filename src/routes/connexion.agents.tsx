@@ -1,5 +1,5 @@
 import { createFileRoute, redirect } from '@tanstack/react-router'
-import { useLoginManagement } from '../core/useLoginManagement'
+import { useLoginManagement } from '../core/context/loginManagement/loginManagementContext'
 import { AgentLoginForm } from '../feature/Login/AgentLoginForm'
 
 type AgentLoginFormSearch = {

@@ -1,11 +1,12 @@
 import { useMutation } from '@tanstack/react-query'
+import { useNavigate } from '@tanstack/react-router'
 import { publicApiSdk } from 'core/apiSdkInstances'
 import { validatePasswordComplexity } from 'core/helper/passwordComplexity'
 import { AlertContactSupport } from 'feature/Login/loggedOutComponents'
 import { useForm } from 'react-hook-form'
 import { PasswordRequirementsDesc } from 'shared/PasswordRequirementsDesc'
 import { fnSwitch } from '../../alexlibs/ts-utils'
-import { useToast } from '../../core/context/toastContext'
+import { useToast } from '../../core/context/toast/toastContext'
 import { useI18n } from '../../core/i18n'
 import {
   AuthenticationEventActions,
@@ -15,7 +16,6 @@ import {
 import { ScButton } from '../../shared/Button'
 import { CenteredContent } from '../../shared/CenteredContent'
 import { ScInputPassword } from '../../shared/ScInputPassword'
-import { useNavigate } from '@tanstack/react-router'
 
 interface Form {
   newPassword: string

@@ -3,8 +3,8 @@ import { useMutation, useQuery } from '@tanstack/react-query'
 import { SendTestEmailParams } from 'core/client/admin/AdminClient'
 import { CleanWidePanel } from 'shared/Panel/simplePanels'
 import { Alert, IconBtn, Txt } from '../../alexlibs/mui-extension'
-import { useConnectedContext } from '../../core/context/ConnectedContext'
-import { useToast } from '../../core/context/toastContext'
+import { useConnectedContext } from '../../core/context/connected/connectedContext'
+import { useToast } from '../../core/context/toast/toastContext'
 import { useI18n } from '../../core/i18n'
 
 export const TestTools = () => {

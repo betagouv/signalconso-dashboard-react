@@ -1,6 +1,6 @@
 import { Box, BoxProps, Icon } from '@mui/material'
 import { IconBtn } from '../../../alexlibs/mui-extension'
-import { useLayoutContext } from '../../context/LayoutContext'
+import { useLayoutContext } from '../../context/layoutContext/layoutContext'
 import { layoutConfig } from '../layoutConfig'
 
 interface SidebarHeaderProps extends BoxProps {

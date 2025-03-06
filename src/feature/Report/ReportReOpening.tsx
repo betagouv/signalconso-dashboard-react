@@ -1,13 +1,11 @@
-import { useMutation } from '@tanstack/react-query'
-import { ReactElement } from 'react'
-import { Btn, Txt } from '../../alexlibs/mui-extension'
-import { Report } from '../../core/client/report/Report'
-import { useConnectedContext } from '../../core/context/ConnectedContext'
-import { useToast } from '../../core/context/toastContext'
-import { useI18n } from '../../core/i18n'
-import { ScDialog } from '../../shared/ScDialog'
-import { Id } from '../../core/model'
 import { Tooltip } from '@mui/material'
+import { useMutation } from '@tanstack/react-query'
+import { Btn, Txt } from '../../alexlibs/mui-extension'
+import { useConnectedContext } from '../../core/context/connected/connectedContext'
+import { useToast } from '../../core/context/toast/toastContext'
+import { useI18n } from '../../core/i18n'
+import { Id } from '../../core/model'
+import { ScDialog } from '../../shared/ScDialog'
 
 interface Props {
   reportIds: Id[]

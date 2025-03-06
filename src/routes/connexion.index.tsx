@@ -1,6 +1,6 @@
 import { createFileRoute, redirect } from '@tanstack/react-router'
+import { useLoginManagement } from '../core/context/loginManagement/loginManagementContext'
 import { ProLoginForm } from '../feature/Login/ProLoginForm'
-import { useLoginManagement } from '../core/useLoginManagement'
 
 type ProLoginFormSearch = {
   redirect?: string

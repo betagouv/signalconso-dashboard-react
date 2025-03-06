@@ -1,5 +1,6 @@
 import { Icon, Tooltip, useMediaQuery } from '@mui/material'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { Link } from '@tanstack/react-router'
 import { formatDate } from 'core/i18n/format'
 import { ReportReferenceNumber } from 'feature/Report/ReportReferenceNumber'
 import { useEffect, useRef } from 'react'
@@ -18,10 +19,11 @@ import {
   ReportSearchResult,
   ReportStatusPro,
 } from '../../core/client/report/Report'
-import { useConnectedContext } from '../../core/context/ConnectedContext'
+import { useConnectedContext } from '../../core/context/connected/connectedContext'
 import { capitalize } from '../../core/helper'
 import { useI18n } from '../../core/i18n'
 import { Id, MinimalUser } from '../../core/model'
+import { initTally } from '../../core/plugins/Tally'
 import {
   GetReportEventsQueryKeys,
   useGetReportEventsQuery,
@@ -35,10 +37,11 @@ import {
 import { ScButton } from '../../shared/Button'
 import { Page } from '../../shared/Page'
 import { UserNameLabel } from '../../shared/UserNameLabel'
+import { ReportAffectation } from './affectation/ReportAffectation'
+import { buildAffectationOptionFromUser } from './affectation/reportAffectationUtils'
 import { CategoryMessage } from './CategoryMessage'
 import { ReportEvents } from './Event/ReportEvents'
-import { creationReportEvent } from './Report'
-import { buildOptionFromUser, ReportAffectation } from './ReportAffectation'
+import { creationReportEvent } from './Event/reportEventsUtils'
 import { ReportDetails, ReportFilesFull } from './ReportDescription'
 import { ExpirationDate } from './ReportHeader'
 import { ReportInfluencer } from './ReportInfluencer'
@@ -47,9 +50,6 @@ import { ReportResponseComponent } from './ReportResponse'
 import { ReportResponseForm } from './ReportResponseForm/ReportResponseForm'
 import { ReportStation } from './ReportStation'
 import { ReportTrain } from './ReportTrain'
-import { initTally } from '../../core/plugins/Tally'
-import { Link } from '@tanstack/react-router'
-
 export const ReportPro = ({ reportId }: { reportId: Id }) => {
   useEffect(() => {
     initTally()
@@ -332,7 +332,7 @@ const AssignedUserLabel = ({
   hasToRespond: boolean
 }) => {
   return user ? (
-    <span>{buildOptionFromUser(user).fullName} </span>
+    <span>{buildAffectationOptionFromUser(user).fullName} </span>
   ) : (
     <span>{hasToRespond ? 'Affecter' : 'Non affecté'}</span>
   )

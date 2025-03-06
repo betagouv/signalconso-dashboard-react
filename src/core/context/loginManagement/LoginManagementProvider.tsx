@@ -1,43 +1,9 @@
 import { QueryClient, useMutation } from '@tanstack/react-query'
 import { publicApiSdk } from 'core/apiSdkInstances'
-import React, { useContext, useRef, useState } from 'react'
-import { User } from './client/user/User'
-import { router as appRouter } from '../App'
-
-type MaybeUser = User | undefined
-export type LoginManagementResult = {
-  connectedUser?: User
-  logout: () => void
-  handleDetectedLogout: () => void
-  login: {
-    action: (login: string, password: string) => Promise<User>
-    loading?: boolean
-    // this is not used, in the LoginForm we do our own error handling
-    errorMsg?: unknown
-  }
-  loginProConnect: {
-    action: (authorizationCode: string, state: string) => Promise<User>
-    loading?: boolean
-    errorMsg?: unknown
-  }
-  startProConnect: {
-    action: (state: string, nonce: string) => Promise<void>
-    loading?: boolean
-    errorMsg?: unknown
-  }
-  register: {
-    action: (siret: string, token: string, email: string) => Promise<void>
-    loading?: boolean
-    errorMsg?: unknown
-  }
-  setConnectedUser: (
-    user: MaybeUser | ((previous: MaybeUser) => MaybeUser),
-  ) => void
-  isAuthenticated: () => boolean
-}
-
-export const LoginManagementContext =
-  React.createContext<LoginManagementResult>({} as LoginManagementResult)
+import React, { useRef, useState } from 'react'
+import { router as appRouter } from '../../../router'
+import { User } from '../../client/user/User'
+import { LoginManagementContext, MaybeUser } from './loginManagementContext'
 
 export function LoginManagementProvider({
   queryClient,
@@ -188,8 +154,4 @@ export function LoginManagementProvider({
       {children}
     </LoginManagementContext.Provider>
   )
-}
-
-export const useLoginManagement = (): LoginManagementResult => {
-  return useContext(LoginManagementContext)
 }

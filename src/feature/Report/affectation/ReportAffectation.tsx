@@ -1,28 +1,22 @@
 import { Icon, MenuItem } from '@mui/material'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { ReactElement, useState } from 'react'
-import { ReportSearchResult } from '../../core/client/report/Report'
-import { useApiContext } from '../../core/context/ApiContext'
-import { useToast } from '../../core/context/toastContext'
-import { useI18n } from '../../core/i18n'
-import { CompanyAccess, MinimalUser, User } from '../../core/model'
-import { useCompanyAccessesQuery } from '../../core/queryhooks/companyQueryHooks'
-import { GetReportQueryKeys } from '../../core/queryhooks/reportQueryHooks'
-import { ScDialog } from '../../shared/ScDialog'
-import { ScInput } from '../../shared/ScInput'
-import { ScSelect } from '../../shared/Select/Select'
+import { ReportSearchResult } from '../../../core/client/report/Report'
+import { useApiContext } from '../../../core/context/ApiContext'
+import { useToast } from '../../../core/context/toast/toastContext'
+import { useI18n } from '../../../core/i18n'
+import { CompanyAccess, User } from '../../../core/model'
+import { useCompanyAccessesQuery } from '../../../core/queryhooks/companyQueryHooks'
+import { GetReportQueryKeys } from '../../../core/queryhooks/reportQueryHooks'
+import { ScDialog } from '../../../shared/ScDialog'
+import { ScInput } from '../../../shared/ScInput'
+import { ScSelect } from '../../../shared/Select/Select'
+import { buildAffectationOptionFromUser } from './reportAffectationUtils'
 
 interface Props {
   reportSearchResult: ReportSearchResult
   companySiret: string
   children: ReactElement<any>
-}
-
-export function buildOptionFromUser(user: MinimalUser) {
-  return {
-    id: user.id,
-    fullName: User.buildFullName(user),
-  }
 }
 
 export const ReportAffectation = ({
@@ -43,7 +37,7 @@ export const ReportAffectation = ({
     ? _accesses.data.map(buildOptionFromAccess)
     : [
         // when loading, at least display the currently assigned user
-        ...(assignedUser ? [buildOptionFromUser(assignedUser)] : []),
+        ...(assignedUser ? [buildAffectationOptionFromUser(assignedUser)] : []),
       ]
 
   function buildOptionFromAccess(access: CompanyAccess) {

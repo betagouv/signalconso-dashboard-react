@@ -5,7 +5,7 @@ import { useI18n } from '../../core/i18n'
 import { useMutation } from '@tanstack/react-query'
 import { ReactElement } from 'react'
 import { useApiContext } from '../../core/context/ApiContext'
-import { useToast } from '../../core/context/toastContext'
+import { useToast } from '../../core/context/toast/toastContext'
 import { ScDialog } from '../../shared/ScDialog'
 
 interface Props {

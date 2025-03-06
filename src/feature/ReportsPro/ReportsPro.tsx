@@ -1,15 +1,10 @@
 import { Badge, Box, Icon, MenuItem } from '@mui/material'
-import { useEffect, useMemo } from 'react'
-import { Alert, Btn, Fender, makeSx, Txt } from '../../alexlibs/mui-extension'
-import { useLayoutContext } from '../../core/context/LayoutContext'
-import { useI18n } from '../../core/i18n'
-import { Datatable } from '../../shared/Datatable/Datatable'
-import { Page, PageTitle } from '../../shared/Page'
-import { ScSelect } from '../../shared/Select/Select'
-import { SelectDepartments } from '../../shared/SelectDepartments/SelectDepartments'
+import { useNavigate } from '@tanstack/react-router'
 import { ScOption } from 'core/helper/ScOption'
 import { useListReportBlockedNotificationsQuery } from 'core/queryhooks/reportBlockedNotificationQueryHooks'
+import { useEffect, useMemo } from 'react'
 import { DebouncedInput } from 'shared/DebouncedInput'
+import { Alert, Btn, Fender, makeSx, Txt } from '../../alexlibs/mui-extension'
 import { useSetState } from '../../alexlibs/react-hooks-lib'
 import { config } from '../../conf/config'
 import { EntityIcon } from '../../core/EntityIcon'
@@ -21,29 +16,25 @@ import {
   ReportType,
 } from '../../core/client/report/Report'
 import { ReportProSearch } from '../../core/client/report/ReportSearch'
+import { useLayoutContext } from '../../core/context/layoutContext/layoutContext'
 import { cleanObject, openInNew } from '../../core/helper'
+import { useI18n } from '../../core/i18n'
 import { Id, PaginatedFilters } from '../../core/model'
 import { useGetAccessibleByProQuery } from '../../core/queryhooks/companyQueryHooks'
 import { useReportSearchQuery } from '../../core/queryhooks/reportQueryHooks'
 import { ScButton } from '../../shared/Button'
+import { Datatable } from '../../shared/Datatable/Datatable'
 import { ExportReportsPopper } from '../../shared/ExportPopperBtn'
+import { Page, PageTitle } from '../../shared/Page'
 import { PeriodPicker } from '../../shared/PeriodPicker'
 import { ScInput } from '../../shared/ScInput'
+import { ScSelect } from '../../shared/Select/Select'
 import { SelectCompaniesByPro } from '../../shared/SelectCompaniesByPro/SelectCompaniesByPro'
+import { SelectDepartments } from '../../shared/SelectDepartments/SelectDepartments'
 import { DatatableToolbarComponent } from '../Reports/DatatableToolbarComponent'
 import { buildReportsProColumns } from './buildReportsProColumns'
-import { useNavigate } from '@tanstack/react-router'
 
-export const css = makeSx({
-  iconDash: {
-    my: 0,
-    mx: 1,
-  },
-  card_head: {
-    display: 'flex',
-    alignItems: 'center',
-    mb: 1 / 2,
-  },
+const reportsProCss = makeSx({
   actions: {
     flexWrap: 'wrap',
     whiteSpace: 'nowrap',
@@ -103,7 +94,6 @@ export const ReportsPro = ({ reportType, search }: ReportsProProps) => {
     selectReport,
     reportType,
     isMobileWidth,
-    css,
     i18nData: { formatDate, m },
   })
 
@@ -311,7 +301,7 @@ export const ReportsPro = ({ reportType, search }: ReportsProProps) => {
                     </div>
                   </div>
 
-                  <Box sx={css.actions}>
+                  <Box sx={reportsProCss.actions}>
                     {filtersCount > 0 && (
                       <Badge color="error" badgeContent={filtersCount}>
                         <ScButton

@@ -1,5 +1,5 @@
 import { Button } from '@mui/material'
-import { useConnectedContext } from 'core/context/ConnectedContext'
+import { useConnectedContext } from 'core/context/connected/connectedContext'
 import {
   AnalyticActionName,
   EventCategories,

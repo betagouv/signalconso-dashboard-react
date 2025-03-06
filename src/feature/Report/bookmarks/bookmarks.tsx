@@ -1,7 +1,7 @@
 import { Icon } from '@mui/material'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useApiContext } from 'core/context/ApiContext'
-import { useConnectedContext } from 'core/context/ConnectedContext'
+import { useConnectedContext } from 'core/context/connected/connectedContext'
 import { Paginate, ReportSearchResult } from 'core/model'
 import {
   EventCategories,
@@ -12,6 +12,7 @@ import {
   GetReportQueryKeys,
   ReportSearchQueryKeyStart,
 } from 'core/queryhooks/reportQueryHooks'
+import { BookmarksCountQueryKey } from './bookmarkUtils'
 
 export function BookmarkButton({
   isBookmarked,
@@ -93,5 +94,3 @@ export function BookmarkButton({
 export function BookmarksIcon() {
   return <Icon className={`mb-[-5px] text-blue-500`}>bookmarks</Icon>
 }
-
-export const BookmarksCountQueryKey = ['bookmarksCount']

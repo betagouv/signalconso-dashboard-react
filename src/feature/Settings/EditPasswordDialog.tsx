@@ -1,5 +1,5 @@
 import { useMutation } from '@tanstack/react-query'
-import { useConnectedContext } from 'core/context/ConnectedContext'
+import { useConnectedContext } from 'core/context/connected/connectedContext'
 import { ScOption } from 'core/helper/ScOption'
 import { validatePasswordComplexity } from 'core/helper/passwordComplexity'
 import { ReactElement } from 'react'
@@ -8,7 +8,7 @@ import { PasswordRequirementsDesc } from 'shared/PasswordRequirementsDesc'
 import { Alert } from '../../alexlibs/mui-extension'
 import { ApiError } from '../../core/client/ApiClient'
 import { useApiContext } from '../../core/context/ApiContext'
-import { useToast } from '../../core/context/toastContext'
+import { useToast } from '../../core/context/toast/toastContext'
 import { useI18n } from '../../core/i18n'
 import {
   AccountEventActions,

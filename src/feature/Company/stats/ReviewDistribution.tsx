@@ -6,7 +6,7 @@ import {
   useGetResponseReviewsQuery,
 } from 'core/queryhooks/statsQueryHooks'
 import { ScPieChart } from 'shared/Chart/ScPieChart'
-import { chartColors } from 'shared/Chart/chartsColors'
+import { chartColors } from 'shared/Chart/chartUtils'
 import { CleanInvisiblePanel } from 'shared/Panel/simplePanels'
 import { Txt } from '../../../alexlibs/mui-extension'
 import { useMemoFn } from '../../../alexlibs/react-hooks-lib'

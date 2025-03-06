@@ -6,19 +6,18 @@ import {
   MenuItem,
   Tooltip,
 } from '@mui/material'
-import React from 'react'
+import { useI18n } from '../../core/i18n'
 import { ScMenu } from '../../shared/Menu'
 import antidropIcon from './img/antidrop.png'
-import whoisIcon from './img/whois.png'
-import webIcon from './img/web.webp'
 import internetArchiveIcon from './img/internetArchive.svg'
 import scamdocIcon from './img/scamdoc.png'
-import { useI18n } from '../../core/i18n'
+import webIcon from './img/web.webp'
+import whoisIcon from './img/whois.png'
 
-import { WebsiteWithCompany } from '../../core/client/website/Website'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { WebsiteWithCompany } from '../../core/client/website/Website'
 import { useApiContext } from '../../core/context/ApiContext'
-import { useToast } from '../../core/context/toastContext'
+import { useToast } from '../../core/context/toast/toastContext'
 import { WebsiteWithCompanySearchKeys } from '../../core/queryhooks/websiteQueryHooks'
 import { SiretExtraction } from './SiretExtraction'
 

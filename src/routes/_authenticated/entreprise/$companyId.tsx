@@ -1,14 +1,14 @@
 import { createFileRoute, Outlet } from '@tanstack/react-router'
+import { useConnectedContext } from '../../../core/context/connected/connectedContext'
 import {
   useGetCompanyByIdQuery,
   useIsAllowedToManageCompanyAccessesQuery,
 } from '../../../core/queryhooks/companyQueryHooks'
-import { useConnectedContext } from '../../../core/context/ConnectedContext'
 import { CompanyPageTitle } from '../../../feature/Company/CompanyPageTitle'
 import { Page } from '../../../shared/Page'
 import { PageTab, PageTabs } from '../../../shared/Page/PageTabs'
-import { Route as bilanRoute } from './$companyId/bilan'
 import { Route as accessesRoute } from './$companyId/accesses'
+import { Route as bilanRoute } from './$companyId/bilan'
 import { Route as historyRoute } from './$companyId/history'
 
 export const Route = createFileRoute('/_authenticated/entreprise/$companyId')({

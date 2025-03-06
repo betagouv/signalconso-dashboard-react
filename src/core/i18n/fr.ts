@@ -1,6 +1,5 @@
-import { AssociationType } from 'feature/ReportedWebsites/SelectWebsiteIdentification/SelectWebsiteAssociation'
-import { config } from '../../conf/config'
-import { DownloadType } from '../../feature/Report/ReportDownloadAction'
+import { config } from 'conf/config'
+import { AssociationType } from '../../feature/ReportedWebsites/SelectWebsiteIdentification/websiteAssociationType'
 import { AsyncFileKind } from '../client/async-file/AsyncFile'
 import { CompanyAccessLevel } from '../client/company-access/CompanyAccess'
 import { Category } from '../client/constant/Category'
@@ -663,15 +662,14 @@ export const fr = {
     cannotCreateCompanyMissingInfo: `Impossible de créer l'entreprise. Son nom ou son adresse ne sont pas renseignés.`,
     editAddress: `Modifier l'adresse`,
     reportDownloadTypeDescription: {
-      [DownloadType.ReportOnly]:
-        'Téléchargement de la fiche de signalement uniquement.',
-      [DownloadType.ReportWithAttachment]:
+      reportOnly: 'Téléchargement de la fiche de signalement uniquement.',
+      reportWithAttachment:
         'Téléchargement de la fiche de signalement et des pièces jointes associées.',
     },
     reportDownload: 'Que voulez-vous télécharger ?',
     reportDownloadTypeTitle: {
-      [DownloadType.ReportOnly]: 'Signalement uniquement',
-      [DownloadType.ReportWithAttachment]: 'Signalement et pièces jointes',
+      reportOnly: 'Signalement uniquement',
+      reportWithAttachment: 'Signalement et pièces jointes',
     },
     companyAccessLevelDescription: {
       [CompanyAccessLevel.admin]:

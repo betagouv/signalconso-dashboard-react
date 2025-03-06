@@ -7,7 +7,7 @@ import {
   Tooltip,
 } from '@mui/material'
 import { useMutation, useQuery } from '@tanstack/react-query'
-import { useConnectedContext } from 'core/context/ConnectedContext'
+import { useConnectedContext } from 'core/context/connected/connectedContext'
 import {
   EventCategories,
   ExportsActions,

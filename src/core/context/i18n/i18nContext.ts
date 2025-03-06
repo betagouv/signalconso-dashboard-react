@@ -1,14 +1,14 @@
 import * as React from 'react'
-import { ReactNode, useContext } from 'react'
+import { useContext } from 'react'
 import {
   formatDate,
   formatDateTime,
   formatLargeNumber,
   formatTime,
-} from './format'
-import { fr } from './fr'
+} from '../../i18n/format'
+import { fr } from '../../i18n/fr'
 
-const I18nContext = React.createContext<I18nContextShape>({} as any)
+export const I18nContext = React.createContext<I18nContextShape>({} as any)
 
 export type I18nContextShape = {
   m: (typeof fr)['messages']
@@ -23,19 +23,3 @@ export type I18nContextShape = {
 // - Texts can be written directly inside the JSX
 // - formatXXX() functions can be directly imported from format.ts
 export const useI18n = () => useContext(I18nContext)
-
-export const I18nProvider = ({ children }: { children: ReactNode }) => {
-  return (
-    <I18nContext.Provider
-      value={{
-        m: fr.messages,
-        formatLargeNumber,
-        formatDate,
-        formatTime,
-        formatDateTime,
-      }}
-    >
-      {children}
-    </I18nContext.Provider>
-  )
-}

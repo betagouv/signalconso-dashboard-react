@@ -1,19 +1,18 @@
 import { Icon } from '@mui/material'
-import React, { ReactNode } from 'react'
+import { Link } from '@tanstack/react-router'
+import { ReactNode } from 'react'
 import { CleanDiscreetPanel } from 'shared/Panel/simplePanels'
-import { Alert, makeSx } from '../../alexlibs/mui-extension'
+import { Alert } from '../../alexlibs/mui-extension'
 import { Report, ReportSearchResult } from '../../core/client/report/Report'
 import { useI18n } from '../../core/i18n'
-import { styleUtils } from '../../core/theme'
+import { ReportStatusLabel } from '../../shared/ReportStatus'
 import {
   isStatusFinal,
   isStatusInvisibleToPro,
-  ReportStatusLabel,
-} from '../../shared/ReportStatus'
+} from '../../shared/reportStatusUtils'
 import { ScChip } from '../../shared/ScChip'
+import { BookmarkButton } from './bookmarks/bookmarks'
 import { ReportCategories } from './ReportCategories'
-import { BookmarkButton } from './bookmarks'
-import { Link } from '@tanstack/react-router'
 import ReportSearchNavLink from './ReportSearchNavLink'
 
 interface Props {

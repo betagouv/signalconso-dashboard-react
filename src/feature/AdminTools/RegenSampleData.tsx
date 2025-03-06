@@ -1,7 +1,7 @@
 import { Icon } from '@mui/material'
 import { useMutation } from '@tanstack/react-query'
 import { config } from 'conf/config'
-import { useConnectedContext } from '../../core/context/ConnectedContext'
+import { useConnectedContext } from '../../core/context/connected/connectedContext'
 import { ScButton } from '../../shared/Button'
 import { CleanWidePanel } from '../../shared/Panel/simplePanels'
 

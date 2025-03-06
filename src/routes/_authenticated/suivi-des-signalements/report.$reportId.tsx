@@ -1,7 +1,7 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { useConnectedContext } from '../../../core/context/ConnectedContext'
-import { ReportPro } from '../../../feature/Report/ReportPro'
+import { useConnectedContext } from '../../../core/context/connected/connectedContext'
 import { ReportComponent } from '../../../feature/Report/Report'
+import { ReportPro } from '../../../feature/Report/ReportPro'
 
 export const Route = createFileRoute(
   '/_authenticated/suivi-des-signalements/report/$reportId',

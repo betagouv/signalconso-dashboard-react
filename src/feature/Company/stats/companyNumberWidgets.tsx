@@ -2,7 +2,8 @@ import TimeIcon from '@mui/icons-material/AccessTime'
 import ChatIcon from '@mui/icons-material/ChatBubbleOutline'
 import UsersIcon from '@mui/icons-material/PeopleAlt'
 import { Icon, LinearProgress, Tooltip } from '@mui/material'
-import { useConnectedContext } from 'core/context/ConnectedContext'
+import { Link } from '@tanstack/react-router'
+import { useConnectedContext } from 'core/context/connected/connectedContext'
 import { useI18n } from 'core/i18n'
 import { EventActionValues, Id } from 'core/model'
 import {
@@ -18,7 +19,6 @@ import {
 } from 'core/queryhooks/statsQueryHooks'
 import { PropsWithChildren } from 'react'
 import { CleanInvisiblePanel } from 'shared/Panel/simplePanels'
-import { Link } from '@tanstack/react-router'
 type Props = {
   companyId: Id
 }

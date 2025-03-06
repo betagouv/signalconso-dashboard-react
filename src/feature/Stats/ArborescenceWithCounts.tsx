@@ -1,12 +1,15 @@
 import { Badge, Box, Icon, useTheme } from '@mui/material'
 import { useMutation, UseQueryResult } from '@tanstack/react-query'
+import { Link, useNavigate } from '@tanstack/react-router'
 import { ApiError } from 'core/client/ApiClient'
 import { parseInt } from 'lodash'
 import { useEffect, useState } from 'react'
 import { CleanWidePanel } from 'shared/Panel/simplePanels'
 import { IconBtn, Txt } from '../../alexlibs/mui-extension'
 import { ReportNode, ReportNodes } from '../../core/client/report/ReportNode'
-import { useConnectedContext } from '../../core/context/ConnectedContext'
+import { ReportNodeSearch } from '../../core/client/report/ReportNodeSearch'
+import { useApiContext } from '../../core/context/ApiContext'
+import { useConnectedContext } from '../../core/context/connected/connectedContext'
 import { useI18n } from '../../core/i18n'
 import {
   AnalyticActionName,
@@ -20,9 +23,6 @@ import { DebouncedInput } from '../../shared/DebouncedInput'
 import { PanelBody } from '../../shared/Panel'
 import { PeriodPicker } from '../../shared/PeriodPicker'
 import { SelectDepartments } from '../../shared/SelectDepartments/SelectDepartments'
-import { useApiContext } from '../../core/context/ApiContext'
-import { ReportNodeSearch } from '../../core/client/report/ReportNodeSearch'
-import { Link, useNavigate } from '@tanstack/react-router'
 
 const compare = (a?: string[], b?: string[]): number => {
   if (!a || !b) return 0

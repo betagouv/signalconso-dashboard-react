@@ -1,5 +1,5 @@
 import { Box, Checkbox, Theme, useTheme } from '@mui/material'
-import { I18nContextShape } from 'core/i18n/i18nContext'
+import { I18nContextShape } from 'core/context/i18n/i18nContext'
 import format from 'date-fns/format'
 import { memo, useMemo, useState } from 'react'
 import {
