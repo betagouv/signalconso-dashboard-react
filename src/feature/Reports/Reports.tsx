@@ -31,6 +31,7 @@ import {
   PaginatedFilters,
   ReportResponseTypes,
   ReportSearch,
+  User,
 } from '../../core/model'
 import { useCategoriesByStatusQuery } from '../../core/queryhooks/constantQueryHooks'
 import { useReportSearchQuery } from '../../core/queryhooks/reportQueryHooks'
@@ -211,7 +212,7 @@ export const Reports = ({
     queryFn: api.secured.reports.countBookmarks,
   })
 
-  const columns = buildColumns({ _reports, selectReport, i18n })
+  const columns = buildColumns({ _reports, selectReport, i18n, connectedUser })
   return (
     <Page>
       <div className="flex gap-2 justify-between items-baseline">
@@ -276,6 +277,7 @@ export const Reports = ({
           _reports={_reports}
           setExpanded={setExpanded}
           filtersCount={filtersCount}
+          selectReport={selectReport}
         />
       </CleanDiscreetPanel>
       <Datatable
@@ -329,6 +331,7 @@ function buildColumns({
   _reports,
   selectReport,
   i18n,
+  connectedUser,
 }: {
   _reports: UseQueryPaginateResult<
     ReportSearch & PaginatedFilters,
@@ -337,17 +340,23 @@ function buildColumns({
   >
   selectReport: UseSetState<string>
   i18n: I18nContextShape
+  connectedUser: { isAdmin: boolean }
 }): DatatableColumnProps<ReportSearchResult>[] {
   const { m, formatDate } = i18n
-  return [
-    {
-      alwaysVisible: true,
-      id: 'checkbox',
-      head: (() => <CheckboxColumnHead {...{ _reports, selectReport }} />)(),
-      style: { width: 0 },
-      render: (r) => <CheckboxColumn {...{ r, selectReport }} />,
-    },
 
+  const includeCheckboxColumn = selectReport.size > 0 || connectedUser.isAdmin
+  const checkboxColumn = {
+    alwaysVisible: true,
+    id: 'checkbox',
+    head: (() => <CheckboxColumnHead {...{ _reports, selectReport }} />)(),
+    style: { width: 0 },
+    render: (r: ReportSearchResult) => (
+      <CheckboxColumn {...{ r, selectReport }} />
+    ),
+  }
+
+  return [
+    ...(includeCheckboxColumn ? [checkboxColumn] : []),
     {
       id: 'bookmark',
       head: <>Marque-pages</>,
