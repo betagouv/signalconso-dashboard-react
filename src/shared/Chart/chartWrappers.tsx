@@ -3,7 +3,6 @@ import { useEffect, useState } from 'react'
 import { CountByDate, Period } from '../../core/client/stats/statsTypes'
 import { ScChart, ScChartKind } from './ScChart'
 
-
 export interface CurveDefinition {
   label: string
   data: CountByDate[]
