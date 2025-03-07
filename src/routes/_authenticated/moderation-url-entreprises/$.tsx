@@ -1,4 +1,5 @@
 import { createFileRoute, redirect } from '@tanstack/react-router'
+import { WebsiteWithCompanySearch } from '../../../core/client/website/Website'
 
 export const Route = createFileRoute(
   '/_authenticated/moderation-url-entreprises/$',
@@ -11,6 +12,7 @@ export const Route = createFileRoute(
     ) {
       throw redirect({
         to: '/moderation-url-entreprises/enquete',
+        search: {} as WebsiteWithCompanySearch,
       })
     } else {
       throw redirect({

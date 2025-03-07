@@ -5,6 +5,7 @@ import { Page, PageTitle } from '../../shared/Page'
 import { PageTab, PageTabs } from '../../shared/Page/PageTabs'
 import { Route as enqueteRoute } from './moderation-url-entreprises/enquete'
 import { Route as sitesNonIdentifiesRoute } from './moderation-url-entreprises/sites-internet.non-identifies'
+import { WebsiteWithCompanySearch } from '../../core/client/website/Website'
 
 export const Route = createFileRoute(
   '/_authenticated/moderation-url-entreprises',
@@ -27,7 +28,10 @@ function ReportedWebsites() {
       {connectedUser.isAdmin && (
         <PageTabs>
           <PageTab
-            navigateOptions={{ to: enqueteRoute.to }}
+            navigateOptions={{
+              to: enqueteRoute.to,
+              search: {} as WebsiteWithCompanySearch,
+            }}
             label={m.websitesInvestigation}
           />
           <PageTab
