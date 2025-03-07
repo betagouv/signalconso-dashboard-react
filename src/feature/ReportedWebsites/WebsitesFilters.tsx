@@ -13,10 +13,20 @@ import { DebouncedInput } from '../../shared/DebouncedInput'
 import { ScInput } from '../../shared/ScInput'
 import { PeriodPicker } from '../../shared/PeriodPicker'
 import { useWebsiteWithCompanySearchQuery } from '../../core/queryhooks/websiteQueryHooks'
+import { PeriodPickerWithPredefinedRanges } from '../../shared/PeriodPickerWithPredefinedRanges'
 
 interface WebsitesFiltersProps {
   _websiteWithCompany: ReturnType<typeof useWebsiteWithCompanySearchQuery>
   onHostChange: (host: string) => void
+}
+
+const identificationStatusToBoolean = (
+  identificationStatuses?: IdentificationStatus[],
+) => {
+  if (identificationStatuses?.length === 1) {
+    return identificationStatuses[0] === IdentificationStatus.Identified
+  }
+  return null
 }
 
 export const WebsitesFilters = ({
@@ -45,28 +55,17 @@ export const WebsitesFilters = ({
           </DebouncedInput>
         </div>
         <div>
-          <DebouncedInput<[Date | undefined, Date | undefined]>
-            value={[
-              _websiteWithCompany.filters.start,
-              _websiteWithCompany.filters.end,
-            ]}
-            onChange={([start, end]) => {
+          <PeriodPickerWithPredefinedRanges
+            start={_websiteWithCompany.filters.start}
+            end={_websiteWithCompany.filters.end}
+            onChange={(start, end) =>
               _websiteWithCompany.updateFilters((prev) => ({
                 ...prev,
                 start,
                 end,
               }))
-            }}
-          >
-            {(value, onChange) => (
-              <PeriodPicker
-                value={value}
-                onChange={onChange}
-                sx={{ mr: 1 }}
-                fullWidth
-              />
-            )}
-          </DebouncedInput>
+            }
+          />
         </div>
         <div>
           <ScMultiSelect
@@ -100,31 +99,23 @@ export const WebsitesFilters = ({
           </ScMultiSelect>
         </div>
         <div>
-          <ScMultiSelect
-            fullWidth
-            label={m.kind}
-            value={_websiteWithCompany.filters.identificationStatus ?? []}
-            withSelectAll
-            onChange={(identificationStatus) =>
+          <TrueFalseNullRow
+            label="Établissement identifié"
+            value={identificationStatusToBoolean(
+              _websiteWithCompany.filters.identificationStatus,
+            )}
+            onChange={(v) =>
               _websiteWithCompany.updateFilters((prev) => ({
                 ...prev,
-                identificationStatus: identificationStatus ?? null,
+                identificationStatus:
+                  v === true
+                    ? [IdentificationStatus.Identified]
+                    : v === false
+                      ? [IdentificationStatus.NotIdentified]
+                      : undefined,
               }))
             }
-            renderValue={(identificationStatus) =>
-              `(${identificationStatus.length}) ${identificationStatus
-                .map((status) => m.IdentificationStatusDesc[status])
-                .join(',')}`
-            }
-          >
-            {Object.values(IdentificationStatus).map((kind) => (
-              <ScMenuItem withCheckbox key={kind} value={kind}>
-                <Label dense {...props}>
-                  {m.IdentificationStatusDesc[kind]}
-                </Label>
-              </ScMenuItem>
-            ))}
-          </ScMultiSelect>
+          />
         </div>
         <div>
           <TrueFalseNullRow

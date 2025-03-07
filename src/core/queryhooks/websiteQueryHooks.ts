@@ -24,12 +24,13 @@ export const useListInvestigationStatusQuery = (
   })
 }
 
-export const useWebsiteWithCompanySearchQuery = () => {
+export const useWebsiteWithCompanySearchQuery = (
+  filters: WebsiteWithCompanySearch,
+) => {
   const { api } = useApiContext()
   const defaultFilters: WebsiteWithCompanySearch = {
     limit: 25,
     offset: 0,
-    identificationStatus: [IdentificationStatus.NotIdentified],
     isOpen: null,
     isMarketplace: null,
   }
@@ -37,21 +38,23 @@ export const useWebsiteWithCompanySearchQuery = () => {
     WebsiteWithCompanySearchKeys,
     api.secured.website.list,
     defaultFilters,
+    filters,
   )
 }
 
 export const useWebsiteWithClosedCompanyQuery = () => {
   const { api } = useApiContext()
+  const defaultFilters: WebsiteWithCompanySearch = {
+    limit: 25,
+    offset: 0,
+    identificationStatus: [IdentificationStatus.Identified],
+    isOpen: null,
+    isMarketplace: null,
+  }
   return useQueryPaginate(
     WebsiteWithCompanySearchKeys,
     api.secured.website.list,
-    {
-      limit: 25,
-      offset: 0,
-      identificationStatus: [IdentificationStatus.Identified],
-      isOpen: false,
-      isMarketplace: null,
-    },
+    defaultFilters,
   )
 }
 
