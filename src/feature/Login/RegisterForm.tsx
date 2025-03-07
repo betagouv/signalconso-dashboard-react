@@ -36,9 +36,15 @@ interface Props {
   register: ActionProps<
     (siret: string, code: string, email: string) => Promise<any>
   >
+  siret?: string
+  code?: string
 }
 
-export const RegisterForm = ({ register: registerAction }: Props) => {
+export const RegisterForm = ({
+  register: registerAction,
+  siret,
+  code,
+}: Props) => {
   const { m } = useI18n()
   const [done, setDone] = useState(false)
   const {
@@ -47,7 +53,10 @@ export const RegisterForm = ({ register: registerAction }: Props) => {
     setError,
     clearErrors,
     formState: { errors },
-  } = useForm<Form>({ mode: 'onChange' })
+  } = useForm<Form>({
+    mode: 'onChange',
+    defaultValues: { siret: siret ?? '', code: code ?? '' },
+  })
 
   const activateAccount = (form: Form) => {
     clearErrors('apiError')
