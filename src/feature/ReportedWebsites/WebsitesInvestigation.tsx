@@ -1,12 +1,13 @@
 import { Badge, Box, Icon, Switch, Tooltip } from '@mui/material'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { useCallback, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { Alert, Btn, IconBtn, Txt } from '../../alexlibs/mui-extension'
 import { useEffectFn } from '../../alexlibs/react-hooks-lib'
 import {
   IdentificationStatus,
   InvestigationStatus,
   WebsiteWithCompany,
+  WebsiteWithCompanySearch,
 } from '../../core/client/website/Website'
 import { useConnectedContext } from '../../core/context/connected/connectedContext'
 import { useToast } from '../../core/context/toast/toastContext'
@@ -29,14 +30,24 @@ import { SiretExtraction } from './SiretExtraction'
 import { StatusChip } from './StatusChip'
 import { WebsitesFilters } from './WebsitesFilters'
 import { WebsiteTools } from './WebsiteTools'
+import { useNavigate } from '@tanstack/react-router'
 
-export const WebsitesInvestigation = () => {
+export const WebsitesInvestigation = ({
+  search,
+}: {
+  search: WebsiteWithCompanySearch
+}) => {
+  const navigate = useNavigate()
   const { m, formatDate } = useI18n()
   const { connectedUser, api: apiSdk } = useConnectedContext()
   const queryClient = useQueryClient()
 
-  const _websiteWithCompany = useWebsiteWithCompanySearchQuery()
+  const _websiteWithCompany = useWebsiteWithCompanySearchQuery(search)
   const _websiteWithClosedCompany = useWebsiteWithClosedCompanyQuery()
+
+  useEffect(() => {
+    navigate({ to: '.', search: _websiteWithCompany.filters, replace: true })
+  }, [_websiteWithCompany.filters])
 
   const _investigationStatus = useListInvestigationStatusQuery()
   const _createOrUpdate = useMutation({
@@ -189,7 +200,9 @@ export const WebsitesInvestigation = () => {
             render: (_) => (
               <div className="flex flex-col">
                 <Txt link>
-                  <a href={'https://' + _.host}>{_.host}</a>
+                  <a href={'https://' + _.host} target="_blank">
+                    {_.host}
+                  </a>
                 </Txt>
                 {_.isMarketplace ? (
                   <Box sx={{ display: 'flex', gap: 0.5, alignItems: 'center' }}>
