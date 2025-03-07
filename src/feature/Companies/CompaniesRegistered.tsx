@@ -42,9 +42,7 @@ export const CompaniesRegistered = ({ search }: { search: CompanySearch }) => {
   const { m, formatLargeNumber } = useI18n()
   const queryClient = useQueryClient()
   const { connectedUser, api: apiSdk } = useConnectedContext()
-  const _companies = useActivatedCompanySearchQuery({
-    ...search,
-  })
+  const _companies = useActivatedCompanySearchQuery(search)
 
   const updateRegisteredCompanyAddress = (id: Id, address: Address) => {
     queryClient.setQueryData(
