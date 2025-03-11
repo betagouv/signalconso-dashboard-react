@@ -1,21 +1,22 @@
-import { ReportReferenceNumber } from 'feature/Report/ReportReferenceNumber'
+import { WithReferenceNumberTooltip } from 'feature/Report/WithReferenceNumberTooltip'
 
-import { WithInlineIcon } from 'shared/WithInlineIcon'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { CleanDiscreetPanel } from 'shared/Panel/simplePanels'
+import { ReportBlockTitle } from 'shared/ReportBlockTitle'
+import { ReportElementRow, ReportElementsGrid } from 'shared/tinyComponents'
 import {
   Report,
   ReportConsumerUpdate,
   ReportSearchResult,
 } from '../../../core/client/report/Report'
+import { useApiContext } from '../../../core/context/ApiContext'
 import { capitalize } from '../../../core/helper'
 import { useI18n } from '../../../core/i18n'
-import { ScButton } from '../../../shared/Button'
-import { EditConsumerDialog } from './EditConsumerDialog'
-import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { useApiContext } from '../../../core/context/ApiContext'
 import { GetReportQueryKeys } from '../../../core/queryhooks/reportQueryHooks'
-import { CleanDiscreetPanel } from 'shared/Panel/simplePanels'
+import { ScButton } from '../../../shared/Button'
 import { UserNameLabel } from '../../../shared/UserNameLabel'
-import { Link } from '@tanstack/react-router'
+import { QuickSmallReportSearchLink } from '../quickSmallLinks'
+import { EditConsumerDialog } from './EditConsumerDialog'
 
 interface Props {
   report: Report
@@ -49,7 +50,7 @@ export const ReportConsumer = ({ report, canEdit }: Props) => {
   return (
     <CleanDiscreetPanel>
       <div className="flex items-center justify-between">
-        <WithInlineIcon icon="person">{m.consumer}</WithInlineIcon>
+        <ReportBlockTitle icon="person">{m.consumer}</ReportBlockTitle>
         {canEdit && (
           <EditConsumerDialog
             report={report}
@@ -70,46 +71,62 @@ export const ReportConsumer = ({ report, canEdit }: Props) => {
           </EditConsumerDialog>
         )}
       </div>
-      <div>
-        <div className={contactAgreement ? '' : 'bg-red-100 py-2 px-4 w-full'}>
+      <div
+        className={`${contactAgreement ? '' : 'bg-red-100 py-2 px-4 w-full'}`}
+      >
+        <ReportElementsGrid>
           {contactAgreement || (
-            <div className="font-bold text-sm text-red-600 mb-2">
+            <div className="font-bold sm:col-span-2 text-sm text-red-600 mb-2">
               {m.reportConsumerWantToBeAnonymous}.
               <br />
               Ne pas divulguer ces informations à l'entreprise.
             </div>
           )}
-          <UserNameLabel
-            firstName={capitalize(firstName)}
-            lastName={capitalize(lastName)}
-          />
-          <div className="text-gray-500">
-            <Link
-              to="/suivi-des-signalements"
-              search={{
-                email: report.email,
-              }}
-            >
-              {report.email}
-            </Link>
-          </div>
-          {report.consumerPhone && (
-            <div className="text-gray-500">
-              <Link
-                to="/suivi-des-signalements"
-                search={{
-                  consumerPhone: report.consumerPhone,
-                  hasConsumerPhone: true,
-                }}
-              >
-                {report.consumerPhone}
-              </Link>
+          <ReportElementRow label="Nom">
+            <UserNameLabel
+              firstName={capitalize(firstName)}
+              lastName={capitalize(lastName)}
+            />
+          </ReportElementRow>
+          <ReportElementRow label="Email">
+            <div className="mb-2">
+              <div>{report.email}</div>
+              <div className="-mt-1.5">
+                <QuickSmallReportSearchLink
+                  reportSearch={{
+                    email: report.email,
+                  }}
+                />
+              </div>
             </div>
+          </ReportElementRow>
+          {report.consumerPhone && (
+            <ReportElementRow label="Téléphone">
+              <div className="mb-2">
+                <div>{report.consumerPhone}</div>
+                <div className="-mt-1.5">
+                  <QuickSmallReportSearchLink
+                    reportSearch={{
+                      consumerPhone: report.consumerPhone,
+                      hasConsumerPhone: true,
+                    }}
+                  />
+                </div>
+              </div>
+            </ReportElementRow>
           )}
-          <ReportReferenceNumber
-            consumerReferenceNumber={report.consumerReferenceNumber}
-          />
-        </div>
+          {report.consumerReferenceNumber && (
+            <ReportElementRow
+              label={
+                <WithReferenceNumberTooltip>
+                  {m.reportConsumerReferenceNumber}
+                </WithReferenceNumberTooltip>
+              }
+            >
+              <p>{report.consumerReferenceNumber}</p>
+            </ReportElementRow>
+          )}
+        </ReportElementsGrid>
       </div>
     </CleanDiscreetPanel>
   )

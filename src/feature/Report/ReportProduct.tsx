@@ -3,7 +3,7 @@ import { ReactNode } from 'react'
 import { CleanDiscreetPanel } from 'shared/Panel/simplePanels'
 import { Id } from '../../core/model'
 import { useGetBarcodeQuery } from '../../core/queryhooks/barcodeQueryHooks'
-import { WithInlineIcon } from '../../shared/WithInlineIcon'
+import { ReportBlockTitle } from '../../shared/ReportBlockTitle'
 
 export const ReportProduct = ({
   barcodeProductId,
@@ -62,7 +62,7 @@ export const ReportProduct = ({
   )
   return variant === 'agent_or_admin' ? (
     <CleanDiscreetPanel>
-      <WithInlineIcon icon="shopping_cart">Fiche produit</WithInlineIcon>
+      <ReportBlockTitle icon="shopping_cart">Fiche produit</ReportBlockTitle>
       {coreContent}
     </CleanDiscreetPanel>
   ) : (

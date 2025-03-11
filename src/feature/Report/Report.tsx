@@ -4,7 +4,7 @@ import { map } from 'core/helper'
 import React, { useState } from 'react'
 import { Divider } from 'shared/Divider'
 import { CleanDiscreetPanel } from 'shared/Panel/simplePanels'
-import { WithInlineIcon } from 'shared/WithInlineIcon'
+import { ReportBlockTitle } from 'shared/ReportBlockTitle'
 import { Btn } from '../../alexlibs/mui-extension'
 import { EventActionValues } from '../../core/client/event/Event'
 import { FileOrigin } from '../../core/client/file/UploadedFile'
@@ -226,9 +226,9 @@ const ReportViewStandard = ({
             {!report.visibleToPro && (
               <div className="bg-yellow-100  border border-gray-700 mx-4 p-4 mb-4">
                 <h3 className="font-bold">
-                  <WithInlineIcon icon="visibility_off">
+                  <ReportBlockTitle icon="visibility_off">
                     Signalement confidentiel
-                  </WithInlineIcon>
+                  </ReportBlockTitle>
                 </h3>
                 Ce signalement n'a pas été transmis à l'entreprise.
                 <br />
@@ -239,7 +239,7 @@ const ReportViewStandard = ({
                 . Ne pas lui divulguer.
               </div>
             )}
-            <div className="grid lg:grid-cols-2 gap-4 ">
+            <div className="grid xl:grid-cols-2 xl:gap-4 ">
               <ReportConsumer report={report} canEdit={connectedUser.isAdmin} />
               <ReportCompany
                 reportExtra={reportExtra}
