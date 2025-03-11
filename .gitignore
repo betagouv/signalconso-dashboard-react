@@ -25,6 +25,7 @@ yarn-error.log*
 # Editors
 .vscode
 .idea
+.cursor
 # Yarn
 # https://yarnpkg.com/getting-started/qa#which-files-should-be-gitignored
 .yarn/*

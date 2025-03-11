@@ -1,5 +1,6 @@
 import { Badge, Box, Icon, Switch, Tooltip } from '@mui/material'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { useNavigate } from '@tanstack/react-router'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { Alert, Btn, IconBtn, Txt } from '../../alexlibs/mui-extension'
 import { useEffectFn } from '../../alexlibs/react-hooks-lib'
@@ -30,7 +31,6 @@ import { SiretExtraction } from './SiretExtraction'
 import { StatusChip } from './StatusChip'
 import { WebsitesFilters } from './WebsitesFilters'
 import { WebsiteTools } from './WebsiteTools'
-import { useNavigate } from '@tanstack/react-router'
 
 export const WebsitesInvestigation = ({
   search,
@@ -47,7 +47,7 @@ export const WebsitesInvestigation = ({
 
   useEffect(() => {
     navigate({ to: '.', search: _websiteWithCompany.filters, replace: true })
-  }, [_websiteWithCompany.filters])
+  }, [_websiteWithCompany.filters, navigate])
 
   const _investigationStatus = useListInvestigationStatusQuery()
   const _createOrUpdate = useMutation({
