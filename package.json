@@ -14,11 +14,11 @@
     "build": "tsc -b && vite build",
     "preview": "vite preview",
     "test": "vitest run",
-    "lint": "eslint .",
+    "lint": "eslint . --max-warnings=0",
     "format": "npx prettier --write .",
     "checkformat": "npx prettier --check .",
     "checktypes": "tsc --noEmit",
-    "checkall": "yarn checktypes && yarn checkformat"
+    "checkall": "yarn checktypes && yarn checkformat && yarn lint"
   },
   "eslintConfig": {
     "extends": [
