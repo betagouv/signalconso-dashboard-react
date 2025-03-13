@@ -1,5 +1,5 @@
 /* eslint-disable react-refresh/only-export-components */
-import { Badge, Box, Button, Icon } from '@mui/material'
+import { Badge, Button, Icon } from '@mui/material'
 import { ButtonProps } from '@mui/material/Button'
 import { createLink, LinkComponent } from '@tanstack/react-router'
 import { fr } from 'core/i18n/fr'
@@ -16,7 +16,6 @@ import {
 import { ReportSearch } from '../../core/client/report/ReportSearch'
 import { Paginate, PaginatedFilters } from '../../core/model'
 import { UseQueryPaginateResult } from '../../core/queryhooks/UseQueryPaginate'
-import { combineSx, styleUtils, sxUtils } from '../../core/theme'
 import { UserNameLabel } from '../../shared/UserNameLabel'
 import { CheckboxColumn, CheckboxColumnHead } from '../Reports/reportsColumns'
 
@@ -28,7 +27,7 @@ interface ReportTableColumnsParams {
   >
   selectReport: UseSetState<string>
   reportType: 'open' | 'closed'
-  isMobileWidth: boolean
+  isMdOrLower: boolean
   i18nData: {
     formatDate: (d?: Date | undefined) => string
     m: (typeof fr)['messages']
@@ -49,7 +48,7 @@ export const buildReportsProColumns = ({
   _reports,
   selectReport,
   reportType,
-  isMobileWidth,
+  isMdOrLower,
   i18nData,
 }: ReportTableColumnsParams) => {
   const { formatDate, m } = i18nData
@@ -69,7 +68,7 @@ export const buildReportsProColumns = ({
       />
     ),
   }
-  if (isMobileWidth) {
+  if (isMdOrLower) {
     return [
       ...(includeCheckboxColumn ? [checkboxColumn] : []),
       {
@@ -81,50 +80,22 @@ export const buildReportsProColumns = ({
               <ReportStatusLabel dense status={_.report.status} />
               <SeeReportButton report={_} />
             </div>
-            <Box
-              sx={{
-                fontSize: (t) => styleUtils(t).fontSize.normal,
-                display: 'flex',
-                alignItems: 'center',
-              }}
-            >
-              <Box>
-                <Box
-                  sx={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    mb: 1 / 2,
-                  }}
-                >
-                  <Txt bold size="big">
-                    {_.report.companySiret}
-                  </Txt>
-                  <Icon
-                    sx={combineSx(
-                      {
-                        my: 0,
-                        mx: 1,
-                      },
-                      sxUtils.inlineIcon,
-                    )}
-                  >
-                    remove
-                  </Icon>
-                  <Txt color="disabled">
-                    <Icon sx={sxUtils.inlineIcon}>location_on</Icon>
-                    {_.report.companyAddress.postalCode}
-                  </Txt>
-                </Box>
-                <Txt block color="hint">
-                  {m.thisDate(formatDate(_.report.creationDate))}
-                </Txt>
+            <div className="flex justify-between gap-2">
+              <div>
+                {_.report.companyName && (
+                  <p className="">{_.report.companyName}</p>
+                )}
+                <p className="text-sm text-gray-500">{_.report.companySiret}</p>
+              </div>
+              <div className="text-right">
+                <p>{m.thisDate(formatDate(_.report.creationDate))}</p>
                 <Txt block color="hint">
                   {_.report.contactAgreement
                     ? m.byHim(_.report.firstName + ' ' + _.report.lastName)
                     : m.anonymousReport}
                 </Txt>
-              </Box>
-            </Box>
+              </div>
+            </div>
           </div>
         ),
       },
@@ -134,10 +105,19 @@ export const buildReportsProColumns = ({
   const baseColumns = [
     ...(includeCheckboxColumn ? [checkboxColumn] : []),
     {
-      id: 'siret',
-      head: 'SIRET',
+      id: 'company',
+      head: 'Entreprise',
       render: (report: ReportSearchResult) => (
-        <MaybeBold report={report}>{report.report.companySiret}</MaybeBold>
+        <MaybeBold report={report}>
+          <div className="max-w-30 lg:max-w-50 xl:max-w-100 2xl:max-w-150">
+            {report.report.companyName && (
+              <p className="truncate">{report.report.companyName}</p>
+            )}
+            <p className="text-sm text-gray-500">
+              {report.report.companySiret}
+            </p>
+          </div>
+        </MaybeBold>
       ),
     },
     {

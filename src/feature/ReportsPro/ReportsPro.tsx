@@ -85,7 +85,7 @@ export const ReportsPro = ({ reportType, search }: ReportsProProps) => {
   const _accessibleByPro = useGetAccessibleByProQuery()
   const _blockedNotifications = useListReportBlockedNotificationsQuery()
   const selectReport = useSetState<Id>()
-  const { isMobileWidth } = useLayoutContext()
+  const { isMdOrLower } = useLayoutContext()
   const history = useNavigate()
   const { formatDate, m } = useI18n()
   const navigate = useNavigate()
@@ -93,7 +93,7 @@ export const ReportsPro = ({ reportType, search }: ReportsProProps) => {
     _reports,
     selectReport,
     reportType,
-    isMobileWidth,
+    isMdOrLower,
     i18nData: { formatDate, m },
   })
 
