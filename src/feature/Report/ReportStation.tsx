@@ -1,24 +1,30 @@
-import { Box, Icon, useTheme } from '@mui/material'
+import { Icon } from '@mui/material'
+import { ReportElementRow } from 'shared/tinyComponents'
 
 export function ReportStation({ station }: { station: string }) {
-  const theme = useTheme()
   return (
-    <Box
-      sx={{
-        mt: theme.spacing(4),
-        display: 'inline-flex',
-        alignItems: 'center',
-      }}
-    >
-      <Icon
-        sx={{
-          fontSize: 20,
-          mr: 0.5,
-        }}
-      >
+    <ReportElementRow label="Gare concernée">
+      <StationValue station={station} />
+    </ReportElementRow>
+  )
+}
+
+export function ReportStationPro({ station }: { station: string }) {
+  return (
+    <div>
+      <span>Gare concernée : </span>
+      <StationValue station={station} />
+    </div>
+  )
+}
+
+function StationValue({ station }: { station: string }) {
+  return (
+    <span>
+      <Icon fontSize="small" className="mb-[-3px] mr-1 ml-[-1px] ">
         subway
       </Icon>
-      Gare concernée : {station}
-    </Box>
+      {station}
+    </span>
   )
 }

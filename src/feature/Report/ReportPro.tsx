@@ -2,10 +2,9 @@ import { Icon, Tooltip, useMediaQuery } from '@mui/material'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { Link } from '@tanstack/react-router'
 import { formatDate } from 'core/i18n/format'
-import { ReportReferenceNumber } from 'feature/Report/ReportReferenceNumber'
 import { useEffect, useRef } from 'react'
+
 import { CleanWidePanel } from 'shared/Panel/simplePanels'
-import { ReportWebsiteUrlLink } from 'shared/tinyComponents'
 import { Alert, Btn } from '../../alexlibs/mui-extension'
 import {
   ConsumerReview,
@@ -49,8 +48,9 @@ import { ReportInfluencer } from './ReportInfluencer'
 import { ReportProduct } from './ReportProduct'
 import { ReportResponseComponent } from './ReportResponse'
 import { ReportResponseForm } from './ReportResponseForm/ReportResponseForm'
-import { ReportStation } from './ReportStation'
-import { ReportTrain } from './ReportTrain'
+import { ReportStationPro } from './ReportStation'
+import { ReportTrainPro } from './ReportTrain'
+import { WithReferenceNumberTooltip } from './WithReferenceNumberTooltip'
 
 export const ReportPro = ({ reportId }: { reportId: Id }) => {
   useEffect(() => {
@@ -230,8 +230,8 @@ function ReportBlock({
           </>
         )}
         <div className="mb-4">
-          {report.train && <ReportTrain train={report.train} />}
-          {report.station && <ReportStation station={report.station} />}
+          {report.train && <ReportTrainPro train={report.train} />}
+          {report.station && <ReportStationPro station={report.station} />}
         </div>
         <ReportDetails {...{ report }} />
         <HorizontalLine />
@@ -374,12 +374,7 @@ function Header({
             </span>
           </p>
           <div className="ml-4">
-            {report.websiteURL && (
-              <p>
-                Concernant le site{' '}
-                <ReportWebsiteUrlLink websiteURL={report.websiteURL} />
-              </p>
-            )}
+            {report.websiteURL && <p>Concernant le site {report.websiteURL}</p>}
             {report.vendor && (
               <p>
                 Concernant le vendeur <b>{report.vendor}</b>
@@ -491,9 +486,14 @@ function Consumer({ report }: { report: Report }) {
             {capitalize(report.lastName)}
           </div>
           <span className="">{report.email}</span>
-          <ReportReferenceNumber
-            consumerReferenceNumber={report.consumerReferenceNumber}
-          />
+          {report.consumerReferenceNumber ? (
+            <div>
+              <WithReferenceNumberTooltip>
+                {m.reportConsumerReferenceNumber}
+              </WithReferenceNumberTooltip>{' '}
+              : <span>{report.consumerReferenceNumber}</span>
+            </div>
+          ) : null}
         </>
       ) : (
         <span className="">{m.reportConsumerWantToBeAnonymous}</span>

@@ -8,3 +8,14 @@ export interface Address {
   city?: string
   country?: Country
 }
+
+export function isAddressEmpty(address: Address) {
+  return (
+    !address.number &&
+    !address.street &&
+    !address.addressSupplement &&
+    !address.postalCode &&
+    !address.city &&
+    !address.country
+  )
+}

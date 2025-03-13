@@ -173,7 +173,7 @@ export type ReportConsumerUpdate = Pick<
   'firstName' | 'lastName' | 'email' | 'consumerReferenceNumber'
 >
 
-enum SpecialLegislation {
+export enum SpecialLegislation {
   SHRINKFLATION = 'SHRINKFLATION',
 }
 

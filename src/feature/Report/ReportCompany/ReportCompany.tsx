@@ -1,26 +1,29 @@
-import { Box, Icon, Tooltip, useTheme } from '@mui/material'
-import { Link } from '@tanstack/react-router'
-import { CleanDiscreetPanel } from 'shared/Panel/simplePanels'
-import { WithInlineIcon } from 'shared/WithInlineIcon'
+import WarningOutlinedIcon from '@mui/icons-material/WarningAmberOutlined'
+import { Icon, Tooltip } from '@mui/material'
+import { isAddressEmpty } from 'core/model/Address'
 import { AlbertActivityLabel } from 'shared/albert/AlbertActivityLabel'
-import { ReportWebsiteUrlLink } from 'shared/tinyComponents'
-import { Txt } from '../../../alexlibs/mui-extension'
+import { CleanDiscreetPanel } from 'shared/Panel/simplePanels'
+import { ReportBlockTitle } from 'shared/ReportBlockTitle'
+import { ReportElementRow, ReportElementsGrid } from 'shared/tinyComponents'
 import {
   Influencer,
   ReportExtra,
   ReportUtils,
+  SpecialLegislation,
 } from '../../../core/client/report/Report'
 import { useConnectedContext } from '../../../core/context/connected/connectedContext'
 import { useI18n } from '../../../core/i18n'
-import { sxUtils } from '../../../core/theme'
 import { AddressComponent } from '../../../shared/Address'
 import { ScButton } from '../../../shared/Button'
+import {
+  QuickSmallExternalLink,
+  QuickSmallLink,
+  QuickSmallReportSearchLink,
+} from '../quickSmallLinks'
 import { ReportInfluencer } from '../ReportInfluencer'
-import ReportSearchNavLink from '../ReportSearchNavLink'
 import { ReportStation } from '../ReportStation'
 import { ReportTrain } from '../ReportTrain'
 import { SelectReportAssociation } from '../SelectReportAssociation'
-
 export const ReportCompany = ({
   reportExtra: r,
   canEdit,
@@ -30,6 +33,7 @@ export const ReportCompany = ({
 }) => {
   const { connectedUser } = useConnectedContext()
   const { m } = useI18n()
+
   const specialLegislation = ReportUtils.appliedSpecialLegislation(r.report)
   const {
     websiteURL,
@@ -52,14 +56,14 @@ export const ReportCompany = ({
     <CleanDiscreetPanel>
       <div className="flex items-center justify-between">
         <div className="">
-          <WithInlineIcon icon="store">
-            {m.company}{' '}
-            {companyId && !connectedUser.isDGAL && (
-              <Link to="/entreprise/$companyId/bilan" params={{ companyId }}>
-                <span className="text-sm">(voir sa fiche)</span>
-              </Link>
-            )}
-          </WithInlineIcon>
+          <ReportBlockTitle icon="store">{m.company} </ReportBlockTitle>
+          {companyId && !connectedUser.isDGAL && (
+            <QuickSmallLink
+              label="fiche entreprise"
+              to="/entreprise/$companyId/bilan"
+              params={{ companyId }}
+            />
+          )}
         </div>
         {canEdit && (
           <SelectReportAssociation
@@ -73,53 +77,78 @@ export const ReportCompany = ({
           </SelectReportAssociation>
         )}
       </div>
-      <div className={specialLegislation ? 'bg-yellow-100 py-2 px-4' : ''}>
-        {specialLegislation && (
-          <div
-            className="text-sm text-yellow-700 mb-4"
-            dangerouslySetInnerHTML={{
-              __html: m.specialLegislation[specialLegislation],
-            }}
-          />
+
+      <div className="space-y-2">
+        {companyAlbertActivityLabel && (
+          <AlbertActivityLabel smaller withExplainButton={true}>
+            {companyAlbertActivityLabel}
+          </AlbertActivityLabel>
         )}
-        <div>
-          {companyAlbertActivityLabel && (
-            <AlbertActivityLabel smaller withExplainButton={true}>
-              {companyAlbertActivityLabel}
-            </AlbertActivityLabel>
-          )}
+        {specialLegislation && (
+          <SpecialLegislationBlock specialLegislation={specialLegislation} />
+        )}
+        <ReportElementsGrid>
           {companySiret && (
-            <div className={'flex flex-row gap-3'}>
-              <div className="mb-1">
-                <ReportSearchNavLink
+            <ReportElementRow label="Siret">
+              <span>{companySiret}</span>
+              <div className="space-x-2 -mt-1.5">
+                <QuickSmallReportSearchLink
                   reportSearch={{
                     siretSirenList: [companySiret],
                     hasCompany: true,
                   }}
-                  value={companySiret}
+                />
+                <QuickSmallExternalLink
+                  label="Annuaire des Entreprises"
+                  href={`https://annuaire-entreprises.data.gouv.fr/etablissement/${companySiret.trim()}}`}
                 />
               </div>
+            </ReportElementRow>
+          )}
+          {(companyName ||
+            companyCommercialName ||
+            companyEstablishmentCommercialName ||
+            companyBrand) && (
+            <ReportElementRow label="Nom">
+              <div className="text-sm">
+                {companyName && (
+                  <div className="font-bold text-base">{companyName}</div>
+                )}
+                {companyCommercialName && <div>{companyCommercialName}</div>}
+                {companyEstablishmentCommercialName && (
+                  <div className="italic">
+                    {companyEstablishmentCommercialName}
+                  </div>
+                )}
+                {companyBrand && <div className="italic">{companyBrand}</div>}
+              </div>
+            </ReportElementRow>
+          )}
+          {!isAddressEmpty(companyAddress) && (
+            <ReportElementRow label="Adresse">
+              <AddressComponent address={companyAddress} />
+            </ReportElementRow>
+          )}
+          {websiteURL && (
+            <ReportElementRow label="Site">
               <a
-                href={`https://annuaire-entreprises.data.gouv.fr/etablissement/${companySiret.trim()}}`}
+                href={websiteURL}
                 target="_blank"
                 rel="noreferrer"
+                className="block text-base"
               >
-                <span className="text-sm">(Annuaire des Entreprises)</span>
+                {websiteURL}
               </a>
-            </div>
+              <div className="-mt-1.5">
+                <QuickSmallReportSearchLink
+                  reportSearch={{
+                    websiteURL: websiteURL,
+                    hasWebsite: true,
+                  }}
+                />
+              </div>
+            </ReportElementRow>
           )}
-
-          <div className="text-gray-500 text-sm">
-            {companyName && <div className="font-bold">{companyName}</div>}
-
-            {companyCommercialName && <div>{companyCommercialName}</div>}
-            {companyEstablishmentCommercialName && (
-              <div className="italic">{companyEstablishmentCommercialName}</div>
-            )}
-            {companyBrand && <div className="italic">{companyBrand}</div>}
-            <AddressComponent address={companyAddress} />
-          </div>
-          {websiteURL && <ReportWebsiteUrlLink {...{ websiteURL }} />}
           {vendor && (
             <MarketplaceBlock vendor={vendor} marketplace={companyName ?? ''} />
           )}
@@ -127,7 +156,7 @@ export const ReportCompany = ({
           {influencer && <InfluencerBlock {...{ influencer }} />}
           {train && <ReportTrain {...{ train }} />}
           {station && <ReportStation {...{ station }} />}
-        </div>
+        </ReportElementsGrid>
       </div>
     </CleanDiscreetPanel>
   )
@@ -135,28 +164,27 @@ export const ReportCompany = ({
 
 function Phone({ phone }: { phone: string }) {
   return (
-    <div
-      style={{
-        display: 'inline-flex',
-        alignItems: 'center',
-      }}
-    >
-      <Icon
-        sx={{
-          fontSize: 20,
-          mr: 0.5,
-        }}
-      >
-        phone
-      </Icon>
-      <ReportSearchNavLink
-        reportSearch={{
-          phone: phone,
-          hasPhone: true,
-        }}
-        value={phone}
-      />
-    </div>
+    <ReportElementRow label="Téléphone">
+      <div className="space-x-2">
+        <span className="">
+          <Icon
+            style={{ fontSize: '1.1em' }}
+            className="mb-[-4px] ml-[-2px] mr-0.5"
+          >
+            phone
+          </Icon>
+          <span>{phone}</span>
+        </span>
+        <span className="-translate-y-[2px] inline-block">
+          <QuickSmallReportSearchLink
+            reportSearch={{
+              phone,
+              hasPhone: true,
+            }}
+          />
+        </span>
+      </div>
+    </ReportElementRow>
   )
 }
 
@@ -169,30 +197,46 @@ function MarketplaceBlock({
 }) {
   const { m } = useI18n()
   return (
-    <div>
-      <Tooltip arrow title={m.marketplaceVendorDesc(marketplace)}>
-        <span className="pointer">
-          <span>
-            <Txt sx={sxUtils.fontBig}>{m.marketplaceVendorTitle}</Txt>
+    <ReportElementRow
+      label={
+        <Tooltip arrow title={m.marketplaceVendorDesc(marketplace)}>
+          <span className="cursor-pointer">
+            Vendeur
             <Icon fontSize="small" sx={{ mb: -0.5, ml: 0.5 }}>
               help_outline
             </Icon>
           </span>
-        </span>
-      </Tooltip>
-      : {vendor}
-    </div>
+        </Tooltip>
+      }
+    >
+      {vendor}
+    </ReportElementRow>
   )
 }
 
 function InfluencerBlock({ influencer }: { influencer: Influencer }) {
-  const theme = useTheme()
-  const { m } = useI18n()
-
   return (
-    <Box sx={{ mt: theme.spacing(2) }}>
-      <Txt sx={sxUtils.fontBig}>{m.influencerIdentifiedTitle}</Txt>
+    <ReportElementRow label="Influenceur">
       <ReportInfluencer influencer={influencer} />
-    </Box>
+    </ReportElementRow>
+  )
+}
+
+function SpecialLegislationBlock({
+  specialLegislation,
+}: {
+  specialLegislation: SpecialLegislation
+}) {
+  const { m } = useI18n()
+  return (
+    <div className="bg-yellow-100 py-2 px-4 border border-black border-solid">
+      <WarningOutlinedIcon fontSize="small" className="mt-[-4px] mr-1" />
+      <span
+        className="text-sm"
+        dangerouslySetInnerHTML={{
+          __html: m.specialLegislation[specialLegislation],
+        }}
+      />
+    </div>
   )
 }

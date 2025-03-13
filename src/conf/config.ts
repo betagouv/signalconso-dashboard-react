@@ -15,6 +15,7 @@ function readSeverity(severity?: string): Severity | null {
 }
 
 export const config = {
+  isManuDev: import.meta.env.VITE_APP_IS_MANU_DEV === 'true',
   proConnectServer: import.meta.env.VITE_APP_PRO_CONNECT_URL,
   proConnectClientId: import.meta.env.VITE_APP_PRO_CONNECT_CLIENT_ID,
   enableProConnect: import.meta.env.VITE_APP_ENABLE_PRO_CONNECT === 'true',

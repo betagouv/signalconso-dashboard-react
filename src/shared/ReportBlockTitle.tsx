@@ -1,8 +1,7 @@
 import { Icon } from '@mui/material'
 import { ReactNode } from 'react'
 
-// To display an icon inline before a text
-export function WithInlineIcon({
+export function ReportBlockTitle({
   icon,
   children,
 }: {
@@ -10,8 +9,8 @@ export function WithInlineIcon({
   children: ReactNode
 }) {
   return (
-    <span className="inline-flex items-start flex-wrap gap-1 underline">
-      <Icon>{icon}</Icon>
+    <span className="">
+      <Icon className="mb-[-5px] mr-1">{icon}</Icon>
       {children}
     </span>
   )

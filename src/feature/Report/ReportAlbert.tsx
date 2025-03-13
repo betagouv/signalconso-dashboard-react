@@ -2,7 +2,7 @@ import { Icon } from '@mui/material'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useEffect } from 'react'
 import { CleanDiscreetPanel } from 'shared/Panel/simplePanels'
-import { WithInlineIcon } from 'shared/WithInlineIcon'
+import { ReportBlockTitle } from 'shared/ReportBlockTitle'
 import { Btn } from '../../alexlibs/mui-extension'
 import { useApiContext } from '../../core/context/ApiContext'
 import { useConnectedContext } from '../../core/context/connected/connectedContext'
@@ -73,9 +73,9 @@ export const ReportAlbert = ({ id }: { id: Id }) => {
     <CleanDiscreetPanel>
       <div className={'flex flex-col'}>
         <div className={'flex flex-row gap-2 mb-2 items-center'}>
-          <WithInlineIcon icon="bubble_chart">
+          <ReportBlockTitle icon="bubble_chart">
             Résumé du signalement
-          </WithInlineIcon>
+          </ReportBlockTitle>
           <BetaTag />
         </div>
         {_getAlbert.data && (
