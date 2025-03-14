@@ -8,6 +8,7 @@ interface LayoutContextShape {
   sidebarOpen: boolean
   setSidebarOpen: Dispatch<SetStateAction<boolean>>
   isMobileWidth: boolean
+  isMdOrLower: boolean
   showSidebarButton?: boolean
   // do we need to reserve space on the left for the sidebar ?
   sidebarTakesSpaceInLayout: boolean

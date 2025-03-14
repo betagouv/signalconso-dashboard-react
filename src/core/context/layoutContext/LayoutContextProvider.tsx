@@ -2,6 +2,7 @@ import { ReactNode, useEffect, useState } from 'react'
 import { LayoutContext } from './layoutContext'
 // "Mobile width" is equivalent to Tailwinds's sm and lower
 const mobileBreakpoint = 768
+const lgBreakpoint = 1024
 
 export const LayoutContextProvider = ({
   hasSidebar,
@@ -12,6 +13,7 @@ export const LayoutContextProvider = ({
 }) => {
   const [pageWidth, setPageWidth] = useState(getWindowWidth())
   const isMobileWidth = pageWidth < mobileBreakpoint
+  const isMdOrLower = pageWidth < lgBreakpoint
   const [sidebarOpen, setSidebarOpen] = useState<boolean>(!isMobileWidth)
   useEffect(() => {
     if (!hasSidebar) {
@@ -29,6 +31,7 @@ export const LayoutContextProvider = ({
         sidebarOpen,
         setSidebarOpen,
         isMobileWidth,
+        isMdOrLower,
         showSidebarButton: hasSidebar,
         sidebarTakesSpaceInLayout: hasSidebar && sidebarOpen && !isMobileWidth,
       }}
