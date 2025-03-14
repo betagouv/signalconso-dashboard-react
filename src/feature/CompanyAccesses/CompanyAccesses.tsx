@@ -38,6 +38,7 @@ import { ScRadioGroup } from '../../shared/RadioGroup'
 import { ScRadioGroupItem } from '../../shared/RadioGroupItem'
 import { ScDialog } from '../../shared/ScDialog'
 import { CompanyAccessCreateBtn } from './CompanyAccessCreateBtn'
+import { config } from '../../conf/config'
 
 type RowData =
   | {
@@ -384,7 +385,7 @@ function ActionsColumn({
 
   function copyActivationLink(token: string) {
     const patch = `/entreprise/rejoindre/${siret}${toQueryString({ token })}`
-    const activationLink = window.location.host + patch
+    const activationLink = config.dashboardBaseUrl + patch
     navigator.clipboard
       .writeText(activationLink)
       .then((_) => toastSuccess(m.addressCopied))

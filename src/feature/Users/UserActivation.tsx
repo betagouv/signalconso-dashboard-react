@@ -64,7 +64,7 @@ export const UserActivation = ({ siret, onUserActivated }: Props) => {
       ),
   })
   const { toastSuccess, toastError } = useToast()
-  const { searchStr } = useLocation()
+  const { searchStr } = useLocation() // TODO Safe search avec tanstack
   const history = useNavigate()
   const {
     register,
