@@ -40,7 +40,11 @@ export const ReportReOpening = ({ reportIds }: Props) => {
       }
     >
       <Tooltip title={m.reportReopening}>
-        <Btn loading={_reOpenReport.isPending} icon="replay">
+        <Btn
+          loading={_reOpenReport.isPending}
+          variant={'outlined'}
+          icon="replay"
+        >
           {m.reOpen}
         </Btn>
       </Tooltip>

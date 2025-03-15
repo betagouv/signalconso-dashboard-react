@@ -27,7 +27,7 @@ export const ReportDownloadAction = ({ report, files, children }: Props) => {
   const _download = useMutation({
     mutationFn: (params: { id: Id; reportType: DownloadType }) => {
       return params.reportType === 'reportWithAttachment'
-        ? apiSdk.secured.reports.downloadZip(report)
+        ? apiSdk.secured.reports.downloadZip([report.id])
         : apiSdk.secured.reports.download([params.id])
     },
     onSuccess: () => {
