@@ -178,17 +178,14 @@ export class ReportsClient {
     // TODO Type it and maybe improve it
     return this.client
       .getBlob(`/reports/download`, { qs: { ids } })
-      .then(directDownloadBlob('Signalement.pdf', 'application/pdf'))
+      .then(directDownloadBlob('Signalement.zip', 'application/zip'))
   }
 
-  readonly downloadZip = (report: Report) => {
+  readonly downloadZip = (ids: Id[]) => {
     return this.client
-      .getBlob(`/reports/download-with-attachments/${report.id}`)
+      .getBlob(`/reports/download-with-attachments`, { qs: { ids } })
       .then((blob) =>
-        directDownloadBlob(
-          `${this.reportName(report)}`,
-          'application/zip',
-        )(blob),
+        directDownloadBlob('Signalement.zip', 'application/zip')(blob),
       )
   }
 
