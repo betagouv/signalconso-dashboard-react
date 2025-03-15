@@ -28,7 +28,7 @@ export const DatatableToolbarComponent: React.FC<
 > = ({ selectReport, canReOpen }) => {
   const { api: apiSdk, connectedUser: user } = useConnectedContext()
   const { m } = useI18n()
-  const MAX_ALLOWED = 10
+  const MAX_ALLOWED = 25
   const downloadReports = useMutation({
     mutationFn: apiSdk.secured.reports.download,
   })
