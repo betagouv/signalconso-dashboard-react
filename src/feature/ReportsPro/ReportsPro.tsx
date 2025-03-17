@@ -354,7 +354,7 @@ export const ReportsPro = ({ reportType, search }: ReportsProProps) => {
                         )
                       }
                     >
-                      Exporter au format PDF
+                      Exporter en PDF
                     </Btn>
                   </Box>
                 </>
@@ -412,7 +412,11 @@ export const ReportsPro = ({ reportType, search }: ReportsProProps) => {
                 }}
                 headerMain={
                   <DatatableToolbarComponent
-                    {...{ selectReport, canReOpen: false }}
+                    {...{
+                      selectReport,
+                      canReOpen: false,
+                      reportFilter: _reports.filters,
+                    }}
                   />
                 }
                 data={_reports.result.data?.entities}

@@ -31,7 +31,6 @@ import {
   PaginatedFilters,
   ReportResponseTypes,
   ReportSearch,
-  User,
 } from '../../core/model'
 import { useCategoriesByStatusQuery } from '../../core/queryhooks/constantQueryHooks'
 import { useReportSearchQuery } from '../../core/queryhooks/reportQueryHooks'
@@ -84,6 +83,12 @@ export const Reports = ({
 
   useEffect(() => {
     navigate({ to: '.', search: _reports.filters, replace: true })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [_reports.filters])
+
+  useEffect(() => {
+    const { limit } = _reports.filters
+    if (selectReport.size > limit) selectReport.clear()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [_reports.filters])
 
@@ -212,7 +217,7 @@ export const Reports = ({
     queryFn: api.secured.reports.countBookmarks,
   })
 
-  const columns = buildColumns({ _reports, selectReport, i18n, connectedUser })
+  const columns = buildColumns({ _reports, selectReport, i18n })
   return (
     <Page>
       <div className="flex gap-2 justify-between items-baseline">
@@ -292,6 +297,7 @@ export const Reports = ({
                     selectReport.has(_.report.id) &&
                     !ReportUtils.canReopenReport(_.report.status),
                 ) === undefined,
+              reportFilter: _reports.filters,
             }}
           />
         }
@@ -331,7 +337,6 @@ function buildColumns({
   _reports,
   selectReport,
   i18n,
-  connectedUser,
 }: {
   _reports: UseQueryPaginateResult<
     ReportSearch & PaginatedFilters,
@@ -340,11 +345,10 @@ function buildColumns({
   >
   selectReport: UseSetState<string>
   i18n: I18nContextShape
-  connectedUser: { isAdmin: boolean }
 }): DatatableColumnProps<ReportSearchResult>[] {
   const { m, formatDate } = i18n
 
-  const includeCheckboxColumn = selectReport.size > 0 || connectedUser.isAdmin
+  // const includeCheckboxColumn = selectReport.size > 0 || connectedUser.isAdmin
   const checkboxColumn = {
     alwaysVisible: true,
     id: 'checkbox',
@@ -356,7 +360,7 @@ function buildColumns({
   }
 
   return [
-    ...(includeCheckboxColumn ? [checkboxColumn] : []),
+    checkboxColumn,
     {
       id: 'bookmark',
       head: <>Marque-pages</>,
