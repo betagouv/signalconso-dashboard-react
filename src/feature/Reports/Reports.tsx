@@ -348,7 +348,6 @@ function buildColumns({
 }): DatatableColumnProps<ReportSearchResult>[] {
   const { m, formatDate } = i18n
 
-  // const includeCheckboxColumn = selectReport.size > 0 || connectedUser.isAdmin
   const checkboxColumn = {
     alwaysVisible: true,
     id: 'checkbox',
