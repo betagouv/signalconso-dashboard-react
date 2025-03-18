@@ -20,7 +20,6 @@ import {
 import { useGetCountBySubCategoriesQuery } from '../../core/queryhooks/reportQueryHooks'
 import { ScButton } from '../../shared/Button'
 import { DebouncedInput } from '../../shared/DebouncedInput'
-import { PanelBody } from '../../shared/Panel'
 import { PeriodPicker } from '../../shared/PeriodPicker'
 import { SelectDepartments } from '../../shared/SelectDepartments/SelectDepartments'
 
@@ -222,21 +221,20 @@ function LangPanel({
           {m.expandAll}
         </ScButton>
       </div>
-      <PanelBody>
-        {countBySubCategories.data?.[langKey]
-          .sort(sortById)
-          .map((reportNode) => (
-            <Node
-              open={openAll}
-              reportNode={reportNode}
-              path={[]}
-              start={start}
-              end={end}
-              foreign={langKey !== 'fr'}
-              key={reportNode.id}
-            />
-          ))}
-      </PanelBody>
+
+      {countBySubCategories.data?.[langKey]
+        .sort(sortById)
+        .map((reportNode) => (
+          <Node
+            open={openAll}
+            reportNode={reportNode}
+            path={[]}
+            start={start}
+            end={end}
+            foreign={langKey !== 'fr'}
+            key={reportNode.id}
+          />
+        ))}
     </CleanWidePanel>
   )
 }
