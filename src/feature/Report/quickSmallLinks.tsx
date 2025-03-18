@@ -20,11 +20,11 @@ function IconAndLabel({
 }) {
   return (
     <>
-      {
+      {icon && (
         <Icon style={{ fontSize: '1.2em' }} className="mb-[-5px]">
-          {icon ?? 'forward'}
+          {icon}
         </Icon>
-      }
+      )}
       {label}
       {isExternal && (
         <Icon style={{ fontSize: '1.2em' }} className="mb-[-4px] ml-0.5">
@@ -72,14 +72,17 @@ export const QuickSmallExternalLink = (props: {
 
 export const QuickSmallReportSearchLink = (props: {
   reportSearch: Partial<ReportSearch>
+  icon?: boolean
+  label?: string
 }) => {
+  const withIcon = props.icon === undefined || props.icon === true
   return (
     <QuickSmallLink
       {...props}
-      label={'autres signalements'}
+      label={props.label ?? 'autres signalements'}
       to="/suivi-des-signalements"
       search={props.reportSearch}
-      icon={'search'}
+      icon={withIcon ? 'search' : undefined}
     />
   )
 }

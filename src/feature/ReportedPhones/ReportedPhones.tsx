@@ -1,10 +1,10 @@
 import { Icon, Tooltip } from '@mui/material'
-import { Link } from '@tanstack/react-router'
+import { QuickSmallReportSearchLink } from 'feature/Report/quickSmallLinks'
 import { useCallback } from 'react'
-import { Btn, IconBtn, Txt } from '../../alexlibs/mui-extension'
+import { DatatableEmptyCell } from 'shared/Datatable/DatatableEmptyCell'
+import { IconBtn } from '../../alexlibs/mui-extension'
 import { useI18n } from '../../core/i18n'
 import { useReportedPhonesSearchQuery } from '../../core/queryhooks/phoneQueryHooks'
-import { sxUtils } from '../../core/theme'
 import { Datatable } from '../../shared/Datatable/Datatable'
 import { DebouncedInput } from '../../shared/DebouncedInput'
 import { ExportPhonesPopper } from '../../shared/ExportPopperBtn'
@@ -31,7 +31,12 @@ export const ReportedPhones = () => {
         <Datatable
           id="reportedphones"
           superheader={
-            <p>Cette page liste les numéros de téléphone les plus signalés.</p>
+            <p>
+              Cette page liste les numéros de téléphone les plus signalés.{' '}
+              <br />
+              Un numéro peut apparaitre plusieurs fois, si des consommateurs
+              l'ont associé à différentes entreprises.
+            </p>
           }
           headerMain={
             <div className="flex w-full gap-2">
@@ -41,11 +46,11 @@ export const ReportedPhones = () => {
               >
                 {(value, onChange) => (
                   <ScInput
-                    style={{ minWidth: 120 }}
                     value={value}
                     onChange={(e) => onChange(e.target.value)}
                     fullWidth
-                    label={m.phone}
+                    label="Rechercher un numéro de téléphone"
+                    placeholder="ex: 0123456789"
                   />
                 )}
               </DebouncedInput>
@@ -103,42 +108,36 @@ export const ReportedPhones = () => {
             },
             {
               id: 'siret',
-              head: m.siret,
+              head: 'Entreprise',
               sx: (_) => ({
-                maxWidth: 200,
+                maxWidth: 100,
               }),
-              render: (_) => (
-                <>
-                  <Txt bold>{_.siret}</Txt>
-                  <br />
-                  <Txt color="hint">{_.companyName}</Txt>
-                </>
-              ),
+              render: (_) =>
+                _.siret ? (
+                  <>
+                    <p className="">{_.companyName}</p>
+                    <p className="text-gray-500">{_.siret}</p>
+                  </>
+                ) : (
+                  <DatatableEmptyCell />
+                ),
             },
             {
               id: 'count',
-              head: m.reportsCount,
-              render: (_) => _.count,
-            },
-            {
-              id: 'actions',
-              sx: (_) => sxUtils.tdActions,
+              head: 'Signalements',
               render: (_) => (
                 <>
-                  <Link
-                    to="/suivi-des-signalements"
-                    search={{
+                  <QuickSmallReportSearchLink
+                    icon={false}
+                    label={`${_.count} signalements`}
+                    reportSearch={{
                       hasPhone: true,
                       phone: _.phone,
                       ...(_.siret
                         ? { hasCompany: true, siretSirenList: [_.siret] }
                         : {}),
                     }}
-                  >
-                    <Btn size="small" color="primary" variant="outlined">
-                      {m.see}
-                    </Btn>
-                  </Link>
+                  />
                 </>
               ),
             },
