@@ -29,10 +29,9 @@ interface DatatableProps<T> {
   headerMain?: ReactNode
   // some arbitrary buttons that appear directly to the right of the headerMain
   actions?: ReactNode
-  // an additional button (added to the actions) to control which columns are displayed or not
-  showColumnsToggle?: boolean
-  // make this button displayed with big text, instead of just an icon
-  plainTextColumnsToggle?: boolean
+  // adds a button to configure which columns are displayed or not
+  // if false, all columns are displayed (default)
+  configurableColumns?: boolean
   // adds a small bottom margin to the header
   headerMarginBottom?: boolean
   loading?: boolean
@@ -95,13 +94,12 @@ export const Datatable = <T,>({
   headerMain,
   headerMarginBottom,
   superheader,
-  showColumnsToggle,
+  configurableColumns = false,
   renderEmptyState,
   rowsPerPageExtraOptions = [],
   sort,
   onClickRows,
   paginate,
-  plainTextColumnsToggle,
   rowSx,
 }: DatatableProps<T>) => {
   const { m } = useI18n()
@@ -121,9 +119,14 @@ export const Datatable = <T,>({
     id,
   )
   const filteredColumns = useMemo(
-    () => displayableColumns.filter((_) => !hiddenColumns.includes(_.id)),
+    () => {
+      if (!configurableColumns) {
+        return displayableColumns
+      }
+      return displayableColumns.filter((_) => !hiddenColumns.includes(_.id))
+    },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [columns, hiddenColumns],
+    [columns, hiddenColumns, configurableColumns],
   )
   const displayTableHeader = useMemo(
     () => !!displayableColumns.find((_) => !!_.head),
@@ -133,7 +136,7 @@ export const Datatable = <T,>({
   return (
     <div className="mb-4">
       {superheader && <div className="py-4 px-2">{superheader}</div>}
-      {(headerMain || showColumnsToggle || actions) && (
+      {(headerMain || configurableColumns || actions) && (
         <div
           className={`relative flex flex-wrap items-center min-h-[52px] gap-2 ${
             headerMarginBottom ? 'mb-2' : ''
@@ -142,12 +145,10 @@ export const Datatable = <T,>({
           <div className="flex items-center flex-grow">{headerMain}</div>
           <div className="whitespace-nowrap flex gap-2">
             {actions}
-            {showColumnsToggle && (
+            {configurableColumns && (
               <DatatableColumnToggle
-                // style={{marginLeft: 'auto'}}
                 columns={toggleableColumnsName}
                 hiddenColumns={hiddenColumns}
-                plainTextButton={plainTextColumnsToggle}
                 onChange={(_) => setHiddenColumns(_)}
                 title={m.toggleDatatableColumns}
               />

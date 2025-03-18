@@ -5,6 +5,7 @@ import { createLink, LinkComponent } from '@tanstack/react-router'
 import { fr } from 'core/i18n/fr'
 import { ReportResponseDetails } from 'feature/Reports/ReportResponseDetails'
 import React from 'react'
+import { DatatableEmptyCell } from 'shared/Datatable/DatatableEmptyCell'
 import { ReportStatusLabel } from 'shared/ReportStatus'
 import { ConsumerReviewLabels } from 'shared/reviews/ConsumerReviewLabels'
 import { Txt } from '../../alexlibs/mui-extension'
@@ -53,7 +54,7 @@ export const buildReportsProColumns = ({
 }: ReportTableColumnsParams) => {
   const { formatDate, m } = i18nData
 
-  const emptyCell = <span className="text-gray-500">—</span>
+  const emptyCell = <DatatableEmptyCell />
   const includeCheckboxColumn = selectReport.size > 0
   const checkboxColumn = {
     alwaysVisible: true,

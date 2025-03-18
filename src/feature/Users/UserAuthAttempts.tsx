@@ -72,7 +72,6 @@ export const UserAuthAttempts = ({
           onPaginationChange: (pagination) =>
             authAttempts.updateFilters((prev) => ({ ...prev, ...pagination })),
         }}
-        showColumnsToggle
         getRenderRowKey={(_) => _.timestamp}
         data={authAttempts.result.data?.entities}
         columns={[

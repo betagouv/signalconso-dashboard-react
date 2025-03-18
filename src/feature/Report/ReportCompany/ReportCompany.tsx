@@ -62,6 +62,7 @@ export const ReportCompany = ({
               label="fiche entreprise"
               to="/entreprise/$companyId/bilan"
               params={{ companyId }}
+              icon="forward"
             />
           )}
         </div>

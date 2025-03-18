@@ -80,7 +80,6 @@ export const ConsumerListPending = () => {
           onPaginationChange: (pagination) =>
             _users.updateFilters((prev) => ({ ...prev, ...pagination })),
         }}
-        showColumnsToggle
         getRenderRowKey={(_) => _.email}
         data={_users.result.data?.entities}
         columns={[

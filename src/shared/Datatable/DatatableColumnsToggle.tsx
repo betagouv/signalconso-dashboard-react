@@ -1,14 +1,12 @@
 import {
   Badge,
   Checkbox,
-  Icon,
   IconButtonProps,
   Menu,
   MenuItem,
   Tooltip,
 } from '@mui/material'
 import React from 'react'
-import { IconBtn } from '../../alexlibs/mui-extension'
 import { ScButton } from '../Button'
 import { DatatableColumnProps } from './Datatable'
 
@@ -18,8 +16,7 @@ interface Props extends Omit<IconButtonProps, 'onChange'> {
   columns: (Omit<DatatableColumnProps<any>, 'id'> & { id: string })[]
   hiddenColumns: string[]
   onChange: (_: string[]) => void
-  title?: string
-  plainTextButton?: boolean
+  title: string
 }
 
 export const DatatableColumnToggle = ({
@@ -28,7 +25,6 @@ export const DatatableColumnToggle = ({
   columns,
   hiddenColumns,
   onChange,
-  plainTextButton,
   ...props
 }: Props) => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
@@ -40,41 +36,19 @@ export const DatatableColumnToggle = ({
   return (
     <>
       <Tooltip title={title ?? ''}>
-        {plainTextButton && title ? (
-          <Badge
-            color="error"
-            badgeContent={
-              columns.length === hiddenColumns.length
-                ? '!'
-                : columns.length - hiddenColumns.length
-            }
-            invisible={hiddenColumns.length === 0}
-          >
-            <ScButton onClick={handleClick} variant="outlined" color="primary">
-              {title}
-            </ScButton>
-          </Badge>
-        ) : (
-          <IconBtn {...props} color="primary" onClick={handleClick}>
-            <Badge
-              color="error"
-              badgeContent={
-                columns.length === hiddenColumns.length
-                  ? '!'
-                  : columns.length - hiddenColumns.length
-              }
-              invisible={hiddenColumns.length === 0}
-            >
-              <Icon
-                color={
-                  columns.length === hiddenColumns.length ? 'error' : undefined
-                }
-              >
-                table_chart
-              </Icon>
-            </Badge>
-          </IconBtn>
-        )}
+        <Badge
+          color="error"
+          badgeContent={
+            columns.length === hiddenColumns.length
+              ? '!'
+              : columns.length - hiddenColumns.length
+          }
+          invisible={hiddenColumns.length === 0}
+        >
+          <ScButton onClick={handleClick} variant="outlined" color="primary">
+            {title}
+          </ScButton>
+        </Badge>
       </Tooltip>
       <Menu
         anchorEl={anchorEl}

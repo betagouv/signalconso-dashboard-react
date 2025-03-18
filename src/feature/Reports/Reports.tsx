@@ -303,8 +303,7 @@ export const Reports = ({
         getRenderRowKey={(_) => _.report.id}
         data={_reports.result.data?.entities}
         total={_reports.result.data?.totalCount}
-        showColumnsToggle={true}
-        plainTextColumnsToggle={true}
+        configurableColumns={true}
         initialHiddenColumns={
           connectedUser.isDGCCRF
             ? [
