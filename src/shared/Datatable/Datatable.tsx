@@ -180,7 +180,7 @@ export const Datatable = <T,>({
                   >
                     {sort && (sort.sortableColumns?.includes(_.id) ?? true) ? (
                       <TableSortLabel
-                        sx={{ color: (t) => t.palette.primary.main }}
+                        className="!text-scbluefrance !underline"
                         active={sort.sortBy === _.id}
                         direction={sort.sortBy === _.id ? sort.orderBy : 'asc'}
                         onClick={() => {

@@ -304,15 +304,14 @@ export const CompaniesRegistered = ({ search }: { search: CompanySearch }) => {
                   siretSirenList: [_.siret],
                   departments: _companies.filters.departments,
                 }}
+                className="text-scbluefrance"
               >
-                <ScButton color="primary">
-                  {formatLargeNumber(_.count)}
-                </ScButton>
+                {formatLargeNumber(_.count)}
               </Link>
             ),
           },
           {
-            head: m.responseRate,
+            head: <span>{m.responseRate}</span>,
             id: 'responseRate',
             sx: (_) => ({ textAlign: 'right' }),
             render: (_) => (
