@@ -208,7 +208,7 @@ function LangPanel({
   const { m } = useI18n()
   return (
     <CleanWidePanel loading={countBySubCategories.isLoading}>
-      <div className="flex justify-between items-center">
+      <div className="flex justify-between items-center mb-4">
         <h2 className="font-bold">
           {langKey === 'fr'
             ? m.statsCountBySubCategories
@@ -228,6 +228,7 @@ function LangPanel({
           .sort(sortById)
           .map((reportNode) => (
             <Node
+              isCategory={true}
               open={openAll}
               reportNode={reportNode}
               path={[]}
@@ -249,6 +250,7 @@ const Node = ({
   start,
   end,
   foreign,
+  isCategory = false,
 }: {
   reportNode: ReportNode
   open?: boolean
@@ -256,6 +258,7 @@ const Node = ({
   start: Date | undefined
   end: Date | undefined
   foreign: boolean
+  isCategory?: boolean
 }) => {
   const iconWidth = 40
   const iconMargin = 8
@@ -266,7 +269,6 @@ const Node = ({
   }, [open])
 
   const fullPath = [...path, n.name]
-  const url = '/suivi-des-signalements'
   const search = {
     category: fullPath[0],
     subcategories: fullPath.length > 0 ? fullPath.slice(1) : undefined,
@@ -275,26 +277,40 @@ const Node = ({
     isForeign: foreign,
   }
 
+  const canOpen = n.children.length !== 0
   return (
     <div className="flex items-start">
-      {n.children.length !== 0 ? (
+      {canOpen ? (
         <IconBtn
           color="primary"
           onClick={() => setIsOpen((_) => !_)}
           className={'!p-0 !bg-blue-100 hover:!bg-blue-300 !mr-2'}
         >
-          <Icon>{isOpen ? 'keyboard_arrow_down' : 'keyboard_arrow_right'}</Icon>
+          <Icon style={{ fontSize: isCategory ? '1.3em' : undefined }}>
+            {isOpen ? 'keyboard_arrow_down' : 'keyboard_arrow_right'}
+          </Icon>
         </IconBtn>
       ) : (
-        <IconBtn disabled className={'!p-0 !mr-2 !text-gray-600'}>
-          <Icon>forward</Icon>
+        <IconBtn disabled className={'!p-0 !mr-2'}>
+          <Icon>remove</Icon>
         </IconBtn>
       )}
       <div className="w-full">
         <div className="flex flex-col justify-center min-h-[42px]">
           {n.id ? (
             <p className="max-w-[80%] truncate">
-              <span className="font-bold">{n.label ?? n.name}</span>{' '}
+              {canOpen ? (
+                <button
+                  onClick={() => setIsOpen((_) => !_)}
+                  className={`hover:bg-gray-100 font-bold underline ${isCategory ? 'text-xl' : ''}`}
+                >
+                  {n.label ?? n.name}
+                </button>
+              ) : (
+                <span className={`font-bold ${isCategory ? 'text-xl' : ''}`}>
+                  {n.label ?? n.name}
+                </span>
+              )}{' '}
               {n.overriddenCategory ? `(${n.overriddenCategory}) ` : undefined}
               <span className="text-sm text-gray-500">id : {n.id}</span>
             </p>
@@ -348,7 +364,7 @@ const Node = ({
                 // borderLeft: t => `1px solid ${t.palette.divider}`
               },
             }}
-            className="pt-1 space-y-1"
+            className="pt-2 space-y-2"
           >
             {n.children.sort(sortById).map((reportNode) => (
               <Node
