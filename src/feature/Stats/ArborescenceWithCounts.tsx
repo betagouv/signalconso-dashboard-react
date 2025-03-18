@@ -223,7 +223,7 @@ function LangPanel({
         </ScButton>
       </div>
 
-      <div className="space-y-2">
+      <div className="space-y-4">
         {countBySubCategories.data?.[langKey]
           .sort(sortById)
           .map((reportNode) => (
@@ -339,7 +339,6 @@ const Node = ({
         {isOpen && n.children.length !== 0 && (
           <Box
             sx={{
-              my: 1,
               position: 'relative',
               '&:before': {
                 content: "' '",
@@ -351,6 +350,7 @@ const Node = ({
                 // borderLeft: t => `1px solid ${t.palette.divider}`
               },
             }}
+            className="pt-1 space-y-1"
           >
             {n.children.sort(sortById).map((reportNode) => (
               <Node
