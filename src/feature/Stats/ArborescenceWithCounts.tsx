@@ -274,7 +274,7 @@ const Node = ({
   }
 
   return (
-    <div className="flex items-start mb-2">
+    <div className="flex items-start">
       <div className="">
         {n.children.length !== 0 ? (
           <IconBtn color="primary" onClick={() => setIsOpen((_) => !_)}>
