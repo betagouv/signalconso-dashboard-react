@@ -1,7 +1,8 @@
 import { Badge, Box, Icon, useTheme } from '@mui/material'
 import { useMutation, UseQueryResult } from '@tanstack/react-query'
-import { Link, useNavigate } from '@tanstack/react-router'
+import { useNavigate } from '@tanstack/react-router'
 import { ApiError } from 'core/client/ApiClient'
+import { QuickSmallReportSearchLink } from 'feature/Report/quickSmallLinks'
 import { parseInt } from 'lodash'
 import { useEffect, useState } from 'react'
 import { CleanWidePanel } from 'shared/Panel/simplePanels'
@@ -305,12 +306,10 @@ const Node = ({
             </div>
           )}
           <p>
-            Signalements : {n.count}{' '}
-            <Link to={url} search={search}>
-              (voir)
-            </Link>
+            {n.count} signalements{' '}
+            <QuickSmallReportSearchLink reportSearch={search} label="voir" />
           </p>
-          <p> Réclamations (RéponseConso) : {n.reclamations}</p>
+          <p className="">dont {n.reclamations} réclamations (RéponseConso)</p>
           <div>
             {n.tags?.map((tag) => (
               <Box
