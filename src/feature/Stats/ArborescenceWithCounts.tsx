@@ -223,19 +223,21 @@ function LangPanel({
         </ScButton>
       </div>
 
-      {countBySubCategories.data?.[langKey]
-        .sort(sortById)
-        .map((reportNode) => (
-          <Node
-            open={openAll}
-            reportNode={reportNode}
-            path={[]}
-            start={start}
-            end={end}
-            foreign={langKey !== 'fr'}
-            key={reportNode.id}
-          />
-        ))}
+      <div className="space-y-2">
+        {countBySubCategories.data?.[langKey]
+          .sort(sortById)
+          .map((reportNode) => (
+            <Node
+              open={openAll}
+              reportNode={reportNode}
+              path={[]}
+              start={start}
+              end={end}
+              foreign={langKey !== 'fr'}
+              key={reportNode.id}
+            />
+          ))}
+      </div>
     </CleanWidePanel>
   )
 }
@@ -275,20 +277,22 @@ const Node = ({
 
   return (
     <div className="flex items-start">
-      <div className="">
-        {n.children.length !== 0 ? (
-          <IconBtn color="primary" onClick={() => setIsOpen((_) => !_)}>
-            <Icon fontSize="medium">
-              {isOpen ? 'keyboard_arrow_down' : 'keyboard_arrow_right'}
-            </Icon>
-          </IconBtn>
-        ) : (
-          <IconBtn disabled>
-            <Icon>forward</Icon>
-          </IconBtn>
-        )}
-      </div>
-      <div className="w-full pt-2">
+      {n.children.length !== 0 ? (
+        <IconBtn
+          color="primary"
+          onClick={() => setIsOpen((_) => !_)}
+          className="!p-0  !mr-2"
+        >
+          <Icon style={{ fontSize: '1em' }}>
+            {isOpen ? 'keyboard_arrow_down' : 'keyboard_arrow_right'}
+          </Icon>
+        </IconBtn>
+      ) : (
+        <IconBtn disabled>
+          <Icon>forward</Icon>
+        </IconBtn>
+      )}
+      <div className="w-full">
         <div className="flex flex-col justify-center min-h-[42px]">
           {n.id ? (
             <p className="max-w-[80%] truncate">
