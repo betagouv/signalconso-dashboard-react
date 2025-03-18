@@ -284,7 +284,7 @@ const Node = ({
           </IconBtn>
         ) : (
           <IconBtn disabled>
-            <Icon>remove</Icon>
+            <Icon>forward</Icon>
           </IconBtn>
         )}
       </div>
