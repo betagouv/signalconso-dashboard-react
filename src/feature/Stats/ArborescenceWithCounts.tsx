@@ -5,7 +5,7 @@ import { ApiError } from 'core/client/ApiClient'
 import { parseInt } from 'lodash'
 import { useEffect, useState } from 'react'
 import { CleanWidePanel } from 'shared/Panel/simplePanels'
-import { IconBtn, Txt } from '../../alexlibs/mui-extension'
+import { IconBtn } from '../../alexlibs/mui-extension'
 import { ReportNode, ReportNodes } from '../../core/client/report/ReportNode'
 import { ReportNodeSearch } from '../../core/client/report/ReportNodeSearch'
 import { useApiContext } from '../../core/context/ApiContext'
@@ -240,7 +240,7 @@ function LangPanel({
 }
 
 const Node = ({
-  reportNode,
+  reportNode: n,
   open,
   path,
   start,
@@ -262,7 +262,7 @@ const Node = ({
     setIsOpen(!!open)
   }, [open])
 
-  const fullPath = [...path, reportNode.name]
+  const fullPath = [...path, n.name]
   const url = '/suivi-des-signalements'
   const search = {
     category: fullPath[0],
@@ -274,45 +274,45 @@ const Node = ({
 
   return (
     <div className="flex items-start mb-2">
-      {reportNode.children.length !== 0 ? (
-        <IconBtn color="primary" onClick={() => setIsOpen((_) => !_)}>
-          <Icon>{isOpen ? 'keyboard_arrow_down' : 'keyboard_arrow_right'}</Icon>
-        </IconBtn>
-      ) : (
-        <IconBtn disabled>
-          <Icon>remove</Icon>
-        </IconBtn>
-      )}
-      <div className="w-full">
+      <div className="">
+        {n.children.length !== 0 ? (
+          <IconBtn color="primary" onClick={() => setIsOpen((_) => !_)}>
+            <Icon fontSize="medium">
+              {isOpen ? 'keyboard_arrow_down' : 'keyboard_arrow_right'}
+            </Icon>
+          </IconBtn>
+        ) : (
+          <IconBtn disabled>
+            <Icon>remove</Icon>
+          </IconBtn>
+        )}
+      </div>
+      <div className="w-full pt-2">
         <div className="flex flex-col justify-center min-h-[42px]">
-          {reportNode.id ? (
-            <div className="max-w-[80%]">
-              <Txt truncate block>
-                {reportNode.label ?? reportNode.name}{' '}
-                {reportNode.overriddenCategory
-                  ? `(${reportNode.overriddenCategory})`
-                  : undefined}
-              </Txt>{' '}
-              <Txt color="hint">{reportNode.id}</Txt>
-            </div>
+          {n.id ? (
+            <p className="max-w-[80%] truncate">
+              <span className="font-bold">{n.label ?? n.name}</span>{' '}
+              {n.overriddenCategory ? `(${n.overriddenCategory}) ` : undefined}
+              <span className="text-sm text-gray-500">id : {n.id}</span>
+            </p>
           ) : (
             <div className="max-w-[80%]">
-              <Txt truncate block color="hint">
-                {reportNode.label ?? reportNode.name}
-              </Txt>{' '}
-              <Txt color="hint">(Ancienne catégorie)</Txt>
+              <p className="text-gray-500">
+                {n.label ?? n.name}
+                <br />
+                (Ancienne catégorie)
+              </p>
             </div>
           )}
-          <Txt color="primary">
-            {' '}
-            Signalements : {reportNode.count}{' '}
+          <p>
+            Signalements : {n.count}{' '}
             <Link to={url} search={search}>
               (voir)
             </Link>
-          </Txt>
-          <Txt color="primary"> Réclamations : {reportNode.reclamations}</Txt>
+          </p>
+          <p> Réclamations (RéponseConso) : {n.reclamations}</p>
           <div>
-            {reportNode.tags?.map((tag) => (
+            {n.tags?.map((tag) => (
               <Box
                 sx={{
                   mr: 1,
@@ -333,7 +333,7 @@ const Node = ({
             ))}
           </div>
         </div>
-        {isOpen && reportNode.children.length !== 0 && (
+        {isOpen && n.children.length !== 0 && (
           <Box
             sx={{
               my: 1,
@@ -349,7 +349,7 @@ const Node = ({
               },
             }}
           >
-            {reportNode.children.sort(sortById).map((reportNode) => (
+            {n.children.sort(sortById).map((reportNode) => (
               <Node
                 open={open}
                 reportNode={reportNode}
