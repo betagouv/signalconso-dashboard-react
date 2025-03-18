@@ -1,5 +1,6 @@
 import { Box, Checkbox, Icon, Tooltip } from '@mui/material'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { Link } from '@tanstack/react-router'
 import { SyntheticEvent } from 'react'
 import { Fender, IconBtn, Txt } from '../../alexlibs/mui-extension'
 import { useSetState } from '../../alexlibs/react-hooks-lib'
@@ -17,7 +18,6 @@ import { ScButton } from '../../shared/Button'
 import { Datatable } from '../../shared/Datatable/Datatable'
 import { DatatableToolbar } from '../../shared/Datatable/DatatableToolbar'
 import { ScDialog } from '../../shared/ScDialog'
-import { Link } from '@tanstack/react-router'
 
 export const CompaniesToFollowUp = () => {
   const { m } = useI18n()
@@ -146,7 +146,6 @@ export const CompaniesToFollowUp = () => {
         }}
         total={_companiesToFollowUp.result.data?.totalCount}
         getRenderRowKey={(_) => _.company.id}
-        showColumnsToggle={true}
         rowsPerPageExtraOptions={[250]}
         columns={[
           {

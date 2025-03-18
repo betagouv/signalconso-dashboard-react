@@ -192,7 +192,6 @@ export const WebsitesInvestigation = ({
         }}
         getRenderRowKey={(_) => _.id}
         data={_websiteWithCompany.result.data?.entities}
-        showColumnsToggle={true}
         columns={[
           {
             id: 'host',

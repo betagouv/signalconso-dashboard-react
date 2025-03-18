@@ -292,7 +292,6 @@ const UsersList = ({ adminView }: Props) => {
           onPaginationChange: (pagination) =>
             _users.updateFilters((prev) => ({ ...prev, ...pagination })),
         }}
-        showColumnsToggle
         rowsPerPageExtraOptions={
           _users.result.data ? [_users.result.data.totalCount] : undefined
         }

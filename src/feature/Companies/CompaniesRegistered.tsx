@@ -215,7 +215,6 @@ export const CompaniesRegistered = ({ search }: { search: CompanySearch }) => {
         }}
         total={_companies.result.data?.totalCount}
         getRenderRowKey={(_) => _.id}
-        showColumnsToggle={true}
         columns={[
           {
             head: m.name,

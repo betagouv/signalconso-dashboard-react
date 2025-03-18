@@ -1,4 +1,5 @@
 import { Icon, Tooltip } from '@mui/material'
+import { Link } from '@tanstack/react-router'
 import { useCallback } from 'react'
 import { Btn, IconBtn, Txt } from '../../alexlibs/mui-extension'
 import { useI18n } from '../../core/i18n'
@@ -10,7 +11,6 @@ import { ExportPhonesPopper } from '../../shared/ExportPopperBtn'
 import { Page, PageTitle } from '../../shared/Page'
 import { PeriodPicker } from '../../shared/PeriodPicker'
 import { ScInput } from '../../shared/ScInput'
-import { Link } from '@tanstack/react-router'
 
 export const ReportedPhones = () => {
   const _reportedPhone = useReportedPhonesSearchQuery()
@@ -30,7 +30,6 @@ export const ReportedPhones = () => {
       <>
         <Datatable
           id="reportedphones"
-          showColumnsToggle
           superheader={
             <p>Cette page liste les numéros de téléphone les plus signalés.</p>
           }
