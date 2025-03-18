@@ -281,14 +281,12 @@ const Node = ({
         <IconBtn
           color="primary"
           onClick={() => setIsOpen((_) => !_)}
-          className="!p-0  !mr-2"
+          className={'!p-0 !bg-blue-100 hover:!bg-blue-300 !mr-2'}
         >
-          <Icon style={{ fontSize: '1em' }}>
-            {isOpen ? 'keyboard_arrow_down' : 'keyboard_arrow_right'}
-          </Icon>
+          <Icon>{isOpen ? 'keyboard_arrow_down' : 'keyboard_arrow_right'}</Icon>
         </IconBtn>
       ) : (
-        <IconBtn disabled>
+        <IconBtn disabled className={'!p-0 !mr-2 !text-gray-600'}>
           <Icon>forward</Icon>
         </IconBtn>
       )}
