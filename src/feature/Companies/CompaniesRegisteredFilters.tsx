@@ -1,11 +1,9 @@
-import { SelectDepartments } from '../../shared/SelectDepartments/SelectDepartments'
-import { SelectActivityCode } from '../../shared/SelectActivityCode'
-import React from 'react'
 import { useI18n } from '../../core/i18n'
-import { ScInput } from '../../shared/ScInput'
 import { useActivatedCompanySearchQuery } from '../../core/queryhooks/companyQueryHooks'
-import { CleanDiscreetPanel } from '../../shared/Panel/simplePanels'
 import { DebouncedInput } from '../../shared/DebouncedInput'
+import { ScInput } from '../../shared/ScInput'
+import { SelectActivityCode } from '../../shared/SelectActivityCode'
+import { SelectDepartments } from '../../shared/SelectDepartments/SelectDepartments'
 
 interface CompaniesRegisteredFiltersProps {
   _companies: ReturnType<typeof useActivatedCompanySearchQuery>
@@ -21,8 +19,8 @@ export const CompaniesRegisteredFilters = ({
   const { m } = useI18n()
 
   return (
-    <CleanDiscreetPanel noShadow>
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-2">
+    <>
+      <div className="grid grid-cols-1 lg:grid-cols-2 lg:gap-x-2 mb-8">
         <div>
           <DebouncedInput
             value={_companies.filters.identity ?? ''}
@@ -78,6 +76,6 @@ export const CompaniesRegisteredFilters = ({
           </DebouncedInput>
         </div>
       </div>
-    </CleanDiscreetPanel>
+    </>
   )
 }
