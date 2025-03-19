@@ -292,7 +292,7 @@ const Node = ({
         </IconBtn>
       ) : (
         <IconBtn disabled className={'!p-0 !mr-2'}>
-          <Icon>remove</Icon>
+          <Icon>{n.isBlocking ? 'block' : 'forward'}</Icon>
         </IconBtn>
       )}
       <div className="w-full">
@@ -307,27 +307,43 @@ const Node = ({
                   {n.label ?? n.name}
                 </button>
               ) : (
-                <span className={`font-bold ${isCategory ? 'text-xl' : ''}`}>
+                <span
+                  className={`${n.isBlocking ? 'text-gray-600' : 'font-bold'} ${isCategory ? 'text-xl' : ''}`}
+                >
                   {n.label ?? n.name}
                 </span>
               )}{' '}
               {n.overriddenCategory ? `(${n.overriddenCategory}) ` : undefined}
-              <span className="text-sm text-gray-500">id : {n.id}</span>
+              <span className="text-sm text-gray-600">id : {n.id}</span>
             </p>
           ) : (
             <div className="max-w-[80%]">
-              <p className="text-gray-500">
+              <p className="text-gray-600">
                 {n.label ?? n.name}
                 <br />
                 (Ancienne catégorie)
               </p>
             </div>
           )}
-          <p>
-            {n.count} signalements{' '}
-            <QuickSmallReportSearchLink reportSearch={search} label="voir" />
-          </p>
-          <p className="">dont {n.reclamations} réclamations (RéponseConso)</p>
+          {n.isBlocking ? (
+            <p className="text-gray-600 text-sm">
+              Impasse : pas de signalement possible ici.
+            </p>
+          ) : (
+            <>
+              <p>
+                {n.count} signalements{' '}
+                <QuickSmallReportSearchLink
+                  reportSearch={search}
+                  label="voir"
+                />
+              </p>
+              <p className="">
+                dont {n.reclamations} réclamations (RéponseConso)
+              </p>
+            </>
+          )}
+
           <div>
             {n.tags?.map((tag) => (
               <Box
