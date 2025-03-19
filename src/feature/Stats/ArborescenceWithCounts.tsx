@@ -1,11 +1,12 @@
 import { Badge, Box, Icon, useTheme } from '@mui/material'
 import { useMutation, UseQueryResult } from '@tanstack/react-query'
-import { Link, useNavigate } from '@tanstack/react-router'
+import { useNavigate } from '@tanstack/react-router'
 import { ApiError } from 'core/client/ApiClient'
+import { QuickSmallReportSearchLink } from 'feature/Report/quickSmallLinks'
 import { parseInt } from 'lodash'
 import { useEffect, useState } from 'react'
 import { CleanWidePanel } from 'shared/Panel/simplePanels'
-import { IconBtn, Txt } from '../../alexlibs/mui-extension'
+import { IconBtn } from '../../alexlibs/mui-extension'
 import { ReportNode, ReportNodes } from '../../core/client/report/ReportNode'
 import { ReportNodeSearch } from '../../core/client/report/ReportNodeSearch'
 import { useApiContext } from '../../core/context/ApiContext'
@@ -20,7 +21,6 @@ import {
 import { useGetCountBySubCategoriesQuery } from '../../core/queryhooks/reportQueryHooks'
 import { ScButton } from '../../shared/Button'
 import { DebouncedInput } from '../../shared/DebouncedInput'
-import { PanelBody } from '../../shared/Panel'
 import { PeriodPicker } from '../../shared/PeriodPicker'
 import { SelectDepartments } from '../../shared/SelectDepartments/SelectDepartments'
 
@@ -208,7 +208,7 @@ function LangPanel({
   const { m } = useI18n()
   return (
     <CleanWidePanel loading={countBySubCategories.isLoading}>
-      <div className="flex justify-between items-center">
+      <div className="flex justify-between items-center mb-4">
         <h2 className="font-bold">
           {langKey === 'fr'
             ? m.statsCountBySubCategories
@@ -222,11 +222,13 @@ function LangPanel({
           {m.expandAll}
         </ScButton>
       </div>
-      <PanelBody>
+
+      <div className="space-y-4">
         {countBySubCategories.data?.[langKey]
           .sort(sortById)
           .map((reportNode) => (
             <Node
+              isCategory={true}
               open={openAll}
               reportNode={reportNode}
               path={[]}
@@ -236,18 +238,19 @@ function LangPanel({
               key={reportNode.id}
             />
           ))}
-      </PanelBody>
+      </div>
     </CleanWidePanel>
   )
 }
 
 const Node = ({
-  reportNode,
+  reportNode: n,
   open,
   path,
   start,
   end,
   foreign,
+  isCategory = false,
 }: {
   reportNode: ReportNode
   open?: boolean
@@ -255,6 +258,7 @@ const Node = ({
   start: Date | undefined
   end: Date | undefined
   foreign: boolean
+  isCategory?: boolean
 }) => {
   const iconWidth = 40
   const iconMargin = 8
@@ -264,8 +268,7 @@ const Node = ({
     setIsOpen(!!open)
   }, [open])
 
-  const fullPath = [...path, reportNode.name]
-  const url = '/suivi-des-signalements'
+  const fullPath = [...path, n.name]
   const search = {
     category: fullPath[0],
     subcategories: fullPath.length > 0 ? fullPath.slice(1) : undefined,
@@ -274,47 +277,59 @@ const Node = ({
     isForeign: foreign,
   }
 
+  const canOpen = n.children.length !== 0
   return (
-    <div className="flex items-start mb-2">
-      {reportNode.children.length !== 0 ? (
-        <IconBtn color="primary" onClick={() => setIsOpen((_) => !_)}>
-          <Icon>{isOpen ? 'keyboard_arrow_down' : 'keyboard_arrow_right'}</Icon>
+    <div className="flex items-start">
+      {canOpen ? (
+        <IconBtn
+          color="primary"
+          onClick={() => setIsOpen((_) => !_)}
+          className={'!p-0 !bg-blue-100 hover:!bg-blue-300 !mr-2'}
+        >
+          <Icon style={{ fontSize: isCategory ? '1.3em' : undefined }}>
+            {isOpen ? 'keyboard_arrow_down' : 'keyboard_arrow_right'}
+          </Icon>
         </IconBtn>
       ) : (
-        <IconBtn disabled>
+        <IconBtn disabled className={'!p-0 !mr-2'}>
           <Icon>remove</Icon>
         </IconBtn>
       )}
       <div className="w-full">
         <div className="flex flex-col justify-center min-h-[42px]">
-          {reportNode.id ? (
-            <div className="max-w-[80%]">
-              <Txt truncate block>
-                {reportNode.label ?? reportNode.name}{' '}
-                {reportNode.overriddenCategory
-                  ? `(${reportNode.overriddenCategory})`
-                  : undefined}
-              </Txt>{' '}
-              <Txt color="hint">{reportNode.id}</Txt>
-            </div>
+          {n.id ? (
+            <p className="max-w-[80%] truncate">
+              {canOpen ? (
+                <button
+                  onClick={() => setIsOpen((_) => !_)}
+                  className={`hover:bg-gray-100 font-bold underline ${isCategory ? 'text-xl' : ''}`}
+                >
+                  {n.label ?? n.name}
+                </button>
+              ) : (
+                <span className={`font-bold ${isCategory ? 'text-xl' : ''}`}>
+                  {n.label ?? n.name}
+                </span>
+              )}{' '}
+              {n.overriddenCategory ? `(${n.overriddenCategory}) ` : undefined}
+              <span className="text-sm text-gray-500">id : {n.id}</span>
+            </p>
           ) : (
             <div className="max-w-[80%]">
-              <Txt truncate block color="hint">
-                {reportNode.label ?? reportNode.name}
-              </Txt>{' '}
-              <Txt color="hint">(Ancienne catégorie)</Txt>
+              <p className="text-gray-500">
+                {n.label ?? n.name}
+                <br />
+                (Ancienne catégorie)
+              </p>
             </div>
           )}
-          <Txt color="primary">
-            {' '}
-            Signalements : {reportNode.count}{' '}
-            <Link to={url} search={search}>
-              (voir)
-            </Link>
-          </Txt>
-          <Txt color="primary"> Réclamations : {reportNode.reclamations}</Txt>
+          <p>
+            {n.count} signalements{' '}
+            <QuickSmallReportSearchLink reportSearch={search} label="voir" />
+          </p>
+          <p className="">dont {n.reclamations} réclamations (RéponseConso)</p>
           <div>
-            {reportNode.tags?.map((tag) => (
+            {n.tags?.map((tag) => (
               <Box
                 sx={{
                   mr: 1,
@@ -335,10 +350,9 @@ const Node = ({
             ))}
           </div>
         </div>
-        {isOpen && reportNode.children.length !== 0 && (
+        {isOpen && n.children.length !== 0 && (
           <Box
             sx={{
-              my: 1,
               position: 'relative',
               '&:before': {
                 content: "' '",
@@ -350,8 +364,9 @@ const Node = ({
                 // borderLeft: t => `1px solid ${t.palette.divider}`
               },
             }}
+            className="pt-2 space-y-2"
           >
-            {reportNode.children.sort(sortById).map((reportNode) => (
+            {n.children.sort(sortById).map((reportNode) => (
               <Node
                 open={open}
                 reportNode={reportNode}

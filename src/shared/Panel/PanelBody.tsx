@@ -1,5 +1,4 @@
-import * as React from 'react'
-import { CardContent as MuiCardContent, CardContentProps } from '@mui/material'
+import { CardContentProps, CardContent as MuiCardContent } from '@mui/material'
 
 type PanelBodyProps = CardContentProps
 
