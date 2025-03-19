@@ -7,6 +7,7 @@ export interface ReportNode {
   id?: string
   tags: string[]
   children: ReportNode[]
+  isBlocking: boolean
 }
 
 export interface ReportNodes {
