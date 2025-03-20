@@ -65,17 +65,6 @@ export function useIsAllowedToManageCompanyAccessesQuery(companyId: string) {
   return true
 }
 
-const useGetAccessLevelOfProQuery = (companyId: Id) => {
-  const { api } = useApiContext()
-  return useQuery({
-    queryKey: GetAccessibleByProQueryKeys,
-    queryFn: api.secured.company.getAccessibleByPro,
-    select: (data) => {
-      return data.find((company) => company.id === companyId)?.level
-    },
-  })
-}
-
 export const useActivatedCompanySearchQuery = (filters: CompanySearch) => {
   const { api } = useApiContext()
   const defaultFilters: CompanySearch = {
