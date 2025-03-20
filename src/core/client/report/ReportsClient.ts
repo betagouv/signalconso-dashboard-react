@@ -28,8 +28,10 @@ import {
   User,
 } from '../../model'
 import { ApiClient } from '../ApiClient'
+import { generateZipFileName } from './ReportExport'
 import { ReportNodes } from './ReportNode'
 import { ReportNodeSearch } from './ReportNodeSearch'
+import { format } from 'date-fns'
 
 interface ReportFilterQuerystring {
   readonly departments?: string[]
@@ -174,19 +176,30 @@ export class ReportsClient {
       })
   }
 
-  readonly download = (ids: Id[]) => {
+  // readonly download = (ids: Id[], reportFilter?: ReportSearch) => {
+  //   return this.client
+  //     .getBlob(`/reports/download`, { qs: { ids } })
+  //     .then(
+  //       directDownloadBlob(
+  //         generateZipFileName(reportFilter),
+  //         'application/zip',
+  //       ),
+  //     )
+  // }
+
+  readonly download = (ids: Id[], reportFilter?: ReportSearch) => {
     // TODO Type it and maybe improve it
     return this.client
       .getBlob(`/reports/download`, { qs: { ids } })
       .then(directDownloadBlob('Signalement.pdf', 'application/pdf'))
   }
 
-  readonly downloadZip = (report: Report) => {
+  readonly downloadZip = (ids: Id[], reportFilter?: ReportSearch) => {
     return this.client
-      .getBlob(`/reports/download-with-attachments/${report.id}`)
+      .getBlob(`/reports/download-with-attachments`, { qs: { ids } })
       .then((blob) =>
         directDownloadBlob(
-          `${this.reportName(report)}`,
+          generateZipFileName(reportFilter),
           'application/zip',
         )(blob),
       )

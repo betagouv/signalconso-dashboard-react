@@ -8,6 +8,8 @@ import { config } from '../../conf/config'
 import { useReportSearchQuery } from '../../core/queryhooks/reportQueryHooks'
 import { ScButton } from '../../shared/Button'
 import { ExportReportsPopper } from '../../shared/ExportPopperBtn'
+import { UseSetState, useSetState } from '../../alexlibs/react-hooks-lib'
+import { Id } from '../../core/model'
 
 const ExpandMore = styled((props: { expand: boolean }) => {
   const { expand, ...other } = props
@@ -20,11 +22,19 @@ const ExpandMore = styled((props: { expand: boolean }) => {
   }),
 }))
 
+type SelectReportType = {
+  size: number
+  clear: () => void
+  add: (t: Id | Id[]) => void
+  toArray: () => Array<Id>
+}
+
 type AdvancedSearchControlsProps = {
   expanded: boolean
   _reports: ReturnType<typeof useReportSearchQuery>
   setExpanded: React.Dispatch<React.SetStateAction<boolean>>
   filtersCount: number
+  selectReport: SelectReportType
 }
 
 export const AdvancedSearchBar: React.FC<AdvancedSearchControlsProps> = ({
@@ -32,6 +42,7 @@ export const AdvancedSearchBar: React.FC<AdvancedSearchControlsProps> = ({
   _reports,
   setExpanded,
   filtersCount,
+  selectReport,
 }) => {
   const { m } = useI18n()
   return (
@@ -52,19 +63,8 @@ export const AdvancedSearchBar: React.FC<AdvancedSearchControlsProps> = ({
           <ExpandMore expand={expanded} />
         </span>
       </ScButton>
-      <Box
-        sx={{
-          flexWrap: 'wrap',
-          whiteSpace: 'nowrap',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'flex-end',
-          '& > *': {
-            mb: 1,
-            ml: 1,
-          },
-        }}
-      >
+
+      <span className="flex flex-wrap items-center justify-end whitespace-nowrap gap-2">
         {filtersCount !== 0 && (
           <Badge
             color="error"
@@ -98,7 +98,20 @@ export const AdvancedSearchBar: React.FC<AdvancedSearchControlsProps> = ({
             {m.exportInXLS}
           </Btn>
         </ExportReportsPopper>
-      </Box>
+        <Btn
+          variant="outlined"
+          color="primary"
+          icon="get_app"
+          disabled={selectReport.size != 0}
+          onClick={(_) =>
+            selectReport.add(
+              _reports.result.data!.entities!.map((_) => _.report.id),
+            )
+          }
+        >
+          Exporter en PDF
+        </Btn>
+      </span>
     </Box>
   )
 }

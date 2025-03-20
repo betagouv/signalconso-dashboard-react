@@ -86,6 +86,12 @@ export const Reports = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [_reports.filters])
 
+  useEffect(() => {
+    const { limit } = _reports.filters
+    if (selectReport.size > limit) selectReport.clear()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [_reports.filters])
+
   const filtersCount = useMemo(() => {
     const { offset, limit, ...filters } = _reports.filters
     return Object.keys(cleanObject(filters)).length
@@ -276,6 +282,7 @@ export const Reports = ({
           _reports={_reports}
           setExpanded={setExpanded}
           filtersCount={filtersCount}
+          selectReport={selectReport}
         />
       </CleanDiscreetPanel>
       <Datatable
@@ -290,6 +297,7 @@ export const Reports = ({
                     selectReport.has(_.report.id) &&
                     !ReportUtils.canReopenReport(_.report.status),
                 ) === undefined,
+              reportFilter: _reports.filters,
             }}
           />
         }
@@ -338,15 +346,19 @@ function buildColumns({
   i18n: I18nContextShape
 }): DatatableColumnProps<ReportSearchResult>[] {
   const { m, formatDate } = i18n
-  return [
-    {
-      alwaysVisible: true,
-      id: 'checkbox',
-      head: (() => <CheckboxColumnHead {...{ _reports, selectReport }} />)(),
-      style: { width: 0 },
-      render: (r) => <CheckboxColumn {...{ r, selectReport }} />,
-    },
 
+  const checkboxColumn = {
+    alwaysVisible: true,
+    id: 'checkbox',
+    head: (() => <CheckboxColumnHead {...{ _reports, selectReport }} />)(),
+    style: { width: 0 },
+    render: (r: ReportSearchResult) => (
+      <CheckboxColumn {...{ r, selectReport }} />
+    ),
+  }
+
+  return [
+    checkboxColumn,
     {
       id: 'bookmark',
       head: <>Marque-pages</>,
