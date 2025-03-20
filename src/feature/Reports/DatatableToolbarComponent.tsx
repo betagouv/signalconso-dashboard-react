@@ -7,10 +7,11 @@ import {
   trackEvent,
 } from 'core/plugins/Matomo'
 import React from 'react'
-import { Id } from '../../core/model'
+import { Id, ReportSearch } from '../../core/model'
 import { ScButton } from '../../shared/Button'
 import { DatatableToolbar } from '../../shared/Datatable/DatatableToolbar'
 import { ReportReOpening } from '../Report/ReportReOpening'
+import { publicApiSdk } from '../../core/apiSdkInstances'
 
 type SelectReportType = {
   size: number
@@ -21,15 +22,33 @@ type SelectReportType = {
 type DatatableToolbarComponentProps = {
   selectReport: SelectReportType
   canReOpen: boolean
+  reportFilter: ReportSearch
 }
 
 export const DatatableToolbarComponent: React.FC<
   DatatableToolbarComponentProps
-> = ({ selectReport, canReOpen }) => {
+> = ({ selectReport, canReOpen, reportFilter }) => {
   const { api: apiSdk, connectedUser: user } = useConnectedContext()
   const { m } = useI18n()
+  const MAX_ALLOWED_DOWNLOADS = 25
+
   const downloadReports = useMutation({
-    mutationFn: apiSdk.secured.reports.download,
+    mutationFn: ({
+      ids,
+      reportFilter,
+    }: {
+      ids: Id[]
+      reportFilter: ReportSearch
+    }) => apiSdk.secured.reports.download(ids, reportFilter),
+  })
+  const downloadReportsWithAttachments = useMutation({
+    mutationFn: ({
+      ids,
+      reportFilter,
+    }: {
+      ids: Id[]
+      reportFilter: ReportSearch
+    }) => apiSdk.secured.reports.downloadZip(ids, reportFilter),
   })
   return (
     <DatatableToolbar
@@ -47,14 +66,48 @@ export const DatatableToolbarComponent: React.FC<
                 EventCategories.Exports,
                 ExportsActions.exportReportsPdf,
               )
-              downloadReports.mutate(selectReport.toArray())
+              downloadReports.mutate({
+                ids: selectReport.toArray(),
+                reportFilter,
+              })
             }}
             sx={{
               marginLeft: 'auto',
             }}
           >
-            Télécharger
+            Export
           </ScButton>
+          {user.isNotPro && (
+            <ScButton
+              loading={downloadReportsWithAttachments.isPending}
+              variant="contained"
+              icon="file_download"
+              disabled={selectReport.size > MAX_ALLOWED_DOWNLOADS}
+              onClick={() => {
+                trackEvent(
+                  user,
+                  EventCategories.Exports,
+                  ExportsActions.exportReportsPdf,
+                )
+                downloadReportsWithAttachments.mutate({
+                  ids: selectReport.toArray(),
+                  reportFilter,
+                })
+              }}
+              sx={{
+                marginLeft: 'auto',
+              }}
+            >
+              Export avec Pièces jointes &nbsp;
+              {selectReport.size > MAX_ALLOWED_DOWNLOADS ? (
+                <span className={'text-red-400'}>
+                  ({MAX_ALLOWED_DOWNLOADS} MAX)
+                </span>
+              ) : (
+                <></>
+              )}
+            </ScButton>
+          )}
           {canReOpen && <ReportReOpening reportIds={selectReport.toArray()} />}
         </div>
       }
