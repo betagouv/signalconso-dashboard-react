@@ -176,15 +176,22 @@ export class ReportsClient {
       })
   }
 
+  // readonly download = (ids: Id[], reportFilter?: ReportSearch) => {
+  //   return this.client
+  //     .getBlob(`/reports/download`, { qs: { ids } })
+  //     .then(
+  //       directDownloadBlob(
+  //         generateZipFileName(reportFilter),
+  //         'application/zip',
+  //       ),
+  //     )
+  // }
+
   readonly download = (ids: Id[], reportFilter?: ReportSearch) => {
+    // TODO Type it and maybe improve it
     return this.client
       .getBlob(`/reports/download`, { qs: { ids } })
-      .then(
-        directDownloadBlob(
-          generateZipFileName(reportFilter),
-          'application/zip',
-        ),
-      )
+      .then(directDownloadBlob('Signalement.pdf', 'application/pdf'))
   }
 
   readonly downloadZip = (ids: Id[], reportFilter?: ReportSearch) => {

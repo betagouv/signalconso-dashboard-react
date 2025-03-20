@@ -77,37 +77,37 @@ export const DatatableToolbarComponent: React.FC<
           >
             Export
           </ScButton>
-          {user.isNotPro && (
-            <ScButton
-              loading={downloadReportsWithAttachments.isPending}
-              variant="contained"
-              icon="file_download"
-              disabled={selectReport.size > MAX_ALLOWED_DOWNLOADS}
-              onClick={() => {
-                trackEvent(
-                  user,
-                  EventCategories.Exports,
-                  ExportsActions.exportReportsPdf,
-                )
-                downloadReportsWithAttachments.mutate({
-                  ids: selectReport.toArray(),
-                  reportFilter,
-                })
-              }}
-              sx={{
-                marginLeft: 'auto',
-              }}
-            >
-              Export avec Pièces jointes &nbsp;
-              {selectReport.size > MAX_ALLOWED_DOWNLOADS ? (
-                <span className={'text-red-400'}>
-                  ({MAX_ALLOWED_DOWNLOADS} MAX)
-                </span>
-              ) : (
-                <></>
-              )}
-            </ScButton>
-          )}
+          {/*{user.isNotPro && (*/}
+          {/*  <ScButton*/}
+          {/*    loading={downloadReportsWithAttachments.isPending}*/}
+          {/*    variant="contained"*/}
+          {/*    icon="file_download"*/}
+          {/*    disabled={selectReport.size > MAX_ALLOWED_DOWNLOADS}*/}
+          {/*    onClick={() => {*/}
+          {/*      trackEvent(*/}
+          {/*        user,*/}
+          {/*        EventCategories.Exports,*/}
+          {/*        ExportsActions.exportReportsPdf,*/}
+          {/*      )*/}
+          {/*      downloadReportsWithAttachments.mutate({*/}
+          {/*        ids: selectReport.toArray(),*/}
+          {/*        reportFilter,*/}
+          {/*      })*/}
+          {/*    }}*/}
+          {/*    sx={{*/}
+          {/*      marginLeft: 'auto',*/}
+          {/*    }}*/}
+          {/*  >*/}
+          {/*    Export avec Pièces jointes &nbsp;*/}
+          {/*    {selectReport.size > MAX_ALLOWED_DOWNLOADS ? (*/}
+          {/*      <span className={'text-red-400'}>*/}
+          {/*        ({MAX_ALLOWED_DOWNLOADS} MAX)*/}
+          {/*      </span>*/}
+          {/*    ) : (*/}
+          {/*      <></>*/}
+          {/*    )}*/}
+          {/*  </ScButton>*/}
+          {/*)}*/}
           {canReOpen && <ReportReOpening reportIds={selectReport.toArray()} />}
         </div>
       }
