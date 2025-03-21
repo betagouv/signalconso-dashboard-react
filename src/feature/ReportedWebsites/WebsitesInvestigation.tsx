@@ -31,6 +31,7 @@ import { SiretExtraction } from './SiretExtraction'
 import { StatusChip } from './StatusChip'
 import { WebsitesFilters } from './WebsitesFilters'
 import { WebsiteTools } from './WebsiteTools'
+import { QuickSmallReportSearchLink } from '../Report/quickSmallLinks'
 
 export const WebsitesInvestigation = ({
   search,
@@ -215,7 +216,20 @@ export const WebsitesInvestigation = ({
           {
             head: m.reports,
             id: 'reports',
-            render: (_) => _.count,
+            render: (_) => (
+              <QuickSmallReportSearchLink
+                icon={false}
+                label={
+                  _.count === 1
+                    ? `${_.count} signalement`
+                    : `${_.count} signalements`
+                }
+                reportSearch={{
+                  hasWebsite: true,
+                  websiteURL: _.host,
+                }}
+              />
+            ),
           },
           {
             head: m.association,

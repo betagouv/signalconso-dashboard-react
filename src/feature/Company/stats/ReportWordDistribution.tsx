@@ -25,7 +25,7 @@ export const ReportWordDistribution = ({ companyId }: Props) => {
               <Link
                 to="/suivi-des-signalements"
                 search={{
-                  description: reportWordCount.value,
+                  details: reportWordCount.value,
                   companyIds: [companyId],
                 }}
               >
