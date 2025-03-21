@@ -129,7 +129,11 @@ export const ReportedPhones = () => {
                 <>
                   <QuickSmallReportSearchLink
                     icon={false}
-                    label={`${_.count} signalements`}
+                    label={
+                      _.count === 1
+                        ? `${_.count} signalement`
+                        : `${_.count} signalements`
+                    }
                     reportSearch={{
                       hasPhone: true,
                       phone: _.phone,
