@@ -194,14 +194,22 @@ export class ReportsClient {
       .then(directDownloadBlob('Signalement.pdf', 'application/pdf'))
   }
 
+  // readonly downloadZip = (ids: Id[], reportFilter?: ReportSearch) => {
+  //   return this.client
+  //     .getBlob(`/reports/download-with-attachments`, { qs: { ids } })
+  //     .then((blob) =>
+  //       directDownloadBlob(
+  //         generateZipFileName(reportFilter),
+  //         'application/zip',
+  //       )(blob),
+  //     )
+  // }
+
   readonly downloadZip = (ids: Id[], reportFilter?: ReportSearch) => {
     return this.client
-      .getBlob(`/reports/download-with-attachments`, { qs: { ids } })
+      .getBlob(`/reports/download-with-attachments/${ids[0]}`)
       .then((blob) =>
-        directDownloadBlob(
-          generateZipFileName(reportFilter),
-          'application/zip',
-        )(blob),
+        directDownloadBlob(`signalement.zip`, 'application/zip')(blob),
       )
   }
 
