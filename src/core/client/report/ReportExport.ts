@@ -9,13 +9,11 @@ export function generateZipFileName(reportFilter?: ReportSearch): string {
     reportFilter?.departments?.join('_'),
   )
 
-  const siren = addPrefix('siren', reportFilter?.siretSirenList?.join('_'))
+  const company = addPrefix('company', reportFilter?.siretSirenList?.join('_'))
 
   const category = addPrefix('category', reportFilter?.category)
 
-  const name = departments.concat(siren).concat(category).concat(tags)
-
-  console.log(name.trim().concat('.zip'))
+  const name = departments.concat(company).concat(category).concat(tags)
 
   return format(new Date(), 'dd-MM-yy')
     .concat('_')
@@ -25,5 +23,5 @@ export function generateZipFileName(reportFilter?: ReportSearch): string {
 }
 
 function addPrefix(prefix: string, s: string | undefined) {
-  return s ? `${prefix}_${s}` : ''
+  return s && s != '' ? `${prefix}_${s}` : ''
 }

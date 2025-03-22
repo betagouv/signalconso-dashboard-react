@@ -94,7 +94,12 @@ export const AdvancedSearchBar: React.FC<AdvancedSearchControlsProps> = ({
             .getOrElse('')}
           filters={_reports.filters}
         >
-          <Btn variant="outlined" color="primary" icon="get_app">
+          <Btn
+            disabled={selectReport.size != 0}
+            variant="outlined"
+            color="primary"
+            icon="get_app"
+          >
             {m.exportInXLS}
           </Btn>
         </ExportReportsPopper>
