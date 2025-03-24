@@ -2,14 +2,14 @@ import { Icon } from '@mui/material'
 import { Fender } from '../../../alexlibs/mui-extension'
 import {
   EventActionValues,
-  ReportEvent,
+  EventWithUser,
 } from '../../../core/client/event/Event'
 import { useI18n } from '../../../core/i18n'
 import { ReportEventIcon } from './ReportEventIcon'
 import { UserNameLabel } from '../../../shared/UserNameLabel'
 
 interface Props {
-  events?: ReportEvent[]
+  events?: EventWithUser[]
 }
 
 export const ReportEvents = ({ events }: Props) => {
@@ -26,10 +26,14 @@ export const ReportEvents = ({ events }: Props) => {
             {events
               .sort(
                 (a, b) =>
-                  a.data.creationDate.getTime() - b.data.creationDate.getTime(),
+                  a.event.creationDate.getTime() -
+                  b.event.creationDate.getTime(),
               )
-              .map((event) => (
-                <ReportEventComponent key={event.data.id} event={event} />
+              .map((eventWithUser) => (
+                <ReportEventComponent
+                  key={eventWithUser.event.id}
+                  eventWithUser={eventWithUser}
+                />
               ))}
           </tbody>
         </table>
@@ -38,66 +42,70 @@ export const ReportEvents = ({ events }: Props) => {
   )
 }
 
-const ReportEventComponent = ({ event }: { event: ReportEvent }) => {
+const ReportEventComponent = ({
+  eventWithUser,
+}: {
+  eventWithUser: EventWithUser
+}) => {
   const { formatDate, formatTime } = useI18n()
 
   return (
     <tr className="text-base border-b-[1px] last:border-b-0 border-solid border-0 border-gray-300">
       <td className="p-2 w-[6.5rem]">
         <p className="font-bold">
-          {formatDate(event.data.creationDate)}{' '}
+          {formatDate(eventWithUser.event.creationDate)}{' '}
           <span className=" font-normal text-gray-500">
-            à {formatTime(event.data.creationDate)}
+            à {formatTime(eventWithUser.event.creationDate)}
           </span>
         </p>
       </td>
       <td className="p-2  w-10">
-        <ReportEventIcon action={event.data.action} />
+        <ReportEventIcon action={eventWithUser.event.action} />
       </td>
       <td className="p-2 ">
-        {translateEventAction(event.data.action)}
-        {event.user && (
+        {translateEventAction(eventWithUser.event.action)}
+        {eventWithUser.user && (
           <div className="text-sm text-gray-500">
             <Icon className="!text-sm">person</Icon>
             &nbsp;
             <span className="">
               <UserNameLabel
-                lastName={event.user.lastName}
-                firstName={event.user.firstName}
+                lastName={eventWithUser.user.lastName}
+                firstName={eventWithUser.user.firstName}
               />{' '}
-              {event.user.role}
+              {eventWithUser.user.role}
             </span>
           </div>
         )}
-        {event.data.action === EventActionValues.UserAccessCreated && (
+        {eventWithUser.event.action === EventActionValues.UserAccessCreated && (
           <p className="text-sm text-gray-500">
-            Utilisateur concerné : {(event.data.details as any)?.email} (
-            {(event.data.details as any)?.level})
+            Utilisateur concerné : {(eventWithUser.event.details as any)?.email}{' '}
+            ({(eventWithUser.event.details as any)?.level})
           </p>
         )}
-        {event.data.action === EventActionValues.UserAccessRemoved && (
+        {eventWithUser.event.action === EventActionValues.UserAccessRemoved && (
           <p className="text-sm text-gray-500">
-            Utilisateur impacté : {(event.data.details as any)?.email}
+            Utilisateur impacté : {(eventWithUser.event.details as any)?.email}
           </p>
         )}
         <p className="text-sm text-gray-500">
-          {(event.data.details as any)?.description}
+          {(eventWithUser.event.details as any)?.description}
         </p>
-        {(event.data.details as any)?.comment && (
+        {(eventWithUser.event.details as any)?.comment && (
           <div className={'  mt-1  flex-row'}>
             <span className="text-sm text-black">Commentaire :</span>
             <p className="text-sm text-blue-600">
-              {(event.data.details as any)?.comment}
+              {(eventWithUser.event.details as any)?.comment}
             </p>
           </div>
         )}
-        {event.data.action === EventActionValues.Reattribution && (
+        {eventWithUser.event.action === EventActionValues.Reattribution && (
           <>
             <p className="text-sm text-gray-500">
-              Signalement : {(event.data.details as any)?.newReportId}
+              Signalement : {(eventWithUser.event.details as any)?.newReportId}
             </p>
             <p className="text-sm text-gray-500">
-              Entreprise : {(event.data.details as any)?.newCompanyId}
+              Entreprise : {(eventWithUser.event.details as any)?.newCompanyId}
             </p>
           </>
         )}

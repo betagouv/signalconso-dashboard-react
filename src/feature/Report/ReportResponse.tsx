@@ -7,7 +7,6 @@ import { EngagementReminderPeriod } from '../../core/client/engagement/Engagemen
 import {
   ConsumerReview,
   EventActionValues,
-  EventUser,
   ExistingReportResponse,
   ReportAction,
   ReportProResponseEvent,
@@ -17,7 +16,7 @@ import {
 import { FileOrigin, UploadedFile } from '../../core/client/file/UploadedFile'
 import { useApiContext } from '../../core/context/ApiContext'
 import { useConnectedContext } from '../../core/context/connected/connectedContext'
-import { Id, Report, ReportStatus } from '../../core/model'
+import { Id, MinimalUserEvent, Report, ReportStatus } from '../../core/model'
 import { GetReportEventsQueryKeys } from '../../core/queryhooks/eventQueryHooks'
 import { GetReportQueryKeys } from '../../core/queryhooks/reportQueryHooks'
 import { Divider } from '../../shared/Divider'
@@ -56,9 +55,9 @@ export function ReportResponseComponent({
         ),
   })
 
-  const details = response.data.details
+  const details = response.event.details
   const engagementExpirationDate = addDays(
-    response.data.creationDate,
+    response.event.creationDate,
     EngagementReminderPeriod,
   )
   const hasEngagement = report.status === ReportStatus.PromesseAction
@@ -145,7 +144,7 @@ function ResponseDetails({
 }: {
   details: ExistingReportResponse
   engagementExpirationDate?: Date
-  user?: EventUser
+  user?: MinimalUserEvent
   hasEngagementReview: boolean
 }) {
   const { m } = useI18n()

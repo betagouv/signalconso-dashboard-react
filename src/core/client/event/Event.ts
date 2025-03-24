@@ -1,22 +1,16 @@
-import { Id } from '../../model'
-
-export interface ReportEvent {
-  data: Event
-  user?: EventUser
-}
-
-// a precise subtype
-export type ReportProResponseEvent = ReportEvent & {
-  action: EventActionValues.ReportProResponse
-  user?: EventUser
-  data: {
-    details: ExistingReportResponse
-  }
-}
+import { Id, MinimalUserEvent } from '../../model'
 
 export interface EventWithUser {
   event: Event
-  user: EventUser
+  user?: MinimalUserEvent
+}
+
+// a precise subtype
+export type ReportProResponseEvent = EventWithUser & {
+  action: EventActionValues.ReportProResponse
+  event: {
+    details: ExistingReportResponse
+  }
 }
 
 export interface Event {
@@ -33,12 +27,6 @@ export interface Event {
 }
 
 export type EventType = 'PRO' | 'CONSO' | 'DGCCRF' | 'ADMIN' | 'SYSTEM'
-
-export interface EventUser {
-  firstName: string
-  lastName: string
-  role: string
-}
 
 export enum EventActionValues {
   Creation = 'Signalement du consommateur',
