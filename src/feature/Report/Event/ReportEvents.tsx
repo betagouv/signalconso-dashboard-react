@@ -7,6 +7,7 @@ import {
 import { useI18n } from '../../../core/i18n'
 import { ReportEventIcon } from './ReportEventIcon'
 import { UserNameLabel } from '../../../shared/UserNameLabel'
+import { Link } from '@tanstack/react-router'
 
 interface Props {
   events?: EventWithUser[]
@@ -100,14 +101,26 @@ const ReportEventComponent = ({
           </div>
         )}
         {eventWithUser.event.action === EventActionValues.Reattribution && (
-          <>
-            <p className="text-sm text-gray-500">
-              Signalement : {(eventWithUser.event.details as any)?.newReportId}
-            </p>
-            <p className="text-sm text-gray-500">
-              Entreprise : {(eventWithUser.event.details as any)?.newCompanyId}
-            </p>
-          </>
+          <div className="flex flex-col">
+            <Link
+              className="text-sm text-gray-500"
+              to="/suivi-des-signalements/report/$reportId"
+              params={{
+                reportId: (eventWithUser.event.details as any)?.newReportId,
+              }}
+            >
+              Voir le nouveau signalement
+            </Link>
+            <Link
+              className="text-sm text-gray-500"
+              to="/entreprise/$companyId/bilan"
+              params={{
+                companyId: (eventWithUser.event.details as any)?.newCompanyId,
+              }}
+            >
+              Voir la nouvelle entreprise
+            </Link>
+          </div>
         )}
       </td>
     </tr>

@@ -39,6 +39,7 @@ export enum EventActionValues {
   ReportProResponse = 'Réponse du professionnel au signalement',
   ReportProEngagementHonoured = 'Engagement du professionnel marqué comme honoré',
   ReportReviewOnResponse = 'Avis du consommateur sur la réponse du professionnel',
+  EngagementReview = "Avis du consommateur sur l'engagement du professionnel",
   ReportClosedByNoReading = 'Signalement non consulté',
   ReportClosedByNoAction = 'Signalement consulté ignoré',
   EmailConsumerAcknowledgment = 'Email « Accusé de réception » envoyé au consommateur',

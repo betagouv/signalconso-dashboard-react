@@ -48,7 +48,7 @@ export const useWebsiteWithClosedCompanyQuery = () => {
     limit: 25,
     offset: 0,
     identificationStatus: [IdentificationStatus.Identified],
-    isOpen: null,
+    isOpen: false,
     isMarketplace: null,
   }
   return useQueryPaginate(
