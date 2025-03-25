@@ -14,6 +14,7 @@ import {
   CompanyWithReportsCount,
   Id,
   Paginate,
+  ProCompaniesExtended,
 } from '../../model'
 import { ApiClient } from '../ApiClient'
 import { AlbertProblemsResult } from '../albert/AlbertProblemsResult'
@@ -101,9 +102,15 @@ export class CompanyClient {
     }))
   }
 
-  readonly getAccessibleByPro = () => {
+  readonly getAccessibleByProAsList = () => {
     return this.client.get<CompanyWithAccessLevel[]>(
       `/companies/connected-user`,
+    )
+  }
+
+  readonly getAccessibleByProExtended = () => {
+    return this.client.get<ProCompaniesExtended>(
+      `/companies/connected-user/extended`,
     )
   }
 
