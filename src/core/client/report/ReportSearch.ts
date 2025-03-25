@@ -20,7 +20,6 @@ export interface ReportSearch {
   category?: string
   subcategories?: string[]
   details?: string
-  description?: string
   contactAgreement?: boolean
   hasPhone?: boolean
   hasWebsite?: boolean

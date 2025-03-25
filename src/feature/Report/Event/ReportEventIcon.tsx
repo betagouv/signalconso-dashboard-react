@@ -1,4 +1,4 @@
-import { Icon, IconProps, Theme, useTheme } from '@mui/material'
+import { Icon, Theme, useTheme } from '@mui/material'
 import { styleUtils } from '../../../core/theme'
 import { EventActionValues } from '../../../core/client/event/Event'
 import { fnSwitch } from '../../../alexlibs/ts-utils'
@@ -21,9 +21,11 @@ const getReportEventIcon = (action: EventActionValues) =>
       [EventActionValues.ConsumerAttachments]: 'attachment',
       [EventActionValues.ProfessionalAttachments]: 'attachment',
       [EventActionValues.ReportReviewOnResponse]: 'rate_review',
+      [EventActionValues.EngagementReview]: 'rate_review',
       [EventActionValues.ReportClosedByNoAction]: 'do_disturb_on',
       [EventActionValues.Creation]: 'add_alert',
       [EventActionValues.ReportAffectedToUser]: 'person_add',
+      [EventActionValues.Reattribution]: 'replay',
     },
     (_) => {
       const toLower = _.toLowerCase()
@@ -50,8 +52,10 @@ const getReportEventColor = (t: Theme) => (action: EventActionValues) =>
       [EventActionValues.ConsumerAttachments]: t.palette.text.disabled,
       [EventActionValues.ProfessionalAttachments]: t.palette.text.disabled,
       [EventActionValues.ReportReviewOnResponse]: styleUtils(t).color.success,
+      [EventActionValues.EngagementReview]: styleUtils(t).color.success,
       [EventActionValues.ReportClosedByNoAction]: styleUtils(t).color.error,
       [EventActionValues.Creation]: styleUtils(t).color.info,
+      [EventActionValues.Reattribution]: styleUtils(t).color.info,
     },
     (_) => t.palette.text.disabled,
   )

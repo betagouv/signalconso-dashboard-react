@@ -1,14 +1,12 @@
-import { EventActionValues } from 'core/client/event/Event'
+import { EventActionValues, EventWithUser } from 'core/client/event/Event'
 
 import { EventType, Report } from 'core/model'
 
-import { ReportEvent } from 'core/client/event/Event'
-
 const CONSO: EventType = 'CONSO'
 
-export const creationReportEvent = (report: Report): ReportEvent =>
+export const creationReportEvent = (report: Report): EventWithUser =>
   Object.freeze({
-    data: {
+    event: {
       id: 'dummy',
       details: {} as any,
       reportId: report.id,

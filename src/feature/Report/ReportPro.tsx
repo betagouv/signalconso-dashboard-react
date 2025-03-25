@@ -263,7 +263,7 @@ function ResponseBlock({
     <CleanWidePanel>
       <h1 className="font-bold text-3xl">Votre réponse</h1>
       <p className="mb-4">
-        Le {formatDateTime(responseEvent.data.creationDate)}
+        Le {formatDateTime(responseEvent.event.creationDate)}
       </p>
       <ReportResponseComponent
         canEditFile={false}

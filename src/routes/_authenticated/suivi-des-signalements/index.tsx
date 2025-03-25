@@ -36,7 +36,6 @@ export const Route = createFileRoute('/_authenticated/suivi-des-signalements/')(
         category: (search.category as string) || undefined,
         subcategories: (search.subcategories as string[]) || undefined,
         details: (search.details as string) || undefined,
-        description: (search.description as string) || undefined,
         contactAgreement: unknownToBoolean(search.contactAgreement),
         hasPhone: unknownToBoolean(search.hasPhone),
         hasWebsite: unknownToBoolean(search.hasWebsite),

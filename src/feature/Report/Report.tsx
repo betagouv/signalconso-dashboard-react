@@ -100,7 +100,7 @@ const ReportViewStandard = ({
   } = useGetReportEventsQuery(id!)
 
   const isAdminClosure = !!reportEvents?.find(
-    (e) => e.data.action === 'SolvedContractualDisputeReportDeletion',
+    (e) => e.event.action === 'SolvedContractualDisputeReportDeletion',
   )
 
   const downloadReport = useMutation({
