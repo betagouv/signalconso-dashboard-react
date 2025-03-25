@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query'
 import { useMemo } from 'react'
 import {
   EventActionValues,
-  ReportEvent,
+  EventWithUser,
   ReportProResponseEvent,
 } from '../client/event/Event'
 import { useApiContext } from '../context/ApiContext'
@@ -19,7 +19,7 @@ export const GetReportEventsQueryKeys = (id: string) => [
 
 export const useGetCompanyEventsQuery = (
   companySiret: string,
-  options?: UseQueryOpts<ReportEvent[], string[]>,
+  options?: UseQueryOpts<EventWithUser[], string[]>,
 ) => {
   const { api } = useApiContext()
   return useQuery({
@@ -31,7 +31,7 @@ export const useGetCompanyEventsQuery = (
 
 export const useGetReportEventsQuery = (
   id: string,
-  options?: UseQueryOpts<ReportEvent[], string[]>,
+  options?: UseQueryOpts<EventWithUser[], string[]>,
 ) => {
   const { api } = useApiContext()
   const _reportEvents = useQuery({
@@ -42,7 +42,7 @@ export const useGetReportEventsQuery = (
   const reportEvents = _reportEvents.data
   const responseEvent = useMemo(() => {
     return reportEvents?.find(
-      (_) => _.data.action === EventActionValues.ReportProResponse,
+      (_) => _.event.action === EventActionValues.ReportProResponse,
     ) as ReportProResponseEvent | undefined
   }, [reportEvents])
   return {

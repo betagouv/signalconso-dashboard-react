@@ -40,6 +40,10 @@ export type MinimalUser = {
   lastName: string
 }
 
+export type MinimalUserEvent = MinimalUser & {
+  role: string
+}
+
 export const isUserActive = (user: User) =>
   user.lastEmailValidation.getTime() > subMonths(new Date(), 3).getTime()
 

@@ -142,7 +142,7 @@ function NumberWidgetBlackmail({ companyId }: Props) {
 function NumberWidgetDocsSent({ siret }: { siret: string }) {
   const _companyEvents = useGetCompanyEventsQuery(siret)
   const count = _companyEvents.data?.filter(
-    (_) => _.data.action === EventActionValues.PostAccountActivationDoc,
+    (_) => _.event.action === EventActionValues.PostAccountActivationDoc,
   ).length
   return (
     <Widget loading={_companyEvents.isLoading}>

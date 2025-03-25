@@ -1,4 +1,4 @@
-import { Event, Id, ReportEvent } from '../../model'
+import { Event, Id, EventWithUser } from '../../model'
 import { ApiClient } from '../ApiClient'
 
 export class EventClient {
@@ -6,22 +6,22 @@ export class EventClient {
 
   readonly getByReportId = (reportId: Id) => {
     return this.client
-      .get<ReportEvent[]>(`reports/${reportId}/events`)
+      .get<EventWithUser[]>(`reports/${reportId}/events`)
       .then((events) =>
-        events.map((reportEvent) => ({
-          ...reportEvent,
-          data: EventClient.mapEvent(reportEvent.data),
+        events.map((eventWithUser) => ({
+          ...eventWithUser,
+          event: EventClient.mapEvent(eventWithUser.event),
         })),
       )
   }
 
   readonly getBySiret = (siret: string) => {
     return this.client
-      .get<ReportEvent[]>(`companies/${siret}/events`)
+      .get<EventWithUser[]>(`companies/${siret}/events`)
       .then((events) =>
-        events.map((reportEvent) => ({
-          ...reportEvent,
-          data: EventClient.mapEvent(reportEvent.data),
+        events.map((eventWithUser) => ({
+          ...eventWithUser,
+          event: EventClient.mapEvent(eventWithUser.event),
         })),
       )
   }
