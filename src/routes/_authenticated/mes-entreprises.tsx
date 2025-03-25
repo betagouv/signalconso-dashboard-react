@@ -1,6 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { CompaniesPro } from '../../feature/CompaniesPro/CompaniesPro'
+import { CompaniesProLegacy } from '../../feature/CompaniesPro/CompaniesProLegacy'
 
 export const Route = createFileRoute('/_authenticated/mes-entreprises')({
-  component: CompaniesPro,
+  component: CompaniesProLegacy,
 })
