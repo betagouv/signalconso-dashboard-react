@@ -7,11 +7,9 @@ import {
   TextField,
 } from '@mui/material'
 import { useMutation, useQuery } from '@tanstack/react-query'
-import { useLocation, useNavigate } from '@tanstack/react-router'
+import { useNavigate } from '@tanstack/react-router'
 import { publicApiSdk } from 'core/apiSdkInstances'
 import { validatePasswordComplexity } from 'core/helper/passwordComplexity'
-import { parse } from 'qs'
-import { useMemo } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { PasswordRequirementsDesc } from 'shared/PasswordRequirementsDesc'
 import { Alert, makeSx, Txt } from '../../alexlibs/mui-extension'
@@ -46,10 +44,11 @@ const sx = makeSx({
 
 interface Props {
   siret?: string
+  urlToken: string
   onUserActivated: (_: User) => void
 }
 
-export const UserActivation = ({ siret, onUserActivated }: Props) => {
+export const UserActivation = ({ urlToken, siret, onUserActivated }: Props) => {
   const { m } = useI18n()
   const _activate = useMutation({
     mutationFn: (params: {
@@ -64,7 +63,6 @@ export const UserActivation = ({ siret, onUserActivated }: Props) => {
       ),
   })
   const { toastSuccess, toastError } = useToast()
-  const { searchStr } = useLocation() // TODO Safe search avec tanstack
   const history = useNavigate()
   const {
     register,
@@ -76,11 +74,7 @@ export const UserActivation = ({ siret, onUserActivated }: Props) => {
     mode: 'onChange',
     defaultValues: { email: ' ' },
   })
-  const urlToken = useMemo(
-    () => parse(searchStr.replace(/^\?/, '')).token as string,
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [],
-  )
+
   const _tokenInfo = useQuery({
     queryKey: FetchTokenInfoQueryKeys(urlToken, siret),
     queryFn: () => publicApiSdk.user.fetchTokenInfo(urlToken, siret),

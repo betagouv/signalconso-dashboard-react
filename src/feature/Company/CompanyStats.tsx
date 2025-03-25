@@ -1,9 +1,8 @@
 import { useI18n } from 'core/i18n'
 import { reportStatusColor } from 'shared/reportStatusUtils'
-import { useEffectFn, useMemoFn } from '../../alexlibs/react-hooks-lib'
+import { useMemoFn } from '../../alexlibs/react-hooks-lib'
 import { ReportStatus } from '../../core/client/report/Report'
 import { CompanyWithReportsCount, User } from '../../core/model'
-import { useReportSearchQuery } from '../../core/queryhooks/reportQueryHooks'
 import {
   useGetTagsQuery,
   useStatusDistributionQuery,
@@ -27,6 +26,7 @@ import {
   CompanyConfidentialNumbers,
   CompanyCoreNumbers,
 } from './stats/companyNumberWidgets'
+
 type ExtendedUser = User & {
   isPro: boolean
 }
@@ -40,23 +40,9 @@ export function CompanyStats({
 }) {
   const { m } = useI18n()
   const id = company.id
-  const _reports = useReportSearchQuery(
-    { hasCompany: true, offset: 0, limit: 5 },
-    false,
-  )
   const _tags = useGetTagsQuery(id)
   const _statusDistribution = useStatusDistributionQuery(id, {
     enabled: !connectedUser.isPro,
-  })
-
-  useEffectFn(company, (_) => {
-    _reports.updateFilters({
-      hasCompany: true,
-      siretSirenList: [_.siret],
-      offset: 0,
-      limit: 5,
-    })
-    _reports.enable()
   })
 
   const tagsDistribution = useMemoFn(_tags.data, (_) =>

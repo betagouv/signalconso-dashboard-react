@@ -3,11 +3,23 @@ import { useLoginManagement } from '../core/context/loginManagement/loginManagem
 import { UserActivation } from '../feature/Users/UserActivation'
 
 export const Route = createFileRoute('/entreprise/rejoindre/$siret')({
+  validateSearch: (search: Record<string, unknown>): { token: string } => {
+    return {
+      token: (search.token as string) || '',
+    }
+  },
   component: RouteComponent,
 })
 
 function RouteComponent() {
   const { siret } = Route.useParams()
+  const { token } = Route.useSearch()
   const { setConnectedUser } = useLoginManagement()
-  return <UserActivation siret={siret} onUserActivated={setConnectedUser} />
+  return (
+    <UserActivation
+      urlToken={token}
+      siret={siret}
+      onUserActivated={setConnectedUser}
+    />
+  )
 }

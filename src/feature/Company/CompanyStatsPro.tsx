@@ -1,10 +1,8 @@
 import { useI18n } from 'core/i18n'
 import { useStatusDistributionProQuery } from 'core/queryhooks/statsQueryHooks'
 import { reportStatusProColor } from 'shared/reportStatusUtils'
-import { useEffectFn } from '../../alexlibs/react-hooks-lib'
 import { ReportStatusPro } from '../../core/client/report/Report'
 import { CompanyWithReportsCount, User } from '../../core/model'
-import { useReportSearchQuery } from '../../core/queryhooks/reportQueryHooks'
 import { CompanyChartPanel } from './stats/CompanyChartPanel'
 import { CompanyInfo } from './stats/CompanyInfo'
 import {
@@ -27,22 +25,8 @@ export function CompanyStatsPro({
 }) {
   const { m } = useI18n()
   const id = company.id
-  const _reports = useReportSearchQuery(
-    { hasCompany: true, offset: 0, limit: 5 },
-    false,
-  )
   const _statusDistribution = useStatusDistributionProQuery(id, {
     enabled: connectedUser.isPro,
-  })
-
-  useEffectFn(company, (_) => {
-    _reports.updateFilters({
-      hasCompany: true,
-      siretSirenList: [_.siret],
-      offset: 0,
-      limit: 5,
-    })
-    _reports.enable()
   })
 
   return (
