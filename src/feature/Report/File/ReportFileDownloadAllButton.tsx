@@ -3,6 +3,7 @@ import { useMutation } from '@tanstack/react-query'
 import { FileOrigin } from '../../../core/client/file/UploadedFile'
 import { Report } from '../../../core/client/report/Report'
 import { useApiContext } from '../../../core/context/ApiContext'
+import { ScButton } from '../../../shared/Button'
 
 export function ReportFileDownloadAllButton({
   report,
@@ -25,8 +26,12 @@ export function ReportFileDownloadAllButton({
   }
 
   return (
-    <a target="_blank" className="flex mt-1 ml-1" onClick={download}>
-      <span className="text-sm">({m.downloadAll})</span>
-    </a>
+    <ScButton
+      style={{ textTransform: 'none', textDecoration: 'underline' }}
+      onClick={download}
+      loading={downloadReport.isPending}
+    >
+      ({m.downloadAll})
+    </ScButton>
   )
 }
