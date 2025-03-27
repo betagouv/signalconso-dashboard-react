@@ -118,7 +118,7 @@ function RowContent({
         </div>
         <div className="flex flex-col items-center justify-center">
           {directAccessesCount === undefined ? (
-            '-'
+            <Icon className="text-gray-400">do_not_disturb</Icon>
           ) : (
             <Link
               className={`text-scbluefrance`}
