@@ -2,12 +2,14 @@ import {
   Accordion,
   AccordionDetails,
   AccordionSummary,
+  FormControlLabel,
   Icon,
+  Switch,
 } from '@mui/material'
 import { Link } from '@tanstack/react-router'
 import { CompanyWithAccessAndCounts } from 'core/client/company/Company'
 import { useGetAccessibleByProExtendedQuery } from 'core/queryhooks/companyQueryHooks'
-import { QuickSmallReportSearchLink } from 'feature/Report/quickSmallLinks'
+import { ReportSearchLink } from 'feature/Report/quickSmallLinks'
 import { AddressComponent } from 'shared/Address'
 import { Page } from 'shared/Page'
 import { PageTitle } from 'shared/Page/PageTitle'
@@ -66,7 +68,7 @@ function TopLevelRow({
               {secondLevel.length} établissements secondaires
             </AccordionSummary>
             <AccordionDetails>
-              <div className="divide-y divide-gray-400">
+              <div className="divide-y divide-gray-300">
                 {secondLevel.map((c) => {
                   return (
                     <SecondLevelRow key={c.company.id} {...{ company: c }} />
@@ -98,8 +100,8 @@ function RowContent({
     <div
       className={`space-y-4 ${isTopLevel ? 'bg-white border-gray-400 border px-8 py-6' : 'bg-white p-2'}`}
     >
-      <div className="grid grid-cols-4">
-        <div>
+      <div className="grid grid-cols-4 divide-x divide-gray-300 gap-2">
+        <div className="flex flex-col items-start justify-center">
           <p>
             <Link
               to="/entreprise/$companyId/bilan"
@@ -114,7 +116,7 @@ function RowContent({
         <div>
           <AddressComponent address={company.address} />
         </div>
-        <div className="flex flex-col items-end">
+        <div className="flex flex-col items-center justify-center">
           {directAccessesCount === undefined ? (
             '-'
           ) : (
@@ -128,12 +130,18 @@ function RowContent({
           )}
         </div>
         <div className="flex flex-col items-end">
-          <QuickSmallReportSearchLink
+          <ReportSearchLink
             reportSearch={{
               companyIds: [company.id],
             }}
-            icon={false}
             label={`${reportsCount} signalements`}
+          />
+          <FormControlLabel
+            control={
+              <Switch disabled={false} checked={true} onChange={(e) => {}} />
+            }
+            labelPlacement="start"
+            label={<span>Notifications par email</span>}
           />
         </div>
       </div>
