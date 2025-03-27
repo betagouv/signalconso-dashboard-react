@@ -97,7 +97,7 @@ function RowContent({
   const companyId = company.id
   return (
     <div
-      className={`p-2 bg-white space-y-0 ${isTopLevel ? 'border border-solid border-gray-400' : ''}`}
+      className={`p-2 bg-white space-y-2 ${isTopLevel ? 'border border-solid border-gray-400' : ''}`}
     >
       <div className="grid grid-cols-4">
         <div>
@@ -139,7 +139,10 @@ function RowContent({
         </div>
       </div>
       {company.isHeadOffice && (
-        <p className="">
+        <p className="font-bold">
+          <Icon fontSize="small" className="mb-[-3px] mr-1">
+            business
+          </Icon>
           <b>Siège social</b>. Les utilisateurs de cet établissement ont accès à
           tous ses établissements secondaires
         </p>
