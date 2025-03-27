@@ -52,10 +52,11 @@ function TopLevelRow({
   return (
     <div className="">
       <RowContent {...{ company }} isTopLevel={true} />
-      {secondLevel && secondLevel.length ? (
+      {secondLevel ? (
         <div className="ml-10">
           <Accordion
             elevation={0}
+            disabled={secondLevel.length === 0}
             className="border border-solid border-gray-400 border-t-0 !rounded-t-none"
           >
             <AccordionSummary
