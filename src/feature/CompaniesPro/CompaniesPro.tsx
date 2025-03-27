@@ -21,7 +21,7 @@ export function CompaniesPro() {
       <PageTitle>Mes entreprises</PageTitle>
 
       {data && (
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-8">
           {data.headOfficesAndSubsidiaries.map(
             ({ headOffice, subsidiaries }) => {
               return (
@@ -56,7 +56,7 @@ function TopLevelRow({
         <div className="ml-20 ">
           <Accordion
             elevation={0}
-            className="!bg-sclightpurple border border-solid border-scbluefrance border-t-0 !rounded-t-none"
+            className=" border border-solid border-scbluefrance border-t-0 !rounded-t-none"
           >
             <AccordionSummary
               expandIcon={
@@ -97,7 +97,7 @@ function RowContent({
   const companyId = company.id
   return (
     <div
-      className={`p-2 bg-white space-y-2 ${isTopLevel ? 'border border-solid border-gray-400' : ''}`}
+      className={`space-y-4 ${isTopLevel ? 'bg-gray-200 px-8 py-6' : 'bg-white p-2'}`}
     >
       <div className="grid grid-cols-4">
         <div>
@@ -105,7 +105,7 @@ function RowContent({
             <Link
               to="/entreprise/$companyId/bilan"
               params={{ companyId }}
-              className="text-scbluefrance"
+              className="text-scbluefrance font-bold"
             >
               {company.name}
             </Link>
@@ -139,12 +139,17 @@ function RowContent({
         </div>
       </div>
       {company.isHeadOffice && (
-        <p className="font-bold">
-          <Icon fontSize="small" className="mb-[-3px] mr-1">
-            business
-          </Icon>
-          <b>Siège social</b>. Les utilisateurs de cet établissement ont accès à
-          tous ses établissements secondaires
+        <p className="">
+          <span className="bg-blue-200 px-1 mr-1 rounded-md text-blue-800">
+            <Icon fontSize="small" className="mb-[-3px] mr-1">
+              business
+            </Icon>
+            <b className="mr-2">Siège social</b>
+          </span>
+          <span className="">
+            Les utilisateurs de cet établissement ont accès à tous ses
+            établissements secondaires
+          </span>
         </p>
       )}
     </div>
