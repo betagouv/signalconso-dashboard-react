@@ -1,3 +1,9 @@
+import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
+  Icon,
+} from '@mui/material'
 import { Link } from '@tanstack/react-router'
 import { CompanyWithAccessAndCounts } from 'core/client/company/Company'
 import { useGetAccessibleByProExtendedQuery } from 'core/queryhooks/companyQueryHooks'
@@ -47,10 +53,21 @@ function TopLevelRow({
     <div className="">
       <RowContent {...{ company }} />
       {secondLevel && secondLevel.length ? (
-        <div className="mt-4 ml-20 flex flex-col gap-4">
-          {secondLevel.map((c) => {
-            return <SecondLevelRow key={c.company.id} {...{ company: c }} />
-          })}
+        <div className="ml-20">
+          <Accordion>
+            <AccordionSummary expandIcon={<Icon>expand_more</Icon>}>
+              {secondLevel.length} établissements secondaires
+            </AccordionSummary>
+            <AccordionDetails>
+              <div className="divide-y divide-gray-300">
+                {secondLevel.map((c) => {
+                  return (
+                    <SecondLevelRow key={c.company.id} {...{ company: c }} />
+                  )
+                })}
+              </div>
+            </AccordionDetails>
+          </Accordion>
         </div>
       ) : null}
     </div>
@@ -69,8 +86,8 @@ function RowContent({
   const { company, access, reportsCount, directAccessesCount } = _company
   const companyId = company.id
   return (
-    <div className="bg-gray-200 p-2 space-y-2">
-      <div className="flex justify-between items-center">
+    <div className="p-2 space-y-2">
+      <div className="grid grid-cols-4">
         <div>
           <p>
             <Link
@@ -86,7 +103,7 @@ function RowContent({
         <div>
           <AddressComponent address={company.address} />
         </div>
-        <div>
+        <div className="flex flex-col items-end">
           {directAccessesCount === undefined ? (
             '-'
           ) : (
@@ -99,7 +116,7 @@ function RowContent({
             </Link>
           )}
         </div>
-        <div>
+        <div className="flex flex-col items-end">
           <QuickSmallReportSearchLink
             reportSearch={{
               companyIds: [company.id],
