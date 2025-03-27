@@ -56,18 +56,16 @@ function TopLevelRow({
         <div className="ml-10">
           <Accordion
             elevation={0}
-            className=" border border-solid border-scbluefrance border-t-0 !rounded-t-none"
+            className="border border-solid border-gray-400 border-t-0 !rounded-t-none"
           >
             <AccordionSummary
-              expandIcon={
-                <Icon className="text-scbluefrance mr-1">expand_more</Icon>
-              }
-              className="font-bold !text-scbluefrance !flex-row-reverse !flex-gap-20"
+              expandIcon={<Icon className=" mr-1">expand_more</Icon>}
+              className="!bg-gray-200 font-bold  !flex-row-reverse !flex-gap-20   "
             >
               {secondLevel.length} établissements secondaires
             </AccordionSummary>
             <AccordionDetails>
-              <div className="divide-y divide-gray-300">
+              <div className="divide-y divide-gray-400">
                 {secondLevel.map((c) => {
                   return (
                     <SecondLevelRow key={c.company.id} {...{ company: c }} />
@@ -105,7 +103,7 @@ function RowContent({
             <Link
               to="/entreprise/$companyId/bilan"
               params={{ companyId }}
-              className="text-scbluefrance font-bold"
+              className={`text-scbluefrance ${isTopLevel ? 'font-bold' : ''}`}
             >
               {company.name}
             </Link>
@@ -140,7 +138,7 @@ function RowContent({
       </div>
       {company.isHeadOffice && (
         <p className="">
-          <span className="bg-blue-200 p-1 px-2 rounded-md mr-1  text-blue-800">
+          <span className=" p-1 px-2 rounded-md mr-1  text-blue-800">
             <Icon fontSize="small" className="mb-[-3px] mr-1">
               business
             </Icon>
