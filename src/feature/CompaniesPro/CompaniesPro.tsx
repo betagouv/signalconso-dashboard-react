@@ -51,11 +51,19 @@ function TopLevelRow({
 }) {
   return (
     <div className="">
-      <RowContent {...{ company }} />
+      <RowContent {...{ company }} isTopLevel={true} />
       {secondLevel && secondLevel.length ? (
-        <div className="ml-20">
-          <Accordion>
-            <AccordionSummary expandIcon={<Icon>expand_more</Icon>}>
+        <div className="ml-20 ">
+          <Accordion
+            elevation={0}
+            className="!bg-sclightpurple border border-solid border-scbluefrance border-t-0 !rounded-t-none"
+          >
+            <AccordionSummary
+              expandIcon={
+                <Icon className="text-scbluefrance mr-1">expand_more</Icon>
+              }
+              className="font-bold !text-scbluefrance !flex-row-reverse !flex-gap-20"
+            >
               {secondLevel.length} établissements secondaires
             </AccordionSummary>
             <AccordionDetails>
@@ -75,18 +83,22 @@ function TopLevelRow({
 }
 
 function SecondLevelRow({ company }: { company: CompanyWithAccessAndCounts }) {
-  return <RowContent {...{ company }} />
+  return <RowContent {...{ company }} isTopLevel={false} />
 }
 
 function RowContent({
   company: _company,
+  isTopLevel,
 }: {
   company: CompanyWithAccessAndCounts
+  isTopLevel: boolean
 }) {
   const { company, access, reportsCount, directAccessesCount } = _company
   const companyId = company.id
   return (
-    <div className="p-2 space-y-2">
+    <div
+      className={`p-2 bg-white space-y-0 ${isTopLevel ? 'border border-solid border-gray-400' : ''}`}
+    >
       <div className="grid grid-cols-4">
         <div>
           <p>
@@ -127,9 +139,9 @@ function RowContent({
         </div>
       </div>
       {company.isHeadOffice && (
-        <p className="text-scpurplepop font-bold">
-          Siège social. Les utilisateurs de cet établissement ont accès à tous
-          ses établissements secondaires
+        <p className="">
+          <b>Siège social</b>. Les utilisateurs de cet établissement ont accès à
+          tous ses établissements secondaires
         </p>
       )}
     </div>
