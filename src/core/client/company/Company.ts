@@ -93,10 +93,10 @@ export type CompanyWithAccessAndCounts = {
   company: Company
   access: {
     level: AccessLevel
-    kind: 'Direct' | 'Synthetic' | 'SyntheticAdminAndDirectMember'
+    kind: 'Direct' | 'Inherited' | 'InheritedAdminAndDirectMember'
   }
   reportsCount: number
-  accessesCount: number | undefined // undefined if your own access level isn't admin
+  directAccessesCount: number | undefined // undefined if your own access level isn't admin
 }
 
 export type ProCompaniesExtended = {

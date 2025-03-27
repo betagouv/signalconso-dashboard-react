@@ -1,8 +1,8 @@
-import {
-  AccessLevel,
-  CompanyWithAccessAndCounts,
-} from 'core/client/company/Company'
+import { Link } from '@tanstack/react-router'
+import { CompanyWithAccessAndCounts } from 'core/client/company/Company'
 import { useGetAccessibleByProExtendedQuery } from 'core/queryhooks/companyQueryHooks'
+import { QuickSmallReportSearchLink } from 'feature/Report/quickSmallLinks'
+import { AddressComponent } from 'shared/Address'
 import { Page } from 'shared/Page'
 import { PageTitle } from 'shared/Page/PageTitle'
 
@@ -66,30 +66,53 @@ function RowContent({
 }: {
   company: CompanyWithAccessAndCounts
 }) {
-  const { company, access, reportsCount, accessesCount } = _company
+  const { company, access, reportsCount, directAccessesCount } = _company
+  const companyId = company.id
   return (
     <div className="bg-gray-200 p-2 space-y-2">
       <div className="flex justify-between items-center">
         <div>
-          <p>{company.name}</p>
+          <p>
+            <Link
+              to="/entreprise/$companyId/bilan"
+              params={{ companyId }}
+              className="text-scbluefrance"
+            >
+              {company.name}
+            </Link>
+          </p>
           <p>{company.siret}</p>
         </div>
         <div>
-          <p>
-            {accessesCount === undefined
-              ? '-'
-              : `${accessesCount} utilisateurs`}
-          </p>
+          <AddressComponent address={company.address} />
         </div>
         <div>
-          <p>{`${reportsCount} signalements`}</p>
+          {directAccessesCount === undefined ? (
+            '-'
+          ) : (
+            <Link
+              className={`text-scbluefrance`}
+              to="/entreprise/$companyId/accesses"
+              params={{ companyId }}
+            >
+              {directAccessesCount} utilisateurs
+            </Link>
+          )}
         </div>
-        <div>{access.level === AccessLevel.ADMIN ? 'Admin' : '-'}</div>
+        <div>
+          <QuickSmallReportSearchLink
+            reportSearch={{
+              companyIds: [company.id],
+            }}
+            icon={false}
+            label={`${reportsCount} signalements`}
+          />
+        </div>
       </div>
       {company.isHeadOffice && (
         <p className="text-scpurplepop font-bold">
           Siège social. Les utilisateurs de cet établissement ont accès à tous
-          les établissements qui y sont liés.
+          ses établissements secondaires
         </p>
       )}
     </div>
