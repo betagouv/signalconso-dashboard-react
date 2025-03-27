@@ -53,7 +53,7 @@ function TopLevelRow({
     <div className="">
       <RowContent {...{ company }} isTopLevel={true} />
       {secondLevel && secondLevel.length ? (
-        <div className="ml-20 ">
+        <div className="ml-10">
           <Accordion
             elevation={0}
             className=" border border-solid border-scbluefrance border-t-0 !rounded-t-none"
@@ -97,7 +97,7 @@ function RowContent({
   const companyId = company.id
   return (
     <div
-      className={`space-y-4 ${isTopLevel ? 'bg-gray-200 px-8 py-6' : 'bg-white p-2'}`}
+      className={`space-y-4 ${isTopLevel ? 'bg-white border-gray-400 border px-8 py-6' : 'bg-white p-2'}`}
     >
       <div className="grid grid-cols-4">
         <div>
@@ -140,15 +140,16 @@ function RowContent({
       </div>
       {company.isHeadOffice && (
         <p className="">
-          <span className="bg-blue-200 px-1 mr-1 rounded-md text-blue-800">
+          <span className="bg-blue-200 p-1 px-2 rounded-md mr-1  text-blue-800">
             <Icon fontSize="small" className="mb-[-3px] mr-1">
               business
             </Icon>
-            <b className="mr-2">Siège social</b>
-          </span>
-          <span className="">
-            Les utilisateurs de cet établissement ont accès à tous ses
-            établissements secondaires
+            <b className="">Siège social</b>
+            <span className="">
+              {' '}
+              : Les utilisateurs de cet établissement ont accès à tous ses
+              établissements secondaires
+            </span>
           </span>
         </p>
       )}
