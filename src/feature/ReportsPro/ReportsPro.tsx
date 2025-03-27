@@ -33,6 +33,7 @@ import { SelectCompaniesByPro } from '../../shared/SelectCompaniesByPro/SelectCo
 import { SelectDepartments } from '../../shared/SelectDepartments/SelectDepartments'
 import { DatatableToolbarComponent } from '../Reports/DatatableToolbarComponent'
 import { buildReportsProColumns } from './buildReportsProColumns'
+import { ReportSortPro } from '../Reports/ReportSortPro'
 
 const reportsProCss = makeSx({
   actions: {
@@ -399,17 +400,6 @@ export const ReportsPro = ({ reportType, search }: ReportsProProps) => {
                     }
                   }
                 }}
-                sort={{
-                  sortableColumns: ['siret', 'creationDate'],
-                  sortBy: _reports.filters?.sortBy,
-                  orderBy: _reports.filters?.orderBy,
-                  onSortChange: ({ sortBy, orderBy }) =>
-                    _reports.updateFilters((prev) => ({
-                      ...prev,
-                      sortBy: sortBy as any,
-                      orderBy: orderBy,
-                    })),
-                }}
                 headerMain={
                   <DatatableToolbarComponent
                     {...{
@@ -425,6 +415,20 @@ export const ReportsPro = ({ reportType, search }: ReportsProProps) => {
                 }
                 total={_reports.result.data?.totalCount}
                 columns={columns}
+                actions={
+                  <ReportSortPro
+                    loading={false}
+                    sortBy={_reports.filters?.sortBy}
+                    orderBy={_reports.filters?.orderBy}
+                    setSort={(sort, order) => {
+                      _reports.updateFilters((prev) => ({
+                        ...prev,
+                        sortBy: sort as any,
+                        orderBy: order,
+                      }))
+                    }}
+                  />
+                }
                 renderEmptyState={
                   filtersCount === 0 && reportType === 'open' ? (
                     <Fender
