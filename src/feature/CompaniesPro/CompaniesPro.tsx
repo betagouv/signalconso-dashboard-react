@@ -21,19 +21,14 @@ export function CompaniesPro() {
               return (
                 <TopLevelRow
                   key={headOffice.company.id}
-                  companyWithAccess={headOffice}
+                  company={headOffice}
                   secondLevel={subsidiaries}
                 />
               )
             },
           )}
-          {data.loneSubsidiaries.map((companyWithAccess) => {
-            return (
-              <TopLevelRow
-                key={companyWithAccess.company.id}
-                {...{ companyWithAccess }}
-              />
-            )
+          {data.loneSubsidiaries.map((company) => {
+            return <TopLevelRow key={company.company.id} {...{ company }} />
           })}
         </div>
       )}
@@ -42,24 +37,19 @@ export function CompaniesPro() {
 }
 
 function TopLevelRow({
-  companyWithAccess,
+  company,
   secondLevel,
 }: {
-  companyWithAccess: CompanyWithAccessAndCounts
+  company: CompanyWithAccessAndCounts
   secondLevel?: CompanyWithAccessAndCounts[]
 }) {
   return (
     <div className="">
-      <RowContent {...{ companyWithAccess }} />
+      <RowContent {...{ company }} />
       {secondLevel && secondLevel.length ? (
         <div className="mt-4 ml-20 flex flex-col gap-4">
           {secondLevel.map((c) => {
-            return (
-              <SecondLevelRow
-                key={c.company.id}
-                {...{ companyWithAccess: c }}
-              />
-            )
+            return <SecondLevelRow key={c.company.id} {...{ company: c }} />
           })}
         </div>
       ) : null}
@@ -67,26 +57,41 @@ function TopLevelRow({
   )
 }
 
-function SecondLevelRow({
-  companyWithAccess,
-}: {
-  companyWithAccess: CompanyWithAccessAndCounts
-}) {
-  return <RowContent {...{ companyWithAccess }} />
+function SecondLevelRow({ company }: { company: CompanyWithAccessAndCounts }) {
+  return <RowContent {...{ company }} />
 }
 
 function RowContent({
-  companyWithAccess,
+  company: _company,
 }: {
-  companyWithAccess: CompanyWithAccessAndCounts
+  company: CompanyWithAccessAndCounts
 }) {
+  const { company, access, reportsCount, accessesCount } = _company
   return (
-    <div className="bg-gray-200 p-2 flex justify-between">
-      <div>
-        <p>{companyWithAccess.company.name}</p>
-        <p>{companyWithAccess.company.siret}</p>
+    <div className="bg-gray-200 p-2 space-y-2">
+      <div className="flex justify-between items-center">
+        <div>
+          <p>{company.name}</p>
+          <p>{company.siret}</p>
+        </div>
+        <div>
+          <p>
+            {accessesCount === undefined
+              ? '-'
+              : `${accessesCount} utilisateurs`}
+          </p>
+        </div>
+        <div>
+          <p>{`${reportsCount} signalements`}</p>
+        </div>
+        <div>{access.level === AccessLevel.ADMIN ? 'Admin' : '-'}</div>
       </div>
-      {companyWithAccess.access.level === AccessLevel.ADMIN && <div>Admin</div>}
+      {company.isHeadOffice && (
+        <p className="text-scpurplepop font-bold">
+          Siège social. Les utilisateurs de cet établissement ont accès à tous
+          les établissements qui y sont liés.
+        </p>
+      )}
     </div>
   )
 }
