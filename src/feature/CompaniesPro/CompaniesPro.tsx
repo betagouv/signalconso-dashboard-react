@@ -1,15 +1,13 @@
-import { AccessLevel, CompanyWithAccess } from 'core/client/company/Company'
+import {
+  AccessLevel,
+  CompanyWithAccessAndCounts,
+} from 'core/client/company/Company'
 import { useGetAccessibleByProExtendedQuery } from 'core/queryhooks/companyQueryHooks'
-import { useEffect } from 'react'
 import { Page } from 'shared/Page'
 import { PageTitle } from 'shared/Page/PageTitle'
 
 export function CompaniesPro() {
   const _companiesAccessibleByPro = useGetAccessibleByProExtendedQuery()
-
-  useEffect(() => {
-    console.log('@@@@', _companiesAccessibleByPro.data)
-  }, [_companiesAccessibleByPro.data])
 
   const data = _companiesAccessibleByPro.data
   return (
@@ -47,8 +45,8 @@ function TopLevelRow({
   companyWithAccess,
   secondLevel,
 }: {
-  companyWithAccess: CompanyWithAccess
-  secondLevel?: CompanyWithAccess[]
+  companyWithAccess: CompanyWithAccessAndCounts
+  secondLevel?: CompanyWithAccessAndCounts[]
 }) {
   return (
     <div className="">
@@ -72,7 +70,7 @@ function TopLevelRow({
 function SecondLevelRow({
   companyWithAccess,
 }: {
-  companyWithAccess: CompanyWithAccess
+  companyWithAccess: CompanyWithAccessAndCounts
 }) {
   return <RowContent {...{ companyWithAccess }} />
 }
@@ -80,7 +78,7 @@ function SecondLevelRow({
 function RowContent({
   companyWithAccess,
 }: {
-  companyWithAccess: CompanyWithAccess
+  companyWithAccess: CompanyWithAccessAndCounts
 }) {
   return (
     <div className="bg-gray-200 p-2 flex justify-between">
@@ -88,7 +86,7 @@ function RowContent({
         <p>{companyWithAccess.company.name}</p>
         <p>{companyWithAccess.company.siret}</p>
       </div>
-      {companyWithAccess.level === AccessLevel.ADMIN && <div>Admin</div>}
+      {companyWithAccess.access.level === AccessLevel.ADMIN && <div>Admin</div>}
     </div>
   )
 }

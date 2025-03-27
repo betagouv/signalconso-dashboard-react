@@ -89,18 +89,22 @@ export interface CompanyWithAccessLevel extends Company {
   level: AccessLevel
 }
 
-export type CompanyWithAccess = {
+export type CompanyWithAccessAndCounts = {
   company: Company
-  level: AccessLevel
-  kind: 'Direct' | 'Synthetic' | 'SyntheticAdminAndDirectMember'
+  access: {
+    level: AccessLevel
+    kind: 'Direct' | 'Synthetic' | 'SyntheticAdminAndDirectMember'
+  }
+  reportsCount: number
+  accessesCount: number | undefined // undefined if your own access level isn't admin
 }
 
 export type ProCompaniesExtended = {
   headOfficesAndSubsidiaries: {
-    headOffice: CompanyWithAccess
-    subsidiaries: CompanyWithAccess[]
+    headOffice: CompanyWithAccessAndCounts
+    subsidiaries: CompanyWithAccessAndCounts[]
   }[]
-  loneSubsidiaries: CompanyWithAccess[]
+  loneSubsidiaries: CompanyWithAccessAndCounts[]
 }
 
 export type CompanyHosts = {
