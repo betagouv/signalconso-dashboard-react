@@ -97,7 +97,7 @@ function RowContent({
     <div
       className={`space-y-4 ${isTopLevel ? 'bg-white border-gray-400 border px-8 py-6' : 'bg-white p-2'}`}
     >
-      <div className="grid grid-cols-4">
+      <div className={`grid grid-cols-4 ${isTopLevel ? '' : ''}`}>
         <div>
           <p>
             <Link
@@ -137,18 +137,17 @@ function RowContent({
         </div>
       </div>
       {company.isHeadOffice && (
-        <p className="">
-          <span className=" p-1 px-2 rounded-md mr-1  text-blue-800">
+        <p className="bg-blue-100 p-2 px-4 rounded-md">
+          <p className="">
             <Icon fontSize="small" className="mb-[-3px] mr-1">
               business
             </Icon>
-            <b className="">Siège social</b>
-            <span className="">
-              {' '}
-              : Les utilisateurs de cet établissement ont accès à tous ses
-              établissements secondaires
-            </span>
-          </span>
+            <b className="mr-1">Siège social</b>
+          </p>
+          <p className="text-sm">
+            Les utilisateurs de cet établissement ont accès à tous ses
+            établissements secondaires
+          </p>
         </p>
       )}
     </div>
