@@ -138,7 +138,7 @@ function RowContent({
       </div>
       {company.isHeadOffice && (
         <p className="">
-          <span className=" p-1 px-2 rounded-md mr-1  text-blue-800">
+          <span className=" p-1 px-2 rounded-md mr-1  text-green-800">
             <Icon fontSize="small" className="mb-[-3px] mr-1">
               business
             </Icon>
