@@ -98,10 +98,10 @@ function RowContent({
   const companyId = company.id
   return (
     <div
-      className={`space-y-4 ${isTopLevel ? 'bg-white border-gray-400 border px-8 py-6' : 'bg-white p-2'}`}
+      className={`space-y-1 ${isTopLevel ? 'bg-white border-gray-400 border px-8 py-6' : 'bg-white p-2'}`}
     >
-      <div className="grid grid-cols-4 divide-x divide-gray-300 gap-2">
-        <div className="flex flex-col items-start justify-center">
+      <div className="flex gap-4">
+        <div className="flex flex-col items-start justify-start">
           <p>
             <Link
               to="/entreprise/$companyId/bilan"
@@ -116,20 +116,7 @@ function RowContent({
         <div>
           <AddressComponent address={company.address} />
         </div>
-        <div className="flex flex-col items-center justify-center">
-          {directAccessesCount === undefined ? (
-            <Icon className="text-gray-400">do_not_disturb</Icon>
-          ) : (
-            <Link
-              className={`text-scbluefrance`}
-              to="/entreprise/$companyId/accesses"
-              params={{ companyId }}
-            >
-              {directAccessesCount} utilisateurs
-            </Link>
-          )}
-        </div>
-        <div className="flex flex-col items-end">
+        <div className="flex flex-col items-end grow ">
           <ReportSearchLink
             reportSearch={{
               companyIds: [company.id],
@@ -141,13 +128,31 @@ function RowContent({
               <Switch disabled={false} checked={true} onChange={(e) => {}} />
             }
             labelPlacement="start"
-            label={<span>Notifications par email</span>}
+            label={<span className="">Notifications par email</span>}
           />
         </div>
       </div>
+      {directAccessesCount !== undefined && (
+        <>
+          <div className="flex flex-col items-start justify-start">
+            <span>
+              <Icon fontSize="medium" className="text-black -mb-1.5 mr-1">
+                people
+              </Icon>
+              <Link
+                className={`text-scbluefrance`}
+                to="/entreprise/$companyId/accesses"
+                params={{ companyId }}
+              >
+                {directAccessesCount} utilisateurs
+              </Link>
+            </span>
+          </div>
+        </>
+      )}
       {company.isHeadOffice && (
         <p className="">
-          <span className=" p-1 px-2 rounded-md mr-1  text-green-800">
+          <span className="rounded-md mr-1  text-green-800">
             <Icon fontSize="small" className="mb-[-3px] mr-1">
               business
             </Icon>
