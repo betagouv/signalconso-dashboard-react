@@ -11,6 +11,7 @@ import { ExportPhonesPopper } from '../../shared/ExportPopperBtn'
 import { Page, PageTitle } from '../../shared/Page'
 import { PeriodPicker } from '../../shared/PeriodPicker'
 import { ScInput } from '../../shared/ScInput'
+import { config } from '../../conf/config'
 
 export const ReportedPhones = () => {
   const _reportedPhone = useReportedPhonesSearchQuery()
@@ -80,7 +81,10 @@ export const ReportedPhones = () => {
                   <Icon>clear</Icon>
                 </IconBtn>
               </Tooltip>
-              <ExportPhonesPopper filters={_reportedPhone.filters}>
+              <ExportPhonesPopper
+                maxElement={config.reportsLimitForExport}
+                filters={_reportedPhone.filters}
+              >
                 <IconBtn color="primary">
                   <Icon>file_download</Icon>
                 </IconBtn>

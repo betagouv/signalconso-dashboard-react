@@ -7,7 +7,10 @@ import { Btn } from '../../alexlibs/mui-extension'
 import { config } from '../../conf/config'
 import { useReportSearchQuery } from '../../core/queryhooks/reportQueryHooks'
 import { ScButton } from '../../shared/Button'
-import { ExportReportsPopper } from '../../shared/ExportPopperBtn'
+import {
+  ExportReportsPdfPopper,
+  ExportReportsPopper,
+} from '../../shared/ExportPopperBtn'
 import { UseSetState, useSetState } from '../../alexlibs/react-hooks-lib'
 import { Id } from '../../core/model'
 
@@ -82,6 +85,7 @@ export const AdvancedSearchBar: React.FC<AdvancedSearchControlsProps> = ({
           </Badge>
         )}
         <ExportReportsPopper
+          maxElement={config.reportsLimitForExport}
           disabled={ScOption.from(_reports?.result.data?.totalCount)
             .map((_) => _ > config.reportsLimitForExport)
             .getOrElse(false)}
@@ -94,23 +98,38 @@ export const AdvancedSearchBar: React.FC<AdvancedSearchControlsProps> = ({
             .getOrElse('')}
           filters={_reports.filters}
         >
-          <Btn variant="outlined" color="primary" icon="get_app">
-            {m.exportInXLS}
+          <Btn
+            disabled={selectReport.size != 0}
+            variant="outlined"
+            color="primary"
+            icon="get_app"
+          >
+            Exporter en Excel
           </Btn>
         </ExportReportsPopper>
-        <Btn
-          variant="outlined"
-          color="primary"
-          icon="get_app"
-          disabled={selectReport.size != 0}
-          onClick={(_) =>
-            selectReport.add(
-              _reports.result.data!.entities!.map((_) => _.report.id),
+        <ExportReportsPdfPopper
+          maxElement={config.reportsPdfLimitForExport}
+          disabled={ScOption.from(_reports?.result.data?.totalCount)
+            .map((_) => _ > config.reportsPdfLimitForExport)
+            .getOrElse(false)}
+          tooltipBtnNew={ScOption.from(_reports?.result.data?.totalCount)
+            .map((_) =>
+              _ > config.reportsPdfLimitForExport
+                ? m.cannotExportMoreReports(config.reportsPdfLimitForExport)
+                : '',
             )
-          }
+            .getOrElse('')}
+          filters={_reports.filters}
         >
-          Exporter en PDF
-        </Btn>
+          <Btn
+            disabled={selectReport.size != 0}
+            variant="outlined"
+            color="primary"
+            icon="get_app"
+          >
+            Exporter en PDF
+          </Btn>
+        </ExportReportsPdfPopper>
       </span>
     </Box>
   )
