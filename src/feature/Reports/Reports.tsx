@@ -105,6 +105,13 @@ export const Reports = ({
     tags[tag] = 'excluded'
   })
 
+  const canReopen =
+    _reports.result.data?.entities.find(
+      (_) =>
+        selectReport.has(_.report.id) &&
+        !ReportUtils.canReopenReport(_.report.status),
+    ) === undefined
+
   const _categoriesByStatus = useCategoriesByStatusQuery()
   const _categories = connectedUser.isAdmin
     ? [
@@ -216,8 +223,13 @@ export const Reports = ({
     queryKey: BookmarksCountQueryKey,
     queryFn: api.secured.reports.countBookmarks,
   })
-
-  const columns = buildColumns({ _reports, selectReport, i18n })
+  const isAdmin = connectedUser.isAdmin
+  const columns = buildColumns({
+    _reports,
+    selectReport,
+    i18n,
+    isAdmin,
+  })
   return (
     <Page>
       <div className="flex gap-2 justify-between items-baseline">
@@ -291,12 +303,7 @@ export const Reports = ({
           <DatatableToolbarComponent
             {...{
               selectReport,
-              canReOpen:
-                _reports.result.data?.entities.find(
-                  (_) =>
-                    selectReport.has(_.report.id) &&
-                    !ReportUtils.canReopenReport(_.report.status),
-                ) === undefined,
+              canReOpen: canReopen,
               reportFilter: _reports.filters,
             }}
           />
@@ -336,6 +343,7 @@ function buildColumns({
   _reports,
   selectReport,
   i18n,
+  isAdmin,
 }: {
   _reports: UseQueryPaginateResult<
     ReportSearch & PaginatedFilters,
@@ -344,6 +352,7 @@ function buildColumns({
   >
   selectReport: UseSetState<string>
   i18n: I18nContextShape
+  isAdmin: boolean
 }): DatatableColumnProps<ReportSearchResult>[] {
   const { m, formatDate } = i18n
 
@@ -358,7 +367,7 @@ function buildColumns({
   }
 
   return [
-    checkboxColumn,
+    ...(isAdmin ? [checkboxColumn] : []),
     {
       id: 'bookmark',
       head: <>Marque-pages</>,
