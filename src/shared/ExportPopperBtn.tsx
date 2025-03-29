@@ -132,8 +132,8 @@ const ExportPopperBtn = ({
       >
         <div className={'mt-2 mr-2 mb-4 ml-2 w-[500px]'}>
           <p className={'ml-3 mb-2'}>
-            Vous pouvez exporter les signalements de la liste ci-dessous en
-            cliquant sur "GÉNÉRER UN NOUVEL EXPORT"
+            Vous pouvez exporter les éléments de la liste ci-dessous en cliquant
+            sur "GÉNÉRER UN NOUVEL EXPORT"
           </p>
           <Alert id="action-info" dense type="info" className={'mt-2'}>
             <p>
