@@ -9,27 +9,25 @@ interface Sort {
 }
 
 const sorts: Sort[] = [
-  { sort: 'creationDate', order: 'desc', name: 'Les plus récents' },
-  { sort: 'creationDate', order: 'asc', name: 'Les moins récents' },
   {
-    sort: 'siretByPendingReport',
+    sort: 'creationDate',
     order: 'desc',
-    name: 'Etablissements avec le plus de signalements en attente',
+    name: 'Par date du plus récent au plus ancien (tri par défaut)',
+  },
+  {
+    sort: 'creationDate',
+    order: 'asc',
+    name: 'Par date du plus ancien au plus récent',
   },
   {
     sort: 'siretByPendingReport',
-    order: 'asc',
-    name: 'Etablissements avec le moins de signalements en attente',
+    order: 'desc',
+    name: 'Afficher en priorité les SIRET avec le plus de signalements',
   },
   {
     sort: 'siretByAccount',
     order: 'desc',
-    name: 'Etablissements avec le plus de comptes',
-  },
-  {
-    sort: 'siretByAccount',
-    order: 'asc',
-    name: 'Etablissements avec le moins de comptes',
+    name: 'Afficher en priorité les SIRET avec le plus de comptes associés',
   },
 ]
 
@@ -81,7 +79,9 @@ export const ReportSortPro = ({
             key={sort.sort + sort.order}
             onClick={() => handleChange(sort)}
           >
-            {sort.name}
+            <span className={sort === foundSort ? 'font-bold' : ''}>
+              {sort.name}
+            </span>
           </MenuItem>
         ))}
       </Menu>
