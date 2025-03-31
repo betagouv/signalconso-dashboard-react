@@ -18,5 +18,6 @@ export enum AsyncFileStatus {
 export enum AsyncFileKind {
   ReportedPhones = 'ReportedPhones',
   Reports = 'Reports',
+  ReportsZip = 'ReportsZip',
   ReportedWebsites = 'ReportedWebsites',
 }
