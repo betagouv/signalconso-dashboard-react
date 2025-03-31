@@ -35,7 +35,6 @@ import { ReportAlbert } from './ReportAlbert'
 import { ReportCompany } from './ReportCompany/ReportCompany'
 import { ReportConsumer } from './ReportConsumer/ReportConsumer'
 import { ReportDetails, ReportFilesFull } from './ReportDescription'
-import { ReportDownloadAction } from './reportDownload/ReportDownloadAction'
 import { trackReportDownload } from './reportDownload/reportDownloadUtils'
 import { ReportHeader } from './ReportHeader'
 import { ReportPostAction } from './ReportPostAction'
@@ -103,9 +102,18 @@ const ReportViewStandard = ({
     (e) => e.event.action === 'SolvedContractualDisputeReportDeletion',
   )
 
+  // const downloadReport = useMutation({
+  //   mutationFn: (id: Id) => apiSdk.secured.reports.download(id),
+  // })
+
   const downloadReport = useMutation({
-    mutationFn: (id: Id) => apiSdk.secured.reports.download([id]),
+    mutationFn: (id: Id) => {
+      return _getReport.data?.files && _getReport.data?.files.length > 0
+        ? apiSdk.secured.reports.downloadZip(id)
+        : apiSdk.secured.reports.download(id)
+    },
   })
+
   const generateConsumerNotificationAsPDF = useMutation({
     mutationFn: apiSdk.secured.reports.generateConsumerNotificationAsPDF,
   })
@@ -159,28 +167,17 @@ const ReportViewStandard = ({
                     </ReportAdminResolution>
                   )}
 
-                {_getReport.data?.files && _getReport.data?.files.length > 0 ? (
-                  <ReportDownloadAction
-                    report={report}
-                    files={_getReport.data?.files}
-                  >
-                    <Btn color="primary" icon="download">
-                      {m.download}
-                    </Btn>
-                  </ReportDownloadAction>
-                ) : (
-                  <Btn
-                    color="primary"
-                    icon="download"
-                    loading={downloadReport.isPending}
-                    onClick={() => {
-                      trackReportDownload(connectedUser, 'reportOnly')
-                      downloadReport.mutate(report.id)
-                    }}
-                  >
-                    {m.download}
-                  </Btn>
-                )}
+                <Btn
+                  color="primary"
+                  icon="download"
+                  loading={downloadReport.isPending}
+                  onClick={() => {
+                    trackReportDownload(connectedUser)
+                    downloadReport.mutate(report.id)
+                  }}
+                >
+                  {m.download}
+                </Btn>
 
                 <ReportPostAction
                   actionType={EventActionValues.Comment}
