@@ -190,11 +190,17 @@ export const fr = {
       'La validation nécéssite que le site soit identifié par une entreprise ou un pays',
     thisWillBeRemoved: (_: string) =>
       `La pièce jointe <b>${_}</b> sera définitivement supprimée.`,
-    exportInXLS: 'Exporter en Excel',
+    exportInXLS: {
+      [AsyncFileKind.ReportedPhones]: 'Exporter en Excel',
+      [AsyncFileKind.Reports]: 'Exporter en Excel',
+      [AsyncFileKind.ReportsZip]: 'Exporter en pdf',
+      [AsyncFileKind.ReportedWebsites]: 'Exporter en Excel',
+    },
     newExportInXLS: 'Générer un nouvel export',
     AsyncFileDesc: {
       [AsyncFileKind.ReportedPhones]: 'numéros de téléphone signalés',
       [AsyncFileKind.Reports]: 'signalements',
+      [AsyncFileKind.ReportsZip]: 'signalements',
       [AsyncFileKind.ReportedWebsites]: 'sites internet signalés',
     },
     removeAllFilters: 'Retirer les filtres',
