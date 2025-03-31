@@ -35,7 +35,6 @@ export const config = {
   ),
   basePath: import.meta.env.VITE_APP_BASE_PATH ?? '/',
   reportsLimitForExport: 30000,
-  reportsPdfLimitForExport: 1000,
   upload_allowedExtensions: ['jpg', 'jpeg', 'pdf', 'png', 'gif', 'docx'],
   upload_maxSizeMb: readInt(import.meta.env.VITE_APP_UPLOAD_MAX_SIZE_MB, 5),
   contactEmail: 'support@signal.conso.gouv.fr',

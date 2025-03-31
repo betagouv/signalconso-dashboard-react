@@ -88,7 +88,7 @@ export function ReportProLoaded({ reportExtra }: { reportExtra: ReportExtra }) {
   }
 
   const downloadReport = useMutation({
-    mutationFn: (id: Id) => apiSdk.secured.reports.download(id),
+    mutationFn: (id: Id) => apiSdk.secured.reports.download([id]),
   })
 
   const download = (event: any) => {

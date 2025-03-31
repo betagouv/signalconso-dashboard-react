@@ -28,7 +28,6 @@ import { HostReportCountSearch } from '../core/client/website/Website'
 import { useApiContext } from '../core/context/ApiContext'
 import { useI18n } from '../core/i18n'
 import { PaginatedFilters } from '../core/model'
-import { config } from '../conf/config'
 
 interface Props {
   className?: string
@@ -42,7 +41,6 @@ interface Props {
   children: ReactElement<any>
   onClick?: (event: any) => void
   trackingEventAction: ExportsActions
-  maxElement: number
 }
 
 const FileItem = ({
@@ -74,7 +72,6 @@ const ExportPopperBtn = ({
   disabled,
   onNewExport,
   trackingEventAction,
-  maxElement,
 }: Props) => {
   const { m, formatDateTime } = useI18n()
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
@@ -113,7 +110,7 @@ const ExportPopperBtn = ({
 
   return (
     <>
-      <Tooltip title={m.exportInXLS[fileType]}>
+      <Tooltip title={m.exportInXLS}>
         <span>
           {React.cloneElement(children, {
             onClick: (event: any) => {
@@ -132,12 +129,12 @@ const ExportPopperBtn = ({
       >
         <div className={'mt-2 mr-2 mb-4 ml-2 w-[500px]'}>
           <p className={'ml-3 mb-2'}>
-            Vous pouvez exporter les éléments de la liste ci-dessous en cliquant
-            sur "GÉNÉRER UN NOUVEL EXPORT"
+            Vous pouvez exporter les signalements de la liste ci-dessous dans un
+            tableur Excel en cliquant sur "GÉNÉRER UN NOUVEL EXPORT"
           </p>
           <Alert id="action-info" dense type="info" className={'mt-2'}>
             <p>
-              L'export est limité à {maxElement} entrées. Pour importer plus
+              L'export est limité à 30 000 entrées. Pour importer plus
               d'éléments, réduisez le nombre de signalements en utilisant les
               filtres.
             </p>
@@ -247,7 +244,6 @@ interface ExportReportProps<S> {
   onClick?: (event: any) => void
   tooltipBtnNew?: string
   filters: S
-  maxElement: number
 }
 
 export const ExportPhonesPopper = (
@@ -292,31 +288,6 @@ export const ExportReportsPopper = (
       {...props}
       loading={_asyncFile.isPending}
       fileType={AsyncFileKind.Reports}
-      onNewExport={_extract.mutateAsync}
-      fetch={() => _asyncFile.refetch()}
-      files={_asyncFile.data}
-      trackingEventAction={ExportsActions.exportReportsExcel}
-    />
-  )
-}
-
-export const ExportReportsPdfPopper = (
-  props: ExportReportProps<ReportSearch & PaginatedFilters>,
-) => {
-  const { api } = useApiContext()
-  const _asyncFile = useQuery({
-    queryKey: ['asyncFiles_zip_fetch'],
-    queryFn: api.secured.asyncFiles.fetch,
-    enabled: false,
-  })
-  const _extract = useMutation({
-    mutationFn: () => api.secured.reports.extractAsZip(props.filters),
-  })
-  return (
-    <ExportPopperBtn
-      {...props}
-      loading={_asyncFile.isPending}
-      fileType={AsyncFileKind.ReportsZip}
       onNewExport={_extract.mutateAsync}
       fetch={() => _asyncFile.refetch()}
       files={_asyncFile.data}

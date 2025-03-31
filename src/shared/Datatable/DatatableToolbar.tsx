@@ -1,9 +1,8 @@
-import React, { ReactNode } from 'react'
+import { useI18n } from '../../core/i18n'
 import { Box, Icon } from '@mui/material'
 import { lighten } from '@mui/system/colorManipulator'
 import { IconBtn } from '../../alexlibs/mui-extension'
-import { useI18n } from '../../core/i18n'
-import { useLayoutContext } from '../../core/context/layoutContext/layoutContext'
+import React, { ReactNode } from 'react'
 
 interface DatatableToolbarProps {
   onClear?: () => void
@@ -19,25 +18,6 @@ export const DatatableToolbar = ({
   actions,
 }: DatatableToolbarProps) => {
   const { m } = useI18n()
-  const { isMdOrLower } = useLayoutContext()
-
-  const renderContent = (
-    <>
-      {onClear && (
-        <IconBtn
-          aria-label={m.clear}
-          sx={{ mr: 1 }}
-          color="primary"
-          onClick={onClear}
-        >
-          <Icon>clear</Icon>
-        </IconBtn>
-      )}
-      {children}
-      {actions && <Box sx={{ marginLeft: 'auto' }}>{actions}</Box>}
-    </>
-  )
-
   return (
     <Box
       sx={{
@@ -53,23 +33,21 @@ export const DatatableToolbar = ({
         right: 0,
         left: 0,
         opacity: open ? 1 : 0,
-        height: open
-          ? isMdOrLower
-            ? 'calc(100% + 60px)'
-            : 'calc(100% + 2px)'
-          : 0,
+        height: open ? 'calc(100% + 2px)' : 0,
         background: (t) => lighten(t.palette.primary.main, 0.86),
-        borderTopRightRadius: (t) => `${t.shape.borderRadius}px`,
-        borderTopLeftRadius: (t) => `${t.shape.borderRadius}px`,
-        margin: '-1px',
+        borderTopRightRadius: (t) => t.shape.borderRadius + 'px',
+        borderTopLeftRadius: (t) => t.shape.borderRadius + 'px',
+        margin: `-1px`,
         border: (t) => `2px solid ${t.palette.primary.main}`,
       }}
     >
-      {isMdOrLower ? (
-        <span className="flex-col">{renderContent}</span>
-      ) : (
-        renderContent
+      {onClear && (
+        <IconBtn sx={{ mr: 1 }} color="primary" onClick={onClear}>
+          <Icon>clear</Icon>
+        </IconBtn>
       )}
+      {children}
+      {actions && <Box sx={{ marginLeft: 'auto' }}>{actions}</Box>}
     </Box>
   )
 }
