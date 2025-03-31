@@ -85,6 +85,7 @@ export const ReportedUnknownWebsites = () => {
             </Tooltip>
 
             <ExportUnknownWebsitesPopper
+              maxElement={config.reportsLimitForExport}
               disabled={ScOption.from(
                 unregisteredWebsites.result.data?.totalCount,
               )

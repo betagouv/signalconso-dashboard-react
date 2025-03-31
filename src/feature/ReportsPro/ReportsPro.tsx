@@ -24,14 +24,16 @@ import { useGetAccessibleByProQuery } from '../../core/queryhooks/companyQueryHo
 import { useReportSearchQuery } from '../../core/queryhooks/reportQueryHooks'
 import { ScButton } from '../../shared/Button'
 import { Datatable } from '../../shared/Datatable/Datatable'
-import { ExportReportsPopper } from '../../shared/ExportPopperBtn'
+import {
+  ExportReportsPdfPopper,
+  ExportReportsPopper,
+} from '../../shared/ExportPopperBtn'
 import { Page, PageTitle } from '../../shared/Page'
 import { PeriodPicker } from '../../shared/PeriodPicker'
 import { ScInput } from '../../shared/ScInput'
 import { ScSelect } from '../../shared/Select/Select'
 import { SelectCompaniesByPro } from '../../shared/SelectCompaniesByPro/SelectCompaniesByPro'
 import { SelectDepartments } from '../../shared/SelectDepartments/SelectDepartments'
-import { DatatableToolbarComponent } from '../Reports/DatatableToolbarComponent'
 import { buildReportsProColumns } from './buildReportsProColumns'
 
 const reportsProCss = makeSx({
@@ -317,6 +319,7 @@ export const ReportsPro = ({ reportType, search }: ReportsProProps) => {
                       </Badge>
                     )}
                     <ExportReportsPopper
+                      maxElement={config.reportsLimitForExport}
                       disabled={ScOption.from(_reports?.result.data?.totalCount)
                         .map((_) => _ > config.reportsLimitForExport)
                         .getOrElse(false)}
@@ -333,29 +336,37 @@ export const ReportsPro = ({ reportType, search }: ReportsProProps) => {
                         .getOrElse('')}
                       filters={_reports.filters}
                     >
-                      <Btn
-                        variant="outlined"
-                        color="primary"
-                        iconAfter="get_app"
-                      >
-                        {m.exportInXLS}
+                      <Btn variant="outlined" color="primary" icon="get_app">
+                        Export en Excel
                       </Btn>
                     </ExportReportsPopper>
-                    <Btn
-                      variant="outlined"
-                      color="primary"
-                      iconAfter="get_app"
-                      disabled={selectReport.size != 0}
-                      onClick={(_) =>
-                        selectReport.add(
-                          _reports.result.data!.entities!.map(
-                            (_) => _.report.id,
-                          ),
+                    <ExportReportsPdfPopper
+                      maxElement={config.reportsPdfLimitForExport}
+                      disabled={ScOption.from(_reports?.result.data?.totalCount)
+                        .map((_) => _ > config.reportsPdfLimitForExport)
+                        .getOrElse(false)}
+                      tooltipBtnNew={ScOption.from(
+                        _reports?.result.data?.totalCount,
+                      )
+                        .map((_) =>
+                          _ > config.reportsPdfLimitForExport
+                            ? m.cannotExportMoreReports(
+                                config.reportsPdfLimitForExport,
+                              )
+                            : '',
                         )
-                      }
+                        .getOrElse('')}
+                      filters={_reports.filters}
                     >
-                      Exporter en PDF
-                    </Btn>
+                      <Btn
+                        disabled={selectReport.size != 0}
+                        variant="outlined"
+                        color="primary"
+                        icon="get_app"
+                      >
+                        Exporter en PDF
+                      </Btn>
+                    </ExportReportsPdfPopper>
                   </Box>
                 </>
               </div>
@@ -410,15 +421,6 @@ export const ReportsPro = ({ reportType, search }: ReportsProProps) => {
                       orderBy: orderBy,
                     })),
                 }}
-                headerMain={
-                  <DatatableToolbarComponent
-                    {...{
-                      selectReport,
-                      canReOpen: false,
-                      reportFilter: _reports.filters,
-                    }}
-                  />
-                }
                 data={_reports.result.data?.entities}
                 loading={
                   _accessibleByPro.isLoading || _reports.result.isFetching
