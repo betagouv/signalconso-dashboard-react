@@ -161,15 +161,6 @@ export class ReportsClient {
     })
   }
 
-  readonly extractAsZip = (filters: ReportSearch & PaginatedFilters) => {
-    return this.client.post<void>(`reports/extract-as-zip`, {
-      qs: cleanObject({
-        ...reportFilter2QueryString(cleanReportFilter(filters)),
-        ...paginateFilters2QueryString(filters),
-      }),
-    })
-  }
-
   readonly search = (filters: ReportSearch & PaginatedSearch<Report>) => {
     const qs = cleanObject(reportFilter2QueryString(cleanReportFilter(filters)))
     return this.client
@@ -185,17 +176,40 @@ export class ReportsClient {
       })
   }
 
-  readonly download = (reportId: Id) => {
+  // readonly download = (ids: Id[], reportFilter?: ReportSearch) => {
+  //   return this.client
+  //     .getBlob(`/reports/download`, { qs: { ids } })
+  //     .then(
+  //       directDownloadBlob(
+  //         generateZipFileName(reportFilter),
+  //         'application/zip',
+  //       ),
+  //     )
+  // }
+
+  readonly download = (ids: Id[], reportFilter?: ReportSearch) => {
+    // TODO Type it and maybe improve it
     return this.client
-      .getBlob(`/reports/download/${reportId}`)
-      .then(directDownloadBlob(generateZipFileName(), 'application/zip'))
+      .getBlob(`/reports/download`, { qs: { ids } })
+      .then(directDownloadBlob('Signalement.pdf', 'application/pdf'))
   }
 
-  readonly downloadZip = (reportId: Id) => {
+  // readonly downloadZip = (ids: Id[], reportFilter?: ReportSearch) => {
+  //   return this.client
+  //     .getBlob(`/reports/download-with-attachments`, { qs: { ids } })
+  //     .then((blob) =>
+  //       directDownloadBlob(
+  //         generateZipFileName(reportFilter),
+  //         'application/zip',
+  //       )(blob),
+  //     )
+  // }
+
+  readonly downloadZip = (ids: Id[], reportFilter?: ReportSearch) => {
     return this.client
-      .getBlob(`/reports/download-with-attachments/${reportId}`)
+      .getBlob(`/reports/download-with-attachments/${ids[0]}`)
       .then((blob) =>
-        directDownloadBlob(generateZipFileName(), 'application/zip')(blob),
+        directDownloadBlob(`signalement.zip`, 'application/zip')(blob),
       )
   }
 
