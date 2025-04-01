@@ -3,9 +3,10 @@ import { styled } from '@mui/material/styles'
 import { colorBlueFrance } from 'alexlibs/mui-extension/color'
 
 // Exactly the same props as MUI Switch component
-// but custom style to look more like the DSFR and have no margin/padding that wrecks everything around
+// but custom style to look more like the DSFR
+// and without annoying margin/padding that wrecks everything around
 //
-// note : the colors are kinda wrong for the disabled state
+// The colors are kinda wrong for the disabled state
 // if we need to use it someday we can improve it
 export const ScSwitch = styled(Switch)(({ theme }) => {
   const height = 22
