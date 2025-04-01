@@ -124,8 +124,8 @@ function RowContent({
             <AddressComponent address={company.address} />
           </div>
         </div>
-        <div className="flex flex-col lg:items-end items-start grow min-w-52">
-          <span className="mb-1 lg:mb-0">
+        <div className="flex gap-4 lg:gap-0 lg:flex-col lg:items-end items-start grow min-w-52">
+          <span className="">
             <Icon fontSize="small" className="text-black -mb-1 mr-1">
               assignment
             </Icon>
