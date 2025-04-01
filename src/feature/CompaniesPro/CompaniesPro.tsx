@@ -122,11 +122,16 @@ function RowContent({
         <div>
           <AddressComponent address={company.address} />
         </div>
-        <div className="flex flex-col items-end grow ">
-          <ReportSearchLink
-            {...{ reportSearch }}
-            label={`${reportsCount} signalements`}
-          />
+        <div className="flex flex-col items-end grow min-w-52">
+          <span>
+            <Icon fontSize="small" className="text-black -mb-1 mr-1">
+              assignment
+            </Icon>
+            <ReportSearchLink
+              {...{ reportSearch }}
+              label={`${reportsCount} signalements`}
+            />
+          </span>
           <FormControlLabel
             control={
               <ScSwitch
