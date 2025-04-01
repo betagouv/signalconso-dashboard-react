@@ -24,7 +24,7 @@ export function CompaniesPro() {
       <PageTitle>Mes entreprises</PageTitle>
 
       {data && (
-        <div className="flex flex-col gap-8">
+        <div className="flex flex-col gap-8 mb-10 lg:mb-20">
           {data.headOfficesAndSubsidiaries.map(
             ({ headOffice, subsidiaries }) => {
               return (
