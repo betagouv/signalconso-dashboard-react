@@ -106,24 +106,26 @@ function RowContent({
     <div
       className={`space-y-1 ${isTopLevel ? 'bg-white border-gray-400 border px-8 py-6' : 'bg-white p-2'}`}
     >
-      <div className="flex gap-4">
-        <div className="flex flex-col items-start justify-start">
-          <p>
-            <Link
-              to="/entreprise/$companyId/bilan"
-              params={{ companyId }}
-              className={`text-scbluefrance ${isTopLevel ? 'font-bold' : ''}`}
-            >
-              {company.name}
-            </Link>
-          </p>
-          <p>{company.siret}</p>
+      <div className="flex gap-4 lg:flex-row flex-col">
+        <div className="lg:contents flex gap-4">
+          <div className="flex flex-col items-start justify-start">
+            <p>
+              <Link
+                to="/entreprise/$companyId/bilan"
+                params={{ companyId }}
+                className={`text-scbluefrance ${isTopLevel ? 'font-bold' : ''}`}
+              >
+                {company.name}
+              </Link>
+            </p>
+            <p>{company.siret}</p>
+          </div>
+          <div>
+            <AddressComponent address={company.address} />
+          </div>
         </div>
-        <div>
-          <AddressComponent address={company.address} />
-        </div>
-        <div className="flex flex-col items-end grow min-w-52">
-          <span>
+        <div className="flex flex-col lg:items-end items-startgrow min-w-52">
+          <span className="mb-1 lg:mb-0">
             <Icon fontSize="small" className="text-black -mb-1 mr-1">
               assignment
             </Icon>
@@ -142,8 +144,8 @@ function RowContent({
                 }}
               />
             }
-            labelPlacement="start"
-            className="!m-0 !flex !gap-1 !text-right"
+            labelPlacement="end"
+            className="!m-0 !flex !gap-1 !text-right lg:flex-row-reverse"
             label={
               <span>
                 {isTopLevel ? 'Être notifié par email' : 'Notifié par email'}
