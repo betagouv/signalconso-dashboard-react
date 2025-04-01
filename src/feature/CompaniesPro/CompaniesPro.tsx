@@ -4,11 +4,8 @@ import {
   AccordionSummary,
   FormControlLabel,
   Icon,
-  styled,
-  Switch,
 } from '@mui/material'
 import { Link } from '@tanstack/react-router'
-import { colorBlueFrance } from 'alexlibs/mui-extension/color'
 import { CompanyWithAccessAndCounts } from 'core/client/company/Company'
 import { useGetAccessibleByProExtendedQuery } from 'core/queryhooks/companyQueryHooks'
 import { ReportSearchLink } from 'feature/Report/quickSmallLinks'
@@ -16,6 +13,7 @@ import { useState } from 'react'
 import { AddressComponent } from 'shared/Address'
 import { Page } from 'shared/Page'
 import { PageTitle } from 'shared/Page/PageTitle'
+import { ScSwitch } from 'shared/ScSwitch'
 
 export function CompaniesPro() {
   const _companiesAccessibleByPro = useGetAccessibleByProExtendedQuery()
@@ -129,43 +127,17 @@ function RowContent({
           />
           <FormControlLabel
             control={
-              <MySwitch
+              <ScSwitch
                 disabled={false}
                 checked={checked}
                 onChange={(e) => {
                   setChecked(!checked)
                 }}
-                // checkedIcon={
-                //   <Icon className="text-green-800 bg-white opacity-40">
-                //     done
-                //   </Icon>
-                // }
               />
             }
             labelPlacement="start"
             label={<span className="mr-1">Notifications par email</span>}
           />
-          {/* <FormControlLabel
-            control={
-              <MySwitch disabled={false} checked={false} onChange={(e) => {}} />
-            }
-            labelPlacement="start"
-            label={<span className="">Notifications par email</span>}
-          />
-          <FormControlLabel
-            control={
-              <MySwitch disabled={true} checked={true} onChange={(e) => {}} />
-            }
-            labelPlacement="start"
-            label={<span className="">Notifications par email</span>}
-          />
-          <FormControlLabel
-            control={
-              <MySwitch disabled={true} checked={false} onChange={(e) => {}} />
-            }
-            labelPlacement="start"
-            label={<span className="">Notifications par email</span>}
-          /> */}
         </div>
       </div>
       {directAccessesCount !== undefined && (
@@ -204,66 +176,3 @@ function RowContent({
     </div>
   )
 }
-
-// function prepareData(data: ProCompaniesExtended) {
-//   const { headOfficesAndSubsidiaries, loneSubsidiaries } = data
-//   const rows = [
-//     ...headOfficesAndSubsidiaries.map(({ headOffice, subsidiaries }) => ({
-//       headOffice,
-//       subsidiaries,
-//     })),
-//     ...loneSubsidiaries.map((company) => ({
-//       company,
-//     })),
-//   ]
-// }
-
-const MySwitch = styled(Switch)(({ theme }) => {
-  const height = 22
-  const width = 36
-  const checkboxSize = 14
-  // note : the colors are kinda wrong for the disabled state
-  // if we need to use it someday we can improve it
-  return {
-    width,
-    height,
-    padding: 0,
-    display: 'flex',
-    '& .MuiSwitch-switchBase': {
-      padding: 0,
-      '&.Mui-checked': {
-        transform: `translateX(${width - height}px)`,
-        '& + .MuiSwitch-track': {
-          opacity: 1,
-          backgroundColor: colorBlueFrance,
-        },
-        '& .MuiSwitch-thumb:before': {
-          backgroundImage: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="${checkboxSize}" width="${checkboxSize}" viewBox="0 0 24 24"><path fill="${encodeURIComponent(colorBlueFrance)}" d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z"/></svg>')`,
-          content: '""',
-          position: 'absolute',
-          top: '50%',
-          left: '50%',
-          transform: 'translate(-50%, -50%)',
-          width: checkboxSize,
-          height: checkboxSize,
-          backgroundRepeat: 'no-repeat',
-          backgroundPosition: 'center',
-        },
-      },
-    },
-    '& .MuiSwitch-thumb': {
-      boxShadow: 'none',
-      width: height,
-      height: height,
-      borderRadius: height / 2,
-      backgroundColor: 'white',
-      border: `1px solid ${colorBlueFrance}`,
-    },
-    '& .MuiSwitch-track': {
-      borderRadius: height / 2,
-      border: `1px solid ${colorBlueFrance}`,
-      opacity: 1,
-      backgroundColor: 'white',
-    },
-  }
-})
