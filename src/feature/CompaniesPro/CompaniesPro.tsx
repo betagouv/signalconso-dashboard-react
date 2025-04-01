@@ -4,9 +4,11 @@ import {
   AccordionSummary,
   FormControlLabel,
   Icon,
+  styled,
   Switch,
 } from '@mui/material'
 import { Link } from '@tanstack/react-router'
+import { colorBlueFrance } from 'alexlibs/mui-extension/color'
 import { CompanyWithAccessAndCounts } from 'core/client/company/Company'
 import { useGetAccessibleByProExtendedQuery } from 'core/queryhooks/companyQueryHooks'
 import { ReportSearchLink } from 'feature/Report/quickSmallLinks'
@@ -125,11 +127,32 @@ function RowContent({
           />
           <FormControlLabel
             control={
-              <Switch disabled={false} checked={true} onChange={(e) => {}} />
+              <MySwitch disabled={false} checked={true} onChange={(e) => {}} />
+            }
+            labelPlacement="start"
+            label={<span className="mr-1">Notifications par email</span>}
+          />
+          {/* <FormControlLabel
+            control={
+              <MySwitch disabled={false} checked={false} onChange={(e) => {}} />
             }
             labelPlacement="start"
             label={<span className="">Notifications par email</span>}
           />
+          <FormControlLabel
+            control={
+              <MySwitch disabled={true} checked={true} onChange={(e) => {}} />
+            }
+            labelPlacement="start"
+            label={<span className="">Notifications par email</span>}
+          />
+          <FormControlLabel
+            control={
+              <MySwitch disabled={true} checked={false} onChange={(e) => {}} />
+            }
+            labelPlacement="start"
+            label={<span className="">Notifications par email</span>}
+          /> */}
         </div>
       </div>
       {directAccessesCount !== undefined && (
@@ -181,3 +204,37 @@ function RowContent({
 //     })),
 //   ]
 // }
+
+const MySwitch = styled(Switch)(({ theme }) => ({
+  width: 38,
+  height: 22,
+  padding: 0,
+  display: 'flex',
+  '& .MuiSwitch-switchBase': {
+    padding: 0,
+    '&.Mui-checked': {
+      transform: 'translateX(16px)',
+      '& + .MuiSwitch-track': {
+        opacity: 1,
+        backgroundColor: colorBlueFrance,
+      },
+    },
+  },
+  '& .MuiSwitch-thumb': {
+    boxShadow: 'none',
+    width: 22,
+    height: 22,
+    borderRadius: 22 / 2,
+    backgroundColor: 'white',
+    border: `1px solid ${colorBlueFrance}`,
+    // transition: theme.transitions.create(['width'], {
+    //   duration: 200,
+    // }),
+  },
+  '& .MuiSwitch-track': {
+    borderRadius: 22 / 2,
+    border: `1px solid ${colorBlueFrance}`,
+    opacity: 1,
+    backgroundColor: 'white',
+  },
+}))
