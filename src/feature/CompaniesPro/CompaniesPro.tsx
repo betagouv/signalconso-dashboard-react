@@ -138,9 +138,9 @@ function RowContent({
               />
             }
             labelPlacement="start"
-            className="!m-0"
+            className="!m-0 !flex !gap-1 !text-right"
             label={
-              <span className={`mr-1`}>
+              <span>
                 {isTopLevel ? 'Être notifié par email' : 'Notifié par email'}
               </span>
             }
