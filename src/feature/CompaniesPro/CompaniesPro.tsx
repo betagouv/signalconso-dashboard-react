@@ -58,7 +58,7 @@ function TopLevelRow({
       {secondLevel ? (
         <div className="ml-10">
           <Accordion
-            defaultExpanded={secondLevel.length > 0}
+            defaultExpanded={secondLevel.length > 0 && secondLevel.length <= 2}
             elevation={0}
             disabled={secondLevel.length === 0}
             className="border border-solid border-gray-400 border-t-0 !rounded-t-none"
@@ -96,12 +96,20 @@ function RowContent({
   company: CompanyWithAccessAndCounts
   isTopLevel: boolean
 }) {
-  const { company, access, reportsCount, directAccessesCount } = _company
+  const {
+    company,
+    access,
+    reportsCount,
+    directAccessesCount,
+    ongoingReportsCount,
+  } = _company
   const companyId = company.id
   const [checked, setChecked] = useState(false)
   const reportSearch = {
     companyIds: [company.id],
   }
+
+  const ongoingReportsLabel = `${ongoingReportsCount} à traiter`
   return (
     <div
       className={`space-y-1 ${isTopLevel ? 'bg-white border-gray-400 border px-8 py-6' : 'bg-white p-2'}`}
@@ -125,15 +133,25 @@ function RowContent({
           </div>
         </div>
         <div className="flex gap-4 lg:gap-0 lg:flex-col lg:items-end items-start grow min-w-52">
-          <span className="">
-            {/* <Icon fontSize="small" className="text-black -mb-1 mr-1">
-              assignment
-            </Icon> */}
-            <ReportSearchLink
-              {...{ reportSearch }}
-              label={`${reportsCount} signalements`}
-            />
+          <span>
+            {`${reportsCount} signalement${reportsCount > 1 ? 's' : ''}`}
+            {reportsCount > 0 ? (
+              <span>
+                {' '}
+                (
+                {ongoingReportsCount > 0 ? (
+                  <ReportSearchLink
+                    reportSearch={reportSearch}
+                    label={ongoingReportsLabel}
+                  />
+                ) : (
+                  <span>{ongoingReportsLabel}</span>
+                )}
+                )
+              </span>
+            ) : null}
           </span>
+
           <FormControlLabel
             control={
               <ScSwitch

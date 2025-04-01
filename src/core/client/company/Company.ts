@@ -96,6 +96,7 @@ export type CompanyWithAccessAndCounts = {
     kind: 'Direct' | 'Inherited' | 'InheritedAdminAndDirectMember'
   }
   reportsCount: number
+  ongoingReportsCount: number
   directAccessesCount: number | undefined // undefined if your own access level isn't admin
 }
 
