@@ -58,6 +58,7 @@ function TopLevelRow({
       {secondLevel ? (
         <div className="ml-10">
           <Accordion
+            defaultExpanded={secondLevel.length > 0}
             elevation={0}
             disabled={secondLevel.length === 0}
             className="border border-solid border-gray-400 border-t-0 !rounded-t-none"
@@ -98,6 +99,9 @@ function RowContent({
   const { company, access, reportsCount, directAccessesCount } = _company
   const companyId = company.id
   const [checked, setChecked] = useState(false)
+  const reportSearch = {
+    companyIds: [company.id],
+  }
   return (
     <div
       className={`space-y-1 ${isTopLevel ? 'bg-white border-gray-400 border px-8 py-6' : 'bg-white p-2'}`}
@@ -120,15 +124,13 @@ function RowContent({
         </div>
         <div className="flex flex-col items-end grow ">
           <ReportSearchLink
-            reportSearch={{
-              companyIds: [company.id],
-            }}
+            {...{ reportSearch }}
             label={`${reportsCount} signalements`}
           />
           <FormControlLabel
             control={
               <ScSwitch
-                disabled={false}
+                size={isTopLevel ? 'medium' : 'small'}
                 checked={checked}
                 onChange={(e) => {
                   setChecked(!checked)
@@ -136,10 +138,16 @@ function RowContent({
               />
             }
             labelPlacement="start"
-            label={<span className="mr-1">Notifications par email</span>}
+            className="!m-0"
+            label={
+              <span className={`mr-1`}>
+                {isTopLevel ? 'Être notifié par email' : 'Notifié par email'}
+              </span>
+            }
           />
         </div>
       </div>
+
       {directAccessesCount !== undefined && (
         <>
           <div className="flex flex-col items-start justify-start">

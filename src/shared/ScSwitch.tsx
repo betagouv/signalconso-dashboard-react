@@ -8,11 +8,9 @@ import { colorBlueFrance } from 'alexlibs/mui-extension/color'
 //
 // The colors are kinda wrong for the disabled state
 // if we need to use it someday we can improve it
-export const ScSwitch = styled(Switch)(({ theme }) => {
-  const height = 22
-  const width = 36
-  const checkboxSize = 14
-
+export const ScSwitch = styled(Switch)((props) => {
+  const [height, width, checkboxSize] =
+    props.size === 'small' ? [18, 27, 12] : [22, 36, 14]
   return {
     width,
     height,

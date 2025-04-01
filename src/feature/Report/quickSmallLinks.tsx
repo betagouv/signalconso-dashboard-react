@@ -90,15 +90,17 @@ export const QuickSmallReportSearchLink = (props: {
 export function ReportSearchLink({
   reportSearch,
   label,
+  bold = false,
 }: {
   reportSearch: Partial<ReportSearch>
   label: string
+  bold?: boolean
 }) {
   return (
     <Link
       to="/suivi-des-signalements"
       search={reportSearch}
-      className="text-scbluefrance"
+      className={`text-scbluefrance ${bold ? 'font-bold' : ''}`}
     >
       {label}
     </Link>
