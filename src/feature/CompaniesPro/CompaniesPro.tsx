@@ -126,9 +126,9 @@ function RowContent({
         </div>
         <div className="flex gap-4 lg:gap-0 lg:flex-col lg:items-end items-start grow min-w-52">
           <span className="">
-            <Icon fontSize="small" className="text-black -mb-1 mr-1">
+            {/* <Icon fontSize="small" className="text-black -mb-1 mr-1">
               assignment
-            </Icon>
+            </Icon> */}
             <ReportSearchLink
               {...{ reportSearch }}
               label={`${reportsCount} signalements`}
