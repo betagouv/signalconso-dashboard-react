@@ -135,6 +135,11 @@ function RowContent({
                 onChange={(e) => {
                   setChecked(!checked)
                 }}
+                // checkedIcon={
+                //   <Icon className="text-green-800 bg-white opacity-40">
+                //     done
+                //   </Icon>
+                // }
               />
             }
             labelPlacement="start"
@@ -215,7 +220,8 @@ function RowContent({
 
 const MySwitch = styled(Switch)(({ theme }) => {
   const height = 22
-  const width = 38
+  const width = 36
+  const checkboxSize = 14
   // note : the colors are kinda wrong for the disabled state
   // if we need to use it someday we can improve it
   return {
@@ -230,6 +236,18 @@ const MySwitch = styled(Switch)(({ theme }) => {
         '& + .MuiSwitch-track': {
           opacity: 1,
           backgroundColor: colorBlueFrance,
+        },
+        '& .MuiSwitch-thumb:before': {
+          backgroundImage: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="${checkboxSize}" width="${checkboxSize}" viewBox="0 0 24 24"><path fill="${encodeURIComponent(colorBlueFrance)}" d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z"/></svg>')`,
+          content: '""',
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+          width: checkboxSize,
+          height: checkboxSize,
+          backgroundRepeat: 'no-repeat',
+          backgroundPosition: 'center',
         },
       },
     },
