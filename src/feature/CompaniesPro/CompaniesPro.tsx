@@ -12,6 +12,7 @@ import { colorBlueFrance } from 'alexlibs/mui-extension/color'
 import { CompanyWithAccessAndCounts } from 'core/client/company/Company'
 import { useGetAccessibleByProExtendedQuery } from 'core/queryhooks/companyQueryHooks'
 import { ReportSearchLink } from 'feature/Report/quickSmallLinks'
+import { useState } from 'react'
 import { AddressComponent } from 'shared/Address'
 import { Page } from 'shared/Page'
 import { PageTitle } from 'shared/Page/PageTitle'
@@ -98,6 +99,7 @@ function RowContent({
 }) {
   const { company, access, reportsCount, directAccessesCount } = _company
   const companyId = company.id
+  const [checked, setChecked] = useState(false)
   return (
     <div
       className={`space-y-1 ${isTopLevel ? 'bg-white border-gray-400 border px-8 py-6' : 'bg-white p-2'}`}
@@ -127,7 +129,13 @@ function RowContent({
           />
           <FormControlLabel
             control={
-              <MySwitch disabled={false} checked={true} onChange={(e) => {}} />
+              <MySwitch
+                disabled={false}
+                checked={checked}
+                onChange={(e) => {
+                  setChecked(!checked)
+                }}
+              />
             }
             labelPlacement="start"
             label={<span className="mr-1">Notifications par email</span>}
@@ -208,6 +216,8 @@ function RowContent({
 const MySwitch = styled(Switch)(({ theme }) => {
   const height = 22
   const width = 38
+  // note : the colors are kinda wrong for the disabled state
+  // if we need to use it someday we can improve it
   return {
     width,
     height,
@@ -230,9 +240,6 @@ const MySwitch = styled(Switch)(({ theme }) => {
       borderRadius: height / 2,
       backgroundColor: 'white',
       border: `1px solid ${colorBlueFrance}`,
-      // transition: theme.transitions.create(['width'], {
-      //   duration: 200,
-      // }),
     },
     '& .MuiSwitch-track': {
       borderRadius: height / 2,
