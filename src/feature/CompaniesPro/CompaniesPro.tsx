@@ -205,36 +205,40 @@ function RowContent({
 //   ]
 // }
 
-const MySwitch = styled(Switch)(({ theme }) => ({
-  width: 38,
-  height: 22,
-  padding: 0,
-  display: 'flex',
-  '& .MuiSwitch-switchBase': {
+const MySwitch = styled(Switch)(({ theme }) => {
+  const height = 22
+  const width = 38
+  return {
+    width,
+    height,
     padding: 0,
-    '&.Mui-checked': {
-      transform: 'translateX(16px)',
-      '& + .MuiSwitch-track': {
-        opacity: 1,
-        backgroundColor: colorBlueFrance,
+    display: 'flex',
+    '& .MuiSwitch-switchBase': {
+      padding: 0,
+      '&.Mui-checked': {
+        transform: `translateX(${width - height}px)`,
+        '& + .MuiSwitch-track': {
+          opacity: 1,
+          backgroundColor: colorBlueFrance,
+        },
       },
     },
-  },
-  '& .MuiSwitch-thumb': {
-    boxShadow: 'none',
-    width: 22,
-    height: 22,
-    borderRadius: 22 / 2,
-    backgroundColor: 'white',
-    border: `1px solid ${colorBlueFrance}`,
-    // transition: theme.transitions.create(['width'], {
-    //   duration: 200,
-    // }),
-  },
-  '& .MuiSwitch-track': {
-    borderRadius: 22 / 2,
-    border: `1px solid ${colorBlueFrance}`,
-    opacity: 1,
-    backgroundColor: 'white',
-  },
-}))
+    '& .MuiSwitch-thumb': {
+      boxShadow: 'none',
+      width: height,
+      height: height,
+      borderRadius: height / 2,
+      backgroundColor: 'white',
+      border: `1px solid ${colorBlueFrance}`,
+      // transition: theme.transitions.create(['width'], {
+      //   duration: 200,
+      // }),
+    },
+    '& .MuiSwitch-track': {
+      borderRadius: height / 2,
+      border: `1px solid ${colorBlueFrance}`,
+      opacity: 1,
+      backgroundColor: 'white',
+    },
+  }
+})
