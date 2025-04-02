@@ -7,7 +7,8 @@ import {
   Icon,
 } from '@mui/material'
 import { Link } from '@tanstack/react-router'
-import { Alert, Modal } from 'alexlibs/mui-extension'
+import { Modal } from 'alexlibs/mui-extension'
+import { colorDsfrInfoBlue } from 'alexlibs/mui-extension/color'
 import {
   CompanyWithAccessAndCounts,
   flattenProCompaniesExtended,
@@ -49,13 +50,28 @@ export function CompaniesPro() {
       </PageTitle>
       {hasBlockedSome && (
         <div className="mb-8 w-fit">
-          <Alert type="warning">
+          {/* <Alert type="warning">
             Vous avez désactivé l'envoi d'email de notifications des nouveaux
             signalements pour au moins une de vos entreprises.
             <br />
             Vous devrez vous connecter régulièrement sur votre espace pour
             consulter les nouveaux signalements.
-          </Alert>
+          </Alert> */}
+          <div
+            className="border border-l-[30px] p-4"
+            style={{ borderColor: colorDsfrInfoBlue }}
+          >
+            <h3 className="text-lg font-bold mb-1">
+              <Icon className="-mb-1 mr-1">info</Icon>Notifications désactivées
+            </h3>
+            <p>
+              Vous avez désactivé l'envoi d'email de notifications des nouveaux
+              signalements pour au moins une de vos entreprises.
+              <br />
+              Vous devrez vous connecter régulièrement sur votre espace pour
+              consulter les nouveaux signalements.
+            </p>
+          </div>
         </div>
       )}
       <p className="mb-2 text-sm">
