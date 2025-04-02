@@ -31,41 +31,39 @@ function useNotificationsSetup() {
   const queryClient = useQueryClient()
   const _blockedNotifList = useListReportBlockedNotificationsQuery()
   const _addBlockedNotif = useMutation({
-    mutationFn: (companyIds: Id[]) => {
-      const newBlocked: BlockedReportNotification[] = companyIds.map(
-        (companyId) => ({
-          companyId,
-          dateCreation: new Date(),
-        }),
-      )
+    mutationFn: (companyIds: Id[]) =>
+      api.secured.reportBlockedNotification.create(companyIds),
+    onSuccess: (newlyBlocked) =>
       queryClient.setQueryData(
         ListReportBlockedNotificationsQueryKeys,
         (prev: BlockedReportNotification[]) => {
-          return uniqBy([...(prev ?? []), ...newBlocked], (_) => _.companyId)
+          return uniqBy([...(prev ?? []), ...newlyBlocked], (_) => _.companyId)
         },
-      )
-      return api.secured.reportBlockedNotification.create(companyIds)
-    },
+      ),
   })
   const _removeBlockedNotif = useMutation({
-    mutationFn: (companyIds: Id[]) => {
+    mutationFn: (companyIds: Id[]) =>
+      api.secured.reportBlockedNotification.delete(companyIds),
+    onSuccess: (_, companyIds) =>
       queryClient.setQueryData(
         ListReportBlockedNotificationsQueryKeys,
-        (currentCompanyIds: BlockedReportNotification[]) =>
-          currentCompanyIds?.filter((_) => !companyIds.includes(_.companyId)),
-      )
-      return api.secured.reportBlockedNotification.delete(companyIds)
-    },
+        (prev: BlockedReportNotification[]) => {
+          return prev?.filter((_) => !companyIds.includes(_.companyId))
+        },
+      ),
   })
   return {
     _blockedNotifList,
     _addBlockedNotif,
     _removeBlockedNotif,
+    isPending:
+      !_blockedNotifList.data ||
+      _addBlockedNotif.isPending ||
+      _removeBlockedNotif.isPending,
   }
 }
 export function CompaniesPro() {
   const _companiesAccessibleByPro = useGetAccessibleByProExtendedQuery()
-
   const data = _companiesAccessibleByPro.data
   const notificationsSetup = useNotificationsSetup()
   return (
@@ -187,7 +185,6 @@ function RowContent({
     notificationsSetup._blockedNotifList.data?.some(
       (_) => _.companyId === companyId,
     ) ?? false
-  const isNotifInteractionDisabled = !notificationsSetup._blockedNotifList.data
   const ongoingReportsLabel = `${ongoingReportsCount} à traiter`
   return (
     <div
@@ -236,7 +233,7 @@ function RowContent({
               <ScSwitch
                 size={isTopLevel ? 'medium' : 'small'}
                 checked={isBlocked}
-                disabled={isNotifInteractionDisabled}
+                disabled={notificationsSetup.isPending}
                 onChange={(e) => {
                   notificationsSetup._addBlockedNotif.mutate([companyId])
                 }}
