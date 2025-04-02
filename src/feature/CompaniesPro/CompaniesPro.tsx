@@ -39,7 +39,7 @@ export function CompaniesPro() {
     <Page>
       <PageTitle>Mes entreprises</PageTitle>
       {hasBlockedSome && (
-        <div className="mb-4">
+        <div className="mb-8 w-fit">
           <Alert type="info">
             Vous avez désactivé l'envoi d'email de notifications des nouveaux
             signalements pour au moins une de vos entreprises.
@@ -49,6 +49,10 @@ export function CompaniesPro() {
           </Alert>
         </div>
       )}
+      <p className="mb-2 text-sm">
+        Le nombre de signalements de chaque entreprise n'est pas en temps réel.
+        Il est rafraîchi toutes les heures.
+      </p>
       {data && (
         <div className="flex flex-col gap-8 mb-10 lg:mb-20">
           {data.headOfficesAndSubsidiaries.map(
