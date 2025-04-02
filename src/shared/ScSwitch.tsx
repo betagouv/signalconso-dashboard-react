@@ -5,9 +5,6 @@ import { colorBlueFrance } from 'alexlibs/mui-extension/color'
 // Exactly the same props as MUI Switch component
 // but custom style to look more like the DSFR
 // and without annoying margin/padding that wrecks everything around
-//
-// The colors are kinda wrong for the disabled state
-// if we need to use it someday we can improve it
 export const ScSwitch = styled(Switch)((props) => {
   const [height, width, checkboxSize] =
     props.size === 'small' ? [18, 27, 12] : [22, 36, 14]
@@ -35,6 +32,20 @@ export const ScSwitch = styled(Switch)((props) => {
           height: checkboxSize,
           backgroundRepeat: 'no-repeat',
           backgroundPosition: 'center',
+        },
+      },
+      '&.Mui-disabled': {
+        '& .MuiSwitch-thumb': {
+          opacity: 0.2,
+        },
+        '& + .MuiSwitch-track': {
+          opacity: 0.2,
+        },
+        '&.Mui-checked': {
+          '& .MuiSwitch-thumb': {},
+          '& + .MuiSwitch-track': {
+            backgroundColor: '#ccc',
+          },
         },
       },
     },
