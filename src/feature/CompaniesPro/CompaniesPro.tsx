@@ -2,11 +2,12 @@ import {
   Accordion,
   AccordionDetails,
   AccordionSummary,
+  Button,
   FormControlLabel,
   Icon,
 } from '@mui/material'
 import { Link } from '@tanstack/react-router'
-import { Alert } from 'alexlibs/mui-extension'
+import { Alert, Modal } from 'alexlibs/mui-extension'
 import {
   CompanyWithAccessAndCounts,
   flattenProCompaniesExtended,
@@ -31,14 +32,21 @@ export function CompaniesPro() {
   const _blockedNotifications = useBlockedNotificationsQuery()
 
   const allCompaniesIds =
-    data && flattenProCompaniesExtended(data).map((_) => _.company.id)
-  const hasBlockedSome =
-    allCompaniesIds?.some((id) =>
-      _blockedNotifications.data?.some((_) => _.companyId == id),
-    ) ?? false
+    (data && flattenProCompaniesExtended(data).map((_) => _.company.id)) ?? []
+  const allBlockedIds = allCompaniesIds.filter((id) =>
+    _blockedNotifications.data?.some((_) => _.companyId == id),
+  )
+  const hasBlockedSome = allBlockedIds.length > 0
+  const totalNbCompanies = allCompaniesIds.length
   return (
     <Page>
-      <PageTitle>Mes entreprises</PageTitle>
+      <PageTitle
+        action={
+          <ManageNotificationsButton {...{ allCompaniesIds, allBlockedIds }} />
+        }
+      >
+        Mes entreprises
+      </PageTitle>
       {hasBlockedSome && (
         <div className="mb-8 w-fit">
           <Alert type="warning">
@@ -63,7 +71,7 @@ export function CompaniesPro() {
                   key={headOffice.company.id}
                   company={headOffice}
                   secondLevel={subsidiaries}
-                  {...{ _blockedNotifications: _blockedNotifications }}
+                  {...{ _blockedNotifications, totalNbCompanies }}
                 />
               )
             },
@@ -73,7 +81,7 @@ export function CompaniesPro() {
               <TopLevelRow
                 key={company.company.id}
                 {...{ company }}
-                {...{ _blockedNotifications }}
+                {...{ _blockedNotifications, totalNbCompanies }}
               />
             )
           })}
@@ -87,10 +95,12 @@ function TopLevelRow({
   company,
   secondLevel,
   _blockedNotifications,
+  totalNbCompanies,
 }: {
   company: CompanyWithAccessAndCounts
   secondLevel?: CompanyWithAccessAndCounts[]
   _blockedNotifications: BlockedNotificationsQuery
+  totalNbCompanies: number
 }) {
   return (
     <div className="">
@@ -102,7 +112,10 @@ function TopLevelRow({
       {secondLevel ? (
         <div className="ml-10">
           <Accordion
-            defaultExpanded={secondLevel.length > 0 && secondLevel.length <= 2}
+            defaultExpanded={
+              secondLevel.length > 0 &&
+              (secondLevel.length <= 2 || totalNbCompanies < 6)
+            }
             elevation={0}
             disabled={secondLevel.length === 0}
             className="border border-solid border-gray-400 border-t-0 !rounded-t-none"
@@ -275,5 +288,63 @@ function RowContent({
         </p>
       )}
     </div>
+  )
+}
+
+export function ManageNotificationsButton({
+  allCompaniesIds,
+  allBlockedIds,
+}: {
+  allCompaniesIds: string[]
+  allBlockedIds: string[]
+}) {
+  const _block = useAddBlockedNotification(allCompaniesIds)
+  const _unblock = useRemoveBlockedNotification(allCompaniesIds)
+  const allBlocked = allBlockedIds.length === allCompaniesIds.length
+  const allUnblocked = allBlockedIds.length === 0
+  return (
+    <Modal
+      title="Gérer les notifications"
+      maxWidth="sm"
+      content={() => (
+        <div className="space-y-4">
+          <p>
+            Les boutons ci-dessous vous permettent d'activer ou de désactiver
+            l'envoi d'email de notifications des nouveaux signalements pour{' '}
+            <b>l'ensemble de vos entreprises.</b>
+          </p>
+          <div className="flex flex-col gap-2 items-stretch">
+            <Button
+              startIcon={<Icon>block</Icon>}
+              variant="outlined"
+              onClick={() => {
+                _block.mutate()
+              }}
+              disabled={allBlocked}
+            >
+              Je ne veux plus aucune notification
+            </Button>
+            <Button
+              variant="outlined"
+              startIcon={<Icon>mail</Icon>}
+              onClick={() => {
+                _unblock.mutate()
+              }}
+              disabled={allUnblocked}
+            >
+              Je veux recevoir toutes les notifications
+            </Button>
+          </div>
+          <p>
+            Pour un réglage plus fin, fermez cette fenêtre et utiliser le bouton
+            "<i>Être notifié par email</i>" entreprise par entreprise.
+          </p>
+        </div>
+      )}
+      loading={_block.isPending || _unblock.isPending}
+      cancelLabel="Fermer"
+    >
+      <Button variant="outlined">Gérer les notifications</Button>
+    </Modal>
   )
 }
