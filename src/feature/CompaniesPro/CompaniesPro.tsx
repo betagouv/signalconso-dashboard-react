@@ -5,71 +5,50 @@ import {
   FormControlLabel,
   Icon,
 } from '@mui/material'
-import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { Link } from '@tanstack/react-router'
-import { BlockedReportNotification } from 'core/client/blocked-report-notifications/BlockedReportNotification'
-import { CompanyWithAccessAndCounts } from 'core/client/company/Company'
-import { useApiContext } from 'core/context/ApiContext'
-import { Id } from 'core/model'
+import { Alert } from 'alexlibs/mui-extension'
+import {
+  CompanyWithAccessAndCounts,
+  flattenProCompaniesExtended,
+} from 'core/client/company/Company'
 import { useGetAccessibleByProExtendedQuery } from 'core/queryhooks/companyQueryHooks'
 import {
-  ListReportBlockedNotificationsQueryKeys,
-  useListReportBlockedNotificationsQuery,
+  NotificationsQueries,
+  useBlockedNotificationsQueries,
 } from 'core/queryhooks/reportBlockedNotificationQueryHooks'
 import { ReportSearchLink } from 'feature/Report/quickSmallLinks'
-import { useState } from 'react'
 import { AddressComponent } from 'shared/Address'
 import { Page } from 'shared/Page'
 import { PageTitle } from 'shared/Page/PageTitle'
 import { ScSwitch } from 'shared/ScSwitch'
-import { uniqBy } from '../../core/lodashNamedExport'
 
-type NotificationsSetup = ReturnType<typeof useNotificationsSetup>
-
-function useNotificationsSetup() {
-  const { api } = useApiContext()
-  const queryClient = useQueryClient()
-  const _blockedNotifList = useListReportBlockedNotificationsQuery()
-  const _addBlockedNotif = useMutation({
-    mutationFn: (companyIds: Id[]) =>
-      api.secured.reportBlockedNotification.create(companyIds),
-    onSuccess: (newlyBlocked) =>
-      queryClient.setQueryData(
-        ListReportBlockedNotificationsQueryKeys,
-        (prev: BlockedReportNotification[]) => {
-          return uniqBy([...(prev ?? []), ...newlyBlocked], (_) => _.companyId)
-        },
-      ),
-  })
-  const _removeBlockedNotif = useMutation({
-    mutationFn: (companyIds: Id[]) =>
-      api.secured.reportBlockedNotification.delete(companyIds),
-    onSuccess: (_, companyIds) =>
-      queryClient.setQueryData(
-        ListReportBlockedNotificationsQueryKeys,
-        (prev: BlockedReportNotification[]) => {
-          return prev?.filter((_) => !companyIds.includes(_.companyId))
-        },
-      ),
-  })
-  return {
-    _blockedNotifList,
-    _addBlockedNotif,
-    _removeBlockedNotif,
-    isPending:
-      !_blockedNotifList.data ||
-      _addBlockedNotif.isPending ||
-      _removeBlockedNotif.isPending,
-  }
-}
 export function CompaniesPro() {
   const _companiesAccessibleByPro = useGetAccessibleByProExtendedQuery()
   const data = _companiesAccessibleByPro.data
-  const notificationsSetup = useNotificationsSetup()
+  const notificationsQueries = useBlockedNotificationsQueries()
+
+  const allCompaniesIds =
+    data && flattenProCompaniesExtended(data).map((_) => _.company.id)
+  const hasBlockedSome =
+    allCompaniesIds?.some((id) =>
+      notificationsQueries._blockedNotifList.data?.some(
+        (_) => _.companyId == id,
+      ),
+    ) ?? false
   return (
     <Page>
       <PageTitle>Mes entreprises</PageTitle>
-
+      {hasBlockedSome && (
+        <div className="mb-4">
+          <Alert type="info">
+            Vous avez désactivé l'envoi d'email de notifications des nouveaux
+            signalements pour au moins une de vos entreprises.
+            <br />
+            Vous devrez vous connecter régulièrement sur votre espace pour
+            consulter les nouveaux signalements.
+          </Alert>
+        </div>
+      )}
       {data && (
         <div className="flex flex-col gap-8 mb-10 lg:mb-20">
           {data.headOfficesAndSubsidiaries.map(
@@ -79,7 +58,7 @@ export function CompaniesPro() {
                   key={headOffice.company.id}
                   company={headOffice}
                   secondLevel={subsidiaries}
-                  {...{ notificationsSetup }}
+                  {...{ notificationsQueries }}
                 />
               )
             },
@@ -89,7 +68,7 @@ export function CompaniesPro() {
               <TopLevelRow
                 key={company.company.id}
                 {...{ company }}
-                {...{ notificationsSetup }}
+                {...{ notificationsQueries }}
               />
             )
           })}
@@ -102,18 +81,18 @@ export function CompaniesPro() {
 function TopLevelRow({
   company,
   secondLevel,
-  notificationsSetup,
+  notificationsQueries,
 }: {
   company: CompanyWithAccessAndCounts
   secondLevel?: CompanyWithAccessAndCounts[]
-  notificationsSetup: NotificationsSetup
+  notificationsQueries: NotificationsQueries
 }) {
   return (
     <div className="">
       <RowContent
         {...{ company }}
         isTopLevel={true}
-        {...{ notificationsSetup }}
+        {...{ notificationsQueries }}
       />
       {secondLevel ? (
         <div className="ml-10">
@@ -136,7 +115,7 @@ function TopLevelRow({
                     <SecondLevelRow
                       key={c.company.id}
                       {...{ company: c }}
-                      {...{ notificationsSetup }}
+                      {...{ notificationsQueries }}
                     />
                   )
                 })}
@@ -151,22 +130,24 @@ function TopLevelRow({
 
 function SecondLevelRow({
   company,
-  notificationsSetup,
+  notificationsQueries,
 }: {
   company: CompanyWithAccessAndCounts
-  notificationsSetup: NotificationsSetup
+  notificationsQueries: NotificationsQueries
 }) {
-  return <RowContent {...{ company, notificationsSetup }} isTopLevel={false} />
+  return (
+    <RowContent {...{ company, notificationsQueries }} isTopLevel={false} />
+  )
 }
 
 function RowContent({
   company: _company,
   isTopLevel,
-  notificationsSetup,
+  notificationsQueries,
 }: {
   company: CompanyWithAccessAndCounts
   isTopLevel: boolean
-  notificationsSetup: NotificationsSetup
+  notificationsQueries: NotificationsQueries
 }) {
   const {
     company,
@@ -176,13 +157,11 @@ function RowContent({
     ongoingReportsCount,
   } = _company
   const companyId = company.id
-  const [checked, setChecked] = useState(false)
   const reportSearch = {
     companyIds: [company.id],
   }
-
   const isBlocked =
-    notificationsSetup._blockedNotifList.data?.some(
+    notificationsQueries._blockedNotifList.data?.some(
       (_) => _.companyId === companyId,
     ) ?? false
   const ongoingReportsLabel = `${ongoingReportsCount} à traiter`
@@ -227,15 +206,18 @@ function RowContent({
               </span>
             ) : null}
           </span>
-
           <FormControlLabel
             control={
               <ScSwitch
                 size={isTopLevel ? 'medium' : 'small'}
-                checked={isBlocked}
-                disabled={notificationsSetup.isPending}
-                onChange={(e) => {
-                  notificationsSetup._addBlockedNotif.mutate([companyId])
+                checked={!isBlocked}
+                disabled={notificationsQueries.isPending}
+                onChange={() => {
+                  if (isBlocked) {
+                    notificationsQueries._removeBlockedNotif.mutate([companyId])
+                  } else {
+                    notificationsQueries._addBlockedNotif.mutate([companyId])
+                  }
                 }}
               />
             }

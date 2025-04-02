@@ -108,6 +108,17 @@ export type ProCompaniesExtended = {
   loneSubsidiaries: CompanyWithAccessAndCounts[]
 }
 
+export function flattenProCompaniesExtended(
+  companies: ProCompaniesExtended,
+): CompanyWithAccessAndCounts[] {
+  return [
+    ...companies.headOfficesAndSubsidiaries.flatMap(
+      ({ headOffice, subsidiaries }) => [headOffice, ...subsidiaries],
+    ),
+    ...companies.loneSubsidiaries,
+  ]
+}
+
 export type CompanyHosts = {
   host: string
   nbOccurences: number
