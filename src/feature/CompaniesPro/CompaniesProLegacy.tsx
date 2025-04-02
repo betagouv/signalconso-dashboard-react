@@ -22,7 +22,7 @@ import {
 import { useGetAccessibleByProQuery } from '../../core/queryhooks/companyQueryHooks'
 import {
   ListReportBlockedNotificationsQueryKeys,
-  useListReportBlockedNotificationsQuery,
+  useBlockedNotificationsQuery,
 } from '../../core/queryhooks/reportBlockedNotificationQueryHooks'
 import { AddressComponent } from '../../shared/Address'
 import { ScButton } from '../../shared/Button'
@@ -37,7 +37,7 @@ export const CompaniesProLegacy = () => {
   const { api } = useApiContext()
   const queryClient = useQueryClient()
   const _companiesAccessibleByPro = useGetAccessibleByProQuery()
-  const _blockedNotifications = useListReportBlockedNotificationsQuery()
+  const _blockedNotifications = useBlockedNotificationsQuery()
   const _create = useMutation({
     mutationFn: (companyIds: Id[]) => {
       const newBlocked: BlockedReportNotification[] = companyIds.map(

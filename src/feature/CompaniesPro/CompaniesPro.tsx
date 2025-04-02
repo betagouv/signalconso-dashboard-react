@@ -13,9 +13,12 @@ import {
 } from 'core/client/company/Company'
 import { useGetAccessibleByProExtendedQuery } from 'core/queryhooks/companyQueryHooks'
 import {
-  NotificationsQueries,
-  useBlockedNotificationsQueries,
+  BlockedNotificationsQuery,
+  useAddBlockedNotification,
+  useBlockedNotificationsQuery,
+  useRemoveBlockedNotification,
 } from 'core/queryhooks/reportBlockedNotificationQueryHooks'
+
 import { ReportSearchLink } from 'feature/Report/quickSmallLinks'
 import { AddressComponent } from 'shared/Address'
 import { Page } from 'shared/Page'
@@ -25,22 +28,20 @@ import { ScSwitch } from 'shared/ScSwitch'
 export function CompaniesPro() {
   const _companiesAccessibleByPro = useGetAccessibleByProExtendedQuery()
   const data = _companiesAccessibleByPro.data
-  const notificationsQueries = useBlockedNotificationsQueries()
+  const _blockedNotifications = useBlockedNotificationsQuery()
 
   const allCompaniesIds =
     data && flattenProCompaniesExtended(data).map((_) => _.company.id)
   const hasBlockedSome =
     allCompaniesIds?.some((id) =>
-      notificationsQueries._blockedNotifList.data?.some(
-        (_) => _.companyId == id,
-      ),
+      _blockedNotifications.data?.some((_) => _.companyId == id),
     ) ?? false
   return (
     <Page>
       <PageTitle>Mes entreprises</PageTitle>
       {hasBlockedSome && (
         <div className="mb-8 w-fit">
-          <Alert type="info">
+          <Alert type="warning">
             Vous avez désactivé l'envoi d'email de notifications des nouveaux
             signalements pour au moins une de vos entreprises.
             <br />
@@ -62,7 +63,7 @@ export function CompaniesPro() {
                   key={headOffice.company.id}
                   company={headOffice}
                   secondLevel={subsidiaries}
-                  {...{ notificationsQueries }}
+                  {...{ _blockedNotifications: _blockedNotifications }}
                 />
               )
             },
@@ -72,7 +73,7 @@ export function CompaniesPro() {
               <TopLevelRow
                 key={company.company.id}
                 {...{ company }}
-                {...{ notificationsQueries }}
+                {...{ _blockedNotifications }}
               />
             )
           })}
@@ -85,18 +86,18 @@ export function CompaniesPro() {
 function TopLevelRow({
   company,
   secondLevel,
-  notificationsQueries,
+  _blockedNotifications,
 }: {
   company: CompanyWithAccessAndCounts
   secondLevel?: CompanyWithAccessAndCounts[]
-  notificationsQueries: NotificationsQueries
+  _blockedNotifications: BlockedNotificationsQuery
 }) {
   return (
     <div className="">
       <RowContent
         {...{ company }}
         isTopLevel={true}
-        {...{ notificationsQueries }}
+        {...{ _blockedNotifications }}
       />
       {secondLevel ? (
         <div className="ml-10">
@@ -119,7 +120,7 @@ function TopLevelRow({
                     <SecondLevelRow
                       key={c.company.id}
                       {...{ company: c }}
-                      {...{ notificationsQueries }}
+                      {...{ _blockedNotifications }}
                     />
                   )
                 })}
@@ -134,24 +135,24 @@ function TopLevelRow({
 
 function SecondLevelRow({
   company,
-  notificationsQueries,
+  _blockedNotifications,
 }: {
   company: CompanyWithAccessAndCounts
-  notificationsQueries: NotificationsQueries
+  _blockedNotifications: BlockedNotificationsQuery
 }) {
   return (
-    <RowContent {...{ company, notificationsQueries }} isTopLevel={false} />
+    <RowContent {...{ company, _blockedNotifications }} isTopLevel={false} />
   )
 }
 
 function RowContent({
   company: _company,
   isTopLevel,
-  notificationsQueries,
+  _blockedNotifications,
 }: {
   company: CompanyWithAccessAndCounts
   isTopLevel: boolean
-  notificationsQueries: NotificationsQueries
+  _blockedNotifications: BlockedNotificationsQuery
 }) {
   const {
     company,
@@ -165,9 +166,9 @@ function RowContent({
     companyIds: [company.id],
   }
   const isBlocked =
-    notificationsQueries._blockedNotifList.data?.some(
-      (_) => _.companyId === companyId,
-    ) ?? false
+    _blockedNotifications.data?.some((_) => _.companyId === companyId) ?? false
+  const _block = useAddBlockedNotification([companyId])
+  const _unblock = useRemoveBlockedNotification([companyId])
   const ongoingReportsLabel = `${ongoingReportsCount} à traiter`
   return (
     <div
@@ -215,12 +216,16 @@ function RowContent({
               <ScSwitch
                 size={isTopLevel ? 'medium' : 'small'}
                 checked={!isBlocked}
-                disabled={notificationsQueries.isPending}
+                disabled={
+                  _blockedNotifications.isPending ||
+                  _block.isPending ||
+                  _unblock.isPending
+                }
                 onChange={() => {
                   if (isBlocked) {
-                    notificationsQueries._removeBlockedNotif.mutate([companyId])
+                    _unblock.mutate()
                   } else {
-                    notificationsQueries._addBlockedNotif.mutate([companyId])
+                    _block.mutate()
                   }
                 }}
               />

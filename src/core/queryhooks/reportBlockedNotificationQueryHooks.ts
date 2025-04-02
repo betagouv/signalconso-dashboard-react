@@ -5,58 +5,48 @@ import { BlockedReportNotification } from '../client/blocked-report-notification
 import { useApiContext } from '../context/ApiContext'
 import { UseQueryOpts } from './UseQueryOpts'
 
-export const ListReportBlockedNotificationsQueryKeys = [
-  'reportBlockedNotification_fetch',
-]
+const BlockedNotificationsQueryKey = ['reportBlockedNotification_fetch']
 
-export const useListReportBlockedNotificationsQuery = (
+export type BlockedNotificationsQuery = ReturnType<
+  typeof useBlockedNotificationsQuery
+>
+
+export const useBlockedNotificationsQuery = (
   options?: UseQueryOpts<BlockedReportNotification[], string[]>,
 ) => {
   const { api } = useApiContext()
   return useQuery({
-    queryKey: ListReportBlockedNotificationsQueryKeys,
+    queryKey: BlockedNotificationsQueryKey,
     queryFn: api.secured.reportBlockedNotification.fetch,
     ...options,
   })
 }
 
-export type NotificationsQueries = ReturnType<
-  typeof useBlockedNotificationsQueries
->
-
-export function useBlockedNotificationsQueries() {
+export function useAddBlockedNotification(companyIds: Id[]) {
   const { api } = useApiContext()
   const queryClient = useQueryClient()
-  const _blockedNotifList = useListReportBlockedNotificationsQuery()
-  const _addBlockedNotif = useMutation({
-    mutationFn: (companyIds: Id[]) =>
-      api.secured.reportBlockedNotification.create(companyIds),
+  return useMutation({
+    mutationFn: () => api.secured.reportBlockedNotification.create(companyIds),
     onSuccess: (newlyBlocked) =>
       queryClient.setQueryData(
-        ListReportBlockedNotificationsQueryKeys,
+        BlockedNotificationsQueryKey,
         (prev: BlockedReportNotification[]) => {
           return uniqBy([...(prev ?? []), ...newlyBlocked], (_) => _.companyId)
         },
       ),
   })
-  const _removeBlockedNotif = useMutation({
-    mutationFn: (companyIds: Id[]) =>
-      api.secured.reportBlockedNotification.delete(companyIds),
-    onSuccess: (_, companyIds) =>
+}
+export function useRemoveBlockedNotification(companyIds: Id[]) {
+  const { api } = useApiContext()
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: () => api.secured.reportBlockedNotification.delete(companyIds),
+    onSuccess: () =>
       queryClient.setQueryData(
-        ListReportBlockedNotificationsQueryKeys,
+        BlockedNotificationsQueryKey,
         (prev: BlockedReportNotification[]) => {
           return prev?.filter((_) => !companyIds.includes(_.companyId))
         },
       ),
   })
-  return {
-    _blockedNotifList,
-    _addBlockedNotif,
-    _removeBlockedNotif,
-    isPending:
-      !_blockedNotifList.data ||
-      _addBlockedNotif.isPending ||
-      _removeBlockedNotif.isPending,
-  }
 }
