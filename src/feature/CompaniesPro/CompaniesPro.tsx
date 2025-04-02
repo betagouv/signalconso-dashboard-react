@@ -8,7 +8,6 @@ import {
 } from '@mui/material'
 import { Link } from '@tanstack/react-router'
 import { Modal } from 'alexlibs/mui-extension'
-import { colorDsfrInfoBlue } from 'alexlibs/mui-extension/color'
 import {
   CompanyWithAccessAndCounts,
   flattenProCompaniesExtended,
@@ -23,10 +22,10 @@ import {
 
 import { ReportSearchLink } from 'feature/Report/quickSmallLinks'
 import { AddressComponent } from 'shared/Address'
+import { DsfrAlertSmall } from 'shared/DsfrAlert'
 import { Page } from 'shared/Page'
 import { PageTitle } from 'shared/Page/PageTitle'
 import { ScSwitch } from 'shared/ScSwitch'
-
 export function CompaniesPro() {
   const _companiesAccessibleByPro = useGetAccessibleByProExtendedQuery()
   const data = _companiesAccessibleByPro.data
@@ -49,29 +48,20 @@ export function CompaniesPro() {
         Mes entreprises
       </PageTitle>
       {hasBlockedSome && (
-        <div className="mb-8 w-fit">
-          {/* <Alert type="warning">
-            Vous avez désactivé l'envoi d'email de notifications des nouveaux
-            signalements pour au moins une de vos entreprises.
-            <br />
-            Vous devrez vous connecter régulièrement sur votre espace pour
-            consulter les nouveaux signalements.
-          </Alert> */}
-          <div
-            className="border border-l-[30px] p-4"
-            style={{ borderColor: colorDsfrInfoBlue }}
-          >
-            <h3 className="text-lg font-bold mb-1">
-              <Icon className="-mb-1 mr-1">info</Icon>Notifications désactivées
-            </h3>
+        <div className="mb-12 mt-8 w-fit">
+          <DsfrAlertSmall>
             <p>
-              Vous avez désactivé l'envoi d'email de notifications des nouveaux
-              signalements pour au moins une de vos entreprises.
+              Vous avez{' '}
+              <b>
+                désactivé l'envoi d'email de notifications des nouveaux
+                signalements
+              </b>{' '}
+              pour au moins une de vos entreprises .
               <br />
               Vous devrez vous connecter régulièrement sur votre espace pour
               consulter les nouveaux signalements.
             </p>
-          </div>
+          </DsfrAlertSmall>
         </div>
       )}
       <p className="mb-2 text-sm">
