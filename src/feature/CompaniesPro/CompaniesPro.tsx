@@ -3,6 +3,7 @@ import {
   AccordionDetails,
   AccordionSummary,
   Button,
+  Collapse,
   FormControlLabel,
   Icon,
 } from '@mui/material'
@@ -47,8 +48,8 @@ export function CompaniesPro() {
       >
         Mes entreprises
       </PageTitle>
-      {hasBlockedSome && (
-        <div className="mb-12 mt-8 w-fit">
+      <Collapse in={hasBlockedSome} timeout={300}>
+        <div className="mb-8 mt-4 w-fit">
           <DsfrAlertSmall>
             <p>
               Vous avez{' '}
@@ -63,7 +64,7 @@ export function CompaniesPro() {
             </p>
           </DsfrAlertSmall>
         </div>
-      )}
+      </Collapse>
       <p className="mb-2 text-sm">
         Le nombre de signalements de chaque entreprise n'est pas en temps réel.
         Il est rafraîchi toutes les heures.
