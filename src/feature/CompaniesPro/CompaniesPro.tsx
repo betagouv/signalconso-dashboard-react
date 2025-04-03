@@ -290,6 +290,14 @@ function SecondLevelAccordion({
           (secondLevel.length <= 2 || totalNbCompanies < 6)
         }
         elevation={0}
+        slotProps={{
+          transition: {
+            // https://mui.com/material-ui/react-accordion/#performance
+            unmountOnExit: true,
+            // when there's a hundred of items, the default transition takes forever to collapse
+            timeout: 300,
+          },
+        }}
         disabled={secondLevel.length === 0}
         className="border border-solid border-gray-400 border-t-0 !rounded-t-none"
       >
