@@ -3,6 +3,7 @@ import {
   AccordionDetails,
   AccordionSummary,
   Button,
+  CircularProgress,
   Collapse,
   FormControlLabel,
   Icon,
@@ -70,7 +71,7 @@ export function CompaniesPro() {
         Le nombre de signalements de chaque entreprise n'est pas en temps réel.
         Il est rafraîchi toutes les heures.
       </p>
-      {data && (
+      {data ? (
         <div className="flex flex-col gap-8 mb-10 lg:mb-20">
           {data.headOfficesAndSubsidiaries.map(
             ({ headOffice, subsidiaries }) => {
@@ -94,6 +95,8 @@ export function CompaniesPro() {
             )
           })}
         </div>
+      ) : (
+        <CircularProgress />
       )}
     </Page>
   )
