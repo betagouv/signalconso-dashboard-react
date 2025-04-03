@@ -147,13 +147,8 @@ function RowContent({
   isTopLevel: boolean
   _blockedNotifications: BlockedNotificationsQuery
 }) {
-  const {
-    company,
-    access,
-    reportsCount,
-    directAccessesCount,
-    ongoingReportsCount,
-  } = _company
+  const { company, access, reportsCount, usersCount, ongoingReportsCount } =
+    _company
   const companyId = company.id
   const reportSearch = {
     companyIds: [company.id],
@@ -234,7 +229,7 @@ function RowContent({
         </div>
       </div>
 
-      {directAccessesCount !== undefined && (
+      {usersCount !== undefined && (
         <>
           <div className="flex flex-col items-start justify-start">
             <span>
@@ -246,7 +241,7 @@ function RowContent({
                 to="/entreprise/$companyId/accesses"
                 params={{ companyId }}
               >
-                {directAccessesCount} utilisateurs
+                {usersCount} utilisateurs
               </Link>
             </span>
           </div>

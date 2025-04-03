@@ -97,7 +97,7 @@ export type CompanyWithAccessAndCounts = {
   }
   reportsCount: number
   ongoingReportsCount: number
-  directAccessesCount: number | undefined // undefined if your own access level isn't admin
+  usersCount: number | undefined // undefined if your own access level isn't admin
 }
 
 export type ProCompaniesExtended = {
