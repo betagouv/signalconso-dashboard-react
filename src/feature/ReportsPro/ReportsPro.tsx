@@ -1,7 +1,7 @@
 import { Badge, Box, Icon, MenuItem } from '@mui/material'
 import { useNavigate } from '@tanstack/react-router'
 import { ScOption } from 'core/helper/ScOption'
-import { useListReportBlockedNotificationsQuery } from 'core/queryhooks/reportBlockedNotificationQueryHooks'
+import { useBlockedNotificationsQuery } from 'core/queryhooks/reportBlockedNotificationQueryHooks'
 import { useEffect, useMemo } from 'react'
 import { DebouncedInput } from 'shared/DebouncedInput'
 import { Alert, Btn, Fender, makeSx, Txt } from '../../alexlibs/mui-extension'
@@ -86,7 +86,7 @@ export const ReportsPro = ({ reportType, search }: ReportsProProps) => {
 
   const _reports = useReportSearchQuery(filtersAppliedToQuery)
   const _accessibleByPro = useGetAccessibleByProQuery()
-  const _blockedNotifications = useListReportBlockedNotificationsQuery()
+  const _blockedNotifications = useBlockedNotificationsQuery()
   const selectReport = useSetState<Id>()
   const { isMdOrLower } = useLayoutContext()
   const history = useNavigate()

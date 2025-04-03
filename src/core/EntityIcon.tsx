@@ -1,7 +1,7 @@
 export class EntityIcon {
   static readonly admin = 'admin_panel_settings'
   static readonly stats = 'leaderboard'
-  static readonly report = 'assignment_late'
+  static readonly report = 'assignment'
   static readonly company = 'store'
   static readonly website = 'language'
   static readonly phone = 'call'

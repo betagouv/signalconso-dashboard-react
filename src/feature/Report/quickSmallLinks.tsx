@@ -1,5 +1,5 @@
 import { Icon } from '@mui/material'
-import { createLink, LinkComponent } from '@tanstack/react-router'
+import { createLink, Link, LinkComponent } from '@tanstack/react-router'
 import { ReportSearch } from 'core/client/report/ReportSearch'
 import * as React from 'react'
 
@@ -84,5 +84,25 @@ export const QuickSmallReportSearchLink = (props: {
       search={props.reportSearch}
       icon={withIcon ? 'search' : undefined}
     />
+  )
+}
+
+export function ReportSearchLink({
+  reportSearch,
+  label,
+  bold = false,
+}: {
+  reportSearch: Partial<ReportSearch>
+  label: string
+  bold?: boolean
+}) {
+  return (
+    <Link
+      to="/suivi-des-signalements"
+      search={reportSearch}
+      className={`text-scbluefrance ${bold ? 'font-bold' : ''}`}
+    >
+      {label}
+    </Link>
   )
 }
