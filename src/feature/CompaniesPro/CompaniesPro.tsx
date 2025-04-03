@@ -212,8 +212,8 @@ function RowContent({
             <AddressComponent address={company.address} />
           </div>
         </div>
-        <div className="flex gap-4 lg:gap-0 lg:flex-col lg:items-end items-start grow min-w-52">
-          <span>
+        <div className="flex gap-4 lg:gap-0 lg:flex-col lg:items-end items-start grow min-w-60">
+          <span className="lg:text-right">
             {`${reportsCount} signalement${reportsCount > 1 ? 's' : ''}`}
             {reportsCount > 0 ? (
               <span>
@@ -251,7 +251,7 @@ function RowContent({
               />
             }
             labelPlacement="end"
-            className="!m-0 !flex !gap-1 !text-right lg:flex-row-reverse"
+            className="!m-0 !flex !gap-1 !lg:text-right lg:flex-row-reverse"
             label={
               <span>
                 {isTopLevel ? 'Être notifié par email' : 'Notifié par email'}
