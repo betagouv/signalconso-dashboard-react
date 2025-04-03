@@ -13,6 +13,7 @@ import {
   CompanyWithAccessAndCounts,
   flattenProCompaniesExtended,
 } from 'core/client/company/Company'
+import { sum } from 'core/helper'
 import { useGetAccessibleByProExtendedQuery } from 'core/queryhooks/companyQueryHooks'
 import {
   BlockedNotificationsQuery,
@@ -117,37 +118,9 @@ function TopLevelRow({
         {...{ _blockedNotifications }}
       />
       {secondLevel ? (
-        <div className="ml-10">
-          <Accordion
-            defaultExpanded={
-              secondLevel.length > 0 &&
-              (secondLevel.length <= 2 || totalNbCompanies < 6)
-            }
-            elevation={0}
-            disabled={secondLevel.length === 0}
-            className="border border-solid border-gray-400 border-t-0 !rounded-t-none"
-          >
-            <AccordionSummary
-              expandIcon={<Icon className=" mr-1">expand_more</Icon>}
-              className="!bg-gray-200 font-bold  !flex-row-reverse !flex-gap-20   "
-            >
-              {secondLevel.length} établissements secondaires
-            </AccordionSummary>
-            <AccordionDetails>
-              <div className="divide-y divide-gray-300">
-                {secondLevel.map((c) => {
-                  return (
-                    <SecondLevelRow
-                      key={c.company.id}
-                      {...{ company: c }}
-                      {...{ _blockedNotifications }}
-                    />
-                  )
-                })}
-              </div>
-            </AccordionDetails>
-          </Accordion>
-        </div>
+        <SecondLevelAccordion
+          {...{ secondLevel, totalNbCompanies, _blockedNotifications }}
+        />
       ) : null}
     </div>
   )
@@ -294,6 +267,60 @@ function RowContent({
           </span>
         </p>
       )}
+    </div>
+  )
+}
+
+function SecondLevelAccordion({
+  totalNbCompanies,
+  secondLevel,
+  _blockedNotifications,
+}: {
+  totalNbCompanies: number
+  secondLevel: CompanyWithAccessAndCounts[]
+  _blockedNotifications: BlockedNotificationsQuery
+}) {
+  const nbReports = sum(secondLevel.map((_) => _.reportsCount))
+  const nbOngoingReports = sum(secondLevel.map((_) => _.ongoingReportsCount))
+  return (
+    <div className="ml-10">
+      <Accordion
+        defaultExpanded={
+          secondLevel.length > 0 &&
+          (secondLevel.length <= 2 || totalNbCompanies < 6)
+        }
+        elevation={0}
+        disabled={secondLevel.length === 0}
+        className="border border-solid border-gray-400 border-t-0 !rounded-t-none"
+      >
+        <AccordionSummary
+          expandIcon={<Icon className=" mr-1">expand_more</Icon>}
+          className="!bg-gray-200 hover:!bg-gray-300 font-bold  !flex-row-reverse !flex-gap-20   "
+        >
+          <span className="flex justify-between gap-2 w-full">
+            <span>{secondLevel.length} établissements secondaires</span>
+            {(nbReports > 0 || nbOngoingReports > 0) && (
+              <span className="font-normal text-gray-600 text-right">
+                {nbReports} signalements
+                {` (${nbOngoingReports} à traiter)`}
+              </span>
+            )}
+          </span>
+        </AccordionSummary>
+        <AccordionDetails>
+          <div className="divide-y divide-gray-300">
+            {secondLevel.map((c) => {
+              return (
+                <SecondLevelRow
+                  key={c.company.id}
+                  {...{ company: c }}
+                  {...{ _blockedNotifications }}
+                />
+              )
+            })}
+          </div>
+        </AccordionDetails>
+      </Accordion>
     </div>
   )
 }
