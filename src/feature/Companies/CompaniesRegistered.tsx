@@ -198,12 +198,14 @@ export const CompaniesRegistered = ({ search }: { search: CompanySearch }) => {
         }
         sort={{
           sortableColumns: ['responseRate'],
-          sortBy: sortByResponseRate ? 'responseRate' : undefined,
-          orderBy: sortByResponseRate,
-          onSortChange: (_) =>
-            setSortByResponseRate(
-              _.sortBy === 'responseRate' ? _.orderBy : undefined,
-            ),
+          sortBy: _companies.filters?.sortBy,
+          orderBy: _companies.filters?.orderBy,
+          onSortChange: ({ sortBy, orderBy }) =>
+            _companies.updateFilters((prev) => ({
+              ...prev,
+              sortBy: sortBy,
+              orderBy: orderBy,
+            })),
         }}
         loading={_companies.result.isFetching}
         data={data}
