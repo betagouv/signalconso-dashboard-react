@@ -1,4 +1,4 @@
-import { Address, Id, PaginatedFilters } from '../../model'
+import { Address, Id, PaginatedFilters, PaginatedSearch } from '../../model'
 
 export interface CompanyWithReportsCount extends Company {
   count: number
@@ -71,7 +71,7 @@ export interface CompanySearchResult {
   isMarketPlace: boolean
 }
 
-export interface CompanySearch extends PaginatedFilters {
+export interface CompanySearch extends PaginatedSearch {
   readonly departments?: string[]
   readonly activityCodes?: string[]
   emailsWithAccess?: string
