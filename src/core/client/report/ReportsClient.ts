@@ -28,7 +28,7 @@ import {
   User,
 } from '../../model'
 import { ApiClient } from '../ApiClient'
-import { generateZipFileName } from './ReportExport'
+import { generatePdfFileName, generateZipFileName } from './ReportExport'
 import { ReportNodes } from './ReportNode'
 import { ReportNodeSearch } from './ReportNodeSearch'
 import { format } from 'date-fns'
@@ -188,7 +188,7 @@ export class ReportsClient {
   readonly download = (reportId: Id) => {
     return this.client
       .getBlob(`/reports/download/${reportId}`)
-      .then(directDownloadBlob(generateZipFileName(), 'application/zip'))
+      .then(directDownloadBlob(generatePdfFileName(), 'application/pdf'))
   }
 
   readonly downloadZip = (reportId: Id) => {

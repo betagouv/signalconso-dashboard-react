@@ -107,29 +107,29 @@ export const AdvancedSearchBar: React.FC<AdvancedSearchControlsProps> = ({
             Exporter en Excel
           </Btn>
         </ExportReportsPopper>
-        {/*<ExportReportsPdfPopper*/}
-        {/*  maxElement={config.reportsPdfLimitForExport}*/}
-        {/*  disabled={ScOption.from(_reports?.result.data?.totalCount)*/}
-        {/*    .map((_) => _ > config.reportsPdfLimitForExport)*/}
-        {/*    .getOrElse(false)}*/}
-        {/*  tooltipBtnNew={ScOption.from(_reports?.result.data?.totalCount)*/}
-        {/*    .map((_) =>*/}
-        {/*      _ > config.reportsPdfLimitForExport*/}
-        {/*        ? m.cannotExportMoreReports(config.reportsPdfLimitForExport)*/}
-        {/*        : '',*/}
-        {/*    )*/}
-        {/*    .getOrElse('')}*/}
-        {/*  filters={_reports.filters}*/}
-        {/*>*/}
-        {/*  <Btn*/}
-        {/*    disabled={selectReport.size != 0}*/}
-        {/*    variant="outlined"*/}
-        {/*    color="primary"*/}
-        {/*    icon="get_app"*/}
-        {/*  >*/}
-        {/*    Exporter en PDF*/}
-        {/*  </Btn>*/}
-        {/*</ExportReportsPdfPopper>*/}
+        <ExportReportsPdfPopper
+          maxElement={config.reportsPdfLimitForExport}
+          disabled={ScOption.from(_reports?.result.data?.totalCount)
+            .map((_) => _ > config.reportsPdfLimitForExport)
+            .getOrElse(false)}
+          tooltipBtnNew={ScOption.from(_reports?.result.data?.totalCount)
+            .map((_) =>
+              _ > config.reportsPdfLimitForExport
+                ? m.cannotExportMoreReports(config.reportsPdfLimitForExport)
+                : '',
+            )
+            .getOrElse('')}
+          filters={_reports.filters}
+        >
+          <Btn
+            disabled={selectReport.size != 0}
+            variant="outlined"
+            color="primary"
+            icon="get_app"
+          >
+            Exporter en PDF
+          </Btn>
+        </ExportReportsPdfPopper>
       </span>
     </Box>
   )
