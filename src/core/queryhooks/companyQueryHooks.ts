@@ -14,6 +14,9 @@ import { UseQueryOpts } from './UseQueryOpts'
 import { useQueryPaginate } from './UseQueryPaginate'
 
 const GetAccessibleByProQueryKeys = ['company_getAccessibleByPro']
+const GetAccessibleByProExtendedQueryKeys = [
+  'company_getAccessibleByProExtended',
+]
 const IsAllowedToManageCompanyAccessesQueryKeys = [
   'company_isAllowedToManageCompanyAccesses',
 ]
@@ -44,8 +47,16 @@ export const useGetAccessibleByProQuery = ({
   const { api } = useApiContext()
   return useQuery({
     queryKey: GetAccessibleByProQueryKeys,
-    queryFn: api.secured.company.getAccessibleByPro,
+    queryFn: api.secured.company.getAccessibleByProAsList,
     enabled,
+  })
+}
+
+export const useGetAccessibleByProExtendedQuery = () => {
+  const { api } = useApiContext()
+  return useQuery({
+    queryKey: GetAccessibleByProExtendedQueryKeys,
+    queryFn: api.secured.company.getAccessibleByProExtended,
   })
 }
 
@@ -63,17 +74,6 @@ export function useIsAllowedToManageCompanyAccessesQuery(companyId: string) {
     return undefined
   }
   return true
-}
-
-const useGetAccessLevelOfProQuery = (companyId: Id) => {
-  const { api } = useApiContext()
-  return useQuery({
-    queryKey: GetAccessibleByProQueryKeys,
-    queryFn: api.secured.company.getAccessibleByPro,
-    select: (data) => {
-      return data.find((company) => company.id === companyId)?.level
-    },
-  })
 }
 
 export const useActivatedCompanySearchQuery = (filters: CompanySearch) => {
