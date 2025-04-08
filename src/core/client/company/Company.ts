@@ -89,6 +89,36 @@ export interface CompanyWithAccessLevel extends Company {
   level: AccessLevel
 }
 
+export type CompanyWithAccessAndCounts = {
+  company: Company
+  access: {
+    level: AccessLevel
+    kind: 'Direct' | 'Inherited' | 'InheritedAdminAndDirectMember'
+  }
+  reportsCount: number
+  ongoingReportsCount: number
+  usersCount: number | undefined // undefined if your own access level isn't admin
+}
+
+export type ProCompaniesExtended = {
+  headOfficesAndSubsidiaries: {
+    headOffice: CompanyWithAccessAndCounts
+    subsidiaries: CompanyWithAccessAndCounts[]
+  }[]
+  loneSubsidiaries: CompanyWithAccessAndCounts[]
+}
+
+export function flattenProCompaniesExtended(
+  companies: ProCompaniesExtended,
+): CompanyWithAccessAndCounts[] {
+  return [
+    ...companies.headOfficesAndSubsidiaries.flatMap(
+      ({ headOffice, subsidiaries }) => [headOffice, ...subsidiaries],
+    ),
+    ...companies.loneSubsidiaries,
+  ]
+}
+
 export type CompanyHosts = {
   host: string
   nbOccurences: number
