@@ -1,10 +1,38 @@
-export enum CompanyAccessLevel {
-  admin = 'Administrateur',
-  member = 'Accès simple',
-}
+import { AccessLevel } from 'core/model'
+
+export const companyAccessLevelsCreatable = ['admin', 'member'] as const
+export type CompanyAccessLevelCreatable =
+  (typeof companyAccessLevelsCreatable)[number]
+
+const companyAccessLevelsAll = [
+  ...companyAccessLevelsCreatable,
+  'none',
+] as const
+export type CompanyAccessLevel = (typeof companyAccessLevelsAll)[number]
 
 export function translateCompanyAccessLevel(level: CompanyAccessLevel) {
-  return (CompanyAccessLevel as any)[level]
+  switch (level) {
+    case 'admin':
+      return 'Administrateur'
+    case 'member':
+      return 'Accès simple'
+    case 'none':
+      return undefined
+    default:
+      return level satisfies never
+  }
+}
+export function translateAccessLevel(level: AccessLevel) {
+  switch (level) {
+    case AccessLevel.ADMIN:
+      return 'Administrateur'
+    case AccessLevel.MEMBER:
+      return 'Accès simple'
+    case AccessLevel.NONE:
+      return undefined
+    default:
+      return level satisfies never
+  }
 }
 
 export interface CompanyAccess {

@@ -84,7 +84,7 @@ export const UsersPro = () => {
         </ul>
         <p className="mb-2">
           Pour gérer finement les accès, établissement par établissement,
-          utilisez la page <Link to="/mes-entreprises">Entreprises</Link>
+          utilisez la page <Link to="/mes-entreprises">Mes Entreprises</Link>
         </p>
         <Alert type="warning">
           Attention : ces actions sont globales et affectent toutes les

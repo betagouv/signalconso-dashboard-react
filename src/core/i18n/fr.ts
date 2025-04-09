@@ -1,7 +1,6 @@
 import { config } from 'conf/config'
 import { AssociationType } from '../../feature/ReportedWebsites/SelectWebsiteIdentification/websiteAssociationType'
 import { AsyncFileKind } from '../client/async-file/AsyncFile'
-import { CompanyAccessLevel } from '../client/company-access/CompanyAccess'
 import { Category } from '../client/constant/Category'
 import { EmailValidationStatus } from '../client/consumer-email-validation/ConsumerEmailValidation'
 import { ReportResponseTypes, ResponseEvaluation } from '../client/event/Event'
@@ -678,10 +677,9 @@ export const fr = {
       reportWithAttachment: 'Signalement et pièces jointes',
     },
     companyAccessLevelDescription: {
-      [CompanyAccessLevel.admin]:
+      admin:
         'Peut  consulter, répondre aux signalements et inviter/supprimer des nouveaux utilisateurs.',
-      [CompanyAccessLevel.member]:
-        'Peut consulter et répondre aux signalements.',
+      member: 'Peut consulter et répondre aux signalements.',
     },
     reportDeletionTypeDescription: {
       [ReportAdminActionType.ConsumerThreatenByPro]:
