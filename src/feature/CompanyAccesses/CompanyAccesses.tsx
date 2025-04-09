@@ -9,9 +9,11 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { Link, useNavigate } from '@tanstack/react-router'
 import { UserDeleteDialog } from 'feature/Users/userDelete'
 import { ScMenu } from 'shared/Menu'
+import { config } from '../../conf/config'
 import {
   CompanyAccess,
   CompanyAccessLevel,
+  translateCompanyAccessLevel,
 } from '../../core/client/company-access/CompanyAccess'
 import { useConnectedContext } from '../../core/context/connected/connectedContext'
 import { useToast } from '../../core/context/toast/toastContext'
@@ -38,7 +40,6 @@ import { ScRadioGroup } from '../../shared/RadioGroup'
 import { ScRadioGroupItem } from '../../shared/RadioGroupItem'
 import { ScDialog } from '../../shared/ScDialog'
 import { CompanyAccessCreateBtn } from './CompanyAccessCreateBtn'
-import { config } from '../../conf/config'
 
 type RowData =
   | {
@@ -263,7 +264,7 @@ function LevelColumn({
       variant="outlined"
       disabled
     >
-      {rowData.level}
+      {translateCompanyAccessLevel(rowData.level)}
     </ScButton>
   )
 }
@@ -334,7 +335,7 @@ function LevelColumnEditable({
           variant="outlined"
           disabled={!rowData.userId || !rowData.editable}
         >
-          {(CompanyAccessLevel as any)[rowData.level]}
+          {translateCompanyAccessLevel(rowData.level)}
         </ScButton>
       </Tooltip>
     </ScDialog>

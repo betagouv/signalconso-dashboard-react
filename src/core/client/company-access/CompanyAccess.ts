@@ -3,6 +3,10 @@ export enum CompanyAccessLevel {
   member = 'Accès simple',
 }
 
+export function translateCompanyAccessLevel(level: CompanyAccessLevel) {
+  return (CompanyAccessLevel as any)[level]
+}
+
 export interface CompanyAccess {
   userId: string
   firstName: string
