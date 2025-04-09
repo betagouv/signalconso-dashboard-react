@@ -44,7 +44,7 @@ export const ToastProvider = ({ children }: { children: ReactNode }) => {
       <Snackbar
         anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
         open={open}
-        autoHideDuration={type === 'error' ? null : 6000}
+        autoHideDuration={6000}
         onClose={(e, reason) => {
           if (reason !== 'clickaway') {
             onClose()
