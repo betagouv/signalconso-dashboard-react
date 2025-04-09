@@ -15,6 +15,7 @@ import {
   flattenProCompaniesExtended,
 } from 'core/client/company/Company'
 import { sum } from 'core/helper'
+import { useI18n } from 'core/i18n'
 import { useGetAccessibleByProExtendedQuery } from 'core/queryhooks/companyQueryHooks'
 import {
   BlockedNotificationsQuery,
@@ -25,11 +26,13 @@ import {
 
 import { ReportSearchLink } from 'feature/Report/quickSmallLinks'
 import { AddressComponent } from 'shared/Address'
+import { ScButton } from 'shared/Button'
 import { DsfrAlertSmall } from 'shared/DsfrAlert'
 import { Page } from 'shared/Page'
 import { PageTitle } from 'shared/Page/PageTitle'
 import { ScSwitch } from 'shared/ScSwitch'
 export function CompaniesPro() {
+  const { m } = useI18n()
   const _companiesAccessibleByPro = useGetAccessibleByProExtendedQuery()
   const data = _companiesAccessibleByPro.data
   const _blockedNotifications = useBlockedNotificationsQuery()
@@ -43,15 +46,26 @@ export function CompaniesPro() {
   const totalNbCompanies = allCompaniesIds.length
   return (
     <Page>
-      <PageTitle
-        action={
-          <ManageNotificationsButton {...{ allCompaniesIds, allBlockedIds }} />
-        }
-      >
-        Mes entreprises
-      </PageTitle>
+      <div className="mb-8">
+        <PageTitle
+          action={
+            <div className="flex gap-2 flex-col lg:flex-row">
+              <ManageNotificationsButton
+                {...{ allCompaniesIds, allBlockedIds }}
+              />
+              <Link to="/entreprise/activation">
+                <ScButton icon="add" color="primary" variant="contained">
+                  {m.addACompany}
+                </ScButton>
+              </Link>
+            </div>
+          }
+        >
+          Mes entreprises
+        </PageTitle>
+      </div>
       <Collapse in={hasBlockedSome} timeout={300}>
-        <div className="mb-8 mt-4 w-fit">
+        <div className="mb-8 w-fit">
           <DsfrAlertSmall>
             <p>
               Vous avez{' '}
