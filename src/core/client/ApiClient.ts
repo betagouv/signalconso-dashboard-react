@@ -35,6 +35,10 @@ export class ApiError extends Error {
     const scErrorCode = this.details.id
     return scErrorCode && scErrorCode === 'SC-AUTH-BROKEN'
   }
+  isFailedLoginError() {
+    const scErrorCode = this.details.id
+    return scErrorCode && scErrorCode === 'SC-AUTH'
+  }
 }
 
 type Method = 'POST' | 'GET' | 'PUT' | 'DELETE'
