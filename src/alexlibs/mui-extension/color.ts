@@ -1,5 +1,6 @@
 export const colorBlueFrance = '#000091'
 export const colorDsfrInfoBlue = '#0063cb'
+export const colorDsfrErrorRed = '#ce0500'
 
 export const colorSuccess = '#119647',
   colorError = '#ea1000',

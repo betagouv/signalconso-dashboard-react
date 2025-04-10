@@ -1,8 +1,9 @@
 import { TextField } from '@mui/material'
+import { Link, useNavigate } from '@tanstack/react-router'
 import { AlertContactSupport } from 'feature/Login/loggedOutComponents'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { Alert, Txt } from '../../alexlibs/mui-extension'
+import { DsfrAlert } from 'shared/DsfrAlert'
 import { config } from '../../conf/config'
 import { ApiError } from '../../core/client/ApiClient'
 import { PublicApiSdk } from '../../core/client/PublicApiSdk'
@@ -17,7 +18,6 @@ import { ScButton } from '../../shared/Button'
 import { ScInputPassword } from '../../shared/ScInputPassword'
 import { ForgottenPasswordDialog } from './ForgottenPasswordDialog'
 import PredefinedUsersPanel from './PredefinedUsersPanel'
-import { Link, useNavigate } from '@tanstack/react-router'
 
 interface ActionProps<F extends (...args: any[]) => Promise<any>> {
   action: F
@@ -100,24 +100,32 @@ export const LoginForm = ({ login, redirect }: Props) => {
           action="#"
         >
           {apiError && (
-            <Alert type="error" sx={{ mb: 2 }}>
-              <Txt size="big" block bold>
-                {m.somethingWentWrong}
-              </Txt>
-              <Txt>{apiError.message}</Txt>
-              {watch('email').toLocaleLowerCase().endsWith('.gouv.fr') &&
-                config.enableProConnect && (
-                  <p className={'mt-2 font-bold'}>
-                    Essayez de vous connecter via le bouton{' '}
-                    <Link to="/connexion/agents" className="underline">
-                      Pro Connect
-                    </Link>{' '}
-                    si vous avez reçu un e-mail d’invitation mentionnant
-                    ProConnect, ou si vous utilisez Pro Connect pour vous
-                    connecter à Signal Conso.
-                  </p>
-                )}
-            </Alert>
+            <div className="mb-6">
+              <DsfrAlert
+                type="error"
+                title={
+                  apiError.isFailedLoginError()
+                    ? 'Email ou mot de passe incorrect'
+                    : m.somethingWentWrong
+                }
+              >
+                {apiError.isFailedLoginError()
+                  ? `Si vous avez oublié votre mot de passe, cliquez sur 'mot de passe oublié' pour le récupérer.`
+                  : apiError.message}
+                {watch('email').toLocaleLowerCase().endsWith('.gouv.fr') &&
+                  config.enableProConnect && (
+                    <p className={'mt-2 font-bold'}>
+                      Essayez de vous connecter via le bouton{' '}
+                      <Link to="/connexion/agents" className="underline">
+                        Pro Connect
+                      </Link>{' '}
+                      si vous avez reçu un e-mail d’invitation mentionnant
+                      ProConnect, ou si vous utilisez Pro Connect pour vous
+                      connecter à Signal Conso.
+                    </p>
+                  )}
+              </DsfrAlert>
+            </div>
           )}
           <TextField
             autoComplete="username"
