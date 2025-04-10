@@ -1,9 +1,6 @@
 import { createFileRoute, Outlet } from '@tanstack/react-router'
 import { useConnectedContext } from '../../../core/context/connected/connectedContext'
-import {
-  useGetCompanyByIdQuery,
-  useIsAllowedToManageCompanyAccessesQuery,
-} from '../../../core/queryhooks/companyQueryHooks'
+import { useGetCompanyByIdQuery } from '../../../core/queryhooks/companyQueryHooks'
 import { CompanyPageTitle } from '../../../feature/Company/CompanyPageTitle'
 import { Page } from '../../../shared/Page'
 import { PageTab, PageTabs } from '../../../shared/Page/PageTabs'
@@ -19,8 +16,6 @@ function RouteComponent() {
   const { companyId } = Route.useParams()
   const _companyById = useGetCompanyByIdQuery(companyId)
   const { connectedUser } = useConnectedContext()
-  const withCompanyAccessesTab =
-    useIsAllowedToManageCompanyAccessesQuery(companyId) ?? false
   const company = _companyById.data
   return (
     <Page loading={_companyById.isLoading}>
@@ -30,14 +25,10 @@ function RouteComponent() {
           navigateOptions={{ to: bilanRoute.to, params: { companyId } }}
           label={'Statistiques'}
         />
-        {withCompanyAccessesTab ? (
-          <PageTab
-            navigateOptions={{ to: accessesRoute.to, params: { companyId } }}
-            label={'Accès utilisateurs'}
-          />
-        ) : (
-          <></>
-        )}
+        <PageTab
+          navigateOptions={{ to: accessesRoute.to, params: { companyId } }}
+          label={'Accès utilisateurs'}
+        />
         {connectedUser.isNotPro ? (
           <PageTab
             navigateOptions={{ to: historyRoute.to, params: { companyId } }}

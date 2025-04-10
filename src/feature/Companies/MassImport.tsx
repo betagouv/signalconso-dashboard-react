@@ -7,6 +7,7 @@ import {
   MenuItem,
 } from '@mui/material'
 import { useMutation } from '@tanstack/react-query'
+import { translateAccessLevel } from 'core/model'
 import React, { ReactElement, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { Btn } from '../../alexlibs/mui-extension'
@@ -162,7 +163,7 @@ export const MassImport = ({ children }: MassImportProps) => {
               })}
             />
           </DialogInputRow>
-          <DialogInputRow label="Droits d'accès">
+          <DialogInputRow label="Niveau d'accès">
             <Controller
               name="level"
               control={control}
@@ -172,8 +173,11 @@ export const MassImport = ({ children }: MassImportProps) => {
                   onChange={field.onChange}
                   fullWidth
                 >
-                  <MenuItem value={AccessLevel.ADMIN}>Administration</MenuItem>
-                  <MenuItem value={AccessLevel.MEMBER}>Lecture seule</MenuItem>
+                  {[AccessLevel.ADMIN, AccessLevel.MEMBER].map((l) => (
+                    <MenuItem key={l} value={l}>
+                      {translateAccessLevel(l)}
+                    </MenuItem>
+                  ))}
                 </ScSelect>
               )}
             />

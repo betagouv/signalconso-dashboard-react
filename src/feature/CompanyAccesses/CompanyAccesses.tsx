@@ -13,16 +13,12 @@ import { config } from '../../conf/config'
 import {
   CompanyAccess,
   CompanyAccessLevel,
+  companyAccessLevelsCreatable,
   translateCompanyAccessLevel,
 } from '../../core/client/company-access/CompanyAccess'
 import { useConnectedContext } from '../../core/context/connected/connectedContext'
 import { useToast } from '../../core/context/toast/toastContext'
-import {
-  isDefined,
-  objectKeysUnsafe,
-  siretToSiren,
-  toQueryString,
-} from '../../core/helper'
+import { isDefined, siretToSiren, toQueryString } from '../../core/helper'
 import { useI18n } from '../../core/i18n'
 import {
   CompanyAccessToken,
@@ -135,7 +131,13 @@ function CompanyAccessesLoaded({
   }
 
   const isAdmin = connectedUser.isAdmin
-  const isPro = connectedUser.isPro
+  const proAccessLevel =
+    connectedUser.isPro &&
+    data.find(
+      (access) =>
+        access.kind === 'actual_access' && access.userId === connectedUser.id,
+    )?.level
+  const isProWithAdminAccess = proAccessLevel === 'admin'
 
   const emailColumn: Column = {
     id: 'email',
@@ -188,7 +190,7 @@ function CompanyAccessesLoaded({
         </div>
 
         <div className="flex gap-2 shrink-0">
-          {(isAdmin || isPro) && (
+          {(isAdmin || isProWithAdminAccess) && (
             <CompanyAccessCreateBtn
               loading={_sendInvitation.isPending}
               onCreate={inviteNewUser}
@@ -313,12 +315,10 @@ function LevelColumnEditable({
             close()
           }}
         >
-          {objectKeysUnsafe(CompanyAccessLevel).map((level) => (
+          {companyAccessLevelsCreatable.map((level) => (
             <ScRadioGroupItem
-              title={CompanyAccessLevel[level]}
-              description={
-                m.companyAccessLevelDescription[CompanyAccessLevel[level]]
-              }
+              title={translateCompanyAccessLevel(level)}
+              description={m.companyAccessLevelDescription[level]}
               value={level}
               key={level}
             />

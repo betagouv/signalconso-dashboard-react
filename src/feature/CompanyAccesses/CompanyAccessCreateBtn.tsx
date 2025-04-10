@@ -1,7 +1,11 @@
-import { objectKeysUnsafe } from 'core/helper'
 import { Controller, useForm } from 'react-hook-form'
 import { Txt } from '../../alexlibs/mui-extension'
-import { CompanyAccessLevel } from '../../core/client/company-access/CompanyAccess'
+import {
+  CompanyAccessLevel,
+  CompanyAccessLevelCreatable,
+  companyAccessLevelsCreatable,
+  translateCompanyAccessLevel,
+} from '../../core/client/company-access/CompanyAccess'
 import { regexp } from '../../core/helper/regexp'
 import { useI18n } from '../../core/i18n'
 import { ScButton } from '../../shared/Button'
@@ -18,7 +22,7 @@ interface Props {
 
 interface Form {
   email: string
-  level: CompanyAccessLevel
+  level: CompanyAccessLevelCreatable
 }
 
 export const CompanyAccessCreateBtn = ({ loading, onCreate, title }: Props) => {
@@ -64,12 +68,10 @@ export const CompanyAccessCreateBtn = ({ loading, onCreate, title }: Props) => {
             control={control}
             render={({ field }) => (
               <ScRadioGroup error={!!errors.level} {...field}>
-                {objectKeysUnsafe(CompanyAccessLevel).map((level) => (
+                {companyAccessLevelsCreatable.map((level) => (
                   <ScRadioGroupItem
-                    title={CompanyAccessLevel[level]}
-                    description={
-                      m.companyAccessLevelDescription[CompanyAccessLevel[level]]
-                    }
+                    title={translateCompanyAccessLevel(level)}
+                    description={m.companyAccessLevelDescription[level]}
                     value={level}
                     key={level}
                   />
