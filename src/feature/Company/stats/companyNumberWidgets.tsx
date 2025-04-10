@@ -9,7 +9,6 @@ import { EventActionValues, Id } from 'core/model'
 import {
   useCompanyAccessCountQuery,
   useGetResponseRateQuery,
-  useIsAllowedToManageCompanyAccessesQuery,
 } from 'core/queryhooks/companyQueryHooks'
 import { useGetCompanyEventsQuery } from 'core/queryhooks/eventQueryHooks'
 import {
@@ -163,29 +162,17 @@ function NumberWidgetAccesses({
   companyId: string
 }) {
   const _accesses = useCompanyAccessCountQuery(siret)
-  const displayAccessesLink =
-    useIsAllowedToManageCompanyAccessesQuery(companyId) ?? false
   const { m } = useI18n()
-
-  const linkContent = (
-    <>
-      <span className="text-lg font-bold">{_accesses.data}</span>{' '}
-      {m.accountsActivated}
-    </>
-  )
   return (
     <Widget loading={_accesses.isLoading}>
       {_accesses.data !== undefined && (
         <div className="flex gap-2 items-center">
           <UsersIcon fontSize="small" />
           <p>
-            {displayAccessesLink ? (
-              <Link to="/entreprise/$companyId/accesses" params={{ companyId }}>
-                {linkContent}
-              </Link>
-            ) : (
-              linkContent
-            )}
+            <Link to="/entreprise/$companyId/accesses" params={{ companyId }}>
+              <span className="text-lg font-bold">{_accesses.data}</span>{' '}
+              {m.accountsActivated}
+            </Link>
           </p>
         </div>
       )}

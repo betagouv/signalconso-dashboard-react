@@ -1,4 +1,4 @@
-import { Address, Id, PaginatedFilters, PaginatedSearch } from '../../model'
+import { Address, Id, PaginatedSearch } from '../../model'
 
 export interface CompanyWithReportsCount extends Company {
   count: number
@@ -78,7 +78,7 @@ export interface CompanySearch extends PaginatedSearch {
   identity?: string
 }
 
-// TODO(Alex) Harmonize with company-access types
+// we should use 'CompanyAccessLevel' instead
 export enum AccessLevel {
   NONE = 'none',
   MEMBER = 'member',

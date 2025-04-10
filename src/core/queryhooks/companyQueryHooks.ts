@@ -1,9 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
-import { useConnectedContext } from 'core/context/connected/connectedContext'
 import { useApiContext } from '../context/ApiContext'
 import { paginateData } from '../helper'
 import {
-  AccessLevel,
   CompanySearch,
   CompanySearchResult,
   CompanyWithReportsCount,
@@ -58,22 +56,6 @@ export const useGetAccessibleByProExtendedQuery = () => {
     queryKey: GetAccessibleByProExtendedQueryKeys,
     queryFn: api.secured.company.getAccessibleByProExtended,
   })
-}
-
-export function useIsAllowedToManageCompanyAccessesQuery(companyId: string) {
-  const { connectedUser } = useConnectedContext()
-  const isPro = connectedUser.isPro
-  const _companiesAccessibleByPro = useGetAccessibleByProQuery({
-    enabled: isPro,
-  })
-  if (isPro) {
-    const data = _companiesAccessibleByPro.data
-    if (data) {
-      return data.find((c) => c.id === companyId)?.level === AccessLevel.ADMIN
-    }
-    return undefined
-  }
-  return true
 }
 
 export const useActivatedCompanySearchQuery = (filters: CompanySearch) => {
