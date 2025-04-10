@@ -138,6 +138,8 @@ function CompanyAccessesLoaded({
         access.kind === 'actual_access' && access.userId === connectedUser.id,
     )?.level
   const isProWithAdminAccess = proAccessLevel === 'admin'
+  // this is a global permission, but there's also the 'editable' field on each row
+  const canManageUsers = isAdmin || isProWithAdminAccess
 
   const emailColumn: Column = {
     id: 'email',
@@ -158,7 +160,13 @@ function CompanyAccessesLoaded({
     sx: (_) => sxUtils.tdActions,
     render: (accesses) => (
       <ActionsColumn
-        {...{ rowData: accesses, siret, invalidateQueries }}
+        {...{
+          rowData: accesses,
+          siret,
+          invalidateQueries,
+          isAdmin,
+          canManageUsers,
+        }}
         onResendCompanyAccessToken={(email: string) => {
           return _sendInvitation.mutateAsync({
             email,
@@ -190,7 +198,7 @@ function CompanyAccessesLoaded({
         </div>
 
         <div className="flex gap-2 shrink-0">
-          {(isAdmin || isProWithAdminAccess) && (
+          {canManageUsers && (
             <CompanyAccessCreateBtn
               loading={_sendInvitation.isPending}
               onCreate={inviteNewUser}
@@ -347,17 +355,20 @@ function ActionsColumn({
   siret,
   invalidateQueries,
   onResendCompanyAccessToken,
+  isAdmin,
+  canManageUsers,
 }: {
   rowData: RowData
   siret: string
   invalidateQueries: () => void
   onResendCompanyAccessToken: (email: string) => Promise<unknown>
+  isAdmin: boolean
+  canManageUsers: boolean
 }) {
   const { setConnectedUser, connectedUser, api } = useConnectedContext()
   const { m } = useI18n()
   const { toastSuccess, toastError } = useToast()
   const email = getEmail(_)
-  const isAdmin = connectedUser.isAdmin
   const navigate = useNavigate()
   const queryClient = useQueryClient()
 
@@ -459,7 +470,7 @@ function ActionsColumn({
       </ScDialog>
     ) : undefined
 
-  const removeMenuItem =
+  const removeMenuItem = canManageUsers ? (
     _.kind === 'actual_access' && _.editable ? (
       <ScDialog
         key="removeMenuItem"
@@ -493,6 +504,7 @@ function ActionsColumn({
         </MenuItem>
       </ScDialog>
     ) : undefined
+  ) : undefined
 
   const deleteUserMenuItem =
     isAdmin && _.kind === 'actual_access' ? (
