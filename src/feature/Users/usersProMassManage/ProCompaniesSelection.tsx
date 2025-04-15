@@ -4,15 +4,17 @@ import { AccessLevel, CompanyWithAccessAndCounts } from 'core/model'
 import { useGetAccessibleByProExtendedQuery } from 'core/queryhooks/companyQueryHooks'
 import { useForm, UseFormReturn } from 'react-hook-form'
 
-type Form = {
-  selectedIds: string[]
+type FormShape = {
+  selectedIds:
+    | string[]
+    // if there's only one company, react-hook-form will not use an array
+    | string
 }
-type FormStuff = UseFormReturn<Form>
+type Form = UseFormReturn<FormShape>
 export function ProCompaniesSelection() {
-  const formStuff = useForm<Form>()
+  const form = useForm<FormShape>()
   const _companiesAccessibleByPro = useGetAccessibleByProExtendedQuery()
   const myCompanies = _companiesAccessibleByPro.data
-  console.log(formStuff.watch('selectedIds'))
   return myCompanies ? (
     <div>
       {myCompanies.headOfficesAndSubsidiaries.map(
@@ -22,15 +24,13 @@ export function ProCompaniesSelection() {
               key={headOffice.company.id}
               company={headOffice}
               secondLevel={subsidiaries}
-              formStuff={formStuff}
+              form={form}
             />
           )
         },
       )}
       {myCompanies.loneSubsidiaries.map((company) => {
-        return (
-          <TopLevelRow key={company.company.id} {...{ company, formStuff }} />
-        )
+        return <TopLevelRow key={company.company.id} {...{ company, form }} />
       })}
     </div>
   ) : (
@@ -41,11 +41,11 @@ export function ProCompaniesSelection() {
 function TopLevelRow({
   company,
   secondLevel,
-  formStuff,
+  form,
 }: {
   company: CompanyWithAccessAndCounts
   secondLevel?: CompanyWithAccessAndCounts[]
-  formStuff: FormStuff
+  form: Form
 }) {
   const showSecondLevel = !!secondLevel && secondLevel.length > 0
   return (
@@ -54,10 +54,10 @@ function TopLevelRow({
         {...{ company }}
         isTopLevel={true}
         hasSecondLevel={showSecondLevel}
-        formStuff={formStuff}
+        form={form}
       />
       {showSecondLevel ? (
-        <SecondLevelWrapper {...{ secondLevel, formStuff }} />
+        <SecondLevelWrapper {...{ secondLevel, form }} />
       ) : null}
     </>
   )
@@ -67,12 +67,12 @@ function RowContent({
   company: _company,
   isTopLevel,
   hasSecondLevel,
-  formStuff,
+  form,
 }: {
   company: CompanyWithAccessAndCounts
   isTopLevel: boolean
   hasSecondLevel: boolean
-  formStuff: FormStuff
+  form: Form
 }) {
   const { company, access } = _company
   const notAdmin = access.level !== AccessLevel.ADMIN
@@ -87,7 +87,7 @@ function RowContent({
               className="!p-0 "
               value={company.id}
               disabled={notAdmin}
-              {...formStuff.register('selectedIds')}
+              {...form.register('selectedIds')}
             />
           </div>
           <p className={`w-34`}>{company.siret}</p>
@@ -113,10 +113,10 @@ function RowContent({
 
 function SecondLevelWrapper({
   secondLevel,
-  formStuff,
+  form,
 }: {
   secondLevel: CompanyWithAccessAndCounts[]
-  formStuff: FormStuff
+  form: Form
 }) {
   return (
     <div className="ml-15 mt-4 mb-4">
@@ -139,7 +139,7 @@ function SecondLevelWrapper({
               {...{ company: c }}
               isTopLevel={false}
               hasSecondLevel={false}
-              formStuff={formStuff}
+              form={form}
             />
           )
         })}
