@@ -72,36 +72,39 @@ function TopLevelRow({
   company: CompanyWithAccessAndCounts
   secondLevel?: CompanyWithAccessAndCounts[]
 }) {
+  const showSecondLevel = !!secondLevel && secondLevel.length > 0
   return (
-    <div className="">
-      <RowContent {...{ company }} isTopLevel={true} />
-      {secondLevel ? <SecondLevelWrapper {...{ secondLevel }} /> : null}
-    </div>
+    <>
+      <RowContent
+        {...{ company }}
+        isTopLevel={true}
+        hasSecondLevel={showSecondLevel}
+      />
+      {showSecondLevel ? <SecondLevelWrapper {...{ secondLevel }} /> : null}
+    </>
   )
-}
-
-function SecondLevelRow({ company }: { company: CompanyWithAccessAndCounts }) {
-  return <RowContent {...{ company }} isTopLevel={false} />
 }
 
 function RowContent({
   company: _company,
   isTopLevel,
+  hasSecondLevel,
 }: {
   company: CompanyWithAccessAndCounts
   isTopLevel: boolean
+  hasSecondLevel: boolean
 }) {
   const { company } = _company
   const companyId = company.id
 
   return (
     <div
-      className={`border border-solid border-black bg-white  ${isTopLevel ? 'p-1 py-3' : 'p-1 py-2'}`}
+      className={`border border-gray-400 border-b-0 last:border-b-1 ${hasSecondLevel ? 'border-b-1' : ''} ${isTopLevel ? 'p-1 py-3' : 'p-1 py-2'}`}
     >
       <div className="flex gap-2 justify-between">
         <div className="flex gap-2">
           <div className="">
-            <Checkbox className="!p-0" />
+            <Checkbox className="!p-0 " />
           </div>
           <p className="w-34">{company.siret}</p>
           <div className="">
@@ -130,21 +133,22 @@ function SecondLevelWrapper({
 }: {
   secondLevel: CompanyWithAccessAndCounts[]
 }) {
-  if (secondLevel.length === 0) {
-    return null
-  }
   return (
     <div className="ml-15 mt-2 mb-4">
-      <div className="flex gap-2 items-center mb-0">
+      <div className="flex gap-2 items-center mb-2">
         <span className="">
           {secondLevel.length} établissements secondaires
         </span>
-        <Button size="small">Sélectionner tous</Button>
-        <Button size="small">Désélectionner tous</Button>
+        <Button size="small" variant="outlined">
+          Sélectionner tous
+        </Button>
+        <Button size="small" variant="outlined">
+          Désélectionner tous
+        </Button>
       </div>
       <div className="">
-        {secondLevel.map((c) => {
-          return <SecondLevelRow key={c.company.id} {...{ company: c }} />
+        {secondLevel.map((c, idx) => {
+          return <RowContent {...{ company: c }} isTopLevel={false} />
         })}
       </div>
     </div>
