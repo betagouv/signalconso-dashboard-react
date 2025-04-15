@@ -35,6 +35,8 @@ import {
 import { ScMenuItem } from '../MenuItem/MenuItem'
 import { SubscriptionCardRow } from './SubscriptionCardRow'
 import { SubscriptionInformation } from './SubscriptionInformation'
+import { EnterHostnameDialog } from './EnterHostnameDialog'
+import { EnterPhoneDialog } from './EnterPhoneDialog'
 
 interface Props {
   subscription: Subscription
@@ -284,6 +286,68 @@ export const SubscriptionCard = ({ subscription, className, style }: Props) => {
           open={!!tagsAnchor.element}
           anchorEl={tagsAnchor.element}
         />
+        <SubscriptionCardRow icon="public" label={m.website}>
+          <div className="flex flex-row gap-1 flex-wrap">
+            {subscription.websites.map((website) => (
+              <ScChip
+                key={website}
+                label={website}
+                onDelete={() =>
+                  _updateSubscription.mutate({
+                    websites: subscription.websites.filter(
+                      (_) => _ !== website,
+                    ),
+                  })
+                }
+              />
+            ))}
+            <EnterHostnameDialog
+              onChange={(website) => {
+                if (!subscription.websites.find((_) => _ === website)) {
+                  _updateSubscription.mutate({
+                    websites: [...subscription.websites, website],
+                  })
+                } else {
+                  toastInfo(m.alreadySelectedValue(website))
+                }
+              }}
+            >
+              <ScChip
+                label={<Icon sx={{ verticalAlign: 'middle' }}>add</Icon>}
+              />
+            </EnterHostnameDialog>
+          </div>
+        </SubscriptionCardRow>
+        <SubscriptionCardRow icon="phone" label={m.phone}>
+          <div className="flex flex-row gap-1 flex-wrap">
+            {subscription.phones.map((phone) => (
+              <ScChip
+                key={phone}
+                label={phone}
+                onDelete={() =>
+                  _updateSubscription.mutate({
+                    phones: subscription.phones.filter((_) => _ !== phone),
+                  })
+                }
+              />
+            ))}
+            <EnterPhoneDialog
+              onChange={(phone) => {
+                if (!subscription.phones.find((_) => _ === phone)) {
+                  _updateSubscription.mutate({
+                    phones: [...subscription.phones, phone],
+                  })
+                } else {
+                  toastInfo(m.alreadySelectedCompany(phone))
+                }
+              }}
+            >
+              <ScChip
+                label={<Icon sx={{ verticalAlign: 'middle' }}>add</Icon>}
+              />
+            </EnterPhoneDialog>
+          </div>
+        </SubscriptionCardRow>
       </CleanWidePanel>
     </Collapse>
   )

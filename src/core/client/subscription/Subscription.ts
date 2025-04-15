@@ -13,6 +13,8 @@ export interface Subscription {
   countries: Country[]
   withTags: ReportTag[]
   withoutTags: ReportTag[]
+  websites: string[]
+  phones: string[]
 }
 
 export interface SubscriptionCreate {
@@ -23,4 +25,6 @@ export interface SubscriptionCreate {
   countries: string[]
   withTags: ReportTag[]
   withoutTags: ReportTag[]
+  websites: string[]
+  phones: string[]
 }
