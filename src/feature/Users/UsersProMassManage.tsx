@@ -1,21 +1,11 @@
 import PlaceOutlinedIcon from '@mui/icons-material/PlaceOutlined'
 import { Button, Checkbox, CircularProgress } from '@mui/material'
-import {
-  CompanyWithAccessAndCounts,
-  flattenProCompaniesExtended,
-} from 'core/model'
+import { AccessLevel, CompanyWithAccessAndCounts } from 'core/model'
 import { useGetAccessibleByProExtendedQuery } from 'core/queryhooks/companyQueryHooks'
 import { Page, PageTitle } from 'shared/Page'
 import { CleanDiscreetPanel } from 'shared/Panel/simplePanels'
 
 export function AccessesManagementPro() {
-  const _companiesAccessibleByPro = useGetAccessibleByProExtendedQuery()
-  const myCompanies = _companiesAccessibleByPro.data
-  const allCompaniesIds =
-    (myCompanies &&
-      flattenProCompaniesExtended(myCompanies).map((_) => _.company.id)) ??
-    []
-
   return (
     <Page>
       <PageTitle>Gestion des accès</PageTitle>
@@ -34,33 +24,38 @@ export function AccessesManagementPro() {
         <h2 className="font-bold text-2xl">
           Sélectionner une ou plusieurs entreprises
         </h2>
-        <div className="">
-          {myCompanies ? (
-            <div className="">
-              {myCompanies.headOfficesAndSubsidiaries.map(
-                ({ headOffice, subsidiaries }) => {
-                  return (
-                    <TopLevelRow
-                      key={headOffice.company.id}
-                      company={headOffice}
-                      secondLevel={subsidiaries}
-                    />
-                  )
-                },
-              )}
-              {myCompanies.loneSubsidiaries.map((company) => {
-                return <TopLevelRow key={company.company.id} {...{ company }} />
-              })}
-            </div>
-          ) : (
-            <CircularProgress />
-          )}
-        </div>
+
+        <ProCompaniesSelection />
         <h2 className="font-bold text-2xl">
           Sélectionner un ou plusieurs utilisateurs
         </h2>
       </div>
     </Page>
+  )
+}
+
+function ProCompaniesSelection() {
+  const _companiesAccessibleByPro = useGetAccessibleByProExtendedQuery()
+  const myCompanies = _companiesAccessibleByPro.data
+  return myCompanies ? (
+    <div>
+      {myCompanies.headOfficesAndSubsidiaries.map(
+        ({ headOffice, subsidiaries }) => {
+          return (
+            <TopLevelRow
+              key={headOffice.company.id}
+              company={headOffice}
+              secondLevel={subsidiaries}
+            />
+          )
+        },
+      )}
+      {myCompanies.loneSubsidiaries.map((company) => {
+        return <TopLevelRow key={company.company.id} {...{ company }} />
+      })}
+    </div>
+  ) : (
+    <CircularProgress />
   )
 }
 
@@ -93,24 +88,28 @@ function RowContent({
   isTopLevel: boolean
   hasSecondLevel: boolean
 }) {
-  const { company } = _company
-  const companyId = company.id
-
+  const { company, access } = _company
+  const notAdmin = access.level !== AccessLevel.ADMIN
   return (
     <div
-      className={` border border-gray-400 border-b-0 last:border-b-1 ${hasSecondLevel ? 'border-b-1' : ''} ${isTopLevel ? 'px-2 py-3' : 'p-1 py-2'}`}
+      className={`border ${notAdmin ? 'bg-gray-100 border-gray-300 text-gray-500' : 'border-gray-400'} border-b-0 last:border-b-1 ${hasSecondLevel ? 'border-b-1' : ''} ${isTopLevel ? 'px-2 py-3' : 'p-1 py-2'}`}
     >
       <div className="flex gap-2 justify-between">
         <div className="flex gap-2">
           <div className={`${isTopLevel ? 'mx-6' : 'mx-2'}`}>
-            <Checkbox className="!p-0 " />
+            <Checkbox className="!p-0 " disabled={notAdmin} />
           </div>
           <p className={`w-34`}>{company.siret}</p>
           <div className="">
             {company.name}
-            {company.isHeadOffice ? ' (siège social)' : null}
+            {company.isHeadOffice ? (
+              <span className="text-green-800 text-sm"> Siège social</span>
+            ) : null}
           </div>
         </div>
+        {notAdmin && (
+          <span className="text-sm"> vous n'êtes pas administrateur</span>
+        )}
         <div className="">
           <PlaceOutlinedIcon className="!text-[1.1em] -mt-0.5" />
 
@@ -141,7 +140,13 @@ function SecondLevelWrapper({
       </div>
       <div className="">
         {secondLevel.map((c, idx) => {
-          return <RowContent {...{ company: c }} isTopLevel={false} />
+          return (
+            <RowContent
+              {...{ company: c }}
+              isTopLevel={false}
+              hasSecondLevel={false}
+            />
+          )
         })}
       </div>
     </div>
