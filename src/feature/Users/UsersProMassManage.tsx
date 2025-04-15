@@ -1,6 +1,5 @@
 import PlaceOutlinedIcon from '@mui/icons-material/PlaceOutlined'
 import { Button, Checkbox, CircularProgress } from '@mui/material'
-import { Link } from '@tanstack/react-router'
 import {
   CompanyWithAccessAndCounts,
   flattenProCompaniesExtended,
@@ -99,22 +98,16 @@ function RowContent({
 
   return (
     <div
-      className={`border border-gray-400 border-b-0 last:border-b-1 ${hasSecondLevel ? 'border-b-1' : ''} ${isTopLevel ? 'p-1 py-3' : 'p-1 py-2'}`}
+      className={` border border-gray-400 border-b-0 last:border-b-1 ${hasSecondLevel ? 'border-b-1' : ''} ${isTopLevel ? 'px-2 py-3' : 'p-1 py-2'}`}
     >
       <div className="flex gap-2 justify-between">
         <div className="flex gap-2">
-          <div className="">
+          <div className={`${isTopLevel ? 'mx-6' : 'mx-2'}`}>
             <Checkbox className="!p-0 " />
           </div>
-          <p className="w-34">{company.siret}</p>
+          <p className={`w-34`}>{company.siret}</p>
           <div className="">
-            <Link
-              to="/entreprise/$companyId/bilan"
-              params={{ companyId }}
-              className={`text-scbluefrance`}
-            >
-              {company.name}
-            </Link>
+            {company.name}
             {company.isHeadOffice ? ' (siège social)' : null}
           </div>
         </div>
