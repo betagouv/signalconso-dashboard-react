@@ -1,6 +1,7 @@
 import { Page, PageTitle } from 'shared/Page'
 import { CleanDiscreetPanel } from 'shared/Panel/simplePanels'
 import { ProCompaniesSelection } from './usersProMassManage/ProCompaniesSelection'
+import { ProUsersSelection } from './usersProMassManage/ProUsersSelection'
 
 export function AccessesManagementPro() {
   return (
@@ -19,13 +20,14 @@ export function AccessesManagementPro() {
           <CleanDiscreetPanel>Ajouter ou modifier des accès</CleanDiscreetPanel>
         </div>
         <h2 className="font-bold text-2xl">
+          Sélectionner un ou plusieurs utilisateurs
+        </h2>
+        <ProUsersSelection />
+        <h2 className="font-bold text-2xl">
           Sélectionner une ou plusieurs entreprises
         </h2>
 
         <ProCompaniesSelection />
-        <h2 className="font-bold text-2xl">
-          Sélectionner un ou plusieurs utilisateurs
-        </h2>
       </div>
     </Page>
   )
