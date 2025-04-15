@@ -17,6 +17,8 @@ const fromApi =
       ...api,
       categories: api.categories ?? [],
       sirets: api.sirets ?? [],
+      websites: api.websites ?? [],
+      phones: api.phones ?? [],
       countries: api.countries ?? [],
       tags: api.tags ?? [],
       departments,
@@ -46,6 +48,8 @@ export class SubscriptionClient {
       withTags: [],
       withoutTags: [],
       countries: [],
+      websites: [],
+      phones: [],
       frequency: 'P7D',
     },
   ) => {
