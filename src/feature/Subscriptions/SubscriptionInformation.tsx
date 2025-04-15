@@ -131,6 +131,34 @@ export const SubscriptionInformation = ({
         sélectionnés
       </>
     )
+  const website =
+    subscription.websites.length === 0 ? null : subscription.websites.length ===
+      1 ? (
+      <>
+        {' '}
+        sur le site web <b>{subscription.websites[0]}</b>
+      </>
+    ) : (
+      <>
+        {' '}
+        sur <b>l'un des {subscription.websites.length} sites web</b>{' '}
+        sélectionnés
+      </>
+    )
+  const phone =
+    subscription.phones.length === 0 ? null : subscription.phones.length ===
+      1 ? (
+      <>
+        {' '}
+        concernant le téléphone <b>{subscription.phones[0]}</b>
+      </>
+    ) : (
+      <>
+        {' '}
+        concernant <b>l'un des {subscription.phones.length} numéros</b>{' '}
+        sélectionnés
+      </>
+    )
 
   const all = [
     category,
@@ -139,6 +167,8 @@ export const SubscriptionInformation = ({
     siret,
     withTags,
     withoutTags,
+    website,
+    phone,
   ].filter(isDefined)
 
   if (allInactiveCategories) {
