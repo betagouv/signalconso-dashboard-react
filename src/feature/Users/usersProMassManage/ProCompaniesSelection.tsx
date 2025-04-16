@@ -94,28 +94,22 @@ function SecondLevelWrapper({
         <h3 className="font-bold text-lg">
           {secondLevel.length} établissements secondaires
         </h3>
-        <Button
-          size="small"
-          variant="outlined"
+        <TinyButton
+          label="Sélectionner tous"
           onClick={() => {
             selectableIds.forEach((id) => {
               form.setValue(`selection.${id}`, true)
             })
           }}
-        >
-          Sélectionner tous
-        </Button>
-        <Button
-          size="small"
-          variant="outlined"
+        />
+        <TinyButton
+          label="Désélectionner tous"
           onClick={() => {
             selectableIds.forEach((id) => {
               form.setValue(`selection.${id}`, false)
             })
           }}
-        >
-          Désélectionner tous
-        </Button>
+        />
       </div>
       <div className="">
         {secondLevel.map((c) => {
@@ -149,7 +143,7 @@ function RowContent({
   const disabled = shouldBeDisabled(companyWithAccess)
   return (
     <div
-      className={`bg-white border ${disabled ? 'bg-gray-100 border-gray-300 text-gray-500' : 'border-gray-400'} border-b-0 border-x-0 last:border-b-1 ${hasSecondLevel ? 'border-b-1' : ''} ${isTopLevel ? 'px-2 py-3' : 'p-1 py-2'}`}
+      className={`border-t ${disabled ? 'bg-gray-100 border-gray-300 text-gray-500' : 'bg-white border-gray-400'} last:border-b-1 ${hasSecondLevel ? 'border-b-1' : ''} ${isTopLevel ? 'px-2 py-3' : 'p-1 py-2'}`}
     >
       <div className="flex gap-2 justify-between">
         <div className="flex gap-2">
@@ -187,6 +181,25 @@ function RowContent({
         </div>
       </div>
     </div>
+  )
+}
+
+function TinyButton({
+  label,
+  onClick,
+}: {
+  label: string
+  onClick: () => void
+}) {
+  return (
+    <Button
+      size="small"
+      variant="outlined"
+      className="!bg-white"
+      onClick={onClick}
+    >
+      {label}
+    </Button>
   )
 }
 
