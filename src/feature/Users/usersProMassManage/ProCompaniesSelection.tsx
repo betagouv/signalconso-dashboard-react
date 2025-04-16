@@ -1,24 +1,35 @@
 import PlaceOutlinedIcon from '@mui/icons-material/PlaceOutlined'
-import { Button, Checkbox, CircularProgress } from '@mui/material'
-import { AccessLevel, CompanyWithAccess } from 'core/model'
+import { Button, CircularProgress } from '@mui/material'
+import {
+  AccessLevel,
+  CompanyWithAccess,
+  flattenProCompanies,
+  ProCompanies,
+} from 'core/model'
 import { useCompaniesOfProQuery } from 'core/queryhooks/accessesMassManagementQueryHooks'
-import { useForm, UseFormReturn } from 'react-hook-form'
+import { Controller, useForm, UseFormReturn } from 'react-hook-form'
+
 type FormShape = {
-  selectedIds: string[]
+  selection: { [id: string]: boolean }
 }
 type Form = UseFormReturn<FormShape>
 
 export function ProCompaniesSelection() {
-  const form = useForm<FormShape>({
-    defaultValues: {
-      selectedIds: [],
-    },
-  })
   const _query = useCompaniesOfProQuery()
   const data = _query.data
-  console.log('@@@', form.watch('selectedIds'))
 
-  return data ? (
+  return data ? <Loaded {...{ data }} /> : <CircularProgress />
+}
+
+function Loaded({ data }: { data: ProCompanies }) {
+  const allIds = flattenProCompanies(data).map((_) => _.company.id)
+  const form = useForm<FormShape>({
+    defaultValues: {
+      selection: Object.fromEntries(allIds.map((_) => [_, false])),
+    },
+  })
+  console.log('@@@ selection', form.watch('selection'))
+  return (
     <div>
       {data.headOfficesAndSubsidiaries.map(({ headOffice, subsidiaries }) => {
         return (
@@ -34,8 +45,6 @@ export function ProCompaniesSelection() {
         return <TopLevelRow key={company.company.id} {...{ company, form }} />
       })}
     </div>
-  ) : (
-    <CircularProgress />
   )
 }
 
@@ -75,32 +84,32 @@ function SecondLevelWrapper({
     .filter((c) => !shouldBeDisabled(c))
     .map((c) => c.company.id)
 
-  function selectAll() {
-    const currentSelected = form.getValues('selectedIds')
-    const newSelected = Array.from(
-      new Set([...currentSelected, ...selectableIds]),
-    )
-    form.setValue('selectedIds', newSelected)
-  }
-
-  function deselectAll() {
-    const currentSelected = form.getValues('selectedIds')
-    const newSelected = currentSelected.filter(
-      (id: string) => !selectableIds.includes(id),
-    )
-    form.setValue('selectedIds', newSelected)
-  }
-
   return (
     <div className="ml-15 mt-4 mb-4">
       <div className="flex gap-2 items-center mb-2">
         <h3 className="font-bold text-lg">
           {secondLevel.length} établissements secondaires
         </h3>
-        <Button size="small" variant="outlined" onClick={selectAll}>
+        <Button
+          size="small"
+          variant="outlined"
+          onClick={() => {
+            selectableIds.forEach((id) => {
+              form.setValue(`selection.${id}`, true)
+            })
+          }}
+        >
           Sélectionner tous
         </Button>
-        <Button size="small" variant="outlined" onClick={deselectAll}>
+        <Button
+          size="small"
+          variant="outlined"
+          onClick={() => {
+            selectableIds.forEach((id) => {
+              form.setValue(`selection.${id}`, false)
+            })
+          }}
+        >
           Désélectionner tous
         </Button>
       </div>
@@ -141,11 +150,23 @@ function RowContent({
       <div className="flex gap-2 justify-between">
         <div className="flex gap-2">
           <div className={`${isTopLevel ? 'mx-6' : 'mx-2'}`}>
-            <Checkbox
-              className="!p-0 "
-              value={company.id}
-              disabled={disabled}
-              {...form.register('selectedIds')}
+            <Controller
+              control={form.control}
+              name={`selection.${company.id}`}
+              render={({ field: { onChange, onBlur, value, ref } }) => {
+                return (
+                  <input
+                    type="checkbox"
+                    ref={ref}
+                    className="!p-0 "
+                    disabled={disabled}
+                    checked={value}
+                    {...{ onBlur, onChange }}
+                    // checked={value.includes(company.id)}
+                    // slotProps={{ input: { ref } }}
+                  />
+                )
+              }}
             />
           </div>
           <p className={`w-34`}>{company.siret}</p>
