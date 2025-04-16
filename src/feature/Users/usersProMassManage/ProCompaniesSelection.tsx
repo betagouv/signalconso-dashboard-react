@@ -182,13 +182,13 @@ function RowContent({
         )}
         <div className="">
           <PlaceOutlinedIcon className="!text-[1.1em] -mt-0.5" />
-
           {company.address.postalCode}
         </div>
       </div>
     </div>
   )
 }
+
 function shouldBeDisabled(c: CompanyWithAccess) {
   return c.access.level !== AccessLevel.ADMIN
 }
