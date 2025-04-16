@@ -34,7 +34,7 @@ function Loaded({ data }: { data: ProCompanies }) {
     },
   })
   return (
-    <div className="bg-gray-100 p-2 px-4">
+    <div className="bg-gray-100 py-2 px-4">
       {data.headOfficesAndSubsidiaries.map(({ headOffice, subsidiaries }) => {
         return (
           <TopLevelRow

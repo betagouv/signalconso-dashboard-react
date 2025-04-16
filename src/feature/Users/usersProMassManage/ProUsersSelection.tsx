@@ -16,6 +16,7 @@ export function ProUsersSelection() {
   const data = _query.data
   return (
     <CleanInvisiblePanel loading={_query.isLoading}>
+      <p className="mb-2">Sélectionnez un ou plusieurs utilisateurs :</p>
       {data ? <Loaded {...{ data }} /> : null}
     </CleanInvisiblePanel>
   )
@@ -28,9 +29,8 @@ function Loaded({ data }: { data: User[] }) {
       selection: Object.fromEntries(allIds.map((_) => [_, false])),
     },
   })
-  console.log('@@@', form.watch('selection'))
   return (
-    <div>
+    <div className="bg-gray-100 py-2 px-4">
       {data.map((user) => {
         return <RowContent key={user.id} user={user} form={form} />
       })}
@@ -43,7 +43,7 @@ function RowContent({ user, form }: { user: User; form: Form }) {
   const disabled = connectedUser.id === user.id
   return (
     <div
-      className={`border ${disabled ? 'bg-gray-100 border-gray-300 text-gray-500' : 'border-gray-400'} border-b-0 last:border-b-1 px-2 py-3`}
+      className={`border-t ${disabled ? 'bg-gray-100 border-gray-300 text-gray-500' : 'bg-white border-gray-400'} last:border-b-1 px-2 py-3`}
     >
       <div className="flex gap-2 items-center">
         <div className={`mx-6 h-fit`}>
