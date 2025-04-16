@@ -56,7 +56,32 @@ function TopLevelRow({
         form={form}
       />
       {showSecondLevel ? (
-        <SecondLevelWrapper {...{ secondLevel, form }} />
+        <div className="ml-15 mt-4 mb-4">
+          <div className="flex gap-2 items-center mb-2">
+            <h3 className="font-bold text-lg">
+              {secondLevel.length} établissements secondaires
+            </h3>
+            <Button size="small" variant="outlined">
+              Sélectionner tous
+            </Button>
+            <Button size="small" variant="outlined">
+              Désélectionner tous
+            </Button>
+          </div>
+          <div className="">
+            {secondLevel.map((c) => {
+              return (
+                <RowContent
+                  key={c.company.id}
+                  {...{ company: c }}
+                  isTopLevel={false}
+                  hasSecondLevel={false}
+                  form={form}
+                />
+              )
+            })}
+          </div>
+        </div>
       ) : null}
     </>
   )
@@ -105,43 +130,6 @@ function RowContent({
 
           {company.address.postalCode}
         </div>
-      </div>
-    </div>
-  )
-}
-
-function SecondLevelWrapper({
-  secondLevel,
-  form,
-}: {
-  secondLevel: CompanyWithAccess[]
-  form: Form
-}) {
-  return (
-    <div className="ml-15 mt-4 mb-4">
-      <div className="flex gap-2 items-center mb-2">
-        <h3 className="font-bold text-lg">
-          {secondLevel.length} établissements secondaires
-        </h3>
-        <Button size="small" variant="outlined">
-          Sélectionner tous
-        </Button>
-        <Button size="small" variant="outlined">
-          Désélectionner tous
-        </Button>
-      </div>
-      <div className="">
-        {secondLevel.map((c) => {
-          return (
-            <RowContent
-              key={c.company.id}
-              {...{ company: c }}
-              isTopLevel={false}
-              hasSecondLevel={false}
-              form={form}
-            />
-          )
-        })}
       </div>
     </div>
   )
