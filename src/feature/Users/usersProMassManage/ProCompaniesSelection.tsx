@@ -1,7 +1,7 @@
 import PlaceOutlinedIcon from '@mui/icons-material/PlaceOutlined'
 import { Button, Checkbox, CircularProgress } from '@mui/material'
-import { AccessLevel, CompanyWithAccessAndCounts } from 'core/model'
-import { useGetAccessibleByProExtendedQuery } from 'core/queryhooks/companyQueryHooks'
+import { AccessLevel, CompanyWithAccess } from 'core/model'
+import { useCompaniesOfProQuery } from 'core/queryhooks/accessesMassManagementQueryHooks'
 import { useForm, UseFormReturn } from 'react-hook-form'
 
 type FormShape = {
@@ -11,25 +11,24 @@ type FormShape = {
     | string
 }
 type Form = UseFormReturn<FormShape>
+
 export function ProCompaniesSelection() {
   const form = useForm<FormShape>()
-  const _companiesAccessibleByPro = useGetAccessibleByProExtendedQuery()
-  const myCompanies = _companiesAccessibleByPro.data
-  return myCompanies ? (
+  const _query = useCompaniesOfProQuery()
+  const data = _query.data
+  return data ? (
     <div>
-      {myCompanies.headOfficesAndSubsidiaries.map(
-        ({ headOffice, subsidiaries }) => {
-          return (
-            <TopLevelRow
-              key={headOffice.company.id}
-              company={headOffice}
-              secondLevel={subsidiaries}
-              form={form}
-            />
-          )
-        },
-      )}
-      {myCompanies.loneSubsidiaries.map((company) => {
+      {data.headOfficesAndSubsidiaries.map(({ headOffice, subsidiaries }) => {
+        return (
+          <TopLevelRow
+            key={headOffice.company.id}
+            company={headOffice}
+            secondLevel={subsidiaries}
+            form={form}
+          />
+        )
+      })}
+      {data.loneSubsidiaries.map((company) => {
         return <TopLevelRow key={company.company.id} {...{ company, form }} />
       })}
     </div>
@@ -43,8 +42,8 @@ function TopLevelRow({
   secondLevel,
   form,
 }: {
-  company: CompanyWithAccessAndCounts
-  secondLevel?: CompanyWithAccessAndCounts[]
+  company: CompanyWithAccess
+  secondLevel?: CompanyWithAccess[]
   form: Form
 }) {
   const showSecondLevel = !!secondLevel && secondLevel.length > 0
@@ -69,7 +68,7 @@ function RowContent({
   hasSecondLevel,
   form,
 }: {
-  company: CompanyWithAccessAndCounts
+  company: CompanyWithAccess
   isTopLevel: boolean
   hasSecondLevel: boolean
   form: Form
@@ -115,7 +114,7 @@ function SecondLevelWrapper({
   secondLevel,
   form,
 }: {
-  secondLevel: CompanyWithAccessAndCounts[]
+  secondLevel: CompanyWithAccess[]
   form: Form
 }) {
   return (
