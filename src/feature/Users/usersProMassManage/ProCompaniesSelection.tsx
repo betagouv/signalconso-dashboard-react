@@ -1,5 +1,5 @@
 import PlaceOutlinedIcon from '@mui/icons-material/PlaceOutlined'
-import { Button, CircularProgress } from '@mui/material'
+import { Button, Checkbox } from '@mui/material'
 import {
   AccessLevel,
   CompanyWithAccess,
@@ -8,6 +8,7 @@ import {
 } from 'core/model'
 import { useCompaniesOfProQuery } from 'core/queryhooks/accessesMassManagementQueryHooks'
 import { Controller, useForm, UseFormReturn } from 'react-hook-form'
+import { CleanInvisiblePanel } from 'shared/Panel/simplePanels'
 
 type FormShape = {
   selection: { [id: string]: boolean }
@@ -17,8 +18,11 @@ type Form = UseFormReturn<FormShape>
 export function ProCompaniesSelection() {
   const _query = useCompaniesOfProQuery()
   const data = _query.data
-
-  return data ? <Loaded {...{ data }} /> : <CircularProgress />
+  return (
+    <CleanInvisiblePanel loading={_query.isLoading}>
+      {data ? <Loaded {...{ data }} /> : null}
+    </CleanInvisiblePanel>
+  )
 }
 
 function Loaded({ data }: { data: ProCompanies }) {
@@ -28,7 +32,6 @@ function Loaded({ data }: { data: ProCompanies }) {
       selection: Object.fromEntries(allIds.map((_) => [_, false])),
     },
   })
-  console.log('@@@ selection', form.watch('selection'))
   return (
     <div>
       {data.headOfficesAndSubsidiaries.map(({ headOffice, subsidiaries }) => {
@@ -155,15 +158,12 @@ function RowContent({
               name={`selection.${company.id}`}
               render={({ field: { onChange, onBlur, value, ref } }) => {
                 return (
-                  <input
-                    type="checkbox"
-                    ref={ref}
+                  <Checkbox
                     className="!p-0 "
                     disabled={disabled}
                     checked={value}
                     {...{ onBlur, onChange }}
-                    // checked={value.includes(company.id)}
-                    // slotProps={{ input: { ref } }}
+                    slotProps={{ input: { ref } }}
                   />
                 )
               }}
@@ -189,7 +189,6 @@ function RowContent({
     </div>
   )
 }
-
 function shouldBeDisabled(c: CompanyWithAccess) {
   return c.access.level !== AccessLevel.ADMIN
 }
