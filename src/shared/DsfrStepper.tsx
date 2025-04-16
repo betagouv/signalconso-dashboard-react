@@ -7,14 +7,14 @@ export function DsfrStepper({
   onPrevious,
 }: {
   currentStep: number
-  steps: string[]
-  onPrevious?: () => void
+  steps: readonly string[]
+  onPrevious: () => void
 }) {
   const step = steps[currentStep]
   const isLastStep = currentStep === steps.length - 1
   const nextStep = isLastStep ? null : steps[currentStep + 1]
   return (
-    <div className="mb-20">
+    <div className="mb-8">
       <span className="text-gray-500 mb-5 text-sm">
         Étape {currentStep + 1} sur {steps.length}
       </span>

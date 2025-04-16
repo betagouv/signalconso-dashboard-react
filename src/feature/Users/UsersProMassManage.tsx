@@ -1,92 +1,53 @@
-import { Button } from '@mui/material'
+import { Button, Icon } from '@mui/material'
 import { useState } from 'react'
 import { DsfrStepper } from 'shared/DsfrStepper'
 import { Page, PageTitle } from 'shared/Page'
-import { CleanDiscreetPanel } from 'shared/Panel/simplePanels'
 import { ProCompaniesSelection } from './usersProMassManage/ProCompaniesSelection'
-import { ProUsersSelection } from './usersProMassManage/ProUsersSelection'
 
-type Subpage = 'selectOperation' | 'selectCompanies' | 'selectUsers'
+const steps = [
+  'Choix des entreprises',
+  'Que voulez-vous-faire ?',
+  'Sélectionner des utilisateurs',
+  'Confirmation',
+] as const
 
 export function AccessesManagementPro() {
-  const [subpage, setSubpage] = useState<Subpage | undefined>()
+  const [step, setStep] = useState<number | undefined>()
   return (
     <Page>
-      <DsfrStepper
-        currentStep={0}
-        steps={[
-          "Titre de l'étape en cours",
-          'Titre de la prochaine étape',
-          'Sélectionner des utilisateurs',
-        ]}
-      />
-
-      <DsfrStepper
-        currentStep={1}
-        steps={[
-          'Sélectionner une opération',
-          'Sélectionner des entreprises',
-          'Sélectionner des utilisateurs',
-          'Confirmation',
-        ]}
-      />
-
-      <DsfrStepper
-        currentStep={4}
-        steps={[
-          'Sélectionner une opération',
-          'Sélectionner des entreprises',
-          'Sélectionner des utilisateurs',
-          'Confirmation',
-        ]}
-      />
-
-      {!subpage && (
-        <>
-          <PageTitle>Gestion des accès</PageTitle>
-          <p className="mb-8">
-            Cette page vous permet d'ajouter, supprimer, ou modifier les accès
-            de <b>un ou plusieurs utilisateurs</b> à{' '}
-            <b>une ou plusieurs entreprises</b>, en quelques clics.
-          </p>
-          <div className="space-y-2">
-            <h2 className="font-bold text-2xl">Que voulez-vous faire ?</h2>
-            <div className="flex gap-2">
-              <CleanDiscreetPanel>Retirer des accès</CleanDiscreetPanel>
-              <CleanDiscreetPanel>
-                Ajouter ou modifier des accès
-              </CleanDiscreetPanel>
-            </div>
-            <h2 className="font-bold text-2xl">Entreprises sélectionnées</h2>
-            <div className="flex gap-2 items-center">
-              <p>2 entreprises sélectionnées</p>
+      <PageTitle>Gestion des accès</PageTitle>
+      <div className="">
+        {step === undefined && (
+          <div className="max-w-4xl space-y-4">
+            <p className="">
+              Cette page vous permet d'ajouter, supprimer, ou modifier les accès
+              de <b>un ou plusieurs utilisateurs</b> à{' '}
+              <b>une ou plusieurs entreprises</b>, en quelques clics.
+            </p>
+            <div className="flex-shrink-0">
               <Button
-                variant="outlined"
-                onClick={() => setSubpage('selectCompanies')}
+                variant="contained"
+                onClick={() => setStep(0)}
+                size="large"
+                endIcon={<Icon>arrow_forward</Icon>}
               >
-                modifier
-              </Button>
-            </div>
-            <h2 className="font-bold text-2xl">Utilisateurs sélectionnés</h2>
-            <div className="flex gap-2 items-center">
-              <p>10 utilisateurs sélectionnés</p>
-              <Button
-                variant="outlined"
-                onClick={() => setSubpage('selectUsers')}
-              >
-                modifier
+                Je commence
               </Button>
             </div>
           </div>
-        </>
+        )}
+      </div>
+
+      {step !== undefined && (
+        <DsfrStepper
+          currentStep={step || 0}
+          steps={steps}
+          onPrevious={() =>
+            setStep((s) => (s === undefined || s === 0 ? undefined : s - 1))
+          }
+        />
       )}
-      {subpage === 'selectCompanies' && (
-        <>
-          <PageTitle>{' > '} Sélection des entreprises</PageTitle>
-          <ProCompaniesSelection />
-        </>
-      )}
-      {subpage === 'selectUsers' && <ProUsersSelection />}
+      {step === 0 && <ProCompaniesSelection />}
     </Page>
   )
 }

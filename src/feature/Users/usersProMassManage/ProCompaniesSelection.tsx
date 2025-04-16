@@ -20,6 +20,7 @@ export function ProCompaniesSelection() {
   const data = _query.data
   return (
     <CleanInvisiblePanel loading={_query.isLoading}>
+      <p className="mb-2">Sélectionnez une ou plusieurs entreprises :</p>
       {data ? <Loaded {...{ data }} /> : null}
     </CleanInvisiblePanel>
   )
@@ -33,7 +34,7 @@ function Loaded({ data }: { data: ProCompanies }) {
     },
   })
   return (
-    <div>
+    <div className="bg-gray-100 p-2 px-4">
       {data.headOfficesAndSubsidiaries.map(({ headOffice, subsidiaries }) => {
         return (
           <TopLevelRow
@@ -148,7 +149,7 @@ function RowContent({
   const disabled = shouldBeDisabled(companyWithAccess)
   return (
     <div
-      className={`border ${disabled ? 'bg-gray-100 border-gray-300 text-gray-500' : 'border-gray-400'} border-b-0 last:border-b-1 ${hasSecondLevel ? 'border-b-1' : ''} ${isTopLevel ? 'px-2 py-3' : 'p-1 py-2'}`}
+      className={`bg-white border ${disabled ? 'bg-gray-100 border-gray-300 text-gray-500' : 'border-gray-400'} border-b-0 border-x-0 last:border-b-1 ${hasSecondLevel ? 'border-b-1' : ''} ${isTopLevel ? 'px-2 py-3' : 'p-1 py-2'}`}
     >
       <div className="flex gap-2 justify-between">
         <div className="flex gap-2">
