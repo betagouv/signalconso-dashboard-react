@@ -2,6 +2,7 @@ import { Button, Icon } from '@mui/material'
 import { useState } from 'react'
 import { DsfrStepper } from 'shared/DsfrStepper'
 import { Page, PageTitle } from 'shared/Page'
+import { MassManageOperationSelection } from './usersProMassManage/MassManageOperationSelection'
 import { ProCompaniesSelection } from './usersProMassManage/ProCompaniesSelection'
 import { ProUsersSelection } from './usersProMassManage/ProUsersSelection'
 
@@ -12,7 +13,7 @@ const steps = [
   'confirmation',
 ] as const
 const stepsName = {
-  operationSelection: 'Que voulez-vous-faire ?',
+  operationSelection: "Choix de l'action",
   companiesSelection: 'Choix des entreprises',
   usersSelection: 'Choix des utilisateurs',
   confirmation: 'Confirmation',
@@ -57,7 +58,7 @@ export function AccessesManagementPro() {
           }
         />
       )}
-      {step === 'operationSelection' && <></>}
+      {step === 'operationSelection' && <MassManageOperationSelection />}
       {step === 'companiesSelection' && <ProCompaniesSelection />}
       {step === 'usersSelection' && <ProUsersSelection />}
       {step === 'confirmation' && <></>}
