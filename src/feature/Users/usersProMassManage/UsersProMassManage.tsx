@@ -19,17 +19,21 @@ const stepsName = {
   confirmation: 'Confirmation',
 }
 
+export type MassManageOperation = 'remove' | 'set_member' | 'set_admin'
+
 export function AccessesManagementPro() {
   const [selection, setSelection] = useState<{
+    operation: MassManageOperation
     companiesIds: string[]
     usersIds: string[]
     emailsToInvite: string[]
   }>({
+    operation: 'remove',
     companiesIds: [],
     usersIds: [],
     emailsToInvite: [],
   })
-  const [stepNumber, setStepNumber] = useState<number | undefined>(0)
+  const [stepNumber, setStepNumber] = useState<number | undefined>()
   const step = stepNumber !== undefined ? steps[stepNumber] : undefined
   function incrementStepNumber() {
     setStepNumber((s) => (s === undefined ? 0 : s + 1))
@@ -69,7 +73,14 @@ export function AccessesManagementPro() {
           onPrevious={decrementStepNumber}
         />
       )}
-      {step === 'operationSelection' && <MassManageOperationSelection />}
+      {step === 'operationSelection' && (
+        <MassManageOperationSelection
+          onSubmit={({ operation }) => {
+            setSelection((prev) => ({ ...prev, operation }))
+            incrementStepNumber()
+          }}
+        />
+      )}
       {step === 'companiesSelection' && (
         <ProCompaniesSelection
           onSubmit={({ selectedCompaniesIds }) => {

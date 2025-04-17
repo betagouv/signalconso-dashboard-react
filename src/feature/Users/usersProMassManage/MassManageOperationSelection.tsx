@@ -1,7 +1,13 @@
 import { FormControlLabel, Radio, RadioGroup } from '@mui/material'
 import { CleanInvisiblePanel } from 'shared/Panel/simplePanels'
+import { NextButton } from './usersProMassManageTinyComponents'
 
-export function MassManageOperationSelection() {
+type OnSubmit = (_: { operation: Operation }) => void
+export function MassManageOperationSelection({
+  onSubmit,
+}: {
+  onSubmit: OnSubmit
+}) {
   return (
     <CleanInvisiblePanel>
       <p className="mb-2">Que voulez-vous faire ?</p>
@@ -80,6 +86,12 @@ export function MassManageOperationSelection() {
           }
         />
       </RadioGroup>
+      <NextButton
+        disabled={false}
+        onClick={() => {
+          onSubmit({ operation: 'remove' })
+        }}
+      />
     </CleanInvisiblePanel>
   )
 }
