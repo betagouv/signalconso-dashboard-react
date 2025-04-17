@@ -195,15 +195,17 @@ function InviteButtonWithDialog({
 }) {
   const {
     register,
+    reset,
     handleSubmit,
+
     formState: { errors, isValid },
   } = useForm<{
     email: string
-  }>({ mode: 'onTouched' })
+  }>({ mode: 'onSubmit' })
   return (
     <ScDialog
       title={'Inviter un utilisateur'}
-      confirmDisabled={!isValid}
+      onOpen={reset}
       onConfirm={(_, close) => {
         handleSubmit((form) => {
           onInvite(form.email)
