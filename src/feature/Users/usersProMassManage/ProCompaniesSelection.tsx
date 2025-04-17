@@ -33,11 +33,33 @@ function Loaded({ data }: { data: ProCompanies }) {
       selection: Object.fromEntries(allIds.map((_) => [_, false])),
     },
   })
+  const selectableIds = flattenProCompanies(data)
+    .filter((c) => !shouldBeDisabled(c))
+    .map((c) => c.company.id)
   return (
     <>
       <p className="mb-2">Sélectionnez une ou plusieurs entreprises :</p>
-
       <div className="bg-gray-100 py-2 px-4">
+        <div className="flex gap-2 items-end justify-between mb-2">
+          <div className="flex gap-2 h-fit">
+            <TinyButton
+              label="Sélectionner tous"
+              onClick={() => {
+                selectableIds?.forEach((id) => {
+                  form.setValue(`selection.${id}`, true)
+                })
+              }}
+            />
+            <TinyButton
+              label="Désélectionner tous"
+              onClick={() => {
+                selectableIds?.forEach((id) => {
+                  form.setValue(`selection.${id}`, false)
+                })
+              }}
+            />
+          </div>
+        </div>
         {data.headOfficesAndSubsidiaries.map(({ headOffice, subsidiaries }) => {
           return (
             <TopLevelRow
@@ -147,7 +169,7 @@ function RowContent({
   const disabled = shouldBeDisabled(companyWithAccess)
   return (
     <div
-      className={`border-t ${disabled ? 'bg-gray-100 border-gray-300 text-gray-500' : 'bg-white border-gray-400'} last:border-b-1 ${hasSecondLevel ? 'border-b-1' : ''} ${isTopLevel ? 'px-2 py-3' : 'p-1 py-2'}`}
+      className={`border-t ${disabled ? 'bg-gray-100 border-gray-300 text-gray-500 border-x' : 'bg-white border-gray-400 '} last:border-b-1 ${hasSecondLevel ? 'border-b-1' : ''} ${isTopLevel ? 'px-2 py-3' : 'p-1 py-2'}`}
     >
       <div className="flex gap-2 justify-between">
         <div className="flex gap-2">

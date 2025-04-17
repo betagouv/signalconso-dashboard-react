@@ -29,15 +29,12 @@ function Loaded({ data }: { data: User[] }) {
       selection: Object.fromEntries(allIds.map((_) => [_, false])),
     },
   })
-  console.log('@@@ watch', form.watch('selection'))
-
   const selectableIds = data
-    ?.filter((c) => !shouldBeDisabled(c, connectedUser))
+    .filter((c) => !shouldBeDisabled(c, connectedUser))
     .map((c) => c.id)
   return (
     <>
       <p className="mb-4">Sélectionnez un ou plusieurs utilisateurs :</p>
-
       <div className="bg-gray-100 py-2 px-4">
         <div className="flex gap-2 items-end justify-between mb-2">
           <div className="flex gap-2 h-fit">
@@ -73,7 +70,7 @@ function RowContent({ user, form }: { user: User; form: Form }) {
   const disabled = shouldBeDisabled(user, connectedUser)
   return (
     <div
-      className={`border-t ${disabled ? 'bg-gray-100 border-gray-300 text-gray-500' : 'bg-white border-gray-400'} last:border-b-1 px-2 py-3`}
+      className={`border-t ${disabled ? 'bg-gray-100 border-gray-300 text-gray-500 border-x' : 'bg-white border-gray-400'} last:border-b-1 px-2 py-3`}
     >
       <div className="flex gap-2 items-center">
         <div className={`mx-6 h-fit`}>
