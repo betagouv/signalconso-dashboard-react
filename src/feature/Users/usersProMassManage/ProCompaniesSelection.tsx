@@ -87,15 +87,13 @@ function Loaded({
       </div>
       <NextButton
         disabled={!isAtLeastOneSelected}
-        onClick={() =>
-          form.handleSubmit(({ selection }) =>
-            onSubmit({
-              selectedCompaniesIds: Object.entries(selection)
-                .filter(([_, selected]) => selected)
-                .map(([id]) => id),
-            }),
-          )
-        }
+        onClick={form.handleSubmit(({ selection }) => {
+          onSubmit({
+            selectedCompaniesIds: Object.entries(selection)
+              .filter(([_, selected]) => selected)
+              .map(([id]) => id),
+          })
+        })}
       />
     </>
   )

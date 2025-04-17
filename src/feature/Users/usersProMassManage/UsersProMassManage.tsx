@@ -41,6 +41,7 @@ export function AccessesManagementPro() {
   function decrementStepNumber() {
     setStepNumber((s) => (s === undefined || s === 0 ? undefined : s - 1))
   }
+  console.log('@@@@ selection', selection)
   return (
     <Page>
       <PageTitle>Gestion des accès</PageTitle>
