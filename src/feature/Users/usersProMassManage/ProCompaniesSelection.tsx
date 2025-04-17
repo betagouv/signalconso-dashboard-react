@@ -21,7 +21,6 @@ export function ProCompaniesSelection() {
   const data = _query.data
   return (
     <CleanInvisiblePanel loading={_query.isLoading}>
-      <p className="mb-2">Sélectionnez une ou plusieurs entreprises :</p>
       {data ? <Loaded {...{ data }} /> : null}
     </CleanInvisiblePanel>
   )
@@ -35,21 +34,25 @@ function Loaded({ data }: { data: ProCompanies }) {
     },
   })
   return (
-    <div className="bg-gray-100 py-2 px-4">
-      {data.headOfficesAndSubsidiaries.map(({ headOffice, subsidiaries }) => {
-        return (
-          <TopLevelRow
-            key={headOffice.company.id}
-            company={headOffice}
-            secondLevel={subsidiaries}
-            form={form}
-          />
-        )
-      })}
-      {data.loneSubsidiaries.map((company) => {
-        return <TopLevelRow key={company.company.id} {...{ company, form }} />
-      })}
-    </div>
+    <>
+      <p className="mb-2">Sélectionnez une ou plusieurs entreprises :</p>
+
+      <div className="bg-gray-100 py-2 px-4">
+        {data.headOfficesAndSubsidiaries.map(({ headOffice, subsidiaries }) => {
+          return (
+            <TopLevelRow
+              key={headOffice.company.id}
+              company={headOffice}
+              secondLevel={subsidiaries}
+              form={form}
+            />
+          )
+        })}
+        {data.loneSubsidiaries.map((company) => {
+          return <TopLevelRow key={company.company.id} {...{ company, form }} />
+        })}
+      </div>
+    </>
   )
 }
 

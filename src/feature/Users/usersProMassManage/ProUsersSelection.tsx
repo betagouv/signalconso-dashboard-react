@@ -36,9 +36,10 @@ function Loaded({ data }: { data: User[] }) {
     .map((c) => c.id)
   return (
     <>
-      <div className="flex flex-col gap-2 mb-2">
-        <p className="">Sélectionnez un ou plusieurs utilisateurs :</p>
-        <div className="flex gap-2 items-end justify-between">
+      <p className="mb-4">Sélectionnez un ou plusieurs utilisateurs :</p>
+
+      <div className="bg-gray-100 py-2 px-4">
+        <div className="flex gap-2 items-end justify-between mb-2">
           <div className="flex gap-2 h-fit">
             <TinyButton
               label="Sélectionner tous"
@@ -59,8 +60,6 @@ function Loaded({ data }: { data: User[] }) {
           </div>
           <TinyButton label="Inviter" onClick={() => {}} />
         </div>
-      </div>
-      <div className="bg-gray-100 py-2 px-4">
         {data.map((user) => {
           return <RowContent key={user.id} user={user} form={form} />
         })}
