@@ -20,8 +20,23 @@ const stepsName = {
 }
 
 export function AccessesManagementPro() {
-  const [stepNumber, setStepNumber] = useState<number | undefined>(2)
+  const [selection, setSelection] = useState<{
+    companiesIds: string[]
+    usersIds: string[]
+    emailsToInvite: string[]
+  }>({
+    companiesIds: [],
+    usersIds: [],
+    emailsToInvite: [],
+  })
+  const [stepNumber, setStepNumber] = useState<number | undefined>(0)
   const step = stepNumber !== undefined ? steps[stepNumber] : undefined
+  function incrementStepNumber() {
+    setStepNumber((s) => (s === undefined ? 0 : s + 1))
+  }
+  function decrementStepNumber() {
+    setStepNumber((s) => (s === undefined || s === 0 ? undefined : s - 1))
+  }
   return (
     <Page>
       <PageTitle>Gestion des accès</PageTitle>
@@ -51,28 +66,35 @@ export function AccessesManagementPro() {
         <DsfrStepper
           currentStep={stepNumber || 0}
           steps={steps.map((s) => stepsName[s])}
-          onPrevious={() =>
-            setStepNumber((s) =>
-              s === undefined || s === 0 ? undefined : s - 1,
-            )
-          }
+          onPrevious={decrementStepNumber}
         />
       )}
       {step === 'operationSelection' && <MassManageOperationSelection />}
-      {step === 'companiesSelection' && <ProCompaniesSelection />}
-      {step === 'usersSelection' && <ProUsersSelection allowInvitation />}
-      {step === 'confirmation' && <></>}
-
-      {stepNumber !== undefined && (
-        <div className="flex justify-end">
-          <Button
-            variant="contained"
-            onClick={() => setStepNumber((s) => (s === undefined ? 0 : s + 1))}
-          >
-            Suivant
-          </Button>
-        </div>
+      {step === 'companiesSelection' && (
+        <ProCompaniesSelection
+          onSubmit={({ selectedCompaniesIds }) => {
+            setSelection((prev) => ({
+              ...prev,
+              companiesIds: selectedCompaniesIds,
+            }))
+            incrementStepNumber()
+          }}
+        />
       )}
+      {step === 'usersSelection' && (
+        <ProUsersSelection
+          allowInvitation
+          onSubmit={({ selectedUserIds, emailsToInvite }) => {
+            setSelection((prev) => ({
+              ...prev,
+              usersIds: selectedUserIds,
+              emailsToInvite,
+            }))
+            incrementStepNumber()
+          }}
+        />
+      )}
+      {step === 'confirmation' && <></>}
     </Page>
   )
 }
