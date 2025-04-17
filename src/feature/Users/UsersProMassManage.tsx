@@ -62,6 +62,17 @@ export function AccessesManagementPro() {
       {step === 'companiesSelection' && <ProCompaniesSelection />}
       {step === 'usersSelection' && <ProUsersSelection />}
       {step === 'confirmation' && <></>}
+
+      {stepNumber !== undefined && (
+        <div className="flex justify-end">
+          <Button
+            variant="contained"
+            onClick={() => setStepNumber((s) => (s === undefined ? 0 : s + 1))}
+          >
+            Suivant
+          </Button>
+        </div>
+      )}
     </Page>
   )
 }
