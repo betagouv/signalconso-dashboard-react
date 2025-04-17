@@ -60,7 +60,7 @@ export function AccessesManagementPro() {
       )}
       {step === 'operationSelection' && <MassManageOperationSelection />}
       {step === 'companiesSelection' && <ProCompaniesSelection />}
-      {step === 'usersSelection' && <ProUsersSelection />}
+      {step === 'usersSelection' && <ProUsersSelection allowInvitation />}
       {step === 'confirmation' && <></>}
 
       {stepNumber !== undefined && (

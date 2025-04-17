@@ -24,22 +24,29 @@ type RowData =
       user: User
     }
 
-export function ProUsersSelection() {
+export function ProUsersSelection({
+  allowInvitation,
+}: {
+  allowInvitation: boolean
+}) {
   const _query = useUsersOfProQuery()
   const data = _query.data
   return (
     <CleanInvisiblePanel loading={_query.isLoading}>
-      {data ? <Loaded {...{ data }} /> : null}
+      {data ? <Loaded {...{ data, allowInvitation }} /> : null}
     </CleanInvisiblePanel>
   )
 }
 
-function Loaded({ data }: { data: User[] }) {
+function Loaded({
+  data,
+  allowInvitation,
+}: {
+  data: User[]
+  allowInvitation: boolean
+}) {
   const { connectedUser } = useConnectedContext()
-  const [usersToInvite, setUsersToInvite] = useState<string[]>([
-    'george@gmail.com',
-    'walalla@gmail.com',
-  ])
+  const [usersToInvite, setUsersToInvite] = useState<string[]>([])
   const allEmails = [...usersToInvite, ...data.map((_) => _.email)]
   const form = useForm<FormShape>({
     defaultValues: {
@@ -74,12 +81,14 @@ function Loaded({ data }: { data: User[] }) {
               }}
             />
           </div>
-          <InviteButtonWithDialog
-            onInvite={(email) => {
-              setUsersToInvite((prev) => [email, ...prev])
-            }}
-            isEmailAlreadyPresent={(email) => allEmails.includes(email)}
-          />
+          {allowInvitation && (
+            <InviteButtonWithDialog
+              onInvite={(email) => {
+                setUsersToInvite((prev) => [email, ...prev])
+              }}
+              isEmailAlreadyPresent={(email) => allEmails.includes(email)}
+            />
+          )}
         </div>
         {usersToInvite.map((email) => {
           return (

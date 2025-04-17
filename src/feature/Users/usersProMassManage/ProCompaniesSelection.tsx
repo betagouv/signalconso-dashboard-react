@@ -9,37 +9,48 @@ import {
 import { useCompaniesOfProQuery } from 'core/queryhooks/accessesMassManagementQueryHooks'
 import { Controller, useForm, UseFormReturn } from 'react-hook-form'
 import { CleanInvisiblePanel } from 'shared/Panel/simplePanels'
-import { TinyButton } from './usersProMassManageTinyComponents'
+import { NextButton, TinyButton } from './usersProMassManageTinyComponents'
 
 type FormShape = {
   selection: { [id: string]: boolean }
 }
 type Form = UseFormReturn<FormShape>
 
-export function ProCompaniesSelection() {
+type OnSubmit = (ids: string[]) => void
+
+export function ProCompaniesSelection({ onSubmit }: { onSubmit: OnSubmit }) {
   const _query = useCompaniesOfProQuery()
   const data = _query.data
   return (
     <CleanInvisiblePanel loading={_query.isLoading}>
-      {data ? <Loaded {...{ data }} /> : null}
+      {data ? <Loaded {...{ data, onSubmit }} /> : null}
     </CleanInvisiblePanel>
   )
 }
 
-function Loaded({ data }: { data: ProCompanies }) {
+function Loaded({
+  data,
+  onSubmit,
+}: {
+  data: ProCompanies
+  onSubmit: OnSubmit
+}) {
   const allIds = flattenProCompanies(data).map((_) => _.company.id)
   const form = useForm<FormShape>({
     defaultValues: {
       selection: Object.fromEntries(allIds.map((_) => [_, false])),
     },
   })
+  const isAtLeastOneSelected = Object.values(form.watch('selection')).some(
+    (_) => _,
+  )
   const selectableIds = flattenProCompanies(data)
     .filter((c) => !shouldBeDisabled(c))
     .map((c) => c.company.id)
   return (
     <>
       <p className="mb-2">Sélectionnez une ou plusieurs entreprises :</p>
-      <div className="bg-gray-100 py-2 px-4">
+      <div className="bg-gray-100 py-2 px-4 mb-4">
         <div className="flex gap-2 items-end justify-between mb-2">
           <div className="flex gap-2 h-fit">
             <TinyButton
@@ -74,6 +85,18 @@ function Loaded({ data }: { data: ProCompanies }) {
           return <TopLevelRow key={company.company.id} {...{ company, form }} />
         })}
       </div>
+      <NextButton
+        disabled={!isAtLeastOneSelected}
+        onClick={() =>
+          form.handleSubmit(({ selection }) =>
+            onSubmit(
+              Object.entries(selection)
+                .filter(([_, selected]) => selected)
+                .map(([id]) => id),
+            ),
+          )
+        }
+      />
     </>
   )
 }

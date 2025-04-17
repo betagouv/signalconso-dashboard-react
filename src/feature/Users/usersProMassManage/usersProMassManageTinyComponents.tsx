@@ -1,4 +1,4 @@
-import { Button } from '@mui/material'
+import { Button, Icon } from '@mui/material'
 
 export function TinyButton({
   label,
@@ -16,5 +16,26 @@ export function TinyButton({
     >
       {label}
     </Button>
+  )
+}
+
+export function NextButton({
+  onClick,
+  disabled,
+}: {
+  onClick: () => void
+  disabled: boolean
+}) {
+  return (
+    <div className="flex justify-end">
+      <Button
+        variant="contained"
+        {...{ onClick, disabled }}
+        size="large"
+        endIcon={<Icon>arrow_forward</Icon>}
+      >
+        Suivant
+      </Button>
+    </div>
   )
 }
