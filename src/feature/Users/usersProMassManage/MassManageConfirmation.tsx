@@ -1,5 +1,8 @@
 import { Button } from '@mui/material'
-import { MassManageChoices, MassManageOperation } from './UsersProMassManage'
+import {
+  MassManageChoices,
+  MassManageOperation,
+} from './usersProMassManagementConstants'
 
 export function MassManageConfirmation({
   choices,

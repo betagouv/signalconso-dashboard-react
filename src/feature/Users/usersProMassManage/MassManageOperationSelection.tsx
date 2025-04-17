@@ -1,16 +1,34 @@
 import { FormControlLabel, Radio, RadioGroup } from '@mui/material'
+import { useForm } from 'react-hook-form'
 import { CleanInvisiblePanel } from 'shared/Panel/simplePanels'
-import { MassManageOperation } from './UsersProMassManage'
+import {
+  MassManageOperation,
+  massManageOperations,
+} from './usersProMassManagementConstants'
 import { NextButton } from './usersProMassManageTinyComponents'
+
 type OnSubmit = (_: { operation: MassManageOperation }) => void
+
 export function MassManageOperationSelection({
   onSubmit,
 }: {
   onSubmit: OnSubmit
 }) {
+  const form = useForm<{ operation: MassManageOperation }>()
+  console.log('@@@ form', form.watch('operation'))
   return (
     <CleanInvisiblePanel>
       <p className="mb-2">Que voulez-vous faire ?</p>
+      <fieldset>
+        {massManageOperations.map((op) => {
+          return (
+            <div>
+              <input type="radio" {...form.register('operation')} value={op} />
+              <label>{op}</label>
+            </div>
+          )
+        })}
+      </fieldset>
       <RadioGroup
         aria-labelledby="demo-radio-buttons-group-label"
         defaultValue="female"

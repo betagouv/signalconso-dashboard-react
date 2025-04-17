@@ -6,6 +6,7 @@ import { MassManageConfirmation } from './MassManageConfirmation'
 import { MassManageOperationSelection } from './MassManageOperationSelection'
 import { ProCompaniesSelection } from './ProCompaniesSelection'
 import { ProUsersSelection } from './ProUsersSelection'
+import { MassManageChoices } from './usersProMassManagementConstants'
 
 const steps = [
   'operationSelection',
@@ -18,14 +19,6 @@ const stepsName = {
   companiesSelection: 'Choix des entreprises',
   usersSelection: 'Choix des utilisateurs',
   confirmation: 'Confirmation',
-}
-
-export type MassManageOperation = 'remove' | 'set_member' | 'set_admin'
-export type MassManageChoices = {
-  operation: MassManageOperation
-  companiesIds: string[]
-  usersIds: string[]
-  emailsToInvite: string[]
 }
 
 export function AccessesManagementPro() {
