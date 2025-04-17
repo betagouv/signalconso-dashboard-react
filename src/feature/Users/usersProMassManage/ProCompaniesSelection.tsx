@@ -16,7 +16,7 @@ type FormShape = {
 }
 type Form = UseFormReturn<FormShape>
 
-type OnSubmit = (ids: string[]) => void
+type OnSubmit = (_: { selectedCompaniesIds: string[] }) => void
 
 export function ProCompaniesSelection({ onSubmit }: { onSubmit: OnSubmit }) {
   const _query = useCompaniesOfProQuery()
@@ -89,11 +89,11 @@ function Loaded({
         disabled={!isAtLeastOneSelected}
         onClick={() =>
           form.handleSubmit(({ selection }) =>
-            onSubmit(
-              Object.entries(selection)
+            onSubmit({
+              selectedCompaniesIds: Object.entries(selection)
                 .filter(([_, selected]) => selected)
                 .map(([id]) => id),
-            ),
+            }),
           )
         }
       />

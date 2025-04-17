@@ -7,7 +7,7 @@ import { SetStateAction, useState } from 'react'
 import { Controller, useForm, UseFormReturn } from 'react-hook-form'
 import { CleanInvisiblePanel } from 'shared/Panel/simplePanels'
 import { ScDialog } from 'shared/ScDialog'
-import { TinyButton } from './usersProMassManageTinyComponents'
+import { NextButton, TinyButton } from './usersProMassManageTinyComponents'
 
 type FormShape = {
   selection: { [id: string]: boolean }
@@ -24,16 +24,23 @@ type RowData =
       user: User
     }
 
+type OnSubmit = (_: {
+  selectedUserIds: string[]
+  emailsToInvite: string[]
+}) => void
+
 export function ProUsersSelection({
   allowInvitation,
+  onSubmit,
 }: {
   allowInvitation: boolean
+  onSubmit: OnSubmit
 }) {
   const _query = useUsersOfProQuery()
   const data = _query.data
   return (
     <CleanInvisiblePanel loading={_query.isLoading}>
-      {data ? <Loaded {...{ data, allowInvitation }} /> : null}
+      {data ? <Loaded {...{ data, allowInvitation, onSubmit }} /> : null}
     </CleanInvisiblePanel>
   )
 }
@@ -41,13 +48,15 @@ export function ProUsersSelection({
 function Loaded({
   data,
   allowInvitation,
+  onSubmit,
 }: {
   data: User[]
   allowInvitation: boolean
+  onSubmit: OnSubmit
 }) {
   const { connectedUser } = useConnectedContext()
-  const [usersToInvite, setUsersToInvite] = useState<string[]>([])
-  const allEmails = [...usersToInvite, ...data.map((_) => _.email)]
+  const [emailsToInvite, setEmailsToInvite] = useState<string[]>([])
+  const allEmails = [...emailsToInvite, ...data.map((_) => _.email)]
   const form = useForm<FormShape>({
     defaultValues: {
       selection: Object.fromEntries(
@@ -55,13 +64,16 @@ function Loaded({
       ),
     },
   })
+  const isAtLeastOneSelected =
+    emailsToInvite.length > 0 ||
+    Object.values(form.watch('selection')).some((_) => _)
   const selectableIds = data
     .filter((c) => !shouldBeDisabled(c, connectedUser))
     .map((c) => c.id)
   return (
     <>
       <p className="mb-4">Sélectionnez un ou plusieurs utilisateurs :</p>
-      <div className="bg-gray-100 py-2 px-4">
+      <div className="bg-gray-100 py-2 px-4 mb-4">
         <div className="flex gap-2 items-end justify-between mb-2">
           <div className="flex gap-2 h-fit">
             <TinyButton
@@ -84,18 +96,18 @@ function Loaded({
           {allowInvitation && (
             <InviteButtonWithDialog
               onInvite={(email) => {
-                setUsersToInvite((prev) => [email, ...prev])
+                setEmailsToInvite((prev) => [email, ...prev])
               }}
               isEmailAlreadyPresent={(email) => allEmails.includes(email)}
             />
           )}
         </div>
-        {usersToInvite.map((email) => {
+        {emailsToInvite.map((email) => {
           return (
             <RowContent
               key={email}
               rowData={{ kind: 'to_invite', email }}
-              {...{ form, setUsersToInvite }}
+              {...{ form, setUsersToInvite: setEmailsToInvite }}
             />
           )
         })}
@@ -104,11 +116,25 @@ function Loaded({
             <RowContent
               key={user.id}
               rowData={{ kind: 'actual_user', user }}
-              {...{ form, setUsersToInvite }}
+              {...{ form, setUsersToInvite: setEmailsToInvite }}
             />
           )
         })}
       </div>
+      <NextButton
+        disabled={!isAtLeastOneSelected}
+        onClick={() =>
+          form.handleSubmit(({ selection }) => {
+            const selectedUserIds = Object.entries(selection)
+              .filter(([_, selected]) => selected)
+              .map(([id]) => id)
+            onSubmit({
+              selectedUserIds,
+              emailsToInvite: emailsToInvite,
+            })
+          })()
+        }
+      />
     </>
   )
 }
