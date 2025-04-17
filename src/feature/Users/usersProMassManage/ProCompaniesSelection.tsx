@@ -1,5 +1,5 @@
 import PlaceOutlinedIcon from '@mui/icons-material/PlaceOutlined'
-import { Button, Checkbox } from '@mui/material'
+import { Checkbox } from '@mui/material'
 import {
   AccessLevel,
   CompanyWithAccess,
@@ -9,6 +9,7 @@ import {
 import { useCompaniesOfProQuery } from 'core/queryhooks/accessesMassManagementQueryHooks'
 import { Controller, useForm, UseFormReturn } from 'react-hook-form'
 import { CleanInvisiblePanel } from 'shared/Panel/simplePanels'
+import { TinyButton } from './usersProMassManageTinyComponents'
 
 type FormShape = {
   selection: { [id: string]: boolean }
@@ -181,25 +182,6 @@ function RowContent({
         </div>
       </div>
     </div>
-  )
-}
-
-function TinyButton({
-  label,
-  onClick,
-}: {
-  label: string
-  onClick: () => void
-}) {
-  return (
-    <Button
-      size="small"
-      variant="outlined"
-      className="!bg-white"
-      onClick={onClick}
-    >
-      {label}
-    </Button>
   )
 }
 

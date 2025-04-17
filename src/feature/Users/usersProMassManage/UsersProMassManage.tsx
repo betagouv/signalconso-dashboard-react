@@ -2,9 +2,9 @@ import { Button, Icon } from '@mui/material'
 import { useState } from 'react'
 import { DsfrStepper } from 'shared/DsfrStepper'
 import { Page, PageTitle } from 'shared/Page'
-import { MassManageOperationSelection } from './usersProMassManage/MassManageOperationSelection'
-import { ProCompaniesSelection } from './usersProMassManage/ProCompaniesSelection'
-import { ProUsersSelection } from './usersProMassManage/ProUsersSelection'
+import { MassManageOperationSelection } from './MassManageOperationSelection'
+import { ProCompaniesSelection } from './ProCompaniesSelection'
+import { ProUsersSelection } from './ProUsersSelection'
 
 const steps = [
   'operationSelection',

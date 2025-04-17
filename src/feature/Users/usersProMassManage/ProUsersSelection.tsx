@@ -4,6 +4,7 @@ import { User } from 'core/model'
 import { useUsersOfProQuery } from 'core/queryhooks/accessesMassManagementQueryHooks'
 import { Controller, useForm, UseFormReturn } from 'react-hook-form'
 import { CleanInvisiblePanel } from 'shared/Panel/simplePanels'
+import { TinyButton } from './usersProMassManageTinyComponents'
 
 type FormShape = {
   selection: { [id: string]: boolean }
@@ -11,36 +12,66 @@ type FormShape = {
 type Form = UseFormReturn<FormShape>
 
 export function ProUsersSelection() {
-  const form = useForm<FormShape>()
   const _query = useUsersOfProQuery()
   const data = _query.data
   return (
     <CleanInvisiblePanel loading={_query.isLoading}>
-      <p className="mb-2">Sélectionnez un ou plusieurs utilisateurs :</p>
       {data ? <Loaded {...{ data }} /> : null}
     </CleanInvisiblePanel>
   )
 }
 
 function Loaded({ data }: { data: User[] }) {
+  const { connectedUser } = useConnectedContext()
   const allIds = data.map((_) => _.id)
   const form = useForm<FormShape>({
     defaultValues: {
       selection: Object.fromEntries(allIds.map((_) => [_, false])),
     },
   })
+  console.log('@@@ watch', form.watch('selection'))
+
+  const selectableIds = data
+    ?.filter((c) => !shouldBeDisabled(c, connectedUser))
+    .map((c) => c.id)
   return (
-    <div className="bg-gray-100 py-2 px-4">
-      {data.map((user) => {
-        return <RowContent key={user.id} user={user} form={form} />
-      })}
-    </div>
+    <>
+      <div className="flex flex-col gap-2 mb-2">
+        <p className="">Sélectionnez un ou plusieurs utilisateurs :</p>
+        <div className="flex gap-2 items-end justify-between">
+          <div className="flex gap-2 h-fit">
+            <TinyButton
+              label="Sélectionner tous"
+              onClick={() => {
+                selectableIds?.forEach((id) => {
+                  form.setValue(`selection.${id}`, true)
+                })
+              }}
+            />
+            <TinyButton
+              label="Désélectionner tous"
+              onClick={() => {
+                selectableIds?.forEach((id) => {
+                  form.setValue(`selection.${id}`, false)
+                })
+              }}
+            />
+          </div>
+          <TinyButton label="Inviter" onClick={() => {}} />
+        </div>
+      </div>
+      <div className="bg-gray-100 py-2 px-4">
+        {data.map((user) => {
+          return <RowContent key={user.id} user={user} form={form} />
+        })}
+      </div>
+    </>
   )
 }
 
 function RowContent({ user, form }: { user: User; form: Form }) {
   const { connectedUser } = useConnectedContext()
-  const disabled = connectedUser.id === user.id
+  const disabled = shouldBeDisabled(user, connectedUser)
   return (
     <div
       className={`border-t ${disabled ? 'bg-gray-100 border-gray-300 text-gray-500' : 'bg-white border-gray-400'} last:border-b-1 px-2 py-3`}
@@ -73,4 +104,8 @@ function RowContent({ user, form }: { user: User; form: Form }) {
       </div>
     </div>
   )
+}
+
+function shouldBeDisabled(user: User, connectedUser: User) {
+  return user.id === connectedUser.id
 }
