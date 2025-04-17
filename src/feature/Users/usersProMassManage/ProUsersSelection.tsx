@@ -1,10 +1,12 @@
-import { Button, Checkbox } from '@mui/material'
+import { Button, Checkbox, TextField } from '@mui/material'
 import { useConnectedContext } from 'core/context/connected/connectedContext'
+import { regexp } from 'core/helper/regexp'
 import { User } from 'core/model'
 import { useUsersOfProQuery } from 'core/queryhooks/accessesMassManagementQueryHooks'
 import { SetStateAction, useState } from 'react'
 import { Controller, useForm, UseFormReturn } from 'react-hook-form'
 import { CleanInvisiblePanel } from 'shared/Panel/simplePanels'
+import { ScDialog } from 'shared/ScDialog'
 import { TinyButton } from './usersProMassManageTinyComponents'
 
 type FormShape = {
@@ -38,10 +40,12 @@ function Loaded({ data }: { data: User[] }) {
     'george@gmail.com',
     'walalla@gmail.com',
   ])
-  const allIds = data.map((_) => _.id)
+  const allEmails = [...usersToInvite, ...data.map((_) => _.email)]
   const form = useForm<FormShape>({
     defaultValues: {
-      selection: Object.fromEntries(allIds.map((_) => [_, false])),
+      selection: Object.fromEntries(
+        data.map((_) => _.id).map((_) => [_, false]),
+      ),
     },
   })
   const selectableIds = data
@@ -70,7 +74,12 @@ function Loaded({ data }: { data: User[] }) {
               }}
             />
           </div>
-          <TinyButton label="Inviter" onClick={() => {}} />
+          <InviteButtonWithDialog
+            onInvite={(email) => {
+              setUsersToInvite((prev) => [email, ...prev])
+            }}
+            isEmailAlreadyPresent={(email) => allEmails.includes(email)}
+          />
         </div>
         {usersToInvite.map((email) => {
           return (
@@ -175,4 +184,64 @@ function RowContent({
 
 function shouldBeDisabled(user: User, connectedUser: User) {
   return user.id === connectedUser.id
+}
+
+function InviteButtonWithDialog({
+  onInvite,
+  isEmailAlreadyPresent,
+}: {
+  onInvite: (email: string) => void
+  isEmailAlreadyPresent: (email: string) => boolean
+}) {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isValid },
+  } = useForm<{
+    email: string
+  }>({ mode: 'onTouched' })
+  return (
+    <ScDialog
+      title={'Inviter un utilisateur'}
+      confirmDisabled={!isValid}
+      onConfirm={(_, close) => {
+        handleSubmit((form) => {
+          onInvite(form.email)
+          close()
+        })()
+      }}
+      content={
+        <div className="min-w-sm">
+          <p>
+            Tapez l'adresse email d'un nouvel utilisateur à ajouter sur ces
+            entreprises. S'il n'a pas de compte SignalConso, une invitation lui
+            sera envoyée par email.
+          </p>
+          <TextField
+            className="!mb-4"
+            size="small"
+            variant="filled"
+            margin="dense"
+            type="email"
+            fullWidth
+            error={!!errors.email}
+            helperText={errors.email?.message ?? ''}
+            label={'Email'}
+            {...register('email', {
+              required: { value: true, message: 'Requis' },
+              pattern: { value: regexp.email, message: 'Email invalide' },
+              validate: (value) => {
+                if (isEmailAlreadyPresent(value)) {
+                  return 'Email déjà présent dans la liste'
+                }
+                return true
+              },
+            })}
+          />
+        </div>
+      }
+    >
+      <TinyButton label="Inviter" />
+    </ScDialog>
+  )
 }

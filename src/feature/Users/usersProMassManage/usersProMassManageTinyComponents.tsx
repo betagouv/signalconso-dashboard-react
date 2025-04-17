@@ -5,14 +5,14 @@ export function TinyButton({
   onClick,
 }: {
   label: string
-  onClick: () => void
+  onClick?: () => void
 }) {
   return (
     <Button
       size="small"
       variant="outlined"
       className="!bg-white"
-      onClick={onClick}
+      {...{ onClick }}
     >
       {label}
     </Button>
