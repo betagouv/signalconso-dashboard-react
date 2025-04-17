@@ -2,6 +2,7 @@ import { Button, Icon } from '@mui/material'
 import { useState } from 'react'
 import { DsfrStepper } from 'shared/DsfrStepper'
 import { Page, PageTitle } from 'shared/Page'
+import { MassManageConfirmation } from './MassManageConfirmation'
 import { MassManageOperationSelection } from './MassManageOperationSelection'
 import { ProCompaniesSelection } from './ProCompaniesSelection'
 import { ProUsersSelection } from './ProUsersSelection'
@@ -20,15 +21,16 @@ const stepsName = {
 }
 
 export type MassManageOperation = 'remove' | 'set_member' | 'set_admin'
+export type MassManageChoices = {
+  operation: MassManageOperation
+  companiesIds: string[]
+  usersIds: string[]
+  emailsToInvite: string[]
+}
 
 export function AccessesManagementPro() {
-  const [selection, setSelection] = useState<{
-    operation: MassManageOperation
-    companiesIds: string[]
-    usersIds: string[]
-    emailsToInvite: string[]
-  }>({
-    operation: 'remove',
+  const [choices, setChoices] = useState<MassManageChoices>({
+    operation: 'set_member',
     companiesIds: [],
     usersIds: [],
     emailsToInvite: [],
@@ -41,7 +43,7 @@ export function AccessesManagementPro() {
   function decrementStepNumber() {
     setStepNumber((s) => (s === undefined || s === 0 ? undefined : s - 1))
   }
-  console.log('@@@@ selection', selection)
+  console.log('@@@ choices', choices)
   return (
     <Page>
       <PageTitle>Gestion des accès</PageTitle>
@@ -77,7 +79,7 @@ export function AccessesManagementPro() {
       {step === 'operationSelection' && (
         <MassManageOperationSelection
           onSubmit={({ operation }) => {
-            setSelection((prev) => ({ ...prev, operation }))
+            setChoices((prev) => ({ ...prev, operation }))
             incrementStepNumber()
           }}
         />
@@ -85,7 +87,7 @@ export function AccessesManagementPro() {
       {step === 'companiesSelection' && (
         <ProCompaniesSelection
           onSubmit={({ selectedCompaniesIds }) => {
-            setSelection((prev) => ({
+            setChoices((prev) => ({
               ...prev,
               companiesIds: selectedCompaniesIds,
             }))
@@ -97,7 +99,7 @@ export function AccessesManagementPro() {
         <ProUsersSelection
           allowInvitation
           onSubmit={({ selectedUserIds, emailsToInvite }) => {
-            setSelection((prev) => ({
+            setChoices((prev) => ({
               ...prev,
               usersIds: selectedUserIds,
               emailsToInvite,
@@ -106,7 +108,14 @@ export function AccessesManagementPro() {
           }}
         />
       )}
-      {step === 'confirmation' && <></>}
+      {step === 'confirmation' && (
+        <MassManageConfirmation
+          choices={choices}
+          onSubmit={() => {
+            console.log('@@@@ onSubmit', choices)
+          }}
+        />
+      )}
     </Page>
   )
 }
