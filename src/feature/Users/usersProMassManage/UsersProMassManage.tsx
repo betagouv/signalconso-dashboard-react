@@ -24,7 +24,7 @@ const stepsName = {
 
 export function AccessesManagementPro() {
   const [choices, setChoices] = useState<MassManageChoices>({
-    operation: 'set_member',
+    operation: null,
     companiesIds: [],
     usersIds: [],
     emailsToInvite: [],
@@ -74,6 +74,7 @@ export function AccessesManagementPro() {
       )}
       {step === 'operationSelection' && (
         <MassManageOperationSelection
+          operation={choices.operation}
           onSubmit={({ operation }) => {
             setChoices((prev) => ({ ...prev, operation }))
             incrementStepNumber()

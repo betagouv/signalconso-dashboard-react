@@ -5,7 +5,7 @@ export const massManageOperations = [
 ] as const
 export type MassManageOperation = (typeof massManageOperations)[number]
 export type MassManageChoices = {
-  operation: MassManageOperation
+  operation: MassManageOperation | null
   companiesIds: string[]
   usersIds: string[]
   emailsToInvite: string[]

@@ -1,5 +1,5 @@
 import { FormControlLabel, Radio, RadioGroup } from '@mui/material'
-import { useForm } from 'react-hook-form'
+import { Controller, useForm } from 'react-hook-form'
 import { Fragment } from 'react/jsx-runtime'
 import { CleanInvisiblePanel } from 'shared/Panel/simplePanels'
 import {
@@ -11,11 +11,16 @@ import { NextButton } from './usersProMassManageTinyComponents'
 type OnSubmit = (_: { operation: MassManageOperation }) => void
 
 export function MassManageOperationSelection({
+  operation,
   onSubmit,
 }: {
+  operation: MassManageOperation | undefined
   onSubmit: OnSubmit
 }) {
-  const form = useForm<{ operation: MassManageOperation }>()
+  const form = useForm<{ operation: MassManageOperation }>({
+    defaultValues: { operation },
+  })
+  console.log('@@@ form watch', form.watch('operation'))
   return (
     <CleanInvisiblePanel>
       <form onSubmit={form.handleSubmit(onSubmit)}>
@@ -26,17 +31,28 @@ export function MassManageOperationSelection({
           name="radio-buttons-group"
           className="flex flex-col gap-4 w-fit "
         >
-          {massManageOperations.map((operation) => {
-            return (
-              <FormControlLabel
-                {...form.register('operation')}
-                value={operation}
-                control={<Radio />}
-                className="border !m-0 border-gray-400 p-2 py-4"
-                label={<Label operation={operation} />}
-              />
-            )
-          })}
+          {massManageOperations.map((operation) => (
+            <Controller
+              key={operation}
+              control={form.control}
+              name="operation"
+              render={({
+                field: { onChange, onBlur, value, name, ref },
+                fieldState: { invalid, isTouched, isDirty, error },
+                formState,
+              }) => {
+                return (
+                  <FormControlLabel
+                    {...{ onBlur, onChange }}
+                    value={operation}
+                    control={<Radio checked={value === operation} />}
+                    className="border !m-0 border-gray-400 p-2 py-4"
+                    label={<Label operation={operation} />}
+                  />
+                )
+              }}
+            />
+          ))}
         </RadioGroup>
         <NextButton disabled={form.watch('operation') === undefined} />
       </form>
