@@ -16,35 +16,30 @@ export function MassManageOperationSelection({
   onSubmit: OnSubmit
 }) {
   const form = useForm<{ operation: MassManageOperation }>()
-  console.log('@@@ form', form.watch('operation'))
   return (
     <CleanInvisiblePanel>
-      <p className="mb-2">Que voulez-vous faire ?</p>
-      <RadioGroup
-        aria-labelledby="demo-radio-buttons-group-label"
-        defaultValue="female"
-        name="radio-buttons-group"
-        className="flex flex-col gap-4 w-fit "
-      >
-        {massManageOperations.map((operation) => {
-          return (
-            <FormControlLabel
-              {...form.register('operation')}
-              value={operation}
-              control={<Radio />}
-              className="border !m-0 border-gray-400 p-2 py-4"
-              label={<Label operation={operation} />}
-            />
-          )
-        })}
-      </RadioGroup>
-
-      <NextButton
-        disabled={false}
-        onClick={() => {
-          onSubmit({ operation: 'set_admin' })
-        }}
-      />
+      <form onSubmit={form.handleSubmit(onSubmit)}>
+        <p className="mb-2">Que voulez-vous faire ?</p>
+        <RadioGroup
+          aria-labelledby="demo-radio-buttons-group-label"
+          defaultValue="female"
+          name="radio-buttons-group"
+          className="flex flex-col gap-4 w-fit "
+        >
+          {massManageOperations.map((operation) => {
+            return (
+              <FormControlLabel
+                {...form.register('operation')}
+                value={operation}
+                control={<Radio />}
+                className="border !m-0 border-gray-400 p-2 py-4"
+                label={<Label operation={operation} />}
+              />
+            )
+          })}
+        </RadioGroup>
+        <NextButton disabled={form.watch('operation') === undefined} />
+      </form>
     </CleanInvisiblePanel>
   )
 }

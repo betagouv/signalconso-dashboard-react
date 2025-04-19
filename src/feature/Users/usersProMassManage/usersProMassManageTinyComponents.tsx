@@ -23,7 +23,7 @@ export function NextButton({
   onClick,
   disabled,
 }: {
-  onClick: () => void
+  onClick?: () => void
   disabled: boolean
 }) {
   return (
@@ -32,6 +32,7 @@ export function NextButton({
         variant="contained"
         {...{ onClick, disabled }}
         size="large"
+        type="submit"
         endIcon={<Icon>arrow_forward</Icon>}
       >
         Suivant
