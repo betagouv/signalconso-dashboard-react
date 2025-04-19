@@ -1,5 +1,6 @@
 import { FormControlLabel, Radio, RadioGroup } from '@mui/material'
 import { useForm } from 'react-hook-form'
+import { Fragment } from 'react/jsx-runtime'
 import { CleanInvisiblePanel } from 'shared/Panel/simplePanels'
 import {
   MassManageOperation,
@@ -19,91 +20,25 @@ export function MassManageOperationSelection({
   return (
     <CleanInvisiblePanel>
       <p className="mb-2">Que voulez-vous faire ?</p>
-      <fieldset>
-        {massManageOperations.map((op) => {
-          return (
-            <div>
-              <input type="radio" {...form.register('operation')} value={op} />
-              <label>{op}</label>
-            </div>
-          )
-        })}
-      </fieldset>
       <RadioGroup
         aria-labelledby="demo-radio-buttons-group-label"
         defaultValue="female"
         name="radio-buttons-group"
-        className="flex flex-col gap-4 w-fit"
+        className="flex flex-col gap-4 w-fit "
       >
-        <FormControlLabel
-          value="remove"
-          control={<Radio />}
-          className="border !m-0 border-gray-400 p-2 py-4"
-          label={
-            <div>
-              <p className="font-bold text-lg">Retirer des accès</p>
-              <p className="text-sm">
-                Les utilisateurs ne pourront plus accéder à ces entreprises
-              </p>
-            </div>
-          }
-        />
-        <FormControlLabel
-          value="membre"
-          control={<Radio />}
-          className="border !m-0 border-gray-400 p-2 py-4"
-          label={
-            <div>
-              <p className="font-bold  text-lg">Définir en tant que membre</p>
-              <ul className="text-sm">
-                <li>
-                  Les utilisateurs auront un accès "membre" à ces entreprises.
-                </li>
-                <li>
-                  Ils pourront consulter et répondre aux signalements de ces
-                  entreprises.
-                </li>
-                <li>
-                  Ils ne pourront pas gérer les accès des autres utilisateurs.
-                </li>
-                <li>
-                  S'ils étaient déjà "administrateurs", ils redescendront au
-                  niveau "membre".
-                </li>
-              </ul>
-            </div>
-          }
-        />
-        <FormControlLabel
-          value="admin"
-          control={<Radio />}
-          className="border !m-0 border-gray-400 p-2 py-4"
-          label={
-            <div>
-              <p className="font-bold text-lg">
-                Définir en tant qu'administrateur
-              </p>
-              <ul className="text-sm">
-                <li>
-                  Les utilisateurs auront un accès "administrateur" à ces
-                  entreprises.
-                </li>
-                <li>
-                  Ils pourront consulter et répondre aux signalements de ces
-                  entreprises.
-                </li>
-                <li className="underline">
-                  Ils pourront aussi gérer les accès des autres utilisateurs .
-                </li>
-                <li>
-                  S'ils étaient déjà "membres", ils monteront au niveau
-                  "administrateur".
-                </li>
-              </ul>
-            </div>
-          }
-        />
+        {massManageOperations.map((operation) => {
+          return (
+            <FormControlLabel
+              {...form.register('operation')}
+              value={operation}
+              control={<Radio />}
+              className="border !m-0 border-gray-400 p-2 py-4"
+              label={<Label operation={operation} />}
+            />
+          )
+        })}
       </RadioGroup>
+
       <NextButton
         disabled={false}
         onClick={() => {
@@ -111,5 +46,54 @@ export function MassManageOperationSelection({
         }}
       />
     </CleanInvisiblePanel>
+  )
+}
+
+function Label({ operation }: { operation: MassManageOperation }) {
+  const { title, desc } = (() => {
+    switch (operation) {
+      case 'set_admin':
+        return {
+          title: "Définir en tant qu'administrateur",
+          desc: [
+            'Les utilisateurs auront un accès "administrateur" à ces entreprises.',
+            'Ils pourront consulter et répondre aux signalements de ces entreprises.',
+            <span className="underline">
+              Ils pourront aussi gérer les accès des autres utilisateurs.
+            </span>,
+            'S\'ils étaient déjà "membres", ils monteront au niveau "administrateur".',
+          ],
+        }
+      case 'set_member':
+        return {
+          title: 'Définir en tant que membre',
+          desc: [
+            'Les utilisateurs auront un accès "membre" à ces entreprises.',
+            'Ils pourront consulter et répondre aux signalements de ces entreprises.',
+            'Ils ne pourront pas gérer les accès des autres utilisateurs.',
+            'S\'ils étaient déjà "administrateurs", ils redescendront au niveau "membre".',
+          ],
+        }
+      case 'remove':
+        return {
+          title: 'Retirer des accès',
+          desc: ['Les utilisateurs ne pourront plus accéder à ces entreprises'],
+        }
+      default:
+        return operation satisfies never
+    }
+  })()
+  return (
+    <div className="">
+      <p className="font-bold text-lg">{title}</p>
+      <p className="text-sm">
+        {desc.map((item, idx) => (
+          <Fragment key={idx}>
+            {item}
+            <br />
+          </Fragment>
+        ))}
+      </p>
+    </div>
   )
 }

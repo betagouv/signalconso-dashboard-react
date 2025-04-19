@@ -1,4 +1,5 @@
 import { Button, Icon } from '@mui/material'
+import { config } from 'conf/config'
 import { useState } from 'react'
 import { DsfrStepper } from 'shared/DsfrStepper'
 import { Page, PageTitle } from 'shared/Page'
@@ -28,7 +29,9 @@ export function AccessesManagementPro() {
     usersIds: [],
     emailsToInvite: [],
   })
-  const [stepNumber, setStepNumber] = useState<number | undefined>()
+  const [stepNumber, setStepNumber] = useState<number | undefined>(
+    config.isManuDev ? 0 : undefined,
+  )
   const step = stepNumber !== undefined ? steps[stepNumber] : undefined
   function incrementStepNumber() {
     setStepNumber((s) => (s === undefined ? 0 : s + 1))
