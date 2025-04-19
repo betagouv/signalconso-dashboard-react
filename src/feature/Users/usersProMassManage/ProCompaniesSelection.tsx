@@ -18,12 +18,18 @@ type Form = UseFormReturn<FormShape>
 
 type OnSubmit = (_: { selectedCompaniesIds: string[] }) => void
 
-export function ProCompaniesSelection({ onSubmit }: { onSubmit: OnSubmit }) {
+export function ProCompaniesSelection({
+  selectedCompaniesIds,
+  onSubmit,
+}: {
+  selectedCompaniesIds: string[]
+  onSubmit: OnSubmit
+}) {
   const _query = useCompaniesOfProQuery()
   const data = _query.data
   return (
     <CleanInvisiblePanel loading={_query.isLoading}>
-      {data ? <Loaded {...{ data, onSubmit }} /> : null}
+      {data ? <Loaded {...{ data, onSubmit, selectedCompaniesIds }} /> : null}
     </CleanInvisiblePanel>
   )
 }
@@ -31,14 +37,18 @@ export function ProCompaniesSelection({ onSubmit }: { onSubmit: OnSubmit }) {
 function Loaded({
   data,
   onSubmit,
+  selectedCompaniesIds,
 }: {
   data: ProCompanies
   onSubmit: OnSubmit
+  selectedCompaniesIds: string[]
 }) {
   const allIds = flattenProCompanies(data).map((_) => _.company.id)
   const form = useForm<FormShape>({
     defaultValues: {
-      selection: Object.fromEntries(allIds.map((_) => [_, false])),
+      selection: Object.fromEntries(
+        allIds.map((id) => [id, selectedCompaniesIds.includes(id)]),
+      ),
     },
   })
   const isAtLeastOneSelected = Object.values(form.watch('selection')).some(

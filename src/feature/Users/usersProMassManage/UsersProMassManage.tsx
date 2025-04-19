@@ -100,6 +100,7 @@ export function AccessesManagementPro() {
       )}
       {step === 'companiesSelection' && (
         <ProCompaniesSelection
+          selectedCompaniesIds={choices.companiesIds}
           onSubmit={({ selectedCompaniesIds }) => {
             setChoices((prev) => ({
               ...prev,
