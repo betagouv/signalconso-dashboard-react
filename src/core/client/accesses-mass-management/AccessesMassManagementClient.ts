@@ -1,7 +1,6 @@
 import { ApiClient } from '../ApiClient'
 import { ProCompanies } from '../company/Company'
-import { User } from '../user/User'
-
+import { AccessesMassManagementUsers } from './accessesMassManagement'
 export class AccessesMassManagementClient {
   constructor(private client: ApiClient) {}
 
@@ -10,6 +9,8 @@ export class AccessesMassManagementClient {
   }
 
   readonly getUsersOfPro = () => {
-    return this.client.get<User[]>(`/accesses-mass-management/users`)
+    return this.client.get<AccessesMassManagementUsers>(
+      `/accesses-mass-management/users`,
+    )
   }
 }

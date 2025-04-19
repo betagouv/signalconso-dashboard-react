@@ -1,4 +1,5 @@
 import { Button, Checkbox, TextField } from '@mui/material'
+import { AccessesMassManagementUsers } from 'core/client/accesses-mass-management/accessesMassManagement'
 import { useConnectedContext } from 'core/context/connected/connectedContext'
 import { regexp } from 'core/helper/regexp'
 import { User } from 'core/model'
@@ -10,7 +11,7 @@ import { ScDialog } from 'shared/ScDialog'
 import { NextButton, TinyButton } from './usersProMassManageTinyComponents'
 import { MassManageChoices } from './usersProMassManagementConstants'
 type FormShape = {
-  selection: { [id: string]: boolean }
+  selected: { [id: string]: boolean }
 }
 type Form = UseFormReturn<FormShape>
 
@@ -62,7 +63,7 @@ function Loaded({
   onSubmit,
   choices,
 }: {
-  data: User[]
+  data: AccessesMassManagementUsers
   allowInvitation: boolean
   onSubmit: OnSubmit
   choices: MassManageChoices
@@ -75,7 +76,9 @@ function Loaded({
   const form = useForm<FormShape>({
     defaultValues: {
       selection: Object.fromEntries(
-        data.map((_) => _.id).map((id) => [id, choices.usersIds.includes(id)]),
+        data.users
+          .map((_) => _.id)
+          .map((id) => [id, choices.usersIds.includes(id)]),
       ),
     },
   })

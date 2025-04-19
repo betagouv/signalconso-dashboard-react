@@ -9,6 +9,6 @@ export interface CompanyAccessToken {
   token?: string
 }
 
-export function getCompanyAccessTokenKind(token: CompanyAccessToken) {
-  return token.emailedTo ? 'email' : 'postal'
+export type CompanyAccessTokenWithEmail = CompanyAccessToken & {
+  emailedTo: string
 }
