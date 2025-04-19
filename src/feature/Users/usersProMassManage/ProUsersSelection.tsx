@@ -8,7 +8,7 @@ import { Controller, useForm, UseFormReturn } from 'react-hook-form'
 import { CleanInvisiblePanel } from 'shared/Panel/simplePanels'
 import { ScDialog } from 'shared/ScDialog'
 import { NextButton, TinyButton } from './usersProMassManageTinyComponents'
-
+import { MassManageChoices } from './usersProMassManagementConstants'
 type FormShape = {
   selection: { [id: string]: boolean }
 }
@@ -30,9 +30,11 @@ type OnSubmit = (_: {
 }) => void
 
 export function ProUsersSelection({
+  choices,
   allowInvitation,
   onSubmit,
 }: {
+  choices: MassManageChoices
   allowInvitation: boolean
   onSubmit: OnSubmit
 }) {
@@ -40,7 +42,16 @@ export function ProUsersSelection({
   const data = _query.data
   return (
     <CleanInvisiblePanel loading={_query.isLoading}>
-      {data ? <Loaded {...{ data, allowInvitation, onSubmit }} /> : null}
+      {data ? (
+        <Loaded
+          {...{
+            data,
+            allowInvitation,
+            onSubmit,
+            choices,
+          }}
+        />
+      ) : null}
     </CleanInvisiblePanel>
   )
 }
@@ -49,18 +60,22 @@ function Loaded({
   data,
   allowInvitation,
   onSubmit,
+  choices,
 }: {
   data: User[]
   allowInvitation: boolean
   onSubmit: OnSubmit
+  choices: MassManageChoices
 }) {
   const { connectedUser } = useConnectedContext()
-  const [emailsToInvite, setEmailsToInvite] = useState<string[]>([])
+  const [emailsToInvite, setEmailsToInvite] = useState<string[]>(
+    choices.emailsToInvite,
+  )
   const allEmails = [...emailsToInvite, ...data.map((_) => _.email)]
   const form = useForm<FormShape>({
     defaultValues: {
       selection: Object.fromEntries(
-        data.map((_) => _.id).map((_) => [_, false]),
+        data.map((_) => _.id).map((id) => [id, choices.usersIds.includes(id)]),
       ),
     },
   })

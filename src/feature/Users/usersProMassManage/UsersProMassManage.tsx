@@ -81,7 +81,7 @@ export function AccessesManagementPro() {
       )}
       {step === 'operationSelection' && (
         <MassManageOperationSelection
-          operation={choices.operation}
+          choices={choices}
           onSubmit={({ operation }) => {
             setChoices((prev) => {
               // the operation choices has some effects on the later steps
@@ -100,7 +100,7 @@ export function AccessesManagementPro() {
       )}
       {step === 'companiesSelection' && (
         <ProCompaniesSelection
-          selectedCompaniesIds={choices.companiesIds}
+          choices={choices}
           onSubmit={({ selectedCompaniesIds }) => {
             setChoices((prev) => ({
               ...prev,
@@ -112,6 +112,7 @@ export function AccessesManagementPro() {
       )}
       {step === 'usersSelection' && (
         <ProUsersSelection
+          choices={choices}
           allowInvitation={choices.operation !== 'remove'}
           onSubmit={({ selectedUserIds, emailsToInvite }) => {
             setChoices((prev) => ({

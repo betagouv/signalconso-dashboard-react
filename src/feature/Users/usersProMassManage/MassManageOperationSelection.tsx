@@ -3,6 +3,7 @@ import { Controller, useForm } from 'react-hook-form'
 import { Fragment } from 'react/jsx-runtime'
 import { CleanInvisiblePanel } from 'shared/Panel/simplePanels'
 import {
+  MassManageChoices,
   MassManageOperation,
   massManageOperations,
 } from './usersProMassManagementConstants'
@@ -11,14 +12,14 @@ import { NextButton } from './usersProMassManageTinyComponents'
 type OnSubmit = (_: { operation: MassManageOperation }) => void
 
 export function MassManageOperationSelection({
-  operation,
+  choices,
   onSubmit,
 }: {
-  operation: MassManageOperation | null
+  choices: MassManageChoices
   onSubmit: OnSubmit
 }) {
   const form = useForm<{ operation: MassManageOperation }>({
-    defaultValues: { operation: operation ?? undefined },
+    defaultValues: { operation: choices.operation ?? undefined },
   })
   return (
     <CleanInvisiblePanel>
@@ -28,7 +29,7 @@ export function MassManageOperationSelection({
           aria-labelledby="demo-radio-buttons-group-label"
           defaultValue="female"
           name="radio-buttons-group"
-          className="flex flex-col gap-4 w-fit "
+          className="flex flex-col gap-4 w-fit mb-4"
         >
           {massManageOperations.map((operation) => (
             <Controller

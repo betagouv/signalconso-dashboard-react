@@ -10,7 +10,7 @@ import { useCompaniesOfProQuery } from 'core/queryhooks/accessesMassManagementQu
 import { Controller, useForm, UseFormReturn } from 'react-hook-form'
 import { CleanInvisiblePanel } from 'shared/Panel/simplePanels'
 import { NextButton, TinyButton } from './usersProMassManageTinyComponents'
-
+import { MassManageChoices } from './usersProMassManagementConstants'
 type FormShape = {
   selection: { [id: string]: boolean }
 }
@@ -19,17 +19,17 @@ type Form = UseFormReturn<FormShape>
 type OnSubmit = (_: { selectedCompaniesIds: string[] }) => void
 
 export function ProCompaniesSelection({
-  selectedCompaniesIds,
+  choices,
   onSubmit,
 }: {
-  selectedCompaniesIds: string[]
+  choices: MassManageChoices
   onSubmit: OnSubmit
 }) {
   const _query = useCompaniesOfProQuery()
   const data = _query.data
   return (
     <CleanInvisiblePanel loading={_query.isLoading}>
-      {data ? <Loaded {...{ data, onSubmit, selectedCompaniesIds }} /> : null}
+      {data ? <Loaded {...{ data, onSubmit, choices }} /> : null}
     </CleanInvisiblePanel>
   )
 }
@@ -37,17 +37,17 @@ export function ProCompaniesSelection({
 function Loaded({
   data,
   onSubmit,
-  selectedCompaniesIds,
+  choices,
 }: {
   data: ProCompanies
   onSubmit: OnSubmit
-  selectedCompaniesIds: string[]
+  choices: MassManageChoices
 }) {
   const allIds = flattenProCompanies(data).map((_) => _.company.id)
   const form = useForm<FormShape>({
     defaultValues: {
       selection: Object.fromEntries(
-        allIds.map((id) => [id, selectedCompaniesIds.includes(id)]),
+        allIds.map((id) => [id, choices.companiesIds.includes(id)]),
       ),
     },
   })
