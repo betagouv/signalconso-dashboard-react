@@ -14,13 +14,12 @@ export function MassManageOperationSelection({
   operation,
   onSubmit,
 }: {
-  operation: MassManageOperation | undefined
+  operation: MassManageOperation | null
   onSubmit: OnSubmit
 }) {
   const form = useForm<{ operation: MassManageOperation }>({
-    defaultValues: { operation },
+    defaultValues: { operation: operation ?? undefined },
   })
-  console.log('@@@ form watch', form.watch('operation'))
   return (
     <CleanInvisiblePanel>
       <form onSubmit={form.handleSubmit(onSubmit)}>

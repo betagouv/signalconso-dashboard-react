@@ -23,12 +23,13 @@ const stepsName = {
 }
 
 export function AccessesManagementPro() {
-  const [choices, setChoices] = useState<MassManageChoices>({
+  const initialChoices: MassManageChoices = {
     operation: null,
     companiesIds: [],
     usersIds: [],
     emailsToInvite: [],
-  })
+  }
+  const [choices, setChoices] = useState<MassManageChoices>(initialChoices)
   const [stepNumber, setStepNumber] = useState<number | undefined>(
     config.isManuDev ? 0 : undefined,
   )
@@ -38,6 +39,9 @@ export function AccessesManagementPro() {
   }
   function decrementStepNumber() {
     setStepNumber((s) => (s === undefined || s === 0 ? undefined : s - 1))
+  }
+  function resetChoices() {
+    setChoices(initialChoices)
   }
   console.log('@@@ choices', choices)
   return (
@@ -54,7 +58,10 @@ export function AccessesManagementPro() {
             <div className="flex-shrink-0">
               <Button
                 variant="contained"
-                onClick={() => setStepNumber(0)}
+                onClick={() => {
+                  resetChoices()
+                  setStepNumber(0)
+                }}
                 size="large"
                 endIcon={<Icon>arrow_forward</Icon>}
               >
@@ -76,7 +83,17 @@ export function AccessesManagementPro() {
         <MassManageOperationSelection
           operation={choices.operation}
           onSubmit={({ operation }) => {
-            setChoices((prev) => ({ ...prev, operation }))
+            setChoices((prev) => {
+              // the operation choices has some effects on the later steps
+              // better to reset everything when it changes.
+              if (operation !== prev.operation) {
+                return {
+                  ...initialChoices,
+                  operation,
+                }
+              }
+              return { ...prev, operation }
+            })
             incrementStepNumber()
           }}
         />
@@ -94,7 +111,7 @@ export function AccessesManagementPro() {
       )}
       {step === 'usersSelection' && (
         <ProUsersSelection
-          allowInvitation
+          allowInvitation={choices.operation !== 'remove'}
           onSubmit={({ selectedUserIds, emailsToInvite }) => {
             setChoices((prev) => ({
               ...prev,
