@@ -58,7 +58,7 @@ function BigNumber({ children }: { children: React.ReactNode }) {
   return <b className="text-2xl">{children}</b>
 }
 
-function buildAdditionalMessages(operation: MassManageOperation) {
+function buildAdditionalMessages(operation: MassManageOperation | null) {
   switch (operation) {
     case 'remove':
       return ["(s'ils y avaient accès)"]
@@ -74,5 +74,8 @@ function buildAdditionalMessages(operation: MassManageOperation) {
         "S'ils avaient un accès membre, ils seront promus.",
         "S'ils avait déjà un accès administrateur, cela ne changera rien.",
       ]
+    case null:
+      // should not happen at this stage
+      return []
   }
 }
