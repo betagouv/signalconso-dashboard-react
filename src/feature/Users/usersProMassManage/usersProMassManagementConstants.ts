@@ -7,6 +7,9 @@ export type MassManageOperation = (typeof massManageOperations)[number]
 export type MassManageChoices = {
   operation: MassManageOperation | null
   companiesIds: string[]
-  usersIds: string[]
-  emailsToInvite: string[]
+  users: {
+    usersIds: string[]
+    alreadyInvitedTokenIds: string[]
+    emailsToInvite: string[]
+  }
 }

@@ -11,17 +11,18 @@ export function MassManageConfirmation({
   choices: MassManageChoices
   onSubmit: () => void
 }) {
+  const users = choices.users
+  const usersNb =
+    users.usersIds.length +
+    users.alreadyInvitedTokenIds.length +
+    users.emailsToInvite.length
   return (
     <div>
       <div className="mx-auto w-fit">
         <div className="mb-8">
           <p className="mb-4">
             <span>
-              Les{' '}
-              <BigNumber>
-                {choices.usersIds.length + choices.emailsToInvite.length}
-              </BigNumber>{' '}
-              utilisateurs sélectionnés
+              Les <BigNumber>{usersNb}</BigNumber> utilisateurs sélectionnés
             </span>{' '}
             <span className="font-bold">
               {choices.operation === 'remove'
@@ -38,7 +39,7 @@ export function MassManageConfirmation({
           {buildAdditionalMessages(choices.operation).map((m) => (
             <p key={m}>{m}</p>
           ))}
-          {choices.emailsToInvite.length > 0 && (
+          {users.emailsToInvite.length > 0 && (
             <p>
               Ceux qui n'avaient pas encore de compte SignalConso recevront une
               invitation pour le créer.

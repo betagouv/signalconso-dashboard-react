@@ -26,8 +26,11 @@ export function AccessesManagementPro() {
   const initialChoices: MassManageChoices = {
     operation: null,
     companiesIds: [],
-    usersIds: [],
-    emailsToInvite: [],
+    users: {
+      usersIds: [],
+      alreadyInvitedTokenIds: [],
+      emailsToInvite: [],
+    },
   }
   const [choices, setChoices] = useState<MassManageChoices>(initialChoices)
   const [stepNumber, setStepNumber] = useState<number | undefined>(

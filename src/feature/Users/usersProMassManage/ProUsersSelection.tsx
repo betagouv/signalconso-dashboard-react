@@ -4,15 +4,24 @@ import { useConnectedContext } from 'core/context/connected/connectedContext'
 import { regexp } from 'core/helper/regexp'
 import { User } from 'core/model'
 import { useUsersOfProQuery } from 'core/queryhooks/accessesMassManagementQueryHooks'
-import { SetStateAction, useState } from 'react'
+import { SetStateAction } from 'react'
 import { Controller, useForm, UseFormReturn } from 'react-hook-form'
 import { CleanInvisiblePanel } from 'shared/Panel/simplePanels'
 import { ScDialog } from 'shared/ScDialog'
 import { NextButton, TinyButton } from './usersProMassManageTinyComponents'
 import { MassManageChoices } from './usersProMassManagementConstants'
+
+// This form allows to select 3 types :
+// - users already in DB
+// - people that have been invited by email already (i.e. pending tokens)
+// - additional emails addresses to be invited (added by the "Inviter" button)
+
 type FormShape = {
-  selected: { [id: string]: boolean }
+  selectedUsers: { [id: string]: boolean }
+  selectedAlreadyInvited: { [id: string]: boolean }
+  emailsToInvite: string[]
 }
+
 type Form = UseFormReturn<FormShape>
 
 type RowData =
@@ -27,6 +36,7 @@ type RowData =
 
 type OnSubmit = (_: {
   selectedUserIds: string[]
+  selectedAlreadyInvited: string[]
   emailsToInvite: string[]
 }) => void
 
@@ -69,25 +79,39 @@ function Loaded({
   choices: MassManageChoices
 }) {
   const { connectedUser } = useConnectedContext()
-  const [emailsToInvite, setEmailsToInvite] = useState<string[]>(
-    choices.emailsToInvite,
-  )
-  const allEmails = [...emailsToInvite, ...data.map((_) => _.email)]
   const form = useForm<FormShape>({
     defaultValues: {
-      selection: Object.fromEntries(
+      selectedUsers: Object.fromEntries(
         data.users
           .map((_) => _.id)
-          .map((id) => [id, choices.usersIds.includes(id)]),
+          .map((id) => [id, choices.users.usersIds.includes(id)]),
       ),
+      selectedAlreadyInvited: Object.fromEntries(
+        data.invitedByEmail
+          .map((_) => _.id)
+          .map((id) => [id, choices.users.alreadyInvitedTokenIds.includes(id)]),
+      ),
+      emailsToInvite: choices.users.emailsToInvite,
     },
   })
   const isAtLeastOneSelected =
-    emailsToInvite.length > 0 ||
-    Object.values(form.watch('selection')).some((_) => _)
-  const selectableIds = data
-    .filter((c) => !shouldBeDisabled(c, connectedUser))
-    .map((c) => c.id)
+    Object.values(form.watch('selectedUsers')).some((_) => _) ||
+    Object.values(form.watch('selectedAlreadyInvited')).some((_) => _) ||
+    form.watch('emailsToInvite').length > 0
+
+  function setAllSelectableTo(value: boolean) {
+    data.users
+      .filter((c) => !shouldBeDisabled(c, connectedUser))
+      .map((c) => c.id)
+      .forEach((id) => {
+        form.setValue(`selectedUsers.${id}`, value)
+      })
+    data.invitedByEmail
+      .map((_) => _.id)
+      .forEach((id) => {
+        form.setValue(`selectedAlreadyInvited.${id}`, value)
+      })
+  }
   return (
     <>
       <p className="mb-4">Sélectionnez un ou plusieurs utilisateurs :</p>
@@ -97,17 +121,13 @@ function Loaded({
             <TinyButton
               label="Sélectionner tous"
               onClick={() => {
-                selectableIds?.forEach((id) => {
-                  form.setValue(`selection.${id}`, true)
-                })
+                setAllSelectableTo(true)
               }}
             />
             <TinyButton
               label="Désélectionner tous"
               onClick={() => {
-                selectableIds?.forEach((id) => {
-                  form.setValue(`selection.${id}`, false)
-                })
+                setAllSelectableTo(false)
               }}
             />
           </div>
