@@ -111,7 +111,13 @@ function Loaded({
         })
       })}
     >
-      <p className="mb-4">Sélectionnez un ou plusieurs utilisateurs :</p>
+      <p className="">Sélectionnez un ou plusieurs utilisateurs :</p>
+      <p className="text-sm text-gray-500 mb-4">
+        Sont listés ci-dessous tous les utilisateurs avec lesquels vous avez au
+        moins une entreprise en commun.{' '}
+        {allowInvitation &&
+          'Pour ajouter quelqu\'un d\'autre, utilisez le bouton "Inviter".'}
+      </p>
       <div className="bg-gray-100 py-2 px-4 mb-4">
         <div className="flex gap-2 items-end justify-between mb-2">
           <div className="flex gap-2 h-fit">

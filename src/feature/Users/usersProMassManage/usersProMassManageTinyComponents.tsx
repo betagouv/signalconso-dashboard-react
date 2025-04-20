@@ -10,7 +10,7 @@ export function TinyButton({
   return (
     <Button
       size="small"
-      variant="outlined"
+      variant={'outlined'}
       className="!bg-white"
       {...{ onClick }}
     >
