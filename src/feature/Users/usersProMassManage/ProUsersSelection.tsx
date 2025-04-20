@@ -23,11 +23,7 @@ type FormShape = {
 
 type Form = UseFormReturn<FormShape>
 
-type OnSubmit = (_: {
-  selectedUserIds: string[]
-  selectedAlreadyInvited: string[]
-  emailsToInvite: string[]
-}) => void
+type OnSubmit = (_: MassManageChoices['users']) => void
 
 export function ProUsersSelection({
   choices,
@@ -105,10 +101,10 @@ function Loaded({
     <form
       onSubmit={form.handleSubmit((formValues) => {
         onSubmit({
-          selectedUserIds: Object.entries(formValues.users)
+          usersIds: Object.entries(formValues.users)
             .filter(([_, selected]) => selected)
             .map(([id]) => id),
-          selectedAlreadyInvited: Object.entries(formValues.invited)
+          alreadyInvitedTokenIds: Object.entries(formValues.invited)
             .filter(([_, selected]) => selected)
             .map(([id]) => id),
           emailsToInvite: formValues.emailsToInvite,

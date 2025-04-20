@@ -117,11 +117,10 @@ export function AccessesManagementPro() {
         <ProUsersSelection
           choices={choices}
           allowInvitation={choices.operation !== 'remove'}
-          onSubmit={({ selectedUserIds, emailsToInvite }) => {
+          onSubmit={(users) => {
             setChoices((prev) => ({
               ...prev,
-              usersIds: selectedUserIds,
-              emailsToInvite,
+              users,
             }))
             incrementStepNumber()
           }}
