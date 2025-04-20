@@ -28,7 +28,7 @@ export function AccessesManagementPro() {
   const wizard = useWizardState()
   return (
     <Page>
-      <PageTitle>Gestion des accès</PageTitle>
+      <PageTitle>Gestion des accès avancée</PageTitle>
       <div className="">
         {wizard.step === undefined && (
           <div className="max-w-4xl space-y-4">
