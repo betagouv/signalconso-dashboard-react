@@ -4,7 +4,6 @@ import { useConnectedContext } from 'core/context/connected/connectedContext'
 import { regexp } from 'core/helper/regexp'
 import { User } from 'core/model'
 import { useUsersOfProQuery } from 'core/queryhooks/accessesMassManagementQueryHooks'
-import { SetStateAction } from 'react'
 import { Controller, useForm, UseFormReturn } from 'react-hook-form'
 import { CleanInvisiblePanel } from 'shared/Panel/simplePanels'
 import { ScDialog } from 'shared/ScDialog'
@@ -17,22 +16,12 @@ import { MassManageChoices } from './usersProMassManagementConstants'
 // - additional emails addresses to be invited (added by the "Inviter" button)
 
 type FormShape = {
-  selectedUsers: { [id: string]: boolean }
-  selectedAlreadyInvited: { [id: string]: boolean }
+  users: { [id: string]: boolean }
+  invited: { [id: string]: boolean }
   emailsToInvite: string[]
 }
 
 type Form = UseFormReturn<FormShape>
-
-type RowData =
-  | {
-      kind: 'to_invite'
-      email: string
-    }
-  | {
-      kind: 'actual_user'
-      user: User
-    }
 
 type OnSubmit = (_: {
   selectedUserIds: string[]
@@ -81,12 +70,12 @@ function Loaded({
   const { connectedUser } = useConnectedContext()
   const form = useForm<FormShape>({
     defaultValues: {
-      selectedUsers: Object.fromEntries(
+      users: Object.fromEntries(
         data.users
           .map((_) => _.id)
           .map((id) => [id, choices.users.usersIds.includes(id)]),
       ),
-      selectedAlreadyInvited: Object.fromEntries(
+      invited: Object.fromEntries(
         data.invitedByEmail
           .map((_) => _.id)
           .map((id) => [id, choices.users.alreadyInvitedTokenIds.includes(id)]),
@@ -95,8 +84,8 @@ function Loaded({
     },
   })
   const isAtLeastOneSelected =
-    Object.values(form.watch('selectedUsers')).some((_) => _) ||
-    Object.values(form.watch('selectedAlreadyInvited')).some((_) => _) ||
+    Object.values(form.watch('users')).some((_) => _) ||
+    Object.values(form.watch('invited')).some((_) => _) ||
     form.watch('emailsToInvite').length > 0
 
   function setAllSelectableTo(value: boolean) {
@@ -104,12 +93,12 @@ function Loaded({
       .filter((c) => !shouldBeDisabled(c, connectedUser))
       .map((c) => c.id)
       .forEach((id) => {
-        form.setValue(`selectedUsers.${id}`, value)
+        form.setValue(`users.${id}`, value)
       })
     data.invitedByEmail
       .map((_) => _.id)
       .forEach((id) => {
-        form.setValue(`selectedAlreadyInvited.${id}`, value)
+        form.setValue(`invited.${id}`, value)
       })
   }
   return (
@@ -134,40 +123,35 @@ function Loaded({
           {allowInvitation && (
             <InviteButtonWithDialog
               onInvite={(email) => {
-                setEmailsToInvite((prev) => [email, ...prev])
+                form.setValue('emailsToInvite', [
+                  email,
+                  ...form.getValues('emailsToInvite'),
+                ])
               }}
-              isEmailAlreadyPresent={(email) => allEmails.includes(email)}
+              isEmailAlreadyPresent={(email) =>
+                form.watch('emailsToInvite').includes(email)
+              }
             />
           )}
         </div>
-        {emailsToInvite.map((email) => {
-          return (
-            <RowContent
-              key={email}
-              rowData={{ kind: 'to_invite', email }}
-              {...{ form, setUsersToInvite: setEmailsToInvite }}
-            />
-          )
+        {form.watch('emailsToInvite').map((email) => {
+          return <RowToInvite key={email} email={email} {...{ form }} />
         })}
-        {data.map((user) => {
-          return (
-            <RowContent
-              key={user.id}
-              rowData={{ kind: 'actual_user', user }}
-              {...{ form, setUsersToInvite: setEmailsToInvite }}
-            />
-          )
+        {data.users.map((user) => {
+          return <RowExistingUser key={user.id} user={user} {...{ form }} />
         })}
       </div>
       <NextButton
         disabled={!isAtLeastOneSelected}
-        onClick={form.handleSubmit(({ selection }) => {
-          const selectedUserIds = Object.entries(selection)
-            .filter(([_, selected]) => selected)
-            .map(([id]) => id)
+        onClick={form.handleSubmit((formValues) => {
           onSubmit({
-            selectedUserIds,
-            emailsToInvite: emailsToInvite,
+            selectedUserIds: Object.entries(formValues.users)
+              .filter(([_, selected]) => selected)
+              .map(([id]) => id),
+            selectedAlreadyInvited: Object.entries(formValues.invited)
+              .filter(([_, selected]) => selected)
+              .map(([id]) => id),
+            emailsToInvite: formValues.emailsToInvite,
           })
         })}
       />
@@ -175,81 +159,88 @@ function Loaded({
   )
 }
 
-function RowContent({
-  rowData,
-  form,
-  setUsersToInvite,
+function RowWrapper({
+  children,
+  disabled,
+  checkbox,
 }: {
-  rowData: RowData
-  form: Form
-  setUsersToInvite: React.Dispatch<SetStateAction<string[]>>
+  children: React.ReactNode
+  disabled: boolean
+  checkbox: React.ReactNode
 }) {
-  const { connectedUser } = useConnectedContext()
-  const disabled =
-    rowData.kind === 'actual_user'
-      ? shouldBeDisabled(rowData.user, connectedUser)
-      : false
   return (
     <div
       className={`border-t ${disabled ? 'bg-gray-100 border-gray-300 text-gray-500 border-x' : 'bg-white border-gray-400'} last:border-b-1 px-2 py-3`}
     >
       <div className="flex gap-2 items-center">
-        {rowData.kind === 'actual_user' ? (
-          <>
-            <div className={`mx-6 h-fit`}>
-              <Controller
-                control={form.control}
-                name={`selection.${rowData.user.id}`}
-                render={({ field: { onChange, onBlur, value, ref } }) => {
-                  return (
-                    <Checkbox
-                      className="!p-0 "
-                      disabled={disabled}
-                      checked={value}
-                      {...{ onBlur, onChange }}
-                      slotProps={{ input: { ref } }}
-                    />
-                  )
-                }}
-              />
-            </div>
-            <div className="flex flex-col gap-0 ">
-              <p>{rowData.user.email}</p>
-              <div className="text-sm">
-                {rowData.user.firstName} {rowData.user.lastName}
-              </div>
-            </div>
-            {disabled && (
-              <p className="text-sm text-right grow"> c'est vous !</p>
-            )}
-          </>
-        ) : (
-          <>
-            <div className={`mx-6 h-fit`}>
-              <Checkbox className="!p-0 " disabled checked />
-            </div>
-            <div>
-              <p>{rowData.email}</p>
-              <p className="text-sm italic">
-                Une invitation sera envoyée{' '}
-                <Button
-                  variant="text"
-                  onClick={() => {
-                    setUsersToInvite((prev) =>
-                      prev.filter((_) => _ !== rowData.email),
-                    )
-                  }}
-                  size="small"
-                  className="!py-0 !-mt-0.5"
-                >
-                  annuler
-                </Button>
-              </p>
-            </div>
-          </>
-        )}
+        <div className={`mx-6 h-fit`}>{checkbox}</div>
+        {children}
       </div>
     </div>
+  )
+}
+
+function RowToInvite({ email, form }: { email: string; form: Form }) {
+  return (
+    <RowWrapper
+      disabled={false}
+      checkbox={<Checkbox className="!p-0 " disabled checked />}
+    >
+      <div>
+        <p>{email}</p>
+        <p className="text-sm italic">
+          Une invitation sera envoyée{' '}
+          <Button
+            variant="text"
+            onClick={() => {
+              form.setValue(
+                'emailsToInvite',
+                form.getValues('emailsToInvite').filter((_) => _ !== email),
+              )
+            }}
+            size="small"
+            className="!py-0 !-mt-0.5"
+          >
+            annuler
+          </Button>
+        </p>
+      </div>
+    </RowWrapper>
+  )
+}
+
+function RowExistingUser({ user, form }: { user: User; form: Form }) {
+  const { connectedUser } = useConnectedContext()
+  const disabled = shouldBeDisabled(user, connectedUser)
+  return (
+    <RowWrapper
+      {...{ disabled }}
+      checkbox={
+        <Controller
+          control={form.control}
+          name={`users.${user.id}`}
+          render={({ field: { onChange, onBlur, value, ref } }) => {
+            return (
+              <Checkbox
+                className="!p-0 "
+                disabled={disabled}
+                checked={value}
+                {...{ onBlur, onChange }}
+                slotProps={{ input: { ref } }}
+              />
+            )
+          }}
+        />
+      }
+    >
+      <div className="flex flex-col gap-0 ">
+        <p>{user.email}</p>
+        <div className="text-sm">
+          {user.firstName} {user.lastName}
+        </div>
+      </div>
+      {disabled && <p className="text-sm text-right grow"> c'est vous !</p>}
+    </RowWrapper>
   )
 }
 
