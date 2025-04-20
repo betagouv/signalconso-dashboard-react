@@ -2,7 +2,7 @@ import { Button, Checkbox, TextField } from '@mui/material'
 import { AccessesMassManagementUsers } from 'core/client/accesses-mass-management/accessesMassManagement'
 import { useConnectedContext } from 'core/context/connected/connectedContext'
 import { regexp } from 'core/helper/regexp'
-import { User } from 'core/model'
+import { CompanyAccessTokenWithEmail, User } from 'core/model'
 import { useUsersOfProQuery } from 'core/queryhooks/accessesMassManagementQueryHooks'
 import { Controller, useForm, UseFormReturn } from 'react-hook-form'
 import { CleanInvisiblePanel } from 'shared/Panel/simplePanels'
@@ -102,7 +102,19 @@ function Loaded({
       })
   }
   return (
-    <>
+    <form
+      onSubmit={form.handleSubmit((formValues) => {
+        onSubmit({
+          selectedUserIds: Object.entries(formValues.users)
+            .filter(([_, selected]) => selected)
+            .map(([id]) => id),
+          selectedAlreadyInvited: Object.entries(formValues.invited)
+            .filter(([_, selected]) => selected)
+            .map(([id]) => id),
+          emailsToInvite: formValues.emailsToInvite,
+        })
+      })}
+    >
       <p className="mb-4">Sélectionnez un ou plusieurs utilisateurs :</p>
       <div className="bg-gray-100 py-2 px-4 mb-4">
         <div className="flex gap-2 items-end justify-between mb-2">
@@ -137,25 +149,15 @@ function Loaded({
         {form.watch('emailsToInvite').map((email) => {
           return <RowToInvite key={email} email={email} {...{ form }} />
         })}
+        {data.invitedByEmail.map((token) => {
+          return <RowInvited key={token.id} token={token} {...{ form }} />
+        })}
         {data.users.map((user) => {
           return <RowExistingUser key={user.id} user={user} {...{ form }} />
         })}
       </div>
-      <NextButton
-        disabled={!isAtLeastOneSelected}
-        onClick={form.handleSubmit((formValues) => {
-          onSubmit({
-            selectedUserIds: Object.entries(formValues.users)
-              .filter(([_, selected]) => selected)
-              .map(([id]) => id),
-            selectedAlreadyInvited: Object.entries(formValues.invited)
-              .filter(([_, selected]) => selected)
-              .map(([id]) => id),
-            emailsToInvite: formValues.emailsToInvite,
-          })
-        })}
-      />
-    </>
+      <NextButton disabled={!isAtLeastOneSelected} />
+    </form>
   )
 }
 
@@ -235,11 +237,46 @@ function RowExistingUser({ user, form }: { user: User; form: Form }) {
     >
       <div className="flex flex-col gap-0 ">
         <p>{user.email}</p>
-        <div className="text-sm">
+        <div className="text-sm font-bold">
           {user.firstName} {user.lastName}
         </div>
       </div>
       {disabled && <p className="text-sm text-right grow"> c'est vous !</p>}
+    </RowWrapper>
+  )
+}
+
+function RowInvited({
+  token,
+  form,
+}: {
+  token: CompanyAccessTokenWithEmail
+  form: Form
+}) {
+  return (
+    <RowWrapper
+      disabled={false}
+      checkbox={
+        <Controller
+          control={form.control}
+          name={`invited.${token.id}`}
+          render={({ field: { onChange, onBlur, value, ref } }) => {
+            return (
+              <Checkbox
+                className="!p-0 "
+                checked={value}
+                {...{ onBlur, onChange }}
+                slotProps={{ input: { ref } }}
+              />
+            )
+          }}
+        />
+      }
+    >
+      <div className="flex flex-col gap-0 ">
+        <p>{token.emailedTo}</p>
+        <div className="text-sm italic">Invitation envoyée</div>
+      </div>
     </RowWrapper>
   )
 }

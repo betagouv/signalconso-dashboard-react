@@ -34,7 +34,7 @@ export function AccessesManagementPro() {
   }
   const [choices, setChoices] = useState<MassManageChoices>(initialChoices)
   const [stepNumber, setStepNumber] = useState<number | undefined>(
-    config.isManuDev ? 0 : undefined,
+    config.isManuDev ? 2 : undefined,
   )
   const step = stepNumber !== undefined ? steps[stepNumber] : undefined
   function incrementStepNumber() {
