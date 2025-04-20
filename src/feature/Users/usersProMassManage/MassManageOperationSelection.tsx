@@ -9,7 +9,7 @@ import {
 } from './usersProMassManagementConstants'
 import { NextButton } from './usersProMassManageTinyComponents'
 
-type OnSubmit = (_: { operation: MassManageOperation }) => void
+type OnSubmit = (operation: MassManageOperation) => void
 
 export function MassManageOperationSelection({
   choices,
@@ -23,7 +23,11 @@ export function MassManageOperationSelection({
   })
   return (
     <CleanInvisiblePanel>
-      <form onSubmit={form.handleSubmit(onSubmit)}>
+      <form
+        onSubmit={form.handleSubmit((formContent) =>
+          onSubmit(formContent.operation),
+        )}
+      >
         <p className="mb-2">Que voulez-vous faire ?</p>
         <RadioGroup
           aria-labelledby="demo-radio-buttons-group-label"

@@ -16,7 +16,7 @@ type FormShape = {
 }
 type Form = UseFormReturn<FormShape>
 
-type OnSubmit = (_: { selectedCompaniesIds: string[] }) => void
+type OnSubmit = (selectedCompaniesIds: string[]) => void
 
 export function ProCompaniesSelection({
   choices,
@@ -98,11 +98,11 @@ function Loaded({
       <NextButton
         disabled={!isAtLeastOneSelected}
         onClick={form.handleSubmit(({ selection }) => {
-          onSubmit({
-            selectedCompaniesIds: Object.entries(selection)
+          onSubmit(
+            Object.entries(selection)
               .filter(([_, selected]) => selected)
               .map(([id]) => id),
-          })
+          )
         })}
       />
     </>
