@@ -23,6 +23,7 @@ export enum Category {
   DemarchesAdministratives = 'DemarchesAdministratives',
   VoitureVehiculeVelo = 'VoitureVehiculeVelo',
   DemarchageAbusif = 'DemarchageAbusif',
+  RecouvrementAmiable = 'RecouvrementAmiable',
 }
 
 export interface CategoriesByStatus {

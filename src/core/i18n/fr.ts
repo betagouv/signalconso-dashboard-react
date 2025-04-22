@@ -47,6 +47,7 @@ export const fr = {
       [Category.DemarchesAdministratives]: 'Démarches administratives',
       [Category.VoitureVehiculeVelo]: 'Voiture / Véhicule / Vélo',
       [Category.DemarchageAbusif]: 'Démarchage abusif',
+      [Category.RecouvrementAmiable]: 'Recouvrement amiable de créance',
     },
     ReportTypeDesc: {
       [ReportType.Both]: 'Sites internet et établissements physiques',
