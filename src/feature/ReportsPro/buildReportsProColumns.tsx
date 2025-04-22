@@ -89,7 +89,9 @@ export const buildReportsProColumns = ({
                 <div className="flex justify-between gap-2">
                   <div>
                     {_.report.companyName && (
-                      <p className="">{_.report.companyName}</p>
+                      <p className="max-w-56 truncate">
+                        {_.report.companyName}
+                      </p>
                     )}
                     <p className="text-sm text-gray-500">
                       {_.report.companySiret}
@@ -97,7 +99,7 @@ export const buildReportsProColumns = ({
                   </div>
                   <div className="text-right">
                     <p>{m.thisDate(formatDate(_.report.creationDate))}</p>
-                    <Txt block color="hint">
+                    <Txt block truncate color="hint" maxWidth="8rem">
                       {_.report.contactAgreement &&
                       _.report.firstName &&
                       _.report.lastName
@@ -143,7 +145,9 @@ export const buildReportsProColumns = ({
                 <div className="flex justify-between gap-2">
                   <div>
                     {_.report.companyName && (
-                      <p className="">{_.report.companyName}</p>
+                      <p className="max-w-56 truncate">
+                        {_.report.companyName}
+                      </p>
                     )}
                     <p className="text-sm text-gray-500">
                       {_.report.companySiret}
@@ -151,7 +155,7 @@ export const buildReportsProColumns = ({
                   </div>
                   <div className="text-right">
                     <p>{m.thisDate(formatDate(_.report.creationDate))}</p>
-                    <Txt block color="hint">
+                    <Txt block truncate color="hint" maxWidth="8rem">
                       {_.report.contactAgreement &&
                       _.report.firstName &&
                       _.report.lastName
