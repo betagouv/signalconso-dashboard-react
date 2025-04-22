@@ -19,6 +19,7 @@ import { Paginate, PaginatedFilters } from '../../core/model'
 import { UseQueryPaginateResult } from '../../core/queryhooks/UseQueryPaginate'
 import { UserNameLabel } from '../../shared/UserNameLabel'
 import { CheckboxColumn, CheckboxColumnHead } from '../Reports/reportsColumns'
+import { ProResponseLabel } from '../../shared/ProResponseLabel'
 
 interface ReportTableColumnsParams {
   _reports: UseQueryPaginateResult<
@@ -70,37 +71,131 @@ export const buildReportsProColumns = ({
     ),
   }
   if (isMdOrLower) {
-    return [
-      ...(includeCheckboxColumn ? [checkboxColumn] : []),
-      {
-        id: 'all',
-        head: '',
-        render: (_: ReportSearchResult) => (
-          <div className="py-2 flex flex-col gap-2">
-            <div className="flex justify-between">
-              <ReportStatusLabel dense status={_.report.status} />
-              <SeeReportButton report={_} />
-            </div>
-            <div className="flex justify-between gap-2">
-              <div>
-                {_.report.companyName && (
-                  <p className="">{_.report.companyName}</p>
-                )}
-                <p className="text-sm text-gray-500">{_.report.companySiret}</p>
+    return reportType === 'open'
+      ? [
+          ...(includeCheckboxColumn ? [checkboxColumn] : []),
+          {
+            id: 'all',
+            head: '',
+            render: (_: ReportSearchResult) => (
+              <div className="py-2 flex flex-col gap-2">
+                <div className="flex justify-between">
+                  <span>
+                    <ReportStatusLabel dense status={_.report.status} /> avant
+                    le {formatDate(_.report.expirationDate)}
+                  </span>
+                  <SeeReportButton report={_} />
+                </div>
+                <div className="flex justify-between gap-2">
+                  <div>
+                    {_.report.companyName && (
+                      <p className="max-w-56 truncate">
+                        {_.report.companyName}
+                      </p>
+                    )}
+                    <p className="text-sm text-gray-500">
+                      {_.report.companySiret}
+                    </p>
+                  </div>
+                  <div className="text-right">
+                    <p>{m.thisDate(formatDate(_.report.creationDate))}</p>
+                    <Txt block truncate color="hint" maxWidth="8rem">
+                      {_.report.contactAgreement &&
+                      _.report.firstName &&
+                      _.report.lastName
+                        ? m.byHim(_.report.firstName + ' ' + _.report.lastName)
+                        : m.anonymousReport}
+                    </Txt>
+                  </div>
+                </div>
+                <div className="flex justify-between mr-2 mt-2">
+                  {_.assignedUser ? (
+                    <span>
+                      Affecté à{' '}
+                      {_.assignedUser.firstName + ' ' + _.assignedUser.lastName}
+                    </span>
+                  ) : (
+                    <span>Non assigné</span>
+                  )}
+                  {_.files.length > 0 && (
+                    <div>
+                      <Badge badgeContent={_.files.length} color="primary">
+                        <Icon>insert_drive_file</Icon>
+                      </Badge>
+                    </div>
+                  )}
+                </div>
               </div>
-              <div className="text-right">
-                <p>{m.thisDate(formatDate(_.report.creationDate))}</p>
-                <Txt block color="hint">
-                  {_.report.contactAgreement
-                    ? m.byHim(_.report.firstName + ' ' + _.report.lastName)
-                    : m.anonymousReport}
-                </Txt>
+            ),
+          },
+        ]
+      : [
+          ...(includeCheckboxColumn ? [checkboxColumn] : []),
+          {
+            id: 'all',
+            head: '',
+            render: (_: ReportSearchResult) => (
+              <div className="py-2 flex flex-col gap-2">
+                <div className="flex justify-between">
+                  <span>
+                    <CloseLabelMobile report={_} />
+                  </span>
+                  <SeeReportButton report={_} />
+                </div>
+                <div className="flex justify-between gap-2">
+                  <div>
+                    {_.report.companyName && (
+                      <p className="max-w-56 truncate">
+                        {_.report.companyName}
+                      </p>
+                    )}
+                    <p className="text-sm text-gray-500">
+                      {_.report.companySiret}
+                    </p>
+                  </div>
+                  <div className="text-right">
+                    <p>{m.thisDate(formatDate(_.report.creationDate))}</p>
+                    <Txt block truncate color="hint" maxWidth="8rem">
+                      {_.report.contactAgreement &&
+                      _.report.firstName &&
+                      _.report.lastName
+                        ? m.byHim(_.report.firstName + ' ' + _.report.lastName)
+                        : m.anonymousReport}
+                    </Txt>
+                  </div>
+                </div>
+                <div className="flex justify-between">
+                  <div>
+                    <div className="flex justify-between mr-2 mt-2">
+                      {_.assignedUser ? (
+                        <span>
+                          Affecté à{' '}
+                          {_.assignedUser.firstName +
+                            ' ' +
+                            _.assignedUser.lastName}
+                        </span>
+                      ) : (
+                        <span>Non assigné</span>
+                      )}
+                    </div>
+                    {_.professionalResponse?.user && (
+                      <div>
+                        Traité par{' '}
+                        {_.professionalResponse?.user?.firstName +
+                          ' ' +
+                          _.professionalResponse?.user?.lastName}
+                      </div>
+                    )}
+                  </div>
+                  <ConsumerReviewLabels
+                    {...{ report: _ }}
+                    detailsTooltip={false}
+                  />
+                </div>
               </div>
-            </div>
-          </div>
-        ),
-      },
-    ]
+            ),
+          },
+        ]
   }
 
   const baseColumns = [
@@ -237,7 +332,7 @@ const MUILinkComponent = React.forwardRef<
       component="a"
       ref={ref}
       variant="text"
-      className="!normal-case"
+      className="!normal-case !p-0"
       endIcon={<Icon>visibility</Icon>}
       {...props}
     >
@@ -259,4 +354,14 @@ function SeeReportButton({ report }: { report: ReportSearchResult }) {
       params={{ reportId: report.report.id }}
     />
   )
+}
+
+function CloseLabelMobile({ report }: { report: ReportSearchResult }) {
+  const details = report.professionalResponse?.event.details
+
+  if (details && !('description' in details)) {
+    return <ProResponseLabel proResponse={details.responseType} />
+  }
+
+  return <ReportStatusLabel dense status={report.report.status} />
 }
