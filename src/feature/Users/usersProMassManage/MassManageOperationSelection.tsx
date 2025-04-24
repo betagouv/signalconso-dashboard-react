@@ -67,7 +67,7 @@ export function MassManageOperationSelection({
 function Label({ operation }: { operation: MassManageOperation }) {
   const { title, desc } = (() => {
     switch (operation) {
-      case 'set_admin':
+      case 'SetAdmin':
         return {
           title: "Définir en tant qu'administrateur",
           desc: [
@@ -79,7 +79,7 @@ function Label({ operation }: { operation: MassManageOperation }) {
             'S\'ils étaient déjà "membres", ils monteront au niveau "administrateur".',
           ],
         }
-      case 'set_member':
+      case 'SetMember':
         return {
           title: 'Définir en tant que membre',
           desc: [
@@ -89,7 +89,7 @@ function Label({ operation }: { operation: MassManageOperation }) {
             'S\'ils étaient déjà "administrateurs", ils redescendront au niveau "membre".',
           ],
         }
-      case 'remove':
+      case 'Remove':
         return {
           title: 'Retirer des accès',
           desc: ['Les utilisateurs ne pourront plus accéder à ces entreprises'],

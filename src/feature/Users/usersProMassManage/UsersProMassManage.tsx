@@ -79,7 +79,7 @@ export function AccessesManagementPro() {
             return (
               <ProUsersSelection
                 choices={wizard.choices}
-                allowInvitation={wizard.choices.operation !== 'remove'}
+                allowInvitation={wizard.choices.operation !== 'Remove'}
                 onSubmit={wizard.handleStep2}
               />
             )

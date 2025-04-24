@@ -25,9 +25,9 @@ export function MassManageConfirmation({
               Les <BigNumber>{usersNb}</BigNumber> utilisateurs sélectionnés
             </span>{' '}
             <span className="font-bold">
-              {choices.operation === 'remove'
+              {choices.operation === 'Remove'
                 ? 'vont perdre leur accès'
-                : choices.operation === 'set_member'
+                : choices.operation === 'SetMember'
                   ? 'vont être ajoutés en tant que membres'
                   : "vont être ajoutés en tant qu'administrateurs"}
             </span>{' '}
@@ -61,15 +61,15 @@ function BigNumber({ children }: { children: React.ReactNode }) {
 
 function buildAdditionalMessages(operation: MassManageOperation | null) {
   switch (operation) {
-    case 'remove':
+    case 'Remove':
       return ["(s'ils y avaient accès)"]
-    case 'set_member':
+    case 'SetMember':
       return [
         'Ils pourront consulter et répondre aux signalements de ces entreprises, mais ne pourront pas ajouter ou supprimer des utilisateurs.',
         "S'ils avaient un accès administrateur, ils seront rétrogradés.",
         "S'ils avait déjà un accès membre, cela ne changera rien.",
       ]
-    case 'set_admin':
+    case 'SetAdmin':
       return [
         'Ils pourront consulter et répondre aux signalements de ces entreprises, et ajouter ou supprimer des utilisateurs.',
         "S'ils avaient un accès membre, ils seront promus.",
