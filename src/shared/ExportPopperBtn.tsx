@@ -139,8 +139,8 @@ const ExportPopperBtn = ({
             <Alert id="action-info" dense type="info" className={'mt-2'}>
               <p>
                 L'export est limité à {maxElement} entrées. Pour exporter plus
-                d'éléments, réduisez le nombre de signalements en utilisant les
-                filtres.
+                d'éléments, utilisez les filtres pour réduire le nombre
+                d'éléments et faire plusieurs exports distincts.
               </p>
             </Alert>
           )}
