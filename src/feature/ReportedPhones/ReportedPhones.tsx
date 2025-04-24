@@ -12,6 +12,7 @@ import { Page, PageTitle } from '../../shared/Page'
 import { PeriodPicker } from '../../shared/PeriodPicker'
 import { ScInput } from '../../shared/ScInput'
 import { config } from '../../conf/config'
+import { ScOption } from '../../core/helper/ScOption'
 
 export const ReportedPhones = () => {
   const _reportedPhone = useReportedPhonesSearchQuery()
@@ -84,6 +85,9 @@ export const ReportedPhones = () => {
               <ExportPhonesPopper
                 maxElement={config.reportsLimitForExport}
                 filters={_reportedPhone.filters}
+                disabled={ScOption.from(_reportedPhone?.result.data?.totalCount)
+                  .map((_) => _ > config.reportsLimitForExport)
+                  .getOrElse(false)}
               >
                 <IconBtn color="primary">
                   <Icon>file_download</Icon>
