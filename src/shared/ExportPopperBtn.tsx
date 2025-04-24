@@ -135,13 +135,15 @@ const ExportPopperBtn = ({
             Vous pouvez exporter les éléments de la liste ci-dessous en cliquant
             sur "GÉNÉRER UN NOUVEL EXPORT"
           </p>
-          <Alert id="action-info" dense type="info" className={'mt-2'}>
-            <p>
-              L'export est limité à {maxElement} entrées. Pour importer plus
-              d'éléments, réduisez le nombre de signalements en utilisant les
-              filtres.
-            </p>
-          </Alert>
+          {disabled && (
+            <Alert id="action-info" dense type="info" className={'mt-2'}>
+              <p>
+                L'export est limité à {maxElement} entrées. Pour exporter plus
+                d'éléments, réduisez le nombre de signalements en utilisant les
+                filtres.
+              </p>
+            </Alert>
+          )}
         </div>
         <Box sx={{ pt: 0, pr: 2, pb: 2, pl: 2 }}>
           <Tooltip title={tooltipBtnNew ?? ''}>
