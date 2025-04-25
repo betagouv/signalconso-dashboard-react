@@ -1,9 +1,9 @@
-import { Icon } from '@mui/material'
+import { Icon, Tooltip } from '@mui/material'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useEffect } from 'react'
 import { CleanDiscreetPanel } from 'shared/Panel/simplePanels'
 import { ReportBlockTitle } from 'shared/ReportBlockTitle'
-import { Btn } from '../../alexlibs/mui-extension'
+import { Btn, IconBtn } from '../../alexlibs/mui-extension'
 import { useApiContext } from '../../core/context/ApiContext'
 import { useConnectedContext } from '../../core/context/connected/connectedContext'
 import { Id } from '../../core/model'
@@ -77,6 +77,17 @@ export const ReportAlbert = ({ id }: { id: Id }) => {
             Résumé du signalement
           </ReportBlockTitle>
           <BetaTag />
+          {_getAlbert.data && connectedUser.isAdmin && (
+            <Tooltip title="Régénérer">
+              <IconBtn
+                color="primary"
+                loading={_classify.isPending}
+                onClick={() => _classify.mutate(id)}
+              >
+                <Icon>replay</Icon>
+              </IconBtn>
+            </Tooltip>
+          )}
         </div>
         {_getAlbert.data && (
           <>
