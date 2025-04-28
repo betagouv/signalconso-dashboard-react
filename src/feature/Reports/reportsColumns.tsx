@@ -10,12 +10,13 @@ import {
   ReportSearchResult,
 } from 'core/model'
 import { UseQueryPaginateResult } from 'core/queryhooks/UseQueryPaginate'
-import { Fender, IconBtn, Txt } from '../../alexlibs/mui-extension'
+import { Fender, Txt } from '../../alexlibs/mui-extension'
 import { EntityIcon } from '../../core/EntityIcon'
 import { textOverflowMiddleCropping } from '../../core/helper'
 import { useI18n } from '../../core/i18n'
 import { ScButton } from '../../shared/Button'
 import { CompanyNameDetails } from './CompanyNameDetails'
+import { IconBtnLink } from '../../alexlibs/mui-extension/IconBtnLink'
 
 type ColumnProps = { r: ReportSearchResult }
 
@@ -188,14 +189,14 @@ export function FilesColumn({ r }: ColumnProps) {
 
 export function ActionsColumn({ r }: ColumnProps) {
   return (
-    <Link
+    <IconBtnLink
+      color="primary"
       to="/suivi-des-signalements/report/$reportId"
       params={{ reportId: r.report.id }}
+      aria-label="Voir le signalement"
     >
-      <IconBtn color="primary">
-        <Icon>chevron_right</Icon>
-      </IconBtn>
-    </Link>
+      <Icon>chevron_right</Icon>
+    </IconBtnLink>
   )
 }
 

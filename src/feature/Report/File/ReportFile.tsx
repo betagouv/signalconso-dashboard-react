@@ -104,14 +104,13 @@ export const ReportFile = ({
             PaperProps={{ style: { overflow: 'visible', maxHeight: '90vh' } }}
             maxWidth="md"
             cancelLabel={m.close}
-            content={(_) => (
-              <Box component="img" src={fileUrl} alt={file.filename} />
-            )}
+            content={(_) => <img src={fileUrl} alt={file.filename} />}
           >
             <div className="flex items-center justify-center bg-cover h-full w-full">
-              <div
+              <img
                 className={`absolute inset-0 bg-cover`}
-                style={{ backgroundImage: `url(${fileUrl})` }}
+                src={fileUrl}
+                alt={`Miniature de l'image ${file.filename}`}
               />
               <Icon className="m-100" sx={css.imgImage}>
                 image
