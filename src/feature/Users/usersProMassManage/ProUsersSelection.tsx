@@ -19,7 +19,8 @@ import {
 
 type FormShape = {
   users: { [id: string]: boolean }
-  alreadyInvitedEmails: { [id: string]: boolean }
+  // the emails can contain dots, which messes with react-hook-form, so we use base64
+  alreadyInvitedEmails: { [emailBase64: string]: boolean }
   emailsToInvite: string[]
 }
 
@@ -75,7 +76,7 @@ function Loaded({
       ),
       alreadyInvitedEmails: Object.fromEntries(
         data.invitedEmails.map((email) => [
-          email,
+          btoa(email),
           choices.users.alreadyInvitedEmails.includes(email),
         ]),
       ),
@@ -95,7 +96,7 @@ function Loaded({
         form.setValue(`users.${id}`, value)
       })
     data.invitedEmails.forEach((email) => {
-      form.setValue(`alreadyInvitedEmails.${email}`, value)
+      form.setValue(`alreadyInvitedEmails.${btoa(email)}`, value)
     })
   }
   return (
@@ -107,7 +108,7 @@ function Loaded({
             .map(([id]) => id),
           alreadyInvitedEmails: Object.entries(formValues.alreadyInvitedEmails)
             .filter(([_, selected]) => selected)
-            .map(([email]) => email),
+            .map(([email]) => atob(email)),
           emailsToInvite: formValues.emailsToInvite,
         })
       })}
@@ -256,7 +257,7 @@ function RowInvited({ email, form }: { email: string; form: Form }) {
       checkbox={
         <Controller
           control={form.control}
-          name={`alreadyInvitedEmails.${email}`}
+          name={`alreadyInvitedEmails.${btoa(email)}`}
           render={({ field: { onChange, onBlur, value, ref } }) => {
             return (
               <Checkbox
