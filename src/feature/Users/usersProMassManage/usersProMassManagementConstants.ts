@@ -1,4 +1,3 @@
-import { CompanyAccessTokenWithEmail } from 'core/client/company-access-token/CompanyAccessToken'
 import { User } from 'core/model'
 
 export const massManageOperations = ['Remove', 'SetMember', 'SetAdmin'] as const
@@ -14,5 +13,5 @@ export type MassManageInputs = {
 }
 export type MassManagementUsers = {
   users: User[]
-  invitedByEmail: CompanyAccessTokenWithEmail[]
+  invitedEmails: string[]
 }

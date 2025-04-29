@@ -1,14 +1,16 @@
 import { Button, Checkbox, TextField } from '@mui/material'
-import { AccessesMassManagementUsers } from 'core/client/accesses-mass-management/accessesMassManagement'
 import { useConnectedContext } from 'core/context/connected/connectedContext'
 import { regexp } from 'core/helper/regexp'
-import { CompanyAccessTokenWithEmail, User } from 'core/model'
+import { User } from 'core/model'
 import { useUsersOfProQuery } from 'core/queryhooks/accessesMassManagementQueryHooks'
 import { Controller, useForm, UseFormReturn } from 'react-hook-form'
 import { CleanInvisiblePanel } from 'shared/Panel/simplePanels'
 import { ScDialog } from 'shared/ScDialog'
 import { NextButton, TinyButton } from './usersProMassManageTinyComponents'
-import { MassManageInputs } from './usersProMassManagementConstants'
+import {
+  MassManageInputs,
+  MassManagementUsers,
+} from './usersProMassManagementConstants'
 
 // This form allows to select 3 types :
 // - users already in DB
@@ -17,7 +19,7 @@ import { MassManageInputs } from './usersProMassManagementConstants'
 
 type FormShape = {
   users: { [id: string]: boolean }
-  invited: { [id: string]: boolean }
+  alreadyInvitedEmails: { [id: string]: boolean }
   emailsToInvite: string[]
 }
 
@@ -58,7 +60,7 @@ function Loaded({
   onSubmit,
   choices,
 }: {
-  data: AccessesMassManagementUsers
+  data: MassManagementUsers
   allowInvitation: boolean
   onSubmit: OnSubmit
   choices: MassManageInputs
@@ -71,17 +73,18 @@ function Loaded({
           .map((_) => _.id)
           .map((id) => [id, choices.users.usersIds.includes(id)]),
       ),
-      invited: Object.fromEntries(
-        data.invitedByEmail
-          .map((_) => _.id)
-          .map((id) => [id, choices.users.alreadyInvitedEmails.includes(id)]),
+      alreadyInvitedEmails: Object.fromEntries(
+        data.invitedEmails.map((email) => [
+          email,
+          choices.users.alreadyInvitedEmails.includes(email),
+        ]),
       ),
       emailsToInvite: choices.users.emailsToInvite,
     },
   })
   const isAtLeastOneSelected =
     Object.values(form.watch('users')).some((_) => _) ||
-    Object.values(form.watch('invited')).some((_) => _) ||
+    Object.values(form.watch('alreadyInvitedEmails')).some((_) => _) ||
     form.watch('emailsToInvite').length > 0
 
   function setAllSelectableTo(value: boolean) {
@@ -91,11 +94,9 @@ function Loaded({
       .forEach((id) => {
         form.setValue(`users.${id}`, value)
       })
-    data.invitedByEmail
-      .map((_) => _.id)
-      .forEach((id) => {
-        form.setValue(`invited.${id}`, value)
-      })
+    data.invitedEmails.forEach((email) => {
+      form.setValue(`alreadyInvitedEmails.${email}`, value)
+    })
   }
   return (
     <form
@@ -104,9 +105,9 @@ function Loaded({
           usersIds: Object.entries(formValues.users)
             .filter(([_, selected]) => selected)
             .map(([id]) => id),
-          alreadyInvitedEmails: Object.entries(formValues.invited)
+          alreadyInvitedEmails: Object.entries(formValues.alreadyInvitedEmails)
             .filter(([_, selected]) => selected)
-            .map(([id]) => id),
+            .map(([email]) => email),
           emailsToInvite: formValues.emailsToInvite,
         })
       })}
@@ -151,8 +152,8 @@ function Loaded({
         {form.watch('emailsToInvite').map((email) => {
           return <RowToInvite key={email} email={email} {...{ form }} />
         })}
-        {data.invitedByEmail.map((token) => {
-          return <RowInvited key={token.id} token={token} {...{ form }} />
+        {data.invitedEmails.map((email) => {
+          return <RowInvited key={email} email={email} {...{ form }} />
         })}
         {data.users.map((user) => {
           return <RowExistingUser key={user.id} user={user} {...{ form }} />
@@ -248,20 +249,14 @@ function RowExistingUser({ user, form }: { user: User; form: Form }) {
   )
 }
 
-function RowInvited({
-  token,
-  form,
-}: {
-  token: CompanyAccessTokenWithEmail
-  form: Form
-}) {
+function RowInvited({ email, form }: { email: string; form: Form }) {
   return (
     <RowWrapper
       disabled={false}
       checkbox={
         <Controller
           control={form.control}
-          name={`invited.${token.id}`}
+          name={`alreadyInvitedEmails.${email}`}
           render={({ field: { onChange, onBlur, value, ref } }) => {
             return (
               <Checkbox
@@ -276,7 +271,7 @@ function RowInvited({
       }
     >
       <div className="flex flex-col gap-0 ">
-        <p>{token.emailedTo}</p>
+        <p>{email}</p>
         <div className="text-sm italic">Invitation envoyée</div>
       </div>
     </RowWrapper>
