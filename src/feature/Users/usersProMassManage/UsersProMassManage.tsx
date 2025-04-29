@@ -2,6 +2,7 @@ import { Button, Icon } from '@mui/material'
 import { useMutation } from '@tanstack/react-query'
 import { useApiContext } from 'core/context/ApiContext'
 import { useState } from 'react'
+import { DsfrAlert } from 'shared/DsfrAlert'
 import { DsfrStepper } from 'shared/DsfrStepper'
 import { Page, PageTitle } from 'shared/Page'
 import { MassManageConfirmation } from './MassManageConfirmation'
@@ -96,7 +97,16 @@ export function AccessesManagementPro() {
               />
             )
           case 'success':
-            return <div>Success !</div>
+            return (
+              <div className="max-w-4xl mt-4 space-y-4">
+                <DsfrAlert title="Modification effectuée" type="success">
+                  La modification des droits d'accès a été faite avec succès.
+                </DsfrAlert>
+                <Button variant="contained" onClick={wizard.reset}>
+                  Retourner au début
+                </Button>
+              </div>
+            )
           default:
             return wizard.step satisfies never
         }
@@ -131,6 +141,10 @@ function useWizardState() {
   }
   function resetChoices() {
     setChoices(initialChoices)
+  }
+  function reset() {
+    resetChoices()
+    setStepNumber(undefined)
   }
   function start() {
     resetChoices()
@@ -167,6 +181,7 @@ function useWizardState() {
     choices,
     decrementStepNumber,
     start,
+    reset,
     handleStep0,
     handleStep1,
     handleStep2,
