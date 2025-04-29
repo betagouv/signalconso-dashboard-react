@@ -20,7 +20,7 @@ export class AccessesMassManagementClient {
 
   readonly massManage = (inputs: MassManageInputs) => {
     return this.client.post<void>(`/accesses-mass-management/manage`, {
-      body: { inputs },
+      body: inputs,
     })
   }
 }
