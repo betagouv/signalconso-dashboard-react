@@ -1,4 +1,5 @@
 import {
+  Button,
   Icon,
   ListItemIcon,
   ListItemText,
@@ -196,15 +197,24 @@ function CompanyAccessesLoaded({
             </p>
           )}
         </div>
-
-        <div className="flex gap-2 shrink-0">
-          {canManageUsers && (
+      </div>
+      <div className="flex ml-auto gap-2 items-end justify-end mb-2">
+        {canManageUsers && (
+          <>
+            <Button
+              variant="text"
+              startIcon={<Icon>people</Icon>}
+              href={'/gestion-des-acces'}
+              component={Link}
+            >
+              Gestion des droits avancée
+            </Button>
             <CompanyAccessCreateBtn
               loading={_sendInvitation.isPending}
               onCreate={inviteNewUser}
             />
-          )}
-        </div>
+          </>
+        )}
       </div>
       <Datatable
         id="companyaccesses"
