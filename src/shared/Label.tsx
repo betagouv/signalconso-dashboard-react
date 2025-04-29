@@ -1,10 +1,17 @@
 import * as React from 'react'
-import { CSSProperties, ReactNode } from 'react'
-import { Paper, PaperProps, Theme, useTheme } from '@mui/material'
+import { CSSProperties, forwardRef, ReactNode, Ref } from 'react'
+import {
+  Box,
+  BoxProps,
+  Paper,
+  PaperProps,
+  Theme,
+  useTheme,
+} from '@mui/material'
 import { alpha } from '@mui/material/styles'
 import { styleUtils } from '../core/theme'
 
-export interface LabelProps extends PaperProps {
+export interface LabelProps extends BoxProps {
   children: ReactNode
   fullWidth?: boolean
   dense?: boolean
@@ -34,49 +41,48 @@ const colors = (t: Theme) => ({
   },
 })
 
-export const Label = ({
-  children,
-  sx,
-  fullWidth,
-  dense,
-  inSelectOptions,
-  ...props
-}: LabelProps) => {
-  const t = useTheme()
-  return (
-    <Paper
-      elevation={0}
-      sx={{
-        whiteSpace: 'nowrap',
-        borderRadius: 40,
-        py: 1 / 1.5,
-        px: 2,
-        display: 'inline-flex',
-        minHeight: 24,
-        alignItems: 'center',
-        transition: (t) => t.transitions.create('all'),
-        ...colorize(t.palette.text.disabled),
-        // ...elevation > 0 && {
-        //   border: 'none'
-        // },
-        ...(fullWidth && {
-          width: '100%',
-        }),
-        ...(dense && {
-          fontWeight: '500' as any,
-          fontSize: (t) => styleUtils(t).fontSize.small,
-          py: 0,
-          px: 1,
-        }),
-        ...(inSelectOptions && {
-          marginTop: -10,
-          marginBottom: -10,
-        }),
-        ...sx,
-      }}
-      {...props}
-    >
-      {children}
-    </Paper>
-  )
-}
+export const Label = forwardRef(
+  (
+    { children, sx, fullWidth, dense, inSelectOptions, ...props }: LabelProps,
+    ref: Ref<unknown>,
+  ) => {
+    const t = useTheme()
+    return (
+      <Box
+        component="span"
+        sx={{
+          whiteSpace: 'nowrap',
+          borderRadius: 40,
+          py: 1 / 1.5,
+          px: 2,
+          display: 'inline-flex',
+          minHeight: 24,
+          alignItems: 'center',
+          transition: (t) => t.transitions.create('all'),
+          ...colorize(t.palette.text.disabled),
+          // ...elevation > 0 && {
+          //   border: 'none'
+          // },
+          ...(fullWidth && {
+            width: '100%',
+          }),
+          ...(dense && {
+            fontWeight: '500' as any,
+            fontSize: (t) => styleUtils(t).fontSize.small,
+            py: 0,
+            px: 1,
+          }),
+          ...(inSelectOptions && {
+            marginTop: -10,
+            marginBottom: -10,
+          }),
+          ...sx,
+        }}
+        ref={ref}
+        {...props}
+      >
+        {children}
+      </Box>
+    )
+  },
+)

@@ -41,7 +41,7 @@ export function ReportElementRow({
 }) {
   return (
     <div className="sm:contents flex flex-col flex-wrap">
-      <div className="text-gray-500">
+      <div className="text-gray-600">
         {label}
         <span className="sm:hidden"> :</span>
       </div>
