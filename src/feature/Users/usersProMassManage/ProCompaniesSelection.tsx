@@ -10,7 +10,7 @@ import { useCompaniesOfProQuery } from 'core/queryhooks/accessesMassManagementQu
 import { Controller, useForm, UseFormReturn } from 'react-hook-form'
 import { CleanInvisiblePanel } from 'shared/Panel/simplePanels'
 import { NextButton, TinyButton } from './usersProMassManageTinyComponents'
-import { MassManageChoices } from './usersProMassManagementConstants'
+import { MassManageInputs } from './usersProMassManagementConstants'
 type FormShape = {
   selection: { [id: string]: boolean }
 }
@@ -22,7 +22,7 @@ export function ProCompaniesSelection({
   choices,
   onSubmit,
 }: {
-  choices: MassManageChoices
+  choices: MassManageInputs
   onSubmit: OnSubmit
 }) {
   const _query = useCompaniesOfProQuery()
@@ -41,7 +41,7 @@ function Loaded({
 }: {
   data: ProCompanies
   onSubmit: OnSubmit
-  choices: MassManageChoices
+  choices: MassManageInputs
 }) {
   const allIds = flattenProCompanies(data).map((_) => _.company.id)
   const form = useForm<FormShape>({

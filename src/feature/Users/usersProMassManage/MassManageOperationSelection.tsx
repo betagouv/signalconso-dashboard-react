@@ -3,7 +3,7 @@ import { Controller, useForm } from 'react-hook-form'
 import { Fragment } from 'react/jsx-runtime'
 import { CleanInvisiblePanel } from 'shared/Panel/simplePanels'
 import {
-  MassManageChoices,
+  MassManageInputs,
   MassManageOperation,
   massManageOperations,
 } from './usersProMassManagementConstants'
@@ -15,7 +15,7 @@ export function MassManageOperationSelection({
   choices,
   onSubmit,
 }: {
-  choices: MassManageChoices
+  choices: MassManageInputs
   onSubmit: OnSubmit
 }) {
   const form = useForm<{ operation: MassManageOperation }>({

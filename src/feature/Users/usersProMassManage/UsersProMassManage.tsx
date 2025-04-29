@@ -7,7 +7,7 @@ import { MassManageOperationSelection } from './MassManageOperationSelection'
 import { ProCompaniesSelection } from './ProCompaniesSelection'
 import { ProUsersSelection } from './ProUsersSelection'
 import {
-  MassManageChoices,
+  MassManageInputs,
   MassManageOperation,
 } from './usersProMassManagementConstants'
 
@@ -99,16 +99,16 @@ export function AccessesManagementPro() {
 }
 
 function useWizardState() {
-  const initialChoices: MassManageChoices = {
+  const initialChoices: MassManageInputs = {
     operation: null,
     companiesIds: [],
     users: {
       usersIds: [],
-      alreadyInvitedTokenIds: [],
+      alreadyInvitedEmails: [],
       emailsToInvite: [],
     },
   }
-  const [choices, setChoices] = useState<MassManageChoices>(initialChoices)
+  const [choices, setChoices] = useState<MassManageInputs>(initialChoices)
   const [stepNumber, setStepNumber] = useState<number | undefined>(undefined)
   const step = stepNumber !== undefined ? steps[stepNumber] : undefined
   function incrementStepNumber() {
@@ -138,7 +138,7 @@ function useWizardState() {
     }))
     incrementStepNumber()
   }
-  function handleStep2(users: MassManageChoices['users']) {
+  function handleStep2(users: MassManageInputs['users']) {
     setChoices((prev) => ({
       ...prev,
       users,

@@ -1,6 +1,6 @@
 import { Button } from '@mui/material'
 import {
-  MassManageChoices,
+  MassManageInputs,
   MassManageOperation,
 } from './usersProMassManagementConstants'
 
@@ -8,13 +8,13 @@ export function MassManageConfirmation({
   choices,
   onSubmit,
 }: {
-  choices: MassManageChoices
+  choices: MassManageInputs
   onSubmit: () => void
 }) {
   const users = choices.users
   const usersNb =
     users.usersIds.length +
-    users.alreadyInvitedTokenIds.length +
+    users.alreadyInvitedEmails.length +
     users.emailsToInvite.length
   return (
     <div>

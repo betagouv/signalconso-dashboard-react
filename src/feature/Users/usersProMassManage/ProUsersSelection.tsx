@@ -8,7 +8,7 @@ import { Controller, useForm, UseFormReturn } from 'react-hook-form'
 import { CleanInvisiblePanel } from 'shared/Panel/simplePanels'
 import { ScDialog } from 'shared/ScDialog'
 import { NextButton, TinyButton } from './usersProMassManageTinyComponents'
-import { MassManageChoices } from './usersProMassManagementConstants'
+import { MassManageInputs } from './usersProMassManagementConstants'
 
 // This form allows to select 3 types :
 // - users already in DB
@@ -23,14 +23,14 @@ type FormShape = {
 
 type Form = UseFormReturn<FormShape>
 
-type OnSubmit = (_: MassManageChoices['users']) => void
+type OnSubmit = (_: MassManageInputs['users']) => void
 
 export function ProUsersSelection({
   choices,
   allowInvitation,
   onSubmit,
 }: {
-  choices: MassManageChoices
+  choices: MassManageInputs
   allowInvitation: boolean
   onSubmit: OnSubmit
 }) {
@@ -61,7 +61,7 @@ function Loaded({
   data: AccessesMassManagementUsers
   allowInvitation: boolean
   onSubmit: OnSubmit
-  choices: MassManageChoices
+  choices: MassManageInputs
 }) {
   const { connectedUser } = useConnectedContext()
   const form = useForm<FormShape>({
@@ -74,7 +74,7 @@ function Loaded({
       invited: Object.fromEntries(
         data.invitedByEmail
           .map((_) => _.id)
-          .map((id) => [id, choices.users.alreadyInvitedTokenIds.includes(id)]),
+          .map((id) => [id, choices.users.alreadyInvitedEmails.includes(id)]),
       ),
       emailsToInvite: choices.users.emailsToInvite,
     },
@@ -104,7 +104,7 @@ function Loaded({
           usersIds: Object.entries(formValues.users)
             .filter(([_, selected]) => selected)
             .map(([id]) => id),
-          alreadyInvitedTokenIds: Object.entries(formValues.invited)
+          alreadyInvitedEmails: Object.entries(formValues.invited)
             .filter(([_, selected]) => selected)
             .map(([id]) => id),
           emailsToInvite: formValues.emailsToInvite,
