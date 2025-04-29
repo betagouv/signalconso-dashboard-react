@@ -1,4 +1,4 @@
-import { Button } from '@mui/material'
+import { Button, CircularProgress } from '@mui/material'
 import {
   MassManageInputs,
   MassManageOperation,
@@ -7,9 +7,11 @@ import {
 export function MassManageConfirmation({
   choices,
   onSubmit,
+  isMutationPending,
 }: {
   choices: MassManageInputs
   onSubmit: () => void
+  isMutationPending: boolean
 }) {
   const users = choices.users
   const usersNb =
@@ -47,9 +49,13 @@ export function MassManageConfirmation({
           )}
         </div>
         <div className="flex justify-center">
-          <Button variant="contained" size="large" onClick={onSubmit}>
-            Valider
-          </Button>
+          {isMutationPending ? (
+            <CircularProgress />
+          ) : (
+            <Button variant="contained" size="large" onClick={onSubmit}>
+              Valider
+            </Button>
+          )}
         </div>
       </div>
     </div>

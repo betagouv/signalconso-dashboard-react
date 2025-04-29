@@ -1,4 +1,6 @@
 import { Button, Icon } from '@mui/material'
+import { useMutation } from '@tanstack/react-query'
+import { useApiContext } from 'core/context/ApiContext'
 import { useState } from 'react'
 import { DsfrStepper } from 'shared/DsfrStepper'
 import { Page, PageTitle } from 'shared/Page'
@@ -10,22 +12,24 @@ import {
   MassManageInputs,
   MassManageOperation,
 } from './usersProMassManagementConstants'
-
 const steps = [
   'operationSelection',
   'companiesSelection',
   'usersSelection',
   'confirmation',
+  'success',
 ] as const
 const stepsName = {
   operationSelection: "Choix de l'action",
   companiesSelection: 'Choix des entreprises',
   usersSelection: 'Choix des utilisateurs',
   confirmation: 'Confirmation',
+  success: '',
 }
 
 export function AccessesManagementPro() {
   const wizard = useWizardState()
+
   return (
     <Page>
       <PageTitle>Gestion des accès avancée</PageTitle>
@@ -50,10 +54,10 @@ export function AccessesManagementPro() {
           </div>
         )}
       </div>
-      {wizard.stepNumber !== undefined && (
+      {wizard.stepNumber !== undefined && wizard.step !== 'success' && (
         <DsfrStepper
           currentStep={wizard.stepNumber}
-          steps={steps.map((s) => stepsName[s])}
+          steps={steps.filter((_) => _ !== 'success').map((s) => stepsName[s])}
           onPrevious={wizard.decrementStepNumber}
         />
       )}
@@ -87,9 +91,12 @@ export function AccessesManagementPro() {
             return (
               <MassManageConfirmation
                 choices={wizard.choices}
-                onSubmit={() => {}}
+                onSubmit={wizard.handleStep3}
+                isMutationPending={wizard.isMutationPending}
               />
             )
+          case 'success':
+            return <div>Success !</div>
           default:
             return wizard.step satisfies never
         }
@@ -99,6 +106,7 @@ export function AccessesManagementPro() {
 }
 
 function useWizardState() {
+  const { api } = useApiContext()
   const initialChoices: MassManageInputs = {
     operation: null,
     companiesIds: [],
@@ -110,6 +118,10 @@ function useWizardState() {
   }
   const [choices, setChoices] = useState<MassManageInputs>(initialChoices)
   const [stepNumber, setStepNumber] = useState<number | undefined>(undefined)
+  const _massManage = useMutation({
+    mutationFn: ({ choices }: { choices: MassManageInputs }) =>
+      api.secured.accessesMassManagement.massManage(choices),
+  })
   const step = stepNumber !== undefined ? steps[stepNumber] : undefined
   function incrementStepNumber() {
     setStepNumber((s) => (s === undefined ? 0 : s + 1))
@@ -145,6 +157,10 @@ function useWizardState() {
     }))
     incrementStepNumber()
   }
+  async function handleStep3() {
+    await _massManage.mutateAsync({ choices })
+    incrementStepNumber()
+  }
   return {
     step,
     stepNumber,
@@ -154,5 +170,7 @@ function useWizardState() {
     handleStep0,
     handleStep1,
     handleStep2,
+    handleStep3,
+    isMutationPending: _massManage.isPending,
   }
 }
