@@ -118,15 +118,6 @@ export const ScSidebar = ({
           {m.menu_my_companies}
         </SidebarItem>
       )}
-      {(['Professionnel'] as Role[]).includes(connectedUser.role) && (
-        <SidebarItem
-          onClick={closeSidebar}
-          to="/mes-utilisateurs"
-          icon={EntityIcon.user}
-        >
-          Utilisateurs
-        </SidebarItem>
-      )}
       {([...roleAdmins] as Role[]).includes(connectedUser.role) && (
         <SidebarItem onClick={closeSidebar} to="/users" icon={EntityIcon.user}>
           {m.menu_users}

@@ -201,18 +201,18 @@ function CompanyAccessesLoaded({
       <div className="flex ml-auto gap-2 items-end justify-end mb-2">
         {canManageUsers && (
           <>
-            <Button
-              variant="text"
-              startIcon={<Icon>people</Icon>}
-              href={'/gestion-des-acces'}
-              component={Link}
-            >
-              Gestion des droits avancée
-            </Button>
             <CompanyAccessCreateBtn
               loading={_sendInvitation.isPending}
               onCreate={inviteNewUser}
             />
+            <Button
+              variant="outlined"
+              startIcon={<Icon>people</Icon>}
+              href={'/gestion-des-acces'}
+              component={Link}
+            >
+              Gestion des accès avancée
+            </Button>
           </>
         )}
       </div>
