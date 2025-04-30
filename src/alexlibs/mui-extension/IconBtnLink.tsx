@@ -1,22 +1,30 @@
-import { IconBtn, IconBtnProps } from './IconBtn'
-import React from 'react'
-import { createLink, LinkComponent } from '@tanstack/react-router'
+import React, { ReactNode } from 'react'
+import { createLink, LinkComponentProps } from '@tanstack/react-router'
+import { IconButton, IconButtonProps } from '@mui/material'
 
-const MUILinkComponent = React.forwardRef<
-  HTMLButtonElement,
-  Omit<IconBtnProps, 'href'>
->((props, ref) => {
-  const { children, ...rest } = props
-
-  return (
-    <IconBtn component="a" ref={ref} {...rest}>
-      {children}
-    </IconBtn>
-  )
-})
-
-const CreatedLinkComponent = createLink(MUILinkComponent)
-
-export const IconBtnLink: LinkComponent<typeof MUILinkComponent> = (props) => {
-  return <CreatedLinkComponent preload={'intent'} {...props} />
+interface IconBtnLinkProps extends IconButtonProps<'a'> {
+  children: ReactNode
 }
+
+const MUILinkComponent = React.forwardRef<HTMLAnchorElement, IconBtnLinkProps>(
+  (props, ref) => {
+    const { children, ...rest } = props
+
+    return (
+      <IconButton ref={ref} component="a" {...rest}>
+        {children}
+      </IconButton>
+    )
+  },
+)
+
+export const CreatedLinkComponent = createLink(MUILinkComponent)
+
+export const IconBtnLink: React.ForwardRefExoticComponent<
+  React.PropsWithoutRef<LinkComponentProps<typeof MUILinkComponent>> &
+    React.RefAttributes<any>
+> = React.forwardRef<any, LinkComponentProps<typeof MUILinkComponent>>(
+  (props, ref) => {
+    return <CreatedLinkComponent preload={'intent'} ref={ref} {...props} />
+  },
+)

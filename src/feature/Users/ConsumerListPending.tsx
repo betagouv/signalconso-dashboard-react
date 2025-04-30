@@ -140,31 +140,29 @@ const Action = (props: {
           title={m.emailValidationStatusTooltipDesc[status]}
           placement="left"
         >
-          <span>
-            <IconBtn
-              disabled={status === EmailValidationStatus.Valid}
-              color={'primary'}
-              loading={_validate.isPending}
-              onClick={() => _validate.mutate()}
-            >
-              {status === EmailValidationStatus.Valid ? (
-                <Icon sx={{ color: (t) => t.palette.success.light }}>
-                  check_circle
-                </Icon>
-              ) : (
-                <Icon
-                  sx={{
-                    color: (t) =>
-                      status === EmailValidationStatus.Expired
-                        ? t.palette.warning.light
-                        : t.palette.primary.light,
-                  }}
-                >
-                  task_alt
-                </Icon>
-              )}
-            </IconBtn>
-          </span>
+          <IconBtn
+            disabled={status === EmailValidationStatus.Valid}
+            color={'primary'}
+            loading={_validate.isPending}
+            onClick={() => _validate.mutate()}
+          >
+            {status === EmailValidationStatus.Valid ? (
+              <Icon sx={{ color: (t) => t.palette.success.light }}>
+                check_circle
+              </Icon>
+            ) : (
+              <Icon
+                sx={{
+                  color: (t) =>
+                    status === EmailValidationStatus.Expired
+                      ? t.palette.warning.light
+                      : t.palette.primary.light,
+                }}
+              >
+                task_alt
+              </Icon>
+            )}
+          </IconBtn>
         </Tooltip>
       ) : (
         <></>

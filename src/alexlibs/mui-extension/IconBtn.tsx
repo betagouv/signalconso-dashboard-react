@@ -6,7 +6,7 @@ import {
 } from '@mui/material'
 import { forwardRef, ReactNode, Ref } from 'react'
 
-export interface IconBtnProps extends IconButtonProps {
+interface IconBtnProps extends IconButtonProps {
   loading?: boolean | null | undefined
   icon?: string
   children: ReactNode

@@ -6,11 +6,11 @@ export const reportStatusColor = {
   [ReportStatus.InformateurInterne]: '#767676',
   [ReportStatus.TraitementEnCours]: '#c75300',
   [ReportStatus.Transmis]: '#c75300',
-  [ReportStatus.NonConsulte]: '#0700d3',
-  [ReportStatus.MalAttribue]: '#0700d3',
+  [ReportStatus.NonConsulte]: '#0003A2',
+  [ReportStatus.MalAttribue]: '#0003A2',
   [ReportStatus.PromesseAction]: '#108a12',
-  [ReportStatus.Infonde]: '#ee0700',
-  [ReportStatus.ConsulteIgnore]: '#ee0700',
+  [ReportStatus.Infonde]: '#BC0015',
+  [ReportStatus.ConsulteIgnore]: '#BC0015',
   [ReportStatus.SuppressionRGPD]: '#767676',
 }
 
