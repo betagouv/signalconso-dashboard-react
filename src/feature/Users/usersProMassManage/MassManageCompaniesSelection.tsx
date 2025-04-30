@@ -18,7 +18,7 @@ type Form = UseFormReturn<FormShape>
 
 type OnSubmit = (selectedCompaniesIds: string[]) => void
 
-export function ProCompaniesSelection({
+export function MassManageCompaniesSelection({
   choices,
   onSubmit,
 }: {

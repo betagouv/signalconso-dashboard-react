@@ -5,10 +5,10 @@ import { useState } from 'react'
 import { DsfrAlert } from 'shared/DsfrAlert'
 import { DsfrStepper } from 'shared/DsfrStepper'
 import { Page, PageTitle } from 'shared/Page'
+import { MassManageCompaniesSelection } from './MassManageCompaniesSelection'
 import { MassManageConfirmation } from './MassManageConfirmation'
 import { MassManageOperationSelection } from './MassManageOperationSelection'
-import { ProCompaniesSelection } from './ProCompaniesSelection'
-import { ProUsersSelection } from './ProUsersSelection'
+import { MassManageUsersSelection } from './MassManageUsersSelection'
 import {
   MassManageInputs,
   MassManageOperation,
@@ -75,14 +75,14 @@ export function AccessesManagementPro() {
             )
           case 'companiesSelection':
             return (
-              <ProCompaniesSelection
+              <MassManageCompaniesSelection
                 choices={wizard.choices}
                 onSubmit={wizard.handleStep1}
               />
             )
           case 'usersSelection':
             return (
-              <ProUsersSelection
+              <MassManageUsersSelection
                 choices={wizard.choices}
                 allowInvitation={wizard.choices.operation !== 'Remove'}
                 onSubmit={wizard.handleStep2}

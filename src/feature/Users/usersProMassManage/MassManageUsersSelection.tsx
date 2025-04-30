@@ -28,7 +28,7 @@ type Form = UseFormReturn<FormShape>
 
 type OnSubmit = (_: MassManageInputs['users']) => void
 
-export function ProUsersSelection({
+export function MassManageUsersSelection({
   choices,
   allowInvitation,
   onSubmit,
