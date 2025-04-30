@@ -27,7 +27,7 @@ import {
 import { ReportSearchLink } from 'feature/Report/quickSmallLinks'
 import { AddressComponent } from 'shared/Address'
 import { ScButton } from 'shared/Button'
-import { DsfrAlertSmall } from 'shared/DsfrAlert'
+import { DsfrAlert, DsfrAlertSmall } from 'shared/DsfrAlert'
 import { Page } from 'shared/Page'
 import { PageTitle } from 'shared/Page/PageTitle'
 import { ScSwitch } from 'shared/ScSwitch'
@@ -86,29 +86,42 @@ export function CompaniesPro() {
         Il est rafraîchi toutes les heures.
       </p>
       {data ? (
-        <div className="flex flex-col gap-8 mb-10 lg:mb-20">
-          {data.headOfficesAndSubsidiaries.map(
-            ({ headOffice, subsidiaries }) => {
+        flattenProCompaniesExtended(data).length > 0 ? (
+          <div className="flex flex-col gap-8 mb-10 lg:mb-20">
+            {data.headOfficesAndSubsidiaries.map(
+              ({ headOffice, subsidiaries }) => {
+                return (
+                  <TopLevelRow
+                    key={headOffice.company.id}
+                    company={headOffice}
+                    secondLevel={subsidiaries}
+                    {...{ _blockedNotifications, totalNbCompanies }}
+                  />
+                )
+              },
+            )}
+            {data.loneSubsidiaries.map((company) => {
               return (
                 <TopLevelRow
-                  key={headOffice.company.id}
-                  company={headOffice}
-                  secondLevel={subsidiaries}
+                  key={company.company.id}
+                  {...{ company }}
                   {...{ _blockedNotifications, totalNbCompanies }}
                 />
               )
-            },
-          )}
-          {data.loneSubsidiaries.map((company) => {
-            return (
-              <TopLevelRow
-                key={company.company.id}
-                {...{ company }}
-                {...{ _blockedNotifications, totalNbCompanies }}
-              />
-            )
-          })}
-        </div>
+            })}
+          </div>
+        ) : (
+          <DsfrAlert title="Vous n'avez actuellement accès à aucune entreprise.">
+            <p className="mb-2">
+              Demandez à un collègue de vous inviter sur les entreprises
+              souhaitées.
+            </p>
+            <p>
+              Si vous avez reçu un courrier de SignalConso concernant une
+              entreprise, utilisez le bouton "Ajouter une entreprise" ci-dessus.
+            </p>
+          </DsfrAlert>
+        )
       ) : (
         <CircularProgress />
       )}
