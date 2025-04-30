@@ -62,7 +62,7 @@ function Loaded({
       <p className="mb-2">Sélectionnez une ou plusieurs entreprises :</p>
       <div className="bg-gray-100 py-2 px-4 mb-4">
         <div className="flex gap-2 items-end justify-between mb-2">
-          <div className="flex gap-2 h-fit">
+          <div className="flex flex-col lg:flex-row gap-2 h-fit">
             <TinyButton
               label="Sélectionner tous"
               onClick={() => {
@@ -147,8 +147,8 @@ function SecondLevelWrapper({
 
   return (
     <div className="ml-15 mt-4 mb-4">
-      <div className="flex gap-2 items-center mb-2">
-        <h3 className="font-bold text-lg">
+      <div className="flex items-start flex-col lg:flex-row gap-2 lg:items-center mb-2">
+        <h3 className=" font-bold text-lg">
           {secondLevel.length} établissements secondaires
         </h3>
         <TinyButton
@@ -220,22 +220,24 @@ function RowContent({
             }}
           />
         </div>
-        <p className={`w-34`}>{company.siret}</p>
-        <div className="flex-grow">
-          {company.name}
-          {company.isHeadOffice ? (
-            <span className="text-green-800 text-sm"> Siège social</span>
-          ) : null}
-        </div>
-        {disabled && (
-          <span className="text-sm flex-grow">
-            {' '}
-            vous n'êtes pas administrateur
-          </span>
-        )}
-        <div className="">
-          <PlaceOutlinedIcon className="!text-[1.1em] -mt-0.5" />
-          {company.address.postalCode}
+        <div className="flex-grow lg:contents">
+          <p className={`w-34`}>{company.siret}</p>
+          <div className="flex-grow">
+            {company.name}
+            {company.isHeadOffice ? (
+              <span className="text-green-800 text-sm"> Siège social</span>
+            ) : null}
+          </div>
+          {disabled && (
+            <span className="text-sm flex-grow">
+              {' '}
+              vous n'êtes pas administrateur
+            </span>
+          )}
+          <div className="">
+            <PlaceOutlinedIcon className="!text-[1.1em] -mt-0.5" />
+            {company.address.postalCode}
+          </div>
         </div>
       </div>
     </div>
