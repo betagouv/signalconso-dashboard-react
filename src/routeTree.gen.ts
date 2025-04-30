@@ -29,7 +29,7 @@ import { Route as AuthenticatedModeEmploiDgccrfImport } from './routes/_authenti
 import { Route as AuthenticatedMesUtilisateursImport } from './routes/_authenticated/mes-utilisateurs'
 import { Route as AuthenticatedMesEntreprisesImport } from './routes/_authenticated/mes-entreprises'
 import { Route as AuthenticatedInformationImport } from './routes/_authenticated/information'
-import { Route as AuthenticatedGestionDesAccesImport } from './routes/_authenticated/gestion-des-acces'
+import { Route as AuthenticatedGestionDesAccesAvanceeImport } from './routes/_authenticated/gestion-des-acces-avancee'
 import { Route as AuthenticatedEntreprisesImport } from './routes/_authenticated/entreprises'
 import { Route as AuthenticatedEngagementsImport } from './routes/_authenticated/engagements'
 import { Route as AuthenticatedAbonnementsImport } from './routes/_authenticated/abonnements'
@@ -185,10 +185,10 @@ const AuthenticatedInformationRoute = AuthenticatedInformationImport.update({
   getParentRoute: () => AuthenticatedRoute,
 } as any)
 
-const AuthenticatedGestionDesAccesRoute =
-  AuthenticatedGestionDesAccesImport.update({
-    id: '/gestion-des-acces',
-    path: '/gestion-des-acces',
+const AuthenticatedGestionDesAccesAvanceeRoute =
+  AuthenticatedGestionDesAccesAvanceeImport.update({
+    id: '/gestion-des-acces-avancee',
+    path: '/gestion-des-acces-avancee',
     getParentRoute: () => AuthenticatedRoute,
   } as any)
 
@@ -505,11 +505,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedEntreprisesImport
       parentRoute: typeof AuthenticatedImport
     }
-    '/_authenticated/gestion-des-acces': {
-      id: '/_authenticated/gestion-des-acces'
-      path: '/gestion-des-acces'
-      fullPath: '/gestion-des-acces'
-      preLoaderRoute: typeof AuthenticatedGestionDesAccesImport
+    '/_authenticated/gestion-des-acces-avancee': {
+      id: '/_authenticated/gestion-des-acces-avancee'
+      path: '/gestion-des-acces-avancee'
+      fullPath: '/gestion-des-acces-avancee'
+      preLoaderRoute: typeof AuthenticatedGestionDesAccesAvanceeImport
       parentRoute: typeof AuthenticatedImport
     }
     '/_authenticated/information': {
@@ -995,7 +995,7 @@ interface AuthenticatedRouteChildren {
   AuthenticatedAbonnementsRoute: typeof AuthenticatedAbonnementsRoute
   AuthenticatedEngagementsRoute: typeof AuthenticatedEngagementsRoute
   AuthenticatedEntreprisesRoute: typeof AuthenticatedEntreprisesRouteWithChildren
-  AuthenticatedGestionDesAccesRoute: typeof AuthenticatedGestionDesAccesRoute
+  AuthenticatedGestionDesAccesAvanceeRoute: typeof AuthenticatedGestionDesAccesAvanceeRoute
   AuthenticatedInformationRoute: typeof AuthenticatedInformationRoute
   AuthenticatedMesEntreprisesRoute: typeof AuthenticatedMesEntreprisesRoute
   AuthenticatedMesUtilisateursRoute: typeof AuthenticatedMesUtilisateursRoute
@@ -1019,7 +1019,8 @@ const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedAbonnementsRoute: AuthenticatedAbonnementsRoute,
   AuthenticatedEngagementsRoute: AuthenticatedEngagementsRoute,
   AuthenticatedEntreprisesRoute: AuthenticatedEntreprisesRouteWithChildren,
-  AuthenticatedGestionDesAccesRoute: AuthenticatedGestionDesAccesRoute,
+  AuthenticatedGestionDesAccesAvanceeRoute:
+    AuthenticatedGestionDesAccesAvanceeRoute,
   AuthenticatedInformationRoute: AuthenticatedInformationRoute,
   AuthenticatedMesEntreprisesRoute: AuthenticatedMesEntreprisesRoute,
   AuthenticatedMesUtilisateursRoute: AuthenticatedMesUtilisateursRoute,
@@ -1057,7 +1058,7 @@ export interface FileRoutesByFullPath {
   '/abonnements': typeof AuthenticatedAbonnementsRoute
   '/engagements': typeof AuthenticatedEngagementsRoute
   '/entreprises': typeof AuthenticatedEntreprisesRouteWithChildren
-  '/gestion-des-acces': typeof AuthenticatedGestionDesAccesRoute
+  '/gestion-des-acces-avancee': typeof AuthenticatedGestionDesAccesAvanceeRoute
   '/information': typeof AuthenticatedInformationRoute
   '/mes-entreprises': typeof AuthenticatedMesEntreprisesRoute
   '/mes-utilisateurs': typeof AuthenticatedMesUtilisateursRoute
@@ -1118,7 +1119,7 @@ export interface FileRoutesByTo {
   '/abonnements': typeof AuthenticatedAbonnementsRoute
   '/engagements': typeof AuthenticatedEngagementsRoute
   '/entreprises': typeof AuthenticatedEntreprisesRouteWithChildren
-  '/gestion-des-acces': typeof AuthenticatedGestionDesAccesRoute
+  '/gestion-des-acces-avancee': typeof AuthenticatedGestionDesAccesAvanceeRoute
   '/information': typeof AuthenticatedInformationRoute
   '/mes-entreprises': typeof AuthenticatedMesEntreprisesRoute
   '/mes-utilisateurs': typeof AuthenticatedMesUtilisateursRoute
@@ -1180,7 +1181,7 @@ export interface FileRoutesById {
   '/_authenticated/abonnements': typeof AuthenticatedAbonnementsRoute
   '/_authenticated/engagements': typeof AuthenticatedEngagementsRoute
   '/_authenticated/entreprises': typeof AuthenticatedEntreprisesRouteWithChildren
-  '/_authenticated/gestion-des-acces': typeof AuthenticatedGestionDesAccesRoute
+  '/_authenticated/gestion-des-acces-avancee': typeof AuthenticatedGestionDesAccesAvanceeRoute
   '/_authenticated/information': typeof AuthenticatedInformationRoute
   '/_authenticated/mes-entreprises': typeof AuthenticatedMesEntreprisesRoute
   '/_authenticated/mes-utilisateurs': typeof AuthenticatedMesUtilisateursRoute
@@ -1243,7 +1244,7 @@ export interface FileRouteTypes {
     | '/abonnements'
     | '/engagements'
     | '/entreprises'
-    | '/gestion-des-acces'
+    | '/gestion-des-acces-avancee'
     | '/information'
     | '/mes-entreprises'
     | '/mes-utilisateurs'
@@ -1303,7 +1304,7 @@ export interface FileRouteTypes {
     | '/abonnements'
     | '/engagements'
     | '/entreprises'
-    | '/gestion-des-acces'
+    | '/gestion-des-acces-avancee'
     | '/information'
     | '/mes-entreprises'
     | '/mes-utilisateurs'
@@ -1363,7 +1364,7 @@ export interface FileRouteTypes {
     | '/_authenticated/abonnements'
     | '/_authenticated/engagements'
     | '/_authenticated/entreprises'
-    | '/_authenticated/gestion-des-acces'
+    | '/_authenticated/gestion-des-acces-avancee'
     | '/_authenticated/information'
     | '/_authenticated/mes-entreprises'
     | '/_authenticated/mes-utilisateurs'
@@ -1481,7 +1482,7 @@ export const routeTree = rootRoute
         "/_authenticated/abonnements",
         "/_authenticated/engagements",
         "/_authenticated/entreprises",
-        "/_authenticated/gestion-des-acces",
+        "/_authenticated/gestion-des-acces-avancee",
         "/_authenticated/information",
         "/_authenticated/mes-entreprises",
         "/_authenticated/mes-utilisateurs",
@@ -1525,8 +1526,8 @@ export const routeTree = rootRoute
         "/_authenticated/entreprises/les-plus-signalees"
       ]
     },
-    "/_authenticated/gestion-des-acces": {
-      "filePath": "_authenticated/gestion-des-acces.tsx",
+    "/_authenticated/gestion-des-acces-avancee": {
+      "filePath": "_authenticated/gestion-des-acces-avancee.tsx",
       "parent": "/_authenticated"
     },
     "/_authenticated/information": {

@@ -208,7 +208,7 @@ function CompanyAccessesLoaded({
             <Button
               variant="outlined"
               startIcon={<Icon>people</Icon>}
-              href={'/gestion-des-acces'}
+              href={'/gestion-des-acces-avancee'}
               component={Link}
             >
               Gestion des accès avancée
