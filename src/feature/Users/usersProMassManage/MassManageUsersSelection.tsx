@@ -240,8 +240,8 @@ function RowExistingUser({ user, form }: { user: User; form: Form }) {
       }
     >
       <div className="flex flex-col items-start lg:contents">
-        <div className="flex flex-col gap-0 ">
-          <p className="">{user.email}</p>
+        <div className="flex flex-col gap-0">
+          <p className="break-all">{user.email}</p>
           <div className="text-sm font-bold">
             {user.firstName} {user.lastName}
           </div>
@@ -274,7 +274,7 @@ function RowInvited({ email, form }: { email: string; form: Form }) {
       }
     >
       <div className="flex flex-col gap-0 ">
-        <p>{email}</p>
+        <p className="break-all">{email}</p>
         <div className="text-sm italic">Invitation envoyée</div>
       </div>
     </RowWrapper>
