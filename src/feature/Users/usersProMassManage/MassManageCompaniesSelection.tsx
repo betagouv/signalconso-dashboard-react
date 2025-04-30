@@ -203,34 +203,35 @@ function RowContent({
       className={`border-t ${disabled ? 'bg-gray-100 border-gray-300 text-gray-500 border-x' : 'bg-white border-gray-400 '} last:border-b-1 ${hasSecondLevel ? 'border-b-1' : ''} ${isTopLevel ? 'px-2 py-3' : 'p-1 py-2'}`}
     >
       <div className="flex gap-2 justify-between">
-        <div className="flex gap-2">
-          <div className={`${isTopLevel ? 'mx-6' : 'mx-2'}`}>
-            <Controller
-              control={form.control}
-              name={`selection.${company.id}`}
-              render={({ field: { onChange, onBlur, value, ref } }) => {
-                return (
-                  <Checkbox
-                    className="!p-0 "
-                    disabled={disabled}
-                    checked={value}
-                    {...{ onBlur, onChange }}
-                    slotProps={{ input: { ref } }}
-                  />
-                )
-              }}
-            />
-          </div>
-          <p className={`w-34`}>{company.siret}</p>
-          <div className="">
-            {company.name}
-            {company.isHeadOffice ? (
-              <span className="text-green-800 text-sm"> Siège social</span>
-            ) : null}
-          </div>
+        <div className={` ${isTopLevel ? 'mx-6' : 'mx-2'}`}>
+          <Controller
+            control={form.control}
+            name={`selection.${company.id}`}
+            render={({ field: { onChange, onBlur, value, ref } }) => {
+              return (
+                <Checkbox
+                  className="!p-0 "
+                  disabled={disabled}
+                  checked={value}
+                  {...{ onBlur, onChange }}
+                  slotProps={{ input: { ref } }}
+                />
+              )
+            }}
+          />
+        </div>
+        <p className={`w-34`}>{company.siret}</p>
+        <div className="flex-grow">
+          {company.name}
+          {company.isHeadOffice ? (
+            <span className="text-green-800 text-sm"> Siège social</span>
+          ) : null}
         </div>
         {disabled && (
-          <span className="text-sm"> vous n'êtes pas administrateur</span>
+          <span className="text-sm flex-grow">
+            {' '}
+            vous n'êtes pas administrateur
+          </span>
         )}
         <div className="">
           <PlaceOutlinedIcon className="!text-[1.1em] -mt-0.5" />
