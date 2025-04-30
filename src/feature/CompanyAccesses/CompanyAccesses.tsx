@@ -239,7 +239,9 @@ function EmailColumn({ accesses: _ }: { accesses: RowData }) {
       <div>
         {}
         {email && (
-          <span className={`font-bold ${isInvitation ? 'text-gray-500' : ''}`}>
+          <span
+            className={`font-bold ${isInvitation ? 'text-gray-500' : ''} break-all`}
+          >
             {email}
           </span>
         )}

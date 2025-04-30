@@ -239,13 +239,15 @@ function RowExistingUser({ user, form }: { user: User; form: Form }) {
         />
       }
     >
-      <div className="flex flex-col gap-0 ">
-        <p>{user.email}</p>
-        <div className="text-sm font-bold">
-          {user.firstName} {user.lastName}
+      <div className="flex flex-col items-start lg:contents">
+        <div className="flex flex-col gap-0 ">
+          <p className="">{user.email}</p>
+          <div className="text-sm font-bold">
+            {user.firstName} {user.lastName}
+          </div>
         </div>
+        {disabled && <p className="text-sm text-right grow"> c'est vous !</p>}
       </div>
-      {disabled && <p className="text-sm text-right grow"> c'est vous !</p>}
     </RowWrapper>
   )
 }
