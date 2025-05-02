@@ -102,7 +102,7 @@ export const ReportedUnknownWebsites = () => {
                 .getOrElse('')}
               filters={unregisteredWebsites.filters}
             >
-              <IconBtn color="primary">
+              <IconBtn color="primary" aria-label="Exporter en excel">
                 <Icon>file_download</Icon>
               </IconBtn>
             </ExportUnknownWebsitesPopper>

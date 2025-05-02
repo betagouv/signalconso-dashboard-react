@@ -1,4 +1,4 @@
-import { MenuItem, Select } from '@mui/material'
+import { FormControl, InputLabel, MenuItem, Select } from '@mui/material'
 import { useMutation } from '@tanstack/react-query'
 import { ResendEmailsParams } from 'core/client/admin/AdminClient'
 import { useState } from 'react'
@@ -66,26 +66,30 @@ export const ResendEmailsAdminTool = () => {
             sx={{ mr: 1 }}
             fullWidth
           />
-          <Select
-            labelId="demo-simple-select-label"
-            id="demo-simple-select"
-            value={emailType}
-            label="Type d'email"
-            onChange={(t) => {
-              setEmailType(t.target.value as ResendEmailType)
-            }}
-          >
-            <MenuItem value={'NewReportAckToConsumer'}>
-              Nouveau signalement au conso
-            </MenuItem>
-            <MenuItem value={'NewReportAckToPro'}>
-              Nouveau signalement au pro
-            </MenuItem>
-            <MenuItem value={'NotifyDGCCRF'}>Produit dangereux</MenuItem>
-            <MenuItem value={'ReportProResponse'}>
-              Réponse du pro au conso
-            </MenuItem>
-          </Select>
+          <FormControl>
+            <InputLabel id="demo-simple-select-label">Type d'email</InputLabel>
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              value={emailType}
+              label="Type d'email"
+              onChange={(t) => {
+                setEmailType(t.target.value as ResendEmailType)
+              }}
+            >
+              <MenuItem value={'NewReportAckToConsumer'}>
+                Nouveau signalement au conso
+              </MenuItem>
+              <MenuItem value={'NewReportAckToPro'}>
+                Nouveau signalement au pro
+              </MenuItem>
+              <MenuItem value={'NotifyDGCCRF'}>Produit dangereux</MenuItem>
+              <MenuItem value={'ReportProResponse'}>
+                Réponse du pro au conso
+              </MenuItem>
+            </Select>
+          </FormControl>
+
           <ScButton
             onClick={handleClick}
             color="primary"

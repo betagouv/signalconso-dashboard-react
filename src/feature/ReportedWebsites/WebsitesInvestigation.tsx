@@ -257,7 +257,7 @@ export const WebsitesInvestigation = ({
                     })
                   }
                 >
-                  <IconBtn>
+                  <IconBtn aria-label="Résultats d'extraction de SIRET">
                     <Icon
                       color={
                         _.siretExtraction?.extractions
@@ -313,6 +313,14 @@ export const WebsitesInvestigation = ({
             head: m.identified,
             render: (_) => (
               <Switch
+                slotProps={{
+                  input: {
+                    'aria-label':
+                      _.identificationStatus === IdentificationStatus.Identified
+                        ? "Supprimer l'identification"
+                        : 'Marquer comme identifié',
+                  },
+                }}
                 checked={
                   _.identificationStatus === IdentificationStatus.Identified
                 }
@@ -333,6 +341,13 @@ export const WebsitesInvestigation = ({
             head: 'Marketplace',
             render: (_) => (
               <Switch
+                slotProps={{
+                  input: {
+                    'aria-label': _.isMarketplace
+                      ? 'Désactiver la marketplace'
+                      : 'Activer la marketplace',
+                  },
+                }}
                 checked={_.isMarketplace}
                 onChange={(e) =>
                   _updateMarketplace.mutate({

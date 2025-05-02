@@ -129,6 +129,11 @@ export const ScChart = memo(
             {m.showLabels}
             {curves.map((c, i) => (
               <Checkbox
+                slotProps={{
+                  input: {
+                    'aria-label': c.label,
+                  },
+                }}
                 key={c.key}
                 checked={showCurves[i]}
                 onChange={(e) =>
