@@ -42,7 +42,11 @@ export function DashboardTitle({
   return (
     <h1 className="text-3xl mt-4 mb-8 text-center">
       {subPageTitle && (
-        <Link to="/" className="no-underline mr-4">
+        <Link
+          to="/"
+          className="no-underline mr-4"
+          aria-label="Retour à l'écran d'accueil"
+        >
           <Icon className="align-top !text-3xl">arrow_back</Icon>
         </Link>
       )}

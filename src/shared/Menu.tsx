@@ -42,7 +42,11 @@ export const ScMenu = ({
           },
         })
       ) : (
-        <IconBtn onClick={handleClick} color="primary">
+        <IconBtn
+          onClick={handleClick}
+          color="primary"
+          aria-label="Dérouler les actions"
+        >
           <Icon>{icon}</Icon>
         </IconBtn>
       )}

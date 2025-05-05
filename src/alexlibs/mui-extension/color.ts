@@ -13,7 +13,7 @@ export const colorMuiTextDisabled = 'rgba(0, 0, 0, 0.38)'
 export const colorsMui = {
   textSecondary: 'rgba(0, 0, 0, 0.6)',
   textDisabled: 'rgba(0, 0, 0, 0.38)',
-  errorMain: '#d32f2f',
+  errorMain: '#d32f1f',
   successMain: '#2e7d32',
   warningMain: '#ed6c02',
 }

@@ -56,7 +56,7 @@ const ReportStatusAdminLabel = ({
         ...style,
       }}
     >
-      {isAdminClosure ? m.adminClosure : m.reportStatusShort[status]} &nbsp;
+      {isAdminClosure ? m.adminClosure : m.reportStatusShort[status]}
     </Label>
   )
 }

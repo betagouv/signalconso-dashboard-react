@@ -125,6 +125,7 @@ export const SubscriptionCard = ({ subscription, className, style }: Props) => {
           <span>{m.subscription}</span>
           <div className="flex items-center">
             <ScSelect
+              label="Fréquence"
               value={subscription.frequency ?? 'P7D'}
               onChange={(e: any) =>
                 _updateSubscription.mutate({ frequency: e.target.value })
@@ -142,7 +143,11 @@ export const SubscriptionCard = ({ subscription, className, style }: Props) => {
                 close()
               }}
             >
-              <IconBtn color="primary" loading={_deleteSubscription.isPending}>
+              <IconBtn
+                color="primary"
+                loading={_deleteSubscription.isPending}
+                aria-label="Supprimer l'abonnement"
+              >
                 <Icon>delete</Icon>
               </IconBtn>
             </ScDialog>
@@ -252,6 +257,7 @@ export const SubscriptionCard = ({ subscription, className, style }: Props) => {
               }}
             >
               <ScChip
+                aria-label="Ajouter un numéro SIRET"
                 label={<Icon sx={{ verticalAlign: 'middle' }}>add</Icon>}
               />
             </SelectCompanyDialog>
@@ -313,6 +319,7 @@ export const SubscriptionCard = ({ subscription, className, style }: Props) => {
               }}
             >
               <ScChip
+                aria-label="Ajouter un site web"
                 label={<Icon sx={{ verticalAlign: 'middle' }}>add</Icon>}
               />
             </EnterHostnameDialog>
@@ -343,6 +350,7 @@ export const SubscriptionCard = ({ subscription, className, style }: Props) => {
               }}
             >
               <ScChip
+                aria-label="Ajouter un numéro de téléphone"
                 label={<Icon sx={{ verticalAlign: 'middle' }}>add</Icon>}
               />
             </EnterPhoneDialog>

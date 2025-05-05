@@ -161,6 +161,7 @@ export const Alert = ({
                   setIsVisible(false)
                 }}
                 size="large"
+                aria-label="Fermer la zone d'information"
               >
                 <Icon>clear</Icon>
               </IconButton>

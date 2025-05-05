@@ -70,7 +70,7 @@ const InnerScRadioGroup = <T,>(
     <Box
       ref={ref}
       {...props}
-      role="listbox"
+      role="radiogroup"
       sx={{
         ...(inline && {
           display: 'flex',

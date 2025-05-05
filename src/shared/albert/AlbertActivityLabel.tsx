@@ -20,7 +20,7 @@ export function AlbertActivityLabel({
   }
   return (
     <div
-      className={`font-normal flex gap-1 items-center ${smaller ? `text-sm` : `text-base`}`}
+      className={`pt-1 font-normal flex gap-1 items-center ${smaller ? `text-sm` : `text-base`}`}
     >
       <span className="inline-flex items-center gap-1">
         <Icon

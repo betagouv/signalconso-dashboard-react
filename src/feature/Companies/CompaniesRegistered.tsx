@@ -36,6 +36,7 @@ import { SelectCompanyDialog } from '../../shared/SelectCompany/SelectCompanyDia
 import { CompaniesRegisteredFilters } from './CompaniesRegisteredFilters'
 import { EditAddressDialog } from './EditAddressDialog'
 import { MassImport } from './MassImport'
+import { IconBtnLink } from '../../alexlibs/mui-extension/IconBtnLink'
 
 export const CompaniesRegistered = ({ search }: { search: CompanySearch }) => {
   const navigate = useNavigate()
@@ -257,7 +258,7 @@ export const CompaniesRegistered = ({ search }: { search: CompanySearch }) => {
                     component="span"
                     sx={{
                       fontSize: (t) => styleUtils(t).fontSize.small,
-                      color: (t) => t.palette.text.disabled,
+                      color: (t) => t.palette.text.secondary,
                     }}
                   >
                     {_.siret}
@@ -286,7 +287,7 @@ export const CompaniesRegistered = ({ search }: { search: CompanySearch }) => {
                 <span>{_.address.postalCode?.slice(0, 2)}</span>
                 <Box
                   component="span"
-                  sx={{ color: (t) => t.palette.text.disabled }}
+                  sx={{ color: (t) => t.palette.text.secondary }}
                 >
                   {_.address.postalCode?.slice(2, 5)}
                 </Box>
@@ -322,14 +323,14 @@ export const CompaniesRegistered = ({ search }: { search: CompanySearch }) => {
                   fontWeight: (t) => t.typography.fontWeightBold,
                   ...(_.responseRate > 50
                     ? {
-                        color: (t) => t.palette.success.light,
+                        color: (t) => t.palette.success.main,
                       }
                     : _.responseRate === 0
                       ? {
-                          color: (t) => t.palette.error.light,
+                          color: (t) => t.palette.error.main,
                         }
                       : {
-                          color: (t) => t.palette.warning.light,
+                          color: (t) => t.palette.warning.main,
                         }),
                 }}
               >
@@ -356,14 +357,14 @@ export const CompaniesRegistered = ({ search }: { search: CompanySearch }) => {
                   variant="dot"
                   overlap="circular"
                 >
-                  <Link
+                  <IconBtnLink
+                    color="primary"
                     to="/entreprise/$companyId/bilan"
                     params={{ companyId: _.id }}
+                    aria-label="Voir les statistiques de l'entreprise"
                   >
-                    <IconBtn color="primary">
-                      <Icon>query_stats</Icon>
-                    </IconBtn>
-                  </Link>
+                    <Icon>query_stats</Icon>
+                  </IconBtnLink>
                 </Badge>
                 <ScMenu>
                   <Link

@@ -303,6 +303,7 @@ function SecondLevelAccordion({
         }
         elevation={0}
         slotProps={{
+          heading: { component: 'h2' },
           transition: {
             // https://mui.com/material-ui/react-accordion/#performance
             unmountOnExit: true,

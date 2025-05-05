@@ -67,7 +67,7 @@ const ProConnectButton = ({ startProConnect }: Props) => {
           target="_blank"
           rel="noopener noreferrer"
           title="Qu’est-ce que ProConnect ? - nouvelle fenêtre"
-          className="text-blue-500 underline hover:text-blue-700"
+          className="text-blue-700 underline hover:text-blue-900"
         >
           Qu’est-ce que ProConnect ?
         </a>
