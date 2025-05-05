@@ -205,14 +205,16 @@ function CompanyAccessesLoaded({
               loading={_sendInvitation.isPending}
               onCreate={inviteNewUser}
             />
-            <Button
-              variant="outlined"
-              startIcon={<Icon>people</Icon>}
-              href={'/gestion-des-acces-avancee'}
-              component={Link}
-            >
-              Gestion des accès avancée
-            </Button>
+            {config.showMassManage && (
+              <Button
+                variant="outlined"
+                startIcon={<Icon>people</Icon>}
+                href={'/gestion-des-acces-avancee'}
+                component={Link}
+              >
+                Gestion des accès avancée
+              </Button>
+            )}
           </>
         )}
       </div>
