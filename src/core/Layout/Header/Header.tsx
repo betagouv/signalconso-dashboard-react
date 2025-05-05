@@ -35,6 +35,7 @@ export const Header = ({ children }: HeaderProps) => {
               },
             }}
             onClick={() => setSidebarOpen((_) => !_)}
+            aria-label="menu"
           >
             <Icon>menu</Icon>
           </IconBtn>

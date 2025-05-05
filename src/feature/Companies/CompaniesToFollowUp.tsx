@@ -151,6 +151,11 @@ export const CompaniesToFollowUp = () => {
           {
             head: (
               <Checkbox
+                slotProps={{
+                  input: {
+                    'aria-label': 'Sélectionner toutes les entreprises',
+                  },
+                }}
                 indeterminate={!allChecked && selectedCompaniesSet.size > 0}
                 checked={allChecked}
                 disabled={_companiesToFollowUp.result.isFetching}
@@ -161,6 +166,11 @@ export const CompaniesToFollowUp = () => {
             id: 'select',
             render: (_) => (
               <Checkbox
+                slotProps={{
+                  input: {
+                    'aria-label': "Sélectionner l'entreprise",
+                  },
+                }}
                 checked={selectedCompaniesSet.has(_.company.id)}
                 onClick={() => toggleSelectedCompany(_.company.id)}
               />
@@ -190,7 +200,7 @@ export const CompaniesToFollowUp = () => {
                     component="span"
                     sx={{
                       fontSize: (t) => styleUtils(t).fontSize.small,
-                      color: (t) => t.palette.text.disabled,
+                      color: (t) => t.palette.text.secondary,
                     }}
                   >
                     {_.company.siret}

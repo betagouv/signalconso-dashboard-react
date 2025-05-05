@@ -225,11 +225,11 @@ const ReportViewStandard = ({
             </ReportHeader>
             {!report.visibleToPro && (
               <div className="bg-yellow-100  border border-gray-700 mx-4 p-4 mb-4">
-                <h3 className="font-bold">
+                <h2 className="font-bold">
                   <ReportBlockTitle icon="visibility_off">
                     Signalement confidentiel
                   </ReportBlockTitle>
-                </h3>
+                </h2>
                 Ce signalement n'a pas été transmis à l'entreprise.
                 <br />
                 L'entreprise{' '}

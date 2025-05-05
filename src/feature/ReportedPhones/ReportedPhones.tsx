@@ -89,7 +89,7 @@ export const ReportedPhones = () => {
                   .map((_) => _ > config.reportsLimitForExport)
                   .getOrElse(false)}
               >
-                <IconBtn color="primary">
+                <IconBtn color="primary" aria-label="Exporter en excel">
                   <Icon>file_download</Icon>
                 </IconBtn>
               </ExportPhonesPopper>

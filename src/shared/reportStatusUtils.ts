@@ -2,16 +2,16 @@ import { ReportStatusPro, ReportUtils } from 'core/client/report/Report'
 
 import { ReportStatus } from 'core/client/report/Report'
 export const reportStatusColor = {
-  [ReportStatus.NA]: '#a1a1a1',
-  [ReportStatus.InformateurInterne]: '#a1a1a1',
-  [ReportStatus.TraitementEnCours]: '#e67e00',
-  [ReportStatus.Transmis]: '#e67e00',
-  [ReportStatus.NonConsulte]: '#3582A3FF',
-  [ReportStatus.MalAttribue]: '#3582A3FF',
-  [ReportStatus.PromesseAction]: '#4caf50',
-  [ReportStatus.Infonde]: '#4caf50',
-  [ReportStatus.ConsulteIgnore]: '#8B0000',
-  [ReportStatus.SuppressionRGPD]: '#a1a1a1',
+  [ReportStatus.NA]: '#767676',
+  [ReportStatus.InformateurInterne]: '#767676',
+  [ReportStatus.TraitementEnCours]: '#c75300',
+  [ReportStatus.Transmis]: '#c75300',
+  [ReportStatus.NonConsulte]: '#0003A2',
+  [ReportStatus.MalAttribue]: '#0003A2',
+  [ReportStatus.PromesseAction]: '#108a12',
+  [ReportStatus.Infonde]: '#BC0015',
+  [ReportStatus.ConsulteIgnore]: '#BC0015',
+  [ReportStatus.SuppressionRGPD]: '#767676',
 }
 
 export const reportStatusProColor = {

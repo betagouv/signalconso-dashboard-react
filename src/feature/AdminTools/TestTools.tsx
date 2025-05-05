@@ -1,4 +1,4 @@
-import { Box, Icon } from '@mui/material'
+import { Box, Icon, Tooltip } from '@mui/material'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { SendTestEmailParams } from 'core/client/admin/AdminClient'
 import { CleanWidePanel } from 'shared/Panel/simplePanels'
@@ -78,9 +78,14 @@ export const TestTools = () => {
                       >
                         {(() => {
                           const emailCodeDisplay = (
-                            <Txt color="disabled" size="small" block>
-                              {emailCode}
-                            </Txt>
+                            <div className="flex">
+                              <Icon color="disabled" sx={{ ml: 1, mr: 1 }}>
+                                key
+                              </Icon>
+                              <Txt color="hint" italic size="small" block>
+                                {emailCode}
+                              </Txt>
+                            </div>
                           )
                           try {
                             const { title, desc } = (m.testMails as any)[type][
@@ -108,18 +113,20 @@ export const TestTools = () => {
                         })()}
                       </Box>
                       <Box>
-                        <IconBtn
-                          color="primary"
-                          loading={_sendEmail.isPending}
-                          onClick={() =>
-                            _sendEmail.mutate({
-                              templateRef: emailCode,
-                              to: connectedUser.email,
-                            })
-                          }
-                        >
-                          <Icon>send</Icon>
-                        </IconBtn>
+                        <Tooltip title="Envoyer l'email de test">
+                          <IconBtn
+                            color="primary"
+                            loading={_sendEmail.isPending}
+                            onClick={() =>
+                              _sendEmail.mutate({
+                                templateRef: emailCode,
+                                to: connectedUser.email,
+                              })
+                            }
+                          >
+                            <Icon>send</Icon>
+                          </IconBtn>
+                        </Tooltip>
                       </Box>
                     </Box>
                   ))}
@@ -165,18 +172,25 @@ export const TestTools = () => {
                             {desc}
                           </Txt>
                         )}
-                        <Txt color="disabled" size="small" block>
-                          {code}
-                        </Txt>
+                        <div className="flex">
+                          <Icon color="disabled" sx={{ ml: 1, mr: 1 }}>
+                            key
+                          </Icon>
+                          <Txt color="hint" italic size="small" block>
+                            {code}
+                          </Txt>
+                        </div>
                       </Box>
                       <Box>
-                        <IconBtn
-                          color="primary"
-                          loading={_downloadTestPdf.isPending}
-                          onClick={() => _downloadTestPdf.mutate(code)}
-                        >
-                          <Icon>download</Icon>
-                        </IconBtn>
+                        <Tooltip title="Télécharger le PDF de test">
+                          <IconBtn
+                            color="primary"
+                            loading={_downloadTestPdf.isPending}
+                            onClick={() => _downloadTestPdf.mutate(code)}
+                          >
+                            <Icon>download</Icon>
+                          </IconBtn>
+                        </Tooltip>
                       </Box>
                     </Box>
                   )

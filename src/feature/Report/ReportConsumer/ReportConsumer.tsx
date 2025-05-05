@@ -76,7 +76,7 @@ export const ReportConsumer = ({ report, canEdit }: Props) => {
       >
         <ReportElementsGrid>
           {contactAgreement || (
-            <div className="font-bold sm:col-span-2 text-sm text-red-600 mb-2">
+            <div className="font-bold sm:col-span-2 text-sm text-red-700 mb-2">
               {m.reportConsumerWantToBeAnonymous}.
               <br />
               Ne pas divulguer ces informations à l'entreprise.

@@ -282,6 +282,7 @@ const Node = ({
     <div className="flex items-start">
       {canOpen ? (
         <IconBtn
+          aria-label={isOpen ? 'Replier' : 'Déplier'}
           color="primary"
           onClick={() => setIsOpen((_) => !_)}
           className={'!p-0 !bg-blue-100 hover:!bg-blue-300 !mr-2'}
@@ -291,9 +292,9 @@ const Node = ({
           </Icon>
         </IconBtn>
       ) : (
-        <IconBtn disabled className={'!p-0 !mr-2'}>
+        <div className={'!p-0 !mr-2 text-gray-400'}>
           <Icon>{n.isBlocking ? 'block' : 'forward'}</Icon>
-        </IconBtn>
+        </div>
       )}
       <div className="w-full">
         <div className="flex flex-col justify-center min-h-[42px]">

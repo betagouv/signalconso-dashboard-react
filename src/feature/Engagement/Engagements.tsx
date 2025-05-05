@@ -148,6 +148,13 @@ export const Engagements = () => {
             head: 'Terminer',
             render: (_) => (
               <Checkbox
+                slotProps={{
+                  input: {
+                    'aria-label': selectReport.has(_.id)
+                      ? 'Marquer comme non terminé'
+                      : 'Marquer comme terminé',
+                  },
+                }}
                 checked={selectReport.has(_.id)}
                 onChange={() => select(_)}
               />

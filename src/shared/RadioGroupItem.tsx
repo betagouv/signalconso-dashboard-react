@@ -16,6 +16,7 @@ export interface ScRadioGroupItemProps<T> extends Omit<BoxProps, 'title'> {
   inline?: boolean
   error?: boolean
   multiple?: boolean
+  ariaLabel?: string
 }
 
 export const ScRadioGroupItem = <T,>({
@@ -31,6 +32,7 @@ export const ScRadioGroupItem = <T,>({
   onClick,
   className,
   multiple,
+  ariaLabel,
   sx,
   ...rest
 }: ScRadioGroupItemProps<T>) => {
@@ -38,6 +40,7 @@ export const ScRadioGroupItem = <T,>({
   return (
     <Box
       role={multiple ? 'checkbox' : 'radio'}
+      aria-checked={!!selected}
       sx={{
         minHeight,
         display: 'flex',
@@ -112,6 +115,11 @@ export const ScRadioGroupItem = <T,>({
         />
       ) : (
         <Radio
+          slotProps={{
+            input: {
+              'aria-label': ariaLabel,
+            },
+          }}
           disabled={disabled}
           size={dense ? 'small' : undefined}
           checked={selected}

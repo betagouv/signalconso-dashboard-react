@@ -117,7 +117,7 @@ export const StatsReportsByRegion = () => {
                             {departmentsIndex![depNumber]}{' '}
                             <Box
                               component="span"
-                              sx={{ color: (t) => t.palette.text.disabled }}
+                              sx={{ color: (t) => t.palette.text.secondary }}
                             >
                               ({depNumber})
                             </Box>

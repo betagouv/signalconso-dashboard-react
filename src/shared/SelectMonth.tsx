@@ -15,6 +15,7 @@ export const SelectMonth = ({ value, onChange }: Props) => {
 
   return (
     <ScSelect
+      label={m.month}
       value={value}
       onChange={(x) => onChange(x.target.value as number)}
       style={{ margin: 0 }}

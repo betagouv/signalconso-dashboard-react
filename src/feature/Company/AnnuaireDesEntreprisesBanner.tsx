@@ -12,7 +12,7 @@ const ExternalLinkWithFavicon = ({
 
   return (
     <div className="flex items-center">
-      <img src={faviconUrl} alt="Favicon" className="w-4 h-4 mr-2" />
+      <img src={faviconUrl} alt="" className="w-4 h-4 mr-2" />
       <a
         href={href}
         target="_blank"

@@ -1,12 +1,10 @@
 import React from 'react'
 import {
+  Button,
   Dialog,
   DialogActions,
   DialogContent,
   DialogContentText,
-  DialogTitle,
-  Button,
-  Modal,
   Icon,
 } from '@mui/material'
 import pics from './contact.png'
@@ -34,7 +32,7 @@ export const SuccessModal: React.FC<SuccessModalProps> = ({
       case ReportResponseTypes.Accepted:
         return (
           <div>
-            <img src={pics} alt="Accepted" className="w-1/2 mx-auto" />
+            <img src={pics} alt="" className="w-1/2 mx-auto" />
             <div className="flex justify-center">
               <CheckCircleIcon
                 className="text-green-500"
@@ -47,7 +45,7 @@ export const SuccessModal: React.FC<SuccessModalProps> = ({
       case ReportResponseTypes.Rejected:
         return (
           <div>
-            <img src={pics} alt="Rejected" className="w-1/2 mx-auto" />
+            <img src={pics} alt="" className="w-1/2 mx-auto" />
             <div className="flex justify-center">
               <MarkEmailReadIcon
                 className="text-green-500"
@@ -61,7 +59,7 @@ export const SuccessModal: React.FC<SuccessModalProps> = ({
       case ReportResponseTypes.NotConcerned:
         return (
           <div>
-            <img src={pics} alt="NotConcerned" className="w-1/2 mx-auto" />
+            <img src={pics} alt="" className="w-1/2 mx-auto" />
             <div className="flex justify-center">
               <MarkEmailReadIcon
                 className="text-green-500"

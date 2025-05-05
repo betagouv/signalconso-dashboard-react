@@ -159,7 +159,11 @@ export const ReportResponseForm = forwardRef(
                   }}
                 >
                   {Object.values(ReportResponseTypes).map((responseType) => (
-                    <ScRadioGroupItem value={responseType} key={responseType}>
+                    <ScRadioGroupItem
+                      value={responseType}
+                      key={responseType}
+                      ariaLabel={m.reportResponseDesc[responseType]}
+                    >
                       {m.reportResponseDesc[responseType]}
                     </ScRadioGroupItem>
                   ))}
@@ -189,6 +193,7 @@ export const ReportResponseForm = forwardRef(
                         <ScRadioGroupItem
                           value={responseDetails}
                           key={responseDetails}
+                          ariaLabel={m.responseDetails[responseDetails]}
                         >
                           {m.responseDetails[responseDetails]}
                         </ScRadioGroupItem>

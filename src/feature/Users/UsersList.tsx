@@ -1,6 +1,6 @@
 import { Icon, Tooltip } from '@mui/material'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { Link, useNavigate } from '@tanstack/react-router'
+import { useNavigate } from '@tanstack/react-router'
 import { useCallback } from 'react'
 import { ScInput } from 'shared/ScInput'
 import { IconBtn, Txt } from '../../alexlibs/mui-extension'
@@ -32,6 +32,7 @@ import { UserAdminInvitationDialog } from './UserAdminInvitationDialog'
 import { UserAgentInvitationDialog } from './UserAgentInvitationDialog'
 import { UserAgentsImportDialog } from './UserAgentsImportDialog'
 import { UserDeleteButton } from './userDelete'
+import { IconBtnLink } from '../../alexlibs/mui-extension/IconBtnLink'
 
 export const AdminUsersList = () => <UsersList adminView />
 export const AgentUsersList = () => <UsersList />
@@ -157,16 +158,16 @@ const UsersList = ({ adminView }: Props) => {
         <>
           {!adminView && _.id && (
             <Tooltip title={m.authAttemptsHistory}>
-              <Link
+              <IconBtnLink
+                color="primary"
                 to="/users/auth-attempts"
                 search={{
                   email: _.email,
                 }}
+                aria-label="Voir l'historique de connexion"
               >
-                <IconBtn color="primary">
-                  <Icon>history</Icon>
-                </IconBtn>
-              </Link>
+                <Icon>history</Icon>
+              </IconBtnLink>
             </Tooltip>
           )}
         </>
