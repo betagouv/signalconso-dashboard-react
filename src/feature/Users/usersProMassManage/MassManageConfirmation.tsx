@@ -30,8 +30,8 @@ export function MassManageConfirmation({
               {choices.operation === 'Remove'
                 ? 'vont perdre leur accès'
                 : choices.operation === 'SetMember'
-                  ? 'vont être ajoutés en tant que membres'
-                  : "vont être ajoutés en tant qu'administrateurs"}
+                  ? 'vont recevoir un accès simple'
+                  : 'vont recevoir un accès administrateur'}
             </span>{' '}
             <span>
               aux <BigNumber>{choices.companiesIds.length}</BigNumber>{' '}
@@ -73,13 +73,13 @@ function buildAdditionalMessages(operation: MassManageOperation | null) {
       return [
         'Ils pourront consulter et répondre aux signalements de ces entreprises, mais ne pourront pas ajouter ou supprimer des utilisateurs.',
         "S'ils avaient un accès administrateur, ils seront rétrogradés.",
-        "S'ils avait déjà un accès membre, cela ne changera rien.",
+        "S'ils avaient déjà un accès simple, cela ne changera rien.",
       ]
     case 'SetAdmin':
       return [
         'Ils pourront consulter et répondre aux signalements de ces entreprises, et ajouter ou supprimer des utilisateurs.',
-        "S'ils avaient un accès membre, ils seront promus.",
-        "S'ils avait déjà un accès administrateur, cela ne changera rien.",
+        "S'ils avaient un accès simple, ils seront promus.",
+        "S'ils avaient déjà un accès administrateur, cela ne changera rien.",
       ]
     case null:
       // should not happen at this stage

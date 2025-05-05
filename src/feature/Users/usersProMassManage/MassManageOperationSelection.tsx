@@ -71,24 +71,24 @@ function Label({ operation }: { operation: MassManageOperation }) {
     switch (operation) {
       case 'SetAdmin':
         return {
-          title: "Définir en tant qu'administrateur",
+          title: 'Donner un accès administrateur',
           desc: [
             'Les utilisateurs auront un accès "administrateur" à ces entreprises.',
             'Ils pourront consulter et répondre aux signalements de ces entreprises.',
             <span className="underline">
               Ils pourront aussi gérer les accès des autres utilisateurs.
             </span>,
-            'S\'ils étaient déjà "membres", ils monteront au niveau "administrateur".',
+            'S\'ils avaient déjà un accès simple, ils monteront au niveau "administrateur".',
           ],
         }
       case 'SetMember':
         return {
-          title: 'Définir en tant que membre',
+          title: 'Donner un accès simple',
           desc: [
-            'Les utilisateurs auront un accès "membre" à ces entreprises.',
+            'Les utilisateurs auront un accès simple à ces entreprises.',
             'Ils pourront consulter et répondre aux signalements de ces entreprises.',
             'Ils ne pourront pas gérer les accès des autres utilisateurs.',
-            'S\'ils étaient déjà "administrateurs", ils redescendront au niveau "membre".',
+            'S\'ils avaient déjà un accès "administrateur", ils redescendront au niveau "accès simple".',
           ],
         }
       case 'Remove':
