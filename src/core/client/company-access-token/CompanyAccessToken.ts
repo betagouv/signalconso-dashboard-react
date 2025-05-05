@@ -8,7 +8,3 @@ export interface CompanyAccessToken {
   expirationDate: Date
   token?: string
 }
-
-export type CompanyAccessTokenWithEmail = CompanyAccessToken & {
-  emailedTo: string
-}

@@ -8,11 +8,11 @@ import { ProCompanies } from '../company/Company'
 export class AccessesMassManagementClient {
   constructor(private client: ApiClient) {}
 
-  readonly getCompaniesOfPro = () => {
+  readonly getMassManagementCompanies = () => {
     return this.client.get<ProCompanies>(`/accesses-mass-management/companies`)
   }
 
-  readonly getUsersOfPro = () => {
+  readonly getMassManagementUsers = () => {
     return this.client.get<MassManagementUsers>(
       `/accesses-mass-management/users`,
     )

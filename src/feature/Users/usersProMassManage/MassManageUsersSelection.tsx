@@ -1,8 +1,9 @@
 import { Button, Checkbox, TextField } from '@mui/material'
+import { useQuery } from '@tanstack/react-query'
+import { useApiContext } from 'core/context/ApiContext'
 import { useConnectedContext } from 'core/context/connected/connectedContext'
 import { regexp } from 'core/helper/regexp'
 import { User } from 'core/model'
-import { useUsersOfProQuery } from 'core/queryhooks/accessesMassManagementQueryHooks'
 import { Controller, useForm, UseFormReturn } from 'react-hook-form'
 import { CleanInvisiblePanel } from 'shared/Panel/simplePanels'
 import { ScDialog } from 'shared/ScDialog'
@@ -37,7 +38,11 @@ export function MassManageUsersSelection({
   allowInvitation: boolean
   onSubmit: OnSubmit
 }) {
-  const _query = useUsersOfProQuery()
+  const { api } = useApiContext()
+  const _query = useQuery({
+    queryKey: ['accessesMassManagement_getUsersOfPro'],
+    queryFn: () => api.secured.accessesMassManagement.getMassManagementUsers(),
+  })
   const data = _query.data
   return (
     <CleanInvisiblePanel loading={_query.isLoading}>

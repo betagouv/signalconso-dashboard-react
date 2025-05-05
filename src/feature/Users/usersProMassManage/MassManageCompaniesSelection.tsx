@@ -1,12 +1,13 @@
 import PlaceOutlinedIcon from '@mui/icons-material/PlaceOutlined'
 import { Checkbox } from '@mui/material'
+import { useQuery } from '@tanstack/react-query'
+import { useApiContext } from 'core/context/ApiContext'
 import {
   AccessLevel,
   CompanyWithAccess,
   flattenProCompanies,
   ProCompanies,
 } from 'core/model'
-import { useCompaniesOfProQuery } from 'core/queryhooks/accessesMassManagementQueryHooks'
 import { Controller, useForm, UseFormReturn } from 'react-hook-form'
 import { CleanInvisiblePanel } from 'shared/Panel/simplePanels'
 import { NextButton, TinyButton } from './usersProMassManageTinyComponents'
@@ -25,7 +26,12 @@ export function MassManageCompaniesSelection({
   choices: MassManageInputs
   onSubmit: OnSubmit
 }) {
-  const _query = useCompaniesOfProQuery()
+  const { api } = useApiContext()
+  const _query = useQuery({
+    queryKey: ['accessesMassManagement_getCompaniesOfPro'],
+    queryFn: () =>
+      api.secured.accessesMassManagement.getMassManagementCompanies(),
+  })
   const data = _query.data
   return (
     <CleanInvisiblePanel loading={_query.isLoading}>
