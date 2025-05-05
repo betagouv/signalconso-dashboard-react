@@ -7,7 +7,7 @@ import {
   MassManageOperation,
   massManageOperations,
 } from './usersProMassManagementConstants'
-import { NextButton } from './usersProMassManageTinyComponents'
+import { MassManageNextButton } from './usersProMassManageTinyComponents'
 
 type OnSubmit = (operation: MassManageOperation) => void
 
@@ -58,7 +58,9 @@ export function MassManageOperationSelection({
             />
           ))}
         </RadioGroup>
-        <NextButton disabled={form.watch('operation') === undefined} />
+        <MassManageNextButton
+          disabled={form.watch('operation') === undefined}
+        />
       </form>
     </CleanInvisiblePanel>
   )

@@ -1,6 +1,6 @@
 import { Button, Icon } from '@mui/material'
 
-export function TinyButton({
+export function MassManageTinyButton({
   label,
   onClick,
 }: {
@@ -19,7 +19,7 @@ export function TinyButton({
   )
 }
 
-export function NextButton({
+export function MassManageNextButton({
   onClick,
   disabled,
 }: {

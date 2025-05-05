@@ -10,7 +10,10 @@ import {
 } from 'core/model'
 import { Controller, useForm, UseFormReturn } from 'react-hook-form'
 import { CleanInvisiblePanel } from 'shared/Panel/simplePanels'
-import { NextButton, TinyButton } from './usersProMassManageTinyComponents'
+import {
+  MassManageNextButton,
+  MassManageTinyButton,
+} from './usersProMassManageTinyComponents'
 import { MassManageInputs } from './usersProMassManagementConstants'
 type FormShape = {
   selection: { [id: string]: boolean }
@@ -69,7 +72,7 @@ function Loaded({
       <div className="bg-gray-100 py-2 px-4 mb-4">
         <div className="flex gap-2 items-end justify-between mb-2">
           <div className="flex flex-col lg:flex-row gap-2 h-fit">
-            <TinyButton
+            <MassManageTinyButton
               label="Sélectionner tous"
               onClick={() => {
                 selectableIds?.forEach((id) => {
@@ -77,7 +80,7 @@ function Loaded({
                 })
               }}
             />
-            <TinyButton
+            <MassManageTinyButton
               label="Désélectionner tous"
               onClick={() => {
                 selectableIds?.forEach((id) => {
@@ -101,7 +104,7 @@ function Loaded({
           return <TopLevelRow key={company.company.id} {...{ company, form }} />
         })}
       </div>
-      <NextButton
+      <MassManageNextButton
         disabled={!isAtLeastOneSelected}
         onClick={form.handleSubmit(({ selection }) => {
           onSubmit(
@@ -157,7 +160,7 @@ function SecondLevelWrapper({
         <h3 className=" font-bold text-lg">
           {secondLevel.length} établissements secondaires
         </h3>
-        <TinyButton
+        <MassManageTinyButton
           label="Sélectionner tous"
           onClick={() => {
             selectableIds.forEach((id) => {
@@ -165,7 +168,7 @@ function SecondLevelWrapper({
             })
           }}
         />
-        <TinyButton
+        <MassManageTinyButton
           label="Désélectionner tous"
           onClick={() => {
             selectableIds.forEach((id) => {

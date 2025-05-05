@@ -7,7 +7,10 @@ import { User } from 'core/model'
 import { Controller, useForm, UseFormReturn } from 'react-hook-form'
 import { CleanInvisiblePanel } from 'shared/Panel/simplePanels'
 import { ScDialog } from 'shared/ScDialog'
-import { NextButton, TinyButton } from './usersProMassManageTinyComponents'
+import {
+  MassManageNextButton,
+  MassManageTinyButton,
+} from './usersProMassManageTinyComponents'
 import {
   MassManageInputs,
   MassManagementUsers,
@@ -128,13 +131,13 @@ function Loaded({
       <div className="bg-gray-100 py-2 px-4 mb-4">
         <div className="flex gap-2 items-end justify-between mb-2">
           <div className="flex gap-2 h-fit">
-            <TinyButton
+            <MassManageTinyButton
               label="Sélectionner tous"
               onClick={() => {
                 setAllSelectableTo(true)
               }}
             />
-            <TinyButton
+            <MassManageTinyButton
               label="Désélectionner tous"
               onClick={() => {
                 setAllSelectableTo(false)
@@ -165,7 +168,7 @@ function Loaded({
           return <RowExistingUser key={user.id} user={user} {...{ form }} />
         })}
       </div>
-      <NextButton disabled={!isAtLeastOneSelected} />
+      <MassManageNextButton disabled={!isAtLeastOneSelected} />
     </form>
   )
 }
@@ -347,7 +350,7 @@ function InviteButtonWithDialog({
         </div>
       }
     >
-      <TinyButton label="Inviter" />
+      <MassManageTinyButton label="Inviter" />
     </ScDialog>
   )
 }
