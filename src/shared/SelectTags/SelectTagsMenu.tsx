@@ -2,6 +2,7 @@ import {
   alpha,
   Icon,
   IconButton,
+  IconButtonProps,
   IconProps,
   Menu,
   MenuItem,
@@ -38,7 +39,8 @@ const TagButton = ({
   status?: 'active' | 'inactive' | 'default'
   children: string
   color: (t: Theme) => string
-} & Pick<IconProps, 'sx' | 'onClick'>) => {
+} & Pick<IconProps, 'sx' | 'onClick'> &
+  Pick<IconButtonProps, 'aria-label'>) => {
   const parsedColor =
     status === 'active' ? color : (t: Theme) => t.palette.text.disabled
   return (
@@ -115,6 +117,7 @@ export const SelectTagsMenu = ({
       {getSelectableTags().map((tag) => (
         <MenuItem key={tag}>
           <TagButton
+            aria-label="Inclure le tag"
             status={switchTagValue(tag, {
               excluded: 'inactive',
               included: 'active',
@@ -127,6 +130,7 @@ export const SelectTagsMenu = ({
             add
           </TagButton>
           <TagButton
+            aria-label="Exclure le tag"
             status={switchTagValue(tag, {
               excluded: 'active',
               included: 'inactive',

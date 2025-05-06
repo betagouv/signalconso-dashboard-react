@@ -212,7 +212,7 @@ export const PeriodPickerWithPredefinedRanges = ({
                 </ScButton>
               </div>
             </div>
-            <div className="border-l-2 border-gray-300">
+            <div role="menu" className="border-l-2 border-gray-300">
               {quickRanges.map((range, index) => (
                 <MenuItem key={index} onClick={() => handleQuickRange(range)}>
                   {range.label}

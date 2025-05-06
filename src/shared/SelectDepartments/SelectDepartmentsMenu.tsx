@@ -121,6 +121,11 @@ export const SelectDepartmentsMenu = withRegions(
           onClick={() => onSelectAll()}
         >
           <Checkbox
+            slotProps={{
+              input: {
+                'aria-label': 'Sélectionner tous les départements',
+              },
+            }}
             indeterminate={someDepartmentsSelected && !allDepartmentsSelected}
             checked={allDepartmentsSelected}
           />
@@ -142,6 +147,11 @@ export const SelectDepartmentsMenu = withRegions(
               }
             >
               <Checkbox
+                slotProps={{
+                  input: {
+                    'aria-label': 'Sélectionner la région',
+                  },
+                }}
                 indeterminate={atLeastOneChecked && !allChecked}
                 checked={allChecked}
               />
@@ -170,6 +180,11 @@ export const SelectDepartmentsMenu = withRegions(
                     onClick={() => onSelectDepartment(department.code)}
                   >
                     <Checkbox
+                      slotProps={{
+                        input: {
+                          'aria-label': 'Sélectionner le département',
+                        },
+                      }}
                       sx={css.cbDepartment}
                       checked={indexValues.has(department.code)}
                     />
