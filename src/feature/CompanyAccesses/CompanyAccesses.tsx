@@ -205,7 +205,7 @@ function CompanyAccessesLoaded({
               loading={_sendInvitation.isPending}
               onCreate={inviteNewUser}
             />
-            {config.showMassManage && (
+            {config.showMassManage && connectedUser.isPro && (
               <Button
                 variant="outlined"
                 startIcon={<Icon>people</Icon>}
