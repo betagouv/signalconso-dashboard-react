@@ -14,13 +14,20 @@ function readSeverity(severity?: string): Severity | null {
   return null
 }
 
+const isDemo = import.meta.env.VITE_APP_IS_DEMO === 'true'
+const isDev = import.meta.env.VITE_APP_NODE_ENV === 'development'
+
 export const config = {
+  // Once we do the normalization of user access (no more inheritance through headoffices)
+  // we intend to show the mass manage page, and remove the "Utilisateurs" page
+  showMassManage: isDev || isDemo,
+  showUtilisateursPage: true,
   isManuDev: import.meta.env.VITE_APP_IS_MANU_DEV === 'true',
   proConnectServer: import.meta.env.VITE_APP_PRO_CONNECT_URL,
   proConnectClientId: import.meta.env.VITE_APP_PRO_CONNECT_CLIENT_ID,
   enableProConnect: import.meta.env.VITE_APP_ENABLE_PRO_CONNECT === 'true',
-  isDev: import.meta.env.VITE_APP_NODE_ENV === 'development',
-  isDemo: import.meta.env.VITE_APP_IS_DEMO === 'true',
+  isDev,
+  isDemo,
   apiBaseUrl: noTrailingSlash(
     import.meta.env.VITE_APP_API_BASE_URL ?? 'http://localhost:9000',
   ),

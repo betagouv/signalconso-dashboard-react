@@ -89,6 +89,13 @@ export interface CompanyWithAccessLevel extends Company {
   level: AccessLevel
 }
 
+export type CompanyWithAccess = {
+  company: Company
+  access: {
+    level: AccessLevel
+  }
+}
+
 export type CompanyWithAccessAndCounts = {
   company: Company
   access: {
@@ -100,6 +107,14 @@ export type CompanyWithAccessAndCounts = {
   usersCount: number | undefined // undefined if your own access level isn't admin
 }
 
+export type ProCompanies = {
+  headOfficesAndSubsidiaries: {
+    headOffice: CompanyWithAccess
+    subsidiaries: CompanyWithAccess[]
+  }[]
+  loneSubsidiaries: CompanyWithAccess[]
+}
+
 export type ProCompaniesExtended = {
   headOfficesAndSubsidiaries: {
     headOffice: CompanyWithAccessAndCounts
@@ -108,6 +123,16 @@ export type ProCompaniesExtended = {
   loneSubsidiaries: CompanyWithAccessAndCounts[]
 }
 
+export function flattenProCompanies(
+  companies: ProCompanies,
+): CompanyWithAccess[] {
+  return [
+    ...companies.headOfficesAndSubsidiaries.flatMap(
+      ({ headOffice, subsidiaries }) => [headOffice, ...subsidiaries],
+    ),
+    ...companies.loneSubsidiaries,
+  ]
+}
 export function flattenProCompaniesExtended(
   companies: ProCompaniesExtended,
 ): CompanyWithAccessAndCounts[] {
