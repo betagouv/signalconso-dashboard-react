@@ -83,7 +83,7 @@ export const CleanInvisiblePanel = forwardRef(function (
   return (
     <div className={`mb-8 ${fullHeight ? 'h-full' : ''}`} ref={ref}>
       {loading ? (
-        <div className="min-h-[100px]">
+        <div className="min-h-[100px] bg-gray-100">
           <LinearProgress className="" />
         </div>
       ) : (

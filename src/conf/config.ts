@@ -15,6 +15,10 @@ function readSeverity(severity?: string): Severity | null {
 }
 
 export const config = {
+  // Once we do the normalization of user access (no more inheritance through headoffices)
+  // we intend to show the mass manage page, and remove the "Utilisateurs" page
+  showMassManage: false,
+  showUtilisateursPage: true,
   isManuDev: import.meta.env.VITE_APP_IS_MANU_DEV === 'true',
   proConnectServer: import.meta.env.VITE_APP_PRO_CONNECT_URL,
   proConnectClientId: import.meta.env.VITE_APP_PRO_CONNECT_CLIENT_ID,

@@ -1,4 +1,5 @@
 import {
+  Button,
   Icon,
   ListItemIcon,
   ListItemText,
@@ -196,15 +197,26 @@ function CompanyAccessesLoaded({
             </p>
           )}
         </div>
-
-        <div className="flex gap-2 shrink-0">
-          {canManageUsers && (
+      </div>
+      <div className="flex ml-auto gap-2 items-end justify-end mb-2">
+        {canManageUsers && (
+          <>
             <CompanyAccessCreateBtn
               loading={_sendInvitation.isPending}
               onCreate={inviteNewUser}
             />
-          )}
-        </div>
+            {config.showMassManage && (
+              <Button
+                variant="outlined"
+                startIcon={<Icon>people</Icon>}
+                href={'/gestion-des-acces-avancee'}
+                component={Link}
+              >
+                Gestion des accès avancée
+              </Button>
+            )}
+          </>
+        )}
       </div>
       <Datatable
         id="companyaccesses"
@@ -229,7 +241,9 @@ function EmailColumn({ accesses: _ }: { accesses: RowData }) {
       <div>
         {}
         {email && (
-          <span className={`font-bold ${isInvitation ? 'text-gray-500' : ''}`}>
+          <span
+            className={`font-bold ${isInvitation ? 'text-gray-500' : ''} break-all`}
+          >
             {email}
           </span>
         )}

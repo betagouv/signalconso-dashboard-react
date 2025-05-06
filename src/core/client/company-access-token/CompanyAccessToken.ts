@@ -8,7 +8,3 @@ export interface CompanyAccessToken {
   expirationDate: Date
   token?: string
 }
-
-export function getCompanyAccessTokenKind(token: CompanyAccessToken) {
-  return token.emailedTo ? 'email' : 'postal'
-}

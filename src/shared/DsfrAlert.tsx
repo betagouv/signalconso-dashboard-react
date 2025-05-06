@@ -3,6 +3,7 @@ import { ReactNode } from '@tanstack/react-router'
 import {
   colorDsfrErrorRed,
   colorDsfrInfoBlue,
+  colorDsfrSuccessGreen,
 } from 'alexlibs/mui-extension/color'
 
 // Imitates roughly https://www.systeme-de-design.gouv.fr/composants-et-modeles/composants/alerte
@@ -13,14 +14,23 @@ export function DsfrAlert({
 }: {
   title: ReactNode
   children: ReactNode
-  type?: 'info' | 'error'
+  type?: 'info' | 'error' | 'success'
 }) {
-  const color = type === 'info' ? colorDsfrInfoBlue : colorDsfrErrorRed
+  const color =
+    type === 'success'
+      ? colorDsfrSuccessGreen
+      : type === 'info'
+        ? colorDsfrInfoBlue
+        : colorDsfrErrorRed
   return (
     <div className="flex border" style={{ borderColor: color }}>
       <div className="py-4 px-2" style={{ backgroundColor: color }}>
         <Icon className="text-white">
-          {type === 'info' ? 'info' : 'dangerous'}
+          {type === 'success'
+            ? 'check_circle'
+            : type === 'info'
+              ? 'info'
+              : 'dangerous'}
         </Icon>
       </div>
       <div className="p-4">

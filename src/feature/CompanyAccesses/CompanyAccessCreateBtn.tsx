@@ -88,7 +88,7 @@ export const CompanyAccessCreateBtn = ({ loading, onCreate, title }: Props) => {
         color="primary"
         variant="contained"
       >
-        {title ?? m.invite}
+        {title ?? 'Ajouter un utilisateur'}
       </ScButton>
     </ScDialog>
   )

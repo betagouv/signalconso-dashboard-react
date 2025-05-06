@@ -9,6 +9,7 @@ import {
   UserClient,
   WebsiteClient,
 } from '.'
+import { AccessesMassManagementClient } from './accesses-mass-management/AccessesMassManagementClient'
 import { AccessesClient } from './accesses/AccessesClient'
 import { AdminClient } from './admin/AdminClient'
 import { ApiClient } from './ApiClient'
@@ -33,6 +34,7 @@ export class SecuredApiSdk {
   reportedPhone: ReportedPhoneClient
   subscription: SubscriptionClient
   company: CompanyClient
+  accessesMassManagement: AccessesMassManagementClient
   consumerEmailValidation: ConsumerEmailValidationClient
   authAttemptClient: AuthAttemptClient
   consumerBlacklist: ConsumerBlacklistClient
@@ -72,6 +74,7 @@ export class SecuredApiSdk {
     this.ipBlacklist = new IpBlacklistClient(this.client)
     this.stats = new StatsClient(this.client)
     this.companyAccess = new CompanyAccessClient(this.client)
+    this.accessesMassManagement = new AccessesMassManagementClient(this.client)
     this.companyAccessToken = new CompanyAccessTokenClient(this.client)
     this.reports = new ReportsClient(this.client)
     this.events = new EventClient(this.client)
