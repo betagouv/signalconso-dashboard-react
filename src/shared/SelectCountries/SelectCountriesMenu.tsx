@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { useEffect, useMemo } from 'react'
 
-import { alpha, Box, Checkbox, Menu } from '@mui/material'
+import { alpha, Box, Checkbox, Menu, MenuItem } from '@mui/material'
 import { ScOption } from 'core/helper/ScOption'
 import { makeSx } from '../../alexlibs/mui-extension'
 import { useSetState, UseSetState } from '../../alexlibs/react-hooks-lib'
@@ -142,11 +142,18 @@ export const SelectCountriesMenu = withRegions(
           }
 
           return [
-            <Box
+            <MenuItem
               sx={combineSx(css.menuItem, css.menuItemCategory)}
               onClick={handleSelectAll}
             >
               <Checkbox
+                slotProps={{
+                  input: {
+                    'aria-label': allSelected
+                      ? `Désélectionner ${countries.label}`
+                      : `Sélectionner ${countries.label}`,
+                  },
+                }}
                 sx={css.iconWidth}
                 indeterminate={someSelected && !allSelected}
                 checked={allSelected}
@@ -157,9 +164,9 @@ export const SelectCountriesMenu = withRegions(
               >
                 {countries.label}
               </Box>
-            </Box>,
+            </MenuItem>,
             countries.countries.map((country) => (
-              <Box
+              <MenuItem
                 key={country.code}
                 sx={combineSx(
                   css.menuItem,
@@ -168,6 +175,13 @@ export const SelectCountriesMenu = withRegions(
                 onClick={() => handleToggle(country)}
               >
                 <Checkbox
+                  slotProps={{
+                    input: {
+                      'aria-label': indexedValues.has(country.code)
+                        ? `Désélectionner ${country.name}`
+                        : `Sélectionner ${country.name}`,
+                    },
+                  }}
                   sx={combineSx(css.innerCheckbox, css.iconWidth)}
                   checked={indexedValues.has(country.code)}
                 />
@@ -175,7 +189,7 @@ export const SelectCountriesMenu = withRegions(
                   {countryToFlag(country.code)}
                 </Box>
                 <span>{country.name}</span>
-              </Box>
+              </MenuItem>
             )),
           ]
         })}

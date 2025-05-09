@@ -5,6 +5,7 @@ interface DialogInputRowProps {
   icon?: string
   label: string | ReactNode
   children: ReactNode
+  id?: string
 }
 
 interface DialogInputRowExtraProps {
@@ -15,6 +16,7 @@ export const DialogInputRow = ({
   icon,
   label,
   children,
+  id,
 }: DialogInputRowProps) => {
   return (
     <Box
@@ -29,13 +31,8 @@ export const DialogInputRow = ({
           alignItems: 'center',
         }}
       >
-        {/*{icon && (*/}
-        {/*  <Icon fontSize="small" sx={{*/}
-        {/*    color: t => t.palette.text.disabled,*/}
-        {/*    mr: 1*/}
-        {/*  }}>{icon}</Icon>*/}
-        {/*)}*/}
         <Box
+          id={id}
           sx={{
             display: 'flex',
             alignItems: 'center',

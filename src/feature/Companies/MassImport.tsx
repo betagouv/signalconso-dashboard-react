@@ -116,6 +116,7 @@ export const MassImport = ({ children }: MassImportProps) => {
           </>
           <DialogInputRow label="SIREN">
             <ScInput
+              placeholder="SIREN"
               error={!!errors.siren}
               helperText={errors.siren?.message ?? ' '}
               fullWidth
@@ -127,12 +128,21 @@ export const MassImport = ({ children }: MassImportProps) => {
               })}
             />
           </DialogInputRow>
-          <DialogInputRow label="Siège social uniquement">
+          <DialogInputRow
+            label="Siège social uniquement"
+            id="siege_social_uniquement"
+          >
             <Controller
               name="onlyHeadOffice"
               control={control}
               render={({ field: { ref, ...field } }) => (
-                <Checkbox checked={field.value} onChange={field.onChange} />
+                <Checkbox
+                  slotProps={{
+                    input: { 'aria-labelledby': 'siege_social_uniquement' },
+                  }}
+                  checked={field.value}
+                  onChange={field.onChange}
+                />
               )}
             />
           </DialogInputRow>
@@ -169,6 +179,7 @@ export const MassImport = ({ children }: MassImportProps) => {
               control={control}
               render={({ field: { ref, ...field } }) => (
                 <ScSelect
+                  label="Niveau"
                   value={field.value}
                   onChange={field.onChange}
                   fullWidth
