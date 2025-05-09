@@ -119,7 +119,12 @@ export const SelectReportAssociation = ({
             onChange={setSelectedAssociation}
           >
             {objectKeysUnsafe(AssociationType).map((_) => (
-              <ScRadioGroupItem key={_} value={_} title={m.attachToType[_]} />
+              <ScRadioGroupItem
+                ariaLabel={`Sélectionner ${m.attachToType[_]}`}
+                key={_}
+                value={_}
+                title={m.attachToType[_]}
+              />
             ))}
           </ScRadioGroup>
 

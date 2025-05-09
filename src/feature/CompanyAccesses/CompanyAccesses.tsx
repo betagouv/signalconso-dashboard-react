@@ -339,6 +339,7 @@ function LevelColumnEditable({
         >
           {companyAccessLevelsCreatable.map((level) => (
             <ScRadioGroupItem
+              ariaLabel={`Sélectionner ${translateCompanyAccessLevel(level)}`}
               title={translateCompanyAccessLevel(level)}
               description={m.companyAccessLevelDescription[level]}
               value={level}

@@ -64,7 +64,11 @@ export const ScHeader = () => {
         <div className="flex items-center ml-auto">
           {isMobileWidth ? (
             <>
-              <IconBtn aria-haspopup="true" onClick={handleClick}>
+              <IconBtn
+                aria-label="Ouvrir le menu d'entête"
+                aria-haspopup="true"
+                onClick={handleClick}
+              >
                 <Icon>menu</Icon>
               </IconBtn>
               <Menu

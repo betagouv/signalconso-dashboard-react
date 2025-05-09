@@ -71,6 +71,13 @@ export const DatatableColumnToggle = ({
               }
             >
               <Checkbox
+                slotProps={{
+                  input: {
+                    'aria-label': checked
+                      ? `Masquer la colonne ${col.head}`
+                      : `Afficher la colonne ${col.head}`,
+                  },
+                }}
                 sx={{
                   pl: 0,
                   pb: 0.25,

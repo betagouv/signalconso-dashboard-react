@@ -57,6 +57,7 @@ export const SelectCountries = forwardRef(
             endAdornment: (
               <>
                 <IconButton
+                  aria-label="Désélectionner tous les pays"
                   size="small"
                   onClick={(_) => stopPropagation(clear)(_)}
                   sx={{
