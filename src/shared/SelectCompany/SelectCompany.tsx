@@ -43,6 +43,7 @@ export const SelectCompany = ({
           endAdornment: (
             <>
               <IconBtn
+                aria-label="Vider"
                 onClick={() => {
                   setInputValue(undefined)
                   setInputSiret(undefined)
@@ -57,6 +58,7 @@ export const SelectCompany = ({
                 flexItem
               />
               <IconBtn
+                aria-label="Rechercher"
                 loading={_company.isLoading}
                 color="primary"
                 sx={{ mr: -1.5 }}

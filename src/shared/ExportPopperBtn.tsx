@@ -2,8 +2,9 @@ import {
   Box,
   CircularProgress,
   Icon,
-  Menu,
   MenuItem,
+  MenuList,
+  Popover,
   Tooltip,
 } from '@mui/material'
 import { useMutation, useQuery } from '@tanstack/react-query'
@@ -28,7 +29,6 @@ import { HostReportCountSearch } from '../core/client/website/Website'
 import { useApiContext } from '../core/context/ApiContext'
 import { useI18n } from '../core/i18n'
 import { PaginatedFilters } from '../core/model'
-import { config } from '../conf/config'
 
 interface Props {
   className?: string
@@ -124,7 +124,7 @@ const ExportPopperBtn = ({
           })}
         </span>
       </Tooltip>
-      <Menu
+      <Popover
         keepMounted
         open={!!anchorEl}
         onClose={handleClose}
@@ -181,63 +181,65 @@ const ExportPopperBtn = ({
             sx={{
               textAlign: 'center',
               m: 1,
-              color: (t) => t.palette.text.disabled,
+              color: (t) => t.palette.text.secondary,
             }}
           >
             {m.noExport}
           </Box>
         )}
-        {files
-          ?.filter((_) => _.kind === fileType)
-          .map((file) => (
-            <MenuItem
-              sx={{
-                '&:not(:last-of-type)': {
-                  borderBottom: (t) => '1px solid ' + t.palette.divider,
-                },
-              }}
-              dense
-              key={file.id}
-            >
-              {fnSwitch(file.status, {
-                [AsyncFileStatus.Successed]: (_) => (
-                  <FileItem
-                    onClick={() => window.open(file.url, '_blank')}
-                    icon={
-                      <Icon sx={{ color: (t) => t.palette.success.light }}>
-                        file_download_done
-                      </Icon>
-                    }
-                  >
-                    <ExportLabel file={file} />
-                    <Txt color="hint">Cliquez pour télécharger</Txt>
-                  </FileItem>
-                ),
-                [AsyncFileStatus.Loading]: (_) => (
-                  <FileItem icon={<CircularProgress size={20} />}>
-                    <ExportLabel file={file} />
-                    <Txt color="hint">Chargement, veuillez patienter...</Txt>
-                  </FileItem>
-                ),
-                [AsyncFileStatus.Failed]: (_) => (
-                  <FileItem
-                    icon={
-                      <Icon sx={{ color: (t) => t.palette.error.main }}>
-                        error_outline
-                      </Icon>
-                    }
-                  >
-                    <ExportLabel file={file} />
-                    <Txt color="hint">
-                      Erreur lors de l'export, veuillez générer un nouvel
-                      export.
-                    </Txt>
-                  </FileItem>
-                ),
-              })}
-            </MenuItem>
-          ))}
-      </Menu>
+        <MenuList>
+          {files
+            ?.filter((_) => _.kind === fileType)
+            .map((file) => (
+              <MenuItem
+                sx={{
+                  '&:not(:last-of-type)': {
+                    borderBottom: (t) => '1px solid ' + t.palette.divider,
+                  },
+                }}
+                dense
+                key={file.id}
+              >
+                {fnSwitch(file.status, {
+                  [AsyncFileStatus.Successed]: (_) => (
+                    <FileItem
+                      onClick={() => window.open(file.url, '_blank')}
+                      icon={
+                        <Icon sx={{ color: (t) => t.palette.success.light }}>
+                          file_download_done
+                        </Icon>
+                      }
+                    >
+                      <ExportLabel file={file} />
+                      <Txt color="hint">Cliquez pour télécharger</Txt>
+                    </FileItem>
+                  ),
+                  [AsyncFileStatus.Loading]: (_) => (
+                    <FileItem icon={<CircularProgress size={20} />}>
+                      <ExportLabel file={file} />
+                      <Txt color="hint">Chargement, veuillez patienter...</Txt>
+                    </FileItem>
+                  ),
+                  [AsyncFileStatus.Failed]: (_) => (
+                    <FileItem
+                      icon={
+                        <Icon sx={{ color: (t) => t.palette.error.main }}>
+                          error_outline
+                        </Icon>
+                      }
+                    >
+                      <ExportLabel file={file} />
+                      <Txt color="hint">
+                        Erreur lors de l'export, veuillez générer un nouvel
+                        export.
+                      </Txt>
+                    </FileItem>
+                  ),
+                })}
+              </MenuItem>
+            ))}
+        </MenuList>
+      </Popover>
     </>
   )
 }

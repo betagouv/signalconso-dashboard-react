@@ -17,6 +17,11 @@ export const ScMenuItem = <T,>({
   return (
     <MenuItem {...props} value={'' + value}>
       <Checkbox
+        slotProps={{
+          input: {
+            'aria-label': 'Sélectionner le status',
+          },
+        }}
         size="small"
         style={{ paddingLeft: 0, paddingTop: 0, paddingBottom: 0 }}
         checked={checked}

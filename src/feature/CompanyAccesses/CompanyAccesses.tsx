@@ -205,7 +205,7 @@ function CompanyAccessesLoaded({
               loading={_sendInvitation.isPending}
               onCreate={inviteNewUser}
             />
-            {config.showMassManage && (
+            {config.showMassManage && connectedUser.isPro && (
               <Button
                 variant="outlined"
                 startIcon={<Icon>people</Icon>}
@@ -339,6 +339,7 @@ function LevelColumnEditable({
         >
           {companyAccessLevelsCreatable.map((level) => (
             <ScRadioGroupItem
+              ariaLabel={`Sélectionner ${translateCompanyAccessLevel(level)}`}
               title={translateCompanyAccessLevel(level)}
               description={m.companyAccessLevelDescription[level]}
               value={level}

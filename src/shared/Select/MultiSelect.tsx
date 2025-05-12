@@ -96,6 +96,11 @@ const InnerScMultiSelect = <T extends E[], E extends string>(
             onClickCapture={(e) => stopPropagation(toggleAll)(e)}
           >
             <Checkbox
+              slotProps={{
+                input: {
+                  'aria-label': 'Sélectionner tous les status',
+                },
+              }}
               checked={allChecked}
               indeterminate={!allChecked && someValuesSelected}
               size="small"
