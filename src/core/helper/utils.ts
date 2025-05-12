@@ -1,5 +1,5 @@
 import { ApiError } from 'core/client/ApiClient'
-import format from 'date-fns/format'
+import { format } from 'date-fns'
 import { ScOption } from './ScOption'
 
 export type Index<T> = { [key: string]: T }

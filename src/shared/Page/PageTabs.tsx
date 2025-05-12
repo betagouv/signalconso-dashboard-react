@@ -49,7 +49,10 @@ export const PageTabs = ({ children }: Props) => {
   )
 }
 
-interface PageTabProps<TRouter extends RegisteredRouter = RegisteredRouter, TOptions = unknown> extends TabProps {
+interface PageTabProps<
+  TRouter extends RegisteredRouter = RegisteredRouter,
+  TOptions = unknown,
+> extends TabProps {
   label?: string
   icon?: string | React.ReactElement
   disabled?: boolean
