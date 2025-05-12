@@ -2,6 +2,7 @@ import { Tab, TabProps, Tabs } from '@mui/material'
 import * as React from 'react'
 import { ReactElement, useMemo } from 'react'
 import {
+  RegisteredRouter,
   useLocation,
   useNavigate,
   useRouter,
@@ -48,19 +49,19 @@ export const PageTabs = ({ children }: Props) => {
   )
 }
 
-interface PageTabProps<TOptions = unknown> extends TabProps {
+interface PageTabProps<TRouter extends RegisteredRouter = RegisteredRouter, TOptions = unknown> extends TabProps {
   label?: string
   icon?: string | React.ReactElement
   disabled?: boolean
   // routing typesafety
   // https://tanstack.com/router/latest/docs/framework/react/guide/type-utilities
-  navigateOptions: ValidateNavigateOptions<TOptions>
+  navigateOptions: ValidateNavigateOptions<TRouter, TOptions>
 }
 
-export function PageTab<TOptions>({
+export function PageTab<TRouter extends RegisteredRouter, TOptions>({
   navigateOptions,
   ...props
-}: PageTabProps<TOptions>) {
+}: PageTabProps<TRouter, TOptions>) {
   const navigate = useNavigate()
   return <Tab {...props} onClick={() => navigate(navigateOptions)} />
 }
