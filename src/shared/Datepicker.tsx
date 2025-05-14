@@ -3,7 +3,7 @@ import {
   TextField,
   TextFieldProps,
 } from '@mui/material'
-import { zonedTimeToUtc } from 'date-fns-tz'
+import { TZDate } from '@date-fns/tz'
 import React, { useEffect, useState } from 'react'
 
 interface DatepickerProps extends Omit<TextFieldProps, 'onChange'> {
@@ -37,7 +37,7 @@ export const Datepicker = ({
           timeOfDay === 'startOfDay' ? '00:00:00.000' : '23:59:59.999'
         }`
         const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone
-        const utcDate = zonedTimeToUtc(dateAndTime, userTimeZone)
+        const utcDate = new TZDate(dateAndTime, userTimeZone)
         onChange(utcDate)
       } else {
         onChange(undefined)

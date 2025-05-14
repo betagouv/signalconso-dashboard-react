@@ -8,7 +8,7 @@ import {
   subMonths,
   subYears,
 } from 'date-fns'
-import format from 'date-fns/format'
+import { format } from 'date-fns'
 import { useEffect, useState } from 'react'
 import { useConnectedContext } from '../core/context/connected/connectedContext'
 import { useI18n } from '../core/i18n'

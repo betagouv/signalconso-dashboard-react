@@ -1,7 +1,6 @@
 import { Box, BoxProps } from '@mui/material'
 import { addDays, subDays } from 'date-fns'
 import { useI18n } from '../core/i18n'
-import { Datepicker } from './Datepicker'
 import { Datetimepicker } from './DatetimePicker'
 
 interface DatepickerProps extends Omit<BoxProps, 'onChange'> {
