@@ -19,7 +19,7 @@ import {
 } from '../../core/client/company-access/CompanyAccess'
 import { useConnectedContext } from '../../core/context/connected/connectedContext'
 import { useToast } from '../../core/context/toast/toastContext'
-import { isDefined, siretToSiren, toQueryString } from '../../core/helper'
+import { isDefined, toQueryString } from '../../core/helper'
 import { useI18n } from '../../core/i18n'
 import {
   CompanyAccessToken,
@@ -46,7 +46,6 @@ type RowData =
       userId: Id
       level: CompanyAccessLevel
       editable: boolean
-      isHeadOffice: boolean
     }
   | ({
       kind: 'invitation'
@@ -187,15 +186,6 @@ function CompanyAccessesLoaded({
             Les personnes suivantes peuvent consulter et répondre aux
             signalements de l'établissement {company.siret}.
           </p>
-
-          {company.isHeadOffice && (
-            <p className="">
-              Comme c'est un <strong>siège social</strong>, ils auront aussi
-              accès aux signalements de tous les établissements qui y sont
-              rattachés (i.e. dont le SIRET commence par{' '}
-              {siretToSiren(company.siret)}).
-            </p>
-          )}
         </div>
       </div>
       <div className="flex ml-auto gap-2 items-end justify-end mb-2">
@@ -205,7 +195,7 @@ function CompanyAccessesLoaded({
               loading={_sendInvitation.isPending}
               onCreate={inviteNewUser}
             />
-            {config.showMassManage && connectedUser.isPro && (
+            {connectedUser.isPro && (
               <Button
                 variant="outlined"
                 startIcon={<Icon>people</Icon>}
@@ -235,7 +225,6 @@ function EmailColumn({ accesses: _ }: { accesses: RowData }) {
   const isInvitation = _.kind === 'invitation'
   const email = getEmail(_)
   const isCurrentUser = connectedUser.email === email
-  const isHeadOffice = _.kind === 'actual_access' && _.isHeadOffice
   return (
     <>
       <div>
@@ -248,9 +237,6 @@ function EmailColumn({ accesses: _ }: { accesses: RowData }) {
           </span>
         )}
         {isCurrentUser && <span className="text-gray-500"> ({m.you})</span>}
-        {isHeadOffice && (
-          <span className="text-gray-500"> (via le siège social)</span>
-        )}
       </div>
       {isInvitation ? (
         _.subkind === 'by_post' ? (
@@ -562,7 +548,6 @@ function mergeData(
       level: _.level,
       userId: _.userId,
       editable: _.editable,
-      isHeadOffice: _.isHeadOffice,
     })),
     ...(companyAccessesTokens ?? []).map((_) => ({
       kind: 'invitation' as const,
