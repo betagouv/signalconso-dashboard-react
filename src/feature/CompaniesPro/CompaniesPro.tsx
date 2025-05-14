@@ -284,11 +284,6 @@ function RowContent({
               business
             </Icon>
             <b className="">Siège social</b>
-            <span className="">
-              {' '}
-              : Les utilisateurs de cet établissement ont accès à tous ses
-              établissements secondaires
-            </span>
           </span>
         </p>
       )}
