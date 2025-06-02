@@ -56,7 +56,7 @@ const ProConnectButton = ({ startProConnect }: Props) => {
         }}
         aria-label={"S'identifier avec ProConnect"}
       >
-        <span className="absolute w-px h-px p-0 m-[-1px] overflow-hidden whitespace-nowrap border-0">
+        <span className="absolute w-px h-px p-0 -m-px overflow-hidden whitespace-nowrap border-0">
           S'identifier avec ProConnect
         </span>
       </ScButton>

@@ -209,7 +209,7 @@ function RowContent({
   const disabled = shouldBeDisabled(companyWithAccess)
   return (
     <div
-      className={`border-t ${disabled ? 'bg-gray-100 border-gray-300 text-gray-500 border-x' : 'bg-white border-gray-400 '} last:border-b-1 ${hasSecondLevel ? 'border-b-1' : ''} ${isTopLevel ? 'px-2 py-3' : 'p-1 py-2'}`}
+      className={`border-t ${disabled ? 'bg-gray-100 border-gray-300 text-gray-500 border-x' : 'bg-white border-gray-400 '} last:border-b ${hasSecondLevel ? 'border-b' : ''} ${isTopLevel ? 'px-2 py-3' : 'p-1 py-2'}`}
     >
       <div className="flex gap-2 justify-between">
         <div className={` ${isTopLevel ? 'mx-6' : 'mx-2'}`}>
@@ -219,7 +219,7 @@ function RowContent({
             render={({ field: { onChange, onBlur, value, ref } }) => {
               return (
                 <Checkbox
-                  className="!p-0 "
+                  className="p-0! "
                   disabled={disabled}
                   checked={value}
                   {...{ onBlur, onChange }}
@@ -229,22 +229,22 @@ function RowContent({
             }}
           />
         </div>
-        <div className="flex-grow lg:contents">
+        <div className="grow lg:contents">
           <p className={`w-34`}>{company.siret}</p>
-          <div className="flex-grow">
+          <div className="grow">
             {company.name}
             {company.isHeadOffice ? (
               <span className="text-green-800 text-sm"> Siège social</span>
             ) : null}
           </div>
           {disabled && (
-            <span className="text-sm flex-grow">
+            <span className="text-sm grow">
               {' '}
               vous n'êtes pas administrateur
             </span>
           )}
           <div className="">
-            <PlaceOutlinedIcon className="!text-[1.1em] -mt-0.5" />
+            <PlaceOutlinedIcon className="text-[1.1em]! -mt-0.5" />
             {company.address.postalCode}
           </div>
         </div>

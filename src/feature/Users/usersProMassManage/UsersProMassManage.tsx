@@ -42,7 +42,7 @@ export function AccessesManagementPro() {
               de <b>un ou plusieurs utilisateurs</b> à{' '}
               <b>une ou plusieurs entreprises</b>, en quelques clics.
             </p>
-            <div className="flex-shrink-0">
+            <div className="shrink-0">
               <Button
                 variant="contained"
                 onClick={wizard.start}
