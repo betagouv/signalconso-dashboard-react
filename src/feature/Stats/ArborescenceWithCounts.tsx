@@ -285,14 +285,14 @@ const Node = ({
           aria-label={isOpen ? 'Replier' : 'Déplier'}
           color="primary"
           onClick={() => setIsOpen((_) => !_)}
-          className={'!p-0 !bg-blue-100 hover:!bg-blue-300 !mr-2'}
+          className={'p-0! bg-blue-100! hover:bg-blue-300! mr-2!'}
         >
           <Icon style={{ fontSize: isCategory ? '1.3em' : undefined }}>
             {isOpen ? 'keyboard_arrow_down' : 'keyboard_arrow_right'}
           </Icon>
         </IconBtn>
       ) : (
-        <div className={'!p-0 !mr-2 text-gray-400'}>
+        <div className={'p-0! mr-2! text-gray-400'}>
           <Icon>{n.isBlocking ? 'block' : 'forward'}</Icon>
         </div>
       )}

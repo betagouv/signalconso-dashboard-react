@@ -142,7 +142,7 @@ export const Datatable = <T,>({
             headerMarginBottom ? 'mb-2' : ''
           }`}
         >
-          <div className="flex items-center flex-grow">{headerMain}</div>
+          <div className="flex items-center grow">{headerMain}</div>
           <div className="whitespace-nowrap flex gap-2">
             {actions}
             {configurableColumns && (
@@ -181,7 +181,7 @@ export const Datatable = <T,>({
                   >
                     {sort && (sort.sortableColumns?.includes(_.id) ?? true) ? (
                       <TableSortLabel
-                        className="!text-scbluefrance !underline"
+                        className="text-scbluefrance! underline!"
                         active={sort.sortBy === _.id}
                         direction={sort.sortBy === _.id ? sort.orderBy : 'asc'}
                         onClick={() => {

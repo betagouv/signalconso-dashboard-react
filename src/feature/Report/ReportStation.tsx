@@ -21,7 +21,7 @@ export function ReportStationPro({ station }: { station: string }) {
 function StationValue({ station }: { station: string }) {
   return (
     <span>
-      <Icon fontSize="small" className="mb-[-3px] mr-1 ml-[-1px] ">
+      <Icon fontSize="small" className="mb-[-3px] mr-1 -ml-px ">
         subway
       </Icon>
       {station}

@@ -282,7 +282,7 @@ function ReportClosedLabel({
   closedReason: ReportClosedReason
 }) {
   return (
-    <div className="flex items-center justify-center bg-[#e3e3fd]  p-2">
+    <div className="flex items-center justify-center bg-sclightpurple  p-2">
       {(() => {
         switch (closedReason.kind) {
           case 'suppression_rgpd':
@@ -451,7 +451,7 @@ function Header({
         )}
       </div>
       {closedReason && (
-        <div className="flex items-center justify-center bg-[#e3e3fd]  p-2">
+        <div className="flex items-center justify-center bg-sclightpurple  p-2">
           <ReportClosedLabel closedReason={closedReason} />
         </div>
       )}
@@ -503,5 +503,5 @@ function Consumer({ report }: { report: Report }) {
 }
 
 function HorizontalLine() {
-  return <hr className="h-[1px] my-4 bg-gray-300 border-0 rounded" />
+  return <hr className="h-px my-4 bg-gray-300 border-0 rounded" />
 }

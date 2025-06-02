@@ -41,7 +41,7 @@ export function AlbertCompanyProblems({ companyId }: { companyId: string }) {
 
           {!query.data && !query.isFetching && (
             <Button
-              className="!mt-2"
+              className="mt-2!"
               variant="outlined"
               size="small"
               onClick={() => {

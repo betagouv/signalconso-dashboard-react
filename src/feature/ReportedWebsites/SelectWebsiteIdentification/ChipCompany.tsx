@@ -21,7 +21,7 @@ export const ChipCompany = ({ company, ...props }: Props) => {
         }}
         label={
           <Box sx={{ mx: 0.5 }}>
-            <div className="flex flex-grow">
+            <div className="flex grow">
               <Txt
                 block
                 truncate

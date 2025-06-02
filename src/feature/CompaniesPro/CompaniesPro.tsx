@@ -249,7 +249,7 @@ function RowContent({
               />
             }
             labelPlacement="end"
-            className="!m-0 !flex !gap-1 !lg:text-right lg:flex-row-reverse"
+            className="m-0! flex! gap-1! !lg:text-right lg:flex-row-reverse"
             label={
               <span>
                 {isTopLevel ? 'Être notifié par email' : 'Notifié par email'}
@@ -320,11 +320,11 @@ function SecondLevelAccordion({
           },
         }}
         disabled={secondLevel.length === 0}
-        className="border border-solid border-gray-400 border-t-0 !rounded-t-none"
+        className="border border-solid border-gray-400 border-t-0 rounded-t-none!"
       >
         <AccordionSummary
           expandIcon={<Icon className=" mr-1">expand_more</Icon>}
-          className="!bg-gray-200 hover:!bg-gray-300 font-bold  !flex-row-reverse !flex-gap-20   "
+          className="bg-gray-200! hover:bg-gray-300! font-bold  flex-row-reverse! !flex-gap-20   "
         >
           <span className="flex justify-between gap-2 w-full">
             <span>{secondLevel.length} établissements secondaires</span>

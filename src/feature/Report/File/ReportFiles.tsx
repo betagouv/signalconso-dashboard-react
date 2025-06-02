@@ -54,7 +54,7 @@ export const ReportFiles = ({
 
   const [innerFiles, setInnerFiles] = useState<UploadedFile[]>()
   const { m } = useI18n()
-  const attachmentRef = useRef<any>()
+  const attachmentRef = useRef<any>(undefined)
   const { connectedUser } = useConnectedContext()
 
   useEffect(() => {

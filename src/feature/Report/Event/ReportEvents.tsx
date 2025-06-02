@@ -51,8 +51,8 @@ const ReportEventComponent = ({
   const { formatDate, formatTime } = useI18n()
 
   return (
-    <tr className="text-base border-b-[1px] last:border-b-0 border-solid border-0 border-gray-300">
-      <td className="p-2 w-[6.5rem]">
+    <tr className="text-base border-b last:border-b-0 border-solid border-0 border-gray-300">
+      <td className="p-2 w-26">
         <p className="font-bold">
           {formatDate(eventWithUser.event.creationDate)}{' '}
           <span className=" font-normal text-gray-500">
@@ -67,7 +67,7 @@ const ReportEventComponent = ({
         {translateEventAction(eventWithUser.event.action)}
         {eventWithUser.user && (
           <div className="text-sm text-gray-500">
-            <Icon className="!text-sm">person</Icon>
+            <Icon className="text-sm!">person</Icon>
             &nbsp;
             <span className="">
               <UserNameLabel

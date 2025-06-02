@@ -4,7 +4,7 @@ export const useInterval = <F extends (...args: unknown[]) => void>(
   callback: F,
   ms: number,
 ) => {
-  const savedCallback = useRef<F>()
+  const savedCallback = useRef<F>(undefined)
 
   useEffect(() => {
     savedCallback.current = callback

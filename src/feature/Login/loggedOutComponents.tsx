@@ -47,7 +47,7 @@ export function DashboardTitle({
           className="no-underline mr-4"
           aria-label="Retour à l'écran d'accueil"
         >
-          <Icon className="align-top !text-3xl">arrow_back</Icon>
+          <Icon className="align-top text-3xl!">arrow_back</Icon>
         </Link>
       )}
       <span>SignalConso</span>{' '}
