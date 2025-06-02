@@ -184,7 +184,7 @@ function RowWrapper({
 }) {
   return (
     <div
-      className={`border-t ${disabled ? 'bg-gray-100 border-gray-300 text-gray-500 border-x' : 'bg-white border-gray-400'} last:border-b-1 px-2 py-3`}
+      className={`border-t ${disabled ? 'bg-gray-100 border-gray-300 text-gray-500 border-x' : 'bg-white border-gray-400'} last:border-b px-2 py-3`}
     >
       <div className="flex gap-2 items-center">
         <div className={`mx-6 h-fit`}>{checkbox}</div>
@@ -198,7 +198,7 @@ function RowToInvite({ email, form }: { email: string; form: Form }) {
   return (
     <RowWrapper
       disabled={false}
-      checkbox={<Checkbox className="!p-0 " disabled checked />}
+      checkbox={<Checkbox className="p-0! " disabled checked />}
     >
       <div>
         <p>{email}</p>
@@ -213,7 +213,7 @@ function RowToInvite({ email, form }: { email: string; form: Form }) {
               )
             }}
             size="small"
-            className="!py-0 !-mt-0.5"
+            className="py-0! -mt-0.5!"
           >
             annuler
           </Button>
@@ -236,7 +236,7 @@ function RowExistingUser({ user, form }: { user: User; form: Form }) {
           render={({ field: { onChange, onBlur, value, ref } }) => {
             return (
               <Checkbox
-                className="!p-0 "
+                className="p-0! "
                 disabled={disabled}
                 checked={value}
                 {...{ onBlur, onChange }}
@@ -271,7 +271,7 @@ function RowInvited({ email, form }: { email: string; form: Form }) {
           render={({ field: { onChange, onBlur, value, ref } }) => {
             return (
               <Checkbox
-                className="!p-0 "
+                className="p-0! "
                 checked={value}
                 {...{ onBlur, onChange }}
                 slotProps={{ input: { ref } }}
@@ -327,7 +327,7 @@ function InviteButtonWithDialog({
             sera envoyée par email.
           </p>
           <TextField
-            className="!mb-4"
+            className="mb-4!"
             size="small"
             variant="filled"
             margin="dense"

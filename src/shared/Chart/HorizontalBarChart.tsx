@@ -48,7 +48,7 @@ export const HorizontalBarChart = ({ data, alwaysExpanded = false }: Props) => {
           return (
             <div key={i} className="flex my-2 hover:bg-gray-200">
               <div
-                className="pr-2 text-right overflow-ellipsis whitespace-nowrap"
+                className="pr-2 text-right text-ellipsis whitespace-nowrap"
                 style={{ width: firstColumnWidth, minWidth: firstColumnWidth }}
               >
                 {item.label}
@@ -102,7 +102,7 @@ export const HorizontalBarChart = ({ data, alwaysExpanded = false }: Props) => {
             {mapFor(nbGridColumns, (i) => (
               <div
                 key={i}
-                className="w-[1px] h-[1000px] bg-gray-300 absolute bottom-0 right-0 z-[-10]"
+                className="w-px h-[1000px] bg-gray-300 absolute bottom-0 right-0 z-[-10]"
                 style={{
                   left: `calc(${i * (100 / nbGridColumns)}% - 1px)`,
                 }}

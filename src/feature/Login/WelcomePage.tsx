@@ -23,7 +23,7 @@ const TileComponent = React.forwardRef<HTMLAnchorElement, TileComponentProps>(
       >
         <h2 className="text-scbluefrance font-bold mb-2 text-lg">{title}</h2>
         <p className="mb-12">{desc}</p>
-        <Icon className="absolute right-6 bottom-6 text-scbluefrance !text-2xl">
+        <Icon className="absolute right-6 bottom-6 text-scbluefrance text-2xl!">
           arrow_forward
         </Icon>
       </a>

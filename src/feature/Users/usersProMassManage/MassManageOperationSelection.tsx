@@ -50,7 +50,7 @@ export function MassManageOperationSelection({
                     {...{ onBlur, onChange }}
                     value={operation}
                     control={<Radio checked={value === operation} />}
-                    className="border !m-0 border-gray-400 p-2 py-4"
+                    className="border m-0! border-gray-400 p-2 py-4"
                     label={<Label operation={operation} />}
                   />
                 )

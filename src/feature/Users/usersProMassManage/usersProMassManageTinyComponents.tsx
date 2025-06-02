@@ -11,7 +11,7 @@ export function MassManageTinyButton({
     <Button
       size="small"
       variant={'outlined'}
-      className="!bg-white"
+      className="bg-white!"
       {...{ onClick }}
     >
       {label}

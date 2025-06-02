@@ -332,7 +332,7 @@ const MUILinkComponent = React.forwardRef<
       component="a"
       ref={ref}
       variant="text"
-      className="!normal-case !p-0"
+      className="normal-case! p-0!"
       endIcon={<Icon>visibility</Icon>}
       {...props}
     >
