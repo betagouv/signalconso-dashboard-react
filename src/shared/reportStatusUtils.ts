@@ -15,8 +15,8 @@ export const reportStatusColor = {
 }
 
 export const reportStatusProColor = {
-  [ReportStatusPro.ARepondre]: '#d64d00',
-  [ReportStatusPro.Cloture]: '#27a658',
+  [ReportStatusPro.ARepondre]: '#c75300',
+  [ReportStatusPro.Cloture]: '#108a12',
 }
 
 export const isStatusFinal = (status: ReportStatus) => {

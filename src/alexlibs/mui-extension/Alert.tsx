@@ -3,6 +3,7 @@ import { CSSProperties, ReactNode, useState } from 'react'
 import { usePersistentState } from '../react-persistent-state'
 import {
   colorBlueFrance,
+  colorDsfrSuccessGreen,
   colorError,
   colorInfo,
   colorSuccess,
@@ -93,7 +94,7 @@ export const Alert = ({
         ...{
           success: {
             background: 'rgba(50, 255, 150, .08)', //'#e1ffe1',
-            color: darken(colorSuccess, 0.1),
+            color: darken(colorDsfrSuccessGreen, 0.1),
           },
           info: {
             background: colorInfo,

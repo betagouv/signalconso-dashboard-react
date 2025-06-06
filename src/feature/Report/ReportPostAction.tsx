@@ -59,6 +59,7 @@ export const ReportPostAction = ({
         <>
           {_addComment.error && <Alert type="error">{m.anErrorOccurred}</Alert>}
           <ScInput
+            placeholder={label}
             required={required}
             value={comment}
             onChange={(e) => setComment(e.target.value)}

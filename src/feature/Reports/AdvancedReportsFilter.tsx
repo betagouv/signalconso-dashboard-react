@@ -90,7 +90,9 @@ export const AdvancedReportsFilter: React.FC<AdvancedFiltersGridProps> = ({
             }))
           }
         >
-          <MenuItem value="">&nbsp;</MenuItem>
+          <MenuItem key="empty" value="" aria-label="Aucune catégorie">
+            &nbsp;
+          </MenuItem>
           {_categories?.map((category) => (
             <MenuItem key={category} value={category}>
               {m.ReportCategoryDesc[category]}
