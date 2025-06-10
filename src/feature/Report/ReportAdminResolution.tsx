@@ -107,11 +107,19 @@ export const ReportAdminResolution = ({
                 }
                 value={reportDeletionType}
                 key={reportDeletionType}
+                ariaLabel={
+                  m.reportDeletionTypeName[
+                    ReportAdminActionType[reportDeletionType]
+                  ]
+                }
               />
             ))}
           </ScRadioGroup>
-          <b className={'mt-10 mb-10'}>Commentaire (Obligatoire) :</b>
+          <label className={'mt-10 mb-10 font-bold'} htmlFor="commentaire">
+            Commentaire (Obligatoire) :
+          </label>
           <ScInput
+            id="commentaire"
             value={comment}
             onChange={(e) => setComment(e.target.value)}
             multiline
