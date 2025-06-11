@@ -59,6 +59,9 @@ export const Route = createFileRoute('/_authenticated/suivi-des-signalements/')(
         limit: (search.limit as number) || 25,
       }
     },
+    head: () => ({
+      meta: [{ title: 'Espace pro Signal Conso : suivi des signalements' }],
+    }),
     component: RouteComponent,
   },
 )

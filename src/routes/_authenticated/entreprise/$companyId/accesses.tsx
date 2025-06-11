@@ -5,6 +5,11 @@ import { useGetCompanyByIdQuery } from '../../../../core/queryhooks/companyQuery
 export const Route = createFileRoute(
   '/_authenticated/entreprise/$companyId/accesses',
 )({
+  head: () => ({
+    meta: [
+      { title: "Espace pro Signal Conso : accès utilisateurs à l'entreprise" },
+    ],
+  }),
   component: RouteComponent,
 })
 

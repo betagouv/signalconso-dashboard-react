@@ -4,5 +4,8 @@ import { AccessesManagementPro } from 'feature/Users/usersProMassManage/UsersPro
 export const Route = createFileRoute(
   '/_authenticated/gestion-des-acces-avancee',
 )({
+  head: () => ({
+    meta: [{ title: 'Espace pro Signal Conso : Gestion des accès avancée' }],
+  }),
   component: AccessesManagementPro,
 })

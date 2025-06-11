@@ -37,6 +37,9 @@ export const Route = createFileRoute(
       limit: (search.limit as number) || 25,
     }
   },
+  head: () => ({
+    meta: [{ title: 'Espace pro Signal Conso : Sites web signalés' }],
+  }),
   component: RouteComponent,
 })
 

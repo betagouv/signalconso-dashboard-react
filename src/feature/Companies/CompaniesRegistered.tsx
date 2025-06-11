@@ -11,7 +11,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { Link, useNavigate } from '@tanstack/react-router'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { AlbertActivityLabel } from 'shared/albert/AlbertActivityLabel'
-import { Fender, IconBtn, Txt } from '../../alexlibs/mui-extension'
+import { Fender, Txt } from '../../alexlibs/mui-extension'
 import {
   Company,
   CompanySearch,
@@ -367,18 +367,23 @@ export const CompaniesRegistered = ({ search }: { search: CompanySearch }) => {
                   </IconBtnLink>
                 </Badge>
                 <ScMenu>
-                  <Link
-                    to="/entreprise/$companyId/accesses"
-                    params={{ companyId: _.id }}
-                  >
-                    <MenuItem>
+                  <MenuItem value={m.handleAccesses} key={m.handleAccesses}>
+                    <Link
+                      className="flex flex-row"
+                      to="/entreprise/$companyId/accesses"
+                      params={{ companyId: _.id }}
+                    >
                       <ListItemIcon>
                         <Icon>vpn_key</Icon>
                       </ListItemIcon>
                       <ListItemText>{m.handleAccesses}</ListItemText>
-                    </MenuItem>
-                  </Link>
-                  <MenuItem onClick={() => copyAddress(_)}>
+                    </Link>
+                  </MenuItem>
+                  <MenuItem
+                    value={m.copyAddress}
+                    key={m.copyAddress}
+                    onClick={() => copyAddress(_)}
+                  >
                     <ListItemIcon>
                       <Icon>content_copy</Icon>
                     </ListItemIcon>
@@ -399,7 +404,7 @@ export const CompaniesRegistered = ({ search }: { search: CompanySearch }) => {
                         })
                       }}
                     >
-                      <MenuItem>
+                      <MenuItem value={m.editAddress} key={m.editAddress}>
                         <ListItemIcon>
                           <Icon>edit</Icon>
                         </ListItemIcon>

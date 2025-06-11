@@ -8,6 +8,9 @@ export const Route = createFileRoute('/entreprise/rejoindre/$siret')({
       token: (search.token as string) || '',
     }
   },
+  head: () => ({
+    meta: [{ title: "Espace pro Signal Conso : Rejoindre l'entreprise" }],
+  }),
   component: RouteComponent,
 })
 
