@@ -19,6 +19,9 @@ export const Route = createFileRoute('/connexion/')({
       redirect: (search.redirect as string) || undefined,
     }
   },
+  head: () => ({
+    meta: [{ title: 'Espace pro Signal Conso : Connexion' }],
+  }),
   component: RouteComponent,
 })
 

@@ -128,7 +128,7 @@ export const Alert = ({
         sx={{
           mr: dense ? 0 : 1,
           height: `${height(dense)}px !important`,
-          display: 'flex',
+          display: 'flex !important',
           alignItems: 'center',
           alignSelf: 'flex-start',
         }}

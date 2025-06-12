@@ -6,6 +6,9 @@ import { ReportPro } from '../../../feature/Report/ReportPro'
 export const Route = createFileRoute(
   '/_authenticated/suivi-des-signalements/report/$reportId',
 )({
+  head: () => ({
+    meta: [{ title: 'Espace pro Signal Conso : détail du signalement' }],
+  }),
   component: RouteComponent,
 })
 

@@ -7,6 +7,9 @@ import { CompanyStatsPro } from '../../../../feature/Company/CompanyStatsPro'
 export const Route = createFileRoute(
   '/_authenticated/entreprise/$companyId/bilan',
 )({
+  head: () => ({
+    meta: [{ title: "Espace pro Signal Conso : statistiques de l'entreprise" }],
+  }),
   component: CompanyStatsVariantSwitch,
 })
 

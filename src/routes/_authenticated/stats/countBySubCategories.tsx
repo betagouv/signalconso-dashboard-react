@@ -12,6 +12,11 @@ export const Route = createFileRoute(
       end: search.end ? new Date(search.end as string) : undefined,
     }
   },
+  head: () => ({
+    meta: [
+      { title: 'Espace pro Signal Conso : Signalements par sous-catégories' },
+    ],
+  }),
   component: RouteComponent,
 })
 
