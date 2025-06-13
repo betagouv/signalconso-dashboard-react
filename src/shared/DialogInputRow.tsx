@@ -26,25 +26,18 @@ export const DialogInputRow = ({
       }}
     >
       <Box
+        id={id}
         sx={{
           display: 'flex',
           alignItems: 'center',
+          minHeight: 50,
+          color: (t) => t.palette.text.secondary,
+          minWidth: 162,
+          maxWidth: 162,
+          flexWrap: 'wrap',
         }}
       >
-        <Box
-          id={id}
-          sx={{
-            display: 'flex',
-            alignItems: 'center',
-            minHeight: 50,
-            color: (t) => t.palette.text.secondary,
-            minWidth: 162,
-            maxWidth: 162,
-            flexWrap: 'wrap',
-          }}
-        >
-          {label}
-        </Box>
+        {label}
       </Box>
       <Box
         sx={{
