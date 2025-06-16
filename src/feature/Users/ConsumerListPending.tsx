@@ -50,7 +50,7 @@ export const ConsumerListPending = () => {
               {(value, onChange) => (
                 <ScInput
                   value={value}
-                  placeholder={m.searchByEmail + '...'}
+                  label={m.searchByEmail + '...'}
                   fullWidth
                   onChange={(e) => onChange(e.target.value)}
                 />
