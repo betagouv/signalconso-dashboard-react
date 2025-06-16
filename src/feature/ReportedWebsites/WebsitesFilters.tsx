@@ -47,7 +47,7 @@ export const WebsitesFilters = ({
             {(value, onChange) => (
               <ScInput
                 value={value}
-                placeholder={m.searchByHost + '...'}
+                label={m.searchByHost + '...'}
                 fullWidth
                 onChange={(e) => onChange(e.target.value)}
               />
