@@ -29,7 +29,7 @@ export const CompaniesRegisteredFilters = ({
             {(value, onChange) => (
               <ScInput
                 value={value}
-                placeholder={m.companiesSearchPlaceholder}
+                label={m.companiesSearchPlaceholder}
                 fullWidth
                 onChange={(e) => onChange(e.target.value)}
               />
