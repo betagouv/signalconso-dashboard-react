@@ -150,7 +150,7 @@ export const MassImport = ({ children }: MassImportProps) => {
                   Ajouter au siège social uniquement
                 </span>
                 <span className="text-gray-500 italic">
-                  L'utilisateur ne sera pas ajouter sur les autres SIRETs de ce
+                  L'utilisateur ne sera pas ajouté sur les autres SIRETs de ce
                   SIREN automatiquement
                 </span>
               </div>
