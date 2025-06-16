@@ -284,6 +284,12 @@ export const Datatable = <T,>({
             const offset = safeParseInt(paginate.offset, 0)
             return (
               <TablePagination
+                slotProps={{
+                  select: {
+                    inputProps: { 'aria-label': 'lignes par pages' },
+                    native: true,
+                  },
+                }}
                 rowsPerPageOptions={[10, 25, 100, ...rowsPerPageExtraOptions]}
                 component="div"
                 labelRowsPerPage="Nombre d'éléments à afficher"

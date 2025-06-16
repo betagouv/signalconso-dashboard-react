@@ -21,6 +21,9 @@ export const Route = createFileRoute('/activation')({
       code: (search.code as string) || undefined,
     }
   },
+  head: () => ({
+    meta: [{ title: 'Espace pro Signal Conso : Création de compte' }],
+  }),
   component: RouteComponent,
 })
 

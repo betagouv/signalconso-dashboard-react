@@ -18,7 +18,6 @@ import {
 import { useApiContext } from '../../core/context/ApiContext'
 import { useToast } from '../../core/context/toast/toastContext'
 import { useI18n } from '../../core/i18n'
-import { DialogInputRow } from '../../shared/DialogInputRow'
 import { ScInput } from '../../shared/ScInput'
 import { ScSelect } from '../../shared/Select/Select'
 
@@ -114,85 +113,105 @@ export const MassImport = ({ children }: MassImportProps) => {
               compte, ils auront juste l'accès à ces nouvelles entreprises.
             </p>
           </>
-          <DialogInputRow label="SIREN">
-            <ScInput
-              placeholder="SIREN"
-              error={!!errors.siren}
-              helperText={errors.siren?.message ?? ' '}
-              fullWidth
-              {...register('siren', {
-                pattern: {
-                  value: /^[0-9]{9}$/,
-                  message: 'SIREN invalide',
-                },
-              })}
-            />
-          </DialogInputRow>
-          <DialogInputRow
-            label="Siège social uniquement"
-            id="siege_social_uniquement"
-          >
-            <Controller
-              name="onlyHeadOffice"
-              control={control}
-              render={({ field: { ref, ...field } }) => (
-                <Checkbox
-                  slotProps={{
-                    input: { 'aria-labelledby': 'siege_social_uniquement' },
-                  }}
-                  checked={field.value}
-                  onChange={field.onChange}
-                />
-              )}
-            />
-          </DialogInputRow>
-          <DialogInputRow label="SIRETs">
-            <ScInput
-              placeholder="Liste de sirets séparés par des virgules"
-              error={!!errors.sirets}
-              helperText={errors.sirets?.message ?? ' '}
-              fullWidth
-              {...register('sirets', {
-                validate: (value) =>
-                  !value ||
-                  value.split(',').every((_) => _.match(/^[0-9]{14}$/)) ||
-                  'Un des SIRETs est invalide',
-              })}
-            />
-          </DialogInputRow>
-          <DialogInputRow label="Emails">
-            <ScInput
-              placeholder="Liste d'emails séparés par des virgules"
-              error={!!errors.emails}
-              helperText={errors.emails?.message ?? ' '}
-              fullWidth
-              {...register('emails', {
-                validate: (value) =>
-                  value.split(',').every((_) => _.match(/.+@.+\..+/)) ||
-                  'Un des emails est invalide',
-              })}
-            />
-          </DialogInputRow>
-          <DialogInputRow label="Niveau d'accès">
-            <Controller
-              name="level"
-              control={control}
-              render={({ field: { ref, ...field } }) => (
-                <ScSelect
-                  label="Niveau"
-                  value={field.value}
-                  onChange={field.onChange}
-                  fullWidth
-                >
-                  {[AccessLevel.ADMIN, AccessLevel.MEMBER].map((l) => (
-                    <MenuItem key={l} value={l}>
-                      {translateAccessLevel(l)}
-                    </MenuItem>
-                  ))}
-                </ScSelect>
-              )}
-            />
-          </DialogInputRow>
+
+          <div className="flex flex-col">
+            <div className="flex items-baseline gap-4">
+              <span className="flex-1/4 text-right text-gray-600">SIREN</span>
+              <ScInput
+                sx={{ flexBasis: '75%' }}
+                placeholder="SIREN"
+                error={!!errors.siren}
+                helperText={errors.siren?.message ?? ' '}
+                fullWidth
+                {...register('siren', {
+                  pattern: {
+                    value: /^[0-9]{9}$/,
+                    message: 'SIREN invalide',
+                  },
+                })}
+              />
+            </div>
+            <div className="flex justify-end items-center gap-4 h-[82px]">
+              <Controller
+                name="onlyHeadOffice"
+                control={control}
+                render={({ field: { ref, ...field } }) => (
+                  <Checkbox
+                    slotProps={{
+                      input: { 'aria-labelledby': 'siege_social_uniquement' },
+                    }}
+                    checked={field.value}
+                    onChange={field.onChange}
+                  />
+                )}
+              />
+              <div className="w-[70%] flex flex-col">
+                <span className="text-gray-600">
+                  Ajouter au siège social uniquement
+                </span>
+                <span className="text-gray-500 italic">
+                  L'utilisateur ne sera pas ajouté sur les autres SIRETs de ce
+                  SIREN automatiquement
+                </span>
+              </div>
+            </div>
+            <div className="flex items-baseline gap-4">
+              <span className="flex-1/4 text-right text-gray-600">SIRETs</span>
+              <ScInput
+                sx={{ flexBasis: '75%' }}
+                placeholder="Liste de sirets séparés par des virgules"
+                error={!!errors.sirets}
+                helperText={errors.sirets?.message ?? ' '}
+                fullWidth
+                {...register('sirets', {
+                  validate: (value) =>
+                    !value ||
+                    value.split(',').every((_) => _.match(/^[0-9]{14}$/)) ||
+                    'Un des SIRETs est invalide',
+                })}
+              />
+            </div>
+
+            <div className="flex items-baseline gap-4">
+              <span className="flex-1/4 text-right text-gray-600">Emails</span>
+              <ScInput
+                sx={{ flexBasis: '75%' }}
+                placeholder="Liste d'emails séparés par des virgules"
+                error={!!errors.emails}
+                helperText={errors.emails?.message ?? ' '}
+                fullWidth
+                {...register('emails', {
+                  validate: (value) =>
+                    value.split(',').every((_) => _.match(/.+@.+\..+/)) ||
+                    'Un des emails est invalide',
+                })}
+              />
+            </div>
+            <div className="flex items-baseline gap-4">
+              <span className="flex-1/4 text-right text-gray-600">
+                Niveau d'accès
+              </span>
+              <Controller
+                name="level"
+                control={control}
+                render={({ field: { ref, ...field } }) => (
+                  <ScSelect
+                    style={{ flexBasis: '75%' }}
+                    label="Niveau"
+                    value={field.value}
+                    onChange={field.onChange}
+                    fullWidth
+                  >
+                    {[AccessLevel.ADMIN, AccessLevel.MEMBER].map((l) => (
+                      <MenuItem key={l} value={l}>
+                        {translateAccessLevel(l)}
+                      </MenuItem>
+                    ))}
+                  </ScSelect>
+                )}
+              />
+            </div>
+          </div>
         </DialogContent>
         <DialogActions>
           <Btn onClick={close} color="primary">

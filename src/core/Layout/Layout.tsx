@@ -35,9 +35,25 @@ function LayoutUsingContext({
   const { sidebarTakesSpaceInLayout } = useLayoutContext()
   return (
     <>
+      {/*Skip links*/}
+      <nav
+        className="sr-only focus-within:not-sr-only"
+        role="navigation"
+        aria-label="Accès rapide"
+      >
+        <ul className="flex gap-2 bg-gray-200 text-lg">
+          <li>
+            <a href="#main-content">Contenu</a>
+          </li>
+          <li>
+            <a href="#sidebar">Menu latéral</a>
+          </li>
+        </ul>
+      </nav>
       <ScHeader />
       {sidebar}
       <main
+        id="main-content"
         className="overflow-hidden relative flex flex-col"
         style={{
           ...(sidebarTakesSpaceInLayout

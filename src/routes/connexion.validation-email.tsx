@@ -12,6 +12,9 @@ export const Route = createFileRoute('/connexion/validation-email')({
       token: (search.token as string) || '',
     }
   },
+  head: () => ({
+    meta: [{ title: "Espace pro Signal Conso : Validation de l'email" }],
+  }),
   component: RouteComponent,
 })
 

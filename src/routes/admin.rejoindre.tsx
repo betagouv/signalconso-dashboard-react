@@ -8,6 +8,13 @@ export const Route = createFileRoute('/admin/rejoindre')({
       token: (search.token as string) || '',
     }
   },
+  head: () => ({
+    meta: [
+      {
+        title: 'Espace pro Signal Conso : Activation du compte administrateur',
+      },
+    ],
+  }),
   component: RouteComponent,
 })
 

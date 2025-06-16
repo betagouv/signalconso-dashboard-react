@@ -1,4 +1,4 @@
-import { Icon, MenuItem } from '@mui/material'
+import { Icon, MenuItem, Tooltip } from '@mui/material'
 import { Category } from '../../core/client/constant/Category'
 import { ReportStatus } from '../../core/client/report/Report'
 import { useI18n } from '../../core/i18n'
@@ -466,16 +466,16 @@ export function TrueFalseNullRow({
 }) {
   const { m } = useI18n()
   return (
-    <div className="flex items-center justify-between mt-1">
-      <div className="text-gray-500 ml-2 flex items-center gap-1">
+    <div className="flex items-center justify-end mt-1">
+      <div className="text-gray-500 flex items-center gap-1 mr-2 max-w-[50%] lg:max-w-[35%] xl:max-w-[45%]">
         {icon && (
-          <>
-            <Icon fontSize="small" className={iconClassName}>
-              {icon}
-            </Icon>
-          </>
+          <Icon fontSize="small" className={iconClassName}>
+            {icon}
+          </Icon>
         )}
-        {label}
+        <Tooltip title={label}>
+          <span className="truncate">{label}</span>
+        </Tooltip>
       </div>
       <TrueFalseNull
         label={

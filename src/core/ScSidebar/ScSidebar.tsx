@@ -29,7 +29,7 @@ export const ScSidebar = ({
   }
   return (
     <Sidebar>
-      <div className="pt-2 pb-1 px-4">
+      <div id="sidebar" className="pt-2 pb-1 px-4">
         <div className="cursor-default">
           {connectedUser && connectedUser.impersonator && (
             <div className="flex flex-col bg-yellow-200 items-center">

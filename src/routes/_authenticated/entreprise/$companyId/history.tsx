@@ -5,6 +5,9 @@ import { CompanyHistory } from '../../../../feature/Company/CompanyHistory'
 export const Route = createFileRoute(
   '/_authenticated/entreprise/$companyId/history',
 )({
+  head: () => ({
+    meta: [{ title: "Espace pro Signal Conso : historique de l'entreprise" }],
+  }),
   component: RouteComponent,
 })
 
