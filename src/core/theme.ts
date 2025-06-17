@@ -1,5 +1,5 @@
 import { SxProps, Theme } from '@mui/material'
-import createTheme from '@mui/material/styles/createTheme'
+import { createTheme } from '@mui/material/styles'
 import { ThemeOptions } from '@mui/material/styles/createTheme'
 import { colorBlueFrance } from 'alexlibs/mui-extension/color'
 import { makeSx } from '../alexlibs/mui-extension'

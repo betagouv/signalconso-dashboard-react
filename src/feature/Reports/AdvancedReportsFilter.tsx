@@ -483,10 +483,7 @@ export function TrueFalseNullRow({
             ? {
                 true: (
                   <>
-                    {m.yes}{' '}
-                    <Icon fontSize="inherit" sx={{ mr: '-4px' }}>
-                      arrow_drop_down
-                    </Icon>
+                    {m.yes} <Icon sx={{ mr: '-4px' }}>arrow_drop_down</Icon>
                   </>
                 ),
               }

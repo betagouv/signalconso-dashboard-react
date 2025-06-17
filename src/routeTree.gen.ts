@@ -8,864 +8,1183 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
-// Import Routes
+import { Route as rootRouteImport } from './routes/__root'
+import { Route as ActivationRouteImport } from './routes/activation'
+import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
+import { Route as IndexRouteImport } from './routes/index'
+import { Route as ConnexionIndexRouteImport } from './routes/connexion.index'
+import { Route as ConnexionValidationEmailRouteImport } from './routes/connexion.validation-email'
+import { Route as ConnexionAgentsRouteImport } from './routes/connexion.agents'
+import { Route as AgentRejoindreRouteImport } from './routes/agent.rejoindre'
+import { Route as AdminRejoindreRouteImport } from './routes/admin.rejoindre'
+import { Route as AuthenticatedUsersRouteImport } from './routes/_authenticated/users'
+import { Route as AuthenticatedToolsRouteImport } from './routes/_authenticated/tools'
+import { Route as AuthenticatedSuiviDesTelephonesRouteImport } from './routes/_authenticated/suivi-des-telephones'
+import { Route as AuthenticatedSuiviDesSignalementsCloturesRouteImport } from './routes/_authenticated/suivi-des-signalements-clotures'
+import { Route as AuthenticatedStatsRouteImport } from './routes/_authenticated/stats'
+import { Route as AuthenticatedModerationUrlEntreprisesRouteImport } from './routes/_authenticated/moderation-url-entreprises'
+import { Route as AuthenticatedModeEmploiDgccrfRouteImport } from './routes/_authenticated/mode-emploi-dgccrf'
+import { Route as AuthenticatedMesUtilisateursRouteImport } from './routes/_authenticated/mes-utilisateurs'
+import { Route as AuthenticatedMesEntreprisesRouteImport } from './routes/_authenticated/mes-entreprises'
+import { Route as AuthenticatedInformationRouteImport } from './routes/_authenticated/information'
+import { Route as AuthenticatedGestionDesAccesAvanceeRouteImport } from './routes/_authenticated/gestion-des-acces-avancee'
+import { Route as AuthenticatedEntreprisesRouteImport } from './routes/_authenticated/entreprises'
+import { Route as AuthenticatedEngagementsRouteImport } from './routes/_authenticated/engagements'
+import { Route as AuthenticatedAbonnementsRouteImport } from './routes/_authenticated/abonnements'
+import { Route as AuthenticatedSplatRouteImport } from './routes/_authenticated/$'
+import { Route as AuthenticatedSuiviDesSignalementsIndexRouteImport } from './routes/_authenticated/suivi-des-signalements/index'
+import { Route as AuthenticatedParametresIndexRouteImport } from './routes/_authenticated/parametres.index'
+import { Route as LogoutProconnectCallbackRouteImport } from './routes/logout.proconnect.callback'
+import { Route as EntrepriseRejoindreSiretRouteImport } from './routes/entreprise.rejoindre.$siret'
+import { Route as ConnexionNouveauMotDePasseTokenRouteImport } from './routes/connexion.nouveau-mot-de-passe.$token'
+import { Route as AuthenticateProconnectCallbackRouteImport } from './routes/authenticate.proconnect.callback'
+import { Route as AuthenticatedUsersPendingRouteImport } from './routes/_authenticated/users/pending'
+import { Route as AuthenticatedUsersConsumersRouteImport } from './routes/_authenticated/users/consumers'
+import { Route as AuthenticatedUsersBlacklistRouteImport } from './routes/_authenticated/users/blacklist'
+import { Route as AuthenticatedUsersAuthAttemptsRouteImport } from './routes/_authenticated/users/auth-attempts'
+import { Route as AuthenticatedUsersAgentRouteImport } from './routes/_authenticated/users/agent'
+import { Route as AuthenticatedUsersAdminRouteImport } from './routes/_authenticated/users/admin'
+import { Route as AuthenticatedUsersSplatRouteImport } from './routes/_authenticated/users/$'
+import { Route as AuthenticatedToolsTestRouteImport } from './routes/_authenticated/tools/test'
+import { Route as AuthenticatedToolsAdminRouteImport } from './routes/_authenticated/tools/admin'
+import { Route as AuthenticatedToolsSplatRouteImport } from './routes/_authenticated/tools/$'
+import { Route as AuthenticatedStatsReportStatsRouteImport } from './routes/_authenticated/stats/report-stats'
+import { Route as AuthenticatedStatsProStatsRouteImport } from './routes/_authenticated/stats/pro-stats'
+import { Route as AuthenticatedStatsDgccrfStatsRouteImport } from './routes/_authenticated/stats/dgccrf-stats'
+import { Route as AuthenticatedStatsCountBySubCategoriesRouteImport } from './routes/_authenticated/stats/countBySubCategories'
+import { Route as AuthenticatedStatsSplatRouteImport } from './routes/_authenticated/stats/$'
+import { Route as AuthenticatedModerationUrlEntreprisesEnqueteRouteImport } from './routes/_authenticated/moderation-url-entreprises/enquete'
+import { Route as AuthenticatedModerationUrlEntreprisesSplatRouteImport } from './routes/_authenticated/moderation-url-entreprises/$'
+import { Route as AuthenticatedEntreprisesLesPlusSignaleesRouteImport } from './routes/_authenticated/entreprises/les-plus-signalees'
+import { Route as AuthenticatedEntreprisesARelancerRouteImport } from './routes/_authenticated/entreprises/a-relancer'
+import { Route as AuthenticatedEntreprisesAActiverRouteImport } from './routes/_authenticated/entreprises/a-activer'
+import { Route as AuthenticatedEntreprisesSplatRouteImport } from './routes/_authenticated/entreprises/$'
+import { Route as AuthenticatedEntrepriseActivationRouteImport } from './routes/_authenticated/entreprise/activation'
+import { Route as AuthenticatedEntrepriseCompanyIdRouteImport } from './routes/_authenticated/entreprise/$companyId'
+import { Route as AuthenticatedSuiviDesSignalementsReportReportIdRouteImport } from './routes/_authenticated/suivi-des-signalements/report.$reportId'
+import { Route as AuthenticatedParametresUpdateEmailTokenRouteImport } from './routes/_authenticated/parametres.update-email.$token'
+import { Route as AuthenticatedModerationUrlEntreprisesSitesInternetNonIdentifiesRouteImport } from './routes/_authenticated/moderation-url-entreprises/sites-internet.non-identifies'
+import { Route as AuthenticatedEntrepriseCompanyIdHistoryRouteImport } from './routes/_authenticated/entreprise/$companyId/history'
+import { Route as AuthenticatedEntrepriseCompanyIdBilanRouteImport } from './routes/_authenticated/entreprise/$companyId/bilan'
+import { Route as AuthenticatedEntrepriseCompanyIdAccessesRouteImport } from './routes/_authenticated/entreprise/$companyId/accesses'
 
-import { Route as rootRoute } from './routes/__root'
-import { Route as ActivationImport } from './routes/activation'
-import { Route as AuthenticatedImport } from './routes/_authenticated'
-import { Route as IndexImport } from './routes/index'
-import { Route as ConnexionIndexImport } from './routes/connexion.index'
-import { Route as ConnexionValidationEmailImport } from './routes/connexion.validation-email'
-import { Route as ConnexionAgentsImport } from './routes/connexion.agents'
-import { Route as AgentRejoindreImport } from './routes/agent.rejoindre'
-import { Route as AdminRejoindreImport } from './routes/admin.rejoindre'
-import { Route as AuthenticatedUsersImport } from './routes/_authenticated/users'
-import { Route as AuthenticatedToolsImport } from './routes/_authenticated/tools'
-import { Route as AuthenticatedSuiviDesTelephonesImport } from './routes/_authenticated/suivi-des-telephones'
-import { Route as AuthenticatedSuiviDesSignalementsCloturesImport } from './routes/_authenticated/suivi-des-signalements-clotures'
-import { Route as AuthenticatedStatsImport } from './routes/_authenticated/stats'
-import { Route as AuthenticatedModerationUrlEntreprisesImport } from './routes/_authenticated/moderation-url-entreprises'
-import { Route as AuthenticatedModeEmploiDgccrfImport } from './routes/_authenticated/mode-emploi-dgccrf'
-import { Route as AuthenticatedMesUtilisateursImport } from './routes/_authenticated/mes-utilisateurs'
-import { Route as AuthenticatedMesEntreprisesImport } from './routes/_authenticated/mes-entreprises'
-import { Route as AuthenticatedInformationImport } from './routes/_authenticated/information'
-import { Route as AuthenticatedGestionDesAccesAvanceeImport } from './routes/_authenticated/gestion-des-acces-avancee'
-import { Route as AuthenticatedEntreprisesImport } from './routes/_authenticated/entreprises'
-import { Route as AuthenticatedEngagementsImport } from './routes/_authenticated/engagements'
-import { Route as AuthenticatedAbonnementsImport } from './routes/_authenticated/abonnements'
-import { Route as AuthenticatedSplatImport } from './routes/_authenticated/$'
-import { Route as AuthenticatedSuiviDesSignalementsIndexImport } from './routes/_authenticated/suivi-des-signalements/index'
-import { Route as AuthenticatedParametresIndexImport } from './routes/_authenticated/parametres.index'
-import { Route as LogoutProconnectCallbackImport } from './routes/logout.proconnect.callback'
-import { Route as EntrepriseRejoindreSiretImport } from './routes/entreprise.rejoindre.$siret'
-import { Route as ConnexionNouveauMotDePasseTokenImport } from './routes/connexion.nouveau-mot-de-passe.$token'
-import { Route as AuthenticateProconnectCallbackImport } from './routes/authenticate.proconnect.callback'
-import { Route as AuthenticatedUsersPendingImport } from './routes/_authenticated/users/pending'
-import { Route as AuthenticatedUsersConsumersImport } from './routes/_authenticated/users/consumers'
-import { Route as AuthenticatedUsersBlacklistImport } from './routes/_authenticated/users/blacklist'
-import { Route as AuthenticatedUsersAuthAttemptsImport } from './routes/_authenticated/users/auth-attempts'
-import { Route as AuthenticatedUsersAgentImport } from './routes/_authenticated/users/agent'
-import { Route as AuthenticatedUsersAdminImport } from './routes/_authenticated/users/admin'
-import { Route as AuthenticatedUsersSplatImport } from './routes/_authenticated/users/$'
-import { Route as AuthenticatedToolsTestImport } from './routes/_authenticated/tools/test'
-import { Route as AuthenticatedToolsAdminImport } from './routes/_authenticated/tools/admin'
-import { Route as AuthenticatedToolsSplatImport } from './routes/_authenticated/tools/$'
-import { Route as AuthenticatedStatsReportStatsImport } from './routes/_authenticated/stats/report-stats'
-import { Route as AuthenticatedStatsProStatsImport } from './routes/_authenticated/stats/pro-stats'
-import { Route as AuthenticatedStatsDgccrfStatsImport } from './routes/_authenticated/stats/dgccrf-stats'
-import { Route as AuthenticatedStatsCountBySubCategoriesImport } from './routes/_authenticated/stats/countBySubCategories'
-import { Route as AuthenticatedStatsSplatImport } from './routes/_authenticated/stats/$'
-import { Route as AuthenticatedModerationUrlEntreprisesEnqueteImport } from './routes/_authenticated/moderation-url-entreprises/enquete'
-import { Route as AuthenticatedModerationUrlEntreprisesSplatImport } from './routes/_authenticated/moderation-url-entreprises/$'
-import { Route as AuthenticatedEntreprisesLesPlusSignaleesImport } from './routes/_authenticated/entreprises/les-plus-signalees'
-import { Route as AuthenticatedEntreprisesARelancerImport } from './routes/_authenticated/entreprises/a-relancer'
-import { Route as AuthenticatedEntreprisesAActiverImport } from './routes/_authenticated/entreprises/a-activer'
-import { Route as AuthenticatedEntreprisesSplatImport } from './routes/_authenticated/entreprises/$'
-import { Route as AuthenticatedEntrepriseActivationImport } from './routes/_authenticated/entreprise/activation'
-import { Route as AuthenticatedEntrepriseCompanyIdImport } from './routes/_authenticated/entreprise/$companyId'
-import { Route as AuthenticatedSuiviDesSignalementsReportReportIdImport } from './routes/_authenticated/suivi-des-signalements/report.$reportId'
-import { Route as AuthenticatedParametresUpdateEmailTokenImport } from './routes/_authenticated/parametres.update-email.$token'
-import { Route as AuthenticatedModerationUrlEntreprisesSitesInternetNonIdentifiesImport } from './routes/_authenticated/moderation-url-entreprises/sites-internet.non-identifies'
-import { Route as AuthenticatedEntrepriseCompanyIdHistoryImport } from './routes/_authenticated/entreprise/$companyId/history'
-import { Route as AuthenticatedEntrepriseCompanyIdBilanImport } from './routes/_authenticated/entreprise/$companyId/bilan'
-import { Route as AuthenticatedEntrepriseCompanyIdAccessesImport } from './routes/_authenticated/entreprise/$companyId/accesses'
-
-// Create/Update Routes
-
-const ActivationRoute = ActivationImport.update({
+const ActivationRoute = ActivationRouteImport.update({
   id: '/activation',
   path: '/activation',
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => rootRouteImport,
 } as any)
-
-const AuthenticatedRoute = AuthenticatedImport.update({
+const AuthenticatedRoute = AuthenticatedRouteImport.update({
   id: '/_authenticated',
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => rootRouteImport,
 } as any)
-
-const IndexRoute = IndexImport.update({
+const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => rootRouteImport,
 } as any)
-
-const ConnexionIndexRoute = ConnexionIndexImport.update({
+const ConnexionIndexRoute = ConnexionIndexRouteImport.update({
   id: '/connexion/',
   path: '/connexion/',
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => rootRouteImport,
 } as any)
-
-const ConnexionValidationEmailRoute = ConnexionValidationEmailImport.update({
-  id: '/connexion/validation-email',
-  path: '/connexion/validation-email',
-  getParentRoute: () => rootRoute,
-} as any)
-
-const ConnexionAgentsRoute = ConnexionAgentsImport.update({
+const ConnexionValidationEmailRoute =
+  ConnexionValidationEmailRouteImport.update({
+    id: '/connexion/validation-email',
+    path: '/connexion/validation-email',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const ConnexionAgentsRoute = ConnexionAgentsRouteImport.update({
   id: '/connexion/agents',
   path: '/connexion/agents',
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => rootRouteImport,
 } as any)
-
-const AgentRejoindreRoute = AgentRejoindreImport.update({
+const AgentRejoindreRoute = AgentRejoindreRouteImport.update({
   id: '/agent/rejoindre',
   path: '/agent/rejoindre',
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => rootRouteImport,
 } as any)
-
-const AdminRejoindreRoute = AdminRejoindreImport.update({
+const AdminRejoindreRoute = AdminRejoindreRouteImport.update({
   id: '/admin/rejoindre',
   path: '/admin/rejoindre',
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => rootRouteImport,
 } as any)
-
-const AuthenticatedUsersRoute = AuthenticatedUsersImport.update({
+const AuthenticatedUsersRoute = AuthenticatedUsersRouteImport.update({
   id: '/users',
   path: '/users',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
-
-const AuthenticatedToolsRoute = AuthenticatedToolsImport.update({
+const AuthenticatedToolsRoute = AuthenticatedToolsRouteImport.update({
   id: '/tools',
   path: '/tools',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
-
 const AuthenticatedSuiviDesTelephonesRoute =
-  AuthenticatedSuiviDesTelephonesImport.update({
+  AuthenticatedSuiviDesTelephonesRouteImport.update({
     id: '/suivi-des-telephones',
     path: '/suivi-des-telephones',
     getParentRoute: () => AuthenticatedRoute,
   } as any)
-
 const AuthenticatedSuiviDesSignalementsCloturesRoute =
-  AuthenticatedSuiviDesSignalementsCloturesImport.update({
+  AuthenticatedSuiviDesSignalementsCloturesRouteImport.update({
     id: '/suivi-des-signalements-clotures',
     path: '/suivi-des-signalements-clotures',
     getParentRoute: () => AuthenticatedRoute,
   } as any)
-
-const AuthenticatedStatsRoute = AuthenticatedStatsImport.update({
+const AuthenticatedStatsRoute = AuthenticatedStatsRouteImport.update({
   id: '/stats',
   path: '/stats',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
-
 const AuthenticatedModerationUrlEntreprisesRoute =
-  AuthenticatedModerationUrlEntreprisesImport.update({
+  AuthenticatedModerationUrlEntreprisesRouteImport.update({
     id: '/moderation-url-entreprises',
     path: '/moderation-url-entreprises',
     getParentRoute: () => AuthenticatedRoute,
   } as any)
-
 const AuthenticatedModeEmploiDgccrfRoute =
-  AuthenticatedModeEmploiDgccrfImport.update({
+  AuthenticatedModeEmploiDgccrfRouteImport.update({
     id: '/mode-emploi-dgccrf',
     path: '/mode-emploi-dgccrf',
     getParentRoute: () => AuthenticatedRoute,
   } as any)
-
 const AuthenticatedMesUtilisateursRoute =
-  AuthenticatedMesUtilisateursImport.update({
+  AuthenticatedMesUtilisateursRouteImport.update({
     id: '/mes-utilisateurs',
     path: '/mes-utilisateurs',
     getParentRoute: () => AuthenticatedRoute,
   } as any)
-
 const AuthenticatedMesEntreprisesRoute =
-  AuthenticatedMesEntreprisesImport.update({
+  AuthenticatedMesEntreprisesRouteImport.update({
     id: '/mes-entreprises',
     path: '/mes-entreprises',
     getParentRoute: () => AuthenticatedRoute,
   } as any)
-
-const AuthenticatedInformationRoute = AuthenticatedInformationImport.update({
-  id: '/information',
-  path: '/information',
-  getParentRoute: () => AuthenticatedRoute,
-} as any)
-
+const AuthenticatedInformationRoute =
+  AuthenticatedInformationRouteImport.update({
+    id: '/information',
+    path: '/information',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
 const AuthenticatedGestionDesAccesAvanceeRoute =
-  AuthenticatedGestionDesAccesAvanceeImport.update({
+  AuthenticatedGestionDesAccesAvanceeRouteImport.update({
     id: '/gestion-des-acces-avancee',
     path: '/gestion-des-acces-avancee',
     getParentRoute: () => AuthenticatedRoute,
   } as any)
-
-const AuthenticatedEntreprisesRoute = AuthenticatedEntreprisesImport.update({
-  id: '/entreprises',
-  path: '/entreprises',
-  getParentRoute: () => AuthenticatedRoute,
-} as any)
-
-const AuthenticatedEngagementsRoute = AuthenticatedEngagementsImport.update({
-  id: '/engagements',
-  path: '/engagements',
-  getParentRoute: () => AuthenticatedRoute,
-} as any)
-
-const AuthenticatedAbonnementsRoute = AuthenticatedAbonnementsImport.update({
-  id: '/abonnements',
-  path: '/abonnements',
-  getParentRoute: () => AuthenticatedRoute,
-} as any)
-
-const AuthenticatedSplatRoute = AuthenticatedSplatImport.update({
+const AuthenticatedEntreprisesRoute =
+  AuthenticatedEntreprisesRouteImport.update({
+    id: '/entreprises',
+    path: '/entreprises',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
+const AuthenticatedEngagementsRoute =
+  AuthenticatedEngagementsRouteImport.update({
+    id: '/engagements',
+    path: '/engagements',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
+const AuthenticatedAbonnementsRoute =
+  AuthenticatedAbonnementsRouteImport.update({
+    id: '/abonnements',
+    path: '/abonnements',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
+const AuthenticatedSplatRoute = AuthenticatedSplatRouteImport.update({
   id: '/$',
   path: '/$',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
-
 const AuthenticatedSuiviDesSignalementsIndexRoute =
-  AuthenticatedSuiviDesSignalementsIndexImport.update({
+  AuthenticatedSuiviDesSignalementsIndexRouteImport.update({
     id: '/suivi-des-signalements/',
     path: '/suivi-des-signalements/',
     getParentRoute: () => AuthenticatedRoute,
   } as any)
-
 const AuthenticatedParametresIndexRoute =
-  AuthenticatedParametresIndexImport.update({
+  AuthenticatedParametresIndexRouteImport.update({
     id: '/parametres/',
     path: '/parametres/',
     getParentRoute: () => AuthenticatedRoute,
   } as any)
-
-const LogoutProconnectCallbackRoute = LogoutProconnectCallbackImport.update({
-  id: '/logout/proconnect/callback',
-  path: '/logout/proconnect/callback',
-  getParentRoute: () => rootRoute,
-} as any)
-
-const EntrepriseRejoindreSiretRoute = EntrepriseRejoindreSiretImport.update({
-  id: '/entreprise/rejoindre/$siret',
-  path: '/entreprise/rejoindre/$siret',
-  getParentRoute: () => rootRoute,
-} as any)
-
+const LogoutProconnectCallbackRoute =
+  LogoutProconnectCallbackRouteImport.update({
+    id: '/logout/proconnect/callback',
+    path: '/logout/proconnect/callback',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const EntrepriseRejoindreSiretRoute =
+  EntrepriseRejoindreSiretRouteImport.update({
+    id: '/entreprise/rejoindre/$siret',
+    path: '/entreprise/rejoindre/$siret',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const ConnexionNouveauMotDePasseTokenRoute =
-  ConnexionNouveauMotDePasseTokenImport.update({
+  ConnexionNouveauMotDePasseTokenRouteImport.update({
     id: '/connexion/nouveau-mot-de-passe/$token',
     path: '/connexion/nouveau-mot-de-passe/$token',
-    getParentRoute: () => rootRoute,
+    getParentRoute: () => rootRouteImport,
   } as any)
-
 const AuthenticateProconnectCallbackRoute =
-  AuthenticateProconnectCallbackImport.update({
+  AuthenticateProconnectCallbackRouteImport.update({
     id: '/authenticate/proconnect/callback',
     path: '/authenticate/proconnect/callback',
-    getParentRoute: () => rootRoute,
+    getParentRoute: () => rootRouteImport,
   } as any)
-
-const AuthenticatedUsersPendingRoute = AuthenticatedUsersPendingImport.update({
-  id: '/pending',
-  path: '/pending',
-  getParentRoute: () => AuthenticatedUsersRoute,
-} as any)
-
+const AuthenticatedUsersPendingRoute =
+  AuthenticatedUsersPendingRouteImport.update({
+    id: '/pending',
+    path: '/pending',
+    getParentRoute: () => AuthenticatedUsersRoute,
+  } as any)
 const AuthenticatedUsersConsumersRoute =
-  AuthenticatedUsersConsumersImport.update({
+  AuthenticatedUsersConsumersRouteImport.update({
     id: '/consumers',
     path: '/consumers',
     getParentRoute: () => AuthenticatedUsersRoute,
   } as any)
-
 const AuthenticatedUsersBlacklistRoute =
-  AuthenticatedUsersBlacklistImport.update({
+  AuthenticatedUsersBlacklistRouteImport.update({
     id: '/blacklist',
     path: '/blacklist',
     getParentRoute: () => AuthenticatedUsersRoute,
   } as any)
-
 const AuthenticatedUsersAuthAttemptsRoute =
-  AuthenticatedUsersAuthAttemptsImport.update({
+  AuthenticatedUsersAuthAttemptsRouteImport.update({
     id: '/auth-attempts',
     path: '/auth-attempts',
     getParentRoute: () => AuthenticatedUsersRoute,
   } as any)
-
-const AuthenticatedUsersAgentRoute = AuthenticatedUsersAgentImport.update({
+const AuthenticatedUsersAgentRoute = AuthenticatedUsersAgentRouteImport.update({
   id: '/agent',
   path: '/agent',
   getParentRoute: () => AuthenticatedUsersRoute,
 } as any)
-
-const AuthenticatedUsersAdminRoute = AuthenticatedUsersAdminImport.update({
+const AuthenticatedUsersAdminRoute = AuthenticatedUsersAdminRouteImport.update({
   id: '/admin',
   path: '/admin',
   getParentRoute: () => AuthenticatedUsersRoute,
 } as any)
-
-const AuthenticatedUsersSplatRoute = AuthenticatedUsersSplatImport.update({
+const AuthenticatedUsersSplatRoute = AuthenticatedUsersSplatRouteImport.update({
   id: '/$',
   path: '/$',
   getParentRoute: () => AuthenticatedUsersRoute,
 } as any)
-
-const AuthenticatedToolsTestRoute = AuthenticatedToolsTestImport.update({
+const AuthenticatedToolsTestRoute = AuthenticatedToolsTestRouteImport.update({
   id: '/test',
   path: '/test',
   getParentRoute: () => AuthenticatedToolsRoute,
 } as any)
-
-const AuthenticatedToolsAdminRoute = AuthenticatedToolsAdminImport.update({
+const AuthenticatedToolsAdminRoute = AuthenticatedToolsAdminRouteImport.update({
   id: '/admin',
   path: '/admin',
   getParentRoute: () => AuthenticatedToolsRoute,
 } as any)
-
-const AuthenticatedToolsSplatRoute = AuthenticatedToolsSplatImport.update({
+const AuthenticatedToolsSplatRoute = AuthenticatedToolsSplatRouteImport.update({
   id: '/$',
   path: '/$',
   getParentRoute: () => AuthenticatedToolsRoute,
 } as any)
-
 const AuthenticatedStatsReportStatsRoute =
-  AuthenticatedStatsReportStatsImport.update({
+  AuthenticatedStatsReportStatsRouteImport.update({
     id: '/report-stats',
     path: '/report-stats',
     getParentRoute: () => AuthenticatedStatsRoute,
   } as any)
-
-const AuthenticatedStatsProStatsRoute = AuthenticatedStatsProStatsImport.update(
-  {
+const AuthenticatedStatsProStatsRoute =
+  AuthenticatedStatsProStatsRouteImport.update({
     id: '/pro-stats',
     path: '/pro-stats',
     getParentRoute: () => AuthenticatedStatsRoute,
-  } as any,
-)
-
+  } as any)
 const AuthenticatedStatsDgccrfStatsRoute =
-  AuthenticatedStatsDgccrfStatsImport.update({
+  AuthenticatedStatsDgccrfStatsRouteImport.update({
     id: '/dgccrf-stats',
     path: '/dgccrf-stats',
     getParentRoute: () => AuthenticatedStatsRoute,
   } as any)
-
 const AuthenticatedStatsCountBySubCategoriesRoute =
-  AuthenticatedStatsCountBySubCategoriesImport.update({
+  AuthenticatedStatsCountBySubCategoriesRouteImport.update({
     id: '/countBySubCategories',
     path: '/countBySubCategories',
     getParentRoute: () => AuthenticatedStatsRoute,
   } as any)
-
-const AuthenticatedStatsSplatRoute = AuthenticatedStatsSplatImport.update({
+const AuthenticatedStatsSplatRoute = AuthenticatedStatsSplatRouteImport.update({
   id: '/$',
   path: '/$',
   getParentRoute: () => AuthenticatedStatsRoute,
 } as any)
-
 const AuthenticatedModerationUrlEntreprisesEnqueteRoute =
-  AuthenticatedModerationUrlEntreprisesEnqueteImport.update({
+  AuthenticatedModerationUrlEntreprisesEnqueteRouteImport.update({
     id: '/enquete',
     path: '/enquete',
     getParentRoute: () => AuthenticatedModerationUrlEntreprisesRoute,
   } as any)
-
 const AuthenticatedModerationUrlEntreprisesSplatRoute =
-  AuthenticatedModerationUrlEntreprisesSplatImport.update({
+  AuthenticatedModerationUrlEntreprisesSplatRouteImport.update({
     id: '/$',
     path: '/$',
     getParentRoute: () => AuthenticatedModerationUrlEntreprisesRoute,
   } as any)
-
 const AuthenticatedEntreprisesLesPlusSignaleesRoute =
-  AuthenticatedEntreprisesLesPlusSignaleesImport.update({
+  AuthenticatedEntreprisesLesPlusSignaleesRouteImport.update({
     id: '/les-plus-signalees',
     path: '/les-plus-signalees',
     getParentRoute: () => AuthenticatedEntreprisesRoute,
   } as any)
-
 const AuthenticatedEntreprisesARelancerRoute =
-  AuthenticatedEntreprisesARelancerImport.update({
+  AuthenticatedEntreprisesARelancerRouteImport.update({
     id: '/a-relancer',
     path: '/a-relancer',
     getParentRoute: () => AuthenticatedEntreprisesRoute,
   } as any)
-
 const AuthenticatedEntreprisesAActiverRoute =
-  AuthenticatedEntreprisesAActiverImport.update({
+  AuthenticatedEntreprisesAActiverRouteImport.update({
     id: '/a-activer',
     path: '/a-activer',
     getParentRoute: () => AuthenticatedEntreprisesRoute,
   } as any)
-
 const AuthenticatedEntreprisesSplatRoute =
-  AuthenticatedEntreprisesSplatImport.update({
+  AuthenticatedEntreprisesSplatRouteImport.update({
     id: '/$',
     path: '/$',
     getParentRoute: () => AuthenticatedEntreprisesRoute,
   } as any)
-
 const AuthenticatedEntrepriseActivationRoute =
-  AuthenticatedEntrepriseActivationImport.update({
+  AuthenticatedEntrepriseActivationRouteImport.update({
     id: '/entreprise/activation',
     path: '/entreprise/activation',
     getParentRoute: () => AuthenticatedRoute,
   } as any)
-
 const AuthenticatedEntrepriseCompanyIdRoute =
-  AuthenticatedEntrepriseCompanyIdImport.update({
+  AuthenticatedEntrepriseCompanyIdRouteImport.update({
     id: '/entreprise/$companyId',
     path: '/entreprise/$companyId',
     getParentRoute: () => AuthenticatedRoute,
   } as any)
-
 const AuthenticatedSuiviDesSignalementsReportReportIdRoute =
-  AuthenticatedSuiviDesSignalementsReportReportIdImport.update({
+  AuthenticatedSuiviDesSignalementsReportReportIdRouteImport.update({
     id: '/suivi-des-signalements/report/$reportId',
     path: '/suivi-des-signalements/report/$reportId',
     getParentRoute: () => AuthenticatedRoute,
   } as any)
-
 const AuthenticatedParametresUpdateEmailTokenRoute =
-  AuthenticatedParametresUpdateEmailTokenImport.update({
+  AuthenticatedParametresUpdateEmailTokenRouteImport.update({
     id: '/parametres/update-email/$token',
     path: '/parametres/update-email/$token',
     getParentRoute: () => AuthenticatedRoute,
   } as any)
-
 const AuthenticatedModerationUrlEntreprisesSitesInternetNonIdentifiesRoute =
-  AuthenticatedModerationUrlEntreprisesSitesInternetNonIdentifiesImport.update({
-    id: '/sites-internet/non-identifies',
-    path: '/sites-internet/non-identifies',
-    getParentRoute: () => AuthenticatedModerationUrlEntreprisesRoute,
-  } as any)
-
+  AuthenticatedModerationUrlEntreprisesSitesInternetNonIdentifiesRouteImport.update(
+    {
+      id: '/sites-internet/non-identifies',
+      path: '/sites-internet/non-identifies',
+      getParentRoute: () => AuthenticatedModerationUrlEntreprisesRoute,
+    } as any,
+  )
 const AuthenticatedEntrepriseCompanyIdHistoryRoute =
-  AuthenticatedEntrepriseCompanyIdHistoryImport.update({
+  AuthenticatedEntrepriseCompanyIdHistoryRouteImport.update({
     id: '/history',
     path: '/history',
     getParentRoute: () => AuthenticatedEntrepriseCompanyIdRoute,
   } as any)
-
 const AuthenticatedEntrepriseCompanyIdBilanRoute =
-  AuthenticatedEntrepriseCompanyIdBilanImport.update({
+  AuthenticatedEntrepriseCompanyIdBilanRouteImport.update({
     id: '/bilan',
     path: '/bilan',
     getParentRoute: () => AuthenticatedEntrepriseCompanyIdRoute,
   } as any)
-
 const AuthenticatedEntrepriseCompanyIdAccessesRoute =
-  AuthenticatedEntrepriseCompanyIdAccessesImport.update({
+  AuthenticatedEntrepriseCompanyIdAccessesRouteImport.update({
     id: '/accesses',
     path: '/accesses',
     getParentRoute: () => AuthenticatedEntrepriseCompanyIdRoute,
   } as any)
 
-// Populate the FileRoutesByPath interface
+export interface FileRoutesByFullPath {
+  '/': typeof IndexRoute
+  '/activation': typeof ActivationRoute
+  '/$': typeof AuthenticatedSplatRoute
+  '/abonnements': typeof AuthenticatedAbonnementsRoute
+  '/engagements': typeof AuthenticatedEngagementsRoute
+  '/entreprises': typeof AuthenticatedEntreprisesRouteWithChildren
+  '/gestion-des-acces-avancee': typeof AuthenticatedGestionDesAccesAvanceeRoute
+  '/information': typeof AuthenticatedInformationRoute
+  '/mes-entreprises': typeof AuthenticatedMesEntreprisesRoute
+  '/mes-utilisateurs': typeof AuthenticatedMesUtilisateursRoute
+  '/mode-emploi-dgccrf': typeof AuthenticatedModeEmploiDgccrfRoute
+  '/moderation-url-entreprises': typeof AuthenticatedModerationUrlEntreprisesRouteWithChildren
+  '/stats': typeof AuthenticatedStatsRouteWithChildren
+  '/suivi-des-signalements-clotures': typeof AuthenticatedSuiviDesSignalementsCloturesRoute
+  '/suivi-des-telephones': typeof AuthenticatedSuiviDesTelephonesRoute
+  '/tools': typeof AuthenticatedToolsRouteWithChildren
+  '/users': typeof AuthenticatedUsersRouteWithChildren
+  '/admin/rejoindre': typeof AdminRejoindreRoute
+  '/agent/rejoindre': typeof AgentRejoindreRoute
+  '/connexion/agents': typeof ConnexionAgentsRoute
+  '/connexion/validation-email': typeof ConnexionValidationEmailRoute
+  '/connexion': typeof ConnexionIndexRoute
+  '/entreprise/$companyId': typeof AuthenticatedEntrepriseCompanyIdRouteWithChildren
+  '/entreprise/activation': typeof AuthenticatedEntrepriseActivationRoute
+  '/entreprises/$': typeof AuthenticatedEntreprisesSplatRoute
+  '/entreprises/a-activer': typeof AuthenticatedEntreprisesAActiverRoute
+  '/entreprises/a-relancer': typeof AuthenticatedEntreprisesARelancerRoute
+  '/entreprises/les-plus-signalees': typeof AuthenticatedEntreprisesLesPlusSignaleesRoute
+  '/moderation-url-entreprises/$': typeof AuthenticatedModerationUrlEntreprisesSplatRoute
+  '/moderation-url-entreprises/enquete': typeof AuthenticatedModerationUrlEntreprisesEnqueteRoute
+  '/stats/$': typeof AuthenticatedStatsSplatRoute
+  '/stats/countBySubCategories': typeof AuthenticatedStatsCountBySubCategoriesRoute
+  '/stats/dgccrf-stats': typeof AuthenticatedStatsDgccrfStatsRoute
+  '/stats/pro-stats': typeof AuthenticatedStatsProStatsRoute
+  '/stats/report-stats': typeof AuthenticatedStatsReportStatsRoute
+  '/tools/$': typeof AuthenticatedToolsSplatRoute
+  '/tools/admin': typeof AuthenticatedToolsAdminRoute
+  '/tools/test': typeof AuthenticatedToolsTestRoute
+  '/users/$': typeof AuthenticatedUsersSplatRoute
+  '/users/admin': typeof AuthenticatedUsersAdminRoute
+  '/users/agent': typeof AuthenticatedUsersAgentRoute
+  '/users/auth-attempts': typeof AuthenticatedUsersAuthAttemptsRoute
+  '/users/blacklist': typeof AuthenticatedUsersBlacklistRoute
+  '/users/consumers': typeof AuthenticatedUsersConsumersRoute
+  '/users/pending': typeof AuthenticatedUsersPendingRoute
+  '/authenticate/proconnect/callback': typeof AuthenticateProconnectCallbackRoute
+  '/connexion/nouveau-mot-de-passe/$token': typeof ConnexionNouveauMotDePasseTokenRoute
+  '/entreprise/rejoindre/$siret': typeof EntrepriseRejoindreSiretRoute
+  '/logout/proconnect/callback': typeof LogoutProconnectCallbackRoute
+  '/parametres': typeof AuthenticatedParametresIndexRoute
+  '/suivi-des-signalements': typeof AuthenticatedSuiviDesSignalementsIndexRoute
+  '/entreprise/$companyId/accesses': typeof AuthenticatedEntrepriseCompanyIdAccessesRoute
+  '/entreprise/$companyId/bilan': typeof AuthenticatedEntrepriseCompanyIdBilanRoute
+  '/entreprise/$companyId/history': typeof AuthenticatedEntrepriseCompanyIdHistoryRoute
+  '/moderation-url-entreprises/sites-internet/non-identifies': typeof AuthenticatedModerationUrlEntreprisesSitesInternetNonIdentifiesRoute
+  '/parametres/update-email/$token': typeof AuthenticatedParametresUpdateEmailTokenRoute
+  '/suivi-des-signalements/report/$reportId': typeof AuthenticatedSuiviDesSignalementsReportReportIdRoute
+}
+export interface FileRoutesByTo {
+  '/': typeof IndexRoute
+  '/activation': typeof ActivationRoute
+  '/$': typeof AuthenticatedSplatRoute
+  '/abonnements': typeof AuthenticatedAbonnementsRoute
+  '/engagements': typeof AuthenticatedEngagementsRoute
+  '/entreprises': typeof AuthenticatedEntreprisesRouteWithChildren
+  '/gestion-des-acces-avancee': typeof AuthenticatedGestionDesAccesAvanceeRoute
+  '/information': typeof AuthenticatedInformationRoute
+  '/mes-entreprises': typeof AuthenticatedMesEntreprisesRoute
+  '/mes-utilisateurs': typeof AuthenticatedMesUtilisateursRoute
+  '/mode-emploi-dgccrf': typeof AuthenticatedModeEmploiDgccrfRoute
+  '/moderation-url-entreprises': typeof AuthenticatedModerationUrlEntreprisesRouteWithChildren
+  '/stats': typeof AuthenticatedStatsRouteWithChildren
+  '/suivi-des-signalements-clotures': typeof AuthenticatedSuiviDesSignalementsCloturesRoute
+  '/suivi-des-telephones': typeof AuthenticatedSuiviDesTelephonesRoute
+  '/tools': typeof AuthenticatedToolsRouteWithChildren
+  '/users': typeof AuthenticatedUsersRouteWithChildren
+  '/admin/rejoindre': typeof AdminRejoindreRoute
+  '/agent/rejoindre': typeof AgentRejoindreRoute
+  '/connexion/agents': typeof ConnexionAgentsRoute
+  '/connexion/validation-email': typeof ConnexionValidationEmailRoute
+  '/connexion': typeof ConnexionIndexRoute
+  '/entreprise/$companyId': typeof AuthenticatedEntrepriseCompanyIdRouteWithChildren
+  '/entreprise/activation': typeof AuthenticatedEntrepriseActivationRoute
+  '/entreprises/$': typeof AuthenticatedEntreprisesSplatRoute
+  '/entreprises/a-activer': typeof AuthenticatedEntreprisesAActiverRoute
+  '/entreprises/a-relancer': typeof AuthenticatedEntreprisesARelancerRoute
+  '/entreprises/les-plus-signalees': typeof AuthenticatedEntreprisesLesPlusSignaleesRoute
+  '/moderation-url-entreprises/$': typeof AuthenticatedModerationUrlEntreprisesSplatRoute
+  '/moderation-url-entreprises/enquete': typeof AuthenticatedModerationUrlEntreprisesEnqueteRoute
+  '/stats/$': typeof AuthenticatedStatsSplatRoute
+  '/stats/countBySubCategories': typeof AuthenticatedStatsCountBySubCategoriesRoute
+  '/stats/dgccrf-stats': typeof AuthenticatedStatsDgccrfStatsRoute
+  '/stats/pro-stats': typeof AuthenticatedStatsProStatsRoute
+  '/stats/report-stats': typeof AuthenticatedStatsReportStatsRoute
+  '/tools/$': typeof AuthenticatedToolsSplatRoute
+  '/tools/admin': typeof AuthenticatedToolsAdminRoute
+  '/tools/test': typeof AuthenticatedToolsTestRoute
+  '/users/$': typeof AuthenticatedUsersSplatRoute
+  '/users/admin': typeof AuthenticatedUsersAdminRoute
+  '/users/agent': typeof AuthenticatedUsersAgentRoute
+  '/users/auth-attempts': typeof AuthenticatedUsersAuthAttemptsRoute
+  '/users/blacklist': typeof AuthenticatedUsersBlacklistRoute
+  '/users/consumers': typeof AuthenticatedUsersConsumersRoute
+  '/users/pending': typeof AuthenticatedUsersPendingRoute
+  '/authenticate/proconnect/callback': typeof AuthenticateProconnectCallbackRoute
+  '/connexion/nouveau-mot-de-passe/$token': typeof ConnexionNouveauMotDePasseTokenRoute
+  '/entreprise/rejoindre/$siret': typeof EntrepriseRejoindreSiretRoute
+  '/logout/proconnect/callback': typeof LogoutProconnectCallbackRoute
+  '/parametres': typeof AuthenticatedParametresIndexRoute
+  '/suivi-des-signalements': typeof AuthenticatedSuiviDesSignalementsIndexRoute
+  '/entreprise/$companyId/accesses': typeof AuthenticatedEntrepriseCompanyIdAccessesRoute
+  '/entreprise/$companyId/bilan': typeof AuthenticatedEntrepriseCompanyIdBilanRoute
+  '/entreprise/$companyId/history': typeof AuthenticatedEntrepriseCompanyIdHistoryRoute
+  '/moderation-url-entreprises/sites-internet/non-identifies': typeof AuthenticatedModerationUrlEntreprisesSitesInternetNonIdentifiesRoute
+  '/parametres/update-email/$token': typeof AuthenticatedParametresUpdateEmailTokenRoute
+  '/suivi-des-signalements/report/$reportId': typeof AuthenticatedSuiviDesSignalementsReportReportIdRoute
+}
+export interface FileRoutesById {
+  __root__: typeof rootRouteImport
+  '/': typeof IndexRoute
+  '/_authenticated': typeof AuthenticatedRouteWithChildren
+  '/activation': typeof ActivationRoute
+  '/_authenticated/$': typeof AuthenticatedSplatRoute
+  '/_authenticated/abonnements': typeof AuthenticatedAbonnementsRoute
+  '/_authenticated/engagements': typeof AuthenticatedEngagementsRoute
+  '/_authenticated/entreprises': typeof AuthenticatedEntreprisesRouteWithChildren
+  '/_authenticated/gestion-des-acces-avancee': typeof AuthenticatedGestionDesAccesAvanceeRoute
+  '/_authenticated/information': typeof AuthenticatedInformationRoute
+  '/_authenticated/mes-entreprises': typeof AuthenticatedMesEntreprisesRoute
+  '/_authenticated/mes-utilisateurs': typeof AuthenticatedMesUtilisateursRoute
+  '/_authenticated/mode-emploi-dgccrf': typeof AuthenticatedModeEmploiDgccrfRoute
+  '/_authenticated/moderation-url-entreprises': typeof AuthenticatedModerationUrlEntreprisesRouteWithChildren
+  '/_authenticated/stats': typeof AuthenticatedStatsRouteWithChildren
+  '/_authenticated/suivi-des-signalements-clotures': typeof AuthenticatedSuiviDesSignalementsCloturesRoute
+  '/_authenticated/suivi-des-telephones': typeof AuthenticatedSuiviDesTelephonesRoute
+  '/_authenticated/tools': typeof AuthenticatedToolsRouteWithChildren
+  '/_authenticated/users': typeof AuthenticatedUsersRouteWithChildren
+  '/admin/rejoindre': typeof AdminRejoindreRoute
+  '/agent/rejoindre': typeof AgentRejoindreRoute
+  '/connexion/agents': typeof ConnexionAgentsRoute
+  '/connexion/validation-email': typeof ConnexionValidationEmailRoute
+  '/connexion/': typeof ConnexionIndexRoute
+  '/_authenticated/entreprise/$companyId': typeof AuthenticatedEntrepriseCompanyIdRouteWithChildren
+  '/_authenticated/entreprise/activation': typeof AuthenticatedEntrepriseActivationRoute
+  '/_authenticated/entreprises/$': typeof AuthenticatedEntreprisesSplatRoute
+  '/_authenticated/entreprises/a-activer': typeof AuthenticatedEntreprisesAActiverRoute
+  '/_authenticated/entreprises/a-relancer': typeof AuthenticatedEntreprisesARelancerRoute
+  '/_authenticated/entreprises/les-plus-signalees': typeof AuthenticatedEntreprisesLesPlusSignaleesRoute
+  '/_authenticated/moderation-url-entreprises/$': typeof AuthenticatedModerationUrlEntreprisesSplatRoute
+  '/_authenticated/moderation-url-entreprises/enquete': typeof AuthenticatedModerationUrlEntreprisesEnqueteRoute
+  '/_authenticated/stats/$': typeof AuthenticatedStatsSplatRoute
+  '/_authenticated/stats/countBySubCategories': typeof AuthenticatedStatsCountBySubCategoriesRoute
+  '/_authenticated/stats/dgccrf-stats': typeof AuthenticatedStatsDgccrfStatsRoute
+  '/_authenticated/stats/pro-stats': typeof AuthenticatedStatsProStatsRoute
+  '/_authenticated/stats/report-stats': typeof AuthenticatedStatsReportStatsRoute
+  '/_authenticated/tools/$': typeof AuthenticatedToolsSplatRoute
+  '/_authenticated/tools/admin': typeof AuthenticatedToolsAdminRoute
+  '/_authenticated/tools/test': typeof AuthenticatedToolsTestRoute
+  '/_authenticated/users/$': typeof AuthenticatedUsersSplatRoute
+  '/_authenticated/users/admin': typeof AuthenticatedUsersAdminRoute
+  '/_authenticated/users/agent': typeof AuthenticatedUsersAgentRoute
+  '/_authenticated/users/auth-attempts': typeof AuthenticatedUsersAuthAttemptsRoute
+  '/_authenticated/users/blacklist': typeof AuthenticatedUsersBlacklistRoute
+  '/_authenticated/users/consumers': typeof AuthenticatedUsersConsumersRoute
+  '/_authenticated/users/pending': typeof AuthenticatedUsersPendingRoute
+  '/authenticate/proconnect/callback': typeof AuthenticateProconnectCallbackRoute
+  '/connexion/nouveau-mot-de-passe/$token': typeof ConnexionNouveauMotDePasseTokenRoute
+  '/entreprise/rejoindre/$siret': typeof EntrepriseRejoindreSiretRoute
+  '/logout/proconnect/callback': typeof LogoutProconnectCallbackRoute
+  '/_authenticated/parametres/': typeof AuthenticatedParametresIndexRoute
+  '/_authenticated/suivi-des-signalements/': typeof AuthenticatedSuiviDesSignalementsIndexRoute
+  '/_authenticated/entreprise/$companyId/accesses': typeof AuthenticatedEntrepriseCompanyIdAccessesRoute
+  '/_authenticated/entreprise/$companyId/bilan': typeof AuthenticatedEntrepriseCompanyIdBilanRoute
+  '/_authenticated/entreprise/$companyId/history': typeof AuthenticatedEntrepriseCompanyIdHistoryRoute
+  '/_authenticated/moderation-url-entreprises/sites-internet/non-identifies': typeof AuthenticatedModerationUrlEntreprisesSitesInternetNonIdentifiesRoute
+  '/_authenticated/parametres/update-email/$token': typeof AuthenticatedParametresUpdateEmailTokenRoute
+  '/_authenticated/suivi-des-signalements/report/$reportId': typeof AuthenticatedSuiviDesSignalementsReportReportIdRoute
+}
+export interface FileRouteTypes {
+  fileRoutesByFullPath: FileRoutesByFullPath
+  fullPaths:
+    | '/'
+    | '/activation'
+    | '/$'
+    | '/abonnements'
+    | '/engagements'
+    | '/entreprises'
+    | '/gestion-des-acces-avancee'
+    | '/information'
+    | '/mes-entreprises'
+    | '/mes-utilisateurs'
+    | '/mode-emploi-dgccrf'
+    | '/moderation-url-entreprises'
+    | '/stats'
+    | '/suivi-des-signalements-clotures'
+    | '/suivi-des-telephones'
+    | '/tools'
+    | '/users'
+    | '/admin/rejoindre'
+    | '/agent/rejoindre'
+    | '/connexion/agents'
+    | '/connexion/validation-email'
+    | '/connexion'
+    | '/entreprise/$companyId'
+    | '/entreprise/activation'
+    | '/entreprises/$'
+    | '/entreprises/a-activer'
+    | '/entreprises/a-relancer'
+    | '/entreprises/les-plus-signalees'
+    | '/moderation-url-entreprises/$'
+    | '/moderation-url-entreprises/enquete'
+    | '/stats/$'
+    | '/stats/countBySubCategories'
+    | '/stats/dgccrf-stats'
+    | '/stats/pro-stats'
+    | '/stats/report-stats'
+    | '/tools/$'
+    | '/tools/admin'
+    | '/tools/test'
+    | '/users/$'
+    | '/users/admin'
+    | '/users/agent'
+    | '/users/auth-attempts'
+    | '/users/blacklist'
+    | '/users/consumers'
+    | '/users/pending'
+    | '/authenticate/proconnect/callback'
+    | '/connexion/nouveau-mot-de-passe/$token'
+    | '/entreprise/rejoindre/$siret'
+    | '/logout/proconnect/callback'
+    | '/parametres'
+    | '/suivi-des-signalements'
+    | '/entreprise/$companyId/accesses'
+    | '/entreprise/$companyId/bilan'
+    | '/entreprise/$companyId/history'
+    | '/moderation-url-entreprises/sites-internet/non-identifies'
+    | '/parametres/update-email/$token'
+    | '/suivi-des-signalements/report/$reportId'
+  fileRoutesByTo: FileRoutesByTo
+  to:
+    | '/'
+    | '/activation'
+    | '/$'
+    | '/abonnements'
+    | '/engagements'
+    | '/entreprises'
+    | '/gestion-des-acces-avancee'
+    | '/information'
+    | '/mes-entreprises'
+    | '/mes-utilisateurs'
+    | '/mode-emploi-dgccrf'
+    | '/moderation-url-entreprises'
+    | '/stats'
+    | '/suivi-des-signalements-clotures'
+    | '/suivi-des-telephones'
+    | '/tools'
+    | '/users'
+    | '/admin/rejoindre'
+    | '/agent/rejoindre'
+    | '/connexion/agents'
+    | '/connexion/validation-email'
+    | '/connexion'
+    | '/entreprise/$companyId'
+    | '/entreprise/activation'
+    | '/entreprises/$'
+    | '/entreprises/a-activer'
+    | '/entreprises/a-relancer'
+    | '/entreprises/les-plus-signalees'
+    | '/moderation-url-entreprises/$'
+    | '/moderation-url-entreprises/enquete'
+    | '/stats/$'
+    | '/stats/countBySubCategories'
+    | '/stats/dgccrf-stats'
+    | '/stats/pro-stats'
+    | '/stats/report-stats'
+    | '/tools/$'
+    | '/tools/admin'
+    | '/tools/test'
+    | '/users/$'
+    | '/users/admin'
+    | '/users/agent'
+    | '/users/auth-attempts'
+    | '/users/blacklist'
+    | '/users/consumers'
+    | '/users/pending'
+    | '/authenticate/proconnect/callback'
+    | '/connexion/nouveau-mot-de-passe/$token'
+    | '/entreprise/rejoindre/$siret'
+    | '/logout/proconnect/callback'
+    | '/parametres'
+    | '/suivi-des-signalements'
+    | '/entreprise/$companyId/accesses'
+    | '/entreprise/$companyId/bilan'
+    | '/entreprise/$companyId/history'
+    | '/moderation-url-entreprises/sites-internet/non-identifies'
+    | '/parametres/update-email/$token'
+    | '/suivi-des-signalements/report/$reportId'
+  id:
+    | '__root__'
+    | '/'
+    | '/_authenticated'
+    | '/activation'
+    | '/_authenticated/$'
+    | '/_authenticated/abonnements'
+    | '/_authenticated/engagements'
+    | '/_authenticated/entreprises'
+    | '/_authenticated/gestion-des-acces-avancee'
+    | '/_authenticated/information'
+    | '/_authenticated/mes-entreprises'
+    | '/_authenticated/mes-utilisateurs'
+    | '/_authenticated/mode-emploi-dgccrf'
+    | '/_authenticated/moderation-url-entreprises'
+    | '/_authenticated/stats'
+    | '/_authenticated/suivi-des-signalements-clotures'
+    | '/_authenticated/suivi-des-telephones'
+    | '/_authenticated/tools'
+    | '/_authenticated/users'
+    | '/admin/rejoindre'
+    | '/agent/rejoindre'
+    | '/connexion/agents'
+    | '/connexion/validation-email'
+    | '/connexion/'
+    | '/_authenticated/entreprise/$companyId'
+    | '/_authenticated/entreprise/activation'
+    | '/_authenticated/entreprises/$'
+    | '/_authenticated/entreprises/a-activer'
+    | '/_authenticated/entreprises/a-relancer'
+    | '/_authenticated/entreprises/les-plus-signalees'
+    | '/_authenticated/moderation-url-entreprises/$'
+    | '/_authenticated/moderation-url-entreprises/enquete'
+    | '/_authenticated/stats/$'
+    | '/_authenticated/stats/countBySubCategories'
+    | '/_authenticated/stats/dgccrf-stats'
+    | '/_authenticated/stats/pro-stats'
+    | '/_authenticated/stats/report-stats'
+    | '/_authenticated/tools/$'
+    | '/_authenticated/tools/admin'
+    | '/_authenticated/tools/test'
+    | '/_authenticated/users/$'
+    | '/_authenticated/users/admin'
+    | '/_authenticated/users/agent'
+    | '/_authenticated/users/auth-attempts'
+    | '/_authenticated/users/blacklist'
+    | '/_authenticated/users/consumers'
+    | '/_authenticated/users/pending'
+    | '/authenticate/proconnect/callback'
+    | '/connexion/nouveau-mot-de-passe/$token'
+    | '/entreprise/rejoindre/$siret'
+    | '/logout/proconnect/callback'
+    | '/_authenticated/parametres/'
+    | '/_authenticated/suivi-des-signalements/'
+    | '/_authenticated/entreprise/$companyId/accesses'
+    | '/_authenticated/entreprise/$companyId/bilan'
+    | '/_authenticated/entreprise/$companyId/history'
+    | '/_authenticated/moderation-url-entreprises/sites-internet/non-identifies'
+    | '/_authenticated/parametres/update-email/$token'
+    | '/_authenticated/suivi-des-signalements/report/$reportId'
+  fileRoutesById: FileRoutesById
+}
+export interface RootRouteChildren {
+  IndexRoute: typeof IndexRoute
+  AuthenticatedRoute: typeof AuthenticatedRouteWithChildren
+  ActivationRoute: typeof ActivationRoute
+  AdminRejoindreRoute: typeof AdminRejoindreRoute
+  AgentRejoindreRoute: typeof AgentRejoindreRoute
+  ConnexionAgentsRoute: typeof ConnexionAgentsRoute
+  ConnexionValidationEmailRoute: typeof ConnexionValidationEmailRoute
+  ConnexionIndexRoute: typeof ConnexionIndexRoute
+  AuthenticateProconnectCallbackRoute: typeof AuthenticateProconnectCallbackRoute
+  ConnexionNouveauMotDePasseTokenRoute: typeof ConnexionNouveauMotDePasseTokenRoute
+  EntrepriseRejoindreSiretRoute: typeof EntrepriseRejoindreSiretRoute
+  LogoutProconnectCallbackRoute: typeof LogoutProconnectCallbackRoute
+}
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexImport
-      parentRoute: typeof rootRoute
+    '/activation': {
+      id: '/activation'
+      path: '/activation'
+      fullPath: '/activation'
+      preLoaderRoute: typeof ActivationRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/_authenticated': {
       id: '/_authenticated'
       path: ''
       fullPath: ''
-      preLoaderRoute: typeof AuthenticatedImport
-      parentRoute: typeof rootRoute
+      preLoaderRoute: typeof AuthenticatedRouteImport
+      parentRoute: typeof rootRouteImport
     }
-    '/activation': {
-      id: '/activation'
-      path: '/activation'
-      fullPath: '/activation'
-      preLoaderRoute: typeof ActivationImport
-      parentRoute: typeof rootRoute
-    }
-    '/_authenticated/$': {
-      id: '/_authenticated/$'
-      path: '/$'
-      fullPath: '/$'
-      preLoaderRoute: typeof AuthenticatedSplatImport
-      parentRoute: typeof AuthenticatedImport
-    }
-    '/_authenticated/abonnements': {
-      id: '/_authenticated/abonnements'
-      path: '/abonnements'
-      fullPath: '/abonnements'
-      preLoaderRoute: typeof AuthenticatedAbonnementsImport
-      parentRoute: typeof AuthenticatedImport
-    }
-    '/_authenticated/engagements': {
-      id: '/_authenticated/engagements'
-      path: '/engagements'
-      fullPath: '/engagements'
-      preLoaderRoute: typeof AuthenticatedEngagementsImport
-      parentRoute: typeof AuthenticatedImport
-    }
-    '/_authenticated/entreprises': {
-      id: '/_authenticated/entreprises'
-      path: '/entreprises'
-      fullPath: '/entreprises'
-      preLoaderRoute: typeof AuthenticatedEntreprisesImport
-      parentRoute: typeof AuthenticatedImport
-    }
-    '/_authenticated/gestion-des-acces-avancee': {
-      id: '/_authenticated/gestion-des-acces-avancee'
-      path: '/gestion-des-acces-avancee'
-      fullPath: '/gestion-des-acces-avancee'
-      preLoaderRoute: typeof AuthenticatedGestionDesAccesAvanceeImport
-      parentRoute: typeof AuthenticatedImport
-    }
-    '/_authenticated/information': {
-      id: '/_authenticated/information'
-      path: '/information'
-      fullPath: '/information'
-      preLoaderRoute: typeof AuthenticatedInformationImport
-      parentRoute: typeof AuthenticatedImport
-    }
-    '/_authenticated/mes-entreprises': {
-      id: '/_authenticated/mes-entreprises'
-      path: '/mes-entreprises'
-      fullPath: '/mes-entreprises'
-      preLoaderRoute: typeof AuthenticatedMesEntreprisesImport
-      parentRoute: typeof AuthenticatedImport
-    }
-    '/_authenticated/mes-utilisateurs': {
-      id: '/_authenticated/mes-utilisateurs'
-      path: '/mes-utilisateurs'
-      fullPath: '/mes-utilisateurs'
-      preLoaderRoute: typeof AuthenticatedMesUtilisateursImport
-      parentRoute: typeof AuthenticatedImport
-    }
-    '/_authenticated/mode-emploi-dgccrf': {
-      id: '/_authenticated/mode-emploi-dgccrf'
-      path: '/mode-emploi-dgccrf'
-      fullPath: '/mode-emploi-dgccrf'
-      preLoaderRoute: typeof AuthenticatedModeEmploiDgccrfImport
-      parentRoute: typeof AuthenticatedImport
-    }
-    '/_authenticated/moderation-url-entreprises': {
-      id: '/_authenticated/moderation-url-entreprises'
-      path: '/moderation-url-entreprises'
-      fullPath: '/moderation-url-entreprises'
-      preLoaderRoute: typeof AuthenticatedModerationUrlEntreprisesImport
-      parentRoute: typeof AuthenticatedImport
-    }
-    '/_authenticated/stats': {
-      id: '/_authenticated/stats'
-      path: '/stats'
-      fullPath: '/stats'
-      preLoaderRoute: typeof AuthenticatedStatsImport
-      parentRoute: typeof AuthenticatedImport
-    }
-    '/_authenticated/suivi-des-signalements-clotures': {
-      id: '/_authenticated/suivi-des-signalements-clotures'
-      path: '/suivi-des-signalements-clotures'
-      fullPath: '/suivi-des-signalements-clotures'
-      preLoaderRoute: typeof AuthenticatedSuiviDesSignalementsCloturesImport
-      parentRoute: typeof AuthenticatedImport
-    }
-    '/_authenticated/suivi-des-telephones': {
-      id: '/_authenticated/suivi-des-telephones'
-      path: '/suivi-des-telephones'
-      fullPath: '/suivi-des-telephones'
-      preLoaderRoute: typeof AuthenticatedSuiviDesTelephonesImport
-      parentRoute: typeof AuthenticatedImport
-    }
-    '/_authenticated/tools': {
-      id: '/_authenticated/tools'
-      path: '/tools'
-      fullPath: '/tools'
-      preLoaderRoute: typeof AuthenticatedToolsImport
-      parentRoute: typeof AuthenticatedImport
-    }
-    '/_authenticated/users': {
-      id: '/_authenticated/users'
-      path: '/users'
-      fullPath: '/users'
-      preLoaderRoute: typeof AuthenticatedUsersImport
-      parentRoute: typeof AuthenticatedImport
-    }
-    '/admin/rejoindre': {
-      id: '/admin/rejoindre'
-      path: '/admin/rejoindre'
-      fullPath: '/admin/rejoindre'
-      preLoaderRoute: typeof AdminRejoindreImport
-      parentRoute: typeof rootRoute
-    }
-    '/agent/rejoindre': {
-      id: '/agent/rejoindre'
-      path: '/agent/rejoindre'
-      fullPath: '/agent/rejoindre'
-      preLoaderRoute: typeof AgentRejoindreImport
-      parentRoute: typeof rootRoute
-    }
-    '/connexion/agents': {
-      id: '/connexion/agents'
-      path: '/connexion/agents'
-      fullPath: '/connexion/agents'
-      preLoaderRoute: typeof ConnexionAgentsImport
-      parentRoute: typeof rootRoute
-    }
-    '/connexion/validation-email': {
-      id: '/connexion/validation-email'
-      path: '/connexion/validation-email'
-      fullPath: '/connexion/validation-email'
-      preLoaderRoute: typeof ConnexionValidationEmailImport
-      parentRoute: typeof rootRoute
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/connexion/': {
       id: '/connexion/'
       path: '/connexion'
       fullPath: '/connexion'
-      preLoaderRoute: typeof ConnexionIndexImport
-      parentRoute: typeof rootRoute
+      preLoaderRoute: typeof ConnexionIndexRouteImport
+      parentRoute: typeof rootRouteImport
     }
-    '/_authenticated/entreprise/$companyId': {
-      id: '/_authenticated/entreprise/$companyId'
-      path: '/entreprise/$companyId'
-      fullPath: '/entreprise/$companyId'
-      preLoaderRoute: typeof AuthenticatedEntrepriseCompanyIdImport
-      parentRoute: typeof AuthenticatedImport
+    '/connexion/validation-email': {
+      id: '/connexion/validation-email'
+      path: '/connexion/validation-email'
+      fullPath: '/connexion/validation-email'
+      preLoaderRoute: typeof ConnexionValidationEmailRouteImport
+      parentRoute: typeof rootRouteImport
     }
-    '/_authenticated/entreprise/activation': {
-      id: '/_authenticated/entreprise/activation'
-      path: '/entreprise/activation'
-      fullPath: '/entreprise/activation'
-      preLoaderRoute: typeof AuthenticatedEntrepriseActivationImport
-      parentRoute: typeof AuthenticatedImport
+    '/connexion/agents': {
+      id: '/connexion/agents'
+      path: '/connexion/agents'
+      fullPath: '/connexion/agents'
+      preLoaderRoute: typeof ConnexionAgentsRouteImport
+      parentRoute: typeof rootRouteImport
     }
-    '/_authenticated/entreprises/$': {
-      id: '/_authenticated/entreprises/$'
+    '/agent/rejoindre': {
+      id: '/agent/rejoindre'
+      path: '/agent/rejoindre'
+      fullPath: '/agent/rejoindre'
+      preLoaderRoute: typeof AgentRejoindreRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/rejoindre': {
+      id: '/admin/rejoindre'
+      path: '/admin/rejoindre'
+      fullPath: '/admin/rejoindre'
+      preLoaderRoute: typeof AdminRejoindreRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/users': {
+      id: '/_authenticated/users'
+      path: '/users'
+      fullPath: '/users'
+      preLoaderRoute: typeof AuthenticatedUsersRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/tools': {
+      id: '/_authenticated/tools'
+      path: '/tools'
+      fullPath: '/tools'
+      preLoaderRoute: typeof AuthenticatedToolsRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/suivi-des-telephones': {
+      id: '/_authenticated/suivi-des-telephones'
+      path: '/suivi-des-telephones'
+      fullPath: '/suivi-des-telephones'
+      preLoaderRoute: typeof AuthenticatedSuiviDesTelephonesRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/suivi-des-signalements-clotures': {
+      id: '/_authenticated/suivi-des-signalements-clotures'
+      path: '/suivi-des-signalements-clotures'
+      fullPath: '/suivi-des-signalements-clotures'
+      preLoaderRoute: typeof AuthenticatedSuiviDesSignalementsCloturesRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/stats': {
+      id: '/_authenticated/stats'
+      path: '/stats'
+      fullPath: '/stats'
+      preLoaderRoute: typeof AuthenticatedStatsRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/moderation-url-entreprises': {
+      id: '/_authenticated/moderation-url-entreprises'
+      path: '/moderation-url-entreprises'
+      fullPath: '/moderation-url-entreprises'
+      preLoaderRoute: typeof AuthenticatedModerationUrlEntreprisesRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/mode-emploi-dgccrf': {
+      id: '/_authenticated/mode-emploi-dgccrf'
+      path: '/mode-emploi-dgccrf'
+      fullPath: '/mode-emploi-dgccrf'
+      preLoaderRoute: typeof AuthenticatedModeEmploiDgccrfRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/mes-utilisateurs': {
+      id: '/_authenticated/mes-utilisateurs'
+      path: '/mes-utilisateurs'
+      fullPath: '/mes-utilisateurs'
+      preLoaderRoute: typeof AuthenticatedMesUtilisateursRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/mes-entreprises': {
+      id: '/_authenticated/mes-entreprises'
+      path: '/mes-entreprises'
+      fullPath: '/mes-entreprises'
+      preLoaderRoute: typeof AuthenticatedMesEntreprisesRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/information': {
+      id: '/_authenticated/information'
+      path: '/information'
+      fullPath: '/information'
+      preLoaderRoute: typeof AuthenticatedInformationRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/gestion-des-acces-avancee': {
+      id: '/_authenticated/gestion-des-acces-avancee'
+      path: '/gestion-des-acces-avancee'
+      fullPath: '/gestion-des-acces-avancee'
+      preLoaderRoute: typeof AuthenticatedGestionDesAccesAvanceeRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/entreprises': {
+      id: '/_authenticated/entreprises'
+      path: '/entreprises'
+      fullPath: '/entreprises'
+      preLoaderRoute: typeof AuthenticatedEntreprisesRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/engagements': {
+      id: '/_authenticated/engagements'
+      path: '/engagements'
+      fullPath: '/engagements'
+      preLoaderRoute: typeof AuthenticatedEngagementsRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/abonnements': {
+      id: '/_authenticated/abonnements'
+      path: '/abonnements'
+      fullPath: '/abonnements'
+      preLoaderRoute: typeof AuthenticatedAbonnementsRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/$': {
+      id: '/_authenticated/$'
       path: '/$'
-      fullPath: '/entreprises/$'
-      preLoaderRoute: typeof AuthenticatedEntreprisesSplatImport
-      parentRoute: typeof AuthenticatedEntreprisesImport
-    }
-    '/_authenticated/entreprises/a-activer': {
-      id: '/_authenticated/entreprises/a-activer'
-      path: '/a-activer'
-      fullPath: '/entreprises/a-activer'
-      preLoaderRoute: typeof AuthenticatedEntreprisesAActiverImport
-      parentRoute: typeof AuthenticatedEntreprisesImport
-    }
-    '/_authenticated/entreprises/a-relancer': {
-      id: '/_authenticated/entreprises/a-relancer'
-      path: '/a-relancer'
-      fullPath: '/entreprises/a-relancer'
-      preLoaderRoute: typeof AuthenticatedEntreprisesARelancerImport
-      parentRoute: typeof AuthenticatedEntreprisesImport
-    }
-    '/_authenticated/entreprises/les-plus-signalees': {
-      id: '/_authenticated/entreprises/les-plus-signalees'
-      path: '/les-plus-signalees'
-      fullPath: '/entreprises/les-plus-signalees'
-      preLoaderRoute: typeof AuthenticatedEntreprisesLesPlusSignaleesImport
-      parentRoute: typeof AuthenticatedEntreprisesImport
-    }
-    '/_authenticated/moderation-url-entreprises/$': {
-      id: '/_authenticated/moderation-url-entreprises/$'
-      path: '/$'
-      fullPath: '/moderation-url-entreprises/$'
-      preLoaderRoute: typeof AuthenticatedModerationUrlEntreprisesSplatImport
-      parentRoute: typeof AuthenticatedModerationUrlEntreprisesImport
-    }
-    '/_authenticated/moderation-url-entreprises/enquete': {
-      id: '/_authenticated/moderation-url-entreprises/enquete'
-      path: '/enquete'
-      fullPath: '/moderation-url-entreprises/enquete'
-      preLoaderRoute: typeof AuthenticatedModerationUrlEntreprisesEnqueteImport
-      parentRoute: typeof AuthenticatedModerationUrlEntreprisesImport
-    }
-    '/_authenticated/stats/$': {
-      id: '/_authenticated/stats/$'
-      path: '/$'
-      fullPath: '/stats/$'
-      preLoaderRoute: typeof AuthenticatedStatsSplatImport
-      parentRoute: typeof AuthenticatedStatsImport
-    }
-    '/_authenticated/stats/countBySubCategories': {
-      id: '/_authenticated/stats/countBySubCategories'
-      path: '/countBySubCategories'
-      fullPath: '/stats/countBySubCategories'
-      preLoaderRoute: typeof AuthenticatedStatsCountBySubCategoriesImport
-      parentRoute: typeof AuthenticatedStatsImport
-    }
-    '/_authenticated/stats/dgccrf-stats': {
-      id: '/_authenticated/stats/dgccrf-stats'
-      path: '/dgccrf-stats'
-      fullPath: '/stats/dgccrf-stats'
-      preLoaderRoute: typeof AuthenticatedStatsDgccrfStatsImport
-      parentRoute: typeof AuthenticatedStatsImport
-    }
-    '/_authenticated/stats/pro-stats': {
-      id: '/_authenticated/stats/pro-stats'
-      path: '/pro-stats'
-      fullPath: '/stats/pro-stats'
-      preLoaderRoute: typeof AuthenticatedStatsProStatsImport
-      parentRoute: typeof AuthenticatedStatsImport
-    }
-    '/_authenticated/stats/report-stats': {
-      id: '/_authenticated/stats/report-stats'
-      path: '/report-stats'
-      fullPath: '/stats/report-stats'
-      preLoaderRoute: typeof AuthenticatedStatsReportStatsImport
-      parentRoute: typeof AuthenticatedStatsImport
-    }
-    '/_authenticated/tools/$': {
-      id: '/_authenticated/tools/$'
-      path: '/$'
-      fullPath: '/tools/$'
-      preLoaderRoute: typeof AuthenticatedToolsSplatImport
-      parentRoute: typeof AuthenticatedToolsImport
-    }
-    '/_authenticated/tools/admin': {
-      id: '/_authenticated/tools/admin'
-      path: '/admin'
-      fullPath: '/tools/admin'
-      preLoaderRoute: typeof AuthenticatedToolsAdminImport
-      parentRoute: typeof AuthenticatedToolsImport
-    }
-    '/_authenticated/tools/test': {
-      id: '/_authenticated/tools/test'
-      path: '/test'
-      fullPath: '/tools/test'
-      preLoaderRoute: typeof AuthenticatedToolsTestImport
-      parentRoute: typeof AuthenticatedToolsImport
-    }
-    '/_authenticated/users/$': {
-      id: '/_authenticated/users/$'
-      path: '/$'
-      fullPath: '/users/$'
-      preLoaderRoute: typeof AuthenticatedUsersSplatImport
-      parentRoute: typeof AuthenticatedUsersImport
-    }
-    '/_authenticated/users/admin': {
-      id: '/_authenticated/users/admin'
-      path: '/admin'
-      fullPath: '/users/admin'
-      preLoaderRoute: typeof AuthenticatedUsersAdminImport
-      parentRoute: typeof AuthenticatedUsersImport
-    }
-    '/_authenticated/users/agent': {
-      id: '/_authenticated/users/agent'
-      path: '/agent'
-      fullPath: '/users/agent'
-      preLoaderRoute: typeof AuthenticatedUsersAgentImport
-      parentRoute: typeof AuthenticatedUsersImport
-    }
-    '/_authenticated/users/auth-attempts': {
-      id: '/_authenticated/users/auth-attempts'
-      path: '/auth-attempts'
-      fullPath: '/users/auth-attempts'
-      preLoaderRoute: typeof AuthenticatedUsersAuthAttemptsImport
-      parentRoute: typeof AuthenticatedUsersImport
-    }
-    '/_authenticated/users/blacklist': {
-      id: '/_authenticated/users/blacklist'
-      path: '/blacklist'
-      fullPath: '/users/blacklist'
-      preLoaderRoute: typeof AuthenticatedUsersBlacklistImport
-      parentRoute: typeof AuthenticatedUsersImport
-    }
-    '/_authenticated/users/consumers': {
-      id: '/_authenticated/users/consumers'
-      path: '/consumers'
-      fullPath: '/users/consumers'
-      preLoaderRoute: typeof AuthenticatedUsersConsumersImport
-      parentRoute: typeof AuthenticatedUsersImport
-    }
-    '/_authenticated/users/pending': {
-      id: '/_authenticated/users/pending'
-      path: '/pending'
-      fullPath: '/users/pending'
-      preLoaderRoute: typeof AuthenticatedUsersPendingImport
-      parentRoute: typeof AuthenticatedUsersImport
-    }
-    '/authenticate/proconnect/callback': {
-      id: '/authenticate/proconnect/callback'
-      path: '/authenticate/proconnect/callback'
-      fullPath: '/authenticate/proconnect/callback'
-      preLoaderRoute: typeof AuthenticateProconnectCallbackImport
-      parentRoute: typeof rootRoute
-    }
-    '/connexion/nouveau-mot-de-passe/$token': {
-      id: '/connexion/nouveau-mot-de-passe/$token'
-      path: '/connexion/nouveau-mot-de-passe/$token'
-      fullPath: '/connexion/nouveau-mot-de-passe/$token'
-      preLoaderRoute: typeof ConnexionNouveauMotDePasseTokenImport
-      parentRoute: typeof rootRoute
-    }
-    '/entreprise/rejoindre/$siret': {
-      id: '/entreprise/rejoindre/$siret'
-      path: '/entreprise/rejoindre/$siret'
-      fullPath: '/entreprise/rejoindre/$siret'
-      preLoaderRoute: typeof EntrepriseRejoindreSiretImport
-      parentRoute: typeof rootRoute
-    }
-    '/logout/proconnect/callback': {
-      id: '/logout/proconnect/callback'
-      path: '/logout/proconnect/callback'
-      fullPath: '/logout/proconnect/callback'
-      preLoaderRoute: typeof LogoutProconnectCallbackImport
-      parentRoute: typeof rootRoute
-    }
-    '/_authenticated/parametres/': {
-      id: '/_authenticated/parametres/'
-      path: '/parametres'
-      fullPath: '/parametres'
-      preLoaderRoute: typeof AuthenticatedParametresIndexImport
-      parentRoute: typeof AuthenticatedImport
+      fullPath: '/$'
+      preLoaderRoute: typeof AuthenticatedSplatRouteImport
+      parentRoute: typeof AuthenticatedRoute
     }
     '/_authenticated/suivi-des-signalements/': {
       id: '/_authenticated/suivi-des-signalements/'
       path: '/suivi-des-signalements'
       fullPath: '/suivi-des-signalements'
-      preLoaderRoute: typeof AuthenticatedSuiviDesSignalementsIndexImport
-      parentRoute: typeof AuthenticatedImport
+      preLoaderRoute: typeof AuthenticatedSuiviDesSignalementsIndexRouteImport
+      parentRoute: typeof AuthenticatedRoute
     }
-    '/_authenticated/entreprise/$companyId/accesses': {
-      id: '/_authenticated/entreprise/$companyId/accesses'
-      path: '/accesses'
-      fullPath: '/entreprise/$companyId/accesses'
-      preLoaderRoute: typeof AuthenticatedEntrepriseCompanyIdAccessesImport
-      parentRoute: typeof AuthenticatedEntrepriseCompanyIdImport
+    '/_authenticated/parametres/': {
+      id: '/_authenticated/parametres/'
+      path: '/parametres'
+      fullPath: '/parametres'
+      preLoaderRoute: typeof AuthenticatedParametresIndexRouteImport
+      parentRoute: typeof AuthenticatedRoute
     }
-    '/_authenticated/entreprise/$companyId/bilan': {
-      id: '/_authenticated/entreprise/$companyId/bilan'
-      path: '/bilan'
-      fullPath: '/entreprise/$companyId/bilan'
-      preLoaderRoute: typeof AuthenticatedEntrepriseCompanyIdBilanImport
-      parentRoute: typeof AuthenticatedEntrepriseCompanyIdImport
+    '/logout/proconnect/callback': {
+      id: '/logout/proconnect/callback'
+      path: '/logout/proconnect/callback'
+      fullPath: '/logout/proconnect/callback'
+      preLoaderRoute: typeof LogoutProconnectCallbackRouteImport
+      parentRoute: typeof rootRouteImport
     }
-    '/_authenticated/entreprise/$companyId/history': {
-      id: '/_authenticated/entreprise/$companyId/history'
-      path: '/history'
-      fullPath: '/entreprise/$companyId/history'
-      preLoaderRoute: typeof AuthenticatedEntrepriseCompanyIdHistoryImport
-      parentRoute: typeof AuthenticatedEntrepriseCompanyIdImport
+    '/entreprise/rejoindre/$siret': {
+      id: '/entreprise/rejoindre/$siret'
+      path: '/entreprise/rejoindre/$siret'
+      fullPath: '/entreprise/rejoindre/$siret'
+      preLoaderRoute: typeof EntrepriseRejoindreSiretRouteImport
+      parentRoute: typeof rootRouteImport
     }
-    '/_authenticated/moderation-url-entreprises/sites-internet/non-identifies': {
-      id: '/_authenticated/moderation-url-entreprises/sites-internet/non-identifies'
-      path: '/sites-internet/non-identifies'
-      fullPath: '/moderation-url-entreprises/sites-internet/non-identifies'
-      preLoaderRoute: typeof AuthenticatedModerationUrlEntreprisesSitesInternetNonIdentifiesImport
-      parentRoute: typeof AuthenticatedModerationUrlEntreprisesImport
+    '/connexion/nouveau-mot-de-passe/$token': {
+      id: '/connexion/nouveau-mot-de-passe/$token'
+      path: '/connexion/nouveau-mot-de-passe/$token'
+      fullPath: '/connexion/nouveau-mot-de-passe/$token'
+      preLoaderRoute: typeof ConnexionNouveauMotDePasseTokenRouteImport
+      parentRoute: typeof rootRouteImport
     }
-    '/_authenticated/parametres/update-email/$token': {
-      id: '/_authenticated/parametres/update-email/$token'
-      path: '/parametres/update-email/$token'
-      fullPath: '/parametres/update-email/$token'
-      preLoaderRoute: typeof AuthenticatedParametresUpdateEmailTokenImport
-      parentRoute: typeof AuthenticatedImport
+    '/authenticate/proconnect/callback': {
+      id: '/authenticate/proconnect/callback'
+      path: '/authenticate/proconnect/callback'
+      fullPath: '/authenticate/proconnect/callback'
+      preLoaderRoute: typeof AuthenticateProconnectCallbackRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/users/pending': {
+      id: '/_authenticated/users/pending'
+      path: '/pending'
+      fullPath: '/users/pending'
+      preLoaderRoute: typeof AuthenticatedUsersPendingRouteImport
+      parentRoute: typeof AuthenticatedUsersRoute
+    }
+    '/_authenticated/users/consumers': {
+      id: '/_authenticated/users/consumers'
+      path: '/consumers'
+      fullPath: '/users/consumers'
+      preLoaderRoute: typeof AuthenticatedUsersConsumersRouteImport
+      parentRoute: typeof AuthenticatedUsersRoute
+    }
+    '/_authenticated/users/blacklist': {
+      id: '/_authenticated/users/blacklist'
+      path: '/blacklist'
+      fullPath: '/users/blacklist'
+      preLoaderRoute: typeof AuthenticatedUsersBlacklistRouteImport
+      parentRoute: typeof AuthenticatedUsersRoute
+    }
+    '/_authenticated/users/auth-attempts': {
+      id: '/_authenticated/users/auth-attempts'
+      path: '/auth-attempts'
+      fullPath: '/users/auth-attempts'
+      preLoaderRoute: typeof AuthenticatedUsersAuthAttemptsRouteImport
+      parentRoute: typeof AuthenticatedUsersRoute
+    }
+    '/_authenticated/users/agent': {
+      id: '/_authenticated/users/agent'
+      path: '/agent'
+      fullPath: '/users/agent'
+      preLoaderRoute: typeof AuthenticatedUsersAgentRouteImport
+      parentRoute: typeof AuthenticatedUsersRoute
+    }
+    '/_authenticated/users/admin': {
+      id: '/_authenticated/users/admin'
+      path: '/admin'
+      fullPath: '/users/admin'
+      preLoaderRoute: typeof AuthenticatedUsersAdminRouteImport
+      parentRoute: typeof AuthenticatedUsersRoute
+    }
+    '/_authenticated/users/$': {
+      id: '/_authenticated/users/$'
+      path: '/$'
+      fullPath: '/users/$'
+      preLoaderRoute: typeof AuthenticatedUsersSplatRouteImport
+      parentRoute: typeof AuthenticatedUsersRoute
+    }
+    '/_authenticated/tools/test': {
+      id: '/_authenticated/tools/test'
+      path: '/test'
+      fullPath: '/tools/test'
+      preLoaderRoute: typeof AuthenticatedToolsTestRouteImport
+      parentRoute: typeof AuthenticatedToolsRoute
+    }
+    '/_authenticated/tools/admin': {
+      id: '/_authenticated/tools/admin'
+      path: '/admin'
+      fullPath: '/tools/admin'
+      preLoaderRoute: typeof AuthenticatedToolsAdminRouteImport
+      parentRoute: typeof AuthenticatedToolsRoute
+    }
+    '/_authenticated/tools/$': {
+      id: '/_authenticated/tools/$'
+      path: '/$'
+      fullPath: '/tools/$'
+      preLoaderRoute: typeof AuthenticatedToolsSplatRouteImport
+      parentRoute: typeof AuthenticatedToolsRoute
+    }
+    '/_authenticated/stats/report-stats': {
+      id: '/_authenticated/stats/report-stats'
+      path: '/report-stats'
+      fullPath: '/stats/report-stats'
+      preLoaderRoute: typeof AuthenticatedStatsReportStatsRouteImport
+      parentRoute: typeof AuthenticatedStatsRoute
+    }
+    '/_authenticated/stats/pro-stats': {
+      id: '/_authenticated/stats/pro-stats'
+      path: '/pro-stats'
+      fullPath: '/stats/pro-stats'
+      preLoaderRoute: typeof AuthenticatedStatsProStatsRouteImport
+      parentRoute: typeof AuthenticatedStatsRoute
+    }
+    '/_authenticated/stats/dgccrf-stats': {
+      id: '/_authenticated/stats/dgccrf-stats'
+      path: '/dgccrf-stats'
+      fullPath: '/stats/dgccrf-stats'
+      preLoaderRoute: typeof AuthenticatedStatsDgccrfStatsRouteImport
+      parentRoute: typeof AuthenticatedStatsRoute
+    }
+    '/_authenticated/stats/countBySubCategories': {
+      id: '/_authenticated/stats/countBySubCategories'
+      path: '/countBySubCategories'
+      fullPath: '/stats/countBySubCategories'
+      preLoaderRoute: typeof AuthenticatedStatsCountBySubCategoriesRouteImport
+      parentRoute: typeof AuthenticatedStatsRoute
+    }
+    '/_authenticated/stats/$': {
+      id: '/_authenticated/stats/$'
+      path: '/$'
+      fullPath: '/stats/$'
+      preLoaderRoute: typeof AuthenticatedStatsSplatRouteImport
+      parentRoute: typeof AuthenticatedStatsRoute
+    }
+    '/_authenticated/moderation-url-entreprises/enquete': {
+      id: '/_authenticated/moderation-url-entreprises/enquete'
+      path: '/enquete'
+      fullPath: '/moderation-url-entreprises/enquete'
+      preLoaderRoute: typeof AuthenticatedModerationUrlEntreprisesEnqueteRouteImport
+      parentRoute: typeof AuthenticatedModerationUrlEntreprisesRoute
+    }
+    '/_authenticated/moderation-url-entreprises/$': {
+      id: '/_authenticated/moderation-url-entreprises/$'
+      path: '/$'
+      fullPath: '/moderation-url-entreprises/$'
+      preLoaderRoute: typeof AuthenticatedModerationUrlEntreprisesSplatRouteImport
+      parentRoute: typeof AuthenticatedModerationUrlEntreprisesRoute
+    }
+    '/_authenticated/entreprises/les-plus-signalees': {
+      id: '/_authenticated/entreprises/les-plus-signalees'
+      path: '/les-plus-signalees'
+      fullPath: '/entreprises/les-plus-signalees'
+      preLoaderRoute: typeof AuthenticatedEntreprisesLesPlusSignaleesRouteImport
+      parentRoute: typeof AuthenticatedEntreprisesRoute
+    }
+    '/_authenticated/entreprises/a-relancer': {
+      id: '/_authenticated/entreprises/a-relancer'
+      path: '/a-relancer'
+      fullPath: '/entreprises/a-relancer'
+      preLoaderRoute: typeof AuthenticatedEntreprisesARelancerRouteImport
+      parentRoute: typeof AuthenticatedEntreprisesRoute
+    }
+    '/_authenticated/entreprises/a-activer': {
+      id: '/_authenticated/entreprises/a-activer'
+      path: '/a-activer'
+      fullPath: '/entreprises/a-activer'
+      preLoaderRoute: typeof AuthenticatedEntreprisesAActiverRouteImport
+      parentRoute: typeof AuthenticatedEntreprisesRoute
+    }
+    '/_authenticated/entreprises/$': {
+      id: '/_authenticated/entreprises/$'
+      path: '/$'
+      fullPath: '/entreprises/$'
+      preLoaderRoute: typeof AuthenticatedEntreprisesSplatRouteImport
+      parentRoute: typeof AuthenticatedEntreprisesRoute
+    }
+    '/_authenticated/entreprise/activation': {
+      id: '/_authenticated/entreprise/activation'
+      path: '/entreprise/activation'
+      fullPath: '/entreprise/activation'
+      preLoaderRoute: typeof AuthenticatedEntrepriseActivationRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/entreprise/$companyId': {
+      id: '/_authenticated/entreprise/$companyId'
+      path: '/entreprise/$companyId'
+      fullPath: '/entreprise/$companyId'
+      preLoaderRoute: typeof AuthenticatedEntrepriseCompanyIdRouteImport
+      parentRoute: typeof AuthenticatedRoute
     }
     '/_authenticated/suivi-des-signalements/report/$reportId': {
       id: '/_authenticated/suivi-des-signalements/report/$reportId'
       path: '/suivi-des-signalements/report/$reportId'
       fullPath: '/suivi-des-signalements/report/$reportId'
-      preLoaderRoute: typeof AuthenticatedSuiviDesSignalementsReportReportIdImport
-      parentRoute: typeof AuthenticatedImport
+      preLoaderRoute: typeof AuthenticatedSuiviDesSignalementsReportReportIdRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/parametres/update-email/$token': {
+      id: '/_authenticated/parametres/update-email/$token'
+      path: '/parametres/update-email/$token'
+      fullPath: '/parametres/update-email/$token'
+      preLoaderRoute: typeof AuthenticatedParametresUpdateEmailTokenRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/moderation-url-entreprises/sites-internet/non-identifies': {
+      id: '/_authenticated/moderation-url-entreprises/sites-internet/non-identifies'
+      path: '/sites-internet/non-identifies'
+      fullPath: '/moderation-url-entreprises/sites-internet/non-identifies'
+      preLoaderRoute: typeof AuthenticatedModerationUrlEntreprisesSitesInternetNonIdentifiesRouteImport
+      parentRoute: typeof AuthenticatedModerationUrlEntreprisesRoute
+    }
+    '/_authenticated/entreprise/$companyId/history': {
+      id: '/_authenticated/entreprise/$companyId/history'
+      path: '/history'
+      fullPath: '/entreprise/$companyId/history'
+      preLoaderRoute: typeof AuthenticatedEntrepriseCompanyIdHistoryRouteImport
+      parentRoute: typeof AuthenticatedEntrepriseCompanyIdRoute
+    }
+    '/_authenticated/entreprise/$companyId/bilan': {
+      id: '/_authenticated/entreprise/$companyId/bilan'
+      path: '/bilan'
+      fullPath: '/entreprise/$companyId/bilan'
+      preLoaderRoute: typeof AuthenticatedEntrepriseCompanyIdBilanRouteImport
+      parentRoute: typeof AuthenticatedEntrepriseCompanyIdRoute
+    }
+    '/_authenticated/entreprise/$companyId/accesses': {
+      id: '/_authenticated/entreprise/$companyId/accesses'
+      path: '/accesses'
+      fullPath: '/entreprise/$companyId/accesses'
+      preLoaderRoute: typeof AuthenticatedEntrepriseCompanyIdAccessesRouteImport
+      parentRoute: typeof AuthenticatedEntrepriseCompanyIdRoute
     }
   }
 }
-
-// Create and export the route tree
 
 interface AuthenticatedEntreprisesRouteChildren {
   AuthenticatedEntreprisesSplatRoute: typeof AuthenticatedEntreprisesSplatRoute
@@ -1050,389 +1369,6 @@ const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(
   AuthenticatedRouteChildren,
 )
 
-export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
-  '': typeof AuthenticatedRouteWithChildren
-  '/activation': typeof ActivationRoute
-  '/$': typeof AuthenticatedSplatRoute
-  '/abonnements': typeof AuthenticatedAbonnementsRoute
-  '/engagements': typeof AuthenticatedEngagementsRoute
-  '/entreprises': typeof AuthenticatedEntreprisesRouteWithChildren
-  '/gestion-des-acces-avancee': typeof AuthenticatedGestionDesAccesAvanceeRoute
-  '/information': typeof AuthenticatedInformationRoute
-  '/mes-entreprises': typeof AuthenticatedMesEntreprisesRoute
-  '/mes-utilisateurs': typeof AuthenticatedMesUtilisateursRoute
-  '/mode-emploi-dgccrf': typeof AuthenticatedModeEmploiDgccrfRoute
-  '/moderation-url-entreprises': typeof AuthenticatedModerationUrlEntreprisesRouteWithChildren
-  '/stats': typeof AuthenticatedStatsRouteWithChildren
-  '/suivi-des-signalements-clotures': typeof AuthenticatedSuiviDesSignalementsCloturesRoute
-  '/suivi-des-telephones': typeof AuthenticatedSuiviDesTelephonesRoute
-  '/tools': typeof AuthenticatedToolsRouteWithChildren
-  '/users': typeof AuthenticatedUsersRouteWithChildren
-  '/admin/rejoindre': typeof AdminRejoindreRoute
-  '/agent/rejoindre': typeof AgentRejoindreRoute
-  '/connexion/agents': typeof ConnexionAgentsRoute
-  '/connexion/validation-email': typeof ConnexionValidationEmailRoute
-  '/connexion': typeof ConnexionIndexRoute
-  '/entreprise/$companyId': typeof AuthenticatedEntrepriseCompanyIdRouteWithChildren
-  '/entreprise/activation': typeof AuthenticatedEntrepriseActivationRoute
-  '/entreprises/$': typeof AuthenticatedEntreprisesSplatRoute
-  '/entreprises/a-activer': typeof AuthenticatedEntreprisesAActiverRoute
-  '/entreprises/a-relancer': typeof AuthenticatedEntreprisesARelancerRoute
-  '/entreprises/les-plus-signalees': typeof AuthenticatedEntreprisesLesPlusSignaleesRoute
-  '/moderation-url-entreprises/$': typeof AuthenticatedModerationUrlEntreprisesSplatRoute
-  '/moderation-url-entreprises/enquete': typeof AuthenticatedModerationUrlEntreprisesEnqueteRoute
-  '/stats/$': typeof AuthenticatedStatsSplatRoute
-  '/stats/countBySubCategories': typeof AuthenticatedStatsCountBySubCategoriesRoute
-  '/stats/dgccrf-stats': typeof AuthenticatedStatsDgccrfStatsRoute
-  '/stats/pro-stats': typeof AuthenticatedStatsProStatsRoute
-  '/stats/report-stats': typeof AuthenticatedStatsReportStatsRoute
-  '/tools/$': typeof AuthenticatedToolsSplatRoute
-  '/tools/admin': typeof AuthenticatedToolsAdminRoute
-  '/tools/test': typeof AuthenticatedToolsTestRoute
-  '/users/$': typeof AuthenticatedUsersSplatRoute
-  '/users/admin': typeof AuthenticatedUsersAdminRoute
-  '/users/agent': typeof AuthenticatedUsersAgentRoute
-  '/users/auth-attempts': typeof AuthenticatedUsersAuthAttemptsRoute
-  '/users/blacklist': typeof AuthenticatedUsersBlacklistRoute
-  '/users/consumers': typeof AuthenticatedUsersConsumersRoute
-  '/users/pending': typeof AuthenticatedUsersPendingRoute
-  '/authenticate/proconnect/callback': typeof AuthenticateProconnectCallbackRoute
-  '/connexion/nouveau-mot-de-passe/$token': typeof ConnexionNouveauMotDePasseTokenRoute
-  '/entreprise/rejoindre/$siret': typeof EntrepriseRejoindreSiretRoute
-  '/logout/proconnect/callback': typeof LogoutProconnectCallbackRoute
-  '/parametres': typeof AuthenticatedParametresIndexRoute
-  '/suivi-des-signalements': typeof AuthenticatedSuiviDesSignalementsIndexRoute
-  '/entreprise/$companyId/accesses': typeof AuthenticatedEntrepriseCompanyIdAccessesRoute
-  '/entreprise/$companyId/bilan': typeof AuthenticatedEntrepriseCompanyIdBilanRoute
-  '/entreprise/$companyId/history': typeof AuthenticatedEntrepriseCompanyIdHistoryRoute
-  '/moderation-url-entreprises/sites-internet/non-identifies': typeof AuthenticatedModerationUrlEntreprisesSitesInternetNonIdentifiesRoute
-  '/parametres/update-email/$token': typeof AuthenticatedParametresUpdateEmailTokenRoute
-  '/suivi-des-signalements/report/$reportId': typeof AuthenticatedSuiviDesSignalementsReportReportIdRoute
-}
-
-export interface FileRoutesByTo {
-  '/': typeof IndexRoute
-  '': typeof AuthenticatedRouteWithChildren
-  '/activation': typeof ActivationRoute
-  '/$': typeof AuthenticatedSplatRoute
-  '/abonnements': typeof AuthenticatedAbonnementsRoute
-  '/engagements': typeof AuthenticatedEngagementsRoute
-  '/entreprises': typeof AuthenticatedEntreprisesRouteWithChildren
-  '/gestion-des-acces-avancee': typeof AuthenticatedGestionDesAccesAvanceeRoute
-  '/information': typeof AuthenticatedInformationRoute
-  '/mes-entreprises': typeof AuthenticatedMesEntreprisesRoute
-  '/mes-utilisateurs': typeof AuthenticatedMesUtilisateursRoute
-  '/mode-emploi-dgccrf': typeof AuthenticatedModeEmploiDgccrfRoute
-  '/moderation-url-entreprises': typeof AuthenticatedModerationUrlEntreprisesRouteWithChildren
-  '/stats': typeof AuthenticatedStatsRouteWithChildren
-  '/suivi-des-signalements-clotures': typeof AuthenticatedSuiviDesSignalementsCloturesRoute
-  '/suivi-des-telephones': typeof AuthenticatedSuiviDesTelephonesRoute
-  '/tools': typeof AuthenticatedToolsRouteWithChildren
-  '/users': typeof AuthenticatedUsersRouteWithChildren
-  '/admin/rejoindre': typeof AdminRejoindreRoute
-  '/agent/rejoindre': typeof AgentRejoindreRoute
-  '/connexion/agents': typeof ConnexionAgentsRoute
-  '/connexion/validation-email': typeof ConnexionValidationEmailRoute
-  '/connexion': typeof ConnexionIndexRoute
-  '/entreprise/$companyId': typeof AuthenticatedEntrepriseCompanyIdRouteWithChildren
-  '/entreprise/activation': typeof AuthenticatedEntrepriseActivationRoute
-  '/entreprises/$': typeof AuthenticatedEntreprisesSplatRoute
-  '/entreprises/a-activer': typeof AuthenticatedEntreprisesAActiverRoute
-  '/entreprises/a-relancer': typeof AuthenticatedEntreprisesARelancerRoute
-  '/entreprises/les-plus-signalees': typeof AuthenticatedEntreprisesLesPlusSignaleesRoute
-  '/moderation-url-entreprises/$': typeof AuthenticatedModerationUrlEntreprisesSplatRoute
-  '/moderation-url-entreprises/enquete': typeof AuthenticatedModerationUrlEntreprisesEnqueteRoute
-  '/stats/$': typeof AuthenticatedStatsSplatRoute
-  '/stats/countBySubCategories': typeof AuthenticatedStatsCountBySubCategoriesRoute
-  '/stats/dgccrf-stats': typeof AuthenticatedStatsDgccrfStatsRoute
-  '/stats/pro-stats': typeof AuthenticatedStatsProStatsRoute
-  '/stats/report-stats': typeof AuthenticatedStatsReportStatsRoute
-  '/tools/$': typeof AuthenticatedToolsSplatRoute
-  '/tools/admin': typeof AuthenticatedToolsAdminRoute
-  '/tools/test': typeof AuthenticatedToolsTestRoute
-  '/users/$': typeof AuthenticatedUsersSplatRoute
-  '/users/admin': typeof AuthenticatedUsersAdminRoute
-  '/users/agent': typeof AuthenticatedUsersAgentRoute
-  '/users/auth-attempts': typeof AuthenticatedUsersAuthAttemptsRoute
-  '/users/blacklist': typeof AuthenticatedUsersBlacklistRoute
-  '/users/consumers': typeof AuthenticatedUsersConsumersRoute
-  '/users/pending': typeof AuthenticatedUsersPendingRoute
-  '/authenticate/proconnect/callback': typeof AuthenticateProconnectCallbackRoute
-  '/connexion/nouveau-mot-de-passe/$token': typeof ConnexionNouveauMotDePasseTokenRoute
-  '/entreprise/rejoindre/$siret': typeof EntrepriseRejoindreSiretRoute
-  '/logout/proconnect/callback': typeof LogoutProconnectCallbackRoute
-  '/parametres': typeof AuthenticatedParametresIndexRoute
-  '/suivi-des-signalements': typeof AuthenticatedSuiviDesSignalementsIndexRoute
-  '/entreprise/$companyId/accesses': typeof AuthenticatedEntrepriseCompanyIdAccessesRoute
-  '/entreprise/$companyId/bilan': typeof AuthenticatedEntrepriseCompanyIdBilanRoute
-  '/entreprise/$companyId/history': typeof AuthenticatedEntrepriseCompanyIdHistoryRoute
-  '/moderation-url-entreprises/sites-internet/non-identifies': typeof AuthenticatedModerationUrlEntreprisesSitesInternetNonIdentifiesRoute
-  '/parametres/update-email/$token': typeof AuthenticatedParametresUpdateEmailTokenRoute
-  '/suivi-des-signalements/report/$reportId': typeof AuthenticatedSuiviDesSignalementsReportReportIdRoute
-}
-
-export interface FileRoutesById {
-  __root__: typeof rootRoute
-  '/': typeof IndexRoute
-  '/_authenticated': typeof AuthenticatedRouteWithChildren
-  '/activation': typeof ActivationRoute
-  '/_authenticated/$': typeof AuthenticatedSplatRoute
-  '/_authenticated/abonnements': typeof AuthenticatedAbonnementsRoute
-  '/_authenticated/engagements': typeof AuthenticatedEngagementsRoute
-  '/_authenticated/entreprises': typeof AuthenticatedEntreprisesRouteWithChildren
-  '/_authenticated/gestion-des-acces-avancee': typeof AuthenticatedGestionDesAccesAvanceeRoute
-  '/_authenticated/information': typeof AuthenticatedInformationRoute
-  '/_authenticated/mes-entreprises': typeof AuthenticatedMesEntreprisesRoute
-  '/_authenticated/mes-utilisateurs': typeof AuthenticatedMesUtilisateursRoute
-  '/_authenticated/mode-emploi-dgccrf': typeof AuthenticatedModeEmploiDgccrfRoute
-  '/_authenticated/moderation-url-entreprises': typeof AuthenticatedModerationUrlEntreprisesRouteWithChildren
-  '/_authenticated/stats': typeof AuthenticatedStatsRouteWithChildren
-  '/_authenticated/suivi-des-signalements-clotures': typeof AuthenticatedSuiviDesSignalementsCloturesRoute
-  '/_authenticated/suivi-des-telephones': typeof AuthenticatedSuiviDesTelephonesRoute
-  '/_authenticated/tools': typeof AuthenticatedToolsRouteWithChildren
-  '/_authenticated/users': typeof AuthenticatedUsersRouteWithChildren
-  '/admin/rejoindre': typeof AdminRejoindreRoute
-  '/agent/rejoindre': typeof AgentRejoindreRoute
-  '/connexion/agents': typeof ConnexionAgentsRoute
-  '/connexion/validation-email': typeof ConnexionValidationEmailRoute
-  '/connexion/': typeof ConnexionIndexRoute
-  '/_authenticated/entreprise/$companyId': typeof AuthenticatedEntrepriseCompanyIdRouteWithChildren
-  '/_authenticated/entreprise/activation': typeof AuthenticatedEntrepriseActivationRoute
-  '/_authenticated/entreprises/$': typeof AuthenticatedEntreprisesSplatRoute
-  '/_authenticated/entreprises/a-activer': typeof AuthenticatedEntreprisesAActiverRoute
-  '/_authenticated/entreprises/a-relancer': typeof AuthenticatedEntreprisesARelancerRoute
-  '/_authenticated/entreprises/les-plus-signalees': typeof AuthenticatedEntreprisesLesPlusSignaleesRoute
-  '/_authenticated/moderation-url-entreprises/$': typeof AuthenticatedModerationUrlEntreprisesSplatRoute
-  '/_authenticated/moderation-url-entreprises/enquete': typeof AuthenticatedModerationUrlEntreprisesEnqueteRoute
-  '/_authenticated/stats/$': typeof AuthenticatedStatsSplatRoute
-  '/_authenticated/stats/countBySubCategories': typeof AuthenticatedStatsCountBySubCategoriesRoute
-  '/_authenticated/stats/dgccrf-stats': typeof AuthenticatedStatsDgccrfStatsRoute
-  '/_authenticated/stats/pro-stats': typeof AuthenticatedStatsProStatsRoute
-  '/_authenticated/stats/report-stats': typeof AuthenticatedStatsReportStatsRoute
-  '/_authenticated/tools/$': typeof AuthenticatedToolsSplatRoute
-  '/_authenticated/tools/admin': typeof AuthenticatedToolsAdminRoute
-  '/_authenticated/tools/test': typeof AuthenticatedToolsTestRoute
-  '/_authenticated/users/$': typeof AuthenticatedUsersSplatRoute
-  '/_authenticated/users/admin': typeof AuthenticatedUsersAdminRoute
-  '/_authenticated/users/agent': typeof AuthenticatedUsersAgentRoute
-  '/_authenticated/users/auth-attempts': typeof AuthenticatedUsersAuthAttemptsRoute
-  '/_authenticated/users/blacklist': typeof AuthenticatedUsersBlacklistRoute
-  '/_authenticated/users/consumers': typeof AuthenticatedUsersConsumersRoute
-  '/_authenticated/users/pending': typeof AuthenticatedUsersPendingRoute
-  '/authenticate/proconnect/callback': typeof AuthenticateProconnectCallbackRoute
-  '/connexion/nouveau-mot-de-passe/$token': typeof ConnexionNouveauMotDePasseTokenRoute
-  '/entreprise/rejoindre/$siret': typeof EntrepriseRejoindreSiretRoute
-  '/logout/proconnect/callback': typeof LogoutProconnectCallbackRoute
-  '/_authenticated/parametres/': typeof AuthenticatedParametresIndexRoute
-  '/_authenticated/suivi-des-signalements/': typeof AuthenticatedSuiviDesSignalementsIndexRoute
-  '/_authenticated/entreprise/$companyId/accesses': typeof AuthenticatedEntrepriseCompanyIdAccessesRoute
-  '/_authenticated/entreprise/$companyId/bilan': typeof AuthenticatedEntrepriseCompanyIdBilanRoute
-  '/_authenticated/entreprise/$companyId/history': typeof AuthenticatedEntrepriseCompanyIdHistoryRoute
-  '/_authenticated/moderation-url-entreprises/sites-internet/non-identifies': typeof AuthenticatedModerationUrlEntreprisesSitesInternetNonIdentifiesRoute
-  '/_authenticated/parametres/update-email/$token': typeof AuthenticatedParametresUpdateEmailTokenRoute
-  '/_authenticated/suivi-des-signalements/report/$reportId': typeof AuthenticatedSuiviDesSignalementsReportReportIdRoute
-}
-
-export interface FileRouteTypes {
-  fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths:
-    | '/'
-    | ''
-    | '/activation'
-    | '/$'
-    | '/abonnements'
-    | '/engagements'
-    | '/entreprises'
-    | '/gestion-des-acces-avancee'
-    | '/information'
-    | '/mes-entreprises'
-    | '/mes-utilisateurs'
-    | '/mode-emploi-dgccrf'
-    | '/moderation-url-entreprises'
-    | '/stats'
-    | '/suivi-des-signalements-clotures'
-    | '/suivi-des-telephones'
-    | '/tools'
-    | '/users'
-    | '/admin/rejoindre'
-    | '/agent/rejoindre'
-    | '/connexion/agents'
-    | '/connexion/validation-email'
-    | '/connexion'
-    | '/entreprise/$companyId'
-    | '/entreprise/activation'
-    | '/entreprises/$'
-    | '/entreprises/a-activer'
-    | '/entreprises/a-relancer'
-    | '/entreprises/les-plus-signalees'
-    | '/moderation-url-entreprises/$'
-    | '/moderation-url-entreprises/enquete'
-    | '/stats/$'
-    | '/stats/countBySubCategories'
-    | '/stats/dgccrf-stats'
-    | '/stats/pro-stats'
-    | '/stats/report-stats'
-    | '/tools/$'
-    | '/tools/admin'
-    | '/tools/test'
-    | '/users/$'
-    | '/users/admin'
-    | '/users/agent'
-    | '/users/auth-attempts'
-    | '/users/blacklist'
-    | '/users/consumers'
-    | '/users/pending'
-    | '/authenticate/proconnect/callback'
-    | '/connexion/nouveau-mot-de-passe/$token'
-    | '/entreprise/rejoindre/$siret'
-    | '/logout/proconnect/callback'
-    | '/parametres'
-    | '/suivi-des-signalements'
-    | '/entreprise/$companyId/accesses'
-    | '/entreprise/$companyId/bilan'
-    | '/entreprise/$companyId/history'
-    | '/moderation-url-entreprises/sites-internet/non-identifies'
-    | '/parametres/update-email/$token'
-    | '/suivi-des-signalements/report/$reportId'
-  fileRoutesByTo: FileRoutesByTo
-  to:
-    | '/'
-    | ''
-    | '/activation'
-    | '/$'
-    | '/abonnements'
-    | '/engagements'
-    | '/entreprises'
-    | '/gestion-des-acces-avancee'
-    | '/information'
-    | '/mes-entreprises'
-    | '/mes-utilisateurs'
-    | '/mode-emploi-dgccrf'
-    | '/moderation-url-entreprises'
-    | '/stats'
-    | '/suivi-des-signalements-clotures'
-    | '/suivi-des-telephones'
-    | '/tools'
-    | '/users'
-    | '/admin/rejoindre'
-    | '/agent/rejoindre'
-    | '/connexion/agents'
-    | '/connexion/validation-email'
-    | '/connexion'
-    | '/entreprise/$companyId'
-    | '/entreprise/activation'
-    | '/entreprises/$'
-    | '/entreprises/a-activer'
-    | '/entreprises/a-relancer'
-    | '/entreprises/les-plus-signalees'
-    | '/moderation-url-entreprises/$'
-    | '/moderation-url-entreprises/enquete'
-    | '/stats/$'
-    | '/stats/countBySubCategories'
-    | '/stats/dgccrf-stats'
-    | '/stats/pro-stats'
-    | '/stats/report-stats'
-    | '/tools/$'
-    | '/tools/admin'
-    | '/tools/test'
-    | '/users/$'
-    | '/users/admin'
-    | '/users/agent'
-    | '/users/auth-attempts'
-    | '/users/blacklist'
-    | '/users/consumers'
-    | '/users/pending'
-    | '/authenticate/proconnect/callback'
-    | '/connexion/nouveau-mot-de-passe/$token'
-    | '/entreprise/rejoindre/$siret'
-    | '/logout/proconnect/callback'
-    | '/parametres'
-    | '/suivi-des-signalements'
-    | '/entreprise/$companyId/accesses'
-    | '/entreprise/$companyId/bilan'
-    | '/entreprise/$companyId/history'
-    | '/moderation-url-entreprises/sites-internet/non-identifies'
-    | '/parametres/update-email/$token'
-    | '/suivi-des-signalements/report/$reportId'
-  id:
-    | '__root__'
-    | '/'
-    | '/_authenticated'
-    | '/activation'
-    | '/_authenticated/$'
-    | '/_authenticated/abonnements'
-    | '/_authenticated/engagements'
-    | '/_authenticated/entreprises'
-    | '/_authenticated/gestion-des-acces-avancee'
-    | '/_authenticated/information'
-    | '/_authenticated/mes-entreprises'
-    | '/_authenticated/mes-utilisateurs'
-    | '/_authenticated/mode-emploi-dgccrf'
-    | '/_authenticated/moderation-url-entreprises'
-    | '/_authenticated/stats'
-    | '/_authenticated/suivi-des-signalements-clotures'
-    | '/_authenticated/suivi-des-telephones'
-    | '/_authenticated/tools'
-    | '/_authenticated/users'
-    | '/admin/rejoindre'
-    | '/agent/rejoindre'
-    | '/connexion/agents'
-    | '/connexion/validation-email'
-    | '/connexion/'
-    | '/_authenticated/entreprise/$companyId'
-    | '/_authenticated/entreprise/activation'
-    | '/_authenticated/entreprises/$'
-    | '/_authenticated/entreprises/a-activer'
-    | '/_authenticated/entreprises/a-relancer'
-    | '/_authenticated/entreprises/les-plus-signalees'
-    | '/_authenticated/moderation-url-entreprises/$'
-    | '/_authenticated/moderation-url-entreprises/enquete'
-    | '/_authenticated/stats/$'
-    | '/_authenticated/stats/countBySubCategories'
-    | '/_authenticated/stats/dgccrf-stats'
-    | '/_authenticated/stats/pro-stats'
-    | '/_authenticated/stats/report-stats'
-    | '/_authenticated/tools/$'
-    | '/_authenticated/tools/admin'
-    | '/_authenticated/tools/test'
-    | '/_authenticated/users/$'
-    | '/_authenticated/users/admin'
-    | '/_authenticated/users/agent'
-    | '/_authenticated/users/auth-attempts'
-    | '/_authenticated/users/blacklist'
-    | '/_authenticated/users/consumers'
-    | '/_authenticated/users/pending'
-    | '/authenticate/proconnect/callback'
-    | '/connexion/nouveau-mot-de-passe/$token'
-    | '/entreprise/rejoindre/$siret'
-    | '/logout/proconnect/callback'
-    | '/_authenticated/parametres/'
-    | '/_authenticated/suivi-des-signalements/'
-    | '/_authenticated/entreprise/$companyId/accesses'
-    | '/_authenticated/entreprise/$companyId/bilan'
-    | '/_authenticated/entreprise/$companyId/history'
-    | '/_authenticated/moderation-url-entreprises/sites-internet/non-identifies'
-    | '/_authenticated/parametres/update-email/$token'
-    | '/_authenticated/suivi-des-signalements/report/$reportId'
-  fileRoutesById: FileRoutesById
-}
-
-export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
-  AuthenticatedRoute: typeof AuthenticatedRouteWithChildren
-  ActivationRoute: typeof ActivationRoute
-  AdminRejoindreRoute: typeof AdminRejoindreRoute
-  AgentRejoindreRoute: typeof AgentRejoindreRoute
-  ConnexionAgentsRoute: typeof ConnexionAgentsRoute
-  ConnexionValidationEmailRoute: typeof ConnexionValidationEmailRoute
-  ConnexionIndexRoute: typeof ConnexionIndexRoute
-  AuthenticateProconnectCallbackRoute: typeof AuthenticateProconnectCallbackRoute
-  ConnexionNouveauMotDePasseTokenRoute: typeof ConnexionNouveauMotDePasseTokenRoute
-  EntrepriseRejoindreSiretRoute: typeof EntrepriseRejoindreSiretRoute
-  LogoutProconnectCallbackRoute: typeof LogoutProconnectCallbackRoute
-}
-
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRoute: AuthenticatedRouteWithChildren,
@@ -1447,311 +1383,6 @@ const rootRouteChildren: RootRouteChildren = {
   EntrepriseRejoindreSiretRoute: EntrepriseRejoindreSiretRoute,
   LogoutProconnectCallbackRoute: LogoutProconnectCallbackRoute,
 }
-
-export const routeTree = rootRoute
+export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-/* ROUTE_MANIFEST_START
-{
-  "routes": {
-    "__root__": {
-      "filePath": "__root.tsx",
-      "children": [
-        "/",
-        "/_authenticated",
-        "/activation",
-        "/admin/rejoindre",
-        "/agent/rejoindre",
-        "/connexion/agents",
-        "/connexion/validation-email",
-        "/connexion/",
-        "/authenticate/proconnect/callback",
-        "/connexion/nouveau-mot-de-passe/$token",
-        "/entreprise/rejoindre/$siret",
-        "/logout/proconnect/callback"
-      ]
-    },
-    "/": {
-      "filePath": "index.tsx"
-    },
-    "/_authenticated": {
-      "filePath": "_authenticated.tsx",
-      "children": [
-        "/_authenticated/$",
-        "/_authenticated/abonnements",
-        "/_authenticated/engagements",
-        "/_authenticated/entreprises",
-        "/_authenticated/gestion-des-acces-avancee",
-        "/_authenticated/information",
-        "/_authenticated/mes-entreprises",
-        "/_authenticated/mes-utilisateurs",
-        "/_authenticated/mode-emploi-dgccrf",
-        "/_authenticated/moderation-url-entreprises",
-        "/_authenticated/stats",
-        "/_authenticated/suivi-des-signalements-clotures",
-        "/_authenticated/suivi-des-telephones",
-        "/_authenticated/tools",
-        "/_authenticated/users",
-        "/_authenticated/entreprise/$companyId",
-        "/_authenticated/entreprise/activation",
-        "/_authenticated/parametres/",
-        "/_authenticated/suivi-des-signalements/",
-        "/_authenticated/parametres/update-email/$token",
-        "/_authenticated/suivi-des-signalements/report/$reportId"
-      ]
-    },
-    "/activation": {
-      "filePath": "activation.tsx"
-    },
-    "/_authenticated/$": {
-      "filePath": "_authenticated/$.tsx",
-      "parent": "/_authenticated"
-    },
-    "/_authenticated/abonnements": {
-      "filePath": "_authenticated/abonnements.tsx",
-      "parent": "/_authenticated"
-    },
-    "/_authenticated/engagements": {
-      "filePath": "_authenticated/engagements.tsx",
-      "parent": "/_authenticated"
-    },
-    "/_authenticated/entreprises": {
-      "filePath": "_authenticated/entreprises.tsx",
-      "parent": "/_authenticated",
-      "children": [
-        "/_authenticated/entreprises/$",
-        "/_authenticated/entreprises/a-activer",
-        "/_authenticated/entreprises/a-relancer",
-        "/_authenticated/entreprises/les-plus-signalees"
-      ]
-    },
-    "/_authenticated/gestion-des-acces-avancee": {
-      "filePath": "_authenticated/gestion-des-acces-avancee.tsx",
-      "parent": "/_authenticated"
-    },
-    "/_authenticated/information": {
-      "filePath": "_authenticated/information.tsx",
-      "parent": "/_authenticated"
-    },
-    "/_authenticated/mes-entreprises": {
-      "filePath": "_authenticated/mes-entreprises.tsx",
-      "parent": "/_authenticated"
-    },
-    "/_authenticated/mes-utilisateurs": {
-      "filePath": "_authenticated/mes-utilisateurs.tsx",
-      "parent": "/_authenticated"
-    },
-    "/_authenticated/mode-emploi-dgccrf": {
-      "filePath": "_authenticated/mode-emploi-dgccrf.tsx",
-      "parent": "/_authenticated"
-    },
-    "/_authenticated/moderation-url-entreprises": {
-      "filePath": "_authenticated/moderation-url-entreprises.tsx",
-      "parent": "/_authenticated",
-      "children": [
-        "/_authenticated/moderation-url-entreprises/$",
-        "/_authenticated/moderation-url-entreprises/enquete",
-        "/_authenticated/moderation-url-entreprises/sites-internet/non-identifies"
-      ]
-    },
-    "/_authenticated/stats": {
-      "filePath": "_authenticated/stats.tsx",
-      "parent": "/_authenticated",
-      "children": [
-        "/_authenticated/stats/$",
-        "/_authenticated/stats/countBySubCategories",
-        "/_authenticated/stats/dgccrf-stats",
-        "/_authenticated/stats/pro-stats",
-        "/_authenticated/stats/report-stats"
-      ]
-    },
-    "/_authenticated/suivi-des-signalements-clotures": {
-      "filePath": "_authenticated/suivi-des-signalements-clotures.tsx",
-      "parent": "/_authenticated"
-    },
-    "/_authenticated/suivi-des-telephones": {
-      "filePath": "_authenticated/suivi-des-telephones.tsx",
-      "parent": "/_authenticated"
-    },
-    "/_authenticated/tools": {
-      "filePath": "_authenticated/tools.tsx",
-      "parent": "/_authenticated",
-      "children": [
-        "/_authenticated/tools/$",
-        "/_authenticated/tools/admin",
-        "/_authenticated/tools/test"
-      ]
-    },
-    "/_authenticated/users": {
-      "filePath": "_authenticated/users.tsx",
-      "parent": "/_authenticated",
-      "children": [
-        "/_authenticated/users/$",
-        "/_authenticated/users/admin",
-        "/_authenticated/users/agent",
-        "/_authenticated/users/auth-attempts",
-        "/_authenticated/users/blacklist",
-        "/_authenticated/users/consumers",
-        "/_authenticated/users/pending"
-      ]
-    },
-    "/admin/rejoindre": {
-      "filePath": "admin.rejoindre.tsx"
-    },
-    "/agent/rejoindre": {
-      "filePath": "agent.rejoindre.tsx"
-    },
-    "/connexion/agents": {
-      "filePath": "connexion.agents.tsx"
-    },
-    "/connexion/validation-email": {
-      "filePath": "connexion.validation-email.tsx"
-    },
-    "/connexion/": {
-      "filePath": "connexion.index.tsx"
-    },
-    "/_authenticated/entreprise/$companyId": {
-      "filePath": "_authenticated/entreprise/$companyId.tsx",
-      "parent": "/_authenticated",
-      "children": [
-        "/_authenticated/entreprise/$companyId/accesses",
-        "/_authenticated/entreprise/$companyId/bilan",
-        "/_authenticated/entreprise/$companyId/history"
-      ]
-    },
-    "/_authenticated/entreprise/activation": {
-      "filePath": "_authenticated/entreprise/activation.tsx",
-      "parent": "/_authenticated"
-    },
-    "/_authenticated/entreprises/$": {
-      "filePath": "_authenticated/entreprises/$.tsx",
-      "parent": "/_authenticated/entreprises"
-    },
-    "/_authenticated/entreprises/a-activer": {
-      "filePath": "_authenticated/entreprises/a-activer.tsx",
-      "parent": "/_authenticated/entreprises"
-    },
-    "/_authenticated/entreprises/a-relancer": {
-      "filePath": "_authenticated/entreprises/a-relancer.tsx",
-      "parent": "/_authenticated/entreprises"
-    },
-    "/_authenticated/entreprises/les-plus-signalees": {
-      "filePath": "_authenticated/entreprises/les-plus-signalees.tsx",
-      "parent": "/_authenticated/entreprises"
-    },
-    "/_authenticated/moderation-url-entreprises/$": {
-      "filePath": "_authenticated/moderation-url-entreprises/$.tsx",
-      "parent": "/_authenticated/moderation-url-entreprises"
-    },
-    "/_authenticated/moderation-url-entreprises/enquete": {
-      "filePath": "_authenticated/moderation-url-entreprises/enquete.tsx",
-      "parent": "/_authenticated/moderation-url-entreprises"
-    },
-    "/_authenticated/stats/$": {
-      "filePath": "_authenticated/stats/$.tsx",
-      "parent": "/_authenticated/stats"
-    },
-    "/_authenticated/stats/countBySubCategories": {
-      "filePath": "_authenticated/stats/countBySubCategories.tsx",
-      "parent": "/_authenticated/stats"
-    },
-    "/_authenticated/stats/dgccrf-stats": {
-      "filePath": "_authenticated/stats/dgccrf-stats.tsx",
-      "parent": "/_authenticated/stats"
-    },
-    "/_authenticated/stats/pro-stats": {
-      "filePath": "_authenticated/stats/pro-stats.tsx",
-      "parent": "/_authenticated/stats"
-    },
-    "/_authenticated/stats/report-stats": {
-      "filePath": "_authenticated/stats/report-stats.tsx",
-      "parent": "/_authenticated/stats"
-    },
-    "/_authenticated/tools/$": {
-      "filePath": "_authenticated/tools/$.tsx",
-      "parent": "/_authenticated/tools"
-    },
-    "/_authenticated/tools/admin": {
-      "filePath": "_authenticated/tools/admin.tsx",
-      "parent": "/_authenticated/tools"
-    },
-    "/_authenticated/tools/test": {
-      "filePath": "_authenticated/tools/test.tsx",
-      "parent": "/_authenticated/tools"
-    },
-    "/_authenticated/users/$": {
-      "filePath": "_authenticated/users/$.tsx",
-      "parent": "/_authenticated/users"
-    },
-    "/_authenticated/users/admin": {
-      "filePath": "_authenticated/users/admin.tsx",
-      "parent": "/_authenticated/users"
-    },
-    "/_authenticated/users/agent": {
-      "filePath": "_authenticated/users/agent.tsx",
-      "parent": "/_authenticated/users"
-    },
-    "/_authenticated/users/auth-attempts": {
-      "filePath": "_authenticated/users/auth-attempts.tsx",
-      "parent": "/_authenticated/users"
-    },
-    "/_authenticated/users/blacklist": {
-      "filePath": "_authenticated/users/blacklist.tsx",
-      "parent": "/_authenticated/users"
-    },
-    "/_authenticated/users/consumers": {
-      "filePath": "_authenticated/users/consumers.tsx",
-      "parent": "/_authenticated/users"
-    },
-    "/_authenticated/users/pending": {
-      "filePath": "_authenticated/users/pending.tsx",
-      "parent": "/_authenticated/users"
-    },
-    "/authenticate/proconnect/callback": {
-      "filePath": "authenticate.proconnect.callback.tsx"
-    },
-    "/connexion/nouveau-mot-de-passe/$token": {
-      "filePath": "connexion.nouveau-mot-de-passe.$token.tsx"
-    },
-    "/entreprise/rejoindre/$siret": {
-      "filePath": "entreprise.rejoindre.$siret.tsx"
-    },
-    "/logout/proconnect/callback": {
-      "filePath": "logout.proconnect.callback.tsx"
-    },
-    "/_authenticated/parametres/": {
-      "filePath": "_authenticated/parametres.index.tsx",
-      "parent": "/_authenticated"
-    },
-    "/_authenticated/suivi-des-signalements/": {
-      "filePath": "_authenticated/suivi-des-signalements/index.tsx",
-      "parent": "/_authenticated"
-    },
-    "/_authenticated/entreprise/$companyId/accesses": {
-      "filePath": "_authenticated/entreprise/$companyId/accesses.tsx",
-      "parent": "/_authenticated/entreprise/$companyId"
-    },
-    "/_authenticated/entreprise/$companyId/bilan": {
-      "filePath": "_authenticated/entreprise/$companyId/bilan.tsx",
-      "parent": "/_authenticated/entreprise/$companyId"
-    },
-    "/_authenticated/entreprise/$companyId/history": {
-      "filePath": "_authenticated/entreprise/$companyId/history.tsx",
-      "parent": "/_authenticated/entreprise/$companyId"
-    },
-    "/_authenticated/moderation-url-entreprises/sites-internet/non-identifies": {
-      "filePath": "_authenticated/moderation-url-entreprises/sites-internet.non-identifies.tsx",
-      "parent": "/_authenticated/moderation-url-entreprises"
-    },
-    "/_authenticated/parametres/update-email/$token": {
-      "filePath": "_authenticated/parametres.update-email.$token.tsx",
-      "parent": "/_authenticated"
-    },
-    "/_authenticated/suivi-des-signalements/report/$reportId": {
-      "filePath": "_authenticated/suivi-des-signalements/report.$reportId.tsx",
-      "parent": "/_authenticated"
-    }
-  }
-}
-ROUTE_MANIFEST_END */

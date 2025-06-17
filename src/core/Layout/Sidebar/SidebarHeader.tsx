@@ -1,4 +1,6 @@
-import { Box, BoxProps } from '@mui/material'
+import { Box, BoxProps, Icon } from '@mui/material'
+import { IconBtn } from '../../../alexlibs/mui-extension'
+import { useLayoutContext } from '../../context/layoutContext/layoutContext'
 import { layoutConfig } from '../layoutConfig'
 
 interface SidebarHeaderProps extends BoxProps {
@@ -11,6 +13,7 @@ export const SidebarHeader = ({
   sx,
   ...props
 }: SidebarHeaderProps) => {
+  const { setSidebarOpen } = useLayoutContext()
   return (
     <Box
       sx={{
@@ -33,6 +36,13 @@ export const SidebarHeader = ({
         ...sx,
       }}
       {...props}
-    />
+    >
+      <IconBtn
+        aria-label="Fermer le menu"
+        onClick={() => setSidebarOpen(false)}
+      >
+        <Icon>clear</Icon>
+      </IconBtn>
+    </Box>
   )
 }
