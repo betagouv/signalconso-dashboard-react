@@ -1,5 +1,4 @@
-import { Icon, Theme, Tooltip } from '@mui/material'
-import withStyles from '@mui/styles/withStyles'
+import { Icon, Tooltip } from '@mui/material'
 import { mapFor } from 'core/helper'
 import { ReactNode, useMemo, useState } from 'react'
 import { useI18n } from '../../core/i18n'
@@ -53,7 +52,13 @@ export const HorizontalBarChart = ({ data, alwaysExpanded = false }: Props) => {
               >
                 {item.label}
               </div>
-              <LightTooltip
+              <Tooltip
+                sx={{
+                  backgroundColor: (theme) => theme.palette.common.white,
+                  color: 'rgba(0, 0, 0, 0.87)',
+                  boxShadow: (theme) => theme.shadows[1],
+                  fontSize: 11,
+                }}
                 title={
                   <div>
                     <div className="text-lg">{item.label}</div>
@@ -85,7 +90,7 @@ export const HorizontalBarChart = ({ data, alwaysExpanded = false }: Props) => {
                     )}
                   </div>
                 </div>
-              </LightTooltip>
+              </Tooltip>
             </div>
           )
         })
@@ -127,12 +132,3 @@ export const HorizontalBarChart = ({ data, alwaysExpanded = false }: Props) => {
     </div>
   )
 }
-
-const LightTooltip = withStyles((theme: Theme) => ({
-  tooltip: {
-    backgroundColor: theme.palette.common.white,
-    color: 'rgba(0, 0, 0, 0.87)',
-    boxShadow: theme.shadows[1],
-    fontSize: 11,
-  },
-}))(Tooltip)

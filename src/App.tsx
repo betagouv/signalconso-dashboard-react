@@ -7,7 +7,7 @@ import {
 import { QueryClientProvider, useQuery } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { RouterProvider } from '@tanstack/react-router'
-import { TanStackRouterDevtools } from '@tanstack/router-devtools'
+import { TanStackRouterDevtools } from '@tanstack/react-router-devtools'
 import { config } from 'conf/config'
 import { LoginManagementProvider } from 'core/context/loginManagement/LoginManagementProvider'
 import { useLoginManagement } from 'core/context/loginManagement/loginManagementContext'
