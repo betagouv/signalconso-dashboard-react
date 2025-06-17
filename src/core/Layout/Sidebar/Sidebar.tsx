@@ -29,8 +29,6 @@ export const Sidebar = ({ children, sx, ...props }: BoxProps) => {
     // Element has been re-created by SwipeableDrawer, thus variable point to nothing.
     sidebar = null
     stickSidebarToHeader()
-    // setSidebarOpen((_) => !isMobileWidth)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isMobileWidth])
 
   useEffect(() => {
