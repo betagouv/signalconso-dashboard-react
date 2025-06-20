@@ -6,7 +6,6 @@ import { makeSx } from './common'
 
 const sx = makeSx({
   icon: {
-    height: '22px !important',
     lineHeight: '22px !important',
     fontSize: '22px !important',
     marginRight: 1,

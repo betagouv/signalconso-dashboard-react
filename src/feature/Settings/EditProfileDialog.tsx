@@ -55,7 +55,7 @@ export const EditProfileDialog = ({ children }: Props) => {
   return (
     <ScDialog
       title={m.editName}
-      maxWidth="xs"
+      maxWidth="md"
       onOpen={() => {
         reset(defaultFormValues)
       }}

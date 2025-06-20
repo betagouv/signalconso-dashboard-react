@@ -62,7 +62,7 @@ export const EditPasswordDialog = ({ children }: Props) => {
   return (
     <ScDialog
       title={m.editPassword}
-      maxWidth="xs"
+      maxWidth="md"
       confirmLabel={m.edit}
       confirmDisabled={!isValid}
       loading={_changePassword.isPending}

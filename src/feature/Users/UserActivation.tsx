@@ -109,7 +109,7 @@ export const UserActivation = ({ urlToken, siret, onUserActivated }: Props) => {
   }
 
   return (
-    <Page maxWidth="s">
+    <Page>
       <PageTitle>{m.finishCreatingMyAccount}</PageTitle>
       <Panel loading={_tokenInfo.isLoading}>
         {_tokenInfo.error ? (

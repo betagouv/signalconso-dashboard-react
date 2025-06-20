@@ -131,7 +131,7 @@ export const MassImport = ({ children }: MassImportProps) => {
                 })}
               />
             </div>
-            <div className="flex justify-end items-center gap-4 h-[82px]">
+            <div className="flex justify-end items-center gap-4 mb-2">
               <Controller
                 name="onlyHeadOffice"
                 control={control}

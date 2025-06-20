@@ -44,7 +44,7 @@ export const EditEmailDialog = ({ children }: Props) => {
   return (
     <ScDialog
       title={m.editEmail}
-      maxWidth="sm"
+      maxWidth="md"
       onOpen={() => {
         reset(defaultFormValues)
       }}

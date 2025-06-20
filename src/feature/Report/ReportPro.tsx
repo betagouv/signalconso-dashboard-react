@@ -59,7 +59,7 @@ export const ReportPro = ({ reportId }: { reportId: Id }) => {
 
   const _getReport = useGetReportQuery(reportId)
   return (
-    <Page maxWidth="l" loading={_getReport.isLoading}>
+    <Page loading={_getReport.isLoading}>
       {_getReport.data && <ReportProLoaded reportExtra={_getReport.data} />}
     </Page>
   )

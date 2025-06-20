@@ -57,7 +57,7 @@ function LayoutUsingContext({
         className="overflow-hidden relative flex flex-col"
         style={{
           ...(sidebarTakesSpaceInLayout
-            ? { paddingLeft: `${layoutConfig.sidebarWidth}px` }
+            ? { paddingLeft: layoutConfig.sidebarWidth }
             : null),
         }}
       >

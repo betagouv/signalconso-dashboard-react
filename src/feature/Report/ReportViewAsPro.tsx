@@ -10,7 +10,7 @@ export function ReportViewAsPro({
   onBackToStandardView: () => void
 }) {
   return (
-    <Page maxWidth="l">
+    <Page>
       <div className="flex justify-center">
         <div className="bg-yellow-200 p-5  max-w-full">
           <p className="mb-2">
