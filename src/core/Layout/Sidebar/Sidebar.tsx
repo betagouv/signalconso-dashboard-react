@@ -17,8 +17,7 @@ const stickSidebarToHeader = () => {
     sidebar = document.getElementById(sidebarId)
   }
   if (sidebar) {
-    sidebar.style.top =
-      Math.max(layoutConfig.headerHeight - window.scrollY, 0) + 'px'
+    sidebar.style.top = `clamp(0px, calc(${layoutConfig.headerHeight} - ${window.scrollY}px), ${layoutConfig.headerHeight})`
   }
 }
 
