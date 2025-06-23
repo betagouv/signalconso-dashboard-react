@@ -15,7 +15,7 @@ export const Settings = () => {
   const { connectedUser } = useConnectedContext()
 
   return (
-    <Page maxWidth="l">
+    <Page>
       <PageTitle>{m.menu_settings}</PageTitle>
       <CleanWidePanel>
         <SettingRow

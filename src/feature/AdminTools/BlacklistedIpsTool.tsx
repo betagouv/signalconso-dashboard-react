@@ -72,18 +72,12 @@ export const BlacklistedIpsTool = () => {
           {
             id: 'comment',
             head: 'Commentaire',
+            sx: (_) => ({
+              maxWidth: 500,
+            }),
             render: (blacklistedId) => (
               <Tooltip title={blacklistedId.comment}>
-                <Box
-                  sx={{
-                    maxWidth: '500px',
-                    overflow: 'hidden',
-                    textOverflow: 'ellipsis',
-                    whiteSpace: 'nowrap',
-                  }}
-                >
-                  {blacklistedId.comment}
-                </Box>
+                <span>{blacklistedId.comment}</span>
               </Tooltip>
             ),
           },

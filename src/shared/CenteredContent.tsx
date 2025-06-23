@@ -10,7 +10,7 @@ export function CenteredContent({ children }: Props) {
     <div
       className="flex flex-col items-center justify-center my-4 mx-2"
       style={{
-        minHeight: `calc(100vh - ${layoutConfig.headerHeight}px)`,
+        minHeight: `calc(100vh - ${layoutConfig.headerHeight})`,
       }}
     >
       {children}

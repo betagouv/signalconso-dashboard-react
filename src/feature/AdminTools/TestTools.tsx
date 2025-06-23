@@ -42,7 +42,7 @@ export const TestTools = () => {
   })
 
   return (
-    <div className="flex flex-row items-start justify-center gap-4 mx-auto mt-10">
+    <div className="flex flex-col xl:flex-row items-start justify-center gap-4 mx-auto mt-10">
       {!_emailCodes.isLoading && (
         <CleanWidePanel>
           <h2 className="font-bold mb-2 text-xl">{m.sendDummyEmail}</h2>
@@ -82,7 +82,14 @@ export const TestTools = () => {
                               <Icon color="disabled" sx={{ ml: 1, mr: 1 }}>
                                 key
                               </Icon>
-                              <Txt color="hint" italic size="small" block>
+                              <Txt
+                                color="hint"
+                                italic
+                                size="small"
+                                block
+                                truncate
+                                sx={{ maxWidth: '20rem' }}
+                              >
                                 {emailCode}
                               </Txt>
                             </div>

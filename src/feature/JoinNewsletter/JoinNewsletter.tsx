@@ -19,7 +19,7 @@ export const JoinNewsletter = () => {
     )
   }
   return (
-    <Page maxWidth="m">
+    <Page>
       <PageTitle>
         Restez informé de l’actualité de la consommation et de la concurrence.
       </PageTitle>
