@@ -274,10 +274,11 @@ const ReportViewStandard = ({
                   ) => setActiveTab(newValue)}
                   indicatorColor="primary"
                   textColor="primary"
+                  aria-label="Onglets des détails du signalement"
                 >
-                  <Tab label={m.proResponse} />
-                  <Tab label={m.reportHistory} />
-                  <Tab label={m.companyHistory} />
+                  <Tab label={m.proResponse} {...a11yProps(0)} />
+                  <Tab label={m.reportHistory} {...a11yProps(1)} />
+                  <Tab label={m.companyHistory} {...a11yProps(2)} />
                 </Tabs>
                 <ReportTabPanel value={activeTab} index={0}>
                   <div className="p-4">
@@ -324,8 +325,8 @@ const ReportViewStandard = ({
 
 interface ReportTabPanelProps {
   children?: React.ReactNode
-  index: any
-  value: any
+  index: number
+  value: number
 }
 
 const ReportTabPanel = (props: ReportTabPanelProps) => {
@@ -343,4 +344,11 @@ const ReportTabPanel = (props: ReportTabPanelProps) => {
       {value === index && children}
     </div>
   )
+}
+
+function a11yProps(index: number) {
+  return {
+    id: `scrollable-auto-tab-${index}`,
+    'aria-controls': `scrollable-auto-tabpanel-${index}`,
+  }
 }

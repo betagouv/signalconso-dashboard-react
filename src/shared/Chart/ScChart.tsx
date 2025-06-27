@@ -1,4 +1,16 @@
-import { Box, Checkbox, Theme, useTheme } from '@mui/material'
+import {
+  Box,
+  Checkbox,
+  Tabs,
+  Tab,
+  Theme,
+  useTheme,
+  Table,
+  TableHead,
+  TableBody,
+  TableRow,
+  TableCell,
+} from '@mui/material'
 import { I18nContextShape } from 'core/context/i18n/i18nContext'
 import { format } from 'date-fns'
 import { memo, useMemo, useState } from 'react'
@@ -110,6 +122,20 @@ export const ScChart = memo(
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [curves])
 
+    const dataAsTableLines = mappedData.map((d) => {
+      const { date, ...rest } = d
+      return [date, ...Object.values(rest)]
+    })
+
+    const [tabIndex, setTabIndex] = useState<number>(0)
+
+    const handleTabIndexChange = (
+      event: React.SyntheticEvent,
+      newValue: number,
+    ) => {
+      setTabIndex(newValue)
+    }
+
     // the labels may go a little bit outside the graph
     const margin = hideLabelToggle ? undefined : { top: 20, right: 20 }
 
@@ -118,82 +144,152 @@ export const ScChart = memo(
 
     return (
       <>
-        {!hideLabelToggle && (
-          <Box
-            sx={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'flex-end',
-            }}
+        <Box
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+          }}
+        >
+          <Tabs
+            value={tabIndex}
+            onChange={handleTabIndexChange}
+            aria-label="Afficher les données sous forme de graphique ou tableau"
           >
-            {m.showLabels}
-            {curves.map((c, i) => (
-              <Checkbox
-                slotProps={{
-                  input: {
-                    'aria-label': c.label,
-                  },
-                }}
-                key={c.key}
-                checked={showCurves[i]}
-                onChange={(e) =>
-                  setShowCurves((prev) =>
-                    prev.map((_, index) =>
-                      i === index ? e.currentTarget.checked : _,
+            <Tab label="Graphique" {...a11yProps(0)} />
+            <Tab label="Tableau" {...a11yProps(1)} />
+          </Tabs>
+          {!hideLabelToggle && tabIndex === 0 && (
+            <Box
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'flex-end',
+              }}
+            >
+              {m.showLabels}
+              {curves.map((c, i) => (
+                <Checkbox
+                  slotProps={{
+                    input: {
+                      'aria-label': c.label,
+                    },
+                  }}
+                  key={c.key}
+                  checked={showCurves[i]}
+                  onChange={(e) =>
+                    setShowCurves((prev) =>
+                      prev.map((_, index) =>
+                        i === index ? e.currentTarget.checked : _,
+                      ),
+                    )
+                  }
+                  sx={{
+                    '& svg': {
+                      fill:
+                        c.color ??
+                        colors(theme)[i] ??
+                        colors(theme)[0] + ' !important',
+                    },
+                  }}
+                />
+              ))}
+            </Box>
+          )}
+        </Box>
+        <ChartAccessibilityTabPanel value={tabIndex} index={0}>
+          <div style={{ height }}>
+            <ResponsiveContainer width="100%" height="100%">
+              <ChartComponent data={mappedData} margin={margin}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="date" />
+                <YAxis {...(smallFontYAxis && { fontSize: '0.85em' })} />
+                <Tooltip />
+                <Legend />
+                {curves.map((_, i) => {
+                  const color = _.color ?? colors(theme)[i] ?? colors(theme)[0]
+                  const props = {
+                    isAnimationActive: disableAnimation,
+
+                    name: _.label,
+                    type: 'monotone',
+                    dataKey: _.key,
+                    children: showCurves[i] && (
+                      <LabelList
+                        dataKey={_.key}
+                        position="top"
+                        style={{
+                          fill: color,
+                          fontSize: styleUtils(theme).fontSize.small,
+                        }}
+                      />
                     ),
+                  } as const
+
+                  const key = _.key
+                  return chartKind === 'stackedbarchart' ? (
+                    <Bar {...props} key={key} fill={color} stackId="a" />
+                  ) : (
+                    <Line {...props} key={key} stroke={color} strokeWidth={2} />
                   )
-                }
-                sx={{
-                  '& svg': {
-                    fill:
-                      c.color ??
-                      colors(theme)[i] ??
-                      colors(theme)[0] + ' !important',
-                  },
-                }}
-              />
-            ))}
-          </Box>
-        )}
-        <div style={{ height }} className="">
-          <ResponsiveContainer width="100%" height="100%">
-            <ChartComponent data={mappedData} margin={margin}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="date" />
-              <YAxis {...(smallFontYAxis && { fontSize: '0.85em' })} />
-              <Tooltip />
-              <Legend />
-              {curves.map((_, i) => {
-                const color = _.color ?? colors(theme)[i] ?? colors(theme)[0]
-                const props = {
-                  isAnimationActive: disableAnimation,
-
-                  name: _.label,
-                  type: 'monotone',
-                  dataKey: _.key,
-                  children: showCurves[i] && (
-                    <LabelList
-                      dataKey={_.key}
-                      position="top"
-                      style={{
-                        fill: color,
-                        fontSize: styleUtils(theme).fontSize.small,
-                      }}
-                    />
-                  ),
-                } as const
-
-                const key = _.key
-                return chartKind === 'stackedbarchart' ? (
-                  <Bar {...props} key={key} fill={color} stackId="a" />
-                ) : (
-                  <Line {...props} key={key} stroke={color} strokeWidth={2} />
+                })}
+              </ChartComponent>
+            </ResponsiveContainer>
+          </div>
+        </ChartAccessibilityTabPanel>
+        <ChartAccessibilityTabPanel value={tabIndex} index={1}>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell>Date</TableCell>
+                {curves.map((curve) => {
+                  return <TableCell>{curve.label}</TableCell>
+                })}
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {dataAsTableLines.map((d) => {
+                return (
+                  <TableRow>
+                    {d.map((c) => {
+                      return <TableCell>{c}</TableCell>
+                    })}
+                  </TableRow>
                 )
               })}
-            </ChartComponent>
-          </ResponsiveContainer>
-        </div>
+            </TableBody>
+          </Table>
+        </ChartAccessibilityTabPanel>
       </>
     )
   },
 )
+
+interface ChartAccessibilityTabPanelProps {
+  children?: React.ReactNode
+  index: number
+  value: number
+}
+
+function ChartAccessibilityTabPanel(props: ChartAccessibilityTabPanelProps) {
+  const { children, value, index, ...other } = props
+
+  return (
+    <div
+      role="tabpanel"
+      hidden={value !== index}
+      id={`chart-a11y-tabpanel-${index}`}
+      aria-labelledby={`chart-a11y-tab-${index}`}
+      {...other}
+    >
+      {value === index && children}
+    </div>
+  )
+}
+
+function a11yProps(index: number) {
+  return {
+    id: `chart-a11y-tab-${index}`,
+    'aria-controls': `chart-a11y-tabpanel-${index}`,
+  }
+}
