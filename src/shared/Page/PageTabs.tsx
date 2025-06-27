@@ -30,7 +30,6 @@ export const PageTabs = ({ children }: Props) => {
       )
     return currentTabIndex !== -1 ? currentTabIndex : defaultTabIndex
   }, [router, pathname, children])
-  console.log([router, pathname, children])
 
   return (
     <Tabs
