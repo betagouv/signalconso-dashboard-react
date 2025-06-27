@@ -282,7 +282,7 @@ function ChartAccessibilityTabPanel(props: ChartAccessibilityTabPanelProps) {
       aria-labelledby={`chart-a11y-tab-${index}`}
       {...other}
     >
-      {value === index && <Box sx={{ p: 3 }}>{children}</Box>}
+      {value === index && children}
     </div>
   )
 }
