@@ -17,14 +17,8 @@ function Tools() {
       <PageTitle>Outils techniques</PageTitle>
       {connectedUser.isAdmin && (
         <PageTabs>
-          <PageTab
-            navigateOptions={{ to: testRoute.to }}
-            label="Outils de tests"
-          />
-          <PageTab
-            navigateOptions={{ to: adminRoute.to }}
-            label="Outils d'administration"
-          />
+          <PageTab to={testRoute.to} label="Outils de tests" />
+          <PageTab to={adminRoute.to} label="Outils d'administration" />
         </PageTabs>
       )}
       <Outlet />
