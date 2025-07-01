@@ -2,15 +2,15 @@ import { Tab, TabProps, Tabs } from '@mui/material'
 import * as React from 'react'
 import { ReactElement, useMemo } from 'react'
 import {
-  RegisteredRouter,
+  createLink,
+  LinkComponent,
+  LinkComponentProps,
   useLocation,
-  useNavigate,
   useRouter,
-  ValidateNavigateOptions,
 } from '@tanstack/react-router'
 
 interface Props {
-  children: Array<ReactElement<PageTabProps> | undefined>
+  children: Array<ReactElement<LinkComponentProps> | undefined>
 }
 
 export const PageTabs = ({ children }: Props) => {
@@ -19,7 +19,7 @@ export const PageTabs = ({ children }: Props) => {
   const defaultTabIndex = 0
   const index = useMemo(() => {
     const currentTabIndex = children
-      .map((child) => child?.props.navigateOptions)
+      .map((child) => child?.props)
       .findIndex(
         (options) =>
           options &&
@@ -33,6 +33,7 @@ export const PageTabs = ({ children }: Props) => {
 
   return (
     <Tabs
+      component="nav"
       value={index}
       indicatorColor="primary"
       textColor="primary"
@@ -48,22 +49,18 @@ export const PageTabs = ({ children }: Props) => {
   )
 }
 
-interface PageTabProps<
-  TRouter extends RegisteredRouter = RegisteredRouter,
-  TOptions = unknown,
-> extends TabProps {
+interface TabLinkProps extends TabProps<'a'> {
   label?: string
   icon?: string | React.ReactElement
   disabled?: boolean
-  // routing typesafety
-  // https://tanstack.com/router/latest/docs/framework/react/guide/type-utilities
-  navigateOptions: ValidateNavigateOptions<TRouter, TOptions>
 }
 
-export function PageTab<TRouter extends RegisteredRouter, TOptions>({
-  navigateOptions,
-  ...props
-}: PageTabProps<TRouter, TOptions>) {
-  const navigate = useNavigate()
-  return <Tab {...props} onClick={() => navigate(navigateOptions)} />
+const TabLinkComponent = React.forwardRef<HTMLAnchorElement, TabLinkProps>(
+  (props, ref) => <Tab ref={ref} component="a" {...props} />,
+)
+
+const CreatedTabLinkComponent = createLink(TabLinkComponent)
+
+export const PageTab: LinkComponent<typeof TabLinkComponent> = (props) => {
+  return <CreatedTabLinkComponent preload={'intent'} {...props} />
 }

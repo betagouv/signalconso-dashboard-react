@@ -21,20 +21,12 @@ function Companies() {
       {connectedUser.isAdmin && (
         <PageTabs>
           <PageTab
-            navigateOptions={{
-              to: lesPlusSignaleesRoute.to,
-              search: { offset: 0, limit: 25 },
-            }}
+            to={lesPlusSignaleesRoute.to}
+            search={{ offset: 0, limit: 25 }}
             label={m.companiesActivated}
           />
-          <PageTab
-            navigateOptions={{ to: aActiverRoute.to }}
-            label={m.companiesToActivate}
-          />
-          <PageTab
-            navigateOptions={{ to: aRelancerRoute.to }}
-            label={m.companiesToFollowUp}
-          />
+          <PageTab to={aActiverRoute.to} label={m.companiesToActivate} />
+          <PageTab to={aRelancerRoute.to} label={m.companiesToFollowUp} />
         </PageTabs>
       )}
       <Outlet />
