@@ -42,7 +42,7 @@ export function WelcomePage({ redirect }: { redirect?: string }) {
     <CenteredContent>
       <InfoBanner />
       <DashboardTitle title={'Espace Pro'} />
-      <div className="flex gap-6 justify-center mb-8 px-2">
+      <div className="flex gap-6 justify-center mb-8 px-2 flex-col md:flex-row">
         <Tile
           title="J'ai reçu un courrier de SignalConso à propos de mon entreprise"
           desc="Je crée mon compte"
