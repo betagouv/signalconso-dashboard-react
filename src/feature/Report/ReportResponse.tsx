@@ -162,12 +162,16 @@ function ResponseDetails({
       </div>
 
       <p className="font-bold">Réponse communiquée au consommateur :</p>
-      <div className="pl-4">{details.consumerDetails}</div>
+      <div className="my-1 pl-4 whitespace-pre-line">
+        {details.consumerDetails}
+      </div>
 
       {details.dgccrfDetails && details.dgccrfDetails !== '' && (
         <>
           <p className="font-bold">{m.reportDgccrfDetails}</p>
-          <div className="pl-4">{details.dgccrfDetails}</div>
+          <div className="mt-1 pl-4 whitespace-pre-line">
+            {details.dgccrfDetails}
+          </div>
         </>
       )}
     </div>
@@ -304,7 +308,7 @@ function ConsumerReviewComponent({
               <p className="font-bold">
                 Précisions (visibles uniquement par la DGCCRF) :
               </p>
-              <div className="">{review.details}</div>
+              <div className="whitespace-pre-line">{review.details}</div>
             </>
           ) : (
             <div className="italic">{m.noReviewDetailsFromConsumer}</div>
