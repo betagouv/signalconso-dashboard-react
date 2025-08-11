@@ -22,6 +22,7 @@ export const ConnectedContextProvider = ({
           ...connectedUser,
           isDGCCRF: connectedUser.role === 'DGCCRF',
           isDGAL: connectedUser.role === 'DGAL',
+          isSSMVM: connectedUser.role === 'SSMVM',
           isPro: connectedUser.role === 'Professionnel',
           isNotPro: connectedUser.role !== 'Professionnel',
           isAdmin:

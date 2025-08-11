@@ -32,7 +32,7 @@ export const SelectRoleAgent = ({
       style={{ flexDirection: 'row' }}
       value={parsedValue}
       onChange={(e, value: string) => {
-        return value === 'DGAL' || value === 'DGCCRF'
+        return value === 'DGAL' || value === 'DGCCRF' || value === 'SSMVM'
           ? onChange([value])
           : onChange(roleAgents.map((_) => _))
       }}
@@ -42,6 +42,9 @@ export const SelectRoleAgent = ({
       </ToggleButton>
       <ToggleButton sx={buttonStyle} value="DGAL">
         DGAL
+      </ToggleButton>
+      <ToggleButton sx={buttonStyle} value="SSMVM">
+        SSMVM
       </ToggleButton>
       <ToggleButton sx={buttonStyle} value="">
         Tous

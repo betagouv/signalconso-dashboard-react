@@ -727,6 +727,7 @@ export const fr = {
       'Email invalide. Emails acceptés : *@dgccrf.finances.gouv.fr, ou *@beta.gouv.fr, ou *.betagouv@gmail.com, ou *.betagouv+suffixe@gmail.com',
     emailDGCCRFValidation: 'Email invalide. Emails acceptés : *.gouv.fr',
     emailDGALValidation: 'Email invalide. Emails acceptés : *.gouv.fr',
+    emailSSMVMValidation: 'Email invalide. Emails acceptés : *.gouv.fr',
     daily: 'Quotidienne',
     yourAccountIsActivated: `Votre compte est bien activé, vous pouvez consulter vos signalements.`,
     weekly: 'Hebdomadaire',
