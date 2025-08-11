@@ -91,6 +91,7 @@ export function CompanyNameColumn({ r }: ColumnProps) {
     <CompanyNameDetails
       companyId={r.report.companyId}
       isDGAL={connectedUser.isDGAL}
+      isSSMVM={connectedUser.isSSMVM}
       companyName={r.report.companyName}
       additionalLabel={
         r.report.websiteURL ? r.report.websiteURL : r.report.companyBrand
@@ -103,7 +104,7 @@ export function SiretColumn({ r }: ColumnProps) {
   const { connectedUser } = useConnectedContext()
   return (
     <>
-      {r.report.companyId && !connectedUser.isDGAL ? (
+      {r.report.companyId && !connectedUser.isDGAL && !connectedUser.isSSMVM ? (
         <Link
           to="/entreprise/$companyId/bilan"
           params={{ companyId: r.report.companyId }}

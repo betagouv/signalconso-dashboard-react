@@ -76,6 +76,7 @@ export const UserAgentsImportDialog = () => {
               >
                 <ToggleButton value="DGCCRF">DGCCRF</ToggleButton>
                 <ToggleButton value="DGAL">DGAL</ToggleButton>
+                <ToggleButton value="SSMVM">SSMVM</ToggleButton>
               </ToggleButtonGroup>
             )}
           />
@@ -98,7 +99,7 @@ export const UserAgentsImportDialog = () => {
             la liste des emails. Séparez chaque email par une virgule, ou bien
             mettez une adresse par ligne. Un courrier électronique sera envoyé à
             chaque adresse e-mail saisie dans le fichier avec un lien sécurisé
-            permettant de créer un compte DGCCRF / DGAL.
+            permettant de créer un compte DGCCRF / DGAL / SSMVM.
           </Txt>
           <input
             type="file"

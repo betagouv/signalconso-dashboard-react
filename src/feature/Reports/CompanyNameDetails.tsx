@@ -6,6 +6,7 @@ import { Link } from '@tanstack/react-router'
 type CompanyNameDetailsProps = {
   companyId: string | undefined
   isDGAL: boolean
+  isSSMVM: boolean
   companyName: string | undefined
   additionalLabel: string | undefined
 }
@@ -17,12 +18,13 @@ const removeProtocol = (url: string) => {
 export const CompanyNameDetails: React.FC<CompanyNameDetailsProps> = ({
   companyId,
   isDGAL,
+  isSSMVM,
   companyName,
   additionalLabel,
 }) => {
   return (
     <Box component="span" sx={{ marginBottom: '-1px' }}>
-      {companyId && !isDGAL ? (
+      {companyId && !isDGAL && !isSSMVM ? (
         <Link to="/entreprise/$companyId/bilan" params={{ companyId }}>
           <Txt link>{companyName}</Txt>
         </Link>
