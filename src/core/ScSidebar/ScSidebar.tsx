@@ -123,9 +123,9 @@ export const ScSidebar = ({
           {m.menu_users}
         </SidebarItem>
       )}
-      {([...roleAdmins, ...roleAgents] as Role[]).includes(
-        connectedUser.role,
-      ) && (
+      {(
+        [...roleAdmins, ...roleAgents].filter((_) => _ !== 'SSMVM') as Role[]
+      ).includes(connectedUser.role) && (
         <SidebarItem
           onClick={closeSidebar}
           to="/abonnements"
@@ -134,9 +134,9 @@ export const ScSidebar = ({
           {m.menu_subscriptions}
         </SidebarItem>
       )}
-      {([...roleAdmins, ...roleAgents] as Role[]).includes(
-        connectedUser.role,
-      ) && (
+      {(
+        [...roleAdmins, ...roleAgents].filter((_) => _ !== 'SSMVM') as Role[]
+      ).includes(connectedUser.role) && (
         <SidebarItem onClick={closeSidebar} to="/stats" icon={EntityIcon.stats}>
           {m.menu_stats}
         </SidebarItem>

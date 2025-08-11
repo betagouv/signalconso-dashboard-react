@@ -7,6 +7,7 @@ export type ConnectedContext = {
   connectedUser: User & {
     isDGCCRF: boolean
     isDGAL: boolean
+    isSSMVM: boolean
     isPro: boolean
     isNotPro: boolean
     isAdmin: boolean

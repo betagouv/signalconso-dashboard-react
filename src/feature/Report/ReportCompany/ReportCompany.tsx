@@ -57,7 +57,7 @@ export const ReportCompany = ({
       <div className="flex items-center justify-between">
         <div className="">
           <ReportBlockTitle icon="store">{m.company} </ReportBlockTitle>
-          {companyId && !connectedUser.isDGAL && (
+          {companyId && !connectedUser.isDGAL && !connectedUser.isSSMVM && (
             <QuickSmallLink
               label="fiche entreprise"
               to="/entreprise/$companyId/bilan"

@@ -195,7 +195,9 @@ const ReportViewStandard = ({
                   </Tooltip>
                 </ReportPostAction>
 
-                {(connectedUser.isDGCCRF || connectedUser.isDGAL) && (
+                {(connectedUser.isDGCCRF ||
+                  connectedUser.isDGAL ||
+                  connectedUser.isSSMVM) && (
                   <ReportPostAction
                     actionType={EventActionValues.Control}
                     label={m.markDgccrfControlDone}

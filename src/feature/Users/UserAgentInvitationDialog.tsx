@@ -30,12 +30,19 @@ export const UserAgentInvitationDialog = () => {
   const { api } = useApiContext()
   const _role = watch('role')
 
-  const selectFromRole = <T,>(role: RoleAgents, dgccrf: T, dgal: T) => {
+  const selectFromRole = <T,>(
+    role: RoleAgents,
+    dgccrf: T,
+    dgal: T,
+    ssmvm: T,
+  ) => {
     switch (role) {
       case 'DGCCRF':
         return dgccrf
       case 'DGAL':
         return dgal
+      case 'SSMVM':
+        return ssmvm
     }
   }
 
@@ -60,11 +67,13 @@ export const UserAgentInvitationDialog = () => {
     _role,
     regexp.emailDGCCRF,
     regexp.emailDGAL,
+    regexp.emailSSMVM,
   )
   const emailValidationMessage = selectFromRole(
     _role,
     m.emailDGCCRFValidation,
     m.emailDGALValidation,
+    m.emailSSMVMValidation,
   )
   const buttonLabel = m.invite_agent
   const dialogTitle = m.users_invite_dialog_title_agent
@@ -113,6 +122,7 @@ export const UserAgentInvitationDialog = () => {
               >
                 <ToggleButton value="DGCCRF">DGCCRF</ToggleButton>
                 <ToggleButton value="DGAL">DGAL</ToggleButton>
+                <ToggleButton value="SSMVM">SSMVM</ToggleButton>
               </ToggleButtonGroup>
             )}
           />

@@ -222,7 +222,7 @@ const UsersList = ({ adminView }: Props) => {
             <p>
               Cette page liste les utilisateurs de type "agent".{' '}
               <span className="italic text-gray-500">
-                Ce sont les agents de la DGCCRF ou de la DGAL.
+                Ce sont les agents de la DGCCRF, de la DGAL ou SSMVM.
               </span>
             </p>
           )}
