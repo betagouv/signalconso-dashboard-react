@@ -29,6 +29,7 @@ interface Form {
   siret: string
   code: string
   email: string
+  confirmEmail: string
   apiError: string
 }
 
@@ -144,7 +145,7 @@ export const RegisterForm = ({
                 },
               })}
             />
-            <div className="flex flex-col gap-2 mb-4">
+            <div className="flex flex-col gap-4 mb-4">
               <TextField
                 {...textFieldProps}
                 error={!!errors.email}
@@ -155,6 +156,20 @@ export const RegisterForm = ({
                   pattern: { value: regexp.email, message: m.invalidEmail },
                 })}
               />
+
+              <TextField
+                {...textFieldProps}
+                error={!!errors.confirmEmail}
+                helperText={errors.confirmEmail?.message ?? m.confirmEmailDesc}
+                label={m.confirmYourEmail}
+                {...register('confirmEmail', {
+                  required: { value: true, message: m.required },
+                  pattern: { value: regexp.email, message: m.invalidEmail },
+                  validate: (value, formValues) =>
+                    value === formValues.email || m.emailsDoNotMatch,
+                })}
+              />
+
               <div className="flex flex-col gap-2 text-gray-500 mx-3">
                 <p className="">
                   <InfoIcon /> {m.willReceiveVerificationEmail}
