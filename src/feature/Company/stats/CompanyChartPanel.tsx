@@ -38,27 +38,37 @@ export const CompanyChartPanel = ({
   useEffect(() => {
     async function inner() {
       setCurves(undefined)
-      const [reports, responses] = await Promise.all([
-        apiSdk.secured.stats.getReportCountCurveForCompany(companyId, {
-          ticks: computeTicks(),
-          tickDuration: reportsCurvePeriod,
-        }),
-        apiSdk.secured.stats.getReportCountCurveForCompany(companyId, {
-          status: [
-            ReportStatus.PromesseAction,
-            ReportStatus.Infonde,
-            ReportStatus.MalAttribue,
-          ],
-          ticks: computeTicks(),
-          tickDuration: reportsCurvePeriod,
-        }),
-      ])
-      const reportsWithoutResponse = reports.map(({ date, count }) => {
-        const nbResponses =
-          responses.find((_) => _.date.getTime() === date.getTime())?.count ?? 0
-        const nbReportsWithoutResponses = count - nbResponses
-        return { date, count: nbReportsWithoutResponses }
-      })
+      const [reportsWithoutResponse, responses, notTransmittedOrRPGD] =
+        await Promise.all([
+          apiSdk.secured.stats.getReportCountCurveForCompany(companyId, {
+            status: [
+              ReportStatus.TraitementEnCours,
+              ReportStatus.Transmis,
+              ReportStatus.NonConsulte,
+              ReportStatus.ConsulteIgnore,
+            ],
+            ticks: computeTicks(),
+            tickDuration: reportsCurvePeriod,
+          }),
+          apiSdk.secured.stats.getReportCountCurveForCompany(companyId, {
+            status: [
+              ReportStatus.PromesseAction,
+              ReportStatus.Infonde,
+              ReportStatus.MalAttribue,
+            ],
+            ticks: computeTicks(),
+            tickDuration: reportsCurvePeriod,
+          }),
+          apiSdk.secured.stats.getReportCountCurveForCompany(companyId, {
+            status: [
+              ReportStatus.NA,
+              ReportStatus.InformateurInterne,
+              ReportStatus.SuppressionRGPD,
+            ],
+            ticks: computeTicks(),
+            tickDuration: reportsCurvePeriod,
+          }),
+        ])
       setCurves([
         {
           label: 'Signalements répondus',
@@ -69,6 +79,11 @@ export const CompanyChartPanel = ({
           label: 'Signalements sans réponse',
           data: reportsWithoutResponse,
           color: chartColors.darkred,
+        },
+        {
+          label: 'Autre (Réponse conso, suppression RGPD etc.)',
+          data: notTransmittedOrRPGD,
+          color: chartColors.darkgray,
         },
       ])
     }
