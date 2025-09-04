@@ -55,6 +55,8 @@ export const ReportResponseForm = forwardRef(
       control,
       watch,
       setValue,
+      setError,
+      clearErrors,
       formState: { errors },
     } = useForm<IncomingReportResponse>()
     const { api } = useApiContext()
@@ -150,6 +152,10 @@ export const ReportResponseForm = forwardRef(
               render={({ field }) => (
                 <ScRadioGroup
                   error={!!errors.responseType}
+                  helperText={
+                    errors.responseType &&
+                    'Veuillez sélectionner une valeur ci-dessus.'
+                  }
                   dense
                   sx={{ mb: 8 }}
                   {...field}
@@ -163,6 +169,10 @@ export const ReportResponseForm = forwardRef(
                       value={responseType}
                       key={responseType}
                       ariaLabel={m.reportResponseDesc[responseType]}
+                      onChange={(event: any) => {
+                        clearErrors('responseType')
+                        return field.onChange(event)
+                      }}
                     >
                       {m.reportResponseDesc[responseType]}
                     </ScRadioGroupItem>
@@ -184,6 +194,10 @@ export const ReportResponseForm = forwardRef(
                 render={({ field }) => (
                   <ScRadioGroup
                     error={!!errors.responseDetails}
+                    helperText={
+                      errors.responseDetails &&
+                      'Veuillez sélectionner une valeur ci-dessus.'
+                    }
                     dense
                     sx={{ mb: 2 }}
                     {...field}
@@ -194,6 +208,10 @@ export const ReportResponseForm = forwardRef(
                           value={responseDetails}
                           key={responseDetails}
                           ariaLabel={m.responseDetails[responseDetails]}
+                          onChange={(event: any) => {
+                            clearErrors('responseDetails')
+                            return field.onChange(event)
+                          }}
                         >
                           {m.responseDetails[responseDetails]}
                         </ScRadioGroupItem>
@@ -296,14 +314,26 @@ export const ReportResponseForm = forwardRef(
           {consumerStep ? (
             <>
               <ScButton
-                onClick={() => setActiveStep(1)}
+                onClick={() => {
+                  if (!watchResponseType) {
+                    setError('responseType', { type: 'required' })
+                  }
+                  if (!watchConsumerDetails) {
+                    setError('consumerDetails', { type: 'required' })
+                  }
+                  if (!watchResponseDetails) {
+                    setError('responseDetails', { type: 'required' })
+                  }
+                  if (
+                    watchResponseType &&
+                    watchConsumerDetails &&
+                    watchResponseDetails
+                  ) {
+                    setActiveStep(1)
+                  }
+                }}
                 color="primary"
                 variant="contained"
-                disabled={
-                  !watchResponseType ||
-                  !watchConsumerDetails ||
-                  !watchResponseDetails
-                }
               >
                 {m.next}
               </ScButton>
