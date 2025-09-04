@@ -161,6 +161,7 @@ export const ReportResponseForm = forwardRef(
                   {...field}
                   onChange={(event: any) => {
                     setValue('responseDetails', '' as any)
+                    clearErrors('responseType')
                     return field.onChange(event)
                   }}
                 >
@@ -169,10 +170,6 @@ export const ReportResponseForm = forwardRef(
                       value={responseType}
                       key={responseType}
                       ariaLabel={m.reportResponseDesc[responseType]}
-                      onChange={(event: any) => {
-                        clearErrors('responseType')
-                        return field.onChange(event)
-                      }}
                     >
                       {m.reportResponseDesc[responseType]}
                     </ScRadioGroupItem>
@@ -201,6 +198,10 @@ export const ReportResponseForm = forwardRef(
                     dense
                     sx={{ mb: 2 }}
                     {...field}
+                    onChange={(event: any) => {
+                      clearErrors('responseDetails')
+                      return field.onChange(event)
+                    }}
                   >
                     {computeDetails(watchResponseType).map(
                       (responseDetails) => (
@@ -208,10 +209,6 @@ export const ReportResponseForm = forwardRef(
                           value={responseDetails}
                           key={responseDetails}
                           ariaLabel={m.responseDetails[responseDetails]}
-                          onChange={(event: any) => {
-                            clearErrors('responseDetails')
-                            return field.onChange(event)
-                          }}
                         >
                           {m.responseDetails[responseDetails]}
                         </ScRadioGroupItem>
@@ -329,6 +326,8 @@ export const ReportResponseForm = forwardRef(
                     watchConsumerDetails &&
                     watchResponseDetails
                   ) {
+                    console.log(watchResponseType)
+                    console.log(watchResponseDetails)
                     setActiveStep(1)
                   }
                 }}
