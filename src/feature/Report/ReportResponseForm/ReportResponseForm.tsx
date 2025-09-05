@@ -55,8 +55,6 @@ export const ReportResponseForm = forwardRef(
       control,
       watch,
       setValue,
-      setError,
-      clearErrors,
       formState: { errors },
     } = useForm<IncomingReportResponse>()
     const { api } = useApiContext()
@@ -152,16 +150,11 @@ export const ReportResponseForm = forwardRef(
               render={({ field }) => (
                 <ScRadioGroup
                   error={!!errors.responseType}
-                  helperText={
-                    errors.responseType &&
-                    'Veuillez sélectionner une valeur ci-dessus.'
-                  }
                   dense
                   sx={{ mb: 8 }}
                   {...field}
                   onChange={(event: any) => {
                     setValue('responseDetails', '' as any)
-                    clearErrors('responseType')
                     return field.onChange(event)
                   }}
                 >
@@ -191,17 +184,9 @@ export const ReportResponseForm = forwardRef(
                 render={({ field }) => (
                   <ScRadioGroup
                     error={!!errors.responseDetails}
-                    helperText={
-                      errors.responseDetails &&
-                      'Veuillez sélectionner une valeur ci-dessus.'
-                    }
                     dense
                     sx={{ mb: 2 }}
                     {...field}
-                    onChange={(event: any) => {
-                      clearErrors('responseDetails')
-                      return field.onChange(event)
-                    }}
                   >
                     {computeDetails(watchResponseType).map(
                       (responseDetails) => (
@@ -311,28 +296,14 @@ export const ReportResponseForm = forwardRef(
           {consumerStep ? (
             <>
               <ScButton
-                onClick={() => {
-                  if (!watchResponseType) {
-                    setError('responseType', { type: 'required' })
-                  }
-                  if (!watchConsumerDetails) {
-                    setError('consumerDetails', { type: 'required' })
-                  }
-                  if (!watchResponseDetails) {
-                    setError('responseDetails', { type: 'required' })
-                  }
-                  if (
-                    watchResponseType &&
-                    watchConsumerDetails &&
-                    watchResponseDetails
-                  ) {
-                    console.log(watchResponseType)
-                    console.log(watchResponseDetails)
-                    setActiveStep(1)
-                  }
-                }}
+                onClick={() => setActiveStep(1)}
                 color="primary"
                 variant="contained"
+                disabled={
+                  !watchResponseType ||
+                  !watchConsumerDetails ||
+                  !watchResponseDetails
+                }
               >
                 {m.next}
               </ScButton>
