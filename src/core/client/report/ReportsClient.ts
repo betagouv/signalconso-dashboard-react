@@ -253,9 +253,12 @@ export class ReportsClient {
   }
 
   readonly postResponse = (id: Id, response: IncomingReportResponse) => {
-    return this.client.post<Event>(`reports/${id}/response`, {
-      body: { ...response, fileIds: response.fileIds ?? [] },
-    })
+    return this.client.post<Event>(
+      `reports/${id}/responseoijsdlfjsadlkfjsalkdjflskadjfasldkfj`,
+      {
+        body: { ...response, fileIds: response.fileIds ?? [] },
+      },
+    )
   }
 
   readonly classifyAndSummarize = (id: Id) => {
