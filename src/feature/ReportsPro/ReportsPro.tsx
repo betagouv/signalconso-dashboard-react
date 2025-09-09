@@ -319,55 +319,55 @@ export const ReportsPro = ({ reportType, search }: ReportsProProps) => {
                         </ScButton>
                       </Badge>
                     )}
-                    <ExportReportsPopper
-                      maxElement={config.reportsLimitForExport}
-                      disabled={ScOption.from(_reports?.result.data?.totalCount)
-                        .map((_) => _ > config.reportsLimitForExport)
-                        .getOrElse(false)}
-                      tooltipBtnNew={ScOption.from(
-                        _reports?.result.data?.totalCount,
-                      )
-                        .map((_) =>
-                          _ > config.reportsLimitForExport
-                            ? m.cannotExportMoreReports(
-                                config.reportsLimitForExport,
-                              )
-                            : '',
-                        )
-                        .getOrElse('')}
-                      filters={_reports.filters}
-                    >
-                      <Btn variant="outlined" color="primary" icon="get_app">
-                        Export en Excel
-                      </Btn>
-                    </ExportReportsPopper>
-                    <ExportReportsPdfPopper
-                      maxElement={config.reportsPdfLimitForExport}
-                      disabled={ScOption.from(_reports?.result.data?.totalCount)
-                        .map((_) => _ > config.reportsPdfLimitForExport)
-                        .getOrElse(false)}
-                      tooltipBtnNew={ScOption.from(
-                        _reports?.result.data?.totalCount,
-                      )
-                        .map((_) =>
-                          _ > config.reportsPdfLimitForExport
-                            ? m.cannotExportMoreReports(
-                                config.reportsPdfLimitForExport,
-                              )
-                            : '',
-                        )
-                        .getOrElse('')}
-                      filters={_reports.filters}
-                    >
-                      <Btn
-                        disabled={selectReport.size != 0}
-                        variant="outlined"
-                        color="primary"
-                        icon="get_app"
-                      >
-                        Exporter en PDF
-                      </Btn>
-                    </ExportReportsPdfPopper>
+                    {/*<ExportReportsPopper*/}
+                    {/*  maxElement={config.reportsLimitForExport}*/}
+                    {/*  disabled={ScOption.from(_reports?.result.data?.totalCount)*/}
+                    {/*    .map((_) => _ > config.reportsLimitForExport)*/}
+                    {/*    .getOrElse(false)}*/}
+                    {/*  tooltipBtnNew={ScOption.from(*/}
+                    {/*    _reports?.result.data?.totalCount,*/}
+                    {/*  )*/}
+                    {/*    .map((_) =>*/}
+                    {/*      _ > config.reportsLimitForExport*/}
+                    {/*        ? m.cannotExportMoreReports(*/}
+                    {/*            config.reportsLimitForExport,*/}
+                    {/*          )*/}
+                    {/*        : '',*/}
+                    {/*    )*/}
+                    {/*    .getOrElse('')}*/}
+                    {/*  filters={_reports.filters}*/}
+                    {/*>*/}
+                    {/*  <Btn variant="outlined" color="primary" icon="get_app">*/}
+                    {/*    Export en Excel*/}
+                    {/*  </Btn>*/}
+                    {/*</ExportReportsPopper>*/}
+                    {/*<ExportReportsPdfPopper*/}
+                    {/*  maxElement={config.reportsPdfLimitForExport}*/}
+                    {/*  disabled={ScOption.from(_reports?.result.data?.totalCount)*/}
+                    {/*    .map((_) => _ > config.reportsPdfLimitForExport)*/}
+                    {/*    .getOrElse(false)}*/}
+                    {/*  tooltipBtnNew={ScOption.from(*/}
+                    {/*    _reports?.result.data?.totalCount,*/}
+                    {/*  )*/}
+                    {/*    .map((_) =>*/}
+                    {/*      _ > config.reportsPdfLimitForExport*/}
+                    {/*        ? m.cannotExportMoreReports(*/}
+                    {/*            config.reportsPdfLimitForExport,*/}
+                    {/*          )*/}
+                    {/*        : '',*/}
+                    {/*    )*/}
+                    {/*    .getOrElse('')}*/}
+                    {/*  filters={_reports.filters}*/}
+                    {/*>*/}
+                    {/*  <Btn*/}
+                    {/*    disabled={selectReport.size != 0}*/}
+                    {/*    variant="outlined"*/}
+                    {/*    color="primary"*/}
+                    {/*    icon="get_app"*/}
+                    {/*  >*/}
+                    {/*    Exporter en PDF*/}
+                    {/*  </Btn>*/}
+                    {/*</ExportReportsPdfPopper>*/}
                   </Box>
                 </>
               </div>
