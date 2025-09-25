@@ -98,13 +98,9 @@ export class UserClient {
     })
   }
 
-  readonly inviteAgent = (
-    email: string,
-    role: RoleAgents,
-    authProvider?: AuthProvider,
-  ) => {
+  readonly inviteAgent = (email: string, role: RoleAgents) => {
     return this.client.post<void>(`/account/agent/invitation?role=${role}`, {
-      body: { email, authProvider },
+      body: { email },
     })
   }
 
