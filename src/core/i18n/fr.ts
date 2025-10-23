@@ -470,7 +470,6 @@ export const fr = {
     websites: 'Sites web',
     howItWorks: 'Comment ça marche ?',
     proLogin: 'Espace Pro',
-    agentLogin: 'Espace Agent',
     helpCenter: "Centre d'aide",
     menu_phones: 'Téléphones signalés',
     menu_modeEmploiDGCCRF: `Mode d'emploi`,

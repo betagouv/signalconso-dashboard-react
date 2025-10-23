@@ -14,7 +14,6 @@ import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ConnexionIndexRouteImport } from './routes/connexion.index'
 import { Route as ConnexionValidationEmailRouteImport } from './routes/connexion.validation-email'
-import { Route as ConnexionAgentsRouteImport } from './routes/connexion.agents'
 import { Route as AgentRejoindreRouteImport } from './routes/agent.rejoindre'
 import { Route as AdminRejoindreRouteImport } from './routes/admin.rejoindre'
 import { Route as AuthenticatedUsersRouteImport } from './routes/_authenticated/users'
@@ -34,10 +33,8 @@ import { Route as AuthenticatedAbonnementsRouteImport } from './routes/_authenti
 import { Route as AuthenticatedSplatRouteImport } from './routes/_authenticated/$'
 import { Route as AuthenticatedSuiviDesSignalementsIndexRouteImport } from './routes/_authenticated/suivi-des-signalements/index'
 import { Route as AuthenticatedParametresIndexRouteImport } from './routes/_authenticated/parametres.index'
-import { Route as LogoutProconnectCallbackRouteImport } from './routes/logout.proconnect.callback'
 import { Route as EntrepriseRejoindreSiretRouteImport } from './routes/entreprise.rejoindre.$siret'
 import { Route as ConnexionNouveauMotDePasseTokenRouteImport } from './routes/connexion.nouveau-mot-de-passe.$token'
-import { Route as AuthenticateProconnectCallbackRouteImport } from './routes/authenticate.proconnect.callback'
 import { Route as AuthenticatedUsersPendingRouteImport } from './routes/_authenticated/users/pending'
 import { Route as AuthenticatedUsersConsumersRouteImport } from './routes/_authenticated/users/consumers'
 import { Route as AuthenticatedUsersBlacklistRouteImport } from './routes/_authenticated/users/blacklist'
@@ -93,11 +90,6 @@ const ConnexionValidationEmailRoute =
     path: '/connexion/validation-email',
     getParentRoute: () => rootRouteImport,
   } as any)
-const ConnexionAgentsRoute = ConnexionAgentsRouteImport.update({
-  id: '/connexion/agents',
-  path: '/connexion/agents',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const AgentRejoindreRoute = AgentRejoindreRouteImport.update({
   id: '/agent/rejoindre',
   path: '/agent/rejoindre',
@@ -206,12 +198,6 @@ const AuthenticatedParametresIndexRoute =
     path: '/parametres/',
     getParentRoute: () => AuthenticatedRoute,
   } as any)
-const LogoutProconnectCallbackRoute =
-  LogoutProconnectCallbackRouteImport.update({
-    id: '/logout/proconnect/callback',
-    path: '/logout/proconnect/callback',
-    getParentRoute: () => rootRouteImport,
-  } as any)
 const EntrepriseRejoindreSiretRoute =
   EntrepriseRejoindreSiretRouteImport.update({
     id: '/entreprise/rejoindre/$siret',
@@ -222,12 +208,6 @@ const ConnexionNouveauMotDePasseTokenRoute =
   ConnexionNouveauMotDePasseTokenRouteImport.update({
     id: '/connexion/nouveau-mot-de-passe/$token',
     path: '/connexion/nouveau-mot-de-passe/$token',
-    getParentRoute: () => rootRouteImport,
-  } as any)
-const AuthenticateProconnectCallbackRoute =
-  AuthenticateProconnectCallbackRouteImport.update({
-    id: '/authenticate/proconnect/callback',
-    path: '/authenticate/proconnect/callback',
     getParentRoute: () => rootRouteImport,
   } as any)
 const AuthenticatedUsersPendingRoute =
@@ -420,7 +400,6 @@ export interface FileRoutesByFullPath {
   '/users': typeof AuthenticatedUsersRouteWithChildren
   '/admin/rejoindre': typeof AdminRejoindreRoute
   '/agent/rejoindre': typeof AgentRejoindreRoute
-  '/connexion/agents': typeof ConnexionAgentsRoute
   '/connexion/validation-email': typeof ConnexionValidationEmailRoute
   '/connexion': typeof ConnexionIndexRoute
   '/entreprise/$companyId': typeof AuthenticatedEntrepriseCompanyIdRouteWithChildren
@@ -446,10 +425,8 @@ export interface FileRoutesByFullPath {
   '/users/blacklist': typeof AuthenticatedUsersBlacklistRoute
   '/users/consumers': typeof AuthenticatedUsersConsumersRoute
   '/users/pending': typeof AuthenticatedUsersPendingRoute
-  '/authenticate/proconnect/callback': typeof AuthenticateProconnectCallbackRoute
   '/connexion/nouveau-mot-de-passe/$token': typeof ConnexionNouveauMotDePasseTokenRoute
   '/entreprise/rejoindre/$siret': typeof EntrepriseRejoindreSiretRoute
-  '/logout/proconnect/callback': typeof LogoutProconnectCallbackRoute
   '/parametres': typeof AuthenticatedParametresIndexRoute
   '/suivi-des-signalements': typeof AuthenticatedSuiviDesSignalementsIndexRoute
   '/entreprise/$companyId/accesses': typeof AuthenticatedEntrepriseCompanyIdAccessesRoute
@@ -479,7 +456,6 @@ export interface FileRoutesByTo {
   '/users': typeof AuthenticatedUsersRouteWithChildren
   '/admin/rejoindre': typeof AdminRejoindreRoute
   '/agent/rejoindre': typeof AgentRejoindreRoute
-  '/connexion/agents': typeof ConnexionAgentsRoute
   '/connexion/validation-email': typeof ConnexionValidationEmailRoute
   '/connexion': typeof ConnexionIndexRoute
   '/entreprise/$companyId': typeof AuthenticatedEntrepriseCompanyIdRouteWithChildren
@@ -505,10 +481,8 @@ export interface FileRoutesByTo {
   '/users/blacklist': typeof AuthenticatedUsersBlacklistRoute
   '/users/consumers': typeof AuthenticatedUsersConsumersRoute
   '/users/pending': typeof AuthenticatedUsersPendingRoute
-  '/authenticate/proconnect/callback': typeof AuthenticateProconnectCallbackRoute
   '/connexion/nouveau-mot-de-passe/$token': typeof ConnexionNouveauMotDePasseTokenRoute
   '/entreprise/rejoindre/$siret': typeof EntrepriseRejoindreSiretRoute
-  '/logout/proconnect/callback': typeof LogoutProconnectCallbackRoute
   '/parametres': typeof AuthenticatedParametresIndexRoute
   '/suivi-des-signalements': typeof AuthenticatedSuiviDesSignalementsIndexRoute
   '/entreprise/$companyId/accesses': typeof AuthenticatedEntrepriseCompanyIdAccessesRoute
@@ -540,7 +514,6 @@ export interface FileRoutesById {
   '/_authenticated/users': typeof AuthenticatedUsersRouteWithChildren
   '/admin/rejoindre': typeof AdminRejoindreRoute
   '/agent/rejoindre': typeof AgentRejoindreRoute
-  '/connexion/agents': typeof ConnexionAgentsRoute
   '/connexion/validation-email': typeof ConnexionValidationEmailRoute
   '/connexion/': typeof ConnexionIndexRoute
   '/_authenticated/entreprise/$companyId': typeof AuthenticatedEntrepriseCompanyIdRouteWithChildren
@@ -566,10 +539,8 @@ export interface FileRoutesById {
   '/_authenticated/users/blacklist': typeof AuthenticatedUsersBlacklistRoute
   '/_authenticated/users/consumers': typeof AuthenticatedUsersConsumersRoute
   '/_authenticated/users/pending': typeof AuthenticatedUsersPendingRoute
-  '/authenticate/proconnect/callback': typeof AuthenticateProconnectCallbackRoute
   '/connexion/nouveau-mot-de-passe/$token': typeof ConnexionNouveauMotDePasseTokenRoute
   '/entreprise/rejoindre/$siret': typeof EntrepriseRejoindreSiretRoute
-  '/logout/proconnect/callback': typeof LogoutProconnectCallbackRoute
   '/_authenticated/parametres/': typeof AuthenticatedParametresIndexRoute
   '/_authenticated/suivi-des-signalements/': typeof AuthenticatedSuiviDesSignalementsIndexRoute
   '/_authenticated/entreprise/$companyId/accesses': typeof AuthenticatedEntrepriseCompanyIdAccessesRoute
@@ -601,7 +572,6 @@ export interface FileRouteTypes {
     | '/users'
     | '/admin/rejoindre'
     | '/agent/rejoindre'
-    | '/connexion/agents'
     | '/connexion/validation-email'
     | '/connexion'
     | '/entreprise/$companyId'
@@ -627,10 +597,8 @@ export interface FileRouteTypes {
     | '/users/blacklist'
     | '/users/consumers'
     | '/users/pending'
-    | '/authenticate/proconnect/callback'
     | '/connexion/nouveau-mot-de-passe/$token'
     | '/entreprise/rejoindre/$siret'
-    | '/logout/proconnect/callback'
     | '/parametres'
     | '/suivi-des-signalements'
     | '/entreprise/$companyId/accesses'
@@ -660,7 +628,6 @@ export interface FileRouteTypes {
     | '/users'
     | '/admin/rejoindre'
     | '/agent/rejoindre'
-    | '/connexion/agents'
     | '/connexion/validation-email'
     | '/connexion'
     | '/entreprise/$companyId'
@@ -686,10 +653,8 @@ export interface FileRouteTypes {
     | '/users/blacklist'
     | '/users/consumers'
     | '/users/pending'
-    | '/authenticate/proconnect/callback'
     | '/connexion/nouveau-mot-de-passe/$token'
     | '/entreprise/rejoindre/$siret'
-    | '/logout/proconnect/callback'
     | '/parametres'
     | '/suivi-des-signalements'
     | '/entreprise/$companyId/accesses'
@@ -720,7 +685,6 @@ export interface FileRouteTypes {
     | '/_authenticated/users'
     | '/admin/rejoindre'
     | '/agent/rejoindre'
-    | '/connexion/agents'
     | '/connexion/validation-email'
     | '/connexion/'
     | '/_authenticated/entreprise/$companyId'
@@ -746,10 +710,8 @@ export interface FileRouteTypes {
     | '/_authenticated/users/blacklist'
     | '/_authenticated/users/consumers'
     | '/_authenticated/users/pending'
-    | '/authenticate/proconnect/callback'
     | '/connexion/nouveau-mot-de-passe/$token'
     | '/entreprise/rejoindre/$siret'
-    | '/logout/proconnect/callback'
     | '/_authenticated/parametres/'
     | '/_authenticated/suivi-des-signalements/'
     | '/_authenticated/entreprise/$companyId/accesses'
@@ -766,13 +728,10 @@ export interface RootRouteChildren {
   ActivationRoute: typeof ActivationRoute
   AdminRejoindreRoute: typeof AdminRejoindreRoute
   AgentRejoindreRoute: typeof AgentRejoindreRoute
-  ConnexionAgentsRoute: typeof ConnexionAgentsRoute
   ConnexionValidationEmailRoute: typeof ConnexionValidationEmailRoute
   ConnexionIndexRoute: typeof ConnexionIndexRoute
-  AuthenticateProconnectCallbackRoute: typeof AuthenticateProconnectCallbackRoute
   ConnexionNouveauMotDePasseTokenRoute: typeof ConnexionNouveauMotDePasseTokenRoute
   EntrepriseRejoindreSiretRoute: typeof EntrepriseRejoindreSiretRoute
-  LogoutProconnectCallbackRoute: typeof LogoutProconnectCallbackRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -810,13 +769,6 @@ declare module '@tanstack/react-router' {
       path: '/connexion/validation-email'
       fullPath: '/connexion/validation-email'
       preLoaderRoute: typeof ConnexionValidationEmailRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/connexion/agents': {
-      id: '/connexion/agents'
-      path: '/connexion/agents'
-      fullPath: '/connexion/agents'
-      preLoaderRoute: typeof ConnexionAgentsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/agent/rejoindre': {
@@ -952,13 +904,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedParametresIndexRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
-    '/logout/proconnect/callback': {
-      id: '/logout/proconnect/callback'
-      path: '/logout/proconnect/callback'
-      fullPath: '/logout/proconnect/callback'
-      preLoaderRoute: typeof LogoutProconnectCallbackRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/entreprise/rejoindre/$siret': {
       id: '/entreprise/rejoindre/$siret'
       path: '/entreprise/rejoindre/$siret'
@@ -971,13 +916,6 @@ declare module '@tanstack/react-router' {
       path: '/connexion/nouveau-mot-de-passe/$token'
       fullPath: '/connexion/nouveau-mot-de-passe/$token'
       preLoaderRoute: typeof ConnexionNouveauMotDePasseTokenRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/authenticate/proconnect/callback': {
-      id: '/authenticate/proconnect/callback'
-      path: '/authenticate/proconnect/callback'
-      fullPath: '/authenticate/proconnect/callback'
-      preLoaderRoute: typeof AuthenticateProconnectCallbackRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_authenticated/users/pending': {
@@ -1375,13 +1313,10 @@ const rootRouteChildren: RootRouteChildren = {
   ActivationRoute: ActivationRoute,
   AdminRejoindreRoute: AdminRejoindreRoute,
   AgentRejoindreRoute: AgentRejoindreRoute,
-  ConnexionAgentsRoute: ConnexionAgentsRoute,
   ConnexionValidationEmailRoute: ConnexionValidationEmailRoute,
   ConnexionIndexRoute: ConnexionIndexRoute,
-  AuthenticateProconnectCallbackRoute: AuthenticateProconnectCallbackRoute,
   ConnexionNouveauMotDePasseTokenRoute: ConnexionNouveauMotDePasseTokenRoute,
   EntrepriseRejoindreSiretRoute: EntrepriseRejoindreSiretRoute,
-  LogoutProconnectCallbackRoute: LogoutProconnectCallbackRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
