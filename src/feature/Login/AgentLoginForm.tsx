@@ -1,4 +1,4 @@
-import { Box, Chip } from '@mui/material'
+import { Alert, Box, Chip } from '@mui/material'
 import { DashboardTitle } from 'feature/Login/loggedOutComponents'
 import { CenteredContent } from 'shared/CenteredContent'
 import { ApiError } from '../../core/client/ApiClient'
@@ -26,6 +26,20 @@ export const AgentLoginForm = ({ login, startProConnect, redirect }: Props) => {
     <CenteredContent>
       <InfoBanner />
       <DashboardTitle title="Espace Agent" />
+      <Alert severity="warning">
+        Si vous vous connectiez habituellement via ProConnect, vous avez dû
+        recevoir un email vous informant de sa mise hors service prochaine.
+        <br />
+        Dans la nuit du <b>lundi 27 au mardi 28 octobre</b>, l’accès à cette
+        page sera <b>désactivé</b> et vous ne pourrez plus vous connecter via
+        ProConnect.
+        <br />
+        Vous recevrez{' '}
+        <b>
+          dans la même nuit un email vous invitant à recréer votre mot de passe
+        </b>{' '}
+        pour accéder à votre compte via le mode de connexion classique.
+      </Alert>
       <Box
         marginTop={4}
         display="flex"
