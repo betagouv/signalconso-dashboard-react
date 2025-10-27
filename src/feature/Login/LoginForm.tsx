@@ -1,5 +1,5 @@
 import { TextField } from '@mui/material'
-import { Link, useNavigate } from '@tanstack/react-router'
+import { useNavigate } from '@tanstack/react-router'
 import { AlertContactSupport } from 'feature/Login/loggedOutComponents'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
@@ -112,18 +112,6 @@ export const LoginForm = ({ login, redirect }: Props) => {
                 {apiError.isFailedLoginError()
                   ? `Si vous avez oublié votre mot de passe, cliquez sur 'mot de passe oublié' pour le récupérer.`
                   : apiError.message}
-                {watch('email').toLocaleLowerCase().endsWith('.gouv.fr') &&
-                  config.enableProConnect && (
-                    <p className={'mt-2 font-bold'}>
-                      Essayez de vous connecter via le bouton{' '}
-                      <Link to="/connexion/agents" className="underline">
-                        Pro Connect
-                      </Link>{' '}
-                      si vous avez reçu un e-mail d’invitation mentionnant
-                      ProConnect, ou si vous utilisez Pro Connect pour vous
-                      connecter à Signal Conso.
-                    </p>
-                  )}
               </DsfrAlert>
             </div>
           )}

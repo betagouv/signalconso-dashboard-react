@@ -1,5 +1,5 @@
 import { Icon, Menu, MenuItem } from '@mui/material'
-import { Link, useLocation } from '@tanstack/react-router'
+import { useLocation } from '@tanstack/react-router'
 import React from 'react'
 import { Btn, IconBtn } from '../../alexlibs/mui-extension'
 import { config } from '../../conf/config'
@@ -85,33 +85,11 @@ export const ScHeader = () => {
                 <a href={config.appBaseUrl + '/centre-aide'}>
                   <MenuItem>{m.helpCenter}</MenuItem>
                 </a>
-                {pathname.includes('/connexion/agents') &&
-                  config.enableProConnect && (
-                    <Link to="/connexion">
-                      <MenuItem>{m.proLogin}</MenuItem>
-                    </Link>
-                  )}
-                {(pathname === '/connexion' || pathname === '/') &&
-                  config.enableProConnect && (
-                    <Link to="/connexion/agents">
-                      <MenuItem>{m.agentLogin}</MenuItem>
-                    </Link>
-                  )}
               </Menu>
             </>
           ) : (
             <nav>
               <HeaderItem href={config.appBaseUrl}>{m.home}</HeaderItem>
-              {pathname.includes('/connexion/agents') &&
-                config.enableProConnect && (
-                  <HeaderItem href="/connexion">{m.proLogin}</HeaderItem>
-                )}
-              {(pathname === '/connexion' || pathname === '/') &&
-                config.enableProConnect && (
-                  <HeaderItem href="/connexion/agents">
-                    {m.agentLogin}
-                  </HeaderItem>
-                )}
               <HeaderItem href={config.appBaseUrl + '/comment-ca-marche'}>
                 {m.howItWorks}
               </HeaderItem>

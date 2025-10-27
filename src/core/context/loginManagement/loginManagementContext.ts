@@ -12,16 +12,6 @@ export type LoginManagementResult = {
     // this is not used, in the LoginForm we do our own error handling
     errorMsg?: unknown
   }
-  loginProConnect: {
-    action: (authorizationCode: string, state: string) => Promise<User>
-    loading?: boolean
-    errorMsg?: unknown
-  }
-  startProConnect: {
-    action: (state: string, nonce: string) => Promise<void>
-    loading?: boolean
-    errorMsg?: unknown
-  }
   register: {
     action: (siret: string, token: string, email: string) => Promise<void>
     loading?: boolean

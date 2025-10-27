@@ -38,34 +38,6 @@ export function LoginManagementProvider({
     }
   }
 
-  const _loginProConnect = useMutation({
-    mutationFn: ({
-      authorizationCode,
-      state,
-    }: {
-      authorizationCode: string
-      state: string
-    }) => publicApiSdk.authenticate.loginProConnect(authorizationCode, state),
-    onSuccess: (user) => {
-      setConnectedUser(user)
-    },
-    // we don't want to trigger the default toast of errors
-    onError: () => {},
-  })
-
-  const isProConnectLoggingIn = _loginProConnect.isPending
-  const proConnectloginError = _loginProConnect.error
-
-  const _startProConnect = useMutation({
-    mutationFn: ({ state, nonce }: { state: string; nonce: string }) =>
-      publicApiSdk.authenticate.startProConnect(state, nonce),
-    // we don't want to trigger the default toast of errors
-    onError: () => {},
-  })
-
-  const isStartingProConnect = _startProConnect.isPending
-  const isStartingProConnectError = _startProConnect.error
-
   const _login = useMutation({
     mutationFn: ({ login, password }: { login: string; password: string }) =>
       publicApiSdk.authenticate.login(login, password),
@@ -104,15 +76,8 @@ export function LoginManagementProvider({
   }
 
   const logout = async () => {
-    if (connectedUser && connectedUser.authProvider === 'ProConnect') {
-      publicApiSdk.authenticate
-        .logoutProConnect()
-        //Need to use window.location.href to force browser to not check CORS
-        .then((_) => (window.location.href = _ as string))
-    } else {
-      const user = await publicApiSdk.authenticate.logout()
-      return handleDetectedLogout(user)
-    }
+    const user = await publicApiSdk.authenticate.logout()
+    return handleDetectedLogout(user)
   }
 
   return (
@@ -125,20 +90,6 @@ export function LoginManagementProvider({
           },
           loading: isLoggingIn,
           errorMsg: loginError,
-        },
-        loginProConnect: {
-          action: (authorizationCode: string, state: string) => {
-            return _loginProConnect.mutateAsync({ authorizationCode, state })
-          },
-          loading: isProConnectLoggingIn,
-          errorMsg: proConnectloginError,
-        },
-        startProConnect: {
-          action: (state: string, nonce: string) => {
-            return _startProConnect.mutateAsync({ state, nonce })
-          },
-          loading: isStartingProConnect,
-          errorMsg: isStartingProConnectError,
         },
         logout,
         handleDetectedLogout,

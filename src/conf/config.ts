@@ -19,9 +19,6 @@ const isDev = import.meta.env.VITE_APP_NODE_ENV === 'development'
 
 export const config = {
   isManuDev: import.meta.env.VITE_APP_IS_MANU_DEV === 'true',
-  proConnectServer: import.meta.env.VITE_APP_PRO_CONNECT_URL,
-  proConnectClientId: import.meta.env.VITE_APP_PRO_CONNECT_CLIENT_ID,
-  enableProConnect: import.meta.env.VITE_APP_ENABLE_PRO_CONNECT === 'true',
   isDev,
   isDemo,
   apiBaseUrl: noTrailingSlash(

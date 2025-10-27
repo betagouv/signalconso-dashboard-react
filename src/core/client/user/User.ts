@@ -10,7 +10,6 @@ export type Role = RoleAdminOrAgent | 'Professionnel'
 
 export enum AuthProvider {
   SignalConso = 'SignalConso',
-  ProConnect = 'ProConnect',
 }
 
 export interface User {
