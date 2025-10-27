@@ -34,9 +34,8 @@ export const ForgottenPasswordDialog = ({ value, children }: Props) => {
     register,
     getValues,
     setValue,
-    watch,
     handleSubmit,
-    formState: { errors, isValid },
+    formState: { errors },
   } = useForm<Form>()
 
   useEffect(() => {
@@ -79,14 +78,6 @@ export const ForgottenPasswordDialog = ({ value, children }: Props) => {
           <Txt color="hint" block gutterBottom>
             {m.forgottenPasswordDesc}
           </Txt>
-          {watch('emailForgotten')
-            ?.toLocaleLowerCase()
-            .endsWith('.gouv.fr') && (
-            <Alert type="warning" gutterBottom>
-              Réservé aux utilisateurs qui n'utilisent pas ProConnect pour se
-              connecter à SignalConso.
-            </Alert>
-          )}
           <TextField
             fullWidth
             autoFocus

@@ -94,23 +94,6 @@ export class PublicApiSdk {
         withCredentials: true,
       })
     },
-    logoutProConnect: () => {
-      return this.apiClient.post<string>(`/logout/proconnect`, {
-        withCredentials: true,
-      })
-    },
-    startProConnect: (state: string, nonce: string) => {
-      return this.apiClient.get<void>(`/authenticate/proconnect/start`, {
-        qs: { state, nonce },
-        withCredentials: true,
-      })
-    },
-    loginProConnect: (code: string, state: string) => {
-      return this.apiClient.get<User>(`authenticate/proconnect`, {
-        qs: { code, state },
-        withCredentials: true,
-      })
-    },
     getUser: async (): Promise<User | null> => {
       try {
         const user = await this.apiClient.get<User>(`/current-user`, {
