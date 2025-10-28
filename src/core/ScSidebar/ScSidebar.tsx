@@ -3,13 +3,7 @@ import { Btn, Txt } from '../../alexlibs/mui-extension'
 import { UserNameLabel } from '../../shared/UserNameLabel'
 import { EntityIcon } from '../EntityIcon'
 import { Sidebar, SidebarHr, SidebarItem } from '../Layout/Sidebar'
-import {
-  AuthProvider,
-  Role,
-  roleAdmins,
-  roleAgents,
-  User,
-} from '../client/user/User'
+import { Role, roleAdmins, roleAgents, User } from '../client/user/User'
 import { useLayoutContext } from '../context/layoutContext/layoutContext'
 import { useI18n } from '../i18n'
 
@@ -172,11 +166,9 @@ export const ScSidebar = ({
           {m.menu_join_informations}
         </SidebarItem>
       )}
-      {connectedUser.authProvider == AuthProvider.SignalConso && (
-        <SidebarItem onClick={closeSidebar} to="/parametres" icon="settings">
-          {m.menu_settings}
-        </SidebarItem>
-      )}
+      <SidebarItem onClick={closeSidebar} to="/parametres" icon="settings">
+        {m.menu_settings}
+      </SidebarItem>
       {([...roleAdmins, ...roleAgents] as Role[]).includes(
         connectedUser.role,
       ) && (
