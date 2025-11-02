@@ -4,6 +4,7 @@ import { Page, PageTitle } from '../../shared/Page'
 import { PageTab, PageTabs } from '../../shared/Page/PageTabs'
 import { Route as adminRoute } from './tools/admin'
 import { Route as testRoute } from './tools/test'
+import { TestTools } from '../../feature/AdminTools/TestTools'
 
 export const Route = createFileRoute('/_authenticated/tools')({
   component: Tools,
@@ -15,7 +16,7 @@ function Tools() {
   return (
     <Page>
       <PageTitle>Outils techniques</PageTitle>
-      {connectedUser.isAdmin && (
+      {connectedUser.isSuperAdmin ? (
         <PageTabs>
           <PageTab
             navigateOptions={{ to: testRoute.to }}
@@ -26,6 +27,8 @@ function Tools() {
             label="Outils d'administration"
           />
         </PageTabs>
+      ) : (
+        <TestTools />
       )}
       <Outlet />
     </Page>
