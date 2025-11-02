@@ -161,7 +161,7 @@ export const ScSidebar = ({
         </SidebarItem>
       )}
       <SidebarHr margin />
-      {(['SuperAdmin'] as Role[]).includes(connectedUser.role) && (
+      {([...roleAdmins] as Role[]).includes(connectedUser.role) && (
         <SidebarItem onClick={closeSidebar} to="/tools" icon={EntityIcon.admin}>
           {m.menu_admin_tools}
         </SidebarItem>
