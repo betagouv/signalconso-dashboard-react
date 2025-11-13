@@ -8,8 +8,9 @@ export function AlertNotForConso() {
   return (
     <Alert type="info" className="max-w-lg mx-auto">
       <p className="mb-2">
-        Cette page permet aux <span className="font-bold">professionnels</span>{' '}
-        de consulter et de répondre aux signalements des consommateurs.
+        Cette page permet aux{' '}
+        <span className="font-bold">professionnels et agents</span> de consulter
+        les signalements des consommateurs.
       </p>
       <p className="mb-2">
         Vous êtes un <span className="font-bold">consommateur</span> et vous
