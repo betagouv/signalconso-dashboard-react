@@ -2,7 +2,6 @@ import { paginateData } from '../../helper'
 import { Id, Paginate } from '../../model'
 import { ApiClient } from '../ApiClient'
 import {
-  AuthProvider,
   isUserActive,
   Role,
   RoleAdmins,
