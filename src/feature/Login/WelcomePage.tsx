@@ -41,7 +41,7 @@ export function WelcomePage({ redirect }: { redirect?: string }) {
   return (
     <CenteredContent>
       <InfoBanner />
-      <DashboardTitle title={'Espace Pro'} />
+      <DashboardTitle title={'Espace Pro et Agents'} />
       <div className="flex gap-6 justify-center mb-8 px-2">
         <Tile
           title="J'ai reçu un courrier de SignalConso à propos de mon entreprise"
@@ -49,7 +49,7 @@ export function WelcomePage({ redirect }: { redirect?: string }) {
           to="/activation"
         />
         <Tile
-          title="J'ai déjà un compte pour mon entreprise"
+          title="J'ai déjà un compte"
           desc="Je me connecte pour consulter et répondre aux signalements"
           to="/connexion"
           search={{ redirect }}
