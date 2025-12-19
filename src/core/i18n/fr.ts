@@ -48,6 +48,7 @@ export const fr = {
       [Category.VoitureVehiculeVelo]: 'Voiture / Véhicule / Vélo',
       [Category.DemarchageAbusif]: 'Démarchage abusif',
       [Category.RecouvrementAmiable]: 'Recouvrement amiable de créance',
+      [Category.Accessibilite]: 'Accessibilité',
     },
     ReportTypeDesc: {
       [ReportType.Both]: 'Sites internet et établissements physiques',
