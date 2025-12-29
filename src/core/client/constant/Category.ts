@@ -24,6 +24,7 @@ export enum Category {
   VoitureVehiculeVelo = 'VoitureVehiculeVelo',
   DemarchageAbusif = 'DemarchageAbusif',
   RecouvrementAmiable = 'RecouvrementAmiable',
+  Accessibilite = 'Accessibilite',
 }
 
 export interface CategoriesByStatus {
