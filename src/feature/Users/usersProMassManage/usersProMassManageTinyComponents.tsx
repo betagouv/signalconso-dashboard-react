@@ -9,6 +9,7 @@ export function MassManageTinyButton({
 }) {
   return (
     <Button
+      type="button"
       size="small"
       variant={'outlined'}
       className="bg-white!"

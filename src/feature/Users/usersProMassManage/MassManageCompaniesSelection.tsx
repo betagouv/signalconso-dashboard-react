@@ -20,6 +20,15 @@ type FormShape = {
 }
 type Form = UseFormReturn<FormShape>
 
+function setSelectionForIds(form: Form, ids: string[], value: boolean) {
+  const selection = form.getValues('selection')
+  const next = { ...selection }
+  for (const id of ids) {
+    next[id] = value
+  }
+  form.setValue('selection', next, { shouldDirty: true })
+}
+
 type OnSubmit = (selectedCompaniesIds: string[]) => void
 
 export function MassManageCompaniesSelection({
@@ -75,17 +84,17 @@ function Loaded({
             <MassManageTinyButton
               label="Sélectionner tous"
               onClick={() => {
-                selectableIds?.forEach((id) => {
-                  form.setValue(`selection.${id}`, true)
-                })
+                if (selectableIds?.length) {
+                  setSelectionForIds(form, selectableIds, true)
+                }
               }}
             />
             <MassManageTinyButton
               label="Désélectionner tous"
               onClick={() => {
-                selectableIds?.forEach((id) => {
-                  form.setValue(`selection.${id}`, false)
-                })
+                if (selectableIds?.length) {
+                  setSelectionForIds(form, selectableIds, false)
+                }
               }}
             />
           </div>
@@ -163,17 +172,17 @@ function SecondLevelWrapper({
         <MassManageTinyButton
           label="Sélectionner tous"
           onClick={() => {
-            selectableIds.forEach((id) => {
-              form.setValue(`selection.${id}`, true)
-            })
+            if (selectableIds.length) {
+              setSelectionForIds(form, selectableIds, true)
+            }
           }}
         />
         <MassManageTinyButton
           label="Désélectionner tous"
           onClick={() => {
-            selectableIds.forEach((id) => {
-              form.setValue(`selection.${id}`, false)
-            })
+            if (selectableIds.length) {
+              setSelectionForIds(form, selectableIds, false)
+            }
           }}
         />
       </div>
