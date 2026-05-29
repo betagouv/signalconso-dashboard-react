@@ -101,7 +101,7 @@ export const ReportCompany = ({
                 />
                 <QuickSmallExternalLink
                   label="Annuaire des Entreprises"
-                  href={`https://annuaire-entreprises.data.gouv.fr/etablissement/${companySiret.trim()}}`}
+                  href={`https://annuaire-entreprises.data.gouv.fr/etablissement/${companySiret.trim()}`}
                 />
               </div>
             </ReportElementRow>
