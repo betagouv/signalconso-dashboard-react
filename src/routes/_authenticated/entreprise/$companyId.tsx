@@ -22,16 +22,19 @@ function RouteComponent() {
       {company && <CompanyPageTitle {...{ company }} />}
       <PageTabs>
         <PageTab
-          navigateOptions={{ to: bilanRoute.to, params: { companyId } }}
+          to={bilanRoute.to}
+          params={{ companyId }}
           label={'Statistiques'}
         />
         <PageTab
-          navigateOptions={{ to: accessesRoute.to, params: { companyId } }}
+          to={accessesRoute.to}
+          params={{ companyId }}
           label={'Accès utilisateurs'}
         />
         {connectedUser.isNotPro ? (
           <PageTab
-            navigateOptions={{ to: historyRoute.to, params: { companyId } }}
+            to={historyRoute.to}
+            params={{ companyId }}
             label={`Historique de l'entreprise`}
           />
         ) : undefined}
