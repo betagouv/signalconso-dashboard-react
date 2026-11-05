@@ -5,6 +5,7 @@ import tailwindcss from '@tailwindcss/vite'
 import eslint from 'vite-plugin-eslint'
 import browserslistToEsbuild from 'browserslist-to-esbuild'
 import { TanStackRouterVite } from '@tanstack/router-plugin/vite'
+import { version } from './package.json'
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -15,6 +16,10 @@ export default defineConfig({
     viteTsconfigPaths(),
     tailwindcss(),
     eslint(),
+    {
+      name: 'html-app-version',
+      transformIndexHtml: (html) => html.replace('%APP_VERSION%', version),
+    },
   ],
   server: {
     // this ensures that the browser opens upon server start
